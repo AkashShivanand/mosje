@@ -118,6 +118,138 @@ export const MAX_RAIL_OFFSET_PX =
   CORNER_ZONE_Y_PX + MAX_OCCUPANT_PX + CORNER_RAIL_GAP_PX;
 
 /**
+ * ── THE CLEARANCE CONTRACT ─────────────────────────────────────────────────
+ *
+ * A surface marked `data-sa-rail-clear` must not have a TRANSIENT floating
+ * widget sitting on it. While one would, the widget gets `data-sa-rail-yield`
+ * and its stylesheet steps it aside — visually and for taps only. It stays in
+ * the accessibility tree and the tab order, and it comes back the moment the
+ * surface scrolls out from under it.
+ *
+ * It exists because on a 568–667px phone the corner stack reaches into the
+ * first screen, and the website's announcement band is what is there: at
+ * 320×568 the chat launcher covered the band's dismiss ✕ entirely, so a tap on
+ * ✕ opened the chat. Moving the launcher cannot fix that — at that size the
+ * band is taller than the space left beneath it — so the launcher gives way.
+ *
+ * TRANSIENT widgets only. The permanence order in
+ * `.claude/rules/floating-element-placement.md` decides who may yield, and the
+ * statutory accessibility control is never one of them.
+ */
+export const RAIL_CLEAR_ATTR = "data-sa-rail-clear";
+export const RAIL_YIELD_ATTR = "data-sa-rail-yield";
+
+export interface RectLike {
+  top: number;
+  right: number;
+  bottom: number;
+  left: number;
+}
+
+/**
+ * True when `box` overlaps any of `surfaces` by more than `tolerance` on both
+ * axes. Exported for the unit test — it is pure given a list of rects. The
+ * tolerance keeps a shared hairline edge from counting as a collision.
+ */
+export function overlapsAny(
+  box: RectLike,
+  surfaces: readonly RectLike[],
+  tolerance = 1,
+): boolean {
+  return surfaces.some(
+    (s) =>
+      Math.min(box.right, s.right) - Math.max(box.left, s.left) > tolerance &&
+      Math.min(box.bottom, s.bottom) - Math.max(box.top, s.top) > tolerance,
+  );
+}
+
+/**
+ * Keeps `data-sa-rail-yield` on the ref'd widget true exactly while it overlaps
+ * a `data-sa-rail-clear` surface. Pass `enabled: false` for any state that must
+ * never yield — an OPEN panel is one the citizen summoned, and nothing takes it
+ * away from them.
+ *
+ * Measured, not assumed, on the same triggers as the rails: scroll (captured,
+ * so an inner scroller counts), resize, the widget's own size and position
+ * changes (its `bottom` transitions when the corner's occupancy changes), and a
+ * subtree `childList` watch so a surface that mounts or is dismissed is seen
+ * without waiting for a scroll. Every path funnels through one rAF-debounced
+ * measure, so a burst costs a single layout read.
+ *
+ * PLUS LAYOUT THAT SHIFTS ON ITS OWN, which none of those see. Measured at
+ * 360×640: for the first 1.2s the launcher was not yet `position: fixed` (a late
+ * stylesheet, which lands in `<head>`, not `<body>`), then jumped onto the band
+ * with no scroll, no resize and no transition — so it sat on the band's action
+ * until the reader first scrolled. A stylesheet, a webfont or an image arriving
+ * late all change the document's size, so the document is watched too, and the
+ * `load` and fonts-ready moments are re-measured outright.
+ */
+export function useRailClearance(
+  ref: React.RefObject<HTMLElement | null>,
+  enabled: boolean,
+): void {
+  React.useEffect(() => {
+    const element = ref.current;
+    if (!element || typeof window === "undefined") return;
+    if (!enabled) {
+      element.removeAttribute(RAIL_YIELD_ATTR);
+      return;
+    }
+
+    let frame: number | undefined;
+    let disposed = false;
+
+    const measure = () => {
+      if (disposed) return;
+      const surfaces: RectLike[] = [];
+      for (const surface of document.querySelectorAll(`[${RAIL_CLEAR_ATTR}]`)) {
+        if (surface.contains(element) || element.contains(surface)) continue;
+        const rect = surface.getBoundingClientRect();
+        if (rect.width > 0 && rect.height > 0) surfaces.push(rect);
+      }
+      element.toggleAttribute(
+        RAIL_YIELD_ATTR,
+        overlapsAny(element.getBoundingClientRect(), surfaces),
+      );
+    };
+
+    function schedule() {
+      if (disposed || frame !== undefined) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = undefined;
+        measure();
+      });
+    }
+
+    measure();
+
+    window.addEventListener("scroll", schedule, { passive: true, capture: true });
+    window.addEventListener("resize", schedule);
+    element.addEventListener("transitionend", schedule);
+    const bodyObserver = new MutationObserver(schedule);
+    bodyObserver.observe(document.body, { childList: true, subtree: true });
+    const resizeObserver =
+      typeof ResizeObserver !== "undefined" ? new ResizeObserver(schedule) : null;
+    resizeObserver?.observe(element);
+    resizeObserver?.observe(document.documentElement);
+    window.addEventListener("load", schedule);
+    void document.fonts?.ready.then(schedule);
+
+    return () => {
+      disposed = true;
+      if (frame !== undefined) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule, true);
+      window.removeEventListener("resize", schedule);
+      window.removeEventListener("load", schedule);
+      element.removeEventListener("transitionend", schedule);
+      bodyObserver.disconnect();
+      resizeObserver?.disconnect();
+      element.removeAttribute(RAIL_YIELD_ATTR);
+    };
+  }, [ref, enabled]);
+}
+
+/**
  * The widget scripts that own this corner inject their markup
  * asynchronously, so the first measurement usually finds nothing. Poll
  * briefly for a late arrival; the observers below take over after that.
@@ -287,12 +419,13 @@ export function useCornerRailOffset(
 
     window.addEventListener("resize", schedule);
 
-    // The AccessibilityBar's refcounted root flag — the one signal that
-    // says the UX4G trigger's visibility just changed.
+    // The AccessibilityBar's refcounted root flags — the signals that say the
+    // UX4G trigger's visibility just changed. The second flips on SCROLL below
+    // `breakpoint/tablet`, as the bar's own icon leaves or re-enters the screen.
     const rootObserver = new MutationObserver(schedule);
     rootObserver.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ["data-sa-abar-a11y"],
+      attributeFilter: ["data-sa-abar-a11y", "data-sa-abar-a11y-onscreen"],
     });
 
     // Late-mounting launchers. Vendor widgets append to <body>, so a

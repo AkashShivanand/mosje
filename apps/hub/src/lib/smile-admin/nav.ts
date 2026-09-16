@@ -95,7 +95,11 @@ export const NAV: NavGroup[] = [
   {
     label: "Communications",
     items: [
-      { label: "Notifications", href: "/portals/smile-admin/notifications", icon: "notifications" },
+      // "Broadcasts", not "Notifications": this is where an administrator SENDS a message. A
+      // reader's own notifications are a different object (docs/specs/notification-object.md),
+      // and one word for both is how the estate's first bell proposal misread this page.
+      // The route keeps its path so existing links do not break.
+      { label: "Broadcasts", href: "/portals/smile-admin/notifications", icon: "campaign" },
       { label: "Compose", href: "/portals/smile-admin/notifications/compose", icon: "edit_square" },
     ],
   },

@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "The Figma Chip set gains an `Emphasis` axis (Subtle, Solid) with six Solid selected variants across Default, Dropdown and Leading + Dropdown, Default and Hover. Solid drops the tick: the state is carried by fill luminance, not hue alone"
+}

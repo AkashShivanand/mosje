@@ -59,12 +59,88 @@ export type PortalAuthMode =
   | "darpan"; // NGO-DARPAN Unique ID — E-Anudaan's organisation applicants
 
 /**
+ * What kind of value an identifier field takes. It decides the control's
+ * `type`, `inputMode`, `autoComplete` and whether non-digits are stripped — the
+ * four things a phone keyboard and a password manager read.
+ *
+ * - `text` — a username, login ID, Project Id, employee ID. Nothing stripped.
+ * - `mobile` — a 10-digit Indian mobile number. Digits only, number pad.
+ * - `email` — an email address. `type="email"`, the email keyboard.
+ *
+ * **Added 2026-09-14, from the portals rather than a brief.** The OTP route was
+ * fixed to a 10-digit mobile, and three of the logins moving onto the template
+ * send a code to something else: the Transgender Portal to an email address
+ * (`10767:101718`, "Email/Mobile"; Garima Greh "Email"), and NMBA's treatment
+ * centres to the mobile registered against a Project Id (`9884:112146`). None of
+ * them could be expressed without forking the OTP stack.
+ */
+export type PortalIdentifierKind = "text" | "mobile" | "email";
+
+/**
+ * A choice WITHIN a role tab — "Your role" on the handoff's SCW Citizen tab
+ * (`9453:255070`: Volunteer / SAGE Organisation) and on SMILE Beggary
+ * (`8383:55528`).
+ *
+ * **Not a fourth audience and not a second row of tabs.** The tab says which of
+ * the estate's three audiences is signing in; this says which register inside
+ * that audience holds the account. SCW drew it as two pill toggles under the
+ * tabs until the handoff replaced them with one labelled select, which is what
+ * this renders.
+ */
+export interface PortalSubRole {
+  id: string;
+  label: string;
+}
+
+/**
+ * The answer to a request the template makes on the portal's behalf — sending a
+ * code, checking a recovery identifier.
+ *
+ * `ok: false` carries the sentence the reader sees, shown against the field that
+ * caused it (WCAG 3.3.1). `ok: true` may carry the ALREADY-MASKED destination
+ * the code went to, because only the portal knows it: a Project Id does not say
+ * which handset it is registered to.
+ */
+export type AuthStepResult =
+  | { ok: true; maskedDestination?: string; channel?: "phone" | "email" }
+  | { ok: false; error: string };
+
+/**
+ * What `onRequestOtp` receives when the reader presses Send OTP (or Resend).
+ */
+export interface OtpRequest {
+  roleId: string;
+  subRoleId?: string;
+  /** Exactly what was typed — digits only for `mobile`. */
+  identifier: string;
+  identifierKind: PortalIdentifierKind;
+  /** `true` on a resend, so a portal can rate-limit the second send differently. */
+  resend: boolean;
+}
+
+/**
+ * Errors a portal attaches to individual fields after a submit.
+ *
+ * `secret` is whichever proof the active mode asks for — the password, the PIN,
+ * or the PAN on the DARPAN route — because a portal reporting "incorrect
+ * credentials" should not have to know which of the three it was.
+ *
+ * **An error hides itself once the reader edits that field.** A message that
+ * stays put while the citizen fixes the thing it complains about reads as a
+ * second, unrelated failure. It returns only when the portal passes a new
+ * `fieldErrors` object.
+ */
+export type PortalLoginFieldErrors = Partial<
+  Record<"identifier" | "secret" | "otp" | "subRole", React.ReactNode>
+>;
+
+/**
  * Custom display option for a specific login method under a role.
  */
 export interface PortalAuthModeOption {
   /** Authentication workflow mode key */
   mode: PortalAuthMode;
-  /** Custom display label, e.g. "Login via Password", "Login with DARPAN ID", "Login via Mobile OTP" */
+  /** Custom display label, e.g. "Login with Password", "Login with DARPAN ID", "Login with OTP" */
   label: string;
   /** Optional subtext or description for radio / dropdown list items */
   description?: string;
@@ -143,17 +219,51 @@ export interface PortalRoleTab {
   identifierLabel?: string;
   /** The placeholder under that label. Say what to type, not what the field is. */
   identifierPlaceholder?: string;
+  /**
+   * What the password and PIN routes' identifier takes. @default "text"
+   *
+   * NMBA's Admin tab and SCW sign in with a mobile number, so a phone should
+   * offer the number pad and a pasted "+91 98100 07001" should arrive as ten
+   * digits. A username field must not do either.
+   */
+  identifierKind?: PortalIdentifierKind;
+  /**
+   * Where the OTP route sends its code. @default "mobile"
+   *
+   * Separate from `identifierKind` because one role can offer both routes with
+   * different identifiers — SAMBAL's handoff (`10434:159436`) signs in with a
+   * Username by password, and a code cannot be sent to a username.
+   *
+   * `mobile` masks as `+91 98••••1234` and `email` as `a•••••s@gmail.com` without
+   * the portal's help. `text` (a Project Id) needs `onRequestOtp` to return
+   * `maskedDestination`; without it the row says "your registered mobile number".
+   */
+  otpIdentifierKind?: PortalIdentifierKind;
+  /** The OTP route's identifier label. @default "Registered Mobile Number", "Email Address" or "Registered ID" by kind */
+  otpIdentifierLabel?: string;
+  /** The OTP route's identifier placeholder. */
+  otpIdentifierPlaceholder?: string;
+  /**
+   * A choice within this tab, rendered as one labelled select above the
+   * credential fields. See `PortalSubRole`. The chosen id arrives as
+   * `LoginSubmitPayload.subRoleId`.
+   */
+  subRoles?: PortalSubRole[];
+  /** The select's label. @default "Your role" — the handoff's wording. */
+  subRoleLabel?: string;
+  /** Which sub-role is selected when the tab opens. @default the first */
+  defaultSubRoleId?: string;
 }
 
 /**
  * Portal-specific brand asset paths.
  */
 export interface PortalBrandAssets {
-  /** National Emblem SVG path — defaults to "/brand/national-emblem.svg" */
+  /** National Emblem SVG path — defaults to "/design-system/national-emblem.svg" */
   emblemSrc?: string;
-  /** Digital India logo path — defaults to "/brand/digital-india.svg" */
+  /** Digital India logo path — defaults to "/website/images/digital-india-logo.svg" */
   digitalIndiaSrc?: string;
-  /** SAMAVESH logo path — defaults to "/brand/samavesh-logo.svg" */
+  /** SAMAVESH logo path — defaults to "/design-system/samavesh-logo.svg" */
   samaveshLogoSrc?: string;
   /** Optional portal-specific icon / seal path */
   portalLogoSrc?: string;
@@ -194,10 +304,17 @@ export interface PortalBrandAssets {
 export interface LoginSubmitPayload {
   /** Selected role ID */
   roleId: string;
+  /** The sub-role chosen in the tab's "Your role" select, when the tab has one. */
+  subRoleId?: string;
   /** Authentication mode used for submission */
   authMode: PortalAuthMode;
   /** Entered credentials object */
   credentials: {
+    /**
+     * The identifier of the active route: the username on the password and PIN
+     * routes, the DARPAN ID on that route, and on the OTP route the email or ID
+     * the code was sent to when `otpIdentifierKind` is not `mobile`.
+     */
     username?: string;
     password?: string;
     /** Set only when `authMode === "pin"`. The PIN never arrives as `password`. */
@@ -236,9 +353,17 @@ export interface PortalLoginConfig {
   portalId: string;
   /** Portal human-readable name, e.g. "Nasha Mukt Bharat Abhiyaan" */
   portalName: string;
-  /** Optional mission tagline displayed in the hero left panel */
+  /**
+   * Optional, large screens only. A line under the portal name in the Signing Into strip — usually the
+   * scheme's expanded name ("Support For Marginalized Individuals For Livelihood &
+   * Enterprise" under "SMILE Beggary"). Omit it where the name says enough.
+   */
   portalTagline?: string;
-  /** Optional subtitle or description text */
+  /**
+   * Optional. A muted line under the tagline saying what the portal is for, e.g.
+   * "Comprehensive Rehabilitation of Persons Engaged in Begging". Shown without a
+   * tagline too. One sentence. Large screens only; the phone strip shows the name alone.
+   */
   portalDescription?: string;
   /** Href for changing selected portal — defaults to "/" */
   changeHref?: string;
@@ -259,18 +384,17 @@ export interface PortalLoginConfig {
    */
   captcha?: boolean;
   /**
-   * The sentence under the DARPAN fields naming the roles that route does NOT
-   * serve — E-Anudaan's reads "Other login roles (DWO, State, Ministry, Finance,
-   * PMU) use Ministry-issued credentials — separate login flow".
+   * Show the consent line — "By continuing, you agree to the Terms of Use and
+   * Privacy Policy" — under the submit button. @default false
    *
-   * **Portal copy, so it has no default.** Those five roles are E-Anudaan's org
-   * chart; a default here would print them on every portal that ever adopts the
-   * DARPAN route. Omit it and nothing renders — which is correct for a portal
-   * whose DARPAN route serves everyone it shows.
-   *
-   * Ignored unless a role offers `darpan`.
+   * **Optional, per portal.** A portal whose sign-in is for the public turns it
+   * on; one that signs in only organisations and officers — E-Anudaan's NGO and
+   * Ministry tabs — leaves it off. It renders only when at least one of
+   * `links.termsHref` or `links.privacyHref` is also set, because a disclosure
+   * pointing nowhere is worse than none. Mirrors `Show consent` on the Figma
+   * `Auth / AuthFormCard`, whose default is off to match.
    */
-  darpanNote?: React.ReactNode;
+  consent?: boolean;
   /** Brand asset path overrides */
   brandAssets?: PortalBrandAssets;
   /** Optional custom form fields or controls to inject */
@@ -281,6 +405,13 @@ export interface PortalLoginConfig {
   links?: {
     forgotPasswordHref?: string;
     registerHref?: string;
+    /**
+     * More than one way to register — SCW's "Don't have an account? Register as"
+     * Volunteer / SAGE Organisation (`9453:255070`). Wins over `registerHref`.
+     * `AccountPrompt` draws two side by side and changes its question to match;
+     * do not use it to offer two brands of the same account.
+     */
+    registerOptions?: { label: string; href: string }[];
     helpFaqHref?: string;
     /**
      * Where the DigiLocker card hands off to. Required for the card to render at
@@ -308,4 +439,58 @@ export interface PortalLoginConfig {
     /** Where a citizen the check will not pass goes instead. */
     helpHref: string;
   };
+}
+
+/**
+ * The shapes a portal's password recovery takes. Three, because the portals
+ * moving onto the template recover in three genuinely different ways:
+ *
+ * - `otp` — identifier → code → new password → done. SCW's handoff draws exactly
+ *   this (`9465:35397` → `:35904` → `:36412` → `:36977`), and SMILE Admin's
+ *   recovery already runs it across two routes.
+ * - `link` — identifier → "a reset link has been sent". The reset itself is a
+ *   separate page reached from the emailed link, rendered with
+ *   `startAt="reset"`. E-Anudaan and SAMBAL.
+ * - `contact` — no self-service at all: the page says who to contact. PM-AJAY's
+ *   MIS resets passwords through the NIC helpdesk and has no form to fill.
+ *
+ * **Why a template and not four more hand-built pages.** Before this, recovery
+ * was the one half of sign-in with no code counterpart to the Figma
+ * `Auth / CredentialRecovery` (56640:4103): every portal restated the shell's
+ * brand props, the step machine and the "do not disclose whether the account
+ * exists" wording by hand, and three of them drew the step as a standalone card
+ * that looked like a different department.
+ */
+export type PortalRecoveryFlow = "otp" | "link" | "contact";
+
+/** The steps a recovery flow passes through. `sent` is the link flow's last. */
+export type PortalRecoveryStep = "request" | "verify" | "reset" | "sent" | "success";
+
+/**
+ * Configuration for `PortalRecoveryTemplate`. The chrome fields are the same
+ * ones `PortalLoginConfig` carries, so a portal passes one object's worth of
+ * brand to both pages and they cannot drift.
+ */
+export interface PortalRecoveryConfig
+  extends Pick<
+    PortalLoginConfig,
+    "portalId" | "portalName" | "portalTagline" | "portalDescription" | "changeHref" | "brandAssets"
+  > {
+  flow: PortalRecoveryFlow;
+  /** Where "Back to Login" goes, on every step. */
+  loginHref: string;
+  /** The identifier field's label. @default by kind — "Registered Mobile Number", "Email Address", "Username" */
+  identifierLabel?: string;
+  identifierPlaceholder?: string;
+  /** @default "mobile" for `otp`, "text" for `link` */
+  identifierKind?: PortalIdentifierKind;
+  /** The department's minimum new-password length. @default 8 */
+  minPasswordLength?: number;
+  /**
+   * PROTOTYPE ONLY — the `link` flow's confirmation offers a button onward to the
+   * reset page, because nothing sends the email. Leave it unset in production.
+   */
+  continueHref?: string;
+  /** The `contact` flow's body: who resets passwords, and how to reach them. */
+  contact?: React.ReactNode;
 }

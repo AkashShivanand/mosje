@@ -110,7 +110,6 @@ export function AuthFormCardPlayground(): React.JSX.Element {
         onDarpanIdChange={setIdentifier}
         pan={pan}
         onPanChange={setPan}
-        note="Other login roles (DWO, State, Ministry, Finance, PMU) use Ministry-issued credentials — separate login flow"
       />
     ),
     "otp-request": <OtpRequestFields mobile={mobile} onMobileChange={setMobile} />,

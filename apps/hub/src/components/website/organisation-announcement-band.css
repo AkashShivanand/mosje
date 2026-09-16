@@ -39,6 +39,79 @@
     box-shadow:
       inset 0 var(--sa-stroke-1) 0 0 color-mix(in srgb, var(--sa-text-neutral-inverse) 18%, transparent),
       0 8px 20px -8px color-mix(in srgb, var(--sa-color-successScale-900) 60%, transparent);
+
+    /* One row, so the fold below has a track to close. `1fr` in an auto-height
+       grid resolves to the content's height; nothing about the band at rest
+       changes. */
+    display: grid;
+    grid-template-rows: 1fr;
+  }
+
+  /*
+   * ── DISMISSED: THE BAND FOLDS AWAY INSTEAD OF VANISHING ─────────────────
+   *
+   * It used to leave in one frame — measured 134px → 0 at 1440 and 289px → 0 at
+   * 390 — so the hero and everything below it jumped by that much in a single
+   * paint. That jump is the abruptness; no easing on the badge could hide it.
+   *
+   * Three parts, in the order the eye needs them:
+   *
+   * 1. THE CONTENT GOES FIRST. Opacity over the exit duration on a strong
+   *    ease-out, so the words are gone before the band starts to close and are
+   *    never seen squashed. The helpline alone also drops 8px — the one hint of
+   *    where the number is going, since the hero is BELOW the band.
+   * 2. THE BAND CLOSES. `grid-template-rows` 1fr → 0fr over `motion/page`,
+   *    starting halfway through the fade, so the page glides up rather than
+   *    jumping. It is layout, not a compositor property, and it is still the
+   *    right tool: it runs once, for 300ms, on an action a reader takes once, and
+   *    the alternative — transforming every section below a server-rendered
+   *    band — is not something this component can reach.
+   * 3. THE BADGE ARRIVES as the fold finishes (see
+   *    `organisation-helpline-badge.css`), coming down into place from above,
+   *    where the band was.
+   *
+   * NOT A FLIGHT. The badge's own stylesheet records why an 860px arc across the
+   * fold was rejected for a page about drug de-addiction; an 8px drop and an 8px
+   * arrival say "it moved down there" without the theatre.
+   *
+   * Reduced motion needs nothing here: every `--sa-motion-*` duration drops to
+   * 0.01ms, so the band closes at once, and the transition still ends — which
+   * is what removes it.
+   */
+  .orgab {
+    transition:
+      grid-template-rows var(--sa-motion-page-duration) var(--sa-motion-page-easing)
+        calc(var(--sa-motion-exit-duration) / 2),
+      box-shadow var(--sa-motion-page-duration) var(--sa-motion-page-easing)
+        calc(var(--sa-motion-exit-duration) / 2);
+  }
+
+  .orgab[data-leaving] {
+    grid-template-rows: 0fr;
+    box-shadow: none;
+  }
+
+  .orgab__fold {
+    min-block-size: 0;
+  }
+
+  /* Only while folding: at rest the band's confetti and focus rings may reach
+     past its edge, and clipping them permanently would cost that for nothing. */
+  .orgab[data-leaving] .orgab__fold {
+    overflow: hidden;
+  }
+
+  .orgab__inner {
+    transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-reveal-easing);
+  }
+
+  .orgab[data-leaving] .orgab__inner {
+    opacity: 0;
+  }
+
+  .orgab[data-leaving] .orgab__helpline {
+    transform: translateY(var(--sa-padding-8));
+    transition: transform var(--sa-motion-exit-duration) var(--sa-motion-reveal-easing);
   }
 
   /*
@@ -90,10 +163,19 @@
    * vanishing point — otherwise each face turns in a world of its own and the
    * two halves of the flip do not line up.
    */
+  /*
+   * THE CARD IS A CONTAINER, because the card is what runs out of room.
+   *
+   * Whether the action fits BESIDE the copy is a question about the card's width,
+   * not the viewport's: the helpline beside it, the solo layout without one, and
+   * the ≤1023 stack all hand the card a different width at the same viewport.
+   * See the `orgab-card` query after `.orgab__cta`.
+   */
   .orgab__stage {
     position: relative;
     display: grid;
     perspective: 1600px;
+    container: orgab-card / inline-size;
   }
 
   /*
@@ -706,7 +788,18 @@
     white-space: nowrap;
   }
 
+  /*
+   * THE LINK BREAKS BEFORE ITSELF, NOT THROUGH ITSELF — the same rule as the note.
+   *
+   * Left inline it split as "File on / the open register" at 1024, 1120, 768, 390
+   * and 320: an underlined phrase severed across a line is harder to read and two
+   * separate touch targets. `inline-block` moves it to the next line whole, and —
+   * unlike `nowrap` — still wraps inside itself when a line cannot hold it at all,
+   * so a 320px phone at 200% text reflows (§1.4.10) instead of overflowing.
+   * Measured: no line count changes at any width from 768 to 1920.
+   */
   .orgab__alt {
+    display: inline-block;
     color: var(--sa-text-neutral-inverse);
     text-decoration: underline;
     text-underline-offset: 0.2em;
@@ -736,6 +829,41 @@
     align-self: start;
 
     --sa-btn-edge: var(--sa-text-neutral-inverse);
+  }
+
+  /*
+   * ── A NARROW CARD PUTS THE ACTION UNDER THE WORDS ────────────────────────
+   *
+   * Beside the copy the action takes a fixed column — 238px for "File Pre-Event
+   * Details" — and the copy gets whatever is left. At 1024 that was 229px: the
+   * body ran to four lines, the card to 168px, and the button, top-aligned with
+   * the heading on purpose, left 76px of empty card beneath it with the pager
+   * stranded in the middle. It read as a card whose content failed to load.
+   *
+   * Centring the button is not the answer: at 102px the pager sits under it and
+   * a centred button lands on the pager. Moving it under the copy is — it is how
+   * the phone already lays the card out, and the copy gets the button's width
+   * back: two lines of body, one of heading, a 153px card with nothing empty.
+   *
+   * 670 is measured, not picked. Empty space between the button and the pager,
+   * by card width: 603 → 76, 627 → 56, 663 → 49, 675 → 29, 759 → 10. From 675
+   * the side-by-side card looks as designed, so it keeps its shorter height
+   * there — stacking at 720 would add 32px at 768 and 1140 to fix nothing.
+   *
+   * Declared BEFORE the phone's media block, so the phone's full-width action
+   * and its out-of-card pager still win below 768. The pager's half of this
+   * query sits after the pager's own base rule, which it has to follow to win.
+   */
+  @container orgab-card (width < 670px) {
+    .orgab__offer {
+      grid-template-columns: auto minmax(0, 1fr);
+      row-gap: var(--sa-stack-12);
+    }
+
+    .orgab__cta {
+      grid-column: 2;
+      justify-self: start;
+    }
   }
 
   /* ── Pagination, on the card it pages ─────────────────────────────────────
@@ -800,6 +928,18 @@
     display: flex;
     align-items: center;
     gap: var(--sa-inline-2);
+  }
+
+  /* When the action drops under the copy (the `orgab-card` query after
+     `.orgab__cta`), the pager rises to the action's row and centres on the
+     button — 24 up plus half its 24 is 36, the button's centre above the card's
+     16px padding — so the last row reads as one strip: the way in on the left,
+     the paging on the right. Here rather than in that query because this base
+     rule would otherwise win on order. */
+  @container orgab-card (width < 670px) {
+    .orgab__pager {
+      inset-block-end: var(--sa-padding-24);
+    }
   }
 
   /*

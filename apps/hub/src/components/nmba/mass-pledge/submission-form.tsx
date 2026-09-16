@@ -1,13 +1,13 @@
 "use client";
 
 // DS Audit — every control below is imported, none re-implemented:
-//   FormField ✅ · Input ✅ · Select ✅ · Button ✅ · Alert ✅ · FormSection ✅
+//   FormField ✅ · Input ✅ · Select ✅ · Button ✅ · Alert ✅ · FormSection ✅ · FormPanel ✅
 //   GeoPhotoInput ✅ (added this session) · DeclarationCheckbox ✅ (added this session)
 //   IdentityHeader → composes DS controls only.
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Alert, Button, DeclarationCheckbox, FormField, FormSection, GeoPhotoInput, Icon, Input, type GeoPhoto } from "@mosje/design-system";
+import { Alert, Button, DeclarationCheckbox, FormField, FormPanel, FormSection, GeoPhotoInput, Icon, Input, type GeoPhoto } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { IdentityHeader, type IdentityValue } from "./identity-header";
 import { usePortalSession } from "@/lib/nmba/committee/session-context";
@@ -54,7 +54,18 @@ interface FieldErrors {
   storage?: string;
 }
 
-export function SubmissionForm() {
+export interface SubmissionFormProps {
+  /** The form panel's heading. */
+  title: React.ReactNode;
+  /** One line under the heading. */
+  description?: React.ReactNode;
+}
+
+/**
+ * The reporting form, drawn as ONE FormPanel (docs/design-system/form-wizard-visual-language.md):
+ * the heading in the panel's head band, the sections flush inside it, Submit in its action band.
+ */
+export function SubmissionForm({ title, description }: SubmissionFormProps) {
   const formRef = React.useRef<HTMLFormElement>(null);
   const session = usePortalSession();
   const router = useRouter();
@@ -286,275 +297,282 @@ export function SubmissionForm() {
   };
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
-      {reporterKind === "SPIRITUAL_ORG" && (
-        <Alert status="warning" title="Placeholder list">
-          The requirement specifies eight spiritual organisations but the list
-          was never supplied. These eight are stand-ins so the form can be
-          tested. They are not a confirmed roster and will be replaced once the
-          Ministry provides the list.
-        </Alert>
-      )}
-
-      <FormSection
-        title="Who is reporting"
-        description={`${REPORTER_LABEL[reporterKind]} · resolved from your login and not editable.`}
-        columns={3}
+    <form ref={formRef} onSubmit={handleSubmit} noValidate>
+      <FormPanel
+        title={title}
+        description={description}
+        footer={
+          <Button
+            type="submit"
+            className="ms-auto"
+            disabled={submitting}
+            iconLeft={<Icon name="send" size={16} />}
+          >
+            {submitting ? "Submitting…" : "Submit report"}
+          </Button>
+        }
       >
-        <IdentityHeader
-          reporterKind={reporterKind}
-          session={session}
-          value={identity}
-          onChange={setIdentity}
-          errors={errors}
-          disabled={submitting}
-        />
+        {reporterKind === "SPIRITUAL_ORG" && (
+          <Alert status="warning" title="Placeholder list">
+            The requirement specifies eight spiritual organisations but the list
+            was never supplied. These eight are stand-ins so the form can be
+            tested. They are not a confirmed roster and will be replaced once the
+            Ministry provides the list.
+          </Alert>
+        )}
 
-        <FormField
-          label="Date of event"
-          hint="Fixed for this campaign and cannot be changed."
+        <FormSection
+          title="Who is reporting"
+          description={`${REPORTER_LABEL[reporterKind]} · resolved from your login and not editable.`}
+          columns={3}
         >
-          {(control) => (
-            <Input {...control} value={EVENT_DATE_LABEL} readOnly disabled />
-          )}
-        </FormField>
-      </FormSection>
+          <IdentityHeader
+            reporterKind={reporterKind}
+            session={session}
+            value={identity}
+            onChange={setIdentity}
+            errors={errors}
+            disabled={submitting}
+          />
 
-      <FormSection
-        title="Participation"
-        description="Count each participant once. The three categories below do not overlap."
-        columns={3}
-      >
-        {(["youth", "women", "others"] as const).map((field) => (
           <FormField
-            key={field}
-            label={
-              <span className="inline-flex items-center gap-1.5">
-                {field === "youth"
-                  ? "Youth"
-                  : field === "women"
-                    ? "Women"
-                    : "Others"}
-              </span>
-            }
-            id={`mp-${field}`}
+            label="Date of event"
+            hint="Fixed for this campaign and cannot be changed."
+          >
+            {(control) => (
+              <Input {...control} value={EVENT_DATE_LABEL} readOnly disabled />
+            )}
+          </FormField>
+        </FormSection>
+
+        <FormSection
+          title="Participation"
+          description="Count each participant once. The three categories below do not overlap."
+          columns={3}
+        >
+          {(["youth", "women", "others"] as const).map((field) => (
+            <FormField
+              key={field}
+              label={
+                <span className="inline-flex items-center gap-1.5">
+                  {field === "youth"
+                    ? "Youth"
+                    : field === "women"
+                      ? "Women"
+                      : "Others"}
+                </span>
+              }
+              id={`mp-${field}`}
+              required
+              hint={COUNT_HINTS[field]}
+            >
+              {(control) => (
+                <Input
+                  {...control}
+                  // The rule spans all three fields, so all three are flagged and
+                  // point at one message. Passing `error` to each FormField would
+                  // print the same sentence three times under adjacent fields.
+                  aria-invalid={errors.counts ? true : undefined}
+                  aria-describedby={
+                    [control["aria-describedby"], errors.counts ? COUNTS_ERROR_ID : null]
+                      .filter(Boolean)
+                      .join(" ") || undefined
+                  }
+                  type="text"
+                  inputMode="numeric"
+                  value={counts[field]}
+                  disabled={submitting}
+                  placeholder="0"
+                  onChange={(e) => setCount(field, e.target.value)}
+                />
+              )}
+            </FormField>
+          ))}
+        </FormSection>
+
+        {errors.counts && (
+          <p id={COUNTS_ERROR_ID} className="-mt-2 text-body-2 text-danger-strong" role="alert">
+            {errors.counts}
+          </p>
+        )}
+
+        {/* Outside the FormSection: its grid is for fields, and the running total
+            is a summary that must span the full width. */}
+        <div className="-mt-2 flex items-center justify-between rounded-lg border border-line bg-surface-muted px-4 py-3">
+          <span className="text-title-3 text-ink">
+            Total participants
+          </span>
+          <output
+            aria-live="polite"
+            className="text-headline-4 tabular-nums text-navy"
+          >
+            {total.toLocaleString("en-IN")}
+          </output>
+        </div>
+
+
+        <FormSection
+          title="Photographs of the event"
+          description={`${MIN_PHOTOS} to ${MAX_PHOTOS} photographs, JPEG or PNG, up to ${MAX_PHOTO_MB} MB each.`}
+          columns={1}
+        >
+          <FormField
+            label="Geo-tagged photographs"
+            id="mp-photos"
             required
-            hint={COUNT_HINTS[field]}
+            error={errors.photos}
+            hint="Location is read from the photograph where available, otherwise from this device."
+          >
+            {(control) => (
+              <GeoPhotoInput
+                {...control}
+                value={photos}
+                onChange={setPhotos}
+                minItems={MIN_PHOTOS}
+                maxItems={MAX_PHOTOS}
+                maxSizeMb={MAX_PHOTO_MB}
+                disabled={submitting}
+              />
+            )}
+          </FormField>
+        </FormSection>
+
+        <FormSection title="Reporting officer" columns={2}>
+          <FormField
+            label="Name of the reporting officer"
+            id="mp-officer-name"
+            required
+            error={errors.officerName}
           >
             {(control) => (
               <Input
                 {...control}
-                // The rule spans all three fields, so all three are flagged and
-                // point at one message. Passing `error` to each FormField would
-                // print the same sentence three times under adjacent fields.
-                aria-invalid={errors.counts ? true : undefined}
-                aria-describedby={
-                  [control["aria-describedby"], errors.counts ? COUNTS_ERROR_ID : null]
-                    .filter(Boolean)
-                    .join(" ") || undefined
-                }
-                type="text"
-                inputMode="numeric"
-                value={counts[field]}
+                value={officerName}
                 disabled={submitting}
-                placeholder="0"
-                onChange={(e) => setCount(field, e.target.value)}
+                placeholder="Full name"
+                onChange={(e) => setOfficerName(e.target.value)}
               />
             )}
           </FormField>
-        ))}
-      </FormSection>
 
-      {errors.counts && (
-        <p id={COUNTS_ERROR_ID} className="-mt-2 text-body-2 text-danger-strong" role="alert">
-          {errors.counts}
-        </p>
-      )}
-
-      {/* Outside the FormSection: its grid is for fields, and the running total
-          is a summary that must span the full width. */}
-      <div className="-mt-2 flex items-center justify-between rounded-lg border border-line bg-surface-muted px-4 py-3">
-        <span className="text-title-3 text-ink">
-          Total participants
-        </span>
-        <output
-          aria-live="polite"
-          className="text-headline-4 tabular-nums text-navy"
-        >
-          {total.toLocaleString("en-IN")}
-        </output>
-      </div>
-
-
-      <FormSection
-        title="Photographs of the event"
-        description={`${MIN_PHOTOS} to ${MAX_PHOTOS} photographs, JPEG or PNG, up to ${MAX_PHOTO_MB} MB each.`}
-        columns={1}
-      >
-        <FormField
-          label="Geo-tagged photographs"
-          id="mp-photos"
-          required
-          error={errors.photos}
-          hint="Location is read from the photograph where available, otherwise from this device."
-        >
-          {(control) => (
-            <GeoPhotoInput
-              {...control}
-              value={photos}
-              onChange={setPhotos}
-              minItems={MIN_PHOTOS}
-              maxItems={MAX_PHOTOS}
-              maxSizeMb={MAX_PHOTO_MB}
-              disabled={submitting}
-            />
-          )}
-        </FormField>
-      </FormSection>
-
-      <FormSection title="Reporting officer" columns={2}>
-        <FormField
-          label="Name of the reporting officer"
-          id="mp-officer-name"
-          required
-          error={errors.officerName}
-        >
-          {(control) => (
-            <Input
-              {...control}
-              value={officerName}
-              disabled={submitting}
-              placeholder="Full name"
-              onChange={(e) => setOfficerName(e.target.value)}
-            />
-          )}
-        </FormField>
-
-        <FormField
-          label="Designation"
-          id="mp-officer-designation"
-          required
-          error={errors.officerDesignation}
-        >
-          {(control) => (
-            <Input
-              {...control}
-              value={officerDesignation}
-              disabled={submitting}
-              placeholder="e.g. Block Development Officer"
-              onChange={(e) => setOfficerDesignation(e.target.value)}
-            />
-          )}
-        </FormField>
-
-        <FormField
-          label="Contact number"
-          id="mp-contact"
-          required
-          error={errors.contactNo}
-          hint="Verified by a one-time code before the report can be submitted."
-        >
-          {(control) => (
-            <div className="flex gap-2">
+          <FormField
+            label="Designation"
+            id="mp-officer-designation"
+            required
+            error={errors.officerDesignation}
+          >
+            {(control) => (
               <Input
                 {...control}
-                type="tel"
-                inputMode="numeric"
-                maxLength={10}
-                value={contactNo}
-                disabled={submitting || contactVerified}
-                placeholder="10-digit mobile number"
-                onChange={(e) => {
-                  setContactNo(e.target.value.replace(/\D/g, ""));
-                  setContactVerified(false);
-                  setSentOtp(null);
-                }}
+                value={officerDesignation}
+                disabled={submitting}
+                placeholder="e.g. Block Development Officer"
+                onChange={(e) => setOfficerDesignation(e.target.value)}
               />
-              {!contactVerified && (
-                <Button
-                  type="button"
-                  appearance="outlined"
-                  onClick={handleSendOtp}
-                  disabled={submitting}
-                >
-                  {sentOtp ? "Resend" : "Send code"}
-                </Button>
-              )}
-            </div>
-          )}
-        </FormField>
+            )}
+          </FormField>
 
-        {contactVerified ? (
-          <div className="flex items-end">
-            <p className="flex items-center gap-1.5 pb-2 text-title-3 text-approve">
-              <Icon name="verified_user" size={16} aria-hidden="true" />
-              Mobile number verified
-            </p>
-          </div>
-        ) : (
-          sentOtp && (
-            <FormField
-              label="One-time code"
-              id="mp-otp"
-              hint={`Prototype: the code is ${sentOtp}. A real deployment sends this by SMS.`}
-            >
-              {(control) => (
-                <div className="flex gap-2">
-                  <Input
-                    {...control}
-                    ref={otpRef}
-                    inputMode="numeric"
-                    maxLength={6}
-                    value={otpEntry}
-                    placeholder="6-digit code"
-                    onChange={(e) =>
-                      setOtpEntry(e.target.value.replace(/\D/g, ""))
-                    }
-                  />
+          <FormField
+            label="Contact number"
+            id="mp-contact"
+            required
+            error={errors.contactNo}
+            hint="Verified by a one-time code before the report can be submitted."
+          >
+            {(control) => (
+              <div className="flex gap-2">
+                <Input
+                  {...control}
+                  type="tel"
+                  inputMode="numeric"
+                  maxLength={10}
+                  value={contactNo}
+                  disabled={submitting || contactVerified}
+                  placeholder="10-digit mobile number"
+                  onChange={(e) => {
+                    setContactNo(e.target.value.replace(/\D/g, ""));
+                    setContactVerified(false);
+                    setSentOtp(null);
+                  }}
+                />
+                {!contactVerified && (
                   <Button
                     type="button"
                     appearance="outlined"
-                    onClick={handleVerifyOtp}
+                    className="shrink-0"
+                    onClick={handleSendOtp}
+                    disabled={submitting}
                   >
-                    Verify
+                    {sentOtp ? "Resend" : "Send code"}
                   </Button>
-                </div>
-              )}
-            </FormField>
-          )
-        )}
-      </FormSection>
+                )}
+              </div>
+            )}
+          </FormField>
 
-      <DeclarationCheckbox
-        checked={declaration}
-        onChange={setDeclaration}
-        error={errors.declaration}
-        disabled={submitting}
-      >
-        <ul>
-          <li>The reported figures are correct.</li>
-          <li>
-            The photographs pertain to the event conducted on{" "}
-            <strong>{EVENT_DATE_LABEL}</strong>.
-          </li>
-        </ul>
-      </DeclarationCheckbox>
+          {contactVerified ? (
+            <div className="flex items-end">
+              <p className="flex items-center gap-1.5 pb-2 text-title-3 text-approve">
+                <Icon name="verified_user" size={16} aria-hidden="true" />
+                Mobile number verified
+              </p>
+            </div>
+          ) : (
+            sentOtp && (
+              <FormField
+                label="One-time code"
+                id="mp-otp"
+                hint={`Prototype: the code is ${sentOtp}. A real deployment sends this by SMS.`}
+              >
+                {(control) => (
+                  <div className="flex gap-2">
+                    <Input
+                      {...control}
+                      ref={otpRef}
+                      inputMode="numeric"
+                      maxLength={6}
+                      value={otpEntry}
+                      placeholder="6-digit code"
+                      onChange={(e) =>
+                        setOtpEntry(e.target.value.replace(/\D/g, ""))
+                      }
+                    />
+                    <Button
+                      type="button"
+                      appearance="outlined"
+                      className="shrink-0"
+                      onClick={handleVerifyOtp}
+                    >
+                      Verify
+                    </Button>
+                  </div>
+                )}
+              </FormField>
+            )
+          )}
+        </FormSection>
 
-      {errors.storage && (
-        <Alert status="error" title="Could not save">
-          {errors.storage}
-        </Alert>
-      )}
-
-      <div className="flex justify-end">
-        <Button
-          type="submit"
+        <DeclarationCheckbox
+          checked={declaration}
+          onChange={setDeclaration}
+          error={errors.declaration}
           disabled={submitting}
-          iconLeft={<Icon name="send" size={16} />}
         >
-          {submitting ? "Submitting…" : "Submit report"}
-        </Button>
-      </div>
+          <ul>
+            <li>The reported figures are correct.</li>
+            <li>
+              The photographs pertain to the event conducted on{" "}
+              <strong>{EVENT_DATE_LABEL}</strong>.
+            </li>
+          </ul>
+        </DeclarationCheckbox>
+
+        {errors.storage && (
+          <Alert status="error" title="Could not save">
+            {errors.storage}
+          </Alert>
+        )}
+      </FormPanel>
     </form>
   );
 }

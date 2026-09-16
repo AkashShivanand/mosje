@@ -275,7 +275,21 @@ export function buildPublishedRamp({ pins, tipToward = 100, tailToward = 0 }) {
  * so they cannot belong to a family that is defined by one. That is also why the neutral ramp
  * has two more rungs than the others rather than the same eleven.
  */
-export const NEUTRAL_STEPS = [0, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950, 1000];
+export const NEUTRAL_STEPS = [0, 25, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950, 1000];
+
+/**
+ * `25` is a SURFACE rung, not a ladder rung, and sits outside the 4.5–11.5 L* gap rule on
+ * purpose. Added 2026-09-14 for `bg/neutral/subtlest` — the page canvas behind white cards.
+ *
+ * The canvas used to be `50` (OKLCH L 95.5), and on a portal it covers the shell, so roughly
+ * three-fifths of the screen sat in one mid-light grey that read as dull beside pure-white
+ * cards and header; the same `50` also filled read-only fields and hover, so the three could
+ * not be told apart (measured 1.00:1). Near-white app grounds sit two steps above the first
+ * "tint" in every system this estate benchmarks against — Radix gray 1–2, Atlassian
+ * neutral-100 over 200, Carbon gray-10 — for exactly this reason. Every existing rung keeps its
+ * value; `25` is inserted, not redistributed.
+ */
+export const NEUTRAL_CORE_STEPS = NEUTRAL_STEPS.filter((s) => s !== 25);
 
 /**
  * Build the 13-step neutral ramp: one hue, one chroma arc, an explicit lightness ladder.

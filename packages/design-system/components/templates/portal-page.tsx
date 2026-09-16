@@ -112,6 +112,11 @@ export interface PortalPageProps {
   /**
    * Start with the rail collapsed to its 88px icon rail.
    *
+   * Whatever this says, the rail starts collapsed between 768 and 1279px (tablets and small laptops): a
+   * 300px column there leaves the content 420–930px, too narrow for a step bar to
+   * name its stages or a worklist to show its columns. The masthead button still
+   * expands it, and the choice holds until the page is reloaded.
+   *
    * **Two widths exist and only two.** The handoff draws 300, 88, 268, 260 and
    * 280 for one page type; only the first two are decisions and the other three
    * are drift, all inside SHRESHTA. See
@@ -165,6 +170,26 @@ export interface PortalPageProps {
  * Do not use it for a login screen — that is `PortalLoginTemplate`, which has no
  * rail and no session.
  */
+/* Two ladder anchors, both min-width, so no off-ladder max-width literal is invented: the rail
+   defaults to its icon width from the tablet anchor until the laptop anchor. */
+const RAIL_COLUMN_QUERY = "(min-width: 768px)";
+const RAIL_ROOMY_QUERY = "(min-width: 1280px)";
+
+function subscribeTablet(onChange: () => void): () => void {
+  if (typeof window === "undefined") return () => {};
+  const queries = [RAIL_COLUMN_QUERY, RAIL_ROOMY_QUERY].map((q) => window.matchMedia(q));
+  queries.forEach((mq) => mq.addEventListener("change", onChange));
+  return () => queries.forEach((mq) => mq.removeEventListener("change", onChange));
+}
+
+function readTablet(): boolean {
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia(RAIL_COLUMN_QUERY).matches &&
+    !window.matchMedia(RAIL_ROOMY_QUERY).matches
+  );
+}
+
 export function PortalPage({
   portal,
   role,
@@ -181,7 +206,19 @@ export function PortalPage({
   children,
   className,
 }: PortalPageProps): React.JSX.Element {
-  const [collapsed, setCollapsed] = React.useState(defaultCollapsed);
+  const isTablet = React.useSyncExternalStore(subscribeTablet, readTablet, () => false);
+  /* null until the user chooses, so the tablet default follows the viewport
+     until then and the user's choice wins after. */
+  const [chosenCollapsed, setChosenCollapsed] = React.useState<boolean | null>(null);
+  const collapsed = chosenCollapsed ?? (defaultCollapsed || isTablet);
+  const setCollapsed = React.useCallback(
+    (next: boolean | ((c: boolean) => boolean)) =>
+      setChosenCollapsed((prev) => {
+        const current = prev ?? (defaultCollapsed || readTablet());
+        return typeof next === "function" ? next(current) : next;
+      }),
+    [defaultCollapsed],
+  );
 
   /* Uncontrolled fallback. The controlled path is the intended one — see
      `sidebarOpen` — but a component that only works controlled cannot be
@@ -207,7 +244,7 @@ export function PortalPage({
       window.matchMedia("(min-width: 768px)").matches;
     if (isColumn) setCollapsed((c) => !c);
     else setDrawerOpen(!drawerOpen);
-  }, [drawerOpen, setDrawerOpen]);
+  }, [drawerOpen, setDrawerOpen, setCollapsed]);
 
   /* Filtered here rather than in the caller so every portal filters the same
      way. Unconditional, so the hook order never changes with the nav. */

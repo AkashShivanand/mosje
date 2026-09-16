@@ -19,7 +19,8 @@
     "NMB-SCREEN-046": "checked against the live DOM during the 2026-09-11 sweep, but the published wording does not record where it looked. The id is frozen and the PDF is issued, so the sentence is corrected at the next re-issue, not retroactively.",
     "NMB-SCREEN-047": "checked against the live DOM during the 2026-09-11 sweep, but the published wording does not record where it looked. The id is frozen and the PDF is issued, so the sentence is corrected at the next re-issue, not retroactively."
   },
-  "quoted build colours": {
-    "NMB-SCREEN-046": "UNRESOLVED, not excused. The finding calls the activity card's edge #E5EAF2 'a sixth near-miss grey'; that value appears on no element of any of the 50 captures, and PUBLIC-ACTIVITIES renders #E5E7EB — the design's own value — 7 points away. Either the edge matches the design and the near-miss half of this finding is false, or the card container is an element the extractor does not emit. Re-read it in the DOM and then either correct the finding or declare `_colourWhy`."
+  "quoted build colours": {},
+  "_verified": {
+    "NMB-SCREEN-046": "Read from the live DOM on 2026-09-12: the activity card is 329x351, radius 8px, border 1px solid #E5EAF2 on all four sides — the hex is hard-coded in the class (`border-[#E5EAF2]`) on all nine cards. The page paints #E5E7EB on 16 other elements, so the finding's 'near-miss grey' is not only true but sits beside the correct value on the same page. The finding stands; the GATE was wrong, and is fixed."
   }
 }

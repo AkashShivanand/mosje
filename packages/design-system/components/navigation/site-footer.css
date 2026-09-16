@@ -9,10 +9,10 @@
    MoSJE / SAMAVESH — SiteFooter
 
    ── THE COLOUR CONTRACT ───────────────────────────────────────────────────
-   Every colour resolves from ONE mode-aware family, `--sa-color-primaryScale-*`,
-   which each `[data-brand]` block in tokens.css re-points at that brand's own
-   ramp. Bind here and the footer repaints itself for blue, navy, dbim and the
-   five DBIM hues with no work at the call site.
+   Every colour is a `--sa-cmp-sitefooter-*` token, which aliases the mode-aware
+   brand ramp that each `[data-brand]` block in tokens.css re-points. Bind here
+   and the footer repaints itself for blue, navy, dbim and the five DBIM hues
+   with no work at the call site — and the Figma master binds the same tokens.
 
    [DBIM 5.6] "The footer must be in the key colour (darkest shade) of the
    selected colour group." Rung 800 IS that key colour — in `dbim` it resolves
@@ -24,17 +24,16 @@
 
    The bands first ran 800 and 900. At a 1.28:1 step that is not a distinction,
    it is a smudge, and it read as a printing error rather than as structure.
+   Tone means depth, not category; a boundary is a hairline.
 
-   The support strip was then kept at 900 as "the one element that is a
-   different kind of thing". That was tone encoding CATEGORY, and tone does not
-   mean category — it means depth. Two consequences followed. Visual weight
-   should increase downward, so the darkest value sitting at the TOP made the
-   footer read as floating on a foreign shelf. And the strip is the most
-   inviting element in the footer; recessing it says "further away", which is
-   the opposite of its job.
-
-   What the strip needs is a boundary and room, not a different colour. It has
-   both, plus the only heading and the only button in the component.
+   ── WIDTH IS `.sa-container` ON THE WEBSITE, FLUID IN A PORTAL ────────────
+   On `website` each band's `__in` carries the class, so the cap (1200 / 1320 /
+   1440), the side margin (16 / 24 / 32) and the right-wall gutter all come from
+   foundations/layout.css. On `portal` it takes no cap and pads with the page
+   margin — portals are fluid, the website is contained, as SiteHeader does. This file used to restate them as a 1280px cap with a
+   24px floor, which put the footer's left edge 20px right of the masthead's at
+   1440 and 8px right of it at 375 — and disagreed with the Figma master, which
+   draws `container/page` and `grid/margin/page`.
 
    ── INK IS SAME-HUE ───────────────────────────────────────────────────────
    `rgba(255,255,255,.8)` on a coloured ground desaturates to a dirty grey. The
@@ -47,54 +46,45 @@
    plain class selector here beats any utility a consumer writes. */
 @layer components {
 
+  /* Visually hidden, still read. Declared HERE because this stylesheet is its own
+     CSS root: the component cannot rely on a consumer's Tailwind supplying `sr-only`.
+     It used Tailwind's class until 2026-09-16, which worked inside the hub and
+     nowhere else — in Storybook the "Site footer" heading, every "(opens in a new
+     window)" note and all five social labels rendered visibly, the labels piled
+     over the chips. The same class is declared in chip.css, stepper.css and the
+     other components that need it. */
+  .ds-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
   .ds-sitefooter {
+    /* THE GROUND AND THE LEAD INK ARE SEMANTIC TOKENS; EVERY OTHER COLOUR IS A `cmp/sitefooter/*` TOKEN. They were `--sa-color-primaryScale-*`
+       rungs here and unpublished Palette rungs in Figma, so neither side consumed the
+       library layer. The translucent roles — rule, chip — are a rung at a published
+       alpha step composited over the ground: a proportion of the ground rather than a
+       fixed rung, so they sit the same distance from it in every brand (Navy's
+       ground IS its rung 600), and Figma binds exactly the same thing per mode. A
+       two-colour color-mix() had no Figma equivalent. Rationale per role lives on
+       each token in packages/tokens/src/component.json. */
     --ds-footer-bg: var(--sa-bg-brand-primary-boldest);
-    --ds-footer-bg-deep: var(--sa-color-primaryScale-900);
-    --ds-footer-rule: var(--sa-color-primaryScale-600);
-    /* THE CHIP IS A PROPORTION OF THE GROUND, NOT A RAMP RUNG. Rung 700 on the
-       800 ground looked right in blue, but the lift it produces depends on how
-       each brand spaces its ramp: measured across the eight modes it ranged
-       1.13:1 (navy — invisible) to 1.39:1. Mixing a fixed 12% of the ink into
-       the ground instead gives 1.30–1.36 everywhere, so the rail looks the same
-       in every brand. Blue lands on 1.33 either way, which is the value that was
-       judged by eye. The rung stays as a fallback for engines without
-       color-mix; they get a chip that is merely inconsistent, not absent.
-
-       The override lives in an @supports block below rather than as a second
-       declaration here. A custom property is substituted lazily, so an
-       unsupported color-mix does not fall back to an earlier declaration — it
-       makes the USING property invalid at computed-value time and the chip
-       disappears entirely. @supports is the only pattern that actually degrades. */
-    --ds-footer-chip: var(--sa-color-primaryScale-700);
-    --ds-footer-chip-hover: var(--sa-color-primaryScale-600);
+    --ds-footer-rule: var(--sa-cmp-sitefooter-rule-base);
+    --ds-footer-rule-subtle: var(--sa-cmp-sitefooter-rule-subtle);
+    --ds-footer-chip: var(--sa-cmp-sitefooter-chip-default);
+    --ds-footer-chip-hover: var(--sa-cmp-sitefooter-chip-hover);
     --ds-footer-ink: var(--sa-on-bg-brand-primary-boldest);
-    --ds-footer-ink-muted: var(--sa-color-primaryScale-100);
-    --ds-footer-ink-dim: var(--sa-color-primaryScale-200);
-    --ds-footer-max: 1280px;
-
-    /* Clearing the right-wall rail. `ImportantLinks` is `position: fixed;
-       right: 0`, so it overlays the last ~37px of the viewport at every scroll
-       position while the centred container reserves only 24px. `100cqw` is the
-       footer's own content width, which EXCLUDES the classic scrollbar; a
-       `100vw` version under-reserves by half a scrollbar on Windows and looks
-       correct on macOS, where overlay scrollbars hide the bug. Reserve the
-       intrusion and nothing else, so wide layouts stay symmetric. */
-    --ds-wall-gutter: max(0px, calc((100cqw - var(--ds-footer-max)) / 2));
-    --ds-wall-clearance: max(
-      var(--sa-padding-24),
-      calc(var(--sa-wall-rail, 40px) + var(--sa-padding-8) - var(--ds-wall-gutter))
-    );
-
-    container-type: inline-size;
+    --ds-footer-ink-muted: var(--sa-cmp-sitefooter-ink-subtle);
+    --ds-footer-ink-dim: var(--sa-cmp-sitefooter-ink-subtler);
     background-color: var(--ds-footer-bg);
     color: var(--ds-footer-ink);
     font-family: var(--sa-font-latin);
-  }
-
-  .ds-sitefooter__in {
-    max-width: var(--ds-footer-max);
-    margin-inline: auto;
-    padding-inline: var(--sa-padding-24) var(--ds-wall-clearance);
   }
 
   /* ── Band 1 · the working footer ─────────────────────────────────────────── */
@@ -106,9 +96,7 @@
     padding-block: var(--sa-padding-48);
   }
 
-  /* THREE items, not four. The call to action left for the support strip, which
-     is where it can be explained. What remains is one coherent block: who this
-     is, where they are, where else they publish. */
+  /* THREE items: who this is, where they are, where else they publish. */
   .ds-sitefooter__ident {
     grid-column: span 12;
     display: flex;
@@ -232,6 +220,15 @@
     list-style: none;
   }
 
+  /* A list item is a FLEX box, not a block. As a block it wraps its inline-flex
+     link in a line box sized by the inherited body line-height, so each row grew
+     to 24px around a 20px link and the columns ran on a 32px rhythm instead of
+     the 28 (20 + 8) the tokens — and the Figma master — describe. */
+  .ds-sitefooter__list > li,
+  .ds-sitefooter__inline > li {
+    display: flex;
+  }
+
   /* The Related Links row reuses the column heading and list, laid on one line.
      These come AFTER the rules they override so source order matches specificity
      order — the reverse still won on specificity, but it is the arrangement that
@@ -279,8 +276,8 @@
      CIRCLE the unit the eye reads and the marks its contents, and the variance
      stops mattering.
 
-     Rung 700 on the 800 ground: mode-aware, and quiet enough that the rail stays
-     tertiary — the link columns above it matter more and must stay louder. The
+     `cmp/sitefooter/chip/default` — rung 100 at alpha/16 over the ground: the same lift
+     in every brand, and quiet enough that the rail stays tertiary — the link columns above it matter more and must stay louder. The
      mark is 24px in a 40px chip, ~50% fill; at 55% the chip stops reading as a
      frame and becomes a tight collar. WCAG 2.5.8 was already satisfied by the
      40px box; the chip makes the target visible, which is a bonus, not the
@@ -305,8 +302,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: var(--sa-cmp-sitefooter-chip-size);
+    height: var(--sa-cmp-sitefooter-chip-size);
     border-radius: var(--sa-shape-full);
     background-color: var(--ds-footer-chip);
     color: var(--ds-footer-ink-muted);
@@ -319,22 +316,6 @@
     background-color: var(--ds-footer-chip-hover);
     color: var(--ds-footer-ink);
   }
-
-  @supports (background-color: color-mix(in srgb, red 50%, blue)) {
-    .ds-sitefooter {
-      --ds-footer-chip: color-mix(
-        in srgb,
-        var(--sa-color-primaryScale-100) 12%,
-        var(--sa-color-primaryScale-800)
-      );
-      --ds-footer-chip-hover: color-mix(
-        in srgb,
-        var(--sa-color-primaryScale-100) 24%,
-        var(--sa-color-primaryScale-800)
-      );
-    }
-  }
-
 
   /* ── Band 2 · the statutory bar ──────────────────────────────────────────
      THREE rows, and it was four. Policies and related links now share one
@@ -394,7 +375,14 @@
     align-items: center;
     gap: var(--sa-padding-16);
     font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
     color: var(--ds-footer-ink-dim);
+  }
+
+  .ds-sitefooter__credit {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-padding-16);
   }
 
   .ds-sitefooter__credit-link { display: inline-flex; align-items: center; }
@@ -402,7 +390,7 @@
   /* Normalise the marks to ONE optical height. Left to their intrinsic aspect
      ratios the NeGD and Digital India SVGs rendered 31px and 44px on the same
      row, which reads as a misalignment rather than as two logos. */
-  .ds-sitefooter__credit-link img { height: 28px; width: auto; }
+  .ds-sitefooter__credit-link img { height: var(--sa-cmp-sitefooter-mark-height); width: auto; }
 
   /* Policies and related links, one wrapped row. No visible labels: both navs
      keep their `aria-label`, which is where the label was doing real work; on
@@ -413,7 +401,7 @@
     flex-wrap: wrap;
     gap: var(--sa-stack-8) var(--sa-padding-20);
     padding-top: var(--sa-padding-16);
-    border-top: var(--sa-stroke-1) solid color-mix(in srgb, var(--ds-footer-rule) 55%, transparent);
+    border-top: var(--sa-stroke-1) solid var(--ds-footer-rule-subtle);
   }
 
   .ds-sitefooter__inline {
@@ -437,6 +425,7 @@
     align-items: baseline;
     gap: var(--sa-stack-4) var(--sa-padding-20);
     font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
     color: var(--ds-footer-ink-dim);
   }
 
@@ -446,8 +435,8 @@
   /* ── Variant · portal ────────────────────────────────────────────────────
      A portal footer is chrome under an authenticated workflow, not the front
      door of a public information site. It carries the statutory minimum and
-     gets out of the way: no navigation columns, no social rail, no address, no
-     support strip. What it must still carry is exactly what DBIM 5.6 and GIGW
+     gets out of the way: no navigation columns, no social rail, no address.
+     What it must still carry is exactly what DBIM 5.6 and GIGW
      require of any government footer — lineage, policies, last-updated, credits
      — which is the whole reason it is a VARIANT of this component rather than a
      separate one that would drift out of compliance on its own. */
@@ -457,6 +446,7 @@
   }
 
   .ds-sitefooter--portal .ds-sitefooter__statutory .ds-sitefooter__in {
+    padding-inline: var(--sa-grid-margin-page);
     padding-block: var(--sa-padding-20);
     gap: var(--sa-stack-16) var(--sa-padding-32);
   }

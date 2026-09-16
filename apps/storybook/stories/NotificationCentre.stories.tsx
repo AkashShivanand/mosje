@@ -89,3 +89,51 @@ export const AllRead: Story = {
 export const Empty: Story = {
   args: { notifications: [], label: "Notifications", markAllLabel: "Mark all as read" },
 };
+
+/**
+ * Action before news. An entry with `actionRequired` sits under `actionHeading`, is
+ * never cut by `limit`, and survives Mark updates as read; the updates follow under
+ * `updatesHeading`, cut at `limit`, with the rest at `viewAllHref` (`viewAllLabel`).
+ * `titleAs` is `h1` on a notifications page, `h2` in a section and `p` in a popover.
+ * `linkAs` passes the app's router link to every entry and to View All. `now` is handed to the
+ * lists so an entry whose `dueAt` has passed reads "Overdue" — resolve it once for the page.
+ */
+export const ActionAndUpdates: Story = {
+  args: {
+    notifications: [
+      { id: "a1", at: "2026-09-06T10:15:00+05:30", action: "Deficiency response requested",
+        subject: "Application 2026/PMS/01301", actionRequired: true, dueAt: "2026-09-30", tone: "warning" },
+      ...NOTICES,
+    ],
+    onMarkAllRead: () => {},
+    limit: 2,
+    viewAllHref: "#notifications",
+    viewAllLabel: "View All Notifications",
+    actionHeading: "Action Needed",
+    updatesHeading: "Updates",
+    titleAs: "h2",
+  },
+};
+
+/** Loading: a skeleton in the shape of the list. */
+export const Loading: Story = {
+  args: { notifications: [], status: "loading" },
+};
+
+/** The feed failed: `errorText`, once, and `onRetry` behind `retryLabel`. */
+export const Failed: Story = {
+  args: { notifications: [], status: "error", errorText: "Notifications could not be loaded.", retryLabel: "Try again", onRetry: () => {} },
+};
+
+/** An action whose deadline has passed, marked Overdue against the page's `now`. */
+export const OverdueAction: Story = {
+  args: {
+    now: "2026-10-15T09:00:00+05:30",
+    notifications: [
+      { id: "od", at: "2026-09-01T10:15:00+05:30", action: "Utilisation Certificate due",
+        subject: "Project SC/DL/NWD/02400", actionRequired: true, dueAt: "2026-09-30", tone: "warning" },
+      ...NOTICES,
+    ],
+    titleAs: "h2",
+  },
+};

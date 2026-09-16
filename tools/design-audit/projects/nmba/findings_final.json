@@ -463,7 +463,7 @@
    "title": "A draft document is marked in the portal's error red",
    "design": "The status chip carries its meaning in the label colour: DRAFT is #8C571F, an amber that reads as 'in progress', and PUBLISHED is #27682A, the token green.",
    "build": "'Draft' is rendered #DC2626 on a #FEF9C3 ground - the red this portal uses for delete and for error - so a document that is merely unfinished is flagged as if something were wrong with it. 'Published' is #16A34A on #DCFCE7, a near-miss of the design's #27682A. Read from the DOM on the live build, 2026-09-11.",
-   "fix": "Set the draft label to the design's #8C571F and the published label to #27682A. Red is the portal's error and destructive colour; spending it on a normal editorial state teaches readers to ignore it where it matters. This is NOT the withdrawn NMB-SCREEN-029, which was about the chip's CASE and was dropped on instruction - if the chip is out of scope entirely, drop this one too, but the colour is a different defect with a different fix.",
+   "fix": "Set the draft label to the design's #8C571F and the published label to #27682A. Red is the portal's error and destructive colour; spending it on a normal editorial state teaches readers to ignore it where it matters.",
    "id": "NMB-SCREEN-050"
   },
   {
@@ -502,7 +502,7 @@
    "title": "The table's header band, cell padding and dividers are all different from the design",
    "design": "The table sits in a #FFFFFF container with a 1px #E5E7EB edge at radius 12. Its header is a band: 52px tall, filled #F9FAFB, each cell padded 16px top and bottom and 24px left and right. Data cells are 56px tall, padded 12/24, and separated by a 1px #F3F4F6 rule.",
    "build": "The header has no fill at all - it is transparent, so there is no band, just text above rows - and it is 38px instead of 52. Every cell, header and data alike, is padded 8/16 where the design says 16/24 and 12/24, which is what makes the rows 41px instead of 56. The row rule is #E5E7EB rather than #F3F4F6, a heavier line than the design draws, and the container is radius 6 against the design's 12. Read from the DOM on the live build, 2026-09-11.",
-   "fix": "Build the table to the design's own component: a radius-12 container, a 52px #F9FAFB header band padded 16/24, 56px data cells padded 12/24, and a #F3F4F6 row rule. This is the finding the other table findings hang off - NMB-GLOBAL-009 (row heights), NMB-GLOBAL-010 (cell colour), NMB-GLOBAL-005 (row actions), NMB-GLOBAL-019 (the extra wrapper), NMB-GLOBAL-036 (a column too narrow for its date) and NMB-SCREEN-030 (action order). The cell padding alone accounts for most of the height difference, so fixing it fixes -009 across the portal.",
+   "fix": "Build the table to the design's own component: a radius-12 container, a 52px #F9FAFB header band padded 16/24, 56px data cells padded 12/24, and a #F3F4F6 row rule. This is the finding the other table findings hang off - NMB-GLOBAL-009 (row heights), NMB-GLOBAL-010 (cell colour), NMB-GLOBAL-005 (row actions), NMB-GLOBAL-035 (the extra wrapper), NMB-GLOBAL-036 (a column too narrow for its date) and NMB-SCREEN-030 (action order). The cell padding alone accounts for most of the height difference, so fixing it fixes -009 across the portal.",
    "id": "NMB-GLOBAL-040",
    "_anchorWhy": "GATE 3 flagged this one, correctly and usefully: the finding is about a header BAND, and the anchor resolves to an element with no background. That is not the resolver landing beside the band - it is the finding. The build's header has no fill at all, which is why there is no band to anchor to; the anchor is the header cell itself, and its transparency is the evidence."
   },
@@ -533,6 +533,19 @@
    "fix": "Remove the Poppins declaration - it is one rule and it is the only thing importing that family - and let the field inherit Noto Sans at 14px #374151. The estate's standing instruction is Noto Sans across all government properties and no other family introduced. While the rule is being changed, the box wants the design's 40px height and radius 8 rather than 43 and 6.",
    "id": "NMB-GLOBAL-044",
    "_anchorWhy": "The field's placeholder text is already NMB-GLOBAL-008's anchor, and two findings must not share one box. The anchor here is the field's own measured rect on both sides - 938x40 in the design, 768x43 in the build - which is also the geometry half of the finding."
+  },
+  {
+   "old": "G28",
+   "scope": "Global",
+   "screen": "Colour tokens (every screen)",
+   "slug": "ADMIN-USER-MANAGEMENT-ADD-USER-MODAL",
+   "sev": "Major",
+   "cat": "Color & Token",
+   "title": "Colours are typed as literals rather than bound to tokens, so the build has its own palette",
+   "design": "The design works from a published token contract of 33 colours - #003366, #1F2937, #E5E7EB, #D1D5DB and the rest - and a form field's edge is the contract's #D1D5DB.",
+   "build": "The build paints 110 distinct colours across the 51 captured screens. Twenty-seven of them are design values; THIRTY-FIVE more sit within 24 points of one, which is close enough to look right in review and far enough to be a different literal in the code. The field anchored here is edged #CED4DA against the contract's #D1D5DB - three points apart, on 16 fields across four screens. The largest is #9CA3AF where the design frames use #94A3B8, on 1,471 elements across all 51 screens; then #0A2C53 for #002244 on 201, #D64539 for #EC5042 on 124 across seven screens, #DBEAFE for #D2E3FC on 100, and #217A39 for #2E7D32 on 88. Read from the DOM on the live build, 2026-09-12; the full table is docs/audit/nmba-colour-drift.md.",
+   "fix": "This is one fix, not thirty-five: bind every colour to its token instead of typing the value. Six findings in this report each name a single instance - the KPI tint (NMB-GLOBAL-012), the activity card edge (NMB-SCREEN-046), the facility card button (NMB-SCREEN-019), the facility chip (NMB-SCREEN-021), the sheet border (NMB-SCREEN-042) and the status labels (NMB-SCREEN-050) - and each of those is this same defect seen once. Correcting them one at a time leaves the next thirty-five to be found by eye. A three-point difference cannot be reviewed reliably by anyone, which is exactly why the values have to come from the tokens.",
+   "id": "NMB-GLOBAL-051"
   },
   {
    "old": "G27",
@@ -636,8 +649,8 @@
    "cat": "Components & States",
    "title": "Use the relevant filter options and follow the design",
    "design": "Several screens draw more filters than the build offers - the citizen dashboard's State and District selects, the admin list screens' 'All States/UTs', the officer dashboard's four-filter row.",
-   "build": "This is raised once, as a note: show the filters each screen actually needs and style them as the design does. It is not repeated as a finding on each screen.",
-   "fix": "This is raised once, as a note: show the filters each screen actually needs and style them as the design does. It is not repeated as a finding on each screen.",
+   "build": "Raised once, as a note: show the filters each screen actually needs and style them as the design does. It is deliberately not repeated as a finding on each screen.",
+   "fix": "Show the filters each screen actually needs and style them as the design does.",
    "id": "NMB-GLOBAL-031",
    "_evidenceWhy": "A standing note about which filters to show, raised once by decision instead of per screen; it describes no single element, so it carries no crop."
   }
@@ -696,7 +709,7 @@
  ],
  "counts": {
   "Blocker": 3,
-  "Major": 22,
+  "Major": 23,
   "Minor": 18,
   "Nit": 5
  },

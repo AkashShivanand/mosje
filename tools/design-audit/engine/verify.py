@@ -217,11 +217,14 @@ def main():
     bundle = js("out", "capture-bundle.json") or {}
     screens = bundle.get("screens") or []
     rows_cache = {}
+    # raw CSS values on the bundle, hex here — converted by integrity.colours_in, the only colour
+    # parser in the engine
+    bundle_inv = {s["slug"]: s["colorInventory"] for s in screens if s.get("colorInventory")}
 
     def rows_for(slug):
-        """The extraction rows for one screen — bundle first (cheap, already in memory), then the
-        per-screen JSON the capture wrote. Returns None, never [], when there is nothing to read:
-        a gate must skip a screen it cannot see rather than conclude from silence."""
+        """The extraction rows for one screen, from the per-screen JSON the capture wrote. Returns
+        None, never [], when there is nothing to read: a gate must skip a screen it cannot see
+        rather than conclude from silence."""
         if slug in rows_cache:
             return rows_cache[slug]
         val = None
@@ -234,45 +237,51 @@ def main():
         rows_cache[slug] = val
         return val
 
-    def _union_colours():
-        """Every colour ANY captured screen paints. The evidence set for a GLOBAL claim.
-
-        Built from the colour inventories, so it is complete in the sense the gate requires —
-        containers included, not just the text and controls the element rows carry.
-        """
-        import glob as _glob
-        out = set()
-        for f in _glob.glob(os.path.join(proj, "captures", "live", "*.json")):
-            try:
-                inv = (json.load(open(f)) or {}).get("colorInventory") or {}
-            except Exception:
-                continue
-            for bucket in ("color", "bg", "border", "outline"):
-                for val in (inv.get(bucket) or {}):
-                    out.update(I.colours_in(val))
-        return out
-
     inv_cache = {}
 
     def inventory_for(slug):
-        """The screen's COLOUR INVENTORY — every colour it paints, containers included.
+        """The screen's COLOUR INVENTORY — every colour it paints, containers included — or None.
 
-        This is what lets the colour gate convict. Without it the gate has only the element
-        rows, which carry text and controls and not containers, and an absent colour is not a
-        proven absence. A capture taken before capture.py recorded an inventory returns None,
-        and the gate degrades to a warning by design rather than judging on partial evidence.
+        Two places hold one, because two capture paths each grew one: the capture bundle's screen
+        entry (flat, written by COLOR_INVENTORY_JS), and the per-screen extraction JSON (bucketed,
+        with the walk's `complete` flag, written by the PM-AJAY run). The bundle is read first; the
+        per-screen file is the fallback. Whichever shape comes back, the gate reads it through
+        integrity.inventory_hexes and asks integrity.inventory_licenses_failure whether it may
+        convict — so a capped walk warns rather than fails.
+
+        None — for a capture taken before either inventory existed — costs the colour gate its
+        power to fail, which is correct: incomplete evidence may warn, never convict.
         """
         if slug in inv_cache:
             return inv_cache[slug]
-        val = None
-        f = os.path.join(proj, "captures", "live", f"{slug}.json")
-        if os.path.exists(f):
+        val = bundle_inv.get(slug)
+        if not val:
+            f = os.path.join(proj, "captures", "live", f"{slug}.json")
+            if os.path.exists(f):
+                try:
+                    val = json.load(open(f)).get("colorInventory") or None
+                except Exception:
+                    val = None
+        inv_cache[slug] = val or None
+        return inv_cache[slug]
+
+    def _union_colours():
+        """Every colour ANY captured screen paints — the evidence set for a GLOBAL claim.
+
+        Built from the colour inventories in both places and both shapes, so it has containers,
+        not just the text and controls the element rows carry.
+        """
+        import glob as _glob
+        out = set()
+        for raw in bundle_inv.values():
+            out.update(I.inventory_hexes(raw))
+        for f in _glob.glob(os.path.join(proj, "captures", "live", "*.json")):
             try:
-                val = json.load(open(f)).get("colorInventory") or None
+                raw = (json.load(open(f)) or {}).get("colorInventory")
             except Exception:
-                val = None
-        inv_cache[slug] = val
-        return val
+                continue
+            out.update(I.inventory_hexes(raw))
+        return out
 
     # capture layout — the canary capture.py records around the unclip pass
     judged = [s for s in screens if "layoutShift" in s]
@@ -296,12 +305,24 @@ def main():
             board.add("quoted build colours", SKIP, "no extraction rows on disk")
         else:
             warn = []
+            _with_inv = sum(1 for f in findings if f.get("slug") and rows_for(f["slug"])
+                            and inventory_for(f["slug"]))
             board.gate("quoted build colours",
                        I.gate_quoted_build_colours(findings, rows_for, warn,
                                                   inventory_for=inventory_for,
                                                   union_colours=_union_colours()),
-                       f"{seen} findings checked against their screen's extraction",
+                       (f"{_with_inv} of {seen} findings' screens carry a colour inventory"
+                        if _with_inv else
+                        f"{seen} findings, rows only — re-capture for a colour inventory"),
                        baseline.get("quoted build colours"), warn)
+
+    if am:
+        reader = [dict(f, id=f["id"]) for s in am.get("screens", []) for f in s.get("findings", [])]
+        board.gate("reader text", I.gate_reader_text(reader),
+                   f"{len(reader)} findings: no pipeline notes, every cited id resolves",
+                   baseline.get("reader text"))
+    else:
+        board.add("reader text", SKIP, "no audit-master.json")
 
     # --- the design-less pair: only meaningful when there is no design frame to compare ---
     # On a side-by-side audit the Figma frame IS the authority, and asking for a written citation

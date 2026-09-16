@@ -300,6 +300,39 @@ icons today (*Night Shelter*, *Justice*); an icon is acceptable for both if draw
 wrong for the subject — that is a judgement for the division, and the audit records both choices
 as defensible.
 
+## 4c. Prompts for the whole set — eleven personas, one style
+
+Added 11 September so the full set can be drawn or redrawn together. Every prompt takes the same
+style paragraph from §4b in front of it. Where a figure already exists on the site, the prompt
+describes that figure, so a redraw lands beside the others without a visible change of hand.
+
+**Style, repeated for convenience.** Black ink line drawing of one Indian adult, waist-up, facing
+the viewer, on a plain white background with no shadow, no colour and no scenery. Clean, even
+lines of one weight, like a coloured-in outline from a textbook. Calm, direct expression, a slight
+smile. Everyday clothes drawn simply. Square image, the person centred, head near the top with a
+little space above it. No text, no logo, no border. The drawing must look kind and ordinary,
+never sad, never dramatic.
+
+| # | Persona | Prompt (add the style paragraph to each) |
+|---|---|---|
+| 1 | Students | A young woman of about nineteen, hair in a low plait over one shoulder, wearing a plain salwar-kameez with a dupatta, one strap of a small backpack over her shoulder, standing straight and looking ahead with a bright, easy smile. A college student on her way to class. No books in hand, no uniform, no badge. |
+| 2 | Scheduled Castes | A young man in his late twenties, short hair, a plain collared shirt with the sleeves rolled once, a folded cotton cloth over one shoulder, standing straight with an open, steady expression. An ordinary working citizen. Nothing that marks caste, occupation or hardship; no tools, no props. |
+| 3 | Other Backward Classes | A man in his thirties with a short trimmed beard, a plain kurta, standing straight with his hands loosely at his sides and a calm, friendly face. An ordinary citizen from a small town. Nothing that marks caste, occupation or region; no props. |
+| 4 | De-notified, Nomadic and Semi-Nomadic Tribes | A man in his forties with a plain cloth turban wrapped simply around his head, a light cotton shirt, a calm and open expression, standing straight. A settled member of a community that once travelled; drawn as any citizen would be. No jewellery, no animals, no tent, no road. |
+| 5 | Safai Karamcharis | A sanitation worker in his forties in a plain collared work shirt and a soft cloth cap, one hand resting on the handle of a long-handled broom that is only partly in frame. Weathered but healthy face, looking straight ahead with quiet dignity. No dirt, no mask, no gloves, no vehicle. |
+| 6 | Senior Citizens | A woman in her late sixties with grey hair tied back and round spectacles, in a plain sari with the pallu over one shoulder, standing straight and holding a small cloth bag by its handles in front of her, with a gentle, composed smile. Healthy and independent. No walking stick, no wheelchair, no hospital. |
+| 7 | Transgender Persons | A transgender woman in her thirties, hair tied back, wearing a plain sari with a small bindi and stud earrings, standing straight with her hands loosely clasped in front of her. Confident and at ease. Nothing that suggests performance or costume. |
+| 8 | Persons Affected by Substance Use | A young man in his twenties in recovery, short neat hair, a plain collared shirt, standing straight with his hands at his sides and a small, hopeful smile. Healthy and alert. Nothing that suggests intoxication, medicine, a hospital or a bottle. |
+| 9 | Persons Engaged in Begging | A man in his fifties now living in a shelter, greying hair combed, a simple cotton kurta and a light shawl over one shoulder, standing upright with a small cloth bag on his shoulder as if arriving somewhere. Dignified and rested. Nothing that suggests begging, a bowl, a street, or pity. |
+| 10 | Victims of Atrocities | A woman in her thirties in a plain cotton sari, hair neatly tied, holding a thin paper folder against her chest with both hands, looking straight ahead, composed and resolute. A person seeking her rights with dignity. No injury, no distress, no police, no courtroom. |
+| 11 | Voluntary Organisations | A woman in her forties, hair tied back, in a plain cotton sari with a cloth bag on her shoulder and a slim folder under one arm, standing straight with a warm, capable expression. A field worker from a voluntary organisation arriving at an office. No lanyard, no logo, no clipboard. |
+
+**Two rules that apply to every prompt.** Nothing in a drawing may mark caste, religion, poverty
+or illness; the eleven read as neighbours, not as cases. And the set must alternate: six women and
+five men in the drawn order above, so no row of the eleven runs three of one after another.
+
+**The "All" tile** is not a person and stays an icon (Material Symbols *groups*).
+
 ## 5. Third pass, 9 September 2026 (evening) — what changed and why
 
 | Instruction | Done |

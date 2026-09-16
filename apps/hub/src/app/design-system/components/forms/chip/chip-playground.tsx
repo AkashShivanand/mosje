@@ -9,6 +9,7 @@ export function ChipPlayground() {
   const [hasLeadingIcon, setHasLeadingIcon] = React.useState(true);
   const [hasDismiss, setHasDismiss] = React.useState(true);
   const [hasTrailingDropdown, setHasTrailingDropdown] = React.useState(false);
+  const [solid, setSolid] = React.useState(false);
 
   return (
     <div
@@ -31,6 +32,8 @@ export function ChipPlayground() {
         <Checkbox label="Dismissible" size="sm" checked={hasDismiss} onCheckedChange={setHasDismiss} />
         
         <Checkbox label="Dropdown Chevron" size="sm" checked={hasTrailingDropdown} onCheckedChange={setHasTrailingDropdown} />
+
+        <Checkbox label="Solid Selected" size="sm" checked={solid} onCheckedChange={setSolid} />
       </div>
 
       <div style={{ display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
@@ -41,6 +44,7 @@ export function ChipPlayground() {
           leadingIcon={hasLeadingIcon ? <Icon name="person" size={16} /> : undefined}
           onDismiss={hasDismiss ? () => alert("Dismissed!") : undefined}
           trailingDropdown={hasTrailingDropdown}
+          emphasis={solid ? "solid" : "subtle"}
         >
           {interactive ? "Toggle me" : "Static Chip"}
         </Chip>
@@ -52,6 +56,7 @@ export function ChipPlayground() {
           leadingIcon={hasLeadingIcon ? <Icon name="filter_alt" size={16} /> : undefined}
           onDismiss={hasDismiss ? () => alert("Dismissed!") : undefined}
           trailingDropdown={hasTrailingDropdown}
+          emphasis={solid ? "solid" : "subtle"}
         >
           Another Chip
         </Chip>

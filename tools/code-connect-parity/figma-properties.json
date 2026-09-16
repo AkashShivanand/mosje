@@ -627,8 +627,16 @@
   },
   "MegaMenu": {
     "nodeId": "4268:914",
-    "captured": "2026-08-22",
+    "captured": "2026-09-14",
     "properties": {
+      "Show Overview#58044:0": {
+        "type": "BOOLEAN",
+        "defaultValue": false
+      },
+      "Overview Label#58044:4": {
+        "type": "TEXT",
+        "defaultValue": "All of Associated Organisations"
+      },
       "Device": {
         "type": "VARIANT",
         "variantOptions": [
@@ -707,8 +715,8 @@
   },
   "MetricCard": {
     "nodeId": "57414:15871",
-    "captured": "2026-09-05",
-    "note": "30 variants = Reading 5 x Tone 3 x Size 2, plus Show icon and an Icon swap of the library Icon (24 at Medium, 20 at Small) — the code's `size` and `icon`. Reading is not a prop: each reading is a different set of props on the one MetricCard.",
+    "captured": "2026-09-16",
+    "note": "50 variants = Reading 5 x Tone 5 x Size 2, plus Show icon and an Icon swap of the library Icon (24 at Medium, 20 at Small) — the code's `size` and `icon` — plus Selected and Opens something. Reading is not a prop: each reading is a different set of props on the one MetricCard. Re-captured 16 Sep 2026: Tone had gained Success and Info, and the two booleans were added the same week; the fixture still described 30 variants and five properties, so the gate was comparing a stale template against an equally stale picture.",
     "properties": {
       "Reading": {
         "type": "VARIANT",
@@ -724,6 +732,8 @@
         "type": "VARIANT",
         "variantOptions": [
           "Neutral",
+          "Info",
+          "Success",
           "Warning",
           "Danger"
         ]
@@ -740,6 +750,12 @@
       },
       "Icon": {
         "type": "INSTANCE_SWAP"
+      },
+      "Selected": {
+        "type": "BOOLEAN"
+      },
+      "Opens something": {
+        "type": "BOOLEAN"
       }
     },
     "deliberatelyOmitted": []
@@ -816,6 +832,31 @@
           "Expanded",
           "Default",
           "Mega"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "State"
+    ]
+  },
+  "NotificationBell": {
+    "nodeId": "58143:59613",
+    "captured": "2026-09-15",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Focused"
+        ]
+      },
+      "Badge": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "None",
+          "Count",
+          "Error"
         ]
       }
     },
@@ -1049,10 +1090,22 @@
   },
   "SigningIntoBar": {
     "nodeId": "57464:12739",
-    "captured": "2026-09-05",
+    "captured": "2026-09-14",
     "properties": {
       "Portal name": {
         "type": "TEXT"
+      },
+      "Tagline": {
+        "type": "TEXT"
+      },
+      "Description": {
+        "type": "TEXT"
+      },
+      "Show tagline": {
+        "type": "BOOLEAN"
+      },
+      "Show description": {
+        "type": "BOOLEAN"
       },
       "Instance": {
         "type": "INSTANCE_SWAP"
@@ -1070,9 +1123,33 @@
       "Device"
     ]
   },
+  "SiteFooter": {
+    "nodeId": "57800:1922",
+    "captured": "2026-09-15",
+    "properties": {
+      "Variant": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Website",
+          "Portal"
+        ]
+      },
+      "Breakpoint": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Desktop",
+          "Tablet",
+          "Mobile"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Breakpoint"
+    ]
+  },
   "SiteHeader": {
     "nodeId": "4235:3169",
-    "captured": "2026-09-05",
+    "captured": "2026-09-15",
     "properties": {
       "Login Signup#2198:4": {
         "type": "BOOLEAN",
@@ -1104,6 +1181,10 @@
       "Profile#56716:0": {
         "type": "BOOLEAN",
         "defaultValue": true
+      },
+      "Notifications#58143:0": {
+        "type": "BOOLEAN",
+        "defaultValue": false
       }
     },
     "deliberatelyOmitted": [
@@ -1547,7 +1628,7 @@
   },
   "EventList": {
     "nodeId": "57600:48770",
-    "captured": "2026-09-06",
+    "captured": "2026-09-15",
     "note": "Figma publishes the row; code publishes the list.",
     "properties": {
       "Tone": {
@@ -1566,9 +1647,23 @@
           "true",
           "false"
         ]
+      },
+      "Action needed#58160:0": {
+        "type": "BOOLEAN",
+        "defaultValue": false
+      },
+      "Show tag#58160:7": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Due#58160:14": {
+        "type": "TEXT",
+        "defaultValue": "Respond by 30 Sept 2026"
       }
     },
-    "deliberatelyOmitted": []
+    "deliberatelyOmitted": [
+      "Due#58160:14"
+    ]
   },
   "NumberInput": {
     "nodeId": "57605:770",
@@ -1771,6 +1866,579 @@
           "Notice",
           "Choice",
           "Choices"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "PortalLoginTemplate": {
+    "nodeId": "55397:1364",
+    "captured": "2026-09-13",
+    "note": "The set's only property since 2026-09-06. The React component is responsive by the template's own width (a CSS container query), so there is no `device` prop to map it to.",
+    "properties": {
+      "Device": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Desktop",
+          "Mobile"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Device"
+    ]
+  },
+  "AuthFormCard": {
+    "nodeId": "55445:778",
+    "captured": "2026-09-15",
+    "note": "`Show consent` defaults to false since 2026-09-13 — the consent line is optional per portal. `Show role tabs` is omitted because the role tabs belong to PortalLoginShell in code, not to this card. `Credential fields` is the slot the snippet names in a comment: Code Connect cannot resolve the swapped master to a JSX stack from here; its preferred values are now the three Identifier-kind sets (Identifier + Password 58128:7186, Identifier + PIN 58128:56377, OTP request 58128:7065) plus the DARPAN and OTP verify masters. `Show role select` (2026-09-15) draws a library Select above the slot; its label is the exposed `Role select` instance's Label Text, read with findText, because Figma cannot bind a card text property to a nested instance's layer.",
+    "properties": {
+      "Show role tabs": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show DigiLocker": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show method tabs": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show role select": {
+        "type": "BOOLEAN",
+        "defaultValue": false
+      },
+      "Credential fields": {
+        "type": "INSTANCE_SWAP"
+      },
+      "Show consent": {
+        "type": "BOOLEAN",
+        "defaultValue": false
+      },
+      "Show account prompt": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      }
+    },
+    "deliberatelyOmitted": [
+      "Show role tabs",
+      "Credential fields"
+    ]
+  },
+  "PortalRecoveryTemplate": {
+    "nodeId": "56640:4103",
+    "captured": "2026-09-15",
+    "note": "Auth / CredentialRecovery. Step spans the three flows: Request, Verify, Reset, Success = config.flow \"otp\"; Link Request, Link Sent = \"link\"; Contact = \"contact\". The step is the component's own state, so the template maps Step to flow and, for Reset, to startAt=\"reset\". Device has no prop — the template is responsive in CSS.",
+    "properties": {
+      "Device": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Mobile",
+          "Desktop"
+        ]
+      },
+      "Step": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Request",
+          "Verify",
+          "Reset",
+          "Success",
+          "Link Request",
+          "Link Sent",
+          "Contact"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Device"
+    ]
+  },
+  "FactStrip": {
+    "nodeId": "57981:811",
+    "captured": "2026-09-16",
+    "note": "2 variants on one axis. Type is the only property the set has; the template maps it exhaustively.",
+    "properties": {
+      "Type": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Compact",
+          "Extended"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "Pagination": {
+    "nodeId": "522:216228",
+    "captured": "2026-09-16",
+    "note": "12 variants = Selected 3 x item control 2 x Size 2. Only Size is a prop. `Selected` draws WHICH WINDOW the control is showing (first page, a middle page, the last) and `item control` whether the numbered items are drawn at all — both of which the code DERIVES from `page`, `totalPages` and `hasNext` rather than being told. A snippet that emitted them would invite a developer to hard-code the state the reader is in.",
+    "properties": {
+      "Selected": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "First",
+          "middle",
+          "last"
+        ]
+      },
+      "item control": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "true",
+          "false"
+        ]
+      },
+      "Size": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "sm",
+          "md"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Selected",
+      "item control"
+    ]
+  },
+  "PortalCard": {
+    "nodeId": "56486:832",
+    "captured": "2026-09-16",
+    "note": "16 variants = Variant 2 x Selected 2 x State 4. Code, Name, Selected and Variant are props. `State` and `Focused` are the drawn hover, pressed, disabled and focus states, which in code are CSS on the card's own link — there is no `state` or `focused` prop and there must not be. `Logo` is an instance swap the code does not take: the mark is resolved from `code`/`org` through the estate's registry, so a swapped logo in Figma is a drawing, not an input.",
+    "properties": {
+      "Code": {
+        "type": "TEXT"
+      },
+      "Name": {
+        "type": "TEXT"
+      },
+      "Focused": {
+        "type": "BOOLEAN"
+      },
+      "Logo": {
+        "type": "INSTANCE_SWAP"
+      },
+      "Variant": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Compact",
+          "Detailed"
+        ]
+      },
+      "Selected": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "True",
+          "False"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Pressed",
+          "Disabled"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "State",
+      "Focused",
+      "Logo"
+    ]
+  },
+  "SamaveshBanner": {
+    "nodeId": "56479:42386",
+    "captured": "2026-09-16",
+    "note": "6 variants = Tone 3 x State 2, plus three text properties. Re-captured 16 Sep 2026: the template had been reading an `Explore` text property the master does not have — it would have emitted undefined. The label is drawn in the master but not exposed, and the code's `exploreLabel` defaults to the same word, so the template no longer reads it. Expose it in Figma if a designer ever needs to change the word.",
+    "properties": {
+      "Title": {
+        "type": "TEXT"
+      },
+      "Subline": {
+        "type": "TEXT"
+      },
+      "Drawer title": {
+        "type": "TEXT"
+      },
+      "Tone": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Light",
+          "Dark",
+          "Tint"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Closed",
+          "Open"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "TabDef": {
+    "nodeId": "2316:353",
+    "captured": "2026-09-16",
+    "note": "36 variants = Indicator 3 x Size 3 x State 4. `Focused` is the drawn focus ring, which in code is `:focus-visible` on the tab's own button — never a prop.",
+    "properties": {
+      "Label": {
+        "type": "TEXT"
+      },
+      "Show icon": {
+        "type": "BOOLEAN"
+      },
+      "Show badge": {
+        "type": "BOOLEAN"
+      },
+      "Focused": {
+        "type": "BOOLEAN"
+      },
+      "Indicator": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Underline",
+          "Rail",
+          "Pill"
+        ]
+      },
+      "Size": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "S",
+          "M",
+          "L"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Selected",
+          "Disabled"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Focused"
+    ]
+  },
+  "Tabs": {
+    "nodeId": "55489:870",
+    "captured": "2026-09-16",
+    "note": "4 variants = Orientation 2 x Track 2. `Tabs` is a SLOT — the tabs themselves, which arrive as data the page owns, not as a property a snippet can invent. `Show overflow` is not a prop either: the strip measures itself and moves what does not fit into the More menu, so a developer who set it by hand would be overriding a measurement.",
+    "properties": {
+      "Show divider": {
+        "type": "BOOLEAN"
+      },
+      "Tabs": {
+        "type": "SLOT"
+      },
+      "Show overflow": {
+        "type": "BOOLEAN"
+      },
+      "Orientation": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Horizontal",
+          "Vertical"
+        ]
+      },
+      "Track": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "None",
+          "Enclosed"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Tabs",
+      "Show overflow"
+    ]
+  },
+  "TabsMore": {
+    "nodeId": "55514:848",
+    "captured": "2026-09-16",
+    "note": "9 variants = Size 3 x State 3, the overflow menu's own trigger. `Focused` is the drawn focus ring, which in code is `:focus-visible` — never a prop.",
+    "properties": {
+      "Focused": {
+        "type": "BOOLEAN"
+      },
+      "Size": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "S",
+          "M",
+          "L"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Open"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Focused"
+    ]
+  },
+  "DeclarationCheckbox": {
+    "nodeId": "58191:3685",
+    "captured": "2026-09-16",
+    "properties": {
+      "Title": {
+        "type": "TEXT"
+      },
+      "Show Lead": {
+        "type": "BOOLEAN"
+      },
+      "Lead": {
+        "type": "TEXT"
+      },
+      "Statement": {
+        "type": "TEXT"
+      },
+      "Error": {
+        "type": "TEXT"
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Invalid"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "DocumentChecklist": {
+    "nodeId": "58283:1076",
+    "captured": "2026-09-16",
+    "properties": {
+      "Body": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Populated",
+          "Loading",
+          "Empty",
+          "Filtered to nothing"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "DocumentFindings": {
+    "nodeId": "58267:821",
+    "captured": "2026-09-16",
+    "properties": {
+      "Show summary": {
+        "type": "BOOLEAN"
+      },
+      "Show confidence": {
+        "type": "BOOLEAN"
+      },
+      "Show reasons": {
+        "type": "BOOLEAN"
+      },
+      "Summary": {
+        "type": "TEXT"
+      },
+      "Empty text": {
+        "type": "TEXT"
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Populated",
+          "Empty"
+        ]
+      },
+      "Fields": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Two column",
+          "One column"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Fields"
+    ]
+  },
+  "DocumentRow": {
+    "nodeId": "58278:1079",
+    "captured": "2026-09-16",
+    "properties": {
+      "Title": {
+        "type": "TEXT"
+      },
+      "File meta": {
+        "type": "TEXT"
+      },
+      "Hint": {
+        "type": "TEXT"
+      },
+      "Show hint": {
+        "type": "BOOLEAN"
+      },
+      "Show file": {
+        "type": "BOOLEAN"
+      },
+      "Show action": {
+        "type": "BOOLEAN"
+      },
+      "Show menu": {
+        "type": "BOOLEAN"
+      },
+      "Show reason": {
+        "type": "BOOLEAN"
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "missing",
+          "optional",
+          "uploading",
+          "failed",
+          "rejected",
+          "checking",
+          "verified",
+          "review",
+          "invalid",
+          "unavailable"
+        ]
+      },
+      "Density": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Compact"
+        ]
+      },
+      "Width": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Wide",
+          "Narrow"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Width"
+    ]
+  },
+  "DocumentTile": {
+    "nodeId": "58096:1947",
+    "captured": "2026-09-16",
+    "properties": {
+      "Title": {
+        "type": "TEXT"
+      },
+      "Meta": {
+        "type": "TEXT"
+      },
+      "Required": {
+        "type": "BOOLEAN"
+      },
+      "Show Icon": {
+        "type": "BOOLEAN"
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Upcoming",
+          "Uploaded",
+          "Verified",
+          "Invalid"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "FormPanel": {
+    "nodeId": "58091:2489",
+    "captured": "2026-09-16",
+    "properties": {
+      "Title": {
+        "type": "TEXT"
+      },
+      "Description": {
+        "type": "TEXT"
+      },
+      "Show Description": {
+        "type": "BOOLEAN"
+      },
+      "Show Header Actions": {
+        "type": "BOOLEAN"
+      },
+      "Show Head": {
+        "type": "BOOLEAN"
+      },
+      "Content": {
+        "type": "SLOT"
+      },
+      "Step": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "First",
+          "Middle",
+          "Last"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "FormSection": {
+    "nodeId": "58089:1454",
+    "captured": "2026-09-16",
+    "properties": {
+      "Show Head": {
+        "type": "BOOLEAN"
+      },
+      "Show Description": {
+        "type": "BOOLEAN"
+      },
+      "Description": {
+        "type": "TEXT"
+      },
+      "Content": {
+        "type": "SLOT"
+      },
+      "Columns": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "ReviewSection": {
+    "nodeId": "58096:2025",
+    "captured": "2026-09-16",
+    "properties": {
+      "Content": {
+        "type": "SLOT"
+      },
+      "Columns": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "2",
+          "4",
+          "3"
         ]
       }
     },

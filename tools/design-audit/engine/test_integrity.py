@@ -56,26 +56,22 @@ class AbsenceClaims(unittest.TestCase):
 class QuotedBuildColours(unittest.TestCase):
     ROWS = [{"text": "Edit", "color": "rgb(237, 133, 37)"},          # #ED8525, the served value
             {"text": "Save", "bg": "rgb(0, 51, 102)"}]               # #003366
+    INVENTORY = {"#ED8525": 3, "#003366": 12}
 
     def rows_for(self, slug):
         return self.ROWS if slug == "list" else None
 
     def inv_for(self, slug):
-        """A COMPLETE colour inventory — every colour the page paints, containers included.
+        return self.INVENTORY if slug == "list" else None
 
-        The gate may only convict on evidence it knows to be complete (audit-rules.md,
-        2026-09-12), so every convicting test below must supply one.
-        """
-        if slug != "list":
-            return None
-        return {"color": {"rgb(237, 133, 37)": 3}, "bg": {"rgb(0, 51, 102)": 1},
-                "border": {}, "outline": {}, "complete": True}
+    def gate(self, f, warn=None):
+        return I.gate_quoted_build_colours([f], self.rows_for, warn, self.inv_for)
 
     def test_a_sampled_colour_is_caught(self):
         # GLOBAL-005 as published: #E08020 is the anti-aliased average, not a value in the build
         f = {"id": "NMB-GLOBAL-005", "slug": "list",
              "build": "The edit glyph is drawn #E08020."}
-        out = I.gate_quoted_build_colours([f], self.rows_for, inventory_for=self.inv_for)
+        out = self.gate(f)
         self.assertEqual(len(out), 1)
         self.assertIn("#E08020", out[0])
 
@@ -97,20 +93,22 @@ class QuotedBuildColours(unittest.TestCase):
     def test_the_corrected_colour_passes(self):
         f = {"id": "NMB-GLOBAL-005", "slug": "list",
              "build": "The edit glyph is drawn #ED8525."}
-        self.assertEqual(I.gate_quoted_build_colours([f], self.rows_for), [])
+        self.assertEqual(self.gate(f), [])
 
     def test_case_does_not_matter(self):
         f = {"id": "X", "slug": "list", "build": "drawn #ed8525 on #003366."}
-        self.assertEqual(I.gate_quoted_build_colours([f], self.rows_for), [])
+        self.assertEqual(self.gate(f), [])
 
-    def test_a_screen_with_no_extraction_is_skipped_not_guessed(self):
+    def test_a_screen_with_no_evidence_is_skipped_not_guessed(self):
         f = {"id": "X", "slug": "unknown", "build": "drawn #123456."}
-        self.assertEqual(I.gate_quoted_build_colours([f], self.rows_for), [])
+        warn = []
+        self.assertEqual(self.gate(f, warn), [])
+        self.assertEqual(warn, [])
 
     def test_a_declared_exception_passes(self):
         # a colour legitimately read from the served SVG rather than a rendered element
         f = {"id": "X", "slug": "list", "build": "drawn #E08020.", "_colourWhy": "read from the SVG"}
-        self.assertEqual(I.gate_quoted_build_colours([f], self.rows_for), [])
+        self.assertEqual(self.gate(f), [])
 
 
 # ---------------------------------------------------------------------------------------------
@@ -329,57 +327,54 @@ class ColourParsing(unittest.TestCase):
 
 
 class ColourNearMiss(unittest.TestCase):
-    ROWS = [{"borderColor": "rgb(229, 231, 235)"},          # #E5E7EB, what the build renders
+    ROWS = [{"borderColor": "rgb(229, 231, 235)"},          # #E5E7EB — a row, i.e. text/controls
             {"color": "rgb(237, 133, 37)"}]                 # #ED8525
+    # what the page actually paints, from capture.py's COLOR_INVENTORY_JS
+    INVENTORY = {"#E5E7EB": 16, "#ED8525": 4, "#FFFFFF": 15}
 
     def rows_for(self, slug):
         return self.ROWS
 
-    def complete_inv(self, extra=None):
-        """A complete inventory of the same two colours, plus anything a case adds."""
-        inv = {"color": {"rgb(237, 133, 37)": 1}, "bg": {},
-               "border": {"rgb(229, 231, 235)": 16}, "outline": {}, "complete": True}
-        if extra:
-            inv["border"].update(extra)
-        return lambda slug: inv
+    def inv_for(self, slug):
+        return self.INVENTORY
 
     def test_a_sampled_near_miss_fails_when_the_inventory_is_complete(self):
-        # both real cases: the quoted value is a few points off one the build genuinely renders,
-        # and the complete inventory proves the quoted value is painted nowhere.
+        # both real cases: the quoted value is a few points off one the build genuinely paints
         for quoted in ("#E5EAF2", "#E08020"):
             with self.subTest(quoted=quoted):
                 out = I.gate_quoted_build_colours(
-                    [{"id": "X", "slug": "s", "build": f"a 1px {quoted} edge"}], self.rows_for,
-                    inventory_for=self.complete_inv())
+                    [{"id": "X", "slug": "s", "build": f"a 1px {quoted} edge"}],
+                    self.rows_for, None, self.inv_for)
                 self.assertEqual(len(out), 1)
                 self.assertIn("pixel sample", out[0])
 
-    def test_the_2026_09_12_correction_the_gate_must_not_convict_a_correct_finding(self):
-        """NMB-SCREEN-046 called an activity card's edge #E5EAF2 and was RIGHT — nine cards
-        paint it, beside sixteen correct #E5E7EB borders. The rows could not see a container's
-        own border, the gate read that silence as proof, and it failed a correct finding.
-
-        With #E5EAF2 in the inventory the gate must stay silent.
-        """
-        out = I.gate_quoted_build_colours(
-            [{"id": "NMB-SCREEN-046", "slug": "s", "build": "a 1px #E5EAF2 edge"}],
-            self.rows_for, inventory_for=self.complete_inv({"rgb(229, 234, 242)": 9}))
-        self.assertEqual(out, [])
-
-    def test_a_near_miss_without_an_inventory_warns_rather_than_convicts(self):
+    def test_the_rows_alone_may_never_convict(self):
+        # NMB-SCREEN-046, the regression this whole redesign exists for. The activity card's
+        # #E5EAF2 edge is real — hard-coded in the class on nine cards — and invisible to the
+        # element rows, which carry no containers. The first version of this gate failed it
+        # because #E5E7EB, used on 16 OTHER elements, is 7 points away.
         warn = []
         out = I.gate_quoted_build_colours(
-            [{"id": "X", "slug": "s", "build": "a 1px #E5EAF2 edge"}], self.rows_for, warn)
+            [{"id": "NMB-SCREEN-046", "slug": "PUBLIC-ACTIVITIES",
+              "build": "The card is 329x351 at radius 8 with a 1px #E5EAF2 edge"}],
+            self.rows_for, warn)
         self.assertEqual(out, [])
         self.assertEqual(len(warn), 1)
-        self.assertIn("not proven", warn[0])
+        self.assertIn("no colour inventory", warn[0])
 
-    def test_a_colour_nowhere_near_anything_warns_instead_of_failing(self):
-        # the extraction carries text and controls, not every container — absence is not proof,
-        # which is the very error this module exists to stop making
+    def test_and_passes_outright_once_the_inventory_sees_it(self):
+        inv = dict(self.INVENTORY, **{"#E5EAF2": 9})        # the nine activity cards
         warn = []
         out = I.gate_quoted_build_colours(
-            [{"id": "X", "slug": "s", "build": "the panel is #112233"}], self.rows_for, warn)
+            [{"id": "NMB-SCREEN-046", "slug": "PUBLIC-ACTIVITIES",
+              "build": "a 1px #E5EAF2 edge"}], self.rows_for, warn, lambda s: inv)
+        self.assertEqual((out, warn), ([], []))
+
+    def test_a_colour_nowhere_near_anything_warns_instead_of_failing(self):
+        warn = []
+        out = I.gate_quoted_build_colours(
+            [{"id": "X", "slug": "s", "build": "the panel is #112233"}],
+            self.rows_for, warn, self.inv_for)
         self.assertEqual(out, [])
         self.assertEqual(len(warn), 1)
 
@@ -389,7 +384,8 @@ class ColourNearMiss(unittest.TestCase):
         warn = []
         f = {"id": "X", "slug": "s",
              "build": "'Published' is #ED8525, a near-miss of the design's #27682A."}
-        self.assertEqual(I.gate_quoted_build_colours([f], self.rows_for, warn), [])
+        self.assertEqual(
+            I.gate_quoted_build_colours([f], self.rows_for, warn, self.inv_for), [])
         self.assertEqual(warn, [])
 
 
@@ -417,3 +413,250 @@ class Ratchet(unittest.TestCase):
     def test_a_message_with_no_id_is_kept_whole(self):
         new, owed, stale = I.ratchet(["the capture bundle is unreadable"], {})
         self.assertEqual(new, ["the capture bundle is unreadable"])
+
+
+class InventoryReading(unittest.TestCase):
+    def test_raw_values_are_converted_by_the_one_parser(self):
+        # the browser hands over what getComputedStyle said; conversion happens here, once
+        inv = {"rgb(229, 231, 235)": 16, "oklch(0.929 0.013 255.508)": 4}
+        self.assertEqual(I.inventory_hexes(inv), {"#E5E7EB": 16, "#E2E8F0": 4})
+
+    def test_the_oklch_bug_that_shipped_in_javascript_cannot_recur_here(self):
+        # a naive rgb-shaped scrape read the HUE into the blue channel: '#010019'
+        self.assertEqual(list(I.inventory_hexes({"oklch(0.551 0.027 264.364)": 1})), ["#6A7282"])
+
+    def test_an_older_hex_keyed_inventory_still_reads(self):
+        self.assertEqual(I.inventory_hexes({"#e5e7eb": 3}), {"#E5E7EB": 3})
+
+    def test_counts_merge_when_two_notations_mean_one_colour(self):
+        inv = {"#003366": 2, "rgb(0, 51, 102)": 5}
+        self.assertEqual(I.inventory_hexes(inv), {"#003366": 7})
+
+    def test_unparseable_values_are_dropped_not_guessed(self):
+        self.assertEqual(I.inventory_hexes({"currentcolor": 9, "": 1}), {})
+
+
+class UnionOfEvidence(unittest.TestCase):
+    """Each source sees what the other misses; the gate reads both."""
+
+    # a visible row WITH text — the rows survive the inventory's scan cap
+    ROWS = [{"text": "ODIC", "w": 53, "h": 26, "color": "rgb(230, 81, 0)",
+             "bg": "rgb(255, 224, 178)"}]                                    # #E65100 on #FFE0B2
+
+    def test_a_colour_only_the_rows_know_is_accepted(self):
+        # PUBLIC-FACILITIES: the ODIC chip lies past the inventory's cap, so #E65100 is missing
+        # from it. NMB-SCREEN-021's claim is CORRECT and must not fail — and a near neighbour in
+        # the inventory is exactly what would have failed it.
+        inv = {"#E85500": 9}                       # 9 points from #E65100 — inside NEAR_MISS
+        warn = []
+        out = I.gate_quoted_build_colours(
+            [{"id": "NMB-SCREEN-021", "slug": "s", "build": "the ODIC label is #E65100"}],
+            lambda s: self.ROWS, warn, lambda s: inv)
+        self.assertEqual((out, warn), ([], []))
+
+    def test_a_colour_only_the_inventory_knows_is_accepted(self):
+        # NMB-SCREEN-046: the activity card's border is a CONTAINER, which the rows never carry
+        inv = {"#E5EAF2": 9, "#E5E7EB": 16}
+        warn = []
+        out = I.gate_quoted_build_colours(
+            [{"id": "NMB-SCREEN-046", "slug": "s", "build": "a 1px #E5EAF2 edge"}],
+            lambda s: [{"text": "x", "w": 9, "h": 9, "color": "rgb(229, 231, 235)"}],
+            warn, lambda s: inv)
+        self.assertEqual((out, warn), ([], []))
+
+    def test_a_near_miss_in_neither_source_still_fails(self):
+        # the gate keeps its teeth: #E08020 for the served #ED8525
+        inv = {"#ED8525": 3}
+        out = I.gate_quoted_build_colours(
+            [{"id": "X", "slug": "s", "build": "drawn #E08020"}],
+            lambda s: [], None, lambda s: inv)
+        self.assertEqual(len(out), 1)
+        self.assertIn("pixel sample", out[0])
+
+    def test_no_evidence_at_all_is_skipped_silently(self):
+        warn = []
+        out = I.gate_quoted_build_colours(
+            [{"id": "X", "slug": "s", "build": "drawn #123456"}],
+            lambda s: None, warn, lambda s: None)
+        self.assertEqual((out, warn), ([], []))
+
+
+class Transparency(unittest.TestCase):
+    """A fully transparent colour paints nothing and is not a colour the build uses."""
+
+    def test_transparent_black_is_not_black(self):
+        # the extraction writes an unstyled background as rgba(0, 0, 0, 0); reading it as #000000
+        # made 70 transparent divs on one page look like 70 black ones
+        self.assertEqual(I.colours_in("rgba(0, 0, 0, 0)"), [])
+        self.assertEqual(I.colours_in("transparent"), [])
+        self.assertEqual(I.colours_in("rgba(255, 255, 255, 0.0)"), [])
+
+    def test_a_partly_transparent_colour_still_counts(self):
+        self.assertEqual(I.colours_in("rgba(0, 51, 102, 0.5)"), ["#003366"])
+        self.assertEqual(I.colours_in("rgba(0, 51, 102, 0.05)"), ["#003366"])
+
+    def test_opaque_black_still_counts(self):
+        self.assertEqual(I.colours_in("rgb(0, 0, 0)"), ["#000000"])
+        self.assertEqual(I.colours_in("rgba(0, 0, 0, 1)"), ["#000000"])
+
+    def test_a_three_part_colour_ending_in_zero_is_not_transparent(self):
+        # `rgb(0, 0, 0)` and `rgb(230, 81, 0)` both end in ", 0)". A pattern that treats the third
+        # component as the alpha deletes opaque black and NMB-SCREEN-021's ODIC orange.
+        self.assertEqual(I.colours_in("rgb(230, 81, 0)"), ["#E65100"])
+        self.assertEqual(I.colours_in("rgb(0, 0, 0)"), ["#000000"])
+        self.assertEqual(I.colours_in("rgb(0 0 0)"), ["#000000"])
+
+
+class ReaderText(unittest.TestCase):
+    """Both defects shipped, and the reviewer found them by comparing Figma with the PDF."""
+
+    SET = [{"id": "NMB-GLOBAL-035", "element": "The table sits inside an extra white container",
+            "figma": "d", "live": "b", "fix": "Remove the wrapper."}]
+
+    def test_an_appended_anchor_note_is_caught(self):
+        f = {"id": "NMB-GLOBAL-040", "element": "t", "figma": "d", "live": "b",
+             "fix": "Match the header band.  (Anchor: GATE 3 flagged this one, correctly and usefully)"}
+        out = I.gate_reader_text(self.SET + [f])
+        self.assertTrue(any("pipeline note" in m for m in out))
+
+    def test_a_working_id_in_published_prose_is_caught(self):
+        # G19 publishes as NMB-GLOBAL-035; the prose said NMB-GLOBAL-019
+        f = {"id": "NMB-GLOBAL-040", "element": "t", "figma": "d", "live": "b",
+             "fix": "See NMB-GLOBAL-019 (the extra wrapper)."}
+        out = I.gate_reader_text(self.SET + [f])
+        self.assertEqual(len(out), 1)
+        self.assertIn("NMB-GLOBAL-019", out[0])
+
+    def test_a_citation_of_a_withdrawn_id_is_caught_once_the_report_drops_it(self):
+        f = {"id": "NMB-SCREEN-050", "element": "t", "figma": "d", "live": "b",
+             "fix": "This is NOT the withdrawn NMB-SCREEN-029."}
+        out = I.gate_reader_text(self.SET + [f], withdrawn_ids={"NMB-SCREEN-029"})
+        self.assertEqual(len(out), 1)
+        self.assertIn("withdrawn", out[0])
+
+    def test_the_repaired_text_passes(self):
+        f = {"id": "NMB-GLOBAL-040", "element": "t", "figma": "d", "live": "b",
+             "fix": "See NMB-GLOBAL-035 (the extra wrapper)."}
+        self.assertEqual(I.gate_reader_text(self.SET + [f]), [])
+
+    def test_a_design_hex_is_not_mistaken_for_an_id(self):
+        f = {"id": "NMB-GLOBAL-040", "element": "t", "figma": "#1F2937 at 14px", "live": "b",
+             "fix": "Use the SAMAVESH token."}
+        self.assertEqual(I.gate_reader_text(self.SET + [f]), [])
+
+    def test_a_fix_that_only_repeats_the_build_text_is_caught(self):
+        t = "This is raised once, as a note: show the filters each screen needs."
+        f = {"id": "NMB-GLOBAL-031", "element": "t", "figma": "d", "live": t, "fix": t}
+        out = I.gate_reader_text(self.SET + [f])
+        self.assertTrue(any("verbatim copy" in m for m in out))
+
+
+# ---------------------------------------------------------------------------------------------
+class BucketedInventoryAndScope(unittest.TestCase):
+    """The PM-AJAY run's evidence, which main's colour-gate tests do not exercise.
+
+    Two capture paths each grew a colour inventory — a FLAT one in the capture bundle and a
+    BUCKETED one, carrying the walk's own `complete` flag, in the per-screen extraction — and
+    committed audits exist in both. The flat shape is covered above; these hold the bucketed
+    shape to the same rule, plus the two scopes the PM-AJAY run taught the gate to judge
+    differently.
+    """
+    ROWS = [{"borderColor": "rgb(229, 231, 235)"},          # #E5E7EB, what the build renders
+            {"color": "rgb(237, 133, 37)"}]                 # #ED8525
+
+    def rows_for(self, slug):
+        return self.ROWS
+
+    def bucketed(self, complete=True, extra=None):
+        inv = {"color": {"rgb(237, 133, 37)": 1}, "bg": {},
+               "border": {"rgb(229, 231, 235)": 16}, "outline": {},
+               "elementsWalked": 480, "complete": complete}
+        if extra:
+            inv["border"].update(extra)
+        return lambda slug: inv
+
+    def test_a_sampled_near_miss_fails_when_the_bucketed_inventory_is_complete(self):
+        for quoted in ("#E5EAF2", "#E08020"):
+            with self.subTest(quoted=quoted):
+                out = I.gate_quoted_build_colours(
+                    [{"id": "X", "slug": "s", "build": f"a 1px {quoted} edge"}], self.rows_for,
+                    inventory_for=self.bucketed())
+                self.assertEqual(len(out), 1)
+                self.assertIn("pixel sample", out[0])
+
+    def test_the_2026_09_12_correction_the_gate_must_not_convict_a_correct_finding(self):
+        # NMB-SCREEN-046: nine cards really paint #E5EAF2; with it in the inventory, silence
+        out = I.gate_quoted_build_colours(
+            [{"id": "NMB-SCREEN-046", "slug": "s", "build": "a 1px #E5EAF2 edge"}],
+            self.rows_for, inventory_for=self.bucketed(extra={"rgb(229, 234, 242)": 9}))
+        self.assertEqual(out, [])
+
+    def test_a_walk_that_hit_its_cap_warns_rather_than_convicts(self):
+        """`complete: false` means the walk stopped at its element cap — the inventory is a sample,
+        and a sample cannot prove an absence. The same near-miss that FAILS against a complete
+        inventory must only warn here."""
+        warn = []
+        out = I.gate_quoted_build_colours(
+            [{"id": "X", "slug": "s", "build": "a 1px #E5EAF2 edge"}], self.rows_for, warn,
+            inventory_for=self.bucketed(complete=False))
+        self.assertEqual(out, [])
+        self.assertEqual(len(warn), 1)
+        self.assertIn("not proven", warn[0])
+
+    def test_a_bucketed_inventory_without_the_flag_does_not_license_a_failure(self):
+        inv = {"color": {"rgb(237, 133, 37)": 1}, "border": {"rgb(229, 231, 235)": 16}}
+        warn = []
+        out = I.gate_quoted_build_colours(
+            [{"id": "X", "slug": "s", "build": "a 1px #E5EAF2 edge"}], self.rows_for, warn,
+            inventory_for=lambda slug: inv)
+        self.assertEqual(out, [])
+        self.assertEqual(len(warn), 1)
+
+    def test_both_shapes_read_to_the_same_hexes(self):
+        flat = {"rgb(237, 133, 37)": 1, "rgb(229, 231, 235)": 16}
+        bucketed = {"color": {"rgb(237, 133, 37)": 1}, "border": {"rgb(229, 231, 235)": 16},
+                    "complete": True}
+        self.assertEqual(I.inventory_hexes(flat), I.inventory_hexes(bucketed))
+        self.assertEqual(I.inventory_hexes(bucketed), {"#ED8525": 1, "#E5E7EB": 16})
+
+    def test_a_design_system_finding_is_not_judged_as_a_build_colour(self):
+        # PMA-DS-001 names the library's grey ramp and the token contract's side by side, because
+        # the finding IS that they disagree; none of those hexes is a claim about the build
+        warn = []
+        f = {"id": "PMA-DS-001", "slug": "s", "scope": "Design System",
+             "build": "The library's #E08020 against the contract's #E5EAF2."}
+        out = I.gate_quoted_build_colours([f], self.rows_for, warn,
+                                          inventory_for=self.bucketed())
+        self.assertEqual((out, warn), ([], []))
+
+    def test_a_global_finding_is_judged_against_every_screen(self):
+        # "#314158 on 43 screens" is a claim about the portal; the dashboard not painting it
+        # proves nothing, and the union of every screen's colours does
+        f = {"id": "PMA-GLOBAL-001", "slug": "s", "scope": "Global",
+             "build": "Body text is #314158 across the portal."}
+        warn = []
+        out = I.gate_quoted_build_colours([f], self.rows_for, warn,
+                                          inventory_for=self.bucketed(),
+                                          union_colours={"#314158"})
+        self.assertEqual((out, warn), ([], []))
+
+    def test_the_same_global_claim_without_the_union_is_judged_on_its_screen(self):
+        f = {"id": "PMA-GLOBAL-001", "slug": "s", "scope": "Global",
+             "build": "Body text is #314158 across the portal."}
+        warn = []
+        out = I.gate_quoted_build_colours([f], self.rows_for, warn,
+                                          inventory_for=self.bucketed())
+        self.assertEqual(out, [])
+        self.assertEqual(len(warn), 1)
+
+    def test_a_near_miss_without_an_inventory_warns_rather_than_convicts(self):
+        warn = []
+        out = I.gate_quoted_build_colours(
+            [{"id": "X", "slug": "s", "build": "a 1px #E5EAF2 edge"}], self.rows_for, warn)
+        self.assertEqual(out, [])
+        self.assertEqual(len(warn), 1)
+        self.assertIn("not proven", warn[0])
+
+    def test_a_screen_with_no_extraction_is_skipped_not_guessed(self):
+        f = {"id": "X", "slug": "unknown", "build": "drawn #123456."}
+        self.assertEqual(I.gate_quoted_build_colours([f], lambda slug: None), [])

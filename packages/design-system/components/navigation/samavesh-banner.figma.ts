@@ -37,7 +37,6 @@
 //                              when the page owns the state)
 //   Title        (text)     -> title
 //   Subline      (text)     -> subline
-//   Explore      (text)     -> exploreLabel
 //   Drawer title (text)     -> drawerTitle
 //
 // CODE PROPS WITH NO FIGMA PROPERTY, deliberately:
@@ -52,6 +51,13 @@
 //   viewAllHref  -> both default correctly (`/portals`, "Search and compare
 //   viewAllLabel    every portal"). A designer editing them in Figma would be
 //                   editing a route, which is not theirs to set.
+//   exploreLabel -> THE MASTER DRAWS THE WORD AND DOES NOT EXPOSE IT. This template
+//                   read an `Explore` text property until 16 Sep 2026; the set has
+//                   no such property, so `getString` returned undefined and the
+//                   snippet emitted `exploreLabel="undefined"`. Caught the day this
+//                   component gained a parity fixture, which is the whole argument
+//                   for having one. The code's default is the same word, so nothing
+//                   is lost — expose it in Figma if a designer ever needs to change it.
 //   allLabel     -> label on a chip row that does not render yet (see above).
 //   logoSrc      -> the badge default is a 13 KB raster of the SAMAVESH mark.
 //                   Nothing in Figma should repoint it.
@@ -115,7 +121,6 @@ const instance = figma.selectedInstance;
 
 const title = instance.getString("Title");
 const subline = instance.getString("Subline");
-const exploreLabel = instance.getString("Explore");
 const drawerTitle = instance.getString("Drawer title");
 
 /*
@@ -146,7 +151,6 @@ export default {
 <SamaveshBanner
   title="${title}"
   subline="${subline}"
-  exploreLabel="${exploreLabel}"
   drawerTitle="${drawerTitle}"${tone}${state}
 />`,
 };

@@ -3,6 +3,7 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { Icon } from "../utilities/icon";
+import { Badge, type BadgeStatus } from "../feedback/badge";
 import "./video-tile.css";
 
 export type VideoTileState = "live" | "recorded" | "connecting" | "offline";
@@ -39,6 +40,14 @@ export interface VideoTileProps {
   alternativeLabel?: string;
   className?: string;
 }
+
+/** The library Badge's status for each state — the colour the old bordered pill inked its word in. */
+const STATE_STATUS: Record<VideoTileState, BadgeStatus> = {
+  live: "danger",
+  recorded: "neutral",
+  connecting: "warning",
+  offline: "neutral",
+};
 
 const STATE_WORD: Record<VideoTileState, string> = {
   live: "Live",
@@ -111,10 +120,9 @@ export function VideoTile({
             </p>
           </div>
         )}
-        <p className={cn("ds-video__badge", `is-${state}`)}>
-          {state === "live" ? <span className="ds-video__dot" aria-hidden="true" /> : null}
+        <Badge className={cn("ds-video__badge", `is-${state}`)} status={STATE_STATUS[state]} dot={state === "live"}>
           {STATE_WORD[state]}
-        </p>
+        </Badge>
       </div>
       <figcaption className="ds-video__caption">
         <span className="ds-video__label">{label}</span>

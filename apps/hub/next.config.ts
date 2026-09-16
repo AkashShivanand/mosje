@@ -213,14 +213,26 @@ const nextConfig: NextConfig = {
         { key: "X-XSS-Protection", value: "1; mode=block" },
       ],
     };
+    // Geolocation stays off estate-wide, with ONE same-origin exception: e-Anudaan's
+    // project-location capture. The department asked for "Use Current Location" to fill
+    // a moving project's address (review call, 11 Sep 2026), and the blanket
+    // `geolocation=()` above made that button fail on every browser with "disabled in
+    // this document by permissions policy" — found by driving the page, not by reading
+    // it. `(self)` still refuses any framed third-party origin. Listed AFTER the
+    // estate rule so its Permissions-Policy wins for these paths.
+    const eAnudaanLocation = {
+      source: "/portals/e-anudaan/:path*",
+      headers: [{ key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(self)" }],
+    };
     // The immutable long-cache header is ONLY safe in production. In dev it makes
     // the browser cache hashed chunks forever, so CSS/JS edits never refetch and
     // appear "stale" (Next.js warns about exactly this). Apply it in prod only.
     if (process.env.NODE_ENV !== "production") {
-      return [securityHeaders];
+      return [securityHeaders, eAnudaanLocation];
     }
     return [
       securityHeaders,
+      eAnudaanLocation,
       {
         source: "/_next/static/:path*",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],

@@ -25,7 +25,10 @@
     --ds-plogin-hero-mark: 84px; /* Figma: the seal inside a 4px white ring = 92 */
 
     position: relative;
-    display: flex;
+    /* Not drawn below the desktop container width — the phone layout carries
+       identity in `.ds-plogin-hero-mobile` instead. */
+    display: none;
+    flex: 1 1 auto;
     flex-direction: column;
     overflow: hidden;
     background-color: var(--sa-bg-brand-primary-bolder);
@@ -144,6 +147,14 @@
     border-block-start: 1px solid var(--sa-border-neutral-inverse-subtle);
   }
 
+  /* The Change button never gives up width to the portal's name. A long name —
+     "Nasha Mukt Bharat Abhiyaan" on a 375px phone — used to squeeze it until the
+     label broke as "Chan / ge"; the name wraps instead, which it can. */
+  .ds-plogin-hero__bar > .ds-btn,
+  .ds-plogin-hero-mobile__bar > .ds-btn {
+    flex: none;
+  }
+
   .ds-plogin-hero__bar-text {
     flex: 1 1 auto;
     min-inline-size: 0;
@@ -229,5 +240,13 @@
 
   .ds-plogin-hero-mobile__bar > * {
     position: relative;
+  }
+
+  /* Desktop from the TEMPLATE's width (see `.ds-plogin`): the hero takes what
+     the fixed 518 panel leaves — 922 at the master's 1440 — and the phone band
+     goes away. */
+  @container plogin (min-width: 1024px) {
+    .ds-plogin-hero { display: flex; }
+    .ds-plogin-hero-mobile { display: none; }
   }
 }

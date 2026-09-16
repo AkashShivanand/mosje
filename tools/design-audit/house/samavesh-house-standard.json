@@ -46,11 +46,11 @@
       "#000f31",
       "#00151b",
       "#001708",
-      "#001734",
+      "#001735",
       "#001737",
       "#001a0b",
       "#001f56",
-      "#002249",
+      "#002349",
       "#00234c",
       "#002855",
       "#002933",
@@ -107,7 +107,7 @@
       "#1f2428",
       "#1f6e6e",
       "#214aab",
-      "#224c7d",
+      "#214c7d",
       "#242a35",
       "#271700",
       "#29136c",
@@ -126,8 +126,8 @@
       "#3b8df0",
       "#3e0221",
       "#3e2700",
+      "#426998",
       "#439db7",
-      "#446a99",
       "#450708",
       "#454545",
       "#469d6e",
@@ -150,9 +150,9 @@
       "#62a7ff",
       "#644588",
       "#674ebf",
+      "#678ab5",
       "#692200",
       "#69b4cb",
-      "#6a8cb7",
       "#6ab589",
       "#6c0f15",
       "#6c1340",
@@ -186,10 +186,10 @@
       "#8f2121",
       "#8f949d",
       "#8fcda7",
+      "#90aed3",
       "#916100",
       "#91c1ff",
       "#92c2ff",
-      "#93b1d6",
       "#961326",
       "#99caa7",
       "#9dc2ff",
@@ -212,6 +212,7 @@
       "#b4e4c6",
       "#b78320",
       "#b92435",
+      "#bbd2ef",
       "#bdadeb",
       "#bddaff",
       "#bde3c7",
@@ -219,7 +220,6 @@
       "#bf4e86",
       "#c084fc",
       "#c0dbff",
-      "#c1d7f2",
       "#c2c7d0",
       "#c34700",
       "#c48608",
@@ -260,6 +260,7 @@
       "#edf4ff",
       "#eeebfa",
       "#eef0f3",
+      "#eef5ff",
       "#ef5c61",
       "#eff0f2",
       "#f1b75e",
@@ -267,9 +268,11 @@
       "#f4d390",
       "#f5f5f5",
       "#f6f5fe",
-      "#f7faff",
+      "#f6f7f8",
+      "#f6f7f9",
       "#faaaaa",
       "#faebf2",
+      "#fafafa",
       "#fcdada",
       "#fe716d",
       "#ff671f",
@@ -508,7 +511,7 @@
         "[data-density=\"compact\"]"
       ],
       "counts": {
-        "colors": 259,
+        "colors": 262,
         "fontFamilies": 12,
         "fontSizeRanges": 19,
         "fontSizes": 3,
@@ -541,7 +544,7 @@
       "source": "house/figma_histogram.js run once per page against Figma file evmNmlK8g4VYwJVu2FwSGV (MoSJE Portal \u2014 Handoff), via the Figma MCP, 2026-09-12. All 12 pages of the file, no sampling of pages. Within a page, TEXT nodes are capped at 4,000 and container nodes at 6,000 \u2014 every page except Login/Signup hits the container cap, so per-page counts are a census of the first N nodes in document order, not of the whole page. Frequencies are therefore comparable across axes within a page and indicative, not exact, across pages.",
       "variableBindingRate": 0.4732
     },
-    "gitSha": "8ffa2d45"
+    "gitSha": "e2651dcf"
   },
   "standard": {
     "canvasWidths": {
@@ -898,9 +901,9 @@
           "pages": 11,
           "tokens": [
             "sa-bg-brand-primary-bolder",
+            "sa-bg-brand-primary-boldest",
             "sa-border-brand-primary-bolder",
-            "sa-brand-samavesh-navy",
-            "sa-cmp-action-brand-primary-default-bg"
+            "sa-brand-samavesh-navy"
           ]
         },
         "#1558b0": {
@@ -1776,7 +1779,7 @@
         "sa-color-accentScale-950",
         "sa-color-successScale-950"
       ],
-      "#001734": [
+      "#001735": [
         "sa-bg-brand-primary-boldest",
         "sa-cmp-action-brand-primary-active-bg",
         "sa-cmp-action-brand-primary-active-border",
@@ -1791,11 +1794,11 @@
       "#001f56": [
         "sa-color-infoScale-900"
       ],
-      "#002249": [
+      "#002349": [
         "sa-cmp-action-brand-primary-hover-bg",
         "sa-cmp-action-brand-primary-hover-border",
         "sa-cmp-action-brand-primary-inverse-default-text",
-        "sa-cmp-action-brand-secondary-default-text"
+        "sa-cmp-action-brand-secondary-active-border"
       ],
       "#00234c": [
         "sa-chart-seq-900"
@@ -1825,9 +1828,9 @@
       ],
       "#003366": [
         "sa-bg-brand-primary-bolder",
+        "sa-bg-brand-primary-boldest",
         "sa-border-brand-primary-bolder",
-        "sa-brand-samavesh-navy",
-        "sa-cmp-action-brand-primary-default-bg"
+        "sa-brand-samavesh-navy"
       ],
       "#00356e": [
         "sa-chart-div-posStrong",
@@ -1868,7 +1871,7 @@
         "sa-cmp-action-brand-primary-hover-bg",
         "sa-cmp-action-brand-primary-hover-border",
         "sa-cmp-action-brand-primary-inverse-default-text",
-        "sa-cmp-action-brand-secondary-default-text"
+        "sa-cmp-action-brand-secondary-active-border"
       ],
       "#00532a": [
         "sa-border-status-success-bolder",
@@ -1993,8 +1996,8 @@
       "#150202": [
         "sa-color-text-default",
         "sa-icon-neutral-base",
-        "sa-on-bg-brand-primary-bolder",
-        "sa-text-neutral-base"
+        "sa-on-bg-brand-accent-base",
+        "sa-on-bg-brand-accent-bold"
       ],
       "#151515": [
         "sa-bg-neutral-inverse",
@@ -2012,7 +2015,7 @@
         "sa-color-primaryScale-950"
       ],
       "#198754": [
-        "sa-cmp-action-success-secondary-active-border",
+        "sa-cmp-action-success-secondary-default-border",
         "sa-color-successScale-500"
       ],
       "#1a801c": [
@@ -2025,7 +2028,7 @@
         "sa-cmp-action-brand-primary-hover-bg",
         "sa-cmp-action-brand-primary-hover-border",
         "sa-cmp-action-brand-primary-inverse-default-text",
-        "sa-cmp-action-brand-secondary-default-text"
+        "sa-cmp-action-brand-secondary-active-border"
       ],
       "#1e1400": [
         "sa-color-warningScale-950"
@@ -2060,11 +2063,11 @@
         "sa-cmp-action-brand-primary-default-bg",
         "sa-cmp-action-brand-primary-default-border"
       ],
-      "#224c7d": [
+      "#214c7d": [
         "sa-border-brand-primary-base",
-        "sa-cmp-action-brand-secondary-active-border",
-        "sa-cmp-button-primary-bg",
-        "sa-color-action-primary-default"
+        "sa-border-neutral-selected",
+        "sa-cmp-action-brand-secondary-default-border",
+        "sa-cmp-button-primary-bg"
       ],
       "#242a35": [
         "sa-color-a11y-dark-surfaceMuted"
@@ -2097,7 +2100,7 @@
         "sa-color-dangerScale-950"
       ],
       "#338051": [
-        "sa-cmp-action-success-secondary-active-border",
+        "sa-cmp-action-success-secondary-default-border",
         "sa-color-accentScale-500",
         "sa-color-successScale-500"
       ],
@@ -2116,30 +2119,29 @@
         "sa-cmp-action-brand-primary-hover-bg",
         "sa-cmp-action-brand-primary-hover-border",
         "sa-cmp-action-brand-primary-inverse-default-text",
-        "sa-cmp-action-brand-secondary-default-text"
+        "sa-cmp-action-brand-secondary-active-border"
       ],
       "#3a3d41": [
         "sa-cmp-action-neutral-primary-hover-bg",
         "sa-cmp-action-neutral-primary-hover-border",
         "sa-cmp-action-neutral-primary-inverse-default-text",
-        "sa-cmp-action-neutral-secondary-default-text"
+        "sa-cmp-action-neutral-secondary-active-border"
       ],
       "#3a61c2": [
         "sa-border-brand-primary-base",
-        "sa-cmp-action-brand-secondary-active-border",
-        "sa-cmp-button-primary-bg",
-        "sa-color-action-primary-default"
+        "sa-border-neutral-selected",
+        "sa-cmp-action-brand-secondary-default-border",
+        "sa-cmp-button-primary-bg"
       ],
       "#3b3d41": [
         "sa-cmp-action-neutral-primary-hover-bg",
         "sa-cmp-action-neutral-primary-hover-border",
         "sa-cmp-action-neutral-primary-inverse-default-text",
-        "sa-cmp-action-neutral-secondary-default-text"
+        "sa-cmp-action-neutral-secondary-active-border"
       ],
       "#3b8df0": [
         "sa-chart-div-pos",
         "sa-chart-seq-400",
-        "sa-cmp-action-brand-secondary-hover-border",
         "sa-color-primaryScale-400"
       ],
       "#3e0221": [
@@ -2150,12 +2152,11 @@
       "#3e2700": [
         "sa-color-warningScale-900"
       ],
+      "#426998": [
+        "sa-color-primaryScale-400"
+      ],
       "#439db7": [
         "sa-color-infoScale-400"
-      ],
-      "#446a99": [
-        "sa-cmp-action-brand-secondary-hover-border",
-        "sa-color-primaryScale-400"
       ],
       "#450708": [
         "sa-cmp-action-brand-primary-inverse-active-text",
@@ -2166,10 +2167,9 @@
         "sa-cmp-action-neutral-primary-hover-bg",
         "sa-cmp-action-neutral-primary-hover-border",
         "sa-cmp-action-neutral-primary-inverse-default-text",
-        "sa-cmp-action-neutral-secondary-default-text"
+        "sa-cmp-action-neutral-secondary-active-border"
       ],
       "#469d6e": [
-        "sa-cmp-action-success-secondary-hover-border",
         "sa-color-successScale-400"
       ],
       "#4729a3": [
@@ -2202,29 +2202,29 @@
         "sa-color-warningScale-800"
       ],
       "#5279d7": [
-        "sa-cmp-action-brand-secondary-hover-border",
         "sa-color-primaryScale-400"
       ],
       "#5330e6": [
         "sa-brand-digilocker-purple"
       ],
       "#53a1a1": [
-        "sa-cmp-action-brand-secondary-active-border",
+        "sa-border-neutral-selected",
+        "sa-cmp-action-brand-secondary-default-border",
         "sa-color-primaryScale-500"
       ],
       "#54585e": [
         "sa-border-neutral-bolder-hover",
         "sa-cmp-action-neutral-primary-default-bg",
         "sa-cmp-action-neutral-primary-default-border",
-        "sa-color-border-controlHover"
+        "sa-cmp-action-neutral-secondary-hover-border"
       ],
       "#55585e": [
         "sa-cmp-action-neutral-primary-default-bg",
         "sa-cmp-action-neutral-primary-default-border",
+        "sa-cmp-action-neutral-secondary-hover-border",
         "sa-color-neutralScale-600"
       ],
       "#55986b": [
-        "sa-cmp-action-success-secondary-hover-border",
         "sa-color-accentScale-400",
         "sa-color-successScale-400"
       ],
@@ -2242,12 +2242,11 @@
         "sa-border-neutral-bolder-hover",
         "sa-cmp-action-neutral-primary-default-bg",
         "sa-cmp-action-neutral-primary-default-border",
-        "sa-color-border-controlHover"
+        "sa-cmp-action-neutral-secondary-hover-border"
       ],
       "#62a7ff": [
         "sa-bg-brand-primary-bold",
         "sa-chart-seq-300",
-        "sa-cmp-action-brand-secondary-default-border",
         "sa-color-primaryScale-300"
       ],
       "#644588": [
@@ -2255,9 +2254,13 @@
       ],
       "#674ebf": [
         "sa-border-brand-primary-base",
-        "sa-cmp-action-brand-secondary-active-border",
-        "sa-cmp-button-primary-bg",
-        "sa-color-action-primary-default"
+        "sa-border-neutral-selected",
+        "sa-cmp-action-brand-secondary-default-border",
+        "sa-cmp-button-primary-bg"
+      ],
+      "#678ab5": [
+        "sa-bg-brand-primary-bold",
+        "sa-color-primaryScale-300"
       ],
       "#692200": [
         "sa-color-secondaryScale-900"
@@ -2266,16 +2269,11 @@
         "sa-bg-status-info-bold",
         "sa-color-infoScale-300"
       ],
-      "#6a8cb7": [
-        "sa-bg-brand-primary-bold",
-        "sa-cmp-action-brand-secondary-default-border",
-        "sa-color-primaryScale-300"
-      ],
       "#6ab589": [
         "sa-bg-status-success-bold",
-        "sa-cmp-action-success-secondary-default-border",
         "sa-cmp-action-success-tonal-active-bg",
-        "sa-cmp-action-success-tonal-active-border"
+        "sa-cmp-action-success-tonal-active-border",
+        "sa-color-successScale-300"
       ],
       "#6c0f15": [
         "sa-bg-status-error-boldest",
@@ -2299,7 +2297,7 @@
         "sa-border-neutral-bolder-default",
         "sa-chart-axis",
         "sa-chart-trend-flat",
-        "sa-cmp-action-neutral-secondary-active-border"
+        "sa-cmp-action-neutral-secondary-default-border"
       ],
       "#704b00": [
         "sa-border-status-warning-bolder",
@@ -2310,7 +2308,7 @@
       "#70757d": [
         "sa-border-neutral-bolder-default",
         "sa-border-neutral-bolder-hover",
-        "sa-cmp-action-neutral-secondary-active-border",
+        "sa-cmp-action-neutral-secondary-default-border",
         "sa-color-border-controlHover"
       ],
       "#730117": [
@@ -2327,14 +2325,13 @@
         "sa-chart-cat-11"
       ],
       "#75bdbd": [
-        "sa-cmp-action-brand-secondary-hover-border",
         "sa-color-primaryScale-400"
       ],
       "#76b188": [
         "sa-bg-brand-accent-bold",
         "sa-bg-status-success-bold",
-        "sa-cmp-action-success-secondary-default-border",
-        "sa-cmp-action-success-tonal-active-bg"
+        "sa-cmp-action-success-tonal-active-bg",
+        "sa-cmp-action-success-tonal-active-border"
       ],
       "#771d1d": [
         "sa-bg-brand-primary-boldest",
@@ -2346,20 +2343,19 @@
         "sa-cmp-action-brand-primary-hover-bg",
         "sa-cmp-action-brand-primary-hover-border",
         "sa-cmp-action-brand-primary-inverse-default-text",
-        "sa-cmp-action-brand-secondary-default-text"
+        "sa-cmp-action-brand-secondary-active-border"
       ],
       "#777777": [
         "sa-border-neutral-bolder-default",
         "sa-chart-axis",
         "sa-chart-trend-flat",
-        "sa-cmp-action-neutral-secondary-active-border"
+        "sa-cmp-action-neutral-secondary-default-border"
       ],
       "#7a3901": [
         "sa-chart-cat-6"
       ],
       "#7b9ae5": [
         "sa-bg-brand-primary-bold",
-        "sa-cmp-action-brand-secondary-default-border",
         "sa-color-primaryScale-300"
       ],
       "#7dd3fc": [
@@ -2376,7 +2372,7 @@
         "sa-cmp-action-brand-primary-hover-bg",
         "sa-cmp-action-brand-primary-hover-border",
         "sa-cmp-action-brand-primary-inverse-default-text",
-        "sa-cmp-action-brand-secondary-default-text"
+        "sa-cmp-action-brand-secondary-active-border"
       ],
       "#886600": [
         "sa-bg-status-warning-bolder",
@@ -2400,7 +2396,6 @@
         "sa-color-warningScale-600"
       ],
       "#8b70db": [
-        "sa-cmp-action-brand-secondary-hover-border",
         "sa-color-primaryScale-400"
       ],
       "#8e8e8e": [
@@ -2417,7 +2412,6 @@
       ],
       "#8ecbcb": [
         "sa-bg-brand-primary-bold",
-        "sa-cmp-action-brand-secondary-default-border",
         "sa-color-primaryScale-300"
       ],
       "#8eccdf": [
@@ -2428,7 +2422,7 @@
         "sa-cmp-action-brand-primary-hover-bg",
         "sa-cmp-action-brand-primary-hover-border",
         "sa-cmp-action-brand-primary-inverse-default-text",
-        "sa-cmp-action-brand-secondary-default-text"
+        "sa-cmp-action-brand-secondary-active-border"
       ],
       "#8f949d": [
         "sa-cmp-action-brand-primary-disabled-text",
@@ -2441,6 +2435,12 @@
         "sa-cmp-action-success-tonal-hover-bg",
         "sa-cmp-action-success-tonal-hover-border",
         "sa-color-successScale-200"
+      ],
+      "#90aed3": [
+        "sa-bg-brand-primary-subtle",
+        "sa-cmp-action-brand-tonal-active-bg",
+        "sa-cmp-action-brand-tonal-active-border",
+        "sa-cmp-sitefooter-ink-subtler"
       ],
       "#916100": [
         "sa-bg-brand-primary-bolder",
@@ -2455,13 +2455,7 @@
         "sa-bg-brand-primary-subtle",
         "sa-cmp-action-brand-tonal-active-bg",
         "sa-cmp-action-brand-tonal-active-border",
-        "sa-color-primaryScale-200"
-      ],
-      "#93b1d6": [
-        "sa-bg-brand-primary-subtle",
-        "sa-cmp-action-brand-tonal-active-bg",
-        "sa-cmp-action-brand-tonal-active-border",
-        "sa-color-primaryScale-200"
+        "sa-cmp-sitefooter-ink-subtler"
       ],
       "#961326": [
         "sa-border-status-error-bolder",
@@ -2493,14 +2487,13 @@
       ],
       "#a38fe4": [
         "sa-bg-brand-primary-bold",
-        "sa-cmp-action-brand-secondary-default-border",
         "sa-color-primaryScale-300"
       ],
       "#a3bbf3": [
         "sa-bg-brand-primary-subtle",
         "sa-cmp-action-brand-tonal-active-bg",
         "sa-cmp-action-brand-tonal-active-border",
-        "sa-color-primaryScale-200"
+        "sa-cmp-sitefooter-ink-subtler"
       ],
       "#a43a00": [
         "sa-color-brand-saffronDark",
@@ -2513,7 +2506,7 @@
         "sa-bg-brand-primary-subtle",
         "sa-cmp-action-brand-tonal-active-bg",
         "sa-cmp-action-brand-tonal-active-border",
-        "sa-color-primaryScale-200"
+        "sa-cmp-sitefooter-ink-subtler"
       ],
       "#a72626": [
         "sa-bg-brand-primary-bolder",
@@ -2531,19 +2524,16 @@
         "sa-cmp-action-destructive-primary-default-bg"
       ],
       "#aaaaaa": [
-        "sa-cmp-action-neutral-secondary-default-border",
         "sa-cmp-action-neutral-tonal-active-bg",
         "sa-cmp-action-neutral-tonal-active-border",
         "sa-color-neutralScale-300"
       ],
       "#adb1b7": [
-        "sa-cmp-action-neutral-secondary-default-border",
         "sa-cmp-action-neutral-tonal-active-bg",
         "sa-cmp-action-neutral-tonal-active-border",
         "sa-color-neutralScale-300"
       ],
       "#aeb1b7": [
-        "sa-cmp-action-neutral-secondary-default-border",
         "sa-cmp-action-neutral-tonal-active-bg",
         "sa-cmp-action-neutral-tonal-active-border",
         "sa-color-neutralScale-300"
@@ -2562,7 +2552,8 @@
         "sa-cmp-action-success-tertiary-active-bg"
       ],
       "#b78320": [
-        "sa-cmp-action-brand-secondary-active-border",
+        "sa-border-neutral-selected",
+        "sa-cmp-action-brand-secondary-default-border",
         "sa-color-primaryScale-500"
       ],
       "#b92435": [
@@ -2571,11 +2562,17 @@
         "sa-chart-trend-down",
         "sa-cmp-action-destructive-primary-default-bg"
       ],
+      "#bbd2ef": [
+        "sa-bg-brand-primary-subtler",
+        "sa-cmp-action-brand-secondary-active-bg",
+        "sa-cmp-action-brand-secondary-inverse-default-border",
+        "sa-cmp-action-brand-tertiary-active-bg"
+      ],
       "#bdadeb": [
         "sa-bg-brand-primary-subtle",
         "sa-cmp-action-brand-tonal-active-bg",
         "sa-cmp-action-brand-tonal-active-border",
-        "sa-color-primaryScale-200"
+        "sa-cmp-sitefooter-ink-subtler"
       ],
       "#bddaff": [
         "sa-chart-div-posSoft",
@@ -2589,26 +2586,20 @@
       ],
       "#bf3c3b": [
         "sa-border-brand-primary-base",
-        "sa-cmp-action-brand-secondary-active-border",
-        "sa-cmp-button-primary-bg",
-        "sa-color-action-primary-default"
+        "sa-border-neutral-selected",
+        "sa-cmp-action-brand-secondary-default-border",
+        "sa-cmp-button-primary-bg"
       ],
       "#bf4e86": [
         "sa-border-brand-primary-base",
-        "sa-cmp-action-brand-secondary-active-border",
-        "sa-cmp-button-primary-bg",
-        "sa-color-action-primary-default"
+        "sa-border-neutral-selected",
+        "sa-cmp-action-brand-secondary-default-border",
+        "sa-cmp-button-primary-bg"
       ],
       "#c084fc": [
         "sa-code-keyword"
       ],
       "#c0dbff": [
-        "sa-bg-brand-primary-subtler",
-        "sa-cmp-action-brand-secondary-active-bg",
-        "sa-cmp-action-brand-secondary-inverse-default-border",
-        "sa-cmp-action-brand-tertiary-active-bg"
-      ],
-      "#c1d7f2": [
         "sa-bg-brand-primary-subtler",
         "sa-cmp-action-brand-secondary-active-bg",
         "sa-cmp-action-brand-secondary-inverse-default-border",
@@ -2654,7 +2645,7 @@
         "sa-chart-cat-5"
       ],
       "#cb3d3f": [
-        "sa-cmp-action-destructive-secondary-active-border",
+        "sa-cmp-action-destructive-secondary-default-border",
         "sa-color-dangerScale-500"
       ],
       "#d2dfff": [
@@ -2664,7 +2655,6 @@
         "sa-cmp-action-brand-tertiary-active-bg"
       ],
       "#d75151": [
-        "sa-cmp-action-brand-secondary-hover-border",
         "sa-color-primaryScale-400"
       ],
       "#d9f2f2": [
@@ -2674,11 +2664,10 @@
         "sa-cmp-action-brand-tertiary-active-bg"
       ],
       "#db70a6": [
-        "sa-cmp-action-brand-secondary-hover-border",
         "sa-color-primaryScale-400"
       ],
       "#dc3545": [
-        "sa-cmp-action-destructive-secondary-active-border",
+        "sa-cmp-action-destructive-secondary-default-border",
         "sa-color-dangerScale-500"
       ],
       "#dcdee1": [
@@ -2688,13 +2677,12 @@
         "sa-border-neutral-subtle"
       ],
       "#dcdee2": [
+        "sa-bg-neutral-active",
         "sa-bg-neutral-disabled",
         "sa-bg-neutral-subtle",
-        "sa-border-neutral-subtle",
-        "sa-cmp-action-neutral-secondary-active-bg"
+        "sa-border-neutral-subtle"
       ],
       "#dda73a": [
-        "sa-cmp-action-brand-secondary-hover-border",
         "sa-color-primaryScale-400"
       ],
       "#dffae8": [
@@ -2724,7 +2712,6 @@
       ],
       "#e48fb8": [
         "sa-bg-brand-primary-bold",
-        "sa-cmp-action-brand-secondary-default-border",
         "sa-color-primaryScale-300"
       ],
       "#e5faea": [
@@ -2747,12 +2734,10 @@
       ],
       "#e9bd68": [
         "sa-bg-brand-primary-bold",
-        "sa-cmp-action-brand-secondary-default-border",
         "sa-color-primaryScale-300"
       ],
       "#ea7f7d": [
         "sa-bg-brand-primary-bold",
-        "sa-cmp-action-brand-secondary-default-border",
         "sa-color-primaryScale-300"
       ],
       "#eaf9f9": [
@@ -2765,24 +2750,23 @@
         "sa-bg-brand-primary-subtle",
         "sa-cmp-action-brand-tonal-active-bg",
         "sa-cmp-action-brand-tonal-active-border",
-        "sa-color-primaryScale-200"
+        "sa-cmp-sitefooter-ink-subtler"
       ],
       "#ebeaea": [
+        "sa-bg-neutral-active",
         "sa-bg-neutral-disabled",
         "sa-bg-neutral-subtle",
-        "sa-border-neutral-subtle",
-        "sa-chart-div-mid"
+        "sa-border-neutral-subtle"
       ],
       "#ec4e4f": [
         "sa-chart-div-neg",
-        "sa-cmp-action-destructive-secondary-hover-border",
         "sa-color-dangerScale-400"
       ],
       "#ecf4ff": [
         "sa-bg-brand-primary-base",
-        "sa-bg-neutral-selected",
         "sa-cmp-action-brand-secondary-hover-bg",
-        "sa-cmp-action-brand-secondary-inverse-hover-border"
+        "sa-cmp-action-brand-secondary-inverse-hover-border",
+        "sa-cmp-action-brand-tertiary-hover-bg"
       ],
       "#ed8a1d": [
         "sa-brand-samavesh-saffron"
@@ -2804,16 +2788,21 @@
         "sa-bg-neutral-readonly",
         "sa-bg-neutral-subtler"
       ],
+      "#eef5ff": [
+        "sa-bg-brand-primary-base",
+        "sa-cmp-action-brand-secondary-hover-bg",
+        "sa-cmp-action-brand-secondary-inverse-hover-border",
+        "sa-cmp-action-brand-tertiary-hover-bg"
+      ],
       "#ef5c61": [
         "sa-chart-div-neg",
-        "sa-cmp-action-destructive-secondary-hover-border",
         "sa-color-dangerScale-400"
       ],
       "#eff0f2": [
-        "sa-bg-neutral-subtler",
-        "sa-cmp-action-neutral-secondary-hover-bg",
-        "sa-cmp-action-neutral-secondary-inverse-hover-border",
-        "sa-cmp-action-neutral-tertiary-hover-bg"
+        "sa-bg-neutral-hover",
+        "sa-bg-neutral-loading",
+        "sa-bg-neutral-readonly",
+        "sa-bg-neutral-subtler"
       ],
       "#f1b75e": [
         "sa-bg-status-warning-subtle",
@@ -2826,13 +2815,13 @@
         "sa-bg-brand-primary-subtle",
         "sa-cmp-action-brand-tonal-active-bg",
         "sa-cmp-action-brand-tonal-active-border",
-        "sa-color-primaryScale-200"
+        "sa-cmp-sitefooter-ink-subtler"
       ],
       "#f5f5f5": [
-        "sa-bg-neutral-subtler",
-        "sa-cmp-action-neutral-secondary-hover-bg",
-        "sa-cmp-action-neutral-secondary-inverse-hover-border",
-        "sa-cmp-action-neutral-tertiary-hover-bg"
+        "sa-bg-neutral-hover",
+        "sa-bg-neutral-loading",
+        "sa-bg-neutral-readonly",
+        "sa-bg-neutral-subtler"
       ],
       "#f6f5fe": [
         "sa-bg-brand-primary-base",
@@ -2840,23 +2829,29 @@
         "sa-cmp-action-brand-secondary-inverse-hover-border",
         "sa-cmp-action-brand-tertiary-hover-bg"
       ],
-      "#f7faff": [
-        "sa-bg-brand-primary-base",
-        "sa-cmp-action-brand-secondary-hover-bg",
-        "sa-cmp-action-brand-secondary-inverse-hover-border",
-        "sa-cmp-action-brand-tertiary-hover-bg"
+      "#f6f7f8": [
+        "sa-bg-neutral-subtlest",
+        "sa-color-neutralScale-25"
+      ],
+      "#f6f7f9": [
+        "sa-bg-neutral-subtlest",
+        "sa-color-neutralScale-25"
       ],
       "#faaaaa": [
         "sa-bg-brand-primary-subtle",
         "sa-cmp-action-brand-tonal-active-bg",
         "sa-cmp-action-brand-tonal-active-border",
-        "sa-color-primaryScale-200"
+        "sa-cmp-sitefooter-ink-subtler"
       ],
       "#faebf2": [
         "sa-bg-brand-primary-subtler",
         "sa-cmp-action-brand-secondary-active-bg",
         "sa-cmp-action-brand-secondary-inverse-default-border",
         "sa-cmp-action-brand-tertiary-active-bg"
+      ],
+      "#fafafa": [
+        "sa-bg-neutral-subtlest",
+        "sa-color-neutralScale-25"
       ],
       "#fcdada": [
         "sa-bg-brand-primary-subtler",
@@ -2866,9 +2861,9 @@
       ],
       "#fe716d": [
         "sa-bg-status-error-bold",
-        "sa-cmp-action-destructive-secondary-default-border",
         "sa-cmp-action-destructive-tonal-active-bg",
-        "sa-cmp-action-destructive-tonal-active-border"
+        "sa-cmp-action-destructive-tonal-active-border",
+        "sa-color-dangerScale-300"
       ],
       "#ff671f": [
         "sa-brand-samavesh-orange",
@@ -2877,9 +2872,9 @@
       ],
       "#ff7e7f": [
         "sa-bg-status-error-bold",
-        "sa-cmp-action-destructive-secondary-default-border",
         "sa-cmp-action-destructive-tonal-active-bg",
-        "sa-cmp-action-destructive-tonal-active-border"
+        "sa-cmp-action-destructive-tonal-active-border",
+        "sa-color-dangerScale-300"
       ],
       "#ff9167": [
         "sa-bg-brand-secondary-bold",

@@ -22,6 +22,7 @@
  *     slot). BLANK by default: with no photograph the column is the solid brand
  *     ground, exactly as the library master renders an empty slot.
  *   - `signingInto` — the scheme/portal name shown in the hero's "SIGNING INTO" strip
+ *   - `portalTagline` / `portalDescription` — optional lines under that name (desktop hero only)
  *   - `tabs` — tab labels and hrefs (e.g. Admin + Patient Monitoring for NMBA)
  *   - `children` — the form content (heading, fields, submit button)
  *
@@ -41,6 +42,7 @@ import { Icon } from "../utilities/icon";
 // The chrome rows use the estate content container, so the emblem lines up with
 // the same column every other page uses. Previously max-w-screen-2xl (1536).
 import "../../foundations/layout.css";
+import { DEFAULT_LOGIN_MARKS } from "./login-shell-chrome";
 import "./portal-login-template.css";
 import "./portal-login-hero.css";
 
@@ -82,6 +84,23 @@ export interface PortalLoginShellProps {
   // ── "SIGNING INTO" strip at the bottom of the hero ────────────────────────
   /** Portal / scheme name, e.g. "Nasha Mukt Bharat Abhiyaan" */
   signingInto: string;
+  /**
+   * Optional line under the portal name — the scheme's expanded name, e.g.
+   * "Support For Marginalized Individuals For Livelihood & Enterprise" under
+   * "SMILE Beggary". Leave it off where the name already says it (E-Anudaan).
+   *
+   * LARGE SCREENS ONLY. The desktop hero's strip shows it; the phone strip does
+   * not, because beside the mark and the Change button there is no room for it
+   * and it pushed the form further down the screen.
+   */
+  portalTagline?: string;
+  /**
+   * Optional second, muted line under the tagline — what the portal is for, e.g.
+   * "Comprehensive Rehabilitation of Persons Engaged in Begging". One sentence;
+   * the strip is identity, not a place for instructions. Large screens only, as
+   * `portalTagline`.
+   */
+  portalDescription?: string;
   /** Href for the "Change" button — defaults to "/" (hub root) */
   changeHref?: string;
   /**
@@ -126,11 +145,14 @@ export interface PortalLoginShellProps {
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export function PortalLoginShell({
-  emblemSrc = "/brand/national-emblem.svg",
-  digitalIndiaSrc = "/brand/digital-india.svg",
-  samaveshLogoSrc = "/brand/samavesh-logo.svg",
+  // Served defaults — `/brand/*.svg` never existed. See `login-shell-chrome.ts`.
+  emblemSrc = DEFAULT_LOGIN_MARKS.emblemSrc,
+  digitalIndiaSrc = DEFAULT_LOGIN_MARKS.digitalIndiaSrc,
+  samaveshLogoSrc = DEFAULT_LOGIN_MARKS.samaveshLogoSrc,
   heroImageSrc,
   signingInto,
+  portalTagline,
+  portalDescription,
   changeHref = "/",
   onChangePortal,
   portalPickerOpen = false,
@@ -143,7 +165,14 @@ export function PortalLoginShell({
   // on afterwards. AccessibilityBar drives `--sa-font-scale` on :root, so the
   // reader's choice now applies estate-wide and survives navigation.
   return (
-    <div className="ds-plogin__shell flex min-h-screen flex-col">
+    /* `ds-plogin` is the size container every layout rule below queries. The
+       template decides desktop vs phone by the width it is GIVEN, not by the
+       viewport — so a specimen inside a 770px documentation column draws the
+       phone layout it actually has room for, instead of a 922px hero crushing the
+       form column to 140px. A full-page portal login is unaffected: there the
+       container IS the viewport. */
+    <div className="ds-plogin">
+    <div className="ds-plogin__shell flex flex-col">
       {/* ── Navbar — the Portal variant of the SAMAVESH Navbar ─────────────────
          Figma: `Navbar/Portal` with Menu, Search, Login Signup and Profile all off;
          accessibility bar + masthead, 146px at desktop. Cobranding is the Digital
@@ -176,8 +205,10 @@ export function PortalLoginShell({
             solid band on the left, the SAMAVESH lockup on that band, and the
             Signing Into bar over a bottom scrim. The rules are in
             portal-login-hero.css beside the Figma node ids they transcribe. */}
-        {/* 922 of 1440 — the handoff's hero/form split, which the Figma master draws. */}
-        <div className="ds-plogin-hero hidden lg:flex lg:w-[64.03%]">
+        {/* 922 of 1440 — the Figma master's split. The PANEL is the fixed
+            `--sa-layout-login-panel-width` and the hero takes the rest, as the
+            master's Form column (518, FIXED) does; see portal-login-hero.css. */}
+        <div className="ds-plogin-hero">
           {/* The Portal Hero slot. Rendered only when a portal has a photograph;
               an empty slot is the column's own ground, in the library and here. */}
           {heroImageSrc ? (
@@ -228,6 +259,10 @@ export function PortalLoginShell({
               <div className="ds-plogin-hero__bar-text">
                 <p className="ds-plogin-hero__eyebrow ds-plogin-hero__muted text-label-2">Signing Into</p>
                 <p className="text-title-1">{signingInto}</p>
+                {portalTagline && <p className="text-body-1">{portalTagline}</p>}
+                {portalDescription && (
+                  <p className="ds-plogin-hero__muted text-body-2">{portalDescription}</p>
+                )}
               </div>
               {onChangePortal ? (
                 <Button
@@ -236,7 +271,7 @@ export function PortalLoginShell({
                   aria-haspopup="dialog"
                   aria-expanded={portalPickerOpen}
                   variant="neutral"
-                  appearance="outlined"
+                  appearance="filled"
                   tone="inverse"
                   iconLeft={<Icon name="swap_horiz" size={16} aria-hidden />}
                 >
@@ -246,7 +281,7 @@ export function PortalLoginShell({
                 <Button
                   href={changeHref}
                   variant="neutral"
-                  appearance="outlined"
+                  appearance="filled"
                   tone="inverse"
                   iconLeft={<Icon name="swap_horiz" size={16} aria-hidden />}
                 >
@@ -270,7 +305,7 @@ export function PortalLoginShell({
             With the column able to shrink, the tab row overflows INSIDE the card
             and `Tabs`' own `overflow` handling takes over — verified: the row
             scrolls and the "More" menu appears. */}
-        <div className="ds-plogin__panel flex min-w-0 flex-1 flex-col">
+        <div className="ds-plogin__panel flex min-w-0 flex-col">
 
           {/* Phone identity — the Figma organism's `Device=Mobile` variant. The
               SAMAVESH band on a light brand ground, then the Signing Into strip
@@ -278,7 +313,7 @@ export function PortalLoginShell({
               right edge, as the handoff draws them (`56693:9335`, `56693:9563`).
               Hidden from the large breakpoint up, where the hero column carries
               both. */}
-          <div className="ds-plogin-hero-mobile lg:hidden">
+          <div className="ds-plogin-hero-mobile">
             <div className="ds-plogin-hero-mobile__band" aria-hidden="true">
               <span className="ds-plogin-hero-mobile__ring">
                 <img src={samaveshLogoSrc} alt="" />
@@ -348,12 +383,22 @@ export function PortalLoginShell({
               tabs, 64 at the sides on desktop, 16 on a phone (`55449:905`,
               `56693:9331`). The column used to centre the form vertically,
               which floated it away from the tabs pinned at the top. */}
-          {tabs && tabs.length > 0 && (
-            <div className="ds-plogin__panel-pad pt-8">
+          {/* Tabs and form as ONE group, centred in the column from the desktop
+              breakpoint — the master's Form column centres its content
+              (primaryAxisAlign CENTER), and on a phone it stacks from the top. */}
+          <div className="ds-plogin__stack">
+          {/* ROLE TABS ONLY WHEN THERE IS A CHOICE. A single-role portal has
+              nothing to switch between, and a one-segment tab strip reads as a
+              control that does nothing — the Figma master hides the region with
+              `Show role tabs` for the same reason. */}
+          {tabs && tabs.length > 1 && (
+            <div className="ds-plogin__panel-pad">
               <div className="ds-plogin__column">
                 <Tabs
                   tabs={tabs.map((tab) => ({
-                    id: tab.href,
+                    /* The href is "?role=citizen"; an element id may not carry "?" or "=",
+                       so the id is the href with everything else folded to hyphens. */
+                    id: tab.href.replace(/[^A-Za-z0-9_-]+/g, "-").replace(/^-+|-+$/g, ""),
                     label: tab.label,
                     href: tab.href,
                   }))}
@@ -378,10 +423,12 @@ export function PortalLoginShell({
           {/* Form area. The 32 between the role tabs and the card's heading is the
               design's (`52380:187221`: tabs end 271, heading 303) and was 24 —
               `py-6` — until it was measured against the frame. */}
-          <div className="ds-plogin__panel-pad flex-1 pt-8 pb-6">
+          <div className="ds-plogin__panel-pad ds-plogin__panel-pad--form">
             <div id="login-form" className="ds-plogin__column" tabIndex={-1}>
               {children}
             </div>
+          </div>
+
           </div>
 
           {/* Extra content (e.g. Portal Switcher Grid) */}
@@ -392,6 +439,7 @@ export function PortalLoginShell({
 
         </div>
       </div>
+    </div>
     </div>
   );
 }

@@ -25,7 +25,7 @@ export type LedgerEntry = { token: string; measured?: number; implied?: number; 
 export type Section = { id: string; title: string };
 
 export const META = {
-  "translucentTokens": 141,
+  "translucentTokens": 146,
   "alphaSteps": 15,
   "ramps": 8,
   "brands": 2,
@@ -150,7 +150,7 @@ export const RAMPS: readonly Ramp[] = [
         "step": 50,
         "token": "--sa-color-primaryScale-50",
         "blue": "#ecf4ff",
-        "navy": "#f7faff",
+        "navy": "#eef5ff",
         "onWhite": 1.11,
         "onMuted": 1.03,
         "oklch": {
@@ -164,7 +164,7 @@ export const RAMPS: readonly Ramp[] = [
         "step": 100,
         "token": "--sa-color-primaryScale-100",
         "blue": "#c0dbff",
-        "navy": "#c1d7f2",
+        "navy": "#bbd2ef",
         "onWhite": 1.42,
         "onMuted": 1.24,
         "oklch": {
@@ -178,7 +178,7 @@ export const RAMPS: readonly Ramp[] = [
         "step": 200,
         "token": "--sa-color-primaryScale-200",
         "blue": "#92c2ff",
-        "navy": "#93b1d6",
+        "navy": "#90aed3",
         "onWhite": 1.84,
         "onMuted": 1.62,
         "oklch": {
@@ -192,7 +192,7 @@ export const RAMPS: readonly Ramp[] = [
         "step": 300,
         "token": "--sa-color-primaryScale-300",
         "blue": "#62a7ff",
-        "navy": "#6a8cb7",
+        "navy": "#678ab5",
         "onWhite": 2.47,
         "onMuted": 2.17,
         "oklch": {
@@ -206,7 +206,7 @@ export const RAMPS: readonly Ramp[] = [
         "step": 400,
         "token": "--sa-color-primaryScale-400",
         "blue": "#3b8df0",
-        "navy": "#446a99",
+        "navy": "#426998",
         "onWhite": 3.36,
         "onMuted": 2.94,
         "oklch": {
@@ -220,7 +220,7 @@ export const RAMPS: readonly Ramp[] = [
         "step": 500,
         "token": "--sa-color-primaryScale-500",
         "blue": "#0373df",
-        "navy": "#224c7d",
+        "navy": "#214c7d",
         "onWhite": 4.64,
         "onMuted": 4.07,
         "oklch": {
@@ -248,7 +248,7 @@ export const RAMPS: readonly Ramp[] = [
         "step": 700,
         "token": "--sa-color-primaryScale-700",
         "blue": "#004b96",
-        "navy": "#002249",
+        "navy": "#002349",
         "onWhite": 8.58,
         "onMuted": 7.52,
         "oklch": {
@@ -262,7 +262,7 @@ export const RAMPS: readonly Ramp[] = [
         "step": 800,
         "token": "--sa-color-primaryScale-800",
         "blue": "#003975",
-        "navy": "#001734",
+        "navy": "#001735",
         "onWhite": 11.4,
         "onMuted": 9.99,
         "oklch": {
@@ -637,6 +637,20 @@ export const RAMPS: readonly Ramp[] = [
           "L": 100,
           "C": 0,
           "H": 90
+        },
+        "anchor": null
+      },
+      {
+        "step": 25,
+        "token": "--sa-color-neutralScale-25",
+        "blue": "#f6f7f8",
+        "navy": "#f6f7f9",
+        "onWhite": 1.07,
+        "onMuted": 1.06,
+        "oklch": {
+          "L": 97.6,
+          "C": 0.002,
+          "H": 248
         },
         "anchor": null
       },
@@ -2555,7 +2569,7 @@ export const TRANSLUCENT = [
   },
   {
     "group": "Scrim, washes and rules",
-    "count": 8,
+    "count": 13,
     "examples": [
       {
         "token": "border/neutral/inverse/subtle",
@@ -2564,16 +2578,16 @@ export const TRANSLUCENT = [
         "css": "--sa-border-neutral-inverse-subtle"
       },
       {
+        "token": "bg/neutral/selected",
+        "base": "color/primaryScale/100",
+        "alpha": "alpha/64",
+        "css": "--sa-bg-neutral-selected"
+      },
+      {
         "token": "overlay/neutral/boldest",
         "base": "color/neutralScale/800",
         "alpha": "alpha/48",
         "css": "--sa-overlay-neutral-boldest"
-      },
-      {
-        "token": "overlay/neutral/hover",
-        "base": "color/neutralScale/800",
-        "alpha": "alpha/4",
-        "css": "--sa-overlay-neutral-hover"
       }
     ]
   }
@@ -2604,15 +2618,15 @@ export const LAYERS = [
 
 export const SLOT_COUNTS = {
   "border": 17,
-  "bg": 53,
+  "bg": 54,
   "text": 22,
   "icon": 16,
-  "cmp": 296,
+  "cmp": 302,
   "focus": 2,
   "overlay": 7,
   "chart": 38,
   "layer": 8,
-  "on": 51
+  "on": 52
 } as const;
 
 export const RETIRED = [
@@ -3553,9 +3567,9 @@ export const MODES: readonly Mode[] = [
       },
       {
         "token": "text/link/brand/default",
-        "value": "#224c7d",
+        "value": "#214c7d",
         "against": "bg/neutral/subtler",
-        "ratio": 7.68,
+        "ratio": 7.69,
         "floor": 4.5,
         "pass": true
       },
@@ -3569,9 +3583,9 @@ export const MODES: readonly Mode[] = [
       },
       {
         "token": "focus/ring",
-        "value": "#0373df",
+        "value": "#214c7d",
         "against": "bg/neutral/base",
-        "ratio": 4.64,
+        "ratio": 8.77,
         "floor": 3,
         "pass": true
       },
@@ -3585,9 +3599,9 @@ export const MODES: readonly Mode[] = [
       },
       {
         "token": "on/bg/status/warning/bold",
-        "value": "#1e2124",
+        "value": "#1e2024",
         "against": "bg/status/warning/bold",
-        "ratio": 6.89,
+        "ratio": 6.95,
         "floor": 4.5,
         "pass": true
       },
@@ -3663,9 +3677,9 @@ export const MODES: readonly Mode[] = [
       },
       {
         "token": "focus/ring",
-        "value": "#0373df",
+        "value": "#3a61c2",
         "against": "bg/neutral/base",
-        "ratio": 4.64,
+        "ratio": 5.72,
         "floor": 3,
         "pass": true
       },
@@ -3679,9 +3693,9 @@ export const MODES: readonly Mode[] = [
       },
       {
         "token": "on/bg/status/warning/bold",
-        "value": "#1e2124",
+        "value": "#150202",
         "against": "bg/status/warning/bold",
-        "ratio": 7.69,
+        "ratio": 9.59,
         "floor": 4.5,
         "pass": true
       },
@@ -3757,9 +3771,9 @@ export const MODES: readonly Mode[] = [
       },
       {
         "token": "focus/ring",
-        "value": "#0373df",
+        "value": "#bf4e86",
         "against": "bg/neutral/base",
-        "ratio": 4.64,
+        "ratio": 4.52,
         "floor": 3,
         "pass": true
       },
@@ -3773,9 +3787,9 @@ export const MODES: readonly Mode[] = [
       },
       {
         "token": "on/bg/status/warning/bold",
-        "value": "#1e2124",
+        "value": "#150202",
         "against": "bg/status/warning/bold",
-        "ratio": 7.69,
+        "ratio": 9.59,
         "floor": 4.5,
         "pass": true
       },
@@ -3851,9 +3865,9 @@ export const MODES: readonly Mode[] = [
       },
       {
         "token": "focus/ring",
-        "value": "#0373df",
+        "value": "#674ebf",
         "against": "bg/neutral/base",
-        "ratio": 4.64,
+        "ratio": 6.14,
         "floor": 3,
         "pass": true
       },
@@ -3867,9 +3881,9 @@ export const MODES: readonly Mode[] = [
       },
       {
         "token": "on/bg/status/warning/bold",
-        "value": "#1e2124",
+        "value": "#150202",
         "against": "bg/status/warning/bold",
-        "ratio": 7.69,
+        "ratio": 9.59,
         "floor": 4.5,
         "pass": true
       },
@@ -3945,9 +3959,9 @@ export const MODES: readonly Mode[] = [
       },
       {
         "token": "focus/ring",
-        "value": "#0373df",
+        "value": "#1f6e6e",
         "against": "bg/neutral/base",
-        "ratio": 4.64,
+        "ratio": 5.98,
         "floor": 3,
         "pass": true
       },
@@ -3961,9 +3975,9 @@ export const MODES: readonly Mode[] = [
       },
       {
         "token": "on/bg/status/warning/bold",
-        "value": "#1e2124",
+        "value": "#150202",
         "against": "bg/status/warning/bold",
-        "ratio": 7.69,
+        "ratio": 9.59,
         "floor": 4.5,
         "pass": true
       },
@@ -4039,9 +4053,9 @@ export const MODES: readonly Mode[] = [
       },
       {
         "token": "focus/ring",
-        "value": "#0373df",
+        "value": "#916100",
         "against": "bg/neutral/base",
-        "ratio": 4.64,
+        "ratio": 5.37,
         "floor": 3,
         "pass": true
       },
@@ -4055,9 +4069,9 @@ export const MODES: readonly Mode[] = [
       },
       {
         "token": "on/bg/status/warning/bold",
-        "value": "#1e2124",
+        "value": "#150202",
         "against": "bg/status/warning/bold",
-        "ratio": 7.69,
+        "ratio": 9.59,
         "floor": 4.5,
         "pass": true
       },
@@ -4133,9 +4147,9 @@ export const MODES: readonly Mode[] = [
       },
       {
         "token": "focus/ring",
-        "value": "#0373df",
+        "value": "#bf3c3b",
         "against": "bg/neutral/base",
-        "ratio": 4.64,
+        "ratio": 5.35,
         "floor": 3,
         "pass": true
       },
@@ -4149,9 +4163,9 @@ export const MODES: readonly Mode[] = [
       },
       {
         "token": "on/bg/status/warning/bold",
-        "value": "#1e2124",
+        "value": "#150202",
         "against": "bg/status/warning/bold",
-        "ratio": 7.69,
+        "ratio": 9.59,
         "floor": 4.5,
         "pass": true
       },

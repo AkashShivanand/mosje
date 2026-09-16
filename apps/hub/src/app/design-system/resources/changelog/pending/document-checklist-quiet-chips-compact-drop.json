@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "DOCUMENTCHECKLIST'S FILTER CHIPS SHOW ONLY WHAT CAN BE FILTERED, AND THE DROP ZONE SHRINKS ONCE DOCUMENTS ARE IN. A chip with no documents is no longer drawn disabled, and the bar is not drawn at all when fewer than two chips have documents — sixteen documents all Ready showed three chips, two of them empty. `compactDrop` draws the drop zone as one line (label, Choose Files, formats) for a list that is already filling; a first visit keeps the full zone that teaches files can be dropped together."
+}

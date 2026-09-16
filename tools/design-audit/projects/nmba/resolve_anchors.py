@@ -270,11 +270,16 @@ def main():
         rec.update(why)
         kept.append(rec)
 
-    for (key, scope, screen, sev, cat, title, design, build) in F.GLOBAL_NOTES:
+    for (key, scope, screen, sev, cat, title, design, build, *rest) in F.GLOBAL_NOTES:
         n += 1
         fid = fid_for(key, scope)
+        # A note's FIX used to be its BUILD text copied — so the developer's instruction read
+        # "This is raised once, as a note: ...", a sentence about the audit rather than the build.
+        # The Figma card had been corrected by hand to the actionable sentence and the master never
+        # was, which is one of the differences the reviewer saw. A note now carries its own fix.
+        fix = rest[0] if rest else build
         kept.append({"old": key, "scope": scope, "screen": screen, "sev": sev, "cat": cat,
-                     "title": title, "design": design, "build": build, "fix": build,
+                     "title": title, "design": design, "build": build, "fix": fix,
                      "id": fid, "_evidenceWhy": "A standing note about which filters to show, "
                      "raised once by decision instead of per screen; it describes no single "
                      "element, so it carries no crop."})

@@ -17,14 +17,19 @@
        zero padding keeps it on the flow line the label above it would occupy. */
     padding: 0;
     margin-block-end: var(--sa-stack-8);
-    color: var(--sa-text-neutral-bolder);
-    font-size: var(--sa-type-title-3-size);
-    line-height: var(--sa-type-title-3-lh);
-    font-weight: var(--sa-font-weight-semibold);
+    /* A question in a field grid is labelled like the text fields beside it (Label 1, medium),
+       not as a heading over them. */
+    color: var(--sa-text-neutral-base);
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-medium);
   }
 
+  /* The same mark, colour and gap as a field label's (`.ds-field__required`), so a
+     radio or checkbox group reads as required exactly like a text field beside it. */
   .ds-control-group__required {
-    color: var(--sa-text-status-error-bolder);
+    margin-left: var(--sa-padding-4);
+    color: var(--sa-text-status-error-base);
   }
 
   .ds-control-group__hint {

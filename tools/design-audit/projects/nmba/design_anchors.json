@@ -584,6 +584,21 @@
    250
   ]
  },
+ "NMB-GLOBAL-051": {
+  "node": "52066:127999",
+  "frameH": 1010,
+  "box": [
+   921,
+   209,
+   300,
+   36
+  ],
+  "text": "Enter Last Name",
+  "offset": [
+   -12,
+   -12
+  ]
+ },
  "NMB-GLOBAL-045": {
   "node": "52061:126900",
   "frameH": 1010,

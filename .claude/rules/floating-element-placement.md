@@ -48,6 +48,32 @@ The accessibility widget anchoring the corner follows from the same rule and
 happens to be right for a second reason: it is the one control on the page that
 is a legal obligation, so it gets the most predictable position on the page.
 
+## A STICKY action bar is not a third rail
+
+**A bar that belongs to a form and rides the bottom of the viewport while that form
+scrolls is not a floating widget, and it does not join the corner stack.** The
+Wizard's phone action bar (0–767px) is the case: `position: sticky`, inside the
+step panel, landing in its own place at the end of the step. It needs no rung on
+the z-index ladder, it cannot outlive the form, and it leaves no hole in the
+document.
+
+What it owes the corner stack is two things, and both are the rails' own contracts:
+
+- **`data-sa-rail-clear`** on the bar, so a TRANSIENT launcher steps aside while it
+  would sit on it. The statutory accessibility control never yields, and must not.
+- **A trailing gutter, where the corner is actually occupied**, so the primary
+  action stops short of the control that will not move. Measure it — on every
+  portal the UX4G trigger is `display: none` because the surface carries an
+  `AccessibilityBar`, and reserving 56px of a 375px row for a control that is not
+  there costs the primary its words. The Wizard measures both the marked occupants
+  and whatever is PAINTED at the rail's resting point: the UX4G widget draws its
+  control in markup that is not the id the rail knows it by, and measured at 375 on
+  the AVYAY upload step `#uw-widget-custom-trigger` was 0×0 while a 56px control sat
+  on the primary action.
+
+Anything that is `position: fixed` is not this: it is a corner or wall occupant and
+the rest of this rule applies to it.
+
 ## The contract is ONE attribute
 
 ```tsx
@@ -112,6 +138,36 @@ right edge before anything opens. On a 640px-tall phone that is 40% of the
 viewport. **Do not add a fourth corner occupant** without deciding which of the
 existing three hides below a breakpoint — and say which in the same change.
 
+## A surface a floating widget must not sit on
+
+**Mark it `data-sa-rail-clear`, and the corner's TRANSIENT occupants step aside while
+they would cover it.** `useRailClearance` (in `foundations/corner-rail.ts`) sets
+`data-sa-rail-yield` on the widget exactly while the two overlap; the widget's own
+stylesheet decides what yielding looks like. It comes back as soon as the surface scrolls
+out from under it.
+
+It exists because moving a widget cannot always clear first-screen content. At 320×568
+the NMBA announcement band is taller than the space left beneath it, and the chat launcher
+covered its dismiss ✕ outright — a tap on ✕ opened the chat. The band is marked; the
+closed chat launcher yields.
+
+Four things the attribute does not enforce for you:
+
+1. **Only transient occupants yield.** Permanence decides, as it does for stacking. The
+   statutory accessibility control never yields — it follows its own one-door rule in
+   `accessibility-entry-point.md`, and that rule can leave it over content when it is the
+   only door on screen. An OPEN panel never yields either; the citizen summoned it.
+2. **Yield visually, never semantically.** Hide it from sight and from taps, not from the
+   tab order or the accessibility tree, and bring it back on `:focus-within`. Where a
+   widget happens to sit on screen means nothing to a screen reader.
+3. **Never yield with `opacity: 0` on the element the rails measure.** Both rails treat it
+   as absent, so the neighbours slide into its slot and back every time. The chat launcher
+   uses `filter: opacity(0)` on its inner button; its measured root only drops
+   `pointer-events`.
+4. **Mark the surface, not its controls.** Covered body text is still covered. Mark a
+   surface only where covering it costs the citizen something on the first screen — a
+   page marked clear everywhere is a page with no chat launcher.
+
 ## Checklist when adding a floating element
 
 - [ ] It is on one of the two rails — not a new location, not either bottom
@@ -123,3 +179,5 @@ existing three hides below a breakpoint — and say which in the same change.
 - [ ] Its z-index is a literal with a comment saying what it must beat and why
 - [ ] It does not make a fourth corner occupant without a breakpoint decision
 - [ ] Verified with something else already in the corner, not on an empty page
+- [ ] If transient, it honours `data-sa-rail-clear` via `useRailClearance` — checked at
+      320×568 on a page with a marked surface, at load and not only after a scroll

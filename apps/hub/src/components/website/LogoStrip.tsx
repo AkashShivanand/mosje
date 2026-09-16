@@ -47,10 +47,17 @@ const GOVERNMENT_PLATFORMS: EcosystemLogo[] = [
     width: 130,
   },
   {
-    src: "/website/images/NeGD-Logo.svg",
+    /* THE COLOUR MARK, AND IT HAS TO BE THE COLOUR ONE. `NeGD-Logo.svg` stacks an
+       all-white layer over the colour artwork — drawn for a dark ground — so on
+       this light strip the logo rendered white on white and was invisible. Same
+       vector as the footer's reversed mark, in NeGD's own blue and green. */
+    src: "/website/images/NeGD-Logo-Colour.svg",
     alt: "National e-Governance Division (NeGD)",
     href: "https://negd.gov.in/",
-    width: 120,
+    /* 132 = the mark's own 143:52 at the strip's 48px height. The raster it
+       replaces was 120 at that height; a stale width makes Next compare the
+       drawn box against the wrong ratio and warn. */
+    width: 132,
   },
 ];
 
@@ -86,7 +93,7 @@ export function LogoStrip() {
                   /* No blanket dimming. Every mark was rendered at 80%
                      opacity, which on the palest of them — the NeGD wordmark —
                      was the difference between faint and barely there
-                     [WEB-F-08]. The artwork is an embedded bitmap and is an
+                     [WEB-F-08]. The artwork is an
                      official mark, so it is not recoloured; it is simply no
                      longer dimmed. */
                   className="block transition-opacity hover:opacity-80"

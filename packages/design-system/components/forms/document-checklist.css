@@ -1,0 +1,372 @@
+/* Declare the order before using it — see forms.css for why each stylesheet repeats this. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — DocumentChecklist · DocumentChecklistGroup
+     Header (progress · formats) → filter chips → drop zone → tray → groups.
+     ============================================================================ */
+
+  .ds-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .ds-doccheck {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-16);
+    min-inline-size: 0;
+    font-family: var(--sa-font-latin);
+    color: var(--sa-text-neutral-base);
+  }
+
+  .ds-doccheck__head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    min-inline-size: 0;
+  }
+
+  /* Title left, formats right, on one baseline; the formats wrap beneath on a narrow screen. */
+  .ds-doccheck__head-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--sa-stack-2) var(--sa-inline-24);
+    min-inline-size: 0;
+  }
+
+  .ds-doccheck__progress {
+    display: flex;
+    flex-direction: column;
+    min-inline-size: 0;
+  }
+
+  .ds-doccheck__progress-label {
+    margin: 0;
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-doccheck__bar {
+    display: block;
+    block-size: var(--sa-stack-8);
+    background-color: var(--sa-bg-neutral-subtler);
+    border-radius: var(--sa-shape-full);
+    overflow: hidden;
+  }
+
+  .ds-doccheck__bar-fill {
+    display: block;
+    block-size: 100%;
+    background-color: var(--sa-bg-status-success-bold);
+    border-radius: inherit;
+    transition: inline-size var(--sa-motion-expand-duration) var(--sa-motion-expand-easing);
+  }
+
+  .ds-doccheck__formats {
+    margin: 0;
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-regular);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-doccheck__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-8);
+  }
+
+  /* "Needs your attention" while it holds something. ONE selected-chip language: the chip itself
+     draws exactly like its neighbours, unselected and selected, and only the COUNT takes the error
+     ink. It used to turn the whole chip red-outlined, so the active filter was filled blue in one
+     state and outlined red in another — two meanings of "selected" in one row (e-Anudaan audit
+     D-04). error-bolder measures AA on white and on the selected brand tint. */
+  .ds-doccheck__chip--danger .ds-chip__count,
+  .ds-doccheck__chip--danger.ds-chip--selected .ds-chip__count {
+    color: var(--sa-text-status-error-bolder);
+    font-weight: var(--sa-font-weight-semibold);
+    opacity: 1;
+  }
+
+  /* ── Drop zone ──────────────────────────────────────────────────────────── */
+
+  .ds-doccheck__drop {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sa-inline-12);
+    padding: var(--sa-padding-16);
+    background-color: var(--sa-bg-neutral-subtlest);
+    border: var(--sa-stroke-1) dashed var(--sa-border-neutral-bolder-default);
+    border-radius: var(--sa-shape-8);
+    color: var(--sa-icon-neutral-subtle);
+    transition:
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  /* One line once documents are in: the label, Choose Files and the formats on a single row. */
+  .ds-doccheck__drop--compact {
+    align-items: center;
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+  }
+
+  .ds-doccheck__drop--compact .ds-doccheck__drop-copy {
+    flex-flow: row wrap;
+    align-items: center;
+    column-gap: var(--sa-inline-12);
+  }
+
+  .ds-doccheck__drop--compact .ds-doccheck__drop-label {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  .ds-doccheck__drop[data-dragging] {
+    background-color: var(--sa-bg-brand-primary-base);
+    border-color: var(--sa-border-brand-primary-base);
+    border-style: solid;
+    color: var(--sa-icon-brand-primary-base);
+  }
+
+  .ds-doccheck__drop-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-2);
+    min-inline-size: 0;
+  }
+
+  .ds-doccheck__drop-label {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 var(--sa-inline-4);
+    margin: 0;
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-doccheck__drop-label--touch {
+    display: none;
+  }
+
+  /* A touch screen, or a phone-width one, has nothing to drag: the zone asks for the files instead.
+     `pointer: coarse` follows button.css; the width catches a narrow desktop window too. */
+  @media (pointer: coarse), (max-width: 767px) {
+    .ds-doccheck__drop-label--pointer {
+      display: none;
+    }
+    .ds-doccheck__drop-label--touch {
+      display: flex;
+    }
+  }
+
+  .ds-doccheck__touch-choose {
+    min-block-size: var(--sa-target-min);
+    padding: 0;
+    background: none;
+    border: 0;
+    font: inherit;
+    color: var(--sa-text-link-brand-default);
+    text-decoration: underline;
+    text-underline-offset: var(--sa-stroke-2);
+    cursor: pointer;
+  }
+
+  .ds-doccheck__touch-choose:hover {
+    color: var(--sa-text-link-brand-hover);
+  }
+
+  .ds-doccheck__touch-choose:active {
+    color: var(--sa-text-link-brand-active);
+  }
+
+  .ds-doccheck__touch-choose:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+    border-radius: var(--sa-shape-2);
+  }
+
+  /* The accepted types, INSIDE the drop zone — where the files are chosen, not across the page in
+     the header's far corner (e-Anudaan audit D-04). */
+  .ds-doccheck__drop-formats {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: var(--sa-font-weight-regular);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── Bulk verdict ──────────────────────────────────────────────────────── */
+
+  .ds-doccheck__bulk {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-stack-8) var(--sa-inline-16);
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    background-color: var(--sa-bg-neutral-subtlest);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+  }
+
+  .ds-doccheck__bulk-text {
+    margin: 0;
+    min-inline-size: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-base);
+  }
+
+  .ds-doccheck__bulk-confirm {
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-base);
+  }
+
+  .ds-doccheck__bulk-confirm + .ds-doccheck__bulk-confirm {
+    margin-block-start: var(--sa-stack-8);
+  }
+
+  /* A group under a "Required Documents" heading already says every row in it is required. The
+     visible asterisk is withheld; the visually hidden "(required)" stays for a screen reader
+     that meets a row out of its group (e-Anudaan audit D-04). */
+  .ds-doccheck__group--no-marks .ds-docrow__title .ds-field__required {
+    display: none;
+  }
+
+  .ds-doccheck__drop-hint {
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-regular);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── Groups and rows ────────────────────────────────────────────────────── */
+
+  .ds-doccheck__groups {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-24);
+  }
+
+  .ds-doccheck__group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    min-inline-size: 0;
+  }
+
+  .ds-doccheck__group-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--sa-inline-16);
+  }
+
+  .ds-doccheck__group-title {
+    margin: 0;
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-medium);
+    letter-spacing: var(--sa-type-caps-tracking);
+    text-transform: uppercase;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-doccheck__group-desc,
+  .ds-doccheck__group-meta {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: var(--sa-font-weight-regular);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-doccheck__group-meta {
+    flex-shrink: 0;
+  }
+
+  .ds-doccheck__rows {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    overflow: hidden;
+  }
+
+  .ds-doccheck__rows > * + * {
+    border-block-start: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+
+  /* ── States of the list itself ─────────────────────────────────────────── */
+
+  .ds-doccheck__empty {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-stack-8) var(--sa-inline-16);
+    padding: var(--sa-padding-16);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-regular);
+  }
+
+  .ds-doccheck__empty p {
+    margin: 0;
+  }
+
+  .ds-doccheck__loading {
+    display: flex;
+    flex-direction: column;
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    overflow: hidden;
+  }
+
+  .ds-doccheck__skeleton {
+    display: block;
+    block-size: calc(var(--sa-control-height-sm) + var(--sa-padding-12) * 2);
+    background-color: var(--sa-bg-neutral-loading);
+    border-block-end: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    animation: ds-doccheck-pulse var(--sa-motion-loading-pulse) var(--sa-motion-loading-easing) infinite alternate;
+  }
+
+  @keyframes ds-doccheck-pulse {
+    to {
+      opacity: var(--sa-alpha-48);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-doccheck__skeleton {
+      animation: none;
+    }
+    .ds-doccheck__bar-fill {
+      transition: none;
+    }
+  }
+}

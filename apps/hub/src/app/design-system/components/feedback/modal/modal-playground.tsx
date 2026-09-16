@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { Button, Modal, type ModalSize } from "@mosje/design-system";
+import { Button, FormField, Input, Modal, type ModalSize } from "@mosje/design-system";
 
 /**
  * One trigger per arrangement, one dialog. The Figma page's arrangements
@@ -8,7 +8,8 @@ import { Button, Modal, type ModalSize } from "@mosje/design-system";
  * developer reading this page see one set: each size on its scrim, a title
  * that wraps, a body that outgrows the panel, a single action, a destructive
  * one, and the two props Figma has no property for — `hideClose` and an
- * omitted `footer`.
+ * omitted `footer`. "Unsaved form" is the `dirty` guard: type anything, then
+ * press Escape, click outside or press × — the dialog asks before discarding.
  */
 interface Arrangement {
   key: string;
@@ -21,6 +22,8 @@ interface Arrangement {
   primaryLabel?: string;
   danger?: boolean;
   hideClose?: boolean;
+  /** Renders a field, and passes `dirty` once it holds text. */
+  form?: boolean;
 }
 
 const SUBMIT_BODY =
@@ -84,6 +87,16 @@ const ARRANGEMENTS: Arrangement[] = [
     hideClose: true,
   },
   {
+    key: "dirty",
+    label: "Unsaved form (dirty)",
+    size: "md",
+    title: "Add District Nodal Officer",
+    body: "",
+    footer: "two",
+    primaryLabel: "Add Officer",
+    form: true,
+  },
+  {
     key: "noFooter",
     label: "No footer",
     size: "md",
@@ -95,7 +108,11 @@ const ARRANGEMENTS: Arrangement[] = [
 
 export function ModalPlayground() {
   const [current, setCurrent] = React.useState<Arrangement | null>(null);
-  const close = () => setCurrent(null);
+  const [name, setName] = React.useState("");
+  const close = () => {
+    setCurrent(null);
+    setName("");
+  };
 
   const footer =
     current && current.footer !== "none" ? (
@@ -128,8 +145,14 @@ export function ModalPlayground() {
         title={current?.title ?? ""}
         size={current?.size ?? "md"}
         hideClose={current?.hideClose}
+        dirty={!!current?.form && name !== ""}
         footer={footer}
       >
+        {current?.form ? (
+          <FormField label="Officer Name" id="modal-dirty-name" required>
+            {(c) => <Input {...c} value={name} onChange={(e) => setName(e.target.value)} />}
+          </FormField>
+        ) : (
         <div
           style={{
             display: "grid",
@@ -141,6 +164,7 @@ export function ModalPlayground() {
         >
           {typeof current?.body === "string" ? <p style={{ margin: 0 }}>{current.body}</p> : current?.body}
         </div>
+        )}
       </Modal>
     </div>
   );

@@ -146,8 +146,8 @@ export const SD_OFFERINGS: SdOffering[] = [
   },
   {
     "id": "care",
-    "label": "Care, Shelter and Health",
-    "short": "Care, Shelter and Health",
+    "label": "Care, Health and Shelter",
+    "short": "Care, Health and Shelter",
     "sub": "Old-age homes, shelter homes, assistive devices and health cover"
   },
   {

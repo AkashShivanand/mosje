@@ -102,18 +102,41 @@ for (const file of templates) {
   const example = (src.match(/example:\s*figma\.code`([\s\S]*?)`,\s*$/m) || src.match(/example:\s*figma\.code`([\s\S]*?)`/))?.[1] ?? "";
   // `\s{2}` only ever matched a prop indented EXACTLY two spaces, and no template
   // in this repo indents that shallowly — so check 4 was passing vacuously on all 19.
-  const emitted = [...new Set([...example.matchAll(/^\s+([a-zA-Z][\w]*)=/gm)].map((m) => m[1]))];
+  // A template emits EITHER JSX attributes or an object literal, and until 16 Sep 2026 this
+  // read only the first — so the two templates whose example IS an object (`TabDef`,
+  // `AccountMenuItem`, both entries in an array a page passes) had nothing compared against
+  // their shape. Resolving their shape without reading their keys would have removed the
+  // "NOT verified" note while still verifying nothing, which is the failure this file's own
+  // comments record twice already.
+  const emittedJsx = [...example.matchAll(/^\s+([a-zA-Z][\w]*)=/gm)].map((m) => m[1]);
+  // `Tab` goes one hop further: its example is the bare interpolation `${def}`, with the
+  // object assembled in a const above. Follow that one hop rather than leaving the only
+  // template whose keys live in a variable as the one nothing checks.
+  const bare = example.trim().match(/^\$\{(\w+)\}$/);
+  const keySource = bare
+    ? (src.match(new RegExp(`const\\s+${bare[1]}\\s*=([\\s\\S]*?);\\n`)) || [, ""])[1]
+    : example;
+  // Line-anchored on an example, because an example's own nested objects (`Legend`'s items
+  // carry `swatch`, `color`, `value`) are NOT props and matching them anywhere reports three
+  // false failures. The const behind a bare interpolation is one flat object, so there the
+  // anchor would match nothing and the scan is unanchored.
+  const emittedKeys = emittedJsx.length
+    ? []
+    : bare
+      ? [...keySource.matchAll(/([a-zA-Z][\w]*)\s*:/g)].map((m) => m[1])
+      : [...example.matchAll(/^\s*([a-zA-Z][\w]*)\s*:/gm)].map((m) => m[1]);
+  const emitted = [...new Set([...emittedJsx, ...emittedKeys])];
   const componentSrc = readFileSync(join(ROOT, sourcePath), "utf8");
   // `[^{]*` steps over an `extends ...` clause, which may sit on its own line.
   // Without it any interface that extends something was silently unverified —
   // Chatbot, Button and TabDef all were.
-  const iface = componentSrc.match(new RegExp(`interface\\s+${componentName}Props\\b[^{]*\\{([\\s\\S]*?)\\n\\}`));
+  const iface = propsShapes(componentSrc, componentName);
   if (!iface) {
-    notes.push(`${rel}: no \`${componentName}Props\` interface found in ${sourcePath} — prop names NOT verified`);
+    notes.push(`${rel}: no \`${componentName}Props\` interface, \`${componentName}Props\` union or \`${componentName}\` shape found in ${sourcePath} — prop names NOT verified`);
   } else {
     const declared = declaredProps(componentSrc, componentName, sourcePath);
     for (const p of emitted) {
-      if (!declared.has(p)) fail(rel, `example emits \`${p}\` but \`${componentName}Props\` does not declare it`);
+      if (!declared.has(p)) fail(rel, `example emits \`${p}\` but \`${iface.as}\` does not declare it`);
     }
   }
 
@@ -122,8 +145,12 @@ for (const file of templates) {
   // an INSTANCE_SWAP property that a template maps correctly was counted as unread,
   // so check 6 would report a mapped property as "silently dropped". Button maps two
   // (`Left Icon`, `Right Icon`); adding its fixture is what surfaced this.
+  // `getSlot` was missing for the same reason, found 2026-09-16 when the first templates to
+  // READ a SLOT property were written (FormPanel, FormSection, ReviewSection). Every earlier
+  // SLOT had been listed in `deliberatelyOmitted`, so nothing exercised the omission; a
+  // template that maps its slot correctly was reported as dropping it.
   const read = new Set([
-    ...[...src.matchAll(/get(?:String|Boolean|InstanceSwap)\(\s*["']([^"']+)["']/g)].map((m) => m[1]),
+    ...[...src.matchAll(/get(?:String|Boolean|InstanceSwap|Slot)\(\s*["']([^"']+)["']/g)].map((m) => m[1]),
     ...[...src.matchAll(/getEnum\(\s*["']([^"']+)["']/g)].map((m) => m[1]),
   ]);
   // A fixture is keyed by component name, but ONE code component can be served by TWO
@@ -172,6 +199,40 @@ if (findings.length) {
 console.log("✔ every template's props, enums and Figma properties line up.");
 
 /** Prop names declared directly in an interface body. */
+/**
+ * The shape a template's props must exist on — as a LIST, because one of the three forms
+ * this repo actually uses is a union and a prop only has to exist on one of its members.
+ *
+ * Three forms, tried in order. All three were in the library before this function existed,
+ * and the check simply skipped the last two with a note nobody acted on for weeks:
+ *
+ *   1. `interface <Name>Props` — the ordinary case.
+ *   2. `type <Name>Props = A | B` — a UNION, which `design-system.md` documents as
+ *      deliberate for `BarChart` (`{data}` or `{labels, series}`, never both). A template
+ *      emits one branch, so a prop is declared if ANY member declares it.
+ *   3. `interface <Name>` — a DATA SHAPE rather than a component's props. `TabDef` and
+ *      `AccountMenuItem` are objects a page passes in an array; there is no `<Name>Props`
+ *      and there should not be one, but the names still have to be verified.
+ */
+function propsShapes(srcText, name) {
+  const iface = (n) => srcText.match(new RegExp(`interface\\s+${n}\\b([^{]*)\\{([\\s\\S]*?)\\n\\}`));
+
+  const own = iface(`${name}Props`);
+  if (own) return Object.assign([{ extendsClause: own[1], body: own[2] }], { as: `${name}Props` });
+
+  const alias = srcText.match(new RegExp(`type\\s+${name}Props\\s*=\\s*([^;]+);`));
+  if (alias) {
+    const members = [...alias[1].matchAll(/[A-Za-z_$][\w$]*/g)].map((m) => m[0]);
+    const shapes = members.map(iface).filter(Boolean).map((m) => ({ extendsClause: m[1], body: m[2] }));
+    if (shapes.length) return Object.assign(shapes, { as: `${name}Props` });
+  }
+
+  const shape = iface(name);
+  if (shape) return Object.assign([{ extendsClause: shape[1], body: shape[2] }], { as: name });
+
+  return null;
+}
+
 function ownProps(body) {
   return [...body.matchAll(/^\s{2}(?:\/\*\*[\s\S]*?\*\/\s*)?["']?([a-zA-Z][\w-]*)["']?\??\s*:/gm)].map((m) => m[1]);
 }
@@ -196,10 +257,10 @@ function declaredProps(srcText, componentName, sourcePath, seen = new Set()) {
   if (seen.has(key)) return new Set();
   seen.add(key);
 
-  const m = srcText.match(new RegExp(`interface\\s+${componentName}Props\\b([^{]*)\\{([\\s\\S]*?)\\n\\}`));
-  if (!m) return new Set();
-  const [, extendsClause, body] = m;
-  const props = new Set(ownProps(body));
+  const shapes = propsShapes(srcText, componentName);
+  if (!shapes) return new Set();
+  const props = new Set(shapes.flatMap((sh) => ownProps(sh.body)));
+  const extendsClause = shapes.map((sh) => sh.extendsClause).join(" ");
 
   for (const base of extendsClause.matchAll(/(\w+)Props\b/g)) {
     const baseName = base[1];

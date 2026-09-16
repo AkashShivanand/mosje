@@ -27,6 +27,14 @@ const A11Y: A11yItem[] = [
     description: "Nothing is signalled by colour alone.",
   },
   {
+    criterion: "1.4.3 Contrast (Minimum)",
+    level: "AA",
+    status: "verified",
+    evidence:
+      "Computed from getComputedStyle on this page's specimen, 16 Sep 2026: the Overdue tag measures 7.56:1 (#8b1e22 on #ffe4e1) and its deadline 9.10:1 on the row's white ground.",
+    description: "The overdue tag and its date hold AA on the row.",
+  },
+  {
     criterion: "4.1.2 Name, Role, Value",
     level: "A",
     status: "verified",
@@ -105,6 +113,29 @@ export default function EventListPage(): React.JSX.Element {
               On a departmental record, the reason an application was returned is the most
               important text on the screen. It is quoted against a rule and wraps as far as it
               needs to; an ellipsis in the middle of it is a defect, not a layout choice.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-overdue">
+            <h2 id="cdp-overdue" className="cdp__h2">Overdue Is a Word and an Icon</h2>
+            <p>
+              An entry whose <code>dueAt</code> has passed reads &ldquo;Overdue&rdquo; beside an{" "}
+              <code>event_busy</code> icon in the error family, and its deadline changes from
+              &ldquo;Respond by&rdquo; to &ldquo;Was due&rdquo;. Never the colour alone, and never a
+              tag that only says &ldquo;Action Needed&rdquo; — a Utilisation Certificate that was due
+              ten months ago must not read like one due next month.
+            </p>
+            <p>
+              It is <strong>derived from <code>now</code>, not from the clock inside the render</strong>.
+              Resolve &ldquo;now&rdquo; once per page — in the server component, or after hydration —
+              and hand the same value to every list on the screen; calling <code>Date.now()</code> while
+              rendering makes the server and the browser disagree on the boundary day, which is a
+              hydration mismatch on a government page. Where the record itself knows (an extension was
+              granted), set the item&rsquo;s own <code>overdue</code> and it wins.
+            </p>
+            <p>
+              Both dates on a row are now spelled the same way — &ldquo;30 Sep 2026&rdquo;. The
+              deadline used the browser&rsquo;s own formatter, which prints &ldquo;30 Sept 2026&rdquo;,
+              so one row could carry two spellings of one month.
             </p>
           </section>
           <section className="cdp__section" aria-labelledby="cdp-system">

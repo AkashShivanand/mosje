@@ -128,6 +128,9 @@ export const Variants: Story = {
  * the case that asked for this, where a blue pill was a third colour family on
  * a two-family panel. An UNSELECTED chip is identical in both tones, so this is
  * not a way to colour-code categories.
+ *
+ * `emphasis="solid"` is the brand selection at full weight, for a single-choice
+ * row whose selection decides the content below it (Type of Applicant).
  */
 export const Tones: Story = {
   render: () => (
@@ -137,6 +140,9 @@ export const Tones: Story = {
       </Chip>
       <Chip tone="success" selected onSelectedChange={() => {}}>
         Selected · success
+      </Chip>
+      <Chip emphasis="solid" selected onSelectedChange={() => {}}>
+        Selected · brand, solid
       </Chip>
       <Chip onSelectedChange={() => {}}>Unselected (identical in both)</Chip>
     </div>

@@ -13,7 +13,7 @@ import { TickerPlayground } from "./ticker-playground";
 export const metadata: Metadata = {
   title: "Ticker — Design System",
   description:
-    "Recent announcements in two shapes: the full-bleed bar under the masthead, and the stacked panel that scrolls them.",
+    "Recent announcements in two shapes: the bar under the masthead, and the stacked panel that scrolls them.",
 };
 
 const A11Y: A11yItem[] = [
@@ -39,7 +39,7 @@ const A11Y: A11yItem[] = [
     criterion: "2.4.7 Focus Visible",
     level: "AA",
     description:
-      "The focus ring is inverse ink rather than `--sa-focus-ring`. The ring token is this bar's own fill and measures 1:1 against it, so the standard ring would be invisible here.",
+      "The focus ring is inverse ink rather than `--sa-focus-ring`. The ring token is #0373DF and measures 1.37:1 on this bar, so the standard ring would all but disappear here.",
   },
   {
     criterion: "1.4.10 Reflow",
@@ -66,7 +66,7 @@ export default function TickerPage(): React.JSX.Element {
     <ComponentDocPage
       name="Ticker"
       status="Stable"
-      summary="Recent announcements, in two shapes. The bar is the full-bleed strip under the masthead, one message at a time. The panel stacks the same items as rows and scrolls them upward under a header. One component, one data model, one pause control."
+      summary="Recent announcements, in two shapes. The bar is the strip under the masthead, one message at a time. The panel stacks the same items as rows and scrolls them upward under a header. One component, one data model, one pause control."
       figma={{ node: "ticker" }}
       specimen={<TickerPlayground />}
       propsFrom="TickerProps"
@@ -108,8 +108,10 @@ export default function TickerPage(): React.JSX.Element {
               Two Shapes, One Data Model
             </h2>
             <p>
-              <code>horizontal</code> is the <strong>bar</strong>: a 72px full-bleed strip under the
-              masthead, one message at a time, stepped with previous and next.{" "}
+              <code>horizontal</code> is the <strong>bar</strong>: a strip at least 72px tall under
+              the masthead, one message at a time, stepped with previous and next. From 1024px its
+              content keeps to the page content width and the plinth runs out to the bar&apos;s
+              leading edge.{" "}
               <code>vertical</code> is the <strong>panel</strong>: the same items stacked as rows,
               scrolling upward under a header that carries the name, the pause control and the way
               out.
@@ -154,8 +156,8 @@ export default function TickerPage(): React.JSX.Element {
               columns={["Width", "Auto-advance", "Pause", "Prev / Next", "View All", "Name"]}
               rows={[
                 ["1024px and up", "Yes, every 5s", "Yes", "Yes", "Button, same row", "Shown"],
-                ["640px to 1023px", "Yes, every 5s", "Yes", "Yes, in the header", "Link, in the header", "Shown"],
-                ["Below 640px", "Yes, every 5s", "Yes", "Dropped", "Link, in the header", "Shown"],
+                ["640px to 1023px", "Yes, every 5s", "Yes", "Yes, in the header", "Text button, in the header", "Shown"],
+                ["Below 640px", "Yes, every 5s", "Yes", "Dropped", "Text button, in the header", "Shown"],
                 ["Reduced motion", "Never starts", "Yes", "As above", "As above", "Shown"],
               ]}
             />
@@ -267,7 +269,7 @@ export default function TickerPage(): React.JSX.Element {
                 [
                   "Hover and focus states",
                   "150ms",
-                  "ease",
+                  "cubic-bezier(0, 0, 0.2, 1)",
                   "Not entering or leaving — a colour changing under the pointer",
                 ],
                 [
@@ -279,21 +281,21 @@ export default function TickerPage(): React.JSX.Element {
                 [
                   "Control press",
                   "160ms",
-                  "ease-out",
-                  "A 0.94 scale — a control that changes nothing under the finger reads as not having registered",
+                  "cubic-bezier(0.23, 1, 0.32, 1)",
+                  "A 0.97 scale, the library Button's press — a control that changes nothing under the finger reads as not having registered",
                 ],
               ]}
             />
             <p>
-              <strong>The message enters from the side it came from.</strong> The offset was a fixed
-              +2rem, so a message summoned by <em>Previous</em> still slid in from the right — the
-              motion saying “forward” while the control said “back”. It is{" "}
+              <strong>The message enters from the side it came from.</strong> A message summoned by{" "}
+              <em>Next</em> slides in from the end edge and one summoned by <em>Previous</em> from the
+              start edge, so the motion and the control say the same thing. It is{" "}
               <strong>logical, not physical</strong>: the estate runs <code>dir=&quot;rtl&quot;</code>{" "}
               in Urdu, where “next” travels leftward, so the sign flips again with the writing
               direction.
             </p>
             <p>
-              <strong>240ms and 12px, down from 320ms and 32px.</strong> A citizen reading the page
+              <strong>240ms and 12px.</strong> A citizen reading the page
               for a minute sees the message change a dozen times, and at that frequency the job of
               the movement is to say “this is new” and then get out of the way.
             </p>
@@ -302,7 +304,7 @@ export default function TickerPage(): React.JSX.Element {
             <h2 id="cdp-divergences" className="cdp__h2">
               Divergences from the Figma Frame
             </h2>
-            <p>Four, each recorded rather than hidden — a later reader will otherwise “fix” them back.</p>
+            <p>Three, each recorded rather than hidden — a later reader will otherwise “fix” them back.</p>
             <ul>
               <li>
                 <strong>The plinth hugs its label</strong>, rather than being the frame&apos;s
@@ -317,10 +319,6 @@ export default function TickerPage(): React.JSX.Element {
               <li>
                 <strong>The nav gap is 8px, not 16px</strong> — the row runs three controls now, and
                 16px would cost another 56px of a row that already had to be taught to compress.
-              </li>
-              <li>
-                <strong>The tile border is 1px, not 0.5px.</strong> Half a pixel is not a colour any
-                display renders predictably.
               </li>
             </ul>
           </section>

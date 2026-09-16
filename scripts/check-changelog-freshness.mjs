@@ -73,7 +73,29 @@ if (dates.length === 0) {
   );
 }
 
-const newest = dates.sort().at(-1);
+const newestRelease = dates.sort().at(-1);
+
+// A NUMBERED release is no longer the only evidence the changelog is being
+// maintained. Since 2026-09-16 a branch adds a file to `pending/` and says
+// nothing about versions — the number is assigned later, on `main`, by
+// `changelog:release` — so entries can be perfectly up to date for days with no
+// new `date:` line behind them. Counting only releases would fail this gate for
+// doing exactly what the mechanism asks.
+//
+// The last commit that touched `pending/` is that evidence, and it keeps the
+// gate's teeth: if nobody writes an entry for GRACE_DAYS while features land,
+// neither marker moves and this still fails.
+const PENDING_DIR = "apps/hub/src/app/design-system/resources/changelog/pending";
+let newestPending = null;
+try {
+  newestPending =
+    git("log", "-1", "--format=%ad", "--date=short", "--", PENDING_DIR) || null;
+} catch {
+  /* the directory may not exist yet on an older ref */
+}
+
+const newest =
+  newestPending && newestPending > newestRelease ? newestPending : newestRelease;
 
 // Commits to the watched packages strictly after the newest logged release.
 const raw = git(

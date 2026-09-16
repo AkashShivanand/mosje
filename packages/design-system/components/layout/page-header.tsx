@@ -21,6 +21,22 @@ export interface PageHeaderProps extends React.HTMLAttributes<HTMLElement> {
    * @default 1
    */
   as?: 1 | 2;
+  /**
+   * The title's rung on the headline ramp. @default "default"
+   *
+   * ONE SCALE PER KIND OF PAGE, so the H1 does not change size inside a single journey.
+   *
+   * - `default` — headline-1 (32px on a portal). Every page whose subject IS the title:
+   *   dashboards, lists and registers, record and detail pages (an application, a payment
+   *   status, NGO 360), review and decision screens, and error pages (403, 404).
+   * - `compact` — headline-3 (24px on a portal). A screen whose own furniture leads and the
+   *   title only names it: a multi-step form or wizard, where the stepper and the step panel
+   *   carry the weight, and a single-task form page (a correction, a certificate, a request).
+   *
+   * Not a third size, and not a per-page judgement: if a page is neither, it is `default`.
+   * Sign-in titles belong to the auth templates, which carry their own scale.
+   */
+  size?: "default" | "compact";
   /** Set on the heading so a region can point `aria-labelledby` at it. */
   headingId?: string;
 }
@@ -41,13 +57,14 @@ export function PageHeader({
   meta,
   actions,
   as = 1,
+  size = "default",
   headingId,
   className,
   ...rest
 }: PageHeaderProps): React.JSX.Element {
   const Heading = (as === 1 ? "h1" : "h2") as "h1" | "h2";
   return (
-    <header className={cn("sa-page-header", className)} {...rest}>
+    <header className={cn("sa-page-header", size === "compact" && "sa-page-header--compact", className)} {...rest}>
       <div className="sa-page-header__text">
         {eyebrow ? <p className="sa-page-header__eyebrow">{eyebrow}</p> : null}
         <Heading id={headingId} className="sa-page-header__title">

@@ -17,8 +17,8 @@ import "./assistant.css";
  * seal, the bubbles, the quick replies, the composer and the disclaimer — is the
  * component the estate ships, so what is demonstrated is what would be built.
  *
- * It asks the SAME two questions as the home-page finder — who is looking, and
- * what kind of support — over the same scheme master, so the chat and the page
+ * It asks the SAME two questions as the home-page finder — the type of
+ * applicant and the type of benefit — over the same scheme master, so the chat and the page
  * can never name different schemes for the same person. The 8 September 2026
  * review cut the five questions to these two.
  *
@@ -65,7 +65,7 @@ export function AssistantChat() {
     asked.current = "who";
     return {
       text:
-        "Two short questions, and nothing you answer is stored.\n\nQuestion 1 of 2. Who is looking for support?",
+        "Two short questions, and nothing you answer is stored.\n\nQuestion 1 of 2. Select the Type of Applicant.",
       quickReplies: q(...PERSONA_LABELS),
     };
   };
@@ -74,7 +74,7 @@ export function AssistantChat() {
     asked.current = "offer";
     const offers = sdOffersFor(persona.current!).map((o) => o.short);
     return {
-      text: "Question 2 of 2. What kind of support? Skip this to see everything the Department provides for the group.",
+      text: "Question 2 of 2. Select the Type of Benefit. Skip this to see everything the Department provides for the selected applicant.",
       quickReplies: q(...offers, "Skip this"),
     };
   };

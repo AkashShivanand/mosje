@@ -11,12 +11,13 @@ import assert from "node:assert/strict";
 import {
   AVYAY_WIZARD,
   applyAutoFields,
+  avyayEntitlement,
   fieldVisible,
   avyayCostHeads,
   visibleDocuments,
   visibleSteps,
   visibleOptions,
-  isReadOnly,
+  fieldHelp,
   requiredMessage,
   validateStep,
 } from "./form-schema.ts";
@@ -84,16 +85,16 @@ test("a renewal IS asked, and for the project it is renewing", () => {
   ]);
 });
 
-test("a new project gets live's eleven documents, in live's order", () => {
+test("a new project in a rented building gets live's eleven documents, in live's order", () => {
   assert.deepEqual(
-    visibleDocuments(AVYAY_WIZARD, NEW).map((d, i) => `${i + 1}. ${d.title}`),
+    visibleDocuments(AVYAY_WIZARD, { ...NEW, fld_building_ownership: "Rented" }).map((d, i) => `${i + 1}. ${d.title}`),
     [
       "1. Registration Certificate",
       "2. PAN Card of the Organisation",
-      "3. Annual Report of NGO — previous FY",
-      "4. Annual Report of NGO — previous-to-previous FY",
-      "5. Audited Accounts of NGO — previous FY",
-      "6. Audited Accounts of NGO — previous-to-previous FY",
+      "3. Annual Report of NGO — previous financial year",
+      "4. Annual Report of NGO — previous-to-previous financial year",
+      "5. Audited Accounts of NGO — previous financial year",
+      "6. Audited Accounts of NGO — previous-to-previous financial year",
       "7. Bank Details of the Project",
       "8. Beneficiary List",
       "9. Staff List",
@@ -103,12 +104,12 @@ test("a new project gets live's eleven documents, in live's order", () => {
   );
 });
 
-test("a renewal gets nine, displayed from one", () => {
+test("a renewal in a rented building gets nine, displayed from one", () => {
   assert.deepEqual(
-    visibleDocuments(AVYAY_WIZARD, RENEWAL).map((d, i) => `${i + 1}. ${d.title}`),
+    visibleDocuments(AVYAY_WIZARD, { ...RENEWAL, fld_building_ownership: "Rented" }).map((d, i) => `${i + 1}. ${d.title}`),
     [
       "1. Registration Certificate",
-      "2. Annual Report of NGO — previous FY",
+      "2. Annual Report of NGO — previous financial year",
       "3. Bank Details of the Project",
       "4. Beneficiary List",
       "5. Staff List",
@@ -118,6 +119,25 @@ test("a renewal gets nine, displayed from one", () => {
       "9. Utilisation Certificate (GFR-12A)",
     ],
   );
+});
+
+test("an owned building is not asked for a rent agreement, on either branch", () => {
+  // Form-path QA, 13 Sep 2026: a new AVYAY project answered "Owned" on step 5 and was then made
+  // to upload a Rent Agreement as a mandatory document before it could continue.
+  for (const branch of [NEW, RENEWAL]) {
+    const owned = visibleDocuments(AVYAY_WIZARD, { ...branch, fld_building_ownership: "Owned" }).map((d) => d.title);
+    const rented = visibleDocuments(AVYAY_WIZARD, { ...branch, fld_building_ownership: "Rented" }).map((d) => d.title);
+    assert.ok(!owned.includes("Rent Agreement"));
+    assert.ok(rented.includes("Rent Agreement"));
+  }
+});
+
+test("each branch is shown only its own help", () => {
+  const all = AVYAY_WIZARD.steps.flatMap((st) => st.sections.flatMap((sec) => sec.fields));
+  const newHelp = all.filter((f) => fieldVisible(f, NEW)).map((f) => fieldHelp(f, NEW) ?? "").join(" ");
+  assert.doesNotMatch(newHelp, /on a renewal|being renewed|instalment you are claiming/i);
+  const renewalHelp = all.filter((f) => fieldVisible(f, RENEWAL)).map((f) => fieldHelp(f, RENEWAL) ?? "").join(" ");
+  assert.doesNotMatch(renewalHelp, /generated automatically|new application is for the financial year now running/i);
 });
 
 test("the 25-beneficiary norms are live's, head for head and in live's row order", () => {
@@ -174,6 +194,12 @@ test("the panel's derived figures reproduce live's summary for a 25-bed Z-catego
   assert.equal(attendance, 991216, "live: ₹9,91,216 is attendance-linked");
   assert.equal(nonRecurring, 309105, "live: non-recurring norm ₹3,09,105");
 
+  // The panel and the Recurring Grant field read one function; it must agree with the arithmetic.
+  const shared = avyayEntitlement({ natureOfProject: "Senior Citizens' Home — 25 beneficiaries", agencyType: "NGO", projectState: "Maharashtra", buildingOwnership: "Owned" });
+  assert.equal(shared.recurringCentral, 2034140);
+  assert.equal(shared.recurringNorm, 2438356);
+  assert.equal(shared.totalCentral, 2312335);
+
   // Live's value column is the central share, and its Total adds the two shares.
   const share = 90;
   const recurringCentral = Math.round((recurringAllowed * share) / 100);
@@ -181,24 +207,6 @@ test("the panel's derived figures reproduce live's summary for a 25-bed Z-catego
   assert.equal(recurringCentral, 2034140, "live: ₹20,34,140");
   assert.equal(nonRecurringCentral, 278195, "live: ₹2,78,195");
   assert.equal(recurringCentral + nonRecurringCentral, 2312335, "live: Total ₹23,12,335");
-});
-
-test("choosing a bank account fills the three fields live fills for you", () => {
-  const step = AVYAY_WIZARD.steps.find((s) => s.title === "Infrastructure, Beneficiaries & Bank")!;
-  const chosen = "State Bank of India · ••••••••••4417 · SBIN0001234";
-
-  const filled = applyAutoFields(step, { fld_bank_account_id: chosen });
-
-  assert.equal(filled.fld_bank_account_number, "••••••••••4417");
-  assert.equal(filled.fld_bank_ifsc, "SBIN0001234");
-  assert.equal(filled.fld_bank_name_branch, "State Bank of India");
-});
-
-test("the three bank fields stay empty until an account is chosen", () => {
-  const step = AVYAY_WIZARD.steps.find((s) => s.title === "Infrastructure, Beneficiaries & Bank")!;
-  const filled = applyAutoFields(step, {});
-  assert.equal(filled.fld_bank_account_number, "");
-  assert.equal(filled.fld_bank_ifsc, "");
 });
 
 test("city category is derived from the project district, not left blank", () => {
@@ -229,18 +237,6 @@ test("Physiotherapy Clinic and Mobile Medicare Unit are offered to renewals only
   assert.equal(visibleOptions(nature, NEW).length, visibleOptions(nature, RENEWAL).length - 2);
 });
 
-test("the bank account is fixed on a renewal and choosable on a new project", () => {
-  // "Carried forward from this project — it cannot be changed on a renewal" was help text with
-  // nothing behind it; the field was fully editable on both branches.
-  const bank = AVYAY_WIZARD.steps
-    .flatMap((s) => s.sections)
-    .flatMap((sec) => sec.fields)
-    .find((f) => f.name === "fld_bank_account_id")!;
-
-  assert.equal(isReadOnly(bank, RENEWAL), true);
-  assert.equal(isReadOnly(bank, NEW), false);
-});
-
 test("a missing required field is told to the applicant as an instruction", () => {
   // Audit finding m3. `${label} is required.` produced "Select the existing project to renew is
   // required." — a label with three words bolted on, which is not a sentence and does not say
@@ -249,7 +245,8 @@ test("a missing required field is told to the applicant as an instruction", () =
   const errors = validateStep(step1, RENEWAL);
 
   assert.equal(errors.fld_ongoing_source_application, "Select the existing project to renew.");
-  assert.equal(errors.fld_installment_no, "Select Installment.");
+  // The instalment is no longer chosen from a list (review call 11 Sep 2026), so it has no
+  // "Select …" instruction; it is filled in for the applicant.
   assert.ok(!Object.values(errors).some((m) => / is required\.$/.test(m)));
 });
 

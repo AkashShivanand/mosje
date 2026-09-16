@@ -6,12 +6,15 @@
  * The three controls that used to live only inside `AccessibilityBar`'s markup.
  * They are their own component now because they have to render in TWO places:
  *
- *   variant="bar"    the utility bar's right-hand cluster (desktop and tablet)
+ *   variant="bar"    the utility bar's right-hand cluster (every width)
  *   variant="sheet"  a labelled section inside `NavSheet` (below breakpoint/tablet)
  *
- * The bar sheds this cluster below 768px — that is the Figma master's own call, and
- * a sensible one, because three icon buttons and a language label do not fit beside
- * the Government of India link on a 375px screen. What was NOT sensible is what
+ * Below 768px the bar SHEDS PART of this cluster — the A−/A/A+ stepper, the
+ * separators and the language label's text — because they do not fit beside the
+ * Government of India link on a 375px screen. Its icon buttons stay, at a 44px
+ * target: measured 2026-09-13, the accessibility icon is on screen at 320–430px,
+ * which is what `data-sa-abar-a11y-onscreen` relies on. Originally the bar shed the
+ * whole cluster. What was NOT sensible is what
  * happened next: nothing picked them up. `accessibility-bar.css` said the controls
  * "move into the consumer's menu"; the consumer's menu is `NavSheet`, and `NavSheet`
  * was never passed them and never rendered them. Measured on 2026-08-26: on a 375px
@@ -45,6 +48,9 @@ const UX4G_TRIGGER_ID = "uw-widget-custom-trigger";
  * button underneath a live bar. Only the last bar out clears the flag.
  */
 let a11yEntryCount = 0;
+/** How many bars' accessibility icons are on screen right now — refcounted for
+ *  the same reason as the entry count: a page can render several bars. */
+let a11yOnscreenCount = 0;
 
 /**
  * Open the official UX4G accessibility widget, returning whether it was there.
@@ -138,6 +144,41 @@ export function AccessibilityControls({
         a11yEntryCount = 0;
         delete root.dataset.saAbarA11y;
       }
+    };
+  }, [variant, accessibility]);
+
+  /* …and whether that icon is ON SCREEN. Below `breakpoint/tablet` the vendor's
+     floating button is hidden only while it is, so a phone shows exactly one door
+     whether the masthead is expanded or has condensed the bar away — see
+     `accessibility-bar.css` and `accessibility-entry-point.md`. An icon that is
+     `display: none` never intersects, so a bar that hides it never hides the
+     floating button on its behalf. */
+  const a11yButtonRef = React.useRef<HTMLButtonElement>(null);
+  React.useEffect(() => {
+    if (variant !== "bar" || !accessibility) return;
+    const button = a11yButtonRef.current;
+    if (!button || typeof IntersectionObserver === "undefined") return;
+    const root = document.documentElement;
+    let counted = false;
+    const setOnscreen = (onscreen: boolean) => {
+      if (onscreen === counted) return;
+      counted = onscreen;
+      a11yOnscreenCount += onscreen ? 1 : -1;
+      if (a11yOnscreenCount > 0) {
+        root.dataset.saAbarA11yOnscreen = "1";
+      } else {
+        a11yOnscreenCount = 0;
+        delete root.dataset.saAbarA11yOnscreen;
+      }
+    };
+    const observer = new IntersectionObserver((entries) => {
+      const entry = entries[entries.length - 1];
+      if (entry) setOnscreen(entry.isIntersecting);
+    });
+    observer.observe(button);
+    return () => {
+      observer.disconnect();
+      setOnscreen(false);
     };
   }, [variant, accessibility]);
 
@@ -283,6 +324,7 @@ export function AccessibilityControls({
       {accessibility && (
         <>
           <button
+            ref={a11yButtonRef}
             type="button"
             className="sa-abar__icbtn"
             aria-label="Accessibility options"
