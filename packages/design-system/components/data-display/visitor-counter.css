@@ -54,10 +54,10 @@
 
   .ds-visits__value {
     /* Tabular figures so the count does not shift the line as digits change.
-       Weight 500, not 600: it sits in a row with the copyright and the
-       last-updated date and has no business being heavier than either. */
+       The line's own weight: the Figma footer draws "Total Visits: …" as one
+       `Body/body-3` Regular layer, and a count beside the copyright and the
+       last-updated date has no business being heavier than either. It was 500. */
     font-variant-numeric: tabular-nums;
-    font-weight: var(--sa-font-weight-medium);
     color: var(--ds-footer-ink-muted, currentColor);
     /* Reserve the widest plausible figure so the first tick cannot reflow the row. */
     min-width: 7ch;

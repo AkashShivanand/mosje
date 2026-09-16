@@ -22,7 +22,8 @@ import {
 export interface OfficerDashboard {
   /** Files with this officer now, in the selected year. */
   queue: GrantApplication[];
-  byCase: { key: "New" | "1" | "2" | "3"; label: string; count: number }[];
+  /** `overdue` is how many of `count` have waited more than 7 days — the tile's second reading. */
+  byCase: { key: "New" | "1" | "2" | "3"; label: string; count: number; overdue: number }[];
   movement: { key: string; label: string; count: number; hint: string }[];
   ageing: { band: string; count: number }[];
   overdue: number;
@@ -34,14 +35,20 @@ export function officerDashboard(state: EAnudaanState, roleId: RoleId, fy: strin
   const all = state.applications.filter(inYear);
   const queue = all.filter((a) => holderIsRole(a.holder, roleId)).sort((a, b) => b.ageingDays - a.ageingDays);
 
+  const OVERDUE_DAYS = 7;
+  const ofCase = (match: (a: GrantApplication) => boolean) => {
+    const files = queue.filter(match);
+    return { count: files.length, overdue: files.filter((a) => a.ageingDays > OVERDUE_DAYS).length };
+  };
   const byCase = [
     // "New Projects": the figure counts the case type, returned files included, so it is named for
     // the case type and not for "New Submission" (audit O-05).
-    { key: "New" as const, label: CASE_TYPE.newPlural, count: queue.filter((a) => a.caseType === "New").length },
-    { key: "1" as const, label: instalmentLabel(1), count: queue.filter((a) => a.caseType === "Ongoing" && a.instalment === 1).length },
-    { key: "2" as const, label: instalmentLabel(2), count: queue.filter((a) => a.caseType === "Ongoing" && a.instalment === 2).length },
-    { key: "3" as const, label: instalmentLabel(3), count: queue.filter((a) => a.caseType === "Ongoing" && a.instalment === 3).length },
+    { key: "New" as const, label: CASE_TYPE.newPlural, ...ofCase((a) => a.caseType === "New") },
+    { key: "1" as const, label: instalmentLabel(1), ...ofCase((a) => a.caseType === "Ongoing" && a.instalment === 1) },
+    { key: "2" as const, label: instalmentLabel(2), ...ofCase((a) => a.caseType === "Ongoing" && a.instalment === 2) },
+    { key: "3" as const, label: instalmentLabel(3), ...ofCase((a) => a.caseType === "Ongoing" && a.instalment === 3) },
   ];
+
 
   const inspected = new Set(
     state.inspections.filter((i) => i.status === "Submitted" || i.status === "Reviewed").map((i) => i.applicationId),

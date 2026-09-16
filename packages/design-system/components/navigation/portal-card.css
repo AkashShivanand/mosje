@@ -264,7 +264,9 @@
   .ds-portal-card__name {
     font-size: var(--sa-type-body-1-size);
     line-height: var(--sa-type-body-1-lh);
-    font-weight: var(--sa-font-weight-medium);
+    /* Regular, as the comment above says and the master's `Body/body-1` name layer draws.
+       It rendered at 500, which is no text style and narrowed the weight step to the code. */
+    font-weight: var(--sa-font-weight-regular);
     color: var(--sa-color-text-default);
   }
 
