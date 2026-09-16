@@ -81,6 +81,7 @@
     "check:figma-docs": "node tools/figma-doc-parity/check.mjs",
     "check:figma-docs:live": "node tools/figma-doc-parity/check.mjs --verify-figma",
     "check:figma-docs:sync": "node tools/figma-doc-parity/check.mjs --verify-figma --sync",
+    "figma:read": "node tools/figma-read/read.mjs",
     "check:figma-index": "node tools/figma-index-parity/check.mjs",
     "check:figma-index:live": "node tools/figma-index-parity/check.mjs --verify-figma",
     "check:figma-index:sync": "node tools/figma-index-parity/check.mjs --verify-figma --sync",
