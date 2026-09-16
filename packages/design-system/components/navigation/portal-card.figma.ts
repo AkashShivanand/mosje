@@ -6,7 +6,11 @@
 //
 //   library : 3FF5l0SMNIwdpZrKkeyPTm  ·  page "Portal Card" (Navigation)
 //   set     : 56486:832  key c92d933367e5ab7dbdc8dad24c576170fb41c25a
-//   axes    : Variant (Compact | Detailed) × Selected (False | True) = 4 variants
+//   axes    : Variant (Compact | Detailed) × Selected (False | True) × State
+//             (Default | Hover | Pressed | Disabled) = 16 variants. The State axis
+//             is DRAWN, never mapped: those four are CSS on the card's own link, and
+//             the card takes no `state` prop. Recorded 16 Sep 2026 — this line said
+//             "= 4 variants" until the component gained a parity fixture.
 //
 // FIGMA AND CODE AGREE AS OF 31 Aug 2026. The set previously carried
 // Status=Live|Planned, which had no code counterpart once `planned` was removed —
