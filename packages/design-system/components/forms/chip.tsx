@@ -16,6 +16,16 @@ export type ChipTone = "brand" | "success" | "neutral";
 
 export type ChipSize = "sm" | "md";
 
+/**
+ * How loud a selected brand chip is.
+ *
+ * `solid` is for a SINGLE-CHOICE ROW WHERE THE CHOICE DRIVES WHAT FOLLOWS — the
+ * home page's Type of Applicant row, where the selected group decides the
+ * portal and schemes shown beneath it. A tonal pill among ten outlined ones did
+ * not read as the answer to the question the row asks; a solid fill does.
+ */
+export type ChipEmphasis = "subtle" | "solid";
+
 export interface ChipProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "onSelect"> {
   /** Controlled selected state. When provided the chip behaves as a toggle. */
@@ -45,6 +55,16 @@ export interface ChipProps
    * @default "brand"
    */
   tone?: ChipTone;
+  /**
+   * How loud the SELECTED state is, for `tone="brand"`. `subtle` (the default)
+   * is the tonal selection used across filter rows. `solid` fills the chip with
+   * `bg/brand/primary/bolder` and white ink (6.36:1) — for a single-choice row
+   * whose selection decides the content below it. It changes the selected state
+   * only, and is ignored by the `success` and `neutral` tones (`neutral` is
+   * already solid). Matches the Figma Chip's `Emphasis=Solid` variant.
+   * @default "subtle"
+   */
+  emphasis?: ChipEmphasis;
   /** Called with the next selected value when the chip is toggled. */
   onSelectedChange?: (selected: boolean) => void;
   /** Optional icon rendered before the label. */
@@ -118,6 +138,7 @@ export const Chip = React.forwardRef<HTMLDivElement, ChipProps>(function Chip(
     selected = false,
     size = "md",
     tone = "brand",
+    emphasis = "subtle",
     onSelectedChange,
     leadingIcon,
     count,
@@ -172,6 +193,7 @@ export const Chip = React.forwardRef<HTMLDivElement, ChipProps>(function Chip(
         `ds-chip--${size}`,
         selected && "ds-chip--selected",
         selected && tone !== "brand" && `ds-chip--selected-${tone}`,
+        selected && tone === "brand" && emphasis === "solid" && "ds-chip--selected-solid",
         disabled && "ds-chip--disabled",
         interactive && "ds-chip--interactive",
         className,

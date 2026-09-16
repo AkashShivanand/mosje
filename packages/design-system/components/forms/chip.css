@@ -238,6 +238,32 @@
     border-color: var(--sa-bg-neutral-inverse);
   }
 
+  /*
+    `emphasis="solid"` — the brand selection at full weight, for a single-choice
+    row whose selection decides what is shown beneath it (Type of Applicant).
+
+    Same specificity lesson as `neutral` above: every rule names `--selected` as
+    well, so the brand hover further down cannot turn a solid chip pale.
+    Hover darkens to `boldest` rather than mixing toward white — a lighter hover
+    on a solid fill read as the chip switching off.
+  */
+  .ds-chip--selected-solid.ds-chip--selected {
+    background-color: var(--sa-bg-brand-primary-bolder);
+    border-color: var(--sa-bg-brand-primary-bolder);
+    color: var(--sa-on-bg-brand-primary-bolder);
+  }
+
+  .ds-chip--selected-solid.ds-chip--selected.ds-chip--interactive:hover {
+    background-color: var(--sa-bg-brand-primary-boldest);
+    border-color: var(--sa-bg-brand-primary-boldest);
+    color: var(--sa-on-bg-brand-primary-boldest);
+  }
+
+  .ds-chip--selected-solid.ds-chip--selected.ds-chip--interactive:active {
+    background-color: var(--sa-bg-brand-primary-bolder);
+    border-color: var(--sa-bg-brand-primary-bolder);
+  }
+
   .ds-chip--selected-success {
     background-color: var(--sa-color-status-successTonal);
     color: var(--sa-color-status-successStrong);
