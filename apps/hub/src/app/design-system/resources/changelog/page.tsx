@@ -12,9 +12,17 @@ export const metadata: Metadata = {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.150.0",
+    version: "v0.151.0",
     date: "2026-09-16",
     current: true,
+    changes: [
+      { kind: "Changed", text: "A CHANGELOG ENTRY IS A FILE NOW, AND THE VERSION IS ASSIGNED AFTER THE MERGE. Every branch used to add its release block to the top of the same array in `page.tsx` \u2014 same line, same next version number, same `current: true` flag \u2014 which is three guaranteed conflicts on a 2,490-line file. One chore branch needed THREE merges of `main` in under an hour on 2026-09-16, all three here and nowhere else. A branch now writes one JSON file into `changelog/pending/`, says nothing about versions, and two branches adding two different files merge cleanly because git has nothing to reconcile. The entries render under `Unreleased` the moment they land, and `npm run changelog:release` folds them into a numbered release on `main`, where there is nothing to race. `check:changelog-entries` gates the shape; the freshness gate now counts a pending entry as logged work, so it neither cries wolf nor loses its teeth" },
+    ],
+  },
+  {
+    version: "v0.150.0",
+    date: "2026-09-16",
+    current: false,
     changes: [
       { kind: "Removed", text: "TWO LOGO FILES THE ESTATE NO LONGER DRAWS. `NeGD-Logo.svg` \u2014 258 KB of raster wrapped in an SVG \u2014 and `Digital-India-White.svg`, a crop with the swirl squashed and the \u2018i\u2019 stem clipped by its viewBox. Both were replaced in v0.146.0 by vectors the estate owns: `NeGD-Logo-White.svg`, `NeGD-Logo-Colour.svg` and `Digital-India-Reverse.svg`. THEIR TWO LINES IN `download-assets.mjs` GO WITH THEM: the scrape manifest writes to the same folder, so deleting only the files would have re-downloaded both the next time anyone ran it" },
     ],
