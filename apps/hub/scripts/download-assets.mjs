@@ -10,13 +10,18 @@ const ORIGINS = {
 };
 
 // "<origin>|<path>" -> downloaded to public/website/images/<basename> (favicon to public/website/seo/)
+// RETIRED 2026-09-16, and removed from this list rather than only from disk:
+// the source site's `NeGD-Logo.svg` (258 KB of raster wrapped in an SVG) and
+// `Digital-India-White.svg` (a crop with the swirl squashed and the 'i' stem
+// clipped). The estate draws its own vectors now — NeGD-Logo-White.svg,
+// NeGD-Logo-Colour.svg and Digital-India-Reverse.svg. Leaving the entries here
+// would have re-downloaded both files the next time anyone ran this.
 const ASSETS = [
   'D|/wp-content/uploads/2025/10/Indian-Flag.svg',
   'D|/wp-content/uploads/2025/10/open_in_new_icon.svg',
   'D|/wp-content/uploads/2025/10/National-Emblem-logo.svg',
   'D|/wp-content/uploads/2025/10/digital-india-logo.svg',
   'D|/wp-content/uploads/2025/11/National_Emblem_logo_white.svg',
-  'D|/wp-content/uploads/2025/11/Digital-India-White.svg',
   'D|/wp-content/themes/mosje/assets/images/important-links.svg',
   'D|/wp-content/themes/mosje/assets/images/close-icon-white.svg',
   'D|/wp-content/themes/mosje/assets/images/open_in_new.svg',
@@ -45,7 +50,6 @@ const ASSETS = [
   'C|/wp-content/uploads/2025/11/india-gov.png',
   'C|/wp-content/uploads/2025/11/make-in-india.png',
   'C|/wp-content/uploads/2025/11/my-gov.png',
-  'C|/wp-content/uploads/2025/11/NeGD-Logo.svg',
   'C|/wp-content/uploads/2025/11/DAIC-LOGO-.png',
   'C|/wp-content/uploads/2025/11/nsfdc-1.png',
   'C|/wp-content/uploads/2025/11/Logo-NSKFDC.png',
