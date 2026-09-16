@@ -265,7 +265,7 @@ import { SiteFooter } from "@mosje/design-system";
   social={[{ label: "X (formerly Twitter)", href: "https://x.com/…", icon: "x" }]}
   columns={FOOTER_COLUMNS}
   lineage={LINEAGE}
-  credits={[{ src: negd, alt: "NeGD", href: "https://negd.gov.in/", width: 96, height: 32, prefix: "Powered by" }]}
+  credits={CREDITS}
   policyLinks={POLICY_LINKS}
   sitemap={{ label: "Sitemap", href: "/website/sitemap" }}
   help={{ label: "Help & Support", href: "/website/help" }}

@@ -569,16 +569,23 @@
   color: var(--sa-text-neutral-subtle);
 }
 
-/* ── Prose inside any tab body honours the single measure ── */
-.cdp__tabbody p,
-.cdp__tabbody ul,
-.cdp__tabbody ol {
+/* ── Prose inside any tab body honours the single measure ──
+   A LIVE COMPONENT IS NOT THIS PAGE'S PROSE, and the guard below is what says
+   so. This sheet is unlayered, and an unlayered rule beats every layered one
+   (design-system-architecture.md §2a) — so without the guard this selector
+   repainted every <p>, <ul> and <ol> inside a specimen rendered in a tab. The
+   Site Footer's identity block and lineage drew #3a3d41 at 16px on the
+   component's own navy ground, about 1.7:1 and effectively unreadable, and
+   twelve other pages that render a component inside a tab had the same defect.
+   `:where()` carries no specificity, so authored prose keeps the weight it had.
+   ========================================================================== */
+.cdp__tabbody :is(p, ul, ol):not(:where([class*="ds-"], [class*="ds-"] *)) {
   max-width: var(--cdp-measure);
   font-size: var(--sa-type-body-1-size);
   line-height: var(--sa-type-body-1-lh);
   color: var(--sa-text-neutral-subtle);
 }
-.cdp__tabbody p + p {
+.cdp__tabbody p + p:not(:where([class*="ds-"], [class*="ds-"] *)) {
   margin-top: var(--sa-stack-16);
 }
 
