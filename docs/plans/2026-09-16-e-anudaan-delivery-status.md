@@ -4,7 +4,7 @@
 same change that moves a line, never afterwards from memory. If a row says ✅ and the thing is
 not true on `main`, that is a defect in this file and it is fixed first.
 
-**Last moved:** 16 September 2026, after PR #507 was merged and :3007 was verified against it.
+**Last moved:** 16 September 2026, after six of P5's seven Figma items were applied and the seat's Figma allowance ran out again.
 
 Status: ⬜ not started · 🟡 in progress · ✅ done · ⏸ waiting on a person · ❌ won't do (reason stated)
 
@@ -46,6 +46,7 @@ Two other trackers stay in force and are not repeated here:
 | Some seed submission dates sit outside their financial year | Seed data, not logic |
 | Hydration warning on the portal root | The UX4G accessibility widget writes `style="zoom:1"` before React hydrates — third-party markup we cannot annotate |
 | PMU inspection report upload | Schedule and Record save to the store; there is no report upload |
+| **The upload checklist numbers a group 8, 6, 7** | Found reviewing the Figma frames against the build. `documents-checklist.tsx` derives the row's number from one expression (`position`, line 126) and the row's place on the page from two others (`displayRank` line 312, `groups` line 423), so the number and the position disagree and a column of numbers reads out of order — which the comment above line 126 already says "reads as a mistake". The fix is to derive all three from ONE order, per `.claude/rules/data-state-completeness.md` §2. Parked, not lost |
 | AVYAY and NAPDDR renewal pickers list projects "awaiting sanction" | The help text says only sanctioned, PMU-verified projects renew. **Both were transcribed from the live portal** — needs the department, see §4 |
 
 ---
@@ -60,11 +61,12 @@ File `evmNmlK8g4VYwJVu2FwSGV`, E-Anudaan page `51313:165608`. Plan: `scratchpad/
 | P2 · SHRESHTA Mode 2 and SMILE forms | 3, 4 | 45 | ✅ |
 | P3 · AVYAY and NAPDDR forms | 5 | 55 | ✅ 1,689 library instances · 0 unbound · 0 placeholders · 0 overflows · 0 off-grid |
 | P4 · Document Centre, Track & Correct, Project Records | 6, 7, 8 | 68 | 🟡 **section 6 done** (12 frames, all ten row states matching §3.2) and **15 upload frames retrofitted** in sections 4 and 5 — the brief said twelve; the page had fifteen, because P2/P3 also drew 2nd- and 3rd-instalment steps. 126 Document Row instances. **Stopped on the Figma quota.** See the remainder below |
-| P5 · Officer queues, registers and review | 9, 10 | 41 | 🟡 built, named, laid out; **seven items outstanding and none applied** — the second attempt lost its connection and then hit the quota. Every fix is scoped, measured and scripted in `scratchpad/figma-2/p5/FINISH.js` as five blocks, one `use_figma` call each |
+| P5 · Officer queues, registers and review | 9, 10 | 41 | 🟡 **six of the seven items now applied and checked by eye.** More Actions is the brand outlined control on all 11 frames; the certification block has its panel, its rule, its readable "Available once…" line and a legible button on all 4 ASO frames; the Section Officer's own summary values and the paler correction panel are on both frames; the two registers' Actions column is widened and both queues' search fills its row. **Sanctioned Applications is half done** — see below |
 | P6 · Directory, PMU, Director, Superseded | 11, 12, 13, 15 | 26 | ✅ 1,610 nodes · 0 unbound · 0 placeholders |
 | — | **P4 remainder: the 375 column** — no phone frame drawn for any of the 68 | | ⬜ the largest single gap in the file |
 | — | **P4 remainder: sections 7 and 8 bodies** — 20 of 22 frames still carry the pre-rebuild drawing | | ⬜ correctly named, placed and hugged, but the build has moved under them. **Three of them (`NGO / Application / Submitted`, `/ Released`, `NGO / Attendance Master / Populated`) are currently copies of their nearest sibling and will mislead anyone who opens them.** Each is flagged `REDRAW OUTSTANDING` in `p4/compare.html` |
-| — | **P5 remainder: run `p5/FINISH.js`** | | ⬜ five blocks, no re-derivation needed |
+| — | **P5 remainder: Sanctioned Applications (`52634:38067`)** | | 🟡 the frame had invented **two columns the build does not have** (Release, Order No.) — ten columns in 1092px, which is why the badge ran over its neighbour and Actions was clipped. Both removed and the remaining seven re-fitted. **Still wrong:** the project reference wraps to three lines because the case badge sits beside it where the build stacks it underneath, and "Payment Status" is clipped. The fix is written in the next row |
+| — | The exact fix for the above | | ⬜ widths `[32,150,210,120,150,90,110,190]`, `project id cell` → `layoutMode = "VERTICAL"` with `counterAxisAlignItems = "MIN"` and its children HUG, and `clipsContent = false` on the action cell. Rolled back mid-write when the quota ran out |
 | — | Page-level pass: stack sections 1 → 15 top to bottom | | ⬜ blocked until every part has landed; parts were placed concurrently and two landed on the same coordinates |
 | — | Re-record the Index snapshot (`npm run check:figma-index:sync`) and commit | | ⬜ after the page-level pass |
 | — | **Final visual verification** — every screen against the build, whole page logical and organised | | ⬜ the goal's closing requirement |
