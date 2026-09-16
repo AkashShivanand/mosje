@@ -5372,9 +5372,9 @@
         "type": "VARIANT",
         "key": "Type",
         "variantOptions": [
-          "Large - Single Digit",
+          "\u26d4 Single Digit (deprecated)",
           "Small",
-          "Large - Multiple Digit",
+          "Count",
           "Text"
         ],
         "defaultValue": "Small"
