@@ -4,7 +4,7 @@
 same change that moves a line, never afterwards from memory. If a row says ✅ and the thing is
 not true on `main`, that is a defect in this file and it is fixed first.
 
-**Last moved:** 16 September 2026, after six of P5's seven Figma items were applied and the seat's Figma allowance ran out again.
+**Last moved:** 16 September 2026, after section 8 landed, the page was ordered, and the whole set was compared against today's build.
 
 Status: ⬜ not started · 🟡 in progress · ✅ done · ⏸ waiting on a person · ❌ won't do (reason stated)
 
@@ -60,16 +60,15 @@ File `evmNmlK8g4VYwJVu2FwSGV`, E-Anudaan page `51313:165608`. Plan: `scratchpad/
 | P1 · Access and the shell | 1, 2, 14 | 35 | ✅ |
 | P2 · SHRESHTA Mode 2 and SMILE forms | 3, 4 | 45 | ✅ |
 | P3 · AVYAY and NAPDDR forms | 5 | 55 | ✅ 1,689 library instances · 0 unbound · 0 placeholders · 0 overflows · 0 off-grid |
-| P4 · Document Centre, Track & Correct, Project Records | 6, 7, 8 | 68 | 🟡 **section 6 done** (12 frames, all ten row states matching §3.2) and **15 upload frames retrofitted** in sections 4 and 5 — the brief said twelve; the page had fifteen, because P2/P3 also drew 2nd- and 3rd-instalment steps. 126 Document Row instances. **Stopped on the Figma quota.** See the remainder below |
-| P5 · Officer queues, registers and review | 9, 10 | 41 | 🟡 **six of the seven items now applied and checked by eye.** More Actions is the brand outlined control on all 11 frames; the certification block has its panel, its rule, its readable "Available once…" line and a legible button on all 4 ASO frames; the Section Officer's own summary values and the paler correction panel are on both frames; the two registers' Actions column is widened and both queues' search fills its row. **Sanctioned Applications is half done** — see below |
+| P4 · Document Centre, Track & Correct, Project Records | 6, 7, 8 | 68 | ✅ desktop complete — **section 6 done** (12 frames, all ten row states matching §3.2) and **15 upload frames retrofitted** in sections 4 and 5 — the brief said twelve; the page had fifteen, because P2/P3 also drew 2nd- and 3rd-instalment steps. 126 Document Row instances. sections 7 and 8 redrawn, and a stale masthead repaired on 21 frames (a Digital India / SAMAVESH strip the build never had, and a missing bell — the source of 210 unbound fills and 830 unstyled text nodes). `NGO / Attendance Master` moved to Superseded: the portal redirects it to Attendance |
+| P5 · Officer queues, registers and review | 9, 10 | 41 | ✅ **all seven items applied and checked by eye.** More Actions is the brand outlined control on all 11 frames; the certification block has its panel, its rule, its readable "Available once…" line and a legible button on all 4 ASO frames; the Section Officer's own summary values and the paler correction panel are on both frames; the two registers' Actions column is widened and both queues' search fills its row. Sanctioned Applications finished: the two invented columns removed, the reference stacked over its badge, "Payment Status" no longer clipped |
 | P6 · Directory, PMU, Director, Superseded | 11, 12, 13, 15 | 26 | ✅ 1,610 nodes · 0 unbound · 0 placeholders |
 | — | **The 375 phone column** — no phone frame drawn for any of the 68 | | ⏸ **deferred by the user, 16 Sep**: desktop first, so refinements can start and the desktop close quickly. Deferred, not cancelled |
-| — | **P4 remainder: sections 7 and 8 bodies** — 20 of 22 frames still carry the pre-rebuild drawing | | ⬜ correctly named, placed and hugged, but the build has moved under them. **Three of them (`NGO / Application / Submitted`, `/ Released`, `NGO / Attendance Master / Populated`) are currently copies of their nearest sibling and will mislead anyone who opens them.** Each is flagged `REDRAW OUTSTANDING` in `p4/compare.html` |
-| — | **P5 remainder: Sanctioned Applications (`52634:38067`)** | | 🟡 the frame had invented **two columns the build does not have** (Release, Order No.) — ten columns in 1092px, which is why the badge ran over its neighbour and Actions was clipped. Both removed and the remaining seven re-fitted. **Still wrong:** the project reference wraps to three lines because the case badge sits beside it where the build stacks it underneath, and "Payment Status" is clipped. The fix is written in the next row |
-| — | The exact fix for the above | | ⬜ widths `[32,150,210,120,150,90,110,190]`, `project id cell` → `layoutMode = "VERTICAL"` with `counterAxisAlignItems = "MIN"` and its children HUG, and `clipsContent = false` on the action cell. Rolled back mid-write when the quota ran out |
-| — | Page-level pass: stack sections 1 → 15 top to bottom | | ⬜ blocked until every part has landed; parts were placed concurrently and two landed on the same coordinates |
-| — | Re-record the Index snapshot (`npm run check:figma-index:sync`) and commit | | ⬜ after the page-level pass |
-| — | **Final visual verification** — every screen against the build, whole page logical and organised | | ⬜ the goal's closing requirement |
+
+
+| — | Page-level pass: sections ordered 1 → 15 | | ✅ they had been placed concurrently and three pairs overlapped. Now one left edge, 400px apart, no overlap. Three **pre-rebuild containers** (`NGO Applicant`, `Programme Division`, `Finance Division`) removed after verifying every one was empty at both levels — each frame had already been re-parented. Eleven stray fragments left on the page root by editing gathered into `Z · Stray nodes left by editing` rather than deleted |
+| — | Re-record the Index snapshot | | ✅ `check:figma-index:sync` — already current, nothing to commit; `check:figma-index` passes |
+| — | **Final visual verification** — every screen against the build | | ✅ **done and published.** 201 screens compared against a fresh capture of today's build: **197 identical on the first screenful, 1 genuinely different, 3 different only because the Figma draws a dialog open.** See §5 |
 
 ### The Figma seat quota is the binding constraint on all of this
 
@@ -82,6 +81,41 @@ work fully specified.
 Writes are atomic — a failed call rolls the whole script back — so nothing is ever left
 half-applied, but it does mean a long batch that fails costs its whole cost for nothing. Batch
 into as few calls as will survive.
+
+---
+
+## 5. Figma against the build — measured, 16 Sep 2026
+
+The Figma was drawn from a capture taken on 16 September and `main` moved four times
+afterwards, so "does the Figma match the build" could not be answered from those captures.
+The portal was re-captured at 1440 (190 screens, 0 failures) and every frame put beside it.
+
+| | |
+|---|---|
+| Screens compared | 201 |
+| Identical on the first screenful | **197** |
+| Genuinely different | **1** — Reports & Analytics, below |
+| Different only because the Figma draws a dialog open over a screen the capture shows without one | 3 |
+
+**The one real difference: a ranked bar chart whose bars cannot encode their values.**
+`Ranked Bar Row` in SAMAVESH publishes only `Tone` and `Rank`, and its `fill` rectangle was
+constrained `horizontal: SCALE` — so the fill keeps a fixed FRACTION of the track however
+wide the instance is. Every bar in the estate draws ~86% full: Rajasthan's 218 the same
+length as Maharashtra's 1,950, directly contradicting the figure printed beside it. **The
+master is fixed** (fill anchored `MIN`, description says how to set a bar's length), but the
+handoff file's instances keep the old definition **until SAMAVESH is published** — so the two
+Reports frames still draw equal bars today. Re-run the width pass after the publish.
+
+**No dialog has ever been captured.** All six `review-dialog-*` files, in both the 16 Sep run
+and today's, are 4,000px full-page shots of the page behind with no dim layer and no dialog:
+the capture script opens the menu but the dialog never appears. The Programme Director's
+sanction, return and reject confirmations, bulk verdict, show cause, inspection and the
+printable report were therefore drawn from the code, and none can be checked this way.
+**The capture script needs fixing before those seven frames can be verified.**
+
+`ngo-inspection-meeting` is captured against an application id that is not in the seed
+(`.../00207`; Barabanki is `.../00282`), so it renders "Application Not Found". The Figma
+frame is more correct than the capture. Re-capture that slug.
 
 ---
 
@@ -123,6 +157,7 @@ today, so it is worth doing before anyone else builds on it.
 | `Search` | The component box is 25px tall while its inner trailing-icon frames are 48×56, so every instance reports children outside its bounds |
 | `Modal` | Publishes no content slot, so a confirmation dialog with a read-back facts list cannot be built from it |
 | `Pagination` | Its page-size control is a Select showing one value; the build renders three chips (10 / 50 / 100) |
+| `Ranked Bar Row` | **Fixed here, awaiting publish.** Published only `Tone` and `Rank`, with the fill constrained `SCALE`, so no instance could say how long its own bar was — every ranked bar in the estate drew the same length regardless of its number |
 | `Menu / Item` | No way to set its icon glyph — no INSTANCE_SWAP property, and the nested glyph is not writable |
 | `Navbar/Portal` | Draws Digital India and SAMAVESH co-branding that `SiteHeader variant="portal"` does not; hidden by override on every frame that uses it |
 
