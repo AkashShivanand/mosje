@@ -70,12 +70,22 @@
    *   --sa-btn-fill   the solid background of the filled appearance
    *   --sa-btn-ink    the label colour ON that fill
    *   --sa-btn-edge   the ink and border of the outlined and text appearances
+   *                   (setting it governs both, as it always has)
    *   --sa-btn-ring   the focus ring colour
    */
   .ds-btn {
     --_c-fill: var(--sa-btn-fill, var(--_fill));
     --_c-on: var(--sa-btn-ink, var(--_on));
     --_c-edge: var(--sa-btn-edge, var(--_color));
+    /* THE OUTLINE IS NOT THE INK. Until 2026-09-16 the outlined appearance painted its
+       border with `--_c-edge`, the label colour — so the boundary was as heavy as the
+       text inside it, and Figma's own border token (ramp 300, 2.15:1 on white) was
+       unusable because it failed WCAG 1.4.11. The matrix's secondary border step is
+       now 400: 3.06-3.64:1 on every ramp, still lighter than the 700 ink. `--sa-btn-edge`
+       keeps governing both, so a consumer override behaves as before. */
+    --_c-line: var(--sa-btn-edge, var(--_line, var(--_color)));
+    --_c-line-hover: var(--sa-btn-edge, var(--_line-hover, var(--_c-line)));
+    --_c-line-active: var(--sa-btn-edge, var(--_line-active, var(--_c-line)));
     /* `--_ring` is declared only by success and danger; primary and neutral fall
        through to the estate's focus colour, which is what the base outline already
        uses. Naming the fallback here is what lets a consumer override the ring on
@@ -289,6 +299,9 @@
      The full Tier-3 matrix (`--sa-cmp-action-brand-primary-*`) models every state and is the
      eventual home for this; restructuring the Button onto it is a separate change. */
   .ds-btn--primary {
+    --_line: var(--sa-cmp-action-brand-secondary-default-border);
+    --_line-hover: var(--sa-cmp-action-brand-secondary-hover-border);
+    --_line-active: var(--sa-cmp-action-brand-secondary-active-border);
     --_dis-bg: var(--sa-cmp-action-brand-primary-disabled-bg);
     --_dis-text: var(--sa-cmp-action-brand-primary-disabled-text);
     --_dis-border: var(--sa-cmp-action-brand-primary-disabled-border);
@@ -319,6 +332,9 @@
   }
 
   .ds-btn--success {
+    --_line: var(--sa-cmp-action-success-secondary-default-border);
+    --_line-hover: var(--sa-cmp-action-success-secondary-hover-border);
+    --_line-active: var(--sa-cmp-action-success-secondary-active-border);
     --_dis-bg: var(--sa-cmp-action-success-primary-disabled-bg);
     --_dis-text: var(--sa-cmp-action-success-primary-disabled-text);
     --_dis-border: var(--sa-cmp-action-success-primary-disabled-border);
@@ -339,6 +355,9 @@
   }
 
   .ds-btn--danger {
+    --_line: var(--sa-cmp-action-destructive-secondary-default-border);
+    --_line-hover: var(--sa-cmp-action-destructive-secondary-hover-border);
+    --_line-active: var(--sa-cmp-action-destructive-secondary-active-border);
     --_dis-bg: var(--sa-cmp-action-destructive-primary-disabled-bg);
     --_dis-text: var(--sa-cmp-action-destructive-primary-disabled-text);
     --_dis-border: var(--sa-cmp-action-destructive-primary-disabled-border);
@@ -401,6 +420,9 @@
      No `--_dark`: it was declared by the three variants above and consumed by
      nothing, and has now been deleted from all three. */
   .ds-btn--neutral {
+    --_line: var(--sa-cmp-action-neutral-secondary-default-border);
+    --_line-hover: var(--sa-cmp-action-neutral-secondary-hover-border);
+    --_line-active: var(--sa-cmp-action-neutral-secondary-active-border);
     --_dis-bg: var(--sa-cmp-action-neutral-primary-disabled-bg);
     --_dis-text: var(--sa-cmp-action-neutral-primary-disabled-text);
     --_dis-border: var(--sa-cmp-action-neutral-primary-disabled-border);
@@ -548,15 +570,17 @@
   .ds-btn--outlined {
     background-color: transparent;
     color: var(--_c-edge);
-    border-color: var(--_c-edge);
+    border-color: var(--_c-line);
   }
 
   .ds-btn--outlined:hover {
     background-color: color-mix(in srgb, var(--_c-edge) 8%, transparent);
+    border-color: var(--_c-line-hover);
   }
 
   .ds-btn--outlined:active {
     background-color: color-mix(in srgb, var(--_c-edge) 14%, transparent);
+    border-color: var(--_c-line-active);
   }
 
   /* --------------------------------------------------------------------------

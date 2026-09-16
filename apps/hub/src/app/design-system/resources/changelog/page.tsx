@@ -32,7 +32,7 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.145.0",
+    version: "v0.146.0",
     date: "2026-09-16",
     current: true,
     changes: [
@@ -51,6 +51,15 @@ const RELEASES: Release[] = [
       { kind: "Changed", text: "THE FOOTER'S SOCIAL CHIP IS RUNG 100 AT alpha/16, NOT A 12% color-mix(). 12 is not a published alpha step and a two-colour mix has no Figma equivalent. The chip lifts 1.43\u20131.52:1 off the ground in all ten brand modes (was 1.30\u20131.36); the glyph on it reads 5.55:1 in Blue and 4.88:1 at worst. The rule is rung 500 at alpha/64 and the policy-row rule alpha/32 (was an effective 35%)" },
       { kind: "Fixed", text: "`SiteFooter`\u2019S CREDITS AND COLOPHON SET BODY 3\u2019S LINE-HEIGHT. They set its size only and inherited 1.5, so both ran 18px lines against the 16px the type ramp and the master draw. A credit\u2019s prefix and its mark now wrap together, where at 375 \u201cPowered by\u201d ended one line and its logo began the next" },
       { kind: "Changed", text: "FOOTER DOCUMENTATION DESCRIBES THE COMPONENT THAT SHIPS. The Site Footer page, `design.md` and Storybook no longer document a support strip, an outlined CTA or dead CSS that no longer exist; the Figma documentation lists all five required properties and places Feedback in the policy row; the Component record carries only what is still open" },
+    ],
+  },
+  {
+    version: "v0.145.0",
+    date: "2026-09-16",
+    changes: [
+      { kind: "Added", text: "`MetricCard` CAN BE A CONTROL. `onSelect` makes the whole tile a button, `href` (with `linkAs`) makes it a link, and `selected` marks the one the page is filtered by \u2014 `aria-pressed` on a button, `aria-current` on a link, so the state is never the tint alone. It is a link when it GOES somewhere and a button when it DOES something here, never both, which is the rule `ListRow` already states; `href` wins. Hover is gated behind a fine pointer so it cannot stick on a touchscreen, the press is a 0.99 scale, and `prefers-reduced-motion` drops both" },
+      { kind: "Changed", text: "THE OFFICER QUEUE\u2019S CASE-TYPE TILES FILTER THE QUEUE BELOW THEM. New Projects, 1st, 2nd and 3rd Instalment set the table\u2019s Case Type and bring the reader to it \u2014 the four cards on the NIC portal the department knows were links (review call, 11 Sep 2026, T698\u2013712). Choosing the tile that is already on clears the filter, the choice rides in the address as `?case=`, and a tile with nothing to show opens nothing" },
+      { kind: "Fixed", text: "THE SLIDER\u2019S TICK LABELS TAKE `Label/label-2`\u2019S OWN WEIGHT. The rule set the role\u2019s size and left the weight to whatever it inherited \u2014 the last of the gaps the 16 Sep pass closed in six other components. The Figma masters draw no tick labels, so the ramp, not a layer, is the source" },
     ],
   },
   {

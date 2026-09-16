@@ -239,7 +239,22 @@
      its navigation row draws its own top border directly under the brand row — and a
      portal that DOES pass `nav` drops that row's top border so the two lines never
      stack into 2px. The condensed bar draws the same line for itself (`.ds-hdr-cond`),
-     so the edge is there in both states. */
+     so the edge is there in both states.
+
+     AT REST IT IS A LINE, NOT A SHADOW (decided 2026-09-16). Figma drew a drop shadow
+     on the Default frames too — 0 4 12 rgba(0,0,0,.08) on Mobile and Tablet, with a
+     second copy leaked onto Tablet's inner `Logo and CTAs` frame — while Desktop/Default
+     had none, so the library disagreed with itself. Nothing is underneath a resting
+     masthead, so that shadow was decoration; it is gone from the library, and this rule
+     is the whole resting edge.
+
+     SCROLLED IS A DIFFERENT STATE, AND IT DOES ELEVATE. See
+     `.ds-hdr.is-sticky.is-scrolled` above: once the masthead is stuck, page content
+     passes beneath it and `--sa-elevation-card` is what says the bar is above the page —
+     a job a 1px line cannot do when the content sliding under it is white cards with
+     1px edges of their own. Figma's three On Scroll variants now bind the published
+     `elevation/card` style, where they previously carried a hand-typed 0 2 8 literal
+     that merely resembled it. Do not flatten those; do not elevate these. */
   .ds-hdr[data-variant="portal"] .ds-hdr-brand {
     border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
