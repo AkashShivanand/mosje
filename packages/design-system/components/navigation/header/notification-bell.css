@@ -3,8 +3,8 @@
 @layer components {
   /* ============================================================================
      MoSJE / SAMAVESH — Navbar/NotificationBell
-     The masthead's 40px outlined control — the same box as the portal search
-     button and the condensed bar's icon buttons, so the row reads as one set.
+     The masthead's notifications control: the DS IconButton (neutral, outlined,
+     md) with a Badge anchored to its corner.
      ============================================================================ */
 
   .ds-hdr-bell {
@@ -12,57 +12,30 @@
     flex: 0 0 auto;
   }
 
+  /* The box, the border, the ink, the hover and the focus ring are IconButton's
+     (`variant="neutral" appearance="outlined" size="md"`). Only what the masthead
+     adds lives here: the badge's anchor and which of the two forms shows. */
   .ds-hdr-bell__btn {
     position: relative;
-    display: inline-grid;
-    place-items: center;
-    height: 40px;
-    width: 40px;
-    flex: 0 0 auto;
-    box-sizing: border-box;
-    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
-    border-radius: var(--sa-shape-8);
-    background: transparent;
-    color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
-    text-decoration: none;
-    cursor: pointer;
-    transition:
-      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
-      transform var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .ds-hdr-bell__btn:hover {
-      background-color: var(--sa-bg-neutral-subtler);
-    }
   }
 
   .ds-hdr-bell__btn[aria-expanded="true"] {
     background-color: var(--sa-bg-neutral-subtler);
   }
 
-  .ds-hdr-bell__btn:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
-    outline-offset: calc(var(--sa-focus-offset) * -1);
-  }
-
-  .ds-hdr-bell__btn:active {
-    transform: scale(0.96);
-  }
-
   /* ONE OF THE TWO SHOWS. The panel button from 768 up; the link to the
      notifications page below — a popover over a phone form is not wanted. */
-  .ds-hdr-bell__btn--link {
+  .ds-hdr-bell .ds-hdr-bell__btn--link {
     display: none;
   }
 
   @media (max-width: 767px) {
-    .ds-hdr-bell__btn--panel {
+    .ds-hdr-bell .ds-hdr-bell__btn--panel {
       display: none;
     }
 
-    .ds-hdr-bell__btn--link {
-      display: inline-grid;
+    .ds-hdr-bell .ds-hdr-bell__btn--link {
+      display: inline-flex;
     }
   }
 
@@ -72,8 +45,10 @@
      the glyph behind it. */
   .ds-hdr-bell__badge {
     position: absolute;
-    inset-block-start: calc(var(--sa-padding-4) * -1);
-    inset-inline-end: calc(var(--sa-padding-4) * -1);
+    /* Measured from the padding box, so the button's own 1px border has to be
+       added back — at a flat -4 the badge sat 3px proud where Figma draws 4. */
+    inset-block-start: calc((var(--sa-padding-4) + var(--sa-stroke-1)) * -1);
+    inset-inline-end: calc((var(--sa-padding-4) + var(--sa-stroke-1)) * -1);
     display: inline-grid;
     place-items: center;
     box-sizing: border-box;

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { Icon } from "../utilities/icon";
+import { Badge } from "../feedback/badge";
 import "./event-list.css";
 
 export type EventTone = "neutral" | "info" | "success" | "warning" | "danger";
@@ -301,13 +302,18 @@ export function EventList({
                         does not say it. */}
                     {overdue || (event.actionRequired && (showActionTag || event.dueAt)) ? (
                       <p className="ds-events__flag">
+                        {/* The library's own chip, as the Figma row instances it — Badge,
+                            Warning for the deadline ahead and Danger for the one gone by,
+                            not a pill this component draws for itself. */}
                         {overdue ? (
-                          <span className="ds-events__tag ds-events__tag--overdue">
+                          <Badge status="danger" size="sm" className="ds-events__tag">
                             <Icon name="event_busy" size={16} aria-hidden />
                             {overdueLabel}
-                          </span>
+                          </Badge>
                         ) : showActionTag ? (
-                          <span className="ds-events__tag">{actionLabel}</span>
+                          <Badge status="warning" size="sm" className="ds-events__tag">
+                            {actionLabel}
+                          </Badge>
                         ) : null}
                         {event.dueAt ? (
                           <span className="ds-events__due">
