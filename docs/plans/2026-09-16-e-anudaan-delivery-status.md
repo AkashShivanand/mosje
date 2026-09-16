@@ -551,3 +551,61 @@ no literal that merely equals a token.
 
 **Still to publish** before the handoff file can use it: `Worklist / Card` and the narrow
 arrangement added to `Document Placement Tray / Item`.
+
+### 9.2 Registers on a phone, and a card that has to carry what columns render (16 Sep 2026)
+
+After the publish of `Worklist / Card` and the tray's narrow arrangement, the phone column grew to
+**twelve frames drawn this session**, every one measured against the portal at 375:
+
+| Frame | Figma | Portal | |
+|---|---|---|---|
+| Upload Documents — nothing uploaded | 2,800 | 2,891 | 0.97× |
+| Upload Documents — doesn't match | 5,040 | 4,531 | 1.11× |
+| Upload Documents — placement tray | 4,202 | 3,789 | 1.11× (was 1.69× before the tray learned a narrow arrangement) |
+| Application — action required | 5,293 | 5,137 | 1.03× |
+| Correct Your Application | 2,000 | 2,111 | 0.95× |
+| My Applications | 3,834 | 3,395 | 1.13× (was 0.50× before the card existed) |
+| Utilisation Certificate | 1,278 | 1,219 | 1.05× |
+| Online Inspection Meeting | 916 | 812 | 1.13× |
+| Beneficiaries | 2,696 | 2,663 | 1.01× |
+| PMU — Institutions | 3,064 | 2,799 | 1.09× |
+| Programme Director — Sent | 3,522 | 3,424 | 1.03× |
+| Programme Director — Inspection Report Repository | 2,476 | 2,320 | 1.07× |
+
+**The capture harness photographed a 404 for Inspection Meeting.** It asks for application
+`…/BARABANKI/00207`, which the seed does not hold; the page it captured reads "Application Not
+Found". Recaptured against `…/00282`: "Online Inspection Meeting", 812px. The harness itself is
+still wrong and is recorded in §8's list.
+
+**Fixed across the whole page, not only on new frames.** The phone masthead master is natively
+412px wide and stuck 37px past a 375 screen on **17** phone frames, including ones drawn in earlier
+parts. Six older frames also carried children far wider than a phone — a 2,640px donut, a 1,092px
+instruction, 720px scheme cards, 540px radio groups — hidden only because the frames clip. All
+now fill their column. Every pager on a phone frame now shows what the portal shows at 375: arrows
+and `1 2 3 … last`, without the words or the rows-per-page control.
+
+**One overflow remains, and it is a library fault:** the Chart master draws its donut's slices at
+a fixed 480px, so on the Dashboard phone frame they run past a 301px chart. A nested instance's
+child cannot be resized from outside; the master needs a width that follows its instance.
+
+**Heights agreeing did not mean the frames agreed.** Read at full size, the Sent register showed
+four differences its 1.03× hid: labels wrapping ("Current / Status"), status as plain text where the
+portal draws a badge, dates and places flattened into the value where the portal sets them as a
+smaller second line, and an outlined button where the portal draws a text button with an icon.
+Those are what each register's columns render INTO the card, so the card has to offer a place for
+them. `Worklist / Card` now carries **31 properties**:
+
+- labels in a real two-column **grid** whose first column hugs the widest label — CSS
+  `auto minmax(0,1fr)` — instead of a fixed 52px that wrapped anything longer than "Scheme";
+- `Reference` under the title (Code 12, subtle);
+- for each of the four values, `Detail n` (Body 12, subtle) and `Show Badge n` with its own
+  `Show Value n`, the badge's label and tone set on the nested Badge instance;
+- a text-style action with a leading icon.
+
+Checked by placing an instance set exactly as the portal's first Sent card beside a crop of the
+portal: they agree line for line, down to the amber badge. What remains is the portal's 21px line
+height against the library's 20px body style, and one gap recorded on the master — the portal sets a
+project ID title in a 16px semibold monospace, and SAMAVESH has no such Code style.
+
+**Needs a publish**, after which the five register frames are re-pointed at the new card and filled
+from the structured card data already read off the portal.
