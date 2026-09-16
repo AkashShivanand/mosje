@@ -161,11 +161,16 @@ const credits: SiteFooterCredit[] = [
     // one without read as "Powered by [A] [B]" — the label appeared to govern
     // both, and the attribution the prose used to carry was left unsaid.
     prefix: "Developed & maintained by",
-    src: "/website/images/NeGD-Logo.svg",
+    /* THE REVERSED MARK, AND IT IS A REAL VECTOR. `NeGD-Logo.svg` is 258 KB of
+       embedded raster — a colour layer with an all-white layer painted over it —
+       so the footer was drawing a photograph of a logo. This is the library's
+       `NeGD/on-dark` exported: 30 KB, crisp at any density, and the colour file
+       stays where it belongs, on the light LogoStrip. */
+    src: "/website/images/NeGD-Logo-White.svg",
     alt: "National e-Governance Division (NeGD)",
     href: "https://negd.gov.in/",
-    width: 78,
-    height: 34,
+    width: 143,
+    height: 52,
   },
   {
     prefix: "Powered by",
