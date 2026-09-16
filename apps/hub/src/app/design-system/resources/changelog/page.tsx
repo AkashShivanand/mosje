@@ -32,9 +32,16 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.145.0",
+    version: "v0.146.0",
     date: "2026-09-16",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "A DASHBOARD’S PANELS ARE EACH AS TALL AS WHAT THEY HOLD. `.sa-overview__pair` stretched every panel to the tallest one in its row. On the Finance queue that drew a card whose rules ended 170px above its own border; on SMILE’s state-wise page it stretched a 599px chart card to 2,240px to match the map beside it — a chart at the top of a bordered box with 1,600px of nothing under it. An empty band inside a card reads as content that failed to load, which is a worse answer than a ragged foot: the pair is two answers side by side, not one object split in half. Measured on both screens before and after, at 1440" },
+    ],
+  },
+  {
+    version: "v0.145.0",
+    date: "2026-09-16",
     changes: [
       { kind: "Added", text: "`MetricCard` CAN BE A CONTROL. `onSelect` makes the whole tile a button, `href` (with `linkAs`) makes it a link, and `selected` marks the one the page is filtered by \u2014 `aria-pressed` on a button, `aria-current` on a link, so the state is never the tint alone. It is a link when it GOES somewhere and a button when it DOES something here, never both, which is the rule `ListRow` already states; `href` wins. Hover is gated behind a fine pointer so it cannot stick on a touchscreen, the press is a 0.99 scale, and `prefers-reduced-motion` drops both" },
       { kind: "Changed", text: "THE OFFICER QUEUE\u2019S CASE-TYPE TILES FILTER THE QUEUE BELOW THEM. New Projects, 1st, 2nd and 3rd Instalment set the table\u2019s Case Type and bring the reader to it \u2014 the four cards on the NIC portal the department knows were links (review call, 11 Sep 2026, T698\u2013712). Choosing the tile that is already on clears the filter, the choice rides in the address as `?case=`, and a tile with nothing to show opens nothing" },
