@@ -518,3 +518,36 @@ and the tray's items kept their single row where the build stacks them (hence ne
 Until those exist, a phone frame drawn from them would tell a developer the wrong thing, which
 is worse than an absent frame. The five sections that still have **no** phone frame at all are
 6 (partly), 7 (partly), 8, 12 and 13.
+
+### 9.1 The table, on a phone — measured before it was drawn (16 Sep 2026)
+
+"Start with the table" turned out not to be a table problem.
+
+**At 375 the portal draws no table at all.** Measured on three register screens — the officer's
+All Applications, the NGO Directory, the NGO's Bank Accounts — the count of visible `<table>`
+elements at 1440 is 1, 1, 0 and at 375 is **0, 0, 0**. Below 768px `WorklistScreen` hides its
+table outright and renders the same rows as cards, read through the same `priority` ordering so
+the two cannot disagree. The All Applications register at 375 draws **10 cards, 30 label/value
+pairs and no table**.
+
+So giving `Table` a narrow variant would have specified something the portal never shows. What
+was missing from the library was the card.
+
+**`Worklist / Card` — built.** Measured off the running portal at 375 rather than estimated:
+
+| | Build at 375 | Master |
+|---|---|---|
+| Card width | 327 | 327 |
+| Padding · gap · radius | 16 · 8 · 8 | bound to `padding/16`, `padding/8`, `shape/8` |
+| Label column | 52 | 52 |
+| Actions strip | 41 tall, rule above, 8 padding | 41, `border/neutral/subtle` top only |
+| Title | 16/24 semibold, `text/neutral/bolder` | `Body/body-1-semibold`, bound |
+| Label · value | 14/20, `text/neutral/subtle` · `text/neutral/base` | `Body/body-2`, both bound |
+
+Thirteen properties: `Title`, four `Label`/`Value` pairs, `Show Pair 3`, `Show Pair 4`,
+`Show Select` (the row checkbox, off by default) and `Show Actions`. The checkbox and the button
+are library instances, not drawn shapes. Every colour, space and radius is bound to a variable —
+no literal that merely equals a token.
+
+**Still to publish** before the handoff file can use it: `Worklist / Card` and the narrow
+arrangement added to `Document Placement Tray / Item`.
