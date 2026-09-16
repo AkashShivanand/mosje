@@ -26,6 +26,14 @@ import { relLum } from "./lib/contrast.mjs";
  * whatever they actually bind. A rebinding cannot silently escape it, and no list here
  * can go stale.
  *
+ * IT ESCAPED ANYWAY, ON 2026-09-16. The paragraph above was true about the METHOD and
+ * wrong about one constant: `EDGE_OF.outlined` named `--_color`, so when the component
+ * was rebound to paint its border from `--_line` the file went on measuring the label ink
+ * at 10:1 and reporting a pass over a rendered border of 3.06:1. "Reads whatever they
+ * actually bind" is only true if the property NAME is read from the component too, which
+ * is what `resolveEdge` now does. And see PAGE_SURFACES: the ground was a constant for
+ * the same reason, and white is not the ground this estate's buttons stand on.
+ *
  * There were four real failures, not five, and all four were `tonal` — retired 2026-08-27.
  *
  * THE AUDIT ALSO MISSED ONE, FOR THE MIRROR-IMAGE REASON.
@@ -140,11 +148,34 @@ function contrastOf(fg, bg) {
   return (hi + 0.05) / (lo + 0.05);
 }
 
-/** Which local custom property each appearance paints its outer edge with. */
+/**
+ * Which local custom property each appearance paints its outer edge with.
+ *
+ * `outlined` WAS `--_color`, and that stopped being true on 2026-09-16 without this file
+ * noticing. `.ds-btn--outlined` now paints `border-color: var(--_c-line)`, which resolves
+ * `--sa-btn-edge` -> `--_line` -> `--_color`; every variant block sets `--_line` from
+ * `cmp/action/<intent>/secondary/default/border`, so `--_color` is the LABEL and `--_line`
+ * is the edge. Measuring `--_color` measured a 10:1 ink and reported a pass while the
+ * rendered border was three rungs lighter.
+ *
+ * That is this file's own opening warning turned on itself — "the audit measured a token;
+ * the citizen sees a component" — and the defence is the same one: read what the variant
+ * block actually binds. `resolveEdge` below walks the real fallback chain rather than
+ * assuming one property, so the next rebinding cannot hide here either.
+ */
 const EDGE_OF = {
-  filled: "--_fill",
-  outlined: "--_color",
+  filled: ["--_fill"],
+  outlined: ["--_line", "--_color"],
 };
+
+/** First property in the chain that the variant block actually declares — the CSS fallback. */
+function resolveEdge(decls, chain) {
+  for (const prop of chain) {
+    const raw = decls.get(prop);
+    if (raw) return { prop, raw };
+  }
+  return null;
+}
 
 const VARIANTS = ["primary", "success", "danger", "neutral"];
 
@@ -167,48 +198,76 @@ const BRAND_SURFACES = [
   ["navy", "--sa-color-brand-navy"],
 ];
 
-test("every Button edge is findable against the page it sits on (1.4.11, 3:1)", () => {
+/**
+ * Every page ground a NON-inverse button is allowed to stand on.
+ *
+ * White was the only one measured until 2026-09-16, and white is not where the estate's
+ * buttons live: `.sa-app-shell` — the shell every portal screen renders inside — paints
+ * `bg/neutral/subtler`, and `ScreenBody` puts an outlined Button straight onto it in its
+ * `error` (retry) and `filtered` (clear filters) states, with `EmptyState` painting no
+ * surface of its own. Rung 400 measured 3.36:1 on white and 2.94:1 there.
+ *
+ * `semantic.json` had already recorded the identical finding for the form-control border
+ * on 2026-09-04 — 3.06:1 on white, 2.68:1 on the muted ground, moved 400 -> 500. The
+ * reasoning simply never reached this file, which is why the ground is now a loop and not
+ * a constant.
+ */
+const PAGE_SURFACES = [
+  ["white page", "--sa-bg-neutral-base"],
+  ["portal shell ground", "--sa-bg-neutral-subtler"],
+];
+
+test("every Button edge is findable against every page it sits on (1.4.11, 3:1)", () => {
   for (const brand of BRANDS) {
     CURRENT = brand.decls;
-    const surface = parseColor(resolve("--sa-bg-neutral-base"));
-    assert.ok(surface, `${brand.name}: --sa-bg-neutral-base must resolve`);
 
     const failures = [];
     let checked = 0;
 
-    for (const variant of VARIANTS) {
-      const decls = declsIn(variant);
-      assert.ok(
-        decls.size > 0,
-        `button.css has no .ds-btn--${variant} block — this test has drifted from the component`,
-      );
-      for (const [appearance, prop] of Object.entries(EDGE_OF)) {
-        const raw = decls.get(prop);
-        if (!raw) continue;
-        const tokenName = raw.match(/^var\((--[A-Za-z0-9-]+)\)$/)?.[1];
-        if (!tokenName) continue;
-        const value = resolve(tokenName);
-        if (!value) continue;
-        const ratio = contrastOf(over(parseColor(value), surface), surface);
-        checked++;
-        const key = `${variant}/${appearance}`;
-        if (ratio < AA_NONTEXT && !EXEMPT.has(key)) {
-          failures.push(`${key}: ${tokenName} = ${value} on surface = ${ratio.toFixed(2)}:1`);
+    for (const [groundLabel, groundToken] of PAGE_SURFACES) {
+      const groundValue = resolve(groundToken);
+      assert.ok(groundValue, `${brand.name}: ${groundToken} must resolve`);
+      const surface = parseColor(groundValue);
+
+      for (const variant of VARIANTS) {
+        const decls = declsIn(variant);
+        assert.ok(
+          decls.size > 0,
+          `button.css has no .ds-btn--${variant} block — this test has drifted from the component`,
+        );
+        for (const [appearance, chain] of Object.entries(EDGE_OF)) {
+          const edge = resolveEdge(decls, chain);
+          if (!edge) continue;
+          const tokenName = edge.raw.match(/^var\((--[A-Za-z0-9-]+)\)$/)?.[1];
+          if (!tokenName) continue;
+          const value = resolve(tokenName);
+          if (!value) continue;
+          const ratio = contrastOf(over(parseColor(value), surface), surface);
+          checked++;
+          const key = `${variant}/${appearance}`;
+          if (ratio < AA_NONTEXT && !EXEMPT.has(key)) {
+            failures.push(
+              `${key} on ${groundLabel}: ${edge.prop} -> ${tokenName} = ${value} ` +
+                `on ${groundValue} = ${ratio.toFixed(2)}:1`,
+            );
+          }
         }
       }
     }
 
-    // 4 variants x 2 appearances. It was 12 while `tonal` existed; if this number drops
-    // again, an appearance has gone missing rather than been retired on purpose.
+    // 4 variants x 2 appearances x 2 grounds. It was 8 while white was the only ground and
+    // 12 while `tonal` existed; if this number drops, a ground, a variant or an appearance
+    // has gone missing rather than been retired on purpose.
     assert.ok(
-      checked >= 8,
-      `${brand.name}: expected every variant x appearance edge, only resolved ${checked}`,
+      checked >= 16,
+      `${brand.name}: expected every variant x appearance x ground, only resolved ${checked}`,
     );
     assert.deepEqual(
       failures,
       [],
       `\n  [${brand.name}] edges a sighted user cannot find against the page:\n  ` +
-        `${failures.join("\n  ")}\n\n  Darken the token. Do NOT add to EXEMPT.`,
+        `${failures.join("\n  ")}\n\n  Darken the token. Do NOT add to EXEMPT, and do ` +
+        `NOT fix only the ground that failed — the rung moves for every variant together.`,
     );
   }
   CURRENT = BRANDS[0].decls;
@@ -225,25 +284,35 @@ test("the 1.4.11 exemption list only ever shrinks", () => {
   );
 });
 
-test("the neutral outlined border is NOT the 2.15:1 the audit reported", () => {
-  // Pins the correction itself, so the wrong number cannot quietly come back. If the
-  // component is ever rebound to cmp/action/neutral/secondary/default/border, this fails
-  // and the 1.4.11 sweep above fails with it — which is the correct outcome, because that
-  // token resolves to #adb1b7 and would be a real failure.
+test("the outlined border is the secondary token, and every variant declares it", () => {
+  // THIS TEST USED TO ASSERT THE OPPOSITE, and that is the point of keeping it.
+  //
+  // Until 2026-09-16 it read: "the neutral outlined border is NOT the 2.15:1 the audit
+  // reported", pinned `--_color` to the tertiary TEXT token, and warned that a rebinding
+  // to `cmp/action/neutral/secondary/default/border` "would be a real failure" because
+  // that token then resolved to #adb1b7.
+  //
+  // The rebinding happened — `.ds-btn--outlined` paints `--_c-line`, fed by each variant's
+  // `--_line` — and this file did not notice, because it was still measuring `--_color`.
+  // The warning was right; the guard was in the wrong place. The token has since moved to
+  // rung 500, so the binding is now correct AND findable, and what needs pinning is no
+  // longer "the border is not that token" but "the border IS that token, on every variant".
   CURRENT = BRANDS[0].decls;
-  const surface = parseColor(resolve("--sa-bg-neutral-base"));
-  const bound = declsIn("neutral").get("--_color");
-  const tokenName = bound?.match(/^var\((--[A-Za-z0-9-]+)\)$/)?.[1];
-  assert.equal(
-    tokenName,
-    "--sa-cmp-action-neutral-tertiary-default-text",
-    "neutral's --_color moved; re-measure the outlined border before trusting this file",
-  );
-  const ratio = contrastOf(over(parseColor(resolve(tokenName)), surface), surface);
-  assert.ok(
-    ratio > 10,
-    `the rendered neutral outlined border measures ${ratio.toFixed(2)}:1, not the >10 expected`,
-  );
+  for (const variant of VARIANTS) {
+    const raw = declsIn(variant).get("--_line");
+    assert.ok(
+      raw,
+      `.ds-btn--${variant} declares no --_line, so its outlined border silently falls back ` +
+        `to --_color (the label ink) and the 1.4.11 sweep above measures the wrong colour`,
+    );
+    const tokenName = raw.match(/^var\((--[A-Za-z0-9-]+)\)$/)?.[1];
+    assert.equal(
+      tokenName,
+      `--sa-cmp-action-${INTENT_OF[variant]}-secondary-default-border`,
+      `.ds-btn--${variant} binds its outlined border to ${tokenName}, not the secondary ` +
+        `border token — re-measure before trusting this file`,
+    );
+  }
 });
 
 test("an inverse button's edge is findable on every brand surface it may sit on", () => {
