@@ -361,3 +361,70 @@ portal is unclear or self-contradictory.
 2. Move its row in the same commit, and say where it stands — not just the tick.
 3. If it turned out to be something else, rewrite the row rather than adding a second one.
 4. A row that goes ⏸ names the person or the decision it waits on.
+
+---
+
+## 7. The 11 September meeting checklist — built, and drawn in Figma
+
+Asked for on 16 Sep: how many of the meeting's items are done, and how many have reached
+Figma. Counted from `docs/plans/2026-09-13-e-anudaan-meeting-refinements.md` §1, and
+cross-checked against the Figma↔build pairing used for §5 rather than asserted.
+
+| Group | Items | Built | Drawn in Figma |
+|---|---|---|---|
+| A · Applicant (N1–N12) | 12 | 12 | 12 |
+| B · Officer console (O1–O5) | 5 | 5 | 5 |
+| C · Application wizard (W1–W5) | 5 | 5 | 5 |
+| **Total** | **22** | **22** | **22** |
+| D · Deliberately out of the pass | 5 | — | — |
+
+The five in D are out with a reason each, and none is a design decision we can take alone:
+DARPAN sign-in replacing the login, the CCTV module the vendor has not built, the officer's
+read-only view of an NGO's roster, which fields an ongoing application may edit, and the
+vendor's error catalogue.
+
+**How "drawn in Figma" was counted.** Each goal was matched to the Figma frames that carry it
+through `pairs.json`, the frame-to-screenshot map behind §5. Every goal resolves to at least
+one pair, and the wizard goals to 109:
+
+| Goal | Figma section | Pairs |
+|---|---|---|
+| N2 Pending Actions | 2 · Dashboard & Notifications | 4 |
+| N3 · N4 Deficiencies | 7 · Track & Correct | 1 |
+| N5 Application detail order | 7 · Track & Correct | 3 |
+| N6 Every version of a document | 6 · Document Centre | 42 |
+| N8 Project Location Change | 8 · Project Records | 2 |
+| N9 Bank accounts per project | 8 · Project Records | 3 |
+| N10 Beneficiaries & Staff | 8 · Project Records | 4 |
+| N12 Attendance, two tabs | 8 · Project Records | 2 |
+| O1 Pending work by case type | 9 · Queues & Registers | 11 |
+| O2 · O3 · O4 Worklists | 9 · Queues & Registers | 18 |
+| O5 Review remarks | 10 · Review an Application | 35 |
+| W1–W5 Wizard | 4 · SHRESHTA & SMILE · 5 · AVYAY & NAPDDR | 109 |
+
+N1, N7 and N11 carry no section of their own: N1 is a sidebar label present on every
+applicant frame, N7 is the processing-history block inside the N5 frames, and N11 is the Add
+Employee dialog inside the N10 set.
+
+### The nine-check audit, re-run against live `:3007` on 16 Sep
+
+190 screens, one check reporting: **477 small targets, and every one of them conformant.**
+
+WCAG 2.2 SC 2.5.8 is met through its **spacing** exception, measured rather than assumed on
+the five screens carrying the most: no undersized target's 24px circle comes near another's —
+the closest centre-to-centre gap on any of them is **71px** against the 24px the criterion
+asks for, and **0 of 477 fail**. 380 of the 477 are the same two links on every screen: the
+"Government of India" masthead link (196×22) and "Skip to Main Content" (137×20). The rest are
+organisation names and "View All" links in table rows. Eight checks report nothing at all:
+clipped text, overlaps, sideways scroll, unlabelled images, skipped heading levels, contrast
+below AA, unnamed buttons, unlabelled fields.
+
+`scratchpad/figma-2/spacing-check.mjs` is the measurement; it is a session script and is not
+committed.
+
+### One thing found while counting, and fixed
+
+`1 · Access & Identity` still carried an empty `1.5 · Portal Landing` sub-section — its two
+frames moved to §15 Superseded when the portal landing page was retired, and the container
+stayed behind. Removed after confirming it held nothing, the same way the three pre-rebuild
+containers were.
