@@ -217,7 +217,7 @@
     "assetKey": "cecce35f4e10df5e79d77725a53ae75ab06c8085"
   },
   {
-    "name": "NeGD",
+    "name": "NeGD/on-light",
     "nodeId": "534:22120",
     "type": "COMPONENT",
     "pageId": "56507:971",
@@ -228,6 +228,19 @@
     "instanceCount": 0,
     "dependencies": [],
     "assetKey": "e8d2994e6fa14c32160cdd1f75ccee2118c1075c"
+  },
+  {
+    "name": "NeGD/on-dark",
+    "nodeId": "58337:9884",
+    "type": "COMPONENT",
+    "pageId": "56507:971",
+    "pageName": "Brand",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "ca2f198c3b688272bc1136159152291fcaad4018"
   },
   {
     "name": "Gov.in",
@@ -468,7 +481,7 @@
       "icon left",
       "icon right"
     ],
-    "instanceCount": 117,
+    "instanceCount": 128,
     "dependencies": [],
     "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
   },
@@ -547,7 +560,7 @@
     "childInstanceTags": [
       "icon"
     ],
-    "instanceCount": 12,
+    "instanceCount": 20,
     "dependencies": [
       {
         "name": "Icon",
@@ -592,7 +605,7 @@
       "Segment 2",
       "Segment 3"
     ],
-    "instanceCount": 7,
+    "instanceCount": 9,
     "dependencies": [
       {
         "name": "Button",
@@ -632,9 +645,18 @@
         "defaultValue": "Default"
       }
     },
-    "childInstanceTags": [],
+    "childInstanceTags": [
+      "default action"
+    ],
     "instanceCount": 3,
-    "dependencies": [],
+    "dependencies": [
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      }
+    ],
     "assetKey": "1bf66fb0efb702036021cb0be482aa33475d7ae0"
   },
   {
@@ -828,12 +850,6 @@
         "key": "Error#57040:10",
         "defaultValue": "Error message"
       },
-      "Select All": {
-        "name": "Select All",
-        "type": "TEXT",
-        "key": "Select All#57040:15",
-        "defaultValue": "Select all"
-      },
       "Show Hint": {
         "name": "Show Hint",
         "type": "BOOLEAN",
@@ -998,6 +1014,16 @@
           "True"
         ],
         "defaultValue": "False"
+      },
+      "Emphasis": {
+        "name": "Emphasis",
+        "type": "VARIANT",
+        "key": "Emphasis",
+        "variantOptions": [
+          "Subtle",
+          "Solid"
+        ],
+        "defaultValue": "Subtle"
       }
     },
     "childInstanceTags": [
@@ -1433,9 +1459,18 @@
         "defaultValue": "Closed"
       }
     },
-    "childInstanceTags": [],
+    "childInstanceTags": [
+      "trigger"
+    ],
     "instanceCount": 3,
-    "dependencies": [],
+    "dependencies": [
+      {
+        "name": "IconButton",
+        "external": false,
+        "nodeId": "3:3497",
+        "assetKey": "4d4a87915a6f7feaf975286a565b248038007673"
+      }
+    ],
     "assetKey": "46097b41e2a7a2fa278ad8de345c9642df424927"
   },
   {
@@ -1458,9 +1493,20 @@
         "defaultValue": "Default"
       }
     },
-    "childInstanceTags": [],
+    "childInstanceTags": [
+      "Last 30 days",
+      "This quarter",
+      "This financial year"
+    ],
     "instanceCount": 3,
-    "dependencies": [],
+    "dependencies": [
+      {
+        "name": "Chip",
+        "external": false,
+        "nodeId": "123:28380",
+        "assetKey": "87e3bb3c82ce22e42a5e5c4ff97883ed384f4a2b"
+      }
+    ],
     "assetKey": "054fb403ba2503646be58375fe5f4136bc0ab17d"
   },
   {
@@ -1767,9 +1813,18 @@
         "defaultValue": "Reading"
       }
     },
-    "childInstanceTags": [],
+    "childInstanceTags": [
+      "Save"
+    ],
     "instanceCount": 4,
-    "dependencies": [],
+    "dependencies": [
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      }
+    ],
     "assetKey": "8de299cee08f28c9115a72bba88710f35172d980"
   },
   {
@@ -2881,6 +2936,942 @@
     "assetKey": "2790cdbf0bb463f726695ce007a2c4b06a9f232f"
   },
   {
+    "name": "Form / Section Head",
+    "nodeId": "58089:739",
+    "type": "COMPONENT",
+    "pageId": "58089:737",
+    "pageName": "Form Layout",
+    "hasVariants": false,
+    "properties": {
+      "Label": {
+        "name": "Label",
+        "type": "TEXT",
+        "key": "Label#58089:0",
+        "defaultValue": "PERSONAL DETAILS"
+      },
+      "Show Badge": {
+        "name": "Show Badge",
+        "type": "BOOLEAN",
+        "key": "Show Badge#58089:1",
+        "defaultValue": false
+      },
+      "Show Actions": {
+        "name": "Show Actions",
+        "type": "BOOLEAN",
+        "key": "Show Actions#58089:2",
+        "defaultValue": false
+      },
+      "Note": {
+        "name": "Note",
+        "type": "TEXT",
+        "key": "Note#58329:0",
+        "defaultValue": "5 need attention"
+      },
+      "Show Note": {
+        "name": "Show Note",
+        "type": "BOOLEAN",
+        "key": "Show Note#58329:1",
+        "defaultValue": false
+      }
+    },
+    "childInstanceTags": [
+      "badge",
+      "rule",
+      "actions"
+    ],
+    "instanceCount": 4,
+    "dependencies": [
+      {
+        "name": "Badge",
+        "external": false,
+        "nodeId": "75:321",
+        "assetKey": "1a2db999fc69f76614ff44a2b3bc8a01c674e579"
+      },
+      {
+        "name": "Divider",
+        "external": false,
+        "nodeId": "55061:700",
+        "assetKey": "c0a9c756ae5f4fbf8fe5c49b56cbd8c14b8b6783"
+      },
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      }
+    ],
+    "assetKey": "de58754b42a18ae90f788d46576ed7cac6eb03b8"
+  },
+  {
+    "name": "Form / Section",
+    "nodeId": "58089:1454",
+    "type": "COMPONENT_SET",
+    "pageId": "58089:737",
+    "pageName": "Form Layout",
+    "hasVariants": true,
+    "properties": {
+      "Show Head": {
+        "name": "Show Head",
+        "type": "BOOLEAN",
+        "key": "Show Head#58179:0",
+        "defaultValue": true
+      },
+      "Show Description": {
+        "name": "Show Description",
+        "type": "BOOLEAN",
+        "key": "Show Description#58179:5",
+        "defaultValue": false
+      },
+      "Description": {
+        "name": "Description",
+        "type": "TEXT",
+        "key": "Description#58179:10",
+        "defaultValue": "The account this project is paid into."
+      },
+      "Content": {
+        "name": "Content",
+        "type": "SLOT",
+        "key": "Content#58179:15",
+        "defaultValue": "-1:-1"
+      },
+      "Columns": {
+        "name": "Columns",
+        "type": "VARIANT",
+        "key": "Columns",
+        "variantOptions": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "defaultValue": "1"
+      }
+    },
+    "childInstanceTags": [
+      "Form / Section Head",
+      "field"
+    ],
+    "instanceCount": 5,
+    "dependencies": [
+      {
+        "name": "Form / Section Head",
+        "external": false,
+        "nodeId": "58089:739",
+        "assetKey": "de58754b42a18ae90f788d46576ed7cac6eb03b8"
+      },
+      {
+        "name": "Input Field",
+        "external": false,
+        "nodeId": "85:837",
+        "assetKey": "fca6f0243673ec4eaa4f0cba4b3d29ebeca1d533"
+      }
+    ],
+    "assetKey": "21fe2606f468d589d0b20f1af29e4ca5599c0de6"
+  },
+  {
+    "name": "Form / Inset",
+    "nodeId": "58090:1134",
+    "type": "COMPONENT",
+    "pageId": "58089:737",
+    "pageName": "Form Layout",
+    "hasVariants": false,
+    "properties": {
+      "Title": {
+        "name": "Title",
+        "type": "TEXT",
+        "key": "Title#58090:0",
+        "defaultValue": "Employment 2"
+      },
+      "Show Head": {
+        "name": "Show Head",
+        "type": "BOOLEAN",
+        "key": "Show Head#58090:1",
+        "defaultValue": true
+      },
+      "Content": {
+        "name": "Content",
+        "type": "SLOT",
+        "key": "Content#58179:28",
+        "defaultValue": "-1:-1"
+      }
+    },
+    "childInstanceTags": [
+      "remove",
+      "field"
+    ],
+    "instanceCount": 4,
+    "dependencies": [
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      },
+      {
+        "name": "Input Field",
+        "external": false,
+        "nodeId": "85:837",
+        "assetKey": "fca6f0243673ec4eaa4f0cba4b3d29ebeca1d533"
+      }
+    ],
+    "assetKey": "09a6e4a8bdb8b1792484f01f4d7d435460e5c48c"
+  },
+  {
+    "name": "Form / Panel",
+    "nodeId": "58091:2489",
+    "type": "COMPONENT_SET",
+    "pageId": "58089:737",
+    "pageName": "Form Layout",
+    "hasVariants": true,
+    "properties": {
+      "Title": {
+        "name": "Title",
+        "type": "TEXT",
+        "key": "Title#58091:0",
+        "defaultValue": "Basic Identity Details"
+      },
+      "Description": {
+        "name": "Description",
+        "type": "TEXT",
+        "key": "Description#58091:4",
+        "defaultValue": "Please enter your details exactly as they appear on your official ID proof (Aadhaar, Voter ID, etc.)."
+      },
+      "Show Description": {
+        "name": "Show Description",
+        "type": "BOOLEAN",
+        "key": "Show Description#58091:8",
+        "defaultValue": true
+      },
+      "Show Header Actions": {
+        "name": "Show Header Actions",
+        "type": "BOOLEAN",
+        "key": "Show Header Actions#58091:12",
+        "defaultValue": false
+      },
+      "Show Head": {
+        "name": "Show Head",
+        "type": "BOOLEAN",
+        "key": "Show Head#58093:0",
+        "defaultValue": true
+      },
+      "Content": {
+        "name": "Content",
+        "type": "SLOT",
+        "key": "Content#58179:20",
+        "defaultValue": "-1:-1"
+      },
+      "Step": {
+        "name": "Step",
+        "type": "VARIANT",
+        "key": "Step",
+        "variantOptions": [
+          "First",
+          "Middle",
+          "Last"
+        ],
+        "defaultValue": "First"
+      }
+    },
+    "childInstanceTags": [
+      "header actions",
+      "Form / Section",
+      "cancel",
+      "continue",
+      "back",
+      "submit"
+    ],
+    "instanceCount": 4,
+    "dependencies": [
+      {
+        "name": "Badge",
+        "external": false,
+        "nodeId": "75:321",
+        "assetKey": "1a2db999fc69f76614ff44a2b3bc8a01c674e579"
+      },
+      {
+        "name": "Form / Section",
+        "external": false,
+        "nodeId": "58089:1454",
+        "assetKey": "21fe2606f468d589d0b20f1af29e4ca5599c0de6"
+      },
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      }
+    ],
+    "assetKey": "33e33b4e282785da9f897c2018dd631890a4c7c6"
+  },
+  {
+    "name": "Document Tile",
+    "nodeId": "58096:1947",
+    "type": "COMPONENT_SET",
+    "pageId": "58089:737",
+    "pageName": "Form Layout",
+    "hasVariants": true,
+    "properties": {
+      "Title": {
+        "name": "Title",
+        "type": "TEXT",
+        "key": "Title#58096:0",
+        "defaultValue": "Income Certificate"
+      },
+      "Meta": {
+        "name": "Meta",
+        "type": "TEXT",
+        "key": "Meta#58096:5",
+        "defaultValue": "PDF, JPG or PNG \u00b7 up to 2 MB"
+      },
+      "Required": {
+        "name": "Required",
+        "type": "BOOLEAN",
+        "key": "Required#58096:10",
+        "defaultValue": true
+      },
+      "Show Icon": {
+        "name": "Show Icon",
+        "type": "BOOLEAN",
+        "key": "Show Icon#58096:15",
+        "defaultValue": false
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Upcoming",
+          "Uploaded",
+          "Verified",
+          "Invalid"
+        ],
+        "defaultValue": "Upcoming"
+      }
+    },
+    "childInstanceTags": [
+      "icon",
+      "primary action",
+      "remove",
+      "status"
+    ],
+    "instanceCount": 9,
+    "dependencies": [
+      {
+        "name": "Icon",
+        "external": false,
+        "nodeId": "55030:701",
+        "assetKey": "7cdc28dc3541b9408c771cc9a7f62fa50b483191"
+      },
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      },
+      {
+        "name": "IconButton",
+        "external": false,
+        "nodeId": "3:3497",
+        "assetKey": "4d4a87915a6f7feaf975286a565b248038007673"
+      },
+      {
+        "name": "Badge",
+        "external": false,
+        "nodeId": "75:321",
+        "assetKey": "1a2db999fc69f76614ff44a2b3bc8a01c674e579"
+      }
+    ],
+    "assetKey": "bb9b56b830da2096e604fcee56b73d2d3d6339d2"
+  },
+  {
+    "name": "Review / Item",
+    "nodeId": "58096:1949",
+    "type": "COMPONENT",
+    "pageId": "58089:737",
+    "pageName": "Form Layout",
+    "hasVariants": false,
+    "properties": {
+      "Label": {
+        "name": "Label",
+        "type": "TEXT",
+        "key": "Label#58096:20",
+        "defaultValue": "Full Legal Name"
+      },
+      "Value": {
+        "name": "Value",
+        "type": "TEXT",
+        "key": "Value#58096:21",
+        "defaultValue": "Sachin Malhotra"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 0,
+    "dependencies": [],
+    "assetKey": "f5205564ba36d3d3889415734978a563ea956d45"
+  },
+  {
+    "name": "Review / Section",
+    "nodeId": "58096:2025",
+    "type": "COMPONENT_SET",
+    "pageId": "58089:737",
+    "pageName": "Form Layout",
+    "hasVariants": true,
+    "properties": {
+      "Content": {
+        "name": "Content",
+        "type": "SLOT",
+        "key": "Content#58179:24",
+        "defaultValue": "-1:-1"
+      },
+      "Columns": {
+        "name": "Columns",
+        "type": "VARIANT",
+        "key": "Columns",
+        "variantOptions": [
+          "2",
+          "4",
+          "3"
+        ],
+        "defaultValue": "2"
+      }
+    },
+    "childInstanceTags": [
+      "Form / Section Head",
+      "Review / Item"
+    ],
+    "instanceCount": 5,
+    "dependencies": [
+      {
+        "name": "Form / Section Head",
+        "external": false,
+        "nodeId": "58089:739",
+        "assetKey": "de58754b42a18ae90f788d46576ed7cac6eb03b8"
+      },
+      {
+        "name": "Review / Item",
+        "external": false,
+        "nodeId": "58096:1949",
+        "assetKey": "f5205564ba36d3d3889415734978a563ea956d45"
+      }
+    ],
+    "assetKey": "306c2bd5293a9d6d9e5fb5ead6a673df73683235"
+  },
+  {
+    "name": "Declaration Checkbox",
+    "nodeId": "58191:3685",
+    "type": "COMPONENT_SET",
+    "pageId": "58089:737",
+    "pageName": "Form Layout",
+    "hasVariants": true,
+    "properties": {
+      "Title": {
+        "name": "Title",
+        "type": "TEXT",
+        "key": "Title#58191:0",
+        "defaultValue": "Declaration"
+      },
+      "Show Lead": {
+        "name": "Show Lead",
+        "type": "BOOLEAN",
+        "key": "Show Lead#58191:3",
+        "defaultValue": true
+      },
+      "Lead": {
+        "name": "Lead",
+        "type": "TEXT",
+        "key": "Lead#58191:6",
+        "defaultValue": "I certify that:"
+      },
+      "Statement": {
+        "name": "Statement",
+        "type": "TEXT",
+        "key": "Statement#58191:9",
+        "defaultValue": "I declare that the information furnished in this application and in every document uploaded with it is true, complete and correct to the best of my knowledge and belief. I understand that the grant-in-aid may be withheld or recovered, and action taken under the rules, if any particular is found to be false or if any material fact has been concealed."
+      },
+      "Error": {
+        "name": "Error",
+        "type": "TEXT",
+        "key": "Error#58191:12",
+        "defaultValue": "Accept the declaration above to submit."
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Default",
+          "Invalid"
+        ],
+        "defaultValue": "Default"
+      }
+    },
+    "childInstanceTags": [
+      "Checkbox"
+    ],
+    "instanceCount": 1,
+    "dependencies": [
+      {
+        "name": "Checkbox",
+        "external": false,
+        "nodeId": "15:664",
+        "assetKey": "f41f0eb6c5b211f05bc5c302e842c8287abb2c60"
+      }
+    ],
+    "assetKey": "20b5276c32e181604fe874cdaf620e7ff68d4f00"
+  },
+  {
+    "name": "Document Row",
+    "nodeId": "58278:1079",
+    "type": "COMPONENT_SET",
+    "pageId": "58261:10962",
+    "pageName": "Document Row",
+    "hasVariants": true,
+    "properties": {
+      "Title": {
+        "name": "Title",
+        "type": "TEXT",
+        "key": "Title#58278:0",
+        "defaultValue": "Registration Certificate"
+      },
+      "File meta": {
+        "name": "File meta",
+        "type": "TEXT",
+        "key": "File meta#58278:82",
+        "defaultValue": "812 KB \u00b7 14 Sep 2026"
+      },
+      "Hint": {
+        "name": "Hint",
+        "type": "TEXT",
+        "key": "Hint#58278:205",
+        "defaultValue": "Required when the building is rented"
+      },
+      "Show hint": {
+        "name": "Show hint",
+        "type": "BOOLEAN",
+        "key": "Show hint#58278:246",
+        "defaultValue": false
+      },
+      "Show file": {
+        "name": "Show file",
+        "type": "BOOLEAN",
+        "key": "Show file#58278:287",
+        "defaultValue": true
+      },
+      "Show action": {
+        "name": "Show action",
+        "type": "BOOLEAN",
+        "key": "Show action#58278:328",
+        "defaultValue": true
+      },
+      "Show menu": {
+        "name": "Show menu",
+        "type": "BOOLEAN",
+        "key": "Show menu#58278:369",
+        "defaultValue": true
+      },
+      "Show reason": {
+        "name": "Show reason",
+        "type": "BOOLEAN",
+        "key": "Show reason#58278:410",
+        "defaultValue": true
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "missing",
+          "optional",
+          "uploading",
+          "failed",
+          "rejected",
+          "checking",
+          "verified",
+          "review",
+          "invalid",
+          "unavailable"
+        ],
+        "defaultValue": "missing"
+      },
+      "Density": {
+        "name": "Density",
+        "type": "VARIANT",
+        "key": "Density",
+        "variantOptions": [
+          "Default",
+          "Compact"
+        ],
+        "defaultValue": "Default"
+      },
+      "Width": {
+        "name": "Width",
+        "type": "VARIANT",
+        "key": "Width",
+        "variantOptions": [
+          "Wide",
+          "Narrow"
+        ],
+        "defaultValue": "Wide"
+      }
+    },
+    "childInstanceTags": [
+      "Icon",
+      "Action",
+      "Menu",
+      "chevron"
+    ],
+    "instanceCount": 22,
+    "dependencies": [
+      {
+        "name": "Icon",
+        "external": false,
+        "nodeId": "55030:701",
+        "assetKey": "7cdc28dc3541b9408c771cc9a7f62fa50b483191"
+      },
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      },
+      {
+        "name": "IconButton",
+        "external": false,
+        "nodeId": "3:3497",
+        "assetKey": "4d4a87915a6f7feaf975286a565b248038007673"
+      }
+    ],
+    "assetKey": "7b5c6f8db324b3007b3d8ddc27db271607344126"
+  },
+  {
+    "name": "Document Checklist",
+    "nodeId": "58283:1076",
+    "type": "COMPONENT_SET",
+    "pageId": "58262:737",
+    "pageName": "Document Checklist",
+    "hasVariants": true,
+    "properties": {
+      "Body": {
+        "name": "Body",
+        "type": "VARIANT",
+        "key": "Body",
+        "variantOptions": [
+          "Populated",
+          "Loading",
+          "Empty",
+          "Filtered to nothing"
+        ],
+        "defaultValue": "Populated"
+      }
+    },
+    "childInstanceTags": [
+      "Chip",
+      "Icon",
+      "Choose Files",
+      "Document Checklist Group",
+      "Show All Documents"
+    ],
+    "instanceCount": 5,
+    "dependencies": [
+      {
+        "name": "Chip",
+        "external": false,
+        "nodeId": "123:28380",
+        "assetKey": "87e3bb3c82ce22e42a5e5c4ff97883ed384f4a2b"
+      },
+      {
+        "name": "Icon",
+        "external": false,
+        "nodeId": "55030:701",
+        "assetKey": "7cdc28dc3541b9408c771cc9a7f62fa50b483191"
+      },
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      },
+      {
+        "name": "Document Checklist Group",
+        "external": false,
+        "nodeId": "58280:857",
+        "assetKey": "910db688cdde5b1d1d11f13cf35189b2effe1fd1"
+      }
+    ],
+    "assetKey": "526beb954696747534a54d697f71a26b8f07cc86"
+  },
+  {
+    "name": "Document Checklist Group",
+    "nodeId": "58280:857",
+    "type": "COMPONENT",
+    "pageId": "58262:737",
+    "pageName": "Document Checklist",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [
+      "Document Row"
+    ],
+    "instanceCount": 3,
+    "dependencies": [
+      {
+        "name": "Document Row",
+        "external": false,
+        "nodeId": "58278:1079",
+        "assetKey": "7b5c6f8db324b3007b3d8ddc27db271607344126"
+      }
+    ],
+    "assetKey": "910db688cdde5b1d1d11f13cf35189b2effe1fd1"
+  },
+  {
+    "name": "Document Findings",
+    "nodeId": "58267:821",
+    "type": "COMPONENT_SET",
+    "pageId": "58262:738",
+    "pageName": "Document Findings",
+    "hasVariants": true,
+    "properties": {
+      "Show summary": {
+        "name": "Show summary",
+        "type": "BOOLEAN",
+        "key": "Show summary#58268:0",
+        "defaultValue": true
+      },
+      "Show confidence": {
+        "name": "Show confidence",
+        "type": "BOOLEAN",
+        "key": "Show confidence#58268:5",
+        "defaultValue": false
+      },
+      "Show reasons": {
+        "name": "Show reasons",
+        "type": "BOOLEAN",
+        "key": "Show reasons#58268:10",
+        "defaultValue": true
+      },
+      "Summary": {
+        "name": "Summary",
+        "type": "TEXT",
+        "key": "Summary#58268:15",
+        "defaultValue": "This Registration Certificate is for another organisation."
+      },
+      "Empty text": {
+        "name": "Empty text",
+        "type": "TEXT",
+        "key": "Empty text#58268:20",
+        "defaultValue": "No details could be read from this file."
+      },
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Populated",
+          "Empty"
+        ],
+        "defaultValue": "Populated"
+      },
+      "Fields": {
+        "name": "Fields",
+        "type": "VARIANT",
+        "key": "Fields",
+        "variantOptions": [
+          "Two column",
+          "One column"
+        ],
+        "defaultValue": "Two column"
+      }
+    },
+    "childInstanceTags": [
+      "Field"
+    ],
+    "instanceCount": 9,
+    "dependencies": [
+      {
+        "name": "Document Findings / Field",
+        "external": false,
+        "nodeId": "58266:760",
+        "assetKey": "31307cda8200a5b4674cce7ef1554491b01122c1"
+      }
+    ],
+    "assetKey": "4c61ffeed6d69bcef619983b78ad8c42adebef00"
+  },
+  {
+    "name": "Document Findings / Field",
+    "nodeId": "58266:760",
+    "type": "COMPONENT_SET",
+    "pageId": "58262:738",
+    "pageName": "Document Findings",
+    "hasVariants": true,
+    "properties": {
+      "Match": {
+        "name": "Match",
+        "type": "VARIANT",
+        "key": "Match",
+        "variantOptions": [
+          "Yes",
+          "No",
+          "Unknown"
+        ],
+        "defaultValue": "Yes"
+      }
+    },
+    "childInstanceTags": [
+      "Icon"
+    ],
+    "instanceCount": 3,
+    "dependencies": [
+      {
+        "name": "Icon",
+        "external": false,
+        "nodeId": "55030:701",
+        "assetKey": "7cdc28dc3541b9408c771cc9a7f62fa50b483191"
+      }
+    ],
+    "assetKey": "31307cda8200a5b4674cce7ef1554491b01122c1"
+  },
+  {
+    "name": "Document Placement Tray",
+    "nodeId": "58281:61145",
+    "type": "COMPONENT",
+    "pageId": "58262:739",
+    "pageName": "Document Placement Tray",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [
+      "Done",
+      "Item"
+    ],
+    "instanceCount": 2,
+    "dependencies": [
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      },
+      {
+        "name": "Document Placement Tray / Item",
+        "external": false,
+        "nodeId": "58281:814",
+        "assetKey": "a9a037def33874c42b7ff9ccb8dbcd474fb53b98"
+      }
+    ],
+    "assetKey": "9335b229864516f4efcc8e3776de66946b69040a"
+  },
+  {
+    "name": "Document Placement Tray / Item",
+    "nodeId": "58281:814",
+    "type": "COMPONENT_SET",
+    "pageId": "58262:739",
+    "pageName": "Document Placement Tray",
+    "hasVariants": true,
+    "properties": {
+      "Status": {
+        "name": "Status",
+        "type": "VARIANT",
+        "key": "Status",
+        "variantOptions": [
+          "Placed",
+          "Unplaced",
+          "Rejected"
+        ],
+        "defaultValue": "Placed"
+      },
+      "Width": {
+        "name": "Width",
+        "type": "VARIANT",
+        "key": "Width",
+        "variantOptions": [
+          "Narrow",
+          "Wide"
+        ],
+        "defaultValue": "Wide"
+      }
+    },
+    "childInstanceTags": [
+      "Icon",
+      "Select",
+      "Remove"
+    ],
+    "instanceCount": 6,
+    "dependencies": [
+      {
+        "name": "Icon",
+        "external": false,
+        "nodeId": "55030:701",
+        "assetKey": "7cdc28dc3541b9408c771cc9a7f62fa50b483191"
+      },
+      {
+        "name": "Select",
+        "external": false,
+        "nodeId": "55430:34472",
+        "assetKey": "a262bb48faa15aff6bda07589aaefac886dc8ff1"
+      },
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      }
+    ],
+    "assetKey": "a9a037def33874c42b7ff9ccb8dbcd474fb53b98"
+  },
+  {
+    "name": "Document History Sheet",
+    "nodeId": "58282:784",
+    "type": "COMPONENT",
+    "pageId": "58262:740",
+    "pageName": "Document History Sheet",
+    "hasVariants": false,
+    "properties": {},
+    "childInstanceTags": [
+      "Entry"
+    ],
+    "instanceCount": 1,
+    "dependencies": [
+      {
+        "name": "Document History Sheet / Entry",
+        "external": false,
+        "nodeId": "58282:756",
+        "assetKey": "32ae2e1afd79dbc5b6309d5cdfe5f77b1ee60b63"
+      }
+    ],
+    "assetKey": "8e8c9c33513c28d4ac9891a392e36aa58fa4a7a0"
+  },
+  {
+    "name": "Document History Sheet / Entry",
+    "nodeId": "58282:756",
+    "type": "COMPONENT_SET",
+    "pageId": "58262:740",
+    "pageName": "Document History Sheet",
+    "hasVariants": true,
+    "properties": {
+      "Version": {
+        "name": "Version",
+        "type": "VARIANT",
+        "key": "Version",
+        "variantOptions": [
+          "Current",
+          "Earlier"
+        ],
+        "defaultValue": "Current"
+      }
+    },
+    "childInstanceTags": [
+      "Badge"
+    ],
+    "instanceCount": 5,
+    "dependencies": [
+      {
+        "name": "Badge",
+        "external": false,
+        "nodeId": "75:321",
+        "assetKey": "1a2db999fc69f76614ff44a2b3bc8a01c674e579"
+      }
+    ],
+    "assetKey": "32ae2e1afd79dbc5b6309d5cdfe5f77b1ee60b63"
+  },
+  {
     "name": "Accordion / Item",
     "nodeId": "395:67819",
     "type": "COMPONENT_SET",
@@ -3153,7 +4144,7 @@
       }
     },
     "childInstanceTags": [
-      "Dropdown / MenuItem"
+      "\u26d4 Dropdown / MenuItem (deprecated)"
     ],
     "instanceCount": 0,
     "dependencies": [
@@ -3252,7 +4243,8 @@
       "text",
       "layout-blocks/horizontal\u00d71",
       "arrow",
-      "layout-blocks/base"
+      "layout-blocks/base",
+      "Divider"
     ],
     "instanceCount": 0,
     "dependencies": [
@@ -3265,6 +4257,12 @@
         "name": "text/text",
         "external": true,
         "assetKey": "2f11abae25261310ebc7fbecefb694613d637c12"
+      },
+      {
+        "name": "Divider",
+        "external": false,
+        "nodeId": "55061:700",
+        "assetKey": "c0a9c756ae5f4fbf8fe5c49b56cbd8c14b8b6783"
       }
     ],
     "assetKey": "e94452a622ba8ce90ebb6757468c2509f9867f0f"
@@ -3425,7 +4423,9 @@
     "childInstanceTags": [
       "Rectangular - Icon only ",
       ".PaginationPage",
-      "select",
+      "page size 10",
+      "page size 50",
+      "page size 100",
       "icon"
     ],
     "instanceCount": 3,
@@ -3440,11 +4440,6 @@
         "external": false,
         "nodeId": "522:216215",
         "assetKey": "11bf8266ed750bd9f74cc0b102077ad82de44ffb"
-      },
-      {
-        "name": "select",
-        "external": true,
-        "assetKey": "cf4b22415405437d98ef3d90e329a7241431cad7"
       },
       {
         "name": "Icon",
@@ -3478,7 +4473,7 @@
     },
     "childInstanceTags": [
       "Pagination",
-      "Dropdown",
+      "\u26d4 Dropdown (deprecated)",
       "Cursor"
     ],
     "instanceCount": 0,
@@ -3529,6 +4524,12 @@
         "key": "Focused#57641:24",
         "defaultValue": false
       },
+      "Logo": {
+        "name": "Logo",
+        "type": "INSTANCE_SWAP",
+        "key": "Logo#58082:0",
+        "defaultValue": "4273:716"
+      },
       "Variant": {
         "name": "Variant",
         "type": "VARIANT",
@@ -3569,12 +4570,6 @@
     "instanceCount": 14,
     "dependencies": [
       {
-        "name": "org-logo",
-        "external": false,
-        "nodeId": "4273:720",
-        "assetKey": "056c77aee2864cc042df3864a8e61eab9b25772c"
-      },
-      {
         "name": "Icon",
         "external": false,
         "nodeId": "55030:701",
@@ -3612,7 +4607,9 @@
           "6",
           "7",
           "8",
-          "9"
+          "9",
+          "10",
+          "11"
         ],
         "defaultValue": "3"
       },
@@ -3797,6 +4794,43 @@
       }
     ],
     "assetKey": "1740d07828be2e106699c0df58347a02f505192c"
+  },
+  {
+    "name": "Stepper / Collapsed",
+    "nodeId": "58336:3382",
+    "type": "COMPONENT_SET",
+    "pageId": "2106:2",
+    "pageName": "Stepper",
+    "hasVariants": true,
+    "properties": {
+      "Stage": {
+        "name": "Stage",
+        "type": "TEXT",
+        "key": "Stage#58336:0",
+        "defaultValue": "Organisation Details"
+      },
+      "Steps": {
+        "name": "Steps",
+        "type": "VARIANT",
+        "key": "Steps",
+        "variantOptions": [
+          "7",
+          "3",
+          "4",
+          "5",
+          "6",
+          "8",
+          "9",
+          "10",
+          "11"
+        ],
+        "defaultValue": "3"
+      }
+    },
+    "childInstanceTags": [],
+    "instanceCount": 3,
+    "dependencies": [],
+    "assetKey": "7cadc7bfddf329288a754ca9d63ee90397b5f099"
   },
   {
     "name": "Tabs",
@@ -4158,85 +5192,6 @@
     "assetKey": "02d6150180295e011d06cca8d3cc2500f75c6725"
   },
   {
-    "name": ".ToastStatus",
-    "nodeId": "220:7769",
-    "type": "COMPONENT_SET",
-    "pageId": "2141:296701",
-    "pageName": "Alerts/Toasts",
-    "hasVariants": true,
-    "properties": {
-      "Status": {
-        "name": "Status",
-        "type": "VARIANT",
-        "key": "Status",
-        "variantOptions": [
-          "Avatar",
-          "Success",
-          "Download",
-          "Error",
-          "Info",
-          "Warning",
-          "Loading",
-          "Upload"
-        ],
-        "defaultValue": "Success"
-      }
-    },
-    "childInstanceTags": [
-      "Loader",
-      "Avatar"
-    ],
-    "instanceCount": 0,
-    "dependencies": [
-      {
-        "name": "Loader",
-        "external": false,
-        "nodeId": "443:88127",
-        "assetKey": "dd9fe6fcd4a5aaa6f1a3d0ccfeed5b1637cb6e5c"
-      },
-      {
-        "name": "Avatar",
-        "external": false,
-        "nodeId": "248:2268",
-        "assetKey": "68f2b1f7fbd9053ace8d9f7df686b5af497bffc5"
-      }
-    ],
-    "assetKey": "4e1a2907623bce6f28c628901fd2868012143558"
-  },
-  {
-    "name": ".RightContent",
-    "nodeId": "220:7849",
-    "type": "COMPONENT_SET",
-    "pageId": "2141:296701",
-    "pageName": "Alerts/Toasts",
-    "hasVariants": true,
-    "properties": {
-      "Property 1": {
-        "name": "Property 1",
-        "type": "VARIANT",
-        "key": "Property 1",
-        "variantOptions": [
-          "Time stamp",
-          "Action"
-        ],
-        "defaultValue": "Action"
-      }
-    },
-    "childInstanceTags": [
-      "Button"
-    ],
-    "instanceCount": 0,
-    "dependencies": [
-      {
-        "name": "Button",
-        "external": false,
-        "nodeId": "609:283111",
-        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
-      }
-    ],
-    "assetKey": "84fd960edbfddf0e715d97796ebf34cc9b1b6698"
-  },
-  {
     "name": "Alert",
     "nodeId": "2272:12530",
     "type": "COMPONENT_SET",
@@ -4333,6 +5288,170 @@
     "assetKey": "86fdf95ef85b6f3d5b68c4f11cd03f663a725bbf"
   },
   {
+    "name": ".ToastStatus",
+    "nodeId": "220:7769",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296701",
+    "pageName": "Alerts/Toasts",
+    "hasVariants": true,
+    "properties": {
+      "Status": {
+        "name": "Status",
+        "type": "VARIANT",
+        "key": "Status",
+        "variantOptions": [
+          "Avatar",
+          "Success",
+          "Download",
+          "Error",
+          "Info",
+          "Warning",
+          "Loading",
+          "Upload"
+        ],
+        "defaultValue": "Success"
+      }
+    },
+    "childInstanceTags": [
+      "Loader",
+      "Avatar"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Loader",
+        "external": false,
+        "nodeId": "443:88127",
+        "assetKey": "dd9fe6fcd4a5aaa6f1a3d0ccfeed5b1637cb6e5c"
+      },
+      {
+        "name": "Avatar",
+        "external": false,
+        "nodeId": "248:2268",
+        "assetKey": "68f2b1f7fbd9053ace8d9f7df686b5af497bffc5"
+      }
+    ],
+    "assetKey": "4e1a2907623bce6f28c628901fd2868012143558"
+  },
+  {
+    "name": ".RightContent",
+    "nodeId": "220:7849",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296701",
+    "pageName": "Alerts/Toasts",
+    "hasVariants": true,
+    "properties": {
+      "Property 1": {
+        "name": "Property 1",
+        "type": "VARIANT",
+        "key": "Property 1",
+        "variantOptions": [
+          "Time stamp",
+          "Action"
+        ],
+        "defaultValue": "Action"
+      }
+    },
+    "childInstanceTags": [
+      "Button"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      }
+    ],
+    "assetKey": "84fd960edbfddf0e715d97796ebf34cc9b1b6698"
+  },
+  {
+    "name": "Alert / Inline",
+    "nodeId": "58323:836",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:296701",
+    "pageName": "Alerts/Toasts",
+    "hasVariants": true,
+    "properties": {
+      "Title": {
+        "name": "Title",
+        "type": "TEXT",
+        "key": "Title#58323:7",
+        "defaultValue": "Title"
+      },
+      "Body": {
+        "name": "Body",
+        "type": "TEXT",
+        "key": "Body#58323:8",
+        "defaultValue": "One sentence saying what happened and what the reader should do next."
+      },
+      "Show title": {
+        "name": "Show title",
+        "type": "BOOLEAN",
+        "key": "Show title#58323:9",
+        "defaultValue": true
+      },
+      "Show timestamp": {
+        "name": "Show timestamp",
+        "type": "BOOLEAN",
+        "key": "Show timestamp#58323:10",
+        "defaultValue": false
+      },
+      "Show body": {
+        "name": "Show body",
+        "type": "BOOLEAN",
+        "key": "Show body#58323:11",
+        "defaultValue": true
+      },
+      "Show action": {
+        "name": "Show action",
+        "type": "BOOLEAN",
+        "key": "Show action#58323:12",
+        "defaultValue": true
+      },
+      "Show close": {
+        "name": "Show close",
+        "type": "BOOLEAN",
+        "key": "Show close#58323:13",
+        "defaultValue": false
+      },
+      "Tone": {
+        "name": "Tone",
+        "type": "VARIANT",
+        "key": "Tone",
+        "variantOptions": [
+          "Info",
+          "Success",
+          "Warning",
+          "Error"
+        ],
+        "defaultValue": "Info"
+      }
+    },
+    "childInstanceTags": [
+      "icon",
+      "Button",
+      "close"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Icon",
+        "external": false,
+        "nodeId": "55030:701",
+        "assetKey": "7cdc28dc3541b9408c771cc9a7f62fa50b483191"
+      },
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      }
+    ],
+    "assetKey": "5b9fd23654ebca9d3218366da0ada8414ba57fdf"
+  },
+  {
     "name": "Chatbot",
     "nodeId": "55826:37003",
     "type": "COMPONENT_SET",
@@ -4394,7 +5513,8 @@
       "x",
       "brand-mark",
       "Icon",
-      "avatar"
+      "avatar",
+      "reply"
     ],
     "instanceCount": 15,
     "dependencies": [
@@ -4409,6 +5529,12 @@
         "external": false,
         "nodeId": "55030:701",
         "assetKey": "7cdc28dc3541b9408c771cc9a7f62fa50b483191"
+      },
+      {
+        "name": "Chip",
+        "external": false,
+        "nodeId": "123:28380",
+        "assetKey": "87e3bb3c82ce22e42a5e5c4ff97883ed384f4a2b"
       }
     ],
     "assetKey": "29a3f8639fb38c64f948a44ab9b7e05f381fc448"
@@ -4619,9 +5745,20 @@
         "defaultValue": "Ask"
       }
     },
-    "childInstanceTags": [],
+    "childInstanceTags": [
+      "verdict \u2014 Yes",
+      "verdict \u2014 No",
+      "send"
+    ],
     "instanceCount": 3,
-    "dependencies": [],
+    "dependencies": [
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      }
+    ],
     "assetKey": "0548147610f47dee03e4024ac2066f368029acaf"
   },
   {
@@ -4644,9 +5781,20 @@
         "defaultValue": "Notice"
       }
     },
-    "childInstanceTags": [],
+    "childInstanceTags": [
+      "Accept and continue",
+      "Accept all",
+      "Reject optional cookies"
+    ],
     "instanceCount": 3,
-    "dependencies": [],
+    "dependencies": [
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      }
+    ],
     "assetKey": "586b8491c11f405ba22b35c3ebc07c5893df0335"
   },
   {
@@ -4703,6 +5851,12 @@
     "pageName": "Progress Indicators",
     "hasVariants": true,
     "properties": {
+      "Value": {
+        "name": "Value",
+        "type": "TEXT",
+        "key": "Value#58302:34",
+        "defaultValue": "62%"
+      },
       "Progress": {
         "name": "Progress",
         "type": "VARIANT",
@@ -4718,7 +5872,8 @@
           "70%",
           "80%",
           "90%",
-          "100%"
+          "100%",
+          "Custom"
         ],
         "defaultValue": "0%"
       },
@@ -4888,8 +6043,8 @@
       "Pause",
       "Previous",
       "Next",
-      "Divider",
-      "Action"
+      "Action",
+      "Divider"
     ],
     "instanceCount": 9,
     "dependencies": [
@@ -4906,12 +6061,6 @@
         "assetKey": "f52899cc0b07006182f520b288b3a85bfac9a459"
       },
       {
-        "name": "Divider",
-        "external": false,
-        "nodeId": "55061:700",
-        "assetKey": "c0a9c756ae5f4fbf8fe5c49b56cbd8c14b8b6783"
-      },
-      {
         "name": "IconButton",
         "external": false,
         "nodeId": "3:3497",
@@ -4922,6 +6071,12 @@
         "external": false,
         "nodeId": "609:283111",
         "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      },
+      {
+        "name": "Divider",
+        "external": false,
+        "nodeId": "55061:700",
+        "assetKey": "c0a9c756ae5f4fbf8fe5c49b56cbd8c14b8b6783"
       }
     ],
     "assetKey": "b0b974bbbf9a6d9ab18f95907f431ee016b68ab7"
@@ -5367,6 +6522,18 @@
     "pageName": "Badges",
     "hasVariants": true,
     "properties": {
+      "Show Icon": {
+        "name": "Show Icon",
+        "type": "BOOLEAN",
+        "key": "Show Icon#58330:0",
+        "defaultValue": false
+      },
+      "Icon": {
+        "name": "Icon",
+        "type": "INSTANCE_SWAP",
+        "key": "Icon#58330:49",
+        "defaultValue": "55064:832"
+      },
       "Type": {
         "name": "Type",
         "type": "VARIANT",
@@ -5404,8 +6571,10 @@
         "defaultValue": "Subtle"
       }
     },
-    "childInstanceTags": [],
-    "instanceCount": 17,
+    "childInstanceTags": [
+      "icon"
+    ],
+    "instanceCount": 64,
     "dependencies": [],
     "assetKey": "1a2db999fc69f76614ff44a2b3bc8a01c674e579"
   },
@@ -5428,9 +6597,20 @@
         "defaultValue": "Hidden"
       }
     },
-    "childInstanceTags": [],
+    "childInstanceTags": [
+      "Return for correction",
+      "Reject",
+      "Clear selection"
+    ],
     "instanceCount": 2,
-    "dependencies": [],
+    "dependencies": [
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      }
+    ],
     "assetKey": "87ad169e10d4aa6004aad54eab0565bedf1db2d8"
   },
   {
@@ -5562,6 +6742,18 @@
         "key": "Icon#57435:16",
         "defaultValue": "55030:699"
       },
+      "Selected": {
+        "name": "Selected",
+        "type": "BOOLEAN",
+        "key": "Selected#58375:0",
+        "defaultValue": false
+      },
+      "Opens something": {
+        "name": "Opens something",
+        "type": "BOOLEAN",
+        "key": "Opens something#58425:0",
+        "defaultValue": false
+      },
       "Reading": {
         "name": "Reading",
         "type": "VARIANT",
@@ -5582,7 +6774,9 @@
         "variantOptions": [
           "Neutral",
           "Warning",
-          "Danger"
+          "Danger",
+          "Success",
+          "Info"
         ],
         "defaultValue": "Neutral"
       },
@@ -5598,15 +6792,24 @@
       }
     },
     "childInstanceTags": [
-      "icon"
+      "icon",
+      "opens mark",
+      "pill",
+      "status"
     ],
-    "instanceCount": 7,
+    "instanceCount": 13,
     "dependencies": [
       {
         "name": "Icon",
         "external": false,
         "nodeId": "55030:701",
         "assetKey": "7cdc28dc3541b9408c771cc9a7f62fa50b483191"
+      },
+      {
+        "name": "Badge",
+        "external": false,
+        "nodeId": "75:321",
+        "assetKey": "1a2db999fc69f76614ff44a2b3bc8a01c674e579"
       }
     ],
     "assetKey": "9f039bbbdcfb80e3fd9bbbceb20836263d9e7458"
@@ -5674,15 +6877,29 @@
       }
     },
     "childInstanceTags": [
-      "chart"
+      "divider",
+      "chart",
+      "action"
     ],
     "instanceCount": 6,
     "dependencies": [
+      {
+        "name": "Divider",
+        "external": false,
+        "nodeId": "55061:700",
+        "assetKey": "c0a9c756ae5f4fbf8fe5c49b56cbd8c14b8b6783"
+      },
       {
         "name": "Chart",
         "external": false,
         "nodeId": "57417:15992",
         "assetKey": "baf44667f450a5e76c926d14f8bce4bc5603363e"
+      },
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
       }
     ],
     "assetKey": "385ec40a5a2b621888c254710f4db185dd19ced8"
@@ -5718,9 +6935,18 @@
         "defaultValue": "On"
       }
     },
-    "childInstanceTags": [],
+    "childInstanceTags": [
+      "rank"
+    ],
     "instanceCount": 3,
-    "dependencies": [],
+    "dependencies": [
+      {
+        "name": "Badge",
+        "external": false,
+        "nodeId": "75:321",
+        "assetKey": "1a2db999fc69f76614ff44a2b3bc8a01c674e579"
+      }
+    ],
     "assetKey": "ccdc0b86a37cf8edba58795c5f9e6e8e1f6fbf8f"
   },
   {
@@ -5941,6 +7167,30 @@
     "pageName": "Event List",
     "hasVariants": true,
     "properties": {
+      "Action needed": {
+        "name": "Action needed",
+        "type": "BOOLEAN",
+        "key": "Action needed#58160:0",
+        "defaultValue": false
+      },
+      "Show tag": {
+        "name": "Show tag",
+        "type": "BOOLEAN",
+        "key": "Show tag#58160:7",
+        "defaultValue": true
+      },
+      "Due": {
+        "name": "Due",
+        "type": "TEXT",
+        "key": "Due#58160:14",
+        "defaultValue": "Respond by 30 Sept 2026"
+      },
+      "Overdue due": {
+        "name": "Overdue due",
+        "type": "TEXT",
+        "key": "Overdue due#58293:18",
+        "defaultValue": "Was due 30 Sep 2026"
+      },
       "Tone": {
         "name": "Tone",
         "type": "VARIANT",
@@ -5963,12 +7213,116 @@
           "true"
         ],
         "defaultValue": "false"
+      },
+      "Overdue": {
+        "name": "Overdue",
+        "type": "VARIANT",
+        "key": "Overdue",
+        "variantOptions": [
+          "false",
+          "true"
+        ],
+        "defaultValue": "false"
       }
     },
-    "childInstanceTags": [],
-    "instanceCount": 3,
-    "dependencies": [],
+    "childInstanceTags": [
+      "mark",
+      "tag"
+    ],
+    "instanceCount": 5,
+    "dependencies": [
+      {
+        "name": "Icon",
+        "external": false,
+        "nodeId": "55030:701",
+        "assetKey": "7cdc28dc3541b9408c771cc9a7f62fa50b483191"
+      },
+      {
+        "name": "Badge",
+        "external": false,
+        "nodeId": "75:321",
+        "assetKey": "1a2db999fc69f76614ff44a2b3bc8a01c674e579"
+      }
+    ],
     "assetKey": "3948909f21417108f6e2a686953a33953c39abc0"
+  },
+  {
+    "name": "Fact Strip / Fact",
+    "nodeId": "57978:751",
+    "type": "COMPONENT_SET",
+    "pageId": "57976:737",
+    "pageName": "Fact Strip",
+    "hasVariants": true,
+    "properties": {
+      "Value": {
+        "name": "Value",
+        "type": "TEXT",
+        "key": "Value#57979:0",
+        "defaultValue": "New Delhi"
+      },
+      "Label": {
+        "name": "Label",
+        "type": "TEXT",
+        "key": "Label#57979:3",
+        "defaultValue": "Headquarters"
+      },
+      "Type": {
+        "name": "Type",
+        "type": "VARIANT",
+        "key": "Type",
+        "variantOptions": [
+          "Compact",
+          "Extended"
+        ],
+        "defaultValue": "Compact"
+      }
+    },
+    "childInstanceTags": [
+      "Icon"
+    ],
+    "instanceCount": 7,
+    "dependencies": [
+      {
+        "name": "Icon",
+        "external": false,
+        "nodeId": "55030:701",
+        "assetKey": "7cdc28dc3541b9408c771cc9a7f62fa50b483191"
+      }
+    ],
+    "assetKey": "b5bb5f203026add347ae8e17f027badbe1d88177"
+  },
+  {
+    "name": "Fact Strip",
+    "nodeId": "57981:811",
+    "type": "COMPONENT_SET",
+    "pageId": "57976:737",
+    "pageName": "Fact Strip",
+    "hasVariants": true,
+    "properties": {
+      "Type": {
+        "name": "Type",
+        "type": "VARIANT",
+        "key": "Type",
+        "variantOptions": [
+          "Compact",
+          "Extended"
+        ],
+        "defaultValue": "Compact"
+      }
+    },
+    "childInstanceTags": [
+      "Fact"
+    ],
+    "instanceCount": 6,
+    "dependencies": [
+      {
+        "name": "Fact Strip / Fact",
+        "external": false,
+        "nodeId": "57978:751",
+        "assetKey": "b5bb5f203026add347ae8e17f027badbe1d88177"
+      }
+    ],
+    "assetKey": "d9e19af1044b28d2e6269add2d6e5a10c0f52f34"
   },
   {
     "name": "Figure",
@@ -6293,7 +7647,7 @@
       }
     },
     "childInstanceTags": [],
-    "instanceCount": 4,
+    "instanceCount": 5,
     "dependencies": [],
     "assetKey": "ac48acbd961f490764ae4ab61d3adf0ea0197759"
   },
@@ -6414,9 +7768,20 @@
         "defaultValue": "Default"
       }
     },
-    "childInstanceTags": [],
+    "childInstanceTags": [
+      "Add",
+      "Remove",
+      "Add 2"
+    ],
     "instanceCount": 3,
-    "dependencies": [],
+    "dependencies": [
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      }
+    ],
     "assetKey": "1fb451e2a567e73a9d8e38736b8ce73918416334"
   },
   {
@@ -6464,9 +7829,18 @@
         "defaultValue": "Live"
       }
     },
-    "childInstanceTags": [],
+    "childInstanceTags": [
+      "badge"
+    ],
     "instanceCount": 3,
-    "dependencies": [],
+    "dependencies": [
+      {
+        "name": "Badge",
+        "external": false,
+        "nodeId": "75:321",
+        "assetKey": "1a2db999fc69f76614ff44a2b3bc8a01c674e579"
+      }
+    ],
     "assetKey": "bdb35b6e17be06b1b34607de499f5f5807815e01"
   },
   {
@@ -6588,7 +7962,7 @@
       "Table",
       "Checkbox"
     ],
-    "instanceCount": 80,
+    "instanceCount": 86,
     "dependencies": [
       {
         "name": "Table",
@@ -6868,19 +8242,15 @@
       }
     },
     "childInstanceTags": [
-      "icon"
+      "Button"
     ],
     "instanceCount": 0,
     "dependencies": [
       {
-        "name": "pause",
-        "external": true,
-        "assetKey": "a2ef0ccb4457d75f7f24b6b69028dc1303d2d722"
-      },
-      {
-        "name": "play_arrow",
-        "external": true,
-        "assetKey": "d0f4785dc287b7cff180812206dfe2ae46d39d38"
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
       }
     ],
     "assetKey": "b8070770dc233c555f6f01c6ad173d12af2c21f2"
@@ -6939,7 +8309,7 @@
       "\u26d4 Slide 4/Desktop (deprecated)",
       "\u26d4 Slide 5/Desktop (deprecated)",
       "icon",
-      "Pause/Play Button",
+      "\u26d4 Pause/Play Button (deprecated)",
       "Loader",
       "Slide 1 Again"
     ],
@@ -7030,7 +8400,7 @@
       "\u26d4 Slide 4/Desktop (deprecated)",
       "\u26d4 Slide 5/Desktop (deprecated)",
       "icon",
-      "Pause/Play Button",
+      "\u26d4 Pause/Play Button (deprecated)",
       "Loader"
     ],
     "instanceCount": 0,
@@ -7389,6 +8759,18 @@
     "pageName": "Navbar",
     "hasVariants": true,
     "properties": {
+      "Show Overview": {
+        "name": "Show Overview",
+        "type": "BOOLEAN",
+        "key": "Show Overview#58044:0",
+        "defaultValue": false
+      },
+      "Overview Label": {
+        "name": "Overview Label",
+        "type": "TEXT",
+        "key": "Overview Label#58044:4",
+        "defaultValue": "All of Associated Organisations"
+      },
       "Device": {
         "name": "Device",
         "type": "VARIANT",
@@ -7402,7 +8784,8 @@
       }
     },
     "childInstanceTags": [
-      "Navbar/MegaMenuItem"
+      "Navbar/MegaMenuItem",
+      "Icon"
     ],
     "instanceCount": 1,
     "dependencies": [
@@ -7411,6 +8794,12 @@
         "external": false,
         "nodeId": "4258:33604",
         "assetKey": "3f2deee53f00707d8e7d74a98978ffa39b9dc84f"
+      },
+      {
+        "name": "Icon",
+        "external": false,
+        "nodeId": "55030:701",
+        "assetKey": "7cdc28dc3541b9408c771cc9a7f62fa50b483191"
       }
     ],
     "assetKey": "141f728cd144e2f770f2ccd7bb322f5fbb3d92ff"
@@ -7437,6 +8826,17 @@
     },
     "childInstanceTags": [
       "Navbar/BrandLockup",
+      "Divider",
+      "Navbar/NavSheetRow \u2014 Home",
+      "Navbar/NavSheetRow \u2014 Department",
+      "Navbar/NavSheetRow \u2014 Associated Organisations",
+      "Navbar/NavSheetRow \u2014 Offerings",
+      "Navbar/NavSheetRow \u2014 Documents",
+      "Navbar/NavSheetRow \u2014 Events & Gallery",
+      "Navbar/NavSheetRow \u2014 Connect",
+      "Navbar/NavSheetRow \u2014 About Us",
+      "Navbar/NavSheetRow \u2014 Who's Who",
+      "Navbar/NavSheetRow \u2014 Directory",
       "Navbar/MegaMenu"
     ],
     "instanceCount": 1,
@@ -7448,6 +8848,18 @@
         "assetKey": "b321ac9b16f33132b0840c65611aa9318a81108d"
       },
       {
+        "name": "Divider",
+        "external": false,
+        "nodeId": "55061:700",
+        "assetKey": "c0a9c756ae5f4fbf8fe5c49b56cbd8c14b8b6783"
+      },
+      {
+        "name": "Navbar/NavSheetRow",
+        "external": false,
+        "nodeId": "58049:763",
+        "assetKey": "fedaee6afe9a3ce3a79fb1642cd6f1e672a4cdca"
+      },
+      {
         "name": "Navbar/MegaMenu",
         "external": false,
         "nodeId": "4268:914",
@@ -7455,6 +8867,56 @@
       }
     ],
     "assetKey": "f3bcd185cfce1a68aa3f2a521b78b5cd8041168f"
+  },
+  {
+    "name": "Navbar/NavSheetRow",
+    "nodeId": "58049:763",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:323870",
+    "pageName": "Navbar",
+    "hasVariants": true,
+    "properties": {
+      "Label": {
+        "name": "Label",
+        "type": "TEXT",
+        "key": "Label#58049:0",
+        "defaultValue": "Department"
+      },
+      "Type": {
+        "name": "Type",
+        "type": "VARIANT",
+        "key": "Type",
+        "variantOptions": [
+          "Link",
+          "Group",
+          "Sub"
+        ],
+        "defaultValue": "Link"
+      },
+      "Open": {
+        "name": "Open",
+        "type": "VARIANT",
+        "key": "Open",
+        "variantOptions": [
+          "False",
+          "True"
+        ],
+        "defaultValue": "False"
+      }
+    },
+    "childInstanceTags": [
+      "Chevron"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Icon",
+        "external": false,
+        "nodeId": "55030:701",
+        "assetKey": "7cdc28dc3541b9408c771cc9a7f62fa50b483191"
+      }
+    ],
+    "assetKey": "fedaee6afe9a3ce3a79fb1642cd6f1e672a4cdca"
   },
   {
     "name": "Navbar/MenuToggle",
@@ -7752,6 +9214,58 @@
     "assetKey": "b90e7dee28c2dffb53bce008afcb0796e8a419b3"
   },
   {
+    "name": "Navbar/NotificationBell",
+    "nodeId": "58143:59613",
+    "type": "COMPONENT_SET",
+    "pageId": "2141:323870",
+    "pageName": "Navbar",
+    "hasVariants": true,
+    "properties": {
+      "State": {
+        "name": "State",
+        "type": "VARIANT",
+        "key": "State",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Focused"
+        ],
+        "defaultValue": "Default"
+      },
+      "Badge": {
+        "name": "Badge",
+        "type": "VARIANT",
+        "key": "Badge",
+        "variantOptions": [
+          "Count",
+          "None",
+          "Error"
+        ],
+        "defaultValue": "None"
+      }
+    },
+    "childInstanceTags": [
+      "IconButton",
+      "Badge"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "IconButton",
+        "external": false,
+        "nodeId": "3:3497",
+        "assetKey": "4d4a87915a6f7feaf975286a565b248038007673"
+      },
+      {
+        "name": "Badge",
+        "external": false,
+        "nodeId": "75:321",
+        "assetKey": "1a2db999fc69f76614ff44a2b3bc8a01c674e579"
+      }
+    ],
+    "assetKey": "df1dea3ff94177bb31afd649f7eab36b934119e9"
+  },
+  {
     "name": "Navbar/Website",
     "nodeId": "2476:296125",
     "type": "COMPONENT_SET",
@@ -7809,7 +9323,7 @@
       "Events & Gallery",
       "Connect"
     ],
-    "instanceCount": 15,
+    "instanceCount": 14,
     "dependencies": [
       {
         "name": "AccessibilityBar",
@@ -7888,6 +9402,12 @@
         "key": "Profile#56716:0",
         "defaultValue": true
       },
+      "Notifications": {
+        "name": "Notifications",
+        "type": "BOOLEAN",
+        "key": "Notifications#58143:0",
+        "defaultValue": false
+      },
       "Device": {
         "name": "Device",
         "type": "VARIANT",
@@ -7915,13 +9435,14 @@
       "Navbar/MenuToggle",
       "Navbar/BrandLockup",
       "Search",
+      "Navbar/NotificationBell",
       "Profile",
       "Button",
       "Navbar/AccountMenu",
       "Avatar",
       "SAMAVESH"
     ],
-    "instanceCount": 37,
+    "instanceCount": 38,
     "dependencies": [
       {
         "name": "AccessibilityBar",
@@ -7946,6 +9467,12 @@
         "external": false,
         "nodeId": "3:3497",
         "assetKey": "4d4a87915a6f7feaf975286a565b248038007673"
+      },
+      {
+        "name": "Navbar/NotificationBell",
+        "external": false,
+        "nodeId": "58143:59613",
+        "assetKey": "df1dea3ff94177bb31afd649f7eab36b934119e9"
       },
       {
         "name": "Avatar",
@@ -8057,6 +9584,81 @@
       }
     ],
     "assetKey": "21453cff1fe3b247c00a5d3bcf5aca3c3d5cf597"
+  },
+  {
+    "name": "Portal Page Header",
+    "nodeId": "58190:854",
+    "type": "COMPONENT_SET",
+    "pageId": "57761:5154",
+    "pageName": "Page Header",
+    "hasVariants": true,
+    "properties": {
+      "Show Eyebrow": {
+        "name": "Show Eyebrow",
+        "type": "BOOLEAN",
+        "key": "Show Eyebrow#58190:0",
+        "defaultValue": false
+      },
+      "Eyebrow": {
+        "name": "Eyebrow",
+        "type": "TEXT",
+        "key": "Eyebrow#58190:3",
+        "defaultValue": "GRANT-IN-AID"
+      },
+      "Title": {
+        "name": "Title",
+        "type": "TEXT",
+        "key": "Title#58190:6",
+        "defaultValue": "Applications"
+      },
+      "Show Meta": {
+        "name": "Show Meta",
+        "type": "BOOLEAN",
+        "key": "Show Meta#58190:9",
+        "defaultValue": true
+      },
+      "Meta": {
+        "name": "Meta",
+        "type": "TEXT",
+        "key": "Meta#58190:12",
+        "defaultValue": "Please provide all necessary information below and complete each section to register for the scheme. Fields marked * are mandatory."
+      },
+      "Show Actions": {
+        "name": "Show Actions",
+        "type": "BOOLEAN",
+        "key": "Show Actions#58190:15",
+        "defaultValue": false
+      },
+      "Actions": {
+        "name": "Actions",
+        "type": "SLOT",
+        "key": "Actions#58190:18",
+        "defaultValue": "-1:-1"
+      },
+      "Size": {
+        "name": "Size",
+        "type": "VARIANT",
+        "key": "Size",
+        "variantOptions": [
+          "Default",
+          "Compact"
+        ],
+        "defaultValue": "Default"
+      }
+    },
+    "childInstanceTags": [
+      "Button"
+    ],
+    "instanceCount": 2,
+    "dependencies": [
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      }
+    ],
+    "assetKey": "bcc212291e6c0ba305c0447ed56dbd117b5f11db"
   },
   {
     "name": "SAMAVESH Banner",
@@ -8178,7 +9780,7 @@
       "instagram",
       "youtube",
       "whatsapp",
-      "NeGD",
+      "NeGD/on-dark",
       "Digital India"
     ],
     "instanceCount": 6,
@@ -8226,10 +9828,10 @@
         "assetKey": "623449b0e863f313e082eae0342898f357f2a4e6"
       },
       {
-        "name": "NeGD",
+        "name": "NeGD/on-dark",
         "external": false,
-        "nodeId": "534:22120",
-        "assetKey": "e8d2994e6fa14c32160cdd1f75ccee2118c1075c"
+        "nodeId": "58337:9884",
+        "assetKey": "ca2f198c3b688272bc1136159152291fcaad4018"
       },
       {
         "name": "Digital India",
@@ -8904,9 +10506,14 @@
         "key": "Step",
         "variantOptions": [
           "Reset",
-          "Success"
+          "Success",
+          "Request",
+          "Verify",
+          "Link Request",
+          "Link Sent",
+          "Contact"
         ],
-        "defaultValue": "Reset"
+        "defaultValue": "Request"
       }
     },
     "childInstanceTags": [
@@ -9008,25 +10615,32 @@
         "name": "Show consent",
         "type": "BOOLEAN",
         "key": "Show consent#57577:7",
-        "defaultValue": true
+        "defaultValue": false
       },
       "Show account prompt": {
         "name": "Show account prompt",
         "type": "BOOLEAN",
         "key": "Show account prompt#57577:8",
         "defaultValue": true
+      },
+      "Show role select": {
+        "name": "Show role select",
+        "type": "BOOLEAN",
+        "key": "Show role select#58128:10",
+        "defaultValue": false
       }
     },
     "childInstanceTags": [
       "Tabs",
       "DigiLocker",
       "Credentials divider",
+      "Role select",
       "Credential fields",
       "Primary action",
       "Consent",
       "Account prompt"
     ],
-    "instanceCount": 12,
+    "instanceCount": 16,
     "dependencies": [
       {
         "name": "Tabs",
@@ -9045,6 +10659,12 @@
         "external": false,
         "nodeId": "55437:695",
         "assetKey": "93481f9430abc3d5618532590ee6441243f9bc86"
+      },
+      {
+        "name": "Select",
+        "external": false,
+        "nodeId": "55430:34472",
+        "assetKey": "a262bb48faa15aff6bda07589aaefac886dc8ff1"
       },
       {
         "name": "Button",
@@ -9117,41 +10737,11 @@
     "pageName": "Portal Login Template",
     "hasVariants": true,
     "properties": {
-      "Show role tabs": {
-        "name": "Show role tabs",
-        "type": "BOOLEAN",
-        "key": "Show role tabs#56640:0",
-        "defaultValue": true
-      },
-      "Show DigiLocker": {
-        "name": "Show DigiLocker",
-        "type": "BOOLEAN",
-        "key": "Show DigiLocker#56640:1",
-        "defaultValue": true
-      },
-      "Show method tabs": {
-        "name": "Show method tabs",
-        "type": "BOOLEAN",
-        "key": "Show method tabs#56640:2",
-        "defaultValue": true
-      },
-      "Show role select": {
-        "name": "Show role select",
-        "type": "BOOLEAN",
-        "key": "Show role select#56640:3",
-        "defaultValue": true
-      },
       "Show consent": {
         "name": "Show consent",
         "type": "BOOLEAN",
         "key": "Show consent#56640:4",
-        "defaultValue": true
-      },
-      "Show account prompt": {
-        "name": "Show account prompt",
-        "type": "BOOLEAN",
-        "key": "Show account prompt#56640:5",
-        "defaultValue": true
+        "defaultValue": false
       },
       "Step": {
         "name": "Step",
@@ -9159,32 +10749,35 @@
         "key": "Step",
         "variantOptions": [
           "Reset",
-          "Success"
+          "Success",
+          "Request",
+          "Verify",
+          "Link Request",
+          "Link Sent",
+          "Contact"
         ],
-        "defaultValue": "Reset"
+        "defaultValue": "Request"
       }
     },
     "childInstanceTags": [
+      "Credential fields",
+      "Primary action",
+      "Consent",
+      "Back to Login link",
       "New password",
       "Strength",
       "Confirm password",
-      "Primary action",
-      "Consent",
-      "Success mark"
+      "Success mark",
+      "Sent mark",
+      "Notice mark"
     ],
-    "instanceCount": 0,
+    "instanceCount": 7,
     "dependencies": [
       {
-        "name": "Input Field",
+        "name": "Auth / CredentialFields / OTP request",
         "external": false,
-        "nodeId": "85:837",
-        "assetKey": "fca6f0243673ec4eaa4f0cba4b3d29ebeca1d533"
-      },
-      {
-        "name": "PasswordStrengthMeter",
-        "external": false,
-        "nodeId": "55432:795",
-        "assetKey": "c6832a5ba7592b7b04a6b3d50385677a3522ce75"
+        "nodeId": "58128:7065",
+        "assetKey": "d214b526fd129eb43289b7b751d516f5e05a63ca"
       },
       {
         "name": "Button",
@@ -9197,6 +10790,30 @@
         "external": false,
         "nodeId": "55437:699",
         "assetKey": "6a761bbd753e44ff6ca30255282e6ee569c0c65a"
+      },
+      {
+        "name": "Link",
+        "external": false,
+        "nodeId": "2723:1598",
+        "assetKey": "027884e4b03f49bd5167d59392e9dd9e347e9473"
+      },
+      {
+        "name": "Auth / CredentialFields / OTP verify",
+        "external": false,
+        "nodeId": "57575:14856",
+        "assetKey": "664a1d8ec7b3d35eb8ea9f2a801e50d9c5591a9a"
+      },
+      {
+        "name": "Input Field",
+        "external": false,
+        "nodeId": "85:837",
+        "assetKey": "fca6f0243673ec4eaa4f0cba4b3d29ebeca1d533"
+      },
+      {
+        "name": "PasswordStrengthMeter",
+        "external": false,
+        "nodeId": "55432:795",
+        "assetKey": "c6832a5ba7592b7b04a6b3d50385677a3522ce75"
       },
       {
         "name": "Icon",
@@ -9239,11 +10856,18 @@
       }
     },
     "childInstanceTags": [
+      "SAMAVESH",
       "Auth / SigningIntoBar",
       "Portal Hero"
     ],
     "instanceCount": 0,
     "dependencies": [
+      {
+        "name": "SAMAVESH",
+        "external": false,
+        "nodeId": "4033:1920",
+        "assetKey": "f2d03148591f5996dae6d78027458ddbb568e344"
+      },
       {
         "name": "Auth / SigningIntoBar",
         "external": false,
@@ -9453,6 +11077,30 @@
         "key": "Logo#57464:1",
         "defaultValue": "56560:947"
       },
+      "Tagline": {
+        "name": "Tagline",
+        "type": "TEXT",
+        "key": "Tagline#58029:0",
+        "defaultValue": "Portal Tagline"
+      },
+      "Description": {
+        "name": "Description",
+        "type": "TEXT",
+        "key": "Description#58029:3",
+        "defaultValue": "Portal Description"
+      },
+      "Show tagline": {
+        "name": "Show tagline",
+        "type": "BOOLEAN",
+        "key": "Show tagline#58029:6",
+        "defaultValue": false
+      },
+      "Show description": {
+        "name": "Show description",
+        "type": "BOOLEAN",
+        "key": "Show description#58029:9",
+        "defaultValue": false
+      },
       "Device": {
         "name": "Device",
         "type": "VARIANT",
@@ -9481,17 +11129,28 @@
   },
   {
     "name": "Auth / CredentialFields / Identifier + Password",
-    "nodeId": "57574:14697",
-    "type": "COMPONENT",
+    "nodeId": "58128:7186",
+    "type": "COMPONENT_SET",
     "pageId": "55384:695",
     "pageName": "Portal Login Template",
-    "hasVariants": false,
+    "hasVariants": true,
     "properties": {
       "Show captcha": {
         "name": "Show captcha",
         "type": "BOOLEAN",
-        "key": "Show captcha#57577:9",
+        "key": "Show captcha#58128:8",
         "defaultValue": false
+      },
+      "Identifier kind": {
+        "name": "Identifier kind",
+        "type": "VARIANT",
+        "key": "Identifier kind",
+        "variantOptions": [
+          "Text",
+          "Mobile",
+          "Email"
+        ],
+        "defaultValue": "Text"
       }
     },
     "childInstanceTags": [
@@ -9521,21 +11180,32 @@
         "assetKey": "1f2af50439268632ad182d5cd4cce57f8cf71201"
       }
     ],
-    "assetKey": "be375d354e132a359f166212617e94563636140b"
+    "assetKey": "d293cffbab385850c39c1dd086da8a43782be697"
   },
   {
     "name": "Auth / CredentialFields / Identifier + PIN",
-    "nodeId": "57574:14737",
-    "type": "COMPONENT",
+    "nodeId": "58128:56377",
+    "type": "COMPONENT_SET",
     "pageId": "55384:695",
     "pageName": "Portal Login Template",
-    "hasVariants": false,
+    "hasVariants": true,
     "properties": {
       "Show captcha": {
         "name": "Show captcha",
         "type": "BOOLEAN",
-        "key": "Show captcha#57577:10",
+        "key": "Show captcha#58128:9",
         "defaultValue": false
+      },
+      "Identifier kind": {
+        "name": "Identifier kind",
+        "type": "VARIANT",
+        "key": "Identifier kind",
+        "variantOptions": [
+          "Text",
+          "Mobile",
+          "Email"
+        ],
+        "defaultValue": "Text"
       }
     },
     "childInstanceTags": [
@@ -9565,7 +11235,7 @@
         "assetKey": "1f2af50439268632ad182d5cd4cce57f8cf71201"
       }
     ],
-    "assetKey": "4ca6d1514e6547a12fc826f46d9d39d8887bcbb4"
+    "assetKey": "e4f05fb7492d9b7314ae1f9d6b78ebcce3257430"
   },
   {
     "name": "Auth / CredentialFields / DARPAN",
@@ -9592,12 +11262,36 @@
   },
   {
     "name": "Auth / CredentialFields / OTP request",
-    "nodeId": "57575:14833",
-    "type": "COMPONENT",
+    "nodeId": "58128:7065",
+    "type": "COMPONENT_SET",
     "pageId": "55384:695",
     "pageName": "Portal Login Template",
-    "hasVariants": false,
-    "properties": {},
+    "hasVariants": true,
+    "properties": {
+      "Show note": {
+        "name": "Show note",
+        "type": "BOOLEAN",
+        "key": "Show note#58128:0",
+        "defaultValue": false
+      },
+      "Note": {
+        "name": "Note",
+        "type": "TEXT",
+        "key": "Note#58128:4",
+        "defaultValue": "The OTP is sent to the contact details registered against this account."
+      },
+      "Identifier kind": {
+        "name": "Identifier kind",
+        "type": "VARIANT",
+        "key": "Identifier kind",
+        "variantOptions": [
+          "Mobile",
+          "Text",
+          "Email"
+        ],
+        "defaultValue": "Mobile"
+      }
+    },
     "childInstanceTags": [
       "Identifier"
     ],
@@ -9610,7 +11304,7 @@
         "assetKey": "fca6f0243673ec4eaa4f0cba4b3d29ebeca1d533"
       }
     ],
-    "assetKey": "103f114b3aba2f9e5f498434f14b29b9ffd03470"
+    "assetKey": "d214b526fd129eb43289b7b751d516f5e05a63ca"
   },
   {
     "name": "Auth / CredentialFields / OTP verify",
@@ -9667,5 +11361,228 @@
     "instanceCount": 0,
     "dependencies": [],
     "assetKey": "ccf1c70f8f8a37842c93e20eed96738fe28e4263"
+  },
+  {
+    "name": "Worklist / Card",
+    "nodeId": "58453:9022",
+    "type": "COMPONENT",
+    "pageId": "57677:737",
+    "pageName": "Screen Templates",
+    "hasVariants": false,
+    "properties": {
+      "Title": {
+        "name": "Title",
+        "type": "TEXT",
+        "key": "Title#58453:0",
+        "defaultValue": "SC/RJ/JAI/02029"
+      },
+      "Label 1": {
+        "name": "Label 1",
+        "type": "TEXT",
+        "key": "Label 1#58453:1",
+        "defaultValue": "NGO"
+      },
+      "Value 1": {
+        "name": "Value 1",
+        "type": "TEXT",
+        "key": "Value 1#58453:2",
+        "defaultValue": "Navchetna Shikshan Prasarak Mandal"
+      },
+      "Label 2": {
+        "name": "Label 2",
+        "type": "TEXT",
+        "key": "Label 2#58453:3",
+        "defaultValue": "Scheme"
+      },
+      "Value 2": {
+        "name": "Value 2",
+        "type": "TEXT",
+        "key": "Value 2#58453:4",
+        "defaultValue": "SHRESHTA Mode 2"
+      },
+      "Label 3": {
+        "name": "Label 3",
+        "type": "TEXT",
+        "key": "Label 3#58453:5",
+        "defaultValue": "Status"
+      },
+      "Value 3": {
+        "name": "Value 3",
+        "type": "TEXT",
+        "key": "Value 3#58453:6",
+        "defaultValue": "Received - with the Assistant Section Officer"
+      },
+      "Label 4": {
+        "name": "Label 4",
+        "type": "TEXT",
+        "key": "Label 4#58453:7",
+        "defaultValue": "Submitted"
+      },
+      "Value 4": {
+        "name": "Value 4",
+        "type": "TEXT",
+        "key": "Value 4#58453:8",
+        "defaultValue": "14 Sep 2026"
+      },
+      "Show Pair 3": {
+        "name": "Show Pair 3",
+        "type": "BOOLEAN",
+        "key": "Show Pair 3#58453:9",
+        "defaultValue": true
+      },
+      "Show Pair 4": {
+        "name": "Show Pair 4",
+        "type": "BOOLEAN",
+        "key": "Show Pair 4#58453:10",
+        "defaultValue": false
+      },
+      "Show Select": {
+        "name": "Show Select",
+        "type": "BOOLEAN",
+        "key": "Show Select#58453:11",
+        "defaultValue": false
+      },
+      "Show Actions": {
+        "name": "Show Actions",
+        "type": "BOOLEAN",
+        "key": "Show Actions#58453:12",
+        "defaultValue": true
+      },
+      "Reference": {
+        "name": "Reference",
+        "type": "TEXT",
+        "key": "Reference#58458:0",
+        "defaultValue": "GIA/2026-27/SHRESHTA_M2/BARABANKI/01280"
+      },
+      "Show Reference": {
+        "name": "Show Reference",
+        "type": "BOOLEAN",
+        "key": "Show Reference#58458:1",
+        "defaultValue": true
+      },
+      "Show Value 1": {
+        "name": "Show Value 1",
+        "type": "BOOLEAN",
+        "key": "Show Value 1#58458:2",
+        "defaultValue": true
+      },
+      "Show Badge 1": {
+        "name": "Show Badge 1",
+        "type": "BOOLEAN",
+        "key": "Show Badge 1#58458:3",
+        "defaultValue": false
+      },
+      "Detail 1": {
+        "name": "Detail 1",
+        "type": "TEXT",
+        "key": "Detail 1#58458:4",
+        "defaultValue": "Barabanki, Uttar Pradesh"
+      },
+      "Show Detail 1": {
+        "name": "Show Detail 1",
+        "type": "BOOLEAN",
+        "key": "Show Detail 1#58458:5",
+        "defaultValue": false
+      },
+      "Show Value 2": {
+        "name": "Show Value 2",
+        "type": "BOOLEAN",
+        "key": "Show Value 2#58458:6",
+        "defaultValue": true
+      },
+      "Show Badge 2": {
+        "name": "Show Badge 2",
+        "type": "BOOLEAN",
+        "key": "Show Badge 2#58458:7",
+        "defaultValue": false
+      },
+      "Detail 2": {
+        "name": "Detail 2",
+        "type": "TEXT",
+        "key": "Detail 2#58458:8",
+        "defaultValue": "06 Aug 2026"
+      },
+      "Show Detail 2": {
+        "name": "Show Detail 2",
+        "type": "BOOLEAN",
+        "key": "Show Detail 2#58458:9",
+        "defaultValue": false
+      },
+      "Show Value 3": {
+        "name": "Show Value 3",
+        "type": "BOOLEAN",
+        "key": "Show Value 3#58458:10",
+        "defaultValue": true
+      },
+      "Show Badge 3": {
+        "name": "Show Badge 3",
+        "type": "BOOLEAN",
+        "key": "Show Badge 3#58458:11",
+        "defaultValue": false
+      },
+      "Detail 3": {
+        "name": "Detail 3",
+        "type": "TEXT",
+        "key": "Detail 3#58458:12",
+        "defaultValue": "Detail"
+      },
+      "Show Detail 3": {
+        "name": "Show Detail 3",
+        "type": "BOOLEAN",
+        "key": "Show Detail 3#58458:13",
+        "defaultValue": false
+      },
+      "Show Value 4": {
+        "name": "Show Value 4",
+        "type": "BOOLEAN",
+        "key": "Show Value 4#58458:14",
+        "defaultValue": true
+      },
+      "Show Badge 4": {
+        "name": "Show Badge 4",
+        "type": "BOOLEAN",
+        "key": "Show Badge 4#58458:15",
+        "defaultValue": false
+      },
+      "Detail 4": {
+        "name": "Detail 4",
+        "type": "TEXT",
+        "key": "Detail 4#58458:16",
+        "defaultValue": "41 days"
+      },
+      "Show Detail 4": {
+        "name": "Show Detail 4",
+        "type": "BOOLEAN",
+        "key": "Show Detail 4#58458:17",
+        "defaultValue": false
+      }
+    },
+    "childInstanceTags": [
+      "Select",
+      "status badge",
+      "Button"
+    ],
+    "instanceCount": 0,
+    "dependencies": [
+      {
+        "name": "Checkbox",
+        "external": false,
+        "nodeId": "15:664",
+        "assetKey": "f41f0eb6c5b211f05bc5c302e842c8287abb2c60"
+      },
+      {
+        "name": "Badge",
+        "external": false,
+        "nodeId": "75:321",
+        "assetKey": "1a2db999fc69f76614ff44a2b3bc8a01c674e579"
+      },
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
+      }
+    ],
+    "assetKey": "c9f7ed4975ebff3cdaf553b979e65ae702b052af"
   }
 ]
