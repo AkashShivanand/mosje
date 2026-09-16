@@ -2542,6 +2542,18 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "ChartTooltipProps": {
+    "source": "packages/design-system/components/data-display/charts/internal/tooltip.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "tip",
+        "type": "TooltipState | null",
+        "required": true,
+        "description": "The reading under the pointer, or `null` when there is none — which renders nothing rather than an empty box. Comes from `useChartTooltip()`; a chart never builds it."
+      }
+    ]
+  },
   "ChatbotMascotProps": {
     "source": "packages/design-system/components/feedback/chatbot-mascot.tsx",
     "inheritsNative": true,
