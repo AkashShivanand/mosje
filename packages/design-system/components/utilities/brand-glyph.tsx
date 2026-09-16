@@ -163,7 +163,7 @@ export interface BrandGlyphProps extends Omit<React.SVGProps<SVGSVGElement>, "vi
  *
  * @example
  * // The normal case — the link owns the name, the glyph is silent
- * <a href={url}><BrandGlyph name="x" /><span className="sr-only">X</span></a>
+ * <a href={url}><BrandGlyph name="x" /><span className="ds-sr-only">X</span></a>
  *
  * @example
  * // Larger, in the brand's own colour

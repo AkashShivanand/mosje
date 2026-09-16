@@ -13637,7 +13637,7 @@ export const GENERATED_PROPS = {
         "name": "organisation",
         "type": "string[]",
         "required": true,
-        "description": "Organisation lines, coarsest first. The last is emphasised."
+        "description": "Organisation lines, coarsest first. The last is emphasised. Required by the type on both variants so one content object drives both, but DRAWN only on `website` — the portal variant has no identity block."
       },
       {
         "name": "policyLinks",
@@ -13679,7 +13679,7 @@ export const GENERATED_PROPS = {
         "name": "emblem",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Emblem or logo for the identity lockup. Pass a rendered `next/image`."
+        "description": "Emblem or logo for the identity lockup. Pass a rendered `next/image`. Website variant only."
       },
       {
         "name": "lastUpdated",

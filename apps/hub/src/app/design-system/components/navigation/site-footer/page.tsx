@@ -94,10 +94,10 @@ const A11Y: A11yItem[] = [
     criterion: "1.4.3 Contrast (Minimum)",
     level: "AA",
     description:
-      "Colour comes entirely from the component's stylesheet, bound to the mode-aware brand ramp, so a caller cannot introduce a failing pair through `className`.",
+      "Colour comes entirely from the component's stylesheet, bound to mode-aware semantic and component tokens, so a caller cannot introduce a failing pair through `className`.",
     status: "verified",
     evidence:
-      "Measured 2026-09-07 on the default blue ground #003975: lead ink #ffffff 11.40:1, navigation ink #c0dbff 8.04:1, boilerplate ink #92c2ff 6.18:1 — all against the 4.5:1 AA threshold. Re-measured 2026-09-16 in the browser across all ten brand modes: unchanged, worst case 5.37:1 (dbim-green, boilerplate ink).",
+      "Measured 2026-09-07 on the default blue ground #003975: lead ink #ffffff 11.40:1, navigation ink #c0dbff 8.04:1, boilerplate ink #92c2ff 6.18:1 — all against the 4.5:1 AA threshold. Re-measured 2026-09-16 in the browser across all eight brand modes: unchanged, worst case 5.37:1 (dbim-green, boilerplate ink).",
   },
   {
     criterion: "1.4.11 Non-text Contrast",
@@ -105,7 +105,7 @@ const A11Y: A11yItem[] = [
     description:
       "The zone hairline (1.81:1) and the social chip ground (1.45:1) both sit below 3:1 and both are exempt: neither carries information required to identify a control or understand content. Each social link is identified by its glyph, which reads 5.55:1 on the chip.",
     status: "verified",
-    evidence: "Measured 2026-09-16 in the browser on the default blue ground; across all ten brand modes the glyph's worst case on its chip is 4.88:1 (dbim-green), the chip 1.43–1.52:1 and the hairline 1.27–2.04:1. The exemption is WCAG 1.4.11's own carve-out for decoration.",
+    evidence: "Measured 2026-09-16 in the browser on the default blue ground; across all eight brand modes the glyph's worst case on its chip is 4.88:1 (dbim-green), the chip 1.43–1.52:1 and the hairline 1.27–2.04:1. The exemption is WCAG 1.4.11's own carve-out for decoration.",
   },
   {
     criterion: "2.5.8 Target Size (Minimum)",
@@ -268,7 +268,7 @@ import { SiteFooter } from "@mosje/design-system";
   credits={CREDITS}
   policyLinks={POLICY_LINKS}
   sitemap={{ label: "Sitemap", href: "/website/sitemap" }}
-  help={{ label: "Help & Support", href: "/website/help" }}
+  help={{ label: "Help & Support", href: "/website/contact-us" }}
   relatedLinks={RELATED_LINKS}
   copyright="© 2026 Department of Social Justice & Empowerment. All rights reserved."
   lastUpdated={page.lastUpdated}
@@ -285,7 +285,7 @@ import { SiteFooter } from "@mosje/design-system";
   lineage={LINEAGE}
   policyLinks={POLICY_LINKS}
   sitemap={{ label: "Sitemap", href: "/website/sitemap" }}
-  help={{ label: "Help & Support", href: "/website/help" }}
+  help={{ label: "Help & Support", href: "/website/contact-us" }}
   copyright={COPYRIGHT}
   lastUpdated={page.lastUpdated}
 />`}</CodeBlock>

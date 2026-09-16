@@ -8,7 +8,7 @@ import "./site-footer.css";
  * Which surface this footer is ending.
  *
  * `website` — the front door of a public information site. Carries wayfinding
- * (navigation columns, social, an optional support strip) on top of the
+ * (identity, address, social, navigation columns, Related Links) on top of the
  * statutory apparatus.
  *
  * `portal` — chrome under an authenticated workflow. Carries the statutory
@@ -59,9 +59,14 @@ export interface SiteFooterCredit {
 export interface SiteFooterProps extends React.HTMLAttributes<HTMLElement> {
   /** @default "website" */
   variant?: SiteFooterVariant;
-  /** Emblem or logo for the identity lockup. Pass a rendered `next/image`. */
+  /** Emblem or logo for the identity lockup. Pass a rendered `next/image`. Website variant only. */
   emblem?: React.ReactNode;
-  /** Organisation lines, coarsest first. The last is emphasised. */
+  /**
+   * Organisation lines, coarsest first. The last is emphasised.
+   *
+   * Required by the type on both variants so one content object drives both,
+   * but DRAWN only on `website` — the portal variant has no identity block.
+   */
   organisation: string[];
   /** Postal address, rendered inside `<address>`. Website variant only. */
   address?: string;
@@ -127,7 +132,7 @@ export interface SiteFooterProps extends React.HTMLAttributes<HTMLElement> {
 
 /** Announces an external destination without adding visual noise. */
 function NewWindow() {
-  return <span className="sr-only"> (opens in a new window)</span>;
+  return <span className="ds-sr-only"> (opens in a new window)</span>;
 }
 
 /**
@@ -167,9 +172,11 @@ function NewWindow() {
  * missing from the variant that has to render it.
  *
  * ── COLOUR ────────────────────────────────────────────────────────────────
- * Comes entirely from `site-footer.css`, bound to the mode-aware
- * `--sa-color-primaryScale-*` family. Never pass a background through
- * `className`; see the contract at the top of that file.
+ * Comes entirely from `site-footer.css`: the ground is `bg/brand/primary/boldest`,
+ * the lead ink `on/bg/brand/primary/boldest`, and the roles the semantic layer has
+ * no name for are `cmp/sitefooter/*`. All of them are mode-aware, so the footer
+ * repaints for every `data-brand`. Never pass a background through `className`;
+ * see the contract at the top of that file.
  *
  * ── ACCESSIBILITY ─────────────────────────────────────────────────────────
  *   · `contentinfo` landmark, named by a visually-hidden `<h2>`.
@@ -247,7 +254,7 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
       className={cn("ds-sitefooter", `ds-sitefooter--${variant}`, className)}
       {...rest}
     >
-      <h2 className="sr-only">Site footer</h2>
+      <h2 className="ds-sr-only">Site footer</h2>
 
       {/* ── Band 1 · the working footer ───────────────────────────────── */}
       {isWebsite && (
@@ -290,7 +297,7 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
                           className="ds-sitefooter__social-link"
                         >
                           <BrandGlyph name={s.icon} size={24} />
-                          <span className="sr-only">
+                          <span className="ds-sr-only">
                             {s.label}
                             <NewWindow />
                           </span>

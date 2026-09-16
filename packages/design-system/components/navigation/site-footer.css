@@ -46,6 +46,25 @@
    plain class selector here beats any utility a consumer writes. */
 @layer components {
 
+  /* Visually hidden, still read. Declared HERE because this stylesheet is its own
+     CSS root: the component cannot rely on a consumer's Tailwind supplying `sr-only`.
+     It used Tailwind's class until 2026-09-16, which worked inside the hub and
+     nowhere else — in Storybook the "Site footer" heading, every "(opens in a new
+     window)" note and all five social labels rendered visibly, the labels piled
+     over the chips. The same class is declared in chip.css, stepper.css and the
+     other components that need it. */
+  .ds-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
   .ds-sitefooter {
     /* THE GROUND AND THE LEAD INK ARE SEMANTIC TOKENS; EVERY OTHER COLOUR IS A `cmp/sitefooter/*` TOKEN. They were `--sa-color-primaryScale-*`
        rungs here and unpublished Palette rungs in Figma, so neither side consumed the
