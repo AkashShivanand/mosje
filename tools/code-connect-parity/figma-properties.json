@@ -715,8 +715,8 @@
   },
   "MetricCard": {
     "nodeId": "57414:15871",
-    "captured": "2026-09-05",
-    "note": "30 variants = Reading 5 x Tone 3 x Size 2, plus Show icon and an Icon swap of the library Icon (24 at Medium, 20 at Small) — the code's `size` and `icon`. Reading is not a prop: each reading is a different set of props on the one MetricCard.",
+    "captured": "2026-09-16",
+    "note": "50 variants = Reading 5 x Tone 5 x Size 2, plus Show icon and an Icon swap of the library Icon (24 at Medium, 20 at Small) — the code's `size` and `icon` — plus Selected and Opens something. Reading is not a prop: each reading is a different set of props on the one MetricCard. Re-captured 16 Sep 2026: Tone had gained Success and Info, and the two booleans were added the same week; the fixture still described 30 variants and five properties, so the gate was comparing a stale template against an equally stale picture.",
     "properties": {
       "Reading": {
         "type": "VARIANT",
@@ -732,6 +732,8 @@
         "type": "VARIANT",
         "variantOptions": [
           "Neutral",
+          "Info",
+          "Success",
           "Warning",
           "Danger"
         ]
@@ -748,6 +750,12 @@
       },
       "Icon": {
         "type": "INSTANCE_SWAP"
+      },
+      "Selected": {
+        "type": "BOOLEAN"
+      },
+      "Opens something": {
+        "type": "BOOLEAN"
       }
     },
     "deliberatelyOmitted": []
