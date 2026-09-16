@@ -290,7 +290,7 @@ container the two Document Checklist masters tell the next person to detach.
 |---|---|---|
 | Six Document Centre masters built and published | ✅ | Verified by importing each key into the handoff file, not by looking at the library |
 | Changed masters published — Metric Card 50, Event List / Row 20, ProgressBar 36, Checkbox, Input Field, Select, EmptyState, Portal Page Header, DataTable, WorklistScreen, Form / Panel | ✅ | |
-| **Checkbox Group** | ⚠️ **had a property conflict — fixed 16 Sep** (see §8), publish again | Built, still **not published** on 16 Sep after three attempts — absent from the 165 component sets the REST API lists, and `importComponentSetByKeyAsync` still answers "not found". **Consumed by nothing:** 0 instances of it on the handoff page against 113 plain `Checkbox`. So the delivery does not wait on it; the library's Checkbox page is one master short until someone ticks it |
+| **Checkbox Group** | ✅ **published 16 Sep, 14:12**, once the property conflict in §8 was removed — imports into the handoff file with its four variants and fourteen properties | Built, still **not published** on 16 Sep after three attempts — absent from the 165 component sets the REST API lists, and `importComponentSetByKeyAsync` still answers "not found". **Consumed by nothing:** 0 instances of it on the handoff page against 113 plain `Checkbox`. So the delivery does not wait on it; the library's Checkbox page is one master short until someone ticks it |
 | Gaps round 1 | ✅ | |
 | Gaps round 2 — built: `Alert / Inline` (4 tones), `Stepper / Collapsed` (Steps 3–11); changed: Input Field, Select, Radio Group label wrapping, Form / Section Head note slot, Badge leading icon | ⏸ | Built locally, **not published** |
 | Gaps round 2 — recorded, deliberately not built: Select read-only, Document Tile description, Selection Card chevron | ✅ | Each rejected with the code that settles it; reasons on the component records |
@@ -460,3 +460,9 @@ All five were carried over from the sign-in card when this one was built, and no
 they name exists on it — so each told a reader the card could do something it cannot. Removed;
 `Show consent` stayed, because it drives the Consent instance. **No set in the library now
 declares a property that nothing uses.**
+
+**And it was the cause.** The next publish carried both sets straight through — the library went
+from 165 published component sets to **167**, both stamped 16 Sep 14:12, and `Checkbox Group`
+now imports into the handoff file with its four variants and fourteen properties after four
+attempts that answered "not found". Nothing about the component had changed except the removal
+of the property no layer bound.
