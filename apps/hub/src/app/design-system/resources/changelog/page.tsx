@@ -32,9 +32,16 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.143.0",
+    version: "v0.144.0",
     date: "2026-09-16",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "A DIVIDED `DescriptionList` NO LONGER RULES UNDER ITS LAST ROW. `divided` drew a hairline under EVERY row, so every fact card closed with a rule under nothing and read as an unfinished table \u2014 seen on the officer\u2019s Payment Status and three cards on the applicant\u2019s dashboard while the screens were being drawn in Figma. `ListGroup` already had this right (`item + item`), but source order is not visual order in a grid, so the two ends are stripped separately: below the 768 step the grid is one column whatever `columns` says and the last row is simply the last child; at and above it the component computes the row each item lands in and marks it. No `:nth-last-child()` is correct for every item count \u2014 six items in two columns put the pair at 5 and 6, five put it at 5 alone, and a `wide` item takes a row of its own \u2014 which is why the placement is simulated in `description-list-rows.ts` and tested against all three shapes." },
+    ],
+  },
+  {
+    version: "v0.143.0",
+    date: "2026-09-16",
     changes: [
       { kind: "Fixed", text: "SIX COMPONENTS SET THEIR TEXT IN THE STYLE THEIR FIGMA MASTER LINKS, WITH NO NEW STYLE ADDED. The Chatbot title is Title 2 at 600 (it was 500). The Portal Card name is Body 1 Regular, as its own comment said (500). The Slider readout is Body 2 SemiBold (500). The visitor counter takes its line\u2019s weight (500). The Pagination steps-only \u201cPage 2 of 12\u201d is Body 1 Regular, beside the 16px SemiBold Previous and Next (it inherited the page size at 500). Every one of those 500s was a weight no text style has" },
       { kind: "Changed", text: "STANDALONE `Link` TAKES THE LIBRARY\u2019S RAMP: Small label-2 12, Default label-1 14, Large title-2 16 SemiBold. It was 14 / 16 / 22, all at 500. Default standalone links are 2px smaller and Large is 6px smaller; inline links still inherit their sentence" },
