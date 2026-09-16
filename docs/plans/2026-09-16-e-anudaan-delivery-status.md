@@ -92,8 +92,9 @@ The portal was re-captured at 1440 (190 screens, 0 failures) and every frame put
 
 | | |
 |---|---|
-| Screens compared | 201 |
+| Screens compared | 209 |
 | Identical on the first screenful | **197** |
+| Dialogs, comparable for the first time | 8 |
 | Genuinely different | **1** — Reports & Analytics, below |
 | Different only because the Figma draws a dialog open over a screen the capture shows without one | 3 |
 
@@ -106,12 +107,21 @@ master is fixed** (fill anchored `MIN`, description says how to set a bar's leng
 handoff file's instances keep the old definition **until SAMAVESH is published** — so the two
 Reports frames still draw equal bars today. Re-run the width pass after the publish.
 
-**No dialog has ever been captured.** All six `review-dialog-*` files, in both the 16 Sep run
-and today's, are 4,000px full-page shots of the page behind with no dim layer and no dialog:
-the capture script opens the menu but the dialog never appears. The Programme Director's
-sanction, return and reject confirmations, bulk verdict, show cause, inspection and the
-printable report were therefore drawn from the code, and none can be checked this way.
-**The capture script needs fixing before those seven frames can be verified.**
+**No dialog had ever been captured — found, fixed, and the eight now verified.** Every
+`review-dialog-*` file in both the 16 Sep run and the first re-capture was a 4,000px
+full-page shot of the page behind, with no dim layer and no dialog on it. Two faults, and
+the second is the one that let it go unnoticed for weeks:
+
+1. the shot was taken `fullPage: true` while a modal is `position: fixed`, so it rendered
+   over the first viewport of a very tall image and duplicated the sticky masthead half way
+   down; and
+2. **nothing asserted the dialog had opened**, so a file was written whatever happened.
+
+`capture-dialogs.mjs` shoots the viewport and **refuses to write unless a dialog is actually
+on screen**. It also fills the mandatory Remarks field first, which is why the Director's
+sanction, return and reject confirmations could never open before — the code will not show
+them until a reason is typed. All eight capture, and all eight are now in the comparison,
+scoring 13-17%: real differences to look at, where before there was nothing to compare.
 
 `ngo-inspection-meeting` is captured against an application id that is not in the seed
 (`.../00207`; Barabanki is `.../00282`), so it renders "Application Not Found". The Figma
