@@ -32,9 +32,16 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.147.0",
+    version: "v0.148.0",
     date: "2026-09-16",
     current: true,
+    changes: [
+      { kind: "Removed", text: "TWO LOGO FILES THE ESTATE NO LONGER DRAWS. `NeGD-Logo.svg` \u2014 258 KB of raster wrapped in an SVG \u2014 and `Digital-India-White.svg`, a crop with the swirl squashed and the \u2018i\u2019 stem clipped by its viewBox. Both were replaced in v0.146.0 by vectors the estate owns: `NeGD-Logo-White.svg`, `NeGD-Logo-Colour.svg` and `Digital-India-Reverse.svg`. THEIR TWO LINES IN `download-assets.mjs` GO WITH THEM: the scrape manifest writes to the same folder, so deleting only the files would have re-downloaded both the next time anyone ran it" },
+    ],
+  },
+  {
+    version: "v0.147.0",
+    date: "2026-09-16",
     changes: [
       { kind: "Fixed", text: "A DASHBOARD’S PANELS ARE EACH AS TALL AS WHAT THEY HOLD. `.sa-overview__pair` stretched every panel to the tallest one in its row. On the Finance queue that drew a card whose rules ended 170px above its own border; on SMILE’s state-wise page it stretched a 599px chart card to 2,240px to match the map beside it — a chart at the top of a bordered box with 1,600px of nothing under it. An empty band inside a card reads as content that failed to load, which is a worse answer than a ragged foot: the pair is two answers side by side, not one object split in half. Measured on both screens before and after, at 1440" },
     ],
