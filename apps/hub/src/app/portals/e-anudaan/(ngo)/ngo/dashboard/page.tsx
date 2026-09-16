@@ -516,11 +516,17 @@ function draftOf(notice: NextInstalmentNotice): { id: string } | undefined {
  *     figures and this block sits under them.
  *  2. **The figures lead.** How many instalments, and how much money, in the dashboard's own
  *     summary pattern — the same `DescriptionList` the Financial Summary uses.
- *  3. **A short list, or none.** Up to three claims are named, each row a link like Recent
- *     Applications' rows, with no button at all: the page keeps ONE filled button, "Apply for
- *     Grant". Above three, naming them rebuilds the wall this replaced, so the block collapses to
- *     its figures and "View All", which opens My Applications filtered to claimable rows — where
- *     every row already carries its own Claim link.
+ *  3. **Always a short list — never more than three.** Up to three claims are named, each row a
+ *     link like Recent Applications' rows, with no button at all: the page keeps ONE filled
+ *     button, "Apply for Grant". Above three, "View All N" opens My Applications filtered to
+ *     claimable rows, where every row already carries its own Claim link.
+ *
+ *     Amended 16 Sep 2026. This used to drop the list entirely above three, on the reasoning that
+ *     naming them rebuilt the wall — but the wall was FOURTEEN rows carrying twelve filled
+ *     buttons, and three links are not that. Dropping it left two short readings alone in a
+ *     full-width card: a 130px band that read as content which had failed to load. The card now
+ *     has ONE design at every size, and the three it names are the three worth starting with —
+ *     a saved draft first, since that is the one that finishes fastest, then by amount.
  */
 function ClaimableInstalments({
   state,
@@ -536,6 +542,11 @@ function ClaimableInstalments({
   const n = items.length;
   const collapsed = n > CLAIM_ROWS;
   const drafts = items.filter((i) => draftOf(i)).length;
+  /* The three worth starting with: a saved draft first — it is the one that finishes fastest —
+     then by amount. Above three, the rest are one click away in My Applications. */
+  const named = [...items]
+    .sort((a, b) => Number(Boolean(draftOf(b))) - Number(Boolean(draftOf(a))) || (b.plan.amount ?? 0) - (a.plan.amount ?? 0))
+    .slice(0, CLAIM_ROWS);
   return (
     <Card variant="outlined" aria-labelledby="claims-title">
       <CardBody className="gap-4 p-6">
@@ -564,9 +575,8 @@ function ClaimableInstalments({
           ]}
         />
 
-        {!collapsed && (
-          <ListGroup divided aria-label="Instalments ready to claim">
-              {items.map((c) => {
+        <ListGroup divided aria-label={collapsed ? `Instalments ready to claim, ${CLAIM_ROWS} of ${n}` : "Instalments ready to claim"}>
+              {named.map((c) => {
                 const label = instalmentLabel(c.plan.instalment ?? 1);
                 const draft = draftOf(c);
                 return (
@@ -593,7 +603,6 @@ function ClaimableInstalments({
                 );
               })}
           </ListGroup>
-        )}
       </CardBody>
     </Card>
   );

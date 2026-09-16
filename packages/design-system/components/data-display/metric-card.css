@@ -305,6 +305,21 @@
     background-color: var(--sa-bg-neutral-selected);
   }
 
+  /* The resting affordance: trailing edge, muted, out of the figure's way. It sits on the
+     card's own foot rather than beside the icon badge, because the badge is decoration and
+     this is the one mark that says the tile answers a press. */
+  .ds-metric-card__go {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: var(--sa-padding-4);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* Chosen, so the mark takes the brand ink the border and ground already carry. */
+  .ds-metric-card--selected .ds-metric-card__go {
+    color: var(--sa-text-brand-primary-base);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .ds-metric-card--interactive {
       transition: none;

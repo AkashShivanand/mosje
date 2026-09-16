@@ -32,11 +32,19 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.148.0",
+    version: "v0.149.0",
     date: "2026-09-16",
     current: true,
     changes: [
       { kind: "Removed", text: "TWO LOGO FILES THE ESTATE NO LONGER DRAWS. `NeGD-Logo.svg` \u2014 258 KB of raster wrapped in an SVG \u2014 and `Digital-India-White.svg`, a crop with the swirl squashed and the \u2018i\u2019 stem clipped by its viewBox. Both were replaced in v0.146.0 by vectors the estate owns: `NeGD-Logo-White.svg`, `NeGD-Logo-Colour.svg` and `Digital-India-Reverse.svg`. THEIR TWO LINES IN `download-assets.mjs` GO WITH THEM: the scrape manifest writes to the same folder, so deleting only the files would have re-downloaded both the next time anyone ran it" },
+    ],
+  },
+  {
+    version: "v0.148.0",
+    date: "2026-09-16",
+    changes: [
+      { kind: "Added", text: "A METRIC TILE THAT IS A CONTROL SAYS SO AT REST. Hover, press and focus all announce the control only once the reader has already reached for it, so a tile that filters the list below looked identical to a tile that is only a number — nobody found it without hovering (officer-queue walkthrough, 16 Sep 2026). An interactive tile now carries `chevron_right` on its foot, muted, taking the brand ink when chosen. The mark is not new: `ListRow` uses it for a row that opens what it counts, and those rows sit directly beneath the tiles on that screen, so the two halves of one dashboard speak one language. `PortalCard` — the library’s other whole-card control — already answered this with a footer and a trailing glyph. A tile with nothing to show stays a plain box and carries no mark" },
+      { kind: "Changed", text: "THE APPLICANT’S “INSTALMENTS READY TO CLAIM” NAMES THREE CLAIMS AT EVERY SIZE. Above three it used to drop the list entirely, on the reasoning that naming them rebuilt the wall it replaced — but that wall was fourteen rows carrying twelve filled buttons, and three links are not that. What it left was two short readings alone in a full-width card: a 130px band that reads as content which failed to load. The card now has ONE design whatever the count, and the three it names are the three worth starting with — a saved draft first, since that is the one that finishes fastest, then by amount. “View All N” still opens the rest in My Applications" },
     ],
   },
   {
