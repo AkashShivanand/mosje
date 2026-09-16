@@ -289,14 +289,7 @@ export function ReviewItem({
  * A review sub-section: the same uppercase head and rule as FormSection, over a label-value
  * grid. Four columns for short values (a name, a date), two for long ones (an address).
  */
-export function ReviewSection({
-  title,
-  columns = 2,
-  badge,
-  actions,
-  as = 3,
-  children,
-}: {
+export interface ReviewSectionProps {
   title: React.ReactNode;
   /** @default 2 */
   columns?: 2 | 3 | 4;
@@ -307,7 +300,16 @@ export function ReviewSection({
   /** @default 3 */
   as?: 2 | 3 | 4;
   children: React.ReactNode;
-}) {
+}
+
+export function ReviewSection({
+  title,
+  columns = 2,
+  badge,
+  actions,
+  as = 3,
+  children,
+}: ReviewSectionProps) {
   const headingId = React.useId();
   return (
     <section aria-labelledby={headingId} className="ds-form-section">

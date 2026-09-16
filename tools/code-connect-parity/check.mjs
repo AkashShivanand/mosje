@@ -145,8 +145,12 @@ for (const file of templates) {
   // an INSTANCE_SWAP property that a template maps correctly was counted as unread,
   // so check 6 would report a mapped property as "silently dropped". Button maps two
   // (`Left Icon`, `Right Icon`); adding its fixture is what surfaced this.
+  // `getSlot` was missing for the same reason, found 2026-09-16 when the first templates to
+  // READ a SLOT property were written (FormPanel, FormSection, ReviewSection). Every earlier
+  // SLOT had been listed in `deliberatelyOmitted`, so nothing exercised the omission; a
+  // template that maps its slot correctly was reported as dropping it.
   const read = new Set([
-    ...[...src.matchAll(/get(?:String|Boolean|InstanceSwap)\(\s*["']([^"']+)["']/g)].map((m) => m[1]),
+    ...[...src.matchAll(/get(?:String|Boolean|InstanceSwap|Slot)\(\s*["']([^"']+)["']/g)].map((m) => m[1]),
     ...[...src.matchAll(/getEnum\(\s*["']([^"']+)["']/g)].map((m) => m[1]),
   ]);
   // A fixture is keyed by component name, but ONE code component can be served by TWO

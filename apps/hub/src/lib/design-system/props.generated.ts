@@ -12399,6 +12399,50 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "ReviewSectionProps": {
+    "source": "packages/design-system/components/forms/wizard.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "title",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "actions",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Controls at the end of the head row — \"Edit\"."
+      },
+      {
+        "name": "as",
+        "type": "2 | 3 | 4",
+        "required": false,
+        "default": "3",
+        "description": ""
+      },
+      {
+        "name": "badge",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A badge between the label and the rule — \"DigiLocker\"."
+      },
+      {
+        "name": "columns",
+        "type": "2 | 3 | 4",
+        "required": false,
+        "default": "2",
+        "description": ""
+      }
+    ]
+  },
   "SSOButtonProps": {
     "source": "packages/design-system/components/auth/auth-parts.tsx",
     "inheritsNative": true,

@@ -2191,5 +2191,257 @@
     "deliberatelyOmitted": [
       "Focused"
     ]
+  },
+  "DeclarationCheckbox": {
+    "nodeId": "58191:3685",
+    "captured": "2026-09-16",
+    "properties": {
+      "Title": {
+        "type": "TEXT"
+      },
+      "Show Lead": {
+        "type": "BOOLEAN"
+      },
+      "Lead": {
+        "type": "TEXT"
+      },
+      "Statement": {
+        "type": "TEXT"
+      },
+      "Error": {
+        "type": "TEXT"
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Invalid"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "DocumentChecklist": {
+    "nodeId": "58283:1076",
+    "captured": "2026-09-16",
+    "properties": {
+      "Body": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Populated",
+          "Loading",
+          "Empty",
+          "Filtered to nothing"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "DocumentFindings": {
+    "nodeId": "58267:821",
+    "captured": "2026-09-16",
+    "properties": {
+      "Show summary": {
+        "type": "BOOLEAN"
+      },
+      "Show confidence": {
+        "type": "BOOLEAN"
+      },
+      "Show reasons": {
+        "type": "BOOLEAN"
+      },
+      "Summary": {
+        "type": "TEXT"
+      },
+      "Empty text": {
+        "type": "TEXT"
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Populated",
+          "Empty"
+        ]
+      },
+      "Fields": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Two column",
+          "One column"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Fields"
+    ]
+  },
+  "DocumentRow": {
+    "nodeId": "58278:1079",
+    "captured": "2026-09-16",
+    "properties": {
+      "Title": {
+        "type": "TEXT"
+      },
+      "File meta": {
+        "type": "TEXT"
+      },
+      "Hint": {
+        "type": "TEXT"
+      },
+      "Show hint": {
+        "type": "BOOLEAN"
+      },
+      "Show file": {
+        "type": "BOOLEAN"
+      },
+      "Show action": {
+        "type": "BOOLEAN"
+      },
+      "Show menu": {
+        "type": "BOOLEAN"
+      },
+      "Show reason": {
+        "type": "BOOLEAN"
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "missing",
+          "optional",
+          "uploading",
+          "failed",
+          "rejected",
+          "checking",
+          "verified",
+          "review",
+          "invalid",
+          "unavailable"
+        ]
+      },
+      "Density": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Compact"
+        ]
+      },
+      "Width": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Wide",
+          "Narrow"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Width"
+    ]
+  },
+  "DocumentTile": {
+    "nodeId": "58096:1947",
+    "captured": "2026-09-16",
+    "properties": {
+      "Title": {
+        "type": "TEXT"
+      },
+      "Meta": {
+        "type": "TEXT"
+      },
+      "Required": {
+        "type": "BOOLEAN"
+      },
+      "Show Icon": {
+        "type": "BOOLEAN"
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Upcoming",
+          "Uploaded",
+          "Verified",
+          "Invalid"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "FormPanel": {
+    "nodeId": "58091:2489",
+    "captured": "2026-09-16",
+    "properties": {
+      "Title": {
+        "type": "TEXT"
+      },
+      "Description": {
+        "type": "TEXT"
+      },
+      "Show Description": {
+        "type": "BOOLEAN"
+      },
+      "Show Header Actions": {
+        "type": "BOOLEAN"
+      },
+      "Show Head": {
+        "type": "BOOLEAN"
+      },
+      "Content": {
+        "type": "SLOT"
+      },
+      "Step": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "First",
+          "Middle",
+          "Last"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "FormSection": {
+    "nodeId": "58089:1454",
+    "captured": "2026-09-16",
+    "properties": {
+      "Show Head": {
+        "type": "BOOLEAN"
+      },
+      "Show Description": {
+        "type": "BOOLEAN"
+      },
+      "Description": {
+        "type": "TEXT"
+      },
+      "Content": {
+        "type": "SLOT"
+      },
+      "Columns": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "ReviewSection": {
+    "nodeId": "58096:2025",
+    "captured": "2026-09-16",
+    "properties": {
+      "Content": {
+        "type": "SLOT"
+      },
+      "Columns": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "2",
+          "4",
+          "3"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
   }
 }
