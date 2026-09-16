@@ -121,10 +121,6 @@ export const DocumentsChecklist = React.forwardRef<
 
   const checked = withYearCheck(documents, uploaded, fy);
   const summary = summariseDocuments(documents, checked, attempts);
-  // Numbered as drawn, group by group — SHRESHTA's groups put document 15 between 9 and 18, and a
-  // column of numbers out of order reads as a mistake.
-  const position = new Map(groupDocuments(schemeCode, documents).flatMap((g) => g.docs).map((d, i) => [d.n, i + 1]));
-
   /**
    * The order rows are drawn in: needing attention first. A snapshot, refreshed when the
    * applicant opens the step, drops files or presses Continue — never on a verdict arriving,
@@ -132,6 +128,22 @@ export const DocumentsChecklist = React.forwardRef<
    */
   const [order, setOrder] = React.useState<Record<number, DocState>>(() => summary.states);
   const refreshOrder = () => setOrder(summary.states);
+
+  /**
+   * ONE order, and everything that describes a row's place reads it.
+   *
+   * Numbered as drawn, group by group — SHRESHTA's groups put document 15 between 9 and 18,
+   * and a column of numbers out of order reads as a mistake. That was the intent from the
+   * start and the code did not honour it: the NUMBER came from the grouped order while the
+   * ROW came from the attention-sorted one, so Banking & Legal printed 8, 6, 7 down a single
+   * group with each number contradicting where its row sat. Deriving both from the same
+   * expression is the fix `.claude/rules/data-state-completeness.md` §2 asks for.
+   *
+   * Filtering deliberately does NOT renumber: the chips narrow which rows are shown, and a
+   * document that is "7." with every row visible must stay "7." when the reader filters.
+   */
+  const drawn = groupDocuments(schemeCode, documents).flatMap((g) => orderForAttention(g.docs, order));
+  const position = new Map(drawn.map((d, i) => [d.n, i + 1]));
 
   useSettleChecks({ documents, uploaded, setUploaded: onChange, values, held, announce: setPolite });
 
@@ -309,11 +321,7 @@ export const DocumentsChecklist = React.forwardRef<
   // The summary stays until the last blocker is resolved, and shrinks as each one is. It lists the
   // rows the filter is showing, in the order they are drawn, so every entry lands on a visible row:
   // what needs the applicant first; uploads still in flight only when nothing else stops them.
-  const displayRank = new Map(
-    groupDocuments(schemeCode, documents)
-      .flatMap((g) => orderForAttention(g.docs, order))
-      .map((d, i) => [d.n, i] as const),
-  );
+  const displayRank = new Map(drawn.map((d, i) => [d.n, i] as const));
   const acting = summary.continueBlockers.filter((b) => b.state !== "uploading");
   const shownBlockers = (acting.length ? acting : summary.continueBlockers).sort((a, b) => (displayRank.get(a.n) ?? 0) - (displayRank.get(b.n) ?? 0));
   const errors = showErrors ? shownBlockers.map((b) => ({ fieldId: actionId(b.n), message: b.message })) : [];
