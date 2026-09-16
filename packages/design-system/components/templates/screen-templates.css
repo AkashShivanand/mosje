@@ -282,7 +282,11 @@
   }
 
   @media (min-width: 1024px) {
-    .sa-overview__pair { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    /* Each panel is as tall as what it holds. Stretching made the shorter one match the taller,
+       and on the Finance queue that drew a card whose rules ended 170px above its own border —
+       an empty band a reader takes for content that failed to load. The pair is two answers side
+       by side, not one object split in half, so a ragged foot is honest where a blank band is not. */
+    .sa-overview__pair { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
   }
 
 
