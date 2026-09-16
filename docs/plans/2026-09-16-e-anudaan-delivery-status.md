@@ -220,6 +220,38 @@ frame is more correct than the capture. Re-capture that slug.
 
 ---
 
+## 2a. The one step nobody here can take — publishing SAMAVESH
+
+**Publishing a Figma library is a UI action and there is no API for it.** Probed directly:
+`figma.publish` raises *"no such property 'publish' on the figma global object"*, and
+`figma.teamLibrary` carries no publish, update or release method. No plugin, no script and no
+access token can do it; it needs a person in the Figma app. Written down because it has been
+the blocker three times, and because the next session should not spend an hour rediscovering it.
+
+Until it happens the handoff file keeps the OLD definitions of everything below — so the ranked
+bars still draw every bar the same length, and every Search instance still reports as broken.
+
+**The tick list, in the order the Assets → Libraries panel shows them.**
+
+| Publish | What it fixes |
+|---|---|
+| `Search` | Its eight variants stood 25, 20, 14, 6, 1, 1, 1, 1 px tall against 56px contents |
+| `Pagination` | Three page-size chips (10 / 50 / 100), as the build draws, instead of a dropdown |
+| `Ranked Bar Row` | A bar can state its own length; today every bar draws ~86% whatever the number says |
+| `Checkbox Group` | Missed off the last publish — still answers "not found" from the handoff file |
+| `Alert / Inline` · `Stepper / Collapsed` | New in gaps round 2 |
+| `Input Field` · `Select` · `Radio Group` | Labels and legends can wrap instead of clipping |
+| `Form / Section Head` | Gains the plain-note slot |
+| `Badge` | Gains a leading icon; digit variants lose the stray uppercase tracking |
+| `Table / Cell` | Description correction only — the action button was never broken |
+| `Document Checklist` · `Document Checklist Group` | Descriptions telling the next person to detach the two containers |
+| The eight form documentation frames | Checkbox, Radio, Input Field, Input Area, Select, OTP Input, Bot Check, Selection Card — each now names its own props instead of Input Area's and OTP Input's |
+
+Then press **Assets → Libraries → Update all** in the handoff file, and re-run the ranked-bar
+width pass, which cannot take effect before the publish.
+
+---
+
 ## 3. The SAMAVESH library
 
 | Thing | Status | Note |
