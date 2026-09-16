@@ -307,7 +307,9 @@ export default function NgoDashboardPage() {
         </Alert>
       )}
 
-      <div className="grid items-stretch gap-6 lg:grid-cols-2">
+      {/* `items-start`, not stretch: the status card is as tall as its six-line key, and stretching
+          the money card to match left a blank band inside it (design review, 16 Sep 2026). */}
+      <div className="grid items-start gap-6 lg:grid-cols-2">
         <Card variant="outlined" aria-labelledby="app-status-title">
           <CardBody className="gap-4 p-6">
             <SectionTitle headingId="app-status-title" title="Application Status Breakdown" />
