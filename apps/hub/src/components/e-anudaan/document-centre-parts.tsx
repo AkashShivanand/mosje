@@ -33,15 +33,16 @@ import {
   settleChecks,
   summariseDocuments,
   type ApplicantFacts,
+  isRefusal,
   type DocState,
 } from "@/lib/e-anudaan/document-centre";
 
 /** How long the prototype's checking service takes to answer. */
 export const CHECK_DELAY_MS = 1600;
 
-/** The model's eleven states onto the design system's ten: both refusals are one row state. */
+/** The model's states onto the design system's ten: every refusal on the device is one row state. */
 export function rowStateOf(state: DocState): DocumentRowState {
-  return state === "rejected-type" || state === "rejected-size" ? "rejected" : state;
+  return isRefusal(state) ? "rejected" : state;
 }
 
 /**

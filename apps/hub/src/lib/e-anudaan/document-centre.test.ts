@@ -7,6 +7,7 @@ import assert from "node:assert/strict";
 import {
   DOC_STATE_META,
   OTHER_ORGANISATION,
+  REFUSALS,
   acceptFromNote,
   applicantFacts,
   classifyFile,
@@ -56,7 +57,9 @@ test("every state in the spec's table is reachable from docState", () => {
   const reached = new Set<DocState>();
   reached.add(docState({}, undefined));
   reached.add(docState({ optional: true }, undefined));
-  for (const phase of ["uploading", "failed", "rejected-type", "rejected-size"] as const) {
+  // Read from the model, not restated: three refusals were added on 17 Sep 2026 and a hand-kept list
+  // here would have had to be remembered.
+  for (const phase of ["uploading", "failed", ...REFUSALS] as const) {
     reached.add(docState({}, undefined, { fileName: "a.pdf", sizeKb: 1, phase }));
   }
   for (const s of ["pending", "verified", "review", "invalid", "unavailable"] as const) reached.add(docState({}, up(s)));

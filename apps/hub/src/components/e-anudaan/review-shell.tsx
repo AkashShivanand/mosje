@@ -86,8 +86,11 @@ import {
   docState,
   fileSizeLabel,
   historyEntriesOfRecord,
+  REFUSAL_OF,
   rejectionOf,
+  rowReason,
 } from "@/lib/e-anudaan/document-centre";
+import { deviceCheckOfBytes } from "@/lib/e-anudaan/doc-checks";
 
 /**
  * The officer review screen — ONE component behind all ten grades and the Programme Director.
@@ -1432,9 +1435,18 @@ function OfficerSupportingDocuments({ app, editable }: { app: GrantApplication; 
                 setRefused(why === "rejected-size" ? `${f.name} is ${fileSizeLabel(file.sizeKb)}. The limit is 5 MB.` : `${f.name} is not a PDF, JPG or PNG file.`);
                 return;
               }
-              setRefused(null);
-              addOfficerDocument(app.id, { ...file, title });
-              setTitle("");
+              // The same checks an applicant's upload meets, on the file's own bytes (doc-checks.ts).
+              const chosenTitle = title;
+              void f.arrayBuffer().then((buf) => {
+                const found = deviceCheckOfBytes(f.name, new Uint8Array(buf));
+                if (found) {
+                  setRefused(`${f.name}: ${rowReason(REFUSAL_OF[found], undefined, undefined, rule)}`);
+                  return;
+                }
+                setRefused(null);
+                addOfficerDocument(app.id, { ...file, title: chosenTitle });
+                setTitle("");
+              });
             }}
           />
           {refused && (

@@ -41,6 +41,8 @@ import {
   fileSizeLabel,
   groupDocuments,
   historyEntries,
+  isRefusal,
+  REFUSAL_OF,
   orderForAttention,
   placeFiles,
   rejectionOf,
@@ -56,6 +58,7 @@ import {
   type PlacementItem,
   type UploadAttempt,
 } from "@/lib/e-anudaan/document-centre";
+import { deviceCheckOfBytes } from "@/lib/e-anudaan/doc-checks";
 import { DEMO_FILL_EVENT, DEMO_HOLD_CHECKS_KEY, type DemoFillDetail } from "@/lib/e-anudaan/demo-scenarios";
 import { ApplicantFindings, DocumentViewSheet, rowStateOf, useSettleChecks } from "./document-centre-parts";
 
@@ -165,10 +168,24 @@ export const DocumentsChecklist = React.forwardRef<
         next.delete(n);
         return next;
       });
-      setAttempts((prev) => ({ ...prev, [n]: { fileName: file.name, sizeKb: file.sizeKb, phase: rejected ?? "uploading", progress: 0, tries } }));
-      if (rejected) {
-        const title = documents.find((d) => d.n === n)?.title ?? "The document";
-        setAssertive(`${title}: ${file.name} can't be uploaded. ${rejected === "rejected-size" ? `The limit is ${fileSizeLabel(rule.maxKb)}.` : `Only ${rule.typesLabel} files can be uploaded.`}`);
+      // A real file's bytes are read before anything is sent: an empty file, a password-protected
+      // PDF, or a file that is not what its name says is refused on the device (doc-checks.ts).
+      const sniffing = Boolean(blob) && !rejected;
+      setAttempts((prev) => ({ ...prev, [n]: { fileName: file.name, sizeKb: file.sizeKb, phase: rejected ?? "uploading", progress: 0, tries, ...(sniffing ? { sniffing: true } : {}) } }));
+      const title = documents.find((d) => d.n === n)?.title ?? "The document";
+      const refuse = (why: NonNullable<typeof rejected> | (typeof REFUSAL_OF)[keyof typeof REFUSAL_OF]) =>
+        setAssertive(`${title}: ${file.name} can't be uploaded. ${rowReason(why, undefined, { fileName: file.name, sizeKb: file.sizeKb, phase: why }, rule) ?? ""}`);
+      if (rejected) refuse(rejected);
+      if (sniffing && blob) {
+        void blob.arrayBuffer().then((buf) => {
+          const found = deviceCheckOfBytes(file.name, new Uint8Array(buf));
+          setAttempts((prev) => {
+            const a = prev[n];
+            if (!a || a.fileName !== file.name || !a.sniffing) return prev;
+            return { ...prev, [n]: found ? { ...a, phase: REFUSAL_OF[found], sniffing: false } : { ...a, sniffing: false } };
+          });
+          if (found) refuse(REFUSAL_OF[found]);
+        });
       }
       if (blob && !rejected) {
         const url = URL.createObjectURL(blob);
@@ -194,7 +211,7 @@ export const DocumentsChecklist = React.forwardRef<
       const failed: string[] = [];
       for (const [key, a] of Object.entries(current)) {
         const n = Number(key);
-        if (a.phase !== "uploading" || held.has(n)) continue;
+        if (a.phase !== "uploading" || a.sniffing || held.has(n)) continue;
         const progress = Math.min(100, (a.progress ?? 0) + 14 + (seedOf(a.fileName) % 12));
         if (DROPS_CONNECTION.test(a.fileName) && !a.tries && progress >= 60) {
           changes.set(n, { ...a, phase: "failed", progress });
@@ -350,7 +367,7 @@ export const DocumentsChecklist = React.forwardRef<
       const { n, state } = (e as CustomEvent<DemoDocStateDetail>).detail;
       const list = n === "all" ? documents : documents.filter((d) => d.n === n);
       const nameOf = (d: DocDef) => `${d.title.replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 36).toLowerCase()}.pdf`;
-      const isAttempt = state === "uploading" || state === "failed" || state === "rejected-type" || state === "rejected-size";
+      const isAttempt = state === "uploading" || state === "failed" || isRefusal(state);
       // Updaters throughout: the dock can fire several forces before this component re-renders.
       setAttempts((prev) => {
         const next = { ...prev };
@@ -359,7 +376,7 @@ export const DocumentsChecklist = React.forwardRef<
           if (isAttempt) {
             next[d.n] = {
               fileName: state === "rejected-type" ? nameOf(d).replace(/\.pdf$/, ".docx") : nameOf(d),
-              sizeKb: state === "rejected-size" ? 7373 : 412,
+              sizeKb: state === "rejected-size" ? 7373 : state === "rejected-empty" ? 0 : 412,
               phase: state,
               progress: 64,
             };
@@ -458,6 +475,9 @@ export const DocumentsChecklist = React.forwardRef<
       failed: { label: "Try Again", run: () => attempt && startUpload(d.n, { name: attempt.fileName, sizeKb: attempt.sizeKb }, files.current.get(d.n), (attempt.tries ?? 0) + 1) },
       "rejected-type": { label: "Choose Another File", run: () => choose(d.n) },
       "rejected-size": { label: "Choose Another File", run: () => choose(d.n) },
+      "rejected-empty": { label: "Choose Another File", run: () => choose(d.n) },
+      "rejected-locked": { label: "Choose Another File", run: () => choose(d.n) },
+      "rejected-unreadable": { label: "Choose Another File", run: () => choose(d.n) },
       invalid: { label: "Replace", run: () => choose(d.n) },
     };
     const p = primary[state];
