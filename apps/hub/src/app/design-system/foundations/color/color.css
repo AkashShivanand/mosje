@@ -225,6 +225,7 @@
 .color-ramp__l { color: var(--sa-text-neutral-subtler) !important; }
 
 .color-ladders { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--sa-inline-16); }
+.color-ladders__wide { grid-column: 1 / -1; }
 .color-ladders__cap { text-align: left; font-weight: var(--sa-font-weight-semibold); padding-bottom: var(--sa-padding-4); color: var(--sa-text-neutral-base); }
 
 /* the class a figure earns */

@@ -1,0 +1,26 @@
+{
+  "_note": "Known debt, per gate. A failure listed here is counted and named on the board but does not fail the run; a failure NOT listed here does. An entry that has stopped failing must be deleted, or the run fails — that is what makes this a ratchet and not a suppression list. Every reason is written for the person who reads it in six months.",
+  "absence claims": {
+    "NMB-GLOBAL-002": "checked against the live DOM during the 2026-09-11 sweep, but the published wording does not record where it looked. The id is frozen and the PDF is issued, so the sentence is corrected at the next re-issue, not retroactively.",
+    "NMB-GLOBAL-003": "checked against the live DOM during the 2026-09-11 sweep, but the published wording does not record where it looked. The id is frozen and the PDF is issued, so the sentence is corrected at the next re-issue, not retroactively.",
+    "NMB-GLOBAL-004": "checked against the live DOM during the 2026-09-11 sweep, but the published wording does not record where it looked. The id is frozen and the PDF is issued, so the sentence is corrected at the next re-issue, not retroactively.",
+    "NMB-GLOBAL-034": "checked against the live DOM during the 2026-09-11 sweep, but the published wording does not record where it looked. The id is frozen and the PDF is issued, so the sentence is corrected at the next re-issue, not retroactively.",
+    "NMB-SCREEN-017": "checked against the live DOM during the 2026-09-11 sweep, but the published wording does not record where it looked. The id is frozen and the PDF is issued, so the sentence is corrected at the next re-issue, not retroactively.",
+    "NMB-SCREEN-018": "checked against the live DOM during the 2026-09-11 sweep, but the published wording does not record where it looked. The id is frozen and the PDF is issued, so the sentence is corrected at the next re-issue, not retroactively.",
+    "NMB-SCREEN-019": "checked against the live DOM during the 2026-09-11 sweep, but the published wording does not record where it looked. The id is frozen and the PDF is issued, so the sentence is corrected at the next re-issue, not retroactively.",
+    "NMB-SCREEN-022": "checked against the live DOM during the 2026-09-11 sweep, but the published wording does not record where it looked. The id is frozen and the PDF is issued, so the sentence is corrected at the next re-issue, not retroactively.",
+    "NMB-SCREEN-023": "checked against the live DOM during the 2026-09-11 sweep, but the published wording does not record where it looked. The id is frozen and the PDF is issued, so the sentence is corrected at the next re-issue, not retroactively.",
+    "NMB-SCREEN-024": "checked against the live DOM during the 2026-09-11 sweep, but the published wording does not record where it looked. The id is frozen and the PDF is issued, so the sentence is corrected at the next re-issue, not retroactively.",
+    "NMB-SCREEN-025": "checked against the live DOM during the 2026-09-11 sweep, but the published wording does not record where it looked. The id is frozen and the PDF is issued, so the sentence is corrected at the next re-issue, not retroactively.",
+    "NMB-SCREEN-026": "checked against the live DOM during the 2026-09-11 sweep, but the published wording does not record where it looked. The id is frozen and the PDF is issued, so the sentence is corrected at the next re-issue, not retroactively.",
+    "NMB-SCREEN-027": "checked against the live DOM during the 2026-09-11 sweep, but the published wording does not record where it looked. The id is frozen and the PDF is issued, so the sentence is corrected at the next re-issue, not retroactively.",
+    "NMB-SCREEN-030": "checked against the live DOM during the 2026-09-11 sweep, but the published wording does not record where it looked. The id is frozen and the PDF is issued, so the sentence is corrected at the next re-issue, not retroactively.",
+    "NMB-SCREEN-042": "checked against the live DOM during the 2026-09-11 sweep, but the published wording does not record where it looked. The id is frozen and the PDF is issued, so the sentence is corrected at the next re-issue, not retroactively.",
+    "NMB-SCREEN-046": "checked against the live DOM during the 2026-09-11 sweep, but the published wording does not record where it looked. The id is frozen and the PDF is issued, so the sentence is corrected at the next re-issue, not retroactively.",
+    "NMB-SCREEN-047": "checked against the live DOM during the 2026-09-11 sweep, but the published wording does not record where it looked. The id is frozen and the PDF is issued, so the sentence is corrected at the next re-issue, not retroactively."
+  },
+  "quoted build colours": {},
+  "_verified": {
+    "NMB-SCREEN-046": "Read from the live DOM on 2026-09-12: the activity card is 329x351, radius 8px, border 1px solid #E5EAF2 on all four sides — the hex is hard-coded in the class (`border-[#E5EAF2]`) on all nine cards. The page paints #E5E7EB on 16 other elements, so the finding's 'near-miss grey' is not only true but sits beside the correct value on the same page. The finding stands; the GATE was wrong, and is fixed."
+  }
+}

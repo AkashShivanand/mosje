@@ -49,6 +49,9 @@ const CONFIG: PortalLoginConfig = {
   // check failed, and then they get a sentence and a way out. `helpHref` is the
   // route a blocked person takes, and without one no check renders at all.
   botCheck: { mode: "invisible", helpHref: "#" },
+  // A public-facing portal, so the consent line is on. It is off by default and
+  // off on E-Anudaan, whose sign-in serves only NGOs and Ministry officers.
+  consent: true,
   roles: [
     {
       id: "citizen",
@@ -91,12 +94,18 @@ const CONFIG: PortalLoginConfig = {
 };
 
 export function PortalLoginTemplateSpecimen(): React.JSX.Element {
+  // `data-surface="portal"` because every portal layout sets it, and it is what
+  // selects the portal type scale the Figma master's masthead is drawn in. Without
+  // it the specimen rendered on the website scale and drew a larger masthead than
+  // any real login does.
   return (
-    <PortalLoginTemplate
-      config={CONFIG}
-      deepLinkRole={false}
-      headingLevel={2}
-      onSubmit={() => undefined}
-    />
+    <div data-surface="portal">
+      <PortalLoginTemplate
+        config={CONFIG}
+        deepLinkRole={false}
+        headingLevel={2}
+        onSubmit={() => undefined}
+      />
+    </div>
   );
 }

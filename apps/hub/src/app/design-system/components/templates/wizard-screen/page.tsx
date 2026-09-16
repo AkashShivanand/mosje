@@ -40,7 +40,7 @@ export default function WizardScreenPage(): React.JSX.Element {
     <ComponentDocPage
       name="Wizard Screen"
       status="Beta"
-      summary="One record, entered in stages. It adds the page around the shared Wizard: the scheme title, the step meta line, the draft banner and any notices the step must carry."
+      summary="One record, entered in stages. It adds the page around the shared Wizard — the scheme title, the step meta line, the draft banner and any notices — and Wizard draws the rest: the stepper on the page ground and one panel per step, with Cancel on the first step."
       figma={{ node: "screenTemplates" }}
       specimen={<WizardSpecimen />}
       propsFrom="WizardScreenProps"
@@ -60,10 +60,31 @@ export default function WizardScreenPage(): React.JSX.Element {
       related={[
         { label: "Wizard", href: "/design-system/components/forms/wizard", reason: "the stepper, focus handling and action row" },
         { label: "Stepper", href: "/design-system/components/feedback/stepper", reason: "the progress indicator" },
+        { label: "Form Panel", href: "/design-system/components/forms/form-panel", reason: "the step card Wizard draws" },
         { label: "Form Section", href: "/design-system/components/forms/form-section", reason: "what a step body is made of" },
       ]}
       design={
         <>
+          <section className="cdp__section" aria-labelledby="cdp-grammar">
+            <h2 id="cdp-grammar" className="cdp__h2">The Page, Then One Panel per Step</h2>
+            <p>
+              The template renders the page header, the step meta line, the draft banner and the
+              notices, then hands the step to Wizard. Wizard draws the stepper directly on the page
+              ground and one Form Panel for the current step: the step&rsquo;s title in the head band,
+              its sub-sections in the body, and Back or Cancel with Continue or Submit in the action
+              band. The template draws no container of its own around either.
+            </p>
+            <p>
+              <code>onCancel</code> is passed through to Wizard, so Cancel is the outlined leading
+              control of the first step&rsquo;s action band, where later steps show Back. There is no
+              separate Cancel button above or beside the panel.
+            </p>
+            <Callout type="warning" title="Pass Sub-Sections, Not Cards">
+              The children are the step&rsquo;s Form Sections and Form Cards. Wrapping them in a Card
+              puts a box inside the panel Wizard has already drawn.
+            </Callout>
+          </section>
+
           <section className="cdp__section" aria-labelledby="cdp-steps">
             <h2 id="cdp-steps" className="cdp__h2">Three to Seven Steps, One Treatment</h2>
             <p>
@@ -94,8 +115,8 @@ export default function WizardScreenPage(): React.JSX.Element {
             <p>
               The handoff&rsquo;s <code>step-3-bank-beneficiaries-filled</code> is 1730px of form
               in a 1024px artboard — about 60% of the screen is not visible in the drawing. If a
-              step runs that long, split it or group it into collapsible{" "}
-              <code>FormSection</code>s; do not let the action row sit 800px below the fold.
+              step runs that long, split it into two steps; do not let the action band sit 800px below
+              the fold.
             </p>
           </section>
         </>
@@ -119,11 +140,13 @@ export default function WizardScreenPage(): React.JSX.Element {
   notices={autoFilled && <Alert status="info">Organisation details auto-populated from DARPAN.</Alert>}
   error={stepError}
   errorRef={errorRef}
+  onCancel={() => router.push("/apply-grant")}   // Cancel on the first step, Back after it
   onBack={back}
   onNext={validateThenNext}
   onSubmit={submit}
 >
   <FormSection title="Project Details">…</FormSection>
+  <FormSection title="Project Location">…</FormSection>
 </WizardScreen>`}</CodeBlock>
           <p>
             The parent owns every field value, the step index and validation — the same division{" "}

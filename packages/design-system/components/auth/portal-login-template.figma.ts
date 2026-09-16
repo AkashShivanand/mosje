@@ -96,6 +96,20 @@
 // shell, and the credential mode is a slot. If you find yourself wanting a new
 // Auth Method variant for a portal, you want a `CredentialFields` master.
 //
+// IDENTIFIERS, SUB-ROLES AND ERRORS ARE CONFIG, NOT FIGMA PROPERTIES (2026-09-14).
+// `identifierKind` / `otpIdentifierKind` (text · mobile · email) decide the
+// field's keyboard and cleaning; `subRoles` draws a "Your role" select inside a
+// tab; `links.registerOptions` gives the Dual account prompt; `onRequestOtp`
+// lets the portal refuse an identifier before the code step; `fieldErrors`
+// places a failed submit against its field. None has a property on this set —
+// the nested `Auth / CredentialFields` masters are where a designer draws them —
+// so do not invent one here — except the two the form card and stacks now
+// carry (2026-09-15): `Show role select` on `Auth / AuthFormCard`, and an
+// `Identifier kind` axis (Text · Mobile · Email) on the Identifier + Password,
+// Identifier + PIN and OTP request sets. Recovery is `PortalRecoveryTemplate`,
+// the code counterpart of `Auth / CredentialRecovery`
+// (portal-recovery-template.figma.ts), not a mode of this component.
+//
 // TONE IS NOT A PROPERTY. Light/dark and high contrast resolve through the
 // `data-color-mode` axis and brand through `data-brand`. Never generate a `tone`,
 // `theme` or `contrast` prop.
@@ -119,7 +133,11 @@ export default {
     // The SCHEME name, never the acronym — "Senior Citizens Welfare", not "SCW".
     portalName: "Senior Citizens Welfare",
     // The DigiLocker card renders only when a role asks for it AND this is set.
-    links: { digilockerHref: "https://digilocker.gov.in/" },
+    links: { digilockerHref: "https://digilocker.gov.in/", termsHref: "/terms", privacyHref: "/privacy" },
+    // OPTIONAL per portal, off by default — \`Show consent\` on the nested
+    // Auth / AuthFormCard. On for a public sign-in; E-Anudaan (NGOs and
+    // officers only) leaves it off.
+    consent: true,
     roles: [
       {
         id: "citizen",

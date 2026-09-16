@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { Button } from "../actions/button";
 import "./feedback-widget.css";
 
 export type FeedbackVerdict = "useful" | "not-useful";
@@ -117,28 +118,27 @@ export function FeedbackWidget({
       <fieldset className="ds-feedback__ask">
         <legend className="ds-feedback__question">{question}</legend>
         <div className="ds-feedback__verdicts">
-          <button
-            type="button"
-            className={cn(
-              "ds-feedback__verdict",
-              verdict === "useful" && "ds-feedback__verdict--chosen",
-            )}
+          {/* The library Button. `aria-pressed` on an outlined button is its selected
+              treatment — the chosen verdict reads as filled, the other as outlined —
+              so the widget no longer draws a toggle of its own. */}
+          <Button
+            variant="neutral"
+            appearance="outlined"
+            className="ds-feedback__verdict"
             aria-pressed={verdict === "useful"}
             onClick={() => setVerdict("useful")}
           >
             Yes
-          </button>
-          <button
-            type="button"
-            className={cn(
-              "ds-feedback__verdict",
-              verdict === "not-useful" && "ds-feedback__verdict--chosen",
-            )}
+          </Button>
+          <Button
+            variant="neutral"
+            appearance="outlined"
+            className="ds-feedback__verdict"
             aria-pressed={verdict === "not-useful"}
             onClick={() => setVerdict("not-useful")}
           >
             No
-          </button>
+          </Button>
         </div>
       </fieldset>
 
@@ -164,14 +164,9 @@ export function FeedbackWidget({
             onChange={(e) => setComment(e.target.value)}
           />
           <div className="ds-feedback__actions">
-            <button
-              type="button"
-              className="ds-feedback__send"
-              disabled={sending}
-              onClick={send}
-            >
+            <Button disabled={sending} onClick={send}>
               {sending ? "Sending…" : "Send"}
-            </button>
+            </Button>
             {helpHref ? (
               <a className="ds-feedback__help" href={helpHref}>
                 {helpLabel}

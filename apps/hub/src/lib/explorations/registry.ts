@@ -566,7 +566,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
         options: [
           {
             id: "personas",
-            title: "Explore User Personas",
+            title: "Explore Specific Benefits",
             label: "Personas",
             summary:
               "The panel already on the home page: one group at a time, moved with arrows, and choosing one opens the Schemes page filtered to it.",
@@ -583,7 +583,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
             title: "Find Schemes for You — two questions",
             label: "Two Questions",
             summary:
-              "Two short questions — who is looking for support, and what kind of support — built as a website section from the design system over the validated scheme master. The second may be left unanswered, which widens the list.",
+              "Two short questions — the type of applicant and the type of benefit — built as a website section from the design system over the validated scheme master. The second may be left unanswered, which widens the list.",
             status: "proposed",
             live: true,
             lookAt: [

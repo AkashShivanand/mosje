@@ -17,6 +17,7 @@
 //     Navbar/MegaMenuItem  → MegaMenuItem
 //     Navbar/NavSheet      → NavSheet
 //     AccountMenu          → AccountMenu
+//     Navbar/NotificationBell → NotificationBell
 //
 //   The accessibility bar is NOT re-declared here: SiteHeader nests the shared
 //   <AccessibilityBar> from components/navigation, which is the one place it lives.
@@ -27,6 +28,8 @@ export { BrandLockup } from "./brand-lockup";
 export type { BrandLockupProps } from "./brand-lockup";
 export { AccountMenu } from "./account-menu";
 export type { AccountMenuProps } from "./account-menu";
+export { NotificationBell } from "./notification-bell";
+export type { NotificationBellProps } from "./notification-bell";
 export {
   MenuToggle,
   SheetToggle,
@@ -59,5 +62,6 @@ export type {
   HeaderSearch,
   UtilityTone,
   HeaderAccount,
+  HeaderNotifications,
   AccountMenuItem,
 } from "./types";

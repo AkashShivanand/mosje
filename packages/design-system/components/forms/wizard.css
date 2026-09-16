@@ -40,71 +40,40 @@
   .ds-wizard {
     display: flex;
     flex-direction: column;
-    gap: var(--sa-stack-24);
+    gap: var(--sa-stack-32);
     font-family: var(--sa-font-latin);
   }
 
+  /* The Stepper sits on the page ground, not in a card. A bordered box round it framed
+     the progress row as one more panel of the form, and it read as a section to fill in. */
   .ds-wizard__stepper {
-    background-color: var(--sa-bg-neutral-base);
-    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
-    border-radius: var(--sa-shape-12);
-    padding: var(--sa-padding-20);
+    min-width: 0;
   }
 
   .ds-wizard__body {
     display: flex;
     flex-direction: column;
-    gap: var(--sa-stack-24);
+    gap: var(--sa-stack-32);
     outline: none;
+    min-width: 0;
   }
 
-  .ds-wizard__actions {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--sa-stack-12);
-    padding-top: var(--sa-padding-20);
-    border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  /* The panel's action band owns the actions' layout (space-between); the Back and advance
+     buttons sit at its two ends. */
+  .ds-wizard .ds-form-panel__foot {
+    flex-wrap: nowrap;
   }
 
-  /* Review summary. */
-  .ds-review-section {
-    background-color: var(--sa-bg-neutral-base);
-    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
-    border-radius: var(--sa-shape-12);
-    padding: var(--sa-padding-20);
-  }
-
-  /* Review section label = Figma uppercase divider (matches form sub-dividers). */
-  .ds-review-section__title {
-    margin: 0 0 var(--sa-padding-16);
-    font-size: var(--sa-type-label-3-size);
-    line-height: var(--sa-type-label-3-lh);
-    font-weight: var(--sa-font-weight-semibold);
-    letter-spacing: var(--sa-type-caps-tracking);
-    text-transform: uppercase;
-    color: var(--sa-text-neutral-subtle);
-  }
-
+  /* Review grid spacing: a label and its value read as one, so rows sit closer than fields. */
   .ds-review-section__grid {
-    display: grid;
-    gap: var(--sa-stack-12) var(--sa-padding-20);
-    grid-template-columns: 1fr;
-    margin: 0;
-  }
-
-  @media (min-width: 640px) {
-    .ds-review-section__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
-
-  @media (min-width: 1280px) {
-    .ds-review-section__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    row-gap: var(--sa-stack-16);
   }
 
   .ds-review-item {
     display: flex;
     flex-direction: column;
-    gap: var(--sa-padding-2);
+    gap: var(--sa-stack-2);
+    min-width: 0;
   }
 
   /* Span the full grid row — for multi-attribute records (e.g. a drug entry). */
@@ -113,7 +82,8 @@
   }
 
   .ds-review-item__label {
-    font-size: var(--sa-type-body-3-size);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
     font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-subtle);
   }
@@ -121,7 +91,9 @@
   .ds-review-item__value {
     margin: 0;
     font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
     color: var(--sa-text-neutral-base);
+    overflow-wrap: anywhere;
   }
 
   /* The reason the advance control is disabled, beside it, so a reader meets the
@@ -129,6 +101,8 @@
      elsewhere on the page is a dead end. `margin-inline-end: auto` pushes it left of the
      buttons without needing a wrapper. */
   .ds-wizard__blocked {
+    flex: 1 1 auto;
+    min-width: 0;
     margin-inline-end: auto;
     max-width: 52ch;
     color: var(--sa-text-status-warning-base);
@@ -143,8 +117,85 @@
      worth meeting before the control. Scoped to this element rather than switching the row
      to `wrap` for everyone, because the row's two-button case has no reason to change. */
   @media (max-width: 767px) {
-    .ds-wizard__actions {
+    /* ── THE ACTION BAR IS STICKY ON A PHONE ───────────────────────────────
+       A step of an application form runs 2,000–3,900px on a 375px screen, so
+       "Save and Continue" was always off-screen: the applicant filled the step,
+       then scrolled the whole of it again to find the only way forward
+       (e-Anudaan audit W-08).
+
+       STICKY, NOT FIXED. The bar belongs to the panel and travels with it — at
+       the end of the step it simply lands in its own place — so it needs no
+       z-index ladder rung, leaves no hole in the document, and cannot outlive
+       the form the way a fixed bar can. `floating-element-placement.md` governs
+       FIXED widgets and the corner stack; this is neither, and the two are kept
+       apart by the `data-sa-rail-clear` contract and the gutter below.
+
+       The panel clips its corners with `overflow: hidden`, and an overflow
+       ancestor is exactly what stops a sticky child from sticking — it sticks
+       to that box instead of the viewport. So on a phone the panel stops
+       clipping and the two bands carry the radii themselves. */
+    .ds-wizard .ds-form-panel {
+      overflow: visible;
+    }
+
+    .ds-wizard .ds-form-panel__head {
+      border-start-start-radius: var(--sa-shape-20);
+      border-start-end-radius: var(--sa-shape-20);
+    }
+
+    .ds-wizard .ds-form-panel__foot {
+      position: sticky;
+      /* The bar's own bottom edge; `env()` keeps it clear of a home indicator. */
+      bottom: 0;
+      border-end-start-radius: var(--sa-shape-20);
+      border-end-end-radius: var(--sa-shape-20);
+      /* Opaque, because content scrolls UNDER it. The panel's own ground rather than the band
+         tint: a translucent or tinted bar over a white form reads as a misprint. */
+      background-color: var(--sa-bg-neutral-base);
+      padding-block-end: calc(var(--sa-padding-16) + env(safe-area-inset-bottom, 0px));
+      box-shadow: 0 -1px 0 0 var(--sa-border-neutral-subtle);
+    }
+
+    /* The last field is never under the bar: the body reserves the bar's height, so the end of
+       the step can always be scrolled clear of it. One control's height plus the band's padding
+       — the bar is a row of buttons, and a taller bar (a blocked reason on its own line) is
+       drawn at the end of the step where nothing is behind it. */
+    .ds-wizard .ds-form-panel__body {
+      padding-block-end: calc(var(--sa-control-height-md) + var(--sa-padding-16) * 2);
+    }
+
+    /* THE GUTTER. Where the corner stack is actually occupied — the statutory accessibility
+       control, which never yields — the primary action stops short of it. Set from a measurement
+       in wizard.tsx, so a portal whose accessibility control lives in its top bar (all of them
+       today) keeps the full row. 56 = the widget's own box plus the rail's 32px inset, rounded
+       to the nearest spacing rung. */
+    .ds-wizard .ds-form-panel__foot[data-corner="occupied"] {
+      padding-inline-end: calc(var(--sa-padding-16) + var(--sa-stack-56));
+    }
+
+    .ds-wizard .ds-form-panel__foot {
       flex-wrap: wrap;
+    }
+
+    /* Back keeps its icon and gives up its word — see wizard.tsx. */
+    .ds-wizard__back-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    /* Back and the advance control share one row, the advance control taking the larger share. */
+    .ds-wizard__blocked {
+      flex: 1 1 100%;
+    }
+
+    .ds-wizard .ds-form-panel__foot > .ds-btn:last-child {
+      flex: 1 1 auto;
     }
 
     .ds-wizard__blocked {

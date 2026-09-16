@@ -1,12 +1,10 @@
-import { ComingSoon } from "@/components/smile-admin/shell/coming-soon";
+import { redirect } from "next/navigation";
 
+/**
+ * The live portal answers `/survey-list` with the Beneficiary List — not a
+ * survey register, despite the name. This follows it there rather than
+ * inventing a screen the portal does not have.
+ */
 export default function Page() {
-  return (
-    <ComingSoon
-      title="Survey Submissions"
-      subtitle="Submitted survey records awaiting verification."
-      breadcrumbs={[{ label: "Field Operations" }, { label: "Survey Submissions" }]}
-      backHref="/portals/smile-admin/dashboard"
-    />
-  );
+  redirect("/portals/smile-admin/persons");
 }

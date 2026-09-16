@@ -285,6 +285,12 @@ export default function FormFieldPage(): React.JSX.Element {
             Notes
           </h2>
           <p>
+            A field that is <code>required</code> and also <code>readOnly</code> or <code>disabled</code> shows
+            no asterisk — a worked-out amount is required in the data and still not the reader&rsquo;s to supply.
+            Pass <code>readOnly</code> to the FormField itself, not only to the Input inside it, or the label
+            cannot know. The control keeps its <code>required</code> attribute.
+          </p>
+          <p>
             When both a hint and an error are present, <code>aria-describedby</code> lists the hint
             first and the error second, so the reader hears the instruction before the correction.
           </p>

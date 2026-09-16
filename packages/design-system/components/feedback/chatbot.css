@@ -245,7 +245,39 @@
       var(--sa-elevation-toast),
       var(--sa-elevation-raised),
       0 0 0 1px var(--sa-border-neutral-subtle);
-    transition: transform var(--ds-chatbot-hover) ease;
+    transition:
+      transform var(--ds-chatbot-hover) ease,
+      filter var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+  }
+
+  /*
+   * ── STEPPING ASIDE FROM A CLEAR SURFACE ─────────────────────────────────
+   *
+   * `useRailClearance` sets `data-sa-rail-yield` while the closed launcher sits
+   * on a surface marked `data-sa-rail-clear` — on a short phone, the website's
+   * announcement band, whose ✕ it covered outright at 320×568.
+   *
+   * FILTER, NOT OPACITY, for two reasons that are both measured facts rather
+   * than taste. The launcher's arrival animation fills `both`, so it holds
+   * `opacity: 1` and would win over any opacity written here. And both rails
+   * treat `opacity: 0` as ABSENT — the demo dock would slide into the launcher's
+   * slot and back again every time it yielded. `filter: opacity(0)` is read by
+   * neither, so nothing else on the rail moves.
+   *
+   * ON THE LAUNCHER, NOT THE ROOT, because the root is what both rails measure.
+   * The root only stops taking taps, so a tap lands on the band beneath.
+   *
+   * VISUAL AND POINTER ONLY. It stays in the tab order and the accessibility
+   * tree — where a widget sits on screen means nothing to a screen reader — and
+   * `:focus-within` brings it straight back for anyone who tabs to it.
+   */
+  .ds-chatbot--fixed[data-sa-rail-yield]:not([data-state="open"], :focus-within) {
+    pointer-events: none;
+  }
+
+  .ds-chatbot--fixed[data-sa-rail-yield]:not([data-state="open"], :focus-within)
+    .ds-chatbot__launcher {
+    filter: opacity(0);
   }
 
   /*
@@ -340,8 +372,6 @@
     transform: scale(0.9) rotate(-45deg);
     filter: blur(3px);
   }
-
-
 
   .ds-chatbot__launcher[data-state="open"] .ds-chatbot__mark {
     opacity: 0;
@@ -783,7 +813,6 @@
       transform var(--ds-chatbot-press) var(--ds-chatbot-ease);
   }
 
-
   @media (hover: hover) and (pointer: fine) {
     .ds-chatbot__icon-btn:hover {
       background: var(--sa-bg-neutral-subtler);
@@ -805,7 +834,9 @@
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-title-2-size);
     line-height: var(--sa-type-title-2-lh);
-    font-weight: var(--sa-font-weight-medium);
+    /* Title 2's own weight, as the Figma header's `Title/title-2` layer. It was 500, which
+       is no text style: the Title tier has been 600 since 2026-09-04. */
+    font-weight: var(--sa-font-weight-semibold);
     /* The title outranks the subtitle beneath it, so it cannot be the same ink.
        Both were `muted`, which left the header with no hierarchy at all — the
        Devanagari name read as equal in weight to the invitation above it. */
@@ -1079,46 +1110,6 @@
     }
   }
 
-  .ds-chatbot__reply {
-    display: block;
-    /* 8/12 puts the control at 36px against the mock's 38 — on the 4px grid the
-       Spacing page insists on, and comfortably over the 24px WCAG 2.2 minimum. */
-    padding: var(--sa-padding-8) var(--sa-padding-12);
-    border: var(--sa-stroke-1) solid transparent;
-    border-radius: var(--sa-shape-8);
-    /* The mock's #EFE8FF lavender is not a SAMAVESH colour and nothing in the
-       ramp resolves near it. The pale brand tint is the same ROLE — a quiet
-       suggestion surface — so the design moves to the system rather than the
-       system growing a one-off variable for it. */
-    background: var(--sa-bg-brand-primary-base);
-    font-family: var(--sa-font-latin);
-    font-size: var(--sa-type-body-2-size);
-    line-height: var(--sa-type-body-2-lh);
-    color: var(--sa-color-text-muted);
-    text-align: start;
-    cursor: pointer;
-    transition:
-      background-color var(--ds-chatbot-press) var(--ds-chatbot-ease),
-      border-color var(--ds-chatbot-press) var(--ds-chatbot-ease),
-      transform var(--ds-chatbot-press) var(--ds-chatbot-ease);
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .ds-chatbot__reply:hover {
-      border-color: var(--sa-border-brand-primary-base);
-      background: var(--sa-bg-brand-primary-subtler);
-    }
-  }
-
-  .ds-chatbot__reply:active {
-    transform: scale(0.97);
-  }
-
-  .ds-chatbot__reply:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-    outline-offset: var(--sa-focus-offset);
-  }
-
   /* -- screen-reader-only ---------------------------------------------------- */
 
   .ds-chatbot__sr {
@@ -1158,8 +1149,7 @@
        here would be a second copy of a decision that lives in button.css. */
     .ds-chatbot__launcher,
     .ds-chatbot__launcher:hover,
-    .ds-chatbot__launcher:active,
-    .ds-chatbot__reply:active {
+    .ds-chatbot__launcher:active {
       transform: none;
     }
 
@@ -1368,7 +1358,6 @@
       opacity var(--ds-chatbot-press) var(--ds-chatbot-ease),
       transform var(--ds-chatbot-press) var(--ds-chatbot-ease);
   }
-
 
   /* Dimmed, never hidden. A send button that vanishes when the field is empty
      removes the affordance that tells you the field is a message box at all. */

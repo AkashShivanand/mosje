@@ -90,7 +90,10 @@ export function TickerPlayground(): React.JSX.Element {
         action={
           withAction ? (
             <a href="#all" className={buttonClasses("primary", "inverseOutlined", "sm")}>
-              View All Updates
+              {/* The panel's header holds the name, the pause, the hairline and the
+                  route on one line only while the route is short — the library draws
+                  it as "View All", and so does the website's own panel. */}
+              {vertical ? "View All" : "View All Updates"}
             </a>
           ) : undefined
         }

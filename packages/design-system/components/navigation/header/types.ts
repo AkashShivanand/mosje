@@ -6,6 +6,8 @@
 // =============================================================================
 
 import type { SearchSuggestion } from "../../forms/search";
+import type { EventItem } from "../../data-display/event-list";
+import type { NotificationStatus } from "../../data-display/notification-centre";
 
 /** A single navigation link. */
 export interface NavLink {
@@ -163,4 +165,43 @@ export interface AccountMenuItem {
   icon?: React.ReactNode;
   /** Renders the destructive treatment (e.g. Sign out). */
   danger?: boolean;
+}
+
+/**
+ * The signed-in reader's notifications, for the masthead bell.
+ *
+ * What belongs in `items` — updates about this reader's own business, never an
+ * officer's work queue or an administrator's broadcast — is defined in
+ * `docs/specs/notification-object.md`. A portal with no real feed passes nothing,
+ * and no bell renders.
+ */
+export interface HeaderNotifications {
+  /** Newest first, the EventItem shape. The badge is `notificationCount(items)`. */
+  items: EventItem[];
+  /**
+   * The portal's notifications page. REQUIRED: the phone bell is a link to it
+   * and the panel's "View All Notifications" leads there. No page, no bell.
+   */
+  href: string;
+  /** @default "ready" */
+  status?: NotificationStatus;
+  /** Offered in the panel's error state. */
+  onRetry?: () => void;
+  /** Marks unread UPDATES as read. Action-required items are untouched. */
+  onMarkAllRead?: () => void;
+  /** Fired when the desktop panel opens. */
+  onOpen?: () => void;
+  /**
+   * Fired when the phone bell (a link) is followed. The design system does not
+   * own the router, so a portal that guards unsaved form edits cancels here with
+   * `event.preventDefault()`.
+   */
+  onNavigate?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
+  /**
+   * Updates shown in the panel; the rest are on `href`.
+   * @default 6
+   */
+  limit?: number;
+  /** @default "Notifications" */
+  label?: string;
 }

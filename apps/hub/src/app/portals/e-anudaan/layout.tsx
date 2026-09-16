@@ -15,6 +15,15 @@ export const metadata: Metadata = {
 // properties scoped by this attribute — see e-anudaan.css.
 //
 // data-surface="portal" applies the DS portal type scale (tokens.css), as every portal does.
+//
+// KNOWN CONSOLE ERROR, not ours: "A tree hydrated but some attributes … didn't match", with the diff
+// `- style={{zoom:"1"}}` on this div. The UX4G accessibility widget (cdn.ux4g.gov.in, loaded by the
+// root layout) writes `style.zoom` onto the page's content wrapper when it initialises; when its
+// script lands before React hydrates, React sees an attribute the server never sent. It is timing-
+// dependent (8 of 174 and 40 of 184 page loads in two walks of every role's routes, 16 Sep 2026;
+// 0 of 121 with the widget's script blocked), changes nothing on screen, and is the only hydration
+// mismatch left on E-Anudaan. It is deliberately NOT silenced with
+// `suppressHydrationWarning`, which would also hide a real mismatch on this element.
 export default function EAnudaanLayout({ children }: { children: React.ReactNode }) {
   return (
     <div data-portal="e-anudaan" data-surface="portal">

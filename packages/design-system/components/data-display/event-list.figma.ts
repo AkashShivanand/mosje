@@ -27,6 +27,16 @@ const note = instance.getEnum("Note", {
   false: "without",
 });
 
+// Action needed -> `actionRequired: true` (derive it from the live record — it clears
+//                  when the action is done, not when the entry is read)
+// Due           -> `dueAt`, an ISO date; Figma carries the printed sentence
+// Show tag      -> the list's `showActionTag`; off where a heading above already says
+//                  "Action Needed", as NotificationCentre's section does
+const actionNeeded = instance.getBoolean("Action needed#58160:0");
+const showTag = instance.getBoolean("Show tag#58160:7");
+
+const actionPart = actionNeeded ? `, actionRequired: true, dueAt: "2026-09-30"` : "";
+
 const notePart =
   note === "with"
     ? `, note: "The income certificate is issued by the block office."`
@@ -44,9 +54,10 @@ export default {
           actorRole: "District Nodal Officer",
           action: "Returned for correction",
           subject: "Application 2026/PMS/01284",
-          tone: "${tone}"${notePart},
+          tone: "${tone}"${notePart}${actionPart},
         },
-      ]}
+      ]}${actionNeeded && !showTag ? figma.code`
+      showActionTag={false}` : ""}
     />
   `,
   imports: ['import { EventList } from "@mosje/design-system"'],

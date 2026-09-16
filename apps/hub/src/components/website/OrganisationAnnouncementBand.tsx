@@ -89,6 +89,40 @@ const DWELL_MS = 6000;
 const FLIP_MS = 520;
 
 /**
+ * The longest the band may take to fold away before it is removed regardless.
+ * The fold ends on its own `transitionend` at about 375ms (a 75ms lead-in and
+ * the 300ms `motion/page` fold); this only catches a transition the browser
+ * never ran — a backgrounded tab, or an engine that does not animate
+ * `grid-template-rows`.
+ */
+const FOLD_FALLBACK_MS = 700;
+
+/**
+ * A LINE NEVER ENDS ON "of" OR "the".
+ *
+ * The heading already asks for `text-wrap: balance`, and balance is exactly what
+ * broke it: "Six Years of the Abhiyaan" splits as "Six Years of / the Abhiyaan"
+ * because those halves are twelve characters each. Balance weighs every space the
+ * same; it has no idea a preposition leans on the word after it. So a short
+ * function word is glued to its successor with a no-break space, and balance then
+ * chooses among the breaks that remain — "Six Years / of the Abhiyaan".
+ *
+ * Render-only. The words are the Department's and unchanged, a no-break space is
+ * read as a space by a screen reader, and the pager's accessible name keeps the
+ * plain string.
+ */
+const SHORT_WORDS = new Set(["a", "an", "and", "at", "by", "for", "in", "of", "on", "or", "the", "to", "with"]);
+
+function bindShortWords(text: string): string {
+  const words = text.split(" ");
+  return words
+    .map((w, i) =>
+      i === words.length - 1 ? w : w + (SHORT_WORDS.has(w.toLowerCase()) ? " " : " "),
+    )
+    .join("");
+}
+
+/**
  * THE PIECES, BY SILHOUETTE.
  *
  * The first burst threw eight of the same object — a thin dash — which is what
@@ -135,6 +169,9 @@ export function OrganisationAnnouncementBand({
    */
   const [turning, setTurning] = React.useState(false);
   const [gone, setGone] = React.useState(false);
+  /* Dismissed and folding away — still in the DOM, inert, no longer rotating. */
+  const [leaving, setLeaving] = React.useState(false);
+  const bandRef = React.useRef<HTMLElement>(null);
   const [playing, setPlaying] = React.useState(true);
   const [hovered, setHovered] = React.useState(false);
   const [focused, setFocused] = React.useState(false);
@@ -184,15 +221,26 @@ export function OrganisationAnnouncementBand({
    * already solid and there is no rotation to stop.
    */
   function fillOnScreen(): number | null {
-    const dot = dotsRef.current?.querySelector<HTMLElement>('.orgab__dot[aria-selected="true"]');
-    if (!dot) return null;
-    const clip = window.getComputedStyle(dot, "::after").clipPath;
-    const inset = /inset\(([^)]*)\)/.exec(clip)?.[1];
-    if (!inset) return null;
-    const right = inset.trim().split(/\s+/)[1];
-    if (!right || !right.endsWith("%")) return null;
-    const pct = 100 - parseFloat(right);
-    return Number.isFinite(pct) ? Math.min(100, Math.max(0, pct)) : null;
+    const fill = dotsRef.current?.querySelector<HTMLElement>(".orgab__fill");
+    if (!fill) return null;
+    /*
+     * The pill sits one full width to the left when empty and at zero when
+     * full, so its offset IS the fill: -100% reads as 0 and 0 reads as 100.
+     *
+     * Read from the MATRIX rather than the declaration, because mid-animation
+     * the declaration is the keyframe's `translateX(-100%)` and the matrix is
+     * where it has actually got to. This used to parse a `clip-path`, and when
+     * the fill stopped being a clip it went on returning null in silence — the
+     * bar simply stopped holding where a reader pressed it.
+     */
+    const width = fill.getBoundingClientRect().width;
+    if (!width) return null;
+    const offset = new DOMMatrixReadOnly(
+      window.getComputedStyle(fill, "::before").transform,
+    ).m41;
+    if (!Number.isFinite(offset)) return null;
+    const pct = 100 + (offset / width) * 100;
+    return Math.min(100, Math.max(0, pct));
   }
 
   /*
@@ -358,7 +406,7 @@ export function OrganisationAnnouncementBand({
   }, []);
 
   const running =
-    armed && rotates && playing && !hovered && !focused && !reduced && !gone && !zoom;
+    armed && rotates && playing && !hovered && !focused && !reduced && !gone && !leaving && !zoom;
 
   /*
    * SWITCHED ON, BUT HELD — and the difference is the whole point.
@@ -381,7 +429,7 @@ export function OrganisationAnnouncementBand({
    * announced while the reader is parked on it.
    */
   const holding =
-    armed && rotates && playing && !reduced && !gone && (hovered || focused || zoom);
+    armed && rotates && playing && !reduced && !gone && !leaving && (hovered || focused || zoom);
 
 
   /*
@@ -498,7 +546,36 @@ export function OrganisationAnnouncementBand({
     dotsRef.current?.querySelector<HTMLButtonElement>(`[data-i="${n}"]`)?.focus();
   }
 
+  /*
+   * THE BAND FOLDS AWAY; IT DOES NOT VANISH.
+   *
+   * It used to unmount in the frame the × was pressed. Recorded: the band went
+   * 134px → 0 in ONE frame at 1440 and 289px → 0 at 390, so the hero and
+   * everything under it jumped up by that much in a single paint, and the
+   * helpline badge then faded in on its own, 250ms later, disconnected from
+   * the number the reader had just been looking at.
+   *
+   * Now `leaving` runs the fold (`.orgab[data-leaving]` in the stylesheet) and
+   * the band is removed when the fold's own transition ends. The badge is told
+   * at the START, so its entrance can be timed to land as the fold finishes.
+   */
+  React.useEffect(() => {
+    if (!leaving) return;
+    const band = bandRef.current;
+    const remove = () => setGone(true);
+    const onEnd = (e: TransitionEvent) => {
+      if (e.target === band && e.propertyName === "grid-template-rows") remove();
+    };
+    band?.addEventListener("transitionend", onEnd);
+    const fallback = window.setTimeout(remove, FOLD_FALLBACK_MS);
+    return () => {
+      band?.removeEventListener("transitionend", onEnd);
+      window.clearTimeout(fallback);
+    };
+  }, [leaving]);
+
   function dismiss() {
+    if (leaving) return;
     /* Announced, so the number reappears beside the organisation's mark. */
     dismissCampaign();
 
@@ -519,7 +596,7 @@ export function OrganisationAnnouncementBand({
       main.setAttribute("tabindex", "-1");
       main.focus({ preventScroll: true });
     }
-    setGone(true);
+    setLeaving(true);
   }
 
   if (panels.length === 0 || !current) return null;
@@ -536,7 +613,7 @@ export function OrganisationAnnouncementBand({
        * exists and only its contents change.
        */}
       <p className="ds-sr-only" role="status">
-        {gone
+        {gone || leaving
           ? banner?.helplineNumber
             ? `Announcements dismissed. The ${banner.helplineLabel}, ${banner.helplineNumber}, is now shown beside the page heading. They return when the page is reloaded.`
             : "Announcements dismissed. They return when the page is reloaded."
@@ -545,7 +622,16 @@ export function OrganisationAnnouncementBand({
 
       {gone ? null : (
         <section
+          ref={bandRef}
           className="orgab"
+          data-leaving={leaving || undefined}
+          /* Out of the tab order and unclickable while it folds, so a second press
+             cannot land on a control that is already on its way out. */
+          {...(leaving ? { inert: true } : {})}
+          /* A floating widget must not sit on the band — its ✕, its number and its
+             action are all first-screen controls on a phone. See the clearance
+             contract in `foundations/corner-rail.ts`. */
+          data-sa-rail-clear=""
           {...(rotates
             ? { role: "region", "aria-roledescription": "carousel", "aria-label": "Announcements" }
             : { "aria-label": "Announcement" })}
@@ -602,6 +688,9 @@ export function OrganisationAnnouncementBand({
             if (!e.currentTarget.contains(e.relatedTarget as Node)) setFocused(false);
           }}
         >
+          {/* The fold's one grid item. It carries no padding of its own, which is
+              what lets it shrink to zero — a padded item cannot go below its padding. */}
+          <div className="orgab__fold">
           <div className="sa-container orgab__inner" data-solo={banner ? undefined : ""}>
             {/* ── The announcement, on the leading edge ──────────────────── */}
             <div
@@ -747,7 +836,7 @@ export function OrganisationAnnouncementBand({
                      * listing headings met the announcement before the page had
                      * told them which page they were on.
                      */}
-                    <p className="orgab__heading">{o.heading}</p>
+                    <p className="orgab__heading">{bindShortWords(o.heading)}</p>
                     <p className="orgab__body">
                       {o.body}
                       {/*
@@ -857,6 +946,14 @@ export function OrganisationAnnouncementBand({
                         }}
                       >
                         <span className="ds-sr-only">{o.name}</span>
+                        {/*
+                         * A REAL ELEMENT, because the dwell needs a box it can
+                         * clip with and a child it can move. The fill used to be
+                         * the dot's `::after` animating `clip-path`, and a
+                         * pseudo-element cannot hold another one — see the note
+                         * in the stylesheet for why that had to change.
+                         */}
+                        {n === i ? <span className="orgab__fill" aria-hidden /> : null}
                       </button>
                     ))}
                   </div>
@@ -940,6 +1037,7 @@ export function OrganisationAnnouncementBand({
             >
               <Icon name="close" size={20} aria-hidden />
             </button>
+          </div>
           </div>
         </section>
       )}

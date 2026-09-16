@@ -8,7 +8,7 @@ import "./site-footer.css";
  * Which surface this footer is ending.
  *
  * `website` — the front door of a public information site. Carries wayfinding
- * (navigation columns, social, an optional support strip) on top of the
+ * (identity, address, social, navigation columns, Related Links) on top of the
  * statutory apparatus.
  *
  * `portal` — chrome under an authenticated workflow. Carries the statutory
@@ -59,9 +59,14 @@ export interface SiteFooterCredit {
 export interface SiteFooterProps extends React.HTMLAttributes<HTMLElement> {
   /** @default "website" */
   variant?: SiteFooterVariant;
-  /** Emblem or logo for the identity lockup. Pass a rendered `next/image`. */
+  /** Emblem or logo for the identity lockup. Pass a rendered `next/image`. Website variant only. */
   emblem?: React.ReactNode;
-  /** Organisation lines, coarsest first. The last is emphasised. */
+  /**
+   * Organisation lines, coarsest first. The last is emphasised.
+   *
+   * Required by the type on both variants so one content object drives both,
+   * but DRAWN only on `website` — the portal variant has no identity block.
+   */
   organisation: string[];
   /** Postal address, rendered inside `<address>`. Website variant only. */
   address?: string;
@@ -115,13 +120,19 @@ export interface SiteFooterProps extends React.HTMLAttributes<HTMLElement> {
    * always use a plain anchor. Defaults to `<a>`.
    */
   linkAs?: React.ElementType;
-  /** Content max-width, kept in sync with the header. @default 1280 */
+  /**
+   * Overrides the content cap. Leave it unset. On `website` the bands carry
+   * `.sa-container`, so they take the estate's container ladder (1200 / 1320 /
+   * 1440) and the right-wall gutter; on `portal` they are fluid and pad with
+   * `--sa-grid-margin-page`, as a portal masthead does. Either way they line up
+   * with the masthead above them. A number here restates what the token decides.
+   */
   maxWidth?: number;
 }
 
 /** Announces an external destination without adding visual noise. */
 function NewWindow() {
-  return <span className="sr-only"> (opens in a new window)</span>;
+  return <span className="ds-sr-only"> (opens in a new window)</span>;
 }
 
 /**
@@ -133,14 +144,16 @@ function NewWindow() {
  * site or portal in the estate.
  *
  * ── THE SHAPE, AND WHY ────────────────────────────────────────────────────
- * Three zones, in priority order, because a government footer has three jobs
- * and the previous version mixed all three at one weight:
+ * Two bands, because a government footer has two jobs — wayfinding, and the
+ * statutory apparatus — and they sit at different weights:
  *
- *   0. Support strip  — OPTIONAL, opt-in, absent from the DOM when unused
  *   1. The working footer — identity, address, social, four link columns
  *   2. The statutory bar  — lineage, credits, policies, colophon
  *
- * `variant="portal"` renders zone 2 alone. That is the whole difference, and
+ * A call to action is not one of them: it is page content, and the website
+ * renders it with `ActionBanner` on a light band ABOVE the footer.
+ *
+ * `variant="portal"` renders band 2 alone. That is the whole difference, and
  * it is why this is a variant: the statutory half is the half that must stay
  * DBIM-compliant, and it is now impossible for a portal to have a footer that
  * drifts from the website's on that half.
@@ -159,9 +172,11 @@ function NewWindow() {
  * missing from the variant that has to render it.
  *
  * ── COLOUR ────────────────────────────────────────────────────────────────
- * Comes entirely from `site-footer.css`, bound to the mode-aware
- * `--sa-color-primaryScale-*` family. Never pass a background through
- * `className`; see the contract at the top of that file.
+ * Comes entirely from `site-footer.css`: the ground is `bg/brand/primary/boldest`,
+ * the lead ink `on/bg/brand/primary/boldest`, and the roles the semantic layer has
+ * no name for are `cmp/sitefooter/*`. All of them are mode-aware, so the footer
+ * repaints for every `data-brand`. Never pass a background through `className`;
+ * see the contract at the top of that file.
  *
  * ── ACCESSIBILITY ─────────────────────────────────────────────────────────
  *   · `contentinfo` landmark, named by a visually-hidden `<h2>`.
@@ -189,14 +204,19 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
     lastUpdated,
     colophonSlot,
     linkAs: Link = "a",
-    maxWidth = 1280,
+    maxWidth,
     className,
     ...rest
   },
   ref,
 ) {
   const isWebsite = variant === "website";
-  const inStyle = { maxWidth } as React.CSSProperties;
+  const inStyle: React.CSSProperties | undefined =
+    maxWidth === undefined ? undefined : { maxWidth };
+  /* The website is CONTAINED and a portal is FLUID — the same split SiteHeader
+     makes. A portal footer pads with the page margin and takes no cap, so its
+     edges meet a portal masthead that runs full width. */
+  const inClass = cn("ds-sitefooter__in", isWebsite && "sa-container");
 
   /**
    * AN ICON MARKS A DISTINCTION. Where every link in a group is external, the
@@ -234,11 +254,11 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
       className={cn("ds-sitefooter", `ds-sitefooter--${variant}`, className)}
       {...rest}
     >
-      <h2 className="sr-only">Site footer</h2>
+      <h2 className="ds-sr-only">Site footer</h2>
 
-      {/* ── Zone 1 · the working footer ───────────────────────────────── */}
+      {/* ── Band 1 · the working footer ───────────────────────────────── */}
       {isWebsite && (
-        <div className="ds-sitefooter__in" style={inStyle}>
+        <div className={inClass} style={inStyle}>
           <div className="ds-sitefooter__body">
             <div className="ds-sitefooter__ident">
               <div className="ds-sitefooter__lockup">
@@ -277,7 +297,7 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
                           className="ds-sitefooter__social-link"
                         >
                           <BrandGlyph name={s.icon} size={24} />
-                          <span className="sr-only">
+                          <span className="ds-sr-only">
                             {s.label}
                             <NewWindow />
                           </span>
@@ -328,15 +348,18 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
         </div>
       )}
 
-      {/* ── Zone 2 · the statutory bar — BOTH variants ─────────────────── */}
+      {/* ── Band 2 · the statutory bar — BOTH variants ─────────────────── */}
       <div className="ds-sitefooter__statutory">
-        <div className="ds-sitefooter__in" style={inStyle}>
+        <div className={inClass} style={inStyle}>
           <p className="ds-sitefooter__lineage">{lineage}</p>
 
           {credits && credits.length > 0 && (
             <div className="ds-sitefooter__credits">
+              {/* A prefix and its mark wrap TOGETHER. As siblings in one flex row they
+                  wrapped apart at 375, leaving "Powered by" at the end of one line
+                  and its logo alone on the next. */}
               {credits.map((c) => (
-                <React.Fragment key={c.href}>
+                <span key={c.href} className="ds-sitefooter__credit">
                   {c.prefix && <span>{c.prefix}</span>}
                   <a
                     href={c.href}
@@ -347,7 +370,7 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
                     <img src={c.src} alt={c.alt} width={c.width} height={c.height} />
                     <NewWindow />
                   </a>
-                </React.Fragment>
+                </span>
               ))}
             </div>
           )}

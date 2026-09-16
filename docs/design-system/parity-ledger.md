@@ -7,14 +7,14 @@
 
 | Verdict | Count | Meaning |
 |---|---:|---|
-| `mapped` | 108 | A Figma component set with a confirmed code counterpart |
-| `figma-only` | 31 | Designed, never built. Backlog item or retire from the library |
-| `code-only` | 123 | Built, never designed. Figma backlog item |
-| `deliberately-unmapped` (Figma) | 14 | Internal sub-parts and brand assets |
+| `mapped` | 120 | A Figma component set with a confirmed code counterpart |
+| `figma-only` | 41 | Designed, never built. Backlog item or retire from the library |
+| `code-only` | 124 | Built, never designed. Figma backlog item |
+| `deliberately-unmapped` (Figma) | 11 | Internal sub-parts and brand assets |
 | `deliberately-unmapped` (code) | 7 | Demo tooling, providers, utilities |
 | `broken-pairing` | 0 | Pairing names a code export that no longer exists — **fix immediately** |
 
-**153** published component sets · **227** code components · **108** paired.
+**172** published component sets · **240** code components · **120** paired.
 
 ## Figma → code
 
@@ -28,6 +28,7 @@
 | .RightContent | Alerts/Toasts | _Internal sub-part of Alert_ | `deliberately-unmapped` | [220:7849](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=220-7849) |
 | .ToastStatus | Alerts/Toasts | _Internal sub-part of Alert_ | `deliberately-unmapped` | [220:7769](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=220-7769) |
 | Alert | Alerts/Toasts | `Alert` | `mapped` | [2272:12530](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=2272-12530) |
+| Alert / Inline | Alerts/Toasts | — | `figma-only` | [58323:836](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58323-836) |
 | Avatar | Avatars | `Avatar` | `mapped` | [248:2268](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=248-2268) |
 | Back to Top | Back to Top | `BackToTop` | `mapped` | [57608:745](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57608-745) |
 | Badge | Badges | `Badge` | `mapped` | [75:321](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=75-321) |
@@ -67,15 +68,28 @@
 | Time Picker | Date-Time Picker | `TimePicker` | `mapped` | [57547:2631](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57547-2631) |
 | Description List / Row | Description List | `DescriptionList` | `mapped` | [57520:769](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57520-769) |
 | Divider | Divider | `Divider` | `mapped` | [55061:700](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55061-700) |
+| Document Checklist | Document Checklist | `DocumentChecklist` | `mapped` | [58283:1076](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58283-1076) |
+| Document Findings | Document Findings | `DocumentFindings` | `mapped` | [58267:821](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58267-821) |
+| Document Findings / Field | Document Findings | — | `figma-only` | [58266:760](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58266-760) |
+| Document History Sheet / Entry | Document History Sheet | — | `figma-only` | [58282:756](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58282-756) |
+| Document Placement Tray / Item | Document Placement Tray | — | `figma-only` | [58281:814](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58281-814) |
+| Document Row | Document Row | `DocumentRow` | `mapped` | [58278:1079](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58278-1079) |
 | EmptyState | Empty State | `EmptyState` | `mapped` | [452:97007](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=452-97007) |
 | Event List / Row | Event List | `EventList` | `mapped` | [57600:48770](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57600-48770) |
+| Fact Strip | Fact Strip | `FactStrip` | `mapped` | [57981:811](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57981-811) |
+| Fact Strip / Fact | Fact Strip | — | `figma-only` | [57978:751](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57978-751) |
 | ⛔ .FeedbackEmojis (deprecated) | Feedback Widget | — | `figma-only` | [3991:3654](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=3991-3654) |
 | ⛔ FeedbackWidget / Button (deprecated) | Feedback Widget | — | `figma-only` | [3991:3480](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=3991-3480) |
 | Feedback Widget | Feedback Widget | `FeedbackWidget` | `mapped` | [57539:1051](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57539-1051) |
 | Figure | Figure | `Figure` | `mapped` | [57524:850](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57524-850) |
 | File List / Row | File List | `FileList` | `mapped` | [57611:775](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57611-775) |
 | Footer - Bottom Strip | Footer | _Footer sub-part_ | `deliberately-unmapped` | [2500:297936](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=2500-297936) |
-| Site Footer | Footer | — | `figma-only` | [57800:1922](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57800-1922) |
+| Site Footer | Footer | `SiteFooter` | `mapped` | [57800:1922](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57800-1922) |
+| Declaration Checkbox | Form Layout | `DeclarationCheckbox` | `mapped` | [58191:3685](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58191-3685) |
+| Document Tile | Form Layout | `DocumentTile` | `mapped` | [58096:1947](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58096-1947) |
+| Form / Panel | Form Layout | `FormPanel` | `mapped` | [58091:2489](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58091-2489) |
+| Form / Section | Form Layout | `FormSection` | `mapped` | [58089:1454](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58089-1454) |
+| Review / Section | Form Layout | `ReviewSection` | `mapped` | [58096:2025](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58096-2025) |
 | IconButton | Icon Button | `IconButton` | `mapped` | [3:3497](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=3-3497) |
 | Icon | Iconography | `Icon` | `mapped` | [55030:701](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55030-701) |
 | Inline Edit | Inline Edit | `InlineEdit` | `mapped` | [57599:770](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57599-770) |
@@ -106,6 +120,8 @@
 | Navbar/NavDropdown | Navbar | `NavDropdown` | `mapped` | [4300:1950](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=4300-1950) |
 | Navbar/NavItem | Navbar | `NavItemLink` | `mapped` | [2065:292757](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=2065-292757) |
 | Navbar/NavSheet | Navbar | `NavSheet` | `mapped` | [55327:3503](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55327-3503) |
+| Navbar/NavSheetRow | Navbar | — | `figma-only` | [58049:763](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58049-763) |
+| Navbar/NotificationBell | Navbar | `NotificationBell` | `mapped` | [58143:59613](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58143-59613) |
 | Navbar/Portal | Navbar | `SiteHeader` | `mapped` | [4235:3169](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=4235-3169) |
 | Navbar/SheetToggle | Navbar | `SheetToggle` | `mapped` | [57295:59399](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57295-59399) |
 | Navbar/Website | Navbar | `SiteHeader` | `mapped` | [2476:296125](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=2476-296125) |
@@ -114,13 +130,17 @@
 | OTP Input / Box | OTP Input | _Internal sub-part of OTP Input — one digit box_ | `deliberately-unmapped` | [55427:704](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55427-704) |
 | Page Header | Page Header | — | `figma-only` | [57817:52731](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57817-52731) |
 | Page Header / Hero Media | Page Header | — | `figma-only` | [57811:2382](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57811-2382) |
+| Portal Page Header | Page Header | — | `figma-only` | [58190:854](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58190-854) |
 | .PaginationPage | Pagination | _Internal sub-part of Pagination_ | `deliberately-unmapped` | [522:216215](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=522-216215) |
 | Pagination | Pagination | `Pagination` | `mapped` | [522:216228](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=522-216228) |
 | ⛔ popover (deprecated) | Popover | — | `figma-only` | [378:69007](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=378-69007) |
 | Popover | Popover | `Popover` | `mapped` | [57538:857](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57538-857) |
 | Portal Card | Portal Card | `PortalCard` | `mapped` | [56486:832](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=56486-832) |
 | Auth / AccountPrompt | Portal Login Template | `AccountPrompt` | `mapped` | [55438:739](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55438-739) |
-| Auth / CredentialRecovery | Portal Login Template | _Internal sub-part of Portal Login Template — the recovery steps_ | `deliberately-unmapped` | [56640:4103](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=56640-4103) |
+| Auth / CredentialFields / Identifier + Password | Portal Login Template | — | `figma-only` | [58128:7186](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58128-7186) |
+| Auth / CredentialFields / Identifier + PIN | Portal Login Template | — | `figma-only` | [58128:56377](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58128-56377) |
+| Auth / CredentialFields / OTP request | Portal Login Template | — | `figma-only` | [58128:7065](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58128-7065) |
+| Auth / CredentialRecovery | Portal Login Template | `PortalRecoveryTemplate` | `mapped` | [56640:4103](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=56640-4103) |
 | Auth / LoginHero | Portal Login Template | — | `figma-only` | [57465:46812](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57465-46812) |
 | Auth / MaskedContactRow | Portal Login Template | `MaskedContactRow` | `mapped` | [55437:718](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55437-718) |
 | Auth / PortalLoginShell | Portal Login Template | `PortalLoginShell` | `mapped` | [55450:1134](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55450-1134) |
@@ -153,6 +173,7 @@
 | Range Slider | Slider | `RangeSlider` | `mapped` | [57547:48771](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57547-48771) |
 | Slider | Slider | `Slider` | `mapped` | [57547:48756](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57547-48756) |
 | Split Button | Split Button | `SplitButton` | `mapped` | [57606:762](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57606-762) |
+| Stepper / Collapsed | Stepper | — | `figma-only` | [58336:3382](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58336-3382) |
 | Stepper / Node | Stepper | — | `figma-only` | [57547:48731](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57547-48731) |
 | Stepper / Row | Stepper | `Stepper` | `mapped` | [57551:49844](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57551-49844) |
 | Stepper / Stage | Stepper | — | `figma-only` | [57549:49381](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57549-49381) |
@@ -164,8 +185,6 @@
 | Tabs / More | Tabs | `Tabs` | `mapped` | [55514:848](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55514-848) |
 | Tabs / Tab | Tabs | `Tabs` | `mapped` | [2316:353](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=2316-353) |
 | Ticker | Ticker | `Ticker` | `mapped` | [56159:903](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=56159-903) |
-| Ticker / Action | Ticker | _Internal sub-part of Ticker — its interaction states_ | `deliberately-unmapped` | [56155:37470](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=56155-37470) |
-| Ticker / Control | Ticker | _Internal sub-part of Ticker — its interaction states_ | `deliberately-unmapped` | [56155:1797](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=56155-1797) |
 | Ticker / Row | Ticker | _Internal sub-part of Ticker — the message, in BOTH shapes_ | `deliberately-unmapped` | [56167:900](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=56167-900) |
 | Time Slot / Slot | Time Slot | `TimeSlot` | `mapped` | [57526:770](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57526-770) |
 | Toggle | Toggle | `Toggle` | `mapped` | [23:599](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=23-599) |
@@ -216,15 +235,18 @@
 | `DarpanFields` | `./components/auth/credential-fields` | `code-only` |
 | `DashboardGrid` | `./components/dashboard/dashboard-grid` | `code-only` |
 | `DecisionScreen` | `./components/templates/decision-screen` | `code-only` |
-| `DeclarationCheckbox` | `./components/forms/declaration-checkbox` | `code-only` |
 | `DemoAccountsPanel` | `./demo` | `deliberately-unmapped` — _Demo tooling — never product UI_ |
 | `DemoDock` | `./demo` | `deliberately-unmapped` — _Demo tooling — never product UI_ |
 | `DemoFab` | `./demo` | `deliberately-unmapped` — _Demo tooling — never product UI_ |
+| `DocumentBulkAction` | `./components/forms/document-checklist` | `code-only` |
+| `DocumentChecklistGroup` | `./components/forms/document-checklist` | `code-only` |
+| `DocumentHistorySheet` | `./components/forms/document-history-sheet` | `code-only` |
 | `DocumentLibrary` | `./components/data-display/document-library` | `code-only` |
+| `DocumentPlacementTray` | `./components/forms/document-placement-tray` | `code-only` |
+| `DocumentTiles` | `./components/forms/document-tile` | `code-only` |
 | `DonutChart` | `./components/data-display/charts` | `code-only` |
 | `ErrorSummary` | `./components/forms/error-summary` | `code-only` |
 | `ErrorView` | `./components/feedback/error-view` | `code-only` |
-| `FactStrip` | `./components/data-display/fact-strip` | `code-only` |
 | `FieldHelp` | `./components/forms/field-parts` | `code-only` |
 | `FieldHelpToggle` | `./components/forms/field-parts` | `code-only` |
 | `FieldHint` | `./components/forms/field-parts` | `code-only` |
@@ -236,8 +258,8 @@
 | `Footer` | `./components/navigation/footer` | `code-only` |
 | `FormCard` | `./components/forms/form-card` | `code-only` |
 | `FormField` | `./components/forms/form-field` | `code-only` |
+| `FormInset` | `./components/forms/form-inset` | `code-only` |
 | `FormScreen` | `./components/templates/form-screen` | `code-only` |
-| `FormSection` | `./components/forms/form-section` | `code-only` |
 | `FunnelChart` | `./components/data-display/charts` | `code-only` |
 | `GalleryScreen` | `./components/templates/gallery-screen` | `code-only` |
 | `Gauge` | `./components/data-display/charts` | `code-only` |
@@ -281,14 +303,12 @@
 | `ReportScreen` | `./components/templates/report-screen` | `code-only` |
 | `ReviewItem` | `./components/forms/wizard` | `code-only` |
 | `ReviewScreen` | `./components/templates/review-screen` | `code-only` |
-| `ReviewSection` | `./components/forms/wizard` | `code-only` |
 | `ScatterChart` | `./components/data-display/charts` | `code-only` |
 | `ScreenBody` | `./components/templates/screen-body` | `code-only` |
 | `SearchScreen` | `./components/templates/search-screen` | `code-only` |
 | `SectionTitle` | `./components/layout/section` | `code-only` |
 | `SegmentedControl` | `./components/dashboard/filter-bar` | `code-only` |
 | `SettingsScreen` | `./components/templates/settings-screen` | `code-only` |
-| `SiteFooter` | `./components/navigation/site-footer` | `code-only` |
 | `SiteLayout` | `./components/layout/site-layout` | `code-only` |
 | `SitePageHeader` | `./components/layout/site-page-header` | `code-only` |
 | `Skeleton` | `./components/feedback/skeleton` | `code-only` |

@@ -28,6 +28,11 @@ import { EventList, type EventItem } from "@mosje/design-system";
  * above each day and drops the date from each row; `"none"` prints the full
  * stamp on every row. `emptyText` is the sentence shown when there is nothing,
  * and it is a real answer rather than a blank panel.
+ *
+ * A deadline that has passed reads "Overdue" beside an icon and changes
+ * `dueLabel` to `overdueDueLabel` ("Was due"). It is derived from the list's
+ * `now` — resolved once per page, never `Date.now()` in the render — or stated
+ * by the item's own `overdue`. `overdueLabel` names the tag.
  */
 const meta = {
   title: "Data Display/EventList",
@@ -102,5 +107,44 @@ export const Unread: Story = {
     label: "Recent activity",
     unreadLabel: "Unread",
     events: LOG.map((event, index) => ({ ...event, unread: index < 2, href: "#case" })),
+  },
+};
+
+/**
+ * An entry the reader must act on. `actionRequired` prints the `actionLabel` tag and,
+ * with `dueAt`, the deadline after `dueLabel`. A caller that already heads the group
+ * with the same words — `NotificationCentre` does — passes `showActionTag={false}` so
+ * it is not said twice. `dayHeadingAs` sets the day heading's element for a panel that
+ * cannot know its nesting level, and `linkAs` hands entries with an `href` the app's
+ * router link (`next/link`).
+ */
+export const ActionRequired: Story = {
+  args: {
+    label: "Recent activity",
+    actionLabel: "Action Needed",
+    dueLabel: "Respond by",
+    events: [
+      { ...LOG[0]!, id: "action", actionRequired: true, dueAt: "2026-09-30", tone: "warning" },
+      ...LOG.slice(1),
+    ],
+  },
+};
+
+/**
+ * Overdue. The first deadline has passed against `now`; the second has not. The tag is a word
+ * beside an icon in the error family, never the colour alone, and the deadline reads "Was due".
+ * Pass the same `now` to every list on a screen, and set an item's own `overdue` where the record
+ * knows better than the clock (an extension was granted).
+ */
+export const Overdue: Story = {
+  args: {
+    label: "Recent activity",
+    now: "2026-10-15T09:00:00+05:30",
+    overdueLabel: "Overdue",
+    overdueDueLabel: "Was due",
+    events: [
+      { id: "od", at: "2026-09-01T10:00:00+05:30", action: "Utilisation Certificate due", subject: "Project SC/DL/NWD/02400", actionRequired: true, dueAt: "2026-09-30", tone: "warning" },
+      { id: "open", at: "2026-10-10T10:00:00+05:30", action: "Deficiency response requested", subject: "Application 2026/PMS/01301", actionRequired: true, dueAt: "2026-11-30", tone: "warning" },
+    ],
   },
 };

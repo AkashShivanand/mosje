@@ -5,6 +5,7 @@ import {
   Callout,
   CodeBlock,
   ComponentDocPage,
+  MatrixTable,
   type A11yItem,
 } from "@/components/design-system/docs-kit";
 import { PageHeader } from "@mosje/design-system";
@@ -108,6 +109,28 @@ export default function PageHeaderPage(): React.JSX.Element {
               floats in empty space or the long one clips. The same reasoning applies to the
               actions: they wrap below the title on a narrow viewport rather than compressing it,
               because a truncated page title is worse than a taller header.
+            </p>
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-size">
+            <h2 id="cdp-size" className="cdp__h2">
+              Two Sizes, Chosen by the Kind of Page
+            </h2>
+            <p>
+              The title&rsquo;s size is decided by what the page is, never page by page, so the H1
+              does not change size inside one journey.
+            </p>
+            <MatrixTable
+              caption="PageHeader size by page"
+              columns={["Size", "Portal size", "Pages"]}
+              rows={[
+                ["default", "headline-1, 32px", "Dashboards; lists and registers; record and detail pages; review and decision screens; 403 and 404"],
+                ["compact", "headline-3, 24px", "Multi-step forms and wizards; a single-task form page — a correction, a certificate, a change request"],
+              ]}
+            />
+            <p>
+              Compact was headline-5 (18px) until 16 Sep 2026, which made a wizard&rsquo;s page title
+              the size of a card title.
             </p>
           </section>
 

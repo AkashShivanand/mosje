@@ -1,0 +1,123 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — DocumentTile
+     One document of an upload step or a review step. Four states, and only an
+     officer or DigiLocker ever puts a tile in the verified one.
+     ============================================================================ */
+
+  .ds-document-tiles {
+    display: grid;
+    gap: var(--sa-stack-16) var(--sa-inline-24);
+    grid-template-columns: minmax(0, 1fr);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 768px) {
+    .ds-document-tiles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .ds-document-tile {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-16);
+    min-width: 0;
+    padding: var(--sa-padding-16);
+    background-color: var(--sa-bg-neutral-base);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-shape-8);
+    font-family: var(--sa-font-latin);
+  }
+
+  .ds-document-tile[data-state="uploaded"] {
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  .ds-document-tile[data-state="verified"] {
+    background-color: var(--sa-bg-status-success-base);
+    border-color: var(--sa-border-status-success-base);
+  }
+
+  .ds-document-tile[data-state="invalid"] {
+    background-color: var(--sa-bg-status-error-base);
+    border-color: var(--sa-border-status-error-base);
+  }
+
+  .ds-document-tile__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    color: var(--sa-icon-neutral-subtle);
+  }
+
+  .ds-document-tile__copy {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .ds-document-tile__title {
+    margin: 0;
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+    overflow-wrap: anywhere;
+  }
+
+  .ds-document-tile__meta {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+    overflow-wrap: anywhere;
+  }
+
+  .ds-document-tile[data-state="verified"] .ds-document-tile__meta {
+    color: var(--sa-text-status-success-bolder);
+  }
+
+  .ds-document-tile[data-state="invalid"] .ds-document-tile__meta {
+    color: var(--sa-text-status-error-base);
+  }
+
+  .ds-document-tile__actions {
+    display: flex;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--sa-inline-8);
+  }
+
+  /* On a phone the controls take their own row under the name, so a long document title is
+     not squeezed into a column of three words. */
+  @media (max-width: 767px) {
+    .ds-document-tile {
+      flex-wrap: wrap;
+    }
+    .ds-document-tile__actions {
+      flex-basis: 100%;
+      justify-content: flex-start;
+    }
+  }
+
+  .ds-document-tile__detail {
+    flex-basis: 100%;
+  }
+
+  .ds-document-tile:has(.ds-document-tile__detail) {
+    flex-wrap: wrap;
+  }
+}

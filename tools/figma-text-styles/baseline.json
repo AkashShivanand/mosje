@@ -1,0 +1,18 @@
+{
+  "note": [
+    "Component pages whose MASTERS still carry text layers not linked to a SAMAVESH text style,",
+    "with the count. A page not listed has none. Written by `check:figma-text-styles:sync`.",
+    "A ratchet: a count may only go down, and going down fails until this file is re-synced."
+  ],
+  "file": "3FF5l0SMNIwdpZrKkeyPTm",
+  "capturedOn": "2026-09-15",
+  "pages": {
+    "Accordion": 1,
+    "Breadcrumbs": 8,
+    "Date-Time Picker": 4,
+    "Map of India": 4,
+    "Page Header": 1,
+    "Progress Indicators": 20,
+    "Select": 4
+  }
+}

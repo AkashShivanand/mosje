@@ -57,6 +57,38 @@
     background-color: var(--sa-overlay-neutral-boldest);
   }
 
+  /*
+   * WHILE A DIALOG IS OPEN, THE FLOATING RAILS STAND DOWN.
+   *
+   * The wall rail and the corner stack sit at 1000 and 1010, above every product
+   * layer — correct for a launcher, which only has to beat page chrome, and
+   * exactly wrong once a dialog owns the screen. Important Links and the chat
+   * launcher went on floating at full strength over a dimmed page, so the scrim
+   * covered everything except the two things most obviously sitting on it.
+   *
+   * KEYED ON THE OCCUPANCY ATTRIBUTES, not on a list of component classes.
+   * `floating-element-placement.md` already requires every fixed widget on
+   * either rail to declare itself with one of these two — and both are gated on
+   * the widget actually being `position: fixed`, so an inline specimen on a
+   * documentation page is untouched. A rail widget added tomorrow is covered the
+   * same day with nothing to remember here, which is the same reason the rails
+   * measure live occupancy rather than carrying a table of known widgets.
+   *
+   * THE STATUTORY PANEL IS DELIBERATELY NOT INCLUDED. The UX4G accessibility
+   * widget is third-party markup at 999999 and carries neither attribute — the
+   * rails know it by id. It stays above the scrim, which is what a statutory
+   * control should do; pushing an accessibility panel behind a dialog would be a
+   * worse defect than the one this fixes.
+   *
+   * `base`, not a negative: these are fixed elements in their own right, and the
+   * point is to put them back in the ordinary stack under the scrim, not to
+   * bury them beneath the page.
+   */
+  :root[data-sa-dialog-open] [data-sa-wall-occupant],
+  :root[data-sa-dialog-open] [data-sa-corner-occupant] {
+    z-index: var(--sa-z-base);
+  }
+
   .ds-modal {
     width: 100%;
     max-height: calc(100vh - 32px);
@@ -123,5 +155,82 @@
        here, and a mis-tap between Cancel/Delete is costlier than elsewhere. */
     gap: var(--sa-stack-12);
     padding: 0 var(--sa-padding-24) var(--sa-padding-24);
+  }
+
+  /*
+   * THE DISCARD QUESTION a `dirty` dialog asks before closing (usability audit UX-06).
+   *
+   * A layer inside the backdrop, after the panel in the markup. The backdrop is fixed and
+   * z-indexed, so it is already a stacking context: a later absolutely positioned child paints
+   * above the panel with NO z-index of its own, and the ladder is left alone. The second scrim is
+   * the lightest overlay rung — enough to say the form behind is paused, not so much that the
+   * reader loses sight of what they would be discarding.
+   */
+  .ds-modal__discard-layer {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--sa-padding-16);
+    background-color: var(--sa-overlay-neutral-focus);
+  }
+
+  .ds-modal__discard-body {
+    margin: 0;
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /*
+   * `printable`: printing the page while the dialog is open prints the dialog alone (UX-24).
+   *
+   * The dialog renders in place, not in a portal, so it sits deep inside the page's layout.
+   * Hiding everything that neither contains the dialog nor is inside it collapses the page to the
+   * dialog's own height — `visibility: hidden` would have kept every hidden element's space and
+   * printed blank pages after the report.
+   */
+  @media print {
+    :root:has(.ds-modal--printable) body *:not(:has(.ds-modal--printable), .ds-modal--printable, .ds-modal--printable *) {
+      /* Important because a later layer wins otherwise: a Tailwind `flex` on any sibling of the
+         dialog's ancestors outranks a component-layer `display: none`. */
+      display: none !important;
+    }
+
+    /* The dialog's ancestors are page layout — a sidebar grid, a flex column, a card — and with
+       their other children gone they still size it: the report printed 250px wide. On paper they
+       are plain blocks. */
+    body *:has(.ds-modal--printable) {
+      display: block !important;
+      position: static !important;
+      width: auto !important;
+      max-width: none !important;
+      height: auto !important;
+      min-height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: visible !important;
+      border: 0 !important;
+    }
+
+    .ds-modal__backdrop--printable {
+      position: static;
+      display: block;
+      padding: 0;
+      background: none;
+    }
+
+    .ds-modal--printable {
+      max-width: none;
+      max-height: none;
+      overflow: visible;
+      box-shadow: none;
+    }
+
+    .ds-modal--printable .ds-modal__close,
+    .ds-modal--printable .ds-modal__footer {
+      display: none;
+    }
   }
 }

@@ -9,7 +9,7 @@ import { TgHeader } from "@/components/tg/gov-chrome";
  */
 export default function TgLandingPage() {
   return (
-    <main className="min-h-screen bg-surface-muted">
+    <main className="min-h-screen bg-surface-canvas">
       <TgHeader />
 
       <section className="container py-12">

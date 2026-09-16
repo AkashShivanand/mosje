@@ -1140,3 +1140,194 @@ class FailedFlowCarryForward(unittest.TestCase):
     def test_no_failures_means_no_carry_forward(self):
         prev = [{"slug": "S01", "reachedBy": "flow:avyay-new"}]
         self.assertEqual(C.screens_to_rescue(prev, self._bundle(), set()), {})
+
+
+class NavGroupExpansion(unittest.TestCase):
+    """Regression tests for the collapsible-nav-group discovery gap.
+
+    NMBA hides four real NAPDDR routes behind a plain <div> nav header. The July 2026 run filed
+    twelve built screens as "designed but never built" because of it; the lesson went into the
+    ledger, and a ledger is not a gate, so the September run was about to lose the same screens
+    again. The second half of these tests exists because the FIRST fix was also wrong: it
+    collected a group header and its inner span as two candidates, clicked both, and toggled the
+    group shut again while reporting success.
+    """
+
+    def test_a_group_header_label_is_clickable(self):
+        self.assertTrue(C.is_safe_group_label("NAPDDR Three-Tier Committee"))
+        self.assertTrue(C.is_safe_group_label("Reports"))
+        self.assertTrue(C.is_safe_group_label("Master Settings"))
+
+    def test_session_ending_and_committing_labels_are_refused(self):
+        for label in ("Logout", "Log out", "Sign Out", "Delete Committee", "Submit",
+                      "Export Excel", "Download PDF", "Approve", "Send OTP", "Save"):
+            self.assertFalse(C.is_safe_group_label(label), label)
+
+    def test_absurd_lengths_are_refused(self):
+        self.assertFalse(C.is_safe_group_label("A"))
+        self.assertFalse(C.is_safe_group_label("x" * 61))
+        self.assertFalse(C.is_safe_group_label(""))
+        self.assertFalse(C.is_safe_group_label(None))
+
+    def test_the_chevron_does_not_make_it_a_different_control(self):
+        for a, b in [("NAPDDR Three-Tier Committee", "NAPDDR Three-Tier Committee\u25b8"),
+                     ("NAPDDR Three-Tier Committee\u25b8", "NAPDDR Three-Tier Committee\u25be")]:
+            self.assertEqual(C._label_key(a), C._label_key(b))
+
+    class _Nav:
+        """A fake nav: groups toggle open/shut and contribute their routes while open."""
+
+        def __init__(self, base, groups):
+            self.base = list(base)
+            self.groups = groups          # [{'text':..., 'routes':[...], 'open':False}]
+            self.clicks = []
+
+        def hrefs(self):
+            out = list(self.base)
+            for g in self.groups:
+                if g["open"]:
+                    out += g["routes"]
+            return out
+
+        def page(self):
+            nav = self
+
+            class FakePage:
+                def wait_for_selector(self, *a, **k): pass
+                def wait_for_timeout(self, *a, **k): pass
+                def evaluate(self, js, arg=None):
+                    if "getAttribute('href')" in js:
+                        return nav.hrefs()
+                    if "__qcNav.push" in js:
+                        if arg:            # the `loose` fallback pass sees no controls
+                            return []
+                        # Only OUTERMOST headers, the way the real walk returns them.
+                        return [{"i": i, "text": g["text"] + ("\u25be" if g["open"] else "\u25b8")}
+                                for i, g in enumerate(nav.groups)]
+                    if "__qcNav[i]" in js:
+                        g = nav.groups[arg]
+                        g["open"] = not g["open"]
+                        nav.clicks.append(g["text"])
+                        return None
+                    return []
+            return FakePage()
+
+    def test_routes_behind_a_group_are_discovered(self):
+        nav = self._Nav(["/dashboard", "/users"],
+                        [{"text": "NAPDDR Three-Tier Committee", "open": False,
+                          "routes": ["/napddr/state-committee", "/napddr/district-committee"]}])
+        routes = C.discover_routes(nav.page(), {"live": {}})
+        self.assertIn("/napddr/state-committee", routes)
+        self.assertIn("/napddr/district-committee", routes)
+        self.assertIn("/dashboard", routes)              # nothing already found is lost
+
+    def test_a_group_is_clicked_once_not_toggled_shut(self):
+        """The exact defect of the first fix: open, then closed, then reported as expanded."""
+        nav = self._Nav(["/dashboard"],
+                        [{"text": "NAPDDR Three-Tier Committee", "open": False,
+                          "routes": ["/napddr/state-committee"]}])
+        C.discover_routes(nav.page(), {"live": {}})
+        self.assertEqual(len(nav.clicks), 1, nav.clicks)
+        self.assertTrue(nav.groups[0]["open"], "the group must be left OPEN")
+
+    def test_a_group_that_was_already_open_is_reopened_not_left_shut(self):
+        nav = self._Nav(["/dashboard"],
+                        [{"text": "Reports", "open": True, "routes": ["/reports/monthly"]}])
+        routes = C.discover_routes(nav.page(), {"live": {}})
+        self.assertTrue(nav.groups[0]["open"], "a click that CLOSED a group must be undone")
+        self.assertIn("/reports/monthly", routes)
+
+    def test_expansion_never_clicks_logout(self):
+        nav = self._Nav(["/dashboard"],
+                        [{"text": "Logout", "open": False, "routes": ["/logout"]},
+                         {"text": "Reports", "open": False, "routes": ["/reports/monthly"]}])
+        C.discover_routes(nav.page(), {"live": {}})
+        self.assertEqual(nav.clicks, ["Reports"])
+
+    def test_skip_routes_still_apply_to_revealed_routes(self):
+        nav = self._Nav(["/dashboard"],
+                        [{"text": "Account", "open": False, "routes": ["/logout", "/profile"]}])
+        routes = C.discover_routes(nav.page(), {"live": {"skipRoutes": ["/logout"]}})
+        self.assertNotIn("/logout", routes)
+        self.assertIn("/profile", routes)
+
+
+class AuditDeclaredRoutes(unittest.TestCase):
+    """The gate that turns a probed-but-empty declaration into a stopped run."""
+
+    def _out(self, payload):
+        d = tempfile.mkdtemp()
+        if payload is not None:
+            import json
+            json.dump(payload, open(os.path.join(d, "route-coverage.json"), "w"))
+        return {"out": d}
+
+    def test_no_file_is_not_a_failure(self):
+        """A project that predates the check, or declares nothing, must not fail."""
+        self.assertEqual(C.audit_declared_routes(self._out(None), verbose=False), [])
+
+    def test_all_declarations_reached_passes(self):
+        paths = self._out({"roles": {"admin": {"unreachable": []}}, "gate": "PASS"})
+        self.assertEqual(C.audit_declared_routes(paths, verbose=False), [])
+
+    def test_an_unreachable_declaration_is_returned(self):
+        paths = self._out({"roles": {"admin": {"unreachable": ["/ghost"]}}, "gate": "FAIL"})
+        self.assertEqual(C.audit_declared_routes(paths, verbose=False), ["/ghost"])
+
+    def test_unreachable_routes_are_unioned_across_roles_and_deduped(self):
+        paths = self._out({"roles": {
+            "admin": {"unreachable": ["/ghost", "/b"]},
+            "officer": {"unreachable": ["/ghost", "/a"]},
+        }})
+        self.assertEqual(C.audit_declared_routes(paths, verbose=False), ["/a", "/b", "/ghost"])
+
+    def test_a_corrupt_file_does_not_crash_the_run(self):
+        d = tempfile.mkdtemp()
+        open(os.path.join(d, "route-coverage.json"), "w").write("{not json")
+        self.assertEqual(C.audit_declared_routes({"out": d}, verbose=False), [])
+
+
+class CanaryShifts(unittest.TestCase):
+    """Both rules here were learned by getting them wrong, on 2026-09-12, one after the other."""
+
+    def test_the_page_that_did_not_move_reports_nothing(self):
+        before = {"0": ["Dashboard", 94], "1": ["Dashboard", 360]}
+        after = {"0": ["Dashboard", 94, 85, 25], "1": ["Dashboard", 360, 504, 43]}
+        self.assertEqual(C.canary_shifts(before, after), ([], 0))
+
+    def test_two_elements_sharing_a_label_are_not_compared_with_each_other(self):
+        # the first version keyed by text, so PUBLIC-HOME's span at x94 and h2 at x360 collapsed
+        # to one key and it reported a 312px shift on a page that had not moved
+        before = {"0": ["Dashboard", 94], "1": ["Dashboard", 360]}
+        after = {"1": ["Dashboard", 360, 504, 43], "0": ["Dashboard", 94, 85, 25]}
+        shifted, hidden = C.canary_shifts(before, after)
+        self.assertEqual(shifted, [])
+
+    def test_an_element_that_stopped_rendering_has_not_moved(self):
+        # HIDE_OFFCANVAS_JS display:none's the accessibility widget between the passes; a hidden
+        # rect is all zeros, and four of those read as "x1536 -> x0"
+        before = {"0": ["Bigger Text", 1538]}
+        after = {"0": ["Bigger Text", 0, 0, 0]}
+        self.assertEqual(C.canary_shifts(before, after), ([], 1))
+
+    def test_the_real_harness_defect_is_still_caught(self):
+        # NMB-SCREEN-016: the pledge button pushed from x1171 to x1841 on a 1440 export
+        before = {"0": ["Take the Pledge", 1171]}
+        after = {"0": ["Take the Pledge", 1841, 176, 36]}
+        shifted, hidden = C.canary_shifts(before, after)
+        self.assertEqual(len(shifted), 1)
+        self.assertEqual((shifted[0]["before"], shifted[0]["after"]), (1171, 1841))
+
+    def test_sub_pixel_jitter_is_not_a_shift(self):
+        before = {"0": ["Save", 100]}
+        after = {"0": ["Save", 102, 80, 32]}
+        self.assertEqual(C.canary_shifts(before, after)[0], [])
+
+    def test_a_mark_whose_text_changed_is_not_judged(self):
+        before = {"0": ["Loading…", 100]}
+        after = {"0": ["12 facilities", 400, 200, 24]}
+        self.assertEqual(C.canary_shifts(before, after), ([], 0))
+
+    def test_empty_and_missing_inputs_are_safe(self):
+        self.assertEqual(C.canary_shifts(None, None), ([], 0))
+        self.assertEqual(C.canary_shifts({}, {"9": ["x", 1, 10, 10]}), ([], 0))

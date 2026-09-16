@@ -46,41 +46,7 @@
     margin-inline-start: auto;
   }
 
-  .ds-bulk__action {
-    min-height: var(--sa-control-height-sm);
-    padding: 0 var(--sa-padding-12);
-    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
-    border-radius: var(--sa-control-radius);
-    background-color: var(--sa-bg-neutral-base);
-    color: var(--sa-text-neutral-bolder);
-    font-family: inherit;
-    font-size: var(--sa-type-label-1-size);
-    cursor: pointer;
-  }
-
-  .ds-bulk__action:hover:not(:disabled) {
-    background-color: var(--sa-bg-neutral-hover);
-  }
-
-  .ds-bulk__action:disabled {
-    color: var(--sa-text-neutral-disabled);
-    cursor: not-allowed;
-  }
-
-  /* Tone colours the LABEL and the edge, never a resting fill: a filled red
-     button in a bar that appeared on its own is easy to press by accident. */
-  .ds-bulk__action--warning {
-    border-color: var(--sa-border-status-warning-base);
-    color: var(--sa-text-status-warning-bolder);
-  }
-
-  .ds-bulk__action--danger {
-    border-color: var(--sa-border-status-error-base);
-    color: var(--sa-text-status-error-bolder);
-  }
-
-  .ds-bulk__link,
-  .ds-bulk__clear {
+  .ds-bulk__link {
     padding: 0;
     border: 0;
     background: none;
@@ -91,9 +57,7 @@
     cursor: pointer;
   }
 
-  .ds-bulk__action:focus-visible,
-  .ds-bulk__link:focus-visible,
-  .ds-bulk__clear:focus-visible {
+  .ds-bulk__link:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-focus-ring);
     outline-offset: var(--sa-focus-offset);
   }

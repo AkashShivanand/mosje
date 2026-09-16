@@ -64,6 +64,9 @@
 
   .ds-events__line {
     margin: 0;
+    /* A reference number is one unbroken string — GIA/2026-27/SHRESHTA_M2/NORTH_WEST_DELHI/01376 —
+       and in a 24rem panel it ran out of its own card. */
+    overflow-wrap: anywhere;
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
     color: var(--sa-text-neutral-bolder);
@@ -109,6 +112,40 @@
     line-height: var(--sa-type-body-2-lh);
     color: var(--sa-text-neutral-bolder);
     overflow-wrap: anywhere;
+  }
+
+  /* An entry the reader must act on. The word carries it; the inline rule is
+     a second signal for a sighted reader scanning a long list. */
+  .ds-events__item--action {
+    box-shadow: inset var(--sa-control-selection-border-width) 0 0 var(--sa-border-status-warning-base);
+  }
+
+  .ds-events__flag {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    margin: 0;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-medium);
+  }
+
+  /* The chip itself is `Badge` — colour, radius, padding and type come from it.
+     OVERDUE carries a word and an icon in the error family, never the colour alone;
+     it sits where the Action Needed tag sits, because an entry is one or the other to
+     the reader: something to do by a date, or something already late. */
+  .ds-events__tag {
+    gap: var(--sa-inline-4);
+  }
+
+  .ds-events__due {
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-events__item--overdue .ds-events__due {
+    color: var(--sa-text-status-error-bolder);
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   /* The dot is decoration on top of the hidden word, never the only signal. */

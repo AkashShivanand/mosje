@@ -138,6 +138,36 @@ export function tagWithoutComments(tag) {
   return out;
 }
 
+/**
+ * The tag's OWN props, with every `{…}` expression blanked.
+ *
+ * A prop's value can be a whole subtree — `trailing={<Link href={…} />}` — and an `href` in
+ * there belongs to the child, not to this tag. Read naively, a row that renders a link INSIDE
+ * itself looked like a row that IS a link, and the href-only gate then demanded a router link of
+ * a `<div>`. Braces are replaced by spaces rather than removed, so nothing welds together.
+ */
+export function topLevelProps(props) {
+  let out = "";
+  let depth = 0;
+  for (let j = 0; j < props.length; j++) {
+    const skipped = skipTrivia(props, j);
+    if (skipped !== j) {
+      const isString = /["'`]/.test(props[j]);
+      // A string at the top level is a prop's own value and is kept; anything inside braces, and
+      // every comment, becomes blank. Either way the LENGTH is preserved, so nothing welds
+      // together and a later scan reading positions still lines up.
+      out += isString && depth === 0 ? props.slice(j, skipped + 1) : " ".repeat(skipped - j + 1);
+      j = skipped;
+      continue;
+    }
+    const c = props[j];
+    if (c === "{") depth++;
+    out += depth === 0 ? c : " ";
+    if (c === "}") depth = Math.max(0, depth - 1);
+  }
+  return out;
+}
+
 /** Categories an inline exemption may declare are validated by the caller. */
 export const EXEMPT_RE = /linkAs-exempt\(([a-z-]+)\)\s*:\s*(.+)/;
 
@@ -160,6 +190,10 @@ export function scanSource(src, components) {
       sites.push({
         line,
         name,
+        /* Whether the tag actually names a destination. Only read for components that declare
+           `linkAs-gate(href-only)` — a `ListRow` with no `href` renders no anchor at all, so
+           demanding a router link of it would be demanding one of a `<div>`. */
+        hasHref: /(^|\s)href\s*=/.test(topLevelProps(props)),
         passes: /\blinkAs\s*=/.test(props),
         spread: /\{\s*\.\.\./.test(props),
         exemption: ex ? { category: ex[1], reason: ex[2].trim() } : null,

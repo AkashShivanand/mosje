@@ -105,7 +105,11 @@ export const CANONICAL = "base";
  * the ordinary FILL is the quietest thing on the page, while the ordinary INK is mid-way,
  * quieter than a max-contrast heading and louder than a caption.
  */
-export const PROMINENCE = ["base", "subtler", "subtle", "bold", "bolder", "boldest"];
+// `subtlest` joined 2026-09-14 for `bg/neutral/subtlest`, the page canvas: a fill one step
+// quieter than `subtler`, so the hover / read-only / loading fills (all `subtler`) are no longer
+// the same colour as the page they sit on. It sorts between `base` (white) and `subtler`, which
+// is where Atlassian's shipped ladder puts the same word.
+export const PROMINENCE = ["base", "subtlest", "subtler", "subtle", "bold", "bolder", "boldest"];
 
 /**
  * Ink prominence — the SAME words, because "how loud is this" is one question whatever it is
@@ -136,6 +140,7 @@ export const PROMINENCE_SLOT = new Set([CANONICAL, ...PROMINENCE, ...INK_PROMINE
 export const PROMINENCE_CONTRACT = {
   fill: {
     base: { minContrast: 0, use: "decorative fills only" },
+    subtlest: { minContrast: 0, use: "page canvas — decorative fill only" },
     subtler: { minContrast: 0, use: "decorative fills only" },
     // `subtle` and `bold` are TONAL FILLS — a chip, a tinted row, a plate. Their readability is
     // carried by the measured `on/*` ink (every pairing is AA in every brand), not by the
@@ -271,7 +276,12 @@ export const COMPONENT = new Set(["action", "control", "spinner", "button", "car
   // 2026-09-06: `stepper` owns a node diameter, a connector-track thickness and a compact-bar dot.
   // Tier 3 rather than Tier 2 because none of the three is a shared scale step: the 32/24 node is
   // the component's own API, and a 1px track only means anything between two step nodes.
-  "stepper"]);
+  "stepper",
+  // 2026-09-16: `sitefooter` owns the colour roles ON the footer ground — a muted and a dim ink,
+  // a rule and a chip. Tier 3 because the semantic layer has an on/* ink for a brand fill but no
+  // muted ink, rule or chip for one, and those only mean anything on this surface. Lowercase
+  // rather than `siteFooter`, per house style for new namespaces.
+  "sitefooter"]);
 export const INTENT = new Set(["brand", "success", "destructive", "neutral", "light"]);
 export const ACTION_VARIANT = new Set(["primary", "secondary", "tertiary", "tonal"]);
 /**

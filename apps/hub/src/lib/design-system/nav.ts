@@ -116,6 +116,36 @@ export const NAV: NavGroup[] = [
         "badge": "New"
       },
       {
+        "label": "Document Checklist",
+        "href": "/design-system/components/forms/document-checklist",
+        "badge": "New"
+      },
+      {
+        "label": "Document Findings",
+        "href": "/design-system/components/forms/document-findings",
+        "badge": "New"
+      },
+      {
+        "label": "Document History Sheet",
+        "href": "/design-system/components/forms/document-history-sheet",
+        "badge": "New"
+      },
+      {
+        "label": "Document Placement Tray",
+        "href": "/design-system/components/forms/document-placement-tray",
+        "badge": "New"
+      },
+      {
+        "label": "Document Row",
+        "href": "/design-system/components/forms/document-row",
+        "badge": "New"
+      },
+      {
+        "label": "Document Tile",
+        "href": "/design-system/components/forms/document-tile",
+        "badge": "New"
+      },
+      {
         "label": "Filter Select",
         "href": "/design-system/components/forms/filter-select",
         "badge": "New"
@@ -129,6 +159,16 @@ export const NAV: NavGroup[] = [
         "label": "Form Field",
         "href": "/design-system/components/forms/form-field",
         "badge": "Stable"
+      },
+      {
+        "label": "Form Inset",
+        "href": "/design-system/components/forms/form-inset",
+        "badge": "New"
+      },
+      {
+        "label": "Form Panel",
+        "href": "/design-system/components/forms/form-panel",
+        "badge": "New"
       },
       {
         "label": "Form Section",
@@ -244,6 +284,11 @@ export const NAV: NavGroup[] = [
         "label": "Nav Sheet",
         "href": "/design-system/components/navigation/nav-sheet",
         "badge": "Stable"
+      },
+      {
+        "label": "Notification Bell",
+        "href": "/design-system/components/navigation/notification-bell",
+        "badge": "Beta"
       },
       {
         "label": "Portal Card",

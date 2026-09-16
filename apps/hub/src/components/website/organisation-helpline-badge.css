@@ -43,16 +43,33 @@
     box-shadow: var(--sa-elevation-raised);
     opacity: 1;
     transform: translateY(0);
+    /*
+     * IT LANDS AS THE BAND FINISHES CLOSING, AND IT COMES DOWN, NOT UP.
+     *
+     * It used to start 120ms after the ×, rising 6px — but the band vanished in
+     * that same frame, so the badge faded in on a hero that had just lurched,
+     * and it rose from BELOW, away from where the number had been. The band now
+     * folds (see `.orgab[data-leaving]`): a 75ms lead-in, then a 300ms close.
+     * The delay here starts the badge 60% of the way through that close, so it
+     * is settling as the hero stops moving, and it arrives from 8px ABOVE — the
+     * direction the band was in — answering the helpline's 8px drop on the way
+     * out.
+     *
+     * The delay is built from the same tokens as the fold, so the two cannot
+     * drift apart, and it drops to nothing under reduced motion.
+     */
+    --orgb-arrive: calc(var(--sa-motion-exit-duration) / 2 + var(--sa-motion-page-duration) * 0.6);
+
     transition:
-      opacity var(--sa-motion-enter-duration) var(--sa-motion-enter-easing) 120ms,
-      transform var(--sa-motion-enter-duration) var(--sa-motion-enter-easing) 120ms,
+      opacity var(--sa-motion-enter-duration) var(--sa-motion-reveal-easing) var(--orgb-arrive),
+      transform var(--sa-motion-enter-duration) var(--sa-motion-reveal-easing) var(--orgb-arrive),
       box-shadow var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   @starting-style {
     .orgb {
       opacity: 0;
-      transform: translateY(6px);
+      transform: translateY(calc(-1 * var(--sa-padding-8)));
     }
   }
 
@@ -98,7 +115,7 @@
     letter-spacing: 0.01em;
   }
 
-  /* The 6px is the only thing to remove; the fade stays, because a fade is not
+  /* The 8px is the only thing to remove; the fade stays, because a fade is not
      motion and it is what tells the reader the badge is new. */
   @media (prefers-reduced-motion: reduce) {
     @starting-style {

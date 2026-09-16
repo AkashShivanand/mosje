@@ -38,6 +38,8 @@ It enforces **100% static compliance with Government of India Web Standards** (D
 ### Configurable Elements (Set via `PortalLoginConfig`)
 - `portalId`: Unique slug (e.g. `"smile-admin"`, `"pm-ajay"`, `"nos"`, `"e-utthan"`, `"scw"`, `"garima-greh"`, `"nmba"`).
 - `portalName`: Title string displayed in the hero "Signing Into" bar (e.g. *"Nasha Mukt Bharat Abhiyaan"*).
+- `portalTagline` *(optional)*: A line under the portal name in the "Signing Into" bar — usually the scheme's expanded name (e.g. *"Support For Marginalized Individuals For Livelihood & Enterprise"* under *"SMILE Beggary"*). Large screens only.
+- `portalDescription` *(optional)*: A muted line under the tagline saying what the portal is for (e.g. *"Comprehensive Rehabilitation of Persons Engaged in Begging"*). Large screens only.
 - `roles`: Role switcher tabs (`id`, `label`, `authModes`, `authModeOptions`, `authSelectorType`, `defaultMode`, `description`).
 - `authSelectorType`: Sub-selection layout style (`"segmented"` pills, `"radio"` group with descriptions, or `"dropdown"`).
 - `brandAssets`: Optional custom asset path overrides for emblem or portal seals.
@@ -47,7 +49,7 @@ It enforces **100% static compliance with Government of India Web Standards** (D
 
 ## 2. Configurable Sub-Selection (Login Method Selector)
 
-Below the main Role Tabs, portals can configure a **Sub-Selection Switcher** allowing users to choose how they want to log in for that specific role (e.g. *"Login via Password"*, *"Login via Mobile OTP"*, *"Login with DARPAN ID"*).
+Below the main Role Tabs, portals can configure a **Sub-Selection Switcher** allowing users to choose how they want to log in for that specific role (e.g. *"Login with Password"*, *"Login with OTP"*, *"Login with DARPAN ID"*).
 
 ### Sub-Selection UI Presentation Styles (`authSelectorType`)
 1. **Segmented Pills (`"segmented"`):** Horizontal pill switchers, ideal for 2–3 compact choices (e.g., `[ Password Login | Mobile OTP ]`).
@@ -58,42 +60,65 @@ Below the main Role Tabs, portals can configure a **Sub-Selection Switcher** all
 
 ## 3. API Specification (`PortalLoginConfig`)
 
-```typescript
-import { PortalLoginConfig, PortalLoginTemplate } from "@mosje/design-system";
+`types.ts` is the source of truth and its docstrings carry the reasons; the
+generated props table on `/design-system/components/auth/portal-login-template`
+is the reference. The shape, in brief:
 
-export interface PortalLoginConfig {
+```typescript
+interface PortalLoginConfig {
   portalId: string;
   portalName: string;
   portalTagline?: string;
   portalDescription?: string;
   changeHref?: string;
-  roles: Array<{
-    id: string;
-    label: string;
-    authModes?: Array<"password" | "otp" | "digilocker" | "darpan" | "aadhaar">;
-    authModeOptions?: Array<{
-      mode: "password" | "otp" | "digilocker" | "darpan" | "aadhaar";
-      label: string;
-      description?: string;
-    }>;
-    authSelectorType?: "segmented" | "radio" | "dropdown";
-    defaultMode?: "password" | "otp" | "digilocker" | "darpan" | "aadhaar";
-    description?: string;
-  }>;
+  roles: PortalRoleTab[];
   defaultRoleId?: string;
-  brandAssets?: {
-    emblemSrc?: string;
-    digitalIndiaSrc?: string;
-    samaveshLogoSrc?: string;
-    portalLogoSrc?: string;
-  };
+  captcha?: boolean;              // per role wins; off by default (WCAG 2.2 3.3.8)
+  consent?: boolean;
+  brandAssets?: PortalBrandAssets; // emblem, Digital India, SAMAVESH, hero, DigiLocker mark
+  extraFields?: React.ReactNode;
+  extraContent?: React.ReactNode;
   links?: {
-    forgotPasswordHref?: string;
-    registerHref?: string;
-    helpFaqHref?: string;
+    forgotPasswordHref?; registerHref?;
+    registerOptions?: { label: string; href: string }[]; // two routes, e.g. SCW
+    helpFaqHref?; digilockerHref?; termsHref?; privacyHref?;
   };
+  botCheck?: { mode?: "invisible" | "checkbox"; helpHref: string };
+}
+
+interface PortalRoleTab {
+  id: string; label: string; audience?: "citizen" | "officer" | "organisation";
+  authModes?: ("password" | "otp" | "pin" | "darpan")[];
+  authModeOptions?: { mode; label; description? }[];
+  authSelectorType?: "segmented" | "radio" | "dropdown";
+  defaultMode?; description?; digilocker?: boolean; captcha?: boolean;
+  identifierLabel?; identifierPlaceholder?;
+  identifierKind?: "text" | "mobile" | "email";     // password + PIN routes
+  otpIdentifierKind?: "text" | "mobile" | "email";  // where a code goes
+  otpIdentifierLabel?; otpIdentifierPlaceholder?;
+  subRoles?: { id: string; label: string }[];      // "Your role" select
+  subRoleLabel?; defaultSubRoleId?;
 }
 ```
+
+Template props beyond `config`: `onSubmit(payload)` (`roleId`, `subRoleId`,
+`authMode`, `credentials`, `botCheck`), `loading`, `error`, `fieldErrors`
+(`identifier` · `secret` · `otp` · `subRole`, each hidden once its field is
+edited), `onRequestOtp(request)` returning `{ ok: false, error }` or
+`{ ok: true, maskedDestination? }`, `roleId`, `onRoleChange`, `deepLinkRole`,
+`portalPicker`, `headingLevel`.
+
+**Demo fill.** The template listens for `demo:fill` itself. `extra.tab`,
+`extra.mode` and `extra.subRole` select a role, mode and sub-role; on the OTP
+route it sends the code through `onRequestOtp` and fills it in.
+
+### Password recovery — `PortalRecoveryTemplate`
+
+Same chrome, three flows: `otp` (identifier → code → new password → done),
+`link` (identifier → "Reset Link Sent"; the reset page is `startAt="reset"`) and
+`contact` (a notice naming who resets passwords). `onRequest`, `onVerify` and
+`onReset` each return `{ ok: false, error }` to hold the step. The `link` flow
+never discloses whether an account exists.
 
 ---
 
@@ -118,9 +143,8 @@ export const portalLoginConfig: PortalLoginConfig = {
       id: "applicant",
       label: "Beneficiary / Applicant",
       authModeOptions: [
-        { mode: "otp", label: "Login via Mobile OTP", description: "Receive 6-digit OTP on your registered phone number." },
-        { mode: "digilocker", label: "Login with DigiLocker", description: "Fast-track identity and document verification." },
-        { mode: "password", label: "Login via Password", description: "Use your user ID and portal password." },
+        { mode: "otp", label: "Login with OTP", description: "Receive 6-digit OTP on your registered phone number." },
+        { mode: "password", label: "Login with Password", description: "Use your user ID and portal password." },
       ],
       authSelectorType: "radio",
       defaultMode: "otp",
@@ -131,7 +155,7 @@ export const portalLoginConfig: PortalLoginConfig = {
       label: "NGO / Implementing Agency",
       authModeOptions: [
         { mode: "darpan", label: "Login with NGO DARPAN ID" },
-        { mode: "password", label: "Login via Credentials" },
+        { mode: "password", label: "Login with Credentials" },
       ],
       authSelectorType: "segmented",
       defaultMode: "darpan",

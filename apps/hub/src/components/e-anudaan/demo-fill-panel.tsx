@@ -3,7 +3,7 @@
 /**
  * The demo dock's "Fill" tab for the e-Anudaan grant wizard.
  *
- * DS Audit: Button ✅ existing · Badge ✅ existing — nothing new needed.
+ * DS Audit: Button ✅ existing · Badge ✅ existing · ListGroup / ListRow ✅ existing — nothing new needed.
  *
  * The dock's Sign in tab is the precedent: a reviewer should not have to type forty answers
  * and upload twelve documents to reach the screen they came to look at. Each button below
@@ -18,8 +18,9 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Badge, Button } from "@mosje/design-system";
+import { Badge, Button, ListGroup, ListRow } from "@mosje/design-system";
 import { wizardFor } from "@/lib/e-anudaan/form-schema";
+import { DemoDocumentStates } from "./demo-document-states";
 import {
   buildScenario,
   DEMO_FILL_EVENT,
@@ -63,22 +64,32 @@ export function DemoFillPanel({ pathname }: { pathname: string | null }) {
         where it shows. Answers and documents are illustrative demo data.
       </p>
 
-      <ul className="space-y-2">
+      <ListGroup bordered size="sm" aria-label="Demo application states">
         {DEMO_SCENARIOS.map((s) => (
-          <li key={s.id} className="rounded-lg border border-line p-3">
-            <div className="flex items-center justify-between gap-3">
-              <span className="text-label-2 text-ink">{s.label}</span>
-              <div className="flex items-center gap-2">
+          <ListRow
+            key={s.id}
+            title={s.label}
+            description={s.effect}
+            trailing={
+              <>
                 {applied === s.id && <Badge status="success">Applied</Badge>}
                 <Button appearance="outlined" size="sm" onClick={() => run(s.id)}>
                   Apply
                 </Button>
-              </div>
-            </div>
-            <p className="mt-1 text-body-3 text-ink-muted">{s.effect}</p>
-          </li>
+              </>
+            }
+          />
         ))}
-      </ul>
+      </ListGroup>
+
+      {pathname?.includes("/step-2") && (
+        <section className="space-y-2" aria-labelledby="demo-doc-states">
+          <h3 id="demo-doc-states" className="text-body-2 font-semibold text-ink">
+            Document States
+          </h3>
+          <DemoDocumentStates />
+        </section>
+      )}
 
       <p className="text-body-3 text-ink-muted">
         Sample documents used by these states are in{" "}

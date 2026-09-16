@@ -71,7 +71,7 @@ SAMAVESH is built against UX4G Design System 3.0 (MeitY/NeGD), the mandated stan
   `Skeleton`/`SkeletonText`/`SkeletonRow` (shaped loading placeholders — use these, not
   `Loader`, whenever the eventual shape is known), `Tooltip` (hover **and** focus hint;
   WCAG 1.4.13 dismissible/hoverable/persistent, portalled so Card and DataTable overflow
-  cannot clip it — never hand-roll one from `title=`) (feedback); `FormSection`, `FormCard`, `Wizard`/`ReviewSection`/`ReviewItem`, `FormField`,
+  cannot clip it — never hand-roll one from `title=`) (feedback); `FormPanel` (the ONE card per form or step — sub-sections are not cards), `FormSection`, `FormCard`, `FormInset` (repeatable entry), `DocumentTile`/`DocumentTiles` (upload/review documents, four states), `Wizard`/`ReviewSection`/`ReviewItem`, `FormField`,
   `MediaUpload` (single file/image upload), `MediaGalleryInput` (multi image/video upload),
   `GeoPhotoInput` (geo-tagged evidence photos with EXIF/device location + auto-downscaling),
   `DeclarationCheckbox` (statutory certification panel), the **identity controls**

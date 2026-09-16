@@ -10,8 +10,8 @@ export default function ComposePage() {
   return (
     <div className="space-y-lg">
       <SmilePageHeader
-        breadcrumbs={[{ label: "Communications" }, { label: "Notifications", href: "/portals/smile-admin/notifications" }, { label: "Compose" }]}
-        title="Compose notification"
+        breadcrumbs={[{ label: "Communications" }, { label: "Broadcasts", href: "/portals/smile-admin/notifications" }, { label: "Compose" }]}
+        title="Compose Broadcast"
         subtitle="Reach surveyors, IAs, nodal officers or all portal users in a single broadcast."
         actions={<Link href="/portals/smile-admin/notifications" className={buttonClasses("primary", "outlined", "sm")}><Icon name="arrow_back" size={14} /> Back</Link>}
       />

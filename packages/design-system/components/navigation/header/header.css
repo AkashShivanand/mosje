@@ -239,7 +239,22 @@
      its navigation row draws its own top border directly under the brand row — and a
      portal that DOES pass `nav` drops that row's top border so the two lines never
      stack into 2px. The condensed bar draws the same line for itself (`.ds-hdr-cond`),
-     so the edge is there in both states. */
+     so the edge is there in both states.
+
+     AT REST IT IS A LINE, NOT A SHADOW (decided 2026-09-16). Figma drew a drop shadow
+     on the Default frames too — 0 4 12 rgba(0,0,0,.08) on Mobile and Tablet, with a
+     second copy leaked onto Tablet's inner `Logo and CTAs` frame — while Desktop/Default
+     had none, so the library disagreed with itself. Nothing is underneath a resting
+     masthead, so that shadow was decoration; it is gone from the library, and this rule
+     is the whole resting edge.
+
+     SCROLLED IS A DIFFERENT STATE, AND IT DOES ELEVATE. See
+     `.ds-hdr.is-sticky.is-scrolled` above: once the masthead is stuck, page content
+     passes beneath it and `--sa-elevation-card` is what says the bar is above the page —
+     a job a 1px line cannot do when the content sliding under it is white cards with
+     1px edges of their own. Figma's three On Scroll variants now bind the published
+     `elevation/card` style, where they previously carried a hand-typed 0 2 8 literal
+     that merely resembled it. Do not flatten those; do not elevate these. */
   .ds-hdr[data-variant="portal"] .ds-hdr-brand {
     border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
@@ -688,6 +703,16 @@
   @media (min-width: 768px) {
     .ds-hdr-account__details {
       display: flex;
+    }
+  }
+
+  /* A portal masthead between 768 and 1023 carries the rail toggle, the lockup, the bell and the
+     account on one row, and a long account name pushed that row past the viewport: the E-Anudaan
+     NGO portal scrolled 91px sideways at 768 ("Sankalp Seva Sansthan"), an officer 36px. Below
+     `laptop` a portal's account is the avatar and caret; the name is the menu's first line. */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .ds-hdr[data-variant="portal"] .ds-hdr-account__details {
+      display: none;
     }
   }
 
@@ -1457,6 +1482,40 @@
   .ds-hdr-acct__menu-icon svg {
     width: 20px;
     height: 20px;
+  }
+
+  /* ── The portal masthead on a phone: two names, not three, WHEN THE ROW IS FULL ──
+     Below `breakpoint/tablet` a portal's lockup stood about 150px tall where the row carries the
+     rail toggle, the bell and the avatar — BETA, "Government of India", "Ministry of Social Justice
+     & Empowerment" over two lines and the Department over three, in the ~140px of text column
+     those controls leave. With the Government of India bar above, a quarter of the first phone
+     screen was chrome before any content (e-Anudaan audit X-08).
+
+     The MINISTRY line is the one that goes, and only when the lockup is narrower than the line
+     itself needs (a container query on the lockup, not a viewport rule): a login page with no
+     trailing controls still has room for it and keeps it. The Department line directly beneath
+     repeats "Social Justice & Empowerment" word for word. The Government of India line, the
+     Department line and BETA stay, and the lockup's accessible name is unchanged. The website
+     masthead, every portal from 768 up and the condensed bar keep all three DBIM 5.2 lines.
+
+     DIVERGENCE, recorded per standards-precedence.md: DBIM 5.2 lists the ministry line in the
+     lockup. Withheld on a crowded portal phone row for the legibility of the page; for the
+     Department to confirm. The emblem steps down with it so the row is not held open by the mark.
+     280px: the ministry line at label-2 is about 235px, plus the emblem and its gap. */
+  @media (max-width: 767px) {
+    .ds-hdr[data-variant="portal"] .ds-hdr-brand__lockup {
+      container: ds-hdr-lockup / inline-size;
+    }
+
+    @container ds-hdr-lockup (max-width: 280px) {
+      .ds-hdr-lockup__ministry {
+        display: none;
+      }
+
+      .ds-hdr-lockup__emblem {
+        height: 48px; /* the emblem ladder: 64 resting · 48 crowded portal phone · 44 compact · 32/28 condensed */
+      }
+    }
   }
 
   .ds-hdr-acct__menu-item:hover .ds-hdr-acct__menu-icon,

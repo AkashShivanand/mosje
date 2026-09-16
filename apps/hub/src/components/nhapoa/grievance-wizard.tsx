@@ -172,7 +172,7 @@ export function GrievanceWizard({
                 <div className="flex gap-2">
                   <TextInput inputMode="numeric" maxLength={10} value={d.idMobile} onChange={(e) => set("idMobile", e.target.value.replace(/\D/g, ""))} placeholder="Enter 10-digit Mobile Number" />
                   {!d.otpVerified ? (
-                    <Button type="button" appearance="outlined" onClick={() => setOtpSent(true)} disabled={!/^\d{10}$/.test(d.idMobile)}>
+                    <Button type="button" appearance="outlined" className="shrink-0" onClick={() => setOtpSent(true)} disabled={!/^\d{10}$/.test(d.idMobile)}>
                       {otpSent ? "Verify" : "Send OTP"}
                     </Button>
                   ) : (

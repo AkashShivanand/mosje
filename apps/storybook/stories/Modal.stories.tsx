@@ -132,6 +132,87 @@ export const WithAForm: Story = {
   ),
 };
 
+/**
+ * `dirty` — type a name, then press Escape, click the scrim or press ×. The dialog asks
+ * "Discard Your Changes?" instead of closing; Keep Editing puts focus back in the field. The
+ * Cancel button is not intercepted: it is an explicit choice. Usability audit UX-06.
+ */
+export const DiscardGuard: Story = {
+  args: { title: "Add District Nodal Officer", size: "md" },
+  render: function Render(args) {
+    const [open, setOpen] = React.useState(false);
+    const [name, setName] = React.useState("");
+    const close = () => {
+      setOpen(false);
+      setName("");
+    };
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>Add officer</Button>
+        <Modal
+          {...args}
+          open={open}
+          onClose={close}
+          dirty={name !== ""}
+          footer={
+            <>
+              <Button appearance="outlined" onClick={close}>
+                Cancel
+              </Button>
+              <Button onClick={close}>Add Officer</Button>
+            </>
+          }
+        >
+          <FormField label="Officer Name" required>
+            {(c) => <Input {...c} value={name} onChange={(e) => setName(e.target.value)} />}
+          </FormField>
+        </Modal>
+      </>
+    );
+  },
+};
+
+/**
+ * `discardPrompt` rewords the question `dirty` asks; `printable` lets the browser print only the
+ * dialog's content (the close button and footer are left off the page). Usability audit UX-24.
+ */
+export const DiscardPromptAndPrint: Story = {
+  args: { title: "Inspection Report", size: "md" },
+  render: function Render(args) {
+    const [open, setOpen] = React.useState(false);
+    const [notes, setNotes] = React.useState("");
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>Open report</Button>
+        <Modal
+          {...args}
+          open={open}
+          onClose={() => setOpen(false)}
+          printable
+          dirty={notes !== ""}
+          discardPrompt={{
+            title: "Discard These Findings?",
+            body: "The findings you typed will not be saved.",
+            discardLabel: "Discard Findings",
+          }}
+          footer={
+            <>
+              <Button appearance="outlined" onClick={() => window.print()}>
+                Print
+              </Button>
+              <Button onClick={() => setOpen(false)}>Done</Button>
+            </>
+          }
+        >
+          <FormField label="Findings">
+            {(c) => <Input {...c} value={notes} onChange={(e) => setNotes(e.target.value)} />}
+          </FormField>
+        </Modal>
+      </>
+    );
+  },
+};
+
 export const Sizes: Story = {
   render: function Render(args) {
     const [size, setSize] = React.useState<"sm" | "md" | "lg" | null>(null);

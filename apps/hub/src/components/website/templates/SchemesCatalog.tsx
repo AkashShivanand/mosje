@@ -220,8 +220,8 @@ export function SchemesCatalog({
                   <thead className="bg-gray-50 text-label-3 uppercase text-ink-muted border-b border-gray-200">
                     <tr>
                       <th className="py-3.5 px-4">Scheme Name</th>
-                      <th className="py-3.5 px-4">Category</th>
-                      <th className="py-3.5 px-4">Target Group</th>
+                      <th className="py-3.5 px-4">Type of Benefit</th>
+                      <th className="py-3.5 px-4">Type of Applicant</th>
                       <th className="py-3.5 px-4 text-right">Action</th>
                     </tr>
                   </thead>

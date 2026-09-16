@@ -22,7 +22,27 @@ export function OnThisPage(): React.JSX.Element {
         document.querySelectorAll<HTMLElement>(
           ".docs-content h2, .docs-content h3",
         ),
-      ).filter((el) => !el.closest("[data-no-toc]"));
+      ).filter(
+        (el) =>
+          !el.closest("[data-no-toc]") &&
+          // A heading inside a RENDERED design-system component belongs to the
+          // thing being demonstrated, not to this page. The template marks the
+          // top specimen `data-no-toc`, but a page that renders a component
+          // inside a tab has no such wrapper — thirteen do — and the Site
+          // Footer's four column headings and its Related Links heading were
+          // offered as navigation for a documentation page that has no such
+          // sections.
+          // `.ds-prose` is this app's own prose helper, not a component, and
+          // the Contributing page puts real headings inside one.
+          !el.closest('[class*="ds-"]:not(.ds-prose)') &&
+          // A heading in a tab the reader is not on is not on the page. The
+          // docs tabs mount every panel and hide the inactive ones, so the
+          // contents list offered "The Four Content Shapes", "Example" and
+          // "Criteria This Component Meets" while the Design tab was open —
+          // and a `hidden` element has no layout, so each of those links
+          // scrolled nowhere at all.
+          !el.closest("[hidden]"),
+      );
 
       setHeadings(
         els
@@ -38,7 +58,24 @@ export function OnThisPage(): React.JSX.Element {
     // Immediate scan + brief timeout for client component renders
     scanHeadings();
     const t = setTimeout(scanHeadings, 150);
-    return () => clearTimeout(t);
+
+    // Switching tabs changes only the `?tab=` query, not the path, so nothing
+    // above re-runs — and the list would go stale the moment a reader moved off
+    // Design. Watching the attribute the tabs actually toggle re-scans without
+    // reaching for `useSearchParams`, which would need its own Suspense
+    // boundary here.
+    const content = document.querySelector(".docs-content");
+    const obs = content
+      ? new MutationObserver(() => scanHeadings())
+      : null;
+    if (obs && content) {
+      obs.observe(content, { subtree: true, attributes: true, attributeFilter: ["hidden"] });
+    }
+
+    return () => {
+      clearTimeout(t);
+      obs?.disconnect();
+    };
   }, [pathname]);
 
   React.useEffect(() => {

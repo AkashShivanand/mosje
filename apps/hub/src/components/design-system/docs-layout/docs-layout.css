@@ -129,6 +129,7 @@
 /* ── Header ── */
 .docs-header {
   grid-area: header;
+  min-width: 0;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -142,6 +143,9 @@
 
 .docs-header__breadcrumb {
   flex: 1;
+  /* Without this a flex item cannot shrink below its content, and a long page name widened the
+     whole header — and the grid column under it — past a 375px screen. */
+  min-width: 0;
   font-size: var(--sa-type-body-2-size);
   display: flex;
   align-items: center;
@@ -377,7 +381,9 @@
 
 @media (max-width: 768px) {
   .docs-shell {
-    grid-template-columns: 1fr;
+    /* minmax(0, 1fr): a bare 1fr floors at its items' min-content width, so one long header or
+       specimen could widen the page past the screen. */
+    grid-template-columns: minmax(0, 1fr);
     grid-template-areas: "header" "main";
   }
 

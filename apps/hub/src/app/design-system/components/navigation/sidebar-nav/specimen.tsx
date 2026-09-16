@@ -57,6 +57,11 @@ const IDENTITY = {
  * arrangement the master grid does not show: the collapsed rail keeping its
  * signals — the mark alone, the badge as a dot, the labels in tooltips.
  */
+const RAIL_GROUND: React.CSSProperties = {
+  background: "var(--sa-bg-neutral-base)",
+  borderRight: "var(--sa-stroke-1) solid var(--sa-border-neutral-subtle)",
+};
+
 export function Specimen(): React.JSX.Element {
   const [collapsed, setCollapsed] = React.useState(false);
   return (
@@ -65,14 +70,21 @@ export function Specimen(): React.JSX.Element {
         {collapsed ? "Expand the rail" : "Collapse the rail"}
       </Button>
     <div style={{ display: "flex", gap: "var(--sa-inline-24)", alignItems: "flex-start", flexWrap: "wrap", minHeight: "36rem" }}>
-      <SidebarNav
-        identity={IDENTITY}
-        pathname="/portals/scw/applications/track/review"
-        collapsed={collapsed}
-        onCollapsedChange={setCollapsed}
-        groups={GROUPS}
-      />
-      <SidebarNav identity={IDENTITY} pathname="/portals/scw/notifications" collapsed groups={GROUPS} />
+      {/* The rail on the ground AppShell gives it — white, with its right edge — not on the
+          specimen stage's grey. On grey, the route tint and the hover fill are drawn against
+          the wrong colour and the page reads differently from the product. */}
+      <div style={RAIL_GROUND}>
+        <SidebarNav
+          identity={IDENTITY}
+          pathname="/portals/scw/applications/track/review"
+          collapsed={collapsed}
+          onCollapsedChange={setCollapsed}
+          groups={GROUPS}
+        />
+      </div>
+      <div style={RAIL_GROUND}>
+        <SidebarNav identity={IDENTITY} pathname="/portals/scw/notifications" collapsed groups={GROUPS} />
+      </div>
     </div>
     </div>
   );

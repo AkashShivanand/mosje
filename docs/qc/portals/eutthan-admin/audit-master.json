@@ -1,1209 +1,1211 @@
 {
-  "portal": "eUtthan — Design QC (Login · Admin · Ministry)",
-  "generated": "2026-06-12",
-  "screens": [
+ "portal": "eUtthan \u2014 Design QC (Login \u00b7 Admin \u00b7 Ministry)",
+ "generated": "2026-06-12",
+ "screens": [
+  {
+   "slug": "GLOBAL",
+   "name": "Global \u2014 Common Elements",
+   "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-39685",
+   "liveUrl": null,
+   "note": "Patterns that repeat on every page (shared chrome, every data table, every Add button). One fix applies everywhere.",
+   "figmaImg": "captures/figma/DASHBOARD-4226-39685.png",
+   "liveImg": "captures/board/DASHBOARD.png",
+   "findings": [
     {
-      "slug": "GLOBAL",
-      "name": "Global — Common Elements",
-      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-39685",
-      "liveUrl": null,
-      "note": "Patterns that repeat on every page (shared chrome, every data table, every Add button). One fix applies everywhere.",
-      "figmaImg": "captures/figma/DASHBOARD-4226-39685.png",
-      "liveImg": "captures/board/DASHBOARD.png",
-      "findings": [
-        {
-          "element": "Accessibility bar",
-          "section": "header-band",
-          "sectionBox": [
-            0,
-            0,
-            1440,
-            165
-          ],
-          "axis": "Layout & Spacing",
-          "severity": "Minor",
-          "figma": "Height 40px, navy #003366 background.",
-          "live": "Height 38px (colour is correct).",
-          "fix": "Increase the accessibility bar height from 38px to 40px.",
-          "figmaPin": {
-            "x": 50,
-            "y": 11.5
-          },
-          "livePin": {
-            "x": 50,
-            "y": 11.5
-          },
-          "num": 1,
-          "id": "UTH-GLOBAL-001"
-        },
-        {
-          "element": "Masthead — Ministry/Department text",
-          "section": "header-band",
-          "sectionBox": [
-            0,
-            0,
-            1440,
-            165
-          ],
-          "axis": "Content & Iconography",
-          "severity": "Major",
-          "figma": "Two lines: 'Ministry of SJE' (14px/500/#1f2937) above the bold 'Department of SJE' headline (20px/700/#374151).",
-          "live": "Single line 'Ministry of SJE' at 20px/700/#374151 — the Department headline is absent.",
-          "fix": "Add 'Department of Social Justice & Empowerment' (20px/700/#374151) as the main masthead headline; show the Ministry line above it at 14px/500/#1f2937.",
-          "figmaPin": {
-            "x": 20.8,
-            "y": 43.6
-          },
-          "livePin": {
-            "x": 20.8,
-            "y": 43.6
-          },
-          "num": 2,
-          "id": "UTH-GLOBAL-002"
-        },
-        {
-          "element": "Masthead — Digital India + SAMAVESH logos",
-          "section": "header-band",
-          "sectionBox": [
-            0,
-            0,
-            1440,
-            165
-          ],
-          "axis": "Content & Iconography",
-          "severity": "Major",
-          "figma": "Centre-right of the masthead: Digital India logo + SAMAVESH lockup, with a 24px gap between them.",
-          "live": "No co-branding — the centre of the header is empty.",
-          "fix": "Add the Digital India logo and the SAMAVESH lockup to the header centre, before the user profile.",
-          "figmaPin": {
-            "x": 70.1,
-            "y": 43.6
-          },
-          "livePin": {
-            "x": 70.1,
-            "y": 43.6
-          },
-          "num": 3,
-          "id": "UTH-GLOBAL-003"
-        },
-        {
-          "element": "Sidebar collapse toggle",
-          "section": "header-band",
-          "sectionBox": [
-            0,
-            0,
-            1440,
-            165
-          ],
-          "axis": "Components & States",
-          "severity": "Minor",
-          "figma": "A hamburger/collapse control sits at the top-left of the header.",
-          "live": "No collapse control is shown in the header.",
-          "fix": "Add the sidebar collapse (hamburger) control at the header's left edge.",
-          "figmaPin": {
-            "x": 4.5,
-            "y": 43.6
-          },
-          "livePin": {
-            "x": 4.5,
-            "y": 43.6
-          },
-          "num": 4,
-          "id": "UTH-GLOBAL-004"
-        },
-        {
-          "element": "Sidebar — active nav item",
-          "section": "sidebar",
-          "sectionBox": [
-            0,
-            80,
-            820,
-            700
-          ],
-          "axis": "Color & Token",
-          "severity": "Major",
-          "figma": "Active item: text #003366 · weight 400 · corner radius 16px · background #e5eff9.",
-          "live": "Active item: text #374151 · weight 700 · radius 8px (background correct; three properties deviate).",
-          "fix": "Active sidebar item: text colour → #003366 · weight → 400 · corner radius → 16px.",
-          "figmaPin": {
-            "x": 17.6,
-            "y": 13.1
-          },
-          "livePin": {
-            "x": 17.6,
-            "y": 13.1
-          },
-          "num": 5,
-          "id": "UTH-GLOBAL-005"
-        },
-        {
-          "element": "Profile — name, role & avatar",
-          "section": "profile",
-          "sectionBox": [
-            600,
-            0,
-            1440,
-            175
-          ],
-          "axis": "Content & Iconography",
-          "severity": "Minor",
-          "figma": "Name with the role below it as plain text ('Admin', no punctuation); the avatar sits AFTER the text, at the far right.",
-          "live": "Avatar comes first, then the name; the role is wrapped in parentheses — '(Super Admin)'.",
-          "fix": "Put the name and role first with the avatar to their right, and show the role as plain text without parentheses.",
-          "figmaPin": {
-            "x": 79.8,
-            "y": 41.1
-          },
-          "livePin": {
-            "x": 79.8,
-            "y": 41.1
-          },
-          "num": 6,
-          "id": "UTH-GLOBAL-006"
-        },
-        {
-          "element": "Search & form input typeface",
-          "section": "search-fields",
-          "sectionBox": [
-            295,
-            196,
-            1440,
-            290
-          ],
-          "axis": "Typography",
-          "severity": "Major",
-          "figma": "All inputs and search fields use Noto Sans, like the rest of the portal.",
-          "live": "Search and text inputs render in Poppins on Login and across the Admin and Ministry screens.",
-          "fix": "Set every input, select and search field to Noto Sans.",
-          "figmaPin": {
-            "x": 8,
-            "y": 55
-          },
-          "livePin": {
-            "x": 8,
-            "y": 55
-          },
-          "figmaImgO": "captures/figma/FINANCIAL-YEAR-4226-40009.png",
-          "liveImgO": "captures/board/FINANCIAL-YEAR.png",
-          "num": 7,
-          "id": "UTH-GLOBAL-007"
-        },
-        {
-          "element": "'Add' buttons — icon, weight & padding",
-          "section": "add-button",
-          "sectionBox": [
-            1080,
-            120,
-            1440,
-            215
-          ],
-          "axis": "Components & States",
-          "severity": "Minor",
-          "figma": "Plus icon to the LEFT of the label; label 14px / 500 / line-height 20; padding 24-left / 16-right / 8 top & bottom; the plus is a separate 16×16 icon.",
-          "live": "Plus icon to the RIGHT; label 14px / 600 with a tight line-height; padding 18 / 12 / 0; the '+' is baked into the label text.",
-          "fix": "On every Add button: plus icon on the left, label weight 500 / line-height 20, padding 24/16/8, and a real plus-icon element.",
-          "figmaPin": {
-            "x": 70,
-            "y": 50
-          },
-          "livePin": {
-            "x": 78,
-            "y": 50
-          },
-          "figmaImgO": "captures/figma/MANAGE-SCHEME-4226-40449.png",
-          "liveImgO": "captures/board/MANAGE-SCHEME.png",
-          "num": 8,
-          "id": "UTH-GLOBAL-008"
-        },
-        {
-          "element": "Data-table column header",
-          "section": "table-header",
-          "sectionBox": [
-            295,
-            205,
-            1440,
-            360
-          ],
-          "axis": "Typography",
-          "severity": "Major",
-          "figma": "14px / 600 / colour #6b7280; cell padding 24px on the sides · 16px top & bottom; header sits on a #f9fafb band.",
-          "live": "Header text renders in #4b5563 with only 14px top/bottom padding (colour and vertical padding deviate; font-size 14px is correct).",
-          "fix": "On every table header: text colour → #6b7280; cell padding 24px sides · 16px top/bottom.",
-          "figmaPin": {
-            "x": 38,
-            "y": 45
-          },
-          "livePin": {
-            "x": 38,
-            "y": 45
-          },
-          "figmaImgO": "captures/figma/FINANCIAL-YEAR-4226-40009.png",
-          "liveImgO": "captures/board/FINANCIAL-YEAR.png",
-          "num": 9,
-          "id": "UTH-GLOBAL-009"
-        },
-        {
-          "element": "Data-table body cell",
-          "section": "table-cell",
-          "sectionBox": [
-            295,
-            300,
-            1440,
-            640
-          ],
-          "axis": "Color & Token",
-          "severity": "Major",
-          "figma": "14px / 400 / colour #374151; cell padding 24px on the sides · 16px top & bottom.",
-          "live": "Body cells render with a different colour (#4b5563, or pure #000 on some screens) and less top/bottom padding (16–20px).",
-          "fix": "On every table body cell: text colour → #374151; cell padding 24px sides · 16px top/bottom.",
-          "figmaPin": {
-            "x": 38,
-            "y": 40
-          },
-          "livePin": {
-            "x": 38,
-            "y": 40
-          },
-          "figmaImgO": "captures/figma/FINANCIAL-YEAR-4226-40009.png",
-          "liveImgO": "captures/board/FINANCIAL-YEAR.png",
-          "num": 10,
-          "id": "UTH-GLOBAL-010"
-        },
-        {
-          "element": "Card wrapper around search & table",
-          "section": "card-wrapper",
-          "sectionBox": [
-            295,
-            150,
-            1440,
-            640
-          ],
-          "axis": "Color & Token",
-          "severity": "Minor",
-          "figma": "The search bar and table sit directly on the page with a soft shadow — there is NO bordered card around them.",
-          "live": "The search and table are wrapped in a 1px hairline-bordered card.",
-          "fix": "Remove the hairline card border around the search + table; use the soft shadow from the design.",
-          "figmaPin": {
-            "x": 50,
-            "y": 20
-          },
-          "livePin": {
-            "x": 50,
-            "y": 20
-          },
-          "figmaImgO": "captures/figma/MANAGE-MINISTRY-4226-40288.png",
-          "liveImgO": "captures/board/MANAGE-MINISTRY.png",
-          "num": 11,
-          "id": "UTH-GLOBAL-011"
-        }
-      ]
+     "element": "Accessibility bar",
+     "section": "header-band",
+     "sectionBox": [
+      0,
+      0,
+      1440,
+      165
+     ],
+     "axis": "Layout & Spacing",
+     "severity": "Minor",
+     "figma": "Height 40px, navy #003366 background.",
+     "live": "Height 38px (colour is correct).",
+     "fix": "Increase the accessibility bar height from 38px to 40px.",
+     "figmaPin": {
+      "x": 50,
+      "y": 11.5
+     },
+     "livePin": {
+      "x": 50,
+      "y": 11.5
+     },
+     "num": 1,
+     "id": "UTH-GLOBAL-001"
     },
     {
-      "slug": "LOGIN",
-      "name": "Login",
-      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=9018-36746",
-      "liveUrl": "https://eutthan-admin-uat.mosje.in/login",
-      "note": null,
-      "figmaImg": "captures/figma/LOGIN-9018-36746.png",
-      "liveImg": "captures/board/LOGIN.png",
-      "findings": [
-        {
-          "element": "Government accessibility bar",
-          "section": "header",
-          "sectionBox": [
-            0,
-            0,
-            1440,
-            150
-          ],
-          "axis": "Components & States",
-          "severity": "Blocker",
-          "figma": "Navy government bar at the very top — flag + 'Government of India', 'Skip to Main Content', A−/A/A+ text resize, contrast toggle and language selector.",
-          "live": "The login page has no government bar at all (the signed-in pages do have it).",
-          "fix": "Add the same government accessibility bar to the top of the login page.",
-          "figmaPin": {
-            "x": 50,
-            "y": 15
-          },
-          "livePin": {
-            "x": 50,
-            "y": 10
-          },
-          "num": 1,
-          "id": "UTH-LOGIN-001"
-        },
-        {
-          "element": "Masthead branding",
-          "section": "header",
-          "sectionBox": [
-            0,
-            0,
-            1440,
-            150
-          ],
-          "axis": "Content & Iconography",
-          "severity": "Major",
-          "figma": "Emblem + BETA tag + the full three-line lockup ending in the bold 'Department of Social Justice & Empowerment', plus the Digital India and SAMAVESH logos.",
-          "live": "Only the emblem with two lines; the BETA tag, Department line and both partner logos are missing.",
-          "fix": "Show the complete masthead: BETA tag, full department lockup, and the Digital India + SAMAVESH logos.",
-          "figmaPin": {
-            "x": 25,
-            "y": 65
-          },
-          "livePin": {
-            "x": 18,
-            "y": 65
-          },
-          "num": 2,
-          "id": "UTH-LOGIN-002"
-        },
-        {
-          "element": "Left brand panel",
-          "section": "brand-panel",
-          "sectionBox": [
-            0,
-            130,
-            920,
-            960
-          ],
-          "axis": "Color & Token",
-          "severity": "Blocker",
-          "figma": "A solid navy #003366 brand panel (~60% of the page): SAMAVESH logo + समावेश wordmark, orange divider, 'Justice. Equality. Dignity.' headline, a short description, and a bottom 'SIGNING INTO E-Utthaan' strip with a Change button.",
-          "live": "A pale-blue illustration fills the left side (~44%) — no navy panel, no SAMAVESH branding, no tagline and no 'SIGNING INTO' strip.",
-          "fix": "Replace the illustration with the navy SAMAVESH brand panel, restore the ~60/40 split and the 'SIGNING INTO E-Utthaan' strip.",
-          "figmaPin": {
-            "x": 40,
-            "y": 42
-          },
-          "livePin": {
-            "x": 40,
-            "y": 55
-          },
-          "num": 3,
-          "id": "UTH-LOGIN-003"
-        },
-        {
-          "element": "Form heading",
-          "section": "form",
-          "sectionBox": [
-            880,
-            300,
-            1440,
-            770
-          ],
-          "axis": "Content & Iconography",
-          "severity": "Major",
-          "figma": "'Log in to your account' — left-aligned at the top of the form.",
-          "live": "'Log In' — centred, with the national emblem repeated above it.",
-          "fix": "Use the heading 'Log in to your account', left-aligned, and remove the duplicate emblem above the form.",
-          "figmaPin": {
-            "x": 19,
-            "y": 25
-          },
-          "livePin": {
-            "x": 46,
-            "y": 23
-          },
-          "num": 4,
-          "id": "UTH-LOGIN-004"
-        },
-        {
-          "element": "Field labels & input style",
-          "section": "form",
-          "sectionBox": [
-            880,
-            300,
-            1440,
-            770
-          ],
-          "axis": "Components & States",
-          "severity": "Major",
-          "figma": "'User ID or Email' and 'Password' labels sit above their fields; inputs are 48px tall with a navy #003366 focus outline.",
-          "live": "No labels — only placeholder text inside the fields; inputs are 46px tall with no visible focus style.",
-          "fix": "Add the two field labels above the inputs; input height 48px with a 2px navy #003366 focus outline.",
-          "figmaPin": {
-            "x": 19,
-            "y": 36
-          },
-          "livePin": {
-            "x": 46,
-            "y": 38
-          },
-          "num": 5,
-          "id": "UTH-LOGIN-005"
-        },
-        {
-          "element": "Password visibility toggle",
-          "section": "form",
-          "sectionBox": [
-            880,
-            300,
-            1440,
-            770
-          ],
-          "axis": "Components & States",
-          "severity": "Minor",
-          "figma": "Eye icon inside the password field — 24×24, grey #6b7280.",
-          "live": "The eye icon is smaller (~16px) and tight against the field edge with a small tap area.",
-          "fix": "Use the 24px eye icon in grey #6b7280 with a comfortable tap area.",
-          "figmaPin": {
-            "x": 85,
-            "y": 62
-          },
-          "livePin": {
-            "x": 79,
-            "y": 55
-          },
-          "num": 6,
-          "id": "UTH-LOGIN-006"
-        },
-        {
-          "element": "Primary button",
-          "section": "form",
-          "sectionBox": [
-            880,
-            300,
-            1440,
-            770
-          ],
-          "axis": "Color & Token",
-          "severity": "Minor",
-          "figma": "Label 'Log In' · 48px tall · 8px corner radius · full form width.",
-          "live": "Label 'Sign In' · ~41px tall · ~6px radius.",
-          "fix": "Change the label to 'Log In'; set height 48px and corner radius 8px.",
-          "figmaPin": {
-            "x": 54,
-            "y": 78
-          },
-          "livePin": {
-            "x": 46,
-            "y": 75
-          },
-          "num": 7,
-          "id": "UTH-LOGIN-007"
-        },
-        {
-          "element": "Forgot Password link",
-          "section": "form",
-          "sectionBox": [
-            880,
-            300,
-            1440,
-            770
-          ],
-          "axis": "Content & Iconography",
-          "severity": "Nit",
-          "figma": "'Forgot Password?' — with the question mark — right-aligned on the Password label row, in navy.",
-          "live": "'Forgot Password' without the question mark.",
-          "fix": "Add the question mark: 'Forgot Password?'.",
-          "figmaPin": {
-            "x": 79,
-            "y": 54
-          },
-          "livePin": {
-            "x": 77,
-            "y": 66
-          },
-          "num": 8,
-          "id": "UTH-LOGIN-008"
-        }
-      ]
+     "element": "Masthead \u2014 Ministry/Department text",
+     "section": "header-band",
+     "sectionBox": [
+      0,
+      0,
+      1440,
+      165
+     ],
+     "axis": "Content & Iconography",
+     "severity": "Major",
+     "figma": "Two lines: 'Ministry of SJE' (14px/500/#1f2937) above the bold 'Department of SJE' headline (20px/700/#374151).",
+     "live": "Single line 'Ministry of SJE' at 20px/700/#374151 \u2014 the Department headline is absent.",
+     "fix": "Add 'Department of Social Justice & Empowerment' (20px/700/#374151) as the main masthead headline; show the Ministry line above it at 14px/500/#1f2937.",
+     "figmaPin": {
+      "x": 20.8,
+      "y": 43.6
+     },
+     "livePin": {
+      "x": 20.8,
+      "y": 43.6
+     },
+     "num": 2,
+     "id": "UTH-GLOBAL-002"
     },
     {
-      "slug": "DASHBOARD",
-      "name": "Admin · Dashboard",
-      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-39685",
-      "liveUrl": "https://eutthan-admin-uat.mosje.in/dashboard",
-      "note": null,
-      "figmaImg": "captures/figma/DASHBOARD-4226-39685.png",
-      "liveImg": "captures/board/DASHBOARD.png",
-      "findings": [
-        {
-          "element": "Page heading 'Dashboard'",
-          "section": "heading",
-          "sectionBox": [
-            295,
-            120,
-            1440,
-            210
-          ],
-          "axis": "Typography",
-          "severity": "Minor",
-          "figma": "Noto Sans 28px / 500 / line-height 36 / letter-spacing −0.28 / colour #374151.",
-          "live": "30px / 600 / colour #1E3A5F (larger, bolder and a different colour).",
-          "fix": "Set the page heading to 28px / 500 / #374151 / letter-spacing −0.28.",
-          "figmaPin": {
-            "x": 13.5,
-            "y": 50
-          },
-          "livePin": {
-            "x": 13.5,
-            "y": 50
-          },
-          "num": 1,
-          "id": "UTH-DASHBOARD-001"
-        },
-        {
-          "element": "Financial-Year filter — placement",
-          "section": "filters",
-          "sectionBox": [
-            295,
-            120,
-            1440,
-            470
-          ],
-          "axis": "Layout & Spacing",
-          "severity": "Major",
-          "figma": "The State and Financial-Year filters sit at the top of the page, next to the 'Dashboard' heading — they control everything below.",
-          "live": "The Financial-Year filter sits inside the 'Progress Report' panel header, although changing it also updates the four KPI cards above it.",
-          "fix": "Move the Financial-Year filter to the top of the page next to the heading, as it affects the whole page. Applies to the Ministry dashboard as well.",
-          "figmaPin": {
-            "x": 88,
-            "y": 16
-          },
-          "livePin": {
-            "x": 90,
-            "y": 77
-          },
-          "num": 2,
-          "id": "UTH-DASHBOARD-002"
-        },
-        {
-          "element": "State filter",
-          "section": "filters",
-          "sectionBox": [
-            295,
-            120,
-            1440,
-            470
-          ],
-          "axis": "Components & States",
-          "severity": "Minor",
-          "figma": "Two filters at the top: a State dropdown ('All States') and the Financial-Year dropdown.",
-          "live": "Only the Financial-Year filter exists; there is no State filter.",
-          "fix": "Show all the relevant filters.",
-          "figmaPin": {
-            "x": 80,
-            "y": 16
-          },
-          "livePin": {
-            "x": 85,
-            "y": 16
-          },
-          "num": 3,
-          "id": "UTH-DASHBOARD-003"
-        },
-        {
-          "element": "KPI & progress card text",
-          "section": "stat-cards",
-          "sectionBox": [
-            295,
-            195,
-            1440,
-            580
-          ],
-          "axis": "Typography",
-          "severity": "Major",
-          "figma": "Card label in regular weight (400) dark slate #374151; the value below in semibold dark slate #374151.",
-          "live": "Card labels render in bold, and all values render in bold navy (#003366 family) — heavier and bluer than the design.",
-          "fix": "Card labels → regular 400 #374151; values → semibold #374151 (not navy, not extra bold). Applies to both dashboards.",
-          "figmaPin": {
-            "x": 12,
-            "y": 22
-          },
-          "livePin": {
-            "x": 12,
-            "y": 18
-          },
-          "num": 4,
-          "id": "UTH-DASHBOARD-004"
-        },
-        {
-          "element": "Progress section container",
-          "section": "stat-cards",
-          "sectionBox": [
-            295,
-            195,
-            1440,
-            580
-          ],
-          "axis": "Layout & Spacing",
-          "severity": "Minor",
-          "figma": "'Progress Report of Financial Year …' is a plain section title on the page, with the white stat cards directly below it.",
-          "live": "The whole progress section is wrapped in a grey panel with a header strip, so the cards sit inside a box that isn't in the design.",
-          "fix": "Remove the grey wrapper panel; show the section title directly on the page with the cards below.",
-          "figmaPin": {
-            "x": 50,
-            "y": 52
-          },
-          "livePin": {
-            "x": 50,
-            "y": 50
-          },
-          "num": 5,
-          "id": "UTH-DASHBOARD-005"
-        }
-      ]
+     "element": "Masthead \u2014 Digital India + SAMAVESH logos",
+     "section": "header-band",
+     "sectionBox": [
+      0,
+      0,
+      1440,
+      165
+     ],
+     "axis": "Content & Iconography",
+     "severity": "Major",
+     "figma": "Centre-right of the masthead: Digital India logo + SAMAVESH lockup, with a 24px gap between them.",
+     "live": "No co-branding \u2014 the centre of the header is empty.",
+     "fix": "Add the Digital India logo and the SAMAVESH lockup to the header centre, before the user profile.",
+     "figmaPin": {
+      "x": 70.1,
+      "y": 43.6
+     },
+     "livePin": {
+      "x": 70.1,
+      "y": 43.6
+     },
+     "num": 3,
+     "id": "UTH-GLOBAL-003"
     },
     {
-      "slug": "FINANCIAL-YEAR",
-      "name": "Admin · Manage Financial Year",
-      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-40009",
-      "liveUrl": "https://eutthan-admin-uat.mosje.in/admin/financial-year-management",
-      "note": null,
-      "figmaImg": "captures/figma/FINANCIAL-YEAR-4226-40009.png",
-      "liveImg": "captures/board/FINANCIAL-YEAR.png",
-      "findings": [
-        {
-          "element": "Body cell colour",
-          "section": "table",
-          "sectionBox": [
-            295,
-            215,
-            1440,
-            890
-          ],
-          "axis": "Color & Token",
-          "severity": "Major",
-          "figma": "Financial-year body cells use navy #003366 (this screen highlights the value in primary).",
-          "live": "Body cells render in #374151 — the navy treatment is missing.",
-          "fix": "Set the body cell text to navy #003366 on this screen.",
-          "figmaPin": {
-            "x": 13.6,
-            "y": 30.5
-          },
-          "livePin": {
-            "x": 14.2,
-            "y": 39.3
-          },
-          "num": 1,
-          "id": "UTH-FINANCIAL-YEAR-001"
-        },
-        {
-          "element": "'Action' column header",
-          "section": "table",
-          "sectionBox": [
-            295,
-            215,
-            1440,
-            890
-          ],
-          "axis": "Components & States",
-          "severity": "Major",
-          "figma": "The right-most column has an 'Action' header above the row controls.",
-          "live": "No 'Action' header above the edit/delete controls.",
-          "fix": "Add the 'Action' column header to the table header row.",
-          "figmaPin": {
-            "x": 89.7,
-            "y": 12
-          },
-          "livePin": {
-            "x": 90.9,
-            "y": 14.7
-          },
-          "num": 2,
-          "id": "UTH-FINANCIAL-YEAR-002"
-        },
-        {
-          "element": "Row action controls",
-          "section": "table",
-          "sectionBox": [
-            295,
-            215,
-            1440,
-            890
-          ],
-          "axis": "Components & States",
-          "severity": "Major",
-          "figma": "Two icon-only buttons per row: a pencil (edit) in a light box and a red trash (delete) in a light-red box.",
-          "live": "An 'Edit' text link with a pencil, plus a bare trash icon — not the boxed icon-only buttons.",
-          "fix": "Use the boxed icon-only pencil and red trash buttons from the design.",
-          "figmaPin": {
-            "x": 93.8,
-            "y": 30.2
-          },
-          "livePin": {
-            "x": 90.9,
-            "y": 35.9
-          },
-          "num": 3,
-          "id": "UTH-FINANCIAL-YEAR-003"
-        },
-        {
-          "element": "Highlighted row background",
-          "section": "table",
-          "sectionBox": [
-            295,
-            215,
-            1440,
-            890
-          ],
-          "axis": "Color & Token",
-          "severity": "Minor",
-          "figma": "Highlighted/selected row background #e5eff9.",
-          "live": "Highlighted row background #eaf2fb — visually close but not the token.",
-          "fix": "Use #e5eff9 for the highlighted row background.",
-          "figmaPin": {
-            "x": 38.1,
-            "y": 17
-          },
-          "livePin": {
-            "x": 36.3,
-            "y": 27
-          },
-          "num": 4,
-          "id": "UTH-FINANCIAL-YEAR-004"
-        },
-        {
-          "element": "Search field background",
-          "section": "search-row",
-          "sectionBox": [
-            295,
-            196,
-            1440,
-            290
-          ],
-          "axis": "Color & Token",
-          "severity": "Minor",
-          "figma": "Search field has a white background (border #e5e7eb).",
-          "live": "Search field background is grey #f9fafb (border #e5e7eb is the same in both).",
-          "fix": "Set the search field background to white.",
-          "figmaPin": {
-            "x": 50.1,
-            "y": 54.4
-          },
-          "livePin": {
-            "x": 50.1,
-            "y": 54.4
-          },
-          "num": 5,
-          "id": "UTH-FINANCIAL-YEAR-005"
-        }
-      ]
+     "element": "Sidebar collapse toggle",
+     "section": "header-band",
+     "sectionBox": [
+      0,
+      0,
+      1440,
+      165
+     ],
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "A hamburger/collapse control sits at the top-left of the header.",
+     "live": "No collapse control is shown in the header.",
+     "fix": "Add the sidebar collapse (hamburger) control at the header's left edge.",
+     "figmaPin": {
+      "x": 4.5,
+      "y": 43.6
+     },
+     "livePin": {
+      "x": 4.5,
+      "y": 43.6
+     },
+     "num": 4,
+     "id": "UTH-GLOBAL-004"
     },
     {
-      "slug": "MANAGE-MINISTRY",
-      "name": "Admin · Manage Ministry",
-      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-40288",
-      "liveUrl": "https://eutthan-admin-uat.mosje.in/ministry-management",
-      "note": null,
-      "figmaImg": "captures/figma/MANAGE-MINISTRY-4226-40288.png",
-      "liveImg": "captures/board/MANAGE-MINISTRY.png",
-      "findings": [
-        {
-          "element": "Row text colour & hover behaviour",
-          "section": "table",
-          "sectionBox": [
-            295,
-            215,
-            1440,
-            890
-          ],
-          "axis": "Color & Token",
-          "severity": "Major",
-          "figma": "Default rows in neutral dark #374151; a row turns primary navy #003366 (on the #e5eff9 highlight) only on hover/selection.",
-          "live": "Ministry names always render in a lighter blue link style, regardless of state.",
-          "fix": "Default rows → #374151; apply the navy #003366 treatment only to the hovered/selected row.",
-          "figmaPin": {
-            "x": 26.6,
-            "y": 22.4
-          },
-          "livePin": {
-            "x": 29.5,
-            "y": 64.1
-          },
-          "num": 1,
-          "id": "UTH-MANAGE-MINISTRY-001"
-        },
-        {
-          "element": "Row action buttons",
-          "section": "table",
-          "sectionBox": [
-            295,
-            215,
-            1440,
-            890
-          ],
-          "axis": "Components & States",
-          "severity": "Major",
-          "figma": "On the hovered row: 'Edit' (navy on a light fill, 8px radius) and 'Delete' (red text + icon), comfortably sized with a 12px gap.",
-          "live": "Edit and Delete appear but are compressed by the tight row padding and can't render at their designed size.",
-          "fix": "Match the Edit/Delete buttons' size, fill and spacing to the design.",
-          "figmaPin": {
-            "x": 95.7,
-            "y": 32.2
-          },
-          "livePin": {
-            "x": 93.3,
-            "y": 65.1
-          },
-          "num": 2,
-          "id": "UTH-MANAGE-MINISTRY-002"
-        }
-      ]
+     "element": "Sidebar \u2014 active nav item",
+     "section": "sidebar",
+     "sectionBox": [
+      0,
+      80,
+      820,
+      700
+     ],
+     "axis": "Color & Token",
+     "severity": "Major",
+     "figma": "Active item: text #003366 \u00b7 weight 400 \u00b7 corner radius 16px \u00b7 background #e5eff9.",
+     "live": "Active item: text #374151 \u00b7 weight 700 \u00b7 radius 8px (background correct; three properties deviate).",
+     "fix": "Active sidebar item: text colour \u2192 #003366 \u00b7 weight \u2192 400 \u00b7 corner radius \u2192 16px.",
+     "figmaPin": {
+      "x": 17.6,
+      "y": 13.1
+     },
+     "livePin": {
+      "x": 17.6,
+      "y": 13.1
+     },
+     "num": 5,
+     "id": "UTH-GLOBAL-005"
     },
     {
-      "slug": "MANAGE-OUTCOME",
-      "name": "Admin · Manage Outcome",
-      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-40657",
-      "liveUrl": "https://eutthan-admin-uat.mosje.in/manage-outcome",
-      "note": null,
-      "figmaImg": "captures/figma/MANAGE-OUTCOME-4226-40657.png",
-      "liveImg": "captures/board/MANAGE-OUTCOME.png",
-      "findings": [
-        {
-          "element": "Filter dropdowns",
-          "section": "toolbar",
-          "sectionBox": [
-            295,
-            120,
-            1440,
-            285
-          ],
-          "axis": "Components & States",
-          "severity": "Minor",
-          "figma": "Three filter chips beside the search: Financial Year, 'All Schemes' and 'All Department'.",
-          "live": "Only the Financial-Year dropdown is present.",
-          "fix": "Show all the relevant filters.",
-          "figmaPin": {
-            "x": 20.5,
-            "y": 45.5
-          },
-          "livePin": {
-            "x": 20.5,
-            "y": 45.5
-          },
-          "num": 1,
-          "id": "UTH-MANAGE-OUTCOME-001"
-        }
-      ]
+     "element": "Profile \u2014 name, role & avatar",
+     "section": "profile",
+     "sectionBox": [
+      600,
+      0,
+      1440,
+      175
+     ],
+     "axis": "Content & Iconography",
+     "severity": "Minor",
+     "figma": "Name with the role below it as plain text ('Admin', no punctuation); the avatar sits AFTER the text, at the far right.",
+     "live": "Avatar comes first, then the name; the role is wrapped in parentheses \u2014 '(Super Admin)'.",
+     "fix": "Put the name and role first with the avatar to their right, and show the role as plain text without parentheses.",
+     "figmaPin": {
+      "x": 79.8,
+      "y": 41.1
+     },
+     "livePin": {
+      "x": 79.8,
+      "y": 41.1
+     },
+     "num": 6,
+     "id": "UTH-GLOBAL-006"
     },
     {
-      "slug": "DOCUMENTS",
-      "name": "Admin · Manage Documents",
-      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-42902",
-      "liveUrl": "https://eutthan-admin-uat.mosje.in/document-management",
-      "note": null,
-      "figmaImg": "captures/figma/DOCUMENTS-4226-42902.png",
-      "liveImg": "captures/board/DOCUMENTS.png",
-      "findings": [
-        {
-          "element": "Year filter — control style",
-          "section": "toolbar",
-          "sectionBox": [
-            295,
-            120,
-            1440,
-            285
-          ],
-          "axis": "Components & States",
-          "severity": "Major",
-          "figma": "A compact filter chip (about 99×36, 6px radius, 1px #e5e7eb border, leading arrow-down icon).",
-          "live": "A wide clearable select with a trailing × button and chevron — a different control style.",
-          "fix": "Use the compact filter-chip style from the design; keep the × clear only for an applied-filter state.",
-          "figmaPin": {
-            "x": 9.2,
-            "y": 45.5
-          },
-          "livePin": {
-            "x": 9.2,
-            "y": 45.5
-          },
-          "num": 1,
-          "id": "UTH-DOCUMENTS-001"
-        }
-      ]
+     "element": "Search & form input typeface",
+     "section": "search-fields",
+     "sectionBox": [
+      295,
+      196,
+      1440,
+      290
+     ],
+     "axis": "Typography",
+     "severity": "Major",
+     "figma": "All inputs and search fields use Noto Sans, like the rest of the portal.",
+     "live": "Search and text inputs render in Poppins on Login and across the Admin and Ministry screens.",
+     "fix": "Set every input, select and search field to Noto Sans.",
+     "figmaPin": {
+      "x": 8,
+      "y": 55
+     },
+     "livePin": {
+      "x": 8,
+      "y": 55
+     },
+     "figmaImgO": "captures/figma/FINANCIAL-YEAR-4226-40009.png",
+     "liveImgO": "captures/board/FINANCIAL-YEAR.png",
+     "num": 7,
+     "id": "UTH-GLOBAL-007"
     },
     {
-      "slug": "MAP-MINISTRY",
-      "name": "Admin · Map Ministry / Schemes",
-      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-41073",
-      "liveUrl": "https://eutthan-admin-uat.mosje.in/map-ministry",
-      "note": null,
-      "figmaImg": "captures/figma/MAP-MINISTRY-4226-41073.png",
-      "liveImg": "captures/board/MAP-MINISTRY.png",
-      "findings": [
-        {
-          "element": "Ministry / Schemes segmented tabs",
-          "section": "toolbar",
-          "sectionBox": [
-            295,
-            120,
-            1440,
-            285
-          ],
-          "axis": "Components & States",
-          "severity": "Blocker",
-          "figma": "A two-option segmented control sits beside the heading — active 'Ministry' in white on navy #003366, inactive 'Schemes' in grey.",
-          "live": "No tabs at all — the 'Mapped Ministry List' heading sits alone above the table.",
-          "fix": "Add the Ministry/Schemes segmented tabs beside the heading, as shown in the design.",
-          "figmaPin": {
-            "x": 55,
-            "y": 45.5
-          },
-          "livePin": {
-            "x": 55,
-            "y": 45.5
-          },
-          "num": 1,
-          "id": "UTH-MAP-MINISTRY-001"
-        },
-        {
-          "element": "Body cell colour",
-          "section": "table",
-          "sectionBox": [
-            295,
-            215,
-            1440,
-            890
-          ],
-          "axis": "Color & Token",
-          "severity": "Major",
-          "figma": "Body cells use neutral dark #374151.",
-          "live": "Ministry-name cells render in navy #003366 with a link treatment that isn't in the design.",
-          "fix": "Set the body cells to #374151; remove the navy link treatment.",
-          "figmaPin": {
-            "x": 26.6,
-            "y": 10.1
-          },
-          "livePin": {
-            "x": 26.6,
-            "y": 11.1
-          },
-          "num": 2,
-          "id": "UTH-MAP-MINISTRY-002"
-        },
-        {
-          "element": "'Unmap' row action colour",
-          "section": "table",
-          "sectionBox": [
-            295,
-            215,
-            1440,
-            890
-          ],
-          "axis": "Color & Token",
-          "severity": "Major",
-          "figma": "'Unmap' is a quiet text button in navy #003366 (text + icon).",
-          "live": "'Unmap' renders in red (~#ef4444) — a danger treatment the design doesn't use.",
-          "fix": "Recolour the Unmap text and icon to navy #003366.",
-          "figmaPin": {
-            "x": 95.6,
-            "y": 10.1
-          },
-          "livePin": {
-            "x": 95.6,
-            "y": 11.1
-          },
-          "num": 3,
-          "id": "UTH-MAP-MINISTRY-003"
-        }
-      ]
+     "element": "'Add' buttons \u2014 icon, weight & padding",
+     "section": "add-button",
+     "sectionBox": [
+      1080,
+      120,
+      1440,
+      215
+     ],
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "Plus icon to the LEFT of the label; label 14px / 500 / line-height 20; padding 24-left / 16-right / 8 top & bottom; the plus is a separate 16\u00d716 icon.",
+     "live": "Plus icon to the RIGHT; label 14px / 600 with a tight line-height; padding 18 / 12 / 0; the '+' is baked into the label text.",
+     "fix": "On every Add button: plus icon on the left, label weight 500 / line-height 20, padding 24/16/8, and a real plus-icon element.",
+     "figmaPin": {
+      "x": 70,
+      "y": 50
+     },
+     "livePin": {
+      "x": 78,
+      "y": 50
+     },
+     "figmaImgO": "captures/figma/MANAGE-SCHEME-4226-40449.png",
+     "liveImgO": "captures/board/MANAGE-SCHEME.png",
+     "num": 8,
+     "id": "UTH-GLOBAL-008"
     },
     {
-      "slug": "MANAGE-USER",
-      "name": "Admin · User Management",
-      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-40865",
-      "liveUrl": "https://eutthan-admin-uat.mosje.in/user-management",
-      "note": null,
-      "figmaImg": "captures/figma/MANAGE-USER-4226-40865.png",
-      "liveImg": "captures/board/MANAGE-USER.png",
-      "findings": [
-        {
-          "element": "Filter dropdowns",
-          "section": "toolbar",
-          "sectionBox": [
-            295,
-            120,
-            1440,
-            285
-          ],
-          "axis": "Components & States",
-          "severity": "Minor",
-          "figma": "Three filter dropdowns beside the search field.",
-          "live": "A single 'All Years' select only.",
-          "fix": "Show all the relevant filters.",
-          "figmaPin": {
-            "x": 20.5,
-            "y": 45.5
-          },
-          "livePin": {
-            "x": 20.5,
-            "y": 45.5
-          },
-          "num": 1,
-          "id": "UTH-MANAGE-USER-001"
-        }
-      ]
+     "element": "Data-table column header",
+     "section": "table-header",
+     "sectionBox": [
+      295,
+      205,
+      1440,
+      360
+     ],
+     "axis": "Typography",
+     "severity": "Major",
+     "figma": "14px / 600 / colour #6b7280; cell padding 24px on the sides \u00b7 16px top & bottom; header sits on a #f9fafb band.",
+     "live": "Header text renders in #4b5563 with only 14px top/bottom padding (colour and vertical padding deviate; font-size 14px is correct).",
+     "fix": "On every table header: text colour \u2192 #6b7280; cell padding 24px sides \u00b7 16px top/bottom.",
+     "figmaPin": {
+      "x": 38,
+      "y": 45
+     },
+     "livePin": {
+      "x": 38,
+      "y": 45
+     },
+     "figmaImgO": "captures/figma/FINANCIAL-YEAR-4226-40009.png",
+     "liveImgO": "captures/board/FINANCIAL-YEAR.png",
+     "num": 9,
+     "id": "UTH-GLOBAL-009"
     },
     {
-      "slug": "MIN-DASHBOARD",
-      "name": "Ministry · Dashboard",
-      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-37114",
-      "liveUrl": "https://eutthan-admin-uat.mosje.in/dashboard",
-      "note": null,
-      "figmaImg": "captures/figma/MIN-DASHBOARD-4226-37114.png",
-      "liveImg": "captures/board/MIN-DASHBOARD.png",
-      "findings": [
-        {
-          "element": "Financial-Year filter control",
-          "section": "filters",
-          "sectionBox": [
-            295,
-            120,
-            1440,
-            440
-          ],
-          "axis": "Components & States",
-          "severity": "Minor",
-          "figma": "The filter control uses an 8px corner radius and sits at the top of the page.",
-          "live": "The Financial-Year selector uses a 6px radius and sits inside the progress panel header (placement covered under Admin · Dashboard).",
-          "fix": "Set the filter control radius to 8px.",
-          "figmaPin": {
-            "x": 90,
-            "y": 15
-          },
-          "livePin": {
-            "x": 92,
-            "y": 72
-          },
-          "num": 1,
-          "id": "UTH-MIN-DASHBOARD-001"
-        },
-        {
-          "element": "KPI & progress card text",
-          "section": "stat-cards",
-          "sectionBox": [
-            295,
-            195,
-            1440,
-            580
-          ],
-          "axis": "Typography",
-          "severity": "Major",
-          "figma": "Card label regular 400 #374151; value semibold #374151.",
-          "live": "Labels bold, values bold navy — same deviation as the Admin dashboard.",
-          "fix": "Card labels → regular 400 #374151; values → semibold #374151.",
-          "figmaPin": {
-            "x": 12,
-            "y": 22
-          },
-          "livePin": {
-            "x": 12,
-            "y": 18
-          },
-          "num": 2,
-          "id": "UTH-MIN-DASHBOARD-002"
-        }
-      ]
+     "element": "Data-table body cell",
+     "section": "table-cell",
+     "sectionBox": [
+      295,
+      300,
+      1440,
+      640
+     ],
+     "axis": "Color & Token",
+     "severity": "Major",
+     "figma": "14px / 400 / colour #374151; cell padding 24px on the sides \u00b7 16px top & bottom.",
+     "live": "Body cells render with a different colour (#4b5563, or pure #000 on some screens) and less top/bottom padding (16\u201320px).",
+     "fix": "On every table body cell: text colour \u2192 #374151; cell padding 24px sides \u00b7 16px top/bottom.",
+     "figmaPin": {
+      "x": 38,
+      "y": 40
+     },
+     "livePin": {
+      "x": 38,
+      "y": 40
+     },
+     "figmaImgO": "captures/figma/FINANCIAL-YEAR-4226-40009.png",
+     "liveImgO": "captures/board/FINANCIAL-YEAR.png",
+     "num": 10,
+     "id": "UTH-GLOBAL-010"
     },
     {
-      "slug": "MIN-SCHEME-MANAGEMENT",
-      "name": "Ministry · Manage Scheme",
-      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-37360",
-      "liveUrl": "https://eutthan-admin-uat.mosje.in/scheme-management",
-      "note": null,
-      "figmaImg": "captures/figma/MIN-MANAGE-SCHEME-4226-37360.png",
-      "liveImg": "captures/board/MIN-SCHEME-MANAGEMENT.png",
-      "findings": [
-        {
-          "element": "Filter dropdowns",
-          "section": "toolbar",
-          "sectionBox": [
-            295,
-            150,
-            1440,
-            290
-          ],
-          "axis": "Components & States",
-          "severity": "Minor",
-          "figma": "An 'All Department' dropdown sits beside the Financial-Year filter.",
-          "live": "Only the Financial-Year filter is present.",
-          "fix": "Show all the relevant filters.",
-          "figmaPin": {
-            "x": 85,
-            "y": 60
-          },
-          "livePin": {
-            "x": 85,
-            "y": 60
-          },
-          "num": 1,
-          "id": "UTH-MIN-SCHEME-MANAGEMENT-001"
-        }
-      ]
-    },
-    {
-      "slug": "MIN-MANAGE-OUTCOME",
-      "name": "Ministry · Manage Outcome",
-      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-38577",
-      "liveUrl": "https://eutthan-admin-uat.mosje.in/manage-outcome",
-      "note": null,
-      "figmaImg": "captures/figma/MIN-MANAGE-OUTCOME-4226-38577.png",
-      "liveImg": "captures/board/MIN-MANAGE-OUTCOME.png",
-      "findings": [
-        {
-          "element": "Filter dropdowns",
-          "section": "toolbar",
-          "sectionBox": [
-            295,
-            150,
-            1440,
-            290
-          ],
-          "axis": "Components & States",
-          "severity": "Minor",
-          "figma": "'All Schemes' and 'All Department' dropdowns sit beside the Financial-Year filter.",
-          "live": "Only the Financial-Year dropdown is present.",
-          "fix": "Show all the relevant filters.",
-          "figmaPin": {
-            "x": 85,
-            "y": 60
-          },
-          "livePin": {
-            "x": 85,
-            "y": 60
-          },
-          "num": 1,
-          "id": "UTH-MIN-MANAGE-OUTCOME-001"
-        }
-      ]
-    },
-    {
-      "slug": "MIN-MINISTRY-PHYSICAL-PROGRESS-DATA",
-      "name": "Ministry · Physical Progress Data",
-      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-38368",
-      "liveUrl": "https://eutthan-admin-uat.mosje.in/ministry/physical-progress-data",
-      "note": null,
-      "figmaImg": "captures/figma/MIN-PPD-4226-38368.png",
-      "liveImg": "captures/board/MIN-MINISTRY-PHYSICAL-PROGRESS-DATA.png",
-      "findings": [
-        {
-          "element": "Header action buttons",
-          "section": "header",
-          "sectionBox": [
-            810,
-            140,
-            1440,
-            210
-          ],
-          "axis": "Components & States",
-          "severity": "Minor",
-          "figma": "Two actions: 'Import Achievements Data' (outline) and 'Add Progress' (filled navy).",
-          "live": "A third button — 'Download Sample Template' — appears to the left of Import.",
-          "fix": "Confirm whether the extra 'Download Sample Template' action is intended; the design shows two actions.",
-          "figmaPin": {
-            "x": 30,
-            "y": 50
-          },
-          "livePin": {
-            "x": 20,
-            "y": 50
-          },
-          "num": 1,
-          "id": "UTH-MIN-MINISTRY-PHYSICAL-PROGRESS-DATA-001"
-        }
-      ]
+     "element": "Card wrapper around search & table",
+     "section": "card-wrapper",
+     "sectionBox": [
+      295,
+      150,
+      1440,
+      640
+     ],
+     "axis": "Color & Token",
+     "severity": "Minor",
+     "figma": "The search bar and table sit directly on the page with a soft shadow \u2014 there is NO bordered card around them.",
+     "live": "The search and table are wrapped in a 1px hairline-bordered card.",
+     "fix": "Remove the hairline card border around the search + table; use the soft shadow from the design.",
+     "figmaPin": {
+      "x": 50,
+      "y": 20
+     },
+     "livePin": {
+      "x": 50,
+      "y": 20
+     },
+     "figmaImgO": "captures/figma/MANAGE-MINISTRY-4226-40288.png",
+     "liveImgO": "captures/board/MANAGE-MINISTRY.png",
+     "num": 11,
+     "id": "UTH-GLOBAL-011"
     }
-  ]
+   ]
+  },
+  {
+   "slug": "LOGIN",
+   "name": "Login",
+   "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=9018-36746",
+   "liveUrl": "https://eutthan-admin-uat.mosje.in/login",
+   "note": null,
+   "figmaImg": "captures/figma/LOGIN-9018-36746.png",
+   "liveImg": "captures/board/LOGIN.png",
+   "findings": [
+    {
+     "element": "Government accessibility bar",
+     "section": "header",
+     "sectionBox": [
+      0,
+      0,
+      1440,
+      150
+     ],
+     "axis": "Components & States",
+     "severity": "Blocker",
+     "figma": "Navy government bar at the very top \u2014 flag + 'Government of India', 'Skip to Main Content', A\u2212/A/A+ text resize, contrast toggle and language selector.",
+     "live": "The login page has no government bar at all (the signed-in pages do have it).",
+     "fix": "Add the same government accessibility bar to the top of the login page.",
+     "figmaPin": {
+      "x": 50,
+      "y": 15
+     },
+     "livePin": {
+      "x": 50,
+      "y": 10
+     },
+     "num": 1,
+     "id": "UTH-LOGIN-001"
+    },
+    {
+     "element": "Masthead branding",
+     "section": "header",
+     "sectionBox": [
+      0,
+      0,
+      1440,
+      150
+     ],
+     "axis": "Content & Iconography",
+     "severity": "Major",
+     "figma": "Emblem + BETA tag + the full three-line lockup ending in the bold 'Department of Social Justice & Empowerment', plus the Digital India and SAMAVESH logos.",
+     "live": "Only the emblem with two lines; the BETA tag, Department line and both partner logos are missing.",
+     "fix": "Show the complete masthead: BETA tag, full department lockup, and the Digital India + SAMAVESH logos.",
+     "figmaPin": {
+      "x": 25,
+      "y": 65
+     },
+     "livePin": {
+      "x": 18,
+      "y": 65
+     },
+     "num": 2,
+     "id": "UTH-LOGIN-002"
+    },
+    {
+     "element": "Left brand panel",
+     "section": "brand-panel",
+     "sectionBox": [
+      0,
+      130,
+      920,
+      960
+     ],
+     "axis": "Color & Token",
+     "severity": "Blocker",
+     "figma": "A solid navy #003366 brand panel (~60% of the page): SAMAVESH logo + \u0938\u092e\u093e\u0935\u0947\u0936 wordmark, orange divider, 'Justice. Equality. Dignity.' headline, a short description, and a bottom 'SIGNING INTO E-Utthaan' strip with a Change button.",
+     "live": "A pale-blue illustration fills the left side (~44%) \u2014 no navy panel, no SAMAVESH branding, no tagline and no 'SIGNING INTO' strip.",
+     "fix": "Replace the illustration with the navy SAMAVESH brand panel, restore the ~60/40 split and the 'SIGNING INTO E-Utthaan' strip.",
+     "figmaPin": {
+      "x": 40,
+      "y": 42
+     },
+     "livePin": {
+      "x": 40,
+      "y": 55
+     },
+     "num": 3,
+     "id": "UTH-LOGIN-003"
+    },
+    {
+     "element": "Form heading",
+     "section": "form",
+     "sectionBox": [
+      880,
+      300,
+      1440,
+      770
+     ],
+     "axis": "Content & Iconography",
+     "severity": "Major",
+     "figma": "'Log in to your account' \u2014 left-aligned at the top of the form.",
+     "live": "'Log In' \u2014 centred, with the national emblem repeated above it.",
+     "fix": "Use the heading 'Log in to your account', left-aligned, and remove the duplicate emblem above the form.",
+     "figmaPin": {
+      "x": 19,
+      "y": 25
+     },
+     "livePin": {
+      "x": 46,
+      "y": 23
+     },
+     "num": 4,
+     "id": "UTH-LOGIN-004"
+    },
+    {
+     "element": "Field labels & input style",
+     "section": "form",
+     "sectionBox": [
+      880,
+      300,
+      1440,
+      770
+     ],
+     "axis": "Components & States",
+     "severity": "Major",
+     "figma": "'User ID or Email' and 'Password' labels sit above their fields; inputs are 48px tall with a navy #003366 focus outline.",
+     "live": "No labels \u2014 only placeholder text inside the fields; inputs are 46px tall with no visible focus style.",
+     "fix": "Add the two field labels above the inputs; input height 48px with a 2px navy #003366 focus outline.",
+     "figmaPin": {
+      "x": 19,
+      "y": 36
+     },
+     "livePin": {
+      "x": 46,
+      "y": 38
+     },
+     "num": 5,
+     "id": "UTH-LOGIN-005"
+    },
+    {
+     "element": "Password visibility toggle",
+     "section": "form",
+     "sectionBox": [
+      880,
+      300,
+      1440,
+      770
+     ],
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "Eye icon inside the password field \u2014 24\u00d724, grey #6b7280.",
+     "live": "The eye icon is smaller (~16px) and tight against the field edge with a small tap area.",
+     "fix": "Use the 24px eye icon in grey #6b7280 with a comfortable tap area.",
+     "figmaPin": {
+      "x": 85,
+      "y": 62
+     },
+     "livePin": {
+      "x": 79,
+      "y": 55
+     },
+     "num": 6,
+     "id": "UTH-LOGIN-006"
+    },
+    {
+     "element": "Primary button",
+     "section": "form",
+     "sectionBox": [
+      880,
+      300,
+      1440,
+      770
+     ],
+     "axis": "Color & Token",
+     "severity": "Minor",
+     "figma": "Label 'Log In' \u00b7 48px tall \u00b7 8px corner radius \u00b7 full form width.",
+     "live": "Label 'Sign In' \u00b7 ~41px tall \u00b7 ~6px radius.",
+     "fix": "Change the label to 'Log In'; set height 48px and corner radius 8px.",
+     "figmaPin": {
+      "x": 54,
+      "y": 78
+     },
+     "livePin": {
+      "x": 46,
+      "y": 75
+     },
+     "num": 7,
+     "id": "UTH-LOGIN-007"
+    },
+    {
+     "element": "Forgot Password link",
+     "section": "form",
+     "sectionBox": [
+      880,
+      300,
+      1440,
+      770
+     ],
+     "axis": "Content & Iconography",
+     "severity": "Nit",
+     "figma": "'Forgot Password?' \u2014 with the question mark \u2014 right-aligned on the Password label row, in navy.",
+     "live": "'Forgot Password' without the question mark.",
+     "fix": "Add the question mark: 'Forgot Password?'.",
+     "figmaPin": {
+      "x": 79,
+      "y": 54
+     },
+     "livePin": {
+      "x": 77,
+      "y": 66
+     },
+     "num": 8,
+     "id": "UTH-LOGIN-008"
+    }
+   ]
+  },
+  {
+   "slug": "DASHBOARD",
+   "name": "Admin \u00b7 Dashboard",
+   "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-39685",
+   "liveUrl": "https://eutthan-admin-uat.mosje.in/dashboard",
+   "note": null,
+   "figmaImg": "captures/figma/DASHBOARD-4226-39685.png",
+   "liveImg": "captures/board/DASHBOARD.png",
+   "findings": [
+    {
+     "element": "Page heading 'Dashboard'",
+     "section": "heading",
+     "sectionBox": [
+      295,
+      120,
+      1440,
+      210
+     ],
+     "axis": "Typography",
+     "severity": "Minor",
+     "figma": "Noto Sans 28px / 500 / line-height 36 / letter-spacing \u22120.28 / colour #374151.",
+     "live": "30px / 600 / colour #1E3A5F (larger, bolder and a different colour).",
+     "fix": "Set the page heading to 28px / 500 / #374151 / letter-spacing \u22120.28.",
+     "figmaPin": {
+      "x": 13.5,
+      "y": 50
+     },
+     "livePin": {
+      "x": 13.5,
+      "y": 50
+     },
+     "num": 1,
+     "id": "UTH-DASHBOARD-001"
+    },
+    {
+     "element": "Financial-Year filter \u2014 placement",
+     "section": "filters",
+     "sectionBox": [
+      295,
+      120,
+      1440,
+      470
+     ],
+     "axis": "Layout & Spacing",
+     "severity": "Major",
+     "figma": "The State and Financial-Year filters sit at the top of the page, next to the 'Dashboard' heading \u2014 they control everything below.",
+     "live": "The Financial-Year filter sits inside the 'Progress Report' panel header, although changing it also updates the four KPI cards above it.",
+     "fix": "Move the Financial-Year filter to the top of the page next to the heading, as it affects the whole page. Applies to the Ministry dashboard as well.",
+     "figmaPin": {
+      "x": 88,
+      "y": 16
+     },
+     "livePin": {
+      "x": 90,
+      "y": 77
+     },
+     "num": 2,
+     "id": "UTH-DASHBOARD-002"
+    },
+    {
+     "element": "State filter",
+     "section": "filters",
+     "sectionBox": [
+      295,
+      120,
+      1440,
+      470
+     ],
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "Two filters at the top: a State dropdown ('All States') and the Financial-Year dropdown.",
+     "live": "Only the Financial-Year filter exists; there is no State filter.",
+     "fix": "Show all the relevant filters.",
+     "figmaPin": {
+      "x": 80,
+      "y": 16
+     },
+     "livePin": {
+      "x": 85,
+      "y": 16
+     },
+     "num": 3,
+     "id": "UTH-DASHBOARD-003"
+    },
+    {
+     "element": "KPI & progress card text",
+     "section": "stat-cards",
+     "sectionBox": [
+      295,
+      195,
+      1440,
+      580
+     ],
+     "axis": "Typography",
+     "severity": "Major",
+     "figma": "Card label in regular weight (400) dark slate #374151; the value below in semibold dark slate #374151.",
+     "live": "Card labels render in bold, and all values render in bold navy (#003366 family) \u2014 heavier and bluer than the design.",
+     "fix": "Card labels \u2192 regular 400 #374151; values \u2192 semibold #374151 (not navy, not extra bold). Applies to both dashboards.",
+     "figmaPin": {
+      "x": 12,
+      "y": 22
+     },
+     "livePin": {
+      "x": 12,
+      "y": 18
+     },
+     "num": 4,
+     "id": "UTH-DASHBOARD-004"
+    },
+    {
+     "element": "Progress section container",
+     "section": "stat-cards",
+     "sectionBox": [
+      295,
+      195,
+      1440,
+      580
+     ],
+     "axis": "Layout & Spacing",
+     "severity": "Minor",
+     "figma": "'Progress Report of Financial Year \u2026' is a plain section title on the page, with the white stat cards directly below it.",
+     "live": "The whole progress section is wrapped in a grey panel with a header strip, so the cards sit inside a box that isn't in the design.",
+     "fix": "Remove the grey wrapper panel; show the section title directly on the page with the cards below.",
+     "figmaPin": {
+      "x": 50,
+      "y": 52
+     },
+     "livePin": {
+      "x": 50,
+      "y": 50
+     },
+     "num": 5,
+     "id": "UTH-DASHBOARD-005"
+    }
+   ]
+  },
+  {
+   "slug": "FINANCIAL-YEAR",
+   "name": "Admin \u00b7 Manage Financial Year",
+   "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-40009",
+   "liveUrl": "https://eutthan-admin-uat.mosje.in/admin/financial-year-management",
+   "note": null,
+   "figmaImg": "captures/figma/FINANCIAL-YEAR-4226-40009.png",
+   "liveImg": "captures/board/FINANCIAL-YEAR.png",
+   "findings": [
+    {
+     "element": "Body cell colour",
+     "section": "table",
+     "sectionBox": [
+      295,
+      215,
+      1440,
+      890
+     ],
+     "axis": "Color & Token",
+     "severity": "Major",
+     "figma": "Financial-year body cells use navy #003366 (this screen highlights the value in primary).",
+     "live": "Body cells render in #374151 \u2014 the navy treatment is missing.",
+     "fix": "Set the body cell text to navy #003366 on this screen.",
+     "figmaPin": {
+      "x": 13.6,
+      "y": 30.5
+     },
+     "livePin": {
+      "x": 14.2,
+      "y": 39.3
+     },
+     "num": 1,
+     "id": "UTH-FINANCIAL-YEAR-001"
+    },
+    {
+     "element": "'Action' column header",
+     "section": "table",
+     "sectionBox": [
+      295,
+      215,
+      1440,
+      890
+     ],
+     "axis": "Components & States",
+     "severity": "Major",
+     "figma": "The right-most column has an 'Action' header above the row controls.",
+     "live": "No 'Action' header above the edit/delete controls.",
+     "fix": "Add the 'Action' column header to the table header row.",
+     "figmaPin": {
+      "x": 89.7,
+      "y": 12
+     },
+     "livePin": {
+      "x": 90.9,
+      "y": 14.7
+     },
+     "num": 2,
+     "id": "UTH-FINANCIAL-YEAR-002"
+    },
+    {
+     "element": "Row action controls",
+     "section": "table",
+     "sectionBox": [
+      295,
+      215,
+      1440,
+      890
+     ],
+     "axis": "Components & States",
+     "severity": "Major",
+     "figma": "Two icon-only buttons per row: a pencil (edit) in a light box and a red trash (delete) in a light-red box.",
+     "live": "An 'Edit' text link with a pencil, plus a bare trash icon \u2014 not the boxed icon-only buttons.",
+     "fix": "Use the boxed icon-only pencil and red trash buttons from the design.",
+     "figmaPin": {
+      "x": 93.8,
+      "y": 30.2
+     },
+     "livePin": {
+      "x": 90.9,
+      "y": 35.9
+     },
+     "num": 3,
+     "id": "UTH-FINANCIAL-YEAR-003"
+    },
+    {
+     "element": "Highlighted row background",
+     "section": "table",
+     "sectionBox": [
+      295,
+      215,
+      1440,
+      890
+     ],
+     "axis": "Color & Token",
+     "severity": "Minor",
+     "figma": "Highlighted/selected row background #e5eff9.",
+     "live": "Highlighted row background #eaf2fb \u2014 visually close but not the token.",
+     "fix": "Use #e5eff9 for the highlighted row background.",
+     "figmaPin": {
+      "x": 38.1,
+      "y": 17
+     },
+     "livePin": {
+      "x": 36.3,
+      "y": 27
+     },
+     "num": 4,
+     "id": "UTH-FINANCIAL-YEAR-004"
+    },
+    {
+     "element": "Search field background",
+     "section": "search-row",
+     "sectionBox": [
+      295,
+      196,
+      1440,
+      290
+     ],
+     "axis": "Color & Token",
+     "severity": "Minor",
+     "figma": "Search field has a white background (border #e5e7eb).",
+     "live": "Search field background is grey #f9fafb (border #e5e7eb is the same in both).",
+     "fix": "Set the search field background to white.",
+     "figmaPin": {
+      "x": 50.1,
+      "y": 54.4
+     },
+     "livePin": {
+      "x": 50.1,
+      "y": 54.4
+     },
+     "num": 5,
+     "id": "UTH-FINANCIAL-YEAR-005"
+    }
+   ]
+  },
+  {
+   "slug": "MANAGE-MINISTRY",
+   "name": "Admin \u00b7 Manage Ministry",
+   "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-40288",
+   "liveUrl": "https://eutthan-admin-uat.mosje.in/ministry-management",
+   "note": null,
+   "figmaImg": "captures/figma/MANAGE-MINISTRY-4226-40288.png",
+   "liveImg": "captures/board/MANAGE-MINISTRY.png",
+   "findings": [
+    {
+     "element": "Row text colour & hover behaviour",
+     "section": "table",
+     "sectionBox": [
+      295,
+      215,
+      1440,
+      890
+     ],
+     "axis": "Color & Token",
+     "severity": "Major",
+     "figma": "Default rows in neutral dark #374151; a row turns primary navy #003366 (on the #e5eff9 highlight) only on hover/selection.",
+     "live": "Ministry names always render in a lighter blue link style, regardless of state.",
+     "fix": "Default rows \u2192 #374151; apply the navy #003366 treatment only to the hovered/selected row.",
+     "figmaPin": {
+      "x": 26.6,
+      "y": 22.4
+     },
+     "livePin": {
+      "x": 29.5,
+      "y": 64.1
+     },
+     "num": 1,
+     "id": "UTH-MANAGE-MINISTRY-001"
+    },
+    {
+     "element": "Row action buttons",
+     "section": "table",
+     "sectionBox": [
+      295,
+      215,
+      1440,
+      890
+     ],
+     "axis": "Components & States",
+     "severity": "Major",
+     "figma": "On the hovered row: 'Edit' (navy on a light fill, 8px radius) and 'Delete' (red text + icon), comfortably sized with a 12px gap.",
+     "live": "Edit and Delete appear but are compressed by the tight row padding and can't render at their designed size.",
+     "fix": "Match the Edit/Delete buttons' size, fill and spacing to the design.",
+     "figmaPin": {
+      "x": 95.7,
+      "y": 32.2
+     },
+     "livePin": {
+      "x": 93.3,
+      "y": 65.1
+     },
+     "num": 2,
+     "id": "UTH-MANAGE-MINISTRY-002"
+    }
+   ]
+  },
+  {
+   "slug": "MANAGE-OUTCOME",
+   "name": "Admin \u00b7 Manage Outcome",
+   "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-40657",
+   "liveUrl": "https://eutthan-admin-uat.mosje.in/manage-outcome",
+   "note": null,
+   "figmaImg": "captures/figma/MANAGE-OUTCOME-4226-40657.png",
+   "liveImg": "captures/board/MANAGE-OUTCOME.png",
+   "findings": [
+    {
+     "element": "Filter dropdowns",
+     "section": "toolbar",
+     "sectionBox": [
+      295,
+      120,
+      1440,
+      285
+     ],
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "Three filter chips beside the search: Financial Year, 'All Schemes' and 'All Department'.",
+     "live": "Only the Financial-Year dropdown is present.",
+     "fix": "Show all the relevant filters.",
+     "figmaPin": {
+      "x": 20.5,
+      "y": 45.5
+     },
+     "livePin": {
+      "x": 20.5,
+      "y": 45.5
+     },
+     "num": 1,
+     "id": "UTH-MANAGE-OUTCOME-001"
+    }
+   ]
+  },
+  {
+   "slug": "DOCUMENTS",
+   "name": "Admin \u00b7 Manage Documents",
+   "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-42902",
+   "liveUrl": "https://eutthan-admin-uat.mosje.in/document-management",
+   "note": null,
+   "figmaImg": "captures/figma/DOCUMENTS-4226-42902.png",
+   "liveImg": "captures/board/DOCUMENTS.png",
+   "findings": [
+    {
+     "element": "Year filter \u2014 control style",
+     "section": "toolbar",
+     "sectionBox": [
+      295,
+      120,
+      1440,
+      285
+     ],
+     "axis": "Components & States",
+     "severity": "Major",
+     "figma": "A compact filter chip (about 99\u00d736, 6px radius, 1px #e5e7eb border, leading arrow-down icon).",
+     "live": "A wide clearable select with a trailing \u00d7 button and chevron \u2014 a different control style.",
+     "fix": "Use the compact filter-chip style from the design; keep the \u00d7 clear only for an applied-filter state.",
+     "figmaPin": {
+      "x": 9.2,
+      "y": 45.5
+     },
+     "livePin": {
+      "x": 9.2,
+      "y": 45.5
+     },
+     "num": 1,
+     "id": "UTH-DOCUMENTS-001"
+    }
+   ]
+  },
+  {
+   "slug": "MAP-MINISTRY",
+   "name": "Admin \u00b7 Map Ministry / Schemes",
+   "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-41073",
+   "liveUrl": "https://eutthan-admin-uat.mosje.in/map-ministry",
+   "note": null,
+   "figmaImg": "captures/figma/MAP-MINISTRY-4226-41073.png",
+   "liveImg": "captures/board/MAP-MINISTRY.png",
+   "findings": [
+    {
+     "element": "Ministry / Schemes segmented tabs",
+     "section": "toolbar",
+     "sectionBox": [
+      295,
+      120,
+      1440,
+      285
+     ],
+     "axis": "Components & States",
+     "severity": "Blocker",
+     "figma": "A two-option segmented control sits beside the heading \u2014 active 'Ministry' in white on navy #003366, inactive 'Schemes' in grey.",
+     "live": "No tabs at all \u2014 the 'Mapped Ministry List' heading sits alone above the table.",
+     "fix": "Add the Ministry/Schemes segmented tabs beside the heading, as shown in the design.",
+     "figmaPin": {
+      "x": 55,
+      "y": 45.5
+     },
+     "livePin": {
+      "x": 55,
+      "y": 45.5
+     },
+     "num": 1,
+     "id": "UTH-MAP-MINISTRY-001"
+    },
+    {
+     "element": "Body cell colour",
+     "section": "table",
+     "sectionBox": [
+      295,
+      215,
+      1440,
+      890
+     ],
+     "axis": "Color & Token",
+     "severity": "Major",
+     "figma": "Body cells use neutral dark #374151.",
+     "live": "Ministry-name cells render in navy #003366 with a link treatment that isn't in the design.",
+     "fix": "Set the body cells to #374151; remove the navy link treatment.",
+     "figmaPin": {
+      "x": 26.6,
+      "y": 10.1
+     },
+     "livePin": {
+      "x": 26.6,
+      "y": 11.1
+     },
+     "num": 2,
+     "id": "UTH-MAP-MINISTRY-002"
+    },
+    {
+     "element": "'Unmap' row action colour",
+     "section": "table",
+     "sectionBox": [
+      295,
+      215,
+      1440,
+      890
+     ],
+     "axis": "Color & Token",
+     "severity": "Major",
+     "figma": "'Unmap' is a quiet text button in navy #003366 (text + icon).",
+     "live": "'Unmap' renders in red (~#ef4444) \u2014 a danger treatment the design doesn't use.",
+     "fix": "Recolour the Unmap text and icon to navy #003366.",
+     "figmaPin": {
+      "x": 95.6,
+      "y": 10.1
+     },
+     "livePin": {
+      "x": 95.6,
+      "y": 11.1
+     },
+     "num": 3,
+     "id": "UTH-MAP-MINISTRY-003"
+    }
+   ]
+  },
+  {
+   "slug": "MANAGE-USER",
+   "name": "Admin \u00b7 User Management",
+   "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-40865",
+   "liveUrl": "https://eutthan-admin-uat.mosje.in/user-management",
+   "note": null,
+   "figmaImg": "captures/figma/MANAGE-USER-4226-40865.png",
+   "liveImg": "captures/board/MANAGE-USER.png",
+   "findings": [
+    {
+     "element": "Filter dropdowns",
+     "section": "toolbar",
+     "sectionBox": [
+      295,
+      120,
+      1440,
+      285
+     ],
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "Three filter dropdowns beside the search field.",
+     "live": "A single 'All Years' select only.",
+     "fix": "Show all the relevant filters.",
+     "figmaPin": {
+      "x": 20.5,
+      "y": 45.5
+     },
+     "livePin": {
+      "x": 20.5,
+      "y": 45.5
+     },
+     "num": 1,
+     "id": "UTH-MANAGE-USER-001"
+    }
+   ]
+  },
+  {
+   "slug": "MIN-DASHBOARD",
+   "name": "Ministry \u00b7 Dashboard",
+   "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-37114",
+   "liveUrl": "https://eutthan-admin-uat.mosje.in/dashboard",
+   "note": null,
+   "figmaImg": "captures/figma/MIN-DASHBOARD-4226-37114.png",
+   "liveImg": "captures/board/MIN-DASHBOARD.png",
+   "findings": [
+    {
+     "element": "Financial-Year filter control",
+     "section": "filters",
+     "sectionBox": [
+      295,
+      120,
+      1440,
+      440
+     ],
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "The filter control uses an 8px corner radius and sits at the top of the page.",
+     "live": "The Financial-Year selector uses a 6px radius and sits inside the progress panel header (placement covered under Admin \u00b7 Dashboard).",
+     "fix": "Set the filter control radius to 8px.",
+     "figmaPin": {
+      "x": 90,
+      "y": 15
+     },
+     "livePin": {
+      "x": 92,
+      "y": 72
+     },
+     "num": 1,
+     "id": "UTH-MIN-DASHBOARD-001"
+    },
+    {
+     "element": "KPI & progress card text",
+     "section": "stat-cards",
+     "sectionBox": [
+      295,
+      195,
+      1440,
+      580
+     ],
+     "axis": "Typography",
+     "severity": "Major",
+     "figma": "Card label regular 400 #374151; value semibold #374151.",
+     "live": "Labels bold, values bold navy \u2014 same deviation as the Admin dashboard.",
+     "fix": "Card labels \u2192 regular 400 #374151; values \u2192 semibold #374151.",
+     "figmaPin": {
+      "x": 12,
+      "y": 22
+     },
+     "livePin": {
+      "x": 12,
+      "y": 18
+     },
+     "num": 2,
+     "id": "UTH-MIN-DASHBOARD-002"
+    }
+   ]
+  },
+  {
+   "slug": "MIN-SCHEME-MANAGEMENT",
+   "name": "Ministry \u00b7 Manage Scheme",
+   "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-37360",
+   "liveUrl": "https://eutthan-admin-uat.mosje.in/scheme-management",
+   "note": null,
+   "figmaImg": "captures/figma/MIN-MANAGE-SCHEME-4226-37360.png",
+   "liveImg": "captures/board/MIN-SCHEME-MANAGEMENT.png",
+   "findings": [
+    {
+     "element": "Filter dropdowns",
+     "section": "toolbar",
+     "sectionBox": [
+      295,
+      150,
+      1440,
+      290
+     ],
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "An 'All Department' dropdown sits beside the Financial-Year filter.",
+     "live": "Only the Financial-Year filter is present.",
+     "fix": "Show all the relevant filters.",
+     "figmaPin": {
+      "x": 85,
+      "y": 60
+     },
+     "livePin": {
+      "x": 85,
+      "y": 60
+     },
+     "num": 1,
+     "id": "UTH-MIN-SCHEME-MANAGEMENT-001"
+    }
+   ]
+  },
+  {
+   "slug": "MIN-MANAGE-OUTCOME",
+   "name": "Ministry \u00b7 Manage Outcome",
+   "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-38577",
+   "liveUrl": "https://eutthan-admin-uat.mosje.in/manage-outcome",
+   "note": null,
+   "figmaImg": "captures/figma/MIN-MANAGE-OUTCOME-4226-38577.png",
+   "liveImg": "captures/board/MIN-MANAGE-OUTCOME.png",
+   "findings": [
+    {
+     "element": "Filter dropdowns",
+     "section": "toolbar",
+     "sectionBox": [
+      295,
+      150,
+      1440,
+      290
+     ],
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "'All Schemes' and 'All Department' dropdowns sit beside the Financial-Year filter.",
+     "live": "Only the Financial-Year dropdown is present.",
+     "fix": "Show all the relevant filters.",
+     "figmaPin": {
+      "x": 85,
+      "y": 60
+     },
+     "livePin": {
+      "x": 85,
+      "y": 60
+     },
+     "num": 1,
+     "id": "UTH-MIN-MANAGE-OUTCOME-001"
+    }
+   ]
+  },
+  {
+   "slug": "MIN-MINISTRY-PHYSICAL-PROGRESS-DATA",
+   "name": "Ministry \u00b7 Physical Progress Data",
+   "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4226-38368",
+   "liveUrl": "https://eutthan-admin-uat.mosje.in/ministry/physical-progress-data",
+   "note": null,
+   "figmaImg": "captures/figma/MIN-PPD-4226-38368.png",
+   "liveImg": "captures/board/MIN-MINISTRY-PHYSICAL-PROGRESS-DATA.png",
+   "findings": [
+    {
+     "element": "Header action buttons",
+     "section": "header",
+     "sectionBox": [
+      810,
+      140,
+      1440,
+      210
+     ],
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "Two actions: 'Import Achievements Data' (outline) and 'Add Progress' (filled navy).",
+     "live": "A third button \u2014 'Download Sample Template' \u2014 appears to the left of Import.",
+     "fix": "Confirm whether the extra 'Download Sample Template' action is intended; the design shows two actions.",
+     "figmaPin": {
+      "x": 30,
+      "y": 50
+     },
+     "livePin": {
+      "x": 20,
+      "y": 50
+     },
+     "num": 1,
+     "id": "UTH-MIN-MINISTRY-PHYSICAL-PROGRESS-DATA-001"
+    }
+   ]
+  }
+ ],
+ "idPrefix": "UTH",
+ "deferred": []
 }

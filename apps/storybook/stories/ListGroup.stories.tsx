@@ -33,12 +33,18 @@ const meta = {
     children: null,
     divided: true,
     bordered: true,
+    flush: false,
     size: "md",
     "aria-label": "Recent applications",
   },
   argTypes: {
     divided: { control: "boolean" },
     bordered: { control: "boolean" },
+    /* `flush` pulls the list out by a row's own side padding, so the rows' TEXT lines up with a
+       heading or a set of readings above it while the hover band still reaches the container's
+       inner edge. It is for a list INSIDE a card beside other content; a `bordered` list owns its
+       own edge and ignores it. */
+    flush: { control: "boolean" },
     size: { control: "inline-radio", options: ["md", "sm"] },
     children: { control: false },
   },
@@ -47,7 +53,13 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Rows that go somewhere: each is a link, and the whole row is the target. */
+/**
+ * Rows that go somewhere: each is a link, and the whole row is the target.
+ *
+ * Pass `linkAs={Link}` on a row with an `href` — without it the row is a bare anchor and every
+ * click costs a full document load. A row with no `href` needs nothing. Storybook has no router,
+ * so these are plain anchors on purpose.
+ */
 export const Playground: Story = {
   args: {},
   render: (args) => (

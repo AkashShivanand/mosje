@@ -37,12 +37,14 @@ also match.
    `packages/design-system/demo/demo-accounts.ts`, keyed by the hub-origin
    path prefix that reaches it (`path`), with an optional `idLabel` for
    portals that don't sign in by mobile number.
-2. The login page itself owns **only** a `demo:fill` `CustomEvent` listener —
-   no local accounts const, no mounted `DemoFab` or `DemoDock`. `DemoDock`'s
-   **Sign in** tab (`DemoAccountsPanel`) dispatches `demo:fill` with
-   `{ id, password, extra }` when a row's **Use** button is pressed; the
-   listener sets the corresponding controlled fields and, if the form has
-   role tabs, switches to the tab named in `extra.tab`.
+2. A login built on `PortalLoginTemplate` owns **nothing** for demos — the
+   template listens for `demo:fill` and honours `extra.tab`, `extra.mode` and
+   `extra.subRole`. A hand-built login owns **only** a `demo:fill`
+   `CustomEvent` listener — no local accounts const, no mounted `DemoFab` or
+   `DemoDock`. `DemoDock`'s **Sign in** tab (`DemoAccountsPanel`) dispatches
+   `demo:fill` with `{ id, password, extra }` when a row's **Use** button is
+   pressed; the listener sets the corresponding controlled fields and, if the
+   form has role tabs, switches to the tab named in `extra.tab`.
 3. Where a path has no entry in `DEMO_ACCOUNTS`, `findDemoAccounts` returns
    `null` and the dock's Sign in tab is **absent**, not shown empty — so a
    page with real credentials only (none, currently) simply isn't offered one.
@@ -115,68 +117,79 @@ only for the shape a bespoke, non-hub page might still choose to hand-roll.
 
 ## Portals and their demo accounts
 
-| Portal | Role | Mobile / ID | Password |
-|--------|------|-------------|----------|
-| **NMBA** (portal login) | Admin | 9999999999 | Demo@123 (any works) |
-| **NMBA** (portal login) | State Nodal Officer (Maharashtra) | 9890123456 | Demo@123 (any works) |
-| **NMBA** (portal login) | District Nodal Officer (Maharashtra / Pune) | 9890001234 | Demo@123 (any works) |
-| **SCW** | Volunteer (Citizen) | 9800000001 | Demo@123 |
-| **SCW** | SAGE Organisation | 9800000002 | Demo@123 |
-| **SCW** | Nodal Officer | 9810000001 | Demo@123 |
-| **SMILE Admin** | Super Admin | 9000000900 | Password@123 |
-| **SMILE Admin** | State Nodal Officer | 9000000901 | Password@123 |
-| **SMILE Admin** | District Nodal Officer | 9000000902 | Password@123 |
-| **NMBA — Mass Pledge** | Block Nodal Officer (Haveli, Pune, Maharashtra) | 9890005678 | Demo@123 |
-| **NMBA — Mass Pledge** | Line Ministry (Ministry of Education) | 9810007001 | Demo@123 |
-| **NMBA — Mass Pledge** | Spiritual Organisation (Brahma Kumaris) | 9810007002 | Demo@123 |
-| **NMBA — Mass Pledge** | Higher Education Institution (Delhi University) | 9810007003 | Demo@123 |
-| **NMBA — Mass Pledge** | GIA (Muktangan Rehabilitation Centre) | 9810007004 | Demo@123 |
-| **NMBA — Mass Pledge** *(spare, can file)* | Block Nodal Officer (Maval, Pune, Maharashtra) | 9890005679 | Demo@123 |
-| **NMBA — Mass Pledge** *(spare, can file)* | District Nodal Officer (Nashik, Maharashtra) | 9890001299 | Demo@123 |
-| **NMBA — Mass Pledge** *(spare, can file)* | Line Ministry (Youth Affairs & Sports) | 9810007011 | Demo@123 |
-| **NMBA — Mass Pledge** *(spare, can file)* | Spiritual Organisation (Ramakrishna Mission) | 9810007012 | Demo@123 |
-| **NMBA — Mass Pledge** *(spare, can file)* | Higher Education Institution (BHU) | 9810007013 | Demo@123 |
-| **NMBA — Mass Pledge** *(spare, can file)* | GIA (Navjeevan Rehabilitation Centre) | 9810007014 | Demo@123 |
-| **PM-AJAY** | Joint Secretary | JS001 | Password@123 |
-| **PM-AJAY** | District Secretary | DS002 | Password@123 |
-| **PM-AJAY** | State Officer | SO003 | Password@123 |
-| **PM-AJAY** | District Officer | DO005 | Password@123 |
-| **E-Anudaan** | ASO — Programme Division | 9200000801 | Demo@123 |
-| **E-Anudaan** | SO — Programme Division | 9200000802 | Demo@123 |
-| **E-Anudaan** | US — Programme Division | 9200000803 | Demo@123 |
-| **E-Anudaan** | DS — Programme Division | 9200000804 | Demo@123 |
-| **E-Anudaan** | JS — Programme Division | 9200000810 | Demo@123 |
-| **E-Anudaan** | ASO — Integrated Finance | 9200000805 | Demo@123 |
-| **E-Anudaan** | SO — Integrated Finance | 9200000806 | Demo@123 |
-| **E-Anudaan** | US — Integrated Finance | 9200000807 | Demo@123 |
-| **E-Anudaan** | DS — Integrated Finance | 9200000808 | Demo@123 |
-| **E-Anudaan** | JS — Integrated Finance | 9200000809 | Demo@123 |
-| **E-Anudaan** | Programme Director | 9200000811 | Demo@123 |
-| **E-Anudaan** | PMU Field Officer | 9200000812 | Demo@123 |
+The **Fill** column is the row's `extra` — what `PortalLoginTemplate` does on
+**Use** besides typing the credentials: `tab` selects a role tab, `subRole`
+sets that tab's "Your role" select. On an OTP tab the template also sends the
+code and types the password column into the code boxes.
 
-The four sets below don't sign in by mobile number, so they're kept separate
+| Portal | Role | Mobile / ID | Password | Fill |
+|--------|------|-------------|----------|------|
+| **NMBA** (portal login) | Admin | 9999999999 | Demo@123 (any works) | tab `admin` |
+| **NMBA** (portal login) | State Nodal Officer (Maharashtra) | 9890123456 | Demo@123 (any works) | tab `admin` |
+| **NMBA** (portal login) | District Nodal Officer (Maharashtra / Pune) | 9890001234 | Demo@123 (any works) | tab `admin` |
+| **SCW** | Volunteer (Citizen) | 9800000001 | Demo@123 | tab `citizen`, subRole `volunteer` |
+| **SCW** | SAGE Organisation | 9800000002 | Demo@123 | tab `citizen`, subRole `sage` |
+| **SCW** | Nodal Officer | 9810000001 | Demo@123 | tab `officer` |
+| **SMILE Admin** | Super Admin | 9000000900 | Password@123 | — |
+| **SMILE Admin** | Central Admin | 9000000901 | Password@123 | — |
+| **SMILE Admin** | State Nodal Officer · Maharashtra | 9000000902 | Password@123 | — |
+| **SMILE Admin** | District Nodal Officer · Mumbai | 9000000903 | Password@123 | — |
+| **SMILE Admin** | District Nodal Officer · Pune | 9000000904 | Password@123 | — |
+| **SMILE Admin** | District Nodal Officer · New Delhi | 9000000905 | Password@123 | — |
+| **NMBA — Mass Pledge** | Block Nodal Officer (Haveli, Pune, Maharashtra) | 9890005678 | Demo@123 | tab `admin` |
+| **NMBA — Mass Pledge** | Line Ministry (Ministry of Education) | 9810007001 | Demo@123 | tab `admin` |
+| **NMBA — Mass Pledge** | Spiritual Organisation (Brahma Kumaris) | 9810007002 | Demo@123 | tab `admin` |
+| **NMBA — Mass Pledge** | Higher Education Institution (Delhi University) | 9810007003 | Demo@123 | tab `admin` |
+| **NMBA — Mass Pledge** | GIA (Muktangan Rehabilitation Centre) | 9810007004 | Demo@123 | tab `admin` |
+| **NMBA — Mass Pledge** *(spare, can file)* | Block Nodal Officer (Maval, Pune, Maharashtra) | 9890005679 | Demo@123 | not in registry |
+| **NMBA — Mass Pledge** *(spare, can file)* | District Nodal Officer (Nashik, Maharashtra) | 9890001299 | Demo@123 | not in registry |
+| **NMBA — Mass Pledge** *(spare, can file)* | Line Ministry (Youth Affairs & Sports) | 9810007011 | Demo@123 | not in registry |
+| **NMBA — Mass Pledge** *(spare, can file)* | Spiritual Organisation (Ramakrishna Mission) | 9810007012 | Demo@123 | not in registry |
+| **NMBA — Mass Pledge** *(spare, can file)* | Higher Education Institution (BHU) | 9810007013 | Demo@123 | not in registry |
+| **NMBA — Mass Pledge** *(spare, can file)* | GIA (Navjeevan Rehabilitation Centre) | 9810007014 | Demo@123 | not in registry |
+| **PM-AJAY** | Joint Secretary | JS001 | Password@123 | — |
+| **PM-AJAY** | Deputy Secretary | DS002 | Password@123 | — |
+| **PM-AJAY** | Section Officer · Maharashtra | SO003 | Password@123 | — |
+| **PM-AJAY** | Section Officer · Tamil Nadu | SO004 | Password@123 | — |
+| **PM-AJAY** | District Officer · Gujarat | DO005 | Password@123 | — |
+| **E-Anudaan** | ASO — Programme Division | 9200000801 | Demo@123 | — |
+| **E-Anudaan** | SO — Programme Division | 9200000802 | Demo@123 | — |
+| **E-Anudaan** | US — Programme Division | 9200000803 | Demo@123 | — |
+| **E-Anudaan** | DS — Programme Division | 9200000804 | Demo@123 | — |
+| **E-Anudaan** | JS — Programme Division | 9200000810 | Demo@123 | — |
+| **E-Anudaan** | ASO — Integrated Finance | 9200000805 | Demo@123 | — |
+| **E-Anudaan** | SO — Integrated Finance | 9200000806 | Demo@123 | — |
+| **E-Anudaan** | US — Integrated Finance | 9200000807 | Demo@123 | — |
+| **E-Anudaan** | DS — Integrated Finance | 9200000808 | Demo@123 | — |
+| **E-Anudaan** | JS — Integrated Finance | 9200000809 | Demo@123 | — |
+| **E-Anudaan** | Programme Director | 9200000811 | Demo@123 | — |
+| **E-Anudaan** | PMU Field Officer | 9200000812 | Demo@123 | — |
+
+The sets below don't sign in by mobile number, so they're kept separate
 rather than forced into the table above's "Mobile / ID" column.
 
-| Portal | Role | ID | Password |
-|--------|------|----|---------|
-| **NMBA — Treatment Centre** (Project Id) | IRCA | IRCA001 | 123456 |
-| **NMBA — Treatment Centre** (Project Id) | ODIC | ODIC001 | 123456 |
-| **NMBA — Treatment Centre** (Project Id) | CPLI | CPLI001 | 123456 |
-| **NMBA — Treatment Centre** (Project Id) | DDAC | DDAC001 | 123456 |
-| **NMBA — Treatment Centre** (Project Id) | US | US001 | 123456 |
-| **TG Admin** (Email) | Central Admin | central.admin@mosje.in | 123456 |
-| **TG Admin** (Email) | Examining Officer | examining.officer@mosje.in | 123456 |
-| **TG Admin** (Email) | Checker | checker@mosje.in | 123456 |
-| **TG Admin** (Email) | District Magistrate | district.magistrate@mosje.in | 123456 |
-| **TG Citizen** (Email) | Citizen (Applicant) | anshul@example.com | 123456 |
-| **NHAPOA** (Username) | District Officer | ba.districtofficer | Demo@123 |
-| **NHAPOA** (Username) | Station House Officer | so_govindnagar_kn | Demo@123 |
-| **NHAPOA** (Username) | State Authority | ba.stateauthority | Demo@123 |
-| **NHAPOA** (Username) | Finance Officer | ba.financeofficer | Demo@123 |
-| **NHAPOA** (Username) | Central Authority | ba.centralauthority | Demo@123 |
-| **NHAPOA** (Username) | System Administrator | nhapoa_sysadmin | Demo@123 |
-| **NHAPOA** (Username) | Call Centre Operator | ankitSharma | Demo@123 |
-| **E-Anudaan — NGO** (Login ID) | NGO Applicant | LGN3712 | Demo@123 |
+| Portal | Role | ID | Password | Fill |
+|--------|------|----|----------|------|
+| **NMBA — Patient Monitoring** (Project Id + OTP) | IRCA | IRCA001 | 123456 | tab `monitoring` |
+| **NMBA — Patient Monitoring** (Project Id + OTP) | ODIC | ODIC001 | 123456 | tab `monitoring` |
+| **NMBA — Patient Monitoring** (Project Id + OTP) | CPLI | CPLI001 | 123456 | tab `monitoring` |
+| **NMBA — Patient Monitoring** (Project Id + OTP) | DDAC | DDAC001 | 123456 | tab `monitoring` |
+| **NMBA — Patient Monitoring** (Project Id + OTP) | US | US001 | 123456 | tab `monitoring` |
+| **TG Admin** (Email + OTP) | Central Admin | central.admin@mosje.in | 123456 | tab `admin` |
+| **TG Admin** (Email + OTP) | Examining Officer | examining.officer@mosje.in | 123456 | tab `admin` |
+| **TG Admin** (Email + OTP) | Checker | checker@mosje.in | 123456 | tab `admin` |
+| **TG Admin** (Email + OTP) | District Magistrate | district.magistrate@mosje.in | 123456 | tab `admin` |
+| **TG Citizen** (Email + OTP) | Citizen (Applicant) | anshul@example.com | 123456 | tab `citizen` |
+| **E-Utthan Admin** (User ID) | Admin | 9990000011 | admin@2026 | — |
+| **E-Utthan Admin** (User ID) | Ministry | shivendra123 | shivendra123 | — |
+| **NHAPOA** (Username) | District Officer | ba.districtofficer | Demo@123 | — |
+| **NHAPOA** (Username) | Station House Officer | so_govindnagar_kn | Demo@123 | — |
+| **NHAPOA** (Username) | State Authority | ba.stateauthority | Demo@123 | — |
+| **NHAPOA** (Username) | Finance Officer | ba.financeofficer | Demo@123 | — |
+| **NHAPOA** (Username) | Central Authority | ba.centralauthority | Demo@123 | — |
+| **NHAPOA** (Username) | System Administrator | nhapoa_sysadmin | Demo@123 | — |
+| **NHAPOA** (Username) | Call Centre Operator | ankitSharma | Demo@123 | — |
+| **E-Anudaan — NGO** (Login ID) | NGO Applicant | LGN3712 | Demo@123 | — |
 
 > **E-Anudaan** carries two audiences on one portal, so it has four
 > `DEMO_ACCOUNTS` entries. The base `/portals/e-anudaan` prefix serves the
@@ -191,10 +204,19 @@ rather than forced into the table above's "Mobile / ID" column.
 > `demo-accounts.ts` ships inside a published package and must never carry a
 > credential that works against a real deployment.
 
-> **NMBA — Treatment Centre** is a distinct login surface from the NMBA admin
-> login above — a Project Id + OTP flow, not mobile number + password — so it
-> gets its own entry in `DEMO_ACCOUNTS` (`path: "/portals/nmba/treatment-centre"`)
-> that wins the longest-prefix match over the broader `/portals/nmba` entry.
+> **NMBA and TG are one tabbed login on two routes.** NMBA's
+> `/admin/login` (Admin: mobile number + password) and
+> `/treatment-centre/login-otp` (Patient Monitoring: Project Id + OTP) render
+> the same `PortalLoginTemplate`, opening on a different tab; TG's
+> `/admin/login` and `/citizen/sign-in` do the same with Admin and Citizen.
+> The dock resolves accounts by **path**, and a tab switch only rewrites
+> `?role=` on the same path — so each of those four `DEMO_ACCOUNTS` entries
+> lists **every** account its login accepts, the route's own tab first, and
+> each row carries `extra.tab`. The longest-prefix match still decides which
+> order the reviewer sees (`/portals/nmba/treatment-centre` over `/portals/nmba`).
+>
+> **E-Utthan Admin** (`/portals/eutthan-admin`) keeps its passwords as its
+> own stub checks them (`eutthan-shared.ts`), not `Demo@123`.
 
 > **NMBA Mass Pledge (18 August 2026)** is a flow inside the **existing** NMBA portal (no separate
 > login/portal). The five documented reporting forms share one form component; the reporter's
@@ -220,13 +242,16 @@ rather than forced into the table above's "Mobile / ID" column.
 ## Checklist when adding a new login page
 
 - [ ] Login form uses controlled state (React `useState`) for all credential fields
-- [ ] A `demo:fill` listener is wired (see the pattern above) — this is the
-      whole integration; there is nothing else for the page to render
+- [ ] On `PortalLoginTemplate`: no listener of your own — the template's is the
+      integration. Hand-built: a `demo:fill` listener is wired (see the pattern
+      above), and there is nothing else for the page to render
 - [ ] The page's accounts are added to `DEMO_ACCOUNTS` in
       `packages/design-system/demo/demo-accounts.ts`, keyed by the page's
       hub-origin path prefix, **not** declared locally in the page
-- [ ] If the form has role tabs, the listener switches to the tab named in
-      `extra.tab` for accounts that need it (see SCW's accounts for the pattern)
+- [ ] If the form has role tabs, each row carries `extra.tab` (and
+      `extra.subRole` for a "Your role" select) — see SCW's accounts. If the
+      same tabbed login is served on two paths, both registry entries list every
+      account it accepts (see NMBA and TG)
 - [ ] Demo password is `Demo@123` where the portal's stub accepts it — otherwise
       whatever value the stub actually checks, transcribed into the registry
 - [ ] The table in this file is updated to match — a human-readable copy of

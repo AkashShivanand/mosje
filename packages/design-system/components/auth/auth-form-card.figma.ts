@@ -38,6 +38,16 @@
 //   Show consent         -> `consent`. GIGW requires the disclosure — never drop
 //                           it to save vertical space.
 //   Show account prompt  -> `accountPrompt`.
+//   Show role select     -> the "Your role" select, emitted INSIDE the
+//                           `credentialFields` fragment and above the stack —
+//                           there is no card prop for it. In code it is
+//                           `PortalRoleTab.subRoles`, which
+//                           `PortalLoginTemplate` renders there. Its label is
+//                           the exposed `Role select` instance's own Label Text
+//                           (code: `subRoleLabel`, default "Your role"), read
+//                           with findText — Figma cannot bind a card text
+//                           property to a layer inside a nested instance, so
+//                           there is no `Role select label` property to read.
 //   Show role tabs       -> NOT A PROP HERE. The role tabs belong to
 //                           `PortalLoginShell` in code, which pins them at a
 //                           breakpoint this card cannot see. The Figma master
@@ -72,6 +82,13 @@ const showSso = instance.getBoolean("Show DigiLocker");
 const showMethodTabs = instance.getBoolean("Show method tabs");
 const showConsent = instance.getBoolean("Show consent");
 const showAccountPrompt = instance.getBoolean("Show account prompt");
+const showRoleSelect = instance.getBoolean("Show role select");
+
+let roleSelectLabel = "Your role";
+if (showRoleSelect) {
+  const labelNode = instance.findText("label", { path: ["Role select"], traverseInstances: true });
+  if (labelNode && labelNode.type === "TEXT" && labelNode.textContent) roleSelectLabel = labelNode.textContent;
+}
 
 export default {
   example: figma.code`<AuthFormCard
@@ -79,22 +96,27 @@ export default {
   // there. 2 or 3 anywhere this is embedded under an existing heading.
   headingLevel={1}
   error={error}
-  onSubmit={handleSubmit}${showSso.and(figma.code`
+  onSubmit={handleSubmit}${showSso ? figma.code`
   // ABOVE the divider and OUTSIDE the fields: a way past the form, not a mode of
   // it. Per role, and nothing renders without links.digilockerHref.
-  sso={<><SSOButton href={digilockerHref} /><AuthDivider /></>}`)}${showMethodTabs.and(figma.code`
+  sso={<><SSOButton href={digilockerHref} /><AuthDivider /></>}` : ""}${showMethodTabs ? figma.code`
   // Up to three modes. Past three the switch is a Select or a RadioGroup.
-  methodTabs={methodTabs}`)}
+  methodTabs={methodTabs}` : ""}
   // THE SLOT. A new credential mode is a new stack — one of PasswordFields,
   // PinFields, DarpanFields, OtpRequestFields, OtpVerifyFields, or a portal's
   // own. Never a prop on this card, and never a variant in Figma.
-  credentialFields={<PasswordFields {...credentials} />}
-  primaryAction={<Button type="submit" fullWidth>Log In</Button>}${showConsent.and(figma.code`
-  consent={<ConsentLine termsHref={termsHref} privacyHref={privacyHref} />}`)}${showAccountPrompt.and(figma.code`
-  accountPrompt={<AccountPrompt options={registerOptions} />}`)}
+  credentialFields={${showRoleSelect ? figma.code`<>
+    {/* A choice WITHIN the tab (PortalRoleTab.subRoles), above the stack and
+        outside the method tab panel. Not a fourth audience. */}
+    <FormField label="${roleSelectLabel}" required>{(control) => <Select {...control} value={subRoleId} onChange={(e) => setSubRoleId(e.target.value)} options={subRoleOptions} />}</FormField>
+    <PasswordFields {...credentials} />
+  </>` : figma.code`<PasswordFields {...credentials} />`}}
+  primaryAction={<Button type="submit" fullWidth>Log In</Button>}${showConsent ? figma.code`
+  consent={<ConsentLine termsHref={termsHref} privacyHref={privacyHref} />}` : ""}${showAccountPrompt ? figma.code`
+  accountPrompt={<AccountPrompt options={registerOptions} />}` : ""}
 />`,
   imports: [
-    'import { AuthFormCard, PasswordFields, ConsentLine, Button } from "@mosje/design-system"',
+    'import { AuthFormCard, PasswordFields, ConsentLine, AccountPrompt, SSOButton, AuthDivider, Button, FormField, Select } from "@mosje/design-system"',
   ],
   id: "auth-form-card",
   metadata: { nestable: true },
