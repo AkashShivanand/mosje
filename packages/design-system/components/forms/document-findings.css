@@ -7,6 +7,11 @@
      ============================================================================ */
 
   .ds-docfind {
+    /* The panel lays itself out by ITS OWN width: it opens inside a DocumentRow, which is
+       itself a container, and that row sits full-width on an upload step and in a ~650px
+       column beside an officer's decision panel. A viewport media query drew the two-column
+       field grid in that 650px column, where the comparison sentences had no room. */
+    container: ds-docfind / inline-size;
     display: flex;
     flex-direction: column;
     gap: var(--sa-stack-12);
@@ -40,7 +45,12 @@
     margin: 0;
   }
 
-  @media (min-width: 768px) {
+  /* Two columns only from 800px of PANEL width — that is the CONTENT box, so roughly an 834px
+     panel. Measured, not guessed: “Does not match. Your application says: Sankalp Seva Sansthan”
+     runs 360px beside its icon, so a column under about 390px wraps every compared field onto a
+     second line. At 800px each column is 388px and the fields stay one line each; below it they
+     stack, which is what an officer's ~650px column gets. */
+  @container ds-docfind (min-width: 800px) {
     .ds-docfind__fields {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }

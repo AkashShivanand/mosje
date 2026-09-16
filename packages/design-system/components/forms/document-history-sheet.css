@@ -41,6 +41,9 @@
     list-style: none;
     border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-8);
+    /* The current version's row is filled, and a filled child paints over a rounded parent's
+       corners: the first and last rows squared off the top and bottom of the sheet. */
+    overflow: hidden;
   }
 
   .ds-dochist__item {

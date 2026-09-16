@@ -4940,7 +4940,7 @@ export const GENERATED_PROPS = {
         "name": "confidence",
         "type": "{ value: number; threshold: number }",
         "required": false,
-        "description": "The check's confidence against its threshold. **For officers only**: an applicant is given the consequence (\"Please confirm\") and never the number, which changes nothing they can do."
+        "description": "The check's confidence against its threshold. **For officers only**: an applicant is given the consequence (\"Check the details\") and never the number, which changes nothing they can do."
       },
       {
         "name": "emptyText",
@@ -5316,7 +5316,7 @@ export const GENERATED_PROPS = {
         "name": "statusLabel",
         "type": "React.ReactNode",
         "required": false,
-        "description": "The words beside the icon. Defaults to the applicant's words for the state — \"Looks right\", \"Doesn't match\", \"Saved — an officer will check it\". An officer's screen passes its own (\"Automatic check · Does not match · 95%\"), because confidence is advice for an officer and noise for an applicant."
+        "description": "The words beside the icon. Defaults to the applicant's words for the state — \"Looks right\", \"Check the details\", \"Doesn't match\". An officer's screen passes its own (\"Automatic check · Does not match · 95%\"), because confidence is advice for an officer and noise for an applicant."
       },
       {
         "name": "summary",

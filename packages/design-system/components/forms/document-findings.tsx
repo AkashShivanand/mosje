@@ -24,7 +24,7 @@ export interface DocumentFindingsProps {
   reasons?: readonly React.ReactNode[];
   /**
    * The check's confidence against its threshold. **For officers only**: an applicant is given
-   * the consequence ("Please confirm") and never the number, which changes nothing they can do.
+   * the consequence ("Check the details") and never the number, which changes nothing they can do.
    */
   confidence?: { value: number; threshold: number };
   /** The phrase before an expected value. @default "Your application says" */
@@ -70,7 +70,7 @@ export function DocumentFindings({
           {fields.length > 0 && (
             <dl className="ds-docfind__fields">
               {fields.map((f) => (
-                <div key={f.label} className="ds-docfind__field" data-matches={f.matches === undefined ? undefined : String(f.matches)}>
+                <div key={f.label} className="ds-docfind__field">
                   <dt className="ds-docfind__term">{f.label}</dt>
                   <dd className="ds-docfind__value">
                     <span className="ds-docfind__found">{f.found}</span>

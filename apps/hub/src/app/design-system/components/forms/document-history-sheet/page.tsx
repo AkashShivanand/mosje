@@ -33,7 +33,7 @@ export default function DocumentHistorySheetPage(): React.JSX.Element {
       name="Document History Sheet"
       status="New"
       summary="Every version of one document, in a side sheet: the current file first, then each earlier file newest first, with what the check said about it and why it was replaced. A replaced file is never lost, and the applicant, the correction flow and the officer read the same log."
-      figma={{ absent: "Built from the e-Anudaan Document Centre spec (docs/plans/2026-09-16-e-anudaan-document-centre.md); not yet drawn in the SAMAVESH library." }}
+      figma={{ node: "documentHistorySheet" }}
       specimen={<DocumentHistorySheetSpecimen />}
       propsFrom="DocumentHistorySheetProps"
       a11y={A11Y}

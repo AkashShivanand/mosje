@@ -33,7 +33,7 @@ export default function DocumentPlacementTrayPage(): React.JSX.Element {
       name="Document Placement Tray"
       status="New"
       summary="What a batch drop did, one line per file: the document it went to, the file it replaced (which moves to that document's history), a Choose a document select for a file that could not be placed — empty documents first — and the reason a file was refused. Dropping files never replaces a document silently."
-      figma={{ absent: "Built from the e-Anudaan Document Centre spec (docs/plans/2026-09-16-e-anudaan-document-centre.md); not yet drawn in the SAMAVESH library." }}
+      figma={{ node: "documentPlacementTray" }}
       specimen={<DocumentPlacementTraySpecimen />}
       propsFrom="DocumentPlacementTrayProps"
       a11y={A11Y}

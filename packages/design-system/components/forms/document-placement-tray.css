@@ -19,6 +19,11 @@
   }
 
   .ds-doctray {
+    /* The tray lays itself out by ITS OWN width, not the viewport's: it sits above the
+       checklist, which is as wide as whatever column holds it. A viewport media query drew
+       the five-column line — icon · file · arrow · destination · Remove — inside an
+       officer's ~650px column, where the destination had no room for the words it carries. */
+    container: ds-doctray / inline-size;
     display: flex;
     flex-direction: column;
     gap: var(--sa-stack-12);
@@ -70,7 +75,11 @@
     border-block-start: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
-  @media (min-width: 768px) {
+  /* One line only from 720px of TRAY width — that is the CONTENT box, so roughly a 754px tray.
+     Measured: at a 700px tray the file name already breaks across two lines and the destination
+     has 290px for “Replaces budget_draft.pdf, which moves to history”. Below the bar the
+     destination sits under the file name instead, which is what an officer's ~650px column gets. */
+  @container ds-doctray (min-width: 720px) {
     .ds-doctray__item {
       grid-template-columns: var(--sa-icon-size-20) minmax(0, 2fr) var(--sa-icon-size-16) minmax(0, 3fr) auto;
       grid-template-areas: "icon file arrow where remove";
@@ -119,7 +128,7 @@
     color: var(--sa-icon-neutral-subtle);
   }
 
-  @media (min-width: 768px) {
+  @container ds-doctray (min-width: 720px) {
     .ds-doctray__arrow {
       display: inline-flex;
     }

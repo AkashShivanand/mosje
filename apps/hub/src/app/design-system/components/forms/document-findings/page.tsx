@@ -33,7 +33,7 @@ export default function DocumentFindingsPage(): React.JSX.Element {
       name="Document Findings"
       status="New"
       summary="“What we found”: the automatic check's one-sentence verdict, the fields it read from the file — each compared with the application's own answer — and every reason. The live portal prints an extracted organisation name and leaves the reader to notice it is not theirs; this panel says so."
-      figma={{ absent: "Built from the e-Anudaan Document Centre spec (docs/plans/2026-09-16-e-anudaan-document-centre.md); not yet drawn in the SAMAVESH library." }}
+      figma={{ node: "documentFindings" }}
       specimen={<DocumentFindingsSpecimen />}
       propsFrom="DocumentFindingsProps"
       a11y={A11Y}

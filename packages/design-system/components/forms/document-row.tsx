@@ -16,7 +16,8 @@ import "./document-row.css";
  * `uploading` in flight (pass `progress`) · `failed` the upload did not arrive ·
  * `rejected` refused on the device before upload (wrong type, too large) · `checking` the
  * automatic check is running · `verified` the check found it right · `review` the check could
- * not be sure and an officer will confirm · `invalid` the check found the wrong document ·
+ * not be sure, so the reader is pointed at what it found · `invalid` the check found the wrong
+ * document ·
  * `unavailable` the check could not run, the file is saved for a hand check.
  */
 export type DocumentRowState =
@@ -55,9 +56,8 @@ export interface DocumentRowProps {
   state: DocumentRowState;
   /**
    * The words beside the icon. Defaults to the applicant's words for the state — "Looks right",
-   * "Doesn't match", "Saved — an officer will check it". An officer's screen passes its own
-   * ("Automatic check · Does not match · 95%"), because confidence is advice for an officer and
-   * noise for an applicant.
+   * "Check the details", "Doesn't match". An officer's screen passes its own ("Automatic check ·
+   * Does not match · 95%"), because confidence is advice for an officer and noise for an applicant.
    */
   statusLabel?: React.ReactNode;
   /** 0–100, drawn as a bar while `state` is `uploading`. */
@@ -151,7 +151,7 @@ const DEFAULT_WORDS: Record<DocumentRowState, string> = {
   rejected: "Can't be uploaded",
   checking: "Checking…",
   verified: "Looks right",
-  review: "Please confirm",
+  review: "Check the details",
   invalid: "Doesn't match",
   unavailable: "Saved — an officer will check it",
 };
@@ -168,9 +168,6 @@ const ICON: Record<DocumentRowState, string | null> = {
   invalid: "report",
   unavailable: "info",
 };
-
-/** States that ask something of the reader. The row grows to carry the reason. */
-const ATTENTION = new Set<DocumentRowState>(["failed", "rejected", "invalid", "review"]);
 
 /**
  * MoSJE / SAMAVESH DocumentRow — one document as a compact row: status icon, title, the file,
@@ -261,13 +258,17 @@ export function DocumentRow({
       id={baseId}
       className={cn(
         "ds-docrow",
-        ATTENTION.has(state) && "ds-docrow--attention",
         aside != null && "ds-docrow--aside",
         folded && "ds-docrow--folded",
         density === "compact" && "ds-docrow--compact",
         clampReason && "ds-docrow--clamp-reason",
         className,
       )}
+      /* The ONE hook for the state, and deliberately the only one: the stylesheet draws the
+         error accent, the icon colour and the status colour from it, and a consumer styling a
+         row reads it too. A second `ds-docrow--attention` class was emitted here with no rule
+         anywhere to match it; the list order it looked like it was for is decided in the
+         page's data (`orderForAttention`), never in CSS. */
       data-state={state}
       aria-labelledby={titleId}
       tabIndex={-1}
