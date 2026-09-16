@@ -240,8 +240,13 @@ frame is more correct than the capture. Re-capture that slug.
 access token can do it; it needs a person in the Figma app. Written down because it has been
 the blocker three times, and because the next session should not spend an hour rediscovering it.
 
-Until it happens the handoff file keeps the OLD definitions of everything below — so the ranked
-bars still draw every bar the same length, and every Search instance still reports as broken.
+Until it happens the handoff file keeps the OLD definitions of everything below. **The one
+consequence a reader could SEE has been dealt with separately**: the ranked bars on the two
+Reports frames were detached and set to their true proportions, so the handoff is correct today
+— Maharashtra's 1,950 draws a full bar and Rajasthan's 218 a short one. They go back to live
+instances the moment the publish lands. The Search instances' 25px boxes are a reported-bounds
+artefact, not a visible fault: the field renders correctly, its own box is simply smaller than
+its contents until the master reaches this file.
 
 **The tick list, in the order the Assets → Libraries panel shows them.**
 
