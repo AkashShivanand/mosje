@@ -255,7 +255,7 @@ its contents until the master reaches this file.
 | `Search` | Its eight variants stood 25, 20, 14, 6, 1, 1, 1, 1 px tall against 56px contents |
 | `Pagination` | Three page-size chips (10 / 50 / 100), as the build draws, instead of a dropdown |
 | `Ranked Bar Row` | A bar can state its own length; today every bar draws ~86% whatever the number says |
-| `Checkbox Group` | Missed off the last publish — still answers "not found" from the handoff file |
+| ~~`Checkbox Group`~~ | **Still unpublished after three attempts, and it blocks nothing — measured, 16 Sep.** The library publishes 165 component sets and this is not one of them (Figma REST `/v1/files/:key/component_sets`), while the handoff page's 8,821 instances include **113 `Checkbox` and 0 `Checkbox Group`**. Nothing in the E-Anudaan handoff consumes it, so the gap is on the Checkbox documentation page alone. Tick it whenever the Publish dialog is next open — it sits under **Added**, not Modified, because it has never been published |
 | `Alert / Inline` · `Stepper / Collapsed` | New in gaps round 2 |
 | `Input Field` · `Select` · `Radio Group` | Labels and legends can wrap instead of clipping |
 | `Form / Section Head` | Gains the plain-note slot |
@@ -267,6 +267,21 @@ its contents until the master reaches this file.
 Then press **Assets → Libraries → Update all** in the handoff file, and re-run the ranked-bar
 width pass, which cannot take effect before the publish.
 
+**Measured after the 16 Sep publishes — every master on this list is live except one.** Read from
+the Figma REST API's published-component-set listing, which is the library's own record rather
+than a look at the file:
+
+| Master | Published |
+|---|---|
+| `Search` · `Pagination` · `Alert / Inline` · `Table / Cell` · `Document Checklist` | 16 Sep 12:28 |
+| `Stepper / Collapsed` · `Select` · `Input Field` · `Radio Group` · `Badge` | 16 Sep 06:37–06:38 |
+| `Form / Section` (the tick list called it `Form / Section Head`) | 16 Sep 12:29 |
+| `Ranked Bar Row` · `Metric Card` | 16 Sep 13:26 |
+| **`Checkbox Group`** | **never** |
+
+`Document Checklist Group` is not on the list because it is not a component set — it is the
+container the two Document Checklist masters tell the next person to detach.
+
 ---
 
 ## 3. The SAMAVESH library
@@ -275,7 +290,7 @@ width pass, which cannot take effect before the publish.
 |---|---|---|
 | Six Document Centre masters built and published | ✅ | Verified by importing each key into the handoff file, not by looking at the library |
 | Changed masters published — Metric Card 50, Event List / Row 20, ProgressBar 36, Checkbox, Input Field, Select, EmptyState, Portal Page Header, DataTable, WorklistScreen, Form / Panel | ✅ | |
-| **Checkbox Group** | ⏸ | Built, **not published** — answers "not found" from the handoff file. Needs a publish |
+| **Checkbox Group** | ⏸ **not blocking** | Built, still **not published** on 16 Sep after three attempts — absent from the 165 component sets the REST API lists, and `importComponentSetByKeyAsync` still answers "not found". **Consumed by nothing:** 0 instances of it on the handoff page against 113 plain `Checkbox`. So the delivery does not wait on it; the library's Checkbox page is one master short until someone ticks it |
 | Gaps round 1 | ✅ | |
 | Gaps round 2 — built: `Alert / Inline` (4 tones), `Stepper / Collapsed` (Steps 3–11); changed: Input Field, Select, Radio Group label wrapping, Form / Section Head note slot, Badge leading icon | ⏸ | Built locally, **not published** |
 | Gaps round 2 — recorded, deliberately not built: Select read-only, Document Tile description, Selection Card chevron | ✅ | Each rejected with the code that settles it; reasons on the component records |
