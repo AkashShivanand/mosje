@@ -60,16 +60,18 @@ function SanctionDesk() {
       <PageHeader
         title="Sanction Desk"
         meta="Applications that have cleared the Programme Division and the Integrated Finance Division and await your decision."
+        /* The year is a page control, so it sits in the header's action slot, as on the Action Queue. */
+        actions={
+          <div className="w-full sm:w-56">
+            <FilterSelect
+              label="Financial Year"
+              value={fy}
+              onChange={setFy}
+              options={[{ value: "", label: "All years" }, ...years.map((y) => ({ value: y, label: `FY ${y}` }))]}
+            />
+          </div>
+        }
       />
-
-      <div className="w-full max-w-xs">
-        <FilterSelect
-          label="Financial Year"
-          value={fy}
-          onChange={setFy}
-          options={[{ value: "", label: "All years" }, ...years.map((y) => ({ value: y, label: `FY ${y}` }))]}
-        />
-      </div>
 
       {/* Captions are `detail`, not `changeLabel`: none of these is a change over time, and a change
           label drew a dash announced as "No change". */}
