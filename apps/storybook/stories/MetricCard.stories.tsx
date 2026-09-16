@@ -246,3 +246,37 @@ export const WithTrend: Story = {
     aside: <Sparkline data={[7_800, 8_100, 8_400, 8_650, 8_900, 9_050, 9_250]} width={72} height={24} />,
   },
 };
+
+/**
+ * THE TILE AS A CONTROL. `onSelect` makes the whole tile a button — for a figure that filters
+ * something on the same page, like an officer's case-type tiles filtering the queue beneath them.
+ * `selected` marks the one the page is filtered by; it sets `aria-pressed`, so the state is not
+ * carried by the tint alone.
+ */
+export const Selectable: Story = {
+  args: {
+    label: "3rd Instalment",
+    value: "5",
+    detail: "2 over 7 days",
+    changeValue: undefined,
+    changeLabel: undefined,
+    selected: true,
+    onSelect: () => {},
+  },
+};
+
+/**
+ * `href` makes it a link instead, for a figure that GOES somewhere — a register, a filtered list
+ * on another page. A tile is a link or a button, never both; `href` wins. Pass `linkAs` with the
+ * app's router link, or every click costs a full document load.
+ */
+export const LinkToARegister: Story = {
+  args: {
+    label: "Sanctioned",
+    value: "37",
+    detail: "All financial years",
+    changeValue: undefined,
+    changeLabel: undefined,
+    href: "/portals/e-anudaan/dashboard/pd/us/sanctioned",
+  },
+};

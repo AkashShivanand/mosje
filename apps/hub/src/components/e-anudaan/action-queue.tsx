@@ -51,6 +51,8 @@ import { INSPECTION_READY_FILTER, WorklistTable } from "./worklist-table";
  *    "Pending with you" printed four times under a header that already says so.
  *  • The ageing card names the three files waiting longest, each a link to its review. Three bars
  *    left the rest of the card empty beside a seven-row panel.
+ *  • A case-type tile filters the queue to its own files and takes the reader there, as the four
+ *    cards on the NIC portal did (T698–712). Choosing the tile that is on clears the filter.
  */
 const OVERDUE_DAYS = 7;
 const LONGEST = 3;
@@ -70,6 +72,7 @@ function Queue({ variant }: { variant: "pd" | "finance" }) {
   const role = state.session ? ROLES[state.session] : null;
   const fy = params.get("fy") ?? "";
   const queueStatus = params.get("status") ?? "";
+  const queueCase = params.get("case") ?? "";
 
   const dash = role ? officerDashboard(state, role.id, fy) : null;
   const isPd = variant === "pd";
@@ -80,6 +83,22 @@ function Queue({ variant }: { variant: "pd" | "finance" }) {
     if (value) next.set("fy", value);
     else next.delete("fy");
     router.replace(`${pathname}${next.size ? `?${next}` : ""}`, { scroll: false });
+  };
+
+  const setQueueCase = (value: string) => {
+    const next = new URLSearchParams(params.toString());
+    if (value) next.set("case", value);
+    else next.delete("case");
+    router.replace(`${pathname}${next.size ? `?${next}` : ""}`, { scroll: false });
+  };
+
+  /* A tile filters the table below to its own case type, and brings the reader to it. Choosing
+     the tile that is already on clears the filter, so the way back is the way in. */
+  const openCase = (key: string) => {
+    setQueueCase(queueCase === key ? "" : key);
+    const table = document.getElementById(QUEUE_ID);
+    table?.scrollIntoView({ behavior: "smooth", block: "start" });
+    table?.focus({ preventScroll: true });
   };
 
   const setQueueStatus = (value: string) => {
@@ -140,6 +159,9 @@ function Queue({ variant }: { variant: "pd" | "finance" }) {
                   : c.overdue === 0
                     ? "None over 7 days"
                     : `${c.overdue} over 7 days`,
+              /* The four cards on the NIC portal the department knows were links (T698–712).
+                 A tile with nothing to show opens nothing. */
+              ...(c.count > 0 ? { onSelect: () => openCase(c.key), selected: queueCase === c.key } : {}),
               icon: <Icon name={c.key === "New" ? "note_add" : "event_repeat"} size={20} aria-hidden />,
             }))
           : undefined
@@ -252,6 +274,8 @@ function Queue({ variant }: { variant: "pd" | "finance" }) {
             rows={dash.queue}
             status={queueStatus}
             onStatusChange={setQueueStatus}
+            caseType={queueCase}
+            onCaseTypeChange={setQueueCase}
             variant="queue"
             reviewBase={`/portals/e-anudaan/dashboard/sm2/${reviewKey}/review`}
             caption="Applications awaiting your action"

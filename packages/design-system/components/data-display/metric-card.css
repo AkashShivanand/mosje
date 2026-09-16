@@ -258,6 +258,63 @@
   .ds-metric-card--tone-danger .ds-metric-card__label,
   .ds-metric-card--tone-danger .ds-metric-card__value  { color: var(--sa-text-status-error-bolder); }
 
+  /*
+   * ── THE TILE AS A CONTROL ────────────────────────────────────────────────
+   *
+   * A figure people act on. The officer dashboards' case-type tiles filter the
+   * queue below them, as the four cards on the portal the department knows did.
+   *
+   * It is a real `<a>` or `<button>`, so it is reachable by keyboard and
+   * announced as what it is. These rules only add the affordance: the pointer,
+   * the lift, the press, the ring, and the SELECTED treatment — a border and a
+   * tint, never the tint alone, because `aria-pressed` carries the state for a
+   * reader who cannot see it.
+   */
+  .ds-metric-card--interactive {
+    width: 100%;
+    text-align: inherit;
+    font: inherit;
+    cursor: pointer;
+    outline: none;
+    transition:
+      transform var(--sa-motion-press-duration) var(--sa-motion-press-easing),
+      box-shadow var(--sa-motion-press-duration) var(--sa-motion-press-easing),
+      border-color var(--sa-motion-press-duration) var(--sa-motion-press-easing);
+  }
+
+  /* Hover is a POINTER affordance: ungated it sticks on a touchscreen, lifted,
+     until the reader taps something else — the gate `PortalCard` already sets. */
+  @media (hover: hover) and (pointer: fine) {
+    .ds-metric-card--interactive:hover {
+      border-color: var(--sa-border-brand-primary-base);
+      box-shadow: var(--sa-elevation-card);
+    }
+  }
+
+  .ds-metric-card--interactive:active {
+    transform: scale(0.99);
+  }
+
+  .ds-metric-card--interactive:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-metric-card--selected {
+    border-color: var(--sa-border-brand-primary-base);
+    background-color: var(--sa-bg-neutral-selected);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-metric-card--interactive {
+      transition: none;
+    }
+
+    .ds-metric-card--interactive:active {
+      transform: none;
+    }
+  }
+
   /* ── The figure against its target ── */
   .ds-metric-card__progress {
     margin-top: var(--sa-padding-12);
