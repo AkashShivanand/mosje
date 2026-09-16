@@ -305,13 +305,18 @@
     background-color: var(--sa-bg-neutral-selected);
   }
 
-  /* The resting affordance: trailing edge, muted, out of the figure's way. It sits on the
-     card's own foot rather than beside the icon badge, because the badge is decoration and
-     this is the one mark that says the tile answers a press. */
+  /* The resting affordance rides the height the figure already needs: the side column stretches
+     to the body's height and `margin-top: auto` drops the mark to its foot. As a row of its own
+     it cost every interactive tile 24px and left a band under the caption. */
+  .ds-metric-card--interactive .ds-metric-card__side {
+    align-self: stretch;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
   .ds-metric-card__go {
     display: flex;
-    justify-content: flex-end;
-    margin-top: var(--sa-padding-4);
+    margin-top: auto;
     color: var(--sa-text-neutral-subtle);
   }
 

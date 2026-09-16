@@ -32,11 +32,20 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.149.0",
+    version: "v0.150.0",
     date: "2026-09-16",
     current: true,
     changes: [
       { kind: "Removed", text: "TWO LOGO FILES THE ESTATE NO LONGER DRAWS. `NeGD-Logo.svg` \u2014 258 KB of raster wrapped in an SVG \u2014 and `Digital-India-White.svg`, a crop with the swirl squashed and the \u2018i\u2019 stem clipped by its viewBox. Both were replaced in v0.146.0 by vectors the estate owns: `NeGD-Logo-White.svg`, `NeGD-Logo-Colour.svg` and `Digital-India-Reverse.svg`. THEIR TWO LINES IN `download-assets.mjs` GO WITH THEM: the scrape manifest writes to the same folder, so deleting only the files would have re-downloaded both the next time anyone ran it" },
+    ],
+  },
+  {
+    version: "v0.149.0",
+    date: "2026-09-16",
+    changes: [
+      { kind: "Fixed", text: "THE TILE’S RESTING MARK COSTS NO HEIGHT. It shipped as a row of its own, which added 24px to every interactive tile and left a band under the caption — a fix for one complaint that made a second. The mark now lives in the tile’s side column, which stretches, with `margin-top: auto` dropping it to the foot: it rides the height the figure already needs and lands on the caption’s own line. Measured on the officer queue, 142px back to 118px" },
+      { kind: "Added", text: "`ListGroup` TAKES `flush`. A row is inset by its own side padding so its hover and focus band is not tight against the text — right for a standalone panel, wrong for a list inside a card under a heading, where the rows read as indented from everything else by exactly that 16px. `flush` pulls the group out by one row’s padding, so the rows’ TEXT lines up with whatever sits above them while the band still reaches the card’s inner edge. A `bordered` list owns its own edge and ignores it. The applicant’s claims card was the case that found it" },
+      { kind: "Added", text: "THE FIGMA `Metric Card` SET TAKES `Opens something`, ON ALL 50 VARIANTS. Switched on, it draws chevron_right on the tile’s foot — an instance of the library `Icon` at Size=16, bound to text/neutral/subtle, 20px from the right and the foot, which is where the code puts it. A designer can now place a tile that filters and have it look like one. The brand tint the mark takes while a tile is CHOSEN stays code’s: a boolean cannot repaint a node another boolean owns, and that is recorded on the component record rather than approximated" },
     ],
   },
   {

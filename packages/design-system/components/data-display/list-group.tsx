@@ -11,6 +11,16 @@ export interface ListGroupProps
   divided?: boolean;
   /** Border and radius around the whole list, making it a panel. */
   bordered?: boolean;
+  /**
+   * Pulls the list out by a row's own side padding, so the rows' TEXT lines up with whatever
+   * sits above them and the hover band still reaches the container's inner edge.
+   *
+   * For a list inside a card beside other content. A row is inset so its hover and focus band
+   * is not flush with the text, which is right for a standalone panel and wrong under a
+   * heading or a set of readings — there the rows read as indented from everything else by
+   * 16px. Do not use it on a `bordered` list, which owns its own edge.
+   */
+  flush?: boolean;
   /** @default "md" */
   size?: "md" | "sm";
   /**
@@ -38,6 +48,7 @@ export function ListGroup({
   children,
   divided = true,
   bordered = false,
+  flush = false,
   size = "md",
   className,
   ...rest
@@ -49,6 +60,7 @@ export function ListGroup({
         `ds-list--${size}`,
         divided && "ds-list--divided",
         bordered && "ds-list--bordered",
+        flush && !bordered && "ds-list--flush",
         className,
       )}
       {...rest}
