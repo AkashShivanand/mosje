@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ChartCard, MetricCard, ProvenanceLine, Sparkline } from "@mosje/design-system";
 
 /**

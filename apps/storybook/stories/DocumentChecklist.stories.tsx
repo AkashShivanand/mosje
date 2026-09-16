@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DocumentBulkAction, DocumentChecklist, DocumentChecklistGroup, DocumentRow } from "@mosje/design-system";
 
 /**

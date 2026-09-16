@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import * as React from "react";
 import { PortalList, SideSheet, Button, DEFAULT_APPS } from "@mosje/design-system";
 

@@ -1,7 +1,7 @@
 // ds-exempt-start(hindi-source): every Devanagari string here is either fixture data
 // handed to LanguageSwitcher — which writes lang={code} on each option itself — or
 // prose about that behaviour. The attribute belongs in the component, not the story.
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { LanguageSwitcher } from "@mosje/design-system";
 
 /**

@@ -1,6 +1,6 @@
-import { Title, Subtitle, Description, Primary, Controls, Stories } from "@storybook/blocks";
+import { Title, Subtitle, Description, Primary, Controls, Stories } from "@storybook/addon-docs/blocks";
 import * as React from "react";
-import type { Preview } from "@storybook/react";
+import type { Preview } from "@storybook/react-vite";
 
 // The generated token contract + all component styles.
 import "@mosje/design-system/tokens.css";
@@ -69,6 +69,7 @@ const preview: Preview = {
       ),
     },
   },
+
   decorators: [
     (Story, context) => {
       const { density, colorMode } = context.globals;
@@ -89,6 +90,8 @@ const preview: Preview = {
       );
     },
   ],
+
+  tags: ["autodocs"]
 };
 
 export default preview;

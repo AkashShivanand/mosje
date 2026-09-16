@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { BRAND_GLYPHS, BrandGlyph, brandGlyphTitle } from "@mosje/design-system";
 
 /**
