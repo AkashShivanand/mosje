@@ -98,3 +98,25 @@ test("the default word for `review` is the one the spec decided", () => {
   assert.match(read("document-row.tsx"), /review:\s*"Check the details",/);
   for (const name of COMPONENTS) assert.doesNotMatch(read(`${name}.tsx`), /Please confirm/i);
 });
+
+/*
+ * EVERY CONTROL IN A ROW IS NAMED FOR ITS OWN DOCUMENT. A checklist draws one row per document —
+ * sixteen on SHRESHTA Mode 2, seventeen on AVYAY — so a control whose accessible name is the same
+ * on every row tells a screen-reader user nothing about which document it acts on. Replace, Try
+ * Again, Details and the menu were qualified from the start; "What we found" was not, and drew
+ * sixteen identical buttons (measured on the running step, 16 Sep 2026).
+ */
+test("every control in a document row is named for its own document", () => {
+  const src = read("document-row.tsx");
+  const buttons = [...src.matchAll(/<button\b[\s\S]*?>/g)].map((m) => m[0]);
+  assert.ok(buttons.length >= 2, `expected the row's buttons, found ${buttons.length}`);
+  for (const b of buttons) {
+    assert.match(
+      b,
+      /aria-label=\{titleText/,
+      `a row control carries no document-specific name:\n${b.slice(0, 160)}`,
+    );
+  }
+  // The menu's trigger is named through Menu's own `label` prop, not a button tag.
+  assert.match(src, /label=\{titleText \? `More actions for \$\{titleText\}`/);
+});
