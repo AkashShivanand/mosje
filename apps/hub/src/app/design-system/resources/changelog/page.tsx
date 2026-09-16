@@ -32,9 +32,17 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.147.0",
+    version: "v0.148.0",
     date: "2026-09-16",
     current: true,
+    changes: [
+      { kind: "Added", text: "A METRIC TILE THAT IS A CONTROL SAYS SO AT REST. Hover, press and focus all announce the control only once the reader has already reached for it, so a tile that filters the list below looked identical to a tile that is only a number — nobody found it without hovering (officer-queue walkthrough, 16 Sep 2026). An interactive tile now carries `chevron_right` on its foot, muted, taking the brand ink when chosen. The mark is not new: `ListRow` uses it for a row that opens what it counts, and those rows sit directly beneath the tiles on that screen, so the two halves of one dashboard speak one language. `PortalCard` — the library’s other whole-card control — already answered this with a footer and a trailing glyph. A tile with nothing to show stays a plain box and carries no mark" },
+      { kind: "Changed", text: "THE APPLICANT’S “INSTALMENTS READY TO CLAIM” NAMES THREE CLAIMS AT EVERY SIZE. Above three it used to drop the list entirely, on the reasoning that naming them rebuilt the wall it replaced — but that wall was fourteen rows carrying twelve filled buttons, and three links are not that. What it left was two short readings alone in a full-width card: a 130px band that reads as content which failed to load. The card now has ONE design whatever the count, and the three it names are the three worth starting with — a saved draft first, since that is the one that finishes fastest, then by amount. “View All N” still opens the rest in My Applications" },
+    ],
+  },
+  {
+    version: "v0.147.0",
+    date: "2026-09-16",
     changes: [
       { kind: "Fixed", text: "A DASHBOARD’S PANELS ARE EACH AS TALL AS WHAT THEY HOLD. `.sa-overview__pair` stretched every panel to the tallest one in its row. On the Finance queue that drew a card whose rules ended 170px above its own border; on SMILE’s state-wise page it stretched a 599px chart card to 2,240px to match the map beside it — a chart at the top of a bordered box with 1,600px of nothing under it. An empty band inside a card reads as content that failed to load, which is a worse answer than a ragged foot: the pair is two answers side by side, not one object split in half. Measured on both screens before and after, at 1440" },
     ],

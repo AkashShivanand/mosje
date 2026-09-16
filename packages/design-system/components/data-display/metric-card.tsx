@@ -3,6 +3,7 @@ import { cn } from "../../utils/cn";
 import { Badge } from "../feedback/badge";
 import { cardStateCopy, type CardStateKind } from "../dashboard/card-state";
 import { ProvenanceLine } from "../dashboard/provenance";
+import { Icon } from "../utilities/icon";
 import { Progress } from "./charts/progress";
 import type { DataProvenance, StatusTone } from "./charts/types";
 import "./metric-card.css";
@@ -293,6 +294,18 @@ export const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
         )}
         {settled && provenance && (
           <ProvenanceLine className="ds-metric-card__provenance" provenance={provenance} />
+        )}
+        {/* THE AFFORDANCE AT REST. Hover, press and focus all say "this is a control" — and all
+            three need the reader to have already reached for it. A tile that filters the list
+            below it looked identical to a tile that is only a number, so nobody found it without
+            hovering (officer-queue walkthrough, 16 Sep 2026). `PortalCard` — the library's other
+            whole-card control — answers this with a footer and a trailing glyph, and `ListRow`
+            marks a row that opens what it counts with `chevron_right`; the tiles sit beside those
+            very rows on this screen, so they take the same mark rather than a new one. */}
+        {interactive && (
+          <div className="ds-metric-card__go" aria-hidden="true">
+            <Icon name="chevron_right" size={16} />
+          </div>
         )}
       </Tag>
     );
