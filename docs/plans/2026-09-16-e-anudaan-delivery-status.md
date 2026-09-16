@@ -98,7 +98,27 @@ The portal was re-captured at 1440 (190 screens, 0 failures) and every frame put
 | Genuinely different | **1** — Reports & Analytics, below |
 | Different only because the Figma draws a dialog open over a screen the capture shows without one | 3 |
 
-**The one real difference: a ranked bar chart whose bars cannot encode their values.**
+**The dialogs, once comparable, were wrong in three ways — all now fixed.** Every dialog's
+width, x and y was read off the running build with `boundingBox()` rather than estimated:
+show cause and inspection and the three Director confirmations are 448 wide, the printable
+report 640, bulk verdict 384. Three faults came out of it:
+
+1. **The three Director confirmations were 560 wide with their eight facts crammed at 16px a
+   row and no rules** — a block of text where the build draws a list, on the last screen read
+   before an irreversible decision. Now 448, divided, and carrying the close control they
+   lacked entirely.
+2. **The bulk-verdict dialog had grown a five-row read-back the build does not draw**, and its
+   button read "Mark 18 as Verified" where the build reads "Mark as Verified". Removed: the
+   handoff file describes what is built, and an addition with no build behind it is an
+   instruction to build something nobody asked for.
+3. **The printable report was drawn at its full 1,157px** and spilled 265px out of its own
+   900px frame. The build caps it at 868 and scrolls inside; it is now drawn at the height a
+   reader actually sees.
+
+Measured effect: report 17.5 → out of the top ten · bulk verdict 14.7 → 11.0 · sanction
+14.9 → 11.4 · return 15.3 → 12.1 · reject 13.7 → 11.6 · show cause 12.1 → 11.3.
+
+**The one real non-dialog difference: a ranked bar chart whose bars cannot encode their values.**
 `Ranked Bar Row` in SAMAVESH publishes only `Tone` and `Rank`, and its `fill` rectangle was
 constrained `horizontal: SCALE` — so the fill keeps a fixed FRACTION of the track however
 wide the instance is. Every bar in the estate draws ~86% full: Rajasthan's 218 the same
