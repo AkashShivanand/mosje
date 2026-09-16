@@ -13356,7 +13356,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/400"
+              "name": "color/primaryScale/500"
             }
           },
           "description": "Use for primary-brand secondary buttons at rest — the outline.",
@@ -13432,7 +13432,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/500"
+              "name": "color/primaryScale/600"
             }
           },
           "description": "Use when the user hovers over a primary-brand secondary button — the outline.",
@@ -13508,7 +13508,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/600"
+              "name": "color/primaryScale/700"
             }
           },
           "description": "Use when a primary-brand secondary button is pressed — the outline.",
@@ -15369,7 +15369,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/successScale/400"
+              "name": "color/successScale/500"
             }
           },
           "description": "Use for confirming secondary buttons at rest — the outline.",
@@ -15445,7 +15445,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/successScale/500"
+              "name": "color/successScale/600"
             }
           },
           "description": "Use when the user hovers over a confirming secondary button — the outline.",
@@ -15521,7 +15521,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/successScale/600"
+              "name": "color/successScale/700"
             }
           },
           "description": "Use when a confirming secondary button is pressed — the outline.",
@@ -17382,7 +17382,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/dangerScale/400"
+              "name": "color/dangerScale/500"
             }
           },
           "description": "Use for destructive secondary buttons at rest — the outline.",
@@ -17458,7 +17458,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/dangerScale/500"
+              "name": "color/dangerScale/600"
             }
           },
           "description": "Use when the user hovers over a destructive secondary button — the outline.",
@@ -17534,7 +17534,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/dangerScale/600"
+              "name": "color/dangerScale/700"
             }
           },
           "description": "Use when a destructive secondary button is pressed — the outline.",
@@ -19395,7 +19395,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/neutralScale/400"
+              "name": "color/neutralScale/500"
             }
           },
           "description": "Use for neutral secondary buttons at rest — the outline.",
@@ -19471,7 +19471,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/neutralScale/500"
+              "name": "color/neutralScale/600"
             }
           },
           "description": "Use when the user hovers over a neutral secondary button — the outline.",
@@ -19547,7 +19547,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/neutralScale/600"
+              "name": "color/neutralScale/700"
             }
           },
           "description": "Use when a neutral secondary button is pressed — the outline.",
