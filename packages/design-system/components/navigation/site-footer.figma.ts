@@ -42,19 +42,24 @@
 //    matching a portal masthead. Do not pass `maxWidth`, do not wrap it in a
 //    container, and do not add `px-*`. The Figma master binds `container/page`
 //    (Website only) and `grid/margin/page` the same way.
-// 4. NEVER PASS A BACKGROUND THROUGH `className`. Colour binds to the mode-aware
-//    brand ramp, so the footer repaints for every `data-brand` with no work here.
+// 4. NEVER PASS A BACKGROUND THROUGH `className`. Every colour binds a mode-aware
+//    semantic or `cmp/sitefooter/*` token, so the footer repaints for every
+//    `data-brand` with no work here.
 // 5. `lastUpdated` IS THE CURRENT PAGE'S DATE, passed down from the page — never
 //    a site-wide build date.
 // 6. PASS `linkAs={Link}` (next/link). Without it every footer link is a full
 //    document load. `npm run check:link-as` gates this.
-// 7. On `variant="portal"`, `columns`, `social` and `address` are ignored rather
-//    than erroring, so one content object can drive both variants.
+// 7. On `variant="portal"`, `emblem`, `address`, `social` and `columns` are ignored
+//    rather than erroring, so one content object can drive both variants.
+//    `organisation` is still REQUIRED by the type on portal, and is not drawn.
 //
 // TOKENS
-//   ground        --sa-bg-brand-primary-boldest     rules    --sa-color-primaryScale-600
-//   lead ink      --sa-on-bg-brand-primary-boldest  links    --sa-color-primaryScale-100
-//   boilerplate   --sa-color-primaryScale-200       width    .sa-container
+//   ground        --sa-bg-brand-primary-boldest
+//   lead ink      --sa-on-bg-brand-primary-boldest
+//   links         --sa-cmp-sitefooter-ink-subtle     boilerplate  --sa-cmp-sitefooter-ink-subtler
+//   rules         --sa-cmp-sitefooter-rule-base      policy row   --sa-cmp-sitefooter-rule-subtle
+//   social chip   --sa-cmp-sitefooter-chip-default   hover        --sa-cmp-sitefooter-chip-hover
+//   marks         --sa-cmp-sitefooter-mark-height    width        .sa-container
 //   type          --sa-type-title-2 (column heads) · body-2 (links) · body-3 (lineage, colophon)
 
 import figma from "figma";
@@ -88,7 +93,7 @@ export default {
   credits={CREDITS}
   policyLinks={POLICY_LINKS}
   sitemap={{ label: "Sitemap", href: "/website/sitemap" }}
-  help={{ label: "Help & Support", href: "/website/help" }}
+  help={{ label: "Help & Support", href: "/website/contact-us" }}
   relatedLinks={RELATED_LINKS}
   copyright={COPYRIGHT}
   lastUpdated={page.lastUpdated}
