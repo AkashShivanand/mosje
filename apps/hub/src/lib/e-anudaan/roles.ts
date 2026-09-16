@@ -56,23 +56,31 @@ export const GRADE_FULL: Record<Grade, string> = {
  * lets a single review screen serve all of them.
  *
  * ASO certifies and may raise a deficiency; SO is the only grade that communicates a deficiency
- * to the NGO; US and DS raise queries that push the file back down; JS concurs. Sanction belongs
- * to the Programme Director alone. [BRD §5.2–5.3 via docs/specs/shreshta-mode2-portal-spec.md]
+ * to the NGO; JS concurs. Sanction belongs to the Programme Director alone. [BRD §5.2–5.3 via
+ * docs/specs/shreshta-mode2-portal-spec.md]
+ *
+ * Revised from the live DECISION captures of 16 Sep 2026 (parity inventory §21, §26, §30):
+ *   - "Return to Previous" (`raiseQuery`) is on every grade above the ASO in both divisions, not
+ *     only US and DS. It sends the file one level down with the officer's remark as the query.
+ *   - Online inspection (BharatVC) is scheduled from the review screen by every grade above the PD
+ *     ASO, every IFD grade and the Programme Director. Physical inspections stay with the PMU.
+ *   - The PD Under Secretary releases funds; the PD SO and JS issue Show Cause Notices.
  */
 const CAPS: Record<Division, Record<Grade, readonly Capability[]>> = {
   pd: {
     aso: ["review", "certify", "raiseDeficiency", "sanctionRegister", "forwardedRegister"],
-    so: ["review", "communicateDeficiency", "sanctionRegister", "forwardedRegister"],
-    us: ["review", "raiseQuery", "sanctionRegister", "forwardedRegister"],
-    ds: ["review", "raiseQuery", "sanctionRegister", "forwardedRegister"],
-    js: ["review", "concur", "sanctionRegister", "forwardedRegister", "auditTrail"],
+    so: ["review", "communicateDeficiency", "raiseQuery", "scheduleInspection", "issueShowCause", "sanctionRegister", "forwardedRegister"],
+    us: ["review", "raiseQuery", "scheduleInspection", "releaseFunds", "sanctionRegister", "forwardedRegister"],
+    ds: ["review", "raiseQuery", "scheduleInspection", "sanctionRegister", "forwardedRegister"],
+    // The bank-account change desk sits with the Joint Secretary, as on the live SM2 console.
+    js: ["review", "concur", "raiseQuery", "scheduleInspection", "issueShowCause", "sanctionRegister", "forwardedRegister", "auditTrail", "approveBankChange"],
   },
   finance: {
     aso: ["review", "scheduleInspection"],
-    so: ["review", "scheduleInspection"],
+    so: ["review", "raiseQuery", "scheduleInspection"],
     us: ["review", "raiseQuery", "scheduleInspection"],
     ds: ["review", "raiseQuery", "scheduleInspection"],
-    js: ["review", "concur", "scheduleInspection", "auditTrail"],
+    js: ["review", "concur", "raiseQuery", "scheduleInspection", "auditTrail"],
   },
 };
 
@@ -90,16 +98,25 @@ const CAPS: Record<Division, Record<Grade, readonly Capability[]>> = {
  */
 function pdNav(grade: Grade): NavItem[] {
   const nav: NavItem[] = [
-    { label: "Dashboard", href: `${BASE}/dashboard/pd/${grade}`, icon: "grid_view" },
+    // One queue per seat, one name for it: the item, the page heading and the review screen's "Back
+    // to My Queue" agree. It read "Dashboard" over a page titled "My Action Queue" (audit O-04).
+    { label: "My Queue", href: `${BASE}/dashboard/pd/${grade}`, icon: "grid_view" },
     { label: "NGO Directory", href: `${BASE}/dashboard/ngo-directory`, icon: "corporate_fare" },
-    { label: "All Applications", href: `${BASE}/dashboard/pd/us/all-applications`, icon: "folder_open" },
+    // Each grade's own path. The live sidebar sends every grade to the Under Secretary's path, and
+    // `/pd/aso/all-applications` answered 404 (verify bug 9, 16 Sep 2026).
+    { label: "All Applications", href: `${BASE}/dashboard/pd/${grade}/all-applications`, icon: "folder_open" },
     { label: "Sanctioned Applications", href: `${BASE}/dashboard/pd/us/sanctioned`, icon: "verified" },
+    // Live "Returned Applications": files this officer sent back. Final rejections keep their own
+    // register below — the two were conflated under one "Rejected" heading (inventory §18).
+    { label: "Returned Applications", href: `${BASE}/dashboard/pd/${grade}/returned`, icon: "undo" },
     { label: "Rejected Applications", href: `${BASE}/dashboard/pd/${grade}/rejected`, icon: "cancel" },
     { label: "Forwarded Applications", href: `${BASE}/dashboard/pd/forwarded`, icon: "forward" },
-    { label: "PD Queries", href: `${BASE}/dashboard/pd/${grade}/queries`, icon: "help" },
+    // Never "PD": it also names the Programme Director, so "PD Queries" read as the Director's (O-08).
+    { label: "Queries", href: `${BASE}/dashboard/pd/${grade}/queries`, icon: "help" },
     { label: "Reports & Analytics", href: `${BASE}/dashboard/sm2/reports`, icon: "bar_chart" },
   ];
   if (grade === "js") {
+    nav.push({ label: "Bank Account Changes", href: `${BASE}/dashboard/sm2/bank-changes`, icon: "account_balance" });
     nav.push({ label: "Audit Trail", href: `${BASE}/dashboard/sm2/audit`, icon: "history" });
   }
   return nav;
@@ -108,19 +125,21 @@ function pdNav(grade: Grade): NavItem[] {
 /**
  * Integrated Finance Division nav — transcribed from the live sidebar.
  *
- * The IFD is NOT a mirror of the PD: it has no Sanctioned or Forwarded register, and its
- * review worklist lives on a different path shape (/dashboard/sm2/ifd<grade>) from its
- * dashboard (/dashboard/finance/<grade>, a payment-processing queue).
+ * The IFD is NOT a mirror of the Programme Division: it has no Sanctioned or Forwarded register.
+ *
+ * The live sidebar also carries "SHRESHTA M2 — IFD-<GRADE>" (/dashboard/sm2/ifd<grade>) beside the
+ * dashboard. Ours rendered the same queue on both — "My Worklist" and "Finance Dashboard" — so
+ * the IFD had two destinations for one list while the Programme Division had one (audit O-04). It
+ * is one item, "My Queue", as in the Programme Division; `sm2/ifd<grade>` redirects to it, so a
+ * link to the live-shaped address still lands. A deliberate divergence from the live sidebar.
  */
 function ifdNav(grade: Grade): NavItem[] {
   const nav: NavItem[] = [
-    { label: "Finance Dashboard", href: `${BASE}/dashboard/finance/${grade}`, icon: "account_balance" },
+    { label: "My Queue", href: `${BASE}/dashboard/finance/${grade}`, icon: "grid_view" },
     { label: "NGO Directory", href: `${BASE}/dashboard/ngo-directory`, icon: "corporate_fare" },
+    { label: "Finance Returned", href: `${BASE}/dashboard/finance/${grade}/returned`, icon: "undo" },
     { label: "Finance Rejected", href: `${BASE}/dashboard/finance/${grade}/rejected`, icon: "cancel" },
     { label: "Finance Queries", href: `${BASE}/dashboard/finance/${grade}/queries`, icon: "help" },
-    // The live label is "SHRESHTA M2 — IFD-<GRADE>", which the rail truncated. The grade is
-    // already in the masthead; the scheme's short name is what tells this list apart.
-    { label: "SHRESHTA Mode 2", href: `${BASE}/dashboard/sm2/ifd${grade}`, icon: "folder_open" },
     { label: "Reports & Analytics", href: `${BASE}/dashboard/sm2/reports`, icon: "bar_chart" },
   ];
   if (grade === "js") {
@@ -181,8 +200,10 @@ export const ROLES: Record<RoleId, RoleDef> = {
   ...(Object.fromEntries(CHAIN_ROLES.map((r) => [r.id, r])) as Record<ChainRoleId, RoleDef>),
 
   /**
-   * INFERRED — the live Programme Director console could not be captured (its landing route
-   * crashes the browser renderer). Nav and capabilities come from the BRD, not observation.
+   * The live Programme Director console was captured on 16 Sep 2026 (parity inventory §27–29): PD /
+   * Selection, Sent, IR Repository, Audit Trail, Notifications, NGO Directory. The desk, Sent and
+   * the IR Repository follow it; Sanctioned and Reports stay, being registers the Director signs.
+   * "Forwarded" is gone — the Director sanctions, returns or rejects, and forwards nothing.
    */
   "programme-director": {
     id: "programme-director",
@@ -193,12 +214,13 @@ export const ROLES: Record<RoleId, RoleDef> = {
     home: `${BASE}/dashboard/sm2/pd`,
     division: null,
     grade: null,
-    caps: ["review", "sanction", "sanctionRegister", "forwardedRegister", "auditTrail"],
+    caps: ["review", "sanction", "scheduleInspection", "sanctionRegister", "auditTrail"],
     nav: [
       { label: "Sanction Desk", href: `${BASE}/dashboard/sm2/pd`, icon: "gavel" },
+      { label: "Sent", href: `${BASE}/dashboard/sent`, icon: "outbox" },
+      { label: "IR Repository", href: `${BASE}/dashboard/ir-repository`, icon: "inventory_2" },
       { label: "NGO Directory", href: `${BASE}/dashboard/ngo-directory`, icon: "corporate_fare" },
       { label: "Sanctioned Applications", href: `${BASE}/dashboard/pd/us/sanctioned`, icon: "verified" },
-      { label: "Forwarded Applications", href: `${BASE}/dashboard/pd/forwarded`, icon: "forward" },
       { label: "Reports & Analytics", href: `${BASE}/dashboard/sm2/reports`, icon: "bar_chart" },
       { label: "Audit Trail", href: `${BASE}/dashboard/sm2/audit`, icon: "history" },
     ],
@@ -213,7 +235,7 @@ export const ROLES: Record<RoleId, RoleDef> = {
     home: `${BASE}/dashboard/pmu/field`,
     division: null,
     grade: null,
-    caps: ["inspect"],
+    caps: ["inspect", "verifyLocationChange"],
     nav: [
       // The live sidebar lists only the three below; the field dashboard is the landing route
       // but carries no nav entry. Added here because a landing page you cannot navigate back
@@ -222,6 +244,10 @@ export const ROLES: Record<RoleId, RoleDef> = {
       { label: "NGO Directory", href: `${BASE}/dashboard/ngo-directory`, icon: "corporate_fare" },
       // Live: "SHRESHTA M2 — PMU Inspection", truncated by the rail to "PMU Inspe…".
       { label: "PMU Inspections", href: `${BASE}/dashboard/sm2/pmu`, icon: "travel_explore" },
+      // Live PMU: "Institutions" (every project, never visited first) and "Project Location Change".
+      { label: "Institutions", href: `${BASE}/dashboard/pmu/institutions`, icon: "domain" },
+      { label: "Location Changes", href: `${BASE}/dashboard/pmu/location-changes`, icon: "edit_location" },
+      { label: "IR Repository", href: `${BASE}/dashboard/ir-repository`, icon: "inventory_2" },
     ],
   },
 
@@ -321,24 +347,31 @@ export function consoleRouteAccess(pathname: string, role: RoleDef): RouteAccess
 
   if (section === undefined) return "allowed"; // the bare dashboard sends each role home
   if (section === "notifications" || section === "ngo-directory") return a ? "not-found" : "allowed";
+  // The inspection-report repository: the PMU files the reports, the Programme Director reads them.
+  if (section === "ir-repository") return a ? "not-found" : role.caps.includes("inspect") || role.caps.includes("sanction") ? "allowed" : "forbidden";
+  if (section === "sent") return a ? "not-found" : can("sanction");
   if (section === "ngo") return a && b === "360" && rest.length === 0 ? "allowed" : "not-found";
 
-  if (section === "pmu") return a === "field" && !b ? can("inspect") : "not-found";
+  if (section === "pmu") {
+    if (b) return "not-found";
+    if (a === "field" || a === "institutions") return can("inspect");
+    if (a === "location-changes") return can("verifyLocationChange");
+    return "not-found";
+  }
 
   if (section === "pd") {
     if (a === "forwarded") return b ? "not-found" : can("forwardedRegister");
     if (!isGrade(a) || rest.length > 0) return "not-found";
-    // Two registers are shared by every grade and live under the Under Secretary's path, as on
-    // the live portal; any other grade in that position names no screen.
-    if (b === "all-applications") return a !== "us" ? "not-found" : role.division === "pd" ? "allowed" : "forbidden";
+    // The Sanction Register is shared by every grade and lives under the Under Secretary's path, as
+    // on the live portal; any other grade in that position names no screen.
     if (b === "sanctioned") return a !== "us" ? "not-found" : can("sanctionRegister");
-    if (b !== undefined && b !== "rejected" && b !== "queries") return "not-found";
+    if (b !== undefined && b !== "rejected" && b !== "returned" && b !== "queries" && b !== "all-applications") return "not-found";
     return role.division === "pd" && role.grade === a ? "allowed" : "forbidden";
   }
 
   if (section === "finance") {
     if (!isGrade(a) || rest.length > 0) return "not-found";
-    if (b !== undefined && b !== "rejected" && b !== "queries") return "not-found";
+    if (b !== undefined && b !== "rejected" && b !== "returned" && b !== "queries") return "not-found";
     return role.division === "finance" && role.grade === a ? "allowed" : "forbidden";
   }
 
@@ -346,6 +379,7 @@ export function consoleRouteAccess(pathname: string, role: RoleDef): RouteAccess
     if (a === "reports") return b ? "not-found" : can("review");
     if (a === "audit") return b ? "not-found" : can("auditTrail");
     if (a === "pmu") return b ? "not-found" : can("inspect");
+    if (a === "bank-changes") return b ? "not-found" : can("approveBankChange");
     if (!a || !REVIEW_KEYS.has(a)) return "not-found";
     // `sm2/<key>` is one seat's list and `sm2/<key>/review/:id` that seat's review screen; the
     // Programme Director's desk is `sm2/pd`. An officer opens a file only under their own key.

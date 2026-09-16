@@ -3,6 +3,8 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
 import { Icon } from "../../utilities/icon";
+import { IconButton } from "../../actions/icon-button";
+import { buttonClasses } from "../../actions/button";
 import { Popover } from "../../feedback/popover";
 import { NotificationCentre, notificationCount } from "../../data-display/notification-centre";
 import type { HeaderNotifications } from "./types";
@@ -26,6 +28,14 @@ function badgeText(count: number): string {
  * `SiteHeader` places it immediately before the account block when a portal
  * passes `notifications`. It is exported for a surface that needs the control
  * without the whole masthead.
+ *
+ * ── IT IS THE DS ICONBUTTON, NOT A BOX THAT LOOKS LIKE ONE ────────────────
+ * Both forms render `IconButton`'s own classes — `variant="neutral"`,
+ * `appearance="outlined"`, `size="md"` — so the border, ink, hover, active and
+ * focus ring come from the one button in this system. It used to hand-roll them
+ * from the masthead's search button, which painted a `border/neutral/subtle`
+ * edge at 1.35:1 where the button ladder paints 16.18:1 (Figma: IconButton
+ * Neutral Outlined).
  *
  * ── TWO ELEMENTS, ONE CONTROL ──────────────────────────────────────────────
  * From 768 up it is a button that opens a `Popover` holding
@@ -116,22 +126,33 @@ export function NotificationBell({
           </div>
         )}
       >
-        <button
-          type="button"
+        <IconButton
+          variant="neutral"
+          appearance="outlined"
+          size="md"
           className="ds-hdr-bell__btn ds-hdr-bell__btn--panel"
           aria-label={name}
           aria-busy={status === "loading" || undefined}
-        >
-          {glyph}
-        </button>
+          icon={glyph}
+        />
       </Popover>
+      {/* The link form takes IconButton's classes rather than its component: the
+          Button's own `href` renders a plain anchor, and this one has to route
+          through the app's `linkAs` (`design-system-architecture.md` §2b). */}
       <LinkTag
-        className="ds-hdr-bell__btn ds-hdr-bell__btn--link"
+        className={buttonClasses(
+          "neutral",
+          "outlined",
+          "md",
+          "ds-icon-btn ds-hdr-bell__btn ds-hdr-bell__btn--link",
+        )}
         href={href}
         aria-label={name}
         onClick={onNavigate}
       >
-        {glyph}
+        <span className="ds-btn__icon" aria-hidden="true">
+          {glyph}
+        </span>
       </LinkTag>
     </span>
   );

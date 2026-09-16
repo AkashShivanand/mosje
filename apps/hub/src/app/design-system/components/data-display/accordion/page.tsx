@@ -137,6 +137,18 @@ export default function AccordionPage(): React.JSX.Element {
               a citizen comparing two answers wants.
             </p>
           </section>
+          <section className="cdp__section" aria-labelledby="cdp-surface">
+            <h2 id="cdp-surface" className="cdp__h2">
+              One Surface
+            </h2>
+            <p>
+              Each item of the default <code>card</code> variant is a white surface on a hairline: no
+              shadow, no grey header band. Hover tints the header. A stack of sections used to raise
+              every item on a card shadow and fill every header grey, which turned an application of
+              eight sections into eight grey slabs. Inside a panel that is already a card, use{" "}
+              <code>variant=&quot;flush&quot;</code>, which drops the item border too.
+            </p>
+          </section>
           <section className="cdp__section" aria-labelledby="cdp-writing">
             <h2 id="cdp-writing" className="cdp__h2">
               Writing the Headers

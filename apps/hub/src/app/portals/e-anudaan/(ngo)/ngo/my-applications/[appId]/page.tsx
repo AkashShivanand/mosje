@@ -5,8 +5,9 @@
  *
  * DS Audit: Alert ✅ existing · Badge ✅ · Button ✅ · Icon ✅ · Card ✅ · SectionTitle ✅ ·
  * DescriptionList ✅ · ListGroup / ListRow ✅ · Accordion ✅ · EventList ✅ · Input ✅ ·
- * Textarea ✅ · FormField ✅ · PageHeader ✅ · Heading ✅ · Link ✅ · useToast ✅ — nothing new.
- * The document "Replace File" control is still a hidden file input behind a Button: see the
+ * Textarea ✅ · FormField ✅ · PageHeader ✅ · Heading ✅ · Link ✅ · useToast ✅ ·
+ * DocumentRow ➕ · DocumentFindings ➕ · DocumentHistorySheet ➕ (the Document Centre).
+ * The document "Replace" control is still a hidden file input behind a Button: see the
  * conformance report — `MediaUpload` rejects PDFs whenever `accept` names an image type.
  *
  * Two modes, both from the review call of 11 Sep 2026:
@@ -23,6 +24,15 @@
  *
  * A replaced document is never overwritten — the earlier file stays on record as a version
  * (T83–92). Officer roles are never named to the applicant (T778–823); see `applicantStages`.
+ *
+ * Design-director audit of 16 Sep 2026 (N-04, N-05, N-09, N-10, X-07):
+ *  • the page is fluid, as every portal surface is — a centred 896px column made the content jump
+ *    left and right between this page and the lists either side of it;
+ *  • a submitted file's sections are described ("12 questions"), never counted against;
+ *  • one vocabulary on the correction list — "Ministry's remark", "To Correct" — and field and
+ *    note answers save when the applicant leaves the box, so "Submit Correction" is the one
+ *    button that sends anything;
+ *  • each submitted document can be opened, and the history names the office that acted.
  */
 
 import * as React from "react";
@@ -49,18 +59,31 @@ import {
   SectionTitle,
   Textarea,
   EventList,
+  DocumentHistorySheet,
+  DocumentRow,
   useToast,
 } from "@mosje/design-system";
+import { DocumentViewSheet, Findings, rowStateOf } from "@/components/e-anudaan/document-centre-parts";
+import {
+  DOC_STATE_META,
+  applicantFacts,
+  docState,
+  fileSizeLabel,
+  historyEntriesOfRecord,
+  simulateCheck,
+} from "@/lib/e-anudaan/document-centre";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { ownApplication, signedInNgoId } from "@/lib/e-anudaan/roles";
 import { applicationNotFoundProps } from "@/components/e-anudaan/ngo-application-not-found";
-import { formatGrant, ngoStatusLabel, statusTone } from "@/lib/e-anudaan/selectors";
+import { answeredSectionSummary, answeredSectionsHeadline, divisionOfRole, formatGrant, ngoStatusLabel, statusTone } from "@/lib/e-anudaan/selectors";
+import { DEFICIENCY, DIVISION_NAME } from "@/lib/e-anudaan/glossary";
 import { formatDate, formatTime } from "@/lib/e-anudaan/format";
 import { uploadProgress } from "@/lib/e-anudaan/doc-verification";
 import { fieldLabel, type FieldDef } from "@/lib/e-anudaan/form-schema";
 import { answeredSections, applicantStages, applicantStanding, caseLabel, openDeficiencyOf, requestedAt } from "@/lib/e-anudaan/applicant";
-import type { DeficiencyItem, GrantApplication, MockDoc } from "@/lib/e-anudaan/types";
+import type { DeficiencyItem, EAnudaanState, GrantApplication, MockDoc } from "@/lib/e-anudaan/types";
 import { routeOnClick } from "@/components/e-anudaan/ngo-shell";
+import { SanctionedFilePanel } from "@/components/e-anudaan/sanctioned-file-panel";
 
 const BASE = "/portals/e-anudaan/ngo/my-applications";
 
@@ -88,14 +111,16 @@ function ApplicationDetail() {
   const scheme = state.schemes.find((s) => s.code === app.schemeCode);
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6">
+    <div className="space-y-6">
       <Button appearance="text" size="sm" onClick={() => router.push(focused ? `${BASE}/deficiencies` : BASE)}>
         <Icon name="arrow_back" size={16} aria-hidden /> {focused ? "Back to Deficiencies" : "Back to My Applications"}
       </Button>
 
       <PageHeader
+        // The correction form is a single task, so it takes the compact title; the file itself is a page.
+        size={focused ? "compact" : "default"}
         eyebrow={
-          <span className="break-all font-mono">
+          <span className="break-all tabular-nums">
             Project ID {app.institutionId} · Application {app.id}
           </span>
         }
@@ -124,8 +149,10 @@ function ApplicationDetail() {
         </>
       ) : (
         <>
-          {open && <CorrectionSummary app={app} items={open.items ?? []} />}
+          {/* Summary first, then what is asked of the applicant (verify N5). */}
           <SummaryCard app={app} schemeName={scheme?.name ?? app.schemeCode} />
+          {open && <CorrectionSummary app={app} items={open.items ?? []} />}
+          <SanctionedFilePanel app={app} />
           <ApplicationData app={app} />
           <Documents app={app} />
           <History app={app} />
@@ -138,7 +165,7 @@ function ApplicationDetail() {
 /* ── Focused mode — the corrections ─────────────────────────────────────── */
 
 function CorrectionPanel({ app }: { app: GrantApplication }) {
-  const { act, replaceDocument, correctDeficiencyItem } = useEAnudaan();
+  const { act, replaceDocument, correctDeficiencyItem, recordDocumentCheck } = useEAnudaan();
   const { toast } = useToast();
   const router = useRouter();
   const deficiency = openDeficiencyOf(app)!;
@@ -147,6 +174,25 @@ function CorrectionPanel({ app }: { app: GrantApplication }) {
   const [note, setNote] = React.useState("");
   const [attempted, setAttempted] = React.useState(false);
   const remaining = items.length - done;
+
+  // A replacement is checked as any upload is. The verdict is recorded on the file that was checked.
+  const pendingKey = app.documents.filter((d) => d.aiVerdict?.state === "pending" && d.fileName).map((d) => `${d.id}|${d.fileName}`).join(",");
+  React.useEffect(() => {
+    if (!pendingKey) return;
+    const t = window.setTimeout(() => {
+      const facts = applicantFacts(app.formValues ?? {});
+      const checklist = app.documents.map((d) => ({ n: d.slot, title: d.title }));
+      for (const key of pendingKey.split(",")) {
+        const [docId, fileName] = key.split("|") as [string, string];
+        const doc = app.documents.find((d) => d.id === docId);
+        if (!doc) continue;
+        recordDocumentCheck(app.id, docId, fileName, simulateCheck({ slot: { n: doc.slot, title: doc.title }, checklist, fileName, sizeKb: doc.sizeKb ?? 0, applicationFy: app.financialYear, facts }));
+      }
+    }, 1600);
+    return () => window.clearTimeout(t);
+    // The key names every file awaiting a check; the rest of `app` is read as it stands when the check answers.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingKey]);
 
   const submit = () => {
     setAttempted(true);
@@ -195,7 +241,7 @@ function CorrectionPanel({ app }: { app: GrantApplication }) {
                 // No toast per item: three stacked toasts covered the next item's controls
                 // (review panel, cycle 2). The item's own "Corrected" badge and line confirm it.
                 onReplace={(doc, file) => {
-                  replaceDocument(app.id, doc.id, file);
+                  replaceDocument(app.id, doc.id, file, "Replaced after the Ministry's query");
                   correctDeficiencyItem(app.id, item.id, `Replaced with ${file.name}`);
                 }}
                 onCorrectField={(value) => correctDeficiencyItem(app.id, item.id, "Answer corrected.", value)}
@@ -251,40 +297,78 @@ function CorrectionItem({
   const doc = item.docId ? app.documents.find((d) => d.id === item.docId) : undefined;
   const current = item.fieldName ? (app.formValues?.[item.fieldName] ?? "") : "";
   const original = item.originalValue ?? current;
-  const [value, setValue] = React.useState("");
   const corrected = !!item.correctedAt;
+  /* Field and note answers are held in the box and saved when the applicant leaves it (N-10).
+     Each item used to carry its own "Save Correction" beside the page's "Submit Correction": two
+     save models on one list, and an answer typed but not saved was silently lost on submit. */
+  const [value, setValue] = React.useState(() => (item.kind === "note" ? (item.response ?? "") : corrected ? current : ""));
+  const [sameAsSubmitted, setSameAsSubmitted] = React.useState(false);
   const headingId = `item-${item.id}`;
+  const [historyOpen, setHistoryOpen] = React.useState(false);
+  const [viewing, setViewing] = React.useState(false);
+  const docStateNow = doc ? docState(doc, doc.fileName ? { verdict: doc.aiVerdict ?? { state: "unavailable" } } : undefined) : "missing";
 
   return (
-    <section aria-labelledby={headingId} className="space-y-3 py-5">
+    <section aria-labelledby={item.kind === "document" && doc ? `${headingId}-row-title` : headingId} className="space-y-3 py-5">
+      {/* A document correction is one DocumentRow, which carries its own heading and status. */}
+      {!(item.kind === "document" && doc) && (
       <div className="flex flex-wrap items-start justify-between gap-2">
         <Heading level={3} variant="title-2" id={headingId}>
           {index}. {item.label}
         </Heading>
         <Badge status={corrected ? "success" : "warning"}>
           <Icon name={corrected ? "check_circle" : "report"} size={16} aria-hidden />
-          {corrected ? "Corrected" : "To Correct"}
+          {corrected ? "Corrected" : TO_CORRECT}
         </Badge>
       </div>
+      )}
 
-      <p className="text-body-2 text-ink">
-        <span className="font-semibold">Officer&apos;s remark: </span>
-        {item.remark}
-      </p>
+      {item.kind !== "document" && (
+        <p className="text-body-2 text-ink">
+          <span className="font-semibold">{REMARK_LABEL}: </span>
+          {item.remark}
+        </p>
+      )}
 
       {item.kind === "document" && doc && (
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-body-2 text-ink">
-            <Icon name="description" size={16} aria-hidden className="mr-1 align-text-bottom text-ink-muted" />
-            {doc.fileName ?? "No file"}
-            {doc.uploadedAt && <span className="text-ink-muted"> · uploaded {formatDate(doc.uploadedAt)}</span>}
-            {doc.versions?.length ? (
-              <span className="text-ink-muted">
-                {" "}
-                · {doc.versions.length} earlier version{doc.versions.length === 1 ? "" : "s"} kept
-              </span>
-            ) : null}
-          </p>
+        <>
+          <DocumentRow
+            linkAs={NextLink}
+            as="div"
+            id={`${headingId}-row`}
+            titleAs="h3"
+            number={index}
+            title={item.label}
+            remark={item.remark}
+            remarkLabel={REMARK_LABEL}
+            state={corrected ? rowStateOf(docStateNow) : "review"}
+            statusLabel={corrected ? `Replaced · ${DOC_STATE_META[docStateNow].words}` : TO_CORRECT}
+            file={doc.fileName ? { name: doc.fileName, size: doc.sizeKb != null ? fileSizeLabel(doc.sizeKb) : undefined, date: doc.uploadedAt ? formatDate(doc.uploadedAt) : undefined } : undefined}
+            reason={corrected && (docStateNow === "invalid" || docStateNow === "review") ? (doc.aiVerdict?.reasons?.[0] ?? doc.aiVerdict?.summary) : undefined}
+            findings={corrected && doc.aiVerdict && doc.aiVerdict.state !== "pending" && doc.aiVerdict.state !== "unavailable" ? (
+              <Findings verdict={doc.aiVerdict} title={doc.title} facts={applicantFacts(app.formValues ?? {})} applicationFy={app.financialYear} />
+            ) : undefined}
+            showFindingsToggle={docStateNow !== "verified"}
+            action={
+              <Button
+                // Outlined: Submit Correction is the page's one filled button.
+                appearance="outlined"
+                size="sm"
+                nowrap
+                onClick={() => fileInput.current?.click()}
+                aria-label={`${corrected ? "Replace again" : "Replace"}: ${doc.title}`}
+              >
+                {corrected ? "Replace Again" : "Replace"}
+              </Button>
+            }
+            menu={{
+              items: [
+                ...(doc.fileName ? [{ id: "view", label: "View", icon: "visibility" }] : []),
+                { id: "history", label: "Upload History", icon: "history" },
+              ],
+              onSelect: (id) => (id === "view" ? setViewing(true) : setHistoryOpen(true)),
+            }}
+          />
           <input
             ref={fileInput}
             type="file"
@@ -298,70 +382,94 @@ function CorrectionItem({
               e.target.value = "";
             }}
           />
-          <Button
-            appearance={corrected ? "outlined" : "filled"}
-            size="sm"
-            onClick={() => fileInput.current?.click()}
-            aria-label={`${corrected ? "Replace again" : "Replace file"}: ${doc.title}`}
-          >
-            <Icon name="upload" size={16} aria-hidden /> {corrected ? "Replace Again" : "Replace File"}
-          </Button>
-        </div>
+          <DocumentHistorySheet
+            linkAs={NextLink}
+            open={historyOpen}
+            onClose={() => setHistoryOpen(false)}
+            title={`Upload History — ${doc.title}`}
+            entries={historyEntriesOfRecord(doc).map((h) => ({
+              id: h.id,
+              fileName: h.fileName,
+              size: h.sizeKb != null ? fileSizeLabel(h.sizeKb) : undefined,
+              date: h.uploadedOn,
+              current: h.current,
+              status: h.status,
+              note: h.note,
+            }))}
+          />
+          <DocumentViewSheet
+            open={viewing}
+            onClose={() => setViewing(false)}
+            title={doc.title}
+            file={doc.fileName ? { name: doc.fileName, sizeKb: doc.sizeKb ?? 0, uploadedOn: doc.uploadedAt ? formatDate(doc.uploadedAt) : undefined } : undefined}
+          />
+        </>
       )}
 
       {item.kind === "note" && (
-        <div className="space-y-3">
-          {corrected && item.response && (
-            <p className="text-body-2 text-ink-muted">
-              Your answer: <span className="text-ink">{item.response}</span>
-            </p>
+        <FormField
+          label="Your Answer"
+          id={`answer-${item.id}`}
+          required={!corrected}
+          hint="Saved when you leave the box."
+        >
+          {(control) => (
+            <Textarea
+              {...control}
+              rows={3}
+              maxLength={1000}
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              onBlur={() => {
+                const v = value.trim();
+                if (v && v !== item.response) onRespond(v);
+              }}
+            />
           )}
-          <FormField label={corrected ? "Change Your Answer" : "Your Answer"} id={`answer-${item.id}`} required={!corrected}>
-            {(control) => <Textarea {...control} rows={3} maxLength={1000} value={value} onChange={(e) => setValue(e.target.value)} />}
-          </FormField>
-          <Button
-            appearance={corrected ? "outlined" : "filled"}
-            size="sm"
-            disabled={value.trim() === "" || value.trim() === item.response}
-            onClick={() => {
-              onRespond(value.trim());
-              setValue("");
-            }}
-          >
-            {corrected ? "Update Answer" : "Save Answer"}
-          </Button>
-        </div>
+        </FormField>
       )}
 
       {item.kind === "field" && (
-        <div className="flex flex-wrap items-end gap-3">
-          <div className="min-w-[14rem] flex-1">
-            {/* The first answer stays visible after correction, so the change can be read and
-                audited: "Submitted 215 → Corrected 208" (review panel, cycle 2). The box starts
-                empty so an item cannot be marked corrected by saving the old figure. */}
-            <p className="mb-2 text-body-2 text-ink-muted">
-              Submitted: <span className="font-semibold text-ink">{original || "—"}</span>
-              {corrected && current !== original && (
-                <>
-                  {" "}→ Corrected: <span className="font-semibold text-ink">{current}</span>
-                </>
-              )}
-            </p>
-            <FormField label={corrected ? "Change the Corrected Answer" : "Corrected Answer"} id={`fix-${item.id}`}>
-              {(control) => <Input {...control} value={value} onChange={(e) => setValue(e.target.value)} />}
-            </FormField>
-          </div>
-          <Button
-            appearance={corrected ? "outlined" : "filled"}
-            size="sm"
-            disabled={value.trim() === "" || value.trim() === original || (corrected && value.trim() === current)}
-            onClick={() => {
-              onCorrectField(value.trim());
-              setValue("");
-            }}
+        <div className="max-w-measure space-y-2">
+          {/* The first answer stays visible after correction, so the change can be read and
+              audited: "Submitted 215 → Corrected 208" (review panel, cycle 2). An item cannot be
+              marked corrected by saving the figure already submitted. Where the register holds no
+              submitted answer, it says so rather than printing a dash beside a remark about that
+              very figure (N-05). */}
+          <p className="text-body-2 text-ink-muted">
+            Submitted: <span className="font-semibold text-ink">{original || "Not answered in the application"}</span>
+            {corrected && current !== original && (
+              <>
+                {" "}→ Corrected: <span className="font-semibold text-ink">{current}</span>
+              </>
+            )}
+          </p>
+          <FormField
+            label={corrected ? "Corrected Answer" : "Your Corrected Answer"}
+            id={`fix-${item.id}`}
+            hint="Saved when you leave the box."
+            error={sameAsSubmitted ? "This is the answer already submitted. Enter the corrected answer." : undefined}
           >
-            {corrected ? "Update Answer" : "Save Correction"}
-          </Button>
+            {(control) => (
+              <Input
+                {...control}
+                value={value}
+                onChange={(e) => {
+                  setValue(e.target.value);
+                  setSameAsSubmitted(false);
+                }}
+                onBlur={() => {
+                  const v = value.trim();
+                  if (!v || (corrected && v === current)) return;
+                  if (v === original) {
+                    setSameAsSubmitted(true);
+                    return;
+                  }
+                  onCorrectField(v);
+                }}
+              />
+            )}
+          </FormField>
         </div>
       )}
     </section>
@@ -370,13 +478,20 @@ function CorrectionItem({
 
 /* ── Normal mode ─────────────────────────────────────────────────────────── */
 
+/** The applicant's word for an item still open, on documents and answers alike (N-10). */
+const TO_CORRECT = "To Correct";
+/** Every remark on the correction list is the Ministry's; officer roles are not named to the applicant. */
+const REMARK_LABEL = "Ministry's remark";
+
 function CorrectionSummary({ app, items }: { app: GrantApplication; items: DeficiencyItem[] }) {
   const router = useRouter();
   const remaining = items.filter((i) => !i.correctedAt).length;
+  // "Deficiency Raised", as the history and the bell name the same event (glossary). "Correction
+  // Requested" was a third name for it, and the button said "Resolve".
   return (
-    <Alert status="warning" title={`Correction Requested — ${remaining} of ${items.length} item${items.length === 1 ? "" : "s"} to correct`}>
+    <Alert status="warning" title={`${DEFICIENCY.raised} — ${remaining} of ${items.length} item${items.length === 1 ? "" : "s"} to correct`}>
       <ul className="mt-1 list-disc space-y-0.5 pl-5 text-body-2">
-        {items.slice(0, 3).map((i) => (
+        {items.map((i) => (
           <li key={i.id}>
             <span className="font-semibold">{i.label}</span> — {i.remark}
           </li>
@@ -387,7 +502,7 @@ function CorrectionSummary({ app, items }: { app: GrantApplication; items: Defic
         className="mt-3"
         onClick={() => router.push(`${BASE}/${encodeURIComponent(app.id)}?focus=deficiency`)}
       >
-        Resolve Now <Icon name="arrow_forward" size={16} aria-hidden />
+        Correct Your Application <Icon name="arrow_forward" size={16} aria-hidden />
       </Button>
     </Alert>
   );
@@ -419,13 +534,8 @@ function ApplicationData({ app }: { app: GrantApplication }) {
   // is not listed, and an optional question left blank is not counted as outstanding.
   const sections = answeredSections(app.schemeCode, app.formValues ?? {});
   if (sections.length === 0) return null;
-  const missing = sections.reduce((a, s) => a + s.missingRequired, 0);
-  const summary =
-    app.status === "Draft"
-      ? missing === 0
-        ? "Every required question is answered. Open a section to read it."
-        : `${missing} required question${missing === 1 ? "" : "s"} still to answer. Open a section to read it.`
-      : "The answers as submitted. Open a section to read it.";
+  // A draft's progress, and a plain description for a submitted file (N-04, selectors.ts).
+  const summary = answeredSectionsHeadline(sections, app);
 
   return (
     <Card variant="outlined">
@@ -440,11 +550,7 @@ function ApplicationData({ app }: { app: GrantApplication }) {
                   <span className="text-body-2 font-semibold text-ink">
                     {s.index}. {s.title}
                   </span>
-                  <span className="text-body-3 text-ink-muted">
-                    {s.missingRequired > 0
-                      ? `${s.missingRequired} required question${s.missingRequired === 1 ? "" : "s"} unanswered`
-                      : `${s.fields.length} question${s.fields.length === 1 ? "" : "s"}`}
-                  </span>
+                  <span className="text-body-3 text-ink-muted">{answeredSectionSummary(s, app)}</span>
                 </span>
               }
             >
@@ -483,7 +589,7 @@ function Documents({ app }: { app: GrantApplication }) {
         <SectionTitle title="Documents" description={`${progress.done} of ${progress.total} uploaded`} />
         <ListGroup aria-label="Documents uploaded with this application" size="sm">
           {app.documents.map((d) => (
-            <DocumentRow key={d.id} doc={d} />
+            <SubmittedDocument key={d.id} doc={d} />
           ))}
         </ListGroup>
       </CardBody>
@@ -499,8 +605,9 @@ function Documents({ app }: { app: GrantApplication }) {
  * still shows at upload time, where it can be acted on), and a "Pending" badge on eighteen
  * untouched files, which read as eighteen problems.
  */
-function DocumentRow({ doc }: { doc: MockDoc }) {
+function SubmittedDocument({ doc }: { doc: MockDoc }) {
   const [showVersions, setShowVersions] = React.useState(false);
+  const [viewing, setViewing] = React.useState(false);
   const flagged = doc.reviewStatus === "Deficient";
 
   return (
@@ -517,7 +624,7 @@ function DocumentRow({ doc }: { doc: MockDoc }) {
           <span className="block">
             {doc.fileName ? `${doc.fileName} · uploaded ${doc.uploadedAt ? formatDate(doc.uploadedAt) : ""}` : "Not uploaded"}
           </span>
-          {flagged && doc.officerRemarks && <span className="block text-ink">Officer&apos;s remark: {doc.officerRemarks}</span>}
+          {flagged && doc.officerRemarks && <span className="block text-ink">{REMARK_LABEL}: {doc.officerRemarks}</span>}
           {doc.versions?.length ? (
             <>
               <span className="mt-1 block">
@@ -539,18 +646,49 @@ function DocumentRow({ doc }: { doc: MockDoc }) {
           ) : null}
         </>
       }
+      /* The applicant could not re-read their own file after submitting it (N-09). */
       trailing={
-        flagged ? (
-          <Badge status="warning" size="sm">Needs Correction</Badge>
-        ) : doc.reviewStatus === "Verified" ? (
-          <Badge status="success" size="sm">Verified</Badge>
-        ) : undefined
+        <span className="flex items-center gap-3">
+          {flagged ? (
+            <Badge status="warning" size="sm">{TO_CORRECT}</Badge>
+          ) : doc.reviewStatus === "Verified" ? (
+            <Badge status="success" size="sm">Verified</Badge>
+          ) : null}
+          {doc.fileName ? (
+            <>
+              <Button appearance="text" size="sm" onClick={() => setViewing(true)} aria-label={`View ${doc.title}`}>
+                <Icon name="visibility" size={16} aria-hidden /> View
+              </Button>
+              <DocumentViewSheet
+                open={viewing}
+                onClose={() => setViewing(false)}
+                title={doc.title}
+                file={{ name: doc.fileName, sizeKb: doc.sizeKb ?? 0, uploadedOn: doc.uploadedAt ? formatDate(doc.uploadedAt) : undefined }}
+              />
+            </>
+          ) : null}
+        </span>
       }
     />
   );
 }
 
+/**
+ * Who acted, as the applicant is told it (N-09, glossary "Who acted"): their own organisation for
+ * their own act, and otherwise the OFFICE — never the officer's seat (T778–823). Every entry used to
+ * read "System", which the event list prints when no actor is given.
+ */
+function actorOf(state: EAnudaanState, app: GrantApplication, stageId: string): string | undefined {
+  const entry = app.audit.find((e) => e.id === stageId);
+  if (!entry) return undefined;
+  if (entry.byRole === "ngo") return state.ngos.find((n) => n.id === app.ngoId)?.name ?? "Your organisation";
+  const division = divisionOfRole(entry.byRole);
+  if (division) return DIVISION_NAME[division];
+  return entry.byRole === "pmu-field" ? "Project Monitoring Unit" : undefined;
+}
+
 function History({ app }: { app: GrantApplication }) {
+  const { state } = useEAnudaan();
   const stages = applicantStages(app);
   const ICON: Record<(typeof stages)[number]["tone"], string> = {
     neutral: "pending",
@@ -571,6 +709,7 @@ function History({ app }: { app: GrantApplication }) {
             id: s.id,
             at: s.until ?? s.at,
             action: s.title,
+            actor: actorOf(state, app, s.id),
             note: [s.until ? `From ${formatDate(s.at)}.` : "", s.detail ?? ""].filter(Boolean).join(" ") || undefined,
             icon: ICON[s.tone],
             tone: TONE[s.tone],

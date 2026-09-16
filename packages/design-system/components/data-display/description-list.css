@@ -122,4 +122,23 @@
     padding-block-end: var(--sa-padding-12);
     border-block-end: var(--sa-cmp-divider-width) solid var(--sa-border-neutral-subtle);
   }
+
+  /* A rule under the LAST row hangs under nothing and reads as an unfinished
+     table. `ListGroup` avoids it with `item + item`, but source order is not
+     visual order in a grid, so the two ends are stripped separately: below the
+     768 step the grid is one column whatever `columns` says, and there the last
+     row is simply the last child; at and above it the component marks the row
+     it computed, because no `:nth-last-child()` is correct for every item count
+     and `wide` combination. */
+  .ds-dl--divided .ds-dl__row:last-child {
+    padding-block-end: 0;
+    border-block-end: none;
+  }
+
+  @media (min-width: 768px) {
+    .ds-dl--divided .ds-dl__row[data-last-row] {
+      padding-block-end: 0;
+      border-block-end: none;
+    }
+  }
 }

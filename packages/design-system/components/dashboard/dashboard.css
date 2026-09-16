@@ -204,6 +204,19 @@
      page's own `PageHeader` already carries the heading. */
   .ds-filter-bar__title + .ds-filter-bar__controls { margin-left: auto; }
 
+  /* A BAR HOLDING ONLY A VIEW SWITCH IS NOT A FILTER BAR. A lone SegmentedControl in the bar drew
+     a grey frame around a grey track — two boxes around two pills — and read as a filter (e-Anudaan
+     audit X-05). The frame drops so the switch sits on the page the way a tab row does. Matched
+     one level deep as well, for a template that wraps its controls (WorklistScreen's toolbar).
+     The documented placement is `WorklistScreen`'s `views` slot; this keeps callers that have not
+     moved yet from shipping the double frame meanwhile. */
+  .ds-filter-bar:not(:has(.ds-filter-bar__title)):has(> .ds-filter-bar__controls > .ds-segmented:only-child),
+  .ds-filter-bar:not(:has(.ds-filter-bar__title)):has(> .ds-filter-bar__controls > :only-child > .ds-segmented:only-child) {
+    padding: 0;
+    background: transparent;
+    border-color: transparent;
+  }
+
   /* With no title the controls ARE the bar, so they take its width. Without
      this they size to content inside the flex row, and a caller laying its
      filters out on a grid gets one column however wide the bar is. */

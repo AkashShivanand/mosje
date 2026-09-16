@@ -131,15 +131,21 @@
     font-weight: var(--sa-font-weight-medium);
   }
 
+  /* The chip itself is `Badge` — colour, radius, padding and type come from it.
+     OVERDUE carries a word and an icon in the error family, never the colour alone;
+     it sits where the Action Needed tag sits, because an entry is one or the other to
+     the reader: something to do by a date, or something already late. */
   .ds-events__tag {
-    padding-inline: var(--sa-padding-8);
-    border-radius: var(--sa-shape-full);
-    background: var(--sa-bg-status-warning-subtler);
-    color: var(--sa-text-status-warning-bolder);
+    gap: var(--sa-inline-4);
   }
 
   .ds-events__due {
     color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-events__item--overdue .ds-events__due {
+    color: var(--sa-text-status-error-bolder);
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   /* The dot is decoration on top of the hidden word, never the only signal. */

@@ -33,7 +33,7 @@ test("no status label is a stored code", () => {
 });
 
 test("the compound label keeps the seat holding the file, in words", () => {
-  assert.equal(statusLabel({ status: "Submitted", holder: { kind: "chain", division: "pd", grade: "aso" } }), "New Submission · With the Assistant Section Officer");
+  assert.equal(statusLabel({ status: "Submitted", holder: { kind: "chain", division: "pd", grade: "aso" } }), "Received · With the Assistant Section Officer");
   assert.equal(statusLabel({ status: "FinanceConcurred", holder: { kind: "pd" } }), "Concurred by Finance · With the Programme Director");
   assert.equal(statusLabel({ status: "Rejected", holder: { kind: "done" } }), "Rejected");
 });

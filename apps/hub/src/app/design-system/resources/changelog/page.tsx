@@ -32,8 +32,8 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.138.0",
-    date: "2026-09-15",
+    version: "v0.145.0",
+    date: "2026-09-16",
     current: true,
     changes: [
       { kind: "Fixed", text: "`SiteFooter` TAKES THE PAGE CONTAINER, SO ITS EDGES MEET THE MASTHEAD\u2019S. On the website each band carries `.sa-container`; on a portal the footer is fluid and pads with the page margin, as a portal `SiteHeader` does. It restated a 1280px cap with a 24px margin, which put its content 20px right of the masthead\u2019s at 1440 and 8px right at 375. `maxWidth` no longer has a default", migration: "Remove any `maxWidth` passed to `SiteFooter`; the container ladder already decides it." },
@@ -46,6 +46,83 @@ const RELEASES: Release[] = [
       { kind: "Changed", text: "THE FOOTER'S SOCIAL CHIP IS RUNG 100 AT alpha/16, NOT A 12% color-mix(). 12 is not a published alpha step and a two-colour mix has no Figma equivalent. The chip lifts 1.43\u20131.52:1 off the ground in all ten brand modes (was 1.30\u20131.36); the glyph on it reads 5.55:1 in Blue and 4.88:1 at worst. The rule is rung 500 at alpha/64 and the policy-row rule alpha/32 (was an effective 35%)" },
       { kind: "Fixed", text: "`SiteFooter`\u2019S CREDITS AND COLOPHON SET BODY 3\u2019S LINE-HEIGHT. They set its size only and inherited 1.5, so both ran 18px lines against the 16px the type ramp and the master draw. A credit\u2019s prefix and its mark now wrap together, where at 375 \u201cPowered by\u201d ended one line and its logo began the next" },
       { kind: "Changed", text: "FOOTER DOCUMENTATION DESCRIBES THE COMPONENT THAT SHIPS. The Site Footer page, `design.md` and Storybook no longer document a support strip, an outlined CTA or dead CSS that no longer exist; the Figma documentation lists all five required properties and places Feedback in the policy row; the Component record carries only what is still open" },
+    ],
+  },
+  {
+    version: "v0.144.0",
+    date: "2026-09-16",
+    changes: [
+      { kind: "Fixed", text: "A DIVIDED `DescriptionList` NO LONGER RULES UNDER ITS LAST ROW. `divided` drew a hairline under EVERY row, so every fact card closed with a rule under nothing and read as an unfinished table \u2014 seen on the officer\u2019s Payment Status and three cards on the applicant\u2019s dashboard while the screens were being drawn in Figma. `ListGroup` already had this right (`item + item`), but source order is not visual order in a grid, so the two ends are stripped separately: below the 768 step the grid is one column whatever `columns` says and the last row is simply the last child; at and above it the component computes the row each item lands in and marks it. No `:nth-last-child()` is correct for every item count \u2014 six items in two columns put the pair at 5 and 6, five put it at 5 alone, and a `wide` item takes a row of its own \u2014 which is why the placement is simulated in `description-list-rows.ts` and tested against all three shapes." },
+    ],
+  },
+  {
+    version: "v0.143.0",
+    date: "2026-09-16",
+    changes: [
+      { kind: "Fixed", text: "SIX COMPONENTS SET THEIR TEXT IN THE STYLE THEIR FIGMA MASTER LINKS, WITH NO NEW STYLE ADDED. The Chatbot title is Title 2 at 600 (it was 500). The Portal Card name is Body 1 Regular, as its own comment said (500). The Slider readout is Body 2 SemiBold (500). The visitor counter takes its line\u2019s weight (500). The Pagination steps-only \u201cPage 2 of 12\u201d is Body 1 Regular, beside the 16px SemiBold Previous and Next (it inherited the page size at 500). Every one of those 500s was a weight no text style has" },
+      { kind: "Changed", text: "STANDALONE `Link` TAKES THE LIBRARY\u2019S RAMP: Small label-2 12, Default label-1 14, Large title-2 16 SemiBold. It was 14 / 16 / 22, all at 500. Default standalone links are 2px smaller and Large is 6px smaller; inline links still inherit their sentence" },
+      { kind: "Fixed", text: "FIGMA: the deprecated RangeSlider\u2019s 20 number layers leave a stray `Text md/Medium` style from another library for `Body/body-2-semibold`, the readout style of the current Slider" },
+    ],
+  },
+  {
+    version: "v0.142.0",
+    date: "2026-09-16",
+    changes: [
+      { kind: "Changed", text: "EVERY BUTTON LABEL IS `label-1`, 14/20 MEDIUM, AT EVERY SIZE. Default and Large set body-1\u2019s 16px at medium, a pairing no text style in the library holds; matching it in Figma had added a `Body/body-1-medium` style that only Button used. The ramp already names label-1 as button text, and Small buttons already used it. Heights stay 32 / 40 / 48 \u2014 the size step is the height and the padding \u2014 and Default and Large labels are 2px smaller" },
+      { kind: "Removed", text: "FIGMA `Body/body-1-medium`. All 240 Button master labels take `Label/label-1`; a full-file scan found no other layer or override on the style before it was deleted, so no instance was left unlinked" },
+    ],
+  },
+  {
+    version: "v0.141.0",
+    date: "2026-09-16",
+    changes: [
+      { kind: "Changed", text: "THE `Wizard`\u2019S ACTION BAND IS STICKY FROM 0\u2013767px. A grant step runs 2,000\u20133,900px on a 375px screen, so \u201cSave and Continue\u201d was off-screen the whole time an applicant was filling the step and they had to scroll the step again to move on (e-Anudaan audit W-08). STICKY, not fixed: the bar belongs to the panel, lands in its own place at the end of the step, needs no rung on the z-index ladder and cannot outlive the form. Back keeps its icon and gives up its word \u2014 clipped, so the button keeps its accessible name \u2014 the step body reserves the bar\u2019s height so the last field is never covered, and `env(safe-area-inset-bottom)` is respected. The panel stops clipping its corners at this width, because an overflow ancestor is what stops a sticky child from sticking; the two bands carry the radii instead. Desktop is unchanged." },
+      { kind: "Added", text: "THE BAR KEEPS OUT OF THE CORNER STACK. It carries `data-sa-rail-clear`, so a transient launcher steps aside while it would sit on it, and where the corner is ACTUALLY occupied it keeps a trailing gutter so the primary action stops short of the statutory accessibility control. Measured rather than always reserved, and measured by what is PAINTED at the rail\u2019s resting point as well as by the marked occupants: at 375 on the AVYAY upload step `#uw-widget-custom-trigger` measured 0\u00d70 while a 56px control sat on the primary action. `.claude/rules/floating-element-placement.md` gained the section that says a sticky bar is not a third rail." },
+      { kind: "Added", text: "`FormPanel` TAKES `footerProps` \u2014 attributes for the action band itself, which is how the Wizard marks its sticky bar for the rails." },
+    ],
+  },
+  {
+    version: "v0.140.0",
+    date: "2026-09-16",
+    changes: [
+      { kind: "Added", text: "`EventList` AND `NotificationCentre` MARK A DEADLINE THAT HAS PASSED AS OVERDUE \u2014 a word beside an `event_busy` icon in the error family, never the colour alone, with the date reading \u201cWas due\u201d instead of \u201cRespond by\u201d. It is DERIVED from a `now` the page resolves once and hands to every list (never `Date.now()` inside the render, which makes the server and the browser disagree on the boundary day), or stated by the item\u2019s own `overdue`. New: `now`, `overdueLabel`, `overdueDueLabel`, and `EventItem.overdue`." },
+      { kind: "Added", text: "AN `EventItem` CAN NAME ITS OWN DEADLINE: `dueLabel` per item, falling back to the list\u2019s. A utilisation certificate reads \u201cFile by 31 Mar 2027\u201d where a deficiency reads \u201cRespond by\u201d. The overdue wording stays one word for every kind of deadline." },
+      { kind: "Fixed", text: "A DUE DATE AND A TIMESTAMP ON ONE ROW ARE NOW SPELLED THE SAME WAY. The deadline used the browser\u2019s own formatter and printed \u201c30 Sept 2026\u201d against the timestamp\u2019s \u201c30 Sep 2026\u201d." },
+      { kind: "Changed", text: "`WorklistScreen`\u2019S DEFAULT COUNT LINE COUNTS IN THE SCREEN\u2019S OWN NOUN \u2014 \u201c95 applications.\u201d, not \u201c95 in the register.\u201d, which is a filing term no applicant uses about their own applications (e-Anudaan audit N-08). `noun` / `pluralNoun` drive both this line and the selection bar; a screen with different words passes `countLine`." },
+      { kind: "Fixed", text: "A PINNED ACTIONS COLUMN PINS ONLY WHERE IT CAN BE SCROLLED OUT FROM UNDER. `DataTable` measures the overflow against the pinned column\u2019s own width: a table 40px wider than its box with a 120px Actions column could never uncover the 80px beneath it, which is how a status badge read \u201cAction Requir\u2026\u201d and two screens dropped columns to work around it (audit N-06). Below the threshold the cells are ordinary cells and the row scrolls as one. Measured on resize; nothing to configure." },
+      { kind: "Added", text: "`ListRow` TAKES `linkAs`. A row with an `href` rendered a bare anchor, so every row-click was a full document load \u2014 the officer dashboard\u2019s figures had just become links. `check:link-as` covers it, and understands that a row with no `href` renders no anchor: a component whose interface carries `linkAs-gate(href-only)` is demanded of only where the call site passes an `href`." },
+      { kind: "Fixed", text: "A `ListRow` LABEL AND ITS FIGURE STAY ON ONE LINE WHERE THEY FIT. The text column asked for `min(14rem, 100%)`, which on a 375px card is the whole row, so any trailing slot wrapped beneath it and a two-part row grew to about 70px. It asks for `min(14rem, 60%)` now: a short label and its figure sit together, a long pair still wraps." },
+      { kind: "Changed", text: "`MetricCard`\u2019S ICON BADGE GIVES WAY BEFORE THE FIGURE DOES. The tile measures ITS OWN width (a container query, not the viewport): the badge steps down to 32px in a tile under about 240px and is not drawn under about 200px \u2014 which is what a half-width tile on a 375px screen is. It is decoration, `aria-hidden`, and a page had been hiding it with a utility of its own." },
+      { kind: "Added", text: "`SegmentedControl` CARRIES THE WAI-ARIA RADIO-GROUP KEYBOARD: one tab stop for the group, arrow keys moving between options with selection following focus, Home and End for the ends, and the ends wrapping. Each option used to be its own tab stop, so a verdict control cost three Tabs and an Enter \u2014 twenty times over on an officer\u2019s review." },
+    ],
+  },
+  {
+    version: "v0.139.0",
+    date: "2026-09-16",
+    changes: [
+      { kind: "Changed", text: "`DataTable` HIDES ITS WHOLE FOOTER WHILE EVERY ROW FITS ON THE SMALLEST PAGE SIZE. A one-row register read \u201cShowing 10 50 100 of 1 items\u201d over a pager with nowhere to go, on about 25 e-Anudaan screens (audit X-04). New `hidePagerWhenFits`, default true; pass false to keep the footer. The count now says \u201citem\u201d for one, the page-size buttons are 24px or larger on both axes (they were 30\u00d722 and 23\u00d722), and the selected size is outlined like the current page instead of filled navy. Every DataTable on the estate takes this." },
+      { kind: "Added", text: "`DataTable` MAKES AN OVERFLOWING TABLE A NAMED, FOCUSABLE REGION, so a keyboard reader can scroll it sideways (axe `scrollable-region-focusable`, 15 review tables at 375px, audit R-08). Only while it overflows \u2014 a table that fits adds no tab stop. New `scrollLabel` names it when there is no `caption`." },
+      { kind: "Changed", text: "`EmptyState`\u2019S TITLE STEPS DOWN FROM HEADLINE-1 TO HEADLINE-4 \u2014 20px on a portal, 24px on the website. A filtered register showed a 32px \u201cNo Application Matches These Filters\u201d under a 32px page title (audit X-02)." },
+      { kind: "Changed", text: "`PageHeader size=\"compact\"` IS HEADLINE-3 (24px ON A PORTAL), NOT HEADLINE-5 (18px). A wizard\u2019s title was the size of a card title, so the H1 went 32 \u2192 18 \u2192 32 across one journey (audit X-01). The docstring and the docs page now say which pages take which: `default` for dashboards, lists, records, review and error pages; `compact` for wizards and single-task form pages." },
+      { kind: "Added", text: "`WorklistScreen` TAKES A `views` SLOT for a view switch (Pending / All), drawn under the header with no frame. A lone `SegmentedControl` in a `FilterBar` now drops the bar\u2019s grey frame, and a switch inside the worklist toolbar hugs its options, so callers that still pass the switch through `filters` stop drawing two boxes around two pills (audit X-05)." },
+      { kind: "Changed", text: "`Accordion`\u2019S DEFAULT `card` VARIANT IS ONE SURFACE: no shadow, no raised hover, no grey header band \u2014 a white item on a hairline, with a neutral tint on hover. Eight sections of an NGO application read as eight grey slabs (audit \u00a74.6). The website\u2019s About Us accordion takes it too." },
+      { kind: "Fixed", text: "A DISABLED `Checkbox` OR RADIO KEEPS ITS DESCRIPTION IN `text/neutral/subtle`. The description is usually the reason the control is disabled, and in the disabled grey it measured 3.04:1 (audit R-01). The box and the label still dim." },
+      { kind: "Changed", text: "NO REQUIRED ASTERISK ON A FIELD THE READER CANNOT CHANGE. `FormField`, `ControlGroup` (`CheckboxGroup`, `RadioGroup`) and the single `Checkbox`/`Radio` withhold the visible mark while `readOnly` or `disabled` holds; the control keeps its `required` attribute (audit W-03). Pass `readOnly` to `FormField` itself, not only to the Input inside." },
+      { kind: "Added", text: "`ChartCard` TAKES `headingLevel` (2 | 3 | 4, default 3), so a card directly under a page\u2019s h1 can be an h2 (axe `heading-order` on 30 e-Anudaan pages, audit X-12)." },
+      { kind: "Added", text: "`DocumentRow` TAKES `density=\"compact\"` \u2014 the reviewed-document row: two lines from a 520px row width (title, verdict and View; file and status as small print) and one line from 960px, title and file cut to one line (audit R-03) \u2014 and `clampReason`, which cuts a repeated reason to one line on a wide row (audit D-03). File names are cut in the stem and keep their extension at every width (audit D-05)." },
+      { kind: "Added", text: "`DocumentChecklist` TAKES `bulkAction` AND THE NEW `DocumentBulkAction` \u2014 \u201cMark All Remaining as Verified (N)\u201d behind a confirmation, for an officer\u2019s review (audit R-01/R-03). The caller chooses the set, excludes anything the automatic check flagged and records one verdict per document. `DocumentChecklistGroup` takes `hideRequiredMarks` for a group whose heading already says Required. `formats` is now drawn inside the drop zone, and the danger filter chip keeps the ordinary selected style with only its count in the error ink (audit D-04)." },
+      { kind: "Changed", text: "A PORTAL MASTHEAD ON A PHONE (BELOW 768px) DRAWS TWO NAMES, NOT THREE: the ministry line is withheld where the department line beneath repeats it, and the emblem steps down to 48px. The Government of India line, the department and BETA stay; the website masthead and every portal from 768px keep all three lines. A divergence from DBIM 5.2 recorded in `header.css`, for the Department to confirm (audit X-08)." },
+    ],
+  },
+  {
+    version: "v0.138.0",
+    date: "2026-09-16",
+    changes: [
+      { kind: "Changed", text: "`PortalPage` STARTS ITS RAIL COLLAPSED FROM THE TABLET ANCHOR TO THE LAPTOP ANCHOR (768\u20131279px). A 300px column there left 420\u2013930px of content: too narrow for a wizard\u2019s step bar to name its stages or a worklist to keep its columns. The masthead button still expands the rail and that choice holds for the visit. Measured on the e-Anudaan AVYAY form: stage names now show from 1024px (were 1280px). At 768px portrait a seven- or eight-stage form keeps the compact bar, because its widest stage word needs about 97px a column and the width gives 90 \u2014 a word broken mid-way reads worse than the bar that names the current stage. Every portal on `PortalPage` takes this." },
+      { kind: "Added", text: "`WorklistScreen` TAKES A `summary` SLOT for count tiles above the filters, as e-Anudaan\u2019s All Applications uses (Total, In Review, Sanctioned, Returned or Queried)." },
+      { kind: "Added", text: "`Accordion` TAKES `variant=\"flush\"` \u2014 rows divided by a hairline, no shaded card, matching the form language of `FormSection`. The default `card` variant is unchanged. The trigger now carries `aria-controls`." },
+      { kind: "Added", text: "`DocumentRow` TAKES `collapsible`, `expanded`, `onExpandedChange` AND `summary`, and lays itself out by its own width: below 760px the automatic check and the verdict move under the title. An officer\u2019s review of twenty verified documents is 44% shorter (7,583 \u2192 4,214px at 1440)." },
+      { kind: "Added", text: "THE DOCUMENT CENTRE \u2014 FIVE COMPONENTS FOR UPLOADING, CHECKING AND KEEPING DOCUMENTS, built for the e-Anudaan application and correction flows and the officer's review (docs/plans/2026-09-16-e-anudaan-document-centre.md). `DocumentRow` is one document as a compact row in ten states \u2014 Not uploaded, Optional, Uploading, Upload failed, Can't be uploaded, Checking, Looks right, Check the details, Doesn't match, Saved for a hand check \u2014 with the status in words beside a distinct icon, one primary action and a menu; it grows by one sentence only when the document needs the reader, and lays itself out by its own width. `DocumentChecklist` and `DocumentChecklistGroup` put the rows under one header: progress counted as documents READY, filter chips, a drop zone with a Choose Files keyboard route, the ErrorSummary a blocked Continue raises, and polite and assertive live regions. `DocumentFindings` is \u201cWhat we found\u201d, each extracted field compared with the application's own answer, with confidence for officers only. `DocumentPlacementTray` shows where each dropped file went, what it replaced and what could not be placed. `DocumentHistorySheet` lists every version of a document" },
     ],
   },
   {

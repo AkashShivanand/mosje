@@ -117,8 +117,76 @@
      worth meeting before the control. Scoped to this element rather than switching the row
      to `wrap` for everyone, because the row's two-button case has no reason to change. */
   @media (max-width: 767px) {
+    /* ── THE ACTION BAR IS STICKY ON A PHONE ───────────────────────────────
+       A step of an application form runs 2,000–3,900px on a 375px screen, so
+       "Save and Continue" was always off-screen: the applicant filled the step,
+       then scrolled the whole of it again to find the only way forward
+       (e-Anudaan audit W-08).
+
+       STICKY, NOT FIXED. The bar belongs to the panel and travels with it — at
+       the end of the step it simply lands in its own place — so it needs no
+       z-index ladder rung, leaves no hole in the document, and cannot outlive
+       the form the way a fixed bar can. `floating-element-placement.md` governs
+       FIXED widgets and the corner stack; this is neither, and the two are kept
+       apart by the `data-sa-rail-clear` contract and the gutter below.
+
+       The panel clips its corners with `overflow: hidden`, and an overflow
+       ancestor is exactly what stops a sticky child from sticking — it sticks
+       to that box instead of the viewport. So on a phone the panel stops
+       clipping and the two bands carry the radii themselves. */
+    .ds-wizard .ds-form-panel {
+      overflow: visible;
+    }
+
+    .ds-wizard .ds-form-panel__head {
+      border-start-start-radius: var(--sa-shape-20);
+      border-start-end-radius: var(--sa-shape-20);
+    }
+
+    .ds-wizard .ds-form-panel__foot {
+      position: sticky;
+      /* The bar's own bottom edge; `env()` keeps it clear of a home indicator. */
+      bottom: 0;
+      border-end-start-radius: var(--sa-shape-20);
+      border-end-end-radius: var(--sa-shape-20);
+      /* Opaque, because content scrolls UNDER it. The panel's own ground rather than the band
+         tint: a translucent or tinted bar over a white form reads as a misprint. */
+      background-color: var(--sa-bg-neutral-base);
+      padding-block-end: calc(var(--sa-padding-16) + env(safe-area-inset-bottom, 0px));
+      box-shadow: 0 -1px 0 0 var(--sa-border-neutral-subtle);
+    }
+
+    /* The last field is never under the bar: the body reserves the bar's height, so the end of
+       the step can always be scrolled clear of it. One control's height plus the band's padding
+       — the bar is a row of buttons, and a taller bar (a blocked reason on its own line) is
+       drawn at the end of the step where nothing is behind it. */
+    .ds-wizard .ds-form-panel__body {
+      padding-block-end: calc(var(--sa-control-height-md) + var(--sa-padding-16) * 2);
+    }
+
+    /* THE GUTTER. Where the corner stack is actually occupied — the statutory accessibility
+       control, which never yields — the primary action stops short of it. Set from a measurement
+       in wizard.tsx, so a portal whose accessibility control lives in its top bar (all of them
+       today) keeps the full row. 56 = the widget's own box plus the rail's 32px inset, rounded
+       to the nearest spacing rung. */
+    .ds-wizard .ds-form-panel__foot[data-corner="occupied"] {
+      padding-inline-end: calc(var(--sa-padding-16) + var(--sa-stack-56));
+    }
+
     .ds-wizard .ds-form-panel__foot {
       flex-wrap: wrap;
+    }
+
+    /* Back keeps its icon and gives up its word — see wizard.tsx. */
+    .ds-wizard__back-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
     }
 
     /* Back and the advance control share one row, the advance control taking the larger share. */

@@ -128,7 +128,13 @@
     margin: 0;
     padding: 0 var(--sa-padding-8);
     color: var(--sa-text-neutral-base);
-    font-weight: var(--sa-font-weight-medium);
+    /* Body 1 Regular: the size of the Previous / Next labels beside it (Figma's
+       `Body/body-1-semibold`), one weight step lighter because it is text, not a control.
+       The master has no steps-only form, so there is no layer to copy; it inherited the
+       page's size at 500 before, which is no text style (decided 15 Sep 2026). */
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    font-weight: var(--sa-font-weight-regular);
     font-variant-numeric: tabular-nums;
   }
 

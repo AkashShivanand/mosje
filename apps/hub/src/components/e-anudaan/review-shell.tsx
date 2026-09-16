@@ -9,19 +9,22 @@ import {
   Alert,
   Badge,
   Button,
-  Card,
-  CardBody,
   Checkbox,
   DescriptionList,
+  DocumentChecklist,
+  DocumentChecklistGroup,
+  DocumentHistorySheet,
+  DocumentRow,
   EventList,
   FormField,
   Icon,
   Input,
   ListGroup,
   ListRow,
+  Menu,
   Modal,
   SectionTitle,
-  Select,
+  SegmentedControl,
   StatusScreen,
   Textarea,
   useToast,
@@ -37,7 +40,6 @@ import {
   permittedActions,
   proposedDeficiency,
   statusLabel,
-  unexaminedRequiredDocs,
   verdictAttribution,
   type ActionPayload,
   type DecisionContext,
@@ -46,10 +48,46 @@ import {
 import { formatGrant, schemeLabel, statusTone } from "@/lib/e-anudaan/selectors";
 import { formatDate, formatTime, rupees } from "@/lib/e-anudaan/format";
 import { answeredSections, ordinal, projectTitleFor } from "@/lib/e-anudaan/applicant";
+import { OFFICER_VERDICT } from "@/lib/e-anudaan/glossary";
+import {
+  answeredDeficiency,
+  asoForwardBlockers,
+  automaticCheckOf,
+  awaitingVerdict,
+  bulkVerifiable,
+  correctedDocIds,
+  isFlagged,
+  matchesReviewFilter,
+  verdictProgress,
+  type ReviewDocFilter,
+} from "@/lib/e-anudaan/review-readiness";
 import { fieldLabel, type FieldDef } from "@/lib/e-anudaan/form-schema";
-import type { AuditAction, Deficiency, DocReviewStatus, GrantApplication, MockDoc } from "@/lib/e-anudaan/types";
+import type { DocVerdict } from "@/lib/e-anudaan/doc-verification";
+import type { AuditAction, Deficiency, DocReviewStatus, GrantApplication, MockDoc, RoleId } from "@/lib/e-anudaan/types";
 import { RefText } from "./worklist-table";
 import { DocumentPreviewSheet } from "./document-preview-sheet";
+import {
+  CostNormsReview,
+  FundingHistory,
+  InspectionsPanel,
+  InstalmentsPanel,
+  Panel,
+  ShowCausePanel,
+  canIssueShowCause,
+  canScheduleInspection,
+  officerCheckLabel,
+  schemeNorms,
+} from "./review-panels";
+import { ReviewReport } from "./review-report";
+import { Findings, rowStateOf } from "./document-centre-parts";
+import {
+  acceptFromNote,
+  applicantFacts,
+  docState,
+  fileSizeLabel,
+  historyEntriesOfRecord,
+  rejectionOf,
+} from "@/lib/e-anudaan/document-centre";
 
 /**
  * The officer review screen — ONE component behind all ten grades and the Programme Director.
@@ -62,10 +100,31 @@ import { DocumentPreviewSheet } from "./document-preview-sheet";
  * three thousand pixels to act.
  *
  * The action set still comes entirely from `permittedActions`, so no screen logic knows about grades.
+ *
+ * Rebuilt again after the design-director audit of 16 Sep 2026:
+ *   R-01  the decision panel says what still blocks the forward BEFORE it is pressed, links to the
+ *         documents concerned, and reads its reason at text contrast, not in the disabled style.
+ *   R-03  verdicts are given in compact rows, two options in the row, with a bulk verdict for the
+ *         documents the automatic check found nothing wrong with.
+ *   R-02  the documents a correction changed are named, filtered and linked from the banner.
+ *   R-04  Schedule Inspection, Issue Show Cause Notice and Generate Review Report moved into
+ *         "More Actions" beside the decision; the cards below carry history only.
+ *   R-05  the sanction amounts are prefilled with the amounts sought, grouped as they are typed.
+ *   R-06  one count of the examination: `verdictProgress`.
+ *   R-08  a sticky summary bar carries the decision to the officer on a phone.
+ *
+ * DS Audit: Accordion ✅ · Alert ✅ · Badge ✅ · Button ✅ · Checkbox ✅ · DescriptionList ✅ ·
+ * DocumentChecklist (`bulkAction`, `filters`) ✅ · DocumentRow (`density="compact"`, `clampReason`)
+ * ✅ · DocumentHistorySheet ✅ · EventList ✅ · FormField / Input / Textarea ✅ · Icon ✅ ·
+ * ListGroup / ListRow ✅ · Menu ✅ · Modal ✅ · SectionTitle ✅ · SegmentedControl ✅ ·
+ * StatusScreen ✅ — nothing new. ⚑ The "Before You Forward" checklist and the phone summary bar are
+ * assembled here from DS parts: `Stepper` carries no step BODY (a link, a checkbox), and the estate
+ * has no sticky action bar yet. Both are proposed for the DS as one `DecisionPanel` template
+ * (audit §4.9, §4.10) and should move there when it is built.
  */
 export function ReviewShell({ appId }: { appId: string }) {
   const router = useRouter();
-  const { state, findApp, findNgo, findInspection, act, reviewDocument } = useEAnudaan();
+  const { state, findApp, findNgo, act, reviewDocument } = useEAnudaan();
   const { toast } = useToast();
 
   const app = findApp(appId);
@@ -74,15 +133,42 @@ export function ReviewShell({ appId }: { appId: string }) {
   const [remarks, setRemarks] = React.useState("");
   const [certifyTicked, setCertifyTicked] = React.useState(false);
   const [confirming, setConfirming] = React.useState<Rule | null>(null);
-  // The sanction amounts start EMPTY, with the amount sought shown as the hint. Prefilled to the
-  // full sum, the Programme Director's ₹68,00,000 sanction went through on one click without the
-  // figure ever being entered or read back (UX audit UX-03, 14 Sep 2026).
-  const [recurring, setRecurring] = React.useState("");
-  const [nonRecurring, setNonRecurring] = React.useState("");
+  // The sanction amounts are PREFILLED with the amounts sought and may be edited down (audit R-05:
+  // the Director retyped two figures on every sanction, ungrouped). Nothing is committed on a
+  // single press: the confirmation dialog reads both figures and the total back before the order
+  // is issued, which is what UX-03 of 14 Sep asked for when it emptied the fields.
+  const [recurring, setRecurring] = React.useState<string | null>(null);
+  const [nonRecurring, setNonRecurring] = React.useState<string | null>(null);
   const [previewing, setPreviewing] = React.useState<MockDoc | null>(null);
-  // Documents opened in this sitting. With a verdict, this is what "examined" means for the
-  // certification gate.
-  const [opened, setOpened] = React.useState<ReadonlySet<string>>(() => new Set());
+  const [reportOpen, setReportOpen] = React.useState(false);
+  // The dialog the decision panel's "More Actions" opened (audit R-04): both used to be buttons on
+  // cards about 5,000px below the decision they belong to.
+  const [dialog, setDialog] = React.useState<"showCause" | "inspection" | null>(null);
+  // The decision the officer last pressed with something missing. One inline message per missing
+  // thing, shown only then — the screen used to explain every disabled button in standing prose.
+  const [attempted, setAttempted] = React.useState<Rule | null>(null);
+  // A forward asked for while a document stands marked Needs Correction. The file normally goes
+  // back to the NGO; the officer may still send it up, and the file then carries that they were
+  // asked (coordinator's decision, 16 Sep 2026).
+  const [forwardWarning, setForwardWarning] = React.useState<Rule | null>(null);
+  /**
+   * The document filter, and the rows it was showing when it was chosen. The membership is FROZEN
+   * at that moment on purpose: under a live filter, giving a verdict made the row vanish from
+   * under the officer's hand and took the focus with it. The chip's count stays live.
+   */
+  const [docFilter, setDocFilter] = React.useState<{ id: ReviewDocFilter; ids: readonly string[] } | null>(null);
+  /**
+   * A row to scroll to and focus once the filter it belongs to has been applied. The counter makes
+   * a second jump to the SAME row a new value, so the effect runs again without writing state.
+   */
+  const [focusDoc, setFocusDoc] = React.useState<{ id: string; n: number } | null>(null);
+
+  React.useEffect(() => {
+    if (!focusDoc) return;
+    const el = document.getElementById(docRowId(focusDoc.id));
+    el?.scrollIntoView({ block: "center" });
+    el?.focus({ preventScroll: true });
+  }, [focusDoc]);
 
   if (!app || !role) {
     return (
@@ -104,7 +190,6 @@ export function ReviewShell({ appId }: { appId: string }) {
   const holdsFile = actions.length > 0;
   const gradeTitle = role.grade ? GRADE_FULL[role.grade] : role.label;
   const project = projectTitleFor(state, app);
-  const inspection = app.inspectionId ? findInspection(app.inspectionId) : undefined;
 
   // The ASO's forward is gated on certification. It used to vanish until then, leaving Reject as
   // the only filled button on the screen; it now stays in place, disabled, saying why.
@@ -117,22 +202,54 @@ export function ReviewShell({ appId }: { appId: string }) {
   const markedDocs = app.documents.filter((d) => d.reviewStatus === "Deficient").length;
   const sendsMessage = decisions.some((d) => d.action === "communicateDeficiency");
   const sanctioning = decisions.some((d) => d.action === "sanction");
-  const sanctionR = Number(recurring);
-  const sanctionNR = Number(nonRecurring);
-  const sanctionEntered = recurring !== "" || nonRecurring !== "";
+  const recurringText = recurring ?? String(app.recurring);
+  const nonRecurringText = nonRecurring ?? String(app.nonRecurring);
+  const sanctionR = Number(recurringText);
+  const sanctionNR = Number(nonRecurringText);
+  const sanctionEntered = recurringText !== "" || nonRecurringText !== "";
   const sanctionInvalid =
     sanctioning &&
-    (recurring === "" || nonRecurring === "" || sanctionR + sanctionNR <= 0 || sanctionR + sanctionNR > app.total);
-  const unexamined = canCertify ? unexaminedRequiredDocs(app, opened) : [];
+    (recurringText === "" || nonRecurringText === "" || sanctionR + sanctionNR <= 0 || sanctionR + sanctionNR > app.total);
+
+  /* ── One reading of the file, read by everything that states it (audit R-01, R-06) ─────────── */
+  const checkOf = (d: MockDoc) => automaticCheckOf(app, d);
+  const progress = verdictProgress(app);
+  const awaiting = awaitingVerdict(app);
+  // The seat that certifies — the Assistant Section Officer. Its forward waits on the verdicts and
+  // on the certification, and the panel says which BEFORE the button is pressed (audit R-01).
+  const certifyingSeat = holdsFile && role.caps.includes("certify");
+  const blockers = certifyingSeat ? asoForwardBlockers(app) : [];
+  const forwardBlocked = certifyingSeat && blockers.length > 0;
+  const bulk = docsEditable ? bulkVerifiable(app, checkOf) : [];
+  const norms = schemeNorms(app);
+  // Stated whenever the figure entered is above the norm — including while it is also above the
+  // amount sought, when the error below says so too: the two are different facts.
+  const overNorm = norms != null && sanctionEntered && sanctionR + sanctionNR > norms.total;
+  const corrected = correctedDocIds(app);
+  const correctionNote = answeredDeficiency(app);
 
   const ngoName = ngo?.name ?? app.ngoId;
+  /** A forward sent over a marked document says so on the file, in the officer's own entry. */
+  const forwardingOverMarked = (rule: Rule) => rule.action === "forward" && markedDocs > 0;
   const payloadFor = (rule: Rule): ActionPayload => ({
-    remarks,
+    remarks: forwardingOverMarked(rule)
+      ? `${remarks.trim()} [Forwarded with ${markedDocs} document${markedDocs === 1 ? "" : "s"} marked Needs Correction; the NGO was not asked to correct ${markedDocs === 1 ? "it" : "them"}.]`
+      : remarks,
     certified: certifyTicked,
     items: rule.action === "raiseDeficiency" ? deficiencyItems : undefined,
     sanction: rule.action === "sanction" ? { recurring: sanctionR, nonRecurring: sanctionNR } : undefined,
   });
   const contextFor = (rule: Rule): DecisionContext => ({ app, role, payload: payloadFor(rule), ngoName, project });
+
+  /** What stops this decision, as the messages beside the fields concerned. Empty when it can go. */
+  const problemsOf = (rule: Rule) => ({
+    remarks: rule.requiresRemarks && !remarks.trim() ? "Enter your remarks." : undefined,
+    certification: rule.action === "forward" && forwardBlocked ? forwardBlockedReason(blockers, awaiting.length) : undefined,
+    sanction: rule.action === "sanction" && sanctionInvalid ? `Enter both amounts. Together they must be more than ₹0 and no more than the ${rupees(app.total)} sought.` : undefined,
+    deficiency:
+      rule.action === "raiseDeficiency" && deficiencyItems.some((it) => !it.remark.trim()) ? "Give a reason for every document marked for correction." : undefined,
+  });
+  const problems: Partial<ReturnType<typeof problemsOf>> = attempted ? problemsOf(attempted) : {};
 
   const commit = (rule: Rule) => {
     const ctx = contextFor(rule);
@@ -148,19 +265,70 @@ export function ReviewShell({ appId }: { appId: string }) {
   };
 
   /** An irreversible or outward decision is read back first; everything else commits. */
-  const decide = (rule: Rule) => {
+  const decide = (rule: Rule, { overMarked = false }: { overMarked?: boolean } = {}) => {
+    const p = problemsOf(rule);
+    if (p.remarks || p.certification || p.sanction || p.deficiency) {
+      setAttempted(rule);
+      document.getElementById(p.remarks ? "officer-remarks" : p.sanction ? "sanction-recurring" : "officer-decision")?.focus();
+      return;
+    }
+    setAttempted(null);
+    // A file with a document the officer has marked as defective normally goes back to the NGO.
+    // It may still go up, but the officer is asked, and the answer is written on the file.
+    if (!overMarked && forwardingOverMarked(rule)) {
+      setForwardWarning(rule);
+      return;
+    }
     if (rule.confirm?.(contextFor(rule))) setConfirming(rule);
     else commit(rule);
   };
   const confirmCopy = confirming?.confirm?.(contextFor(confirming)) ?? null;
-  const openDocument = (doc: MockDoc) => {
-    setPreviewing(doc);
-    setOpened((prev) => (prev.has(doc.id) ? prev : new Set(prev).add(doc.id)));
+  const openDocument = (doc: MockDoc) => setPreviewing(doc);
+
+  /** Show one question's documents and put the officer on the first of them (audit R-01). */
+  const showDocuments = (filter: ReviewDocFilter, focusId?: string) => {
+    const ids = documentsInOrder(app)
+      .filter((d) => matchesReviewFilter(app, d, filter, checkOf))
+      .map((d) => d.id);
+    setDocFilter({ id: filter, ids });
+    const target = focusId ?? ids[0];
+    if (target) setFocusDoc((prev) => ({ id: target, n: (prev?.n ?? 0) + 1 }));
   };
+
+  /** One verdict per document, in the officer's name, after the confirmation (audit R-03). */
+  const verifyRemaining = () => {
+    for (const d of bulk) reviewDocument(app.id, d.id, "Verified", d.officerRemarks ?? "");
+    toast(
+      `${bulk.length} document${bulk.length === 1 ? "" : "s"} marked Verified. Each verdict can still be changed.`,
+      "success",
+    );
+  };
+
+  const goToDecision = () => {
+    document.getElementById("review-decision")?.scrollIntoView({ block: "start" });
+    document.getElementById("officer-decision")?.focus({ preventScroll: true });
+  };
+
+  /** "More Actions": everything that is not the decision itself, beside the decision (audit R-04). */
+  const moreActions = [
+    ...(canScheduleInspection(state, app) ? [{ id: "inspection", label: "Schedule Online Inspection", icon: "videocam" }] : []),
+    ...(canIssueShowCause(app, state.session) ? [{ id: "showCause", label: "Issue Show Cause Notice", icon: "gavel" }] : []),
+    { id: "report", label: "Generate Review Report", icon: "description" },
+  ];
+  const onMoreAction = (id: string) => {
+    if (id === "report") setReportOpen(true);
+    else setDialog(id as "showCause" | "inspection");
+  };
+
+  const previewedDoc = previewing ? (app.documents.find((d) => d.id === previewing.id) ?? previewing) : null;
 
   const primary = decisions.filter((d) => d.intent === "primary");
   const secondary = decisions.filter((d) => d.intent === "secondary");
   const danger = decisions.filter((d) => d.intent === "danger");
+  // With a document marked Needs Correction, raising the deficiency is the file's normal next move
+  // and leads the buttons; the forward stays available, one press and one question away.
+  const deficiencyRule = decisions.find((d) => d.action === "raiseDeficiency");
+  const deficiencyLeads = markedDocs > 0 && !!deficiencyRule;
 
   return (
     <div className="space-y-5">
@@ -180,18 +348,17 @@ export function ReviewShell({ appId }: { appId: string }) {
             Application No. <RefText value={app.id} breakAtEverySlash className="text-ink" /> · Project ID {app.institutionId}
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <Badge status={statusTone(app.status)}>{statusLabel(app)}</Badge>
-          {/* The review report is this screen, printed — there is no separate report service. */}
-          <Button appearance="outlined" size="sm" onClick={() => window.print()}>
-            <Icon name="print" size={16} aria-hidden /> Print
-          </Button>
+        <div className="flex min-w-0 max-w-full flex-wrap items-center gap-3">
+          {/* Wraps on a phone: "Under Examination · With the Under Secretary, Integrated Finance" ran 45px off a 375px screen. */}
+          <Badge status={statusTone(app.status)} className="h-auto max-w-full whitespace-normal">
+            {statusLabel(app)}
+          </Badge>
         </div>
       </header>
 
       <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_24rem] xl:items-start">
         <div className="min-w-0 space-y-5">
-          <OpenItem app={app} />
+          <OpenItem app={app} onShowDocument={(docId) => showDocuments("changed", docId)} />
 
           <Panel title="Summary">
             <Facts
@@ -206,46 +373,32 @@ export function ReviewShell({ appId }: { appId: string }) {
             />
           </Panel>
 
+          <CostNormsReview app={app} />
+
           <ApplicationAnswers app={app} />
 
           <DocumentsPanel
             app={app}
             editable={docsEditable}
-            opened={opened}
+            viewer={state.session}
+            checkOf={checkOf}
+            corrected={corrected}
+            progressLabel={progress.label}
+            filter={docFilter}
+            onFilter={(id) => (id ? showDocuments(id) : setDocFilter(null))}
+            bulk={bulk}
+            onVerifyRemaining={verifyRemaining}
             onOpen={openDocument}
             onReview={(doc, status, remark) => reviewDocument(app.id, doc.id, status, remark)}
           />
 
-          <ProjectSanctions app={app} />
+          <FundingHistory app={app} />
 
-          {(inspection || role.caps.includes("scheduleInspection")) && (
-            <Panel title="Inspection">
-              {inspection ? (
-                <Facts
-                  items={[
-                    ["Visit", `${inspection.visitType} · ${inspection.status}`],
-                    ["Scheduled For", inspection.scheduledFor ? formatDate(inspection.scheduledFor) : "Not scheduled"],
-                    ["Report Submitted", inspection.submittedAt ? formatDate(inspection.submittedAt) : "Not yet"],
-                    ["Recommendation", inspection.recommendation ?? "—"],
-                  ]}
-                />
-              ) : (
-                <p className="text-body-2 text-ink-muted">
-                  No inspection has been scheduled for this application. The PMU schedules physical and online inspections.
-                </p>
-              )}
-            </Panel>
-          )}
+          <InstalmentsPanel app={app} />
 
-          {app.showCauseNotices.length > 0 && (
-            <Panel title="Show Cause Notices">
-              <ListGroup>
-                {app.showCauseNotices.map((n) => (
-                  <ListRow key={n.id} title={n.grounds} description={formatDate(n.issuedAt)} />
-                ))}
-              </ListGroup>
-            </Panel>
-          )}
+          <ShowCausePanel app={app} dialogOpen={dialog === "showCause"} onDialogClose={() => setDialog(null)} />
+
+          <InspectionsPanel app={app} dialogOpen={dialog === "inspection"} onDialogClose={() => setDialog(null)} />
 
           <Panel title="File Movement and Remarks">
             <EventList
@@ -265,50 +418,68 @@ export function ReviewShell({ appId }: { appId: string }) {
         </div>
 
         {/* ── The decision, held beside the file on a wide screen ─────────────────── */}
-        <aside className="space-y-5 xl:sticky xl:top-4" aria-label="Your decision">
-          {canCertify && (
-            <Panel title="Certification (Mandatory)">
-              <Checkbox
-                checked={certifyTicked && unexamined.length === 0}
-                disabled={unexamined.length > 0}
-                onChange={(e) => setCertifyTicked(e.target.checked)}
-                // The certification step the scheme rules require before the file moves on (BR-SM2-05).
-                label="I certify that the application and documents have been examined and are complete and correct as per scheme guidelines."
-                description={
-                  unexamined.length > 0
-                    ? `Open or give a verdict on every required document first. ${unexamined.length} of ${app.documents.filter((d) => !d.optional).length} required documents have not been examined.`
-                    : undefined
-                }
-              />
-              <div className="mt-3">
-                <Button
-                  appearance="outlined"
-                  disabled={!certifyTicked || unexamined.length > 0}
-                  onClick={() => decide(actions.find((a) => a.action === "certify")!)}
-                >
-                  Record Certification
-                </Button>
-              </div>
-            </Panel>
-          )}
-
+        <aside id="review-decision" className="space-y-5 xl:sticky xl:top-4" aria-label="Your decision">
           {sanctioning && (
             <Panel title="Sanction Order">
               <p className="mb-3 text-body-3 text-ink-muted">
-                Amount sought: {rupees(app.total)}. The sanction may not exceed it.
+                Both amounts are filled with what the NGO sought. Change either to sanction less; the sanction may not exceed {rupees(app.total)}.
               </p>
               <div className="space-y-3">
-                <FormField label="Recurring Grant (₹)" id="sanction-recurring" required hint={`Amount sought: ${rupees(app.recurring)}`}>
-                  {(c) => <Input {...c} inputMode="numeric" value={recurring} onChange={(e) => setRecurring(e.target.value.replace(/[^\d]/g, ""))} />}
+                <FormField
+                  label="Recurring Grant"
+                  id="sanction-recurring"
+                  required
+                  hint={`Sought: ${rupees(app.recurring)}${norms ? ` · admissible under the norms: ${rupees(norms.recurring)}` : ""}`}
+                >
+                  {(c) => (
+                    <Input
+                      {...c}
+                      inputMode="numeric"
+                      prefix="₹"
+                      prefixLabel="rupees"
+                      className="tabular-nums"
+                      value={grouped(recurringText)}
+                      onChange={(e) => setRecurring(digits(e.target.value))}
+                    />
+                  )}
                 </FormField>
-                <FormField label="Non-Recurring Grant (₹)" id="sanction-non-recurring" required hint={`Amount sought: ${rupees(app.nonRecurring)}`}>
-                  {(c) => <Input {...c} inputMode="numeric" value={nonRecurring} onChange={(e) => setNonRecurring(e.target.value.replace(/[^\d]/g, ""))} />}
+                <FormField
+                  label="Non-Recurring Grant"
+                  id="sanction-non-recurring"
+                  required
+                  hint={`Sought: ${rupees(app.nonRecurring)}${norms ? ` · admissible under the norms: ${rupees(norms.nonRecurring)}` : ""}`}
+                >
+                  {(c) => (
+                    <Input
+                      {...c}
+                      inputMode="numeric"
+                      prefix="₹"
+                      prefixLabel="rupees"
+                      className="tabular-nums"
+                      value={grouped(nonRecurringText)}
+                      onChange={(e) => setNonRecurring(digits(e.target.value))}
+                    />
+                  )}
                 </FormField>
                 <p className="text-body-2 text-ink">
-                  Total to sanction: <strong>{sanctionEntered ? rupees(sanctionR + sanctionNR) : "Not entered"}</strong>
+                  Total to sanction: <strong className="tabular-nums">{sanctionEntered ? rupees(sanctionR + sanctionNR) : "Not entered"}</strong>
                 </p>
-                {sanctionInvalid && sanctionEntered && (
-                  <p className="text-body-3 text-[var(--sa-text-status-error-base)]" role="alert">
+                {sanctionEntered && !sanctionInvalid && sanctionR + sanctionNR < app.total && (
+                  <p className="text-body-3 text-[var(--sa-text-status-warning-bolder)]">
+                    {rupees(app.total - sanctionR - sanctionNR)} less than the amount sought.
+                  </p>
+                )}
+                {/* The cost norms are read here as well as on the panel below, because this is
+                    where the figure is decided (coordinator's decision, 16 Sep 2026). */}
+                {norms && (
+                  <p className={`text-body-3 ${overNorm ? "text-[var(--sa-text-status-warning-bolder)]" : "text-ink-muted"}`}>
+                    {overNorm
+                      ? `${rupees(sanctionR + sanctionNR - norms.total)} above the ${rupees(norms.total)} admissible under the scheme's cost norms.`
+                      : `Admissible under the scheme's cost norms: ${rupees(norms.total)}.`}
+                  </p>
+                )}
+                {(problems.sanction || (sanctionInvalid && sanctionEntered)) && (
+                  <p className="text-body-3 text-[var(--sa-text-status-error-bolder)]" role="alert">
                     Enter both amounts. Together they must be more than ₹0 and no more than the {rupees(app.total)} sought.
                   </p>
                 )}
@@ -316,13 +487,63 @@ export function ReviewShell({ appId }: { appId: string }) {
             </Panel>
           )}
 
-          <Panel title="Your Decision">
+          <Panel
+            title="Your Decision"
+            actions={
+              <Menu items={moreActions} onSelect={onMoreAction} label="More actions on this file">
+                <Button appearance="outlined" size="sm" nowrap>
+                  More Actions <Icon name="expand_more" size={16} aria-hidden />
+                </Button>
+              </Menu>
+            }
+          >
+            <span id="officer-decision" tabIndex={-1} className="sr-only">Your decision</span>
             {!holdsFile ? (
               <p className="text-body-2 text-ink-muted">
-                This application is not with you. It is <strong className="text-ink">{statusLabel(app)}</strong>, and you are viewing it read-only.
+                This application is not with you. Its status is <strong className="text-ink">{statusLabel(app)}</strong>, and you are viewing it read-only.
               </p>
             ) : (
               <div className="space-y-4">
+                {/* What the file still needs, BEFORE the button is pressed (audit R-01). */}
+                {certifyingSeat && (
+                  <BeforeForwarding
+                    progress={progress}
+                    awaiting={awaiting.length}
+                    certifiedAt={app.certifiedAt}
+                    onShowAwaiting={() => showDocuments("awaiting")}
+                  />
+                )}
+                {canCertify && (
+                  <div className="space-y-3 rounded-md bg-surface-muted p-3">
+                    <Checkbox
+                      checked={certifyTicked && awaiting.length === 0}
+                      disabled={awaiting.length > 0}
+                      onChange={(e) => setCertifyTicked(e.target.checked)}
+                      // The certification step the scheme rules require before the file moves on (BR-SM2-05).
+                      label="I certify that the application and documents have been examined and are complete and correct as per scheme guidelines."
+                      description={
+                        awaiting.length > 0
+                          ? "Available once every required document has your verdict."
+                          : undefined
+                      }
+                    />
+                    <Button
+                      appearance="outlined"
+                      disabled={!certifyTicked || awaiting.length > 0}
+                      onClick={() => decide(actions.find((a) => a.action === "certify")!)}
+                    >
+                      Record Certification
+                    </Button>
+                  </div>
+                )}
+                {!certifyingSeat && corrected.size > 0 && correctionNote && (
+                  <p className="text-body-3 text-ink-muted">
+                    {corrected.size} document{corrected.size === 1 ? " was" : "s were"} replaced by the NGO on {formatDate(correctionNote.respondedAt!)}.{" "}
+                    <Button appearance="text" size="sm" onClick={() => showDocuments("changed")}>
+                      Review the Changed Documents
+                    </Button>
+                  </p>
+                )}
                 {decisions.some((d) => d.action === "raiseDeficiency") && (
                   <p className="text-body-3 text-ink-muted">
                     {markedDocs > 0
@@ -334,11 +555,8 @@ export function ReviewShell({ appId }: { appId: string }) {
                   label={sendsMessage ? "Message to the NGO" : "Remarks"}
                   id="officer-remarks"
                   required
-                  hint={
-                    sendsMessage
-                      ? "The NGO reads this above the items it must correct."
-                      : "Recorded on the file's movement history. Required for every decision."
-                  }
+                  error={problems.remarks}
+                  hint={sendsMessage ? "The NGO reads this above the items it must correct." : "Recorded on the file's movement history."}
                 >
                   {(control) => (
                     <Textarea {...control} value={remarks} onChange={(e) => setRemarks(e.target.value)} rows={4} />
@@ -346,65 +564,141 @@ export function ReviewShell({ appId }: { appId: string }) {
                 </FormField>
 
                 <div className="flex flex-col gap-2">
+                  {/* With a document marked Needs Correction, the deficiency leads and the forward
+                      steps back to an outlined control: the file's normal next move is the NGO's. */}
+                  {deficiencyLeads && (
+                    <Button fullWidth onClick={() => decide(deficiencyRule!)}>
+                      {deficiencyRule!.label(role, app)}
+                    </Button>
+                  )}
                   {primary.map((a) => (
                     <Button
                       key={a.action}
                       fullWidth
-                      disabled={(a.requiresRemarks && !remarks.trim()) || (a.action === "sanction" && sanctionInvalid)}
+                      appearance={deficiencyLeads ? "outlined" : undefined}
+                      disabled={a.action === "forward" && forwardBlocked}
+                      aria-describedby={a.action === "forward" && forwardBlocked ? "forward-blocked" : undefined}
                       onClick={() => decide(a)}
                     >
                       {a.label(role, app)}
                     </Button>
                   ))}
                   {certificationPending && (
-                    <Button fullWidth disabled>
+                    <Button
+                      fullWidth
+                      appearance={deficiencyLeads ? "outlined" : undefined}
+                      disabled={forwardBlocked}
+                      aria-describedby={forwardBlocked ? "forward-blocked" : undefined}
+                      onClick={() => decide(forwardRule)}
+                    >
                       {forwardRule.label(role, app)}
                     </Button>
                   )}
-                  {secondary.map((a) => (
-                    <Button
-                      key={a.action}
-                      fullWidth
-                      appearance="outlined"
-                      disabled={
-                        (a.requiresRemarks && !remarks.trim()) ||
-                        (a.action === "raiseDeficiency" && deficiencyItems.some((it) => !it.remark.trim()))
-                      }
-                      onClick={() => decide(a)}
-                    >
-                      {a.label(role, app)}
-                    </Button>
-                  ))}
+                  {/* The reason a disabled button is disabled is read at body contrast, not in the
+                      disabled style it explains — it was #8f949d on white, 3.04:1 (audit R-01). */}
+                  {forwardBlocked && (
+                    <p id="forward-blocked" className="text-body-3 text-ink-muted">
+                      {forwardBlockedReason(blockers, awaiting.length)}
+                    </p>
+                  )}
+                  {secondary
+                    .filter((a) => !(deficiencyLeads && a.action === "raiseDeficiency"))
+                    .map((a) => (
+                      <Button
+                        key={a.action}
+                        fullWidth
+                        appearance="outlined"
+                        onClick={() => decide(a)}
+                      >
+                        {a.label(role, app)}
+                      </Button>
+                    ))}
                   {danger.map((a) => (
                     <Button
                       key={a.action}
                       fullWidth
                       appearance="outlined"
                       variant="danger"
-                      disabled={a.requiresRemarks && !remarks.trim()}
                       onClick={() => decide(a)}
                     >
                       {a.label(role, app)}
                     </Button>
                   ))}
                 </div>
-                {certificationPending && (
-                  <p className="text-body-3 text-ink-muted">Record the certification above to forward the file.</p>
-                )}
-                {decisions.some((a) => a.requiresRemarks) && !remarks.trim() && (
-                  <p className="text-body-3 text-ink-muted">Enter remarks to enable these decisions.</p>
-                )}
-                {sanctioning && sanctionInvalid && !sanctionEntered && (
-                  <p className="text-body-3 text-ink-muted">Enter the amounts to sanction above to enable Sanction.</p>
-                )}
-                {docsEditable && decisions.some((d) => d.action === "raiseDeficiency") && markedDocs > 0 && deficiencyItems.some((it) => !it.remark.trim()) && (
-                  <p className="text-body-3 text-ink-muted">Give a reason for every document marked for correction.</p>
+                {problems.deficiency && (
+                  <p className="text-body-3 text-[var(--sa-text-status-error-bolder)]" role="alert">
+                    {problems.deficiency}
+                  </p>
                 )}
               </div>
             )}
           </Panel>
         </aside>
       </div>
+
+      {/*
+        On a phone the decision is the last block on a 9,000px page (audit R-08). This bar holds the
+        one thing the officer needs to know from anywhere on the file — what is still missing — and
+        the way back to the decision. It marks itself as an occupant of the bottom-right corner rail
+        (floating-element-placement.md), so the accessibility widget stacks above it rather than on
+        it. Above 1280px the decision is beside the file and the bar is not drawn.
+      */}
+      {holdsFile && (
+        <div
+          data-sa-corner-occupant=""
+          className="sticky bottom-0 z-[var(--sa-z-sticky)] -mx-4 border-t border-border bg-surface px-4 py-3 shadow-[0_-2px_8px_rgba(0,0,0,0.08)] xl:hidden"
+        >
+          {/* The right gutter keeps the button clear of the accessibility widget, which is
+              third-party markup parked in the same corner and cannot be moved. */}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 pe-[4.5rem]">
+            <p className="min-w-[9rem] flex-1 text-body-3 text-ink-muted">
+              <span className="block font-semibold text-ink">Your Decision</span>
+              {decisionStandFirst({ blockers, awaiting: awaiting.length, primary, role, app })}
+            </p>
+            <Button size="sm" nowrap onClick={goToDecision}>
+              Go to Decision
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* A forward over a document the officer has marked as defective. Not a block — the officer
+          may have a reason — but the question is asked and the answer goes onto the file. */}
+      <Modal
+        open={forwardWarning !== null}
+        onClose={() => setForwardWarning(null)}
+        size="sm"
+        title={`Forward with ${markedDocs} Document${markedDocs === 1 ? "" : "s"} Marked Needs Correction?`}
+        footer={
+          <div className="flex flex-wrap justify-end gap-3">
+            {deficiencyRule && (
+              <Button
+                appearance="outlined"
+                onClick={() => {
+                  setForwardWarning(null);
+                  decide(deficiencyRule);
+                }}
+              >
+                Raise Deficiency
+              </Button>
+            )}
+            <Button
+              onClick={() => {
+                const rule = forwardWarning;
+                setForwardWarning(null);
+                if (rule) decide(rule, { overMarked: true });
+              }}
+            >
+              Forward Anyway
+            </Button>
+          </div>
+        }
+      >
+        <p className="text-body-2 text-ink">
+          The NGO has not been asked to correct {markedDocs === 1 ? "it" : "them"}. Forwarding sends the file up the chain with the
+          {markedDocs === 1 ? " document" : " documents"} as {markedDocs === 1 ? "it stands" : "they stand"}, and your entry on the file records that.
+        </p>
+      </Modal>
 
       {/* One confirmation for every irreversible or outward decision; its words come from the rule. */}
       <Modal
@@ -429,13 +723,35 @@ export function ReviewShell({ appId }: { appId: string }) {
           <div className="space-y-4">
             <p className="text-body-2 text-ink">{confirmCopy.summary}</p>
             <DescriptionList columns={1} layout="inline" size="sm" divided items={confirmCopy.facts} />
+            {/* The norm is stated again where the order is issued, not only in the panel above. */}
+            {confirming?.action === "sanction" && overNorm && norms && (
+              <p className="text-body-2 text-[var(--sa-text-status-warning-bolder)]" role="alert">
+                This is {rupees(sanctionR + sanctionNR - norms.total)} above the {rupees(norms.total)} admissible under the scheme&apos;s cost norms.
+              </p>
+            )}
           </div>
         )}
       </Modal>
 
+      <ReviewReport
+        app={app}
+        open={reportOpen}
+        onClose={() => setReportOpen(false)}
+        overallRemark={remarks.trim() || ([...app.audit].reverse().find((e) => e.byRole === state.session && e.remarks)?.remarks ?? "")}
+      />
+
       <DocumentPreviewSheet
-        doc={previewing ? (app.documents.find((d) => d.id === previewing.id) ?? previewing) : null}
-        verdict={previewing ? DOC_STATUS_LABEL[(app.documents.find((d) => d.id === previewing.id) ?? previewing).reviewStatus] : undefined}
+        doc={previewedDoc}
+        verdict={previewedDoc ? VERDICT_LABEL[previewedDoc.reviewStatus] : undefined}
+        verdictControl={
+          previewedDoc && docsEditable ? (
+            <VerdictControl
+              doc={previewedDoc}
+              editable
+              onReview={(doc, status, remark) => reviewDocument(app.id, doc.id, status, remark)}
+            />
+          ) : undefined
+        }
         onClose={() => setPreviewing(null)}
       />
     </div>
@@ -449,7 +765,7 @@ export function ReviewShell({ appId }: { appId: string }) {
  * "Resolve Query and Send Back" with the query's text shown nowhere, and an ASO saw "Returned
  * for Rework · By the Programme Director" without the Director's reason (screen audit, 14 Sep).
  */
-function OpenItem({ app }: { app: GrantApplication }) {
+function OpenItem({ app, onShowDocument }: { app: GrantApplication; onShowDocument: (docId: string) => void }) {
   const proposed = proposedDeficiency(app);
   if (proposed) {
     return (
@@ -457,7 +773,7 @@ function OpenItem({ app }: { app: GrantApplication }) {
         <p className="text-body-2">
           Noted on {formatDate(proposed.raisedAt)} by {ROLES[proposed.raisedBy]?.label ?? "the ASO"}: {proposed.detail}
         </p>
-        <DeficiencyItems deficiency={proposed} app={app} />
+        <DeficiencyItems deficiency={proposed} app={app} onShowDocument={onShowDocument} />
         <p className="mt-2 text-body-3">
           Send it to the NGO with a message, or return it to the ASO without sending. The file cannot be forwarded until then.
         </p>
@@ -471,7 +787,7 @@ function OpenItem({ app }: { app: GrantApplication }) {
       return (
         <Alert status="info" title={`With the NGO for Correction since ${formatDate(d.communicatedAt!)}`}>
           {d.message && <p className="text-body-2">Message sent: {d.message}</p>}
-          <DeficiencyItems deficiency={d} app={app} />
+          <DeficiencyItems deficiency={d} app={app} onShowDocument={onShowDocument} />
         </Alert>
       );
     }
@@ -483,7 +799,7 @@ function OpenItem({ app }: { app: GrantApplication }) {
       return (
         <Alert status="info" title={`Corrected by the NGO on ${formatDate(d.respondedAt!)}`}>
           {d.response && <p className="text-body-2">The NGO&apos;s note: {d.response}</p>}
-          <DeficiencyItems deficiency={d} app={app} />
+          <DeficiencyItems deficiency={d} app={app} onShowDocument={onShowDocument} />
         </Alert>
       );
     }
@@ -491,11 +807,13 @@ function OpenItem({ app }: { app: GrantApplication }) {
 
   const query = [...app.queries].reverse().find((q) => !q.resolvedAt);
   if (app.status === "QueryRaised" && query) {
+    const by = ROLES[query.raisedBy];
     return (
-      <Alert status="warning" title="Returned for Rework">
+      <Alert status="warning" title="Returned to You from the Previous Level">
         <p className="text-body-2">
-          {ROLES[query.raisedBy]?.label ?? "An officer"} returned this file on {formatDate(query.raisedAt)}: {query.detail}
+          {by ? `${by.personName}, ${by.grade ? GRADE_FULL[by.grade] : by.label}` : "An officer"}, returned this file on {formatDate(query.raisedAt)}: {query.detail}
         </p>
+        <p className="mt-2 text-body-3">Answer it in your remarks and send the file back.</p>
       </Alert>
     );
   }
@@ -516,13 +834,29 @@ function OpenItem({ app }: { app: GrantApplication }) {
   return null;
 }
 
-function DeficiencyItems({ deficiency, app }: { deficiency: Deficiency; app: GrantApplication }) {
+/**
+ * What the deficiency asked for, and — once the NGO has answered — what came back. Each corrected
+ * DOCUMENT is a way into its own row, and each corrected FIELD prints the answer as submitted
+ * beside the answer now on the file: the Section Officer had to hunt the three changed items among
+ * twenty rows and could not see what a figure had been changed from (audit R-02).
+ */
+function DeficiencyItems({
+  deficiency,
+  app,
+  onShowDocument,
+}: {
+  deficiency: Deficiency;
+  app: GrantApplication;
+  onShowDocument: (docId: string) => void;
+}) {
   const items = deficiency.items ?? [];
   if (items.length === 0) return null;
+  const values = app.formValues ?? {};
   return (
     <ListGroup size="sm" aria-label="Items to correct" className="mt-2">
       {items.map((it) => {
         const doc = it.docId ? app.documents.find((d) => d.id === it.docId) : undefined;
+        const nowValue = it.fieldName ? values[it.fieldName] : undefined;
         return (
           <ListRow
             key={it.id}
@@ -537,7 +871,19 @@ function DeficiencyItems({ deficiency, app }: { deficiency: Deficiency; app: Gra
                     {it.response && it.kind === "note" ? ` · answer: ${it.response}` : ""}
                   </span>
                 )}
+                {it.correctedAt && it.kind === "field" && it.originalValue != null && (
+                  <span className="block">
+                    Submitted {it.originalValue} · now {nowValue ?? "not recorded"}
+                  </span>
+                )}
               </>
+            }
+            trailing={
+              it.correctedAt && doc ? (
+                <Button appearance="text" size="sm" nowrap onClick={() => onShowDocument(doc.id)}>
+                  Go to Document
+                </Button>
+              ) : undefined
             }
           />
         );
@@ -556,7 +902,9 @@ function ApplicationAnswers({ app }: { app: GrantApplication }) {
       {sections.length === 0 ? (
         <p className="text-body-2 text-ink-muted">The form answers for this application were not recorded in the register.</p>
       ) : (
-        <Accordion>
+        // Flush: the panel is already the card. Ten shaded, shadowed cards inside it read as heavy
+        // furniture beside the flat form language the applicant filled the same answers in.
+        <Accordion variant="flush">
           {sections.map((s) => (
             <AccordionItem
               key={`${s.index}-${s.title}`}
@@ -593,213 +941,509 @@ function answer(field: FieldDef, raw: string | undefined): string {
   return v;
 }
 
-/* ── Earlier sanctions ────────────────────────────────────────────────────── */
-
-function ProjectSanctions({ app }: { app: GrantApplication }) {
-  const { state } = useEAnudaan();
-  const earlier = state.applications
-    .filter((a) => a.institutionId === app.institutionId && a.id !== app.id && a.sanction)
-    .sort((a, b) => b.financialYear.localeCompare(a.financialYear));
-  return (
-    <Panel title="Earlier Sanctions for This Project">
-      {earlier.length === 0 ? (
-        <p className="text-body-2 text-ink-muted">No earlier grant has been sanctioned for project {app.institutionId}.</p>
-      ) : (
-        <ListGroup>
-          {earlier.map((a) => (
-            <ListRow
-              key={a.id}
-              title={`FY ${a.financialYear} · ${a.caseType === "New" ? "New project" : `${a.instalment ? ordinal(a.instalment) : "Next"} instalment`}`}
-              description={`Sanction ${a.sanction!.orderNo} · ${formatDate(a.sanction!.sanctionedAt)}`}
-              trailing={<strong className="text-body-2 text-ink">{formatGrant(a.sanction!.total)}</strong>}
-            />
-          ))}
-        </ListGroup>
-      )}
-    </Panel>
-  );
-}
-
 /* ── local building blocks ──────────────────────────────────────────────── */
 
 function toneOf(action: AuditAction): "neutral" | "info" | "success" | "warning" | "danger" {
-  if (action === "sanction" || action === "concur" || action === "respondDeficiency") return "success";
+  if (action === "sanction" || action === "concur" || action === "respondDeficiency" || action === "releaseFunds") return "success";
   if (action === "reject") return "danger";
-  if (action === "raiseDeficiency" || action === "communicateDeficiency" || action === "raiseQuery" || action === "return" || action === "routeDown") return "warning";
+  if (action === "raiseDeficiency" || action === "communicateDeficiency" || action === "raiseQuery" || action === "return" || action === "routeDown" || action === "showCauseIssued") return "warning";
   return "neutral";
-}
-
-/** A section of the review: the design system's Card with its section heading. */
-function Panel({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <Card variant="outlined">
-      <CardBody className="space-y-4">
-        <SectionTitle title={title} />
-        {children}
-      </CardBody>
-    </Card>
-  );
 }
 
 function Facts({ items }: { items: [string, string][] }) {
   return <DescriptionList columns={2} size="sm" divided items={items.map(([term, value]) => ({ term, value }))} />;
 }
 
-const DOC_STATUSES: DocReviewStatus[] = ["Pending", "Verified", "Deficient", "Not applicable"];
+/** The verdict as officers read it, in the glossary's words (OFFICER_VERDICT). */
+const VERDICT_LABEL: Record<DocReviewStatus, string> = { ...OFFICER_VERDICT, "Not applicable": "Not Applicable" };
 
-/** The verdict as officers read it. "Deficient" is a document that needs correction — not a "query". */
-const DOC_STATUS_LABEL: Record<DocReviewStatus, string> = {
-  Pending: "Not reviewed",
-  Verified: "Verified",
-  Deficient: "Needs correction",
-  "Not applicable": "Not applicable",
-};
+/** The row's id, so the decision panel and the deficiency banner can send the officer to it. */
+const docRowId = (docId: string) => `doc-${docId}`;
+
+/** The documents as the list draws them: annual first, each group by checklist number. */
+function documentsInOrder(app: Pick<GrantApplication, "documents">): MockDoc[] {
+  const bySlot = [...app.documents].sort((a, b) => a.slot - b.slot);
+  return [...bySlot.filter((d) => d.group === "annual"), ...bySlot.filter((d) => d.group !== "annual")];
+}
+
+/** Digits only — what a rupee field stores. */
+const digits = (v: string) => v.replace(/[^\d]/g, "");
+
+/** The same digits with Indian grouping, as the officer types: "6300000" reads "63,00,000". */
+const grouped = (v: string) => (v === "" ? "" : Number(v).toLocaleString("en-IN"));
+
+/** Why the forward is not available, in one sentence, at reading contrast (audit R-01). */
+function forwardBlockedReason(blockers: readonly ("verdicts" | "certification")[], awaiting: number): string {
+  if (blockers.includes("verdicts") && blockers.includes("certification")) {
+    return `${awaiting} document${awaiting === 1 ? "" : "s"} still need${awaiting === 1 ? "s" : ""} your verdict, and the certification is not yet recorded.`;
+  }
+  if (blockers.includes("verdicts")) {
+    return `${awaiting} document${awaiting === 1 ? "" : "s"} still need${awaiting === 1 ? "s" : ""} your verdict.`;
+  }
+  return "Record the certification to forward the file.";
+}
+
+/** The phone bar's second line: SHORT — what is missing, or what the decision is. */
+function decisionStandFirst({
+  blockers,
+  awaiting,
+  primary,
+  role,
+  app,
+}: {
+  blockers: readonly ("verdicts" | "certification")[];
+  awaiting: number;
+  primary: Rule[];
+  role: Parameters<Rule["label"]>[0];
+  app: GrantApplication;
+}): string {
+  if (blockers.includes("verdicts")) return `${awaiting} document${awaiting === 1 ? "" : "s"} need${awaiting === 1 ? "s" : ""} your verdict.`;
+  if (blockers.includes("certification")) return "The certification is not yet recorded.";
+  const first = primary[0];
+  return first ? first.label(role, app) : "Record your decision on this file.";
+}
 
 /**
- * One document's review. The remark follows the verdict, as settled in the review call of
- * 11 Sep 2026 (T752–768): nothing to remark while a document is not reviewed, an optional remark
- * when it is Verified, and a MANDATORY one when it needs correction. Both are SAVED as they are
- * made, so a refresh keeps them and a deficiency is built from them.
+ * What the Assistant Section Officer must do before the file can be forwarded, said BEFORE the
+ * button is pressed and with a way to each step (audit R-01). The ASO used to press "Forward", be
+ * told to record a certification, find the certification disabled, and scroll 3,700px to learn why.
+ *
+ * DS Audit: ListGroup / ListRow ✅ · Icon ✅ · Button ✅ — Stepper carries no step BODY (a link, a
+ * checkbox), so the steps are a list. A DecisionPanel template is proposed for the DS (audit §4.9).
  */
-function DocReviewRow({
-  doc: d,
-  editable,
-  opened,
-  onOpen,
-  onReview,
+function BeforeForwarding({
+  progress,
+  awaiting,
+  certifiedAt,
+  onShowAwaiting,
 }: {
-  doc: MockDoc;
-  editable: boolean;
-  opened: boolean;
-  onOpen: (doc: MockDoc) => void;
-  onReview: (doc: MockDoc, status: DocReviewStatus, remark: string) => void;
+  progress: { reviewed: number; required: number };
+  awaiting: number;
+  certifiedAt?: string;
+  onShowAwaiting: () => void;
 }) {
-  const [remark, setRemark] = React.useState(d.officerRemarks ?? "");
-  const [touched, setTouched] = React.useState(false);
-  const status = d.reviewStatus;
-  const needsRemark = status === "Deficient";
-  const reviewer = docReviewerLine(d);
-
+  const verdictsDone = awaiting === 0;
   return (
-    <li className="flex flex-col gap-3 py-3 md:flex-row md:items-start">
-      <div className="min-w-0 flex-1">
-        <span className="font-medium text-ink">
-          {d.slot}. {d.title}
-        </span>
-        {!d.optional && <span className="sr-only"> (required document)</span>}
-        <span className="block break-all text-body-3 text-ink-muted">
-          {d.fileName ? `${d.fileName}${d.uploadedAt ? ` · uploaded ${formatDate(d.uploadedAt)}` : ""}` : "No file uploaded"}
-          {d.versions?.length ? ` · ${d.versions.length} earlier version${d.versions.length === 1 ? "" : "s"} on record` : ""}
-        </span>
-        <div className="mt-1 flex flex-wrap items-center gap-2">
-          {d.fileName && (
-            <Button appearance="outlined" size="sm" onClick={() => onOpen(d)} aria-label={`View ${d.title}`}>
-              <Icon name="visibility" size={16} aria-hidden /> View
-            </Button>
-          )}
-          {opened && (
-            <Badge status="neutral" size="sm">
-              Opened
-            </Badge>
-          )}
-          {d.reUploadedThisYear && (
-            <Badge status="warning" size="sm">
-              Permanent · re-uploaded this year · verify
-            </Badge>
-          )}
-        </div>
-      </div>
-      {editable ? (
-        <div className="flex flex-col gap-2 md:w-[22rem] md:shrink-0">
-          <Select
-            value={status}
-            onChange={(e) => onReview(d, e.target.value as DocReviewStatus, remark)}
-            aria-label={`Review of ${d.title}`}
-          >
-            {DOC_STATUSES.map((s) => (
-              <option key={s} value={s}>
-                {DOC_STATUS_LABEL[s]}
-              </option>
-            ))}
-          </Select>
-          {status !== "Pending" && (
-            <FormField
-              id={`remark-${d.id}`}
-              label={needsRemark ? "What must the NGO correct?" : `Remarks on ${d.title}`}
-              labelHidden={!needsRemark}
-              required={needsRemark}
-              optional={!needsRemark}
-              error={needsRemark && touched && !remark.trim() ? "Give the reason, so the NGO knows what to correct." : undefined}
-            >
-              {(c) => (
-                <Input
-                  {...c}
-                  value={remark}
-                  onChange={(e) => setRemark(e.target.value)}
-                  onBlur={() => {
-                    setTouched(true);
-                    if (remark !== (d.officerRemarks ?? "")) onReview(d, status, remark);
-                  }}
-                  placeholder={needsRemark ? "" : "Remarks (optional)"}
-                />
-              )}
-            </FormField>
-          )}
-        </div>
-      ) : (
-        <div className="text-body-2 md:w-[22rem] md:shrink-0">
-          <span className="font-semibold text-ink">{DOC_STATUS_LABEL[status]}</span>
-          {/* Who gave this verdict and when: "Verified by the Assistant Section Officer, 12 Sep 2026". */}
-          {reviewer && <span className="block text-body-3 text-ink-muted"> {reviewer}</span>}
-          {d.officerRemarks && <span className="block text-body-3 text-ink-muted">{d.officerRemarks}</span>}
-        </div>
-      )}
-    </li>
+    <div className="space-y-2">
+      <SectionTitle as={3} title="Before You Forward" />
+      <ListGroup size="sm" aria-label="Before you forward">
+        <ListRow
+          leading={<StepMark done={verdictsDone} />}
+          title="Give a Verdict on Every Required Document"
+          description={
+            verdictsDone ? (
+              `All ${progress.required} required documents have your verdict.`
+            ) : (
+              <>
+                <span className="block">
+                  {progress.reviewed} of {progress.required} done.
+                </span>
+                <Button appearance="text" size="sm" className="!justify-start !px-0" onClick={onShowAwaiting}>
+                  {awaiting} Document{awaiting === 1 ? "" : "s"} Still Need{awaiting === 1 ? "s" : ""} Your Verdict
+                </Button>
+              </>
+            )
+          }
+        />
+        <ListRow
+          leading={<StepMark done={!!certifiedAt} />}
+          title="Record the Certification"
+          description={certifiedAt ? `Recorded on ${formatDate(certifiedAt)}.` : undefined}
+        />
+      </ListGroup>
+    </div>
+  );
+}
+
+function StepMark({ done }: { done: boolean }) {
+  return (
+    <Icon
+      name={done ? "check_circle" : "radio_button_unchecked"}
+      size={20}
+      fill={done}
+      className={done ? "text-[var(--sa-icon-status-success-bolder)]" : "text-ink-muted"}
+      aria-hidden
+    />
   );
 }
 
 /**
- * The Documents list. The live screen splits the checklist into annual documents (verified each
- * year) and permanent ones (view-only unless re-uploaded), each row with its own verdict.
+ * The officer's own verdict on one document — two options, in the row, so twenty verdicts are
+ * twenty clicks and not twenty dropdowns 185px apart (audit R-03). The remark follows the verdict,
+ * as settled in the review call of 11 Sep 2026 (T752-768, O5): nothing to remark while a document
+ * is Not Reviewed, an optional remark when it is Verified, and a MANDATORY one when it needs
+ * correction. Both are SAVED as they are made, so a refresh keeps them and a deficiency is built
+ * from them.
+ */
+function VerdictControl({
+  doc: d,
+  editable,
+  onReview,
+}: {
+  doc: MockDoc;
+  editable: boolean;
+  onReview: (doc: MockDoc, status: DocReviewStatus, remark: string) => void;
+}) {
+  const reviewer = docReviewerLine(d);
+  if (!editable) {
+    return (
+      <div className="text-body-3">
+        {/* Not "Your verdict": read-only, it is an earlier grade's — the line under it says whose. */}
+        <span className="block font-semibold text-ink">{VERDICT_LABEL[d.reviewStatus]}</span>
+        {reviewer && <span className="block text-ink-muted">{reviewer}</span>}
+        {d.officerRemarks && <span className="block text-ink-muted">{d.officerRemarks}</span>}
+      </div>
+    );
+  }
+  // A document with no file cannot be "Verified": what is offered is what can honestly be recorded.
+  const options: { value: DocReviewStatus; label: string }[] = d.fileName
+    ? [
+        { value: "Verified", label: VERDICT_LABEL.Verified },
+        { value: "Deficient", label: VERDICT_LABEL.Deficient },
+      ]
+    : d.optional
+      ? [
+          { value: "Not applicable", label: VERDICT_LABEL["Not applicable"] },
+          { value: "Deficient", label: VERDICT_LABEL.Deficient },
+        ]
+      : [{ value: "Deficient", label: VERDICT_LABEL.Deficient }];
+  return (
+    <SegmentedControl<DocReviewStatus>
+      ariaLabel={`Your verdict on ${d.title}`}
+      value={d.reviewStatus}
+      options={options}
+      onChange={(v) => onReview(d, v, d.officerRemarks ?? "")}
+    />
+  );
+}
+
+/** The remark that follows a verdict, under the row it belongs to. */
+function VerdictRemark({
+  doc: d,
+  onReview,
+}: {
+  doc: MockDoc;
+  onReview: (doc: MockDoc, status: DocReviewStatus, remark: string) => void;
+}) {
+  const [remark, setRemark] = React.useState(d.officerRemarks ?? "");
+  const [touched, setTouched] = React.useState(false);
+  const needsRemark = d.reviewStatus === "Deficient";
+  return (
+    <div className="max-w-xl">
+      <FormField
+        id={`remark-${d.id}`}
+        label={needsRemark ? "What must the NGO correct?" : "Your remark on this document"}
+        required={needsRemark}
+        optional={!needsRemark}
+        error={needsRemark && touched && !remark.trim() ? "Give the reason, so the NGO knows what to correct." : undefined}
+      >
+        {(c) => (
+          <Input
+            {...c}
+            size="sm"
+            value={remark}
+            onChange={(e) => setRemark(e.target.value)}
+            onBlur={() => {
+              setTouched(true);
+              if (remark !== (d.officerRemarks ?? "")) onReview(d, d.reviewStatus, remark);
+            }}
+          />
+        )}
+      </FormField>
+    </div>
+  );
+}
+
+/** A folded row's verdict line: "Verified by ASO, 21 Jul 2026 · with a remark". */
+function verdictSummary(d: MockDoc): string {
+  const by = d.reviewedBy ? ROLES[d.reviewedBy] : undefined;
+  const who = by && d.reviewedAt ? ` by ${by.shortLabel}, ${formatDate(d.reviewedAt)}` : "";
+  return `${VERDICT_LABEL[d.reviewStatus]}${who}${d.officerRemarks?.trim() ? " · with a remark" : ""}`;
+}
+
+/**
+ * The Documents list: annual documents (verified and remarked each year) and permanent ones, each
+ * row carrying the automatic check as ADVICE and the officer's own verdict beside it — the machine
+ * observation kept at the side of the review, never in place of it (review call T752-771).
+ *
+ * Rebuilt after the design-director audit of 16 Sep 2026: compact rows (R-03), one count (R-06),
+ * a filter for each question an officer asks of the list, a bulk verdict for the documents nothing
+ * was found wrong with (R-01), and the changed documents of a correction named as such (R-02).
  */
 function DocumentsPanel({
   app,
   editable,
-  opened,
+  viewer,
+  checkOf,
+  corrected,
+  progressLabel,
+  filter,
+  onFilter,
+  bulk,
+  onVerifyRemaining,
   onOpen,
   onReview,
 }: {
   app: GrantApplication;
   editable: boolean;
-  opened: ReadonlySet<string>;
+  /** The signed-in officer, so a verdict of THEIRS is never folded away under their hand. */
+  viewer: RoleId | null;
+  checkOf: (doc: MockDoc) => DocVerdict | undefined;
+  corrected: ReadonlySet<string>;
+  progressLabel: string;
+  filter: { id: ReviewDocFilter; ids: readonly string[] } | null;
+  onFilter: (id: ReviewDocFilter | null) => void;
+  bulk: MockDoc[];
+  onVerifyRemaining: () => void;
   onOpen: (doc: MockDoc) => void;
   onReview: (doc: MockDoc, status: DocReviewStatus, remark: string) => void;
 }) {
-  const bySlot = [...app.documents].sort((a, b) => a.slot - b.slot);
+  const [historyOf, setHistoryOf] = React.useState<MockDoc | null>(null);
+  const [reportOpen, setReportOpen] = React.useState<Record<string, boolean>>({});
+  // Rows whose optional remark the officer asked for from the menu.
+  const [remarkOpen, setRemarkOpen] = React.useState<Record<string, boolean>>({});
+  // Which read-only rows are unfolded.
+  const [unfolded, setUnfolded] = React.useState<Record<string, boolean>>({});
+  const review = (doc: MockDoc, status: DocReviewStatus, remark: string) => {
+    // A document that needs correction needs a reason, so its remark opens with the verdict.
+    if (status === "Deficient") setRemarkOpen((o) => ({ ...o, [doc.id]: true }));
+    onReview(doc, status, remark);
+  };
+  const ordered = documentsInOrder(app);
+  const shown = filter ? new Set(filter.ids) : null;
   const groups = [
-    { label: "Annual Documents", hint: "Verified each year", docs: bySlot.filter((d) => d.group === "annual") },
-    { label: "Permanent Documents", hint: "View only unless re-uploaded this year", docs: bySlot.filter((d) => d.group === "permanent") },
-  ].filter((g) => g.docs.length > 0);
-  const reviewed = app.documents.filter((d) => d.reviewStatus !== "Pending").length;
+    { id: "annual", label: "Annual Documents", hint: "Verified and remarked each year", docs: ordered.filter((d) => d.group === "annual") },
+    { id: "permanent", label: "Permanent Documents", hint: "One-time — view only unless re-uploaded this year", docs: ordered.filter((d) => d.group !== "annual") },
+  ]
+    .map((g) => ({ ...g, docs: shown ? g.docs.filter((d) => shown.has(d.id)) : g.docs }))
+    .filter((g) => g.docs.length > 0);
+  const progress = verdictProgress(app);
+  const facts = applicantFacts(app.formValues ?? {});
+  const countOf = (f: ReviewDocFilter) => ordered.filter((d) => matchesReviewFilter(app, d, f, checkOf)).length;
+  const awaitingCount = countOf("awaiting");
+  const filters = [
+    { id: "awaiting" as const, label: editable ? "Needs Your Verdict" : "Not Reviewed", count: awaitingCount, ...(editable && awaitingCount > 0 ? { tone: "danger" as const } : {}) },
+    { id: "flagged" as const, label: "Flagged by the Automatic Check", count: countOf("flagged") },
+    ...(countOf("correction") > 0 ? [{ id: "correction" as const, label: "Marked Needs Correction", count: countOf("correction") }] : []),
+    ...(corrected.size > 0 ? [{ id: "changed" as const, label: "Changed Since the Deficiency", count: countOf("changed") }] : []),
+  ];
   // Read-only once the ASO has certified. Each verdict names who gave it; the certification line
   // stands in only where a verdict was recorded without that (a copy saved before it was kept).
   const unattributed = app.documents.some((d) => d.reviewStatus !== "Pending" && !docReviewerLine(d));
   const attribution = editable || !unattributed ? null : verdictAttribution(app);
   return (
-    <Panel title={`Documents (${reviewed} of ${app.documents.length} reviewed)`}>
+    <Panel title="Documents">
       <div className="space-y-6">
         {attribution && <p className="text-body-3 text-ink-muted">{attribution}</p>}
-        {groups.map((g) => (
-          <div key={g.label}>
-            <SectionTitle as={3} title={g.label} description={g.hint} />
-            <ul className="divide-y divide-line">
-              {g.docs.map((d) => (
-                <DocReviewRow key={d.id} doc={d} editable={editable} opened={opened.has(d.id)} onOpen={onOpen} onReview={onReview} />
-              ))}
-            </ul>
-          </div>
-        ))}
+        <DocumentChecklist
+          visibleCount={groups.reduce((n, g) => n + g.docs.length, 0)}
+          progressLabel={progressLabel}
+          ready={progress.reviewed}
+          required={progress.required}
+          filters={filters}
+          activeFilter={filter?.id ?? null}
+          onFilterChange={(id) => onFilter((id as ReviewDocFilter | null) ?? null)}
+          bulkAction={
+            editable
+              ? {
+                  label: "Mark All Remaining as Verified",
+                  count: bulk.length,
+                  description: "Required documents with no verdict yet that the automatic check read as consistent. Anything it flagged, and anything the NGO corrected, is left for you.",
+                  confirmTitle: `Mark ${bulk.length} Document${bulk.length === 1 ? "" : "s"} as Verified?`,
+                  confirmDescription: `A verdict of Verified is recorded in your name against each of the ${bulk.length} documents, and each one is named on the file. You can change any of them before the file is forwarded.`,
+                  onConfirm: onVerifyRemaining,
+                }
+              : undefined
+          }
+        >
+          {groups.map((g) => (
+            <DocumentChecklistGroup key={g.id} title={g.label} description={g.hint}>
+              {g.docs.map((d) => {
+                const verdict = checkOf(d);
+                const state = docState(d, verdict ? { verdict } : undefined);
+                const flagged = isFlagged(verdict);
+                const hasReport = !!verdict && verdict.state !== "pending" && verdict.state !== "unavailable";
+                // A settled verdict folds to one line: read-only, or an earlier grade's. The row
+                // the officer is working on never folds — the verdict control is IN the row, and
+                // folding it under the hand that had just clicked it took the focus with it.
+                const settled =
+                  (d.reviewStatus === "Verified" || d.reviewStatus === "Not applicable") &&
+                  (!editable || (!!d.reviewedBy && d.reviewedBy !== viewer));
+                const remarkVisible =
+                  editable && d.reviewStatus !== "Pending" && (d.reviewStatus === "Deficient" || !!d.officerRemarks || !!remarkOpen[d.id]);
+                const showReport = !!reportOpen[d.id] && hasReport;
+                const previous = d.versions?.[d.versions.length - 1];
+                return (
+                  <DocumentRow
+                    key={d.id}
+                    id={docRowId(d.id)}
+                    linkAs={Link}
+                    density="compact"
+                    clampReason
+                    number={d.slot}
+                    title={d.title}
+                    required={!d.optional}
+                    state={rowStateOf(state)}
+                    statusLabel={d.fileName ? officerCheckLabel(verdict) : d.optional ? "Optional · not uploaded" : "Not uploaded"}
+                    collapsible={settled}
+                    expanded={!!unfolded[d.id]}
+                    onExpandedChange={(open) => setUnfolded((u) => ({ ...u, [d.id]: open }))}
+                    summary={verdictSummary(d)}
+                    hint={
+                      [
+                        // A corrected file names what it replaced; the version count would say the
+                        // same thing again, and "Opened" is the old gate, which is now the verdict.
+                        corrected.has(d.id) && d.uploadedAt
+                          ? `Corrected ${formatDate(d.uploadedAt)}${previous ? ` · replaces ${previous.fileName}` : ""}`
+                          : d.versions?.length
+                            ? `${d.versions.length} earlier version${d.versions.length === 1 ? "" : "s"} on record`
+                            : null,
+                        d.reUploadedThisYear ? "Permanent document, re-uploaded this year" : null,
+                      ]
+                        .filter(Boolean)
+                        .join(" · ") || undefined
+                    }
+                    file={d.fileName ? { name: d.fileName, size: d.sizeKb != null ? fileSizeLabel(d.sizeKb) : undefined, date: d.uploadedAt ? formatDate(d.uploadedAt) : undefined } : undefined}
+                    reason={flagged ? (verdict?.reasons?.[0] ?? verdict?.summary) : undefined}
+                    // The remark belongs under the row it is about; the check's report opens in the
+                    // same place, from the row menu. One disclosure, never two fighting each other.
+                    findings={
+                      remarkVisible || showReport ? (
+                        <div className="space-y-3">
+                          {remarkVisible && <VerdictRemark key={`${d.id}-${d.reviewStatus}`} doc={d} onReview={review} />}
+                          {showReport && <Findings verdict={verdict!} title={d.title} facts={facts} applicationFy={app.financialYear} officer />}
+                        </div>
+                      ) : undefined
+                    }
+                    showFindingsToggle={false}
+                    findingsOpen
+                    action={
+                      d.fileName ? (
+                        <Button appearance="outlined" size="sm" nowrap onClick={() => onOpen(d)} aria-label={`View ${d.title}`}>
+                          <Icon name="visibility" size={16} aria-hidden /> View
+                        </Button>
+                      ) : undefined
+                    }
+                    menu={{
+                      items: [
+                        ...(hasReport ? [{ id: "report", label: reportOpen[d.id] ? "Hide Automatic Check Report" : "Automatic Check Report", icon: "fact_check" }] : []),
+                        ...(editable && d.reviewStatus !== "Pending" && !remarkVisible ? [{ id: "remark", label: "Add a Remark", icon: "edit_note" }] : []),
+                        ...(editable && d.reviewStatus !== "Pending" ? [{ id: "clear", label: "Clear the Verdict", icon: "undo" }] : []),
+                        ...(d.fileName ? [{ id: "history", label: "Upload History", icon: "history" }] : []),
+                      ],
+                      onSelect: (id: string) => {
+                        if (id === "report") setReportOpen((o) => ({ ...o, [d.id]: !o[d.id] }));
+                        else if (id === "remark") setRemarkOpen((o) => ({ ...o, [d.id]: true }));
+                        else if (id === "clear") {
+                          setRemarkOpen((o) => ({ ...o, [d.id]: false }));
+                          onReview(d, "Pending", "");
+                        } else setHistoryOf(d);
+                      },
+                    }}
+                    aside={<VerdictControl doc={d} editable={editable} onReview={review} />}
+                  />
+                );
+              })}
+            </DocumentChecklistGroup>
+          ))}
+        </DocumentChecklist>
+
+        <OfficerSupportingDocuments app={app} editable={editable} />
       </div>
+      <DocumentHistorySheet
+        open={historyOf != null}
+        onClose={() => setHistoryOf(null)}
+        title={historyOf ? `Upload History — ${historyOf.title}` : ""}
+        linkAs={Link}
+        entries={historyEntriesOfRecord(historyOf ?? {}).map((h) => ({
+          id: h.id,
+          fileName: h.fileName,
+          size: h.sizeKb != null ? fileSizeLabel(h.sizeKb) : undefined,
+          date: h.uploadedOn,
+          current: h.current,
+          status: h.status,
+          note: h.note,
+          onView: h.current && historyOf ? () => { onOpen(historyOf); setHistoryOf(null); } : undefined,
+        }))}
+      />
     </Panel>
+  );
+}
+
+/**
+ * "Officer Supporting Documents (n)" — files an officer attaches to the review, with an optional
+ * title, as the live DECISION screens carry them.
+ */
+function OfficerSupportingDocuments({ app, editable }: { app: GrantApplication; editable: boolean }) {
+  const { addOfficerDocument, removeOfficerDocument } = useEAnudaan();
+  const [title, setTitle] = React.useState("");
+  const [refused, setRefused] = React.useState<string | null>(null);
+  const input = React.useRef<HTMLInputElement>(null);
+  const files = app.officerDocuments ?? [];
+  const rule = acceptFromNote("PDF / JPG / PNG · Max 5 MB per file");
+  return (
+    <div className="space-y-3">
+      <SectionTitle as={3} title={`Officer Supporting Documents (${files.length})`} description={editable ? "Attached to your forward, deficiency or query, and kept with the file." : undefined} />
+      {files.length > 0 ? (
+        <ListGroup size="sm" aria-label="Officer supporting documents">
+          {files.map((f) => (
+            <ListRow
+              key={f.id}
+              leading={<Icon name="attach_file" size={20} className="text-ink-muted" />}
+              title={f.title ?? f.fileName}
+              description={`${f.title ? `${f.fileName} · ` : ""}${fileSizeLabel(f.sizeKb)} · ${ROLES[f.uploadedBy]?.label ?? "Officer"}, ${formatDate(f.uploadedAt)}`}
+              trailing={
+                editable ? (
+                  <Button appearance="text" size="sm" onClick={() => removeOfficerDocument(app.id, f.id)} aria-label={`Remove ${f.title ?? f.fileName}`}>
+                    Remove
+                  </Button>
+                ) : undefined
+              }
+            />
+          ))}
+        </ListGroup>
+      ) : (
+        <p className="text-body-2 text-ink-muted">No supporting document has been attached.</p>
+      )}
+      {editable && (
+        <div className="flex flex-wrap items-end gap-3">
+          <div className="min-w-0 flex-1 basis-64">
+            <FormField id={`odoc-title-${app.id}`} label="Document Title" optional hint={rule.label}>
+              {(c) => <Input {...c} size="sm" value={title} onChange={(e) => setTitle(e.target.value)} />}
+            </FormField>
+          </div>
+          <Button appearance="outlined" size="sm" onClick={() => input.current?.click()}>
+            <Icon name="upload" size={16} aria-hidden /> Upload PDF, JPG or PNG
+          </Button>
+          <input
+            ref={input}
+            type="file"
+            accept={rule.inputAccept}
+            className="sr-only"
+            tabIndex={-1}
+            aria-hidden
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              e.target.value = "";
+              if (!f) return;
+              const file = { name: f.name, sizeKb: Math.max(1, Math.round(f.size / 1024)) };
+              const why = rejectionOf(file, rule);
+              if (why) {
+                setRefused(why === "rejected-size" ? `${f.name} is ${fileSizeLabel(file.sizeKb)}. The limit is 5 MB.` : `${f.name} is not a PDF, JPG or PNG file.`);
+                return;
+              }
+              setRefused(null);
+              addOfficerDocument(app.id, { ...file, title });
+              setTitle("");
+            }}
+          />
+          {refused && (
+            <p className="basis-full text-body-3 text-[var(--sa-text-status-error-bolder)]" role="alert">
+              {refused}
+            </p>
+          )}
+        </div>
+      )}
+    </div>
   );
 }

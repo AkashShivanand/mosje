@@ -1,140 +1,605 @@
 "use client";
 
 /**
- * The upload step's documents, drawn in the form-wizard visual language
- * (docs/design-system/form-wizard-visual-language.md §7): mandatory and optional documents
- * as two sub-sections of document tiles, two to a row.
+ * The Upload Documents step — the e-Anudaan Document Centre (docs/plans/2026-09-16-e-anudaan-document-centre.md).
  *
- * DS Audit: FormCard ✅ · DocumentTiles / DocumentTile ✅ (added for this language) · Alert ✅ ·
- * Badge ✅ · Button ✅ · Icon ✅.
+ * DS Audit: DocumentChecklist / DocumentChecklistGroup ➕ added · DocumentRow ➕ added ·
+ * DocumentPlacementTray ➕ added · DocumentHistorySheet ➕ added · DocumentFindings ➕ added ·
+ * ErrorSummary ✅ (inside DocumentChecklist) · Chip ✅ · Button ✅ · Menu ✅ · SideSheet ✅.
  *
- * An upload is "Uploaded", never "Verified": the automated check's findings are shown only
- * where they ask something of the applicant (the document may be the wrong one, or not valid).
- * A clean check says so in one line. Verification is the officer's.
+ * What it replaces, and why: one tall card per document made a verified file and a rejected one
+ * the same size, so the document that needed action was found by scrolling past ten that did not;
+ * four pills competed on every card; batch upload placed files silently; Continue was a dead
+ * button; Replace destroyed the earlier file. Now: one compact row per document, height following
+ * need; progress counted as documents READY; three filter chips for the three questions a clerk
+ * has; a tray that shows where every dropped file went; an enabled Continue that explains itself;
+ * and history for every document.
+ *
+ * The step's Continue is the wizard's button. The wizard asks this component through the ref
+ * (`tryContinue`) and moves on only when it answers true.
  */
 
 import * as React from "react";
-import { Alert, Button, DocumentTile, DocumentTiles, FormCard, Icon } from "@mosje/design-system";
-import type { DocDef } from "@/lib/e-anudaan/form-schema";
+import Link from "next/link";
 import {
-  DEMO_VERDICTS,
-  demoVerdictFor,
-  verdictHeadline,
-  withYearCheck,
-  type UploadedDoc,
-} from "@/lib/e-anudaan/doc-verification";
-import { formatDate } from "@/lib/e-anudaan/format";
+  Button,
+  DocumentChecklist,
+  DocumentChecklistGroup,
+  DocumentHistorySheet,
+  DocumentPlacementTray,
+  DocumentRow,
+} from "@mosje/design-system";
+import type { DocDef } from "@/lib/e-anudaan/form-schema";
+import { demoVerdictFor, withYearCheck, type UploadedDoc } from "@/lib/e-anudaan/doc-verification";
+import {
+  DEMO_DOC_STATE_EVENT,
+  DOC_LIST_EVENT,
+  DOC_STATE_META,
+  acceptFromNote,
+  blockerTitle,
+  commitUpload,
+  fileSizeLabel,
+  groupDocuments,
+  historyEntries,
+  orderForAttention,
+  placeFiles,
+  rejectionOf,
+  requestCheck,
+  rowReason,
+  seedOf,
+  summariseDocuments,
+  withdrawUpload,
+  type DemoDocStateDetail,
+  type DocBucket,
+  type DocListDetail,
+  type DocState,
+  type PlacementItem,
+  type UploadAttempt,
+} from "@/lib/e-anudaan/document-centre";
+import { DEMO_FILL_EVENT, DEMO_HOLD_CHECKS_KEY, type DemoFillDetail } from "@/lib/e-anudaan/demo-scenarios";
+import { ApplicantFindings, DocumentViewSheet, rowStateOf, useSettleChecks } from "./document-centre-parts";
 
-export function DocumentsChecklist({
-  documents,
-  uploaded,
-  applicationFy,
-  onChange,
-  accept = "PDF, JPG or PNG",
-  maxSize = "5 MB",
-}: {
-  documents: readonly DocDef[];
-  uploaded: Record<number, UploadedDoc>;
-  /** The application's financial year — what each document's own year is checked against. */
-  applicationFy?: string;
-  onChange: (next: Record<number, UploadedDoc>) => void;
-  accept?: string;
-  maxSize?: string;
-}) {
-  const checked = withYearCheck(documents, uploaded, applicationFy);
+export interface DocumentsChecklistHandle {
+  /** Whether the step may be left. When it may not, the ErrorSummary is raised and focused. */
+  tryContinue: () => boolean;
+}
 
-  const upload = (d: DocDef) => {
-    onChange({
-      ...uploaded,
-      [d.n]: {
-        fileName: `${d.title.replace(/[^A-Za-z0-9]+/g, "_").slice(0, 40)}.pdf`,
-        sizeKb: 512,
-        uploadedOn: formatDate(new Date()),
-        verdict: DEMO_VERDICTS.pending,
-      },
-    });
-  };
+const FILTERS: { id: DocBucket; label: string }[] = [
+  { id: "attention", label: "Needs your attention" },
+  { id: "checking", label: "Being checked" },
+  { id: "ready", label: "Ready" },
+  { id: "optional", label: "Optional" },
+];
 
-  const remove = (d: DocDef) => {
-    const next = { ...uploaded };
-    delete next[d.n];
-    onChange(next);
-  };
+/** How often an upload's progress moves, and the connection-drop keyword the demo uses. */
+const TICK_MS = 140;
+const DROPS_CONNECTION = /network|connection|drop[-_]?out|flaky/i;
 
-  // The demo's automated check settles a moment after an upload.
+const kbOf = (file: File) => Math.max(1, Math.round(file.size / 1024));
+const rowId = (n: number) => `doc-${n}`;
+const actionId = (n: number) => `doc-${n}-action`;
+
+export const DocumentsChecklist = React.forwardRef<
+  DocumentsChecklistHandle,
+  {
+    schemeCode: string;
+    /** The scheme's format line, e.g. "PDF / JPG / PNG · Max 5 MB per file". */
+    documentsNote: string;
+    documents: readonly DocDef[];
+    uploaded: Record<number, UploadedDoc>;
+    /** The application's answers — the financial year and the facts each document is compared with. */
+    values: Record<string, string>;
+    onChange: React.Dispatch<React.SetStateAction<Record<number, UploadedDoc>>>;
+  }
+>(function DocumentsChecklist({ schemeCode, documentsNote, documents, uploaded, values, onChange }, ref) {
+  const rule = React.useMemo(() => acceptFromNote(documentsNote), [documentsNote]);
+  const fy = values.fld_financial_year;
+
+  const [attempts, setAttempts] = React.useState<Record<number, UploadAttempt>>({});
+  const [filter, setFilter] = React.useState<DocBucket | null>(null);
+  const [showErrors, setShowErrors] = React.useState(false);
+  const [revision, setRevision] = React.useState(0);
+  const [tray, setTray] = React.useState<PlacementItem[] | null>(null);
+  const [historyOf, setHistoryOf] = React.useState<DocDef | null>(null);
+  const [viewing, setViewing] = React.useState<DocDef | null>(null);
+  const [findingsOpen, setFindingsOpen] = React.useState<Record<number, boolean>>({});
+  const [polite, setPolite] = React.useState("");
+  const [assertive, setAssertive] = React.useState("");
+  // Checks the demo dock is holding in "Being checked". "Documents verifying" holds every pending
+  // check until a state is set under Document States (audit D-06); the flag survives the move to
+  // this route, which mounts the step afresh.
+  const [held, setHeld] = React.useState<ReadonlySet<number>>(() => {
+    if (typeof window === "undefined" || window.sessionStorage.getItem(DEMO_HOLD_CHECKS_KEY) !== schemeCode) return new Set();
+    return new Set(documents.filter((d) => uploaded[d.n]?.verdict.state === "pending").map((d) => d.n));
+  });
+  const fileInput = React.useRef<HTMLInputElement>(null);
+  const target = React.useRef<number | null>(null);
+  /** Object URLs for files chosen in this sitting, so View can show them. */
+  const previews = React.useRef(new Map<string, string>());
+  /** The browser's File for each attempt, kept so a retry resends the same bytes. */
+  const files = React.useRef(new Map<number, File | null>());
+
+  const checked = withYearCheck(documents, uploaded, fy);
+  const summary = summariseDocuments(documents, checked, attempts);
+  // Numbered as drawn, group by group — SHRESHTA's groups put document 15 between 9 and 18, and a
+  // column of numbers out of order reads as a mistake.
+  const position = new Map(groupDocuments(schemeCode, documents).flatMap((g) => g.docs).map((d, i) => [d.n, i + 1]));
+
+  /**
+   * The order rows are drawn in: needing attention first. A snapshot, refreshed when the
+   * applicant opens the step, drops files or presses Continue — never on a verdict arriving,
+   * which would move the row being worked on out from under the pointer.
+   */
+  const [order, setOrder] = React.useState<Record<number, DocState>>(() => summary.states);
+  const refreshOrder = () => setOrder(summary.states);
+
+  useSettleChecks({ documents, uploaded, setUploaded: onChange, values, held, announce: setPolite });
+
   React.useEffect(() => {
-    const pending = documents.filter((d) => uploaded[d.n]?.verdict.state === "pending");
-    if (pending.length === 0) return;
-    const t = window.setTimeout(() => {
-      const next = { ...uploaded };
-      for (const d of pending) next[d.n] = { ...next[d.n]!, verdict: demoVerdictFor("verified", d.title, applicationFy) };
-      onChange(next);
-    }, 1800);
-    return () => window.clearTimeout(t);
-  }, [documents, uploaded, onChange, applicationFy]);
+    const map = previews.current;
+    return () => map.forEach((url) => URL.revokeObjectURL(url));
+  }, []);
 
-  const tile = (d: DocDef) => {
-    const up = checked[d.n];
-    const state = up?.verdict.state;
-    const flagged = state === "review" || state === "invalid";
-    const hint = [d.note, d.description].filter(Boolean).join(" ");
-    return (
-      <DocumentTile
-        key={d.n}
-        title={d.title}
-        required={!d.optional}
-        state={!up ? "upcoming" : state === "invalid" ? "invalid" : "uploaded"}
-        meta={
-          up
-            ? `${up.fileName} · ${up.sizeKb} KB${state === "pending" ? " · Checking…" : state === "verified" ? " · No problems found" : ""}`
-            : hint || `${accept}, up to ${maxSize}.`
+  /* ── Uploads ──────────────────────────────────────────────────────────── */
+
+  const startUpload = React.useCallback(
+    (n: number, file: { name: string; sizeKb: number }, blob?: File | null, tries = 0) => {
+      const rejected = rejectionOf(file, rule);
+      files.current.set(n, blob ?? null);
+      // A file the applicant chooses is checked as any file is, whatever the demo was holding.
+      setHeld((prev) => {
+        if (!prev.has(n)) return prev;
+        const next = new Set(prev);
+        next.delete(n);
+        return next;
+      });
+      setAttempts((prev) => ({ ...prev, [n]: { fileName: file.name, sizeKb: file.sizeKb, phase: rejected ?? "uploading", progress: 0, tries } }));
+      if (rejected) {
+        const title = documents.find((d) => d.n === n)?.title ?? "The document";
+        setAssertive(`${title}: ${file.name} can't be uploaded. ${rejected === "rejected-size" ? `The limit is ${fileSizeLabel(rule.maxKb)}.` : `Only ${rule.typesLabel} files can be uploaded.`}`);
+      }
+      if (blob && !rejected) {
+        const url = URL.createObjectURL(blob);
+        previews.current.set(`${n}|${file.name}`, url);
+      }
+    },
+    [rule, documents],
+  );
+
+  // Progress, as the network would report it. A file whose name says the connection drops fails
+  // on its first try, so the failure state can be rehearsed; its retry arrives.
+  const attemptsRef = React.useRef(attempts);
+  React.useEffect(() => {
+    attemptsRef.current = attempts;
+  }, [attempts]);
+  const uploading = Object.entries(attempts).some(([n, a]) => a.phase === "uploading" && !held.has(Number(n)));
+  React.useEffect(() => {
+    if (!uploading) return;
+    const t = window.setInterval(() => {
+      const current = attemptsRef.current;
+      const changes = new Map<number, UploadAttempt | null>();
+      const arrived: { n: number; name: string; sizeKb: number }[] = [];
+      const failed: string[] = [];
+      for (const [key, a] of Object.entries(current)) {
+        const n = Number(key);
+        if (a.phase !== "uploading" || held.has(n)) continue;
+        const progress = Math.min(100, (a.progress ?? 0) + 14 + (seedOf(a.fileName) % 12));
+        if (DROPS_CONNECTION.test(a.fileName) && !a.tries && progress >= 60) {
+          changes.set(n, { ...a, phase: "failed", progress });
+          failed.push(documents.find((d) => d.n === n)?.title ?? a.fileName);
+        } else if (progress >= 100) {
+          changes.set(n, null);
+          arrived.push({ n, name: a.fileName, sizeKb: a.sizeKb });
+        } else {
+          changes.set(n, { ...a, progress });
         }
-        actions={
-          up ? (
-            <>
-              <Button appearance="outlined" size="sm" onClick={() => upload(d)} aria-label={`Change ${d.title}`}>
-                Change
-              </Button>
-              <Button appearance="text" size="sm" onClick={() => remove(d)} aria-label={`Remove ${d.title}`}>
-                <Icon name="delete" size={16} aria-hidden />
-              </Button>
-            </>
-          ) : (
-            <Button appearance="outlined" size="sm" nowrap onClick={() => upload(d)} aria-label={`Browse file for ${d.title}`}>
-              Browse File
-            </Button>
-          )
+      }
+      // The updater only applies what was computed above, so it is safe to run twice.
+      setAttempts((prev) => {
+        const next = { ...prev };
+        for (const [n, change] of changes) {
+          if (prev[n] !== current[n]) continue; // cancelled or replaced meanwhile
+          if (change) next[n] = change;
+          else delete next[n];
         }
-      >
-        {up && flagged ? (
-          <Alert status={state === "invalid" ? "error" : "warning"} title={verdictHeadline(up.verdict)}>
-            {up.verdict.summary && <p>{up.verdict.summary}</p>}
-            {up.verdict.reasons && (
-              <ul className="mt-1.5 list-disc space-y-1 pl-5">
-                {up.verdict.reasons.map((r) => (
-                  <li key={r}>{r}</li>
-                ))}
-              </ul>
-            )}
-          </Alert>
-        ) : null}
-      </DocumentTile>
+        return next;
+      });
+      if (arrived.length) {
+        onChange((prev) => arrived.reduce((acc, f) => commitUpload(acc, f.n, { name: f.name, sizeKb: f.sizeKb }), prev));
+        setPolite(`${arrived.length === 1 ? "File" : `${arrived.length} files`} uploaded. Checking now.`);
+      }
+      if (failed.length) setAssertive(`${failed.join(", ")}: upload failed. Check your connection and try again.`);
+    }, TICK_MS);
+    return () => window.clearInterval(t);
+  }, [uploading, held, documents, onChange]);
+
+  const cancelAttempt = (n: number) =>
+    setAttempts((prev) => {
+      const next = { ...prev };
+      delete next[n];
+      return next;
+    });
+
+  const choose = (n: number) => {
+    target.current = n;
+    fileInput.current?.click();
+  };
+
+  /* ── Batch drop and the tray ──────────────────────────────────────────── */
+
+  const onFiles = (list: File[]) => {
+    const now = Date.now().toString(36);
+    const items = placeFiles(
+      list.map((f) => ({ name: f.name, sizeKb: kbOf(f) })),
+      documents,
+      checked,
+      rule,
+      fy,
+      (i) => `drop-${now}-${i}`,
+    );
+    items.forEach((item, i) => {
+      if (item.n != null) startUpload(item.n, { name: item.fileName, sizeKb: item.sizeKb }, list[i]);
+    });
+    setTray((prev) => [...(prev ?? []), ...items]);
+    setFilter(null);
+    refreshOrder();
+    const placed = items.filter((i) => i.n != null).length;
+    setPolite(`${placed} of ${items.length} file${items.length === 1 ? "" : "s"} placed. The list of where each went is above the documents.`);
+  };
+
+  const moveTrayItem = (itemId: string, targetId: string | null) => {
+    const item = tray?.find((i) => i.id === itemId);
+    if (!item) return;
+    const to = targetId == null ? null : Number(targetId);
+    if (item.n != null) {
+      if (attempts[item.n]?.fileName === item.fileName) cancelAttempt(item.n);
+      else onChange((prev) => withdrawUpload(prev, item.n!, item.fileName));
+    }
+    if (to != null) startUpload(to, { name: item.fileName, sizeKb: item.sizeKb }, null);
+    setTray((prev) =>
+      (prev ?? []).map((i) =>
+        i.id === itemId
+          ? {
+              ...i,
+              n: to,
+              replaces: to != null ? checked[to]?.fileName : undefined,
+              unplaced: to == null ? ("unrecognised" as const) : undefined,
+            }
+          : i,
+      ),
     );
   };
 
-  const mandatory = documents.filter((d) => !d.optional);
-  const optional = documents.filter((d) => d.optional);
+  /* ── Row commands ─────────────────────────────────────────────────────── */
+
+  const onMenu = (d: DocDef) => (id: string) => {
+    if (id === "view") setViewing(d);
+    else if (id === "replace") choose(d.n);
+    else if (id === "check") {
+      onChange((prev) => requestCheck(prev, d.n));
+      setPolite(`Checking ${d.title} again.`);
+    } else if (id === "history") setHistoryOf(d);
+    else if (id === "findings") setFindingsOpen((o) => ({ ...o, [d.n]: !o[d.n] }));
+    else if (id === "keep") cancelAttempt(d.n);
+    else if (id === "remove")
+      onChange((prev) => {
+        const next = { ...prev };
+        delete next[d.n];
+        return next;
+      });
+  };
+
+  /* ── The gate ─────────────────────────────────────────────────────────── */
+
+  React.useImperativeHandle(ref, () => ({
+    tryContinue: () => {
+      if (summary.continueBlockers.length === 0) {
+        setShowErrors(false);
+        return true;
+      }
+      setShowErrors(true);
+      setRevision((r) => r + 1);
+      const onlyUploading = summary.continueBlockers.every((b) => b.state === "uploading");
+      setFilter(onlyUploading ? "checking" : "attention");
+      setOrder(summary.states);
+      return false;
+    },
+  }));
+
+  // The summary stays until the last blocker is resolved, and shrinks as each one is. It lists the
+  // rows the filter is showing, in the order they are drawn, so every entry lands on a visible row:
+  // what needs the applicant first; uploads still in flight only when nothing else stops them.
+  const displayRank = new Map(
+    groupDocuments(schemeCode, documents)
+      .flatMap((g) => orderForAttention(g.docs, order))
+      .map((d, i) => [d.n, i] as const),
+  );
+  const acting = summary.continueBlockers.filter((b) => b.state !== "uploading");
+  const shownBlockers = (acting.length ? acting : summary.continueBlockers).sort((a, b) => (displayRank.get(a.n) ?? 0) - (displayRank.get(b.n) ?? 0));
+  const errors = showErrors ? shownBlockers.map((b) => ({ fieldId: actionId(b.n), message: b.message })) : [];
+
+  /* ── The demo dock ────────────────────────────────────────────────────── */
+
+  React.useEffect(() => {
+    const onFill = (e: Event) => {
+      const detail = (e as CustomEvent<DemoFillDetail>).detail;
+      if (detail?.scheme !== schemeCode) return;
+      setHeld(detail.holdChecks ? new Set(Object.entries(detail.docs).filter(([, d]) => d.verdict.state === "pending").map(([n]) => Number(n))) : new Set());
+      setFilter(null);
+    };
+    window.addEventListener(DEMO_FILL_EVENT, onFill);
+    return () => window.removeEventListener(DEMO_FILL_EVENT, onFill);
+  }, [schemeCode]);
+
+  React.useEffect(() => {
+    const detail: DocListDetail = { scheme: schemeCode, documents: documents.map((d) => ({ n: d.n, title: d.title, optional: d.optional })) };
+    (window as unknown as { __eAnudaanDocList?: DocListDetail }).__eAnudaanDocList = detail;
+    window.dispatchEvent(new CustomEvent(DOC_LIST_EVENT, { detail }));
+  }, [schemeCode, documents]);
+
+  React.useEffect(() => {
+    const onForce = (e: Event) => {
+      const { n, state } = (e as CustomEvent<DemoDocStateDetail>).detail;
+      const list = n === "all" ? documents : documents.filter((d) => d.n === n);
+      const nameOf = (d: DocDef) => `${d.title.replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 36).toLowerCase()}.pdf`;
+      const isAttempt = state === "uploading" || state === "failed" || state === "rejected-type" || state === "rejected-size";
+      // Updaters throughout: the dock can fire several forces before this component re-renders.
+      setAttempts((prev) => {
+        const next = { ...prev };
+        for (const d of list) {
+          delete next[d.n];
+          if (isAttempt) {
+            next[d.n] = {
+              fileName: state === "rejected-type" ? nameOf(d).replace(/\.pdf$/, ".docx") : nameOf(d),
+              sizeKb: state === "rejected-size" ? 7373 : 412,
+              phase: state,
+              progress: 64,
+            };
+          }
+        }
+        return next;
+      });
+      setHeld((prev) => {
+        const next = new Set(prev);
+        for (const d of list) {
+          if (state === "uploading" || state === "checking") next.add(d.n);
+          else next.delete(d.n);
+        }
+        if (next.size === 0) window.sessionStorage.removeItem(DEMO_HOLD_CHECKS_KEY);
+        return next;
+      });
+      if (!isAttempt) {
+        onChange((prev) => {
+          const next = { ...prev };
+          for (const d of list) {
+            const base = next[d.n] ?? { fileName: nameOf(d), sizeKb: 412, uploadedOn: "16 Sep 2026" };
+            if (state === "missing" || state === "optional") delete next[d.n];
+            else if (state === "checking") next[d.n] = { ...base, verdict: { state: "pending" } };
+            else {
+              // The demo verdict names its own illustrative organisation; read as this application's.
+              const v = demoVerdictFor(state, d.title, fy);
+              const org = values.fld_ngo_name;
+              next[d.n] = {
+                ...base,
+                verdict: v.extracted && org && v.extracted["Organisation Name"] ? { ...v, extracted: { ...v.extracted, "Organisation Name": org } } : v,
+              };
+            }
+          }
+          return next;
+        });
+      }
+      setShowErrors(false);
+    };
+    window.addEventListener(DEMO_DOC_STATE_EVENT, onForce);
+    return () => window.removeEventListener(DEMO_DOC_STATE_EVENT, onForce);
+  }, [documents, onChange, fy, values.fld_ngo_name]);
+
+  /* ── Render ───────────────────────────────────────────────────────────── */
+
+  /**
+   * The filter the list is drawn with. A filter the step chose itself — "Needs your attention" when
+   * Continue was pressed, "Being checked" while uploads ran — lets go once its bucket empties, so a
+   * completed step shows its documents rather than "No documents are in 'Needs your attention'"
+   * (audit D-02). A filter the applicant picks with nothing in it still shows its designed empty state.
+   */
+  const shownFilter = filter && (filter === "attention" || filter === "checking") && summary.counts[filter] === 0 ? null : filter;
+
+  /**
+   * One cause on many rows is said once a row (audit D-03): ten rows each repeated the same sentence
+   * under a two-line title, and the list ran 1,600px. Rows whose reason is the same sentence — the
+   * document's own name aside, which is all that differs when one file was attached ten times — are
+   * held to one line; the whole reason stays in "What we found" and on the row's tooltip.
+   */
+  const reasonShape = (d: DocDef) => {
+    const r = rowReason(summary.states[d.n]!, checked[d.n], attempts[d.n], rule);
+    return r ? r.replace(d.title, "…") : undefined;
+  };
+  const reasonCount = new Map<string, number>();
+  for (const d of documents) {
+    const r = reasonShape(d);
+    if (r) reasonCount.set(r, (reasonCount.get(r) ?? 0) + 1);
+  }
+
+  const groups = groupDocuments(schemeCode, documents)
+    .map((g) => ({
+      ...g,
+      docs: orderForAttention(g.docs, order).filter((d) => !shownFilter || DOC_STATE_META[summary.states[d.n]!].bucket === shownFilter),
+    }))
+    .filter((g) => g.docs.length > 0);
+  const visible = groups.reduce((a, g) => a + g.docs.length, 0);
+  const optionalCount = documents.filter((d) => d.optional).length;
+
+  const row = (d: DocDef) => {
+    const up = checked[d.n];
+    const attempt = attempts[d.n];
+    const state = summary.states[d.n]!;
+    const reason = rowReason(state, up, attempt, rule);
+    const hasVerdictDetail = !attempt && up && (state === "verified" || state === "review" || state === "invalid");
+    const file = attempt
+      ? { name: attempt.fileName, size: fileSizeLabel(attempt.sizeKb) }
+      : up
+        ? { name: up.fileName, size: fileSizeLabel(up.sizeKb), date: up.uploadedOn }
+        : undefined;
+
+    const primary: Partial<Record<DocState, { label: string; run: () => void; appearance?: "filled" | "outlined" | "text" }>> = {
+      // Every row action is outlined: the step's Save and Continue is the only filled button on the
+      // screen. A row's trouble is already carried by its icon, its status words and its reason.
+      missing: { label: "Upload", run: () => choose(d.n), appearance: "outlined" },
+      optional: { label: "Upload", run: () => choose(d.n), appearance: "outlined" },
+      uploading: { label: "Cancel", run: () => cancelAttempt(d.n), appearance: "text" },
+      failed: { label: "Try Again", run: () => attempt && startUpload(d.n, { name: attempt.fileName, sizeKb: attempt.sizeKb }, files.current.get(d.n), (attempt.tries ?? 0) + 1) },
+      "rejected-type": { label: "Choose Another File", run: () => choose(d.n) },
+      "rejected-size": { label: "Choose Another File", run: () => choose(d.n) },
+      invalid: { label: "Replace", run: () => choose(d.n) },
+    };
+    const p = primary[state];
+
+    const items = [
+      ...(up ? [{ id: "view", label: "View", icon: "visibility" }] : []),
+      ...(up && state !== "invalid" ? [{ id: "replace", label: "Replace", icon: "upload" }] : []),
+      ...(up && !attempt && (state === "invalid" || state === "review" || state === "unavailable") ? [{ id: "check", label: "Check Again", icon: "refresh" }] : []),
+      ...(hasVerdictDetail && state === "verified" ? [{ id: "findings", label: findingsOpen[d.n] ? "Hide What We Found" : "What We Found", icon: "fact_check" }] : []),
+      ...(up ? [{ id: "history", label: "Upload History", icon: "history" }] : []),
+      ...(attempt && up && attempt.phase !== "uploading" ? [{ id: "keep", label: `Keep ${up.fileName}`, icon: "undo" }] : []),
+      ...(up && d.optional ? [{ kind: "separator" as const }, { id: "remove", label: "Remove", icon: "delete", tone: "danger" as const }] : []),
+    ];
+
+    return (
+      <DocumentRow
+        linkAs={Link}
+        key={d.n}
+        id={rowId(d.n)}
+        number={position.get(d.n)}
+        title={d.title}
+        required={!d.optional}
+        hint={[d.note, d.description].filter(Boolean).join(" ") || undefined}
+        state={rowStateOf(state)}
+        // The row prints "Uploading 64%" itself from `progress`.
+        statusLabel={state === "uploading" ? undefined : DOC_STATE_META[state].words}
+        progress={attempt?.progress}
+        file={file}
+        reason={reason}
+        clampReason={(reasonCount.get(reasonShape(d) ?? "") ?? 0) > 1}
+        action={
+          p ? (
+            <Button id={actionId(d.n)} size="sm" appearance={p.appearance ?? "outlined"} nowrap onClick={p.run} aria-label={`${p.label}: ${d.title}`}>
+              {p.label}
+            </Button>
+          ) : (
+            <span id={actionId(d.n)} tabIndex={-1} />
+          )
+        }
+        menu={items.length ? { items, onSelect: onMenu(d) } : undefined}
+        findings={hasVerdictDetail ? <ApplicantFindings verdict={up!.verdict} title={d.title} values={values} /> : undefined}
+        showFindingsToggle={state !== "verified"}
+        findingsOpen={state === "verified" ? !!findingsOpen[d.n] : undefined}
+      />
+    );
+  };
 
   return (
     <>
-      <FormCard title="Mandatory Documents">
-        <DocumentTiles aria-label="Mandatory documents">{mandatory.map(tile)}</DocumentTiles>
-      </FormCard>
-      {optional.length > 0 && (
-        <FormCard title="Optional Documents">
-          <DocumentTiles aria-label="Optional documents">{optional.map(tile)}</DocumentTiles>
-        </FormCard>
-      )}
+      <DocumentChecklist
+        formats={rule.label}
+        ready={summary.readyRequired}
+        required={summary.required}
+        filters={FILTERS.filter((f) => f.id !== "optional" || optionalCount > 0).map((f) => ({ ...f, count: summary.counts[f.id], tone: f.id === "attention" ? ("danger" as const) : undefined }))}
+        activeFilter={shownFilter}
+        onFilterChange={(id) => {
+          setFilter(id as DocBucket | null);
+          refreshOrder();
+        }}
+        onFiles={onFiles}
+        accept={rule.inputAccept}
+        errors={errors}
+        errorTitle={blockerTitle(shownBlockers.length, "continue")}
+        errorsRevision={revision}
+        politeMessage={polite}
+        assertiveMessage={assertive}
+        visibleCount={visible}
+        tray={
+          tray && tray.length > 0 ? (
+            <DocumentPlacementTray
+              items={tray.map((i) => ({
+                id: i.id,
+                fileName: i.fileName,
+                size: fileSizeLabel(i.sizeKb),
+                targetId: i.n == null ? null : String(i.n),
+                replaces: i.replaces,
+                rejected: i.rejected ? rowReason(i.rejected, undefined, { fileName: i.fileName, sizeKb: i.sizeKb, phase: i.rejected }, rule) : undefined,
+                unplacedReason: i.unplaced === "duplicate" ? "Another file in this drop was placed in the document this looks like." : undefined,
+              }))}
+              options={documents.map((d) => ({ id: String(d.n), label: `${position.get(d.n)}. ${d.title}`, filled: !!checked[d.n] || !!attempts[d.n] }))}
+              onChange={moveTrayItem}
+              onRemove={(id) => setTray((prev) => (prev ?? []).filter((i) => i.id !== id))}
+              onDone={() => {
+                setTray(null);
+                refreshOrder();
+              }}
+            />
+          ) : undefined
+        }
+      >
+        {groups.map((g) => (
+          <DocumentChecklistGroup
+            key={g.id}
+            title={g.title}
+            // Under "Required Documents" every row is required; the heading says so once (audit D-04).
+            hideRequiredMarks={g.id === "required"}
+            // Where a 17-document list is scanned group by group, each heading says whether the group needs anything.
+            meta={(() => {
+              const all = groupDocuments(schemeCode, documents).find((x) => x.id === g.id)?.docs ?? [];
+              const need = all.filter((d) => DOC_STATE_META[summary.states[d.n]!].bucket === "attention").length;
+              return need > 0 ? `${need} need${need === 1 ? "s" : ""} attention` : undefined;
+            })()}
+          >
+            {g.docs.map(row)}
+          </DocumentChecklistGroup>
+        ))}
+      </DocumentChecklist>
+
+      {/* One input for every row's Upload, Replace and Choose Another File. */}
+      <input
+        ref={fileInput}
+        type="file"
+        accept={rule.inputAccept}
+        className="sr-only"
+        tabIndex={-1}
+        aria-hidden
+        onChange={(e) => {
+          const f = e.target.files?.[0];
+          const n = target.current;
+          target.current = null;
+          e.target.value = "";
+          if (f && n != null) startUpload(n, { name: f.name, sizeKb: kbOf(f) }, f);
+          if (n != null) window.requestAnimationFrame(() => document.getElementById(actionId(n))?.focus());
+        }}
+      />
+
+      <DocumentHistorySheet
+        linkAs={Link}
+        open={historyOf != null}
+        onClose={() => setHistoryOf(null)}
+        title={historyOf ? `Upload History — ${historyOf.title}` : ""}
+        entries={historyEntries(historyOf ? checked[historyOf.n] : undefined).map((h) => ({
+          id: h.id,
+          fileName: h.fileName,
+          size: h.sizeKb != null ? fileSizeLabel(h.sizeKb) : undefined,
+          date: h.uploadedOn,
+          current: h.current,
+          status: h.status,
+          note: h.note,
+          onView: h.current && historyOf ? () => { setViewing(historyOf); setHistoryOf(null); } : undefined,
+        }))}
+      />
+
+      <DocumentViewSheet
+        open={viewing != null}
+        onClose={() => setViewing(null)}
+        title={viewing?.title ?? ""}
+        file={viewing && checked[viewing.n] ? { name: checked[viewing.n]!.fileName, sizeKb: checked[viewing.n]!.sizeKb, uploadedOn: checked[viewing.n]!.uploadedOn } : undefined}
+        previewUrl={viewing && checked[viewing.n] ? previews.current.get(`${viewing.n}|${checked[viewing.n]!.fileName}`) : undefined}
+      />
     </>
   );
-}
+});

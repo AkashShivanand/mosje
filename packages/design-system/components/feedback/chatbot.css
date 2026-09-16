@@ -834,7 +834,9 @@
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-title-2-size);
     line-height: var(--sa-type-title-2-lh);
-    font-weight: var(--sa-font-weight-medium);
+    /* Title 2's own weight, as the Figma header's `Title/title-2` layer. It was 500, which
+       is no text style: the Title tier has been 600 since 2026-09-04. */
+    font-weight: var(--sa-font-weight-semibold);
     /* The title outranks the subtitle beneath it, so it cannot be the same ink.
        Both were `muted`, which left the header with no hierarchy at all — the
        Devanagari name read as equal in weight to the invitation above it. */

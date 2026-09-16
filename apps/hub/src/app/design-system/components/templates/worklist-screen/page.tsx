@@ -149,6 +149,29 @@ export default function WorklistScreenPage(): React.JSX.Element {
             </p>
           </section>
 
+          <section className="cdp__section" aria-labelledby="cdp-views">
+            <h2 id="cdp-views" className="cdp__h2">A View Is Not a Filter</h2>
+            <p>
+              A switch that chooses <em>which</em> register is shown — Pending or All, Beneficiaries
+              or Staff — goes in <code>views</code>. It is drawn under the header with no frame of its
+              own. Controls that <em>narrow</em> the register go in <code>filters</code>, inside the
+              filter bar. A two-option switch passed through <code>filters</code> sat in a grey framed
+              box around a grey track and read as a filter nobody had set; a bar holding nothing but a
+              segmented control now drops its frame, but the documented place is <code>views</code>.
+            </p>
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-countwords">
+            <h2 id="cdp-countwords" className="cdp__h2">The Count Line Uses the Screen&rsquo;s Own Noun</h2>
+            <p>
+              The default sentence counts in <code>noun</code> / <code>pluralNoun</code> — &ldquo;95
+              applications.&rdquo; It used to read &ldquo;95 in the register.&rdquo;, which is a filing
+              term an applicant does not use about their own applications. Set the noun once and both
+              the count line and the selection bar say the same word; a screen that wants different
+              words passes its own <code>countLine</code>, and <code>countLine=&#123;null&#125;</code>{" "}
+              drops the line where the page header already states the count.
+            </p>
+          </section>
           <section className="cdp__section" aria-labelledby="cdp-counts">
             <h2 id="cdp-counts" className="cdp__h2">Two Counts, Kept Apart</h2>
             <p>
