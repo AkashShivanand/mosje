@@ -4,7 +4,7 @@
 same change that moves a line, never afterwards from memory. If a row says ✅ and the thing is
 not true on `main`, that is a defect in this file and it is fixed first.
 
-**Last moved:** 16 September 2026, after PR #507 and the P4/P5 Figma reports.
+**Last moved:** 16 September 2026, after PR #507 was merged and :3007 was verified against it.
 
 Status: ⬜ not started · 🟡 in progress · ✅ done · ⏸ waiting on a person · ❌ won't do (reason stated)
 
@@ -36,7 +36,7 @@ Two other trackers stay in force and are not repeated here:
 | P-11 | Seed data self-consistent | ✅ | Invariant tests fail if a project's scheme, nature, instalment and attendance disagree |
 | P-12 | Design-director audit | ✅ | 836 shots, 16 P1s, fixed in 8 batches |
 | P-13 | DigiLocker removed from every portal login and the TG application form | ✅ | Now a per-portal, per-role switch in `lib/tg/identity.ts` |
-| P-14 | Live on `main:3007` | ✅ | Through PR #507 |
+| P-14 | Live on `main:3007` | ✅ | PR #507 merged 16 Sep. **Verified on the running server, not inferred from the merge:** 18 routes across 8 roles at 1440 and 375 — 36 page loads, no HTTP error, no page error, no sideways scroll; the divided-list assertion passes over 8 fact cards; the Payment Status order number re-checked by eye |
 
 ### Known, not fixed — carried deliberately
 
