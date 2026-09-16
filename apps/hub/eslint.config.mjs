@@ -1,10 +1,39 @@
 import { defineConfig, globalIgnores } from "eslint/config";
+import { fixupPluginRules } from "@eslint/compat";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
 
+/*
+ * ESLint 10 removed the context methods deprecated in 9 — `context.getFilename()`
+ * and its siblings. eslint-plugin-react (7.37.x, pulled in by eslint-config-next)
+ * still calls them while detecting the React version, so every lint run threw
+ * "contextOrFilename.getFilename is not a function" before checking a single file.
+ *
+ * `fixupPluginRules` is ESLint's own shim for exactly this: it hands each rule a
+ * context that has the old methods back. It is applied to EVERY plugin in Next's
+ * config, not only react, because a plugin that still works is left unchanged by
+ * the wrapper, while one that breaks later would otherwise fail the same way.
+ *
+ * One wrapped copy per plugin object, reused everywhere that plugin appears:
+ * ESLint refuses two different objects registered under the same plugin name.
+ *
+ * Remove this when eslint-plugin-react ships ESLint 10 support.
+ */
+const fixed = new Map();
+const withFixedPlugins = (configs) =>
+  configs.map((config) => {
+    if (!config.plugins) return config;
+    const plugins = {};
+    for (const [name, plugin] of Object.entries(config.plugins)) {
+      if (!fixed.has(plugin)) fixed.set(plugin, fixupPluginRules(plugin));
+      plugins[name] = fixed.get(plugin);
+    }
+    return { ...config, plugins };
+  });
+
 const eslintConfig = defineConfig([
-  ...nextVitals,
-  ...nextTs,
+  ...withFixedPlugins(nextVitals),
+  ...withFixedPlugins(nextTs),
   globalIgnores([
     ".next/**",
     "out/**",

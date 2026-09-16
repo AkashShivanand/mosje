@@ -527,7 +527,7 @@ export const DocumentsChecklist = React.forwardRef<
         clampReason={(reasonCount.get(reasonShape(d) ?? "") ?? 0) > 1}
         action={
           visible.length ? (
-            visible.map((a, i) => (
+            visible.map((a) => (
               <Button
                 key={a.label}
                 // The ErrorSummary links to the command that fixes the row, which is its main one.
