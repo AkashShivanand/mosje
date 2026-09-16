@@ -107,6 +107,28 @@ export interface DocumentRowProps {
    * correction, is not collapsible: what the reader must act on is never folded away.
    */
   collapsible?: boolean;
+  /**
+   * Row density. @default "default"
+   *
+   * `compact` is the REVIEWED-DOCUMENT row for an officer's list. From a 520px row it is two
+   * lines — title, verdict (`aside`) and actions, with the file and the status as small print
+   * beneath — and from 960px one line: icon · title · file · status · verdict · actions. Tighter
+   * padding; the title and file cut to one line each (full text on hover and to a screen
+   * reader); on a `collapsible` row the hint waits behind Details. It exists because a
+   * 20-document review ran about 3,700px at 185px a row (e-Anudaan audit R-03). Below 520px it
+   * stacks exactly like the default row. The `aside` should itself be compact — a segmented
+   * verdict or a small select — for the first line to hold.
+   */
+  density?: "default" | "compact";
+  /**
+   * Cut `reason` to one line wherever the row is 640px or wider. @default false
+   *
+   * For a list where many rows carry the same reason: the sentence is still read in full by a
+   * screen reader and on hover, and the whole of it belongs inside `findings` ("What we found").
+   * Ten rows repeating one two-line sentence ran 1,600px (e-Anudaan audit D-03). On a phone the
+   * reason wraps as before.
+   */
+  clampReason?: boolean;
   /** Controlled fold state for a `collapsible` row. Uncontrolled rows start folded. */
   expanded?: boolean;
   onExpandedChange?: (expanded: boolean) => void;
@@ -184,6 +206,8 @@ export function DocumentRow({
   expanded,
   onExpandedChange,
   summary,
+  density = "default",
+  clampReason = false,
   linkAs,
   id,
   as = "li",
@@ -240,6 +264,8 @@ export function DocumentRow({
         ATTENTION.has(state) && "ds-docrow--attention",
         aside != null && "ds-docrow--aside",
         folded && "ds-docrow--folded",
+        density === "compact" && "ds-docrow--compact",
+        clampReason && "ds-docrow--clamp-reason",
         className,
       )}
       data-state={state}
@@ -259,7 +285,7 @@ export function DocumentRow({
         </span>
 
         <div className="ds-docrow__main">
-          <TitleTag className="ds-docrow__title" id={titleId}>
+          <TitleTag className="ds-docrow__title" id={titleId} title={density === "compact" ? titleText : undefined}>
             {number != null && <span className="ds-docrow__number">{number}. </span>}
             {title}
             {required && (
@@ -269,7 +295,9 @@ export function DocumentRow({
               </>
             )}
           </TitleTag>
-          {hint != null && !folded && <p className="ds-docrow__hint">{hint}</p>}
+          {hint != null && !folded && (density !== "compact" || !collapsible || isExpanded) && (
+            <p className="ds-docrow__hint">{hint}</p>
+          )}
         </div>
 
         {!folded && (
@@ -278,10 +306,12 @@ export function DocumentRow({
             <>
               {FileLink ? (
                 <FileLink className="ds-docrow__file-name ds-docrow__file-link" href={file.href} title={file.name}>
-                  {file.name}
+                  <FileName name={file.name} />
                 </FileLink>
               ) : (
-                <span className="ds-docrow__file-name" title={file.name}>{file.name}</span>
+                <span className="ds-docrow__file-name" title={file.name}>
+                  <FileName name={file.name} />
+                </span>
               )}
               {fileMeta && <span className="ds-docrow__file-meta">{fileMeta}</span>}
             </>
@@ -312,7 +342,11 @@ export function DocumentRow({
         {/* Before the actions in reading order: what is wrong, then what to do about it. */}
         {!folded && (reason != null || (findings != null && showFindingsToggle)) && (
           <div className="ds-docrow__more">
-            {reason != null && <p className="ds-docrow__reason">{reason}</p>}
+            {reason != null && (
+              <p className="ds-docrow__reason" title={clampReason && typeof reason === "string" ? reason : undefined}>
+                {reason}
+              </p>
+            )}
             {findings != null && showFindingsToggle && (
               <button
                 type="button"
@@ -354,5 +388,24 @@ export function DocumentRow({
         </div>
       )}
     </Tag>
+  );
+}
+
+/**
+ * A file name that is cut in its STEM, never in its extension: "PAN_Card_of_the_Orga… .pdf", not
+ * "PAN_Card_of_the_Organisation.pd / f" (e-Anudaan audit D-05). The extension is what tells a
+ * reader which of two scans they are looking at, and a break inside it read as a broken name.
+ * One text node to a screen reader — the two spans are presentational — and the full name is on
+ * the parent's `title`.
+ */
+function FileName({ name }: { name: string }) {
+  const dot = name.lastIndexOf(".");
+  // No extension, a dotfile, or an "extension" too long to be one: draw the name whole.
+  if (dot <= 0 || name.length - dot > 6) return <span className="ds-docrow__file-stem">{name}</span>;
+  return (
+    <>
+      <span className="ds-docrow__file-stem">{name.slice(0, dot)}</span>
+      <span className="ds-docrow__file-ext">{name.slice(dot)}</span>
+    </>
   );
 }

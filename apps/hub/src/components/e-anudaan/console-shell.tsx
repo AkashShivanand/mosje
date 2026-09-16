@@ -36,6 +36,10 @@ import { notificationItems, notificationsHref } from "@/lib/e-anudaan/notificati
  * scheduled a PMU inspection (security audit S06, 14 Sep 2026). `consoleRouteAccess` decides from
  * the same `caps` and `nav` the rail is built from; a screen belonging to another role renders
  * the 403 status screen, and an address naming no screen the 404, both inside the chrome.
+ *
+ * **An NGO that opens a console address is refused, not signed out** (audit N-17). It was sent to
+ * the officer login, which read as a lost session and cost the clerk their place. It now gets the
+ * same 403 an officer gets for another role's screen, with the way back to the NGO dashboard.
  */
 export function ConsoleShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -43,6 +47,7 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
   const { state, hydrated, logout, markAllNotificationsRead } = useEAnudaan();
 
   const isOfficer = state.session !== null && state.session !== "ngo";
+  const isNgo = state.session === "ngo";
   const role = isOfficer ? ROLES[state.session!] : null;
 
   const notifications = React.useMemo(() => notificationItems(state, role?.id ?? null), [state, role]);
@@ -54,11 +59,13 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
   );
 
   React.useEffect(() => {
-    if (hydrated && !isOfficer) router.replace("/portals/e-anudaan/login?role=officer");
-  }, [hydrated, isOfficer, router]);
+    if (hydrated && !isOfficer && !isNgo) router.replace("/portals/e-anudaan/login?role=officer");
+  }, [hydrated, isOfficer, isNgo, router]);
 
-  const access = role ? consoleRouteAccess(pathname, role) : "allowed";
-  const toDashboard = { label: "Go to My Dashboard", onClick: () => role && router.push(role.home) };
+  // `consoleRouteAccess` refuses the NGO every console screen; its role carries its own home.
+  const viewer = role ?? (isNgo ? ROLES.ngo : null);
+  const access = viewer ? consoleRouteAccess(pathname, viewer) : "allowed";
+  const toDashboard = { label: "Go to My Dashboard", onClick: () => viewer && router.push(viewer.home) };
 
   return (
     <PortalPage
@@ -76,7 +83,7 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
         mark: <OrgLogo path="/portals/e-anudaan" />,
         href: "/portals/e-anudaan",
       }}
-      pending={!hydrated || !role}
+      pending={!hydrated || !viewer}
       /* A function, so the masthead drives the rail: above the tablet anchor its
          button collapses the column, below it opens the drawer. */
       header={(navState) => (
@@ -93,7 +100,7 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
           beta
           onToggleNav={navState.toggle}
           navExpanded={navState.open}
-          account={role ? { name: role.personName, role: role.label } : undefined}
+          account={viewer ? { name: viewer.personName, role: viewer.label } : undefined}
           /* The bell is this portal's one door to notifications: the sidebar item and
              the account-menu item it replaces are gone (docs/specs/notification-object.md). */
           notifications={
@@ -111,7 +118,7 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
               danger: true,
               onSelect: () => {
                 logout();
-                router.push("/portals/e-anudaan/login?role=officer");
+                router.push(`/portals/e-anudaan/login?role=${isNgo ? "ngo" : "officer"}`);
               },
             },
           ]}
@@ -124,7 +131,11 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
         <StatusScreen
           kind="403"
           title="You Do Not Have Access to This Page"
-          description="This page belongs to another officer's role. Your own applications and registers are on your dashboard."
+          description={
+            isNgo
+              ? "This page is for officers of the Ministry. Your organisation's applications are on your dashboard."
+              : "This page belongs to another officer's role. Your own applications and registers are on your dashboard."
+          }
           primaryAction={toDashboard}
           searchUrl={null}
           wayfindingLinks={[]}

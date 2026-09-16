@@ -20,31 +20,13 @@ import { ACTION_LABEL, statusLabel } from "@/lib/e-anudaan/workflow";
 import { formatDate, formatDateTime, rupees } from "@/lib/e-anudaan/format";
 import { schemeLabel } from "@/lib/e-anudaan/selectors";
 import { ordinal, projectTitleFor } from "@/lib/e-anudaan/applicant";
-import { applicantFacts, simulateCheck } from "@/lib/e-anudaan/document-centre";
-import { officerCheckLabel } from "./review-panels";
-import type { DocVerdict } from "@/lib/e-anudaan/doc-verification";
+import { automaticCheckOf } from "@/lib/e-anudaan/review-readiness";
+import { OFFICER_VERDICT } from "@/lib/e-anudaan/glossary";
 import type { AuditEntry, GrantApplication, MockDoc } from "@/lib/e-anudaan/types";
-import { officerOf } from "./review-panels";
+import { officerCheckLabel, officerOf } from "./review-panels";
 
-const VERDICT: Record<MockDoc["reviewStatus"], string> = {
-  Pending: "Not reviewed",
-  Verified: "Verified",
-  Deficient: "Needs correction",
-  "Not applicable": "Not applicable",
-};
-
-function checkOf(app: GrantApplication, d: MockDoc): DocVerdict | undefined {
-  if (!d.fileName) return undefined;
-  if (d.aiVerdict) return d.aiVerdict;
-  return simulateCheck({
-    slot: { n: d.slot, title: d.title },
-    checklist: app.documents.map((x) => ({ n: x.slot, title: x.title })),
-    fileName: d.fileName,
-    sizeKb: d.sizeKb ?? 0,
-    applicationFy: app.financialYear,
-    facts: applicantFacts(app.formValues ?? {}),
-  });
-}
+/** The glossary's verdict words, Title Case as the review screen prints them. */
+export const VERDICT: Record<MockDoc["reviewStatus"], string> = { ...OFFICER_VERDICT, "Not applicable": "Not Applicable" };
 
 export function ReviewReport({
   app,
@@ -64,7 +46,7 @@ export function ReviewReport({
   const officer = role ? `${role.personName}, ${role.grade ? GRADE_FULL[role.grade] : role.label}${role.division === "finance" ? ", Integrated Finance Division" : role.division === "pd" ? ", Programme Division" : ""}` : "—";
   const docs = [...app.documents].sort((a, b) => a.slot - b.slot);
   type DocRow = { doc: MockDoc; check: string };
-  const docRows: DocRow[] = docs.map((d) => ({ doc: d, check: d.fileName ? officerCheckLabel(checkOf(app, d), { column: true }) : "Not uploaded" }));
+  const docRows: DocRow[] = docs.map((d) => ({ doc: d, check: d.fileName ? officerCheckLabel(automaticCheckOf(app, d), { column: true }) : "Not uploaded" }));
   const history = [...app.audit].reverse();
 
   return (

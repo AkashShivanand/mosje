@@ -98,7 +98,9 @@ const CAPS: Record<Division, Record<Grade, readonly Capability[]>> = {
  */
 function pdNav(grade: Grade): NavItem[] {
   const nav: NavItem[] = [
-    { label: "Dashboard", href: `${BASE}/dashboard/pd/${grade}`, icon: "grid_view" },
+    // One queue per seat, one name for it: the item, the page heading and the review screen's "Back
+    // to My Queue" agree. It read "Dashboard" over a page titled "My Action Queue" (audit O-04).
+    { label: "My Queue", href: `${BASE}/dashboard/pd/${grade}`, icon: "grid_view" },
     { label: "NGO Directory", href: `${BASE}/dashboard/ngo-directory`, icon: "corporate_fare" },
     // Each grade's own path. The live sidebar sends every grade to the Under Secretary's path, and
     // `/pd/aso/all-applications` answered 404 (verify bug 9, 16 Sep 2026).
@@ -109,7 +111,8 @@ function pdNav(grade: Grade): NavItem[] {
     { label: "Returned Applications", href: `${BASE}/dashboard/pd/${grade}/returned`, icon: "undo" },
     { label: "Rejected Applications", href: `${BASE}/dashboard/pd/${grade}/rejected`, icon: "cancel" },
     { label: "Forwarded Applications", href: `${BASE}/dashboard/pd/forwarded`, icon: "forward" },
-    { label: "PD Queries", href: `${BASE}/dashboard/pd/${grade}/queries`, icon: "help" },
+    // Never "PD": it also names the Programme Director, so "PD Queries" read as the Director's (O-08).
+    { label: "Queries", href: `${BASE}/dashboard/pd/${grade}/queries`, icon: "help" },
     { label: "Reports & Analytics", href: `${BASE}/dashboard/sm2/reports`, icon: "bar_chart" },
   ];
   if (grade === "js") {
@@ -122,20 +125,21 @@ function pdNav(grade: Grade): NavItem[] {
 /**
  * Integrated Finance Division nav — transcribed from the live sidebar.
  *
- * The IFD is NOT a mirror of the PD: it has no Sanctioned or Forwarded register, and its
- * review worklist lives on a different path shape (/dashboard/sm2/ifd<grade>) from its
- * dashboard (/dashboard/finance/<grade>, a payment-processing queue).
+ * The IFD is NOT a mirror of the Programme Division: it has no Sanctioned or Forwarded register.
+ *
+ * The live sidebar also carries "SHRESHTA M2 — IFD-<GRADE>" (/dashboard/sm2/ifd<grade>) beside the
+ * dashboard. Ours rendered the same queue on both — "My Worklist" and "Finance Dashboard" — so
+ * the IFD had two destinations for one list while the Programme Division had one (audit O-04). It
+ * is one item, "My Queue", as in the Programme Division; `sm2/ifd<grade>` redirects to it, so a
+ * link to the live-shaped address still lands. A deliberate divergence from the live sidebar.
  */
 function ifdNav(grade: Grade): NavItem[] {
   const nav: NavItem[] = [
-    { label: "Finance Dashboard", href: `${BASE}/dashboard/finance/${grade}`, icon: "account_balance" },
+    { label: "My Queue", href: `${BASE}/dashboard/finance/${grade}`, icon: "grid_view" },
     { label: "NGO Directory", href: `${BASE}/dashboard/ngo-directory`, icon: "corporate_fare" },
     { label: "Finance Returned", href: `${BASE}/dashboard/finance/${grade}/returned`, icon: "undo" },
     { label: "Finance Rejected", href: `${BASE}/dashboard/finance/${grade}/rejected`, icon: "cancel" },
     { label: "Finance Queries", href: `${BASE}/dashboard/finance/${grade}/queries`, icon: "help" },
-    // The live label is "SHRESHTA M2 — IFD-<GRADE>". It lists every file with this seat, of every
-    // scheme — AVYAY and NAPDDR as well — so it is named for what it holds (inventory §15, §23).
-    { label: "My Worklist", href: `${BASE}/dashboard/sm2/ifd${grade}`, icon: "folder_open" },
     { label: "Reports & Analytics", href: `${BASE}/dashboard/sm2/reports`, icon: "bar_chart" },
   ];
   if (grade === "js") {

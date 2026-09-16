@@ -30,6 +30,7 @@
 
 import { GRADE_FULL, ROLES, type RoleDef } from "./roles.ts";
 import { formatDate, rupees } from "./format.ts";
+import { DEFICIENCY, GRANT, RECEIVED, REJECT, RETURN, returnTo } from "./glossary.ts";
 import {
   holderIsRole,
   nextGrade,
@@ -323,7 +324,9 @@ export const RULES: readonly Rule[] = [
   },
   {
     action: "return",
-    label: () => "Return for Reconsideration",
+    // One family, named by where the file goes (glossary: Returned vs Rejected). "Return for
+    // Reconsideration" named the act a third way beside "Return to Previous" and "Raise Deficiency".
+    label: () => returnTo(GRADE_FULL.aso),
     // A return is not a rejection: it sent the file back with the same red fill as Reject.
     intent: "secondary",
     requiresRemarks: true,
@@ -332,14 +335,14 @@ export const RULES: readonly Rule[] = [
     // Returns to the bottom of the PD chain and re-climbs the whole way. [BRD §5.2]
     next: () => ({ holder: { kind: "chain", division: "pd", grade: "aso" }, status: "Returned" }),
     confirm: (ctx) => ({
-      title: "Return for Reconsideration?",
+      title: `${returnTo(GRADE_FULL.aso)}?`,
       summary:
         "The file goes back to the Assistant Section Officer, Programme Division, and must be examined again at every level before it returns to you.",
       facts: [...fileFacts(ctx), { term: "Grant Sought", value: rupees(ctx.app.total) }, remarksFact(ctx, "Reason for Return")],
-      confirmLabel: "Return to the Assistant Section Officer",
+      confirmLabel: returnTo(GRADE_FULL.aso),
       tone: "primary",
     }),
-    outcome: ({ after }) => `File returned to ${seatName(after.holder)} for reconsideration.`,
+    outcome: ({ after }) => `File returned to ${seatName(after.holder)} for rework.`,
   },
   {
     action: "raiseDeficiency",
@@ -359,7 +362,7 @@ export const RULES: readonly Rule[] = [
   },
   {
     action: "communicateDeficiency",
-    label: () => "Send Deficiency to NGO",
+    label: () => "Send Deficiency to the NGO",
     intent: "primary",
     requiresRemarks: true,
     audit: "communicateDeficiency",
@@ -384,18 +387,21 @@ export const RULES: readonly Rule[] = [
   },
   {
     action: "respondDeficiency",
-    label: () => "Submit Response",
+    label: () => DEFICIENCY.submitCorrection,
     intent: "primary",
     requiresRemarks: true,
     audit: "respondDeficiency",
     can: (app, role) => role.id === "ngo" && app.status === "DeficiencyRaised",
     next: () => ({ holder: { kind: "chain", division: "pd", grade: "so" }, status: "DeficiencyResponded" }),
-    outcome: () => "Response submitted to the Ministry.",
+    outcome: () => "Correction submitted to the Ministry.",
   },
   {
     action: "raiseQuery",
-    label: (_role, app) =>
-      app.status === "DeficiencyProposed" ? "Return to the Assistant Section Officer Without Sending" : "Return to Previous",
+    // Named by the seat the file goes to: "Return to Previous" did not say to whom (audit R-07).
+    label: (role, app) =>
+      app.status === "DeficiencyProposed"
+        ? `${returnTo(GRADE_FULL.aso)} Without Sending`
+        : returnTo(GRADE_FULL[(role.grade && prevGrade(role.grade)) || "aso"]),
     intent: "secondary",
     requiresRemarks: true,
     audit: "raiseQuery",
@@ -418,7 +424,7 @@ export const RULES: readonly Rule[] = [
   {
     action: "resolveQuery",
     // Live: "Respond & Send Back". The answer to a Return to Previous, not a separate query desk.
-    label: () => "Respond and Send Back",
+    label: () => RETURN.respond,
     intent: "primary",
     requiresRemarks: true,
     audit: "resolveQuery",
@@ -452,23 +458,28 @@ export const RULES: readonly Rule[] = [
 ];
 
 /**
- * May this officer change the document verdicts? Only while the file is with them, and — once the
- * ASO has certified that the documents were examined — only at ASO grade. The Programme Director,
- * sanctioning a file the ASO certified and Finance concurred, was handed twenty editable verdicts
- * and told to "give a reason for every document marked" (UX audit UX-11, 14 Sep 2026).
+ * May this officer change the document verdicts?
+ *
+ * Three conditions, and the second is the one that was missing. The file must be WITH them; they
+ * must be the EXAMINING SEAT — an Assistant Section Officer — or a grade above one holding a file
+ * nobody has certified yet; and once the file is certified, only the seat that certified it may
+ * still change a verdict.
+ *
+ * The rule used to read `role.grade === "aso" || !app.certifiedAt`, which named the grade and not
+ * the division: the Integrated Finance Division's ASO, holding a file the Programme Division's ASO
+ * had examined and certified, was handed twenty editable verdicts and could overwrite another
+ * division's examination (design-director audit, 16 Sep 2026). The Programme Director, sanctioning
+ * a certified file, was handed the same set before that (UX audit UX-11, 14 Sep 2026).
  */
 export function canEditDocVerdicts(app: GrantApplication, role: RoleDef): boolean {
   if (app.holder.kind === "done" || !holds(app, role)) return false;
-  return role.grade === "aso" || !app.certifiedAt;
-}
-
-/**
- * The required documents the certifying officer has neither opened nor given a verdict on. The
- * certification says the documents "have been examined"; it stays unavailable until this is empty
- * (UX audit UX-02 — no document could be opened from the review screen at all).
- */
-export function unexaminedRequiredDocs(app: Pick<GrantApplication, "documents">, opened: ReadonlySet<string>) {
-  return app.documents.filter((d) => !d.optional && d.reviewStatus === "Pending" && !opened.has(d.id));
+  // The Programme Director decides on the examination; they never give a document its verdict.
+  if (!chainHolder(app)) return false;
+  if (role.grade !== "aso") return !app.certifiedAt;
+  if (!app.certifiedAt) return true;
+  // Certified: the seat of record keeps its own verdicts, in its own division. `certifiedBy` is
+  // unset only on a file saved before it was recorded, and the certifying seat is the PD's ASO.
+  return app.certifiedBy ? app.certifiedBy === role.id : role.division === "pd";
 }
 
 /** Who examined the verdicts and when, for an officer who may only read them. */
@@ -795,19 +806,20 @@ export function sanctionOrderNo(app: Pick<GrantApplication, "financialYear">, ra
  */
 export const STATUS_LABEL: Record<AppStatus, string> = {
   Draft: "Draft",
-  Submitted: "New Submission",
+  // "Received", not "New Submission": "New" is the case type's word (audit O-05).
+  Submitted: RECEIVED,
   UnderReview: "Under Examination",
-  QueryRaised: "Returned for Rework",
-  DeficiencyProposed: "Deficiency to Send",
-  DeficiencyRaised: "Deficiency Raised",
-  DeficiencyResponded: "Resubmitted after Deficiency",
+  QueryRaised: RETURN.status,
+  DeficiencyProposed: DEFICIENCY.toSend,
+  DeficiencyRaised: DEFICIENCY.raised,
+  DeficiencyResponded: DEFICIENCY.resubmitted,
   WithFinance: "Under Financial Examination",
   FinanceConcurred: "Concurred by Finance",
   WithPD: "Awaiting Sanction",
-  Returned: "Returned for Rework",
-  Sanctioned: "Sanctioned",
-  Released: "Grant Released",
-  Rejected: "Rejected",
+  Returned: RETURN.status,
+  Sanctioned: GRANT.sanctioned,
+  Released: GRANT.released,
+  Rejected: REJECT.status,
 };
 
 /**
@@ -839,17 +851,18 @@ export const ACTION_LABEL: Record<AuditAction, string> = {
   submit: "Application Submitted",
   certify: "Certification Recorded",
   forward: "Forwarded",
-  // The query that sends a file one level down: live's "Return to Previous".
-  raiseQuery: "Returned to Previous Level",
-  resolveQuery: "Responded and Sent Back",
-  raiseDeficiency: "Deficiency Noted",
-  communicateDeficiency: "Deficiency Sent to NGO",
-  respondDeficiency: "Deficiency Response Submitted",
+  // A query one level down, the Director's return and a route-down are one family with one name,
+  // the status the file then carries (glossary: Returned vs Rejected).
+  raiseQuery: RETURN.status,
+  resolveQuery: RETURN.responded,
+  raiseDeficiency: DEFICIENCY.noted,
+  communicateDeficiency: DEFICIENCY.sent,
+  respondDeficiency: DEFICIENCY.correctionSubmitted,
   concur: "Financial Concurrence Recorded",
-  sanction: "Sanctioned",
-  reject: "Rejected",
-  return: "Returned for Rework",
-  routeDown: "Returned to Previous Level",
+  sanction: GRANT.sanctioned,
+  reject: REJECT.status,
+  return: RETURN.status,
+  routeDown: RETURN.status,
   inspectionScheduled: "Inspection Scheduled",
   inspectionSubmitted: "Inspection Report Submitted",
   inspectionReviewed: "Inspection Report Reviewed",

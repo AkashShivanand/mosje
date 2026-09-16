@@ -12,6 +12,14 @@
  * would never think to look inside attendance. Attendance now reads this same roster.
  *
  * Project, tab and search live in the URL, so a link to one project's staff list works.
+ *
+ * Design-director audit, 16 Sep 2026 (N-11):
+ *  • "Deactivate" was a blue text link identical to "View" on every row. It is a danger text
+ *    button now, and it asks before it acts: a deactivated beneficiary drops out of the weekly
+ *    register, so a slip changes what the organisation certifies. Reactivating asks nothing.
+ *  • The Beneficiaries / Staff switch chooses WHICH register is shown, so it sits in the
+ *    template's `views` slot above the filter bar, not inside it as though it were a filter.
+ *  • The header count is a sentence, not a title: "110 active of 124 registered beneficiaries".
  */
 
 import * as React from "react";
@@ -21,6 +29,7 @@ import {
   Button,
   FormField,
   Icon,
+  Modal,
   Search,
   SegmentedControl,
   Select,
@@ -65,6 +74,10 @@ function Roster() {
   };
 
   const [adding, setAdding] = React.useState<Tab | null>(null);
+  /** A row awaiting confirmation before it is deactivated. */
+  const [deactivating, setDeactivating] = React.useState<
+    { kind: "beneficiary"; id: string; name: string } | { kind: "employee"; id: string; name: string } | null
+  >(null);
   const [viewing, setViewing] = React.useState<
     { kind: "beneficiary"; data: Beneficiary } | { kind: "employee"; data: Employee } | null
   >(null);
@@ -121,7 +134,7 @@ function Roster() {
   const activeEmp = employees.filter((e) => e.active).length;
 
   const filters = (
-    <div className="grid w-full gap-3 md:grid-cols-[minmax(0,1.4fr)_auto_minmax(0,1fr)] md:items-end">
+    <div className="grid w-full gap-3 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:items-end">
       <FormField label="Project" id="roster-project">
         {(c) => (
           <Select {...c} value={projectId} onChange={(e) => setParam("project", e.target.value)}>
@@ -133,15 +146,6 @@ function Roster() {
           </Select>
         )}
       </FormField>
-      <SegmentedControl<Tab>
-        ariaLabel="Show"
-        value={tab}
-        onChange={(v) => setParam("tab", v === "beneficiaries" ? "" : v)}
-        options={[
-          { value: "beneficiaries", label: "Beneficiaries" },
-          { value: "staff", label: "Staff" },
-        ]}
-      />
       <Search
         value={q}
         onChange={(e) => setParam("q", e.target.value)}
@@ -149,6 +153,18 @@ function Roster() {
         aria-label={tab === "staff" ? "Search staff" : "Search beneficiaries"}
       />
     </div>
+  );
+
+  const views = (
+    <SegmentedControl<Tab>
+      ariaLabel="Show"
+      value={tab}
+      onChange={(v) => setParam("tab", v === "beneficiaries" ? "" : v)}
+      options={[
+        { value: "beneficiaries", label: "Beneficiaries" },
+        { value: "staff", label: "Staff" },
+      ]}
+    />
   );
 
   const addButton = (
@@ -163,10 +179,11 @@ function Roster() {
     // beside the template's "124 in the register", which read as two different totals.
     meta: project
       ? tab === "staff"
-        ? `${projectName(project)} · ${activeEmp} Active of ${employees.length} Registered Staff`
-        : `${projectName(project)} · ${activeBen} Active of ${beneficiaries.length} Registered Beneficiaries`
+        ? `${projectName(project)} · ${activeEmp} active of ${employees.length} registered staff`
+        : `${projectName(project)} · ${activeBen} active of ${beneficiaries.length} registered beneficiaries`
       : undefined,
     actions: addButton,
+    views,
     filters,
     loading: !hydrated,
     asked: hydrated,
@@ -175,9 +192,9 @@ function Roster() {
     copy: screenCopy({
       retryLabel: "Try Again",
       clearFiltersLabel: "Clear Search",
-      emptyTitle: tab === "staff" ? "No staff on this project." : "No beneficiaries on this project.",
+      emptyTitle: tab === "staff" ? "No Staff on This Project" : "No Beneficiaries on This Project",
       emptyDescription: tab === "staff" ? "Add an employee to start the register." : "Add a beneficiary to start the register.",
-      filteredTitle: tab === "staff" ? "No staff match this search." : "No beneficiaries match this search.",
+      filteredTitle: tab === "staff" ? "No Staff Match This Search" : "No Beneficiaries Match This Search",
       filteredDescription: "Clear the search to see the whole register.",
     }),
   };
@@ -190,7 +207,7 @@ function Roster() {
           columns={benColumns}
           rows={benRows}
           registerTotal={beneficiaries.length}
-          // The heading already says "110 Active of 124 Registered"; the list's own count line
+          // The heading already says "110 active of 124 registered"; the list's own count line
           // would say the register total a second time.
           countLine={null}
           getRowId={(r) => r.id}
@@ -202,9 +219,15 @@ function Roster() {
               <Button appearance="text" size="sm" onClick={() => setViewing({ kind: "beneficiary", data: r })} aria-label={`View ${r.name}`}>
                 View
               </Button>
-              <Button appearance="text" size="sm" onClick={() => setBeneficiaryActive(r.id, !r.active)} aria-label={`${r.active ? "Deactivate" : "Reactivate"} ${r.name}`}>
-                {r.active ? "Deactivate" : "Reactivate"}
-              </Button>
+              {r.active ? (
+                <Button appearance="text" variant="danger" size="sm" onClick={() => setDeactivating({ kind: "beneficiary", id: r.id, name: r.name })} aria-label={`Deactivate ${r.name}`}>
+                  Deactivate
+                </Button>
+              ) : (
+                <Button appearance="text" size="sm" onClick={() => setBeneficiaryActive(r.id, true)} aria-label={`Reactivate ${r.name}`}>
+                  Reactivate
+                </Button>
+              )}
             </span>
           )}
         />
@@ -214,7 +237,7 @@ function Roster() {
           columns={empColumns}
           rows={empRows}
           registerTotal={employees.length}
-          // The heading already says "110 Active of 124 Registered"; the list's own count line
+          // The heading already says "110 active of 124 registered"; the list's own count line
           // would say the register total a second time.
           countLine={null}
           getRowId={(r) => r.id}
@@ -226,9 +249,15 @@ function Roster() {
               <Button appearance="text" size="sm" onClick={() => setViewing({ kind: "employee", data: r })} aria-label={`View ${r.name}`}>
                 View
               </Button>
-              <Button appearance="text" size="sm" onClick={() => setEmployeeActive(r.id, !r.active)} aria-label={`${r.active ? "Deactivate" : "Reactivate"} ${r.name}`}>
-                {r.active ? "Deactivate" : "Reactivate"}
-              </Button>
+              {r.active ? (
+                <Button appearance="text" variant="danger" size="sm" onClick={() => setDeactivating({ kind: "employee", id: r.id, name: r.name })} aria-label={`Deactivate ${r.name}`}>
+                  Deactivate
+                </Button>
+              ) : (
+                <Button appearance="text" size="sm" onClick={() => setEmployeeActive(r.id, true)} aria-label={`Reactivate ${r.name}`}>
+                  Reactivate
+                </Button>
+              )}
             </span>
           )}
         />
@@ -249,6 +278,35 @@ function Roster() {
         onCreate={addEmployee}
       />
       <PersonDetailsDialog person={viewing} onClose={() => setViewing(null)} />
+      <Modal
+        open={deactivating != null}
+        onClose={() => setDeactivating(null)}
+        title={deactivating?.kind === "employee" ? "Deactivate Employee?" : "Deactivate Beneficiary?"}
+        size="sm"
+        footer={
+          <div className="flex justify-end gap-2">
+            <Button appearance="outlined" onClick={() => setDeactivating(null)}>
+              Keep Active
+            </Button>
+            <Button
+              variant="danger"
+              onClick={() => {
+                if (!deactivating) return;
+                if (deactivating.kind === "employee") setEmployeeActive(deactivating.id, false);
+                else setBeneficiaryActive(deactivating.id, false);
+                setDeactivating(null);
+              }}
+            >
+              Deactivate
+            </Button>
+          </div>
+        }
+      >
+        <p className="text-body-2">
+          {deactivating?.name} will no longer appear in the weekly attendance register for {project ? projectName(project) : "this project"}.
+          The record is kept and can be reactivated.
+        </p>
+      </Modal>
     </>
   );
 }

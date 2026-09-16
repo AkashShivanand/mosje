@@ -17,8 +17,8 @@ import {
   type Clock,
   type WorkflowAction,
 } from "./workflow.ts";
-import { ROLES } from "./roles.ts";
-import { GRADES, type EAnudaanState, type Grade, type GrantApplication, type RoleId } from "./types.ts";
+import { GRADE_FULL, ROLES } from "./roles.ts";
+import { GRADES, prevGrade, type EAnudaanState, type Grade, type GrantApplication, type RoleId } from "./types.ts";
 import { buildSeed, SEED_SCHEMES } from "./store/seed.ts";
 import { returnedBy, queryRowsFor } from "./registers.ts";
 import { instalmentSchedule, ngoSanctions, projectDisbursement, releasePatternFact } from "./funding.ts";
@@ -95,7 +95,8 @@ test("every grade above the ASO, in both divisions, may Return to Previous; the 
         continue;
       }
       assert.ok(back, `${role.id} should be offered Return to Previous`);
-      assert.equal(back!.label(role, app), "Return to Previous");
+      // Named by where the file goes (glossary, audit R-07): "Return to Previous" did not say to whom.
+      assert.equal(back!.label(role, app), `Return to the ${GRADE_FULL[prevGrade(grade)!]}`);
     }
   }
 });
@@ -141,7 +142,7 @@ test("a returned file is on the sender's Returned register and the receiver's op
   const open = queryRowsFor(state, "pd-ds").filter((r) => r.open);
   assert.equal(open.length, 1);
   assert.ok(open[0]!.canRespond);
-  assert.equal(notificationTitle("raiseQuery"), "Returned to Previous Level");
+  assert.equal(notificationTitle("raiseQuery"), "Returned for Rework");
   assert.equal(notifiesApplicant("raiseQuery"), false, "an internal return is not the applicant's business");
 });
 

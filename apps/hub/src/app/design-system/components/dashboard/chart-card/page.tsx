@@ -20,7 +20,7 @@ const A11Y: A11yItem[] = [
     criterion: "1.3.1 Info and Relationships",
     level: "A",
     description:
-      "The card is a `<section>` with a real `<h3>` heading, so the chart inside it is announced under a named heading rather than as a loose graphic.",
+      "The card is a `<section>` with a real heading — `<h3>` by default, set with `headingLevel` to the level the card actually sits at (an `h2` directly under the page's `h1`) — so the chart inside it is announced under a named heading and the outline skips no level.",
   },
   {
     criterion: "4.1.3 Status Messages",

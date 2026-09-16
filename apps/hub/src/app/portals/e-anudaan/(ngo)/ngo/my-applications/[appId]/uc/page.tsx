@@ -13,6 +13,13 @@
  * application page of a sanctioned file, and the certificate is recorded on the file rather than
  * only acknowledged. Its own lead says the certificate is signed by a Chartered Accountant, and the
  * form now asks for that signed certificate (parity inventory §12).
+ *
+ * Design-director audit, 16 Sep 2026 (N-18, X-07): the page had no way back to its application,
+ * and never said WHICH grant it certifies — a project claims up to three instalments a year, so
+ * "₹29,00,000 sanctioned" alone was ambiguous. It names the instalment and financial year, and
+ * shows what was released beside what was sanctioned. Amounts stay in full rupees: this is a
+ * statutory certificate (glossary, money `exact`). The page is fluid like every portal surface;
+ * the form fields keep a readable measure inside the card.
  */
 
 import * as React from "react";
@@ -33,7 +40,8 @@ import {
   useToast,
 } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
-import { projectTitleFor } from "@/lib/e-anudaan/applicant";
+import { caseLabel, projectTitleFor } from "@/lib/e-anudaan/applicant";
+import { ngoScheme } from "@/components/e-anudaan/ngo-schemes";
 import { formatDate, rupees } from "@/lib/e-anudaan/format";
 import { ownApplication, signedInNgoId } from "@/lib/e-anudaan/roles";
 import { NgoApplicationNotFound } from "@/components/e-anudaan/ngo-application-not-found";
@@ -54,13 +62,16 @@ export default function UtilisationCertificatePage() {
   if (!app) return <NgoApplicationNotFound />;
 
   const sanctioned = app.sanction?.total ?? 0;
-  const scheme = state.schemes.find((s) => s.code === app.schemeCode);
+  // What can have been spent is what reached the organisation: the release, once there is one.
+  const released = app.release?.amount;
+  const ceiling = released ?? sanctioned;
+  const certifies = `${caseLabel(app)} · FY ${app.financialYear}`;
   const amount = Number(spent);
   const back = `/portals/e-anudaan/ngo/my-applications/${encodeURIComponent(app.id)}`;
 
   const errors = [
     !(spent && Number.isFinite(amount) && amount > 0) && { fieldId: "spent", message: "Enter the amount utilised, in rupees." },
-    spent && amount > sanctioned && { fieldId: "spent", message: `The amount utilised cannot exceed the ${rupees(sanctioned)} sanctioned.` },
+    spent && amount > ceiling && { fieldId: "spent", message: `The amount utilised cannot exceed the ${rupees(ceiling)} ${released != null ? "released" : "sanctioned"}.` },
     !remarks.trim() && { fieldId: "uc-remarks", message: "State the purposes the grant was spent on." },
     !doc && { fieldId: "uc-doc", message: "Upload the certificate signed by the Chartered Accountant." },
   ].filter(Boolean) as { fieldId: string; message: string }[];
@@ -79,10 +90,14 @@ export default function UtilisationCertificatePage() {
   };
 
   return (
-    <div className="mx-auto max-w-2xl space-y-5">
+    <div className="space-y-5">
+      <Button appearance="text" size="sm" onClick={() => router.push(back)}>
+        <Icon name="arrow_back" size={16} aria-hidden /> Back to the Application
+      </Button>
       <PageHeader
+        size="compact"
         eyebrow={
-          <span className="font-mono">
+          <span className="tabular-nums">
             Project ID <span className="whitespace-nowrap">{app.institutionId}</span> · Application{" "}
             <span className="whitespace-nowrap">{app.id}</span>
           </span>
@@ -91,7 +106,7 @@ export default function UtilisationCertificatePage() {
         meta={
           <>
             <span className="block">
-              {projectTitleFor(state, app)} · {scheme?.name ?? app.schemeCode} · FY {app.financialYear}
+              {projectTitleFor(state, app)} · {ngoScheme(app.schemeCode).title} · {certifies}
             </span>
             <span className="mt-2 block">
               Certify how the sanctioned grant was spent, under GFR 12-A. The certificate must be signed by a Chartered
@@ -112,11 +127,13 @@ export default function UtilisationCertificatePage() {
               Filed on {formatDate(app.utilisation.filedAt)}.
             </Alert>
             <DescriptionList
-              columns={2}
+              columns={3}
               items={[
+                { term: "Certifies", value: certifies },
                 { term: "Sanctioned", value: rupees(sanctioned) },
+                { term: "Released", value: released != null ? rupees(released) : "Not yet released" },
                 { term: "Amount Utilised", value: rupees(app.utilisation.amountUtilised) },
-                { term: "Unspent Balance", value: rupees(Math.max(0, sanctioned - app.utilisation.amountUtilised)) },
+                { term: "Unspent Balance", value: rupees(Math.max(0, ceiling - app.utilisation.amountUtilised)) },
                 { term: "Signed Certificate", value: app.utilisation.documentName },
                 { term: "Purposes and Remarks", value: app.utilisation.remarks },
               ]}
@@ -130,10 +147,17 @@ export default function UtilisationCertificatePage() {
             <DescriptionList
               columns={2}
               items={[
+                { term: "Certifies", value: certifies },
                 { term: "Sanctioned", value: rupees(sanctioned) },
+                {
+                  term: "Released",
+                  value: app.release ? `${rupees(app.release.amount)} on ${formatDate(app.release.releasedAt)}` : "Not yet released",
+                },
                 { term: "Sanction Order", value: `${app.sanction.orderNo}, ${formatDate(app.sanction.sanctionedAt)}` },
               ]}
             />
+
+            <div className="max-w-measure space-y-4">
 
             <FormField label="Amount Utilised (₹)" id="spent" required error={errorFor("spent")}>
               {(control) => (
@@ -172,7 +196,11 @@ export default function UtilisationCertificatePage() {
               )}
             </FormField>
 
-            <Button onClick={submit}>File Utilisation Certificate</Button>
+            </div>
+
+            <div>
+              <Button onClick={submit}>File Utilisation Certificate</Button>
+            </div>
           </CardBody>
         </Card>
       )}

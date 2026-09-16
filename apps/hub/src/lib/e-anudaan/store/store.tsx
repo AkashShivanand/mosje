@@ -14,6 +14,7 @@
 import * as React from "react";
 import { useToast } from "@mosje/design-system";
 import type {
+  CctvSetup,
   ChangeRequest,
   DocReviewStatus,
   EAnudaanState,
@@ -63,8 +64,13 @@ import {
  * officer decisions; instalment releases; seeded 1st/2nd/3rd-instalment projects for every scheme. An
  * older copy is dropped and reseeded: it predates the projects and releases every renewal now reads,
  * so carrying it forward would show renewals with nothing to claim.
+ * 11 — a `cctv` record per project (the NGO's CCTV setup, which an inspecting officer has to be
+ * able to read), and the seed's own story changed (design-director audit B8, 16 Sep 2026): a
+ * project's years follow the order its files were filed, a draft claim is the claim the dashboard
+ * offers, corrected files are dated their correction, and submitted files answer their questions.
+ * An older copy is reseeded, because it holds exactly the contradictions those rules remove.
  */
-const SCHEMA_VERSION = 10;
+const SCHEMA_VERSION = 11;
 
 function seedState(): EAnudaanState {
   const seed = buildSeed();
@@ -77,6 +83,7 @@ function seedState(): EAnudaanState {
     inspections: seed.inspections,
     notifications: seed.notifications,
     projectAccounts: seed.projectAccounts,
+    cctv: seed.cctv,
     changeRequests: seed.changeRequests,
     beneficiaries: seed.beneficiaries,
     employees: seed.employees,
@@ -146,6 +153,11 @@ interface EAnudaanContextValue {
   setEmployeeActive: (id: string, active: boolean) => void;
   /** Schedule or record a PMU inspection — replaces the inspection with the same id. */
   saveInspection: (next: Inspection) => void;
+  /**
+   * Register (or change) the CCTV at one project. Replaces that project's record, so a project
+   * never carries two. The officer's e-inspection reads the same record.
+   */
+  saveCctv: (setup: CctvSetup) => void;
   /** Raise a new inspection on a sanctioned file (PMU "Inspect"). Returns the inspection raised. */
   raiseInspection: (applicationId: string) => Inspection | undefined;
   /**
@@ -174,6 +186,8 @@ interface EAnudaanContextValue {
   findApp: (id: string) => GrantApplication | undefined;
   findNgo: (id: string) => NgoProfile | undefined;
   findInspection: (id: string) => Inspection | undefined;
+  /** The CCTV registered at a project, if the NGO has set it up. */
+  findCctv: (projectId: string) => CctvSetup | undefined;
 }
 
 export type { SubmitApplicationInput };
@@ -621,6 +635,9 @@ export function EAnudaanProvider({ children }: { children: React.ReactNode }) {
       saveInspection: (next) =>
         run((s) => ({ ...s, inspections: s.inspections.map((i) => (i.id === next.id ? next : i)) })),
 
+      saveCctv: (setup) =>
+        run((s) => ({ ...s, cctv: [setup, ...s.cctv.filter((c) => c.projectId !== setup.projectId)] })),
+
       markNotificationRead: (id) =>
         run((s) => ({ ...s, notifications: markReadFor(s.notifications, id, s.session) })),
 
@@ -634,6 +651,7 @@ export function EAnudaanProvider({ children }: { children: React.ReactNode }) {
       findApp,
       findNgo: (id) => state.ngos.find((n) => n.id === id),
       findInspection: (id) => state.inspections.find((i) => i.id === id),
+      findCctv: (projectId) => state.cctv.find((c) => c.projectId === projectId),
     };
   }, [state, hydrated, commit, run]);
 

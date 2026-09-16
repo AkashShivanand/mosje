@@ -49,6 +49,7 @@ import {
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { accountsFor, maskedAccount, projectName, projectsOf } from "@/lib/e-anudaan/applicant";
 import { formatDate } from "@/lib/e-anudaan/format";
+import { requestStatusLabel, requestStatusTone } from "@/lib/e-anudaan/change-requests";
 import type { BankChangeRequest, Institution, ProjectAccount } from "@/lib/e-anudaan/types";
 
 const IFSC = /^[A-Z]{4}0[A-Z0-9]{6}$/;
@@ -197,8 +198,10 @@ function ProjectRow({
           )}
           {!pending && decided && (
             <span className="mt-1 block">
-              <Badge status={decided.status === "Approved" ? "success" : "danger"} size="sm">
-                {decided.status === "Approved" ? "Change Approved" : "Change Rejected"}
+              {/* The shared label, so this page and the officer's desk give the request one
+                  decision word (audit N-19, glossary: Approved / Not Approved). */}
+              <Badge status={requestStatusTone(decided)} size="sm">
+                {requestStatusLabel(decided)}
               </Badge>{" "}
               {formatDate(decided.decidedAt!)}
               {decided.decisionRemarks ? ` · ${decided.decisionRemarks}` : ""}

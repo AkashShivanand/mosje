@@ -31,7 +31,9 @@ import {
  *   part worth using — **`loading` and `empty` states built in**. A dashboard
  *   whose tiles collapse to nothing while data arrives is the usual reason the
  *   layout jumps on load. Set `loading`, don't render nothing. Add `exportable`
- *   for a header download control (PNG · SVG · CSV) via `ChartExport`.
+ *   for a header download control (PNG · SVG · CSV) via `ChartExport`. Set
+ *   `headingLevel` to the level the card sits at — `2` directly under a page's
+ *   `h1` — so the outline skips no level; the size does not change with it.
  * - **`KpiRow`** lays out `MetricCard` tiles. It reuses `MetricCard` rather
  *   than reimplementing it, so a change to the card reaches every dashboard.
  * - **`FilterBar`** is layout only. It hosts controls; it holds no state and
@@ -39,7 +41,10 @@ import {
  * - **`SegmentedControl`** is a **single-select** rendered as an ARIA
  *   radiogroup. Use it for two to four mutually exclusive options that are
  *   worth showing all at once — a period toggle. Past four, or where options
- *   are not exclusive, use a `Select` or `Chip` filters instead.
+ *   are not exclusive, use a `Select` or `Chip` filters instead. It carries the
+ *   WAI-ARIA radio-group keyboard: one tab stop, arrow keys to move (selection
+ *   follows focus), Home and End for the ends, and the ends wrap — so a verdict
+ *   control can be operated without a mouse.
  *
  * Four KPIs is the practical ceiling for a row. Past that they stop being key.
  *

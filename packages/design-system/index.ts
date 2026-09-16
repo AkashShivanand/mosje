@@ -221,11 +221,12 @@ export { DocumentTile, DocumentTiles } from "./components/forms/document-tile";
 export type { DocumentTileProps, DocumentTileState } from "./components/forms/document-tile";
 export { DocumentRow } from "./components/forms/document-row";
 export type { DocumentRowProps, DocumentRowState, DocumentRowFile } from "./components/forms/document-row";
-export { DocumentChecklist, DocumentChecklistGroup } from "./components/forms/document-checklist";
+export { DocumentChecklist, DocumentChecklistGroup, DocumentBulkAction } from "./components/forms/document-checklist";
 export type {
   DocumentChecklistProps,
   DocumentChecklistGroupProps,
   DocumentChecklistFilter,
+  DocumentBulkActionProps,
 } from "./components/forms/document-checklist";
 export { DocumentFindings } from "./components/forms/document-findings";
 export type { DocumentFindingsProps, DocumentFinding } from "./components/forms/document-findings";

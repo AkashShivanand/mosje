@@ -2240,6 +2240,13 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "headingLevel",
+        "type": "2 | 3 | 4",
+        "required": false,
+        "default": "3\n\nSet it to the level the card actually sits at. A card placed straight under a page's `<h1>`\nwith no section heading between is an `h2`; the fixed `h3` skipped a level on 30 e-Anudaan\npages (axe `heading-order`, audit X-12). The visual size does not change with the level —\nonly the document outline does.",
+        "description": "The title's heading level."
+      },
+      {
         "name": "loading",
         "type": "boolean",
         "required": false,
@@ -3974,6 +3981,13 @@ export const GENERATED_PROPS = {
         "description": "Empty-state message."
       },
       {
+        "name": "hidePagerWhenFits",
+        "type": "boolean",
+        "required": false,
+        "default": "true\n\nA register of one row drew \"Showing 10 50 100 of 1 items\" and a pager with nowhere to go\n(e-Anudaan audit X-04: Funding History, Bank Account Changes, Location Changes, Queries).\nThe footer answers \"how do I see the rest?\", and when there is no rest it is noise. It\nreturns the moment the set outgrows the smallest page, so a reader who narrows a filter\ndown to three rows and widens it again gets the pager back.\n\nPass `false` where the footer carries a count the page states nowhere else and must always\nshow — but prefer stating the count above the table, where `WorklistScreen` already does.",
+        "description": "Hide the whole footer — page sizes, range and pager — while every row already fits on the smallest page size."
+      },
+      {
         "name": "onSortChange",
         "type": "(sort: DataTableSort | null) => void",
         "required": false,
@@ -3985,6 +3999,13 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "[10, 50, 100]",
         "description": ""
+      },
+      {
+        "name": "scrollLabel",
+        "type": "string",
+        "required": false,
+        "default": "`caption`, else \"Table\"",
+        "description": "Accessible name for the scroll region, used only when the table is wider than its box."
       },
       {
         "name": "showPageSizes",
@@ -4613,6 +4634,82 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "DocumentBulkActionProps": {
+    "source": "packages/design-system/components/forms/document-checklist.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "count",
+        "type": "number",
+        "required": true,
+        "description": "How many documents the action will record a verdict for. 0 draws nothing."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "The button: \"Mark All Remaining as Verified\". The count is appended in brackets."
+      },
+      {
+        "name": "onConfirm",
+        "type": "() => void",
+        "required": true,
+        "description": "Called once, after the reader confirms."
+      },
+      {
+        "name": "cancelLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Cancel\"",
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "confirmDescription",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The dialog body: what will be recorded, and that each verdict can still be changed."
+      },
+      {
+        "name": "confirmLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Mark as Verified\"",
+        "description": ""
+      },
+      {
+        "name": "confirmTitle",
+        "type": "string",
+        "required": false,
+        "default": "\"Mark {count} Documents as Verified?\"",
+        "description": ""
+      },
+      {
+        "name": "description",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "One line beside the button saying what \"remaining\" means: \"12 not yet reviewed; the automatic check found nothing wrong with them.\""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Draws the button disabled with `disabledReason` beside it, e.g. while the file is read-only."
+      },
+      {
+        "name": "disabledReason",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      }
+    ]
+  },
   "DocumentChecklistGroupProps": {
     "source": "packages/design-system/components/forms/document-checklist.tsx",
     "inheritsNative": false,
@@ -4649,6 +4746,13 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "hideRequiredMarks",
+        "type": "boolean",
+        "required": false,
+        "default": "false\n\nFor a group whose heading already says so — \"Required Documents\" — where an asterisk on\nevery title is the same fact ten times (e-Anudaan audit D-04). Each row keeps its visually\nhidden \"(required)\". Leave it off for a mixed group.",
+        "description": "Withhold the visible required asterisk on every row in this group."
+      },
+      {
         "name": "meta",
         "type": "React.ReactNode",
         "required": false,
@@ -4678,6 +4782,12 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": "Announced at once — an upload failing."
+      },
+      {
+        "name": "bulkAction",
+        "type": "DocumentBulkActionProps",
+        "required": false,
+        "description": "A verdict for many documents at once, drawn above the groups — see `DocumentBulkActionProps`. Officer screens only. Omit, or pass `count: 0`, and nothing is drawn."
       },
       {
         "name": "children",
@@ -4749,7 +4859,7 @@ export const GENERATED_PROPS = {
         "name": "formats",
         "type": "React.ReactNode",
         "required": false,
-        "description": "The accepted types and size, stated ONCE, where files are chosen: \"PDF, JPG or PNG · up to 5 MB each\"."
+        "description": "The accepted types and size, stated ONCE, where files are chosen: \"PDF, JPG or PNG · up to 5 MB each\". Drawn INSIDE the drop zone when there is one, and in the header line otherwise."
       },
       {
         "name": "loading",
@@ -5065,6 +5175,13 @@ export const GENERATED_PROPS = {
         "description": "The officer's own verdict. Beside the row on a wide row; under the title — with the status — once the row is narrower than about 760px, so the title is never squeezed to a word a line."
       },
       {
+        "name": "clampReason",
+        "type": "boolean",
+        "required": false,
+        "default": "false\n\nFor a list where many rows carry the same reason: the sentence is still read in full by a\nscreen reader and on hover, and the whole of it belongs inside `findings` (\"What we found\").\nTen rows repeating one two-line sentence ran 1,600px (e-Anudaan audit D-03). On a phone the\nreason wraps as before.",
+        "description": "Cut `reason` to one line wherever the row is 640px or wider."
+      },
+      {
         "name": "className",
         "type": "string",
         "required": false,
@@ -5076,6 +5193,13 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "false",
         "description": "The row can fold to one line: icon, title, `summary`, the status words, the action and the menu. The file, hint, reason, findings and `aside` sit behind a \"Details\" disclosure. For a document that needs nothing more from the reader — an officer's list where most documents were verified by an earlier grade. A document still to review, or one that needs correction, is not collapsible: what the reader must act on is never folded away."
+      },
+      {
+        "name": "density",
+        "type": "\"default\" | \"compact\"",
+        "required": false,
+        "default": "\"default\"\n\n`compact` is the REVIEWED-DOCUMENT row for an officer's list. From a 520px row it is two\nlines — title, verdict (`aside`) and actions, with the file and the status as small print\nbeneath — and from 960px one line: icon · title · file · status · verdict · actions. Tighter\npadding; the title and file cut to one line each (full text on hover and to a screen\nreader); on a `collapsible` row the hint waits behind Details. It exists because a\n20-document review ran about 3,700px at 185px a row (e-Anudaan audit R-03). Below 520px it\nstacks exactly like the default row. The `aside` should itself be compact — a segmented\nverdict or a small select — for the first line to hold.",
+        "description": "Row density."
       },
       {
         "name": "expanded",
@@ -5594,7 +5718,7 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "default": "\"Respond by\"",
-        "description": "Printed before an action's deadline."
+        "description": "Printed before an action's deadline, where the entry does not name its own. An item's `dueLabel` wins, for a list that mixes kinds of deadline."
       },
       {
         "name": "emptyText",
@@ -5615,6 +5739,26 @@ export const GENERATED_PROPS = {
         "type": "React.ElementType",
         "required": false,
         "description": "The app's router link (`next/link`) for entries with an `href`. Defaults to a plain anchor."
+      },
+      {
+        "name": "now",
+        "type": "string | number | Date",
+        "required": false,
+        "description": "What \"now\" is, for deciding whether a `dueAt` has passed: an ISO string, a timestamp, or a Date. Resolve it ONCE per page — in a server component, or after hydration — and hand the same value to every list on the screen, so a dashboard tile and the notification panel cannot disagree about which items are overdue. Omitted, nothing is derived and only an item's own `overdue` marks one."
+      },
+      {
+        "name": "overdueDueLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Was due\"",
+        "description": "Printed before the deadline of an OVERDUE entry, in place of `dueLabel`."
+      },
+      {
+        "name": "overdueLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Overdue\"",
+        "description": "The tag on an entry whose deadline has passed. A word beside an icon, in the error family — never the colour alone (WCAG 1.4.1)."
       },
       {
         "name": "showActionTag",
@@ -6247,7 +6391,7 @@ export const GENERATED_PROPS = {
         "type": "boolean",
         "required": false,
         "default": "false",
-        "description": "Pass through to the control as a real `readonly`."
+        "description": "Pass through to the control as a real `readonly`. A read-only field shows NO required marker even when `required` is set — the reader cannot act on it. Pass `readOnly` HERE, not only on the `Input` inside, or the label cannot know."
       },
       {
         "name": "required",
@@ -6353,6 +6497,12 @@ export const GENERATED_PROPS = {
         "type": "React.ReactNode",
         "required": false,
         "description": "The action band at the foot — Back / Cancel and the primary action."
+      },
+      {
+        "name": "footerProps",
+        "type": "React.HTMLAttributes<HTMLDivElement>",
+        "required": false,
+        "description": "Attributes for the action band itself — a class, or the data attributes a floating-element rail reads. The Wizard uses it to mark its sticky phone bar as a surface a transient widget must keep clear of (`floating-element-placement.md`). Never a substitute for `footer`."
       },
       {
         "name": "title",
@@ -8504,6 +8654,12 @@ export const GENERATED_PROPS = {
         "description": "Icon, avatar or organisation mark before the text. Decorative."
       },
       {
+        "name": "linkAs",
+        "type": "React.ElementType",
+        "required": false,
+        "description": "The app's router link (`next/link`), for a row with an `href`. Defaults to a plain `<a>`. linkAs-gate(href-only): a row with no `href` navigates nowhere and needs no router link. PASS IT. Without it every row-click is a full document load — the bundle re-fetched, the tree re-hydrated, the scroll position lost, no prefetch — and nothing looks broken, which is why it goes unnoticed. The officer dashboard's figures became links and paid exactly that. An external destination, a fragment and a disabled row stay a plain anchor by the estate's usual four rules (`navLinkRoutes`)."
+      },
+      {
         "name": "onClick",
         "type": "() => void",
         "required": false,
@@ -9489,6 +9645,12 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "now",
+        "type": "string | number | Date",
+        "required": false,
+        "description": "What \"now\" is, for marking an entry whose `dueAt` has passed as Overdue. Passed straight to `EventList`; resolve it once per page and hand the same value to every list on the screen. Omitted, only an item's own `overdue` marks one."
+      },
+      {
         "name": "onMarkAllRead",
         "type": "() => void",
         "required": false,
@@ -10051,8 +10213,8 @@ export const GENERATED_PROPS = {
         "name": "size",
         "type": "\"default\" | \"compact\"",
         "required": false,
-        "default": "\"default\"",
-        "description": "`compact` sets the title a step down the headline ramp, for a screen whose own content carries the weight — a form wizard, where the stepper and the step panel lead."
+        "default": "\"default\"\n\nONE SCALE PER KIND OF PAGE, so the H1 does not change size inside a single journey.\n\n- `default` — headline-1 (32px on a portal). Every page whose subject IS the title:\ndashboards, lists and registers, record and detail pages (an application, a payment\nstatus, NGO 360), review and decision screens, and error pages (403, 404).\n- `compact` — headline-3 (24px on a portal). A screen whose own furniture leads and the\ntitle only names it: a multi-step form or wizard, where the stepper and the step panel\ncarry the weight, and a single-task form page (a correction, a certificate, a request).\n\nNot a third size, and not a per-page judgement: if a page is neither, it is `default`.\nSign-in titles belong to the auth templates, which carry their own scale.",
+        "description": "The title's rung on the headline ramp."
       }
     ]
   },
@@ -15577,7 +15739,7 @@ export const GENERATED_PROPS = {
         "name": "countLine",
         "type": "React.ReactNode | null",
         "required": false,
-        "description": "Replace the count line under the filters (\"124 in the register.\"). Omit for the default sentence. Pass `null` to suppress it where the page header already states the count — the NGO beneficiaries register reads \"110 Active of 124 Registered Beneficiaries\" above the table, and the default line repeated the same fact beneath it. Pass a node to say it differently. Shown only when the list is `ready`, like the default."
+        "description": "Replace the count line under the filters (\"124 applications.\"). Omit for the default sentence, which counts in the screen's own words — `noun` / `pluralNoun`, so \"95 applications.\" rather than a filing term no applicant uses. Pass a node to say it differently (\"95 applications in the register\", a count with a link). Pass `null` to suppress it where the page header already states the count — the NGO beneficiaries register reads \"110 Active of 124 Registered Beneficiaries\" above the table, and the default line repeated the same fact beneath it. Shown only when the list is `ready`, like the default."
       },
       {
         "name": "emptyAction",
@@ -15608,7 +15770,7 @@ export const GENERATED_PROPS = {
         "name": "filters",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Filter controls. Drop DS form controls straight in."
+        "description": "Filter controls. Drop DS form controls straight in. A view switch belongs in `views`."
       },
       {
         "name": "headingLevel",
@@ -15634,7 +15796,7 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "default": "\"record\"",
-        "description": "What one row is called, for the selection bar."
+        "description": "What ONE ROW is called — in the reader's own words, not the filing system's. It names the rows in the selection bar (\"3 applications selected\") and in the default count line (\"95 applications.\"), so both sentences on a screen use one noun."
       },
       {
         "name": "onBulkAction",
@@ -15664,7 +15826,7 @@ export const GENERATED_PROPS = {
         "name": "pluralNoun",
         "type": "string",
         "required": false,
-        "description": ""
+        "description": "The plural, where it is not `noun` + \"s\" — \"bodies\", \"beneficiaries\"."
       },
       {
         "name": "registerTotal",
@@ -15689,6 +15851,12 @@ export const GENERATED_PROPS = {
         "type": "React.ReactNode",
         "required": false,
         "description": "A summary of the register — a row of `MetricCard`s — between the header and the filters. There was no slot for it, so the E-Anudaan applicant's My Applications put its Saved Drafts below the register (UX-04) and the officer's All Applications had nowhere to show its Total / In Review / Sanctioned / Returned tiles (parity inventory §16). Figures here must be computed from the same rows the table lists."
+      },
+      {
+        "name": "views",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A view switch — `Tabs` or a `SegmentedControl` choosing WHICH register is shown (\"Pending / All\", \"Beneficiaries / Staff\") — drawn directly under the header, with no frame of its own. A view is not a filter. Passed through `filters`, a two-option switch sat in the grey framed filter bar and read as a filter nobody had set (e-Anudaan audit X-05: Queries, Bank Account Changes, Location Changes, Sent). Put views here and narrowing controls in `filters`; a page with both renders views first, then the bar."
       }
     ]
   },

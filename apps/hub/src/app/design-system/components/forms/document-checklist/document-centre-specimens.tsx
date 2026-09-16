@@ -15,6 +15,7 @@ import {
   DocumentHistorySheet,
   DocumentPlacementTray,
   DocumentRow,
+  SegmentedControl,
   type DocumentPlacement,
   type DocumentRowState,
 } from "@mosje/design-system";
@@ -174,6 +175,81 @@ export function DocumentChecklistSpecimen(): React.JSX.Element {
           Press Continue
         </Button>
       </div>
+    </div>
+  );
+}
+
+/**
+ * An officer's review list: compact rows with the verdict in the line, a folded row an earlier
+ * grade verified, and the bulk verdict for the documents the automatic check found nothing wrong
+ * with. Illustrative data only.
+ */
+export function DocumentOfficerReviewSpecimen(): React.JSX.Element {
+  type Verdict = "pending" | "verified" | "correction";
+  const DOCS = [
+    { n: 1, title: "Registration Certificate (Societies Registration Act 1860 / Charitable Trust)", file: "Registration_Certificate_of_the_Organisation.pdf", check: "verified" as const },
+    { n: 2, title: "PAN Card of the Organisation", file: "PAN_Card_of_the_Organisation.pdf", check: "verified" as const },
+    { n: 3, title: "Audited Accounts — Previous Financial Year", file: "Audited_Accounts_2025-26.pdf", check: "invalid" as const },
+    { n: 4, title: "Annual Report — Previous Financial Year", file: "Annual_Report_2025-26.pdf", check: "verified" as const },
+    { n: 5, title: "Bank Authorisation Letter", file: "Bank_Authorisation_Letter.pdf", check: "verified" as const },
+  ];
+  const [verdicts, setVerdicts] = React.useState<Record<number, Verdict>>({ 1: "verified" });
+  const [open, setOpen] = React.useState<Record<number, boolean>>({});
+  const remaining = DOCS.filter((d) => (verdicts[d.n] ?? "pending") === "pending" && d.check === "verified");
+  return (
+    <div style={frame}>
+      <DocumentChecklist
+        ready={DOCS.filter((d) => (verdicts[d.n] ?? "pending") !== "pending").length}
+        required={DOCS.length}
+        progressLabel={`${DOCS.filter((d) => (verdicts[d.n] ?? "pending") !== "pending").length} of ${DOCS.length} required documents examined`}
+        visibleCount={DOCS.length}
+        bulkAction={{
+          label: "Mark All Remaining as Verified",
+          count: remaining.length,
+          description: "Documents not yet examined where the automatic check found nothing wrong.",
+          confirmDescription: `A verdict of Verified will be recorded in your name against each of the ${remaining.length} documents. The automatic check flagged none of them. Each verdict can still be changed before the file is forwarded.`,
+          onConfirm: () => setVerdicts((v) => ({ ...v, ...Object.fromEntries(remaining.map((d) => [d.n, "verified" as Verdict])) })),
+        }}
+      >
+        <DocumentChecklistGroup title="Required Documents" hideRequiredMarks>
+          {DOCS.map((d) => {
+            const verdict = verdicts[d.n] ?? "pending";
+            const settled = verdict === "verified" && d.n === 1;
+            return (
+              <DocumentRow
+                key={d.n}
+                density="compact"
+                number={d.n}
+                title={d.title}
+                required
+                state={d.check}
+                statusLabel={d.check === "invalid" ? "Automatic check · Does not match" : "Automatic check · Looks right"}
+                file={{ name: d.file, size: "212 KB", date: "14 Sep 2026" }}
+                collapsible={settled}
+                expanded={!!open[d.n]}
+                onExpandedChange={(o) => setOpen((x) => ({ ...x, [d.n]: o }))}
+                summary="Verified by the Assistant Section Officer, 12 Sep 2026"
+                aside={
+                  <SegmentedControl<Verdict>
+                    ariaLabel={`Verdict on ${d.title}`}
+                    value={verdict}
+                    onChange={(v) => setVerdicts((x) => ({ ...x, [d.n]: v }))}
+                    options={[
+                      { value: "verified", label: "Verified" },
+                      { value: "correction", label: "Needs Correction" },
+                    ]}
+                  />
+                }
+                action={
+                  <Button size="sm" appearance="outlined" nowrap aria-label={`View ${d.title}`}>
+                    View
+                  </Button>
+                }
+              />
+            );
+          })}
+        </DocumentChecklistGroup>
+      </DocumentChecklist>
     </div>
   );
 }

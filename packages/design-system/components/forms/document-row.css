@@ -131,11 +131,7 @@
       align-items: center;
       column-gap: var(--sa-inline-12);
     }
-    .ds-docrow--aside .ds-docrow__file-name {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
+
   }
 
   /* Room enough for the status beside a title of readable measure. */
@@ -266,14 +262,25 @@
   }
 
   /* A scanner's file name is long and says little; broken mid-word across two lines it says
-     less. One line, cut with an ellipsis, the whole name in the tooltip and read in full by a
-     screen reader. On a phone it has its own line and wraps. */
-  @container ds-docrow (min-width: 640px) {
-    .ds-docrow__file-name {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
+     less. One line at EVERY width, cut in the stem so the extension survives — on a phone it
+     used to wrap as "PAN_Card_of_the_Organisation.pd / f" (e-Anudaan audit D-05). The whole
+     name is in the tooltip and read in full by a screen reader. */
+  .ds-docrow__file-name {
+    display: inline-flex;
+    max-inline-size: 100%;
+    min-inline-size: 0;
+    overflow-wrap: normal;
+    white-space: nowrap;
+  }
+
+  .ds-docrow__file-stem {
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ds-docrow__file-ext {
+    flex: 0 0 auto;
   }
 
   .ds-docrow__file-link {
@@ -510,6 +517,142 @@
     .ds-docrow--folded .ds-docrow__icon {
       align-self: start;
       margin-block-start: calc((var(--sa-type-body-1-lh) - var(--sa-icon-size-20)) / 2);
+    }
+  }
+
+  /* ── Reason cut to one line (`clampReason`) ────────────────────────────── */
+
+  @container ds-docrow (min-width: 640px) {
+    .ds-docrow--clamp-reason .ds-docrow__reason {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+      overflow: hidden;
+    }
+  }
+
+  /* ── Compact — the reviewed-document row (`density="compact"`) ──────────
+     TWO LINES from a 520px row, ONE from 960px. The review column beside an officer's decision
+     panel is about 650px at 1440, so a one-line rule gated at 760 would never have engaged where
+     it was needed (e-Anudaan audit R-03). From 520: the title, the verdict and View on the first
+     line; the file and the automatic check as small print under them. From 960: all of it on one
+     line. Every row of the list puts each part in the same column, so the verdicts line up down
+     the page and read as a column. Below 520 nothing here applies and the row stacks as usual. */
+  .ds-docrow--compact {
+    padding-block: var(--sa-padding-8);
+  }
+
+  .ds-docrow--compact .ds-docrow__title {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  .ds-docrow--compact .ds-docrow__icon {
+    margin-block-start: calc((var(--sa-type-body-2-lh) - var(--sa-icon-size-20)) / 2);
+  }
+
+  @container ds-docrow (min-width: 520px) {
+    .ds-docrow--compact .ds-docrow__line,
+    .ds-docrow--compact.ds-docrow--aside:not(.ds-docrow--folded) .ds-docrow__line {
+      grid-template-columns: var(--sa-icon-size-20) minmax(0, 1fr) auto auto;
+      grid-template-areas:
+        "icon main aside actions"
+        ". file status status"
+        ". more more more";
+      align-items: center;
+      gap: 0 var(--sa-inline-12);
+    }
+
+    .ds-docrow--compact.ds-docrow--folded .ds-docrow__line {
+      grid-template-columns: var(--sa-icon-size-20) minmax(0, 1fr) auto;
+      grid-template-areas:
+        "icon main actions"
+        ". status status";
+      align-items: center;
+      row-gap: 0;
+    }
+
+    .ds-docrow--compact .ds-docrow__icon,
+    .ds-docrow--compact.ds-docrow--aside .ds-docrow__icon,
+    .ds-docrow--compact.ds-docrow--folded .ds-docrow__icon {
+      align-self: start;
+      margin-block-start: calc((var(--sa-control-height-sm) - var(--sa-icon-size-20)) / 2);
+    }
+
+    .ds-docrow--compact .ds-docrow__title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* The file as small print: name and meta on one line. */
+    .ds-docrow--compact .ds-docrow__file {
+      flex-direction: row;
+      align-items: baseline;
+      gap: var(--sa-inline-8);
+    }
+
+    .ds-docrow--compact .ds-docrow__file-name {
+      font-size: var(--sa-type-body-3-size);
+      line-height: var(--sa-type-body-3-lh);
+    }
+
+    .ds-docrow--compact .ds-docrow__file-meta {
+      flex: 0 0 auto;
+    }
+
+    .ds-docrow--compact .ds-docrow__status,
+    .ds-docrow--compact.ds-docrow--aside:not(.ds-docrow--folded) .ds-docrow__status {
+      flex-flow: row wrap;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0 var(--sa-inline-8);
+    }
+
+    .ds-docrow--compact .ds-docrow__status-words {
+      font-size: var(--sa-type-body-3-size);
+      line-height: var(--sa-type-body-3-lh);
+    }
+
+    /* The verdict sits IN the line, not in a bordered column below or beside it. */
+    .ds-docrow--compact .ds-docrow__aside,
+    .ds-docrow--compact.ds-docrow--aside:not(.ds-docrow--folded) .ds-docrow__aside {
+      padding: 0;
+      border: 0;
+    }
+  }
+
+  @container ds-docrow (min-width: 960px) {
+    .ds-docrow--compact .ds-docrow__line,
+    .ds-docrow--compact.ds-docrow--aside:not(.ds-docrow--folded) .ds-docrow__line {
+      grid-template-columns:
+        var(--sa-icon-size-20)
+        minmax(0, 4fr)
+        minmax(0, 2.5fr)
+        minmax(0, 2fr)
+        auto
+        auto;
+      grid-template-areas:
+        "icon main file status aside actions"
+        ". more more more more more";
+    }
+
+    /* A folded row draws no file and no verdict, so its summary takes the middle columns and the
+       title and actions stay in the same columns as the open rows around it. */
+    .ds-docrow--compact.ds-docrow--folded .ds-docrow__line {
+      grid-template-columns:
+        var(--sa-icon-size-20)
+        minmax(0, 4fr)
+        minmax(0, 4.5fr)
+        auto;
+      grid-template-areas: "icon main status actions";
+    }
+
+    .ds-docrow--compact .ds-docrow__icon,
+    .ds-docrow--compact.ds-docrow--aside .ds-docrow__icon,
+    .ds-docrow--compact.ds-docrow--folded .ds-docrow__icon {
+      align-self: center;
+      margin-block-start: 0;
     }
   }
 }

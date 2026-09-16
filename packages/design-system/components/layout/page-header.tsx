@@ -22,9 +22,19 @@ export interface PageHeaderProps extends React.HTMLAttributes<HTMLElement> {
    */
   as?: 1 | 2;
   /**
-   * `compact` sets the title a step down the headline ramp, for a screen whose own content
-   * carries the weight — a form wizard, where the stepper and the step panel lead.
-   * @default "default"
+   * The title's rung on the headline ramp. @default "default"
+   *
+   * ONE SCALE PER KIND OF PAGE, so the H1 does not change size inside a single journey.
+   *
+   * - `default` — headline-1 (32px on a portal). Every page whose subject IS the title:
+   *   dashboards, lists and registers, record and detail pages (an application, a payment
+   *   status, NGO 360), review and decision screens, and error pages (403, 404).
+   * - `compact` — headline-3 (24px on a portal). A screen whose own furniture leads and the
+   *   title only names it: a multi-step form or wizard, where the stepper and the step panel
+   *   carry the weight, and a single-task form page (a correction, a certificate, a request).
+   *
+   * Not a third size, and not a per-page judgement: if a page is neither, it is `default`.
+   * Sign-in titles belong to the auth templates, which carry their own scale.
    */
   size?: "default" | "compact";
   /** Set on the heading so a region can point `aria-labelledby` at it. */

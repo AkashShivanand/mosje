@@ -41,6 +41,7 @@ import { holderLabel } from "@/lib/e-anudaan/workflow";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { placeOfProjectId } from "@/lib/e-anudaan/geography";
 import { awaitingInspection } from "@/lib/e-anudaan/registers";
+import { CASE_TYPE, RECEIVED } from "@/lib/e-anudaan/glossary";
 
 export type WorklistVariant = "queue" | "explorer" | "sanctioned" | "rejected" | "forwarded";
 
@@ -147,8 +148,9 @@ export function worklistColumns(
         className={buttonClasses("primary", "text", "sm", "whitespace-nowrap")}
         aria-label={`${verb} project ${row.institutionId}`}
       >
-        <Icon name="open_in_new" size={16} aria-hidden />
+        {/* Same tab, so no `open_in_new`: that glyph promised a new window it never opened (X-06). */}
         {verb}
+        <RowLinkIcon />
       </Link>
     ) : (
       <span className="text-ink-hint">—</span>
@@ -239,19 +241,26 @@ export function worklistColumns(
 
   /* The status with the seat now holding the file — on a register of files that have moved on, the
      live explorer's "JS-PD approved · with US-PD". Forwarded read "Under Examination" on every row
-     with no word of where (inventory §19). */
+     with no word of where (inventory §19).
+
+     The status's own note comes first and the seat second, always both: the queue read "By the
+     Programme Director" and All Applications "With the Assistant Section Officer" for the same
+     returned file, because each printed only one of the two facts (audit O-06). */
   const statusWithSeat: WorklistColumn<GrantApplication> = {
     ...status,
-    exportValue: (r) => [officerStatus(r).label, holderLabel(r.holder)].filter(Boolean).join(" · "),
+    exportValue: (r) => {
+      const s = officerStatus(r, inspectionReady?.has(r.id));
+      return [s.label, s.note, holderLabel(r.holder)].filter(Boolean).join(" · ");
+    },
     render: (r) => {
       const s = officerStatus(r, inspectionReady?.has(r.id));
-      const seat = holderLabel(r.holder);
+      const line = [s.note, holderLabel(r.holder)].filter(Boolean).join(" · ");
       return (
         <span className="block min-w-[9.5rem]">
           <Badge status={s.tone} className="max-w-full whitespace-normal text-left">
             <Icon name={s.icon} size={16} aria-hidden /> {s.label}
           </Badge>
-          {(seat || s.note) && <span className="mt-1 block text-body-3 text-ink-muted">{seat || s.note}</span>}
+          {line && <span className="mt-1 block text-body-3 text-ink-muted">{line}</span>}
         </span>
       );
     },
@@ -482,13 +491,19 @@ export const STATUS_FILTERS = [
   { value: "Deficiency Raised", label: "Deficiency Raised" },
   { value: "Resubmitted after Deficiency", label: "Resubmitted after Deficiency" },
   { value: "Returned for Rework", label: "Returned for Rework" },
-  { value: "New Submission", label: "New Submission" },
+  { value: RECEIVED, label: RECEIVED },
   { value: "Under Examination", label: "Under Examination" },
 ] as const;
 
+/**
+ * Not a status but a fact about the file, offered in the queue's Status filter so the dashboard's
+ * "Inspection Report Available" figure can open exactly the rows it counts.
+ */
+export const INSPECTION_READY_FILTER = "Inspection Report Available";
+
 export const TYPE_FILTERS = [
   { value: "", label: "All Case Types" },
-  { value: "New", label: "New" },
+  { value: "New", label: CASE_TYPE.new },
   { value: "1", label: "1st Instalment" },
   { value: "2", label: "2nd Instalment" },
   { value: "3", label: "3rd Instalment" },
@@ -498,6 +513,44 @@ export function matchesType(app: GrantApplication, type: string): boolean {
   if (!type) return true;
   if (type === "New") return app.caseType === "New";
   return app.caseType === "Ongoing" && String(app.instalment) === type;
+}
+
+/**
+ * The trailing mark on a row link that opens another screen in the same tab. Every officer register
+ * uses this one, so no list goes back to `open_in_new` (audit X-06).
+ */
+export function RowLinkIcon() {
+  return <Icon name="chevron_right" size={16} aria-hidden />;
+}
+
+/**
+ * A search field with a visible label, sized and labelled like the `FilterSelect`s beside it.
+ *
+ * The bare `Search` carried only a placeholder, which truncated to "Search application" and left
+ * the one text field in the bar as the only control without a label (audit O-07).
+ */
+export function LabelledSearch({
+  label,
+  value,
+  onChange,
+  placeholder,
+  className,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+  className?: string;
+}) {
+  const id = React.useId();
+  return (
+    <div className={`flex min-w-0 flex-col gap-1 ${className ?? ""}`}>
+      <label htmlFor={id} className="text-label-2 font-semibold text-[var(--sa-text-neutral-subtle)]">
+        {label}
+      </label>
+      <Search id={id} size="sm" value={value} onChange={(e) => onChange(e.target.value)} onClear={() => onChange("")} placeholder={placeholder} />
+    </div>
+  );
 }
 
 /** Hook: the column options every officer list needs, resolved from the store once. */
@@ -535,53 +588,73 @@ export function WorklistTable({
   variant = "queue",
   reviewBase,
   caption,
+  id,
+  status: controlledStatus,
+  onStatusChange,
 }: {
   rows: GrantApplication[];
   variant?: WorklistVariant;
   reviewBase?: string;
   caption: string;
+  /** The card's id, so a figure elsewhere on the page can bring the reader to this table. */
+  id?: string;
+  /**
+   * The Status filter, when the page owns it — the dashboard's figures set it so that each opens
+   * exactly the rows it counts (audit O-03). Omit and the table keeps its own.
+   */
+  status?: string;
+  onStatusChange?: (status: string) => void;
 }) {
   const [q, setQ] = React.useState("");
   const [type, setType] = React.useState("");
-  const [status, setStatus] = React.useState("");
-  const opts = useWorklistOptions(reviewBase);
+  const [ownStatus, setOwnStatus] = React.useState("");
+  const status = controlledStatus ?? ownStatus;
+  const setStatus = onStatusChange ?? setOwnStatus;
+  // NGO names link to NGO 360 in every officer list, the queue included (audit O-06).
+  const opts = useWorklistOptions(reviewBase, undefined, { withNgoLink: true });
   const columns = React.useMemo(() => worklistColumns(variant, opts), [variant, opts]);
+
+  const statusOptions = React.useMemo(() => {
+    const labels = [...new Set(rows.map((r) => officerStatus(r).label))].sort();
+    const withReport = rows.some((r) => opts.inspectionReady?.has(r.id));
+    return [
+      STATUS_FILTERS[0],
+      ...labels.map((l) => ({ value: l, label: l })),
+      ...(withReport || status === INSPECTION_READY_FILTER ? [{ value: INSPECTION_READY_FILTER, label: INSPECTION_READY_FILTER }] : []),
+    ];
+  }, [rows, opts, status]);
+
+  const matchesStatus = React.useCallback(
+    (r: GrantApplication) =>
+      !status || (status === INSPECTION_READY_FILTER ? !!opts.inspectionReady?.has(r.id) : officerStatus(r).label === status),
+    [status, opts],
+  );
 
   const filtered = React.useMemo(() => {
     const needle = q.trim().toLowerCase();
     return rows.filter(
       (r) =>
         matchesType(r, type) &&
-        (!status || officerStatus(r).label === status) &&
+        matchesStatus(r) &&
         (!needle ||
           r.id.toLowerCase().includes(needle) ||
           r.institutionId.toLowerCase().includes(needle) ||
           (opts.ngoName?.(r.ngoId) ?? "").toLowerCase().includes(needle)),
     );
-  }, [rows, q, type, status, opts]);
+  }, [rows, q, type, matchesStatus, opts]);
 
   const active = (q.trim() ? 1 : 0) + (type ? 1 : 0) + (status ? 1 : 0);
 
   return (
-    <Card variant="outlined">
+    <Card variant="outlined" id={id} tabIndex={id ? -1 : undefined} className={id ? "scroll-mt-4 outline-none" : undefined}>
       <CardBody>
-      <div className="mb-4 grid gap-3 md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,1fr)_auto] md:items-center">
-        <Search
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          placeholder="Project ID or NGO"
-          aria-label="Search applications"
-        />
+      <div className="mb-4 grid gap-3 md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,1fr)_auto] md:items-end">
+        <LabelledSearch label="Search" value={q} onChange={setQ} placeholder="Project ID or NGO" />
         <FilterSelect label="Case Type" options={[...TYPE_FILTERS]} value={type} onChange={setType} />
         {/* Only the statuses present in these rows. A fixed list offered five statuses the
             Finance queue never holds, so every choice emptied the table (screen audit, 14 Sep). */}
-        <FilterSelect
-          label="Status"
-          options={[STATUS_FILTERS[0], ...[...new Set(rows.map((r) => officerStatus(r).label))].sort().map((l) => ({ value: l, label: l }))]}
-          value={status}
-          onChange={setStatus}
-        />
-        <p className="text-body-2 text-ink-muted md:text-right" role="status">
+        <FilterSelect label="Status" options={statusOptions} value={status} onChange={setStatus} />
+        <p className="text-body-2 text-ink-muted md:pb-2.5 md:text-right" role="status">
           {/* The table's own footer says which page of rows is shown; this line only says how
               many the filters let through, so the two never state different "Showing" counts. */}
           {active > 0

@@ -4,9 +4,46 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { OrgLogo, PortalPage, SiteHeader } from "@mosje/design-system";
+import type { EventItem } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { ROLES } from "@/lib/e-anudaan/roles";
 import { notificationItems, notificationsHref } from "@/lib/e-anudaan/notifications";
+import type { EAnudaanState } from "@/lib/e-anudaan/types";
+
+/**
+ * The applicant's feed, as BOTH the masthead bell and the notifications page read it — one
+ * expression, so the two cannot label the same notice differently.
+ *
+ * A utilisation certificate is FILED, not responded to, so its deadline is named for what it asks
+ * ("File by 30 Jun 2026"); everything else keeps the list's default. The due dates themselves are
+ * the notifications module's (`dueAt`).
+ */
+export function ngoNotifications(state: EAnudaanState): EventItem[] {
+  return notificationItems(state, "ngo").map((n) => (n.id.startsWith("uc-") ? { ...n, dueLabel: "File by" } : n));
+}
+
+/**
+ * ONE moment for a whole screen, for marking an entry whose `dueAt` has passed.
+ *
+ * The clock is an external system: it is read AFTER paint, and once a minute after that, so a page
+ * left open does not go on saying a certificate is due today. Read during render it would move
+ * between two entries on one screen — a certificate due today reading Overdue in one row and not
+ * the next — and the server's clock would decide the first paint. `undefined` until it is set, so
+ * until then only an entry's own `overdue` marks one.
+ */
+export function useNow(): number | undefined {
+  const [now, setNow] = React.useState<number | undefined>(undefined);
+  React.useEffect(() => {
+    const tick = () => setNow(Date.now());
+    const first = window.setTimeout(tick, 0);
+    const every = window.setInterval(tick, 60_000);
+    return () => {
+      window.clearTimeout(first);
+      window.clearInterval(every);
+    };
+  }, []);
+  return now;
+}
 
 /**
  * The design system's `Link` renders a plain anchor and takes no router link, so a click is
@@ -58,7 +95,7 @@ export function NgoShell({ children }: { children: React.ReactNode }) {
 
   const isNgo = state.session === "ngo";
   const role = ROLES.ngo;
-  const notifications = React.useMemo(() => notificationItems(state, "ngo"), [state]);
+  const notifications = React.useMemo(() => ngoNotifications(state), [state]);
 
   React.useEffect(() => {
     if (hydrated && !isNgo) router.replace("/portals/e-anudaan/login?role=ngo");

@@ -15,6 +15,11 @@
  *   • latitude and longitude are recorded for the department and never shown — they mean
  *     nothing to the applicant;
  *   • the reason is mandatory; a supporting document is optional.
+ *
+ * Design-director audit, 16 Sep 2026 (N-19, X-07): a decided request read "Verified … decided
+ * 13 Feb 2026". A request is Approved or Not Approved (glossary, `requestStatusLabel`), and the
+ * date reads "Decided 13 Feb 2026". The page is fluid like every portal surface; the form keeps
+ * a readable width inside its card.
  */
 
 import * as React from "react";
@@ -129,15 +134,16 @@ export default function ProjectLocationChangePage() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6">
+    <div className="space-y-6">
       <PageHeader
+        size="compact"
         title="Project Location Change"
         meta="Ask the Ministry to record a new address for a project. A project can move within its district only."
       />
 
       <Card variant="outlined">
         <CardBody>
-          <form onSubmit={submit} noValidate className="space-y-6">
+          <form onSubmit={submit} noValidate className="max-w-[var(--sa-container-md)] space-y-6">
             {tried && errors.length > 0 && <ErrorSummary errors={errors.map((er) => ({ fieldId: er.id, message: er.text }))} />}
 
             <FormField label="Project" id="project" required error={errorFor("project")}>
@@ -172,7 +178,7 @@ export default function ProjectLocationChangePage() {
                 />
 
                 {pendingForProject ? (
-                  <Alert status="info" title="A request for this project is already under examination">
+                  <Alert status="info" title="A Request for This Project Is Already Under Examination">
                     Submitted on {formatDate(pendingForProject.submittedAt)} for {pendingForProject.address}. A new request can be
                     made once the Ministry has decided on it.
                   </Alert>
@@ -271,15 +277,15 @@ export default function ProjectLocationChangePage() {
                 return (
                   <ListRow
                     key={r.id}
-                    eyebrow={<span className="font-mono">{r.projectId}</span>}
+                    eyebrow={<span className="tabular-nums">{r.projectId}</span>}
                     title={p ? projectName(p) : r.projectId}
                     description={
                       <>
                         <span className="block">New address: {r.address}</span>
                         <span className="block text-ink-muted">
                           Submitted {formatDate(r.submittedAt)}
-                          {r.decidedAt ? ` · decided ${formatDate(r.decidedAt)}` : ""}
-                          {r.documentName ? ` · document: ${r.documentName}` : ""}
+                          {r.decidedAt ? ` · Decided ${formatDate(r.decidedAt)}` : ""}
+                          {r.documentName ? ` · Document: ${r.documentName}` : ""}
                         </span>
                         {r.decisionRemarks && <span className="block">Ministry&apos;s remarks: {r.decisionRemarks}</span>}
                       </>

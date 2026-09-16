@@ -69,8 +69,12 @@ Upload Documents                                                  PDF, JPG or PN
 
 - **Progress counts "ready", not "uploaded".** A rejected upload is not progress.
 - **Three chips are the three questions** a clerk has, and each filters the list. "Needs your
-  attention" = not valid + upload failed + required and missing. Checking and "couldn't check" are not
-  in it, because neither asks anything of the user.
+  attention" = not valid + upload failed + required and missing + **check was unsure** (amended
+  16 Sep 2026, §6.1 item 11). Checking and "couldn't check" are not in it, because neither asks
+  anything of the user.
+- **"Asks something of me" and "stops me" are different questions.** A chip answers the first; the
+  gate (§3.5) answers the second. A row the check was unsure about is in Needs your attention and
+  blocks nothing, exactly as a file still being checked is not Ready and blocks nothing.
 - The accepted types and size are stated once, where the file is chosen, not under every row.
 
 ### 3.2 One compact row per document, grouped as the scheme groups them
@@ -98,14 +102,14 @@ Upload Documents                                                  PDF, JPG or PN
 | Rejected before upload | This file is 7.2 MB. The limit is 5 MB. / Only PDF, JPG or PNG files can be uploaded. | ✕ error | yes | Choose Another File |
 | Checking | Checking… | ◌ progress | no* | — |
 | Verified | Looks right | ● success | no | (menu) |
-| Needs review (< 90%) | Please confirm — (first reason) | ▲ warning | no | What we found |
+| Needs review (< 90%) | Check the details — (first reason) | ▲ warning | no | What we found |
 | Not valid | Doesn't match — (first reason) | ▲ error | yes | Replace |
 | Check unavailable | Saved — an officer will check it | ⓘ neutral | no | (menu) |
 
 \* A file still being checked does not stop the applicant moving on; Submit waits for it.
 
 - **Confidence leaves the applicant's screen** and stays on the officer's. The applicant needs the
-  consequence ("Please confirm" vs "Doesn't match"), which the 90% bar already decides.
+  consequence ("Check the details" vs "Doesn't match"), which the 90% bar already decides.
 - **"Re-verify" becomes "Check Again"** — the same action, in words a clerk uses.
 - **"What we found"** expands in place: the model's extracted fields as a two-column list, **each
   compared with what the application says** — "Organisation Name: HARIJAN SEVAK SANGH ≠ Sankalp Seva
@@ -221,7 +225,7 @@ answer everywhere.
    AVYAY, NAPDDR and SMILE have no live groups, so they are split into Required and Optional.
 8. **Comparison rules.** Another organisation's name or registration number, or the wrong financial
    year, makes a document "Doesn't match"; an IFSC or account number that differs from the
-   application makes it "Please confirm", because the account on the application can itself be wrong.
+   application makes it "Check the details", because the account on the application can itself be wrong.
 9. **The officer's automatic check on seeded files is computed when the screen is drawn**, not
    stored: the seed deliberately carries no verdicts to keep the store inside localStorage
    (serious audit S03). Files uploaded through the form keep the verdict recorded at upload.
@@ -229,3 +233,21 @@ answer everywhere.
     `submission.ts` (not this change's file) copies the file and verdict but not `UploadedDoc.history`.
     Replacements made after submission (the correction flow) are kept. Hook needed:
     `versions: up.history?.map(h => ({ fileName: h.fileName, sizeKb: h.sizeKb, uploadedAt: h.uploadedAt, replacedAt: h.replacedAt, verdict: h.verdict }))`.
+11. **A file the check was unsure about is not Ready (design-director audit D-01, 16 Sep 2026).**
+    As first built, the row read "Please confirm" in amber while the header said "10 of 10 required
+    documents ready", the bar was green, the Ready chip counted it — and the row offered nothing to
+    confirm with. One of those answers was wrong.
+    *Options weighed.* (a) Rename it to something settled — "Accepted — an officer will check" — and
+    keep it Ready. (b) Keep what the row asks, and take it out of Ready.
+    *Decided: (b).* The unsure verdict carries information the applicant can act on — most often an
+    IFSC or account number that differs from the application (item 8), where either the file or the
+    application is wrong and only the applicant knows which. Calling that "Accepted" would hide the
+    one useful thing the check found. So:
+    - the words are **"Check the details"**, not "Please confirm" — they point at the reason line and
+      "What we found", which are on the row, instead of at a confirm action that is not;
+    - `DOC_STATE_META.review.bucket` is **`attention`**: counted under Needs your attention, never in
+      "N of M required documents ready", never in the Ready chip;
+    - it **blocks neither Continue nor Submit** — an officer decides the document, as §3.2 always said.
+    The header, the chips and both gates read `summariseDocuments`, so they agree by construction;
+    `glossary.test.ts` asserts it. The word is glossary-owned (`AUTO_CHECK.applicant.review`,
+    docs/plans/2026-09-16-e-anudaan-glossary.md).

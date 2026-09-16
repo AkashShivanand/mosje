@@ -6,6 +6,7 @@ import { Button } from "../actions/button";
 import { Icon } from "../utilities/icon";
 import { Chip } from "./chip";
 import { ErrorSummary, type ErrorSummaryItem } from "./error-summary";
+import { Modal } from "../feedback/modal";
 import "./forms.css";
 import "./document-checklist.css";
 
@@ -21,8 +22,109 @@ export interface DocumentChecklistFilter {
   tone?: "danger";
 }
 
+/**
+ * A verdict given to many documents at once, behind a confirmation — "Mark All Remaining as
+ * Verified". For an officer's review, where most rows are automatically checked and the officer
+ * would otherwise set twenty verdicts one by one (e-Anudaan audit R-01, R-03).
+ *
+ * The DS draws the affordance and the confirmation; the CALLER decides which documents count as
+ * "remaining", records one verdict per document (so each stays individually auditable), and
+ * never includes a document the automatic check flagged. `count` is that set's size, and the
+ * control is not drawn when it is 0.
+ */
+export interface DocumentBulkActionProps {
+  /** The button: "Mark All Remaining as Verified". The count is appended in brackets. */
+  label: string;
+  /** How many documents the action will record a verdict for. 0 draws nothing. */
+  count: number;
+  /** One line beside the button saying what "remaining" means: "12 not yet reviewed; the automatic check found nothing wrong with them." */
+  description?: React.ReactNode;
+  /** @default "Mark {count} Documents as Verified?" */
+  confirmTitle?: string;
+  /** The dialog body: what will be recorded, and that each verdict can still be changed. */
+  confirmDescription?: React.ReactNode;
+  /** @default "Mark as Verified" */
+  confirmLabel?: string;
+  /** @default "Cancel" */
+  cancelLabel?: string;
+  /** Called once, after the reader confirms. */
+  onConfirm: () => void;
+  /** Draws the button disabled with `disabledReason` beside it, e.g. while the file is read-only. */
+  disabled?: boolean;
+  disabledReason?: React.ReactNode;
+  className?: string;
+}
+
+/**
+ * DocumentBulkAction — one button and one confirmation for a verdict given to many documents.
+ * Drawn by `DocumentChecklist`'s `bulkAction`, or placed on its own (a decision aside).
+ */
+export function DocumentBulkAction({
+  label,
+  count,
+  description,
+  confirmTitle,
+  confirmDescription,
+  confirmLabel = "Mark as Verified",
+  cancelLabel = "Cancel",
+  onConfirm,
+  disabled = false,
+  disabledReason,
+  className,
+}: DocumentBulkActionProps) {
+  const [open, setOpen] = React.useState(false);
+  if (count <= 0) return null;
+  const noun = count === 1 ? "Document" : "Documents";
+  return (
+    <div className={cn("ds-doccheck__bulk", className)}>
+      {(disabled ? disabledReason : description) != null && (
+        <p className="ds-doccheck__bulk-text">{disabled ? disabledReason : description}</p>
+      )}
+      <Button appearance="outlined" size="sm" disabled={disabled} onClick={() => setOpen(true)}>
+        <Icon name="done_all" size={16} aria-hidden /> {`${label} (${count})`}
+      </Button>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        size="sm"
+        title={confirmTitle ?? `Mark ${count} ${noun} as Verified?`}
+        footer={
+          <>
+            <Button appearance="outlined" onClick={() => setOpen(false)}>
+              {cancelLabel}
+            </Button>
+            <Button
+              onClick={() => {
+                setOpen(false);
+                onConfirm();
+              }}
+            >
+              {confirmLabel}
+            </Button>
+          </>
+        }
+      >
+        {confirmDescription != null ? (
+          typeof confirmDescription === "string" ? (
+            <p className="ds-doccheck__bulk-confirm">{confirmDescription}</p>
+          ) : (
+            confirmDescription
+          )
+        ) : (
+          <p className="ds-doccheck__bulk-confirm">
+            {`A verdict of Verified will be recorded against each of the ${count} ${noun.toLowerCase()}, in your name. Each can still be changed one by one before the file is forwarded.`}
+          </p>
+        )}
+      </Modal>
+    </div>
+  );
+}
+
 export interface DocumentChecklistProps {
-  /** The accepted types and size, stated ONCE, where files are chosen: "PDF, JPG or PNG · up to 5 MB each". */
+  /**
+   * The accepted types and size, stated ONCE, where files are chosen: "PDF, JPG or PNG · up to 5
+   * MB each". Drawn INSIDE the drop zone when there is one, and in the header line otherwise.
+   */
   formats?: React.ReactNode;
   /** Required documents that are ready. Progress counts READY, never "uploaded" — a rejected upload is not progress. */
   ready?: number;
@@ -59,6 +161,11 @@ export interface DocumentChecklistProps {
   politeMessage?: string;
   /** Announced at once — an upload failing. */
   assertiveMessage?: string;
+  /**
+   * A verdict for many documents at once, drawn above the groups — see `DocumentBulkActionProps`.
+   * Officer screens only. Omit, or pass `count: 0`, and nothing is drawn.
+   */
+  bulkAction?: DocumentBulkActionProps;
   /** The placement tray, drawn between the drop zone and the list. */
   tray?: React.ReactNode;
   /** How many rows the current filter leaves. `0` with a filter selected draws the filtered-to-nothing state. */
@@ -98,6 +205,7 @@ export function DocumentChecklist({
   politeMessage,
   assertiveMessage,
   tray,
+  bulkAction,
   visibleCount,
   emptyText = "No documents are asked for on this application.",
   loading = false,
@@ -113,6 +221,8 @@ export function DocumentChecklist({
   const hasProgress = ready != null && required != null && required > 0;
   const pct = hasProgress ? Math.round((Math.min(ready!, required!) / required!) * 100) : 0;
   const active = filters?.find((f) => f.id === activeFilter) ?? null;
+  // The accepted types belong where the files are chosen. With a drop zone they move into it.
+  const formatsInDrop = Boolean(onFiles) && formats != null;
 
   const take = (list: FileList | null) => {
     const files = list ? Array.from(list) : [];
@@ -125,7 +235,7 @@ export function DocumentChecklist({
         <ErrorSummary key={errorsRevision} errors={[...errors]} title={errorTitle} className="ds-doccheck__errors" />
       )}
 
-      {(hasProgress || formats != null) && (
+      {(hasProgress || (formats != null && !formatsInDrop)) && (
         <div className="ds-doccheck__head">
           {/* The title and the formats share one line; the formats wrap under the title on a narrow screen. */}
           <div className="ds-doccheck__head-line">
@@ -134,7 +244,7 @@ export function DocumentChecklist({
                 {progressLabel ?? `${Math.min(ready!, required!)} of ${required} required documents ready`}
               </p>
             )}
-            {formats != null && <p className="ds-doccheck__formats">{formats}</p>}
+            {formats != null && !formatsInDrop && <p className="ds-doccheck__formats">{formats}</p>}
           </div>
           {hasProgress && (
             <div className="ds-doccheck__progress">
@@ -208,6 +318,7 @@ export function DocumentChecklist({
               </button>
             </p>
             {dropHint != null && <p className="ds-doccheck__drop-hint">{dropHint}</p>}
+            {formatsInDrop && <p className="ds-doccheck__drop-formats">{formats}</p>}
           </div>
           <input
             ref={input}
@@ -226,6 +337,8 @@ export function DocumentChecklist({
       )}
 
       {tray}
+
+      {bulkAction && !loading ? <DocumentBulkAction {...bulkAction} /> : null}
 
       {loading ? (
         <div className="ds-doccheck__loading" role="status" aria-live="polite">
@@ -270,17 +383,36 @@ export interface DocumentChecklistGroupProps {
   meta?: React.ReactNode;
   /** @default 3 */
   headingLevel?: 2 | 3 | 4;
+  /**
+   * Withhold the visible required asterisk on every row in this group. @default false
+   *
+   * For a group whose heading already says so — "Required Documents" — where an asterisk on
+   * every title is the same fact ten times (e-Anudaan audit D-04). Each row keeps its visually
+   * hidden "(required)". Leave it off for a mixed group.
+   */
+  hideRequiredMarks?: boolean;
   /** DocumentRow elements. */
   children?: React.ReactNode;
   className?: string;
 }
 
 /** One group of a DocumentChecklist: a heading and a divided list of rows. */
-export function DocumentChecklistGroup({ title, description, meta, headingLevel = 3, children, className }: DocumentChecklistGroupProps) {
+export function DocumentChecklistGroup({
+  title,
+  description,
+  meta,
+  headingLevel = 3,
+  hideRequiredMarks = false,
+  children,
+  className,
+}: DocumentChecklistGroupProps) {
   const id = React.useId();
   const Heading = `h${headingLevel}` as "h2" | "h3" | "h4";
   return (
-    <section className={cn("ds-doccheck__group", className)} aria-labelledby={`${id}-title`}>
+    <section
+      className={cn("ds-doccheck__group", hideRequiredMarks && "ds-doccheck__group--no-marks", className)}
+      aria-labelledby={`${id}-title`}
+    >
       <div className="ds-doccheck__group-head">
         <div>
           <Heading className="ds-doccheck__group-title" id={`${id}-title`}>

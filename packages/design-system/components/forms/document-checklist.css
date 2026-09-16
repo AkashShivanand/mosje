@@ -91,31 +91,16 @@
     gap: var(--sa-inline-8);
   }
 
-  /* "Needs your attention" while it holds something: the error family, unselected and selected.
-     Every pair measured AA — error-bolder text on white and on the error tint. */
-  .ds-doccheck__chip--danger {
+  /* "Needs your attention" while it holds something. ONE selected-chip language: the chip itself
+     draws exactly like its neighbours, unselected and selected, and only the COUNT takes the error
+     ink. It used to turn the whole chip red-outlined, so the active filter was filled blue in one
+     state and outlined red in another — two meanings of "selected" in one row (e-Anudaan audit
+     D-04). error-bolder measures AA on white and on the selected brand tint. */
+  .ds-doccheck__chip--danger .ds-chip__count,
+  .ds-doccheck__chip--danger.ds-chip--selected .ds-chip__count {
     color: var(--sa-text-status-error-bolder);
-    border-color: var(--sa-border-status-error-base);
-  }
-
-  .ds-doccheck__chip--danger.ds-chip--interactive:hover {
-    background-color: var(--sa-bg-status-error-base);
-    border-color: var(--sa-border-status-error-bolder);
-  }
-
-  .ds-doccheck__chip--danger.ds-chip--interactive:active {
-    background-color: var(--sa-bg-status-error-subtler);
-  }
-
-  .ds-doccheck__chip--danger.ds-chip--selected,
-  .ds-doccheck__chip--danger.ds-chip--selected.ds-chip--interactive:hover {
-    background-color: var(--sa-bg-status-error-base);
-    color: var(--sa-text-status-error-bolder);
-    border-color: var(--sa-border-status-error-bolder);
-  }
-
-  .ds-doccheck__chip--danger .ds-chip__count {
-    color: inherit;
+    font-weight: var(--sa-font-weight-semibold);
+    opacity: 1;
   }
 
   /* ── Drop zone ──────────────────────────────────────────────────────────── */
@@ -199,6 +184,56 @@
     outline: var(--sa-focus-width) solid var(--sa-focus-ring);
     outline-offset: var(--sa-focus-offset);
     border-radius: var(--sa-shape-2);
+  }
+
+  /* The accepted types, INSIDE the drop zone — where the files are chosen, not across the page in
+     the header's far corner (e-Anudaan audit D-04). */
+  .ds-doccheck__drop-formats {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: var(--sa-font-weight-regular);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── Bulk verdict ──────────────────────────────────────────────────────── */
+
+  .ds-doccheck__bulk {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-stack-8) var(--sa-inline-16);
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    background-color: var(--sa-bg-neutral-subtlest);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+  }
+
+  .ds-doccheck__bulk-text {
+    margin: 0;
+    min-inline-size: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-base);
+  }
+
+  .ds-doccheck__bulk-confirm {
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-base);
+  }
+
+  .ds-doccheck__bulk-confirm + .ds-doccheck__bulk-confirm {
+    margin-block-start: var(--sa-stack-8);
+  }
+
+  /* A group under a "Required Documents" heading already says every row in it is required. The
+     visible asterisk is withheld; the visually hidden "(required)" stays for a screen reader
+     that meets a row out of its group (e-Anudaan audit D-04). */
+  .ds-doccheck__group--no-marks .ds-docrow__title .ds-field__required {
+    display: none;
   }
 
   .ds-doccheck__drop-hint {

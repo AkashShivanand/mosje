@@ -56,6 +56,7 @@ import {
   type PlacementItem,
   type UploadAttempt,
 } from "@/lib/e-anudaan/document-centre";
+import { DEMO_FILL_EVENT, DEMO_HOLD_CHECKS_KEY, type DemoFillDetail } from "@/lib/e-anudaan/demo-scenarios";
 import { ApplicantFindings, DocumentViewSheet, rowStateOf, useSettleChecks } from "./document-centre-parts";
 
 export interface DocumentsChecklistHandle {
@@ -104,7 +105,13 @@ export const DocumentsChecklist = React.forwardRef<
   const [findingsOpen, setFindingsOpen] = React.useState<Record<number, boolean>>({});
   const [polite, setPolite] = React.useState("");
   const [assertive, setAssertive] = React.useState("");
-  const [held, setHeld] = React.useState<ReadonlySet<number>>(() => new Set());
+  // Checks the demo dock is holding in "Being checked". "Documents verifying" holds every pending
+  // check until a state is set under Document States (audit D-06); the flag survives the move to
+  // this route, which mounts the step afresh.
+  const [held, setHeld] = React.useState<ReadonlySet<number>>(() => {
+    if (typeof window === "undefined" || window.sessionStorage.getItem(DEMO_HOLD_CHECKS_KEY) !== schemeCode) return new Set();
+    return new Set(documents.filter((d) => uploaded[d.n]?.verdict.state === "pending").map((d) => d.n));
+  });
   const fileInput = React.useRef<HTMLInputElement>(null);
   const target = React.useRef<number | null>(null);
   /** Object URLs for files chosen in this sitting, so View can show them. */
@@ -139,6 +146,13 @@ export const DocumentsChecklist = React.forwardRef<
     (n: number, file: { name: string; sizeKb: number }, blob?: File | null, tries = 0) => {
       const rejected = rejectionOf(file, rule);
       files.current.set(n, blob ?? null);
+      // A file the applicant chooses is checked as any file is, whatever the demo was holding.
+      setHeld((prev) => {
+        if (!prev.has(n)) return prev;
+        const next = new Set(prev);
+        next.delete(n);
+        return next;
+      });
       setAttempts((prev) => ({ ...prev, [n]: { fileName: file.name, sizeKb: file.sizeKb, phase: rejected ?? "uploading", progress: 0, tries } }));
       if (rejected) {
         const title = documents.find((d) => d.n === n)?.title ?? "The document";
@@ -307,6 +321,17 @@ export const DocumentsChecklist = React.forwardRef<
   /* ── The demo dock ────────────────────────────────────────────────────── */
 
   React.useEffect(() => {
+    const onFill = (e: Event) => {
+      const detail = (e as CustomEvent<DemoFillDetail>).detail;
+      if (detail?.scheme !== schemeCode) return;
+      setHeld(detail.holdChecks ? new Set(Object.entries(detail.docs).filter(([, d]) => d.verdict.state === "pending").map(([n]) => Number(n))) : new Set());
+      setFilter(null);
+    };
+    window.addEventListener(DEMO_FILL_EVENT, onFill);
+    return () => window.removeEventListener(DEMO_FILL_EVENT, onFill);
+  }, [schemeCode]);
+
+  React.useEffect(() => {
     const detail: DocListDetail = { scheme: schemeCode, documents: documents.map((d) => ({ n: d.n, title: d.title, optional: d.optional })) };
     (window as unknown as { __eAnudaanDocList?: DocListDetail }).__eAnudaanDocList = detail;
     window.dispatchEvent(new CustomEvent(DOC_LIST_EVENT, { detail }));
@@ -340,6 +365,7 @@ export const DocumentsChecklist = React.forwardRef<
           if (state === "uploading" || state === "checking") next.add(d.n);
           else next.delete(d.n);
         }
+        if (next.size === 0) window.sessionStorage.removeItem(DEMO_HOLD_CHECKS_KEY);
         return next;
       });
       if (!isAttempt) {
@@ -370,10 +396,34 @@ export const DocumentsChecklist = React.forwardRef<
 
   /* ── Render ───────────────────────────────────────────────────────────── */
 
+  /**
+   * The filter the list is drawn with. A filter the step chose itself — "Needs your attention" when
+   * Continue was pressed, "Being checked" while uploads ran — lets go once its bucket empties, so a
+   * completed step shows its documents rather than "No documents are in 'Needs your attention'"
+   * (audit D-02). A filter the applicant picks with nothing in it still shows its designed empty state.
+   */
+  const shownFilter = filter && (filter === "attention" || filter === "checking") && summary.counts[filter] === 0 ? null : filter;
+
+  /**
+   * One cause on many rows is said once a row (audit D-03): ten rows each repeated the same sentence
+   * under a two-line title, and the list ran 1,600px. Rows whose reason is the same sentence — the
+   * document's own name aside, which is all that differs when one file was attached ten times — are
+   * held to one line; the whole reason stays in "What we found" and on the row's tooltip.
+   */
+  const reasonShape = (d: DocDef) => {
+    const r = rowReason(summary.states[d.n]!, checked[d.n], attempts[d.n], rule);
+    return r ? r.replace(d.title, "…") : undefined;
+  };
+  const reasonCount = new Map<string, number>();
+  for (const d of documents) {
+    const r = reasonShape(d);
+    if (r) reasonCount.set(r, (reasonCount.get(r) ?? 0) + 1);
+  }
+
   const groups = groupDocuments(schemeCode, documents)
     .map((g) => ({
       ...g,
-      docs: orderForAttention(g.docs, order).filter((d) => !filter || DOC_STATE_META[summary.states[d.n]!].bucket === filter),
+      docs: orderForAttention(g.docs, order).filter((d) => !shownFilter || DOC_STATE_META[summary.states[d.n]!].bucket === shownFilter),
     }))
     .filter((g) => g.docs.length > 0);
   const visible = groups.reduce((a, g) => a + g.docs.length, 0);
@@ -429,6 +479,7 @@ export const DocumentsChecklist = React.forwardRef<
         progress={attempt?.progress}
         file={file}
         reason={reason}
+        clampReason={(reasonCount.get(reasonShape(d) ?? "") ?? 0) > 1}
         action={
           p ? (
             <Button id={actionId(d.n)} size="sm" appearance={p.appearance ?? "outlined"} nowrap onClick={p.run} aria-label={`${p.label}: ${d.title}`}>
@@ -453,7 +504,7 @@ export const DocumentsChecklist = React.forwardRef<
         ready={summary.readyRequired}
         required={summary.required}
         filters={FILTERS.filter((f) => f.id !== "optional" || optionalCount > 0).map((f) => ({ ...f, count: summary.counts[f.id], tone: f.id === "attention" ? ("danger" as const) : undefined }))}
-        activeFilter={filter}
+        activeFilter={shownFilter}
         onFilterChange={(id) => {
           setFilter(id as DocBucket | null);
           refreshOrder();
@@ -493,6 +544,8 @@ export const DocumentsChecklist = React.forwardRef<
           <DocumentChecklistGroup
             key={g.id}
             title={g.title}
+            // Under "Required Documents" every row is required; the heading says so once (audit D-04).
+            hideRequiredMarks={g.id === "required"}
             // Where a 17-document list is scanned group by group, each heading says whether the group needs anything.
             meta={(() => {
               const all = groupDocuments(schemeCode, documents).find((x) => x.id === g.id)?.docs ?? [];

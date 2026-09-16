@@ -22,9 +22,9 @@ import { applicationRefOf, instalmentLabel } from "@/lib/e-anudaan/instalments";
 const NEXT_STEPS = [
   {
     title: "Review Process",
-    // Live says "7–14 business days" here and "30 days" in the panel above it — two answers to
-    // one question on one screen. The panel's figure stands; this line no longer contradicts it
-    // (full-wizard walk, 13 Sep 2026).
+    // Live says "7–14 business days" here and "30 days (standard process)" in the panel above it.
+    // Neither is traceable to a scheme guideline or a Ministry document, so neither is promised
+    // (audit W-11, 16 Sep 2026).
     description: "Ministry officers will examine your application and documents, in the order they were received.",
   },
   {
@@ -36,7 +36,8 @@ const NEXT_STEPS = [
   },
   {
     title: "Action Required",
-    description: "If we need clarifications or additional documents, we will notify you. Please respond promptly to avoid delays.",
+    // The Department, not "we" (audit W-11; ui-restraint-and-copy.md §2).
+    description: "If the Department needs clarification or further documents, it will raise a deficiency on this portal. Respond to it promptly to avoid delay.",
   },
 ];
 
@@ -97,7 +98,7 @@ export default function ApplySuccessPage() {
           title="No submitted application found for this scheme."
           action={
             <Button appearance="text" onClick={() => router.push("/portals/e-anudaan/apply-grant")}>
-              Start a new application
+              Apply for Grant
             </Button>
           }
         />
@@ -122,15 +123,15 @@ export default function ApplySuccessPage() {
               : filed?.caseType === "Ongoing"
                 ? "Your 2nd and 3rd instalments of this year will be claimed on this Application ID."
                 : "Please save this Application ID for future reference."}{" "}
-            <Button appearance="text" size="sm" onClick={copy} aria-label="Copy Application ID">
-              <Icon name="content_copy" size={16} aria-hidden />
+            {/* 24px glyph in a medium button: a 16px copy icon was below the 24px target minimum (W-11). */}
+            <Button appearance="text" size="md" onClick={copy} aria-label="Copy Application ID">
+              <Icon name="content_copy" size={24} aria-hidden />
             </Button>
           </>
         }
         facts={[
           ...(claim ? [{ label: "Instalment claimed", value: claim }] : []),
           { label: "Routed to", value: "Ministry — Programme Division" },
-          { label: "Estimated timeline", value: "30 days (standard process)" },
         ]}
         nextStepsTitle="What Happens Next?"
         nextSteps={NEXT_STEPS}

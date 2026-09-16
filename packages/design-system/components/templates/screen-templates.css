@@ -123,6 +123,21 @@
     width: 100%;
   }
 
+  /* The view switch: under the header, no frame, hugging its options. */
+  .sa-worklist__views {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-padding-12);
+  }
+
+  /* A switch that still arrives through `filters` hugs its options instead of stretching into a
+     full-width grey track — a grid item is blockified, so `inline-flex` alone did not stop it. */
+  .sa-worklist__toolbar > .ds-segmented,
+  .sa-worklist__toolbar > .ds-tabs {
+    justify-self: start;
+  }
+
   /* Below the tablet anchor the table becomes a card list. Priority-1 columns
      become the card's title and subtitle; the rest become label/value rows.
      This is the answer to a question the handoff never asked — it draws no

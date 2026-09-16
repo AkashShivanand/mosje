@@ -56,19 +56,21 @@ const COPY: Record<Kind, { title: string; meta: string; noun: string; approve: s
     title: "Bank Account Changes",
     meta: "Requests from NGOs to change the account a project is paid into. Payments continue to the current account until a request is approved.",
     noun: "request",
-    approve: "Approve Change",
-    reject: "Reject",
-    approved: "Change approved. The new account is now the project's account, and the NGO has been notified.",
-    rejected: "Request rejected. The NGO has been notified with your remarks.",
+    // The decision's words are the glossary's (CHANGE_REQUEST_DECISION): the row the officer then
+    // sees reads "Approved" or "Not Approved", so the buttons that produce it say the same.
+    approve: "Approve",
+    reject: "Do Not Approve",
+    approved: "Request approved. The new account is now the project's account, and the NGO has been notified.",
+    rejected: "Request not approved. The NGO has been notified with your remarks.",
   },
   location: {
     title: "Location Changes",
     meta: "Requests from NGOs to record a new address for a project within its district.",
     noun: "request",
-    approve: "Verify Location",
-    reject: "Return to NGO",
-    approved: "Location verified. The project's address is updated, and the NGO has been notified.",
-    rejected: "Request returned to the NGO with your remarks.",
+    approve: "Approve",
+    reject: "Do Not Approve",
+    approved: "Request approved. The project's address is updated, and the NGO has been notified.",
+    rejected: "Request not approved. The NGO has been notified with your remarks and may raise a new request.",
   },
 };
 
@@ -182,7 +184,9 @@ export function ChangeRequestDesk({ kind }: { kind: Kind }) {
         getRowId={(r) => r.id}
         noun={copy.noun}
         countLine={null}
-        filters={
+        /* A view, not a filter: in the filter bar the Pending / All switch sat in a grey framed box
+           and read as a filter nobody had set (audit X-05, NOTES: Bank Account Changes). */
+        views={
           <SegmentedControl<QueueView>
             ariaLabel="Show requests"
             value={view}

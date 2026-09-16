@@ -37,7 +37,7 @@ export default function DeficienciesPage() {
   );
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6">
+    <div className="space-y-6">
       <PageHeader
         title="Deficiencies"
         meta="Corrections the Ministry has asked for on your applications. Open one to correct it."
@@ -53,7 +53,7 @@ export default function DeficienciesPage() {
               {submitted.map(({ app, d }) => (
                 <ListRow
                   key={d.id}
-                  eyebrow={<span className="break-all font-mono">{app.institutionId} · {app.id}</span>}
+                  eyebrow={<span className="break-all tabular-nums">{app.institutionId} · {app.id}</span>}
                   title={app.projectLabel.split(" · ")[0]}
                   description={
                     <>

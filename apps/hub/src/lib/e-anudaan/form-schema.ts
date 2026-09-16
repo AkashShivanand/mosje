@@ -91,6 +91,11 @@ export interface FieldDef {
   readOnly?: boolean;
   /** Character budget; renders the live "n / N characters" counter. */
   maxLength?: number;
+  /**
+   * Advice shown under the field that never blocks it. `costedStrength`: AVYAY's beneficiaries against
+   * the number of residents the chosen project type is costed for (`strengthAdvice`).
+   */
+  advisory?: "costedStrength";
   /** Show the field only while another field holds one of these values. */
   showWhen?: { field: string; equals: readonly string[] };
   /**
@@ -299,7 +304,9 @@ function person(prefix: string, who: string, required: boolean, posts?: readonly
     posts
       ? { name: names[2]!, label: `${who} — Designation`, kind: "select", required, options: posts, ...group(names[2]!), ...when }
       : { name: names[2]!, label: `${who} — Designation`, kind: "text", required, rule: "lettersOnly", ...group(names[2]!), ...when },
-    { name: names[3]!, label: `${who} — Mobile Number`, kind: "tel", required, ...group(names[3]!), ...when },
+    // "Mobile", not "Mobile Number": the longer label wrapped in a four-column row and dropped its
+    // box 20px below its neighbours (audit W-12).
+    { name: names[3]!, label: `${who} — Mobile`, kind: "tel", required, ...group(names[3]!), ...when },
   ];
 }
 
@@ -405,7 +412,9 @@ const SHRESHTA_STEPS: readonly StepDef[] = [
             kind: "select",
             required: true,
             options: FINANCIAL_YEARS,
-            readOnlyWhenAny: [UNCLAIMED, LATER_INSTALMENT],
+            // Locked on a claim too (audit W-09): the instalment plan decides its year, and an editable
+            // year let a 1st instalment be claimed for the wrong one.
+            readOnlyWhenAny: [UNCLAIMED, CLAIMED],
             helpWhenLocked: true,
             helpWhen: {
               field: "claim_stage",
@@ -465,12 +474,14 @@ const SHRESHTA_STEPS: readonly StepDef[] = [
           },
           { name: "fld_institution_gender_type", label: "Type", kind: "select", required: true, options: ["Boys", "Girls", "Co-Ed"] },
           { name: "fld_institution_level", label: "Level", kind: "select", required: true, options: ["Primary", "Secondary"] },
-          { name: "fld_institution_status", label: "Status of Institution", kind: "select", required: true, options: ["Ongoing"] },
+          // "New" since 16 Sep 2026: a New institution has no grant history, and the form asked it for one
+          // (`fld_gia_since_year` below). A claim on an institution's record is Ongoing, and stays so.
+          { name: "fld_institution_status", label: "Status of Institution", kind: "select", required: true, options: ["New", "Ongoing"], readOnlyWhen: CLAIMED },
           { name: "assistance_3yrs", label: "Receiving assistance continuously for the last 3 years", kind: "radio", required: true, options: YES_NO, wide: true },
           // Live labels this "UC Pending Status (SFR 212(1))" — a rule citation we could not trace.
           { name: "fld_uc_pending_status", label: "Utilisation Certificate Pending Status", kind: "select", required: true, options: ["No Utilisation Certificate Pending", "Utilisation Certificate Pending"] },
           { name: "fld_commencement_date", label: "Date & Year of Commencement", kind: "date", required: true },
-          { name: "fld_gia_since_year", label: "Year from which Grant-in-Aid has been received under SHRESHTA", kind: "text", required: true },
+          { name: "fld_gia_since_year", label: "Year from which Grant-in-Aid has been received under SHRESHTA", kind: "text", required: true, showWhen: { field: "fld_institution_status", equals: ["Ongoing"] } },
           { name: "fld_institution_location", label: "Institution Location (address, district, landmark, contact)", kind: "textarea", required: true, wide: true },
           { name: "fld_institution_pin", label: "Institution PIN Code", kind: "text", required: true, rule: "pin" },
           { name: "govt_institution_within_2km", label: "Government-run similar institution within 2 km", kind: "radio", required: true, options: YES_NO, wide: true },
@@ -545,10 +556,10 @@ const SHRESHTA_STEPS: readonly StepDef[] = [
           { name: "decl_uc_uploaded", label: "Requisite Utilisation Certificate uploaded", kind: "radio", required: true, options: YES_NO, wide: true },
           { name: "decl_audited_accounts_submitted", label: "Audited accounts (previous year) submitted", kind: "radio", required: true, options: YES_NO, wide: true },
           { name: "decl_name_changed_after_grant", label: "Organisation changed its name after the first grant", kind: "radio", required: true, options: YES_NO, wide: true },
-          { name: "decl_not_for_profit", label: "Organisation does not earn profit by running the institution", kind: "radio", required: true, options: YES_NO, wide: true },
+          { name: "decl_not_for_profit", label: "Confirm the organisation does not earn profit by running the institution", kind: "radio", required: true, options: YES_NO, wide: true },
           { name: "decl_other_grant", label: "Receiving grant from another Government source for the same purpose", kind: "radio", required: true, options: YES_NO, wide: true },
           { name: "decl_fee_charged", label: "Capitation / other fee charged from beneficiaries", kind: "radio", required: true, options: YES_NO, wide: true },
-          { name: "decl_not_blacklisted", label: "Organisation is not blacklisted by any authority", kind: "radio", required: true, options: YES_NO, wide: true },
+          { name: "decl_not_blacklisted", label: "Confirm the organisation is not blacklisted by any authority", kind: "radio", required: true, options: YES_NO, wide: true },
           { name: "decl_annual_report_uploaded", label: "Annual report (previous year) uploaded", kind: "radio", required: true, options: YES_NO, wide: true },
           { name: "decl_all_docs_signed", label: "All documents signed by the authorised signatory", kind: "radio", required: true, options: YES_NO, wide: true },
         ],
@@ -614,6 +625,33 @@ export const SHRESHTA_WIZARD: WizardDef = {
 
 /** AVYAY's two branches and its two kinds of renewal, named once. */
 const AV_NEW = "New project";
+/**
+ * The residents each AVYAY project type is costed for — the number in its name, and 20 for a
+ * Continuous Care Home. The cost norms scale with it (`AVYAY_COST_HEADS_BY_CAPACITY`).
+ */
+const AVYAY_COSTED_STRENGTH: Readonly<Record<string, number>> = {
+  "Senior Citizens' Home — 25 beneficiaries": 25,
+  "Senior Citizens' Home — 50 beneficiaries": 50,
+  "Senior Citizens' Home — 50 elderly women only": 50,
+  "Continuous Care Home (CCH) / Dementia / Alzheimer's": 20,
+};
+
+/** The residents an AVYAY project is costed for, from its project type; undefined where the type has none. */
+export function costedStrength(values: Record<string, string>): number | undefined {
+  return AVYAY_COSTED_STRENGTH[values.fld_nature_of_project ?? ""];
+}
+
+/**
+ * Advice under a beneficiary count that is below the strength its project type is costed for. Never
+ * a validation error: the norms reduce the attendance-linked grant instead (see the field's note).
+ */
+export function strengthAdvice(field: FieldDef, values: Record<string, string>): string | undefined {
+  if (field.advisory !== "costedStrength") return undefined;
+  const strength = costedStrength(values);
+  const raw = (values[field.name] ?? "").trim();
+  if (!strength || !/^\d+$/.test(raw) || Number(raw) >= strength) return undefined;
+  return `Fewer than the ${strength} residents this project type is costed for. The attendance-linked part of the recurring grant is reduced when a home runs below that strength.`;
+}
 const AV_RENEWAL = "Ongoing / Renewal of an existing project";
 const NEW_ONLY = { field: "case_type", equals: [AV_NEW] } as const;
 const RENEWAL_ONLY = { field: "case_type", equals: [AV_RENEWAL] } as const;
@@ -671,7 +709,7 @@ const AVYAY_STEPS: readonly StepDef[] = [
             options: FINANCIAL_YEARS,
             // A new application is always for the year now running (T328–329), and a 2nd or 3rd
             // instalment belongs to the year its application was made for.
-            readOnlyWhenAny: [NEW_ONLY, LATER_INSTALMENT],
+            readOnlyWhenAny: [NEW_ONLY, CLAIMED],
             helpWhenLocked: true,
             helpWhen: [
               { field: "claim_stage", byValue: { "later-instalment": "The year of the application this instalment is claimed under." } },
@@ -828,18 +866,21 @@ const AVYAY_STEPS: readonly StepDef[] = [
             label: "Number of indigent senior-citizen beneficiaries",
             kind: "number",
             required: true,
-            help: "The minimum depends on the nature of the project: 25 or 50 for a Senior Citizens' Home, and 20 for a Continuous Care Home.",
+            // Guidance, not a minimum (audit W-01). Neither the live form nor any scheme document in
+            // the repository states a minimum; the live cost norms say the attendance-linked heads are
+            // REDUCED when a home runs below its sanctioned strength, which presupposes it may. The
+            // help said "At least 25" and the form accepted 12 — a rule shown and not applied. It now
+            // names the strength the project type is costed for, and says what a lower figure means.
+            help: "Each project type is costed for a number of residents: 25 or 50 for a Senior Citizens' Home, and 20 for a Continuous Care Home.",
             helpWhen: {
               field: "fld_nature_of_project",
               byValue: {
-                "Senior Citizens' Home — 25 beneficiaries": "At least 25 for this project.",
-                "Senior Citizens' Home — 50 beneficiaries": "At least 50 for this project.",
-                "Senior Citizens' Home — 50 elderly women only": "At least 50 for this project.",
-                "Continuous Care Home (CCH) / Dementia / Alzheimer's": "At least 20 for this project.",
+                ...Object.fromEntries(Object.entries(AVYAY_COSTED_STRENGTH).map(([nature, n]) => [nature, `This project type is costed for ${n} residents.`])),
                 "Physiotherapy Clinic": "",
                 "Mobile Medicare Unit": "",
               },
             },
+            advisory: "costedStrength",
           },
           { name: "fld_beneficiaries_women", label: "Of which women", kind: "number", notMoreThan: "fld_total_beneficiaries" },
         ],
@@ -878,8 +919,8 @@ const AVYAY_STEPS: readonly StepDef[] = [
         title: "Verification & Authorised Person",
         reconfirm: true,
         fields: [
-          { name: "decl_no_money_from_beneficiaries", label: "No money is charged from the beneficiaries", kind: "radio", required: true, options: YES_NO, wide: true },
-          { name: "decl_not_blacklisted", label: "Organisation is not blacklisted", kind: "radio", required: true, options: YES_NO, wide: true },
+          { name: "decl_no_money_from_beneficiaries", label: "Confirm no money is charged from the beneficiaries", kind: "radio", required: true, options: YES_NO, wide: true },
+          { name: "decl_not_blacklisted", label: "Confirm the organisation is not blacklisted by any authority", kind: "radio", required: true, options: YES_NO, wide: true },
           { name: "fld_auth_person_name", label: "Name of Authorised Person", kind: "text", required: true, rule: "lettersOnly" },
           { name: "fld_auth_person_contact", label: "Mobile Number of Authorised Person", kind: "tel", required: true },
           { name: "fld_auth_place", label: "Place", kind: "text", required: true },
@@ -1140,7 +1181,7 @@ const SMILE_STEPS: readonly StepDef[] = [
             kind: "select",
             required: true,
             options: FINANCIAL_YEARS,
-            readOnlyWhenAny: [SM_NEW, LATER_INSTALMENT],
+            readOnlyWhenAny: [SM_NEW, CLAIMED],
             helpWhenLocked: true,
             helpWhen: [
               { field: "claim_stage", byValue: { "later-instalment": "The year of the application this instalment is claimed under." } },
@@ -1442,7 +1483,7 @@ const NAPDDR_STEPS: readonly StepDef[] = [
             kind: "select",
             required: true,
             options: FINANCIAL_YEARS,
-            readOnlyWhenAny: [ND_NEW, LATER_INSTALMENT],
+            readOnlyWhenAny: [ND_NEW, CLAIMED],
             helpWhenLocked: true,
             helpWhen: [
               { field: "claim_stage", byValue: { "later-instalment": "The year of the application this instalment is claimed under." } },
@@ -1628,7 +1669,8 @@ const NAPDDR_STEPS: readonly StepDef[] = [
       instalmentGrantSection("NAPDDR", ND_RENEWAL, {
         annual: "Annual Recurring Grant (₹)",
         amount: (ord, share) => `Recurring Grant — ${ord} Instalment, ${share}% (₹)`,
-        prior: "Already Applied This Year (₹)",
+        // One label across schemes (audit W-06): officers compare this figure between them.
+        prior: "Released Earlier This Year (₹)",
         remaining: "Remaining After This Instalment (₹)",
       }),
     ],
@@ -1657,8 +1699,8 @@ const NAPDDR_STEPS: readonly StepDef[] = [
         title: "Verification & Authorised Person",
         reconfirm: true,
         fields: [
-          { name: "decl_no_money_from_beneficiaries", label: "No money is charged from the beneficiaries", kind: "radio", required: true, options: YES_NO, wide: true },
-          { name: "decl_not_blacklisted", label: "Organisation is not blacklisted and has no pending actionable complaint", kind: "radio", required: true, options: YES_NO, wide: true },
+          { name: "decl_no_money_from_beneficiaries", label: "Confirm no money is charged from the beneficiaries", kind: "radio", required: true, options: YES_NO, wide: true },
+          { name: "decl_not_blacklisted", label: "Confirm the organisation is not blacklisted and has no pending actionable complaint", kind: "radio", required: true, options: YES_NO, wide: true },
           { name: "fld_auth_person_name", label: "Name of Authorised Person", kind: "text", required: true, rule: "lettersOnly" },
           { name: "fld_auth_person_designation", label: "Designation", kind: "text", required: true, rule: "lettersOnly" },
           { name: "fld_auth_person_contact", label: "Mobile Number of Authorised Person", kind: "tel", required: true },

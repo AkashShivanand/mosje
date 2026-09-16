@@ -172,6 +172,15 @@ export interface Deficiency {
   communicatedBy?: RoleId;
   /** Set when the SO sent the file back to the ASO instead of communicating it. */
   withdrawnAt?: string;
+  /**
+   * The date the applicant was given to answer by, where the Ministry set one.
+   *
+   * Left unset: the response period is not published anywhere we hold — not in the scheme
+   * guidelines, the BRD, or the live portal's own letters — and a deadline with no source does not
+   * go on a citizen's page (`ui-restraint-and-copy.md`). The notification shows a "Respond by" date
+   * only when this is recorded. **Needs a Ministry answer.**
+   */
+  respondBy?: string;
   /** Fields the NGO may edit while responding. Empty = whole form reopened. */
   reopenedFields: string[];
   /** The individual corrections asked for. Absent on deficiencies raised before items existed. */
@@ -468,6 +477,30 @@ export interface ProjectAccount {
   activeTo?: string;
 }
 
+/**
+ * The CCTV registered at a project, so an inspecting officer can open its live feed during an
+ * e-inspection. One record per project, replaced when the NGO changes the setup.
+ *
+ * It lives in the store rather than in the NGO's own browser (design-director follow-up, 16 Sep
+ * 2026): a setup kept in `localStorage` is invisible to the officer who has to watch the feed, which
+ * is the only reason the NGO is asked for it.
+ */
+export interface CctvSetup {
+  /** `Institution.id` — the Project ID. One record per project. */
+  projectId: string;
+  /** Cameras registered at the centre, 1 to 8 as the live screen offers. */
+  cameras: number;
+  /** Whether the recorder has reached the portal, so an officer can open the feed. */
+  liveFeed: boolean;
+  /** The code the NGO enters in the recorder software at the centre. */
+  activationCode: string;
+  /** Who manages the CCTV computer at the centre. Optional on the form, so optional here. */
+  contactName?: string;
+  contactMobile?: string;
+  /** When the NGO saved this setup. */
+  savedAt: string;
+}
+
 /** "Returned" is a location change the PMU sent back to the NGO to raise again. */
 export type ChangeRequestStatus = "Pending" | "Approved" | "Rejected" | "Returned";
 
@@ -515,6 +548,8 @@ export interface EAnudaanState {
   inspections: Inspection[];
   notifications: NotificationEntry[];
   projectAccounts: ProjectAccount[];
+  /** CCTV registered per project, read by the NGO's setup page and by the inspecting officer. */
+  cctv: CctvSetup[];
   changeRequests: ChangeRequest[];
   /** The applicant's roster, keyed by Project ID. */
   beneficiaries: import("./roster").Beneficiary[];

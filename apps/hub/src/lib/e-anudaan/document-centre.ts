@@ -30,6 +30,7 @@ import {
   type VerdictState,
 } from "./doc-verification.ts";
 import { formatDate } from "./format.ts";
+import { AUTO_CHECK } from "./glossary.ts";
 
 /* ── 1. States ───────────────────────────────────────────────────────────── */
 
@@ -62,7 +63,14 @@ export interface UploadAttempt {
   tries?: number;
 }
 
-/** Which of the header's questions a row answers (spec §3.1). Exclusive. */
+/**
+ * Which of the header's questions a row answers (spec §3.1). Exclusive.
+ *
+ * `attention` is "does this ask something of me?", and `blocksContinue` is "does this stop me?" —
+ * two different questions. A file the check was unsure about asks the applicant to look at what it
+ * found, so it is in Needs your attention; it does not stop them, because an officer decides it.
+ * It is never counted Ready (audit D-01, spec §3.1 as amended 16 Sep 2026).
+ */
 export type DocBucket = "attention" | "checking" | "ready" | "optional";
 
 export type DocTone = "neutral" | "info" | "success" | "warning" | "error";
@@ -88,11 +96,14 @@ export const DOC_STATE_META: Readonly<Record<DocState, DocStateMeta>> = {
   failed: { words: "Upload failed", tone: "error", icon: "error", blocksContinue: true, blocksSubmit: true, bucket: "attention" },
   "rejected-type": { words: "Can't be uploaded", tone: "error", icon: "error", blocksContinue: true, blocksSubmit: true, bucket: "attention" },
   "rejected-size": { words: "Can't be uploaded", tone: "error", icon: "error", blocksContinue: true, blocksSubmit: true, bucket: "attention" },
-  checking: { words: "Checking…", tone: "info", icon: "progress_activity", blocksContinue: false, blocksSubmit: true, bucket: "checking" },
-  verified: { words: "Looks right", tone: "success", icon: "check_circle", blocksContinue: false, blocksSubmit: false, bucket: "ready" },
-  review: { words: "Please confirm", tone: "warning", icon: "warning", blocksContinue: false, blocksSubmit: false, bucket: "ready" },
-  invalid: { words: "Doesn't match", tone: "error", icon: "report", blocksContinue: true, blocksSubmit: true, bucket: "attention" },
-  unavailable: { words: "Saved — an officer will check it", tone: "neutral", icon: "info", blocksContinue: false, blocksSubmit: false, bucket: "ready" },
+  checking: { words: AUTO_CHECK.applicant.pending, tone: "info", icon: "progress_activity", blocksContinue: false, blocksSubmit: true, bucket: "checking" },
+  verified: { words: AUTO_CHECK.applicant.verified, tone: "success", icon: "check_circle", blocksContinue: false, blocksSubmit: false, bucket: "ready" },
+  // Was "Please confirm", counted Ready: the row asked the applicant to act while the header said
+  // "10 of 10 ready" and the row offered nothing to confirm with (audit D-01). It asks them to look
+  // at what the check found, sits in Needs your attention, and blocks nothing.
+  review: { words: AUTO_CHECK.applicant.review, tone: "warning", icon: "warning", blocksContinue: false, blocksSubmit: false, bucket: "attention" },
+  invalid: { words: AUTO_CHECK.applicant.invalid, tone: "error", icon: "report", blocksContinue: true, blocksSubmit: true, bucket: "attention" },
+  unavailable: { words: AUTO_CHECK.applicant.unavailable, tone: "neutral", icon: "info", blocksContinue: false, blocksSubmit: false, bucket: "ready" },
 };
 
 /**
@@ -105,15 +116,22 @@ export function docState(doc: { optional?: boolean }, up: Pick<UploadedDoc, "ver
   return up.verdict.state === "pending" ? "checking" : up.verdict.state;
 }
 
-/** Words for the automatic check as an OFFICER reads it — the confidence stays on this side. */
+/**
+ * Words for the automatic check as an OFFICER reads it — the confidence stays on this side.
+ *
+ * Never "Verified": that is the officer's own verdict, and "Verified · 98%" beside an unset verdict
+ * read as though the machine had decided (glossary: automatic check vs officer's verdict).
+ */
 export function officerCheckWords(verdict: DocVerdict | undefined): string {
   if (!verdict) return "Not checked";
+  const pct = verdict.confidence != null ? ` · ${verdict.confidence}%` : "";
   switch (verdict.state) {
-    case "pending": return "Checking…";
-    case "unavailable": return "Automatic check unavailable";
-    case "verified": return `Verified${verdict.confidence != null ? ` · ${verdict.confidence}%` : ""}`;
-    case "review": return `Needs review${verdict.confidence != null ? ` · ${verdict.confidence}%` : ""}`;
-    case "invalid": return `Not valid${verdict.confidence != null ? ` · ${verdict.confidence}%` : ""}`;
+    case "pending": return `${AUTO_CHECK.name} running`;
+    case "unavailable": return `${AUTO_CHECK.name} unavailable`;
+    case "verified":
+    case "review":
+    case "invalid":
+      return `${AUTO_CHECK.officer[verdict.state]}${pct}`;
   }
 }
 
@@ -180,6 +198,7 @@ export function rowReason(state: DocState, up: Pick<UploadedDoc, "verdict"> | un
       return `Only ${rule.typesLabel} files can be uploaded.`;
     case "invalid":
     case "review":
+      // The reason is what the applicant is being asked to look at — both states need it.
       return up?.verdict.reasons?.[0] ?? up?.verdict.summary;
     default:
       return undefined;
@@ -364,14 +383,14 @@ export const OTHER_ORGANISATION = "Illustrative Other Welfare Society";
  *
  * Keywords in the file name (the vendor's sample names use them):
  *   valid                                 → Looks right
- *   needs-review · illegible · blurry     → Please confirm
+ *   needs-review · illegible · blurry     → Check the details
  *   wrong · invalid · placeholder         → Doesn't match
  *   other-org                             → Doesn't match (another organisation's document)
- *   other-bank                            → Please confirm (IFSC differs from the application)
+ *   other-bank                            → Check the details (IFSC differs from the application)
  *   2024-25 · old · previous              → the year the file carries, compared at read time
  *   offline                               → check unavailable on the first run, then checks
  * A file that is plainly another document on the checklist is "Doesn't match" whatever it is
- * called. Anything else takes a seeded outcome: mostly "Looks right", some "Please confirm", a
+ * called. Anything else takes a seeded outcome: mostly "Looks right", some "Check the details", a
  * few "unavailable" on the first run.
  */
 export function simulateCheck(input: CheckInput): DocVerdict {
@@ -798,7 +817,7 @@ const BLOCKER_MESSAGE: Partial<Record<DocState, (t: string) => string>> = {
 };
 
 export interface DocSummary {
-  /** Required documents that are ready — verified, needing an officer's confirmation, or saved for a hand check. */
+  /** Required documents that are ready — looks right, or saved for an officer's hand check. A file the check was unsure about is not ready. */
   readyRequired: number;
   required: number;
   counts: Record<DocBucket, number>;

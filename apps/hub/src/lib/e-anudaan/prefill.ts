@@ -17,6 +17,7 @@ export function darpanSeed(ngo: NgoProfile | undefined, now: Date = new Date()):
     fld_ngo_name: ngo?.name ?? "Sankalp Seva Sansthan",
     fld_darpan_id: ngo?.darpanId ?? "MH/2016/100000",
     fld_registration_number: ngo?.registrationNo ?? "51-54",
+    ...registrationOf(ngo),
     fld_contact_mobile: ngo?.mobile ?? "9441747200",
     fld_contact_email: ngo?.email ?? "sankalpsevasansthan@gmail.com",
     fld_reg_office_state: ngo?.state ?? "Maharashtra",
@@ -24,6 +25,34 @@ export function darpanSeed(ngo: NgoProfile | undefined, now: Date = new Date()):
     // The year now running, not a constant: a new application is always for it (T328–329).
     fld_financial_year: currentFinancialYear(now),
   };
+}
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+/**
+ * The organisation's registration as its record holds it (audit N-16): the number, the date and,
+ * where the record names an Act, the statute. The form asked for them afresh on every application,
+ * and the demo's 51-54 / 01 Apr 2016 sat on a file whose organisation is registered as 81-51 on
+ * 12 Mar 1978. A record that names only the registering authority ("Registrar of Societies") does
+ * not answer "Statute / Act of Registration", so that one is left to the applicant.
+ */
+export function registrationOf(ngo: NgoProfile | undefined): Record<string, string> {
+  if (!ngo) return {};
+  const out: Record<string, string> = {};
+  if (ngo.registrationNo) out.fld_registration_number = ngo.registrationNo;
+  const date = isoDate(ngo.registrationDate);
+  if (date) out.fld_registration_date = date;
+  if (ngo.registeredUnder && /\bAct\b/.test(ngo.registeredUnder)) out.fld_statute_act = ngo.registeredUnder;
+  return out;
+}
+
+/** "12 Mar 1978" or "1978-03-12" as the `YYYY-MM-DD` a date field holds. */
+function isoDate(value: string | undefined): string | undefined {
+  if (!value) return undefined;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
+  const m = /^(\d{1,2}) ([A-Z][a-z]{2})[a-z]* (\d{4})$/.exec(value.trim());
+  const month = m ? MONTHS.indexOf(m[2]!) : -1;
+  return m && month >= 0 ? `${m[3]}-${String(month + 1).padStart(2, "0")}-${m[1]!.padStart(2, "0")}` : undefined;
 }
 
 /**

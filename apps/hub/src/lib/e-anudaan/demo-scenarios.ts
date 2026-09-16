@@ -15,6 +15,7 @@
 
 import {
   applyAllAutoFields,
+  costedStrength,
   isReadOnly,
   visibleDocuments,
   visibleSteps,
@@ -33,7 +34,16 @@ export interface DemoFillDetail {
   scheme: string;
   values: Record<string, string>;
   docs: Record<number, UploadedDoc>;
+  /**
+   * Hold every check in "Being checked" until a state is set under Document States (audit D-06). The
+   * prototype's checker answers in under two seconds, so "Documents verifying" settled before the
+   * page painted and the state it names was never seen.
+   */
+  holdChecks?: boolean;
 }
+
+/** Set in sessionStorage, to the scheme code, while the demo holds the upload step's checks. */
+export const DEMO_HOLD_CHECKS_KEY = "e-anudaan.demo.hold-checks";
 
 export interface DemoScenario {
   id: string;
@@ -54,7 +64,7 @@ export const DEMO_SCENARIOS: readonly DemoScenario[] = [
   { id: "docs-missing", label: "Documents part-uploaded", lands: "documents",
     effect: "Answers complete, roughly half the checklist filled. Next is held with the count outstanding." },
   { id: "docs-verifying", label: "Documents verifying", lands: "documents",
-    effect: "Every document uploaded and still being checked. Next is held until the check finishes." },
+    effect: "Every document uploaded and held in checking. Next is held until a state is set under Document States." },
   { id: "docs-review", label: "Documents need review", lands: "documents",
     effect: "Uploads accepted below the confidence threshold. An officer confirms them by hand — the applicant is not blocked." },
   { id: "docs-rejected", label: "Documents rejected", lands: "documents",
@@ -89,6 +99,12 @@ function fullValues(def: WizardDef, seed: Record<string, string> = {}): Record<s
   const dependent = all.filter((f) => f.districtsOf);
   for (const f of independent) if (answerable(f)) out[f.name] ??= answerFor(f);
   for (const f of dependent) if (answerable(f)) out[f.name] ??= answerFor(f, out);
+  // A beneficiary count that agrees with the project type it is costed for (audit W-01): "Complete &
+  // valid" put 12 residents in a home the cost-norms panel costs for 25.
+  for (const f of all) if (f.advisory === "costedStrength" && seed[f.name] == null) {
+    const strength = costedStrength(out);
+    if (strength) out[f.name] = String(strength);
+  }
 
   return applyAllAutoFields(def, out);
 }
@@ -128,7 +144,9 @@ function answerFor(f: FieldDef, values?: Record<string, string>): string {
     case "tel": return "9800000000";
     case "date": return "2026-04-01";
     case "time": return "10:30";
-    case "number": return "12";
+    // A figure in rupees is filled as money, not as the generic 12: "Complete & valid" asked for a
+    // ₹12 non-recurring grant beside cost norms of ₹20 lakh, and the review step read it back (W-01).
+    case "number": return /₹|grant|cost|amount|expenditure|turnover|salary|honorarium|rent/i.test(f.label) ? "250000" : "12";
     case "checkbox": return "true";
     case "textarea": {
       const text = `Illustrative response for "${stripStar(f.label)}", entered by the SAMAVESH prototype demo tools.`;
@@ -203,7 +221,7 @@ export function buildScenario(id: string, def: WizardDef): DemoFillDetail {
                docs: docsWith(def, full, "verified", Math.ceil(list.length / 2)) };
     }
     case "docs-verifying":
-      return { scheme: def.code, values: full, docs: docsWith(def, full, "pending") };
+      return { scheme: def.code, values: full, docs: docsWith(def, full, "pending"), holdChecks: true };
     case "docs-review":
       return { scheme: def.code, values: full, docs: docsWith(def, full, "review") };
     case "docs-rejected":

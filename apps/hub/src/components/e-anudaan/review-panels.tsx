@@ -38,7 +38,8 @@ import {
 } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { GRADE_FULL, ROLES } from "@/lib/e-anudaan/roles";
-import { formatDate, formatDateTime, rupees } from "@/lib/e-anudaan/format";
+import { formatDate, formatDateTime, formatMoney, rupees } from "@/lib/e-anudaan/format";
+import { AUTO_CHECK } from "@/lib/e-anudaan/glossary";
 import { schemeLabel } from "@/lib/e-anudaan/selectors";
 import { avyayEntitlement } from "@/lib/e-anudaan/form-schema";
 import {
@@ -50,7 +51,7 @@ import {
   type ProjectSanctionRow,
   type ScheduleRow,
 } from "@/lib/e-anudaan/funding";
-import type { GrantApplication, Inspection, RoleId } from "@/lib/e-anudaan/types";
+import type { EAnudaanState, GrantApplication, Inspection, RoleId } from "@/lib/e-anudaan/types";
 import type { DocVerdict } from "@/lib/e-anudaan/doc-verification";
 import { RefText } from "./worklist-table";
 
@@ -84,25 +85,43 @@ export function officerOf(role: RoleId): string {
 export function officerCheckLabel(verdict: DocVerdict | undefined, { column = false }: { column?: boolean } = {}): string {
   // Non-breaking around the confidence, so "· 98%" never wraps to a line of its own on a phone.
   const pct = verdict?.confidence != null ? `\u00a0·\u00a0${verdict.confidence}%` : "";
-  // `column`: under an "Automatic Check" header, where repeating the name says nothing.
-  const lead = column ? "" : "Automatic check · ";
+  // `column`: under an "Automatic Check" header, where repeating the name says nothing. The words
+  // are the glossary's (AUTO_CHECK.officer) — "Does not match" here said "Doesn't match" elsewhere.
+  const lead = column ? "" : `${AUTO_CHECK.name} · `;
   switch (verdict?.state) {
     case undefined:
       return column ? "Not checked" : "Not checked automatically";
     case "pending":
-      return column ? "Running" : "Automatic check running";
     case "unavailable":
-      return column ? "Unavailable" : "Automatic check unavailable";
+      // "Automatic check · Unavailable", never "Automatic check unavailable" run into one phrase.
+      return `${lead}${AUTO_CHECK.officer[verdict.state]}`;
     case "verified":
-      return `${lead}Looks right${pct}`;
     case "review":
-      return `${lead}Unsure${pct}`;
     case "invalid":
-      return `${lead}Does not match${pct}`;
+      return `${lead}${AUTO_CHECK.officer[verdict.state]}${pct}`;
   }
 }
 
 const isOpenFile = (app: GrantApplication) => app.status !== "Draft" && app.status !== "Rejected";
+
+/**
+ * What the scheme's cost norms admit for this file, as the CENTRAL share — the figure a sanction is
+ * measured against. **AVYAY is the only scheme whose norms this portal holds**; for every other
+ * scheme this is null and the sanction box states no admissible figure (design-director audit R-05,
+ * and the coordinator's decision of 16 Sep 2026). Read by `CostNormsReview` and by the sanction
+ * panel, so the two cannot disagree.
+ */
+export function schemeNorms(app: GrantApplication): { recurring: number; nonRecurring: number; total: number } | null {
+  if (app.schemeCode !== "AVYAY") return null;
+  const v = app.formValues ?? {};
+  const norm = avyayEntitlement({
+    natureOfProject: v.fld_nature_of_project,
+    agencyType: v.fld_agency_type,
+    projectState: v.fld_project_state,
+    buildingOwnership: v.fld_building_ownership,
+  });
+  return { recurring: norm.recurringCentral, nonRecurring: norm.nonRecurringCentral, total: norm.totalCentral };
+}
 
 /* ── Funding history ─────────────────────────────────────────────────────── */
 
@@ -134,14 +153,14 @@ export function FundingHistory({ app }: { app: GrantApplication }) {
                 { key: "orderNo", header: "Sanction No.", render: (r) => <span className="whitespace-nowrap font-mono">{r.orderNo}</span> },
                 { key: "sanctionedAt", header: "Date", render: (r) => <span className="whitespace-nowrap">{formatDate(r.sanctionedAt)}</span> },
                 { key: "scheme", header: "Scheme", render: (r) => schemeLabel(r.scheme) },
-                { key: "amount", header: "Sanctioned Amount", className: "text-right", render: (r) => <span className="whitespace-nowrap font-mono">{rupees(r.amount)}</span> },
+                { key: "amount", header: "Sanctioned Amount", className: "text-right", render: (r) => <span className="whitespace-nowrap tabular-nums">{formatMoney(r.amount)}</span> },
               ]}
               data={ngo.rows as (NgoSanctionRow & Record<string, unknown>)[]}
               total={ngo.rows.length}
               pageSizes={[5, 25]}
             />
             <p className="text-body-2 text-ink">
-              Total previously allocated: <strong className="font-mono">{rupees(ngo.total)}</strong> across {ngo.rows.length} sanction order{ngo.rows.length === 1 ? "" : "s"}.
+              Total previously allocated: <strong className="tabular-nums">{formatMoney(ngo.total)}</strong> across {ngo.rows.length} sanction order{ngo.rows.length === 1 ? "" : "s"}.
             </p>
           </>
         )}
@@ -158,8 +177,8 @@ export function FundingHistory({ app }: { app: GrantApplication }) {
           size="sm"
           items={[
             { term: "Sanctioned Grants", value: String(project.rows.length) },
-            { term: "Total Sanctioned", value: <span className="font-mono">{rupees(project.totalSanctioned)}</span> },
-            { term: "Total Released", value: <span className="font-mono">{rupees(project.totalReleased)}</span> },
+            { term: "Total Sanctioned", value: <span className="tabular-nums">{formatMoney(project.totalSanctioned)}</span> },
+            { term: "Total Released", value: <span className="tabular-nums">{formatMoney(project.totalReleased)}</span> },
           ]}
         />
           <DataTable<ProjectSanctionRow & Record<string, unknown>>
@@ -168,8 +187,8 @@ export function FundingHistory({ app }: { app: GrantApplication }) {
               { key: "id", header: "Application No.", render: (r) => <RefText value={r.app.id} className="font-mono text-body-3" /> },
               { key: "fy", header: "FY", render: (r) => <span className="whitespace-nowrap">{r.app.financialYear}</span> },
               { key: "date", header: "Sanction Date", render: (r) => <span className="whitespace-nowrap">{formatDate(r.app.sanction!.sanctionedAt)}</span> },
-              { key: "sanctioned", header: "Sanctioned", className: "text-right", render: (r) => <span className="whitespace-nowrap font-mono">{rupees(r.sanctioned)}</span> },
-              { key: "released", header: "Released", className: "text-right", render: (r) => <span className="whitespace-nowrap font-mono">{rupees(r.released)}</span> },
+              { key: "sanctioned", header: "Sanctioned", className: "text-right", render: (r) => <span className="whitespace-nowrap tabular-nums">{formatMoney(r.sanctioned)}</span> },
+              { key: "released", header: "Released", className: "text-right", render: (r) => <span className="whitespace-nowrap tabular-nums">{formatMoney(r.released)}</span> },
             ]}
             data={project.rows as (ProjectSanctionRow & Record<string, unknown>)[]}
             total={project.rows.length}
@@ -260,7 +279,7 @@ export function InstalmentsPanel({ app }: { app: GrantApplication }) {
         columns={2}
         size="sm"
         items={[
-          { term: "Released So Far", value: <span className="font-mono">{rupees(schedule.releasedSoFar)}</span> },
+          { term: "Released So Far", value: <span className="tabular-nums">{formatMoney(schedule.releasedSoFar)}</span> },
           { term: "Release Pattern", value: releasePatternFact(schedule.pattern) },
         ]}
       />
@@ -278,10 +297,10 @@ export function InstalmentsPanel({ app }: { app: GrantApplication }) {
             }
             description={
               <span className="block">
-                Planned <span className="font-mono">{rupees(r.planned)}</span>
+                Planned <span className="tabular-nums">{formatMoney(r.planned)}</span>
                 {r.claim?.sanction && <> · sanction {r.claim.sanction.orderNo}</>}
-                {r.claim && <> · claimed <span className="font-mono">{rupees(r.claim.total)}</span></>}
-                {" · "}released <span className="font-mono">{rupees(r.released)}</span>
+                {r.claim && <> · claimed <span className="tabular-nums">{formatMoney(r.claim.total)}</span></>}
+                {" · "}released <span className="tabular-nums">{formatMoney(r.released)}</span>
               </span>
             }
             trailing={status(r)}
@@ -325,21 +344,27 @@ export function InstalmentsPanel({ app }: { app: GrantApplication }) {
 
 /* ── Show Cause Notices ──────────────────────────────────────────────────── */
 
-export function ShowCausePanel({ app }: { app: GrantApplication }) {
-  const { state, issueShowCauseNotice } = useEAnudaan();
+/** Whether the signed-in officer may issue a Show Cause Notice on this file — the decision panel's "More Actions" asks. */
+export function canIssueShowCause(app: GrantApplication, role: RoleId | null | undefined): boolean {
+  return !!role && !!ROLES[role]?.caps.includes("issueShowCause") && isOpenFile(app);
+}
+
+/**
+ * The notices issued on the file, and the dialog that issues one. The dialog is opened from the
+ * decision panel's "More Actions" (audit R-04): the button used to sit on this card about 5,000px
+ * below "Your Decision", so the card now holds history only and is drawn only when there is some.
+ */
+export function ShowCausePanel({ app, dialogOpen, onDialogClose }: { app: GrantApplication; dialogOpen: boolean; onDialogClose: () => void }) {
+  const { issueShowCauseNotice } = useEAnudaan();
   const { toast } = useToast();
-  const role = state.session ? ROLES[state.session] : null;
-  const canIssue = !!role?.caps.includes("issueShowCause") && isOpenFile(app);
   const [grounds, setGrounds] = React.useState("");
   const [respondBy, setRespondBy] = React.useState("");
   const [error, setError] = React.useState<string | null>(null);
-  const [open, setOpen] = React.useState(false);
   const notices = app.showCauseNotices;
-  if (!canIssue && notices.length === 0) return null;
   const today = new Date().toISOString().slice(0, 10);
 
   const close = () => {
-    setOpen(false);
+    onDialogClose();
     setGrounds("");
     setRespondBy("");
     setError(null);
@@ -359,19 +384,9 @@ export function ShowCausePanel({ app }: { app: GrantApplication }) {
   };
 
   return (
-    <Panel
-      title="Show Cause Notices"
-      actions={
-        canIssue ? (
-          <Button appearance="outlined" size="sm" nowrap onClick={() => setOpen(true)}>
-            Issue Show Cause Notice
-          </Button>
-        ) : undefined
-      }
-    >
-      {notices.length === 0 ? (
-        <p className="text-body-2 text-ink-muted">No Show Cause Notice has been issued on this application.</p>
-      ) : (
+    <>
+      {notices.length > 0 && (
+        <Panel title="Show Cause Notices">
         <ListGroup aria-label="Show Cause Notices issued">
           {[...notices].reverse().map((n) => (
             <ListRow
@@ -388,12 +403,13 @@ export function ShowCausePanel({ app }: { app: GrantApplication }) {
             />
           ))}
         </ListGroup>
+        </Panel>
       )}
       {/* The form opens on request. Inline it stood open on every SO and JS review, a textarea and a
           date the officer had not asked for, between the documents and the file movement. The dialog
           states what issuing does and asks before discarding typed grounds. */}
       <Modal
-        open={open}
+        open={dialogOpen}
         onClose={close}
         dirty={grounds.trim() !== "" || respondBy !== ""}
         title="Issue a Show Cause Notice"
@@ -418,7 +434,7 @@ export function ShowCausePanel({ app }: { app: GrantApplication }) {
           </div>
         </div>
       </Modal>
-    </Panel>
+    </>
   );
 }
 
@@ -434,22 +450,25 @@ function inspectionLine(i: Inspection): string {
 
 const EMPTY_INSPECTION = { title: "", description: "", date: "", start: "", end: "" };
 
-export function InspectionsPanel({ app }: { app: GrantApplication }) {
+/** Whether the signed-in officer may schedule an online inspection now — none is already booked. */
+export function canScheduleInspection(state: EAnudaanState, app: GrantApplication): boolean {
+  const role = state.session ? ROLES[state.session] : null;
+  const onlineBooked = state.inspections.some((i) => i.applicationId === app.id && i.visitType === "Online" && i.status === "Scheduled");
+  return !!role?.caps.includes("scheduleInspection") && isOpenFile(app) && !onlineBooked;
+}
+
+/** The inspections on the file, and the dialog that schedules one — opened from "More Actions" (R-04). */
+export function InspectionsPanel({ app, dialogOpen, onDialogClose }: { app: GrantApplication; dialogOpen: boolean; onDialogClose: () => void }) {
   const { state, scheduleOnlineInspection } = useEAnudaan();
   const { toast } = useToast();
-  const role = state.session ? ROLES[state.session] : null;
   const inspections = state.inspections.filter((i) => i.applicationId === app.id);
-  const onlineBooked = inspections.some((i) => i.visitType === "Online" && i.status === "Scheduled");
-  const canSchedule = !!role?.caps.includes("scheduleInspection") && isOpenFile(app) && !onlineBooked;
   const [f, setF] = React.useState(EMPTY_INSPECTION);
   const [error, setError] = React.useState<string | null>(null);
-  const [open, setOpen] = React.useState(false);
-  if (inspections.length === 0 && !canSchedule) return null;
   const today = new Date().toISOString().slice(0, 10);
   const dirty = Object.values(f).some((v) => v !== "");
 
   const close = () => {
-    setOpen(false);
+    onDialogClose();
     setF(EMPTY_INSPECTION);
     setError(null);
   };
@@ -465,19 +484,9 @@ export function InspectionsPanel({ app }: { app: GrantApplication }) {
   };
 
   return (
-    <Panel
-      title="Inspections"
-      actions={
-        canSchedule ? (
-          <Button appearance="outlined" size="sm" nowrap onClick={() => setOpen(true)}>
-            Schedule Online Inspection
-          </Button>
-        ) : undefined
-      }
-    >
-      {inspections.length === 0 ? (
-        <p className="text-body-2 text-ink-muted">No inspection is scheduled for this application.</p>
-      ) : (
+    <>
+      {inspections.length > 0 && (
+        <Panel title="Inspections">
         <ListGroup aria-label="Inspections on this application">
           {inspections.map((i) => (
             <ListRow
@@ -493,11 +502,12 @@ export function InspectionsPanel({ app }: { app: GrantApplication }) {
             />
           ))}
         </ListGroup>
+        </Panel>
       )}
       {/* The BharatVC form opens on request. Inline, five empty fields stood open on every review
           that could schedule one — 520px of the page for an action most files never take. */}
       <Modal
-        open={open}
+        open={dialogOpen}
         onClose={close}
         dirty={dirty}
         title="Schedule Online Inspection (BharatVC)"
@@ -530,7 +540,7 @@ export function InspectionsPanel({ app }: { app: GrantApplication }) {
           )}
         </div>
       </Modal>
-    </Panel>
+    </>
   );
 }
 
@@ -547,20 +557,20 @@ export function CostNormsReview({ app }: { app: GrantApplication }) {
   });
   const line = (sought: number, allowed: number) => (
     <span className="flex flex-wrap items-center gap-2">
-      <span className="font-mono">{rupees(sought)}</span>
-      <span className="text-body-3 text-ink-muted">admissible {rupees(allowed)}</span>
+      <span className="tabular-nums">{formatMoney(sought)}</span>
+      <span className="text-body-3 text-ink-muted">admissible {formatMoney(allowed)}</span>
       {sought > allowed && <Badge status="warning" size="sm">Above the Norm</Badge>}
     </span>
   );
-  const ownedHint = norm.ownedDeduction > 0 ? `Norm ${rupees(norm.recurringNorm)}, less ${rupees(norm.ownedDeduction)} for an owned building` : undefined;
+  const ownedHint = norm.ownedDeduction > 0 ? `Norm ${formatMoney(norm.recurringNorm)}, less ${formatMoney(norm.ownedDeduction)} for an owned building` : undefined;
   // An instalment claims a share of the year's recurring grant, so the NORM is compared with the
   // year's figure, never with the instalment — a 40% claim read as far below a norm it is not.
   const annual = Number(v.fld_sanctioned_recurring || 0);
   const items =
     app.caseType === "Ongoing"
       ? [
-          { term: "Year's Recurring Grant", hint: ownedHint, value: annual > 0 ? line(annual, norm.recurringCentral) : <span className="text-body-3 text-ink-muted">Not recorded · admissible {rupees(norm.recurringCentral)}</span> },
-          { term: "This Instalment", value: <span className="font-mono">{rupees(app.recurring)}</span> },
+          { term: "Year's Recurring Grant", hint: ownedHint, value: annual > 0 ? line(annual, norm.recurringCentral) : <span className="text-body-3 text-ink-muted">Not recorded · admissible {formatMoney(norm.recurringCentral)}</span> },
+          { term: "This Instalment", value: <span className="tabular-nums">{formatMoney(app.recurring)}</span> },
         ]
       : [
           { term: "Recurring", hint: ownedHint, value: line(app.recurring, norm.recurringCentral) },

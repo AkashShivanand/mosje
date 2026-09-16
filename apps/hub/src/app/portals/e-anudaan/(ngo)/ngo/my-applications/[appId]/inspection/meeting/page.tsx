@@ -10,6 +10,9 @@
  * (user INVENTORY §13), so the applicant half of the BharatVC inspection is not built upstream.
  * This page follows the officer side's behaviour: the IFD schedules a session, and the applicant
  * joins it from here.
+ *
+ * Design-director audit, 16 Sep 2026 (N-18, X-07): the page had no back link while every other
+ * detail page did, and sat in a centred column narrower than the application it belongs to.
  */
 
 import { useParams, useRouter } from "next/navigation";
@@ -42,10 +45,14 @@ export default function InspectionMeetingPage() {
   if (!app) return <NgoApplicationNotFound />;
 
   return (
-    <div className="mx-auto max-w-2xl space-y-5">
+    <div className="space-y-5">
+      <Button appearance="text" size="sm" onClick={() => router.push(`/portals/e-anudaan/ngo/my-applications/${encodeURIComponent(app.id)}`)}>
+        <Icon name="arrow_back" size={16} aria-hidden /> Back to the Application
+      </Button>
       <PageHeader
+        size="compact"
         eyebrow={
-          <span className="font-mono">
+          <span className="tabular-nums">
             Application <span className="whitespace-nowrap">{app.id}</span>
           </span>
         }
@@ -71,7 +78,7 @@ export default function InspectionMeetingPage() {
                 { term: "Scheduled For", value: inspection.scheduledFor ? formatDateTime(inspection.scheduledFor) : "Not scheduled" },
               ]}
             />
-            <p className="text-body-2 text-ink-muted">
+            <p className="max-w-measure text-body-2 text-ink-muted">
               Complete the{" "}
               <Link href="/portals/e-anudaan/ngo/cctv" onClick={routeOnClick(router, "/portals/e-anudaan/ngo/cctv")}>
                 CCTV setup

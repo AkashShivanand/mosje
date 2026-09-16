@@ -108,7 +108,7 @@ test("verifying a location change moves the project's address; returning it does
   const verified = decideChangeRequest(s, req.id, "approve", "Premises seen.", "pmu-field", clock());
   assert.ok(verified.ok);
   assert.equal(currentAddressOf(verified.state, req.projectId), req.address);
-  assert.ok(notificationItems(verified.state, "ngo").some((i) => i.action === "Project Location Change Verified"));
+  assert.ok(notificationItems(verified.state, "ngo").some((i) => i.action === "Project Location Change Approved"));
   assert.equal(decideChangeRequest(s, req.id, "approve", "x", "pd-js", clock()).ok, false, "only the PMU verifies");
 });
 
@@ -263,4 +263,28 @@ test("a pending bank change on the seed is the NGO's own, so the approval reache
   const s = state();
   const req = s.changeRequests.find((r): r is BankChangeRequest => r.kind === "bank")!;
   assert.ok(s.ngos[0]!.institutions.some((i) => i.id === req.projectId));
+});
+
+/* ── The dashboard's figures open the lists they count (audit O-03) ────────── */
+
+test("each register-wide dashboard figure equals the list it opens, in every year", async () => {
+  const { officerDashboard, explorerView, DEFAULT_EXPLORER_FILTERS } = await import("./officer.ts");
+  const { forwardedFor } = await import("./selectors.ts");
+  const s = state();
+  const years = ["", ...new Set(s.applications.map((a) => a.financialYear))];
+  for (const role of OFFICER_ROLES.filter((r) => r.division === "pd")) {
+    for (const fy of years) {
+      const dash = officerDashboard(s, role.id, fy);
+      const figure = (k: string) => dash.movement.find((m) => m.key === k)!.count;
+      const opened = (status: "deficiency" | "corrected") =>
+        explorerView(s, role.id, { ...DEFAULT_EXPLORER_FILTERS, status, financialYear: fy }).rows.length;
+      assert.equal(opened("deficiency"), figure("deficiency"), `${role.id} ${fy}: Deficiencies Raised`);
+      assert.equal(opened("corrected"), figure("resolved"), `${role.id} ${fy}: Deficiencies Resolved`);
+      assert.equal(
+        forwardedFor(s, role.id).filter((a) => !fy || a.financialYear === fy).length,
+        figure("forwarded"),
+        `${role.id} ${fy}: Forwarded by You`,
+      );
+    }
+  }
 });

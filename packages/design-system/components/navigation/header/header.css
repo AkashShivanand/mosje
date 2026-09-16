@@ -1469,6 +1469,40 @@
     height: 20px;
   }
 
+  /* ── The portal masthead on a phone: two names, not three, WHEN THE ROW IS FULL ──
+     Below `breakpoint/tablet` a portal's lockup stood about 150px tall where the row carries the
+     rail toggle, the bell and the avatar — BETA, "Government of India", "Ministry of Social Justice
+     & Empowerment" over two lines and the Department over three, in the ~140px of text column
+     those controls leave. With the Government of India bar above, a quarter of the first phone
+     screen was chrome before any content (e-Anudaan audit X-08).
+
+     The MINISTRY line is the one that goes, and only when the lockup is narrower than the line
+     itself needs (a container query on the lockup, not a viewport rule): a login page with no
+     trailing controls still has room for it and keeps it. The Department line directly beneath
+     repeats "Social Justice & Empowerment" word for word. The Government of India line, the
+     Department line and BETA stay, and the lockup's accessible name is unchanged. The website
+     masthead, every portal from 768 up and the condensed bar keep all three DBIM 5.2 lines.
+
+     DIVERGENCE, recorded per standards-precedence.md: DBIM 5.2 lists the ministry line in the
+     lockup. Withheld on a crowded portal phone row for the legibility of the page; for the
+     Department to confirm. The emblem steps down with it so the row is not held open by the mark.
+     280px: the ministry line at label-2 is about 235px, plus the emblem and its gap. */
+  @media (max-width: 767px) {
+    .ds-hdr[data-variant="portal"] .ds-hdr-brand__lockup {
+      container: ds-hdr-lockup / inline-size;
+    }
+
+    @container ds-hdr-lockup (max-width: 280px) {
+      .ds-hdr-lockup__ministry {
+        display: none;
+      }
+
+      .ds-hdr-lockup__emblem {
+        height: 48px; /* the emblem ladder: 64 resting · 48 crowded portal phone · 44 compact · 32/28 condensed */
+      }
+    }
+  }
+
   .ds-hdr-acct__menu-item:hover .ds-hdr-acct__menu-icon,
   .ds-hdr-acct__menu-item:focus-visible .ds-hdr-acct__menu-icon,
   .ds-hdr-acct__menu-item.is-danger .ds-hdr-acct__menu-icon {

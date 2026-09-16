@@ -108,3 +108,29 @@ test("an NGO sees only its own applications, and another's reads as not found", 
   assert.equal(signedInNgoId({ ...state, session: "pd-aso" as never }), undefined);
   assert.equal(ownApplication(mine, undefined), undefined);
 });
+
+test("one queue per seat: no sidebar carries a second copy of it, and the old address stays reachable", () => {
+  // Audit O-04 (16 Sep 2026): the IFD sidebar listed "Finance Dashboard" and "My Worklist"
+  // (`sm2/ifd<grade>`), two items drawing the same queue. `sm2/<key>` now redirects to the home.
+  for (const role of ADMIN_ROLES) {
+    const key = reviewKeyOf(role);
+    if (!key || key === "pd") continue; // `sm2/pd` is the Programme Director's desk, a page of its own.
+    const hrefs = role.nav.map((n) => n.href);
+    assert.ok(!hrefs.includes(`${B}/dashboard/sm2/${key}`), `${role.id} still lists sm2/${key}`);
+    assert.equal(hrefs.filter((h) => h === role.home).length, 1, `${role.id} lists its home once`);
+    // Not a 403: the redirect page must render for the seat's own officer, so their link lands.
+    assert.equal(consoleRouteAccess(`${B}/dashboard/sm2/${key}`, role), "allowed", `${role.id} sm2/${key}`);
+  }
+  for (const role of ADMIN_ROLES.filter((r) => r.division)) {
+    const home = role.nav.find((n) => n.href === role.home);
+    assert.equal(home?.label, "My Queue", `${role.id} home label`);
+  }
+});
+
+test("no sidebar label abbreviates the Programme Division or the Programme Director", () => {
+  // Audit O-08: "PD Queries" read as queries raised by the Programme Director.
+  for (const role of ADMIN_ROLES) {
+    for (const item of role.nav) assert.doesNotMatch(item.label, /\bPD\b/, `${role.id} · "${item.label}"`);
+  }
+  assert.equal(consoleRouteAccess(`${B}/dashboard/pd/so/queries`, ROLES["pd-so"]), "allowed");
+});

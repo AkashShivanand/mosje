@@ -14,8 +14,14 @@
 
 import * as React from "react";
 import { Alert, Button, Card, CardBody, DataTable, DescriptionList, Heading, Icon, Text } from "@mosje/design-system";
-import { avyayCostHeads, avyayEntitlement } from "@/lib/e-anudaan/form-schema";
-import { rupees } from "@/lib/e-anudaan/format";
+import { avyayCostHeads, avyayEntitlement, costedStrength } from "@/lib/e-anudaan/form-schema";
+import { formatMoney } from "@/lib/e-anudaan/format";
+
+/**
+ * Money in this panel is the EXACT form (format.ts): the Recurring Grant field under it prints the
+ * same figure in full, and the two must read alike. Tabular Noto Sans, never monospace (audit W-12).
+ */
+const money = (n: number) => formatMoney(n, "exact");
 
 export function CostNormsPanel({
   natureOfProject,
@@ -25,6 +31,7 @@ export function CostNormsPanel({
   buildingOwnership,
   recurringSought,
   nonRecurringSought,
+  beneficiaries,
 }: {
   natureOfProject?: string;
   agencyType?: string;
@@ -33,6 +40,8 @@ export function CostNormsPanel({
   buildingOwnership?: string;
   recurringSought?: string;
   nonRecurringSought?: string;
+  /** The beneficiaries entered on the Infrastructure step, read against the strength the norms are costed for. */
+  beneficiaries?: string;
 }) {
   const [open, setOpen] = React.useState(false);
 
@@ -45,6 +54,10 @@ export function CostNormsPanel({
   // One computation, shared with the Recurring Grant field under this panel, so the two cannot differ.
   const { share, recurringAllowed, recurringNorm, ownedDeduction, nonRecurringNorm, attendanceLinked, recurringCentral, nonRecurringCentral, totalCentral: totalAllowed } =
     avyayEntitlement({ natureOfProject, agencyType, projectState, buildingOwnership });
+
+  const strength = costedStrength({ fld_nature_of_project: natureOfProject ?? "" });
+  const enteredResidents = /^\d+$/.test((beneficiaries ?? "").trim()) ? Number(beneficiaries) : null;
+  const belowStrength = strength != null && enteredResidents != null && enteredResidents < strength;
 
   const overNorm =
     Number(recurringSought || 0) > recurringAllowed || Number(nonRecurringSought || 0) > nonRecurringNorm;
@@ -76,15 +89,15 @@ export function CostNormsPanel({
           items={[
             {
               term: "Recurring",
-              hint: ownedDeduction > 0 ? `Norm ${rupees(recurringNorm)}, less ${rupees(ownedDeduction)} because the building is owned` : undefined,
-              value: <span className="font-mono font-semibold">{rupees(recurringCentral)}</span>,
+              hint: ownedDeduction > 0 ? `Norm ${money(recurringNorm)}, less ${money(ownedDeduction)} because the building is owned` : undefined,
+              value: <span className="font-semibold tabular-nums">{money(recurringCentral)}</span>,
             },
             {
               term: "Non-recurring",
-              hint: `Norm ${rupees(nonRecurringNorm)}`,
-              value: <span className="font-mono font-semibold">{rupees(nonRecurringCentral)}</span>,
+              hint: `Norm ${money(nonRecurringNorm)}`,
+              value: <span className="font-semibold tabular-nums">{money(nonRecurringCentral)}</span>,
             },
-            { term: "Total", value: <span className="font-mono font-bold">{rupees(totalAllowed)}</span> },
+            { term: "Total", value: <span className="font-bold tabular-nums">{money(totalAllowed)}</span> },
           ]}
         />
 
@@ -100,8 +113,8 @@ export function CostNormsPanel({
             caption="AVYAY cost norms, head by head"
             columns={[
               { key: "head", header: "Head" },
-              { key: "norm", header: "Norm", className: "text-right font-mono", render: (h) => rupees(h.norm) },
-              { key: "central", header: "Central share", className: "text-right font-mono", render: (h) => rupees(h.central) },
+              { key: "norm", header: "Norm", className: "text-right tabular-nums", render: (h) => money(h.norm) },
+              { key: "central", header: "Central share", className: "text-right tabular-nums", render: (h) => money(h.central) },
             ]}
             data={headRows}
             total={headRows.length}
@@ -111,11 +124,20 @@ export function CostNormsPanel({
         )}
 
         <p className="text-body-3 text-ink-muted">
-          Central share {share}% · city category {tier} · norms of 2021-22. {rupees(attendanceLinked)} of the
+          Central share {share}% · city category {tier} · norms of 2021-22. {money(attendanceLinked)} of the
           recurring norm is linked to the residents actually served, and is reduced if the home runs below its
           sanctioned strength. Indicative. The amount sanctioned is decided by the Ministry from these same
           norms after scrutiny.
         </p>
+
+        {/* The figure entered, read against the strength the norms are costed for — one application,
+            one number of residents (audit W-01). The 25 in a project type's name is not a minimum. */}
+        {belowStrength && (
+          <Alert status="info">
+            {enteredResidents} residents are entered against the {strength} this project type is costed for. The
+            attendance-linked part of the recurring grant is reduced when a home runs below that strength.
+          </Alert>
+        )}
 
         {overNorm && (
           <Alert status="warning">

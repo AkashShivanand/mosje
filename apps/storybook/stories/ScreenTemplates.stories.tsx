@@ -55,6 +55,9 @@ import {
  * draws no mobile version of any application screen, so this is the estate's
  * answer rather than a transcription. `countLine` replaces the "N in the register."
  * sentence, or hides it with `null` when a heading above already states the count.
+ * `views` takes a view switch (Tabs or a SegmentedControl: Pending / All) drawn
+ * under the header with no frame — a view is not a filter, so it never goes in
+ * `filters`.
  *
  * **`WizardScreen`** covers 22 of the handoff's 44 screens across three schemes
  * with 3, 6 and 7 steps. It ships one stepper treatment where the handoff draws

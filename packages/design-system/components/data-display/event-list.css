@@ -138,8 +138,24 @@
     color: var(--sa-text-status-warning-bolder);
   }
 
+  /* OVERDUE — a word and an icon in the error family, never the colour alone. It sits where the
+     Action Needed tag sits, because an entry is one or the other to the reader: something to do
+     by a date, or something already late. */
+  .ds-events__tag--overdue {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    background: var(--sa-bg-status-error-base);
+    color: var(--sa-text-status-error-bolder);
+  }
+
   .ds-events__due {
     color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-events__item--overdue .ds-events__due {
+    color: var(--sa-text-status-error-bolder);
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   /* The dot is decoration on top of the hidden word, never the only signal. */

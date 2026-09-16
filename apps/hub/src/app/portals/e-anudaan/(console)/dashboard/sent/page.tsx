@@ -9,6 +9,11 @@
  * Live `/dashboard/avyay/sent`: file, NGO, State / District, the movement, the date, where the file
  * is now and ageing in days, with a List / By State toggle (inventory §28). Ageing was also asked
  * for in the review call (B8).
+ *
+ * Design-director audit PD-01 (16 Sep 2026): "40 days" in red on files the Director had returned
+ * to the ASO — red read as the Director being late on a file no longer with them — and a "Closed"
+ * chip on some rows only. Now every row carries one status chip, and the wait is stated beside the
+ * seat that holds the file, in a neutral tone: "With the Assistant Section Officer · 40 days".
  */
 
 import * as React from "react";
@@ -17,7 +22,8 @@ import { Badge, Icon, SegmentedControl, WorklistScreen, buttonClasses, screenCop
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { ROLES, reviewKeyOf } from "@/lib/e-anudaan/roles";
 import { formatDate } from "@/lib/e-anudaan/format";
-import { auditActionLabel, statusLabel } from "@/lib/e-anudaan/workflow";
+import { STATUS_LABEL, auditActionLabel, holderLabel } from "@/lib/e-anudaan/workflow";
+import { statusTone } from "@/lib/e-anudaan/selectors";
 import { sentBy, sentByState, type SentByState, type SentRow } from "@/lib/e-anudaan/registers";
 import { RefText, splitRowActions } from "@/components/e-anudaan/worklist-table";
 
@@ -69,21 +75,34 @@ export default function SentPage() {
         </span>
       ),
     },
-    { key: "now", header: "Current Status", priority: 2, exportValue: (r) => statusLabel(r.app), render: (r) => <span className="block min-w-[10rem]">{statusLabel(r.app)}</span> },
+    {
+      key: "now",
+      header: "Current Status",
+      priority: 2,
+      exportValue: (r) => STATUS_LABEL[r.app.status],
+      render: (r) => (
+        <Badge status={statusTone(r.app.status)} size="sm">
+          <span className="whitespace-nowrap">{STATUS_LABEL[r.app.status]}</span>
+        </Badge>
+      ),
+    },
     {
       key: "days",
-      header: "Ageing",
+      header: "Now With",
       priority: 2,
       sortable: true,
       sortValue: (r) => (r.pending ? r.days : -1),
-      exportValue: (r) => (r.pending ? String(r.days) : ""),
+      exportValue: (r) => (r.pending ? `${holderLabel(r.app.holder)} · ${r.days} day${r.days === 1 ? "" : "s"}` : ""),
       render: (r) =>
         r.pending ? (
-          <span className={`whitespace-nowrap ${r.days > 7 ? "font-semibold text-[var(--sa-text-status-error-base)]" : "text-ink"}`}>
-            {r.days} day{r.days === 1 ? "" : "s"}
+          <span className="block min-w-[10rem] text-ink">
+            {holderLabel(r.app.holder)}
+            <span className="block text-body-3 text-ink-muted">
+              {r.days} day{r.days === 1 ? "" : "s"}
+            </span>
           </span>
         ) : (
-          <Badge status="neutral" size="sm">Closed</Badge>
+          <span className="text-ink-muted">—</span>
         ),
     },
     {
@@ -133,8 +152,8 @@ export default function SentPage() {
   const meta = "Files you have sanctioned, returned or rejected, and where each is now.";
 
   return view === "list" ? (
-    <WorklistScreen<SentRow> title="Sent" meta={meta} {...splitRowActions(listColumns)} rows={rows} getRowId={(r) => r.app.id} noun="file" filters={toggle} copy={copy} />
+    <WorklistScreen<SentRow> title="Sent" meta={meta} {...splitRowActions(listColumns)} rows={rows} getRowId={(r) => r.app.id} noun="file" views={toggle} copy={copy} />
   ) : (
-    <WorklistScreen<SentByState> title="Sent" meta={meta} columns={stateColumns} rows={byState} getRowId={(s) => s.state} noun="State" filters={toggle} copy={copy} countLine={null} />
+    <WorklistScreen<SentByState> title="Sent" meta={meta} columns={stateColumns} rows={byState} getRowId={(s) => s.state} noun="State" views={toggle} copy={copy} countLine={null} />
   );
 }

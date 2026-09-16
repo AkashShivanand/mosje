@@ -8,6 +8,7 @@ import { placeOfProjectId } from "./geography.ts";
 import { PROJECT_ID_PREFIX, projectForSubmission, type SubmittedProject } from "./submission.ts";
 import { STATUS_LABEL } from "./workflow.ts";
 import { formatDate } from "./format.ts";
+import { CASE_TYPE, DEFICIENCY, GRANT, RECEIVED, REJECT, RETURN, instalmentLabel, ordinal as glossaryOrdinal } from "./glossary.ts";
 import type {
   AuditEntry,
   Deficiency,
@@ -140,21 +141,25 @@ export function applicantStages(app: GrantApplication): ApplicantStage[] {
         const n = def?.items?.length ?? 0;
         out.push({
           id: e.id,
-          title: "Correction Requested",
+          title: DEFICIENCY.raised,
           at: e.at,
-          detail: n ? `${n} item${n === 1 ? "" : "s"} to correct — ${def?.detail}` : def?.detail,
+          // `message` is what the Section Officer sent. `detail` is the ASO's internal note, which
+          // stays inside the Ministry (types.ts) — it was reaching the applicant here.
+          detail: n ? `${n} item${n === 1 ? "" : "s"} to correct${def?.message ? ` — ${def.message}` : ""}` : def?.message,
           tone: "attention",
         });
         break;
       }
       case "respondDeficiency":
-        out.push({ id: e.id, title: "Correction Submitted", at: e.at, detail: e.remarks, tone: "done" });
+        out.push({ id: e.id, title: DEFICIENCY.correctionSubmitted, at: e.at, detail: e.remarks, tone: "done" });
         break;
       case "sanction":
-        out.push({ id: e.id, title: "Sanctioned", at: e.at, tone: "done" });
+        out.push({ id: e.id, title: GRANT.sanctioned, at: e.at, tone: "done" });
         break;
       case "reject":
-        out.push({ id: e.id, title: "Not Approved", at: e.at, detail: e.remarks, tone: "closed" });
+        // "Rejected", as the notification and the officer's register say it. "Approved" is a
+        // change request's word, never a grant's (glossary).
+        out.push({ id: e.id, title: REJECT.status, at: e.at, detail: e.remarks, tone: "closed" });
         break;
       case "inspectionScheduled":
         out.push({ id: e.id, title: "Inspection Scheduled", at: e.at, tone: "neutral" });
@@ -164,7 +169,7 @@ export function applicantStages(app: GrantApplication): ApplicantStage[] {
         out.push({ id: e.id, title: "Inspection Completed", at: e.at, tone: "done" });
         break;
       case "releaseFunds":
-        out.push({ id: e.id, title: "Grant Released", at: e.at, detail: e.remarks, tone: "done" });
+        out.push({ id: e.id, title: GRANT.released, at: e.at, detail: e.remarks, tone: "done" });
         break;
       case "openClaim":
         out.push({ id: e.id, title: "Next Instalment Open to Claim", at: e.at, detail: e.remarks, tone: "attention" });
@@ -187,7 +192,7 @@ export function applicantStanding(app: GrantApplication): string {
   // The chip already says "Sanctioned"; the line names the order, which is what the applicant quotes.
   if (app.sanction) return `Sanction order ${app.sanction.orderNo}, issued ${formatDate(app.sanction.sanctionedAt)}.`;
   if (app.status === "Sanctioned" || app.status === "Released") return "The sanction order is being issued.";
-  if (app.status === "Rejected") return "Not approved.";
+  if (app.status === "Rejected") return "The application was rejected.";
   return "Under examination at the Ministry. No action is needed from you.";
 }
 
@@ -203,19 +208,19 @@ const NOTIFICATION_TITLES: Record<AuditEntry["action"], string> = {
   certify: "Application Certified",
   forward: "Application Forwarded",
   raiseDeficiency: "Deficiency Noted",
-  communicateDeficiency: "Deficiency Raised",
-  respondDeficiency: "Correction Submitted",
-  raiseQuery: "Returned to Previous Level",
-  resolveQuery: "Responded and Sent Back",
+  communicateDeficiency: DEFICIENCY.raised,
+  respondDeficiency: DEFICIENCY.correctionSubmitted,
+  raiseQuery: RETURN.status,
+  resolveQuery: RETURN.responded,
   concur: "Financial Concurrence Recorded",
   sanction: "Application Sanctioned",
   reject: "Application Rejected",
-  return: "Returned for Rework",
-  routeDown: "Returned for Rework",
+  return: RETURN.status,
+  routeDown: RETURN.status,
   inspectionScheduled: "Inspection Scheduled",
   inspectionSubmitted: "Inspection Report Submitted",
   inspectionReviewed: "Inspection Report Reviewed",
-  releaseFunds: "Grant Released",
+  releaseFunds: GRANT.released,
   openClaim: "Next Instalment Open to Claim",
   showCauseIssued: "Show Cause Notice Issued",
 };
@@ -272,39 +277,43 @@ export function officerStatus(app: GrantApplication, inspectionReady = false): O
   let s: OfficerStatus;
   switch (app.status) {
     case "DeficiencyProposed":
-      s = { label: "Deficiency to Send", tone: "warning", icon: "outgoing_mail", note: "Noted by the ASO · not yet sent to the NGO" };
+      s = { label: DEFICIENCY.toSend, tone: "warning", icon: "outgoing_mail", note: "Noted by the Assistant Section Officer · not yet sent to the NGO" };
       break;
     case "DeficiencyRaised":
-      s = { label: "Deficiency Raised", tone: "warning", icon: "report", note: "With the NGO for correction" };
+      s = { label: DEFICIENCY.raised, tone: "warning", icon: "report", note: "With the NGO for correction" };
       break;
     case "DeficiencyResponded":
-      s = { label: "Resubmitted after Deficiency", tone: "info", icon: "published_with_changes" };
+      s = { label: DEFICIENCY.resubmitted, tone: "info", icon: "published_with_changes" };
       break;
     case "QueryRaised":
-      s = { label: "Returned for Rework", tone: "warning", icon: "undo" };
+      s = { label: RETURN.status, tone: "warning", icon: "undo" };
       break;
     case "Returned":
       // The same state as a query pushed down, from one level higher; one name for both, so
       // the dashboard count and the rows it counts agree.
-      s = { label: "Returned for Rework", tone: "warning", icon: "undo", note: "By the Programme Director" };
+      s = { label: RETURN.status, tone: "warning", icon: "undo", note: "By the Programme Director" };
       break;
     case "Sanctioned":
+      s = { label: GRANT.sanctioned, tone: "success", icon: "verified" };
+      break;
+    // Released is its own state: the money has moved, which a sanction alone does not say.
     case "Released":
-      s = { label: "Sanctioned", tone: "success", icon: "verified" };
+      s = { label: GRANT.released, tone: "success", icon: "payments" };
       break;
     case "Rejected":
-      s = { label: "Rejected", tone: "danger", icon: "cancel" };
+      s = { label: REJECT.status, tone: "danger", icon: "cancel" };
       break;
     case "Draft":
       s = { label: "Draft", tone: "neutral", icon: "edit_note" };
       break;
     case "Submitted":
-      s = { label: "New Submission", tone: "info", icon: "inbox" };
+      s = { label: RECEIVED, tone: "info", icon: "inbox" };
       break;
     default:
-      // Under Examination, Under Financial Examination, Concurred by Finance, Awaiting Sanction,
-      // Grant Released — the same words the review screen's badge uses, from one table.
-      s = { label: STATUS_LABEL[app.status], tone: "neutral", icon: "pending" };
+      // Under Examination, Under Financial Examination, Concurred by Finance, Awaiting Sanction —
+      // the same words the review screen's badge uses, from one table. A file still moving is
+      // info, not neutral grey: grey read as inert on a pending decision (audit O-13).
+      s = { label: STATUS_LABEL[app.status], tone: "info", icon: "pending" };
   }
   if (inspectionReady && !s.note) s.note = "Inspection report available";
   return s;
@@ -312,13 +321,14 @@ export function officerStatus(app: GrantApplication, inspectionReady = false): O
 
 /** A short, human reference for the case type, used as a badge. */
 export function caseLabel(app: GrantApplication): string {
-  if (app.caseType === "New") return "New";
-  return app.instalment ? `${ordinal(app.instalment)} Instalment` : "Ongoing";
+  // "New Project", not "New": the bare word sat beside a "New Submission" status and meant
+  // something else there (audit O-05).
+  if (app.caseType === "New") return CASE_TYPE.new;
+  return app.instalment ? instalmentLabel(app.instalment) : CASE_TYPE.ongoing;
 }
 
-export function ordinal(n: number): string {
-  return n === 1 ? "1st" : n === 2 ? "2nd" : n === 3 ? "3rd" : `${n}th`;
-}
+/** Re-exported from the glossary, where "2nd Instalment" is spelled once. */
+export const ordinal = glossaryOrdinal;
 
 /* ── projects, accounts, instalments ──────────────────────────────────────── */
 

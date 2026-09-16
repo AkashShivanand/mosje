@@ -31,6 +31,7 @@
  */
 
 import { ordinal } from "./applicant.ts";
+import { draftResumeRoute } from "./drafts.ts";
 import { RELEASE_PATTERN, RENEWAL_PICKER, type SchemeCode } from "./form-schema.ts";
 import type { EAnudaanState, GrantApplication, Institution, ProjectAccount } from "./types.ts";
 
@@ -188,8 +189,31 @@ export function renewalOption(plan: InstalmentPlan): string {
   return `${plan.projectId} — ${p ? `${p.name}, ${p.district}` : plan.projectId}`;
 }
 
-/** The NGO's own projects under a scheme with an instalment open to claim now — the previous one released. */
-export function renewableProjects(state: EAnudaanState, ngoId: string, scheme: string, now: Date = new Date()): InstalmentPlan[] {
+/**
+ * The Draft of the claim a plan describes, if the applicant has saved one: same scheme, project,
+ * instalment and financial year, filed as an Ongoing claim (audit N-02). While it exists the claim
+ * is continued, never offered again — the dashboard offered "Claim 3rd Instalment" beside a Draft
+ * of that very instalment, which is how a duplicate claim is made.
+ */
+export function draftOfClaim(state: EAnudaanState, plan: InstalmentPlan): GrantApplication | undefined {
+  if (!plan.instalment) return undefined;
+  return state.applications.find(
+    (a) =>
+      a.status === "Draft" &&
+      a.schemeCode === plan.scheme &&
+      a.institutionId === plan.projectId &&
+      a.caseType === "Ongoing" &&
+      (a.instalment ?? 1) === plan.instalment &&
+      a.financialYear === plan.financialYear,
+  );
+}
+
+/**
+ * The NGO's own projects under a scheme with an instalment open to claim now — the previous one released.
+ * A project whose claim is saved as a Draft is not offered: the draft is continued instead. `keepDraftId`
+ * is the draft being continued, which must still find its own project in the list.
+ */
+export function renewableProjects(state: EAnudaanState, ngoId: string, scheme: string, now: Date = new Date(), keepDraftId?: string): InstalmentPlan[] {
   const code = scheme.toUpperCase();
   const ngo = state.ngos.find((n) => n.id === ngoId);
   if (!ngo) return [];
@@ -197,14 +221,21 @@ export function renewableProjects(state: EAnudaanState, ngoId: string, scheme: s
   return ngo.institutions
     .filter((i) => withFiles.has(i.id))
     .map((i) => instalmentPlan(state, code, i.id, now))
-    .filter((p) => p.state === "open");
+    .filter((p) => {
+      if (p.state !== "open") return false;
+      const draft = draftOfClaim(state, p);
+      return !draft || draft.id === keepDraftId;
+    });
 }
 
 /** The plan behind a picker option, if the option names one of the NGO's open projects. */
 export function planForOption(state: EAnudaanState, ngoId: string, scheme: string, option: string, now: Date = new Date()): InstalmentPlan | undefined {
   const id = option.split(" — ")[0]?.trim();
   if (!id) return undefined;
-  return renewableProjects(state, ngoId, scheme, now).find((p) => p.projectId === id);
+  // Not filtered by draft: an option already chosen (a draft continued, its project picked again)
+  // must still resolve to its plan. The picker's LIST is what leaves a drafted claim out.
+  const draftIds = state.applications.filter((a) => a.status === "Draft" && a.institutionId === id).map((a) => a.id);
+  return [undefined, ...draftIds].map((keep) => renewableProjects(state, ngoId, scheme, now, keep).find((p) => p.projectId === id)).find(Boolean);
 }
 
 /** "XXXX XXXX 4417" — the account number as the applicant is shown it, once. */
@@ -287,8 +318,10 @@ export interface NextInstalmentNotice {
   plan: InstalmentPlan;
   /** "2nd Instalment is open" / "1st Instalment for 2027-28 opens when the Ministry opens applications" */
   title: string;
-  /** Where to claim it, when it is open. */
+  /** Where to claim it, when it is open — or to continue its draft, when one is saved. */
   href?: string;
+  /** The saved Draft of this claim. The dashboard labels the row "Continue Draft". */
+  draft?: GrantApplication;
 }
 
 /**
@@ -302,6 +335,8 @@ export function nextInstalmentNotice(state: EAnudaanState, app: GrantApplication
   const plan = instalmentPlan(state, app.schemeCode, app.institutionId, now);
   if (plan.lastSanctioned?.id !== app.id || !plan.instalment) return undefined;
   if (plan.state === "open") {
+    const draft = draftOfClaim(state, plan);
+    if (draft) return { plan, draft, title: `${instalmentLabel(plan.instalment)} is saved as a draft`, href: draftResumeRoute(draft) };
     return {
       plan,
       title: `${instalmentLabel(plan.instalment)} is open to claim`,

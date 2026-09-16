@@ -263,8 +263,9 @@ test("a new application's financial year is fixed to the year now running, and s
   assert.equal(v.fld_financial_year, "2026-27");
   assert.equal(isReadOnly(fy, v), true);
   assert.equal(fieldHelp(fy, v), "A new application is for the financial year now running.");
-  // A 1st instalment of a new year may still choose among the three years; a 2nd may not.
-  assert.equal(isReadOnly(fy, renew("SR/MH/THN/03603")), false);
+  // Since 16 Sep 2026 (audit W-09) no claim chooses its year: the instalment plan decides it, for a
+  // 1st instalment as for a 2nd. An editable year let a claim be filed for the wrong one.
+  assert.equal(isReadOnly(fy, renew("SR/MH/THN/03603")), true);
   assert.equal(isReadOnly(fy, renew("SR/MH/PUN/03601")), true);
 });
 

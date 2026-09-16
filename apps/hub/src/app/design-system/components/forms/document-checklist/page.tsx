@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { CodeBlock, ComponentDocPage, MatrixTable, type A11yItem } from "@/components/design-system/docs-kit";
 
-import { DocumentChecklistSpecimen } from "./document-centre-specimens";
+import { DocumentChecklistSpecimen, DocumentOfficerReviewSpecimen } from "./document-centre-specimens";
 
 export const metadata: Metadata = {
   title: "Document Checklist — Design System",
@@ -85,13 +85,27 @@ export default function DocumentChecklistPage(): React.JSX.Element {
               rows={[
                 ["ErrorSummary", "N Documents Need Your Attention Before You Continue", "Only after Continue is pressed with blockers; takes focus"],
                 ["Progress", "12 of 17 required documents ready", "Counts READY, never uploaded — a rejected upload is not progress"],
-                ["Formats", "PDF, JPG or PNG · up to 5 MB each", "Stated once, here, never under every row"],
-                ["Filter chips", "Needs your attention (danger tone while above 0) · Being checked · Ready · Optional", "Each filters the list; a filter that leaves nothing says so and offers Show All Documents"],
+                ["Formats", "PDF, JPG or PNG · up to 5 MB each", "Stated once, inside the drop zone where files are chosen; in the header only when there is no drop zone"],
+                ["Filter chips", "Needs your attention (its count in the error ink while above 0) · Being checked · Ready · Optional", "One selected style for every chip; each filters the list; a filter that leaves nothing says so and offers Show All Documents"],
                 ["Drop zone", "Drop all your documents here, or Choose Files — on a touch screen or below 768px, Choose your documents", "Choose Files is the keyboard route; a thumb has nothing to drag"],
                 ["Tray slot", "Document Placement Tray", "Between the drop zone and the list, until closed"],
-                ["Groups", "Document Checklist Group of Document Rows", "The scheme's own groups; uppercase label, divided list"],
+                ["Bulk verdict", "Mark All Remaining as Verified (12)", "Officer screens only; behind a confirmation; drawn only while the count is above 0"],
+                ["Groups", "Document Checklist Group of Document Rows", "The scheme's own groups; uppercase label, divided list; hideRequiredMarks under a Required heading"],
               ]}
             />
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-bulk">
+            <h2 id="cdp-bulk" className="cdp__h2">
+              Bulk Verdict
+            </h2>
+            <p>
+              <code>bulkAction</code> draws one outlined button and a confirmation for a verdict given to many documents at once. The design
+              system draws the affordance; the screen decides which documents are &ldquo;remaining&rdquo;, never includes one the automatic
+              check flagged, and records one verdict per document so each stays individually auditable. It is also exported alone as
+              <code> DocumentBulkAction</code>, for a decision panel. Rows here are <code>density=&quot;compact&quot;</code> under a group with{" "}
+              <code>hideRequiredMarks</code>.
+            </p>
+            <DocumentOfficerReviewSpecimen />
           </section>
           <section className="cdp__section" aria-labelledby="cdp-gate">
             <h2 id="cdp-gate" className="cdp__h2">

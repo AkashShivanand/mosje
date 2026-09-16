@@ -174,6 +174,9 @@ export const DOCUMENTED_BY = {
   TabPanel: "Tabs",
   // A group is a heading and a list inside a DocumentChecklist; it is never used outside one.
   DocumentChecklistGroup: "DocumentChecklist",
+  // The bulk verdict is `DocumentChecklist`'s `bulkAction`, exported alone for a decision panel.
+  // Its page section is "Bulk Verdict" on the Document Checklist page.
+  DocumentBulkAction: "DocumentChecklist",
   // THE CREDENTIAL STACKS. `AuthFormCard` is the component a consumer composes;
   // these five are what go in its one slot, and none is used on its own. Its page
   // is where the comparison lives — which stack carries a security check, which

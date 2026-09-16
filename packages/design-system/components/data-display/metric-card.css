@@ -58,6 +58,9 @@
     border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-cmp-card-radius);
     box-shadow: var(--sa-elevation-raised);
+    /* The tile answers to ITS OWN width, not the viewport's: the same card is full width on one
+       dashboard and half a 375px screen on another, and only the card knows which. */
+    container: ds-metric-card / inline-size;
   }
 
   .ds-metric-card__inner {
@@ -162,6 +165,28 @@
   .ds-metric-card--sm .ds-metric-card__icon {
     width: 32px;
     height: 32px;
+  }
+
+  /* ── The icon badge gives way before the figure does ──────────────────────
+     The badge is decorative — it is `aria-hidden`, and the label already says what the figure is.
+     In a half-width tile on a 375px screen it kept its full 40px and squeezed the label into two
+     or three lines; a page hid it with a utility of its own, which is the sign the component owed
+     the rule. It shrinks to 32 in a narrow tile and goes entirely in a very narrow one. */
+  /* The query measures the card's CONTENT box, so these read 40px narrower than the card: 200
+     here is a 240px tile, and 160 below is a 200px one — a half-width tile on a 375px screen is
+     165px. Measured in the browser rather than reasoned about, because the padding is easy to
+     forget and the first pass hid the badge a rung too early. */
+  @container ds-metric-card (max-width: 200px) {
+    .ds-metric-card__icon {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  @container ds-metric-card (max-width: 160px) {
+    .ds-metric-card__icon {
+      display: none;
+    }
   }
 
   /* ── Change indicator ── */

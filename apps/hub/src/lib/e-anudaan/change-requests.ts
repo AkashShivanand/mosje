@@ -12,6 +12,7 @@
  */
 
 import { ROLES } from "./roles.ts";
+import { CHANGE_REQUEST_DECISION } from "./glossary.ts";
 import { checkLocation, type LocationCheck } from "./district-centres.ts";
 import type {
   BankChangeRequest,
@@ -80,10 +81,16 @@ export function locationCheckFor(state: EAnudaanState, request: LocationChangeRe
 }
 
 /** The words each outcome is shown in, to the officer and the NGO alike. */
+/**
+ * A change request's decision in the glossary's two words (audit N-19). A location change read
+ * "Verified", which is an officer's verdict on a document, not a decision; the bank desk said
+ * "Rejected" and the location desk "Returned" for the same outcome — the request was not granted and
+ * a new one may be raised. The stored status keeps its own value; only the words are one.
+ */
 export function requestStatusLabel(request: ChangeRequest): string {
   if (request.status === "Pending") return "Under Examination";
-  if (request.kind === "location" && request.status === "Approved") return "Verified";
-  return request.status;
+  if (request.status === "Approved") return CHANGE_REQUEST_DECISION.approved;
+  return CHANGE_REQUEST_DECISION.notApproved;
 }
 
 export function requestStatusTone(request: ChangeRequest): "warning" | "success" | "danger" | "neutral" {
@@ -173,14 +180,9 @@ export function decideChangeRequest(
   // The applicant is told only about its own project — the signed-in organisation is the first in
   // the register, as the store's workflow notices already assume.
   const toApplicant = owner?.ngo.id === state.ngos[0]?.id;
-  const title =
-    decided.kind === "bank"
-      ? status === "Approved"
-        ? "Bank Account Change Approved"
-        : "Bank Account Change Rejected"
-      : status === "Approved"
-        ? "Project Location Change Verified"
-        : "Project Location Change Returned";
+  // The notice says what the request's own row says (requestStatusLabel).
+  const decisionWord = status === "Approved" ? CHANGE_REQUEST_DECISION.approved : CHANGE_REQUEST_DECISION.notApproved;
+  const title = `${decided.kind === "bank" ? "Bank Account Change" : "Project Location Change"} ${decisionWord}`;
   const notice: NotificationEntry = {
     id: `ntf-${decided.id}-decided`,
     at: clock.now,

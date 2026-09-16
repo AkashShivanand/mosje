@@ -12,14 +12,33 @@
  *
  * Export, in this prototype: the CSV is generated in the browser (it opens in Excel), and PDF is
  * the browser's own print dialog. No Excel workbook is generated.
+ *
+ * Design-director audit RP-01 (16 Sep 2026): one table per report, money in full rupees, "12 in the
+ * register", no totals and no chart, so a Deputy or Joint Secretary could read neither a total nor
+ * a trend. Now each report carries its totals and one chart, both read from the rows the table
+ * lists (`reportTotals`, `report.chart`), money in the summary form every other screen uses, and a
+ * count line that names what it counts. DS Audit adds: ChartCard ✅ · RankedBarList ✅ · ListGroup ✅.
  */
 
 import * as React from "react";
-import { Button, FilterSelect, Icon, Search, WorklistScreen, screenCopy, type WorklistColumn } from "@mosje/design-system";
+import {
+  Button,
+  ChartCard,
+  FilterSelect,
+  Icon,
+  ListGroup,
+  ListRow,
+  RankedBarList,
+  Search,
+  WorklistScreen,
+  screenCopy,
+  type WorklistColumn,
+} from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { schemeLabel } from "@/lib/e-anudaan/selectors";
 import { officerApplications } from "@/lib/e-anudaan/registers";
-import { REPORTS, formatCell, reportById, reportCsv, type ReportRow } from "@/lib/e-anudaan/reports";
+import { REPORTS, formatCell, reportById, reportCsv, reportTotals, type ReportRow } from "@/lib/e-anudaan/reports";
+import { formatMoney } from "@/lib/e-anudaan/format";
 import { RefText } from "@/components/e-anudaan/worklist-table";
 
 export default function ReportsPage() {
@@ -72,7 +91,43 @@ export default function ReportsPage() {
 
   const active = (scheme ? 1 : 0) + (fy ? 1 : 0) + (ngo.trim() ? 1 : 0);
 
+  const totals = reportTotals(report, rows);
+  const chart = report.chart(rows);
+  const figure = (kind: "number" | "money", n: number) => (kind === "money" ? formatMoney(n, "summary") : n.toLocaleString("en-IN"));
+  const counted = (n: number) => `${n.toLocaleString("en-IN")} ${n === 1 ? report.noun : report.pluralNoun}`;
+  const selection = fy || scheme ? [scheme ? schemeLabel(scheme) : null, fy ? `FY ${fy}` : null].filter(Boolean).join(" · ") : "All schemes and years";
+  const trailing = (text: string) => <span className="text-title-3 font-semibold tabular-nums text-ink">{text}</span>;
+
+  /* Totals and the chart follow the same filtered rows the table lists. From a tablet up they sit
+     above the filters, as the figures on every officer register do. On a phone the two cards ran
+     to about 900px and put the Report picker a screen and a half down, so there they follow the
+     table; one copy is always display:none, so a screen reader meets them once. At empty or
+     filtered-to-nothing the body's own message answers, and neither copy is drawn. */
+  const summaryCards = (
+    <>
+      <ChartCard title="Totals" subtitle={selection} headingLevel={2}>
+        <ListGroup size="sm" aria-label={`${report.title} totals`}>
+          <ListRow title={report.pluralNoun.replace(/\b\w/g, (c) => c.toUpperCase())} trailing={trailing(rows.length.toLocaleString("en-IN"))} />
+          {totals.map((t) => (
+            <ListRow key={t.key} title={t.header} trailing={trailing(figure(t.kind, t.value))} />
+          ))}
+        </ListGroup>
+      </ChartCard>
+      <ChartCard
+        title={chart.title}
+        subtitle={selection}
+        headingLevel={2}
+        empty={chart.items.every((i) => i.value === 0)}
+        emptyTitle="Nothing to Chart"
+        emptyLabel="Every figure in this selection is zero."
+      >
+        <RankedBarList title={chart.title} items={chart.items} valueFormat={(n) => figure(chart.kind, n)} showRank={false} sort="none" pageSize={6} />
+      </ChartCard>
+    </>
+  );
+
   return (
+    <div className="space-y-5">
     <WorklistScreen<ReportRow>
       title="Reports &amp; Analytics"
       meta={report.description}
@@ -89,8 +144,11 @@ export default function ReportsPage() {
       columns={columns}
       rows={rows}
       registerTotal={all.length}
+      summary={rows.length === 0 ? undefined : <div className="hidden gap-4 md:grid lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">{summaryCards}</div>}
+      countLine={rows.length === all.length ? `${counted(rows.length)}.` : `Showing ${rows.length.toLocaleString("en-IN")} of ${counted(all.length)}, filtered.`}
       getRowId={(r) => r.id}
-      noun="row"
+      noun={report.noun}
+      pluralNoun={report.pluralNoun}
       activeFilterCount={active}
       onClearFilters={() => {
         setScheme("");
@@ -124,5 +182,7 @@ export default function ReportsPage() {
         clearFiltersLabel: "Clear Filters",
       })}
     />
+    {rows.length > 0 && <div className="grid gap-4 md:hidden">{summaryCards}</div>}
+    </div>
   );
 }

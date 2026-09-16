@@ -48,12 +48,13 @@ import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { districtsOf } from "@/lib/e-anudaan/geography";
 import { formatDate, formatTime, rupees } from "@/lib/e-anudaan/format";
 import { schemeLabel } from "@/lib/e-anudaan/selectors";
-import { darpanSeed as seedFromDarpan, declarationStamp } from "@/lib/e-anudaan/prefill";
+import { claimIntro, instalmentLabel, wizardIntro } from "@/lib/e-anudaan/glossary";
+import { darpanSeed as seedFromDarpan, declarationStamp, registrationOf } from "@/lib/e-anudaan/prefill";
 import { checkApplication, documentsOf, type ApplicationCheck } from "@/lib/e-anudaan/submission";
 import { answerField, darpanIdentity } from "@/lib/e-anudaan/submit-application";
-import { DERIVED_CLAIM_SCHEMES, renewableProjects, renewalOption } from "@/lib/e-anudaan/instalments";
-import type { EAnudaanState } from "@/lib/e-anudaan/types";
-import { activeKey, draftKey, draftStep, hasAnswers, needsDraftWrite, parseDraft, stepRoute, type SavedDraft } from "@/lib/e-anudaan/drafts";
+import { DERIVED_CLAIM_SCHEMES, draftOfClaim, instalmentPlan, renewableProjects, renewalOption } from "@/lib/e-anudaan/instalments";
+import type { EAnudaanState, GrantApplication } from "@/lib/e-anudaan/types";
+import { activeKey, claimStartStep, draftFromRegister, draftKey, draftStep, hasAnswers, needsDraftWrite, parseDraft, stepRoute, type SavedDraft } from "@/lib/e-anudaan/drafts";
 import {
   DECLARATION_TEXT,
   RENEWAL_PICKER,
@@ -70,6 +71,7 @@ import {
   visibleSteps,
   visibleOptions,
   isReadOnly,
+  strengthAdvice,
   wizardFor,
   type FieldDef,
   type SectionDef,
@@ -77,7 +79,7 @@ import {
   type WizardDef,
 } from "@/lib/e-anudaan/form-schema";
 import { withYearCheck, type UploadedDoc } from "@/lib/e-anudaan/doc-verification";
-import { DEMO_FILL_EVENT, type DemoFillDetail } from "@/lib/e-anudaan/demo-scenarios";
+import { DEMO_FILL_EVENT, DEMO_HOLD_CHECKS_KEY, type DemoFillDetail } from "@/lib/e-anudaan/demo-scenarios";
 import { CostNormsPanel } from "./cost-norms-panel";
 import { ChooseSchemeFirst } from "./choose-scheme-first";
 import { DocumentsChecklist, type DocumentsChecklistHandle } from "./documents-checklist";
@@ -128,6 +130,39 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
     return parseDraft(window.localStorage.getItem(key)) ?? {};
   };
   /**
+   * A Draft in the register this link continues (audit N-02): named by `?draft=`, or found from
+   * `?project=` when the claim that link would start is already saved as a draft. The claim is
+   * continued, never started a second time.
+   */
+  const [linked] = React.useState<{ app: GrantApplication; route: string; clash: boolean } | null>(() => {
+    if (typeof window === "undefined" || !def || !ngo) return null;
+    const draftId = searchParams.get("draft");
+    const projectId = searchParams.get("project");
+    const app = draftId
+      ? state.applications.find((a) => a.id === draftId && a.ngoId === ngo.id && a.status === "Draft" && wizardFor(a.schemeCode)?.code === def.code)
+      : projectId && ngo.institutions.some((i) => i.id === projectId)
+        ? draftOfClaim(state, instalmentPlan(state, def.code, projectId))
+        : undefined;
+    const opened = app ? draftFromRegister(app) : null;
+    if (!app || !opened) return null;
+    const saved = parseDraft(window.localStorage.getItem(key));
+    // This draft is already the one in the form: carry it on where it was left.
+    if (hasAnswers(saved) && saved.registerId === app.id) {
+      window.sessionStorage.setItem(activeKey(def.code), "1");
+      return { app, route: stepRoute(def.code, saved.values ?? {}, draftStep(def.code, saved)?.index ?? 0), clash: false };
+    }
+    // Another draft of this scheme is saved: the applicant chooses, as on My Applications.
+    if (hasAnswers(saved)) return { app, route: opened.route, clash: true };
+    try {
+      window.localStorage.setItem(key, JSON.stringify(opened.draft));
+      window.sessionStorage.setItem(activeKey(def.code), "1");
+    } catch {
+      return null;
+    }
+    return { app, route: opened.route, clash: false };
+  });
+  const [clashChoice, setClashChoice] = React.useState<"pending" | "made">(() => (linked?.clash ? "pending" : "made"));
+  /**
    * The draft this form was opened with, if there really was one. The banner used to say
    * "You are continuing a saved draft … last saved 21 Aug 2026" on EVERY visit, fresh ones
    * included, above four documents the applicant had never uploaded (full-wizard walk,
@@ -148,15 +183,24 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
 
   /** What the portal knows before the applicant types anything: DARPAN, and the account on record. */
   const darpanSeed = (): Record<string, string> => seedFromDarpan(ngo);
+  /**
+   * "Claim the 2nd instalment" from the dashboard arrives as `?project=<ID>`: the picker option for
+   * that project, when it has an instalment open. Decided once, as the form is created — only on a
+   * form nobody has started, and never over a draft the applicant has not chosen to resume.
+   */
+  const [linkClaim] = React.useState<string | undefined>(() => {
+    if (typeof window === "undefined" || !def || openedDraft || linked) return undefined;
+    if ((readDraft().values ?? {}).case_type) return undefined;
+    return projectOption(def, state, ngo?.id, searchParams.get("project"));
+  });
   const [values, setValues] = React.useState<Record<string, string>>(() => {
     // The declaration stamp goes on LAST: a draft from an earlier day must not carry its date
     // forward, because the declaration is signed when it is submitted, not when it was begun.
     const carried = openedDraft ? {} : (readDraft().values ?? {});
     const seed: Record<string, string> = { ...darpanSeed(), ...carried, ...declarationStamp() };
-    // "Claim the 2nd instalment" from the dashboard arrives as `?project=<ID>`: the form opens as
-    // that project's renewal. Decided here, as the form is created — only on a form nobody has
-    // started, and never over a draft the applicant has not yet chosen to resume or discard.
-    const option = !openedDraft && !seed.case_type ? projectOption(def, state, ngo?.id, searchParams.get("project")) : undefined;
+    // The claim the link names (`linkClaim` above): the form opens as that project's renewal, unless
+    // a draft already carried a case type in.
+    const option = seed.case_type ? undefined : linkClaim;
     if (def && option) {
       const stepOne = visibleSteps(def, seed)[0]!;
       const renewalAnswer = RENEWAL_CASE_ANSWER[def.code];
@@ -235,7 +279,8 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
       const detail = (e as CustomEvent<DemoFillDetail>).detail;
       if (!def || detail?.scheme !== def.code) return;
       // DARPAN's identity and the declaration stamp are the portal's, never the demo's (C11).
-      const filled = applyAllAutoFields(def, { ...darpanSeed(), ...detail.values, ...darpanIdentity(darpanSeed()), ...declarationStamp() });
+      // The registration on the organisation's record too (N-16): a demo's illustrative number beside the real one gave one file two.
+      const filled = applyAllAutoFields(def, { ...darpanSeed(), ...detail.values, ...darpanIdentity(darpanSeed()), ...registrationOf(ngo), ...declarationStamp() });
       setValues(filled);
       setDocs(detail.docs);
       setErrors({});
@@ -248,6 +293,8 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
         window.localStorage.setItem(key, raw);
         lastWritten.current = raw;
         window.sessionStorage.setItem(activeKey(def.code), "1");
+        if (detail.holdChecks) window.sessionStorage.setItem(DEMO_HOLD_CHECKS_KEY, def.code);
+        else window.sessionStorage.removeItem(DEMO_HOLD_CHECKS_KEY);
         opened.current = JSON.stringify({ values: filled, docs: detail.docs });
         setDraftChoice("made");
         setSave({ kind: "saved", at: new Date() });
@@ -325,13 +372,37 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
     }
   }, [canonical, misplaced, phase, router, def, values, activeIndex]);
 
+  /** A linked register draft opens where it was left — the Review step, for a draft from the register. */
+  React.useEffect(() => {
+    if (linked && !linked.clash) router.replace(linked.route, { scroll: false });
+  }, [linked, router]);
+
+  /**
+   * "Claim 2nd Instalment" already answered Application Type — the project, and with it the
+   * instalment and the year — so the form opens on the step after it (audit W-04). The address keeps
+   * `?project=` so a refresh opens the same claim.
+   */
+  const jumped = React.useRef(false);
+  React.useEffect(() => {
+    if (jumped.current || !linkClaim || !def || phase !== "form" || step !== 0) return;
+    jumped.current = true;
+    const at = claimStartStep(def, values);
+    const project = searchParams.get("project");
+    if (at > 0 && project) {
+      const route = stepRoute(def.code, values, at);
+      router.replace(`${route}${route.includes("?") ? "&" : "?"}project=${encodeURIComponent(project)}`, { scroll: false });
+    }
+  }, [def, phase, step, values, router, searchParams, linkClaim]);
+
   const roomForLabels = useRoomForStageNames(stepperBox, steps.map((st) => st.title));
 
   /**
    * The applicant's own projects with an instalment open to claim — the renewal picker's options,
    * read from the sanctioned record rather than listed in the schema (W1, C2).
    */
-  const dynamic = def ? { [RENEWAL_PICKER[def.code]]: renewalOptionsFor(def, state, ngo?.id) } : {};
+  // The draft this form continues, so the picker still offers that draft's own project (N-02).
+  const ownDraftId = carriedRegisterId ?? linked?.app.id;
+  const dynamic = def ? { [RENEWAL_PICKER[def.code]]: renewalOptionsFor(def, state, ngo?.id, ownDraftId) } : {};
 
   if (!def) return <ChooseSchemeFirst />;
 
@@ -443,6 +514,22 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
     router.push(`${base(def.code)}/success?ref=${encodeURIComponent(res.app.id)}`);
   };
 
+  /** Replace the other saved draft with the register draft this link names, and open it. */
+  const openLinkedDraft = () => {
+    if (!linked) return;
+    const opened = draftFromRegister(linked.app);
+    if (!opened) return;
+    try {
+      window.localStorage.setItem(key, JSON.stringify(opened.draft));
+      window.sessionStorage.setItem(activeKey(def.code), "1");
+    } catch {
+      toast("This draft could not be opened on this device. Try again.", "error");
+      return;
+    }
+    setClashChoice("made");
+    router.replace(opened.route, { scroll: false });
+  };
+
   const resumeDraft = () => {
     const d = readDraft();
     const seed = { ...darpanSeed(), ...(d.values ?? {}), ...declarationStamp() };
@@ -509,23 +596,32 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
    * What this claim is, once a renewal's project is chosen — kept in view on every step, because a
    * 2nd instalment is claimed on the application ID its 1st instalment created (C7).
    */
-  const claimLine = values.claim_stage && values.fld_installment_no
-    ? [
-        values.fld_application_ref ? `Application ID ${values.fld_application_ref}` : null,
-        `${values.fld_installment_no} of FY ${values.fld_financial_year}`,
-        values.fld_project_id ? `Project ${values.fld_project_id}` : null,
-      ]
-        .filter(Boolean)
-        .join(" · ")
-    : null;
+  const claimNumber = Number(/^(\d+)/.exec(values.fld_installment_no ?? "")?.[1]);
+  const claimLine =
+    values.claim_stage && claimNumber && values.fld_financial_year && values.fld_project_id
+      ? [claimIntro(claimNumber, values.fld_financial_year, values.fld_project_id), values.fld_application_ref ? `Application ID ${values.fld_application_ref}` : null]
+          .filter(Boolean)
+          .join(" · ")
+      : null;
+  /**
+   * The line under the scheme's title (audit W-02). An application says what it is, once, on its
+   * first step; a claim names its instalment, year and project on every step, because that is what
+   * the applicant must keep in view. "…complete each section to register for AVYAY" was the wrong
+   * verb, printed on every step, Upload Documents and Review included.
+   */
+  const intro = claimLine ?? (activeIndex === 0 && !isDocs && !isReview ? wizardIntro(schemeLabel(def.code)) : null);
+  /** A choice about a saved draft is still to be made: the form waits for it (audit W-14). */
+  const choosing = (openedDraft != null && draftChoice === "pending" && !linked?.clash) || (linked?.clash === true && clashChoice === "pending");
 
   const checklist = visibleDocuments(def, values);
   // The upload step keeps Continue enabled: pressed with a document that needs attention, the
   // step raises its own ErrorSummary and filters to what needs doing (Document Centre §3.5).
   // Submit stays the hard gate, through `checkApplication`.
-  const gate = isReview && !declared
-    ? { blocked: true, reason: "Accept the declaration above to submit." }
-    : { blocked: false, reason: null };
+  const gate = choosing
+    ? { blocked: true, reason: "Resume the saved draft or start fresh first." }
+    : isReview && !declared
+      ? { blocked: true, reason: "Accept the declaration above to submit." }
+      : { blocked: false, reason: null };
   /** Continue on the upload step: the documents first, then every earlier step, then Review. */
   const docsNext = () => {
     if (docStep.current && !docStep.current.tryContinue()) return;
@@ -548,12 +644,20 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
         size="compact"
         title={def.title}
         meta={
-          <>
-            {`Please provide all necessary information below and complete each section to register for ${schemeLabel(def.code)}.${!isDocs && !isReview ? " Fields marked * are mandatory." : ""}`}
-            {claimLine && (
-              <span className="mt-1 block font-semibold text-ink">{claimLine}</span>
-            )}
-          </>
+          intro ? (
+            claimLine ? (
+              <span className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <span className="font-semibold text-ink tabular-nums">{claimLine}</span>
+                {phase === "form" && activeIndex > 0 && (
+                  <Button appearance="text" size="sm" onClick={() => goto(0)}>
+                    Change Project
+                  </Button>
+                )}
+              </span>
+            ) : (
+              intro
+            )
+          ) : undefined
         }
         actions={<SaveIndicator status={save} onRetry={() => writeDraft()} />}
       />
@@ -590,7 +694,24 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
         error={errorSummary(current, errors)}
         errorRef={errorRef}
       >
-        {openedDraft && draftChoice === "pending" && (
+        {linked?.clash && clashChoice === "pending" && (
+          <Alert status="warning" title={`Another ${schemeLabel(def.code)} draft is saved on this device.`}>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <p className="text-body-2">
+                Opening the saved draft of {linked.app.instalment ? `the ${instalmentLabel(linked.app.instalment)}` : "this claim"} for Project {linked.app.institutionId} replaces the other draft on this device.
+              </p>
+              <div className="flex flex-wrap items-center gap-2">
+                <Button size="sm" onClick={openLinkedDraft}>
+                  Open This Draft
+                </Button>
+                <Button appearance="text" size="sm" onClick={() => router.push("/portals/e-anudaan/ngo/my-applications")}>
+                  Go to My Applications
+                </Button>
+              </div>
+            </div>
+          </Alert>
+        )}
+        {openedDraft && draftChoice === "pending" && !linked?.clash && (
           <Alert status="warning" title="You have a saved draft for this scheme.">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p className="text-body-2">
@@ -637,7 +758,7 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
             </div>
           </Alert>
         )}
-        {isDocs ? (
+        {choosing ? null : isDocs ? (
           <DocumentsChecklist
             ref={docStep}
             schemeCode={def.code}
@@ -706,9 +827,12 @@ const RENEWAL_CASE_ANSWER: Partial<Record<string, string>> = {
   SMILE: SMILE_CASE_EXISTING,
 };
 
-/** The renewal picker's options for a scheme whose claims are derived from the sanction record. */
-function renewalOptionsFor(def: WizardDef | undefined, state: EAnudaanState, ngoId: string | undefined): string[] {
-  return def && ngoId && DERIVED_CLAIM_SCHEMES.has(def.code) ? renewableProjects(state, ngoId, def.code).map(renewalOption) : [];
+/**
+ * The renewal picker's options for a scheme whose claims are derived from the sanction record. A
+ * project whose claim is saved as a draft is left out — except to that draft itself.
+ */
+function renewalOptionsFor(def: WizardDef | undefined, state: EAnudaanState, ngoId: string | undefined, keepDraftId?: string): string[] {
+  return def && ngoId && DERIVED_CLAIM_SCHEMES.has(def.code) ? renewableProjects(state, ngoId, def.code, new Date(), keepDraftId).map(renewalOption) : [];
 }
 
 /** The picker option for `?project=<ID>`, when that project has an instalment open. */
@@ -837,6 +961,7 @@ function FormStep({
                   buildingOwnership={values.fld_building_ownership}
                   recurringSought={values.fld_grant_recurring}
                   nonRecurringSought={values.fld_grant_non_recurring}
+                beneficiaries={values.fld_total_beneficiaries}
                 />
               </div>
             )}
@@ -1008,6 +1133,9 @@ function sectionSummary(section: SectionDef, values: Record<string, string>): st
       if (f.kind === "number") return `${label} ${reviewValue(f, raw)}`;
       if (f.kind === "radio" || f.kind === "checkbox") return `${label}: ${reviewValue(f, raw)}`;
       if (f.kind === "textarea") return raw.length > 70 ? `${raw.slice(0, 67).trimEnd()}…` : raw;
+      // A short choice does not explain itself: "· NGO ·" read as a stray word (audit W-07). It
+      // carries its label; a long one ("Senior Citizens' Home — 25 beneficiaries") does not need to.
+      if (f.kind === "select" && raw.length <= 16) return `${label}: ${reviewValue(f, raw)}`;
       return reviewValue(f, raw);
     });
   return parts.length ? parts.join(" · ") : "Nothing recorded.";
@@ -1139,7 +1267,13 @@ function Field({
         id={field.name}
         hint={help}
         error={error}
+        // Advice that never blocks: AVYAY's beneficiaries below the strength the project type is costed for (W-01).
+        warning={strengthAdvice(field, values)}
         required={field.required}
+        // On the field itself, not only the box inside: the design system withholds the required
+        // mark from a field the applicant cannot change — a computed or carried-forward amount, the
+        // declaration's date (audit W-03).
+        readOnly={readOnly || undefined}
         characterCount={field.maxLength != null ? { value, maxLength: field.maxLength } : undefined}
       >
         {(control) =>

@@ -13,11 +13,16 @@
  *   review    "⚠ Needs review — <type>"           "Needs review · 82%"
  *   invalid   "✗ Document not valid — <type>"     "Not valid · 95%"
  *
+ * Those are live's words, recorded as evidence. On screen the check speaks the glossary's words
+ * (`AUTO_CHECK`): "Verified" is the officer's verdict, never the machine's.
+ *
  * A verdict carries a one-sentence summary, a bullet list of reasons, and the key/value pairs
  * the model extracted from the file (Organisation Name, Pan, Financial Year, Amount Utilised,
  * Member Count, Beneficiary Count, Employee Count, Total Budget, Ifsc, Account Name,
  * Account Number, Rent Amount, Project Address …).
  */
+
+import { AUTO_CHECK } from "./glossary.ts";
 
 export type VerdictState = "pending" | "verified" | "review" | "invalid" | "unavailable";
 
@@ -69,12 +74,16 @@ export interface UploadedDoc {
   checks?: number;
 }
 
+/**
+ * The check's own headline words. Live prints "Document verified" and "Document not valid"; the
+ * glossary keeps "Verified" for the officer's verdict, so the check says what it saw instead.
+ */
 export const VERDICT_LABEL: Record<VerdictState, string> = {
-  pending: "Verifying…",
-  unavailable: "Automatic check unavailable",
-  verified: "Document verified",
-  review: "Needs review",
-  invalid: "Document not valid",
+  pending: AUTO_CHECK.applicant.pending,
+  unavailable: `${AUTO_CHECK.name} unavailable`,
+  verified: AUTO_CHECK.officer.verified,
+  review: AUTO_CHECK.officer.review,
+  invalid: AUTO_CHECK.officer.invalid,
 };
 
 export const VERDICT_GLYPH: Record<VerdictState, string> = {
@@ -85,11 +94,10 @@ export const VERDICT_GLYPH: Record<VerdictState, string> = {
   invalid: "cancel",
 };
 
-/** Pill text, e.g. "Verified · 100%". */
+/** Pill text, e.g. "Looks right · 100%" — never "Verified", which is the officer's word. */
 export function verdictPill(v: DocVerdict): string | null {
   if (v.state === "pending" || v.state === "unavailable" || v.confidence == null) return null;
-  const word = v.state === "verified" ? "Verified" : v.state === "review" ? "Needs review" : "Not valid";
-  return `${word} · ${v.confidence}%`;
+  return `${AUTO_CHECK.officer[v.state]} · ${v.confidence}%`;
 }
 
 /** The headline line, e.g. "✗ Document not valid — Utilisation Certificate in GFR 12-A format". */

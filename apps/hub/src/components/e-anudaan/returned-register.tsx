@@ -10,32 +10,52 @@
  * "reverted to the previous level", with Returned On, Reason and whether the query was answered.
  * Ours relabelled those paths "Rejected" and listed final rejections only, so a file an officer
  * had sent back was on no register (inventory §18, §24). Rejections keep their own page.
+ *
+ * `?response=open` and `?fy=` open it pre-filtered: the dashboard's "Returned by You, Awaiting
+ * Response" figure links here, and counts with the same `returnedBy` rows and the same two tests
+ * (audit O-09). The year is a visible filter, not a hidden one, so the reader can clear it.
  */
 
 import * as React from "react";
 import Link from "next/link";
-import { Badge, FilterSelect, Icon, Search, WorklistScreen, buttonClasses, screenCopy, type WorklistColumn } from "@mosje/design-system";
+import { useSearchParams } from "next/navigation";
+import { Badge, FilterSelect, Icon, WorklistScreen, buttonClasses, screenCopy, type WorklistColumn } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { ROLES, reviewKeyOf } from "@/lib/e-anudaan/roles";
 import { formatDate } from "@/lib/e-anudaan/format";
 import { returnedBy, type ReturnedRow } from "@/lib/e-anudaan/registers";
-import { RefText, useWorklistOptions, splitRowActions } from "./worklist-table";
+import { LabelledSearch, RefText, RowLinkIcon, useWorklistOptions, splitRowActions } from "./worklist-table";
 
 type Answer = "" | "open" | "responded";
 
 export function ReturnedRegister({ title }: { title: string }) {
+  return (
+    <React.Suspense fallback={null}>
+      <Register title={title} />
+    </React.Suspense>
+  );
+}
+
+function Register({ title }: { title: string }) {
   const { state } = useEAnudaan();
+  const params = useSearchParams();
   const role = state.session ? ROLES[state.session] : null;
   const key = role ? reviewKeyOf(role) : null;
   const opts = useWorklistOptions(undefined, undefined, { withPlace: true, withNgoLink: true });
   const [q, setQ] = React.useState("");
-  const [answer, setAnswer] = React.useState<Answer>("");
+  const [answer, setAnswer] = React.useState<Answer>(() => {
+    const r = params.get("response");
+    return r === "open" || r === "responded" ? r : "";
+  });
+  const [fy, setFy] = React.useState(() => params.get("fy") ?? "");
 
   const all = React.useMemo(() => (role ? returnedBy(state, role.id) : []), [state, role]);
+  const years = React.useMemo(() => [...new Set(all.map((r) => r.app.financialYear))].sort().reverse(), [all]);
   const rows = all.filter((r) => {
     const needle = q.trim().toLowerCase();
     if (answer === "open" && r.responded) return false;
     if (answer === "responded" && !r.responded) return false;
+    if (fy && r.app.financialYear !== fy) return false;
     return (
       !needle ||
       r.app.id.toLowerCase().includes(needle) ||
@@ -115,13 +135,14 @@ export function ReturnedRegister({ title }: { title: string }) {
             className={buttonClasses("primary", "text", "sm", "whitespace-nowrap")}
             aria-label={`View project ${r.app.institutionId}`}
           >
-            <Icon name="open_in_new" size={16} aria-hidden /> View
+            View
+            <RowLinkIcon />
           </Link>
         ) : null,
     },
   ];
 
-  const active = (q.trim() ? 1 : 0) + (answer ? 1 : 0);
+  const active = (q.trim() ? 1 : 0) + (answer ? 1 : 0) + (fy ? 1 : 0);
 
   return (
     <WorklistScreen<ReturnedRow>
@@ -136,10 +157,11 @@ export function ReturnedRegister({ title }: { title: string }) {
       onClearFilters={() => {
         setQ("");
         setAnswer("");
+        setFy("");
       }}
       filters={
         <>
-          <Search value={q} onChange={(e) => setQ(e.target.value)} onClear={() => setQ("")} placeholder="Project ID, application or NGO" aria-label="Search returned applications" />
+          <LabelledSearch label="Search" value={q} onChange={setQ} placeholder="Project ID, application or NGO" />
           <FilterSelect
             label="Response"
             value={answer}
@@ -149,6 +171,12 @@ export function ReturnedRegister({ title }: { title: string }) {
               { value: "open", label: "Awaiting Response" },
               { value: "responded", label: "Responded" },
             ]}
+          />
+          <FilterSelect
+            label="Financial Year"
+            value={fy}
+            onChange={setFy}
+            options={[{ value: "", label: "All Years" }, ...[...new Set([...years, ...(fy ? [fy] : [])])].map((y) => ({ value: y, label: `FY ${y}` }))]}
           />
         </>
       }

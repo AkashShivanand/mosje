@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Search, WorklistScreen, screenCopy } from "@mosje/design-system";
+import { FormField, Search, Select, WorklistScreen, screenCopy } from "@mosje/design-system";
 import type { GrantApplication, RoleId } from "@/lib/e-anudaan/types";
 import { useWorklistOptions, worklistColumns, type WorklistVariant, splitRowActions } from "./worklist-table";
 
@@ -40,7 +40,22 @@ export interface ApplicationListProps {
   /** Which of the five column sets this screen shows. */
   variant: WorklistVariant;
   title: string;
-  description: string;
+  /**
+   * The standfirst. Pass a function where the sentence names the year being shown: it is called
+   * with the chosen financial year ("" for every year), so the heading and the filter cannot say
+   * two different things (audit O-07 / B5 hand-over).
+   */
+  description: string | ((financialYear: string) => string);
+  /**
+   * Offer a Financial Year filter over `rows`. The years are the ones the rows carry.
+   *
+   * The Forwarded register applied `?fy=` from the URL and said so in its standfirst, but the
+   * reader had no way to widen or clear it — the only route back to every year was editing the
+   * address. The register now passes ALL its rows and the year from the URL as the starting value.
+   */
+  financialYearFilter?: boolean;
+  /** The year to start on, normally the URL's `?fy=`. Empty means every year. */
+  initialFinancialYear?: string;
   rows: GrantApplication[];
   /** Where a row's Review / View link goes. Omit for a read-only register. */
   reviewBase?: string;
@@ -65,9 +80,9 @@ const LIST_COPY = screenCopy({
   // The heading form of the embedded table's sentence (EMPTY_LIST), so both say the same thing.
   emptyTitle: "No Applications in This List",
   emptyDescription: undefined,
-  filteredTitle: "No Application Matches This Search",
-  filteredDescription: "Clear the search to see the full list.",
-  clearFiltersLabel: "Clear Search",
+  filteredTitle: "No Application Matches These Filters",
+  filteredDescription: "Clear the filters to see the full list.",
+  clearFiltersLabel: "Clear Filters",
 });
 
 /**
@@ -90,9 +105,17 @@ export function ApplicationList({
   exportable = false,
   forwardedBy,
   paymentBase,
+  financialYearFilter = false,
+  initialFinancialYear = "",
 }: ApplicationListProps): React.JSX.Element {
   const [q, setQ] = React.useState("");
+  const [fy, setFy] = React.useState(initialFinancialYear);
   const [selected, setSelected] = React.useState<string[]>([]);
+  // Newest year first, from the register itself: a year with no file in it is not offered.
+  const years = React.useMemo(
+    () => Array.from(new Set(rows.map((r) => r.financialYear))).sort((a, b) => b.localeCompare(a)),
+    [rows],
+  );
 
   // Every register names the State and links the organisation to its NGO 360 (inventory §17–19, §33).
   const opts = useWorklistOptions(reviewBase, forwardedBy, { paymentBase, withPlace: true, withNgoLink: true });
@@ -100,20 +123,22 @@ export function ApplicationList({
 
   const filtered = React.useMemo(() => {
     const needle = q.trim().toLowerCase();
-    if (!needle) return rows;
-    return rows.filter(
-      (r) =>
+    return rows.filter((r) => {
+      if (fy && r.financialYear !== fy) return false;
+      if (!needle) return true;
+      return (
         r.id.toLowerCase().includes(needle) ||
         r.institutionId.toLowerCase().includes(needle) ||
-        (opts.ngoName?.(r.ngoId) ?? "").toLowerCase().includes(needle),
-    );
-  }, [rows, q, opts]);
+        (opts.ngoName?.(r.ngoId) ?? "").toLowerCase().includes(needle)
+      );
+    });
+  }, [rows, q, fy, opts]);
 
   /* The reader's search IS the filter, so it decides whether an empty result
      reads as "nothing matches what you typed" or as "the register holds
      nothing". Those are different sentences and the template picks between them
      from this number. */
-  const activeFilterCount = q.trim() ? 1 : 0;
+  const activeFilterCount = (q.trim() ? 1 : 0) + (fy ? 1 : 0);
 
   const handleBulk = (id: string): void => {
     if (id !== "export") return;
@@ -130,7 +155,8 @@ export function ApplicationList({
   return (
     <WorklistScreen<GrantApplication>
       title={title}
-      meta={description}
+      // One sentence, driven by the same year the filter holds.
+      meta={typeof description === "function" ? description(fy) : description}
       {...splitRowActions(columns)}
       rows={filtered}
       registerTotal={rows.length}
@@ -138,14 +164,33 @@ export function ApplicationList({
       noun="application"
       pluralNoun="applications"
       activeFilterCount={activeFilterCount}
-      onClearFilters={() => setQ("")}
+      onClearFilters={() => {
+        setQ("");
+        setFy("");
+      }}
       filters={
-        <Search
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          placeholder="Search by Project ID, application or NGO"
-          aria-label="Search applications"
-        />
+        <>
+          <Search
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Search by Project ID, application or NGO"
+            aria-label="Search applications"
+          />
+          {financialYearFilter && years.length > 1 && (
+            <FormField label="Financial Year" id="register-fy">
+              {(control) => (
+                <Select {...control} value={fy} onChange={(e) => setFy(e.target.value)}>
+                  <option value="">All years</option>
+                  {years.map((y) => (
+                    <option key={y} value={y}>
+                      {y}
+                    </option>
+                  ))}
+                </Select>
+              )}
+            </FormField>
+          )}
+        </>
       }
       selectedIds={exportable ? selected : undefined}
       onSelectionChange={exportable ? setSelected : undefined}

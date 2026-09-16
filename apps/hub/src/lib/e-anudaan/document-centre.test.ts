@@ -71,7 +71,7 @@ test("an attempt in flight shows over a stored file, and never costs it", () => 
 
 test("the applicant's words are consequences, never a percentage", () => {
   for (const meta of Object.values(DOC_STATE_META)) assert.doesNotMatch(meta.words, /%/);
-  assert.equal(DOC_STATE_META.review.words, "Please confirm");
+  assert.equal(DOC_STATE_META.review.words, "Check the details");
   assert.equal(DOC_STATE_META.invalid.words, "Doesn't match");
   assert.equal(DOC_STATE_META.unavailable.words, "Saved — an officer will check it");
 });
@@ -93,9 +93,9 @@ test("checking holds Submit but not Continue; not valid, failed and missing hold
   const s = summariseDocuments(CHECKLIST, docs, { 4: { fileName: "ar.pdf", sizeKb: 10, phase: "failed" } });
   assert.deepEqual(s.continueBlockers.map((b) => b.n), [4, 6]);
   assert.deepEqual(s.submitBlockers.map((b) => b.n), [1, 4, 6]);
-  assert.equal(s.readyRequired, 3); // verified, review, unavailable
+  assert.equal(s.readyRequired, 2); // verified, unavailable — never a file the check was unsure about
   assert.equal(s.required, 6);
-  assert.deepEqual(s.counts, { attention: 2, checking: 1, ready: 3, optional: 1 });
+  assert.deepEqual(s.counts, { attention: 3, checking: 1, ready: 2, optional: 1 });
 });
 
 test("progress counts ready documents, not uploads — a rejected upload is not progress", () => {

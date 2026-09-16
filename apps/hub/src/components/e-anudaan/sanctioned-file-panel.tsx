@@ -9,15 +9,19 @@
  *
  * The page of a sanctioned file had no link but Back, while the Utilisation Certificate and the
  * Online Inspection Meeting screens existed and nothing reached them (parity inventory §3, §12, §13).
+ *
+ * Design-director audit, 16 Sep 2026 (N-09): the rows' actions were 36×20 text links reading
+ * "Open", which did not say what they did. They are DS Buttons named for the task. Filing a
+ * certificate that is DUE is the page's primary action and is filled; one that is not due yet, and
+ * viewing a filed one, are outlined.
  */
 
 import { useRouter } from "next/navigation";
-import { Badge, Card, CardBody, Icon, Link, ListGroup, ListRow, SectionTitle } from "@mosje/design-system";
+import { Badge, Button, Card, CardBody, Icon, ListGroup, ListRow, SectionTitle } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { formatDate, formatDateTime } from "@/lib/e-anudaan/format";
 import { ucDue } from "@/lib/e-anudaan/registers";
 import type { GrantApplication } from "@/lib/e-anudaan/types";
-import { routeOnClick } from "./ngo-shell";
 
 const BASE = "/portals/e-anudaan/ngo/my-applications";
 
@@ -55,9 +59,14 @@ export function SanctionedFilePanel({ app }: { app: GrantApplication }) {
                 ) : due ? (
                   <Badge status="warning" size="sm">Due</Badge>
                 ) : null}
-                <Link variant="standalone" size="sm" href={ucHref} onClick={routeOnClick(router, ucHref)} className="whitespace-nowrap">
-                  {app.utilisation ? "View" : "Open"}
-                </Link>
+                <Button
+                  size="sm"
+                  nowrap
+                  appearance={!app.utilisation && due ? "filled" : "outlined"}
+                  onClick={() => router.push(ucHref)}
+                >
+                  {app.utilisation ? "View Certificate" : "File Utilisation Certificate"}
+                </Button>
               </span>
             }
           />
@@ -68,9 +77,9 @@ export function SanctionedFilePanel({ app }: { app: GrantApplication }) {
               description={inspection.scheduledFor ? `Scheduled for ${formatDateTime(inspection.scheduledFor)}.` : "Not yet scheduled by the inspecting officer."}
               trailing={
                 inspection.visitType === "Online" ? (
-                  <Link variant="standalone" size="sm" href={meetingHref} onClick={routeOnClick(router, meetingHref)} className="whitespace-nowrap">
-                    Open
-                  </Link>
+                  <Button appearance="outlined" size="sm" nowrap onClick={() => router.push(meetingHref)}>
+                    View Meeting Details
+                  </Button>
                 ) : undefined
               }
             />

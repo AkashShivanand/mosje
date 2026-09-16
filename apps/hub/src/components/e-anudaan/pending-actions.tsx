@@ -13,6 +13,12 @@
  *
  * Rows are ordered by corrections still outstanding, then by how long the applicant has been
  * waiting, so the three the dashboard shows are the three that matter (`openDeficiencies`).
+ *
+ * Design-director audit, 16 Sep 2026: the row action said "Resolve", a verb no other screen uses
+ * for this (glossary: the applicant CORRECTS an application), and it was a filled button on every
+ * row — three filled buttons above the dashboard's own "Apply for Grant". It is an outlined
+ * "Correct Application" now, named for the page it opens, and the references are set in Noto Sans
+ * with tabular figures rather than monospace (N-20).
  */
 
 import * as React from "react";
@@ -73,7 +79,7 @@ export function PendingActions({
 
         {items.length === 0 ? (
           <EmptyState
-            title="No corrections are waiting on you."
+            title="No Corrections Are Waiting on You"
             description="The Ministry has not asked for any correction on your applications."
           />
         ) : (
@@ -120,7 +126,7 @@ export function PendingActions({
                         <span className="block">{deficiency.detail}</span>
                       )}
                       <span className="mt-0.5 block text-ink-muted">
-                        <span className="font-mono [overflow-wrap:anywhere]">
+                        <span className="tabular-nums [overflow-wrap:anywhere]">
                           Project {app.institutionId} · {app.id}
                         </span>
                         {" · "}Requested {formatDate(requestedAt(app, deficiency))} · {days === 0 ? "today" : `${days} day${days === 1 ? "" : "s"} ago`}
@@ -129,12 +135,13 @@ export function PendingActions({
                   }
                   trailing={
                     <Button
+                      appearance="outlined"
                       size="sm"
                       nowrap
                       onClick={() => router.push(resolveHref(app.id))}
-                      aria-label={`Resolve ${left} correction${left === 1 ? "" : "s"} on ${project}, application ${app.id}`}
+                      aria-label={`Correct application ${app.id}, ${project}: ${left} item${left === 1 ? "" : "s"} to correct`}
                     >
-                      Resolve
+                      Correct Application
                     </Button>
                   }
                 />

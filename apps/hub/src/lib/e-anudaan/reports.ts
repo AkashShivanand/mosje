@@ -9,14 +9,13 @@
  * the CSV is written from the same rows, so the file and the screen cannot differ.
  */
 
-import { ROLES } from "./roles.ts";
 import { buildReturnRows } from "./roster.ts";
 import { projectRunningSince } from "./applicant.ts";
 import { schemeLabel } from "./selectors.ts";
-import { auditActionLabel, holderLabel, statusLabel } from "./workflow.ts";
+import { holderLabel, statusLabel } from "./workflow.ts";
 import { INSPECTION_STATUS_LABEL } from "./officer.ts";
-import { explorerGroup, officerApplications, placeOf } from "./registers.ts";
-import { formatDate, formatDateTime, formatMonthYear } from "./format.ts";
+import { auditTrail, explorerGroup, officerApplications, placeOf, type AuditTrailRow } from "./registers.ts";
+import { formatDate, formatDateTime, formatMoney, formatMonthYear } from "./format.ts";
 import type { EAnudaanState, GrantApplication } from "./types.ts";
 
 export type CellKind = "text" | "number" | "money" | "date" | "datetime" | "reference";
@@ -25,6 +24,24 @@ export interface ReportColumn {
   key: string;
   header: string;
   kind?: CellKind;
+  /**
+   * Adds up across the rows into the report's totals. Only a count or an amount does: a longest
+   * wait, a percentage or a day count summed over rows is a number that means nothing.
+   */
+  sum?: boolean;
+}
+
+/** One bar in a report's chart: a label and a figure, drawn from the same rows as the table. */
+export interface ReportChartItem {
+  label: string;
+  value: number;
+}
+
+export interface ReportChart {
+  title: string;
+  /** Money bars print in the summary form; counts print as counts. */
+  kind: "number" | "money";
+  items: ReportChartItem[];
 }
 
 export type ReportCell = string | number | null;
@@ -44,8 +61,13 @@ export interface ReportDef {
   title: string;
   /** One sentence: what each row is. */
   description: string;
+  /** What one row is, for the count line: "12 organisations", not "12 in the register". */
+  noun: string;
+  pluralNoun: string;
   columns: ReportColumn[];
   rows: (state: EAnudaanState, f: ReportFilters, now: Date) => ReportRow[];
+  /** One chart over the same rows the table lists (RP-01: a senior officer cannot read a trend from a table). */
+  chart: (rows: ReportRow[]) => ReportChart;
 }
 
 const DAY = 86_400_000;
@@ -71,21 +93,56 @@ function files(state: EAnudaanState, f: ReportFilters): GrantApplication[] {
 
 const ngoName = (state: EAnudaanState, id: string) => state.ngos.find((n) => n.id === id)?.name ?? "";
 
+/** Sum `value` per `label` over the rows, largest first. Order within ties is by label. */
+function groupBy(rows: ReportRow[], label: (r: ReportRow) => string, value: (r: ReportRow) => number = () => 1): ReportChartItem[] {
+  const map = new Map<string, number>();
+  for (const r of rows) {
+    const k = label(r) || "Not Recorded";
+    map.set(k, (map.get(k) ?? 0) + value(r));
+  }
+  return [...map].map(([l, v]) => ({ label: l, value: v })).sort((a, b) => b.value - a.value || a.label.localeCompare(b.label));
+}
+
+const num = (v: ReportCell | undefined) => (typeof v === "number" ? v : Number(v ?? 0) || 0);
+
+/** The Audit Trail's columns — shared by the Audit Log report and the Audit Trail's own download. */
+const AUDIT_COLUMNS: ReportColumn[] = [
+  { key: "at", header: "Timestamp", kind: "datetime" },
+  { key: "application", header: "Application", kind: "reference" },
+  { key: "project", header: "Project ID", kind: "reference" },
+  { key: "ngo", header: "NGO" },
+  { key: "user", header: "User" },
+  { key: "role", header: "Role" },
+  { key: "action", header: "Action" },
+  { key: "remarks", header: "Remarks" },
+];
+
+function auditReportRow(r: AuditTrailRow): ReportRow {
+  return { id: r.id, at: r.at, application: r.application, project: r.project, ngo: r.ngo, user: r.user, role: r.role, action: r.action, remarks: r.remarks };
+}
+
 export const REPORTS: readonly ReportDef[] = [
   {
     id: "ngo-applications",
     title: "NGO-wise Applications",
     description: "Each organisation's applications, by where they stand, with the amounts sought and sanctioned.",
+    noun: "organisation",
+    pluralNoun: "organisations",
     columns: [
       { key: "ngo", header: "NGO" },
       { key: "state", header: "State" },
-      { key: "applications", header: "Applications", kind: "number" },
-      { key: "progress", header: "In Progress", kind: "number" },
-      { key: "sanctioned", header: "Sanctioned", kind: "number" },
-      { key: "rejected", header: "Rejected", kind: "number" },
-      { key: "sought", header: "Amount Sought", kind: "money" },
-      { key: "sanctionedAmount", header: "Amount Sanctioned", kind: "money" },
+      { key: "applications", header: "Applications", kind: "number", sum: true },
+      { key: "progress", header: "In Progress", kind: "number", sum: true },
+      { key: "sanctioned", header: "Sanctioned", kind: "number", sum: true },
+      { key: "rejected", header: "Rejected", kind: "number", sum: true },
+      { key: "sought", header: "Amount Sought", kind: "money", sum: true },
+      { key: "sanctionedAmount", header: "Amount Sanctioned", kind: "money", sum: true },
     ],
+    chart: (rows) => ({
+      title: "Amount Sanctioned by NGO",
+      kind: "money",
+      items: groupBy(rows, (r) => String(r.ngo), (r) => num(r.sanctionedAmount)).filter((i) => i.value > 0),
+    }),
     rows: (state, f) => {
       const list = files(state, f);
       return state.ngos
@@ -111,14 +168,17 @@ export const REPORTS: readonly ReportDef[] = [
     id: "beneficiaries",
     title: "Beneficiary Summary",
     description: "Beneficiaries under sanctioned grants, by scheme and State, as stated in the applications.",
+    noun: "row",
+    pluralNoun: "rows",
     columns: [
       { key: "scheme", header: "Scheme" },
       { key: "state", header: "State" },
-      { key: "grants", header: "Sanctioned Grants", kind: "number" },
-      { key: "sc", header: "SC Beneficiaries", kind: "number" },
-      { key: "other", header: "Other Beneficiaries", kind: "number" },
-      { key: "total", header: "Total Beneficiaries", kind: "number" },
+      { key: "grants", header: "Sanctioned Grants", kind: "number", sum: true },
+      { key: "sc", header: "SC Beneficiaries", kind: "number", sum: true },
+      { key: "other", header: "Other Beneficiaries", kind: "number", sum: true },
+      { key: "total", header: "Total Beneficiaries", kind: "number", sum: true },
     ],
+    chart: (rows) => ({ title: "Beneficiaries by State", kind: "number", items: groupBy(rows, (r) => String(r.state), (r) => num(r.total)) }),
     rows: (state, f) => {
       const map = new Map<string, ReportRow & { grants: number; sc: number; other: number; total: number }>();
       for (const a of files(state, f).filter((x) => x.sanction)) {
@@ -138,12 +198,15 @@ export const REPORTS: readonly ReportDef[] = [
     id: "pending-by-role",
     title: "Pending Cases by Role",
     description: "Files waiting with each seat in the approval chain, and how long they have waited.",
+    noun: "seat",
+    pluralNoun: "seats",
     columns: [
       { key: "seat", header: "With" },
-      { key: "pending", header: "Pending", kind: "number" },
-      { key: "overdue", header: "Over 7 Days", kind: "number" },
+      { key: "pending", header: "Pending", kind: "number", sum: true },
+      { key: "overdue", header: "Over 7 Days", kind: "number", sum: true },
       { key: "oldest", header: "Longest Wait (Days)", kind: "number" },
     ],
+    chart: (rows) => ({ title: "Pending Files by Seat", kind: "number", items: rows.map((r) => ({ label: String(r.seat), value: num(r.pending) })) }),
     rows: (state, f) => {
       const map = new Map<string, { id: string; seat: string; pending: number; overdue: number; oldest: number; order: number }>();
       const order = (a: GrantApplication) =>
@@ -176,6 +239,9 @@ export const REPORTS: readonly ReportDef[] = [
       { key: "date", header: "Visit Date", kind: "date" },
       { key: "recommendation", header: "Recommendation" },
     ],
+    noun: "inspection",
+    pluralNoun: "inspections",
+    chart: (rows) => ({ title: "Inspections by Status", kind: "number", items: groupBy(rows, (r) => String(r.status)) }),
     rows: (state, f) => {
       const allowed = new Set(files(state, f).map((a) => a.id));
       return state.inspections
@@ -202,10 +268,17 @@ export const REPORTS: readonly ReportDef[] = [
       { key: "project", header: "Project ID", kind: "reference" },
       { key: "ngo", header: "NGO" },
       { key: "scheme", header: "Scheme" },
-      { key: "recurring", header: "Recurring", kind: "money" },
-      { key: "nonRecurring", header: "Non-Recurring", kind: "money" },
-      { key: "total", header: "Total", kind: "money" },
+      { key: "recurring", header: "Recurring", kind: "money", sum: true },
+      { key: "nonRecurring", header: "Non-Recurring", kind: "money", sum: true },
+      { key: "total", header: "Total", kind: "money", sum: true },
     ],
+    noun: "sanction order",
+    pluralNoun: "sanction orders",
+    chart: (rows) => ({
+      title: "Value Sanctioned by Financial Year",
+      kind: "money",
+      items: groupBy(rows, (r) => `FY ${r.fy}`, (r) => num(r.total)).sort((a, b) => b.label.localeCompare(a.label)),
+    }),
     rows: (state, f) =>
       files(state, f)
         .filter((a) => a.sanction)
@@ -217,6 +290,8 @@ export const REPORTS: readonly ReportDef[] = [
           project: a.institutionId,
           ngo: ngoName(state, a.ngoId),
           scheme: `${schemeLabel(a.schemeCode)} (FY ${a.financialYear})`,
+          // Not a column: the chart groups by it.
+          fy: a.financialYear,
           recurring: a.sanction!.recurring,
           nonRecurring: a.sanction!.nonRecurring,
           total: a.sanction!.total,
@@ -230,11 +305,21 @@ export const REPORTS: readonly ReportDef[] = [
       { key: "order", header: "Order No.", kind: "reference" },
       { key: "project", header: "Project ID", kind: "reference" },
       { key: "ngo", header: "NGO" },
-      { key: "sanctioned", header: "Sanctioned", kind: "money" },
-      { key: "released", header: "Released", kind: "money" },
-      { key: "balance", header: "Balance", kind: "money" },
+      { key: "sanctioned", header: "Sanctioned", kind: "money", sum: true },
+      { key: "released", header: "Released", kind: "money", sum: true },
+      { key: "balance", header: "Balance", kind: "money", sum: true },
       { key: "status", header: "Status" },
     ],
+    noun: "grant",
+    pluralNoun: "grants",
+    chart: (rows) => ({
+      title: "Released Against Sanctioned",
+      kind: "money",
+      items: [
+        { label: "Released", value: rows.reduce((s, r) => s + num(r.released), 0) },
+        { label: "Awaiting Release", value: rows.reduce((s, r) => s + num(r.balance), 0) },
+      ],
+    }),
     rows: (state, f) =>
       files(state, f)
         .filter((a) => a.sanction)
@@ -264,6 +349,15 @@ export const REPORTS: readonly ReportDef[] = [
       { key: "days", header: "Days", kind: "number" },
       { key: "stage", header: "Current Stage" },
     ],
+    noun: "file",
+    pluralNoun: "files",
+    chart: (rows) => {
+      const bands = ["Up to 30 Days", "31 to 60 Days", "61 to 90 Days", "Over 90 Days"];
+      const band = (d: number) => (d <= 30 ? bands[0]! : d <= 60 ? bands[1]! : d <= 90 ? bands[2]! : bands[3]!);
+      const counts = groupBy(rows, (r) => band(num(r.days)));
+      // In band order, not by size: the bands are a scale, and a scale read out of order is a puzzle.
+      return { title: "Files by Processing Time", kind: "number", items: bands.map((b) => ({ label: b, value: counts.find((c) => c.label === b)?.value ?? 0 })) };
+    },
     rows: (state, f, now) =>
       files(state, f)
         .filter((a) => a.submittedAt)
@@ -286,28 +380,16 @@ export const REPORTS: readonly ReportDef[] = [
     id: "audit-log",
     title: "Audit Log",
     description: "Every recorded action on a file, newest first.",
-    columns: [
-      { key: "at", header: "Timestamp", kind: "datetime" },
-      { key: "application", header: "Application", kind: "reference" },
-      { key: "user", header: "User" },
-      { key: "role", header: "Role" },
-      { key: "action", header: "Action" },
-      { key: "remarks", header: "Remarks" },
-    ],
-    rows: (state, f) =>
-      files(state, f)
-        .flatMap((a) =>
-          a.audit.map((e) => ({
-            id: e.id,
-            at: e.at,
-            application: a.id,
-            user: e.byName,
-            role: ROLES[e.byRole]?.label ?? e.byRole,
-            action: auditActionLabel(e.action),
-            remarks: e.remarks ?? "",
-          })),
-        )
-        .sort((a, b) => String(b.at).localeCompare(String(a.at))),
+    noun: "entry",
+    pluralNoun: "entries",
+    columns: AUDIT_COLUMNS,
+    rows: (state, f) => {
+      const allowed = new Set(files(state, f).map((a) => a.id));
+      return auditTrail(state)
+        .filter((r) => allowed.has(r.application))
+        .map(auditReportRow);
+    },
+    chart: (rows) => ({ title: "Actions by Type", kind: "number", items: groupBy(rows, (r) => String(r.action)) }),
   },
   {
     id: "attendance-returns",
@@ -322,6 +404,9 @@ export const REPORTS: readonly ReportDef[] = [
       { key: "percent", header: "Attendance %", kind: "number" },
       { key: "status", header: "Status" },
     ],
+    noun: "return",
+    pluralNoun: "returns",
+    chart: (rows) => ({ title: "Returns by Status", kind: "number", items: groupBy(rows, (r) => String(r.status)) }),
     rows: (state, f, now) => {
       const ngoOk = ngoMatcher(state, f.ngo);
       const rows: ReportRow[] = [];
@@ -362,7 +447,9 @@ export function reportById(id: string): ReportDef | undefined {
 /** A cell as a person reads it. */
 export function formatCell(value: ReportCell, kind: CellKind = "text"): string {
   if (value === null || value === "") return "—";
-  if (kind === "money") return `₹${Math.round(Number(value)).toLocaleString("en-IN")}`;
+  // A report is a summary: ₹22.28 Cr here must read as it does on NGO 360 and the Sanction Desk
+  // (audit X-03, RP-01). The CSV keeps the exact rupees, as plain numbers a spreadsheet can add.
+  if (kind === "money") return formatMoney(Number(value), "summary");
   if (kind === "number") return Number(value).toLocaleString("en-IN");
   if (kind === "date") return formatDate(String(value));
   if (kind === "datetime") return formatDateTime(String(value));
@@ -387,4 +474,24 @@ export function reportCsv(report: ReportDef, rows: ReportRow[]): string {
       .join(","),
   );
   return [head, ...body].join("\n");
+}
+
+export interface ReportTotal {
+  key: string;
+  header: string;
+  kind: "number" | "money";
+  value: number;
+}
+
+/** The report's totals — one per summable column, over exactly the rows the table lists. */
+export function reportTotals(report: ReportDef, rows: readonly ReportRow[]): ReportTotal[] {
+  return report.columns
+    .filter((c) => c.sum && (c.kind === "number" || c.kind === "money"))
+    .map((c) => ({ key: c.key, header: c.header, kind: c.kind as "number" | "money", value: rows.reduce((s, r) => s + num(r[c.key]), 0) }));
+}
+
+/** The Audit Trail as CSV, with the Audit Log report's columns — the same file either screen downloads. */
+export function auditTrailCsv(rows: readonly AuditTrailRow[]): string {
+  const def = reportById("audit-log")!;
+  return reportCsv(def, rows.map(auditReportRow));
 }

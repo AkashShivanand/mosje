@@ -235,7 +235,7 @@ export function ReviewDocuments({
       )}
       <DocumentChecklist ready={summary.readyRequired} required={summary.required} politeMessage={polite} visibleCount={documents.length}>
         {groupDocuments(schemeCode, documents).map((g) => (
-          <DocumentChecklistGroup key={g.id} title={g.title}>
+          <DocumentChecklistGroup key={g.id} title={g.title} hideRequiredMarks={g.id === "required"}>
             {g.docs.map((d) => {
               const up = checked[d.n];
               const state = summary.states[d.n]!;

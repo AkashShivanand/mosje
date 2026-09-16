@@ -24,7 +24,8 @@ import { formatDate, formatGrant } from "@/lib/e-anudaan/selectors";
 import { attendanceOf, officerApplications, type AttendanceSummary } from "@/lib/e-anudaan/registers";
 import type { NgoProfile } from "@/lib/e-anudaan/types";
 
-type Row = NgoProfile & { attendance: AttendanceSummary; filed: number; sanctioned: number };
+/** `granted` is the sum of the organisation's sanction orders — the figure NGO 360 and Reports print. */
+type Row = NgoProfile & { attendance: AttendanceSummary; filed: number; sanctioned: number; granted: number };
 
 export default function NgoDirectoryPage() {
   const { state } = useEAnudaan();
@@ -39,6 +40,7 @@ export default function NgoDirectoryPage() {
       attendance: attendanceOf(state, n, now),
       filed: files.filter((a) => a.ngoId === n.id).length,
       sanctioned: files.filter((a) => a.ngoId === n.id && a.sanction).length,
+      granted: files.filter((a) => a.ngoId === n.id).reduce((sum, a) => sum + (a.sanction?.total ?? 0), 0),
     }));
   }, [state]);
   const states = [...new Set(all.map((n) => n.state))].sort();
@@ -66,7 +68,7 @@ export default function NgoDirectoryPage() {
     { key: "location", header: "Location", priority: 2, sortable: true, sortValue: (n) => `${n.state} ${n.district}`, exportValue: (n) => `${n.district}, ${n.state}`, render: (n) => `${n.district}, ${n.state}` },
     { key: "filed", header: "Applications", priority: 2, sortable: true, sortValue: (n) => n.filed, exportValue: (n) => String(n.filed), render: (n) => String(n.filed) },
     { key: "sanctioned", header: "Sanctioned", priority: 2, sortable: true, sortValue: (n) => n.sanctioned, exportValue: (n) => String(n.sanctioned), render: (n) => String(n.sanctioned) },
-    { key: "totalGrant", header: "Total Grant", priority: 3, sortable: true, sortValue: (n) => n.totalGrant, exportValue: (n) => formatGrant(n.totalGrant), render: (n) => <span className="whitespace-nowrap">{formatGrant(n.totalGrant)}</span> },
+    { key: "granted", header: "Total Grant Sanctioned", priority: 3, sortable: true, sortValue: (n) => n.granted, exportValue: (n) => formatGrant(n.granted), render: (n) => <span className="whitespace-nowrap">{formatGrant(n.granted)}</span> },
     {
       key: "attendance",
       header: "Attendance",

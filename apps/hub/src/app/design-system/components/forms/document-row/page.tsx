@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { CodeBlock, ComponentDocPage, MatrixTable, type A11yItem } from "@/components/design-system/docs-kit";
 
-import { DocumentRowStates } from "../document-checklist/document-centre-specimens";
+import { DocumentOfficerReviewSpecimen, DocumentRowStates } from "../document-checklist/document-centre-specimens";
 
 export const metadata: Metadata = {
   title: "Document Row — Design System",
@@ -73,6 +73,7 @@ export default function DocumentRowPage(): React.JSX.Element {
         { label: "Document History Sheet", href: "/design-system/components/forms/document-history-sheet", reason: "Upload History from the menu" },
       ]}
       design={
+        <>
         <section className="cdp__section" aria-labelledby="cdp-states">
           <h2 id="cdp-states" className="cdp__h2">
             Ten States
@@ -97,7 +98,35 @@ export default function DocumentRowPage(): React.JSX.Element {
             Columns are fractions of the row, not auto, so every row of a list puts its file, status and action in the same place. The row lays
             itself out by its own width (a container query), so the same row works full-width on an upload step and in a narrow review column.
           </p>
+          <p>
+            A file name is cut in its stem and never in its extension, at every width, so two scans stay distinguishable on a phone and a name
+            never breaks as &ldquo;.pd&rdquo; over &ldquo;f&rdquo;.
+          </p>
         </section>
+        <section className="cdp__section" aria-labelledby="cdp-compact">
+          <h2 id="cdp-compact" className="cdp__h2">
+            Compact — The Reviewed-Document Row
+          </h2>
+          <p>
+            <code>density=&quot;compact&quot;</code> is the officer&rsquo;s row. From a row width of 520px it is two lines — the
+            title, the verdict passed as <code>aside</code> and View, with the file and the automatic check as small print beneath —
+            and from 960px one line. The title and file are each cut to one line, and on a collapsible row the hint waits behind
+            Details. Below 520px it stacks like the default row. The review column beside an officer&rsquo;s decision panel is
+            about 650px wide, which is why the two-line form starts at 520. A twenty-document review at the default density ran
+            about 3,700px.
+          </p>
+          <DocumentOfficerReviewSpecimen />
+          <MatrixTable
+            caption="Props that shorten a long list"
+            columns={["Prop", "Effect", "Use on"]}
+            rows={[
+              ["density=\"compact\"", "Two lines from 520px, one from 960px; verdict in the line", "An officer's review list"],
+              ["collapsible + summary", "Folds a settled row to its summary and status", "A document an earlier grade verified"],
+              ["clampReason", "Cuts the reason to one line from 640px; the full sentence stays in the DOM and on hover", "A list where many rows carry one reason — put the full reason in findings"],
+            ]}
+          />
+        </section>
+        </>
       }
       code={
         <section className="cdp__section" aria-labelledby="cdp-example">

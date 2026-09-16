@@ -13,9 +13,11 @@ import { placeOfProjectId } from "./geography.ts";
 import { queriesFor } from "./selectors.ts";
 import { ROLES } from "./roles.ts";
 import { holderIsRole } from "./types.ts";
-import { seatName } from "./workflow.ts";
+import { auditActionLabel, seatName } from "./workflow.ts";
+import { DIVISION_NAME, PROGRAMME_DIRECTOR } from "./glossary.ts";
 import type {
   AppStatus,
+  AuditAction,
   AuditEntry,
   EAnudaanState,
   GrantApplication,
@@ -53,14 +55,24 @@ export function placeOf(state: EAnudaanState, app: Pick<GrantApplication, "insti
 
 /* ── All Applications ─────────────────────────────────────────────────────── */
 
-export type ExplorerStatus = "mine" | "progress" | "sanctioned" | "returned" | "rejected" | "all";
+export type ExplorerStatus = "mine" | "progress" | "sanctioned" | "returned" | "deficiency" | "corrected" | "rejected" | "all";
 
-/** The live explorer's Status filter, in its order. "Needs My Action" is the default. */
+/**
+ * The live explorer's Status filter, in its order. "Needs My Action" is the default.
+ *
+ * `deficiency` and `corrected` are the two register-wide rows of the officer dashboard's
+ * "Deficiencies and Returns" card. Each of those figures opens All Applications on this filter, so
+ * the figure and the list it opens are one expression (audit O-03, 16 Sep 2026). Neither is one of
+ * the four tiles' groups: a deficiency raised is inside "Returned or Queried", and a corrected
+ * file can be at any stage.
+ */
 export const EXPLORER_STATUS: { value: ExplorerStatus; label: string }[] = [
   { value: "mine", label: "Needs My Action" },
   { value: "progress", label: "In Progress" },
   { value: "sanctioned", label: "Sanctioned" },
   { value: "returned", label: "Returned or Queried" },
+  { value: "deficiency", label: "Deficiency Raised" },
+  { value: "corrected", label: "Deficiency Resolved" },
   { value: "rejected", label: "Rejected" },
   { value: "all", label: "All Statuses" },
 ];
@@ -78,6 +90,9 @@ export function explorerGroup(app: GrantApplication): "progress" | "sanctioned" 
 export function matchesExplorerStatus(app: GrantApplication, status: ExplorerStatus, roleId: RoleId | null): boolean {
   if (status === "all") return true;
   if (status === "mine") return !!roleId && holderIsRole(app.holder, roleId);
+  // The dashboard's "Deficiencies Raised" and "Deficiencies Resolved" read these same two tests.
+  if (status === "deficiency") return app.status === "DeficiencyRaised";
+  if (status === "corrected") return app.deficiencies.some((d) => d.respondedAt);
   return explorerGroup(app) === status;
 }
 
@@ -416,6 +431,19 @@ function previousFinancialYear(now: Date): string {
  * financial year closed within the last twelve months, not yet certified. GFR 12-A asks for the
  * certificate within twelve months of the close of the year the grant was released for.
  */
+/**
+ * When that certificate is due: **31 March of the year after the one the grant's financial year
+ * closed in** — GFR 12-A's twelve months from the close of the year the grant was released for,
+ * the same rule `ucDue` selects on. FY 2025-26 closes 31 March 2026, so its certificate is due
+ * 31 March 2027.
+ *
+ * A calendar date, not an instant: it is that date in every time zone.
+ */
+export function ucDueBy(app: Pick<GrantApplication, "financialYear">): string {
+  const start = Number(app.financialYear.slice(0, 4));
+  return Number.isFinite(start) ? `${start + 2}-03-31` : "";
+}
+
 export function ucDue(state: EAnudaanState, ngoId: string, now: Date = new Date()): GrantApplication[] {
   const fy = previousFinancialYear(now);
   const latest = new Map<string, GrantApplication>();
@@ -425,4 +453,139 @@ export function ucDue(state: EAnudaanState, ngoId: string, now: Date = new Date(
     if (!prev || prev.sanction!.sanctionedAt < a.sanction.sanctionedAt) latest.set(a.institutionId, a);
   }
   return [...latest.values()].filter((a) => a.financialYear === fy && !a.utilisation).sort((a, b) => a.id.localeCompare(b.id));
+}
+
+/* ── Audit Trail ──────────────────────────────────────────────────────────── */
+
+/**
+ * One recorded action on one file, as the Audit Trail lists it.
+ *
+ * Design-director audit A-01 (16 Sep 2026): 1,280 rows with no search, filter, date range or
+ * export, so an auditor could not find one file's trail — the only reason the page exists. The
+ * rows, the filters and the CSV all read these functions, so the file and the screen agree.
+ */
+export interface AuditTrailRow {
+  id: string;
+  /** ISO instant. */
+  at: string;
+  /** The date the action was taken, in India Standard Time (`yyyy-mm-dd`) — what a date range compares. */
+  day: string;
+  application: string;
+  project: string;
+  ngoId: string;
+  ngo: string;
+  roleId: RoleId;
+  role: string;
+  /** The office the seat belongs to — a division, the Programme Director, the PMU or the NGO. */
+  office: string;
+  user: string;
+  actionKey: AuditAction;
+  action: string;
+  remarks: string;
+}
+
+export interface AuditTrailFilters {
+  /** Free text: application number, project ID, NGO name, officer's name or remarks. */
+  q: string;
+  /** An office from `auditOffices`, or "" for every office. */
+  office: string;
+  /** A role id, or "" for every seat. */
+  role: string;
+  /** An action key, or "" for every action. */
+  action: string;
+  /** Inclusive date range, `yyyy-mm-dd`, either end may be "". */
+  from: string;
+  to: string;
+}
+
+export const NO_AUDIT_FILTERS: AuditTrailFilters = { q: "", office: "", role: "", action: "", from: "", to: "" };
+
+const IST_OFFSET_MS = 330 * 60_000;
+
+/** The calendar date of an instant in India Standard Time — the date `formatDate` prints for it. */
+export function istDay(at: string): string {
+  const t = Date.parse(at);
+  return Number.isNaN(t) ? "" : new Date(t + IST_OFFSET_MS).toISOString().slice(0, 10);
+}
+
+/** "Programme Division", "Integrated Finance Division", "Programme Director", "PMU", "NGO". */
+export function auditOfficeOf(roleId: RoleId): string {
+  const role = ROLES[roleId];
+  if (!role) return "";
+  if (role.division) return DIVISION_NAME[role.division];
+  if (roleId === "programme-director") return PROGRAMME_DIRECTOR;
+  if (roleId === "pmu-field") return "PMU";
+  return "NGO";
+}
+
+/** The order offices are offered in a filter: the chain as a file climbs it. */
+export const AUDIT_OFFICES: readonly string[] = ["NGO", DIVISION_NAME.pd, DIVISION_NAME.finance, PROGRAMME_DIRECTOR, "PMU"];
+
+/** Every recorded action on every file, newest first. */
+export function auditTrail(state: EAnudaanState): AuditTrailRow[] {
+  const ngoName = new Map(state.ngos.map((n) => [n.id, n.name]));
+  return state.applications
+    .flatMap((a) =>
+      a.audit.map(
+        (e): AuditTrailRow => ({
+          id: e.id,
+          at: e.at,
+          day: istDay(e.at),
+          application: a.id,
+          project: a.institutionId,
+          ngoId: a.ngoId,
+          ngo: ngoName.get(a.ngoId) ?? "",
+          roleId: e.byRole,
+          role: ROLES[e.byRole]?.label ?? e.byRole,
+          office: auditOfficeOf(e.byRole),
+          user: e.byName,
+          actionKey: e.action,
+          action: auditActionLabel(e.action),
+          remarks: e.remarks ?? "",
+        }),
+      ),
+    )
+    .sort((x, y) => y.at.localeCompare(x.at) || x.id.localeCompare(y.id));
+}
+
+/** How many of the filters are set — drives the "filtered to nothing" state. */
+export function activeAuditFilterCount(f: AuditTrailFilters): number {
+  const range = f.from || f.to ? 1 : 0;
+  return (f.q.trim() ? 1 : 0) + (f.office ? 1 : 0) + (f.role ? 1 : 0) + (f.action ? 1 : 0) + range;
+}
+
+/**
+ * The rows the filters let through. One expression, used by the table, the count line and the
+ * download alike. A range whose ends are reversed is read the right way round rather than
+ * silently matching nothing.
+ */
+export function filterAuditTrail(rows: readonly AuditTrailRow[], f: AuditTrailFilters): AuditTrailRow[] {
+  const needle = f.q.trim().toLowerCase();
+  const [from, to] = f.from && f.to && f.from > f.to ? [f.to, f.from] : [f.from, f.to];
+  return rows.filter(
+    (r) =>
+      (!f.office || r.office === f.office) &&
+      (!f.role || r.roleId === f.role) &&
+      (!f.action || r.actionKey === f.action) &&
+      (!from || r.day >= from) &&
+      (!to || r.day <= to) &&
+      (!needle || `${r.application} ${r.project} ${r.ngo} ${r.user} ${r.remarks}`.toLowerCase().includes(needle)),
+  );
+}
+
+/** The seats and actions that actually occur, for the filter menus — never an option that matches nothing. */
+export function auditFilterOptions(rows: readonly AuditTrailRow[], office = ""): {
+  roles: { value: RoleId; label: string }[];
+  actions: { value: AuditAction; label: string }[];
+} {
+  const roles = new Map<RoleId, string>();
+  const actions = new Map<AuditAction, string>();
+  for (const r of rows) {
+    if (!office || r.office === office) roles.set(r.roleId, r.role);
+    actions.set(r.actionKey, r.action);
+  }
+  return {
+    roles: [...roles].map(([value, label]) => ({ value, label })).sort((a, b) => a.label.localeCompare(b.label)),
+    actions: [...actions].map(([value, label]) => ({ value, label })).sort((a, b) => a.label.localeCompare(b.label)),
+  };
 }

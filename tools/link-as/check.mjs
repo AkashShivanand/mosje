@@ -28,6 +28,13 @@
  * component in scope automatically. Add `linkAs` to a new component tomorrow and
  * its call sites are gated the same day, with nothing to remember here.
  *
+ * A component whose interface carries the marker `linkAs-gate(href-only)` is
+ * demanded of only where the CALL SITE passes an `href`. `ListRow` is the case:
+ * the same component is a link, a button and a plain row depending on which
+ * props it is given, and a row that renders no anchor cannot render a bare one.
+ * The marker is declared in the design system beside the prop, so the rule
+ * travels with the component rather than living as a special case here.
+ *
  * ── WHAT IT DELIBERATELY DOES NOT CHECK ─────────────────────────────────────
  *
  * Documentation specimens and Storybook stories. Both render components to be
@@ -70,6 +77,17 @@ const EXCLUSIONS = [
   },
 ];
 
+/**
+ * Call sites a component's `linkAs` has not reached YET, each named with the batch that owns
+ * the file. A ratchet, in the estate's usual shape: an entry that no longer matches a failing
+ * site is an ERROR, so the list can only shrink and cannot quietly outlive its reason.
+ *
+ * `ListRow` gained `linkAs` on 16 Sep 2026 (the officer dashboard's figures became links and
+ * paid a full document load for every click). The files that were mid-edit in other batches that
+ * day have since been given the prop, and the list is empty — as a ratchet that only shrinks ends.
+ */
+const PENDING = [];
+
 /** Categories an inline exemption may declare. Anything else is a failure. */
 const EXEMPT_CATEGORIES = {
   specimen: "rendered to be looked at, not navigated",
@@ -94,6 +112,8 @@ function walk(dir, out = []) {
 
 function componentsAcceptingLinkAs() {
   const found = new Set();
+  /** Components demanded of only where the call site passes an `href`. */
+  hrefOnly.clear();
   for (const file of walk(path.join(ROOT, DS_COMPONENTS))) {
     const src = fs.readFileSync(file, "utf8");
     if (!/^\s*linkAs\??\s*:/m.test(src)) continue;
@@ -103,7 +123,11 @@ function componentsAcceptingLinkAs() {
     for (let i = 0; i < marks.length; i++) {
       const start = marks[i].index;
       const end = i + 1 < marks.length ? marks[i + 1].index : src.length;
-      if (/^\s*linkAs\??\s*:/m.test(src.slice(start, end))) found.add(marks[i][1]);
+      const slice = src.slice(start, end);
+      if (/^\s*linkAs\??\s*:/m.test(slice)) {
+        found.add(marks[i][1]);
+        if (/linkAs-gate\(href-only\)/.test(slice)) hrefOnly.add(marks[i][1]);
+      }
     }
   }
   return found;
@@ -125,6 +149,7 @@ function callSites(files, components) {
 
 /* ── 3. run ───────────────────────────────────────────────────────────────── */
 
+const hrefOnly = new Set();
 const components = componentsAcceptingLinkAs();
 
 // A gate that cannot fail is worse than no gate. If the derivation finds
@@ -161,8 +186,17 @@ const failures = [];
 const spreads = [];
 const exempted = [];
 
+const pendingHit = new Set();
+
 for (const s of sites) {
   if (s.passes) continue;
+  // A component that only navigates when handed an `href` — see the header.
+  if (hrefOnly.has(s.name) && !s.hasHref) continue;
+  const pending = PENDING.find((p) => rel(s.file) === p.file && p.name === s.name);
+  if (pending) {
+    pendingHit.add(pending);
+    continue;
+  }
   if (s.exemption) {
     if (!(s.exemption.category in EXEMPT_CATEGORIES)) {
       failures.push({ ...s, why: `unknown exemption category "${s.exemption.category}"` });
@@ -178,9 +212,22 @@ for (const s of sites) {
   failures.push({ ...s, why: "does not pass `linkAs`" });
 }
 
+const stale = PENDING.filter((p) => !pendingHit.has(p));
+
 const head =
   `link-as: ${sites.length} call site(s) across ${files.length} file(s) · ` +
   `${components.size} component(s) accept the prop`;
+
+if (stale.length > 0) {
+  console.error(head);
+  console.error(`\n✖ ${stale.length} pending entr(y/ies) no longer match a failing call site:\n`);
+  for (const p of stale) console.error(`   ${p.file} <${p.name}> — ${p.why}`);
+  console.error(
+    "\n   Either the prop was passed (delete the entry — the ratchet only shrinks)\n" +
+      "   or the file moved (the gate is now measuring the wrong estate).\n",
+  );
+  process.exit(1);
+}
 
 if (failures.length === 0) {
   console.log(head);
@@ -189,6 +236,10 @@ if (failures.length === 0) {
       `  · ${spreads.length} site(s) spread their props, so the prop cannot be proven statically — reported, not failed`,
     );
   if (exempted.length) console.log(`  · ${exempted.length} declared exemption(s)`);
+  if (pendingHit.size)
+    console.log(
+      `  · ${pendingHit.size} site(s) pending a batch that owns the file — listed in PENDING, may only shrink`,
+    );
   console.log("✔ every navigating call site routes through the app's link component.");
   process.exit(0);
 }

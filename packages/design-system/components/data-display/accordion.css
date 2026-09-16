@@ -34,17 +34,17 @@
     gap: var(--sa-stack-12);
   }
 
+  /* ONE SURFACE: a white item on a hairline, no shadow and no grey header band. The card
+     variant used to raise every item on `elevation/card`, lift it further on hover, and fill
+     the trigger `bg/neutral/subtle` — so a stack of eight sections read as eight grey slabs
+     with shadows (e-Anudaan audit §4.6: the NGO application detail). Elevation is for things
+     that float over the page; an accordion item sits in it. The hairline alone separates the
+     items, and hover is carried by the trigger's own tint below. */
   .sa-accordion-item {
     background-color: var(--sa-bg-neutral-base);
     border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-12);
     overflow: hidden;
-    box-shadow: var(--sa-elevation-card);
-    transition: box-shadow var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
-  }
-
-  .sa-accordion-item:hover {
-    box-shadow: var(--sa-elevation-raised);
   }
 
   .sa-accordion-item__trigger {
@@ -54,7 +54,7 @@
     align-items: center;
     justify-content: space-between;
     gap: var(--sa-stack-12);
-    background-color: var(--sa-bg-neutral-subtle);
+    background-color: var(--sa-bg-neutral-base);
     color: var(--sa-text-neutral-bolder);
     font-family: var(--sa-font-latin);
     text-align: left;
@@ -64,7 +64,7 @@
   }
 
   .sa-accordion-item__trigger:hover {
-    background-color: var(--sa-bg-brand-primary-subtler);
+    background-color: var(--sa-bg-neutral-subtler);
   }
 
   .sa-accordion-item__trigger:focus {

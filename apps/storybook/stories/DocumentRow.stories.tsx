@@ -10,7 +10,8 @@ import { Button, DocumentChecklistGroup, DocumentFindings, DocumentRow } from "@
  * disclosure (`findingsLabel`, `showFindingsToggle`, `findingsOpen`, `onFindingsOpenChange`).
  * `remark` (with `remarkLabel`) sits above the row on a correction screen; `aside` holds an
  * officer's own verdict. `linkAs` routes `file.href`; `id` lets an ErrorSummary point at the row;
- * `as` is `li` in a list, `div` alone.
+ * `as` is `li` in a list, `div` alone. `density="compact"` is the one-line reviewed-document row for an
+ * officer's list; `clampReason` cuts a repeated reason to one line on a wide row.
  *
  * Lifecycle: **New**.
  *
@@ -50,6 +51,8 @@ const meta = {
     expanded: { control: "boolean" },
     onExpandedChange: { action: "details toggled" },
     summary: { control: "text" },
+    density: { control: "inline-radio", options: ["default", "compact"] },
+    clampReason: { control: "boolean" },
     linkAs: { control: false },
     id: { control: "text" },
   },
@@ -144,4 +147,31 @@ function FoldedOfficerRows() {
 
 export const FoldedOfficerRow: Story = {
   render: () => <FoldedOfficerRows />,
+};
+
+/** The reviewed-document row: one line from 760px, verdict in the line. */
+export const CompactOfficerRow: Story = {
+  render: () => (
+    <DocumentChecklistGroup title="Required Documents" hideRequiredMarks>
+      <DocumentRow
+        density="compact"
+        number={1}
+        title="Registration Certificate (Societies Registration Act 1860 / Charitable Trust)"
+        required
+        state="verified"
+        statusLabel="Automatic check · Looks right"
+        file={{ name: "Registration_Certificate_of_the_Organisation.pdf", size: "212 KB", date: "14 Sep 2026" }}
+        aside={<span>Verified</span>}
+        action={<Button size="sm" appearance="outlined">View</Button>}
+      />
+    </DocumentChecklistGroup>
+  ),
+};
+
+/** A repeated reason cut to one line on a wide row; the full sentence stays in the DOM. */
+export const ClampedReason: Story = {
+  args: {
+    clampReason: true,
+    reason: "This is a financial statement (Form-VII) showing income and expenditure, not the Registration Certificate of the organisation.",
+  },
 };

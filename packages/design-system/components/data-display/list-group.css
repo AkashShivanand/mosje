@@ -97,9 +97,15 @@
     display: flex;
     flex-direction: column;
     gap: var(--sa-stack-2);
-    /* The width the text keeps before the trailing slot wraps under it. `min(…, 100%)` so the
-       basis never exceeds a very narrow row on its own. */
-    flex: 1 1 min(14rem, 100%);
+    /* THE BASIS IS A FLOOR, NOT A CLAIM ON THE WHOLE ROW.
+       It was `min(14rem, 100%)`, which on a 375px card resolves to 100% — the text asks for the
+       full row, so ANY trailing slot wraps under it and a two-part row ("Returned for Rework  2")
+       becomes two lines and about 70px tall, even when the label and its figure would have sat
+       side by side with room to spare (e-Anudaan audit, officer dashboard cards at 375).
+       `min(14rem, 60%)` keeps the same behaviour on a wide row — 14rem of text before the
+       trailing slot drops — and on a narrow one leaves the trailing slot its share, so a short
+       label and a figure stay on one line and only a genuinely long pair wraps. */
+    flex: 1 1 min(14rem, 60%);
     min-width: 0;
   }
 

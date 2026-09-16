@@ -1,7 +1,13 @@
 "use client";
 
 /**
- * PD Queries / Finance Queries — the query log.
+ * Queries / Finance Queries — the query log.
+ *
+ * Audit O-08, 16 Sep 2026: the Programme Division's register was "PD Queries", and in a portal
+ * whose top decision-maker is the Programme Director that read as queries the Director raised. It
+ * is "Queries", as its siblings are "Returned Applications" and "Rejected Applications". A query
+ * addressed to this officer whose file is with them now offers "Review" (the file is theirs to act
+ * on), not only "View"; "Respond and Send Back" is outlined, not a filled button on every row.
  *
  * DS Audit: WorklistScreen ✅ existing · SegmentedControl ✅ · Badge ✅ · Button ✅ · Modal ✅ ·
  * DescriptionList ✅ · FormField ✅ · Textarea ✅ · Icon ✅ · useToast ✅ · screenCopy ✅ — nothing new.
@@ -33,10 +39,12 @@ import {
 } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { GRADE_FULL, ROLES, reviewKeyOf } from "@/lib/e-anudaan/roles";
+import { RETURN } from "@/lib/e-anudaan/glossary";
 import { formatDate } from "@/lib/e-anudaan/format";
 import { queryRowsFor, type QueryRow } from "@/lib/e-anudaan/registers";
 import { seatName } from "@/lib/e-anudaan/workflow";
-import { RefText, useWorklistOptions, splitRowActions } from "./worklist-table";
+import { holderIsRole } from "@/lib/e-anudaan/types";
+import { RefText, RowLinkIcon, useWorklistOptions, splitRowActions } from "./worklist-table";
 
 type View = "open" | "responded";
 
@@ -69,7 +77,10 @@ export function QueryRegister({ title }: { title: string }) {
         <span className="block">
           <span className="block whitespace-nowrap font-mono font-semibold text-ink">{r.app.institutionId}</span>
           <RefText value={r.app.id} className="mt-0.5 block font-mono text-body-3 text-ink-muted" />
-          <span className="mt-0.5 block text-body-3 text-ink-muted">{opts.ngoName?.(r.app.ngoId)}</span>
+          {/* Linked, as in every officer list (audit O-06). */}
+          <Link href={opts.ngoHref!(r.app.ngoId)} className="mt-0.5 block text-body-3 text-[var(--sa-text-brand-primary-base)] underline-offset-2 hover:underline">
+            {opts.ngoName?.(r.app.ngoId)}
+          </Link>
         </span>
       ),
     },
@@ -114,24 +125,29 @@ export function QueryRegister({ title }: { title: string }) {
       priority: 3,
       noExport: true,
       className: "is-sticky-right",
-      render: (r) => (
-        <span className="flex flex-col items-start gap-1">
-          {r.canRespond && (
-            <Button size="sm" nowrap onClick={() => setResponding(r)} aria-label={`Respond and send back project ${r.app.institutionId}`}>
-              Respond &amp; Send Back
-            </Button>
-          )}
-          {key && (
-            <Link
-              href={`/portals/e-anudaan/dashboard/sm2/${key}/review/${encodeURIComponent(r.app.id)}`}
-              className={buttonClasses("primary", "text", "sm", "whitespace-nowrap")}
-              aria-label={`View application for project ${r.app.institutionId}`}
-            >
-              <Icon name="open_in_new" size={16} aria-hidden /> View Application
-            </Link>
-          )}
-        </span>
-      ),
+      render: (r) => {
+        const withMe = !!role && holderIsRole(r.app.holder, role.id);
+        const verb = withMe ? "Review" : "View";
+        return (
+          <span className="flex flex-col items-start gap-1">
+            {r.canRespond && (
+              <Button size="sm" appearance="outlined" nowrap onClick={() => setResponding(r)} aria-label={`Respond and send back project ${r.app.institutionId}`}>
+                {RETURN.respond}
+              </Button>
+            )}
+            {key && (
+              <Link
+                href={`/portals/e-anudaan/dashboard/sm2/${key}/review/${encodeURIComponent(r.app.id)}`}
+                className={buttonClasses("primary", "text", "sm", "whitespace-nowrap")}
+                aria-label={`${verb} project ${r.app.institutionId}`}
+              >
+                {verb}
+                <RowLinkIcon />
+              </Link>
+            )}
+          </span>
+        );
+      },
     },
   ];
 
@@ -147,7 +163,8 @@ export function QueryRegister({ title }: { title: string }) {
         noun="query"
         pluralNoun="queries"
         countLine={null}
-        filters={
+        /* A view switch, not a filter: drawn under the header with no grey frame (audit X-05). */
+        views={
           <SegmentedControl<View>
             ariaLabel="Show queries"
             value={view}

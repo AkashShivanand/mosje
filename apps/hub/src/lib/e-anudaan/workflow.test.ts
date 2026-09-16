@@ -18,7 +18,6 @@ import {
   permittedActions,
   seatName,
   statusLabel,
-  unexaminedRequiredDocs,
   verdictAttribution,
   type Clock,
   type DecisionContext,
@@ -202,7 +201,7 @@ test("only the Programme Director can sanction", () => {
 
 test("statusLabel renders the live portal's compound badge, in words", () => {
   const app = must(draft(), "ngo", "submit");
-  assert.equal(statusLabel(app), "New Submission · With the Assistant Section Officer");
+  assert.equal(statusLabel(app), "Received · With the Assistant Section Officer");
 });
 
 test("the seed builds, and every officer grade lands on a non-empty worklist", () => {
@@ -361,24 +360,29 @@ test("once the ASO has certified, only the ASO-grade holder edits document verdi
   const uncertifiedAtSo: GrantApplication = { ...submitted, holder: { kind: "chain", division: "pd", grade: "so" }, status: "DeficiencyResponded" };
   assert.equal(canEditDocVerdicts(uncertifiedAtSo, ROLES["pd-so"]), true);
 
+  // The Integrated Finance Division examines the file, but it does not re-judge the Programme
+  // Division's documents: the verdicts on a certified file belong to the seat that certified them.
+  const atFinance: GrantApplication = { ...atSo, holder: { kind: "chain", division: "finance", grade: "aso" }, status: "WithFinance" };
+  assert.equal(canEditDocVerdicts(atFinance, ROLES["finance-aso"]), false, "the IFD ASO may not change the PD ASO's verdicts");
+  assert.equal(canEditDocVerdicts(atFinance, ROLES["pd-aso"]), false, "and the PD ASO no longer holds the file");
+  assert.equal(canEditDocVerdicts({ ...atFinance, holder: { kind: "chain", division: "finance", grade: "so" } }, ROLES["finance-so"]), false);
+
+  // An uncertified file inside Finance — never reached today, but the rule says the same thing.
+  const uncertifiedAtFinance: GrantApplication = { ...submitted, holder: { kind: "chain", division: "finance", grade: "aso" }, status: "WithFinance" };
+  assert.equal(canEditDocVerdicts(uncertifiedAtFinance, ROLES["finance-aso"]), true, "nothing is certified: the holder judges");
+
+  // A certified file back with its own ASO after a correction: still theirs to judge.
+  const backWithAso: GrantApplication = { ...certified, status: "DeficiencyResponded" };
+  assert.equal(canEditDocVerdicts(backWithAso, ROLES["pd-aso"]), true);
+
   const attribution = verdictAttribution(certified);
   assert.match(attribution!, /^Examined and certified by Ananya Rao, Assistant Section Officer, on \d{2} \w{3} 2026\.$/);
   assert.equal(verdictAttribution(submitted), null);
 });
 
-test("certification waits until every required document has been opened or given a verdict", () => {
-  // UX-02: the officer certified "documents have been examined" with no way to open one.
-  const app = submittedWithDocuments();
-  const required = app.documents.filter((d) => !d.optional);
-  assert.ok(required.length > 1);
-  assert.equal(unexaminedRequiredDocs(app, new Set()).length, required.length);
-
-  const opened = new Set(required.slice(1).map((d) => d.id));
-  assert.deepEqual(unexaminedRequiredDocs(app, opened).map((d) => d.id), [required[0]!.id]);
-
-  const judged = { ...app, documents: app.documents.map((d) => (d.id === required[0]!.id ? { ...d, reviewStatus: "Verified" as const } : d)) };
-  assert.equal(unexaminedRequiredDocs(judged, opened).length, 0);
-});
+// The certification gate itself moved to lib/e-anudaan/review-readiness.ts on 16 Sep 2026: it is
+// now "every required document has a VERDICT" rather than "opened or judged", and it is tested in
+// review-readiness.test.ts. `unexaminedRequiredDocs` was retired with this test.
 
 /** A submitted file with real documents, sitting with PD:ASO, from the seed. */
 function submittedWithDocuments(): GrantApplication {
