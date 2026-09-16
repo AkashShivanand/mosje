@@ -174,11 +174,17 @@ const credits: SiteFooterCredit[] = [
   },
   {
     prefix: "Powered by",
-    src: "/website/images/Digital-India-White.svg",
+    /* THE ESTATE'S OWN Digital India ARTWORK, REVERSED FOR THIS GROUND.
+       `Digital-India-White.svg` was a bad crop of the mark — the swirl squashed
+       to a 86x48 box and the blue stem of the 'i' clipped by the viewBox. This is
+       `digital-india-logo.svg`, the file the masthead, the PM-AJAY navbar and the
+       login templates already draw, with the wordmark in white: the swirl keeps
+       its tricolour, which is the mark's identity and not ours to recolour. */
+    src: "/website/images/Digital-India-Reverse.svg",
     alt: "Digital India",
     href: "https://www.digitalindia.gov.in/",
-    width: 78,
-    height: 34,
+    width: 105,
+    height: 41,
   },
 ];
 
