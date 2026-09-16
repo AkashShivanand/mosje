@@ -69,6 +69,9 @@ const rows = (
 
 export const Playground: Story = { render: (args) => <DocumentChecklist {...args}>{rows}</DocumentChecklist> };
 
+/** A list that is already filling: the drop zone is one line. */
+export const CompactDrop: Story = { args: { compactDrop: true, dropLabel: "Drop more files here, or" }, render: (args) => <DocumentChecklist {...args}>{rows}</DocumentChecklist> };
+
 export const BlockedContinue: Story = {
   args: { errors: [{ fieldId: "pan-action", message: "The PAN of the Organisation doesn't match what was asked for — replace it" }], activeFilter: "attention" },
   render: (args) => <DocumentChecklist {...args}>{rows}</DocumentChecklist>,

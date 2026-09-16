@@ -4828,6 +4828,13 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "compactDrop",
+        "type": "boolean",
+        "required": false,
+        "default": "false\n\nPass it once documents are in: a first visit needs the full zone to learn that files can be\ndropped together; a list that is mostly filled needs the documents, not a 90px box above them.",
+        "description": "Draw the drop zone as one quiet line."
+      },
+      {
         "name": "dropHint",
         "type": "React.ReactNode",
         "required": false,
@@ -5262,6 +5269,13 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": "Rendered on the row, so an ErrorSummary or a status message can point at it."
+      },
+      {
+        "name": "layout",
+        "type": "\"columns\" | \"stacked\"",
+        "required": false,
+        "default": "\"columns\"\n\n`columns` gives the file and the status a column each — the officer's list, where a verdict\nsits beside them. `stacked` is the APPLICANT'S row: the title takes the whole line, and the\nstatus and the file share ONE line beneath it — \"Looks right · pan-card.pdf · 412 KB · 16 Sep\n2026\". It exists because the column layout squeezed a 90-character title to three lines while\nleaving a blank strip beside the status, and cut every file name to \"registration-certif… .pdf\"\n(e-Anudaan upload polish, 17 Sep 2026). The status words start at one edge on every row, so the\nlist scans down a single column. Not combined with `collapsible`.",
+        "description": "How the file and the status are laid out."
       },
       {
         "name": "linkAs",

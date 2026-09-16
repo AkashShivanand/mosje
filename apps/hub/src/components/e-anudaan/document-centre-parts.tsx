@@ -19,6 +19,7 @@ import {
   DocumentChecklistGroup,
   DocumentFindings,
   DocumentRow,
+  Icon,
   SideSheet,
   type DocumentRowState,
 } from "@mosje/design-system";
@@ -33,15 +34,16 @@ import {
   settleChecks,
   summariseDocuments,
   type ApplicantFacts,
+  isRefusal,
   type DocState,
 } from "@/lib/e-anudaan/document-centre";
 
 /** How long the prototype's checking service takes to answer. */
 export const CHECK_DELAY_MS = 1600;
 
-/** The model's eleven states onto the design system's ten: both refusals are one row state. */
+/** The model's states onto the design system's ten: every refusal on the device is one row state. */
 export function rowStateOf(state: DocState): DocumentRowState {
-  return state === "rejected-type" || state === "rejected-size" ? "rejected" : state;
+  return isRefusal(state) ? "rejected" : state;
 }
 
 /**
@@ -245,13 +247,14 @@ export function ReviewDocuments({
                   key={d.n}
                   number={position.get(d.n)}
                   title={d.title}
-                  required={!d.optional}
+                  layout="stacked"
+                  hint={d.optional ? "Optional." : undefined}
                   state={rowStateOf(state)}
                   statusLabel={DOC_STATE_META[state].words}
                   file={up ? { name: up.fileName, size: fileSizeLabel(up.sizeKb), date: up.uploadedOn } : undefined}
                   action={
                     up ? (
-                      <Button appearance="text" size="sm" onClick={() => setViewing(d)} aria-label={`View ${d.title}`}>
+                      <Button appearance="text" size="sm" nowrap iconLeft={<Icon name="visibility" size={16} aria-hidden />} onClick={() => setViewing(d)} aria-label={`View: ${d.title}`}>
                         View
                       </Button>
                     ) : undefined

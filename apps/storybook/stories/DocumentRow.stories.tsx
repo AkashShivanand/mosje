@@ -11,7 +11,9 @@ import { Button, DocumentChecklistGroup, DocumentFindings, DocumentRow } from "@
  * `remark` (with `remarkLabel`) sits above the row on a correction screen; `aside` holds an
  * officer's own verdict. `linkAs` routes `file.href`; `id` lets an ErrorSummary point at the row;
  * `as` is `li` in a list, `div` alone. `density="compact"` is the one-line reviewed-document row for an
- * officer's list; `clampReason` cuts a repeated reason to one line on a wide row.
+ * officer's list; `clampReason` cuts a repeated reason to one line on a wide row. `layout="stacked"` is the
+ * applicant's row — title on the first line, status and file on the second — with View and the main
+ * command drawn on the row rather than in the menu.
  *
  * Lifecycle: **New**.
  *
@@ -52,6 +54,7 @@ const meta = {
     onExpandedChange: { action: "details toggled" },
     summary: { control: "text" },
     density: { control: "inline-radio", options: ["default", "compact"] },
+    layout: { control: "inline-radio", options: ["columns", "stacked"] },
     clampReason: { control: "boolean" },
     linkAs: { control: false },
     id: { control: "text" },
@@ -88,6 +91,35 @@ export const EveryState: Story = {
           file={s === "missing" || s === "optional" ? undefined : { name: "registration.pdf", size: "812 KB" }}
         />
       ))}
+    </DocumentChecklistGroup>
+  ),
+};
+
+/** The applicant's row: commands on the row, in one order, and a row with no menu keeps its place. */
+export const StackedApplicantRows: Story = {
+  render: () => (
+    <DocumentChecklistGroup title="Registration & Identity">
+      <DocumentRow
+        layout="stacked"
+        number={1}
+        title="Registration Certificate (Societies Registration Act 1860 / Charitable Trust) — certified copy"
+        state="verified"
+        file={{ name: "registration-certificate.pdf", size: "412 KB", date: "16 Sep 2026" }}
+        action={<><Button size="sm" appearance="text">View</Button><Button size="sm" appearance="text">Replace</Button></>}
+        menu={{ items: [{ id: "history", label: "Upload History" }], onSelect: () => undefined }}
+      />
+      <DocumentRow
+        layout="stacked"
+        number={2}
+        title="Annual Report — Previous Financial Year"
+        state="invalid"
+        file={{ name: "annual-report.pdf", size: "412 KB", date: "16 Sep 2026" }}
+        reason="This is a financial statement (Form-VII), not the Annual Report."
+        findings={<DocumentFindings summary="Wrong document." reasons={["Registration number and date are not present."]} />}
+        action={<><Button size="sm" appearance="text">View</Button><Button size="sm" appearance="outlined">Replace</Button></>}
+        menu={{ items: [{ id: "check", label: "Check Again" }, { id: "history", label: "Upload History" }], onSelect: () => undefined }}
+      />
+      <DocumentRow layout="stacked" number={3} title="School Recognition Certificate" state="missing" action={<Button size="sm" appearance="outlined">Upload</Button>} />
     </DocumentChecklistGroup>
   ),
 };

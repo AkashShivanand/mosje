@@ -403,6 +403,148 @@
     }
   }
 
+  /* ── Stacked — the applicant's row ────────────────────────────────────────
+     The title owns the first line; the status and the file share the second. On a phone the
+     actions drop below; from 640px they sit at the row's end, level with the two lines. */
+
+  /* On a phone the row's commands are one toolbar across the row, the menu at its end: squeezed
+     beside the icon's indent, the menu wrapped onto a line of its own under View and Replace. */
+  .ds-docrow--stacked .ds-docrow__line {
+    grid-template-columns: var(--sa-icon-size-20) minmax(0, 1fr);
+    grid-template-areas:
+      "icon main"
+      ". more"
+      "actions actions";
+    align-items: start;
+  }
+
+  .ds-docrow--stacked .ds-docrow__actions {
+    flex-wrap: nowrap;
+    padding-block-start: var(--sa-stack-4);
+  }
+
+  .ds-docrow--stacked .ds-docrow__actions > :last-child:not(:first-child) {
+    margin-inline-start: auto;
+  }
+
+  .ds-docrow--stacked .ds-docrow__icon {
+    align-self: start;
+    margin-block-start: calc((var(--sa-type-body-1-lh) - var(--sa-icon-size-20)) / 2);
+  }
+
+  @container ds-docrow (min-width: 640px) {
+    .ds-docrow--stacked .ds-docrow__line {
+      grid-template-columns: var(--sa-icon-size-20) minmax(0, 1fr) auto;
+      grid-template-areas:
+        "icon main actions"
+        ". more more";
+      align-items: center;
+      column-gap: var(--sa-inline-16);
+    }
+    .ds-docrow--stacked .ds-docrow__icon {
+      align-self: start;
+    }
+    .ds-docrow--stacked .ds-docrow__actions {
+      padding-block-start: 0;
+    }
+    .ds-docrow--stacked .ds-docrow__actions > :last-child:not(:first-child) {
+      margin-inline-start: 0;
+    }
+  }
+
+  .ds-docrow__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 var(--sa-inline-8);
+    min-inline-size: 0;
+    margin: var(--sa-stack-2) 0 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-docrow__meta .ds-docrow__status-words {
+    white-space: nowrap;
+  }
+
+  .ds-docrow__meta .ds-docrow__file-name {
+    max-inline-size: min(100%, var(--sa-padding-360));
+    color: var(--sa-text-neutral-base);
+  }
+
+  .ds-docrow__meta .ds-docrow__file-meta {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    white-space: nowrap;
+  }
+
+  .ds-docrow__meta .ds-docrow__progress {
+    inline-size: var(--sa-padding-120);
+  }
+
+  .ds-docrow__meta-sep {
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-docrow__meta-file {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 var(--sa-inline-8);
+    min-inline-size: 0;
+    max-inline-size: 100%;
+  }
+
+  /* On a phone the status takes a line and the file the next, so no separator is left hanging at
+     the end of "Looks right ·". */
+  @container ds-docrow (max-width: 639.98px) {
+    .ds-docrow__meta {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .ds-docrow__meta-sep--lead {
+      display: none;
+    }
+    /* …and the name and its size and date likewise, so a line never begins with "· 412 KB". */
+    .ds-docrow__meta-file {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .ds-docrow__meta-file .ds-docrow__meta-sep {
+      display: none;
+    }
+  }
+
+  /* What is wrong sits under the two lines it explains, and "What we found" follows it — not
+     pushed to the far edge of the row, away from the sentence it opens. */
+  .ds-docrow--stacked .ds-docrow__more {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    margin-block-start: var(--sa-stack-4);
+  }
+
+  .ds-docrow--stacked .ds-docrow__more .ds-docrow__reason {
+    flex: none;
+  }
+
+  .ds-docrow--stacked .ds-docrow__more .ds-docrow__disclosure {
+    margin-inline-start: calc(var(--sa-padding-4) * -1);
+  }
+
+  .ds-docrow__menu-space {
+    display: none;
+    inline-size: var(--sa-control-height-sm);
+    flex: none;
+  }
+
+  @container ds-docrow (min-width: 640px) {
+    .ds-docrow--stacked .ds-docrow__menu-space {
+      display: block;
+    }
+  }
+
   /* ── What grows under the line ─────────────────────────────────────────── */
 
   .ds-docrow__more {
