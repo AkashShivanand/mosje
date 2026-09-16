@@ -1762,6 +1762,18 @@ stated — the queue's "due soon" and "overdue" tiles — never on the first car
 `<Progress>` takes the same `target`, `targetLabel` and `tone`, and `compact` drops its
 label row where the surface already prints the label.
 
+**A figure people act on is a real control.** `<MetricCard onSelect>` makes the whole tile a
+button, `<MetricCard href linkAs={Link}>` makes it a link, and `selected` marks the one the
+page is filtered by — `aria-pressed` on the button, `aria-current` on the link, so the state is
+never carried by the tint alone. A tile is a link when it GOES somewhere and a button when it
+DOES something here, never both, and `href` wins: the rule `ListRow` states. The officer queue's
+case-type tiles are the case in the estate — they filter the table beneath them and clear on a
+second press, as the four cards on the NIC portal did. **In Figma the master carries a `Selected`
+boolean** (Metric Card, on the `Charts & Graphs` page) which shows the same ground: `bg/neutral/
+selected` inside `border/brand/primary/base`. Hover, press and focus exist in CODE ONLY — they are
+pointer and keyboard states, and drawing each as a variant would multiply a 50-variant set
+four-fold for nothing a designer places.
+
 **Provenance travels with the data.** `DataProvenance` — source, as-of date, status — is
 a field on the data, not a caption someone types, and `<ChartCard provenance>` and
 `<MetricCard provenance>` print it as one muted `<ProvenanceLine>` and drop it whenever
