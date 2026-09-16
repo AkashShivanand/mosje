@@ -4570,7 +4570,7 @@ export const GENERATED_PROPS = {
         "type": "boolean",
         "required": false,
         "default": "false",
-        "description": "Draw a hairline under every row. Use it for a long single-column list."
+        "description": "Draw a hairline BETWEEN rows. The grid's final row does not get one: a rule under the last fact hangs under nothing and reads as an unfinished table, which is the same reason `ListGroup` rules between its items rather than after each one."
       },
       {
         "name": "emptyText",

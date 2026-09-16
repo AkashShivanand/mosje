@@ -32,13 +32,20 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.144.0",
+    version: "v0.145.0",
     date: "2026-09-16",
     current: true,
     changes: [
       { kind: "Added", text: "`MetricCard` CAN BE A CONTROL. `onSelect` makes the whole tile a button, `href` (with `linkAs`) makes it a link, and `selected` marks the one the page is filtered by \u2014 `aria-pressed` on a button, `aria-current` on a link, so the state is never the tint alone. It is a link when it GOES somewhere and a button when it DOES something here, never both, which is the rule `ListRow` already states; `href` wins. Hover is gated behind a fine pointer so it cannot stick on a touchscreen, the press is a 0.99 scale, and `prefers-reduced-motion` drops both" },
       { kind: "Changed", text: "THE OFFICER QUEUE\u2019S CASE-TYPE TILES FILTER THE QUEUE BELOW THEM. New Projects, 1st, 2nd and 3rd Instalment set the table\u2019s Case Type and bring the reader to it \u2014 the four cards on the NIC portal the department knows were links (review call, 11 Sep 2026, T698\u2013712). Choosing the tile that is already on clears the filter, the choice rides in the address as `?case=`, and a tile with nothing to show opens nothing" },
       { kind: "Fixed", text: "THE SLIDER\u2019S TICK LABELS TAKE `Label/label-2`\u2019S OWN WEIGHT. The rule set the role\u2019s size and left the weight to whatever it inherited \u2014 the last of the gaps the 16 Sep pass closed in six other components. The Figma masters draw no tick labels, so the ramp, not a layer, is the source" },
+    ],
+  },
+  {
+    version: "v0.144.0",
+    date: "2026-09-16",
+    changes: [
+      { kind: "Fixed", text: "A DIVIDED `DescriptionList` NO LONGER RULES UNDER ITS LAST ROW. `divided` drew a hairline under EVERY row, so every fact card closed with a rule under nothing and read as an unfinished table \u2014 seen on the officer\u2019s Payment Status and three cards on the applicant\u2019s dashboard while the screens were being drawn in Figma. `ListGroup` already had this right (`item + item`), but source order is not visual order in a grid, so the two ends are stripped separately: below the 768 step the grid is one column whatever `columns` says and the last row is simply the last child; at and above it the component computes the row each item lands in and marks it. No `:nth-last-child()` is correct for every item count \u2014 six items in two columns put the pair at 5 and 6, five put it at 5 alone, and a `wide` item takes a row of its own \u2014 which is why the placement is simulated in `description-list-rows.ts` and tested against all three shapes." },
     ],
   },
   {

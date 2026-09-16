@@ -59,7 +59,12 @@ jobs:
     runs-on: ubuntu-latest
     # A full green run takes ~5 minutes. Without this the default is SIX HOURS, which
     # is how one stuck download held two pull requests all morning.
-    timeout-minutes: 20
+    # 25, not 20: five live Figma checks run here and the slowest walks every component
+    # page, so the job sits at 15-20 minutes on a good day. On 2026-09-16 it reached 20m14s
+    # and was cancelled mid-retry inside the Code Connect step — the ceiling turning a
+    # handled rate limit back into a red PR. The headroom is for the retry, not for drift:
+    # if this job starts approaching 25, something has got slower and should be measured.
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v7
         with:
@@ -430,7 +435,23 @@ jobs:
           fi
           # From the REPO ROOT — the config's include glob is root-relative and a
           # workspace cwd silently matches zero templates.
-          npm run figma:connect:check
+          #
+          # Through the wrapper, which retries and then separates the two kinds of bad
+          # news the same way the live Figma checks above do. This step reads ~70
+          # components from the Figma API in one burst and is the heaviest consumer in
+          # the repo: on 2026-09-16 it failed a clean PR three times running on
+          # `429 Rate limit exceeded` while every other check passed. Exit 1 is Code
+          # Connect rejecting a template and still fails the PR; exit 2 is the
+          # allowance, and warns.
+          set +e
+          node scripts/figma-connect-dry-run.mjs
+          code=$?
+          set -e
+          if [ $code -eq 2 ]; then
+            echo "::warning::Code Connect dry run could not complete (Figma rate limit, exit 2) — not treated as a template failure. check:code-connect still ran."
+            exit 0
+          fi
+          exit $code
 
   # Publishing runs ONLY on main, and only if the secret exists. Code Connect does not
   # detect drift by itself — it publishes a snapshot that goes stale silently — so this

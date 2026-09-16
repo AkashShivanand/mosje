@@ -131,10 +131,9 @@ export default function PaymentStatusPage() {
             {app.sanction ? (
               <DescriptionList
                 columns={2}
-                layout="inline"
                 divided
                 items={[
-                  { term: "Order No.", value: <span className="whitespace-nowrap">{app.sanction.orderNo}</span> },
+                  { term: "Order No.", value: app.sanction.orderNo },
                   { term: "Sanction Date", value: formatDate(app.sanction.sanctionedAt) },
                   { term: "Recurring", value: formatGrant(app.sanction.recurring) },
                   { term: "Non-Recurring", value: formatGrant(app.sanction.nonRecurring) },
