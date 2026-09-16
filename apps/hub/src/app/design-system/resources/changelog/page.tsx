@@ -1,34 +1,14 @@
 import * as React from "react";
 import type { Metadata } from "next";
 import { Callout } from "@/components/design-system/docs-kit/index";
+import { UNRELEASED, type ChangeEntry, type Release } from "./entry";
+import { PENDING } from "./pending-entries";
 
 export const metadata: Metadata = {
   title: "Changelog",
   description:
     "Every release of the SAMAVESH design system — what was added, changed, and fixed in each version.",
 };
-
-interface ChangeEntry {
-  /**
-   * `Breaking` was missing until 2026-09-02, so across ninety-four releases
-   * nothing was ever marked as breaking — including the retirement of the
-   * `--ds-*` token contract, which is the most severe change a token system can
-   * make and which a consumer could only discover by their application
-   * silently losing its styles. A changelog that cannot say what broke is a
-   * list of news, not a release note.
-   */
-  kind: "Breaking" | "Added" | "Changed" | "Fixed" | "Removed";
-  text: string;
-  /** Required in spirit on `Breaking`: where a consumer goes to migrate. */
-  migration?: string;
-}
-
-interface Release {
-  version: string;
-  date: string;
-  current?: boolean;
-  changes: ChangeEntry[];
-}
 
 const RELEASES: Release[] = [
   {
@@ -2351,6 +2331,20 @@ const KIND_COLOR: Record<ChangeEntry["kind"], string> = {
   Breaking: "var(--sa-color-status-danger)",
 };
 
+/*
+ * What the page actually renders. Entries in `pending/` have landed but have
+ * not been given a version — see `pending/README.md` — so they show under
+ * Unreleased and they carry the Current badge, because they are what `main`
+ * has right now. The newest NUMBERED release keeps its badge only when there
+ * is nothing pending, so the page never shows two.
+ */
+const DISPLAY: Release[] = PENDING.length
+  ? [
+      { version: UNRELEASED, date: "not yet numbered", current: true, changes: PENDING },
+      ...RELEASES.map((r) => ({ ...r, current: false })),
+    ]
+  : RELEASES;
+
 export default function ChangelogPage(): React.JSX.Element {
   return (
     <>
@@ -2383,7 +2377,7 @@ export default function ChangelogPage(): React.JSX.Element {
             gap: "var(--sa-stack-32)",
           }}
         >
-          {RELEASES.map((release) => (
+          {DISPLAY.map((release) => (
             <article
               key={release.version}
               id={release.version.replace(/\./g, "-")}

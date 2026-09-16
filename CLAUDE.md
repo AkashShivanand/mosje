@@ -299,11 +299,19 @@ initiative is**. If a branch can't land within a few days, split it.
 enough to be abandoned (2026-08-11); `git merge origin/main` resolved the same divergence.
 Rebase is fine for a young branch you own alone.
 
-**Conflict magnets:** hand-maintained version histories (the changelog page, the
-`design.md` header — keep **both** sets of entries, renumber the unmerged branch upward)
-and generated baselines (regenerate deliberately, then audit the diff against both
-parents). On `add/add`, diff both sides and take the later fix. Detail in the archived
-narrative doc.
+**THE CHANGELOG IS NO LONGER ONE OF THESE — do not edit `changelog/page.tsx`.**
+Add a changelog line by writing ONE JSON FILE into
+`apps/hub/src/app/design-system/resources/changelog/pending/`, and **do not choose a
+version number**: it is assigned afterwards, on `main`, by `npm run changelog:release`.
+Two branches adding two different files merge cleanly. Editing the page instead puts
+you back on the same line, the same number and the same `current: true` flag as every
+other branch — which cost one chore branch three merges of `main` in an hour on
+2026-09-16. → `pending/README.md`
+
+**Conflict magnets that remain:** the `design.md` header — keep **both** sets of
+entries, renumber the unmerged branch upward — and generated baselines (regenerate
+deliberately, then audit the diff against both parents). On `add/add`, diff both sides
+and take the later fix. Detail in the archived narrative doc.
 
 Delete a branch once merged, and **never reuse a branch whose PR was closed**.
 
