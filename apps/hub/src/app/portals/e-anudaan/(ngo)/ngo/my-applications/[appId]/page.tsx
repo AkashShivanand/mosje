@@ -337,6 +337,7 @@ function CorrectionItem({
             as="div"
             id={`${headingId}-row`}
             titleAs="h3"
+            layout="stacked"
             number={index}
             title={item.label}
             remark={item.remark}
@@ -350,23 +351,28 @@ function CorrectionItem({
             ) : undefined}
             showFindingsToggle={docStateNow !== "verified"}
             action={
-              <Button
-                // Outlined: Submit Correction is the page's one filled button.
-                appearance="outlined"
-                size="sm"
-                nowrap
-                onClick={() => fileInput.current?.click()}
-                aria-label={`${corrected ? "Replace again" : "Replace"}: ${doc.title}`}
-              >
-                {corrected ? "Replace Again" : "Replace"}
-              </Button>
+              <>
+                {doc.fileName && (
+                  <Button appearance="text" size="sm" nowrap iconLeft={<Icon name="visibility" size={16} aria-hidden />} onClick={() => setViewing(true)} aria-label={`View: ${doc.title}`}>
+                    View
+                  </Button>
+                )}
+                <Button
+                  // Outlined: Submit Correction is the page's one filled button.
+                  appearance="outlined"
+                  size="sm"
+                  nowrap
+                  iconLeft={<Icon name="upload" size={16} aria-hidden />}
+                  onClick={() => fileInput.current?.click()}
+                  aria-label={`${corrected ? "Replace again" : "Replace"}: ${doc.title}`}
+                >
+                  {corrected ? "Replace Again" : "Replace"}
+                </Button>
+              </>
             }
             menu={{
-              items: [
-                ...(doc.fileName ? [{ id: "view", label: "View", icon: "visibility" }] : []),
-                { id: "history", label: "Upload History", icon: "history" },
-              ],
-              onSelect: (id) => (id === "view" ? setViewing(true) : setHistoryOpen(true)),
+              items: [{ id: "history", label: "Upload History", icon: "history" }],
+              onSelect: () => setHistoryOpen(true),
             }}
           />
           <input

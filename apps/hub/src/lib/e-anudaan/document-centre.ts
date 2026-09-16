@@ -309,8 +309,10 @@ export function compareFindings(extracted: Readonly<Record<string, string>> | un
 const TOPICS: ReadonlyArray<readonly [key: string, title: RegExp, file: RegExp]> = [
   ["registration", /registration certificate/i, /regist|\bregn?\b|society[-_ ]?cert|trust[-_ ]?deed/i],
   ["pan", /\bpan\b/i, /(^|[^a-z])pan([^a-z]|$)/i],
+  ["recognition", /recognition certificate/i, /recognition/i],
   ["annual-report", /annual report/i, /annual[-_ ]?report/i],
-  ["accounts", /audit(ed)? (accounts|report)|accounts in parts|balance sheet/i, /audit(?!.*fire)|balance[-_ ]?sheet|accounts/i],
+  // "Fire Safety Audit Report" is a safety audit, not the accounts: it read as both until 17 Sep 2026.
+  ["accounts", /(?<!safety )audit(ed)? (accounts|report)|accounts in parts|balance sheet/i, /(?<!safety[-_ ])audit(?!.*fire)|balance[-_ ]?sheet|accounts/i],
   ["budget", /budget/i, /budget|estimate/i],
   ["uc", /utilisation certificate|\bgfr/i, /(^|[^a-z])ucs?([^a-z]|$)|utili[sz]ation|gfr|12[-_ ]?a/i],
   ["provisional", /provisional/i, /provisional/i],

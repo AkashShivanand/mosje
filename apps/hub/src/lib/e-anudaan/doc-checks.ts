@@ -54,7 +54,7 @@ export type CheckId = DeviceCheckId | "upload-interrupted" | CheckVerdictId;
  * from a title or a file name. `"any"` is every document.
  */
 export type Topic =
-  | "registration" | "pan" | "annual-report" | "accounts" | "budget" | "uc" | "provisional" | "bank"
+  | "registration" | "recognition" | "pan" | "annual-report" | "accounts" | "budget" | "uc" | "provisional" | "bank"
   | "bond" | "rent" | "staff" | "beneficiaries" | "committee" | "compliance" | "eat" | "income" | "moa"
   | "infrastructure" | "fire" | "progress" | "justification" | "monitoring";
 
@@ -98,7 +98,7 @@ export const DOC_CHECKS: readonly DocCheck[] = [
     evidence: "“Document is an annual report for 2024-25, but 2025-26 is required.”" },
   { id: "wrong-variant", stage: "check", outcome: "invalid", label: "Wrong Format of the Right Document", appliesTo: ["uc", "provisional", "accounts"], source: "live",
     evidence: "“Wrong document: this is an audited UC for 2024-25, but a provisional UC for current…” · “please upload the GFR 12-A format certificate”" },
-  { id: "missing-particulars", stage: "check", outcome: "invalid", label: "Required Particulars Missing", appliesTo: ["registration", "pan", "annual-report", "accounts", "uc", "provisional", "bank", "budget"], source: "live",
+  { id: "missing-particulars", stage: "check", outcome: "invalid", label: "Required Particulars Missing", appliesTo: ["registration", "recognition", "pan", "annual-report", "accounts", "uc", "provisional", "bank", "budget"], source: "live",
     evidence: "“The registration number is not present.” · “The organisation name is not present.” · “must include a Chartered Accountant's declaration, signature”" },
   { id: "missing-parts", stage: "check", outcome: "invalid", label: "Required Parts Missing", appliesTo: ["accounts", "income"], source: "live",
     evidence: "“The document must contain the balance sheet, income & expenditure statement, and auditor's report”" },
@@ -109,7 +109,7 @@ export const DOC_CHECKS: readonly DocCheck[] = [
   // ── The automatic check — check the details ────────────────────────────────
   { id: "blank-template", stage: "check", outcome: "review", label: "Blank or Unfilled Template", appliesTo: ["rent", "bond", "staff", "beneficiaries", "committee"], source: "live",
     evidence: "“⚠ Needs review — Rent Agreement Template (blank/unfilled)” · “Monthly rent amount must be clearly stated and filled in the document.”" },
-  { id: "validity-lapsed", stage: "check", outcome: "review", label: "Validity Does Not Cover the Year", appliesTo: ["rent", "registration", "fire"], source: "live",
+  { id: "validity-lapsed", stage: "check", outcome: "review", label: "Validity Does Not Cover the Year", appliesTo: ["rent", "registration", "recognition", "fire"], source: "live",
     evidence: "“Agreement must show commencement and expiry dates covering the current financial year”" },
   { id: "not-notarised", stage: "check", outcome: "review", label: "Not Notarised", appliesTo: ["rent", "bond"], source: "live",
     evidence: "“No notarisation seal or certificate visible. Agreement must be notarised as per…”" },
@@ -198,6 +198,7 @@ export interface CheckContext {
 /** The particulars a document must carry, by topic — what "Required Particulars Missing" names. */
 const PARTICULARS: ReadonlyArray<readonly [Topic, string, string]> = [
   ["registration", "registration number and date of registration", "Registration Number"],
+  ["recognition", "recognition number, the school's name and the period of recognition", "Recognition Number"],
   ["pan", "Permanent Account Number of the organisation", "PAN"],
   ["annual-report", "financial year and the activities undertaken in it", "Financial Year"],
   ["accounts", "Chartered Accountant's name, membership number and UDIN", "UDIN"],

@@ -28,6 +28,7 @@ import {
   DocumentHistorySheet,
   DocumentPlacementTray,
   DocumentRow,
+  Icon,
 } from "@mosje/design-system";
 import type { DocDef } from "@/lib/e-anudaan/form-schema";
 import { demoVerdictFor, withYearCheck, type UploadedDoc } from "@/lib/e-anudaan/doc-verification";
@@ -76,7 +77,7 @@ const FILTERS: { id: DocBucket; label: string }[] = [
 
 /** How often an upload's progress moves, and the connection-drop keyword the demo uses. */
 const TICK_MS = 140;
-const DROPS_CONNECTION = /network|connection|drop[-_]?out|flaky/i;
+const DROPS_CONNECTION = /network|connection|drop[-_]?out|flaky|upload-interrupted/i;
 
 const kbOf = (file: File) => Math.max(1, Math.round(file.size / 1024));
 const rowId = (n: number) => `doc-${n}`;
@@ -466,25 +467,39 @@ export const DocumentsChecklist = React.forwardRef<
         ? { name: up.fileName, size: fileSizeLabel(up.sizeKb), date: up.uploadedOn }
         : undefined;
 
-    const primary: Partial<Record<DocState, { label: string; run: () => void; appearance?: "filled" | "outlined" | "text" }>> = {
+    const primary: Partial<Record<DocState, { label: string; icon: string; run: () => void; appearance?: "filled" | "outlined" | "text" }>> = {
       // Every row action is outlined: the step's Save and Continue is the only filled button on the
       // screen. A row's trouble is already carried by its icon, its status words and its reason.
-      missing: { label: "Upload", run: () => choose(d.n), appearance: "outlined" },
-      optional: { label: "Upload", run: () => choose(d.n), appearance: "outlined" },
-      uploading: { label: "Cancel", run: () => cancelAttempt(d.n), appearance: "text" },
-      failed: { label: "Try Again", run: () => attempt && startUpload(d.n, { name: attempt.fileName, sizeKb: attempt.sizeKb }, files.current.get(d.n), (attempt.tries ?? 0) + 1) },
-      "rejected-type": { label: "Choose Another File", run: () => choose(d.n) },
-      "rejected-size": { label: "Choose Another File", run: () => choose(d.n) },
-      "rejected-empty": { label: "Choose Another File", run: () => choose(d.n) },
-      "rejected-locked": { label: "Choose Another File", run: () => choose(d.n) },
-      "rejected-unreadable": { label: "Choose Another File", run: () => choose(d.n) },
-      invalid: { label: "Replace", run: () => choose(d.n) },
+      missing: { label: "Upload", icon: "upload", run: () => choose(d.n), appearance: "outlined" },
+      optional: { label: "Upload", icon: "upload", run: () => choose(d.n), appearance: "outlined" },
+      uploading: { label: "Cancel", icon: "close", run: () => cancelAttempt(d.n), appearance: "text" },
+      failed: { label: "Try Again", icon: "refresh", run: () => attempt && startUpload(d.n, { name: attempt.fileName, sizeKb: attempt.sizeKb }, files.current.get(d.n), (attempt.tries ?? 0) + 1) },
+      "rejected-type": { label: "Choose Another File", icon: "upload", run: () => choose(d.n) },
+      "rejected-size": { label: "Choose Another File", icon: "upload", run: () => choose(d.n) },
+      "rejected-empty": { label: "Choose Another File", icon: "upload", run: () => choose(d.n) },
+      "rejected-locked": { label: "Choose Another File", icon: "upload", run: () => choose(d.n) },
+      "rejected-unreadable": { label: "Choose Another File", icon: "upload", run: () => choose(d.n) },
+      invalid: { label: "Replace", icon: "upload", run: () => choose(d.n) },
     };
     const p = primary[state];
+    /**
+     * The commands a row with a file ALWAYS shows. View and Replace used to live only in the ⋯ menu,
+     * so a row that looked right showed nothing a reader could do with it and nobody found either
+     * (upload polish, 17 Sep 2026). What stays in the menu is what is rarely needed: history, a
+     * second check, removing an optional file.
+     */
+    // One order on every row — View, then the row's main command — so a command never moves
+    // between rows; only its emphasis changes when the document needs something.
+    const visible: { label: string; icon: string; run: () => void; appearance: "outlined" | "text"; primary?: boolean }[] = [
+      ...(up && state !== "uploading" ? [{ label: "View", icon: "visibility", run: () => setViewing(d), appearance: "text" as const }] : []),
+      ...(p
+        ? [{ ...p, appearance: p.appearance === "text" ? ("text" as const) : ("outlined" as const), primary: true }]
+        : up
+          ? [{ label: "Replace", icon: "upload", run: () => choose(d.n), appearance: "text" as const, primary: true }]
+          : []),
+    ];
 
     const items = [
-      ...(up ? [{ id: "view", label: "View", icon: "visibility" }] : []),
-      ...(up && state !== "invalid" ? [{ id: "replace", label: "Replace", icon: "upload" }] : []),
       ...(up && !attempt && (state === "invalid" || state === "review" || state === "unavailable") ? [{ id: "check", label: "Check Again", icon: "refresh" }] : []),
       ...(hasVerdictDetail && state === "verified" ? [{ id: "findings", label: findingsOpen[d.n] ? "Hide What We Found" : "What We Found", icon: "fact_check" }] : []),
       ...(up ? [{ id: "history", label: "Upload History", icon: "history" }] : []),
@@ -499,8 +514,10 @@ export const DocumentsChecklist = React.forwardRef<
         id={rowId(d.n)}
         number={position.get(d.n)}
         title={d.title}
-        required={!d.optional}
-        hint={[d.note, d.description].filter(Boolean).join(" ") || undefined}
+        layout="stacked"
+        /* No asterisk on every row: the header counts the required documents, and the few that
+           are not required say so here instead — sixteen red stars said nothing sixteen times. */
+        hint={[d.optional && state !== "optional" ? "Optional." : null, d.note, d.description].filter(Boolean).join(" ") || undefined}
         state={rowStateOf(state)}
         // The row prints "Uploading 64%" itself from `progress`.
         statusLabel={state === "uploading" ? undefined : DOC_STATE_META[state].words}
@@ -509,10 +526,22 @@ export const DocumentsChecklist = React.forwardRef<
         reason={reason}
         clampReason={(reasonCount.get(reasonShape(d) ?? "") ?? 0) > 1}
         action={
-          p ? (
-            <Button id={actionId(d.n)} size="sm" appearance={p.appearance ?? "outlined"} nowrap onClick={p.run} aria-label={`${p.label}: ${d.title}`}>
-              {p.label}
-            </Button>
+          visible.length ? (
+            visible.map((a, i) => (
+              <Button
+                key={a.label}
+                // The ErrorSummary links to the command that fixes the row, which is its main one.
+                id={a.primary || visible.length === 1 ? actionId(d.n) : undefined}
+                size="sm"
+                appearance={a.appearance}
+                nowrap
+                iconLeft={<Icon name={a.icon} size={16} aria-hidden />}
+                onClick={a.run}
+                aria-label={`${a.label}: ${d.title}`}
+              >
+                {a.label}
+              </Button>
+            ))
           ) : (
             <span id={actionId(d.n)} tabIndex={-1} />
           )
@@ -539,6 +568,8 @@ export const DocumentsChecklist = React.forwardRef<
         }}
         onFiles={onFiles}
         accept={rule.inputAccept}
+        compactDrop={Object.keys(checked).length > 0 || Object.keys(attempts).length > 0}
+        dropLabel={Object.keys(checked).length > 0 || Object.keys(attempts).length > 0 ? "Drop more files here, or" : undefined}
         errors={errors}
         errorTitle={blockerTitle(shownBlockers.length, "continue")}
         errorsRevision={revision}

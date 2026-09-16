@@ -152,6 +152,13 @@ export interface DocumentChecklistProps {
    * whole line is the button. @default "Choose your documents"
    */
   touchLabel?: string;
+  /**
+   * Draw the drop zone as one quiet line. @default false
+   *
+   * Pass it once documents are in: a first visit needs the full zone to learn that files can be
+   * dropped together; a list that is mostly filled needs the documents, not a 90px box above them.
+   */
+  compactDrop?: boolean;
   /** What stops the reader moving on, as links to the rows. Rendered as an ErrorSummary that takes focus. */
   errors?: readonly ErrorSummaryItem[];
   errorTitle?: React.ReactNode;
@@ -199,6 +206,7 @@ export function DocumentChecklist({
   dropHint = "We read each file and put it in the right place. You can move any we get wrong.",
   chooseLabel = "Choose Files",
   touchLabel = "Choose your documents",
+  compactDrop = false,
   errors = [],
   errorTitle,
   errorsRevision = 0,
@@ -221,6 +229,10 @@ export function DocumentChecklist({
   const hasProgress = ready != null && required != null && required > 0;
   const pct = hasProgress ? Math.round((Math.min(ready!, required!) / required!) * 100) : 0;
   const active = filters?.find((f) => f.id === activeFilter) ?? null;
+  // A chip that would filter to nothing is noise, and one chip filters nothing: the bar shows the
+  // chips that have documents, and only when there is a choice to make (upload polish, 17 Sep 2026).
+  const shownFilters = (filters ?? []).filter((f) => f.count > 0 || f.id === activeFilter);
+  const showFilters = shownFilters.length > 1 || activeFilter != null;
   // The accepted types belong where the files are chosen. With a drop zone they move into it.
   const formatsInDrop = Boolean(onFiles) && formats != null;
 
@@ -263,9 +275,9 @@ export function DocumentChecklist({
         </div>
       )}
 
-      {filters && filters.length > 0 && (
+      {showFilters && (
         <div className="ds-doccheck__filters" role="group" aria-label="Show documents">
-          {filters.map((f) => (
+          {shownFilters.map((f) => (
             <Chip
               key={f.id}
               className={f.tone === "danger" && f.count > 0 ? "ds-doccheck__chip--danger" : undefined}
@@ -283,7 +295,7 @@ export function DocumentChecklist({
 
       {onFiles && (
         <div
-          className="ds-doccheck__drop"
+          className={cn("ds-doccheck__drop", compactDrop && "ds-doccheck__drop--compact")}
           data-dragging={dragging || undefined}
           onDragEnter={(e) => {
             e.preventDefault();
@@ -302,7 +314,7 @@ export function DocumentChecklist({
             take(e.dataTransfer.files);
           }}
         >
-          <Icon name="upload_file" size={24} aria-hidden />
+          <Icon name="upload_file" size={compactDrop ? 20 : 24} aria-hidden />
           <div className="ds-doccheck__drop-copy">
             {/* Two wordings, one shown: a pointer can drag, a thumb cannot. The hidden one is display:none,
                 so a screen reader meets only one. */}
@@ -317,7 +329,7 @@ export function DocumentChecklist({
                 {touchLabel}
               </button>
             </p>
-            {dropHint != null && <p className="ds-doccheck__drop-hint">{dropHint}</p>}
+            {dropHint != null && !compactDrop && <p className="ds-doccheck__drop-hint">{dropHint}</p>}
             {formatsInDrop && <p className="ds-doccheck__drop-formats">{formats}</p>}
           </div>
           <input
