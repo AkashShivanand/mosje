@@ -1,0 +1,109 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — Navbar/NotificationBell
+     The masthead's notifications control: the DS IconButton (neutral, outlined,
+     md) with a Badge anchored to its corner.
+     ============================================================================ */
+
+  .ds-hdr-bell {
+    display: inline-flex;
+    flex: 0 0 auto;
+  }
+
+  /* The box, the border, the ink, the hover and the focus ring are IconButton's
+     (`variant="neutral" appearance="outlined" size="md"`). Only what the masthead
+     adds lives here: the badge's anchor and which of the two forms shows. */
+  .ds-hdr-bell__btn {
+    position: relative;
+  }
+
+  .ds-hdr-bell__btn[aria-expanded="true"] {
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  /* ONE OF THE TWO SHOWS. The panel button from 768 up; the link to the
+     notifications page below — a popover over a phone form is not wanted. */
+  .ds-hdr-bell .ds-hdr-bell__btn--link {
+    display: none;
+  }
+
+  @media (max-width: 767px) {
+    .ds-hdr-bell .ds-hdr-bell__btn--panel {
+      display: none;
+    }
+
+    .ds-hdr-bell .ds-hdr-bell__btn--link {
+      display: inline-flex;
+    }
+  }
+
+  /* The count — the library's own Badge (Type=Large, State=Primary, Emphasis=Solid):
+     16px, `cmp/button/primary/bg`, Label/label-3. Brand primary, not red: red is a
+     rejected application here. The ring in the masthead's ground separates it from
+     the glyph behind it. */
+  .ds-hdr-bell__badge {
+    position: absolute;
+    /* Measured from the padding box, so the button's own 1px border has to be
+       added back — at a flat -4 the badge sat 3px proud where Figma draws 4. */
+    inset-block-start: calc((var(--sa-padding-4) + var(--sa-stroke-1)) * -1);
+    inset-inline-end: calc((var(--sa-padding-4) + var(--sa-stroke-1)) * -1);
+    display: inline-grid;
+    place-items: center;
+    box-sizing: border-box;
+    min-inline-size: var(--sa-icon-size-16);
+    block-size: var(--sa-icon-size-16);
+    padding-inline: var(--sa-padding-4);
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-cmp-button-primary-bg);
+    color: var(--sa-text-neutral-inverse);
+    box-shadow: 0 0 0 var(--sa-stroke-2) var(--sa-bg-neutral-base);
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: var(--sa-font-weight-medium);
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+  }
+
+  /* Badge State=Neutral, Solid: the feed failed, so the count is not known. Not
+     the amber Warning badge — #e09c1d measures 2.35:1 against the white masthead,
+     under the 3:1 a graphic needs (WCAG 1.4.11). Neutral solid is 16:1, and a
+     failed feed is not a warning about the reader's business anyway. */
+  .ds-hdr-bell__badge--error {
+    background: var(--sa-color-text-default);
+    color: var(--sa-bg-neutral-base);
+  }
+
+  /* The panel is NotificationCentre in a Popover — a little wider than the
+     popover's default measure, which wraps a notification's subject line early. */
+  .ds-popover.ds-hdr-bell__panel {
+    inline-size: min(24rem, calc(100vw - var(--sa-padding-32)));
+    max-inline-size: min(24rem, calc(100vw - var(--sa-padding-32)));
+    /* Short enough to open BELOW the bell on a laptop screen. At the popover's
+       default ceiling (the viewport less 64px) a full panel had no room under the
+       masthead, the anchor flipped it, and it opened on top of the bell it
+       belongs to. */
+    max-block-size: min(40rem, 70vh);
+  }
+
+  @media (max-width: 767px) {
+    /* THE BELL MUST NOT PUSH THE ACCOUNT ONTO A SECOND ROW. A phone row spends
+       toggle 40 · 12 · identity (min 168) · 12 · trailing. Bell 40 + the desktop
+       24 + avatar 48 is 112, one pixel over a 375 screen's budget and 16 over a
+       360's — measured, and the pair wrapped under the lockup. At 8 the pair is
+       96, which fits a 360 exactly. */
+    .ds-hdr-brand__trailing:has(> .ds-hdr-bell) {
+      gap: var(--sa-stack-8);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .ds-hdr-bell__badge {
+      border: var(--sa-stroke-1) solid CanvasText;
+      forced-color-adjust: none;
+      background: Highlight;
+      color: HighlightText;
+    }
+  }
+}

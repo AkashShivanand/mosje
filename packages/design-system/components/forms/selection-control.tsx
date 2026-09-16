@@ -192,7 +192,8 @@ export function SelectionControl({
               className={cn("ds-selection__label", hideLabel && "ds-sr-only")}
             >
               {label}
-              {required ? (
+              {/* No mark on a control the reader cannot change — see FormField's `required` rule. */}
+              {required && !readOnly && !disabled ? (
                 <span className="ds-selection__required" aria-hidden="true">
                   {" *"}
                 </span>

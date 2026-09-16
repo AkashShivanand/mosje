@@ -3,6 +3,7 @@ import { cn } from "../../utils/cn";
 import { Badge } from "../feedback/badge";
 import { cardStateCopy, type CardStateKind } from "../dashboard/card-state";
 import { ProvenanceLine } from "../dashboard/provenance";
+import { Icon } from "../utilities/icon";
 import { Progress } from "./charts/progress";
 import type { DataProvenance, StatusTone } from "./charts/types";
 import "./metric-card.css";
@@ -22,6 +23,26 @@ export interface MetricCardProgress {
 }
 
 export interface MetricCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  /**
+   * Makes the whole tile a link. A tile is a link when it GOES somewhere — a register, a filtered
+   * list on another page — and a button when it DOES something here, like filtering the table
+   * below it. It is never both, the rule `ListRow` already states.
+   */
+  href?: string;
+  /**
+   * The app's router link, for a tile with an `href`. Defaults to a plain `<a>`, and without it
+   * every click costs a full document load — the defect `check:link-as` exists to catch.
+   *
+   * linkAs-gate(href-only): a tile with no `href` navigates nowhere and needs no router link.
+   */
+  linkAs?: React.ElementType;
+  /** Makes the whole tile a button. Ignored when `href` is set. */
+  onSelect?: () => void;
+  /**
+   * The tile's figure is the one the page is currently filtered by. Sets `aria-pressed` on a
+   * button and `aria-current` on a link, so the state is not carried by the tint alone.
+   */
+  selected?: boolean;
   /** Descriptor label (small, muted). */
   label: string;
   /**
@@ -151,6 +172,10 @@ export const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
       progress,
       aside,
       provenance,
+      href,
+      linkAs,
+      onSelect,
+      selected = false,
       className,
       ...rest
     },
@@ -169,17 +194,33 @@ export const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
        call site had nothing, which is a punctuation mark read as a figure. */
     const spoken = loading ? "Loading" : (copy?.title ?? value ?? "Not reported");
     const spokenStatus = settled && status ? `, ${status.label}` : "";
+    /*
+     * A link when it goes somewhere, a button when it does something here, a plain box otherwise.
+     * The accessible name is the same in all three — the label and the figure — so a reader who
+     * arrives on the control hears what it is before what it does.
+     */
+    const interactive = href != null || onSelect != null;
+    const Tag = (href != null ? (linkAs ?? "a") : onSelect != null ? "button" : "div") as React.ElementType;
+    const behaviour =
+      href != null
+        ? { href, ...(selected ? { "aria-current": "true" as const } : {}) }
+        : onSelect != null
+          ? { type: "button" as const, onClick: onSelect, "aria-pressed": selected }
+          : {};
     return (
-      <div
+      <Tag
         ref={ref}
         className={cn(
           "ds-metric-card",
           size !== "md" && `ds-metric-card--${size}`,
           tone && tone !== "neutral" && `ds-metric-card--tone-${tone}`,
+          interactive && "ds-metric-card--interactive",
+          interactive && selected && "ds-metric-card--selected",
           className,
         )}
         aria-label={`${label}: ${spoken}${spokenStatus}`}
         {...(loading ? { "aria-busy": true } : {})}
+        {...behaviour}
         {...rest}
       >
         <div className="ds-metric-card__inner">
@@ -202,7 +243,7 @@ export const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
             )}
             {settled && detail != null && <div className="ds-metric-card__detail">{detail}</div>}
           </div>
-          {(settled && status) || icon != null || (settled && aside != null) ? (
+          {(settled && status) || icon != null || (settled && aside != null) || interactive ? (
             <div className="ds-metric-card__side">
               {settled && status && (
                 <Badge className="ds-metric-card__status" status={status.tone ?? "neutral"}>
@@ -213,6 +254,22 @@ export const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
               {icon != null && (
                 <div className="ds-metric-card__icon" aria-hidden="true">
                   {icon}
+                </div>
+              )}
+              {/* THE AFFORDANCE AT REST. Hover, press and focus all say "this is a control" — and
+                  all three need the reader to have already reached for it. A tile that filters the
+                  list below it looked identical to a tile that is only a number, so nobody found it
+                  without hovering (officer-queue walkthrough, 16 Sep 2026). `PortalCard` — the
+                  library's other whole-card control — answers this with a footer and a trailing
+                  glyph, and `ListRow` marks a row that opens what it counts with `chevron_right`;
+                  the tiles sit beside those very rows on this screen, so they take the same mark.
+
+                  It lives in the SIDE column, pushed down by `margin-top: auto`, so it rides the
+                  height the figure already needs. As a row of its own it added 24px to every
+                  interactive tile and left a band under the caption. */}
+              {interactive && (
+                <div className="ds-metric-card__go" aria-hidden="true">
+                  <Icon name="chevron_right" size={16} />
                 </div>
               )}
             </div>
@@ -254,7 +311,7 @@ export const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
         {settled && provenance && (
           <ProvenanceLine className="ds-metric-card__provenance" provenance={provenance} />
         )}
-      </div>
+      </Tag>
     );
   },
 );

@@ -15,13 +15,17 @@
 
 import {
   applyAllAutoFields,
+  costedStrength,
+  isReadOnly,
   visibleDocuments,
   visibleSteps,
   type FieldDef,
   type WizardDef,
-} from "./form-schema";
-import { districtsOf } from "./geography";
-import { demoVerdictFor, type UploadedDoc, type VerdictState } from "./doc-verification";
+} from "./form-schema.ts";
+import { districtsOf } from "./geography.ts";
+import { currentFinancialYear } from "./instalments.ts";
+import { darpanSeed } from "./prefill.ts";
+import { demoVerdictFor, type UploadedDoc, type VerdictState } from "./doc-verification.ts";
 
 /** The event the wizard listens for. Dispatched on `window` by the demo dock panel. */
 export const DEMO_FILL_EVENT = "e-anudaan:demo-fill";
@@ -30,7 +34,16 @@ export interface DemoFillDetail {
   scheme: string;
   values: Record<string, string>;
   docs: Record<number, UploadedDoc>;
+  /**
+   * Hold every check in "Being checked" until a state is set under Document States (audit D-06). The
+   * prototype's checker answers in under two seconds, so "Documents verifying" settled before the
+   * page painted and the state it names was never seen.
+   */
+  holdChecks?: boolean;
 }
+
+/** Set in sessionStorage, to the scheme code, while the demo holds the upload step's checks. */
+export const DEMO_HOLD_CHECKS_KEY = "e-anudaan.demo.hold-checks";
 
 export interface DemoScenario {
   id: string;
@@ -51,7 +64,7 @@ export const DEMO_SCENARIOS: readonly DemoScenario[] = [
   { id: "docs-missing", label: "Documents part-uploaded", lands: "documents",
     effect: "Answers complete, roughly half the checklist filled. Next is held with the count outstanding." },
   { id: "docs-verifying", label: "Documents verifying", lands: "documents",
-    effect: "Every document uploaded and still being checked. Next is held until the check finishes." },
+    effect: "Every document uploaded and held in checking. Next is held until a state is set under Document States." },
   { id: "docs-review", label: "Documents need review", lands: "documents",
     effect: "Uploads accepted below the confidence threshold. An officer confirms them by hand — the applicant is not blocked." },
   { id: "docs-rejected", label: "Documents rejected", lands: "documents",
@@ -71,14 +84,27 @@ export const DEMO_SCENARIOS: readonly DemoScenario[] = [
  * first and the dependent fields after.
  */
 function fullValues(def: WizardDef, seed: Record<string, string> = {}): Record<string, string> {
-  const out: Record<string, string> = { ...seed };
+  // What the portal supplies comes first — NGO-Darpan's identity and the year now running — so the
+  // payload is complete on its own and the wizard only has to lay the signed-in NGO's record over it.
+  const out: Record<string, string> = { ...darpanSeed(undefined), fld_financial_year: currentFinancialYear(), ...seed };
   const all: FieldDef[] = [];
   for (const step of def.steps) for (const section of step.sections) all.push(...section.fields);
 
-  const independent = all.filter((f) => !f.auto && !f.districtsOf);
-  const dependent = all.filter((f) => !f.auto && f.districtsOf);
-  for (const f of independent) out[f.name] ??= answerFor(f);
-  for (const f of dependent) out[f.name] ??= answerFor(f, out);
+  // A locked answer the portal has supplied is the portal's, never the demo's: DARPAN's name, ID,
+  // State and District, a new application's financial year. The demo used to write "Illustrative
+  // name of NGO / VO" over what NGO-Darpan had supplied. Options drawn from the applicant's own
+  // records (a renewal's project) are not invented either.
+  const answerable = (f: FieldDef) => !f.auto && !f.optionsFrom && !(isReadOnly(f, out) && (out[f.name] ?? "").trim() !== "");
+  const independent = all.filter((f) => !f.districtsOf);
+  const dependent = all.filter((f) => f.districtsOf);
+  for (const f of independent) if (answerable(f)) out[f.name] ??= answerFor(f);
+  for (const f of dependent) if (answerable(f)) out[f.name] ??= answerFor(f, out);
+  // A beneficiary count that agrees with the project type it is costed for (audit W-01): "Complete &
+  // valid" put 12 residents in a home the cost-norms panel costs for 25.
+  for (const f of all) if (f.advisory === "costedStrength" && seed[f.name] == null) {
+    const strength = costedStrength(out);
+    if (strength) out[f.name] = String(strength);
+  }
 
   return applyAllAutoFields(def, out);
 }
@@ -105,6 +131,12 @@ function answerFor(f: FieldDef, values?: Record<string, string>): string {
     case "pin": return "411001";
     case "nameAndPhone": return "Illustrative Name, 9800000000";
     case "lettersOnly": return "Illustrative Name";
+    case "accountNumber": return "123456789012";
+    case "notFuture": return "2016-04-01";
+    // A date that must follow another one: every demo date was 1 Apr 2026, so "Complete & valid"
+    // stopped on Organisation Details with "Must be later than the date of registration."
+    case "afterRegistration":
+    case "afterPeriodFrom": return "2031-03-31";
     default: break;
   }
   switch (f.kind) {
@@ -112,7 +144,9 @@ function answerFor(f: FieldDef, values?: Record<string, string>): string {
     case "tel": return "9800000000";
     case "date": return "2026-04-01";
     case "time": return "10:30";
-    case "number": return "12";
+    // A figure in rupees is filled as money, not as the generic 12: "Complete & valid" asked for a
+    // ₹12 non-recurring grant beside cost norms of ₹20 lakh, and the review step read it back (W-01).
+    case "number": return /₹|grant|cost|amount|expenditure|turnover|salary|honorarium|rent/i.test(f.label) ? "250000" : "12";
     case "checkbox": return "true";
     case "textarea": {
       const text = `Illustrative response for "${stripStar(f.label)}", entered by the SAMAVESH prototype demo tools.`;
@@ -138,7 +172,7 @@ function docsWith(def: WizardDef, values: Record<string, string>, state: Verdict
       fileName: `${d.title.replace(/[^A-Za-z0-9]+/g, "_").slice(0, 40)}.pdf`,
       sizeKb: 68 + (d.n % 7) * 3,
       uploadedOn: "07 Sep 2026",
-      verdict: demoVerdictFor(state, d.title),
+      verdict: demoVerdictFor(state, d.title, values.fld_financial_year),
     };
   }
   return out;
@@ -187,7 +221,7 @@ export function buildScenario(id: string, def: WizardDef): DemoFillDetail {
                docs: docsWith(def, full, "verified", Math.ceil(list.length / 2)) };
     }
     case "docs-verifying":
-      return { scheme: def.code, values: full, docs: docsWith(def, full, "pending") };
+      return { scheme: def.code, values: full, docs: docsWith(def, full, "pending"), holdChecks: true };
     case "docs-review":
       return { scheme: def.code, values: full, docs: docsWith(def, full, "review") };
     case "docs-rejected":

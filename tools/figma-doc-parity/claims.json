@@ -1330,18 +1330,18 @@
     {
       "node": "54989:776",
       "where": "Color — Documentation › 02 Tiers › Tier 1",
-      "figma": "Palette collection · 139 variables · modes Blue and Navy · hidden from publishing",
+      "figma": "Palette collection · 143 variables · modes Blue and Navy · hidden from publishing",
       "expect": [
         {
           "kind": "text",
-          "value": "139 variables"
+          "value": "143 variables"
         },
         {
           "kind": "source",
           "file": "packages/tokens/dist/figma.variables.json",
-          "pattern": "\"Palette\":\\s*\\{\\s*\"total\":\\s*139",
+          "pattern": "\"Palette\":\\s*\\{\\s*\"total\":\\s*143",
           "flags": "s",
-          "hint": "The payload's Palette count; the frame said 164 until 2026-09-05 and 138 until 2026-09-06, when color/transparent/secondary/0 joined."
+          "hint": "The payload's Palette count; the frame said 164 until 2026-09-05 138 until 2026-09-06, when color/transparent/secondary/0 joined, 139 until 2026-09-14, when color/neutralScale/25 joined, 140 until 2026-09-15, when color/transparent/secondary/0 was retired with the sidebar's saffron wash, 139 until later that day, when three brand-source companions joined (bg/brand/primary/boldest, text/link/visited/default, text/link/brand/default), and 142 until the wash and its 0 tier were restored as SAMAVESH branding."
         },
         {
           "kind": "source",
@@ -1390,6 +1390,167 @@
           "file": "packages/design-system/components/auth/portal-login-hero.css",
           "pattern": "transparent 16%,\\s+color-mix\\(in srgb, currentColor 50%, transparent\\) 60%,\\s+currentColor 100%",
           "hint": "The mask stops transcribe the Figma alpha mask (57375:16783, isMask, 814 square): stored as α1 at 0, α0.5 at 0.4, α0 at 0.84 — which READS right to left, so in CSS they are 16%, 60% and 100%. Corrected 7 Sep 2026: this claim previously asserted 0% / 50% / 70%, which matched neither the stored stops nor the render — and the CSS matched the wrong claim, so the gate was green over a hero that was visibly brighter than the design. Settled by solving the per-pixel alpha out of Figma's own render of 52380:187221 against the known navy ground and the source photograph: measured 0.00 out to 15% across, 0.38 at half, 0.63 at 70%, 0.97 at the right edge — a straight ramp from 16% to 100%. Change one side and the band the text sits on differs between the library and the estate."
+        }
+      ]
+    },
+    {
+      "node": "58161:10777",
+      "where": "Navbar — Documentation › 07 Props & API › props › notifications",
+      "figma": "Portal only, and only with account. items + href (required) + status + onMarkAllRead. The badge is notificationCount(items). Figma: Navbar/Portal › Notifications. What belongs: docs/specs/notification-object.md.",
+      "expect": [
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/navigation/header/site-header.tsx",
+          "pattern": "\\{account && notifications && <NotificationBell",
+          "hint": "The bell renders only when an account is present. 'Portal only' on this card is a usage convention, NOT enforced by code — both render sites gate on account && notifications, never on the variant — so it is deliberately not pinned."
+        },
+        {
+          "kind": "text",
+          "value": "href (required)"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/navigation/header/types.ts",
+          "pattern": "interface HeaderNotifications\\b[^}]*\\bhref: string;",
+          "flags": "s",
+          "hint": "href is required: on a phone the bell is a link to the notifications page, not a panel."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/navigation/header/types.ts",
+          "pattern": "interface HeaderNotifications\\b[^}]*\\bhref\\?:",
+          "flags": "s",
+          "absent": true,
+          "hint": "If href becomes optional, a phone bell can render with nowhere to go."
+        },
+        {
+          "kind": "text",
+          "value": "notificationCount(items)"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/navigation/header/notification-bell.tsx",
+          "pattern": "notificationCount\\(items\\)",
+          "hint": "One request, one answer: the badge and the notification centre resolve the count with the same expression."
+        },
+        {
+          "kind": "source",
+          "file": "docs/specs/notification-object.md",
+          "pattern": "notificationCount",
+          "hint": "The card points readers at the spec for what belongs in the feed; the spec must still define the count."
+        }
+      ]
+    },
+    {
+      "node": "58161:10771",
+      "where": "Navbar — Documentation › 07 Props & API › mapping › Navbar/NotificationBell",
+      "figma": "<SiteHeader notifications={…} /> · NotificationBell — portal only, before the account",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "before the account"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/navigation/header/site-header.tsx",
+          "pattern": "\\{account && notifications && <NotificationBell[\\s\\S]{0,300}?\\{account && <AccountMenu",
+          "hint": "The bell sits immediately before the account block, in the resting row and the condensed bar alike; the account keeps the row's outer edge."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/navigation/header/site-header.tsx",
+          "pattern": "\\{account && <AccountMenu[^\\n]*\\n[\\s\\S]{0,300}?\\{account && notifications && <NotificationBell",
+          "absent": true,
+          "hint": "The positive pattern alone matched EITHER render site, so moving the account above the bell in one row passed. This asserts the account is never immediately followed by the bell anywhere — the resting row and the condensed bar both keep the bell first."
+        }
+      ]
+    },
+    {
+      "node": "58143:59713",
+      "where": "Navbar — Documentation › 11 Arrangements › Portal · Notifications on",
+      "figma": "Notifications on places the bell immediately before the account block, for a portal that has a real feed and a notifications page. It is off by default. The count is unread updates plus items that need action; the account keeps the row's outer edge.",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "unread updates plus items that need action"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/data-display/notification-centre.tsx",
+          "pattern": "item\\.actionRequired \\|\\| item\\.unread",
+          "hint": "The count is actionRequired OR unread — an item needing action counts even once it has been read."
+        },
+        {
+          "kind": "text",
+          "value": "immediately before the account block"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/navigation/header/site-header.tsx",
+          "pattern": "\\{account && notifications && <NotificationBell[\\s\\S]{0,300}?\\{account && <AccountMenu"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/navigation/header/site-header.tsx",
+          "pattern": "\\{account && <AccountMenu[^\\n]*\\n[\\s\\S]{0,300}?\\{account && notifications && <NotificationBell",
+          "absent": true,
+          "hint": "The positive pattern alone matched EITHER render site, so moving the account above the bell in one row passed. This asserts the account is never immediately followed by the bell anywhere — the resting row and the condensed bar both keep the bell first."
+        }
+      ]
+    },
+    {
+      "node": "57340:5145",
+      "where": "Navbar — Component record › 1 · Record — maintainers › property mapping",
+      "figma": "Device and State are CSS breakpoints and a scroll state, never props. Menu → onToggleNav present; Profile → account; Search → search; Login Signup → actions; Notifications → notifications (rendered only with account). NotificationBell Badge None · Count · Error → derived from items and status, never a prop. NavItem Density and the toggles' Size and State are decided by placement and interaction in CSS. Code-only: search opening in place in the condensed bar, and the navigation handing itself to the sheet when it runs out of room — both drawn from instances in 11 / ARRANGEMENTS.",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "rendered only with account"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/navigation/header/site-header.tsx",
+          "pattern": "\\{account && notifications && <NotificationBell"
+        },
+        {
+          "kind": "text",
+          "value": "never a prop"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/navigation/header/notification-bell.tsx",
+          "pattern": "interface NotificationBellProps\\b[^}]*\\bbadge\\??\\s*:",
+          "flags": "s",
+          "absent": true,
+          "hint": "The badge is derived from items and status. A badge prop would let a caller show a count that disagrees with the feed."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/navigation/header/notification-bell.figma.ts",
+          "pattern": "getEnum\\(\"Badge\", \\{ None: \"none\", Count: \"count\", Error: \"error\" \\}\\)",
+          "hint": "Code Connect maps all three Figma Badge options; a fourth option in Figma with no mapping would emit undefined."
+        }
+      ]
+    },
+    {
+      "node": "57340:5149",
+      "where": "Navbar — Component record › 1 · Record — maintainers › counts and measurements",
+      "figma": "Navbar/Website and Navbar/Portal: 6 variants each (3 devices × Default/On Scroll). NavItem: 20 (14 Default density, 6 Condensed). MenuToggle: 16 (Sidebar × Size × State). SheetToggle: 8. NotificationBell: 9 (State × Badge), added 2026-09-15. Bell to account, Notifications on: 8 Mobile (Trailing, stack/8 — the row's space-between had left it at 0), 24 Tablet and Desktop, 16 On Scroll — the same as code, measured 2026-09-15. BrandLockup: 8 (Default, Compact, Condensed). Condensed bar 64px, 56 on a phone; every control in it 40. Masthead rows pad grid/margin/page and the website caps at container/page; measured on the live hub at 1440, 1024 and 412 on 2026-09-05.",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "NotificationBell: 9 (State × Badge)"
+        },
+        {
+          "kind": "token",
+          "token": "--sa-stack-8",
+          "hint": "The phone gap between the bell and the account. It was 0 until the row's space-between was replaced; at 0 the two controls touched."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/navigation/header/notification-bell.css",
+          "pattern": ":has\\(> \\.ds-hdr-bell\\) \\{\\s*gap: var\\(--sa-stack-8\\)",
+          "flags": "s"
         }
       ]
     }

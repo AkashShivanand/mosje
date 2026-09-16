@@ -9,11 +9,26 @@ import { LanguageDialog } from "@/components/i18n/language-dialog";
 import { useTranslation } from "@/components/i18n/translation-provider";
 import { languageLabel } from "@/lib/bhashini/languages";
 import { useSearchSuggestions } from "@/components/website/search/use-search-suggestions";
+import { getOrganisationByAbbr } from "@/data/website";
 
 // The website mounts natively in the hub at /website, and its public assets live
 // at apps/hub/public/website/…, so they serve under this prefix. (It was the app's
 // basePath before the native mount — same value, now a literal folder path.)
 const BP = "/website";
+
+/**
+ * An organisation's mark, READ FROM THE REGISTRY — never retyped here.
+ *
+ * These eleven paths used to be eleven string literals, which is how this menu came to
+ * disagree with `data/website/organisations.ts` about where DWBDNC belongs while agreeing
+ * with it about DWBDNC's logo. `check:org-logos` counts literals like those because each
+ * one keeps the website's duplicate copy of the org-mark tree alive; the only one left in
+ * this file is the National Emblem, which is not an organisation's mark. A row whose
+ * abbreviation is not in the registry renders without a mark rather than a broken image.
+ */
+function orgMark(abbr: string): string | undefined {
+  return getOrganisationByAbbr(abbr)?.logoSrc;
+}
 
 /**
  * SEVEN ENTRIES IS THE CEILING ON A 1280px SCREEN — read this before adding one.
@@ -71,37 +86,51 @@ const NAV: NavItem[] = [
       {
         heading: "Commissions",
         items: [
-          { abbr: "NCSC", name: "National Commission for Scheduled Castes", href: "/website/organisation/national-commission-for-scheduled-castes", iconSrc: `${BP}/images/org-logos/ncsc.png` },
-          { abbr: "NCSK", name: "National Commission for Safai Karamcharis", href: "/website/organisation/national-commission-for-safai-karamcharis", iconSrc: `${BP}/images/org-logos/ncsk.png` },
-          { abbr: "NCBC", name: "National Commission for Backward Classes", href: "/website/organisation/national-commission-for-backward-classes-ncbc", iconSrc: `${BP}/images/org-logos/ncbc.png` },
+          { abbr: "NCSC", name: "National Commission for Scheduled Castes", href: "/website/organisation/national-commission-for-scheduled-castes", iconSrc: orgMark("NCSC") },
+          { abbr: "NCSK", name: "National Commission for Safai Karamcharis", href: "/website/organisation/national-commission-for-safai-karamcharis", iconSrc: orgMark("NCSK") },
+          { abbr: "NCBC", name: "National Commission for Backward Classes", href: "/website/organisation/national-commission-for-backward-classes-ncbc", iconSrc: orgMark("NCBC") },
         ],
       },
       {
         heading: "Corporations",
         items: [
-          { abbr: "NSFDC", name: "National Scheduled Castes Finance and Development Corporation", href: "/website/organisation/national-scheduled-castes-finance-and-development-corporation", iconSrc: `${BP}/images/org-logos/nsfdc.png` },
-          { abbr: "NSKFDC", name: "National Safai Karamcharis Finance and Development Corporation", href: "/website/organisation/national-safai-karamcharis-finance-development-corporation", iconSrc: `${BP}/images/org-logos/nskfdc.png` },
-          { abbr: "NBCFDC", name: "National Backward Classes Finance and Development Corporation", href: "/website/organisation/national-backward-classes-financeand-development-corporationnbcfdc", iconSrc: `${BP}/images/org-logos/nbcfdc.png` },
+          { abbr: "NSFDC", name: "National Scheduled Castes Finance and Development Corporation", href: "/website/organisation/national-scheduled-castes-finance-and-development-corporation", iconSrc: orgMark("NSFDC") },
+          { abbr: "NSKFDC", name: "National Safai Karamcharis Finance and Development Corporation", href: "/website/organisation/national-safai-karamcharis-finance-development-corporation", iconSrc: orgMark("NSKFDC") },
+          { abbr: "NBCFDC", name: "National Backward Classes Finance and Development Corporation", href: "/website/organisation/national-backward-classes-financeand-development-corporationnbcfdc", iconSrc: orgMark("NBCFDC") },
         ],
       },
+      /*
+       * DWBDNC AND NISD ARE BODIES, AND THEY BELONG HERE — read this before moving
+       * either of them back.
+       *
+       * Both were mis-filed against the department's own site (checked live,
+       * 2026-09-11, and again against `data/website/organisations.ts`, which had
+       * DWBDNC right all along):
+       *
+       *   - DWBDNC sat under "Scheme Specific Thematic Portals". It is a statutory
+       *     Board that RUNS a scheme (SEED); it is not the scheme. The registry
+       *     already said `category: "foundations"` — this menu was a second,
+       *     hand-kept copy of the same list and it had drifted from it.
+       *   - NISD had a column of its own, "Training & Capacity Building", holding
+       *     one item. The department files it with the autonomous bodies, which is
+       *     also what it is: a society under the Societies Registration Act 1860.
+       *
+       * Order matches the department's own column: DAF, DAIC, BJRNF, DWBDNC, NISD.
+       * `organisations.test.ts` now fails if this column and the registry disagree.
+       */
       {
         heading: "Foundation / Autonomous Bodies",
         items: [
-          { abbr: "DAF", name: "Dr. Ambedkar Foundation", href: "/website/organisation/dr-ambedkar-foundation", iconSrc: `${BP}/images/org-logos/daf.png` },
-          { abbr: "BJRNF", name: "Babu Jagjivan Ram National Foundation", href: "/website/organisation/babu-jagjivan-ram-national-foundation-jrf", iconSrc: `${BP}/images/org-logos/jrf.png` },
-          { abbr: "DAIC", name: "Dr Ambedkar International Centre", href: "/website/organisation/dr-ambedkar-international-centre", iconSrc: `${BP}/images/org-logos/daic.png` },
-        ],
-      },
-      {
-        heading: "Training & Capacity Building",
-        items: [
-          { abbr: "NISD", name: "National Institute of Social Defence", href: "/website/organisation/national-institute-of-social-defence", iconSrc: `${BP}/images/org-logos/nisd.png` },
+          { abbr: "DAF", name: "Dr. Ambedkar Foundation", href: "/website/organisation/dr-ambedkar-foundation", iconSrc: orgMark("DAF") },
+          { abbr: "DAIC", name: "Dr Ambedkar International Centre", href: "/website/organisation/dr-ambedkar-international-centre", iconSrc: orgMark("DAIC") },
+          { abbr: "BJRNF", name: "Babu Jagjivan Ram National Foundation", href: "/website/organisation/babu-jagjivan-ram-national-foundation-jrf", iconSrc: orgMark("BJRNF") },
+          { abbr: "DWBDNC", name: "Development and Welfare Board for De-notified, Nomadic, and Semi-Nomadic Communities", href: "/website/organisation/development-and-welfare-board-for-de-notified-nomadic-and-semi-nomadic", iconSrc: orgMark("DWBDNC") },
+          { abbr: "NISD", name: "National Institute of Social Defence", href: "/website/organisation/national-institute-of-social-defence", iconSrc: orgMark("NISD") },
         ],
       },
       {
         heading: "Scheme Specific Thematic Portals",
         items: [
-          { abbr: "DWBDNC", name: "Development and Welfare Board for De-notified, Nomadic, and Semi-Nomadic Communities", href: "/website/organisation/development-and-welfare-board-for-de-notified-nomadic-and-semi-nomadic" },
           { abbr: "SCW", name: "Senior Citizens Welfare", href: "/website/organisation/senior-citizens-welfarescw" },
           { abbr: "PM-AJAY", name: "Pradhan Mantri Anusuchit Jaati Abhyuday Yojna", href: "/website/organisation/pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay" },
           { abbr: "SMILE", name: "National Portal for Transgender Persons", href: "/website/organisation/national-portal-for-transgender-persons" },

@@ -5,6 +5,7 @@
  * ("Anshul Verma") owns an approved certificate so the citizen dashboard is live.
  */
 
+import { TG_DIGILOCKER } from "../identity";
 import type {
   Application,
   ApplicantDetails,
@@ -101,7 +102,8 @@ function buildApp(r: Row): Application {
     documents: DOCS,
     timeline,
     certificateNo: r.cert,
-    viaDigiLocker: r.n % 3 === 0,
+    // Only while DigiLocker prefill is offered; otherwise every sample application was entered by hand.
+    viaDigiLocker: TG_DIGILOCKER.citizen.applicationPrefill && r.n % 3 === 0,
   };
 }
 

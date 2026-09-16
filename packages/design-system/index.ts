@@ -213,6 +213,31 @@ export { FormSection } from "./components/forms/form-section";
 export type { FormSectionProps } from "./components/forms/form-section";
 export { FormCard } from "./components/forms/form-card";
 export type { FormCardProps } from "./components/forms/form-card";
+export { FormPanel } from "./components/forms/form-panel";
+export type { FormPanelProps } from "./components/forms/form-panel";
+export { FormInset } from "./components/forms/form-inset";
+export type { FormInsetProps } from "./components/forms/form-inset";
+export { DocumentTile, DocumentTiles } from "./components/forms/document-tile";
+export type { DocumentTileProps, DocumentTileState } from "./components/forms/document-tile";
+export { DocumentRow } from "./components/forms/document-row";
+export type { DocumentRowProps, DocumentRowState, DocumentRowFile } from "./components/forms/document-row";
+export { DocumentChecklist, DocumentChecklistGroup, DocumentBulkAction } from "./components/forms/document-checklist";
+export type {
+  DocumentChecklistProps,
+  DocumentChecklistGroupProps,
+  DocumentChecklistFilter,
+  DocumentBulkActionProps,
+} from "./components/forms/document-checklist";
+export { DocumentFindings } from "./components/forms/document-findings";
+export type { DocumentFindingsProps, DocumentFinding } from "./components/forms/document-findings";
+export { DocumentPlacementTray } from "./components/forms/document-placement-tray";
+export type {
+  DocumentPlacementTrayProps,
+  DocumentPlacement,
+  DocumentPlacementOption,
+} from "./components/forms/document-placement-tray";
+export { DocumentHistorySheet } from "./components/forms/document-history-sheet";
+export type { DocumentHistorySheetProps, DocumentHistoryEntry } from "./components/forms/document-history-sheet";
 export { Wizard, ReviewSection, ReviewItem } from "./components/forms/wizard";
 export type { WizardProps } from "./components/forms/wizard";
 export { MediaUpload } from "./components/forms/media-upload";
@@ -329,8 +354,8 @@ export { EventList } from "./components/data-display/event-list";
 export type { EventListProps, EventItem, EventTone } from "./components/data-display/event-list";
 export { CommentThread } from "./components/data-display/comment-thread";
 export type { CommentThreadProps, ThreadComment } from "./components/data-display/comment-thread";
-export { NotificationCentre } from "./components/data-display/notification-centre";
-export type { NotificationCentreProps } from "./components/data-display/notification-centre";
+export { NotificationCentre, notificationCount } from "./components/data-display/notification-centre";
+export type { NotificationCentreProps, NotificationStatus } from "./components/data-display/notification-centre";
 export { ListGroup, ListRow } from "./components/data-display/list-group";
 export type {
   ListGroupProps,
@@ -527,6 +552,7 @@ export {
   SiteHeader,
   BrandLockup,
   AccountMenu,
+  NotificationBell,
 } from "./components/navigation/header";
 export {
   MenuToggle,
@@ -584,6 +610,8 @@ export type {
   SiteHeaderProps,
   BrandLockupProps,
   AccountMenuProps,
+  NotificationBellProps,
+  HeaderNotifications,
   NavLink,
   NavItem,
   NavColumn,
@@ -709,12 +737,24 @@ export type {
 } from "./components/auth/portal-login-shell";
 export { PortalLoginTemplate } from "./components/auth/portal-login-template";
 export type { PortalLoginTemplateProps } from "./components/auth/portal-login-template";
+// Password recovery on the login page's own chrome — the code counterpart of the
+// Figma `Auth / CredentialRecovery`, which had none until 2026-09-14.
+export { PortalRecoveryTemplate } from "./components/auth/portal-recovery-template";
+export type { PortalRecoveryTemplateProps } from "./components/auth/portal-recovery-template";
 export type {
   PortalLoginConfig,
   PortalRoleTab as PortalConfigRoleTab,
   PortalAuthMode,
   PortalAudience,
   PortalBrandAssets,
+  PortalIdentifierKind,
+  PortalSubRole,
+  PortalLoginFieldErrors,
+  OtpRequest,
+  AuthStepResult,
+  PortalRecoveryConfig,
+  PortalRecoveryFlow,
+  PortalRecoveryStep,
   LoginSubmitPayload,
 } from "./components/auth/types";
 // Auth parts — the pieces every portal login is assembled from. Mirrors the

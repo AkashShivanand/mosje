@@ -56,8 +56,8 @@
     "weight": 0,
     "hindi-unmarked": 0,
     "style-mixed": 3,
-    "style-weight": 244,
-    "style-weight-unset": 178
+    "style-weight": 224,
+    "style-weight-unset": 173
   },
   "files": {
     "apps/hub/src/app/design-system/components/brand/org-logo/org-logo-docs.css": {
@@ -237,7 +237,7 @@
       "weight": 0,
       "hindi-unmarked": 0,
       "style-mixed": 0,
-      "style-weight": 12,
+      "style-weight": 8,
       "style-weight-unset": 5
     },
     "apps/hub/src/app/portals/pm-ajay/pm-ajay.css": {
@@ -252,8 +252,8 @@
       "weight": 0,
       "hindi-unmarked": 0,
       "style-mixed": 0,
-      "style-weight": 40,
-      "style-weight-unset": 6
+      "style-weight": 31,
+      "style-weight-unset": 4
     },
     "apps/hub/src/app/portals/smile-admin/smile-admin.css": {
       "size-off-ramp": 0,
@@ -599,21 +599,6 @@
       "style-mixed": 0,
       "style-weight": 11,
       "style-weight-unset": 4
-    },
-    "packages/design-system/components/actions/button.css": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 0,
-      "tracking": 0,
-      "family": 0,
-      "utility-size": 0,
-      "utility-leading": 0,
-      "utility-tracking": 0,
-      "weight": 0,
-      "hindi-unmarked": 0,
-      "style-mixed": 0,
-      "style-weight": 0,
-      "style-weight-unset": 1
     },
     "packages/design-system/components/actions/menu.css": {
       "size-off-ramp": 0,
@@ -975,21 +960,6 @@
       "style-weight": 0,
       "style-weight-unset": 1
     },
-    "packages/design-system/components/feedback/chatbot.css": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 0,
-      "tracking": 0,
-      "family": 0,
-      "utility-size": 0,
-      "utility-leading": 0,
-      "utility-tracking": 0,
-      "weight": 0,
-      "hindi-unmarked": 0,
-      "style-mixed": 0,
-      "style-weight": 1,
-      "style-weight-unset": 0
-    },
     "packages/design-system/components/feedback/cookie-consent.css": {
       "size-off-ramp": 0,
       "size": 0,
@@ -1197,7 +1167,7 @@
       "weight": 0,
       "hindi-unmarked": 0,
       "style-mixed": 0,
-      "style-weight": 1,
+      "style-weight": 0,
       "style-weight-unset": 1
     },
     "packages/design-system/components/forms/date-range-picker.css": {
@@ -1257,7 +1227,7 @@
       "weight": 0,
       "hindi-unmarked": 0,
       "style-mixed": 0,
-      "style-weight": 4,
+      "style-weight": 3,
       "style-weight-unset": 0
     },
     "packages/design-system/components/forms/geo-photo-input.css": {
@@ -1395,21 +1365,6 @@
       "style-weight": 2,
       "style-weight-unset": 1
     },
-    "packages/design-system/components/forms/slider.css": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 0,
-      "tracking": 0,
-      "family": 0,
-      "utility-size": 0,
-      "utility-leading": 0,
-      "utility-tracking": 0,
-      "weight": 0,
-      "hindi-unmarked": 0,
-      "style-mixed": 0,
-      "style-weight": 1,
-      "style-weight-unset": 1
-    },
     "packages/design-system/components/forms/time-picker.css": {
       "size-off-ramp": 0,
       "size": 0,
@@ -1439,21 +1394,6 @@
       "style-mixed": 0,
       "style-weight": 3,
       "style-weight-unset": 1
-    },
-    "packages/design-system/components/forms/wizard.css": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 0,
-      "tracking": 0,
-      "family": 0,
-      "utility-size": 0,
-      "utility-leading": 0,
-      "utility-tracking": 0,
-      "weight": 0,
-      "hindi-unmarked": 0,
-      "style-mixed": 0,
-      "style-weight": 2,
-      "style-weight-unset": 0
     },
     "packages/design-system/components/layout/layout.css": {
       "size-off-ramp": 0,
@@ -1545,21 +1485,6 @@
       "style-weight": 1,
       "style-weight-unset": 0
     },
-    "packages/design-system/components/navigation/link.css": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 0,
-      "tracking": 0,
-      "family": 0,
-      "utility-size": 0,
-      "utility-leading": 0,
-      "utility-tracking": 0,
-      "weight": 0,
-      "hindi-unmarked": 0,
-      "style-mixed": 0,
-      "style-weight": 0,
-      "style-weight-unset": 1
-    },
     "packages/design-system/components/navigation/portal-card.css": {
       "size-off-ramp": 0,
       "size": 0,
@@ -1572,7 +1497,7 @@
       "weight": 0,
       "hindi-unmarked": 0,
       "style-mixed": 0,
-      "style-weight": 3,
+      "style-weight": 2,
       "style-weight-unset": 0
     },
     "packages/design-system/components/navigation/samavesh-banner.css": {

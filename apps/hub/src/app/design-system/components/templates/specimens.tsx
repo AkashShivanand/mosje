@@ -202,13 +202,36 @@ export function WizardSpecimen(): React.JSX.Element {
       steps={steps}
       current={step}
       draft={{ savedAt: "18 Aug 2026", onResume: () => undefined, onStartFresh: () => undefined }}
+      nextLabel="Save and Continue"
+      submitLabel="Submit Application"
+      onCancel={() => setStep(0)}
       onBack={() => setStep((s) => Math.max(0, s - 1))}
       onNext={() => setStep((s) => Math.min(steps.length - 1, s + 1))}
       onSubmit={() => undefined}
     >
-      <Card>
-        <CardBody>The current step&rsquo;s fields go here, as FormSections.</CardBody>
-      </Card>
+      {/* Sub-sections straight into the step panel Wizard draws — never a Card around them. */}
+      <FormSection title="Registration">
+        <FormField label="Name of the Organisation" required>
+          {(p) => <Input {...p} defaultValue="Harijan Sevak Sangh" />}
+        </FormField>
+        <FormField label="NGO-Darpan ID" required>
+          {(p) => <Input {...p} defaultValue="DL/2016/0104728" />}
+        </FormField>
+        <FormField label="Year of Registration" required>
+          {(p) => <Input {...p} defaultValue="1932" inputMode="numeric" />}
+        </FormField>
+      </FormSection>
+      <FormSection title="Registered Address">
+        <FormField label="District" required>
+          {(p) => <Input {...p} defaultValue="North West Delhi" />}
+        </FormField>
+        <FormField label="PIN Code" required>
+          {(p) => <Input {...p} defaultValue="110009" inputMode="numeric" />}
+        </FormField>
+        <FormField label="Address" required className="ds-form-span-full">
+          {(p) => <Textarea {...p} rows={2} defaultValue="Kingsway Camp, Delhi" />}
+        </FormField>
+      </FormSection>
     </WizardScreen>
   );
 }
@@ -312,6 +335,14 @@ export function FormSpecimen(): React.JSX.Element {
         </FormField>
         <FormField label="Telephone">
           {(p) => <Input {...p} defaultValue="011 2766 1234" />}
+        </FormField>
+      </FormSection>
+      <FormSection title="Contact Person" columns={2}>
+        <FormField label="Name" required>
+          {(p) => <Input {...p} defaultValue="Laxmi Dass" />}
+        </FormField>
+        <FormField label="Designation" required>
+          {(p) => <Input {...p} defaultValue="Secretary" />}
         </FormField>
       </FormSection>
     </FormScreen>

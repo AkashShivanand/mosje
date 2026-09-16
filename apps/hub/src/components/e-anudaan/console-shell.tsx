@@ -3,9 +3,10 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { SiteHeader, OrgLogo, PortalPage, type PortalNavGroup } from "@mosje/design-system";
+import { SiteHeader, OrgLogo, PortalPage, StatusScreen, type PortalNavGroup } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
-import { ROLES } from "@/lib/e-anudaan/roles";
+import { ROLES, consoleRouteAccess } from "@/lib/e-anudaan/roles";
+import { notificationItems, notificationsHref } from "@/lib/e-anudaan/notifications";
 
 /**
  * Authenticated shell for the 12 officer roles — a wrapper around `PortalPage`.
@@ -29,14 +30,27 @@ import { ROLES } from "@/lib/e-anudaan/roles";
  * not see, and no way to reach another screen.
  *
  * **`data-portal`**, which the palette re-bind reads and this shell never set.
+ *
+ * **The route agrees with the sidebar.** The rail showed each officer only their own screens,
+ * but any officer could type another's address and use it — the ASO opened the Sanction Desk and
+ * scheduled a PMU inspection (security audit S06, 14 Sep 2026). `consoleRouteAccess` decides from
+ * the same `caps` and `nav` the rail is built from; a screen belonging to another role renders
+ * the 403 status screen, and an address naming no screen the 404, both inside the chrome.
+ *
+ * **An NGO that opens a console address is refused, not signed out** (audit N-17). It was sent to
+ * the officer login, which read as a lost session and cost the clerk their place. It now gets the
+ * same 403 an officer gets for another role's screen, with the way back to the NGO dashboard.
  */
 export function ConsoleShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { state, hydrated, logout } = useEAnudaan();
+  const { state, hydrated, logout, markAllNotificationsRead } = useEAnudaan();
 
   const isOfficer = state.session !== null && state.session !== "ngo";
+  const isNgo = state.session === "ngo";
   const role = isOfficer ? ROLES[state.session!] : null;
+
+  const notifications = React.useMemo(() => notificationItems(state, role?.id ?? null), [state, role]);
 
   /* Unconditional, so the hook order never changes with the session. */
   const nav = React.useMemo<PortalNavGroup[]>(
@@ -45,8 +59,13 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
   );
 
   React.useEffect(() => {
-    if (hydrated && !isOfficer) router.replace("/portals/e-anudaan/login?role=officer");
-  }, [hydrated, isOfficer, router]);
+    if (hydrated && !isOfficer && !isNgo) router.replace("/portals/e-anudaan/login?role=officer");
+  }, [hydrated, isOfficer, isNgo, router]);
+
+  // `consoleRouteAccess` refuses the NGO every console screen; its role carries its own home.
+  const viewer = role ?? (isNgo ? ROLES.ngo : null);
+  const access = viewer ? consoleRouteAccess(pathname, viewer) : "allowed";
+  const toDashboard = { label: "Go to My Dashboard", onClick: () => viewer && router.push(viewer.home) };
 
   return (
     <PortalPage
@@ -59,11 +78,12 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
       mainId="main"
       identity={{
         name: "E-Anudaan",
-        expansion: "Grant-in-Aid Management",
+        // Non-breaking hyphens (U+2011): a narrow rail broke the name as "Grant-" / "in-Aid".
+        expansion: "Grant\u2011in\u2011Aid Management",
         mark: <OrgLogo path="/portals/e-anudaan" />,
         href: "/portals/e-anudaan",
       }}
-      pending={!hydrated || !role}
+      pending={!hydrated || !viewer}
       /* A function, so the masthead drives the rail: above the tablet anchor its
          button collapses the column, below it opens the drawer. */
       header={(navState) => (
@@ -80,27 +100,56 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
           beta
           onToggleNav={navState.toggle}
           navExpanded={navState.open}
-          account={role ? { name: role.personName, role: role.label } : undefined}
+          account={viewer ? { name: viewer.personName, role: viewer.label } : undefined}
+          /* The bell is this portal's one door to notifications: the sidebar item and
+             the account-menu item it replaces are gone (docs/specs/notification-object.md). */
+          notifications={
+            role
+              ? {
+                  items: notifications,
+                  href: notificationsHref(role.id),
+                  onMarkAllRead: markAllNotificationsRead,
+                }
+              : undefined
+          }
           accountMenu={[
-            {
-              label: "Notifications",
-              onSelect: () => {
-                router.push("/portals/e-anudaan/dashboard/notifications");
-              },
-            },
             {
               label: "Sign out",
               danger: true,
               onSelect: () => {
                 logout();
-                router.push("/portals/e-anudaan/login?role=officer");
+                router.push(`/portals/e-anudaan/login?role=${isNgo ? "ngo" : "officer"}`);
               },
             },
           ]}
         />
       )}
     >
-      {children}
+      {access === "allowed" ? (
+        children
+      ) : access === "forbidden" ? (
+        <StatusScreen
+          kind="403"
+          title="You Do Not Have Access to This Page"
+          description={
+            isNgo
+              ? "This page is for officers of the Ministry. Your organisation's applications are on your dashboard."
+              : "This page belongs to another officer's role. Your own applications and registers are on your dashboard."
+          }
+          primaryAction={toDashboard}
+          searchUrl={null}
+          wayfindingLinks={[]}
+        />
+      ) : (
+        <StatusScreen
+          kind="404"
+          title="Page Not Found"
+          description="No page exists at this address. The link may be incomplete."
+          primaryAction={toDashboard}
+          searchUrl={null}
+          wayfindingLinks={[]}
+        />
+      )}
     </PortalPage>
   );
 }

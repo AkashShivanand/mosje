@@ -54,19 +54,19 @@ export default function NotificationsPage() {
   return (
     <div className="space-y-lg">
       <SmilePageHeader
-        breadcrumbs={[{ label: "Communications" }, { label: "Notifications" }]}
+        breadcrumbs={[{ label: "Communications" }, { label: "Broadcasts" }]}
         eyebrow="Communications"
-        title="Notifications"
+        title="Broadcasts"
         subtitle="Broadcast and scheduled messages sent to portal users across states, districts, and field roles."
         actions={
           <div className="flex items-center gap-sm">
             <ExportMenu
-              filename="smile-notifications"
-              title="Notifications"
-              subtitle="System and broadcast notifications sent to stakeholders."
+              filename="smile-broadcasts"
+              title="Broadcasts"
+              subtitle="Broadcast and scheduled messages sent to stakeholders."
               columns={[
                 { header: "S.No.", accessor: (r: Notification & { sno: number }) => r.sno },
-                { header: "Notification Title", accessor: "title" },
+                { header: "Broadcast Title", accessor: "title" },
                 { header: "Channel", accessor: (r) => r.channel.join(", ") },
                 { header: "Target Audience", accessor: "audience" },
                 { header: "Sent On", accessor: "sentAt" },
@@ -123,7 +123,7 @@ export default function NotificationsPage() {
           data={NOTIFICATIONS as Array<Notification & Record<string, unknown>>}
           total={NOTIFICATIONS.length}
           showPageSizes={false}
-          caption="Notifications by audience, channel and status"
+          caption="Broadcasts by audience, channel and status"
           emptyLabel="No notification has been sent yet."
         />
       </div>

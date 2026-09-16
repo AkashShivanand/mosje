@@ -21,6 +21,16 @@ import {
  * column a `sortValue`: without it a formatted figure sorts as text and
  * "₹1,20,000" lands before "₹9,000".
  *
+ * **A pinned Actions column** (`className: "is-sticky-right"` on the column)
+ * pins itself only while the table overflows by at least its own width —
+ * otherwise it would paint over the column before it with no way to scroll it
+ * back. Nothing to configure; it is measured.
+ *
+ * **The footer.** Hidden while every row fits on the smallest page size
+ * (`hidePagerWhenFits`, default true). A table wider than its box becomes a
+ * focusable `region` named by `caption`, or by `scrollLabel` when there is no
+ * caption, so a keyboard reader can scroll it.
+ *
  * `sort` / `onSortChange` are the CONTROLLED form, for a page that sorts on the
  * server or keeps the order in its URL; `defaultSort` seeds the uncontrolled
  * one. Uncontrolled sorts the whole set and then pages it — sorting the visible
@@ -150,9 +160,17 @@ export const Empty: Story = {
   },
 };
 
-/** A single page — the pager stands down when there is nowhere to go. */
+/**
+ * A single page — the whole footer stands down while every row fits on the smallest page size
+ * (`hidePagerWhenFits`, on by default). No "Showing 10 50 100 of 4 items", no pager.
+ */
 export const SinglePage: Story = {
   args: { data: ROWS.slice(0, 4), total: 4 },
+};
+
+/** The footer forced back on for a short register, where the page states its count nowhere else. */
+export const SinglePageFooterKept: Story = {
+  args: { data: ROWS.slice(0, 1), total: 1, hidePagerWhenFits: false },
 };
 
 /**
@@ -190,3 +208,32 @@ export const GovernmentRangeLabel: Story = {
   },
 };
 
+/**
+ * A PINNED ACTIONS COLUMN, in a box too narrow for the table. The column pins itself only while
+ * the table overflows by at least its own width — otherwise it would paint over the Status column
+ * with no way to scroll it back, which is how a status badge ends up permanently reading
+ * "Action Requir…". Narrow the Storybook viewport to see it pin and unpin; nothing is configured.
+ */
+export const PinnedActionsColumn: Story = {
+  args: {
+    data: ROWS.slice(0, 5),
+    total: 5,
+    hidePagerWhenFits: false,
+    caption: "Applications with a pinned action column",
+    columns: [
+      ...COLUMNS,
+      {
+        key: "actions",
+        header: "Actions",
+        noExport: true,
+        className: "is-sticky-right",
+        render: () => <Button size="sm" appearance="outlined">Review</Button>,
+      },
+    ],
+  },
+  render: (args) => (
+    <div style={{ maxWidth: 720 }}>
+      <DataTable<Application> {...args} />
+    </div>
+  ),
+};

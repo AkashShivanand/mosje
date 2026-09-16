@@ -11,7 +11,7 @@ export default function RootRedirect() {
     router.replace(account ? "/portals/smile-admin/dashboard" : "/portals/smile-admin/login");
   }, [account, router]);
   return (
-    <div className="grid min-h-dvh place-items-center bg-surface-muted">
+    <div className="grid min-h-dvh place-items-center bg-surface-canvas">
       <div className="text-body-2 text-ink-muted">Loading SMILE Admin…</div>
     </div>
   );

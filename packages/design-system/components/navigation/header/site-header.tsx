@@ -6,6 +6,7 @@ import { AccessibilityBar } from "../../utilities/accessibility-bar";
 import { Icon } from "../../utilities/icon";
 import { BrandLockup } from "./brand-lockup";
 import { AccountMenu } from "./account-menu";
+import { NotificationBell } from "./notification-bell";
 import { MenuToggle, NavItemLink, SheetToggle } from "./nav-parts";
 import { NavSheet } from "./nav-sheet";
 import { Search } from "../../forms/search";
@@ -14,6 +15,7 @@ import type {
   BrandLines,
   BrandMark,
   HeaderAccount,
+  HeaderNotifications,
   HeaderSearchConfig,
   HeaderVariant,
   NavItem,
@@ -124,6 +126,14 @@ export interface SiteHeaderProps {
   account?: HeaderAccount;
   /** Account dropdown items. When provided, the account block opens a menu. */
   accountMenu?: AccountMenuItem[];
+  /**
+   * The signed-in reader's notifications. Renders the bell immediately before the
+   * account block — in the resting row and the condensed bar — and ONLY together
+   * with `account`: a bell with nobody signed in has nothing to count. Off unless
+   * passed; a portal with no real feed and no notifications page passes nothing.
+   * What belongs in it: `docs/specs/notification-object.md`.
+   */
+  notifications?: HeaderNotifications;
   /**
    * Trailing CTA (e.g. a Login or Apply Online button). In the condensed bar every
    * link or button in this slot is held at the bar's 40px control height, so pass
@@ -247,6 +257,7 @@ export function SiteHeader({
   cobranding,
   account,
   accountMenu,
+  notifications,
   actions,
   nav,
   maxWidth,
@@ -910,6 +921,8 @@ export function SiteHeader({
           </button>
         )}
 
+        {account && notifications && <NotificationBell notifications={notifications} linkAs={linkAs} />}
+
         {/* 40, not the brand row's 48: at 48 the avatar decided the bar's height. */}
         {account && <AccountMenu account={account} items={accountMenu} avatarSize={40} />}
 
@@ -1007,6 +1020,11 @@ export function SiteHeader({
                   <Icon name={mobileSearchOpen ? "close" : "search"} size={24} />
                 </button>
               )}
+
+              {/* The bell sits BEFORE the account, never after it: the two are "about
+                  me", and the account is the row's outer edge (Figma: Navbar/Portal,
+                  Notifications on). */}
+              {account && notifications && <NotificationBell notifications={notifications} linkAs={linkAs} />}
 
               {account && <AccountMenu account={account} items={accountMenu} />}
 

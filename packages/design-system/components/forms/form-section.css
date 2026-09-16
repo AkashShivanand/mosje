@@ -21,65 +21,170 @@
  */
 @layer components {
   /* ============================================================================
-     MoSJE / SAMAVESH — FormSection
-     Titled card + responsive field grid. Left-aligned title (Figma).
+     MoSJE / SAMAVESH — form layout
+     The handoff's form grammar (docs/design-system/form-wizard-visual-language.md):
+     ONE panel per form or wizard step — a head band, flush sub-sections, a CTA band.
+     A sub-section is never a card of its own; the panel is the card.
      ============================================================================ */
 
-  .ds-form-section {
+  /* ── FormPanel — the step card ─────────────────────────────────────────── */
+
+  .ds-form-panel {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     background-color: var(--sa-bg-neutral-base);
     border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
-    border-radius: var(--sa-shape-12);
-    padding: var(--sa-padding-20);
+    border-radius: var(--sa-shape-20);
     font-family: var(--sa-font-latin);
   }
 
-  .ds-form-section__head {
-    margin-bottom: var(--sa-padding-20);
-    padding-bottom: var(--sa-padding-12);
+  .ds-form-panel__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--sa-inline-16);
+    padding: var(--sa-padding-24);
+    background-color: var(--sa-bg-neutral-subtler);
     border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
-  /* FormCard header row: title (+ optional required marker) and optional actions. */
-  .ds-form-section__head-row {
+  .ds-form-panel__title {
+    margin: 0;
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-form-panel__desc {
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-form-panel__head-actions {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--sa-inline-8);
+  }
+
+  .ds-form-panel__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-32);
+    padding: var(--sa-padding-24);
+    min-width: 0;
+  }
+
+  /* Buttons in the action band keep their words whole; the blocked-reason text is what gives. */
+  .ds-form-panel__foot > .ds-btn,
+  .ds-form-panel__foot .sa-form__actions-buttons > .ds-btn {
+    flex-shrink: 0;
+  }
+
+  .ds-form-panel__foot {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--sa-stack-12);
+    gap: var(--sa-inline-12);
+    padding: var(--sa-padding-24);
+    background-color: var(--sa-bg-neutral-subtler);
+    border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
-  .ds-form-section__actions {
+  @media (max-width: 767px) {
+    /* On a phone the head's actions drop under the title rather than squeezing it. */
+    .ds-form-panel__head {
+      flex-wrap: wrap;
+    }
+
+    .ds-form-panel__head,
+    .ds-form-panel__body,
+    .ds-form-panel__foot {
+      padding: var(--sa-padding-16);
+    }
+    .ds-form-panel__body {
+      gap: var(--sa-stack-24);
+    }
+  }
+
+  /* ── Sub-section — FormSection, FormCard, ReviewSection ────────────────── */
+
+  .ds-form-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-16);
+    min-width: 0;
+    font-family: var(--sa-font-latin);
+  }
+
+  /* An uppercase label, then a hairline that fills the rest of the row. */
+  .ds-form-section__head-row {
     display: flex;
     align-items: center;
-    gap: var(--sa-stack-8);
+    gap: var(--sa-inline-12);
+    min-height: var(--sa-type-label-1-lh);
   }
 
-  /* Section header = SAMAVESH Figma "sub-divider" treatment: uppercase, muted,
-     letter-spaced, sitting above a hairline rule (the head's bottom border). */
+  .ds-form-section__head-row::after {
+    content: "";
+    order: 2;
+    flex: 1 1 var(--sa-inline-24);
+    height: var(--sa-stroke-1);
+    background-color: var(--sa-border-neutral-subtle);
+  }
+
   .ds-form-section__title {
     margin: 0;
-    font-size: var(--sa-type-label-3-size);
-    line-height: var(--sa-type-label-3-lh);
-    font-weight: var(--sa-font-weight-semibold);
+    flex: 0 1 auto;
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-medium);
     letter-spacing: var(--sa-type-caps-tracking);
     text-transform: uppercase;
     color: var(--sa-text-neutral-subtle);
   }
 
+  .ds-form-section__badge {
+    display: inline-flex;
+    flex-shrink: 0;
+  }
+
+  /* Actions sit after the rule, at the row's end. */
+  .ds-form-section__actions {
+    order: 3;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--sa-inline-8);
+  }
+
   .ds-form-section__desc {
-    margin: var(--sa-padding-4) 0 0;
-    font-size: var(--sa-type-body-3-size);
-    color: var(--sa-text-neutral-subtle);
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-base);
   }
 
   .ds-form-section__grid {
     display: grid;
-    gap: var(--sa-stack-16) var(--sa-padding-20);
-    grid-template-columns: 1fr;
+    gap: var(--sa-stack-24) var(--sa-inline-24);
+    grid-template-columns: minmax(0, 1fr);
+    margin: 0;
+  }
+
+  /* A field that needs the whole row — an address, a radio group, a long answer. */
+  .ds-form-section__grid > .ds-form-span-full {
+    grid-column: 1 / -1;
   }
 
   @media (min-width: 768px) {
     .ds-form-section__grid--2,
-    .ds-form-section__grid--3 {
+    .ds-form-section__grid--3,
+    .ds-form-section__grid--4 {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
@@ -88,5 +193,35 @@
     .ds-form-section__grid--3 {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
+    .ds-form-section__grid--4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  /* ── FormInset — one entry of a repeatable group ───────────────────────── */
+
+  .ds-form-inset {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-16);
+    padding: var(--sa-padding-16);
+    background-color: var(--sa-bg-neutral-subtler);
+    border-radius: var(--sa-shape-12);
+    min-width: 0;
+  }
+
+  .ds-form-inset__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-inline-12);
+  }
+
+  .ds-form-inset__title {
+    margin: 0;
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-base);
   }
 }

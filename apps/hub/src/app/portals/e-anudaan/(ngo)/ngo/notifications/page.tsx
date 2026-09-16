@@ -1,80 +1,33 @@
 "use client";
 
 /**
- * Notifications — the applicant's feed.
+ * Notifications — the applicant's feed, and the page the masthead bell leads to.
  *
- * DS Audit: Badge ✅ existing · Button ✅ · EmptyState ✅ · Icon ✅ — nothing new.
+ * DS Audit: NotificationCentre ✅ existing (gained Action Needed, due dates and an Overdue mark) — nothing new.
  *
  * The live screen shows "<n> unread", a "Mark all read" action, and an "Open →" link on any item
- * that names an application. Timestamps read "17 Aug 2026, 04:59 pm".
+ * that names an application. Both survive: the count is the panel's status line and the link is
+ * the entry's own. Two things deliberately differ from the live screen, per
+ * docs/specs/notification-object.md: an application waiting on the NGO sits at the top under
+ * "Action Needed" and is not cleared by marking updates read; and the page reads the SAME
+ * selector as the bell, so the two cannot show different counts.
  */
 
 import Link from "next/link";
-import { Badge, Button, EmptyState, Icon } from "@mosje/design-system";
+import { NotificationCentre } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
-import { formatDate } from "@/lib/e-anudaan/format";
-
-function formatStamp(iso: string): string {
-  const d = new Date(iso);
-  const date = formatDate(d);
-  const time = d
-    .toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", hour12: true })
-    .toLowerCase();
-  return `${date}, ${time}`;
-}
+import { ngoNotifications, useNow } from "@/components/e-anudaan/ngo-shell";
 
 export default function NgoNotificationsPage() {
   const { state, markAllNotificationsRead } = useEAnudaan();
-  const mine = state.notifications.filter((n) => n.audience.includes("ngo"));
-  const unread = mine.filter((n) => !n.read).length;
 
   return (
-    <div className="space-y-5">
-      <header className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-headline-1 text-ink">Notifications</h1>
-          <p className="mt-1 text-body-2 text-ink-muted">{unread} unread</p>
-        </div>
-        {unread > 0 && (
-          <Button appearance="outlined" onClick={markAllNotificationsRead}>
-            <Icon name="mark_email_read" size={16} aria-hidden /> Mark all read
-          </Button>
-        )}
-      </header>
-
-      {mine.length === 0 ? (
-        <EmptyState title="Nothing to read" description="You have no notifications." />
-      ) : (
-        <ul className="space-y-3">
-          {mine.map((n) => (
-            <li
-              key={n.id}
-              className={`rounded-xl border bg-surface p-4 ${
-                n.read ? "border-line" : "border-primary/40"
-              }`}
-            >
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <p className="font-semibold text-ink">{n.title}</p>
-                  <p className="mt-1 text-body-2 text-ink-muted">{n.body}</p>
-                  <p className="mt-2 text-body-3 text-ink-hint">{formatStamp(n.at)}</p>
-                </div>
-                <div className="flex shrink-0 items-center gap-2">
-                  {!n.read && <Badge status="info">New</Badge>}
-                  {n.applicationId && (
-                    <Link
-                      href={`/portals/e-anudaan/ngo/my-applications/${encodeURIComponent(n.applicationId)}`}
-                      className="flex items-center gap-1 text-label-2 font-semibold text-primary hover:underline"
-                    >
-                      Open <span aria-hidden="true">→</span>
-                    </Link>
-                  )}
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+    <NotificationCentre
+      notifications={ngoNotifications(state)}
+      titleAs="h1"
+      now={useNow()}
+      onMarkAllRead={markAllNotificationsRead}
+      linkAs={Link}
+    />
   );
 }
