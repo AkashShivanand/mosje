@@ -32,9 +32,18 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.143.0",
+    version: "v0.144.0",
     date: "2026-09-16",
     current: true,
+    changes: [
+      { kind: "Added", text: "`MetricCard` CAN BE A CONTROL. `onSelect` makes the whole tile a button, `href` (with `linkAs`) makes it a link, and `selected` marks the one the page is filtered by \u2014 `aria-pressed` on a button, `aria-current` on a link, so the state is never the tint alone. It is a link when it GOES somewhere and a button when it DOES something here, never both, which is the rule `ListRow` already states; `href` wins. Hover is gated behind a fine pointer so it cannot stick on a touchscreen, the press is a 0.99 scale, and `prefers-reduced-motion` drops both" },
+      { kind: "Changed", text: "THE OFFICER QUEUE\u2019S CASE-TYPE TILES FILTER THE QUEUE BELOW THEM. New Projects, 1st, 2nd and 3rd Instalment set the table\u2019s Case Type and bring the reader to it \u2014 the four cards on the NIC portal the department knows were links (review call, 11 Sep 2026, T698\u2013712). Choosing the tile that is already on clears the filter, the choice rides in the address as `?case=`, and a tile with nothing to show opens nothing" },
+      { kind: "Fixed", text: "THE SLIDER\u2019S TICK LABELS TAKE `Label/label-2`\u2019S OWN WEIGHT. The rule set the role\u2019s size and left the weight to whatever it inherited \u2014 the last of the gaps the 16 Sep pass closed in six other components. The Figma masters draw no tick labels, so the ramp, not a layer, is the source" },
+    ],
+  },
+  {
+    version: "v0.143.0",
+    date: "2026-09-16",
     changes: [
       { kind: "Fixed", text: "SIX COMPONENTS SET THEIR TEXT IN THE STYLE THEIR FIGMA MASTER LINKS, WITH NO NEW STYLE ADDED. The Chatbot title is Title 2 at 600 (it was 500). The Portal Card name is Body 1 Regular, as its own comment said (500). The Slider readout is Body 2 SemiBold (500). The visitor counter takes its line\u2019s weight (500). The Pagination steps-only \u201cPage 2 of 12\u201d is Body 1 Regular, beside the 16px SemiBold Previous and Next (it inherited the page size at 500). Every one of those 500s was a weight no text style has" },
       { kind: "Changed", text: "STANDALONE `Link` TAKES THE LIBRARY\u2019S RAMP: Small label-2 12, Default label-1 14, Large title-2 16 SemiBold. It was 14 / 16 / 22, all at 500. Default standalone links are 2px smaller and Large is 6px smaller; inline links still inherit their sentence" },

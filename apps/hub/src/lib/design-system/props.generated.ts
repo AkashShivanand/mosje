@@ -9162,10 +9162,22 @@ export const GENERATED_PROPS = {
         "description": "A second reading under the figure — the numerator and denominator behind a rate (\"90 / 883\"), or the window a count covers (\"Feb – May 2026\")."
       },
       {
+        "name": "href",
+        "type": "string",
+        "required": false,
+        "description": "Makes the whole tile a link. A tile is a link when it GOES somewhere — a register, a filtered list on another page — and a button when it DOES something here, like filtering the table below it. It is never both, the rule `ListRow` already states."
+      },
+      {
         "name": "icon",
         "type": "React.ReactNode",
         "required": false,
         "description": "Optional icon rendered in a tinted badge top-right."
+      },
+      {
+        "name": "linkAs",
+        "type": "React.ElementType",
+        "required": false,
+        "description": "The app's router link, for a tile with an `href`. Defaults to a plain `<a>`, and without it every click costs a full document load — the defect `check:link-as` exists to catch. linkAs-gate(href-only): a tile with no `href` navigates nowhere and needs no router link."
       },
       {
         "name": "loading",
@@ -9173,6 +9185,12 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "false",
         "description": "The figure is still arriving. The tile keeps its exact height and shimmers where the value will be, so a row of six does not reflow when they land."
+      },
+      {
+        "name": "onSelect",
+        "type": "() => void",
+        "required": false,
+        "description": "Makes the whole tile a button. Ignored when `href` is set."
       },
       {
         "name": "progress",
@@ -9185,6 +9203,13 @@ export const GENERATED_PROPS = {
         "type": "DataProvenance",
         "required": false,
         "description": "Where the figure came from, printed as one muted line under the tile."
+      },
+      {
+        "name": "selected",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "The tile's figure is the one the page is currently filtered by. Sets `aria-pressed` on a button and `aria-current` on a link, so the state is not carried by the tint alone."
       },
       {
         "name": "size",

@@ -591,6 +591,8 @@ export function WorklistTable({
   id,
   status: controlledStatus,
   onStatusChange,
+  caseType: controlledType,
+  onCaseTypeChange,
 }: {
   rows: GrantApplication[];
   variant?: WorklistVariant;
@@ -604,9 +606,17 @@ export function WorklistTable({
    */
   status?: string;
   onStatusChange?: (status: string) => void;
+  /**
+   * The Case Type filter, when the page owns it — the dashboard's case tiles set it, so a tile
+   * and this table cannot disagree about which files it means. Omit and the table keeps its own.
+   */
+  caseType?: string;
+  onCaseTypeChange?: (type: string) => void;
 }) {
   const [q, setQ] = React.useState("");
-  const [type, setType] = React.useState("");
+  const [ownType, setOwnType] = React.useState("");
+  const type = controlledType ?? ownType;
+  const setType = onCaseTypeChange ?? setOwnType;
   const [ownStatus, setOwnStatus] = React.useState("");
   const status = controlledStatus ?? ownStatus;
   const setStatus = onStatusChange ?? setOwnStatus;
