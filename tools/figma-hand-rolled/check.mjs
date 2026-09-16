@@ -96,17 +96,47 @@ if (!VERIFY) { console.log("✔ the baseline is coherent. Run check:figma-hand-r
 const token = process.env.FIGMA_ACCESS_TOKEN;
 if (!token) { console.log("  · --verify-figma skipped: FIGMA_ACCESS_TOKEN not set. The offline half still ran."); process.exit(0); }
 
+/**
+ * PACING, AND WHY IT IS NOT JUST A RETRY LADDER.
+ *
+ * On 2026-09-16 this gate could not finish three times running, stopping at a different
+ * node each attempt — 57765:750, then 57411:15871, then 57340:5120. That pattern is the
+ * signature of a spent allowance rather than a bad node: it reads a while, then every
+ * request is refused. It already retried five times per request, so the missing piece was
+ * never retrying harder.
+ *
+ * Two changes. Requests are now SPACED (`GAP_MS` between batches) so the gate stops
+ * spending the window faster than it refills — it walks the whole library one batch at a
+ * time and has no reason to sprint. And the backoff ladder runs to a minute rather than
+ * 12.5 seconds, because Figma's limits are per-seat and shared: a parallel session's work
+ * is the usual reason this one is refused, and that does not clear in ten seconds.
+ *
+ * `FIGMA_GATE_GAP_MS=0` turns the spacing off for a run against a quiet quota.
+ */
+const PAUSE_MS = [2500, 7500, 15000, 30000, 45000, 60000];
+const GAP_MS = Number(process.env.FIGMA_GATE_GAP_MS ?? 400);
+const pause = (ms) => (ms > 0 ? new Promise((r) => setTimeout(r, ms)) : Promise.resolve());
+
 async function figma(path) {
   for (let attempt = 0; ; attempt++) {
     // A dropped connection is the network's business, not the rule's: retry it like a 5xx.
     let res;
     try {
       res = await fetch(`${API}${path}`, { headers: { "X-Figma-Token": token } });
-      if ((res.status === 429 || res.status >= 500) && attempt < 5) { await new Promise((r) => setTimeout(r, 2500 * (attempt + 1))); continue; }
+      if ((res.status === 429 || res.status >= 500) && attempt < 5) {
+        // A 429 here is a shared allowance being spent, not a transient blip: a second
+        // session doing Figma work, or this gate's own volume. Honour Retry-After when
+        // Figma sends one, and otherwise back off far enough to matter — the old ladder
+        // topped out at 12.5s and a depleted window needs longer than that.
+        const stated = Number(res.headers.get("retry-after"));
+        const wait = Number.isFinite(stated) && stated > 0 ? stated * 1000 : PAUSE_MS[attempt];
+        await new Promise((r) => setTimeout(r, wait));
+        continue;
+      }
       if (!res.ok) throw new Error(`Figma API ${res.status} on ${path.slice(0, 80)}`);
       return await res.json();
     } catch (e) {
-      if (attempt < 5 && !/^Figma API/.test(e.message)) { await new Promise((r) => setTimeout(r, 2500 * (attempt + 1))); continue; }
+      if (attempt < 5 && !/^Figma API/.test(e.message)) { await new Promise((r) => setTimeout(r, PAUSE_MS[attempt])); continue; }
       throw e;
     }
   }
@@ -180,7 +210,10 @@ try {
   const fetched = [];
   // One at a time. Documentation frames are large responses, and reading them in
   // parallel dropped connections faster than the retries could recover them.
-  for (const batch of batches) fetched.push([batch, await figma(`/files/${index.file}/nodes?ids=${batch.map((r) => r.id).join(",")}`)]);
+  for (const [i, batch] of batches.entries()) {
+    if (i > 0) await pause(GAP_MS);
+    fetched.push([batch, await figma(`/files/${index.file}/nodes?ids=${batch.map((r) => r.id).join(",")}`)]);
+  }
   for (const [batch, res] of fetched) {
     for (const r of batch) {
       const doc = res.nodes[r.id]?.document;
