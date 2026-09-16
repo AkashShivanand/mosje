@@ -29,6 +29,7 @@ import {
   type UploadedDoc,
   type VerdictState,
 } from "./doc-verification.ts";
+import { checkIdOfFile, verdictForCheck, type CheckVerdictId, type DeviceCheckId } from "./doc-checks.ts";
 import { formatDate } from "./format.ts";
 import { AUTO_CHECK } from "./glossary.ts";
 
@@ -42,6 +43,9 @@ export type DocState =
   | "failed"
   | "rejected-type"
   | "rejected-size"
+  | "rejected-empty"
+  | "rejected-locked"
+  | "rejected-unreadable"
   | "checking"
   | "verified"
   | "review"
@@ -53,10 +57,29 @@ export type DocState =
  * left the device. Held beside the stored upload, never in place of it — a file that fails to
  * upload must not cost the applicant the good file already there.
  */
+/** Every way a file is refused on the device, before anything is sent (doc-checks.ts, stage "device"). */
+export type Refusal = "rejected-type" | "rejected-size" | "rejected-empty" | "rejected-locked" | "rejected-unreadable";
+
+export const REFUSALS: readonly Refusal[] = ["rejected-type", "rejected-size", "rejected-empty", "rejected-locked", "rejected-unreadable"];
+
+export const isRefusal = (state: string): state is Refusal => (REFUSALS as readonly string[]).includes(state);
+
+/** The refusal a byte check produces. */
+export const REFUSAL_OF: Readonly<Record<Extract<DeviceCheckId, "file-empty" | "file-locked" | "file-unreadable">, Refusal>> = {
+  "file-empty": "rejected-empty",
+  "file-locked": "rejected-locked",
+  "file-unreadable": "rejected-unreadable",
+};
+
 export interface UploadAttempt {
   fileName: string;
   sizeKb: number;
-  phase: "uploading" | "failed" | "rejected-type" | "rejected-size";
+  phase: "uploading" | "failed" | Refusal;
+  /**
+   * The file's bytes are still being read on the device (empty, password-protected, not what its
+   * name says). The transfer does not start until they have been.
+   */
+  sniffing?: boolean;
   /** 0–100 while uploading. */
   progress?: number;
   /** How many times this file has been sent. A retry after a dropped connection succeeds. */
@@ -96,6 +119,9 @@ export const DOC_STATE_META: Readonly<Record<DocState, DocStateMeta>> = {
   failed: { words: "Upload failed", tone: "error", icon: "error", blocksContinue: true, blocksSubmit: true, bucket: "attention" },
   "rejected-type": { words: "Can't be uploaded", tone: "error", icon: "error", blocksContinue: true, blocksSubmit: true, bucket: "attention" },
   "rejected-size": { words: "Can't be uploaded", tone: "error", icon: "error", blocksContinue: true, blocksSubmit: true, bucket: "attention" },
+  "rejected-empty": { words: "Can't be uploaded", tone: "error", icon: "error", blocksContinue: true, blocksSubmit: true, bucket: "attention" },
+  "rejected-locked": { words: "Can't be uploaded", tone: "error", icon: "error", blocksContinue: true, blocksSubmit: true, bucket: "attention" },
+  "rejected-unreadable": { words: "Can't be uploaded", tone: "error", icon: "error", blocksContinue: true, blocksSubmit: true, bucket: "attention" },
   checking: { words: AUTO_CHECK.applicant.pending, tone: "info", icon: "progress_activity", blocksContinue: false, blocksSubmit: true, bucket: "checking" },
   verified: { words: AUTO_CHECK.applicant.verified, tone: "success", icon: "check_circle", blocksContinue: false, blocksSubmit: false, bucket: "ready" },
   // Was "Please confirm", counted Ready: the row asked the applicant to act while the header said
@@ -196,6 +222,12 @@ export function rowReason(state: DocState, up: Pick<UploadedDoc, "verdict"> | un
       return `This file is ${fileSizeLabel(attempt?.sizeKb ?? 0)}. The limit is ${fileSizeLabel(rule.maxKb)}.`;
     case "rejected-type":
       return `Only ${rule.typesLabel} files can be uploaded.`;
+    case "rejected-empty":
+      return "This file is empty. Scan or save the document again and choose the new file.";
+    case "rejected-locked":
+      return "This PDF is protected by a password, so it cannot be opened for checking. Save a copy without the password and upload that.";
+    case "rejected-unreadable":
+      return "This file could not be opened. It may be damaged, or saved in another format and renamed. Save it again as a PDF, JPG or PNG.";
     case "invalid":
     case "review":
       // The reason is what the applicant is being asked to look at — both states need it.
@@ -277,8 +309,10 @@ export function compareFindings(extracted: Readonly<Record<string, string>> | un
 const TOPICS: ReadonlyArray<readonly [key: string, title: RegExp, file: RegExp]> = [
   ["registration", /registration certificate/i, /regist|\bregn?\b|society[-_ ]?cert|trust[-_ ]?deed/i],
   ["pan", /\bpan\b/i, /(^|[^a-z])pan([^a-z]|$)/i],
+  ["recognition", /recognition certificate/i, /recognition/i],
   ["annual-report", /annual report/i, /annual[-_ ]?report/i],
-  ["accounts", /audit(ed)? (accounts|report)|accounts in parts|balance sheet/i, /audit(?!.*fire)|balance[-_ ]?sheet|accounts/i],
+  // "Fire Safety Audit Report" is a safety audit, not the accounts: it read as both until 17 Sep 2026.
+  ["accounts", /(?<!safety )audit(ed)? (accounts|report)|accounts in parts|balance sheet/i, /(?<!safety[-_ ])audit(?!.*fire)|balance[-_ ]?sheet|accounts/i],
   ["budget", /budget/i, /budget|estimate/i],
   ["uc", /utilisation certificate|\bgfr/i, /(^|[^a-z])ucs?([^a-z]|$)|utili[sz]ation|gfr|12[-_ ]?a/i],
   ["provisional", /provisional/i, /provisional/i],
@@ -299,8 +333,8 @@ const TOPICS: ReadonlyArray<readonly [key: string, title: RegExp, file: RegExp]>
   ["monitoring", /monitoring sheet/i, /monitoring/i],
 ];
 
-const topicsOfTitle = (title: string) => new Set(TOPICS.filter(([, t]) => t.test(title)).map(([k]) => k));
-const topicsOfFile = (name: string) => new Set(TOPICS.filter(([, , f]) => f.test(name)).map(([k]) => k));
+export const topicsOfTitle = (title: string) => new Set(TOPICS.filter(([, t]) => t.test(title)).map(([k]) => k));
+export const topicsOfFile = (name: string) => new Set(TOPICS.filter(([, , f]) => f.test(name)).map(([k]) => k));
 
 /** Which year a file name points at, relative to the application: -2, -1, 0, or unknown. */
 function yearCueOfFile(name: string, applicationFy?: string): number | undefined {
@@ -399,6 +433,45 @@ export function simulateCheck(input: CheckInput): DocVerdict {
   const name = fileName.toLowerCase();
   const seed = seedOf(`${slot.n}|${name}|${input.sizeKb}`);
 
+  // A sample file names the check it rehearses (doc-checks.ts): `rent-agreement--validity-lapsed.pdf`.
+  // Its verdict is decided by the catalogue, never by the keyword heuristics below.
+  const sample = checkIdOfFile(fileName);
+  if (sample) {
+    const slotTopics = topicsOfTitle(slot.title);
+    const fileTopics = topicsOfFile(fileName);
+    const expectedYear = expectedDocumentYear(slot.title, applicationFy);
+    const ctx = {
+      slotTitle: slot.title,
+      slotTopics,
+      fileIs: sampleSubject(fileName),
+      facts,
+      expectedYear,
+      priorYear: expectedYear ? shiftFy(expectedYear, -1) : undefined,
+    };
+    // Whatever a sample rehearses, a file about another document in this slot is the wrong document —
+    // a passing PAN card is not a passing Annual Report. A placeholder names no real document.
+    const fits = fileTopics.size === 0 || [...fileTopics].some((t) => slotTopics.has(t));
+    if (!fits && sample !== "placeholder") return verdictForCheck("wrong-document", ctx);
+    // The outage clears on a second run, as a real one does; a "wrong document" sample in its own
+    // slot is simply that document; a device check's name means nothing once the bytes have passed.
+    const clean = sample === "valid" || sample === "wrong-document" || (sample === "check-unavailable" && checks > 0) || !isVerdictCheck(sample);
+    if (!clean) return verdictForCheck(sample as CheckVerdictId, ctx);
+    const extracted: Record<string, string> = { "Organisation Name": facts.organisationName ?? "Not found" };
+    if (expectedYear) extracted["Financial Year"] = expectedYear;
+    if (slotTopics.has("registration") && facts.registrationNumber) extracted["Registration Number"] = facts.registrationNumber;
+    if (slotTopics.has("bank")) {
+      if (facts.ifsc) extracted.IFSC = facts.ifsc;
+      if (facts.accountNumber) extracted["Account Number"] = facts.accountNumber;
+    }
+    return {
+      state: "verified",
+      detectedType: slot.title,
+      summary: `Valid ${slot.title}${expectedYear ? ` for FY ${expectedYear}` : ""} from ${extracted["Organisation Name"]} with all required information present.`,
+      extracted,
+      confidence: 96 + (seed % 5),
+    };
+  }
+
   if (/offline|unavailable|timeout/.test(name) && checks === 0) return demoVerdictFor("unavailable", slot.title);
   if (!/\bvalid\b|[-_]valid/.test(name) || /invalid/.test(name)) {
     // Not declared valid by name: the file may be plainly something else.
@@ -496,6 +569,26 @@ export function simulateCheck(input: CheckInput): DocVerdict {
   };
 }
 
+const VERDICT_CHECKS = new Set<string>([
+  "placeholder", "wrong-document", "wrong-year", "wrong-variant", "missing-particulars", "missing-parts", "other-organisation",
+  "account-name", "blank-template", "validity-lapsed", "not-notarised", "unsigned", "incomplete-table", "address-mismatch",
+  "bank-mismatch", "illegible", "check-unavailable",
+] satisfies CheckVerdictId[]);
+
+const isVerdictCheck = (id: string): id is CheckVerdictId => VERDICT_CHECKS.has(id);
+
+/** `pan-card--wrong-document.pdf` → "PAN Card": what a sample file says it is. */
+export function sampleSubject(fileName: string): string | undefined {
+  const stem = /^(.+?)--/.exec(fileName.replace(/^.*[\\/]/, ""))?.[1];
+  if (!stem) return undefined;
+  const SMALL = new Set(["of", "and", "the", "for", "in", "on", "to", "a", "an"]);
+  const UPPER = new Set(["pan", "uc", "gfr", "ngo", "eat", "pfms", "moa", "cctv", "ifsc"]);
+  return stem
+    .split("-")
+    .map((w, i) => (UPPER.has(w) ? w.toUpperCase() : i > 0 && SMALL.has(w) ? w : w.charAt(0).toUpperCase() + w.slice(1)))
+    .join(" ");
+}
+
 /** A verdict to show, with the financial year compared again against the application now. */
 export function currentVerdict(up: Pick<UploadedDoc, "verdict"> | undefined, title: string, applicationFy?: string): DocVerdict | undefined {
   return up ? yearCheckedVerdict(up.verdict, title, applicationFy) : undefined;
@@ -512,7 +605,7 @@ export interface PlacementItem {
   /** The file it replaced in that slot, which moved to the slot's history. */
   replaces?: string;
   /** Refused before upload. Such a file is listed, never placed. */
-  rejected?: "rejected-type" | "rejected-size";
+  rejected?: Refusal;
   /** Why an unplaced file is unplaced. */
   unplaced?: "unrecognised" | "duplicate";
 }
@@ -812,6 +905,9 @@ const BLOCKER_MESSAGE: Partial<Record<DocState, (t: string) => string>> = {
   failed: (t) => `The ${t} did not upload — try again`,
   "rejected-type": (t) => `The file chosen for the ${t} is not an accepted type — choose another file`,
   "rejected-size": (t) => `The file chosen for the ${t} is too large — choose a smaller file`,
+  "rejected-empty": (t) => `The file chosen for the ${t} is empty — choose another file`,
+  "rejected-locked": (t) => `The file chosen for the ${t} is protected by a password — upload a copy without one`,
+  "rejected-unreadable": (t) => `The file chosen for the ${t} could not be opened — save it again and choose the new file`,
   invalid: (t) => `The ${t} doesn't match what was asked for — replace it`,
   checking: (t) => `The ${t} is still being checked — Submit is available when the check finishes`,
 };

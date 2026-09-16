@@ -119,6 +119,23 @@
       border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
+  /* One line once documents are in: the label, Choose Files and the formats on a single row. */
+  .ds-doccheck__drop--compact {
+    align-items: center;
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+  }
+
+  .ds-doccheck__drop--compact .ds-doccheck__drop-copy {
+    flex-flow: row wrap;
+    align-items: center;
+    column-gap: var(--sa-inline-12);
+  }
+
+  .ds-doccheck__drop--compact .ds-doccheck__drop-label {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
   .ds-doccheck__drop[data-dragging] {
     background-color: var(--sa-bg-brand-primary-base);
     border-color: var(--sa-border-brand-primary-base);

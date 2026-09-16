@@ -121,6 +121,18 @@ export interface DocumentRowProps {
    */
   density?: "default" | "compact";
   /**
+   * How the file and the status are laid out. @default "columns"
+   *
+   * `columns` gives the file and the status a column each — the officer's list, where a verdict
+   * sits beside them. `stacked` is the APPLICANT'S row: the title takes the whole line, and the
+   * status and the file share ONE line beneath it — "Looks right · pan-card.pdf · 412 KB · 16 Sep
+   * 2026". It exists because the column layout squeezed a 90-character title to three lines while
+   * leaving a blank strip beside the status, and cut every file name to "registration-certif… .pdf"
+   * (e-Anudaan upload polish, 17 Sep 2026). The status words start at one edge on every row, so the
+   * list scans down a single column. Not combined with `collapsible`.
+   */
+  layout?: "columns" | "stacked";
+  /**
    * Cut `reason` to one line wherever the row is 640px or wider. @default false
    *
    * For a list where many rows carry the same reason: the sentence is still read in full by a
@@ -204,6 +216,7 @@ export function DocumentRow({
   onExpandedChange,
   summary,
   density = "default",
+  layout = "columns",
   clampReason = false,
   linkAs,
   id,
@@ -252,6 +265,30 @@ export function DocumentRow({
   const fileMeta = file ? [file.size, file.date].filter(Boolean).join(" · ") : "";
   const FileLink: React.ElementType | null = !file?.href ? null : navLinkRoutes({ href: file.href }, linkAs) ? linkAs! : "a";
   const titleText = typeof title === "string" ? title : undefined;
+  const stacked = layout === "stacked" && !collapsible;
+  const fileName = file ? (
+    FileLink ? (
+      <FileLink className="ds-docrow__file-name ds-docrow__file-link" href={file.href} title={file.name}>
+        <FileName name={file.name} />
+      </FileLink>
+    ) : (
+      <span className="ds-docrow__file-name" title={file.name}>
+        <FileName name={file.name} />
+      </span>
+    )
+  ) : null;
+  const progressBar = state === "uploading" && (
+    <span
+      className="ds-docrow__progress"
+      role="progressbar"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={pct}
+      aria-label={titleText ? `Uploading ${titleText}` : "Upload progress"}
+    >
+      <span className="ds-docrow__progress-bar" style={{ inlineSize: `${pct}%` }} />
+    </span>
+  );
 
   return (
     <Tag
@@ -261,6 +298,7 @@ export function DocumentRow({
         aside != null && "ds-docrow--aside",
         folded && "ds-docrow--folded",
         density === "compact" && "ds-docrow--compact",
+        stacked && "ds-docrow--stacked",
         clampReason && "ds-docrow--clamp-reason",
         className,
       )}
@@ -299,21 +337,33 @@ export function DocumentRow({
           {hint != null && !folded && (density !== "compact" || !collapsible || isExpanded) && (
             <p className="ds-docrow__hint">{hint}</p>
           )}
+          {stacked && (
+            <p className="ds-docrow__meta">
+              <span className="ds-docrow__status-words">{words}</span>
+              {progressBar}
+              {file && (
+                <>
+                  <span className="ds-docrow__meta-sep ds-docrow__meta-sep--lead" aria-hidden="true">·</span>
+                  <span className="ds-docrow__meta-file">
+                    {fileName}
+                    {fileMeta && (
+                      <>
+                        <span className="ds-docrow__meta-sep" aria-hidden="true">·</span>
+                        <span className="ds-docrow__file-meta">{fileMeta}</span>
+                      </>
+                    )}
+                  </span>
+                </>
+              )}
+            </p>
+          )}
         </div>
 
-        {!folded && (
+        {!folded && !stacked && (
         <div className="ds-docrow__file">
           {file ? (
             <>
-              {FileLink ? (
-                <FileLink className="ds-docrow__file-name ds-docrow__file-link" href={file.href} title={file.name}>
-                  <FileName name={file.name} />
-                </FileLink>
-              ) : (
-                <span className="ds-docrow__file-name" title={file.name}>
-                  <FileName name={file.name} />
-                </span>
-              )}
+              {fileName}
               {fileMeta && <span className="ds-docrow__file-meta">{fileMeta}</span>}
             </>
           ) : (
@@ -322,23 +372,14 @@ export function DocumentRow({
         </div>
         )}
 
-        <div className="ds-docrow__status">
-          {folded && summary != null && <span className="ds-docrow__summary">{summary}</span>}
-          <span className="ds-docrow__status-words">{words}</span>
-          {state === "uploading" && (
-            <span
-              className="ds-docrow__progress"
-              role="progressbar"
-              aria-valuemin={0}
-              aria-valuemax={100}
-              aria-valuenow={pct}
-              aria-label={titleText ? `Uploading ${titleText}` : "Upload progress"}
-            >
-              <span className="ds-docrow__progress-bar" style={{ inlineSize: `${pct}%` }} />
-            </span>
-          )}
-          {collapsible && expandToggle("status")}
-        </div>
+        {!stacked && (
+          <div className="ds-docrow__status">
+            {folded && summary != null && <span className="ds-docrow__summary">{summary}</span>}
+            <span className="ds-docrow__status-words">{words}</span>
+            {progressBar}
+            {collapsible && expandToggle("status")}
+          </div>
+        )}
 
         {/* Before the actions in reading order: what is wrong, then what to do about it. */}
         {!folded && (reason != null || (findings != null && showFindingsToggle)) && (
@@ -371,6 +412,8 @@ export function DocumentRow({
         {(action != null || menu || collapsible) && (
           <div className="ds-docrow__actions">
             {action}
+            {/* A stacked row with no menu keeps the menu's place, so every row's commands end at one edge. */}
+            {stacked && !(menu && menu.items.length > 0) && <span className="ds-docrow__menu-space" aria-hidden="true" />}
             {menu && menu.items.length > 0 && (
               <Menu items={menu.items} onSelect={menu.onSelect} label={titleText ? `More actions for ${titleText}` : "More actions"}>
                 <IconButton
