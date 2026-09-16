@@ -273,7 +273,9 @@ export default function NgoDashboardPage() {
           label="Action Required"
           value={String(needsActionCount)}
           detail={`${pendingItems} correction${pendingItems === 1 ? "" : "s"} to make`}
-          tone={needsActionCount > 0 ? "warning" : undefined}
+          /* No warning fill. Pending Actions, directly above, is where the applicant acts; an amber
+             tile beside three white ones became the loudest thing on the page and pulled the eye
+             away from the list that holds the Resolve buttons (design review, 16 Sep 2026). */
           icon={<Icon name="error" size={20} aria-hidden />}
         />
         <MetricCard
@@ -305,7 +307,9 @@ export default function NgoDashboardPage() {
         </Alert>
       )}
 
-      <div className="grid items-stretch gap-6 lg:grid-cols-2">
+      {/* `items-start`, not stretch: the status card is as tall as its six-line key, and stretching
+          the money card to match left a blank band inside it (design review, 16 Sep 2026). */}
+      <div className="grid items-start gap-6 lg:grid-cols-2">
         <Card variant="outlined" aria-labelledby="app-status-title">
           <CardBody className="gap-4 p-6">
             <SectionTitle headingId="app-status-title" title="Application Status Breakdown" />
@@ -314,7 +318,7 @@ export default function NgoDashboardPage() {
                 "Highest Allocation" line repeated the list's first row (removed on confirmation,
                 15 Sep 2026); the per-status counts remain in the chart's "View as Table". */}
             <div className="flex justify-center py-2">
-              <div className="w-[220px] max-w-full">
+              <div className="w-[260px] max-w-full">
                 <DonutChart
                   title="Application Status Distribution"
                   data={donutChartData}

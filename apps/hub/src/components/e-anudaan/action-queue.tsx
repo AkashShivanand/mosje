@@ -43,7 +43,17 @@ import { INSPECTION_READY_FILTER, WorklistTable } from "./worklist-table";
  *  • The Integrated Finance Division is shown only what it acts on (O-02). Deficiencies are the
  *    Programme Division's (only its Section Officer sends one), and the IFD has no Forwarded
  *    register, so "Forwarded by You" had no list to open.
+ *
+ * Design review of 16 Sep 2026:
+ *  • The year is a page control, so it sits in the header's action slot rather than on a row of
+ *    its own above the tiles.
+ *  • Each tile's second line is information — how many of its files are over 7 days — instead of
+ *    "Pending with you" printed four times under a header that already says so.
+ *  • The ageing card names the three files waiting longest, each a link to its review. Three bars
+ *    left the rest of the card empty beside a seven-row panel.
  */
+const OVERDUE_DAYS = 7;
+const LONGEST = 3;
 export function ActionQueue({ variant = "pd" }: { variant?: "pd" | "finance" }) {
   return (
     <React.Suspense fallback={null}>
@@ -106,9 +116,9 @@ function Queue({ variant }: { variant: "pd" | "finance" }) {
          hydrated with no role has not been refused a queue, they have not
          signed in — and those are different screens. */
       asked={role != null}
-      filters={
+      actions={
         dash ? (
-          <div className="w-full max-w-xs">
+          <div className="w-full sm:w-56">
             <FilterSelect
               label="Financial Year"
               value={fy}
@@ -124,7 +134,12 @@ function Queue({ variant }: { variant: "pd" | "finance" }) {
               key: c.key,
               label: c.label,
               value: c.count.toLocaleString("en-IN"),
-              detail: "Pending with you",
+              detail:
+                c.count === 0
+                  ? "None with you"
+                  : c.overdue === 0
+                    ? "None over 7 days"
+                    : `${c.overdue} over 7 days`,
               icon: <Icon name={c.key === "New" ? "note_add" : "event_repeat"} size={20} aria-hidden />,
             }))
           : undefined
@@ -179,18 +194,52 @@ function Queue({ variant }: { variant: "pd" | "finance" }) {
                 /* No "pending beyond 7 days" alert under the bars: it restated the "Over 7 days"
                    bar directly above it (removed on confirmation, 15 Sep 2026). */
               >
-                <div className="space-y-4">
-                  {/* The count rides in the label: Progress prints the share of the queue, and an
-                      officer plans by how many files, not by what fraction of them. */}
-                  {dash.ageing.map((b) => (
-                    <Progress
-                      key={b.band}
-                      label={`${b.band} (${b.count})`}
-                      value={b.count}
-                      max={Math.max(dash.queue.length, 1)}
-                      tone={b.band === "Over 7 days" ? "danger" : undefined}
-                    />
-                  ))}
+                <div className="space-y-6">
+                  <div className="space-y-4">
+                    {/* The count rides in the label: Progress prints the share of the queue, and an
+                        officer plans by how many files, not by what fraction of them. */}
+                    {dash.ageing.map((b) => (
+                      <Progress
+                        key={b.band}
+                        label={`${b.band} (${b.count})`}
+                        value={b.count}
+                        max={Math.max(dash.queue.length, 1)}
+                        tone={b.band === "Over 7 days" ? "danger" : undefined}
+                      />
+                    ))}
+                  </div>
+                  {dash.queue.length > 0 && (
+                    <div>
+                      {/* Named once, here and as the list's label — the pattern the movement panel uses. */}
+                      <p className="mb-1 px-3 text-label-2 font-semibold text-ink-muted" aria-hidden>
+                        Waiting Longest
+                      </p>
+                      {/* The queue is sorted oldest first, so its head is the answer. */}
+                      <ListGroup size="sm" aria-label="Waiting Longest">
+                        {dash.queue.slice(0, LONGEST).map((a) => (
+                          <ListRow
+                            key={a.id}
+                            href={`/portals/e-anudaan/dashboard/sm2/${reviewKey}/review/${encodeURIComponent(a.id)}`}
+                            linkAs={Link}
+                            title={<span className="font-mono">{a.institutionId}</span>}
+                            description={state.ngos.find((n) => n.id === a.ngoId)?.name ?? "—"}
+                            trailing={
+                              <span className="inline-flex items-center gap-1">
+                                <span
+                                  className={`tabular-nums font-semibold ${
+                                    a.ageingDays > OVERDUE_DAYS ? "text-[var(--sa-text-status-error-base)]" : "text-ink"
+                                  }`}
+                                >
+                                  {a.ageingDays} days
+                                </span>
+                                <Icon name="chevron_right" size={20} aria-hidden />
+                              </span>
+                            }
+                          />
+                        ))}
+                      </ListGroup>
+                    </div>
+                  )}
                 </div>
               </ChartCard>,
             ]
