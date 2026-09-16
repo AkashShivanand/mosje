@@ -354,6 +354,11 @@ export function DocumentRow({
                 className="ds-docrow__disclosure"
                 aria-expanded={open}
                 aria-controls={findingsId}
+                /* Named for its own document, as Replace, Try Again, Details and the menu already
+                   are. Sixteen rows on the AVYAY upload step drew sixteen buttons whose accessible
+                   name was the identical "What we found", so a screen reader's button list gave no
+                   way to tell which document any of them opened. */
+                aria-label={titleText ? `${findingsLabel}: ${titleText}` : undefined}
                 onClick={() => setOpen(!open)}
               >
                 {findingsLabel}
