@@ -4,7 +4,7 @@
 same change that moves a line, never afterwards from memory. If a row says ✅ and the thing is
 not true on `main`, that is a defect in this file and it is fixed first.
 
-**Last moved:** 16 September 2026, after section 8 landed, the page was ordered, and the whole set was compared against today's build.
+**Last moved:** 16 September 2026, after the phone-width pass on List Row and Card (§9).
 
 Status: ⬜ not started · 🟡 in progress · ✅ done · ⏸ waiting on a person · ❌ won't do (reason stated)
 
@@ -512,8 +512,10 @@ and the tray's items kept their single row where the build stacks them (hence ne
 |---|---|---|
 | `Document Placement Tray / Item` | the stacked arrangement its own stylesheet defines below 720px | ✅ **built 16 Sep** — `Width: Wide, Narrow`, 3 new variants. **Waits on a publish** before the handoff file can use it |
 | `Document History Sheet / Entry` | a narrow arrangement | ⬜ |
-| `Table` · `Table / Row` · `Table / Cell` | a narrow arrangement — a phone stacks a table, it does not scroll one | ⬜ |
-| `Card` · `Metric Card` · `Event List / Row` · `List Row` · `File List / Row` | a narrow arrangement | ⬜ |
+| `Table` · `Table / Row` · `Table / Cell` | a narrow arrangement — a phone stacks a table, it does not scroll one | ❌ **won't do** — the portal draws **no table** below 768px (§9.1), so a narrow Table would specify something no phone shows. The phone form is `Worklist / Card`, which **waits on a publish** |
+| `List Row` | a narrow arrangement | ✅ **16 Sep — no new variant, and none needed.** The code has no phone breakpoint here: the row is `flex-wrap: wrap`, the text column's basis is `min(224px, 60%)`, and the trailing slot is `margin-inline-start: auto`. All 9 variants now reproduce that with auto-layout — `WRAP`, the line gap bound to `stack/12`, the text column `FILL` with a 224 minimum, the trailing slot `HUG`, the row aligned to its end. **Measured against the build:** at 327 the trailing slot wraps, 16 from the right edge and 12 below the text (the build at 375: 16 and 12); at 1058 it stays inline. Before, a 327 row crushed its trailing text to one letter per line and stood 444px tall. Every master is unchanged at its own 420×80. The `Static` variants hide their trailing slot by default, so they carry the settings with nothing to wrap until a designer shows it. Drawn as a fifth arrangement cell on `List — Documentation`; the Component record moved down to stay 200 below. **Waits on a publish** |
+| `Card` | a narrow arrangement | ✅ **16 Sep — no new variant: the code has none.** `card.css` has no media or container query; a card is simply fluid. What was wrong was that the master could not BE fluid: `Frame 51` and `Frame 53` were stamped at 369, wider than a 327 card, and hidden only by clipping. The variants' own width is now pinned and every child that spanned its parent's content box fills it — 2 nodes per Vertical variant, 3–4 per Horizontal. All 4 masters are unchanged in size. **Vertical cards now have 0 children wider than a 327 card** — and the phone only ever draws Vertical: `ds-card--vertical` on all 7 cards on the NGO dashboard at 375 and both on Deficiencies. Horizontal still overflows at 327 by construction — two 369 halves side by side, which the code never stacks either. **Waits on a publish** |
+| `Metric Card` · `Event List / Row` · `File List / Row` | a narrow arrangement | ⬜ |
 
 Until those exist, a phone frame drawn from them would tell a developer the wrong thing, which
 is worse than an absent frame. The five sections that still have **no** phone frame at all are
