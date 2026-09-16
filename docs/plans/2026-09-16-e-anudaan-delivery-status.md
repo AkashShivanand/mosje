@@ -34,7 +34,7 @@ Two other trackers stay in force and are not repeated here:
 | P-9 | Review screen rework — Before You Forward, in-row verdicts, bulk verify, fund release, return to seat, show cause, inspection, printable report | ✅ | ASO page came down 6,119px → 4,003px |
 | P-10 | Glossary — one term per concept | ✅ | `lib/e-anudaan/glossary.ts`, record in `2026-09-16-e-anudaan-glossary.md` |
 | P-11 | Seed data self-consistent | ✅ | Invariant tests fail if a project's scheme, nature, instalment and attendance disagree |
-| P-12 | Design-director audit | ✅ | 836 shots, 16 P1s, fixed in 8 batches |
+| P-12 | Design-director audit | ✅ | 836 shots, 16 P1s, fixed in 8 batches — plus a **measured pass over all 190 screens, 16 Sep**: see below |
 | P-13 | DigiLocker removed from every portal login and the TG application form | ✅ | Now a per-portal, per-role switch in `lib/tg/identity.ts` |
 | P-14 | Live on `main:3007` | ✅ | PR #507 merged 16 Sep. **Verified on the running server, not inferred from the merge:** 18 routes across 8 roles at 1440 and 375 — 36 page loads, no HTTP error, no page error, no sideways scroll; the divided-list assertion passes over 8 fact cards; the Payment Status order number re-checked by eye |
 
@@ -81,6 +81,32 @@ work fully specified.
 Writes are atomic — a failed call rolls the whole script back — so nothing is ever left
 half-applied, but it does mean a long batch that fails costs its whole cost for nothing. Batch
 into as few calls as will survive.
+
+### The measured audit — all 190 screens, 16 Sep 2026
+
+Nine checks run in the DOM on every screen at 1440, each one a defect a reviewer would raise
+and none a matter of taste.
+
+| Check | Result |
+|---|---|
+| Text cut off by its own box | **0** |
+| Elements overlapping | **0** |
+| Page scrolling sideways | **0** |
+| Image with nothing for a screen reader | **0** |
+| Headings skipping a level | **0** |
+| Button with no accessible name | **0** |
+| Form field with no label | **0** |
+| Contrast below AA | **0** |
+| Target under 24px | 477 — **all pass WCAG 2.2 SC 2.5.8 by the spacing exception**, measured: 79–114px clear against a 24px requirement |
+
+**The first run of this said 1,978 clipped strings, 1,403 small targets, 760 unnamed buttons
+and 61 unlabelled fields, and every one of those numbers was noise.** The 760 buttons were all
+one third-party accessibility widget we neither own nor may annotate; the 1,978 clipped strings
+were screen-reader-only text, which is *supposed* to sit in a 1px box with its content clipped
+away. The checks now exclude both, and judge target size the way 2.5.8 actually does — by the
+smaller side, exempting a link inline in a sentence, and then by spacing. An audit that reports
+its own blind spots as defects is worse than no audit, which is why the first numbers are
+written down here rather than quietly replaced.
 
 ---
 
