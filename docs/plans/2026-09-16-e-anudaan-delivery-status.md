@@ -84,6 +84,51 @@ into as few calls as will survive.
 
 ---
 
+## 6. The junk-copy audit, 16 Sep 2026
+
+The brief asked for junk copies "rewritten everywhere, like documentation" to be removed, and
+for anything useless to be **discussed** rather than quietly dropped. Three surfaces were
+searched; one was dirty.
+
+| Surface | Result |
+|---|---|
+| The portal's own copy (page descriptions, subtitles, hints, empty states) | **Clean.** 57 distinct strings across the e-Anudaan screens, **none** repeated between files |
+| The web documentation pages | **Clean enough.** 1,434 distinct strings across 403 pages, 22 repeated — and each repeat is specimen content legitimately shared between a component's page and its playground |
+| The Figma documentation frames | **One real fault**, below |
+
+**A sentence written for Button, pasted onto eight form components, where it was false.**
+77 library pages carry 146 documentation and record frames; 73 sentences repeat across pages.
+Almost all are section headings and standing captions, which are *supposed* to be identical —
+"Open items only. Anything already fixed is not recorded here." is the record's own contract.
+
+But one is prose, not a heading. `The React component has these props and Figma has no property
+for them: …` is written correctly on Button, Icon Button, Button Group and Link — each naming
+its own props. On **Checkbox, Radio, Input Field, Input Area, Select, OTP Input, Bot Check and
+Selection Card** the same sentence was pasted verbatim, so all eight told a reader that the
+component has `autoResize` and `onComplete`. `autoResize` belongs to Input Area alone;
+`onComplete` to OTP Input alone. **Checkbox has neither.** That is worse than junk: it is
+documentation that is wrong, on the surface `documentation-ds-linkage.md` calls the strictest
+in the estate.
+
+Each of the eight now names its own props, computed from the TypeScript type checker
+(`props.generated.ts`, the source `check:props` gates) differenced against that master's own
+`componentPropertyDefinitions` — not written by hand, so it cannot drift the same way again:
+
+| Page | Now reads |
+|---|---|
+| Checkbox | cardLayout, defaultChecked, error, hideLabel, icon, indeterminate, labelPlacement, meta, readOnly, variant |
+| Radio | cardLayout, defaultChecked, hideLabel, icon, labelPlacement, meta, readOnly, variant |
+| Input Field | autoComplete, invalid, prefixLabel, status, suffixLabel |
+| Input Area | autoResize, invalid, maxRows, status |
+| Select | appearance, invalid, options, status |
+| OTP Input | label, aria-describedby, autoFocus, disabled, invalid |
+| Bot Check | helpHref, disabled, error, label |
+| Selection Card | *"There is no SelectionCard component in code: this is Checkbox or Radio with `variant="card"`"* — because there isn't one |
+
+Verified: the pasted sentence now appears **zero** times in the file.
+
+---
+
 ## 5. Figma against the build — measured, 16 Sep 2026
 
 The Figma was drawn from a capture taken on 16 September and `main` moved four times
