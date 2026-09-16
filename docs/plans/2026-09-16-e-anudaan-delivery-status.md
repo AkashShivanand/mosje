@@ -175,7 +175,7 @@ today, so it is worth doing before anyone else builds on it.
 
 | Master | Defect |
 |---|---|
-| `Document Checklist` / `Document Checklist Group` | No slot; instance children cannot be added or removed. Both must be detached to draw any real checklist — see above |
+| `Document Checklist` / `Document Checklist Group` | **Settled, 16 Sep: detaching is the intended use, and both masters now say so.** A checklist is a variable number of groups each holding a variable number of rows; that cannot be a Figma component without slots, `figma.createSlot` is not in this API, and a count axis does not rescue it — 4 body states × 6 group counts × 12 row counts is 288 variants and still misses cases. Both descriptions now tell the next person to detach the two containers and keep Document Row, Chip, Placement Tray / Item and History Sheet / Entry live, which is what the fifteen built screens already do |
 | `Document Row` | Cannot express the row's display number or its required marker: the build draws `1.` in muted grey and `*` in red, but `Title` is one text node in one style, so both get baked into the string unstyled |
 | `Document Row` | No `File name` or `Reason` property — only `File meta`; both have to be set by overriding nested text nodes |
 | `Document Row` | File name and reason wrap; the build truncates to one line with an ellipsis |
