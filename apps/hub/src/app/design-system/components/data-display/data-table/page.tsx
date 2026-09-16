@@ -269,6 +269,18 @@ export function ApplicantList({ data }: { data: Applicant[] }) {
             <h2 id="cdp-pager" className="cdp__h2">
               The Pager
             </h2>
+            <p>
+              The footer is not drawn while every row fits on the smallest page size —{" "}
+              <code>hidePagerWhenFits</code>, on by default. A one-row register used to read
+              &ldquo;Showing 10 50 100 of 1 items&rdquo;; now it reads as a table. The count says
+              &ldquo;item&rdquo; for one. The page-size buttons are at least 24px on both axes, and the
+              selected size is outlined like the current page, not filled.
+            </p>
+            <p>
+              A table wider than its box becomes a named, focusable <code>region</code> — only while it
+              overflows — so a keyboard reader can scroll it with the arrow keys. Name it with{" "}
+              <code>scrollLabel</code> when there is no <code>caption</code>.
+            </p>
             <ul>
               <li>
                 <strong>Tab</strong> — moves through the page-size buttons and then the page numbers.
@@ -284,6 +296,26 @@ export function ApplicantList({ data }: { data: Applicant[] }) {
               page reports <code>aria-current=&quot;page&quot;</code>, and the ellipsis carries a
               visually hidden &ldquo;more pages&rdquo; so the gap in the sequence is announced rather
               than silently skipped.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-pinned">
+            <h2 id="cdp-pinned" className="cdp__h2">
+              A Pinned Column Pins Only When It Can Be Uncovered
+            </h2>
+            <p>
+              Give a column <code>className: &quot;is-sticky-right&quot;</code> and it pins to the
+              trailing edge — but only while the table overflows by at least the column&rsquo;s own
+              width. That condition is the whole fix: a pinned column paints over the column before
+              it until the reader scrolls it back into place, and if the table is 40px wider than its
+              box while the Actions column is 120px, the last 80px of the column beside it can never
+              be uncovered. That is what hid the Status badge on an applicant&rsquo;s register
+              (&ldquo;Action Requir…&rdquo;), and two later screens worked around it by dropping
+              columns.
+            </p>
+            <p>
+              Below the threshold the cells are ordinary cells and the row scrolls as one, so nothing
+              is hidden and the shadow that promises &ldquo;there is more under here&rdquo; is not
+              drawn. It is measured on every resize; there is nothing to configure.
             </p>
           </section>
           <section className="cdp__section" aria-labelledby="cdp-gap">

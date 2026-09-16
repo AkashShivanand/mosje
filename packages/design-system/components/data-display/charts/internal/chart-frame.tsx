@@ -415,7 +415,12 @@ export function ChartFrame({
         </>
       )}
       {table && (tableView === "sr-only" || !tableOpen) && (
-        <table className="ds-sr-only">
+        /* The visually-hidden box is a DIV around the table, never the table itself: a table
+           cannot be narrower than its content, so `width: 1px` on it is ignored and the hidden
+           table still widened the page — 47px on a 375px phone under every chart (e-Anudaan
+           screen crawl, 13 Sep 2026). A div honours the 1px box and clips what is inside. */
+        <div className="ds-sr-only">
+        <table>
           <caption>{title}</caption>
           <thead>
             <tr>
@@ -436,6 +441,7 @@ export function ChartFrame({
             ))}
           </tbody>
         </table>
+        </div>
       )}
     </figure>
   );

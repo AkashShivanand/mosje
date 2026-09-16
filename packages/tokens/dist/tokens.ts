@@ -55,15 +55,15 @@ export const tokens = {
         "950": "#001737"
       },
       "navy": {
-        "50": "#f7faff",
-        "100": "#c1d7f2",
-        "200": "#93b1d6",
-        "300": "#6a8cb7",
-        "400": "#446a99",
-        "500": "#224c7d",
+        "50": "#eef5ff",
+        "100": "#bbd2ef",
+        "200": "#90aed3",
+        "300": "#678ab5",
+        "400": "#426998",
+        "500": "#214c7d",
         "600": "#003366",
-        "700": "#002249",
-        "800": "#001734",
+        "700": "#002349",
+        "800": "#001735",
         "900": "#000e24",
         "950": "#000614"
       },
@@ -163,6 +163,7 @@ export const tokens = {
     },
     "neutral": {
       "0": "#ffffff",
+      "25": "#f6f7f8",
       "50": "#eef0f3",
       "100": "#dcdee1",
       "200": "#c6c9cd",
@@ -178,6 +179,7 @@ export const tokens = {
     },
     "neutralDark": {
       "0": "#ffffff",
+      "25": "#f6f7f9",
       "50": "#eff0f2",
       "100": "#dcdee2",
       "200": "#c6c9ce",
@@ -245,6 +247,7 @@ export const tokens = {
     },
     "neutralDbim": {
       "0": "#ffffff",
+      "25": "#fafafa",
       "50": "#f5f5f5",
       "100": "#ebeaea",
       "200": "#c6c6c6",
@@ -387,6 +390,7 @@ export const tokens = {
     },
     "neutralScale": {
       "0": "#ffffff",
+      "25": "#f6f7f8",
       "50": "#eef0f3",
       "100": "#dcdee1",
       "200": "#c6c9cd",
@@ -1005,10 +1009,11 @@ export const tokens = {
   "bg": {
     "neutral": {
       "base": "#ffffff",
+      "subtlest": "#f6f7f8",
       "subtler": "#eef0f3",
       "hover": "#eef0f3",
       "active": "#dcdee1",
-      "selected": "#ecf4ff",
+      "selected": "#c0dbff",
       "readonly": "#eef0f3",
       "loading": "#eef0f3",
       "subtle": "#dcdee1",
@@ -1291,6 +1296,7 @@ export const tokens = {
     "bg": {
       "neutral": {
         "base": "#1e2124",
+        "subtlest": "#1e2124",
         "subtler": "#1e2124",
         "subtle": "#1e2124",
         "bold": "#1e2124",
@@ -1387,6 +1393,9 @@ export const tokens = {
       "primary": {
         "base": "#0373df",
         "bolder": "#005eb9"
+      },
+      "secondary": {
+        "bolder": "#c34700"
       }
     },
     "status": {
@@ -1643,6 +1652,24 @@ export const tokens = {
     "track": "1px",
     "dot": "0.5rem"
   },
+  "sitefooter": {
+    "ink": {
+      "subtle": "#c0dbff",
+      "subtler": "#92c2ff"
+    },
+    "rule": {
+      "base": "#0373df",
+      "subtle": "#0373df"
+    },
+    "chip": {
+      "default": "#c0dbff",
+      "hover": "#c0dbff",
+      "size": "2.5rem"
+    },
+    "mark": {
+      "height": "1.75rem"
+    }
+  },
   "action": {
     "brand": {
       "primary": {
@@ -1693,17 +1720,17 @@ export const tokens = {
         "default": {
           "bg": "#ffffff",
           "text": "#004b96",
-          "border": "#62a7ff"
+          "border": "#0373df"
         },
         "hover": {
           "bg": "#ecf4ff",
           "text": "#004b96",
-          "border": "#3b8df0"
+          "border": "#005eb9"
         },
         "active": {
           "bg": "#c0dbff",
           "text": "#003975",
-          "border": "#0373df"
+          "border": "#004b96"
         },
         "disabled": {
           "bg": "#ffffff",
@@ -1827,17 +1854,17 @@ export const tokens = {
         "default": {
           "bg": "#ffffff",
           "text": "#00532a",
-          "border": "#76b188"
+          "border": "#338051"
         },
         "hover": {
           "bg": "#e5faea",
           "text": "#00532a",
-          "border": "#55986b"
+          "border": "#046a38"
         },
         "active": {
           "bg": "#bde3c7",
           "text": "#003d1e",
-          "border": "#338051"
+          "border": "#00532a"
         },
         "disabled": {
           "bg": "#ffffff",
@@ -1961,17 +1988,17 @@ export const tokens = {
         "default": {
           "bg": "#ffffff",
           "text": "#8b1e22",
-          "border": "#fe716d"
+          "border": "#cb3d3f"
         },
         "hover": {
           "bg": "#ffe4e1",
           "text": "#8b1e22",
-          "border": "#ec4e4f"
+          "border": "#aa2d30"
         },
         "active": {
           "bg": "#ffc1bc",
           "text": "#6c0f15",
-          "border": "#cb3d3f"
+          "border": "#8b1e22"
         },
         "disabled": {
           "bg": "#ffffff",
@@ -2095,17 +2122,17 @@ export const tokens = {
         "default": {
           "bg": "#ffffff",
           "text": "#3a3d41",
-          "border": "#adb1b7"
+          "border": "#6f757d"
         },
         "hover": {
           "bg": "#eef0f3",
           "text": "#3a3d41",
-          "border": "#8e949c"
+          "border": "#54585e"
         },
         "active": {
           "bg": "#dcdee1",
           "text": "#1e2124",
-          "border": "#6f757d"
+          "border": "#3a3d41"
         },
         "disabled": {
           "bg": "#ffffff",

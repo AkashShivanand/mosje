@@ -1,0 +1,465 @@
+{
+  "portal": "SMILE \u2014 Beggary (Comprehensive Rehabilitation) \u00b7 Admin (DEV)",
+  "idPrefix": "SMB",
+  "generated": "auto",
+  "status": "MACHINE-DRAFT",
+  "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=7732-77842",
+  "method": "Machine pass (project-agnostic engine). Baseline=derived. DS-adoption 54.1%. Coverage gate=WARN. \ud83e\udd16 machine checks only; human sign-off (\ud83d\udc64) required before CERTIFIED.",
+  "coverage": {
+    "figma_frames": 105,
+    "captured": 75,
+    "mapped": 62,
+    "unmapped": 0,
+    "design_only": 43,
+    "extra_build_only": 13,
+    "mismap": 0
+  },
+  "coverage_gate": "WARN",
+  "ds_adoption_pct": 54.1,
+  "deferred": [],
+  "screens": [
+    {
+      "slug": "GLOBAL-DSCONF",
+      "name": "Global \u2014 Design-System Conformance (machine-verified every element)",
+      "figmaImg": null,
+      "liveImg": "captures/live/SUPER-ADMIN-DASHBOARD.png",
+      "figmaUrl": null,
+      "liveUrl": null,
+      "note": "DS-adoption: 54.1% of 13337 elements use design-system tokens. Baseline mode: derived. The full deviation table is in out/conformance.json. These are \ud83e\udd16 machine checks \u2014 verify severity with a human before certifying.",
+      "findings": [
+        {
+          "num": 1,
+          "id": "SMB-DSCONF-001",
+          "element": "Off-token fontFamily: -apple-system",
+          "section": "ds-conformance",
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "Every element should use a font-family token from the design system.",
+          "live": "3261 element(s) across 70 screen(s) render fontFamily=-apple-system, which is not a design-system token (first seen near \"\").",
+          "fix": "Replace the raw fontFamily value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/SUPER-ADMIN-DASHBOARD.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            5932
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            5932
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 10,
+            "y": 3.0
+          }
+        },
+        {
+          "num": 2,
+          "id": "SMB-DSCONF-002",
+          "element": "Off-token fontSize: 15",
+          "section": "ds-conformance",
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "Every element should use a type-scale token from the design system.",
+          "live": "3143 element(s) across 75 screen(s) render fontSize=15, which is not a design-system token (first seen near \"A\").",
+          "fix": "Replace the raw fontSize value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/SIGNIN-LOGIN.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            5932
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            5932
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 77,
+            "y": 2.1
+          }
+        },
+        {
+          "num": 3,
+          "id": "SMB-DSCONF-003",
+          "element": "Off-token color: #000000",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "707 element(s) across 75 screen(s) render color=#000000, which is not a design-system token (first seen near \"\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/SIGNIN-LOGIN.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            5932
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            5932
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 92,
+            "y": 8.9
+          }
+        },
+        {
+          "num": 4,
+          "id": "SMB-DSCONF-004",
+          "element": "Off-token radius: 9999",
+          "section": "ds-conformance",
+          "axis": "Components & States",
+          "severity": "Major",
+          "figma": "Every element should use a radius token from the design system.",
+          "live": "466 element(s) across 30 screen(s) render radius=9999, which is not a design-system token (first seen near \"Change\").",
+          "fix": "Replace the raw radius value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/SIGNIN-LOGIN.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            5932
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            5932
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 55,
+            "y": 94.6
+          }
+        },
+        {
+          "num": 5,
+          "id": "SMB-DSCONF-005",
+          "element": "Off-token fontSize: 10",
+          "section": "ds-conformance",
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "Every element should use a type-scale token from the design system.",
+          "live": "360 element(s) across 75 screen(s) render fontSize=10, which is not a design-system token (first seen near \"BETA\").",
+          "fix": "Replace the raw fontSize value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/SIGNIN-LOGIN.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            5932
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            5932
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 6,
+            "y": 5.9
+          }
+        },
+        {
+          "num": 6,
+          "id": "SMB-DSCONF-006",
+          "element": "Off-token color: #111827",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "342 element(s) across 65 screen(s) render color=#111827, which is not a design-system token (first seen near \"Begging-Free City \u2014 KPI Framew\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/SUPER-ADMIN-PERFORMANCE-STATS.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            5932
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            5932
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 49,
+            "y": 4.7
+          }
+        },
+        {
+          "num": 7,
+          "id": "SMB-DSCONF-007",
+          "element": "Off-token color: #3a4a63",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "220 element(s) across 11 screen(s) render color=#3a4a63, which is not a design-system token (first seen near \"\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/SUPER-ADMIN-CITY-PROFILING-L2-DISTRICTS.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            5932
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            5932
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 10,
+            "y": 10.3
+          }
+        },
+        {
+          "num": 8,
+          "id": "SMB-DSCONF-008",
+          "element": "Off-token color: #15803d",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "189 element(s) across 30 screen(s) render color=#15803d, which is not a design-system token (first seen near \"0\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/SUPER-ADMIN-USERS.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            5932
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            5932
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 41,
+            "y": 17.4
+          }
+        },
+        {
+          "num": 9,
+          "id": "SMB-DSCONF-009",
+          "element": "Off-token fontSize: 9",
+          "section": "ds-conformance",
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "Every element should use a type-scale token from the design system.",
+          "live": "156 element(s) across 75 screen(s) render fontSize=9, which is not a design-system token (first seen near \"\u2212\").",
+          "fix": "Replace the raw fontSize value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/SIGNIN-LOGIN.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            5932
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            5932
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 75,
+            "y": 2.1
+          }
+        },
+        {
+          "num": 10,
+          "id": "SMB-DSCONF-010",
+          "element": "Off-token color: #64748b",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "138 element(s) across 5 screen(s) render color=#64748b, which is not a design-system token (first seen near \"Enter your registered email to\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/SIGNIN-FORGET-PASSWORD.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            5932
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            5932
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 82,
+            "y": 47.2
+          }
+        },
+        {
+          "num": 11,
+          "id": "SMB-DSCONF-011",
+          "element": "Off-token color: #0a3a74",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "134 element(s) across 67 screen(s) render color=#0a3a74, which is not a design-system token (first seen near \"\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/SUPER-ADMIN-DASHBOARD.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            5932
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            5932
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 10,
+            "y": 3.0
+          }
+        },
+        {
+          "num": 12,
+          "id": "SMB-DSCONF-012",
+          "element": "Off-token color: #047857",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "112 element(s) across 13 screen(s) render color=#047857, which is not a design-system token (first seen near \"On target\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/SUPER-ADMIN-PERFORMANCE-STATS.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            5932
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            5932
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 57,
+            "y": 10.5
+          }
+        }
+      ]
+    }
+  ]
+}

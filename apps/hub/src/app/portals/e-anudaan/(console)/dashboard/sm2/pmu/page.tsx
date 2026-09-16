@@ -1,45 +1,51 @@
 "use client";
 
-import { Badge } from "@mosje/design-system";
-import { useEAnudaan } from "@/lib/e-anudaan/store/store";
+/**
+ * PMU Inspections — the field officer's worklist.
+ *
+ * DS Audit: PageHeader ✅ existing · SegmentedControl ✅ · InspectionTable / AwaitingInspectionTable
+ * (portal components over Card · DataTable · Search · FilterSelect) — nothing new.
+ *
+ * Live PMU: "Awaiting inspection" (sanctioned files with Inspect), "My open visits" and every
+ * inspection, with a Finding column and search. Ours repeated the dashboard's twelve-row table
+ * (inventory §37, §38).
+ *
+ * Design-director audit P-01 (16 Sep 2026): "Awaiting Inspection (61)" here sat beside "Awaiting
+ * Schedule (3)" on the Inspection Dashboard — near-identical words for different sets, so the field
+ * officer could not tell which list was theirs. The 61 are sanctioned files no inspection has been
+ * raised on; the 3 are the officer's own assignments not yet given a date. The view now reads "Not Yet
+ * Inspected", and the line under the title says they are sanctioned files. Which of the three
+ * screens should start an inspection is for discussion (P-01), and nothing is removed here.
+ */
 
-/** "PMU Inspection — SHRESHTA Mode-2", section "Awaiting inspection" (§13). */
+import * as React from "react";
+import { PageHeader, SegmentedControl } from "@mosje/design-system";
+import { useEAnudaan } from "@/lib/e-anudaan/store/store";
+import { awaitingInspection, openVisits } from "@/lib/e-anudaan/registers";
+import { AwaitingInspectionTable, InspectionTable } from "@/components/e-anudaan/worklist-table";
+
+type View = "awaiting" | "open" | "all";
+
 export default function PmuInspectionWorklistPage() {
   const { state } = useEAnudaan();
-  const rows = state.inspections.filter((i) => i.status !== "Reviewed");
+  const [view, setView] = React.useState<View>("awaiting");
 
   return (
     <div className="space-y-5">
-      <div>
-        <h1 className="text-headline-1 text-ink">PMU Inspection — SHRESHTA Mode-2</h1>
-        <p className="mt-1 text-body-2 text-ink-muted">Awaiting inspection</p>
-      </div>
-      <section className="rounded-xl border border-line bg-surface p-5">
-        <table className="w-full text-body-2">
-          <thead>
-            <tr className="border-b border-line text-left text-label-3 uppercase text-ink-muted">
-              <th className="pb-2 pr-3 font-medium">Reference</th>
-              <th className="pb-2 pr-3 font-medium">NGO</th>
-              <th className="pb-2 pr-3 font-medium">FY</th>
-              <th className="pb-2 font-medium">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((i) => {
-              const ngo = state.ngos.find((n) => n.id === i.ngoId);
-              const app = state.applications.find((a) => a.id === i.applicationId);
-              return (
-                <tr key={i.id} className="border-b border-line">
-                  <td className="py-2 pr-3 text-ink">{i.applicationId}</td>
-                  <td className="py-2 pr-3 text-ink">{ngo?.name ?? i.ngoId}</td>
-                  <td className="py-2 pr-3 text-ink">{app?.financialYear ?? "—"}</td>
-                  <td className="py-2"><Badge status="info">{i.status}</Badge></td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </section>
+      <PageHeader title="PMU Inspections" meta="Sanctioned files with no inspection raised, your open visits, and every inspection report filed." />
+      <SegmentedControl<View>
+        ariaLabel="Show"
+        value={view}
+        onChange={setView}
+        options={[
+          { value: "awaiting", label: `Not Yet Inspected (${awaitingInspection(state).length})` },
+          { value: "open", label: `My Open Visits (${openVisits(state).length})` },
+          { value: "all", label: `All Inspections (${state.inspections.length})` },
+        ]}
+      />
+      {view === "awaiting" && <AwaitingInspectionTable caption="Sanctioned files with no inspection raised" />}
+      {view === "open" && <InspectionTable key="open" scope="open" searchable showFinding={false} caption="Open inspection visits" />}
+      {view === "all" && <InspectionTable key="all" searchable showFinding caption="All inspections" />}
     </div>
   );
 }

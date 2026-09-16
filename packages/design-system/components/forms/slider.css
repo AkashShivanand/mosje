@@ -136,7 +136,8 @@
     color: var(--sa-text-neutral-bolder);
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: var(--sa-font-weight-medium);
+    /* `Body/body-2-semibold`, the readout layer on both Figma masters. 500 is no body style. */
+    font-weight: var(--sa-font-weight-semibold);
     font-variant-numeric: tabular-nums;
     text-align: right;
   }
@@ -154,6 +155,10 @@
     color: var(--sa-text-neutral-subtle);
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
+    /* `Label/label-2`'s own weight. The rule set the size and left the weight to whatever it
+       inherited, which is the gap the six components of 16 Sep 2026 closed elsewhere. The Figma
+       masters draw no tick labels, so there is no layer to copy — the style is the ramp's. */
+    font-weight: var(--sa-font-weight-medium);
     white-space: nowrap;
   }
 

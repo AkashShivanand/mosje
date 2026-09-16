@@ -114,6 +114,13 @@ export const FIGMA_NODES = {
   // ROW master (8 variants), its documentation frame and its component record.
   // The grid that arranges rows is code-only and is recorded as open item 01.
   descriptionList: "57518:737",
+  // "Fact Strip" — created 2026-09-10 between Event List and Figure, and the FIRST
+  // Figma home this component has ever had: it was drawn inside the site header's
+  // frame and published nowhere, which is why its docs page declared it absent.
+  // Two sets on the page — `Fact Strip` (Type=Compact | Extended) and the nested
+  // `Fact Strip / Fact` cell that carries Value, Label and the Icon swap. The node
+  // below is the documentation FRAME, not the page, so the link lands on the prose.
+  factStrip: "57985:811",
   // "Figure" — created 2026-09-06 after Description List. Ten variants (Ratio ×
   // Fit); the image itself is a slot the caller fills, which is why the master
   // draws an empty framed rectangle.
@@ -169,6 +176,20 @@ export const FIGMA_NODES = {
   search: "2141:323878",
   toggle: "2141:323883",
   dropdown: "2141:296718", // Select
+  /* Document Centre — the five components the e-Anudaan upload, correction and officer-review
+     screens are built from (docs/plans/2026-09-16-e-anudaan-document-centre.md), drawn in the
+     library on 2026-09-16. Node ids are the component SETS, not their page, so a docs page opens
+     on the master rather than on whatever the page was last scrolled to.
+
+     `documentChecklistGroup` has no docs route of its own — it is documented on the Document
+     Checklist page, which is the only place it is ever used — so it is recorded here purely so
+     the id does not have to be looked up again. */
+  documentRow: "58278:1079",
+  documentChecklist: "58283:1076",
+  documentChecklistGroup: "58280:857",
+  documentFindings: "58267:821",
+  documentPlacementTray: "58281:61145",
+  documentHistorySheet: "58282:784",
   alerts: "2141:296701",
   chatbot: "55827:730", // "Chatbot — Documentation" on the Chatbot page (55813:941),
   //                          authored 2026-08-23 under Feedback & Status
@@ -244,6 +265,7 @@ export const FIGMA_NODES = {
   accessibilityBar: "55065-33766",
   accountMenu: "56046-4113",
   accountMenuItem: "56040-4083",
+  notificationBell: "58143-59613",
   authParts: "57464-12739", // the SigningIntoBar Device set (2026-09-05); its Tone set (55439-749) was dissolved 2026-09-04
   brandLockup: "4235-3652",
   divider: "55061-700",

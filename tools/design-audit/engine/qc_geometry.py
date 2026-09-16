@@ -167,13 +167,24 @@ def finalize(screen, eng_dir, base_dir):
                 cx, cy = pinx(fb), _ctr(fb)[1]
                 f["figmaPin"] = {"x": round(cx / 1440 * 100), "y": round((cy - fc[1]) / max(1, fc[3] - fc[1]) * 100, 1)}
                 if not (0 <= cx <= 1440 and 0 <= cy <= Hf + 1):
-                    FAILURES.append(f"{f['id']}: figma element outside capture (cy={round(cy)} vs {Hf}) — recapture")
+                    _ax = "WIDTH (cx=%d vs 1440)" % round(cx) if not (0 <= cx <= 1440) else "HEIGHT (cy=%d vs %d)" % (round(cy), Hf)
+                    FAILURES.append(f"{f['id']}: figma element outside frame {_ax} — recheck the frame")
             else: f["figmaPin"] = None
             if lb:
                 cx, cy = pinx(lb), _ctr(lb)[1]
                 f["livePin"] = {"x": round(cx / 1440 * 100), "y": round((cy - lc[1]) / max(1, lc[3] - lc[1]) * 100, 1)}
                 if not (0 <= cx <= 1440 and 0 <= cy <= Hl + 1):
-                    FAILURES.append(f"{f['id']}: live element outside capture (cy={round(cy)} vs {Hl}) — recapture taller")
+                    # Name the axis that actually failed. The old message always blamed the
+                    # HEIGHT, so an element sitting off the right edge (an off-canvas widget at
+                    # x=1728) read as "recapture taller" and sent the reader looking at capture
+                    # height for an hour. Two different defects, two different messages.
+                    if not (0 <= cx <= 1440):
+                        FAILURES.append(f"{f['id']}: live element outside capture WIDTH "
+                                        f"(cx={round(cx)} vs 1440) — the element is off-canvas "
+                                        f"(a hidden/third-party panel?); pick a different sample")
+                    else:
+                        FAILURES.append(f"{f['id']}: live element below capture (cy={round(cy)} "
+                                        f"vs {Hl}) — recapture taller")
             else: f["livePin"] = None
             for k in ("_fbox", "_lbox", "_fpct", "_lpct", "_anchor"): f.pop(k, None)
     order = sorted(order, key=lambda s: secy.get(s, 1e9))         # render sections top-to-bottom

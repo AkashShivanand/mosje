@@ -70,12 +70,32 @@
    *   --sa-btn-fill   the solid background of the filled appearance
    *   --sa-btn-ink    the label colour ON that fill
    *   --sa-btn-edge   the ink and border of the outlined and text appearances
+   *                   (setting it governs both, as it always has)
    *   --sa-btn-ring   the focus ring colour
    */
   .ds-btn {
     --_c-fill: var(--sa-btn-fill, var(--_fill));
     --_c-on: var(--sa-btn-ink, var(--_on));
     --_c-edge: var(--sa-btn-edge, var(--_color));
+    /* THE OUTLINE IS NOT THE INK. Until 2026-09-16 the outlined appearance painted its
+       border with `--_c-edge`, the label colour — so the boundary was as heavy as the
+       text inside it, and Figma's own border token (ramp 300, 2.15:1 on white) was
+       unusable because it failed WCAG 1.4.11.
+
+       THE STEP IS 500, AND THE GROUND IS WHY. Rung 400 was adopted first, on white:
+       3.06-3.64:1, a pass. But a portal screen is not white — `.sa-app-shell` paints
+       `bg/neutral/subtler` (#eef0f3), and `ScreenBody` stands an outlined Button
+       directly on it for the error retry and the clear-filters action, with
+       `EmptyState` painting no surface of its own. On that ground 400 measures 2.94
+       (brand, the default variant) and 2.68 (neutral) — failures — while 500 measures
+       4.07/4.07/4.23/4.30 across the four ramps and 4.64-4.91 on white, and still
+       sits two rungs lighter than the 700 ink. Brand's 500 IS gov-blue #0373df. Same ground and same remedy as the
+       form-control border, which moved 400 -> 500 on 2026-09-04.
+       `action-nontext-contrast.test.mjs` now measures both grounds; `--sa-btn-edge`
+       keeps governing both lines, so a consumer override behaves as before. */
+    --_c-line: var(--sa-btn-edge, var(--_line, var(--_color)));
+    --_c-line-hover: var(--sa-btn-edge, var(--_line-hover, var(--_c-line)));
+    --_c-line-active: var(--sa-btn-edge, var(--_line-active, var(--_c-line)));
     /* `--_ring` is declared only by success and danger; primary and neutral fall
        through to the estate's focus colour, which is what the base outline already
        uses. Naming the fallback here is what lets a consumer override the ring on
@@ -104,7 +124,7 @@
        reader is entitled to apply under WCAG 1.4.12, and it is the other half of
        the clipping this size ladder used to cause. Each size names its own role
        token below; this is the fallback for anything that does not. */
-    line-height: var(--sa-type-body-1-lh);
+    line-height: var(--sa-type-label-1-lh);
     border: var(--sa-stroke-1) solid transparent;
     border-radius: var(--sa-shape-8);
     cursor: pointer;
@@ -289,6 +309,12 @@
      The full Tier-3 matrix (`--sa-cmp-action-brand-primary-*`) models every state and is the
      eventual home for this; restructuring the Button onto it is a separate change. */
   .ds-btn--primary {
+    --_line: var(--sa-cmp-action-brand-secondary-default-border);
+    --_line-hover: var(--sa-cmp-action-brand-secondary-hover-border);
+    --_line-active: var(--sa-cmp-action-brand-secondary-active-border);
+    --_dis-bg: var(--sa-cmp-action-brand-primary-disabled-bg);
+    --_dis-text: var(--sa-cmp-action-brand-primary-disabled-text);
+    --_dis-border: var(--sa-cmp-action-brand-primary-disabled-border);
     --_fill: var(--sa-bg-brand-primary-bolder);
     --_on: var(--sa-on-bg-brand-primary-bolder);
     /*
@@ -316,6 +342,12 @@
   }
 
   .ds-btn--success {
+    --_line: var(--sa-cmp-action-success-secondary-default-border);
+    --_line-hover: var(--sa-cmp-action-success-secondary-hover-border);
+    --_line-active: var(--sa-cmp-action-success-secondary-active-border);
+    --_dis-bg: var(--sa-cmp-action-success-primary-disabled-bg);
+    --_dis-text: var(--sa-cmp-action-success-primary-disabled-text);
+    --_dis-border: var(--sa-cmp-action-success-primary-disabled-border);
     --_fill: var(--sa-bg-status-success-bolder);
     --_on: var(--sa-on-bg-status-success-bolder);
     --_color: var(--sa-text-status-success-base);
@@ -333,6 +365,12 @@
   }
 
   .ds-btn--danger {
+    --_line: var(--sa-cmp-action-destructive-secondary-default-border);
+    --_line-hover: var(--sa-cmp-action-destructive-secondary-hover-border);
+    --_line-active: var(--sa-cmp-action-destructive-secondary-active-border);
+    --_dis-bg: var(--sa-cmp-action-destructive-primary-disabled-bg);
+    --_dis-text: var(--sa-cmp-action-destructive-primary-disabled-text);
+    --_dis-border: var(--sa-cmp-action-destructive-primary-disabled-border);
     --_fill: var(--sa-bg-status-error-bolder);
     --_on: var(--sa-on-bg-status-error-bolder);
     --_color: var(--sa-text-status-error-base);
@@ -392,6 +430,12 @@
      No `--_dark`: it was declared by the three variants above and consumed by
      nothing, and has now been deleted from all three. */
   .ds-btn--neutral {
+    --_line: var(--sa-cmp-action-neutral-secondary-default-border);
+    --_line-hover: var(--sa-cmp-action-neutral-secondary-hover-border);
+    --_line-active: var(--sa-cmp-action-neutral-secondary-active-border);
+    --_dis-bg: var(--sa-cmp-action-neutral-primary-disabled-bg);
+    --_dis-text: var(--sa-cmp-action-neutral-primary-disabled-text);
+    --_dis-border: var(--sa-cmp-action-neutral-primary-disabled-border);
     --_fill: var(--sa-cmp-action-neutral-primary-default-bg);
     --_on: var(--sa-cmp-action-neutral-primary-default-text);
     --_color: var(--sa-cmp-action-neutral-tertiary-default-text);
@@ -435,27 +479,36 @@
      grows. Sized the other way round — padding that exactly fills the box — the
      button would immediately outgrow its own size ladder at the first zoom step.
 
-     At 100%: sm 20+8+2=30 -> 32 · md 24+12+2=38 -> 40 · lg 24+16+2=42 -> 48.
-     Every rung is a real token; the ladder is value-named so nothing is invented. */
+     At 100%: sm 20+8+2=30 -> 32 · md 20+12+2=34 -> 40 · lg 20+16+2=38 -> 48.
+     Every rung is a real token; the ladder is value-named so nothing is invented.
+
+     ONE LABEL TYPE AT EVERY SIZE — label-1, 14/20 medium, the ramp's own button role.
+     md and lg used to set body-1's 16px at medium, a pairing no text style in the
+     library holds, and matching it in Figma meant adding `Body/body-1-medium` for this
+     one component (15 Sep 2026). The size step is the height and the padding; the
+     label stays the same, as it does in Figma's Button masters. */
   .ds-btn--sm {
     min-height: var(--sa-control-height-sm);
     padding: var(--sa-padding-4) var(--sa-padding-16);
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-medium);
   }
 
   .ds-btn--md {
     min-height: 40px;
     padding: var(--sa-padding-6) var(--sa-padding-24);
-    font-size: var(--sa-type-body-1-size);
-    line-height: var(--sa-type-body-1-lh);
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-medium);
   }
 
   .ds-btn--lg {
     min-height: 48px;
     padding: var(--sa-padding-8) var(--sa-padding-24);
-    font-size: var(--sa-type-body-1-size);
-    line-height: var(--sa-type-body-1-lh);
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-medium);
   }
 
   /* ==========================================================================
@@ -527,15 +580,17 @@
   .ds-btn--outlined {
     background-color: transparent;
     color: var(--_c-edge);
-    border-color: var(--_c-edge);
+    border-color: var(--_c-line);
   }
 
   .ds-btn--outlined:hover {
     background-color: color-mix(in srgb, var(--_c-edge) 8%, transparent);
+    border-color: var(--_c-line-hover);
   }
 
   .ds-btn--outlined:active {
     background-color: color-mix(in srgb, var(--_c-edge) 14%, transparent);
+    border-color: var(--_c-line-active);
   }
 
   /* --------------------------------------------------------------------------
@@ -691,6 +746,22 @@
     cursor: not-allowed;
     filter: none;
     box-shadow: none;
+  }
+
+  /* A FILLED button on the default tone draws the Figma Button master's Disabled
+     state — its intent's `cmp/action/<intent>/primary/disabled/*` grey, bound per
+     variant above — rather than the brand fill at reduced opacity. The washed-out
+     blue read as "a lighter button", which is not what disabled means, and it was
+     the one state where code and the master visibly disagreed (13 Sep 2026, E-Anudaan
+     login audit). Outlined, text and inverse keep the opacity treatment until their
+     masters are compared the same way. A busy button is disabled too, but it keeps
+     its colour: it is working, not unavailable. */
+  .ds-btn--filled:disabled:not([aria-busy="true"]),
+  .ds-btn--filled[aria-disabled="true"]:not([aria-busy="true"]) {
+    opacity: 1;
+    background-color: var(--_dis-bg);
+    color: var(--_dis-text);
+    border-color: var(--_dis-border);
   }
 
   /*

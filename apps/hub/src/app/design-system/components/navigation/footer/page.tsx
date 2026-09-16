@@ -148,11 +148,12 @@ export default function FooterPage(): React.JSX.Element {
               Keep the Width in Step with the Header
             </h2>
             <p>
-              The footer&apos;s content column is capped by <code>maxWidth</code> and the
-              masthead&apos;s by its own. When the two disagree, the credit line and the emblem sit
-              on different left edges on any screen wider than the smaller cap — a misalignment
-              that is invisible on a laptop and obvious on a large display. Pass the same value to
-              both, or leave both at their defaults.
+              This footer caps its content at <code>maxWidth</code>, 1320 by default, with a 24px
+              margin. The masthead does not: in a portal it runs fluid, and on the website it takes
+              the page container. So above 1368px the credit line and the masthead sit on different
+              edges — invisible on a laptop, obvious on a large display. Pass a{" "}
+              <code>maxWidth</code> that matches the shell, or use Site Footer with{" "}
+              <code>variant=&quot;portal&quot;</code>, which takes the page container itself.
             </p>
           </section>
         </>

@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useLayoutEffect } from "react";
+import { useEffect, useState, useLayoutEffect } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { type Role } from "@/lib/eutthan/portal-data";
 import { normalizePath, DEMO_CREDENTIALS, portalLink } from "./eutthan-shared";
 import { LoginPage } from "./eutthan-login";
@@ -37,6 +37,7 @@ import { Icon, PortalPage } from "@mosje/design-system";
 
 export default function EutthanPortal() {
   const pathname = usePathname();
+  const router = useRouter();
   const path = normalizePath(pathname);
 
   const [role, setRole] = useState<Role | null>(null);
@@ -63,7 +64,7 @@ export default function EutthanPortal() {
         return null;
       }
     }
-    return "Invalid username or password. Please try again.";
+    return "Invalid user ID or password.";
   }
 
   function handleLogout() {
@@ -71,8 +72,37 @@ export default function EutthanPortal() {
     setRole(null);
   }
 
+  /*
+   * THE LOGIN HAS A URL. Signed out on any other path, the reader is moved to
+   * `/login` — carrying where they were as `returnTo` — because the DemoDock
+   * offers accounts only on a path ending `/login`. Signed in on `/login`, they
+   * go back to `returnTo`, or the dashboard. The `[[...slug]]` catch-all serves
+   * both, so no route is added.
+   *
+   * `returnTo` is read from `window.location` inside the effect rather than
+   * `useSearchParams`, which would need a Suspense boundary around the portal.
+   */
+  useEffect(() => {
+    if (!hydrated) return;
+    if (!role && path !== "/login") {
+      const here = path === "/" ? "" : path + window.location.search;
+      router.replace(portalLink("/login") + (here ? `?returnTo=${encodeURIComponent(here)}` : ""));
+    } else if (role && path === "/login") {
+      const wanted = new URLSearchParams(window.location.search).get("returnTo");
+      // Only a path inside this portal: never "//host", never back to /login.
+      const safe =
+        wanted && wanted.startsWith("/") && !wanted.startsWith("//") && !wanted.startsWith("/login")
+          ? wanted
+          : "/";
+      router.replace(portalLink(safe));
+    }
+  }, [hydrated, role, path, router]);
+
   if (!hydrated) return null;
+  // Rendered on any path while signed out, so the redirect above never flashes a blank page.
   if (!role) return <LoginPage onLogin={handleLogin} />;
+  // Signed in on /login: the effect is already leaving for the dashboard.
+  if (path === "/login") return null;
 
   const navItems = role === "admin" ? adminNavItems : ministryNavItems;
   const userName = role === "admin" ? "Admin User" : "Shivendra";

@@ -12,6 +12,64 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-16 · System version: v0.69.0 (`SiteFooter` OWNS NO WIDTH, AND FIGMA AND CODE
+  DRAW ONE FOOTER. The website footer takes `.sa-container` and the portal footer is fluid, as
+  `SiteHeader` is; the restated 1280px cap put the footer 20px off the masthead's edge at 1440. List
+  rows are flex boxes, restoring the 28px link rhythm. The Figma master was measured against the
+  running component at 1440, 768 and 375 and brought to within 8px; the social glyphs were rebuilt
+  from `brand-glyph.tsx`. A Code Connect template now maps the master. Both sides now bind the new
+  `cmp/sitefooter/*` tokens instead of the brand ramp's rungs, and all six variants render at identical
+  heights in code and Figma.)
+
+  Last reviewed: 2026-09-16 · System version: v0.68.0 (THE WIZARD'S ACTION BAR IS STICKY ON A
+  PHONE. Below 768px it rides the bottom of the viewport while the step scrolls under it — a grant
+  step runs 2,000–3,900px at 375, so "Save and Continue" was off-screen the whole time an applicant
+  filled it. Sticky rather than fixed: it belongs to the panel, needs no z-index rung and cannot
+  outlive the form. Back keeps its icon and gives up its word; the body reserves the bar's height so
+  the last field is never covered; `env(safe-area-inset-bottom)` is respected; the bar carries
+  `data-sa-rail-clear` and, where the corner is actually occupied, a trailing gutter so the primary
+  stops short of the statutory accessibility control. `floating-element-placement.md` gained the
+  section that says a sticky bar is not a third rail. `FormPanel` takes `footerProps`.)
+
+  Last reviewed: 2026-09-16 · System version: v0.67.0 (THE FOLLOW-UPS THE AUDIT BATCHES SENT BACK.
+  `EventList`/`NotificationCentre` mark a passed deadline OVERDUE — a word and an icon, derived from
+  a `now` the page resolves once — and an item may name its own due label ("File by"); both dates on
+  a row are now spelled the same way. `WorklistScreen`'s count line counts in the screen's own noun.
+  `DataTable` pins an Actions column only where the overflow is at least the column's own width, so
+  a pinned column can never hide a cell that cannot be scrolled out from under it. `ListRow` takes
+  `linkAs` — and `check:link-as` learned `linkAs-gate(href-only)`, for a component that renders an
+  anchor only when given an href — and its text column asks for 60% of a narrow row rather than
+  100%, so a label and its figure stay on one line. `MetricCard`'s icon badge shrinks and then goes
+  as its own tile narrows. `SegmentedControl` carries the radio-group keyboard.)
+
+  Last reviewed: 2026-09-16 · System version: v0.66.0 (THE E-ANUDAAN AUDIT'S SHARED-LAYER FIXES,
+  MADE ONCE FOR THE ESTATE. `DataTable` hides its footer while every row fits on the smallest page
+  size (`hidePagerWhenFits`), says "item" for one, gives its page-size buttons 24px targets and an
+  outlined selected state, and turns an overflowing table into a named focusable region.
+  `EmptyState`'s title is headline-4, a rung below any page title. `PageHeader size="compact"` is
+  headline-3 (24px on a portal), and the docstring names which pages take which. `WorklistScreen`
+  takes a `views` slot and a lone segmented control no longer draws the filter bar's frame.
+  `Accordion`'s card variant is one surface, no shadow and no grey band. A disabled selection
+  control keeps its description at AA. No required asterisk on a read-only or disabled field.
+  `ChartCard` takes `headingLevel`. `DocumentRow` takes `density="compact"` and `clampReason` and
+  never breaks a file extension; `DocumentChecklist` takes `bulkAction` (and exports
+  `DocumentBulkAction`), draws `formats` in the drop zone, and `DocumentChecklistGroup` takes
+  `hideRequiredMarks`. A portal masthead below 768px withholds the ministry line — a recorded DBIM
+  5.2 divergence for the Department to confirm.)
+
+  Last reviewed: 2026-09-14 · System version: v0.65.0 (EVERY FORM TAKES ONE GRAMMAR: ONE PANEL
+  PER STEP, AND THE SUB-SECTIONS INSIDE IT ARE NOT CARDS. Read from the portal handoff, where it
+  repeats across Transgender Portal, NOS, NMBA, Garima Greh, SCW and SAMBAL, and written down in
+  `docs/design-system/form-wizard-visual-language.md`. E-Anudaan's application form had grown its
+  own — a boxed stepper, a card per section, the actions below the last card — because no pass took
+  the other portals as the reference. `Wizard` now draws the stepper on the page ground and one
+  `FormPanel` for the step (head band, sub-sections, action band, Cancel on the first step);
+  `FormSection`, `FormCard` and `ReviewSection` share one head — an uppercase label and a hairline
+  rule — and draw no card; `FormScreen` renders its sections and actions in one untitled
+  `FormPanel`. New: `FormPanel`, `FormInset` for repeatable entries, `DocumentTile` /
+  `DocumentTiles` for documents in four states. Field labels step up to Label 1, input text to
+  Body 2, and `PageHeader` takes `size="compact"` for a wizard page.)
+
   Last reviewed: 2026-09-09 · System version: v0.64.0 (`SitePageHeader` CUTS THE PORTRAIT TO THE
   CIRCLE ITSELF, SO A CALLER CANNOT GET THE FRAME WRONG. The halo cannot do the clipping — the
   pulse discs are its children and the whole point of them is that they travel out past the
@@ -959,7 +1017,8 @@ that changes a colour is `data-brand`, so the two value columns below are Blue a
 | `--sa-text-neutral-base` | `#1E2124` | `#1E2024` | All body/heading text | Interactive elements, backgrounds |
 | `--sa-text-neutral-subtle` | `#3A3D41` | `#3B3D41` | Captions, hints, helper text | — comfortably AA at 10.92:1; the old "check below 16px" caveat no longer applies |
 | `--sa-bg-neutral-base` | `#FFFFFF` | same | Page and card backgrounds | Text or icon fills |
-| `--sa-bg-neutral-subtler` | `#EEF0F3` | `#EFF0F2` | Inputs, code blocks, quiet panels | Anything needing a measured contrast — it is a surface, not a fill with a guarantee |
+| `--sa-bg-neutral-subtlest` | `#F6F7F8` | `#F6F7F9` | The page canvas behind white cards — `AppShell`, `<body>`, the `bg-surface-canvas` utility | Panels, inputs, hover or read-only fills — those are `subtler`, and must stay one step darker than the page they sit on |
+| `--sa-bg-neutral-subtler` | `#EEF0F3` | `#EFF0F2` | Inputs, code blocks, quiet panels, hover and read-only fills | The page canvas (use `subtlest`); anything needing a measured contrast — it is a surface, not a fill with a guarantee |
 | `--sa-text-status-error-base` | `#AA2D30` | same | Error text and icons on white, destructive labels — rung 600, 6.72:1 | Decorative fills (use `bg/status/error/subtler`) |
 | `--sa-text-status-success-base` | `#046A38` | same | Success states, validation confirmation — rung 600, which is India Green itself, 6.72:1 | Primary brand actions |
 | `--sa-on-bg-brand-primary-bolder` | `#FFFFFF` | same | Text/icons on a solid primary fill | Any other background |
@@ -1398,8 +1457,13 @@ graph TD
 | Do | Don't |
 | :--- | :--- |
 | Wrap every input in `<FormField>` containing explicit label, hint, and error nodes. | Do not use placeholder text as a substitute for labels. Placeholders disappear on type and fail accessibility. |
+| Pass `readOnly` (or `disabled`) to the `<FormField>` — not only to the `<Input>` inside — for a worked-out or carried-forward value. The label then shows no required asterisk. | Do not mark a field the reader cannot change as required. An asterisk is an instruction; on a computed amount it cannot be followed. |
+| Choose `PageHeader`'s size by the KIND of page: `default` for dashboards, lists, records, review and error pages; `compact` for wizards and single-task form pages. | Do not pick a size per page, and do not add a third. The H1 must not change size inside one journey. |
+| Put a view switch (Pending / All) in `WorklistScreen`'s `views`, under the header, unframed. | Do not put tabs or a segmented control inside a `Card` or a `FilterBar`. A view is not a filter, and a switch in a grey frame reads as one. |
 | Show red error states (`var(--sa-border-status-error-base)` + `var(--sa-text-status-error-base)`) only after validation runs or input blur. | Do not render inline inputs without surrounding margin-bottom/padding constraints. |
 | Use `<FormSection>` to group related fields under a sub-heading within a form. | Do not render a single `<form>` with 20+ fields — break it into `<FormSection>` groups or use `<Wizard>`. |
+| Put a form's or a step's sub-sections inside ONE `<FormPanel>` (a `<Wizard>` draws it for you). | Do not wrap a sub-section in a `<Card>`. The panel is the card; boxes inside it read as separate forms and push the actions below the last box. |
+| Let the Wizard's action band stick on a phone (it does, 0–767px) and leave the reserved body padding alone. | Do not re-clip the panel (`overflow: hidden`) at phone width, or pin the bar with `position: fixed`. The first stops the bar sticking; the second makes it a corner occupant, with everything `floating-element-placement.md` asks of one. |
 | Use `<Search>` (not `<Input>`) for search affordances — it includes the correct icon and clear button. | Do not use `type="search"` on a plain `<Input>` and style it manually. |
 | Use `<Select>` for a FORM field — it is a native `<select>`, which every assistive technology and every mobile keyboard already knows. | Do not reach for `<FilterSelect>` in a form because it looks better. A native control is worth more than a hint column on a field a citizen submits. |
 | Wrap any set of radios or checkboxes answering ONE question in `<RadioGroup>` / `<CheckboxGroup>`. They supply the `<fieldset>`/`<legend>` that gives the QUESTION an accessible name — without it a screen reader announces the options and never the question. `legend` is required; hide it with `sa-sr-only` if a heading already asks it. | Do not hand-roll a fieldset around bare `<Radio>`s, and do not omit the legend because the layout looks fine. Do not add `tabIndex` to the options — the browser's roving tabindex already makes the group one tab stop, and re-implementing it produces four. |
@@ -1416,6 +1480,8 @@ graph TD
 | Use sticky headers (`position: sticky`) for scrollable tall tables. | Do not render tables without a visible `<caption>` or an `aria-label` on the `<table>` element. |
 | Right-align numeric columns and align the header text to match. | Do not mix left- and right-aligned text in the same column. |
 | Always add a sort indicator icon when a column is sortable. | Do not rely on row order alone to communicate data ranking. |
+| Leave `hidePagerWhenFits` on: a register that fits on its smallest page size shows no footer at all. | Do not show "Showing 10 50 100 of 1 items" and a one-page pager — the footer answers "how do I see the rest?", and there is no rest. |
+| Pin an Actions column with `className: "is-sticky-right"` and let the table decide: it pins only while the overflow is at least the column's own width. | Do not pin a column in a table that overflows by less than the column is wide. It then paints over the cell beside it with no way to scroll it back — which is how a status badge ends up reading "Action Requir…". |
 
 | Mark a column `sortable` and give it a `sortValue` when its cell comes from `render`. | Do not sort a rendered column by its display string — "₹1,20,000" sorts before "₹9,000", which is the classic register defect. |
 | Let `DataTable` sort the whole set and then page it. | Do not sort the visible page. Reordering ten rows inside a register of four thousand reads as correct and is not. |
@@ -1424,6 +1490,7 @@ graph TD
 
 | Do | Don't |
 | :--- | :--- |
+| Keep the EmptyState title a rung below the page title (the component sets headline-4), in Title Case with no full stop. | Do not restyle it up to the page title's size — an empty panel must not outshout the page it answers inside. |
 | Always show: icon + heading + 1-sentence explanation + a primary CTA to unblock the user. | Do not show only "No data found" with no action path. |
 | Use `<EmptyState>` with `variant="no-results"` for filtered tables, `variant="no-data"` for fresh portals. | Do not use red or warning colours — an empty state is not an error. |
 | Keep the message constructive: "Add your first application to get started." | Do not use passive voice: "No results were found." |
@@ -1703,6 +1770,18 @@ denominator behind a rate. A `tone` is a claim: set it only against a rule the s
 stated — the queue's "due soon" and "overdue" tiles — never on the first card in a row.
 `<Progress>` takes the same `target`, `targetLabel` and `tone`, and `compact` drops its
 label row where the surface already prints the label.
+
+**A figure people act on is a real control.** `<MetricCard onSelect>` makes the whole tile a
+button, `<MetricCard href linkAs={Link}>` makes it a link, and `selected` marks the one the
+page is filtered by — `aria-pressed` on the button, `aria-current` on the link, so the state is
+never carried by the tint alone. A tile is a link when it GOES somewhere and a button when it
+DOES something here, never both, and `href` wins: the rule `ListRow` states. The officer queue's
+case-type tiles are the case in the estate — they filter the table beneath them and clear on a
+second press, as the four cards on the NIC portal did. **In Figma the master carries a `Selected`
+boolean** (Metric Card, on the `Charts & Graphs` page) which shows the same ground: `bg/neutral/
+selected` inside `border/brand/primary/base`. Hover, press and focus exist in CODE ONLY — they are
+pointer and keyboard states, and drawing each as a variant would multiply a 50-variant set
+four-fold for nothing a designer places.
 
 **Provenance travels with the data.** `DataProvenance` — source, as-of date, status — is
 a field on the data, not a caption someone types, and `<ChartCard provenance>` and
@@ -2099,7 +2178,7 @@ one. Each segment still meets 24×24 on its own, which the size ladder guarantee
 **Tuning belongs to the containment, not to the mark.** Before the chip, the corrections pulled hard toward equal *ink* (YouTube down to 0.86) because with nothing to compare against, the eye judges a mark by how dark it is. Inside a chip that reverses — the frame is constant, so the eye compares mark-to-chip and reads *extent*, and the hard correction left YouTube looking undersized in its circle. The shipped values are therefore light: YouTube 0.94, Instagram 0.98, the rest 1.0. Marks fill **47–50%** of the 40px chip; at 55% the chip stops reading as a frame and becomes a tight collar.
 **Key props**: `name` (required) · `size` (default 24, on the DBIM 3.7 scale) · `aria-label`
 **Colour**: always `currentColor` — set it on the parent. Brand colours belong to the brands, so they are **not** SAMAVESH tokens and a coloured treatment names its own value at the call site. This is the one sanctioned place a raw brand hex may appear.
-**The chip is a proportion of the ground, not a ramp rung.** In the footer rail it is `color-mix(in srgb, primaryScale-100 12%, primaryScale-800)`. Rung 700 on the 800 ground looked right in blue, but the lift it produces depends on how each brand spaces its ramp — measured across the eight modes it ran from **1.13:1 in navy (invisible) to 1.39:1**. The mix gives **1.30–1.36 everywhere**. A rung fallback sits outside an `@supports` block: a custom property is substituted lazily, so an unsupported `color-mix` does not fall back to an earlier declaration, it makes the *using* property invalid and the chip vanishes. `@supports` is the only pattern that actually degrades.
+**The chip is a proportion of the ground, not a ramp rung.** In the footer rail it is `cmp/sitefooter/chip/default` — rung 100 at `alpha/16`, composited over the ground. Rung 700 on the 800 ground looked right in blue, but the lift it produces depends on how each brand spaces its ramp — measured across the eight modes it ran from **1.13:1 in navy (invisible) to 1.39:1**. A fixed alpha of one ink over the ground lifts it the same distance in every brand: **1.43–1.52 across all ten modes**, measured in the browser 2026-09-16. It was a 12% `color-mix()` until then; 12 is not a published alpha step and a two-colour mix has no Figma equivalent, so the chip took the nearest step (16) and became a token both sides bind.
 **When NOT to reach for it**: anything in the Material set is `Icon`. Organisational and scheme logos (NeGD, Digital India, NCSC, SMILE) are **hyperlinked image assets**, not glyphs — they carry attribution and must stay clickable. And never add a mark for an account the estate does not actually publish on.
 **Rules**:
 - **Never paste vendor path data at a call site.** That is how the same five marks ended up duplicated across `SiteFooter` and the homepage social feed, drifting independently. `SiteFooterSocial.icon` takes a **name**, not a `d` attribute, for exactly this reason.
@@ -2417,17 +2496,40 @@ Docs: `/design-system/components/sla-progress`.
 **Props**: `checked`, `onChange(checked)`, `children` (the statement), `title` (default `"Declaration"`), `lead` (default `"I certify that:"`), `error`, `disabled`.
 **Rule**: Use for any form where the user attests to the truth of what they submitted. Do not substitute a bare `<Checkbox>` — the declaration must read as a distinct, deliberate act, not one more field in a grid.
 
+#### The form grammar (read first)
+Every form on the estate takes one shape — spec: `docs/design-system/form-wizard-visual-language.md`.
+**One `FormPanel` per form or wizard step**; the sub-sections inside it (`FormSection`, `FormCard`,
+`ReviewSection`) are **not cards** — they open with an uppercase label and a hairline rule, 32 apart.
+The stepper sits on the page ground with no box. Actions live in the panel's action band, never
+below it.
+
+#### FormPanel
+**Purpose**: The one card a form or wizard step lives in — a tinted head band (`title`, `description`, `actions`), a body holding the sub-sections, and a tinted action band (`footer`: Back or Cancel, then the primary action).  
+**Rule**: Use it for a single-screen form or a custom step layout. **Inside a multi-step form use `<Wizard>`, which draws it** — never render a FormPanel inside a Wizard. Omit `title` only where the page header directly above already names the form (`FormScreen` does); the head band is then not drawn. Never put a `<Card>` inside it.
+
 #### FormSection
-**Purpose**: Groups related fields under a sub-heading with optional description.  
-**Rule**: Use one `<FormSection>` per logical group of fields within a larger form (e.g. "Personal Details", "Address").
+**Purpose**: One sub-section of a form: an uppercase label (Label 1, medium, `text/neutral/subtle`) and a hairline rule over a 1–4 column field grid (3 by default; 2 below 1280px, 1 below 768px). Optional `badge` between label and rule, `actions` at the row's end, `as` for the heading level (`h3` by default).  
+**Rule**: Use one per logical group of fields inside the step's panel. It is not a card and must not be wrapped in one. Wide fields take `className="ds-form-span-full"`. A `description` only where it changes what the applicant enters.
 
 #### FormCard
-**Purpose**: A titled surface card with the **same header styling as `<FormSection>`** but a custom (non-grid) body — for sections whose content isn't a simple field grid (repeatable cards, tables, mixed content).  
-**Rule**: Never hand-roll a `<section>` with its own heading classes for a custom-layout group — use `<FormCard title=… description=… required? headingId?>` so every section header across the estate stays visually identical. Pass `headingId` when a child needs `aria-labelledby` (e.g. a data table).
+**Purpose**: The same sub-section head as `<FormSection>` over an **arbitrary body** — `FormInset` entries, a table, `DocumentTiles`. Despite its historical name it draws **no card**.  
+**Rule**: Never hand-roll a `<section>` with its own heading classes for a custom-layout group — use `<FormCard title=… required? badge? actions? headingId?>` so every sub-section head stays identical. Pass `headingId` when a child needs `aria-labelledby` (e.g. a data table).
+
+#### FormInset
+**Purpose**: One entry of a repeatable group (an employment, a key functionary) — a tinted inset (`bg/neutral/subtler`, `shape/12`, `padding/16`, no border) with an optional `title` and `actions` over a 2-column grid.  
+**Rule**: Follow the last entry with a small outlined "Add More" `Button` with a leading plus, right-aligned; the parent owns the list. Not for short uniform rows (family members, awards) — those are a bordered `DataTable`. Not for a group that appears once.
+
+#### DocumentChecklist / DocumentChecklistGroup / DocumentRow / DocumentFindings / DocumentPlacementTray / DocumentHistorySheet
+**Purpose**: The Document Centre — a long list of named documents that are uploaded, checked automatically and kept with their history. `DocumentChecklist` is the header (progress counted as `ready` of `required`, `formats` stated once, `filters` chips, a drop zone via `onFiles` with a Choose Files button, `errors` rendered as an ErrorSummary, `politeMessage` / `assertiveMessage` live regions, a `tray` slot, `visibleCount` for filtered-to-nothing, `loading`) over `DocumentChecklistGroup`s of `DocumentRow`s. `DocumentRow` takes `state` (`missing` · `optional` · `uploading` · `failed` · `rejected` · `checking` · `verified` · `review` · `invalid` · `unavailable`), `file`, one `reason`, one `action`, a `menu`, `findings` behind a disclosure, `remark` above and `aside` beside (under the title below a 760px row), and `linkAs` for `file.href`. `collapsible` folds a row that needs nothing more to one line — icon, title, `summary` ("Verified by ASO, 21 Jul 2026"), the status words, the action and the menu — with the file, reason, findings and `aside` behind "Details" (`expanded`, `onExpandedChange`). Never make a row collapsible that the reader must still act on. `density="compact"` is the officer's reviewed-document row — two lines from a 520px row width (title · `aside` verdict · actions, then file · status as small print) and one line from 960px, title and file cut to one line — and `clampReason` cuts a reason repeated down a list to one line on a wide row (the full reason belongs in `findings`). File names are cut in the stem, never in the extension. `DocumentChecklist`'s `bulkAction` (also exported as `DocumentBulkAction`) draws "Mark All Remaining as Verified (N)" behind a confirmation: the screen chooses the set, never includes a document the automatic check flagged, and records one verdict per document. `formats` is drawn inside the drop zone when there is one. `DocumentChecklistGroup`'s `hideRequiredMarks` withholds the asterisk under a heading that already says Required. `DocumentFindings` compares each extracted field with the application (`expected`, `matches`). `DocumentPlacementTray` lists a batch drop's placements. `DocumentHistorySheet` lists every version (`linkAs`).  
+**Rules**: (1) Progress counts documents READY, never uploaded. (2) Status is words beside an icon, never colour alone. (3) Confidence goes to officers only — an applicant gets the consequence (“Check the details”, “Doesn't match”). The words for `review` point at the reason line and “What we found”, which are on the row; “Please confirm” pointed at a confirm action that is not (docs/plans/2026-09-16-e-anudaan-document-centre.md §3.2, audit D-01). (4) Continue stays enabled: pressed with blockers, raise `errors` (bump `errorsRevision`) and filter to what needs attention; Submit is the hard gate. (5) Each error's `fieldId` is the row's primary control id. (6) A batch drop never replaces silently — show the tray. (7) A replaced file goes to history; never delete it. (8) Use `DocumentTile` instead for two or three documents on an ordinary form step.
+
+#### DocumentTile / DocumentTiles
+**Purpose**: One document on an upload or review step — `title` (+`required`), one line of `meta`, `actions` at the right, optional `icon` — in four `state`s: `upcoming`, `uploaded`, `verified`, `invalid`. `DocumentTiles` is the `<ul>` grid, two to a row from 768px.  
+**Rule**: **An upload is `uploaded`, never `verified`** — only an officer or DigiLocker verifies. Verified carries a `Badge`; invalid carries the officer's reason as `meta`. Not for an officer's checklist with findings (`ChecklistScreen`) or a public download list (`DocumentLibrary`).
 
 #### Wizard
-**Purpose**: Multi-step form experience with a progress `<Stepper>`.  
-**Rule**: Each wizard step should have 3–6 fields. The final step must always be a `<ReviewSection>` showing all entered values before submit.
+**Purpose**: Multi-step form shell: `<Stepper>` on the page ground, then one `FormPanel` for the current step — head band (`title`/`description` default to the stage's label/description; `headerActions`), the step's sub-sections, error summary, action band.  
+**Rule**: Pass `onCancel` so the first step shows an outlined Cancel instead of a disabled Back. Children are sub-sections, never a `<Card>`. Each step should have 3–6 fields. The final step is a review: one `<ReviewSection columns={4|2} actions={Edit}>` per earlier step, documents as `DocumentTile`s, then `DeclarationCheckbox`, with "Submit Application".
 
 ---
 
@@ -2501,7 +2603,7 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 
 **Two deliberate divergences from the Figma mock**, both recorded rather than hidden:
 - **The reset control is not red at all**, where the mock made it `#ff0004`. That value measures **4.00:1** on white and fails AA for text, so it never shipped; the system's error ink was used instead at 9.10:1. As of 2026-08-25 the colour is gone too — clearing a scripted routing transcript is housekeeping, not a failure, and it now paints `text/neutral/base` at **16.18:1** with no border. Accessibility was never traded against fidelity; the second pass corrected the *signal*, which fidelity had got wrong in a way contrast alone could not fix.
-- **Quick replies use `bg/brand/primary/base`, not the mock's `#EFE8FF`.** Nothing in the ramp resolves near that lavender; the pale brand tint is the same *role*. Per `.claude/rules/documentation-ds-linkage.md`, a value that is not a design-system colour means the design moves — not that the system grows a one-off variable.
+- **Quick replies are the library `Chip`** — outlined at rest, brand-tinted on hover, the same part the Figma master instances. A reply is an action, not a toggle, so the chatbot removes the `aria-pressed` Chip would otherwise announce.
 - **The transcript sits on a 16px bottom gutter, not the mock's 57px.** The mock floats the message stack 56.68px above the panel floor — space that holds nothing in any of its four frames. An unexplained gap at the foot of a chat panel reads as a composer that failed to render; matching the panel's other gutters reads as intentional. Every other measurement is reproduced exactly (panel 400 wide, radius 16, mark 84 / disc 60 / wordmark 73.7×76.7 / figure 55.4, bubble capped at 67%). **719 is the panel's CAP, not its height.** Pinned there, the opening state was a 531px log holding 96px of greeting — 435px of white, about 45% of the panel, collecting under the header because the log is floor-anchored. The panel sizes to its content up to `min(719px, viewport room)`, so it opens at ~420px and grows with the conversation.
 
 #### ActionBanner
@@ -2525,8 +2627,8 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 #### Ticker
 **Purpose**: The full-bleed announcement strip that runs under the masthead on public pages — "Latest Updates" on the DoSJE website. A named plinth, one message at a time, and the controls to move through them.
 **Source of truth**: Figma **SAMAVESH › Ticker**, recreated from *MoSJE Handoff › Latest Updates* (`8137:48790`).
-**Key props**: `items` (`{ id?, title, description?, date?, dateTime?, href, linkLabel? }[]`) · `label` (default `"Latest Updates"`) · `icon` (slot, defaults to `TickerMark` — the drawn megaphone whose arcs answer to the strip's state) · `action` (slot) · `orientation` (`horizontal` default | `vertical`) · `height` (`auto` default | `fill`) · `interval` (default 5000) · `autoplay` · `linkAs`
-**Contrast — the ground is `primaryScale/600`, not `/500`, and that is a fix rather than a preference.** White on `/500` (`#0373df`) measures **4.64:1** — it clears WCAG 1.4.3's 4.5:1 by four hundredths — and the moment secondary text is dimmed it fails outright: 90% is **4.06:1**, 80% is **3.52:1**. This component shipped an 80% description line on that ground and its own documentation claimed 6.3:1, which was simply wrong. On `/600` (`#005eb9`) the primary line is **6.36:1** and 80% is **4.66:1**, so a title-over-subtitle structure is possible at all. The plinth moves to `/800` with it, holding the tonal step at 1.77:1 against the 1.85:1 the two had before — the shape is unchanged.
+**Key props**: `items` (`{ id?, title, description?, date?, dateTime?, href, linkLabel? }[]`) · `label` (default `"Latest Updates"`) · `icon` (slot, defaults to `TickerMark` — the drawn megaphone whose arcs answer to the strip's state) · `action` (slot) · `orientation` (`horizontal` default | `vertical`) · `height` (`auto` default | `fill`) · `interval` (default 5000) · `autoplay` · `linkAs` · `bleed`
+**Contrast — the ground is `primaryScale/600`, not `/500`, and that is a fix rather than a preference.** White on `/500` (`#0373df`) measures **4.64:1** — it clears WCAG 1.4.3's 4.5:1 by four hundredths — and the moment secondary text is dimmed it fails outright: 90% is **4.06:1**, 80% is **3.52:1**. This component shipped an 80% description line on that ground and its own documentation claimed 6.3:1, which was simply wrong. On `/600` (`#005eb9`) the primary line is **6.36:1** and 80% is **4.66:1**, so a title-over-subtitle structure is possible at all. **Since 2026-09-14 the subtitle is not dimmed at all:** the library binds kind, separator and date to the same inverse text variable as the title, and the two lines are told apart by style — `Body/body-3` under `Body/body-2-semibold` — at the full 6.36:1. The plinth moves to `/800` with it, holding the tonal step at 1.77:1 against the 1.85:1 the two had before — the shape is unchanged.
 **Each row is a title over a subtitle**, the structure the live site uses and the one the bar already had: the notice is the title, its kind and date the subtitle. It replaced a bold lead-in and a colon on one line, which read as a label when the data's kinds repeat. **A subtitle is allowed to repeat**, because it is plainly the quieter line — which is why the kind can be shown at all now.
 **Each row is marked, and the marker hangs.** A small 48%-ink dot sits in its own grid column with the title and subtitle stacked beside it, so wrapped lines return to the text column and the dot is the only thing at the outer edge. Without it every line in the rail starts at the same x and nothing but a vertical gap says whether a line begins a notice or continues the one above — 32px between rows against 20px inside a wrapped title, a ratio of 1.6 that is thin enough to misread *while the list is moving*. A reader here is re-acquiring the list constantly, items arriving clipped at one edge and leaving at the other, so a fixed column of markers is an anchor that survives the movement. **The hanging indent is the point, not the dot**: a marker with the text wrapping back underneath it would be decoration. The bar has none — it shows one message and there is no list to scan.
 **Rows do not underline on hover.** WCAG 1.4.1 asks that a link be distinguishable from the text *around* it, and in a list where every row is a link there is no surrounding text to confuse it with. The row's own background wash and the cursor carry the affordance; an underline on a wrapped two-line notice struck through both lines and fought the subtitle for the same few pixels.
@@ -2535,7 +2637,7 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 **Nothing is truncated, in either shape.** Both lines clipped to an ellipsis until 2026-08-25, and on a notice list that is not a compromise but a loss of meaning: two DoSJE notices both open *"Extension of Application Submission Date for Financial Adviser (FA) Post at…"* and clipped to the **same visible string** — two links reading identically and leading to different pages, WCAG 2.4.9 failed by a CSS property. Text wraps; the bar has a **minimum** height rather than a fixed one and grows to fit, and the panel measures its window instead of calculating it.
 **Orientation — two shapes, one data model**: `horizontal` (default) is the **bar** — the 72px full-bleed strip under the masthead, one message at a time, stepped with prev/next. `vertical` is the **panel** — the same items stacked as rows, scrolling upward under a header that carries the name, the pause control and the way out. Several headlines are legible at once, which is what a notice board is for, and there is no stepping because the list moves on its own. They are one component because the data is identical (a lead-in, a sentence, a link) and a site usually wants both: the bar on the home page, the panel in a column beside it.
 **How the panel maps the item**: `title` is the notice and renders as the row's own line; `description` and `date` fall to the subtitle beneath it, and a row carrying neither renders the title alone. There is **no colon and no bold lead-in** — that was the shape until 2026-08-25, and it read as a label rather than a notice whenever the data's kinds repeat: the DoSJE list is "Documents" seven times out of eight, which drew the same bold word down the rail four times over carrying no information. Demoting the kind to the subtitle is what makes it safe to show at all. `linkLabel` is ignored here: on a scrolling list it would repeat on every row, and the whole row is already the link. `rows` (default 4) sets how many are visible and therefore the panel's height.
-**The panel is built from the bar's parts, deliberately**: its header is the bar's **navy plinth** — the same `primaryScale/800` behind the same mark and name — over the same `primaryScale/600` ground in the same single ink, and its rows are set in the bar's own title role (`title-3`, 500). Side by side the two read as one component in two shapes, which is what they are. It carried its own treatment (a transparent header over a hairline rule) until 2026-08-25 and looked like a different component wearing the same colours. **There is no rule under the header** — the plinth's colour change already separates it, and a hairline on top is a second boundary doing the first one's job.
+**The panel is built from the bar's parts, deliberately**: its header is the bar's **navy plinth** — the same `primaryScale/800` behind the same mark and name — over the same `primaryScale/600` ground in the same single ink, and its rows are set in the bar's own notice style (`Body/body-2-semibold` — body-2 at 600; until 2026-09-14 this said `title-3` at 500, a combination no text style draws). Side by side the two read as one component in two shapes, which is what they are. It carried its own treatment (a transparent header over a hairline rule) until 2026-08-25 and looked like a different component wearing the same colours. **There is no rule under the header** — the plinth's colour change already separates it, and a hairline on top is a second boundary doing the first one's job.
 **`fill` needs a parent whose height does not come from the panel.** A grid or flex item is sized by its own content, so a long list grows the row and the panel then fills what it just inflated — the website reached **2,616px** that way before the rail was taken out of flow. Give the rail `position: relative` and the panel's wrapper `position: absolute; inset: 0`, so whatever shares the row decides its height and the panel scrolls the remainder.
 **Height — `auto` stands, `fill` takes the row**: `auto` is the header plus the `rows` window, for a widget with a row to itself. `fill` takes the height of the row it shares and `rows` becomes a floor — the website's panel uses it beside the Offerings cards. **It is a prop rather than something inferred**, and the first attempt is why: `block-size: 100%` looks like it would do this for free (resolving to `auto` against an auto-height parent, the row otherwise) and in practice filled almost everywhere, because a flex parent already has a resolved height by the time the child asks. Only the consumer knows which situation it is in.
 **Whether it scrolls is measured, not counted**: `count > rows` was only ever a proxy for "does the list overflow its window", and it stopped being true the moment the panel could take a row's height — given a tall enough column the whole list fits, and a marquee moving content already entirely on screen is motion for its own sake. One copy of the list is compared against the viewport. **A panel that is not scrolling itself scrolls by hand** (`overflow-y: auto`): the full list is always in the DOM, because slicing it to `rows` both stranded the notices past the cut and latched the overflow check off — a sliced list can never be found to overflow, so a panel that stopped scrolling could never start again.
@@ -2555,14 +2657,19 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - **The panel does not scroll on a phone.** Below 640px it becomes a still list of its first `rows` items, the rest behind the action. On touch there is no hover to stop it with, so a citizen would be chasing the link. The bar is unaffected — it holds one message, so nothing moves out from under a thumb.
 - **Nothing that cannot move shows controls that govern motion.** Below two items (bar), or when the list is no longer than its own window (panel), the **entire control cluster is removed** — pause included. A pause button on something that is not moving is *worse* than absent: it advertises motion a citizen may be trying to escape. This is the one place pause legitimately disappears, and it disappears because there is no motion to stop.
 - **The action slot takes `inverseOutlined`.** The strip is a solid brand surface; a normal `outlined` button draws its border in a blue that is invisible against it.
+- **Every text is one whole SAMAVESH text style**, as the library's layers are linked: the name `Title/title-2`, a notice `Body/body-2-semibold`, kind and date `Body/body-3`, the route `Label/label-1`, every control glyph `Icon/24/Filled`. Size from one style and weight from another is the defect `check:type-linkage` now fails as `style-weight`.
+- **The route is the library `Button`** — in Figma a `Button` instance (Primary · Inverse · Default; Outlined on the desktop bar, Text in every header), in code the consumer's `buttonClasses("primary", "inverseOutlined", "sm")`. On the desktop bar: 40px, 24 either side, label-1, 8px from the controls and **no hairline** — the ticker sizes its own slot to Figma's Default over the consumer's `sm` (32px); `md` has matched that Default since 15 Sep 2026, when Button labels moved to label-1 at every size. Below 1024px and in the panel: a text-style route with a 24px hairline at 40% ink, 8 either side. Its border stays the Button's inverse edge — the part draws `primaryScale/100`, but the Button's only hook, `--sa-btn-edge`, would recolour the label with it. **In a panel, keep the route short — "View All".** The header holds the name, the pause, the hairline and the route on one line; at 408px with the part's 24px inset that is true for "View All" and not for "View All Updates", which wraps a semibold "Latest Updates" to two lines. Below the library's smallest panel (326px) the route drops its inset, because on a 360px phone the website's 296px panel had two pixels of headroom.
+- **The controls are the library `IconButton`** — Primary · Text · Inverse · `md` in code, the same instance in Figma, glyph in `Icon/24/Filled`. Size, radius, hover and pressed layers and the 0.97 press come from `button.css`; the strip keeps only its inverse focus ring (see below). **Never draw a control on the strip** — a frame with a stroke and a label is a defect, in Figma or in CSS.
+- **From 1024px the content keeps to `--sa-container-page` and the plinth runs to the bar's leading edge.** The plinth's inset is the container's edge (`--sa-ticker-edge`) plus the gutter the centred content leaves, `(100cqi − min(100cqi, container-page)) / 2`, so a bar in a column gets no gutter and a bar across the viewport is navy to the edge. Spacing is the library frame's: 32 from the content edge to the mark, 24 from the name to the plinth's end, the notice 24 past the plinth and 32 short of the controls, 32 at the far end. Figma draws it as `Gutter start — plinth run-out` · `Container` (min and max `container/page`) · `Gutter end`, variants pinned to `Viewport=Desktop XL`.
+- **Below 1024px the plinth is a 60px full-width header** and the mark and the notice both start 16 in; the notice sits 24 below the header. **The panel's first row sits directly under its header** — the container's side-by-side gap is zeroed when it stacks.
 - **The focus ring is inverse ink, not `--sa-focus-ring`.** The ring token is `#0373DF` — this bar's own fill — measuring 1:1 against it and failing the 3:1 floor of WCAG 1.4.11 / 2.4.11 outright. The identical defect was found and fixed on `AccessibilityBar`; do not "restore the token" here.
 **Reflow (WCAG 1.4.10)**: the control row cannot compress, so things drop in order of cost against value — prev/next below 640px, the action button below 1024px, the plinth's label text below 640px (the section's accessible name already carries it). **Pause never drops**: trading a reflow failure for a 2.2.2 failure is not a trade.
 **Four deliberate divergences from the Figma frame**, recorded rather than hidden:
+- **Corners, unless it bleeds.** A contained bar carries `--sa-shape-12` (the radius the vertical panel already uses) and clips to it; a `bleed` bar keeps square ends, because a band meant to be continuous with the page edges has no corners a reader can see and rounding them would show two slivers of page through the ends. `overflow: clip`, not `hidden` — the second makes a scroll container a keyboard user can end up scrolling.
 - **The plinth hugs its label**; it is not the frame's absolutely-placed 265x72 rectangle. That width ends just past "Latest Updates" *in English* — not in Hindi, and not once a citizen raises their browser font size. A fixed rectangle would clip the label or trail empty colour past it, so the plinth is the heading's own background.
 - **The pause control is added.** See the rule above; per `.claude/rules/standards-precedence.md` a published set of values is a floor, not a ceiling, so what is missing gets added rather than the frame shipped as drawn.
 - **The nav gap is 8px, not 16px.** The frame spaces two arrows; this row runs three because of the pause control, and 16px would cost another 56px of a row that already had to be taught to compress.
-- **The tile border is 1px, not 0.5px.** Half a pixel is not a colour any display renders predictably — it dithers lighter at 1x and disappears against the white tile at some zoom levels.
-**Figma**: SAMAVESH › Ticker — `Breakpoint` (Desktop · Tablet · Mobile) × `Direction` (Horizontal · Vertical) × `Motion` (Playing A · Playing B · Paused A · Paused B). The A/B pair is what makes the file a working prototype rather than a still: `Playing A` advances to `Playing B` on a 5s delay and back again, both with Smart Animate, so the strip cycles on its own in presentation mode and the pause control actually stops it. `Paused A` / `Paused B` exist so a citizen can pause **and then still step** — a single Paused variant would have left prev and next with nowhere to go. Interaction states live in three nested library parts — `Ticker / Control`, `Ticker / Action` and `Ticker / Row` — rather than as axes on the parent, which would have multiplied 24 variants into hundreds. **Two motion mechanisms, each where it fits:** the bar uses prototype reactions (Smart Animate on the component's own 240ms ease-out, with hover states at 150ms — the same two numbers the CSS uses) so the file cycles by itself in presentation mode; the panel uses **Figma Motion** — a `TRANSLATION_Y` keyframe track on its Track, linear, because a timed variant swap cannot express a continuous scroll and any easing would make the marquee hesitate at the loop point.
+**Figma**: SAMAVESH › Ticker — `Breakpoint` (Desktop · Tablet · Mobile) × `Direction` (Horizontal · Vertical) × `Motion` (Playing A · Playing B · Paused A · Paused B). The A/B pair is what makes the file a working prototype rather than a still: `Playing A` advances to `Playing B` on a 5s delay and back again, both with Smart Animate, so the strip cycles on its own in presentation mode and the pause control actually stops it. `Paused A` / `Paused B` exist so a citizen can pause **and then still step** — a single Paused variant would have left prev and next with nowhere to go. Interaction states live in the nested parts — `Ticker / Row` and the library's `IconButton` and `Button` — rather than as axes on the parent, which would have multiplied 24 variants into hundreds. **Two motion mechanisms, each where it fits:** the bar uses prototype reactions (Smart Animate on the component's own 240ms ease-out, with hover states at 150ms — the same two numbers the CSS uses) so the file cycles by itself in presentation mode; the panel uses **Figma Motion** — a `TRANSLATION_Y` keyframe track on its Track, linear, because a timed variant swap cannot express a continuous scroll and any easing would make the marquee hesitate at the loop point.
 **The outlined button appears only at 1024px and up — in BOTH shapes (2026-08-26)**: one rule by container width rather than per shape. The bar is that wide when it runs full-bleed; the **panel never is** — it is a column, 408px at desktop and 326px on a phone — so it always takes the text link. That is not a special case, it is the same measurement reaching a different answer. An outlined button costs 32px of padding plus a border, and in a 408px header already carrying a mark, the name and the pause it was the widest element competing with the component's own identity: **130px down to 53px**, giving 77px back. The outline was doing decorative work there, not affordance work — a header row is a place a citizen expects links, and the hairline already separates it from the control.
 **`labelAs` puts the strip's name in the document outline**: the section is labelled, so landmark navigation already reaches it, but **heading navigation skipped it entirely** because the name was a `span` — and on a notice board that is the one thing somebody is most likely to jump to. It defaults to `"span"`, the existing behaviour, because the right LEVEL depends on the page: the website's rail sits inside a section that owns an `h2`, so it passes `h3`, while a bar under the masthead wants `h2`. A component cannot know that, and guessing would skip a level — worse than not being a heading. The label's own type is stated rather than inherited, so a browser's `h2` default cannot drag the plinth to 32px.
 **The Figma bar was 102px against the code's 72px**: the bar's Row instance carried the **panel's** row padding — 16px top and bottom, meant for spacing a list — and the Body added 16 more. Row spacing belongs to the LIST, not to the message, so it is stripped on the bar's instances. That was the "extra space" the design showed and the build never had.
@@ -2671,7 +2778,7 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 **Rules**:
 - **An inverted period is REPORTED, never silently swapped.** Swapping means the report runs over a period nobody asked for and the reader cannot tell.
 - **Each end bounds the other**, so the inverted state is reachable only by typing — which is exactly when a message is the right answer.
-- **A preset is a real button carrying `aria-pressed`**, not a dropdown: "Last 30 days" is one press, and behind a select it is three on the control a dashboard's reader uses most.
+- **A preset is the library `Chip`** — `role="button"` carrying `aria-pressed`, the selected fill on the active period — not a dropdown: "Last 30 days" is one press, and behind a select it is three on the control a dashboard's reader uses most.
 - **Both ends carry the group's name** — "From — Period", not "From". Two period filters on one page otherwise offer four fields with two names between them.
 - The group is a `fieldset`/`legend`; the ordering message is `role="alert"`.
 
@@ -2732,13 +2839,15 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 
 #### EventList
 **Purpose**: a dated, attributed record of things that happened. Used directly it IS the activity log and the audit trail; `CommentThread` and `NotificationCentre` are composed from it.
-**Props**: `events` (`{ id, at, actor?, actorRole?, action, subject?, note?, icon?, tone?, unread?, href? }[]`) · `label` (**required**) · `emptyText` · `grouping` (`none` | `day`) · `unreadLabel`
+**Props**: `events` (`{ id, at, actor?, actorRole?, action, subject?, note?, icon?, tone?, unread?, href?, actionRequired?, dueAt?, dueLabel?, overdue?, source? }[]`) · `label` (**required**) · `emptyText` · `grouping` (`none` | `day`) · `unreadLabel` · `actionLabel` · `dueLabel` · `overdueLabel` · `overdueDueLabel` · `now` · `linkAs`
 **Rules**:
 - **One object, three views.** A comment, an audit entry and a notification are the same thing — *someone did something to something, at a time, and may have said why*. Three components would produce three vocabularies for one object, and then a portal's audit log and its notification panel disagree about what an actor is.
 - **It does NOT sort.** The order it is handed is the order it renders. A log is newest-first; a thread is oldest-first. The caller knows which; the component does not.
 - **A note is never truncated.** On a departmental record the reason an application was returned is the most important text on the screen.
 - **`unread` is a WORD before it is a dot.** The row carries a visually hidden `unreadLabel`; the coloured dot is `aria-hidden`.
 - **A system action says "System".** An empty actor column reads as missing data, which on an audit trail is the worst thing it could read as.
+- **Overdue is a WORD and an ICON**, in the error family, with the date reading "Was due" rather than "Respond by". It is derived from `now` — resolved ONCE per page and handed to every list, never `Date.now()` in the render, which makes the server and the browser disagree on the boundary day — or stated by the item's own `overdue`.
+- **A deadline may name its own verb.** An item's `dueLabel` wins over the list's: "File by 31 Mar 2027" for a utilisation certificate, "Respond by" for a deficiency. Both dates on a row are spelled the same way — "30 Sep 2026", never the browser's "30 Sept 2026".
 - Not for an approval chain with a fixed vocabulary of steps — that is `ApprovalTimeline`.
 
 #### CommentThread
@@ -2752,12 +2861,15 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - Without `onSubmit` the composer is not rendered at all.
 
 #### NotificationCentre
-**Purpose**: the panel behind the bell — what has happened that this officer has not seen.
-**Props**: `notifications` (`EventItem[]`, newest first) · `label` · `onMarkAllRead` · `markAllLabel` · `emptyText`
+**Purpose**: the panel behind the bell, and the notifications page itself — what needs the reader's action, then what has happened since they last looked.
+**Props**: `notifications` (`EventItem[]`, newest first) · `label` · `titleAs` · `onMarkAllRead` · `markAllLabel` · `emptyText` · `status` · `onRetry` · `limit` · `viewAllHref` · `linkAs` — and the exported `notificationCount(items)`
 **Rules**:
+- **Action before news.** `actionRequired` entries sit under "Action Needed", are never cut by `limit`, and survive "Mark updates as read" — derive the flag from the live record so it clears when the action is done, not when it is read.
+- **One count.** Every surface that prints a notification count calls `notificationCount`, so the bell and the page cannot disagree.
+- **Every state is designed**: `status="loading"` is a skeleton, `"error"` says so once and offers `onRetry`.
 - **The same sentence in both places.** It renders `EventList` grouped by day, so a notification and the entry on the case read identically and an officer is not matching two differently-worded summaries of one event.
 - **The unread count is announced politely** in a live region, so a screen-reader user learns three things arrived without opening the panel and counting.
-- **"Mark all as read" appears only when something is unread.** A control that does nothing most of the time is ignored on the day it matters.
+- **"Mark updates as read" appears only when an update is unread.** A control that does nothing most of the time is ignored on the day it matters.
 - **It does not place itself.** There is no floating variant: both bottom corners and the right wall are spoken for (`floating-element-placement.md`), so whatever opens the panel decides where it sits.
 - Empty is a GOOD state and reads like one — "Nothing new. You are up to date."
 
@@ -2864,7 +2976,7 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 
 #### ListGroup / ListRow
 **Purpose**: a real `<ul>` of rows — leading slot, text block, trailing slot. The surface behind "recent applications", notifications, documents and search results.
-**Props**: `ListGroup`: `divided` (default true) · `bordered` · `size` · `aria-label`. `ListRow`: `title` · `description` · `eyebrow` · `leading` · `trailing` · `href` · `onClick` · `selected` · `disabled`.
+**Props**: `ListGroup`: `divided` (default true) · `bordered` · `size` · `aria-label`. `ListRow`: `title` · `description` · `eyebrow` · `leading` · `trailing` · `href` · `linkAs` · `onClick` · `selected` · `disabled`.
 **Rules**:
 - **List or table is decided by what the reader does next.** If they will pick one row and open it, it is a list. If they will read down a column, it is a `DataTable`. Reaching for a table because the data has fields produces twelve columns on a phone; reaching for a list because it looks lighter produces a comparison the reader cannot make.
 - **The WHOLE row is the target**, never the title inside it. A 40px link in a 600px row is a target most people miss and everyone with a tremor misses; WCAG 2.2 §2.5.8's 24×24 is the floor, not the goal.
@@ -2872,6 +2984,8 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - **Selection carries an inset leading rule as well as a fill**, plus `aria-current="page"` on a link or `aria-pressed` on a button. Colour alone fails WCAG 1.4.1, and the fill vanishes in forced-colors mode where the rule survives.
 - A disabled row **stays in the list** with `aria-disabled`. "Bank passbook — not yet uploaded" is information; removing the row leaves the reader to notice an absence.
 - **Long lists are PAGED, never scrolled inside their card** — on a phone a reader flicking the page down lands in the list and moves the list instead.
+- **A row with an `href` takes `linkAs`.** Without it every row-click is a full document load. A row with no `href` renders no anchor and needs nothing; `check:link-as` knows the difference.
+- **A label and its figure stay on one line where they fit.** The text column asks for 14rem, and never more than 60% of the row: at 100% any trailing slot wrapped beneath the label and a two-part row on a 375px card grew to about 70px.
 
 #### Tooltip
 **Purpose**: A short hint revealed on hover **and** focus.  
@@ -2945,7 +3059,8 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 #### EmptyState
 **Purpose**: Fills empty data containers with context + a call-to-action.  
 **Variants**: `no-data` (fresh/empty portal), `no-results` (filtered table returned nothing)  
-**Rule**: Always include: icon + heading + description + primary CTA.
+**Rule**: Always include: icon + heading + description + primary CTA.  
+**Scale**: the title is headline-4 (20px portal, 24px website) — a rung below any page title. Title Case, no full stop.
 
 ---
 
@@ -2971,11 +3086,19 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 **Rule**: Never nest `<Card>` inside another `<Card>`.
 
 #### FactStrip
-**Purpose**: The row of standing facts under a page hero — headquarters, number of components, who a scheme serves. One card divided by hairlines, not a row of cards.
-**Key props**: `items` (`{icon, value, label}[]`), `overlap`, `ariaLabel`
+**Purpose**: The row of standing facts under a page hero — headquarters, number of components, who a scheme serves. One card, not a row of cards.
+**Key props**: `items` (`{icon, value, label}[]`), `overlap`, `variant`, `ariaLabel`
 **Rules**:
 - **NOT `MetricCard`.** A metric is a measurement that moves and carries a trend; MetricCard has the change pill to prove it. These are facts that never trend, so the two differ in what they may *contain*, not only in how they look. Giving MetricCard a centred variant would have put a change arrow one prop away from a headquarters address.
-- **One surface, not four cards.** Separate cards read as four things to compare; a divided surface reads as one summary of one organisation, which is what it is.
+- **One surface, not four cards.** Separate cards read as four things to compare; one surface reads as one summary of one organisation, which is what it is. There is no rule between the cells — the icons already give the row its rhythm, and four vertical hairlines add furniture to the calmest band on the page. (This line said "divided by hairlines" until 10 Sep 2026, months after they were taken out.)
+- **It has a Figma home now, and it did not before.** `Fact Strip` was published to SAMAVESH on 10 September 2026 — its own page in Data Display, two sets (`Fact Strip` with `Type=Compact | Extended`, and the nested `Fact Strip / Fact` cell carrying Value, Label and the Icon swap), a documentation frame, a component record and an Index card. Until then it was drawn inside the site header's frame and published nowhere, which is why its docs page declared `figma={{ absent: … }}`. Figma says `Type` where code says `variant`: designer-facing Title Case, mapped by Code Connect, deliberately not the same string.
+- **TWO SHAPES, AND THE ITEM COUNT PICKS ONE.** `variant` defaults to `compact` up to five facts and `extended` above. The threshold is arithmetic: `minmax(200px, 1fr)` fits at most five tracks in the widest content column on the estate, so six is the first count that cannot be one row. Pass `variant` only to override that.
+- **`compact`** is the handoff's strip — one row, each cell a centred stack of mark over value over label. Right for the three or four standing facts under a page hero.
+- **`extended`** is what a set becomes once it is too long for a row, and three things change together because they are one decision. The cells **wrap to a balanced column count** (4, or 3 where the count divides by three and not four) so the last row is full — `auto-fit` laid eight out 5 + 3, which reads as a grid that ran out of content. Each cell **turns on its side**, mark in its own column, figure and caption beside it, so a row scans left to right. And the **figure steps up** from `headline-5` to `headline-2` against a `body-2` caption — 2.3:1 where compact is 1.25:1, which is the weakest hierarchy two sizes can have.
+- **The mark keeps its chip in `extended`, at 8 of padding rather than 12** — a 48px tile against a 60px copy block, spanning the figure and its caption rather than sitting above them. It was briefly demoted to a bare glyph on the reasoning that a tile competes with a 32px figure; that is true of the COMPACT tile (56px, stacked above a 20px value, the widest thing in its own cell) and not of this one. **The height saving comes from the layout, not from dropping anything**: a side-on cell costs 60px a row against 116 stacked, which is why an extended card holding eight counters at 32px is shorter than a compact one holding the same eight at 20px — 220 against 312.
+- **The figure and its caption are one block, with no gap of their own.** Their line boxes already carry the air: `headline-2` is 40px for 32px of type and `body-2` is 20 for 14, so four points sit under the figure's baseline and three above the caption's cap before anything is added. A grid gap on top of that reads as blank space between two texts rather than as a pair — the same note `compact`'s `gap: 0` has carried since the component was built.
+- **The full column count waits until 1280, and that is measured.** An extended cell must hold a 24px mark, a 12px gap and the widest figure beside them. `345,703,321` is 183px at `headline-2`; four-up inside a 1024 content column gives a 212px cell, so the copy column would be 176 — six pixels short. Two-up from 768, one below. **A published figure may never be shrunk, wrapped or clipped to fit a layout**; if it does not fit, the layout changes.
+- **The label sits under its own value, not at the foot of the cell.** A wrapping label makes its cell taller; its neighbours' labels stay put rather than dropping to meet it. The pair is one two-line block and must read as one.
 - `ariaLabel` is required. Unlabelled, the strip is announced as the bare run "New Delhi, Headquarters, 3, Scheme components".
 - Renders as a `<dl>`; the value is moved above the label with `order`, so the DOM keeps `<dt>` first and the pair is read "Headquarters: New Delhi".
 - `overlap` pulls the card up over the band above it. Use it only directly under a hero — elsewhere it bites into whatever precedes it.
@@ -3013,21 +3136,25 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - `changeValue` (e.g. `"12%"`) renders the delta as a tinted success/danger pill with `changeLabel` (e.g. `"vs last month"`) as a muted suffix — the SAMAVESH KPI treatment. Omit `changeValue` for the legacy inline-text change.
 - Use `Intl.NumberFormat` for all numeric values — never hardcode `₹ 1,00,000`.
 - Maximum 2 decimal places.
+- **The icon badge gives way before the figure does.** The tile measures its OWN width: the badge is 32px in a tile under about 240px and is not drawn under about 200px — a half-width tile on a 375px screen. It is decoration (`aria-hidden`); the label already names the figure, and no page should be hiding it with a utility of its own.
 
 #### DataTable
 **Purpose**: Sortable, paginated data table with column definitions.  
 **Props**: `columns: DataTableColumn[]`, `data`, `pagination`  
-**Rules**: Always supply a `caption` prop or `aria-label`. Right-align numeric columns. Support keyboard sort via column header buttons.
+**Rules**: Always supply a `caption` prop or `aria-label`. Right-align numeric columns. Support keyboard sort via column header buttons.  
+**Footer**: hidden while every row fits on the smallest page size (`hidePagerWhenFits`, default true). An overflowing table is a focusable `region` named by `caption` or `scrollLabel`, so it can be scrolled from the keyboard.
 
 #### Accordion / AccordionItem
 **Purpose**: A stack of disclosures, for reference content that is long, list-shaped, and mostly **not** what the reader came for. The estate's case is the About Us bureau breakdown — nine officials with four to six responsibilities each, which printed flat is sixty bullets nobody reads and behind disclosures is a scannable list of nine names.
-**Props**: `AccordionItem` — `title`, `defaultOpen`. `Accordion` is the wrapper and takes only HTML attributes.
+**Props**: `AccordionItem` — `title`, `defaultOpen`. `Accordion` — `variant` (`card` default · `flush`) plus HTML attributes.
+**`card`** is one surface: a white item on a hairline, no shadow, no grey header band; hover tints the header.
+**`variant="flush"`** is the form language: no fill, no shadow, a hairline between items. Use it for an accordion that sits inside a panel which is already a card — the sections of an application on the officer review screen. A stack of shaded, shadowed cards inside a card reads as furniture, not content.
 **The test**: **the headings must be useful closed**, because closed is the state the reader spends most of their time in. If someone has to open every panel to find what they want, the accordion is hiding content rather than organising it and a plain list is better.
 **When NOT to reach for it**: not for content the reader definitely needs — a disclosure adds a click to everything it contains. **Never for form fields**: hidden fields get skipped, and browser validation cannot focus an unmounted control. Not as a substitute for a page — five accordions on one screen is a table of contents made harder to use. Not for a single item, which is a native `<details>`.
 **Rules**:
 - **`defaultOpen` should usually stay false.** Opening the first item by habit makes the row heights uneven and quietly says the first one matters most. Set it when that panel genuinely is the common case.
 - **Items open independently.** This is an accordion, not a radio group; closing one to open another loses a comparison the reader may be mid-way through.
-- **Known accessibility gaps, recorded rather than hidden.** The trigger carries `aria-expanded` and an accessible name, so it is operable and its state is announced — but it diverges from the WAI-ARIA Authoring Practices accordion pattern in three ways: the trigger is **not wrapped in a heading**, so screen reader users cannot move between panels by heading; there is no `aria-controls` / `role="region"` association between trigger and panel; and the panel is **unmounted** when closed rather than hidden, so browser find-in-page cannot reach it. None is a WCAG failure on its own and all three are fixable without changing the API. Fix them before this component carries statutory content.
+- **Known accessibility gaps, recorded rather than hidden.** The trigger carries `aria-expanded` and an accessible name, so it is operable and its state is announced — but it diverges from the WAI-ARIA Authoring Practices accordion pattern in three ways: the trigger is **not wrapped in a heading**, so screen reader users cannot move between panels by heading; there is no `role="region"` on the panel (the trigger does carry `aria-controls` while open); and the panel is **unmounted** when closed rather than hidden, so browser find-in-page cannot reach it. None is a WCAG failure on its own and all three are fixable without changing the API. Fix them before this component carries statutory content.
 
 #### VerticalTimeline / VerticalTimelineItem
 **Purpose**: A **narrative chronology** — dated events on a public information page, written as prose, where the reader is learning history. The estate's case is the About Us page: eight events from the 1985–86 bifurcation of the Ministry of Welfare to the 2012 split into DoSJE and DEPwD.
@@ -3300,25 +3427,27 @@ and renders it only when `exportable`.
   WCAG 2.4.1 outranks a structural preference. Recorded in the component spec.
 
 #### SiteFooter
-**Purpose**: The statutory footer for the estate, in two variants. `website` (default) renders an optional support strip, the working footer (identity, address, social, four link columns) and the statutory bar; `portal` renders the statutory bar alone.
-**Key props**: `variant`, `emblem`, `organisation`, `address`, `social`, `columns`, `lineage`, `credits`, `policyLinks`, `relatedLinks`, `copyright`, `lastUpdated`, `colophonSlot`, `linkAs`, `maxWidth`
+**Purpose**: The statutory footer for the estate, in two variants. `website` (default) renders the working footer (identity, address, social, four link columns, Related Links) above the statutory bar; `portal` renders the statutory bar alone.
+**Key props**: `variant`, `emblem`, `organisation`, `address`, `social`, `columns`, `lineage`, `credits`, `policyLinks`, `sitemap`, `help`, `relatedLinks`, `copyright`, `lastUpdated`, `colophonSlot`, `linkAs`
 **Rules**:
-- **`sitemap` and `help` are REQUIRED PROPS that DRAW only on `portal`, and that is not an accident.** DBIM 5.6 requires both in the footer. On `website` they already sit in a link column, and the clause asks for the element to be present, not present twice — so the component does not draw them again. On `portal` there are no columns, so they render in the statutory bar beside the policies, exactly as `relatedLinks` already did. **Do not list Sitemap or Help in `policyLinks`**: on the portal variant each would then appear twice in one band, which is what the documentation specimen did until it was caught in a browser. Found by audit 2026-09-07, which counted the portal variant's DBIM elements and got four of six; the rule about not dropping an element for layout had been written for Related Links and never applied to these two, so the portal footer was short for eight weeks. Nothing was live — the only consumers of `variant="portal"` were the documentation specimens.
-- **`variant="portal"` is why this is one component and not two.** The statutory bar is the half that must stay DBIM-compliant, and a separate portal footer is a second thing to keep compliant that will drift. The DS still ships `Footer`, a slim strip written for portals that **no portal ever adopted** — prefer `variant="portal"` for new work and do not extend `Footer`.
-- On `portal`, `columns` / `social` / `address` are **ignored rather than erroring**, so one content object can drive both variants.
-- **`lineage`, `policyLinks` and `copyright` are REQUIRED PROPS on both variants.** A footer without them is not a government footer, and making them optional would let a caller ship one that is not.
-- **THERE IS NO `supportStrip`, and this line records why the name still turns up.** The footer carried an opt-in support band until the CTA moved to `ActionBanner` on a light band above the footer — a CTA is page content and the footer is statutory chrome. This document went on listing the prop and describing its behaviour for three weeks after it was deleted; `site-footer.css` still holds seven dead `support` rules, which have not been removed here. The Figma master deliberately draws no support strip.
-- **It is structural, not content-bound.** Every label, href, logo and sentence arrives as a prop. Never fork it to change wording.
-- **NEVER pass a background through `className`.** Colour binds to the mode-aware `--sa-color-primaryScale-*` family — ground = rung 800, hairlines = rung 600, the support strip = rung 900 — so the footer repaints for `blue`, `navy`, `dbim` and the five DBIM hues with no work at the call site. In `dbim` the ground resolves to **#162F6A**, DBIM's own published Blue shade 1, satisfying **[DBIM 5.6]** by construction.
-- **ONE ground, ONE hairline.** The two bands ran rungs 800 and 900 for a while; a 1.28:1 step is not a distinction, it is a smudge. The support strip is the deliberate exception, because it is the one element that is a different kind of thing and the one a site can switch off.
-- **Ink is same-hue, never white-alpha.** Three levels: rungs 100 and 200 plus `on/bg/brand/primary/boldest`. Worst case across all **eight** brand modes the tokens define is 5.37:1 (dbim-green, dim ink) against the 4.5:1 AA asks for.
-- **The CTA is an OUTLINE, and reverting it to a fill is a hierarchy regression.** A white fill made a tertiary action the brightest object in the footer, out-shouting the National Emblem. Border 6.18:1 (1.4.11 wants 3:1), label 11.4:1 (1.4.3 wants 4.5:1).
-- **Social marks carry no ring at rest.** The 40px target is unchanged; WCAG 2.5.8 is satisfied by the box, which does not have to be visible to be clickable.
-- **No visible eyebrows on the policy and related navs**, which share one wrapped row. Both keep their `aria-label`. Two uppercase micro-labels inside one small band is the most templated thing a footer can do.
-- **`lastUpdated` must be the CURRENT PAGE's date** — pass it down from the page layout, never the site-wide build date, or the footer contradicts the page hero.
-- **Do not put the same destination behind two labels.** The link graph is deduplicated deliberately: "Vision & Mission" and "Help & Support" both pointed at pages already linked one line above them. The two remaining shared destinations are role-distinct and intended (the support CTA vs the Help nav entry; the Digital India related-link vs its mandated credit logo).
-- Every `<nav>` is labelled, the footer is named by a visually-hidden `<h2>`, and one focus ring is defined once for the subtree — do not add per-control rings.
-- **FIGMA PARITY: `Site Footer` on the library's `Footer` page — Variant (Website|Portal) x Breakpoint (Desktop|Tablet|Mobile), six variants, zero unbound values.** Built 2026-09-07; before that the page held only the UX4G 2.0 fork and BOTH footer docs pages declared a Figma absence. Three known divergences are recorded on the page's Component record rather than papered over: the code's `maxWidth` default of **1280** against the library's `container/page` of **1200** (Figma draws the token, per `ui-restraint-and-copy.md`); **NeGD has no inverse mark** in the library, so a background-removed raster with dark text sits on the darkest brand rung and cannot be recoloured; and the two `color-mix` values Figma cannot hold — the social chip ground, drawn as the `primaryScale/700` rung the CSS itself declares as its fallback, and the inline-navs hairline, drawn at 55% paint opacity.
+- **Required on both variants: `organisation`, `lineage`, `policyLinks`, `sitemap`, `help` and `copyright`.** DBIM 5.6 makes a footer without them not a government footer. `organisation` is required by the type but drawn only on `website`.
+- **`sitemap` and `help` draw only on `portal`.** On `website` they already sit in a link column, and the clause asks for each element to be present, not present twice. Related Links follows the same rule — a wide row in the working band on `website`, beside the policies on `portal`. An element may change place for layout; it is never dropped from a variant. **Never list Sitemap or Help inside `policyLinks`**, or the portal variant renders each twice.
+- **On `portal`, `emblem`, `address`, `social` and `columns` are ignored rather than erroring**, so one content object drives both variants.
+- **One component, not two.** The statutory bar must stay DBIM-compliant, and a separate portal footer would drift. The DS also ships `Footer`, a slim strip no portal adopted — use `variant="portal"` instead and do not extend `Footer`.
+- **There is no support strip.** A call to action is page content: place `ActionBanner` on a light band above the footer.
+- **The footer owns no width.** On `website` each band carries `.sa-container` (cap, margin and right-wall gutter from `foundations/layout.css`); on `portal` the bands are fluid and pad with `--sa-grid-margin-page`, as a portal `SiteHeader` does. Do not pass `maxWidth`.
+- **Structural, not content-bound.** Every label, href, logo and sentence is a prop. Never fork it to change wording.
+- **Never pass a background through `className`.** The ground is `bg/brand/primary/boldest` and the lead ink `on/bg/brand/primary/boldest`; every other colour is `cmp/sitefooter/*` — `ink/subtle` (links), `ink/subtler` (boilerplate), `rule/base` and `rule/subtle` (rung 500 at alpha 64 / 32), `chip/default` and `chip/hover` (rung 100 at alpha 16 / 24) — with `chip/size` (40) and `mark/height` (28). All are mode-aware, so the footer repaints for all eight brand modes. In `dbim-blue` the ground resolves to **#162F6A**, DBIM's published Blue shade 1.
+- **One ground, one hairline between the bands.** Two shades of navy at a 1.28:1 step read as a printing error, not as structure.
+- **Ink is same-hue, never white-alpha.** Worst case across all eight brand modes: 5.37:1 for boilerplate ink (dbim-green) against AA's 4.5:1, and 4.88:1 for the social glyph on its chip against 1.4.11's 3:1.
+- **Social marks carry no ring at rest.** The 40px box satisfies WCAG 2.5.8 without being visible.
+- **No visible eyebrows on the policy and related navs**, which share one wrapped row; both keep their `aria-label`.
+- **`lastUpdated` is the CURRENT PAGE's date**, passed down from the page layout — never a site-wide build date.
+- **One destination, one label.** The two shared destinations that remain are role-distinct: the `ActionBanner` CTA vs the Help nav entry, and the Digital India related link vs its mandated credit mark.
+- **Credit marks on the navy ground are `NeGD-Logo-White.svg` and `Digital-India-Reverse.svg`**; on a light ground use `NeGD-Logo-Colour.svg`. The Digital India swirl keeps its tricolour in both — it is the mark's identity.
+- **Accessibility:** a `contentinfo` landmark named by a visually hidden `<h2>`; every `<nav>` labelled; one focus ring defined once for the subtree. Hidden text uses `.ds-sr-only`, declared in `site-footer.css` — never Tailwind's `sr-only`, which exists only where a consumer loads Tailwind.
+- **Figma parity** — master `Site Footer` on the library's `Footer` page, Variant (Website | Portal) × Breakpoint (Desktop | Tablet | Mobile), Code Connect `site-footer.figma.ts`. Both sides bind the same tokens, and the master has no unbound fill, stroke, padding, gap, radius or text style. Three widths are drawn rather than bound: the lineage's 96ch measure (659px), the 180px Mobile address, and the credit boxes (77 and 71.7). Heights match on Portal (181 / 273 / 397) and Website Desktop (490). Website Tablet (886 vs 794) and Mobile (1274 vs 1138) differ only by two runtime affordances the master deliberately does not draw: the scroll-end safe area below 1336px (+92) and the right-wall gutter, which leaves 311px of content at 375 where the master draws 343 (+44).
+- **Still open:** `VisitorCounter` has no Figma master, so the colophon draws what it renders as plain layers; the legacy `Footer - Bottom Strip` set survives while ten `PortalLoginTemplate` instances still use it.
 
 #### OrgLogo
 **Purpose**: An organisation or scheme mark — **the mark and nothing else** — and **the only place a mark's path is written**.
@@ -3495,6 +3624,23 @@ matching the Figma "Navbar Portal" account.
   design system ships **zero runtime dependencies**. Match that pattern if you add a
   popover; do not introduce a menu library for one component.
 
+#### NotificationBell
+**Purpose**: The signed-in reader's notifications control in the portal masthead, immediately
+before `AccountMenu`. `SiteHeader` renders it from `notifications` (Figma: `Navbar/NotificationBell`;
+`Navbar/Portal` › Notifications).  
+**Key props**: `notifications` (`items`, **`href` required**, `status`, `onMarkAllRead`, `onRetry`, `onNavigate`, `limit`), `linkAs`  
+**Rules**:
+- **Off unless a portal has a real feed and a notifications page.** A badge that never moves
+  teaches people not to look. `SiteHeader` renders it only with `account`.
+- **One door.** Where it is on, remove the sidebar and account-menu "Notifications" items it replaces.
+- **What goes in it is defined** in `docs/specs/notification-object.md`: updates about the reader's own
+  business. Never an officer's work queue (the dashboard counts it), never an administrator's
+  broadcasts (that page is "Broadcasts").
+- **The badge is `notificationCount(items)`** — action-required plus unread — in the library's primary
+  Badge, never red (red is a rejected application). Error shows a warning mark, never a zero.
+- From 768 up it opens `NotificationCentre` in a `Popover`; below 768 it is a link to `href`. The design
+  system does not own the router, so a portal guarding unsaved edits cancels in `onNavigate`.
+
 #### SidebarNav
 **Purpose**: Portal app-shell left navigation.  
 **Rules**:
@@ -3595,15 +3741,29 @@ matching the Figma "Navbar Portal" account.
 > **`digilocker` left the union on 2026-09-02.** It was never a mode of the credential form, and carrying it there made it one — the template rendered it as a fourth selectable method and suppressed the submit button while it was chosen, so the form had no way to be completed. It is now **`PortalRoleTab.digilocker`**, a per-role boolean that draws a card above the credentials divider with the form untouched beneath it. Nothing renders unless `config.links.digilockerHref` is set too, and the divider belongs to the card: no card, no divider.
 
 > **`pin` was added on 2026-09-02, and it is not a reinstatement of those two.** NOS is PIN-only and both its auth screens in the Handoff (`2436:15957`) are `Sign In Pin`, so the credential form has three modes. The Figma master was re-cut in place the same day — `Device × Step` (8 variants) became `Device × Auth Method` — because the old axis put `Credentials` and `OTP`, which are ways of proving identity, beside `Reset` and `Success`, which are stages of recovery. **That replacement axis is itself gone as of 2026-09-06**: it grew to four values, seven of the card's eight regions were identical across all of them, and the credential mode became a slot. The master is `Device` alone, two variants. Recovery moved to `Auth / CredentialRecovery`; the component nodes were moved rather than re-created, so their keys and every instance link survived.  
-**Props**: `config` (`PortalLoginConfig`), `onSubmit`, `loading`, `error`, `onFooterLinkClick`  
+**Props**: `config` (`PortalLoginConfig`), `onSubmit`, `loading`, `error`, `fieldErrors`, `onRequestOtp`, `roleId`, `onRoleChange`, `deepLinkRole`, `portalPicker`, `headingLevel`  
 **Rules**:
+- **Say what the identifier IS, on the role (added 2026-09-14).** `identifierKind` (`text` · `mobile` · `email`) for the password and PIN routes, `otpIdentifierKind` for where a code goes. `mobile` strips a pasted `+91` to ten digits and offers the number pad; `email` gives the email keyboard; `text` leaves a Project Id alone. They are two properties because one role can sign in with a username by password and receive a code on a mobile.
+- **The portal answers before the code step opens.** `onRequestOtp` returns `{ ok: false, error }` to keep the reader on the identifier with the reason against it, or `{ ok: true, maskedDestination }` — required for a `text` identifier, which does not contain the handset it is registered to. Never open the code step on an identifier the portal has refused.
+- **A failed submit goes against its field.** `fieldErrors` (`identifier` · `secret` · `otp` · `subRole`) — `secret` is whichever proof the mode asks for. Each hides once its field is edited and returns only on a NEW object, so keep it in state; an inline literal never hides.
+- **"Your role" inside a tab is `subRoles`, not a fourth audience and not a second tab row.** It renders one labelled select above the fields and arrives as `subRoleId`. Two registration routes are `links.registerOptions`.
+- **The demo console drives the template through `extra`.** `tab` (a role id), `mode` and `subRole` are honoured; on the OTP route the fill sends the code through `onRequestOtp` and types it in, leaving Verify to the reviewer.
 - **The captcha is per ROLE, and OFF unless a role asks for it.** It resolves `role.captcha` ?? `config.captcha` ?? `false`, drawing the security-code field on the password and PIN forms. It belongs to the tab because that is how the Handoff uses it — SMILE-Transgender asks a Garima Greh organisation for a captcha and asks the same portal's citizen for none, and a portal-wide boolean can express neither without imposing it on the other. The fallback is `??` and not `||` so that a role setting `captcha: false` opts OUT of a portal-wide default rather than being read as unset. The default stays `false`: a captcha is a cognitive function test, and **WCAG 2.2 3.3.8 Accessible Authentication (AA)** forbids one without an alternative — switch it on only where that alternative exists, and say which in the same change. Since 2026-09-06 the check belongs to the **credential stack** rather than the card — `PasswordFields` and `PinFields` take a `botCheck` node, `DarpanFields` takes none at all — because it guards a typed secret, and a stack without one has nothing for it to protect. `Show captcha` on the Figma `Auth / CredentialFields / Identifier + Password` defaults to `false` for the same reason it does here.
 - **A PIN never leaves the component as `credentials.password`, and neither does a PAN.** The PIN form reuses the password field's internal state, but the payload carries it as `credentials.pin`; the DARPAN form sends `credentials.pan` and no password at all. A consumer must not be able to mistake one secret for another, and while the DARPAN form was a clone of the password form the PAN did arrive under that name — so the obvious implementation hashed a public registry number into a credentials table and compared it against nothing.
 - **Reach for this when the portal's login is one of the shapes the Handoff already describes** — which is most of them, and the reason it exists is that those shapes kept being re-typed per portal.
 - **Use `PortalLoginShell` directly when the form is genuinely bespoke** (an extra consent step, a non-standard identity provider). Forcing a one-off through a config object produces a worse page than composing it.
 - A single role hides the role tabs — a one-audience portal must not render a one-tab strip.
-- **Not yet adopted**: no page renders this today; both E-Anudaan logins still use `PortalLoginShell`. Adoption is portal by portal, not one sweep.
+- **Adoption is portal by portal.** E-Anudaan's login renders it; the remaining eight logins move onto it in the migration planned 2026-09-14.
 - **Status: Beta, mid-rescope.** `components/auth/LOGIN-SYSTEM-ANALYSIS.md` supersedes `FIGMA-SPEC.md` §9 — the Handoff carries **69 auth screens across 10 pages**, not the 25 the designer's index frame counts. This covers the original reading; the config shape is expected to grow.
+
+#### PortalRecoveryTemplate
+**Purpose**: A portal's password recovery on the login page's own chrome — the code counterpart of the Figma `Auth / CredentialRecovery` (56640:4103), which had none until 2026-09-14. It reads the same brand fields as `PortalLoginConfig`, so a sign-in and its recovery cannot drift.  
+**Props**: `config` (`PortalRecoveryConfig`), `startAt`, `onRequest`, `onVerify`, `onReset`, `onStepChange`, `headingLevel`  
+**Rules**:
+- **Three flows, because the portals recover three ways.** `otp` — identifier → code → new password → confirmation (SCW, SMILE Admin). `link` — identifier → "Reset Link Sent", with the reset page as the same template at `startAt="reset"` (E-Anudaan, SAMBAL). `contact` — one notice naming who resets passwords (PM-AJAY).
+- **The `link` flow never says whether an account exists.** Its confirmation reads "If that is a registered account…" whatever was typed; `onRequest` on that flow refuses a malformed value and nothing more.
+- **Every step keeps Back to Login**, and a new password is checked for length and match on the fields themselves — the mismatch on the confirm field, never the first.
+- **`continueHref` is prototype-only**: it walks a reviewer from "Reset Link Sent" to the reset page because nothing sends the email.
 
 #### Auth parts — the pieces a login is assembled from
 
@@ -3875,6 +4035,8 @@ wired differently: `data-portal` for the palette re-bind, the rail's **two** wid
 navigation (`PortalRole` is `public · citizen · organisation · officer · admin`), and the
 mobile drawer, closed on route change. Hiding a nav item is **not** authorisation.
 
+From the tablet anchor to the laptop anchor (768–1279px) the rail starts collapsed to its 88px icons; the masthead button expands it and that choice holds for the visit. A 300px rail there left the content too narrow for a step bar to name its stages.
+
 **`ScreenBody`** is why the states are structural. Every template routes content through
 it, so no code path renders rows without having decided what happens when there are none.
 Six branches — `idle · loading · error · empty · filtered · ready` — resolved **once** by
@@ -3891,12 +4053,13 @@ draws no list screen at all, and `Pagination` appears in 1 of 265 pages. `Workli
 adds `priority` — 1 becomes the mobile card's title, 2 a label/value pair, 3 is dropped —
 which is how a twelve-column table survives a phone the handoff never drew. **`rows` is
 every matching row, not one page**, and `registerTotal` is for the count line only: handing
-`DataTable` a bigger number than its array drew seven pages over five records.
+`DataTable` a bigger number than its array drew seven pages over five records. `summary` takes count tiles above the filters; they must count the same rows the filters narrow, or the page answers one question twice.
 
 **`WizardScreen`** covers 22 of the handoff's 44 screens at 3, 6 and 7 steps, and ships
 **one** stepper treatment where the handoff draws two. It wraps `Wizard` and adds the page:
 title, the composed step meta line, the draft banner (both flavours, one shape, switched by
-`resumed`) and notices.
+`resumed`) and notices. `onCancel` goes through to `Wizard`, so Cancel is the first step's
+outlined leading control — there is no separate Cancel button.
 
 **`OverviewScreen`** cannot enforce its own two most important rules, so they are stated on
 its page: a ratio takes both halves **from one source** (mixing them published a `138%`),
@@ -3916,7 +4079,8 @@ fourteen below completed it. Each owns the seven states through `ScreenBody`, ta
 exclusive options as `RadioGroup variant="card"`, with one Continue that is never
 disabled; the handoff draws this three ways under one name and two of them are drift.
 **`FormScreen`** — one record that fits one screen, with `ErrorSummary` above the fields
-and an action bar that goes sticky below 768px; **more than eight fields, or a statutory
+and the sections and action bar in one untitled `FormPanel` (outlined Cancel, then submit —
+the page header names the form, so the panel draws no head band); **more than eight fields, or a statutory
 stage, and it is a wizard instead**, which is a count rather than a feeling.
 **`ChecklistScreen`** — a required set of artefacts with **four** per-item states
 (`missing · attached · review · rejected`), because a file that has left the citizen's
@@ -4013,20 +4177,27 @@ Do not deviate from these layouts without a documented reason.
 ### Form Wizard (Multi-step Application)
 
 ```tsx
-<Wizard steps={["Personal", "Address", "Documents", "Review"]} currentStep={step}>
+<PageHeader size="compact" eyebrow="E-Anudaan" title="Atal Vayo Abhyuday Yojana" meta="…" />
+<Wizard
+  steps={STEPS} current={step}
+  nextLabel="Save and Continue" submitLabel="Submit Application"
+  onCancel={leave} onBack={back} onNext={validateThenNext} onSubmit={submit}
+>
+  {/* sub-sections straight into the step panel — never a Card around them */}
   <FormSection title="Personal Details">
-    <FormField label="Full Name" required><Input /></FormField>
-    <FormField label="Date of Birth"><Input type="date" /></FormField>
+    <FormField label="Full Name" required>{(c) => <Input {...c} />}</FormField>
   </FormSection>
-  {/* ... */}
-  <ReviewSection data={formData} />
+  <FormCard title="Identity Documents">
+    <DocumentTiles><DocumentTile title="Aadhaar Card" required state="upcoming" /></DocumentTiles>
+  </FormCard>
 </Wizard>
 ```
 
 **Rules**:
+- One panel per step (Wizard draws it); sub-sections are not cards.
 - Each step: 3–6 FormFields. Never exceed 8 visible fields per step.
-- Final step is always `<ReviewSection>` — show all entered values before submit.
-- Show `<Stepper>` at the top of the wizard to communicate progress.
+- Final step is always a review: `<ReviewSection>` per earlier step with Edit — show all entered values before submit.
+- The `<Stepper>` sits on the page ground, never in a box.
 
 ### Media Gallery Manager (Portal — photos/videos, documents, any record-with-attachments list)
 

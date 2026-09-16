@@ -193,7 +193,10 @@
     font-size: var(--sa-type-body-1-size);
     line-height: var(--sa-type-body-1-lh);
     font-weight: var(--sa-font-weight-semibold);
-    color: var(--sa-text-brand-primary-base);
+    /* DigiLocker's own purple, as the Figma `Auth / SSOButton` binds it
+       (`brand/digilocker/purple`). The card is a handoff to a partner, so it
+       wears the partner's colour, not the portal's brand; 6.5:1 on white. */
+    color: var(--sa-brand-digilocker-purple);
   }
 
   .ds-auth-sso:disabled .ds-auth-sso__title { color: var(--sa-text-neutral-subtler); }
@@ -205,8 +208,9 @@
     color: var(--sa-text-neutral-subtle);
   }
 
-  .ds-auth-sso__mark,
-  .ds-auth-sso__arrow { flex: none; color: var(--sa-icon-brand-primary-base); }
+  .ds-auth-sso__mark { flex: none; color: var(--sa-icon-brand-primary-base); }
+  /* The arrow follows the title — the master draws both in the partner's purple. */
+  .ds-auth-sso__arrow { flex: none; color: var(--sa-brand-digilocker-purple); }
 
   /* A partner's mark is artwork, not a glyph: it is sized on the icon scale but
      keeps its own aspect, because squashing DigiLocker's mark to a square is a
@@ -238,8 +242,11 @@
     color: var(--sa-text-neutral-subtle);
   }
 
-  .ds-auth-prompt__options { display: flex; gap: var(--sa-inline-8); }
-  .ds-auth-prompt__options > * { flex: 1 1 0; }
+  /* Equal columns while each label fits on one line; when one cannot ("SAGE Organisation"
+     beside "Volunteer" in a 360px column), both drop to full-width rows rather than one
+     button wrapping to two left-aligned lines beside a one-line neighbour. */
+  .ds-auth-prompt__options { display: flex; flex-wrap: wrap; gap: var(--sa-inline-8); }
+  .ds-auth-prompt__options > * { flex: 1 1 max-content; white-space: nowrap; }
 
   /* ---- signing-into bar ----------------------------------------------------- */
 
@@ -277,6 +284,18 @@
     font-weight: var(--sa-font-weight-semibold);
   }
 
+  .ds-auth-signing__tagline {
+    display: block;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  .ds-auth-signing__description {
+    display: block;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+
   .ds-auth-signing__change {
     flex: none;
     display: inline-flex;
@@ -300,42 +319,13 @@
   /* Tone follows the SURFACE, not the brand. */
   .ds-auth-signing--hero { color: var(--sa-text-neutral-inverse); }
   .ds-auth-signing--hero .ds-auth-signing__eyebrow { color: var(--sa-text-neutral-inverse); }
-  .ds-auth-signing--hero .ds-auth-signing__name { color: var(--sa-text-neutral-inverse); }
+  .ds-auth-signing--hero .ds-auth-signing__name,
+  .ds-auth-signing--hero .ds-auth-signing__tagline,
+  .ds-auth-signing--hero .ds-auth-signing__description { color: var(--sa-text-neutral-inverse); }
 
   .ds-auth-signing--surface { color: var(--sa-text-neutral-base); }
   .ds-auth-signing--surface .ds-auth-signing__eyebrow { color: var(--sa-text-neutral-subtle); }
-  .ds-auth-signing--surface .ds-auth-signing__name { color: var(--sa-text-neutral-base); }
-
-  /* The question sits ON the rule, not above it — the reference's shape. */
-  .ds-auth-prompt__label {
-    display: flex;
-    align-items: center;
-    gap: var(--sa-inline-12);
-    text-align: center;
-  }
-
-  .ds-auth-prompt__label::before,
-  .ds-auth-prompt__label::after {
-    content: "";
-    flex: 1 1 auto;
-    height: 1px;
-    background-color: var(--sa-border-neutral-subtle);
-  }
-
-  .ds-auth-prompt__link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: var(--sa-target-comfortable);
-    font-size: var(--sa-type-body-2-size);
-    line-height: var(--sa-type-body-2-lh);
-    font-weight: var(--sa-font-weight-semibold);
-    color: var(--sa-text-link-brand-default);
-    text-underline-offset: 2px;
-  }
-
-  .ds-auth-prompt__link:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-    outline-offset: var(--sa-focus-offset);
-  }
+  .ds-auth-signing--surface .ds-auth-signing__name,
+  .ds-auth-signing--surface .ds-auth-signing__tagline { color: var(--sa-text-neutral-base); }
+  .ds-auth-signing--surface .ds-auth-signing__description { color: var(--sa-text-neutral-subtle); }
 }

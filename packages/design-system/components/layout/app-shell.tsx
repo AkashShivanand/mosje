@@ -66,7 +66,9 @@ export function AppShell({
     <div className={cn("sa-app-shell", className)}>
       {header}
 
-      <div className="sa-app-shell__body">
+      {/* Two columns only when there IS a sidebar: without one, main took the
+          300px sidebar column and every sidebar-less portal read as a thin strip. */}
+      <div className={sidebar ? "sa-app-shell__body sa-app-shell__body--with-sidebar" : "sa-app-shell__body"}>
         {/* A plain wrapper on purpose: SidebarNav renders its own <aside>
             landmark, and nesting a second one duplicates it for screen readers. */}
         {sidebar ? <div className="sa-app-shell__sidebar">{sidebar}</div> : null}

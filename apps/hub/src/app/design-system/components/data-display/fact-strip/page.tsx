@@ -26,7 +26,7 @@ export default function Page(): React.JSX.Element {
       name="Fact Strip"
       status="Stable"
       summary="The row of standing facts that sits under a page hero — where the office is, how many components a scheme has, the year it started. These are FACTS, not metrics: they never trend, which is exactly what separates this from a Metric Card."
-      figma={{ absent: "Composed under the site page header; no separate node." }}
+      figma={{ node: "factStrip" }}
       specimen={<Specimen />}
       propsFrom="FactStripProps"
       a11y={A11Y}

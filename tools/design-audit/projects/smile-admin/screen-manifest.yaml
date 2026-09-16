@@ -1,0 +1,176 @@
+version: 1
+environment: dev          # dev/uat permit non-destructive clicks; no flow sets allowSubmit,
+                          # so every submit/save/approve/delete/send is refused and logged.
+stalenessCeiling: 14d
+
+volatile:
+  - pattern: '\b\d{2}/\d{2}/\d{4}\b'
+  - pattern: '\b\d{1,2} [A-Z][a-z]{2} \d{4}\b'
+
+# Every label below was read off the live captures' own element extraction, not guessed —
+# see the control enumeration in docs/audit/smile-beggary-capture-and-session.md §7.
+flows:
+  # ---------- auth (pre-login) ----------
+  - id: signin-states
+    role: signin
+    entry: /login
+    steps:
+      - capture: SIGNIN-DEFAULT
+      - click: Change
+        waitMs: 2000
+      - capture: SIGNIN-CHOOSE-PORTAL
+
+  - id: signin-ia-otp
+    role: signin
+    entry: /login
+    steps:
+      - click: Implementing Agency
+        waitMs: 2000
+      - capture: SIGNIN-IMPLEMENTING-AGENCY-OTP
+
+  # ---------- super-admin: states behind a button ----------
+  - id: users-onboard
+    role: super-admin
+    entry: /users
+    steps:
+      - capture: SUPER-ADMIN-USERS-ADD-USER-ENTRY
+      - click: Onboard New Users
+        waitMs: 3000
+      - capture: SUPER-ADMIN-USERS-ADD-USER
+
+  - id: roles-new
+    role: super-admin
+    entry: /roles
+    steps:
+      - click: New Role
+        waitMs: 3000
+      - capture: SUPER-ADMIN-ROLES-NEW-ROLE
+
+  - id: roles-catalog
+    role: super-admin
+    entry: /roles
+    steps:
+      - click: View Catalog
+        waitMs: 3000
+      - capture: SUPER-ADMIN-ROLES-VIEW-CATALOG
+
+  - id: roles-edit-permissions
+    role: super-admin
+    entry: /roles
+    steps:
+      - click: Edit Permissions
+        waitMs: 3000
+      - capture: SUPER-ADMIN-ROLES-EDIT-PERMISSIONS
+
+  - id: permissions-manage
+    role: super-admin
+    entry: /permissions
+    steps:
+      - click: Manage Roles
+        waitMs: 3000
+      - capture: SUPER-ADMIN-PERMISSIONS-MANAGE-ROLES
+
+  - id: permissions-expand
+    role: super-admin
+    entry: /permissions
+    steps:
+      - click: Expand all
+        waitMs: 2500
+      - capture: SUPER-ADMIN-PERMISSIONS-EXPANDED
+
+  - id: survey-location-create
+    role: super-admin
+    entry: /surveys
+    steps:
+      - click: Create Survey Location
+        waitMs: 3000
+      - capture: SUPER-ADMIN-SURVEY-LOCATIONS-CREATE
+
+  - id: surveyor-view
+    role: super-admin
+    entry: /surveyor-mapped
+    steps:
+      - click: View Surveyor
+        waitMs: 3000
+      - capture: SUPER-ADMIN-SURVEYOR-MAPPED-VIEW
+
+  - id: shelter-home-add
+    role: super-admin
+    entry: /shelter-homes
+    steps:
+      - click: Add Swashraya (Shelter Home)
+        waitMs: 3000
+      - capture: SUPER-ADMIN-SHELTER-HOMES-ADD
+
+  - id: shelter-home-edit
+    role: super-admin
+    entry: /shelter-homes
+    steps:
+      - click: Edit
+        waitMs: 3000
+      - capture: SUPER-ADMIN-SHELTER-HOMES-EDIT
+
+  - id: beneficiary-view
+    role: super-admin
+    entry: /persons
+    steps:
+      - click: View
+        waitMs: 4000
+      - capture: SUPER-ADMIN-PERSONS-VIEW
+
+  - id: hotspot-reinspection
+    role: super-admin
+    entry: /hotspot-approvals
+    steps:
+      - click: Re-inspection forms
+        waitMs: 2500
+      - capture: SUPER-ADMIN-HOTSPOT-APPROVALS-REINSPECTION
+
+  - id: dashboard-chart-tabs
+    role: super-admin
+    entry: /dashboard
+    steps:
+      - click: Rehabilitation
+        waitMs: 2500
+      - capture: SUPER-ADMIN-DASHBOARD-TAB-REHABILITATION
+      - click: Mobilisation
+        waitMs: 2500
+      - capture: SUPER-ADMIN-DASHBOARD-TAB-MOBILISATION
+
+  - id: city-profiling-drilldown
+    role: super-admin
+    entry: /city-profiling
+    steps:
+      - click: Andhra Pradesh
+        waitMs: 3000
+      - capture: SUPER-ADMIN-CITY-PROFILING-L2-DISTRICTS
+
+  - id: sanction-order-add-district
+    role: super-admin
+    entry: /fund-monitoring/sanction-orders/create
+    steps:
+      - click: Add District
+        waitMs: 2500
+      - capture: SUPER-ADMIN-SANCTION-ORDER-ADD-DISTRICT
+
+  # ---------- Master Settings: the design draws seventeen panels; these are its tabs ----------
+  - id: master-settings-tabs
+    role: super-admin
+    entry: /master-setting
+    steps:
+      - capture: SUPER-ADMIN-MASTER-SETTING-GEOGRAPHY
+      - click: Role & Permission Masters
+        waitMs: 2500
+      - capture: SUPER-ADMIN-MASTER-SETTING-ROLE-PERMISSION
+      - click: Survey Questionnaire Masters
+        waitMs: 2500
+      - capture: SUPER-ADMIN-MASTER-SETTING-SURVEY-QUESTIONNAIRE
+      - click: Agency Masters
+        waitMs: 2500
+      - capture: SUPER-ADMIN-MASTER-SETTING-AGENCY
+      - click: Operational Masters
+        waitMs: 2500
+      - capture: SUPER-ADMIN-MASTER-SETTING-OPERATIONAL
+      - click: Fund Management Masters
+        waitMs: 2500
+      - capture: SUPER-ADMIN-MASTER-SETTING-FUND-MANAGEMENT

@@ -58,6 +58,25 @@ export interface DataTableProps<T> {
    * the page size at the first entry of `pageSizes`. @default true
    */
   showPageSizes?: boolean;
+  /**
+   * Hide the whole footer — page sizes, range and pager — while every row already fits on the
+   * smallest page size. @default true
+   *
+   * A register of one row drew "Showing 10 50 100 of 1 items" and a pager with nowhere to go
+   * (e-Anudaan audit X-04: Funding History, Bank Account Changes, Location Changes, Queries).
+   * The footer answers "how do I see the rest?", and when there is no rest it is noise. It
+   * returns the moment the set outgrows the smallest page, so a reader who narrows a filter
+   * down to three rows and widens it again gets the pager back.
+   *
+   * Pass `false` where the footer carries a count the page states nowhere else and must always
+   * show — but prefer stating the count above the table, where `WorklistScreen` already does.
+   */
+  hidePagerWhenFits?: boolean;
+  /**
+   * Accessible name for the scroll region, used only when the table is wider than its box.
+   * @default `caption`, else "Table"
+   */
+  scrollLabel?: string;
   /** Accessible table caption (sr-only). */
   caption?: string;
   /** Empty-state message. @default "No records found." */
@@ -90,6 +109,8 @@ export function DataTable<T extends Record<string, unknown>>({
   total,
   pageSizes = [10, 50, 100],
   showPageSizes = true,
+  hidePagerWhenFits = true,
+  scrollLabel,
   caption,
   emptyLabel = "No records found.",
   sort: controlledSort,
@@ -146,7 +167,57 @@ export function DataTable<T extends Record<string, unknown>>({
     });
   }, [data, sort, byKey, controlledSort]);
 
+  /*
+   * A SCROLL BOX THE KEYBOARD CAN REACH — only while it scrolls.
+   *
+   * axe `scrollable-region-focusable` (e-Anudaan audit R-08, 15 review tables at 375px): a table
+   * wider than its box can only be scrolled sideways with a pointer. The box takes a tab stop,
+   * a `region` role and a name so a keyboard reader can land on it and use the arrow keys — but
+   * ONLY while it overflows. A tab stop on every table that fits would add a pointless stop per
+   * register on every desktop page. Measured on resize, because a rail collapsing or a phone
+   * rotating changes the answer without the rows changing.
+   */
+  /*
+   * AND THE PINNED COLUMN ONLY PINS WHEN IT CAN BE SCROLLED OUT FROM UNDER.
+   *
+   * A column pinned with `position: sticky; right: 0` paints over the columns to its left until
+   * the reader scrolls it back into its own place. That is the point of a pinned column — and it
+   * only works when there is ENOUGH overflow to scroll it back: if the table is 40px wider than
+   * its box and the Actions column is 120px, the last 80px of the column before it can never be
+   * uncovered. That is what hid the Status badge on the applicant's My Applications ("Action
+   * Requir…", audit N-06), and two later batches worked around it by dropping columns.
+   *
+   * So the pin is measured, not assumed: it holds only while the horizontal overflow is at least
+   * the pinned column's own width. Below that the column returns to the flow and the row simply
+   * scrolls as one — nothing is hidden, and the shadow that promises "there is more under here"
+   * goes with it. Re-measured on resize, because a collapsing rail changes the answer.
+   */
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+  const [overflows, setOverflows] = React.useState(false);
+  const [pinned, setPinned] = React.useState(false);
+  React.useEffect(() => {
+    const el = scrollRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const measure = () => {
+      const over = el.scrollWidth - el.clientWidth;
+      setOverflows(over > 1);
+      const cell = el.querySelector<HTMLElement>(".is-sticky-right");
+      // A zero-width cell is a table that is not drawn as a table at all — below the tablet
+      // anchor `WorklistScreen` renders cards — and `over >= 0` would have called that pinned.
+      const pinWidth = cell?.offsetWidth ?? 0;
+      setPinned(pinWidth > 0 && over >= pinWidth);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    if (el.firstElementChild) ro.observe(el.firstElementChild);
+    return () => ro.disconnect();
+  }, [data, columns]);
+
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  const smallestPage = pageSizes.length > 0 ? Math.min(...pageSizes) : pageSize;
+  const showFooter = !(hidePagerWhenFits && total <= smallestPage);
+  const itemWord = total === 1 ? "item" : "items";
   const safePage = Math.min(page, totalPages);
   const visibleData = sorted.slice((safePage - 1) * pageSize, safePage * pageSize);
 
@@ -183,11 +254,17 @@ export function DataTable<T extends Record<string, unknown>>({
   ].join(", ");
 
   return (
-    <div className={cn("ds-table", className)}>
+    <div className={cn("ds-table", className)} data-pin={pinned ? "on" : undefined}>
       <div className="ds-table__live" role="status" aria-live="polite">
         {announcement}
       </div>
-      <div className="ds-table__scroll">
+      <div
+        ref={scrollRef}
+        className="ds-table__scroll"
+        {...(overflows
+          ? { tabIndex: 0, role: "region", "aria-label": scrollLabel ?? caption ?? "Table" }
+          : {})}
+      >
         <table className="ds-table__table">
           {caption && <caption className="ds-table__caption">{caption}</caption>}
           <thead className="ds-table__head">
@@ -260,6 +337,7 @@ export function DataTable<T extends Record<string, unknown>>({
         </table>
       </div>
 
+      {showFooter ? (
       <div className="ds-table__footer">
         <div className="ds-table__pagesize">
           {showPageSizes ? (
@@ -280,7 +358,7 @@ export function DataTable<T extends Record<string, unknown>>({
               {size}
             </button>
           ))}
-          <span>of {total.toLocaleString("en-IN")} items</span>
+          <span>of {total.toLocaleString("en-IN")} {itemWord}</span>
             </>
           ) : (
             <span>
@@ -310,6 +388,7 @@ export function DataTable<T extends Record<string, unknown>>({
           label="Table pagination"
         />
       </div>
+      ) : null}
     </div>
   );
 }

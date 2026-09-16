@@ -39,7 +39,7 @@ export default async function AdminLoginPage({
   const { error } = await searchParams;
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-surface-muted px-6 py-16">
+    <main className="flex min-h-screen items-center justify-center bg-surface-canvas px-6 py-16">
       <div className="w-full max-w-[26rem]">
         <div className="flex items-center gap-3.5">
           {/* eslint-disable-next-line @next/next/no-img-element -- /admin sits

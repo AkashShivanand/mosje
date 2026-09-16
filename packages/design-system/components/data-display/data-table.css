@@ -58,6 +58,13 @@
     border-radius: var(--sa-shape-12);
   }
 
+  /* Focusable only while it overflows (see data-table.tsx), so a keyboard reader can scroll a
+     wide register with the arrow keys. The ring sits inside the rounded border. */
+  .ds-table__scroll:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
   .ds-table__table {
     min-width: 100%;
     border-collapse: collapse;
@@ -143,9 +150,17 @@
     color: var(--sa-text-neutral-subtle);
   }
 
+  /* 24px minimum on both axes (WCAG 2.2 SC 2.5.8). They drew 30x22 and 23x22 — under the
+     floor on the one axis nobody measures (e-Anudaan audit X-04). The border is transparent at
+     rest so the selected state can outline without the row shifting. */
   .ds-table__pagesize-btn {
     appearance: none;
-    border: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-block-size: var(--sa-target-min);
+    min-inline-size: var(--sa-target-min);
+    border: var(--sa-stroke-1) solid transparent;
     cursor: pointer;
     border-radius: var(--sa-shape-6);
     padding: var(--sa-padding-2) var(--sa-padding-8);
@@ -160,9 +175,13 @@
     background-color: var(--sa-bg-neutral-hover);
   }
 
+  /* Outlined, the pager's own current-page treatment — not a filled navy block. A filled
+     selected size read as a primary button in a footer (and counted as one: the audit's
+     filled-button tally included it on every register). One selected language per footer. */
   .ds-table__pagesize-btn.is-active {
-    background-color: var(--sa-bg-brand-primary-bolder);
-    color: var(--sa-on-bg-brand-primary-bolder);
+    border-color: var(--sa-border-brand-primary-base);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-text-brand-primary-base);
   }
 
   .ds-table__pager {
@@ -244,9 +263,15 @@
     color: var(--sa-text-neutral-subtle);
   }
 
-  /* ── Sticky right column (e.g. Action) ─────────────────────────────────────── */
-  .ds-table__th.is-sticky-right,
-  .ds-table__td.is-sticky-right {
+  /* ── Sticky right column (e.g. Action) ───────────────────────────────────────
+     GATED ON `data-pin="on"`, which data-table.tsx sets only while the table
+     overflows by at least the pinned column's own width. Ungated, the column
+     painted over the one before it with no way to scroll it back — the Status
+     badge on a register that overflowed by 40px was permanently half-hidden
+     under a 120px Actions column (e-Anudaan audit N-06). Below that threshold
+     the cells are ordinary cells and the row scrolls as one. */
+  .ds-table[data-pin="on"] .ds-table__th.is-sticky-right,
+  .ds-table[data-pin="on"] .ds-table__td.is-sticky-right {
     position: sticky;
     right: 0;
     z-index: 1;
@@ -255,13 +280,13 @@
     box-shadow: -3px 0 8px -3px color-mix(in oklab, var(--sa-text-neutral-bolder) 10%, transparent);
   }
 
-  .ds-table__head .ds-table__th.is-sticky-right {
+  .ds-table[data-pin="on"] .ds-table__head .ds-table__th.is-sticky-right {
     background-color: var(--sa-bg-neutral-base);
     z-index: 2;
   }
 
   /* Keep the brandwash hover on sticky cells */
-  .ds-table__row:hover .ds-table__td.is-sticky-right {
+  .ds-table[data-pin="on"] .ds-table__row:hover .ds-table__td.is-sticky-right {
     background-color: var(--sa-color-primaryScale-50);
   }
 

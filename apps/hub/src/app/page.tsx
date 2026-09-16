@@ -56,7 +56,7 @@ export default async function HomePage() {
   ] as const;
 
   return (
-    <div className="flex min-h-screen flex-col bg-surface-muted">
+    <div className="flex min-h-screen flex-col bg-surface-canvas">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:left-4 focus:top-4 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 text-label-1 font-semibold focus:text-on-primary"

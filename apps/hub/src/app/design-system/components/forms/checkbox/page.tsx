@@ -185,8 +185,13 @@ export default function CheckboxPage(): React.JSX.Element {
                 pointer cursor. It is not disabled, and it does not look disabled.
               </li>
               <li>
-                <strong>Disabled</strong> — leaves the tab order and the submitted form. Painted in the disabled tokens,
-                not with an opacity.
+                <strong>Disabled</strong> — leaves the tab order and the submitted form. The box and the label are painted
+                in the disabled tokens, not with an opacity. The <em>description</em> keeps its ordinary ink, because on a
+                disabled control it is usually the reason — &ldquo;Give a verdict on every required document first&rdquo; —
+                and in the disabled grey it measured 3.04:1.
+              </li>
+              <li>
+                <strong>Required, but read-only or disabled</strong> — no asterisk. The reader cannot act on the mark.
               </li>
             </ul>
           </section>

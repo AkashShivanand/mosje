@@ -43,7 +43,14 @@
         },
         "boldest": {
           "$value": "{color.primaryScale.800}",
-          "$description": "Use for the heaviest fill, for maximum emphasis on a light page, tinted with the primary brand colour."
+          "$description": "Use for the heaviest fill, for maximum emphasis on a light page, tinted with the primary brand colour.",
+          "$extensions": {
+            "mosje": {
+              "colorModes": {
+                "navy": "{color.primaryRamp.navy.600}"
+              }
+            }
+          }
         }
       },
       "secondary": {
@@ -301,7 +308,14 @@
       "visited": {
         "default": {
           "$value": "{color.primaryScale.800}",
-          "$description": "Use for an already-visited link."
+          "$description": "Use for an already-visited link.",
+          "$extensions": {
+            "mosje": {
+              "colorModes": {
+                "navy": "{color.primaryRamp.navy.600}"
+              }
+            }
+          }
         }
       },
       "neutral": {
@@ -344,6 +358,12 @@
         "bolder": {
           "$value": "{color.primaryScale.600}",
           "$description": "Use for icons in the primary brand colour — not for long-form reading."
+        }
+      },
+      "secondary": {
+        "bolder": {
+          "$value": "{color.secondaryScale.600}",
+          "$description": "Use for icons in the secondary brand colour — not for long-form reading."
         }
       }
     },

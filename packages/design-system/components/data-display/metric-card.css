@@ -58,6 +58,9 @@
     border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-cmp-card-radius);
     box-shadow: var(--sa-elevation-raised);
+    /* The tile answers to ITS OWN width, not the viewport's: the same card is full width on one
+       dashboard and half a 375px screen on another, and only the card knows which. */
+    container: ds-metric-card / inline-size;
   }
 
   .ds-metric-card__inner {
@@ -164,6 +167,28 @@
     height: 32px;
   }
 
+  /* ── The icon badge gives way before the figure does ──────────────────────
+     The badge is decorative — it is `aria-hidden`, and the label already says what the figure is.
+     In a half-width tile on a 375px screen it kept its full 40px and squeezed the label into two
+     or three lines; a page hid it with a utility of its own, which is the sign the component owed
+     the rule. It shrinks to 32 in a narrow tile and goes entirely in a very narrow one. */
+  /* The query measures the card's CONTENT box, so these read 40px narrower than the card: 200
+     here is a 240px tile, and 160 below is a 200px one — a half-width tile on a 375px screen is
+     165px. Measured in the browser rather than reasoned about, because the padding is easy to
+     forget and the first pass hid the badge a rung too early. */
+  @container ds-metric-card (max-width: 200px) {
+    .ds-metric-card__icon {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  @container ds-metric-card (max-width: 160px) {
+    .ds-metric-card__icon {
+      display: none;
+    }
+  }
+
   /* ── Change indicator ── */
   .ds-metric-card__change {
     display: inline-flex;
@@ -180,19 +205,8 @@
   .ds-metric-card__change--down { color: var(--sa-text-status-error-base); }
   .ds-metric-card__change--flat { color: var(--sa-text-neutral-subtle); }
 
-  /* ── Tinted delta pill + muted suffix (SAMAVESH KPI card) ── */
-  .ds-metric-card__pill {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--sa-stack-4);
-    padding: var(--sa-padding-2) var(--sa-padding-8);
-    border-radius: var(--sa-shape-full);
-    font-size: var(--sa-type-label-2-size);
-    line-height: var(--sa-type-label-2-lh);
-    font-weight: var(--sa-font-weight-semibold);
-  }
-  .ds-metric-card__pill--up   { background-color: var(--sa-bg-status-success-subtler); color: var(--sa-text-status-success-base); }
-  .ds-metric-card__pill--down { background-color: var(--sa-bg-status-error-base);  color: var(--sa-text-status-error-base); }
+  
+  
   .ds-metric-card__suffix {
     margin-left: var(--sa-padding-8);
     font-size: var(--sa-type-label-2-size);
@@ -223,27 +237,11 @@
     align-items: center;
     max-width: 96px;
   }
-  .ds-metric-card__status {
-    display: inline-flex;
-    align-items: center;
-    padding: var(--sa-padding-2) var(--sa-padding-8);
-    border-radius: var(--sa-shape-full);
-    font-family: var(--sa-font-latin);
-    font-size: var(--sa-type-label-3-size);
-    line-height: var(--sa-type-label-3-lh);
-    font-weight: var(--sa-font-weight-semibold);
-    /* label-3 is the 12px uppercase overline role — the same treatment the Figma
-       master's Label/label-3 style carries, so the chip reads identically. */
-    text-transform: uppercase;
-    letter-spacing: var(--sa-type-caps-tracking);
-    white-space: nowrap;
-    background-color: var(--sa-bg-neutral-subtler);
-    color: var(--sa-text-neutral-base);
-  }
-  .ds-metric-card__status--info    { background-color: var(--sa-bg-status-info-subtler);    color: var(--sa-text-status-info-base); }
-  .ds-metric-card__status--success { background-color: var(--sa-bg-status-success-subtler); color: var(--sa-text-status-success-base); }
-  .ds-metric-card__status--warning { background-color: var(--sa-bg-status-warning-subtler); color: var(--sa-text-status-warning-base); }
-  .ds-metric-card__status--danger  { background-color: var(--sa-bg-status-error-subtler);   color: var(--sa-text-status-error-base); }
+  
+  
+  
+  
+  
 
   /* ── Toned tile: border, label and figure take the status ink; the ground
         stays a tint, never a fill, so the figure keeps its contrast. ── */
@@ -259,6 +257,83 @@
   .ds-metric-card--tone-warning .ds-metric-card__value { color: var(--sa-text-status-warning-bolder); }
   .ds-metric-card--tone-danger .ds-metric-card__label,
   .ds-metric-card--tone-danger .ds-metric-card__value  { color: var(--sa-text-status-error-bolder); }
+
+  /*
+   * ── THE TILE AS A CONTROL ────────────────────────────────────────────────
+   *
+   * A figure people act on. The officer dashboards' case-type tiles filter the
+   * queue below them, as the four cards on the portal the department knows did.
+   *
+   * It is a real `<a>` or `<button>`, so it is reachable by keyboard and
+   * announced as what it is. These rules only add the affordance: the pointer,
+   * the lift, the press, the ring, and the SELECTED treatment — a border and a
+   * tint, never the tint alone, because `aria-pressed` carries the state for a
+   * reader who cannot see it.
+   */
+  .ds-metric-card--interactive {
+    width: 100%;
+    text-align: inherit;
+    font: inherit;
+    cursor: pointer;
+    outline: none;
+    transition:
+      transform var(--sa-motion-press-duration) var(--sa-motion-press-easing),
+      box-shadow var(--sa-motion-press-duration) var(--sa-motion-press-easing),
+      border-color var(--sa-motion-press-duration) var(--sa-motion-press-easing);
+  }
+
+  /* Hover is a POINTER affordance: ungated it sticks on a touchscreen, lifted,
+     until the reader taps something else — the gate `PortalCard` already sets. */
+  @media (hover: hover) and (pointer: fine) {
+    .ds-metric-card--interactive:hover {
+      border-color: var(--sa-border-brand-primary-base);
+      box-shadow: var(--sa-elevation-card);
+    }
+  }
+
+  .ds-metric-card--interactive:active {
+    transform: scale(0.99);
+  }
+
+  .ds-metric-card--interactive:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-metric-card--selected {
+    border-color: var(--sa-border-brand-primary-base);
+    background-color: var(--sa-bg-neutral-selected);
+  }
+
+  /* The resting affordance rides the height the figure already needs: the side column stretches
+     to the body's height and `margin-top: auto` drops the mark to its foot. As a row of its own
+     it cost every interactive tile 24px and left a band under the caption. */
+  .ds-metric-card--interactive .ds-metric-card__side {
+    align-self: stretch;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .ds-metric-card__go {
+    display: flex;
+    margin-top: auto;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* Chosen, so the mark takes the brand ink the border and ground already carry. */
+  .ds-metric-card--selected .ds-metric-card__go {
+    color: var(--sa-text-brand-primary-base);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-metric-card--interactive {
+      transition: none;
+    }
+
+    .ds-metric-card--interactive:active {
+      transform: none;
+    }
+  }
 
   /* ── The figure against its target ── */
   .ds-metric-card__progress {

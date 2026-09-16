@@ -37,6 +37,15 @@ const A11Y: A11yItem[] = [
     description: "Measured, not assumed — the return path is the half that is usually skipped.",
   },
   {
+    criterion: "3.3.1 Error Identification",
+    level: "A",
+    status: "verified",
+    evidence:
+      "Playwright, 14 Sep 2026, E-Anudaan Schedule Inspection (scratchpad p1fix/audit-fix/dialogs/repro.mjs): `2092026` stayed in the field with “Enter the date as DD/MM/YYYY.” and `31/02/2027` with “That date does not exist.”; `20092026`, `20-09-2026` and `20.09.2026` each committed as 20/09/2026. Parser unit-tested in apps/hub/src/lib/e-anudaan/date-typing.test.ts.",
+    description:
+      "An entry the field cannot read is kept on screen and described in text, announced through role=\"alert\" — never cleared.",
+  },
+  {
     criterion: "2.5.8 Target Size (Minimum)",
     level: "AA",
     status: "verified",
@@ -138,6 +147,21 @@ const [dob, setDob] = React.useState("");   // ISO yyyy-mm-dd
             read as a wrong one. An impossible date is rejected by round-trip:{" "}
             <code>31/02/2026</code> passes every field-by-field bounds check and is not a date, so
             the component builds it and asks whether the month survived.
+          </p>
+          <h2 className="cdp__h2">What the Field Accepts</h2>
+          <p>
+            <code>20/09/2026</code>, <code>20-09-2026</code>, <code>20.09.2026</code> and the
+            digits alone, <code>20092026</code>, are all read as 20 September 2026 and shown back as{" "}
+            <code>20/09/2026</code>. A two-digit year and six or seven bare digits are refused
+            rather than guessed — <code>2092026</code> is the 2nd or the 20th.
+          </p>
+          <p>
+            Anything the field cannot read <strong>stays in the field</strong> with the message
+            &ldquo;Enter the date as DD/MM/YYYY.&rdquo;, and a date outside <code>min</code> or{" "}
+            <code>max</code> says which bound it crossed. The field&apos;s <code>value</code> becomes
+            empty meanwhile, so a form cannot submit the last good date behind a rejected entry.
+            It used to put back the last good value instead, which on an empty field meant a typed
+            date vanished on blur without a word.
           </p>
         </section>
       }

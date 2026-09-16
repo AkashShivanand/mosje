@@ -15,7 +15,7 @@
     "page, re-run --update-baseline in the same change."
   ],
   "totals": {
-    "offScale": 193,
+    "offScale": 192,
     "classSized": 4
   },
   "files": {
@@ -184,10 +184,6 @@
       "classSized": 0
     },
     "apps/hub/src/app/portals/smile-admin/(app)/users/page.tsx": {
-      "offScale": 1,
-      "classSized": 0
-    },
-    "apps/hub/src/app/portals/smile-admin/(auth)/login/page.tsx": {
       "offScale": 1,
       "classSized": 0
     },

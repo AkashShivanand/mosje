@@ -6,6 +6,7 @@ import {
   CORNER_RAIL_REST_PX,
   CORNER_RAIL_GAP_PX,
   MAX_RAIL_OFFSET_PX,
+  overlapsAny,
 } from "./corner-rail.ts";
 
 const VIEWPORT = { width: 1280, height: 800 };
@@ -89,4 +90,42 @@ test("the ceiling is exactly the tallest legal occupant at the top of the zone",
   };
   assert.equal(railOffsetFromRects([extreme], VIEWPORT), MAX_RAIL_OFFSET_PX);
   assert.equal(MAX_RAIL_OFFSET_PX, 220 + 200 + CORNER_RAIL_GAP_PX);
+});
+
+// ── The clearance contract ───────────────────────────────────────────────────
+
+/** The chat launcher as measured at 320×568 on the NMBA page, before the fix. */
+const LAUNCHER_320 = { left: 220, top: 374, right: 304, bottom: 458 };
+/** The announcement band on the same screen. */
+const BAND_320 = { left: 0, top: 375, right: 320, bottom: 741 };
+
+test("a launcher sitting on a clear surface yields", () => {
+  assert.equal(overlapsAny(LAUNCHER_320, [BAND_320]), true);
+});
+
+test("no clear surface on the page means nothing yields", () => {
+  assert.equal(overlapsAny(LAUNCHER_320, []), false);
+});
+
+test("a surface that has scrolled above the launcher releases it", () => {
+  const scrolledBand = { ...BAND_320, top: -10, bottom: 373 };
+  assert.equal(overlapsAny(LAUNCHER_320, [scrolledBand]), false);
+});
+
+test("a shared hairline edge is not a collision", () => {
+  // Ends 1px into the launcher's top edge — within the tolerance.
+  const edgeOnly = { left: 0, top: 0, right: 320, bottom: LAUNCHER_320.top + 1 };
+  assert.equal(overlapsAny(LAUNCHER_320, [edgeOnly]), false);
+  // 2px in is past it.
+  assert.equal(overlapsAny(LAUNCHER_320, [{ ...edgeOnly, bottom: LAUNCHER_320.top + 2 }]), true);
+});
+
+test("overlap on one axis alone is not overlap", () => {
+  const besideIt = { left: 0, top: 374, right: 219, bottom: 458 };
+  assert.equal(overlapsAny(LAUNCHER_320, [besideIt]), false);
+});
+
+test("any one of several surfaces is enough", () => {
+  const far = { left: 0, top: 0, right: 100, bottom: 100 };
+  assert.equal(overlapsAny(LAUNCHER_320, [far, BAND_320]), true);
 });

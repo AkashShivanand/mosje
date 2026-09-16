@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { rowOfEachItem } from "./description-list-rows";
 import "./description-list.css";
 
 export interface DescriptionItem {
@@ -39,7 +40,12 @@ export interface DescriptionListProps
   layout?: "stacked" | "inline";
   /** @default "md" */
   size?: "md" | "sm";
-  /** Draw a hairline under every row. Use it for a long single-column list. */
+  /**
+   * Draw a hairline BETWEEN rows. The grid's final row does not get one: a rule
+   * under the last fact hangs under nothing and reads as an unfinished table,
+   * which is the same reason `ListGroup` rules between its items rather than
+   * after each one.
+   */
   divided?: boolean;
   /**
    * What to show where nothing was recorded. It is real text, not a dash alone:
@@ -86,6 +92,8 @@ export function DescriptionList({
   className,
   ...rest
 }: DescriptionListProps): React.JSX.Element {
+  const rows = rowOfEachItem(items, columns);
+  const lastRow = rows.length > 0 ? rows[rows.length - 1] : 0;
   return (
     <dl
       className={cn(
@@ -98,12 +106,13 @@ export function DescriptionList({
       )}
       {...rest}
     >
-      {items.map((item) => {
+      {items.map((item, index) => {
         const empty = isEmpty(item.value);
         return (
           <div
             key={item.term}
             className={cn("ds-dl__row", item.wide && "ds-dl__row--wide")}
+            data-last-row={rows[index] === lastRow ? "" : undefined}
           >
             <dt className="ds-dl__term">{item.term}</dt>
             <dd className={cn("ds-dl__value", empty && "ds-dl__value--empty")}>

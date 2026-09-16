@@ -21,7 +21,12 @@ counts = {"Blocker":0,"Major":0,"Minor":0,"Nit":0}; total=0
 for s in am["screens"]:
     for f in s["findings"]:
         counts[f["severity"]] = counts.get(f["severity"],0)+1; total+=1
-screens_n = len(am["screens"])
+# The cover's SCREENS tile must say how many screens were AUDITED, not how many boards the report
+# happens to draw. Once findings-free screens moved from a board each to a coverage ledger, and once
+# global findings each took a board of their own, len(screens) stopped being the screen count in
+# either direction. `coverageSummary.screensCaptured` is the audited total when the builder emits
+# one; len(screens) remains the fallback for portals that do not.
+screens_n = (am.get("coverageSummary") or {}).get("screensCaptured") or len(am["screens"])
 
 def panel(img_rel, box, pins, side):
     """A cropped screenshot panel with pins. side: 'figma'|'live'. pins: list of (num,sev,xPct,yPct).
@@ -256,7 +261,14 @@ sections=[cover]+screen_sections+([defer_html] if defer_html else [])
 json.dump({"css":css_full,"sections":sections,"width":1100,"out":pdf_path},
           open(os.path.join(BASE,"report-sections.json"),"w"))
 print("Sections:", len(sections), "— rendering one dynamically-sized page per screen via Node/puppeteer")
-r=subprocess.run(["node", os.path.join(BASE,"render.js")], cwd=BASE, capture_output=True, text=True, timeout=300)
+# The render budget has to scale with the report. A flat 300s was fine at 25 boards and silently
+# expired at 45 on NMBA (2026-09-11), leaving a STALE pdf on disk while the surrounding shell
+# pipeline reported success - `python3 generate_pdf.py | tail -1` takes tail's exit code, so the
+# TimeoutExpired traceback scrolled past and `pdfinfo` then read the OLD file. Budget per section,
+# with a floor, and never pipe this script's output in a way that eats its exit code.
+_budget = max(300, 20 * len(am.get("screens", [])) + 120)
+print(f"render budget: {_budget}s for {len(am.get('screens', []))} sections", flush=True)
+r=subprocess.run(["node", os.path.join(BASE,"render.js")], cwd=BASE, capture_output=True, text=True, timeout=_budget)
 if r.stdout.strip(): print(r.stdout.strip())
 if r.returncode!=0: print("RENDER ERR:", r.stderr[-900:])
 print("PDF:", pdf_path, (str(os.path.getsize(pdf_path))+" bytes") if os.path.exists(pdf_path) else "MISSING")

@@ -153,10 +153,11 @@ const GroupShell = React.forwardRef<HTMLFieldSetElement, GroupShellProps>(functi
     >
       <legend className={cn("ds-control-group__legend", hideLegend && "ds-sr-only")}>
         {legend}
-        {required ? (
+        {/* No mark on a group the reader cannot change — see FormField's `required` rule. */}
+        {required && !readOnly && !disabled ? (
           <>
             <span className="ds-control-group__required" aria-hidden="true">
-              {" *"}
+              *
             </span>
             {!isRadioGroup ? <span className="ds-sr-only"> (required)</span> : null}
           </>

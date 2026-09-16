@@ -70,6 +70,29 @@ type Story = StoryObj<typeof meta>;
 export const Playground: Story = {};
 
 /**
+ * THE TILE MEASURES ITSELF. The icon badge is decoration — `aria-hidden`, with the label already
+ * naming the figure — so it steps down to 32px in a tile narrower than 240px and is not drawn at
+ * all below 200px, which is what a half-width tile on a 375px screen is. No page needs a utility
+ * of its own to hide it.
+ */
+export const NarrowTile: Story = {
+  decorators: [
+    (Story) => (
+      <div style={{ display: "grid", gridTemplateColumns: "180px 220px 320px", gap: 12, alignItems: "start" }}>
+        <Story />
+      </div>
+    ),
+  ],
+  render: (args) => (
+    <>
+      <MetricCard {...args} label="No badge under 200px" />
+      <MetricCard {...args} label="Smaller badge under 240px" />
+      <MetricCard {...args} label="Full badge" />
+    </>
+  ),
+};
+
+/**
  * All three directions. Note the middle one: a fall in pending grievances is
  * good news, which is why the arrow is not the judgement — the label is.
  */
@@ -221,5 +244,39 @@ export const WithTrend: Story = {
     changeLabel: "FY budget",
     icon: undefined,
     aside: <Sparkline data={[7_800, 8_100, 8_400, 8_650, 8_900, 9_050, 9_250]} width={72} height={24} />,
+  },
+};
+
+/**
+ * THE TILE AS A CONTROL. `onSelect` makes the whole tile a button — for a figure that filters
+ * something on the same page, like an officer's case-type tiles filtering the queue beneath them.
+ * `selected` marks the one the page is filtered by; it sets `aria-pressed`, so the state is not
+ * carried by the tint alone.
+ */
+export const Selectable: Story = {
+  args: {
+    label: "3rd Instalment",
+    value: "5",
+    detail: "2 over 7 days",
+    changeValue: undefined,
+    changeLabel: undefined,
+    selected: true,
+    onSelect: () => {},
+  },
+};
+
+/**
+ * `href` makes it a link instead, for a figure that GOES somewhere — a register, a filtered list
+ * on another page. A tile is a link or a button, never both; `href` wins. Pass `linkAs` with the
+ * app's router link, or every click costs a full document load.
+ */
+export const LinkToARegister: Story = {
+  args: {
+    label: "Sanctioned",
+    value: "37",
+    detail: "All financial years",
+    changeValue: undefined,
+    changeLabel: undefined,
+    href: "/portals/e-anudaan/dashboard/pd/us/sanctioned",
   },
 };

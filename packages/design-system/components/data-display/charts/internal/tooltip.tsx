@@ -36,8 +36,16 @@ export function useChartTooltip(): ChartTooltipController {
   return { canvasRef, tip, show, hide };
 }
 
+export interface ChartTooltipProps {
+  /**
+   * The reading under the pointer, or `null` when there is none — which renders nothing
+   * rather than an empty box. Comes from `useChartTooltip()`; a chart never builds it.
+   */
+  tip: TooltipState | null;
+}
+
 /** Floating HTML tooltip rendered inside the (position:relative) chart canvas. */
-export function ChartTooltip({ tip }: { tip: TooltipState | null }) {
+export function ChartTooltip({ tip }: ChartTooltipProps) {
   if (!tip) return null;
   return (
     <div

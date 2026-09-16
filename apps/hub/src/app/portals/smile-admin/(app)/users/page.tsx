@@ -6,11 +6,53 @@ import { statusTone } from "@/lib/smile-admin/status-tone";
 import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-toolbar";
 import { StatPill } from "@/components/smile-admin/data/stat-pill";
-import { Table, TD, TH, THead, TR } from "@/components/smile-admin/table";
 import { APP_USERS, type AppUser } from "@/lib/smile-admin/mock-data";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
 import { initials } from "@/lib/smile-admin/utils";
-import { Badge, Icon, buttonClasses } from "@mosje/design-system";
+import { Badge, DataTable, Icon, buttonClasses, type DataTableColumn } from "@mosje/design-system";
+
+const COLUMNS: DataTableColumn<AppUser & Record<string, unknown>>[] = [
+  {
+    key: "name",
+    header: "User",
+    sortable: true,
+    render: (u) => (
+      <div className="flex items-center gap-md">
+        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-md bg-primary text-label-1 font-bold text-white shadow-xs ring-1 ring-inset ring-primary-700/30">
+          {initials(u.name)}
+        </div>
+        <div className="min-w-0">
+          {/* Semibold, which is what lets a reader scan the column
+              (SMB-SUPER-ADMIN-USERS-002). */}
+          <div className="truncate font-semibold text-ink">{u.name}</div>
+          <div className="truncate text-label-2 text-ink-muted">{u.email}</div>
+        </div>
+      </div>
+    ),
+    exportValue: (u) => `${u.name} <${u.email}>`,
+  },
+  { key: "mobile", header: "Mobile", className: "font-mono text-body-2 text-ink-muted" },
+  { key: "role", header: "Role", sortable: true },
+  {
+    key: "state",
+    header: "Scope",
+    sortable: true,
+    render: (u) => `${u.state}${u.district ? ` / ${u.district}` : ""}`,
+    exportValue: (u) => `${u.state}${u.district ? ` / ${u.district}` : ""}`,
+  },
+  {
+    key: "status",
+    header: "Status",
+    sortable: true,
+    render: (u) => (
+      <Badge status={statusTone(u.status)} dot>
+        {u.status}
+      </Badge>
+    ),
+    exportValue: (u) => u.status,
+  },
+  { key: "lastLogin", header: "Last login", sortable: true, className: "text-ink-muted" },
+];
 
 export default function UsersPage() {
   const [search, setSearch] = useState("");
@@ -126,47 +168,14 @@ export default function UsersPage() {
       </ul>
 
       {/* Desktop table */}
-      <div className="hidden overflow-hidden rounded-lg border border-stroke-200 bg-white shadow-xs md:block">
-        <Table>
-          <THead>
-            <tr>
-              <TH>User</TH>
-              <TH>Mobile</TH>
-              <TH>Role</TH>
-              <TH>Scope</TH>
-              <TH>Status</TH>
-              <TH>Last login</TH>
-            </tr>
-          </THead>
-          <tbody>
-            {users.map((u) => (
-              <TR key={u.id}>
-                <TD>
-                  <div className="flex items-center gap-md">
-                    <div className="grid h-9 w-9 shrink-0 place-items-center rounded-md bg-primary text-label-1 font-bold text-white shadow-xs ring-1 ring-inset ring-primary-700/30">
-                      {initials(u.name)}
-                    </div>
-                    <div className="min-w-0">
-                      <div className="truncate font-semibold text-ink">{u.name}</div>
-                      <div className="truncate text-label-2 text-ink-muted">
-                        {u.email}
-                      </div>
-                    </div>
-                  </div>
-                </TD>
-                <TD className="font-mono text-body-2 text-ink-muted">{u.mobile}</TD>
-                <TD>{u.role}</TD>
-                <TD>{u.state}{u.district ? ` / ${u.district}` : ""}</TD>
-                <TD>
-                  <Badge status={statusTone(u.status)} dot>
-                    {u.status}
-                  </Badge>
-                </TD>
-                <TD className="text-ink-muted">{u.lastLogin}</TD>
-              </TR>
-            ))}
-          </tbody>
-        </Table>
+      <div className="hidden rounded-lg border border-stroke-200 bg-white p-md shadow-xs md:block">
+        <DataTable
+          columns={COLUMNS}
+          data={users as Array<AppUser & Record<string, unknown>>}
+          total={users.length}
+          caption="Portal users, their role, scope and sign-in status"
+          emptyLabel="No user matches these filters."
+        />
       </div>
     </div>
   );

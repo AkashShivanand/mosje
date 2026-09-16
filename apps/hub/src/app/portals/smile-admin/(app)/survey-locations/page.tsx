@@ -5,10 +5,42 @@ import { useMemo, useState } from "react";
 import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-toolbar";
 import { StatPill } from "@/components/smile-admin/data/stat-pill";
-import { Table, TD, TH, THead, TR } from "@/components/smile-admin/table";
-import { SURVEY_LOCATIONS } from "@/lib/smile-admin/mock-data";
+import { SURVEY_LOCATIONS, type SurveyLocation } from "@/lib/smile-admin/mock-data";
 import { formatNumber } from "@/lib/smile-admin/utils";
-import { Badge, Icon, buttonClasses } from "@mosje/design-system";
+import { Badge, DataTable, Icon, buttonClasses, type DataTableColumn } from "@mosje/design-system";
+
+const COLUMNS: DataTableColumn<SurveyLocation & Record<string, unknown>>[] = [
+  { key: "name", header: "Location", sortable: true, className: "font-semibold text-ink" },
+  {
+    key: "state",
+    header: "State / District",
+    sortable: true,
+    render: (r) => (
+      <>
+        {r.state} <span className="text-ink-muted">/ {r.district}</span>
+      </>
+    ),
+    exportValue: (r) => `${r.state} / ${r.district}`,
+  },
+  { key: "pincode", header: "Pincode", className: "font-mono text-body-2 text-ink-muted" },
+  {
+    key: "type",
+    header: "Type",
+    sortable: true,
+    render: (r) => <Badge status="info">{r.type}</Badge>,
+    exportValue: (r) => r.type,
+  },
+  { key: "surveyors", header: "Surveyors", sortable: true, className: "text-right tabular-nums" },
+  {
+    key: "identified",
+    header: "Identified",
+    sortable: true,
+    className: "text-right tabular-nums",
+    render: (r) => formatNumber(r.identified),
+    sortValue: (r) => r.identified,
+  },
+  { key: "lastSurveyed", header: "Last survey", sortable: true, className: "text-ink-muted" },
+];
 
 export default function SurveyLocationsPage() {
   const [search, setSearch] = useState("");
@@ -32,33 +64,15 @@ export default function SurveyLocationsPage() {
         <StatPill label="Identified at locations" value={totalIdentified} icon="location_on"  tone="success" />
       </div>
       <DataToolbar><SearchField placeholder="Search location / state / pincode…" value={search} onChange={setSearch} /></DataToolbar>
-      <div className="overflow-hidden rounded-lg border border-stroke-200 bg-white shadow-xs">
-        <Table>
-          <THead>
-            <tr>
-              <TH>Location</TH>
-              <TH>State / District</TH>
-              <TH>Pincode</TH>
-              <TH>Type</TH>
-              <TH className="text-right">Surveyors</TH>
-              <TH className="text-right">Identified</TH>
-              <TH>Last survey</TH>
-            </tr>
-          </THead>
-          <tbody>
-            {rows.map((r) => (
-              <TR key={r.id}>
-                <TD className="font-semibold text-ink">{r.name}</TD>
-                <TD>{r.state} <span className="text-ink-muted">/ {r.district}</span></TD>
-                <TD className="font-mono text-body-2 text-ink-muted">{r.pincode}</TD>
-                <TD><Badge status="info">{r.type}</Badge></TD>
-                <TD className="text-right tabular-nums">{r.surveyors}</TD>
-                <TD className="text-right tabular-nums">{formatNumber(r.identified)}</TD>
-                <TD className="text-ink-muted">{r.lastSurveyed}</TD>
-              </TR>
-            ))}
-          </tbody>
-        </Table>
+      <div className="rounded-lg border border-stroke-200 bg-white p-md shadow-xs">
+        <DataTable
+          columns={COLUMNS}
+          data={rows as Array<SurveyLocation & Record<string, unknown>>}
+          total={rows.length}
+          showPageSizes={false}
+          caption="Survey locations, with the surveyors deployed and beneficiaries identified at each"
+          emptyLabel="No survey location matches this search."
+        />
       </div>
     </div>
   );

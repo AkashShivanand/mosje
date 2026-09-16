@@ -126,6 +126,10 @@
   /* ── Surfaces & borders ─────────────────────────────────────────────── */
   --color-surface:        var(--portal-surface, var(--sa-bg-neutral-base));
   --color-surface-muted:  var(--portal-surface-muted, var(--sa-bg-neutral-subtler));
+  /* The PAGE ground behind white cards — bg/neutral/subtlest, one step lighter than
+     surface-muted so hover and read-only fills stay distinct from the page. A portal that
+     re-binds surface-muted keeps it as its canvas, so no portal palette moves. (2026-09-14) */
+  --color-surface-canvas: var(--portal-surface-canvas, var(--portal-surface-muted, var(--sa-bg-neutral-subtlest)));
   --color-border:         var(--portal-border, var(--sa-border-neutral-subtle));
   --color-border-strong:  var(--sa-border-neutral-base);
   /* website-only name. The DoSJE website distinguishes `border-border` (its own

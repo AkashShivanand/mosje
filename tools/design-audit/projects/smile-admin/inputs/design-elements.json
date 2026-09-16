@@ -1,0 +1,233 @@
+{
+ "SUPER-ADMIN-DASHBOARD": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "8664:49264",
+   "totalText": 392,
+   "offCanvas": 0,
+   "noRender": 91,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-USERS": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "8664:51029",
+   "totalText": 283,
+   "offCanvas": 41,
+   "noRender": 69,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-ROLES": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "8664:52367",
+   "totalText": 220,
+   "offCanvas": 6,
+   "noRender": 31,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-PERMISSIONS": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51661:156038",
+   "totalText": 195,
+   "offCanvas": 3,
+   "noRender": 20,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-CONSENT": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51873:194809",
+   "totalText": 255,
+   "offCanvas": 4,
+   "noRender": 56,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-NOTIFICATIONS": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51830:237991",
+   "totalText": 160,
+   "offCanvas": 13,
+   "noRender": 30,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-PERSONS": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "8664:57337",
+   "totalText": 309,
+   "offCanvas": 28,
+   "noRender": 73,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-MASTER-SETTING": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51836:240081",
+   "totalText": 201,
+   "offCanvas": 10,
+   "noRender": 33,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-COMPREHENSIVE-REHAB-DATA": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51742:166982",
+   "totalText": 268,
+   "offCanvas": 33,
+   "noRender": 58,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-COMPREHENSIVE-REHAB-SKILL-TRAINING": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51742:164435",
+   "totalText": 265,
+   "offCanvas": 35,
+   "noRender": 58,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-SHELTER-HOMES-BENEFICIARIES": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51712:164958",
+   "totalText": 311,
+   "offCanvas": 102,
+   "noRender": 131,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-CITY-PROFILING": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51891:441340",
+   "totalText": 281,
+   "offCanvas": 13,
+   "noRender": 30,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-CITY-PROFILING-L2-DISTRICTS": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51891:441685",
+   "totalText": 217,
+   "offCanvas": 17,
+   "noRender": 33,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-PERFORMANCE-STATS": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51563:156833",
+   "totalText": 580,
+   "offCanvas": 53,
+   "noRender": 65,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-SURVEYOR-MAPPED": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51699:165683",
+   "totalText": 276,
+   "offCanvas": 14,
+   "noRender": 56,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-SURVEY-LOCATIONS": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "8664:55325",
+   "totalText": 262,
+   "offCanvas": 3,
+   "noRender": 33,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-USERS-ADD-USER": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "8664:52311",
+   "totalText": 164,
+   "offCanvas": 17,
+   "noRender": 33,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-SHELTER-HOMES-ADD": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51712:166102",
+   "totalText": 186,
+   "offCanvas": 17,
+   "noRender": 34,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-ROLES-NEW-ROLE": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51661:158685",
+   "totalText": 230,
+   "offCanvas": 7,
+   "noRender": 33,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SIGNIN-LOGIN": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "8383:55268",
+   "totalText": 277,
+   "offCanvas": 0,
+   "noRender": 109,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SIGNIN-CHOOSE-PORTAL": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "8383:55528",
+   "totalText": 289,
+   "offCanvas": 0,
+   "noRender": 109,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ }
+}

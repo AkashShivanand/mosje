@@ -49,3 +49,35 @@
 
 Baseline modes: `tokens` (strict, vs `inputs/tokens.json`) · `derived` (from Figma variables) ·
 `internal` (no design system — flag statistical outliers).
+
+---
+
+## Before you write a single finding
+
+Three things this engine learned the hard way. They cost a portal about one wrong claim in five
+before they were gates; now they are gates, and the run refuses to publish without them.
+
+**1. Read the design with `engine/figma_dump.js`, never a hand-rolled traversal.** `use_figma`
+returns a TRUNCATED node tree when the frame's page was never loaded — 45 text nodes on a frame
+that has 201 — and tells you nothing. The snippet sets the page and records `_meta.pageLoaded` and
+`_meta.totalText` for every frame; write the result to `inputs/design-elements.json`. Leave
+`WITH_ELEMENTS = false` for the whole-page pass: meta alone is what the gate needs, and two frames
+of elements overflow the MCP response.
+
+**2. Anchor every finding, in `resolve_anchors.py`.** Copy the pattern from
+`projects/smile-admin/resolve_anchors.py`: your file holds only the `ANCHORS` dict, and
+`engine/anchors.py` does the resolving. That is what gives every finding a real element box — and
+therefore a crop pair, a pin, and a claim gate that can check it. When an anchor is deliberately
+the NEIGHBOUR of the thing the finding is about (an icon, a tinted banner, a card), say so with
+`why="…"` on the spec.
+
+**3. Turn the claim gates on** (`"claimGates": true`) and read `out/claims.md`. Every presence,
+colour, count or position claim gets a 1:1 crop of both sides in `out/evidence/<ID>.png` with the
+element ringed. **Look at it before you write the sentence.** Everything that went wrong in the
+SMILE Beggary run — "the icons lost their tinted chip" (they hadn't), "the KPI row lost its
+container" (it hadn't), "the column is not built" (it is; it is off-screen) — would have died at
+that picture.
+
+`out/claims.md` also lists every design frame drawing content OUTSIDE its own bounds. Nothing out
+there renders — not in the export, not in Dev Mode — so the build implements a spec nobody can
+see. That is a finding about the design file, and it is usually news to the design team.

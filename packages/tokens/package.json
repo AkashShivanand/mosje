@@ -20,6 +20,6 @@
     "test": "node --test --test-concurrency=1 test/*.test.mjs"
   },
   "devDependencies": {
-    "style-dictionary": "^4.3.0"
+    "style-dictionary": "^5.5.3"
   }
 }

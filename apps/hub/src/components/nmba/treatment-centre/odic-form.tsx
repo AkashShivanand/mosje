@@ -481,7 +481,7 @@ export function OdicBeneficiaryForm({
       >
         {/* ── Step 0: Registration & Personal Details ─────────────────────── */}
         {step === 0 && (
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-8">
             <FormSection title={kind === "Outreach" ? "Details of Outreach" : "Details of DIC"} columns={2}>
               <FormField label="Date of Registration" required error={err("dateOfRegistration")}>
                 {(c) => <Input {...c} type="date" max={todayIso()} value={f.dateOfRegistration} onChange={(e) => set("dateOfRegistration")(e.target.value)} invalid={errors.has("dateOfRegistration")} />}
@@ -554,7 +554,7 @@ export function OdicBeneficiaryForm({
 
         {/* ── Step 1: Substance Use ───────────────────────────────────────── */}
         {step === 1 && (
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-8">
             <FormCard
               title="Drug Use Details"
               required
@@ -686,7 +686,7 @@ export function OdicBeneficiaryForm({
 
         {/* ── Step 2: Assessment & Intervention ───────────────────────────── */}
         {step === 2 && (
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-8">
             <FormSection title="Treatment Details" columns={2}>
               <FormField label="Previous Treatment for use Substance" required error={err("previousTreatment")}>
                 {(c) => <Select {...c} value={f.previousTreatment} onChange={(e) => { set("previousTreatment")(e.target.value); if (e.target.value !== "Yes") set("treatmentTaken")(""); }} placeholder="Select" options={YES_NO} invalid={errors.has("previousTreatment")} />}
@@ -798,7 +798,7 @@ export function OdicBeneficiaryForm({
 
         {/* ── Step 3: Review ──────────────────────────────────────────────── */}
         {step === 3 && (
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-3">
               <p className="text-body-2 text-ink-muted">
                 Review the details below, then submit. Use the quick links or{" "}

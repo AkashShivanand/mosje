@@ -36,8 +36,35 @@
  * selector or line names an icon is left to that gate and counted separately here so
  * the hand-off stays visible rather than looking like an omission.
  *
- * `font-weight` has no token by design (see CLAUDE.md — "write the number, as
- * button.css does"), so a weight literal is correct and is not a finding.
+ * A weight LITERAL is not a finding on its own — 600 and `var(--sa-font-weight-
+ * semibold)` are the same weight. (This header once said weight had "no token by
+ * design"; `--sa-font-weight-*` has been Tier 2 since 2026-08-26.) What IS a finding
+ * is a weight that does not belong to the text style its size came from — see
+ * COMPOSITION below.
+ *
+ * ── COMPOSITION: EVERY TEXT IS ONE WHOLE TEXT STYLE ─────────────────────────
+ * Checking each value in isolation misses the defect that shipped on the Ticker:
+ * every value a token, and still no text style anywhere. Its plinth name was
+ * title-2 at weight 500 and its notices title-3 at 500, where the SAMAVESH text
+ * styles are 600 for both — so the build drew two type styles the library does
+ * not have, and this gate passed it. For any CSS rule that sizes text from a role
+ * (`font-size: var(--sa-type-<role>-size)`) the same rule is checked for:
+ *
+ *   style-mixed         leading from ANOTHER role's `-lh`, or tracking from another
+ *                       family (display and headline take `heading`; `caps` is
+ *                       allowed where the rule sets `text-transform: uppercase`)
+ *   style-weight        a weight that is not the role's tier weight. Tier weights
+ *                       are read from `typography-content.json`, the file the
+ *                       Typography page is generated from. One published
+ *                       composition is allowed besides: body at semibold, which is
+ *                       the library's `Body/body-N-semibold`.
+ *   style-weight-unset  a role whose tier weight is not 400 with no weight at all —
+ *                       it renders at whatever it inherits, which for an `h3` is
+ *                       the browser's 700.
+ *
+ * CSS files only. Icon-named selectors are skipped, as everywhere in this gate.
+ * The Figma half of the same rule — every text layer in a published component
+ * linked to a text style — is `check:figma-text-styles`.
  *
  * ── WHY A RATCHET AND NOT A SWEEP ────────────────────────────────────────────
  * The same reasoning the icon gate records. Snapping 71 sites from 13px to 12 or 14
@@ -87,6 +114,83 @@ const RAMP = (() => {
 })();
 
 /* ── matchers ───────────────────────────────────────────────────────────── */
+
+/*
+ * TIER WEIGHTS AND WEIGHT TOKENS, read from their sources like the ramp above.
+ */
+const TIER_WEIGHT = (() => {
+  const content = JSON.parse(readFileSync(join(ROOT, "apps/hub/src/app/design-system/foundations/typography/typography-content.json"), "utf8"));
+  const out = Object.fromEntries(Object.entries(content.tierWeights ?? {}).map(([tier, w]) => [tier, w.value]));
+  for (const tier of ["display", "headline", "title", "body", "label"]) {
+    if (typeof out[tier] !== "number") throw new Error(`type-linkage: typography-content.json has no tier weight for "${tier}" — composition cannot be checked against a style it cannot read.`);
+  }
+  return out;
+})();
+
+const WEIGHT_TOKEN = (() => {
+  const tokens = readFileSync(join(ROOT, "packages/design-system/tokens.css"), "utf8");
+  const out = Object.fromEntries([...tokens.matchAll(/--sa-font-weight-([a-zA-Z]+):\s*(\d{3})/g)].map((m) => [m[1], Number(m[2])]));
+  if (!out.semibold || !out.medium || !out.regular) throw new Error("type-linkage: --sa-font-weight-* not found in tokens.css");
+  return out;
+})();
+
+/** The tracking family each role family is set with. */
+const TRACKING_OF = { display: "heading", headline: "heading", title: "title", body: "body", label: "label" };
+
+/** Innermost CSS rule blocks — the ones that carry declarations rather than rules. */
+function leafBlocks(src) {
+  const out = [];
+  const stack = [];
+  for (let i = 0; i < src.length; i++) {
+    const c = src[i];
+    if (c === "{") stack.push({ open: i, parent: false });
+    else if (c === "}") {
+      const b = stack.pop();
+      if (!b) continue;
+      if (stack.length) stack[stack.length - 1].parent = true;
+      if (!b.parent) {
+        const selStart = Math.max(src.lastIndexOf("}", b.open), src.lastIndexOf("{", b.open - 1), src.lastIndexOf(";", b.open)) + 1;
+        out.push({ selector: src.slice(selStart, b.open).trim(), body: src.slice(b.open + 1, i), open: b.open });
+      }
+    }
+  }
+  return out;
+}
+
+function compositionFindings(raw, src, rel, perLine) {
+  const findings = [];
+  for (const block of leafBlocks(src)) {
+    const size = block.body.match(/font-size\s*:\s*var\(--sa-type-(display|headline|title|body|label)-(\d)-size\)/);
+    if (!size) continue;
+    if (ICONISH.test(block.selector)) continue;
+    const family = size[1];
+    const role = `${family}-${size[2]}`;
+    const at = block.open + 1 + size.index;
+    const line = lineAt(src, at);
+    if (perLine.get(line)) continue;
+    const text = `${block.selector.replace(/\s+/g, " ").slice(0, 60)} { ${role} }`;
+
+    const lh = block.body.match(/line-height\s*:\s*var\(--sa-type-([a-z]+-\d)-lh\)/);
+    if (lh && lh[1] !== role) findings.push({ file: rel, line, kind: "style-mixed", value: `size ${role}, leading ${lh[1]}`, text });
+
+    const tr = block.body.match(/letter-spacing\s*:\s*var\(--sa-type-([a-z]+)-tracking\)/);
+    const upper = /text-transform\s*:\s*uppercase/.test(block.body);
+    if (tr && tr[1] !== TRACKING_OF[family] && !(tr[1] === "caps" && upper)) {
+      findings.push({ file: rel, line, kind: "style-mixed", value: `size ${role}, tracking ${tr[1]}`, text });
+    }
+
+    const wt = block.body.match(/font-weight\s*:\s*(?:var\(--sa-font-weight-([a-zA-Z]+)\)|(\d{3})\b|(bold|normal)\b)/);
+    const expected = TIER_WEIGHT[family];
+    if (wt) {
+      const value = wt[1] ? WEIGHT_TOKEN[wt[1]] : wt[2] ? Number(wt[2]) : wt[3] === "bold" ? 700 : 400;
+      const allowed = value === expected || (family === "body" && value === WEIGHT_TOKEN.semibold);
+      if (value !== undefined && !allowed) findings.push({ file: rel, line, kind: "style-weight", value: `${role} at ${value}, the style is ${expected}`, text });
+    } else if (expected !== 400 && !/font-weight\s*:/.test(block.body) && !/\bfont\s*:/.test(block.body)) {
+      findings.push({ file: rel, line, kind: "style-weight-unset", value: `${role} with no weight, the style is ${expected}`, text });
+    }
+  }
+  return findings;
+}
 
 /** CSS + Tailwind-arbitrary + React-style-object forms of each typographic property. */
 const MATCHERS = [
@@ -272,12 +376,14 @@ function checkFile(path) {
     }
   }
 
+  if (isCss) findings.push(...compositionFindings(raw, src, rel, perLine));
+
   return findings;
 }
 
 /* ── collect ────────────────────────────────────────────────────────────── */
 
-const KINDS = ["size-off-ramp", "size", "leading", "tracking", "family", "utility-size", "utility-leading", "utility-tracking", "weight", "hindi-unmarked"];
+const KINDS = ["size-off-ramp", "size", "leading", "tracking", "family", "utility-size", "utility-leading", "utility-tracking", "weight", "hindi-unmarked", "style-mixed", "style-weight", "style-weight-unset"];
 
 let all = [];
 for (const dir of SCAN) {
@@ -392,6 +498,11 @@ else if (process.argv.includes("--gate")) {
       `\n  Bind the value: font-size to var(--sa-type-<role>-size) and, in the same rule,\n` +
         `  line-height to its paired var(--sa-type-<role>-lh) — a size without its leading\n` +
         `  is half a binding. Tracking is var(--sa-type-<family>-tracking).\n\n` +
+        `  A "style-*" finding means the rule is not ONE text style: leading or tracking\n` +
+        `  from another role, or a weight the role's style does not have (title and\n` +
+        `  headline 600, label and display 500, body 400 — or body at 600, which is the\n` +
+        `  library's Body/body-N-semibold). Take every value from the text style the\n` +
+        `  Figma layer is linked to; if no style fits, the fix is a style, not a mix.\n\n` +
         `  A "size-off-ramp" finding is not a binding problem, it is a DESIGN one: the\n` +
         `  scale cannot express that number. The Typography page states the answer —\n` +
         `  body-2 at 14 or body-3 at 12, never a 22nd size invented for one card. Nothing\n` +
@@ -411,7 +522,8 @@ else if (process.argv.includes("--gate")) {
   } else {
     console.log(
     `✔ type-linkage: no new unbound typography — ${gated.length} known (${totals["size-off-ramp"]} off-ramp sizes, ` +
-      `${totals.size} bindable sizes, ${totals.leading} leadings, ${totals.tracking} trackings, ${totals.family} families), ` +
+      `${totals.size} bindable sizes, ${totals.leading} leadings, ${totals.tracking} trackings, ${totals.family} families, ` +
+      `${totals["style-mixed"]} mixed styles, ${totals["style-weight"]} off-style weights, ${totals["style-weight-unset"]} unset weights), ` +
       `all declared in the baseline.`,
     );
   }

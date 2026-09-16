@@ -54,7 +54,15 @@ export function ImportantLinks() {
         // that going compact cannot change the input to the decision that
         // made it compact — see WALL_NATURAL_ATTR in foundations/wall-rail.ts.
         data-sa-wall-natural="175"
-        className="fixed right-0 top-[42%] z-[1002] flex flex-col items-center gap-2 rounded-l-lg bg-primary px-2 py-4 text-white shadow-md transition-colors hover:bg-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+        /* THE TOKEN, AND IT STANDS DOWN FOR A DIALOG.
+           `z-[1002]` was a literal, which this estate calls a defect on its own
+           — `--sa-z-*` is the only z-index app code may write. It also put the
+           rail in Tailwind's UTILITIES layer, where it outranked the design
+           system's own `[data-sa-dialog-open]` rule and went on floating at
+           full strength over a dimmed page while a dialog was open.
+           The variant keeps the override in the same layer as the value it is
+           overriding, which is the only place it can win from. */
+        className="fixed right-0 top-[42%] z-[var(--sa-z-rail)] [html[data-sa-dialog-open]_&]:z-[var(--sa-z-base)] flex flex-col items-center gap-2 rounded-l-lg bg-primary px-2 py-4 text-white shadow-md transition-colors hover:bg-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
       >
         <Icon name="link" size={20} aria-hidden="true" />
         {/* Dropped when the right wall runs out of room, leaving the icon

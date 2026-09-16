@@ -11,11 +11,12 @@ manifest (rows for that role's slugs are replaced, every other role's rows are p
 and a full run that captured nothing refuses to overwrite a non-empty manifest without
 `--allow-empty`. The manifest is the only record of the captured SET — the PNG/JSON files
 survive a bad write, the set does not."""
-import json, os, struct, subprocess, sys
+import json, os, re, struct, subprocess, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import config as C
 import manifest as MAN
 import bundle as B
+import routes as R
 from playwright.sync_api import sync_playwright
 
 EXTRACT_JS = r"""
@@ -107,10 +108,173 @@ EXTRACT_JS = r"""
 # NOTE: 'hidden'/'clip' count as clipping too — an `h-screen overflow-hidden` shell pins the
 # document at exactly the viewport height and is invisible to an auto|scroll-only detector
 # (symptom: every page reports pageH == viewport height, e.g. 1000).
+# Third-party chrome that lives OFF-CANVAS must be taken out before the unclip pass, not after.
+# UNCLIP sets overflow:visible on body and documentElement, which is what stops an off-screen
+# fixed panel from being clipped - so it joins the layout, the page grows by its width, and the
+# flex rows inside re-flow. On NMBA the UX4G accessibility drawer sits at x1520-1970; unclipping
+# it pushed the citizen home page's "Take the Pledge" button from x1171 to x1841, outside the
+# 1440 export. A finding was published saying that button did not exist. It did.
+#
+# The rule: an element that is FIXED and lies entirely outside the viewport is not part of the
+# page being audited. Hide it, record what was hidden, and unclip what remains.
+# The unclip pass exists to make a page its full HEIGHT. If it also moves anything SIDEWAYS,
+# the capture has stopped describing the page and started describing an artefact of the harness —
+# and a finding written off it can be flatly false. NMB-SCREEN-016 was published saying the NMBA
+# pledge banner had no call to action; the button was at x1171 in the browser and x1841 in the
+# capture, because unclipping released the horizontal axis and a scrolling row re-flowed.
+#
+# So the harness watches itself: a handful of stable, visible elements are measured BEFORE the
+# pass and again AFTER. If any has moved horizontally, the screen is flagged. Cheap (one
+# evaluate each side), and it catches the whole class at the moment it happens rather than four
+# review passes later.
+# The canary: does the page still sit where it sat, after the harness un-clips it? A capture whose
+# elements moved sideways has stopped describing the page — that defect put NMB-SCREEN-016's button
+# at x1841 on a 1440 export and published a finding saying it was missing.
+#
+# Identity is an ATTRIBUTE, never the label. The first version keyed by text, and PUBLIC-HOME has
+# two elements reading 'Dashboard' (a span at x94 and an h2 at x360) — so it compared one against
+# the other and reported a 312px shift on a page that had not moved. That is the same
+# short-label-swallows-another bug the anchor matcher was fixed for, reproduced here within a day.
+# An attribute cannot be ambiguous, and no stylesheet targets it, so it changes no layout.
+CANARY_MARK_JS = r"""() => {
+  const out = {};
+  let n = 0;
+  for (const el of document.querySelectorAll('h1,h2,h3,button,a,th,label')) {
+    const t = (el.textContent || '').trim();
+    if (t.length < 4 || t.length > 60) continue;
+    const b = el.getBoundingClientRect();
+    if (b.width < 8 || b.height < 8) continue;
+    if (b.top < 0 || b.top > 2000) continue;
+    el.setAttribute('data-sa-canary', String(n));
+    out[n] = [t.slice(0, 40), Math.round(b.left + scrollX)];
+    if (++n >= 24) break;
+  }
+  return out;
+}"""
+
+CANARY_READ_JS = r"""() => {
+  const out = {};
+  for (const el of document.querySelectorAll('[data-sa-canary]')) {
+    const k = el.getAttribute('data-sa-canary');
+    const b = el.getBoundingClientRect();
+    // width/height travel with the verdict: HIDE_OFFCANVAS_JS display:none's the off-canvas
+    // accessibility widget between the two passes, and a hidden element's rect is all zeros. Four
+    // of those read as "moved from x1536 to x0" — an element that renders nothing cannot have moved.
+    out[k] = [(el.textContent || '').trim().slice(0, 40), Math.round(b.left + scrollX),
+              Math.round(b.width), Math.round(b.height)];
+    el.removeAttribute('data-sa-canary');        // leave the DOM as the extraction expects it
+  }
+  return out;
+}"""
+
+SHIFT_TOLERANCE_PX = 2
+
+
+def canary_shifts(before, after):
+    """(shifted, hidden) — which marked elements moved sideways, and which stopped rendering.
+
+    Pure, and tested, because both of this function's rules were learned by getting them wrong:
+
+      * Compare by MARK, never by label. PUBLIC-HOME has two elements reading 'Dashboard' and a
+        text-keyed version compared one against the other, reporting a 312px shift on a page that
+        had not moved.
+      * An element that renders nothing has not moved. HIDE_OFFCANVAS_JS display:none's the
+        off-canvas accessibility widget between the two passes and a hidden rect is all zeros, so
+        four of those read as "x1536 -> x0".
+
+    `before` is {mark: [text, left]}; `after` is {mark: [text, left, width, height]}.
+    """
+    shifted, hidden = [], 0
+    for mark, row in (after or {}).items():
+        text, x_after, w_after, h_after = row
+        pair = (before or {}).get(str(mark)) or (before or {}).get(mark)
+        if not pair:
+            continue
+        if w_after < 1 or h_after < 1:
+            hidden += 1                       # counted, never silently dropped
+            continue
+        text_before, x_before = pair
+        # a mark whose text has changed is a different element wearing it; measuring proves nothing
+        if text_before != text:
+            continue
+        if abs(x_after - x_before) > SHIFT_TOLERANCE_PX:
+            shifted.append({"text": text, "before": x_before, "after": x_after})
+    return shifted, hidden
+
+
+HIDE_OFFCANVAS_JS = r"""(w) => {
+  const hidden = [];
+  document.querySelectorAll('*').forEach(el => {
+    const cs = getComputedStyle(el);
+    if (cs.position !== 'fixed' && cs.position !== 'absolute') return;
+    const b = el.getBoundingClientRect();
+    if (b.width < 4 || b.height < 4) return;
+    if (b.left >= w - 2 || b.right <= 2) {            // entirely off to one side
+      hidden.push((el.id || el.className || el.tagName).toString().slice(0, 40)
+                  + ' @' + Math.round(b.left) + 'x' + Math.round(b.width));
+      el.style.setProperty('display', 'none', 'important');
+    }
+  });
+  return hidden;
+}"""
+
+# Every colour the page actually paints, with a count. The element rows carry TEXT and CONTROLS,
+# not containers — so a card's own border is invisible to them, and a gate that read absence from
+# the rows as evidence would be making the unfounded-absence mistake this engine exists to stop.
+# It did: NMB-SCREEN-046 correctly reported the activity card's 1px #E5EAF2 edge (the hex is
+# hard-coded in the class, `border-[#E5EAF2]`, on nine cards) and the gate failed it because the
+# rows only knew the #E5E7EB used on 16 OTHER elements of the same page.
+#
+# Cheap: one pass, one string per element, capped. Channels are CLAMPED — an unclamped
+# toString(16) turned a 256 into '100' and produced seven-character "hex".
+COLOR_INVENTORY_JS = r"""() => {
+  // RAW computed values, counted. NOT hex — the conversion belongs to Python's colours_in(),
+  // which is tested. The first version converted here, in JavaScript, and reimplemented the exact
+  // oklch bug that had just been fixed on the Python side: this estate is Tailwind v4, so
+  // getComputedStyle returns `oklch(0.551 0.027 264.364)`, and a naive rgb()-shaped scrape read
+  // the HUE into the blue channel and recorded it as '#010019'. Every Tailwind colour in the first
+  // inventory was junk of that kind.
+  //
+  // ONE colour parser, in one language, with tests. A second one is a second set of the same bugs.
+  const tally = {};
+  const bump = c => {
+    const v = String(c || '').trim();
+    if (!v || v === 'none' || v === 'transparent') return;
+    if (/^rgba?\(.*,\s*0\s*\)$/.test(v)) return;          // fully transparent paints nothing
+    tally[v] = (tally[v] || 0) + 1;
+  };
+  // The cap was 6000, and PUBLIC-FACILITIES — a lazy-loading list 223,000px tall — has more
+  // elements than that, so its ODIC chip fell outside and the inventory came back SHORT while
+  // looking complete. integrity.inventory_is_complete() now proves completeness rather than
+  // assuming it, but the cap should not be the thing that breaks it either.
+  const all = document.querySelectorAll('*');
+  for (let i = 0; i < all.length && i < 40000; i++) {
+    const el = all[i], s = getComputedStyle(el);
+    const b = el.getBoundingClientRect();
+    if (b.width < 1 || b.height < 1) continue;            // nothing invisible counts
+    if (s.visibility === 'hidden' || s.opacity === '0') continue;
+    bump(s.color);
+    bump(s.backgroundColor);
+    if (parseFloat(s.borderTopWidth) > 0) bump(s.borderTopColor);
+    if (parseFloat(s.borderRightWidth) > 0) bump(s.borderRightColor);
+    if (parseFloat(s.borderBottomWidth) > 0) bump(s.borderBottomColor);
+    if (parseFloat(s.borderLeftWidth) > 0) bump(s.borderLeftColor);
+    if (s.outlineStyle !== 'none' && parseFloat(s.outlineWidth) > 0) bump(s.outlineColor);
+    if (s.fill && s.fill !== 'none') bump(s.fill);
+    if (s.stroke && s.stroke !== 'none') bump(s.stroke);
+  }
+  return tally;
+}"""
+
 UNCLIP_JS = r"""() => {
+  // Un-clip the VERTICAL axis only. `overflow: visible` releases both, and releasing X makes a
+  // horizontally-scrolling region lay its children out in a full-width row instead of scrolling:
+  // the NMBA citizen home page grew from 1440 to 2050 that way, carrying its KPI cards, filters
+  // and the pledge CTA outside the export. The pass exists to make the page its full HEIGHT.
   const fix = el => { el.style.setProperty('height','auto','important');
     el.style.setProperty('max-height','none','important');
-    el.style.setProperty('overflow','visible','important'); };
+    el.style.setProperty('overflow-y','visible','important');
+    el.style.setProperty('overflow-x','hidden','important'); };
   const CLIP = new Set(['auto','scroll','hidden','clip']);
   const scr = [];
   document.querySelectorAll('*').forEach(el => {
@@ -409,6 +573,266 @@ def do_login(pg, role, auth):
     login(pg, role["base"], auth, role["user"], role["pass"])
     return True
 
+# ---------------------------------------------------------------------------
+# Navigation modes.
+#
+# The default crawl is `goto` — a full document load per route. That is correct for
+# most builds and it is what every existing project uses.
+#
+# It is WRONG for a build whose session cannot survive a reload. SMILE-Beggary's admin
+# (2026-09-10) logs the user out on a hard refresh of /dashboard and /city-profiling:
+# the `smile_admin_token` cookie is dropped and every later route renders the login
+# page. Because the engine visits the landing route FIRST, one bad route poisoned the
+# whole run — 49 screenshots of a login form across 4 roles, and every gate stayed
+# green, because a login page is a perfectly valid 1440x1000 capture.
+#
+# `navMode: "spa"` navigates the way a person does: click the sidebar anchor for the
+# route, no document load, session untouched. `goto` stays the fallback for a route
+# with no anchor.
+# ---------------------------------------------------------------------------
+LOGIN_MARKER_TEXT = ("log in to your account", "sign in to your account",
+                     "enter your registered email", "enter password")
+
+def looks_like_login(pg, auth=None):
+    """True when the rendered page is a login screen.
+
+    Deliberately checks the RENDERED TEXT, not the URL. A SPA that renders its login
+    view without changing the path (or that bounces after the URL bar has already
+    settled) defeats a url-only check, which is exactly how the SMILE run passed its
+    own `loginMarker` test and still captured 49 login pages."""
+    try:
+        txt = (pg.evaluate("()=>document.body.innerText.slice(0,4000)") or "").lower()
+    except Exception:
+        return False
+    if any(m in txt for m in LOGIN_MARKER_TEXT):
+        return True
+    marker = (auth or {}).get("loginMarker")
+    return bool(marker and marker in pg.url)
+
+# A skeleton row is an element with a background, a real box, and NO text — the grey bar a
+# table draws while its request is in flight. A capture taken mid-skeleton is not a capture of
+# the screen: it shows the loading state under the populated screen's name, and every fidelity
+# finding derived from it is about a placeholder. Observed on SMILE-Beggary /persons, whose KPI
+# cards and 10 table rows were all grey bars while the design frame beside it showed real data.
+WAIT_FOR_DATA_JS = r"""() => {
+  const busy = document.querySelectorAll('[aria-busy="true"],[data-loading="true"]').length;
+  let skel = 0;
+  document.querySelectorAll('div,span,td,li').forEach(el => {
+    if (el.children.length) return;
+    if ((el.textContent || '').trim()) return;
+    const r = el.getBoundingClientRect();
+    if (r.width < 24 || r.height < 6 || r.height > 60) return;
+    const cs = getComputedStyle(el);
+    const bg = cs.backgroundColor || '';
+    if (bg === 'transparent' || bg === 'rgba(0, 0, 0, 0)') return;
+    if (cs.animationName && cs.animationName !== 'none') { skel += 2; return; }
+    skel += 1;
+  });
+  return { busy, skel };
+}"""
+
+# Every page in a real app has a handful of small filled boxes with no text — a divider, a
+# progress track, an avatar ring. Measured across SMILE-Beggary's 23 admin screens that floor is
+# a steady 15, while a page genuinely mid-load reads 105-127. Report against the floor, not
+# against zero, or every screen in the estate is flagged as "still loading".
+SKELETON_FLOOR = 20
+
+def wait_for_data(pg, tries=16, pause=2000):
+    # Budget: up to ~32s, but ONLY for a page that is actually showing skeletons — a page below
+    # SKELETON_FLOOR returns on the first reading and costs nothing. The budget is set by the
+    # slowest real page measured: SMILE-Beggary's Beneficiary List renders its first table row
+    # between 12s and 25s after arrival. A 7s budget filed that screen as an empty grey page and
+    # would have shipped "the list never loads" as a finding, which is not what it does.
+    """Wait until a page stops rendering skeleton placeholders.
+
+    Returns (skeletons_remaining, waited_ms). Never blocks forever: a page whose EMPTY state
+    legitimately draws grey bars would otherwise hang the crawl, so this caps out and lets the
+    capture proceed — the gate below is what reports it.
+    """
+    waited = 0
+    last = None
+    agree = 0
+    for _ in range(tries):
+        try:
+            st = pg.evaluate(WAIT_FOR_DATA_JS)
+        except Exception:
+            return (0, waited)
+        n = (st or {}).get("skel", 0) + (st or {}).get("busy", 0) * 5
+        if n <= SKELETON_FLOOR:
+            return (0, waited)
+        # Require TWO agreeing readings before calling it a resting state, for the same reason
+        # settle_height does: a list that renders in two passes plateaus briefly mid-load, and
+        # accepting the first quiet reading files a half-drawn page as finished.
+        # A plateau only means "resting state" when the count is NEAR the floor. A page that is
+        # genuinely mid-load sits at a constant high count for its whole wait — SMILE-Beggary's
+        # Beneficiary List holds a steady 105 for 12-25s — so treating any plateau as finished
+        # returned after 2s and filed the loading state as the screen. Above 3x the floor, keep
+        # waiting until the count actually drops or the budget is spent.
+        if last is not None and n == last and n < SKELETON_FLOOR * 3:
+            agree += 1
+            if agree >= 1:
+                return (n, waited)
+        else:
+            agree = 0
+        last = n
+        pg.wait_for_timeout(pause); waited += pause
+    return (last or 0, waited)
+
+def expand_nav_groups(pg):
+    """Open every collapsible sidebar group so its anchors exist in the DOM.
+
+    A group header is often a plain <div>/<button> with no href, so a crawl that follows
+    <a href> only cannot see the routes nested under it — NMBA hid 12 real screens this way.
+    Here it also breaks SPA navigation: the anchor is absent, spa_navigate returns False, and
+    the caller falls back to a reload, which on a session-fragile build logs the user out.
+
+    Clicks candidate headers inside the nav/aside and returns how many new hrefs appeared.
+    """
+    try:
+        before = set(pg.evaluate("()=>[...document.querySelectorAll('a[href^=\"/\"]')].map(a=>a.getAttribute('href'))"))
+    except Exception:
+        return 0
+    try:
+        heads = pg.query_selector_all(
+            "nav [role=button], aside [role=button], nav button, aside button, "
+            "nav [aria-expanded], aside [aria-expanded]")
+    except Exception:
+        heads = []
+    for h in heads[:40]:
+        try:
+            if not h.is_visible():
+                continue
+            if (h.get_attribute("aria-expanded") or "").lower() == "true":
+                continue
+            h.click(timeout=2500)
+            pg.wait_for_timeout(180)
+        except Exception:
+            continue
+    try:
+        after = set(pg.evaluate("()=>[...document.querySelectorAll('a[href^=\"/\"]')].map(a=>a.getAttribute('href'))"))
+    except Exception:
+        return 0
+    return len(after - before)
+
+def spa_navigate(pg, base, path, timeout=25000):
+    """Click the in-app anchor for `path`. Returns True when the SPA actually moved."""
+    # A responsive shell renders its nav TWICE — a hidden off-canvas/mobile copy and the
+    # visible desktop one — and the hidden copy usually comes first in the DOM. Taking
+    # query_selector's first match therefore clicks a node with no offsetParent, the click
+    # fails, and the crawl silently falls back to goto (which is the whole thing SPA mode
+    # exists to avoid). Always pick a VISIBLE anchor.
+    sel = f'a[href="{path}"]'
+    try:
+        start = pg.evaluate("()=>location.pathname")
+    except Exception:
+        start = None
+    try:
+        els = pg.query_selector_all(sel)
+        el = next((e for e in els if e.is_visible()), None) if els else None
+        if el is None:
+            # The anchor may be nested under a collapsed group. Open the groups and look again
+            # BEFORE surrendering to a reload — on a session-fragile build the reload is the
+            # expensive failure, not the missing anchor.
+            expand_nav_groups(pg)
+            els = pg.query_selector_all(sel)
+            el = next((e for e in els if e.is_visible()), None) if els else None
+        if el is None:
+            return False
+        el.scroll_into_view_if_needed(timeout=4000)
+        el.click(timeout=timeout)
+    except Exception:
+        return False
+    # The URL updates synchronously on a history push; give the view a moment to swap.
+    #
+    # Accept a REDIRECT. A nav href and the route the app actually serves need not agree:
+    # SMILE-Beggary's sidebar links to /survey-locations and the app lands on /surveys. Insisting
+    # on an exact pathname match reported "no in-app link", fell back to a reload, and lost the
+    # session — so a real, reachable, correctly-rendering screen went uncaptured twice.
+    for _ in range(40):
+        pg.wait_for_timeout(150)
+        try:
+            here = pg.evaluate("()=>location.pathname")
+        except Exception:
+            return False
+        if here == path:
+            return True
+        if here != start and here and not here.rstrip("/").endswith("/login"):
+            return here          # landed somewhere else on purpose — a redirect, not a failure
+    return False
+
+def navigate(pg, base, path, cfg, auth, role, waitms=0):
+    """Go to `path`, honouring navMode, and RECOVER a lost session instead of
+    silently screenshotting the login page.
+
+    Returns "ok" | "failed". Never returns success while a login form is on screen."""
+    mode = (cfg.get("live", {}) or {}).get("navMode", "goto")
+
+    def _goto():
+        try:
+            pg.goto(base + path, wait_until="networkidle", timeout=45000); return True
+        except Exception:
+            pass
+        try:
+            pg.goto(base + path, wait_until="domcontentloaded", timeout=45000); return True
+        except Exception:
+            pg.wait_for_timeout(2000)
+        try:
+            pg.goto(base + path, wait_until="domcontentloaded", timeout=45000); return True
+        except Exception:
+            return False
+
+    # Already on the target path: navigating again is pure risk. On a build whose session
+    # cannot survive a reload, "re-visit the route you are already on" is the single most
+    # expensive no-op there is — it was the landing route, so it poisoned every run.
+    try:
+        here = pg.evaluate("()=>location.pathname")
+    except Exception:
+        here = None
+    if here == path and mode == "spa":
+        moved = True
+    else:
+        moved = spa_navigate(pg, base, path) if mode == "spa" else _goto()
+    if not moved and mode == "spa":
+        moved = _goto()          # no anchor for this route (deep link / detail view)
+    if not moved:
+        return "failed"
+    if waitms:
+        pg.wait_for_timeout(waitms)
+
+    # Landed on a login form -> the session died. Re-authenticate once and retry, in
+    # SPA mode, so the route that killed the session is not the route that re-kills it.
+    if role.get("auth") != "none" and looks_like_login(pg, auth):
+        print(f"  ! session lost before {path} — re-authenticating", flush=True)
+        try:
+            if not do_login(pg, role, auth):
+                return "failed"
+        except Exception:
+            return "failed"
+        # The shell's nav is rendered asynchronously after a login. Looking for the anchor
+        # immediately reports "no in-app link" for a route whose link is a second away — which
+        # cost three real screens before this wait existed.
+        try:
+            pg.wait_for_selector("nav a[href], aside a[href], [class*=sidebar] a[href]", timeout=10000)
+        except Exception:
+            pass
+        pg.wait_for_timeout(800)
+        if not spa_navigate(pg, base, path):
+            # In SPA mode a reload is what killed the session in the first place. Retrying it
+            # here just spends a second login to reach the same login page — which is exactly
+            # what the first version of this recovery did, on every route it could not click.
+            if mode == "spa":
+                print(f"  ! {path}: no in-app link after re-auth — screen NOT captured "
+                      f"(a reload would only lose the session again)", flush=True)
+                return "failed"
+            if not _goto():
+                return "failed"
+        if waitms:
+            pg.wait_for_timeout(waitms)
+        if looks_like_login(pg, auth):
+            print(f"  ! {path}: still a login page after re-auth — screen NOT captured", flush=True)
+            return "failed"
+    return "ok"
+
 def _route_path(route, base):
     """A crawlable route is a path, never an absolute URL — `base + route` is how the crawl
     navigates, so an origin left on the front concatenates into an unresolvable host."""
@@ -418,6 +842,138 @@ def _route_path(route, base):
     elif r.startswith("http://") or r.startswith("https://"):
         return None                     # some other origin — not this role's to crawl
     return r if r.startswith("/") else None
+
+
+# A nav group header that is not a <button> and not an <a> is invisible to an href crawl, and
+# so is everything inside it. NMBA nests four real, rendering NAPDDR committee routes behind a
+# plain <div> with `cursor:auto`; the July 2026 run therefore filed eleven built screens as
+# "designed but never built" — the exact opposite of the truth — across three roles. The lesson
+# was written down and never mechanized, so the same portal was about to lose the same twelve
+# screens a second time. Hence this: expansion is part of discovery, not a per-project driver.
+#
+# Clicking unlabelled things in a live build is only safe with a refusal list. These labels are
+# never nav toggles, and one of them (Logout) would end the run.
+_GROUP_LABEL_REFUSE = re.compile(
+    r"\b(log\s?out|sign\s?out|logout|signout|delete|remove|submit|save|approve|reject|"
+    r"withdraw|disburse|send|export|download|verify|otp|confirm|pay|print)\b", re.I)
+
+
+def is_safe_group_label(text):
+    """True when `text` may be clicked in a nav to reveal routes.
+
+    Refuses anything that could commit, export, or end the session, and anything too long or
+    too short to be a group header. The length bounds matter as much as the word list: a whole
+    sidebar's text collapses into one node when a wrapper has no element children, and clicking
+    that is a shot in the dark."""
+    t = (text or "").strip()
+    if not (2 <= len(t) <= 60):
+        return False
+    return not _GROUP_LABEL_REFUSE.search(t)
+
+
+# Returns the VISIBLE, hrefless nav-group CONTROLS as [{i, text}], outermost first.
+#
+# Three properties are load-bearing, and each was learned by getting it wrong on this portal.
+#
+# VISIBLE: a responsive shell renders its nav twice and the hidden off-canvas copy comes FIRST
+# in the DOM, so an index-based click on the first match hits a node with no layout box.
+#
+# OUTERMOST: a group header is a <button> wrapping a <span> of the same text. Collecting both
+# and clicking both toggles the group open and then shut again - which is what happened on
+# NMBA's first run: three clicks on one control, a cheerful "expanded 3 nav group(s)" in the
+# log, and not one new route.
+#
+# A CONTROL, not any ancestor: the button sits inside two plain <div>s that also have no
+# anchors and the same text. Clicking one of THOSE does nothing at all, because a DOM click
+# dispatches on the element it is called on and React's handler is on the descendant - events
+# bubble up, never down. So a candidate must look like a control: a <button>, role=button, or
+# cursor:pointer. The wrapping divs compute cursor:auto and are correctly skipped.
+#
+# `loose` drops the control test and takes leaf text nodes instead. It is the fallback for a
+# build whose group header genuinely is an unstyled <div>, which is what NMBA's own July 2026
+# ledger entry claims this portal had - the build has since changed, and a fallback is cheaper
+# than assuming which of the two is true on the next portal.
+_NAV_CANDIDATES_JS = """(loose)=>{
+  const roots=[...document.querySelectorAll('nav,aside,[class*=sidebar],[class*=Sidebar]')];
+  const out=[]; window.__qcNav=[]; const seen=new Set();
+  const vis=e=>e.offsetParent||getComputedStyle(e).position==='fixed';
+  const ctl=e=>e.tagName==='BUTTON'||e.getAttribute('role')==='button'
+              ||getComputedStyle(e).cursor==='pointer';
+  const qualifies=e=>{
+    if(e.nodeType!==1) return false;
+    if(e.matches('a[href]')||e.closest('a[href]')) return false;
+    if(e.querySelector('a[href]')) return false;      // a container, not a header
+    if(e.children.length>3) return false;
+    if(!vis(e)) return false;
+    if(loose ? e.children.length!==0 : !ctl(e)) return false;
+    const t=(e.textContent||'').replace(/\s+/g,' ').trim();
+    return !!t && t.length>=2 && t.length<=60;
+  };
+  const walk=e=>{
+    if(qualifies(e)){
+      const t=(e.textContent||'').replace(/\s+/g,' ').trim();
+      const key=t.replace(/[^a-z0-9]/gi,'').toLowerCase();
+      if(!seen.has(key)){ seen.add(key); window.__qcNav.push(e); out.push({i:window.__qcNav.length-1,text:t}); }
+      return;                                          // STOP - do not collect its children too
+    }
+    for(const c of e.children) walk(c);
+  };
+  for(const r of roots) walk(r);
+  return out;
+}"""
+
+
+def expand_nav_groups(pg, log=True):
+    """Click every safe collapsible nav group so its routes enter the DOM.
+
+    Each candidate is clicked ONCE and then VERIFIED against the anchor count: a click that
+    revealed nothing is simply not a group, and a click that made anchors DISAPPEAR shut a
+    group that was already open and is undone. Verification is the only honest signal here -
+    a nav header carries no aria-expanded, no role, and sometimes no cursor:pointer.
+
+    Returns the labels that actually revealed routes."""
+    revealed, tried = [], set()
+    for loose in (False, True):
+        for _ in range(2):                  # two rounds, so a group inside a group opens too
+            try:
+                cands = pg.evaluate(_NAV_CANDIDATES_JS, loose)
+            except Exception:
+                break
+            todo = [c for c in cands if is_safe_group_label(c.get("text"))
+                    and _label_key(c.get("text")) not in tried]
+            if not todo:
+                break
+            for c in todo:
+                tried.add(_label_key(c.get("text")))
+                try:
+                    before = len(pg.evaluate(_HREFS_JS))
+                    # el.click(), not a Playwright click: these headers have no accessible role
+                    # and Playwright's actionability checks reject them, while a DOM click works.
+                    pg.evaluate("i=>window.__qcNav[i] && window.__qcNav[i].click()", c["i"])
+                    pg.wait_for_timeout(900)
+                    after = len(pg.evaluate(_HREFS_JS))
+                    if after > before:
+                        revealed.append(c["text"])
+                    elif after < before:
+                        pg.evaluate("i=>window.__qcNav[i] && window.__qcNav[i].click()", c["i"])
+                        pg.wait_for_timeout(900)
+                except Exception:
+                    pass
+        if revealed:
+            break                           # the strict pass worked; no need to guess loosely
+    if revealed and log:
+        print(f"  expanded {len(revealed)} nav group(s): "
+              f"{', '.join(sorted(set(revealed))[:6])}", flush=True)
+    return revealed
+
+
+def _label_key(text):
+    """A group header re-renders with a chevron that flips between collapsed and expanded, so
+    one control reads as three different labels across two rounds. Compare on letters only."""
+    return re.sub(r"[^a-z0-9]", "", str(text or "").lower())
+
+
+_HREFS_JS = """()=>{const s=new Set();document.querySelectorAll('nav a[href],aside a[href],[class*=sidebar] a[href],[class*=menu] a[href],a[href]').forEach(a=>{const h=a.getAttribute('href');if(h&&h.startsWith('/')&&!h.startsWith('//'))s.add(h.split('?')[0].split('#')[0])});return [...s]}"""
 
 
 def discover_routes(pg, cfg):
@@ -430,9 +986,15 @@ def discover_routes(pg, cfg):
                              "[class*=menu] a[href]", timeout=4000)
     except Exception:
         pass
-    hrefs = pg.evaluate("""()=>{const s=new Set();document.querySelectorAll('nav a[href],aside a[href],[class*=sidebar] a[href],[class*=menu] a[href],a[href]').forEach(a=>{const h=a.getAttribute('href');if(h&&h.startsWith('/')&&!h.startsWith('//'))s.add(h.split('?')[0].split('#')[0])});return [...s]}""")
+    before = set(pg.evaluate(_HREFS_JS))
+    expand_nav_groups(pg)
+    hrefs = set(pg.evaluate(_HREFS_JS)) | before
+    gained = hrefs - before
+    if gained:
+        print(f"  +{len(gained)} route(s) revealed by expanding nav groups: "
+              f"{', '.join(sorted(gained)[:6])}", flush=True)
     skip = set(cfg.get("live", {}).get("skipRoutes", []))
-    return [h for h in hrefs if h and h not in skip]
+    return [h for h in sorted(hrefs) if h and h not in skip]
 
 def _engine_sha():
     """Short git sha of the engine, recorded so a bundle can be traced to the code that made it."""
@@ -442,6 +1004,13 @@ def _engine_sha():
                               capture_output=True, text=True, timeout=5).stdout.strip() or None
     except Exception:
         return None
+
+#: Per-role route coverage, filled by capture_role and drained by run().
+#: A dict rather than a return value because capture_role's return is the captured
+#: screens, and threading a second value through every caller would be worse than
+#: one module-level record that run() owns the lifetime of.
+ROUTE_REPORTS = {}
+
 
 class SessionLost(Exception):
     """Raised when a role's captures collapse mid-run. Distinct from any other failure because
@@ -460,11 +1029,19 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
         failures = {}
     base = role["base"]; width = cfg.get("capture", {}).get("width", 1440)
     waitms = cfg.get("capture", {}).get("waitMs", 1800)
+    auth = role_auth(role, cfg.get("live", {}).get("auth", {}))
     degraded = []          # consecutive screens far smaller than the bundle says they were
-    routes = discover_routes(pg, cfg)
+    # A crawl finds what the navigation links, and nothing else. Routes DECLARED in
+    # the config are probed as well, whether or not anything points at them — see
+    # engine/routes.py for the miss that put this here.
+    discovered = discover_routes(pg, cfg)
+    declared = R.declared_for(cfg, role)
     land = pg.url.replace(base, "").split("?")[0]
-    if land and land not in routes:
-        routes.insert(0, land)
+    routes, origins = R.merge(discovered, declared, landing=land)
+    probed = [r for r in routes if origins.get(r) == R.DECLARED]
+    if probed:
+        print(f"  +{len(probed)} declared route(s) probed that the crawl did not link: "
+              f"{', '.join(probed[:6])}" + (" …" if len(probed) > 6 else ""), flush=True)
     # Route discovery is a timing race on some live sites (a slow-loading widget's links are
     # sometimes there, sometimes not — see discover_routes). Rather than keep trying to win that
     # race, make discovery MONOTONIC: once a route has been seen for this role, always revisit
@@ -482,9 +1059,8 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
         if str(s.get("reachedBy") or "").startswith("flow:"):
             continue
         r = _route_path(s.get("route"), base)
-        if r and r not in routes and r not in skip:
-            routes.append(r)
-            carried.append(r)
+        if r and r not in origins and r not in skip:
+            carried.extend(R.add_carried(routes, origins, [r]))
     if carried:
         print(f"  carried forward {len(carried)} route(s) seen in a previous run", flush=True)
     captured = []
@@ -496,24 +1072,12 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
         # from the previous route changes how the next one lays out.
         try: pg.set_viewport_size({"width": width, "height": 1000})
         except Exception: pass
-        try:
-            pg.goto(base + path, wait_until="networkidle", timeout=45000)
-        except Exception:
-            try:
-                pg.goto(base + path, wait_until="domcontentloaded", timeout=45000)
-            except Exception:
-                # One extra try after a short pause — no loop, no backoff ladder — before we
-                # accept the route is unreachable this run. A screen must never vanish from a
-                # run silently: if this also fails, it is logged here and in the role summary.
-                pg.wait_for_timeout(2000)
-                try:
-                    pg.goto(base + path, wait_until="domcontentloaded", timeout=45000)
-                except Exception as e:
-                    print(f"  ! {slug}: navigation failed ({str(e)[:120]}) — screen NOT captured",
-                          flush=True)
-                    failed.append(slug)
-                    continue
-        pg.wait_for_timeout(waitms)
+        # navigate() honours live.navMode ("goto" default, "spa" clicks the in-app anchor)
+        # and re-authenticates rather than screenshotting a login page. A screen must never
+        # vanish from a run silently: an unreachable route is logged here and in the role summary.
+        if navigate(pg, base, path, cfg, auth, role, waitms=waitms) != "ok":
+            failed.append(slug)
+            continue
         prev = B.find_screen(prev_bundle, slug) if prev_bundle else None
         png = os.path.join(paths["captures_live"], f"{slug}.png")
         dpr = cfg.get("capture", {}).get("dpr", 2)
@@ -525,11 +1089,36 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
         # comments say are common: pageH and the row set differ from settling alone, so a
         # verify run would report "changed" on nearly every page for reasons that have
         # nothing to do with the page actually changing, and the reuse saving is lost.
+        skel_left, skel_waited = wait_for_data(pg)
+        try:
+            canary_before = pg.evaluate(CANARY_MARK_JS) or {}
+        except Exception:
+            canary_before = {}
+        try:
+            off = pg.evaluate(HIDE_OFFCANVAS_JS, width)
+        except Exception:
+            off = []
+        if off:
+            print(f"  hid {len(off)} off-canvas fixed element(s) before unclip: "
+                  f"{', '.join(off[:2])}", flush=True)
         settled = settle_height(pg, UNCLIP_JS, width=width, base_h=1000)
+        shifted, hidden_after = [], 0
+        try:
+            shifted, hidden_after = canary_shifts(canary_before, pg.evaluate(CANARY_READ_JS))
+        except Exception:
+            pass
+        if shifted:
+            worst = max(shifted, key=lambda d: abs(d["after"] - d["before"]))
+            print(f"  !! LAYOUT SHIFTED during unclip on {slug}: {len(shifted)} element(s) moved "
+                  f"sideways, worst {worst['text']!r} x{worst['before']} -> x{worst['after']}. "
+                  f"The capture no longer describes the page.", flush=True)
         try:
             probe = pg.evaluate(EXTRACT_JS, {"volatileSelectors": vol_selectors})
         except Exception:
             probe = None
+        if probe is not None and isinstance(probe, dict):
+            probe["layoutShift"] = shifted
+            probe["canaryHidden"] = hidden_after
 
         decision = "recapture"
         if mode == "verify" and prev and probe is not None:
@@ -562,6 +1151,10 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
         except Exception: pass
         try:
             data = probe if probe is not None else pg.evaluate(EXTRACT_JS, {"volatileSelectors": vol_selectors})
+            try:
+                data["colorInventory"] = pg.evaluate(COLOR_INVENTORY_JS)
+            except Exception:
+                data["colorInventory"] = None      # null, not {} — "could not look" is not "empty"
             data["role"] = role["name"]; data["route"] = path; data["slug"] = slug
             data["figmaImg"] = None; data["url"] = base + path
             json.dump(data, open(os.path.join(paths["captures_live"], f"{slug}.json"), "w"), indent=2)
@@ -576,7 +1169,13 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
             truncated = residual > 4
             if truncated:
                 warn += f"  [TRUNCATED - {residual}px still hidden (lazy-loading page)]"
-            captured.append({"slug": slug, "role": role["name"], "route": path, "url": base + path,
+            # A page still drawing skeleton placeholders after wait_for_data gave up is showing
+            # its LOADING state under the populated screen's name. Say so on the line and record
+            # it on the row, so nobody audits a grey bar against a design frame full of data.
+            if skel_left > SKELETON_FLOOR:
+                warn += f"  <-- STILL LOADING ({skel_left} skeleton placeholders after {skel_waited}ms)"
+            captured.append({"skeletons": skel_left,
+                             "slug": slug, "role": role["name"], "route": path, "url": base + path,
                              "png": f"captures/live/{slug}.png", "rows": len(data["rows"]),
                              "pageH": data["pageH"], "pngH": png_h, "truncated": truncated})
             kept, masked = B.mask_rows(data["rows"], MAN.volatile_patterns(man, slug) if man else [])
@@ -597,6 +1196,11 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
                 masked=masked, total=len(data["rows"]),
                 fields=data.get("fields") or [], wizard=None, captured_at=B.now_iso())
             entry["designUnchanged"] = (decision == "reshoot")
+            # Carried onto the bundle so integrity.gate_capture_layout can fail the run without
+            # opening 51 per-screen extraction files. Empty list = the canary ran and saw nothing
+            # move; a MISSING key means the capture predates the canary and is not judged.
+            entry["layoutShift"] = data.get("layoutShift") or []
+            entry["colorInventory"] = data.get("colorInventory")
             B.upsert_screen(bdl, entry)
             if len(data["rows"]) and masked / len(data["rows"]) > B.MASK_WARN_RATIO:
                 print(f"  ! {slug}: {masked}/{len(data['rows'])} rows masked as volatile — "
@@ -621,7 +1225,39 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
         print(f"[{role['name']}] {len(failed)} screen(s) not captured: {', '.join(failed)}",
               flush=True)
     failures.setdefault(role["name"], []).extend(failed)
+
+    # What the navigation would have hidden, and what a declaration failed to reach.
+    # Written per role and read back by run() into out/route-coverage.json.
+    rep = R.report(origins, [c["route"] for c in captured], declared)
+    line = R.summarise(rep)
+    if line:
+        print(line, flush=True)
+    ROUTE_REPORTS[role["name"]] = rep
     return captured
+
+def audit_declared_routes(paths, verbose=True):
+    """Declared routes that captured nothing. Returns the offending route paths.
+
+    Reads `out/route-coverage.json`, written by run(). A project that declares no
+    routes has nothing to fail on — the file records that plainly rather than
+    leaving "we looked and found everything" indistinguishable from "nobody asked
+    us to look".
+    """
+    f = os.path.join(paths["out"], "route-coverage.json")
+    if not os.path.exists(f):
+        return []
+    try:
+        rep = json.load(open(f))
+    except Exception:
+        return []
+    bad = sorted({r for role in rep.get("roles", {}).values()
+                  for r in role.get("unreachable", [])})
+    if bad and verbose:
+        print(f"!! {len(bad)} declared route(s) captured nothing: {', '.join(bad)}\n"
+              f"   Either the route is wrong in audit.config.json, or the screen is down. "
+              f"A declared route is one the audit was told to cover.", flush=True)
+    return bad
+
 
 def rows_to_prune(rows, failures, visited_roles, captured_counts):
     """Pure decision function for the manifest-pruning step in run().
@@ -881,6 +1517,19 @@ def run(project, only_role=None, allow_empty=False, force=False, verify=False):
     json.dump(out, open(mpath, "w"), indent=2)
     print(f"CAPTURED {len(manifest)} screens (manifest now {len(out)})", flush=True)
 
+    # Route coverage, per role. Written even when every declaration was reached, so a
+    # run that names no declaredRoutes leaves a file saying so rather than nothing —
+    # "the crawl found everything" and "nobody asked it to look further" read the same
+    # in an empty directory, and telling them apart is the point of this whole change.
+    if ROUTE_REPORTS:
+        gate = "FAIL" if any(r["gate"] == "FAIL" for r in ROUTE_REPORTS.values()) else "PASS"
+        json.dump({"roles": ROUTE_REPORTS, "gate": gate},
+                  open(os.path.join(paths["out"], "route-coverage.json"), "w"), indent=2)
+        unreachable = sorted({r for rep in ROUTE_REPORTS.values() for r in rep["unreachable"]})
+        if unreachable:
+            print(f"!! ROUTE COVERAGE FAIL — {len(unreachable)} declared route(s) captured "
+                  f"nothing: {', '.join(unreachable)}", flush=True)
+
     prev = prev_bundle  # loaded once, above, before the route-union needed it
     if prev:
         # A bundle must not speak for roles it never visited this run — same contract as
@@ -942,6 +1591,86 @@ def refresh(project, force=False, verify=True):
     """Re-check freshness without a full capture. `--phase bundle` — what a QC run calls first."""
     return run(project, only_role=None, allow_empty=False, force=force, verify=verify)
 
+
+def audit_no_login_pages(paths, verbose=True, expected_roles=()):
+    """A captured screen must never BE the login page.
+
+    The gate that did not exist on 2026-09-10, when a run against SMILE-Beggary wrote 49
+    screenshots of a login form across four roles and reported success. The build logs the
+    session out on a hard reload of its landing route, so every route after the first rendered
+    the login view — and nothing noticed, because a login page is a valid 1440x1000 capture
+    with a real element extraction behind it. The url-based `loginMarker` check could not see
+    it: the SPA renders the login view without the path being /login.
+
+    Reads the extraction JSON beside each PNG (no browser, no re-fetch) and looks for the
+    login form's own text. Cheap, so always run it.
+    """
+    live = paths["captures_live"]
+    if not os.path.isdir(live):
+        return []
+    # A role may capture the sign-in surface ON PURPOSE — the five designed auth frames have to
+    # be compared like any other screen. Such a role declares `expectsLoginPage: true` in the
+    # config and its captures are exempt. Without this the gate is right in general and wrong
+    # about exactly the screens someone deliberately went to fetch.
+    exempt = tuple(r.upper().replace("_", "-") + "-" for r in expected_roles)
+    bad = []
+    for fn in sorted(os.listdir(live)):
+        if not fn.endswith(".json"):
+            continue
+        if exempt and fn.upper().startswith(exempt):
+            continue
+        try:
+            with open(os.path.join(live, fn)) as fh:
+                d = json.load(fh)
+        except Exception:
+            continue
+        rows = d.get("rows") or d.get("elements") or []
+        blob = " ".join(str(r.get("text") or "") for r in rows).lower()
+        if any(m in blob for m in LOGIN_MARKER_TEXT):
+            bad.append(fn[:-5])
+    if verbose:
+        if bad:
+            print(f"!! LOGIN-PAGE CAPTURES: {len(bad)} screen(s) are the login form, not the screen "
+                  f"they claim to be. The session was lost mid-run; do NOT analyze on top of this. "
+                  f"Try live.navMode='spa'. Affected: {bad}", flush=True)
+        else:
+            print("login-page audit: ok (no capture is a login screen)", flush=True)
+    return bad
+
+def audit_design_frame_width(paths, width=1440, verbose=True):
+    """Every design frame PNG must be exactly `width` px wide.
+
+    The board/crop/pin maths in qc_geometry assumes a 1440-wide source on BOTH sides. The Figma
+    MCP's get_screenshot caps the LONGER edge at `maxDimension` (default 1024), so any tall frame
+    — a 1440x3869 dashboard, say — comes back proportionally DOWNSCALED (1072x2880) unless the cap
+    is raised past its height. Nothing about that is visible in the image: it renders, it looks
+    right, and every crop and pin derived from it is silently off by the scale factor.
+
+    Ask for maxDimension >= the frame's original_height and re-download when this fires.
+    """
+    d = paths["captures_figma"]
+    if not os.path.isdir(d):
+        return []
+    bad = []
+    for fn in sorted(os.listdir(d)):
+        if not fn.endswith(".png"):
+            continue
+        try:
+            with open(os.path.join(d, fn), "rb") as fh:
+                fh.read(16)
+                w, h = struct.unpack(">II", fh.read(8))
+        except Exception:
+            continue
+        if w != width:
+            bad.append(f"{fn} ({w}x{h})")
+    if verbose:
+        if bad:
+            print(f"!! DESIGN FRAME SCALE: {len(bad)} frame(s) are not {width}px wide — every crop "
+                  f"and pin derived from them will be off. Re-export with a larger maxDimension: "
+                  f"{bad}", flush=True)
+        else:
+            print(f"design frame widths: ok (all {width}px)", flush=True)
+    return bad
 
 def audit_capture_integrity(paths, verbose=True):
     """A live capture must never be byte-identical to its own design image.

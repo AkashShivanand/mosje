@@ -59,7 +59,7 @@ function GroupTitle({ children }: { children: React.ReactNode }) {
   return <h2 className="mb-4 text-title-2 text-ink">{children}</h2>;
 }
 
-function DocumentRow({ label, filename }: { label: string; filename: string }) {
+function SageDocumentRow({ label, filename }: { label: string; filename: string }) {
   return (
     <div className="flex items-center justify-between gap-4 rounded-lg border border-line px-4 py-3">
       <div>
@@ -139,8 +139,8 @@ function StepCompanyInformation() {
       <section>
         <GroupTitle>Document Uploads</GroupTitle>
         <div className="space-y-3">
-          <DocumentRow label="Paid-up Capital Proof" filename="TESTING_DATA.pdf" />
-          <DocumentRow label="Investor Pitch Presentation" filename="images.pdf" />
+          <SageDocumentRow label="Paid-up Capital Proof" filename="TESTING_DATA.pdf" />
+          <SageDocumentRow label="Investor Pitch Presentation" filename="images.pdf" />
         </div>
       </section>
     </div>
@@ -242,11 +242,11 @@ function StepFinancialInvestors() {
       <section>
         <GroupTitle>Documents</GroupTitle>
         <div className="space-y-3">
-          <DocumentRow
+          <SageDocumentRow
             label="Upload Financial Statement (Balance Sheet / P&L)"
             filename="TESTING_DATA.pdf"
           />
-          <DocumentRow label="Upload Financial Projections Document" filename="images.pdf" />
+          <SageDocumentRow label="Upload Financial Projections Document" filename="images.pdf" />
         </div>
       </section>
     </div>

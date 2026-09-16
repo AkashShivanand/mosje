@@ -56,9 +56,17 @@ const ZONES: Zone[] = [
  * when it mounted natively; see apps/hub/src/app/portals/MIGRATION-RECIPE.md §6).
  * All paths under /portals/smile-admin/ are protected EXCEPT:
  * - /portals/smile-admin/login             (sign-in page)
- * - /portals/smile-admin/forgot-password   (kept from the original PUBLIC_PATHS
- *   list even though the actual route is /forget-password — see note below)
+ * - /portals/smile-admin/forget-password   (password recovery — the route folder
+ *   really is "forget-password")
+ * - /portals/smile-admin/reset-password    (old second half of recovery, now part
+ *   of forget-password — redirected below)
+ * - /portals/smile-admin/forgot-password   (never a page, but the estate's usual
+ *   spelling and this list's own until now — redirected below)
  * - asset-like paths (contain a ".")
+ *
+ * Until 2026-09-15 this list named only login and forgot-password — the original
+ * PUBLIC_PATHS spelling, which matched no page — so both real recovery routes
+ * 307'd a signed-out officer to the login page they were trying to recover from.
  *
  * We read the session from localStorage, but localStorage is not available in
  * middleware (Edge runtime). We use a lightweight cookie instead: set
@@ -78,8 +86,36 @@ const ZONES: Zone[] = [
  * "/portals/smile-admin/login", and redirects are NOT re-prefixed. Every path
  * below is written in full form.
  */
-const SMILE_ADMIN_PUBLIC = ["/portals/smile-admin/login", "/portals/smile-admin/forgot-password"];
+const SMILE_ADMIN_PUBLIC = [
+  "/portals/smile-admin/login",
+  "/portals/smile-admin/forget-password",
+  "/portals/smile-admin/reset-password",
+  "/portals/smile-admin/forgot-password",
+];
+const SMILE_ADMIN_RECOVERY = "/portals/smile-admin/forget-password";
+/* Old recovery URLs, answered with a real 307 here rather than a client-side
+   redirect from a rendered page, so a link already sent out lands on recovery. */
+const SMILE_ADMIN_RECOVERY_ALIASES = [
+  "/portals/smile-admin/forgot-password",
+  "/portals/smile-admin/reset-password",
+];
 const SMILE_ADMIN_SESSION_COOKIE = "smile_session"; // set by the client auth-context — keep exact name
+
+/*
+ * E-Anudaan — retired URLs, answered with a real 307 (design-director audit X-13, 16 Sep 2026).
+ *
+ * `/sign-in` was the NGO's own login page before the audiences became role tabs on `/login`, and
+ * `/portals/e-anudaan` was a "choose how to sign in" page. Both were kept as pages that called
+ * `redirect()`. Under `app/portals/loading.tsx` that redirect streams AFTER the shell has been
+ * sent, so the browser got `200 OK`, a `<meta http-equiv="refresh">`, a client-side re-render of
+ * the login and a "negative time stamp" console error — one destination served at two URLs.
+ * Answered here, before rendering, the old URL is a redirect and nothing else.
+ */
+const E_ANUDAAN_ALIASES: Readonly<Record<string, string>> = {
+  "/portals/e-anudaan": "/portals/e-anudaan/login",
+  "/portals/e-anudaan/sign-in": "/portals/e-anudaan/login?role=ngo",
+  "/portals/e-anudaan/ngo/attendance-master": "/portals/e-anudaan/ngo/attendance",
+};
 
 /*
  * PM-AJAY — route guard (folded in from the portal's own src/middleware.ts
@@ -324,10 +360,27 @@ export async function proxy(req: NextRequest): Promise<NextResponse> {
   const finish =
     hidden?.kind === "admin-pass" ? noStore : (response: NextResponse) => response;
 
+  {
+    const alias = E_ANUDAAN_ALIASES[pathname.replace(/\/$/, "")];
+    if (alias) {
+      const url = req.nextUrl.clone();
+      const [target, query] = alias.split("?");
+      url.pathname = target!;
+      if (query) for (const [k, v] of new URLSearchParams(query)) url.searchParams.set(k, v);
+      return finish(NextResponse.redirect(url));
+    }
+  }
+
   // SMILE Admin route guard — must run in every environment (it's a real auth
   // check, not a dev convenience), so it sits before the dev-only production
   // early-return below.
   if (pathname === "/portals/smile-admin" || pathname.startsWith("/portals/smile-admin/")) {
+    // Old recovery URLs go to the one recovery page, signed in or not.
+    if (SMILE_ADMIN_RECOVERY_ALIASES.some((p) => pathname === p || pathname === p + "/")) {
+      const recoveryUrl = req.nextUrl.clone();
+      recoveryUrl.pathname = SMILE_ADMIN_RECOVERY;
+      return finish(NextResponse.redirect(recoveryUrl));
+    }
     const isPublic = SMILE_ADMIN_PUBLIC.some(
       (p) => pathname === p || pathname.startsWith(p + "/"),
     );

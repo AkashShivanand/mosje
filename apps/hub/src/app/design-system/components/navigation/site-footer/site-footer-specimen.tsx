@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SiteFooter } from "@mosje/design-system";
+import { SiteFooter, VisitorCounter } from "@mosje/design-system";
 
 /*
  * Sitemap and Help are NOT here. They are their own props since 2026-09-07, and
@@ -17,14 +17,52 @@ const POLICY = [
   { label: "Feedback", href: "#" },
 ];
 
+/* The estate's own five, so the specimen wraps where the real footer wraps.
+   The first of them is the GIGW-mandated india.gov.in link. */
 const RELATED = [
-  { label: "india.gov.in", href: "#", external: true },
+  { label: "National Portal of India", href: "#", external: true },
   { label: "MyGov", href: "#", external: true },
+  { label: "Open Government Data", href: "#", external: true },
   { label: "Digital India", href: "#", external: true },
+  { label: "CPGRAMS", href: "#", external: true },
 ];
 
+/*
+ * THE SENTENCE DBIM 5.6 PRESCRIBES, which is the one the website and the Figma
+ * master both carry. The specimen used to quote "This portal is designed,
+ * developed and hosted by…" — the longer pre-2026-09 wording, which the estate
+ * had already stopped using — so the page documenting the statutory sentence
+ * showed a sentence the department does not publish.
+ */
 const LINEAGE =
-  "This portal is designed, developed and hosted by the Department of Social Justice and Empowerment, Ministry of Social Justice and Empowerment, Government of India.";
+  "This website belongs to the Department of Social Justice & Empowerment, " +
+  "Ministry of Social Justice & Empowerment, Government of India.";
+
+/*
+ * DBIM 5.6 lists the hyperlinked logos among the required footer elements and
+ * this page's own accessibility evidence says they render on BOTH variants —
+ * but neither specimen passed `credits`, so the documentation showed a footer
+ * the estate does not ship. These are the two marks the website draws, at their
+ * real intrinsic sizes; the component normalises both to one optical height.
+ */
+const CREDITS = [
+  {
+    prefix: "Developed & maintained by",
+    src: "/website/images/NeGD-Logo-White.svg",
+    alt: "National e-Governance Division (NeGD)",
+    href: "https://negd.gov.in/",
+    width: 143,
+    height: 52,
+  },
+  {
+    prefix: "Powered by",
+    src: "/website/images/Digital-India-Reverse.svg",
+    alt: "Digital India",
+    href: "https://www.digitalindia.gov.in/",
+    width: 105,
+    height: 41,
+  },
+];
 
 /**
  * The portal variant: the statutory bar alone, which is the half that must stay
@@ -40,12 +78,14 @@ export function SiteFooterPortalSpecimen(): React.JSX.Element {
         "Department of Social Justice & Empowerment",
       ]}
       lineage={LINEAGE}
+      credits={CREDITS}
       policyLinks={POLICY}
       sitemap={{ label: "Sitemap", href: "#" }}
       help={{ label: "Help & Support", href: "#" }}
       relatedLinks={RELATED}
       copyright="© 2026 Department of Social Justice & Empowerment. All rights reserved."
       lastUpdated="27 August 2026"
+      colophonSlot={<VisitorCounter />}
     />
   );
 }
@@ -105,12 +145,14 @@ export function SiteFooterWebsiteSpecimen(): React.JSX.Element {
         },
       ]}
       lineage={LINEAGE}
+      credits={CREDITS}
       policyLinks={POLICY}
       sitemap={{ label: "Sitemap", href: "#" }}
       help={{ label: "Help & Support", href: "#" }}
       relatedLinks={RELATED}
       copyright="© 2026 Department of Social Justice & Empowerment. All rights reserved."
       lastUpdated="27 August 2026"
+      colophonSlot={<VisitorCounter />}
     />
   );
 }

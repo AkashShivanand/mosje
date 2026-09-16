@@ -1,36 +1,41 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { FormSectionHead, type FormHeadingLevel } from "./form-section-head";
 import "./form-section.css";
 
 export interface FormCardProps {
-  /** Section heading — styled identically to {@link FormSection}'s title. */
+  /** Sub-section label — the same head as {@link FormSection}. */
   title: React.ReactNode;
-  /** Optional sub-heading below the title. */
+  /** One sentence under the head. */
   description?: React.ReactNode;
   /** Append the accessible required marker (*) to the title. */
   required?: boolean;
   /** Explicit heading id — pass this when a child needs `aria-labelledby`. */
   headingId?: string;
-  /** Optional right-aligned controls in the header row (e.g. a small action). */
+  /** Heading level. @default 3 */
+  as?: FormHeadingLevel;
+  /** A badge between the label and the rule. */
+  badge?: React.ReactNode;
+  /** Controls at the end of the head row. */
   actions?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
 }
 
 /**
- * MoSJE / SAMAVESH FormCard — a titled surface card with a custom body.
+ * MoSJE / SAMAVESH FormCard — a sub-section whose body is arbitrary content rather than a
+ * field grid: repeatable entries (`FormInset`), a table, document tiles.
  *
- * The sibling of {@link FormSection}: same card chrome and section-title styling,
- * but the body is arbitrary children instead of a field grid. Use it for sections
- * whose layout isn't a simple 1/2/3-column grid — repeatable cards, tables, or
- * mixed content — so every section header across the estate stays visually
- * identical. Token-driven CSS (shares `form-section.css`).
+ * Kept under its historical name; since the form-wizard visual language it draws no card of
+ * its own — the surrounding {@link FormPanel} is the card.
  */
 export function FormCard({
   title,
   description,
   required,
   headingId,
+  as = 3,
+  badge,
   actions,
   children,
   className,
@@ -39,20 +44,8 @@ export function FormCard({
   const id = headingId ?? reactId;
   return (
     <section aria-labelledby={id} className={cn("ds-form-section", className)}>
-      <div className="ds-form-section__head">
-        <div className="ds-form-section__head-row">
-          <h2 id={id} className="ds-form-section__title">
-            {title}
-            {required && (
-              <span className="ds-field__required" aria-hidden="true">
-                *
-              </span>
-            )}
-          </h2>
-          {actions && <div className="ds-form-section__actions">{actions}</div>}
-        </div>
-        {description && <p className="ds-form-section__desc">{description}</p>}
-      </div>
+      <FormSectionHead id={id} title={title} as={as} required={required} badge={badge} actions={actions} />
+      {description && <p className="ds-form-section__desc">{description}</p>}
       {children}
     </section>
   );
