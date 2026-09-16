@@ -117,3 +117,44 @@ class Report(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ForeignOriginIsNeverARoute(unittest.TestCase):
+    """PM-AJAY, 2026-09-12: the signin crawl produced the route
+
+        /https://seniorcitizen-admin.dosje.gov.in/login
+
+    an absolute URL to ANOTHER MoSJE portal with a slash prepended by `_clean` itself. It was
+    fetched as `https://pmajay-dev.mosje.in/https://seniorcitizen-admin.dosje.gov.in/login`,
+    returned a 404 page, and the coverage ledger counted that 404 as an audited PM-AJAY screen.
+    A run that miscounts its own coverage cannot be trusted about what it covered.
+    """
+
+    def test_an_absolute_url_is_dropped_not_prefixed(self):
+        for foreign in ("https://seniorcitizen-admin.dosje.gov.in/login",
+                        "http://example.gov.in/x",
+                        "//cdn.example.com/a",
+                        "mailto:someone@gov.in",
+                        "tel:+911234567890",
+                        "javascript:void(0)",
+                        "data:text/html,x"):
+            with self.subTest(href=foreign):
+                self.assertEqual(R._clean([foreign]), [])
+
+    def test_the_already_mangled_form_is_also_dropped(self):
+        # the exact string that reached the browser
+        self.assertEqual(R._clean(["/https://seniorcitizen-admin.dosje.gov.in/login"]), [])
+
+    def test_ordinary_paths_are_untouched(self):
+        self.assertEqual(R._clean(["/admin/dashboard", "gia/reports", "/x/"]),
+                         ["/admin/dashboard", "/gia/reports", "/x"])
+
+    def test_a_path_that_merely_contains_a_colon_still_works(self):
+        # a router param is a legitimate path segment
+        self.assertEqual(R._clean(["/admin/gia/pending-list/:aap_id"]),
+                         ["/admin/gia/pending-list/:aap_id"])
+
+    def test_a_declared_foreign_route_cannot_reach_the_report_either(self):
+        cfg = {"live": {"declaredRoutes": ["/admin/dashboard",
+                                           "https://other-portal.gov.in/login"]}}
+        self.assertEqual(R.declared_for(cfg), ["/admin/dashboard"])

@@ -39,14 +39,41 @@ CARRIED = "carried"
 LANDING = "landing"
 
 
+#: A route is a PATH on the portal under audit. Anything carrying a scheme or a protocol-relative
+#: host is another origin's business, and prepending "/" to it produces a URL that can only 404.
+_SCHEMES = ("http://", "https://", "mailto:", "tel:", "javascript:", "data:")
+
+
+def _is_foreign(p: str) -> bool:
+    """True when the string names somewhere other than a path on this portal.
+
+    PM-AJAY's signin crawl produced the route `/https://seniorcitizen-admin.dosje.gov.in/login`
+    — an absolute URL to ANOTHER MoSJE portal with a slash prepended by this very function. It
+    was fetched as `https://pmajay-dev.mosje.in/https://seniorcitizen-admin.dosje.gov.in/login`,
+    returned a 404 page, and the coverage ledger counted that 404 as an audited screen of
+    PM-AJAY.
+
+    `_HREFS_JS` already refuses absolute hrefs, so the string did not come from the crawl's own
+    filter and its origin was never reproduced — which is exactly why the guard belongs HERE, at
+    the one place every route passes through, rather than at whichever caller is suspected. A
+    route that names another host is never right, whatever produced it.
+    """
+    s = p.strip().lower()
+    # Protocol-relative: "//cdn.example.com/a" is another host, and so is the mangled "///a".
+    if s.startswith("//"):
+        return True
+    # Strip EVERY leading slash, so the already-mangled "/https://…" form is caught as well.
+    return s.lstrip("/").startswith(_SCHEMES)
+
+
 def _clean(paths: Iterable[str]) -> List[str]:
-    """Normalise to leading-slash paths, drop empties and duplicates, keep order."""
+    """Normalise to leading-slash paths, drop empties, foreign origins and duplicates, keep order."""
     out: List[str] = []
     for p in paths or []:
         if not isinstance(p, str):
             continue
         p = p.strip().split("#")[0].split("?")[0]
-        if not p:
+        if not p or _is_foreign(p):
             continue
         if not p.startswith("/"):
             p = "/" + p
