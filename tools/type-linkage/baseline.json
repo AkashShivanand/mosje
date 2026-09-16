@@ -57,7 +57,7 @@
     "hindi-unmarked": 0,
     "style-mixed": 3,
     "style-weight": 224,
-    "style-weight-unset": 175
+    "style-weight-unset": 174
   },
   "files": {
     "apps/hub/src/app/design-system/components/brand/org-logo/org-logo-docs.css": {
@@ -599,21 +599,6 @@
       "style-mixed": 0,
       "style-weight": 11,
       "style-weight-unset": 4
-    },
-    "packages/design-system/components/actions/button.css": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 0,
-      "tracking": 0,
-      "family": 0,
-      "utility-size": 0,
-      "utility-leading": 0,
-      "utility-tracking": 0,
-      "weight": 0,
-      "hindi-unmarked": 0,
-      "style-mixed": 0,
-      "style-weight": 0,
-      "style-weight-unset": 1
     },
     "packages/design-system/components/actions/menu.css": {
       "size-off-ramp": 0,
