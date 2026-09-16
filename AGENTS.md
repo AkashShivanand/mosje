@@ -69,6 +69,13 @@ git worktree add ../wt-<slug> -b <type>/<slug> main    # start fresh
 Resuming a branch? Sync first: `git fetch origin && git merge origin/main`.
 **Merge, never rebase** on this repo — see `CLAUDE.md` → Branching & merging.
 
+**Writing a changelog line? Add ONE JSON FILE to
+`apps/hub/src/app/design-system/resources/changelog/pending/` and do not choose a
+version number.** Do not edit `changelog/page.tsx`: every branch that does lands on
+the same line, the same next number and the same `current: true` flag, which is three
+conflicts by construction. The number is assigned afterwards, on `main`, by
+`npm run changelog:release`. → `changelog/pending/README.md`
+
 ## Gates you must pass (tool-agnostic)
 
 These run for everyone. Run them before you claim work is done.

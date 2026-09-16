@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "A CHANGELOG ENTRY IS A FILE NOW, AND THE VERSION IS ASSIGNED AFTER THE MERGE. Every branch used to add its release block to the top of the same array in `page.tsx` — same line, same next version number, same `current: true` flag — which is three guaranteed conflicts on a 2,490-line file. One chore branch needed THREE merges of `main` in under an hour on 2026-09-16, all three here and nowhere else. A branch now writes one JSON file into `changelog/pending/`, says nothing about versions, and two branches adding two different files merge cleanly because git has nothing to reconcile. The entries render under `Unreleased` the moment they land, and `npm run changelog:release` folds them into a numbered release on `main`, where there is nothing to race. `check:changelog-entries` gates the shape; the freshness gate now counts a pending entry as logged work, so it neither cries wolf nor loses its teeth"
+}
