@@ -196,7 +196,7 @@
           },
           "border": {
             "$type": "color",
-            "$value": "{color.primaryScale.400}",
+            "$value": "{color.primaryScale.500}",
             "$description": "Use for primary-brand secondary buttons at rest — the outline."
           }
         },
@@ -213,7 +213,7 @@
           },
           "border": {
             "$type": "color",
-            "$value": "{color.primaryScale.500}",
+            "$value": "{color.primaryScale.600}",
             "$description": "Use when the user hovers over a primary-brand secondary button — the outline."
           }
         },
@@ -230,7 +230,7 @@
           },
           "border": {
             "$type": "color",
-            "$value": "{color.primaryScale.600}",
+            "$value": "{color.primaryScale.700}",
             "$description": "Use when a primary-brand secondary button is pressed — the outline."
           }
         },
@@ -723,7 +723,7 @@
           },
           "border": {
             "$type": "color",
-            "$value": "{color.successScale.400}",
+            "$value": "{color.successScale.500}",
             "$description": "Use for confirming secondary buttons at rest — the outline."
           }
         },
@@ -740,7 +740,7 @@
           },
           "border": {
             "$type": "color",
-            "$value": "{color.successScale.500}",
+            "$value": "{color.successScale.600}",
             "$description": "Use when the user hovers over a confirming secondary button — the outline."
           }
         },
@@ -757,7 +757,7 @@
           },
           "border": {
             "$type": "color",
-            "$value": "{color.successScale.600}",
+            "$value": "{color.successScale.700}",
             "$description": "Use when a confirming secondary button is pressed — the outline."
           }
         },
@@ -1250,7 +1250,7 @@
           },
           "border": {
             "$type": "color",
-            "$value": "{color.dangerScale.400}",
+            "$value": "{color.dangerScale.500}",
             "$description": "Use for destructive secondary buttons at rest — the outline."
           }
         },
@@ -1267,7 +1267,7 @@
           },
           "border": {
             "$type": "color",
-            "$value": "{color.dangerScale.500}",
+            "$value": "{color.dangerScale.600}",
             "$description": "Use when the user hovers over a destructive secondary button — the outline."
           }
         },
@@ -1284,7 +1284,7 @@
           },
           "border": {
             "$type": "color",
-            "$value": "{color.dangerScale.600}",
+            "$value": "{color.dangerScale.700}",
             "$description": "Use when a destructive secondary button is pressed — the outline."
           }
         },
@@ -1777,7 +1777,7 @@
           },
           "border": {
             "$type": "color",
-            "$value": "{color.neutralScale.400}",
+            "$value": "{color.neutralScale.500}",
             "$description": "Use for neutral secondary buttons at rest — the outline."
           }
         },
@@ -1794,7 +1794,7 @@
           },
           "border": {
             "$type": "color",
-            "$value": "{color.neutralScale.500}",
+            "$value": "{color.neutralScale.600}",
             "$description": "Use when the user hovers over a neutral secondary button — the outline."
           }
         },
@@ -1811,7 +1811,7 @@
           },
           "border": {
             "$type": "color",
-            "$value": "{color.neutralScale.600}",
+            "$value": "{color.neutralScale.700}",
             "$description": "Use when a neutral secondary button is pressed — the outline."
           }
         },

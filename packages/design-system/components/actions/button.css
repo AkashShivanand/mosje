@@ -80,9 +80,19 @@
     /* THE OUTLINE IS NOT THE INK. Until 2026-09-16 the outlined appearance painted its
        border with `--_c-edge`, the label colour — so the boundary was as heavy as the
        text inside it, and Figma's own border token (ramp 300, 2.15:1 on white) was
-       unusable because it failed WCAG 1.4.11. The matrix's secondary border step is
-       now 400: 3.06-3.64:1 on every ramp, still lighter than the 700 ink. `--sa-btn-edge`
-       keeps governing both, so a consumer override behaves as before. */
+       unusable because it failed WCAG 1.4.11.
+
+       THE STEP IS 500, AND THE GROUND IS WHY. Rung 400 was adopted first, on white:
+       3.06-3.64:1, a pass. But a portal screen is not white — `.sa-app-shell` paints
+       `bg/neutral/subtler` (#eef0f3), and `ScreenBody` stands an outlined Button
+       directly on it for the error retry and the clear-filters action, with
+       `EmptyState` painting no surface of its own. On that ground 400 measures 2.94
+       (brand, the default variant) and 2.68 (neutral) — failures — while 500 measures
+       4.07/4.07/4.23/4.30 across the four ramps and 4.64-4.91 on white, and still
+       sits two rungs lighter than the 700 ink. Brand's 500 IS gov-blue #0373df. Same ground and same remedy as the
+       form-control border, which moved 400 -> 500 on 2026-09-04.
+       `action-nontext-contrast.test.mjs` now measures both grounds; `--sa-btn-edge`
+       keeps governing both lines, so a consumer override behaves as before. */
     --_c-line: var(--sa-btn-edge, var(--_line, var(--_color)));
     --_c-line-hover: var(--sa-btn-edge, var(--_line-hover, var(--_c-line)));
     --_c-line-active: var(--sa-btn-edge, var(--_line-active, var(--_c-line)));

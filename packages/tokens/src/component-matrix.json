@@ -30,7 +30,7 @@
   "$stepNotes": {
     "fill": "600 not 500 — 500 fails 4.5:1 against white for the label on several ramps. See test/prominence-contract.test.mjs.",
     "disabled": "A flat neutral fill, NOT the intent colour at reduced opacity: a washed-out red still reads as an error affordance.",
-    "secondaryBorder": "400, not 300 — WCAG 1.4.11 wants 3:1 against the page for the boundary of a control, and 300 measures 2.15:1 (neutral), 2.47 (brand), 2.50 (success), 2.69 (destructive) on white. 400 is the LIGHTEST rung that clears it on every ramp (3.06-3.64) and stays lighter than the 700 ink, so an outlined button still reads as an outline rather than a filled edge. Hover and active step with it, 500 and 600. Measured 2026-09-16; asserted in test/action-nontext-contrast.test.mjs. Step 500 (4.65:1 neutral) was drawn beside it on 2026-09-16 and declined: it clears 1.4.11 twice over, but at that weight the outline stops reading as chrome and starts reading as ink."
+    "secondaryBorder": "500, not 400 — and the reason is the GROUND, not the ramp. WCAG 1.4.11 wants 3:1 between a control's boundary and what is behind it, and 'behind it' on this estate is not white: every portal screen renders inside .sa-app-shell, which paints bg/neutral/subtler (#eef0f3). Rung 400 measured 3.36 (brand), 3.06 (neutral), 3.45 (success) and 3.64 (destructive) on WHITE and was adopted on 2026-09-16 on that evidence — but on the muted ground the same rung is 2.94 (brand, the DEFAULT variant) and 2.68 (neutral), both FAILURES, with success at 3.02 and destructive at 3.19 clearing by margins a palette retune would erase. That is not hypothetical: ScreenBody renders an outlined Button straight onto the shell ground in its `error` (retry) and `filtered` (clear filters) states, and EmptyState paints no surface of its own. Rung 500 measures 4.64/4.65/4.83/4.91 on white and 4.07/4.07/4.23/4.30 on the muted ground (brand's 500 is gov-blue #0373df itself) — every variant, both grounds, with headroom. Hover and active step with it, 600 and 700. This is the same finding, the same ground and the same remedy as the form-control border on 2026-09-04, which moved 400 -> 500 for exactly these numbers; the two are now consistent. Measured 2026-09-16; asserted against BOTH grounds in test/action-nontext-contrast.test.mjs, which previously measured white alone and so reported a pass."
   },
   "variants": {
     "primary": {
@@ -61,17 +61,17 @@
       "default": {
         "bg": "transparent",
         "text": "700",
-        "border": "400"
+        "border": "500"
       },
       "hover": {
         "bg": "50",
         "text": "700",
-        "border": "500"
+        "border": "600"
       },
       "active": {
         "bg": "100",
         "text": "800",
-        "border": "600"
+        "border": "700"
       },
       "disabled": {
         "bg": "transparent",
