@@ -20,15 +20,27 @@
  *
  * Three states, not two: a project with no record, a project whose recorder has not reached the
  * portal, and a project sending a live feed an officer can open (`liveFeed`).
+ *
+ * The complete module (e-Anudaan parity brief §D item 2, 17 Sep 2026): a configured project opens
+ * at `?project=<Project ID>` — coverage of the mandated areas, the camera register with its privacy
+ * exclusions, the installation certificate, footage retention and storage, and the monthly uptime
+ * declarations (`components/e-anudaan/cctv-module.tsx`). The list states each project's compliance
+ * from the same `cctvCompliance` reading the officer's view uses.
+ *
+ * DS Audit (module): Breadcrumb ✅ · DescriptionList ✅ added to the imports above — nothing new.
  */
 
 import * as React from "react";
+import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   Alert,
   Badge,
+  Breadcrumb,
   Button,
   Card,
   CardBody,
+  DescriptionList,
   EmptyState,
   FormField,
   Icon,
@@ -47,16 +59,34 @@ import { projectName, projectsOf } from "@/lib/e-anudaan/applicant";
 import { formatDate } from "@/lib/e-anudaan/format";
 import { cctvActivationCode } from "@/lib/e-anudaan/store/seed";
 import type { CctvSetup, Institution } from "@/lib/e-anudaan/types";
+import { cctvCompliance } from "@/lib/e-anudaan/cctv";
+import { CctvModule } from "@/components/e-anudaan/cctv-module";
+import { CctvStatusBadge } from "@/components/e-anudaan/cctv-parts";
 
 /** Projects to a page. A fixed page keeps the card the same height whatever the register holds. */
 const PAGE_SIZE = 10;
 
 export default function CctvSetupPage() {
+  return (
+    <React.Suspense fallback={null}>
+      <CctvSetupScreen />
+    </React.Suspense>
+  );
+}
+
+const CCTV_BASE = "/portals/e-anudaan/ngo/cctv";
+
+function CctvSetupScreen() {
   const { state, findCctv, saveCctv } = useEAnudaan();
+  const router = useRouter();
+  const pathname = usePathname();
+  const params = useSearchParams();
+  const openProjectId = params.get("project");
   const ngo = state.ngos[0];
   const projects = ngo ? projectsOf(state, ngo.id) : [];
   const [open, setOpen] = React.useState<Institution | null>(null);
   const [page, setPage] = React.useState(1);
+  const openModule = (projectId: string) => router.push(`${pathname}?project=${encodeURIComponent(projectId)}`);
 
   const setupOf = (projectId: string) => findCctv(projectId);
   const live = projects.filter((p) => setupOf(p.id)?.liveFeed).length;
@@ -73,6 +103,64 @@ export default function CctvSetupPage() {
   const rows = [...projects].sort((a, b) => rank(a) - rank(b) || a.id.localeCompare(b.id));
   const totalPages = Math.max(1, Math.ceil(rows.length / PAGE_SIZE));
   const shown = rows.slice((Math.min(page, totalPages) - 1) * PAGE_SIZE, Math.min(page, totalPages) * PAGE_SIZE);
+  const needAction = projects.filter((p) => cctvCompliance(setupOf(p.id)).status === "action-needed").length;
+
+  if (openProjectId !== null) {
+    const project = projects.find((p) => p.id === openProjectId);
+    const setup = project ? setupOf(project.id) : undefined;
+    return (
+      <div className="space-y-5">
+        <Breadcrumb linkAs={Link} items={[{ label: "CCTV Setup", href: CCTV_BASE }, { label: project ? projectName(project) : "Project" }]} />
+        {!project ? (
+          <Alert status="warning" title="Project Not Found">
+            No project of your organisation has the Project ID {openProjectId}.
+          </Alert>
+        ) : (
+          <>
+            <PageHeader
+              size="compact"
+              title={projectName(project)}
+              meta={`${project.id} · ${project.nature}`}
+              actions={
+                <Button appearance="outlined" nowrap onClick={() => setOpen(project)}>
+                  {setup ? "View Recorder Setup" : "Set Up"}
+                </Button>
+              }
+            />
+            {!setup ? (
+              <Card variant="outlined">
+                <CardBody>
+                  <EmptyState
+                    icon={<Icon name="videocam_off" size={32} aria-hidden />}
+                    title="CCTV Not Set Up"
+                    description="Set up the recorder at this project first. The camera register, certificate and uptime declarations follow."
+                    action={<Button onClick={() => setOpen(project)}>Set Up CCTV</Button>}
+                  />
+                </CardBody>
+              </Card>
+            ) : (
+              <>
+                <Card variant="outlined">
+                  <CardBody>
+                    <DescriptionList
+                      columns={3}
+                      items={[
+                        { term: "Live Feed", value: setup.liveFeed ? "On" : "Recorder not connected" },
+                        { term: "Activation Code", value: <span className="tabular-nums">{setup.activationCode}</span> },
+                        { term: "Registered On", value: formatDate(setup.savedAt) },
+                      ]}
+                    />
+                  </CardBody>
+                </Card>
+                <CctvModule setup={setup} onSave={saveCctv} />
+              </>
+            )}
+          </>
+        )}
+        {open && <SetupDialog key={open.id} project={open} saved={setupOf(open.id)} onSave={saveCctv} onClose={() => setOpen(null)} />}
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-5">
@@ -88,7 +176,7 @@ export default function CctvSetupPage() {
             title="Projects"
             description={
               projects.length
-                ? `${live} of ${projects.length} project${projects.length === 1 ? "" : "s"} sending a live feed${waiting ? ` · ${waiting} waiting for the recorder` : ""}`
+                ? `${live} of ${projects.length} project${projects.length === 1 ? "" : "s"} sending a live feed${waiting ? ` · ${waiting} waiting for the recorder` : ""}${needAction ? ` · ${needAction} with CCTV requirements not met` : ""}`
                 : undefined
             }
           />
@@ -121,14 +209,15 @@ export default function CctvSetupPage() {
                               {!setup ? "Not Configured" : setup.liveFeed ? "Live Feed On" : "Recorder Not Connected"}
                             </Badge>
                           </span>
+                          {setup && <CctvStatusBadge compliance={cctvCompliance(setup)} />}
                           <Button
                             appearance="outlined"
                             size="sm"
                             nowrap
-                            onClick={() => setOpen(p)}
-                            aria-label={`${setup ? "View the CCTV setup for" : "Set up CCTV at"} ${projectName(p)}`}
+                            onClick={() => (setup ? openModule(p.id) : setOpen(p))}
+                            aria-label={`${setup ? "Open the CCTV records of" : "Set up CCTV at"} ${projectName(p)}`}
                           >
-                            {setup ? "View Setup" : "Set Up"}
+                            {setup ? "Open" : "Set Up"}
                           </Button>
                         </span>
                       }
@@ -144,7 +233,20 @@ export default function CctvSetupPage() {
         </CardBody>
       </Card>
 
-      {open && <SetupDialog key={open.id} project={open} saved={setupOf(open.id)} onSave={saveCctv} onClose={() => setOpen(null)} />}
+      {open && (
+        <SetupDialog
+          key={open.id}
+          project={open}
+          saved={setupOf(open.id)}
+          onSave={saveCctv}
+          onClose={() => setOpen(null)}
+          onOpenModule={() => {
+            const id = open.id;
+            setOpen(null);
+            openModule(id);
+          }}
+        />
+      )}
     </div>
   );
 }
@@ -154,11 +256,14 @@ function SetupDialog({
   saved,
   onSave,
   onClose,
+  onOpenModule,
 }: {
   project: Institution;
   saved?: CctvSetup;
   onSave: (setup: CctvSetup) => void;
   onClose: () => void;
+  /** Offered once a setup exists and the dialog was opened from the list. */
+  onOpenModule?: () => void;
 }) {
   const { toast } = useToast();
   const [cameras, setCameras] = React.useState(saved ? String(saved.cameras) : "");
@@ -176,8 +281,11 @@ function SetupDialog({
       return;
     }
     setFailed(false);
-    const n = Number(cameras);
+    // Once a camera register is kept, the register counts the cameras, not this field.
+    const n = saved?.cameraRegister?.length ? saved.cameraRegister.length : Number(cameras);
     onSave({
+      // Everything recorded since — register, certificate, retention, declarations — is kept.
+      ...saved,
       projectId: project.id,
       cameras: n,
       // Registering the recorder is what opens the feed to the inspecting officer.
@@ -214,7 +322,7 @@ function SetupDialog({
               <Button appearance="outlined" onClick={() => setEditing(true)}>
                 {saved && !saved.liveFeed ? "Register Again" : "Change Setup"}
               </Button>
-              <Button onClick={onClose}>Done</Button>
+              {onOpenModule ? <Button onClick={onOpenModule}>Open CCTV Records</Button> : <Button onClick={onClose}>Done</Button>}
             </>
           )}
         </div>
@@ -222,18 +330,24 @@ function SetupDialog({
     >
       {editing ? (
         <div className="space-y-4">
-          <FormField label="Number of Cameras" id="cameras" required>
-            {(control) => (
-              <Select {...control} value={cameras} onChange={(e) => setCameras(e.target.value)}>
-                <option value="">Select…</option>
-                {Array.from({ length: 8 }, (_, i) => i + 1).map((n) => (
-                  <option key={n} value={String(n)}>
-                    {n} camera{n === 1 ? "" : "s"}
-                  </option>
-                ))}
-              </Select>
-            )}
-          </FormField>
+          {saved?.cameraRegister?.length ? (
+            <p className="text-body-2 text-ink">
+              {saved.cameraRegister.length} camera{saved.cameraRegister.length === 1 ? "" : "s"}, as counted in the camera register.
+            </p>
+          ) : (
+            <FormField label="Number of Cameras" id="cameras" required>
+              {(control) => (
+                <Select {...control} value={cameras} onChange={(e) => setCameras(e.target.value)}>
+                  <option value="">Select…</option>
+                  {Array.from({ length: 8 }, (_, i) => i + 1).map((n) => (
+                    <option key={n} value={String(n)}>
+                      {n} camera{n === 1 ? "" : "s"}
+                    </option>
+                  ))}
+                </Select>
+              )}
+            </FormField>
+          )}
           <FormField label="Contact Person" id="cctv-contact" optional>
             {(control) => (
               <Input {...control} value={contact} placeholder="Name of the person managing the CCTV computer" onChange={(e) => setContact(e.target.value)} />

@@ -61,6 +61,7 @@ import {
 } from "@/lib/e-anudaan/document-centre";
 import { deviceCheckOfBytes } from "@/lib/e-anudaan/doc-checks";
 import { DEMO_FILL_EVENT, DEMO_HOLD_CHECKS_KEY, type DemoFillDetail } from "@/lib/e-anudaan/demo-scenarios";
+import { DEMO_PENDING_SAMPLES_KEY, DEMO_PLACE_SAMPLES_EVENT, type DemoPlaceSamplesDetail } from "@/lib/e-anudaan/sample-files";
 import { ApplicantFindings, DocumentViewSheet, rowStateOf, useSettleChecks } from "./document-centre-parts";
 import { takeFailure } from "@/lib/e-anudaan/error-catalogue";
 import { ServiceErrorNotice, failureOf, serviceErrorText, type ServiceFailure } from "./service-error";
@@ -81,7 +82,11 @@ const FILTERS: { id: DocBucket; label: string }[] = [
 const TICK_MS = 140;
 const DROPS_CONNECTION = /network|connection|drop[-_]?out|flaky|upload-interrupted/i;
 
-const kbOf = (file: File) => Math.max(1, Math.round(file.size / 1024));
+// An empty file is 0 KB, and says so; any other file is at least 1 KB.
+const kbOf = (file: File) => (file.size === 0 ? 0 : Math.max(1, Math.round(file.size / 1024)));
+const mimeOf = (name: string) =>
+  /\.pdf$/i.test(name) ? "application/pdf" : /\.jpe?g$/i.test(name) ? "image/jpeg" : /\.png$/i.test(name) ? "image/png"
+    : /\.docx$/i.test(name) ? "application/vnd.openxmlformats-officedocument.wordprocessingml.document" : "application/octet-stream";
 const rowId = (n: number) => `doc-${n}`;
 const actionId = (n: number) => `doc-${n}-action`;
 
@@ -441,6 +446,61 @@ export const DocumentsChecklist = React.forwardRef<
     window.addEventListener(DEMO_DOC_STATE_EVENT, onForce);
     return () => window.removeEventListener(DEMO_DOC_STATE_EVENT, onForce);
   }, [documents, onChange, fy, values.fld_ngo_name]);
+
+  /**
+   * Sample files from the dock, each put into its slot as if the applicant had chosen it there: the
+   * bytes are fetched (or built — an empty file, one padded past the limit) and handed to the same
+   * `startUpload` a row's own Upload button calls, so the type and size rule, the byte checks, the
+   * transfer and the automatic check all run on them.
+   */
+  React.useEffect(() => {
+    const onPlace = (e: Event) => {
+      const { scheme, placements } = (e as CustomEvent<DemoPlaceSamplesDetail>).detail;
+      if (scheme !== schemeCode) return;
+      const known = new Set(documents.map((d) => d.n));
+      setHeld(new Set());
+      window.sessionStorage.removeItem(DEMO_HOLD_CHECKS_KEY);
+      setFilter(null);
+      setShowErrors(false);
+      for (const p of placements) {
+        if (!known.has(p.n)) continue;
+        void (async () => {
+          let parts: BlobPart[] = [];
+          if (p.url) {
+            const res = await fetch(p.url);
+            if (!res.ok) return;
+            parts = [await res.arrayBuffer()];
+          }
+          if (p.padToKb) {
+            const have = parts.reduce((n, b) => n + (b as ArrayBuffer).byteLength, 0);
+            parts.push(new Uint8Array(Math.max(0, p.padToKb * 1024 - have)));
+          }
+          const file = new File(parts, p.fileName, { type: mimeOf(p.fileName) });
+          startUpload(p.n, { name: file.name, sizeKb: kbOf(file) }, file);
+        })();
+      }
+      refreshOrder();
+    };
+    window.addEventListener(DEMO_PLACE_SAMPLES_EVENT, onPlace);
+    return () => window.removeEventListener(DEMO_PLACE_SAMPLES_EVENT, onPlace);
+  });
+
+  // Placements the dock left while moving here from another step.
+  React.useEffect(() => {
+    // Read in the timeout, not before it: development mounts effects twice, and a key removed by the
+    // first run would leave the second, real one with nothing to place.
+    const t = window.setTimeout(() => {
+      try {
+        const raw = window.sessionStorage.getItem(DEMO_PENDING_SAMPLES_KEY);
+        if (!raw) return;
+        window.sessionStorage.removeItem(DEMO_PENDING_SAMPLES_KEY);
+        window.dispatchEvent(new CustomEvent(DEMO_PLACE_SAMPLES_EVENT, { detail: JSON.parse(raw) as DemoPlaceSamplesDetail }));
+      } catch {
+        // Storage unavailable: the dock's own dispatch is the only route, and it still works on this step.
+      }
+    }, 0);
+    return () => window.clearTimeout(t);
+  }, []);
 
   /* ── Render ───────────────────────────────────────────────────────────── */
 

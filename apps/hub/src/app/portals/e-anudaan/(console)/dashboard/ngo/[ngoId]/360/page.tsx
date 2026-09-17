@@ -7,6 +7,7 @@ import {
   Alert,
   Badge,
   Breadcrumb,
+  buttonClasses,
   Card,
   CardBody,
   Icon,
@@ -26,6 +27,9 @@ import { accountsFor, maskedAccount } from "@/lib/e-anudaan/applicant";
 import { currentAddressOf } from "@/lib/e-anudaan/change-requests";
 import { attendanceOf, officerApplications } from "@/lib/e-anudaan/registers";
 import { RefText, WorklistTable } from "@/components/e-anudaan/worklist-table";
+import { CCTV_STATUS_LABEL, cctvCompliance, type CctvStatus } from "@/lib/e-anudaan/cctv";
+import { CctvStatusBadge } from "@/components/e-anudaan/cctv-parts";
+import { projectRecordsHref } from "@/components/e-anudaan/project-records";
 
 /** Institutions per page. Five fit one screen at 1440; 30 of them ran to 6,325px (audit O-11). */
 const INSTITUTIONS_PER_PAGE = 5;
@@ -45,6 +49,11 @@ const INSTITUTIONS_PER_PAGE = 5;
  * figure is the sum of this organisation's sanction orders — the expression Reports adds up — in
  * the summary form every screen uses.
  *
+ * CCTV compliance and Project Records (parity brief §D items 2 and 3, 17 Sep 2026): every project's
+ * CCTV standing, read from the same `cctvCompliance` the project's own records show, the projects
+ * with a requirement not met listed first, five to a page; and each institution links to its
+ * read-only Project Records (staff roster, weekly attendance).
+ *
  * DS Audit: Breadcrumb ✅ · Search ✅ · Pagination ✅ added to the existing PageHeader · MetricCard ·
  * Card · ListGroup — nothing new.
  */
@@ -54,6 +63,7 @@ export default function Ngo360Page() {
   const ngo = findNgo(decodeURIComponent(params.ngoId));
   const [q, setQ] = React.useState("");
   const [page, setPage] = React.useState(1);
+  const [cctvPage, setCctvPage] = React.useState(1);
 
   if (!ngo) {
     return <Alert status="warning" title="Organisation Not Found">This organisation is not in the NGO register.</Alert>;
@@ -75,6 +85,17 @@ export default function Ngo360Page() {
   const pages = Math.max(1, Math.ceil(institutions.length / INSTITUTIONS_PER_PAGE));
   const safePage = Math.min(page, pages);
   const shown = institutions.slice((safePage - 1) * INSTITUTIONS_PER_PAGE, safePage * INSTITUTIONS_PER_PAGE);
+
+  // One reading per project, behind the counts and the list alike.
+  const cctv = ngo.institutions.map((i) => ({ institution: i, compliance: cctvCompliance(state.cctv.find((c) => c.projectId === i.id)) }));
+  const cctvCount = (s: CctvStatus) => cctv.filter((r) => r.compliance.status === s).length;
+  const cctvOrder: Record<CctvStatus, number> = { "action-needed": 0, "no-cameras": 1, "not-configured": 2, compliant: 3 };
+  const cctvOutstanding = cctv
+    .filter((r) => r.compliance.status !== "compliant")
+    .sort((a, b) => cctvOrder[a.compliance.status] - cctvOrder[b.compliance.status] || a.institution.id.localeCompare(b.institution.id));
+  const cctvPages = Math.max(1, Math.ceil(cctvOutstanding.length / INSTITUTIONS_PER_PAGE));
+  const cctvSafePage = Math.min(cctvPage, cctvPages);
+  const cctvShown = cctvOutstanding.slice((cctvSafePage - 1) * INSTITUTIONS_PER_PAGE, cctvSafePage * INSTITUTIONS_PER_PAGE);
 
   return (
     <div className="space-y-5">
@@ -145,6 +166,60 @@ export default function Ngo360Page() {
 
       <Card variant="outlined">
         <CardBody className="space-y-4">
+          <SectionTitle
+            title="CCTV Compliance"
+            description={
+              ngo.institutions.length
+                ? (["compliant", "action-needed", "no-cameras", "not-configured"] as const)
+                    .map((s) => `${CCTV_STATUS_LABEL[s]} ${cctvCount(s)}`)
+                    .join(" · ")
+                : undefined
+            }
+          />
+          {ngo.institutions.length === 0 ? (
+            <p className="text-body-2 text-ink-muted">No institution is registered for this organisation.</p>
+          ) : cctvOutstanding.length === 0 ? (
+            <p className="text-body-2 text-ink">Every project of {ngo.name} meets the CCTV requirements.</p>
+          ) : (
+            <>
+              <ListGroup aria-label="Projects with CCTV requirements outstanding">
+                {cctvShown.map(({ institution: i, compliance }) => (
+                  <ListRow
+                    key={i.id}
+                    title={`${i.id} · ${i.name} · ${i.district}`}
+                    description={
+                      compliance.flags.length
+                        ? compliance.flags.join(" ")
+                        : compliance.status === "not-configured"
+                          ? "CCTV has not been set up at this project."
+                          : undefined
+                    }
+                    trailing={
+                      <span className="flex flex-wrap items-center justify-end gap-3">
+                        <CctvStatusBadge compliance={compliance} />
+                        <Link href={projectRecordsHref(ngo.id, i.id)} className={buttonClasses("primary", "text", "sm", "whitespace-nowrap")}>
+                          Project Records
+                        </Link>
+                      </span>
+                    }
+                  />
+                ))}
+              </ListGroup>
+              {cctvPages > 1 && (
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <p className="text-body-3 text-ink-muted">
+                    {(cctvSafePage - 1) * INSTITUTIONS_PER_PAGE + 1}–{Math.min(cctvSafePage * INSTITUTIONS_PER_PAGE, cctvOutstanding.length)} of {cctvOutstanding.length} projects not compliant
+                  </p>
+                  <Pagination page={cctvSafePage} totalPages={cctvPages} onPageChange={setCctvPage} label="CCTV compliance pages" size="sm" />
+                </div>
+              )}
+            </>
+          )}
+        </CardBody>
+      </Card>
+
+      <Card variant="outlined">
+        <CardBody className="space-y-4">
           <SectionTitle title="Institutions" count={ngo.institutions.length}>
             <div className="w-full sm:w-72">
               <Search
@@ -177,6 +252,11 @@ export default function Ngo360Page() {
                     <ListRow
                       key={i.id}
                       title={`${i.id} · ${i.name} · ${i.district}`}
+                      trailing={
+                        <Link href={projectRecordsHref(ngo.id, i.id)} className={buttonClasses("primary", "text", "sm", "whitespace-nowrap")}>
+                          Project Records
+                        </Link>
+                      }
                       description={
                         <>
                           <span className="block">{`${i.nature} · ${i.type} · ${i.building}`}</span>

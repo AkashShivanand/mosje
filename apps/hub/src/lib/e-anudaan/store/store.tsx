@@ -51,6 +51,8 @@ import {
   markAllReadFor,
   markReadFor,
   migrateFrom8,
+  migrateFrom11,
+  type PersistedState,
   readPersisted,
   writePersisted,
   type StorageLike,
@@ -70,8 +72,10 @@ import {
  * project's years follow the order its files were filed, a draft claim is the claim the dashboard
  * offers, corrected files are dated their correction, and submitted files answer their questions.
  * An older copy is reseeded, because it holds exactly the contradictions those rules remove.
+ * 12 — a CCTV setup gains its camera register, installation certificate, retention, storage and
+ * monthly uptime declarations. All optional, so an 11 copy is carried forward (`migrateFrom11`).
  */
-const SCHEMA_VERSION = 11;
+const SCHEMA_VERSION = 12;
 
 function seedState(): EAnudaanState {
   const seed = buildSeed();
@@ -93,7 +97,7 @@ function seedState(): EAnudaanState {
 
 /** An earlier build's copy, brought forward so the applicant's own work on this device survives. */
 // Schema 8 → 9 stays available for a copy that is exactly 8; it is not applied to 10 (see above).
-const migrate = undefined;
+const migrate = (old: PersistedState) => migrateFrom11(old, buildSeed());
 void migrateFrom8;
 
 /**

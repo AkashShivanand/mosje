@@ -290,13 +290,20 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
       const filled = applyAllAutoFields(def, { ...darpanSeed(), ...detail.values, ...darpanIdentity(darpanSeed()), ...registrationOf(ngo), ...declarationStamp() });
       setValues(filled);
       setDocs(detail.docs);
-      setErrors({});
+      // A rule preset opens its step with that step's errors showing. On this mount they are set
+      // here; a form step reached by the dock's navigation from another route reads the flag.
+      const errorsStep = detail.errorsAt == null ? undefined : visibleSteps(def, filled)[detail.errorsAt];
+      if (errorsStep && phase === "form") setErrors(validateStep(errorsStep, filled));
+      else {
+        setErrors({});
+        if (errorsStep) window.sessionStorage.setItem(CHECK_KEY, "1");
+      }
       setDeclared(false);
       // Saved NOW, not after the autosave pause. The dock moves to the step where the scenario
       // shows, which is usually another route and a new mount that reads the draft — before this,
       // "Complete & valid" pressed on a form step landed on Upload Documents with every answer gone.
       try {
-        const raw = JSON.stringify({ values: filled, docs: detail.docs, savedAt: new Date().toISOString(), step: 0, registerId: registerId.current });
+        const raw = JSON.stringify({ values: filled, docs: detail.docs, savedAt: new Date().toISOString(), step: detail.errorsAt ?? 0, registerId: registerId.current });
         window.localStorage.setItem(key, raw);
         lastWritten.current = raw;
         window.sessionStorage.setItem(activeKey(def.code), "1");
@@ -1209,7 +1216,14 @@ function Field({
   onChange: (v: string) => void;
   dynamic?: DynamicOptions;
 }) {
-  const wide = field.wide || field.kind === "textarea" || field.kind === "radio";
+  // A Yes/No question sits in the grid beside its neighbours. Every radio used to take a whole row,
+  // so a step of short Yes/No questions stacked one per row — "Kitchen available" alone on a line,
+  // "Open / recreational area available" alone on the next — and the form scrolled twice as far as
+  // its answers needed. A choice with long or many options still spans the row, where its options
+  // can sit in a line. The schema's `wide` on a radio (47 of 49 carry it) is not honoured for this
+  // reason: it was set when every radio spanned the row anyway.
+  const radioNeedsRow = (field.options?.length ?? 0) > 3 || (field.options ?? []).join("").length > 24;
+  const wide = field.kind === "radio" ? radioNeedsRow : field.wide || field.kind === "textarea";
   // Not `field.options` — an option can be branch-specific (AVYAY offers Physiotherapy Clinic
   // and Mobile Medicare Unit to renewals only), and a field can be editable on one branch and
   // fixed on another.

@@ -134,3 +134,13 @@ test("no sidebar label abbreviates the Programme Division or the Programme Direc
   }
   assert.equal(consoleRouteAccess(`${B}/dashboard/pd/so/queries`, ROLES["pd-so"]), "allowed");
 });
+
+test("a project's records open beside NGO 360 for every officer, and nothing deeper does", () => {
+  const project = encodeURIComponent("SC/DL/NWD/02400");
+  for (const role of ADMIN_ROLES) {
+    assert.equal(consoleRouteAccess(`${B}/dashboard/ngo/ngo-001/project/${project}`, role), "allowed", role.id);
+    assert.equal(consoleRouteAccess(`${B}/dashboard/ngo/ngo-001/project`, role), "not-found", role.id);
+    assert.equal(consoleRouteAccess(`${B}/dashboard/ngo/ngo-001/project/${project}/edit`, role), "not-found", role.id);
+  }
+  assert.equal(consoleRouteAccess(`${B}/dashboard/ngo/ngo-001/project/${project}`, ROLES.ngo), "forbidden");
+});
