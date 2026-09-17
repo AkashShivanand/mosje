@@ -25,6 +25,20 @@ import { PROJECT_LOCATION_CHANGE } from "./project-location-change.ts";
 import { ADD_BENEFICIARY, ADD_EMPLOYEE } from "./roster.ts";
 import { UTILISATION_CERTIFICATE } from "./utilisation-certificate.ts";
 import { WEEKLY_ATTENDANCE } from "./weekly-attendance.ts";
+import { REVIEW_FORWARD } from "./review-forward.ts";
+import { REVIEW_RETURN_PREVIOUS } from "./review-return-previous.ts";
+import { REVIEW_DEFICIENCY } from "./review-deficiency.ts";
+import { REVIEW_SEND_DEFICIENCY } from "./review-send-deficiency.ts";
+import { REVIEW_RESPOND } from "./review-respond.ts";
+import { REVIEW_SANCTION } from "./review-sanction.ts";
+import { REVIEW_RETURN_DIRECTOR } from "./review-return-director.ts";
+import { REVIEW_REJECT } from "./review-reject.ts";
+import { SHOW_CAUSE_NOTICE } from "./show-cause-notice.ts";
+import { ONLINE_INSPECTION } from "./online-inspection.ts";
+import { INSPECTION_SCHEDULE } from "./inspection-schedule.ts";
+import { INSPECTION_REPORT } from "./inspection-report.ts";
+import { BANK_CHANGE_APPROVE, BANK_CHANGE_REFUSE, LOCATION_CHANGE_APPROVE, LOCATION_CHANGE_REFUSE } from "./change-request-decisions.ts";
+import { QUERY_RESPONSE } from "./query-response.ts";
 
 export const DEMO_FORM_FILL_EVENT = "e-anudaan:demo-form-fill";
 
@@ -64,6 +78,23 @@ export const FORMS: readonly DemoFormDef[] = [
   CCTV_UPTIME,
   CORRECT_APPLICATION,
   UTILISATION_CERTIFICATE,
+  REVIEW_SANCTION,
+  REVIEW_FORWARD,
+  REVIEW_DEFICIENCY,
+  REVIEW_SEND_DEFICIENCY,
+  REVIEW_RESPOND,
+  REVIEW_RETURN_PREVIOUS,
+  REVIEW_RETURN_DIRECTOR,
+  REVIEW_REJECT,
+  SHOW_CAUSE_NOTICE,
+  ONLINE_INSPECTION,
+  INSPECTION_SCHEDULE,
+  INSPECTION_REPORT,
+  BANK_CHANGE_APPROVE,
+  BANK_CHANGE_REFUSE,
+  LOCATION_CHANGE_APPROVE,
+  LOCATION_CHANGE_REFUSE,
+  QUERY_RESPONSE,
 ];
 
 /** The forms on this page, in the order the page shows them. */

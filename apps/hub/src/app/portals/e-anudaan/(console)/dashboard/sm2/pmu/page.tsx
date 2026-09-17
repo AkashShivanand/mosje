@@ -23,12 +23,31 @@ import { PageHeader, SegmentedControl } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { awaitingInspection, openVisits } from "@/lib/e-anudaan/registers";
 import { AwaitingInspectionTable, InspectionTable } from "@/components/e-anudaan/worklist-table";
+import { useDemoFormFill } from "@/components/e-anudaan/use-demo-form-fill";
+import { DEMO_FORM_FILL_EVENT, type DemoFormFillDetail, type DemoFormPreset } from "@/lib/e-anudaan/demo-forms";
+import { INSPECTION_SCHEDULE } from "@/lib/e-anudaan/demo-forms/inspection-schedule";
+import { INSPECTION_REPORT } from "@/lib/e-anudaan/demo-forms/inspection-report";
 
 type View = "awaiting" | "open" | "all";
 
 export default function PmuInspectionWorklistPage() {
   const { state } = useEAnudaan();
   const [view, setView] = React.useState<View>("awaiting");
+
+  /*
+   * The demo dock's inspection fills are handled by the inspection table, which "Not Yet Inspected"
+   * does not show. From that view a fill switches to "My Open Visits" and hands the fill on once the
+   * table has rendered to receive it.
+   */
+  const fillFromAwaiting = (formId: string) => (_: unknown, preset: DemoFormPreset) => {
+    if (view !== "awaiting") return;
+    setView("open");
+    window.setTimeout(() => {
+      window.dispatchEvent(new CustomEvent<DemoFormFillDetail>(DEMO_FORM_FILL_EVENT, { detail: { formId, preset } }));
+    }, 0);
+  };
+  useDemoFormFill(INSPECTION_SCHEDULE.id, fillFromAwaiting(INSPECTION_SCHEDULE.id));
+  useDemoFormFill(INSPECTION_REPORT.id, fillFromAwaiting(INSPECTION_REPORT.id));
 
   return (
     <div className="space-y-5">

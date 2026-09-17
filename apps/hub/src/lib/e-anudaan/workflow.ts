@@ -30,6 +30,7 @@
 
 import { GRADE_FULL, ROLES, type RoleDef } from "./roles.ts";
 import { formatDate, rupees } from "./format.ts";
+import { onlineInspectionError, showCauseError } from "./officer-forms.ts";
 import { DEFICIENCY, GRANT, RECEIVED, REJECT, RETURN, returnTo } from "./glossary.ts";
 import {
   holderIsRole,
@@ -708,10 +709,11 @@ export function issueShowCauseNotice(app: GrantApplication, roleId: RoleId, inpu
   const role = ROLES[roleId];
   if (!role?.caps.includes("issueShowCause")) return { ok: false, error: "A Show Cause Notice is issued by the Section Officer or the Joint Secretary, Programme Division." };
   const grounds = input.grounds.trim();
-  if (!grounds) return { ok: false, error: "State the grounds for the notice." };
+  if (!grounds) return { ok: false, error: showCauseError(input, clock.now)! };
   if (app.status === "Draft" || app.status === "Rejected") return { ok: false, error: "A notice can be issued only on a submitted, open application." };
+  const invalid = showCauseError(input, clock.now);
+  if (invalid) return { ok: false, error: invalid };
   const days = input.respondBy ? Math.ceil((Date.parse(input.respondBy) - Date.parse(clock.now)) / 86_400_000) : 0;
-  if (input.respondBy && !(days > 0)) return { ok: false, error: "The response deadline must be a date after today." };
   return {
     ok: true,
     app: {
@@ -749,13 +751,11 @@ export function scheduleOnlineInspection(
   const role = ROLES[roleId];
   if (!role?.caps.includes("scheduleInspection")) return { ok: false, error: "You cannot schedule an online inspection." };
   if (app.status === "Draft" || app.status === "Rejected") return { ok: false, error: "An inspection can be scheduled only on a submitted, open application." };
+  const invalid = onlineInspectionError(input, clock.now);
+  if (invalid) return { ok: false, error: invalid };
   const title = input.title.trim();
-  if (!title) return { ok: false, error: "Give the inspection a title." };
   const start = Date.parse(input.startsAt);
   const end = Date.parse(input.endsAt);
-  if (!Number.isFinite(start)) return { ok: false, error: "Enter the start date and time." };
-  if (start <= Date.parse(clock.now)) return { ok: false, error: "The start must be later than now." };
-  if (!Number.isFinite(end) || end <= start) return { ok: false, error: "The end must be later than the start." };
   if (existing.some((i) => i.applicationId === app.id && i.visitType === "Online" && i.status === "Scheduled")) {
     return { ok: false, error: "An online inspection is already scheduled for this application." };
   }

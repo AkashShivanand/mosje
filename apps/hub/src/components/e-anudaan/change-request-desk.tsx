@@ -48,6 +48,22 @@ import { farLine, type LocationCheck } from "@/lib/e-anudaan/district-centres";
 import { formatDate } from "@/lib/e-anudaan/format";
 import { ROLES } from "@/lib/e-anudaan/roles";
 import type { BankChangeRequest, ChangeRequest, LocationChangeRequest } from "@/lib/e-anudaan/types";
+import { changeDecisionError } from "@/lib/e-anudaan/officer-forms";
+import type { DemoFormPreset } from "@/lib/e-anudaan/demo-forms";
+import {
+  BANK_CHANGE_APPROVE,
+  BANK_CHANGE_REFUSE,
+  LOCATION_CHANGE_APPROVE,
+  LOCATION_CHANGE_REFUSE,
+} from "@/lib/e-anudaan/demo-forms/change-request-decisions";
+import { useDemoFormFill } from "./use-demo-form-fill";
+
+/** A demo dock fill the decision dialog opens with. */
+interface DecisionDemoFill {
+  remarks: string;
+  valid: boolean;
+  n: number;
+}
 
 type Kind = "bank" | "location";
 
@@ -80,9 +96,34 @@ function accountLine(a: { bank: string; last4: string; ifsc: string; branch: str
 
 export function ChangeRequestDesk({ kind }: { kind: Kind }) {
   const { state } = useEAnudaan();
+  const { toast } = useToast();
   const [view, setView] = React.useState<QueueView>("Pending");
   const [open, setOpen] = React.useState<ChangeRequest | null>(null);
+  const [demo, setDemo] = React.useState<DecisionDemoFill | null>(null);
   const copy = COPY[kind];
+
+  /*
+   * The demo dock's fills (demo-forms/change-request-decisions.ts): open a pending request — for an
+   * approval one that can be approved as it stands, for a refusal one with something wrong where the
+   * register has one — filled, with the message shown for a rule preset.
+   */
+  const fillDecision = (approve: boolean) => (v: Readonly<Record<string, string>>, preset: DemoFormPreset) => {
+    const pendingRows: ChangeRequest[] = kind === "bank" ? bankChangeQueue(state, "Pending") : locationChangeQueue(state, "Pending");
+    const flawed = (r: ChangeRequest) =>
+      r.kind === "bank" ? !r.pfmsRegistered : locationCheckFor(state, r).kind === "far";
+    const request = pendingRows.find((r) => flawed(r) !== approve) ?? pendingRows[0];
+    if (!request) {
+      toast("No request awaits a decision.", "info");
+      return;
+    }
+    setView("Pending");
+    setDemo({ remarks: v.remarks ?? "", valid: !!preset.valid, n: Date.now() });
+    setOpen(request);
+  };
+  useDemoFormFill(BANK_CHANGE_APPROVE.id, fillDecision(true));
+  useDemoFormFill(BANK_CHANGE_REFUSE.id, fillDecision(false));
+  useDemoFormFill(LOCATION_CHANGE_APPROVE.id, fillDecision(true));
+  useDemoFormFill(LOCATION_CHANGE_REFUSE.id, fillDecision(false));
 
   const rows: ChangeRequest[] = kind === "bank" ? bankChangeQueue(state, view) : locationChangeQueue(state, view);
   const total = kind === "bank" ? bankChangeQueue(state, "All").length : locationChangeQueue(state, "All").length;
@@ -205,7 +246,18 @@ export function ChangeRequestDesk({ kind }: { kind: Kind }) {
           clearFiltersLabel: "Show All",
         })}
       />
-      {open && <DecisionDialog key={open.id} request={open} kind={kind} onClose={() => setOpen(null)} />}
+      {open && (
+        <DecisionDialog
+          key={`${open.id}-${demo?.n ?? 0}`}
+          request={open}
+          kind={kind}
+          demo={demo}
+          onClose={() => {
+            setOpen(null);
+            setDemo(null);
+          }}
+        />
+      )}
     </>
   );
 }
@@ -232,18 +284,29 @@ function PositionBadge({ check }: { check: LocationCheck }) {
   return null;
 }
 
-function DecisionDialog({ request, kind, onClose }: { request: ChangeRequest; kind: Kind; onClose: () => void }) {
+function DecisionDialog({
+  request,
+  kind,
+  demo,
+  onClose,
+}: {
+  request: ChangeRequest;
+  kind: Kind;
+  demo: DecisionDemoFill | null;
+  onClose: () => void;
+}) {
   const { state, decideChangeRequest } = useEAnudaan();
   const { toast } = useToast();
   const copy = COPY[kind];
-  const [remarks, setRemarks] = React.useState("");
-  const [tried, setTried] = React.useState(false);
+  const [remarks, setRemarks] = React.useState(demo?.remarks ?? "");
+  const [tried, setTried] = React.useState(demo ? !demo.valid : false);
+  const remarksError = changeDecisionError(remarks);
   const owner = projectOwner(state, request.projectId);
   const pending = request.status === "Pending";
 
   const decide = (decision: ChangeDecision) => {
     setTried(true);
-    if (!remarks.trim()) return;
+    if (remarksError) return;
     const res = decideChangeRequest(request.id, decision, remarks);
     if (!res.ok) {
       toast(res.error, "error");
@@ -342,7 +405,7 @@ function DecisionDialog({ request, kind, onClose }: { request: ChangeRequest; ki
             id="decision-remarks"
             required
             hint="The NGO is shown these with the decision."
-            error={tried && !remarks.trim() ? "Enter your remarks before deciding." : undefined}
+            error={tried ? remarksError : undefined}
             characterCount={{ value: remarks, maxLength: 500 }}
           >
             {(c) => <Textarea {...c} rows={3} maxLength={500} value={remarks} onChange={(e) => setRemarks(e.target.value)} />}
