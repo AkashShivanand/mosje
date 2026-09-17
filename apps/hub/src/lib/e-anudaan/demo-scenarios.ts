@@ -16,16 +16,20 @@
 import {
   applyAllAutoFields,
   costedStrength,
+  fieldVisible,
   isReadOnly,
+  stepFields,
   visibleDocuments,
   visibleSteps,
   type FieldDef,
   type WizardDef,
 } from "./form-schema.ts";
+import { stepRoute } from "./drafts.ts";
 import { districtsOf } from "./geography.ts";
 import { currentFinancialYear } from "./instalments.ts";
 import { darpanSeed } from "./prefill.ts";
 import { demoVerdictFor, type UploadedDoc, type VerdictState } from "./doc-verification.ts";
+import { DEMO_APPLICANT, demoAnswer, preferredOption } from "./demo-answers.ts";
 
 /** The event the wizard listens for. Dispatched on `window` by the demo dock panel. */
 export const DEMO_FILL_EVENT = "e-anudaan:demo-fill";
@@ -40,6 +44,11 @@ export interface DemoFillDetail {
    * page painted and the state it names was never seen.
    */
   holdChecks?: boolean;
+  /**
+   * Show the errors of this step (an index into the branch's visible steps) as the form opens, as
+   * if Next had been pressed there. A rule preset lands on the step its bad answer is on.
+   */
+  errorsAt?: number;
 }
 
 /** Set in sessionStorage, to the scheme code, while the demo holds the upload step's checks. */
@@ -119,19 +128,21 @@ function fullValues(def: WizardDef, seed: Record<string, string> = {}): Record<s
 function answerFor(f: FieldDef, values?: Record<string, string>): string {
   if (f.districtsOf) {
     const state = values?.[f.districtsOf];
-    return (state ? districtsOf(state)[0] : undefined) ?? "Pune";
+    const districts = state ? districtsOf(state) : [];
+    return districts.includes(DEMO_APPLICANT.district) ? DEMO_APPLICANT.district : (districts[0] ?? DEMO_APPLICANT.district);
   }
-  // `noUncheckedIndexedAccess` is on, so an indexed read is `string | undefined` even after a
-  // length test. The fallback is never reached; writing it is cheaper than asserting.
-  if (f.options?.length) return f.options[0] ?? "";
+  // The demo applicant's choice where the list offers it — a Pune society's project in Maharashtra,
+  // not in whichever state sorts first.
+  if (f.options?.length) return preferredOption(f.options);
+  const told = demoAnswer(f);
+  if (told !== undefined) return told;
 
   switch (f.rule) {
-    case "ifsc": return "SBIN0000001";
-    case "pan": return "AAAAA0000A";
-    case "pin": return "411001";
-    case "nameAndPhone": return "Illustrative Name, 9800000000";
-    case "lettersOnly": return "Illustrative Name";
-    case "accountNumber": return "123456789012";
+    case "ifsc": return DEMO_APPLICANT.ifsc;
+    case "pan": return DEMO_APPLICANT.pan;
+    case "pin": return DEMO_APPLICANT.pin;
+    case "nameAndPhone": return "Anil Kulkarni, 9800000103";
+    case "accountNumber": return DEMO_APPLICANT.account;
     case "notFuture": return "2016-04-01";
     // A date that must follow another one: every demo date was 1 Apr 2026, so "Complete & valid"
     // stopped on Organisation Details with "Must be later than the date of registration."
@@ -140,26 +151,19 @@ function answerFor(f: FieldDef, values?: Record<string, string>): string {
     default: break;
   }
   switch (f.kind) {
-    case "email": return "contact@sankalpseva.example.org";
-    case "tel": return "9800000000";
     case "date": return "2026-04-01";
     case "time": return "10:30";
     // A figure in rupees is filled as money, not as the generic 12: "Complete & valid" asked for a
     // ₹12 non-recurring grant beside cost norms of ₹20 lakh, and the review step read it back (W-01).
-    case "number": return /₹|grant|cost|amount|expenditure|turnover|salary|honorarium|rent/i.test(f.label) ? "250000" : "12";
+    case "number": return /₹|grant|cost|amount|expenditure|turnover|salary|honorarium|rent/i.test(f.label) ? "250000" : "10";
     case "checkbox": return "true";
-    case "textarea": {
-      const text = `Illustrative response for "${stripStar(f.label)}", entered by the SAMAVESH prototype demo tools.`;
-      return f.maxLength ? text.slice(0, f.maxLength) : text;
-    }
-    default: {
-      const text = `Illustrative ${stripStar(f.label).toLowerCase()}`;
-      return f.maxLength ? text.slice(0, f.maxLength) : text;
-    }
+    default:
+      // Every free-text field the demo applicant answers is named in demo-answers.ts; one that is
+      // not is a new field, and the test beside this file fails until it is given an answer.
+      return "";
   }
 }
 
-const stripStar = (label: string) => label.replace(/\s*\*$/, "").trim();
 
 /** Uploads for the checklist, every one carrying the given verdict. */
 function docsWith(def: WizardDef, values: Record<string, string>, state: VerdictState,
@@ -234,4 +238,107 @@ export function buildScenario(id: string, def: WizardDef): DemoFillDetail {
     default:
       return { scheme: def.code, values: full, docs: docsWith(def, full, "verified") };
   }
+}
+
+/* ── One preset per validation rule ─────────────────────────────────────────────────────────── */
+
+/**
+ * The data that trips exactly ONE of the form's rules, everything else answered correctly.
+ *
+ * "Validation errors" above shows the error summary; these show each message, so a reviewer can ask
+ * for "the IFSC error" and see the words the applicant sees. Each is derived from the scheme's own
+ * fields: a preset appears only where the open scheme has a field the rule guards, and it lands on
+ * the step that field is on, with that step's errors showing.
+ */
+export interface RulePreset {
+  id: string;
+  label: string;
+  /** The field it breaks, and how. */
+  finds: (f: FieldDef, values: Record<string, string>) => boolean;
+  bad: (f: FieldDef, values: Record<string, string>) => string | undefined;
+}
+
+const text = (f: FieldDef) => f.kind === "text" || f.kind === "textarea";
+
+export const RULE_PRESETS: readonly RulePreset[] = [
+  { id: "rule-required", label: "Mandatory Answer Left Out",
+    finds: (f) => Boolean(f.required) && text(f), bad: () => undefined },
+  { id: "rule-email", label: "Email Without @",
+    finds: (f) => f.kind === "email", bad: () => "office.sankalpseva.example.org" },
+  { id: "rule-mobile", label: "Mobile Number Too Short",
+    finds: (f) => f.kind === "tel" && /mobile/i.test(`${f.name} ${f.label}`), bad: () => "98000" },
+  { id: "rule-telephone", label: "Telephone With Letters",
+    finds: (f) => f.kind === "tel" && !/mobile/i.test(`${f.name} ${f.label}`), bad: () => "020-HADAPSAR" },
+  { id: "rule-number", label: "Figure in Words",
+    finds: (f) => f.kind === "number" && !f.notMoreThan, bad: () => "twenty five" },
+  { id: "rule-not-more-than", label: "Part Larger Than the Whole",
+    finds: (f) => Boolean(f.notMoreThan),
+    bad: (f, v) => String(Number(v[f.notMoreThan!] || 0) + 5) },
+  { id: "rule-letters-only", label: "Name With Digits",
+    finds: (f) => f.rule === "lettersOnly", bad: () => "Anil Kulkarni 2" },
+  { id: "rule-pin", label: "PIN Code of Five Digits",
+    finds: (f) => f.rule === "pin", bad: () => "41102" },
+  { id: "rule-ifsc", label: "IFSC Code Malformed",
+    finds: (f) => f.rule === "ifsc", bad: () => "SBIN000001" },
+  { id: "rule-account-number", label: "Account Number With Letters",
+    finds: (f) => f.rule === "accountNumber", bad: () => "1234-5678-ABC" },
+  { id: "rule-pan", label: "PAN of the Wrong Holder Type",
+    finds: (f) => f.rule === "pan", bad: () => "ABCXE1234F" },
+  { id: "rule-not-future", label: "Date Later Than Today",
+    finds: (f) => f.rule === "notFuture", bad: () => "2031-01-01" },
+  { id: "rule-after-registration", label: "Expiry Before Registration",
+    finds: (f) => f.rule === "afterRegistration", bad: (_f, v) => shiftYear(v.fld_registration_date, -1) ?? "2010-01-01" },
+  { id: "rule-after-period-from", label: "Period Ending Before It Starts",
+    finds: (f) => f.rule === "afterPeriodFrom", bad: (_f, v) => shiftYear(v.fld_track_period_from, -1) ?? "2010-01-01" },
+  { id: "rule-must-be-yes", label: "Account Not in the Organisation's Name",
+    finds: (f) => f.rule === "mustBeYes", bad: () => "No" },
+];
+
+function shiftYear(iso: string | undefined, by: number): string | undefined {
+  if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return undefined;
+  return `${Number(iso.slice(0, 4)) + by}${iso.slice(4)}`;
+}
+
+interface RuleTarget { stepIndex: number; field: FieldDef }
+
+/** Where a preset's rule bites in this scheme: the first visible, typeable field it guards. */
+function ruleTarget(preset: RulePreset, def: WizardDef, values: Record<string, string>): RuleTarget | undefined {
+  const steps = visibleSteps(def, values);
+  // A figure that feeds a total breaks the total too, and the preset would show two errors.
+  const feeds = new Set(def.steps.flatMap((s) => stepFields(s)).flatMap((f) => (f.auto?.kind === "sum" ? f.auto.from : [])));
+  for (let i = 0; i < steps.length; i++) {
+    const step = steps[i]!;
+    if (step.kind === "documents" || step.kind === "review") continue;
+    for (const f of stepFields(step)) {
+      if (f.auto || !fieldVisible(f, values) || isReadOnly(f, values) || feeds.has(f.name)) continue;
+      if (preset.finds(f, values)) return { stepIndex: i, field: f };
+    }
+  }
+  return undefined;
+}
+
+/** The presets the open scheme can show, each with the label of the field it breaks. */
+export function rulePresetsFor(def: WizardDef): { preset: RulePreset; fieldLabel: string }[] {
+  const full = fullValues(def);
+  return RULE_PRESETS.flatMap((preset) => {
+    const target = ruleTarget(preset, def, full);
+    return target ? [{ preset, fieldLabel: target.field.label.replace(/\s*\*$/, "") }] : [];
+  });
+}
+
+/** A rule preset's payload and the address of the step it lands on. */
+export function buildRulePreset(id: string, def: WizardDef): { detail: DemoFillDetail; route: string } | undefined {
+  const preset = RULE_PRESETS.find((p) => p.id === id);
+  if (!preset) return undefined;
+  const values = fullValues(def);
+  const target = ruleTarget(preset, def, values);
+  if (!target) return undefined;
+  const bad = preset.bad(target.field, values);
+  if (bad === undefined) delete values[target.field.name];
+  else values[target.field.name] = bad;
+  const filled = applyAllAutoFields(def, values);
+  return {
+    detail: { scheme: def.code, values: filled, docs: {}, errorsAt: target.stepIndex },
+    route: stepRoute(def.code, filled, target.stepIndex),
+  };
 }
