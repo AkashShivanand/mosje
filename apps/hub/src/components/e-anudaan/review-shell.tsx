@@ -63,7 +63,7 @@ import {
 } from "@/lib/e-anudaan/review-readiness";
 import { fieldLabel, type FieldDef } from "@/lib/e-anudaan/form-schema";
 import type { DocVerdict } from "@/lib/e-anudaan/doc-verification";
-import type { AuditAction, Deficiency, DocReviewStatus, GrantApplication, MockDoc, RoleId } from "@/lib/e-anudaan/types";
+import { holderIsRole, type AuditAction, type Deficiency, type DocReviewStatus, type GrantApplication, type MockDoc, type RoleId } from "@/lib/e-anudaan/types";
 import { RefText } from "./worklist-table";
 import { ServiceErrorNotice, useServiceErrors } from "./service-error";
 import { DocumentPreviewSheet } from "./document-preview-sheet";
@@ -93,6 +93,18 @@ import {
   rowReason,
 } from "@/lib/e-anudaan/document-centre";
 import { deviceCheckOfBytes } from "@/lib/e-anudaan/doc-checks";
+import { decisionProblems, sanctionAmountsInvalid } from "@/lib/e-anudaan/officer-forms";
+import type { DemoFormPreset } from "@/lib/e-anudaan/demo-forms";
+import { resolveSanction } from "@/lib/e-anudaan/demo-forms/officer-values";
+import { REVIEW_DEFICIENCY } from "@/lib/e-anudaan/demo-forms/review-deficiency";
+import { REVIEW_FORWARD } from "@/lib/e-anudaan/demo-forms/review-forward";
+import { REVIEW_REJECT } from "@/lib/e-anudaan/demo-forms/review-reject";
+import { REVIEW_RESPOND } from "@/lib/e-anudaan/demo-forms/review-respond";
+import { REVIEW_RETURN_DIRECTOR } from "@/lib/e-anudaan/demo-forms/review-return-director";
+import { REVIEW_RETURN_PREVIOUS } from "@/lib/e-anudaan/demo-forms/review-return-previous";
+import { REVIEW_SANCTION } from "@/lib/e-anudaan/demo-forms/review-sanction";
+import { REVIEW_SEND_DEFICIENCY } from "@/lib/e-anudaan/demo-forms/review-send-deficiency";
+import { useDemoFormFill } from "./use-demo-form-fill";
 
 /**
  * The officer review screen — ONE component behind all ten grades and the Programme Director.
@@ -177,6 +189,58 @@ export function ReviewShell({ appId }: { appId: string }) {
     el?.focus({ preventScroll: true });
   }, [focusDoc]);
 
+  /**
+   * The demo dock's fills for the decision (lib/e-anudaan/demo-forms). A fill sets the remarks, the
+   * sanction amounts and, where the preset marks a document, that document's verdict — then shows
+   * the message the decision's rule gives, as pressing the button would, without deciding. A
+   * decision this seat cannot make on this file says so and changes nothing.
+   */
+  const fillDecision = (title: string) => (v: Readonly<Record<string, string>>, preset: DemoFormPreset) => {
+    if (!app || !role) return;
+    const permitted = permittedActions(app, role).filter((a) => a.action !== "certify");
+    const pendingCertification = role.caps.includes("certify") && holderIsRole(app.holder, role.id) && !app.certifiedAt;
+    const rule =
+      permitted.find((a) => a.action === v.decision) ??
+      (v.decision === "forward"
+        ? pendingCertification
+          ? RULES.find((r) => r.action === "forward")
+          : permitted.find((a) => a.action === "concur")
+        : undefined);
+    if (!rule) {
+      toast(`${title} is not open to you on this file.`, "info");
+      return;
+    }
+    if (v.mark) {
+      if (!canEditDocVerdicts(app, role)) {
+        toast("Only the examining officer marks documents on this file.", "info");
+        return;
+      }
+      const doc = app.documents.find((d) => d.fileName && /audit/i.test(d.title)) ?? app.documents.find((d) => d.fileName);
+      if (doc) reviewDocument(app.id, doc.id, "Deficient", v.mark === "with-reason" ? (v.markReason ?? "").replace("{document}", doc.title) : "");
+    }
+    setRemarks(v.remarks ?? "");
+    if (rule.action === "sanction") {
+      const norm = schemeNorms(app);
+      if (v.recurring === "above-norm" && !norm) toast("Cost norms are held for AVYAY files only. The amounts sought are filled.", "info");
+      const amounts = resolveSanction(v, { recurring: app.recurring, nonRecurring: app.nonRecurring, norm });
+      setRecurring(amounts.recurring);
+      setNonRecurring(amounts.nonRecurring);
+    }
+    setConfirming(null);
+    // A forward over a marked document is not an error: it is the question pressing Forward asks.
+    const asksFirst = !preset.valid && rule.action === "forward" && !!v.mark;
+    setForwardWarning(asksFirst ? rule : null);
+    setAttempted(preset.valid || asksFirst ? null : rule);
+  };
+  useDemoFormFill(REVIEW_SANCTION.id, fillDecision(REVIEW_SANCTION.title));
+  useDemoFormFill(REVIEW_FORWARD.id, fillDecision(REVIEW_FORWARD.title));
+  useDemoFormFill(REVIEW_DEFICIENCY.id, fillDecision(REVIEW_DEFICIENCY.title));
+  useDemoFormFill(REVIEW_SEND_DEFICIENCY.id, fillDecision(REVIEW_SEND_DEFICIENCY.title));
+  useDemoFormFill(REVIEW_RESPOND.id, fillDecision(REVIEW_RESPOND.title));
+  useDemoFormFill(REVIEW_RETURN_PREVIOUS.id, fillDecision(REVIEW_RETURN_PREVIOUS.title));
+  useDemoFormFill(REVIEW_RETURN_DIRECTOR.id, fillDecision(REVIEW_RETURN_DIRECTOR.title));
+  useDemoFormFill(REVIEW_REJECT.id, fillDecision(REVIEW_REJECT.title));
+
   if (!app || !role) {
     return (
       <StatusScreen
@@ -214,9 +278,7 @@ export function ReviewShell({ appId }: { appId: string }) {
   const sanctionR = Number(recurringText);
   const sanctionNR = Number(nonRecurringText);
   const sanctionEntered = recurringText !== "" || nonRecurringText !== "";
-  const sanctionInvalid =
-    sanctioning &&
-    (recurringText === "" || nonRecurringText === "" || sanctionR + sanctionNR <= 0 || sanctionR + sanctionNR > app.total);
+  const sanctionInvalid = sanctioning && sanctionAmountsInvalid({ recurring: recurringText, nonRecurring: nonRecurringText, sought: app.total });
 
   /* ── One reading of the file, read by everything that states it (audit R-01, R-06) ─────────── */
   const checkOf = (d: MockDoc) => automaticCheckOf(app, d);
@@ -250,11 +312,8 @@ export function ReviewShell({ appId }: { appId: string }) {
 
   /** What stops this decision, as the messages beside the fields concerned. Empty when it can go. */
   const problemsOf = (rule: Rule) => ({
-    remarks: rule.requiresRemarks && !remarks.trim() ? "Enter your remarks." : undefined,
+    ...decisionProblems(rule, { remarks, recurring: recurringText, nonRecurring: nonRecurringText, sought: app.total, items: deficiencyItems }),
     certification: rule.action === "forward" && forwardBlocked ? forwardBlockedReason(blockers, awaiting.length) : undefined,
-    sanction: rule.action === "sanction" && sanctionInvalid ? `Enter both amounts. Together they must be more than ₹0 and no more than the ${rupees(app.total)} sought.` : undefined,
-    deficiency:
-      rule.action === "raiseDeficiency" && deficiencyItems.some((it) => !it.remark.trim()) ? "Give a reason for every document marked for correction." : undefined,
   });
   const problems: Partial<ReturnType<typeof problemsOf>> = attempted ? problemsOf(attempted) : {};
 
@@ -412,9 +471,9 @@ export function ReviewShell({ appId }: { appId: string }) {
 
           <InstalmentsPanel app={app} />
 
-          <ShowCausePanel app={app} dialogOpen={dialog === "showCause"} onDialogClose={() => setDialog(null)} />
+          <ShowCausePanel app={app} dialogOpen={dialog === "showCause"} onDialogOpen={() => setDialog("showCause")} onDialogClose={() => setDialog(null)} />
 
-          <InspectionsPanel app={app} dialogOpen={dialog === "inspection"} onDialogClose={() => setDialog(null)} />
+          <InspectionsPanel app={app} dialogOpen={dialog === "inspection"} onDialogOpen={() => setDialog("inspection")} onDialogClose={() => setDialog(null)} />
 
           <Panel title="File Movement and Remarks">
             <EventList

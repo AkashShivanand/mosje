@@ -45,6 +45,16 @@ import { queryRowsFor, type QueryRow } from "@/lib/e-anudaan/registers";
 import { seatName } from "@/lib/e-anudaan/workflow";
 import { holderIsRole } from "@/lib/e-anudaan/types";
 import { RefText, RowLinkIcon, useWorklistOptions, splitRowActions } from "./worklist-table";
+import { queryResponseError } from "@/lib/e-anudaan/officer-forms";
+import { QUERY_RESPONSE } from "@/lib/e-anudaan/demo-forms/query-response";
+import { useDemoFormFill } from "./use-demo-form-fill";
+
+/** A demo dock fill the response dialog opens with. */
+interface ResponseDemoFill {
+  response: string;
+  valid: boolean;
+  n: number;
+}
 
 type View = "open" | "responded";
 
@@ -56,16 +66,31 @@ function raisedBy(row: QueryRow): string {
 
 export function QueryRegister({ title }: { title: string }) {
   const { state } = useEAnudaan();
+  const { toast } = useToast();
   const role = state.session ? ROLES[state.session] : null;
   const key = role ? reviewKeyOf(role) : null;
   const opts = useWorklistOptions(undefined, undefined, { withPlace: true, withNgoLink: true });
   const [view, setView] = React.useState<View>("open");
   const [responding, setResponding] = React.useState<QueryRow | null>(null);
+  const [demo, setDemo] = React.useState<ResponseDemoFill | null>(null);
 
   const all = React.useMemo(() => (role ? queryRowsFor(state, role.id) : []), [state, role]);
   const open = all.filter((r) => r.open);
   const responded = all.filter((r) => !r.open);
   const rows = view === "open" ? open : responded;
+
+  // The demo dock's fill (demo-forms/query-response.ts): opens the first query awaiting this
+  // officer's response, filled, with the message shown for a rule preset.
+  useDemoFormFill(QUERY_RESPONSE.id, (v, preset) => {
+    const row = open.find((r) => r.canRespond);
+    if (!row) {
+      toast("No query awaits your response.", "info");
+      return;
+    }
+    setView("open");
+    setDemo({ response: v.response ?? "", valid: !!preset.valid, n: Date.now() });
+    setResponding(row);
+  });
 
   const columns: WorklistColumn<QueryRow>[] = [
     {
@@ -183,20 +208,31 @@ export function QueryRegister({ title }: { title: string }) {
           clearFiltersLabel: "Clear Filters",
         })}
       />
-      {responding && <RespondDialog key={responding.id} row={responding} onClose={() => setResponding(null)} />}
+      {responding && (
+        <RespondDialog
+          key={`${responding.id}-${demo?.n ?? 0}`}
+          row={responding}
+          demo={demo}
+          onClose={() => {
+            setResponding(null);
+            setDemo(null);
+          }}
+        />
+      )}
     </>
   );
 }
 
-function RespondDialog({ row, onClose }: { row: QueryRow; onClose: () => void }) {
+function RespondDialog({ row, demo, onClose }: { row: QueryRow; demo: ResponseDemoFill | null; onClose: () => void }) {
   const { act } = useEAnudaan();
   const { toast } = useToast();
-  const [remarks, setRemarks] = React.useState("");
-  const [tried, setTried] = React.useState(false);
+  const [remarks, setRemarks] = React.useState(demo?.response ?? "");
+  const [tried, setTried] = React.useState(demo ? !demo.valid : false);
+  const responseError = queryResponseError(remarks);
 
   const submit = () => {
     setTried(true);
-    if (!remarks.trim()) return;
+    if (responseError) return;
     const res = act(row.app.id, "resolveQuery", { remarks });
     if (!res.ok) {
       toast(res.error, "error");
@@ -237,7 +273,7 @@ function RespondDialog({ row, onClose }: { row: QueryRow; onClose: () => void })
           label="Your Response"
           id="query-response"
           required
-          error={tried && !remarks.trim() ? "Write your response to the query." : undefined}
+          error={tried ? responseError : undefined}
           characterCount={{ value: remarks, maxLength: 1000 }}
         >
           {(c) => <Textarea {...c} rows={4} maxLength={1000} value={remarks} onChange={(e) => setRemarks(e.target.value)} />}

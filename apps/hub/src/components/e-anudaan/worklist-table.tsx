@@ -39,6 +39,11 @@ import { formatDate, formatGrant, rejectionOf, schemeLabel } from "@/lib/e-anuda
 import { caseLabel, officerStatus } from "@/lib/e-anudaan/applicant";
 import { holderLabel } from "@/lib/e-anudaan/workflow";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
+import { inspectionReportErrors, inspectionScheduleError } from "@/lib/e-anudaan/officer-forms";
+import { resolveDate } from "@/lib/e-anudaan/demo-forms/officer-values";
+import { INSPECTION_SCHEDULE } from "@/lib/e-anudaan/demo-forms/inspection-schedule";
+import { INSPECTION_REPORT } from "@/lib/e-anudaan/demo-forms/inspection-report";
+import { useDemoFormFill } from "./use-demo-form-fill";
 import { placeOfProjectId } from "@/lib/e-anudaan/geography";
 import { awaitingInspection } from "@/lib/e-anudaan/registers";
 import { CASE_TYPE, RECEIVED } from "@/lib/e-anudaan/glossary";
@@ -744,7 +749,22 @@ export function InspectionTable({
   const { toast } = useToast();
   const [status, setStatus] = React.useState<"" | InspectionStatus>("");
   const [q, setQ] = React.useState("");
-  const [open, setOpen] = React.useState<{ insp: Inspection; action: InspectionAction } | null>(null);
+  const [open, setOpen] = React.useState<{ insp: Inspection; action: InspectionAction; demo?: InspectionDemoFill } | null>(null);
+
+  // The demo dock's fills (demo-forms/inspection-schedule.ts, inspection-report.ts): open the first
+  // assignment the form applies to, filled, with the messages shown for a rule preset.
+  const fillInspection = (action: "schedule" | "inspect", none: string) => (v: Readonly<Record<string, string>>, preset: { valid?: boolean }) => {
+    const insp = inspectionsFor(state, action === "schedule" ? "Pending" : "Scheduled")[0];
+    if (!insp) {
+      toast(none, "info");
+      return;
+    }
+    setStatus("");
+    setQ("");
+    setOpen({ insp, action, demo: { values: v, valid: !!preset.valid, n: Date.now() } });
+  };
+  useDemoFormFill(INSPECTION_SCHEDULE.id, fillInspection("schedule", "No inspection is awaiting a date."));
+  useDemoFormFill(INSPECTION_REPORT.id, fillInspection("inspect", "No scheduled visit is awaiting its report."));
 
   const names = React.useMemo(() => new Map(state.ngos.map((n) => [n.id, n.name])), [state.ngos]);
   const apps = React.useMemo(() => new Map(state.applications.map((a) => [a.id, a])), [state.applications]);
@@ -915,9 +935,10 @@ export function InspectionTable({
       />
       {open && (
         <InspectionDialog
-          key={`${open.insp.id}-${open.action}`}
+          key={`${open.insp.id}-${open.action}-${open.demo?.n ?? 0}`}
           insp={open.insp}
           action={open.action}
+          demo={open.demo}
           ngoName={names.get(open.insp.ngoId) ?? "—"}
           onClose={() => setOpen(null)}
           onSave={save}
@@ -928,33 +949,46 @@ export function InspectionTable({
   );
 }
 
+/** A demo dock fill the dialog opens with: its values, whether it is the correct fill, and a key. */
+export interface InspectionDemoFill {
+  values: Readonly<Record<string, string>>;
+  valid: boolean;
+  n: number;
+}
+
 export function InspectionDialog({
   insp,
   action,
   ngoName,
   onClose,
   onSave,
+  demo,
 }: {
   insp: Inspection;
   action: InspectionAction;
   ngoName: string;
   onClose: () => void;
   onSave: (next: Inspection, done: string) => void;
+  demo?: InspectionDemoFill;
 }) {
   const initialDate = insp.scheduledFor?.slice(0, 10) ?? "";
-  const [date, setDate] = React.useState(initialDate);
-  const [visitType, setVisitType] = React.useState<Inspection["visitType"]>(insp.visitType);
-  const [findings, setFindings] = React.useState("");
+  const today = new Date().toISOString().slice(0, 10);
+  const [date, setDate] = React.useState(demo ? resolveDate(demo.values.date, today) : initialDate);
+  const [visitType, setVisitType] = React.useState<Inspection["visitType"]>(
+    demo?.values.visitType === "Online" || demo?.values.visitType === "Physical" ? demo.values.visitType : insp.visitType,
+  );
+  const [findings, setFindings] = React.useState(demo?.values.findings ?? "");
   /*
    * No default (usability audit UX-08, 14 Sep 2026). The field used to open on "Satisfactory", so
    * a report submitted without a decision recorded one anyway — the most favourable one.
    */
-  const [recommendation, setRecommendation] = React.useState<"" | Recommendation>("");
-  const [tried, setTried] = React.useState(false);
+  const [recommendation, setRecommendation] = React.useState<"" | Recommendation>(
+    RECOMMENDATIONS.find((r) => r === demo?.values.recommendation) ?? "",
+  );
+  const [tried, setTried] = React.useState(demo ? !demo.valid : false);
   /** Record Inspection asks "Submit this report?" with a summary before anything is saved. */
   const [confirming, setConfirming] = React.useState(false);
   const summaryRef = React.useRef<HTMLDivElement>(null);
-  const today = new Date().toISOString().slice(0, 10);
 
   React.useEffect(() => {
     if (confirming) summaryRef.current?.focus();
@@ -1012,7 +1046,7 @@ export function InspectionDialog({
   }
 
   if (action === "schedule") {
-    const error = tried && !date ? "Choose the date of the visit." : undefined;
+    const error = tried ? inspectionScheduleError(date) : undefined;
     return (
       <Modal
         open
@@ -1050,8 +1084,9 @@ export function InspectionDialog({
     );
   }
 
-  const findingsError = tried && !findings.trim() ? "Record what was found at the visit." : undefined;
-  const recommendationError = tried && !recommendation ? "Select a recommendation." : undefined;
+  const reportErrors = tried ? inspectionReportErrors({ findings, recommendation }) : {};
+  const findingsError = reportErrors.findings;
+  const recommendationError = reportErrors.recommendation;
   return (
     <Modal
       open

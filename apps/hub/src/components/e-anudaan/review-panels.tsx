@@ -54,6 +54,11 @@ import {
 import type { EAnudaanState, GrantApplication, Inspection, RoleId } from "@/lib/e-anudaan/types";
 import type { DocVerdict } from "@/lib/e-anudaan/doc-verification";
 import { RefText } from "./worklist-table";
+import { onlineInspectionError, showCauseError } from "@/lib/e-anudaan/officer-forms";
+import { resolveDate } from "@/lib/e-anudaan/demo-forms/officer-values";
+import { SHOW_CAUSE_NOTICE } from "@/lib/e-anudaan/demo-forms/show-cause-notice";
+import { ONLINE_INSPECTION } from "@/lib/e-anudaan/demo-forms/online-inspection";
+import { useDemoFormFill } from "./use-demo-form-fill";
 
 const BASE = "/portals/e-anudaan";
 
@@ -354,8 +359,18 @@ export function canIssueShowCause(app: GrantApplication, role: RoleId | null | u
  * decision panel's "More Actions" (audit R-04): the button used to sit on this card about 5,000px
  * below "Your Decision", so the card now holds history only and is drawn only when there is some.
  */
-export function ShowCausePanel({ app, dialogOpen, onDialogClose }: { app: GrantApplication; dialogOpen: boolean; onDialogClose: () => void }) {
-  const { issueShowCauseNotice } = useEAnudaan();
+export function ShowCausePanel({
+  app,
+  dialogOpen,
+  onDialogOpen,
+  onDialogClose,
+}: {
+  app: GrantApplication;
+  dialogOpen: boolean;
+  onDialogOpen: () => void;
+  onDialogClose: () => void;
+}) {
+  const { state, issueShowCauseNotice } = useEAnudaan();
   const { toast } = useToast();
   const [grounds, setGrounds] = React.useState("");
   const [respondBy, setRespondBy] = React.useState("");
@@ -370,8 +385,9 @@ export function ShowCausePanel({ app, dialogOpen, onDialogClose }: { app: GrantA
     setError(null);
   };
   const issue = () => {
-    if (!grounds.trim()) {
-      setError("State the grounds for the notice.");
+    const invalid = showCauseError({ grounds, respondBy: respondBy || undefined }, new Date().toISOString());
+    if (invalid) {
+      setError(invalid);
       return;
     }
     const res = issueShowCauseNotice(app.id, { grounds, respondBy: respondBy || undefined });
@@ -382,6 +398,20 @@ export function ShowCausePanel({ app, dialogOpen, onDialogClose }: { app: GrantA
     close();
     toast("Show Cause Notice issued. The NGO has been notified.", "success");
   };
+
+  // The demo dock's fill (demo-forms/show-cause-notice.ts): opens the dialog filled, and for a rule
+  // preset shows the message Issue Notice would.
+  useDemoFormFill(SHOW_CAUSE_NOTICE.id, (v, preset) => {
+    if (!canIssueShowCause(app, state.session)) {
+      toast(`${SHOW_CAUSE_NOTICE.title} is not open to you on this file.`, "info");
+      return;
+    }
+    const next = { grounds: v.grounds ?? "", respondBy: resolveDate(v.respondBy, today) };
+    setGrounds(next.grounds);
+    setRespondBy(next.respondBy);
+    setError(preset.valid ? null : showCauseError({ grounds: next.grounds, respondBy: next.respondBy || undefined }, new Date().toISOString()));
+    onDialogOpen();
+  });
 
   return (
     <>
@@ -426,11 +456,19 @@ export function ShowCausePanel({ app, dialogOpen, onDialogClose }: { app: GrantA
           <p className="text-body-2 text-ink">
             The NGO is notified and asked for a written explanation. The file stays with you.
           </p>
-          <FormField id={`scn-grounds-${app.id}`} label="Grounds for the Notice" required error={error ?? undefined}>
+          <FormField id={`scn-grounds-${app.id}`} label="Grounds for the Notice" required error={(!grounds.trim() && error) || undefined}>
             {(c) => <Textarea {...c} rows={4} value={grounds} onChange={(e) => setGrounds(e.target.value)} />}
           </FormField>
           <div className="max-w-xs">
-            <DatePicker id={`scn-due-${app.id}`} label="Response Deadline" hint="Optional" value={respondBy} onChange={setRespondBy} min={today} />
+            <DatePicker
+              id={`scn-due-${app.id}`}
+              label="Response Deadline"
+              hint="Optional"
+              value={respondBy}
+              onChange={setRespondBy}
+              min={today}
+              error={(grounds.trim() && error) || undefined}
+            />
           </div>
         </div>
       </Modal>
@@ -450,6 +488,9 @@ function inspectionLine(i: Inspection): string {
 
 const EMPTY_INSPECTION = { title: "", description: "", date: "", start: "", end: "" };
 
+/** A date and a time as the officer's local date-time, ISO; "" until both are entered. */
+const at = (date: string, time: string) => (date && time ? new Date(`${date}T${time}:00`).toISOString() : "");
+
 /** Whether the signed-in officer may schedule an online inspection now — none is already booked. */
 export function canScheduleInspection(state: EAnudaanState, app: GrantApplication): boolean {
   const role = state.session ? ROLES[state.session] : null;
@@ -458,7 +499,17 @@ export function canScheduleInspection(state: EAnudaanState, app: GrantApplicatio
 }
 
 /** The inspections on the file, and the dialog that schedules one — opened from "More Actions" (R-04). */
-export function InspectionsPanel({ app, dialogOpen, onDialogClose }: { app: GrantApplication; dialogOpen: boolean; onDialogClose: () => void }) {
+export function InspectionsPanel({
+  app,
+  dialogOpen,
+  onDialogOpen,
+  onDialogClose,
+}: {
+  app: GrantApplication;
+  dialogOpen: boolean;
+  onDialogOpen: () => void;
+  onDialogClose: () => void;
+}) {
   const { state, scheduleOnlineInspection } = useEAnudaan();
   const { toast } = useToast();
   const inspections = state.inspections.filter((i) => i.applicationId === app.id);
@@ -473,8 +524,7 @@ export function InspectionsPanel({ app, dialogOpen, onDialogClose }: { app: Gran
     setError(null);
   };
   const schedule = () => {
-    const at = (t: string) => (f.date && t ? new Date(`${f.date}T${t}:00`).toISOString() : "");
-    const res = scheduleOnlineInspection(app.id, { title: f.title, description: f.description, startsAt: at(f.start), endsAt: at(f.end) });
+    const res = scheduleOnlineInspection(app.id, { title: f.title, description: f.description, startsAt: at(f.date, f.start), endsAt: at(f.date, f.end) });
     if (!res.ok) {
       setError(res.error);
       return;
@@ -482,6 +532,23 @@ export function InspectionsPanel({ app, dialogOpen, onDialogClose }: { app: Gran
     close();
     toast("Online inspection scheduled. The NGO has been notified.", "success");
   };
+
+  // The demo dock's fill (demo-forms/online-inspection.ts): opens the dialog filled, and for a rule
+  // preset shows the message Schedule Inspection would.
+  useDemoFormFill(ONLINE_INSPECTION.id, (v, preset) => {
+    if (!canScheduleInspection(state, app)) {
+      toast(`${ONLINE_INSPECTION.title} is not open to you on this file.`, "info");
+      return;
+    }
+    const next = { title: v.title ?? "", description: v.description ?? "", date: resolveDate(v.date, today), start: v.start ?? "", end: v.end ?? "" };
+    setF(next);
+    setError(
+      preset.valid
+        ? null
+        : onlineInspectionError({ title: next.title, startsAt: at(next.date, next.start), endsAt: at(next.date, next.end) }, new Date().toISOString()),
+    );
+    onDialogOpen();
+  });
 
   return (
     <>
