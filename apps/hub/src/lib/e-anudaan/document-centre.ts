@@ -210,7 +210,7 @@ export function fileSizeLabel(kb: number): string {
     const mb = kb / 1024;
     return `${mb >= 10 ? Math.round(mb) : Math.round(mb * 10) / 10} MB`;
   }
-  return `${Math.max(1, Math.round(kb))} KB`;
+  return kb <= 0 ? "0 KB" : `${Math.max(1, Math.round(kb))} KB`;
 }
 
 /** The one sentence under a row that needs attention — the model's first reason, or why a file was refused. */
@@ -449,8 +449,9 @@ export function simulateCheck(input: CheckInput): DocVerdict {
       priorYear: expectedYear ? shiftFy(expectedYear, -1) : undefined,
     };
     // Whatever a sample rehearses, a file about another document in this slot is the wrong document —
-    // a passing PAN card is not a passing Annual Report. A placeholder names no real document.
-    const fits = fileTopics.size === 0 || [...fileTopics].some((t) => slotTopics.has(t));
+    // a passing PAN card is not a passing Annual Report. A placeholder names no real document, and a
+    // slot that names no document type ("Any other document as requested") takes any document.
+    const fits = fileTopics.size === 0 || slotTopics.size === 0 || [...fileTopics].some((t) => slotTopics.has(t));
     if (!fits && sample !== "placeholder") return verdictForCheck("wrong-document", ctx);
     // The outage clears on a second run, as a real one does; a "wrong document" sample in its own
     // slot is simply that document; a device check's name means nothing once the bytes have passed.
