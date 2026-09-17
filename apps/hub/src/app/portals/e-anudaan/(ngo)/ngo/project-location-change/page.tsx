@@ -46,7 +46,8 @@ import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { projectName, projectsOf } from "@/lib/e-anudaan/applicant";
 import { formatDate } from "@/lib/e-anudaan/format";
 import { currentAddressOf, requestStatusLabel, requestStatusTone } from "@/lib/e-anudaan/change-requests";
-import { addressFromPosition, checkLocation, farLine } from "@/lib/e-anudaan/district-centres";
+import { addressFromPosition, centreOf, checkLocation, farLine } from "@/lib/e-anudaan/district-centres";
+import { useDemoFormFill } from "@/components/e-anudaan/use-demo-form-fill";
 import type { LocationChangeRequest } from "@/lib/e-anudaan/types";
 
 const MAX = 500;
@@ -116,6 +117,25 @@ export default function ProjectLocationChangePage() {
     setCapture({ state: "idle" });
     setTried(false);
   };
+
+  // The demo dock's Fill tab (lib/e-anudaan/demo-forms/project-location-change.ts). A rule preset
+  // shows the form's errors as Submit would, and submits nothing.
+  useDemoFormFill("project-location-change", (v, preset) => {
+    const pendingIds = new Set(requests.filter((r) => r.status === "Pending").map((r) => r.projectId));
+    const chosen = v.project === "pending"
+      ? projects.find((p) => pendingIds.has(p.id))
+      : v.project === "free" ? projects.find((p) => !pendingIds.has(p.id)) : undefined;
+    setProjectId(chosen?.id ?? "");
+    setAddress((v.address ?? "").replace("{district}", chosen?.district ?? "").replace("{state}", chosen?.state ?? ""));
+    setReason(v.reason ?? "");
+    setDoc(v.document ? { name: v.document, size: 184_000 } : null);
+    const centre = chosen ? centreOf(chosen.state, chosen.district) : undefined;
+    if (v.position === "within" && centre) setCapture({ state: "captured", lat: centre.lat, lng: centre.lng });
+    // Far from any district this estate lists a project in: the Andaman Sea off Port Blair.
+    else if (v.position === "far") setCapture({ state: "captured", lat: 11.62, lng: 92.73 });
+    else setCapture({ state: "idle" });
+    setTried(!preset.valid);
+  });
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
