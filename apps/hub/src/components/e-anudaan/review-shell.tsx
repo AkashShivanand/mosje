@@ -79,6 +79,7 @@ import {
   schemeNorms,
 } from "./review-panels";
 import { ReviewReport } from "./review-report";
+import { ProjectRecordsSummary } from "./project-records";
 import { Findings, rowStateOf } from "./document-centre-parts";
 import {
   acceptFromNote,
@@ -396,6 +397,8 @@ export function ReviewShell({ appId }: { appId: string }) {
           />
 
           <FundingHistory app={app} />
+
+          <ProjectRecordsSummary app={app} />
 
           <InstalmentsPanel app={app} />
 
