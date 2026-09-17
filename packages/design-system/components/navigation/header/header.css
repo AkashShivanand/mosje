@@ -1501,19 +1501,81 @@
      DIVERGENCE, recorded per standards-precedence.md: DBIM 5.2 lists the ministry line in the
      lockup. Withheld on a crowded portal phone row for the legibility of the page; for the
      Department to confirm. The emblem steps down with it so the row is not held open by the mark.
-     280px: the ministry line at label-2 is about 235px, plus the emblem and its gap. */
+     320px (was 280 until 2026-09-17): the ministry line at label-2 is about 235px plus the emblem
+     and its gap, and the 8px row gap left a 375 row with a toggle at 295 — just over 280, so the
+     masthead flipped to its tall state on exactly the screen most readers hold. At 320 a row with
+     any trailing control is crowded at 375 and 412; a login row with none keeps every line. */
   @media (max-width: 767px) {
     .ds-hdr[data-variant="portal"] .ds-hdr-brand__lockup {
       container: ds-hdr-lockup / inline-size;
     }
 
-    @container ds-hdr-lockup (max-width: 280px) {
+    @container ds-hdr-lockup (max-width: 320px) {
       .ds-hdr-lockup__ministry {
         display: none;
       }
 
       .ds-hdr-lockup__emblem {
         height: 48px; /* the emblem ladder: 64 resting · 48 crowded portal phone · 44 compact · 32/28 condensed */
+      }
+    }
+  }
+
+  /* ── The portal phone row, audited 2026-09-17: ONE ROW, ONE NAME, QUIET CONTROLS ──
+     Measured before this block on E-Anudaan's NGO screens: at 320 the bell and avatar wrapped
+     onto a second line under the toggle and the brand row stood 145px (191 with the bar); at
+     375 the department ran to three lines beside a low-sitting emblem. Four things read as
+     clutter, and each has one answer here.
+
+     1. TWO CONTROLS IN A BOX, ONE IN A BLOB. The toggle and the bell were 40px outlined squares
+        and the avatar a filled one — three shapes on a 320px row, framing the identity between
+        two borders. On a phone the controls go GHOST: same 40px target, same hover/pressed
+        ground, same focus ring, no stroke. The identity is then the only framed-looking thing
+        on the row. From 768 up nothing changes — the outlined IconButton stays the spec.
+     2. "GOVERNMENT OF INDIA" TWICE IN 50px. The accessibility bar directly above already
+        carries it, with the flag, on every portal (SiteHeader renders it for every non-compact
+        variant). On a CROWDED phone lockup the org line goes; BETA keeps its own short row.
+        DIVERGENCE, recorded per standards-precedence.md beside the ministry-line one above:
+        DBIM 5.2 lists the line in the lockup; it is present on the page, one row up.
+     3. THE EMBLEM SAT ON THE BASELINE, not the row. `flex-end` is right for the 64px resting
+        lockup beside four lines; beside two it dropped the mark below the controls' centre.
+        Centred, and stepped to 40 so it matches the controls it sits between.
+     4. THE ROW WRAPPED. The lockup's 168px floor predates the bell: toggle 40 · 12 · 168 · 12 ·
+        bell 40 · 8 · account 48 = 328 > 288 at 320. Gaps go to 8, the avatar's trigger loses
+        its 4px padding (the 40px avatar IS the target), and the floor drops to 136 — at 320
+        that leaves 144, which holds the department on three lines of 14px, not a column. */
+  @media (max-width: 767px) {
+    .ds-hdr[data-variant="portal"] .ds-hdr-brand__in {
+      gap: var(--sa-stack-8);
+    }
+
+    .ds-hdr[data-variant="portal"] .ds-hdr-brand__lockup {
+      min-width: 136px;
+    }
+
+    .ds-hdr[data-variant="portal"] .ds-hdr-brand__toggle,
+    .ds-hdr[data-variant="portal"] .ds-hdr-brand__in .ds-hdr-bell__btn {
+      border-color: transparent;
+    }
+
+    .ds-hdr[data-variant="portal"] .ds-hdr-brand__in .ds-hdr-account.is-button {
+      padding: 0;
+    }
+
+    @container ds-hdr-lockup (max-width: 320px) {
+      /* On the children, not the lockup: the lockup IS the container, and a container
+         query cannot select its own container. */
+      .ds-hdr-lockup__emblem,
+      .ds-hdr-lockup__lines {
+        align-self: center;
+      }
+
+      .ds-hdr-lockup__org {
+        display: none;
+      }
+
+      .ds-hdr-lockup__emblem {
+        height: 40px;
       }
     }
   }

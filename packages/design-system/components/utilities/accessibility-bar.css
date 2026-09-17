@@ -179,6 +179,29 @@
       clip: rect(0, 0, 0, 0);
       white-space: nowrap;
     }
+    /* "GOVERNMENT OF / INDIA" is not a label. At 320 the name broke over two lines and the
+       bar grew from 44 to 46 with the words stacked beside a flag. It stays one line: the
+       flag's gap and the cluster's gap step down to 8, which is the width it needed. */
+    .sa-abar.device-auto .sa-abar__govlabel {
+      white-space: nowrap;
+    }
+    .sa-abar.device-auto .sa-abar__gov,
+    .sa-abar.device-auto .sa-abar__end {
+      gap: var(--sa-inline-8);
+    }
+  }
+  /* Below 360 the launch glyph goes too: the link's destination is already announced by
+     its visually-hidden text, and the 14px it frees is what keeps the name on one line.
+     `Icon` writes `display` inline, so a class cannot switch it off; out of flow at zero
+     size does the same job — the masthead's account caret uses the same move. */
+  @media (max-width: 359px) {
+    .sa-abar.device-auto .sa-abar__ext {
+      position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+      opacity: 0;
+    }
   }
 
   /* Government of India link */

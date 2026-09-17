@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "SiteHeader `variant=\"portal\"` below 768: the rail toggle and bell are ghost controls (no stroke), the row gap is 8 and the account trigger drops its padding, so the bell and avatar no longer wrap onto a second row at 320–360. A crowded lockup (container ≤ 320px, was 280) drops the \"Government of India\" line the accessibility bar already carries and centres a 40px emblem. AccessibilityBar keeps \"Government of India\" on one line on a phone, hiding the launch glyph below 360. Tablet and desktop unchanged"
+}
