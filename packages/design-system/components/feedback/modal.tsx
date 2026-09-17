@@ -387,6 +387,12 @@ export function Modal({
     */
     let pressedOutside = false;
     const onDown = (e: MouseEvent) => {
+      // The demo tools are not part of the page a dialog sits on: filling the open form from the
+      // dock must not read as dismissing it (which asked to discard the answers being filled).
+      if ((e.target as Element | null)?.closest?.("[data-sa-demo-tools]")) {
+        pressedOutside = false;
+        return;
+      }
       pressedOutside = !!panel && !panel.contains(e.target as Node);
     };
     const onUp = (e: MouseEvent) => {
