@@ -71,7 +71,8 @@ const meta = {
      */
     viewAllHref: "/portals",
     viewAllLabel: "Find your portal",
-    viewAllPrompt: "Are you an officer or administrator?",
+    viewAllPrompt: "",
+    showViewAll: true,
     logoSrc: "/design-system/samavesh-logo-156.png",
     portals: DEFAULT_SAMAVESH_PORTALS,
     /*

@@ -151,12 +151,20 @@ const ARRANGEMENTS: {
     props: { defaultOpen: true, portals: [] },
   },
   {
-    id: "prompt",
-    eyebrow: 'code only · viewAllPrompt=""',
+    id: "view-all-off",
+    eyebrow: "View all · off",
     caption:
-      "An empty viewAllPrompt drops the question and leaves the link; viewAllLabel is its wording and viewAllHref its target.",
+      "showViewAll={false} removes the footer link, for a drawer that is the whole answer. On, the link is Find your portal and opens the portal listing; viewAllLabel is its wording and viewAllHref its target.",
     open: true,
-    props: { defaultOpen: true, portals: SPECIMEN_PORTALS, viewAllPrompt: "" },
+    props: { defaultOpen: true, portals: SPECIMEN_PORTALS, showViewAll: false },
+  },
+  {
+    id: "prompt",
+    eyebrow: "code only · viewAllPrompt",
+    caption:
+      "viewAllPrompt places a short question before the link. It is empty by default and is not drawn in Figma; any question used must address every reader, not one role.",
+    open: true,
+    props: { defaultOpen: true, portals: SPECIMEN_PORTALS, viewAllPrompt: "Signing in to a portal?" },
   },
   {
     id: "explore",
@@ -358,8 +366,11 @@ export default function SamaveshBannerDocPage(): React.JSX.Element {
                     <h2 id="example" style={h2Style}>Code Example</h2>
                     <CodeBlock>{`<SamaveshBanner
   drawerTitle="Choose a portal to visit"
-  viewAllHref="/website/samavesh-citizen-portals"
-/>`}</CodeBlock>
+  linkAs={Link}
+/>
+
+{/* A drawer that is the whole answer: no link to the directory. */}
+<SamaveshBanner linkAs={Link} showViewAll={false} />`}</CodeBlock>
                   </section>
                 </>
               ),
