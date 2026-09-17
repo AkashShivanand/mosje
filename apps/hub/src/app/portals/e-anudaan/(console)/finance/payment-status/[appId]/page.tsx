@@ -51,7 +51,8 @@ export default function PaymentStatusPage() {
   const app = findApp(decodeURIComponent(params.appId));
   const role = state.session ? ROLES[state.session] : null;
   // The status is read from PFMS when the page opens; that read can fail (error-catalogue.ts).
-  const [failure, clearFailure] = useFailureOnLoad("payment");
+  // Keyed by the application: moving from one payment status to another does not remount the page.
+  const [failure, clearFailure] = useFailureOnLoad("payment", params.appId);
 
   if (failure?.target === "page") {
     return <ServiceErrorNotice failure={failure} homeHref={role?.home} onRetry={clearFailure} onDismiss={clearFailure} />;

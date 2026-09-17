@@ -266,6 +266,8 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
   /** The draft exactly as this tab last wrote it, so its own writes are not mistaken for another tab's. */
   const lastWritten = React.useRef<string | null>(null);
   const errorRef = React.useRef<HTMLDivElement>(null);
+  /** The step move a failed save interrupted, so Try Again completes it rather than only saving. */
+  const interruptedMove = React.useRef<{ i: number; how: "push" | "replace" } | null>(null);
   /** The Upload Documents step, asked whether it may be left (the Document Centre's gate). */
   const docStep = React.useRef<DocumentsChecklistHandle>(null);
   const submitErrorRef = React.useRef<HTMLDivElement>(null);
@@ -431,8 +433,13 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
    * still exactly as it opened is not a draft, and moving does not make it one.
    */
   const navigate = (i: number, how: "push" | "replace" = "push"): boolean => {
-    // The draft is saved to the portal on every move between steps; a failed save keeps the step open.
-    if (requests.attempt("save-draft")) return false;
+    // The draft is saved to the portal on every move between steps; a failed save keeps the step open,
+    // and remembers where the applicant was going so Try Again finishes the move.
+    if (requests.attempt("save-draft")) {
+      interruptedMove.current = { i, how };
+      return false;
+    }
+    interruptedMove.current = null;
     requests.clear();
     const mustWrite = needsDraftWrite(JSON.stringify({ values, docs }), opened.current, window.localStorage.getItem(key));
     if (mustWrite && !writeDraft(i)) {
@@ -650,6 +657,7 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
         onRetry={() => {
           requests.clear();
           if (requests.failure?.occasion === "submit") submit();
+          else if (interruptedMove.current) navigate(interruptedMove.current.i, interruptedMove.current.how);
           else writeDraft();
         }}
         onDismiss={requests.clear}
