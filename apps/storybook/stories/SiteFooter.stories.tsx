@@ -47,14 +47,10 @@ import digitalIndiaMark from "../../hub/public/website/images/Digital-India-Reve
  */
 const HELP = { label: "Help", href: "/website/help" };
 
-/** The policy row without Help, which the portal variant draws from its own prop. */
+/** The portal strip's policies. Sitemap and Help come from their own props there. */
 const PORTAL_POLICY = [
-  { label: "Copyright Policy", href: "/website/copyright" },
-  { label: "Hyperlinking Policy", href: "/website/hyperlinking-policy" },
   { label: "Terms & Conditions", href: "/website/terms-conditions" },
   { label: "Privacy Policy", href: "/website/privacy-policy" },
-  { label: "Cookies", href: "/website/cookies" },
-  { label: "Visitor Analytics", href: "/website/visitor-analytics" },
   { label: "Feedback", href: "/website/contact-us#feedback" },
 ];
 
@@ -118,15 +114,22 @@ const meta = {
     help: HELP,
     // The website's policy row, in the dosje.gov.in footer's order. Help sits in
     // it because the website variant does not draw the `help` prop; the portal
-    // story below passes the row WITHOUT it, because the portal variant does.
+    // story below passes its own shorter list, because the portal strip does.
     policyLinks: [
       { label: "Copyright Policy", href: "/website/copyright" },
       { label: "Hyperlinking Policy", href: "/website/hyperlinking-policy" },
       HELP,
-      ...PORTAL_POLICY.slice(2),
+      { label: "Terms & Conditions", href: "/website/terms-conditions" },
+      { label: "Privacy Policy", href: "/website/privacy-policy" },
+      { label: "Cookies", href: "/website/cookies" },
+      { label: "Visitor Analytics", href: "/website/visitor-analytics" },
+      { label: "Feedback", href: "/website/contact-us#feedback" },
     ],
     relatedLinks: [
       { label: "National Portal of India", href: "https://www.india.gov.in/", external: true },
+      { label: "CPGRAMS", href: "https://pgportal.gov.in/", external: true },
+      { label: "MyGov", href: "https://www.mygov.in/", external: true },
+      { label: "Open Government Data", href: "https://data.gov.in/", external: true },
     ],
     copyright: "© 2026 Department of Social Justice & Empowerment. All Rights Reserved.",
     lastUpdated: "06 Jun 2026",
@@ -215,34 +218,13 @@ export const Minimal: Story = {
 };
 
 /**
- * `variant="portal"` — the statutory bar alone. No navigation columns, no social
- * rail, no address: a portal has its own navigation and the footer's job there
- * is to carry what DBIM 5.6 and GIGW require and get out of the way.
- * `emblem`, `address`, `social` and `columns` are ignored rather than erroring, so
- * the same content object can drive both variants; `organisation` is required by
- * the type and not drawn.
+ * `variant="portal"` — one thin strip: the lineage beside the policy, Sitemap and Help links. Columns, social rail, credit logos,
+ * Related Links, the copyright line and Last Updated are the website's and are not drawn, so
+ * one content object can still drive both variants.
  */
 export const PortalVariant: Story = {
   args: {
     variant: "portal",
     policyLinks: PORTAL_POLICY,
-    credits: [
-      {
-        prefix: "Developed & maintained by",
-        src: negdMark,
-        alt: "National e-Governance Division (NeGD)",
-        href: "https://negd.gov.in/",
-        width: 143,
-        height: 52,
-      },
-      {
-        prefix: "Powered by",
-        src: digitalIndiaMark,
-        alt: "Digital India",
-        href: "https://www.digitalindia.gov.in/",
-        width: 105,
-        height: 41,
-      },
-    ],
   },
 };

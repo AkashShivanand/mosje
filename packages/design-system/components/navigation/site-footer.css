@@ -445,27 +445,33 @@
   .ds-sitefooter__colophon p { margin: 0; }
   .ds-sitefooter__colophon time { font-variant-numeric: tabular-nums; }
 
-  /* ── Variant · portal ────────────────────────────────────────────────────
+  /* ── Variant · portal — one thin strip ──────────────────────────────────
      A portal footer is chrome under an authenticated workflow, not the front
-     door of a public information site. It carries the statutory minimum and
-     gets out of the way: no navigation columns, no social rail, no address.
-     What it must still carry is exactly what DBIM 5.6 and GIGW
-     require of any government footer — lineage, policies, last-updated, credits
-     — which is the whole reason it is a VARIANT of this component rather than a
-     separate one that would drift out of compliance on its own. */
+     door of a public information site. It is ONE STRIP: the ownership sentence
+     on one side, the policy, Sitemap
+     and Help links on the other. Columns, social rail, credit logos and Related
+     Links are the website's, one click away — a citizen part-way through an
+     application needs to know whose service this is and where the rules and help
+     are, and nothing else.
 
-  .ds-sitefooter--portal .ds-sitefooter__statutory {
-    border-top: 0;
-  }
+     Same ground and inks as the website footer, so the two read as one family.
+     Fluid, padded with the page margin, like a portal masthead. */
 
-  .ds-sitefooter--portal .ds-sitefooter__statutory .ds-sitefooter__in {
+  .ds-sitefooter__strip {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-stack-8) var(--sa-padding-32);
+    padding-block: var(--sa-padding-12);
     padding-inline: var(--sa-grid-margin-page);
-    padding-block: var(--sa-padding-20);
-    gap: var(--sa-stack-16) var(--sa-padding-32);
   }
 
-  .ds-sitefooter--portal .ds-sitefooter__inline-navs {
-    padding-top: var(--sa-padding-12);
+  .ds-sitefooter__strip-owner {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--ds-footer-ink-dim);
   }
 
   /* ── The scroll-end safe area ────────────────────────────────────────────
@@ -477,7 +483,8 @@
      absent; reserving room for a widget that is not there is a hole in the page.
      Above 1336px the container already clears the launcher's column. */
   @media (max-width: 1335px) {
-    body:has(.ds-chatbot--fixed) .ds-sitefooter__statutory .ds-sitefooter__in {
+    body:has(.ds-chatbot--fixed) .ds-sitefooter__statutory .ds-sitefooter__in,
+    body:has(.ds-chatbot--fixed) .ds-sitefooter__strip {
       padding-block-end: var(--sa-corner-safe-bottom, 116px);
     }
   }

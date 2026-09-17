@@ -11,12 +11,14 @@ import "./site-footer.css";
  * (identity, address, social, navigation columns, Related Links) on top of the
  * statutory apparatus.
  *
- * `portal` — chrome under an authenticated workflow. Carries the statutory
- * apparatus and nothing else: a portal has its own navigation, and a citizen
- * mid-application does not need a sitemap. It is a VARIANT rather than a second
- * component because the statutory half is identical and must stay identical —
- * a separate portal footer is a second thing to keep DBIM-compliant, and the
- * one that already existed drifted into being used by nobody.
+ * `portal` — chrome under an authenticated workflow: ONE THIN STRIP, one row at
+ * desktop widths. The ownership sentence on one side, the policy, Sitemap and
+ * Help links on the other, and nothing else. A citizen part-way through an
+ * application needs to know whose service this is and where the rules and help
+ * are; the columns, social rail, credit logos, Related Links and the page date
+ * belong to the website, one click away. It is still a VARIANT, so the
+ * statutory strings a portal shows are the same props the website shows and
+ * cannot drift.
  */
 export type SiteFooterVariant = "website" | "portal";
 
@@ -76,7 +78,7 @@ export interface SiteFooterProps extends React.HTMLAttributes<HTMLElement> {
   columns?: SiteFooterColumn[];
   /** [DBIM 5.6] Required on BOTH variants. The mandated lineage sentence. */
   lineage: string;
-  /** [DBIM 5.6] "Hyperlinked logos". Rendered on both variants. */
+  /** [DBIM 5.6] "Hyperlinked logos". Website variant only. */
   credits?: SiteFooterCredit[];
   /**
    * [DBIM 5.6] The website policies — terms of use, privacy, copyright,
@@ -93,8 +95,8 @@ export interface SiteFooterProps extends React.HTMLAttributes<HTMLElement> {
    *
    * WHERE IT RENDERS DEPENDS ON THE VARIANT, and that is the whole point of the
    * prop. On `website` the content already places the Sitemap (a link column, or
-   * the policy row), so this is not drawn again — the clause asks for the element to be present, not present
-   * twice. On `portal` there are no columns, so it renders in the statutory bar.
+   * the policy row), so this is not drawn again — the clause asks for the element
+   * to be present, not present twice. On `portal` it renders in the strip.
    * Passing it is how a caller proves the destination exists for both.
    */
   sitemap: SiteFooterLink;
@@ -104,16 +106,20 @@ export interface SiteFooterProps extends React.HTMLAttributes<HTMLElement> {
    * accessibility help), not a contact form.
    */
   help: SiteFooterLink;
-  /** [DBIM 5.6] Required element. Other government platforms. */
+  /** [DBIM 5.6] Required element. Other government platforms. Website variant only. */
   relatedLinks?: SiteFooterLink[];
+  /** Website variant only; on `portal` the lineage sentence states ownership. */
   copyright: string;
-  /** [DBIM 5.6] "Last Updated On" for the *respective page*. */
+  /**
+   * [DBIM 5.6] "Last Updated On" for the *respective page*. Website variant only:
+   * a portal screen is a step in a workflow, not a page of content with a revision date.
+   */
   lastUpdated?: string;
   /**
    * Slot in the colophon, beside the copyright and last-updated. The estate
    * puts `<VisitorCounter />` here — a visit count is page metadata, not
    * identity, and grouping it with the other provenance lines stops it
-   * competing with the emblem.
+   * competing with the emblem. Website variant only.
    */
   colophonSlot?: React.ReactNode;
   /**
@@ -154,10 +160,10 @@ function NewWindow() {
  * A call to action is not one of them: it is page content, and the website
  * renders it with `ActionBanner` on a light band ABOVE the footer.
  *
- * `variant="portal"` renders band 2 alone. That is the whole difference, and
- * it is why this is a variant: the statutory half is the half that must stay
- * DBIM-compliant, and it is now impossible for a portal to have a footer that
- * drifts from the website's on that half.
+ * `variant="portal"` renders neither band. It renders a single thin strip — the
+ * lineage beside one row of links: the policy
+ * links, Sitemap and Help. A portal is a workflow, not a front door; everything
+ * else the footer carries is the website's job.
  *
  * ── DBIM 5.6 ──────────────────────────────────────────────────────────────
  * The six required elements are Website Policy, Sitemap, Related Links, Help,
@@ -167,9 +173,9 @@ function NewWindow() {
  * not a government footer, and making them optional would let a caller ship one
  * that is not.
  *
- * `sitemap` and `help` DRAW only on `portal`, because on `website` the content
- * already places them — in a link column or the policy row and the clause asks for the element to be present,
- * not present twice. They are required regardless, so the destination cannot be
+ * `sitemap` and `help` DRAW only on `portal`, in the strip, because on `website`
+ * the content already places them — in a link column or the policy row — and
+ * the clause asks for the element to be present, not present twice. They are required regardless, so the destination cannot be
  * missing from the variant that has to render it.
  *
  * ── COLOUR ────────────────────────────────────────────────────────────────
@@ -215,9 +221,9 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
   const inStyle: React.CSSProperties | undefined =
     maxWidth === undefined ? undefined : { maxWidth };
   /* The website is CONTAINED and a portal is FLUID — the same split SiteHeader
-     makes. A portal footer pads with the page margin and takes no cap, so its
-     edges meet a portal masthead that runs full width. */
-  const inClass = cn("ds-sitefooter__in", isWebsite && "sa-container");
+     makes. The portal strip pads with the page margin and takes no cap (see
+     site-footer.css), so its edges meet a portal masthead that runs full width. */
+  const inClass = "ds-sitefooter__in sa-container";
 
   /**
    * AN ICON MARKS A DISTINCTION. Where every link in a group is external, the
@@ -249,107 +255,130 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
   const isMixed = (links: SiteFooterLink[]) =>
     links.some((l) => l.external) && links.some((l) => !l.external);
 
+  if (!isWebsite) {
+    return (
+      <footer
+        ref={ref}
+        className={cn("ds-sitefooter", "ds-sitefooter--portal", className)}
+        {...rest}
+      >
+        <h2 className="ds-sr-only">Site footer</h2>
+        {/* One strip. The ownership statement on one side, the
+            way to the rules and to help on the other. Sitemap and Help are
+            drawn from their own props, which is why a portal caller must not
+            also list them in `policyLinks`. */}
+        <div className="ds-sitefooter__strip" style={inStyle}>
+          <p className="ds-sitefooter__strip-owner">{lineage}</p>
+          <nav aria-label="Policies, sitemap and help">
+            <ul className="ds-sitefooter__inline">
+              {[...policyLinks, sitemap, help].map((link) => (
+                <li key={link.label}>{renderLink(link)}</li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+      </footer>
+    );
+  }
+
   return (
     <footer
       ref={ref}
-      className={cn("ds-sitefooter", `ds-sitefooter--${variant}`, className)}
+      className={cn("ds-sitefooter", "ds-sitefooter--website", className)}
       {...rest}
     >
       <h2 className="ds-sr-only">Site footer</h2>
 
       {/* ── Band 1 · the working footer ───────────────────────────────── */}
-      {isWebsite && (
-        <div className={inClass} style={inStyle}>
-          <div className="ds-sitefooter__body">
-            <div className="ds-sitefooter__ident">
-              <div className="ds-sitefooter__lockup">
-                {emblem}
-                <div className="ds-sitefooter__lockup-text">
-                  {organisation.map((line, i) => (
-                    <p
-                      key={line}
-                      className={cn(
-                        "ds-sitefooter__org",
-                        i === organisation.length - 1 && "ds-sitefooter__org--lead",
-                      )}
-                    >
-                      {line}
-                    </p>
-                  ))}
-                </div>
+      <div className={inClass} style={inStyle}>
+        <div className="ds-sitefooter__body">
+          <div className="ds-sitefooter__ident">
+            <div className="ds-sitefooter__lockup">
+              {emblem}
+              <div className="ds-sitefooter__lockup-text">
+                {organisation.map((line, i) => (
+                  <p
+                    key={line}
+                    className={cn(
+                      "ds-sitefooter__org",
+                      i === organisation.length - 1 && "ds-sitefooter__org--lead",
+                    )}
+                  >
+                    {line}
+                  </p>
+                ))}
               </div>
-
-              {address && (
-                <address className="ds-sitefooter__address">
-                  <Icon name="location_on" size={16} />
-                  <span>{address}</span>
-                </address>
-              )}
-
-              {social && social.length > 0 && (
-                <nav aria-label="Social media">
-                  <ul className="ds-sitefooter__social">
-                    {social.map((s) => (
-                      <li key={s.label}>
-                        <a
-                          href={s.href}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="ds-sitefooter__social-link"
-                        >
-                          <BrandGlyph name={s.icon} size={24} />
-                          <span className="ds-sr-only">
-                            {s.label}
-                            <NewWindow />
-                          </span>
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </nav>
-              )}
             </div>
 
-            {Boolean(columns?.length) && (
-              <div className="ds-sitefooter__cols">
-                {columns!.map((col) => (
-                  <nav key={col.id} aria-labelledby={col.id}>
-                    <h3 id={col.id} className="ds-sitefooter__colhead">
-                      {col.heading}
-                    </h3>
-                    <ul className="ds-sitefooter__list">
-                      {col.links.map((link) => (
-                        <li key={link.label}>{renderLink(link)}</li>
-                      ))}
-                    </ul>
-                  </nav>
-                ))}
-
-              </div>
+            {address && (
+              <address className="ds-sitefooter__address">
+                <Icon name="location_on" size={16} />
+                <span>{address}</span>
+              </address>
             )}
 
-            {/* [DBIM 5.6] Related Links — wayfinding, so it lives in the
-                working band, but laid out WIDE rather than as a sixth column.
-                Six columns is one vertical rhythm more than the eye wants to
-                parse in a footer, and this group is short enough to spend the
-                width the four columns leave over. */}
-            {relatedLinks && relatedLinks.length > 0 && (
-              <nav className="ds-sitefooter__wide" aria-labelledby="ds-footer-related">
-                <h3 id="ds-footer-related" className="ds-sitefooter__colhead">
-                  Related Links
-                </h3>
-                <ul className="ds-sitefooter__list">
-                  {relatedLinks.map((link) => (
-                    <li key={link.label}>{renderLink(link, isMixed(relatedLinks))}</li>
+            {social && social.length > 0 && (
+              <nav aria-label="Social media">
+                <ul className="ds-sitefooter__social">
+                  {social.map((s) => (
+                    <li key={s.label}>
+                      <a
+                        href={s.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="ds-sitefooter__social-link"
+                      >
+                        <BrandGlyph name={s.icon} size={24} />
+                        <span className="ds-sr-only">
+                          {s.label}
+                          <NewWindow />
+                        </span>
+                      </a>
+                    </li>
                   ))}
                 </ul>
               </nav>
             )}
           </div>
-        </div>
-      )}
 
-      {/* ── Band 2 · the statutory bar — BOTH variants ─────────────────── */}
+          {Boolean(columns?.length) && (
+            <div className="ds-sitefooter__cols">
+              {columns!.map((col) => (
+                <nav key={col.id} aria-labelledby={col.id}>
+                  <h3 id={col.id} className="ds-sitefooter__colhead">
+                    {col.heading}
+                  </h3>
+                  <ul className="ds-sitefooter__list">
+                    {col.links.map((link) => (
+                      <li key={link.label}>{renderLink(link)}</li>
+                    ))}
+                  </ul>
+                </nav>
+              ))}
+            </div>
+          )}
+
+          {/* [DBIM 5.6] Related Links — wayfinding, so it lives in the
+                working band, but laid out WIDE rather than as a sixth column.
+                Six columns is one vertical rhythm more than the eye wants to
+                parse in a footer, and this group is short enough to spend the
+                width the four columns leave over. */}
+          {relatedLinks && relatedLinks.length > 0 && (
+            <nav className="ds-sitefooter__wide" aria-labelledby="ds-footer-related">
+              <h3 id="ds-footer-related" className="ds-sitefooter__colhead">
+                Related Links
+              </h3>
+              <ul className="ds-sitefooter__list">
+                {relatedLinks.map((link) => (
+                  <li key={link.label}>{renderLink(link, isMixed(relatedLinks))}</li>
+                ))}
+              </ul>
+            </nav>
+          )}
+        </div>
+      </div>
+
+      {/* ── Band 2 · the statutory bar ─────────────────────────────────── */}
       <div className="ds-sitefooter__statutory">
         <div className={inClass} style={inStyle}>
           <p className="ds-sitefooter__lineage">{lineage}</p>
@@ -376,11 +405,8 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
             </div>
           )}
 
-          {/* Policies and related links share one wrapped row. They were two
-              stacked rows of undifferentiated grey under two uppercase
-              eyebrows; both are "links out of here", and the external ones
-              already carry an arrow that says which is which. Both navs keep
-              their `aria-label`, which is where the label was doing work. */}
+          {/* The policy row. No visible eyebrow: the nav keeps its
+              `aria-label`, which is where the label does its work. */}
           <div className="ds-sitefooter__inline-navs">
             <nav aria-label="Website policies">
               <ul className="ds-sitefooter__inline">
@@ -389,35 +415,6 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
                 ))}
               </ul>
             </nav>
-
-            {/* On the WEBSITE these render as a column up in the working band.
-                The portal variant has no working band, so they render here —
-                DBIM 5.6 requires the element on both variants, and moving it
-                for layout reasons must not quietly drop it from one of them.
-
-                Sitemap and Help are here for exactly that reason, and were NOT
-                until an audit on 2026-09-07 counted the portal variant's DBIM
-                elements and found four of six. The rule above had been written
-                for Related Links and never applied to the other two, so the
-                portal footer silently dropped them for eight weeks. */}
-            {!isWebsite && (
-              <nav aria-label="Site navigation and help">
-                <ul className="ds-sitefooter__inline">
-                  <li>{renderLink(sitemap)}</li>
-                  <li>{renderLink(help)}</li>
-                </ul>
-              </nav>
-            )}
-
-            {!isWebsite && relatedLinks && relatedLinks.length > 0 && (
-              <nav aria-label="Related government links">
-                <ul className="ds-sitefooter__inline">
-                  {relatedLinks.map((link) => (
-                    <li key={link.label}>{renderLink(link, isMixed(relatedLinks))}</li>
-                  ))}
-                </ul>
-              </nav>
-            )}
           </div>
 
           <div className="ds-sitefooter__colophon">

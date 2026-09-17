@@ -51,9 +51,13 @@
 //    a site-wide build date.
 // 6. PASS `linkAs={Link}` (next/link). Without it every footer link is a full
 //    document load. `npm run check:link-as` gates this.
-// 7. On `variant="portal"`, `emblem`, `address`, `social` and `columns` are ignored
-//    rather than erroring, so one content object can drive both variants.
-//    `organisation` is still REQUIRED by the type on portal, and is not drawn.
+// 7. `variant="portal"` IS ONE THIN STRIP: the lineage beside the
+//    policy, Sitemap and Help links. `emblem`, `address`, `social`, `columns`,
+//    `credits`, `relatedLinks`, `copyright`, `lastUpdated` and `colophonSlot` are not
+//    drawn there
+//    (ignored rather than erroring, so one content object drives both variants).
+//    `organisation` and `copyright` are still REQUIRED by the type. Keep a
+//    portal's `policyLinks` short — Terms & Conditions, Privacy Policy, Feedback.
 //
 // TOKENS
 //   ground        --sa-bg-brand-primary-boldest
@@ -84,6 +88,8 @@ const websiteOnly = instance.getEnum("Variant", {
   address={ADDRESS}
   social={SOCIAL}
   columns={COLUMNS}
+  credits={CREDITS}
+  relatedLinks={RELATED_LINKS}
   colophonSlot={<VisitorCounter />}`,
   Portal: "",
 });
@@ -93,11 +99,9 @@ export default {
   linkAs={Link}
   organisation={ORGANISATION}${websiteOnly}
   lineage={LINEAGE}
-  credits={CREDITS}
   policyLinks={POLICY_LINKS}
   sitemap={{ label: "Sitemap", href: "/website/sitemap" }}
   help={{ label: "Help", href: "/website/help" }}
-  relatedLinks={RELATED_LINKS}
   copyright={COPYRIGHT}
   lastUpdated={page.lastUpdated}
 />`,

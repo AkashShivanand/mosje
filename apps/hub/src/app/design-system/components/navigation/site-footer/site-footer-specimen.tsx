@@ -3,24 +3,38 @@ import { SiteFooter, VisitorCounter } from "@mosje/design-system";
 
 /*
  * The website's policy row, in the dosje.gov.in footer's order. Help is in it
- * because the website variant does not draw the `help` prop. The portal variant
- * DOES draw it, so the portal specimen passes the row without Help — listing it
- * in both would render it twice in one band.
+ * because the website variant does not draw the `help` prop.
  */
 const HELP = { label: "Help", href: "#" };
-const PORTAL_POLICY = [
+const WEBSITE_POLICY = [
   { label: "Copyright Policy", href: "#" },
   { label: "Hyperlinking Policy", href: "#" },
+  HELP,
   { label: "Terms & Conditions", href: "#" },
   { label: "Privacy Policy", href: "#" },
   { label: "Cookies", href: "#" },
   { label: "Visitor Analytics", href: "#" },
   { label: "Feedback", href: "#" },
 ];
-const WEBSITE_POLICY = [...PORTAL_POLICY.slice(0, 2), HELP, ...PORTAL_POLICY.slice(2)];
 
-/* [DBIM 5.6] Related Links — the GIGW-mandated link to the National Portal of India. */
-const RELATED = [{ label: "National Portal of India", href: "#", external: true }];
+/*
+ * The portal strip's policies: the two a citizen transacting on a portal is
+ * bound by, and Feedback. Sitemap and Help are drawn from their own props, so
+ * they are NOT listed here — they would render twice.
+ */
+const PORTAL_POLICY = [
+  { label: "Terms & Conditions", href: "#" },
+  { label: "Privacy Policy", href: "#" },
+  { label: "Feedback", href: "#" },
+];
+
+/* [DBIM 5.6] Related Links, as the website carries them. */
+const RELATED = [
+  { label: "National Portal of India", href: "#", external: true },
+  { label: "CPGRAMS", href: "#", external: true },
+  { label: "MyGov", href: "#", external: true },
+  { label: "Open Government Data", href: "#", external: true },
+];
 
 /*
  * THE SENTENCE DBIM 5.6 PRESCRIBES, which is the one the website and the Figma
@@ -60,8 +74,8 @@ const CREDITS = [
 ];
 
 /**
- * The portal variant: the statutory bar alone, which is the half that must stay
- * DBIM-compliant and identical to the website's.
+ * The portal variant: one thin strip — the lineage beside
+ * the policy, Sitemap and Help links.
  */
 export function SiteFooterPortalSpecimen(): React.JSX.Element {
   return (
@@ -73,19 +87,15 @@ export function SiteFooterPortalSpecimen(): React.JSX.Element {
         "Department of Social Justice & Empowerment",
       ]}
       lineage={LINEAGE}
-      credits={CREDITS}
       policyLinks={PORTAL_POLICY}
       sitemap={{ label: "Sitemap", href: "#" }}
       help={HELP}
-      relatedLinks={RELATED}
       copyright="© 2026 Department of Social Justice & Empowerment. All Rights Reserved."
-      lastUpdated="27 August 2026"
-      colophonSlot={<VisitorCounter />}
     />
   );
 }
 
-/** The website variant: the same statutory bar, with the working footer above it. */
+/** The website variant: the working footer, and the statutory bar under it. */
 export function SiteFooterWebsiteSpecimen(): React.JSX.Element {
   return (
     <SiteFooter

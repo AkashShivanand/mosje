@@ -13684,7 +13684,7 @@ export const GENERATED_PROPS = {
         "name": "copyright",
         "type": "string",
         "required": true,
-        "description": ""
+        "description": "Website variant only; on `portal` the lineage sentence states ownership."
       },
       {
         "name": "help",
@@ -13714,7 +13714,7 @@ export const GENERATED_PROPS = {
         "name": "sitemap",
         "type": "SiteFooterLink",
         "required": true,
-        "description": "[DBIM 5.6] Sitemap — REQUIRED, like `lineage` and `copyright`, and for the same reason: a footer without it is not a government footer. WHERE IT RENDERS DEPENDS ON THE VARIANT, and that is the whole point of the prop. On `website` the content already places the Sitemap (a link column, or the policy row), so this is not drawn again — the clause asks for the element to be present, not present twice. On `portal` there are no columns, so it renders in the statutory bar. Passing it is how a caller proves the destination exists for both."
+        "description": "[DBIM 5.6] Sitemap — REQUIRED, like `lineage` and `copyright`, and for the same reason: a footer without it is not a government footer. WHERE IT RENDERS DEPENDS ON THE VARIANT, and that is the whole point of the prop. On `website` the content already places the Sitemap (a link column, or the policy row), so this is not drawn again — the clause asks for the element to be present, not present twice. On `portal` it renders in the strip. Passing it is how a caller proves the destination exists for both."
       },
       {
         "name": "address",
@@ -13726,7 +13726,7 @@ export const GENERATED_PROPS = {
         "name": "colophonSlot",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Slot in the colophon, beside the copyright and last-updated. The estate puts `<VisitorCounter />` here — a visit count is page metadata, not identity, and grouping it with the other provenance lines stops it competing with the emblem."
+        "description": "Slot in the colophon, beside the copyright and last-updated. The estate puts `<VisitorCounter />` here — a visit count is page metadata, not identity, and grouping it with the other provenance lines stops it competing with the emblem. Website variant only."
       },
       {
         "name": "columns",
@@ -13738,7 +13738,7 @@ export const GENERATED_PROPS = {
         "name": "credits",
         "type": "SiteFooterCredit[]",
         "required": false,
-        "description": "[DBIM 5.6] \"Hyperlinked logos\". Rendered on both variants."
+        "description": "[DBIM 5.6] \"Hyperlinked logos\". Website variant only."
       },
       {
         "name": "emblem",
@@ -13750,7 +13750,7 @@ export const GENERATED_PROPS = {
         "name": "lastUpdated",
         "type": "string",
         "required": false,
-        "description": "[DBIM 5.6] \"Last Updated On\" for the *respective page*."
+        "description": "[DBIM 5.6] \"Last Updated On\" for the *respective page*. Website variant only: a portal screen is a step in a workflow, not a page of content with a revision date."
       },
       {
         "name": "linkAs",
@@ -13769,7 +13769,7 @@ export const GENERATED_PROPS = {
         "name": "relatedLinks",
         "type": "SiteFooterLink[]",
         "required": false,
-        "description": "[DBIM 5.6] Required element. Other government platforms."
+        "description": "[DBIM 5.6] Required element. Other government platforms. Website variant only."
       },
       {
         "name": "social",

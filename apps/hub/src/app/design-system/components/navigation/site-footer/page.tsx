@@ -118,10 +118,10 @@ const A11Y: A11yItem[] = [
     criterion: "GIGW 3.0 / DBIM 5.6 — Mandatory footer elements",
     level: "GIGW",
     description:
-      "Website Policy, Sitemap, Related Links, Help, Feedback and Last Updated On, plus the lineage sentence and the hyperlinked logos — on BOTH variants. On `website` the Sitemap sits in the Support column and Help in the policy row; on `portal`, which renders no columns, both render in the statutory bar.",
+      "Website Policy, Sitemap, Related Links, Help, Feedback and Last Updated On, plus the lineage sentence and the hyperlinked logos, on the website variant: Sitemap in the Support column, Help in the policy row. The portal strip carries the lineage, the policies, Feedback, Sitemap and Help, and leaves Related Links, the logos and Last Updated to the website.",
     status: "verified",
     evidence:
-      "Audited 2026-09-07 against DBIM 5.6 and Table 8. The audit found the portal variant publishing four of six — Sitemap and Help lived only in the columns — and both are now REQUIRED props (`sitemap`, `help`) rendered in the portal's statutory bar, joining `lineage`, `policyLinks` and `copyright` as type-enforced. Verified in a browser: three labelled navs, no duplicated destination.",
+      "Audited 2026-09-07 against DBIM 5.6 and Table 8; `sitemap` and `help` are REQUIRED props so the portal strip cannot lose them. Re-verified 2026-09-17 in the built site: the website footer carries every element, and the portal strip renders one labelled nav with no duplicated destination.",
   },
 ];
 
@@ -191,7 +191,7 @@ const LIVE_COVERAGE: [string, string, string][] = [
   ["Last Updated", "Covered", "The colophon, dated for the page being read."],
   ["Need Support? · Get in Touch", "Covered", "An Action Banner above the footer."],
   ["Feedback", "Added", "Required by DBIM §5.6 and GIGW 3.0. Opens the Feedback section of Contact Us."],
-  ["Related Links", "Added", "Required by DBIM §5.6. One link, the National Portal of India, which GIGW 3.0 requires."],
+  ["Related Links", "Added", "Required by DBIM §5.6. The National Portal of India (required by GIGW 3.0), CPGRAMS, MyGov and Open Government Data."],
   ["Lineage sentence", "Added", "Prescribed by DBIM §5.6."],
 ];
 
@@ -208,13 +208,13 @@ export default function SiteFooterPage(): React.JSX.Element {
       whenToUse={{
         use: [
           "The foot of every public website page, with `variant=\"website\"`.",
-          "A portal that must publish the statutory apparatus, with `variant=\"portal\"`.",
+          "The foot of every portal screen, with `variant=\"portal\"` — one thin strip.",
           "Anywhere DBIM 5.6's required elements have to be on the page.",
         ],
         avoid: [
           "An internal index surface that is not a public government page — the slim Footer is the right shape there.",
           "A page that needs only a credit line and two policy links — again, Footer.",
-          "Building a second portal footer: the statutory half is identical by design, and a separate one is a second thing to keep DBIM-compliant.",
+          "Building a second portal footer: the strip draws from the same statutory props as the website, so a separate one is a second thing to keep in step.",
         ],
       }}
       related={[
@@ -249,15 +249,16 @@ export default function SiteFooterPage(): React.JSX.Element {
               columns={["Band", "Carries", "website", "portal"]}
               rows={[
                 ["1 — Working footer", "Identity, address, social, four link columns, Related Links", "Yes", "Absent"],
-                ["2 — Statutory bar", "Lineage, credits, policies, Sitemap and Help (portal), colophon", "Yes", "Yes"],
+                ["2 — Statutory bar", "Lineage, credits, policies, colophon", "Yes", "Absent"],
+                ["Portal strip", "Lineage beside the policies, Sitemap and Help — one row at desktop widths", "Absent", "Yes"],
               ]}
             />
             <p>
-              <code>variant=&quot;portal&quot;</code> renders band 2 alone. That is the whole
-              difference, and it is why this is a variant rather than a second component: the
-              statutory half is the half that must stay compliant, and a portal&apos;s cannot drift
-              from the website&apos;s. A call to action is not part of the footer; the website sets
-              it with Action Banner on a light band above.
+              <code>variant=&quot;portal&quot;</code> renders neither band. A portal is a
+              workflow, so its footer is one thin strip: whose service this is, and where the
+              rules and help are. Columns, social links, credit logos and Related Links stay on
+              the website, one click away. A call to action is not part of the footer; the website
+              sets it with Action Banner on a light band above.
             </p>
           </section>
 
@@ -312,8 +313,11 @@ export default function SiteFooterPage(): React.JSX.Element {
               Assessed against every item of DBIM 3.0&apos;s own compliance checklist (Annexure F,
               Checklist 1) that applies to a footer, on the running website footer:{" "}
               <strong>{DBIM_SCORE} / 100</strong>, with {DEVIATIONS} recorded deviations. All six
-              information elements §5.6 makes mandatory are present on both variants, with the
-              prescribed lineage sentence and the hyperlinked logos. The deviations keep the
+              information elements §5.6 makes mandatory are present on the website variant, with the
+              prescribed lineage sentence and the hyperlinked logos. The portal strip keeps the
+              lineage, the policies, Feedback, Sitemap and Help, and leaves Related Links, the logos
+              and Last Updated to the website — a portal is a workflow, not a front door. The
+              deviations keep the
               estate&apos;s Material Symbols icon set and its column-heading size, where following
               DBIM in the footer alone would make the footer inconsistent with the rest of the estate.
             </p>
@@ -373,26 +377,26 @@ import { SiteFooter } from "@mosje/design-system";
   credits={CREDITS}
   policyLinks={POLICY_LINKS}
   sitemap={{ label: "Sitemap", href: "/website/sitemap" }}
-  help={{ label: "Help & Support", href: "/website/contact-us" }}
+  help={{ label: "Help", href: "/website/help" }}
   relatedLinks={RELATED_LINKS}
-  copyright="© 2026 Department of Social Justice & Empowerment. All rights reserved."
+  copyright="© 2026 Department of Social Justice & Empowerment. All Rights Reserved."
   lastUpdated={page.lastUpdated}
   colophonSlot={<VisitorCounter />}
 />`}</CodeBlock>
           <p>
-            A portal takes the same statutory props and nothing else. Passing{" "}
-            <code>columns</code> or <code>social</code> alongside{" "}
+            A portal passes a short policy list — Terms &amp; Conditions, Privacy Policy and
+            Feedback — with Sitemap and Help as their own props. Passing <code>columns</code>,{" "}
+            <code>credits</code> or <code>relatedLinks</code> alongside{" "}
             <code>variant=&quot;portal&quot;</code> is not an error; they are simply not rendered.
           </p>
           <CodeBlock>{`<SiteFooter
   variant="portal"
   organisation={ORGANISATION}
   lineage={LINEAGE}
-  policyLinks={POLICY_LINKS}
+  policyLinks={PORTAL_POLICY_LINKS}
   sitemap={{ label: "Sitemap", href: "/website/sitemap" }}
-  help={{ label: "Help & Support", href: "/website/contact-us" }}
+  help={{ label: "Help", href: "/website/help" }}
   copyright={COPYRIGHT}
-  lastUpdated={page.lastUpdated}
 />`}</CodeBlock>
           </section>
         </>

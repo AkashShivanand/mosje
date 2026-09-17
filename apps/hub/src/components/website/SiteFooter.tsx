@@ -35,12 +35,13 @@ import { VISITOR_ANALYTICS } from "@/lib/website/visitor-analytics";
  * 2026-09-17), and the only additions are what DBIM 3.0 §5.6 or GIGW 3.0
  * requires and the live footer lacks:
  *   Feedback              DBIM 5.6 required element; GIGW 3.0 homepage minimum (g)
- *   Related Links         DBIM 5.6 required element — one entry, the National
- *                         Portal of India, which GIGW 3.0 requires to be linked
+ *   Related Links         DBIM 5.6 required element — the National Portal of
+ *                         India (GIGW 3.0 requires it), CPGRAMS, MyGov and
+ *                         Open Government Data
  *   lineage sentence      DBIM 5.6 prescribed wording
- * MyGov, Open Government Data, Digital India and CPGRAMS were removed from
- * Related Links on 2026-09-17: none is required, and Digital India was already
- * linked by its credit logo. "Help & Support" left the Support column for the
+ * Digital India left Related Links on 2026-09-17: its credit logo already links
+ * it. (The other three were removed the same day and restored — a Related Links
+ * row with one entry read as content that had failed to load.) "Help & Support" left the Support column for the
  * live site's Help link in the policy row, which now opens a real Help page.
  * The Accessibility Statement link left the footer the same day: neither
  * standard asks for it there, and DBIM 5.6 defines Help as the home of
@@ -99,9 +100,17 @@ const columns: SiteFooterColumn[] = [
   },
 ];
 
-/** [DBIM 5.6] Related Links — the GIGW-mandated link to the National Portal of India. */
+/**
+ * [DBIM 5.6] Related Links. The National Portal of India is the one GIGW 3.0
+ * requires; the other three are the national platforms a citizen of this
+ * Department most often needs next — grievance redressal, participation and
+ * published data. Digital India is NOT here: its credit logo already links it.
+ */
 const relatedLinks: SiteFooterLink[] = [
   { label: "National Portal of India", href: "https://www.india.gov.in/", external: true },
+  { label: "CPGRAMS", href: "https://pgportal.gov.in/", external: true },
+  { label: "MyGov", href: "https://www.mygov.in/", external: true },
+  { label: "Open Government Data", href: "https://data.gov.in/", external: true },
 ];
 
 /**
