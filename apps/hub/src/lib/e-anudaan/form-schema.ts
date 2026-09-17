@@ -1904,6 +1904,8 @@ const NAME_AND_PHONE_RE = /^[A-Za-z][A-Za-z .'-]*,\s*\d{10,}$/;
 // Any script's letters and combining marks: a name typed in Devanagari is a name. It was
 // Latin-only, and refused "सुनीता शर्मा".
 const LETTERS_ONLY_RE = /^\p{L}[\p{L}\p{M} .,'-]*$/u;
+/** One @, something either side, a dot in the domain, no spaces. Shape only; delivery proves the rest. */
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 /** A 10-digit Indian mobile number, after spaces, hyphens and a +91 or 0 prefix are removed. */
 const MOBILE_RE = /^[6-9]\d{9}$/;
 /** A landline or other contact number: 6 to 12 digits once the same separators are removed. */
@@ -1977,6 +1979,13 @@ export function validateStep(
         errors[f.name] = "Cannot be more than the number of beneficiaries.";
         continue;
       }
+    }
+
+    // An email box took "sankalpseva.example.org" — no @, nothing to deliver to — and the
+    // validation-errors demo that typed it raised no error at all.
+    if (f.kind === "email" && !EMAIL_RE.test(v)) {
+      errors[f.name] = "Enter an email address in the correct format, like name@example.com.";
+      continue;
     }
 
     // Phone boxes collected paragraphs (review call 11 Sep 2026, T486): a telephone field takes
