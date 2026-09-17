@@ -1785,7 +1785,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Site Footer — Design System",
     "section": "Navigation",
     "href": "/design-system/components/navigation/site-footer",
-    "keywords": "site footer — design system navigation two bands on one ground width comes from the page container the website variant writing the content the four content shapes example every navigation is named SiteFooterLink · label SiteFooterLink · href SiteFooterLink · external SiteFooterColumn · heading SiteFooterColumn · id SiteFooterColumn · links SiteFooterSocial · label SiteFooterSocial · href SiteFooterSocial · icon SiteFooterCredit · src / alt / href SiteFooterCredit · width / height SiteFooterCredit · prefix tokens wcag accessibility",
+    "keywords": "site footer — design system navigation two bands on one ground width comes from the page container the website variant writing the content dbim 3.0 compliance coverage of the dosje.gov.in footer the four content shapes example every navigation is named SiteFooterLink · label SiteFooterLink · href SiteFooterLink · external SiteFooterColumn · heading SiteFooterColumn · id SiteFooterColumn · links SiteFooterSocial · label SiteFooterSocial · href SiteFooterSocial · icon SiteFooterCredit · src / alt / href SiteFooterCredit · width / height SiteFooterCredit · prefix tokens wcag accessibility",
     "description": "The statutory footer for the SAMAVESH estate, in two variants. Structural, not content-bound: every label, href, logo and sentence arrives as a prop.",
     "type": "component",
     "iconName": "navigation"

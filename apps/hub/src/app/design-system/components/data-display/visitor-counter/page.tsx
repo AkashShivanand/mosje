@@ -56,7 +56,7 @@ export default function VisitorCounterPage(): React.JSX.Element {
       name="Visitor Counter"
       status="Beta"
       summary="The “Total Visits” figure in the site footer. It derives a consistent, gently ticking number from a seeded baseline rather than printing an invented constant."
-      figma={{ absent: "Not yet published in the Figma library." }}
+      figma={{ node: "visitorCounter" }}
       specimen={
         <div className="cdp-stack">
           <VisitorCounter />
