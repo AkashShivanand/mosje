@@ -197,7 +197,16 @@ test("the seeded store fits in the browser with room for the applicant's work", 
 test("a schema-11 copy is carried to 12: the NGO's own CCTV setups kept, seeded ones given their register", () => {
   const fresh = seed();
   const detailed = fresh.cctv.find((c) => c.cameraRegister)!;
-  const plain = ({ cameraRegister: _r, certificate: _c, retentionDays: _d, storage: _s, uptime: _u, ...rest }: (typeof fresh.cctv)[number]) => rest;
+  // A schema-11 setup: the record without the fields schema 12 added.
+  const plain = (c: (typeof fresh.cctv)[number]) => {
+    const rest = { ...c };
+    delete rest.cameraRegister;
+    delete rest.certificate;
+    delete rest.retentionDays;
+    delete rest.storage;
+    delete rest.uptime;
+    return rest;
+  };
   const mine = { ...plain(fresh.cctv[1]!), cameras: 8, savedAt: "2026-09-15T10:00:00.000Z" };
   const old = { ...fresh, version: 11, rev: 4, cctv: [plain(detailed), mine] };
   const got = migrateFrom11(old, fresh)!;

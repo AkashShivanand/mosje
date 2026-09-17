@@ -4,6 +4,8 @@ import { DemoDock, type AppEntry, type DemoDockTab } from "@mosje/design-system"
 import { DataModePanel } from "@/components/website/DataModePanel";
 import { hasDataModes } from "@/lib/data-mode/routes";
 import { DemoFillPanel, schemeFromPath } from "@/components/e-anudaan/demo-fill-panel";
+import { DemoFormsPanel } from "@/components/e-anudaan/demo-forms-panel";
+import { formsForPath } from "@/lib/e-anudaan/demo-forms";
 import { DemoDarpanPanel } from "@/components/e-anudaan/demo-darpan-panel";
 import { isDarpanDemoRoute } from "@/lib/e-anudaan/darpan-sign-in";
 import { DemoErrorsPanel } from "@/components/e-anudaan/demo-errors-panel";
@@ -41,6 +43,10 @@ export function ConditionalDemoDock({
   const tabs: DemoDockTab[] = [];
   if (schemeFromPath(pathname)) {
     tabs.push({ id: "fill", label: "Fill", content: <DemoFillPanel pathname={pathname} /> });
+  } else if (pathname.startsWith("/portals/e-anudaan")) {
+    // Every other form: one correct fill and one preset per rule (lib/e-anudaan/demo-forms).
+    const forms = formsForPath(pathname);
+    if (forms.length) tabs.push({ id: "fill", label: "Fill", content: <DemoFormsPanel forms={forms} /> });
   }
   if (isDarpanDemoRoute(pathname)) {
     tabs.push({ id: "darpan", label: "NGO-DARPAN", content: <DemoDarpanPanel /> });
