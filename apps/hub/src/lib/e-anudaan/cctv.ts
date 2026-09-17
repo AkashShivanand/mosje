@@ -129,6 +129,18 @@ export function validateCamera(v: CameraFormValues, id: string, now: Date = new 
   };
 }
 
+/* ── installation certificate ────────────────────────────────────────────── */
+
+export const CERTIFICATE_TYPES: readonly string[] = ["application/pdf", "image/jpeg", "image/png"];
+export const CERTIFICATE_MAX_KB = 5 * 1024;
+
+/** Why a chosen certificate file is refused, or null when it may be uploaded. */
+export function certificateFileProblem(file: { name: string; type: string; size: number }): string | null {
+  if (!CERTIFICATE_TYPES.includes(file.type)) return `${file.name} is not a PDF, JPG or PNG file. Choose the certificate in one of those formats.`;
+  if (file.size / 1024 > CERTIFICATE_MAX_KB) return `${file.name} is larger than 5 MB. Choose a smaller copy of the certificate.`;
+  return null;
+}
+
 /* ── retention and storage form ──────────────────────────────────────────── */
 
 export interface RecordsFormValues {

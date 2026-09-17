@@ -59,8 +59,11 @@ import { projectName, projectsOf } from "@/lib/e-anudaan/applicant";
 import { formatDate } from "@/lib/e-anudaan/format";
 import { cctvActivationCode } from "@/lib/e-anudaan/store/seed";
 import type { CctvSetup, Institution } from "@/lib/e-anudaan/types";
-import { cctvCompliance } from "@/lib/e-anudaan/cctv";
-import { CctvModule } from "@/components/e-anudaan/cctv-module";
+import { cctvCompliance, certificateFileProblem } from "@/lib/e-anudaan/cctv";
+import { CctvModule, type CctvDemoFill } from "@/components/e-anudaan/cctv-module";
+import { useDemoFormFill } from "@/components/e-anudaan/use-demo-form-fill";
+import type { DemoFormPreset } from "@/lib/e-anudaan/demo-forms";
+import { certificateFileOf } from "@/lib/e-anudaan/demo-forms/cctv";
 import { CctvStatusBadge } from "@/components/e-anudaan/cctv-parts";
 
 /** Projects to a page. A fixed page keeps the card the same height whatever the register holds. */
@@ -78,6 +81,7 @@ const CCTV_BASE = "/portals/e-anudaan/ngo/cctv";
 
 function CctvSetupScreen() {
   const { state, findCctv, saveCctv } = useEAnudaan();
+  const { toast } = useToast();
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
@@ -87,6 +91,28 @@ function CctvSetupScreen() {
   const [open, setOpen] = React.useState<Institution | null>(null);
   const [page, setPage] = React.useState(1);
   const openModule = (projectId: string) => router.push(`${pathname}?project=${encodeURIComponent(projectId)}`);
+  /** A demo dock fill for one of the module's forms, handed to the module (demo-forms/cctv.ts). */
+  const [demo, setDemo] = React.useState<CctvDemoFill | null>(null);
+  // The module's forms belong to a configured project: from the list, a fill opens the first one.
+  const fillModule = (formId: string) => (values: Readonly<Record<string, string>>, preset: DemoFormPreset) => {
+    const here = openProjectId !== null && findCctv(openProjectId) ? openProjectId : projects.find((p) => findCctv(p.id))?.id;
+    if (!here) return;
+    if (here !== openProjectId) openModule(here);
+    const setup = findCctv(here);
+    const file = formId === "cctv-certificate" ? certificateFileOf(values) : null;
+    if (setup && file && !certificateFileProblem(file)) {
+      saveCctv({ ...setup, certificate: { fileName: file.name, sizeKb: Math.max(1, Math.round(file.size / 1024)), uploadedAt: new Date().toISOString() } });
+      toast("Installation certificate uploaded.", "success");
+    }
+    setDemo((d) => ({ n: (d?.n ?? 0) + 1, formId, values, valid: !!preset.valid }));
+    // The certificate and the retention form sit on the page, not in a dialog: bring them into view.
+    const target = formId === "cctv-certificate" ? "cctv-certificate-storage" : formId === "cctv-records" ? "cctv-retention" : null;
+    if (target) window.setTimeout(() => document.getElementById(target)?.scrollIntoView({ block: formId === "cctv-records" ? "center" : "start" }), 400);
+  };
+  useDemoFormFill("cctv-camera", fillModule("cctv-camera"));
+  useDemoFormFill("cctv-certificate", fillModule("cctv-certificate"));
+  useDemoFormFill("cctv-records", fillModule("cctv-records"));
+  useDemoFormFill("cctv-uptime", fillModule("cctv-uptime"));
 
   const setupOf = (projectId: string) => findCctv(projectId);
   const live = projects.filter((p) => setupOf(p.id)?.liveFeed).length;
@@ -152,7 +178,7 @@ function CctvSetupScreen() {
                     />
                   </CardBody>
                 </Card>
-                <CctvModule setup={setup} onSave={saveCctv} />
+                <CctvModule setup={setup} onSave={saveCctv} demo={demo} />
               </>
             )}
           </>

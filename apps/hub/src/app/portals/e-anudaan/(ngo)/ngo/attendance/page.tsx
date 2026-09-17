@@ -64,6 +64,7 @@ import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { projectName, projectRunningSince, projectsOf } from "@/lib/e-anudaan/applicant";
 import { formatDate, formatMonthYear } from "@/lib/e-anudaan/format";
 import { WEEK_DAYS, buildReturnRows, weekStart } from "@/lib/e-anudaan/roster";
+import { useDemoFormFill } from "@/components/e-anudaan/use-demo-form-fill";
 
 const TABS = [
   { id: "overview", label: "Overview" },
@@ -90,6 +91,8 @@ function Attendance() {
   const projectId = params.get("project") ?? projects[0]?.id ?? "";
   const project = projects.find((p) => p.id === projectId);
   const tab = params.get("tab") === "week" ? 1 : 0;
+  /** A demo dock fill for the register (lib/e-anudaan/demo-forms/weekly-attendance.ts); `n` remounts it. */
+  const [demo, setDemo] = React.useState<{ n: number; values: Readonly<Record<string, string>> } | null>(null);
 
   const setParam = (key: string, value: string) => {
     const next = new URLSearchParams(params.toString());
@@ -97,6 +100,11 @@ function Attendance() {
     else next.delete(key);
     router.replace(`${pathname}?${next.toString()}`, { scroll: false });
   };
+
+  useDemoFormFill("weekly-attendance", (values) => {
+    setDemo((d) => ({ n: (d?.n ?? 0) + 1, values }));
+    if (tab !== 1) setParam("tab", "week");
+  });
 
   return (
     <div className="space-y-5">
@@ -134,7 +142,7 @@ function Attendance() {
         {tab === 0 ? (
           <Overview projectId={projectId} onRecord={() => setParam("tab", "week")} />
         ) : (
-          <WeekRegister key={projectId} projectId={projectId} projectLabel={project ? projectName(project) : ""} />
+          <WeekRegister key={`${projectId}-${demo?.n ?? 0}`} projectId={projectId} projectLabel={project ? projectName(project) : ""} demo={demo?.values} />
         )}
       </TabPanel>
     </div>
@@ -241,15 +249,28 @@ function Overview({ projectId, onRecord }: { projectId: string; onRecord: () => 
 type Who = "beneficiaries" | "staff";
 type Person = { id: string; name: string; sub: string | undefined };
 
-function WeekRegister({ projectId, projectLabel }: { projectId: string; projectLabel: string }) {
+function WeekRegister({
+  projectId,
+  projectLabel,
+  demo,
+}: {
+  projectId: string;
+  projectLabel: string;
+  /** A demo dock fill, applied as the register mounts. */
+  demo?: Readonly<Record<string, string>>;
+}) {
   const { state } = useEAnudaan();
   const router = useRouter();
   const { toast } = useToast();
-  const [start, setStart] = React.useState(() => weekStart(new Date()));
-  const [who, setWho] = React.useState<Who>("beneficiaries");
+  const [start, setStart] = React.useState(() => {
+    const d = weekStart(new Date());
+    if (demo?.week === "previous") d.setDate(d.getDate() - 7);
+    return d;
+  });
+  const [who, setWho] = React.useState<Who>(demo?.who === "staff" ? "staff" : "beneficiaries");
   /** Present marks, keyed `${personId}:${day}`. Nothing is marked until the NGO marks it. */
   const [present, setPresent] = React.useState<Set<string>>(() => new Set());
-  const [confirming, setConfirming] = React.useState(false);
+  const [confirming, setConfirming] = React.useState(demo?.confirm === "yes");
   const [submittedWeeks, setSubmittedWeeks] = React.useState<Record<string, string>>({});
 
   const people =
@@ -280,8 +301,19 @@ function WeekRegister({ projectId, projectLabel }: { projectId: string; projectL
   };
   const openDays = WEEK_DAYS.filter((_, i) => dateOf(i).getTime() <= endOfToday.getTime());
   const isOpenDay = (d: string) => (openDays as readonly string[]).includes(d);
-
   const key = (id: string, d: string) => `${id}:${d}`;
+
+  /* A fill's marks, placed once as the register mounts. Marking goes through the register's own
+     rule: a day that has not come yet takes no mark, whatever the fill asked for. */
+  const [demoMarked, setDemoMarked] = React.useState(!demo?.marks || demo.marks === "none");
+  if (!demoMarked) {
+    setDemoMarked(true);
+    const asked = demo?.marks === "whole-week" ? WEEK_DAYS : openDays;
+    const marks = people.flatMap((p) => asked.filter(isOpenDay).map((d) => key(p.id, d)));
+    // Two absences on the first day, so the certified totals are not a perfect week.
+    setPresent(new Set(demo?.marks === "all-but-two" ? marks.filter((_, i) => !(i < 2 * openDays.length && i % openDays.length === 0)) : marks));
+  }
+
   const presentOn = (d: string) => people.filter((p) => present.has(key(p.id, d))).length;
   const setDay = (d: string, on: boolean) =>
     setPresent((prev) => {
