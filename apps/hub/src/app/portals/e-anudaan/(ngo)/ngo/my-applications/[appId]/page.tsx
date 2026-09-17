@@ -57,6 +57,7 @@ import {
   ListRow,
   PageHeader,
   SectionTitle,
+  Select,
   Textarea,
   EventList,
   DocumentHistorySheet,
@@ -80,6 +81,7 @@ import { DEFICIENCY, DIVISION_NAME } from "@/lib/e-anudaan/glossary";
 import { formatDate, formatTime } from "@/lib/e-anudaan/format";
 import { uploadProgress } from "@/lib/e-anudaan/doc-verification";
 import { fieldLabel, type FieldDef } from "@/lib/e-anudaan/form-schema";
+import { changesForAudit, editRuleOnFile, type ChangedAnswer, type EditRule } from "@/lib/e-anudaan/edit-policy";
 import { answeredSections, applicantStages, applicantStanding, caseLabel, openDeficiencyOf, requestedAt } from "@/lib/e-anudaan/applicant";
 import type { DeficiencyItem, EAnudaanState, GrantApplication, MockDoc } from "@/lib/e-anudaan/types";
 import { routeOnClick } from "@/components/e-anudaan/ngo-shell";
@@ -194,11 +196,15 @@ function CorrectionPanel({ app }: { app: GrantApplication }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pendingKey]);
 
+  const changed = changedAnswersOf(app, deficiency);
+
   const submit = () => {
     setAttempted(true);
     if (remaining > 0) return;
+    // The file's own record of what changed, and why: the audit trail keeps these remarks.
+    const base = note.trim() || `${items.length} item${items.length === 1 ? "" : "s"} corrected as requested.`;
     const res = act(app.id, "respondDeficiency", {
-      remarks: note.trim() || `${items.length} item${items.length === 1 ? "" : "s"} corrected as requested.`,
+      remarks: changed.length ? `${base} Answers changed — ${changesForAudit(changed)}.` : base,
     });
     if (!res.ok) {
       toast(res.error, "error");
@@ -244,12 +250,16 @@ function CorrectionPanel({ app }: { app: GrantApplication }) {
                   replaceDocument(app.id, doc.id, file, "Replaced after the Ministry's query");
                   correctDeficiencyItem(app.id, item.id, `Replaced with ${file.name}`);
                 }}
-                onCorrectField={(value) => correctDeficiencyItem(app.id, item.id, "Answer corrected.", value)}
+                onCorrectField={(value, reason) => correctDeficiencyItem(app.id, item.id, reason ?? "Answer corrected.", value)}
                 onRespond={(text) => correctDeficiencyItem(app.id, item.id, text)}
               />
             </li>
           ))}
         </ol>
+
+        <ChangeAnotherAnswer app={app} excluded={new Set(items.map((i) => i.fieldName).filter((n): n is string => !!n))} />
+
+        {changed.length > 0 && <ChangedAnswers app={app} changes={changed} />}
 
         <FormField
           label="Note to the Ministry (optional)"
@@ -290,7 +300,7 @@ function CorrectionItem({
   item: DeficiencyItem;
   app: GrantApplication;
   onReplace: (doc: MockDoc, file: { name: string; sizeKb: number }) => void;
-  onCorrectField: (value: string) => void;
+  onCorrectField: (value: string, reason?: string) => void;
   onRespond: (text: string) => void;
 }) {
   const fileInput = React.useRef<HTMLInputElement>(null);
@@ -301,8 +311,8 @@ function CorrectionItem({
   /* Field and note answers are held in the box and saved when the applicant leaves it (N-10).
      Each item used to carry its own "Save Correction" beside the page's "Submit Correction": two
      save models on one list, and an answer typed but not saved was silently lost on submit. */
-  const [value, setValue] = React.useState(() => (item.kind === "note" ? (item.response ?? "") : corrected ? current : ""));
-  const [sameAsSubmitted, setSameAsSubmitted] = React.useState(false);
+  const [value, setValue] = React.useState(() => (item.kind === "note" ? (item.response ?? "") : ""));
+  const rule = item.fieldName ? ruleAtCorrection(app, item.fieldName) : undefined;
   const headingId = `item-${item.id}`;
   const [historyOpen, setHistoryOpen] = React.useState(false);
   const [viewing, setViewing] = React.useState(false);
@@ -436,24 +446,154 @@ function CorrectionItem({
       )}
 
       {item.kind === "field" && (
-        <div className="max-w-measure space-y-2">
-          {/* The first answer stays visible after correction, so the change can be read and
-              audited: "Submitted 215 → Corrected 208" (review panel, cycle 2). An item cannot be
-              marked corrected by saving the figure already submitted. Where the register holds no
-              submitted answer, it says so rather than printing a dash beside a remark about that
-              very figure (N-05). */}
-          <p className="text-body-2 text-ink-muted">
-            Submitted: <span className="font-semibold text-ink">{original || "Not answered in the application"}</span>
-            {corrected && current !== original && (
-              <>
-                {" "}→ Corrected: <span className="font-semibold text-ink">{current}</span>
-              </>
+        <FieldCorrection
+          item={item}
+          app={app}
+          rule={rule}
+          original={original}
+          current={current}
+          corrected={corrected}
+          onCorrectField={onCorrectField}
+          onRespond={onRespond}
+        />
+      )}
+    </section>
+  );
+}
+
+/* ── What the edit policy allows while correcting (lib/e-anudaan/edit-policy.ts) ── */
+
+function ruleAtCorrection(app: GrantApplication, fieldName: string): EditRule | undefined {
+  return editRuleOnFile(app, fieldName);
+}
+
+/** Every answer this correction changes: the items the Ministry asked about, then the applicant's own. */
+function changedAnswersOf(app: GrantApplication, deficiency: NonNullable<ReturnType<typeof openDeficiencyOf>>): ChangedAnswer[] {
+  const values = app.formValues ?? {};
+  const fromItems = (deficiency.items ?? [])
+    .filter((i) => i.kind === "field" && i.fieldName && i.correctedAt && i.originalValue != null && (values[i.fieldName] ?? "") !== i.originalValue)
+    .map((i) => ({
+      fieldName: i.fieldName!,
+      label: i.label,
+      from: i.originalValue!,
+      to: values[i.fieldName!] ?? "",
+      ...(ruleAtCorrection(app, i.fieldName!)?.kind === "editable-with-reason" && i.response ? { reason: i.response } : {}),
+    }));
+  const own = (deficiency.changes ?? []).map(({ fieldName, label, from, to, reason }) => ({ fieldName, label, from, to, ...(reason ? { reason } : {}) }));
+  return [...fromItems, ...own];
+}
+
+/** A locked answer: read-only, why, and where it is changed instead. */
+function LockedAnswer({ rule }: { rule: Extract<EditRule, { kind: "locked" }> }) {
+  const router = useRouter();
+  const to = rule.changeAt;
+  return (
+    <p className="flex items-start gap-2 text-body-2 text-ink">
+      <Icon name="lock" size={16} className="mt-0.5 shrink-0 text-ink-muted" aria-hidden />
+      <span>
+        <span className="font-semibold">This answer cannot be changed here. </span>
+        {rule.reason}{" "}
+        {to &&
+          (to.external ? (
+            <Link href={to.href} external>
+              {to.label}
+            </Link>
+          ) : (
+            <Link href={to.href} onClick={routeOnClick(router, to.href)}>
+              {to.label}
+            </Link>
+          ))}
+      </span>
+    </p>
+  );
+}
+
+function FieldCorrection({
+  item,
+  app,
+  rule,
+  original,
+  current,
+  corrected,
+  onCorrectField,
+  onRespond,
+}: {
+  item: DeficiencyItem;
+  app: GrantApplication;
+  rule: EditRule | undefined;
+  original: string;
+  current: string;
+  corrected: boolean;
+  onCorrectField: (value: string, reason?: string) => void;
+  onRespond: (text: string) => void;
+}) {
+  const needsReason = rule?.kind === "editable-with-reason";
+  const [value, setValue] = React.useState(() => (corrected ? current : ""));
+  const [reason, setReason] = React.useState(() => (needsReason && corrected ? (item.response ?? "") : ""));
+  const [answer, setAnswer] = React.useState(() => (rule?.kind === "locked" ? (item.response ?? "") : ""));
+  const [sameAsSubmitted, setSameAsSubmitted] = React.useState(false);
+  const [reasonMissing, setReasonMissing] = React.useState(false);
+  void app;
+
+  /* Saved when the applicant leaves a box, as every answer on this list is (N-10) — and, where the
+     policy asks for a reason, only once the reason is there too. */
+  const save = () => {
+    const v = value.trim();
+    const r = reason.trim();
+    if (!v) return;
+    if (v === original) {
+      setSameAsSubmitted(true);
+      return;
+    }
+    if (needsReason && !r) {
+      setReasonMissing(true);
+      return;
+    }
+    if (corrected && v === current && (!needsReason || r === (item.response ?? ""))) return;
+    onCorrectField(v, needsReason ? r : undefined);
+  };
+
+  return (
+    <div className="max-w-measure space-y-2">
+      {/* The first answer stays visible after correction, so the change can be read and
+          audited: "Submitted 215 → Corrected 208" (review panel, cycle 2). An item cannot be
+          marked corrected by saving the figure already submitted. Where the register holds no
+          submitted answer, it says so rather than printing a dash beside a remark about that
+          very figure (N-05). */}
+      <p className="text-body-2 text-ink-muted">
+        Submitted: <span className="font-semibold text-ink">{original || "Not answered in the application"}</span>
+        {corrected && current !== original && (
+          <>
+            {" "}→ Corrected: <span className="font-semibold text-ink">{current}</span>
+          </>
+        )}
+      </p>
+
+      {rule?.kind === "locked" ? (
+        <>
+          <LockedAnswer rule={rule} />
+          <FormField label="Your Answer" id={`answer-${item.id}`} required={!corrected} hint="Say what has been done about it. Saved when you leave the box.">
+            {(control) => (
+              <Textarea
+                {...control}
+                rows={3}
+                maxLength={1000}
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value)}
+                onBlur={() => {
+                  const v = answer.trim();
+                  if (v && v !== item.response) onRespond(v);
+                }}
+              />
             )}
-          </p>
+          </FormField>
+        </>
+      ) : (
+        <>
           <FormField
             label={corrected ? "Corrected Answer" : "Your Corrected Answer"}
             id={`fix-${item.id}`}
-            hint="Saved when you leave the box."
+            hint={needsReason ? "Saved with the reason below when you leave either box." : "Saved when you leave the box."}
             error={sameAsSubmitted ? "This is the answer already submitted. Enter the corrected answer." : undefined}
           >
             {(control) => (
@@ -464,20 +604,195 @@ function CorrectionItem({
                   setValue(e.target.value);
                   setSameAsSubmitted(false);
                 }}
-                onBlur={() => {
-                  const v = value.trim();
-                  if (!v || (corrected && v === current)) return;
-                  if (v === original) {
-                    setSameAsSubmitted(true);
-                    return;
-                  }
-                  onCorrectField(v);
-                }}
+                onBlur={save}
               />
             )}
           </FormField>
-        </div>
+          {needsReason && (
+            <FormField
+              label="Reason for the Change"
+              id={`reason-${item.id}`}
+              required
+              hint={rule.why}
+              error={reasonMissing && !reason.trim() ? "Enter the reason for the change." : undefined}
+            >
+              {(control) => (
+                <Textarea
+                  {...control}
+                  rows={2}
+                  maxLength={500}
+                  value={reason}
+                  onChange={(e) => {
+                    setReason(e.target.value);
+                    setReasonMissing(false);
+                  }}
+                  onBlur={save}
+                />
+              )}
+            </FormField>
+          )}
+        </>
       )}
+    </div>
+  );
+}
+
+/**
+ * Another answer the applicant finds wrong while correcting. The Ministry asked about some answers;
+ * the applicant may put right others, within what the edit policy allows at this stage — a locked
+ * one says why and where it is changed instead, and a significant one asks for a reason.
+ */
+function ChangeAnotherAnswer({ app, excluded }: { app: GrantApplication; excluded: ReadonlySet<string> }) {
+  const { amendAnswer } = useEAnudaan();
+  const values = app.formValues ?? {};
+  const sections = answeredSections(app.schemeCode, values);
+  const [open, setOpen] = React.useState(false);
+  const [name, setName] = React.useState("");
+  const [value, setValue] = React.useState("");
+  const [reason, setReason] = React.useState("");
+  const [tried, setTried] = React.useState(false);
+
+  const field = sections.flatMap((s) => s.fields).find((f) => f.name === name);
+  const rule = field ? editRuleOnFile(app, field.name) : undefined;
+  const label = field ? fieldLabel(field, values) : "";
+  const submitted = field ? (values[field.name] ?? "") : "";
+
+  const choose = (next: string) => {
+    setName(next);
+    setValue(next ? (values[next] ?? "") : "");
+    setReason("");
+    setTried(false);
+  };
+
+  const problem = !field
+    ? undefined
+    : !value.trim()
+      ? "Enter the new answer."
+      : value.trim() === submitted.trim()
+        ? "This is the answer already on the application."
+        : undefined;
+  const reasonProblem = rule?.kind === "editable-with-reason" && !reason.trim() ? "Enter the reason for the change." : undefined;
+
+  const save = () => {
+    setTried(true);
+    if (!field || problem || reasonProblem) return;
+    amendAnswer(app.id, field.name, label, value.trim(), rule?.kind === "editable-with-reason" ? reason.trim() : undefined);
+    choose("");
+    setOpen(false);
+  };
+
+  if (!open) {
+    return (
+      <div>
+        <Button appearance="text" size="sm" iconLeft={<Icon name="edit" size={16} aria-hidden />} onClick={() => setOpen(true)}>
+          Change Another Answer
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <section aria-labelledby="change-another" className="space-y-3 border-t border-line pt-5">
+      <Heading level={3} variant="title-2" id="change-another">
+        Change Another Answer
+      </Heading>
+      <div className="max-w-measure space-y-3">
+        <FormField label="Answer to Change" id="change-field">
+          {(control) => (
+            <Select {...control} value={name} onChange={(e) => choose(e.target.value)}>
+              <option value="">Select…</option>
+              {sections.map((s) => (
+                <optgroup key={`${s.index}-${s.title}`} label={s.title}>
+                  {s.fields
+                    .filter((f) => !excluded.has(f.name))
+                    .map((f) => (
+                      <option key={f.name} value={f.name}>
+                        {fieldLabel(f, values)}
+                      </option>
+                    ))}
+                </optgroup>
+              ))}
+            </Select>
+          )}
+        </FormField>
+
+        {field && (
+          <>
+            <p className="text-body-2 text-ink-muted">
+              Submitted: <span className="font-semibold text-ink">{submitted || "Not answered in the application"}</span>
+            </p>
+            {rule?.kind === "locked" ? (
+              <LockedAnswer rule={rule} />
+            ) : (
+              <>
+                <FormField label="New Answer" id="change-value" required error={tried ? problem : undefined}>
+                  {(control) => <Input {...control} value={value} onChange={(e) => setValue(e.target.value)} />}
+                </FormField>
+                {rule?.kind === "editable-with-reason" && (
+                  <FormField label="Reason for the Change" id="change-reason" required hint={rule.why} error={tried ? reasonProblem : undefined}>
+                    {(control) => <Textarea {...control} rows={2} maxLength={500} value={reason} onChange={(e) => setReason(e.target.value)} />}
+                  </FormField>
+                )}
+              </>
+            )}
+          </>
+        )}
+
+        <div className="flex flex-wrap items-center gap-3">
+          {field && rule?.kind !== "locked" && (
+            <Button appearance="outlined" size="sm" onClick={save}>
+              Save Change
+            </Button>
+          )}
+          <Button
+            appearance="text"
+            size="sm"
+            onClick={() => {
+              choose("");
+              setOpen(false);
+            }}
+          >
+            Cancel
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** What this correction changes, read back before it is submitted — the officer sees the same list. */
+function ChangedAnswers({ app, changes }: { app: GrantApplication; changes: readonly ChangedAnswer[] }) {
+  const { amendAnswer } = useEAnudaan();
+  const deficiency = openDeficiencyOf(app);
+  const own = new Set((deficiency?.changes ?? []).map((c) => c.fieldName));
+  return (
+    <section aria-labelledby="answers-changed" className="space-y-3 border-t border-line pt-5">
+      <Heading level={3} variant="title-2" id="answers-changed">
+        Answers Changed ({changes.length})
+      </Heading>
+      <ListGroup size="sm" aria-labelledby="answers-changed">
+        {changes.map((c) => (
+          <ListRow
+            key={c.fieldName}
+            title={c.label}
+            description={
+              <>
+                <span className="block">
+                  {c.from || "Not answered"} → <span className="font-semibold text-ink">{c.to || "Not answered"}</span>
+                </span>
+                {c.reason && <span className="block">Reason: {c.reason}</span>}
+              </>
+            }
+            trailing={
+              own.has(c.fieldName) ? (
+                <Button appearance="text" size="sm" nowrap onClick={() => amendAnswer(app.id, c.fieldName, c.label, c.from)} aria-label={`Undo change: ${c.label}`}>
+                  Undo
+                </Button>
+              ) : undefined
+            }
+          />
+        ))}
+      </ListGroup>
     </section>
   );
 }

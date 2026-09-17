@@ -63,6 +63,8 @@ import { deviceCheckOfBytes } from "@/lib/e-anudaan/doc-checks";
 import { DEMO_FILL_EVENT, DEMO_HOLD_CHECKS_KEY, type DemoFillDetail } from "@/lib/e-anudaan/demo-scenarios";
 import { DEMO_PENDING_SAMPLES_KEY, DEMO_PLACE_SAMPLES_EVENT, type DemoPlaceSamplesDetail } from "@/lib/e-anudaan/sample-files";
 import { ApplicantFindings, DocumentViewSheet, rowStateOf, useSettleChecks } from "./document-centre-parts";
+import { takeFailure } from "@/lib/e-anudaan/error-catalogue";
+import { ServiceErrorNotice, failureOf, serviceErrorText, type ServiceFailure } from "./service-error";
 
 export interface DocumentsChecklistHandle {
   /** Whether the step may be left. When it may not, the ErrorSummary is raised and focused. */
@@ -105,6 +107,10 @@ export const DocumentsChecklist = React.forwardRef<
   const fy = values.fld_financial_year;
 
   const [attempts, setAttempts] = React.useState<Record<number, UploadAttempt>>({});
+  /** A row whose upload the portal refused with a catalogued error (error-catalogue.ts), keyed by slot. */
+  const [failures, setFailures] = React.useState<Record<number, ServiceFailure>>({});
+  /** The same failure where its render target is the step, not the row (a session that has ended). */
+  const [stepFailure, setStepFailure] = React.useState<ServiceFailure | null>(null);
   const [filter, setFilter] = React.useState<DocBucket | null>(null);
   const [showErrors, setShowErrors] = React.useState(false);
   const [revision, setRevision] = React.useState(0);
@@ -182,6 +188,22 @@ export const DocumentsChecklist = React.forwardRef<
       const refuse = (why: NonNullable<typeof rejected> | (typeof REFUSAL_OF)[keyof typeof REFUSAL_OF]) =>
         setAssertive(`${title}: ${file.name} can't be uploaded. ${rowReason(why, undefined, { fileName: file.name, sizeKb: file.sizeKb, phase: why }, rule) ?? ""}`);
       if (rejected) refuse(rejected);
+      // The simulated request layer: the transfer itself can fail with a catalogued error.
+      const failedWith = rejected ? null : takeFailure("upload");
+      setFailures((prev) => {
+        if (!prev[n] && !failedWith) return prev;
+        const next = { ...prev };
+        if (failedWith) next[n] = failureOf(failedWith, "upload");
+        else delete next[n];
+        return next;
+      });
+      if (failedWith) {
+        const failure = failureOf(failedWith, "upload");
+        setAttempts((prev) => ({ ...prev, [n]: { fileName: file.name, sizeKb: file.sizeKb, phase: "failed", progress: 0, tries } }));
+        setStepFailure(failure.target === "inline" ? null : failure);
+        setAssertive(`${title}: ${serviceErrorText(failure)}`);
+        return;
+      }
       if (sniffing && blob) {
         void blob.arrayBuffer().then((buf) => {
           const found = deviceCheckOfBytes(file.name, new Uint8Array(buf));
@@ -519,7 +541,8 @@ export const DocumentsChecklist = React.forwardRef<
     const up = checked[d.n];
     const attempt = attempts[d.n];
     const state = summary.states[d.n]!;
-    const reason = rowReason(state, up, attempt, rule);
+    const failure = state === "failed" ? failures[d.n] : undefined;
+    const reason = failure ? serviceErrorText(failure) : rowReason(state, up, attempt, rule);
     const hasVerdictDetail = !attempt && up && (state === "verified" || state === "review" || state === "invalid");
     const file = attempt
       ? { name: attempt.fileName, size: fileSizeLabel(attempt.sizeKb) }
@@ -533,7 +556,10 @@ export const DocumentsChecklist = React.forwardRef<
       missing: { label: "Upload", icon: "upload", run: () => choose(d.n), appearance: "outlined" },
       optional: { label: "Upload", icon: "upload", run: () => choose(d.n), appearance: "outlined" },
       uploading: { label: "Cancel", icon: "close", run: () => cancelAttempt(d.n), appearance: "text" },
-      failed: { label: "Try Again", icon: "refresh", run: () => attempt && startUpload(d.n, { name: attempt.fileName, sizeKb: attempt.sizeKb }, files.current.get(d.n), (attempt.tries ?? 0) + 1) },
+      failed:
+        failure?.entry.action === "choose-file"
+          ? { label: failure.entry.actionLabel, icon: "upload", run: () => choose(d.n) }
+          : { label: "Try Again", icon: "refresh", run: () => attempt && startUpload(d.n, { name: attempt.fileName, sizeKb: attempt.sizeKb }, files.current.get(d.n), (attempt.tries ?? 0) + 1) },
       "rejected-type": { label: "Choose Another File", icon: "upload", run: () => choose(d.n) },
       "rejected-size": { label: "Choose Another File", icon: "upload", run: () => choose(d.n) },
       "rejected-empty": { label: "Choose Another File", icon: "upload", run: () => choose(d.n) },
@@ -616,6 +642,7 @@ export const DocumentsChecklist = React.forwardRef<
 
   return (
     <>
+      <ServiceErrorNotice failure={stepFailure} onRetry={() => setStepFailure(null)} onDismiss={() => setStepFailure(null)} className="mb-4" />
       <DocumentChecklist
         formats={rule.label}
         ready={summary.readyRequired}

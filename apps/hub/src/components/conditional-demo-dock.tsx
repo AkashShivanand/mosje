@@ -6,6 +6,7 @@ import { hasDataModes } from "@/lib/data-mode/routes";
 import { DemoFillPanel, schemeFromPath } from "@/components/e-anudaan/demo-fill-panel";
 import { DemoDarpanPanel } from "@/components/e-anudaan/demo-darpan-panel";
 import { isDarpanDemoRoute } from "@/lib/e-anudaan/darpan-sign-in";
+import { DemoErrorsPanel } from "@/components/e-anudaan/demo-errors-panel";
 
 /**
  * Mounts the demo dock, if an admin has it switched on.
@@ -43,6 +44,10 @@ export function ConditionalDemoDock({
   }
   if (isDarpanDemoRoute(pathname)) {
     tabs.push({ id: "darpan", label: "NGO-DARPAN", content: <DemoDarpanPanel /> });
+  }
+  // Errors: every catalogued request failure, on any E-Anudaan screen (error-catalogue.ts).
+  if (pathname.startsWith("/portals/e-anudaan")) {
+    tabs.push({ id: "errors", label: "Errors", content: <DemoErrorsPanel /> });
   }
   if (hasDataModes(pathname)) {
     tabs.push({ id: "data", label: "Data", content: <DataModePanel /> });

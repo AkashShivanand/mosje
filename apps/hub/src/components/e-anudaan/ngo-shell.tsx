@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { OrgLogo, PortalPage, SiteHeader } from "@mosje/design-system";
 import type { EventItem } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
+import { ServiceErrorNotice, useFailureOnLoad } from "./service-error";
 import { ROLES } from "@/lib/e-anudaan/roles";
 import { notificationItems, notificationsHref } from "@/lib/e-anudaan/notifications";
 import type { EAnudaanState } from "@/lib/e-anudaan/types";
@@ -92,6 +93,8 @@ export function NgoShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const { state, hydrated, logout, markAllNotificationsRead } = useEAnudaan();
+  /** Any signed-in page: the session can end, or the role be refused, on the next request (error-catalogue.ts). */
+  const [sessionFailure, clearSessionFailure] = useFailureOnLoad("session", pathname);
 
   const isNgo = state.session === "ngo";
   const role = ROLES.ngo;
@@ -156,7 +159,11 @@ export function NgoShell({ children }: { children: React.ReactNode }) {
         />
       )}
     >
-      {children}
+      {sessionFailure ? (
+        <ServiceErrorNotice failure={sessionFailure} homeHref={role.home} onRetry={clearSessionFailure} onDismiss={clearSessionFailure} />
+      ) : (
+        children
+      )}
     </PortalPage>
   );
 }

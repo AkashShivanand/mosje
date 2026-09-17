@@ -2131,5 +2131,34 @@ export function buildSeed(): {
   ).concat(historyRoster);
   const employees: Employee[] = applicant.institutions.filter((inst) => !historyProjects.has(inst.id) && !rehomed.has(inst.id)).flatMap((inst, k) => buildEmployees(inst.id, k === 0 ? 7 : 3 + (k % 4))).concat(historyStaff);
 
+  /*
+   * Answers the edit policy treats differently (edit-policy.ts), on the applicant's own open
+   * corrections, so each outcome can be seen on "Correct Your Application": the audited-accounts file
+   * (a new project) asks for the recurring grant — changed only with a reason; the bank letter's file
+   * (a 2nd-instalment claim) asks for the IFSC — locked to the project's bank-account request; and the
+   * staff-and-rent file asks about the organisation's name, which is read from NGO-DARPAN. Added after every
+   * random draw, from answers the files already carry, so nothing above moves.
+   */
+  {
+    const extra: Record<number, { field: string; remark: string }> = {
+      10: { field: "fld_bank_ifsc", remark: "The IFSC in the application differs from the one on the bank authorisation letter." },
+      7: { field: "fld_grant_recurring", remark: "The recurring grant sought is higher than the expenditure shown in the audited accounts. Check the figure against those accounts." },
+      16: { field: "fld_ngo_name", remark: "The organisation's name in the application differs from the name on the list of employees." },
+    };
+    for (const a of apps) {
+      if (a.ngoId !== applicant.id || a.status !== "DeficiencyRaised") continue;
+      const open = [...a.deficiencies].reverse().find((d) => d.communicatedAt && !d.respondedAt);
+      if (!open?.items) continue;
+      for (const item of [...open.items]) {
+        const slot = item.docId ? a.documents.find((d) => d.id === item.docId)?.slot : undefined;
+        const add = slot != null ? extra[slot] : undefined;
+        const answer = add ? (a.formValues?.[add.field] ?? "").trim() : "";
+        if (!add || !answer || open.items.some((i) => i.fieldName === add.field)) continue;
+        const label = wizardFor(a.schemeCode)?.steps.flatMap((st) => st.sections.flatMap((x) => x.fields)).find((f) => f.name === add.field)?.label ?? add.field;
+        open.items.push({ id: `${item.id}-f`, kind: "field", fieldName: add.field, label, remark: add.remark, originalValue: answer });
+      }
+    }
+  }
+
   return { applications: apps, ngos, inspections, notifications, projectAccounts, changeRequests, cctv, beneficiaries, employees };
 }
