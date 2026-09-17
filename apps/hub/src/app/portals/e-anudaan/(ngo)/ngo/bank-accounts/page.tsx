@@ -51,6 +51,7 @@ import { accountsFor, maskedAccount, projectName, projectsOf } from "@/lib/e-anu
 import { formatDate } from "@/lib/e-anudaan/format";
 import { requestStatusLabel, requestStatusTone } from "@/lib/e-anudaan/change-requests";
 import type { BankChangeRequest, Institution, ProjectAccount } from "@/lib/e-anudaan/types";
+import { useDemoFormFill } from "@/components/e-anudaan/use-demo-form-fill";
 
 const IFSC = /^[A-Z]{4}0[A-Z0-9]{6}$/;
 const PAGE = 10;
@@ -60,6 +61,8 @@ export default function ProjectBankAccountsPage() {
   const ngo = state.ngos[0];
   const projects = ngo ? projectsOf(state, ngo.id) : [];
   const [changing, setChanging] = React.useState<Institution | null>(null);
+  /** A demo dock fill for the dialog, applied as it opens; `n` remounts it for a second fill. */
+  const [demo, setDemo] = React.useState<{ n: number; values: Readonly<Record<string, string>>; tried: boolean } | null>(null);
   const [page, setPage] = React.useState(1);
   /*
    * Usability audit UX-14 (14 Sep 2026): 37 projects, ten to a page, and no way to find one but
@@ -73,6 +76,15 @@ export default function ProjectBankAccountsPage() {
 
   const bankRequests = state.changeRequests.filter((r): r is BankChangeRequest => r.kind === "bank");
   const pendingCount = bankRequests.filter((r) => r.status === "Pending").length;
+
+  // The dialog belongs to one project: the fill opens it on the first project with no request pending.
+  useDemoFormFill("bank-account-change", (values, preset) => {
+    const pending = new Set(bankRequests.filter((r) => r.status === "Pending").map((r) => r.projectId));
+    const project = projects.find((p) => !pending.has(p.id));
+    if (!project) return;
+    setDemo((d) => ({ n: (d?.n ?? 0) + 1, values, tried: !preset.valid }));
+    setChanging(project);
+  });
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
@@ -145,7 +157,16 @@ export default function ProjectBankAccountsPage() {
       </Card>
 
       {changing && (
-        <ChangeAccountDialog project={changing} current={accountsFor(state, changing.id).current} onClose={() => setChanging(null)} />
+        <ChangeAccountDialog
+          key={`${changing.id}-${demo?.n ?? 0}`}
+          project={changing}
+          current={accountsFor(state, changing.id).current}
+          demo={demo}
+          onClose={() => {
+            setChanging(null);
+            setDemo(null);
+          }}
+        />
       )}
     </div>
   );
@@ -254,13 +275,36 @@ function ProjectRow({
   );
 }
 
-function ChangeAccountDialog({ project, current, onClose }: { project: Institution; current?: ProjectAccount; onClose: () => void }) {
+function ChangeAccountDialog({
+  project,
+  current,
+  demo,
+  onClose,
+}: {
+  project: Institution;
+  current?: ProjectAccount;
+  /** A demo dock fill (lib/e-anudaan/demo-forms/bank-account-change.ts); `{current}` is the recorded account. */
+  demo?: { values: Readonly<Record<string, string>>; tried: boolean } | null;
+  onClose: () => void;
+}) {
   const { raiseChangeRequest } = useEAnudaan();
   const { toast } = useToast();
   const fileInput = React.useRef<HTMLInputElement>(null);
-  const [f, setF] = React.useState({ bank: "", branch: "", account: "", confirm: "", ifsc: "", pfms: "", reason: "" });
-  const [doc, setDoc] = React.useState<{ name: string; size: number } | null>(null);
-  const [tried, setTried] = React.useState(false);
+  const [f, setF] = React.useState(() => {
+    const v = demo?.values ?? {};
+    const account = (x: string | undefined) => (x === "{current}" ? `30045${current?.last4 ?? "0000"}` : (x ?? ""));
+    return {
+      bank: v.bank ?? "",
+      branch: v.branch ?? "",
+      account: account(v.account),
+      confirm: account(v.confirm),
+      ifsc: v.ifsc === "{current}" ? (current?.ifsc ?? "") : (v.ifsc ?? ""),
+      pfms: v.pfms ?? "",
+      reason: v.reason ?? "",
+    };
+  });
+  const [doc, setDoc] = React.useState<{ name: string; size: number } | null>(() => (demo?.values.document ? { name: demo.values.document, size: 212_000 } : null));
+  const [tried, setTried] = React.useState(demo?.tried ?? false);
 
   const errors = [
     !f.bank.trim() && { id: "chg-bank", text: "Enter the name of the bank." },

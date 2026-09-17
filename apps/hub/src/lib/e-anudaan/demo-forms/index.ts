@@ -18,7 +18,13 @@
  * correct fill.
  */
 
+import { BANK_ACCOUNT_CHANGE } from "./bank-account-change.ts";
+import { CCTV_CAMERA, CCTV_CERTIFICATE, CCTV_RECORDS, CCTV_UPTIME } from "./cctv.ts";
+import { CORRECT_APPLICATION } from "./correct-application.ts";
 import { PROJECT_LOCATION_CHANGE } from "./project-location-change.ts";
+import { ADD_BENEFICIARY, ADD_EMPLOYEE } from "./roster.ts";
+import { UTILISATION_CERTIFICATE } from "./utilisation-certificate.ts";
+import { WEEKLY_ATTENDANCE } from "./weekly-attendance.ts";
 
 export const DEMO_FORM_FILL_EVENT = "e-anudaan:demo-form-fill";
 
@@ -46,7 +52,19 @@ export interface DemoFormFillDetail {
   preset: DemoFormPreset;
 }
 
-export const FORMS: readonly DemoFormDef[] = [PROJECT_LOCATION_CHANGE];
+export const FORMS: readonly DemoFormDef[] = [
+  PROJECT_LOCATION_CHANGE,
+  BANK_ACCOUNT_CHANGE,
+  ADD_BENEFICIARY,
+  ADD_EMPLOYEE,
+  WEEKLY_ATTENDANCE,
+  CCTV_CAMERA,
+  CCTV_CERTIFICATE,
+  CCTV_RECORDS,
+  CCTV_UPTIME,
+  CORRECT_APPLICATION,
+  UTILISATION_CERTIFICATE,
+];
 
 /** The forms on this page, in the order the page shows them. */
 export function formsForPath(pathname: string | null): DemoFormDef[] {

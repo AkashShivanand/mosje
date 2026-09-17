@@ -45,6 +45,8 @@ import { ngoScheme } from "@/components/e-anudaan/ngo-schemes";
 import { formatDate, rupees } from "@/lib/e-anudaan/format";
 import { ownApplication, signedInNgoId } from "@/lib/e-anudaan/roles";
 import { NgoApplicationNotFound } from "@/components/e-anudaan/ngo-application-not-found";
+import { useDemoFormFill } from "@/components/e-anudaan/use-demo-form-fill";
+import { ucAmountOf } from "@/lib/e-anudaan/demo-forms/utilisation-certificate";
 
 export default function UtilisationCertificatePage() {
   const params = useParams<{ appId: string }>();
@@ -58,6 +60,15 @@ export default function UtilisationCertificatePage() {
   const [doc, setDoc] = React.useState<{ name: string; size: number } | null>(null);
   const [tried, setTried] = React.useState(false);
   const fileInput = React.useRef<HTMLInputElement>(null);
+
+  // The form shows only on a sanctioned file with no certificate yet; elsewhere there is nothing to fill.
+  useDemoFormFill("utilisation-certificate", (v, preset) => {
+    if (!app?.sanction || app.utilisation) return;
+    setSpent(ucAmountOf(v.amount ?? "", app.release?.amount ?? app.sanction.total));
+    setRemarks(v.remarks ?? "");
+    setDoc(v.document ? { name: v.document, size: 486_000 } : null);
+    setTried(!preset.valid);
+  });
 
   if (!app) return <NgoApplicationNotFound />;
 
