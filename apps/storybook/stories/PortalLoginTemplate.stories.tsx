@@ -257,6 +257,48 @@ export const DigiLockerHandoff: Story = {
 };
 
 /**
+ * **Another identity provider — NGO-DARPAN on E-Anudaan's NGO tab.**
+ *
+ * `identityProvider` on a role draws the same card as the DigiLocker handoff,
+ * above the same divider, with the provider's own title and mark. The mark
+ * defaults to a generic glyph, never DigiLocker's. `href` is the portal's own
+ * start route, which records the request before redirecting, so the return can
+ * be checked against it.
+ *
+ * No captcha and no bot check on either tab: signing in through the provider
+ * asks the applicant to remember and transcribe nothing (WCAG 2.2 SC 3.3.8).
+ */
+export const IdentityProviderHandoff: Story = {
+  args: {
+    config: {
+      ...eAnudaan,
+      roles: [
+        {
+          id: "ngo",
+          audience: "organisation",
+          label: "NGO",
+          identifierLabel: "Username",
+          identityProvider: {
+            title: "Sign in with NGO-DARPAN",
+            subtitle: "For registered organisations",
+            href: "/portals/e-anudaan/login/darpan-start",
+            icon: "corporate_fare",
+          },
+          authModes: ["password"],
+        },
+        {
+          id: "officer",
+          audience: "officer",
+          label: "Officer",
+          identifierLabel: "Mobile Number",
+          authModes: ["password"],
+        },
+      ],
+    },
+  },
+};
+
+/**
  * **A PIN portal, with the captcha switched on.**
  *
  * The National Overseas Scholarship signs in on a registered identifier and a

@@ -1,8 +1,8 @@
 "use client";
 
-// DS Audit: PortalLoginTemplate ✅ existing. Nothing is
-// hand-rolled here any more — the two bespoke pages this replaces carried their
-// own tabs, their own captcha and their own forgot-password rows.
+// DS Audit: PortalLoginTemplate ✅ existing · PortalRoleTab.identityProvider ➕ added for the
+// NGO-DARPAN card. Nothing is hand-rolled here — the two bespoke pages this replaces carried
+// their own tabs, their own captcha and their own forgot-password rows.
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
@@ -12,6 +12,8 @@ import {
   type LoginSubmitPayload,
   type PortalLoginConfig,
 } from "@mosje/design-system";
+import { EANUDAAN_LOGIN_CHROME } from "@/components/e-anudaan/login-chrome";
+import { DARPAN_ROUTES } from "@/lib/e-anudaan/darpan-sign-in";
 import { ROLES, roleByLoginId } from "@/lib/e-anudaan/roles";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 
@@ -34,21 +36,8 @@ const BASE = "/portals/e-anudaan";
  * by the mobile number they sign in with rather than by a tab each.
  */
 const CONFIG: PortalLoginConfig = {
-  portalId: "e-anudaan",
-  portalName: "E-Anudaan",
-  changeHref: "/portals",
+  ...EANUDAAN_LOGIN_CHROME,
   defaultRoleId: "ngo",
-  brandAssets: {
-    emblemSrc: `${BASE}/brand/national-emblem.svg`,
-    digitalIndiaSrc: `${BASE}/brand/digital-india.svg`,
-    samaveshLogoSrc: `${BASE}/brand/samavesh-logo.svg`,
-    /* The handoff's Portal Hero photograph (52380:187201), exported from the
-       design at its native 1254 square — the source's ceiling, so it is shipped
-       whole rather than upscaled. Served from the shared login-hero directory
-       beside SMILE's, because a hero photograph belongs to the SCHEME and any
-       portal's login may want it. */
-    heroImageSrc: "/portals/login-hero/e-anudaan.jpg",
-  },
   /*
    * FOLLOWING THE HANDOFF — `E-Anudaan | NGO` and `| Admin`, LOGIN &
    * AUTHENTICATION (52368:232012) in MoSJE Portal — Handoff. Everything below
@@ -71,17 +60,26 @@ const CONFIG: PortalLoginConfig = {
       identifierLabel: "Username",
       identifierPlaceholder: "Enter your username",
       // NO DigiLocker. The handoff's NGO frames (52380:187221, :187235, :187249 and
-      // the phone frames) draw `Auth / AuthFormCard` with Show DigiLocker OFF — the
-      // card went out of the design after this config first followed it.
-      // "I am not a robot" with a Security check, drawn on all three NGO frames.
-      // Switched on here because the alternative WCAG 2.2 3.3.8 requires is
-      // real: `botCheck.helpHref` below routes a blocked applicant to a person.
-      captcha: true,
-      authModeOptions: [
-        { mode: "password", label: "Login with Credentials" },
-        { mode: "darpan", label: "Login with DARPAN ID" },
-      ],
-      defaultMode: "password",
+      // the phone frames) draw `Auth / AuthFormCard` with Show DigiLocker OFF.
+      /*
+       * SIGN IN WITH NGO-DARPAN — §D item 1 of the 17 Sep 2026 plan, replacing both the
+       * "I am not a robot" check and the "Login with DARPAN ID" tab.
+       *
+       * The tab asked for a DARPAN ID and a PAN: two identifiers that are PUBLIC, so it proved
+       * nothing about who was typing them. The captcha beside the password was a cognitive
+       * function test (WCAG 2.2 SC 3.3.8). A redirect to NGO-DARPAN proves control of the
+       * organisation's registration and asks the applicant to remember nothing, so both go.
+       * The username and password stay beneath the card as the fallback for an organisation
+       * whose NGO-DARPAN sign-in is unavailable — with no captcha on them either.
+       */
+      identityProvider: {
+        title: "Sign in with NGO-DARPAN",
+        subtitle: "For registered organisations",
+        href: DARPAN_ROUTES.start,
+        // A generic mark, never the registry's own: this is a prototype stand-in.
+        icon: "corporate_fare",
+      },
+      authModes: ["password"],
     },
     {
       id: "officer",
@@ -91,7 +89,9 @@ const CONFIG: PortalLoginConfig = {
       identifierLabel: "Mobile Number",
       identifierPlaceholder: "Enter your mobile number",
       // No DigiLocker, no method tabs, no security check: the Admin frames draw a
-      // mobile number, a password and the button, and nothing else.
+      // mobile number, a password and the button, and nothing else. No second factor is
+      // drawn either; when one is added it is an OTP (paste allowed,
+      // autocomplete="one-time-code"), which the template's OTP stack already is.
       authModes: ["password"],
     },
   ],
@@ -100,19 +100,10 @@ const CONFIG: PortalLoginConfig = {
     forgotPasswordHref: `${BASE}/forgot-password`,
     // No DigiLocker and no consent line on this portal (the handoff draws
     // neither), so neither the handoff link nor the Terms and Privacy links are set.
-    /*
-     * NO `helpFaqHref`. It renders a visible "Need Help?" line under the account
-     * prompt, and the handoff draws none. The bot check's own escape route is
-     * `botCheck.helpHref` below — a different thing, shown only inside the check,
-     * and the one WCAG 2.2 3.3.8 actually requires.
-     */
+    // NO `helpFaqHref`. It renders a visible "Need Help?" line under the account
+    // prompt, and the handoff draws none.
   },
-  /*
-   * The checkbox check the handoff draws, not the invisible default. Its
-   * `helpHref` is the alternative WCAG 2.2 3.3.8 requires — an applicant the
-   * check will not pass reaches a person rather than a dead end.
-   */
-  botCheck: { mode: "checkbox", helpHref: `${BASE}/help` },
+  /* No `botCheck`. Neither tab asks for one any more (WCAG 2.2 SC 3.3.8). */
 };
 
 export default function EAnudaanLoginPage() {
@@ -150,20 +141,7 @@ export default function EAnudaanLoginPage() {
       return;
     }
 
-    if (payload.authMode === "darpan") {
-      // Both identifiers, because the form now asks for both — the DARPAN route
-      // stopped being the password form with a different label on 2026-09-06.
-      // The wording matches the field labels; "NGO-DARPAN Unique ID" named a
-      // field that no longer exists on the screen.
-      if (!id) {
-        setError("Enter your DARPAN ID.");
-        return;
-      }
-      if (!payload.credentials.pan) {
-        setError("Enter the organisation's PAN Number.");
-        return;
-      }
-    } else if (id.toUpperCase() !== ROLES.ngo.loginId) {
+    if (id.toUpperCase() !== ROLES.ngo.loginId) {
       setError("Unknown username or login ID for this demo.");
       return;
     }

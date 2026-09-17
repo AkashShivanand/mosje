@@ -13,6 +13,7 @@ import type { DemoFillDetail } from "../../demo/demo-fab";
 // ConsentLine ✅ and AccountPrompt ✅ were exported by the system and rendered by
 // NOTHING — the consent sentence GIGW requires existed only in the Figma drawing.
 import { Button } from "../actions/button";
+import { Icon } from "../utilities/icon";
 import { BotCheck } from "../forms/bot-check";
 import { useBotCheck } from "../forms/use-bot-check";
 import { RadioGroup } from "../forms/control-group";
@@ -730,6 +731,8 @@ export function PortalLoginTemplate({
   const showDigiLocker = Boolean(
     activeRole?.digilocker && config.links?.digilockerHref
   );
+  /* The same rule for any other provider: no destination, no card. */
+  const identityProvider = activeRole?.identityProvider?.href ? activeRole.identityProvider : null;
 
   /* The picker is the TEMPLATE's state, not the shell's: the shell draws two
      Change controls (desktop and mobile) and both must drive one panel. */
@@ -986,12 +989,26 @@ export function PortalLoginTemplate({
            It is a LINK, not a submit: it leaves for the identity provider and
            takes nothing from the form with it. */
         sso={
-          showDigiLocker ? (
+          showDigiLocker || identityProvider ? (
             <div className="ds-plogin__sso">
-              <SSOButton
-                href={config.links!.digilockerHref}
-                markSrc={config.brandAssets?.digilockerLogoSrc}
-              />
+              {showDigiLocker ? (
+                <SSOButton
+                  href={config.links!.digilockerHref}
+                  markSrc={config.brandAssets?.digilockerLogoSrc}
+                />
+              ) : null}
+              {/* Another provider's card. `markSrc` is passed explicitly even
+                  when unset: SSOButton defaults it to DigiLocker's mark, and
+                  that mark must never appear on another provider's card. */}
+              {identityProvider ? (
+                <SSOButton
+                  href={identityProvider.href}
+                  title={identityProvider.title}
+                  subtitle={identityProvider.subtitle}
+                  markSrc={identityProvider.markSrc ?? ""}
+                  mark={<Icon name={identityProvider.icon ?? "shield_person"} size={32} aria-hidden />}
+                />
+              ) : null}
               <AuthDivider />
             </div>
           ) : null

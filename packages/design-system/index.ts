@@ -747,6 +747,7 @@ export type {
   PortalAuthMode,
   PortalAudience,
   PortalBrandAssets,
+  PortalIdentityProvider,
   PortalIdentifierKind,
   PortalSubRole,
   PortalLoginFieldErrors,

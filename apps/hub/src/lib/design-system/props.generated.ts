@@ -845,10 +845,10 @@ export const GENERATED_PROPS = {
       },
       {
         "name": "status",
-        "type": "\"success\" | \"notice\"",
+        "type": "\"success\" | \"notice\" | \"warning\" | \"error\"",
         "required": false,
         "default": "\"success\"",
-        "description": "The outcome. `success` is a green tick; `notice` is the neutral information mark, for an outcome that is neither a success nor a failure — a link that has expired, a session that has ended."
+        "description": "The outcome. `success` is a green tick; `notice` is the neutral information mark, for an outcome that is neither a success nor a failure — a link that has expired, a session that has ended. `warning` is an outcome the reader can recover from here — a sign-in they cancelled, a provider that did not answer — so it carries a way to try again. `error` is one this page cannot resolve — an organisation whose registration is not active. Both added 2026-09-17 for E-Anudaan's NGO-DARPAN return states, which had nothing to land on but a banner over a form the reader could not use."
       }
     ]
   },

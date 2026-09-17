@@ -4,6 +4,8 @@ import { DemoDock, type AppEntry, type DemoDockTab } from "@mosje/design-system"
 import { DataModePanel } from "@/components/website/DataModePanel";
 import { hasDataModes } from "@/lib/data-mode/routes";
 import { DemoFillPanel, schemeFromPath } from "@/components/e-anudaan/demo-fill-panel";
+import { DemoDarpanPanel } from "@/components/e-anudaan/demo-darpan-panel";
+import { isDarpanDemoRoute } from "@/lib/e-anudaan/darpan-sign-in";
 
 /**
  * Mounts the demo dock, if an admin has it switched on.
@@ -38,6 +40,9 @@ export function ConditionalDemoDock({
   const tabs: DemoDockTab[] = [];
   if (schemeFromPath(pathname)) {
     tabs.push({ id: "fill", label: "Fill", content: <DemoFillPanel pathname={pathname} /> });
+  }
+  if (isDarpanDemoRoute(pathname)) {
+    tabs.push({ id: "darpan", label: "NGO-DARPAN", content: <DemoDarpanPanel /> });
   }
   if (hasDataModes(pathname)) {
     tabs.push({ id: "data", label: "Data", content: <DataModePanel /> });

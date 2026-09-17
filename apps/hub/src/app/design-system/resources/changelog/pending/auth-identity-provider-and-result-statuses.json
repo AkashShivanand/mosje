@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "PortalLoginTemplate roles take an `identityProvider` (title, subtitle, href, mark or glyph), drawn through `SSOButton` above the credentials divider like the DigiLocker card but never with DigiLocker's mark. `AuthResult` gains `warning` and `error` statuses for outcomes a reader can retry and outcomes they cannot. Both added for E-Anudaan's Sign in with NGO-DARPAN"
+}
