@@ -4,6 +4,7 @@ import { DemoDock, type AppEntry, type DemoDockTab } from "@mosje/design-system"
 import { DataModePanel } from "@/components/website/DataModePanel";
 import { hasDataModes } from "@/lib/data-mode/routes";
 import { DemoFillPanel, schemeFromPath } from "@/components/e-anudaan/demo-fill-panel";
+import { DemoErrorsPanel } from "@/components/e-anudaan/demo-errors-panel";
 
 /**
  * Mounts the demo dock, if an admin has it switched on.
@@ -38,6 +39,10 @@ export function ConditionalDemoDock({
   const tabs: DemoDockTab[] = [];
   if (schemeFromPath(pathname)) {
     tabs.push({ id: "fill", label: "Fill", content: <DemoFillPanel pathname={pathname} /> });
+  }
+  // Errors: every catalogued request failure, on any E-Anudaan screen (error-catalogue.ts).
+  if (pathname.startsWith("/portals/e-anudaan")) {
+    tabs.push({ id: "errors", label: "Errors", content: <DemoErrorsPanel /> });
   }
   if (hasDataModes(pathname)) {
     tabs.push({ id: "data", label: "Data", content: <DataModePanel /> });

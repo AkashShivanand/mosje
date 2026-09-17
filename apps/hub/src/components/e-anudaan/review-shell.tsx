@@ -65,6 +65,7 @@ import { fieldLabel, type FieldDef } from "@/lib/e-anudaan/form-schema";
 import type { DocVerdict } from "@/lib/e-anudaan/doc-verification";
 import type { AuditAction, Deficiency, DocReviewStatus, GrantApplication, MockDoc, RoleId } from "@/lib/e-anudaan/types";
 import { RefText } from "./worklist-table";
+import { ServiceErrorNotice, useServiceErrors } from "./service-error";
 import { DocumentPreviewSheet } from "./document-preview-sheet";
 import {
   CostNormsReview,
@@ -129,6 +130,8 @@ export function ReviewShell({ appId }: { appId: string }) {
   const router = useRouter();
   const { state, findApp, findNgo, act, reviewDocument } = useEAnudaan();
   const { toast } = useToast();
+  /** The simulated request layer: a decision can fail with a catalogued error (error-catalogue.ts). */
+  const requests = useServiceErrors();
 
   const app = findApp(appId);
   const role = state.session ? ROLES[state.session] : null;
@@ -256,8 +259,10 @@ export function ReviewShell({ appId }: { appId: string }) {
 
   const commit = (rule: Rule) => {
     const ctx = contextFor(rule);
-    const res = act(app.id, rule.action, ctx.payload);
     setConfirming(null);
+    if (requests.attempt("officer-action")) return;
+    requests.clear();
+    const res = act(app.id, rule.action, ctx.payload);
     if (!res.ok) {
       toast(res.error, "error");
       return;
@@ -332,6 +337,11 @@ export function ReviewShell({ appId }: { appId: string }) {
   // and leads the buttons; the forward stays available, one press and one question away.
   const deficiencyRule = decisions.find((d) => d.action === "raiseDeficiency");
   const deficiencyLeads = markedDocs > 0 && !!deficiencyRule;
+
+  // A decision on a file that is no longer there, or a role that may not make it, replaces the page.
+  if (requests.failure?.target === "page") {
+    return <ServiceErrorNotice failure={requests.failure} homeHref={role.home} onDismiss={requests.clear} />;
+  }
 
   return (
     <div className="space-y-5">
@@ -422,6 +432,13 @@ export function ReviewShell({ appId }: { appId: string }) {
 
         {/* ── The decision, held beside the file on a wide screen ─────────────────── */}
         <aside id="review-decision" className="space-y-5 xl:sticky xl:top-4" aria-label="Your decision">
+          <ServiceErrorNotice
+            failure={requests.failure}
+            homeHref={role.home}
+            field={{ id: "officer-remarks", label: "Remarks" }}
+            onRetry={requests.clear}
+            onDismiss={requests.clear}
+          />
           {sanctioning && (
             <Panel title="Sanction Order">
               <p className="mb-3 text-body-3 text-ink-muted">
@@ -853,9 +870,31 @@ function DeficiencyItems({
   onShowDocument: (docId: string) => void;
 }) {
   const items = deficiency.items ?? [];
-  if (items.length === 0) return null;
+  const changes = deficiency.changes ?? [];
+  if (items.length === 0 && changes.length === 0) return null;
   const values = app.formValues ?? {};
   return (
+    <>
+    {changes.length > 0 && (
+      // Answers the NGO changed beyond the items asked about, with the reason where the edit policy
+      // requires one (edit-policy.ts). Listed so a resubmission never changes a figure unseen.
+      <ListGroup size="sm" aria-label="Other answers changed by the NGO" className="mt-2">
+        {changes.map((c) => (
+          <ListRow
+            key={c.fieldName}
+            title={`${c.label} — changed by the NGO`}
+            description={
+              <>
+                <span className="block">
+                  Submitted {c.from || "not answered"} · now {c.to || "not answered"}
+                </span>
+                {c.reason && <span className="block">Reason: {c.reason}</span>}
+              </>
+            }
+          />
+        ))}
+      </ListGroup>
+    )}
     <ListGroup size="sm" aria-label="Items to correct" className="mt-2">
       {items.map((it) => {
         const doc = it.docId ? app.documents.find((d) => d.id === it.docId) : undefined;
@@ -877,6 +916,7 @@ function DeficiencyItems({
                 {it.correctedAt && it.kind === "field" && it.originalValue != null && (
                   <span className="block">
                     Submitted {it.originalValue} · now {nowValue ?? "not recorded"}
+                    {it.response && it.response !== "Answer corrected." ? ` · the NGO's note: ${it.response}` : ""}
                   </span>
                 )}
               </>
@@ -892,6 +932,7 @@ function DeficiencyItems({
         );
       })}
     </ListGroup>
+    </>
   );
 }
 

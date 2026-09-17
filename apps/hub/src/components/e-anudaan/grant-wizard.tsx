@@ -84,6 +84,7 @@ import { CostNormsPanel } from "./cost-norms-panel";
 import { ChooseSchemeFirst } from "./choose-scheme-first";
 import { DocumentsChecklist, type DocumentsChecklistHandle } from "./documents-checklist";
 import { ReviewDocuments } from "./document-centre-parts";
+import { ServiceErrorNotice, useFailureOnLoad, useServiceErrors } from "./service-error";
 
 
 /**
@@ -113,6 +114,10 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
   const searchParams = useSearchParams();
   const { state, submitApplication } = useEAnudaan();
   const { toast } = useToast();
+  /** The simulated request layer: a save or a submit can fail, with a catalogued error (error-catalogue.ts). */
+  const requests = useServiceErrors();
+  /** The organisation's details are read from NGO-DARPAN when the form opens. */
+  const [darpanFailure, clearDarpanFailure] = useFailureOnLoad("darpan");
 
   const def = wizardFor(schemeCode);
   const ngo = state.ngos[0];
@@ -426,6 +431,9 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
    * still exactly as it opened is not a draft, and moving does not make it one.
    */
   const navigate = (i: number, how: "push" | "replace" = "push"): boolean => {
+    // The draft is saved to the portal on every move between steps; a failed save keeps the step open.
+    if (requests.attempt("save-draft")) return false;
+    requests.clear();
     const mustWrite = needsDraftWrite(JSON.stringify({ values, docs }), opened.current, window.localStorage.getItem(key));
     if (mustWrite && !writeDraft(i)) {
       toast("Your answers could not be saved on this device, so the next step cannot open. Try again.", "error");
@@ -479,6 +487,8 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
       toast("Accept the declaration above to submit.", "error");
       return;
     }
+    if (requests.attempt("submit")) return;
+    requests.clear();
     // Signed now: the declaration's date and time are the moment of submission.
     const signed: Record<string, string> = { ...values, ...declarationStamp() };
     // The whole application, not just the declaration. Opening the review address directly and
@@ -622,6 +632,30 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
     : isReview && !declared
       ? { blocked: true, reason: "Accept the declaration above to submit." }
       : { blocked: false, reason: null };
+  /** The answer a "not accepted" failure points at: the first one the applicant can type on this step. */
+  const firstAnswer = (step: StepDef | undefined) =>
+    step ? visibleSections(step, values).flatMap((sec) => sec.fields).find((f) => fieldVisible(f, values) && !isReadOnly(f, values) && !f.auto) : undefined;
+  const failedField = (() => {
+    const at = requests.failure?.occasion === "submit" ? steps.find((st) => !st.kind || st.kind === "form") : current;
+    // Only an answer drawn on THIS page can be linked to; on the upload or review route it is a banner.
+    const f = phase === "form" && at === current ? firstAnswer(at) : undefined;
+    return f ? { id: f.name, label: fieldLabel(f, values) } : undefined;
+  })();
+  const requestNotice = (where: "top" | "foot") =>
+    (where === "foot") === (requests.failure?.occasion === "submit") ? (
+      <ServiceErrorNotice
+        failure={requests.failure}
+        field={failedField}
+        homeHref="/portals/e-anudaan/ngo/my-applications"
+        onRetry={() => {
+          requests.clear();
+          if (requests.failure?.occasion === "submit") submit();
+          else writeDraft();
+        }}
+        onDismiss={requests.clear}
+      />
+    ) : null;
+
   /** Continue on the upload step: the documents first, then every earlier step, then Review. */
   const docsNext = () => {
     if (docStep.current && !docStep.current.tryContinue()) return;
@@ -694,6 +728,8 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
         error={errorSummary(current, errors)}
         errorRef={errorRef}
       >
+        {darpanFailure && <ServiceErrorNotice failure={darpanFailure} onRetry={clearDarpanFailure} onDismiss={clearDarpanFailure} />}
+        {requestNotice("top")}
         {linked?.clash && clashChoice === "pending" && (
           <Alert status="warning" title={`Another ${schemeLabel(def.code)} draft is saved on this device.`}>
             <div className="flex flex-wrap items-center justify-between gap-3">
@@ -773,6 +809,7 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
             <ReviewStep def={def} values={values} docs={docs} onDocsChange={setDocs} declared={declared} onDeclare={setDeclared} onEdit={goto} />
             {/* Beside the button that was pressed, and focused, so it is seen where the applicant is
                 looking — at the foot of a review several screens long. */}
+            {requestNotice("foot")}
             {submitError && (
               <div ref={submitErrorRef} tabIndex={-1} className="outline-none">
                 <Alert status="error" title={submitError}>

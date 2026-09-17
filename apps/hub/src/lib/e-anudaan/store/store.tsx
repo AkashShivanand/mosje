@@ -27,6 +27,7 @@ import type {
 import type { Beneficiary, Employee } from "../roster.ts";
 import { decideChangeRequest as decideChange, requestRaisedNotice, type ChangeDecision } from "../change-requests.ts";
 import { newInspection } from "../registers.ts";
+import { applyAnswer, canEdit, editRuleOnFile } from "../edit-policy.ts";
 import type { DocVerdict } from "../doc-verification.ts";
 import { notificationBody, notificationTitle, notifiesApplicant } from "../applicant.ts";
 import { fileApplication, type SubmitApplicationInput } from "../submit-application.ts";
@@ -145,6 +146,12 @@ interface EAnudaanContextValue {
   reviewDocument: (appId: string, docId: string, status: DocReviewStatus, remarks: string) => void;
   /** Record the applicant's correction of one deficiency item. */
   correctDeficiencyItem: (appId: string, itemId: string, response: string, value?: string) => void;
+  /**
+   * Change an answer the Ministry did not ask about, while a correction is open. Refused for an
+   * answer `edit-policy.ts` locks at this stage. Setting it back to the submitted answer removes
+   * the change.
+   */
+  amendAnswer: (appId: string, fieldName: string, label: string, value: string, reason?: string) => void;
   /** Raise a location or bank-account change request for a project. */
   submitChangeRequest: (request: Omit<ChangeRequest, "id" | "submittedAt" | "status">) => ChangeRequest;
   addBeneficiary: (b: Omit<Beneficiary, "id">) => void;
@@ -532,39 +539,56 @@ export function EAnudaanProvider({ children }: { children: React.ReactNode }) {
         const now = new Date().toISOString();
         run((s) => ({
           ...s,
-          applications: s.applications.map((a) =>
-            a.id !== appId
-              ? a
-              : {
-                  ...a,
-                  formValues:
-                    value === undefined
-                      ? a.formValues
-                      : (() => {
-                          const field = a.deficiencies.flatMap((d) => d.items ?? []).find((it) => it.id === itemId)?.fieldName;
-                          return field ? { ...a.formValues, [field]: value } : a.formValues;
-                        })(),
-                  deficiencies: a.deficiencies.map((d) =>
-                    d.respondedAt || !d.items
-                      ? d
-                      : {
-                          ...d,
-                          items: d.items.map((it) =>
-                            it.id === itemId
-                              ? {
-                                  ...it,
-                                  correctedAt: now,
-                                  response: response.trim() || undefined,
-                                  // The first submitted answer is kept however many times it is corrected.
-                                  originalValue:
-                                    it.originalValue ?? (it.fieldName && value !== undefined ? a.formValues?.[it.fieldName] : undefined),
-                                }
-                              : it,
-                          ),
-                        },
-                  ),
-                },
-          ),
+          applications: s.applications.map((a) => {
+            if (a.id !== appId) return a;
+            const field = a.deficiencies.flatMap((d) => d.items ?? []).find((it) => it.id === itemId)?.fieldName;
+            // An answer the edit policy locks is never written, whatever the screen sent; one it
+            // allows carries everything calculated from it (`applyAnswer`).
+            const answered = value !== undefined && field && canEdit(editRuleOnFile(a, field)) ? applyAnswer(a, field, value) : a;
+            return {
+              ...answered,
+              deficiencies: a.deficiencies.map((d) =>
+                d.respondedAt || !d.items
+                  ? d
+                  : {
+                      ...d,
+                      items: d.items.map((it) =>
+                        it.id === itemId
+                          ? {
+                              ...it,
+                              correctedAt: now,
+                              response: response.trim() || undefined,
+                              // The first submitted answer is kept however many times it is corrected.
+                              originalValue:
+                                it.originalValue ?? (it.fieldName && value !== undefined ? a.formValues?.[it.fieldName] : undefined),
+                            }
+                          : it,
+                      ),
+                    },
+              ),
+            };
+          }),
+        }));
+      },
+
+      amendAnswer: (appId, fieldName, label, value, reason) => {
+        const now = new Date().toISOString();
+        run((s) => ({
+          ...s,
+          applications: s.applications.map((a) => {
+            if (a.id !== appId || !canEdit(editRuleOnFile(a, fieldName))) return a;
+            const open = [...a.deficiencies].reverse().find((d) => d.communicatedAt && !d.respondedAt);
+            if (!open) return a;
+            const before = a.formValues?.[fieldName] ?? "";
+            const earlier = open.changes?.find((c) => c.fieldName === fieldName);
+            const from = earlier?.from ?? before;
+            const rest = (open.changes ?? []).filter((c) => c.fieldName !== fieldName);
+            const changes = value.trim() === from.trim() ? rest : [...rest, { fieldName, label, from, to: value, ...(reason?.trim() ? { reason: reason.trim() } : {}), at: now }];
+            return {
+              ...applyAnswer(a, fieldName, value),
+              deficiencies: a.deficiencies.map((d) => (d === open ? { ...d, changes } : d)),
+            };
+          }),
         }));
       },
 

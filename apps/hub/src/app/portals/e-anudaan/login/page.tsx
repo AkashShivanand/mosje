@@ -14,6 +14,8 @@ import {
 } from "@mosje/design-system";
 import { ROLES, roleByLoginId } from "@/lib/e-anudaan/roles";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
+import { takeFailure } from "@/lib/e-anudaan/error-catalogue";
+import { failureOf, serviceErrorText } from "@/components/e-anudaan/service-error";
 
 const BASE = "/portals/e-anudaan";
 
@@ -138,6 +140,15 @@ export default function EAnudaanLoginPage() {
   const handleSubmit = (payload: LoginSubmitPayload) => {
     const id = (payload.credentials.username ?? "").trim();
     setError(null);
+
+    // The simulated request layer. The template's error slot takes one sentence, so the catalogued
+    // failure is written through the shared helper rather than worded here (error-catalogue.ts).
+    const occasion = payload.roleId !== "officer" && payload.authMode === "darpan" ? "darpan" : "sign-in";
+    const failed = takeFailure(occasion) ?? (occasion === "darpan" ? takeFailure("sign-in") : null);
+    if (failed) {
+      setError(serviceErrorText(failureOf(failed, occasion)));
+      return;
+    }
 
     if (payload.roleId === "officer") {
       const role = roleByLoginId(id);

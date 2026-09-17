@@ -23,6 +23,7 @@ import { ROLES, reviewKeyOf } from "@/lib/e-anudaan/roles";
 import { projectTitleFor } from "@/lib/e-anudaan/applicant";
 import { RefText } from "@/components/e-anudaan/worklist-table";
 import { instalmentSchedule, releasePatternFact } from "@/lib/e-anudaan/funding";
+import { ServiceErrorNotice, useFailureOnLoad } from "@/components/e-anudaan/service-error";
 
 /**
  * Payment status for a sanctioned application — the live bundle's /finance/payment-status/:id.
@@ -49,6 +50,12 @@ export default function PaymentStatusPage() {
   const { state, findApp } = useEAnudaan();
   const app = findApp(decodeURIComponent(params.appId));
   const role = state.session ? ROLES[state.session] : null;
+  // The status is read from PFMS when the page opens; that read can fail (error-catalogue.ts).
+  const [failure, clearFailure] = useFailureOnLoad("payment");
+
+  if (failure?.target === "page") {
+    return <ServiceErrorNotice failure={failure} homeHref={role?.home} onRetry={clearFailure} onDismiss={clearFailure} />;
+  }
 
   if (!app) {
     return <Alert status="warning" title="Application Not Found">This application is not in the register.</Alert>;
@@ -108,6 +115,8 @@ export default function PaymentStatusPage() {
           </div>
         }
       />
+
+      <ServiceErrorNotice failure={failure} homeHref={role?.home} onRetry={clearFailure} onDismiss={clearFailure} />
 
       <div className="grid gap-5 xl:grid-cols-2 xl:items-start">
         <Card variant="outlined">
