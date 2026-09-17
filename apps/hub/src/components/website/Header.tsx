@@ -206,7 +206,7 @@ const NAV: NavItem[] = [
 ];
 
 export interface HeaderProps {
-  /** Hide the Admin Login button in the header actions. Defaults to false (or auto-hidden on /portals). */
+  /** Hide the Login button in the header actions. Defaults to false (or auto-hidden on /portals). */
   hideAdminLogin?: boolean;
 }
 
@@ -314,8 +314,11 @@ export function Header({ hideAdminLogin = false }: HeaderProps = {}) {
       nav={nav}
       actions={
         shouldHideAdmin ? undefined : (
-          <Link href="/website/admin" className={buttonClasses()}>
-            {t("Admin Login")}
+          /* ONE door, not an administrators' door (Secretary's review, 2026-09-17).
+             It opens the portal listing; each portal's login opens on its citizen
+             tab by default, and an officer switches role there. */
+          <Link href="/portals" className={buttonClasses()}>
+            {t("Login")}
           </Link>
         )
       }

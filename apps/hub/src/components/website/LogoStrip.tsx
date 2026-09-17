@@ -1,8 +1,11 @@
 import Image from "next/image";
 import { ORGANISATIONS } from "@/data/website";
+import { SCHEME_MARKS } from "@/components/website/home-options/schemes";
 
 /**
- * The homepage logo strip: Government of India platforms, then the Ministry's own bodies.
+ * The homepage logo strip: the Department's scheme portals FIRST, then Government of India
+ * platforms, then the Ministry's other bodies. Schemes lead on the Secretary's review of
+ * 2026-09-17 — they are what a citizen comes to use, and each mark opens its portal.
  *
  * The two halves are kept apart because they are different things. The platforms below are
  * not our organisations and have no entry in the registry; the Ministry's bodies are read
@@ -61,9 +64,19 @@ const GOVERNMENT_PLATFORMS: EcosystemLogo[] = [
   },
 ];
 
-/** Organisations that publish a horizontal wordmark, in registry order. */
+/** Scheme marks, each opening the scheme's own portal. */
+const SCHEME_LOGOS: EcosystemLogo[] = SCHEME_MARKS.map((scheme) => ({
+  src: scheme.stripSrc,
+  alt: `${scheme.name} (${scheme.abbr})`,
+  href: scheme.portalHref,
+  width: 120,
+}));
+
+const SCHEME_ABBRS = new Set(SCHEME_MARKS.map((scheme) => scheme.abbr));
+
+/** The other organisations that publish a horizontal wordmark, in registry order. */
 const ORGANISATION_LOGOS: EcosystemLogo[] = ORGANISATIONS.filter(
-  (org) => org.wordmarkSrc
+  (org) => org.wordmarkSrc && !SCHEME_ABBRS.has(org.abbr)
 ).map((org) => ({
   src: org.wordmarkSrc!,
   alt: `${org.name} (${org.abbr})`,
@@ -71,7 +84,7 @@ const ORGANISATION_LOGOS: EcosystemLogo[] = ORGANISATIONS.filter(
   width: 120,
 }));
 
-const logos: EcosystemLogo[] = [...GOVERNMENT_PLATFORMS, ...ORGANISATION_LOGOS];
+const logos: EcosystemLogo[] = [...SCHEME_LOGOS, ...GOVERNMENT_PLATFORMS, ...ORGANISATION_LOGOS];
 
 export function LogoStrip() {
   return (
