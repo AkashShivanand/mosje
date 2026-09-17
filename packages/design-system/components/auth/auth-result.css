@@ -24,6 +24,14 @@
     color: var(--sa-icon-status-info-base);
   }
 
+  .ds-authresult--warning .ds-authresult__mark {
+    color: var(--sa-icon-status-warning-base);
+  }
+
+  .ds-authresult--error .ds-authresult__mark {
+    color: var(--sa-icon-status-error-base);
+  }
+
   /* Headline/headline-4 — set on the class, not the element, so the caller can
      choose h1/h2/h3 for the page outline without the size following. */
   .ds-authresult__heading {

@@ -147,6 +147,43 @@ export interface PortalAuthModeOption {
 }
 
 /**
+ * A federated sign-in offered on one role's tab — an identity provider other
+ * than DigiLocker that the portal hands the reader off to and that returns them
+ * signed in.
+ *
+ * **Added 2026-09-17 for NGO-DARPAN on E-Anudaan.** Organisations applying for
+ * grant-in-aid already hold a registration on NGO-DARPAN, and signing in with it
+ * replaces a password-and-captcha login — no cognitive function test, which is
+ * what WCAG 2.2 3.3.8 Accessible Authentication asks for.
+ *
+ * It renders exactly where the DigiLocker card does — above the "or sign in with
+ * credentials" divider — through the same `SSOButton`. It is a separate field
+ * rather than a second `digilocker` because the card's wording and mark belong
+ * to the provider, and DigiLocker's defaults must never be drawn for another.
+ */
+export interface PortalIdentityProvider {
+  /** The card's title, naming the provider. e.g. "Sign in with NGO-DARPAN" */
+  title: string;
+  /** One line under it. @default "Secured Government Login" */
+  subtitle?: string;
+  /**
+   * Where the handoff starts. Usually a route on the portal that records the
+   * request and then redirects to the provider, so the return can be checked
+   * against it. A card with no destination renders nothing.
+   */
+  href: string;
+  /** The provider's mark as an image path the portal serves. */
+  markSrc?: string;
+  /**
+   * A Material Symbols glyph drawn when there is no `markSrc`. @default "shield_person"
+   *
+   * A prototype that may not use the provider's own mark uses this, rather than
+   * borrowing DigiLocker's.
+   */
+  icon?: string;
+}
+
+/**
  * Definition for a role navigation tab.
  */
 export interface PortalRoleTab {
@@ -178,6 +215,12 @@ export interface PortalRoleTab {
    * nowhere to go is worse than no CTA.
    */
   digilocker?: boolean;
+  /**
+   * Offer a federated sign-in other than DigiLocker on this tab — see
+   * `PortalIdentityProvider`. Rendered above the credentials divider; when the
+   * role also sets `digilocker`, both cards render, DigiLocker first.
+   */
+  identityProvider?: PortalIdentityProvider;
   /**
    * Show the security captcha for THIS role. Falls back to `config.captcha`, and
    * to `false` when neither is set.
