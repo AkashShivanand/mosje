@@ -125,6 +125,73 @@ const A11Y: A11yItem[] = [
   },
 ];
 
+/*
+ * DBIM 3.0, Annexure F — Checklist 1, every item that applies to a footer, assessed
+ * against the running website footer on 2026-09-17. Header-only items (5.2, 5.4),
+ * button items (4.5) and imagery items (6.1) do not apply and are not counted.
+ * Scored Met = 1, Partial = 0.5, Not met = 0.
+ */
+const DBIM_ROWS: [string, string, string][] = [
+  ["1 · One colour group from the primary palette", "Met", "Every colour resolves from the selected brand mode, so a portal never mixes groups."],
+  ["2 · Other colours from the palette", "Met", "No colour outside the key group: the inks, rules and chips are tints and alphas of it."],
+  ["3 · Icons in the darkest key colour or inclusive white", "Not\u00a0met", "The location pin and the five social glyphs draw in a light tint of the key colour (#c0dbff in Blue), not inclusive white."],
+  ["4 · Footer background is the darkest shade of the key colour", "Met", "bg/brand/primary/boldest — #003975 in Blue, #162F6A (DBIM Blue shade 1) in DBIM Blue."],
+  ["5 · Consistent icon style", "Met", "One rounded outline set for interface icons; brand marks for social links."],
+  ["6 · Icons from the DBIM Toolkit", "Not\u00a0met", "Interface icons are Material Symbols Rounded — an estate-wide decision recorded in the project rules."],
+  ["7 · Icons in PNG, SVG or WEBP", "Partial", "The five social glyphs are SVG; the location pin is an icon-font glyph."],
+  ["8 · Icon sizes 24, 32, 48 or 64px", "Partial", "Social glyphs are 24px; the location pin is 16px, set to the 14px address beside it."],
+  ["9 · Icon proportions retained", "Met", "No icon is stretched or compressed."],
+  ["10 · Icon contrast with its background", "Met", "Social glyph on its chip: 5.55:1 in Blue, 4.88:1 at worst across all eight brand modes."],
+  ["11 · Noto Sans", "Met", "Every line is set in Noto Sans."],
+  ["12 · Body text left-aligned", "Met", "All text is left-aligned."],
+  ["13 · No capital case for sentences", "Met", "No uppercase labels or sentences."],
+  ["14 · Type scale as defined in DBIM", "Partial", "Links and organisation lines 14px (Paragraph 2), lineage and colophon 12px (Small Text 1). Column headings are 16px Semi Bold, which is not a row in DBIM Table 3."],
+  ["15 · Text colour with optimal contrast", "Met", "11.40:1 lead, 8.04:1 links, 6.18:1 boilerplate on Blue; 5.37:1 at worst across all eight modes, against WCAG's 4.5:1."],
+  ["18 · Hover changes clickable items", "Met", "Links underline and brighten to white on hover; social chips lighten."],
+  ["19 · Emblem from an authorised source", "Met", "The National Emblem file published by the Department's own website."],
+  ["20 · Emblem in proportion", "Met", "Drawn at 34 × 56 from a 40 × 65 original."],
+  ["22 · Logo lockup white over a dark background", "Partial", "The emblem and the Department line are white; the two parent-organisation lines above it are a light tint."],
+  ["25 · All key information elements and the lineage", "Partial", "Website Policy, Sitemap, Related Links, Help, Feedback, Last Updated On and the lineage are all present. Help links to Contact Us, where §5.6 asks for help resources such as FAQs and screen reader access."],
+  ["Table 12 · Archives", "Not\u00a0met", "The website has no Archives page to link to."],
+  ["Table 12 · Social Media Links", "Met", "Facebook, X, Instagram, YouTube and WhatsApp Channel."],
+  ["Table 8 · Hyperlinked logos", "Met", "NeGD and Digital India, each linked to its own site."],
+  ["26 · Correct logos", "Met", "The canonical NeGD and Digital India marks."],
+  ["27 · Logos not scaled disproportionately", "Met", "Both are set to one height with their width following their own aspect."],
+  ["28 · Logos in JPEG, PNG, SVG or WEBP", "Met", "All SVG."],
+  ["29 · Logos under 100 KB", "Partial", "NeGD 30 KB and Digital India 23 KB pass; the National Emblem file is 196 KB of vector geometry."],
+  ["38 · Content complete and up to date", "Met", "Last Updated On is the date of the page being read, passed down from the page."],
+  ["39 · Language free of errors, no Hinglish", "Met", "Formal English throughout."],
+];
+
+const DBIM_SCORE = (() => {
+  const points = DBIM_ROWS.reduce((sum, [, status]) => sum + (status === "Met" ? 1 : status === "Partial" ? 0.5 : 0), 0);
+  return Math.round((points / DBIM_ROWS.length) * 100);
+})();
+
+/*
+ * The live dosje.gov.in footer, read on 2026-09-17 (31 links), set against this
+ * footer. "Covered" means the same destination is reachable from this footer.
+ */
+const LIVE_COVERAGE: [string, string, string][] = [
+  ["Facebook · X · Instagram · YouTube · WhatsApp", "Covered", "Same five accounts."],
+  ["About Ministry · Organisational Chart · Ministers & Officials", "Covered", "Department column."],
+  ["Vision & Mission", "Covered", "Links to the same About Us page as About Ministry, so it is not repeated."],
+  ["Citizen Charter", "Not\u00a0covered", "The website has no Citizen Charter page yet."],
+  ["Schemes · Tenders · Vacancies", "Covered", "Services column; Schemes is labelled Schemes & Benefits."],
+  ["Contact Us · RTI · Sitemap", "Covered", "Support column."],
+  ["Notices · Acts & Rules · Reports · Publications · Statistics", "Covered", "Resources column."],
+  ["NeGD and Digital India logos", "Covered", "Hyperlinked credits in the statutory bar."],
+  ["Copyright Policy · Hyperlinking Policy · Terms & Conditions · Privacy Policy", "Covered", "Website Policy row."],
+  ["Help", "Partly\u00a0covered", "The live site links a dedicated Help page; this footer's Help & Support links to Contact Us, because the website has no Help page yet."],
+  ["Cookies", "Not\u00a0covered", "The website has no cookie policy page yet."],
+  ["Visitor Analytics", "Not\u00a0covered", "The visit count is shown, but the website has no Visitor Analytics page yet."],
+  ["Need Support? · Get in Touch", "Covered", "An Action Banner above the footer."],
+  ["Feedback", "Added", "Not in the live footer; required by DBIM §5.6. Links to the Feedback section of Contact Us."],
+  ["Related Links", "Added", "Not in the live footer; required by DBIM §5.6. Five government platforms."],
+  ["Accessibility statement", "Added", "Not in the live footer. Links to the Accessibility page."],
+  ["Lineage sentence", "Added", "Not in the live footer; prescribed by DBIM §5.6."],
+];
+
 export default function SiteFooterPage(): React.JSX.Element {
   return (
     <ComponentDocPage
@@ -233,6 +300,42 @@ export default function SiteFooterPage(): React.JSX.Element {
               <em>respective page</em>. A single date passed from a shared layout is correct on one
               page and wrong on every other, which is worse than omitting it.
             </Callout>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-dbim">
+            <h2 id="cdp-dbim" className="cdp__h2">
+              DBIM 3.0 Compliance
+            </h2>
+            <p>
+              Assessed against every item of DBIM 3.0&apos;s own compliance checklist (Annexure F,
+              Checklist 1) that applies to a footer, on the running website footer:{" "}
+              <strong>{DBIM_SCORE} / 100</strong>. All six information elements §5.6 makes
+              mandatory are present on both variants, with the prescribed lineage sentence and the
+              hyperlinked logos. The gaps are the colour, size and format of the icons, the size of
+              the column headings, the tinted organisation lines, the Help destination, the
+              National Emblem file size and the absence of an Archives link.
+            </p>
+            <MatrixTable
+              caption="DBIM 3.0 checklist items that apply to the footer"
+              columns={["Checklist item", "Status", "How the footer meets it"]}
+              rows={DBIM_ROWS}
+            />
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-live-coverage">
+            <h2 id="cdp-live-coverage" className="cdp__h2">
+              Coverage of the dosje.gov.in Footer
+            </h2>
+            <p>
+              Every link in the live dosje.gov.in footer, set against this footer. Three
+              destinations are not covered because the website does not yet have the page; four
+              elements are added because DBIM requires them and the live footer does not carry
+              them.
+            </p>
+            <MatrixTable
+              caption="Links in the live dosje.gov.in footer, and where this footer carries them"
+              columns={["Live footer link", "Status", "In this footer"]}
+              rows={LIVE_COVERAGE}
+            />
           </section>
         </>
       }

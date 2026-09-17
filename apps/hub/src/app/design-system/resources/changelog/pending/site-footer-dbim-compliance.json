@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "THE SITE FOOTER PAGE STATES ITS DBIM 3.0 COMPLIANCE, ITEM BY ITEM, AND ITS COVERAGE OF THE LIVE dosje.gov.in FOOTER. Scored 79 / 100 against every item of DBIM's own Annexure F checklist that applies to a footer — all six §5.6 mandatory elements and the prescribed lineage present on both variants, with the gaps named: icon colour, format and size, column-heading size, tinted organisation lines, the Help destination, the National Emblem file size and the missing Archives link. A second table sets every link in the live dosje.gov.in footer against this one: Citizen Charter, Cookies and Visitor Analytics are not covered because the website has no page for them yet, and Feedback, Related Links, the Accessibility statement and the lineage are carried where the live footer does not. The Figma master's credits now sit flush right on both desktop variants, where they had trailed the capped lineage by 170px"
+}

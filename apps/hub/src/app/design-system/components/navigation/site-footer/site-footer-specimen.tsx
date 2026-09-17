@@ -83,7 +83,7 @@ export function SiteFooterPortalSpecimen(): React.JSX.Element {
       sitemap={{ label: "Sitemap", href: "#" }}
       help={{ label: "Help & Support", href: "#" }}
       relatedLinks={RELATED}
-      copyright="© 2026 Department of Social Justice & Empowerment. All rights reserved."
+      copyright="© 2026 Department of Social Justice & Empowerment. All Rights Reserved."
       lastUpdated="27 August 2026"
       colophonSlot={<VisitorCounter />}
     />
@@ -150,7 +150,7 @@ export function SiteFooterWebsiteSpecimen(): React.JSX.Element {
       sitemap={{ label: "Sitemap", href: "#" }}
       help={{ label: "Help & Support", href: "#" }}
       relatedLinks={RELATED}
-      copyright="© 2026 Department of Social Justice & Empowerment. All rights reserved."
+      copyright="© 2026 Department of Social Justice & Empowerment. All Rights Reserved."
       lastUpdated="27 August 2026"
       colophonSlot={<VisitorCounter />}
     />
