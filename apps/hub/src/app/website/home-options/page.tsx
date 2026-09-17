@@ -17,7 +17,7 @@ import { LogoStrip } from "@/components/website/LogoStrip";
 import { WebsiteSiteFooter } from "@/components/website/SiteFooter";
 import { SchemePortalsRail, SchemePortalsStrip } from "@/components/website/home-options/SchemePortals";
 import { PledgeBand, PledgeCards } from "@/components/website/home-options/PledgeSection";
-import { PmQuoteBand, PmQuoteCard } from "@/components/website/home-options/PmQuote";
+import { PmQuoteBand } from "@/components/website/home-options/PmQuote";
 
 /**
  * The homepage with the Secretary's review options (2026-09-17) swapped in place,
@@ -25,7 +25,6 @@ import { PmQuoteBand, PmQuoteCard } from "@/components/website/home-options/PmQu
  *
  *   ?schemes=rail|strip   scheme portals in the upper fold
  *   ?pledge=cards|band      Take a Pledge — SCW and NMBA
- *   ?quote=band|card        PM Quote per DBIM
  */
 export const metadata: Metadata = {
   title: "Homepage Options for Review",
@@ -37,7 +36,6 @@ type Search = Promise<Record<string, string | string[] | undefined>>;
 const AXES = [
   { key: "schemes", label: "Scheme Portals", options: [["rail", "A · Band below banner"], ["strip", "B · Slim strip"]] },
   { key: "pledge", label: "Take a Pledge", options: [["cards", "A · Twin cards"], ["band", "B · Single band"]] },
-  { key: "quote", label: "PM Quote", options: [["band", "A · Full-width band"], ["card", "B · Card in About Us"]] },
 ] as const;
 
 function pick(v: string | string[] | undefined, allowed: readonly string[], fallback: string) {
@@ -50,7 +48,6 @@ export default async function HomeOptions({ searchParams }: { searchParams: Sear
   const chosen = {
     schemes: pick(sp.schemes, ["rail", "strip"], "rail"),
     pledge: pick(sp.pledge, ["cards", "band"], "cards"),
-    quote: pick(sp.quote, ["band", "card"], "band"),
   };
 
   return (
@@ -85,8 +82,8 @@ export default async function HomeOptions({ searchParams }: { searchParams: Sear
       <main id="main-content" className="flex-1">
         <HeroCarousel />
         {chosen.schemes === "strip" ? <SchemePortalsStrip /> : <SchemePortalsRail />}
-        {chosen.quote === "band" && <PmQuoteBand />}
-        <AboutUs quote={chosen.quote === "card" ? <PmQuoteCard /> : undefined} />
+        <PmQuoteBand />
+        <AboutUs />
         <PledgeSection kind={chosen.pledge} />
         <Offerings />
         <Organisations />

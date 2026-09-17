@@ -1,4 +1,9 @@
+"use client";
+
+import * as React from "react";
 import Image from "next/image";
+import { Icon, IconButton } from "@mosje/design-system";
+import "./logo-strip.css";
 import { ORGANISATIONS } from "@/data/website";
 import { SCHEME_MARKS } from "@/components/website/home-options/schemes";
 
@@ -86,43 +91,73 @@ const ORGANISATION_LOGOS: EcosystemLogo[] = ORGANISATIONS.filter(
 
 const logos: EcosystemLogo[] = [...SCHEME_LOGOS, ...GOVERNMENT_PLATFORMS, ...ORGANISATION_LOGOS];
 
+/**
+ * A CAROUSEL, per the finalised homepage design (Figma 51610:18831): one line of
+ * marks drifting sideways, clipped at both edges, rather than a wrapped grid.
+ *
+ * The list is rendered twice and the track moves by exactly half its width, so the
+ * loop has no seam. The second copy is presentation only — hidden from assistive
+ * technology and out of the tab order — so each organisation is announced and
+ * reached once.
+ *
+ * WCAG 2.2.2: anything that moves for more than five seconds must be pausable, so
+ * the row carries a pause button, and it also holds still while pointed at or while
+ * a mark has keyboard focus. Under `prefers-reduced-motion` it does not move at all
+ * and scrolls sideways by hand instead (logo-strip.css).
+ */
 export function LogoStrip() {
+  const [playing, setPlaying] = React.useState(true);
+
+  const renderList = (copy: boolean) => (
+    <ul className="sa-logo-strip__list" aria-hidden={copy || undefined}>
+      {logos.map((logo) => {
+        const isExternal = logo.href.startsWith("http");
+        return (
+          <li key={`${copy ? "copy-" : ""}${logo.src}`} className="sa-logo-strip__item">
+            <a
+              href={logo.href}
+              target={isExternal ? "_blank" : undefined}
+              rel={isExternal ? "noreferrer" : undefined}
+              tabIndex={copy ? -1 : undefined}
+              /* No blanket dimming: the palest marks (NeGD) were barely visible at
+                 80% opacity [WEB-F-08]. Official marks are neither recoloured nor dimmed. */
+              className="sa-logo-strip__link"
+            >
+              <Image
+                src={logo.src}
+                alt={copy ? "" : logo.alt}
+                width={logo.width}
+                height={48}
+                className="h-12 w-auto object-contain"
+              />
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  );
+
   return (
-    <section className="bg-surface">
-      <div className="sa-container py-8">
-        {/* A uniform box per mark so the row wraps evenly. Without it the five
-            wide wordmarks and the eight small circular marks packed 9 + 5, and
-            the short second row read as an accident rather than a row [WEB-F-07,
-            in part — the marks themselves stay, per WEB-X-03]. */}
-        <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-7">
-          {logos.map((logo) => {
-            const isExternal = logo.href.startsWith("http");
-            return (
-              <li key={logo.src} className="flex min-w-[128px] justify-center">
-                <a
-                  href={logo.href}
-                  target={isExternal ? "_blank" : undefined}
-                  rel={isExternal ? "noreferrer" : undefined}
-                  /* No blanket dimming. Every mark was rendered at 80%
-                     opacity, which on the palest of them — the NeGD wordmark —
-                     was the difference between faint and barely there
-                     [WEB-F-08]. The artwork is an
-                     official mark, so it is not recoloured; it is simply no
-                     longer dimmed. */
-                  className="block transition-opacity hover:opacity-80"
-                >
-                  <Image
-                    src={logo.src}
-                    alt={logo.alt}
-                    width={logo.width}
-                    height={48}
-                    className="h-12 w-auto object-contain"
-                  />
-                </a>
-              </li>
-            );
-          })}
-        </ul>
+    <section className="sa-logo-strip bg-surface" aria-label="Schemes, Organisations and Government Platforms">
+      <div className="sa-logo-strip__viewport" data-playing={playing ? "true" : "false"}>
+        <div
+          className="sa-logo-strip__track"
+          style={{ "--sa-logo-strip-count": logos.length } as React.CSSProperties}
+        >
+          {renderList(false)}
+          {renderList(true)}
+        </div>
+      </div>
+      <div className="sa-container sa-logo-strip__controls">
+        <IconButton
+          variant="primary"
+          appearance="text"
+          size="sm"
+          icon={<Icon name={playing ? "pause" : "play_arrow"} size={20} />}
+          aria-label={playing ? "Pause logo carousel" : "Play logo carousel"}
+          aria-pressed={!playing}
+          onClick={() => setPlaying((p) => !p)}
+        />
       </div>
     </section>
   );

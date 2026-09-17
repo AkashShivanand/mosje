@@ -60,12 +60,7 @@ const stats: Stat[] = [
   },
 ];
 
-export interface AboutUsProps {
-  /** Replaces the section's own pull quote — the PM Quote card option under review. */
-  quote?: React.ReactNode;
-}
-
-export function AboutUs({ quote }: AboutUsProps = {}) {
+export function AboutUs() {
   return (
     <section className="bg-primary-50">
       <div className="sa-container py-12 md:py-16">
@@ -83,11 +78,9 @@ export function AboutUs({ quote }: AboutUsProps = {}) {
               and economic development, ensuring their inclusion despite
               challenges like the lack of updated demographic data.
             </p>
-            {quote ?? (
             <blockquote className="mt-6 border-l-4 border-saffron bg-saffron/10 p-4 rounded-r-lg italic text-body-1 text-ink">
               “The Ministry of Social Justice &amp; Empowerment works to uplift India&apos;s most vulnerable communities through targeted initiatives, inclusive growth, and compassionate governance.”
             </blockquote>
-            )}
 
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
