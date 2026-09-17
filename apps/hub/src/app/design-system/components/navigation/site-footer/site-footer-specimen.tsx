@@ -2,30 +2,25 @@ import * as React from "react";
 import { SiteFooter, VisitorCounter } from "@mosje/design-system";
 
 /*
- * Sitemap and Help are NOT here. They are their own props since 2026-09-07, and
- * a caller that also lists them among the policies gets each of them twice on
- * the portal variant — which is what this specimen did until the change was
- * verified in a browser. DBIM 5.6 asks for the element to be present, not
- * present twice.
+ * The website's policy row, in the dosje.gov.in footer's order. Help is in it
+ * because the website variant does not draw the `help` prop. The portal variant
+ * DOES draw it, so the portal specimen passes the row without Help — listing it
+ * in both would render it twice in one band.
  */
-const POLICY = [
+const HELP = { label: "Help", href: "#" };
+const PORTAL_POLICY = [
+  { label: "Copyright Policy", href: "#" },
+  { label: "Hyperlinking Policy", href: "#" },
   { label: "Terms & Conditions", href: "#" },
   { label: "Privacy Policy", href: "#" },
-  { label: "Copyright", href: "#" },
-  { label: "Hyperlinking", href: "#" },
-  { label: "Accessibility", href: "#" },
+  { label: "Cookies", href: "#" },
+  { label: "Visitor Analytics", href: "#" },
   { label: "Feedback", href: "#" },
 ];
+const WEBSITE_POLICY = [...PORTAL_POLICY.slice(0, 2), HELP, ...PORTAL_POLICY.slice(2)];
 
-/* The estate's own five, so the specimen wraps where the real footer wraps.
-   The first of them is the GIGW-mandated india.gov.in link. */
-const RELATED = [
-  { label: "National Portal of India", href: "#", external: true },
-  { label: "MyGov", href: "#", external: true },
-  { label: "Open Government Data", href: "#", external: true },
-  { label: "Digital India", href: "#", external: true },
-  { label: "CPGRAMS", href: "#", external: true },
-];
+/* [DBIM 5.6] Related Links — the GIGW-mandated link to the National Portal of India. */
+const RELATED = [{ label: "National Portal of India", href: "#", external: true }];
 
 /*
  * THE SENTENCE DBIM 5.6 PRESCRIBES, which is the one the website and the Figma
@@ -79,9 +74,9 @@ export function SiteFooterPortalSpecimen(): React.JSX.Element {
       ]}
       lineage={LINEAGE}
       credits={CREDITS}
-      policyLinks={POLICY}
+      policyLinks={PORTAL_POLICY}
       sitemap={{ label: "Sitemap", href: "#" }}
-      help={{ label: "Help & Support", href: "#" }}
+      help={HELP}
       relatedLinks={RELATED}
       copyright="© 2026 Department of Social Justice & Empowerment. All Rights Reserved."
       lastUpdated="27 August 2026"
@@ -100,55 +95,61 @@ export function SiteFooterWebsiteSpecimen(): React.JSX.Element {
         "Ministry of Social Justice & Empowerment",
         "Department of Social Justice & Empowerment",
       ]}
-      address="Shastri Bhawan, Dr. Rajendra Prasad Road, New Delhi 110001"
+      address="8th Floor, GPOA-3, Netaji Nagar, New Delhi - 110023"
       social={[
         { label: "Facebook", href: "#", icon: "facebook" },
         { label: "X (formerly Twitter)", href: "#", icon: "x" },
+        { label: "Instagram", href: "#", icon: "instagram" },
         { label: "YouTube", href: "#", icon: "youtube" },
+        { label: "WhatsApp Channel", href: "#", icon: "whatsapp" },
       ]}
       columns={[
         {
-          heading: "The Department",
-          id: "footer-department",
+          heading: "Department",
+          id: "specimen-footer-department",
           links: [
-            { label: "About Us", href: "#" },
-            { label: "Who’s Who", href: "#" },
-            { label: "Organisation Chart", href: "#" },
+            { label: "About Ministry", href: "#" },
+            { label: "Vision & Mission", href: "#" },
+            { label: "Organisational Chart", href: "#" },
+            { label: "Ministers & Officials", href: "#" },
+            { label: "Citizen Charter", href: "#" },
           ],
         },
         {
-          heading: "Schemes",
-          id: "footer-schemes",
+          heading: "Services",
+          id: "specimen-footer-services",
           links: [
-            { label: "PM-AJAY", href: "#" },
-            { label: "SMILE", href: "#" },
-            { label: "National Overseas Scholarship", href: "#" },
-          ],
-        },
-        {
-          heading: "Documents",
-          id: "footer-documents",
-          links: [
-            { label: "Annual Reports", href: "#" },
-            { label: "Guidelines", href: "#" },
+            { label: "Schemes", href: "#" },
             { label: "Tenders", href: "#" },
+            { label: "Vacancies", href: "#" },
           ],
         },
         {
-          heading: "Citizen Services",
-          id: "footer-services",
+          heading: "Support",
+          id: "specimen-footer-support",
           links: [
-            { label: "Grievance Redressal", href: "#" },
-            { label: "Right to Information", href: "#" },
             { label: "Contact Us", href: "#" },
+            { label: "RTI", href: "#" },
+            { label: "Sitemap", href: "#" },
+          ],
+        },
+        {
+          heading: "Resources",
+          id: "specimen-footer-resources",
+          links: [
+            { label: "Notices", href: "#" },
+            { label: "Acts & Rules", href: "#" },
+            { label: "Reports", href: "#" },
+            { label: "Publications", href: "#" },
+            { label: "Statistics", href: "#" },
           ],
         },
       ]}
       lineage={LINEAGE}
       credits={CREDITS}
-      policyLinks={POLICY}
+      policyLinks={WEBSITE_POLICY}
       sitemap={{ label: "Sitemap", href: "#" }}
-      help={{ label: "Help & Support", href: "#" }}
+      help={HELP}
       relatedLinks={RELATED}
       copyright="© 2026 Department of Social Justice & Empowerment. All Rights Reserved."
       lastUpdated="27 August 2026"

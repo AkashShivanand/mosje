@@ -25,6 +25,7 @@ const SECTIONS: SitemapSection[] = [
       { label: "About Us", href: "/website/about-us" },
       { label: "Who's Who", href: "/website/whos-who" },
       { label: "Directory", href: "/website/mosje-directory" },
+      { label: "Citizen Charter", href: "/website/citizen-charter" },
     ],
   },
   {
@@ -64,7 +65,11 @@ const SECTIONS: SitemapSection[] = [
   },
   {
     heading: "Connect",
-    links: [{ label: "Contact Us", href: "/website/contact-us" }],
+    links: [
+      { label: "Contact Us", href: "/website/contact-us" },
+      { label: "Help", href: "/website/help" },
+      { label: "Visitor Analytics", href: "/website/visitor-analytics" },
+    ],
   },
   {
     heading: "Policies",
@@ -74,6 +79,7 @@ const SECTIONS: SitemapSection[] = [
       { label: "Copyright Policy", href: "/website/copyright" },
       { label: "Hyperlinking Policy", href: "/website/hyperlinking-policy" },
       { label: "Accessibility Statement", href: "/website/accessibility" },
+      { label: "Cookies", href: "/website/cookies" },
     ],
   },
 ];

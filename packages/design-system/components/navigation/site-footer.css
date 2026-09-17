@@ -159,15 +159,19 @@
     line-height: var(--sa-type-body-2-lh);
   }
 
+  /* [DBIM 3.0 §2 · Inclusive White] Every organisation line is WHITE — the
+     colour DBIM names for text on a dark ground. The hierarchy is carried by
+     WEIGHT alone: the Department, the owner of the site, is semibold. The two
+     outer lines used to be tinted as well, which added no order the weight did
+     not already give and made the Government of India line look faded. */
   .ds-sitefooter__org {
     margin: 0;
     font-size: var(--sa-type-body-2-size);
-    color: var(--ds-footer-ink-muted);
+    color: var(--ds-footer-ink);
   }
 
   .ds-sitefooter__org--lead {
     font-weight: var(--sa-font-weight-semibold);
-    color: var(--ds-footer-ink);
   }
 
   .ds-sitefooter__address {
@@ -197,6 +201,11 @@
      comma. Addressed BY POSITION — the Icon's class name is its own business,
      not something this stylesheet should depend on. */
   .ds-sitefooter__address > span:last-child { text-wrap: balance; }
+
+  /* [DBIM 3.0 §3.7 iii] An icon is the key colour or inclusive WHITE, never a
+     tint. The pin keeps the address text's muted ink beside it, but the glyph
+     itself is white. Addressed by position for the reason given above. */
+  .ds-sitefooter__address > span:first-child { color: var(--ds-footer-ink); }
 
   /* ── Link columns ────────────────────────────────────────────────────────
      A heading the same SIZE as its list is not a heading, it is a bold line.
@@ -261,6 +270,10 @@
     text-underline-offset: 3px;
   }
 
+  /* [DBIM 3.0 §3.7 iii] The external-window arrow is an icon, so it is white
+     even while the label beside it rests in the muted ink. */
+  .ds-sitefooter__link > [aria-hidden="true"] { color: var(--ds-footer-ink); }
+
   /* ── Social rail ─────────────────────────────────────────────────────────
      A FILLED CHIP AT REST, which reverses an earlier decision here. That note
      said five circles put "five hard shapes in the quietest part of the footer"
@@ -306,15 +319,15 @@
     height: var(--sa-cmp-sitefooter-chip-size);
     border-radius: var(--sa-shape-full);
     background-color: var(--ds-footer-chip);
-    color: var(--ds-footer-ink-muted);
-    transition:
-      background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing),
-      color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+    /* [DBIM 3.0 §3.7 iii] Inclusive white at rest. The mark was the muted tint
+       until 2026-09-17, which DBIM does not allow for an icon; hover is now
+       carried by the chip's ground alone. */
+    color: var(--ds-footer-ink);
+    transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
   }
 
   .ds-sitefooter__social-link:hover {
     background-color: var(--ds-footer-chip-hover);
-    color: var(--ds-footer-ink);
   }
 
   /* ── Band 2 · the statutory bar ──────────────────────────────────────────

@@ -97,15 +97,15 @@ const A11Y: A11yItem[] = [
       "Colour comes entirely from the component's stylesheet, bound to mode-aware semantic and component tokens, so a caller cannot introduce a failing pair through `className`.",
     status: "verified",
     evidence:
-      "Measured 2026-09-07 on the default blue ground #003975: lead ink #ffffff 11.40:1, navigation ink #c0dbff 8.04:1, boilerplate ink #92c2ff 6.18:1 — all against the 4.5:1 AA threshold. Re-measured 2026-09-16 in the browser across all eight brand modes: unchanged, worst case 5.37:1 (dbim-green, boilerplate ink).",
+      "Measured 2026-09-07 on the default blue ground #003975: lead ink #ffffff 11.40:1, navigation ink #c0dbff 8.04:1, boilerplate ink #92c2ff 6.18:1 — all against the 4.5:1 AA threshold. Re-measured 2026-09-16 in the browser across all eight brand modes: unchanged, worst case 5.37:1 (dbim-green, boilerplate ink). Since 2026-09-17 all three organisation lines use the white lead ink.",
   },
   {
     criterion: "1.4.11 Non-text Contrast",
     level: "AA",
     description:
-      "The zone hairline (1.81:1) and the social chip ground (1.45:1) both sit below 3:1 and both are exempt: neither carries information required to identify a control or understand content. Each social link is identified by its glyph, which reads 5.55:1 on the chip.",
+      "The zone hairline (1.81:1) and the social chip ground (1.45:1) both sit below 3:1 and both are exempt: neither carries information required to identify a control or understand content. Each social link is identified by its glyph, which is white and reads 7.88:1 on the chip.",
     status: "verified",
-    evidence: "Measured 2026-09-16 in the browser on the default blue ground; across all eight brand modes the glyph's worst case on its chip is 4.88:1 (dbim-green), the chip 1.43–1.52:1 and the hairline 1.27–2.04:1. The exemption is WCAG 1.4.11's own carve-out for decoration.",
+    evidence: "Glyph measured 2026-09-17 in the browser: white on the chip is 7.88:1 on the default blue ground and 5.73:1 at worst across all eight brand modes (dbim-green). Chip 1.43–1.52:1 and hairline 1.27–2.04:1, measured 2026-09-16. The exemption is WCAG 1.4.11's own carve-out for decoration.",
   },
   {
     criterion: "2.5.8 Target Size (Minimum)",
@@ -118,7 +118,7 @@ const A11Y: A11yItem[] = [
     criterion: "GIGW 3.0 / DBIM 5.6 — Mandatory footer elements",
     level: "GIGW",
     description:
-      "Website Policy, Sitemap, Related Links, Help, Feedback and Last Updated On, plus the lineage sentence and the hyperlinked logos — on BOTH variants. On `website` the Sitemap and Help sit in the link columns; on `portal`, which renders no columns, they render in the statutory bar.",
+      "Website Policy, Sitemap, Related Links, Help, Feedback and Last Updated On, plus the lineage sentence and the hyperlinked logos — on BOTH variants. On `website` the Sitemap sits in the Support column and Help in the policy row; on `portal`, which renders no columns, both render in the statutory bar.",
     status: "verified",
     evidence:
       "Audited 2026-09-07 against DBIM 5.6 and Table 8. The audit found the portal variant publishing four of six — Sitemap and Help lived only in the columns — and both are now REQUIRED props (`sitemap`, `help`) rendered in the portal's statutory bar, joining `lineage`, `policyLinks` and `copyright` as type-enforced. Verified in a browser: three labelled navs, no duplicated destination.",
@@ -129,67 +129,70 @@ const A11Y: A11yItem[] = [
  * DBIM 3.0, Annexure F — Checklist 1, every item that applies to a footer, assessed
  * against the running website footer on 2026-09-17. Header-only items (5.2, 5.4),
  * button items (4.5) and imagery items (6.1) do not apply and are not counted.
- * Scored Met = 1, Partial = 0.5, Not met = 0.
+ *
+ * Scored Met = 1, Partial = 0.5, Not met = 0. Two statuses are NOT scored:
+ *   Deviation     a recorded decision where the estate's standard is kept on
+ *                 purpose (.claude/rules/standards-precedence.md)
+ *   Not required  an element §5.6 lists as optional
  */
 const DBIM_ROWS: [string, string, string][] = [
   ["1 · One colour group from the primary palette", "Met", "Every colour resolves from the selected brand mode, so a portal never mixes groups."],
   ["2 · Other colours from the palette", "Met", "No colour outside the key group: the inks, rules and chips are tints and alphas of it."],
-  ["3 · Icons in the darkest key colour or inclusive white", "Not\u00a0met", "The location pin and the five social glyphs draw in a light tint of the key colour (#c0dbff in Blue), not inclusive white."],
+  ["3 · Icons in the darkest key colour or inclusive white", "Met", "The location pin, the five social glyphs and the new-window arrow are inclusive white."],
   ["4 · Footer background is the darkest shade of the key colour", "Met", "bg/brand/primary/boldest — #003975 in Blue, #162F6A (DBIM Blue shade 1) in DBIM Blue."],
   ["5 · Consistent icon style", "Met", "One rounded outline set for interface icons; brand marks for social links."],
-  ["6 · Icons from the DBIM Toolkit", "Not\u00a0met", "Interface icons are Material Symbols Rounded — an estate-wide decision recorded in the project rules."],
-  ["7 · Icons in PNG, SVG or WEBP", "Partial", "The five social glyphs are SVG; the location pin is an icon-font glyph."],
-  ["8 · Icon sizes 24, 32, 48 or 64px", "Partial", "Social glyphs are 24px; the location pin is 16px, set to the 14px address beside it."],
+  ["6 · Icons from the DBIM Toolkit", "Deviation", "Interface icons are Material Symbols Rounded, the one icon set used across the website and every portal. Replacing it in the footer alone would break that consistency."],
+  ["7 · Icons in PNG, SVG or WEBP", "Deviation", "The social glyphs are SVG. The location pin is a Material Symbols glyph, drawn from the icon font like every other interface icon in the estate."],
+  ["8 · Icon sizes 24, 32, 48 or 64px", "Deviation", "The social glyphs are 24px. The location pin is 16px so that it matches the 14px address beside it; at 24px it would outweigh the text it marks."],
   ["9 · Icon proportions retained", "Met", "No icon is stretched or compressed."],
-  ["10 · Icon contrast with its background", "Met", "Social glyph on its chip: 5.55:1 in Blue, 4.88:1 at worst across all eight brand modes."],
+  ["10 · Icon contrast with its background", "Met", "White glyph on its chip: 7.88:1 in Blue, 5.73:1 at worst across all eight brand modes."],
   ["11 · Noto Sans", "Met", "Every line is set in Noto Sans."],
   ["12 · Body text left-aligned", "Met", "All text is left-aligned."],
   ["13 · No capital case for sentences", "Met", "No uppercase labels or sentences."],
-  ["14 · Type scale as defined in DBIM", "Partial", "Links and organisation lines 14px (Paragraph 2), lineage and colophon 12px (Small Text 1). Column headings are 16px Semi Bold, which is not a row in DBIM Table 3."],
-  ["15 · Text colour with optimal contrast", "Met", "11.40:1 lead, 8.04:1 links, 6.18:1 boilerplate on Blue; 5.37:1 at worst across all eight modes, against WCAG's 4.5:1."],
+  ["14 · Type scale as defined in DBIM", "Deviation", "Links and organisation lines are 14px (Paragraph 2); lineage and colophon are 12px (Small Text 1). Column headings are 16px Semi Bold, which is not a row in DBIM Table 3. They head a 14px list clearly without competing with the section headings on the page."],
+  ["15 · Text colour with optimal contrast", "Met", "11.40:1 for white, 8.04:1 for links and 6.18:1 for boilerplate on Blue; 5.37:1 at worst across all eight modes, against WCAG's 4.5:1."],
   ["18 · Hover changes clickable items", "Met", "Links underline and brighten to white on hover; social chips lighten."],
   ["19 · Emblem from an authorised source", "Met", "The National Emblem file published by the Department's own website."],
   ["20 · Emblem in proportion", "Met", "Drawn at 34 × 56 from a 40 × 65 original."],
-  ["22 · Logo lockup white over a dark background", "Partial", "The emblem and the Department line are white; the two parent-organisation lines above it are a light tint."],
-  ["25 · All key information elements and the lineage", "Partial", "Website Policy, Sitemap, Related Links, Help, Feedback, Last Updated On and the lineage are all present. Help links to Contact Us, where §5.6 asks for help resources such as FAQs and screen reader access."],
-  ["Table 12 · Archives", "Not\u00a0met", "The website has no Archives page to link to."],
+  ["22 · Logo lockup white over a dark background", "Met", "The emblem and all three organisation lines are white. The Department line is set in Semi Bold."],
+  ["25 · All key information elements and the lineage", "Met", "Website Policy, Sitemap, Related Links, Help, Feedback, Last Updated On and the lineage are all present. Help opens the Help page: file formats, screen reader access, accessibility and FAQs."],
+  ["Table 12 · Archives", "Not\u00a0required", "§5.6 lists Archives among the elements that “may also be included”, and the live footer carries none."],
   ["Table 12 · Social Media Links", "Met", "Facebook, X, Instagram, YouTube and WhatsApp Channel."],
   ["Table 8 · Hyperlinked logos", "Met", "NeGD and Digital India, each linked to its own site."],
   ["26 · Correct logos", "Met", "The canonical NeGD and Digital India marks."],
   ["27 · Logos not scaled disproportionately", "Met", "Both are set to one height with their width following their own aspect."],
   ["28 · Logos in JPEG, PNG, SVG or WEBP", "Met", "All SVG."],
-  ["29 · Logos under 100 KB", "Partial", "NeGD 30 KB and Digital India 23 KB pass; the National Emblem file is 196 KB of vector geometry."],
+  ["29 · Logos under 100 KB", "Met", "NeGD 30 KB, Digital India 23 KB and the National Emblem 89 KB."],
   ["38 · Content complete and up to date", "Met", "Last Updated On is the date of the page being read, passed down from the page."],
   ["39 · Language free of errors, no Hinglish", "Met", "Formal English throughout."],
 ];
 
-const DBIM_SCORE = (() => {
-  const points = DBIM_ROWS.reduce((sum, [, status]) => sum + (status === "Met" ? 1 : status === "Partial" ? 0.5 : 0), 0);
-  return Math.round((points / DBIM_ROWS.length) * 100);
-})();
+const SCORED = DBIM_ROWS.filter(([, status]) => ["Met", "Partial", "Not\u00a0met"].includes(status));
+const DBIM_SCORE = Math.round(
+  (SCORED.reduce((sum, [, status]) => sum + (status === "Met" ? 1 : status === "Partial" ? 0.5 : 0), 0) /
+    SCORED.length) *
+    100,
+);
+const DEVIATIONS = DBIM_ROWS.filter(([, status]) => status === "Deviation").length;
 
 /*
  * The live dosje.gov.in footer, read on 2026-09-17 (31 links), set against this
  * footer. "Covered" means the same destination is reachable from this footer.
  */
 const LIVE_COVERAGE: [string, string, string][] = [
-  ["Facebook · X · Instagram · YouTube · WhatsApp", "Covered", "Same five accounts."],
-  ["About Ministry · Organisational Chart · Ministers & Officials", "Covered", "Department column."],
-  ["Vision & Mission", "Covered", "Links to the same About Us page as About Ministry, so it is not repeated."],
-  ["Citizen Charter", "Not\u00a0covered", "The website has no Citizen Charter page yet."],
-  ["Schemes · Tenders · Vacancies", "Covered", "Services column; Schemes is labelled Schemes & Benefits."],
+  ["Facebook · X · Instagram · YouTube · WhatsApp", "Covered", "The same five accounts."],
+  ["About Ministry · Vision & Mission · Organisational Chart · Ministers & Officials · Citizen Charter", "Covered", "Department column. Vision & Mission opens About Us, as it does on the live site."],
+  ["Schemes · Tenders · Vacancies", "Covered", "Services column."],
   ["Contact Us · RTI · Sitemap", "Covered", "Support column."],
   ["Notices · Acts & Rules · Reports · Publications · Statistics", "Covered", "Resources column."],
+  ["Total Visits", "Covered", "The colophon shows the Department's published total, the same figure as the Visitor Analytics page."],
   ["NeGD and Digital India logos", "Covered", "Hyperlinked credits in the statutory bar."],
-  ["Copyright Policy · Hyperlinking Policy · Terms & Conditions · Privacy Policy", "Covered", "Website Policy row."],
-  ["Help", "Partly\u00a0covered", "The live site links a dedicated Help page; this footer's Help & Support links to Contact Us, because the website has no Help page yet."],
-  ["Cookies", "Not\u00a0covered", "The website has no cookie policy page yet."],
-  ["Visitor Analytics", "Not\u00a0covered", "The visit count is shown, but the website has no Visitor Analytics page yet."],
+  ["Copyright Policy · Hyperlinking Policy · Help · Terms & Conditions · Privacy Policy · Cookies · Visitor Analytics", "Covered", "The policy row, in the live footer's order."],
+  ["Last Updated", "Covered", "The colophon, dated for the page being read."],
   ["Need Support? · Get in Touch", "Covered", "An Action Banner above the footer."],
-  ["Feedback", "Added", "Not in the live footer; required by DBIM §5.6. Links to the Feedback section of Contact Us."],
-  ["Related Links", "Added", "Not in the live footer; required by DBIM §5.6. Five government platforms."],
-  ["Accessibility statement", "Added", "Not in the live footer. Links to the Accessibility page."],
-  ["Lineage sentence", "Added", "Not in the live footer; prescribed by DBIM §5.6."],
+  ["Feedback", "Added", "Required by DBIM §5.6 and GIGW 3.0. Opens the Feedback section of Contact Us."],
+  ["Related Links", "Added", "Required by DBIM §5.6. One link, the National Portal of India, which GIGW 3.0 requires."],
+  ["Lineage sentence", "Added", "Prescribed by DBIM §5.6."],
 ];
 
 export default function SiteFooterPage(): React.JSX.Element {
@@ -308,11 +311,11 @@ export default function SiteFooterPage(): React.JSX.Element {
             <p>
               Assessed against every item of DBIM 3.0&apos;s own compliance checklist (Annexure F,
               Checklist 1) that applies to a footer, on the running website footer:{" "}
-              <strong>{DBIM_SCORE} / 100</strong>. All six information elements §5.6 makes
-              mandatory are present on both variants, with the prescribed lineage sentence and the
-              hyperlinked logos. The gaps are the colour, size and format of the icons, the size of
-              the column headings, the tinted organisation lines, the Help destination, the
-              National Emblem file size and the absence of an Archives link.
+              <strong>{DBIM_SCORE} / 100</strong>, with {DEVIATIONS} recorded deviations. All six
+              information elements §5.6 makes mandatory are present on both variants, with the
+              prescribed lineage sentence and the hyperlinked logos. The deviations keep the
+              estate&apos;s Material Symbols icon set and its column-heading size, where following
+              DBIM in the footer alone would make the footer inconsistent with the rest of the estate.
             </p>
             <MatrixTable
               caption="DBIM 3.0 checklist items that apply to the footer"
@@ -326,10 +329,9 @@ export default function SiteFooterPage(): React.JSX.Element {
               Coverage of the dosje.gov.in Footer
             </h2>
             <p>
-              Every link in the live dosje.gov.in footer, set against this footer. Three
-              destinations are not covered because the website does not yet have the page; four
-              elements are added because DBIM requires them and the live footer does not carry
-              them.
+              Every link in the live dosje.gov.in footer is carried. Three elements are added
+              because DBIM or GIGW requires them and the live footer does not have them; nothing
+              else is added.
             </p>
             <MatrixTable
               caption="Links in the live dosje.gov.in footer, and where this footer carries them"

@@ -13708,13 +13708,13 @@ export const GENERATED_PROPS = {
         "name": "policyLinks",
         "type": "SiteFooterLink[]",
         "required": true,
-        "description": "[DBIM 5.6] The website policies — terms of use, privacy, copyright, hyperlinking, accessibility, feedback. Required on both variants. DO NOT list Sitemap or Help here. They are their own props, and on the portal variant a duplicate renders twice in the same band."
+        "description": "[DBIM 5.6] The website policies — terms of use, privacy, copyright, hyperlinking, accessibility, feedback. Required on both variants. On `portal`, DO NOT list Sitemap or Help here: the component draws them from their own props, so a duplicate renders twice in the same band. On `website` those props are not drawn, and Help may sit here as it does on dosje.gov.in."
       },
       {
         "name": "sitemap",
         "type": "SiteFooterLink",
         "required": true,
-        "description": "[DBIM 5.6] Sitemap — REQUIRED, like `lineage` and `copyright`, and for the same reason: a footer without it is not a government footer. WHERE IT RENDERS DEPENDS ON THE VARIANT, and that is the whole point of the prop. On `website` the Sitemap already sits in a link column, so this is not drawn again — the clause asks for the element to be present, not present twice. On `portal` there are no columns, so it renders in the statutory bar. Passing it is how a caller proves the destination exists for both."
+        "description": "[DBIM 5.6] Sitemap — REQUIRED, like `lineage` and `copyright`, and for the same reason: a footer without it is not a government footer. WHERE IT RENDERS DEPENDS ON THE VARIANT, and that is the whole point of the prop. On `website` the content already places the Sitemap (a link column, or the policy row), so this is not drawn again — the clause asks for the element to be present, not present twice. On `portal` there are no columns, so it renders in the statutory bar. Passing it is how a caller proves the destination exists for both."
       },
       {
         "name": "address",

@@ -34,8 +34,10 @@
 //    carries the Department's columns, credits and lineage. Use this component
 //    directly only for a portal or a new site.
 // 2. `lineage`, `policyLinks`, `sitemap`, `help` AND `copyright` ARE REQUIRED on
-//    BOTH variants — DBIM 5.6. Never list Sitemap or Help inside `policyLinks`:
-//    on the portal variant each would render twice in one band.
+//    BOTH variants — DBIM 5.6. On `portal` the component draws Sitemap and Help
+//    from those props, so never list them inside `policyLinks` there: each would
+//    render twice in one band. On `website` the props are not drawn; the content
+//    places them (the hub: Sitemap in Support, Help in the policy row).
 // 3. THE FOOTER OWNS NO WIDTH. On `website` each band carries `.sa-container`
 //    (the 1200 / 1320 / 1440 ladder, the 16 / 24 / 32 margin, the right-wall
 //    gutter); on `portal` it is fluid and pads with `--sa-grid-margin-page`,
@@ -55,7 +57,8 @@
 //
 // TOKENS
 //   ground        --sa-bg-brand-primary-boldest
-//   lead ink      --sa-on-bg-brand-primary-boldest
+//   lead ink      --sa-on-bg-brand-primary-boldest   also every organisation line and
+//                                                      every icon (DBIM 3.7: white, never a tint)
 //   links         --sa-cmp-sitefooter-ink-subtle     boilerplate  --sa-cmp-sitefooter-ink-subtler
 //   rules         --sa-cmp-sitefooter-rule-base      policy row   --sa-cmp-sitefooter-rule-subtle
 //   social chip   --sa-cmp-sitefooter-chip-default   hover        --sa-cmp-sitefooter-chip-hover
@@ -93,7 +96,7 @@ export default {
   credits={CREDITS}
   policyLinks={POLICY_LINKS}
   sitemap={{ label: "Sitemap", href: "/website/sitemap" }}
-  help={{ label: "Help & Support", href: "/website/contact-us" }}
+  help={{ label: "Help", href: "/website/help" }}
   relatedLinks={RELATED_LINKS}
   copyright={COPYRIGHT}
   lastUpdated={page.lastUpdated}

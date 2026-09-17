@@ -154,6 +154,13 @@ export const STATIC_PAGES: StaticPageEntry[] = [
     "iconName": "campaign"
   },
   {
+    "title": "Citizen Charter",
+    "description": "The Citizen Charter of the Ministry of Social Justice & Empowerment.",
+    "href": "/website/citizen-charter",
+    "section": "Pages",
+    "iconName": "article"
+  },
+  {
     "title": "Contact Person — Grant-in-Aid",
     "description": "Contact points in the Department of Social Justice & Empowerment for queries relating to grant-in-aid to NGOs and voluntary organisations.",
     "href": "/website/contact-person",
@@ -166,6 +173,13 @@ export const STATIC_PAGES: StaticPageEntry[] = [
     "href": "/website/contact-us",
     "section": "Contact & Directory",
     "iconName": "call"
+  },
+  {
+    "title": "Cookies",
+    "description": "The cookies this website uses, and how to manage them in your browser.",
+    "href": "/website/cookies",
+    "section": "Pages",
+    "iconName": "article"
   },
   {
     "title": "Copyright Policy",
@@ -292,6 +306,13 @@ export const STATIC_PAGES: StaticPageEntry[] = [
     "href": "/website/guidelines-for-assisting-ngos-voluntary-organisations",
     "section": "NGOs & Grants",
     "iconName": "handshake"
+  },
+  {
+    "title": "Help",
+    "description": "Help with viewing documents in different file formats and accessing this website with a screen reader.",
+    "href": "/website/help",
+    "section": "Pages",
+    "iconName": "article"
   },
   {
     "title": "Hyperlinking Policy",
@@ -572,6 +593,13 @@ export const STATIC_PAGES: StaticPageEntry[] = [
     "href": "/website/vacancies",
     "section": "Opportunities",
     "iconName": "work"
+  },
+  {
+    "title": "Visitor Analytics",
+    "description": "Visitors to the website of the Department of Social Justice & Empowerment, by language and month.",
+    "href": "/website/visitor-analytics",
+    "section": "Pages",
+    "iconName": "article"
   },
   {
     "title": "Welfare of Other Backward Classes",

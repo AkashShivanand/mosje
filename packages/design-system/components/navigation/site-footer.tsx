@@ -82,8 +82,9 @@ export interface SiteFooterProps extends React.HTMLAttributes<HTMLElement> {
    * [DBIM 5.6] The website policies — terms of use, privacy, copyright,
    * hyperlinking, accessibility, feedback. Required on both variants.
    *
-   * DO NOT list Sitemap or Help here. They are their own props, and on the
-   * portal variant a duplicate renders twice in the same band.
+   * On `portal`, DO NOT list Sitemap or Help here: the component draws them from
+   * their own props, so a duplicate renders twice in the same band. On `website`
+   * those props are not drawn, and Help may sit here as it does on dosje.gov.in.
    */
   policyLinks: SiteFooterLink[];
   /**
@@ -91,8 +92,8 @@ export interface SiteFooterProps extends React.HTMLAttributes<HTMLElement> {
    * same reason: a footer without it is not a government footer.
    *
    * WHERE IT RENDERS DEPENDS ON THE VARIANT, and that is the whole point of the
-   * prop. On `website` the Sitemap already sits in a link column, so this is not
-   * drawn again — the clause asks for the element to be present, not present
+   * prop. On `website` the content already places the Sitemap (a link column, or
+   * the policy row), so this is not drawn again — the clause asks for the element to be present, not present
    * twice. On `portal` there are no columns, so it renders in the statutory bar.
    * Passing it is how a caller proves the destination exists for both.
    */
@@ -166,8 +167,8 @@ function NewWindow() {
  * not a government footer, and making them optional would let a caller ship one
  * that is not.
  *
- * `sitemap` and `help` DRAW only on `portal`, because on `website` they already
- * sit in the link columns and the clause asks for the element to be present,
+ * `sitemap` and `help` DRAW only on `portal`, because on `website` the content
+ * already places them — in a link column or the policy row and the clause asks for the element to be present,
  * not present twice. They are required regardless, so the destination cannot be
  * missing from the variant that has to render it.
  *
