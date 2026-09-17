@@ -717,7 +717,7 @@ export function DemoDock({
   const leadLabel = showSignIn ? "Sign in" : (extras[0]?.label ?? label);
 
   return (
-    <div ref={rootRef} className={cn("ds-demodock", className)}>
+    <div ref={rootRef} className={cn("ds-demodock", className)} data-sa-demo-tools="">
       {/* Always mounted (not just while the panel is open) so the global
           colour-mode shortcut can announce a change even with the dock
           closed — that's the whole point of the shortcut. */}

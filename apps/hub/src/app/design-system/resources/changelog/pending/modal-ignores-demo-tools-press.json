@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "`Modal` no longer treats a press inside the demo dock as a press outside the dialog. Filling an open form from the dock's Fill tab asked whether to discard the answers being filled; the dock now carries `data-sa-demo-tools` and the dialog's outside-press check ignores it"
+}

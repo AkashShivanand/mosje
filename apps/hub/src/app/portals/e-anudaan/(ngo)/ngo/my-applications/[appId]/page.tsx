@@ -86,6 +86,12 @@ import { answeredSections, applicantStages, applicantStanding, caseLabel, openDe
 import type { DeficiencyItem, EAnudaanState, GrantApplication, MockDoc } from "@/lib/e-anudaan/types";
 import { routeOnClick } from "@/components/e-anudaan/ngo-shell";
 import { SanctionedFilePanel } from "@/components/e-anudaan/sanctioned-file-panel";
+import { useDemoFormFill } from "@/components/e-anudaan/use-demo-form-fill";
+import { correctedValueOf } from "@/lib/e-anudaan/demo-forms/correct-application";
+import { sampleChoices } from "@/lib/e-anudaan/sample-files";
+
+/** A demo dock fill for Correct Your Application (lib/e-anudaan/demo-forms/correct-application.ts). */
+type CorrectionFill = { n: number; values: Readonly<Record<string, string>> };
 
 const BASE = "/portals/e-anudaan/ngo/my-applications";
 
@@ -101,9 +107,48 @@ function ApplicationDetail() {
   const params = useParams<{ appId: string }>();
   const search = useSearchParams();
   const router = useRouter();
-  const { findApp, state } = useEAnudaan();
+  const { findApp, state, replaceDocument, correctDeficiencyItem } = useEAnudaan();
   // Another organisation's file reads exactly as a missing one (security audit S05).
   const app = ownApplication(findApp(decodeURIComponent(params.appId)), signedInNgoId(state));
+  const [demo, setDemo] = React.useState<CorrectionFill | null>(null);
+
+  /* The correct fill saves each open item the way leaving its box (or choosing its file) does; it
+     does not submit. Every fill then opens the correction form, which the panel remounts to show. */
+  useDemoFormFill("correct-application", (v, preset) => {
+    const deficiency = app ? openDeficiencyOf(app) : undefined;
+    if (!app || !deficiency) return;
+    if (v.items === "correct") {
+      for (const item of deficiency.items ?? []) {
+        if (item.correctedAt) continue;
+        const doc = item.docId ? app.documents.find((d) => d.id === item.docId) : undefined;
+        if (item.kind === "document" && doc) {
+          const name = sampleChoices(doc.title)[0]?.source.fileName ?? `${doc.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.pdf`;
+          replaceDocument(app.id, doc.id, { name, sizeKb: 640 }, "Replaced after the Ministry's query");
+          correctDeficiencyItem(app.id, item.id, `Replaced with ${name}`);
+        } else if (item.kind === "field" && item.fieldName) {
+          const rule = editRuleOnFile(app, item.fieldName);
+          if (rule?.kind === "locked") {
+            const answer = /ifsc|bank/.test(item.fieldName) ? v.answerIfsc : /ngo_name/.test(item.fieldName) ? v.answerName : v.answerOther;
+            correctDeficiencyItem(app.id, item.id, answer ?? "");
+          } else {
+            const value = correctedValueOf(item.originalValue ?? app.formValues?.[item.fieldName] ?? "");
+            correctDeficiencyItem(app.id, item.id, rule?.kind === "editable-with-reason" ? (v.reason ?? "") : "Answer corrected.", value);
+          }
+        } else {
+          correctDeficiencyItem(app.id, item.id, v.answerOther ?? "");
+        }
+      }
+    }
+    setDemo((d) => ({ n: (d?.n ?? 0) + 1, values: v }));
+    if (search.get("focus") !== "deficiency") router.replace(`${BASE}/${encodeURIComponent(app.id)}?focus=deficiency`, { scroll: false });
+    // A rule preset's message can sit well down a long list: bring the first one into view.
+    if (!preset.valid) {
+      window.setTimeout(() => {
+        const shown = document.querySelector(".ds-field__message--error") ?? document.getElementById("change-another") ?? document.querySelector(".ds-alert--error");
+        shown?.scrollIntoView({ block: "center" });
+      }, 450);
+    }
+  });
 
   // The shared not-found props, rendered as the DS StatusScreen template directly.
   if (!app) return <StatusScreen {...applicationNotFoundProps(router)} />;
@@ -141,7 +186,7 @@ function ApplicationDetail() {
 
       {focused ? (
         <>
-          <CorrectionPanel app={app} />
+          <CorrectionPanel key={demo?.n ?? 0} app={app} demo={demo} />
           <p className="text-body-2 text-ink-muted">
             Need to check what you submitted?{" "}
             <Link href={`${BASE}/${encodeURIComponent(app.id)}`} onClick={routeOnClick(router, `${BASE}/${encodeURIComponent(app.id)}`)}>
@@ -166,16 +211,29 @@ function ApplicationDetail() {
 
 /* ── Focused mode — the corrections ─────────────────────────────────────── */
 
-function CorrectionPanel({ app }: { app: GrantApplication }) {
+function CorrectionPanel({ app, demo }: { app: GrantApplication; demo?: CorrectionFill | null }) {
   const { act, replaceDocument, correctDeficiencyItem, recordDocumentCheck } = useEAnudaan();
   const { toast } = useToast();
   const router = useRouter();
   const deficiency = openDeficiencyOf(app)!;
   const items = deficiency.items ?? [];
   const done = items.filter((i) => i.correctedAt).length;
-  const [note, setNote] = React.useState("");
-  const [attempted, setAttempted] = React.useState(false);
+  const fill = demo?.values;
+  const [note, setNote] = React.useState(fill?.items === "correct" ? (fill.note ?? "") : "");
+  const [attempted, setAttempted] = React.useState(fill?.submit === "attempt");
   const remaining = items.length - done;
+
+  /* Which item a rule preset lands on: the first the problem can arise in. Where no item can show it
+     (no significant answer was raised on this file), Change Another Answer shows it instead. */
+  const ruleOf = (i: DeficiencyItem) => (i.kind === "field" && i.fieldName ? editRuleOnFile(app, i.fieldName)?.kind : undefined);
+  const sameItem = fill?.item === "same" ? items.find((i) => ruleOf(i) === "editable" || ruleOf(i) === "editable-with-reason") : undefined;
+  const reasonItem = fill?.item === "no-reason" ? items.find((i) => ruleOf(i) === "editable-with-reason") : undefined;
+  const itemFill = (i: DeficiencyItem): "same" | "no-reason" | undefined => (i === sameItem ? "same" : i === reasonItem ? "no-reason" : undefined);
+  const anotherFill =
+    fill?.another ||
+    (fill?.item === "same" && !sameItem ? "same" : "") ||
+    (fill?.item === "no-reason" && !reasonItem ? "no-reason" : "") ||
+    undefined;
 
   // A replacement is checked as any upload is. The verdict is recorded on the file that was checked.
   const pendingKey = app.documents.filter((d) => d.aiVerdict?.state === "pending" && d.fileName).map((d) => `${d.id}|${d.fileName}`).join(",");
@@ -244,6 +302,7 @@ function CorrectionPanel({ app }: { app: GrantApplication }) {
                 index={i + 1}
                 item={item}
                 app={app}
+                demo={itemFill(item)}
                 // No toast per item: three stacked toasts covered the next item's controls
                 // (review panel, cycle 2). The item's own "Corrected" badge and line confirm it.
                 onReplace={(doc, file) => {
@@ -257,7 +316,7 @@ function CorrectionPanel({ app }: { app: GrantApplication }) {
           ))}
         </ol>
 
-        <ChangeAnotherAnswer app={app} excluded={new Set(items.map((i) => i.fieldName).filter((n): n is string => !!n))} />
+        <ChangeAnotherAnswer app={app} excluded={new Set(items.map((i) => i.fieldName).filter((n): n is string => !!n))} demo={anotherFill} />
 
         {changed.length > 0 && <ChangedAnswers app={app} changes={changed} />}
 
@@ -292,6 +351,7 @@ function CorrectionItem({
   index,
   item,
   app,
+  demo,
   onReplace,
   onCorrectField,
   onRespond,
@@ -299,6 +359,8 @@ function CorrectionItem({
   index: number;
   item: DeficiencyItem;
   app: GrantApplication;
+  /** A demo fill's problem to show on this item's answer. */
+  demo?: "same" | "no-reason";
   onReplace: (doc: MockDoc, file: { name: string; sizeKb: number }) => void;
   onCorrectField: (value: string, reason?: string) => void;
   onRespond: (text: string) => void;
@@ -453,6 +515,7 @@ function CorrectionItem({
           original={original}
           current={current}
           corrected={corrected}
+          demo={demo}
           onCorrectField={onCorrectField}
           onRespond={onRespond}
         />
@@ -515,6 +578,7 @@ function FieldCorrection({
   original,
   current,
   corrected,
+  demo,
   onCorrectField,
   onRespond,
 }: {
@@ -524,15 +588,17 @@ function FieldCorrection({
   original: string;
   current: string;
   corrected: boolean;
+  /** A demo fill's problem, shown as leaving the box would show it: the answer already submitted, or a changed answer with no reason. */
+  demo?: "same" | "no-reason";
   onCorrectField: (value: string, reason?: string) => void;
   onRespond: (text: string) => void;
 }) {
   const needsReason = rule?.kind === "editable-with-reason";
-  const [value, setValue] = React.useState(() => (corrected ? current : ""));
-  const [reason, setReason] = React.useState(() => (needsReason && corrected ? (item.response ?? "") : ""));
+  const [value, setValue] = React.useState(() => (demo === "same" ? original : demo === "no-reason" ? correctedValueOf(original) : corrected ? current : ""));
+  const [reason, setReason] = React.useState(() => (needsReason && corrected && !demo ? (item.response ?? "") : ""));
   const [answer, setAnswer] = React.useState(() => (rule?.kind === "locked" ? (item.response ?? "") : ""));
-  const [sameAsSubmitted, setSameAsSubmitted] = React.useState(false);
-  const [reasonMissing, setReasonMissing] = React.useState(false);
+  const [sameAsSubmitted, setSameAsSubmitted] = React.useState(demo === "same");
+  const [reasonMissing, setReasonMissing] = React.useState(demo === "no-reason");
   void app;
 
   /* Saved when the applicant leaves a box, as every answer on this list is (N-10) — and, where the
@@ -642,15 +708,36 @@ function FieldCorrection({
  * the applicant may put right others, within what the edit policy allows at this stage — a locked
  * one says why and where it is changed instead, and a significant one asks for a reason.
  */
-function ChangeAnotherAnswer({ app, excluded }: { app: GrantApplication; excluded: ReadonlySet<string> }) {
+function ChangeAnotherAnswer({
+  app,
+  excluded,
+  demo,
+}: {
+  app: GrantApplication;
+  excluded: ReadonlySet<string>;
+  /** A demo fill: open on a field the policy locks, or show one of the three messages Save Change can. */
+  demo?: string;
+}) {
   const { amendAnswer } = useEAnudaan();
   const values = app.formValues ?? {};
   const sections = answeredSections(app.schemeCode, values);
-  const [open, setOpen] = React.useState(false);
-  const [name, setName] = React.useState("");
-  const [value, setValue] = React.useState("");
+  // The field a fill chooses: the first answered one the policy treats the way the fill needs.
+  const [initial] = React.useState(() => {
+    const wanted = demo === "locked" ? "locked" : demo === "no-reason" ? "editable-with-reason" : "editable";
+    const field = demo
+      ? sections.flatMap((s) => s.fields).find((f) => !excluded.has(f.name) && (values[f.name] ?? "").trim() && editRuleOnFile(app, f.name)?.kind === wanted)
+      : undefined;
+    const submittedAnswer = field ? (values[field.name] ?? "") : "";
+    return {
+      name: field?.name ?? "",
+      value: demo === "same" ? submittedAnswer : demo === "no-reason" ? correctedValueOf(submittedAnswer) : "",
+    };
+  });
+  const [open, setOpen] = React.useState(!!initial.name);
+  const [name, setName] = React.useState(initial.name);
+  const [value, setValue] = React.useState(initial.value);
   const [reason, setReason] = React.useState("");
-  const [tried, setTried] = React.useState(false);
+  const [tried, setTried] = React.useState(!!initial.name);
 
   const field = sections.flatMap((s) => s.fields).find((f) => f.name === name);
   const rule = field ? editRuleOnFile(app, field.name) : undefined;

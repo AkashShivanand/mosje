@@ -45,6 +45,7 @@ import {
   type QualificationDoc,
 } from "@/lib/e-anudaan/roster";
 import { formatDate } from "@/lib/e-anudaan/format";
+import { useDemoFormFill } from "./use-demo-form-fill";
 
 const MOBILE = /^[6-9]\d{9}$/;
 const OTP_VALID_SECONDS = 600;
@@ -58,16 +59,26 @@ export function AddBeneficiaryDialog({
   projectName,
   onClose,
   onCreate,
+  onDemoOpen,
 }: {
   open: boolean;
   projectId: string;
   projectName: string;
   onClose: () => void;
   onCreate: (b: Omit<Beneficiary, "id">) => void;
+  /** Opens the dialog for a demo dock fill (lib/e-anudaan/demo-forms/roster.ts). */
+  onDemoOpen?: () => void;
 }) {
   const blank = { name: "", gender: "", category: "", idType: "", idNumber: "", mobile: "", dob: "", guardian: "", admissionDate: "", remarks: "" };
   const [f, setF] = React.useState(blank);
   const [tried, setTried] = React.useState(false);
+
+  useDemoFormFill("add-beneficiary", (v, preset) => {
+    if (!projectId) return;
+    setF(Object.fromEntries(Object.keys(blank).map((k) => [k, v[k] ?? ""])) as typeof blank);
+    setTried(!preset.valid);
+    onDemoOpen?.();
+  });
 
   const errors = {
     name: !f.name.trim() ? "Enter the beneficiary's full name." : undefined,
@@ -185,12 +196,15 @@ export function AddEmployeeDialog({
   projectName,
   onClose,
   onCreate,
+  onDemoOpen,
 }: {
   open: boolean;
   projectId: string;
   projectName: string;
   onClose: () => void;
   onCreate: (e: Omit<Employee, "id">) => void;
+  /** Opens the dialog for a demo dock fill (lib/e-anudaan/demo-forms/roster.ts). */
+  onDemoOpen?: () => void;
 }) {
   const blank = { name: "", designation: "", category: "", joiningDate: "", qualification: "", mobile: "" };
   const [f, setF] = React.useState(blank);
@@ -223,6 +237,19 @@ export function AddEmployeeDialog({
   };
   const valid = Object.values(errors).every((e) => !e);
   const err = (k: keyof typeof errors) => (tried ? errors[k] : undefined);
+
+  // The one-time code is the employee's to read out, so a fill arrives with the number verified or
+  // with no code sent yet — never with a code typed for them.
+  useDemoFormFill("add-employee", (v, preset) => {
+    if (!projectId) return;
+    setF(Object.fromEntries(Object.keys(blank).map((k) => [k, v[k] ?? ""])) as typeof blank);
+    setDocs((v.certificates ?? "").split(",").filter(Boolean).map((fileName, i) => ({ fileName, sizeKb: 340 + i * 95 })));
+    setOtp("");
+    setSentAt(null);
+    setStage(v.mobileStage === "verified" ? "verified" : "idle");
+    setTried(!preset.valid);
+    onDemoOpen?.();
+  });
 
   const close = () => {
     setF(blank);

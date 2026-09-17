@@ -18,7 +18,13 @@
  * correct fill.
  */
 
+import { BANK_ACCOUNT_CHANGE } from "./bank-account-change.ts";
+import { CCTV_CAMERA, CCTV_CERTIFICATE, CCTV_RECORDS, CCTV_UPTIME } from "./cctv.ts";
+import { CORRECT_APPLICATION } from "./correct-application.ts";
 import { PROJECT_LOCATION_CHANGE } from "./project-location-change.ts";
+import { ADD_BENEFICIARY, ADD_EMPLOYEE } from "./roster.ts";
+import { UTILISATION_CERTIFICATE } from "./utilisation-certificate.ts";
+import { WEEKLY_ATTENDANCE } from "./weekly-attendance.ts";
 import { REVIEW_FORWARD } from "./review-forward.ts";
 import { REVIEW_RETURN_PREVIOUS } from "./review-return-previous.ts";
 import { REVIEW_DEFICIENCY } from "./review-deficiency.ts";
@@ -62,6 +68,16 @@ export interface DemoFormFillDetail {
 
 export const FORMS: readonly DemoFormDef[] = [
   PROJECT_LOCATION_CHANGE,
+  BANK_ACCOUNT_CHANGE,
+  ADD_BENEFICIARY,
+  ADD_EMPLOYEE,
+  WEEKLY_ATTENDANCE,
+  CCTV_CAMERA,
+  CCTV_CERTIFICATE,
+  CCTV_RECORDS,
+  CCTV_UPTIME,
+  CORRECT_APPLICATION,
+  UTILISATION_CERTIFICATE,
   REVIEW_SANCTION,
   REVIEW_FORWARD,
   REVIEW_DEFICIENCY,

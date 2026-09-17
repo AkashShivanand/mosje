@@ -269,6 +269,10 @@ function Roster() {
         projectName={project ? projectName(project) : ""}
         onClose={() => setAdding(null)}
         onCreate={addBeneficiary}
+        onDemoOpen={() => {
+          if (tab !== "beneficiaries") setParam("tab", "");
+          setAdding("beneficiaries");
+        }}
       />
       <AddEmployeeDialog
         open={adding === "staff"}
@@ -276,6 +280,10 @@ function Roster() {
         projectName={project ? projectName(project) : ""}
         onClose={() => setAdding(null)}
         onCreate={addEmployee}
+        onDemoOpen={() => {
+          if (tab !== "staff") setParam("tab", "staff");
+          setAdding("staff");
+        }}
       />
       <PersonDetailsDialog person={viewing} onClose={() => setViewing(null)} />
       <Modal

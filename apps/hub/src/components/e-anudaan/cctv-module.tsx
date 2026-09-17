@@ -43,6 +43,7 @@ import {
 import {
   CCTV_AREAS,
   DECLARATION_DUE_DAY,
+  certificateFileProblem,
   EMPTY_CAMERA,
   EMPTY_UPTIME,
   RETENTION_MIN_DAYS,
@@ -63,16 +64,34 @@ import {
   type UptimeFormValues,
 } from "@/lib/e-anudaan/cctv";
 import { formatDate } from "@/lib/e-anudaan/format";
+import { cameraValuesOf, certificateFileOf, recordsValuesOf, uptimeValuesOf } from "@/lib/e-anudaan/demo-forms/cctv";
 import type { CctvCamera, CctvSetup, CctvUptimeDeclaration } from "@/lib/e-anudaan/types";
 import { CctvFlags, CctvStatusBadge, CoverageList } from "./cctv-parts";
 
 const PRIVACY_NOTE =
   "Cameras must not be installed in toilets, bathrooms, dormitory sleeping areas or medical examination rooms.";
-const CERTIFICATE_TYPES = ["application/pdf", "image/jpeg", "image/png"];
-const CERTIFICATE_MAX_KB = 5 * 1024;
 const DECLARATIONS_PER_PAGE = 6;
 
-export function CctvModule({ setup, onSave }: { setup: CctvSetup; onSave: (next: CctvSetup) => void }) {
+/**
+ * A demo dock fill for one of the module's forms (lib/e-anudaan/demo-forms/cctv.ts). `n` counts
+ * fills, so the same preset twice is applied twice.
+ */
+export interface CctvDemoFill {
+  n: number;
+  formId: string;
+  values: Readonly<Record<string, string>>;
+  valid: boolean;
+}
+
+/** The fill for `formId` that has not been applied yet, once per fill: state adjusted during render. */
+function useFillFor(demo: CctvDemoFill | null | undefined, formId: string): CctvDemoFill | null {
+  const [seen, setSeen] = React.useState(0);
+  if (!demo || demo.formId !== formId || demo.n === seen) return null;
+  setSeen(demo.n);
+  return demo;
+}
+
+export function CctvModule({ setup, onSave, demo }: { setup: CctvSetup; onSave: (next: CctvSetup) => void; demo?: CctvDemoFill | null }) {
   const compliance = cctvCompliance(setup);
   return (
     <div className="space-y-5">
@@ -89,9 +108,9 @@ export function CctvModule({ setup, onSave }: { setup: CctvSetup; onSave: (next:
         </CardBody>
       </Card>
 
-      <CameraRegister setup={setup} onSave={onSave} />
-      <CertificateAndStorage setup={setup} onSave={onSave} />
-      <UptimeDeclarations setup={setup} onSave={onSave} overdueMonth={compliance.declarationOverdue ? compliance.dueMonth : null} />
+      <CameraRegister setup={setup} onSave={onSave} demo={demo} />
+      <CertificateAndStorage setup={setup} onSave={onSave} demo={demo} />
+      <UptimeDeclarations setup={setup} onSave={onSave} overdueMonth={compliance.declarationOverdue ? compliance.dueMonth : null} demo={demo} />
     </div>
   );
 }
@@ -100,10 +119,19 @@ export function CctvModule({ setup, onSave }: { setup: CctvSetup; onSave: (next:
 
 type CameraRow = CctvCamera & Record<string, unknown>;
 
-function CameraRegister({ setup, onSave }: { setup: CctvSetup; onSave: (next: CctvSetup) => void }) {
+function CameraRegister({ setup, onSave, demo }: { setup: CctvSetup; onSave: (next: CctvSetup) => void; demo?: CctvDemoFill | null }) {
   const { toast } = useToast();
   const cameras = setup.cameraRegister ?? [];
   const [editing, setEditing] = React.useState<CctvCamera | "new" | null>(null);
+  /** A fill's values and, for a rule preset, the errors Save Camera would show. */
+  const [draft, setDraft] = React.useState<{ n: number; values: CameraFormValues; errors: Partial<Record<keyof CameraFormValues, string>> } | null>(null);
+  const fill = useFillFor(demo, "cctv-camera");
+  if (fill) {
+    const values = cameraValuesOf(fill.values);
+    const res = validateCamera(values, "demo");
+    setDraft({ n: fill.n, values, errors: fill.valid || res.ok ? {} : res.errors });
+    setEditing("new");
+  }
   const [removing, setRemoving] = React.useState<CctvCamera | null>(null);
 
   const saveRegister = (next: CctvCamera[]) =>
@@ -171,10 +199,14 @@ function CameraRegister({ setup, onSave }: { setup: CctvSetup; onSave: (next: Cc
 
         {editing && (
           <CameraDialog
-            key={editing === "new" ? "new" : editing.id}
-            initial={editing === "new" ? EMPTY_CAMERA : cameraToValues(editing)}
+            key={editing === "new" ? `new-${draft?.n ?? 0}` : editing.id}
+            initial={editing === "new" ? (draft?.values ?? EMPTY_CAMERA) : cameraToValues(editing)}
+            initialErrors={editing === "new" ? draft?.errors : undefined}
             title={editing === "new" ? "Register Camera" : "Edit Camera"}
-            onCancel={() => setEditing(null)}
+            onCancel={() => {
+              setEditing(null);
+              setDraft(null);
+            }}
             onSubmit={(values) => {
               const id = editing === "new" ? `cam-${setup.projectId}-${Date.now().toString(36)}` : editing.id;
               const res = validateCamera(values, id);
@@ -182,6 +214,7 @@ function CameraRegister({ setup, onSave }: { setup: CctvSetup; onSave: (next: Cc
               saveRegister(editing === "new" ? [...cameras, res.value] : cameras.map((c) => (c.id === id ? res.value : c)));
               toast(editing === "new" ? `Camera at ${res.value.location} registered.` : `Camera at ${res.value.location} updated.`, "success");
               setEditing(null);
+              setDraft(null);
               return null;
             }}
           />
@@ -222,18 +255,21 @@ function CameraRegister({ setup, onSave }: { setup: CctvSetup; onSave: (next: Cc
 
 function CameraDialog({
   initial,
+  initialErrors,
   title,
   onCancel,
   onSubmit,
 }: {
   initial: CameraFormValues;
+  /** Errors to show as it opens — a demo fill of a rule preset. */
+  initialErrors?: Partial<Record<keyof CameraFormValues, string>>;
   title: string;
   onCancel: () => void;
   /** Returns the errors to show, or null when the camera was saved. */
   onSubmit: (values: CameraFormValues) => Partial<Record<keyof CameraFormValues, string>> | null;
 }) {
   const [values, setValues] = React.useState<CameraFormValues>(initial);
-  const [errors, setErrors] = React.useState<Partial<Record<keyof CameraFormValues, string>>>({});
+  const [errors, setErrors] = React.useState<Partial<Record<keyof CameraFormValues, string>>>(initialErrors ?? {});
   const set = <K extends keyof CameraFormValues>(k: K, v: CameraFormValues[K]) => setValues((prev) => ({ ...prev, [k]: v }));
   const today = new Date().toISOString().slice(0, 10);
   const ids: Record<keyof CameraFormValues, string> = {
@@ -335,7 +371,7 @@ function CameraDialog({
 
 /* ── certificate, retention, storage ─────────────────────────────────────── */
 
-function CertificateAndStorage({ setup, onSave }: { setup: CctvSetup; onSave: (next: CctvSetup) => void }) {
+function CertificateAndStorage({ setup, onSave, demo }: { setup: CctvSetup; onSave: (next: CctvSetup) => void; demo?: CctvDemoFill | null }) {
   const { toast } = useToast();
   const fileInput = React.useRef<HTMLInputElement>(null);
   const [fileError, setFileError] = React.useState<string | null>(null);
@@ -346,20 +382,31 @@ function CertificateAndStorage({ setup, onSave }: { setup: CctvSetup; onSave: (n
   const set = <K extends keyof RecordsFormValues>(k: K, v: RecordsFormValues[K]) => setValues((prev) => ({ ...prev, [k]: v }));
   const cert = setup.certificate;
 
-  const onFile = (file: File | undefined) => {
+  const onFile = (file: { name: string; type: string; size: number } | undefined) => {
     if (!file) return;
-    if (!CERTIFICATE_TYPES.includes(file.type)) {
-      setFileError(`${file.name} is not a PDF, JPG or PNG file. Choose the certificate in one of those formats.`);
-      return;
-    }
-    if (file.size / 1024 > CERTIFICATE_MAX_KB) {
-      setFileError(`${file.name} is larger than 5 MB. Choose a smaller copy of the certificate.`);
+    const problem = certificateFileProblem(file);
+    if (problem) {
+      setFileError(problem);
       return;
     }
     setFileError(null);
     onSave({ ...setup, certificate: { fileName: file.name, sizeKb: Math.max(1, Math.round(file.size / 1024)), uploadedAt: new Date().toISOString() } });
     toast("Installation certificate uploaded.", "success");
   };
+
+  /* A certificate fill is a file chosen as the picker would choose it. A file the check accepts is
+     uploaded by the page as the fill arrives (a store write cannot happen during render); a refused
+     one shows its reason here. A retention fill opens the form with its values. */
+  const certificateFill = useFillFor(demo, "cctv-certificate");
+  if (certificateFill) setFileError(certificateFileProblem(certificateFileOf(certificateFill.values)));
+  const recordsFill = useFillFor(demo, "cctv-records");
+  if (recordsFill) {
+    const next = recordsValuesOf(recordsFill.values);
+    const res = validateRecords(next);
+    setValues(next);
+    setErrors(recordsFill.valid || res.ok ? {} : res.errors);
+    setEditing(true);
+  }
 
   const save = () => {
     const res = validateRecords(values);
@@ -374,7 +421,7 @@ function CertificateAndStorage({ setup, onSave }: { setup: CctvSetup; onSave: (n
   };
 
   return (
-    <Card variant="outlined">
+    <Card variant="outlined" id="cctv-certificate-storage">
       <CardBody className="space-y-4">
         <SectionTitle title="Installation Certificate and Footage Storage" />
         <DocumentRow
@@ -480,13 +527,23 @@ function UptimeDeclarations({
   setup,
   onSave,
   overdueMonth,
+  demo,
 }: {
   setup: CctvSetup;
   onSave: (next: CctvSetup) => void;
   overdueMonth: string | null;
+  demo?: CctvDemoFill | null;
 }) {
   const { toast } = useToast();
   const [open, setOpen] = React.useState<UptimeFormValues | null>(null);
+  const [draft, setDraft] = React.useState<{ n: number; errors: UptimeErrors } | null>(null);
+  const fill = useFillFor(demo, "cctv-uptime");
+  if (fill) {
+    const values = uptimeValuesOf(fill.values);
+    const res = validateUptime(values);
+    setDraft({ n: fill.n, errors: fill.valid || res.ok ? {} : res.errors });
+    setOpen(values);
+  }
   const list = setup.uptime ?? [];
   const cameras = setup.cameraRegister?.length ?? 0;
 
@@ -556,15 +613,21 @@ function UptimeDeclarations({
         )}
         {open && (
           <UptimeDialog
+            key={draft?.n ?? 0}
             initial={open}
+            initialErrors={draft?.errors}
             declared={new Set(list.map((d) => d.month))}
-            onCancel={() => setOpen(null)}
+            onCancel={() => {
+              setOpen(null);
+              setDraft(null);
+            }}
             onSubmit={(values) => {
               const res = validateUptime(values);
               if (!res.ok) return res.errors;
               onSave({ ...setup, uptime: withDeclaration(list, { ...res.value, declaredAt: new Date().toISOString() }) });
               toast(`Uptime declaration for ${cctvMonthLabel(res.value.month)} filed.`, "success");
               setOpen(null);
+              setDraft(null);
               return null;
             }}
           />
@@ -576,17 +639,20 @@ function UptimeDeclarations({
 
 function UptimeDialog({
   initial,
+  initialErrors,
   declared,
   onCancel,
   onSubmit,
 }: {
   initial: UptimeFormValues;
+  /** Errors to show as it opens — a demo fill of a rule preset. */
+  initialErrors?: UptimeErrors;
   declared: ReadonlySet<string>;
   onCancel: () => void;
   onSubmit: (values: UptimeFormValues) => UptimeErrors | null;
 }) {
   const [values, setValues] = React.useState<UptimeFormValues>(initial);
-  const [errors, setErrors] = React.useState<UptimeErrors>({});
+  const [errors, setErrors] = React.useState<UptimeErrors>(initialErrors ?? {});
   const set = <K extends keyof UptimeFormValues>(k: K, v: UptimeFormValues[K]) => setValues((prev) => ({ ...prev, [k]: v }));
   const setOutage = (i: number, k: "from" | "to" | "reason", v: string) =>
     setValues((prev) => ({ ...prev, outages: prev.outages.map((o, j) => (j === i ? { ...o, [k]: v } : o)) }));
