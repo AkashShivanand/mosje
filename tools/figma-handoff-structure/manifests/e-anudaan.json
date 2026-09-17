@@ -1,0 +1,2271 @@
+{
+ "portal": "E-Anudaan",
+ "file": "evmNmlK8g4VYwJVu2FwSGV",
+ "page": "51313:165608",
+ "recordedAt": "2026-09-17",
+ "$comment": "Snapshot of the organised page, read back over REST after the reorganisation, in layers-panel (reading) order. Flow IDs are scoped to the ROLE code (ACCESS, NGO, OFFICER, DIRECTOR, PMU), not to the lane, so a role column can be split or regrouped without renumbering. A retired ID is never reused. Regenerate after any structural change.",
+ "zones": [
+  {
+   "name": "A · START HERE",
+   "id": "53100:120823",
+   "children": [
+    {
+     "name": "Guide to This Page",
+     "id": "53106:120825",
+     "frames": [
+      {
+       "id": "53106:120826",
+       "name": ".doc / Cover"
+      },
+      {
+       "id": "53106:120846",
+       "name": ".doc / Portal Map"
+      },
+      {
+       "id": "53106:120989",
+       "name": ".doc / How to Read This Page"
+      },
+      {
+       "id": "53106:121037",
+       "name": ".doc / Status & Change Log"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "B · SCREENS BY USER ROLE",
+   "id": "53100:120824",
+   "children": [
+    {
+     "name": "Everyone · Sign In & Account",
+     "id": "53100:120827",
+     "children": [
+      {
+       "name": "ACCESS 10 · Sign In — NGO, Credentials",
+       "id": "52380:187214",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120828",
+         "frames": [
+          {
+           "id": "52380:187221",
+           "name": "Auth / Sign In / NGO — credentials, empty"
+          },
+          {
+           "id": "52380:187235",
+           "name": "Auth / Sign In / NGO — credentials, filled"
+          },
+          {
+           "id": "52380:187249",
+           "name": "Auth / Sign In / NGO — invalid credentials"
+          }
+         ]
+        },
+        {
+         "name": "Mobile · 375",
+         "id": "53100:120829",
+         "frames": [
+          {
+           "id": "52380:187228",
+           "name": "Auth / Sign In / NGO — credentials, empty · Mobile"
+          },
+          {
+           "id": "52380:187242",
+           "name": "Auth / Sign In / NGO — credentials, filled · Mobile"
+          },
+          {
+           "id": "52380:187256",
+           "name": "Auth / Sign In / NGO — invalid credentials · Mobile"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "ACCESS 20 · Sign In — NGO, DARPAN ID",
+       "id": "52380:187257",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120830",
+         "frames": [
+          {
+           "id": "52380:187264",
+           "name": "Auth / Sign In / NGO — DARPAN ID, empty"
+          },
+          {
+           "id": "52380:187278",
+           "name": "Auth / Sign In / NGO — DARPAN ID, filled"
+          }
+         ]
+        },
+        {
+         "name": "Mobile · 375",
+         "id": "53100:120831",
+         "frames": [
+          {
+           "id": "52380:187271",
+           "name": "Auth / Sign In / NGO — DARPAN ID, empty · Mobile"
+          },
+          {
+           "id": "52380:187285",
+           "name": "Auth / Sign In / NGO — DARPAN ID, filled · Mobile"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "ACCESS 25 · Sign In with NGO-DARPAN — Return States · Pending Discussion",
+       "id": "53088:111517",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120918",
+         "frames": [
+          {
+           "id": "53088:112038",
+           "name": "Auth / Sign In / NGO — NGO-DARPAN first, no captcha"
+          },
+          {
+           "id": "53088:113028",
+           "name": "Auth / NGO-DARPAN / Not registered on E-Anudaan"
+          },
+          {
+           "id": "53088:113908",
+           "name": "Auth / NGO-DARPAN / Registration inactive"
+          },
+          {
+           "id": "53088:114788",
+           "name": "Auth / NGO-DARPAN / Registration suspended"
+          },
+          {
+           "id": "53088:115667",
+           "name": "Auth / NGO-DARPAN / Consent refused"
+          },
+          {
+           "id": "53088:116553",
+           "name": "Auth / NGO-DARPAN / Provider unavailable"
+          },
+          {
+           "id": "53088:117439",
+           "name": "Auth / NGO-DARPAN / Request expired"
+          },
+          {
+           "id": "53088:118319",
+           "name": "Auth / NGO-DARPAN / First sign-in — confirm and link"
+          },
+          {
+           "id": "53088:119232",
+           "name": "Auth / NGO-DARPAN / Register the organisation"
+          },
+          {
+           "id": "53088:120145",
+           "name": "Auth / NGO-DARPAN / Registration request submitted"
+          },
+          {
+           "id": "53088:120586",
+           "name": "Auth / NGO-DARPAN / Consent — prototype stand-in"
+          }
+         ]
+        }
+       ],
+       "frames": [
+        {
+         "id": "53104:120898",
+         "name": ".note / Pending Discussion"
+        }
+       ]
+      },
+      {
+       "name": "ACCESS 30 · Sign In — Officer",
+       "id": "52380:187286",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120832",
+         "frames": [
+          {
+           "id": "52380:187293",
+           "name": "Auth / Sign In / Officer — empty"
+          },
+          {
+           "id": "52380:187307",
+           "name": "Auth / Sign In / Officer — filled"
+          }
+         ]
+        },
+        {
+         "name": "Mobile · 375",
+         "id": "53100:120833",
+         "frames": [
+          {
+           "id": "52380:187300",
+           "name": "Auth / Sign In / Officer — empty · Mobile"
+          },
+          {
+           "id": "52380:187314",
+           "name": "Auth / Sign In / Officer — filled · Mobile"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "ACCESS 40 · Password Recovery",
+       "id": "52836:65329",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120834",
+         "frames": [
+          {
+           "id": "52380:187321",
+           "name": "Auth / Forgot Password / Default"
+          },
+          {
+           "id": "52836:65330",
+           "name": "Auth / Reset Password / Default"
+          }
+         ]
+        },
+        {
+         "name": "Mobile · 375",
+         "id": "53100:120835",
+         "frames": [
+          {
+           "id": "52380:187328",
+           "name": "Auth / Forgot Password / Default · Mobile"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "NGO Applicant · Apply for a Grant",
+     "id": "53100:120837",
+     "children": [
+      {
+       "name": "NGO 10 · Dashboard & Notifications",
+       "id": "52849:66102",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120838",
+         "frames": [
+          {
+           "id": "52619:27254",
+           "name": "NGO / Dashboard / Populated"
+          },
+          {
+           "id": "52849:66103",
+           "name": "NGO / Dashboard / First application"
+          },
+          {
+           "id": "52645:46156",
+           "name": "NGO / Notifications / Populated"
+          }
+         ]
+        },
+        {
+         "name": "Mobile · 375",
+         "id": "53100:120839",
+         "frames": [
+          {
+           "id": "52849:67341",
+           "name": "NGO / Dashboard / Populated · Mobile"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "NGO 20 · Choose a Scheme",
+       "id": "52856:541971",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120840",
+         "frames": [
+          {
+           "id": "52624:33019",
+           "name": "NGO / Apply for Grant / Scheme Chooser"
+          },
+          {
+           "id": "52873:574012",
+           "name": "NGO / Apply for Grant / No Scheme Chosen"
+          },
+          {
+           "id": "52641:43816",
+           "name": "NGO / Apply for Grant / Submitted"
+          }
+         ]
+        },
+        {
+         "name": "Mobile · 375",
+         "id": "53100:120841",
+         "frames": [
+          {
+           "id": "52873:578513",
+           "name": "NGO / Apply for Grant / Scheme Chooser · Mobile"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "NGO 30 · SHRESHTA Mode 2 Application",
+       "id": "53100:120842",
+       "children": [
+        {
+         "name": "New Application · 7 Steps",
+         "id": "52856:541973",
+         "children": [
+          {
+           "name": "Desktop · 1440",
+           "id": "53100:120843",
+           "frames": [
+            {
+             "id": "52857:555312",
+             "name": "NGO / SHRESHTA Mode 2 · New / Step 1 of 7 — Application Type"
+            },
+            {
+             "id": "52667:51133",
+             "name": "NGO / SHRESHTA Mode 2 · New / Step 2 of 7 — Organisation Details"
+            },
+            {
+             "id": "52670:57459",
+             "name": "NGO / SHRESHTA Mode 2 · New / Step 3 of 7 — Institution Details"
+            },
+            {
+             "id": "52671:62545",
+             "name": "NGO / SHRESHTA Mode 2 · New / Step 4 of 7 — Bank, Beneficiaries & Grant"
+            },
+            {
+             "id": "52671:70102",
+             "name": "NGO / SHRESHTA Mode 2 · New / Step 5 of 7 — Declarations"
+            },
+            {
+             "id": "52671:77728",
+             "name": "NGO / SHRESHTA Mode 2 · New / Step 6 of 7 — Upload Documents"
+            },
+            {
+             "id": "52675:75927",
+             "name": "NGO / SHRESHTA Mode 2 · New / Step 7 of 7 — Review & Submit"
+            }
+           ]
+          },
+          {
+           "name": "Mobile · 375",
+           "id": "53100:120844",
+           "frames": [
+            {
+             "id": "52873:575211",
+             "name": "NGO / SHRESHTA Mode 2 · New / Step 2 of 7 — Organisation Details · Mobile"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "1st Instalment · 7 Steps",
+         "id": "52856:541974",
+         "children": [
+          {
+           "name": "Desktop · 1440",
+           "id": "53100:120845",
+           "frames": [
+            {
+             "id": "52857:560287",
+             "name": "NGO / SHRESHTA Mode 2 · 1st Instalment / Step 1 of 7 — Application Type"
+            },
+            {
+             "id": "52857:560309",
+             "name": "NGO / SHRESHTA Mode 2 · 1st Instalment / Step 2 of 7 — Organisation Details"
+            },
+            {
+             "id": "52857:560330",
+             "name": "NGO / SHRESHTA Mode 2 · 1st Instalment / Step 3 of 7 — Institution Details"
+            },
+            {
+             "id": "52857:560351",
+             "name": "NGO / SHRESHTA Mode 2 · 1st Instalment / Step 4 of 7 — Bank, Beneficiaries & Grant"
+            },
+            {
+             "id": "52857:560372",
+             "name": "NGO / SHRESHTA Mode 2 · 1st Instalment / Step 5 of 7 — Declarations"
+            },
+            {
+             "id": "52857:560462",
+             "name": "NGO / SHRESHTA Mode 2 · 1st Instalment / Step 6 of 7 — Upload Documents"
+            },
+            {
+             "id": "52857:560718",
+             "name": "NGO / SHRESHTA Mode 2 · 1st Instalment / Step 7 of 7 — Review & Submit"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "2nd Instalment · 4 Steps",
+         "id": "52856:541975",
+         "children": [
+          {
+           "name": "Desktop · 1440",
+           "id": "53100:120846",
+           "frames": [
+            {
+             "id": "52864:552596",
+             "name": "NGO / SHRESHTA Mode 2 · 2nd Instalment / Step 1 of 4 — Application Type"
+            },
+            {
+             "id": "52864:552618",
+             "name": "NGO / SHRESHTA Mode 2 · 2nd Instalment / Step 2 of 4 — Confirm Details"
+            },
+            {
+             "id": "52864:552640",
+             "name": "NGO / SHRESHTA Mode 2 · 2nd Instalment / Step 3 of 4 — Upload Documents"
+            },
+            {
+             "id": "52864:552899",
+             "name": "NGO / SHRESHTA Mode 2 · 2nd Instalment / Step 4 of 4 — Review & Submit"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "3rd Instalment · 4 Steps",
+         "id": "52856:541976",
+         "children": [
+          {
+           "name": "Desktop · 1440",
+           "id": "53100:120847",
+           "frames": [
+            {
+             "id": "52868:76698",
+             "name": "NGO / SHRESHTA Mode 2 · 3rd Instalment / Step 1 of 4 — Application Type"
+            },
+            {
+             "id": "52868:76720",
+             "name": "NGO / SHRESHTA Mode 2 · 3rd Instalment / Step 2 of 4 — Confirm Details"
+            },
+            {
+             "id": "52868:76742",
+             "name": "NGO / SHRESHTA Mode 2 · 3rd Instalment / Step 3 of 4 — Upload Documents"
+            },
+            {
+             "id": "52868:77000",
+             "name": "NGO / SHRESHTA Mode 2 · 3rd Instalment / Step 4 of 4 — Review & Submit"
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "NGO 40 · SMILE (Garima Greh) Application · Pending Discussion",
+       "id": "53100:120848",
+       "children": [
+        {
+         "name": "New Application · 7 Steps",
+         "id": "52856:541977",
+         "children": [
+          {
+           "name": "Desktop · 1440",
+           "id": "53100:120849",
+           "frames": [
+            {
+             "id": "52873:564609",
+             "name": "NGO / SMILE · New / Step 1 of 7 — Application Type"
+            },
+            {
+             "id": "52666:496602",
+             "name": "NGO / SMILE · New / Step 2 of 7 — Organisation Details"
+            },
+            {
+             "id": "52671:64340",
+             "name": "NGO / SMILE · New / Step 3 of 7 — Institution Details"
+            },
+            {
+             "id": "52671:72057",
+             "name": "NGO / SMILE · New / Step 4 of 7 — Bank, Beneficiaries & Grant"
+            },
+            {
+             "id": "52666:497381",
+             "name": "NGO / SMILE · New / Step 5 of 7 — Declarations"
+            },
+            {
+             "id": "52668:54289",
+             "name": "NGO / SMILE · New / Step 6 of 7 — Upload Documents"
+            },
+            {
+             "id": "52671:72821",
+             "name": "NGO / SMILE · New / Step 7 of 7 — Review & Submit"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "1st Instalment · 7 Steps",
+         "id": "52856:541978",
+         "children": [
+          {
+           "name": "Desktop · 1440",
+           "id": "53100:120850",
+           "frames": [
+            {
+             "id": "52873:565586",
+             "name": "NGO / SMILE · 1st Instalment / Step 1 of 7 — Application Type"
+            },
+            {
+             "id": "52626:30782",
+             "name": "NGO / SMILE · 1st Instalment / Step 2 of 7 — Organisation Details"
+            },
+            {
+             "id": "52667:52698",
+             "name": "NGO / SMILE · 1st Instalment / Step 3 of 7 — Institution Details"
+            },
+            {
+             "id": "52670:56207",
+             "name": "NGO / SMILE · 1st Instalment / Step 4 of 7 — Bank, Beneficiaries & Grant"
+            },
+            {
+             "id": "52671:63570",
+             "name": "NGO / SMILE · 1st Instalment / Step 5 of 7 — Declarations"
+            },
+            {
+             "id": "52633:38152",
+             "name": "NGO / SMILE · 1st Instalment / Step 6 of 7 — Upload Documents"
+            },
+            {
+             "id": "52637:42537",
+             "name": "NGO / SMILE · 1st Instalment / Step 7 of 7 — Review & Submit"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "2nd Instalment · 4 Steps",
+         "id": "52856:541979",
+         "children": [
+          {
+           "name": "Desktop · 1440",
+           "id": "53100:120851",
+           "frames": [
+            {
+             "id": "52873:567324",
+             "name": "NGO / SMILE · 2nd Instalment / Step 1 of 4 — Application Type"
+            },
+            {
+             "id": "52873:567346",
+             "name": "NGO / SMILE · 2nd Instalment / Step 2 of 4 — Confirm Details"
+            },
+            {
+             "id": "52873:567368",
+             "name": "NGO / SMILE · 2nd Instalment / Step 3 of 4 — Upload Documents"
+            },
+            {
+             "id": "52873:567550",
+             "name": "NGO / SMILE · 2nd Instalment / Step 4 of 4 — Review & Submit"
+            }
+           ]
+          }
+         ]
+        }
+       ],
+       "frames": [
+        {
+         "id": "53104:120841",
+         "name": ".note / Pending Discussion"
+        }
+       ]
+      },
+      {
+       "name": "NGO 50 · AVYAY Application · Pending Discussion",
+       "id": "53100:120852",
+       "children": [
+        {
+         "name": "New Application · 8 Steps",
+         "id": "52856:541847",
+         "children": [
+          {
+           "name": "Desktop · 1440",
+           "id": "53100:120853",
+           "frames": [
+            {
+             "id": "52781:78743",
+             "name": "NGO / AVYAY / New · Step 1 — Application Type, nothing chosen"
+            },
+            {
+             "id": "52667:53755",
+             "name": "NGO / AVYAY / New · Step 1 of 8 — Application Type"
+            },
+            {
+             "id": "52670:58785",
+             "name": "NGO / AVYAY / New · Step 2 of 8 — Organisation Details"
+            },
+            {
+             "id": "52671:68059",
+             "name": "NGO / AVYAY / New · Step 3 of 8 — Project Details"
+            },
+            {
+             "id": "52671:68673",
+             "name": "NGO / AVYAY / New · Step 4 of 8 — Justification"
+            },
+            {
+             "id": "52671:74938",
+             "name": "NGO / AVYAY / New · Step 5 of 8 — Infrastructure, Beneficiaries & Bank"
+            },
+            {
+             "id": "52671:76043",
+             "name": "NGO / AVYAY / New · Step 6 of 8 — Grant Sought & Declaration"
+            },
+            {
+             "id": "52671:528866",
+             "name": "NGO / AVYAY / New · Step 7 of 8 — Upload Documents"
+            },
+            {
+             "id": "52676:76093",
+             "name": "NGO / AVYAY / New · Step 8 of 8 — Review & Submit"
+            },
+            {
+             "id": "53093:122401",
+             "name": "NGO / AVYAY / New · Step 2 of 8 — Organisation Details · Email in the wrong format"
+            },
+            {
+             "id": "53093:120266",
+             "name": "NGO / AVYAY / New · Step 5 of 8 — Infrastructure, Beneficiaries & Bank · Filled"
+            }
+           ]
+          },
+          {
+           "name": "Mobile · 375",
+           "id": "53100:120854",
+           "frames": [
+            {
+             "id": "52873:574355",
+             "name": "NGO / AVYAY / New · Step 3 of 8 — Project Details · Mobile"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "1st Instalment · 7 Steps",
+         "id": "52856:541848",
+         "children": [
+          {
+           "name": "Desktop · 1440",
+           "id": "53100:120855",
+           "frames": [
+            {
+             "id": "52667:52081",
+             "name": "NGO / AVYAY / 1st instalment · Step 1 of 7 — Application Type"
+            },
+            {
+             "id": "52670:62488",
+             "name": "NGO / AVYAY / 1st instalment · Step 2 of 7 — Organisation Details"
+            },
+            {
+             "id": "52671:66363",
+             "name": "NGO / AVYAY / 1st instalment · Step 3 of 7 — Project Details"
+            },
+            {
+             "id": "52671:66965",
+             "name": "NGO / AVYAY / 1st instalment · Step 4 of 7 — Infrastructure, Beneficiaries & Bank"
+            },
+            {
+             "id": "52671:76892",
+             "name": "NGO / AVYAY / 1st instalment · Step 5 of 7 — Grant Sought & Declaration"
+            },
+            {
+             "id": "52671:529545",
+             "name": "NGO / AVYAY / 1st instalment · Step 6 of 7 — Upload Documents"
+            },
+            {
+             "id": "52675:75193",
+             "name": "NGO / AVYAY / 1st instalment · Step 7 of 7 — Review & Submit"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "2nd Instalment · 4 Steps",
+         "id": "52856:541849",
+         "children": [
+          {
+           "name": "Desktop · 1440",
+           "id": "53100:120856",
+           "frames": [
+            {
+             "id": "52872:80835",
+             "name": "NGO / AVYAY / 2nd instalment · Step 1 of 4 — Application Type"
+            },
+            {
+             "id": "52872:80874",
+             "name": "NGO / AVYAY / 2nd instalment · Step 2 of 4 — Confirm Details"
+            },
+            {
+             "id": "52872:80924",
+             "name": "NGO / AVYAY / 2nd instalment · Step 3 of 4 — Upload Documents"
+            },
+            {
+             "id": "52872:80974",
+             "name": "NGO / AVYAY / 2nd instalment · Step 4 of 4 — Review & Submit"
+            }
+           ]
+          },
+          {
+           "name": "Mobile · 375",
+           "id": "53100:120857",
+           "frames": [
+            {
+             "id": "52888:89318",
+             "name": "NGO / AVYAY / 2nd instalment · Step 2 of 4 — Confirm Details · Mobile"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "3rd Instalment · 4 Steps",
+         "id": "52856:541850",
+         "children": [
+          {
+           "name": "Desktop · 1440",
+           "id": "53100:120858",
+           "frames": [
+            {
+             "id": "52873:83553",
+             "name": "NGO / AVYAY / 3rd instalment · Step 1 of 4 — Application Type"
+            },
+            {
+             "id": "52873:83592",
+             "name": "NGO / AVYAY / 3rd instalment · Step 2 of 4 — Confirm Details"
+            },
+            {
+             "id": "52873:83642",
+             "name": "NGO / AVYAY / 3rd instalment · Step 3 of 4 — Upload Documents"
+            },
+            {
+             "id": "52873:83692",
+             "name": "NGO / AVYAY / 3rd instalment · Step 4 of 4 — Review & Submit"
+            }
+           ]
+          }
+         ]
+        }
+       ],
+       "frames": [
+        {
+         "id": "53104:120823",
+         "name": ".note / Pending Discussion"
+        }
+       ]
+      },
+      {
+       "name": "NGO 60 · NAPDDR Application · Pending Discussion",
+       "id": "53100:120859",
+       "children": [
+        {
+         "name": "New Application · 10 Steps",
+         "id": "52856:541851",
+         "children": [
+          {
+           "name": "Desktop · 1440",
+           "id": "53100:120860",
+           "frames": [
+            {
+             "id": "52665:48415",
+             "name": "NGO / NAPDDR / New · Step 1 of 10 — Application Type"
+            },
+            {
+             "id": "52666:498150",
+             "name": "NGO / NAPDDR / New · Step 2 of 10 — Organisation Details"
+            },
+            {
+             "id": "52667:54858",
+             "name": "NGO / NAPDDR / New · Step 3 of 10 — Project Details"
+            },
+            {
+             "id": "52667:55477",
+             "name": "NGO / NAPDDR / New · Step 4 of 10 — Location, Infrastructure & Preparedness"
+            },
+            {
+             "id": "52670:59708",
+             "name": "NGO / NAPDDR / New · Step 5 of 10 — Functionaries, Staff & Committee"
+            },
+            {
+             "id": "52670:60452",
+             "name": "NGO / NAPDDR / New · Step 6 of 10 — Capability & Prior Work"
+            },
+            {
+             "id": "52670:61104",
+             "name": "NGO / NAPDDR / New · Step 7 of 10 — Beneficiaries, Bank & Grant"
+            },
+            {
+             "id": "52670:61835",
+             "name": "NGO / NAPDDR / New · Step 8 of 10 — Verification & Declaration"
+            },
+            {
+             "id": "52671:65397",
+             "name": "NGO / NAPDDR / New · Step 9 of 10 — Upload Documents"
+            },
+            {
+             "id": "52671:73512",
+             "name": "NGO / NAPDDR / New · Step 10 of 10 — Review & Submit"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "1st Instalment · 11 Steps",
+         "id": "52856:541852",
+         "children": [
+          {
+           "name": "Desktop · 1440",
+           "id": "53100:120861",
+           "frames": [
+            {
+             "id": "52667:50513",
+             "name": "NGO / NAPDDR / 1st instalment · Step 1 of 11 — Application Type"
+            },
+            {
+             "id": "52668:54871",
+             "name": "NGO / NAPDDR / 1st instalment · Step 2 of 11 — Organisation Details"
+            },
+            {
+             "id": "52668:55812",
+             "name": "NGO / NAPDDR / 1st instalment · Step 3 of 11 — Project Details"
+            },
+            {
+             "id": "52668:56441",
+             "name": "NGO / NAPDDR / 1st instalment · Step 4 of 11 — Location, Infrastructure & Preparedness"
+            },
+            {
+             "id": "52670:63536",
+             "name": "NGO / NAPDDR / 1st instalment · Step 5 of 11 — Functionaries, Staff & Committee"
+            },
+            {
+             "id": "52670:64290",
+             "name": "NGO / NAPDDR / 1st instalment · Step 6 of 11 — Capability & Prior Work"
+            },
+            {
+             "id": "52631:483864",
+             "name": "NGO / NAPDDR / 1st instalment · Step 7 of 11 — Beneficiaries, Bank & Grant"
+            },
+            {
+             "id": "52629:34121",
+             "name": "NGO / NAPDDR / 1st instalment · Step 8 of 11 — Previous Instalment"
+            },
+            {
+             "id": "52670:64952",
+             "name": "NGO / NAPDDR / 1st instalment · Step 9 of 11 — Verification & Declaration"
+            },
+            {
+             "id": "52671:69285",
+             "name": "NGO / NAPDDR / 1st instalment · Step 10 of 11 — Upload Documents"
+            },
+            {
+             "id": "52671:74215",
+             "name": "NGO / NAPDDR / 1st instalment · Step 11 of 11 — Review & Submit"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "2nd Instalment · 4 Steps",
+         "id": "52856:541853",
+         "children": [
+          {
+           "name": "Desktop · 1440",
+           "id": "53100:120862",
+           "frames": [
+            {
+             "id": "52873:85661",
+             "name": "NGO / NAPDDR / 2nd instalment · Step 1 of 4 — Application Type"
+            },
+            {
+             "id": "52873:85703",
+             "name": "NGO / NAPDDR / 2nd instalment · Step 2 of 4 — Confirm Details"
+            },
+            {
+             "id": "52873:85758",
+             "name": "NGO / NAPDDR / 2nd instalment · Step 3 of 4 — Upload Documents"
+            },
+            {
+             "id": "52873:85813",
+             "name": "NGO / NAPDDR / 2nd instalment · Step 4 of 4 — Review & Submit"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "3rd Instalment · 4 Steps",
+         "id": "52856:541854",
+         "children": [
+          {
+           "name": "Desktop · 1440",
+           "id": "53100:120863",
+           "frames": [
+            {
+             "id": "52873:88523",
+             "name": "NGO / NAPDDR / 3rd instalment · Step 1 of 4 — Application Type"
+            },
+            {
+             "id": "52873:88565",
+             "name": "NGO / NAPDDR / 3rd instalment · Step 2 of 4 — Confirm Details"
+            },
+            {
+             "id": "52873:88620",
+             "name": "NGO / NAPDDR / 3rd instalment · Step 3 of 4 — Upload Documents"
+            },
+            {
+             "id": "52873:88675",
+             "name": "NGO / NAPDDR / 3rd instalment · Step 4 of 4 — Review & Submit"
+            }
+           ]
+          }
+         ]
+        }
+       ],
+       "frames": [
+        {
+         "id": "53104:120832",
+         "name": ".note / Pending Discussion"
+        }
+       ]
+      },
+      {
+       "name": "NGO 70 · Upload Documents · Pending Discussion",
+       "id": "53100:120864",
+       "children": [
+        {
+         "name": "Document Row States",
+         "id": "52915:570894",
+         "children": [
+          {
+           "name": "Desktop · 1440",
+           "id": "53100:120865",
+           "frames": [
+            {
+             "id": "52915:570906",
+             "name": "NGO / Upload Documents / Not uploaded"
+            },
+            {
+             "id": "52920:102966",
+             "name": "NGO / Upload Documents / Uploading"
+            },
+            {
+             "id": "52920:103510",
+             "name": "NGO / Upload Documents / Upload failed"
+            },
+            {
+             "id": "52920:104054",
+             "name": "NGO / Upload Documents / Refused — wrong type"
+            },
+            {
+             "id": "52920:104598",
+             "name": "NGO / Upload Documents / Refused — too large"
+            },
+            {
+             "id": "52920:105142",
+             "name": "NGO / Upload Documents / Checking"
+            },
+            {
+             "id": "52920:105686",
+             "name": "NGO / Upload Documents / Verified"
+            },
+            {
+             "id": "52920:106230",
+             "name": "NGO / Upload Documents / Needs review"
+            },
+            {
+             "id": "52920:106774",
+             "name": "NGO / Upload Documents / Invalid"
+            },
+            {
+             "id": "52920:107318",
+             "name": "NGO / Upload Documents / Check unavailable"
+            },
+            {
+             "id": "53093:117374",
+             "name": "NGO / Upload Documents / Refused — empty file"
+            },
+            {
+             "id": "53093:118032",
+             "name": "NGO / Upload Documents / Refused — password-protected PDF"
+            },
+            {
+             "id": "53093:118686",
+             "name": "NGO / Upload Documents / Refused — file cannot be opened"
+            },
+            {
+             "id": "53093:119340",
+             "name": "NGO / Upload Documents / Every check at once — sample files"
+            }
+           ]
+          },
+          {
+           "name": "Mobile · 375",
+           "id": "53100:120866",
+           "frames": [
+            {
+             "id": "53045:105412",
+             "name": "NGO / Upload Documents / Not uploaded · Mobile"
+            },
+            {
+             "id": "53045:106172",
+             "name": "NGO / Upload Documents / Invalid · Mobile"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "Placement Tray & Document History",
+         "id": "52915:570895",
+         "children": [
+          {
+           "name": "Desktop · 1440",
+           "id": "53100:120867",
+           "frames": [
+            {
+             "id": "52930:104219",
+             "name": "NGO / Upload Documents / Placement tray"
+            }
+           ]
+          },
+          {
+           "name": "Mobile · 375",
+           "id": "53100:120868",
+           "frames": [
+            {
+             "id": "53050:105463",
+             "name": "NGO / Upload Documents / Placement tray · Mobile"
+            }
+           ]
+          },
+          {
+           "name": "Dialogs & Overlays",
+           "id": "53100:120869",
+           "frames": [
+            {
+             "id": "52934:104688",
+             "name": "NGO / Upload Documents / Document history sheet"
+            }
+           ]
+          }
+         ]
+        }
+       ],
+       "frames": [
+        {
+         "id": "53104:120847",
+         "name": ".note / Pending Discussion"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "NGO Applicant · After Submission",
+     "id": "53100:120870",
+     "children": [
+      {
+       "name": "NGO 110 · My Applications",
+       "id": "52915:570897",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120871",
+         "frames": [
+          {
+           "id": "52624:28945",
+           "name": "NGO / My Applications / Populated"
+          },
+          {
+           "id": "52928:101746",
+           "name": "NGO / My Applications / Filtered"
+          },
+          {
+           "id": "52928:101901",
+           "name": "NGO / My Applications / Filtered to nothing"
+          }
+         ]
+        },
+        {
+         "name": "Mobile · 375",
+         "id": "53100:120872",
+         "frames": [
+          {
+           "id": "53053:104462",
+           "name": "NGO / My Applications / Populated · Mobile"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "NGO 120 · Application Detail",
+       "id": "52915:570898",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120873",
+         "frames": [
+          {
+           "id": "52928:102056",
+           "name": "NGO / Application / Submitted"
+          },
+          {
+           "id": "52628:480375",
+           "name": "NGO / Application / Action required"
+          },
+          {
+           "id": "52633:37516",
+           "name": "NGO / Application / Sanctioned"
+          },
+          {
+           "id": "52928:102225",
+           "name": "NGO / Application / Released"
+          }
+         ]
+        },
+        {
+         "name": "Mobile · 375",
+         "id": "53100:120874",
+         "frames": [
+          {
+           "id": "53045:109500",
+           "name": "NGO / Application / Action required · Mobile"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "NGO 130 · Deficiencies & Correction · Pending Discussion",
+       "id": "52915:570899",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120875",
+         "frames": [
+          {
+           "id": "52635:487996",
+           "name": "NGO / Deficiencies / Populated"
+          },
+          {
+           "id": "52631:483315",
+           "name": "NGO / Correct Your Application / Items outstanding"
+          }
+         ]
+        },
+        {
+         "name": "Mobile · 375",
+         "id": "53100:120876",
+         "frames": [
+          {
+           "id": "53045:110401",
+           "name": "NGO / Correct Your Application / Items outstanding · Mobile"
+          }
+         ]
+        }
+       ],
+       "frames": [
+        {
+         "id": "53104:120856",
+         "name": ".note / Pending Discussion"
+        }
+       ]
+      },
+      {
+       "name": "NGO 135 · Which Answers Can Change · Pending Discussion",
+       "id": "53090:114820",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120920",
+         "frames": [
+          {
+           "id": "53090:114821",
+           "name": "NGO / Correct Your Application / Locked answer — change it on NGO-DARPAN"
+          },
+          {
+           "id": "53090:115196",
+           "name": "NGO / Correct Your Application / Answer needs a reason — reason left out"
+          },
+          {
+           "id": "53090:115551",
+           "name": "NGO / Correct Your Application / Change another answer — locked and needs a reason"
+          },
+          {
+           "id": "53090:115940",
+           "name": "NGO / Correct Your Application / Answers changed — before submitting"
+          }
+         ]
+        }
+       ],
+       "frames": [
+        {
+         "id": "53104:120862",
+         "name": ".note / Pending Discussion"
+        }
+       ]
+      },
+      {
+       "name": "NGO 140 · Utilisation Certificate & Inspection Meeting",
+       "id": "52915:570901",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120877",
+         "frames": [
+          {
+           "id": "52637:41041",
+           "name": "NGO / Utilisation Certificate / Default"
+          },
+          {
+           "id": "52639:42779",
+           "name": "NGO / Inspection Meeting / Default"
+          }
+         ]
+        },
+        {
+         "name": "Mobile · 375",
+         "id": "53100:120878",
+         "frames": [
+          {
+           "id": "53051:584711",
+           "name": "NGO / Utilisation Certificate / Default · Mobile"
+          },
+          {
+           "id": "53051:585008",
+           "name": "NGO / Inspection Meeting / Default · Mobile"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "NGO 150 · Project Location & Bank Accounts",
+       "id": "52915:570902",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120879",
+         "frames": [
+          {
+           "id": "52624:28131",
+           "name": "NGO / Project Location Change / Populated"
+          },
+          {
+           "id": "52625:29251",
+           "name": "NGO / Project Bank Accounts / Populated"
+          }
+         ]
+        },
+        {
+         "name": "Dialogs & Overlays",
+         "id": "53100:120880",
+         "frames": [
+          {
+           "id": "52628:31169",
+           "name": "NGO / Project Bank Accounts / Change account dialog"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "NGO 160 · Beneficiaries & Staff · Pending Discussion",
+       "id": "52915:570903",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120881",
+         "frames": [
+          {
+           "id": "52629:32752",
+           "name": "NGO / Beneficiaries & Staff / Beneficiaries"
+          },
+          {
+           "id": "52633:36705",
+           "name": "NGO / Beneficiaries & Staff / Staff"
+          }
+         ]
+        },
+        {
+         "name": "Mobile · 375",
+         "id": "53100:120882",
+         "frames": [
+          {
+           "id": "53053:108222",
+           "name": "NGO / Beneficiaries & Staff / Beneficiaries · Mobile"
+          }
+         ]
+        },
+        {
+         "name": "Dialogs & Overlays",
+         "id": "53100:120883",
+         "frames": [
+          {
+           "id": "52631:34681",
+           "name": "NGO / Beneficiaries & Staff / Add beneficiary dialog"
+          },
+          {
+           "id": "52635:38742",
+           "name": "NGO / Beneficiaries & Staff / Add staff dialog"
+          }
+         ]
+        }
+       ],
+       "frames": [
+        {
+         "id": "53104:120868",
+         "name": ".note / Pending Discussion"
+        }
+       ]
+      },
+      {
+       "name": "NGO 170 · Attendance",
+       "id": "52915:570904",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120884",
+         "frames": [
+          {
+           "id": "52637:41535",
+           "name": "NGO / Attendance / Overview"
+          },
+          {
+           "id": "52643:44701",
+           "name": "NGO / Attendance / Weekly attendance"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "NGO 180 · CCTV Setup",
+       "id": "52915:570905",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120885",
+         "frames": [
+          {
+           "id": "52645:46709",
+           "name": "NGO / CCTV Setup / Populated — superseded 17 Sep 2026 by Projects — with compliance"
+          },
+          {
+           "id": "53084:108579",
+           "name": "NGO / CCTV Setup / Project — compliant"
+          },
+          {
+           "id": "53085:108824",
+           "name": "NGO / CCTV Setup / Projects — with compliance"
+          },
+          {
+           "id": "53085:109194",
+           "name": "NGO / CCTV Setup / Project — partial coverage"
+          },
+          {
+           "id": "53085:109720",
+           "name": "NGO / CCTV Setup / Project — no cameras registered"
+          },
+          {
+           "id": "53085:110103",
+           "name": "NGO / CCTV Setup / Project — not set up"
+          },
+          {
+           "id": "53085:110370",
+           "name": "NGO / CCTV Setup / Project — certificate missing, declaration overdue"
+          },
+          {
+           "id": "53085:110764",
+           "name": "NGO / CCTV Setup / Register camera — privacy exclusion error"
+          },
+          {
+           "id": "53085:111275",
+           "name": "NGO / CCTV Setup / Declare uptime — errors"
+          },
+          {
+           "id": "53085:111743",
+           "name": "NGO / CCTV Setup / Retention and storage — below the minimum"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Officer · Process Applications",
+     "id": "53100:120886",
+     "children": [
+      {
+       "name": "OFFICER 10 · My Queue",
+       "id": "53100:120887",
+       "children": [
+        {
+         "name": "Programme Division",
+         "id": "52856:541773",
+         "children": [
+          {
+           "name": "Desktop · 1440",
+           "id": "53100:120888",
+           "frames": [
+            {
+             "id": "52625:30378",
+             "name": "Officer / My Queue / Programme Division — Assistant Section Officer"
+            },
+            {
+             "id": "52862:70589",
+             "name": "Officer / My Queue / Programme Division — Section Officer"
+            },
+            {
+             "id": "52864:71124",
+             "name": "Officer / My Queue / Programme Division — Under Secretary"
+            },
+            {
+             "id": "52864:71350",
+             "name": "Officer / My Queue / Programme Division — Deputy Secretary"
+            },
+            {
+             "id": "52864:72669",
+             "name": "Officer / My Queue / Programme Division — Joint Secretary"
+            }
+           ]
+          },
+          {
+           "name": "Mobile · 375",
+           "id": "53100:120889",
+           "frames": [
+            {
+             "id": "52899:568996",
+             "name": "Officer / My Queue / Programme Division — Assistant Section Officer · Mobile"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "Integrated Finance Division",
+         "id": "52856:541774",
+         "children": [
+          {
+           "name": "Desktop · 1440",
+           "id": "53100:120890",
+           "frames": [
+            {
+             "id": "52625:29846",
+             "name": "Officer / My Queue / Integrated Finance Division — Assistant Section Officer"
+            },
+            {
+             "id": "52864:74639",
+             "name": "Officer / My Queue / Integrated Finance Division — Section Officer"
+            },
+            {
+             "id": "52864:74865",
+             "name": "Officer / My Queue / Integrated Finance Division — Under Secretary"
+            },
+            {
+             "id": "52864:76063",
+             "name": "Officer / My Queue / Integrated Finance Division — Deputy Secretary"
+            },
+            {
+             "id": "52864:76289",
+             "name": "Officer / My Queue / Integrated Finance Division — Joint Secretary"
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "OFFICER 20 · Review an Application · Pending Discussion",
+       "id": "52856:541778",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120891",
+         "frames": [
+          {
+           "id": "52644:46009",
+           "name": "Officer / Review / Programme Division — Assistant Section Officer"
+          },
+          {
+           "id": "52895:92229",
+           "name": "Officer / Review / Programme Division — Assistant Section Officer · Mid-review"
+          },
+          {
+           "id": "52895:92562",
+           "name": "Officer / Review / Programme Division — Assistant Section Officer · Document needs correction"
+          },
+          {
+           "id": "52768:77281",
+           "name": "Officer / Review / Programme Division — Section Officer"
+          },
+          {
+           "id": "53090:116268",
+           "name": "Officer / Review / Section Officer — resubmitted after deficiency, answers changed"
+          },
+          {
+           "id": "52888:564433",
+           "name": "Officer / Review / Programme Division — Under Secretary"
+          },
+          {
+           "id": "52888:564766",
+           "name": "Officer / Review / Programme Division — Deputy Secretary"
+          },
+          {
+           "id": "52888:566449",
+           "name": "Officer / Review / Programme Division — Joint Secretary"
+          },
+          {
+           "id": "52632:36504",
+           "name": "Officer / Review / Integrated Finance Division — Assistant Section Officer"
+          },
+          {
+           "id": "52888:566782",
+           "name": "Officer / Review / Integrated Finance Division — Joint Secretary"
+          }
+         ]
+        },
+        {
+         "name": "Mobile · 375",
+         "id": "53100:120892",
+         "frames": [
+          {
+           "id": "52904:95877",
+           "name": "Officer / Review / Programme Division — Assistant Section Officer · Mobile"
+          }
+         ]
+        },
+        {
+         "name": "Dialogs & Overlays",
+         "id": "53100:120893",
+         "frames": [
+          {
+           "id": "52648:47424",
+           "name": "Officer / Review / Raise deficiency dialog"
+          },
+          {
+           "id": "52772:582203",
+           "name": "Officer / Review / Send deficiency confirmation"
+          },
+          {
+           "id": "52897:567841",
+           "name": "Officer / Review / Bulk verdict confirmation"
+          },
+          {
+           "id": "52897:569835",
+           "name": "Officer / Review / Document row actions menu"
+          },
+          {
+           "id": "52897:568137",
+           "name": "Officer / Review / Show cause dialog"
+          },
+          {
+           "id": "52897:569243",
+           "name": "Officer / Review / Schedule inspection dialog"
+          },
+          {
+           "id": "52897:569539",
+           "name": "Officer / Review / Review report"
+          },
+          {
+           "id": "52772:582529",
+           "name": "Officer / Review / Forward to Integrated Finance confirmation"
+          }
+         ]
+        }
+       ],
+       "frames": [
+        {
+         "id": "53104:120874",
+         "name": ".note / Pending Discussion"
+        }
+       ]
+      },
+      {
+       "name": "OFFICER 30 · All Applications",
+       "id": "52856:541775",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120894",
+         "frames": [
+          {
+           "id": "52631:484715",
+           "name": "Officer / All Applications / Default"
+          },
+          {
+           "id": "52873:576978",
+           "name": "Officer / All Applications / Filtered to Sanctioned"
+          },
+          {
+           "id": "52873:576871",
+           "name": "Officer / All Applications / Filtered to Rejected"
+          }
+         ]
+        },
+        {
+         "name": "Mobile · 375",
+         "id": "53100:120895",
+         "frames": [
+          {
+           "id": "52903:95572",
+           "name": "Officer / All Applications / Filter sheet · Mobile"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "OFFICER 40 · Registers",
+       "id": "52856:541776",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120896",
+         "frames": [
+          {
+           "id": "52634:38067",
+           "name": "Officer / Sanctioned Applications / Populated"
+          },
+          {
+           "id": "52873:575962",
+           "name": "Officer / Returned Applications / Programme Division"
+          },
+          {
+           "id": "52635:488550",
+           "name": "Officer / Rejected Applications / Programme Division"
+          },
+          {
+           "id": "52638:42202",
+           "name": "Officer / Forwarded Applications / Programme Division"
+          },
+          {
+           "id": "52873:576033",
+           "name": "Officer / Returned Applications / Integrated Finance Division"
+          },
+          {
+           "id": "52873:576800",
+           "name": "Officer / Rejected Applications / Integrated Finance Division"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "OFFICER 50 · Queries",
+       "id": "52856:541777",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120897",
+         "frames": [
+          {
+           "id": "52640:43380",
+           "name": "Officer / Queries / Programme Division"
+          },
+          {
+           "id": "52629:33659",
+           "name": "Officer / Queries / Integrated Finance Division"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "OFFICER 60 · Notifications",
+       "id": "52856:541741",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120898",
+         "frames": [
+          {
+           "id": "52641:44878",
+           "name": "Officer / Notifications / Populated"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Officer · Oversight & Records",
+     "id": "53100:120899",
+     "children": [
+      {
+       "name": "OFFICER 110 · NGO Directory & NGO 360",
+       "id": "52856:541737",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120900",
+         "frames": [
+          {
+           "id": "52624:32434",
+           "name": "Officer / NGO Directory / Populated"
+          },
+          {
+           "id": "52628:481728",
+           "name": "Officer / NGO 360 / Populated"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "OFFICER 120 · Bank Account Changes",
+       "id": "52856:541740",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120901",
+         "frames": [
+          {
+           "id": "52868:81571",
+           "name": "Officer / Bank Account Changes / Populated"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "OFFICER 130 · Payment Status",
+       "id": "52856:541742",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120902",
+         "frames": [
+          {
+           "id": "52637:42043",
+           "name": "Officer / Payment Status / Released"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "OFFICER 140 · Reports & Analytics",
+       "id": "52856:541738",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120903",
+         "frames": [
+          {
+           "id": "52635:487236",
+           "name": "Officer / Reports & Analytics / First report"
+          },
+          {
+           "id": "52881:89136",
+           "name": "Officer / Reports & Analytics / Second report"
+          }
+         ]
+        },
+        {
+         "name": "Mobile · 375",
+         "id": "53100:120904",
+         "frames": [
+          {
+           "id": "52884:89409",
+           "name": "Officer / Reports & Analytics / First report · Mobile"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "OFFICER 150 · Audit Trail",
+       "id": "52856:541739",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120905",
+         "frames": [
+          {
+           "id": "52637:40482",
+           "name": "Officer / Audit Trail / Populated"
+          },
+          {
+           "id": "52857:566222",
+           "name": "Officer / Audit Trail / Filtered"
+          }
+         ]
+        },
+        {
+         "name": "Mobile · 375",
+         "id": "53100:120906",
+         "frames": [
+          {
+           "id": "52864:78247",
+           "name": "Officer / Audit Trail / Populated · Mobile"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "OFFICER 160 · Project Records & CCTV Compliance",
+       "id": "53087:110609",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120919",
+         "frames": [
+          {
+           "id": "53087:110610",
+           "name": "Officer / Project Records / CCTV Compliance tab"
+          },
+          {
+           "id": "53087:111175",
+           "name": "Officer / Project Records / Staff Roster tab"
+          },
+          {
+           "id": "53087:111783",
+           "name": "Officer / Project Records / Weekly Attendance tab"
+          },
+          {
+           "id": "53087:112460",
+           "name": "Officer / Project Records / Project not found"
+          },
+          {
+           "id": "53087:112876",
+           "name": "Officer / NGO 360 / CCTV Compliance"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Programme Director · Sanction",
+     "id": "53100:120907",
+     "children": [
+      {
+       "name": "DIRECTOR 10 · Sanction Desk · Pending Discussion",
+       "id": "52856:541748",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120908",
+         "frames": [
+          {
+           "id": "52641:44273",
+           "name": "Director / Sanction Desk / Populated"
+          }
+         ]
+        }
+       ],
+       "frames": [
+        {
+         "id": "53104:120880",
+         "name": ".note / Pending Discussion"
+        }
+       ]
+      },
+      {
+       "name": "DIRECTOR 20 · Examine and Sanction · Pending Discussion",
+       "id": "52856:541749",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120909",
+         "frames": [
+          {
+           "id": "52644:45558",
+           "name": "Director / Review / Default"
+          }
+         ]
+        },
+        {
+         "name": "Dialogs & Overlays",
+         "id": "53100:120910",
+         "frames": [
+          {
+           "id": "52772:561140",
+           "name": "Director / Review / Sanction confirmation"
+          },
+          {
+           "id": "52772:569453",
+           "name": "Director / Review / Return confirmation"
+          },
+          {
+           "id": "52772:570259",
+           "name": "Director / Review / Reject confirmation"
+          }
+         ]
+        }
+       ],
+       "frames": [
+        {
+         "id": "53104:120886",
+         "name": ".note / Pending Discussion"
+        }
+       ]
+      },
+      {
+       "name": "DIRECTOR 30 · Sent & Inspection Reports · Pending Discussion",
+       "id": "52856:541750",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120911",
+         "frames": [
+          {
+           "id": "52893:565134",
+           "name": "Director / Sent / Populated"
+          },
+          {
+           "id": "52895:94253",
+           "name": "Director / Inspection Report Repository / Populated"
+          }
+         ]
+        },
+        {
+         "name": "Mobile · 375",
+         "id": "53100:120912",
+         "frames": [
+          {
+           "id": "53051:106167",
+           "name": "Director / Sent / Populated · Mobile"
+          },
+          {
+           "id": "53053:109124",
+           "name": "Director / Inspection Report Repository / Populated · Mobile"
+          }
+         ]
+        }
+       ],
+       "frames": [
+        {
+         "id": "53104:120892",
+         "name": ".note / Pending Discussion"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "PMU Field Officer · Inspect",
+     "id": "53100:120913",
+     "children": [
+      {
+       "name": "PMU 10 · Inspection Dashboard",
+       "id": "52856:541744",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120914",
+         "frames": [
+          {
+           "id": "52648:48076",
+           "name": "PMU / Inspection Dashboard / Populated"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "PMU 20 · Inspections",
+       "id": "52856:541745",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120915",
+         "frames": [
+          {
+           "id": "52651:48146",
+           "name": "PMU / PMU Inspections / Populated"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "PMU 30 · Registers",
+       "id": "52856:541746",
+       "children": [
+        {
+         "name": "Desktop · 1440",
+         "id": "53100:120916",
+         "frames": [
+          {
+           "id": "52888:569473",
+           "name": "PMU / Institutions / Populated"
+          },
+          {
+           "id": "52890:92244",
+           "name": "PMU / Location Changes / Populated"
+          }
+         ]
+        },
+        {
+         "name": "Mobile · 375",
+         "id": "53100:120917",
+         "frames": [
+          {
+           "id": "53051:583097",
+           "name": "PMU / Institutions / Populated · Mobile"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "C · SHARED BUILDING BLOCKS",
+   "id": "53100:120825",
+   "children": [
+    {
+     "name": "Portal Shell · Pending Discussion",
+     "id": "52657:48480",
+     "frames": [
+      {
+       "id": "53104:120904",
+       "name": ".note / Pending Discussion"
+      },
+      {
+       "id": "52616:27620",
+       "name": "Shared / Portal Shell / NGO"
+      },
+      {
+       "id": "52849:68449",
+       "name": "Shared / Portal Shell / NGO · Mobile"
+      }
+     ]
+    },
+    {
+     "name": "System Status Screens",
+     "id": "52849:68038",
+     "frames": [
+      {
+       "id": "52849:68039",
+       "name": "Shared / Status / Not your screen (403)"
+      },
+      {
+       "id": "52849:68284",
+       "name": "Shared / Status / No such screen (404)"
+      }
+     ]
+    },
+    {
+     "name": "Service Errors",
+     "id": "53091:115859",
+     "frames": [
+      {
+       "id": "53091:115860",
+       "name": "Shared / Service Error / Session ended — full page"
+      },
+      {
+       "id": "53091:116067",
+       "name": "Shared / Service Error / Something went wrong — full page with reference"
+      },
+      {
+       "id": "53091:116493",
+       "name": "Shared / Service Error / Changed somewhere else — save conflict"
+      },
+      {
+       "id": "53091:116728",
+       "name": "Shared / Service Error / Applications closed — at submit"
+      },
+      {
+       "id": "53091:116962",
+       "name": "Shared / Service Error / Upload — file refused by the security check"
+      },
+      {
+       "id": "53091:117686",
+       "name": "Shared / Service Error / Sign-in — too many attempts"
+      },
+      {
+       "id": "53091:118250",
+       "name": "Shared / Service Error / Payment status — PFMS cannot be reached"
+      },
+      {
+       "id": "53091:118568",
+       "name": "Shared / Service Error / Request took too long — toast"
+      }
+     ]
+    },
+    {
+     "name": "Wizard Step Bodies — SHRESHTA & SMILE",
+     "id": "52768:77280",
+     "frames": [
+      {
+       "id": "52768:547024",
+       "name": "Wizard Body / SHRESHTA Mode 2 · New / Step 2 — Organisation Details"
+      },
+      {
+       "id": "52772:554051",
+       "name": "Wizard Body / SHRESHTA Mode 2 · New / Step 3 — Institution Details"
+      },
+      {
+       "id": "52772:579160",
+       "name": "Wizard Body / SHRESHTA Mode 2 · New / Step 4 — Bank, Beneficiaries & Grant"
+      },
+      {
+       "id": "52857:543903",
+       "name": "Wizard Body / SHRESHTA Mode 2 · New / Step 1 — Application Type"
+      },
+      {
+       "id": "52857:566002",
+       "name": "Wizard Body / SHRESHTA Mode 2 · Instalment / Step 1 — Application Type"
+      },
+      {
+       "id": "52864:72506",
+       "name": "Wizard Body / SHRESHTA Mode 2 · Instalment / Step 2 — Confirm Details"
+      },
+      {
+       "id": "52872:556105",
+       "name": "Wizard Body / SMILE · New / Step 1 — Application Type"
+      },
+      {
+       "id": "52873:85529",
+       "name": "Wizard Body / SMILE · Instalment / Step 1 — Application Type"
+      }
+     ]
+    },
+    {
+     "name": "Reference Assets",
+     "id": "53100:120836",
+     "frames": [
+      {
+       "id": "52354:186290",
+       "name": ".reference / Portal Hero Photograph"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "D · ARCHIVE — DO NOT BUILD FROM",
+   "id": "53100:120826",
+   "children": [
+    {
+     "name": "Superseded — 17 Sep 2026",
+     "id": "52856:541751",
+     "frames": [
+      {
+       "id": "52639:43184",
+       "name": "Officer / Notifications / Finance Division"
+      },
+      {
+       "id": "52906:569650",
+       "name": ".note / Why Retired"
+      },
+      {
+       "id": "52631:34004",
+       "name": "Officer / Worklist / Finance Division — SHRESHTA Mode 2"
+      },
+      {
+       "id": "52906:569651",
+       "name": ".note / Why Retired"
+      },
+      {
+       "id": "52380:187330",
+       "name": "Auth / Portal Landing / Default"
+      },
+      {
+       "id": "52906:569652",
+       "name": ".note / Why Retired"
+      },
+      {
+       "id": "52380:187342",
+       "name": "Auth / Portal Landing / Default · Mobile"
+      },
+      {
+       "id": "52906:569653",
+       "name": ".note / Why Retired"
+      },
+      {
+       "id": "52966:104537",
+       "name": ".note / Why Retired"
+      },
+      {
+       "id": "52928:103890",
+       "name": "NGO / Attendance Master / Populated"
+      }
+     ]
+    },
+    {
+     "name": "Stray Nodes — Sweep Before Handoff",
+     "id": "52988:103433",
+     "frames": [
+      {
+       "id": "52882:562123",
+       "name": ".stray / Table / Cell"
+      },
+      {
+       "id": "52882:562127",
+       "name": ".stray / project id cell"
+      },
+      {
+       "id": "52882:562201",
+       "name": ".stray / Table / Cell"
+      },
+      {
+       "id": "52882:562205",
+       "name": ".stray / project id cell"
+      },
+      {
+       "id": "52884:563441",
+       "name": ".stray / Table / Cell"
+      },
+      {
+       "id": "52884:563447",
+       "name": ".stray / project id cell"
+      },
+      {
+       "id": "52885:563221",
+       "name": ".stray / Table / Cell"
+      },
+      {
+       "id": "52885:563223",
+       "name": ".stray / project id cell"
+      },
+      {
+       "id": "52886:563329",
+       "name": ".stray / Empty State"
+      },
+      {
+       "id": "52888:90357",
+       "name": ".stray / Table / Cell"
+      },
+      {
+       "id": "52917:570982",
+       "name": ".stray / Document Row"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
