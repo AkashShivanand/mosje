@@ -174,6 +174,14 @@ function audit(page, rootDepth) {
     if (zone === "D") for (const f of screens) if (Math.abs((f.opacity ?? 1) - 0.4) > 0.05) add("archive-opacity", f, "archived frames sit at 40%");
 
     if (ROWS.includes(sec.name)) {
+      const sb = box(sec);
+      for (const f of screens) {
+        const b = box(f);
+        if (b.x < sb.x - 1 || b.y < sb.y - 1 || b.x + b.width > sb.x + sb.width + 1 || b.y + b.height > sb.y + sb.height + 1) add("screen-outside-row", f, `spills out of "${sec.name}"`);
+      }
+      for (let i = 0; i < screens.length; i++)
+        for (let j = i + 1; j < screens.length; j++) if (overlaps(screens[i], screens[j])) add("screen-overlap", screens[i], `overlaps "${screens[j].name}"`);
+      if (new Set(screens.map((f) => Math.round(box(f).y))).size > 1) add("row-not-one-line", sec, "screens in a row share one top edge");
       if (sec.name === "Mobile · 375") {
         const desk = subsOf(sec.__parent).find((s) => s.name === "Desktop · 1440");
         const deskX = new Map((desk?.children ?? []).map((f) => [f.name, box(f).x]));
@@ -252,6 +260,7 @@ for (const entry of registry.filter((p) => !only || p.portal.toLowerCase() === o
     plant("screen left loose in a flow", "row-name", (t, s) => { const f = s.find((x) => FLOW.test(x.name)); const row = f.children.find((c) => c.type === "SECTION"); f.children.push(row.children.find((c) => c.type !== "SECTION")); });
     plant("frame dropped on the page", "loose-at-root", (t) => { t.children.push({ id: "0:0", type: "FRAME", name: "Frame 1", children: [] }); });
     plant("layers panel reversed", "layer-order", (t) => { t.children.reverse(); });
+    plant("screen pushed out of its row", "screen-outside-row", (t, s) => { const r = s.find((x) => x.name === "Desktop · 1440"); const f = r.children.find((c) => c.type !== "SECTION"); f.absoluteBoundingBox = { ...f.absoluteBoundingBox, x: f.absoluteBoundingBox.x + 1e6 }; });
   }
   const identity = v.filter((x) => IDENTITY.has(x.check)).length;
   const visual = v.length - identity;

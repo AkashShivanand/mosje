@@ -91,8 +91,7 @@ Change Log (pending list linked). Never type the flow list by hand.
 
 ## 10. Hand over what the API cannot do
 Say it in the summary, every time: **name a version** (`saveVersionHistoryAsync` is not supported),
-**mark flows Ready for dev** (`devStatus` is not supported), **confirm stray deletions**, **run the
-timed find test**.
+**confirm stray deletions**, **run the timed find test**.
 
 ## Plugin API gotchas
 - `SECTION` children use coordinates relative to the section. Re-parented nodes keep their old relative

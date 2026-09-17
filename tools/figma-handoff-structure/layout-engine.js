@@ -19,7 +19,7 @@
  * the whole page (132 sections, 300 frames took one call), one for zone A. Writes are atomic.
  *
  * Not available through the Plugin API, so a person does them in Figma: a named version
- * (`saveVersionHistoryAsync`), and Dev Mode "Ready for dev" (`devStatus`).
+ * (`saveVersionHistoryAsync`). Ready for dev is not used on this estate.
  *
  * Set per portal: ORDER (role column and group order), BR (branch order).
  */

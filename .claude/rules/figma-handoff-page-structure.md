@@ -33,7 +33,7 @@ developer builds from the stale one. Each audience gets a way in instead:
 | Audience | Way in |
 |---|---|
 | Reviewers, stakeholders, clients | `A · START HERE` → Portal Map; every flow in it links to its screens |
-| Developers | the flow ID on the ticket; Dev Mode's Ready-for-dev list |
+| Developers | the flow ID on the ticket; the flow's rows hold every state and the phone version |
 | Designers | the role columns in `B`, and the rows inside each flow |
 
 ## 2. Four zones
@@ -200,7 +200,7 @@ after changing the checker. Without `FIGMA_ACCESS_TOKEN` it prints SKIPPED; that
 - [ ] Portal Map and Status regenerated from the canvas
 - [ ] Before/after pictures captured from the same REST renders
 - [ ] Snapshot recorded in `tools/figma-handoff-structure/manifests/<portal>.json`
-- [ ] **In Figma, by a person** (no API): name a version in version history; mark non-pending flows
-      Ready for dev in Dev Mode
+- [ ] **In Figma, by a person** (no API): name a version in version history. Flows are not
+      marked Ready for dev — not used on this estate (17 Sep 2026)
 - [ ] **With people:** one developer and one reviewer who have not seen the page each find a named
       screen from its ID, and it takes under a minute

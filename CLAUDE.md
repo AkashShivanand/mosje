@@ -237,7 +237,7 @@ stories**; the static build takes precedence at `/storybook` until you rebuild
   `B · SCREENS BY USER ROLE` (one column per user role → flows with fixed IDs like `NGO 30` →
   Desktop / Mobile / Dialogs rows), `C · SHARED BUILDING BLOCKS`, `D · ARCHIVE — DO NOT BUILD FROM`;
   grey by depth; **red + a note for flows pending discussion**; layers panel in reading order.
-  Audiences get ways in (linked Portal Map, flow IDs, Dev Mode), never copies of screens.
+  Audiences get ways in (linked Portal Map, flow IDs), never copies of screens.
   **`npm run check:figma-handoff`** ratchets every registered page. Example: E-Anudaan.
   → `.claude/rules/figma-handoff-page-structure.md`
 - **Commit messages: no AI attribution.** Never add `Co-Authored-By: Claude` or a

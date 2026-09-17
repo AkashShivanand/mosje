@@ -2,7 +2,7 @@
  "portal": "E-Anudaan",
  "file": "evmNmlK8g4VYwJVu2FwSGV",
  "page": "51313:165608",
- "recordedAt": "2026-09-17",
+ "recordedAt": "2026-09-17 (after build sync)",
  "$comment": "Snapshot of the organised page, read back over REST after the reorganisation, in layers-panel (reading) order. Flow IDs are scoped to the ROLE code (ACCESS, NGO, OFFICER, DIRECTOR, PMU), not to the lane, so a role column can be split or regrouped without renumbering. A retired ID is never reused. Regenerate after any structural change.",
  "zones": [
   {
@@ -42,76 +42,16 @@
      "id": "53100:120827",
      "children": [
       {
-       "name": "ACCESS 10 · Sign In — NGO, Credentials",
+       "name": "ACCESS 10 · Sign In — NGO",
        "id": "52380:187214",
        "children": [
         {
          "name": "Desktop · 1440",
-         "id": "53100:120828",
+         "id": "53127:120823",
          "frames": [
           {
-           "id": "52380:187221",
-           "name": "Auth / Sign In / NGO — credentials, empty"
-          },
-          {
-           "id": "52380:187235",
-           "name": "Auth / Sign In / NGO — credentials, filled"
-          },
-          {
-           "id": "52380:187249",
-           "name": "Auth / Sign In / NGO — invalid credentials"
-          }
-         ]
-        },
-        {
-         "name": "Mobile · 375",
-         "id": "53100:120829",
-         "frames": [
-          {
-           "id": "52380:187228",
-           "name": "Auth / Sign In / NGO — credentials, empty · Mobile"
-          },
-          {
-           "id": "52380:187242",
-           "name": "Auth / Sign In / NGO — credentials, filled · Mobile"
-          },
-          {
-           "id": "52380:187256",
-           "name": "Auth / Sign In / NGO — invalid credentials · Mobile"
-          }
-         ]
-        }
-       ]
-      },
-      {
-       "name": "ACCESS 20 · Sign In — NGO, DARPAN ID",
-       "id": "52380:187257",
-       "children": [
-        {
-         "name": "Desktop · 1440",
-         "id": "53100:120830",
-         "frames": [
-          {
-           "id": "52380:187264",
-           "name": "Auth / Sign In / NGO — DARPAN ID, empty"
-          },
-          {
-           "id": "52380:187278",
-           "name": "Auth / Sign In / NGO — DARPAN ID, filled"
-          }
-         ]
-        },
-        {
-         "name": "Mobile · 375",
-         "id": "53100:120831",
-         "frames": [
-          {
-           "id": "52380:187271",
-           "name": "Auth / Sign In / NGO — DARPAN ID, empty · Mobile"
-          },
-          {
-           "id": "52380:187285",
-           "name": "Auth / Sign In / NGO — DARPAN ID, filled · Mobile"
+           "id": "53088:112038",
+           "name": "Auth / Sign In / NGO — NGO-DARPAN or credentials"
           }
          ]
         }
@@ -126,8 +66,20 @@
          "id": "53100:120918",
          "frames": [
           {
-           "id": "53088:112038",
-           "name": "Auth / Sign In / NGO — NGO-DARPAN first, no captcha"
+           "id": "53088:120586",
+           "name": "Auth / NGO-DARPAN / Consent — prototype stand-in"
+          },
+          {
+           "id": "53088:118319",
+           "name": "Auth / NGO-DARPAN / First sign-in — confirm and link"
+          },
+          {
+           "id": "53088:119232",
+           "name": "Auth / NGO-DARPAN / Register the organisation"
+          },
+          {
+           "id": "53088:120145",
+           "name": "Auth / NGO-DARPAN / Registration request submitted"
           },
           {
            "id": "53088:113028",
@@ -152,22 +104,6 @@
           {
            "id": "53088:117439",
            "name": "Auth / NGO-DARPAN / Request expired"
-          },
-          {
-           "id": "53088:118319",
-           "name": "Auth / NGO-DARPAN / First sign-in — confirm and link"
-          },
-          {
-           "id": "53088:119232",
-           "name": "Auth / NGO-DARPAN / Register the organisation"
-          },
-          {
-           "id": "53088:120145",
-           "name": "Auth / NGO-DARPAN / Registration request submitted"
-          },
-          {
-           "id": "53088:120586",
-           "name": "Auth / NGO-DARPAN / Consent — prototype stand-in"
           }
          ]
         }
@@ -982,6 +918,18 @@
              "name": "NGO / Upload Documents / Refused — too large"
             },
             {
+             "id": "53093:117374",
+             "name": "NGO / Upload Documents / Refused — empty file"
+            },
+            {
+             "id": "53093:118032",
+             "name": "NGO / Upload Documents / Refused — password-protected PDF"
+            },
+            {
+             "id": "53093:118686",
+             "name": "NGO / Upload Documents / Refused — file cannot be opened"
+            },
+            {
              "id": "52920:105142",
              "name": "NGO / Upload Documents / Checking"
             },
@@ -1000,18 +948,6 @@
             {
              "id": "52920:107318",
              "name": "NGO / Upload Documents / Check unavailable"
-            },
-            {
-             "id": "53093:117374",
-             "name": "NGO / Upload Documents / Refused — empty file"
-            },
-            {
-             "id": "53093:118032",
-             "name": "NGO / Upload Documents / Refused — password-protected PDF"
-            },
-            {
-             "id": "53093:118686",
-             "name": "NGO / Upload Documents / Refused — file cannot be opened"
             },
             {
              "id": "53093:119340",
@@ -1370,16 +1306,12 @@
          "id": "53100:120885",
          "frames": [
           {
-           "id": "52645:46709",
-           "name": "NGO / CCTV Setup / Populated — superseded 17 Sep 2026 by Projects — with compliance"
+           "id": "53085:108824",
+           "name": "NGO / CCTV Setup / Projects — with compliance"
           },
           {
            "id": "53084:108579",
            "name": "NGO / CCTV Setup / Project — compliant"
-          },
-          {
-           "id": "53085:108824",
-           "name": "NGO / CCTV Setup / Projects — with compliance"
           },
           {
            "id": "53085:109194",
@@ -1732,6 +1664,10 @@
           {
            "id": "52628:481728",
            "name": "Officer / NGO 360 / Populated"
+          },
+          {
+           "id": "53087:112876",
+           "name": "Officer / NGO 360 / CCTV Compliance"
           }
          ]
         }
@@ -1852,10 +1788,6 @@
           {
            "id": "53087:112460",
            "name": "Officer / Project Records / Project not found"
-          },
-          {
-           "id": "53087:112876",
-           "name": "Officer / NGO 360 / CCTV Compliance"
           }
          ]
         }
@@ -2212,6 +2144,50 @@
       {
        "id": "52928:103890",
        "name": "NGO / Attendance Master / Populated"
+      },
+      {
+       "id": "52645:46709",
+       "name": "NGO / CCTV Setup / Populated — superseded 17 Sep 2026 by Projects — with compliance"
+      },
+      {
+       "id": "52380:187221",
+       "name": "Auth / Sign In / NGO — credentials, empty"
+      },
+      {
+       "id": "52380:187235",
+       "name": "Auth / Sign In / NGO — credentials, filled"
+      },
+      {
+       "id": "52380:187249",
+       "name": "Auth / Sign In / NGO — invalid credentials"
+      },
+      {
+       "id": "52380:187228",
+       "name": "Auth / Sign In / NGO — credentials, empty · Mobile"
+      },
+      {
+       "id": "52380:187242",
+       "name": "Auth / Sign In / NGO — credentials, filled · Mobile"
+      },
+      {
+       "id": "52380:187256",
+       "name": "Auth / Sign In / NGO — invalid credentials · Mobile"
+      },
+      {
+       "id": "52380:187264",
+       "name": "Auth / Sign In / NGO — DARPAN ID, empty"
+      },
+      {
+       "id": "52380:187278",
+       "name": "Auth / Sign In / NGO — DARPAN ID, filled"
+      },
+      {
+       "id": "52380:187271",
+       "name": "Auth / Sign In / NGO — DARPAN ID, empty · Mobile"
+      },
+      {
+       "id": "52380:187285",
+       "name": "Auth / Sign In / NGO — DARPAN ID, filled · Mobile"
       }
      ]
     },

@@ -117,12 +117,53 @@ layout (the red goes), update the Status & Change Log.
 | What | Why a person | Where |
 |---|---|---|
 | Name a version, e.g. “Handoff structure — 17 Sep 2026” | version naming is not in the Plugin API | File → Version history |
-| Mark the non-pending flows Ready for dev | `devStatus` is not in the Plugin API | Dev Mode, on each flow section |
 | Confirm and delete the 11 stray nodes | deleting is a person's call | D · Stray Nodes |
 | Timed find test: a developer and a reviewer find a screen by its ID | the structure is only proven when people use it | rule §11 |
 | Phone screens for the rest of the flows | deferred 16 Sep 2026 | the empty slots in each Mobile row |
 
-## 5. Adding to the page
+## 5. Sync with the build — 17 Sep 2026
+
+Measured against `main` at `e8fb4909`, running on :3007. The build was re-captured at 1440 (190
+screens, 8 dialogs, 0 failures), at 375 (190), and the NGO-DARPAN, CCTV and edit-policy states were
+re-shot with their own scripts — every capture with the page's visible text saved beside it.
+
+**How it was measured, and why the old score was dropped.** The 16 Sep comparison scored the first
+screenful as a shrunk greyscale image, with < 4 read as "identical". Re-run today, that score put
+*wrongly paired* screens under 4 — Project Records against Weekly Attendance scored 3.4 — so it cannot
+prove two screens agree. The comparison was replaced by the **words on the screen**: each Figma frame's
+text (REST) against the build's visible text, as word bags with page chrome removed; the changed
+surfaces were then checked **side by side by eye**.
+
+**What changed in the build since the Figma was drawn** (`git log` on the portal and the design
+system since 16 Sep), and what that meant for the page:
+
+| Build change | Figma | Result |
+|---|---|---|
+| `062ba317` NGO sign-in through NGO-DARPAN; captcha and DARPAN ID + PAN removed | ACCESS 10 drew the captcha login; ACCESS 20 the DARPAN ID + PAN form | **Synced.** The NGO-DARPAN login is now ACCESS 10; the ten old frames are in the archive; ACCESS 20 is retired |
+| `062ba317` NGO-DARPAN return states | ACCESS 25, 11 frames | **In sync** — word match 0.96–0.98 on every state |
+| `cd31d83d` edit policy and error catalogue | NGO 135, OFFICER 20, C · Service Errors | **In sync** where a matching capture exists (0.94–0.98); four states could not be re-shot (see below) |
+| `6308c62d`, `065b0e06` CCTV module and project records | NGO 180, OFFICER 160, OFFICER 110 | **In sync** on the states re-shot (0.93–0.99); lower scores are different sample projects, checked by eye |
+| `29d670d2` the upload row reads in two lines, commands on the row; `134308ae` validation catalogue | **every Upload Documents frame** | **OUT OF SYNC — not fixed here.** See below |
+| `c63f1e76`, `6ed5bb1e`, `edf0f95d`, `0fc59dde` demo fills | demo dock only | no screen change |
+
+**Out of sync, and why it was not fixed in this file.** The build's upload row is two lines — the
+document's name, then its status and file — with the command on the right and no "Needs your attention
+/ Being checked / Ready" filter chips. Every Upload Documents frame on the page (the 14 row states,
+the placement tray and history, and each scheme's upload step — about 29 frames) still draws the older
+three-column row with the chips. Those rows are instances of **`Document Row`** in the **SAMAVESH
+library** (`58278:1079`), last published 16 Sep 2026 23:01 IST — two hours before the build changed.
+The fix belongs on the library master, then a **publish** (a person, in Figma), then accepting the
+update in this file. Redrawing 29 copies here would leave the library wrong for every other file.
+
+**Minor drift on the new login frame:** "Forgot Password?" sits under the password field (build: beside
+its label), and the NGO-DARPAN card reads "Continue" (build: an arrow). Not yet drawn for the new login:
+the invalid-credentials state and its phone frame.
+
+**Not verified** (no build capture reaches the state): filled-form wizard variants, the
+officer's raise-deficiency and send-deficiency dialogs, four service errors (applications closed, save
+conflict, timeout toast, session banner), and the phone frames beyond the screens above.
+
+## 6. Adding to the page
 
 - **A screen:** into the right row of its flow; name `Role / Screen / State`; phone version ends ` · Mobile`.
 - **A flow:** a free number in its role (`NGO 145`), then run the layout from `layout-engine.js`
