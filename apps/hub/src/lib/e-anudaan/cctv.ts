@@ -305,9 +305,25 @@ export interface CctvCompliance {
   latestDeclaration?: CctvUptimeDeclaration;
   /** The month whose declaration is due now, `yyyy-mm`. */
   dueMonth: string;
+  /** Every owed month, from registration to `dueMonth`, with no declaration filed. */
+  missingMonths: string[];
   declarationOverdue: boolean;
   /** Each failing requirement, one short sentence each, in the order an officer checks them. */
   flags: string[];
+}
+
+/** `yyyy-mm` months from `from` to `to`, inclusive. */
+function monthsBetween(from: string, to: string): string[] {
+  const out: string[] = [];
+  let [y, m] = from.split("-").map(Number) as [number, number];
+  for (let guard = 0; guard < 240; guard++) {
+    const key = `${y}-${String(m).padStart(2, "0")}`;
+    if (key > to) break;
+    out.push(key);
+    m += 1;
+    if (m > 12) { m = 1; y += 1; }
+  }
+  return out;
 }
 
 const monthName = (key: string) => {
@@ -330,8 +346,11 @@ export function cctvCompliance(setup: CctvSetup | undefined, now: Date = new Dat
   const retention = setup?.retentionDays == null ? "not-stated" : setup.retentionDays >= RETENTION_MIN_DAYS ? "met" : "short";
   const registered = setup ? setup.savedAt.slice(0, 7) : "";
   const owesDeclaration = !!setup?.cameraRegister?.length && registered <= dueMonth;
-  const declarationOverdue = owesDeclaration && (!latestDeclaration || latestDeclaration.month < dueMonth);
-  const base = { coverage, covered: coverage.length - gaps.length, gaps, certificate, retention, latestDeclaration, dueMonth, declarationOverdue } as const;
+  // Every month owed, not only the latest: filing August must not make a skipped July disappear.
+  const filed = new Set((setup?.uptime ?? []).map((d) => d.month));
+  const missingMonths = owesDeclaration ? monthsBetween(registered, dueMonth).filter((m) => !filed.has(m)) : [];
+  const declarationOverdue = missingMonths.length > 0;
+  const base = { coverage, covered: coverage.length - gaps.length, gaps, certificate, retention, latestDeclaration, dueMonth, missingMonths, declarationOverdue } as const;
 
   if (!setup) return { ...base, status: "not-configured", flags: [] };
   // No flag sentence: the status itself says it, and a sentence under the badge would say it twice.
@@ -345,7 +364,11 @@ export function cctvCompliance(setup: CctvSetup | undefined, now: Date = new Dat
   if (certificate === "missing") flags.push("Installation certificate not uploaded.");
   if (retention === "not-stated") flags.push("Footage retention period not stated.");
   if (retention === "short") flags.push(`Footage kept for ${setup.retentionDays} days, below the ${RETENTION_MIN_DAYS}-day minimum.`);
-  if (declarationOverdue) flags.push(`Uptime declaration for ${monthName(dueMonth)} not filed.`);
+  if (declarationOverdue) {
+    flags.push(missingMonths.length === 1
+      ? `Uptime declaration for ${monthName(missingMonths[0]!)} not filed.`
+      : `Uptime declarations not filed for ${missingMonths.length} months: ${missingMonths.map(monthName).join(", ")}.`);
+  }
   return { ...base, status: flags.length ? "action-needed" : "compliant", flags };
 }
 
@@ -382,7 +405,8 @@ export function seedCctvDetail(setup: CctvSetup, story: 0 | 1 | 2 | 3 | 4): Cctv
     // The partial story also has its only recreation-room camera out of order.
     working: !(story === 1 && area === "common"),
   }));
-  const months = ["2026-08", "2026-07", "2026-06"].slice(story === 3 ? 2 : 0);
+  // Every month owed since registration is declared, newest first; the overdue story stops at June.
+  const months = monthsBetween(setup.savedAt.slice(0, 7), "2026-08").reverse().filter((m) => story !== 3 || m <= "2026-06");
   const uptime: CctvUptimeDeclaration[] = months.map((month, i) => {
     const [y, m] = month.split("-").map(Number) as [number, number];
     const next = new Date(Date.UTC(y, m, 3 + i, 5, 30)).toISOString();

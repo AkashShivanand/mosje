@@ -107,7 +107,7 @@ function CameraRegister({ setup, onSave }: { setup: CctvSetup; onSave: (next: Cc
   const [removing, setRemoving] = React.useState<CctvCamera | null>(null);
 
   const saveRegister = (next: CctvCamera[]) =>
-    onSave({ ...setup, cameraRegister: next, cameras: next.length || setup.cameras });
+    onSave({ ...setup, cameraRegister: next, cameras: next.length });
 
   const columns: DataTableColumn<CameraRow>[] = [
     { key: "location", header: "Location" },

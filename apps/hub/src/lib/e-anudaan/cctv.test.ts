@@ -130,10 +130,16 @@ test("compliance: every state reads from one expression", () => {
   const overdue = cctvCompliance(seedCctvDetail(base, 3), now);
   assert.equal(overdue.declarationOverdue, true);
   assert.equal(overdue.latestDeclaration?.month, "2026-06");
-  assert.deepEqual(overdue.flags, ["Uptime declaration for August 2026 not filed."]);
+  assert.deepEqual(overdue.flags, ["Uptime declarations not filed for 2 months: July 2026, August 2026."]);
 
   const short = cctvCompliance(seedCctvDetail(base, 4), now);
   assert.equal(short.retention, "short");
+
+  // A skipped month stays owed after a later month is filed.
+  const compliantSetup = seedCctvDetail(base, 0);
+  const skipped = cctvCompliance({ ...compliantSetup, uptime: (compliantSetup.uptime ?? []).filter((x) => x.month !== "2026-07") }, now);
+  assert.equal(skipped.declarationOverdue, true);
+  assert.deepEqual(skipped.missingMonths, ["2026-07"]);
 
   // A setup registered after the due month owes no declaration yet.
   const fresh = cctvCompliance({ ...seedCctvDetail(base, 0), savedAt: "2026-09-10T00:00:00.000Z", uptime: [] }, now);
