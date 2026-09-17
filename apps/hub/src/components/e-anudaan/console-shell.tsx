@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { SiteHeader, OrgLogo, PortalPage, StatusScreen, type PortalNavGroup } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
+import { ServiceErrorNotice, useFailureOnLoad } from "./service-error";
 import { ROLES, consoleRouteAccess } from "@/lib/e-anudaan/roles";
 import { notificationItems, notificationsHref } from "@/lib/e-anudaan/notifications";
 
@@ -45,6 +46,8 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const { state, hydrated, logout, markAllNotificationsRead } = useEAnudaan();
+  /** Any signed-in page: the session can end, or the role be refused, on the next request (error-catalogue.ts). */
+  const [sessionFailure, clearSessionFailure] = useFailureOnLoad("session", pathname);
 
   const isOfficer = state.session !== null && state.session !== "ngo";
   const isNgo = state.session === "ngo";
@@ -125,7 +128,9 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
         />
       )}
     >
-      {access === "allowed" ? (
+      {sessionFailure ? (
+        <ServiceErrorNotice failure={sessionFailure} homeHref={role?.home} onRetry={clearSessionFailure} onDismiss={clearSessionFailure} />
+      ) : access === "allowed" ? (
         children
       ) : access === "forbidden" ? (
         <StatusScreen

@@ -160,6 +160,17 @@ export interface DeficiencyItem {
   originalValue?: string;
 }
 
+/** One answer changed while correcting, as the officer reads it on resubmission. */
+export interface AnswerChange {
+  fieldName: string;
+  label: string;
+  /** The answer as submitted. Kept however many times it is changed again. */
+  from: string;
+  to: string;
+  reason?: string;
+  at: string;
+}
+
 export interface Deficiency {
   id: string;
   raisedBy: RoleId;
@@ -183,6 +194,12 @@ export interface Deficiency {
   respondBy?: string;
   /** Fields the NGO may edit while responding. Empty = whole form reopened. */
   reopenedFields: string[];
+  /**
+   * Answers the applicant changed of their own accord while correcting — beyond the items the
+   * Ministry asked about — each with its answer as submitted and, where `edit-policy.ts` asks for
+   * one, the applicant's reason. Shown to the officer on resubmission.
+   */
+  changes?: AnswerChange[];
   /** The individual corrections asked for. Absent on deficiencies raised before items existed. */
   items?: DeficiencyItem[];
   respondedAt?: string;
