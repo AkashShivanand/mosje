@@ -233,6 +233,12 @@ stories**; the static build takes precedence at `/storybook` until you rebuild
   offline half on every PR, the live half (`:live`) guarded on `FIGMA_ACCESS_TOKEN`.
   Re-capture the snapshot with `npm run check:figma-index:sync` after every pass.
   → `.claude/rules/figma-library-index.md`
+- **Every portal handoff page in Figma has one shape** — zones `A · START HERE`, `B · JOURNEYS`
+  (user-role lanes → tens-numbered flows `B2.30` → device rows → states), `C · BUILD REFERENCE`,
+  `D · ARCHIVE`; fills by depth `#E3E3E3`→`#C0C0C0`; layers panel in reading order. Audiences get
+  front doors (Portal Map, Dev Mode list, prototype flows), never copies of screens.
+  **`npm run check:figma-handoff`** measures every registered page.
+  → `.claude/rules/figma-handoff-page-structure.md`
 - **Commit messages: no AI attribution.** Never add `Co-Authored-By: Claude` or a
   "Generated with Claude Code" trailer. `.husky/commit-msg` strips them as a backstop.
 
