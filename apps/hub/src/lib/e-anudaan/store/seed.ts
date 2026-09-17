@@ -15,6 +15,7 @@
  */
 
 import { applyAction, deficiencyItemsFrom, releaseFunds, type Clock, type WorkflowAction } from "../workflow.ts";
+import { seedCctvDetail } from "../cctv.ts";
 import {
   GRADES,
   type Division,
@@ -2097,7 +2098,18 @@ export function buildSeed(): {
         contactName: k % 3 === 0 ? applicant.secretary : undefined,
         contactMobile: k % 3 === 0 ? applicant.mobile : undefined,
         savedAt: iso(40 + ((digits % 23) * 9)),
-      };
+      } satisfies CctvSetup;
+    })
+    /*
+     * The camera register, certificate, retention and uptime declarations (schema 12). Five projects
+     * carry a worked record, one of each story — compliant, partial coverage, certificate missing,
+     * declaration overdue, retention too short — and the rest are registered with no cameras yet,
+     * so every state of the module is on the demo account.
+     */
+    .map((setup, k) => {
+      if (k >= 5) return setup;
+      const worked = seedCctvDetail(setup, k as 0 | 1 | 2 | 3 | 4);
+      return { ...worked, activationCode: cctvActivationCode(worked.projectId, worked.cameras) };
     });
 
   /*

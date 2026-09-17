@@ -14,6 +14,7 @@ import {
   markAllReadFor,
   markReadFor,
   migrateFrom8,
+  migrateFrom11,
   readPersisted,
   writePersisted,
   type StorageLike,
@@ -187,6 +188,22 @@ test("the seeded store fits in the browser with room for the applicant's work", 
   // +12,000 on 16 Sep 2026 for the answers a submitted file owes (bank, PFMS and which claim it is)
   // and +5,800 for the CCTV registered at each project, which used to sit in the NGO's own browser
   // where no officer could read it — the ceiling moved 1.90M → 1.91M for both (audit batch B8).
+  // +12,800 on 17 Sep 2026 for five worked CCTV records (camera register, certificate, retention,
+  // uptime declarations), one per compliance state an officer must be able to see — 1.91M → 1.925M.
   const size = JSON.stringify(seed()).length;
-  assert.ok(size < 1_910_000, `seeded store is ${size.toLocaleString("en-IN")} characters`);
+  assert.ok(size < 1_925_000, `seeded store is ${size.toLocaleString("en-IN")} characters`);
+});
+
+test("a schema-11 copy is carried to 12: the NGO's own CCTV setups kept, seeded ones given their register", () => {
+  const fresh = seed();
+  const detailed = fresh.cctv.find((c) => c.cameraRegister)!;
+  const plain = ({ cameraRegister: _r, certificate: _c, retentionDays: _d, storage: _s, uptime: _u, ...rest }: (typeof fresh.cctv)[number]) => rest;
+  const mine = { ...plain(fresh.cctv[1]!), cameras: 8, savedAt: "2026-09-15T10:00:00.000Z" };
+  const old = { ...fresh, version: 11, rev: 4, cctv: [plain(detailed), mine] };
+  const got = migrateFrom11(old, fresh)!;
+  assert.ok(got, "migrated");
+  assert.deepEqual(got.cctv[0], detailed, "a still-seeded setup takes the worked record");
+  assert.deepEqual(got.cctv[1], mine, "a setup the NGO saved is untouched");
+  assert.equal(migrateFrom11({ ...old, version: 10 }, fresh), null);
+  assert.equal("rev" in got, false);
 });

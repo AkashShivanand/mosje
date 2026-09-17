@@ -488,7 +488,10 @@ export interface ProjectAccount {
 export interface CctvSetup {
   /** `Institution.id` — the Project ID. One record per project. */
   projectId: string;
-  /** Cameras registered at the centre, 1 to 8 as the live screen offers. */
+  /**
+   * Cameras registered at the centre, 1 to 8 as the live screen offers. Once the NGO keeps a camera
+   * register (`cameraRegister`) this is the register's length, so the two can never disagree.
+   */
   cameras: number;
   /** Whether the recorder has reached the portal, so an officer can open the feed. */
   liveFeed: boolean;
@@ -499,6 +502,61 @@ export interface CctvSetup {
   contactMobile?: string;
   /** When the NGO saved this setup. */
   savedAt: string;
+  /** Each camera at the centre, against the coverage area it watches (schema 12). */
+  cameraRegister?: CctvCamera[];
+  /** The installer's certificate for the installation. */
+  certificate?: CctvCertificate;
+  /** Days recorded footage is kept before it is overwritten. See `RETENTION_MIN_DAYS`. */
+  retentionDays?: number;
+  storage?: CctvStorage;
+  /** One declaration per calendar month, newest first. */
+  uptime?: CctvUptimeDeclaration[];
+}
+
+/** The areas of a residential project a camera must cover. Labels and order: `CCTV_AREAS`. */
+export type CctvAreaId = "entrance" | "corridors" | "dining" | "common" | "kitchen" | "office" | "perimeter";
+
+export interface CctvCamera {
+  id: string;
+  /** Where the camera is mounted, in the NGO's words: "Main gate, facing the road". */
+  location: string;
+  area: CctvAreaId;
+  placement: "Indoor" | "Outdoor";
+  recording: "Continuous" | "Motion-Activated";
+  nightVision: boolean;
+  /** `yyyy-mm-dd`. */
+  installedOn: string;
+  working: boolean;
+}
+
+export interface CctvCertificate {
+  fileName: string;
+  sizeKb: number;
+  uploadedAt: string;
+}
+
+export interface CctvStorage {
+  medium: "Network Video Recorder (NVR)" | "Digital Video Recorder (DVR)" | "Cloud Storage";
+  capacityGb: number;
+  /** Where the recorder or the account is kept: "Office, ground floor, locked cabinet". */
+  location: string;
+}
+
+export interface CctvOutage {
+  /** `yyyy-mm-dd`, inclusive. */
+  from: string;
+  to: string;
+  reason: string;
+}
+
+export interface CctvUptimeDeclaration {
+  /** `yyyy-mm`. */
+  month: string;
+  uptimePercent: number;
+  outages: CctvOutage[];
+  declaredBy: string;
+  designation: string;
+  declaredAt: string;
 }
 
 /** "Returned" is a location change the PMU sent back to the NGO to raise again. */

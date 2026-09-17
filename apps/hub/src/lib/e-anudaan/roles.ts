@@ -350,7 +350,8 @@ export function consoleRouteAccess(pathname: string, role: RoleDef): RouteAccess
   // The inspection-report repository: the PMU files the reports, the Programme Director reads them.
   if (section === "ir-repository") return a ? "not-found" : role.caps.includes("inspect") || role.caps.includes("sanction") ? "allowed" : "forbidden";
   if (section === "sent") return a ? "not-found" : can("sanction");
-  if (section === "ngo") return a && b === "360" && rest.length === 0 ? "allowed" : "not-found";
+  // NGO 360, and beside it one project's records (CCTV compliance, staff roster, weekly attendance).
+  if (section === "ngo") return a && ((b === "360" && rest.length === 0) || (b === "project" && rest.length === 1)) ? "allowed" : "not-found";
 
   if (section === "pmu") {
     if (b) return "not-found";
