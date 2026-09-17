@@ -1,6 +1,6 @@
 ---
 name: figma-page-organiser
-description: Organise a Figma handoff page of portal screens into the estate-wide handoff structure — zones A Start Here / B Screens by User Role / C Shared Building Blocks / D Archive, one column per user role, flows with fixed role-scoped IDs (NGO 30), branches only where a flow splits, Desktop / Mobile / Dialogs rows with phone frames under their desktop frame, grey by depth, red plus a note for flows pending discussion, a generated and linked Portal Map, and a layers panel in reading order. Use when a portal page in a handoff file (MoSJE Portal [Handoff], the E-Anudaan file, or a new portal) is scattered, unnumbered, mis-coloured, or needs setting up. Requires the figma-use skill and Figma MCP tools.
+description: Organise a Figma handoff page of portal screens into the estate-wide handoff structure — START HERE / SCREENS BY WHO USES THEM / SHARED PARTS / OLD SCREENS — DO NOT USE, one column per user group, journeys named in plain words, versions only where a journey splits, Desktop / Mobile / Pop-ups and Dialogs rows with phone screens under their desktop screen, grey by depth, red plus a note only where a decision could change the screens, a generated and linked Portal Map, and a layers panel in reading order. Use when a portal page in a handoff file (MoSJE Portal [Handoff], the E-Anudaan file, or a new portal) is scattered, unnumbered, mis-coloured, or needs setting up. Requires the figma-use skill and Figma MCP tools.
 user-invocable: true
 allowed-tools: Read, Grep, Glob, Bash
 ---
@@ -40,22 +40,26 @@ whatever is left.
 - **Role columns:** `Everyone · Sign In & Account` first, then user roles in the order a case meets
   them. Ground roles in the code (`find apps/hub/src/app/portals/<slug> -name page.tsx`; route groups
   map to screen prefixes) and the recon (`docs/research/<host>/INVENTORY.md`). >9 flows → split by phase.
-- **Flows:** role code + tens (`OFFICER 20`), dependency order. Existing leaf sections become flows or
-  branches by **re-parenting** (keeps node ids and links) — do not rebuild them.
+- **Journeys:** plain names (`Reviewing an Application`), in the order they happen. Existing leaf sections become
+  journeys or versions by **re-parenting** (keeps node ids and links) — do not rebuild them.
+- **Names:** plain English, Title Case, no codes or developer words — rule §4. Draft the full rename list and
+  show the user a sample before applying; 442 renames went in one call on E-Anudaan.
 - **Branches:** only where the flow forks.
-- **Pending discussion:** only flows with a *documented* open question — the portal's questions list or
-  a recorded decision awaiting sign-off. Collect each question's reference and what is drawn for now.
-  Never mark something pending on a hunch.
+- **Needs discussion:** only where a *documented* decision could change the screens. A question that
+  does not change a screen goes on the Status page as plain text, not red. Ask the user which stay red —
+  13 red flows read as "so much discussion pending" and were cut to 4.
+- **Never move a person's screens to the archive because the build differs.** Record the difference on the
+  Status page and ask. A sign-in flow archived this way on 17 Sep had to be restored.
 
 ## 4. Move — `buildLane` from the engine, 2–3 columns per call
-Zones first (`ensure(page, "A · START HERE")` …), then `buildLane(B, {name, flows})` per column, C and D
+Areas first (`ensure(page, "START HERE")` …), then `buildLane(B, {name, flows})` per column, C and D
 groups, archive frames `opacity = 0.4`, strays prefixed `.stray / `. `rows()` sorts each flow's screens
 into Desktop / Mobile / Dialogs by name.
 
 ## 5. Pending notes
-For each pending flow: append ` · Pending Discussion` to its name and add a `.note / Pending Discussion`
-auto-layout card (1440 wide, Noto Sans; title, one-line lead, then per question `Ref · question` and
-`For now: …`). **Nested auto-layout frames default to a white fill — clear them**, or every question
+For each journey that needs discussion: append ` — Needs Discussion` to its name and add a `Note — Needs Discussion`
+auto-layout card (1440 wide, Noto Sans; title, one-line lead, then per point the question in plain words and
+`Drawn for now: …`). No question codes. **Nested auto-layout frames default to a white fill — clear them**, or every question
 sits on a white stripe.
 
 ## 6. Colours — bind to SAMAVESH by NAME from the library
@@ -71,7 +75,7 @@ nothing — and a loose regex matched `text/neutral/inverse` (white) on the firs
 page ramp and stay literal.
 
 ## 7. Layout — one call for the whole page
-`layoutSection(zone, 1, false, ORDER, BR, "B · SCREENS BY USER ROLE")` per zone, then place A at (0,0),
+`layoutSection(area, 1, false, ORDER, BR, "SCREENS BY WHO USES THEM")` per zone, then place A at (0,0),
 B below, C and D to the right, `reorder(page, [A, B, C, D])`. A group in C that holds both a note and
 screens needs its screens pushed below the note by hand (the engine handles notes only in sections
 with sub-sections).
@@ -102,3 +106,5 @@ Say it in the summary, every time: **name a version** (`saveVersionHistoryAsync`
 - `node.children` is read-only → copy before sorting.
 - Heavy frames time out full text scans → bounded top-band DFS only.
 - A failed call rolls back everything in it. After an error, re-read before assuming anything landed.
+- Re-ordering a frame whose text uses an unloaded font fails (`insertChild: unloaded font "Cascadia Code Regular"`).
+  Load the fonts found on the page first, and wrap each `insertChild` so one frame cannot roll back the whole pass.

@@ -13,6 +13,6 @@ Before scaffolding, confirm intent and the org/scheme it serves, then:
 4. Add a config entry to `.claude/launch.json` (name `$1`, `npm --prefix portals/$1 run dev`, the chosen port). **Show the diff and let the user apply the launch.json change** (settings files need explicit approval).
 5. Seed a minimal landing route + a portal `CLAUDE.md` noting its org/scheme, stack, and port. Verify `npm run build` passes.
 6. Once `packages/design-system` exists, consume it instead of re-declaring tokens.
-7. **Figma handoff page:** create the portal's page on the handoff structure from day one — zones `A · START HERE` / `B · SCREENS BY USER ROLE` / `C · SHARED BUILDING BLOCKS` / `D · ARCHIVE — DO NOT BUILD FROM`, one column per user role, flows with fixed role IDs (`.claude/rules/figma-handoff-page-structure.md`, procedure in the `figma-page-organiser` skill) — and register it in `tools/figma-handoff-structure/pages.json` and run `npm run check:figma-handoff -- --update-baseline` so the check measures it.
+7. **Figma handoff page:** create the portal's page on the handoff structure from day one — areas `START HERE` / `SCREENS BY WHO USES THEM` / `SHARED PARTS` / `OLD SCREENS — DO NOT USE`, one column per user group, journeys named in plain words (`.claude/rules/figma-handoff-page-structure.md`, procedure in the `figma-page-organiser` skill) — and register it in `tools/figma-handoff-structure/pages.json` and run `npm run check:figma-handoff -- --update-baseline` so the check measures it.
 
 Do NOT delete or overwrite any existing portal. Never `rm -rf`.

@@ -24,93 +24,104 @@ were added.
 
 ## 2. The page
 
+Every name is plain English with no codes (decided 17 Sep 2026). Screen counts include notes.
+
 ```
-A · START HERE
-  Guide to This Page  (4 frames)
-B · SCREENS BY USER ROLE
-  Everyone · Sign In & Account
-    ACCESS 10 · Sign In — NGO, Credentials
-    ACCESS 20 · Sign In — NGO, DARPAN ID
-    ACCESS 25 · Sign In with NGO-DARPAN — Return States · Pending Discussion
-    ACCESS 30 · Sign In — Officer
-    ACCESS 40 · Password Recovery
-  NGO Applicant · Apply for a Grant
-    NGO 10 · Dashboard & Notifications
-    NGO 20 · Choose a Scheme
-    NGO 30 · SHRESHTA Mode 2 Application   [New Application · 7 Steps | 1st Instalment · 7 Steps | 2nd Instalment · 4 Steps | 3rd Instalment · 4 Steps]
-    NGO 40 · SMILE (Garima Greh) Application · Pending Discussion   [New Application · 7 Steps | 1st Instalment · 7 Steps | 2nd Instalment · 4 Steps]
-    NGO 50 · AVYAY Application · Pending Discussion   [New Application · 8 Steps | 1st Instalment · 7 Steps | 2nd Instalment · 4 Steps | 3rd Instalment · 4 Steps]
-    NGO 60 · NAPDDR Application · Pending Discussion   [New Application · 10 Steps | 1st Instalment · 11 Steps | 2nd Instalment · 4 Steps | 3rd Instalment · 4 Steps]
-    NGO 70 · Upload Documents · Pending Discussion   [Document Row States | Placement Tray & Document History]
-  NGO Applicant · After Submission
-    NGO 110 · My Applications
-    NGO 120 · Application Detail
-    NGO 130 · Deficiencies & Correction · Pending Discussion
-    NGO 135 · Which Answers Can Change · Pending Discussion
-    NGO 140 · Utilisation Certificate & Inspection Meeting
-    NGO 150 · Project Location & Bank Accounts
-    NGO 160 · Beneficiaries & Staff · Pending Discussion
-    NGO 170 · Attendance
-    NGO 180 · CCTV Setup
-  Officer · Process Applications
-    OFFICER 10 · My Queue   [Programme Division | Integrated Finance Division]
-    OFFICER 20 · Review an Application · Pending Discussion
-    OFFICER 30 · All Applications
-    OFFICER 40 · Registers
-    OFFICER 50 · Queries
-    OFFICER 60 · Notifications
-  Officer · Oversight & Records
-    OFFICER 110 · NGO Directory & NGO 360
-    OFFICER 120 · Bank Account Changes
-    OFFICER 130 · Payment Status
-    OFFICER 140 · Reports & Analytics
-    OFFICER 150 · Audit Trail
-    OFFICER 160 · Project Records & CCTV Compliance
-  Programme Director · Sanction
-    DIRECTOR 10 · Sanction Desk · Pending Discussion
-    DIRECTOR 20 · Examine and Sanction · Pending Discussion
-    DIRECTOR 30 · Sent & Inspection Reports · Pending Discussion
-  PMU Field Officer · Inspect
-    PMU 10 · Inspection Dashboard
-    PMU 20 · Inspections
-    PMU 30 · Registers
-C · SHARED BUILDING BLOCKS
-  Portal Shell · Pending Discussion  (3 frames)
-  System Status Screens  (2 frames)
-  Service Errors  (8 frames)
-  Wizard Step Bodies — SHRESHTA & SMILE  (8 frames)
-  Reference Assets  (1 frames)
-D · ARCHIVE — DO NOT BUILD FROM
-  Superseded — 17 Sep 2026  (10 frames)
-  Stray Nodes — Sweep Before Handoff  (11 frames)
+START HERE
+  Guide to This Page
+SCREENS BY WHO USES THEM
+  Everyone — Signing In
+    NGO Sign-In with Username and Password   (6 screens)
+    NGO Sign-In with DARPAN ID   (4 screens)
+    NGO Sign-In through NGO-DARPAN — Needs Discussion   (12 screens)
+    Officer Sign-In   (4 screens)
+    Forgot and Reset Password   (3 screens)
+  NGO — Applying for a Grant
+    Dashboard and Notifications   (4 screens)
+    Choose a Scheme   (4 screens)
+    SHRESHTA Mode 2 Application Form
+      New Application — 7 Steps   (8 screens)
+      1st Instalment Claim — 7 Steps   (7 screens)
+      2nd Instalment Claim — 4 Steps   (4 screens)
+      3rd Instalment Claim — 4 Steps   (4 screens)
+    SMILE (Garima Greh) Application Form
+      New Application — 7 Steps   (7 screens)
+      1st Instalment Claim — 7 Steps   (7 screens)
+      2nd Instalment Claim — 4 Steps   (4 screens)
+    AVYAY Application Form
+      New Application — 8 Steps   (12 screens)
+      1st Instalment Claim — 7 Steps   (7 screens)
+      2nd Instalment Claim — 4 Steps   (5 screens)
+      3rd Instalment Claim — 4 Steps   (4 screens)
+    NAPDDR Application Form
+      New Application — 10 Steps   (10 screens)
+      1st Instalment Claim — 11 Steps   (11 screens)
+      2nd Instalment Claim — 4 Steps   (4 screens)
+      3rd Instalment Claim — 4 Steps   (4 screens)
+    Uploading Documents — Needs Discussion   (1 screens)
+      Each Document's Status   (16 screens)
+      Sorting Files and Document History   (3 screens)
+  NGO — After Applying
+    My Applications   (4 screens)
+    Application Details   (5 screens)
+    Deficiencies and Corrections   (3 screens)
+    Changing Answers After Submitting — Needs Discussion   (5 screens)
+    Utilisation Certificate and Inspection Meeting   (4 screens)
+    Project Location and Bank Accounts   (3 screens)
+    Beneficiaries and Staff   (5 screens)
+    Attendance   (2 screens)
+    CCTV Setup   (9 screens)
+  Officers — Reviewing Applications
+    My Queue
+      Programme Division   (6 screens)
+      Integrated Finance Division   (5 screens)
+    Reviewing an Application   (19 screens)
+    All Applications   (4 screens)
+    Sanctioned, Returned, Rejected and Forwarded Lists   (6 screens)
+    Queries   (2 screens)
+    Notifications   (1 screens)
+  Officers — Records and Reports
+    NGO Directory and NGO Profile   (3 screens)
+    Bank Account Change Requests   (1 screens)
+    Payment Status   (1 screens)
+    Reports and Analytics   (3 screens)
+    Audit Trail   (3 screens)
+    Project Records and CCTV Compliance   (4 screens)
+  Programme Director — Sanctioning
+    Sanction Desk   (1 screens)
+    Examining and Sanctioning an Application — Needs Discussion   (5 screens)
+    Sent Applications and Inspection Reports   (4 screens)
+  PMU Field Officer — Inspections
+    Inspection Dashboard   (1 screens)
+    Inspections   (1 screens)
+    Institutions and Location Changes   (3 screens)
+SHARED PARTS
+  Page Frame — Header and Side Menu
+  Access Denied and Page Not Found
+  Error Messages
+  Form Step Content — SHRESHTA and SMILE
+  Reference Images
+OLD SCREENS — DO NOT USE
+  Replaced Screens — 17 Sep 2026
+  Leftover Pieces — To Be Deleted
 ```
 
-Four groups were added to the page by other sessions shortly before the reorganisation; each was
-filed by user role: NGO-DARPAN return states → `ACCESS 25`, Which Answers Can Change → `NGO 135`
-(its one officer screen went to `OFFICER 20`'s desktop row), Project Records & CCTV Compliance →
-`OFFICER 160`, Service Errors → C.
+## 3. Needs discussion — red only where screens may change
 
-## 3. Pending discussion — red on the canvas, each with a note
+Decided 17 Sep 2026: red marks only a journey whose screens a decision could still change. The first pass marked
+13 and read as "so much discussion pending"; nine were questions that change no screen and are now a plain list
+on the Status page.
 
-Designed to the recommended approach for now; each needs a decision before build. Questions are
-from `docs/plans/2026-09-16-e-anudaan-delivery-status.md` §4 unless stated.
-
-| Flow | Open question | Drawn for now |
+| Journey (red) | Open point | Drawn for now |
 |---|---|---|
-| ACCESS 25 · Sign In with NGO-DARPAN | Sign-in through NGO-DARPAN replaces the captcha and DARPAN ID + PAN form; consent screen and return states to confirm with NGO-DARPAN (commit `062ba317`) | Consent screen is a labelled stand-in. If adopted, ACCESS 20 moves to the archive |
-| NGO 40 · SMILE (Garima Greh) | Q-5 — no UAT recording to check against | Shared SHRESHTA Mode 2 step pattern |
-| NGO 50 · AVYAY | Q-4 release 40-40-20 or half-yearly; Q-11 renewal picker lists “awaiting sanction” | As the live portal lists them |
-| NGO 60 · NAPDDR | Q-6 coordinates, scores, SLCA fields; Q-11 | As the live form has them |
-| NGO 70 · Upload Documents | Q-3 documents for 2nd/3rd instalment; Q-10 three Document Centre decisions (`2026-09-16-e-anudaan-document-centre.md` §6) | Live rule: “not valid” must be replaced or checked again; no percentage shown |
-| NGO 130 · Deficiencies & Correction | Q-1 how long an applicant has to answer | No deadline until confirmed |
-| NGO 135 · Which Answers Can Change | Per-field edit policy is the design team's proposal (commit `cd31d83d`) | Editable / editable with a reason / locked; changes shown to the officer |
-| NGO 160 · Beneficiaries & Staff | Q-8 count from the roster, or typed | Confirm before making it read-only |
-| OFFICER 20 · Review an Application | Q-7 meaning of “Status of Institution” | The live label |
-| DIRECTOR 10, 20, 30 | Q-2 who sanctions SHRESHTA; the Programme Director console is not implemented on dev (`docs/research/eanudaan-admin-dev.mosje.in/INVENTORY.md` §17) | Director sanctions, returns or rejects — the design team's proposal |
-| C · Portal Shell | Q-9 phone masthead deviates from DBIM | As built |
+| NGO Sign-In through NGO-DARPAN | The provider's consent screen and return states, to confirm with NGO-DARPAN | Consent screen is a labelled placeholder |
+| Uploading Documents | Documents for 2nd and 3rd instalment claims; keeping a "not valid" document with an explanation; showing the confidence percentage; last year's documents as permanent | The document list and rule the built portal uses today |
+| Changing Answers After Submitting | Which answers may change, which need a reason, which are locked | The design team's proposed rule for each answer |
+| Examining and Sanctioning an Application | Who sanctions SHRESHTA | The Programme Director sanctions, returns or rejects |
 
-When a question is decided: drop ` · Pending Discussion` from the name, delete the note, re-run the
-layout (the red goes), update the Status & Change Log.
+**Listed on the Status page, not red:** the deficiency answer period; AVYAY's release pattern; SMILE's missing test
+recording; NAPDDR's coordinates, scores and SLCA fields; "Status of Institution"; typed vs counted beneficiaries;
+the phone header's DBIM difference; renewal lists; the Programme Director screens not yet in the test portal.
 
 ## 4. Still needs a person
 
@@ -139,7 +150,7 @@ system since 16 Sep), and what that meant for the page:
 
 | Build change | Figma | Result |
 |---|---|---|
-| `062ba317` NGO sign-in through NGO-DARPAN; captcha and DARPAN ID + PAN removed | ACCESS 10 drew the captcha login; ACCESS 20 the DARPAN ID + PAN form | **Synced.** The NGO-DARPAN login is now ACCESS 10; the ten old frames are in the archive; ACCESS 20 is retired |
+| `062ba317` NGO sign-in through NGO-DARPAN; captcha and DARPAN ID + PAN removed | "NGO Sign-In with Username and Password" and "NGO Sign-In with DARPAN ID" still show the captcha | **Kept, not archived — a person decides.** They were briefly moved to the archive on 17 Sep and restored the same day; the difference is on the Status page |
 | `062ba317` NGO-DARPAN return states | ACCESS 25, 11 frames | **In sync** — word match 0.96–0.98 on every state |
 | `cd31d83d` edit policy and error catalogue | NGO 135, OFFICER 20, C · Service Errors | **In sync** where a matching capture exists (0.94–0.98); four states could not be re-shot (see below) |
 | `6308c62d`, `065b0e06` CCTV module and project records | NGO 180, OFFICER 160, OFFICER 110 | **In sync** on the states re-shot (0.93–0.99); lower scores are different sample projects, checked by eye |

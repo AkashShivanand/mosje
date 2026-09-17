@@ -47,10 +47,14 @@ const has = (name) => argv.includes(`--${name}`);
 
 /** Depth → grey. Rule §5. Index 0 is the multi-portal product wrapper. */
 const RAMP = [234, 227, 220, 213, 206, 199, 192];
-const PENDING = " · Pending Discussion";
-const ROWS = ["Desktop · 1440", "Tablet · 768", "Mobile · 375", "Dialogs & Overlays"];
+const PENDING = " — Needs Discussion";
+const ROWS = ["Desktop", "Tablet", "Mobile", "Pop-ups and Dialogs"];
+/** Zones are named in plain words; the letter is only how this checker refers to them. */
+const ZONES = { "START HERE": "A", "SCREENS BY WHO USES THEM": "B", "SHARED PARTS": "C", "OLD SCREENS — DO NOT USE": "D" };
+const HELPER = /^(Guide|Note|Reference|Leftover) — /;
+const NOTE = "Note — Needs Discussion";
 const MAX_FLOWS_PER_LANE = 9;
-const IDENTITY = new Set(["loose-at-root", "zone-name", "no-start-here", "flow-id", "duplicate-flow-id", "row-name", "frame-name", "mobile-alignment", "pending-without-note", "frames-in-zone"]);
+const IDENTITY = new Set(["loose-at-root", "zone-name", "no-start-here", "flow-name", "duplicate-flow-name", "row-name", "frame-name", "mobile-alignment", "pending-without-note", "frames-in-zone"]);
 
 const token = process.env.FIGMA_ACCESS_TOKEN;
 if (!token) {
@@ -110,8 +114,7 @@ const overlaps = (a, b) => {
   return p.x < q.x + q.width && q.x < p.x + p.width && p.y < q.y + q.height && q.y < p.y + p.height;
 };
 
-const ZONE = /^([A-Z]) · [A-Z0-9 &()—'-]+$/;
-const FLOW = /^([A-Z]+) (\d+) · \S/;
+const CODEY = /^[A-Z]+ \d+ · | · \d{3,4}$|Pending Discussion/;
 const FRAME = /^[^/]+ \/ [^/]+( \/ .+)?$/;
 
 function audit(page, rootDepth) {
@@ -145,12 +148,12 @@ function audit(page, rootDepth) {
     const kids = sec.children ?? [];
     const subs = kids.filter((k) => k.type === "SECTION");
     const frames = kids.filter((k) => k.type !== "SECTION");
-    const note = frames.find((f) => f.name === ".note / Pending Discussion");
+    const note = frames.find((f) => f.name === NOTE);
     if (sec.name.endsWith(PENDING) && !note) add("pending-without-note", sec, "a pending flow says what is pending, in a note at its top");
     if (kids.length === 0) add("empty-section", sec, "remove it, or fill it");
 
     if (level === 0) {
-      if (!ZONE.test(sec.name)) add("zone-name", sec, "want `<Letter> · <NAME IN CAPS>`");
+      if (!(sec.name in ZONES)) add("zone-name", sec, `want one of: ${Object.keys(ZONES).join(", ")}`);
       if (frames.length) add("frames-in-zone", sec, `${frames.length} node(s) directly in a zone`);
     }
     // zone B: level 1 = role lane, level 2 = flow
@@ -159,18 +162,17 @@ function audit(page, rootDepth) {
       if (flows > MAX_FLOWS_PER_LANE) add("lane-too-long", sec, `${flows} flows; split the role by phase at ${MAX_FLOWS_PER_LANE}`);
     }
     if (zone === "B" && level === 2) {
-      const m = sec.name.replace(PENDING, "").match(FLOW);
-      if (!m) add("flow-id", sec, "want `<ROLE> <number> · <Flow Name>`, e.g. `NGO 30 · SHRESHTA Mode 2 Application`");
+      const base = sec.name.replace(PENDING, "");
+      if (CODEY.test(sec.name) || !/^[A-Z][A-Za-z]/.test(base)) add("flow-name", sec, "a journey is named in plain words, e.g. `My Applications`");
       else {
-        const id = `${m[1]} ${m[2]}`;
-        if (flowIds.has(id)) add("duplicate-flow-id", sec, `${id} is also used by "${flowIds.get(id)}"`);
-        flowIds.set(id, sec.name);
+        if (flowIds.has(base)) add("duplicate-flow-name", sec, `"${base}" is also used in "${flowIds.get(base)}"`);
+        flowIds.set(base, sec.__parent?.name ?? "");
       }
     }
     // rows: in zone B, any section that holds screens (other than a note) is a row
-    const screens = frames.filter((f) => !f.name.startsWith("."));
+    const screens = frames.filter((f) => !f.name.startsWith(".") && !HELPER.test(f.name));
     if (zone === "B" && level >= 2 && screens.length && !ROWS.includes(sec.name)) add("row-name", sec, `screens sit in a row section: ${ROWS.join(", ")}`);
-    for (const f of screens) if (!FRAME.test(f.name)) add("frame-name", f, "want `Role / Screen / State`");
+    for (const f of screens) if (!FRAME.test(f.name) || / · Mobile$/.test(f.name)) add("frame-name", f, "want `Who / Screen / State`, phone versions ending ` — Mobile`");
     if (zone === "D") for (const f of screens) if (Math.abs((f.opacity ?? 1) - 0.4) > 0.05) add("archive-opacity", f, "archived frames sit at 40%");
 
     if (ROWS.includes(sec.name)) {
@@ -182,11 +184,11 @@ function audit(page, rootDepth) {
       for (let i = 0; i < screens.length; i++)
         for (let j = i + 1; j < screens.length; j++) if (overlaps(screens[i], screens[j])) add("screen-overlap", screens[i], `overlaps "${screens[j].name}"`);
       if (new Set(screens.map((f) => Math.round(box(f).y))).size > 1) add("row-not-one-line", sec, "screens in a row share one top edge");
-      if (sec.name === "Mobile · 375") {
-        const desk = subsOf(sec.__parent).find((s) => s.name === "Desktop · 1440");
+      if (sec.name === "Mobile") {
+        const desk = subsOf(sec.__parent).find((s) => s.name === "Desktop");
         const deskX = new Map((desk?.children ?? []).map((f) => [f.name, box(f).x]));
         for (const f of screens) {
-          const x = deskX.get(f.name.replace(/ · Mobile$/, ""));
+          const x = deskX.get(f.name.replace(/ — Mobile$/, ""));
           if (x !== undefined && Math.abs(x - box(f).x) > 1) add("mobile-alignment", f, "sits directly under its desktop frame");
         }
       }
@@ -195,22 +197,10 @@ function audit(page, rootDepth) {
     for (let i = 0; i < subs.length; i++)
       for (let j = i + 1; j < subs.length; j++) if (overlaps(subs[i], subs[j])) add("overlap", subs[i], `overlaps "${subs[j].name}"`);
 
-    const idOf = (n) => {
-      const m = n.name.replace(PENDING, "").match(FLOW);
-      return m ? +m[2] : null;
-    };
     const lanes = zone === "B" && level === 0;
-    const withIds = subs.length > 1 && subs.every((s) => idOf(s) !== null);
-    layerOrder(sec, [...(note ? [note] : []), ...subs], lanes ? byX : withIds ? (a, b) => (a === note ? -1 : b === note ? 1 : idOf(a) - idOf(b)) : byY);
+    const withNote = (key) => (a, b) => (a === note ? -1 : b === note ? 1 : key(a, b));
+    layerOrder(sec, [...(note ? [note] : []), ...subs], withNote(lanes ? byX : byY));
     layerOrder(sec, screens, byX);
-    if (withIds) {
-      const read = [...subs].sort((a, b) => idOf(a) - idOf(b));
-      for (let i = 1; i < read.length; i++)
-        if (box(read[i]).y < box(read[i - 1]).y) {
-          add("canvas-order", sec, `"${read[i].name}" is placed above "${read[i - 1].name}"`);
-          break;
-        }
-    }
     for (const s of subs) {
       s.__parent = sec;
       walk(s, depth + 1, zone, pending, level + 1);
@@ -219,9 +209,9 @@ function audit(page, rootDepth) {
   const subsOf = (n) => (n?.children ?? []).filter((k) => k.type === "SECTION");
 
   const zones = page.children.filter((c) => c.type === "SECTION");
-  layerOrder(page, zones, (a, b) => a.name.localeCompare(b.name));
-  if (!zones.some((z) => /^A · START HERE/.test(z.name))) v.push({ check: "no-start-here", name: page.name, id: page.id, detail: "zone A · START HERE is missing" });
-  for (const z of zones) walk(z, rootDepth, z.name.match(ZONE)?.[1] ?? null, false, 0);
+  layerOrder(page, zones, (a, b) => (ZONES[a.name] ?? "Z").localeCompare(ZONES[b.name] ?? "Z"));
+  if (!zones.some((z) => z.name === "START HERE")) v.push({ check: "no-start-here", name: page.name, id: page.id, detail: "the START HERE area is missing" });
+  for (const z of zones) walk(z, rootDepth, ZONES[z.name] ?? null, false, 0);
   return v;
 }
 
@@ -252,15 +242,16 @@ for (const entry of registry.filter((p) => !only || p.portal.toLowerCase() === o
       console.log(`  ${got > base ? "✔" : "✖"} selftest ${label} → ${want}`);
       if (got <= base) failing++;
     };
-    plant("flow renamed without ID", "flow-id", (t, s) => { const f = s.find((x) => FLOW.test(x.name)); f.name = "Some Flow"; });
-    plant("two flows share an ID", "duplicate-flow-id", (t, s) => { const f = s.filter((x) => FLOW.test(x.name)); f[1].name = f[0].name; });
-    plant("phone frame moved", "mobile-alignment", (t, s) => { const m = s.find((x) => x.name === "Mobile · 375" && x.children.some((f) => f.absoluteBoundingBox)); for (const f of m.children) f.absoluteBoundingBox = { ...f.absoluteBoundingBox, x: f.absoluteBoundingBox.x + 500 }; });
+    const flowsIn = (t) => t.children.filter((z) => z.name === "SCREENS BY WHO USES THEM").flatMap((z) => z.children.flatMap((l) => (l.children ?? []).filter((c) => c.type === "SECTION")));
+    plant("journey given a code name", "flow-name", (t) => { flowsIn(t)[0].name = "NGO 30 · Application"; });
+    plant("two journeys share a name", "duplicate-flow-name", (t) => { const f = flowsIn(t); f[1].name = f[0].name; });
+    plant("phone frame moved", "mobile-alignment", (t, s) => { const m = s.find((x) => x.name === "Mobile" && x.children.some((f) => f.absoluteBoundingBox)); for (const f of m.children) f.absoluteBoundingBox = { ...f.absoluteBoundingBox, x: f.absoluteBoundingBox.x + 500 }; });
     plant("section painted white", "fill-off-ramp", (t, s) => { s[3].fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }]; });
-    plant("note deleted from a pending flow", "pending-without-note", (t, s) => { const p = s.find((x) => x.name.endsWith(PENDING)); p.children = p.children.filter((c) => c.name !== ".note / Pending Discussion"); });
-    plant("screen left loose in a flow", "row-name", (t, s) => { const f = s.find((x) => FLOW.test(x.name)); const row = f.children.find((c) => c.type === "SECTION"); f.children.push(row.children.find((c) => c.type !== "SECTION")); });
+    plant("note deleted from a pending flow", "pending-without-note", (t, s) => { const p = s.find((x) => x.name.endsWith(PENDING)); p.children = p.children.filter((c) => c.name !== NOTE); });
+    plant("screen left loose in a flow", "row-name", (t) => { const f = flowsIn(t).find((x) => x.children.some((c) => c.type === "SECTION")); const row = f.children.find((c) => c.type === "SECTION"); f.children.push(row.children.find((c) => c.type !== "SECTION")); });
     plant("frame dropped on the page", "loose-at-root", (t) => { t.children.push({ id: "0:0", type: "FRAME", name: "Frame 1", children: [] }); });
     plant("layers panel reversed", "layer-order", (t) => { t.children.reverse(); });
-    plant("screen pushed out of its row", "screen-outside-row", (t, s) => { const r = s.find((x) => x.name === "Desktop · 1440"); const f = r.children.find((c) => c.type !== "SECTION"); f.absoluteBoundingBox = { ...f.absoluteBoundingBox, x: f.absoluteBoundingBox.x + 1e6 }; });
+    plant("screen pushed out of its row", "screen-outside-row", (t, s) => { const r = s.find((x) => x.name === "Desktop"); const f = r.children.find((c) => c.type !== "SECTION"); f.absoluteBoundingBox = { ...f.absoluteBoundingBox, x: f.absoluteBoundingBox.x + 1e6 }; });
   }
   const identity = v.filter((x) => IDENTITY.has(x.check)).length;
   const visual = v.length - identity;

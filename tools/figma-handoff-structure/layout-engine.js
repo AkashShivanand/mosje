@@ -4,13 +4,13 @@
  * The code that organised the E-Anudaan page on 17 Sep 2026, kept so the next portal is a run,
  * not a project. It implements `.claude/rules/figma-handoff-page-structure.md`:
  *
- *   rows(section)             sorts a flow's (or branch's) screens into Desktop · 1440,
- *                             Mobile · 375 (name ends " · Mobile") and Dialogs & Overlays
+ *   rows(section)             sorts a journey's (or version's) screens into Desktop,
+ *                             Mobile (name ends " — Mobile") and Pop-ups and Dialogs
  *                             (name ends dialog / confirmation / menu).
  *   buildLane(zone, lane)     creates a role column and re-parents existing sections into it as
  *                             flows or branches — re-parenting keeps node ids, so links survive.
- *   layoutSection(zone, 1)    fills by depth (red ramp under " · Pending Discussion"), orders by
- *                             flow ID / row / branch, lays role columns left→right and flows down,
+ *   layoutSection(zone, 1)    fills by depth (red ramp under " — Needs Discussion"), orders by
+ *                             name / row / version, lays user-group columns left→right and journeys down,
  *                             puts phone frames under their desktop frame, places a pending note
  *                             at the top, hugs every section, and re-inserts children so the
  *                             layers panel reads in reading order.
@@ -21,13 +21,14 @@
  * Not available through the Plugin API, so a person does them in Figma: a named version
  * (`saveVersionHistoryAsync`). Ready for dev is not used on this estate.
  *
- * Set per portal: ORDER (role column and group order), BR (branch order).
+ * Set per portal: ORDER (every container's children in reading order, by name — journeys have no codes), BR (version order).
+ * Form steps are ordered by their step number, and a step's variant sits right after it.
  */
 const RAMP = [234, 227, 220, 213, 206, 199, 192];
-const PENDING = " · Pending Discussion";
-const ROWS = ["Desktop · 1440", "Tablet · 768", "Mobile · 375", "Dialogs & Overlays"];
-const MOB = / · Mobile$/;
-const DLG = /(dialog|confirmation|menu)$/i;
+const PENDING = " — Needs Discussion";
+const ROWS = ["Desktop", "Tablet", "Mobile", "Pop-ups and Dialogs"];
+const MOB = / — Mobile$/;
+const DLG = /\(Dialog\)$|menu$/i;
 const GUT = 96;
 
 const grey = (d, red) => {
@@ -37,7 +38,7 @@ const grey = (d, red) => {
 };
 const pad = (d) => (d <= 2 ? { t: 240, s: 160 } : d === 3 ? { t: 160, s: 80 } : { t: 120, s: 80 });
 const reorder = (parent, reading) => { for (const c of reading) parent.insertChild(0, c); };
-const isNote = (c) => c.name === ".note / Pending Discussion";
+const isNote = (c) => c.name === "Note — Needs Discussion";
 const byId = async (id) => { const n = await figma.getNodeByIdAsync(id); if (!n) throw new Error("missing " + id); return n; };
 function ensure(parent, name) {
   let s = parent.children.find((c) => c.type === "SECTION" && c.name === name);
@@ -49,8 +50,8 @@ async function rows(sec, extraIds = []) {
   const own = sec.children.filter((c) => c.type !== "SECTION" && !isNote(c))
     .sort((a, b) => Math.floor(a.y / 1000) - Math.floor(b.y / 1000) || a.x - b.x);
   const extra = []; for (const id of extraIds) extra.push(await byId(id));
-  const g = { "Desktop · 1440": [], "Mobile · 375": [], "Dialogs & Overlays": [] };
-  for (const f of [...own, ...extra]) (MOB.test(f.name) ? g["Mobile · 375"] : DLG.test(f.name) ? g["Dialogs & Overlays"] : g["Desktop · 1440"]).push(f);
+  const g = { "Desktop": [], "Mobile": [], "Pop-ups and Dialogs": [] };
+  for (const f of [...own, ...extra]) (MOB.test(f.name) ? g["Mobile"] : DLG.test(f.name) ? g["Pop-ups and Dialogs"] : g["Desktop"]).push(f);
   for (const [rn, fs] of Object.entries(g)) { if (!fs.length) continue; const r = ensure(sec, rn); for (const f of fs) r.appendChild(f); }
 }
 
@@ -65,8 +66,7 @@ async function buildLane(zone, lane) {
 }
 
 function subKey(ORDER, BR, parentName, s) {
-  const o = ORDER[parentName]; if (o) { const i = o.indexOf(s.name); return i < 0 ? 999 : i; }
-  const m = s.name.match(/^[A-Z]+ (\d+) · /); if (m) return +m[1];
+  const o = ORDER[parentName]; if (o) { const i = o.findIndex((n) => s.name === n || s.name.startsWith(n + PENDING)); return i < 0 ? 999 : i; }
   const r = ROWS.indexOf(s.name); if (r >= 0) return r;
   const b = BR.findIndex((p) => s.name.startsWith(p)); return b >= 0 ? b : 999;
 }
@@ -76,7 +76,7 @@ function layoutFrames(sec, d, deskMap, red) {
   const fr = sec.children.filter((c) => c.type !== "SECTION" && !isNote(c))
     .sort((a, b) => Math.floor(a.y / 1000) - Math.floor(b.y / 1000) || a.x - b.x);
   let right = p.s, maxH = 0; const map = {};
-  if (sec.name === "Mobile · 375" && deskMap) {
+  if (sec.name === "Mobile" && deskMap) {
     let next = deskMap.__end;
     const placed = fr.map((f) => { let fx = deskMap[f.name.replace(MOB, "")]; if (fx === undefined) { fx = next; next += f.width + GUT; } return [f, fx]; }).sort((a, b) => a[1] - b[1]);
     for (const [f, fx] of placed) { f.x = fx; f.y = p.t; right = Math.max(right, fx + f.width); maxH = Math.max(maxH, f.height); }
@@ -103,8 +103,8 @@ function layoutSection(sec, d, red, ORDER, BR, COLUMNS_ZONE) {
   let x = p.s, y = p.t, W = 0, H = 0, deskMap = null;
   if (note) { note.x = p.s; note.y = p.t; y = p.t + note.height + 120; W = note.width; }
   for (const s of subs) {
-    if (s.name === "Mobile · 375") layoutFrames(s, d + 1, deskMap, pend);
-    else { const r = layoutSection(s, d + 1, pend, ORDER, BR, COLUMNS_ZONE); if (s.name === "Desktop · 1440") deskMap = r; }
+    if (s.name === "Mobile") layoutFrames(s, d + 1, deskMap, pend);
+    else { const r = layoutSection(s, d + 1, pend, ORDER, BR, COLUMNS_ZONE); if (s.name === "Desktop") deskMap = r; }
     s.x = x; s.y = y;
     if (cols) { x += s.width + gap; H = Math.max(H, s.height); } else { y += s.height + gap; W = Math.max(W, s.width); }
   }

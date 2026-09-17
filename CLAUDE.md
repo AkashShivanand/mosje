@@ -233,12 +233,11 @@ stories**; the static build takes precedence at `/storybook` until you rebuild
   offline half on every PR, the live half (`:live`) guarded on `FIGMA_ACCESS_TOKEN`.
   Re-capture the snapshot with `npm run check:figma-index:sync` after every pass.
   → `.claude/rules/figma-library-index.md`
-- **Every portal handoff page in Figma has one shape** — zones `A · START HERE`,
-  `B · SCREENS BY USER ROLE` (one column per user role → flows with fixed IDs like `NGO 30` →
-  Desktop / Mobile / Dialogs rows), `C · SHARED BUILDING BLOCKS`, `D · ARCHIVE — DO NOT BUILD FROM`;
-  grey by depth; **red + a note for flows pending discussion**; layers panel in reading order.
-  Audiences get ways in (linked Portal Map, flow IDs), never copies of screens.
-  **`npm run check:figma-handoff`** ratchets every registered page. Example: E-Anudaan.
+- **Every portal handoff page in Figma has one shape** — `START HERE`, `SCREENS BY WHO USES THEM`
+  (one column per user group → journeys → Desktop / Mobile / Pop-ups and Dialogs rows), `SHARED PARTS`,
+  `OLD SCREENS — DO NOT USE`; every name in plain English, no codes; grey by depth; **red + a note only where
+  a decision could change the screens**. Never archive someone's screens to match the build.
+  **`npm run check:figma-handoff`** checks every registered page.
   → `.claude/rules/figma-handoff-page-structure.md`
 - **Commit messages: no AI attribution.** Never add `Co-Authored-By: Claude` or a
   "Generated with Claude Code" trailer. `.husky/commit-msg` strips them as a backstop.
