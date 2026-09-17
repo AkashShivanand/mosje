@@ -113,6 +113,28 @@ export function migrateFrom8(old: PersistedState, seed: EAnudaanState): EAnudaan
   return { ...state, notifications, inspections, applications };
 }
 
+/* ── schema 11 → 12 ───────────────────────────────────────────────────────── */
+
+/**
+ * Schema 12 gave a CCTV setup its camera register, installation certificate, footage retention,
+ * storage and monthly uptime declarations — all optional, so a schema-11 copy is already a valid
+ * schema-12 one and the applicant's work on this device is carried forward whole.
+ *
+ * The seed's worked CCTV records are brought in only where the stored setup is still exactly the
+ * seeded one (same project, same save time, no register of its own), so nothing the NGO saved is
+ * overwritten.
+ */
+export function migrateFrom11(old: PersistedState, seed: Pick<EAnudaanState, "cctv">): EAnudaanState | null {
+  if (old?.version !== 11 || !Array.isArray(old.applications) || !Array.isArray(old.cctv)) return null;
+  const state = withoutRev(old);
+  const seeded = new Map(seed.cctv.map((c) => [c.projectId, c]));
+  const cctv = state.cctv.map((c) => {
+    const fresh = seeded.get(c.projectId);
+    return fresh && !c.cameraRegister && fresh.savedAt === c.savedAt ? fresh : c;
+  });
+  return { ...state, cctv };
+}
+
 export type WriteResult = { ok: true } | { ok: false; error: string };
 
 export function writePersisted(storage: StorageLike, key: string, state: EAnudaanState, rev: number): WriteResult {
