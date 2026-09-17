@@ -22,7 +22,7 @@ export function HeroCarousel() {
   }, [count, isPlaying]);
 
   return (
-    <section className="relative isolate w-full overflow-hidden bg-gray-50 border-b border-gray-200" aria-roledescription="carousel" aria-label="Highlights">
+    <section className="relative w-full overflow-hidden bg-gray-50 border-b border-gray-200" aria-roledescription="carousel" aria-label="Highlights">
       <div className="relative min-h-[300px] sm:min-h-[380px] md:min-h-[440px] w-full">
         {/* Slide 0: Mann Ki Baat Banner matching Figma node 8137:48670 */}
         <div

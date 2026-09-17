@@ -7,7 +7,9 @@ import { SCHEME_MARKS, type SchemeMark } from "./schemes";
  * Scheme portals in the upper fold — two placements for the Secretary's review.
  *
  * A · `rail`    a full-width band directly beneath the hero carousel
- * B · `overlap` a raised card that rides the bottom edge of the hero
+ * B · `strip`   a slim one-line strip directly beneath the hero
+ *
+ * Nothing overlaps the banner — ruled out in review, 2026-09-17.
  *
  * Both render the same marks from `SCHEME_MARKS`, so choosing one is a layout
  * decision only.
@@ -82,21 +84,30 @@ export function SchemePortalsRail() {
   );
 }
 
-/** Option B — a raised card overlapping the hero's lower edge. */
-export function SchemePortalsOverlap() {
+/** Option B — a slim strip under the banner: marks and short names on one line. */
+export function SchemePortalsStrip() {
   return (
-    <section className="relative isolate bg-transparent" aria-labelledby="scheme-portals-heading">
-      <div className="sa-container -mt-12 pb-4 md:-mt-16">
-        <div className="rounded-2xl border border-border bg-surface p-5 shadow-lg md:p-6">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <h2 id="scheme-portals-heading" className="text-title-1 text-primary-dark">
-              Scheme Portals
-            </h2>
-            <AllPortals />
-          </div>
-          <div className="mt-4">
-            <Tiles compact />
-          </div>
+    <section className="border-b border-border bg-primary-50" aria-labelledby="scheme-portals-heading">
+      <div className="sa-container flex flex-col gap-4 py-5 lg:flex-row lg:items-center lg:gap-8">
+        <h2 id="scheme-portals-heading" className="shrink-0 text-title-1 text-primary-dark">
+          Scheme Portals
+        </h2>
+        <ul className="grid flex-1 grid-cols-3 gap-2 sm:grid-cols-6">
+          {SCHEME_MARKS.map((scheme) => (
+            <li key={scheme.abbr}>
+              <SchemeLink
+                scheme={scheme}
+                className="flex items-center gap-2 rounded-lg bg-surface px-2 py-2 transition hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              >
+                <Image src={scheme.markSrc} alt="" width={36} height={36} className="h-9 w-9 shrink-0 object-contain" />
+                <span className="text-label-1 text-ink">{scheme.abbr}</span>
+                <span className="sr-only">{scheme.name}</span>
+              </SchemeLink>
+            </li>
+          ))}
+        </ul>
+        <div className="shrink-0">
+          <AllPortals />
         </div>
       </div>
     </section>

@@ -15,7 +15,7 @@ import { SocialMedia } from "@/components/website/SocialMedia";
 import { SupportSection } from "@/components/website/SupportSection";
 import { LogoStrip } from "@/components/website/LogoStrip";
 import { WebsiteSiteFooter } from "@/components/website/SiteFooter";
-import { SchemePortalsOverlap, SchemePortalsRail } from "@/components/website/home-options/SchemePortals";
+import { SchemePortalsRail, SchemePortalsStrip } from "@/components/website/home-options/SchemePortals";
 import { PledgeBand, PledgeCards } from "@/components/website/home-options/PledgeSection";
 import { PmQuoteBand, PmQuoteCard } from "@/components/website/home-options/PmQuote";
 
@@ -23,7 +23,7 @@ import { PmQuoteBand, PmQuoteCard } from "@/components/website/home-options/PmQu
  * The homepage with the Secretary's review options (2026-09-17) swapped in place,
  * so each is judged in context rather than on a board. Internal, never indexed.
  *
- *   ?schemes=rail|overlap   scheme portals in the upper fold
+ *   ?schemes=rail|strip   scheme portals in the upper fold
  *   ?pledge=cards|band      Take a Pledge — SCW and NMBA
  *   ?quote=band|card        PM Quote per DBIM
  */
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
 type Search = Promise<Record<string, string | string[] | undefined>>;
 
 const AXES = [
-  { key: "schemes", label: "Scheme Portals", options: [["rail", "A · Band below banner"], ["overlap", "B · Card over banner"]] },
+  { key: "schemes", label: "Scheme Portals", options: [["rail", "A · Band below banner"], ["strip", "B · Slim strip"]] },
   { key: "pledge", label: "Take a Pledge", options: [["cards", "A · Twin cards"], ["band", "B · Single band"]] },
   { key: "quote", label: "PM Quote", options: [["band", "A · Full-width band"], ["card", "B · Card in About Us"]] },
 ] as const;
@@ -48,7 +48,7 @@ function pick(v: string | string[] | undefined, allowed: readonly string[], fall
 export default async function HomeOptions({ searchParams }: { searchParams: Search }) {
   const sp = await searchParams;
   const chosen = {
-    schemes: pick(sp.schemes, ["rail", "overlap"], "rail"),
+    schemes: pick(sp.schemes, ["rail", "strip"], "rail"),
     pledge: pick(sp.pledge, ["cards", "band"], "cards"),
     quote: pick(sp.quote, ["band", "card"], "band"),
   };
@@ -84,7 +84,7 @@ export default async function HomeOptions({ searchParams }: { searchParams: Sear
       <WebsiteSamaveshBanner />
       <main id="main-content" className="flex-1">
         <HeroCarousel />
-        {chosen.schemes === "overlap" ? <SchemePortalsOverlap /> : <SchemePortalsRail />}
+        {chosen.schemes === "strip" ? <SchemePortalsStrip /> : <SchemePortalsRail />}
         {chosen.quote === "band" && <PmQuoteBand />}
         <AboutUs quote={chosen.quote === "card" ? <PmQuoteCard /> : undefined} />
         <PledgeSection kind={chosen.pledge} />
