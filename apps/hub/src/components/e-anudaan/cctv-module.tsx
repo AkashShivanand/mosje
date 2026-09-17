@@ -15,6 +15,7 @@
  */
 
 import * as React from "react";
+import Link from "next/link";
 import {
   Alert,
   Badge,
@@ -377,6 +378,7 @@ function CertificateAndStorage({ setup, onSave }: { setup: CctvSetup; onSave: (n
       <CardBody className="space-y-4">
         <SectionTitle title="Installation Certificate and Footage Storage" />
         <DocumentRow
+          linkAs={Link}
           title="CCTV Installation Certificate"
           titleAs="h3"
           layout="columns"
