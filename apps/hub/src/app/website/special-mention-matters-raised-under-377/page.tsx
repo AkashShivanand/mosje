@@ -4,7 +4,7 @@ import { SPECIAL_MENTION_MATTERS } from "@/data/website";
 import { grantDocumentColumns } from "@/data/website/columns";
 import { socialCard } from "@/lib/seo/social";
 
-const TITLE = "Special Mention / Matters Raised Under 377";
+const TITLE = "Special Mention / Matters Raised Under Rule 377";
 const DESCRIPTION =
   "Special Mentions made in the Rajya Sabha and matters raised under Rule 377 in the Lok Sabha on subjects administered by the Department, and the monitoring of replies to them.";
 

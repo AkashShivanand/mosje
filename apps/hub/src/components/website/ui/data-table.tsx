@@ -188,7 +188,10 @@ export function ListingTable({
             {pageRows.length === 0 ? (
               <tr>
                 <td colSpan={columns.length} className="px-4 py-10 text-center text-gray-500">
-                  No records found.
+                  {/* Filtered-to-nothing is not empty: name the search and how to undo it. */}
+                  {rows.length > 0 && query.trim()
+                    ? `No record matches “${query.trim()}”. Clear the search to see all ${rows.length.toLocaleString("en-IN")} records.`
+                    : "No records have been published."}
                 </td>
               </tr>
             ) : (

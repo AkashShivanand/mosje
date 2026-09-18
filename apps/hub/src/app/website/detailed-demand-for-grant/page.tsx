@@ -4,7 +4,7 @@ import { DETAILED_DEMAND_FOR_GRANT } from "@/data/website";
 import type { ListingTableColumn } from "@/components/website/ui/data-table";
 import { socialCard } from "@/lib/seo/social";
 
-const TITLE = "Detailed Demand For Grant";
+const TITLE = "Detailed Demand for Grant";
 const DESCRIPTION =
   "The Detailed Demands for Grants of the Department of Social Justice & Empowerment, laid before Parliament, by financial year.";
 
