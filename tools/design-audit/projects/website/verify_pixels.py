@@ -1,25 +1,31 @@
 #!/usr/bin/env python3
-"""Re-measure every contrast finding on the PIXELS of the capture, not on computed CSS.
+"""Re-measure every contrast finding against what is actually on screen.
 
-Computed CSS lies in two directions, and both were found in this run:
-  · an icon button carries an aria-label, so the DOM reports text in the button's own colour while
-    what a citizen sees is an image — CSS said "#0373DF on #0373DF = 1:1", which is not a real
-    defect;
-  · text over a gradient or image has no CSS background at all, so a real failure can be missed.
+Computed CSS is right about the TEXT colour and often wrong about the GROUND: an element over a
+gradient, a photo or a parent's band reports a transparent or unrelated background. So:
 
-This reads the element's own box out of the screenshot, separates foreground from background by
-luminance clustering, and reports the ratio actually on screen. A finding whose pixel ratio passes
-is WITHDRAWN (kept in the master's deferred list, never silently deleted); one that fails carries
-the pixel-measured label from here on.
+  · TEXT (A-CONTRAST): foreground = the element's computed CSS colour — the colour the developer
+    set; ground = the dominant tone of the capture's pixels in the element's box, stepping to the
+    next tone when bold glyphs dominate their own box. If the CSS colour is not painted anywhere in
+    the box, the text is covered or not drawn as text, and the reading is withdrawn.
+  · NON-TEXT (A-CONTRAST-NONTEXT, an icon control whose accessible name is not painted): the
+    foreground is taken from the pixels — the 99th percentile of distance from the ground, which
+    lands on the stroke rather than on an anti-aliased edge.
+
+History, so this is not relearned: the first version took foreground AND ground as medians of the
+darkest/lightest 12% of the box. On small text that is an anti-aliased blend — white on #0373DF read
+as #A3CCF3 at 2.76:1 — and it published a Blocker (WEB-GLOBAL-078, the language toggle) that is in
+fact white on blue at 3.68:1 and passes the 3:1 a UI component needs. Withdrawn findings are kept in
+out/findings-withdrawn.json with the reason; they are never silently deleted.
 
   python3 verify_pixels.py         # rewrites out/findings-auto.json, writes out/pixel-verify.json
 """
 import json, os, re, collections
 from PIL import Image
 
+Image.MAX_IMAGE_PIXELS = None
 BASE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(BASE, "out")
-MIN_PIXELS = 12
 
 
 def lum(c):
@@ -35,39 +41,54 @@ def ratio(a, b):
     return round((hi + 0.05) / (lo + 0.05), 2)
 
 
-def measure(img, box, basis):
-    """Foreground/background of the element's own box, by luminance split.
+def hexs(c):
+    return "#%02X%02X%02X" % tuple(int(v) for v in c[:3])
 
-    Anti-aliased edge pixels sit between the two, so the extremes are taken from the darkest and
-    lightest 12% of the box and the ratio is computed between their medians — which is what a reader
-    perceives as the text colour against its ground."""
+
+def rgb(h):
+    h = (h or "").lstrip("#")
+    if len(h) < 6:
+        return None
+    try:
+        return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
+    except ValueError:
+        return None
+
+
+def pixels(img, box, basis):
     w, h = img.size
     sc = w / float(basis)
     x1, y1, x2, y2 = [v * sc for v in box]
     x1, y1 = max(0, int(x1)), max(0, int(y1))
     x2, y2 = min(w, int(x2)), min(h, int(y2))
-    if x2 - x1 < 2 or y2 - y1 < 2:
+    if x2 - x1 < 3 or y2 - y1 < 3:
         return None
-    crop = img.crop((x1, y1, x2, y2)).convert("RGB")
-    px = list(crop.getdata())
-    if len(px) < MIN_PIXELS:
-        return None
-    by_lum = sorted(px, key=lum)
-    k = max(3, int(len(px) * 0.12))
-    dark = by_lum[:k]
-    light = by_lum[-k:]
-    med_dark = dark[len(dark) // 2]
-    med_light = light[len(light) // 2]
-    # The background is whichever tone occupies more of the box.
-    counts = collections.Counter(px)
-    bg = counts.most_common(1)[0][0]
-    fg = med_dark if ratio(med_dark, bg) >= ratio(med_light, bg) else med_light
-    return {"fg": fg, "bg": bg, "ratio": ratio(fg, bg),
-            "extremes": ratio(med_dark, med_light)}
+    px = list(img.crop((x1, y1, x2, y2)).convert("RGB").getdata())
+    return px if len(px) >= 20 else None
 
 
-def hexs(c):
-    return "#%02X%02X%02X" % tuple(int(v) for v in c)
+def ground(px, fg):
+    ranked = collections.Counter(px).most_common()
+    bg = ranked[0][0]
+    if fg and ratio(bg, fg) < 1.15:
+        bg = next((c for c, n in ranked if ratio(c, fg) >= 1.15 and n >= len(px) * 0.05), None)
+    return bg
+
+
+def painted(px):
+    by = sorted(px, key=lum)
+    k = max(3, len(px) // 8)
+    return ratio(by[k // 2], by[-k // 2]) >= 1.05
+
+
+def visible(px, fg, tol=38):
+    return any(abs(p[0] - fg[0]) + abs(p[1] - fg[1]) + abs(p[2] - fg[2]) <= tol for p in px)
+
+
+def core(px, bg):
+    lb = lum(bg)
+    ordered = sorted(px, key=lambda c: abs(lum(c) - lb), reverse=True)
+    return ordered[min(len(ordered) - 1, max(0, len(ordered) // 100))]
 
 
 def main():
@@ -82,57 +103,68 @@ def main():
             kept.append(f)
             continue
         if png not in cache:
-            cache.clear()                       # full-page captures are large; hold one at a time
+            cache.clear()
             cache[png] = Image.open(png)
-        basis = 1440 if f["viewport"] == "desktop" else (320 if "320" in f["slug"] else 375)
-        m = measure(cache[png], f["box"], basis)
-        need = 4.5
-        mm = re.search(r"needs ([\d.]+):1", f["label"])
-        if mm:
-            need = float(mm.group(1))
-        row = dict(id=f.get("id"), slug=f["slug"], viewport=f["viewport"], element=f["element"],
-                   cssLabel=f["label"], pixel=None)
-        if not m:
+        basis = 1440 if f["viewport"] == "desktop" else (320 if "320" in f["viewport"] else 375)
+        px = pixels(cache[png], f["box"], basis)
+        need = float(re.search(r"needs ([\d.]+):1", f["label"]).group(1)) if "needs" in f["label"] else 4.5
+        row = dict(slug=f["slug"], viewport=f["viewport"], code=f["code"], element=f["element"],
+                   cssLabel=f["label"])
+
+        def withdraw(why):
+            row["verdict"] = "withdrawn — " + why
+            f["withdrawnReason"] = why
+            withdrawn.append(f)
+            report.append(row)
+
+        if not px:
             kept.append(f)
+            row["verdict"] = "kept — box too small to measure; CSS reading stands"
             report.append(row)
             continue
-        row["pixel"] = {"fg": hexs(m["fg"]), "bg": hexs(m["bg"]), "ratio": m["ratio"],
-                        "extremes": m["extremes"]}
-        # The perceived ratio is foreground against the tone that fills most of the box. The box's
-        # extremes are used only to detect a box with nothing painted in it (a solid block), where
-        # the CSS reading was about text that is not rendered at all.
-        perceived = m["ratio"]
-        if m["extremes"] < 1.05:
-            row["verdict"] = "withdrawn — nothing painted in this box"
-            withdrawn.append(f)
-            report.append(row)
+        if not painted(px):
+            withdraw("nothing painted in this box on the capture")
             continue
-        if perceived >= need:
-            row["verdict"] = "withdrawn — passes on screen"
-            withdrawn.append(f)
+        if f["code"] == "A-CONTRAST":
+            fg = rgb(f.get("cssFg"))
+            if not fg:
+                kept.append(f)
+                row["verdict"] = "kept — no CSS colour recorded"
+                report.append(row)
+                continue
+            if not visible(px, fg):
+                withdraw(f"the CSS colour {hexs(fg)} is not painted in the box — covered, or not drawn as text")
+                continue
+            bg = ground(px, fg)
         else:
-            size = re.search(r"at (\d+)px", f["label"])
-            f["label"] = (f"{hexs(m['fg'])} on {hexs(m['bg'])} = {perceived}:1"
-                          + (f" at {size.group(1)}px" if size else "")
-                          + f" · needs {need}:1 · FAIL")
-            f["detail"] = (f["detail"].split(" — ")[0]
-                           + f" — measured on the capture's pixels: {hexs(m['fg'])} on "
-                             f"{hexs(m['bg'])} is {perceived}:1 against the {need}:1 minimum.")
-            f["pixelVerified"] = True
-            row["verdict"] = "confirmed on pixels"
-            kept.append(f)
+            bg = ground(px, None)
+            fg = core(px, bg)
+        if bg is None or fg == bg:
+            withdraw("no distinguishable foreground on the capture")
+            continue
+        r = ratio(fg, bg)
+        row.update(fg=hexs(fg), bg=hexs(bg), ratio=r, need=need)
+        if r >= need:
+            withdraw(f"passes on screen: {hexs(fg)} on {hexs(bg)} is {r}:1 against {need}:1")
+            continue
+        size = re.search(r"at (\d+)px", f["label"])
+        kind = " · icon control" if f["code"] == "A-CONTRAST-NONTEXT" else ""
+        f["label"] = (f"{hexs(fg)} on {hexs(bg)} = {r}:1" + (f" at {size.group(1)}px" if size else "")
+                      + kind + f" · needs {need}:1 · FAIL")
+        f["detail"] = (f["detail"].split(" — ")[0] + f" — {hexs(fg)} on {hexs(bg)} as painted on the capture: "
+                       f"{r}:1 against the {need}:1 minimum.")
+        f["pixelVerified"] = True
+        row["verdict"] = "confirmed on pixels"
+        kept.append(f)
         report.append(row)
     json.dump(kept, open(os.path.join(OUT, "findings-auto.json"), "w"), indent=1)
-    json.dump({"checked": len(report), "withdrawn": len(withdrawn), "confirmed":
-               sum(1 for r in report if r.get("verdict") == "confirmed on pixels"),
-               "rows": report}, open(os.path.join(OUT, "pixel-verify.json"), "w"), indent=1)
     json.dump(withdrawn, open(os.path.join(OUT, "findings-withdrawn.json"), "w"), indent=1)
-    print(f"contrast findings checked on pixels: {len(report)}; "
-          f"confirmed {sum(1 for r in report if r.get('verdict') == 'confirmed on pixels')}, "
-          f"withdrawn {len(withdrawn)}")
-    c = collections.Counter(r["cssLabel"][:44] for r in report if r.get("verdict", "").startswith("withdrawn"))
-    for k, v in c.most_common(8):
-        print(f"  withdrawn ×{v}: {k}")
+    v = collections.Counter(r["verdict"].split(" — ")[0] for r in report)
+    json.dump({"checked": len(report), "verdicts": dict(v), "rows": report},
+              open(os.path.join(OUT, "pixel-verify.json"), "w"), indent=1)
+    print(f"contrast findings checked: {len(report)}  " + str(dict(v)))
+    for k, n in collections.Counter(r["verdict"] for r in report if r["verdict"].startswith("withdrawn")).most_common(6):
+        print(f"  {n:4}  {k[:110]}")
 
 
 if __name__ == "__main__":

@@ -181,7 +181,8 @@ def r_contrast(d):
                      + (" The label is not painted as text (it does not fit the control's box), so "
                         "this is judged as a non-text control under WCAG 1.4.11." if icon_like else ""),
                      severity="Blocker" if ratio < need * 0.7 else "Major",
-                     key=f"{_hex(e.get('color'))}|{_hex(e.get('background'))}|{int(size)}"))
+                     key=f"{_hex(e.get('color'))}|{_hex(e.get('background'))}|{int(size)}",
+                     cssFg=_hex(e.get("color")), cssBg=_hex(e.get("background"))))
     return dedupe(out, 4)
 
 
@@ -213,27 +214,11 @@ def r_alt(d):
     return dedupe(out, 3)
 
 
-@rule("A-FOCUS", "GIGW/WCAG 2.2 AA", "2.4.7", "Components & States", "Blocker",
-      "No visible focus indicator")
-def r_focus(d):
-    out = []
-    for f in d.get("focus", []):
-        if f.get("zeroSize") or not f.get("inViewport"):
-            continue
-        if f.get("visibleIndicator"):
-            continue
-        b = _box(f.get("bbox"))
-        if not b:
-            continue
-        out.append(F("A-FOCUS", b,
-                     f"Tab stop {f.get('index')} · nothing changes on focus · WCAG 2.4.7 FAIL",
-                     _short(f.get("text")) or f.get("tag"),
-                     f"Tab stop {f.get('index')} ({f.get('tag')}"
-                     f"{'#' + f['id'] if f.get('id') else ''}, “{_short(f.get('text'), 60)}”) shows no "
-                     f"visible change when focused — outline, box-shadow, border, background and "
-                     f"colour are identical focused and unfocused.",
-                     key="focus"))
-    return dedupe(out, 3)
+# A-FOCUS lived here until 2026-09-18. It compared an element's outline / box-shadow / border /
+# background / colour focused vs unfocused, and called "no change" a missing indicator — which was
+# wrong on the first Tab stop of every page ("Open the accessibility option" is invisible until
+# focused and then shows a 4px ring). Focus is now judged on PIXELS by verify_focus.mjs +
+# verify_focus.py, and focus_findings.py turns those verdicts into findings.
 
 
 @rule("A-TARGET", "UX4G 3.0 §6 / WCAG 2.5.8", "2.5.8", "Layout & Spacing", "Major",

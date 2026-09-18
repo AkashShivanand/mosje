@@ -97,6 +97,34 @@ FIX = {
 }
 
 
+def resolve_anchor(f):
+    """A hand-authored finding names its element by text or link target, not by coordinates, so it
+    survives a re-capture whose layout moved: the box is read from the current capture's DOM."""
+    if f.get("box") or not (f.get("anchorText") or f.get("anchorHref")):
+        return f
+    cap = os.path.join(BASE, "captures", "live", f"{f['slug']}.{f['viewport']}.json")
+    if not os.path.exists(cap):
+        return f
+    d = json.load(open(cap))
+    boxes = []
+    if f.get("anchorText"):
+        for e in d.get("elements", []):
+            if f["anchorText"].lower() in (e.get("text") or "").lower() and e.get("bbox", {}).get("w"):
+                boxes.append(e["bbox"])
+                break
+    for needle in f.get("anchorHref") or []:
+        for l in d.get("links", []):
+            if needle in (l.get("href") or "") and l.get("bbox", {}).get("w") and l.get("visible", True):
+                boxes.append(l["bbox"])
+                if needle == "cloudfront.net":
+                    break
+    if boxes:
+        x1 = min(b["x"] for b in boxes); y1 = min(b["y"] for b in boxes)
+        x2 = max(b["x"] + b["w"] for b in boxes); y2 = max(b["y"] + b["h"] for b in boxes)
+        f["box"] = [round(x1), round(y1), round(x2), round(y2)]
+    return f
+
+
 def load(name):
     p = os.path.join(OUT, name)
     return json.load(open(p)) if os.path.exists(p) else []
@@ -146,7 +174,8 @@ def card_text(f):
 
 def main():
     auto, design = load("findings-auto.json"), load("findings-design.json")
-    judged = load("findings-judgement.json")          # authored by hand, each verified on the page
+    judged = [resolve_anchor(f) for f in
+              json.load(open(os.path.join(BASE, "inputs", "findings-judgement.json")))]  # hand-authored, verified
     findings = auto + design + judged
     for f in findings:
         f.setdefault("scope", "Screen")
