@@ -168,7 +168,11 @@ export function GalleryClient({ items }: { items: GalleryRecord[] }) {
             <>
               <ul className="sa-gallery-grid">
                 {shown.map((g) => {
-                  const cover = g.thumbnailUrl ?? g.imageUrl;
+                  /* Five items carry a PDF or an MP4 in the cover slot, eight the generic Ashoka emblem; those get the type glyph. */
+                  const coverUrl = g.thumbnailUrl ?? g.imageUrl;
+                  const cover = coverUrl && /\.(jpe?g|png|webp|gif|avif|svg)(\?|$)/i.test(coverUrl) && !/\/Ashoka\.png$/i.test(coverUrl)
+                      ? coverUrl
+                      : undefined;
                   return (
                     <li key={g.slug} className="sa-gallery-card">
                       <Link href={`/website/gallery/${g.slug}`} className="sa-gallery-card__link">

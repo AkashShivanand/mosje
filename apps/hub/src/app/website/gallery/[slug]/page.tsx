@@ -38,7 +38,18 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   const item = getGalleryItem(slug);
   if (!item) notFound();
 
-  const images = item.images ?? [];
+  /*
+   * NOT EVERY "IMAGE" IS ONE.
+   *
+   * Five News items attach a PDF press clipping in the image slot. Drawn as an
+   * <img> it rendered a broken picture; it is offered as a document instead.
+   */
+  const isPicture = (u: string) => /\.(jpe?g|png|webp|gif|avif|svg)(\?|$)/i.test(u);
+  const allMedia = item.images ?? [];
+  const images = allMedia.filter((i) => isPicture(i.url));
+  const clippings = allMedia
+    .filter((i) => !isPicture(i.url))
+    .map((i, n, all) => ({ label: all.length > 1 ? `Press Clipping ${n + 1}` : "Press Clipping", url: i.url }));
   const videos = item.videos ?? [];
   /*
    * THE COVER IS SHOWN ONLY WHERE IT IS NOT ALREADY IN THE SET.
@@ -48,7 +59,12 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
    * the top of 434 pages.
    */
   const coverIsInSet = images.some((i) => i.url === item.imageUrl || i.thumbnailUrl === item.imageUrl);
-  const showCover = Boolean(item.imageUrl) && !coverIsInSet && images.length === 0;
+  /* Eight records use the department's generic Ashoka emblem as a stand-in cover. It is not a photograph of the event. */
+  const isGenericCover = (u: string) => /\/Ashoka\.png$/i.test(u);
+  const showCover =
+    Boolean(item.imageUrl && isPicture(item.imageUrl) && !isGenericCover(item.imageUrl)) &&
+    !coverIsInSet &&
+    images.length === 0;
 
   return (
     <RecordDetail
@@ -70,7 +86,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         { term: "Published", value: humanDate(item.date) },
         { term: "Source", value: item.source },
       ])}
-      files={item.sourceLink ? [{ label: "Visit Source", url: item.sourceLink }] : []}
+      files={[...clippings, ...(item.sourceLink ? [{ label: "Visit Source", url: item.sourceLink }] : [])]}
       sourceUrl={item.sourceUrl}
     >
       {showCover && item.imageUrl && (
