@@ -1745,6 +1745,16 @@ this is a real text input whose focus never leaves, so a screen reader announces
 editable and reads the remaining match count after each keystroke. It refuses
 unmatched text on blur — a box reading "Bankuraa" over a form value of "" is how a
 district goes missing between the screen and the database.
+Several answers from the same kind of long list — every district an NGO works in —
+is `<Combobox multiple>`: `value` becomes a `string[]`, chosen options sit in the field
+as removable chips, and the list stays open between choices. Several answers from a
+SHORT list are a `CheckboxGroup` or a row of `Chip`s, where every option is visible.
+It is a form field like any other: label, hint, messages (`error`, `warning`,
+`success`), `labelHelp`, `optional`, `readOnly` and `size` are `FormField`'s own, and the
+box is `.ds-input-shell`, so it lines up in a row of Inputs and Selects. For a list too
+long to send to the page, search the server with `onQueryChange` + `filterOptions={false}`
+and draw `loading` / `loadError`; `maxSelected` and `maxVisibleChips` bound a long answer;
+`name` posts with a native form.
 
 **A ranking or a breakdown with the figure printed per row: use `<RankedBarList>`.**
 "Top States by Pledges", "SLA Compliance by District", "Category Distribution",

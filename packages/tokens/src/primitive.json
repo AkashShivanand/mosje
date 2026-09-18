@@ -2558,6 +2558,10 @@
       "$value": "1.5rem",
       "$description": "24px"
     },
+    "26": {
+      "$value": "1.625rem",
+      "$description": "The resting height of the small chip — 26px, two past the 24px WCAG 2.5.8 minimum target. Added 2026-09-18 for cmp/chip/heightSm; until then it was a literal in chip.css."
+    },
     "28": {
       "$value": "1.75rem",
       "$description": "28px"

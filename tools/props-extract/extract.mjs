@@ -236,12 +236,14 @@ function extract() {
       for (let ai = 0; ai < arms.length; ai++) {
         for (const symbol of checker.getPropertiesOfType(arms[ai])) {
           const entry = seen.get(symbol.getName());
-          if (entry) entry.arms.push(ai);
-          else seen.set(symbol.getName(), { symbol, arms: [ai] });
+          if (entry) {
+            entry.arms.push(ai);
+            entry.symbols.push(symbol);
+          } else seen.set(symbol.getName(), { symbol, symbols: [symbol], arms: [ai] });
         }
       }
 
-      for (const { symbol, arms: inArms } of seen.values()) {
+      for (const { symbol, symbols, arms: inArms } of seen.values()) {
         const onlyIn =
           arms.length > 1 && inArms.length < arms.length
             ? inArms.map((i) => armNames[i]).join(" | ")
@@ -340,6 +342,30 @@ function extract() {
           .map((tag) => ts.displayPartsToString(tag.text).trim())
           .filter(Boolean)[0];
 
+        /*
+         * A PROP THAT CHANGES TYPE BETWEEN ARMS prints every arm's type.
+         *
+         * Merging by name kept only the first arm's declaration, so
+         * `Combobox`'s `value` was documented as `string` and its `string[]`
+         * — the whole point of `multiple` — was invisible. Where the arms
+         * disagree, each is printed and each description is labelled by arm.
+         */
+        let description = describe(symbol, checker);
+        const writtenPerArm = symbols.map((s) => {
+          const d = s.getDeclarations()?.[0];
+          return d && ts.isPropertySignature(d) && d.type ? d.type.getText().replace(/\s+/g, " ").trim() : null;
+        });
+        if (symbols.length > 1 && writtenPerArm.every(Boolean) && new Set(writtenPerArm).size > 1) {
+          printed = [...new Set(writtenPerArm)].join(" | ");
+          const descs = symbols.map((s) => describe(s, checker));
+          if (new Set(descs).size > 1) {
+            description = descs
+              .map((d, i) => (d ? `${armNames[inArms[i]]}: ${d}` : null))
+              .filter(Boolean)
+              .join(" ");
+          }
+        }
+
         props.push({
           name: symbol.getName(),
           type: printed,
@@ -347,7 +373,7 @@ function extract() {
           // whatever it is inside its own arm.
           required: !optional && !onlyIn,
           default: defaultOf(symbol, destructured),
-          description: describe(symbol, checker),
+          description,
           ...(onlyIn ? { onlyIn } : {}),
           ...(deprecated ? { deprecated: deprecatedNote || true } : {}),
         });

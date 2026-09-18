@@ -493,7 +493,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/combobox",
     "keywords": "combobox — design system forms & inputs example how it differs from filter select  tokens wcag accessibility",
-    "description": "A text field that filters a long list as the reader types, then commits one of its options.",
+    "description": "A text field that filters a long list as the reader types, then commits one of its options — or, with",
     "type": "component",
     "iconName": "edit_note"
   },

@@ -390,7 +390,12 @@ export type { InlineEditProps } from "./components/forms/inline-edit";
 export { DatePicker } from "./components/forms/date-picker";
 export type { DatePickerProps } from "./components/forms/date-picker";
 export { Combobox } from "./components/forms/combobox";
-export type { ComboboxProps, ComboboxOption } from "./components/forms/combobox";
+export type {
+  ComboboxProps,
+  ComboboxSingleProps,
+  ComboboxMultipleProps,
+  ComboboxOption,
+} from "./components/forms/combobox";
 export { FilterSelect } from "./components/forms/filter-select";
 export type { FilterSelectProps, FilterSelectOption } from "./components/forms/filter-select";
 
