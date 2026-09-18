@@ -1,10 +1,23 @@
 import { localiseDocumentLinks, sampleDocumentFor } from "../sample-documents";
-import type { SectionRecord, FileRecord } from "@/types/website/content";
+import type {
+  SectionRecord, FileRecord, DocumentRecord, EventRecord, GalleryRecord,
+  OfficialRecord, CpioRecord, BookingRecord, UpdateRecord, SewerDeathCaseRecord,
+} from "@/types/website/content";
 import organisationData from "@/content/website/organisation.json";
 import schemesData from "@/content/website/schemes.json";
 import tendersData from "@/content/website/tenders.json";
 import vacanciesData from "@/content/website/vacancies.json";
 import documentsData from "@/content/website/documents.json";
+import obcData from "@/content/website/documents-central-list-of-obcs.json";
+import schemeDocumentsData from "@/content/website/scheme-documents.json";
+import suoMotoData from "@/content/website/suo-moto-disclosure.json";
+import eventsData from "@/content/website/events.json";
+import galleryData from "@/content/website/gallery.json";
+import officialData from "@/content/website/official.json";
+import cpioData from "@/content/website/cpio.json";
+import bookingData from "@/content/website/booking.json";
+import updatesData from "@/content/website/updates.json";
+import sewerCasesData from "@/content/website/sewer-death-cases.json";
 import manifest from "@/content/website/manifest.json";
 
 /**
@@ -103,4 +116,117 @@ export function getDocuments(): FileRecord[] {
 
 export function getDocumentsByType(category: string): FileRecord[] {
   return documents.filter((d) => d.category === category);
+}
+
+/*
+ * EVERY OTHER RECORD COLLECTION ON dosje.gov.in.
+ *
+ * These are the full ingested sets, with the site's own metadata: file URL, size
+ * and type, publish window, event venue and gallery images, an official's contact
+ * card. Every file and image URL points at the LIVE site — nothing is mirrored
+ * locally yet, so a consumer that needs a local asset must mirror it first.
+ *
+ * Nothing renders them yet; they exist so a page can be built against real data.
+ */
+const centralListOfObcs = obcData as DocumentRecord[];
+
+/** The Central List of OBCs — 2,667 state-wise entries, kept in its own file. */
+export function getCentralListOfObcs(): DocumentRecord[] {
+  return centralListOfObcs;
+}
+
+/** Every document, the library's own rows plus the Central List of OBCs. */
+export function getAllDocuments(): DocumentRecord[] {
+  return [...(documentsData as DocumentRecord[]), ...centralListOfObcs];
+}
+
+const schemeDocuments = schemeDocumentsData as DocumentRecord[];
+
+/** Documents attached to a scheme (each carries `scheme` / `schemeUrl`). */
+export function getSchemeDocuments(): DocumentRecord[] {
+  return schemeDocuments;
+}
+
+const suoMotoDisclosures = suoMotoData as DocumentRecord[];
+
+/** RTI section 4(1)(b) suo-moto disclosures. */
+export function getSuoMotoDisclosures(): DocumentRecord[] {
+  return suoMotoDisclosures;
+}
+
+const events = eventsData as EventRecord[];
+
+export function getEvents(): EventRecord[] {
+  return events;
+}
+
+export function getEvent(slug: string): EventRecord | undefined {
+  return events.find((e) => e.slug === slug);
+}
+
+const gallery = galleryData as GalleryRecord[];
+
+export function getGalleryItems(): GalleryRecord[] {
+  return gallery;
+}
+
+/** Gallery items of one type: "Photos", "Videos" or "News". */
+export function getGalleryItemsByType(type: string): GalleryRecord[] {
+  return gallery.filter((g) => g.type === type);
+}
+
+export function getGalleryItem(slug: string): GalleryRecord | undefined {
+  return gallery.find((g) => g.slug === slug);
+}
+
+const officials = officialData as OfficialRecord[];
+
+export function getOfficials(): OfficialRecord[] {
+  return officials;
+}
+
+/** Officials of one organisation, by its abbreviation, e.g. "NCSK". */
+export function getOfficialsByOrganisation(organisation: string): OfficialRecord[] {
+  return officials.filter((o) => o.organisation === organisation);
+}
+
+export function getOfficial(slug: string): OfficialRecord | undefined {
+  return officials.find((o) => o.slug === slug);
+}
+
+const cpios = cpioData as CpioRecord[];
+
+/** Central Public Information Officers and appellate authorities (RTI). */
+export function getCpios(): CpioRecord[] {
+  return cpios;
+}
+
+const bookings = bookingData as BookingRecord[];
+
+/** Bookable DAIC venues, with their rate cards. */
+export function getBookableVenues(): BookingRecord[] {
+  return bookings;
+}
+
+const updates = updatesData as UpdateRecord[];
+
+export function getUpdates(): UpdateRecord[] {
+  return updates;
+}
+
+/** Updates with a given component status, e.g. "Active" or "Archived". */
+export function getUpdatesByStatus(status: string): UpdateRecord[] {
+  return updates.filter((u) => u.status === status);
+}
+
+const sewerDeathCases = sewerCasesData as SewerDeathCaseRecord[];
+
+/** Sewer and septic-tank death cases recorded by the NCSK. */
+export function getSewerDeathCases(): SewerDeathCaseRecord[] {
+  return sewerDeathCases;
+}
+
+/** Sewer-death cases in one state, as the register names it. */
+export function getSewerDeathCasesByState(state: string): SewerDeathCaseRecord[] {
+  return sewerDeathCases.filter((c) => c.state === state);
 }

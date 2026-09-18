@@ -1,4 +1,5 @@
 import { writeFile, mkdir, readFile } from "node:fs/promises";
+import { z } from "zod";
 import { fetchAllRecords, fetchSitemapUrls } from "./wp-client.mjs";
 import { resolveTermNames } from "./taxonomy.mjs";
 import { transformRecord, transformFileRecord } from "./transform.mjs";
@@ -8,6 +9,12 @@ import { processCollectionAssets } from "./assets.mjs";
 import { buildReport, formatReport } from "./verify.mjs";
 import { collectionFileSchema, fileCollectionFileSchema } from "./schema.mjs";
 import { COLLECTIONS } from "./collections.mjs";
+import { KINDS } from "./kinds.mjs";
+import { fetchRankMathSitemapUrls } from "./wp-client.mjs";
+import { loadTermMap, namesFromMap } from "./taxonomy.mjs";
+import { resolveMedia } from "./media.mjs";
+import { fetchRecordPages, fetchDocumentListing } from "./record-pages.mjs";
+import { parseDocumentListing } from "./detail-extract.mjs";
 
 // Namespaced under src/content/website/ now that the website is a native route
 // group in the hub rather than its own app.
@@ -83,15 +90,103 @@ async function ingestCollection(def) {
   return { def, kept, skipped, sitemapCount };
 }
 
+// Record identity across REST, sitemap and listing: the path, without a trailing
+// slash and percent-decoded (the sitemap and REST disagree on %-case for Hindi slugs).
+function urlKey(u) {
+  try { return decodeURIComponent(new URL(u).pathname).replace(/\/+$/, "").toLowerCase(); } catch { return u; }
+}
+
+async function ingestRichCollection(def) {
+  console.log(`\n→ ${def.name} (${def.kind})`);
+  const kind = KINDS[def.kind];
+  const sitemapUrls = def.sitemapType ? await fetchRankMathSitemapUrls(def.sitemapType) : [];
+  const raw = await fetchAllRecords(def.restBase, { fields: def.fields });
+  console.log(`  fetched ${raw.length} REST records; sitemap lists ${def.sitemapType ? sitemapUrls.length : "n/a"}`);
+
+  const termMaps = {};
+  for (const tax of def.terms ?? []) termMaps[tax] = await loadTermMap(tax);
+
+  // Page-derived fields, keyed by record URL.
+  const details = new Map();
+  if (def.detail === "listing") {
+    for (const html of await fetchDocumentListing()) {
+      for (const row of parseDocumentListing(html)) details.set(urlKey(row.recordUrl), row);
+    }
+    console.log(`  listing rows ${details.size}`);
+  }
+  if (kind.detail === "page") {
+    const need = raw.filter((r) => !details.has(urlKey(r.link)));
+    if (def.detail === "listing" && need.length) console.log(`  ${need.length} records not in listing → reading their pages`);
+    const pages = await fetchRecordPages(need, { label: def.name });
+    for (const r of need) {
+      const html = pages.get(r.link);
+      if (html != null) details.set(urlKey(r.link), kind.parsePage(html));
+    }
+  }
+
+  let media = new Map();
+  if (kind.media) {
+    const ids = raw.flatMap((r) => [r.featured_media, ...(r.acf?.item_images ?? [])]);
+    media = await resolveMedia(ids);
+  }
+
+  const records = raw.map((r) => {
+    const terms = {};
+    for (const [tax, map] of Object.entries(termMaps)) terms[tax] = namesFromMap(map, r[tax]);
+    const detail = kind.detail === "content" ? kind.parseContent(r.content?.rendered ?? "") : details.get(urlKey(r.link));
+    return kind.transform(r, { terms, detail, media, preferCategories: def.preferCategories });
+  });
+  const withoutDetail = raw.filter((r) => kind.detail !== "content" && !details.has(urlKey(r.link))).length;
+  if (withoutDetail) console.warn(`  ! ${withoutDetail} records have no page fields (page fetch failed)`);
+
+  const { kept, skipped } = dedupeRecords(records);
+  console.log(`  kept ${kept.length}, skipped ${skipped.length} duplicates`);
+  z.array(kind.schema).parse(kept); // throws on malformed → fails the ingest
+
+  const restKeys = new Set(raw.map((r) => urlKey(r.link)));
+  const sitemapKeys = new Set(sitemapUrls.map(urlKey));
+  const sitemapOnly = [...sitemapKeys].filter((k) => !restKeys.has(k));
+  const notInSitemap = def.sitemapType ? [...restKeys].filter((k) => !sitemapKeys.has(k)) : [];
+  if (sitemapOnly.length) console.warn(`  ! ${sitemapOnly.length} sitemap URLs not returned by REST: ${sitemapOnly.slice(0, 5).join(", ")}`);
+  if (notInSitemap.length) console.log(`  ${notInSitemap.length} published REST records are absent from the sitemap (kept)`);
+
+  // A collection that would ship one very large JSON module is split by category
+  // (see `splitByCategory` in collections.mjs); everything else stays in one file.
+  const files = new Map([[def.name, kept]]);
+  for (const [category, fileName] of Object.entries(def.splitByCategory ?? {})) {
+    files.set(fileName, kept.filter((r) => r.category === category));
+    files.set(def.name, files.get(def.name).filter((r) => r.category !== category));
+  }
+  if (!VERIFY_ONLY && !ASSETS_ONLY) {
+    await mkdir(CONTENT_DIR, { recursive: true });
+    for (const [fileName, rows] of files) {
+      await writeFile(`${CONTENT_DIR}/${fileName}.json`, JSON.stringify(rows, null, 2) + "\n");
+      if (fileName !== def.name) console.log(`  split ${rows.length} records into ${fileName}.json`);
+    }
+  }
+  // "Missing" = sitemap URLs we hold no record for. Collections with no sitemap are
+  // measured against REST, which is then the whole public set.
+  const sitemapCount = def.sitemapType ? sitemapUrls.length : raw.length;
+  const accountedSitemap = def.sitemapType ? sitemapUrls.length - sitemapOnly.length : raw.length;
+  return {
+    def, kept, skipped, sitemapCount,
+    files: [...files].map(([name, rows]) => ({ name, count: rows.length })),
+    extra: { restCount: raw.length, notInSitemap: notInSitemap.length, sitemapOnly: sitemapOnly.length, withoutDetail, accountedSitemap },
+  };
+}
+
 async function main() {
   const toRun = ONLY ? COLLECTIONS.filter((c) => ONLY.has(c.name)) : COLLECTIONS;
   if (ONLY && toRun.length === 0) { console.error(`No collections match --only=${[...ONLY].join(",")}`); process.exit(1); }
 
   const results = [];
-  for (const def of toRun) results.push(await ingestCollection(def));
+  for (const def of toRun) results.push(def.kind && KINDS[def.kind] ? await ingestRichCollection(def) : await ingestCollection(def));
 
   const reports = results.map((r) =>
-    buildReport({ collection: r.def.name, sitemapCount: r.sitemapCount, kept: r.kept.length, skipped: r.skipped.length })
+    r.extra
+      // Rich: a gap is a sitemap URL REST did not return, or a record whose page failed.
+      ? { ...buildReport({ collection: r.def.name, sitemapCount: r.sitemapCount, kept: r.extra.accountedSitemap, skipped: 0 }), kept: r.kept.length, skipped: r.skipped.length, ok: r.extra.sitemapOnly === 0 && r.extra.withoutDetail === 0 }
+      : buildReport({ collection: r.def.name, sitemapCount: r.sitemapCount, kept: r.kept.length, skipped: r.skipped.length })
   );
   console.log(formatReport(reports));
 
@@ -99,7 +194,7 @@ async function main() {
     let existing = [];
     try { existing = JSON.parse(await readFile(`${CONTENT_DIR}/manifest.json`, "utf8")).collections ?? []; } catch {}
     const byName = new Map(existing.map((c) => [c.name, c]));
-    for (const r of results) byName.set(r.def.name, { name: r.def.name, sitemapCount: r.sitemapCount, kept: r.kept.length, skipped: r.skipped.length, skippedDetail: r.skipped });
+    for (const r of results) byName.set(r.def.name, { name: r.def.name, sitemapCount: r.sitemapCount, kept: r.kept.length, skipped: r.skipped.length, ...(r.files && r.files.length > 1 ? { files: r.files } : {}), ...(r.extra ? { restCount: r.extra.restCount, notInSitemap: r.extra.notInSitemap, sitemapOnly: r.extra.sitemapOnly, withoutPageFields: r.extra.withoutDetail } : {}), skippedDetail: r.skipped });
     const manifest = { generatedAt: new Date().toISOString(), collections: [...byName.values()].sort((a, b) => a.name.localeCompare(b.name)) };
     await writeFile(`${CONTENT_DIR}/manifest.json`, JSON.stringify(manifest, null, 2) + "\n");
   }

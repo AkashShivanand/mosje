@@ -14,3 +14,17 @@ test("decodes named entities and trims", () => {
 test("decodes curly apostrophe", () => {
   assert.equal(decodeEntities("DoSJE&#8217;s report"), "DoSJE’s report");
 });
+
+import { mapPool } from "./utils.mjs";
+
+test("mapPool preserves order and never exceeds the concurrency", async () => {
+  let inFlight = 0, peak = 0;
+  const out = await mapPool([30, 10, 20, 5], 2, async (ms, i) => {
+    inFlight++; peak = Math.max(peak, inFlight);
+    await new Promise((r) => setTimeout(r, ms));
+    inFlight--;
+    return i;
+  });
+  assert.deepEqual(out, [0, 1, 2, 3]);
+  assert.equal(peak, 2);
+});
