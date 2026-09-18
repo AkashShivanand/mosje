@@ -3,383 +3,62 @@
  "idPrefix": "WEB",
  "generated": "2026-09-18",
  "figmaUrl": "https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-",
- "method": "Every page in dosje.gov.in's sitemap (94 standalone pages), one sample of every record template (documents, events, gallery, officials, tenders, organisations, vacancies, schemes, scheme documents, suo-moto disclosures, CPIO, bookings, updates) and 25 global states were captured at 1440\u00d7900 and 375\u00d7812 \u2014 263 captures in all \u2014 with the computed CSS, accessibility tree, axe-core results, focus behaviour, target sizes and DBIM element inventory of every element recorded. Findings are measured, never eyeballed: each carries the element's real box and its measured value. Captures the server refused (HTTP 429) were rejected and re-taken. The design side is the MoSJE [Handoff] Figma file: 175 design\u2194build pairs were compared by specification \u2014 type size, weight, family and colour on text matched between the two sides \u2014 never by pixel diff, and never on width, height or dynamic data. Where one design frame serves many pages (an organisation template against 172 organisation pages), only shared-template properties are compared, not its sample copy. A breach measured on three or more pages is published once, as a Global finding. Out of scope for this report: the screen-reader walkthrough, Hindi content quality, and the 34 live views for which no design frame exists \u2014 those are in the separate design report.",
+ "method": "Every page in dosje.gov.in's sitemap (94 standalone pages), one sample of every record template (documents, events, gallery, officials, tenders, organisations, vacancies, schemes, scheme documents, suo-moto disclosures, CPIO, bookings, updates) and 25 global states were captured at 1440\u00d7900 and 375\u00d7812 \u2014 266 captures in all \u2014 with the computed CSS, accessibility tree, axe-core results, focus behaviour, target sizes and DBIM element inventory of every element recorded. Findings are measured, never eyeballed: each carries the element's real box and its measured value. Captures the server refused (HTTP 429) were rejected and re-taken. The design side is the MoSJE [Handoff] Figma file: 175 design\u2194build pairs were compared by specification \u2014 type size, weight, family and colour on text matched between the two sides \u2014 never by pixel diff, and never on width, height or dynamic data. Where one design frame serves many pages (an organisation template against 172 organisation pages), only shared-template properties are compared, not its sample copy. A breach measured on three or more pages is published once, as a Global finding. Out of scope for this report: the screen-reader walkthrough, Hindi content quality, and the 34 live views for which no design frame exists \u2014 those are in the separate design report.",
  "coverageSummary": {
-  "screensCaptured": 263,
+  "screensCaptured": 266,
   "pagesInSitemap": 8782,
   "standalonePages": 94,
   "states": 25,
   "designPairsCompared": 175
  },
- "deferred": [],
+ "deferred": [
+  {
+   "id": "WEB-GLOBAL-008",
+   "title": "Global \u00b7 No visible focus indicator \u2014 Open the accessibility option \u2014 Open the accessibility option",
+   "reason": "Re-measured on pixels: the control is invisible until focused and then shows a visible ring. The first version compared styles, not what a keyboard user sees."
+  },
+  {
+   "id": "WEB-GLOBAL-078",
+   "title": "Global \u00b7 Non-text control below 3:1 \u2014 Language Translator \u2014 Language Translator",
+   "reason": "Re-measured on pixels with the element's own CSS colour: the pair passes on screen. The first version read an anti-aliased edge pixel as the text colour."
+  },
+  {
+   "id": "WEB-GLOBAL-080",
+   "title": "Global \u00b7 Non-text control below 3:1 \u2014 Go to slide 1 \u2014 Go to slide 1",
+   "reason": "Re-measured on pixels with the element's own CSS colour: the pair passes on screen. The first version read an anti-aliased edge pixel as the text colour."
+  },
+  {
+   "id": "WEB-SCREEN-158",
+   "title": "Home \u00b7 desktop \u2014 new funding alert!",
+   "reason": "Not reproduced on the re-capture of 18 September 2026."
+  },
+  {
+   "id": "WEB-SCREEN-033",
+   "title": "Home \u00b7 mobile \u2014 Go to slide 1",
+   "reason": "Not reproduced on the re-capture of 18 September 2026."
+  },
+  {
+   "id": "WEB-SCREEN-036",
+   "title": "Home \u00b7 mobile \u2014 Go to slide 2",
+   "reason": "Not reproduced on the re-capture of 18 September 2026."
+  },
+  {
+   "id": "WEB-SCREEN-041",
+   "title": "Procedure For Processing Grant In Aid Cases In Respect Of Voluntary Organisations \u00b7 desktop \u2014 Home",
+   "reason": "Not reproduced on the re-capture of 18 September 2026."
+  },
+  {
+   "id": "WEB-SCREEN-042",
+   "title": "Procedure For Processing Grant In Aid Cases In Respect Of Voluntary Organisations \u00b7 desktop \u2014 Department",
+   "reason": "Not reproduced on the re-capture of 18 September 2026."
+  },
+  {
+   "id": "WEB-SCREEN-040",
+   "title": "Procedure For Processing Grant In Aid Cases In Respect Of Voluntary Organisations \u00b7 desktop \u2014 Associated Organisations",
+   "reason": "Not reproduced on the re-capture of 18 September 2026."
+  }
+ ],
  "screens": [
-  {
-   "slug": "WEB-GLOBAL-008",
-   "name": "Global \u00b7 No visible focus indicator \u2014 Open the accessibility option",
-   "env": "live",
-   "liveImg": "captures/board/67969787f780.jpg",
-   "liveUrl": "https://www.dosje.gov.in/about-the-division/",
-   "_basisLive": 864,
-   "note": "Applies to 142 pages. Fix once, it lands everywhere.",
-   "findings": [
-    {
-     "num": 1,
-     "id": "WEB-GLOBAL-008",
-     "element": "Open the accessibility option",
-     "section": "global",
-     "scope": "Global",
-     "axis": "Components & States",
-     "severity": "Blocker",
-     "figma": "WCAG 2.2 AA (2.4.7): every keyboard-focusable control shows a visible focus indicator. DBIM and UX4G both draw a 4px ring.",
-     "live": "Tab stop 1 (button#open-the-accessibility-menu, \u201cOpen the accessibility option\u201d) shows no visible change when focused \u2014 outline, box-shadow, border, background and colour are identical focused and unfocused. Measured on 142 pages.",
-     "fix": "Give the control a visible focus style \u2014 the estate's 4px ring \u2014 and make sure it is not removed by an `outline: none` elsewhere in the stylesheet.",
-     "liveMark": {
-      "box": [
-       24,
-       21,
-       351,
-       69
-      ],
-      "label": "Tab stop 1 \u00b7 nothing changes on focus \u00b7 WCAG 2.4.7 FAIL"
-     },
-     "liveBasis": 864,
-     "subO": "Scope: Global \u2014 measured on 142 pages/states; shown on about-the-division",
-     "liveBox": [
-      0,
-      0,
-      864,
-      320
-     ],
-     "sectionBox": [
-      0,
-      0,
-      864,
-      320
-     ]
-    }
-   ],
-   "_pages": [
-    "about-the-division",
-    "about-the-division-2",
-    "about-the-division-social-defence",
-    "about-the-division-statistics-division",
-    "about-the-division-welfare-of-the-other-backward-classes",
-    "about-us",
-    "activities-of-the-ministry-official-language",
-    "acts-rules",
-    "advertisement",
-    "advices",
-    "annual-reports",
-    "assurances",
-    "bjrnf-directory",
-    "booking--conference-3",
-    "booking--vaishali",
-    "cessation-of-voluntary-organisation-activities",
-    "chairpersons-office",
-    "circulars-notifications",
-    "contact-person",
-    "contact-us",
-    "contact-us-2",
-    "cookies",
-    "copyright-policy",
-    "cpio",
-    "cpio--shri-sumit-kumar",
-    "cpio--shri-vinesh-pachnanda",
-    "daf-directory",
-    "daic-directory",
-    "dashboard",
-    "detailed-demand-for-grant",
-    "documents--corrigendum-to-pm-daksh-scheme-guideline",
-    "documents--expression-of-interest-eoi-for-rate-of-i",
-    "drug-division",
-    "dwbdnc-directory",
-    "events",
-    "events--ek-ped-maa-ke-naam-6",
-    "events--ek-ped-maa-ke-naam-7",
-    "footer-carousel",
-    "for-beneficiary",
-    "for-government-official",
-    "for-researchers",
-    "for-student",
-    "forms-templates",
-    "gallery",
-    "gallery--14446-national-de-addiction-and-telecoun",
-    "gallery--role-of-parents-teachers-in-early-identi",
-    "grants-in-aid-to-ngos-faqs",
-    "grants-suspended-list-blacklisted-ngos",
-    "guidelines-for-assisting-ngos-voluntary-organisations",
-    "handbook-on-social-welfare-statistics",
-    "help",
-    "home",
-    "hyperlinking-policy",
-    "inspection-and-monitoring-procedure",
-    "list-of-de-blacklisted-ngos",
-    "list-of-research-evaluation-studies",
-    "list-of-scheduled-castes",
-    "lok-sabha-question-answer",
-    "meta-data",
-    "minutes-of-screening-committees",
-    "minutes-of-screening-committees-2",
-    "miscellaneous",
-    "mosje-directory",
-    "mou",
-    "nbcfdc-directory",
-    "ncbc-directory",
-    "ncsk-directory",
-    "newsletter",
-    "nhaa-directory",
-    "nisd-directory",
-    "notices",
-    "nsfdc-directory",
-    "nskfdc-directory",
-    "official--dr-swati-s-mishra",
-    "official--shri-shailendra-kumar",
-    "official-language-act",
-    "official-language-background",
-    "organisation--contact-us",
-    "organisation--pearls-of-wisdom",
-    "organisation-under-division-social-division",
-    "penalties-in-case-of-misutilization-of-grands",
-    "pm-ajay-directory",
-    "policies",
-    "policies-acts-rules-circular",
-    "policies-acts-rules-codes-circular",
-    "policies-acts-rules-codes-circular-social-defence",
-    "prioritization-guidelines-for-funding-projects-by-vuluntary-organisations",
-    "privacy-policy",
-    "procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations",
-    "publications",
-    "resources",
-    "rti",
-    "samavesh-admin-portals",
-    "samavesh-citizen-portals",
-    "scheme-documents--dr-ambedkar-national-merit-award-scheme-",
-    "scheme-documents--merger-order",
-    "schemes-and-services--geriatric-caregivers-training",
-    "schemes-and-services--top-class-education-in-colllege-for-obc-",
-    "schemes-services",
-    "scw-directory",
-    "sitemap",
-    "social-defence-faqs",
-    "special-mention-matters-raised-under-377",
-    "state--accessibility-panel-open",
-    "state--annual-reports-filtered",
-    "state--event-detail",
-    "state--events-listing",
-    "state--form-empty-submit-validation",
-    "state--high-contrast-dark",
-    "state--high-contrast-invert",
-    "state--home-320",
-    "state--home-hindi",
-    "state--important-links-modal",
-    "state--mega-menu-associated-organisations",
-    "state--mega-menu-connect",
-    "state--mega-menu-department",
-    "state--mega-menu-documents",
-    "state--mega-menu-events-and-gallery",
-    "state--mega-menu-offerings",
-    "state--mobile-menu-open",
-    "state--search-live-dropdown",
-    "state--search-no-results",
-    "state--search-scholarship",
-    "state--tenders-page-2",
-    "state--whats-new-ticker-paused",
-    "suo-moto-disclosure",
-    "suo-moto-disclosure--list-of-schemes-projects-programme-under",
-    "suo-moto-disclosure--security-audit-certificate",
-    "supreme-court-judgement",
-    "tender--investment-of-an-amount-of-rs-10-00-cror",
-    "tender--investment-of-an-amount-of-rs-174-00-cro",
-    "tenders",
-    "terms-conditions",
-    "updates",
-    "updates--3rd-national-lok-adalat-awareness-materi",
-    "updates--pre-bid-meeting-tender-id-gem-2026-b-774",
-    "vacancies",
-    "vacancies--short-term-internship-programme-at-daic-",
-    "vacancies--short-term-internship-programme-at-dr-am",
-    "visitor-analytics",
-    "welfare-of-the-other-backward-classes",
-    "whos-who"
-   ]
-  },
-  {
-   "slug": "WEB-GLOBAL-078",
-   "name": "Global \u00b7 Non-text control below 3:1 \u2014 Language Translator",
-   "env": "live",
-   "liveImg": "captures/board/d61498f800fb.jpg",
-   "liveUrl": "https://www.dosje.gov.in/about-the-division/",
-   "_basisLive": 864,
-   "note": "Applies to 129 pages. Fix once, it lands everywhere.",
-   "findings": [
-    {
-     "num": 1,
-     "id": "WEB-GLOBAL-078",
-     "element": "Language Translator",
-     "section": "global",
-     "scope": "Global",
-     "axis": "Color & Token",
-     "severity": "Blocker",
-     "figma": "WCAG 2.2 AA (1.4.11): the visible part of a control \u2014 its icon, its outline, its indicator \u2014 needs 3:1 against what is behind it.",
-     "live": "Text \u201cLanguage Translator\u201d (button.bhashini-dropdown-btn) renders #0373DF on #0373DF at 14px/400 \u2014 measured on the capture's pixels: #A3CCF3 on #0373DF is 2.76:1 against the 3.0:1 minimum. Measured on 129 pages.",
-     "fix": "Darken the icon or its ground until the pair reaches 3:1. The control's accessible name is already correct; only what is drawn needs changing.",
-     "liveMark": {
-      "box": [
-       754,
-       3,
-       780,
-       37
-      ],
-      "label": "#A3CCF3 on #0373DF = 2.76:1 \u00b7 needs 3.0:1 \u00b7 FAIL"
-     },
-     "liveBasis": 864,
-     "subO": "Scope: Global \u2014 measured on 129 pages/states; shown on about-the-division",
-     "liveBox": [
-      0,
-      0,
-      864,
-      320
-     ],
-     "sectionBox": [
-      0,
-      0,
-      864,
-      320
-     ]
-    }
-   ],
-   "_pages": [
-    "about-the-division",
-    "about-the-division-2",
-    "about-the-division-social-defence",
-    "about-the-division-statistics-division",
-    "about-the-division-welfare-of-the-other-backward-classes",
-    "activities-of-the-ministry-official-language",
-    "acts-rules",
-    "advertisement",
-    "advices",
-    "annual-reports",
-    "assurances",
-    "bjrnf-directory",
-    "booking--conference-3",
-    "booking--vaishali",
-    "cessation-of-voluntary-organisation-activities",
-    "circulars-notifications",
-    "contact-person",
-    "contact-us",
-    "contact-us-2",
-    "cookies",
-    "copyright-policy",
-    "cpio",
-    "cpio--shri-sumit-kumar",
-    "cpio--shri-vinesh-pachnanda",
-    "daf-directory",
-    "daic-directory",
-    "dashboard",
-    "detailed-demand-for-grant",
-    "documents--corrigendum-to-pm-daksh-scheme-guideline",
-    "documents--expression-of-interest-eoi-for-rate-of-i",
-    "drug-division",
-    "dwbdnc-directory",
-    "events",
-    "events--ek-ped-maa-ke-naam-6",
-    "events--ek-ped-maa-ke-naam-7",
-    "footer-carousel",
-    "for-beneficiary",
-    "for-government-official",
-    "for-researchers",
-    "for-student",
-    "forms-templates",
-    "gallery",
-    "gallery--14446-national-de-addiction-and-telecoun",
-    "gallery--role-of-parents-teachers-in-early-identi",
-    "grants-in-aid-to-ngos-faqs",
-    "guidelines-for-assisting-ngos-voluntary-organisations",
-    "handbook-on-social-welfare-statistics",
-    "help",
-    "hyperlinking-policy",
-    "inspection-and-monitoring-procedure",
-    "list-of-de-blacklisted-ngos",
-    "list-of-research-evaluation-studies",
-    "list-of-scheduled-castes",
-    "lok-sabha-question-answer",
-    "meta-data",
-    "minutes-of-screening-committees",
-    "minutes-of-screening-committees-2",
-    "miscellaneous",
-    "mou",
-    "nbcfdc-directory",
-    "ncbc-directory",
-    "ncsk-directory",
-    "newsletter",
-    "nhaa-directory",
-    "nisd-directory",
-    "notices",
-    "nsfdc-directory",
-    "nskfdc-directory",
-    "official--dr-swati-s-mishra",
-    "official--shri-shailendra-kumar",
-    "official-language-act",
-    "official-language-background",
-    "organisation--contact-us",
-    "organisation--pearls-of-wisdom",
-    "organisation-under-division-social-division",
-    "penalties-in-case-of-misutilization-of-grands",
-    "pm-ajay-directory",
-    "policies",
-    "policies-acts-rules-circular",
-    "policies-acts-rules-codes-circular",
-    "policies-acts-rules-codes-circular-social-defence",
-    "prioritization-guidelines-for-funding-projects-by-vuluntary-organisations",
-    "privacy-policy",
-    "procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations",
-    "publications",
-    "resources",
-    "rti",
-    "samavesh-admin-portals",
-    "samavesh-citizen-portals",
-    "scheme-documents--dr-ambedkar-national-merit-award-scheme-",
-    "scheme-documents--merger-order",
-    "schemes-and-services--geriatric-caregivers-training",
-    "schemes-and-services--top-class-education-in-colllege-for-obc-",
-    "schemes-services",
-    "scw-directory",
-    "social-defence-faqs",
-    "special-mention-matters-raised-under-377",
-    "state--annual-reports-filtered",
-    "state--event-detail",
-    "state--events-listing",
-    "state--form-empty-submit-validation",
-    "state--home-hindi",
-    "state--important-links-modal",
-    "state--mega-menu-associated-organisations",
-    "state--mega-menu-connect",
-    "state--mega-menu-department",
-    "state--mega-menu-documents",
-    "state--mega-menu-events-and-gallery",
-    "state--mega-menu-offerings",
-    "state--search-live-dropdown",
-    "state--search-no-results",
-    "state--search-scholarship",
-    "suo-moto-disclosure",
-    "suo-moto-disclosure--list-of-schemes-projects-programme-under",
-    "suo-moto-disclosure--security-audit-certificate",
-    "supreme-court-judgement",
-    "tender--investment-of-an-amount-of-rs-10-00-cror",
-    "tender--investment-of-an-amount-of-rs-174-00-cro",
-    "tenders",
-    "terms-conditions",
-    "updates",
-    "updates--3rd-national-lok-adalat-awareness-materi",
-    "updates--pre-bid-meeting-tender-id-gem-2026-b-774",
-    "vacancies",
-    "vacancies--short-term-internship-programme-at-daic-",
-    "vacancies--short-term-internship-programme-at-dr-am",
-    "visitor-analytics",
-    "welfare-of-the-other-backward-classes",
-    "whos-who"
-   ]
-  },
   {
    "slug": "WEB-GLOBAL-001",
    "name": "Global \u00b7 Automated accessibility violation \u2014 aria-valid-attr-value",
@@ -450,7 +129,7 @@
    "liveImg": "captures/board/0b0f428829a1.jpg",
    "liveUrl": "https://www.dosje.gov.in/",
    "_basisLive": 864,
-   "note": "Applies to 11 pages. Fix once, it lands everywhere.",
+   "note": "Applies to 10 pages. Fix once, it lands everywhere.",
    "findings": [
     {
      "num": 1,
@@ -461,7 +140,7 @@
      "axis": "Color & Token",
      "severity": "Blocker",
      "figma": "WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold.",
-     "live": "Text \u201cSingle Access Mechanism for All Verticals of Empowerment & Social Har\u2026\u201d (p.elementor-heading-title) renders #FFFFFF on #F97316 at 16px/400 \u2014 measured on the capture's pixels: #FFFFFF on #F97316 is 2.8:1 against the 4.5:1 minimum. Measured on 11 pages.",
+     "live": "Text \u201cSingle Access Mechanism for All Verticals of Empowerment & Social Har\u2026\u201d (p.elementor-heading-title) renders #FFFFFF on #F97316 at 16px/400 \u2014 #FFFFFF on #F97316 as painted on the capture: 2.8:1 against the 4.5:1 minimum. Measured on 10 pages.",
      "fix": "Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used.",
      "liveMark": {
       "box": [
@@ -473,7 +152,7 @@
       "label": "#FFFFFF on #F97316 = 2.8:1 at 16px \u00b7 needs 4.5:1 \u00b7 FAIL"
      },
      "liveBasis": 864,
-     "subO": "Scope: Global \u2014 measured on 11 pages/states; shown on home",
+     "subO": "Scope: Global \u2014 measured on 10 pages/states; shown on home",
      "liveBox": [
       0,
       0,
@@ -493,7 +172,6 @@
     "state--accessibility-panel-open",
     "state--home-320",
     "state--home-hindi",
-    "state--important-links-modal",
     "state--mega-menu-connect",
     "state--mega-menu-department",
     "state--mega-menu-documents",
@@ -503,13 +181,127 @@
    ]
   },
   {
+   "slug": "WEB-GLOBAL-086",
+   "name": "Global \u00b7 No visible focus indicator \u2014 Pagination page numbers",
+   "env": "live",
+   "liveImg": "captures/board/47d308d98977.jpg",
+   "liveUrl": "https://www.dosje.gov.in/annual-reports/",
+   "_basisLive": 864,
+   "note": "Applies to 9 pages. Fix once, it lands everywhere.",
+   "findings": [
+    {
+     "num": 1,
+     "id": "WEB-GLOBAL-086",
+     "element": "Pagination page numbers",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Components & States",
+     "severity": "Blocker",
+     "figma": "WCAG 2.2 AA (2.4.7): every keyboard-focusable control shows a visible focus indicator. DBIM and UX4G both draw a 4px ring.",
+     "live": "Pagination page numbers: screenshotted focused and then blurred, no pixel changes, so a keyboard user cannot see where focus is. Measured on 9 pages.",
+     "fix": "Give the control a visible focus style \u2014 the estate's 4px ring \u2014 and make sure it is not removed by an `outline: none` elsewhere in the stylesheet.",
+     "liveMark": {
+      "box": [
+       137,
+       140,
+       162,
+       172
+      ],
+      "label": "Tab stop 73 \u00b7 nothing changes on focus \u00b7 WCAG 2.4.7 FAIL"
+     },
+     "liveBasis": 864,
+     "subO": "Scope: Global \u2014 measured on 9 pages/states; shown on annual-reports",
+     "liveBox": [
+      0,
+      0,
+      864,
+      320
+     ],
+     "sectionBox": [
+      0,
+      0,
+      864,
+      320
+     ]
+    }
+   ],
+   "_pages": [
+    "annual-reports",
+    "circulars-notifications",
+    "cpio",
+    "events",
+    "gallery",
+    "rti",
+    "schemes-services",
+    "tenders",
+    "updates"
+   ]
+  },
+  {
+   "slug": "WEB-GLOBAL-085",
+   "name": "Global \u00b7 No visible focus indicator \u2014 Pagination previous / next arrows",
+   "env": "live",
+   "liveImg": "captures/board/47d308d98977.jpg",
+   "liveUrl": "https://www.dosje.gov.in/annual-reports/",
+   "_basisLive": 864,
+   "note": "Applies to 9 pages. Fix once, it lands everywhere.",
+   "findings": [
+    {
+     "num": 1,
+     "id": "WEB-GLOBAL-085",
+     "element": "Pagination previous / next arrows",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Components & States",
+     "severity": "Blocker",
+     "figma": "WCAG 2.2 AA (2.4.7): every keyboard-focusable control shows a visible focus indicator. DBIM and UX4G both draw a 4px ring.",
+     "live": "Pagination previous / next arrows: screenshotted focused and then blurred, no pixel changes, so a keyboard user cannot see where focus is. Measured on 9 pages.",
+     "fix": "Give the control a visible focus style \u2014 the estate's 4px ring \u2014 and make sure it is not removed by an `outline: none` elsewhere in the stylesheet.",
+     "liveMark": {
+      "box": [
+       107,
+       140,
+       132,
+       172
+      ],
+      "label": "Tab stop 72 \u00b7 nothing changes on focus \u00b7 WCAG 2.4.7 FAIL"
+     },
+     "liveBasis": 864,
+     "subO": "Scope: Global \u2014 measured on 9 pages/states; shown on annual-reports",
+     "liveBox": [
+      0,
+      0,
+      864,
+      320
+     ],
+     "sectionBox": [
+      0,
+      0,
+      864,
+      320
+     ]
+    }
+   ],
+   "_pages": [
+    "annual-reports",
+    "circulars-notifications",
+    "cpio",
+    "events",
+    "gallery",
+    "rti",
+    "schemes-services",
+    "tenders",
+    "updates"
+   ]
+  },
+  {
    "slug": "WEB-GLOBAL-079",
    "name": "Global \u00b7 Non-text control below 3:1 \u2014 Previous slide",
    "env": "live",
-   "liveImg": "captures/board/162742ae0684.jpg",
+   "liveImg": "captures/board/4b62159660a9.jpg",
    "liveUrl": "https://www.dosje.gov.in/",
-   "_basisLive": 1440,
-   "note": "Applies to 7 pages. Fix once, it lands everywhere.",
+   "_basisLive": 375,
+   "note": "Applies to 1 pages. Fix once, it lands everywhere.",
    "findings": [
     {
      "num": 1,
@@ -520,72 +312,26 @@
      "axis": "Color & Token",
      "severity": "Blocker",
      "figma": "WCAG 2.2 AA (1.4.11): the visible part of a control \u2014 its icon, its outline, its indicator \u2014 needs 3:1 against what is behind it.",
-     "live": "Text \u201cPrevious slide\u201d (div.ccps-nav-btn) renders #EEEEEE on #FFFFFF at 16px/400 \u2014 measured on the capture's pixels: #F1EFEA on #FBF3DC is 1.04:1 against the 3.0:1 minimum. Measured on 7 pages.",
+     "live": "Text \u201cPrevious slide\u201d (div.ccps-nav-btn) renders #EEEEEE on #FFFFFF at 16px/400 \u2014 #F0EFED on #FCF9EA as painted on the capture: 1.09:1 against the 3.0:1 minimum.",
      "fix": "Darken the icon or its ground until the pair reaches 3:1. The control's accessible name is already correct; only what is drawn needs changing.",
-     "liveBasis": 1440,
-     "subO": "Scope: Global \u2014 measured on 7 pages/states; shown on home",
+     "liveBasis": 375,
+     "subO": "Scope: Global \u2014 measured on 1 pages/states; shown on home",
      "liveBox": [
       0,
       0,
-      1440,
-      1080.0
+      375,
+      281.25
      ],
      "sectionBox": [
       0,
       0,
-      1440,
-      1080.0
+      375,
+      281.25
      ]
     }
    ],
    "_pages": [
-    "home",
-    "state--home-320",
-    "state--important-links-modal",
-    "state--mega-menu-associated-organisations",
-    "state--mega-menu-connect",
-    "state--mega-menu-documents",
-    "state--mega-menu-events-and-gallery"
-   ]
-  },
-  {
-   "slug": "WEB-GLOBAL-080",
-   "name": "Global \u00b7 Non-text control below 3:1 \u2014 Go to slide 1",
-   "env": "live",
-   "liveImg": "captures/board/c6ef0fcb15f4.jpg",
-   "liveUrl": "https://www.dosje.gov.in/",
-   "_basisLive": 1440,
-   "note": "Applies to 1 pages. Fix once, it lands everywhere.",
-   "findings": [
-    {
-     "num": 1,
-     "id": "WEB-GLOBAL-080",
-     "element": "Go to slide 1",
-     "section": "global",
-     "scope": "Global",
-     "axis": "Color & Token",
-     "severity": "Blocker",
-     "figma": "WCAG 2.2 AA (1.4.11): the visible part of a control \u2014 its icon, its outline, its indicator \u2014 needs 3:1 against what is behind it.",
-     "live": "Text \u201cGo to slide 1\u201d (span.swiper-pagination-bullet) renders #1F2937 on #373737 at 16px/400 \u2014 measured on the capture's pixels: #4A4A4A on #0F0F0F is 2.16:1 against the 3.0:1 minimum.",
-     "fix": "Darken the icon or its ground until the pair reaches 3:1. The control's accessible name is already correct; only what is drawn needs changing.",
-     "liveBasis": 1440,
-     "subO": "Scope: Global \u2014 measured on 1 pages/states; shown on state--important-links-modal",
-     "liveBox": [
-      0,
-      0,
-      1440,
-      900.0
-     ],
-     "sectionBox": [
-      0,
-      0,
-      1440,
-      900.0
-     ]
-    }
-   ],
-   "_pages": [
-    "state--important-links-modal"
+    "home"
    ]
   },
   {
@@ -595,7 +341,7 @@
    "liveImg": "captures/board/b8fb29fa0043.jpg",
    "liveUrl": "https://www.dosje.gov.in/about-the-division/",
    "_basisLive": 864,
-   "note": "Applies to 135 pages. Fix once, it lands everywhere.",
+   "note": "Applies to 138 pages. Fix once, it lands everywhere.",
    "findings": [
     {
      "num": 1,
@@ -606,7 +352,7 @@
      "axis": "Content & Iconography",
      "severity": "Major",
      "figma": "WCAG 2.2 A (1.3.1): heading levels descend without skipping, so the outline can be navigated.",
-     "live": "\u201cNeed Support?\u201d is an <h6> directly after an <h1>, skipping h2. The outline cannot be navigated reliably by a screen reader. Measured on 135 pages.",
+     "live": "\u201cNeed Support?\u201d is an <h6> directly after an <h1>, skipping h2. The outline cannot be navigated reliably by a screen reader. Measured on 138 pages.",
      "fix": "Re-tag the heading so levels descend in order, or promote the heading above it. Where the markup is only for size, use CSS instead.",
      "liveMark": {
       "box": [
@@ -618,7 +364,7 @@
       "label": "<h1> \u2192 <h6> \u00b7 skips h2"
      },
      "liveBasis": 864,
-     "subO": "Scope: Global \u2014 measured on 135 pages/states; shown on about-the-division",
+     "subO": "Scope: Global \u2014 measured on 138 pages/states; shown on about-the-division",
      "liveBox": [
       0,
       0,
@@ -730,11 +476,14 @@
     "sitemap",
     "social-defence-faqs",
     "special-mention-matters-raised-under-377",
+    "state--404",
     "state--accessibility-panel-open",
     "state--annual-reports-filtered",
     "state--event-detail",
     "state--events-listing",
     "state--form-empty-submit-validation",
+    "state--gallery-card-opens",
+    "state--gallery-category-filter",
     "state--gallery-lightbox",
     "state--high-contrast-dark",
     "state--high-contrast-invert",
@@ -778,7 +527,7 @@
    "liveImg": "captures/board/d61498f800fb.jpg",
    "liveUrl": "https://www.dosje.gov.in/about-the-division/",
    "_basisLive": 864,
-   "note": "Applies to 143 pages. Fix once, it lands everywhere.",
+   "note": "Applies to 146 pages. Fix once, it lands everywhere.",
    "findings": [
     {
      "num": 1,
@@ -789,7 +538,7 @@
      "axis": "Accessibility",
      "severity": "Major",
      "figma": "GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically.",
-     "live": "ARIA commands must have an accessible name \u2014 <a class=\"elementor-button elementor-size-sm\" role=\"button\" id=\"accessibilityButton\"> (aria-command-name, wcag2a, wcag412). Measured on 143 pages.",
+     "live": "ARIA commands must have an accessible name \u2014 <a class=\"elementor-button elementor-size-sm\" role=\"button\" id=\"accessibilityButton\"> (aria-command-name, wcag2a, wcag412). Measured on 146 pages.",
      "fix": "Correct the markup the rule names; the rule's help page states the accepted fixes.",
      "liveMark": {
       "box": [
@@ -801,7 +550,7 @@
       "label": "aria-command-name \u00b7 serious \u00b7 ARIA commands must have an accessible name"
      },
      "liveBasis": 864,
-     "subO": "Scope: Global \u2014 measured on 143 pages/states; shown on about-the-division",
+     "subO": "Scope: Global \u2014 measured on 146 pages/states; shown on about-the-division",
      "liveBox": [
       0,
       0,
@@ -920,11 +669,14 @@
     "sitemap",
     "social-defence-faqs",
     "special-mention-matters-raised-under-377",
+    "state--404",
     "state--accessibility-panel-open",
     "state--annual-reports-filtered",
     "state--event-detail",
     "state--events-listing",
     "state--form-empty-submit-validation",
+    "state--gallery-card-opens",
+    "state--gallery-category-filter",
     "state--gallery-lightbox",
     "state--high-contrast-dark",
     "state--high-contrast-invert",
@@ -969,7 +721,7 @@
    "liveImg": "captures/board/d61498f800fb.jpg",
    "liveUrl": "https://www.dosje.gov.in/about-the-division/",
    "_basisLive": 864,
-   "note": "Applies to 143 pages. Fix once, it lands everywhere.",
+   "note": "Applies to 146 pages. Fix once, it lands everywhere.",
    "findings": [
     {
      "num": 1,
@@ -980,7 +732,7 @@
      "axis": "Accessibility",
      "severity": "Major",
      "figma": "GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically.",
-     "live": "Links must have discernible text \u2014 <a href=\"https://www.digitalindia.gov.in/\" target=\"_blank\">\n\t\t\t\t\t\t\t<img loading=\"lazy\" width=\"105\" height=\"41\" src=\"https://www.dosje.gov.in/wp-content/uploads/ (link-name, wcag2a, wcag244, wcag412). Measured on 143 pages.",
+     "live": "Links must have discernible text \u2014 <a href=\"https://www.digitalindia.gov.in/\" target=\"_blank\">\n\t\t\t\t\t\t\t<img loading=\"lazy\" width=\"105\" height=\"41\" src=\"https://www.dosje.gov.in/wp-content/uploads/ (link-name, wcag2a, wcag244, wcag412). Measured on 146 pages.",
      "fix": "Correct the markup the rule names; the rule's help page states the accepted fixes.",
      "liveMark": {
       "box": [
@@ -992,7 +744,7 @@
       "label": "link-name \u00b7 serious \u00b7 Links must have discernible text"
      },
      "liveBasis": 864,
-     "subO": "Scope: Global \u2014 measured on 143 pages/states; shown on about-the-division",
+     "subO": "Scope: Global \u2014 measured on 146 pages/states; shown on about-the-division",
      "liveBox": [
       0,
       0,
@@ -1111,11 +863,14 @@
     "sitemap",
     "social-defence-faqs",
     "special-mention-matters-raised-under-377",
+    "state--404",
     "state--accessibility-panel-open",
     "state--annual-reports-filtered",
     "state--event-detail",
     "state--events-listing",
     "state--form-empty-submit-validation",
+    "state--gallery-card-opens",
+    "state--gallery-category-filter",
     "state--gallery-lightbox",
     "state--high-contrast-dark",
     "state--high-contrast-invert",
@@ -1160,7 +915,7 @@
    "liveImg": "captures/board/8c324e810a51.jpg",
    "liveUrl": "https://www.dosje.gov.in/about-the-division/",
    "_basisLive": 864,
-   "note": "Applies to 143 pages. Fix once, it lands everywhere.",
+   "note": "Applies to 146 pages. Fix once, it lands everywhere.",
    "findings": [
     {
      "num": 1,
@@ -1171,7 +926,7 @@
      "axis": "Content & Iconography",
      "severity": "Major",
      "figma": "DBIM 3.0 \u00a75.6: the footer carries Archives, Website Policy, Related Links and Feedback.",
-     "live": "DBIM 5.6 mandates four footer sections. This footer publishes 0 of them; missing: Archives, Website Policy, Related Links, Feedback. Measured on 143 pages.",
+     "live": "DBIM 5.6 mandates four footer sections. This footer publishes 0 of them; missing: Archives, Website Policy, Related Links, Feedback. Measured on 146 pages.",
      "fix": "Add the missing sections to the footer. Archives and Website Policy need a page each; Related Links and Feedback can carry the existing ones.",
      "liveMark": {
       "box": [
@@ -1183,7 +938,7 @@
       "label": "Footer missing: Archives, Website Policy, Related Links, Feedback \u00b7 DBIM 5.6"
      },
      "liveBasis": 864,
-     "subO": "Scope: Global \u2014 measured on 143 pages/states; shown on about-the-division",
+     "subO": "Scope: Global \u2014 measured on 146 pages/states; shown on about-the-division",
      "liveBox": [
       0,
       0,
@@ -1302,11 +1057,14 @@
     "sitemap",
     "social-defence-faqs",
     "special-mention-matters-raised-under-377",
+    "state--404",
     "state--accessibility-panel-open",
     "state--annual-reports-filtered",
     "state--event-detail",
     "state--events-listing",
     "state--form-empty-submit-validation",
+    "state--gallery-card-opens",
+    "state--gallery-category-filter",
     "state--gallery-lightbox",
     "state--high-contrast-dark",
     "state--high-contrast-invert",
@@ -1351,7 +1109,7 @@
    "liveImg": "captures/board/d61498f800fb.jpg",
    "liveUrl": "https://www.dosje.gov.in/about-the-division/",
    "_basisLive": 864,
-   "note": "Applies to 142 pages. Fix once, it lands everywhere.",
+   "note": "Applies to 145 pages. Fix once, it lands everywhere.",
    "findings": [
     {
      "num": 1,
@@ -1362,7 +1120,7 @@
      "axis": "Color & Token",
      "severity": "Major",
      "figma": "DBIM 3.0 \u00a72.1: one colour group from the primary palette. UX4G's violet is its own brand layer, not the Department's.",
-     "live": "9 element(s) render UX4G's violet primary rather than the Department's key colour. DBIM 2.1 allows one colour group from the primary palette. Measured on 142 pages.",
+     "live": "9 element(s) render UX4G's violet primary rather than the Department's key colour. DBIM 2.1 allows one colour group from the primary palette. Measured on 145 pages.",
      "fix": "Override the inherited UX4G variables so the Department's key colour applies everywhere, including the skip link and the accessibility widget.",
      "liveMark": {
       "box": [
@@ -1374,7 +1132,7 @@
       "label": "#613AF5/#FFFFFF \u00b7 UX4G violet, not the DBIM palette"
      },
      "liveBasis": 864,
-     "subO": "Scope: Global \u2014 measured on 142 pages/states; shown on about-the-division",
+     "subO": "Scope: Global \u2014 measured on 145 pages/states; shown on about-the-division",
      "liveBox": [
       0,
       0,
@@ -1493,11 +1251,14 @@
     "sitemap",
     "social-defence-faqs",
     "special-mention-matters-raised-under-377",
+    "state--404",
     "state--accessibility-panel-open",
     "state--annual-reports-filtered",
     "state--event-detail",
     "state--events-listing",
     "state--form-empty-submit-validation",
+    "state--gallery-card-opens",
+    "state--gallery-category-filter",
     "state--gallery-lightbox",
     "state--high-contrast-invert",
     "state--home-320",
@@ -1541,7 +1302,7 @@
    "liveImg": "captures/board/67969787f780.jpg",
    "liveUrl": "https://www.dosje.gov.in/about-the-division/",
    "_basisLive": 864,
-   "note": "Applies to 127 pages. Fix once, it lands everywhere.",
+   "note": "Applies to 130 pages. Fix once, it lands everywhere.",
    "findings": [
     {
      "num": 1,
@@ -1552,7 +1313,7 @@
      "axis": "Typography",
      "severity": "Major",
      "figma": "UX4G 3.0 \u00a72.3: font sizes come from the published type scale (12/14/16/18/20/24/28/32/36/40/52/60), and Body/XS 12px is the minimum.",
-     "live": "1 element(s) render at 10px, which is not on the UX4G type scale (12/14/16/18/20/24/28/32/36/40/52/60). It is also below Body/XS, the stated minimum usable size. Measured on 127 pages.",
+     "live": "1 element(s) render at 10px, which is not on the UX4G type scale (12/14/16/18/20/24/28/32/36/40/52/60). It is also below Body/XS, the stated minimum usable size. Measured on 130 pages.",
      "fix": "Move the size to the nearest step on the UX4G scale, and never below 12px.",
      "liveMark": {
       "box": [
@@ -1564,7 +1325,7 @@
       "label": "10px \u00b7 off the UX4G scale \u00b7 1 element on this page \u00b7 below the 12px minimum"
      },
      "liveBasis": 864,
-     "subO": "Scope: Global \u2014 measured on 127 pages/states; shown on about-the-division",
+     "subO": "Scope: Global \u2014 measured on 130 pages/states; shown on about-the-division",
      "liveBox": [
       0,
       0,
@@ -1682,10 +1443,13 @@
     "sitemap",
     "social-defence-faqs",
     "special-mention-matters-raised-under-377",
+    "state--404",
     "state--annual-reports-filtered",
     "state--event-detail",
     "state--events-listing",
     "state--form-empty-submit-validation",
+    "state--gallery-card-opens",
+    "state--gallery-category-filter",
     "state--gallery-lightbox",
     "state--search-no-results",
     "state--search-scholarship",
@@ -1716,7 +1480,7 @@
    "liveImg": "captures/board/de500055cae6.jpg",
    "liveUrl": "https://www.dosje.gov.in/about-the-division/",
    "_basisLive": 864,
-   "note": "Applies to 121 pages. Fix once, it lands everywhere.",
+   "note": "Applies to 124 pages. Fix once, it lands everywhere.",
    "findings": [
     {
      "num": 1,
@@ -1727,7 +1491,7 @@
      "axis": "Color & Token",
      "severity": "Major",
      "figma": "WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold.",
-     "live": "Text \u201cAbout Ministry\u201d (span.elementor-icon-list-text) renders #E2E6EA on #0373DF at 14px/400 \u2014 measured on the capture's pixels: #E2E6EA on #0373DF is 3.7:1 against the 4.5:1 minimum. Measured on 121 pages.",
+     "live": "Text \u201cAbout Ministry\u201d (span.elementor-icon-list-text) renders #E2E6EA on #0373DF at 14px/400 \u2014 #E2E6EA on #0373DF as painted on the capture: 3.7:1 against the 4.5:1 minimum. Measured on 124 pages.",
      "fix": "Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used.",
      "liveMark": {
       "box": [
@@ -1739,7 +1503,7 @@
       "label": "#E2E6EA on #0373DF = 3.7:1 at 14px \u00b7 needs 4.5:1 \u00b7 FAIL"
      },
      "liveBasis": 864,
-     "subO": "Scope: Global \u2014 measured on 121 pages/states; shown on about-the-division",
+     "subO": "Scope: Global \u2014 measured on 124 pages/states; shown on about-the-division",
      "liveBox": [
       0,
       0,
@@ -1853,201 +1617,15 @@
     "sitemap",
     "social-defence-faqs",
     "special-mention-matters-raised-under-377",
+    "state--404",
     "state--annual-reports-filtered",
     "state--events-listing",
     "state--form-empty-submit-validation",
+    "state--gallery-card-opens",
+    "state--gallery-category-filter",
     "state--gallery-lightbox",
     "state--search-no-results",
     "state--tenders-page-2",
-    "suo-moto-disclosure",
-    "suo-moto-disclosure--list-of-schemes-projects-programme-under",
-    "suo-moto-disclosure--security-audit-certificate",
-    "supreme-court-judgement",
-    "tender--investment-of-an-amount-of-rs-10-00-cror",
-    "tender--investment-of-an-amount-of-rs-174-00-cro",
-    "tenders",
-    "terms-conditions",
-    "updates",
-    "updates--3rd-national-lok-adalat-awareness-materi",
-    "updates--pre-bid-meeting-tender-id-gem-2026-b-774",
-    "vacancies",
-    "vacancies--short-term-internship-programme-at-daic-",
-    "vacancies--short-term-internship-programme-at-dr-am",
-    "visitor-analytics",
-    "welfare-of-the-other-backward-classes",
-    "whos-who"
-   ]
-  },
-  {
-   "slug": "WEB-GLOBAL-026",
-   "name": "Global \u00b7 Touch target below the minimum \u2014 Open Department",
-   "env": "live",
-   "liveImg": "captures/board/c6c0111b682f.jpg",
-   "liveUrl": "https://www.dosje.gov.in/about-the-division/",
-   "_basisLive": 864,
-   "note": "Applies to 141 pages. Fix once, it lands everywhere.",
-   "findings": [
-    {
-     "num": 1,
-     "id": "WEB-GLOBAL-026",
-     "element": "Open Department",
-     "section": "global",
-     "scope": "Global",
-     "axis": "Layout & Spacing",
-     "severity": "Major",
-     "figma": "UX4G 3.0 \u00a76: interactive targets are at least 44\u00d744px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24\u00d724.",
-     "live": "\u201cOpen Department\u201d is 14\u00d721px. UX4G 3.0 \u00a76 sets 44\u00d744px as the minimum interactive size; at 14\u00d721 it is also below the WCAG 2.5.8 AA floor of 24\u00d724. Measured on 141 pages.",
-     "fix": "Grow the control, or add transparent padding around it, until it measures 44\u00d744px with 8px clear of its neighbours.",
-     "liveMark": {
-      "box": [
-       313,
-       140,
-       327,
-       161
-      ],
-      "label": "Target 14\u00d721px \u00b7 UX4G needs 44\u00d744 \u00b7 WCAG 2.5.8 needs 24\u00d724 \u00b7 FAIL"
-     },
-     "liveBasis": 864,
-     "subO": "Scope: Global \u2014 measured on 141 pages/states; shown on about-the-division",
-     "liveBox": [
-      0,
-      0,
-      864,
-      320
-     ],
-     "sectionBox": [
-      0,
-      0,
-      864,
-      320
-     ]
-    }
-   ],
-   "_pages": [
-    "about-the-division",
-    "about-the-division-2",
-    "about-the-division-social-defence",
-    "about-the-division-statistics-division",
-    "about-the-division-welfare-of-the-other-backward-classes",
-    "about-us",
-    "activities-of-the-ministry-official-language",
-    "acts-rules",
-    "advertisement",
-    "advices",
-    "annual-reports",
-    "assurances",
-    "bjrnf-directory",
-    "booking--conference-3",
-    "booking--vaishali",
-    "cessation-of-voluntary-organisation-activities",
-    "chairpersons-office",
-    "circulars-notifications",
-    "contact-person",
-    "contact-us",
-    "contact-us-2",
-    "cookies",
-    "copyright-policy",
-    "cpio",
-    "cpio--shri-sumit-kumar",
-    "cpio--shri-vinesh-pachnanda",
-    "daf-directory",
-    "daic-directory",
-    "dashboard",
-    "detailed-demand-for-grant",
-    "documents--corrigendum-to-pm-daksh-scheme-guideline",
-    "documents--expression-of-interest-eoi-for-rate-of-i",
-    "drug-division",
-    "dwbdnc-directory",
-    "events",
-    "events--ek-ped-maa-ke-naam-6",
-    "events--ek-ped-maa-ke-naam-7",
-    "footer-carousel",
-    "for-beneficiary",
-    "for-government-official",
-    "for-researchers",
-    "for-student",
-    "forms-templates",
-    "gallery",
-    "gallery--14446-national-de-addiction-and-telecoun",
-    "gallery--role-of-parents-teachers-in-early-identi",
-    "grants-in-aid-to-ngos-faqs",
-    "grants-suspended-list-blacklisted-ngos",
-    "guidelines-for-assisting-ngos-voluntary-organisations",
-    "handbook-on-social-welfare-statistics",
-    "help",
-    "home",
-    "hyperlinking-policy",
-    "inspection-and-monitoring-procedure",
-    "list-of-de-blacklisted-ngos",
-    "list-of-research-evaluation-studies",
-    "list-of-scheduled-castes",
-    "lok-sabha-question-answer",
-    "meta-data",
-    "minutes-of-screening-committees",
-    "minutes-of-screening-committees-2",
-    "miscellaneous",
-    "mosje-directory",
-    "mou",
-    "nbcfdc-directory",
-    "ncbc-directory",
-    "ncsk-directory",
-    "newsletter",
-    "nhaa-directory",
-    "nisd-directory",
-    "notices",
-    "nsfdc-directory",
-    "nskfdc-directory",
-    "official--dr-swati-s-mishra",
-    "official--shri-shailendra-kumar",
-    "official-language-act",
-    "official-language-background",
-    "organisation--contact-us",
-    "organisation--pearls-of-wisdom",
-    "organisation-under-division-social-division",
-    "penalties-in-case-of-misutilization-of-grands",
-    "pm-ajay-directory",
-    "policies",
-    "policies-acts-rules-circular",
-    "policies-acts-rules-codes-circular",
-    "policies-acts-rules-codes-circular-social-defence",
-    "prioritization-guidelines-for-funding-projects-by-vuluntary-organisations",
-    "privacy-policy",
-    "procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations",
-    "publications",
-    "resources",
-    "rti",
-    "samavesh-admin-portals",
-    "samavesh-citizen-portals",
-    "scheme-documents--dr-ambedkar-national-merit-award-scheme-",
-    "scheme-documents--merger-order",
-    "schemes-and-services--geriatric-caregivers-training",
-    "schemes-and-services--top-class-education-in-colllege-for-obc-",
-    "schemes-services",
-    "scw-directory",
-    "sitemap",
-    "social-defence-faqs",
-    "special-mention-matters-raised-under-377",
-    "state--accessibility-panel-open",
-    "state--annual-reports-filtered",
-    "state--event-detail",
-    "state--events-listing",
-    "state--form-empty-submit-validation",
-    "state--gallery-lightbox",
-    "state--high-contrast-dark",
-    "state--high-contrast-invert",
-    "state--home-hindi",
-    "state--important-links-modal",
-    "state--mega-menu-associated-organisations",
-    "state--mega-menu-connect",
-    "state--mega-menu-documents",
-    "state--mega-menu-events-and-gallery",
-    "state--mega-menu-offerings",
-    "state--mobile-menu-open",
-    "state--search-live-dropdown",
-    "state--search-no-results",
-    "state--search-scholarship",
-    "state--tenders-page-2",
-    "state--whats-new-ticker-paused",
     "suo-moto-disclosure",
     "suo-moto-disclosure--list-of-schemes-projects-programme-under",
     "suo-moto-disclosure--security-audit-certificate",
@@ -2074,7 +1652,7 @@
    "liveImg": "captures/board/c6c0111b682f.jpg",
    "liveUrl": "https://www.dosje.gov.in/about-the-division/",
    "_basisLive": 864,
-   "note": "Applies to 140 pages. Fix once, it lands everywhere.",
+   "note": "Applies to 144 pages. Fix once, it lands everywhere.",
    "findings": [
     {
      "num": 1,
@@ -2085,7 +1663,7 @@
      "axis": "Layout & Spacing",
      "severity": "Major",
      "figma": "UX4G 3.0 \u00a76: interactive targets are at least 44\u00d744px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24\u00d724.",
-     "live": "\u201cHome\u201d is 41\u00d721px. UX4G 3.0 \u00a76 sets 44\u00d744px as the minimum interactive size; at 41\u00d721 it is also below the WCAG 2.5.8 AA floor of 24\u00d724. Measured on 140 pages.",
+     "live": "\u201cHome\u201d is 41\u00d721px. UX4G 3.0 \u00a76 sets 44\u00d744px as the minimum interactive size; at 41\u00d721 it is also below the WCAG 2.5.8 AA floor of 24\u00d724. Measured on 144 pages.",
      "fix": "Grow the control, or add transparent padding around it, until it measures 44\u00d744px with 8px clear of its neighbours.",
      "liveMark": {
       "box": [
@@ -2097,7 +1675,7 @@
       "label": "Target 41\u00d721px \u00b7 UX4G needs 44\u00d744 \u00b7 WCAG 2.5.8 needs 24\u00d724 \u00b7 FAIL"
      },
      "liveBasis": 864,
-     "subO": "Scope: Global \u2014 measured on 140 pages/states; shown on about-the-division",
+     "subO": "Scope: Global \u2014 measured on 144 pages/states; shown on about-the-division",
      "liveBox": [
       0,
       0,
@@ -2201,6 +1779,7 @@
     "policies-acts-rules-codes-circular-social-defence",
     "prioritization-guidelines-for-funding-projects-by-vuluntary-organisations",
     "privacy-policy",
+    "procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations",
     "publications",
     "resources",
     "rti",
@@ -2215,11 +1794,14 @@
     "sitemap",
     "social-defence-faqs",
     "special-mention-matters-raised-under-377",
+    "state--404",
     "state--accessibility-panel-open",
     "state--annual-reports-filtered",
     "state--event-detail",
     "state--events-listing",
     "state--form-empty-submit-validation",
+    "state--gallery-card-opens",
+    "state--gallery-category-filter",
     "state--gallery-lightbox",
     "state--high-contrast-dark",
     "state--high-contrast-invert",
@@ -2262,7 +1844,7 @@
    "liveImg": "captures/board/c6c0111b682f.jpg",
    "liveUrl": "https://www.dosje.gov.in/about-the-division/",
    "_basisLive": 864,
-   "note": "Applies to 140 pages. Fix once, it lands everywhere.",
+   "note": "Applies to 144 pages. Fix once, it lands everywhere.",
    "findings": [
     {
      "num": 1,
@@ -2273,7 +1855,7 @@
      "axis": "Layout & Spacing",
      "severity": "Major",
      "figma": "UX4G 3.0 \u00a76: interactive targets are at least 44\u00d744px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24\u00d724.",
-     "live": "\u201cDepartment\u201d is 83\u00d721px. UX4G 3.0 \u00a76 sets 44\u00d744px as the minimum interactive size; at 83\u00d721 it is also below the WCAG 2.5.8 AA floor of 24\u00d724. Measured on 140 pages.",
+     "live": "\u201cDepartment\u201d is 83\u00d721px. UX4G 3.0 \u00a76 sets 44\u00d744px as the minimum interactive size; at 83\u00d721 it is also below the WCAG 2.5.8 AA floor of 24\u00d724. Measured on 144 pages.",
      "fix": "Grow the control, or add transparent padding around it, until it measures 44\u00d744px with 8px clear of its neighbours.",
      "liveMark": {
       "box": [
@@ -2285,7 +1867,7 @@
       "label": "Target 83\u00d721px \u00b7 UX4G needs 44\u00d744 \u00b7 WCAG 2.5.8 needs 24\u00d724 \u00b7 FAIL"
      },
      "liveBasis": 864,
-     "subO": "Scope: Global \u2014 measured on 140 pages/states; shown on about-the-division",
+     "subO": "Scope: Global \u2014 measured on 144 pages/states; shown on about-the-division",
      "liveBox": [
       0,
       0,
@@ -2389,6 +1971,7 @@
     "policies-acts-rules-codes-circular-social-defence",
     "prioritization-guidelines-for-funding-projects-by-vuluntary-organisations",
     "privacy-policy",
+    "procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations",
     "publications",
     "resources",
     "rti",
@@ -2403,11 +1986,14 @@
     "sitemap",
     "social-defence-faqs",
     "special-mention-matters-raised-under-377",
+    "state--404",
     "state--accessibility-panel-open",
     "state--annual-reports-filtered",
     "state--event-detail",
     "state--events-listing",
     "state--form-empty-submit-validation",
+    "state--gallery-card-opens",
+    "state--gallery-category-filter",
     "state--gallery-lightbox",
     "state--high-contrast-dark",
     "state--high-contrast-invert",
@@ -2444,36 +2030,36 @@
    ]
   },
   {
-   "slug": "WEB-GLOBAL-031",
-   "name": "Global \u00b7 Touch target below the minimum \u2014 Associated Organisations",
+   "slug": "WEB-GLOBAL-026",
+   "name": "Global \u00b7 Touch target below the minimum \u2014 Open Department",
    "env": "live",
-   "liveImg": "captures/board/6ed462786cf9.jpg",
+   "liveImg": "captures/board/c6c0111b682f.jpg",
    "liveUrl": "https://www.dosje.gov.in/about-the-division/",
    "_basisLive": 864,
-   "note": "Applies to 140 pages. Fix once, it lands everywhere.",
+   "note": "Applies to 144 pages. Fix once, it lands everywhere.",
    "findings": [
     {
      "num": 1,
-     "id": "WEB-GLOBAL-031",
-     "element": "Associated Organisations",
+     "id": "WEB-GLOBAL-026",
+     "element": "Open Department",
      "section": "global",
      "scope": "Global",
      "axis": "Layout & Spacing",
      "severity": "Major",
      "figma": "UX4G 3.0 \u00a76: interactive targets are at least 44\u00d744px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24\u00d724.",
-     "live": "\u201cAssociated Organisations\u201d is 172\u00d721px. UX4G 3.0 \u00a76 sets 44\u00d744px as the minimum interactive size; at 172\u00d721 it is also below the WCAG 2.5.8 AA floor of 24\u00d724. Measured on 140 pages.",
+     "live": "\u201cOpen Department\u201d is 14\u00d721px. UX4G 3.0 \u00a76 sets 44\u00d744px as the minimum interactive size; at 14\u00d721 it is also below the WCAG 2.5.8 AA floor of 24\u00d724. Measured on 144 pages.",
      "fix": "Grow the control, or add transparent padding around it, until it measures 44\u00d744px with 8px clear of its neighbours.",
      "liveMark": {
       "box": [
-       346,
+       313,
        140,
-       518,
+       327,
        161
       ],
-      "label": "Target 172\u00d721px \u00b7 UX4G needs 44\u00d744 \u00b7 WCAG 2.5.8 needs 24\u00d724 \u00b7 FAIL"
+      "label": "Target 14\u00d721px \u00b7 UX4G needs 44\u00d744 \u00b7 WCAG 2.5.8 needs 24\u00d724 \u00b7 FAIL"
      },
      "liveBasis": 864,
-     "subO": "Scope: Global \u2014 measured on 140 pages/states; shown on about-the-division",
+     "subO": "Scope: Global \u2014 measured on 144 pages/states; shown on about-the-division",
      "liveBox": [
       0,
       0,
@@ -2577,6 +2163,7 @@
     "policies-acts-rules-codes-circular-social-defence",
     "prioritization-guidelines-for-funding-projects-by-vuluntary-organisations",
     "privacy-policy",
+    "procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations",
     "publications",
     "resources",
     "rti",
@@ -2591,11 +2178,206 @@
     "sitemap",
     "social-defence-faqs",
     "special-mention-matters-raised-under-377",
+    "state--404",
     "state--accessibility-panel-open",
     "state--annual-reports-filtered",
     "state--event-detail",
     "state--events-listing",
     "state--form-empty-submit-validation",
+    "state--gallery-card-opens",
+    "state--gallery-category-filter",
+    "state--gallery-lightbox",
+    "state--high-contrast-dark",
+    "state--high-contrast-invert",
+    "state--home-hindi",
+    "state--important-links-modal",
+    "state--mega-menu-associated-organisations",
+    "state--mega-menu-connect",
+    "state--mega-menu-documents",
+    "state--mega-menu-events-and-gallery",
+    "state--mega-menu-offerings",
+    "state--mobile-menu-open",
+    "state--search-live-dropdown",
+    "state--search-no-results",
+    "state--search-scholarship",
+    "state--tenders-page-2",
+    "state--whats-new-ticker-paused",
+    "suo-moto-disclosure",
+    "suo-moto-disclosure--list-of-schemes-projects-programme-under",
+    "suo-moto-disclosure--security-audit-certificate",
+    "supreme-court-judgement",
+    "tender--investment-of-an-amount-of-rs-10-00-cror",
+    "tender--investment-of-an-amount-of-rs-174-00-cro",
+    "tenders",
+    "terms-conditions",
+    "updates",
+    "updates--3rd-national-lok-adalat-awareness-materi",
+    "updates--pre-bid-meeting-tender-id-gem-2026-b-774",
+    "vacancies",
+    "vacancies--short-term-internship-programme-at-daic-",
+    "vacancies--short-term-internship-programme-at-dr-am",
+    "visitor-analytics",
+    "welfare-of-the-other-backward-classes",
+    "whos-who"
+   ]
+  },
+  {
+   "slug": "WEB-GLOBAL-031",
+   "name": "Global \u00b7 Touch target below the minimum \u2014 Associated Organisations",
+   "env": "live",
+   "liveImg": "captures/board/6ed462786cf9.jpg",
+   "liveUrl": "https://www.dosje.gov.in/about-the-division/",
+   "_basisLive": 864,
+   "note": "Applies to 144 pages. Fix once, it lands everywhere.",
+   "findings": [
+    {
+     "num": 1,
+     "id": "WEB-GLOBAL-031",
+     "element": "Associated Organisations",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Layout & Spacing",
+     "severity": "Major",
+     "figma": "UX4G 3.0 \u00a76: interactive targets are at least 44\u00d744px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24\u00d724.",
+     "live": "\u201cAssociated Organisations\u201d is 172\u00d721px. UX4G 3.0 \u00a76 sets 44\u00d744px as the minimum interactive size; at 172\u00d721 it is also below the WCAG 2.5.8 AA floor of 24\u00d724. Measured on 144 pages.",
+     "fix": "Grow the control, or add transparent padding around it, until it measures 44\u00d744px with 8px clear of its neighbours.",
+     "liveMark": {
+      "box": [
+       346,
+       140,
+       518,
+       161
+      ],
+      "label": "Target 172\u00d721px \u00b7 UX4G needs 44\u00d744 \u00b7 WCAG 2.5.8 needs 24\u00d724 \u00b7 FAIL"
+     },
+     "liveBasis": 864,
+     "subO": "Scope: Global \u2014 measured on 144 pages/states; shown on about-the-division",
+     "liveBox": [
+      0,
+      0,
+      864,
+      320
+     ],
+     "sectionBox": [
+      0,
+      0,
+      864,
+      320
+     ]
+    }
+   ],
+   "_pages": [
+    "about-the-division",
+    "about-the-division-2",
+    "about-the-division-social-defence",
+    "about-the-division-statistics-division",
+    "about-the-division-welfare-of-the-other-backward-classes",
+    "about-us",
+    "activities-of-the-ministry-official-language",
+    "acts-rules",
+    "advertisement",
+    "advices",
+    "annual-reports",
+    "assurances",
+    "bjrnf-directory",
+    "booking--conference-3",
+    "booking--vaishali",
+    "cessation-of-voluntary-organisation-activities",
+    "chairpersons-office",
+    "circulars-notifications",
+    "contact-person",
+    "contact-us",
+    "contact-us-2",
+    "cookies",
+    "copyright-policy",
+    "cpio",
+    "cpio--shri-sumit-kumar",
+    "cpio--shri-vinesh-pachnanda",
+    "daf-directory",
+    "daic-directory",
+    "dashboard",
+    "detailed-demand-for-grant",
+    "documents--corrigendum-to-pm-daksh-scheme-guideline",
+    "documents--expression-of-interest-eoi-for-rate-of-i",
+    "drug-division",
+    "dwbdnc-directory",
+    "events",
+    "events--ek-ped-maa-ke-naam-6",
+    "events--ek-ped-maa-ke-naam-7",
+    "footer-carousel",
+    "for-beneficiary",
+    "for-government-official",
+    "for-researchers",
+    "for-student",
+    "forms-templates",
+    "gallery",
+    "gallery--14446-national-de-addiction-and-telecoun",
+    "gallery--role-of-parents-teachers-in-early-identi",
+    "grants-in-aid-to-ngos-faqs",
+    "grants-suspended-list-blacklisted-ngos",
+    "guidelines-for-assisting-ngos-voluntary-organisations",
+    "handbook-on-social-welfare-statistics",
+    "help",
+    "home",
+    "hyperlinking-policy",
+    "inspection-and-monitoring-procedure",
+    "list-of-de-blacklisted-ngos",
+    "list-of-research-evaluation-studies",
+    "list-of-scheduled-castes",
+    "lok-sabha-question-answer",
+    "meta-data",
+    "minutes-of-screening-committees",
+    "minutes-of-screening-committees-2",
+    "miscellaneous",
+    "mosje-directory",
+    "mou",
+    "nbcfdc-directory",
+    "ncbc-directory",
+    "ncsk-directory",
+    "newsletter",
+    "nhaa-directory",
+    "nisd-directory",
+    "notices",
+    "nsfdc-directory",
+    "nskfdc-directory",
+    "official--dr-swati-s-mishra",
+    "official--shri-shailendra-kumar",
+    "official-language-act",
+    "official-language-background",
+    "organisation--contact-us",
+    "organisation--pearls-of-wisdom",
+    "organisation-under-division-social-division",
+    "penalties-in-case-of-misutilization-of-grands",
+    "pm-ajay-directory",
+    "policies",
+    "policies-acts-rules-circular",
+    "policies-acts-rules-codes-circular",
+    "policies-acts-rules-codes-circular-social-defence",
+    "prioritization-guidelines-for-funding-projects-by-vuluntary-organisations",
+    "privacy-policy",
+    "procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations",
+    "publications",
+    "resources",
+    "rti",
+    "samavesh-admin-portals",
+    "samavesh-citizen-portals",
+    "scheme-documents--dr-ambedkar-national-merit-award-scheme-",
+    "scheme-documents--merger-order",
+    "schemes-and-services--geriatric-caregivers-training",
+    "schemes-and-services--top-class-education-in-colllege-for-obc-",
+    "schemes-services",
+    "scw-directory",
+    "sitemap",
+    "social-defence-faqs",
+    "special-mention-matters-raised-under-377",
+    "state--404",
+    "state--accessibility-panel-open",
+    "state--annual-reports-filtered",
+    "state--event-detail",
+    "state--events-listing",
+    "state--form-empty-submit-validation",
+    "state--gallery-card-opens",
+    "state--gallery-category-filter",
     "state--gallery-lightbox",
     "state--high-contrast-dark",
     "state--high-contrast-invert",
@@ -2638,7 +2420,7 @@
    "liveImg": "captures/board/c067a8492e72.jpg",
    "liveUrl": "https://www.dosje.gov.in/about-the-division/",
    "_basisLive": 864,
-   "note": "Applies to 123 pages. Fix once, it lands everywhere.",
+   "note": "Applies to 126 pages. Fix once, it lands everywhere.",
    "findings": [
     {
      "num": 1,
@@ -2649,7 +2431,7 @@
      "axis": "Color & Token",
      "severity": "Major",
      "figma": "WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold.",
-     "live": "Text \u201cGet in Touch\u201d (a.btn) renders #0373DF on #E5EFF9 at 16px/500 \u2014 measured on the capture's pixels: #0373DF on #E5EFF9 is 3.99:1 against the 4.5:1 minimum. Measured on 123 pages.",
+     "live": "Text \u201cGet in Touch\u201d (a.btn) renders #0373DF on #E5EFF9 at 16px/500 \u2014 #0373DF on #E5EFF9 as painted on the capture: 3.99:1 against the 4.5:1 minimum. Measured on 126 pages.",
      "fix": "Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used.",
      "liveMark": {
       "box": [
@@ -2661,7 +2443,7 @@
       "label": "#0373DF on #E5EFF9 = 3.99:1 at 16px \u00b7 needs 4.5:1 \u00b7 FAIL"
      },
      "liveBasis": 864,
-     "subO": "Scope: Global \u2014 measured on 123 pages/states; shown on about-the-division",
+     "subO": "Scope: Global \u2014 measured on 126 pages/states; shown on about-the-division",
      "liveBox": [
       0,
       0,
@@ -2776,9 +2558,12 @@
     "sitemap",
     "social-defence-faqs",
     "special-mention-matters-raised-under-377",
+    "state--404",
     "state--annual-reports-filtered",
     "state--events-listing",
     "state--form-empty-submit-validation",
+    "state--gallery-card-opens",
+    "state--gallery-category-filter",
     "state--gallery-lightbox",
     "state--search-no-results",
     "state--search-scholarship",
@@ -2806,7 +2591,7 @@
    "slug": "WEB-GLOBAL-064",
    "name": "Global \u00b7 Font size outside the UX4G type scale \u2014 8px text",
    "env": "live",
-   "liveImg": "captures/board/f0379f29a9cb.jpg",
+   "liveImg": "captures/board/f6eb55b223ec.jpg",
    "liveUrl": "https://www.dosje.gov.in/about-the-division/",
    "_basisLive": 375,
    "note": "Applies to 117 pages. Fix once, it lands everywhere.",
@@ -2825,9 +2610,9 @@
      "liveMark": {
       "box": [
        56,
-       140,
+       70,
        256,
-       151
+       81
       ],
       "label": "8px \u00b7 off the UX4G scale \u00b7 2 elements on this page \u00b7 below the 12px minimum"
      },
@@ -2985,7 +2770,7 @@
      "axis": "Color & Token",
      "severity": "Major",
      "figma": "WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold.",
-     "live": "Text \u201cGet in Touch\u201d (a.btn) renders #0373DF on #E5EFF9 at 14px/500 \u2014 measured on the capture's pixels: #0373DF on #E5EFF9 is 3.99:1 against the 4.5:1 minimum. Measured on 116 pages.",
+     "live": "Text \u201cGet in Touch\u201d (a.btn) renders #0373DF on #E5EFF9 at 14px/500 \u2014 #0373DF on #E5EFF9 as painted on the capture: 3.99:1 against the 4.5:1 minimum. Measured on 116 pages.",
      "fix": "Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used.",
      "liveMark": {
       "box": [
@@ -3914,9 +3699,9 @@
      "liveMark": {
       "box": [
        16,
-       8,
+       12,
        153,
-       56
+       60
       ],
       "label": "Built 12px \u00b7 design 14px \u00b7 Built 400 weight \u00b7 design 500"
      },
@@ -4034,7 +3819,7 @@
    "liveImg": "captures/board/cd8eac34defc.jpg",
    "liveUrl": "https://www.dosje.gov.in/advertisement/",
    "_basisLive": 864,
-   "note": "Applies to 41 pages. Fix once, it lands everywhere.",
+   "note": "Applies to 42 pages. Fix once, it lands everywhere.",
    "findings": [
     {
      "num": 1,
@@ -4045,7 +3830,7 @@
      "axis": "Content & Iconography",
      "severity": "Major",
      "figma": "WCAG 2.2 A (1.3.1) and GIGW 3.0: one <h1> per page, naming the page.",
-     "live": "The page renders no <h1>. The first visible heading is <h6> \u201cNeed Support?\u201d. Measured on 41 pages.",
+     "live": "The page renders no <h1>. The first visible heading is <h6> \u201cNeed Support?\u201d. Measured on 42 pages.",
      "fix": "Render exactly one <h1> carrying the page's own title, above the content.",
      "liveMark": {
       "box": [
@@ -4057,7 +3842,7 @@
       "label": "No <h1> on this page \u00b7 WCAG 1.3.1"
      },
      "liveBasis": 864,
-     "subO": "Scope: Global \u2014 measured on 41 pages/states; shown on advertisement",
+     "subO": "Scope: Global \u2014 measured on 42 pages/states; shown on advertisement",
      "liveBox": [
       0,
       0,
@@ -4089,6 +3874,7 @@
     "policies",
     "samavesh-admin-portals",
     "samavesh-citizen-portals",
+    "state--404",
     "state--accessibility-panel-open",
     "state--high-contrast-dark",
     "state--high-contrast-invert",
@@ -4242,7 +4028,7 @@
      "axis": "Color & Token",
      "severity": "Major",
      "figma": "WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold.",
-     "live": "Text \u201cView All Documents from MoSJE\u201d (a.btn) renders #0373DF on #F9FAFB at 14px/500 \u2014 measured on the capture's pixels: #2E8AE4 on #F9FAFB is 3.42:1 against the 4.5:1 minimum. Measured on 13 pages.",
+     "live": "Text \u201cView All Documents from MoSJE\u201d (a.btn) renders #0373DF on #F9FAFB at 14px/500 \u2014 #0373DF on #F9FAFB as painted on the capture: 4.44:1 against the 4.5:1 minimum. Measured on 13 pages.",
      "fix": "Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used.",
      "liveMark": {
       "box": [
@@ -4251,7 +4037,7 @@
        572,
        174
       ],
-      "label": "#2E8AE4 on #F9FAFB = 3.42:1 at 14px \u00b7 needs 4.5:1 \u00b7 FAIL"
+      "label": "#0373DF on #F9FAFB = 4.44:1 at 14px \u00b7 needs 4.5:1 \u00b7 FAIL"
      },
      "liveBasis": 864,
      "subO": "Scope: Global \u2014 measured on 13 pages/states; shown on documents--corrigendum-to-pm-daksh-scheme-guideline",
@@ -4345,23 +4131,23 @@
   },
   {
    "slug": "WEB-GLOBAL-020",
-   "name": "Global \u00b7 Text contrast below AA \u2014 Chairperson's office",
+   "name": "Global \u00b7 Text contrast below AA \u2014 Dr. Ambedkar Foundation Official",
    "env": "live",
-   "liveImg": "captures/board/4a670f9b1d37.jpg",
-   "liveUrl": "https://www.dosje.gov.in/chairpersons-office/",
+   "liveImg": "captures/board/6747f0c28675.jpg",
+   "liveUrl": "https://www.dosje.gov.in/daf-directory/",
    "_basisLive": 1440,
    "note": "Applies to 14 pages. Fix once, it lands everywhere.",
    "findings": [
     {
      "num": 1,
      "id": "WEB-GLOBAL-020",
-     "element": "Chairperson's office",
+     "element": "Dr. Ambedkar Foundation Official",
      "section": "global",
      "scope": "Global",
      "axis": "Color & Token",
      "severity": "Major",
      "figma": "WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold.",
-     "live": "Text \u201cChairperson's office\u201d (h4.text-center) renders #0373DF on #F9FAFB at 20px/600 \u2014 measured on the capture's pixels: #848586 on #FFFFFF is 3.7:1 against the 4.5:1 minimum. Measured on 14 pages.",
+     "live": "Text \u201cDr. Ambedkar Foundation Official\u201d (h4.text-center) renders #0373DF on #F9FAFB at 20px/600 \u2014 #0373DF on #F9FAFB as painted on the capture: 4.44:1 against the 4.5:1 minimum. Measured on 14 pages.",
      "fix": "Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used.",
      "liveMark": {
       "box": [
@@ -4370,10 +4156,10 @@
        1356,
        168
       ],
-      "label": "#848586 on #FFFFFF = 3.7:1 at 20px \u00b7 needs 4.5:1 \u00b7 FAIL"
+      "label": "#0373DF on #F9FAFB = 4.44:1 at 20px \u00b7 needs 4.5:1 \u00b7 FAIL"
      },
      "liveBasis": 1440,
-     "subO": "Scope: Global \u2014 measured on 14 pages/states; shown on chairpersons-office",
+     "subO": "Scope: Global \u2014 measured on 14 pages/states; shown on daf-directory",
      "liveBox": [
       0,
       0,
@@ -4403,6 +4189,51 @@
     "nskfdc-directory",
     "pm-ajay-directory",
     "scw-directory"
+   ]
+  },
+  {
+   "slug": "WEB-GLOBAL-065",
+   "name": "Global \u00b7 Font size outside the UX4G type scale \u2014 11px text",
+   "env": "live",
+   "liveImg": "captures/board/10a4cc2cac01.jpg",
+   "liveUrl": "https://www.dosje.gov.in/dashboard/",
+   "_basisLive": 1440,
+   "note": "Applies to 6 pages. Fix once, it lands everywhere.",
+   "findings": [
+    {
+     "num": 1,
+     "id": "WEB-GLOBAL-065",
+     "element": "11px text",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Typography",
+     "severity": "Major",
+     "figma": "UX4G 3.0 \u00a72.3: font sizes come from the published type scale (12/14/16/18/20/24/28/32/36/40/52/60), and Body/XS 12px is the minimum.",
+     "live": "9 element(s) render at 11px, which is not on the UX4G type scale (12/14/16/18/20/24/28/32/36/40/52/60). It is also below Body/XS, the stated minimum usable size. Measured on 6 pages.",
+     "fix": "Move the size to the nearest step on the UX4G scale, and never below 12px.",
+     "liveBasis": 1440,
+     "subO": "Scope: Global \u2014 measured on 6 pages/states; shown on dashboard",
+     "liveBox": [
+      0,
+      0,
+      1440,
+      1080.0
+     ],
+     "sectionBox": [
+      0,
+      0,
+      1440,
+      1080.0
+     ]
+    }
+   ],
+   "_pages": [
+    "dashboard",
+    "gallery",
+    "schemes-services",
+    "state--gallery-card-opens",
+    "state--gallery-category-filter",
+    "state--gallery-lightbox"
    ]
   },
   {
@@ -4472,46 +4303,57 @@
    ]
   },
   {
-   "slug": "WEB-GLOBAL-065",
-   "name": "Global \u00b7 Font size outside the UX4G type scale \u2014 11px text",
+   "slug": "WEB-GLOBAL-009",
+   "name": "Global \u00b7 Image carries no alt attribute",
    "env": "live",
-   "liveImg": "captures/board/10a4cc2cac01.jpg",
-   "liveUrl": "https://www.dosje.gov.in/dashboard/",
-   "_basisLive": 1440,
-   "note": "Applies to 4 pages. Fix once, it lands everywhere.",
+   "liveImg": "captures/board/f134fc2ce7f4.jpg",
+   "liveUrl": "https://www.dosje.gov.in/gallery/",
+   "_basisLive": 864,
+   "note": "Applies to 6 pages. Fix once, it lands everywhere.",
    "findings": [
     {
      "num": 1,
-     "id": "WEB-GLOBAL-065",
-     "element": "11px text",
+     "id": "WEB-GLOBAL-009",
+     "element": "g8203_6a017643c9e5a_5jbzbySbWZr2OwiYXBianYQzkv1kI7tVXaWbwldA.jpg",
      "section": "global",
      "scope": "Global",
-     "axis": "Typography",
+     "axis": "Content & Iconography",
      "severity": "Major",
-     "figma": "UX4G 3.0 \u00a72.3: font sizes come from the published type scale (12/14/16/18/20/24/28/32/36/40/52/60), and Body/XS 12px is the minimum.",
-     "live": "9 element(s) render at 11px, which is not on the UX4G type scale (12/14/16/18/20/24/28/32/36/40/52/60). It is also below Body/XS, the stated minimum usable size. Measured on 4 pages.",
-     "fix": "Move the size to the nearest step on the UX4G scale, and never below 12px.",
-     "liveBasis": 1440,
-     "subO": "Scope: Global \u2014 measured on 4 pages/states; shown on dashboard",
+     "figma": "WCAG 2.2 A (1.1.1): every image carries an alt attribute \u2014 descriptive where it conveys meaning, empty where it is decorative.",
+     "live": "\u201cg8203_6a017643c9e5a_5jbzbySbWZr2OwiYXBianYQzkv1kI7tVXaWbwldA.jpg\u201d renders at 411px wide with no alt attribute. A screen reader announces the file name instead of the content. Measured on 6 pages.",
+     "fix": "Add an alt attribute: a description where the image carries meaning, alt=\"\" where it is decorative.",
+     "liveMark": {
+      "box": [
+       85,
+       140,
+       496,
+       371
+      ],
+      "label": "No alt attribute \u00b7 g8203_6a017643c9e5a_5jbzbySbWZr2OwiYXBia"
+     },
+     "liveBasis": 864,
+     "subO": "Scope: Global \u2014 measured on 6 pages/states; shown on gallery",
      "liveBox": [
       0,
       0,
-      1440,
-      1080.0
+      864,
+      511
      ],
      "sectionBox": [
       0,
       0,
-      1440,
-      1080.0
+      864,
+      511
      ]
     }
    ],
    "_pages": [
-    "dashboard",
     "gallery",
-    "schemes-services",
-    "state--gallery-lightbox"
+    "state--404",
+    "state--gallery-card-opens",
+    "state--gallery-category-filter",
+    "state--gallery-lightbox",
+    "state--search-no-results"
    ]
   },
   {
@@ -4642,6 +4484,58 @@
    ]
   },
   {
+   "slug": "WEB-GLOBAL-022",
+   "name": "Global \u00b7 Text contrast below AA \u2014 Dr. Ambedkar International Centre (DAIC)",
+   "env": "live",
+   "liveImg": "captures/board/78d00db8b341.jpg",
+   "liveUrl": "https://www.dosje.gov.in/official/dr-swati-s-mishra/",
+   "_basisLive": 864,
+   "note": "Applies to 4 pages. Fix once, it lands everywhere.",
+   "findings": [
+    {
+     "num": 1,
+     "id": "WEB-GLOBAL-022",
+     "element": "Dr. Ambedkar International Centre (DAIC)",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Color & Token",
+     "severity": "Major",
+     "figma": "WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold.",
+     "live": "Text \u201cDr. Ambedkar International Centre (DAIC)\u201d (a.text-primary) renders #0373DF on #F9FAFB at 16px/400 \u2014 #0373DF on #F9FAFB as painted on the capture: 4.44:1 against the 4.5:1 minimum. Measured on 4 pages.",
+     "fix": "Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used.",
+     "liveMark": {
+      "box": [
+       267,
+       140,
+       597,
+       162
+      ],
+      "label": "#0373DF on #F9FAFB = 4.44:1 at 16px \u00b7 needs 4.5:1 \u00b7 FAIL"
+     },
+     "liveBasis": 864,
+     "subO": "Scope: Global \u2014 measured on 4 pages/states; shown on official--dr-swati-s-mishra",
+     "liveBox": [
+      0,
+      0,
+      864,
+      320
+     ],
+     "sectionBox": [
+      0,
+      0,
+      864,
+      320
+     ]
+    }
+   ],
+   "_pages": [
+    "official--dr-swati-s-mishra",
+    "official--shri-shailendra-kumar",
+    "scheme-documents--dr-ambedkar-national-merit-award-scheme-",
+    "scheme-documents--merger-order"
+   ]
+  },
+  {
    "slug": "WEB-GLOBAL-059",
    "name": "Global \u00b7 Built value differs from the design \u2014 dr. virendra kumar",
    "env": "live",
@@ -4762,58 +4656,6 @@
     "about-the-division-social-defence",
     "booking--conference-3",
     "booking--vaishali"
-   ]
-  },
-  {
-   "slug": "WEB-GLOBAL-022",
-   "name": "Global \u00b7 Text contrast below AA \u2014 Dr. Ambedkar International Centre (DAIC)",
-   "env": "live",
-   "liveImg": "captures/board/78d00db8b341.jpg",
-   "liveUrl": "https://www.dosje.gov.in/official/dr-swati-s-mishra/",
-   "_basisLive": 864,
-   "note": "Applies to 4 pages. Fix once, it lands everywhere.",
-   "findings": [
-    {
-     "num": 1,
-     "id": "WEB-GLOBAL-022",
-     "element": "Dr. Ambedkar International Centre (DAIC)",
-     "section": "global",
-     "scope": "Global",
-     "axis": "Color & Token",
-     "severity": "Major",
-     "figma": "WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold.",
-     "live": "Text \u201cDr. Ambedkar International Centre (DAIC)\u201d (a.text-primary) renders #0373DF on #F9FAFB at 16px/400 \u2014 measured on the capture's pixels: #0373DF on #F9FAFB is 4.44:1 against the 4.5:1 minimum. Measured on 4 pages.",
-     "fix": "Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used.",
-     "liveMark": {
-      "box": [
-       267,
-       140,
-       597,
-       162
-      ],
-      "label": "#0373DF on #F9FAFB = 4.44:1 at 16px \u00b7 needs 4.5:1 \u00b7 FAIL"
-     },
-     "liveBasis": 864,
-     "subO": "Scope: Global \u2014 measured on 4 pages/states; shown on official--dr-swati-s-mishra",
-     "liveBox": [
-      0,
-      0,
-      864,
-      320
-     ],
-     "sectionBox": [
-      0,
-      0,
-      864,
-      320
-     ]
-    }
-   ],
-   "_pages": [
-    "official--dr-swati-s-mishra",
-    "official--shri-shailendra-kumar",
-    "scheme-documents--dr-ambedkar-national-merit-award-scheme-",
-    "scheme-documents--merger-order"
    ]
   },
   {
@@ -4989,57 +4831,6 @@
     "mou",
     "policies",
     "rti"
-   ]
-  },
-  {
-   "slug": "WEB-GLOBAL-009",
-   "name": "Global \u00b7 Image carries no alt attribute",
-   "env": "live",
-   "liveImg": "captures/board/f134fc2ce7f4.jpg",
-   "liveUrl": "https://www.dosje.gov.in/gallery/",
-   "_basisLive": 864,
-   "note": "Applies to 3 pages. Fix once, it lands everywhere.",
-   "findings": [
-    {
-     "num": 1,
-     "id": "WEB-GLOBAL-009",
-     "element": "g8203_6a017643c9e5a_5jbzbySbWZr2OwiYXBianYQzkv1kI7tVXaWbwldA.jpg",
-     "section": "global",
-     "scope": "Global",
-     "axis": "Content & Iconography",
-     "severity": "Major",
-     "figma": "WCAG 2.2 A (1.1.1): every image carries an alt attribute \u2014 descriptive where it conveys meaning, empty where it is decorative.",
-     "live": "\u201cg8203_6a017643c9e5a_5jbzbySbWZr2OwiYXBianYQzkv1kI7tVXaWbwldA.jpg\u201d renders at 411px wide with no alt attribute. A screen reader announces the file name instead of the content. Measured on 3 pages.",
-     "fix": "Add an alt attribute: a description where the image carries meaning, alt=\"\" where it is decorative.",
-     "liveMark": {
-      "box": [
-       85,
-       140,
-       496,
-       371
-      ],
-      "label": "No alt attribute \u00b7 g8203_6a017643c9e5a_5jbzbySbWZr2OwiYXBia"
-     },
-     "liveBasis": 864,
-     "subO": "Scope: Global \u2014 measured on 3 pages/states; shown on gallery",
-     "liveBox": [
-      0,
-      0,
-      864,
-      511
-     ],
-     "sectionBox": [
-      0,
-      0,
-      864,
-      511
-     ]
-    }
-   ],
-   "_pages": [
-    "gallery",
-    "state--gallery-lightbox",
-    "state--search-no-results"
    ]
   },
   {
@@ -5728,7 +5519,7 @@
      "axis": "Color & Token",
      "severity": "Major",
      "figma": "WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold.",
-     "live": "Text \u201cDr. Swati S. Mishra\u201d (h1.h3) renders #0373DF on #F9FAFB at 22px/500 \u2014 measured on the capture's pixels: #0675DF on #F9FAFB is 4.35:1 against the 4.5:1 minimum. Measured on 3 pages.",
+     "live": "Text \u201cDr. Swati S. Mishra\u201d (h1.h3) renders #0373DF on #F9FAFB at 22px/500 \u2014 #0373DF on #F9FAFB as painted on the capture: 4.44:1 against the 4.5:1 minimum. Measured on 3 pages.",
      "fix": "Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used.",
      "liveMark": {
       "box": [
@@ -5737,7 +5528,7 @@
        359,
        188
       ],
-      "label": "#0675DF on #F9FAFB = 4.35:1 at 22px \u00b7 needs 4.5:1 \u00b7 FAIL"
+      "label": "#0373DF on #F9FAFB = 4.44:1 at 22px \u00b7 needs 4.5:1 \u00b7 FAIL"
      },
      "liveBasis": 375,
      "subO": "Scope: Global \u2014 measured on 3 pages/states; shown on official--dr-swati-s-mishra",
@@ -6077,7 +5868,7 @@
    "liveImg": "captures/board/938a7ab7641c.jpg",
    "liveUrl": "https://www.dosje.gov.in/about-the-division/",
    "_basisLive": 1440,
-   "note": "Applies to 143 pages. Fix once, it lands everywhere.",
+   "note": "Applies to 146 pages. Fix once, it lands everywhere.",
    "findings": [
     {
      "num": 1,
@@ -6088,10 +5879,10 @@
      "axis": "Content & Iconography",
      "severity": "Minor",
      "figma": "GIGW 3.0 and WCAG 3.1.1: the page declares its language; en-IN on a Government of India property.",
-     "live": "The document declares lang=\"en-US\" on a Government of India property; en-IN is the correct locale. Measured on 143 pages.",
+     "live": "The document declares lang=\"en-US\" on a Government of India property; en-IN is the correct locale. Measured on 146 pages.",
      "fix": "Set lang=\"en-IN\" on <html>, and lang on any block in another language.",
      "liveBasis": 1440,
-     "subO": "Scope: Global \u2014 measured on 143 pages/states; shown on about-the-division",
+     "subO": "Scope: Global \u2014 measured on 146 pages/states; shown on about-the-division",
      "liveBox": [
       0,
       0,
@@ -6210,11 +6001,14 @@
     "sitemap",
     "social-defence-faqs",
     "special-mention-matters-raised-under-377",
+    "state--404",
     "state--accessibility-panel-open",
     "state--annual-reports-filtered",
     "state--event-detail",
     "state--events-listing",
     "state--form-empty-submit-validation",
+    "state--gallery-card-opens",
+    "state--gallery-category-filter",
     "state--gallery-lightbox",
     "state--high-contrast-dark",
     "state--high-contrast-invert",
@@ -6259,7 +6053,7 @@
    "liveImg": "captures/board/938a7ab7641c.jpg",
    "liveUrl": "https://www.dosje.gov.in/about-the-division/",
    "_basisLive": 1440,
-   "note": "Applies to 143 pages. Fix once, it lands everywhere.",
+   "note": "Applies to 146 pages. Fix once, it lands everywhere.",
    "findings": [
     {
      "num": 1,
@@ -6270,10 +6064,10 @@
      "axis": "Functional",
      "severity": "Minor",
      "figma": "GIGW 3.0 quality: a page loads without scripting errors.",
-     "live": "The page logs 21 JavaScript errors on load. First: Error: <svg> attribute height: Expected length, \"undefined\". Measured on 143 pages.",
+     "live": "The page logs 21 JavaScript errors on load. First: Loading the font 'https://fonts.gstatic.com/s/notosans/v42/o-0ZIpQlx3QUlC5A4PNr4C5OaxRsfNNlKbCePevttHOmHS91ixg0.woff2' violates the following Content Security Policy directive: \"fo Measured on 146 pages.",
      "fix": "Fix the scripting errors, starting with the first \u2014 later ones are often consequences.",
      "liveBasis": 1440,
-     "subO": "Scope: Global \u2014 measured on 143 pages/states; shown on about-the-division",
+     "subO": "Scope: Global \u2014 measured on 146 pages/states; shown on about-the-division",
      "liveBox": [
       0,
       0,
@@ -6392,11 +6186,14 @@
     "sitemap",
     "social-defence-faqs",
     "special-mention-matters-raised-under-377",
+    "state--404",
     "state--accessibility-panel-open",
     "state--annual-reports-filtered",
     "state--event-detail",
     "state--events-listing",
     "state--form-empty-submit-validation",
+    "state--gallery-card-opens",
+    "state--gallery-category-filter",
     "state--gallery-lightbox",
     "state--high-contrast-dark",
     "state--high-contrast-invert",
@@ -6441,7 +6238,7 @@
    "liveImg": "captures/board/b0929f0b875a.jpg",
    "liveUrl": "https://www.dosje.gov.in/about-the-division/",
    "_basisLive": 864,
-   "note": "Applies to 142 pages. Fix once, it lands everywhere.",
+   "note": "Applies to 145 pages. Fix once, it lands everywhere.",
    "findings": [
     {
      "num": 1,
@@ -6452,7 +6249,7 @@
      "axis": "Accessibility",
      "severity": "Minor",
      "figma": "GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically.",
-     "live": "Contentinfo landmark should not be contained in another landmark \u2014 <div class=\"mosje-visitor-counter mosje-visitor-counter-total\" role=\"contentinfo\" aria-label=\"Total site visits\">\n\t\t\t\t\t<span class=\"mvc-item mvc-total\">\n\t\t\t<spa (landmark-contentinfo-is-top-level, ). Measured on 142 pages.",
+     "live": "Contentinfo landmark should not be contained in another landmark \u2014 <div class=\"mosje-visitor-counter mosje-visitor-counter-total\" role=\"contentinfo\" aria-label=\"Total site visits\">\n\t\t\t\t\t<span class=\"mvc-item mvc-total\">\n\t\t\t<spa (landmark-contentinfo-is-top-level, ). Measured on 145 pages.",
      "fix": "Correct the markup the rule names; the rule's help page states the accepted fixes.",
      "liveMark": {
       "box": [
@@ -6464,7 +6261,7 @@
       "label": "landmark-contentinfo-is-top-level \u00b7 moderate \u00b7 Contentinfo landmark should not be contained in another landmar"
      },
      "liveBasis": 864,
-     "subO": "Scope: Global \u2014 measured on 142 pages/states; shown on about-the-division",
+     "subO": "Scope: Global \u2014 measured on 145 pages/states; shown on about-the-division",
      "liveBox": [
       0,
       0,
@@ -6583,10 +6380,13 @@
     "sitemap",
     "social-defence-faqs",
     "special-mention-matters-raised-under-377",
+    "state--404",
     "state--annual-reports-filtered",
     "state--event-detail",
     "state--events-listing",
     "state--form-empty-submit-validation",
+    "state--gallery-card-opens",
+    "state--gallery-category-filter",
     "state--gallery-lightbox",
     "state--high-contrast-dark",
     "state--high-contrast-invert",
@@ -6631,7 +6431,7 @@
    "liveImg": "captures/board/c970a7be379e.jpg",
    "liveUrl": "https://www.dosje.gov.in/about-the-division/",
    "_basisLive": 1440,
-   "note": "Applies to 141 pages. Fix once, it lands everywhere.",
+   "note": "Applies to 144 pages. Fix once, it lands everywhere.",
    "findings": [
     {
      "num": 1,
@@ -6642,7 +6442,7 @@
      "axis": "Accessibility",
      "severity": "Minor",
      "figma": "GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically.",
-     "live": "Document should not have more than one contentinfo landmark \u2014 <footer data-elementor-type=\"footer\" data-elementor-id=\"370\" class=\"elementor elementor-370 elementor-location-footer\" data-elementor-post-type=\"elementor_libra (landmark-no-duplicate-contentinfo, ). Measured on 141 pages.",
+     "live": "Document should not have more than one contentinfo landmark \u2014 <footer data-elementor-type=\"footer\" data-elementor-id=\"370\" class=\"elementor elementor-370 elementor-location-footer\" data-elementor-post-type=\"elementor_libra (landmark-no-duplicate-contentinfo, ). Measured on 144 pages.",
      "fix": "Correct the markup the rule names; the rule's help page states the accepted fixes.",
      "liveMark": {
       "box": [
@@ -6654,7 +6454,7 @@
       "label": "landmark-no-duplicate-contentinfo \u00b7 moderate \u00b7 Document should not have more than one contentinfo landmark"
      },
      "liveBasis": 1440,
-     "subO": "Scope: Global \u2014 measured on 141 pages/states; shown on about-the-division",
+     "subO": "Scope: Global \u2014 measured on 144 pages/states; shown on about-the-division",
      "liveBox": [
       0,
       0,
@@ -6773,10 +6573,13 @@
     "sitemap",
     "social-defence-faqs",
     "special-mention-matters-raised-under-377",
+    "state--404",
     "state--annual-reports-filtered",
     "state--event-detail",
     "state--events-listing",
     "state--form-empty-submit-validation",
+    "state--gallery-card-opens",
+    "state--gallery-category-filter",
     "state--gallery-lightbox",
     "state--high-contrast-dark",
     "state--high-contrast-invert",
@@ -6820,7 +6623,7 @@
    "liveImg": "captures/board/b8fb29fa0043.jpg",
    "liveUrl": "https://www.dosje.gov.in/about-the-division/",
    "_basisLive": 864,
-   "note": "Applies to 135 pages. Fix once, it lands everywhere.",
+   "note": "Applies to 138 pages. Fix once, it lands everywhere.",
    "findings": [
     {
      "num": 1,
@@ -6831,7 +6634,7 @@
      "axis": "Accessibility",
      "severity": "Minor",
      "figma": "GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically.",
-     "live": "Heading levels should only increase by one \u2014 <h6 class=\"elementor-heading-title elementor-size-default\">Need Support?</h6> (heading-order, ). Measured on 135 pages.",
+     "live": "Heading levels should only increase by one \u2014 <h6 class=\"elementor-heading-title elementor-size-default\">Need Support?</h6> (heading-order, ). Measured on 138 pages.",
      "fix": "Correct the markup the rule names; the rule's help page states the accepted fixes.",
      "liveMark": {
       "box": [
@@ -6843,7 +6646,7 @@
       "label": "heading-order \u00b7 moderate \u00b7 Heading levels should only increase by one"
      },
      "liveBasis": 864,
-     "subO": "Scope: Global \u2014 measured on 135 pages/states; shown on about-the-division",
+     "subO": "Scope: Global \u2014 measured on 138 pages/states; shown on about-the-division",
      "liveBox": [
       0,
       0,
@@ -6955,11 +6758,14 @@
     "sitemap",
     "social-defence-faqs",
     "special-mention-matters-raised-under-377",
+    "state--404",
     "state--accessibility-panel-open",
     "state--annual-reports-filtered",
     "state--event-detail",
     "state--events-listing",
     "state--form-empty-submit-validation",
+    "state--gallery-card-opens",
+    "state--gallery-category-filter",
     "state--gallery-lightbox",
     "state--high-contrast-dark",
     "state--high-contrast-invert",
@@ -7003,7 +6809,7 @@
    "liveImg": "captures/board/470b07dada46.jpg",
    "liveUrl": "https://www.dosje.gov.in/acts-rules/",
    "_basisLive": 1440,
-   "note": "Applies to 69 pages. Fix once, it lands everywhere.",
+   "note": "Applies to 70 pages. Fix once, it lands everywhere.",
    "findings": [
     {
      "num": 1,
@@ -7014,10 +6820,10 @@
      "axis": "Accessibility",
      "severity": "Minor",
      "figma": "GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically.",
-     "live": "All page content should be contained by landmarks \u2014 <a class=\"skip-link screen-reader-text\" href=\"#content\">Skip to content</a> (region, ). Measured on 69 pages.",
+     "live": "All page content should be contained by landmarks \u2014 <a class=\"skip-link screen-reader-text\" href=\"#content\">Skip to content</a> (region, ). Measured on 70 pages.",
      "fix": "Correct the markup the rule names; the rule's help page states the accepted fixes.",
      "liveBasis": 1440,
-     "subO": "Scope: Global \u2014 measured on 69 pages/states; shown on acts-rules",
+     "subO": "Scope: Global \u2014 measured on 70 pages/states; shown on acts-rules",
      "liveBox": [
       0,
       0,
@@ -7085,6 +6891,7 @@
     "state--annual-reports-filtered",
     "state--events-listing",
     "state--form-empty-submit-validation",
+    "state--gallery-category-filter",
     "state--search-no-results",
     "state--tenders-page-2",
     "suo-moto-disclosure",
@@ -7111,7 +6918,7 @@
    "liveImg": "captures/board/20f5828e0c95.jpg",
    "liveUrl": "https://www.dosje.gov.in/advertisement/",
    "_basisLive": 1440,
-   "note": "Applies to 55 pages. Fix once, it lands everywhere.",
+   "note": "Applies to 56 pages. Fix once, it lands everywhere.",
    "findings": [
     {
      "num": 1,
@@ -7122,10 +6929,10 @@
      "axis": "Content & Iconography",
      "severity": "Minor",
      "figma": "GIGW 3.0: every page publishes a descriptive title and meta description.",
-     "live": "The page publishes no meta description. Measured on 55 pages.",
+     "live": "The page publishes no meta description. Measured on 56 pages.",
      "fix": "Publish a page-specific title and meta description.",
      "liveBasis": 1440,
-     "subO": "Scope: Global \u2014 measured on 55 pages/states; shown on advertisement",
+     "subO": "Scope: Global \u2014 measured on 56 pages/states; shown on advertisement",
      "liveBox": [
       0,
       0,
@@ -7184,6 +6991,7 @@
     "scheme-documents--merger-order",
     "scw-directory",
     "sitemap",
+    "state--404",
     "state--event-detail",
     "state--search-no-results",
     "state--search-scholarship",
@@ -7444,6 +7252,62 @@
     "organisation--pearls-of-wisdom",
     "policies",
     "supreme-court-judgement"
+   ]
+  },
+  {
+   "slug": "WEB-GLOBAL-087",
+   "name": "Global \u00b7 Focus indicator too faint to find \u2014 Pagination page numbers",
+   "env": "live",
+   "liveImg": "captures/board/47d308d98977.jpg",
+   "liveUrl": "https://www.dosje.gov.in/annual-reports/",
+   "_basisLive": 864,
+   "note": "Applies to 8 pages. Fix once, it lands everywhere.",
+   "findings": [
+    {
+     "num": 1,
+     "id": "WEB-GLOBAL-087",
+     "element": "Pagination page numbers",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "WCAG 2.2 AA (2.4.7): every keyboard-focusable control shows a visible focus indicator. DBIM and UX4G both draw a 4px ring.",
+     "live": "Pagination page numbers: screenshotted focused and then blurred, only 1.3% of the region changes \u2014 the digit turns from grey to black, with no ring or fill, which is hard to find on a page. Measured on 8 pages.",
+     "fix": "Give the control a visible focus style \u2014 the estate's 4px ring \u2014 and make sure it is not removed by an `outline: none` elsewhere in the stylesheet.",
+     "liveMark": {
+      "box": [
+       167,
+       140,
+       192,
+       172
+      ],
+      "label": "Tab stop 74 \u00b7 focused only the digit darkens (1.3% of pixels)"
+     },
+     "liveBasis": 864,
+     "subO": "Scope: Global \u2014 measured on 8 pages/states; shown on annual-reports",
+     "liveBox": [
+      0,
+      0,
+      864,
+      320
+     ],
+     "sectionBox": [
+      0,
+      0,
+      864,
+      320
+     ]
+    }
+   ],
+   "_pages": [
+    "annual-reports",
+    "circulars-notifications",
+    "cpio",
+    "events",
+    "gallery",
+    "rti",
+    "schemes-services",
+    "updates"
    ]
   },
   {
@@ -8454,7 +8318,7 @@
    "slug": "circulars-notifications.desktop",
    "name": "Circulars Notifications \u00b7 desktop",
    "env": "live",
-   "liveImg": "captures/board/ef3f0e5b3a0e.jpg",
+   "liveImg": "captures/board/9bdcd80b77e4.jpg",
    "liveUrl": "https://www.dosje.gov.in/circulars-notifications/",
    "_basisLive": 864,
    "findings": [
@@ -8474,7 +8338,7 @@
        600,
        140,
        764,
-       256
+       261
       ],
       "label": "2 of 1,248 links are dead: DoPTOM08.06.2018.pdf and dopteng.pdf \u00b7 HTTP 404"
      },
@@ -8482,13 +8346,13 @@
       0,
       0,
       864,
-      396
+      401
      ],
      "sectionBox": [
       0,
       0,
       864,
-      396
+      401
      ]
     }
    ]
@@ -8923,7 +8787,7 @@
      "axis": "Color & Token",
      "severity": "Blocker",
      "figma": "WCAG 2.2 AA (1.4.11): the visible part of a control \u2014 its icon, its outline, its indicator \u2014 needs 3:1 against what is behind it.",
-     "live": "Text \u201cSession Cookies always active\u201d (input.form-check-input) renders #545454 on #0373DF at 16px/400 \u2014 measured on the capture's pixels: #FFFFFF on #90BFEC is 1.94:1 against the 3.0:1 minimum. Also measured on the 375px capture of the same page.",
+     "live": "Text \u201cSession Cookies always active\u201d (input.form-check-input) renders #545454 on #0373DF at 16px/400 \u2014 #FFFFFF on #90BFEC as painted on the capture: 1.94:1 against the 3.0:1 minimum. Also measured on the 375px capture of the same page.",
      "fix": "Darken the icon or its ground until the pair reaches 3:1. The control's accessible name is already correct; only what is drawn needs changing.",
      "liveBasis": 1440,
      "liveMark": {
@@ -8933,7 +8797,7 @@
        1275,
        164
       ],
-      "label": "#FFFFFF on #90BFEC = 1.94:1 \u00b7 needs 3.0:1 \u00b7 FAIL"
+      "label": "#FFFFFF on #90BFEC = 1.94:1 \u00b7 icon control \u00b7 needs 3.0:1 \u00b7 FAIL"
      },
      "liveBox": [
       0,
@@ -8956,7 +8820,7 @@
      "axis": "Color & Token",
      "severity": "Major",
      "figma": "WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold.",
-     "live": "Text \u201cEnsures user session persistence, allowing seamless navigation on the\u2026\u201d (p.small) renders #938BB6 on #FFFFFF at 12px/400 \u2014 measured on the capture's pixels: #9A92BA on #FFFFFF is 2.92:1 against the 4.5:1 minimum. Also measured on the 375px capture of the same page.",
+     "live": "Text \u201cEnsures user session persistence, allowing seamless navigation on the\u2026\u201d (p.small) renders #938BB6 on #FFFFFF at 12px/400 \u2014 #938BB6 on #FFFFFF as painted on the capture: 3.18:1 against the 4.5:1 minimum. Also measured on the 375px capture of the same page.",
      "fix": "Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used.",
      "liveBasis": 1440,
      "liveMark": {
@@ -8966,7 +8830,7 @@
        769,
        188
       ],
-      "label": "#9A92BA on #FFFFFF = 2.92:1 at 12px \u00b7 needs 4.5:1 \u00b7 FAIL"
+      "label": "#938BB6 on #FFFFFF = 3.18:1 at 12px \u00b7 needs 4.5:1 \u00b7 FAIL"
      },
      "liveBox": [
       0,
@@ -9352,7 +9216,7 @@
      "axis": "Color & Token",
      "severity": "Major",
      "figma": "WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold.",
-     "live": "Text \u201cPre-Matric (SCs & Others)\u201d (span.mosje-cat-metric-label) renders #6B6F78 on #EAF2FB at 12px/500 \u2014 measured on the capture's pixels: #999FA8 on #EAF2FB is 2.36:1 against the 4.5:1 minimum.",
+     "live": "Text \u201cPre-Matric (SCs & Others)\u201d (span.mosje-cat-metric-label) renders #6B6F78 on #EAF2FB at 12px/500 \u2014 #6B6F78 on #EAF2FB as painted on the capture: 4.46:1 against the 4.5:1 minimum.",
      "fix": "Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used.",
      "liveBasis": 864,
      "liveMark": {
@@ -9362,7 +9226,7 @@
        477,
        159
       ],
-      "label": "#999FA8 on #EAF2FB = 2.36:1 at 12px \u00b7 needs 4.5:1 \u00b7 FAIL"
+      "label": "#6B6F78 on #EAF2FB = 4.46:1 at 12px \u00b7 needs 4.5:1 \u00b7 FAIL"
      },
      "liveBox": [
       0,
@@ -9565,7 +9429,7 @@
      "axis": "Color & Token",
      "severity": "Blocker",
      "figma": "WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold.",
-     "live": "Text \u201c29,015\u201d (div.mosje-hostel-num) renders #2BA84A on #FFFFFF at 20px/600 \u2014 measured on the capture's pixels: #B0DFBB on #FFFFFF is 1.49:1 against the 4.5:1 minimum.",
+     "live": "Text \u201c29,015\u201d (div.mosje-hostel-num) renders #2BA84A on #FFFFFF at 20px/600 \u2014 #2BA84A on #FFFFFF as painted on the capture: 3.09:1 against the 4.5:1 minimum.",
      "fix": "Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used.",
      "liveBasis": 375,
      "liveMark": {
@@ -9575,7 +9439,7 @@
        342,
        162
       ],
-      "label": "#B0DFBB on #FFFFFF = 1.49:1 at 20px \u00b7 needs 4.5:1 \u00b7 FAIL"
+      "label": "#2BA84A on #FFFFFF = 3.09:1 at 20px \u00b7 needs 4.5:1 \u00b7 FAIL"
      },
      "liveBox": [
       0,
@@ -9912,7 +9776,7 @@
      "axis": "Color & Token",
      "severity": "Major",
      "figma": "WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold.",
-     "live": "Text \u201cDeclared\u201d (span.badge) renders #FFFFFF on #3C9718 at 12px/500 \u2014 measured on the capture's pixels: #F9FCF7 on #3C9718 is 3.6:1 against the 4.5:1 minimum. Measured on 2 pages. Also measured on the 375px capture of the same page.",
+     "live": "Text \u201cDeclared\u201d (span.badge) renders #FFFFFF on #3C9718 at 12px/500 \u2014 #FFFFFF on #3C9718 as painted on the capture: 3.73:1 against the 4.5:1 minimum. Measured on 2 pages. Also measured on the 375px capture of the same page.",
      "fix": "Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used.",
      "liveBasis": 1440,
      "liveMark": {
@@ -9922,7 +9786,7 @@
        1017,
        460
       ],
-      "label": "#F9FCF7 on #3C9718 = 3.6:1 at 12px \u00b7 needs 4.5:1 \u00b7 FAIL"
+      "label": "#FFFFFF on #3C9718 = 3.73:1 at 12px \u00b7 needs 4.5:1 \u00b7 FAIL"
      },
      "liveBox": [
       0,
@@ -10108,7 +9972,7 @@
      "axis": "Color & Token",
      "severity": "Major",
      "figma": "WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold.",
-     "live": "Text \u201cDeclared\u201d (span.badge) renders #FFFFFF on #3C9718 at 12px/500 \u2014 measured on the capture's pixels: #F9FCF7 on #3C9718 is 3.6:1 against the 4.5:1 minimum. Measured on 2 pages. Also measured on the 375px capture of the same page.",
+     "live": "Text \u201cDeclared\u201d (span.badge) renders #FFFFFF on #3C9718 at 12px/500 \u2014 #FFFFFF on #3C9718 as painted on the capture: 3.73:1 against the 4.5:1 minimum. Measured on 2 pages. Also measured on the 375px capture of the same page.",
      "fix": "Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used.",
      "liveBasis": 1440,
      "liveMark": {
@@ -10118,7 +9982,7 @@
        1017,
        460
       ],
-      "label": "#F9FCF7 on #3C9718 = 3.6:1 at 12px \u00b7 needs 4.5:1 \u00b7 FAIL"
+      "label": "#FFFFFF on #3C9718 = 3.73:1 at 12px \u00b7 needs 4.5:1 \u00b7 FAIL"
      },
      "liveBox": [
       0,
@@ -10823,14 +10687,45 @@
    "slug": "home.desktop",
    "name": "Home \u00b7 desktop",
    "env": "live",
-   "liveImg": "captures/board/162742ae0684.jpg",
-   "figmaImg": "captures/board/f35feea5c97b.jpg",
-   "figmaUrl": "https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-7805",
+   "liveImg": "captures/board/675a9e1361f3.jpg",
+   "liveUrl": "https://www.dosje.gov.in/",
    "_basisLive": 1440,
-   "_basisFigma": 1440,
    "findings": [
     {
      "num": 1,
+     "id": "WEB-SCREEN-326",
+     "element": "Home hero banner (an unlabelled link)",
+     "section": "Components & States",
+     "axis": "Components & States",
+     "severity": "Blocker",
+     "figma": "WCAG 2.2 AA (2.4.7): every keyboard-focusable control shows a visible focus indicator. DBIM and UX4G both draw a 4px ring.",
+     "live": "Home hero banner (an unlabelled link): screenshotted focused and then blurred, no pixel changes, so a keyboard user cannot see where focus is.",
+     "fix": "Give the control a visible focus style \u2014 the estate's 4px ring \u2014 and make sure it is not removed by an `outline: none` elsewhere in the stylesheet.",
+     "liveBasis": 1440,
+     "liveMark": {
+      "box": [
+       0,
+       140,
+       1440,
+       620
+      ],
+      "label": "Tab stop 27 \u00b7 nothing changes on focus \u00b7 WCAG 2.4.7 FAIL"
+     },
+     "liveBox": [
+      0,
+      0,
+      1440,
+      760
+     ],
+     "sectionBox": [
+      0,
+      0,
+      1440,
+      760
+     ]
+    },
+    {
+     "num": 2,
      "id": "WEB-SCREEN-152",
      "element": "empowering india, every day",
      "section": "Content & Iconography",
@@ -10843,34 +10738,28 @@
      "figmaMark": {
       "box": [
        1524,
-       140,
+       326,
        2372,
-       212
+       398
       ],
       "label": "Design: \u201cempowering india, every day\u201d \u00b7 absent from the build"
      },
-     "figmaBasis": 1440,
+     "figmaBasis": 1440.0,
      "liveBox": [
       0,
       0,
       1440,
-      1080.0
-     ],
-     "figmaBox": [
-      0,
-      0,
-      1440,
-      669
+      760
      ],
      "sectionBox": [
       0,
       0,
       1440,
-      1080.0
+      760
      ]
     },
     {
-     "num": 2,
+     "num": 3,
      "id": "WEB-SCREEN-150",
      "element": "bringing social justice to every doorstep through digital ac",
      "section": "Content & Iconography",
@@ -10883,34 +10772,28 @@
      "figmaMark": {
       "box": [
        1524,
-       228,
+       414,
        2372,
-       256
+       442
       ],
       "label": "Design: \u201cbringing social justice to every doorste\u201d \u00b7 absent from the build"
      },
-     "figmaBasis": 1440,
+     "figmaBasis": 1440.0,
      "liveBox": [
       0,
       0,
       1440,
-      1080.0
-     ],
-     "figmaBox": [
-      0,
-      0,
-      1440,
-      669
+      760
      ],
      "sectionBox": [
       0,
       0,
       1440,
-      1080.0
+      760
      ]
     },
     {
-     "num": 3,
+     "num": 4,
      "id": "WEB-SCREEN-153",
      "element": "explore opportunities",
      "section": "Content & Iconography",
@@ -10923,34 +10806,28 @@
      "figmaMark": {
       "box": [
        1548,
-       308,
+       494,
        1720,
-       332
+       518
       ],
       "label": "Design: \u201cexplore opportunities\u201d \u00b7 absent from the build"
      },
-     "figmaBasis": 1440,
+     "figmaBasis": 1440.0,
      "liveBox": [
       0,
       0,
       1440,
-      1080.0
-     ],
-     "figmaBox": [
-      0,
-      0,
-      1440,
-      669
+      760
      ],
      "sectionBox": [
       0,
       0,
       1440,
-      1080.0
+      760
      ]
     },
     {
-     "num": 4,
+     "num": 5,
      "id": "WEB-SCREEN-169",
      "element": "view schemes",
      "section": "Content & Iconography",
@@ -10963,34 +10840,28 @@
      "figmaMark": {
       "box": [
        1792,
-       308,
+       494,
        1902,
-       332
+       518
       ],
       "label": "Design: \u201cview schemes\u201d \u00b7 absent from the build"
      },
-     "figmaBasis": 1440,
+     "figmaBasis": 1440.0,
      "liveBox": [
       0,
       0,
       1440,
-      1080.0
-     ],
-     "figmaBox": [
-      0,
-      0,
-      1440,
-      669
+      760
      ],
      "sectionBox": [
       0,
       0,
       1440,
-      1080.0
+      760
      ]
     },
     {
-     "num": 5,
+     "num": 6,
      "id": "WEB-SCREEN-157",
      "element": "latest updates",
      "section": "Content & Iconography",
@@ -11003,70 +10874,24 @@
      "figmaMark": {
       "box": [
        132,
-       505,
+       691,
        249,
-       529
+       715
       ],
       "label": "Design: \u201clatest updates\u201d \u00b7 absent from the build"
      },
-     "figmaBasis": 1440,
+     "figmaBasis": 1440.0,
      "liveBox": [
       0,
       0,
       1440,
-      1080.0
-     ],
-     "figmaBox": [
-      0,
-      0,
-      1440,
-      669
+      760
      ],
      "sectionBox": [
       0,
       0,
       1440,
-      1080.0
-     ]
-    },
-    {
-     "num": 6,
-     "id": "WEB-SCREEN-158",
-     "element": "new funding alert!",
-     "section": "Content & Iconography",
-     "axis": "Content & Iconography",
-     "severity": "Major",
-     "figma": "The approved Figma handoff frame for this screen. Design: \u201cnew funding alert!\u201d \u00b7 absent from the build",
-     "live": "The design frame carries \u201cnew funding alert!\u201d (14px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page.",
-     "fix": "Add the content the design carries, or confirm with the design team that it was dropped deliberately.",
-     "liveBasis": 1440,
-     "figmaMark": {
-      "box": [
-       289,
-       499,
-       1051,
-       519
-      ],
-      "label": "Design: \u201cnew funding alert!\u201d \u00b7 absent from the build"
-     },
-     "figmaBasis": 1440,
-     "liveBox": [
-      0,
-      0,
-      1440,
-      1080.0
-     ],
-     "figmaBox": [
-      0,
-      0,
-      1440,
-      669
-     ],
-     "sectionBox": [
-      0,
-      0,
-      1440,
-      1080.0
+      760
      ]
     }
    ]
@@ -11081,23 +10906,23 @@
    "findings": [
     {
      "num": 1,
-     "id": "WEB-SCREEN-033",
+     "id": "WEB-SCREEN-317",
      "element": "Go to slide 1",
      "section": "Layout & Spacing",
      "axis": "Layout & Spacing",
      "severity": "Major",
      "figma": "UX4G 3.0 \u00a76: interactive targets are at least 44\u00d744px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24\u00d724.",
-     "live": "\u201cGo to slide 1\u201d is 12\u00d712px. UX4G 3.0 \u00a76 sets 44\u00d744px as the minimum interactive size; at 12\u00d712 it is also below the WCAG 2.5.8 AA floor of 24\u00d724.",
+     "live": "\u201cGo to slide 1\u201d is 40\u00d712px. UX4G 3.0 \u00a76 sets 44\u00d744px as the minimum interactive size; at 40\u00d712 it is also below the WCAG 2.5.8 AA floor of 24\u00d724. Measured on 2 pages.",
      "fix": "Grow the control, or add transparent padding around it, until it measures 44\u00d744px with 8px clear of its neighbours.",
      "liveBasis": 375,
      "liveMark": {
       "box": [
        108,
        140,
-       120,
+       148,
        152
       ],
-      "label": "Target 12\u00d712px \u00b7 UX4G needs 44\u00d744 \u00b7 WCAG 2.5.8 needs 24\u00d724 \u00b7 FAIL"
+      "label": "Target 40\u00d712px \u00b7 UX4G needs 44\u00d744 \u00b7 WCAG 2.5.8 needs 24\u00d724 \u00b7 FAIL"
      },
      "liveBox": [
       0,
@@ -11114,23 +10939,23 @@
     },
     {
      "num": 2,
-     "id": "WEB-SCREEN-036",
+     "id": "WEB-SCREEN-316",
      "element": "Go to slide 2",
      "section": "Layout & Spacing",
      "axis": "Layout & Spacing",
      "severity": "Major",
      "figma": "UX4G 3.0 \u00a76: interactive targets are at least 44\u00d744px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24\u00d724.",
-     "live": "\u201cGo to slide 2\u201d is 40\u00d712px. UX4G 3.0 \u00a76 sets 44\u00d744px as the minimum interactive size; at 40\u00d712 it is also below the WCAG 2.5.8 AA floor of 24\u00d724.",
+     "live": "\u201cGo to slide 2\u201d is 12\u00d712px. UX4G 3.0 \u00a76 sets 44\u00d744px as the minimum interactive size; at 12\u00d712 it is also below the WCAG 2.5.8 AA floor of 24\u00d724. Measured on 2 pages.",
      "fix": "Grow the control, or add transparent padding around it, until it measures 44\u00d744px with 8px clear of its neighbours.",
      "liveBasis": 375,
      "liveMark": {
       "box": [
-       132,
+       160,
        140,
        172,
        152
       ],
-      "label": "Target 40\u00d712px \u00b7 UX4G needs 44\u00d744 \u00b7 WCAG 2.5.8 needs 24\u00d724 \u00b7 FAIL"
+      "label": "Target 12\u00d712px \u00b7 UX4G needs 44\u00d744 \u00b7 WCAG 2.5.8 needs 24\u00d724 \u00b7 FAIL"
      },
      "liveBox": [
       0,
@@ -12293,115 +12118,6 @@
    ]
   },
   {
-   "slug": "procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations.desktop",
-   "name": "Procedure For Processing Grant In Aid Cases In Respect Of Voluntary Organisations \u00b7 desktop",
-   "env": "live",
-   "liveImg": "captures/board/6d334ec6273e.jpg",
-   "liveUrl": "https://www.dosje.gov.in/procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations/",
-   "_basisLive": 864,
-   "findings": [
-    {
-     "num": 1,
-     "id": "WEB-SCREEN-041",
-     "element": "Home",
-     "section": "Layout & Spacing",
-     "axis": "Layout & Spacing",
-     "severity": "Major",
-     "figma": "UX4G 3.0 \u00a76: interactive targets are at least 44\u00d744px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24\u00d724.",
-     "live": "\u201cHome\u201d is 38\u00d721px. UX4G 3.0 \u00a76 sets 44\u00d744px as the minimum interactive size; at 38\u00d721 it is also below the WCAG 2.5.8 AA floor of 24\u00d724.",
-     "fix": "Grow the control, or add transparent padding around it, until it measures 44\u00d744px with 8px clear of its neighbours.",
-     "liveBasis": 864,
-     "liveMark": {
-      "box": [
-       96,
-       140,
-       134,
-       161
-      ],
-      "label": "Target 38\u00d721px \u00b7 UX4G needs 44\u00d744 \u00b7 WCAG 2.5.8 needs 24\u00d724 \u00b7 FAIL"
-     },
-     "liveBox": [
-      0,
-      0,
-      864,
-      320
-     ],
-     "sectionBox": [
-      0,
-      0,
-      864,
-      320
-     ]
-    },
-    {
-     "num": 2,
-     "id": "WEB-SCREEN-042",
-     "element": "Department",
-     "section": "Layout & Spacing",
-     "axis": "Layout & Spacing",
-     "severity": "Major",
-     "figma": "UX4G 3.0 \u00a76: interactive targets are at least 44\u00d744px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24\u00d724.",
-     "live": "\u201cDepartment\u201d is 74\u00d721px. UX4G 3.0 \u00a76 sets 44\u00d744px as the minimum interactive size; at 74\u00d721 it is also below the WCAG 2.5.8 AA floor of 24\u00d724.",
-     "fix": "Grow the control, or add transparent padding around it, until it measures 44\u00d744px with 8px clear of its neighbours.",
-     "liveBasis": 864,
-     "liveMark": {
-      "box": [
-       229,
-       140,
-       303,
-       161
-      ],
-      "label": "Target 74\u00d721px \u00b7 UX4G needs 44\u00d744 \u00b7 WCAG 2.5.8 needs 24\u00d724 \u00b7 FAIL"
-     },
-     "liveBox": [
-      0,
-      0,
-      864,
-      320
-     ],
-     "sectionBox": [
-      0,
-      0,
-      864,
-      320
-     ]
-    },
-    {
-     "num": 3,
-     "id": "WEB-SCREEN-040",
-     "element": "Associated Organisations",
-     "section": "Layout & Spacing",
-     "axis": "Layout & Spacing",
-     "severity": "Major",
-     "figma": "UX4G 3.0 \u00a76: interactive targets are at least 44\u00d744px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24\u00d724.",
-     "live": "\u201cAssociated Organisations\u201d is 161\u00d721px. UX4G 3.0 \u00a76 sets 44\u00d744px as the minimum interactive size; at 161\u00d721 it is also below the WCAG 2.5.8 AA floor of 24\u00d724.",
-     "fix": "Grow the control, or add transparent padding around it, until it measures 44\u00d744px with 8px clear of its neighbours.",
-     "liveBasis": 864,
-     "liveMark": {
-      "box": [
-       418,
-       140,
-       579,
-       161
-      ],
-      "label": "Target 161\u00d721px \u00b7 UX4G needs 44\u00d744 \u00b7 WCAG 2.5.8 needs 24\u00d724 \u00b7 FAIL"
-     },
-     "liveBox": [
-      0,
-      0,
-      864,
-      320
-     ],
-     "sectionBox": [
-      0,
-      0,
-      864,
-      320
-     ]
-    }
-   ]
-  },
-  {
    "slug": "resources.mobile",
    "name": "Resources \u00b7 mobile",
    "env": "live",
@@ -12714,7 +12430,7 @@
      "axis": "Color & Token",
      "severity": "Blocker",
      "figma": "WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold.",
-     "live": "Text \u201cScheme: Dr. Ambedkar National Merit Award Scheme for meritorious stud\u2026\u201d (p.mb-0) renders #938BB6 on #F9FAFB at 16px/400 \u2014 measured on the capture's pixels: #0373DF on #F9FAFB is 4.44:1 against the 4.5:1 minimum. Measured on 2 pages.",
+     "live": "Text \u201cScheme: Dr. Ambedkar National Merit Award Scheme for meritorious stud\u2026\u201d (p.mb-0) renders #938BB6 on #F9FAFB at 16px/400 \u2014 #938BB6 on #F9FAFB as painted on the capture: 3.04:1 against the 4.5:1 minimum. Measured on 2 pages.",
      "fix": "Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used.",
      "liveBasis": 1440,
      "liveMark": {
@@ -12724,7 +12440,7 @@
        1356,
        164
       ],
-      "label": "#0373DF on #F9FAFB = 4.44:1 at 16px \u00b7 needs 4.5:1 \u00b7 FAIL"
+      "label": "#938BB6 on #F9FAFB = 3.04:1 at 16px \u00b7 needs 4.5:1 \u00b7 FAIL"
      },
      "liveBox": [
       0,
@@ -12757,7 +12473,7 @@
      "axis": "Color & Token",
      "severity": "Blocker",
      "figma": "WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold.",
-     "live": "Text \u201cScheme: Dr. Ambedkar Scheme for Social Integration through Inter-Cast\u2026\u201d (p.mb-0) renders #938BB6 on #F9FAFB at 16px/400 \u2014 measured on the capture's pixels: #2787E3 on #F9FAFB is 3.55:1 against the 4.5:1 minimum. Measured on 2 pages.",
+     "live": "Text \u201cScheme: Dr. Ambedkar Scheme for Social Integration through Inter-Cast\u2026\u201d (p.mb-0) renders #938BB6 on #F9FAFB at 16px/400 \u2014 #938BB6 on #F9FAFB as painted on the capture: 3.04:1 against the 4.5:1 minimum. Measured on 2 pages.",
      "fix": "Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used.",
      "liveBasis": 1440,
      "liveMark": {
@@ -12767,7 +12483,7 @@
        1356,
        188
       ],
-      "label": "#2787E3 on #F9FAFB = 3.55:1 at 16px \u00b7 needs 4.5:1 \u00b7 FAIL"
+      "label": "#938BB6 on #F9FAFB = 3.04:1 at 16px \u00b7 needs 4.5:1 \u00b7 FAIL"
      },
      "liveBox": [
       0,
@@ -13596,6 +13312,49 @@
    ]
   },
   {
+   "slug": "state--gallery-card-opens.desktop",
+   "name": "State \u00b7 Gallery Card Opens \u00b7 desktop",
+   "env": "live",
+   "liveImg": "captures/board/d56a734c629e.jpg",
+   "liveUrl": "https://www.dosje.gov.in/gallery/",
+   "_basisLive": 864,
+   "findings": [
+    {
+     "num": 1,
+     "id": "WEB-SCREEN-315",
+     "element": "svg-img-alt",
+     "section": "Accessibility",
+     "axis": "Accessibility",
+     "severity": "Major",
+     "figma": "GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically.",
+     "live": "<svg> elements with an img role must have an alternative text \u2014 <svg viewBox=\"0 0 24 24\" role=\"img\" tabindex=\"-1\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"10\" cy=\"10\" r=\"7\"></circle><path d=\"M16 16 L21 21\"></path></svg (svg-img-alt, wcag2a, wcag111). Measured on 2 pages.",
+     "fix": "Correct the markup the rule names; the rule's help page states the accepted fixes.",
+     "liveBasis": 864,
+     "liveMark": {
+      "box": [
+       593,
+       140,
+       607,
+       160
+      ],
+      "label": "svg-img-alt \u00b7 serious \u00b7 <svg> elements with an img role must have an alternative text"
+     },
+     "liveBox": [
+      0,
+      0,
+      864,
+      320
+     ],
+     "sectionBox": [
+      0,
+      0,
+      864,
+      320
+     ]
+    }
+   ]
+  },
+  {
    "slug": "state--gallery-lightbox.desktop",
    "name": "State \u00b7 Gallery Lightbox \u00b7 desktop",
    "env": "live",
@@ -13611,7 +13370,7 @@
      "axis": "Accessibility",
      "severity": "Major",
      "figma": "GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically.",
-     "live": "<svg> elements with an img role must have an alternative text \u2014 <svg viewBox=\"0 0 24 24\" role=\"img\" tabindex=\"-1\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"10\" cy=\"10\" r=\"7\"></circle><path d=\"M16 16 L21 21\"></path></svg (svg-img-alt, wcag2a, wcag111).",
+     "live": "<svg> elements with an img role must have an alternative text \u2014 <svg viewBox=\"0 0 24 24\" role=\"img\" tabindex=\"-1\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"10\" cy=\"10\" r=\"7\"></circle><path d=\"M16 16 L21 21\"></path></svg (svg-img-alt, wcag2a, wcag111). Measured on 2 pages.",
      "fix": "Correct the markup the rule names; the rule's help page states the accepted fixes.",
      "liveBasis": 864,
      "liveMark": {
@@ -13654,7 +13413,7 @@
      "axis": "Layout & Spacing",
      "severity": "Major",
      "figma": "UX4G 3.0 \u00a76: interactive targets are at least 44\u00d744px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24\u00d724.",
-     "live": "\u201cGo to slide 1\u201d is 40\u00d712px. UX4G 3.0 \u00a76 sets 44\u00d744px as the minimum interactive size; at 40\u00d712 it is also below the WCAG 2.5.8 AA floor of 24\u00d724.",
+     "live": "\u201cGo to slide 1\u201d is 40\u00d712px. UX4G 3.0 \u00a76 sets 44\u00d744px as the minimum interactive size; at 40\u00d712 it is also below the WCAG 2.5.8 AA floor of 24\u00d724. Measured on 2 pages.",
      "fix": "Grow the control, or add transparent padding around it, until it measures 44\u00d744px with 8px clear of its neighbours.",
      "liveBasis": 375,
      "liveMark": {
@@ -13687,7 +13446,7 @@
      "axis": "Layout & Spacing",
      "severity": "Major",
      "figma": "UX4G 3.0 \u00a76: interactive targets are at least 44\u00d744px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24\u00d724.",
-     "live": "\u201cGo to slide 2\u201d is 12\u00d712px. UX4G 3.0 \u00a76 sets 44\u00d744px as the minimum interactive size; at 12\u00d712 it is also below the WCAG 2.5.8 AA floor of 24\u00d724.",
+     "live": "\u201cGo to slide 2\u201d is 12\u00d712px. UX4G 3.0 \u00a76 sets 44\u00d744px as the minimum interactive size; at 12\u00d712 it is also below the WCAG 2.5.8 AA floor of 24\u00d724. Measured on 2 pages.",
      "fix": "Grow the control, or add transparent padding around it, until it measures 44\u00d744px with 8px clear of its neighbours.",
      "liveBasis": 375,
      "liveMark": {
@@ -13991,7 +13750,7 @@
      "axis": "Color & Token",
      "severity": "Major",
      "figma": "WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold.",
-     "live": "Text \u201cScholarship\u201d (mark) renders #0373DF on #FFF3CD at 16px/600 \u2014 measured on the capture's pixels: #0373DF on #FFF3CD is 4.19:1 against the 4.5:1 minimum.",
+     "live": "Text \u201cScholarship\u201d (mark) renders #0373DF on #FFF3CD at 16px/600 \u2014 #0373DF on #FFF3CD as painted on the capture: 4.19:1 against the 4.5:1 minimum.",
      "fix": "Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used.",
      "liveBasis": 1440,
      "liveMark": {
@@ -14024,7 +13783,7 @@
      "axis": "Color & Token",
      "severity": "Major",
      "figma": "WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold.",
-     "live": "Text \u201c\u2026\u201d (span.page-link) renders #938BB6 on #FFFFFF at 14px/400 \u2014 measured on the capture's pixels: #DEE2E6 on #FFFFFF is 1.3:1 against the 4.5:1 minimum.",
+     "live": "Text \u201c\u2026\u201d (span.page-link) renders #938BB6 on #FFFFFF at 14px/400 \u2014 #938BB6 on #FFFFFF as painted on the capture: 3.18:1 against the 4.5:1 minimum.",
      "fix": "Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used.",
      "liveBasis": 1440,
      "liveMark": {
@@ -14034,7 +13793,7 @@
        1286,
        2613
       ],
-      "label": "#DEE2E6 on #FFFFFF = 1.3:1 at 14px \u00b7 needs 4.5:1 \u00b7 FAIL"
+      "label": "#938BB6 on #FFFFFF = 3.18:1 at 14px \u00b7 needs 4.5:1 \u00b7 FAIL"
      },
      "liveBox": [
       0,
@@ -15099,7 +14858,7 @@
      "axis": "Color & Token",
      "severity": "Major",
      "figma": "WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold.",
-     "live": "Text \u201cPrevious\u201d (a.page-link) renders #938BB6 on #FFFFFF at 16px/400 \u2014 measured on the capture's pixels: #B2ACCB on #FFFFFF is 2.17:1 against the 4.5:1 minimum. Also measured on the 375px capture of the same page.",
+     "live": "Text \u201cPrevious\u201d (a.page-link) renders #938BB6 on #FFFFFF at 16px/400 \u2014 #938BB6 on #FFFFFF as painted on the capture: 3.18:1 against the 4.5:1 minimum. Also measured on the 375px capture of the same page.",
      "fix": "Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used.",
      "liveBasis": 864,
      "liveMark": {
@@ -15109,7 +14868,7 @@
        631,
        178
       ],
-      "label": "#B2ACCB on #FFFFFF = 2.17:1 at 16px \u00b7 needs 4.5:1 \u00b7 FAIL"
+      "label": "#938BB6 on #FFFFFF = 3.18:1 at 16px \u00b7 needs 4.5:1 \u00b7 FAIL"
      },
      "liveBox": [
       0,

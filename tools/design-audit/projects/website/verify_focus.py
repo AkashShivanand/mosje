@@ -12,7 +12,10 @@ from PIL import Image, ImageChops
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 F = os.path.join(BASE, "captures", "focus")
-THRESH = 0.015
+THRESH = 0.015      # below this, the indicator is at best weak
+NONE = 0.003        # below this, nothing a person can see changes (verified by eye: the hero
+                    # banner and the pagination "next" arrow read 0.0; pagination numbers read ~1.3%
+                    # and only turn their digit from grey to black)
 
 
 def changed(a, b):
@@ -32,6 +35,7 @@ def main():
         frac = changed(os.path.join(F, r["focused"]), os.path.join(F, r["blurred"]))
         r["changedFraction"] = round(frac, 4)
         r["indicator"] = frac >= THRESH
+        r["strength"] = "clear" if frac >= THRESH else ("weak" if frac >= NONE else "none")
         out.append(r)
     none = [r for r in out if not r["indicator"]]
     by = collections.Counter((r["tag"], r["text"][:30]) for r in none)

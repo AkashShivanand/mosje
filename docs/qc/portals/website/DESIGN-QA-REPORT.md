@@ -11,18 +11,19 @@
 | | |
 |---|---|
 | Boards in the report | 145 |
-| Findings | **263** - 15 Blocker, 228 Major, 19 Minor, 1 Nit |
+| Findings | **261** - 15 Blocker, 225 Major, 20 Minor, 1 Nit |
 | Applies to every screen | 75 |
-| Specific to one screen | 188 |
+| Specific to one screen | 186 |
+| Withdrawn, not raised, or noted about the design file | 9 |
 
-Every page in dosje.gov.in's sitemap (94 standalone pages), one sample of every record template (documents, events, gallery, officials, tenders, organisations, vacancies, schemes, scheme documents, suo-moto disclosures, CPIO, bookings, updates) and 25 global states were captured at 1440×900 and 375×812 — 263 captures in all — with the computed CSS, accessibility tree, axe-core results, focus behaviour, target sizes and DBIM element inventory of every element recorded. Findings are measured, never eyeballed: each carries the element's real box and its measured value. Captures the server refused (HTTP 429) were rejected and re-taken. The design side is the MoSJE [Handoff] Figma file: 175 design↔build pairs were compared by specification — type size, weight, family and colour on text matched between the two sides — never by pixel diff, and never on width, height or dynamic data. Where one design frame serves many pages (an organisation template against 172 organisation pages), only shared-template properties are compared, not its sample copy. A breach measured on three or more pages is published once, as a Global finding. Out of scope for this report: the screen-reader walkthrough, Hindi content quality, and the 34 live views for which no design frame exists — those are in the separate design report.
+Every page in dosje.gov.in's sitemap (94 standalone pages), one sample of every record template (documents, events, gallery, officials, tenders, organisations, vacancies, schemes, scheme documents, suo-moto disclosures, CPIO, bookings, updates) and 25 global states were captured at 1440×900 and 375×812 — 266 captures in all — with the computed CSS, accessibility tree, axe-core results, focus behaviour, target sizes and DBIM element inventory of every element recorded. Findings are measured, never eyeballed: each carries the element's real box and its measured value. Captures the server refused (HTTP 429) were rejected and re-taken. The design side is the MoSJE [Handoff] Figma file: 175 design↔build pairs were compared by specification — type size, weight, family and colour on text matched between the two sides — never by pixel diff, and never on width, height or dynamic data. Where one design frame serves many pages (an organisation template against 172 organisation pages), only shared-template properties are compared, not its sample copy. A breach measured on three or more pages is published once, as a Global finding. Out of scope for this report: the screen-reader walkthrough, Hindi content quality, and the 34 live views for which no design frame exists — those are in the separate design report.
 
 **Where to start.** The findings with the widest reach or the highest severity:
 
-1. **Open the accessibility option** - `WEB-GLOBAL-008` · Blocker
-2. **Language Translator** - `WEB-GLOBAL-078` · Blocker
-3. **aria-valid-attr-value** - `WEB-GLOBAL-001` · Blocker
-4. **Single Access Mechanism for All Verticals o…** - `WEB-GLOBAL-007` · Blocker
+1. **aria-valid-attr-value** - `WEB-GLOBAL-001` · Blocker
+2. **Single Access Mechanism for All Verticals o…** - `WEB-GLOBAL-007` · Blocker
+3. **Pagination page numbers** - `WEB-GLOBAL-086` · Blocker
+4. **Pagination previous / next arrows** - `WEB-GLOBAL-085` · Blocker
 5. **Previous slide** - `WEB-GLOBAL-079` · Blocker
 
 ---
@@ -50,34 +51,10 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “Single Access Mechanism for All Verticals of Empowerment & Social Har…” (p.elementor-heading-title) renders #FFFFFF on #F97316 at 16px/400 — measured on the capture's pixels: #FFFFFF on #F97316 is 2.8:1 against the 4.5:1 minimum. Measured on 11 pages. |
+| **Build does** | Text “Single Access Mechanism for All Verticals of Empowerment & Social Har…” (p.elementor-heading-title) renders #FFFFFF on #F97316 at 16px/400 — #FFFFFF on #F97316 as painted on the capture: 2.8:1 against the 4.5:1 minimum. Measured on 10 pages. |
 | **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
 
 [Live page](https://www.dosje.gov.in/)
-
-### Open the accessibility option
-
-`WEB-GLOBAL-008` · **Blocker** · Components & States · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | WCAG 2.2 AA (2.4.7): every keyboard-focusable control shows a visible focus indicator. DBIM and UX4G both draw a 4px ring. |
-| **Build does** | Tab stop 1 (button#open-the-accessibility-menu, “Open the accessibility option”) shows no visible change when focused — outline, box-shadow, border, background and colour are identical focused and unfocused. Measured on 142 pages. |
-| **Fix** | Give the control a visible focus style — the estate's 4px ring — and make sure it is not removed by an `outline: none` elsewhere in the stylesheet. |
-
-[Live page](https://www.dosje.gov.in/about-the-division/)
-
-### Language Translator
-
-`WEB-GLOBAL-078` · **Blocker** · Color & Token · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | WCAG 2.2 AA (1.4.11): the visible part of a control — its icon, its outline, its indicator — needs 3:1 against what is behind it. |
-| **Build does** | Text “Language Translator” (button.bhashini-dropdown-btn) renders #0373DF on #0373DF at 14px/400 — measured on the capture's pixels: #A3CCF3 on #0373DF is 2.76:1 against the 3.0:1 minimum. Measured on 129 pages. |
-| **Fix** | Darken the icon or its ground until the pair reaches 3:1. The control's accessible name is already correct; only what is drawn needs changing. |
-
-[Live page](https://www.dosje.gov.in/about-the-division/)
 
 ### Previous slide
 
@@ -86,22 +63,34 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.11): the visible part of a control — its icon, its outline, its indicator — needs 3:1 against what is behind it. |
-| **Build does** | Text “Previous slide” (div.ccps-nav-btn) renders #EEEEEE on #FFFFFF at 16px/400 — measured on the capture's pixels: #F1EFEA on #FBF3DC is 1.04:1 against the 3.0:1 minimum. Measured on 7 pages. |
+| **Build does** | Text “Previous slide” (div.ccps-nav-btn) renders #EEEEEE on #FFFFFF at 16px/400 — #F0EFED on #FCF9EA as painted on the capture: 1.09:1 against the 3.0:1 minimum. |
 | **Fix** | Darken the icon or its ground until the pair reaches 3:1. The control's accessible name is already correct; only what is drawn needs changing. |
 
 [Live page](https://www.dosje.gov.in/)
 
-### Go to slide 1
+### Pagination previous / next arrows
 
-`WEB-GLOBAL-080` · **Blocker** · Color & Token · Scope: every screen with this element
+`WEB-GLOBAL-085` · **Blocker** · Components & States · Scope: every screen with this element
 
 | | |
 |---|---|
-| **Design says** | WCAG 2.2 AA (1.4.11): the visible part of a control — its icon, its outline, its indicator — needs 3:1 against what is behind it. |
-| **Build does** | Text “Go to slide 1” (span.swiper-pagination-bullet) renders #1F2937 on #373737 at 16px/400 — measured on the capture's pixels: #4A4A4A on #0F0F0F is 2.16:1 against the 3.0:1 minimum. |
-| **Fix** | Darken the icon or its ground until the pair reaches 3:1. The control's accessible name is already correct; only what is drawn needs changing. |
+| **Design says** | WCAG 2.2 AA (2.4.7): every keyboard-focusable control shows a visible focus indicator. DBIM and UX4G both draw a 4px ring. |
+| **Build does** | Pagination previous / next arrows: screenshotted focused and then blurred, no pixel changes, so a keyboard user cannot see where focus is. Measured on 9 pages. |
+| **Fix** | Give the control a visible focus style — the estate's 4px ring — and make sure it is not removed by an `outline: none` elsewhere in the stylesheet. |
 
-[Live page](https://www.dosje.gov.in/)
+[Live page](https://www.dosje.gov.in/annual-reports/)
+
+### Pagination page numbers
+
+`WEB-GLOBAL-086` · **Blocker** · Components & States · Scope: every screen with this element
+
+| | |
+|---|---|
+| **Design says** | WCAG 2.2 AA (2.4.7): every keyboard-focusable control shows a visible focus indicator. DBIM and UX4G both draw a 4px ring. |
+| **Build does** | Pagination page numbers: screenshotted focused and then blurred, no pixel changes, so a keyboard user cannot see where focus is. Measured on 9 pages. |
+| **Fix** | Give the control a visible focus style — the estate's 4px ring — and make sure it is not removed by an `outline: none` elsewhere in the stylesheet. |
+
+[Live page](https://www.dosje.gov.in/annual-reports/)
 
 ### g8203_6a017643c9e5a_5jbzbySbWZr2OwiYXBianYQzkv1kI7tVXaWbwldA.jpg
 
@@ -110,7 +99,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 A (1.1.1): every image carries an alt attribute — descriptive where it conveys meaning, empty where it is decorative. |
-| **Build does** | “g8203_6a017643c9e5a_5jbzbySbWZr2OwiYXBianYQzkv1kI7tVXaWbwldA.jpg” renders at 411px wide with no alt attribute. A screen reader announces the file name instead of the content. Measured on 3 pages. |
+| **Build does** | “g8203_6a017643c9e5a_5jbzbySbWZr2OwiYXBianYQzkv1kI7tVXaWbwldA.jpg” renders at 411px wide with no alt attribute. A screen reader announces the file name instead of the content. Measured on 6 pages. |
 | **Fix** | Add an alt attribute: a description where the image carries meaning, alt="" where it is decorative. |
 
 [Live page](https://www.dosje.gov.in/gallery/)
@@ -122,7 +111,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
-| **Build does** | ARIA commands must have an accessible name — <a class="elementor-button elementor-size-sm" role="button" id="accessibilityButton"> (aria-command-name, wcag2a, wcag412). Measured on 143 pages. |
+| **Build does** | ARIA commands must have an accessible name — <a class="elementor-button elementor-size-sm" role="button" id="accessibilityButton"> (aria-command-name, wcag2a, wcag412). Measured on 146 pages. |
 | **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
@@ -135,7 +124,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
 | **Build does** | Links must have discernible text — <a href="https://www.digitalindia.gov.in/" target="_blank">
-							<img loading="lazy" width="105" height="41" src="https://www.dosje.gov.in/wp-content/uploads/ (link-name, wcag2a, wcag244, wcag412). Measured on 143 pages. |
+							<img loading="lazy" width="105" height="41" src="https://www.dosje.gov.in/wp-content/uploads/ (link-name, wcag2a, wcag244, wcag412). Measured on 146 pages. |
 | **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
@@ -171,7 +160,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “Get in Touch” (a.btn) renders #0373DF on #E5EFF9 at 14px/500 — measured on the capture's pixels: #0373DF on #E5EFF9 is 3.99:1 against the 4.5:1 minimum. Measured on 116 pages. |
+| **Build does** | Text “Get in Touch” (a.btn) renders #0373DF on #E5EFF9 at 14px/500 — #0373DF on #E5EFF9 as painted on the capture: 3.99:1 against the 4.5:1 minimum. Measured on 116 pages. |
 | **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
@@ -183,7 +172,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “Get in Touch” (a.btn) renders #0373DF on #E5EFF9 at 16px/500 — measured on the capture's pixels: #0373DF on #E5EFF9 is 3.99:1 against the 4.5:1 minimum. Measured on 123 pages. |
+| **Build does** | Text “Get in Touch” (a.btn) renders #0373DF on #E5EFF9 at 16px/500 — #0373DF on #E5EFF9 as painted on the capture: 3.99:1 against the 4.5:1 minimum. Measured on 126 pages. |
 | **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
@@ -195,22 +184,22 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “About Ministry” (span.elementor-icon-list-text) renders #E2E6EA on #0373DF at 14px/400 — measured on the capture's pixels: #E2E6EA on #0373DF is 3.7:1 against the 4.5:1 minimum. Measured on 121 pages. |
+| **Build does** | Text “About Ministry” (span.elementor-icon-list-text) renders #E2E6EA on #0373DF at 14px/400 — #E2E6EA on #0373DF as painted on the capture: 3.7:1 against the 4.5:1 minimum. Measured on 124 pages. |
 | **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
 
-### Chairperson's office
+### Dr. Ambedkar Foundation Official
 
 `WEB-GLOBAL-020` · **Major** · Color & Token · Scope: every screen with this element
 
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “Chairperson's office” (h4.text-center) renders #0373DF on #F9FAFB at 20px/600 — measured on the capture's pixels: #848586 on #FFFFFF is 3.7:1 against the 4.5:1 minimum. Measured on 14 pages. |
+| **Build does** | Text “Dr. Ambedkar Foundation Official” (h4.text-center) renders #0373DF on #F9FAFB at 20px/600 — #0373DF on #F9FAFB as painted on the capture: 4.44:1 against the 4.5:1 minimum. Measured on 14 pages. |
 | **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
 
-[Live page](https://www.dosje.gov.in/chairpersons-office/)
+[Live page](https://www.dosje.gov.in/daf-directory/)
 
 ### View All Documents from MoSJE
 
@@ -219,7 +208,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “View All Documents from MoSJE” (a.btn) renders #0373DF on #F9FAFB at 14px/500 — measured on the capture's pixels: #2E8AE4 on #F9FAFB is 3.42:1 against the 4.5:1 minimum. Measured on 13 pages. |
+| **Build does** | Text “View All Documents from MoSJE” (a.btn) renders #0373DF on #F9FAFB at 14px/500 — #0373DF on #F9FAFB as painted on the capture: 4.44:1 against the 4.5:1 minimum. Measured on 13 pages. |
 | **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
 
 [Live page](https://www.dosje.gov.in/documents/corrigendum-to-pm-daksh-scheme-guidelines/)
@@ -231,7 +220,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “Dr. Ambedkar International Centre (DAIC)” (a.text-primary) renders #0373DF on #F9FAFB at 16px/400 — measured on the capture's pixels: #0373DF on #F9FAFB is 4.44:1 against the 4.5:1 minimum. Measured on 4 pages. |
+| **Build does** | Text “Dr. Ambedkar International Centre (DAIC)” (a.text-primary) renders #0373DF on #F9FAFB at 16px/400 — #0373DF on #F9FAFB as painted on the capture: 4.44:1 against the 4.5:1 minimum. Measured on 4 pages. |
 | **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
 
 [Live page](https://www.dosje.gov.in/official/dr-swati-s-mishra/)
@@ -243,7 +232,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “Dr. Swati S. Mishra” (h1.h3) renders #0373DF on #F9FAFB at 22px/500 — measured on the capture's pixels: #0675DF on #F9FAFB is 4.35:1 against the 4.5:1 minimum. Measured on 3 pages. |
+| **Build does** | Text “Dr. Swati S. Mishra” (h1.h3) renders #0373DF on #F9FAFB at 22px/500 — #0373DF on #F9FAFB as painted on the capture: 4.44:1 against the 4.5:1 minimum. Measured on 3 pages. |
 | **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
 
 [Live page](https://www.dosje.gov.in/official/dr-swati-s-mishra/)
@@ -255,7 +244,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 A (1.3.1) and GIGW 3.0: one <h1> per page, naming the page. |
-| **Build does** | The page renders no <h1>. The first visible heading is <h6> “Need Support?”. Measured on 41 pages. |
+| **Build does** | The page renders no <h1>. The first visible heading is <h6> “Need Support?”. Measured on 42 pages. |
 | **Fix** | Render exactly one <h1> carrying the page's own title, above the content. |
 
 [Live page](https://www.dosje.gov.in/advertisement/)
@@ -267,7 +256,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 A (1.3.1): heading levels descend without skipping, so the outline can be navigated. |
-| **Build does** | “Need Support?” is an <h6> directly after an <h1>, skipping h2. The outline cannot be navigated reliably by a screen reader. Measured on 135 pages. |
+| **Build does** | “Need Support?” is an <h6> directly after an <h1>, skipping h2. The outline cannot be navigated reliably by a screen reader. Measured on 138 pages. |
 | **Fix** | Re-tag the heading so levels descend in order, or promote the heading above it. Where the markup is only for size, use CSS instead. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
@@ -279,7 +268,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Open Department” is 14×21px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 14×21 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 141 pages. |
+| **Build does** | “Open Department” is 14×21px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 14×21 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 144 pages. |
 | **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
@@ -339,7 +328,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Associated Organisations” is 172×21px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 172×21 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 140 pages. |
+| **Build does** | “Associated Organisations” is 172×21px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 172×21 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 144 pages. |
 | **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
@@ -351,7 +340,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Home” is 41×21px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 41×21 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 140 pages. |
+| **Build does** | “Home” is 41×21px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 41×21 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 144 pages. |
 | **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
@@ -363,7 +352,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Department” is 83×21px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 83×21 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 140 pages. |
+| **Build does** | “Department” is 83×21px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 83×21 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 144 pages. |
 | **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
@@ -507,7 +496,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | DBIM 3.0 §5.6: the footer carries Archives, Website Policy, Related Links and Feedback. |
-| **Build does** | DBIM 5.6 mandates four footer sections. This footer publishes 0 of them; missing: Archives, Website Policy, Related Links, Feedback. Measured on 143 pages. |
+| **Build does** | DBIM 5.6 mandates four footer sections. This footer publishes 0 of them; missing: Archives, Website Policy, Related Links, Feedback. Measured on 146 pages. |
 | **Fix** | Add the missing sections to the footer. Archives and Website Policy need a page each; Related Links and Feedback can carry the existing ones. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
@@ -519,7 +508,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | DBIM 3.0 §2.1: one colour group from the primary palette. UX4G's violet is its own brand layer, not the Department's. |
-| **Build does** | 9 element(s) render UX4G's violet primary rather than the Department's key colour. DBIM 2.1 allows one colour group from the primary palette. Measured on 142 pages. |
+| **Build does** | 9 element(s) render UX4G's violet primary rather than the Department's key colour. DBIM 2.1 allows one colour group from the primary palette. Measured on 145 pages. |
 | **Fix** | Override the inherited UX4G variables so the Department's key colour applies everywhere, including the skip link and the accessibility widget. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
@@ -723,7 +712,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | UX4G 3.0 §2.3: font sizes come from the published type scale (12/14/16/18/20/24/28/32/36/40/52/60), and Body/XS 12px is the minimum. |
-| **Build does** | 1 element(s) render at 10px, which is not on the UX4G type scale (12/14/16/18/20/24/28/32/36/40/52/60). It is also below Body/XS, the stated minimum usable size. Measured on 127 pages. |
+| **Build does** | 1 element(s) render at 10px, which is not on the UX4G type scale (12/14/16/18/20/24/28/32/36/40/52/60). It is also below Body/XS, the stated minimum usable size. Measured on 130 pages. |
 | **Fix** | Move the size to the nearest step on the UX4G scale, and never below 12px. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
@@ -747,7 +736,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | UX4G 3.0 §2.3: font sizes come from the published type scale (12/14/16/18/20/24/28/32/36/40/52/60), and Body/XS 12px is the minimum. |
-| **Build does** | 9 element(s) render at 11px, which is not on the UX4G type scale (12/14/16/18/20/24/28/32/36/40/52/60). It is also below Body/XS, the stated minimum usable size. Measured on 4 pages. |
+| **Build does** | 9 element(s) render at 11px, which is not on the UX4G type scale (12/14/16/18/20/24/28/32/36/40/52/60). It is also below Body/XS, the stated minimum usable size. Measured on 6 pages. |
 | **Fix** | Move the size to the nearest step on the UX4G scale, and never below 12px. |
 
 [Live page](https://www.dosje.gov.in/dashboard/)
@@ -759,7 +748,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
-| **Build does** | Heading levels should only increase by one — <h6 class="elementor-heading-title elementor-size-default">Need Support?</h6> (heading-order, ). Measured on 135 pages. |
+| **Build does** | Heading levels should only increase by one — <h6 class="elementor-heading-title elementor-size-default">Need Support?</h6> (heading-order, ). Measured on 138 pages. |
 | **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
@@ -773,7 +762,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
 | **Build does** | Contentinfo landmark should not be contained in another landmark — <div class="mosje-visitor-counter mosje-visitor-counter-total" role="contentinfo" aria-label="Total site visits">
 					<span class="mvc-item mvc-total">
-			<spa (landmark-contentinfo-is-top-level, ). Measured on 142 pages. |
+			<spa (landmark-contentinfo-is-top-level, ). Measured on 145 pages. |
 | **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
@@ -785,7 +774,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
-| **Build does** | Document should not have more than one contentinfo landmark — <footer data-elementor-type="footer" data-elementor-id="370" class="elementor elementor-370 elementor-location-footer" data-elementor-post-type="elementor_libra (landmark-no-duplicate-contentinfo, ). Measured on 141 pages. |
+| **Build does** | Document should not have more than one contentinfo landmark — <footer data-elementor-type="footer" data-elementor-id="370" class="elementor elementor-370 elementor-location-footer" data-elementor-post-type="elementor_libra (landmark-no-duplicate-contentinfo, ). Measured on 144 pages. |
 | **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
@@ -797,7 +786,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | GIGW 3.0 and WCAG 3.1.1: the page declares its language; en-IN on a Government of India property. |
-| **Build does** | The document declares lang="en-US" on a Government of India property; en-IN is the correct locale. Measured on 143 pages. |
+| **Build does** | The document declares lang="en-US" on a Government of India property; en-IN is the correct locale. Measured on 146 pages. |
 | **Fix** | Set lang="en-IN" on <html>, and lang on any block in another language. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
@@ -809,7 +798,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | GIGW 3.0 quality: a page loads without scripting errors. |
-| **Build does** | The page logs 21 JavaScript errors on load. First: Error: <svg> attribute height: Expected length, "undefined". Measured on 143 pages. |
+| **Build does** | The page logs 21 JavaScript errors on load. First: Loading the font 'https://fonts.gstatic.com/s/notosans/v42/o-0ZIpQlx3QUlC5A4PNr4C5OaxRsfNNlKbCePevttHOmHS91ixg0.woff2' violates the following Content Security Policy directive: "fo Measured on 146 pages. |
 | **Fix** | Fix the scripting errors, starting with the first — later ones are often consequences. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
@@ -821,7 +810,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | GIGW 3.0: every page publishes a descriptive title and meta description. |
-| **Build does** | The page publishes no meta description. Measured on 55 pages. |
+| **Build does** | The page publishes no meta description. Measured on 56 pages. |
 | **Fix** | Publish a page-specific title and meta description. |
 
 [Live page](https://www.dosje.gov.in/advertisement/)
@@ -893,7 +882,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
-| **Build does** | All page content should be contained by landmarks — <a class="skip-link screen-reader-text" href="#content">Skip to content</a> (region, ). Measured on 69 pages. |
+| **Build does** | All page content should be contained by landmarks — <a class="skip-link screen-reader-text" href="#content">Skip to content</a> (region, ). Measured on 70 pages. |
 | **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
 
 [Live page](https://www.dosje.gov.in/acts-rules/)
@@ -921,6 +910,18 @@ Each has its own board in the PDF, showing the design and the build side by side
 | **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
 
 [Live page](https://www.dosje.gov.in/cpio/)
+
+### Pagination page numbers
+
+`WEB-GLOBAL-087` · **Minor** · Components & States · Scope: every screen with this element
+
+| | |
+|---|---|
+| **Design says** | WCAG 2.2 AA (2.4.7): every keyboard-focusable control shows a visible focus indicator. DBIM and UX4G both draw a 4px ring. |
+| **Build does** | Pagination page numbers: screenshotted focused and then blurred, only 1.3% of the region changes — the digit turns from grey to black, with no ring or fill, which is hard to find on a page. Measured on 8 pages. |
+| **Fix** | Give the control a visible focus style — the estate's 4px ring — and make sure it is not removed by an `outline: none` elsewhere in the stylesheet. |
+
+[Live page](https://www.dosje.gov.in/annual-reports/)
 
 ### Audience page standfirst
 
@@ -1063,7 +1064,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.11): the visible part of a control — its icon, its outline, its indicator — needs 3:1 against what is behind it. |
-| **Build does** | Text “Session Cookies always active” (input.form-check-input) renders #545454 on #0373DF at 16px/400 — measured on the capture's pixels: #FFFFFF on #90BFEC is 1.94:1 against the 3.0:1 minimum. Also measured on the 375px capture of the same page. |
+| **Build does** | Text “Session Cookies always active” (input.form-check-input) renders #545454 on #0373DF at 16px/400 — #FFFFFF on #90BFEC as painted on the capture: 1.94:1 against the 3.0:1 minimum. Also measured on the 375px capture of the same page. |
 | **Fix** | Darken the icon or its ground until the pair reaches 3:1. The control's accessible name is already correct; only what is drawn needs changing. |
 
 [Live page](https://www.dosje.gov.in/cookies/)
@@ -1075,7 +1076,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “Ensures user session persistence, allowing seamless navigation on the…” (p.small) renders #938BB6 on #FFFFFF at 12px/400 — measured on the capture's pixels: #9A92BA on #FFFFFF is 2.92:1 against the 4.5:1 minimum. Also measured on the 375px capture of the same page. |
+| **Build does** | Text “Ensures user session persistence, allowing seamless navigation on the…” (p.small) renders #938BB6 on #FFFFFF at 12px/400 — #938BB6 on #FFFFFF as painted on the capture: 3.18:1 against the 4.5:1 minimum. Also measured on the 375px capture of the same page. |
 | **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
 
 [Live page](https://www.dosje.gov.in/cookies/)
@@ -1089,10 +1090,84 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “29,015” (div.mosje-hostel-num) renders #2BA84A on #FFFFFF at 20px/600 — measured on the capture's pixels: #B0DFBB on #FFFFFF is 1.49:1 against the 4.5:1 minimum. |
+| **Build does** | Text “29,015” (div.mosje-hostel-num) renders #2BA84A on #FFFFFF at 20px/600 — #2BA84A on #FFFFFF as painted on the capture: 3.09:1 against the 4.5:1 minimum. |
 | **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
 
 [Live page](https://www.dosje.gov.in/dashboard/)
+
+## Home · desktop
+
+### Home hero banner (an unlabelled link)
+
+`WEB-SCREEN-326` · **Blocker** · Components & States · Scope: Home · desktop
+
+| | |
+|---|---|
+| **Design says** | WCAG 2.2 AA (2.4.7): every keyboard-focusable control shows a visible focus indicator. DBIM and UX4G both draw a 4px ring. |
+| **Build does** | Home hero banner (an unlabelled link): screenshotted focused and then blurred, no pixel changes, so a keyboard user cannot see where focus is. |
+| **Fix** | Give the control a visible focus style — the estate's 4px ring — and make sure it is not removed by an `outline: none` elsewhere in the stylesheet. |
+
+[Live page](https://www.dosje.gov.in/)
+
+### empowering india, every day
+
+`WEB-SCREEN-152` · **Major** · Content & Iconography · Scope: Home · desktop
+
+| | |
+|---|---|
+| **Design says** | The approved Figma handoff frame for this screen. Design: “empowering india, every day” · absent from the build |
+| **Build does** | The design frame carries “empowering india, every day” (56px). Nothing with that text renders on the live page. |
+| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+
+[Live page](https://www.dosje.gov.in/)
+
+### bringing social justice to every doorstep through digital ac
+
+`WEB-SCREEN-150` · **Major** · Content & Iconography · Scope: Home · desktop
+
+| | |
+|---|---|
+| **Design says** | The approved Figma handoff frame for this screen. Design: “bringing social justice to every doorste” · absent from the build |
+| **Build does** | The design frame carries “bringing social justice to every doorstep through digital access” (22px). Nothing with that text renders on the live page. |
+| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+
+[Live page](https://www.dosje.gov.in/)
+
+### explore opportunities
+
+`WEB-SCREEN-153` · **Major** · Content & Iconography · Scope: Home · desktop
+
+| | |
+|---|---|
+| **Design says** | The approved Figma handoff frame for this screen. Design: “explore opportunities” · absent from the build |
+| **Build does** | The design frame carries “explore opportunities” (16px). Nothing with that text renders on the live page. |
+| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+
+[Live page](https://www.dosje.gov.in/)
+
+### view schemes
+
+`WEB-SCREEN-169` · **Major** · Content & Iconography · Scope: Home · desktop
+
+| | |
+|---|---|
+| **Design says** | The approved Figma handoff frame for this screen. Design: “view schemes” · absent from the build |
+| **Build does** | The design frame carries “view schemes” (16px). Nothing with that text renders on the live page. |
+| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+
+[Live page](https://www.dosje.gov.in/)
+
+### latest updates
+
+`WEB-SCREEN-157` · **Major** · Content & Iconography · Scope: Home · desktop
+
+| | |
+|---|---|
+| **Design says** | The approved Figma handoff frame for this screen. Design: “latest updates” · absent from the build |
+| **Build does** | The design frame carries “latest updates” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
+| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+
+[Live page](https://www.dosje.gov.in/)
 
 ## Minutes Of Screening Committees 2 · mobile
 
@@ -1117,7 +1192,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “Scheme: Dr. Ambedkar National Merit Award Scheme for meritorious stud…” (p.mb-0) renders #938BB6 on #F9FAFB at 16px/400 — measured on the capture's pixels: #0373DF on #F9FAFB is 4.44:1 against the 4.5:1 minimum. Measured on 2 pages. |
+| **Build does** | Text “Scheme: Dr. Ambedkar National Merit Award Scheme for meritorious stud…” (p.mb-0) renders #938BB6 on #F9FAFB at 16px/400 — #938BB6 on #F9FAFB as painted on the capture: 3.04:1 against the 4.5:1 minimum. Measured on 2 pages. |
 | **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
 
 [Live page](https://www.dosje.gov.in/scheme-documents/dr-ambedkar-national-merit-award-scheme-for-scs-students-for-class-12th-level/)
@@ -1131,7 +1206,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “Scheme: Dr. Ambedkar Scheme for Social Integration through Inter-Cast…” (p.mb-0) renders #938BB6 on #F9FAFB at 16px/400 — measured on the capture's pixels: #2787E3 on #F9FAFB is 3.55:1 against the 4.5:1 minimum. Measured on 2 pages. |
+| **Build does** | Text “Scheme: Dr. Ambedkar Scheme for Social Integration through Inter-Cast…” (p.mb-0) renders #938BB6 on #F9FAFB at 16px/400 — #938BB6 on #F9FAFB as painted on the capture: 3.04:1 against the 4.5:1 minimum. Measured on 2 pages. |
 | **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
 
 [Live page](https://www.dosje.gov.in/scheme-documents/merger-order/)
@@ -1527,7 +1602,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “Pre-Matric (SCs & Others)” (span.mosje-cat-metric-label) renders #6B6F78 on #EAF2FB at 12px/500 — measured on the capture's pixels: #999FA8 on #EAF2FB is 2.36:1 against the 4.5:1 minimum. |
+| **Build does** | Text “Pre-Matric (SCs & Others)” (span.mosje-cat-metric-label) renders #6B6F78 on #EAF2FB at 12px/500 — #6B6F78 on #EAF2FB as painted on the capture: 4.46:1 against the 4.5:1 minimum. |
 | **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
 
 [Live page](https://www.dosje.gov.in/dashboard/)
@@ -1601,7 +1676,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “Declared” (span.badge) renders #FFFFFF on #3C9718 at 12px/500 — measured on the capture's pixels: #F9FCF7 on #3C9718 is 3.6:1 against the 4.5:1 minimum. Measured on 2 pages. Also measured on the 375px capture of the same page. |
+| **Build does** | Text “Declared” (span.badge) renders #FFFFFF on #3C9718 at 12px/500 — #FFFFFF on #3C9718 as painted on the capture: 3.73:1 against the 4.5:1 minimum. Measured on 2 pages. Also measured on the 375px capture of the same page. |
 | **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
 
 [Live page](https://www.dosje.gov.in/events/ek-ped-maa-ke-naam-6/)
@@ -1653,7 +1728,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “Declared” (span.badge) renders #FFFFFF on #3C9718 at 12px/500 — measured on the capture's pixels: #F9FCF7 on #3C9718 is 3.6:1 against the 4.5:1 minimum. Measured on 2 pages. Also measured on the 375px capture of the same page. |
+| **Build does** | Text “Declared” (span.badge) renders #FFFFFF on #3C9718 at 12px/500 — #FFFFFF on #3C9718 as painted on the capture: 3.73:1 against the 4.5:1 minimum. Measured on 2 pages. Also measured on the 375px capture of the same page. |
 | **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
 
 [Live page](https://www.dosje.gov.in/events/ek-ped-maa-ke-naam-7/)
@@ -1948,102 +2023,28 @@ Each has its own board in the PDF, showing the design and the build side by side
 
 [Live page](https://www.dosje.gov.in/gallery/)
 
-## Home · desktop
-
-### empowering india, every day
-
-`WEB-SCREEN-152` · **Major** · Content & Iconography · Scope: Home · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “empowering india, every day” · absent from the build |
-| **Build does** | The design frame carries “empowering india, every day” (56px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-7805)
-
-### bringing social justice to every doorstep through digital ac
-
-`WEB-SCREEN-150` · **Major** · Content & Iconography · Scope: Home · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “bringing social justice to every doorste” · absent from the build |
-| **Build does** | The design frame carries “bringing social justice to every doorstep through digital access” (22px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-7805)
-
-### explore opportunities
-
-`WEB-SCREEN-153` · **Major** · Content & Iconography · Scope: Home · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “explore opportunities” · absent from the build |
-| **Build does** | The design frame carries “explore opportunities” (16px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-7805)
-
-### view schemes
-
-`WEB-SCREEN-169` · **Major** · Content & Iconography · Scope: Home · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “view schemes” · absent from the build |
-| **Build does** | The design frame carries “view schemes” (16px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-7805)
-
-### latest updates
-
-`WEB-SCREEN-157` · **Major** · Content & Iconography · Scope: Home · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “latest updates” · absent from the build |
-| **Build does** | The design frame carries “latest updates” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-7805)
-
-### new funding alert!
-
-`WEB-SCREEN-158` · **Major** · Content & Iconography · Scope: Home · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “new funding alert!” · absent from the build |
-| **Build does** | The design frame carries “new funding alert!” (14px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-7805)
-
 ## Home · mobile
 
 ### Go to slide 1
 
-`WEB-SCREEN-033` · **Major** · Layout & Spacing · Scope: Home · mobile
+`WEB-SCREEN-317` · **Major** · Layout & Spacing · Scope: Home · mobile
 
 | | |
 |---|---|
 | **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Go to slide 1” is 12×12px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 12×12 it is also below the WCAG 2.5.8 AA floor of 24×24. |
+| **Build does** | “Go to slide 1” is 40×12px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 40×12 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 2 pages. |
 | **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
 
 [Live page](https://www.dosje.gov.in/)
 
 ### Go to slide 2
 
-`WEB-SCREEN-036` · **Major** · Layout & Spacing · Scope: Home · mobile
+`WEB-SCREEN-316` · **Major** · Layout & Spacing · Scope: Home · mobile
 
 | | |
 |---|---|
 | **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Go to slide 2” is 40×12px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 40×12 it is also below the WCAG 2.5.8 AA floor of 24×24. |
+| **Build does** | “Go to slide 2” is 12×12px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 12×12 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 2 pages. |
 | **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
 
 [Live page](https://www.dosje.gov.in/)
@@ -2366,44 +2367,6 @@ Each has its own board in the PDF, showing the design and the build side by side
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=5243-126087)
 
-## Procedure For Processing Grant In Aid Cases In Respect Of Voluntary Organisations · desktop
-
-### Home
-
-`WEB-SCREEN-041` · **Major** · Layout & Spacing · Scope: Procedure For Processing Grant In Aid Cases In Respect Of Voluntary Organisations · desktop
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Home” is 38×21px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 38×21 it is also below the WCAG 2.5.8 AA floor of 24×24. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations/)
-
-### Department
-
-`WEB-SCREEN-042` · **Major** · Layout & Spacing · Scope: Procedure For Processing Grant In Aid Cases In Respect Of Voluntary Organisations · desktop
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Department” is 74×21px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 74×21 it is also below the WCAG 2.5.8 AA floor of 24×24. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations/)
-
-### Associated Organisations
-
-`WEB-SCREEN-040` · **Major** · Layout & Spacing · Scope: Procedure For Processing Grant In Aid Cases In Respect Of Voluntary Organisations · desktop
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Associated Organisations” is 161×21px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 161×21 it is also below the WCAG 2.5.8 AA floor of 24×24. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations/)
-
 ## Resources · mobile
 
 ### DWBDNC
@@ -2714,6 +2677,20 @@ Each has its own board in the PDF, showing the design and the build side by side
 
 [Live page](https://www.dosje.gov.in/)
 
+## State · Gallery Card Opens · desktop
+
+### svg-img-alt
+
+`WEB-SCREEN-315` · **Major** · Accessibility · Scope: State · Gallery Card Opens · desktop
+
+| | |
+|---|---|
+| **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
+| **Build does** | <svg> elements with an img role must have an alternative text — <svg viewBox="0 0 24 24" role="img" tabindex="-1" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="7"></circle><path d="M16 16 L21 21"></path></svg (svg-img-alt, wcag2a, wcag111). Measured on 2 pages. |
+| **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
+
+[Live page](https://www.dosje.gov.in/gallery/)
+
 ## State · Gallery Lightbox · desktop
 
 ### svg-img-alt
@@ -2723,7 +2700,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
-| **Build does** | <svg> elements with an img role must have an alternative text — <svg viewBox="0 0 24 24" role="img" tabindex="-1" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="7"></circle><path d="M16 16 L21 21"></path></svg (svg-img-alt, wcag2a, wcag111). |
+| **Build does** | <svg> elements with an img role must have an alternative text — <svg viewBox="0 0 24 24" role="img" tabindex="-1" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="7"></circle><path d="M16 16 L21 21"></path></svg (svg-img-alt, wcag2a, wcag111). Measured on 2 pages. |
 | **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
 
 [Live page](https://www.dosje.gov.in/gallery/)
@@ -2737,7 +2714,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Go to slide 1” is 40×12px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 40×12 it is also below the WCAG 2.5.8 AA floor of 24×24. |
+| **Build does** | “Go to slide 1” is 40×12px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 40×12 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 2 pages. |
 | **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
 
 [Live page](https://www.dosje.gov.in/)
@@ -2749,7 +2726,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Go to slide 2” is 12×12px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 12×12 it is also below the WCAG 2.5.8 AA floor of 24×24. |
+| **Build does** | “Go to slide 2” is 12×12px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 12×12 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 2 pages. |
 | **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
 
 [Live page](https://www.dosje.gov.in/)
@@ -2853,7 +2830,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “Scholarship” (mark) renders #0373DF on #FFF3CD at 16px/600 — measured on the capture's pixels: #0373DF on #FFF3CD is 4.19:1 against the 4.5:1 minimum. |
+| **Build does** | Text “Scholarship” (mark) renders #0373DF on #FFF3CD at 16px/600 — #0373DF on #FFF3CD as painted on the capture: 4.19:1 against the 4.5:1 minimum. |
 | **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
 
 [Live page](https://www.dosje.gov.in/?s=scholarship)
@@ -2865,7 +2842,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “…” (span.page-link) renders #938BB6 on #FFFFFF at 14px/400 — measured on the capture's pixels: #DEE2E6 on #FFFFFF is 1.3:1 against the 4.5:1 minimum. |
+| **Build does** | Text “…” (span.page-link) renders #938BB6 on #FFFFFF at 14px/400 — #938BB6 on #FFFFFF as painted on the capture: 3.18:1 against the 4.5:1 minimum. |
 | **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
 
 [Live page](https://www.dosje.gov.in/?s=scholarship)
@@ -3181,7 +3158,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “Previous” (a.page-link) renders #938BB6 on #FFFFFF at 16px/400 — measured on the capture's pixels: #B2ACCB on #FFFFFF is 2.17:1 against the 4.5:1 minimum. Also measured on the 375px capture of the same page. |
+| **Build does** | Text “Previous” (a.page-link) renders #938BB6 on #FFFFFF at 16px/400 — #938BB6 on #FFFFFF as painted on the capture: 3.18:1 against the 4.5:1 minimum. Also measured on the 375px capture of the same page. |
 | **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
 
 [Live page](https://www.dosje.gov.in/visitor-analytics/)
@@ -3333,3 +3310,18 @@ Each has its own board in the PDF, showing the design and the build side by side
 | **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
 
 [Live page](https://www.dosje.gov.in/whos-who/)
+
+---
+## Withdrawn on re-checking, not raised, and notes on the design file
+
+Nothing here is a finding. Each was either raised in an earlier round and did not survive re-checking, ruled out of scope, or is a defect in the handoff file rather than the build. They stay visible, with the reason, so a reviewer who saw one learns the outcome rather than wondering where it went.
+
+- **Global · No visible focus indicator — Open the accessibility option — Open the accessibility option** - Re-measured on pixels: the control is invisible until focused and then shows a visible ring. The first version compared styles, not what a keyboard user sees.
+- **Global · Non-text control below 3:1 — Language Translator — Language Translator** - Re-measured on pixels with the element's own CSS colour: the pair passes on screen. The first version read an anti-aliased edge pixel as the text colour.
+- **Global · Non-text control below 3:1 — Go to slide 1 — Go to slide 1** - Re-measured on pixels with the element's own CSS colour: the pair passes on screen. The first version read an anti-aliased edge pixel as the text colour.
+- **Home · desktop — new funding alert!** - Not reproduced on the re-capture of 18 September 2026.
+- **Home · mobile — Go to slide 1** - Not reproduced on the re-capture of 18 September 2026.
+- **Home · mobile — Go to slide 2** - Not reproduced on the re-capture of 18 September 2026.
+- **Procedure For Processing Grant In Aid Cases In Respect Of Voluntary Organisations · desktop — Home** - Not reproduced on the re-capture of 18 September 2026.
+- **Procedure For Processing Grant In Aid Cases In Respect Of Voluntary Organisations · desktop — Department** - Not reproduced on the re-capture of 18 September 2026.
+- **Procedure For Processing Grant In Aid Cases In Respect Of Voluntary Organisations · desktop — Associated Organisations** - Not reproduced on the re-capture of 18 September 2026.

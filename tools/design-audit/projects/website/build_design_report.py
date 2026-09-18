@@ -160,6 +160,7 @@ def main():
     })
 
     # ---------------------------------------------------------------- B · frame updates
+    fv = J(os.path.join(BASE, "out", "focus-verdicts.json"))
     names = [f["name"].lower() for f in frames if f.get("status") == "handoff"]
     counts = {w: sum(1 for n in names if w in n) for w in STATE_WORDS}
     missing_states = [w for w, n in counts.items() if n == 0]
@@ -168,28 +169,30 @@ def main():
         "title": "Interaction and data states are almost entirely undrawn",
         "observed": ("Of the handoff frames, the number whose name shows each state: "
                      + ", ".join(f"{w} {n}" for w, n in counts.items())
-                     + f". No frame shows {', '.join(missing_states)}. On the live site 262 keyboard stops "
-                     "show no focus indicator at all — the developers had no focus state to build from."),
+                     + f". No frame shows {', '.join(missing_states)}. On the live site, of "
+                     f"{fv['stops']} keyboard stops measured on {len(fv['pages'])} pages, "
+                     f"{sum(1 for r in fv['rows'] if r['strength'] == 'none')} change nothing at all when "
+                     f"focused and {sum(1 for r in fv['rows'] if r['strength'] == 'weak')} change only a "
+                     "digit's colour — the pagination and the hero banner, the controls the design never "
+                     "drew a focus state for."),
         "recommendation": ("Add, as components on the SAMAVESH library rather than per page: the focus "
                            "ring for every interactive element, hover and disabled for buttons and links, "
                            "the empty, loading, error and filtered-to-nothing states for every listing "
                            "(documents, tenders, gallery, events, directories), form validation, and a 404 page."),
     })
-    flows = collections.defaultdict(collections.Counter)
-    for f in frames:
-        if f.get("status") != "handoff" or f.get("kind") not in ("desktop", "mobile"):
-            continue
-        sec = (f.get("sectionPath") or "").split(" › ")
-        top = sec[1] if len(sec) > 1 and f["page"].startswith("✅") else f["page"]
-        flows[re.sub(r"/Mobile|/Desktop", "", top).strip()][f["kind"]] += 1
-    gaps = sorted(k for k, v in flows.items() if v["desktop"] and not v["mobile"])
+    # Every section of the ✅ UI Flow pages has phone frames (checked 18 Sep). The gap is the DBIM
+    # page: the newest, DBIM-compliant versions of the key screens exist at desktop width only.
+    dbim_desktop = sorted(f["name"] for f in frames if f["page"] == "DBIM" and f.get("kind") == "desktop")
+    dbim_mobile = [f for f in frames if f["page"] == "DBIM" and f.get("kind") == "mobile"]
     items.append({
         "id": "DES-B-02", "group": "B", "type": "Design",
-        "title": f"{len(gaps)} flows have a desktop design and no phone design",
-        "observed": ("Grouping every handoff frame by the flow it sits in, these have desktop frames and no "
-                     "mobile frame: " + ", ".join(gaps) + ". Two in three citizens reach the site on a phone."),
-        "recommendation": "Draw the 375px version of each, from the same components, before the next build.",
-        "list": gaps,
+        "title": f"The DBIM-compliant screens exist at desktop width only ({len(dbim_desktop)} frames, {len(dbim_mobile)} phone)",
+        "observed": ("Every section of the ✅ UI Flow pages carries phone frames. The DBIM page does not: it holds "
+                     "the newest, DBIM-compliant versions of these screens, and none has a 375px version, so the "
+                     "phone build still follows the earlier, non-compliant design."),
+        "list": dbim_desktop,
+        "recommendation": "Draw the 375px version of each DBIM frame from the same components, then retire the "
+                          "superseded phone frames in the ✅ flow.",
     })
     dbim_footer = [s for s, d in specs.items()
                    if "related links" in " ".join((t.get("characters") or "").lower() for t in d.get("texts", []))
@@ -213,8 +216,8 @@ def main():
         "id": "DES-C-01", "group": "C", "type": "Propose",
         "title": f"{len(pages)} live pages were built with no design frame",
         "observed": ("These pages are published on dosje.gov.in and have no frame in the handoff file; "
-                     "developers built them from nothing, which is where most of the inconsistency in the "
-                     "dev report comes from."),
+                     "developers built them without a design to follow, and QC has nothing to check them "
+                     "against."),
         "list": [f"{u['path']}" + (f" — nearest: {u['nearest']['desktop']['name']}"
                                   if (u.get("nearest") or {}).get("desktop") else "") for u in pages],
         "recommendation": ("Most are document or policy pages: design one 'content page' template (heading, "

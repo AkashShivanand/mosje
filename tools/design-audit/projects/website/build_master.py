@@ -125,6 +125,34 @@ def resolve_anchor(f):
     return f
 
 
+def withdrawn_rows(screens_now):
+    """Findings published in v1 (2026-09-18 morning) that the corrected run no longer carries.
+
+    They stay in the tracker marked Withdrawn with the reason — a developer may already have written
+    a status against the id, and a row that silently vanishes is a dangling reference."""
+    v1p = os.path.join(BASE, "out", "audit-master.v1.json")
+    if not os.path.exists(v1p):
+        return []
+    v1 = json.load(open(v1p))
+    now = {f["id"] for s in screens_now for f in s["findings"]}
+    out = []
+    for s in v1["screens"]:
+        for f in s["findings"]:
+            if f["id"] in now:
+                continue
+            fig = f.get("figma", "")
+            if "2.4.7" in fig:
+                why = ("Re-measured on pixels: the control is invisible until focused and then shows a "
+                       "visible ring. The first version compared styles, not what a keyboard user sees.")
+            elif "1.4.3" in fig or "1.4.11" in fig:
+                why = ("Re-measured on pixels with the element's own CSS colour: the pair passes on screen. "
+                       "The first version read an anti-aliased edge pixel as the text colour.")
+            else:
+                why = "Not reproduced on the re-capture of 18 September 2026."
+            out.append({"id": f["id"], "title": f"{s['name']} — {f.get('element', '')}", "reason": why})
+    return out
+
+
 def load(name):
     p = os.path.join(OUT, name)
     return json.load(open(p)) if os.path.exists(p) else []
@@ -313,7 +341,7 @@ def main():
                          "standalonePages": 94,
                          "states": 25,
                          "designPairsCompared": droll["pairsCompared"]},
-        deferred=[],
+        deferred=withdrawn_rows(screens),
         screens=screens,
     )
     json.dump(am, open(os.path.join(OUT, "audit-master.json"), "w"), indent=1)

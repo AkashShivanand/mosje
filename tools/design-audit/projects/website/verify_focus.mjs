@@ -77,19 +77,17 @@ for (const p of targets) {
       if (clip.width < 4 || clip.height < 4) continue;
       const base = path.join(OUT, `${p.slug}.${String(i).padStart(2, "0")}`);
       await page.screenshot({ path: base + ".focused.png", clip });
-      await page.evaluate(() => document.activeElement?.blur?.());
+      // Hold a direct reference to the focused element: re-finding it by text after the blur landed
+      // on a different element with the same label, the tab order jumped back, and the walk ended
+      // after ~25 stops without ever leaving the masthead.
+      await page.evaluate(() => { window.__qcEl = document.activeElement; document.activeElement?.blur?.(); });
       await sleep(250);
       await page.screenshot({ path: base + ".blurred.png", clip });
       results.push({ slug: p.slug, url: "https://www.dosje.gov.in" + p.path, stop: i, ...info,
                      box: [info.x, info.y + info.sy, info.x + info.w, info.y + info.h + info.sy],
                      focused: path.basename(base) + ".focused.png", blurred: path.basename(base) + ".blurred.png" });
-      // Restore focus to this element so the next Tab continues from it.
-      await page.evaluate((k) => {
-        const [tag, id, text] = k.split("|");
-        const cand = [...document.querySelectorAll(tag)].find((e) => (id !== "null" && e.id === id) ||
-          (e.innerText || e.getAttribute("aria-label") || e.getAttribute("title") || "").trim().replace(/\s+/g, " ").slice(0, 60) === text);
-        cand?.focus({ preventScroll: true });
-      }, key);
+      // Restore focus to exactly this element so the next Tab continues from it.
+      await page.evaluate(() => window.__qcEl?.focus?.({ preventScroll: true }));
       await sleep(150);
     }
     console.log(`${p.slug}: ${results.filter((r) => r.slug === p.slug).length} stops`);

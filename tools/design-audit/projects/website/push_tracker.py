@@ -64,12 +64,14 @@ def coverage_rows():
 
 def main():
     apply = "--apply" in sys.argv
+    wd = None       # withdrawn findings travel in the master's deferred[] (build_master.py)
     cov = coverage_rows()
     for path, with_cov in ((REPO_XLSX, cov), (DRIVE_XLSX, None)):
         if not os.path.exists(path):
             print(f"!! not found: {path}")
             continue
-        rep = tracker.push(MASTER, path, TAB, coverage=with_cov, apply=apply, backup_dir=BACKUPS)
+        rep = tracker.push(MASTER, path, TAB, coverage=with_cov, apply=apply, backup_dir=BACKUPS,
+                           withdrawn=wd)
         where = "repo" if path == REPO_XLSX else "DRIVE"
         print(f"\n[{where}] {os.path.basename(path)}")
         print(f"  rows {rep['rows']}  new {rep['new']}  dev-status preserved {rep['dev_status_preserved']}")

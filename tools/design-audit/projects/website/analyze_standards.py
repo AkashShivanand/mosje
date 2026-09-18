@@ -518,7 +518,8 @@ def analyse():
             continue
         # A capture the server refused (429/5xx) or one that yielded no elements is NOT evidence.
         # Rejecting it here is what keeps a rate-limited blank page out of the report.
-        if d.get("status") != 200 or not d.get("elementCount"):
+        expected_404 = slug == "state--404" and d.get("status") == 404   # the 404 page IS the evidence
+        if (d.get("status") != 200 and not expected_404) or not d.get("elementCount"):
             rejected.append({"slug": slug, "viewport": viewport, "status": d.get("status"),
                              "elements": d.get("elementCount"), "url": d.get("url")})
             continue
