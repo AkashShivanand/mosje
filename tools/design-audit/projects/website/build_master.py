@@ -14,6 +14,7 @@ Every finding carries a MARK: the element's real box plus a label with the measu
   python3 build_master.py
 """
 import json, os, collections, datetime, re
+from fixes import fix_for
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(BASE, "out")
@@ -125,32 +126,131 @@ def resolve_anchor(f):
     return f
 
 
-def withdrawn_rows(screens_now):
+def withdrawn_rows(screens_now, merged_into=None):
     """Findings published in v1 (2026-09-18 morning) that the corrected run no longer carries.
 
     They stay in the tracker marked Withdrawn with the reason — a developer may already have written
     a status against the id, and a row that silently vanishes is a dangling reference."""
-    v1p = os.path.join(BASE, "out", "audit-master.v1.json")
-    if not os.path.exists(v1p):
+    # Every edition a stakeholder has seen: the first (v1) and the corrected one committed before this
+    # run (v2). An id published in either that this run no longer carries stays on the tracker, marked.
+    eds = [json.load(open(p)) for p in (os.path.join(BASE, "out", "audit-master.v1.json"),
+                                         os.path.join(BASE, "out", "audit-master.v2.json")) if os.path.exists(p)]
+    if not eds:
         return []
-    v1 = json.load(open(v1p))
+    v1 = {"screens": [s for e in eds for s in e["screens"]]}
+    merged_into = merged_into or {}
     now = {f["id"] for s in screens_now for f in s["findings"]}
-    out = []
+    out, seen_ids = [], set()
     for s in v1["screens"]:
         for f in s["findings"]:
-            if f["id"] in now:
+            if f["id"] in now or f["id"] in seen_ids:
                 continue
+            seen_ids.add(f["id"])
             fig = f.get("figma", "")
             if "2.4.7" in fig:
                 why = ("Re-measured on pixels: the control is invisible until focused and then shows a "
                        "visible ring. The first version compared styles, not what a keyboard user sees.")
+            elif f["id"] in merged_into:
+                why = (f"Merged into {merged_into[f['id']]}, which now carries this defect together with "
+                       f"the others of the same kind — one fix, one row.")
             elif "1.4.3" in fig or "1.4.11" in fig:
                 why = ("Re-measured on pixels with the element's own CSS colour: the pair passes on screen. "
                        "The first version read an anti-aliased edge pixel as the text colour.")
+            elif "Nothing with that text renders" in (f.get("live") or ""):
+                why = ("Withdrawn: the design text is sample content in a repeated list or data field — "
+                       "names, e-mail addresses, dates, figures, event or album titles — which the live page "
+                       "fills with real entries. It is different data, not missing interface copy.")
+            elif "The approved Figma handoff frame" in fig:
+                why = ("Withdrawn: on the re-capture the design and build values could not both be proven on "
+                       "screen (the element was covered by the sticky header or not painted where the page "
+                       "says it is), so the comparison is not published.")
             else:
                 why = "Not reproduced on the re-capture of 18 September 2026."
             out.append({"id": f["id"], "title": f"{s['name']} — {f.get('element', '')}", "reason": why})
     return out
+
+
+def merged_map(screens_now):
+    """Where a first-edition finding went, when it is no longer carried under its own id.
+
+    Matched on the finding's OWN evidence, never on the standard's sentence — every design finding
+    shares "The approved Figma handoff frame…", and matching on it once attributed 113 unrelated
+    findings to one Global (18 Sep). Rules, in order:
+      · its element text appears in a current finding's element, missing-copy list or evidence;
+      · the same colour pair (contrast);
+      · a touch-target finding → the touch-target Globals, which are now grouped by page area."""
+    eds = [json.load(open(p)) for p in (os.path.join(BASE, "out", "audit-master.v1.json"),
+                                         os.path.join(BASE, "out", "audit-master.v2.json")) if os.path.exists(p)]
+    if not eds:
+        return {}
+    v1 = {"screens": [s for e in eds for s in e["screens"]]}
+    now = [f for s in screens_now for f in s["findings"]]
+    ids_now = {f["id"] for f in now}
+    pair_rx = re.compile(r"#[0-9A-F]{6} on #[0-9A-F]{6}")
+    targets = [f["id"] for f in now if "UX4G 3.0 §6" in f.get("figma", "")]
+    out = {}
+    for s in v1["screens"]:
+        for f in s["findings"]:
+            if f["id"] in ids_now:
+                continue
+            el = (f.get("element") or "").strip().lower()
+            hit = None
+            if len(el) > 3:
+                for g in now:
+                    hay = " ".join([g.get("element") or "", g.get("live") or "", g.get("fix") or ""]).lower()
+                    if el in hay and g.get("figma", "")[:12] == f.get("figma", "")[:12]:
+                        hit = g["id"]
+                        break
+            if not hit:
+                m = pair_rx.search(f.get("live") or "")
+                if m:
+                    hit = next((g["id"] for g in now if m.group(0) in (g.get("live") or "")), None)
+            if not hit and "UX4G 3.0 §6" in f.get("figma", "") and targets:
+                hit = " / ".join(targets)
+            if hit:
+                out[f["id"]] = hit
+    return out
+
+
+def consolidate_missing(findings):
+    """All the design copy missing from ONE page is one finding: one card listing every piece, and
+    one board with each piece outlined on the design. Six cards and six stacked callouts for one
+    page read as six defects; the reviewer found them unreadable (18 Sep)."""
+    keep, groups = [], collections.defaultdict(list)
+    for f in findings:
+        if f["code"] == "DVB-MISSING" and f.get("scope") != "Global":
+            groups[(f["slug"], f["viewport"])].append(f)
+        else:
+            keep.append(f)
+    for (slug, vp), allg in groups.items():
+      allg = sorted(allg, key=lambda f: (f.get("figmaBoxRaw") or [0, 0])[1])
+      # Split by AREA of the design frame, so a board never spans a whole long frame as a sliver.
+      areas, cur, start = [], [], None
+      for f in allg:
+          y = (f.get("figmaBoxRaw") or [0, 0])[1]
+          if cur and y - start > 800:
+              areas.append(cur)
+              cur, start = [], None
+          if start is None:
+              start = y
+          cur.append(f)
+      if cur:
+          areas.append(cur)
+      for ai, g in enumerate(areas, 1):
+        texts = [re.search(r"“(.+?)”", f["label"]).group(1) if "“" in f["label"] else f["element"] for f in g]
+        base = dict(g[0])
+        area_note = f" (area {ai} of {len(areas)})" if len(areas) > 1 else ""
+        base.update(
+            element=(f"{len(g)} pieces of design copy missing" if len(g) > 1 else g[0]["element"]) + area_note,
+            key=f"missing-page|{slug}|{ai}",
+            label=f"Design copy absent from the build",
+            detail=("The design frame carries this copy and nothing with the same text renders on the live "
+                    "page: " + "; ".join(f"“{t}”" for t in texts) + "."),
+            figmaMarks=[{"box": f["figmaBoxRaw"], "label": f"Missing: “{t[:38]}”"}
+                        for f, t in zip(g, texts) if f.get("figmaBoxRaw")],
+            figmaBoxRaw=None, missingTexts=texts)
+        keep.append(base)
+    return keep
 
 
 def load(name):
@@ -205,6 +305,37 @@ def main():
     judged = [resolve_anchor(f) for f in
               json.load(open(os.path.join(BASE, "inputs", "findings-judgement.json")))]  # hand-authored, verified
     findings = auto + design + judged
+    # Exemptions verified on the live page, each with its reason (inputs/exemptions.json). They are
+    # published in the Deferred section, not dropped silently.
+    exempt = json.load(open(os.path.join(BASE, "inputs", "exemptions.json")))
+    exempted = []
+    def _exempt(f):
+        for e in exempt:
+            if f["code"] == e["code"] and e["slug"] in ("*", f.get("slug")) and \
+                    e["elementContains"].lower() in (f.get("element") or "").lower():
+                exempted.append({"id": None, "title": f"{f['title']} — {f.get('element')}", "reason": e["reason"]})
+                return True
+        return False
+    findings = [f for f in findings if not _exempt(f)]
+    findings = consolidate_missing(findings)
+    # A design-vs-build SPEC finding is only shown on a board when BOTH sides were proven: a design
+    # outline beside an unmarked build crop points the developer at nothing.
+    for f in findings:
+        if f["code"] == "DVB-SPEC" and not (f.get("box") and f.get("figmaBoxRaw")):
+            f["box"] = None
+            f["figmaBoxRaw"] = None
+    # Violet declared in CSS but painted nowhere on the page is not a defect a citizen meets: keep only
+    # the pages where check_marks proved #613AF5 on screen (5 of 266 captures, 18 Sep).
+    findings = [f for f in findings if not (f["code"] == "D-UX4G-VIOLET" and not f.get("box"))]
+    # Scope and page counts are recomputed on what survived verification and consolidation, so a
+    # card never claims more pages than the evidence supports.
+    groups = collections.defaultdict(set)
+    for f in findings:
+        groups[(f["code"], f.get("key"))].add(f["slug"])
+    for f in findings:
+        n = len(groups[(f["code"], f.get("key"))])
+        f["pageCount"] = n
+        f["scope"] = "Global" if n >= 3 else "Screen"
     for f in findings:
         f.setdefault("scope", "Screen")
     findings = frozen_ids(findings)
@@ -219,7 +350,8 @@ def main():
     globals_sorted = sorted(by_group.items(),
                             key=lambda kv: (RANK[kv[1][0]["severity"]], -len(kv[1])))
     for (code, key), group in globals_sorted:
-        rep = sorted(group, key=lambda f: (f.get("viewport") != "desktop", f.get("slug")))[0]
+        rep = sorted(group, key=lambda f: (not (f.get("box") or f.get("figmaBoxRaw")),
+                                           f.get("viewport") != "desktop", f.get("slug")))[0]
         num += 1
         pages = sorted({f["slug"] for f in group})
         # One page measured at two viewports is ONE page: the board heading and the card must not
@@ -229,7 +361,7 @@ def main():
         finding = dict(
             num=1, id=rep["id"], element=rep.get("element") or rep["title"], section="global",
             scope="Global", axis=rep.get("axis", "Accessibility"), severity=rep["severity"],
-            figma=req, live=live, fix=rep.get("fix") or FIX.get(code, ""),
+            figma=req, live=live, fix=rep.get("fix") or fix_for(rep) or FIX.get(code, ""),
             liveMark={"box": rep["box"], "label": rep["label"]} if rep.get("box") else None,
             liveBasis=rep.get("liveBasis") or (1440 if rep.get("viewport") == "desktop" else 375),
             subO=f"Scope: Global — measured on {len(pages)} pages/states; shown on {rep['slug']}",
@@ -237,6 +369,9 @@ def main():
         if rep.get("figmaBoxRaw"):
             finding["figmaMark"] = {"box": rep["figmaBoxRaw"],
                                     "label": rep.get("figmaLabel") or rep["label"]}
+            finding["figmaBasis"] = rep.get("figmaBasis") or 1440
+        if rep.get("figmaMarks"):
+            finding["figmaMarks"] = rep["figmaMarks"]
             finding["figmaBasis"] = rep.get("figmaBasis") or 1440
         finding = {k: v for k, v in finding.items() if v is not None}
         screens.append(dict(
@@ -283,7 +418,7 @@ def main():
             item = dict(num=i, id=f["id"], element=f.get("element") or f["title"],
                         section=f.get("axis", "page"), axis=f.get("axis", "Accessibility"),
                         severity=f["severity"], figma=req, live=live,
-                        fix=f.get("fix") or FIX.get(f["code"], ""),
+                        fix=f.get("fix") or fix_for(f) or FIX.get(f["code"], ""),
                         liveBasis=f.get("liveBasis") or (1440 if viewport == "desktop" else 375))
             if f.get("box"):
                 item["liveMark"] = {"box": f["box"], "label": f["label"]}
@@ -291,17 +426,38 @@ def main():
                 item["figmaMark"] = {"box": f["figmaBoxRaw"],
                                      "label": f.get("figmaLabel") or f["label"]}
                 item["figmaBasis"] = f.get("figmaBasis") or 1440
+            if f.get("figmaMarks"):
+                item["figmaMarks"] = f["figmaMarks"]
+                item["figmaBasis"] = f.get("figmaBasis") or 1440
+            item["_y"] = (f.get("box") or f.get("figmaBoxRaw") or
+                          ((f.get("figmaMarks") or [{}])[0].get("box")) or [0, -1])[1]
+            item["_marked"] = bool(f.get("box") or f.get("figmaBoxRaw") or f.get("figmaMarks"))
             fs.append(item)
+        # Findings whose marks sit far apart on a long page get their own board each, so no board is
+        # a tall sliver with an outline at either end. Page-level findings share one card-only group.
+        fs.sort(key=lambda x: (not x["_marked"], x["_y"]))
+        cluster_start, n_cluster = None, 0
+        for i, item in enumerate(fs, 1):
+            item["num"] = i
+            if not item["_marked"]:
+                item["section"] = "Page-level — no single element to mark"
+            else:
+                if cluster_start is None or item["_y"] - cluster_start > 600:
+                    cluster_start, n_cluster = item["_y"], n_cluster + 1
+                item["section"] = f"Area {n_cluster} · about {int(cluster_start) // 100 * 100}px down the page"
+            del item["_y"], item["_marked"]
         rep = group[0]
+        # the page's design frame comes from whichever of its findings is a design comparison
+        fig_rep = next((f for f in group if f.get("figmaPng")), {})
         name = slug.replace("state--", "State · ").replace("-", " ").title()
         screens.append(dict(
             slug=f"{slug}.{viewport}", name=f"{name} · {viewport}", env="live",
             liveImg=rep.get("livePng") or f"captures/live/{slug}.{viewport}.png",
-            figmaImg=rep.get("figmaPng"),
+            figmaImg=fig_rep.get("figmaPng"),
             liveUrl=rep.get("url"),
             figmaUrl=(f"https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?"
-                      f"node-id={(rep.get('figmaNode') or '').replace(':', '-')}"
-                      if rep.get("figmaNode") else None),
+                      f"node-id={(fig_rep.get('figmaNode') or '').replace(':', '-')}"
+                      if fig_rep.get("figmaNode") else None),
             _basisLive=fs[0].get("liveBasis"), _basisFigma=fs[0].get("figmaBasis"),
             findings=fs))
 
@@ -341,7 +497,9 @@ def main():
                          "standalonePages": 94,
                          "states": 25,
                          "designPairsCompared": droll["pairsCompared"]},
-        deferred=withdrawn_rows(screens),
+        deferred=withdrawn_rows(screens, merged_map(screens)) + [
+            {"id": "EXEMPT", "title": x["title"], "reason": x["reason"]}
+            for x in {x["reason"]: x for x in exempted}.values()],
         screens=screens,
     )
     json.dump(am, open(os.path.join(OUT, "audit-master.json"), "w"), indent=1)

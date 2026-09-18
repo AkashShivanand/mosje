@@ -22,9 +22,19 @@ MIN_TEXT = 4            # shorter strings collide constantly ("PDF", "of", "New"
 SIZE_TOL = 1.0          # px
 WEIGHT_TOL = 100
 
-# Text that is DATA rather than UI copy: never a finding when it differs.
-DATA_RX = re.compile(r"^[\d\s,.:/₹%+-]*$|^\d{1,2}[-/ ][A-Za-z]{3,9}[-/ ]\d{2,4}$|^(page|showing)\b",
-                     re.I)
+# Text that is DATA rather than UI copy: never a finding when it differs. A design frame fills its
+# lists with sample people, e-mail addresses, rooms and figures; the live page shows the real ones.
+# Reporting the sample as "missing copy" (CPIO's officer list, Contact Us's room numbers) is false.
+DATA_RX = re.compile(
+    r"^[\d\s,.:/₹%+()-]*$"                                   # numbers, amounts, dates
+    r"|^\d{1,2}[-/ ][A-Za-z]{3,9}[-/ ]\d{2,4}$"
+    r"|^(page|showing)\b"
+    r"|^(shri|smt|dr|ms|mr|mrs|kumari|km)\.?\s"                # a person
+    r"|\[at\]|\[dot\]|@|\bwww\.|https?:"                      # e-mail / web address
+    r"|\broom no\b|\b[a-z]-wing\b|\bnew delhi\b|\b\d{6}\b"   # an address
+    r"|₹|\b\d[\d,.]*\s?(cr|crore|lakh|lakhs|%)\b"               # a figure
+    r"|^\d+(\.\d+)?\s?(mb|kb|gb)$"
+    r"|\b\d{1,2}:\d{2}\s?(am|pm)\b|\bonwards\b", re.I)
 
 
 def norm(t):
@@ -69,7 +79,7 @@ def spec_texts(spec, frame_h=None):
     nodes = spec.get("texts") or spec.get("text") or spec.get("textNodes") or []
     for n in nodes:
         t = norm(n.get("characters") or n.get("text"))
-        if len(t) < MIN_TEXT or DATA_RX.match(t):
+        if len(t) < MIN_TEXT or DATA_RX.search(t):
             continue
         b = n.get("box") or n.get("bbox") or n.get("absoluteBoundingBox") or {}
         if isinstance(b, dict):
@@ -80,6 +90,7 @@ def spec_texts(spec, frame_h=None):
         if box[2] - box[0] <= 0 or box[3] - box[1] <= 0:
             continue
         rows.append((t, {
+            "raw": re.sub(r"\s+", " ", (n.get("characters") or n.get("text") or "")).strip(),
             "size": _px(n.get("fontSize")),
             "weight": n.get("fontWeight"),
             "family": (n.get("fontFamily") or n.get("fontName") or "").split(",")[0].strip(),
@@ -94,7 +105,7 @@ def live_texts(d):
     rows = []
     for e in d.get("elements", []):
         t = norm(e.get("text"))
-        if len(t) < MIN_TEXT or DATA_RX.match(t):
+        if len(t) < MIN_TEXT or DATA_RX.search(t):
             continue
         b = e.get("bbox") or {}
         if not b or b.get("w", 0) <= 0 or b.get("h", 0) <= 0:
@@ -156,11 +167,12 @@ def compare(entry, spec_slug, specs, viewport, chrome=frozenset(), match_kind="e
         out.append(dict(
             code="DVB-SPEC", axis=axis, severity=sev, standard="Figma handoff",
             title="Built value differs from the design",
-            element=t[:60], slug=entry["slug"], viewport=viewport, url=entry.get("url"),
+            element=(f.get("raw") or t)[:60], slug=entry["slug"], viewport=viewport, url=entry.get("url"),
             figmaBoxRaw=f["box"], box=l["box"], figmaBasis=basis_fig, liveBasis=basis_live,
+            cssFg=l["colour"], figmaFg=f["colour"],
             label=" · ".join(labels)[:110],
             figmaLabel=" · ".join(labels)[:110],
-            detail=f"“{t[:70]}” — " + "; ".join(x for _, x in diffs) + ".",
+            detail=f"“{(f.get('raw') or t)[:70]}” — " + "; ".join(x for _, x in diffs) + ".",
             key=f"spec|{'|'.join(x for _, x in diffs)}",
             chrome=t in chrome, figmaSlug=spec_slug))
     # Content present in the design, absent from the build. Only meaningful where the frame IS this
@@ -180,9 +192,17 @@ def compare(entry, spec_slug, specs, viewport, chrome=frozenset(), match_kind="e
         if isinstance(v, dict):
             corpus.append(v.get("text"))
     live_all = " ".join(norm(x) for x in corpus if x)
+    # Repeated content: a text style used by 3+ nodes in this frame is a list — event cards, gallery
+    # tiles, table rows, scheme cards — filled with the designer's SAMPLE entries. Its absence from
+    # the live page is different data, not missing copy (the Events frame's sample titles and times,
+    # the Gallery frame's sample albums, 18 Sep). One-off interface copy keeps its own style.
+    style_count = collections.Counter((round(v["size"] or 0), v.get("weight"), v.get("colour"))
+                                      for _, v in spec_texts(specs[spec_slug]))
     for t, f in fig.items():
         if match_kind != "exact":
             break
+        if style_count[(round(f["size"] or 0), f.get("weight"), f.get("colour"))] >= 3:
+            continue
         if len(t) < 8 or t in liv or t in live_all:
             continue
         if f["size"] and f["size"] < 12:
@@ -190,11 +210,12 @@ def compare(entry, spec_slug, specs, viewport, chrome=frozenset(), match_kind="e
         out.append(dict(
             code="DVB-MISSING", axis="Content & Iconography", severity="Major",
             standard="Figma handoff", title="Content in the design is not in the build",
-            element=t[:60], slug=entry["slug"], viewport=viewport, url=entry.get("url"),
+            element=(f.get("raw") or t)[:60], slug=entry["slug"], viewport=viewport, url=entry.get("url"),
             figmaBoxRaw=f["box"], box=None, figmaBasis=basis_fig, liveBasis=basis_live,
-            label=f"Design has “{t[:40]}” · not on the page",
+            figmaFg=f["colour"],
+            label=f"Design has “{(f.get('raw') or t)[:40]}” · not on the page",
             figmaLabel=f"Design: “{t[:40]}” · absent from the build",
-            detail=f"The design frame carries “{t[:80]}” ({f['size'] and int(f['size'])}px). "
+            detail=f"The design frame carries “{(f.get('raw') or t)[:80]}” ({f['size'] and int(f['size'])}px). "
                    f"Nothing with that text renders on the live page.",
             key=f"missing|{t[:40]}", chrome=t in chrome, figmaSlug=spec_slug))
     # Chrome is one finding for the whole site, carried by the home page's pair.

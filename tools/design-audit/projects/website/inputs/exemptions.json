@@ -1,0 +1,14 @@
+[
+ {
+  "code": "A-CONTRAST-NONTEXT",
+  "slug": "cookies",
+  "elementContains": "always active",
+  "reason": "The two 'always active' cookie switches are disabled checkboxes (<input type=checkbox disabled checked>, verified on the live page 18 Sep). WCAG 1.4.11 exempts inactive components."
+ },
+ {
+  "code": "DVB-MISSING",
+  "slug": "*",
+  "elementContains": "Hemant Kumar Srivastava",
+  "reason": "A sample officer's name in the design's directory card \u2014 data the live page fills with the real officer, not interface copy."
+ }
+]

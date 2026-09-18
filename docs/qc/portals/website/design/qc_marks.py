@@ -74,8 +74,9 @@ def marks_html(marks, pw, disp_h, maxw):
             svg += (f'<line x1="{sx:.1f}" y1="{sy:.1f}" x2="{(tx1+tx2)/2:.1f}" y2="{ty1:.1f}" '
                     f'stroke="{col}" stroke-width="1.5" stroke-dasharray="4 3"/>')
         lbl = f'<span class="mtxt">{esc(label)}</span>' if label else ""
+        nm = f'<span class="mnum">{esc(num)}</span>' if num not in (None, "") else ""
         out += (f'<span class="mtag" style="left:{tx1:.1f}px;top:{ty1:.1f}px;max-width:{maxw}px;'
-                f'background:{col}"><span class="mnum">{esc(num)}</span>{lbl}</span>')
+                f'background:{col}">{nm}{lbl}</span>')
     if svg:
         out = (f'<svg class="mlines" width="{pw}" height="{disp_h+gutter_h}" '
                f'viewBox="0 0 {pw} {disp_h+gutter_h}">{svg}</svg>') + out

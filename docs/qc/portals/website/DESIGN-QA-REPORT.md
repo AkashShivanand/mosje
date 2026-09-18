@@ -10,21 +10,21 @@
 
 | | |
 |---|---|
-| Boards in the report | 145 |
-| Findings | **261** - 15 Blocker, 225 Major, 20 Minor, 1 Nit |
-| Applies to every screen | 75 |
-| Specific to one screen | 186 |
-| Withdrawn, not raised, or noted about the design file | 9 |
+| Boards in the report | 105 |
+| Findings | **147** - 14 Blocker, 110 Major, 21 Minor, 2 Nit |
+| Applies to every screen | 50 |
+| Specific to one screen | 97 |
+| Withdrawn, not raised, or noted about the design file | 196 |
 
 Every page in dosje.gov.in's sitemap (94 standalone pages), one sample of every record template (documents, events, gallery, officials, tenders, organisations, vacancies, schemes, scheme documents, suo-moto disclosures, CPIO, bookings, updates) and 25 global states were captured at 1440×900 and 375×812 — 266 captures in all — with the computed CSS, accessibility tree, axe-core results, focus behaviour, target sizes and DBIM element inventory of every element recorded. Findings are measured, never eyeballed: each carries the element's real box and its measured value. Captures the server refused (HTTP 429) were rejected and re-taken. The design side is the MoSJE [Handoff] Figma file: 175 design↔build pairs were compared by specification — type size, weight, family and colour on text matched between the two sides — never by pixel diff, and never on width, height or dynamic data. Where one design frame serves many pages (an organisation template against 172 organisation pages), only shared-template properties are compared, not its sample copy. A breach measured on three or more pages is published once, as a Global finding. Out of scope for this report: the screen-reader walkthrough, Hindi content quality, and the 34 live views for which no design frame exists — those are in the separate design report.
 
 **Where to start.** The findings with the widest reach or the highest severity:
 
 1. **aria-valid-attr-value** - `WEB-GLOBAL-001` · Blocker
-2. **Single Access Mechanism for All Verticals o…** - `WEB-GLOBAL-007` · Blocker
+2. **Single Access Mechanism for All Verticals o…** - `WEB-GLOBAL-088` · Blocker
 3. **Pagination page numbers** - `WEB-GLOBAL-086` · Blocker
 4. **Pagination previous / next arrows** - `WEB-GLOBAL-085` · Blocker
-5. **Previous slide** - `WEB-GLOBAL-079` · Blocker
+5. **Page scrolls sideways at 375px** - `WEB-SCREEN-012` · Blocker
 
 ---
 
@@ -40,33 +40,9 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
 | **Build does** | ARIA attributes must conform to valid values — <th class="sorting sorting_asc" tabindex="0" aria-controls="dataTable1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="#: activate to sort column des (aria-valid-attr-value, wcag2a, wcag412). Measured on 15 pages. |
-| **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
+| **Fix** | The sortable column headers carry `aria-controls="dataTable1"`, but the `<table>` has no id (verified 18 Sep). Add `id="dataTable1"` to the `<table>` that DataTables initialises. |
 
 [Live page](https://www.dosje.gov.in/about-the-division-social-defence/)
-
-### Single Access Mechanism for All Verticals o…
-
-`WEB-GLOBAL-007` · **Blocker** · Color & Token · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “Single Access Mechanism for All Verticals of Empowerment & Social Har…” (p.elementor-heading-title) renders #FFFFFF on #F97316 at 16px/400 — #FFFFFF on #F97316 as painted on the capture: 2.8:1 against the 4.5:1 minimum. Measured on 10 pages. |
-| **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
-
-[Live page](https://www.dosje.gov.in/)
-
-### Previous slide
-
-`WEB-GLOBAL-079` · **Blocker** · Color & Token · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | WCAG 2.2 AA (1.4.11): the visible part of a control — its icon, its outline, its indicator — needs 3:1 against what is behind it. |
-| **Build does** | Text “Previous slide” (div.ccps-nav-btn) renders #EEEEEE on #FFFFFF at 16px/400 — #F0EFED on #FCF9EA as painted on the capture: 1.09:1 against the 3.0:1 minimum. |
-| **Fix** | Darken the icon or its ground until the pair reaches 3:1. The control's accessible name is already correct; only what is drawn needs changing. |
-
-[Live page](https://www.dosje.gov.in/)
 
 ### Pagination previous / next arrows
 
@@ -76,7 +52,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | WCAG 2.2 AA (2.4.7): every keyboard-focusable control shows a visible focus indicator. DBIM and UX4G both draw a 4px ring. |
 | **Build does** | Pagination previous / next arrows: screenshotted focused and then blurred, no pixel changes, so a keyboard user cannot see where focus is. Measured on 9 pages. |
-| **Fix** | Give the control a visible focus style — the estate's 4px ring — and make sure it is not removed by an `outline: none` elsewhere in the stylesheet. |
+| **Fix** | Add a visible focus style to the pagination links (`.pagination a`, `.page-link`): `:focus-visible { outline: 2px solid #0373DF; outline-offset: 2px; }` — and remove any `outline: none` that overrides it; the current page needs a different style from the focused one, so a keyboard user can tell them apart. |
 
 [Live page](https://www.dosje.gov.in/annual-reports/)
 
@@ -88,9 +64,21 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | WCAG 2.2 AA (2.4.7): every keyboard-focusable control shows a visible focus indicator. DBIM and UX4G both draw a 4px ring. |
 | **Build does** | Pagination page numbers: screenshotted focused and then blurred, no pixel changes, so a keyboard user cannot see where focus is. Measured on 9 pages. |
-| **Fix** | Give the control a visible focus style — the estate's 4px ring — and make sure it is not removed by an `outline: none` elsewhere in the stylesheet. |
+| **Fix** | Add a visible focus style to the pagination links (`.pagination a`, `.page-link`): `:focus-visible { outline: 2px solid #0373DF; outline-offset: 2px; }` — and remove any `outline: none` that overrides it; the current page needs a different style from the focused one, so a keyboard user can tell them apart. |
 
 [Live page](https://www.dosje.gov.in/annual-reports/)
+
+### Single Access Mechanism for All Verticals o…
+
+`WEB-GLOBAL-088` · **Blocker** · Color & Token · Scope: every screen with this element
+
+| | |
+|---|---|
+| **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
+| **Build does** | Text “Single Access Mechanism for All Verticals of Empowerment & Social Har…” (p.elementor-heading-title) renders #FFFFFF on #F97316 at 16px/400 — #FFFFFF on #F97316 as painted on the capture: 2.8:1 against the 4.5:1 minimum. Measured on 10 pages. |
+| **Fix** | Change the text colour of “Single Access Mechanism for All Verticals o…” from #FFFFFF to #1F2937 (the site's body text colour) — 5.24:1 on #F97316, which passes the 4.5:1 minimum. Or keep #FFFFFF and darken the background from #F97316 to #C05911 (4.51:1). Change it where the colour is set (the shared class or theme setting), so every page using this pair is fixed at once. |
+
+[Live page](https://www.dosje.gov.in/)
 
 ### g8203_6a017643c9e5a_5jbzbySbWZr2OwiYXBianYQzkv1kI7tVXaWbwldA.jpg
 
@@ -100,7 +88,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | WCAG 2.2 A (1.1.1): every image carries an alt attribute — descriptive where it conveys meaning, empty where it is decorative. |
 | **Build does** | “g8203_6a017643c9e5a_5jbzbySbWZr2OwiYXBianYQzkv1kI7tVXaWbwldA.jpg” renders at 411px wide with no alt attribute. A screen reader announces the file name instead of the content. Measured on 6 pages. |
-| **Fix** | Add an alt attribute: a description where the image carries meaning, alt="" where it is decorative. |
+| **Fix** | Add an `alt` to “g8203_6a017643c9e5a_5jbzbySbWZr2OwiYXBianYQzkv1kI7tVXaWbwldA.jpg”: describe it if it carries meaning, `alt=""` if it is decoration. |
 
 [Live page](https://www.dosje.gov.in/gallery/)
 
@@ -112,7 +100,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
 | **Build does** | ARIA commands must have an accessible name — <a class="elementor-button elementor-size-sm" role="button" id="accessibilityButton"> (aria-command-name, wcag2a, wcag412). Measured on 146 pages. |
-| **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
+| **Fix** | Give the accessibility button a name: on `<a id="accessibilityButton" role="button">` add `aria-label="Accessibility options"`. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
 
@@ -125,7 +113,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
 | **Build does** | Links must have discernible text — <a href="https://www.digitalindia.gov.in/" target="_blank">
 							<img loading="lazy" width="105" height="41" src="https://www.dosje.gov.in/wp-content/uploads/ (link-name, wcag2a, wcag244, wcag412). Measured on 146 pages. |
-| **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
+| **Fix** | Give every image-only link a name: on each `<a>` that wraps only an `<img>` (the Digital India, India.gov.in and partner logos in the footer and logo row), set the image's `alt` to the destination — e.g. `alt="Digital India (opens in a new tab)"`. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
 
@@ -137,7 +125,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
 | **Build does** | Links must be distinguishable without relying on color — <a href="https://www.dosje.gov.in/organisation/national-portal-for-transgender-persons/" target="_blank" rel="noopener">https://www.dosje.gov.in/organisation/na (link-in-text-block, wcag2a, wcag141). Measured on 3 pages. |
-| **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
+| **Fix** | Underline links inside running text (`text-decoration: underline`), so they are not told apart from the sentence by colour alone. |
 
 [Live page](https://www.dosje.gov.in/about-the-division-social-defence/)
 
@@ -148,106 +136,22 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
-| **Build does** | Frames must have an accessible name — <iframe width="100%" height="300" style="border:0;" loading="lazy" allowfullscreen="" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/ma (frame-title, wcag2a, wcag412). Measured on 19 pages. |
-| **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
+| **Build does** | Frames must have an accessible name — <iframe data-mcc-blocked="social" data-mcc-src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fgoimsje&amp;tabs=timeline&amp;wi (frame-title, wcag2a, wcag412). Measured on 19 pages. |
+| **Fix** | Give the embedded frame from facebook.com a title that says what it shows: `<iframe title="Facebook feed" …>`. |
 
-[Live page](https://www.dosje.gov.in/events/ek-ped-maa-ke-naam-6/)
+[Live page](https://www.dosje.gov.in/)
 
-### Get in Touch
-
-`WEB-GLOBAL-016` · **Major** · Color & Token · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “Get in Touch” (a.btn) renders #0373DF on #E5EFF9 at 14px/500 — #0373DF on #E5EFF9 as painted on the capture: 3.99:1 against the 4.5:1 minimum. Measured on 116 pages. |
-| **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
-
-[Live page](https://www.dosje.gov.in/about-the-division/)
-
-### Get in Touch
-
-`WEB-GLOBAL-017` · **Major** · Color & Token · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “Get in Touch” (a.btn) renders #0373DF on #E5EFF9 at 16px/500 — #0373DF on #E5EFF9 as painted on the capture: 3.99:1 against the 4.5:1 minimum. Measured on 126 pages. |
-| **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
-
-[Live page](https://www.dosje.gov.in/about-the-division/)
-
-### About Ministry
-
-`WEB-GLOBAL-019` · **Major** · Color & Token · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “About Ministry” (span.elementor-icon-list-text) renders #E2E6EA on #0373DF at 14px/400 — #E2E6EA on #0373DF as painted on the capture: 3.7:1 against the 4.5:1 minimum. Measured on 124 pages. |
-| **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
-
-[Live page](https://www.dosje.gov.in/about-the-division/)
-
-### Dr. Ambedkar Foundation Official
-
-`WEB-GLOBAL-020` · **Major** · Color & Token · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “Dr. Ambedkar Foundation Official” (h4.text-center) renders #0373DF on #F9FAFB at 20px/600 — #0373DF on #F9FAFB as painted on the capture: 4.44:1 against the 4.5:1 minimum. Measured on 14 pages. |
-| **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
-
-[Live page](https://www.dosje.gov.in/daf-directory/)
-
-### View All Documents from MoSJE
-
-`WEB-GLOBAL-021` · **Major** · Color & Token · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “View All Documents from MoSJE” (a.btn) renders #0373DF on #F9FAFB at 14px/500 — #0373DF on #F9FAFB as painted on the capture: 4.44:1 against the 4.5:1 minimum. Measured on 13 pages. |
-| **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
-
-[Live page](https://www.dosje.gov.in/documents/corrigendum-to-pm-daksh-scheme-guidelines/)
-
-### Dr. Ambedkar International Centre (DAIC)
-
-`WEB-GLOBAL-022` · **Major** · Color & Token · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “Dr. Ambedkar International Centre (DAIC)” (a.text-primary) renders #0373DF on #F9FAFB at 16px/400 — #0373DF on #F9FAFB as painted on the capture: 4.44:1 against the 4.5:1 minimum. Measured on 4 pages. |
-| **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
-
-[Live page](https://www.dosje.gov.in/official/dr-swati-s-mishra/)
-
-### Dr. Swati S. Mishra
-
-`WEB-GLOBAL-023` · **Major** · Color & Token · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “Dr. Swati S. Mishra” (h1.h3) renders #0373DF on #F9FAFB at 22px/500 — #0373DF on #F9FAFB as painted on the capture: 4.44:1 against the 4.5:1 minimum. Measured on 3 pages. |
-| **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
-
-[Live page](https://www.dosje.gov.in/official/dr-swati-s-mishra/)
-
-### page title
+### Contact
 
 `WEB-GLOBAL-024` · **Major** · Content & Iconography · Scope: every screen with this element
 
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 A (1.3.1) and GIGW 3.0: one <h1> per page, naming the page. |
-| **Build does** | The page renders no <h1>. The first visible heading is <h6> “Need Support?”. Measured on 42 pages. |
-| **Fix** | Render exactly one <h1> carrying the page's own title, above the content. |
+| **Build does** | The page renders no <h1>. Its visible title, “Contact” (h3, 28px), is the element that should be it. Measured on 42 pages. |
+| **Fix** | Make “Contact” the page's `<h1>` (Elementor: select the heading → HTML Tag → H1). Keep its current look; only the tag changes. |
 
-[Live page](https://www.dosje.gov.in/advertisement/)
+[Live page](https://www.dosje.gov.in/contact-us-2/)
 
 ### Need Support?
 
@@ -257,237 +161,9 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | WCAG 2.2 A (1.3.1): heading levels descend without skipping, so the outline can be navigated. |
 | **Build does** | “Need Support?” is an <h6> directly after an <h1>, skipping h2. The outline cannot be navigated reliably by a screen reader. Measured on 138 pages. |
-| **Fix** | Re-tag the heading so levels descend in order, or promote the heading above it. Where the markup is only for size, use CSS instead. |
+| **Fix** | Change “Need Support?” from `<h6>` to `<h2>` and keep its size with CSS, so the outline steps down one level at a time. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
-
-### Open Department
-
-`WEB-GLOBAL-026` · **Major** · Layout & Spacing · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Open Department” is 14×21px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 14×21 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 144 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/about-the-division/)
-
-### About Ministry
-
-`WEB-GLOBAL-027` · **Major** · Layout & Spacing · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “About Ministry” is 151×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 151×20 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 110 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/about-the-division/)
-
-### Ministers & Officials
-
-`WEB-GLOBAL-028` · **Major** · Layout & Spacing · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Ministers & Officials” is 151×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 151×20 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 94 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/about-the-division/)
-
-### Organisational Chart
-
-`WEB-GLOBAL-029` · **Major** · Layout & Spacing · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Organisational Chart” is 151×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 151×20 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 106 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/about-the-division/)
-
-### Vision & Mission
-
-`WEB-GLOBAL-030` · **Major** · Layout & Spacing · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Vision & Mission” is 151×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 151×20 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 108 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/about-the-division/)
-
-### Associated Organisations
-
-`WEB-GLOBAL-031` · **Major** · Layout & Spacing · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Associated Organisations” is 172×21px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 172×21 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 144 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/about-the-division/)
-
-### Home
-
-`WEB-GLOBAL-032` · **Major** · Layout & Spacing · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Home” is 41×21px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 41×21 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 144 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/about-the-division/)
-
-### Department
-
-`WEB-GLOBAL-033` · **Major** · Layout & Spacing · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Department” is 83×21px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 83×21 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 144 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/about-the-division/)
-
-### NCBC
-
-`WEB-GLOBAL-034` · **Major** · Layout & Spacing · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “NCBC” is 147×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 147×20 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 3 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/acts-rules/)
-
-### Transgender
-
-`WEB-GLOBAL-035` · **Major** · Layout & Spacing · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Transgender” is 147×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 147×20 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 4 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/acts-rules/)
-
-### DAF
-
-`WEB-GLOBAL-036` · **Major** · Layout & Spacing · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “DAF” is 147×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 147×20 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 3 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/advertisement/)
-
-### DAIC
-
-`WEB-GLOBAL-037` · **Major** · Layout & Spacing · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “DAIC” is 147×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 147×20 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 3 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/advertisement/)
-
-### MoSJE
-
-`WEB-GLOBAL-038` · **Major** · Layout & Spacing · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “MoSJE” is 147×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 147×20 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 6 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/annual-reports/)
-
-### NSFDC
-
-`WEB-GLOBAL-039` · **Major** · Layout & Spacing · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “NSFDC” is 147×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 147×20 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 3 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/annual-reports/)
-
-### NMBA
-
-`WEB-GLOBAL-040` · **Major** · Layout & Spacing · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “NMBA” is 147×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 147×20 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 3 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/circulars-notifications/)
-
-### NBCFDC
-
-`WEB-GLOBAL-041` · **Major** · Layout & Spacing · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “NBCFDC” is 147×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 147×20 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 4 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/forms-templates/)
-
-### NSKFDC
-
-`WEB-GLOBAL-042` · **Major** · Layout & Spacing · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “NSKFDC” is 147×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 147×20 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 3 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/mou/)
-
-### SCW
-
-`WEB-GLOBAL-043` · **Major** · Layout & Spacing · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “SCW” is 147×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 147×20 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 3 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/mou/)
-
-### DAIC
-
-`WEB-GLOBAL-044` · **Major** · Layout & Spacing · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “DAIC” is 35×19px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 35×19 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 3 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/tender/investment-of-an-amount-of-rs-10-00-crore-in-fixed-reg-2/)
 
 ### footer
 
@@ -497,33 +173,21 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | DBIM 3.0 §5.6: the footer carries Archives, Website Policy, Related Links and Feedback. |
 | **Build does** | DBIM 5.6 mandates four footer sections. This footer publishes 0 of them; missing: Archives, Website Policy, Related Links, Feedback. Measured on 146 pages. |
-| **Fix** | Add the missing sections to the footer. Archives and Website Policy need a page each; Related Links and Feedback can carry the existing ones. |
+| **Fix** | Add to the footer: Archives, Website Policy, Related Links, Feedback. Website Policy → one page linking the Copyright, Hyperlinking, Privacy and Terms policies; Related Links → the Important Links list; Feedback → the existing contact form; Archives → a page listing superseded documents. This needs the Ministry's decision on T10 / T32 first. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
 
-### a
+### UX4G violet in place of the Department's blue
 
 `WEB-GLOBAL-046` · **Major** · Color & Token · Scope: every screen with this element
 
 | | |
 |---|---|
 | **Design says** | DBIM 3.0 §2.1: one colour group from the primary palette. UX4G's violet is its own brand layer, not the Department's. |
-| **Build does** | 9 element(s) render UX4G's violet primary rather than the Department's key colour. DBIM 2.1 allows one colour group from the primary palette. Measured on 145 pages. |
-| **Fix** | Override the inherited UX4G variables so the Department's key colour applies everywhere, including the skip link and the accessibility widget. |
+| **Build does** | 3 element(s) on this page carry UX4G's violet primary (#613AF5) — here “https://www.dosje.gov.in/organisation/national-po…”. DBIM 2.1 allows one colour group from the primary palette. Measured on 3 pages. |
+| **Fix** | Override the UX4G variables after `ux4g-min.css` loads: `:root { --bs-primary: #0373DF; --bs-link-color: #0373DF; --bs-blue: #0373DF; }`, and restyle the accessibility widget's controls to the same blue. |
 
-[Live page](https://www.dosje.gov.in/about-the-division/)
-
-### last updated on
-
-`WEB-GLOBAL-047` · **Major** · Content & Iconography · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “last updated on” · absent from the build |
-| **Build does** | The design frame carries “last updated on” (12px). Nothing with that text renders on the live page. Measured on 9 pages. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-12795)
+[Live page](https://www.dosje.gov.in/about-the-division-social-defence/)
 
 ### of 1500 items
 
@@ -532,176 +196,116 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Design: “of 1500 items” · absent from the build |
-| **Build does** | The design frame carries “of 1500 items” (12px). Nothing with that text renders on the live page. Measured on 4 pages. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Build does** | The design frame carries “of 1500 items” (12px). Nothing with that text renders on the live page. Measured on 9 pages. |
+| **Fix** | Add the text “of 1500 items” where the Figma frame places it (open the frame from the link on this board) — or, if it was dropped on purpose, tell the design team so the frame is updated. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-12795)
 
-### search by title, keyword, or document number
+### Search by title, keyword, or document number
 
 `WEB-GLOBAL-049` · **Major** · Content & Iconography · Scope: every screen with this element
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Design: “search by title, keyword, or document nu” · absent from the build |
-| **Build does** | The design frame carries “search by title, keyword, or document number” (16px). Nothing with that text renders on the live page. Measured on 3 pages. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Build does** | The design frame carries “Search by title, keyword, or document number” (16px). Nothing with that text renders on the live page. Measured on 3 pages. |
+| **Fix** | Add the text “Search by title, keyword, or document number” where the Figma frame places it (open the frame from the link on this board) — or, if it was dropped on purpose, tell the design team so the frame is updated. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-12795)
 
-### sort by recently added
-
-`WEB-GLOBAL-050` · **Major** · Content & Iconography · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “sort by recently added” · absent from the build |
-| **Build does** | The design frame carries “sort by recently added” (14px). Nothing with that text renders on the live page. Measured on 3 pages. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-12795)
-
-### empowering citizens with the right to information access gov
+### Empowering citizens with the right to information access gov
 
 `WEB-GLOBAL-051` · **Major** · Content & Iconography · Scope: every screen with this element
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Design: “empowering citizens with the right to in” · absent from the build |
-| **Build does** | The design frame carries “empowering citizens with the right to information access government data, decisi” (16px). Nothing with that text renders on the live page. Measured on 3 pages. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Build does** | The design frame carries “Empowering citizens with the right to information access government data, decisi” (16px). Nothing with that text renders on the live page. Measured on 3 pages. |
+| **Fix** | Add the text “Empowering citizens with the right to information access government data, decisi” where the Figma frame places it (open the frame from the link on this board) — or, if it was dropped on purpose, tell the design team so the frame is updated. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14221)
 
-### search by name, designation, or organization
+### Search by name, designation, or organization
 
 `WEB-GLOBAL-052` · **Major** · Content & Iconography · Scope: every screen with this element
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Design: “search by name, designation, or organiza” · absent from the build |
-| **Build does** | The design frame carries “search by name, designation, or organization” (16px). Nothing with that text renders on the live page. Measured on 3 pages. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Build does** | The design frame carries “Search by name, designation, or organization” (16px). Nothing with that text renders on the live page. Measured on 3 pages. |
+| **Fix** | Add the text “Search by name, designation, or organization” where the Figma frame places it (open the frame from the link on this board) — or, if it was dropped on purpose, tell the design team so the frame is updated. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-9324)
 
-### target group
-
-`WEB-GLOBAL-053` · **Major** · Content & Iconography · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “target group” · absent from the build |
-| **Build does** | The design frame carries “target group” (14px). Nothing with that text renders on the live page. Measured on 3 pages. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-12250)
-
-### login
+### Login
 
 `WEB-GLOBAL-054` · **Major** · Color & Token · Scope: every screen with this element
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built #FFFFFF · design #0373DF |
-| **Build does** | “login” — colour #0373DF → #FFFFFF. Measured on 82 pages. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Login” — colour #0373DF → #FFFFFF. Measured on 92 pages. |
+| **Fix** | On “Login”, change #FFFFFF to #0373DF — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-12795)
 
-### title
+### Formation of the Ministry of Welfare
 
 `WEB-GLOBAL-055` · **Major** · Color & Token · Scope: every screen with this element
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built #1F2937 · design #1F2428 |
-| **Build does** | “title” — colour #1F2428 → #1F2937. Measured on 42 pages. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Formation of the Ministry of Welfare” — colour #1F2428 → #1F2937. Measured on 49 pages. |
+| **Fix** | On “Formation of the Ministry of Welfare”, change #1F2937 to #1F2428 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-12795)
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-8567)
 
-### gov. of india
+### Gov. of India
 
 `WEB-GLOBAL-056` · **Major** · Typography · Scope: every screen with this element
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built 12px · design 14px · Built 400 weight · design 500 |
-| **Build does** | “gov. of india” — size 14 → 12; weight 500 → 400. Measured on 72 pages. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Gov. of India” — size 14 → 12; weight 500 → 400. Measured on 79 pages. |
+| **Fix** | On “Gov. of India”, change 12px to 14px; change 400 weight to 500 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-109359)
 
-### dr. virendra kumar
-
-`WEB-GLOBAL-057` · **Major** · Color & Token · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Built #0373DF · design #1F2428 |
-| **Build does** | “dr. virendra kumar” — colour #1F2428 → #0373DF. Measured on 5 pages. |
-| **Fix** | Set the built value to the design's. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-9324)
-
-### name
+### Name
 
 `WEB-GLOBAL-058` · **Major** · Typography · Scope: every screen with this element
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built 14px · design 12px · Built 500 weight · design 400 · Built #1F2937 · design #1F2428 |
-| **Build does** | “name” — size 12 → 14; weight 400 → 500; colour #1F2428 → #1F2937. Measured on 7 pages. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Name” — size 12 → 14; weight 400 → 500; colour #1F2428 → #1F2937. Measured on 7 pages. |
+| **Fix** | On “Name”, change 14px to 12px; change 500 weight to 400; change #1F2937 to #1F2428 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-9324)
 
-### dr. virendra kumar
-
-`WEB-GLOBAL-059` · **Major** · Typography · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Built 400 weight · design 500 · Built #0373DF · design #1F2428 |
-| **Build does** | “dr. virendra kumar” — weight 500 → 400; colour #1F2428 → #0373DF. Measured on 6 pages. |
-| **Fix** | Set the built value to the design's. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-89516)
-
-### union minister of social justice and empowerment
+### Union Minister of Social Justice and Empowerment
 
 `WEB-GLOBAL-060` · **Major** · Typography · Scope: every screen with this element
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built 14px · design 12px · Built #1F2937 · design #343A40 |
-| **Build does** | “union minister of social justice and empowerment” — size 12 → 14; colour #343A40 → #1F2937. Measured on 3 pages. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Union Minister of Social Justice and Empowerment” — size 12 → 14; colour #343A40 → #1F2937. Measured on 4 pages. |
+| **Fix** | On “Union Minister of Social Justice and Empowerment”, change 14px to 12px; change #1F2937 to #343A40 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-89516)
 
-### mos3-msje[at]gov[dot]in
-
-`WEB-GLOBAL-061` · **Major** · Typography · Scope: every screen with this element
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Built 14px · design 12px · Built 400 weight · design 500 · Built #1F2937 · design #1F2428 |
-| **Build does** | “mos3-msje[at]gov[dot]in” — size 12 → 14; weight 500 → 400; colour #1F2428 → #1F2937. Measured on 3 pages. |
-| **Fix** | Set the built value to the design's. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-89516)
-
-### here's how the ministry empowers citizens like you
+### Here’s how the Ministry empowers citizens like you.
 
 `WEB-GLOBAL-062` · **Major** · Typography · Scope: every screen with this element
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built 28px · design 22px · Built #1F2937 · design #1F2428 |
-| **Build does** | “here's how the ministry empowers citizens like you” — size 22 → 28; colour #1F2428 → #1F2937. Measured on 4 pages. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Here’s how the Ministry empowers citizens like you.” — size 22 → 28; colour #1F2428 → #1F2937. Measured on 4 pages. |
+| **Fix** | On “Here’s how the Ministry empowers citizens like you.”, change 28px to 22px; change #1F2937 to #1F2428 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-8477)
 
@@ -713,7 +317,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | UX4G 3.0 §2.3: font sizes come from the published type scale (12/14/16/18/20/24/28/32/36/40/52/60), and Body/XS 12px is the minimum. |
 | **Build does** | 1 element(s) render at 10px, which is not on the UX4G type scale (12/14/16/18/20/24/28/32/36/40/52/60). It is also below Body/XS, the stated minimum usable size. Measured on 130 pages. |
-| **Fix** | Move the size to the nearest step on the UX4G scale, and never below 12px. |
+| **Fix** | Change the 10px text to 12px (Body/XS on the UX4G scale); nothing on a page may be smaller than 12px. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
 
@@ -725,7 +329,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | UX4G 3.0 §2.3: font sizes come from the published type scale (12/14/16/18/20/24/28/32/36/40/52/60), and Body/XS 12px is the minimum. |
 | **Build does** | 2 element(s) render at 8px, which is not on the UX4G type scale (12/14/16/18/20/24/28/32/36/40/52/60). It is also below Body/XS, the stated minimum usable size. Measured on 117 pages. |
-| **Fix** | Move the size to the nearest step on the UX4G scale, and never below 12px. |
+| **Fix** | Change the 8px text to 12px (Body/XS on the UX4G scale); nothing on a page may be smaller than 12px. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
 
@@ -736,22 +340,94 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | UX4G 3.0 §2.3: font sizes come from the published type scale (12/14/16/18/20/24/28/32/36/40/52/60), and Body/XS 12px is the minimum. |
-| **Build does** | 9 element(s) render at 11px, which is not on the UX4G type scale (12/14/16/18/20/24/28/32/36/40/52/60). It is also below Body/XS, the stated minimum usable size. Measured on 6 pages. |
-| **Fix** | Move the size to the nearest step on the UX4G scale, and never below 12px. |
+| **Build does** | 12 element(s) render at 11px, which is not on the UX4G type scale (12/14/16/18/20/24/28/32/36/40/52/60). It is also below Body/XS, the stated minimum usable size. Measured on 6 pages. |
+| **Fix** | Change the 11px text to 12px (Body/XS on the UX4G scale); nothing on a page may be smaller than 12px. |
 
-[Live page](https://www.dosje.gov.in/dashboard/)
+[Live page](https://www.dosje.gov.in/gallery/)
 
-### heading-order
+### Get in Touch
 
-`WEB-GLOBAL-066` · **Minor** · Accessibility · Scope: every screen with this element
+`WEB-GLOBAL-090` · **Major** · Color & Token · Scope: every screen with this element
 
 | | |
 |---|---|
-| **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
-| **Build does** | Heading levels should only increase by one — <h6 class="elementor-heading-title elementor-size-default">Need Support?</h6> (heading-order, ). Measured on 138 pages. |
-| **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
+| **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
+| **Build does** | Text “Get in Touch” (a.btn) renders #0373DF on #E5EFF9 at 16px/500 — #0373DF on #E5EFF9 as painted on the capture: 3.99:1 against the 4.5:1 minimum. Measured on 127 pages. |
+| **Fix** | Change the text colour of “Get in Touch” from #0373DF to #014B92 (the site's dark blue (footer strip)) — 7.45:1 on #E5EFF9, which passes the 4.5:1 minimum. Or keep #0373DF and lighten the background from #E5EFF9 to #FAFCFE (4.5:1). Change it where the colour is set (the shared class or theme setting), so every page using this pair is fixed at once. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
+
+### About Ministry
+
+`WEB-GLOBAL-091` · **Major** · Color & Token · Scope: every screen with this element
+
+| | |
+|---|---|
+| **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
+| **Build does** | Text “About Ministry” (span.elementor-icon-list-text) renders #E2E6EA on #0373DF at 14px/400 — #E2E6EA on #0373DF as painted on the capture: 3.7:1 against the 4.5:1 minimum. Measured on 124 pages. |
+| **Fix** | Change the text colour of “About Ministry” from #E2E6EA to #FFFFFF (the site's white) — 4.64:1 on #0373DF, which passes the 4.5:1 minimum. Or keep #E2E6EA and darken the background from #0373DF to #0365C4 (4.56:1). Change it where the colour is set (the shared class or theme setting), so every page using this pair is fixed at once. |
+
+[Live page](https://www.dosje.gov.in/about-the-division/)
+
+### Dr. Ambedkar Foundation Official
+
+`WEB-GLOBAL-092` · **Major** · Color & Token · Scope: every screen with this element
+
+| | |
+|---|---|
+| **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
+| **Build does** | Text “Dr. Ambedkar Foundation Official” (h4.text-center) renders #0373DF on #F9FAFB at 20px/600 — #0373DF on #F9FAFB as painted on the capture: 4.44:1 against the 4.5:1 minimum. Measured on 30 pages. |
+| **Fix** | Change the text colour of “Dr. Ambedkar Foundation Official” from #0373DF to #014B92 (the site's dark blue (footer strip)) — 8.29:1 on #F9FAFB, which passes the 4.5:1 minimum. Or keep #0373DF and lighten the background from #F9FAFB to #FBFBFC (4.5:1). Change it where the colour is set (the shared class or theme setting), so every page using this pair is fixed at once. |
+
+[Live page](https://www.dosje.gov.in/daf-directory/)
+
+### Ensures user session persistence, allowing …
+
+`WEB-GLOBAL-093` · **Major** · Color & Token · Scope: every screen with this element
+
+| | |
+|---|---|
+| **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
+| **Build does** | Text “Ensures user session persistence, allowing seamless navigation on the…” (p.small) renders #938BB6 on #FFFFFF at 12px/400 — #938BB6 on #FFFFFF as painted on the capture: 3.18:1 against the 4.5:1 minimum. Measured on 3 pages. |
+| **Fix** | Change the text colour of “Ensures user session persistence, allowing …” from #938BB6 to #0373DF (the site's primary blue) — 4.64:1 on #FFFFFF, which passes the 4.5:1 minimum. Change it where the colour is set (the shared class or theme setting), so every page using this pair is fixed at once. |
+
+[Live page](https://www.dosje.gov.in/cookies/)
+
+### About Ministry
+
+`WEB-GLOBAL-110` · **Major** · Layout & Spacing · Scope: every screen with this element
+
+| | |
+|---|---|
+| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
+| **Build does** | “About Ministry” is 123×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 123×20 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 145 pages. |
+| **Fix** | Make “About Ministry” at least 44×44px: it is 123×20px. Add 12px padding top and bottom (or set `min-height: 44px; min-width: 44px`), keeping 8px clear of the next control. |
+
+[Live page](https://www.dosje.gov.in/about-the-division/)
+
+### Home
+
+`WEB-GLOBAL-111` · **Major** · Layout & Spacing · Scope: every screen with this element
+
+| | |
+|---|---|
+| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
+| **Build does** | “Home” is 41×21px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 41×21 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 146 pages. |
+| **Fix** | Make “Home” at least 44×44px: it is 41×21px. Add 12px padding top and bottom and 2px left and right (or set `min-height: 44px; min-width: 44px`), keeping 8px clear of the next control. |
+
+[Live page](https://www.dosje.gov.in/about-the-division/)
+
+### Suo-moto Disclosure
+
+`WEB-GLOBAL-113` · **Major** · Color & Token · Scope: every screen with this element
+
+| | |
+|---|---|
+| **Design says** | The approved Figma handoff frame for this screen. Built #374151 · design #343A40 |
+| **Build does** | “Suo-moto Disclosure” — colour #343A40 → #374151. Measured on 7 pages. |
+| **Fix** | On “Suo-moto Disclosure”, change #374151 to #343A40 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
+
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14262)
 
 ### landmark-contentinfo-is-top-level
 
@@ -762,8 +438,8 @@ Each has its own board in the PDF, showing the design and the build side by side
 | **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
 | **Build does** | Contentinfo landmark should not be contained in another landmark — <div class="mosje-visitor-counter mosje-visitor-counter-total" role="contentinfo" aria-label="Total site visits">
 					<span class="mvc-item mvc-total">
-			<spa (landmark-contentinfo-is-top-level, ). Measured on 145 pages. |
-| **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
+			<spa (landmark-contentinfo-is-top-level, ). Measured on 146 pages. |
+| **Fix** | Remove `role="contentinfo"` from the visitor counter (`<div class="mosje-visitor-counter">`); the page footer is already the contentinfo landmark. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
 
@@ -774,8 +450,8 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
-| **Build does** | Document should not have more than one contentinfo landmark — <footer data-elementor-type="footer" data-elementor-id="370" class="elementor elementor-370 elementor-location-footer" data-elementor-post-type="elementor_libra (landmark-no-duplicate-contentinfo, ). Measured on 144 pages. |
-| **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
+| **Build does** | Document should not have more than one contentinfo landmark — <footer data-elementor-type="footer" data-elementor-id="370" class="elementor elementor-370 elementor-location-footer" data-elementor-post-type="elementor_libra (landmark-no-duplicate-contentinfo, ). Measured on 145 pages. |
+| **Fix** | Keep exactly one contentinfo landmark: the same fix — drop `role="contentinfo"` from the visitor counter inside the footer. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
 
@@ -787,7 +463,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | GIGW 3.0 and WCAG 3.1.1: the page declares its language; en-IN on a Government of India property. |
 | **Build does** | The document declares lang="en-US" on a Government of India property; en-IN is the correct locale. Measured on 146 pages. |
-| **Fix** | Set lang="en-IN" on <html>, and lang on any block in another language. |
+| **Fix** | Set the site language to English (India): WordPress → Settings → General → Site Language → English (India), which renders `<html lang="en-IN">`. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
 
@@ -799,7 +475,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | GIGW 3.0 quality: a page loads without scripting errors. |
 | **Build does** | The page logs 21 JavaScript errors on load. First: Loading the font 'https://fonts.gstatic.com/s/notosans/v42/o-0ZIpQlx3QUlC5A4PNr4C5OaxRsfNNlKbCePevttHOmHS91ixg0.woff2' violates the following Content Security Policy directive: "fo Measured on 146 pages. |
-| **Fix** | Fix the scripting errors, starting with the first — later ones are often consequences. |
+| **Fix** | Fix the first error on load: Loading the font 'https://fonts.gstatic.com/s/notosans/v42/… — later errors often follow from it. Check again with the browser console open. |
 
 [Live page](https://www.dosje.gov.in/about-the-division/)
 
@@ -811,7 +487,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | GIGW 3.0: every page publishes a descriptive title and meta description. |
 | **Build does** | The page publishes no meta description. Measured on 56 pages. |
-| **Fix** | Publish a page-specific title and meta description. |
+| **Fix** | Add a meta description of 120–160 characters saying what the page offers (Yoast/Rank Math → the page's SEO box). |
 
 [Live page](https://www.dosje.gov.in/advertisement/)
 
@@ -823,21 +499,21 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | DBIM 3.0 §3.7: icons are drawn at 24, 32, 48 or 64px, in proportion. |
 | **Build does** | 6 icon(s) render at sizes outside DBIM 3.7's set (24/32/48/64 px) — the first is Icon-Container.svg at 35×35px. Measured on 20 pages. |
-| **Fix** | Redraw or re-export the icon at 24, 32, 48 or 64px, keeping its proportion. |
+| **Fix** | Export “Icon-Container.svg” at 24px (or 32 / 48 / 64) and render it at that size, keeping its proportion. |
 
 [Live page](https://www.dosje.gov.in/home-page/for-beneficiary/)
 
-### choose a portal to visit
+### Choose a portal to visit
 
 `WEB-GLOBAL-073` · **Minor** · Typography · Scope: every screen with this element
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built 500 weight · design 600 |
-| **Build does** | “choose a portal to visit” — weight 600 → 500. Measured on 3 pages. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Choose a portal to visit” — weight 600 → 500. Measured on 4 pages. |
+| **Fix** | On “Choose a portal to visit”, change 500 weight to 600 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=7298-28616)
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=7116-34665)
 
 ### Helvetica
 
@@ -847,7 +523,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | UX4G 3.0 §2.2 and the Government standard: Noto Sans across the estate. |
 | **Build does** | 3 element(s) render in Helvetica. Noto Sans is the mandated typeface across Government of India properties. Measured on 3 pages. |
-| **Fix** | Set the element to Noto Sans. |
+| **Fix** | Set “Helvetica” to Noto Sans (`font-family: "Noto Sans", sans-serif`). |
 
 [Live page](https://www.dosje.gov.in/events/ek-ped-maa-ke-naam-6/)
 
@@ -859,7 +535,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | UX4G 3.0 §2.3: font sizes come from the published type scale (12/14/16/18/20/24/28/32/36/40/52/60), and Body/XS 12px is the minimum. |
 | **Build does** | 19 element(s) render at 15px, which is not on the UX4G type scale (12/14/16/18/20/24/28/32/36/40/52/60). Measured on 19 pages. |
-| **Fix** | Move the size to the nearest step on the UX4G scale, and never below 12px. |
+| **Fix** | Change the 15px text to 16px (Body/M on the UX4G scale). |
 
 [Live page](https://www.dosje.gov.in/contact-us/)
 
@@ -871,7 +547,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | UX4G 3.0 §2.3: font sizes come from the published type scale (12/14/16/18/20/24/28/32/36/40/52/60), and Body/XS 12px is the minimum. |
 | **Build does** | 5 element(s) render at 22px, which is not on the UX4G type scale (12/14/16/18/20/24/28/32/36/40/52/60). Measured on 19 pages. |
-| **Fix** | Move the size to the nearest step on the UX4G scale, and never below 12px. |
+| **Fix** | Change the 22px text to 24px (Heading/M on the UX4G scale). |
 
 [Live page](https://www.dosje.gov.in/)
 
@@ -882,8 +558,8 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
-| **Build does** | All page content should be contained by landmarks — <a class="skip-link screen-reader-text" href="#content">Skip to content</a> (region, ). Measured on 70 pages. |
-| **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
+| **Build does** | All page content should be contained by landmarks — <a class="skip-link screen-reader-text" href="#content">Skip to content</a> (region, ). Measured on 78 pages. |
+| **Fix** | Move the skip link and the floating widgets inside a landmark, or give their wrapper `role="region"` with an `aria-label`; all visible content must sit in header/nav/main/footer. |
 
 [Live page](https://www.dosje.gov.in/acts-rules/)
 
@@ -894,10 +570,10 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
-| **Build does** | The skip-link target should exist and be focusable — <a class="skip-link screen-reader-text" href="#content">Skip to content</a> (skip-link, ). Measured on 7 pages. |
-| **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
+| **Build does** | The skip-link target should exist and be focusable — <a class="skip-link screen-reader-text" href="#content">Skip to content</a> (skip-link, ). Measured on 70 pages. |
+| **Fix** | This page template has no `<main>` element, so “Skip to content” points at `#content`, which does not exist. Wrap the page content in `<main id="content">` — as the About Us template already does (verified on /policies/ and /newsletter/, 18 Sep). |
 
-[Live page](https://www.dosje.gov.in/advertisement/)
+[Live page](https://www.dosje.gov.in/acts-rules/)
 
 ### landmark-unique
 
@@ -906,8 +582,8 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
-| **Build does** | Landmarks should have a unique role or role/label/title (i.e. accessible name) combination — <nav class="e-n-menu" data-widget-number="240" aria-label="Menu" data-touch-mode="false" data-layout="horizontal"> (landmark-unique, ). Measured on 3 pages. |
-| **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
+| **Build does** | Landmarks should have a unique role or role/label/title (i.e. accessible name) combination — <nav class="e-n-menu" data-widget-number="240" aria-label="Menu" data-touch-mode="false" data-layout="horizontal"> (landmark-unique, ). Measured on 17 pages. |
+| **Fix** | Give each navigation a different name: e.g. `aria-label="Main menu"` on the header nav and `aria-label="Footer menu"` on the footer nav. |
 
 [Live page](https://www.dosje.gov.in/cpio/)
 
@@ -919,21 +595,45 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | WCAG 2.2 AA (2.4.7): every keyboard-focusable control shows a visible focus indicator. DBIM and UX4G both draw a 4px ring. |
 | **Build does** | Pagination page numbers: screenshotted focused and then blurred, only 1.3% of the region changes — the digit turns from grey to black, with no ring or fill, which is hard to find on a page. Measured on 8 pages. |
-| **Fix** | Give the control a visible focus style — the estate's 4px ring — and make sure it is not removed by an `outline: none` elsewhere in the stylesheet. |
+| **Fix** | Add a visible focus style to the pagination links (`.pagination a`, `.page-link`): `:focus-visible { outline: 2px solid #0373DF; outline-offset: 2px; }` — and remove any `outline: none` that overrides it; the current page needs a different style from the focused one, so a keyboard user can tell them apart. |
 
 [Live page](https://www.dosje.gov.in/annual-reports/)
 
-### Audience page standfirst
+### View
 
-`WEB-GLOBAL-084` · **Nit** · Content & Iconography · Scope: every screen with this element
+`WEB-GLOBAL-112` · **Minor** · Layout & Spacing · Scope: every screen with this element
 
 | | |
 |---|---|
-| **Design says** | GIGW 3.0: page content is accurate, specific to the page, and in the Department's own register. |
-| **Build does** | All four audience pages open with “Here's how the Ministry empowers citizens like you.” A reader who arrives on the page for their own group is told nothing specific to it. |
-| **Fix** | Give each audience page a sentence about what that audience will find on it. |
+| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
+| **Build does** | “View” is 67×40px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; WCAG 2.5.8's 24×24 floor is met. Measured on 143 pages. |
+| **Fix** | Make “View” at least 44×44px: it is 67×40px. Add 2px padding top and bottom (or set `min-height: 44px; min-width: 44px`), keeping 8px clear of the next control. |
 
-[Live page](https://www.dosje.gov.in/home-page/for-student/)
+[Live page](https://www.dosje.gov.in/about-the-division/)
+
+### Access official reports released by the Commission and its a
+
+`WEB-GLOBAL-114` · **Minor** · Typography · Scope: every screen with this element
+
+| | |
+|---|---|
+| **Design says** | The approved Figma handoff frame for this screen. Built 16px · design 14px |
+| **Build does** | “Access official reports released by the Commission and its associated ” — size 14 → 16. Measured on 3 pages. |
+| **Fix** | On “Access official reports released by the Commission and its a”, change 16px to 14px — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
+
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-109359)
+
+### Current Events
+
+`WEB-GLOBAL-115` · **Minor** · Typography · Scope: every screen with this element
+
+| | |
+|---|---|
+| **Design says** | The approved Figma handoff frame for this screen. Built 22px · design 20px |
+| **Build does** | “Current Events” — size 20 → 22. Measured on 4 pages. |
+| **Fix** | On “Current Events”, change 22px to 20px — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
+
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-114418)
 
 ---
 
@@ -941,15 +641,15 @@ Each has its own board in the PDF, showing the design and the build side by side
 
 ## About The Division Social Defence · mobile
 
-### a
+### Page scrolls sideways at 375px
 
 `WEB-SCREEN-012` · **Blocker** · Layout & Spacing · Scope: About The Division Social Defence · mobile
 
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.10): content reflows to 320 CSS px with no horizontal scrolling. |
-| **Build does** | The page scrolls horizontally at 375px: content reaches 446px. WCAG 1.4.10 requires reflow without a horizontal scrollbar down to 320 CSS px. Measured on 2 pages. |
-| **Fix** | Find the element wider than the viewport and let it wrap or scroll inside itself; the page itself must not scroll sideways. |
+| **Build does** | The widest element is the link “https://www.dosje.gov.in/organisation/national-po…”. The page scrolls horizontally at 375px: content reaches 446px. WCAG 1.4.10 requires reflow without a horizontal scrollbar down to 320 CSS px. Measured on 2 pages. |
+| **Fix** | At 375px the page is 446px wide; the cause is the link “https://www.dosje.gov.in/organisation/national-po…”. For a long link or word add `overflow-wrap: anywhere` to its paragraph; for a table, wrap it in a container with `overflow-x: auto`. The page itself must never scroll sideways. |
 
 [Live page](https://www.dosje.gov.in/about-the-division-social-defence/)
 
@@ -963,69 +663,57 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
 | **Build does** | Certain ARIA roles must contain particular children — <div class="elementor-loop-container elementor-grid" role="list"> (aria-required-children, wcag2a, wcag131). Also measured on the 375px capture of the same page. |
-| **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
+| **Fix** | The card grid has `role="list"` but its cards are not `role="listitem"`. Either add `role="listitem"` to each card or remove `role="list"`. |
 
-[Live page](https://www.dosje.gov.in/about-us/)
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-8567) · [Live page](https://www.dosje.gov.in/about-us/)
 
-### discover the initiatives that drive national efforts to adva
+### 2 pieces of design copy missing
 
-`WEB-SCREEN-061` · **Major** · Content & Iconography · Scope: About Us · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “discover the initiatives that drive nati” · absent from the build |
-| **Build does** | The design frame carries “discover the initiatives that drive national efforts to advance equality, protec” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Live page](https://www.dosje.gov.in/about-us/)
-
-### the department of social justice & empowerment is entrusted 
-
-`WEB-SCREEN-072` · **Major** · Content & Iconography · Scope: About Us · desktop
+`WEB-SCREEN-357` · **Major** · Content & Iconography · Scope: About Us · desktop
 
 | | |
 |---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “the department of social justice & empow” · absent from the build |
-| **Build does** | The design frame carries “the department of social justice & empowerment is entrusted with the empowerment” (16px). Nothing with that text renders on the live page. Measured on 2 pages. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Design says** | The approved Figma handoff frame for this screen. Design: “matters related to the national schedule” · absent from the build |
+| **Build does** | The design frame carries this copy and nothing with the same text renders on the live page: “Matters related to the National Schedule”; “Discover the initiatives that drive nati”. Also measured on the 375px capture of the same page. |
+| **Fix** | Add this copy where the Figma frame places it (each piece is outlined on the design panel): “Matters related to the National Schedule”; “Discover the initiatives that drive nati”. Where a piece was dropped on purpose, tell the design team so the frame is updated instead. |
 
-[Live page](https://www.dosje.gov.in/about-us/)
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-8567) · [Live page](https://www.dosje.gov.in/about-us/)
 
-### the ministry has been implementing various programmes/scheme
+### Evolution of the Department Over Time
 
-`WEB-SCREEN-074` · **Major** · Content & Iconography · Scope: About Us · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “the ministry has been implementing vario” · absent from the build |
-| **Build does** | The design frame carries “the ministry has been implementing various programmes/schemes for social, educat” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Live page](https://www.dosje.gov.in/about-us/)
-
-### in the year 1985-86, the erstwhile ministry of welfare was b
-
-`WEB-SCREEN-063` · **Major** · Content & Iconography · Scope: About Us · desktop
+`WEB-SCREEN-406` · **Major** · Typography · Scope: About Us · desktop
 
 | | |
 |---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “in the year 1985-86, the erstwhile minis” · absent from the build |
-| **Build does** | The design frame carries “in the year 1985-86, the erstwhile ministry of welfare was bifurcated into the d” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Design says** | The approved Figma handoff frame for this screen. Built 400 weight · design 500 · Built #1F2937 · design #343A40 |
+| **Build does** | “Evolution of the Department Over Time” — weight 500 → 400; colour #343A40 → #1F2937. Measured on 2 pages. |
+| **Fix** | On “Evolution of the Department Over Time”, change 400 weight to 500; change #1F2937 to #343A40 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
-[Live page](https://www.dosje.gov.in/about-us/)
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-8567) · [Live page](https://www.dosje.gov.in/about-us/)
 
-### in january, 2007, the minorities division along with wakf un
+### Union Minister of Social Justice and Empowerment
 
-`WEB-SCREEN-062` · **Major** · Content & Iconography · Scope: About Us · desktop
+`WEB-SCREEN-405` · **Major** · Typography · Scope: About Us · desktop
 
 | | |
 |---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “in january, 2007, the minorities divisio” · absent from the build |
-| **Build does** | The design frame carries “in january, 2007, the minorities division along with wakf unit have been moved o” (16px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Design says** | The approved Figma handoff frame for this screen. Built 12px · design 14px · Built #5E5E5E · design #374151 |
+| **Build does** | “Union Minister of Social Justice and Empowerment” — size 14 → 12; colour #374151 → #5E5E5E. |
+| **Fix** | On “Union Minister of Social Justice and Empowerment”, change 12px to 14px; change #5E5E5E to #374151 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
-[Live page](https://www.dosje.gov.in/about-us/)
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-8567) · [Live page](https://www.dosje.gov.in/about-us/)
+
+### Arial
+
+`WEB-SCREEN-284` · **Minor** · Typography · Scope: About Us · desktop
+
+| | |
+|---|---|
+| **Design says** | UX4G 3.0 §2.2 and the Government standard: Noto Sans across the estate. |
+| **Build does** | 80 element(s) render in Arial. Noto Sans is the mandated typeface across Government of India properties. Also measured on the 375px capture of the same page. |
+| **Fix** | Set “Arial” to Noto Sans (`font-family: "Noto Sans", sans-serif`). |
+
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-8567) · [Live page](https://www.dosje.gov.in/about-us/)
 
 ## Circulars Notifications · desktop
 
@@ -1051,47 +739,21 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
 | **Build does** | Select element must have an accessible name — <select class="form-select mobile-tab-select d-block d-lg-none mb-3" id="mobileTabSelect"> (select-name, wcag2a, wcag412). |
-| **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
+| **Fix** | Label the mobile tab selector: add `aria-label="Choose a section"` to `<select id="mobileTabSelect">`. |
 
 [Live page](https://www.dosje.gov.in/contact-us/)
-
-## Cookies · desktop
-
-### Session Cookies always active
-
-`WEB-SCREEN-285` · **Blocker** · Color & Token · Scope: Cookies · desktop
-
-| | |
-|---|---|
-| **Design says** | WCAG 2.2 AA (1.4.11): the visible part of a control — its icon, its outline, its indicator — needs 3:1 against what is behind it. |
-| **Build does** | Text “Session Cookies always active” (input.form-check-input) renders #545454 on #0373DF at 16px/400 — #FFFFFF on #90BFEC as painted on the capture: 1.94:1 against the 3.0:1 minimum. Also measured on the 375px capture of the same page. |
-| **Fix** | Darken the icon or its ground until the pair reaches 3:1. The control's accessible name is already correct; only what is drawn needs changing. |
-
-[Live page](https://www.dosje.gov.in/cookies/)
-
-### Ensures user session persistence, allowing …
-
-`WEB-SCREEN-018` · **Major** · Color & Token · Scope: Cookies · desktop
-
-| | |
-|---|---|
-| **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “Ensures user session persistence, allowing seamless navigation on the…” (p.small) renders #938BB6 on #FFFFFF at 12px/400 — #938BB6 on #FFFFFF as painted on the capture: 3.18:1 against the 4.5:1 minimum. Also measured on the 375px capture of the same page. |
-| **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
-
-[Live page](https://www.dosje.gov.in/cookies/)
 
 ## Dashboard · mobile
 
 ### 29,015
 
-`WEB-SCREEN-004` · **Blocker** · Color & Token · Scope: Dashboard · mobile
+`WEB-SCREEN-328` · **Blocker** · Color & Token · Scope: Dashboard · mobile
 
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
 | **Build does** | Text “29,015” (div.mosje-hostel-num) renders #2BA84A on #FFFFFF at 20px/600 — #2BA84A on #FFFFFF as painted on the capture: 3.09:1 against the 4.5:1 minimum. |
-| **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
+| **Fix** | Change the text colour of “29,015” from #2BA84A to #0373DF (the site's primary blue) — 4.64:1 on #FFFFFF, which passes the 4.5:1 minimum. Change it where the colour is set (the shared class or theme setting), so every page using this pair is fixed at once. |
 
 [Live page](https://www.dosje.gov.in/dashboard/)
 
@@ -1105,81 +767,131 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | WCAG 2.2 AA (2.4.7): every keyboard-focusable control shows a visible focus indicator. DBIM and UX4G both draw a 4px ring. |
 | **Build does** | Home hero banner (an unlabelled link): screenshotted focused and then blurred, no pixel changes, so a keyboard user cannot see where focus is. |
-| **Fix** | Give the control a visible focus style — the estate's 4px ring — and make sure it is not removed by an `outline: none` elsewhere in the stylesheet. |
+| **Fix** | Add a visible focus style to the hero banner link (`.swiper-slide a`): `:focus-visible { outline: 2px solid #0373DF; outline-offset: 2px; }` — and remove any `outline: none` that overrides it. Give the banner link a name too: `aria-label` with the slide's message. |
 
-[Live page](https://www.dosje.gov.in/)
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-7805) · [Live page](https://www.dosje.gov.in/)
 
-### empowering india, every day
+### BETA
 
-`WEB-SCREEN-152` · **Major** · Content & Iconography · Scope: Home · desktop
+`WEB-SCREEN-413` · **Major** · Color & Token · Scope: Home · desktop
+
+| | |
+|---|---|
+| **Design says** | The approved Figma handoff frame for this screen. Built #1F2937 · design #000000 |
+| **Build does** | “BETA” — colour #000000 → #1F2937. Also measured on the 375px capture of the same page. |
+| **Fix** | On “BETA”, change #1F2937 to #000000 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
+
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-7805) · [Live page](https://www.dosje.gov.in/)
+
+### The Ministry of Social Justice & Empowerment works to uplift (area 2 of 3)
+
+`WEB-SCREEN-375` · **Major** · Content & Iconography · Scope: Home · desktop
+
+| | |
+|---|---|
+| **Design says** | The approved Figma handoff frame for this screen. Design: “the ministry of social justice & empower” · absent from the build |
+| **Build does** | The design frame carries this copy and nothing with the same text renders on the live page: “The Ministry of Social Justice & Empower”. Also measured on the 375px capture of the same page. |
+| **Fix** | Add this copy where the Figma frame places it (each piece is outlined on the design panel): “The Ministry of Social Justice & Empower”. Where a piece was dropped on purpose, tell the design team so the frame is updated instead. |
+
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-7805) · [Live page](https://www.dosje.gov.in/)
+
+### Our Team
+
+`WEB-SCREEN-419` · **Major** · Typography · Scope: Home · desktop
+
+| | |
+|---|---|
+| **Design says** | The approved Figma handoff frame for this screen. Built 14px · design 16px · Built #0373DF · design #003366 |
+| **Build does** | “Our Team” — size 16 → 14; colour #003366 → #0373DF. Also measured on the 375px capture of the same page. |
+| **Fix** | On “Our Team”, change 14px to 16px; change #0373DF to #003366 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
+
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-7805) · [Live page](https://www.dosje.gov.in/)
+
+### Promotes equality and social participation for all communiti (area 3 of 3)
+
+`WEB-SCREEN-376` · **Major** · Content & Iconography · Scope: Home · desktop
+
+| | |
+|---|---|
+| **Design says** | The approved Figma handoff frame for this screen. Design: “promotes equality and social participati” · absent from the build |
+| **Build does** | The design frame carries this copy and nothing with the same text renders on the live page: “Promotes equality and social participati”. |
+| **Fix** | Add this copy where the Figma frame places it (each piece is outlined on the design panel): “Promotes equality and social participati”. Where a piece was dropped on purpose, tell the design team so the frame is updated instead. |
+
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-7805) · [Live page](https://www.dosje.gov.in/)
+
+### Empowering India, Every Day. (area 1 of 3)
+
+`WEB-SCREEN-374` · **Major** · Content & Iconography · Scope: Home · desktop
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Design: “empowering india, every day” · absent from the build |
-| **Build does** | The design frame carries “empowering india, every day” (56px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Build does** | The design frame carries this copy and nothing with the same text renders on the live page: “Empowering India, Every Day.”. Also measured on the 375px capture of the same page. |
+| **Fix** | Add this copy where the Figma frame places it (each piece is outlined on the design panel): “Empowering India, Every Day.”. Where a piece was dropped on purpose, tell the design team so the frame is updated instead. |
 
-[Live page](https://www.dosje.gov.in/)
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-7805) · [Live page](https://www.dosje.gov.in/)
 
-### bringing social justice to every doorstep through digital ac
+## Home · mobile
 
-`WEB-SCREEN-150` · **Major** · Content & Iconography · Scope: Home · desktop
+### Previous slide
 
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “bringing social justice to every doorste” · absent from the build |
-| **Build does** | The design frame carries “bringing social justice to every doorstep through digital access” (22px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Live page](https://www.dosje.gov.in/)
-
-### explore opportunities
-
-`WEB-SCREEN-153` · **Major** · Content & Iconography · Scope: Home · desktop
+`WEB-SCREEN-355` · **Blocker** · Color & Token · Scope: Home · mobile
 
 | | |
 |---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “explore opportunities” · absent from the build |
-| **Build does** | The design frame carries “explore opportunities” (16px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Design says** | WCAG 2.2 AA (1.4.11): the visible part of a control — its icon, its outline, its indicator — needs 3:1 against what is behind it. |
+| **Build does** | Text “Previous slide” (div.ccps-nav-btn) renders #EEEEEE on #FFFFFF at 16px/400 — #F0EFED on #FCF9EA as painted on the capture: 1.09:1 against the 3.0:1 minimum. |
+| **Fix** | Change the icon of “Previous slide” from #F0EFED to #0373DF (the site's primary blue) — 4.4:1 on #FCF9EA, which passes the 3.0:1 minimum. Change it where the colour is set (the shared class or theme setting), so every page using this pair is fixed at once. |
 
-[Live page](https://www.dosje.gov.in/)
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4285-223026) · [Live page](https://www.dosje.gov.in/)
 
-### view schemes
+### Discover our schemes, careers, and partnerships.
 
-`WEB-SCREEN-169` · **Major** · Content & Iconography · Scope: Home · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “view schemes” · absent from the build |
-| **Build does** | The design frame carries “view schemes” (16px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Live page](https://www.dosje.gov.in/)
-
-### latest updates
-
-`WEB-SCREEN-157` · **Major** · Content & Iconography · Scope: Home · desktop
+`WEB-SCREEN-418` · **Major** · Typography · Scope: Home · mobile
 
 | | |
 |---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “latest updates” · absent from the build |
-| **Build does** | The design frame carries “latest updates” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Design says** | The approved Figma handoff frame for this screen. Built 16px · design 14px · Built 400 weight · design 500 · Built #1F2937 · design #343A40 |
+| **Build does** | “Discover our schemes, careers, and partnerships.” — size 14 → 16; weight 500 → 400; colour #343A40 → #1F2937. |
+| **Fix** | On “Discover our schemes, careers, and partnerships.”, change 16px to 14px; change 400 weight to 500; change #1F2937 to #343A40 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
-[Live page](https://www.dosje.gov.in/)
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4285-223026) · [Live page](https://www.dosje.gov.in/)
+
+### Explore our schemes, career opportunities, and business part
+
+`WEB-SCREEN-415` · **Major** · Typography · Scope: Home · mobile
+
+| | |
+|---|---|
+| **Design says** | The approved Figma handoff frame for this screen. Built 16px · design 12px · Built #1F2937 · design #343A40 |
+| **Build does** | “Explore our schemes, career opportunities, and business partnerships” — size 12 → 16; colour #343A40 → #1F2937. Measured on 2 pages. |
+| **Fix** | On “Explore our schemes, career opportunities, and business part”, change 16px to 12px; change #1F2937 to #343A40 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
+
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4285-223026) · [Live page](https://www.dosje.gov.in/)
+
+### Need Support?
+
+`WEB-SCREEN-424` · **Major** · Typography · Scope: Home · mobile
+
+| | |
+|---|---|
+| **Design says** | The approved Figma handoff frame for this screen. Built 500 weight · design 600 · Built #1F2937 · design #1F2428 |
+| **Build does** | “Need Support?” — weight 600 → 500; colour #1F2428 → #1F2937. |
+| **Fix** | On “Need Support?”, change 500 weight to 600; change #1F2937 to #1F2428 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
+
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4285-223026) · [Live page](https://www.dosje.gov.in/)
 
 ## Minutes Of Screening Committees 2 · mobile
 
-### table
+### Page scrolls sideways at 375px
 
 `WEB-SCREEN-013` · **Blocker** · Layout & Spacing · Scope: Minutes Of Screening Committees 2 · mobile
 
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.10): content reflows to 320 CSS px with no horizontal scrolling. |
-| **Build does** | The page scrolls horizontally at 375px: content reaches 582px. WCAG 1.4.10 requires reflow without a horizontal scrollbar down to 320 CSS px. Measured on 2 pages. |
-| **Fix** | Find the element wider than the viewport and let it wrap or scroll inside itself; the page itself must not scroll sideways. |
+| **Build does** | The widest element is the th “#”. The page scrolls horizontally at 375px: content reaches 582px. WCAG 1.4.10 requires reflow without a horizontal scrollbar down to 320 CSS px. Measured on 2 pages. |
+| **Fix** | At 375px the page is 582px wide; the cause is the th “#”. For a long link or word add `overflow-wrap: anywhere` to its paragraph; for a table, wrap it in a container with `overflow-x: auto`. The page itself must never scroll sideways. |
 
 [Live page](https://www.dosje.gov.in/minutes-of-screening-committees-2/)
 
@@ -1187,13 +899,13 @@ Each has its own board in the PDF, showing the design and the build side by side
 
 ### Scheme: Dr. Ambedkar National Merit Award S…
 
-`WEB-SCREEN-009` · **Blocker** · Color & Token · Scope: Scheme Documents  Dr Ambedkar National Merit Award Scheme  · desktop
+`WEB-SCREEN-329` · **Blocker** · Color & Token · Scope: Scheme Documents  Dr Ambedkar National Merit Award Scheme  · desktop
 
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
 | **Build does** | Text “Scheme: Dr. Ambedkar National Merit Award Scheme for meritorious stud…” (p.mb-0) renders #938BB6 on #F9FAFB at 16px/400 — #938BB6 on #F9FAFB as painted on the capture: 3.04:1 against the 4.5:1 minimum. Measured on 2 pages. |
-| **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
+| **Fix** | Change the text colour of “Scheme: Dr. Ambedkar National Merit Award S…” from #938BB6 to #014B92 (the site's dark blue (footer strip)) — 8.29:1 on #F9FAFB, which passes the 4.5:1 minimum. Change it where the colour is set (the shared class or theme setting), so every page using this pair is fixed at once. |
 
 [Live page](https://www.dosje.gov.in/scheme-documents/dr-ambedkar-national-merit-award-scheme-for-scs-students-for-class-12th-level/)
 
@@ -1201,17 +913,65 @@ Each has its own board in the PDF, showing the design and the build side by side
 
 ### Scheme: Dr. Ambedkar Scheme for Social Inte…
 
-`WEB-SCREEN-010` · **Blocker** · Color & Token · Scope: Scheme Documents  Merger Order · desktop
+`WEB-SCREEN-330` · **Blocker** · Color & Token · Scope: Scheme Documents  Merger Order · desktop
 
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
 | **Build does** | Text “Scheme: Dr. Ambedkar Scheme for Social Integration through Inter-Cast…” (p.mb-0) renders #938BB6 on #F9FAFB at 16px/400 — #938BB6 on #F9FAFB as painted on the capture: 3.04:1 against the 4.5:1 minimum. Measured on 2 pages. |
-| **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
+| **Fix** | Change the text colour of “Scheme: Dr. Ambedkar Scheme for Social Inte…” from #938BB6 to #014B92 (the site's dark blue (footer strip)) — 8.29:1 on #F9FAFB, which passes the 4.5:1 minimum. Change it where the colour is set (the shared class or theme setting), so every page using this pair is fixed at once. |
 
 [Live page](https://www.dosje.gov.in/scheme-documents/merger-order/)
 
 ## About Us · mobile
+
+### Overview
+
+`WEB-SCREEN-396` · **Major** · Typography · Scope: About Us · mobile
+
+| | |
+|---|---|
+| **Design says** | The approved Figma handoff frame for this screen. Built 28px · design 20px · Built 500 weight · design 600 |
+| **Build does** | “Overview” — size 20 → 28; weight 600 → 500. Measured on 2 pages. |
+| **Fix** | On “Overview”, change 28px to 20px; change 500 weight to 600 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
+
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-88901) · [Live page](https://www.dosje.gov.in/about-us/)
+
+### Evolution of the Department Over Time
+
+`WEB-SCREEN-394` · **Major** · Typography · Scope: About Us · mobile
+
+| | |
+|---|---|
+| **Design says** | The approved Figma handoff frame for this screen. Built 16px · design 12px · Built #1F2937 · design #343A40 |
+| **Build does** | “Evolution of the Department Over Time” — size 12 → 16; colour #343A40 → #1F2937. Measured on 2 pages. |
+| **Fix** | On “Evolution of the Department Over Time”, change 16px to 12px; change #1F2937 to #343A40 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
+
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-88901) · [Live page](https://www.dosje.gov.in/about-us/)
+
+### Formation of the Ministry of Welfare
+
+`WEB-SCREEN-395` · **Major** · Typography · Scope: About Us · mobile
+
+| | |
+|---|---|
+| **Design says** | The approved Figma handoff frame for this screen. Built 20px · design 16px · Built 600 weight · design 500 · Built #1F2937 · design #1F2428 |
+| **Build does** | “Formation of the Ministry of Welfare” — size 16 → 20; weight 500 → 600; colour #1F2428 → #1F2937. |
+| **Fix** | On “Formation of the Ministry of Welfare”, change 20px to 16px; change 600 weight to 500; change #1F2937 to #1F2428 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
+
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-88901) · [Live page](https://www.dosje.gov.in/about-us/)
+
+### There are two departments viz. Department of Social Justice  (area 2 of 2)
+
+`WEB-SCREEN-358` · **Major** · Content & Iconography · Scope: About Us · mobile
+
+| | |
+|---|---|
+| **Design says** | The approved Figma handoff frame for this screen. Design: “there are two departments viz. departmen” · absent from the build |
+| **Build does** | The design frame carries this copy and nothing with the same text renders on the live page: “There are two departments viz. Departmen”. |
+| **Fix** | Add this copy where the Figma frame places it (each piece is outlined on the design panel): “There are two departments viz. Departmen”. Where a piece was dropped on purpose, tell the design team so the frame is updated instead. |
+
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-88901) · [Live page](https://www.dosje.gov.in/about-us/)
 
 ### scrollable-region-focusable
 
@@ -1221,189 +981,77 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
 | **Build does** | Scrollable region must have keyboard access — <div class="table-responsive w-100"> (scrollable-region-focusable, wcag2a, wcag211, wcag213). Measured on 2 pages. |
-| **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
+| **Fix** | Make the scrolling table wrapper reachable by keyboard: add `tabindex="0"`, `role="region"` and `aria-label="<table name>"` to `<div class="table-responsive">`. |
 
-[Live page](https://www.dosje.gov.in/about-us/)
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-88901) · [Live page](https://www.dosje.gov.in/about-us/)
 
-### mrs. caralyn khongwar deshmukh, as
+### May 1998
 
-`WEB-SCREEN-065` · **Major** · Content & Iconography · Scope: About Us · mobile
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “mrs. caralyn khongwar deshmukh, as” · absent from the build |
-| **Build does** | The design frame carries “mrs. caralyn khongwar deshmukh, as” (16px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Live page](https://www.dosje.gov.in/about-us/)
-
-### matters related to the national scheduled castes finance and
-
-`WEB-SCREEN-064` · **Major** · Content & Iconography · Scope: About Us · mobile
+`WEB-SCREEN-404` · **Major** · Typography · Scope: About Us · mobile
 
 | | |
 |---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “matters related to the national schedule” · absent from the build |
-| **Build does** | The design frame carries “matters related to the national scheduled castes finance and development corpora” (14px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Design says** | The approved Figma handoff frame for this screen. Built 20px · design 11px · Built 600 weight · design 500 |
+| **Build does** | “May 1998” — size 11 → 20; weight 500 → 600. |
+| **Fix** | On “May 1998”, change 20px to 11px; change 600 weight to 500 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
-[Live page](https://www.dosje.gov.in/about-us/)
-
-### shri biswaranjan sasmal, as
-
-`WEB-SCREEN-070` · **Major** · Content & Iconography · Scope: About Us · mobile
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “shri biswaranjan sasmal, as” · absent from the build |
-| **Build does** | The design frame carries “shri biswaranjan sasmal, as” (16px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Live page](https://www.dosje.gov.in/about-us/)
-
-### mrs. yogita swaroop, sr. ea
-
-`WEB-SCREEN-066` · **Major** · Content & Iconography · Scope: About Us · mobile
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “mrs. yogita swaroop, sr. ea” · absent from the build |
-| **Build does** | The design frame carries “mrs. yogita swaroop, sr. ea” (16px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Live page](https://www.dosje.gov.in/about-us/)
-
-### ms. latha ganapathy, js
-
-`WEB-SCREEN-067` · **Major** · Content & Iconography · Scope: About Us · mobile
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “ms. latha ganapathy, js” · absent from the build |
-| **Build does** | The design frame carries “ms. latha ganapathy, js” (16px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Live page](https://www.dosje.gov.in/about-us/)
-
-## Acts Rules · mobile
-
-### NHAA
-
-`WEB-SCREEN-025` · **Major** · Layout & Spacing · Scope: Acts Rules · mobile
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “NHAA” is 147×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 147×20 it is also below the WCAG 2.5.8 AA floor of 24×24. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/acts-rules/)
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-88901) · [Live page](https://www.dosje.gov.in/about-us/)
 
 ## Annual Reports · desktop
 
-### access official reports released by the commission and its a
+### Access official reports released by the Commission and its a
 
-`WEB-SCREEN-079` · **Major** · Content & Iconography · Scope: Annual Reports · desktop
+`WEB-SCREEN-362` · **Major** · Content & Iconography · Scope: Annual Reports · desktop
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Design: “access official reports released by the ” · absent from the build |
-| **Build does** | The design frame carries “access official reports released by the commission and its associated organisati” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-12795)
-
-### download all reports
-
-`WEB-SCREEN-080` · **Major** · Content & Iconography · Scope: Annual Reports · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “download all reports” · absent from the build |
-| **Build does** | The design frame carries “download all reports” (14px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Build does** | The design frame carries this copy and nothing with the same text renders on the live page: “Access official reports released by the ”. Also measured on the 375px capture of the same page. |
+| **Fix** | Add this copy where the Figma frame places it (each piece is outlined on the design panel): “Access official reports released by the ”. Where a piece was dropped on purpose, tell the design team so the frame is updated instead. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-12795)
 
 ## Annual Reports · mobile
 
-### NISD
+### NSFDC
 
-`WEB-SCREEN-027` · **Major** · Layout & Spacing · Scope: Annual Reports · mobile
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “NISD” is 147×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 147×20 it is also below the WCAG 2.5.8 AA floor of 24×24. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/annual-reports/)
-
-### BJRNF
-
-`WEB-SCREEN-026` · **Major** · Layout & Spacing · Scope: Annual Reports · mobile
+`WEB-SCREEN-397` · **Major** · Color & Token · Scope: Annual Reports · mobile
 
 | | |
 |---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “BJRNF” is 147×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 147×20 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 2 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
+| **Design says** | The approved Figma handoff frame for this screen. Built #0373DF · design #1F2428 |
+| **Build does** | “NSFDC” — colour #1F2428 → #0373DF. |
+| **Fix** | On “NSFDC”, change #0373DF to #1F2428 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
-[Live page](https://www.dosje.gov.in/annual-reports/)
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-109359)
 
 ## Booking  Conference 3 · desktop
 
-### government
+### Government
 
 `WEB-SCREEN-254` · **Major** · Typography · Scope: Booking  Conference 3 · desktop
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built 400 weight · design 500 · Built #212121 · design #1F2428 |
-| **Build does** | “government” — weight 500 → 400; colour #1F2428 → #212121. Measured on 2 pages. Also measured on the 375px capture of the same page. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Government” — weight 500 → 400; colour #1F2428 → #212121. Measured on 2 pages. Also measured on the 375px capture of the same page. |
+| **Fix** | On “Government”, change 400 weight to 500; change #212121 to #1F2428 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4743-129775)
 
 ## Booking  Vaishali · desktop
 
-### government
+### Government
 
 `WEB-SCREEN-255` · **Major** · Typography · Scope: Booking  Vaishali · desktop
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built 400 weight · design 500 · Built #212121 · design #1F2428 |
-| **Build does** | “government” — weight 500 → 400; colour #1F2428 → #212121. Measured on 2 pages. Also measured on the 375px capture of the same page. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Government” — weight 500 → 400; colour #1F2428 → #212121. Measured on 2 pages. Also measured on the 375px capture of the same page. |
+| **Fix** | On “Government”, change 400 weight to 500; change #212121 to #1F2428 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4743-129775)
-
-## Circulars Notifications · mobile
-
-### PMAJAY
-
-`WEB-SCREEN-028` · **Major** · Layout & Spacing · Scope: Circulars Notifications · mobile
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “PMAJAY” is 147×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 147×20 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 2 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/circulars-notifications/)
-
-### Smile Beggary
-
-`WEB-SCREEN-029` · **Major** · Layout & Spacing · Scope: Circulars Notifications · mobile
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Smile Beggary” is 147×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 147×20 it is also below the WCAG 2.5.8 AA floor of 24×24. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/circulars-notifications/)
 
 ## Contact Person · mobile
 
@@ -1415,1243 +1063,653 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
 | **Build does** | Scrollable region must have keyboard access — <div class="table-responsive w-100"> (scrollable-region-focusable, wcag2a, wcag211, wcag213). Measured on 2 pages. |
-| **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
+| **Fix** | Make the scrolling table wrapper reachable by keyboard: add `tabindex="0"`, `role="region"` and `aria-label="<table name>"` to `<div class="table-responsive">`. |
 
 [Live page](https://www.dosje.gov.in/contact-person/)
 
 ## Contact Us · desktop
 
-### contact details
+### 3 pieces of design copy missing
 
-`WEB-SCREEN-083` · **Major** · Content & Iconography · Scope: Contact Us · desktop
+`WEB-SCREEN-363` · **Major** · Content & Iconography · Scope: Contact Us · desktop
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Design: “contact details” · absent from the build |
-| **Build does** | The design frame carries “contact details” (40px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Build does** | The design frame carries this copy and nothing with the same text renders on the live page: “Contact Details”; “Connect directly with the Ministry, reac”; “Ministry of Social Justice and Empowerme”. Also measured on the 375px capture of the same page. |
+| **Fix** | Add this copy where the Figma frame places it (each piece is outlined on the design panel): “Contact Details”; “Connect directly with the Ministry, reac”; “Ministry of Social Justice and Empowerme”. Where a piece was dropped on purpose, tell the design team so the frame is updated instead. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14626)
 
-### connect directly with the ministry, reach the concerned depa
+### National Commission for Scheduled Castes (NCSC)
 
-`WEB-SCREEN-082` · **Major** · Content & Iconography · Scope: Contact Us · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “connect directly with the ministry, reac” · absent from the build |
-| **Build does** | The design frame carries “connect directly with the ministry, reach the concerned department, office, or o” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14626)
-
-### ministry of social justice and empowerment (mosje) contact d
-
-`WEB-SCREEN-087` · **Major** · Content & Iconography · Scope: Contact Us · desktop
+`WEB-SCREEN-256` · **Major** · Typography · Scope: Contact Us · desktop
 
 | | |
 |---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “ministry of social justice and empowerme” · absent from the build |
-| **Build does** | The design frame carries “ministry of social justice and empowerment (mosje) contact details” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14626)
-
-### room no. 631, a-wing, shastri bhawan, new delhi - 110001
-
-`WEB-SCREEN-090` · **Major** · Content & Iconography · Scope: Contact Us · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “room no. 631, a-wing, shastri bhawan, ne” · absent from the build |
-| **Build does** | The design frame carries “room no. 631, a-wing, shastri bhawan, new delhi - 110001” (14px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14626)
-
-### complaint[at]ncsc[dot]gov[dot]in
-
-`WEB-SCREEN-081` · **Major** · Content & Iconography · Scope: Contact Us · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “complaint[at]ncsc[dot]gov[dot]in” · absent from the build |
-| **Build does** | The design frame carries “complaint[at]ncsc[dot]gov[dot]in” (14px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14626)
-
-### national commission for safai karamchari (ncsk)
-
-`WEB-SCREEN-088` · **Major** · Content & Iconography · Scope: Contact Us · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “national commission for safai karamchari” · absent from the build |
-| **Build does** | The design frame carries “national commission for safai karamchari (ncsk)” (16px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Design says** | The approved Figma handoff frame for this screen. Built 15px · design 16px · Built #333333 · design #1F2428 |
+| **Build does** | “National Commission for Scheduled Castes (NCSC)” — size 16 → 15; colour #1F2428 → #333333. |
+| **Fix** | On “National Commission for Scheduled Castes (NCSC)”, change 15px to 16px; change #333333 to #1F2428 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14626)
 
 ## Cpio · desktop
 
-### the designated authority responsible for providing timely an
+### The designated authority responsible for providing timely an
 
-`WEB-SCREEN-104` · **Major** · Content & Iconography · Scope: Cpio · desktop
+`WEB-SCREEN-365` · **Major** · Content & Iconography · Scope: Cpio · desktop
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Design: “the designated authority responsible for” · absent from the build |
-| **Build does** | The design frame carries “the designated authority responsible for providing timely and transparent inform” (16px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Build does** | The design frame carries this copy and nothing with the same text renders on the live page: “The designated authority responsible for”. |
+| **Fix** | Add this copy where the Figma frame places it (each piece is outlined on the design panel): “The designated authority responsible for”. Where a piece was dropped on purpose, tell the design team so the frame is updated instead. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14262)
 
-### sort by recently updated
+### List of CPIOs/AAs
 
-`WEB-SCREEN-103` · **Major** · Content & Iconography · Scope: Cpio · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “sort by recently updated” · absent from the build |
-| **Build does** | The design frame carries “sort by recently updated” (14px). Nothing with that text renders on the live page. Measured on 2 pages. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14262)
-
-### designantion
-
-`WEB-SCREEN-091` · **Major** · Content & Iconography · Scope: Cpio · desktop
+`WEB-SCREEN-398` · **Major** · Color & Token · Scope: Cpio · desktop
 
 | | |
 |---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “designantion” · absent from the build |
-| **Build does** | The design frame carries “designantion” (14px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14262)
-
-### shri gulshan kumar pahadia, ad
-
-`WEB-SCREEN-099` · **Major** · Content & Iconography · Scope: Cpio · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “shri gulshan kumar pahadia, ad” · absent from the build |
-| **Build does** | The design frame carries “shri gulshan kumar pahadia, ad” (14px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14262)
-
-### ms. sanmeet kaur, dig(p)
-
-`WEB-SCREEN-097` · **Major** · Content & Iconography · Scope: Cpio · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “ms. sanmeet kaur, dig(p)” · absent from the build |
-| **Build does** | The design frame carries “ms. sanmeet kaur, dig(p)” (14px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14262)
-
-### sanmeet[dot]kaur[at]ips[dot]gov[dot]in
-
-`WEB-SCREEN-098` · **Major** · Content & Iconography · Scope: Cpio · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “sanmeet[dot]kaur[at]ips[dot]gov[dot]in” · absent from the build |
-| **Build does** | The design frame carries “sanmeet[dot]kaur[at]ips[dot]gov[dot]in” (14px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Design says** | The approved Figma handoff frame for this screen. Built #1F2937 · design #014B92 |
+| **Build does** | “List of CPIOs/AAs” — colour #014B92 → #1F2937. |
+| **Fix** | On “List of CPIOs/AAs”, change #1F2937 to #014B92 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14262)
 
 ## Cpio · mobile
 
-### gk[dot]pahadia[at]gov[dot]in
-
-`WEB-SCREEN-093` · **Major** · Content & Iconography · Scope: Cpio · mobile
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “gk[dot]pahadia[at]gov[dot]in” · absent from the build |
-| **Build does** | The design frame carries “gk[dot]pahadia[at]gov[dot]in” (12px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4626-80865)
-
-### list of cpios/aas
+### List of CPIOs/AAs
 
 `WEB-SCREEN-257` · **Major** · Typography · Scope: Cpio · mobile
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built 22px · design 20px · Built #1F2937 · design #014B92 |
-| **Build does** | “list of cpios/aas” — size 20 → 22; colour #014B92 → #1F2937. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “List of CPIOs/AAs” — size 20 → 22; colour #014B92 → #1F2937. |
+| **Fix** | On “List of CPIOs/AAs”, change 22px to 20px; change #1F2937 to #014B92 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4626-80865)
 
 ## Dashboard · desktop
 
+### Dashboard
+
+`WEB-SCREEN-407` · **Major** · Typography · Scope: Dashboard · desktop
+
+| | |
+|---|---|
+| **Design says** | The approved Figma handoff frame for this screen. Built 14px · design 40px · Built 500 weight · design 600 · Built #1F2937 · design #FFFFFF |
+| **Build does** | “Dashboard” — size 40 → 14; weight 600 → 500; colour #FFFFFF → #1F2937. |
+| **Fix** | On “Dashboard”, change 14px to 40px; change 500 weight to 600; change #1F2937 to #FFFFFF — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
+
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4743-128714) · [Live page](https://www.dosje.gov.in/dashboard/)
+
+### 2 pieces of design copy missing
+
+`WEB-SCREEN-366` · **Major** · Content & Iconography · Scope: Dashboard · desktop
+
+| | |
+|---|---|
+| **Design says** | The approved Figma handoff frame for this screen. Design: “sc/st women beneficiary percentage” · absent from the build |
+| **Build does** | The design frame carries this copy and nothing with the same text renders on the live page: “SC/ST Women Beneficiary Percentage”; “Total SC/ST Beneficiary Count”. Also measured on the 375px capture of the same page. |
+| **Fix** | Add this copy where the Figma frame places it (each piece is outlined on the design panel): “SC/ST Women Beneficiary Percentage”; “Total SC/ST Beneficiary Count”. Where a piece was dropped on purpose, tell the design team so the frame is updated instead. |
+
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4743-128714) · [Live page](https://www.dosje.gov.in/dashboard/)
+
 ### Pre-Matric (SCs & Others)
 
-`WEB-SCREEN-019` · **Major** · Color & Token · Scope: Dashboard · desktop
+`WEB-SCREEN-331` · **Major** · Color & Token · Scope: Dashboard · desktop
 
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
 | **Build does** | Text “Pre-Matric (SCs & Others)” (span.mosje-cat-metric-label) renders #6B6F78 on #EAF2FB at 12px/500 — #6B6F78 on #EAF2FB as painted on the capture: 4.46:1 against the 4.5:1 minimum. |
-| **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
+| **Fix** | Change the text colour of “Pre-Matric (SCs & Others)” from #6B6F78 to #014B92 (the site's dark blue (footer strip)) — 7.67:1 on #EAF2FB, which passes the 4.5:1 minimum. Or keep #6B6F78 and lighten the background from #EAF2FB to #EBF3FB (4.5:1). Change it where the colour is set (the shared class or theme setting), so every page using this pair is fixed at once. |
 
-[Live page](https://www.dosje.gov.in/dashboard/)
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4743-128714) · [Live page](https://www.dosje.gov.in/dashboard/)
 
-### total sc/st beneficiary count
+### 13px text
 
-`WEB-SCREEN-117` · **Major** · Content & Iconography · Scope: Dashboard · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “total sc/st beneficiary count” · absent from the build |
-| **Build does** | The design frame carries “total sc/st beneficiary count” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Live page](https://www.dosje.gov.in/dashboard/)
-
-### sc/st coverage rate
-
-`WEB-SCREEN-109` · **Major** · Content & Iconography · Scope: Dashboard · desktop
+`WEB-SCREEN-290` · **Minor** · Typography · Scope: Dashboard · desktop
 
 | | |
 |---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “sc/st coverage rate” · absent from the build |
-| **Build does** | The design frame carries “sc/st coverage rate” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Design says** | UX4G 3.0 §2.3: font sizes come from the published type scale (12/14/16/18/20/24/28/32/36/40/52/60), and Body/XS 12px is the minimum. |
+| **Build does** | 41 element(s) render at 13px, which is not on the UX4G type scale (12/14/16/18/20/24/28/32/36/40/52/60). Measured on 2 pages. Also measured on the 375px capture of the same page. |
+| **Fix** | Change the 13px text to 14px (Body/S on the UX4G scale). |
 
-[Live page](https://www.dosje.gov.in/dashboard/)
-
-### dapsc budget utilization rate
-
-`WEB-SCREEN-107` · **Major** · Content & Iconography · Scope: Dashboard · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “dapsc budget utilization rate” · absent from the build |
-| **Build does** | The design frame carries “dapsc budget utilization rate” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Live page](https://www.dosje.gov.in/dashboard/)
-
-### sc/st women beneficiary percentage
-
-`WEB-SCREEN-112` · **Major** · Content & Iconography · Scope: Dashboard · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “sc/st women beneficiary percentage” · absent from the build |
-| **Build does** | The design frame carries “sc/st women beneficiary percentage” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Live page](https://www.dosje.gov.in/dashboard/)
-
-### sc/st scholarship beneficiaries
-
-`WEB-SCREEN-111` · **Major** · Content & Iconography · Scope: Dashboard · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “sc/st scholarship beneficiaries” · absent from the build |
-| **Build does** | The design frame carries “sc/st scholarship beneficiaries” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Live page](https://www.dosje.gov.in/dashboard/)
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4743-128714) · [Live page](https://www.dosje.gov.in/dashboard/)
 
 ## Events  Ek Ped Maa Ke Naam 6 · desktop
 
-### Declared
-
-`WEB-SCREEN-020` · **Major** · Color & Token · Scope: Events  Ek Ped Maa Ke Naam 6 · desktop
-
-| | |
-|---|---|
-| **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “Declared” (span.badge) renders #FFFFFF on #3C9718 at 12px/500 — #FFFFFF on #3C9718 as painted on the capture: 3.73:1 against the 4.5:1 minimum. Measured on 2 pages. Also measured on the 375px capture of the same page. |
-| **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
-
-[Live page](https://www.dosje.gov.in/events/ek-ped-maa-ke-naam-6/)
-
-### description
+### Description
 
 `WEB-SCREEN-260` · **Major** · Typography · Scope: Events  Ek Ped Maa Ke Naam 6 · desktop
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built 20px · design 28px · Built #0373DF · design #014B92 |
-| **Build does** | “description” — size 28 → 20; colour #014B92 → #0373DF. Measured on 2 pages. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Description” — size 28 → 20; colour #014B92 → #0373DF. Measured on 2 pages. |
+| **Fix** | On “Description”, change 20px to 28px; change #0373DF to #014B92 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
-[Live page](https://www.dosje.gov.in/events/ek-ped-maa-ke-naam-6/)
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14110) · [Live page](https://www.dosje.gov.in/events/ek-ped-maa-ke-naam-6/)
+
+### Declared
+
+`WEB-SCREEN-332` · **Major** · Color & Token · Scope: Events  Ek Ped Maa Ke Naam 6 · desktop
+
+| | |
+|---|---|
+| **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
+| **Build does** | Text “Declared” (span.badge) renders #FFFFFF on #3C9718 at 12px/500 — #FFFFFF on #3C9718 as painted on the capture: 3.73:1 against the 4.5:1 minimum. Measured on 2 pages. Also measured on the 375px capture of the same page. |
+| **Fix** | Change the text colour of “Declared” from #FFFFFF to #1C1C1C — 4.57:1 on #3C9718, which passes the 4.5:1 minimum. Or keep #FFFFFF and darken the background from #3C9718 to #358615 (4.57:1). Change it where the colour is set (the shared class or theme setting), so every page using this pair is fixed at once. |
+
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14110) · [Live page](https://www.dosje.gov.in/events/ek-ped-maa-ke-naam-6/)
 
 ## Events  Ek Ped Maa Ke Naam 6 · mobile
 
-### description
+### Description
 
 `WEB-SCREEN-258` · **Major** · Color & Token · Scope: Events  Ek Ped Maa Ke Naam 6 · mobile
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built #0373DF · design #014B92 |
-| **Build does** | “description” — colour #014B92 → #0373DF. Measured on 2 pages. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Description” — colour #014B92 → #0373DF. Measured on 2 pages. |
+| **Fix** | On “Description”, change #0373DF to #014B92 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-115254)
 
-### email
+### Email
 
 `WEB-SCREEN-259` · **Major** · Typography · Scope: Events  Ek Ped Maa Ke Naam 6 · mobile
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built 12px · design 14px · Built #343A40 · design #1F2937 |
-| **Build does** | “email” — size 14 → 12; colour #1F2937 → #343A40. Measured on 2 pages. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Email” — size 14 → 12; colour #1F2937 → #343A40. Measured on 2 pages. |
+| **Fix** | On “Email”, change 12px to 14px; change #343A40 to #1F2937 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-115254)
 
 ## Events  Ek Ped Maa Ke Naam 7 · desktop
 
-### Declared
-
-`WEB-SCREEN-021` · **Major** · Color & Token · Scope: Events  Ek Ped Maa Ke Naam 7 · desktop
-
-| | |
-|---|---|
-| **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “Declared” (span.badge) renders #FFFFFF on #3C9718 at 12px/500 — #FFFFFF on #3C9718 as painted on the capture: 3.73:1 against the 4.5:1 minimum. Measured on 2 pages. Also measured on the 375px capture of the same page. |
-| **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
-
-[Live page](https://www.dosje.gov.in/events/ek-ped-maa-ke-naam-7/)
-
-### description
+### Description
 
 `WEB-SCREEN-263` · **Major** · Typography · Scope: Events  Ek Ped Maa Ke Naam 7 · desktop
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built 20px · design 28px · Built #0373DF · design #014B92 |
-| **Build does** | “description” — size 28 → 20; colour #014B92 → #0373DF. Measured on 2 pages. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Description” — size 28 → 20; colour #014B92 → #0373DF. Measured on 2 pages. |
+| **Fix** | On “Description”, change 20px to 28px; change #0373DF to #014B92 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
-[Live page](https://www.dosje.gov.in/events/ek-ped-maa-ke-naam-7/)
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14110) · [Live page](https://www.dosje.gov.in/events/ek-ped-maa-ke-naam-7/)
+
+### Declared
+
+`WEB-SCREEN-333` · **Major** · Color & Token · Scope: Events  Ek Ped Maa Ke Naam 7 · desktop
+
+| | |
+|---|---|
+| **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
+| **Build does** | Text “Declared” (span.badge) renders #FFFFFF on #3C9718 at 12px/500 — #FFFFFF on #3C9718 as painted on the capture: 3.73:1 against the 4.5:1 minimum. Measured on 2 pages. Also measured on the 375px capture of the same page. |
+| **Fix** | Change the text colour of “Declared” from #FFFFFF to #1C1C1C — 4.57:1 on #3C9718, which passes the 4.5:1 minimum. Or keep #FFFFFF and darken the background from #3C9718 to #358615 (4.57:1). Change it where the colour is set (the shared class or theme setting), so every page using this pair is fixed at once. |
+
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14110) · [Live page](https://www.dosje.gov.in/events/ek-ped-maa-ke-naam-7/)
 
 ## Events  Ek Ped Maa Ke Naam 7 · mobile
 
-### description
+### Description
 
 `WEB-SCREEN-261` · **Major** · Color & Token · Scope: Events  Ek Ped Maa Ke Naam 7 · mobile
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built #0373DF · design #014B92 |
-| **Build does** | “description” — colour #014B92 → #0373DF. Measured on 2 pages. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Description” — colour #014B92 → #0373DF. Measured on 2 pages. |
+| **Fix** | On “Description”, change #0373DF to #014B92 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-115254)
 
-### email
+### Email
 
 `WEB-SCREEN-262` · **Major** · Typography · Scope: Events  Ek Ped Maa Ke Naam 7 · mobile
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built 12px · design 14px · Built #343A40 · design #1F2937 |
-| **Build does** | “email” — size 14 → 12; colour #1F2937 → #343A40. Measured on 2 pages. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Email” — size 14 → 12; colour #1F2937 → #343A40. Measured on 2 pages. |
+| **Fix** | On “Email”, change 12px to 14px; change #343A40 to #1F2937 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-115254)
 
 ## Events · desktop
 
-### discover initiatives, workshops, and awareness programs that
+### 2 pieces of design copy missing
 
-`WEB-SCREEN-122` · **Major** · Content & Iconography · Scope: Events · desktop
+`WEB-SCREEN-368` · **Major** · Content & Iconography · Scope: Events · desktop
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Design: “discover initiatives, workshops, and awa” · absent from the build |
-| **Build does** | The design frame carries “discover initiatives, workshops, and awareness programs that highlight the minis” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Build does** | The design frame carries this copy and nothing with the same text renders on the live page: “Discover initiatives, workshops, and awa”; “View All”. Also measured on the 375px capture of the same page. |
+| **Fix** | Add this copy where the Figma frame places it (each piece is outlined on the design panel): “Discover initiatives, workshops, and awa”; “View All”. Where a piece was dropped on purpose, tell the design team so the frame is updated instead. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-13841)
 
-### view all
+### Other Events
 
-`WEB-SCREEN-132` · **Major** · Content & Iconography · Scope: Events · desktop
+`WEB-SCREEN-412` · **Major** · Typography · Scope: Events · desktop
 
 | | |
 |---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “view all” · absent from the build |
-| **Build does** | The design frame carries “view all” (14px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Design says** | The approved Figma handoff frame for this screen. Built 24px · design 28px · Built 500 weight · design 600 · Built #1F2937 · design #1F2428 |
+| **Build does** | “Other Events” — size 28 → 24; weight 600 → 500; colour #1F2428 → #1F2937. |
+| **Fix** | On “Other Events”, change 24px to 28px; change 500 weight to 600; change #1F2937 to #1F2428 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-13841)
 
-### hard to reach population-smile (beggary)
+### Upcoming Events
 
-`WEB-SCREEN-124` · **Major** · Content & Iconography · Scope: Events · desktop
+`WEB-SCREEN-408` · **Major** · Color & Token · Scope: Events · desktop
 
 | | |
 |---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “hard to reach population-smile (beggary)” · absent from the build |
-| **Build does** | The design frame carries “hard to reach population-smile (beggary)” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Design says** | The approved Figma handoff frame for this screen. Built #374151 · design #1F2428 |
+| **Build does** | “Upcoming Events” — colour #1F2428 → #374151. Also measured on the 375px capture of the same page. |
+| **Fix** | On “Upcoming Events”, change #374151 to #1F2428 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-13841)
 
-### nov 10th, 2025 • 05:00 pm onwards
+### Past Events
 
-`WEB-SCREEN-126` · **Major** · Content & Iconography · Scope: Events · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “nov 10th, 2025 • 05:00 pm onwards” · absent from the build |
-| **Build does** | The design frame carries “nov 10th, 2025 • 05:00 pm onwards” (14px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-13841)
-
-### dr. ambedkar international centre
-
-`WEB-SCREEN-123` · **Major** · Content & Iconography · Scope: Events · desktop
+`WEB-SCREEN-409` · **Major** · Color & Token · Scope: Events · desktop
 
 | | |
 |---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “dr. ambedkar international centre” · absent from the build |
-| **Build does** | The design frame carries “dr. ambedkar international centre” (14px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-13841)
-
-### "chandalika" - musical dance drama
-
-`WEB-SCREEN-120` · **Major** · Content & Iconography · Scope: Events · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “"chandalika" - musical dance drama” · absent from the build |
-| **Build does** | The design frame carries “"chandalika" - musical dance drama” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Design says** | The approved Figma handoff frame for this screen. Built #1F2937 · design #343A40 |
+| **Build does** | “Past Events” — colour #343A40 → #1F2937. Measured on 2 pages. Also measured on the 375px capture of the same page. |
+| **Fix** | On “Past Events”, change #1F2937 to #343A40 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-13841)
 
 ## Events · mobile
 
-### painting exhibition and yamuna sustaibablity run
+### Stay updated on the Ministry’s recent events and campaigns f
 
-`WEB-SCREEN-130` · **Major** · Content & Iconography · Scope: Events · mobile
+`WEB-SCREEN-410` · **Major** · Typography · Scope: Events · mobile
 
 | | |
 |---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “painting exhibition and yamuna sustaibab” · absent from the build |
-| **Build does** | The design frame carries “painting exhibition and yamuna sustaibablity run” (16px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Design says** | The approved Figma handoff frame for this screen. Built 16px · design 12px · Built 500 weight · design 400 · Built #374151 · design #343A40 |
+| **Build does** | “Stay updated on the Ministry’s recent events and campaigns for equalit” — size 12 → 16; weight 400 → 500; colour #343A40 → #374151. |
+| **Fix** | On “Stay updated on the Ministry’s recent events and campaigns f”, change 16px to 12px; change 500 weight to 400; change #374151 to #343A40 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-114418)
 
-## For Researchers · desktop
+### Other Events
 
-### discover all welfare initiatives, social justice schemes, an
-
-`WEB-SCREEN-134` · **Major** · Content & Iconography · Scope: For Researchers · desktop
+`WEB-SCREEN-411` · **Major** · Typography · Scope: Events · mobile
 
 | | |
 |---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “discover all welfare initiatives, social” · absent from the build |
-| **Build does** | The design frame carries “discover all welfare initiatives, social justice schemes, and citizen services o” (14px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Design says** | The approved Figma handoff frame for this screen. Built 24px · design 20px · Built 500 weight · design 600 · Built #1F2937 · design #1F2428 |
+| **Build does** | “Other Events” — size 20 → 24; weight 600 → 500; colour #1F2428 → #1F2937. |
+| **Fix** | On “Other Events”, change 24px to 20px; change 500 weight to 600; change #1F2937 to #1F2428 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-8477)
-
-### browse the key legislations, policy frameworks, and governme
-
-`WEB-SCREEN-133` · **Major** · Content & Iconography · Scope: For Researchers · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “browse the key legislations, policy fram” · absent from the build |
-| **Build does** | The design frame carries “browse the key legislations, policy frameworks, and government guidelines that p” (14px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-8477)
-
-## Forms Templates · mobile
-
-### PMAJAY
-
-`WEB-SCREEN-031` · **Major** · Layout & Spacing · Scope: Forms Templates · mobile
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “PMAJAY” is 147×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 147×20 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 2 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/forms-templates/)
-
-### NOS
-
-`WEB-SCREEN-030` · **Major** · Layout & Spacing · Scope: Forms Templates · mobile
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “NOS” is 147×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 147×20 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 2 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/forms-templates/)
-
-### access official reports released by the commission and its a
-
-`WEB-SCREEN-280` · **Minor** · Typography · Scope: Forms Templates · mobile
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Built 16px · design 14px |
-| **Build does** | “access official reports released by the commission and its associated ” — size 14 → 16. Measured on 2 pages. |
-| **Fix** | Set the built value to the design's. |
-
-[Live page](https://www.dosje.gov.in/forms-templates/)
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-114418)
 
 ## Gallery · desktop
 
-### explore photos, videos and news from the ministry of social 
+### Gallery standfirst
 
-`WEB-SCREEN-139` · **Major** · Content & Iconography · Scope: Gallery · desktop
+`WEB-SCREEN-293` · **Major** · Content & Iconography · Scope: Gallery · desktop
+
+| | |
+|---|---|
+| **Design says** | GIGW 3.0: page content is accurate, specific to the page, and in the Department's own register. |
+| **Build does** | Under the Gallery page's <h1>, the standfirst reads “Review comprehensive annual reports released by the Commission and its associated organisations.” That is the Annual Reports page's description, and it also says “the Commission” on a Department page. It is the first sentence a citizen reads on the page. |
+| **Fix** | Replace with a description of the gallery — what it holds and who publishes it — in the Department's own words, and use “the Department”. |
+
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-13281)
+
+### 2 pieces of design copy missing
+
+`WEB-SCREEN-371` · **Major** · Content & Iconography · Scope: Gallery · desktop
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Design: “explore photos, videos and news from the” · absent from the build |
-| **Build does** | The design frame carries “explore photos, videos and news from the ministry of social justice & empowermen” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Build does** | The design frame carries this copy and nothing with the same text renders on the live page: “Explore photos, videos and news from the”; “Search by keyword or event”. Also measured on the 375px capture of the same page. |
+| **Fix** | Add this copy where the Figma frame places it (each piece is outlined on the design panel): “Explore photos, videos and news from the”; “Search by keyword or event”. Where a piece was dropped on purpose, tell the design team so the frame is updated instead. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-13281)
 
-### search by keyword or event
+### Gallery card
 
-`WEB-SCREEN-145` · **Major** · Content & Iconography · Scope: Gallery · desktop
+`WEB-SCREEN-295` · **Major** · Functional · Scope: Gallery · desktop
 
 | | |
 |---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “search by keyword or event” · absent from the build |
-| **Build does** | The design frame carries “search by keyword or event” (16px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Design says** | GIGW 3.0: published content is reachable by navigating the site, not only by search. |
+| **Build does** | The gallery cards link straight to an image file on the CDN (dxrs6j9umb85v.cloudfront.net). A citizen who opens one in a new tab, or whose lightbox script fails, lands on a bare JPEG with no masthead, no context and no way back — and a search engine indexes the file rather than the page. |
+| **Fix** | Point the card at its gallery page and open the lightbox from there, so the image is always reachable inside the site. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-13281)
 
-### ambedkar jayanti celebration 2025
+### Gallery listing
 
-`WEB-SCREEN-135` · **Major** · Content & Iconography · Scope: Gallery · desktop
+`WEB-SCREEN-294` · **Major** · Functional · Scope: Gallery · desktop
 
 | | |
 |---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “ambedkar jayanti celebration 2025” · absent from the build |
-| **Build does** | The design frame carries “ambedkar jayanti celebration 2025” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Design says** | GIGW 3.0: published content is reachable by navigating the site, not only by search. |
+| **Build does** | The sitemap publishes 590 gallery pages at /gallery/<name>/, and each one loads. The Gallery listing links to CDN image files instead, so those 590 pages can be found only through a search engine. |
+| **Fix** | Link each card to its /gallery/<name>/ page. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-13281)
-
-### glimpses from the national celebration
-
-`WEB-SCREEN-140` · **Major** · Content & Iconography · Scope: Gallery · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “glimpses from the national celebration” · absent from the build |
-| **Build does** | The design frame carries “glimpses from the national celebration” (12px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-13281)
-
-### elder care workshop
-
-`WEB-SCREEN-138` · **Major** · Content & Iconography · Scope: Gallery · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “elder care workshop” · absent from the build |
-| **Build does** | The design frame carries “elder care workshop” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-13281)
-
-### training for caregivers and elder care professionals
-
-`WEB-SCREEN-147` · **Major** · Content & Iconography · Scope: Gallery · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “training for caregivers and elder care p” · absent from the build |
-| **Build does** | The design frame carries “training for caregivers and elder care professionals” (12px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-13281)
-
-## Gallery · mobile
-
-### “Ek Ped Maa Ke Naam”
-
-`WEB-SCREEN-032` · **Major** · Layout & Spacing · Scope: Gallery · mobile
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | ““Ek Ped Maa Ke Naam”” is 177×22px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 177×22 it is also below the WCAG 2.5.8 AA floor of 24×24. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/gallery/)
-
-### scholars present research on ambedkar studies
-
-`WEB-SCREEN-144` · **Major** · Content & Iconography · Scope: Gallery · mobile
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “scholars present research on ambedkar st” · absent from the build |
-| **Build does** | The design frame carries “scholars present research on ambedkar studies” (12px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Live page](https://www.dosje.gov.in/gallery/)
-
-## Home · mobile
-
-### Go to slide 1
-
-`WEB-SCREEN-317` · **Major** · Layout & Spacing · Scope: Home · mobile
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Go to slide 1” is 40×12px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 40×12 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 2 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/)
-
-### Go to slide 2
-
-`WEB-SCREEN-316` · **Major** · Layout & Spacing · Scope: Home · mobile
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Go to slide 2” is 12×12px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 12×12 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 2 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/)
-
-### Go to slide 3
-
-`WEB-SCREEN-034` · **Major** · Layout & Spacing · Scope: Home · mobile
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Go to slide 3” is 12×12px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 12×12 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 2 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/)
-
-### Go to slide 4
-
-`WEB-SCREEN-035` · **Major** · Layout & Spacing · Scope: Home · mobile
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Go to slide 4” is 12×12px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 12×12 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 2 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/)
-
-### smile - support for marginalised individuals for livelihood 
-
-`WEB-SCREEN-163` · **Major** · Content & Iconography · Scope: Home · mobile
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “smile - support for marginalised individ” · absent from the build |
-| **Build does** | The design frame carries “smile - support for marginalised individuals for livelihood & enterprise” (16px). Nothing with that text renders on the live page. Measured on 2 pages. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Live page](https://www.dosje.gov.in/)
-
-### integrated rehabilitation, skills training and livelihood su
-
-`WEB-SCREEN-156` · **Major** · Content & Iconography · Scope: Home · mobile
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “integrated rehabilitation, skills traini” · absent from the build |
-| **Build does** | The design frame carries “integrated rehabilitation, skills training and livelihood support for marginalis” (14px). Nothing with that text renders on the live page. Measured on 2 pages. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Live page](https://www.dosje.gov.in/)
-
-## Lok Sabha Question Answer · mobile
-
-### NCSK
-
-`WEB-SCREEN-037` · **Major** · Layout & Spacing · Scope: Lok Sabha Question Answer · mobile
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “NCSK” is 147×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 147×20 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 2 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/lok-sabha-question-answer/)
 
 ## Mosje Directory · desktop
 
-### discover the commissions, corporations, institutes and found
+### Discover the Commissions, Corporations, Institutes and Found
 
-`WEB-SCREEN-179` · **Major** · Content & Iconography · Scope: Mosje Directory · desktop
+`WEB-SCREEN-377` · **Major** · Content & Iconography · Scope: Mosje Directory · desktop
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Design: “discover the commissions, corporations, ” · absent from the build |
-| **Build does** | The design frame carries “discover the commissions, corporations, institutes and foundations that work col” (16px). Nothing with that text renders on the live page. Measured on 2 pages. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-9324)
-
-### reset filters
-
-`WEB-SCREEN-189` · **Major** · Content & Iconography · Scope: Mosje Directory · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “reset filters” · absent from the build |
-| **Build does** | The design frame carries “reset filters” (14px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-9324)
-
-### organization
-
-`WEB-SCREEN-187` · **Major** · Content & Iconography · Scope: Mosje Directory · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “organization” · absent from the build |
-| **Build does** | The design frame carries “organization” (12px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-9324)
-
-### ashutosh niranjan
-
-`WEB-SCREEN-172` · **Major** · Content & Iconography · Scope: Mosje Directory · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “ashutosh niranjan” · absent from the build |
-| **Build does** | The design frame carries “ashutosh niranjan” (14px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-9324)
-
-### ms. priya sharma
-
-`WEB-SCREEN-186` · **Major** · Content & Iconography · Scope: Mosje Directory · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “ms. priya sharma” · absent from the build |
-| **Build does** | The design frame carries “ms. priya sharma” (14px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-9324)
-
-### private secretary to the minister
-
-`WEB-SCREEN-188` · **Major** · Content & Iconography · Scope: Mosje Directory · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “private secretary to the minister” · absent from the build |
-| **Build does** | The design frame carries “private secretary to the minister” (14px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Build does** | The design frame carries this copy and nothing with the same text renders on the live page: “Discover the Commissions, Corporations, ”. |
+| **Fix** | Add this copy where the Figma frame places it (each piece is outlined on the design panel): “Discover the Commissions, Corporations, ”. Where a piece was dropped on purpose, tell the design team so the frame is updated instead. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-9324)
 
 ## Mosje Directory · mobile
 
-### browse our directory for key contact information of commissi
+### Union Cabinet Minister of Social Justice & Empowerment
 
-`WEB-SCREEN-175` · **Major** · Content & Iconography · Scope: Mosje Directory · mobile
+`WEB-SCREEN-264` · **Major** · Typography · Scope: Mosje Directory · mobile
 
 | | |
 |---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “browse our directory for key contact inf” · absent from the build |
-| **Build does** | The design frame carries “browse our directory for key contact information of commissions, corporations, i” (14px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Design says** | The approved Figma handoff frame for this screen. Built 20px · design 12px · Built 600 weight · design 500 · Built #0373DF · design #1F2428 |
+| **Build does** | “Union Cabinet Minister of Social Justice & Empowerment” — size 12 → 20; weight 500 → 600; colour #1F2428 → #0373DF. |
+| **Fix** | On “Union Cabinet Minister of Social Justice & Empowerment”, change 20px to 12px; change 600 weight to 500; change #0373DF to #1F2428 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-89516)
 
-### download directory
+### Prabhat Kumar Tripathy
 
-`WEB-SCREEN-180` · **Major** · Content & Iconography · Scope: Mosje Directory · mobile
+`WEB-SCREEN-400` · **Major** · Typography · Scope: Mosje Directory · mobile
 
 | | |
 |---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “download directory” · absent from the build |
-| **Build does** | The design frame carries “download directory” (14px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Design says** | The approved Figma handoff frame for this screen. Built 400 weight · design 500 · Built #0373DF · design #1F2428 |
+| **Build does** | “Prabhat Kumar Tripathy” — weight 500 → 400; colour #1F2428 → #0373DF. |
+| **Fix** | On “Prabhat Kumar Tripathy”, change 400 weight to 500; change #0373DF to #1F2428 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-89516)
 
-### telephone(res./mobile)
+### 011-23381656, 011-23381657, 011-23381669(Fax), 011-23018975,
 
-`WEB-SCREEN-190` · **Major** · Content & Iconography · Scope: Mosje Directory · mobile
+`WEB-SCREEN-399` · **Major** · Typography · Scope: Mosje Directory · mobile
 
 | | |
 |---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “telephone(res./mobile)” · absent from the build |
-| **Build does** | The design frame carries “telephone(res./mobile)” (12px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Design says** | The approved Figma handoff frame for this screen. Built 14px · design 12px · Built 400 weight · design 500 · Built #1F2937 · design #1F2428 |
+| **Build does** | “011-23381656, 011-23381657, 011-23381669(Fax), 011-23018975, 011-23018” — size 12 → 14; weight 500 → 400; colour #1F2428 → #1F2937. Measured on 2 pages. |
+| **Fix** | On “011-23381656, 011-23381657, 011-23381669(Fax), 011-23018975,”, change 14px to 12px; change 400 weight to 500; change #1F2937 to #1F2428 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-89516)
-
-### ashutosh niranjan, ias
-
-`WEB-SCREEN-173` · **Major** · Content & Iconography · Scope: Mosje Directory · mobile
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “ashutosh niranjan, ias” · absent from the build |
-| **Build does** | The design frame carries “ashutosh niranjan, ias” (14px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-89516)
-
-### devansh wathrey
-
-`WEB-SCREEN-177` · **Major** · Content & Iconography · Scope: Mosje Directory · mobile
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “devansh wathrey” · absent from the build |
-| **Build does** | The design frame carries “devansh wathrey” (14px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-89516)
-
-### tripathi[dot]yogesh[at]nic[dot]in
-
-`WEB-SCREEN-191` · **Major** · Content & Iconography · Scope: Mosje Directory · mobile
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “tripathi[dot]yogesh[at]nic[dot]in” · absent from the build |
-| **Build does** | The design frame carries “tripathi[dot]yogesh[at]nic[dot]in” (12px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-89516)
-
-## Notices · mobile
-
-### BJRNF
-
-`WEB-SCREEN-038` · **Major** · Layout & Spacing · Scope: Notices · mobile
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “BJRNF” is 147×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 147×20 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 2 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/notices/)
-
-### E-Anudaan
-
-`WEB-SCREEN-039` · **Major** · Layout & Spacing · Scope: Notices · mobile
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “E-Anudaan” is 147×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 147×20 it is also below the WCAG 2.5.8 AA floor of 24×24. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/notices/)
 
 ## Official  Dr Swati S Mishra · desktop
 
-### address
+### Address
 
 `WEB-SCREEN-265` · **Major** · Typography · Scope: Official  Dr Swati S Mishra · desktop
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built 16px · design 12px · Built 700 weight · design 400 · Built #1F2937 · design #1F2428 |
-| **Build does** | “address” — size 12 → 16; weight 400 → 700; colour #1F2428 → #1F2937. Measured on 2 pages. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Address” — size 12 → 16; weight 400 → 700; colour #1F2428 → #1F2937. Measured on 2 pages. |
+| **Fix** | On “Address”, change 16px to 12px; change 700 weight to 400; change #1F2937 to #1F2428 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-9455)
 
 ## Official  Shri Shailendra Kumar · desktop
 
-### address
+### Address
 
 `WEB-SCREEN-266` · **Major** · Typography · Scope: Official  Shri Shailendra Kumar · desktop
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built 16px · design 12px · Built 700 weight · design 400 · Built #1F2937 · design #1F2428 |
-| **Build does** | “address” — size 12 → 16; weight 400 → 700; colour #1F2428 → #1F2937. Measured on 2 pages. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Address” — size 12 → 16; weight 400 → 700; colour #1F2428 → #1F2937. Measured on 2 pages. |
+| **Fix** | On “Address”, change 16px to 12px; change 700 weight to 400; change #1F2937 to #1F2428 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-9455)
 
 ## Organisation  Contact Us · desktop
 
-### indira gandhi international airport
+### Indira Gandhi International Airport
 
 `WEB-SCREEN-267` · **Major** · Color & Token · Scope: Organisation  Contact Us · desktop
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built #5E5E5E · design #343A40 |
-| **Build does** | “indira gandhi international airport” — colour #343A40 → #5E5E5E. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Indira Gandhi International Airport” — colour #343A40 → #5E5E5E. |
+| **Fix** | On “Indira Gandhi International Airport”, change #5E5E5E to #343A40 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14723)
 
 ## Organisation  Contact Us · mobile
 
-### nearest airport
+### Nearest Airport
 
 `WEB-SCREEN-269` · **Major** · Typography · Scope: Organisation  Contact Us · mobile
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built 16px · design 14px · Built #1F2937 · design #1F2428 |
-| **Build does** | “nearest airport” — size 14 → 16; colour #1F2428 → #1F2937. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Nearest Airport” — size 14 → 16; colour #1F2428 → #1F2937. |
+| **Fix** | On “Nearest Airport”, change 16px to 14px; change #1F2937 to #1F2428 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4626-81838)
 
-### indira gandhi international airport
+### Indira Gandhi International Airport
 
 `WEB-SCREEN-268` · **Major** · Typography · Scope: Organisation  Contact Us · mobile
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built 14px · design 12px · Built #5E5E5E · design #343A40 |
-| **Build does** | “indira gandhi international airport” — size 12 → 14; colour #343A40 → #5E5E5E. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Indira Gandhi International Airport” — size 12 → 14; colour #343A40 → #5E5E5E. |
+| **Fix** | On “Indira Gandhi International Airport”, change 14px to 12px; change #5E5E5E to #343A40 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4626-81838)
 
-## Policies · desktop
+## Policies · mobile
 
-### 1. information collection we do not automatically gather any
+### 1. Information Collection We do not automatically gather any
 
-`WEB-SCREEN-192` · **Major** · Content & Iconography · Scope: Policies · desktop
+`WEB-SCREEN-379` · **Major** · Content & Iconography · Scope: Policies · mobile
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Design: “1. information collection we do not auto” · absent from the build |
-| **Build does** | The design frame carries “1. information collection we do not automatically gather any personally identifi” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Build does** | The design frame carries this copy and nothing with the same text renders on the live page: “1. Information Collection We do not auto”. |
+| **Fix** | Add this copy where the Figma frame places it (each piece is outlined on the design panel): “1. Information Collection We do not auto”. Where a piece was dropped on purpose, tell the design team so the frame is updated instead. |
 
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=5243-126087)
-
-## Resources · mobile
-
-### DWBDNC
-
-`WEB-SCREEN-043` · **Major** · Layout & Spacing · Scope: Resources · mobile
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “DWBDNC” is 147×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 147×20 it is also below the WCAG 2.5.8 AA floor of 24×24. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/resources/)
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4330-66694)
 
 ## Rti · desktop
 
-### suo-moto disclosure
+### 2 pieces of design copy missing
 
-`WEB-SCREEN-194` · **Major** · Content & Iconography · Scope: Rti · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “suo-moto disclosure” · absent from the build |
-| **Build does** | The design frame carries “suo-moto disclosure” (14px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14221)
-
-### right to information act 2005
-
-`WEB-SCREEN-193` · **Major** · Content & Iconography · Scope: Rti · desktop
+`WEB-SCREEN-380` · **Major** · Content & Iconography · Scope: Rti · desktop
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Design: “right to information act 2005” · absent from the build |
-| **Build does** | The design frame carries “right to information act 2005” (28px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14221)
-
-### the national commission for scheduled castes (ncsc) is a con
-
-`WEB-SCREEN-195` · **Major** · Content & Iconography · Scope: Rti · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “the national commission for scheduled ca” · absent from the build |
-| **Build does** | The design frame carries “the national commission for scheduled castes (ncsc) is a constitutional body est” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Build does** | The design frame carries this copy and nothing with the same text renders on the live page: “Right to Information Act 2005”; “The National Commission for Scheduled Ca”. Also measured on the 375px capture of the same page. |
+| **Fix** | Add this copy where the Figma frame places it (each piece is outlined on the design panel): “Right to Information Act 2005”; “The National Commission for Scheduled Ca”. Where a piece was dropped on purpose, tell the design team so the frame is updated instead. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14221)
 
 ## Samavesh Admin Portals · desktop
 
-### smile - transgender
+### SMILE - Transgender
 
 `WEB-SCREEN-270` · **Major** · Typography · Scope: Samavesh Admin Portals · desktop
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built 700 weight · design 500 · Built #FF671F · design #1F2428 |
-| **Build does** | “smile - transgender” — weight 500 → 700; colour #1F2428 → #FF671F. Measured on 2 pages. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “SMILE - Transgender” — weight 500 → 700; colour #1F2428 → #FF671F. Measured on 2 pages. |
+| **Fix** | On “SMILE - Transgender”, change 700 weight to 500; change #FF671F to #1F2428 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=7298-28616)
 
 ## Samavesh Citizen Portals · desktop
 
-### smile - transgender
+### SMILE - Transgender
 
 `WEB-SCREEN-271` · **Major** · Typography · Scope: Samavesh Citizen Portals · desktop
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built 700 weight · design 500 · Built #FF671F · design #1F2428 |
-| **Build does** | “smile - transgender” — weight 500 → 700; colour #1F2428 → #FF671F. Measured on 2 pages. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “SMILE - Transgender” — weight 500 → 700; colour #1F2428 → #FF671F. Measured on 2 pages. |
+| **Fix** | On “SMILE - Transgender”, change 700 weight to 500; change #FF671F to #1F2428 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=7116-34665)
 
 ## Schemes And Services  Geriatric Caregivers Training · mobile
 
-### Senior Citizens Welfare(SCW)
-
-`WEB-SCREEN-044` · **Major** · Layout & Spacing · Scope: Schemes And Services  Geriatric Caregivers Training · mobile
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Senior Citizens Welfare(SCW)” is 203×19px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 203×19 it is also below the WCAG 2.5.8 AA floor of 24×24. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/schemes-and-services/geriatric-caregivers-training/)
-
-### about the scheme
+### About the Scheme
 
 `WEB-SCREEN-272` · **Major** · Typography · Scope: Schemes And Services  Geriatric Caregivers Training · mobile
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built 28px · design 20px · Built 500 weight · design 600 |
-| **Build does** | “about the scheme” — size 20 → 28; weight 600 → 500. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “About the Scheme” — size 20 → 28; weight 600 → 500. Measured on 2 pages. |
+| **Fix** | On “About the Scheme”, change 28px to 20px; change 500 weight to 600 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
-[Live page](https://www.dosje.gov.in/schemes-and-services/geriatric-caregivers-training/)
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-105399)
 
 ## Schemes And Services  Top Class Education In Colllege For Obc  · desktop
 
-### active
+### Active
 
 `WEB-SCREEN-275` · **Major** · Typography · Scope: Schemes And Services  Top Class Education In Colllege For Obc  · desktop
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built 400 weight · design 500 · Built #FFFFFF · design #1F2937 |
-| **Build does** | “active” — weight 500 → 400; colour #1F2937 → #FFFFFF. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Active” — weight 500 → 400; colour #1F2937 → #FFFFFF. |
+| **Fix** | On “Active”, change 400 weight to 500; change #FFFFFF to #1F2937 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-11885)
 
-### scheme
+### Scheme
 
 `WEB-SCREEN-281` · **Minor** · Typography · Scope: Schemes And Services  Top Class Education In Colllege For Obc  · desktop
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built 400 weight · design 500 |
-| **Build does** | “scheme” — weight 500 → 400. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Scheme” — weight 500 → 400. |
+| **Fix** | On “Scheme”, change 400 weight to 500 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-11885)
 
 ## Schemes And Services  Top Class Education In Colllege For Obc  · mobile
 
-### active
+### Active
 
 `WEB-SCREEN-274` · **Major** · Typography · Scope: Schemes And Services  Top Class Education In Colllege For Obc  · mobile
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built 400 weight · design 500 · Built #FFFFFF · design #1F2428 |
-| **Build does** | “active” — weight 500 → 400; colour #1F2428 → #FFFFFF. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Active” — weight 500 → 400; colour #1F2428 → #FFFFFF. |
+| **Fix** | On “Active”, change 400 weight to 500; change #FFFFFF to #1F2428 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-105399)
 
-### archived
+### Archived
 
 `WEB-SCREEN-276` · **Major** · Typography · Scope: Schemes And Services  Top Class Education In Colllege For Obc  · mobile
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built 400 weight · design 500 · Built #374151 · design #343A40 |
-| **Build does** | “archived” — weight 500 → 400; colour #343A40 → #374151. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Archived” — weight 500 → 400; colour #343A40 → #374151. |
+| **Fix** | On “Archived”, change 400 weight to 500; change #374151 to #343A40 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-105399)
 
-### start publish date
+### Start Publish Date
 
 `WEB-SCREEN-273` · **Major** · Typography · Scope: Schemes And Services  Top Class Education In Colllege For Obc  · mobile
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built 14px · design 12px · Built 500 weight · design 400 · Built #1F2937 · design #343A40 |
-| **Build does** | “start publish date” — size 12 → 14; weight 400 → 500; colour #343A40 → #1F2937. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Start Publish Date” — size 12 → 14; weight 400 → 500; colour #343A40 → #1F2937. |
+| **Fix** | On “Start Publish Date”, change 14px to 12px; change 500 weight to 400; change #1F2937 to #343A40 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-105399)
 
 ## Schemes Services · desktop
 
-### schemes and services
+### 2 pieces of design copy missing
 
-`WEB-SCREEN-204` · **Major** · Content & Iconography · Scope: Schemes Services · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “schemes and services” · absent from the build |
-| **Build does** | The design frame carries “schemes and services” (14px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-12250)
-
-### explore welfare schemes, social empowerment programs, and ci
-
-`WEB-SCREEN-199` · **Major** · Content & Iconography · Scope: Schemes Services · desktop
+`WEB-SCREEN-381` · **Major** · Content & Iconography · Scope: Schemes Services · desktop
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Design: “explore welfare schemes, social empowerm” · absent from the build |
-| **Build does** | The design frame carries “explore welfare schemes, social empowerment programs, and citizen services offer” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Build does** | The design frame carries this copy and nothing with the same text renders on the live page: “Explore welfare schemes, social empowerm”; “Search by scheme name or keyword”. Also measured on the 375px capture of the same page. |
+| **Fix** | Add this copy where the Figma frame places it (each piece is outlined on the design panel): “Explore welfare schemes, social empowerm”; “Search by scheme name or keyword”. Where a piece was dropped on purpose, tell the design team so the frame is updated instead. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-12250)
 
-### search by scheme name or keyword
+## Scw Directory · mobile
 
-`WEB-SCREEN-205` · **Major** · Content & Iconography · Scope: Schemes Services · desktop
+### 011-23381656, 011-23381657, 011-23381669(Fax), 011-23018975,
 
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “search by scheme name or keyword” · absent from the build |
-| **Build does** | The design frame carries “search by scheme name or keyword” (16px). Nothing with that text renders on the live page. Measured on 2 pages. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-12250)
-
-### smile - support for marginalised individuals for livelihood 
-
-`WEB-SCREEN-207` · **Major** · Content & Iconography · Scope: Schemes Services · desktop
+`WEB-SCREEN-401` · **Major** · Typography · Scope: Scw Directory · mobile
 
 | | |
 |---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “smile - support for marginalised individ” · absent from the build |
-| **Build does** | The design frame carries “smile - support for marginalised individuals for livelihood & enterprise” (16px). Nothing with that text renders on the live page. Measured on 2 pages. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Design says** | The approved Figma handoff frame for this screen. Built 14px · design 12px · Built 400 weight · design 500 · Built #1F2937 · design #1F2428 |
+| **Build does** | “011-23381656, 011-23381657, 011-23381669(Fax), 011-23018975, 011-23018” — size 12 → 14; weight 500 → 400; colour #1F2428 → #1F2937. Measured on 2 pages. |
+| **Fix** | On “011-23381656, 011-23381657, 011-23381669(Fax), 011-23018975,”, change 14px to 12px; change 400 weight to 500; change #1F2937 to #1F2428 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-12250)
-
-### integrated rehabilitation, skills training and livelihood su
-
-`WEB-SCREEN-200` · **Major** · Content & Iconography · Scope: Schemes Services · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “integrated rehabilitation, skills traini” · absent from the build |
-| **Build does** | The design frame carries “integrated rehabilitation, skills training and livelihood support for marginalis” (14px). Nothing with that text renders on the live page. Measured on 2 pages. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-12250)
-
-### scheme for economic empowerment of dnts (seed)
-
-`WEB-SCREEN-203` · **Major** · Content & Iconography · Scope: Schemes Services · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “scheme for economic empowerment of dnts ” · absent from the build |
-| **Build does** | The design frame carries “scheme for economic empowerment of dnts (seed)” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-12250)
-
-## Schemes Services · mobile
-
-### venture capital fund for scs & obcs
-
-`WEB-SCREEN-209` · **Major** · Content & Iconography · Scope: Schemes Services · mobile
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “venture capital fund for scs & obcs” · absent from the build |
-| **Build does** | The design frame carries “venture capital fund for scs & obcs” (16px). Nothing with that text renders on the live page. Measured on 2 pages. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-105022)
+[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-89516)
 
 ## Sitemap · desktop
 
-### dashboard
+### Dashboard
 
 `WEB-SCREEN-277` · **Major** · Typography · Scope: Sitemap · desktop
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Built 14px · design 16px · Built #0373DF · design #014B92 |
-| **Build does** | “dashboard” — size 16 → 14; colour #014B92 → #0373DF. |
-| **Fix** | Set the built value to the design's. |
+| **Build does** | “Dashboard” — size 16 → 14; colour #014B92 → #0373DF. |
+| **Fix** | On “Dashboard”, change 14px to 16px; change #0373DF to #014B92 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=5243-134590)
 
 ## State · Accessibility Panel Open · desktop
-
-### nested-interactive
-
-`WEB-SCREEN-286` · **Major** · Accessibility · Scope: State · Accessibility Panel Open · desktop
-
-| | |
-|---|---|
-| **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
-| **Build does** | Interactive controls must not be nested — <button aria-label="Light Dark Theme" aria-pressed="false" tabindex="9" id="dark-btn" class="uwaw-features__item__i"> (nested-interactive, wcag2a, wcag412). |
-| **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
-
-[Live page](https://www.dosje.gov.in/)
 
 ### tabindex
 
@@ -2661,7 +1719,19 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
 | **Build does** | Elements should not have tabindex greater than zero — <button type="button" aria-label="Close main navigation panel" class="uwaw-close" tabindex="1"></button> (tabindex, ). |
-| **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
+| **Fix** | Remove `tabindex="1"` from the widget's Close button (use `tabindex="0"` or none) so Tab order follows the page. |
+
+[Live page](https://www.dosje.gov.in/)
+
+### nested-interactive
+
+`WEB-SCREEN-286` · **Major** · Accessibility · Scope: State · Accessibility Panel Open · desktop
+
+| | |
+|---|---|
+| **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
+| **Build does** | Interactive controls must not be nested — <button aria-label="Light Dark Theme" aria-pressed="false" tabindex="9" id="dark-btn" class="uwaw-features__item__i"> (nested-interactive, wcag2a, wcag412). |
+| **Fix** | In the accessibility widget, the Light/Dark button sits inside another control. Make the outer element a plain container (no role/tabindex). |
 
 [Live page](https://www.dosje.gov.in/)
 
@@ -2673,7 +1743,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | UX4G 3.0 §2.3: font sizes come from the published type scale (12/14/16/18/20/24/28/32/36/40/52/60), and Body/XS 12px is the minimum. |
 | **Build does** | 14 element(s) render at 13px, which is not on the UX4G type scale (12/14/16/18/20/24/28/32/36/40/52/60). Measured on 2 pages. |
-| **Fix** | Move the size to the nearest step on the UX4G scale, and never below 12px. |
+| **Fix** | Change the 13px text to 14px (Body/S on the UX4G scale). |
 
 [Live page](https://www.dosje.gov.in/)
 
@@ -2687,7 +1757,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
 | **Build does** | <svg> elements with an img role must have an alternative text — <svg viewBox="0 0 24 24" role="img" tabindex="-1" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="7"></circle><path d="M16 16 L21 21"></path></svg (svg-img-alt, wcag2a, wcag111). Measured on 2 pages. |
-| **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
+| **Fix** | Name the search icon: on `<svg role="img">` add `<title>Search</title>` as its first child, or set `aria-hidden="true"` if the button already has a label. |
 
 [Live page](https://www.dosje.gov.in/gallery/)
 
@@ -2701,97 +1771,9 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
 | **Build does** | <svg> elements with an img role must have an alternative text — <svg viewBox="0 0 24 24" role="img" tabindex="-1" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="7"></circle><path d="M16 16 L21 21"></path></svg (svg-img-alt, wcag2a, wcag111). Measured on 2 pages. |
-| **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
+| **Fix** | Name the search icon: on `<svg role="img">` add `<title>Search</title>` as its first child, or set `aria-hidden="true"` if the button already has a label. |
 
 [Live page](https://www.dosje.gov.in/gallery/)
-
-## State · Home 320 · mobile320
-
-### Go to slide 1
-
-`WEB-SCREEN-048` · **Major** · Layout & Spacing · Scope: State · Home 320 · mobile320
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Go to slide 1” is 40×12px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 40×12 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 2 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/)
-
-### Go to slide 2
-
-`WEB-SCREEN-045` · **Major** · Layout & Spacing · Scope: State · Home 320 · mobile320
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Go to slide 2” is 12×12px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 12×12 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 2 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/)
-
-### Go to slide 3
-
-`WEB-SCREEN-046` · **Major** · Layout & Spacing · Scope: State · Home 320 · mobile320
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Go to slide 3” is 12×12px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 12×12 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 2 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/)
-
-### Go to slide 4
-
-`WEB-SCREEN-047` · **Major** · Layout & Spacing · Scope: State · Home 320 · mobile320
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Go to slide 4” is 12×12px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 12×12 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 2 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/)
-
-## State · Home Hindi · desktop
-
-### घर
-
-`WEB-SCREEN-049` · **Major** · Layout & Spacing · Scope: State · Home Hindi · desktop
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “घर” is 15×21px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 15×21 it is also below the WCAG 2.5.8 AA floor of 24×24. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/)
-
-### विभाग
-
-`WEB-SCREEN-050` · **Major** · Layout & Spacing · Scope: State · Home Hindi · desktop
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “विभाग” is 34×21px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 34×21 it is also below the WCAG 2.5.8 AA floor of 24×24. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/)
-
-### संबद्ध संगठन
-
-`WEB-SCREEN-051` · **Major** · Layout & Spacing · Scope: State · Home Hindi · desktop
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “संबद्ध संगठन” is 68×21px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 68×21 it is also below the WCAG 2.5.8 AA floor of 24×24. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/)
 
 ## State · Important Links Modal · desktop
 
@@ -2803,21 +1785,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
 | **Build does** | ARIA dialog and alertdialog nodes should have an accessible name — <div class="modal fade modal-links show" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog" style="display: blo (aria-dialog-name, ). |
-| **Fix** | Correct the markup the rule names; the rule's help page states the accepted fixes. |
-
-[Live page](https://www.dosje.gov.in/)
-
-## State · Mega Menu Department · desktop
-
-### Close Department
-
-`WEB-SCREEN-052` · **Major** · Layout & Spacing · Scope: State · Mega Menu Department · desktop
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Close Department” is 14×21px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 14×21 it is also below the WCAG 2.5.8 AA floor of 24×24. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
+| **Fix** | On the Important Links dialog `<div id="exampleModal">`, change `aria-labelledby="exampleModalLabel"` to `aria-labelledby="exampleModalPopoversLabel"` — the id its “Important Links” heading actually has. |
 
 [Live page](https://www.dosje.gov.in/)
 
@@ -2825,491 +1793,125 @@ Each has its own board in the PDF, showing the design and the build side by side
 
 ### Scholarship
 
-`WEB-SCREEN-022` · **Major** · Color & Token · Scope: State · Search Scholarship · desktop
+`WEB-SCREEN-334` · **Major** · Color & Token · Scope: State · Search Scholarship · desktop
 
 | | |
 |---|---|
 | **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
 | **Build does** | Text “Scholarship” (mark) renders #0373DF on #FFF3CD at 16px/600 — #0373DF on #FFF3CD as painted on the capture: 4.19:1 against the 4.5:1 minimum. |
-| **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
-
-[Live page](https://www.dosje.gov.in/?s=scholarship)
-
-### …
-
-`WEB-SCREEN-023` · **Major** · Color & Token · Scope: State · Search Scholarship · desktop
-
-| | |
-|---|---|
-| **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “…” (span.page-link) renders #938BB6 on #FFFFFF at 14px/400 — #938BB6 on #FFFFFF as painted on the capture: 3.18:1 against the 4.5:1 minimum. |
-| **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
+| **Fix** | Change the text colour of “Scholarship” from #0373DF to #014B92 (the site's dark blue (footer strip)) — 7.82:1 on #FFF3CD, which passes the 4.5:1 minimum. Or keep #0373DF and lighten the background from #FFF3CD to #FFFBF0 (4.5:1). Change it where the colour is set (the shared class or theme setting), so every page using this pair is fixed at once. |
 
 [Live page](https://www.dosje.gov.in/?s=scholarship)
 
 ## Suo Moto Disclosure · desktop
 
-### government's proactive release of key information to ensure 
+### Government’s proactive release of key information to ensure 
 
-`WEB-SCREEN-212` · **Major** · Content & Iconography · Scope: Suo Moto Disclosure · desktop
+`WEB-SCREEN-385` · **Major** · Content & Iconography · Scope: Suo Moto Disclosure · desktop
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Design: “government's proactive release of key in” · absent from the build |
-| **Build does** | The design frame carries “government's proactive release of key information to ensure transparency without” (16px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Build does** | The design frame carries this copy and nothing with the same text renders on the live page: “Government’s proactive release of key in”. |
+| **Fix** | Add this copy where the Figma frame places it (each piece is outlined on the design panel): “Government’s proactive release of key in”. Where a piece was dropped on purpose, tell the design team so the frame is updated instead. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14426)
-
-### sort by recently updated
-
-`WEB-SCREEN-221` · **Major** · Content & Iconography · Scope: Suo Moto Disclosure · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “sort by recently updated” · absent from the build |
-| **Build does** | The design frame carries “sort by recently updated” (14px). Nothing with that text renders on the live page. Measured on 2 pages. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14426)
-
-### list of faa
-
-`WEB-SCREEN-218` · **Major** · Content & Iconography · Scope: Suo Moto Disclosure · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “list of faa” · absent from the build |
-| **Build does** | The design frame carries “list of faa” (14px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14426)
-
-### list of cpio
-
-`WEB-SCREEN-215` · **Major** · Content & Iconography · Scope: Suo Moto Disclosure · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “list of cpio” · absent from the build |
-| **Build does** | The design frame carries “list of cpio” (14px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14426)
-
-### list of cpio and faa
-
-`WEB-SCREEN-216` · **Major** · Content & Iconography · Scope: Suo Moto Disclosure · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “list of cpio and faa” · absent from the build |
-| **Build does** | The design frame carries “list of cpio and faa” (14px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14426)
-
-### list of cpios and faas
-
-`WEB-SCREEN-217` · **Major** · Content & Iconography · Scope: Suo Moto Disclosure · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “list of cpios and faas” · absent from the build |
-| **Build does** | The design frame carries “list of cpios and faas” (14px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-14426)
-
-## Supreme Court Judgement · mobile
-
-### NCSK
-
-`WEB-SCREEN-053` · **Major** · Layout & Spacing · Scope: Supreme Court Judgement · mobile
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “NCSK” is 147×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 147×20 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 2 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/supreme-court-judgement/)
 
 ## Tenders · desktop
 
-### search by tender name or keyword
+### Search by tender name or keyword
 
-`WEB-SCREEN-222` · **Major** · Content & Iconography · Scope: Tenders · desktop
+`WEB-SCREEN-387` · **Major** · Content & Iconography · Scope: Tenders · desktop
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Design: “search by tender name or keyword” · absent from the build |
-| **Build does** | The design frame carries “search by tender name or keyword” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Build does** | The design frame carries this copy and nothing with the same text renders on the live page: “Search by tender name or keyword”. Also measured on the 375px capture of the same page. |
+| **Fix** | Add this copy where the Figma frame places it (each piece is outlined on the design panel): “Search by tender name or keyword”. Where a piece was dropped on purpose, tell the design team so the frame is updated instead. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-12568)
-
-### archived
-
-`WEB-SCREEN-278` · **Major** · Color & Token · Scope: Tenders · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Built #374151 · design #343A40 |
-| **Build does** | “archived” — colour #343A40 → #374151. Measured on 2 pages. Also measured on the 375px capture of the same page. |
-| **Fix** | Set the built value to the design's. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-12568)
-
-## Tenders · mobile
-
-### NSFDC
-
-`WEB-SCREEN-054` · **Major** · Layout & Spacing · Scope: Tenders · mobile
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “NSFDC” is 47×19px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 47×19 it is also below the WCAG 2.5.8 AA floor of 24×24. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/tenders/)
-
-### explore current tender notices, eligibility details, and sub
-
-`WEB-SCREEN-282` · **Minor** · Typography · Scope: Tenders · mobile
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Built 16px · design 14px |
-| **Build does** | “explore current tender notices, eligibility details, and submission gu” — size 14 → 16. Measured on 2 pages. |
-| **Fix** | Set the built value to the design's. |
-
-[Live page](https://www.dosje.gov.in/tenders/)
-
-### active tenders
-
-`WEB-SCREEN-283` · **Minor** · Typography · Scope: Tenders · mobile
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Built 22px · design 20px |
-| **Build does** | “active tenders” — size 20 → 22. |
-| **Fix** | Set the built value to the design's. |
-
-[Live page](https://www.dosje.gov.in/tenders/)
-
-## Updates · mobile
-
-### NOS
-
-`WEB-SCREEN-055` · **Major** · Layout & Spacing · Scope: Updates · mobile
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “NOS” is 147×20px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 147×20 it is also below the WCAG 2.5.8 AA floor of 24×24. Measured on 2 pages. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/updates/)
 
 ## Vacancies · desktop
 
-### search by vacancy name or keyword
+### Search by vacancy name or keyword
 
-`WEB-SCREEN-230` · **Major** · Content & Iconography · Scope: Vacancies · desktop
+`WEB-SCREEN-388` · **Major** · Content & Iconography · Scope: Vacancies · desktop
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Design: “search by vacancy name or keyword” · absent from the build |
-| **Build does** | The design frame carries “search by vacancy name or keyword” (16px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-12427)
-
-### engagement of supervisor/consultant (contract)
-
-`WEB-SCREEN-225` · **Major** · Content & Iconography · Scope: Vacancies · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “engagement of supervisor/consultant (con” · absent from the build |
-| **Build does** | The design frame carries “engagement of supervisor/consultant (contract)” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-12427)
-
-### new delhi · contract · apply by 30 nov 2025
-
-`WEB-SCREEN-227` · **Major** · Content & Iconography · Scope: Vacancies · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “new delhi · contract · apply by 30 nov 2” · absent from the build |
-| **Build does** | The design frame carries “new delhi · contract · apply by 30 nov 2025” (12px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-12427)
-
-### supervisory and consultant roles for project implementation 
-
-`WEB-SCREEN-233` · **Major** · Content & Iconography · Scope: Vacancies · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “supervisory and consultant roles for pro” · absent from the build |
-| **Build does** | The design frame carries “supervisory and consultant roles for project implementation and monitoring” (14px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-12427)
-
-### temporary / short-term consultants
-
-`WEB-SCREEN-234` · **Major** · Content & Iconography · Scope: Vacancies · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “temporary / short-term consultants” · absent from the build |
-| **Build does** | The design frame carries “temporary / short-term consultants” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-12427)
-
-### multiple locations · contract · ongoing
-
-`WEB-SCREEN-226` · **Major** · Content & Iconography · Scope: Vacancies · desktop
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “multiple locations · contract · ongoing” · absent from the build |
-| **Build does** | The design frame carries “multiple locations · contract · ongoing” (12px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Build does** | The design frame carries this copy and nothing with the same text renders on the live page: “Search by vacancy name or keyword”. Also measured on the 375px capture of the same page. |
+| **Fix** | Add this copy where the Figma frame places it (each piece is outlined on the design panel): “Search by vacancy name or keyword”. Where a piece was dropped on purpose, tell the design team so the frame is updated instead. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-12427)
 
 ## Vacancies · mobile
 
-### search by scheme name or keyword
+### Contact & Support (area 2 of 2)
 
-`WEB-SCREEN-229` · **Major** · Content & Iconography · Scope: Vacancies · mobile
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “search by scheme name or keyword” · absent from the build |
-| **Build does** | The design frame carries “search by scheme name or keyword” (14px). Nothing with that text renders on the live page. Measured on 2 pages. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-105929)
-
-### contact & support
-
-`WEB-SCREEN-224` · **Major** · Content & Iconography · Scope: Vacancies · mobile
+`WEB-SCREEN-389` · **Major** · Content & Iconography · Scope: Vacancies · mobile
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Design: “contact & support” · absent from the build |
-| **Build does** | The design frame carries “contact & support” (20px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Build does** | The design frame carries this copy and nothing with the same text renders on the live page: “Contact & Support”. |
+| **Fix** | Add this copy where the Figma frame places it (each piece is outlined on the design panel): “Contact & Support”. Where a piece was dropped on purpose, tell the design team so the frame is updated instead. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-105929)
-
-### nodal ministry
-
-`WEB-SCREEN-228` · **Major** · Content & Iconography · Scope: Vacancies · mobile
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “nodal ministry” · absent from the build |
-| **Build does** | The design frame carries “nodal ministry” (14px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-105929)
-
-### shreshta@dosje.gov.in
-
-`WEB-SCREEN-232` · **Major** · Content & Iconography · Scope: Vacancies · mobile
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “shreshta@dosje.gov.in” · absent from the build |
-| **Build does** | The design frame carries “shreshta@dosje.gov.in” (12px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-105929)
-
-### 5th floor, lok nayak bhawan, khan market, new delhi - 110003
-
-`WEB-SCREEN-223` · **Major** · Content & Iconography · Scope: Vacancies · mobile
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “5th floor, lok nayak bhawan, khan market” · absent from the build |
-| **Build does** | The design frame carries “5th floor, lok nayak bhawan, khan market, new delhi - 110003” (12px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=4571-105929)
-
-## Visitor Analytics · desktop
-
-### Previous
-
-`WEB-SCREEN-024` · **Major** · Color & Token · Scope: Visitor Analytics · desktop
-
-| | |
-|---|---|
-| **Design says** | WCAG 2.2 AA (1.4.3), carried into GIGW 3.0: text needs 4.5:1 against its background, or 3:1 at 24px+ / 18.66px+ bold. |
-| **Build does** | Text “Previous” (a.page-link) renders #938BB6 on #FFFFFF at 16px/400 — #938BB6 on #FFFFFF as painted on the capture: 3.18:1 against the 4.5:1 minimum. Also measured on the 375px capture of the same page. |
-| **Fix** | Darken the text or lighten its ground until the pair measures at least the required ratio, then re-check every place the pair is used. |
-
-[Live page](https://www.dosje.gov.in/visitor-analytics/)
 
 ## Whos Who · desktop
 
-### discover the commissions, corporations, institutes and found
+### Discover the Commissions, Corporations, Institutes and Found
 
-`WEB-SCREEN-240` · **Major** · Content & Iconography · Scope: Whos Who · desktop
+`WEB-SCREEN-391` · **Major** · Content & Iconography · Scope: Whos Who · desktop
 
 | | |
 |---|---|
 | **Design says** | The approved Figma handoff frame for this screen. Design: “discover the commissions, corporations, ” · absent from the build |
-| **Build does** | The design frame carries “discover the commissions, corporations, institutes and foundations that work col” (16px). Nothing with that text renders on the live page. Measured on 2 pages. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Build does** | The design frame carries this copy and nothing with the same text renders on the live page: “Discover the Commissions, Corporations, ”. |
+| **Fix** | Add this copy where the Figma frame places it (each piece is outlined on the design panel): “Discover the Commissions, Corporations, ”. Where a piece was dropped on purpose, tell the design team so the frame is updated instead. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-8801)
 
-### mosje officials
+### Designation
 
-`WEB-SCREEN-245` · **Major** · Content & Iconography · Scope: Whos Who · desktop
+`WEB-SCREEN-425` · **Major** · Color & Token · Scope: Whos Who · desktop
 
 | | |
 |---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “mosje officials” · absent from the build |
-| **Build does** | The design frame carries “mosje officials” (28px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Design says** | The approved Figma handoff frame for this screen. Built #212121 · design #1F2428 |
+| **Build does** | “Designation” — colour #1F2428 → #212121. |
+| **Fix** | On “Designation”, change #212121 to #1F2428 — as in the Figma frame (link on this board). Make the change in the shared style for this element, so every page using it follows. |
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-8801)
 
-### min-sje@nic.in
+## For Student · desktop
 
-`WEB-SCREEN-243` · **Major** · Content & Iconography · Scope: Whos Who · desktop
+### Audience page standfirst
 
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “min-sje@nic.in” · absent from the build |
-| **Build does** | The design frame carries “min-sje@nic.in” (14px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-8801)
-
-### 201 c-wing, shastri bhawan, new delhi
-
-`WEB-SCREEN-236` · **Major** · Content & Iconography · Scope: Whos Who · desktop
+`WEB-SCREEN-356` · **Nit** · Content & Iconography · Scope: For Student · desktop
 
 | | |
 |---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “201 c-wing, shastri bhawan, new delhi” · absent from the build |
-| **Build does** | The design frame carries “201 c-wing, shastri bhawan, new delhi” (14px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Design says** | GIGW 3.0: page content is accurate, specific to the page, and in the Department's own register. |
+| **Build does** | All four audience pages open with “Here's how the Ministry empowers citizens like you.” A reader who arrives on the page for their own group is told nothing specific to it. |
+| **Fix** | Give each audience page a sentence about what that audience will find on it. |
 
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-8801)
+[Live page](https://www.dosje.gov.in/home-page/for-student/)
 
-### mosathawale@gmail.com
+## Policies Acts Rules Codes Circular · desktop
 
-`WEB-SCREEN-244` · **Major** · Content & Iconography · Scope: Whos Who · desktop
+### empty-table-header
 
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “mosathawale@gmail.com” · absent from the build |
-| **Build does** | The design frame carries “mosathawale@gmail.com” (14px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-8801)
-
-### shri b l verma
-
-`WEB-SCREEN-250` · **Major** · Content & Iconography · Scope: Whos Who · desktop
+`WEB-SCREEN-327` · **Nit** · Accessibility · Scope: Policies Acts Rules Codes Circular · desktop
 
 | | |
 |---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “shri b l verma” · absent from the build |
-| **Build does** | The design frame carries “shri b l verma” (16px). Nothing with that text renders on the live page. Also measured on the 375px capture of the same page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
+| **Design says** | GIGW 3.0 mandates WCAG 2.2 AA conformance; axe-core tests a subset of it programmatically. |
+| **Build does** | Table header text should not be empty — <th class="sorting sorting_asc" tabindex="0" colspan="1" rowspan="1" aria-controls="dataTable1" aria-sort="ascending" aria-label="#: activate to sort column des (empty-table-header, ). Also measured on the 375px capture of the same page. |
+| **Fix** | Correct the markup named in the finding. |
 
-[Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-8801)
-
-## Whos Who · mobile
-
-### Dr. Virendra Kumar
-
-`WEB-SCREEN-057` · **Major** · Layout & Spacing · Scope: Whos Who · mobile
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Dr. Virendra Kumar” is 130×19px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 130×19 it is also below the WCAG 2.5.8 AA floor of 24×24. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/whos-who/)
-
-### Shri Kishor Makwana
-
-`WEB-SCREEN-058` · **Major** · Layout & Spacing · Scope: Whos Who · mobile
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Shri Kishor Makwana” is 144×19px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 144×19 it is also below the WCAG 2.5.8 AA floor of 24×24. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/whos-who/)
-
-### Shri Kaishab Bihari
-
-`WEB-SCREEN-288` · **Major** · Layout & Spacing · Scope: Whos Who · mobile
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Shri Kaishab Bihari” is 129×19px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 129×19 it is also below the WCAG 2.5.8 AA floor of 24×24. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/whos-who/)
-
-### Sadhvi Niranjan Jyoti
-
-`WEB-SCREEN-289` · **Major** · Layout & Spacing · Scope: Whos Who · mobile
-
-| | |
-|---|---|
-| **Design says** | UX4G 3.0 §6: interactive targets are at least 44×44px with 8px between them. WCAG 2.5.8 AA sets an absolute floor of 24×24. |
-| **Build does** | “Sadhvi Niranjan Jyoti” is 142×19px. UX4G 3.0 §6 sets 44×44px as the minimum interactive size; at 142×19 it is also below the WCAG 2.5.8 AA floor of 24×24. |
-| **Fix** | Grow the control, or add transparent padding around it, until it measures 44×44px with 8px clear of its neighbours. |
-
-[Live page](https://www.dosje.gov.in/whos-who/)
-
-### 101c-wing, shastri bhawan, new delhi
-
-`WEB-SCREEN-235` · **Major** · Content & Iconography · Scope: Whos Who · mobile
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “101c-wing, shastri bhawan, new delhi” · absent from the build |
-| **Build does** | The design frame carries “101c-wing, shastri bhawan, new delhi” (14px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Live page](https://www.dosje.gov.in/whos-who/)
-
-### room no. 623, a-wing, shastri bhawan
-
-`WEB-SCREEN-249` · **Major** · Content & Iconography · Scope: Whos Who · mobile
-
-| | |
-|---|---|
-| **Design says** | The approved Figma handoff frame for this screen. Design: “room no. 623, a-wing, shastri bhawan” · absent from the build |
-| **Build does** | The design frame carries “room no. 623, a-wing, shastri bhawan” (14px). Nothing with that text renders on the live page. |
-| **Fix** | Add the content the design carries, or confirm with the design team that it was dropped deliberately. |
-
-[Live page](https://www.dosje.gov.in/whos-who/)
+[Live page](https://www.dosje.gov.in/policies-acts-rules-codes-circular/)
 
 ---
 ## Withdrawn on re-checking, not raised, and notes on the design file
@@ -3318,10 +1920,197 @@ Nothing here is a finding. Each was either raised in an earlier round and did no
 
 - **Global · No visible focus indicator — Open the accessibility option — Open the accessibility option** - Re-measured on pixels: the control is invisible until focused and then shows a visible ring. The first version compared styles, not what a keyboard user sees.
 - **Global · Non-text control below 3:1 — Language Translator — Language Translator** - Re-measured on pixels with the element's own CSS colour: the pair passes on screen. The first version read an anti-aliased edge pixel as the text colour.
+- **Global · Text contrast below AA — Single Access Mechanism for All Verticals o… — Single Access Mechanism for All Verticals o…** - Merged into WEB-GLOBAL-088, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Non-text control below 3:1 — Previous slide — Previous slide** - Merged into WEB-SCREEN-355, which now carries this defect together with the others of the same kind — one fix, one row.
 - **Global · Non-text control below 3:1 — Go to slide 1 — Go to slide 1** - Re-measured on pixels with the element's own CSS colour: the pair passes on screen. The first version read an anti-aliased edge pixel as the text colour.
-- **Home · desktop — new funding alert!** - Not reproduced on the re-capture of 18 September 2026.
-- **Home · mobile — Go to slide 1** - Not reproduced on the re-capture of 18 September 2026.
-- **Home · mobile — Go to slide 2** - Not reproduced on the re-capture of 18 September 2026.
-- **Procedure For Processing Grant In Aid Cases In Respect Of Voluntary Organisations · desktop — Home** - Not reproduced on the re-capture of 18 September 2026.
-- **Procedure For Processing Grant In Aid Cases In Respect Of Voluntary Organisations · desktop — Department** - Not reproduced on the re-capture of 18 September 2026.
-- **Procedure For Processing Grant In Aid Cases In Respect Of Voluntary Organisations · desktop — Associated Organisations** - Not reproduced on the re-capture of 18 September 2026.
+- **Global · Text contrast below AA — About Ministry — About Ministry** - Merged into WEB-GLOBAL-091, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Touch target below the minimum — Open Department — Open Department** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Touch target below the minimum — Home — Home** - Merged into WEB-GLOBAL-111, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Touch target below the minimum — Department — Department** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Touch target below the minimum — Associated Organisations — Associated Organisations** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Text contrast below AA — Get in Touch — Get in Touch** - Merged into WEB-GLOBAL-090, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Text contrast below AA — Get in Touch — Get in Touch** - Merged into WEB-GLOBAL-090, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Touch target below the minimum — About Ministry — About Ministry** - Merged into WEB-GLOBAL-110, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Touch target below the minimum — Vision & Mission — Vision & Mission** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Touch target below the minimum — Organisational Chart — Organisational Chart** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Touch target below the minimum — Ministers & Officials — Ministers & Officials** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Text contrast below AA — View All Documents from MoSJE — View All Documents from MoSJE** - Merged into WEB-GLOBAL-092, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Text contrast below AA — Chairperson's office — Chairperson's office** - Merged into WEB-GLOBAL-092, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Content in the design is not in the build — last updated on — last updated on** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Global · Touch target below the minimum — MoSJE — MoSJE** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Built value differs from the design — dr. virendra kumar — dr. virendra kumar** - Withdrawn: on the re-capture the design and build values could not both be proven on screen (the element was covered by the sticky header or not painted where the page says it is), so the comparison is not published.
+- **Global · Text contrast below AA — Dr. Ambedkar International Centre (DAIC) — Dr. Ambedkar International Centre (DAIC)** - Merged into WEB-GLOBAL-092, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Built value differs from the design — dr. virendra kumar — dr. virendra kumar** - Withdrawn: on the re-capture the design and build values could not both be proven on screen (the element was covered by the sticky header or not painted where the page says it is), so the comparison is not published.
+- **Global · Touch target below the minimum — Transgender — Transgender** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Touch target below the minimum — NBCFDC — NBCFDC** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Touch target below the minimum — NCBC — NCBC** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Touch target below the minimum — DAF — DAF** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Touch target below the minimum — DAIC — DAIC** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Touch target below the minimum — NSFDC — NSFDC** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Touch target below the minimum — NMBA — NMBA** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Touch target below the minimum — SCW — SCW** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Touch target below the minimum — NSKFDC — NSKFDC** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Text contrast below AA — Dr. Swati S. Mishra — Dr. Swati S. Mishra** - Merged into WEB-GLOBAL-092, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Touch target below the minimum — DAIC — DAIC** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Global · Built value differs from the design — mos3-msje[at]gov[dot]in — mos3-msje[at]gov[dot]in** - Withdrawn: on the re-capture the design and build values could not both be proven on screen (the element was covered by the sticky header or not painted where the page says it is), so the comparison is not published.
+- **Global · Content in the design is not in the build — target group — target group** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Global · Content in the design is not in the build — sort by recently added — sort by recently added** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Global · Automated accessibility violation — heading-order — heading-order** - Not reproduced on the re-capture of 18 September 2026.
+- **Global · The four audience pages share one description — Audience page standfirst — Audience page standfirst** - Merged into WEB-SCREEN-356, which now carries this defect together with the others of the same kind — one fix, one row.
+- **About Us · desktop — discover the initiatives that drive national efforts to adva** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **About Us · desktop — the department of social justice & empowerment is entrusted ** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **About Us · desktop — the ministry has been implementing various programmes/scheme** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **About Us · desktop — in the year 1985-86, the erstwhile ministry of welfare was b** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **About Us · desktop — in january, 2007, the minorities division along with wakf un** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **About Us · mobile — mrs. caralyn khongwar deshmukh, as** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **About Us · mobile — matters related to the national scheduled castes finance and** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **About Us · mobile — shri biswaranjan sasmal, as** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **About Us · mobile — mrs. yogita swaroop, sr. ea** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **About Us · mobile — ms. latha ganapathy, js** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Acts Rules · mobile — NHAA** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Annual Reports · desktop — access official reports released by the commission and its a** - Merged into WEB-GLOBAL-114, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Annual Reports · desktop — download all reports** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Annual Reports · mobile — NISD** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Annual Reports · mobile — BJRNF** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Circulars Notifications · mobile — PMAJAY** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Circulars Notifications · mobile — Smile Beggary** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Contact Us · desktop — contact details** - Merged into WEB-SCREEN-363, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Contact Us · desktop — connect directly with the ministry, reach the concerned depa** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Contact Us · desktop — ministry of social justice and empowerment (mosje) contact d** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Contact Us · desktop — room no. 631, a-wing, shastri bhawan, new delhi - 110001** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Contact Us · desktop — complaint[at]ncsc[dot]gov[dot]in** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Contact Us · desktop — national commission for safai karamchari (ncsk)** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Cookies · desktop — Session Cookies always active** - Re-measured on pixels with the element's own CSS colour: the pair passes on screen. The first version read an anti-aliased edge pixel as the text colour.
+- **Cookies · desktop — Ensures user session persistence, allowing …** - Merged into WEB-GLOBAL-093, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Cpio · desktop — the designated authority responsible for providing timely an** - Merged into WEB-SCREEN-365, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Cpio · desktop — sort by recently updated** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Cpio · desktop — designantion** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Cpio · desktop — shri gulshan kumar pahadia, ad** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Cpio · desktop — ms. sanmeet kaur, dig(p)** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Cpio · desktop — sanmeet[dot]kaur[at]ips[dot]gov[dot]in** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Cpio · mobile — gk[dot]pahadia[at]gov[dot]in** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Dashboard · desktop — Pre-Matric (SCs & Others)** - Merged into WEB-SCREEN-331, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Dashboard · desktop — total sc/st beneficiary count** - Merged into WEB-SCREEN-366, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Dashboard · desktop — sc/st coverage rate** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Dashboard · desktop — dapsc budget utilization rate** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Dashboard · desktop — sc/st women beneficiary percentage** - Merged into WEB-SCREEN-366, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Dashboard · desktop — sc/st scholarship beneficiaries** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Dashboard · mobile — 29,015** - Merged into WEB-SCREEN-328, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Events · desktop — discover initiatives, workshops, and awareness programs that** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Events · desktop — view all** - Merged into WEB-SCREEN-368, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Events · desktop — hard to reach population-smile (beggary)** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Events · desktop — nov 10th, 2025 • 05:00 pm onwards** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Events · desktop — dr. ambedkar international centre** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Events · desktop — "chandalika" - musical dance drama** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Events · mobile — painting exhibition and yamuna sustaibablity run** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Events  Ek Ped Maa Ke Naam 6 · desktop — Declared** - Merged into WEB-SCREEN-332, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Events  Ek Ped Maa Ke Naam 7 · desktop — Declared** - Merged into WEB-SCREEN-332, which now carries this defect together with the others of the same kind — one fix, one row.
+- **For Researchers · desktop — discover all welfare initiatives, social justice schemes, an** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **For Researchers · desktop — browse the key legislations, policy frameworks, and governme** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Forms Templates · mobile — PMAJAY** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Forms Templates · mobile — NOS** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Forms Templates · mobile — access official reports released by the commission and its a** - Merged into WEB-GLOBAL-114, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Gallery · desktop — explore photos, videos and news from the ministry of social ** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Gallery · desktop — search by keyword or event** - Merged into WEB-SCREEN-371, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Gallery · desktop — ambedkar jayanti celebration 2025** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Gallery · desktop — glimpses from the national celebration** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Gallery · desktop — elder care workshop** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Gallery · desktop — training for caregivers and elder care professionals** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Gallery · mobile — “Ek Ped Maa Ke Naam”** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Gallery · mobile — scholars present research on ambedkar studies** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Home · desktop — empowering india, every day** - Merged into WEB-SCREEN-374, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Home · desktop — bringing social justice to every doorstep through digital ac** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Home · desktop — explore opportunities** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Home · desktop — view schemes** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Home · desktop — latest updates** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Home · desktop — new funding alert!** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Home · mobile — Go to slide 1** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Home · mobile — Go to slide 2** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Home · mobile — Go to slide 3** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Home · mobile — Go to slide 4** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Home · mobile — smile - support for marginalised individuals for livelihood ** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Home · mobile — integrated rehabilitation, skills training and livelihood su** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Lok Sabha Question Answer · mobile — NCSK** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Mosje Directory · desktop — discover the commissions, corporations, institutes and found** - Merged into WEB-SCREEN-377, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Mosje Directory · desktop — reset filters** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Mosje Directory · desktop — organization** - Merged into WEB-GLOBAL-052, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Mosje Directory · desktop — ashutosh niranjan** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Mosje Directory · desktop — ms. priya sharma** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Mosje Directory · desktop — private secretary to the minister** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Mosje Directory · mobile — browse our directory for key contact information of commissi** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Mosje Directory · mobile — download directory** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Mosje Directory · mobile — telephone(res./mobile)** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Mosje Directory · mobile — ashutosh niranjan, ias** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Mosje Directory · mobile — devansh wathrey** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Mosje Directory · mobile — tripathi[dot]yogesh[at]nic[dot]in** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Notices · mobile — BJRNF** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Notices · mobile — E-Anudaan** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Policies · desktop — 1. information collection we do not automatically gather any** - Merged into WEB-SCREEN-379, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Procedure For Processing Grant In Aid Cases In Respect Of Voluntary Organisations · desktop — Home** - Merged into WEB-GLOBAL-111, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Procedure For Processing Grant In Aid Cases In Respect Of Voluntary Organisations · desktop — Department** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Procedure For Processing Grant In Aid Cases In Respect Of Voluntary Organisations · desktop — Associated Organisations** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Resources · mobile — DWBDNC** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Rti · desktop — suo-moto disclosure** - Merged into WEB-GLOBAL-113, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Rti · desktop — right to information act 2005** - Merged into WEB-SCREEN-380, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Rti · desktop — the national commission for scheduled castes (ncsc) is a con** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Scheme Documents  Dr Ambedkar National Merit Award Scheme  · desktop — Scheme: Dr. Ambedkar National Merit Award S…** - Merged into WEB-SCREEN-329, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Scheme Documents  Merger Order · desktop — Scheme: Dr. Ambedkar Scheme for Social Inte…** - Merged into WEB-SCREEN-330, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Schemes And Services  Geriatric Caregivers Training · mobile — Senior Citizens Welfare(SCW)** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Schemes Services · desktop — schemes and services** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Schemes Services · desktop — explore welfare schemes, social empowerment programs, and ci** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Schemes Services · desktop — search by scheme name or keyword** - Merged into WEB-SCREEN-381, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Schemes Services · desktop — smile - support for marginalised individuals for livelihood ** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Schemes Services · desktop — integrated rehabilitation, skills training and livelihood su** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Schemes Services · desktop — scheme for economic empowerment of dnts (seed)** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Schemes Services · mobile — venture capital fund for scs & obcs** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **State · Home 320 · mobile320 — Go to slide 1** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **State · Home 320 · mobile320 — Go to slide 2** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **State · Home 320 · mobile320 — Go to slide 3** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **State · Home 320 · mobile320 — Go to slide 4** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **State · Home Hindi · desktop — घर** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **State · Home Hindi · desktop — विभाग** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **State · Home Hindi · desktop — संबद्ध संगठन** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **State · Mega Menu Department · desktop — Close Department** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **State · Search Scholarship · desktop — Scholarship** - Merged into WEB-SCREEN-334, which now carries this defect together with the others of the same kind — one fix, one row.
+- **State · Search Scholarship · desktop — …** - Merged into WEB-GLOBAL-093, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Suo Moto Disclosure · desktop — government's proactive release of key information to ensure ** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Suo Moto Disclosure · desktop — sort by recently updated** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Suo Moto Disclosure · desktop — list of faa** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Suo Moto Disclosure · desktop — list of cpio** - Merged into WEB-SCREEN-398, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Suo Moto Disclosure · desktop — list of cpio and faa** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Suo Moto Disclosure · desktop — list of cpios and faas** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Supreme Court Judgement · mobile — NCSK** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Tenders · desktop — search by tender name or keyword** - Merged into WEB-SCREEN-387, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Tenders · desktop — archived** - Merged into WEB-SCREEN-276, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Tenders · mobile — NSFDC** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Tenders · mobile — explore current tender notices, eligibility details, and sub** - Withdrawn: on the re-capture the design and build values could not both be proven on screen (the element was covered by the sticky header or not painted where the page says it is), so the comparison is not published.
+- **Tenders · mobile — active tenders** - Withdrawn: on the re-capture the design and build values could not both be proven on screen (the element was covered by the sticky header or not painted where the page says it is), so the comparison is not published.
+- **Updates · mobile — NOS** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Vacancies · desktop — search by vacancy name or keyword** - Merged into WEB-SCREEN-388, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Vacancies · desktop — engagement of supervisor/consultant (contract)** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Vacancies · desktop — new delhi · contract · apply by 30 nov 2025** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Vacancies · desktop — supervisory and consultant roles for project implementation ** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Vacancies · desktop — temporary / short-term consultants** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Vacancies · desktop — multiple locations · contract · ongoing** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Vacancies · mobile — search by scheme name or keyword** - Merged into WEB-SCREEN-381, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Vacancies · mobile — contact & support** - Merged into WEB-SCREEN-389, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Vacancies · mobile — nodal ministry** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Vacancies · mobile — shreshta@dosje.gov.in** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Vacancies · mobile — 5th floor, lok nayak bhawan, khan market, new delhi - 110003** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Visitor Analytics · desktop — Previous** - Merged into WEB-GLOBAL-085, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Whos Who · desktop — discover the commissions, corporations, institutes and found** - Merged into WEB-SCREEN-377, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Whos Who · desktop — mosje officials** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Whos Who · desktop — min-sje@nic.in** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Whos Who · desktop — 201 c-wing, shastri bhawan, new delhi** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Whos Who · desktop — mosathawale@gmail.com** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Whos Who · desktop — shri b l verma** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Whos Who · mobile — Dr. Virendra Kumar** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Whos Who · mobile — Shri Kishor Makwana** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Whos Who · mobile — Shri Kaishab Bihari** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Whos Who · mobile — Sadhvi Niranjan Jyoti** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Whos Who · mobile — 101c-wing, shastri bhawan, new delhi** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Whos Who · mobile — room no. 623, a-wing, shastri bhawan** - Withdrawn: the design text is sample content in a repeated list or data field — names, e-mail addresses, dates, figures, event or album titles — which the live page fills with real entries. It is different data, not missing interface copy.
+- **Home · mobile — Go to slide 1** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Home · mobile — Go to slide 2** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
+- **Non-text control below 3:1 — Session Cookies always active** - The two 'always active' cookie switches are disabled checkboxes (<input type=checkbox disabled checked>, verified on the live page 18 Sep). WCAG 1.4.11 exempts inactive components.
+- **Content in the design is not in the build — Hemant Kumar Srivastava** - A sample officer's name in the design's directory card — data the live page fills with the real officer, not interface copy.

@@ -12,6 +12,7 @@ SEV = {"Blocker":"#dc2626","Major":"#ea580c","Minor":"#ca8a04","Nit":"#6b7280"}
 TINT = {"design":"#fef3e2","build":"#eaf2fb","fix":"#ecfdf5"}
 PANEL_W = 506  # px per panel in the comparison board
 SINGLE_W = 1030  # a build-only board (no design frame) uses the full row
+PHONE_W = 460    # a phone capture is shown near its real proportion, not blown up to the full row
 
 def esc(s): return html.escape(str(s or ""))
 def furl(rel): return "file://" + os.path.join(BASE, rel)
@@ -120,8 +121,9 @@ def panel(img_rel, box, pins, side, marks=None, pw=None, basis=1440):
                 svg += (f'<line x1="{sx:.1f}" y1="{sy:.1f}" x2="{ex:.1f}" y2="{ey:.1f}" stroke="{col}" '
                         f'stroke-width="1.5" stroke-dasharray="4 3"/>')
             lbl = f'<span class="mtxt">{esc(label)}</span>' if label else ""
+            nm = f'<span class="mnum">{esc(num)}</span>' if num not in (None, "") else ""
             mark_html += (f'<span class="mtag" style="left:{tx1:.1f}px;top:{ty1:.1f}px;max-width:{maxw}px;'
-                          f'background:{col}"><span class="mnum">{esc(num)}</span>{lbl}</span>')
+                          f'background:{col}">{nm}{lbl}</span>')
         if svg:
             svg = (f'<svg class="mlines" width="{pw}" height="{dispH+gutter_h}" '
                    f'viewBox="0 0 {pw} {dispH+gutter_h}">{svg}</svg>')
@@ -191,8 +193,20 @@ def board(screen, section, sec_findings):
                [0, 0, basis_fig, box[3] - box[1]])   # design crop
     live_box = sec_findings[0].get("liveBox") or box   # per-section crop override (build) — use when
                                                      # design & build captures differ in proportion
-    fig_marks=[(f["num"],f["severity"],f["figmaMark"]["box"],f["figmaMark"].get("label","")) for f in sec_findings if f.get("figmaMark")]
-    live_marks=[(f["num"],f["severity"],f["liveMark"]["box"],f["liveMark"].get("label","")) for f in sec_findings if f.get("liveMark")]
+    # A number only earns its place when a board carries more than one mark: with one, the outline
+    # and its callout already say which card they belong to, and a lone "1" reads as noise.
+    numbered = len(sec_findings) > 1
+    def _marks(side):
+        # A finding may carry one mark ("liveMark") or several ("liveMarks", e.g. every piece of design
+        # copy missing from one page). Several marks of ONE finding share its number, or none.
+        out = []
+        for f in sec_findings:
+            n = f["num"] if numbered else None
+            for m in ([f[side + "Mark"]] if f.get(side + "Mark") else []) + list(f.get(side + "Marks") or []):
+                out.append((n, f["severity"], m["box"], m.get("label", "")))
+        return out
+    fig_marks = _marks("figma")
+    live_marks = _marks("live")
     fig_pins=[(f["num"],f["severity"],f["figmaPin"]["x"],f["figmaPin"]["y"]) for f in sec_findings if f.get("figmaPin")]
     live_pins=[(f["num"],f["severity"],f["livePin"]["x"],f["livePin"]["y"]) for f in sec_findings if f.get("livePin")]
     ids=[f["id"] for f in sec_findings]
@@ -207,14 +221,29 @@ def board(screen, section, sec_findings):
     if figu: links+=f'<a href="{esc(figu)}">Figma frame ↗</a>'
     if livu: links+=f'<a href="{esc(livu)}">Live page ↗</a>'
     env = screen.get("env","dev")
-    single = not figma_img
+    # The design panel appears only where this board has something marked on the design: a standards
+    # finding on a page that ALSO has design findings must not borrow an unrelated design frame.
+    single = not figma_img or not (fig_marks or fig_pins)
     panels = ""
+    design_only = (not single) and not (live_marks or live_pins) and bool(fig_marks or fig_pins)
+    if design_only:
+        # e.g. copy the design carries and the build lacks: there is nothing on the build to outline,
+        # so the design panel carries the board alone rather than sit beside an unmarked crop.
+        panels = (f'<div class="pwrap"><div class="plabel design"><b>DESIGN</b> Figma intent — '
+                  f'outlined: what the build is missing</div>'
+                  f'{panel(figma_img, fig_box, fig_pins, "figma", fig_marks, SINGLE_W if basis_fig >= 700 else PHONE_W, basis_fig)}</div>')
+        return (f'<div class="board">'
+                f'<div class="bhead"><div class="btitle"><b>{esc(title)}</b> · <span>{esc(subtitle)}</span></div>'
+                f'<div class="bbadge">{esc(idrange)}</div></div>'
+                f'<div class="panels">{panels}</div>'
+                f'<div class="bfoot"><span>{esc(am["portal"])} — Design QC · {esc(am.get("generated",""))}</span>'
+                f'<span class="links">{links}</span></div></div>')
     if not single:
         panels += (f'<div class="pwrap"><div class="plabel design"><b>DESIGN</b> Figma intent</div>'
                    f'{panel(figma_img, fig_box, fig_pins, "figma", fig_marks, None, basis_fig)}</div>')
     panels += (f'<div class="pwrap"><div class="plabel build"><b>BUILD</b> '
                f'{"Live build · "+env}</div>'
-               f'{panel(live_img, live_box, live_pins, "live", live_marks, None if not single else SINGLE_W, basis_live)}</div>')
+               f'{panel(live_img, live_box, live_pins, "live", live_marks, None if not single else (SINGLE_W if basis_live >= 700 else PHONE_W), basis_live)}</div>')
     return (f'<div class="board">'
             f'<div class="bhead"><div class="btitle"><b>{esc(title)}</b> · <span>{esc(subtitle)}</span></div>'
             f'<div class="bbadge">{esc(idrange)}</div></div>'
@@ -249,14 +278,15 @@ def ref_board(screen):
             f'<div class="bfoot"><span>{esc(am["portal"])} — Design QC · {esc(am.get("generated",""))}</span>'
             f'<span class="links">{links}</span></div></div>')
 
-def card(f):
+def card(f, numbered=True):
     sev=f["severity"]; col=SEV.get(sev,"#6b7280")
     scope = f.get("scope")
     scope_chip = (f'<span class="scopechip">SCOPE: GLOBAL</span>' if scope=="Global" else "")
     scope_meta = (' &nbsp;·&nbsp; <b style="color:#6d28d9">Global</b> — applies to every screen with this element'
                   if scope=="Global" else "")
+    numspan = f'<span class="num" style="background:{col}">{esc(f["num"])}</span>' if numbered else ""
     return (f'<div class="card" style="border-left-color:{col}">'
-            f'<div class="chead"><span class="num" style="background:{col}">{esc(f["num"])}</span>'
+            f'<div class="chead">{numspan}'
             f'<span class="ctitle">{esc(f["element"])}</span>'
             f'{scope_chip}'
             f'<span class="chip" style="background:{col}">{esc(sev)}</span>'
@@ -293,8 +323,12 @@ for s in am["screens"]:
     groups=""
     for sec in order:
         sf=bysec[sec]
-        cards="".join(card(f) for f in sf)
-        groups+=f'<div class="group">{board(s, sec, sf)}<div class="cards">{cards}</div></div>'
+        cards="".join(card(f, len(sf) > 1) for f in sf)
+        marked = any(f.get(k) for f in sf for k in ("liveMark", "figmaMark", "liveMarks", "figmaMarks", "livePin", "figmaPin"))
+        # A page-level finding (the page's language, its console errors) has no element to point at:
+        # a crop of the page with nothing marked on it only sends the reader looking for something.
+        brd = board(s, sec, sf) if marked else ""
+        groups+=f'<div class="group">{brd}<div class="cards">{cards}</div></div>'
     if not groups and (s.get("figmaImg") or s.get("liveImg")):   # findings-free parity/coverage/reference screen
         groups=f'<div class="group">{ref_board(s)}</div>'
         if not chips: chips=f'<span class="hchip" style="background:{s.get("_refchip","#047857")}">{esc(s.get("_refbadge","✓ faithful"))}</span>'
@@ -305,7 +339,32 @@ screens_html="".join(screen_sections)
 # ---- deferred (optional): items parked by decision (e.g. approved divergence), not dropped ----
 defer = am.get("deferred", [])
 defer_html = ""
-if defer:
+if defer and len(defer) > 20:
+    # A long withdrawn/merged list is grouped by reason in the PDF — one row per reason listing its
+    # ids — so the report stays readable; the tracker still carries one row per id.
+    import re as _re
+    grouped, merges = {}, []
+    for d in defer:
+        m = _re.match(r"Merged into ([A-Z0-9/ -]+?), which", d.get("reason", ""))
+        if m:
+            merges.append((str(d["id"]), m.group(1).strip()))
+        else:
+            grouped.setdefault(d.get("reason", ""), []).append(d)
+    def _n(k): return f"{k} finding" + ("" if k == 1 else "s")
+    rows = ""
+    if merges:
+        rows += (f'<div class="drow"><span class="did">{_n(len(merges))}</span>'
+                 f'<span class="dtitle">Merged into a wider finding of the same kind — one fix, one row. '
+                 f'Old id → the id that now carries it:</span>'
+                 f'<div class="dreason">{esc("; ".join(f"{a} → {b}" for a, b in merges))}</div></div>')
+    rows += "".join(f'<div class="drow"><span class="did">{_n(len(ds))}</span>'
+                    f'<span class="dtitle">{esc(reason)}</span>'
+                    f'<div class="dreason">{esc(", ".join(str(d["id"]) for d in ds))}</div></div>'
+                    for reason, ds in sorted(grouped.items(), key=lambda kv: -len(kv[1])))
+    defer_html = (f'<section class="screen"><div class="shead alt"><h2>Withdrawn, merged or exempted</h2>'
+                  f'<div class="hchips"><span class="hchip" style="background:#6b7280">{len(defer)} items</span></div></div>'
+                  f'<div class="defer">{rows}</div></section>')
+elif defer:
     rows = "".join(f'<div class="drow"><span class="did">{esc(d["id"])}</span>'
                    f'<span class="dtitle">{esc(d.get("title",""))}</span>'
                    f'<div class="dreason">{esc(d.get("reason",""))}</div></div>' for d in defer)

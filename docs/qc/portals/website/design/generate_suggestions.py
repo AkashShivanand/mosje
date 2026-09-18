@@ -66,7 +66,8 @@ def panel(img, box, pins, label, color, marks=None, basis=1440, pw=PANEL):
     ph = "".join(f'<span class="pin" style="left:{px/100*pw:.0f}px;top:{py/100*H:.0f}px">{n}</span>' for n, px, py in pins)
     mk, gut = "", 0
     if marks:
-        disp = [(n, color, ((b[0]-x1)*sc-3, (b[1]-y1)*sc-3, (b[2]-x1)*sc+3, (b[3]-y1)*sc+3), lab)
+        single = len(marks) == 1          # a lone mark carries no number
+        disp = [(None if single else n, color, ((b[0]-x1)*sc-3, (b[1]-y1)*sc-3, (b[2]-x1)*sc+3, (b[3]-y1)*sc+3), lab)
                 for n, b, lab in marks]
         mk, gut = marks_html(disp, pw, H, 250 if pw < 700 else 380)
     try:

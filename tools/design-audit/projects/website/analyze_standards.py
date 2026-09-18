@@ -104,6 +104,27 @@ def _short(t, n=44):
     return (t[: n - 1] + "…") if len(t) > n else t
 
 
+def region_of(d, b):
+    """Where on the page a box sits — the unit a repeated defect is grouped by. The same 20px-tall
+    link in the masthead on 144 pages is ONE defect, not one per menu word."""
+    ph = d.get("pageHeight") or 2000
+    ftop = footer_top(d)
+    if b[1] < 260:
+        return "masthead"
+    if ftop and b[1] >= ftop - 40:
+        return "footer"
+    return "content"
+
+
+def footer_top(d):
+    """The y where the site footer begins: the lowest 'Department' / 'Services' / 'Support' column
+    heading on the page (the footer's first row), or None."""
+    ys = [e["bbox"]["y"] for e in d.get("elements", [])
+          if (e.get("text") or "").strip() in ("Department", "Services", "Support", "Resources")
+          and e.get("bbox", {}).get("y", 0) > (d.get("pageHeight") or 2000) * 0.45]
+    return min(ys) - 60 if ys else None
+
+
 def dedupe(out, cap=3):
     """One finding per distinct measurement per page, worst first — repetition is carried by the
     Global grouping, not by 40 copies of the same row."""
@@ -181,7 +202,7 @@ def r_contrast(d):
                      + (" The label is not painted as text (it does not fit the control's box), so "
                         "this is judged as a non-text control under WCAG 1.4.11." if icon_like else ""),
                      severity="Blocker" if ratio < need * 0.7 else "Major",
-                     key=f"{_hex(e.get('color'))}|{_hex(e.get('background'))}|{int(size)}",
+                     key=f"{_hex(e.get('color'))}|{_hex(e.get('background'))}",
                      cssFg=_hex(e.get("color")), cssBg=_hex(e.get("background"))))
     return dedupe(out, 4)
 
@@ -245,7 +266,8 @@ def r_target(d):
                      + (f"; at {w}×{h} it is also below the WCAG 2.5.8 AA floor of 24×24."
                         if wcag_fail else "; WCAG 2.5.8's 24×24 floor is met."),
                      severity="Major" if wcag_fail else "Minor",
-                     key=f"target-{w}x{h}-{_short(label, 20)}"))
+                     key=f"target|{region_of(d, b)}",
+                     region=region_of(d, b)))
     return dedupe(out, 4)
 
 
@@ -258,7 +280,25 @@ def r_h1(d):
     first = next((h for h in d.get("headings", []) if h.get("visible")), None)
     b = _box((first or {}).get("bbox")) or [0, 0, 1440, 200]
     if not h1:
-        return [F("A-H1", b, "No <h1> on this page · WCAG 1.3.1", "page title",
+        # Mark the page's visible title — the largest text in the first 700px below the masthead —
+        # because that is the element the developer must turn into the <h1>.
+        CHROME = ("need support", "reach out to us", "government of india", "ministry of social",
+                  "department of social", "skip to", "search schemes")
+        ftop = footer_top(d) or 10 ** 6
+        top = [e for e in d.get("elements", []) if (e.get("text") or "").strip()
+               and 150 < (e.get("bbox") or {}).get("y", 0) < min(700, ftop - 200)
+               and (e.get("bbox") or {}).get("w", 0) > 60
+               and (_px(e.get("fontSize")) or 0) >= 20
+               and not any(c in (e.get("text") or "").lower() for c in CHROME)]
+        title = max(top, key=lambda e: _px(e.get("fontSize")) or 0) if top else None
+        if title:
+            return [F("A-H1", _box(title["bbox"]),
+                      "This title is not marked up as an <h1> · the page has none",
+                      _short(title.get("text")) or "page title",
+                      f"The page renders no <h1>. Its visible title, “{_short(title.get('text'), 60)}” "
+                      f"({title.get('tag')}, {title.get('fontSize')}), is the element that should be it.",
+                      key="h1-missing", cssFg=_hex(title.get("color")))]
+        return [F("A-H1", None, "No <h1> on this page · WCAG 1.3.1", "page title",
                   "The page renders no <h1>. The first visible heading is "
                   f"<h{(first or {}).get('level')}> “{_short((first or {}).get('text'), 60)}”.",
                   key="h1-missing")]
@@ -307,11 +347,12 @@ def r_axe(d):
     out = []
     sev = {"critical": "Blocker", "serious": "Major", "moderate": "Minor", "minor": "Nit"}
     for v in (d.get("axe") or {}).get("violations", []):
-        if v["id"] in ("color-contrast", "image-alt"):     # measured precisely by our own rules
+        if v["id"] in ("color-contrast", "image-alt", "heading-order"):   # measured by our own rules
             continue
+        structural = v["id"].startswith("landmark-") or v["id"] in ("region", "skip-link")
         for n in v.get("nodes", [])[:2]:
-            b = _box(n.get("bbox"))
-            if not b:
+            b = None if structural else _box(n.get("bbox"))
+            if not b and not structural:
                 continue
             out.append(F("A-AXE", b, f"{v['id']} · {v.get('impact')} · {v['help']}"[:110],
                          v["id"],
@@ -325,7 +366,7 @@ def r_axe(d):
       "Font size outside the UX4G type scale")
 def r_type_scale(d):
     off = collections.Counter()
-    sample = {}
+    sample, best_sample = {}, {}
     for e in d.get("elements", []):
         if not (e.get("text") or "").strip():
             continue
@@ -334,9 +375,13 @@ def r_type_scale(d):
             continue
         off[int(s)] += 1
         sample.setdefault(int(s), e)
+        # prefer a sample a reader can actually see: on-canvas, and a real run of text
+        b = e.get("bbox") or {}
+        if b.get("w", 0) > 20 and b.get("h", 0) >= 8 and len((e.get("text") or "").strip()) > 3:
+            best_sample.setdefault(int(s), e)
     out = []
     for size, n in off.most_common(3):
-        e = sample[size]
+        e = best_sample.get(size) or sample[size]
         b = _box(e.get("bbox"))
         if not b:
             continue
@@ -348,7 +393,8 @@ def r_type_scale(d):
                      f"{n} element(s) render at {size}px, which is not on the UX4G type scale "
                      f"(12/14/16/18/20/24/28/32/36/40/52/60)."
                      + (" It is also below Body/XS, the stated minimum usable size." if below else ""),
-                     severity="Major" if below else "Minor", key=f"type-{size}"))
+                     severity="Major" if below else "Minor", key=f"type-{size}",
+                     cssFg=_hex(e.get("color"))))
     return out
 
 
@@ -369,7 +415,8 @@ def r_font(d):
         if b:
             out.append(F("U-FONT", b, f"{fam} · {n} element(s) · Noto Sans is the standard", fam,
                          f"{n} element(s) render in {fam}. Noto Sans is the mandated typeface "
-                         f"across Government of India properties.", key=f"font-{fam}"))
+                         f"across Government of India properties.", key=f"font-{fam}",
+                         cssFg=_hex(sample[fam].get("color"))))
     return out
 
 
@@ -408,16 +455,18 @@ def r_violet(d):
             or (e.get("background") or "").lower()[:7] in UX4G_VIOLET]
     if not hits:
         return []
-    e = hits[0]
-    b = _box(e.get("bbox"))
-    if not b:
-        return []
-    return [F("D-UX4G-VIOLET", b,
-              f"{_hex(e.get('color'))}/{_hex(e.get('background'))} · UX4G violet, not the DBIM palette",
-              _short(e.get("text")) or e.get("tag"),
-              f"{len(hits)} element(s) render UX4G's violet primary rather than the Department's "
-              f"key colour. DBIM 2.1 allows one colour group from the primary palette.",
-              key="violet")]
+    out = []
+    for e in hits[:8]:
+        b = _box(e.get("bbox"))
+        if not b:
+            continue
+        col = e.get("color") if (e.get("color") or "").lower()[:7] in UX4G_VIOLET else e.get("background")
+        out.append(F("D-UX4G-VIOLET", b, f"{_hex(col)} · UX4G violet, not the Department's blue",
+                     "UX4G violet in place of the Department's blue",
+                     f"{len(hits)} element(s) on this page carry UX4G's violet primary ({_hex(col)}) — "
+                     f"here “{_short(e.get('text'), 50) or e.get('tag')}”. DBIM 2.1 allows one colour "
+                     f"group from the primary palette.", key="violet", cssFg=_hex(col)))
+    return out
 
 
 @rule("D-FOOTER-SECTIONS", "DBIM 3.0 §5.6", "5.6", "Content & Iconography", "Major",
@@ -427,9 +476,10 @@ def r_footer(d):
     missing = [k for k in DBIM_FOOTER_SECTIONS if not (foot.get(k) or {}).get("present")]
     if not missing:
         return []
-    anchor = next((v for v in foot.values() if isinstance(v, dict) and v.get("bbox")), None)
-    b = _box((anchor or {}).get("bbox")) or [0, max(0, (d.get("pageHeight") or 1200) - 320),
-                                             1440, d.get("pageHeight") or 1200]
+    ftop = footer_top(d)
+    ph = d.get("pageHeight") or 1200
+    vw = (d.get("viewportSize") or {}).get("width") or 1440
+    b = [0, round(ftop), vw, round(min(ph, ftop + 520))] if ftop else None
     names = {"archives": "Archives", "websitePolicies": "Website Policy",
              "relatedLinks": "Related Links", "feedback": "Feedback"}
     return [F("D-FOOTER-SECTIONS", b,
@@ -463,12 +513,37 @@ def r_overflow(d):
     ho = d.get("horizontalOverflow") or {}
     if not ho.get("value"):
         return []
-    c = (ho.get("culprits") or [{}])[0]
+    # The widest in-page culprit, named so a developer can find it: tag, first class, id.
+    # In-page content only: the accessibility widget, the chatbot and the Important Links tab are
+    # fixed overlays parked at the edge; the element that makes the PAGE scroll starts on screen and
+    # runs past it. (First pass picked the off-screen Important Links tab and drew a meaningless box.)
+    vw = ho.get("clientWidth") or 375
+    WIDGETS = ("uwaw", "important-link", "chatbot", "uw-main")
+    culprits = [c for c in (ho.get("culprits") or [])
+                if not any(w in ((c.get("cls") or "") + (c.get("id") or "")) for w in WIDGETS)
+                and (c.get("bbox") or {}).get("x", vw) < vw]
+    c = max(culprits, key=lambda c: (c.get("bbox") or {}).get("w", 0)) if culprits else {}
     b = _box(c.get("bbox")) or [0, 0, ho.get("clientWidth", 1440), 400]
+    name = c.get("tag", "element") + (("#" + c["id"]) if c.get("id") else "") + \
+        (("." + c["cls"].split()[0]) if c.get("cls") else "")
+    # Name it by what a person sees: the link or element whose box is the culprit's.
+    cb = c.get("bbox") or {}
+    for l in d.get("links", []):
+        lb = l.get("bbox") or {}
+        if cb and abs(lb.get("x", -9) - cb.get("x", 0)) < 2 and abs(lb.get("y", -9) - cb.get("y", 0)) < 2:
+            name = f"the link “{_short(l.get('text') or l.get('href'), 50)}”"
+            break
+    else:
+        for e in d.get("elements", []):
+            eb = e.get("bbox") or {}
+            if cb and abs(eb.get("x", -9) - cb.get("x", 0)) < 2 and abs(eb.get("y", -9) - cb.get("y", 0)) < 2 \
+                    and (e.get("text") or "").strip():
+                name = f"the {e.get('tag')} “{_short(e.get('text'), 50)}”"
+                break
     return [F("R-OVERFLOW", b,
               f"scrollWidth {ho.get('scrollWidth')}px > viewport {ho.get('clientWidth')}px · reflow FAIL",
-              c.get("tag", "page"),
-              f"The page scrolls horizontally at {ho.get('clientWidth')}px: content reaches "
+              f"Page scrolls sideways at {ho.get('clientWidth')}px",
+              f"The widest element is {name}. The page scrolls horizontally at {ho.get('clientWidth')}px: content reaches "
               f"{ho.get('scrollWidth')}px. WCAG 1.4.10 requires reflow without a horizontal "
               f"scrollbar down to 320 CSS px.", key="overflow")]
 

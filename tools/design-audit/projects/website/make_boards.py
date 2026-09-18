@@ -26,29 +26,26 @@ def png_size(p):
 
 def crop_scale(src, box, basis, dst, target_w):
     """box is in `basis` px; writes dst cropped to box and scaled so its width is <= target_w.
-    Returns the crop's width in basis px (the new basis for marks inside it)."""
-    w, h = png_size(src)
+
+    Pillow, not sips: `sips -c --cropOffset` silently returned the WHOLE page when the crop region
+    ran to the image's bottom edge (the footer board, 18 Sep), so a footer finding was drawn on the
+    masthead. The result is checked against the requested size before it is accepted."""
+    from PIL import Image
+    Image.MAX_IMAGE_PIXELS = None
+    im = Image.open(src).convert("RGB")
+    w, h = im.size
     sc = w / float(basis)
     x1, y1, x2, y2 = box
     X, Y = max(0, int(x1 * sc)), max(0, int(y1 * sc))
-    W, H = min(w - X, int((x2 - x1) * sc)), min(h - Y, int((y2 - y1) * sc))
-    if W <= 0 or H <= 0:
+    X2, Y2 = min(w, int(x2 * sc)), min(h, int(y2 * sc))
+    if X2 <= X or Y2 <= Y:
         return None
-    tmp = dst + ".crop.png"
-    r = subprocess.run(["sips", "-c", str(H), str(W), "--cropOffset", str(Y), str(X), src,
-                        "--out", tmp], capture_output=True, text=True)
-    if r.returncode or not os.path.exists(tmp):
-        return None
-    # Boards ship as JPEG: the same crops as PNG made a 277 MB report, which no ministry mailbox
-    # accepts. Quality 82 keeps 1px hairlines and 12px type legible at 2x.
-    if W > target_w:
-        subprocess.run(["sips", "--resampleWidth", str(target_w), tmp, "--out", tmp],
-                       capture_output=True)
-    subprocess.run(["sips", "-s", "format", "jpeg", "-s", "formatOptions", "74", tmp, "--out", dst],
-                   capture_output=True)
-    if os.path.exists(tmp):
-        os.remove(tmp)
-    return (x2 - x1)          # new basis: the crop's width in basis px
+    crop = im.crop((X, Y, X2, Y2))
+    assert crop.size == (X2 - X, Y2 - Y), "crop size mismatch"
+    if crop.width > target_w:
+        crop = crop.resize((target_w, round(crop.height * target_w / crop.width)), Image.LANCZOS)
+    crop.save(dst, "JPEG", quality=78, optimize=True)
+    return x2 - x1
 
 
 def union(marks, basis, page_h):
@@ -72,49 +69,67 @@ def union(marks, basis, page_h):
 
 
 def do_side(screen, findings, side, target_w):
-    """side: 'live' | 'figma'. Crops that panel's image and moves its marks into crop space."""
+    """Crop ONE section's panel. side: 'live' | 'figma'. Writes the crop to captures/board/, sets the
+    section's *ImgO override on its first finding (the generator reads overrides from there), and moves
+    every mark of the section into crop coordinates."""
     img_key = "liveImg" if side == "live" else "figmaImg"
-    mark_key = "liveMark" if side == "live" else "figmaMark"
     basis_screen = "_basisLive" if side == "live" else "_basisFigma"
     basis_finding = "liveBasis" if side == "live" else "figmaBasis"
     box_key = "liveBox" if side == "live" else "figmaBox"
-
     img = screen.get(img_key)
     if not img:
-        return
+        return None
     src = os.path.join(BASE, img)
     if not os.path.exists(src):
-        screen.pop(img_key, None)
-        return
-    basis = screen.get(basis_screen) or findings[0].get(basis_finding) or 1440
-    marks = [f[mark_key] for f in findings if f.get(mark_key)]
+        return None
+    basis = findings[0].get(basis_finding) or screen.get(basis_screen) or 1440
+    marks = []
+    for f in findings:
+        if f.get(side + "Mark"):
+            marks.append(f[side + "Mark"])
+        marks.extend(f.get(side + "Marks") or [])
     w, h = png_size(src)
     page_h = h * basis / w
-    box = union(marks, basis, page_h) if marks else [0, 0, basis, min(page_h, basis * 0.75)]
-    name = hashlib.md5((img + str(box)).encode()).hexdigest()[:12] + ".jpg"
+    box = union(marks, basis, page_h) if marks else [0, 0, basis, min(page_h, basis * 0.6)]
+    name = hashlib.md5((img + str(box) + side).encode()).hexdigest()[:12] + ".jpg"
     dst = os.path.join(BOARD, name)
     if not os.path.exists(dst) and crop_scale(src, box, basis, dst, target_w) is None:
-        return
+        return None
     new_basis = box[2] - box[0]
-    screen[img_key] = f"captures/board/{name}"
-    screen[basis_screen] = new_basis
+    for m in marks:
+        m["box"] = [m["box"][0] - box[0], m["box"][1] - box[1], m["box"][2] - box[0], m["box"][3] - box[1]]
     for f in findings:
-        m = f.get(mark_key)
-        if m:
-            m["box"] = [m["box"][0] - box[0], m["box"][1] - box[1],
-                        m["box"][2] - box[0], m["box"][3] - box[1]]
         f[basis_finding] = new_basis
         f[box_key] = [0, 0, new_basis, box[3] - box[1]]
+    findings[0][img_key + "O"] = f"captures/board/{name}"
+    return f"captures/board/{name}"
 
 
 def main():
     am = json.load(open(os.path.join(OUT, "audit-master.json")))
     for s in am["screens"]:
-        fs = s["findings"]
-        do_side(s, fs, "live", SINGLE_2X if not s.get("figmaImg") else PANEL_2X)
-        do_side(s, fs, "figma", PANEL_2X)
-        for f in fs:
-            f["sectionBox"] = f.get("liveBox") or [0, 0, s.get("_basisLive", 1440), 600]
+        sections = {}
+        for f in s["findings"]:
+            sections.setdefault(f.get("section", "page"), []).append(f)
+        first_live = first_fig = None
+        for sec, fs in sections.items():
+            has_live = any(f.get("liveMark") or f.get("liveMarks") for f in fs)
+            has_fig = any(f.get("figmaMark") or f.get("figmaMarks") for f in fs)
+            if not (has_live or has_fig):
+                continue                       # page-level group: cards only, no board
+            wide = not s.get("figmaImg")
+            lv = do_side(s, fs, "live", SINGLE_2X if wide else PANEL_2X)
+            fg = (do_side(s, fs, "figma", PANEL_2X if has_live else SINGLE_2X)
+                  if s.get("figmaImg") and has_fig else None)
+            for f in fs:
+                f["sectionBox"] = f.get("liveBox") or [0, 0, f.get("liveBasis", 1440), 600]
+            first_live = first_live or lv
+            first_fig = first_fig or fg
+        # the screen-level image is the first section's crop (reference boards read it)
+        if first_live:
+            s["liveImg"] = first_live
+        if first_fig:
+            s["figmaImg"] = first_fig
     json.dump(am, open(os.path.join(OUT, "audit-master.json"), "w"), indent=1)
     tot = sum(os.path.getsize(os.path.join(BOARD, f)) for f in os.listdir(BOARD))
     print(f"boards: {len(os.listdir(BOARD))} files, {tot / 1e6:.1f} MB")
