@@ -1,119 +1,217 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import {
+  Button,
+  EmptyState,
+  Icon,
+  Pagination,
+  Search,
+  Select,
+} from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
-import { Icon } from "@mosje/design-system";
+import type { GalleryRecord } from "@/types/website/content";
+import "@/components/website/templates/record-library.css";
+import "@/components/website/templates/record-detail.css";
+import "./gallery.css";
 
-interface GalleryImage {
-  src: string;
-  caption: string;
-}
+/**
+ * The department's gallery — 590 records, not a dozen hand-picked pictures.
+ *
+ * ── WHAT THIS REPLACED ───────────────────────────────────────────────────────
+ * A hard-coded list of thirteen local images with captions written here. The
+ * register publishes 434 photo sets, 94 videos and 60 news items, each with its
+ * own page, organisation and date, and the ingest carries all of them.
+ *
+ * ── STATES ───────────────────────────────────────────────────────────────────
+ * Populated, empty, filtered-to-nothing (worded differently, with the reset),
+ * and too-much — paged at twenty-four, never scrolled inside a card. Loading and
+ * error cannot occur: the register is imported JSON resolved on the server.
+ *
+ * ── 59 RECORDS CARRY NO COVER IMAGE ──────────────────────────────────────────
+ * They are still listed. A record with no picture gets the collection's icon
+ * rather than a broken frame or a gap, because the record is what the
+ * department published and its own page still holds the rest.
+ */
 
-const IMAGES: GalleryImage[] = [
-  { src: "/website/images/Banner-6.png", caption: "SAMAVESH outreach programme" },
-  { src: "/website/images/Banner-7.png", caption: "Skill-development initiative under SMILE" },
-  { src: "/website/images/Banner-8.png", caption: "Scholarship felicitation ceremony" },
-  { src: "/website/images/Banner-9.png", caption: "Nasha Mukt Bharat Abhiyaan awareness drive" },
-  { src: "/website/images/Banner-10.png", caption: "Dr. Ambedkar Jayanti commemoration" },
-  { src: "/website/images/samavesh-citizens-4x3.jpg", caption: "SAMAVESH campaign artwork — the communities the citizen portals serve" },
-  { src: "/website/images/5-234x300.jpg", caption: "Beneficiary interaction camp" },
-  { src: "/website/images/3-300x251.jpg", caption: "Community empowerment workshop" },
-  { src: "/website/images/65811748325059-300x291.jpg", caption: "Field visit to an Adarsh Gram" },
-  // PM-AJAY's three photographs. They were mirrored locally and captioned for
-  // the scheme page, but never registered here — so that page's "View all
-  // photos" led to a gallery its own pictures were missing from.
-  { src: "/website/content/organisation/pmajay-training1.jpg", caption: "Capacity building of Uttarakhand state and district officers on the PM-AJAY MIS (23 September 2022)" },
-  { src: "/website/content/organisation/pmajay-training5.jpg", caption: "PM-AJAY MIS training session for Uttarakhand officers (23 September 2022)" },
-  { src: "/website/content/organisation/pmajay-training6.jpg", caption: "PM-AJAY MIS training workshop, Uttarakhand (23 September 2022)" },
-];
+const PAGE_SIZE = 24;
 
-export function GalleryClient() {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
+const TYPE_ICON: Record<string, string> = {
+  Photos: "photo_library",
+  Videos: "smart_display",
+  News: "newspaper",
+};
 
-  const close = useCallback(() => setActiveIndex(null), []);
+export function GalleryClient({ items }: { items: GalleryRecord[] }) {
+  const [query, setQuery] = useState("");
+  const [type, setType] = useState("All");
+  const [organisation, setOrganisation] = useState("All");
+  const [page, setPage] = useState(1);
 
-  useEffect(() => {
-    if (activeIndex === null) return;
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") close();
-    };
-    document.addEventListener("keydown", onKeyDown);
-    closeButtonRef.current?.focus();
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, [activeIndex, close]);
+  const types = useMemo(() => {
+    const seen = new Set<string>();
+    for (const g of items) if (g.type) seen.add(g.type);
+    return [...seen].sort();
+  }, [items]);
 
-  const active = activeIndex === null ? null : IMAGES[activeIndex];
+  const organisations = useMemo(() => {
+    const seen = new Set<string>();
+    for (const g of items) if (g.organisation) seen.add(g.organisation);
+    return [...seen].sort();
+  }, [items]);
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return items.filter((g) => {
+      if (type !== "All" && g.type !== type) return false;
+      if (organisation !== "All" && g.organisation !== organisation) return false;
+      if (q && !g.title.toLowerCase().includes(q)) return false;
+      return true;
+    });
+  }, [items, query, type, organisation]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const current = Math.min(page, totalPages);
+  const shown = filtered.slice((current - 1) * PAGE_SIZE, current * PAGE_SIZE);
+
+  const filterActive = query.trim() !== "" || type !== "All" || organisation !== "All";
+  const reset = () => {
+    setQuery("");
+    setType("All");
+    setOrganisation("All");
+    setPage(1);
+  };
 
   return (
     <PageLayout
-      title="Photo Gallery"
+      title="Gallery"
       breadcrumb={[{ label: "Events & Gallery" }, { label: "Gallery" }]}
-      description="A glimpse of events, programmes and initiatives of the Department of Social Justice & Empowerment."
+      description="Photographs, videos and news coverage of the programmes of the Department of Social Justice & Empowerment and its associated organisations."
     >
-      <section>
-        <div className="sa-container py-10">
-          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {IMAGES.map((image, index) => (
-              <li key={image.src}>
-                <button
-                  type="button"
-                  onClick={() => setActiveIndex(index)}
-                  aria-label={`View larger image: ${image.caption}`}
-                  className="group relative block aspect-[4/3] w-full overflow-hidden rounded-xl border border-gray-200 bg-surface-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                >
-                  <Image
-                    src={image.src}
-                    alt={image.caption}
-                    fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                  <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 text-left text-body-2 font-medium text-white">
-                    {image.caption}
-                  </span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {active && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label={active.caption}
-          onClick={close}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4"
-        >
-          <div
-            onClick={(event) => event.stopPropagation()}
-            className="relative max-h-[90vh] w-full max-w-3xl"
-          >
-            <button
-              ref={closeButtonRef}
-              type="button"
-              onClick={close}
-              aria-label="Close image viewer"
-              className="absolute -top-3 -right-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-ink shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-            >
-              <Icon name="close" size={20} aria-hidden="true" />
-            </button>
-            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-surface-muted">
-              <Image
-                src={active.src}
-                alt={active.caption}
-                fill
-                className="object-contain"
-                sizes="(max-width: 768px) 100vw, 768px"
+      <section className="sa-record-library">
+        <div className="sa-container">
+          <div className="sa-record-library__filters">
+            <div className="sa-record-library__search">
+              <Search
+                value={query}
+                onChange={(e) => { setQuery(e.target.value); setPage(1); }}
+                onClear={() => { setQuery(""); setPage(1); }}
+                size="sm"
+                placeholder="Search the gallery by title"
+                aria-label="Search the gallery by title"
               />
             </div>
-            <p className="mt-3 text-center text-body-2 font-medium text-white">{active.caption}</p>
+
+            {types.length > 1 && (
+              <label className="sa-record-library__filter">
+                <span className="sa-record-library__filter-label">Media</span>
+                <Select
+                  appearance="filter"
+                  value={type}
+                  onChange={(e) => { setType(e.target.value); setPage(1); }}
+                  options={[
+                    { label: "All media", value: "All" },
+                    ...types.map((t) => ({ label: t, value: t })),
+                  ]}
+                />
+              </label>
+            )}
+
+            {organisations.length > 1 && (
+              <label className="sa-record-library__filter">
+                <span className="sa-record-library__filter-label">Organisation</span>
+                <Select
+                  appearance="filter"
+                  value={organisation}
+                  onChange={(e) => { setOrganisation(e.target.value); setPage(1); }}
+                  options={[
+                    { label: "All organisations", value: "All" },
+                    ...organisations.map((o) => ({ label: o, value: o })),
+                  ]}
+                />
+              </label>
+            )}
+
+            {filterActive && (
+              <Button variant="neutral" appearance="text" size="sm" onClick={reset}>
+                Reset Filters
+              </Button>
+            )}
           </div>
+
+          <p className="sa-record-library__count" role="status">
+            {filtered.length.toLocaleString("en-IN")}{" "}
+            {filtered.length === 1 ? "item" : "items"}
+            {filterActive && ` of ${items.length.toLocaleString("en-IN")}`}
+          </p>
+
+          {items.length === 0 ? (
+            <EmptyState
+              icon={<Icon name="photo_library" size={40} />}
+              title="No Gallery Items Published"
+              description="The Department has not published any photographs, videos or news coverage."
+            />
+          ) : filtered.length === 0 ? (
+            <EmptyState
+              icon={<Icon name="search_off" size={40} />}
+              title="No Gallery Items Match These Filters"
+              description={`All ${items.length.toLocaleString("en-IN")} items in the gallery were excluded by the filters above. Clear them to see everything the Department has published.`}
+              action={
+                <Button variant="primary" appearance="outlined" size="sm" onClick={reset}>
+                  Reset Filters
+                </Button>
+              }
+            />
+          ) : (
+            <>
+              <ul className="sa-gallery-grid">
+                {shown.map((g) => {
+                  const cover = g.thumbnailUrl ?? g.imageUrl;
+                  return (
+                    <li key={g.slug} className="sa-gallery-card">
+                      <Link href={`/website/gallery/${g.slug}`} className="sa-gallery-card__link">
+                        <span className="sa-gallery-card__frame">
+                          {cover ? (
+                            <Image
+                              src={cover}
+                              alt=""
+                              fill
+                              className="sa-gallery-card__image"
+                              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                            />
+                          ) : (
+                            <Icon
+                              name={TYPE_ICON[g.type ?? ""] ?? "image"}
+                              size={40}
+                              className="sa-gallery-card__placeholder"
+                            />
+                          )}
+                          {g.type && <span className="sa-gallery-card__type">{g.type}</span>}
+                        </span>
+                        <span className="sa-gallery-card__title">{g.title}</span>
+                      </Link>
+                      {g.organisation && (
+                        <span className="sa-gallery-card__meta">{g.organisation}</span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+
+              <div className="sa-gallery-pager">
+                <Pagination
+                  page={current}
+                  totalPages={totalPages}
+                  onPageChange={setPage}
+                  label="Gallery pages"
+                />
+              </div>
+            </>
+          )}
         </div>
-      )}
+      </section>
     </PageLayout>
   );
 }
