@@ -1,31 +1,29 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
-import { documentListColumns } from "@/data/website/columns";
-import { getDocumentsByType, getContentSyncedDate } from "@/lib/website/content";
+import { RecordLibrary } from "@/components/website/templates/RecordLibrary";
+import { getContentSyncedDate, getDocumentsOfType } from "@/lib/website/content";
+import { socialCard } from "@/lib/seo/social";
+
+const TITLE = "Resources";
+const DESCRIPTION =
+  "Toolkits, manuals and reference material published to support the implementation and outreach of the Department's schemes.";
 
 export const metadata: Metadata = {
-  title: "Resources | DoSJE",
-  description:
-    "Useful resources, toolkits and reference material from the Department of Social Justice & Empowerment.",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
+  ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/resources" }),
 };
-
-const rows = getDocumentsByType("Resources").map((d) => ({
-  title: d.title,
-  date: d.date ?? "—",
-  href: d.fileUrl ?? d.sourceUrl,
-}));
 
 export default function Page() {
   return (
-    <ListingPage
-      title="Resources"
-      breadcrumb={[{ label: "Documents" }, { label: "Resources" }]}
+    <RecordLibrary
+      title={TITLE}
+      description={DESCRIPTION}
+      breadcrumb={[{ label: "Documents" }, { label: TITLE }]}
       lastUpdated={getContentSyncedDate()}
-      description="Toolkits, manuals and reference material to support scheme implementation and outreach."
-      columns={documentListColumns}
-      rows={rows}
-      searchKeys={["title"]}
-      searchPlaceholder="Search resources…"
+      records={getDocumentsOfType("Resources")}
+      detailBase="/website/documents"
+      noun="resources"
+      nounSingular="resource"
     />
   );
 }

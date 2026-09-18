@@ -1,31 +1,29 @@
 import type { Metadata } from "next";
-import { DocumentCatalog } from "@/components/website/templates/DocumentCatalog";
-import { getDocumentsByType, getContentSyncedDate } from "@/lib/website/content";
+import { RecordLibrary } from "@/components/website/templates/RecordLibrary";
+import { getContentSyncedDate, getDocumentsOfType } from "@/lib/website/content";
+import { socialCard } from "@/lib/seo/social";
+
+const TITLE = "Right to Information (RTI)";
+const DESCRIPTION =
+  "Proactive disclosures, annual returns and reports published under the Right to Information Act, 2005 by the Department and its associated organisations.";
 
 export const metadata: Metadata = {
-  title: "Right to Information (RTI) | DoSJE",
-  description:
-    "Proactive disclosures under Section 4(1)(b) of the RTI Act, 2005, CPIO directory, and appellate authority details.",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
+  ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/rti" }),
 };
 
-export default function RtiPage() {
-  const docs = getDocumentsByType("RTI").map((d) => ({
-    slug: d.slug,
-    title: d.title,
-    date: d.date,
-    category: "RTI Disclosure",
-    sourceUrl: d.fileUrl ?? d.sourceUrl,
-    fileSize: "PDF Document",
-  }));
-
+export default function Page() {
   return (
-    <DocumentCatalog
-      title="Right to Information (RTI)"
-      description="Proactive disclosures, CPIO details, and statutory reporting under Section 4(1)(b) of the Right to Information Act, 2005."
-      breadcrumb={[{ label: "Documents", href: "/website/rti" }, { label: "RTI" }]}
+    <RecordLibrary
+      title={TITLE}
+      description={DESCRIPTION}
+      breadcrumb={[{ label: "Documents" }, { label: TITLE }]}
       lastUpdated={getContentSyncedDate()}
-      documents={docs}
-      categories={["RTI Disclosure"]}
+      records={getDocumentsOfType("RTI")}
+      detailBase="/website/documents"
+      noun="records"
+      nounSingular="record"
     />
   );
 }

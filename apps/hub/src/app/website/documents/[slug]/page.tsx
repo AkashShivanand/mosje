@@ -4,6 +4,7 @@ import type { DescriptionItem } from "@mosje/design-system";
 import { RecordDetail } from "@/components/website/templates/RecordDetail";
 import { getAllDocuments, getContentSyncedDate, getDocument } from "@/lib/website/content";
 import { documentFacts, documentFiles } from "@/lib/website/record-facts";
+import { documentListingFor } from "@/lib/website/directories";
 import { socialCard } from "@/lib/seo/social";
 
 /**
@@ -49,6 +50,14 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   if (!doc) notFound();
 
   const facts: DescriptionItem[] = documentFacts(doc);
+  /*
+   * BACK TO THE PAGE THIS RECORD IS ACTUALLY LISTED ON.
+   *
+   * "Back to Documents" is not a place — the estate has eighteen document
+   * listings and no page that is all of them. This one pointed at Resources,
+   * which held none of the Advices it was reached from.
+   */
+  const listing = documentListingFor(doc.types);
 
   return (
     <RecordDetail
@@ -56,11 +65,11 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       badge={doc.category ?? "Document"}
       breadcrumb={[
         { label: "Documents" },
-        { label: doc.category ?? "Document" },
+        { label: listing.label, href: listing.href },
         { label: doc.title },
       ]}
-      backHref="/website/resources"
-      backLabel="Back to Documents"
+      backHref={listing.href}
+      backLabel={`Back to ${listing.label}`}
       lastUpdated={getContentSyncedDate()}
       facts={facts}
       files={documentFiles(doc)}

@@ -62,6 +62,19 @@
     color: var(--sa-text-neutral-subtle);
   }
 
+  /*
+   * THE TITLE COLUMN HAS A FLOOR.
+   *
+   * Without one, a phone squeezes it to whatever is left after six other
+   * columns — measured at 375, "Advisory for Senior citizens in Assamese" wrapped
+   * to four lines in about 100px while the Size column kept its full width. A
+   * floor makes the table overflow instead, which `DataTable` already handles:
+   * it gives the box a tab stop, a name and the arrow keys.
+   */
+  .ds-table__cell--title {
+    min-width: 18rem;
+  }
+
   /* A title cell is a link to the record's own page, not a plain string. */
   .sa-record-link {
     color: var(--sa-text-link-brand-default);

@@ -284,3 +284,41 @@ export function getSewerDeathCases(): SewerDeathCaseRecord[] {
 export function getSewerDeathCasesByState(state: string): SewerDeathCaseRecord[] {
   return sewerDeathCases.filter((c) => c.state === state);
 }
+
+/**
+ * Every document type that has a listing page of its own on this site.
+ *
+ * `/miscellaneous` is the department's catch-all — its live page holds 903
+ * records against a Type column — and the only honest definition of "the rest"
+ * is "everything not on a page of its own". Listed here rather than in the page
+ * so that adding a listing page removes its records from Miscellaneous in the
+ * same change, which is the failure this list exists to prevent: a document
+ * appearing on two pages, or on none.
+ */
+const TYPES_WITH_A_LISTING_PAGE = new Set([
+  "Advices",
+  "Annual Reports",
+  "Acts & Rules",
+  "Advertisement",
+  "Central List of OBC's",
+  "Circulars & Notifications",
+  "Forms & Templates",
+  "Meta Data",
+  "MOU",
+  "Newsletter",
+  "Notice",
+  "Parliament Questions",
+  "POLICY",
+  "Publications",
+  "Resources",
+  "RTI",
+  "Suo-Moto",
+  "Supreme Court Judgement",
+]);
+
+/** Documents that appear on no listing page of their own, newest first. */
+export function getMiscellaneousDocuments(): DocumentRecord[] {
+  return allDocuments
+    .filter((d) => !(d.types ?? []).some((t) => TYPES_WITH_A_LISTING_PAGE.has(t)))
+    .sort((a, b) => (b.publishStart ?? b.date ?? "").localeCompare(a.publishStart ?? a.date ?? ""));
+}

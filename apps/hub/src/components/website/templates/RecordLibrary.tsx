@@ -64,11 +64,18 @@ export interface RecordLibraryProps {
   noun?: string;
   /** Plural-safe singular. @default noun without its trailing "s" */
   nounSingular?: string;
-  /** Show the Year column. @default true */
+  /**
+   * Allow the Year column. @default true
+   *
+   * Each of these is a CEILING, not an instruction: a column no record on the
+   * page publishes is dropped whatever the prop says. Newsletter records carry
+   * no year and no publish window, so the department's seven-column table drew
+   * three columns of dashes across all 55 rows — width spent saying nothing.
+   */
   showYear?: boolean;
-  /** Show the Start/End publish columns. @default true */
+  /** Allow the Start/End publish columns. @default true */
   showPublishWindow?: boolean;
-  /** Show the Organisation column and its filter. @default true */
+  /** Allow the Organisation column and its filter. @default true */
   showOrganisation?: boolean;
   /** Show a Category column and its filter — for a page holding several types. */
   showCategory?: boolean;
@@ -147,6 +154,26 @@ export function RecordLibrary({
   }, [records, query, organisation, year, category]);
 
   const hasRecords = records.length > 0;
+
+  /*
+   * A COLUMN EXISTS ONLY WHERE THE REGISTER FILLS IT.
+   *
+   * Measured against the whole page's records, never against the filtered set:
+   * a column that vanished when a reader narrowed the list and came back when
+   * they widened it would move every other column sideways as they typed.
+   */
+  const anyYear = useMemo(() => records.some((r) => r.year), [records]);
+  const anySize = useMemo(() => records.some((r) => r.fileSize), [records]);
+  const anyWindow = useMemo(
+    () => records.some((r) => r.publishStart ?? r.publishEnd),
+    [records],
+  );
+  const anyOrganisation = useMemo(() => records.some((r) => r.organisation), [records]);
+  const anyDate = useMemo(() => records.some((r) => r.date), [records]);
+
+  const yearColumn = showYear && anyYear;
+  const windowColumns = showPublishWindow && anyWindow;
+  const organisationColumn = showOrganisation && anyOrganisation;
   const filterActive =
     query.trim() !== "" || organisation !== "All" || year !== "All" || category !== "All";
 
@@ -172,7 +199,7 @@ export function RecordLibrary({
         ),
       },
     ];
-    if (showOrganisation) {
+    if (organisationColumn) {
       cols.push({
         key: "organisation",
         header: "Organisation",
@@ -190,7 +217,7 @@ export function RecordLibrary({
         render: (r) => r.category ?? "—",
       });
     }
-    if (showYear) {
+    if (yearColumn) {
       cols.push({
         key: "year",
         header: "Year",
@@ -199,13 +226,15 @@ export function RecordLibrary({
         render: (r) => r.year ?? "—",
       });
     }
-    cols.push({
-      key: "fileSize",
-      header: "Size",
-      render: (r) => r.fileSize ?? "—",
-      noExport: true,
-    });
-    if (showPublishWindow) {
+    if (anySize) {
+      cols.push({
+        key: "fileSize",
+        header: "Size",
+        render: (r) => r.fileSize ?? "—",
+        noExport: true,
+      });
+    }
+    if (windowColumns) {
       cols.push(
         {
           key: "publishStart",
@@ -220,6 +249,15 @@ export function RecordLibrary({
           render: (r) => humanDate(r.publishEnd),
         },
       );
+    } else if (anyDate) {
+      /* No publish window anywhere: the record's own date is what the reader has. */
+      cols.push({
+        key: "date",
+        header: "Published",
+        sortable: true,
+        sortValue: (r) => r.date ?? "",
+        render: (r) => humanDate(r.date),
+      });
     }
     cols.push({
       key: "action",
@@ -267,7 +305,7 @@ export function RecordLibrary({
       },
     });
     return cols;
-  }, [detailBase, showOrganisation, showCategory, showYear, showPublishWindow]);
+  }, [detailBase, organisationColumn, showCategory, yearColumn, windowColumns, anySize, anyDate]);
 
   return (
     <PageLayout
@@ -292,7 +330,7 @@ export function RecordLibrary({
                   />
                 </div>
 
-                {showOrganisation && organisations.length > 1 && (
+                {organisationColumn && organisations.length > 1 && (
                   <label className="sa-record-library__filter">
                     <span className="sa-record-library__filter-label">Organisation</span>
                     <Select
@@ -322,7 +360,7 @@ export function RecordLibrary({
                   </label>
                 )}
 
-                {showYear && years.length > 1 && (
+                {yearColumn && years.length > 1 && (
                   <label className="sa-record-library__filter">
                     <span className="sa-record-library__filter-label">Year</span>
                     <Select
@@ -380,7 +418,16 @@ export function RecordLibrary({
               caption={title}
               showPageSizes={false}
               pageSizes={[10]}
-              defaultSort={{ key: "publishStart", direction: "desc" }}
+              /* Sort on the date column the page actually shows. Naming a
+                 column that was dropped leaves the table unsorted AND announces
+                 an order it is not in. */
+              defaultSort={
+                windowColumns
+                  ? { key: "publishStart", direction: "desc" }
+                  : anyDate
+                    ? { key: "date", direction: "desc" }
+                    : null
+              }
               scrollLabel={`${title} table`}
             />
           )}

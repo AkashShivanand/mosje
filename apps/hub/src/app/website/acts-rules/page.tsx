@@ -1,31 +1,29 @@
 import type { Metadata } from "next";
-import { DocumentCatalog } from "@/components/website/templates/DocumentCatalog";
-import { getDocumentsByType, getContentSyncedDate } from "@/lib/website/content";
+import { RecordLibrary } from "@/components/website/templates/RecordLibrary";
+import { getContentSyncedDate, getDocumentsOfType } from "@/lib/website/content";
+import { socialCard } from "@/lib/seo/social";
+
+const TITLE = "Acts & Rules";
+const DESCRIPTION =
+  "Acts of Parliament, rules and statutory instruments administered by the Department of Social Justice & Empowerment.";
 
 export const metadata: Metadata = {
-  title: "Acts & Rules | DoSJE",
-  description:
-    "Acts, rules and statutory regulations administered by the Department of Social Justice & Empowerment.",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
+  ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/acts-rules" }),
 };
 
-export default function ActsRulesPage() {
-  const docs = getDocumentsByType("Acts & Rules").map((d) => ({
-    slug: d.slug,
-    title: d.title,
-    date: d.date,
-    category: "Statutory Acts & Rules",
-    sourceUrl: d.fileUrl ?? d.sourceUrl,
-    fileSize: "PDF (Official Gazette)",
-  }));
-
+export default function Page() {
   return (
-    <DocumentCatalog
-      title="Acts & Rules"
-      description="Official Acts, Rules, and statutory regulations administered by the Department of Social Justice & Empowerment."
-      breadcrumb={[{ label: "Documents", href: "/website/acts-rules" }, { label: "Acts & Rules" }]}
+    <RecordLibrary
+      title={TITLE}
+      description={DESCRIPTION}
+      breadcrumb={[{ label: "Documents" }, { label: TITLE }]}
       lastUpdated={getContentSyncedDate()}
-      documents={docs}
-      categories={["Statutory Acts & Rules"]}
+      records={getDocumentsOfType("Acts & Rules")}
+      detailBase="/website/documents"
+      noun="acts and rules"
+      nounSingular="act"
     />
   );
 }

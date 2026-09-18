@@ -1,31 +1,29 @@
 import type { Metadata } from "next";
-import { DocumentCatalog } from "@/components/website/templates/DocumentCatalog";
-import { getDocumentsByType, getContentSyncedDate } from "@/lib/website/content";
+import { RecordLibrary } from "@/components/website/templates/RecordLibrary";
+import { getContentSyncedDate, getDocumentsOfType } from "@/lib/website/content";
+import { socialCard } from "@/lib/seo/social";
+
+const TITLE = "Advices";
+const DESCRIPTION =
+  "Advices tendered by the National Commission for Backward Classes and other advisory bodies of the Department.";
 
 export const metadata: Metadata = {
-  title: "Statutory Advices | DoSJE",
-  description:
-    "Statutory advices tendered by the National Commission for Backward Classes (NCBC) and advisory bodies.",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
+  ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/advices" }),
 };
 
-export default function AdvicesPage() {
-  const docs = getDocumentsByType("Advices").map((d) => ({
-    slug: d.slug,
-    title: d.title,
-    date: d.date,
-    category: "Statutory Advice",
-    sourceUrl: d.fileUrl ?? d.sourceUrl,
-    fileSize: "PDF Document",
-  }));
-
+export default function Page() {
   return (
-    <DocumentCatalog
-      title="Statutory Advices"
-      description="Statutory advices and recommendations tendered by advisory commissions and expert appraisal committees."
-      breadcrumb={[{ label: "Documents", href: "/website/advices" }, { label: "Advices" }]}
+    <RecordLibrary
+      title={TITLE}
+      description={DESCRIPTION}
+      breadcrumb={[{ label: "Documents" }, { label: TITLE }]}
       lastUpdated={getContentSyncedDate()}
-      documents={docs}
-      categories={["Statutory Advice"]}
+      records={getDocumentsOfType("Advices")}
+      detailBase="/website/documents"
+      noun="advices"
+      nounSingular="advice"
     />
   );
 }

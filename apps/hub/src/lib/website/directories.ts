@@ -52,3 +52,48 @@ export function directoryHrefFor(organisation: string | undefined): { href: stri
   const match = organisation ? byOrganisation.get(organisation) : undefined;
   return match ?? { href: "/website/whos-who", label: "Who's Who" };
 }
+
+/**
+ * Which listing page a document belongs to.
+ *
+ * A document's own page needs a way back, and "back to Documents" is not a
+ * place — the estate has eighteen document listings and no page that is all of
+ * them. A record carrying the "Advices" term goes back to Advices; one carrying
+ * a term with no page of its own goes back to Miscellaneous, which is defined
+ * as exactly that set (`getMiscellaneousDocuments`), so the Back link always
+ * lands on a page the record is actually listed on.
+ *
+ * The keys are the register's own `documents-type` terms and MUST stay in step
+ * with `TYPES_WITH_A_LISTING_PAGE` in the content module — that list decides
+ * what Miscellaneous holds, and this one decides where a record goes back to.
+ */
+const DOCUMENT_LISTINGS: Record<string, { href: string; label: string }> = {
+  "Advices": { href: "/website/advices", label: "Advices" },
+  "Annual Reports": { href: "/website/annual-reports", label: "Annual Reports" },
+  "Acts & Rules": { href: "/website/acts-rules", label: "Acts & Rules" },
+  "Advertisement": { href: "/website/advertisement", label: "Advertisement" },
+  "Central List of OBC's": { href: "/website/welfare-of-the-other-backward-classes", label: "Welfare of the Other Backward Classes" },
+  "Circulars & Notifications": { href: "/website/circulars-notifications", label: "Circulars & Notifications" },
+  "Forms & Templates": { href: "/website/forms-templates", label: "Forms & Templates" },
+  "Meta Data": { href: "/website/meta-data", label: "Meta Data" },
+  "MOU": { href: "/website/mou", label: "Memoranda of Understanding" },
+  "Newsletter": { href: "/website/newsletter", label: "Newsletter" },
+  "Notice": { href: "/website/notices", label: "Public Notices" },
+  "Parliament Questions": { href: "/website/lok-sabha-question-answer", label: "Lok Sabha Question & Answer" },
+  "POLICY": { href: "/website/policies", label: "Policies" },
+  "Publications": { href: "/website/publications", label: "Publications" },
+  "Resources": { href: "/website/resources", label: "Resources" },
+  "RTI": { href: "/website/rti", label: "Right to Information (RTI)" },
+  "Suo-Moto": { href: "/website/suo-moto-disclosure", label: "Suo Moto Disclosure" },
+  "Supreme Court Judgement": { href: "/website/supreme-court-judgement", label: "Supreme Court Judgement" },
+};
+
+const MISCELLANEOUS = { href: "/website/miscellaneous", label: "Miscellaneous" };
+
+export function documentListingFor(types: string[] | undefined): { href: string; label: string } {
+  for (const t of types ?? []) {
+    const match = DOCUMENT_LISTINGS[t];
+    if (match) return match;
+  }
+  return MISCELLANEOUS;
+}

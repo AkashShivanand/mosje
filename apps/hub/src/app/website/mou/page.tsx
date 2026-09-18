@@ -1,31 +1,29 @@
 import type { Metadata } from "next";
-import { DocumentCatalog } from "@/components/website/templates/DocumentCatalog";
-import { getDocumentsByType, getContentSyncedDate } from "@/lib/website/content";
+import { RecordLibrary } from "@/components/website/templates/RecordLibrary";
+import { getContentSyncedDate, getDocumentsOfType } from "@/lib/website/content";
+import { socialCard } from "@/lib/seo/social";
+
+const TITLE = "Memoranda of Understanding";
+const DESCRIPTION =
+  "Memoranda of Understanding entered into by the Department of Social Justice & Empowerment and its associated organisations.";
 
 export const metadata: Metadata = {
-  title: "Memorandums of Understanding (MOU) | DoSJE",
-  description:
-    "MOUs and bilateral agreements signed between the Department of Social Justice & Empowerment and partner organizations.",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
+  ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/mou" }),
 };
 
-export default function MouPage() {
-  const docs = getDocumentsByType("MOU").map((d) => ({
-    slug: d.slug,
-    title: d.title,
-    date: d.date,
-    category: "MOU / Agreement",
-    sourceUrl: d.fileUrl ?? d.sourceUrl,
-    fileSize: "PDF Document",
-  }));
-
+export default function Page() {
   return (
-    <DocumentCatalog
-      title="Memorandums of Understanding (MoU)"
-      description="Official MoUs, bilateral agreements, and institutional partnerships signed by the Department."
-      breadcrumb={[{ label: "Documents", href: "/website/mou" }, { label: "MOU" }]}
+    <RecordLibrary
+      title={TITLE}
+      description={DESCRIPTION}
+      breadcrumb={[{ label: "Documents" }, { label: TITLE }]}
       lastUpdated={getContentSyncedDate()}
-      documents={docs}
-      categories={["MOU / Agreement"]}
+      records={getDocumentsOfType("MOU")}
+      detailBase="/website/documents"
+      noun="memoranda"
+      nounSingular="memorandum"
     />
   );
 }
