@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { Alert, Button, DescriptionList } from "@mosje/design-system";
 
 const STORAGE_KEY = "mosje_cookie_consent";
@@ -15,7 +15,8 @@ const STORAGE_KEY = "mosje_cookie_consent";
  * withdrawn. `idle` is also distinct from all of them — on the server and on
  * the first client paint there is no way to know which, and rendering
  * "not acknowledged" during that moment would flash the wrong answer on every
- * load. It reads storage in an effect and says nothing until it has.
+ * load. It reads storage through `useSyncExternalStore`, whose server snapshot
+ * is "unknown", and says nothing until the client snapshot has been taken.
  *
  * Storage can throw — a private window, blocked site data — and that is not an
  * error to report. It means this browser stores nothing, which is the most
@@ -38,17 +39,23 @@ const ESSENTIAL = [
   },
 ];
 
-export function CookiePreferences() {
-  const [consent, setConsent] = useState<Consent>("unknown");
-  const [withdrawn, setWithdrawn] = useState(false);
+function readConsent(): Consent {
+  try {
+    return localStorage.getItem(STORAGE_KEY) ? "stored" : "none";
+  } catch {
+    return "none";
+  }
+}
 
-  useEffect(() => {
-    try {
-      setConsent(localStorage.getItem(STORAGE_KEY) ? "stored" : "none");
-    } catch {
-      setConsent("none");
-    }
-  }, []);
+function subscribe(onChange: () => void): () => void {
+  window.addEventListener("storage", onChange);
+  return () => window.removeEventListener("storage", onChange);
+}
+
+export function CookiePreferences() {
+  const stored = useSyncExternalStore<Consent>(subscribe, readConsent, () => "unknown");
+  const [withdrawn, setWithdrawn] = useState(false);
+  const consent: Consent = withdrawn ? "none" : stored;
 
   const withdraw = () => {
     try {
@@ -56,7 +63,6 @@ export function CookiePreferences() {
     } catch {
       /* Nothing was stored to remove. The outcome the reader asked for is met. */
     }
-    setConsent("none");
     setWithdrawn(true);
   };
 
