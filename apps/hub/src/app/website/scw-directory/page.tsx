@@ -1,24 +1,26 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
-import { directoryColumns, directoryRows } from "@/data/website";
+import { OfficialsDirectory } from "@/components/website/templates/OfficialsDirectory";
+import { getContentSyncedDate, getOfficialsByOrganisation } from "@/lib/website/content";
+import { socialCard } from "@/lib/seo/social";
+
+const TITLE = "SCW Directory";
+const DESCRIPTION =
+  "Telephone directory of the Scheduled Caste Welfare division — officers with intercom and contact details.";
 
 export const metadata: Metadata = {
-  title: "SCW Directory | Scheduled Caste Welfare",
-  description:
-    "Telephone directory of the Scheduled Caste Welfare (SCW) division — Director, Deputy Secretaries, and officers handling SC welfare programmes with contact details.",
+  title: `${TITLE} | Scheduled Caste Welfare`,
+  description: DESCRIPTION,
+  ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/scw-directory" }),
 };
 
 export default function Page() {
   return (
-    <ListingPage
-      title="SCW Directory"
-      breadcrumb={[{ label: "Associated Organisations" }, { label: "SCW Directory" }]}
-      lastUpdated="06 Jun 2026"
-      description="Telephone directory of the Scheduled Caste Welfare (SCW) division — Director, Deputy Secretaries, and officers handling SC welfare programmes with contact details."
-      columns={directoryColumns}
-      rows={directoryRows("scheduled-caste-welfare")}
-      searchKeys={["name", "designation"]}
-      searchPlaceholder="Search by name or designation…"
+    <OfficialsDirectory
+      title={TITLE}
+      breadcrumb={[{ label: "Associated Organisations" }, { label: TITLE }]}
+      description={DESCRIPTION}
+      lastUpdated={getContentSyncedDate()}
+      officials={getOfficialsByOrganisation("SCW")}
     />
   );
 }

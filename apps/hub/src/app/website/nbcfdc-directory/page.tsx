@@ -1,24 +1,26 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
-import { directoryColumns, directoryRows } from "@/data/website";
+import { OfficialsDirectory } from "@/components/website/templates/OfficialsDirectory";
+import { getContentSyncedDate, getOfficialsByOrganisation } from "@/lib/website/content";
+import { socialCard } from "@/lib/seo/social";
+
+const TITLE = "NBCFDC Directory";
+const DESCRIPTION =
+  "Telephone directory of the National Backward Classes Finance & Development Corporation (NBCFDC) — officers with intercom and contact details.";
 
 export const metadata: Metadata = {
-  title: "NBCFDC Directory | National Backward Classes Finance & Development Corporation",
-  description:
-    "Telephone directory of the National Backward Classes Finance and Development Corporation (NBCFDC) — Chairman-cum-Managing Director, General Managers, and officers with contact details.",
+  title: `${TITLE} | National Backward Classes Finance & Development Corporation`,
+  description: DESCRIPTION,
+  ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/nbcfdc-directory" }),
 };
 
 export default function Page() {
   return (
-    <ListingPage
-      title="NBCFDC Directory"
-      breadcrumb={[{ label: "Associated Organisations" }, { label: "NBCFDC Directory" }]}
-      lastUpdated="06 Jun 2026"
-      description="Telephone directory of the National Backward Classes Finance and Development Corporation (NBCFDC) — CMD, General Managers, and officers with contact details."
-      columns={directoryColumns}
-      rows={directoryRows("national-backward-classes-finance-and-development-corporation")}
-      searchKeys={["name", "designation"]}
-      searchPlaceholder="Search by name or designation…"
+    <OfficialsDirectory
+      title={TITLE}
+      breadcrumb={[{ label: "Associated Organisations" }, { label: TITLE }]}
+      description={DESCRIPTION}
+      lastUpdated={getContentSyncedDate()}
+      officials={getOfficialsByOrganisation("NBCFDC")}
     />
   );
 }

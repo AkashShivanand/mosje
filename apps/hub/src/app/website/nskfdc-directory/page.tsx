@@ -1,24 +1,26 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
-import { directoryColumns, directoryRows } from "@/data/website";
+import { OfficialsDirectory } from "@/components/website/templates/OfficialsDirectory";
+import { getContentSyncedDate, getOfficialsByOrganisation } from "@/lib/website/content";
+import { socialCard } from "@/lib/seo/social";
+
+const TITLE = "NSKFDC Directory";
+const DESCRIPTION =
+  "Telephone directory of the National Safai Karamcharis Finance & Development Corporation (NSKFDC) — officers with intercom and contact details.";
 
 export const metadata: Metadata = {
-  title: "NSKFDC Directory | National Safai Karamcharis Finance & Development Corporation",
-  description:
-    "Telephone directory of the National Safai Karamcharis Finance and Development Corporation (NSKFDC) — Chairman-cum-Managing Director, General Managers, and officers with contact details.",
+  title: `${TITLE} | National Safai Karamcharis Finance & Development Corporation`,
+  description: DESCRIPTION,
+  ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/nskfdc-directory" }),
 };
 
 export default function Page() {
   return (
-    <ListingPage
-      title="NSKFDC Directory"
-      breadcrumb={[{ label: "Associated Organisations" }, { label: "NSKFDC Directory" }]}
-      lastUpdated="06 Jun 2026"
-      description="Telephone directory of the National Safai Karamcharis Finance and Development Corporation (NSKFDC) — CMD, General Managers, and officers with contact details."
-      columns={directoryColumns}
-      rows={directoryRows("national-safai-karamcharis-finance-and-development-corporation")}
-      searchKeys={["name", "designation"]}
-      searchPlaceholder="Search by name or designation…"
+    <OfficialsDirectory
+      title={TITLE}
+      breadcrumb={[{ label: "Associated Organisations" }, { label: TITLE }]}
+      description={DESCRIPTION}
+      lastUpdated={getContentSyncedDate()}
+      officials={getOfficialsByOrganisation("NSKFDC")}
     />
   );
 }

@@ -3,14 +3,14 @@ import { OfficialsDirectory } from "@/components/website/templates/OfficialsDire
 import { getContentSyncedDate, getOfficialsByOrganisation } from "@/lib/website/content";
 import { socialCard } from "@/lib/seo/social";
 
-const TITLE = "NSFDC Directory";
+const TITLE = "NHAA Directory";
 const DESCRIPTION =
-  "Telephone directory of the National Scheduled Castes Finance & Development Corporation (NSFDC) — officers with intercom and contact details.";
+  "Telephone directory of the National Helpline Against Atrocities (NHAA) — officers with intercom and contact details.";
 
 export const metadata: Metadata = {
-  title: `${TITLE} | National Scheduled Castes Finance & Development Corporation`,
+  title: `${TITLE} | National Helpline Against Atrocities`,
   description: DESCRIPTION,
-  ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/nsfdc-directory" }),
+  ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/nhaa-directory" }),
 };
 
 export default function Page() {
@@ -20,7 +20,7 @@ export default function Page() {
       breadcrumb={[{ label: "Associated Organisations" }, { label: TITLE }]}
       description={DESCRIPTION}
       lastUpdated={getContentSyncedDate()}
-      officials={getOfficialsByOrganisation("NSFDC")}
+      officials={getOfficialsByOrganisation("NHAA")}
     />
   );
 }
