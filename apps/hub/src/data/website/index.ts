@@ -16,6 +16,7 @@ export * from "./organisations";
 export * from "./divisions";
 export * from "./officials";
 export * from "./ngo-grants";
+export * from "./scheduled-castes";
 
 import type { Official } from "./officials";
 import { getOfficials } from "./officials";

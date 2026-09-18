@@ -188,11 +188,46 @@ const nextConfig: NextConfig = {
       "pm-ajay": "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay",
       "transgender-portal": "national-portal-for-transgender-persons",
     };
-    return Object.entries(legacyOrgSlugs).map(([from, to]) => ({
-      source: `/website/organisation/${from}`,
-      destination: `/website/organisation/${to}`,
-      permanent: true,
-    }));
+    /*
+     * PAGES dosje.gov.in PUBLISHES AT ONE URL AND THIS ESTATE AT ANOTHER.
+     *
+     * Each of these already exists here, with the same content, under a name
+     * that is either spelled correctly or shorter. A second page at the live
+     * spelling would be the same content answering to two headings, which is
+     * how a register starts contradicting itself — so the live URL redirects to
+     * the page that holds it rather than getting a copy of it.
+     *
+     * Four of them are the department's own typographical errors, kept only as
+     * an entrance: "misutilization of grands", "vuluntary organisations", the
+     * "-2" suffixes WordPress adds when a page is recreated. The estate does
+     * not adopt the misspelling; it answers to it.
+     */
+    const movedPages = {
+      "/website/copyright-policy": "/website/copyright",
+      "/website/home-page/copyright-policy": "/website/copyright",
+      "/website/for-researchers": "/website/for-researcher",
+      "/website/home-page/for-researchers": "/website/for-researcher",
+      "/website/home-page/help": "/website/help",
+      "/website/contact-us-2": "/website/mosje-contact",
+      "/website/minutes-of-screening-committees-2": "/website/minutes-of-screening-committees",
+      "/website/penalties-in-case-of-misutilization-of-grands":
+        "/website/penalties-in-case-of-misutilisation-of-grants",
+      "/website/prioritization-guidelines-for-funding-projects-by-vuluntary-organisations":
+        "/website/prioritization-guidelines-for-funding-projects-by-voluntary-organisations",
+    };
+
+    return [
+      ...Object.entries(legacyOrgSlugs).map(([from, to]) => ({
+        source: `/website/organisation/${from}`,
+        destination: `/website/organisation/${to}`,
+        permanent: true,
+      })),
+      ...Object.entries(movedPages).map(([source, destination]) => ({
+        source,
+        destination,
+        permanent: true,
+      })),
+    ];
   },
   async headers() {
     const securityHeaders = {
