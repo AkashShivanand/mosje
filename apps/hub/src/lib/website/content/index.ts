@@ -102,10 +102,18 @@ export function getTenders(): FileRecord[] {
   return tenders;
 }
 
+export function getTender(slug: string): FileRecord | undefined {
+  return tenders.find((t) => t.slug === slug);
+}
+
 const vacancies = withLocalFile(vacanciesData as FileRecord[]);
 
 export function getVacancies(): FileRecord[] {
   return vacancies;
+}
+
+export function getVacancy(slug: string): FileRecord | undefined {
+  return vacancies.find((v) => v.slug === slug);
 }
 
 const documents = withLocalFile(documentsData as FileRecord[]);
@@ -135,9 +143,35 @@ export function getCentralListOfObcs(): DocumentRecord[] {
   return centralListOfObcs;
 }
 
+const allDocuments: DocumentRecord[] = [
+  ...(documentsData as DocumentRecord[]),
+  ...centralListOfObcs,
+];
+
 /** Every document, the library's own rows plus the Central List of OBCs. */
 export function getAllDocuments(): DocumentRecord[] {
-  return [...(documentsData as DocumentRecord[]), ...centralListOfObcs];
+  return allDocuments;
+}
+
+const allDocumentsBySlug = new Map(allDocuments.map((d) => [d.slug, d]));
+
+export function getDocument(slug: string): DocumentRecord | undefined {
+  return allDocumentsBySlug.get(slug);
+}
+
+/**
+ * Every document carrying a `documents-type` term, newest first.
+ *
+ * Matched on `types`, NOT on `category`. A record can hold several type terms
+ * and `category` keeps only the one with a listing page, so filtering a listing
+ * page by `category` silently drops records that also carry an unlisted type —
+ * which is the difference between the 62 Advertisement records the department
+ * publishes and the 51 a `category` filter returns.
+ */
+export function getDocumentsOfType(type: string): DocumentRecord[] {
+  return allDocuments
+    .filter((d) => d.types?.includes(type))
+    .sort((a, b) => (b.publishStart ?? b.date ?? "").localeCompare(a.publishStart ?? a.date ?? ""));
 }
 
 const schemeDocuments = schemeDocumentsData as DocumentRecord[];
@@ -147,11 +181,19 @@ export function getSchemeDocuments(): DocumentRecord[] {
   return schemeDocuments;
 }
 
+export function getSchemeDocument(slug: string): DocumentRecord | undefined {
+  return schemeDocuments.find((d) => d.slug === slug);
+}
+
 const suoMotoDisclosures = suoMotoData as DocumentRecord[];
 
 /** RTI section 4(1)(b) suo-moto disclosures. */
 export function getSuoMotoDisclosures(): DocumentRecord[] {
   return suoMotoDisclosures;
+}
+
+export function getSuoMotoDisclosure(slug: string): DocumentRecord | undefined {
+  return suoMotoDisclosures.find((d) => d.slug === slug);
 }
 
 const events = eventsData as EventRecord[];
@@ -201,6 +243,10 @@ export function getCpios(): CpioRecord[] {
   return cpios;
 }
 
+export function getCpio(slug: string): CpioRecord | undefined {
+  return cpios.find((c) => c.slug === slug);
+}
+
 const bookings = bookingData as BookingRecord[];
 
 /** Bookable DAIC venues, with their rate cards. */
@@ -208,10 +254,18 @@ export function getBookableVenues(): BookingRecord[] {
   return bookings;
 }
 
+export function getBookableVenue(slug: string): BookingRecord | undefined {
+  return bookings.find((b) => b.slug === slug);
+}
+
 const updates = updatesData as UpdateRecord[];
 
 export function getUpdates(): UpdateRecord[] {
   return updates;
+}
+
+export function getUpdate(slug: string): UpdateRecord | undefined {
+  return updates.find((u) => u.slug === slug);
 }
 
 /** Updates with a given component status, e.g. "Active" or "Archived". */

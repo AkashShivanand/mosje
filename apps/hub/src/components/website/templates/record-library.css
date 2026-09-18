@@ -1,0 +1,81 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ==========================================================================
+     The document register — filters, count, table.
+     ==========================================================================
+     Everything here is spacing and type; the table itself is the design
+     system's `DataTable` and is not restyled. No literal colour, size or radius
+     appears below: the estate's contract is `--sa-*` and nothing else.
+     ========================================================================= */
+
+  .sa-record-library {
+    padding-block: var(--sa-padding-40);
+  }
+
+  @media (min-width: 768px) {
+    .sa-record-library {
+      padding-block: var(--sa-padding-56);
+    }
+  }
+
+  .sa-record-library__filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: var(--sa-inline-16);
+    margin-block-end: var(--sa-stack-20);
+  }
+
+  /*
+   * The search field takes the row on a phone and a readable measure on a
+   * desktop. `flex-basis` rather than a width so the selects wrap under it
+   * rather than squeezing it to nothing at 375.
+   */
+  .sa-record-library__search {
+    flex: 1 1 18rem;
+    min-width: 0;
+  }
+
+  .sa-record-library__filter {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+  }
+
+  .sa-record-library__filter-label {
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: var(--sa-font-weight-medium);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /*
+   * The count is the page's answer to "how many are there", and it is said
+   * ONCE — the table's own footer states the visible range, which is a
+   * different fact.
+   */
+  .sa-record-library__count {
+    margin-block-end: var(--sa-stack-12);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* A title cell is a link to the record's own page, not a plain string. */
+  .sa-record-link {
+    color: var(--sa-text-link-brand-default);
+    text-decoration: underline;
+    text-underline-offset: var(--sa-padding-2);
+  }
+
+  .sa-record-link:hover {
+    color: var(--sa-text-link-brand-hover);
+  }
+
+  .sa-record-actions {
+    display: inline-flex;
+    gap: var(--sa-inline-8);
+    white-space: nowrap;
+  }
+}
