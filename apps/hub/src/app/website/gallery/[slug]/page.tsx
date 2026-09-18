@@ -3,13 +3,13 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { SectionTitle } from "@mosje/design-system";
 import { RecordDetail } from "@/components/website/templates/RecordDetail";
-import { getContentSyncedDate, getGalleryItem, getGalleryItems } from "@/lib/website/content";
+import { getContentSyncedDate, getGalleryItem, getGalleryItems, routeSlug } from "@/lib/website/content";
 import { facts, humanDate } from "@/lib/website/record-facts";
 import { socialCard } from "@/lib/seo/social";
 
 /** 590 gallery records — every one is prerendered. */
 export function generateStaticParams() {
-  return getGalleryItems().map((g) => ({ slug: g.slug }));
+  return getGalleryItems().map((g) => ({ slug: routeSlug(g.slug) }));
 }
 
 export async function generateMetadata(

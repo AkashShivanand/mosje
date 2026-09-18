@@ -66,6 +66,29 @@ export function getOrganisation(slug: string): SectionRecord | undefined {
   return orgMap.get(slug);
 }
 
+/*
+ * A SLUG IS COMPARED DECODED.
+ *
+ * WordPress hands non-Latin slugs back percent-encoded — 101 gallery items, six
+ * events and five documents are stored as `%e0%a4%89…`. Next decodes a route
+ * param before the page sees it, so a lookup comparing the raw strings missed
+ * every one of them and each of those records answered 404. Every lookup below
+ * compares both sides decoded, and `routeSlug` is what `generateStaticParams`
+ * returns, so the prerendered path is the one a link actually requests.
+ */
+export function routeSlug(slug: string): string {
+  try {
+    return decodeURIComponent(slug);
+  } catch {
+    return slug;
+  }
+}
+
+function findBySlug<T extends { slug: string }>(rows: T[], slug: string): T | undefined {
+  const key = routeSlug(slug);
+  return rows.find((r) => routeSlug(r.slug) === key);
+}
+
 const schemes = schemesData as SectionRecord[];
 
 export function getSchemes(): SectionRecord[] {
@@ -73,7 +96,7 @@ export function getSchemes(): SectionRecord[] {
 }
 
 export function getScheme(slug: string): SectionRecord | undefined {
-  return schemes.find((s) => s.slug === slug);
+  return findBySlug(schemes, slug);
 }
 
 /*
@@ -103,7 +126,7 @@ export function getTenders(): FileRecord[] {
 }
 
 export function getTender(slug: string): FileRecord | undefined {
-  return tenders.find((t) => t.slug === slug);
+  return findBySlug(tenders, slug);
 }
 
 const vacancies = withLocalFile(vacanciesData as FileRecord[]);
@@ -113,7 +136,7 @@ export function getVacancies(): FileRecord[] {
 }
 
 export function getVacancy(slug: string): FileRecord | undefined {
-  return vacancies.find((v) => v.slug === slug);
+  return findBySlug(vacancies, slug);
 }
 
 const documents = withLocalFile(documentsData as FileRecord[]);
@@ -133,8 +156,6 @@ export function getDocumentsByType(category: string): FileRecord[] {
  * and type, publish window, event venue and gallery images, an official's contact
  * card. Every file and image URL points at the LIVE site — nothing is mirrored
  * locally yet, so a consumer that needs a local asset must mirror it first.
- *
- * Nothing renders them yet; they exist so a page can be built against real data.
  */
 const centralListOfObcs = obcData as DocumentRecord[];
 
@@ -153,10 +174,10 @@ export function getAllDocuments(): DocumentRecord[] {
   return allDocuments;
 }
 
-const allDocumentsBySlug = new Map(allDocuments.map((d) => [d.slug, d]));
+const allDocumentsBySlug = new Map(allDocuments.map((d) => [routeSlug(d.slug), d]));
 
 export function getDocument(slug: string): DocumentRecord | undefined {
-  return allDocumentsBySlug.get(slug);
+  return allDocumentsBySlug.get(routeSlug(slug));
 }
 
 /**
@@ -182,7 +203,7 @@ export function getSchemeDocuments(): DocumentRecord[] {
 }
 
 export function getSchemeDocument(slug: string): DocumentRecord | undefined {
-  return schemeDocuments.find((d) => d.slug === slug);
+  return findBySlug(schemeDocuments, slug);
 }
 
 const suoMotoDisclosures = suoMotoData as DocumentRecord[];
@@ -193,7 +214,7 @@ export function getSuoMotoDisclosures(): DocumentRecord[] {
 }
 
 export function getSuoMotoDisclosure(slug: string): DocumentRecord | undefined {
-  return suoMotoDisclosures.find((d) => d.slug === slug);
+  return findBySlug(suoMotoDisclosures, slug);
 }
 
 const events = eventsData as EventRecord[];
@@ -203,7 +224,7 @@ export function getEvents(): EventRecord[] {
 }
 
 export function getEvent(slug: string): EventRecord | undefined {
-  return events.find((e) => e.slug === slug);
+  return findBySlug(events, slug);
 }
 
 const gallery = galleryData as GalleryRecord[];
@@ -218,7 +239,7 @@ export function getGalleryItemsByType(type: string): GalleryRecord[] {
 }
 
 export function getGalleryItem(slug: string): GalleryRecord | undefined {
-  return gallery.find((g) => g.slug === slug);
+  return findBySlug(gallery, slug);
 }
 
 const officials = officialData as OfficialRecord[];
@@ -233,7 +254,7 @@ export function getOfficialsByOrganisation(organisation: string): OfficialRecord
 }
 
 export function getOfficial(slug: string): OfficialRecord | undefined {
-  return officials.find((o) => o.slug === slug);
+  return findBySlug(officials, slug);
 }
 
 const cpios = cpioData as CpioRecord[];
@@ -244,7 +265,7 @@ export function getCpios(): CpioRecord[] {
 }
 
 export function getCpio(slug: string): CpioRecord | undefined {
-  return cpios.find((c) => c.slug === slug);
+  return findBySlug(cpios, slug);
 }
 
 const bookings = bookingData as BookingRecord[];
@@ -255,7 +276,7 @@ export function getBookableVenues(): BookingRecord[] {
 }
 
 export function getBookableVenue(slug: string): BookingRecord | undefined {
-  return bookings.find((b) => b.slug === slug);
+  return findBySlug(bookings, slug);
 }
 
 const updates = updatesData as UpdateRecord[];
@@ -265,7 +286,7 @@ export function getUpdates(): UpdateRecord[] {
 }
 
 export function getUpdate(slug: string): UpdateRecord | undefined {
-  return updates.find((u) => u.slug === slug);
+  return findBySlug(updates, slug);
 }
 
 /** Updates with a given component status, e.g. "Active" or "Archived". */

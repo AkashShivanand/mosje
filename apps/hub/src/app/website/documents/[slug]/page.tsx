@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { DescriptionItem } from "@mosje/design-system";
 import { RecordDetail } from "@/components/website/templates/RecordDetail";
-import { getAllDocuments, getContentSyncedDate, getDocument } from "@/lib/website/content";
+import { getAllDocuments, getContentSyncedDate, getDocument, routeSlug } from "@/lib/website/content";
 import { documentFacts, documentFiles } from "@/lib/website/record-facts";
 import { documentListingFor } from "@/lib/website/directories";
 import { socialCard } from "@/lib/seo/social";
@@ -27,7 +27,7 @@ export function generateStaticParams() {
   return [...getAllDocuments()]
     .sort((a, b) => (b.publishStart ?? b.date ?? "").localeCompare(a.publishStart ?? a.date ?? ""))
     .slice(0, PRERENDERED)
-    .map((d) => ({ slug: d.slug }));
+    .map((d) => ({ slug: routeSlug(d.slug) }));
 }
 
 export async function generateMetadata(
