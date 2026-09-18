@@ -134,6 +134,8 @@ export function RecordLibrary({
   const [category, setCategory] = useState("All");
 
   const singular = nounSingular ?? noun.replace(/s$/, "");
+  /* Empty-state titles are titles, so Title Case; the noun stays lowercase in running text. */
+  const Noun = noun.replace(/\b\w/g, (c) => c.toUpperCase());
 
   const organisations = useMemo(() => optionsFor(records, (r) => r.organisation), [records]);
   const years = useMemo(
@@ -393,7 +395,7 @@ export function RecordLibrary({
           {!hasRecords ? (
             <EmptyState
               icon={<Icon name="folder_off" size={40} />}
-              title={`No ${noun} published`}
+              title={`No ${Noun} Published`}
               description={
                 emptyMessage ??
                 `The Department has not published any ${noun} under this heading.`
@@ -402,7 +404,7 @@ export function RecordLibrary({
           ) : filtered.length === 0 ? (
             <EmptyState
               icon={<Icon name="search_off" size={40} />}
-              title={`No ${noun} match these filters`}
+              title={`No ${Noun} Match These Filters`}
               description={`All ${records.length.toLocaleString("en-IN")} ${noun} on this page were excluded by the search and filters above. Clear them to see the full register.`}
               action={
                 <Button variant="primary" appearance="outlined" size="sm" onClick={reset}>
