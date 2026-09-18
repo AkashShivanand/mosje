@@ -3469,7 +3469,436 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "ComboboxMultipleProps": {
+    "source": "packages/design-system/components/forms/combobox.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Always visible."
+      },
+      {
+        "name": "multiple",
+        "type": "true",
+        "required": true,
+        "description": "Several answers from one long list. Chosen options sit in the field as removable chips and the list stays open after each choice."
+      },
+      {
+        "name": "onChange",
+        "type": "(value: string[]) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "options",
+        "type": "ComboboxOption[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "string[]",
+        "required": true,
+        "description": "The chosen options' `value`s, in the order they were chosen. `[]` for none."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "describedBy",
+        "type": "string",
+        "required": false,
+        "description": "Merged into the input's `aria-describedby`."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "emptyLabel",
+        "type": "string",
+        "required": false,
+        "description": "Wording for a list with nothing in it at all, before anything is typed."
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "required": false,
+        "description": "Error message. Blocks submission. Wins over `warning` and `success`."
+      },
+      {
+        "name": "filterOptions",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Filter `options` against the query here. Turn off when the options already are the server's answer to the query."
+      },
+      {
+        "name": "hint",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "invalid",
+        "type": "boolean",
+        "required": false,
+        "description": "Sets the error state without supplying a message. It exists so that spreading `FormField`'s render-prop object onto this component degrades rather than breaks. A message is still better — prefer `error`."
+      },
+      {
+        "name": "labelHelp",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Extra explanation, revealed by a button beside the label."
+      },
+      {
+        "name": "labelHidden",
+        "type": "boolean",
+        "required": false,
+        "description": "Hide the label visually, keeping it for assistive technology."
+      },
+      {
+        "name": "loadError",
+        "type": "string",
+        "required": false,
+        "description": "The options could not be fetched. Said in the list, with `onRetry`."
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "description": "The options are being fetched. Draws a skeleton in the list's shape."
+      },
+      {
+        "name": "maxResults",
+        "type": "number",
+        "required": false,
+        "default": "100",
+        "description": "The most rows drawn at once. Beyond it the list asks the reader to type more — a popup of nineteen thousand villages helps nobody."
+      },
+      {
+        "name": "maxSelected",
+        "type": "number",
+        "required": false,
+        "description": "The most options that may be chosen. At the limit the rest of the list is disabled and the list says why."
+      },
+      {
+        "name": "maxVisibleChips",
+        "type": "number",
+        "required": false,
+        "default": "5",
+        "description": "Chips drawn before the rest fold into a \"+N more\" button, so a long answer cannot push the form down the page. `Infinity` never folds."
+      },
+      {
+        "name": "minQueryLength",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "Show nothing until this many characters are typed — the \"not asked yet\" state, for a list too long to draw whole or a search too costly to run on one letter."
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": false,
+        "description": "Submitted with a native `<form>`. The single mode posts one value; the multiple mode posts one entry per chosen value under the same name."
+      },
+      {
+        "name": "noMatchLabel",
+        "type": "string",
+        "required": false,
+        "description": "Wording for \"your search matched nothing\", which is not \"there is nothing\"."
+      },
+      {
+        "name": "onQueryChange",
+        "type": "(query: string) => void",
+        "required": false,
+        "description": "Called with every keystroke's query — the hook for a SERVER search. Pair it with `filterOptions={false}`, `loading` and `loadError`, and pass the results back as `options`. Debouncing is the caller's."
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": "Offered beside `loadError` as \"Try again\"."
+      },
+      {
+        "name": "optional",
+        "type": "boolean",
+        "required": false,
+        "description": "Rendered only when the form's policy is `optional`."
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "readOnly",
+        "type": "boolean",
+        "required": false,
+        "description": "Shows the answer; cannot be changed. No list, no remove buttons."
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "size",
+        "type": "FieldSize = \"sm\" | \"md\" | \"lg\" | \"xl\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": "The same four steps as every other field."
+      },
+      {
+        "name": "success",
+        "type": "string",
+        "required": false,
+        "description": "Success message — a real check passed."
+      },
+      {
+        "name": "warning",
+        "type": "string",
+        "required": false,
+        "description": "Warning message. Does not block. Wins over `success`."
+      }
+    ]
+  },
   "ComboboxProps": {
+    "source": "packages/design-system/components/forms/combobox.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Always visible."
+      },
+      {
+        "name": "onChange",
+        "type": "(value: string) => void | (value: string[]) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "options",
+        "type": "ComboboxOption[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "string | string[]",
+        "required": true,
+        "description": "ComboboxSingleProps: The selected option's `value`, or \"\" when nothing is chosen. ComboboxMultipleProps: The chosen options' `value`s, in the order they were chosen. `[]` for none."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "describedBy",
+        "type": "string",
+        "required": false,
+        "description": "Merged into the input's `aria-describedby`."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "emptyLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"There is nothing to choose from yet.\"",
+        "description": "Wording for a list with nothing in it at all, before anything is typed."
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "required": false,
+        "description": "Error message. Blocks submission. Wins over `warning` and `success`."
+      },
+      {
+        "name": "filterOptions",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Filter `options` against the query here. Turn off when the options already are the server's answer to the query."
+      },
+      {
+        "name": "hint",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "invalid",
+        "type": "boolean",
+        "required": false,
+        "description": "Sets the error state without supplying a message. It exists so that spreading `FormField`'s render-prop object onto this component degrades rather than breaks. A message is still better — prefer `error`."
+      },
+      {
+        "name": "labelHelp",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Extra explanation, revealed by a button beside the label."
+      },
+      {
+        "name": "labelHidden",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Hide the label visually, keeping it for assistive technology."
+      },
+      {
+        "name": "loadError",
+        "type": "string",
+        "required": false,
+        "description": "The options could not be fetched. Said in the list, with `onRetry`."
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "description": "The options are being fetched. Draws a skeleton in the list's shape."
+      },
+      {
+        "name": "maxResults",
+        "type": "number",
+        "required": false,
+        "default": "100",
+        "description": "The most rows drawn at once. Beyond it the list asks the reader to type more — a popup of nineteen thousand villages helps nobody."
+      },
+      {
+        "name": "maxSelected",
+        "type": "number",
+        "required": false,
+        "description": "The most options that may be chosen. At the limit the rest of the list is disabled and the list says why.",
+        "onlyIn": "ComboboxMultipleProps"
+      },
+      {
+        "name": "maxVisibleChips",
+        "type": "number",
+        "required": false,
+        "default": "5",
+        "description": "Chips drawn before the rest fold into a \"+N more\" button, so a long answer cannot push the form down the page. `Infinity` never folds.",
+        "onlyIn": "ComboboxMultipleProps"
+      },
+      {
+        "name": "minQueryLength",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "Show nothing until this many characters are typed — the \"not asked yet\" state, for a list too long to draw whole or a search too costly to run on one letter."
+      },
+      {
+        "name": "multiple",
+        "type": "false | true",
+        "required": false,
+        "default": "false",
+        "description": "ComboboxSingleProps: Omit, or `false`, for one answer. ComboboxMultipleProps: Several answers from one long list. Chosen options sit in the field as removable chips and the list stays open after each choice."
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": false,
+        "description": "Submitted with a native `<form>`. The single mode posts one value; the multiple mode posts one entry per chosen value under the same name."
+      },
+      {
+        "name": "noMatchLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"No match. Check the spelling, or clear the box to see everything.\"",
+        "description": "Wording for \"your search matched nothing\", which is not \"there is nothing\"."
+      },
+      {
+        "name": "onQueryChange",
+        "type": "(query: string) => void",
+        "required": false,
+        "description": "Called with every keystroke's query — the hook for a SERVER search. Pair it with `filterOptions={false}`, `loading` and `loadError`, and pass the results back as `options`. Debouncing is the caller's."
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": "Offered beside `loadError` as \"Try again\"."
+      },
+      {
+        "name": "optional",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Rendered only when the form's policy is `optional`."
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "default": "\"Start typing to search\"",
+        "description": ""
+      },
+      {
+        "name": "readOnly",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Shows the answer; cannot be changed. No list, no remove buttons."
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "size",
+        "type": "FieldSize = \"sm\" | \"md\" | \"lg\" | \"xl\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": "The same four steps as every other field."
+      },
+      {
+        "name": "success",
+        "type": "string",
+        "required": false,
+        "description": "Success message — a real check passed."
+      },
+      {
+        "name": "warning",
+        "type": "string",
+        "required": false,
+        "description": "Warning message. Does not block. Wins over `success`."
+      }
+    ]
+  },
+  "ComboboxSingleProps": {
     "source": "packages/design-system/components/forms/combobox.tsx",
     "inheritsNative": false,
     "props": [
@@ -3504,17 +3933,35 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "describedBy",
+        "type": "string",
+        "required": false,
+        "description": "Merged into the input's `aria-describedby`."
+      },
+      {
         "name": "disabled",
         "type": "boolean",
         "required": false,
-        "default": "false",
         "description": ""
+      },
+      {
+        "name": "emptyLabel",
+        "type": "string",
+        "required": false,
+        "description": "Wording for a list with nothing in it at all, before anything is typed."
       },
       {
         "name": "error",
         "type": "string",
         "required": false,
-        "description": ""
+        "description": "Error message. Blocks submission. Wins over `warning` and `success`."
+      },
+      {
+        "name": "filterOptions",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Filter `options` against the query here. Turn off when the options already are the server's answer to the query."
       },
       {
         "name": "hint",
@@ -3532,29 +3979,118 @@ export const GENERATED_PROPS = {
         "name": "invalid",
         "type": "boolean",
         "required": false,
-        "default": "false",
-        "description": "Sets the error state without supplying a message. It exists so that spreading `FormField`'s render-prop object onto this component degrades rather than breaks: `FormField` hands over `invalid`, this component asks for `error`, and before this alias the field simply lost its error state. A message is still better — prefer `error`."
+        "description": "Sets the error state without supplying a message. It exists so that spreading `FormField`'s render-prop object onto this component degrades rather than breaks. A message is still better — prefer `error`."
+      },
+      {
+        "name": "labelHelp",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Extra explanation, revealed by a button beside the label."
+      },
+      {
+        "name": "labelHidden",
+        "type": "boolean",
+        "required": false,
+        "description": "Hide the label visually, keeping it for assistive technology."
+      },
+      {
+        "name": "loadError",
+        "type": "string",
+        "required": false,
+        "description": "The options could not be fetched. Said in the list, with `onRetry`."
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "description": "The options are being fetched. Draws a skeleton in the list's shape."
+      },
+      {
+        "name": "maxResults",
+        "type": "number",
+        "required": false,
+        "default": "100",
+        "description": "The most rows drawn at once. Beyond it the list asks the reader to type more — a popup of nineteen thousand villages helps nobody."
+      },
+      {
+        "name": "minQueryLength",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "Show nothing until this many characters are typed — the \"not asked yet\" state, for a list too long to draw whole or a search too costly to run on one letter."
+      },
+      {
+        "name": "multiple",
+        "type": "false",
+        "required": false,
+        "description": "Omit, or `false`, for one answer."
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": false,
+        "description": "Submitted with a native `<form>`. The single mode posts one value; the multiple mode posts one entry per chosen value under the same name."
       },
       {
         "name": "noMatchLabel",
         "type": "string",
         "required": false,
-        "default": "\"No match. Check the spelling, or clear the box to see everything.\"",
         "description": "Wording for \"your search matched nothing\", which is not \"there is nothing\"."
+      },
+      {
+        "name": "onQueryChange",
+        "type": "(query: string) => void",
+        "required": false,
+        "description": "Called with every keystroke's query — the hook for a SERVER search. Pair it with `filterOptions={false}`, `loading` and `loadError`, and pass the results back as `options`. Debouncing is the caller's."
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": "Offered beside `loadError` as \"Try again\"."
+      },
+      {
+        "name": "optional",
+        "type": "boolean",
+        "required": false,
+        "description": "Rendered only when the form's policy is `optional`."
       },
       {
         "name": "placeholder",
         "type": "string",
         "required": false,
-        "default": "\"Start typing to search\"",
         "description": ""
+      },
+      {
+        "name": "readOnly",
+        "type": "boolean",
+        "required": false,
+        "description": "Shows the answer; cannot be changed. No list, no remove buttons."
       },
       {
         "name": "required",
         "type": "boolean",
         "required": false,
-        "default": "false",
         "description": ""
+      },
+      {
+        "name": "size",
+        "type": "FieldSize = \"sm\" | \"md\" | \"lg\" | \"xl\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": "The same four steps as every other field."
+      },
+      {
+        "name": "success",
+        "type": "string",
+        "required": false,
+        "description": "Success message — a real check passed."
+      },
+      {
+        "name": "warning",
+        "type": "string",
+        "required": false,
+        "description": "Warning message. Does not block. Wins over `success`."
       }
     ]
   },

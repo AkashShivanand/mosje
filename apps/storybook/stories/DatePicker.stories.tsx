@@ -150,3 +150,110 @@ export const ComboboxNoMatch: StoryObj = {
     );
   },
 };
+
+/**
+ * `multiple`: several districts, each a removable chip. Enter adds or removes
+ * the highlighted option, Backspace in an empty box removes the last chip, and
+ * Escape clears the query but never the choices.
+ */
+export const ComboboxMultiple: StoryObj = {
+  render: function ComboboxMultipleStory() {
+    const [v, setV] = React.useState<string[]>(["ba", "ra"]);
+    return (
+      <div style={{ maxWidth: "22rem" }}>
+        <Combobox
+          multiple
+          label="Districts of Operation"
+          options={DISTRICTS}
+          value={v}
+          onChange={setV}
+          hint="Choose every district the organisation works in."
+        />
+      </div>
+    );
+  },
+};
+
+/**
+ * Limits: `maxSelected` disables the rest of the list at three and says why;
+ * `maxVisibleChips` folds a long answer into "+N more"; `name` posts one entry
+ * per chosen value; `size` follows the field scale.
+ */
+export const ComboboxLimits: StoryObj = {
+  render: function ComboboxLimitsStory() {
+    const [v, setV] = React.useState<string[]>(["ba", "ra"]);
+    return (
+      <div style={{ maxWidth: "22rem" }}>
+        <Combobox
+          multiple
+          label="Preferred Districts"
+          options={DISTRICTS}
+          value={v}
+          onChange={setV}
+          maxSelected={3}
+          maxVisibleChips={2}
+          name="districts"
+          size="lg"
+          hint="Up to three."
+        />
+      </div>
+    );
+  },
+};
+
+/**
+ * A server search: `onQueryChange` runs it, `filterOptions={false}` trusts the
+ * results, `minQueryLength` asks before searching, `maxResults` caps the rows,
+ * and `loading`, `loadError` and `onRetry` draw its three other states.
+ */
+export const ComboboxServerSearch: StoryObj = {
+  render: function ComboboxServerSearchStory() {
+    const [v, setV] = React.useState<string[]>([]);
+    const [results, setResults] = React.useState(DISTRICTS);
+    const [loading, setLoading] = React.useState(false);
+    const search = (q: string) => {
+      setLoading(true);
+      window.setTimeout(() => {
+        setResults(DISTRICTS.filter((d) => d.label.toLowerCase().includes(q.toLowerCase())));
+        setLoading(false);
+      }, 500);
+    };
+    return (
+      <div style={{ maxWidth: "22rem" }}>
+        <Combobox
+          multiple
+          label="Districts"
+          options={results}
+          value={v}
+          onChange={setV}
+          filterOptions={false}
+          minQueryLength={2}
+          maxResults={50}
+          onQueryChange={search}
+          loading={loading}
+          loadError={undefined}
+          onRetry={() => search("")}
+        />
+      </div>
+    );
+  },
+};
+
+/**
+ * Field states, from FormField: `warning`, `success`, `labelHelp`, `optional`,
+ * `readOnly`, `labelHidden` and `describedBy`; `emptyLabel` is the wording for
+ * a list with nothing in it at all.
+ */
+export const ComboboxFieldStates: StoryObj = {
+  render: function ComboboxFieldStatesStory() {
+    const [v, setV] = React.useState("nd");
+    return (
+      <div style={{ display: "grid", gap: "var(--sa-stack-24)", maxWidth: "22rem" }}>
+        <Combobox label="Head Office District" options={DISTRICTS} value={v} onChange={setV} warning="This district is outside the state." labelHelp="Districts come from the LGD register." />
+        <Combobox multiple label="Verified Districts" options={DISTRICTS} value={["ba", "nd"]} onChange={() => undefined} success="All districts verified." readOnly />
+        <Combobox label="Scheme" options={[]} value="" onChange={() => undefined} emptyLabel="No schemes are open for applications." optional />
+        <Combobox label="Search Districts" labelHidden options={DISTRICTS} value="" onChange={() => undefined} describedBy="district-note" />
+      </div>
+    );
+  },
+};
