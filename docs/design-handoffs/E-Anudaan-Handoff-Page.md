@@ -1,6 +1,6 @@
 # E-Anudaan Handoff Page — How It Is Organised
 
-**File** `evmNmlK8g4VYwJVu2FwSGV` · **Page** `E-Anudaan` (`51313:165608`) · **Organised** 17 Sep 2026
+**File** `evmNmlK8g4VYwJVu2FwSGV` · **Page** `E-Anudaan` (`51313:165608`) · **Organised** 17 Sep 2026 · **Desktop and phone complete** 18 Sep 2026
 **Standard** `.claude/rules/figma-handoff-page-structure.md` · **Snapshot** `tools/figma-handoff-structure/manifests/e-anudaan.json`
 **Gate** `npm run check:figma-handoff -- --portal E-Anudaan --strict` — **conformant** (0 identity, 0 visual)
 
@@ -130,7 +130,7 @@ the phone header's DBIM difference; renewal lists; the Programme Director screen
 | Name a version, e.g. “Handoff structure — 17 Sep 2026” | version naming is not in the Plugin API | File → Version history |
 | Confirm and delete the 11 stray nodes | deleting is a person's call | D · Stray Nodes |
 | Timed find test: a developer and a reviewer find a screen by its ID | the structure is only proven when people use it | rule §11 |
-| Phone screens for the rest of the flows | deferred 16 Sep 2026 | the empty slots in each Mobile row |
+| ~~Phone screens for the rest of the flows~~ | **Done 18 Sep 2026** — every desktop screen has a phone version | the Mobile row of each journey |
 
 ## 5. Sync with the build — 17 Sep 2026
 
@@ -173,6 +173,36 @@ the invalid-credentials state and its phone frame.
 **Not verified** (no build capture reaches the state): filled-form wizard variants, the
 officer's raise-deficiency and send-deficiency dialogs, four service errors (applications closed, save
 conflict, timeout toast, session banner), and the phone frames beyond the screens above.
+
+## 5a. Desktop and phone, completed 18 Sep 2026
+
+**Every desktop screen now has a phone version** — 221 in the Mobile rows, 191 of them new. Each is built from
+the same library components as its desktop screen, at 375 wide, and sits at the same x as the screen it matches.
+
+| What the phone version does | Why |
+|---|---|
+| Tables become one card per row, label and value side by side | the built portal does the same at 375; a 7-column table cannot be read on a phone |
+| Side-by-side fields and summary cards stack | measured: any row whose parts would fall under ~90px is stacked |
+| The step bar reads `STEP 3 OF 7` with dots, instead of the seven-label stepper | the seven labels broke a letter per line |
+| The wizard's Back and Save and Continue sit in a bar at the bottom of the screen | matches the build's sticky action bar |
+| A page title's action moves under the title | otherwise the title is squeezed to a few characters |
+| Grids that must stay a grid (the weekly attendance matrix) are clipped, not rebuilt | the build scrolls them sideways |
+
+**Checked by measurement, not by eye alone.** A script walks every phone screen and reports content that runs past
+the edge of the screen and text squeezed into a column narrower than 90px. Both were **0** at the end
+(they were 963 and 549 mid-way).
+
+**Upload rows, now on the published library.** SAMAVESH was published on 17 Sep with `Document Row` gaining a
+`Layout` axis. 556 applicant rows across 62 screens were re-pointed to `Layout=Stacked`, the filter chips were
+removed and the drop area put on one line — the build's upload step. The officer's review rows keep `Layout=Columns`.
+The 16 rows inside **Upload Documents / Document History** were left on the column row: that sheet lists a file's
+versions, not the checklist.
+
+**Sign-in, rebuilt from the library.** The NGO-DARPAN sign-in screen was redrawn with `Auth / SSOButton`,
+`Auth / OrDivider` and `Auth / CredentialFields / Identifier + Password`, so "Forgot Password?" sits beside the
+Password label and the card carries an arrow, as in the build. The **wrong username or password** state was added
+(desktop and phone). Nine NGO-DARPAN screens showed the placeholder "Signing into Organisation Name" and now read
+"E-Anudaan".
 
 ## 6. Adding to the page
 
