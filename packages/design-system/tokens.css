@@ -1077,6 +1077,8 @@
   --sa-cmp-sitefooter-chip-hover: color-mix(in srgb, var(--sa-color-primaryScale-100) calc(var(--sa-alpha-24) * 100%), transparent);
   --sa-cmp-sitefooter-chip-size: var(--sa-ref-size-40);
   --sa-cmp-sitefooter-mark-height: var(--sa-ref-size-28);
+  --sa-cmp-navbar-workingBar-height: var(--sa-ref-size-56);
+  --sa-cmp-navbar-betaSash-length: 96px;
   --sa-cmp-action-brand-primary-default-bg: var(--sa-color-primaryScale-600);
   --sa-cmp-action-brand-primary-default-text: var(--sa-color-neutralScale-0);
   --sa-cmp-action-brand-primary-default-border: var(--sa-color-primaryScale-600);

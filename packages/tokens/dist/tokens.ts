@@ -1670,6 +1670,14 @@ export const tokens = {
       "height": "1.75rem"
     }
   },
+  "navbar": {
+    "workingBar": {
+      "height": "3.5rem"
+    },
+    "betaSash": {
+      "length": "96px"
+    }
+  },
   "action": {
     "brand": {
       "primary": {

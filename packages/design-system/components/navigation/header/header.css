@@ -1522,18 +1522,15 @@
      2026-09-17 and withdrawn on 2026-09-19: the same control drawn two ways by breakpoint
      is two controls to learn, and the outline is what tells a first-time reader on a
      government service that the glyph is a button (the reason the toggle got it at all).
-     THE ROW WRAPPED. The lockup's 168px floor predates the bell: toggle 40 · 12 · 168 · 12 ·
-        bell 40 · 8 · account 48 = 328 > 288 at 320. Gaps go to 8, the avatar's trigger loses
-        its 4px padding (the 40px avatar IS the target), and the floor drops to 136.
+     THE ROW WRAPPED at 320 with a bell: toggle 40 · 12 · lockup floor · 12 · bell 40 · 8 ·
+        account 48 overran 288. Gaps go to 8 and the avatar's trigger loses its 4px padding (the
+        40px avatar IS the target). Every portal that carries a bell now passes `service` and
+        leaves this row entirely, so the lockup floor keeps main's value.
      The Government of India line stays: DBIM 5.2.2 makes it part of the lockup, and the
      accessibility bar's link to india.gov.in is not the lockup. */
   @media (max-width: 767px) {
     .ds-hdr[data-variant="portal"]:not([data-layers]) .ds-hdr-brand__in {
       gap: var(--sa-stack-8);
-    }
-
-    .ds-hdr[data-variant="portal"]:not([data-layers]) .ds-hdr-brand__lockup {
-      min-width: 136px;
     }
 
     .ds-hdr[data-variant="portal"] .ds-hdr-brand__in .ds-hdr-account.is-button {
@@ -1586,10 +1583,11 @@
       align-items: center;
     }
 
-    /* 56, one rung under the resting 64, so the ministry line keeps ONE line at 320:
-       288 of row, less a 35px emblem and its 8px gap, leaves 245 for a 234px line. */
+    /* icon/size/48 — the emblem ladder's crowded-phone rung — so the ministry line keeps
+       ONE line at 320: 288 of row, less a 30px emblem and its 8px gap, leaves 250 for a
+       234px line. */
     .ds-hdr[data-layers] .ds-hdr-brand__lockup .ds-hdr-lockup__emblem {
-      height: 56px;
+      height: var(--sa-icon-size-48);
     }
 
     /* BETA leaves the stack, so Government of India is the stack's first line and spans. */
@@ -1609,8 +1607,8 @@
       position: absolute;
       inset-block-start: var(--sa-padding-6);
       inset-inline-end: calc(var(--sa-padding-32) * -1);
-      inline-size: 96px;
-      transform: rotate(45deg);
+      inline-size: var(--sa-cmp-navbar-betaSash-length);
+      transform: rotate(45deg); /* the sash's geometry, not a design value: no token names an angle */
       text-align: center;
       background-color: var(--sa-cmp-badge-beta-bg);
       color: var(--sa-color-neutralScale-1000);
@@ -1649,31 +1647,25 @@
       display: flex;
       align-items: center;
       gap: var(--sa-stack-8);
-      min-height: 56px;
+      min-height: var(--sa-cmp-navbar-workingBar-height);
       padding: var(--sa-padding-8) var(--sa-grid-margin-page) var(--sa-padding-8) var(--sa-padding-8);
       background-color: var(--sa-bg-neutral-base);
       border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     }
 
     .ds-hdr-work__toggle {
-      height: 40px;
-      width: 40px;
+      height: var(--sa-control-height-md);
+      width: var(--sa-control-height-md);
       padding: var(--sa-padding-4);
     }
 
     .ds-hdr-work__service {
       display: inline-flex;
       align-items: center;
-      min-height: 40px;
+      min-height: var(--sa-control-height-md);
       border-radius: var(--sa-shape-4);
       color: inherit;
       text-decoration: none;
-    }
-
-    .ds-hdr-work__emblem {
-      flex: 0 0 auto;
-      height: 32px;
-      width: auto;
     }
 
     .ds-hdr-work__service {
@@ -1739,7 +1731,7 @@
     }
 
     .ds-hdr.is-sticky[data-layers][data-reveal="hidden"] {
-      transform: translateY(calc(-1 * var(--sa-hdr-work-h, 57px)));
+      transform: translateY(calc(-1 * var(--sa-hdr-work-h, var(--sa-cmp-navbar-workingBar-height))));
     }
 
     .ds-hdr.is-sticky[data-layers][data-reveal="shown"] {

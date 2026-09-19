@@ -245,5 +245,22 @@
         "$description": "The credit marks' shared optical height. Left to their intrinsic ratios the NeGD and Digital India marks drew 31px and 44px on one row."
       }
     }
+  },
+  "navbar": {
+    "$description": "Navbar (SiteHeader) — the two sizes the portal phone layers own. Everything else in the masthead binds a shared rung (control/height/md for its 40px controls, icon/size/* for the emblem); these two have no shared meaning to borrow.",
+    "workingBar": {
+      "height": {
+        "$type": "dimension",
+        "$value": "{size.56}",
+        "$description": "The portal phone working bar — menu, the service's mark and name, bell, account — and the only row that pins. 56 is the condensed bar's phone height, so the bar is the same object pinned or at rest."
+      }
+    },
+    "betaSash": {
+      "length": {
+        "$type": "dimension",
+        "$value": "96px",
+        "$description": "Length of the 45° BETA sash across the identity row's free corner, before the row clips it. A literal because no ref/size rung is 96 (the scale steps 80 → 120), and inventing one would add a step for a single affordance — the reasoning badge/dotSize and layout/flag/width already follow. At 96 the band clears the lockup by 16px at 320 and 71 at 375."
+      }
+    }
   }
 }

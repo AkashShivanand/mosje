@@ -4,6 +4,8 @@ import * as React from "react";
 import { cn } from "../../../utils/cn";
 import { AccessibilityBar } from "../../utilities/accessibility-bar";
 import { Icon } from "../../utilities/icon";
+import { IconButton } from "../../actions/icon-button";
+import { OrgLogo } from "../../brand/org-logo";
 import { BrandLockup } from "./brand-lockup";
 import { AccountMenu } from "./account-menu";
 import { NotificationBell } from "./notification-bell";
@@ -1181,26 +1183,27 @@ export function SiteHeader({
                 mark. The emblem appears only as the fallback for a service with none
                 (E-Anudaan, E-Utthan) — the same fallback OrgLogo uses. */}
             <ServiceTag href={serviceHref} className="ds-hdr-work__service">
-              {service!.mark ? (
-                <span className="ds-hdr-work__mark" aria-hidden="true">
-                  {service!.mark}
-                </span>
-              ) : (
-                <img className="ds-hdr-work__emblem" src={emblemSrc} alt="" />
-              )}
+              {/* One slot: the service's own OrgLogo, or OrgLogo with no org — which IS the
+                  State Emblem, from the registry. The same component either way, as Figma's
+                  Service mark is one org-logo instance set to Org=Emblem by default. */}
+              <span className="ds-hdr-work__mark" aria-hidden="true">
+                {service!.mark ?? <OrgLogo size="sm" />}
+              </span>
               <span className="ds-hdr-work__name">{service!.name}</span>
             </ServiceTag>
             <span className="ds-hdr-cond__spacer" />
             {search && !onToggleNav && (
-              <button
-                type="button"
-                className="ds-hdr-cond__iconbtn"
+              /* The design system's IconButton — the same neutral, outlined, 40px control the
+                 bell is — not a button restyled with the condensed bar's classes. */
+              <IconButton
+                variant="neutral"
+                appearance="outlined"
+                size="md"
                 aria-label={mobileSearchOpen ? "Close search" : (search.placeholder ?? "Search")}
                 aria-expanded={mobileSearchOpen}
                 onClick={() => setMobileSearchOpen((o) => !o)}
-              >
-                <Icon name={mobileSearchOpen ? "close" : "search"} size={24} />
-              </button>
+                icon={<Icon name={mobileSearchOpen ? "close" : "search"} size={24} />}
+              />
             )}
             {account && notifications && <NotificationBell notifications={notifications} linkAs={linkAs} />}
             {account && <AccountMenu account={account} items={accountMenu} avatarSize={40} />}
