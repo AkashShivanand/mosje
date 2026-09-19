@@ -1767,6 +1767,19 @@
     }
   }
 
+  /* Paper gets the masthead where the page puts it, whatever the reader had scrolled to —
+     SiteHeader also resets the state on beforeprint; this holds without script. */
+  @media print {
+    .ds-hdr.is-sticky[data-layers],
+    .ds-hdr.is-sticky[data-layers] .sa-abar {
+      transform: none;
+    }
+
+    .ds-hdr.is-sticky[data-layers] .ds-hdr-brand {
+      visibility: visible;
+    }
+  }
+
   /* Reduced motion: the rows still come and go, but they arrive instead of travelling. */
   @media (max-width: 767px) and (prefers-reduced-motion: reduce) {
     .ds-hdr.is-sticky[data-layers],

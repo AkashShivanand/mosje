@@ -10,6 +10,7 @@ import { NotificationBell } from "./notification-bell";
 import { MenuToggle, NavItemLink, SheetToggle } from "./nav-parts";
 import { NavSheet } from "./nav-sheet";
 import { navLinkRoutes, type NavTag } from "./nav-link-tag";
+import { nextReveal, type HeaderReveal } from "./header-reveal";
 import { Search } from "../../forms/search";
 import type {
   AccountMenuItem,
@@ -309,7 +310,7 @@ export function SiteHeader({
    *   "shown"  scrolling UP, or focus in the header: the accessibility bar and the
    *            working bar back together, the identity row left behind
    */
-  const [reveal, setReveal] = React.useState<"top" | "hidden" | "shown">("top");
+  const [reveal, setReveal] = React.useState<HeaderReveal>("top");
   /** Held true across printing, so scroll anchoring cannot re-condense the header. */
   const printingRef = React.useRef(false);
   /** Held true across the condense/expand morph — see the effect that sets it. */
@@ -394,6 +395,7 @@ export function SiteHeader({
        A 12px travel threshold, accumulated, so a finger resting on the glass or a
        momentum tail cannot flicker it. */
     let lastY = window.scrollY;
+    let current: HeaderReveal = "top";
     let frame = 0;
     const holding = () => {
       const el = headerRef.current;
@@ -401,39 +403,32 @@ export function SiteHeader({
          reader who tabbed back up), or any of its disclosures open. */
       return !!el && (el.matches(":focus-within") || !!el.querySelector('[aria-expanded="true"]'));
     };
+    const peelOf = () => parseFloat(headerRef.current?.style.getPropertyValue("--sa-hdr-peel-h") || "0");
     const read = () => {
       frame = 0;
       if (printingRef.current || morphingRef.current) return;
       if (layered?.matches) {
         setScrolled(false);
-        const y = window.scrollY;
-        const peel = parseFloat(headerRef.current?.style.getPropertyValue("--sa-hdr-peel-h") || "0");
-        if (y < peel || peel === 0) {
-          lastY = y;
-          setReveal("top");
-          return;
+        const r = nextReveal({ y: window.scrollY, lastY, peel: peelOf(), holding: holding(), current });
+        lastY = r.lastY;
+        if (r.reveal !== current) {
+          current = r.reveal;
+          setReveal(r.reveal);
         }
-        if (holding()) {
-          lastY = y;
-          setReveal("shown");
-          return;
-        }
-        const dy = y - lastY;
-        if (Math.abs(dy) < 12) return;
-        lastY = y;
-        setReveal(dy > 0 ? "hidden" : "shown");
         return;
       }
+      current = "top";
       setReveal("top");
       const y = window.scrollY;
       setScrolled((was) => (was ? y > 40 : y > 120));
     };
     /* Focus arriving from outside — Shift+Tab from the page — brings it back at once. */
     const onFocusIn = () => {
-      if (layered?.matches && headerRef.current && window.scrollY > 0) {
-        const peel = parseFloat(headerRef.current.style.getPropertyValue("--sa-hdr-peel-h") || "0");
-        if (window.scrollY >= peel) setReveal("shown");
-      }
+      if (!layered?.matches) return;
+      const r = nextReveal({ y: window.scrollY, lastY, peel: peelOf(), holding: true, current });
+      lastY = r.lastY;
+      current = r.reveal;
+      setReveal(r.reveal);
     };
     headerRef.current?.addEventListener("focusin", onFocusIn);
     const onScroll = () => {
@@ -441,10 +436,12 @@ export function SiteHeader({
     };
     read();
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
     layered?.addEventListener("change", read);
     const header = headerRef.current;
     return () => {
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
       header?.removeEventListener("focusin", onFocusIn);
       layered?.removeEventListener("change", read);
       if (frame !== 0) window.cancelAnimationFrame(frame);
@@ -510,7 +507,12 @@ export function SiteHeader({
       const layered = !!work && work.offsetHeight > 0;
       const brand = layered ? el.querySelector<HTMLElement>(".ds-hdr-brand") : null;
       const peel = abarH + (brand?.offsetHeight ?? 0);
-      const pinned = Math.max(0, el.offsetHeight - peel);
+      /* In the phone layers the tallest thing that can cover the top of the viewport
+         while scrolled is the REVEALED state — the accessibility bar AND the working
+         bar — so that, not the bar alone, is what a scroll-padding must clear. At 57
+         a Shift+Tab upward could land focus under the returning accessibility bar
+         (WCAG 2.4.11). */
+      const pinned = layered ? abarH + work!.offsetHeight : Math.max(0, el.offsetHeight - peel);
       el.style.setProperty("--sa-hdr-abar-h", `${abarH}px`);
       el.style.setProperty("--sa-hdr-peel-h", `${peel}px`);
       el.style.setProperty("--sa-hdr-ident-h", `${brand?.offsetHeight ?? 0}px`);
@@ -525,7 +527,13 @@ export function SiteHeader({
          them, which is the defect this whole variable exists to close. */
       root.style.setProperty("--sa-header-bottom", `${isCondensed ? pinned : el.offsetHeight}px`);
       if (!isCondensed) root.style.setProperty("--sa-header-pinned", `${pinned}px`);
-      if (isSticky) root.style.setProperty("--sa-header-stuck", `${pinned}px`);
+      /* A sticky OFFSET follows the state the masthead is in NOW. In the phone layers
+         that is the gesture: nothing while hidden, bar + working bar while revealed,
+         the working bar otherwise — so a band pinned under the masthead rides up with
+         it instead of leaving a gap the height of a row. */
+      const reveal = el.dataset.reveal;
+      const stuck = !layered ? pinned : reveal === "hidden" ? 0 : reveal === "shown" ? abarH + work!.offsetHeight : work!.offsetHeight;
+      if (isSticky) root.style.setProperty("--sa-header-stuck", `${stuck}px`);
     };
     measure();
     const ro = new ResizeObserver(measure);
@@ -535,7 +543,7 @@ export function SiteHeader({
       ro.disconnect();
       window.removeEventListener("resize", measure);
     };
-  }, [condensed, isSticky]);
+  }, [condensed, isSticky, reveal]);
 
 
   /**
@@ -589,6 +597,9 @@ export function SiteHeader({
     const onBeforePrint = () => {
       printingRef.current = true;
       setScrolled(false);
+      /* The phone layers too: a masthead translated off the top of the viewport
+         would print as a blank band. */
+      setReveal("top");
     };
     const onAfterPrint = () => {
       printingRef.current = false;
