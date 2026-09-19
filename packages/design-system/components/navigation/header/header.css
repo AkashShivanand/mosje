@@ -1621,6 +1621,25 @@
       pointer-events: none;
     }
 
+    /* WHERE THE FILL IS DROPPED, THE BAND IS DRAWN. Forced colours remove background
+       colours, and so does printing by default — both left "BETA" floating on a
+       diagonal with nothing under it. The band's two long edges are ruled instead: in
+       the system's own ink under forced colours, in the text's ink on paper. */
+    @media (forced-colors: active) {
+      .ds-hdr[data-layers] .ds-hdr-sash {
+        forced-color-adjust: none;
+        background-color: Canvas;
+        color: CanvasText;
+        border-block: var(--sa-stroke-1) solid CanvasText;
+      }
+    }
+
+    @media print {
+      .ds-hdr[data-layers] .ds-hdr-sash {
+        border-block: var(--sa-stroke-1) solid currentcolor;
+      }
+    }
+
     /* The working bar: the condensed bar's anatomy, at rest and pinned alike. */
     .ds-hdr[data-layers] .ds-hdr-work {
       display: flex;
