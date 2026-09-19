@@ -90,7 +90,7 @@ The Figma page "Login/Signup" contains a mix of naming conventions — some Pasc
 | `7048:33600` | Create New Account | `03 Registration / Create Account` | "New" is redundant |
 | `7048:35014` | Reset PASSWORD | `04 Credential Recovery / Reset Password` | ALL-CAPS is not a name convention |
 | `8755:4593` | Sign In images options | `05 Portal Themes / Login Hero Backgrounds` | Descriptive name that communicates purpose |
-| `8774:24865` | NOS/NHAPOA | `05 Portal Themes / Hero — NOS & NHAPOA` | Use dash for slash in names |
+| `8774:24865` | NOS/SAMBAL | `05 Portal Themes / Hero — NOS` | Use dash for slash in names |
 | `8904:35114` | PM AJAY | `05 Portal Themes / Hero — PM-AJAY` | Consistent hyphenation |
 | `9018:36746` | E-Utthaan | `05 Portal Themes / Hero — E-Utthaan` | Consistent |
 | `8755:2194` | SCW | `05 Portal Themes / Hero — SCW` | Consistent |
@@ -136,7 +136,7 @@ The Figma page "Login/Signup" contains a mix of naming conventions — some Pasc
   ├── Hero — NMBA
   ├── Hero — SMILE-Transgender
   ├── Hero — SMILE-Beggary
-  ├── Hero — NOS & NHAPOA
+  ├── Hero — NOS
   ├── Hero — PM-AJAY
   └── Hero — E-Utthaan
 
@@ -172,7 +172,7 @@ The Figma page "Login/Signup" contains a mix of naming conventions — some Pasc
 | 20 | Portal Themes | Hero — NMBA | 1440×960 | `8755:2462` | P1 |
 | 21 | Portal Themes | Hero — SMILE-Transgender | 1440×960 | `8755:2730` | P1 |
 | 22 | Portal Themes | Hero — SMILE-Beggary | 1440×960 | `9178:57187` | P1 |
-| 23 | Portal Themes | Hero — NOS/NHAPOA | 1440×960 | `8774:24865` | P2 |
+| 23 | Portal Themes | Hero — NOS | 1440×960 | `8774:24865` | P2 |
 | 24 | Portal Themes | Hero — PM-AJAY | 1440×960 | `8904:35114` | P2 |
 | 25 | Portal Themes | Hero — E-Utthaan | 1440×960 | `9018:36746` | P2 |
 
@@ -949,7 +949,7 @@ Each hero variant uses the same layout. Only the background photograph and porta
 | NMBA — Nasha Mukt Bharat Abhiyaan | Community/youth | Designed |
 | SMILE - Transgender | Transgender inclusion imagery | Designed |
 | SMILE - Beggary | Social inclusion scene | Designed (node `9178:57187` — verify name) |
-| NOS / NHAPOA | Student/community scene | Designed (standalone frame `8774:24865`) |
+| NOS / SAMBAL | Student/community scene | Designed (standalone frame `8774:24865`) |
 | PM-AJAY | Rural community | Designed (standalone frame `8904:35114`) |
 | E-Utthaan | Empowerment scene | Designed (standalone frame `9018:36746`) |
 
