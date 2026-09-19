@@ -302,8 +302,14 @@ export function SiteHeader({
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const [scrolled, setScrolled] = React.useState(false);
-  /** Phone layers: the upper rows have scrolled away and the working bar is pinned. */
-  const [peeled, setPeeled] = React.useState(false);
+  /**
+   * Phone layers only — where the masthead is, driven by the reader's gesture:
+   *   "top"    within the first screen of masthead: every row where the page puts it
+   *   "hidden" scrolling DOWN past it: the whole masthead out of the way
+   *   "shown"  scrolling UP, or focus in the header: the accessibility bar and the
+   *            working bar back together, the identity row left behind
+   */
+  const [reveal, setReveal] = React.useState<"top" | "hidden" | "shown">("top");
   /** Held true across printing, so scroll anchoring cannot re-condense the header. */
   const printingRef = React.useRef(false);
   /** Held true across the condense/expand morph — see the effect that sets it. */
@@ -380,28 +386,66 @@ export function SiteHeader({
        sticky offset, so the working bar is already the pinned state; a morph on
        top of that would crossfade the bar with a copy of itself 96px higher. */
     const layered = hasLayers ? window.matchMedia("(max-width: 767px)") : null;
+    /* THE GESTURE, not the position, decides the phone layers. Down means reading:
+       the masthead leaves entirely. Up means reaching for something: the bar with
+       the accessibility and language controls comes back WITH the working bar, so
+       the bar's icon — the page's one door to the accessibility panel — is one
+       flick away from anywhere on the page, and the floating button is not needed.
+       A 12px travel threshold, accumulated, so a finger resting on the glass or a
+       momentum tail cannot flicker it. */
+    let lastY = window.scrollY;
     let frame = 0;
+    const holding = () => {
+      const el = headerRef.current;
+      /* Never hide a masthead the reader is using: focus inside it (a keyboard
+         reader who tabbed back up), or any of its disclosures open. */
+      return !!el && (el.matches(":focus-within") || !!el.querySelector('[aria-expanded="true"]'));
+    };
     const read = () => {
       frame = 0;
       if (printingRef.current || morphingRef.current) return;
       if (layered?.matches) {
         setScrolled(false);
+        const y = window.scrollY;
         const peel = parseFloat(headerRef.current?.style.getPropertyValue("--sa-hdr-peel-h") || "0");
-        setPeeled(peel > 0 && window.scrollY >= peel - 1);
+        if (y < peel || peel === 0) {
+          lastY = y;
+          setReveal("top");
+          return;
+        }
+        if (holding()) {
+          lastY = y;
+          setReveal("shown");
+          return;
+        }
+        const dy = y - lastY;
+        if (Math.abs(dy) < 12) return;
+        lastY = y;
+        setReveal(dy > 0 ? "hidden" : "shown");
         return;
       }
-      setPeeled(false);
+      setReveal("top");
       const y = window.scrollY;
       setScrolled((was) => (was ? y > 40 : y > 120));
     };
+    /* Focus arriving from outside — Shift+Tab from the page — brings it back at once. */
+    const onFocusIn = () => {
+      if (layered?.matches && headerRef.current && window.scrollY > 0) {
+        const peel = parseFloat(headerRef.current.style.getPropertyValue("--sa-hdr-peel-h") || "0");
+        if (window.scrollY >= peel) setReveal("shown");
+      }
+    };
+    headerRef.current?.addEventListener("focusin", onFocusIn);
     const onScroll = () => {
       if (frame === 0) frame = window.requestAnimationFrame(read);
     };
     read();
     window.addEventListener("scroll", onScroll, { passive: true });
     layered?.addEventListener("change", read);
+    const header = headerRef.current;
     return () => {
       window.removeEventListener("scroll", onScroll);
+      header?.removeEventListener("focusin", onFocusIn);
       layered?.removeEventListener("change", read);
       if (frame !== 0) window.cancelAnimationFrame(frame);
     };
@@ -469,6 +513,8 @@ export function SiteHeader({
       const pinned = Math.max(0, el.offsetHeight - peel);
       el.style.setProperty("--sa-hdr-abar-h", `${abarH}px`);
       el.style.setProperty("--sa-hdr-peel-h", `${peel}px`);
+      el.style.setProperty("--sa-hdr-ident-h", `${brand?.offsetHeight ?? 0}px`);
+      el.style.setProperty("--sa-hdr-work-h", `${layered ? work!.offsetHeight : 0}px`);
       /* The panels hanging off the nav row are positioned at the header's bottom
          edge, so this is how much of the viewport they have left. While RESTING it
          is the whole header: the accessibility bar is still on screen for the first
@@ -1158,7 +1204,7 @@ export function SiteHeader({
       className={cn("ds-hdr", isSticky && "is-sticky", condensed && "is-scrolled", className)}
       data-variant={variant}
       data-layers={hasLayers ? "" : undefined}
-      data-peeled={hasLayers && peeled ? "" : undefined}
+      data-reveal={hasLayers && reveal !== "top" ? reveal : undefined}
       data-nav-overflow={condensed && hasNav && navOverflows ? "true" : undefined}
     >
       {/* ── Tier 1: Accessibility bar (the shared DS component) ──

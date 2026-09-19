@@ -1517,10 +1517,12 @@
      At 320 the bell and avatar wrapped onto a second line under the toggle and the brand row
      stood 145px (191 with the bar).
 
-     1. GHOST CONTROLS. The toggle and the bell were 40px outlined squares and the avatar a
-        filled one — three shapes on a 320px row. On a phone the controls lose the stroke; same
-        40px target, same hover/pressed ground, same focus ring. From 768 up nothing changes.
-     2. THE ROW WRAPPED. The lockup's 168px floor predates the bell: toggle 40 · 12 · 168 · 12 ·
+     The toggle and the bell KEEP their outline, as at every other width and in Figma
+     (Navbar/MenuToggle, Navbar/NotificationBell). A ghost-on-phone variant was tried on
+     2026-09-17 and withdrawn on 2026-09-19: the same control drawn two ways by breakpoint
+     is two controls to learn, and the outline is what tells a first-time reader on a
+     government service that the glyph is a button (the reason the toggle got it at all).
+     THE ROW WRAPPED. The lockup's 168px floor predates the bell: toggle 40 · 12 · 168 · 12 ·
         bell 40 · 8 · account 48 = 328 > 288 at 320. Gaps go to 8, the avatar's trigger loses
         its 4px padding (the 40px avatar IS the target), and the floor drops to 136.
      The Government of India line stays: DBIM 5.2.2 makes it part of the lockup, and the
@@ -1532,11 +1534,6 @@
 
     .ds-hdr[data-variant="portal"]:not([data-layers]) .ds-hdr-brand__lockup {
       min-width: 136px;
-    }
-
-    .ds-hdr[data-variant="portal"] .ds-hdr-brand__toggle,
-    .ds-hdr[data-variant="portal"] .ds-hdr-brand__in .ds-hdr-bell__btn {
-      border-color: transparent;
     }
 
     .ds-hdr[data-variant="portal"] .ds-hdr-brand__in .ds-hdr-account.is-button {
@@ -1639,7 +1636,6 @@
       height: 40px;
       width: 40px;
       padding: var(--sa-padding-4);
-      border-color: transparent;
     }
 
     .ds-hdr-work__service {
@@ -1683,12 +1679,7 @@
       font-weight: var(--sa-font-weight-semibold);
     }
 
-    /* The reader's own controls, ghost as on the single row. */
-    .ds-hdr-work .ds-hdr-bell__btn,
-    .ds-hdr-work .ds-hdr-cond__iconbtn {
-      border-color: transparent;
-    }
-
+    /* The reader's own controls are the masthead's everywhere else: outlined IconButtons. */
     .ds-hdr-work .ds-hdr-account.is-button {
       padding: 0;
     }
@@ -1701,10 +1692,62 @@
       opacity: 0;
     }
 
-    /* Flat at rest, like every resting masthead; lifted once the upper rows have gone and
-       page content passes under it — the scrolled state's elevation, for the same reason. */
-    .ds-hdr.is-sticky[data-layers][data-peeled] {
+    /* ── THE GESTURE STATES ─────────────────────────────────────────────────
+       SiteHeader writes `data-reveal` from the reader's scroll direction once the
+       masthead has scrolled past its own height (absent within it):
+
+         hidden  scrolling down — the working bar slides up and out too, and the page
+                 has the whole screen. The header is already stuck at minus
+                 (bar + identity), so one row's height takes the rest away.
+         shown   scrolling up, or focus in the header — the accessibility bar AND the
+                 working bar come back, stacked, and the identity row stays behind.
+
+       Every movement is a TRANSFORM, never a height or an offset: the header's box
+       and the page under it never move, so nothing reflows and there is nothing for
+       scroll anchoring to chase. For `shown` the header drops by the bar's height
+       and the bar drops a further identity-row's height, landing on top of the
+       identity row it passes over — which is hidden, so it can never flash through
+       the gap while they travel. */
+    .ds-hdr.is-sticky[data-layers],
+    .ds-hdr.is-sticky[data-layers] .sa-abar {
+      transition: transform var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+    }
+
+    .ds-hdr.is-sticky[data-layers][data-reveal="hidden"] {
+      transform: translateY(calc(-1 * var(--sa-hdr-work-h, 57px)));
+    }
+
+    .ds-hdr.is-sticky[data-layers][data-reveal="shown"] {
+      transform: translateY(var(--sa-hdr-abar-h, 0));
       box-shadow: var(--sa-elevation-card);
+    }
+
+    .ds-hdr.is-sticky[data-layers][data-reveal="shown"] .sa-abar {
+      position: relative;
+      z-index: var(--sa-z-raised);
+      transform: translateY(var(--sa-hdr-ident-h, 0));
+    }
+
+    .ds-hdr.is-sticky[data-layers][data-reveal="shown"] .ds-hdr-brand {
+      visibility: hidden;
+    }
+
+    /* ONE DOOR, AND IT IS THE BAR'S. On a layered portal phone the UX4G floating
+       button never shows: the bar's accessibility icon is on screen at the top of the
+       page and comes back with any upward scroll, so the floating copy would only ever
+       be a second door or a button over content. Hidden, never unmounted — the bar's
+       icon opens the panel by replaying a click on this very element
+       (accessibility-entry-point.md rules 2 and 4b). */
+    :root:has(.ds-hdr[data-layers]) #uw-widget-custom-trigger {
+      display: none !important;
+    }
+  }
+
+  /* Reduced motion: the rows still come and go, but they arrive instead of travelling. */
+  @media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+    .ds-hdr.is-sticky[data-layers],
+    .ds-hdr.is-sticky[data-layers] .sa-abar {
+      transition: none;
     }
   }
 
