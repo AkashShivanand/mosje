@@ -3539,7 +3539,7 @@ and renders it only when `exportable`.
 #### SiteHeader
 **Purpose**: The SAMAVESH Navbar. **One component serves every placement in the estate** — there is no second masthead to reach for and none to write.  
 **Variants**: `website` (static three-tier masthead) | `portal` (sticky, sidebar toggle, account) | `compact` (one 64px tier for hub index surfaces)  
-**Key props**: `emblemSrc`, `brandLines`, `homeHref`, `nav`, `variant`, `search`, `account`, `actions`, `onToggleNav`, `navExpanded`  
+**Key props**: `emblemSrc`, `brandLines`, `homeHref`, `nav`, `variant`, `search`, `account`, `actions`, `onToggleNav`, `navExpanded`, `service`  
 **Rules**:
 - **Choose the variant by PLACEMENT, not by taste.** `website` for public pages, `portal`
   for signed-in app shells, `compact` for internal index / wayfinding surfaces (the hub
@@ -3585,6 +3585,23 @@ and renders it only when `exportable`.
   SECOND ACCESSIBILITY BAR INSIDE THE DESIGN SYSTEM (`portal-login-shell`, with two
   skip links to one target and ◑ ♿ 🌐 as literal emoji) and an INVENTED ABSTRACT
   MARK where the National Emblem belongs (`eutthan-shell`).
+- **A portal passes `service` — its phone layout depends on it.** `service={{ name, mark?, href }}`
+  names the SERVICE (E-Anudaan, NMBA, SAMBAL…) as the sidebar does; `mark` is
+  `<OrgLogo path="/portals/<slug>" size="sm" />` where the organisation has one, and left out
+  where it has none (the emblem already heads the bar). Below 768 the masthead becomes three
+  rows: the accessibility bar; the identity row — the COMPLETE Lockup 2 and no control, BETA as
+  a 45° corner sash; and the working bar — menu, emblem + service name, bell, account. It
+  follows the reader's gesture: scrolling down hides it, any upward scroll of 12px brings back
+  the bar and the working bar together, focus inside holds it. There is no floating
+  accessibility button on these pages (accessibility-entry-point.md 4b). The decision logic is
+  `header-reveal.ts`, tested on its own.
+- **`brandLines` is Lockup 2, never the service.** `ministry` names the Ministry and
+  `department` names the Department — "Patient Data Monitoring System", "DAPSC Allocation &
+  Progress Tracker" and "SAMBAL" all sat in the Department line until 2026-09-19 (DBIM 5.2.2).
+  The service's name goes in `service`.
+- **Not on a scaled canvas.** A surface that scales a desktop canvas to fit a phone (PM-AJAY's
+  `.pm-app`) is not a phone surface and does not pass `service`: sticky pinning does not
+  survive a transformed ancestor.
 - **The parts are importable.** `MenuToggle`, `SheetToggle`, `NavItemLink`, `NavDropdown`,
   `DropdownItem`, `MegaMenu`, `MegaMenuItem` and `NavSheet` are exported. Reach for one when
   a surface needs that piece **without** the masthead; do not re-implement it beside one.

@@ -1,6 +1,6 @@
 import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Button, SiteHeader } from "@mosje/design-system";
+import { Button, OrgLogo, SiteHeader } from "@mosje/design-system";
 
 /**
  * **SiteHeader** — the SAMAVESH Navbar, in its two estate variants.
@@ -220,7 +220,7 @@ export const Portal: Story = {
         brandLines={{
           org: "Government of India",
           ministry: "Ministry of Social Justice & Empowerment",
-          department: "Nasha Mukt Bharat Abhiyaan",
+          department: "Department of Social Justice & Empowerment",
         }}
         onToggleNav={() => setNavOpen((o) => !o)}
         navExpanded={navOpen}
@@ -264,6 +264,93 @@ export const PortalWithNotifications: Story = {
         ],
       }}
     />
+  ),
+};
+
+const PHONE_BRAND_LINES = {
+  org: "Government of India",
+  ministry: "Ministry of Social Justice & Empowerment",
+  department: "Department of Social Justice & Empowerment",
+};
+
+/** Enough page beneath the masthead to scroll it through all three states. */
+function ScrollPage({ children }: { children: React.ReactNode }) {
+  return (
+    <div>
+      {children}
+      <main style={{ padding: "var(--sa-padding-16)" }}>
+        {Array.from({ length: 24 }, (_, i) => (
+          <p key={i} style={{ margin: "0 0 var(--sa-stack-16)" }}>
+            Application {String(i + 1).padStart(3, "0")} · Hostel (Unit 2) · Under Review
+          </p>
+        ))}
+      </main>
+    </div>
+  );
+}
+
+/**
+ * **A portal on a phone** — `service` opts the portal into its phone layout, below 768.
+ * Three rows: the accessibility bar; the identity row, which holds the department's
+ * complete Lockup 2 and no control, with BETA as a corner sash; and the working bar —
+ * menu, emblem and service name, notifications, account.
+ *
+ * **Scroll it.** Down takes the whole masthead away; any upward scroll of 12px brings
+ * back the accessibility bar and the working bar together; Tab into it and it stays.
+ * There is no floating accessibility button on these pages — the bar's icon is the door.
+ */
+export const PortalOnAPhone: Story = {
+  parameters: { viewport: { defaultViewport: "mobile1" } },
+  render: function Render(args) {
+    const [navOpen, setNavOpen] = React.useState(false);
+    return (
+      <ScrollPage>
+        <SiteHeader
+          {...args}
+          variant="portal"
+          nav={undefined}
+          sticky
+          beta
+          brandLines={PHONE_BRAND_LINES}
+          service={{ name: "NMBA", mark: <OrgLogo path="/portals/nmba" size="sm" />, href: "#" }}
+          onToggleNav={() => setNavOpen((o) => !o)}
+          navExpanded={navOpen}
+          account={{ name: "Sunita Deshmukh", role: "State Nodal Officer, Maharashtra" }}
+          accountMenu={[{ label: "Sign out", onSelect: () => {}, danger: true }]}
+          notifications={{
+            href: "#notifications",
+            items: [
+              { id: "a1", at: "2026-09-12T10:30:00+05:30", action: "Deficiency response requested",
+                subject: "Application 2026/PMS/01284", actionRequired: true, tone: "warning" },
+            ],
+          }}
+        />
+      </ScrollPage>
+    );
+  },
+};
+
+/**
+ * A service with no mark of its own — E-Anudaan, E-Utthan — passes no `mark`. The
+ * emblem already heads the working bar; a second copy of it would say nothing.
+ */
+export const PortalOnAPhoneWithoutAMark: Story = {
+  parameters: { viewport: { defaultViewport: "mobile1" } },
+  render: (args) => (
+    <ScrollPage>
+      <SiteHeader
+        {...args}
+        variant="portal"
+        nav={undefined}
+        sticky
+        beta
+        brandLines={PHONE_BRAND_LINES}
+        service={{ name: "E-Anudaan", href: "#" }}
+        onToggleNav={() => {}}
+        navExpanded={false}
+        account={{ name: "Sankalp Seva Sansthan", role: "NGO Applicant" }}
+      />
+    </ScrollPage>
   ),
 };
 
