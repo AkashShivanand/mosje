@@ -406,7 +406,7 @@ export default function SiteHeaderPage(): React.JSX.Element {
               rows={[
                 ["Accessibility bar", "Skip link, Government of India, accessibility, language", "Leaves first; returns with the working bar on any upward scroll"],
                 ["Identity row", "The emblem and the full lockup — Government of India, Ministry, Department — with BETA as a corner sash", "Leaves second, and stays away until the page is back at the top"],
-                ["Working bar", "Menu, emblem and service name, notifications, account", "Hides while the reader scrolls down; returns on any upward scroll of 12px or more"],
+                ["Working bar", "Menu, the service's own mark (the emblem where it has none) and name, notifications, account", "Hides while the reader scrolls down; returns on any upward scroll of 12px or more"],
               ]}
             />
             <p>
@@ -461,7 +461,7 @@ export default function SiteHeaderPage(): React.JSX.Element {
                 ["1024 and up", "The navigation row is shown, with dropdowns and mega-menus"],
                 ["Below 1024", "The navigation row collapses; a trigger in the brand row opens NavSheet"],
                 ["Below 900", "The search field hides; the condensed bar keeps a search icon"],
-                ["Below 768, portal passing service", "The three phone rows above: the identity row holds the complete lockup and no control; BETA becomes a corner sash; the working bar carries the menu, the emblem and service name, notifications and the account"],
+                ["Below 768, portal passing service", "The three phone rows above: the identity row holds the complete lockup and no control; BETA becomes a corner sash; the working bar carries the menu, the service's own mark (the emblem where it has none) and name, notifications and the account"],
                 ["Below 768", "Co-branding marks hide; BETA moves onto the Government of India line; the account name, email and caret hide and the avatar steps to 40; on a portal every control on the row is 40; with a sidebar toggle the sheet trigger is not rendered and search lives at the head of the drawer (SidebarNav header); without one the search field waits behind a 40px button that opens it on its own row"],
                 ["Below 768, accessibility bar", "Font size leaves for the sheet and the widget; accessibility and language stay as 44px icon controls; the skip link shows on the first Tab press"],
                 [

@@ -1687,7 +1687,8 @@
     }
 
     /* The service's mark is the estate's OrgLogo at size "sm" — a 32px tile, the same
-       mark the sidebar's identity block carries — so the slot takes its size from it. */
+       mark the sidebar's identity block carries — so the slot takes its size from it. It
+       replaces the emblem rather than joining it, so it holds at every width, 320 included. */
     .ds-hdr-work__mark {
       display: inline-flex;
       flex: 0 0 auto;
@@ -1785,13 +1786,6 @@
     .ds-hdr.is-sticky[data-layers],
     .ds-hdr.is-sticky[data-layers] .sa-abar {
       transition: none;
-    }
-  }
-
-  /* Below 360 the service's own mark yields: the emblem already heads the bar. */
-  @media (max-width: 359px) {
-    .ds-hdr-work__mark {
-      display: none;
     }
   }
 

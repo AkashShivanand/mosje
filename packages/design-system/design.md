@@ -3588,9 +3588,10 @@ and renders it only when `exportable`.
 - **A portal passes `service` — its phone layout depends on it.** `service={{ name, mark?, href }}`
   names the SERVICE (E-Anudaan, NMBA, SAMBAL…) as the sidebar does; `mark` is
   `<OrgLogo path="/portals/<slug>" size="sm" />` where the organisation has one, and left out
-  where it has none (the emblem already heads the bar). Below 768 the masthead becomes three
+  where it has none, in which case the emblem stands in (OrgLogo's own fallback). The mark
+  and the emblem are never drawn side by side: the emblem already heads the identity row. Below 768 the masthead becomes three
   rows: the accessibility bar; the identity row — the COMPLETE Lockup 2 and no control, BETA as
-  a 45° corner sash; and the working bar — menu, emblem + service name, bell, account. It
+  a 45° corner sash; and the working bar — menu, the service's mark and name, bell, account. It
   follows the reader's gesture: scrolling down hides it, any upward scroll of 12px brings back
   the bar and the working bar together, focus inside holds it. There is no floating
   accessibility button on these pages (accessibility-entry-point.md 4b). The decision logic is

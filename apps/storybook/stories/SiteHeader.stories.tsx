@@ -293,7 +293,8 @@ function ScrollPage({ children }: { children: React.ReactNode }) {
  * **A portal on a phone** — `service` opts the portal into its phone layout, below 768.
  * Three rows: the accessibility bar; the identity row, which holds the department's
  * complete Lockup 2 and no control, with BETA as a corner sash; and the working bar —
- * menu, emblem and service name, notifications, account.
+ * menu, the service's own mark and name, notifications, account. The mark stands alone: the
+ * emblem already heads the identity row above, so it is not repeated beside the mark.
  *
  * **Scroll it.** Down takes the whole masthead away; any upward scroll of 12px brings
  * back the accessibility bar and the working bar together; Tab into it and it stays.
@@ -331,8 +332,8 @@ export const PortalOnAPhone: Story = {
 };
 
 /**
- * A service with no mark of its own — E-Anudaan, E-Utthan — passes no `mark`. The
- * emblem already heads the working bar; a second copy of it would say nothing.
+ * A service with no mark of its own — E-Anudaan, E-Utthan — passes no `mark`, and the
+ * emblem stands in for it in the working bar: the same fallback OrgLogo uses.
  */
 export const PortalOnAPhoneWithoutAMark: Story = {
   parameters: { viewport: { defaultViewport: "mobile1" } },

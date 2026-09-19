@@ -167,8 +167,10 @@ export interface HeaderService {
   /** The service's name as the Department writes it, e.g. "E-Anudaan". */
   name: string;
   /**
-   * The service's own mark, if it has one. Leave it out where the organisation has
-   * none: the emblem already heads the bar, and a second copy of it says nothing.
+   * The service's own mark — `<OrgLogo path="/portals/<slug>" size="sm" />`. It identifies the
+   * portal in the working bar ON ITS OWN; the emblem is not drawn beside it, because the
+   * emblem already heads the identity row. Leave it out where the organisation has no
+   * mark, and the emblem stands in — the same fallback OrgLogo uses.
    */
   mark?: React.ReactNode;
   /** Where the name leads — the service's home. Defaults to the header's `homeHref`. */

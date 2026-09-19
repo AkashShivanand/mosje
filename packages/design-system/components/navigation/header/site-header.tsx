@@ -133,8 +133,8 @@ export interface SiteHeaderProps {
    *   2. the department's Lockup 2, COMPLETE and holding no control — Government of
    *      India, the Ministry and the Department, as DBIM 5.2.2 requires, with BETA
    *      as a corner sash — scrolls away second;
-   *   3. the working bar — menu, emblem, this service's name, bell, account — the
-   *      only row that pins.
+   *   3. the working bar — menu, this service's mark (the emblem where it has none)
+   *      and name, bell, account — the only row that pins.
    *
    * The two upper rows leave by the page's own scroll (a negative sticky offset),
    * not by a script-driven morph, so there is no height animation on a phone.
@@ -1174,16 +1174,19 @@ export function SiteHeader({
                 className="ds-hdr-work__toggle"
               />
             )}
-            {/* ONE LINK, emblem and name together. A separate emblem link repeated the
-                lockup's own "Department — Home" one row up: two identical tab stops
-                in a row for a keyboard reader. The department's home is the lockup;
-                this is the service's. */}
+            {/* ONE LINK, the service's mark and name together — the service's home. The
+                department's home is the lockup one row up.
+                THE MARK OR THE EMBLEM, NEVER BOTH. The emblem already heads the identity
+                row with the Ministry's name; here the portal is identified by its OWN
+                mark. The emblem appears only as the fallback for a service with none
+                (E-Anudaan, E-Utthan) — the same fallback OrgLogo uses. */}
             <ServiceTag href={serviceHref} className="ds-hdr-work__service">
-              <img className="ds-hdr-work__emblem" src={emblemSrc} alt="" />
-              {service!.mark && (
+              {service!.mark ? (
                 <span className="ds-hdr-work__mark" aria-hidden="true">
                   {service!.mark}
                 </span>
+              ) : (
+                <img className="ds-hdr-work__emblem" src={emblemSrc} alt="" />
               )}
               <span className="ds-hdr-work__name">{service!.name}</span>
             </ServiceTag>
