@@ -179,12 +179,12 @@
       clip: rect(0, 0, 0, 0);
       white-space: nowrap;
     }
-    /* "GOVERNMENT OF / INDIA" is not a label. At 320 the name broke over two lines and the
-       bar grew from 44 to 46 with the words stacked beside a flag. It stays one line: the
-       flag's gap and the cluster's gap step down to 8, which is the width it needed. */
-    .sa-abar.device-auto .sa-abar__govlabel {
-      white-space: nowrap;
-    }
+    /* "GOVERNMENT OF / INDIA" at 320 and default text size: the flag's gap and the
+       cluster's gap step down to 8, and below 360 the launch glyph goes, which is the
+       width the name needed to stay on one line. It is NOT forced with `nowrap`: at 150%
+       text that held the bar at ~395px on a 375 screen and scrolled the whole page
+       sideways (WCAG 1.4.10). Where the reader has asked for bigger text, two lines is
+       the correct answer. */
     .sa-abar.device-auto .sa-abar__gov,
     .sa-abar.device-auto .sa-abar__end {
       gap: var(--sa-inline-8);

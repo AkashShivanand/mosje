@@ -1614,9 +1614,13 @@
       text-align: center;
       background-color: var(--sa-cmp-badge-beta-bg);
       color: var(--sa-color-neutralScale-1000);
+      /* Label/label-3, whole — the text style the Figma sash links. The 2px above and
+         below make the 20px band; the leading stays the style's own. */
+      padding-block: var(--sa-padding-2);
       font-size: var(--sa-type-label-3-size);
-      line-height: var(--sa-type-label-1-lh);
-      font-weight: var(--sa-font-weight-semibold);
+      line-height: var(--sa-type-label-3-lh);
+      font-weight: var(--sa-font-weight-medium);
+      text-transform: uppercase;
       letter-spacing: var(--sa-type-caps-tracking);
       pointer-events: none;
     }
@@ -1693,8 +1697,9 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      font-size: var(--sa-type-label-1-size);
-      line-height: var(--sa-type-label-1-lh);
+      /* Title/title-3 — the style the Figma layer links: 14/20 semibold. */
+      font-size: var(--sa-type-title-3-size);
+      line-height: var(--sa-type-title-3-lh);
       font-weight: var(--sa-font-weight-semibold);
     }
 
