@@ -9,12 +9,14 @@ import { AccountMenu } from "./account-menu";
 import { NotificationBell } from "./notification-bell";
 import { MenuToggle, NavItemLink, SheetToggle } from "./nav-parts";
 import { NavSheet } from "./nav-sheet";
+import { navLinkRoutes, type NavTag } from "./nav-link-tag";
 import { Search } from "../../forms/search";
 import type {
   AccountMenuItem,
   BrandLines,
   BrandMark,
   HeaderAccount,
+  HeaderService,
   HeaderNotifications,
   HeaderSearchConfig,
   HeaderVariant,
@@ -122,6 +124,23 @@ export interface SiteHeaderProps {
   search?: HeaderSearchConfig;
   /** Cobranding marks in the trailing zone (Digital India, SAMAVESH …). */
   cobranding?: BrandMark[];
+  /**
+   * The portal's own service identity. Passing it opts a `variant="portal"` masthead
+   * into its phone layout (below `breakpoint/tablet`), three rows with one job each:
+   *
+   *   1. the accessibility bar — scrolls away first;
+   *   2. the department's Lockup 2, COMPLETE and holding no control — Government of
+   *      India, the Ministry and the Department, as DBIM 5.2.2 requires, with BETA
+   *      as a corner sash — scrolls away second;
+   *   3. the working bar — menu, emblem, this service's name, bell, account — the
+   *      only row that pins.
+   *
+   * The two upper rows leave by the page's own scroll (a negative sticky offset),
+   * not by a script-driven morph, so there is no height animation on a phone.
+   * Without it a portal keeps its single brand row on a phone. From 768 up nothing
+   * changes either way.
+   */
+  service?: HeaderService;
   /** Portal account block (name / email + avatar). */
   account?: HeaderAccount;
   /** Account dropdown items. When provided, the account block opens a menu. */
@@ -255,6 +274,7 @@ export function SiteHeader({
   navControlsId,
   search,
   cobranding,
+  service,
   account,
   accountMenu,
   notifications,
@@ -267,6 +287,11 @@ export function SiteHeader({
 }: SiteHeaderProps): React.JSX.Element {
   const isPortal = variant === "portal";
   const isCompact = variant === "compact";
+  /** The portal's phone layout — see the `service` docs. The CSS decides WHERE it
+      applies (below 768); this only says whether the portal asked for it. */
+  const hasLayers = isPortal && !!service;
+  const serviceHref = service?.href ?? homeHref;
+  const ServiceTag: NavTag = navLinkRoutes({ href: serviceHref }, linkAs) ? (linkAs as NavTag) : "a";
   /* Pinned by default on every surface — see the `sticky` docs. */
   const isSticky = sticky ?? true;
   /* The compact bar is one 65px tier already; there is nothing to condense, and the
@@ -277,6 +302,8 @@ export function SiteHeader({
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const [scrolled, setScrolled] = React.useState(false);
+  /** Phone layers: the upper rows have scrolled away and the working bar is pinned. */
+  const [peeled, setPeeled] = React.useState(false);
   /** Held true across printing, so scroll anchoring cannot re-condense the header. */
   const printingRef = React.useRef(false);
   /** Held true across the condense/expand morph — see the effect that sets it. */
@@ -349,10 +376,21 @@ export function SiteHeader({
        `react-hooks/set-state-in-effect` is right that scheduling a render to
        clear it is work the render can just do. */
     if (!wantsScrollCollapse) return;
+    /* THE PHONE LAYERS NEVER CONDENSE. Their upper rows leave by the negative
+       sticky offset, so the working bar is already the pinned state; a morph on
+       top of that would crossfade the bar with a copy of itself 96px higher. */
+    const layered = hasLayers ? window.matchMedia("(max-width: 767px)") : null;
     let frame = 0;
     const read = () => {
       frame = 0;
       if (printingRef.current || morphingRef.current) return;
+      if (layered?.matches) {
+        setScrolled(false);
+        const peel = parseFloat(headerRef.current?.style.getPropertyValue("--sa-hdr-peel-h") || "0");
+        setPeeled(peel > 0 && window.scrollY >= peel - 1);
+        return;
+      }
+      setPeeled(false);
       const y = window.scrollY;
       setScrolled((was) => (was ? y > 40 : y > 120));
     };
@@ -361,11 +399,13 @@ export function SiteHeader({
     };
     read();
     window.addEventListener("scroll", onScroll, { passive: true });
+    layered?.addEventListener("change", read);
     return () => {
       window.removeEventListener("scroll", onScroll);
+      layered?.removeEventListener("change", read);
       if (frame !== 0) window.cancelAnimationFrame(frame);
     };
-  }, [wantsScrollCollapse]);
+  }, [wantsScrollCollapse, hasLayers]);
 
   /**
    * Publish the masthead's own measurements, so nothing else has to guess them.
@@ -419,8 +459,16 @@ export function SiteHeader({
       const isCondensed = el.classList.contains("is-scrolled");
       const abar = el.querySelector<HTMLElement>(".sa-abar");
       const abarH = abar?.offsetHeight ?? 0;
-      const pinned = Math.max(0, el.offsetHeight - abarH);
+      /* What scrolls away before the header pins. Ordinarily the accessibility bar;
+         in the portal's phone layers, the identity row too — read off the DOM (is
+         the working bar laid out?), so the breakpoint lives in the CSS alone. */
+      const work = el.querySelector<HTMLElement>(".ds-hdr-work");
+      const layered = !!work && work.offsetHeight > 0;
+      const brand = layered ? el.querySelector<HTMLElement>(".ds-hdr-brand") : null;
+      const peel = abarH + (brand?.offsetHeight ?? 0);
+      const pinned = Math.max(0, el.offsetHeight - peel);
       el.style.setProperty("--sa-hdr-abar-h", `${abarH}px`);
+      el.style.setProperty("--sa-hdr-peel-h", `${peel}px`);
       /* The panels hanging off the nav row are positioned at the header's bottom
          edge, so this is how much of the viewport they have left. While RESTING it
          is the whole header: the accessibility bar is still on screen for the first
@@ -1039,7 +1087,65 @@ export function SiteHeader({
               )}
             </div>
           </div>
+
+          {/* BETA AS A CORNER SASH, phone layers only. The identity row is the one
+              row with a free corner — the bar above ends in the language control,
+              the working bar below in the account — and a badge inside the lockup
+              adds a line DBIM 5.2.2 does not define. The slanted word is hidden
+              from the tree and spoken as a phrase instead; the lockup's badge is a
+              link's content under an aria-label, so it was never announced. */}
+          {hasLayers && beta && (
+            <span className="ds-hdr-sash">
+              <span aria-hidden="true">BETA</span>
+              <span className="ds-hdr-sr">Beta service</span>
+            </span>
+          )}
         </div>
+
+        {/* ── The working bar (phone layers) ──
+            The only row that pins on a phone: the rail toggle, the emblem as the
+            way home, the service's name, and the reader's own controls. The same
+            controls as the brand row's trailing cluster, which the CSS hides where
+            this shows — two copies in the DOM, one laid out at any width. */}
+        {hasLayers && (
+          <div className="ds-hdr-work">
+            {onToggleNav && (
+              <MenuToggle
+                expanded={navExpanded}
+                onToggle={onToggleNav}
+                controlsId={navControlsId}
+                className="ds-hdr-work__toggle"
+              />
+            )}
+            {/* ONE LINK, emblem and name together. A separate emblem link repeated the
+                lockup's own "Department — Home" one row up: two identical tab stops
+                in a row for a keyboard reader. The department's home is the lockup;
+                this is the service's. */}
+            <ServiceTag href={serviceHref} className="ds-hdr-work__service">
+              <img className="ds-hdr-work__emblem" src={emblemSrc} alt="" />
+              {service!.mark && (
+                <span className="ds-hdr-work__mark" aria-hidden="true">
+                  {service!.mark}
+                </span>
+              )}
+              <span className="ds-hdr-work__name">{service!.name}</span>
+            </ServiceTag>
+            <span className="ds-hdr-cond__spacer" />
+            {search && !onToggleNav && (
+              <button
+                type="button"
+                className="ds-hdr-cond__iconbtn"
+                aria-label={mobileSearchOpen ? "Close search" : (search.placeholder ?? "Search")}
+                aria-expanded={mobileSearchOpen}
+                onClick={() => setMobileSearchOpen((o) => !o)}
+              >
+                <Icon name={mobileSearchOpen ? "close" : "search"} size={24} />
+              </button>
+            )}
+            {account && notifications && <NotificationBell notifications={notifications} linkAs={linkAs} />}
+            {account && <AccountMenu account={account} items={accountMenu} avatarSize={40} />}
+          </div>
+        )}
 
         {/* ── Tier 3: Navigation row (website / portal) ── */}
         {!isCompact && navRow}
@@ -1051,6 +1157,8 @@ export function SiteHeader({
       ref={headerRef}
       className={cn("ds-hdr", isSticky && "is-sticky", condensed && "is-scrolled", className)}
       data-variant={variant}
+      data-layers={hasLayers ? "" : undefined}
+      data-peeled={hasLayers && peeled ? "" : undefined}
       data-nav-overflow={condensed && hasNav && navOverflows ? "true" : undefined}
     >
       {/* ── Tier 1: Accessibility bar (the shared DS component) ──

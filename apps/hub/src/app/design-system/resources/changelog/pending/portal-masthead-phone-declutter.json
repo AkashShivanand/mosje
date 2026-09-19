@@ -1,4 +1,4 @@
 {
-  "kind": "Changed",
-  "text": "SiteHeader `variant=\"portal\"` below 768: the rail toggle and bell are ghost controls (no stroke), the row gap is 8 and the account trigger drops its padding, so the bell and avatar no longer wrap onto a second row at 320–360. A crowded lockup (container ≤ 320px, was 280) drops the \"Government of India\" line the accessibility bar already carries and centres a 40px emblem. AccessibilityBar keeps \"Government of India\" on one line on a phone, hiding the launch glyph below 360. Tablet and desktop unchanged"
+  "kind": "Added",
+  "text": "SiteHeader takes `service` (`HeaderService`: name, optional mark and href). A `variant=\"portal\"` masthead that passes it gets its phone layout below 768: the accessibility bar, then the department's Lockup 2 complete (Government of India, Ministry, Department, as DBIM 5.2.2 requires) with BETA as a 45° corner sash, then a 56px working bar (menu, emblem and service name, bell, account) that is the only row to pin. The upper rows leave by a negative sticky offset, not the condense morph. E-Anudaan is the first portal on it; tablet and desktop are unchanged. The single-row phone masthead keeps the Government of India line again and loses the outlined boxes on its controls; the accessibility bar keeps \"Government of India\" on one line on a phone"
 }

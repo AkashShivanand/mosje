@@ -157,6 +157,24 @@ export interface HeaderAccount {
   avatarSrc?: string;
 }
 
+/**
+ * The portal's own identity — the service the reader is using, as distinct from
+ * the Department that publishes it. On a phone it heads the portal's working bar,
+ * in the slot DBIM 5.4 calls co-branding; the department's Lockup 2 stays whole
+ * in the identity row above it.
+ */
+export interface HeaderService {
+  /** The service's name as the Department writes it, e.g. "E-Anudaan". */
+  name: string;
+  /**
+   * The service's own mark, if it has one. Leave it out where the organisation has
+   * none: the emblem already heads the bar, and a second copy of it says nothing.
+   */
+  mark?: React.ReactNode;
+  /** Where the name leads — the service's home. Defaults to the header's `homeHref`. */
+  href?: string;
+}
+
 /** An item in the account dropdown. */
 export interface AccountMenuItem {
   label: string;

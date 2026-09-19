@@ -622,6 +622,7 @@ export type {
   HeaderSearch,
   UtilityTone,
   HeaderAccount,
+  HeaderService,
   AccountMenuItem,
 } from "./components/navigation/header";
 
