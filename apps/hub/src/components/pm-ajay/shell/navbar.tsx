@@ -5,7 +5,7 @@
    "Website" / public-brand variant) so the National Emblem lockup, GoI utility
    bar, and Government marks stay in lockstep with the rest of the estate. */
 
-import { SiteHeader, SAMAVESH_COBRAND, OrgLogo } from "@mosje/design-system";
+import { SiteHeader, SAMAVESH_COBRAND } from "@mosje/design-system";
 
 import Link from "next/link";
 
@@ -26,8 +26,10 @@ export function Navbar() {
         department: "Department of Social Justice & Empowerment",
       }}
       beta
-      /* The phone layers: the Lockup 2 whole, and this service named in the bar that pins. */
-      service={{ name: "PM-AJAY", mark: <OrgLogo path="/portals/pm-ajay" size="sm" />, href: IMG_BASE }}
+      /* NO `service`, deliberately. The PM-AJAY dashboard is a desktop canvas that
+         `.pm-app` scales to fit a phone (a 0.26 transform at 375), so it is never a
+         phone surface: the phone layers would draw a phone masthead inside a scaled
+         1440 canvas, and sticky pinning does not survive a transformed ancestor. */
       skipTo="#pm-main"
       govLink={{
         href: "https://india.gov.in/",
