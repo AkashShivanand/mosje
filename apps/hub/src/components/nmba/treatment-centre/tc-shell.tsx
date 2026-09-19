@@ -76,7 +76,9 @@ export function TreatmentCentreShell({ children }: { children: React.ReactNode }
           brandLines={{
             org: "Government of India",
             ministry: "Ministry of Social Justice & Empowerment",
-            department: "Patient Data Monitoring System",
+            /* DBIM 5.2.2: this line names the Department. The Patient Data Monitoring System
+               is the application; NMBA is named as the service in the working bar. */
+            department: "Department of Social Justice & Empowerment",
           }}
           cobranding={[
             { src: `${BASE}/brand/digital-india.svg`, alt: "Digital India", href: "https://www.digitalindia.gov.in/", height: 34 },
