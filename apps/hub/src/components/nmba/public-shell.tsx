@@ -94,6 +94,8 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
             department: "Department of Social Justice & Empowerment",
           }}
           beta
+          /* The phone layers: the Lockup 2 whole, and this service named in the bar that pins. */
+          service={{ name: "NMBA", mark: <OrgLogo path="/portals/nmba" size="sm" />, href: BASE }}
           skipTo="#main-content"
           govLink={{ href: "https://india.gov.in", label: "Government of India" }}
           language={{

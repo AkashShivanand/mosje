@@ -1,6 +1,6 @@
 "use client";
 
-import { SiteHeader, Divider, type SiteHeaderProps, SAMAVESH_COBRAND } from "@mosje/design-system";
+import { SiteHeader, Divider, type SiteHeaderProps, SAMAVESH_COBRAND, OrgLogo } from "@mosje/design-system";
 
 import Link from "next/link";
 
@@ -41,6 +41,8 @@ export function ScwHeader({
         department: "Department of Social Justice & Empowerment",
       }}
       beta
+      /* The phone layers: the Lockup 2 whole, and this service named in the bar that pins. */
+      service={{ name: "SCW", mark: <OrgLogo path="/portals/scw" size="sm" />, href: BASE }}
       skipTo="#main"
       govLink={{ href: "https://india.gov.in/", label: "Government of India" }}
       language={{ label: "English" }}

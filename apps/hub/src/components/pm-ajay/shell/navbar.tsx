@@ -5,7 +5,7 @@
    "Website" / public-brand variant) so the National Emblem lockup, GoI utility
    bar, and Government marks stay in lockstep with the rest of the estate. */
 
-import { SiteHeader, SAMAVESH_COBRAND } from "@mosje/design-system";
+import { SiteHeader, SAMAVESH_COBRAND, OrgLogo } from "@mosje/design-system";
 
 import Link from "next/link";
 
@@ -26,6 +26,8 @@ export function Navbar() {
         department: "Department of Social Justice & Empowerment",
       }}
       beta
+      /* The phone layers: the Lockup 2 whole, and this service named in the bar that pins. */
+      service={{ name: "PM-AJAY", mark: <OrgLogo path="/portals/pm-ajay" size="sm" />, href: IMG_BASE }}
       skipTo="#pm-main"
       govLink={{
         href: "https://india.gov.in/",

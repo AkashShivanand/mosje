@@ -1686,11 +1686,11 @@
       outline-offset: var(--sa-focus-offset);
     }
 
+    /* The service's mark is the estate's OrgLogo at size "sm" — a 32px tile, the same
+       mark the sidebar's identity block carries — so the slot takes its size from it. */
     .ds-hdr-work__mark {
-      display: inline-grid;
+      display: inline-flex;
       flex: 0 0 auto;
-      block-size: 28px;
-      inline-size: 28px;
     }
 
     .ds-hdr-work__name {

@@ -168,6 +168,8 @@ export function AdminShell({ children }: AdminShellProps) {
           variant="portal"
           sticky
           beta
+          /* The phone layers: the Lockup 2 whole, and this service named in the bar that pins. */
+          service={{ name: "NMBA", mark: <OrgLogo path="/portals/nmba" size="sm" />, href: "/portals/nmba/admin/dashboard" }}
           emblemSrc={`${BASE}/brand/national-emblem.svg`}
           brandLines={{
             org: "Government of India",
