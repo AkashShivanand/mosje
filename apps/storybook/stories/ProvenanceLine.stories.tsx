@@ -47,9 +47,9 @@ export const Playground: Story = {};
 export const Statuses: Story = {
   render: () => (
     <div style={{ display: "grid", gap: 12 }}>
-      <ProvenanceLine provenance={{ source: "NHAPOA MIS", asOf: "2026-08-31" }} />
-      <ProvenanceLine provenance={{ source: "NHAPOA MIS", asOf: "2026-08-31", status: "provisional" }} />
-      <ProvenanceLine provenance={{ source: "NHAPOA MIS", asOf: "2026-06-30", status: "revised", note: "Bihar restated" }} />
+      <ProvenanceLine provenance={{ source: "SAMBAL MIS", asOf: "2026-08-31" }} />
+      <ProvenanceLine provenance={{ source: "SAMBAL MIS", asOf: "2026-08-31", status: "provisional" }} />
+      <ProvenanceLine provenance={{ source: "SAMBAL MIS", asOf: "2026-06-30", status: "revised", note: "Bihar restated" }} />
     </div>
   ),
 };

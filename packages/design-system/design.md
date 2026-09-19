@@ -3799,7 +3799,7 @@ Seven small components mirroring the `Auth / *` sets in the SAMAVESH Figma libra
 - Buttons are outlined, never filled: the filled button on this screen is Log In, and two filled buttons compete.
 
 **`SigningIntoBar`** — which portal you are signing into, and how to change it.
-- `portalName` is the **scheme** name, never the acronym: "Senior Citizens Welfare", not "SCW"; NHAPOA shows "SAMBAL (NHAA 2.0)".
+- `portalName` is the **scheme** name, never the acronym: "Senior Citizens Welfare", not "SCW"; the SAMBAL portal shows "SAMBAL (NHAA 2.0)", never its route name `nhapoa`.
 - **`tone` follows the surface, not the brand** — `hero` over the photograph scrim, `surface` anywhere else. Backwards is the fastest way to fail contrast here.
 - `onChange` opens the portal picker. It never submits, and anything already typed must survive the round trip.
 

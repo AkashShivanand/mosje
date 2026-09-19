@@ -182,13 +182,13 @@ rather than forced into the table above's "Mobile / ID" column.
 | **TG Citizen** (Email + OTP) | Citizen (Applicant) | anshul@example.com | 123456 | tab `citizen` |
 | **E-Utthan Admin** (User ID) | Admin | 9990000011 | admin@2026 | — |
 | **E-Utthan Admin** (User ID) | Ministry | shivendra123 | shivendra123 | — |
-| **NHAPOA** (Username) | District Officer | ba.districtofficer | Demo@123 | — |
-| **NHAPOA** (Username) | Station House Officer | so_govindnagar_kn | Demo@123 | — |
-| **NHAPOA** (Username) | State Authority | ba.stateauthority | Demo@123 | — |
-| **NHAPOA** (Username) | Finance Officer | ba.financeofficer | Demo@123 | — |
-| **NHAPOA** (Username) | Central Authority | ba.centralauthority | Demo@123 | — |
-| **NHAPOA** (Username) | System Administrator | nhapoa_sysadmin | Demo@123 | — |
-| **NHAPOA** (Username) | Call Centre Operator | ankitSharma | Demo@123 | — |
+| **SAMBAL** (Username) | District Officer | ba.districtofficer | Demo@123 | — |
+| **SAMBAL** (Username) | Station House Officer | so_govindnagar_kn | Demo@123 | — |
+| **SAMBAL** (Username) | State Authority | ba.stateauthority | Demo@123 | — |
+| **SAMBAL** (Username) | Finance Officer | ba.financeofficer | Demo@123 | — |
+| **SAMBAL** (Username) | Central Authority | ba.centralauthority | Demo@123 | — |
+| **SAMBAL** (Username) | System Administrator | nhapoa_sysadmin | Demo@123 | — |
+| **SAMBAL** (Username) | Call Centre Operator | ankitSharma | Demo@123 | — |
 | **E-Anudaan — NGO** (Login ID) | NGO Applicant | LGN3712 | Demo@123 | — |
 
 > **E-Anudaan** carries two audiences on one portal, so it has four

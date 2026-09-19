@@ -35,7 +35,7 @@
 // geometry can tell you.
 //
 // PORTAL NAME IS THE SCHEME NAME, NEVER THE ACRONYM. "Senior Citizens Welfare",
-// not "SCW"; NHAPOA signs into "SAMBAL (NHAA 2.0)".
+// not "SCW"; the SAMBAL portal (route `nhapoa`) signs into "SAMBAL (NHAA 2.0)".
 //
 // KNOWN FIGMA↔CODE DIVERGENCE, deliberate: in Figma the Change control is built
 // inline because the Figma `Button` has no Inverse tone and inheriting brand

@@ -226,7 +226,7 @@ export const WithProvenance: Story = {
     changeValue: undefined,
     changeLabel: undefined,
     icon: undefined,
-    provenance: { source: "NHAPOA MIS", asOf: "2026-08-31", status: "provisional" },
+    provenance: { source: "SAMBAL MIS", asOf: "2026-08-31", status: "provisional" },
   },
 };
 

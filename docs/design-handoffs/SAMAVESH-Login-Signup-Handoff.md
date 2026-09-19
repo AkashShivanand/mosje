@@ -59,7 +59,7 @@ All screens related to the authentication journey: selecting a portal, signing i
 
 ### Portal Ecosystem Served
 
-SAMAVESH gates access to: SCW, SMILE-Transgender, SMILE-Beggary, NOS, NMBA, E-Utthaan, E-Anudaan, PM-AJAY, NHAPOA. Each portal has distinct branding that surfaces in the login experience via context-aware hero imagery.
+SAMAVESH gates access to: SCW, SMILE-Transgender, SMILE-Beggary, NOS, NMBA, E-Utthaan, E-Anudaan, PM-AJAY, SAMBAL (formerly NHAPOA). Each portal has distinct branding that surfaces in the login experience via context-aware hero imagery.
 
 ---
 
@@ -659,7 +659,7 @@ Content layout:
 6. E-Utthaan — Development Action Plan for Scheduled Caste
 7. E-Anudaan — [Description Text — PLACEHOLDER, needs real copy]
 8. PM-AJAY — Pradhan Mantri Anusuchit Jaati Abhyuday Yojna
-9. NHAPOA — National Helpline Against Atrocities
+9. SAMBAL (formerly NHAPOA) — National Helpline Against Atrocities
 ```
 
 > **⚠️ Dev note:** "E-Anudaan" shows "Description Text" as the tagline — this is a placeholder. Real copy must be supplied before go-live.
@@ -971,7 +971,7 @@ Complete list of portals in the SAMAVESH ecosystem (from the Portals frame `8837
 | 6 | E-Utthaan | Development Action Plan for Scheduled Caste | ✅ Designed | ✅ Ready |
 | 7 | E-Anudaan | (unknown) | ✅ Designed | ❌ MISSING — "Description Text" placeholder |
 | 8 | PM-AJAY | Pradhan Mantri Anusuchit Jaati Abhyuday Yojna | ✅ Designed | ✅ Ready |
-| 9 | NHAPOA | National Helpline Against Atrocities | ✅ Designed | ✅ Ready |
+| 9 | SAMBAL (formerly NHAPOA) | National Helpline Against Atrocities | ✅ Designed | ✅ Ready |
 
 > **Action required:** E-Anudaan tagline must be provided by content team before the portal list goes live.
 
