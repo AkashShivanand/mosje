@@ -43,9 +43,13 @@ export function EutthanHeader({
       brandLines={{
         org: "Government of India",
         ministry: "Ministry of Social Justice & Empowerment",
-        department: "DAPSC Allocation & Progress Tracker",
+        /* DBIM 5.2.2: this line names the Department. The tracker is the SERVICE, and is
+           named as one in the working bar below (`service`) and in the sidebar. */
+        department: "Department of Social Justice & Empowerment",
       }}
       beta
+      /* The phone layers: the Lockup 2 whole, and this service named in the bar that pins. */
+      service={{ name: "E-Utthan", href: portalLink("/dashboard") }}
       onToggleNav={onToggleNav}
       navExpanded={navExpanded}
       skipTo="#eu-main-content"

@@ -1,0 +1,7205 @@
+{
+ "generated": "2026-09-17",
+ "notes": "Primary frame = handoff copy on a ✅ UI Flow page where one exists; same-named copies on topic pages / DBIM listed under alternates. match: exact | template (one design serves many live pages) | partial (only a fragment/list is drawn) | overlay-state. Live entries with confidence <0.35 are counted undesigned; 'nearest' keeps the weak candidate.",
+ "entries": [
+  {
+   "path": "/",
+   "slug": "home",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.85,
+    "match": "exact",
+    "reason": "Home frames; UI Flow 'Home' (3453:7805) is the ✅ flow copy — the Home page's own 'Home' (51821:33657, 7216px) is newer and taller; human to choose which is current",
+    "desktop": {
+     "node_id": "3453:7805",
+     "name": "Home",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Home",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-HOME-3453-7805",
+     "heading": "Empowering India, Every Day."
+    },
+    "mobile": {
+     "node_id": "4285:223026",
+     "name": "Organisation Details",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Home/Mobile",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-ORGANISATION-DETAILS-4285-223026",
+     "heading": "About Us"
+    },
+    "alternates": [
+     {
+      "node_id": "51821:33657",
+      "page": "Home",
+      "name": "Home",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7639:39669",
+      "page": "DBIM",
+      "name": "Home",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "6812:54879",
+      "page": "Home",
+      "name": "Organisation Details",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7144:37592",
+      "page": "Home",
+      "name": "Organisation Details",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/footer-carousel/",
+   "slug": "footer-carousel",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.25,
+    "match": "partial",
+    "reason": "No page design; only a 'Carousel' strip on Home page (the live URL is a utility carousel page)",
+    "desktop": {
+     "node_id": "4432:105121",
+     "name": "Carousel ",
+     "page": "Home",
+     "sectionPath": "Home",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "HOME-CAROUSEL-4432-105121",
+     "heading": null
+    },
+    "mobile": null,
+    "alternates": [
+     {
+      "node_id": "7467:27144",
+      "page": "Banner",
+      "name": "Carousel ",
+      "kind": "desktop",
+      "status": "exploration"
+     }
+    ]
+   },
+   "undesigned": true
+  },
+  {
+   "path": "/samavesh-citizen-portals/",
+   "slug": "samavesh-citizen-portals",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.6,
+    "match": "overlay-state",
+    "reason": "Home › Explore 'SAMAVESH Login (Citizen)' state shows the citizen portal chooser; not a standalone page",
+    "desktop": {
+     "node_id": "7116:34665",
+     "name": "Home -> SAMAVESH Login (Citizen)",
+     "page": "Home",
+     "sectionPath": "Home › Home › Explore",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "HOME-HOME-SAMAVESH-LOGIN-CITIZEN-7116-34665",
+     "heading": "Empowering India, Every Day."
+    },
+    "mobile": null,
+    "alternates": []
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/about-us/",
+   "slug": "about-us",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.95,
+    "match": "exact",
+    "reason": "Ministry › About Us",
+    "desktop": {
+     "node_id": "3453:8567",
+     "name": "About Us",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Ministry",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ABOUT-US-3453-8567",
+     "heading": "About Us"
+    },
+    "mobile": {
+     "node_id": "4571:88901",
+     "name": "Ministry/About Us",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Ministry/Mobile",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-MINISTRY-ABOUT-US-4571-88901",
+     "heading": "About Us"
+    },
+    "alternates": [
+     {
+      "node_id": "4249:38915",
+      "page": "Ministry",
+      "name": "Ministry/About Us",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7648:35088",
+      "page": "DBIM",
+      "name": "Ministry/About Us",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:39902",
+      "page": "Ministry",
+      "name": "Ministry/About Us",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/miscellaneous/",
+   "slug": "miscellaneous",
+   "kind": "page",
+   "type": "page",
+   "mapping": null,
+   "undesigned": true
+  },
+  {
+   "path": "/meta-data/",
+   "slug": "meta-data",
+   "kind": "page",
+   "type": "page",
+   "mapping": null,
+   "undesigned": true
+  },
+  {
+   "path": "/mosje-directory/",
+   "slug": "mosje-directory",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.8,
+    "match": "exact",
+    "reason": "UI Flow names it 'Who’s Who -> MoSJE'; Ministry page names it 'Ministry/Directory'",
+    "desktop": {
+     "node_id": "3453:9324",
+     "name": "Who’s Who -> MoSJE",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Ministry › Who’s Who",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-WHO-S-WHO-MOSJE-3453-9324",
+     "heading": "Who’s Who"
+    },
+    "mobile": {
+     "node_id": "4571:89516",
+     "name": "Ministry/Directory",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Ministry/Mobile › Ministry/Directory",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-MINISTRY-DIRECTORY-4571-89516",
+     "heading": "Directory"
+    },
+    "alternates": [
+     {
+      "node_id": "4249:38199",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7639:98569",
+      "page": "DBIM",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89769",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89914",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:90059",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40517",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40770",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40915",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:41060",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/contact-us-2/",
+   "slug": "contact-us-2",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.45,
+    "match": "template",
+    "reason": "Second contact page; closest is the organisation Contact Us (NCSC) variant",
+    "desktop": {
+     "node_id": "3453:14723",
+     "name": "Contact Us/NCSC",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Connect › Contact Us",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-CONTACT-US-NCSC-3453-14723",
+     "heading": "Contact Details"
+    },
+    "mobile": {
+     "node_id": "4626:81838",
+     "name": "Contact Us/NCSC",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Connect/Mobile › Contact Us",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-CONTACT-US-NCSC-4626-81838",
+     "heading": "Contact Details"
+    },
+    "alternates": [
+     {
+      "node_id": "3448:11580",
+      "page": "Connect",
+      "name": "Contact Us/NCSC",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4626:82234",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Contact Us/NCSC",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:135107",
+      "page": "Connect",
+      "name": "Contact Us/NCSC",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:135503",
+      "page": "Connect",
+      "name": "Contact Us/NCSC",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/cookies/",
+   "slug": "cookies",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Individual policy/help page; design shows the combined Policies page",
+    "desktop": {
+     "node_id": "5243:126087",
+     "name": "Policies",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Compliance Pages › Policies",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-POLICIES-5243-126087",
+     "heading": "Policies"
+    },
+    "mobile": {
+     "node_id": "4330:66694",
+     "name": "Search result",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Compliance Pages/Mobile › Policies",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-SEARCH-RESULT-4330-66694",
+     "heading": "Policies"
+    },
+    "alternates": [
+     {
+      "node_id": "5243:115118",
+      "page": "Compliance Pages",
+      "name": "Policies",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4743:113118",
+      "page": "Compliance Pages",
+      "name": "Search result",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/guidelines-for-assisting-ngos-voluntary-organisations/",
+   "slug": "guidelines-for-assisting-ngos-voluntary-organisations",
+   "kind": "page",
+   "type": "page",
+   "mapping": null,
+   "undesigned": true
+  },
+  {
+   "path": "/list-of-scheduled-castes/",
+   "slug": "list-of-scheduled-castes",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Document-listing page; the only drawn document list is Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/advertisement/",
+   "slug": "advertisement",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Document-listing page; the only drawn document list is Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/visitor-analytics/",
+   "slug": "visitor-analytics",
+   "kind": "page",
+   "type": "page",
+   "mapping": null,
+   "undesigned": true
+  },
+  {
+   "path": "/whos-who/",
+   "slug": "whos-who",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.9,
+    "match": "exact",
+    "reason": "Ministry › Who’s Who",
+    "desktop": {
+     "node_id": "3453:8801",
+     "name": "Who’s Who",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Ministry › Who’s Who",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-WHO-S-WHO-3453-8801",
+     "heading": "Who’s Who"
+    },
+    "mobile": {
+     "node_id": "4571:89085",
+     "name": "Ministry/Who’s Who",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Ministry/Mobile",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-MINISTRY-WHO-S-WHO-4571-89085",
+     "heading": "Who’s Who"
+    },
+    "alternates": [
+     {
+      "node_id": "4249:38483",
+      "page": "Ministry",
+      "name": "Ministry/Who’s Who",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7639:98845",
+      "page": "DBIM",
+      "name": "Ministry/Who’s Who",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40086",
+      "page": "Ministry",
+      "name": "Ministry/Who’s Who",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/bjrnf-directory/",
+   "slug": "bjrnf-directory",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.55,
+    "match": "template",
+    "reason": "Organisation directory pages share the MoSJE Directory design",
+    "desktop": {
+     "node_id": "3453:9324",
+     "name": "Who’s Who -> MoSJE",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Ministry › Who’s Who",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-WHO-S-WHO-MOSJE-3453-9324",
+     "heading": "Who’s Who"
+    },
+    "mobile": {
+     "node_id": "4571:89516",
+     "name": "Ministry/Directory",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Ministry/Mobile › Ministry/Directory",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-MINISTRY-DIRECTORY-4571-89516",
+     "heading": "Directory"
+    },
+    "alternates": [
+     {
+      "node_id": "4249:38199",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7639:98569",
+      "page": "DBIM",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89769",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89914",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:90059",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40517",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40770",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40915",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:41060",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/home-page/help/",
+   "slug": "help",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Individual policy/help page; design shows the combined Policies page",
+    "desktop": {
+     "node_id": "5243:126087",
+     "name": "Policies",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Compliance Pages › Policies",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-POLICIES-5243-126087",
+     "heading": "Policies"
+    },
+    "mobile": {
+     "node_id": "4330:66694",
+     "name": "Search result",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Compliance Pages/Mobile › Policies",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-SEARCH-RESULT-4330-66694",
+     "heading": "Policies"
+    },
+    "alternates": [
+     {
+      "node_id": "5243:115118",
+      "page": "Compliance Pages",
+      "name": "Policies",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4743:113118",
+      "page": "Compliance Pages",
+      "name": "Search result",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/home-page/copyright-policy/",
+   "slug": "copyright-policy",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Individual policy/help page; design shows the combined Policies page",
+    "desktop": {
+     "node_id": "5243:126087",
+     "name": "Policies",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Compliance Pages › Policies",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-POLICIES-5243-126087",
+     "heading": "Policies"
+    },
+    "mobile": {
+     "node_id": "4330:66694",
+     "name": "Search result",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Compliance Pages/Mobile › Policies",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-SEARCH-RESULT-4330-66694",
+     "heading": "Policies"
+    },
+    "alternates": [
+     {
+      "node_id": "5243:115118",
+      "page": "Compliance Pages",
+      "name": "Policies",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4743:113118",
+      "page": "Compliance Pages",
+      "name": "Search result",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/home-page/hyperlinking-policy/",
+   "slug": "hyperlinking-policy",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Individual policy/help page; design shows the combined Policies page",
+    "desktop": {
+     "node_id": "5243:126087",
+     "name": "Policies",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Compliance Pages › Policies",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-POLICIES-5243-126087",
+     "heading": "Policies"
+    },
+    "mobile": {
+     "node_id": "4330:66694",
+     "name": "Search result",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Compliance Pages/Mobile › Policies",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-SEARCH-RESULT-4330-66694",
+     "heading": "Policies"
+    },
+    "alternates": [
+     {
+      "node_id": "5243:115118",
+      "page": "Compliance Pages",
+      "name": "Policies",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4743:113118",
+      "page": "Compliance Pages",
+      "name": "Search result",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/daic-directory/",
+   "slug": "daic-directory",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.55,
+    "match": "template",
+    "reason": "Organisation directory pages share the MoSJE Directory design",
+    "desktop": {
+     "node_id": "3453:9324",
+     "name": "Who’s Who -> MoSJE",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Ministry › Who’s Who",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-WHO-S-WHO-MOSJE-3453-9324",
+     "heading": "Who’s Who"
+    },
+    "mobile": {
+     "node_id": "4571:89516",
+     "name": "Ministry/Directory",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Ministry/Mobile › Ministry/Directory",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-MINISTRY-DIRECTORY-4571-89516",
+     "heading": "Directory"
+    },
+    "alternates": [
+     {
+      "node_id": "4249:38199",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7639:98569",
+      "page": "DBIM",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89769",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89914",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:90059",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40517",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40770",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40915",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:41060",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/nisd-directory/",
+   "slug": "nisd-directory",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.55,
+    "match": "template",
+    "reason": "Organisation directory pages share the MoSJE Directory design",
+    "desktop": {
+     "node_id": "3453:9324",
+     "name": "Who’s Who -> MoSJE",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Ministry › Who’s Who",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-WHO-S-WHO-MOSJE-3453-9324",
+     "heading": "Who’s Who"
+    },
+    "mobile": {
+     "node_id": "4571:89516",
+     "name": "Ministry/Directory",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Ministry/Mobile › Ministry/Directory",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-MINISTRY-DIRECTORY-4571-89516",
+     "heading": "Directory"
+    },
+    "alternates": [
+     {
+      "node_id": "4249:38199",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7639:98569",
+      "page": "DBIM",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89769",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89914",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:90059",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40517",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40770",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40915",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:41060",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/samavesh-admin-portals/",
+   "slug": "samavesh-admin-portals",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.6,
+    "match": "overlay-state",
+    "reason": "Home › Explore 'SAMAVESH Login (Admin)' — portal chooser drawn as a Home state",
+    "desktop": {
+     "node_id": "7298:28616",
+     "name": "Home -> SAMAVESH Login (Admin)",
+     "page": "Home",
+     "sectionPath": "Home › Home › Explore",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "HOME-HOME-SAMAVESH-LOGIN-ADMIN-7298-28616",
+     "heading": "Choose a portal to visit"
+    },
+    "mobile": null,
+    "alternates": []
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/pm-ajay-directory/",
+   "slug": "pm-ajay-directory",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.55,
+    "match": "template",
+    "reason": "Organisation directory pages share the MoSJE Directory design",
+    "desktop": {
+     "node_id": "3453:9324",
+     "name": "Who’s Who -> MoSJE",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Ministry › Who’s Who",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-WHO-S-WHO-MOSJE-3453-9324",
+     "heading": "Who’s Who"
+    },
+    "mobile": {
+     "node_id": "4571:89516",
+     "name": "Ministry/Directory",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Ministry/Mobile › Ministry/Directory",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-MINISTRY-DIRECTORY-4571-89516",
+     "heading": "Directory"
+    },
+    "alternates": [
+     {
+      "node_id": "4249:38199",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7639:98569",
+      "page": "DBIM",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89769",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89914",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:90059",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40517",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40770",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40915",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:41060",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/resources/",
+   "slug": "resources",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Document-listing page; the only drawn document list is Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/nsfdc-directory/",
+   "slug": "nsfdc-directory",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.55,
+    "match": "template",
+    "reason": "Organisation directory pages share the MoSJE Directory design",
+    "desktop": {
+     "node_id": "3453:9324",
+     "name": "Who’s Who -> MoSJE",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Ministry › Who’s Who",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-WHO-S-WHO-MOSJE-3453-9324",
+     "heading": "Who’s Who"
+    },
+    "mobile": {
+     "node_id": "4571:89516",
+     "name": "Ministry/Directory",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Ministry/Mobile › Ministry/Directory",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-MINISTRY-DIRECTORY-4571-89516",
+     "heading": "Directory"
+    },
+    "alternates": [
+     {
+      "node_id": "4249:38199",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7639:98569",
+      "page": "DBIM",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89769",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89914",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:90059",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40517",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40770",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40915",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:41060",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/nhaa-directory/",
+   "slug": "nhaa-directory",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.55,
+    "match": "template",
+    "reason": "Organisation directory pages share the MoSJE Directory design",
+    "desktop": {
+     "node_id": "3453:9324",
+     "name": "Who’s Who -> MoSJE",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Ministry › Who’s Who",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-WHO-S-WHO-MOSJE-3453-9324",
+     "heading": "Who’s Who"
+    },
+    "mobile": {
+     "node_id": "4571:89516",
+     "name": "Ministry/Directory",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Ministry/Mobile › Ministry/Directory",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-MINISTRY-DIRECTORY-4571-89516",
+     "heading": "Directory"
+    },
+    "alternates": [
+     {
+      "node_id": "4249:38199",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7639:98569",
+      "page": "DBIM",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89769",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89914",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:90059",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40517",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40770",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40915",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:41060",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/official-language-act/",
+   "slug": "official-language-act",
+   "kind": "page",
+   "type": "page",
+   "mapping": null,
+   "undesigned": true
+  },
+  {
+   "path": "/home-page/terms-conditions/",
+   "slug": "terms-conditions",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Individual policy/help page; design shows the combined Policies page",
+    "desktop": {
+     "node_id": "5243:126087",
+     "name": "Policies",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Compliance Pages › Policies",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-POLICIES-5243-126087",
+     "heading": "Policies"
+    },
+    "mobile": {
+     "node_id": "4330:66694",
+     "name": "Search result",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Compliance Pages/Mobile › Policies",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-SEARCH-RESULT-4330-66694",
+     "heading": "Policies"
+    },
+    "alternates": [
+     {
+      "node_id": "5243:115118",
+      "page": "Compliance Pages",
+      "name": "Policies",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4743:113118",
+      "page": "Compliance Pages",
+      "name": "Search result",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/updates/",
+   "slug": "updates",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.3,
+    "match": "partial",
+    "reason": "No updates listing page; only the Latest Updates side sheet / 'Home -> View All Updates' state",
+    "desktop": {
+     "node_id": "3453:8192",
+     "name": "Latest Updates Side Sheet Container",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Home",
+     "kind": "overlay",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-LATEST-UPDATES-SIDE-SHEET-CONTAINER-3453-8192",
+     "heading": "New Funding Alert!"
+    },
+    "mobile": null,
+    "alternates": []
+   },
+   "undesigned": true
+  },
+  {
+   "path": "/vacancies/",
+   "slug": "vacancies",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.9,
+    "match": "exact",
+    "reason": "Offerings › Vacancies",
+    "desktop": {
+     "node_id": "3453:12427",
+     "name": "Vacancies",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Offerings",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-VACANCIES-3453-12427",
+     "heading": "Vacancies"
+    },
+    "mobile": {
+     "node_id": "4571:105929",
+     "name": "Offerings/Vacancies",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Offerings/Mobile › Offerings/Schemes & Services/Mobile",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-OFFERINGS-VACANCIES-4571-105929",
+     "heading": "Vacancies"
+    },
+    "alternates": [
+     {
+      "node_id": "3366:25147",
+      "page": "Offerings",
+      "name": "Offerings/Vacancies",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:94716",
+      "page": "Offerings",
+      "name": "Offerings/Vacancies",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/tenders/",
+   "slug": "tenders",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.9,
+    "match": "exact",
+    "reason": "Offerings › Tenders",
+    "desktop": {
+     "node_id": "3453:12568",
+     "name": "Tenders",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Offerings",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-TENDERS-3453-12568",
+     "heading": "Tenders"
+    },
+    "mobile": {
+     "node_id": "4571:106362",
+     "name": "Offerings/Tenders",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Offerings/Mobile › Offerings/Schemes & Services/Mobile",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-OFFERINGS-TENDERS-4571-106362",
+     "heading": "Tenders"
+    },
+    "alternates": [
+     {
+      "node_id": "3366:25288",
+      "page": "Offerings",
+      "name": "Offerings/Tenders",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:95149",
+      "page": "Offerings",
+      "name": "Offerings/Tenders",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/supreme-court-judgement/",
+   "slug": "supreme-court-judgement",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Document-listing page; the only drawn document list is Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/schemes-services/",
+   "slug": "schemes-services",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.85,
+    "match": "exact",
+    "reason": "Offerings › Schemes & Services; newer 'Scheme Discovery — Finalised for Handoff (Review of 14 September)' frames (52428:9723 etc.) supersede it per the Read Me — human to confirm",
+    "desktop": {
+     "node_id": "3453:12250",
+     "name": "Schemes & Services",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Offerings › Offerings/Schemes & Services",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-SCHEMES-SERVICES-3453-12250",
+     "heading": "Schemes & Services"
+    },
+    "mobile": {
+     "node_id": "4571:105022",
+     "name": "Offerings/Schemes & Services",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Offerings/Mobile › Offerings/Schemes & Services/Mobile",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-OFFERINGS-SCHEMES-SERVICES-4571-105022",
+     "heading": "Schemes &\nServices"
+    },
+    "alternates": [
+     {
+      "node_id": "3363:14156",
+      "page": "Offerings",
+      "name": "Offerings/Schemes & Services",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:93809",
+      "page": "Offerings",
+      "name": "Offerings/Schemes & Services",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/suo-moto-disclosure/",
+   "slug": "suo-moto-disclosure",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.9,
+    "match": "exact",
+    "reason": "Connect › RTI › Suo-moto Disclosure",
+    "desktop": {
+     "node_id": "3453:14426",
+     "name": "Suo-moto Disclosure",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Connect › RTI",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-SUO-MOTO-DISCLOSURE-3453-14426",
+     "heading": "Suo-moto Disclosure"
+    },
+    "mobile": {
+     "node_id": "4626:81219",
+     "name": "Suo-moto Disclosure",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Connect/Mobile › RTI",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-SUO-MOTO-DISCLOSURE-4626-81219",
+     "heading": "RTI"
+    },
+    "alternates": [
+     {
+      "node_id": "3448:11279",
+      "page": "Connect",
+      "name": "Suo-moto Disclosure",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:134488",
+      "page": "Connect",
+      "name": "Suo-moto Disclosure",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/policies/",
+   "slug": "policies",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.85,
+    "match": "exact",
+    "reason": "Compliance Pages › Policies (mobile frame is misnamed 'Search result' in Policies section)",
+    "desktop": {
+     "node_id": "5243:126087",
+     "name": "Policies",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Compliance Pages › Policies",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-POLICIES-5243-126087",
+     "heading": "Policies"
+    },
+    "mobile": {
+     "node_id": "4330:66694",
+     "name": "Search result",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Compliance Pages/Mobile › Policies",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-SEARCH-RESULT-4330-66694",
+     "heading": "Policies"
+    },
+    "alternates": [
+     {
+      "node_id": "5243:115118",
+      "page": "Compliance Pages",
+      "name": "Policies",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4743:113118",
+      "page": "Compliance Pages",
+      "name": "Search result",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/newsletter/",
+   "slug": "newsletter",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Document-listing page; the only drawn document list is Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/publications/",
+   "slug": "publications",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Document-listing page; the only drawn document list is Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/notices/",
+   "slug": "notices",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Document-listing page; the only drawn document list is Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/rti/",
+   "slug": "rti",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.9,
+    "match": "exact",
+    "reason": "Connect › RTI › RTI Act",
+    "desktop": {
+     "node_id": "3453:14221",
+     "name": "RTI Act",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Connect › RTI",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-RTI-ACT-3453-14221",
+     "heading": "RTI"
+    },
+    "mobile": {
+     "node_id": "4626:80619",
+     "name": "RTI ACT",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Connect/Mobile › RTI",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-RTI-ACT-4626-80619",
+     "heading": "RTI"
+    },
+    "alternates": [
+     {
+      "node_id": "3448:11074",
+      "page": "Connect",
+      "name": "RTI Act",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:133888",
+      "page": "Connect",
+      "name": "RTI ACT",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/mou/",
+   "slug": "mou",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Document-listing page; the only drawn document list is Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/lok-sabha-question-answer/",
+   "slug": "lok-sabha-question-answer",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Document-listing page; the only drawn document list is Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/home-page/for-student/",
+   "slug": "for-student",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.6,
+    "match": "template",
+    "reason": "Persona page; only the Researcher persona is drawn",
+    "desktop": {
+     "node_id": "3453:8477",
+     "name": "Home -> for Researcher",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Home",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-HOME-FOR-RESEARCHER-3453-8477",
+     "heading": "for Researchers"
+    },
+    "mobile": {
+     "node_id": "4285:226032",
+     "name": "Home -> for Researcher",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Home/Mobile › Home -> Explore User Personas",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-HOME-FOR-RESEARCHER-4285-226032",
+     "heading": "for Researcher"
+    },
+    "alternates": [
+     {
+      "node_id": "3305:12290",
+      "page": "Home",
+      "name": "Home -> for Researcher",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7639:42153",
+      "page": "DBIM",
+      "name": "Home -> for Researcher",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "6812:58957",
+      "page": "Home",
+      "name": "Home -> for Researcher",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/home-page/privacy-policy/",
+   "slug": "privacy-policy",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Individual policy/help page; design shows the combined Policies page",
+    "desktop": {
+     "node_id": "5243:126087",
+     "name": "Policies",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Compliance Pages › Policies",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-POLICIES-5243-126087",
+     "heading": "Policies"
+    },
+    "mobile": {
+     "node_id": "4330:66694",
+     "name": "Search result",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Compliance Pages/Mobile › Policies",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-SEARCH-RESULT-4330-66694",
+     "heading": "Policies"
+    },
+    "alternates": [
+     {
+      "node_id": "5243:115118",
+      "page": "Compliance Pages",
+      "name": "Policies",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4743:113118",
+      "page": "Compliance Pages",
+      "name": "Search result",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/home-page/sitemap/",
+   "slug": "sitemap",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.9,
+    "match": "exact",
+    "reason": "Compliance Pages › Sitemap (no mobile frame)",
+    "desktop": {
+     "node_id": "5243:134590",
+     "name": "Sitemap",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Compliance Pages › Sitemap",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-SITEMAP-5243-134590",
+     "heading": "Sitemap"
+    },
+    "mobile": null,
+    "alternates": [
+     {
+      "node_id": "5243:133584",
+      "page": "Compliance Pages",
+      "name": "Sitemap",
+      "kind": "desktop",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/home-page/for-beneficiary/",
+   "slug": "for-beneficiary",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.6,
+    "match": "template",
+    "reason": "Persona page; only the Researcher persona is drawn",
+    "desktop": {
+     "node_id": "3453:8477",
+     "name": "Home -> for Researcher",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Home",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-HOME-FOR-RESEARCHER-3453-8477",
+     "heading": "for Researchers"
+    },
+    "mobile": {
+     "node_id": "4285:226032",
+     "name": "Home -> for Researcher",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Home/Mobile › Home -> Explore User Personas",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-HOME-FOR-RESEARCHER-4285-226032",
+     "heading": "for Researcher"
+    },
+    "alternates": [
+     {
+      "node_id": "3305:12290",
+      "page": "Home",
+      "name": "Home -> for Researcher",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7639:42153",
+      "page": "DBIM",
+      "name": "Home -> for Researcher",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "6812:58957",
+      "page": "Home",
+      "name": "Home -> for Researcher",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/home-page/for-government-official/",
+   "slug": "for-government-official",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.6,
+    "match": "template",
+    "reason": "Persona page; only the Researcher persona is drawn",
+    "desktop": {
+     "node_id": "3453:8477",
+     "name": "Home -> for Researcher",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Home",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-HOME-FOR-RESEARCHER-3453-8477",
+     "heading": "for Researchers"
+    },
+    "mobile": {
+     "node_id": "4285:226032",
+     "name": "Home -> for Researcher",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Home/Mobile › Home -> Explore User Personas",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-HOME-FOR-RESEARCHER-4285-226032",
+     "heading": "for Researcher"
+    },
+    "alternates": [
+     {
+      "node_id": "3305:12290",
+      "page": "Home",
+      "name": "Home -> for Researcher",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7639:42153",
+      "page": "DBIM",
+      "name": "Home -> for Researcher",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "6812:58957",
+      "page": "Home",
+      "name": "Home -> for Researcher",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/home-page/for-researchers/",
+   "slug": "for-researchers",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.9,
+    "match": "exact",
+    "reason": "Home › for Researcher persona page",
+    "desktop": {
+     "node_id": "3453:8477",
+     "name": "Home -> for Researcher",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Home",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-HOME-FOR-RESEARCHER-3453-8477",
+     "heading": "for Researchers"
+    },
+    "mobile": {
+     "node_id": "4285:226032",
+     "name": "Home -> for Researcher",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Home/Mobile › Home -> Explore User Personas",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-HOME-FOR-RESEARCHER-4285-226032",
+     "heading": "for Researcher"
+    },
+    "alternates": [
+     {
+      "node_id": "3305:12290",
+      "page": "Home",
+      "name": "Home -> for Researcher",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7639:42153",
+      "page": "DBIM",
+      "name": "Home -> for Researcher",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "6812:58957",
+      "page": "Home",
+      "name": "Home -> for Researcher",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/events/",
+   "slug": "events",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.9,
+    "match": "exact",
+    "reason": "Events & Gallery › Events",
+    "desktop": {
+     "node_id": "3453:13841",
+     "name": "Events",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Events & Gallery › Events",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-EVENTS-3453-13841",
+     "heading": "Events"
+    },
+    "mobile": {
+     "node_id": "4571:114418",
+     "name": "Events List",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Events&Gallery/Mobile",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-EVENTS-LIST-4571-114418",
+     "heading": "Events"
+    },
+    "alternates": [
+     {
+      "node_id": "3438:52590",
+      "page": "Events & Gallery",
+      "name": "Events",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:114824",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Events List",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:107653",
+      "page": "Events & Gallery",
+      "name": "Events List",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:108059",
+      "page": "Events & Gallery",
+      "name": "Events List",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/forms-templates/",
+   "slug": "forms-templates",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Document-listing page; the only drawn document list is Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/gallery/",
+   "slug": "gallery",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.85,
+    "match": "exact",
+    "reason": "Events & Gallery › Gallery (Photo and Video tab)",
+    "desktop": {
+     "node_id": "3453:13281",
+     "name": "Gallery -> Photo and Video",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Events & Gallery › Gallery",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-GALLERY-PHOTO-AND-VIDEO-3453-13281",
+     "heading": "Gallery"
+    },
+    "mobile": {
+     "node_id": "4571:115575",
+     "name": "Events & Gallery/Gallery -> Photo and Video",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Events&Gallery/Mobile",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-EVENTS-GALLERY-GALLERY-PHOTO-AND-VIDEO-4571-115575",
+     "heading": "Gallery"
+    },
+    "alternates": [
+     {
+      "node_id": "3438:52030",
+      "page": "Events & Gallery",
+      "name": "Events & Gallery/Gallery -> Photo and Video",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7704:99959",
+      "page": "DBIM",
+      "name": "Gallery -> Photo and Video",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:108810",
+      "page": "Events & Gallery",
+      "name": "Events & Gallery/Gallery -> Photo and Video",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/contact-us/",
+   "slug": "contact-us",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.9,
+    "match": "exact",
+    "reason": "Connect › Contact Us/MoSJE",
+    "desktop": {
+     "node_id": "3453:14626",
+     "name": "Contact Us/MoSJE",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Connect › Contact Us",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-CONTACT-US-MOSJE-3453-14626",
+     "heading": "Contact Details"
+    },
+    "mobile": {
+     "node_id": "4626:81565",
+     "name": "Contact Us/MoSJE",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Connect/Mobile › Contact Us",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-CONTACT-US-MOSJE-4626-81565",
+     "heading": "Contact Details"
+    },
+    "alternates": [
+     {
+      "node_id": "3448:11483",
+      "page": "Connect",
+      "name": "Contact Us/MoSJE",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:134834",
+      "page": "Connect",
+      "name": "Contact Us/MoSJE",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/dashboard/",
+   "slug": "dashboard",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.8,
+    "match": "exact",
+    "reason": "Home › Statistics › Home/Dashboard",
+    "desktop": {
+     "node_id": "4743:128714",
+     "name": "Home/Dashboard",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Home",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-HOME-DASHBOARD-4743-128714",
+     "heading": "2,58,74,571"
+    },
+    "mobile": {
+     "node_id": "4285:226234",
+     "name": "Home/Dashboard",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Home/Mobile › Home -> Statistics",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-HOME-DASHBOARD-4285-226234",
+     "heading": "2,58,74,571"
+    },
+    "alternates": [
+     {
+      "node_id": "6935:23815",
+      "page": "Home",
+      "name": "Home/Dashboard",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "6812:59143",
+      "page": "Home",
+      "name": "Home/Dashboard",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/cpio/",
+   "slug": "cpio",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.9,
+    "match": "exact",
+    "reason": "Connect › RTI › CPIO",
+    "desktop": {
+     "node_id": "3453:14262",
+     "name": "CPIO",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Connect › RTI",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-CPIO-3453-14262",
+     "heading": "CPIO"
+    },
+    "mobile": {
+     "node_id": "4626:80865",
+     "name": "CPIO",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Connect/Mobile › RTI",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-CPIO-4626-80865",
+     "heading": "RTI"
+    },
+    "alternates": [
+     {
+      "node_id": "3448:11115",
+      "page": "Connect",
+      "name": "CPIO",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:134134",
+      "page": "Connect",
+      "name": "CPIO",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/circulars-notifications/",
+   "slug": "circulars-notifications",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Document-listing page; the only drawn document list is Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/annual-reports/",
+   "slug": "annual-reports",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.9,
+    "match": "exact",
+    "reason": "Documents › Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/advices/",
+   "slug": "advices",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Document-listing page; the only drawn document list is Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/acts-rules/",
+   "slug": "acts-rules",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Document-listing page; the only drawn document list is Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/social-defence-faqs/",
+   "slug": "social-defence-faqs",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.6,
+    "match": "template",
+    "reason": "Division FAQ page uses the Compliance › FAQs design",
+    "desktop": {
+     "node_id": "4330:56208",
+     "name": "FAQs",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Compliance Pages › FAQs",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-FAQS-4330-56208",
+     "heading": "FAQs"
+    },
+    "mobile": {
+     "node_id": "4330:66616",
+     "name": "Search result",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Compliance Pages/Mobile › FAQs",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-SEARCH-RESULT-4330-66616",
+     "heading": "FAQs"
+    },
+    "alternates": [
+     {
+      "node_id": "5243:126010",
+      "page": "✅ UI Flow / Desktop",
+      "name": "FAQs",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5243:114900",
+      "page": "Compliance Pages",
+      "name": "FAQs",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4743:113040",
+      "page": "Compliance Pages",
+      "name": "Search result",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/about-the-division-social-defence/",
+   "slug": "about-the-division-social-defence",
+   "kind": "page",
+   "type": "page",
+   "mapping": null,
+   "undesigned": true
+  },
+  {
+   "path": "/daf-directory/",
+   "slug": "daf-directory",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.55,
+    "match": "template",
+    "reason": "Organisation directory pages share the MoSJE Directory design",
+    "desktop": {
+     "node_id": "3453:9324",
+     "name": "Who’s Who -> MoSJE",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Ministry › Who’s Who",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-WHO-S-WHO-MOSJE-3453-9324",
+     "heading": "Who’s Who"
+    },
+    "mobile": {
+     "node_id": "4571:89516",
+     "name": "Ministry/Directory",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Ministry/Mobile › Ministry/Directory",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-MINISTRY-DIRECTORY-4571-89516",
+     "heading": "Directory"
+    },
+    "alternates": [
+     {
+      "node_id": "4249:38199",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7639:98569",
+      "page": "DBIM",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89769",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89914",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:90059",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40517",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40770",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40915",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:41060",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/chairpersons-office/",
+   "slug": "chairpersons-office",
+   "kind": "page",
+   "type": "page",
+   "mapping": null,
+   "undesigned": true
+  },
+  {
+   "path": "/nskfdc-directory/",
+   "slug": "nskfdc-directory",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.55,
+    "match": "template",
+    "reason": "Organisation directory pages share the MoSJE Directory design",
+    "desktop": {
+     "node_id": "3453:9324",
+     "name": "Who’s Who -> MoSJE",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Ministry › Who’s Who",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-WHO-S-WHO-MOSJE-3453-9324",
+     "heading": "Who’s Who"
+    },
+    "mobile": {
+     "node_id": "4571:89516",
+     "name": "Ministry/Directory",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Ministry/Mobile › Ministry/Directory",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-MINISTRY-DIRECTORY-4571-89516",
+     "heading": "Directory"
+    },
+    "alternates": [
+     {
+      "node_id": "4249:38199",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7639:98569",
+      "page": "DBIM",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89769",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89914",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:90059",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40517",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40770",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40915",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:41060",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/ncsk-directory/",
+   "slug": "ncsk-directory",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.55,
+    "match": "template",
+    "reason": "Organisation directory pages share the MoSJE Directory design",
+    "desktop": {
+     "node_id": "3453:9324",
+     "name": "Who’s Who -> MoSJE",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Ministry › Who’s Who",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-WHO-S-WHO-MOSJE-3453-9324",
+     "heading": "Who’s Who"
+    },
+    "mobile": {
+     "node_id": "4571:89516",
+     "name": "Ministry/Directory",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Ministry/Mobile › Ministry/Directory",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-MINISTRY-DIRECTORY-4571-89516",
+     "heading": "Directory"
+    },
+    "alternates": [
+     {
+      "node_id": "4249:38199",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7639:98569",
+      "page": "DBIM",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89769",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89914",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:90059",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40517",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40770",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40915",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:41060",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/scw-directory/",
+   "slug": "scw-directory",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.55,
+    "match": "template",
+    "reason": "Organisation directory pages share the MoSJE Directory design",
+    "desktop": {
+     "node_id": "3453:9324",
+     "name": "Who’s Who -> MoSJE",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Ministry › Who’s Who",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-WHO-S-WHO-MOSJE-3453-9324",
+     "heading": "Who’s Who"
+    },
+    "mobile": {
+     "node_id": "4571:89516",
+     "name": "Ministry/Directory",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Ministry/Mobile › Ministry/Directory",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-MINISTRY-DIRECTORY-4571-89516",
+     "heading": "Directory"
+    },
+    "alternates": [
+     {
+      "node_id": "4249:38199",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7639:98569",
+      "page": "DBIM",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89769",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89914",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:90059",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40517",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40770",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40915",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:41060",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/ncbc-directory/",
+   "slug": "ncbc-directory",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.55,
+    "match": "template",
+    "reason": "Organisation directory pages share the MoSJE Directory design",
+    "desktop": {
+     "node_id": "3453:9324",
+     "name": "Who’s Who -> MoSJE",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Ministry › Who’s Who",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-WHO-S-WHO-MOSJE-3453-9324",
+     "heading": "Who’s Who"
+    },
+    "mobile": {
+     "node_id": "4571:89516",
+     "name": "Ministry/Directory",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Ministry/Mobile › Ministry/Directory",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-MINISTRY-DIRECTORY-4571-89516",
+     "heading": "Directory"
+    },
+    "alternates": [
+     {
+      "node_id": "4249:38199",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7639:98569",
+      "page": "DBIM",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89769",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89914",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:90059",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40517",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40770",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40915",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:41060",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/nbcfdc-directory/",
+   "slug": "nbcfdc-directory",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.55,
+    "match": "template",
+    "reason": "Organisation directory pages share the MoSJE Directory design",
+    "desktop": {
+     "node_id": "3453:9324",
+     "name": "Who’s Who -> MoSJE",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Ministry › Who’s Who",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-WHO-S-WHO-MOSJE-3453-9324",
+     "heading": "Who’s Who"
+    },
+    "mobile": {
+     "node_id": "4571:89516",
+     "name": "Ministry/Directory",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Ministry/Mobile › Ministry/Directory",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-MINISTRY-DIRECTORY-4571-89516",
+     "heading": "Directory"
+    },
+    "alternates": [
+     {
+      "node_id": "4249:38199",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7639:98569",
+      "page": "DBIM",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89769",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89914",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:90059",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40517",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40770",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40915",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:41060",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/dwbdnc-directory/",
+   "slug": "dwbdnc-directory",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.55,
+    "match": "template",
+    "reason": "Organisation directory pages share the MoSJE Directory design",
+    "desktop": {
+     "node_id": "3453:9324",
+     "name": "Who’s Who -> MoSJE",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Ministry › Who’s Who",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-WHO-S-WHO-MOSJE-3453-9324",
+     "heading": "Who’s Who"
+    },
+    "mobile": {
+     "node_id": "4571:89516",
+     "name": "Ministry/Directory",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Ministry/Mobile › Ministry/Directory",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-MINISTRY-DIRECTORY-4571-89516",
+     "heading": "Directory"
+    },
+    "alternates": [
+     {
+      "node_id": "4249:38199",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7639:98569",
+      "page": "DBIM",
+      "name": "Ministry/Directory",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89769",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:89914",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4571:90059",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40517",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40770",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:40915",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4249:41060",
+      "page": "Ministry",
+      "name": "Ministry/Directory",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/handbook-on-social-welfare-statistics/",
+   "slug": "handbook-on-social-welfare-statistics",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Document-listing page; the only drawn document list is Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/list-of-research-evaluation-studies/",
+   "slug": "list-of-research-evaluation-studies",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Document-listing page; the only drawn document list is Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/about-the-division-statistics-division/",
+   "slug": "about-the-division-statistics-division",
+   "kind": "page",
+   "type": "page",
+   "mapping": null,
+   "undesigned": true
+  },
+  {
+   "path": "/about-the-division-2/",
+   "slug": "about-the-division-2",
+   "kind": "page",
+   "type": "page",
+   "mapping": null,
+   "undesigned": true
+  },
+  {
+   "path": "/special-mention-matters-raised-under-377/",
+   "slug": "special-mention-matters-raised-under-377",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Document-listing page; the only drawn document list is Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/assurances/",
+   "slug": "assurances",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Document-listing page; the only drawn document list is Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/grants-in-aid-to-ngos-faqs/",
+   "slug": "grants-in-aid-to-ngos-faqs",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.6,
+    "match": "template",
+    "reason": "Division FAQ page uses the Compliance › FAQs design",
+    "desktop": {
+     "node_id": "4330:56208",
+     "name": "FAQs",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Compliance Pages › FAQs",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-FAQS-4330-56208",
+     "heading": "FAQs"
+    },
+    "mobile": {
+     "node_id": "4330:66616",
+     "name": "Search result",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Compliance Pages/Mobile › FAQs",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-SEARCH-RESULT-4330-66616",
+     "heading": "FAQs"
+    },
+    "alternates": [
+     {
+      "node_id": "5243:126010",
+      "page": "✅ UI Flow / Desktop",
+      "name": "FAQs",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5243:114900",
+      "page": "Compliance Pages",
+      "name": "FAQs",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4743:113040",
+      "page": "Compliance Pages",
+      "name": "Search result",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/list-of-de-blacklisted-ngos/",
+   "slug": "list-of-de-blacklisted-ngos",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Document-listing page; the only drawn document list is Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/grants-suspended-list-blacklisted-ngos/",
+   "slug": "grants-suspended-list-blacklisted-ngos",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Document-listing page; the only drawn document list is Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/minutes-of-screening-committees-2/",
+   "slug": "minutes-of-screening-committees-2",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Document-listing page; the only drawn document list is Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/activities-of-the-ministry-official-language/",
+   "slug": "activities-of-the-ministry-official-language",
+   "kind": "page",
+   "type": "page",
+   "mapping": null,
+   "undesigned": true
+  },
+  {
+   "path": "/official-language-background/",
+   "slug": "official-language-background",
+   "kind": "page",
+   "type": "page",
+   "mapping": null,
+   "undesigned": true
+  },
+  {
+   "path": "/policies-acts-rules-codes-circular-social-defence/",
+   "slug": "policies-acts-rules-codes-circular-social-defence",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Document-listing page; the only drawn document list is Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/organisation-under-division-social-division/",
+   "slug": "organisation-under-division-social-division",
+   "kind": "page",
+   "type": "page",
+   "mapping": null,
+   "undesigned": true
+  },
+  {
+   "path": "/drug-division/",
+   "slug": "drug-division",
+   "kind": "page",
+   "type": "page",
+   "mapping": null,
+   "undesigned": true
+  },
+  {
+   "path": "/welfare-of-the-other-backward-classes/",
+   "slug": "welfare-of-the-other-backward-classes",
+   "kind": "page",
+   "type": "page",
+   "mapping": null,
+   "undesigned": true
+  },
+  {
+   "path": "/cessation-of-voluntary-organisation-activities/",
+   "slug": "cessation-of-voluntary-organisation-activities",
+   "kind": "page",
+   "type": "page",
+   "mapping": null,
+   "undesigned": true
+  },
+  {
+   "path": "/penalties-in-case-of-misutilization-of-grands/",
+   "slug": "penalties-in-case-of-misutilization-of-grands",
+   "kind": "page",
+   "type": "page",
+   "mapping": null,
+   "undesigned": true
+  },
+  {
+   "path": "/inspection-and-monitoring-procedure/",
+   "slug": "inspection-and-monitoring-procedure",
+   "kind": "page",
+   "type": "page",
+   "mapping": null,
+   "undesigned": true
+  },
+  {
+   "path": "/contact-person/",
+   "slug": "contact-person",
+   "kind": "page",
+   "type": "page",
+   "mapping": null,
+   "undesigned": true
+  },
+  {
+   "path": "/detailed-demand-for-grant/",
+   "slug": "detailed-demand-for-grant",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Document-listing page; the only drawn document list is Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/minutes-of-screening-committees/",
+   "slug": "minutes-of-screening-committees",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Document-listing page; the only drawn document list is Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations/",
+   "slug": "procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations",
+   "kind": "page",
+   "type": "page",
+   "mapping": null,
+   "undesigned": true
+  },
+  {
+   "path": "/prioritization-guidelines-for-funding-projects-by-vuluntary-organisations/",
+   "slug": "prioritization-guidelines-for-funding-projects-by-vuluntary-organisations",
+   "kind": "page",
+   "type": "page",
+   "mapping": null,
+   "undesigned": true
+  },
+  {
+   "path": "/policies-acts-rules-codes-circular/",
+   "slug": "policies-acts-rules-codes-circular",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Document-listing page; the only drawn document list is Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/about-the-division-welfare-of-the-other-backward-classes/",
+   "slug": "about-the-division-welfare-of-the-other-backward-classes",
+   "kind": "page",
+   "type": "page",
+   "mapping": null,
+   "undesigned": true
+  },
+  {
+   "path": "/policies-acts-rules-circular/",
+   "slug": "policies-acts-rules-circular",
+   "kind": "page",
+   "type": "page",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Document-listing page; the only drawn document list is Annual Reports",
+    "desktop": {
+     "node_id": "3453:12795",
+     "name": "Annual Reports",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ANNUAL-REPORTS-3453-12795",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:109359",
+     "name": "Documents/Annual Reports",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-ANNUAL-REPORTS-4571-109359",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "3431:7072",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:98154",
+      "page": "Documents",
+      "name": "Documents/Annual Reports",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/about-the-division/",
+   "slug": "about-the-division",
+   "kind": "page",
+   "type": "page",
+   "mapping": null,
+   "undesigned": true
+  },
+  {
+   "path": "/booking/conference-3/",
+   "slug": "booking--conference-3",
+   "kind": "template-sample",
+   "type": "booking",
+   "mapping": {
+    "confidence": 0.85,
+    "match": "template",
+    "reason": "Booking detail view under Organisation Details › Booking",
+    "desktop": {
+     "node_id": "4743:129775",
+     "name": "Organisation Details/Booking -> Booking Details",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Associated Organisations › Booking",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ORGANISATION-DETAILS-BOOKING-BOOKING-DETAILS-4743-129775",
+     "heading": "Bookings"
+    },
+    "mobile": {
+     "node_id": "4571:96493",
+     "name": "Organisation Details/Booking -> Booking Details",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Associated Organisations/Mobile › Booking",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-ORGANISATION-DETAILS-BOOKING-BOOKING-DETAILS-4571-96493",
+     "heading": "Bookings"
+    },
+    "alternates": [
+     {
+      "node_id": "3751:8665",
+      "page": "Associated Organisations",
+      "name": "Organisation Details/Booking -> Booking Details",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "3815:12791",
+      "page": "Associated Organisations",
+      "name": "Organisation Details/Booking -> Booking Details",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/booking/vaishali/",
+   "slug": "booking--vaishali",
+   "kind": "template-sample",
+   "type": "booking",
+   "mapping": {
+    "confidence": 0.85,
+    "match": "template",
+    "reason": "Booking detail view under Organisation Details › Booking",
+    "desktop": {
+     "node_id": "4743:129775",
+     "name": "Organisation Details/Booking -> Booking Details",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Associated Organisations › Booking",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ORGANISATION-DETAILS-BOOKING-BOOKING-DETAILS-4743-129775",
+     "heading": "Bookings"
+    },
+    "mobile": {
+     "node_id": "4571:96493",
+     "name": "Organisation Details/Booking -> Booking Details",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Associated Organisations/Mobile › Booking",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-ORGANISATION-DETAILS-BOOKING-BOOKING-DETAILS-4571-96493",
+     "heading": "Bookings"
+    },
+    "alternates": [
+     {
+      "node_id": "3751:8665",
+      "page": "Associated Organisations",
+      "name": "Organisation Details/Booking -> Booking Details",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "3815:12791",
+      "page": "Associated Organisations",
+      "name": "Organisation Details/Booking -> Booking Details",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/cpio/shri-sumit-kumar/",
+   "slug": "cpio--shri-sumit-kumar",
+   "kind": "template-sample",
+   "type": "cpio",
+   "mapping": {
+    "confidence": 0.3,
+    "match": "partial",
+    "reason": "CPIO person detail page is not drawn; only the CPIO list",
+    "desktop": {
+     "node_id": "3453:14262",
+     "name": "CPIO",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Connect › RTI",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-CPIO-3453-14262",
+     "heading": "CPIO"
+    },
+    "mobile": null,
+    "alternates": [
+     {
+      "node_id": "3448:11115",
+      "page": "Connect",
+      "name": "CPIO",
+      "kind": "desktop",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": true
+  },
+  {
+   "path": "/cpio/shri-vinesh-pachnanda/",
+   "slug": "cpio--shri-vinesh-pachnanda",
+   "kind": "template-sample",
+   "type": "cpio",
+   "mapping": {
+    "confidence": 0.3,
+    "match": "partial",
+    "reason": "CPIO person detail page is not drawn; only the CPIO list",
+    "desktop": {
+     "node_id": "3453:14262",
+     "name": "CPIO",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Connect › RTI",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-CPIO-3453-14262",
+     "heading": "CPIO"
+    },
+    "mobile": null,
+    "alternates": [
+     {
+      "node_id": "3448:11115",
+      "page": "Connect",
+      "name": "CPIO",
+      "kind": "desktop",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": true
+  },
+  {
+   "path": "/documents/corrigendum-to-pm-daksh-scheme-guidelines/",
+   "slug": "documents--corrigendum-to-pm-daksh-scheme-guideline",
+   "kind": "template-sample",
+   "type": "documents",
+   "mapping": {
+    "confidence": 0.4,
+    "match": "template",
+    "reason": "Document detail: design uses Quick View side sheet (desktop) / Document View (mobile), not a detail page",
+    "desktop": {
+     "node_id": "3431:7459",
+     "name": "Documents/Annual Report -> Quick View",
+     "page": "Documents",
+     "sectionPath": "Documents › Documents/Annual Reports",
+     "kind": "overlay",
+     "status": "handoff",
+     "slug": "DOCUMENTS-DOCUMENTS-ANNUAL-REPORT-QUICK-VIEW-3431-7459",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:110315",
+     "name": "Documents/Document View",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-DOCUMENT-VIEW-4571-110315",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "5527:99110",
+      "page": "Documents",
+      "name": "Documents/Document View",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/documents/expression-of-interest-eoi-for-rate-of-interest-for-investment-of-an-amount-of-rs-105-00-crore-in-fixed-deposit-from-public-and-private-sector-banks/",
+   "slug": "documents--expression-of-interest-eoi-for-rate-of-i",
+   "kind": "template-sample",
+   "type": "documents",
+   "mapping": {
+    "confidence": 0.4,
+    "match": "template",
+    "reason": "Document detail: design uses Quick View side sheet (desktop) / Document View (mobile), not a detail page",
+    "desktop": {
+     "node_id": "3431:7459",
+     "name": "Documents/Annual Report -> Quick View",
+     "page": "Documents",
+     "sectionPath": "Documents › Documents/Annual Reports",
+     "kind": "overlay",
+     "status": "handoff",
+     "slug": "DOCUMENTS-DOCUMENTS-ANNUAL-REPORT-QUICK-VIEW-3431-7459",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:110315",
+     "name": "Documents/Document View",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-DOCUMENT-VIEW-4571-110315",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "5527:99110",
+      "page": "Documents",
+      "name": "Documents/Document View",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/events/ek-ped-maa-ke-naam-7/",
+   "slug": "events--ek-ped-maa-ke-naam-7",
+   "kind": "template-sample",
+   "type": "events",
+   "mapping": {
+    "confidence": 0.85,
+    "match": "template",
+    "reason": "Event detail template",
+    "desktop": {
+     "node_id": "3453:14110",
+     "name": "Event Details",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Events & Gallery › Events",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-EVENT-DETAILS-3453-14110",
+     "heading": "Hard to Reach Population-SMILE"
+    },
+    "mobile": {
+     "node_id": "4571:115254",
+     "name": "Events Details",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Events&Gallery/Mobile",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-EVENTS-DETAILS-4571-115254",
+     "heading": "Hard to Reach Population-SMILE"
+    },
+    "alternates": [
+     {
+      "node_id": "3438:52859",
+      "page": "Events & Gallery",
+      "name": "Events page",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:108489",
+      "page": "Events & Gallery",
+      "name": "Events Details",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/events/ek-ped-maa-ke-naam-6/",
+   "slug": "events--ek-ped-maa-ke-naam-6",
+   "kind": "template-sample",
+   "type": "events",
+   "mapping": {
+    "confidence": 0.85,
+    "match": "template",
+    "reason": "Event detail template",
+    "desktop": {
+     "node_id": "3453:14110",
+     "name": "Event Details",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Events & Gallery › Events",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-EVENT-DETAILS-3453-14110",
+     "heading": "Hard to Reach Population-SMILE"
+    },
+    "mobile": {
+     "node_id": "4571:115254",
+     "name": "Events Details",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Events&Gallery/Mobile",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-EVENTS-DETAILS-4571-115254",
+     "heading": "Hard to Reach Population-SMILE"
+    },
+    "alternates": [
+     {
+      "node_id": "3438:52859",
+      "page": "Events & Gallery",
+      "name": "Events page",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:108489",
+      "page": "Events & Gallery",
+      "name": "Events Details",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/gallery/14446-national-de-addiction-and-telecounseling-helpline-op-1/",
+   "slug": "gallery--14446-national-de-addiction-and-telecoun",
+   "kind": "template-sample",
+   "type": "gallery",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Gallery item: design uses a Quick View modal, not a detail page",
+    "desktop": {
+     "node_id": "3453:13524",
+     "name": "Events & Gallery/Gallery -> Quick View | Photo",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Events & Gallery › Gallery",
+     "kind": "overlay",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-EVENTS-GALLERY-GALLERY-QUICK-VIEW-PHOTO-3453-13524",
+     "heading": "Photos"
+    },
+    "mobile": null,
+    "alternates": [
+     {
+      "node_id": "3438:52273",
+      "page": "Events & Gallery",
+      "name": "Events & Gallery/Gallery -> Quick View | Photo",
+      "kind": "overlay",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7704:100206",
+      "page": "DBIM",
+      "name": "Events & Gallery/Gallery -> Quick View | Photo",
+      "kind": "overlay",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/gallery/role-of-parents-teachers-in-early-identification-prevention-and-treatment-of-substance-use/",
+   "slug": "gallery--role-of-parents-teachers-in-early-identi",
+   "kind": "template-sample",
+   "type": "gallery",
+   "mapping": {
+    "confidence": 0.5,
+    "match": "template",
+    "reason": "Gallery item: design uses a Quick View modal, not a detail page",
+    "desktop": {
+     "node_id": "3453:13524",
+     "name": "Events & Gallery/Gallery -> Quick View | Photo",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Events & Gallery › Gallery",
+     "kind": "overlay",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-EVENTS-GALLERY-GALLERY-QUICK-VIEW-PHOTO-3453-13524",
+     "heading": "Photos"
+    },
+    "mobile": null,
+    "alternates": [
+     {
+      "node_id": "3438:52273",
+      "page": "Events & Gallery",
+      "name": "Events & Gallery/Gallery -> Quick View | Photo",
+      "kind": "overlay",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7704:100206",
+      "page": "DBIM",
+      "name": "Events & Gallery/Gallery -> Quick View | Photo",
+      "kind": "overlay",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/official/shri-shailendra-kumar/",
+   "slug": "official--shri-shailendra-kumar",
+   "kind": "template-sample",
+   "type": "official",
+   "mapping": {
+    "confidence": 0.65,
+    "match": "template",
+    "reason": "Official profile drawn as the Directory → Joint Secretary detail state",
+    "desktop": {
+     "node_id": "3453:9455",
+     "name": "Ministry/Who’s Who -> MoSJE, Joint Secretary",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Ministry › Who’s Who",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-MINISTRY-WHO-S-WHO-MOSJE-JOINT-SECRETARY-3453-9455",
+     "heading": "Who’s Who"
+    },
+    "mobile": null,
+    "alternates": [
+     {
+      "node_id": "4249:38373",
+      "page": "Ministry",
+      "name": "Ministry/Directory -> MoSJE, Joint Secretary",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7639:98739",
+      "page": "DBIM",
+      "name": "Ministry/Directory -> MoSJE, Joint Secretary",
+      "kind": "desktop",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/official/dr-swati-s-mishra/",
+   "slug": "official--dr-swati-s-mishra",
+   "kind": "template-sample",
+   "type": "official",
+   "mapping": {
+    "confidence": 0.65,
+    "match": "template",
+    "reason": "Official profile drawn as the Directory → Joint Secretary detail state",
+    "desktop": {
+     "node_id": "3453:9455",
+     "name": "Ministry/Who’s Who -> MoSJE, Joint Secretary",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Ministry › Who’s Who",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-MINISTRY-WHO-S-WHO-MOSJE-JOINT-SECRETARY-3453-9455",
+     "heading": "Who’s Who"
+    },
+    "mobile": null,
+    "alternates": [
+     {
+      "node_id": "4249:38373",
+      "page": "Ministry",
+      "name": "Ministry/Directory -> MoSJE, Joint Secretary",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "7639:98739",
+      "page": "DBIM",
+      "name": "Ministry/Directory -> MoSJE, Joint Secretary",
+      "kind": "desktop",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/organisation/senior-citizens-welfarescw/pearls-of-wisdom/",
+   "slug": "organisation--pearls-of-wisdom",
+   "kind": "template-sample",
+   "type": "organisation",
+   "mapping": {
+    "confidence": 0.45,
+    "match": "template",
+    "reason": "Organisation sub-page (e.g. Pearls of Wisdom) — only the Organisation Details shell is drawn, sub-page content is not",
+    "desktop": {
+     "node_id": "3453:11191",
+     "name": "Organisation Details",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Associated Organisations",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-ORGANISATION-DETAILS-3453-11191",
+     "heading": "National Commission for Scheduled Castes (NCSC)"
+    },
+    "mobile": {
+     "node_id": "4571:95083",
+     "name": "Organisation Details",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Associated Organisations/Mobile",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-ORGANISATION-DETAILS-4571-95083",
+     "heading": "National Commission for Scheduled Castes (NCSC)"
+    },
+    "alternates": [
+     {
+      "node_id": "3751:10124",
+      "page": "Associated Organisations",
+      "name": "Organisation Details",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "8284:64125",
+      "page": "Associated Organisations",
+      "name": "Organisation Details",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "3815:10652",
+      "page": "Associated Organisations",
+      "name": "Organisation Details",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/organisation/national-commission-for-safai-karamcharis/contact-us/",
+   "slug": "organisation--contact-us",
+   "kind": "template-sample",
+   "type": "organisation",
+   "mapping": {
+    "confidence": 0.7,
+    "match": "template",
+    "reason": "Organisation contact sub-page = Contact Us/NCSC",
+    "desktop": {
+     "node_id": "3453:14723",
+     "name": "Contact Us/NCSC",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Connect › Contact Us",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-CONTACT-US-NCSC-3453-14723",
+     "heading": "Contact Details"
+    },
+    "mobile": {
+     "node_id": "4626:81838",
+     "name": "Contact Us/NCSC",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Connect/Mobile › Contact Us",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-CONTACT-US-NCSC-4626-81838",
+     "heading": "Contact Details"
+    },
+    "alternates": [
+     {
+      "node_id": "3448:11580",
+      "page": "Connect",
+      "name": "Contact Us/NCSC",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "4626:82234",
+      "page": "✅ UI Flow / Mobile",
+      "name": "Contact Us/NCSC",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:135107",
+      "page": "Connect",
+      "name": "Contact Us/NCSC",
+      "kind": "mobile",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:135503",
+      "page": "Connect",
+      "name": "Contact Us/NCSC",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/scheme-documents/merger-order/",
+   "slug": "scheme-documents--merger-order",
+   "kind": "template-sample",
+   "type": "scheme-documents",
+   "mapping": {
+    "confidence": 0.4,
+    "match": "template",
+    "reason": "Document detail: design uses Quick View side sheet (desktop) / Document View (mobile), not a detail page",
+    "desktop": {
+     "node_id": "3431:7459",
+     "name": "Documents/Annual Report -> Quick View",
+     "page": "Documents",
+     "sectionPath": "Documents › Documents/Annual Reports",
+     "kind": "overlay",
+     "status": "handoff",
+     "slug": "DOCUMENTS-DOCUMENTS-ANNUAL-REPORT-QUICK-VIEW-3431-7459",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:110315",
+     "name": "Documents/Document View",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-DOCUMENT-VIEW-4571-110315",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "5527:99110",
+      "page": "Documents",
+      "name": "Documents/Document View",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/scheme-documents/dr-ambedkar-national-merit-award-scheme-for-scs-students-for-class-12th-level/",
+   "slug": "scheme-documents--dr-ambedkar-national-merit-award-scheme-",
+   "kind": "template-sample",
+   "type": "scheme-documents",
+   "mapping": {
+    "confidence": 0.4,
+    "match": "template",
+    "reason": "Document detail: design uses Quick View side sheet (desktop) / Document View (mobile), not a detail page",
+    "desktop": {
+     "node_id": "3431:7459",
+     "name": "Documents/Annual Report -> Quick View",
+     "page": "Documents",
+     "sectionPath": "Documents › Documents/Annual Reports",
+     "kind": "overlay",
+     "status": "handoff",
+     "slug": "DOCUMENTS-DOCUMENTS-ANNUAL-REPORT-QUICK-VIEW-3431-7459",
+     "heading": "Annual Reports"
+    },
+    "mobile": {
+     "node_id": "4571:110315",
+     "name": "Documents/Document View",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-DOCUMENTS-DOCUMENT-VIEW-4571-110315",
+     "heading": "Annual Reports"
+    },
+    "alternates": [
+     {
+      "node_id": "5527:99110",
+      "page": "Documents",
+      "name": "Documents/Document View",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/schemes-and-services/top-class-education-in-colllege-for-obc-ebc-and-dnt-students/",
+   "slug": "schemes-and-services--top-class-education-in-colllege-for-obc-",
+   "kind": "template-sample",
+   "type": "schemes-and-services",
+   "mapping": {
+    "confidence": 0.85,
+    "match": "template",
+    "reason": "Scheme Details template",
+    "desktop": {
+     "node_id": "3453:11885",
+     "name": "Schemes & Services/Scheme Details",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Offerings › Offerings/Schemes & Services",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-SCHEMES-SERVICES-SCHEME-DETAILS-3453-11885",
+     "heading": "Scheme for Residential Education for Students in High Schools in Targeted Areas (SHRESHTA)"
+    },
+    "mobile": {
+     "node_id": "4571:105399",
+     "name": "Offerings/Schemes & Services/Scheme Details",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Offerings/Mobile › Offerings/Schemes & Services/Mobile",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-OFFERINGS-SCHEMES-SERVICES-SCHEME-DETAILS-4571-105399",
+     "heading": "Scheme for\nResidential\nEducation for Students in High Schools in Targeted Areas (SHRESHTA)"
+    },
+    "alternates": [
+     {
+      "node_id": "3363:13864",
+      "page": "Offerings",
+      "name": "Offerings/Schemes & Services/Scheme Details",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:94186",
+      "page": "Offerings",
+      "name": "Offerings/Schemes & Services/Scheme Details",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/schemes-and-services/geriatric-caregivers-training/",
+   "slug": "schemes-and-services--geriatric-caregivers-training",
+   "kind": "template-sample",
+   "type": "schemes-and-services",
+   "mapping": {
+    "confidence": 0.85,
+    "match": "template",
+    "reason": "Scheme Details template",
+    "desktop": {
+     "node_id": "3453:11885",
+     "name": "Schemes & Services/Scheme Details",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Offerings › Offerings/Schemes & Services",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-SCHEMES-SERVICES-SCHEME-DETAILS-3453-11885",
+     "heading": "Scheme for Residential Education for Students in High Schools in Targeted Areas (SHRESHTA)"
+    },
+    "mobile": {
+     "node_id": "4571:105399",
+     "name": "Offerings/Schemes & Services/Scheme Details",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Offerings/Mobile › Offerings/Schemes & Services/Mobile",
+     "kind": "mobile",
+     "status": "handoff",
+     "slug": "UI-FLOW-MOBILE-OFFERINGS-SCHEMES-SERVICES-SCHEME-DETAILS-4571-105399",
+     "heading": "Scheme for\nResidential\nEducation for Students in High Schools in Targeted Areas (SHRESHTA)"
+    },
+    "alternates": [
+     {
+      "node_id": "3363:13864",
+      "page": "Offerings",
+      "name": "Offerings/Schemes & Services/Scheme Details",
+      "kind": "desktop",
+      "status": "handoff"
+     },
+     {
+      "node_id": "5527:94186",
+      "page": "Offerings",
+      "name": "Offerings/Schemes & Services/Scheme Details",
+      "kind": "mobile",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": false
+  },
+  {
+   "path": "/suo-moto-disclosure/list-of-schemes-projects-programme-underway-in-nisd/",
+   "slug": "suo-moto-disclosure--list-of-schemes-projects-programme-under",
+   "kind": "template-sample",
+   "type": "suo-moto-disclosure",
+   "mapping": {
+    "confidence": 0.3,
+    "match": "partial",
+    "reason": "Disclosure item detail not drawn; only the list",
+    "desktop": {
+     "node_id": "3453:14426",
+     "name": "Suo-moto Disclosure",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Connect › RTI",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-SUO-MOTO-DISCLOSURE-3453-14426",
+     "heading": "Suo-moto Disclosure"
+    },
+    "mobile": null,
+    "alternates": [
+     {
+      "node_id": "3448:11279",
+      "page": "Connect",
+      "name": "Suo-moto Disclosure",
+      "kind": "desktop",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": true
+  },
+  {
+   "path": "/suo-moto-disclosure/security-audit-certificate/",
+   "slug": "suo-moto-disclosure--security-audit-certificate",
+   "kind": "template-sample",
+   "type": "suo-moto-disclosure",
+   "mapping": {
+    "confidence": 0.3,
+    "match": "partial",
+    "reason": "Disclosure item detail not drawn; only the list",
+    "desktop": {
+     "node_id": "3453:14426",
+     "name": "Suo-moto Disclosure",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Connect › RTI",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-SUO-MOTO-DISCLOSURE-3453-14426",
+     "heading": "Suo-moto Disclosure"
+    },
+    "mobile": null,
+    "alternates": [
+     {
+      "node_id": "3448:11279",
+      "page": "Connect",
+      "name": "Suo-moto Disclosure",
+      "kind": "desktop",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": true
+  },
+  {
+   "path": "/tender/investment-of-an-amount-of-rs-10-00-crore-in-fixed-reg-2/",
+   "slug": "tender--investment-of-an-amount-of-rs-10-00-cror",
+   "kind": "template-sample",
+   "type": "tender",
+   "mapping": {
+    "confidence": 0.3,
+    "match": "partial",
+    "reason": "Tender detail not drawn; only the Tenders list",
+    "desktop": {
+     "node_id": "3453:12568",
+     "name": "Tenders",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Offerings",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-TENDERS-3453-12568",
+     "heading": "Tenders"
+    },
+    "mobile": null,
+    "alternates": [
+     {
+      "node_id": "3366:25288",
+      "page": "Offerings",
+      "name": "Offerings/Tenders",
+      "kind": "desktop",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": true
+  },
+  {
+   "path": "/tender/investment-of-an-amount-of-rs-174-00-crore-in-fixed-reg/",
+   "slug": "tender--investment-of-an-amount-of-rs-174-00-cro",
+   "kind": "template-sample",
+   "type": "tender",
+   "mapping": {
+    "confidence": 0.3,
+    "match": "partial",
+    "reason": "Tender detail not drawn; only the Tenders list",
+    "desktop": {
+     "node_id": "3453:12568",
+     "name": "Tenders",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Offerings",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-TENDERS-3453-12568",
+     "heading": "Tenders"
+    },
+    "mobile": null,
+    "alternates": [
+     {
+      "node_id": "3366:25288",
+      "page": "Offerings",
+      "name": "Offerings/Tenders",
+      "kind": "desktop",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": true
+  },
+  {
+   "path": "/updates/3rd-national-lok-adalat-awareness-material-2026/",
+   "slug": "updates--3rd-national-lok-adalat-awareness-materi",
+   "kind": "template-sample",
+   "type": "updates",
+   "mapping": null,
+   "undesigned": true
+  },
+  {
+   "path": "/updates/pre-bid-meeting-tender-id-gem-2026-b-7743923/",
+   "slug": "updates--pre-bid-meeting-tender-id-gem-2026-b-774",
+   "kind": "template-sample",
+   "type": "updates",
+   "mapping": null,
+   "undesigned": true
+  },
+  {
+   "path": "/vacancies/short-term-internship-programme-at-daic-september-2026/",
+   "slug": "vacancies--short-term-internship-programme-at-daic-",
+   "kind": "template-sample",
+   "type": "vacancies",
+   "mapping": {
+    "confidence": 0.3,
+    "match": "partial",
+    "reason": "Vacancy detail not drawn; only the Vacancies list",
+    "desktop": {
+     "node_id": "3453:12427",
+     "name": "Vacancies",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Offerings",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-VACANCIES-3453-12427",
+     "heading": "Vacancies"
+    },
+    "mobile": null,
+    "alternates": [
+     {
+      "node_id": "3366:25147",
+      "page": "Offerings",
+      "name": "Offerings/Vacancies",
+      "kind": "desktop",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": true
+  },
+  {
+   "path": "/vacancies/short-term-internship-programme-at-dr-ambedkar-international-centre-15-janpath-new-delhi-110001-3/",
+   "slug": "vacancies--short-term-internship-programme-at-dr-am",
+   "kind": "template-sample",
+   "type": "vacancies",
+   "mapping": {
+    "confidence": 0.3,
+    "match": "partial",
+    "reason": "Vacancy detail not drawn; only the Vacancies list",
+    "desktop": {
+     "node_id": "3453:12427",
+     "name": "Vacancies",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Offerings",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-VACANCIES-3453-12427",
+     "heading": "Vacancies"
+    },
+    "mobile": null,
+    "alternates": [
+     {
+      "node_id": "3366:25147",
+      "page": "Offerings",
+      "name": "Offerings/Vacancies",
+      "kind": "desktop",
+      "status": "handoff"
+     }
+    ]
+   },
+   "undesigned": true
+  }
+ ],
+ "undesigned": [
+  {
+   "path": "/footer-carousel/",
+   "slug": "footer-carousel",
+   "type": "page",
+   "kind": "page",
+   "nearest": {
+    "confidence": 0.25,
+    "match": "partial",
+    "reason": "No page design; only a 'Carousel' strip on Home page (the live URL is a utility carousel page)",
+    "desktop": {
+     "node_id": "4432:105121",
+     "name": "Carousel ",
+     "page": "Home",
+     "sectionPath": "Home",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "HOME-CAROUSEL-4432-105121",
+     "heading": null
+    },
+    "mobile": null,
+    "alternates": [
+     {
+      "node_id": "7467:27144",
+      "page": "Banner",
+      "name": "Carousel ",
+      "kind": "desktop",
+      "status": "exploration"
+     }
+    ]
+   }
+  },
+  {
+   "path": "/miscellaneous/",
+   "slug": "miscellaneous",
+   "type": "page",
+   "kind": "page",
+   "nearest": null
+  },
+  {
+   "path": "/meta-data/",
+   "slug": "meta-data",
+   "type": "page",
+   "kind": "page",
+   "nearest": null
+  },
+  {
+   "path": "/guidelines-for-assisting-ngos-voluntary-organisations/",
+   "slug": "guidelines-for-assisting-ngos-voluntary-organisations",
+   "type": "page",
+   "kind": "page",
+   "nearest": null
+  },
+  {
+   "path": "/visitor-analytics/",
+   "slug": "visitor-analytics",
+   "type": "page",
+   "kind": "page",
+   "nearest": null
+  },
+  {
+   "path": "/official-language-act/",
+   "slug": "official-language-act",
+   "type": "page",
+   "kind": "page",
+   "nearest": null
+  },
+  {
+   "path": "/updates/",
+   "slug": "updates",
+   "type": "page",
+   "kind": "page",
+   "nearest": {
+    "confidence": 0.3,
+    "match": "partial",
+    "reason": "No updates listing page; only the Latest Updates side sheet / 'Home -> View All Updates' state",
+    "desktop": {
+     "node_id": "3453:8192",
+     "name": "Latest Updates Side Sheet Container",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Home",
+     "kind": "overlay",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-LATEST-UPDATES-SIDE-SHEET-CONTAINER-3453-8192",
+     "heading": "New Funding Alert!"
+    },
+    "mobile": null,
+    "alternates": []
+   }
+  },
+  {
+   "path": "/about-the-division-social-defence/",
+   "slug": "about-the-division-social-defence",
+   "type": "page",
+   "kind": "page",
+   "nearest": null
+  },
+  {
+   "path": "/chairpersons-office/",
+   "slug": "chairpersons-office",
+   "type": "page",
+   "kind": "page",
+   "nearest": null
+  },
+  {
+   "path": "/about-the-division-statistics-division/",
+   "slug": "about-the-division-statistics-division",
+   "type": "page",
+   "kind": "page",
+   "nearest": null
+  },
+  {
+   "path": "/about-the-division-2/",
+   "slug": "about-the-division-2",
+   "type": "page",
+   "kind": "page",
+   "nearest": null
+  },
+  {
+   "path": "/activities-of-the-ministry-official-language/",
+   "slug": "activities-of-the-ministry-official-language",
+   "type": "page",
+   "kind": "page",
+   "nearest": null
+  },
+  {
+   "path": "/official-language-background/",
+   "slug": "official-language-background",
+   "type": "page",
+   "kind": "page",
+   "nearest": null
+  },
+  {
+   "path": "/organisation-under-division-social-division/",
+   "slug": "organisation-under-division-social-division",
+   "type": "page",
+   "kind": "page",
+   "nearest": null
+  },
+  {
+   "path": "/drug-division/",
+   "slug": "drug-division",
+   "type": "page",
+   "kind": "page",
+   "nearest": null
+  },
+  {
+   "path": "/welfare-of-the-other-backward-classes/",
+   "slug": "welfare-of-the-other-backward-classes",
+   "type": "page",
+   "kind": "page",
+   "nearest": null
+  },
+  {
+   "path": "/cessation-of-voluntary-organisation-activities/",
+   "slug": "cessation-of-voluntary-organisation-activities",
+   "type": "page",
+   "kind": "page",
+   "nearest": null
+  },
+  {
+   "path": "/penalties-in-case-of-misutilization-of-grands/",
+   "slug": "penalties-in-case-of-misutilization-of-grands",
+   "type": "page",
+   "kind": "page",
+   "nearest": null
+  },
+  {
+   "path": "/inspection-and-monitoring-procedure/",
+   "slug": "inspection-and-monitoring-procedure",
+   "type": "page",
+   "kind": "page",
+   "nearest": null
+  },
+  {
+   "path": "/contact-person/",
+   "slug": "contact-person",
+   "type": "page",
+   "kind": "page",
+   "nearest": null
+  },
+  {
+   "path": "/procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations/",
+   "slug": "procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations",
+   "type": "page",
+   "kind": "page",
+   "nearest": null
+  },
+  {
+   "path": "/prioritization-guidelines-for-funding-projects-by-vuluntary-organisations/",
+   "slug": "prioritization-guidelines-for-funding-projects-by-vuluntary-organisations",
+   "type": "page",
+   "kind": "page",
+   "nearest": null
+  },
+  {
+   "path": "/about-the-division-welfare-of-the-other-backward-classes/",
+   "slug": "about-the-division-welfare-of-the-other-backward-classes",
+   "type": "page",
+   "kind": "page",
+   "nearest": null
+  },
+  {
+   "path": "/about-the-division/",
+   "slug": "about-the-division",
+   "type": "page",
+   "kind": "page",
+   "nearest": null
+  },
+  {
+   "path": "/cpio/shri-sumit-kumar/",
+   "slug": "cpio--shri-sumit-kumar",
+   "type": "cpio",
+   "kind": "template-sample",
+   "nearest": {
+    "confidence": 0.3,
+    "match": "partial",
+    "reason": "CPIO person detail page is not drawn; only the CPIO list",
+    "desktop": {
+     "node_id": "3453:14262",
+     "name": "CPIO",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Connect › RTI",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-CPIO-3453-14262",
+     "heading": "CPIO"
+    },
+    "mobile": null,
+    "alternates": [
+     {
+      "node_id": "3448:11115",
+      "page": "Connect",
+      "name": "CPIO",
+      "kind": "desktop",
+      "status": "handoff"
+     }
+    ]
+   }
+  },
+  {
+   "path": "/cpio/shri-vinesh-pachnanda/",
+   "slug": "cpio--shri-vinesh-pachnanda",
+   "type": "cpio",
+   "kind": "template-sample",
+   "nearest": {
+    "confidence": 0.3,
+    "match": "partial",
+    "reason": "CPIO person detail page is not drawn; only the CPIO list",
+    "desktop": {
+     "node_id": "3453:14262",
+     "name": "CPIO",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Connect › RTI",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-CPIO-3453-14262",
+     "heading": "CPIO"
+    },
+    "mobile": null,
+    "alternates": [
+     {
+      "node_id": "3448:11115",
+      "page": "Connect",
+      "name": "CPIO",
+      "kind": "desktop",
+      "status": "handoff"
+     }
+    ]
+   }
+  },
+  {
+   "path": "/suo-moto-disclosure/list-of-schemes-projects-programme-underway-in-nisd/",
+   "slug": "suo-moto-disclosure--list-of-schemes-projects-programme-under",
+   "type": "suo-moto-disclosure",
+   "kind": "template-sample",
+   "nearest": {
+    "confidence": 0.3,
+    "match": "partial",
+    "reason": "Disclosure item detail not drawn; only the list",
+    "desktop": {
+     "node_id": "3453:14426",
+     "name": "Suo-moto Disclosure",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Connect › RTI",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-SUO-MOTO-DISCLOSURE-3453-14426",
+     "heading": "Suo-moto Disclosure"
+    },
+    "mobile": null,
+    "alternates": [
+     {
+      "node_id": "3448:11279",
+      "page": "Connect",
+      "name": "Suo-moto Disclosure",
+      "kind": "desktop",
+      "status": "handoff"
+     }
+    ]
+   }
+  },
+  {
+   "path": "/suo-moto-disclosure/security-audit-certificate/",
+   "slug": "suo-moto-disclosure--security-audit-certificate",
+   "type": "suo-moto-disclosure",
+   "kind": "template-sample",
+   "nearest": {
+    "confidence": 0.3,
+    "match": "partial",
+    "reason": "Disclosure item detail not drawn; only the list",
+    "desktop": {
+     "node_id": "3453:14426",
+     "name": "Suo-moto Disclosure",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Connect › RTI",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-SUO-MOTO-DISCLOSURE-3453-14426",
+     "heading": "Suo-moto Disclosure"
+    },
+    "mobile": null,
+    "alternates": [
+     {
+      "node_id": "3448:11279",
+      "page": "Connect",
+      "name": "Suo-moto Disclosure",
+      "kind": "desktop",
+      "status": "handoff"
+     }
+    ]
+   }
+  },
+  {
+   "path": "/tender/investment-of-an-amount-of-rs-10-00-crore-in-fixed-reg-2/",
+   "slug": "tender--investment-of-an-amount-of-rs-10-00-cror",
+   "type": "tender",
+   "kind": "template-sample",
+   "nearest": {
+    "confidence": 0.3,
+    "match": "partial",
+    "reason": "Tender detail not drawn; only the Tenders list",
+    "desktop": {
+     "node_id": "3453:12568",
+     "name": "Tenders",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Offerings",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-TENDERS-3453-12568",
+     "heading": "Tenders"
+    },
+    "mobile": null,
+    "alternates": [
+     {
+      "node_id": "3366:25288",
+      "page": "Offerings",
+      "name": "Offerings/Tenders",
+      "kind": "desktop",
+      "status": "handoff"
+     }
+    ]
+   }
+  },
+  {
+   "path": "/tender/investment-of-an-amount-of-rs-174-00-crore-in-fixed-reg/",
+   "slug": "tender--investment-of-an-amount-of-rs-174-00-cro",
+   "type": "tender",
+   "kind": "template-sample",
+   "nearest": {
+    "confidence": 0.3,
+    "match": "partial",
+    "reason": "Tender detail not drawn; only the Tenders list",
+    "desktop": {
+     "node_id": "3453:12568",
+     "name": "Tenders",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Offerings",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-TENDERS-3453-12568",
+     "heading": "Tenders"
+    },
+    "mobile": null,
+    "alternates": [
+     {
+      "node_id": "3366:25288",
+      "page": "Offerings",
+      "name": "Offerings/Tenders",
+      "kind": "desktop",
+      "status": "handoff"
+     }
+    ]
+   }
+  },
+  {
+   "path": "/updates/3rd-national-lok-adalat-awareness-material-2026/",
+   "slug": "updates--3rd-national-lok-adalat-awareness-materi",
+   "type": "updates",
+   "kind": "template-sample",
+   "nearest": null
+  },
+  {
+   "path": "/updates/pre-bid-meeting-tender-id-gem-2026-b-7743923/",
+   "slug": "updates--pre-bid-meeting-tender-id-gem-2026-b-774",
+   "type": "updates",
+   "kind": "template-sample",
+   "nearest": null
+  },
+  {
+   "path": "/vacancies/short-term-internship-programme-at-daic-september-2026/",
+   "slug": "vacancies--short-term-internship-programme-at-daic-",
+   "type": "vacancies",
+   "kind": "template-sample",
+   "nearest": {
+    "confidence": 0.3,
+    "match": "partial",
+    "reason": "Vacancy detail not drawn; only the Vacancies list",
+    "desktop": {
+     "node_id": "3453:12427",
+     "name": "Vacancies",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Offerings",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-VACANCIES-3453-12427",
+     "heading": "Vacancies"
+    },
+    "mobile": null,
+    "alternates": [
+     {
+      "node_id": "3366:25147",
+      "page": "Offerings",
+      "name": "Offerings/Vacancies",
+      "kind": "desktop",
+      "status": "handoff"
+     }
+    ]
+   }
+  },
+  {
+   "path": "/vacancies/short-term-internship-programme-at-dr-ambedkar-international-centre-15-janpath-new-delhi-110001-3/",
+   "slug": "vacancies--short-term-internship-programme-at-dr-am",
+   "type": "vacancies",
+   "kind": "template-sample",
+   "nearest": {
+    "confidence": 0.3,
+    "match": "partial",
+    "reason": "Vacancy detail not drawn; only the Vacancies list",
+    "desktop": {
+     "node_id": "3453:12427",
+     "name": "Vacancies",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Offerings",
+     "kind": "desktop",
+     "status": "handoff",
+     "slug": "UI-FLOW-DESKTOP-VACANCIES-3453-12427",
+     "heading": "Vacancies"
+    },
+    "mobile": null,
+    "alternates": [
+     {
+      "node_id": "3366:25147",
+      "page": "Offerings",
+      "name": "Offerings/Vacancies",
+      "kind": "desktop",
+      "status": "handoff"
+     }
+    ]
+   }
+  }
+ ],
+ "unmappedFrames": [
+  {
+   "name": "Index Page",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "3453:7671",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop",
+     "status": "handoff",
+     "heading": "Home"
+    }
+   ]
+  },
+  {
+   "name": "Back to top",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "4787:131742",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Home",
+     "status": "handoff",
+     "heading": "Need Support?"
+    },
+    {
+     "node_id": "4787:136509",
+     "page": "Home",
+     "sectionPath": "Home › Home",
+     "status": "handoff",
+     "heading": "Need Support?"
+    }
+   ]
+  },
+  {
+   "name": "Important Links/Full Container",
+   "kind": "overlay",
+   "frames": [
+    {
+     "node_id": "5060:43188",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Home",
+     "status": "handoff",
+     "heading": "Important Links"
+    }
+   ]
+  },
+  {
+   "name": "Accessibility Panel - Web - Version 3",
+   "kind": "overlay",
+   "frames": [
+    {
+     "node_id": "5060:43427",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Home",
+     "status": "handoff",
+     "heading": "Accessibility Options by UX4G"
+    }
+   ]
+  },
+  {
+   "name": "Ministry Menu",
+   "kind": "overlay",
+   "frames": [
+    {
+     "node_id": "3453:9603",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop",
+     "status": "handoff",
+     "heading": "About Us"
+    },
+    {
+     "node_id": "4249:39150",
+     "page": "Ministry",
+     "sectionPath": "Ministry › Ministry/Desktop › Preview [Ministry Menu]",
+     "status": "handoff",
+     "heading": "About Us"
+    }
+   ]
+  },
+  {
+   "name": "Organisation Details -> About the Commission",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "3453:9608",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Associated Organisations",
+     "status": "handoff",
+     "heading": "About the Commission"
+    },
+    {
+     "node_id": "3751:7943",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › Associated Organisations/Desktop",
+     "status": "handoff",
+     "heading": "About the Commission"
+    }
+   ]
+  },
+  {
+   "name": "Organisation Details -> Leadership & Organisation",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "3453:9753",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Associated Organisations › Leadership & Organisation",
+     "status": "handoff",
+     "heading": "Leadership & Organisation"
+    },
+    {
+     "node_id": "3751:8992",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › Associated Organisations/Desktop › Leadership & Organisation",
+     "status": "handoff",
+     "heading": "Leadership & Organisation"
+    }
+   ]
+  },
+  {
+   "name": "Organisation Details -> Leadership & Organisation -> Biographical Sketch",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "3453:10272",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Associated Organisations › Leadership & Organisation",
+     "status": "handoff",
+     "heading": "Leadership & Organisation"
+    },
+    {
+     "node_id": "3751:9511",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › Associated Organisations/Desktop › Leadership & Organisation",
+     "status": "handoff",
+     "heading": "Leadership & Organisation"
+    }
+   ]
+  },
+  {
+   "name": "Organisation Details -> State Offices",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "3453:10885",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Associated Organisations › Leadership & Organisation",
+     "status": "handoff",
+     "heading": "State Offices"
+    },
+    {
+     "node_id": "3751:8087",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › Associated Organisations/Desktop",
+     "status": "handoff",
+     "heading": "State Offices"
+    }
+   ]
+  },
+  {
+   "name": "Organisation Details/Booking",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "4743:129504",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Associated Organisations › Booking",
+     "status": "handoff",
+     "heading": "Bookings"
+    },
+    {
+     "node_id": "3751:8394",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › Associated Organisations/Desktop › Booking",
+     "status": "handoff",
+     "heading": "Bookings"
+    }
+   ]
+  },
+  {
+   "name": "Offerings Menu",
+   "kind": "overlay",
+   "frames": [
+    {
+     "node_id": "3453:12790",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop",
+     "status": "handoff",
+     "heading": "Schemes & Services"
+    },
+    {
+     "node_id": "3387:38849",
+     "page": "Offerings",
+     "sectionPath": "Offerings › Preview [Offerings Menu]",
+     "status": "handoff",
+     "heading": "Schemes & Services"
+    }
+   ]
+  },
+  {
+   "name": "Annual Reports-Filter Applied",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "3453:12985",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "status": "handoff",
+     "heading": "Annual Reports"
+    }
+   ]
+  },
+  {
+   "name": "Side Sheet Container",
+   "kind": "overlay",
+   "frames": [
+    {
+     "node_id": "3453:13182",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Documents/Annual Reports",
+     "status": "handoff",
+     "heading": "Thirteenth Annual Report of National Commission for Scheduled Castes for the year 2021-22 submitted to the President of "
+    }
+   ]
+  },
+  {
+   "name": "Organisation Filter Dropdown",
+   "kind": "overlay",
+   "frames": [
+    {
+     "node_id": "3453:13230",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop",
+     "status": "handoff",
+     "heading": "All Organisation"
+    },
+    {
+     "node_id": "974:8034",
+     "page": "Offerings",
+     "sectionPath": "Offerings",
+     "status": "handoff",
+     "heading": "All Organisation"
+    },
+    {
+     "node_id": "3431:7719",
+     "page": "Documents",
+     "sectionPath": "Documents",
+     "status": "handoff",
+     "heading": "All Organisation"
+    }
+   ]
+  },
+  {
+   "name": "Documents Menu",
+   "kind": "overlay",
+   "frames": [
+    {
+     "node_id": "3453:13273",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop",
+     "status": "handoff",
+     "heading": "Annual Reports"
+    },
+    {
+     "node_id": "3483:28171",
+     "page": "Documents",
+     "sectionPath": "Documents › Preview [Documents Menu]",
+     "status": "handoff",
+     "heading": "Annual Reports"
+    }
+   ]
+  },
+  {
+   "name": "Gallery -> News",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "3453:13402",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Events & Gallery › Gallery",
+     "status": "handoff",
+     "heading": "Gallery"
+    },
+    {
+     "node_id": "7704:100084",
+     "page": "DBIM",
+     "sectionPath": "DBIM › Gallery",
+     "status": "handoff",
+     "heading": "Gallery"
+    }
+   ]
+  },
+  {
+   "name": "Events & Gallery/Gallery -> Quick View | Video",
+   "kind": "overlay",
+   "frames": [
+    {
+     "node_id": "3453:13643",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Events & Gallery › Gallery",
+     "status": "handoff",
+     "heading": "Photos"
+    },
+    {
+     "node_id": "7704:100325",
+     "page": "DBIM",
+     "sectionPath": "DBIM › Gallery",
+     "status": "handoff",
+     "heading": "Photos"
+    },
+    {
+     "node_id": "3438:52392",
+     "page": "Events & Gallery",
+     "sectionPath": "Events & Gallery › Events & Gallery › Gallery",
+     "status": "handoff",
+     "heading": "Photos"
+    }
+   ]
+  },
+  {
+   "name": "Image Modal",
+   "kind": "overlay",
+   "frames": [
+    {
+     "node_id": "3453:13779",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Events & Gallery › Gallery",
+     "status": "handoff",
+     "heading": "Ambedkar Jayanti Celebration 2025"
+    },
+    {
+     "node_id": "7704:100461",
+     "page": "DBIM",
+     "sectionPath": "DBIM › Gallery",
+     "status": "handoff",
+     "heading": "Ambedkar Jayanti Celebration 2025"
+    }
+   ]
+  },
+  {
+   "name": "Video Modal",
+   "kind": "overlay",
+   "frames": [
+    {
+     "node_id": "3453:13793",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Events & Gallery › Gallery",
+     "status": "handoff",
+     "heading": "Elder Care Workshop"
+    },
+    {
+     "node_id": "7704:100475",
+     "page": "DBIM",
+     "sectionPath": "DBIM › Gallery",
+     "status": "handoff",
+     "heading": "Elder Care Workshop"
+    }
+   ]
+  },
+  {
+   "name": "Events & Gallery Menu",
+   "kind": "overlay",
+   "frames": [
+    {
+     "node_id": "3453:14216",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop",
+     "status": "handoff",
+     "heading": "Events"
+    },
+    {
+     "node_id": "3438:52970",
+     "page": "Events & Gallery",
+     "sectionPath": "Events & Gallery › Preview [Events & Gallery Menu]",
+     "status": "handoff",
+     "heading": "Events"
+    }
+   ]
+  },
+  {
+   "name": "Feedback Form",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "3453:14981",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Connect",
+     "status": "handoff",
+     "heading": "Feedback Form"
+    },
+    {
+     "node_id": "3448:11838",
+     "page": "Connect",
+     "sectionPath": "Connect › Connect",
+     "status": "handoff",
+     "heading": "Feedback Form"
+    }
+   ]
+  },
+  {
+   "name": "Connect Menu",
+   "kind": "overlay",
+   "frames": [
+    {
+     "node_id": "3453:15033",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop",
+     "status": "handoff",
+     "heading": "RTI"
+    },
+    {
+     "node_id": "3448:11068",
+     "page": "Connect",
+     "sectionPath": "Connect › Preview [Connect Menu]",
+     "status": "handoff",
+     "heading": "RTI"
+    }
+   ]
+  },
+  {
+   "name": "Home",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "4330:55428",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Compliance Pages › Search",
+     "status": "handoff",
+     "heading": "Empowering India, Every Day."
+    },
+    {
+     "node_id": "5243:125371",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Compliance Pages › Search",
+     "status": "handoff",
+     "heading": "Empowering India, Every Day."
+    },
+    {
+     "node_id": "5243:114120",
+     "page": "Compliance Pages",
+     "sectionPath": "Compliance Pages › Compliance Pages › Search",
+     "status": "handoff",
+     "heading": "Empowering India, Every Day."
+    }
+   ]
+  },
+  {
+   "name": "Search Result",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "4330:55836",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Compliance Pages › Search",
+     "status": "handoff",
+     "heading": "Search"
+    },
+    {
+     "node_id": "5243:125779",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Compliance Pages › Search",
+     "status": "handoff",
+     "heading": "Search"
+    },
+    {
+     "node_id": "5243:114528",
+     "page": "Compliance Pages",
+     "sectionPath": "Compliance Pages › Compliance Pages › Search",
+     "status": "handoff",
+     "heading": "Search"
+    }
+   ]
+  },
+  {
+   "name": "Search Result/Filtered",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "4330:55904",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Compliance Pages › Search",
+     "status": "handoff",
+     "heading": "Search"
+    },
+    {
+     "node_id": "5243:125847",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Compliance Pages › Search",
+     "status": "handoff",
+     "heading": "Search"
+    },
+    {
+     "node_id": "5243:114596",
+     "page": "Compliance Pages",
+     "sectionPath": "Compliance Pages › Compliance Pages › Search",
+     "status": "handoff",
+     "heading": "Search"
+    }
+   ]
+  },
+  {
+   "name": "No Result Found",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "4330:55973",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Compliance Pages › Search",
+     "status": "handoff",
+     "heading": "Search"
+    },
+    {
+     "node_id": "5243:125916",
+     "page": "✅ UI Flow / Desktop",
+     "sectionPath": "✅ UI Flow / Desktop › Compliance Pages › Search",
+     "status": "handoff",
+     "heading": "Search"
+    },
+    {
+     "node_id": "5243:114665",
+     "page": "Compliance Pages",
+     "sectionPath": "Compliance Pages › Compliance Pages › Search",
+     "status": "handoff",
+     "heading": "Search"
+    }
+   ]
+  },
+  {
+   "name": "Latest Updates",
+   "kind": "mobile",
+   "frames": [
+    {
+     "node_id": "4285:224168",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Home/Mobile",
+     "status": "handoff",
+     "heading": "About Us"
+    },
+    {
+     "node_id": "4848:58035",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Home/Mobile › Home -> Important Links & Latest updates",
+     "status": "handoff",
+     "heading": "About Us"
+    },
+    {
+     "node_id": "6812:56039",
+     "page": "Home",
+     "sectionPath": "Home › Home/Mobile",
+     "status": "handoff",
+     "heading": "About Us"
+    },
+    {
+     "node_id": "6812:57347",
+     "page": "Home",
+     "sectionPath": "Home › Home/Mobile › Home -> Important Links",
+     "status": "handoff",
+     "heading": "About Us"
+    }
+   ]
+  },
+  {
+   "name": "Important Links",
+   "kind": "mobile",
+   "frames": [
+    {
+     "node_id": "4848:49247",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Home/Mobile › Home -> Important Links & Latest updates",
+     "status": "handoff",
+     "heading": "About Us"
+    },
+    {
+     "node_id": "6812:56615",
+     "page": "Home",
+     "sectionPath": "Home › Home/Mobile › Home -> Important Links",
+     "status": "handoff",
+     "heading": "About Us"
+    }
+   ]
+  },
+  {
+   "name": "Qucik Actions",
+   "kind": "mobile",
+   "frames": [
+    {
+     "node_id": "4848:50533",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Home/Mobile › Home -> Important Links & Latest updates",
+     "status": "handoff",
+     "heading": "The Department of Social Justice & Empowerment (DoSJE) is mandated to ensure the empowerment and welfare of India's most"
+    },
+    {
+     "node_id": "6812:57906",
+     "page": "Home",
+     "sectionPath": "Home › Home/Mobile › Home -> Important Links",
+     "status": "handoff",
+     "heading": "About Us"
+    }
+   ]
+  },
+  {
+   "name": "Qucik Actions/Expanded",
+   "kind": "mobile",
+   "frames": [
+    {
+     "node_id": "4848:51023",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Home/Mobile › Home -> Important Links & Latest updates",
+     "status": "handoff",
+     "heading": "The Department of Social Justice & Empowerment (DoSJE) is mandated to ensure the empowerment and welfare of India's most"
+    },
+    {
+     "node_id": "6812:58380",
+     "page": "Home",
+     "sectionPath": "Home › Home/Mobile › Home -> Important Links",
+     "status": "handoff",
+     "heading": "About Us"
+    }
+   ]
+  },
+  {
+   "name": "Home",
+   "kind": "mobile",
+   "frames": [
+    {
+     "node_id": "4285:225979",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Home/Mobile › Home -> Explore User Personas",
+     "status": "handoff",
+     "heading": "Annual Strategy Review 2022–23"
+    },
+    {
+     "node_id": "4285:226121",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Home/Mobile › Home -> Statistics",
+     "status": "handoff",
+     "heading": "About Us"
+    },
+    {
+     "node_id": "6812:58858",
+     "page": "Home",
+     "sectionPath": "Home › Home/Mobile › Home -> Explore User Personas",
+     "status": "handoff",
+     "heading": "Explore User Personas"
+    },
+    {
+     "node_id": "6812:59046",
+     "page": "Home",
+     "sectionPath": "Home › Home/Mobile › Home -> Statistics",
+     "status": "handoff",
+     "heading": "₹67,977Crore"
+    }
+   ]
+  },
+  {
+   "name": "Organisation Details",
+   "kind": "mobile",
+   "frames": [
+    {
+     "node_id": "5498:52751",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile",
+     "status": "handoff",
+     "heading": "About Us"
+    },
+    {
+     "node_id": "5498:55007",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile",
+     "status": "handoff",
+     "heading": "About Us"
+    },
+    {
+     "node_id": "4330:65061",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Compliance Pages/Mobile › Search",
+     "status": "handoff",
+     "heading": "About Us"
+    },
+    {
+     "node_id": "4330:66607",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Compliance Pages/Mobile › FAQs",
+     "status": "handoff",
+     "heading": "Get in Touch"
+    },
+    {
+     "node_id": "4330:66685",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Compliance Pages/Mobile › Policies",
+     "status": "handoff",
+     "heading": "Get in Touch"
+    },
+    {
+     "node_id": "4743:111485",
+     "page": "Compliance Pages",
+     "sectionPath": "Compliance Pages › Compliance Pages/Mobile › Search",
+     "status": "handoff",
+     "heading": "About Us"
+    },
+    {
+     "node_id": "4743:113031",
+     "page": "Compliance Pages",
+     "sectionPath": "Compliance Pages › Compliance Pages/Mobile › FAQs",
+     "status": "handoff",
+     "heading": "Get in Touch"
+    },
+    {
+     "node_id": "4743:113109",
+     "page": "Compliance Pages",
+     "sectionPath": "Compliance Pages › Compliance Pages/Mobile › Policies",
+     "status": "handoff",
+     "heading": "Get in Touch"
+    }
+   ]
+  },
+  {
+   "name": "Main Menu",
+   "kind": "overlay",
+   "frames": [
+    {
+     "node_id": "4571:88154",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Ministry/Mobile",
+     "status": "handoff",
+     "heading": "National Commission for Scheduled Castes (NCSC)"
+    },
+    {
+     "node_id": "4571:95831",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Associated Organisations/Mobile",
+     "status": "handoff",
+     "heading": "National Commission for Scheduled Castes (NCSC)"
+    },
+    {
+     "node_id": "4249:39155",
+     "page": "Ministry",
+     "sectionPath": "Ministry › Ministry/Mobile",
+     "status": "handoff",
+     "heading": "National Commission for Scheduled Castes (NCSC)"
+    },
+    {
+     "node_id": "3824:13476",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › Associated Organisations/Mobile",
+     "status": "handoff",
+     "heading": "National Commission for Scheduled Castes (NCSC)"
+    }
+   ]
+  },
+  {
+   "name": "Organisation Details -> Scrolled View",
+   "kind": "mobile",
+   "frames": [
+    {
+     "node_id": "4571:95636",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Associated Organisations/Mobile › Quick Nav Behaviour",
+     "status": "handoff",
+     "heading": "Shri Kishor Makwana"
+    },
+    {
+     "node_id": "3815:11199",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › Associated Organisations/Mobile › Quick Nav Behaviour",
+     "status": "handoff",
+     "heading": "Shri Kishor Makwana"
+    }
+   ]
+  },
+  {
+   "name": "Organisation Details -> Scrolled View - Expanded Quick Nav",
+   "kind": "mobile",
+   "frames": [
+    {
+     "node_id": "4571:95714",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Associated Organisations/Mobile › Quick Nav Behaviour",
+     "status": "handoff",
+     "heading": "About the Commission"
+    },
+    {
+     "node_id": "3815:11277",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › Associated Organisations/Mobile › Quick Nav Behaviour",
+     "status": "handoff",
+     "heading": "About the Commission"
+    }
+   ]
+  },
+  {
+   "name": "Organisation Details -> About the Commission",
+   "kind": "mobile",
+   "frames": [
+    {
+     "node_id": "4571:96106",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Associated Organisations/Mobile",
+     "status": "handoff",
+     "heading": "About the Commission"
+    },
+    {
+     "node_id": "3815:12404",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › Associated Organisations/Mobile",
+     "status": "handoff",
+     "heading": "About the Commission"
+    }
+   ]
+  },
+  {
+   "name": "Organisation Details/Booking",
+   "kind": "mobile",
+   "frames": [
+    {
+     "node_id": "4571:96222",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Associated Organisations/Mobile › Booking",
+     "status": "handoff",
+     "heading": "Bookings"
+    },
+    {
+     "node_id": "3815:12520",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › Associated Organisations/Mobile › Booking",
+     "status": "handoff",
+     "heading": "Bookings"
+    }
+   ]
+  },
+  {
+   "name": "Biographical Sketch Bottom Sheet",
+   "kind": "overlay",
+   "frames": [
+    {
+     "node_id": "4571:96820",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Associated Organisations/Mobile › Leadership & Organisation",
+     "status": "handoff",
+     "heading": "Leadership & Organisation"
+    },
+    {
+     "node_id": "3815:13118",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › Associated Organisations/Mobile › Leadership & Organisation",
+     "status": "handoff",
+     "heading": "Leadership & Organisation"
+    }
+   ]
+  },
+  {
+   "name": "Organisation Details -> Leadership & Organisation",
+   "kind": "mobile",
+   "frames": [
+    {
+     "node_id": "4571:97393",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Associated Organisations/Mobile › Leadership & Organisation",
+     "status": "handoff",
+     "heading": "Leadership & Organisation"
+    },
+    {
+     "node_id": "3815:13691",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › Associated Organisations/Mobile › Leadership & Organisation",
+     "status": "handoff",
+     "heading": "Leadership & Organisation"
+    }
+   ]
+  },
+  {
+   "name": "Organisation Details -> State Offices",
+   "kind": "mobile",
+   "frames": [
+    {
+     "node_id": "4571:97872",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Associated Organisations/Mobile",
+     "status": "handoff",
+     "heading": "State Offices"
+    },
+    {
+     "node_id": "3815:14170",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › Associated Organisations/Mobile",
+     "status": "handoff",
+     "heading": "State Offices"
+    }
+   ]
+  },
+  {
+   "name": "Documents/Annual Reports-Filter Applied",
+   "kind": "mobile",
+   "frames": [
+    {
+     "node_id": "4571:109832",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "status": "handoff",
+     "heading": "Annual Reports"
+    },
+    {
+     "node_id": "5527:98627",
+     "page": "Documents",
+     "sectionPath": "Documents › Documents/Annual Reports",
+     "status": "handoff",
+     "heading": "Annual Reports"
+    }
+   ]
+  },
+  {
+   "name": "Documents/Document View/Pdf error",
+   "kind": "mobile",
+   "frames": [
+    {
+     "node_id": "4571:110837",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Documents/Annual Reports",
+     "status": "handoff",
+     "heading": "Annual Reports"
+    },
+    {
+     "node_id": "5527:99632",
+     "page": "Documents",
+     "sectionPath": "Documents › Documents/Annual Reports",
+     "status": "handoff",
+     "heading": "Annual Reports"
+    }
+   ]
+  },
+  {
+   "name": "Events & Gallery/Gallery -> News",
+   "kind": "mobile",
+   "frames": [
+    {
+     "node_id": "4571:115899",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Events&Gallery/Mobile",
+     "status": "handoff",
+     "heading": "Gallery"
+    },
+    {
+     "node_id": "4571:116223",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Events&Gallery/Mobile",
+     "status": "handoff",
+     "heading": "Gallery"
+    },
+    {
+     "node_id": "4571:116555",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Events&Gallery/Mobile",
+     "status": "handoff",
+     "heading": "Gallery"
+    },
+    {
+     "node_id": "5527:109134",
+     "page": "Events & Gallery",
+     "sectionPath": "Events & Gallery › Events&Gallery/Mobile",
+     "status": "handoff",
+     "heading": "Gallery"
+    },
+    {
+     "node_id": "5527:109458",
+     "page": "Events & Gallery",
+     "sectionPath": "Events & Gallery › Events&Gallery/Mobile",
+     "status": "handoff",
+     "heading": "Gallery"
+    },
+    {
+     "node_id": "5527:109790",
+     "page": "Events & Gallery",
+     "sectionPath": "Events & Gallery › Events&Gallery/Mobile",
+     "status": "handoff",
+     "heading": "Gallery"
+    }
+   ]
+  },
+  {
+   "name": "Search",
+   "kind": "mobile",
+   "frames": [
+    {
+     "node_id": "4330:65581",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Compliance Pages/Mobile › Search",
+     "status": "handoff",
+     "heading": "About Us"
+    },
+    {
+     "node_id": "4743:112005",
+     "page": "Compliance Pages",
+     "sectionPath": "Compliance Pages › Compliance Pages/Mobile › Search",
+     "status": "handoff",
+     "heading": "About Us"
+    }
+   ]
+  },
+  {
+   "name": "Search result",
+   "kind": "mobile",
+   "frames": [
+    {
+     "node_id": "4330:66399",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Compliance Pages/Mobile › Search",
+     "status": "handoff",
+     "heading": "Search"
+    },
+    {
+     "node_id": "4330:66458",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Compliance Pages/Mobile › Search",
+     "status": "handoff",
+     "heading": "Search"
+    },
+    {
+     "node_id": "4330:66516",
+     "page": "✅ UI Flow / Mobile",
+     "sectionPath": "✅ UI Flow / Mobile › Compliance Pages/Mobile › Search",
+     "status": "handoff",
+     "heading": "Search"
+    },
+    {
+     "node_id": "4743:112823",
+     "page": "Compliance Pages",
+     "sectionPath": "Compliance Pages › Compliance Pages/Mobile › Search",
+     "status": "handoff",
+     "heading": "Search"
+    },
+    {
+     "node_id": "4743:112882",
+     "page": "Compliance Pages",
+     "sectionPath": "Compliance Pages › Compliance Pages/Mobile › Search",
+     "status": "handoff",
+     "heading": "Search"
+    },
+    {
+     "node_id": "4743:112940",
+     "page": "Compliance Pages",
+     "sectionPath": "Compliance Pages › Compliance Pages/Mobile › Search",
+     "status": "handoff",
+     "heading": "Search"
+    }
+   ]
+  },
+  {
+   "name": "Home -> Cookie Consent",
+   "kind": "overlay",
+   "frames": [
+    {
+     "node_id": "7639:41146",
+     "page": "DBIM",
+     "sectionPath": "DBIM › Home",
+     "status": "handoff",
+     "heading": "Empowering India, Every Day."
+    },
+    {
+     "node_id": "7633:151676",
+     "page": "Home",
+     "sectionPath": "Home › Home",
+     "status": "handoff",
+     "heading": "Empowering India, Every Day."
+    }
+   ]
+  },
+  {
+   "name": "Home -> View All Updates",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "3283:26718",
+     "page": "Home",
+     "sectionPath": "Home › Home",
+     "status": "handoff",
+     "heading": "Empowering India, Every Day."
+    }
+   ]
+  },
+  {
+   "name": "Home -> Accessibility Panel",
+   "kind": "overlay",
+   "frames": [
+    {
+     "node_id": "3283:28156",
+     "page": "Home",
+     "sectionPath": "Home › Home",
+     "status": "handoff",
+     "heading": "Empowering India, Every Day."
+    }
+   ]
+  },
+  {
+   "name": "Home -> Important Links",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "3283:27547",
+     "page": "Home",
+     "sectionPath": "Home › Home",
+     "status": "handoff",
+     "heading": "Empowering India, Every Day."
+    }
+   ]
+  },
+  {
+   "name": "Home -> SAMAVESH Explore",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "7116:33785",
+     "page": "Home",
+     "sectionPath": "Home › Home › Explore",
+     "status": "handoff",
+     "heading": "Empowering India, Every Day."
+    }
+   ]
+  },
+  {
+   "name": "Ministry/Who’s Who",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "7084:31856",
+     "page": "Ministry",
+     "sectionPath": "Ministry › WHO's WHO Options",
+     "status": "exploration",
+     "heading": "Who’s Who"
+    },
+    {
+     "node_id": "7084:32237",
+     "page": "Ministry",
+     "sectionPath": "Ministry › WHO's WHO Options",
+     "status": "exploration",
+     "heading": "Who’s Who"
+    },
+    {
+     "node_id": "7084:32467",
+     "page": "Ministry",
+     "sectionPath": "Ministry › WHO's WHO Options",
+     "status": "exploration",
+     "heading": "Who’s Who"
+    }
+   ]
+  },
+  {
+   "name": "Associated Organisations Mega Menu New",
+   "kind": "overlay",
+   "frames": [
+    {
+     "node_id": "3216:54066",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › Associated Organisations/Desktop › Preview [Associated Organisations Mega Menu]",
+     "status": "handoff",
+     "heading": "NCSC"
+    }
+   ]
+  },
+  {
+   "name": "Associated Organisations Mega Menu",
+   "kind": "overlay",
+   "frames": [
+    {
+     "node_id": "4660:94367",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations",
+     "status": "handoff",
+     "heading": "NCSC"
+    }
+   ]
+  },
+  {
+   "name": "NMBA Website",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "51586:22013",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › NMBA Website - Update",
+     "status": "exploration",
+     "heading": "Nasha Mukt Bharat Abhiyaan (NMBA)"
+    },
+    {
+     "node_id": "51714:47861",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › NMBA Website - Update",
+     "status": "exploration",
+     "heading": "About the Abhiyaan"
+    },
+    {
+     "node_id": "51717:53098",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › NMBA Website - Update",
+     "status": "exploration",
+     "heading": "About the Abhiyaan"
+    },
+    {
+     "node_id": "51714:52142",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › NMBA Website - Update",
+     "status": "exploration",
+     "heading": "315 districts have no de-addiction centre."
+    },
+    {
+     "node_id": "52331:24662",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › NMBA Options",
+     "status": "exploration",
+     "heading": "Nasha Mukt Bharat Abhiyaan (NMBA)"
+    },
+    {
+     "node_id": "52331:25687",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › NMBA Options",
+     "status": "exploration",
+     "heading": "Nasha Mukt Bharat Abhiyaan (NMBA)"
+    },
+    {
+     "node_id": "52331:26722",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › NMBA Options",
+     "status": "exploration",
+     "heading": "14446"
+    }
+   ]
+  },
+  {
+   "name": "hero-mobile",
+   "kind": "mobile",
+   "frames": [
+    {
+     "node_id": "51586:22969",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › NMBA Website - Update",
+     "status": "exploration",
+     "heading": "14446"
+    }
+   ]
+  },
+  {
+   "name": "Organisation Details / Development of SC dominated villages into “Adarsh Gram”",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "51894:49858",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › PM-AJAY Components",
+     "status": "handoff",
+     "heading": "Development of SC dominated villages into “Adarsh Gram”"
+    }
+   ]
+  },
+  {
+   "name": "Organisation Details / Grants-in-aid to State/Districts",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "51901:54181",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › PM-AJAY Components",
+     "status": "handoff",
+     "heading": "Grants-in-aid to State/Districts"
+    }
+   ]
+  },
+  {
+   "name": "Organisation Details / Construction & Repair of Hostels",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "51902:53106",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › PM-AJAY Components",
+     "status": "handoff",
+     "heading": "Construction & Repair of Hostels"
+    }
+   ]
+  },
+  {
+   "name": "NMBA Website -> View All Updates",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "52365:56504",
+     "page": "Associated Organisations",
+     "sectionPath": "Associated Organisations › NMBA Options",
+     "status": "exploration",
+     "heading": "Nasha Mukt Bharat Abhiyaan (NMBA)"
+    }
+   ]
+  },
+  {
+   "name": "Categories Filter Dropdown",
+   "kind": "overlay",
+   "frames": [
+    {
+     "node_id": "974:8142",
+     "page": "Offerings",
+     "sectionPath": "Offerings",
+     "status": "handoff",
+     "heading": "All Categories"
+    }
+   ]
+  },
+  {
+   "name": "Navigation — Offerings Open",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "52433:8755",
+     "page": "Offerings",
+     "sectionPath": "Offerings › Scheme Discovery — Finalised for Handoff (Review of 14 September) › 01 · Navigation — Desktop",
+     "status": "exploration",
+     "heading": "SCHEME PORTALS"
+    }
+   ]
+  },
+  {
+   "name": "Navigation — Associated Organisations Open",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "52433:8955",
+     "page": "Offerings",
+     "sectionPath": "Offerings › Scheme Discovery — Finalised for Handoff (Review of 14 September) › 01 · Navigation — Desktop",
+     "status": "exploration",
+     "heading": null
+    }
+   ]
+  },
+  {
+   "name": "Home / Explore Specific Benefits — Students (Default on Load)",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "52490:64848",
+     "page": "Offerings",
+     "sectionPath": "Offerings › Scheme Discovery — Finalised for Handoff (Review of 14 September) › 02 · Home — Explore Specific Benefits — Desktop",
+     "status": "exploration",
+     "heading": "Students"
+    }
+   ]
+  },
+  {
+   "name": "Home / Explore Specific Benefits — Senior Citizens Selected",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "52500:8192",
+     "page": "Offerings",
+     "sectionPath": "Offerings › Scheme Discovery — Finalised for Handoff (Review of 14 September) › 02 · Home — Explore Specific Benefits — Desktop",
+     "status": "exploration",
+     "heading": "Senior Citizens"
+    }
+   ]
+  },
+  {
+   "name": "Schemes & Services — Direct Visit (All)",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "52428:9723",
+     "page": "Offerings",
+     "sectionPath": "Offerings › Scheme Discovery — Finalised for Handoff (Review of 14 September) › 03 · Schemes & Services — Desktop",
+     "status": "exploration",
+     "heading": "Schemes & Services"
+    }
+   ]
+  },
+  {
+   "name": "Schemes & Services — Arrived from Home (Senior Citizens)",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "52513:36282",
+     "page": "Offerings",
+     "sectionPath": "Offerings › Scheme Discovery — Finalised for Handoff (Review of 14 September) › 03 · Schemes & Services — Desktop",
+     "status": "exploration",
+     "heading": "Schemes & Services"
+    }
+   ]
+  },
+  {
+   "name": "Documents/Annual Reports-Filter Applied",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "3431:7262",
+     "page": "Documents",
+     "sectionPath": "Documents › Documents/Annual Reports",
+     "status": "handoff",
+     "heading": "Annual Reports"
+    }
+   ]
+  },
+  {
+   "name": "Events & Gallery/Gallery -> News",
+   "kind": "desktop",
+   "frames": [
+    {
+     "node_id": "3438:52151",
+     "page": "Events & Gallery",
+     "sectionPath": "Events & Gallery › Events & Gallery › Gallery",
+     "status": "handoff",
+     "heading": "Gallery"
+    }
+   ]
+  }
+ ]
+}

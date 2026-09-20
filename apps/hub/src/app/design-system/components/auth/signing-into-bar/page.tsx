@@ -33,7 +33,7 @@ export default function Page(): React.JSX.Element {
       whenToUse={{
         use: ["At the top of any portal login screen."],
         avoid: [
-          "Passing an acronym. NHAPOA shows “SAMBAL (NHAA 2.0)”, not “NHAPOA”.",
+          "Passing an acronym or a route name. The SAMBAL portal shows “SAMBAL (NHAA 2.0)”, not “NHAPOA”.",
           "Choosing `tone` from the brand instead of the surface. It follows what is BEHIND the bar: `hero` over the photograph scrim, `surface` anywhere else.",
         ],
       }}

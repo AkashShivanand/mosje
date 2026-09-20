@@ -34,7 +34,7 @@ export function RoleDashboard({ roleId }: { roleId: Exclude<RoleId, "citizen"> }
     <div>
       <PortalPageHeader
         title={`${role.label} Dashboard`}
-        meta="NHAPOA administration · live counts from the shared case store"
+        meta="SAMBAL administration · live counts from the shared case store"
       />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">

@@ -62,6 +62,7 @@ export type {
   HeaderSearch,
   UtilityTone,
   HeaderAccount,
+  HeaderService,
   HeaderNotifications,
   AccountMenuItem,
 } from "./types";

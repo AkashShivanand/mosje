@@ -185,14 +185,14 @@ export default function SlaProgressPage(): React.JSX.Element {
               seven-day allowance than against a ninety-day one.
             </p>
             <p>
-              Where a rule genuinely is written in absolute terms — the NHAPOA rule is “warn at five
+              Where a rule genuinely is written in absolute terms — the SAMBAL rule is “warn at five
               days remaining of thirty” — convert it. The same case, twenty-four of thirty days used,
-              under each rule: the default has already escalated, and the NHAPOA rule has not.
+              under each rule: the default has already escalated, and the SAMBAL rule has not.
             </p>
             <div className="cdp__specimen-stack">
               <SlaProgressIndicator label="Default — Warn at 75% Consumed" total={30} elapsed={24} />
               <SlaProgressIndicator
-                label="NHAPOA — Warn at 5 Days Left"
+                label="SAMBAL — Warn at 5 Days Left"
                 total={30}
                 elapsed={24}
                 thresholds={{ dueSoonAt: slaFractionForRemaining(30, 5) }}

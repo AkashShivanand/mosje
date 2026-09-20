@@ -74,7 +74,7 @@ export function MetricCardSpecimen(): React.JSX.Element {
           label="Resolved Cases"
           value="31,200"
           detail="75% resolution rate"
-          provenance={{ source: "NHAPOA MIS", asOf: "2026-08-31", status: "provisional" }}
+          provenance={{ source: "SAMBAL MIS", asOf: "2026-08-31", status: "provisional" }}
         />
       </div>
       <div className="cdp__specimen-row">

@@ -102,3 +102,29 @@ Annotated boards are produced as **HTML (`templates/annotation-board.html`) → 
 via the headless browser. This guarantees pixel-consistent chrome, crisp text, and identical
 styling on every board. Inputs are the two raw captures + a small JSON of callouts
 (`{n, severity, category, x%, y%, label}`). No hand-drawing.
+
+---
+
+## Marks supersede pins (standing instruction, 2026-09-17)
+
+**A finding is drawn as a MARK, not a bare numbered pin.** The reviewer found pins confusing: a
+dot does not show how far an issue extends, and it sometimes sat on top of the very thing it
+described.
+
+A mark is two parts:
+
+1. **Outline** — a 2px rounded rectangle in the severity colour, 3px outside the element's real
+   bounding box, so the whole span of the issue is visible.
+2. **Callout tag** — a severity-coloured tag with a white number badge and the *measured* evidence
+   in one line: `#E2E6EA on #0373DF = 3.70:1 at 14px · needs 4.5:1 · FAIL`,
+   `Built 14px/400 · design 16px/500`, `Target 20px tall · UX4G needs 44×44`. Values, not adjectives.
+
+Placement is computed, never hand-set (`_layout_marks` in the design-qc `generate_pdf.py`): below,
+above, right, then left of its own outline, and **never over any flagged element or another tag**.
+A tag that cannot fit clean drops to a gutter under the screenshot with a dashed leader line.
+
+`audit-master.json`: `liveMark: {box: [x1,y1,x2,y2], label}` and `figmaMark: {…}` in 1440-basis
+image px. A section with marks and no `sectionBox` crops to the marks' union automatically. Old
+masters with `livePin`/`figmaPin` still render unchanged.
+
+![Mark style sample](img/mark-style-sample.png)

@@ -106,17 +106,26 @@ export interface SamaveshBannerProps
    */
   viewAllHref?: string;
   /**
-   * The question above the footer link. @default "Are you an officer or administrator?"
+   * Show the footer link to the portal directory. @default true
    *
-   * IT IS A SIGNPOST, NOT A CLAIM ABOUT THE LIST. Both surfaces currently show
-   * the same live portals, so any copy promising MORE there is false — which is
-   * what "Browse every portal, including those in development" became the day the
-   * directory went live-only, and what "Search and compare every portal" was from
-   * the start: nothing on `/portals` compares anything.
+   * Figma's `View all` boolean. Turn it off where the drawer is the whole answer
+   * — a page that already IS the directory, or a drawer narrowed to one set of
+   * portals whose reader has no reason to leave it.
+   */
+  showViewAll?: boolean;
+  /**
+   * An optional question before the footer link. @default "" (none)
    *
-   * What IS true is who the second route is for. A citizen has already arrived
-   * where they are going; an officer needs the directory to reach the portal they
-   * sign in to. Pass `viewAllPrompt=""` to render the link with no question.
+   * EMPTY BY DEFAULT since the Secretary's review of 17 Sep 2026. It read "Are you
+   * an officer or administrator?", which made the directory an administrators'
+   * door; the website header's single "Login" now leads every reader to
+   * `/portals`, and each portal's sign-in chooses the role. The link says where
+   * it goes without the question.
+   *
+   * If a surface does pass one, it must stay a signpost, not a claim about the
+   * list: both surfaces show the same live portals, so copy promising MORE on
+   * `/portals` is false — "Browse every portal, including those in development"
+   * and "Search and compare every portal" both were.
    */
   viewAllPrompt?: string;
   /** Label for the footer link. @default "Find your portal" */
@@ -205,7 +214,8 @@ export function SamaveshBanner({
   linkAs,
   drawerTitle = "Choose a portal to visit",
   viewAllHref = "/portals",
-  viewAllPrompt = "Are you an officer or administrator?",
+  showViewAll = true,
+  viewAllPrompt = "",
   viewAllLabel = "Find your portal",
   allLabel = "All",
   emptyLabel = "No portals are available right now.",
@@ -720,7 +730,7 @@ export function SamaveshBanner({
             </nav>
             )}
 
-            {viewAllHref && (
+            {showViewAll && viewAllHref && (
               <div className="ds-samavesh-banner__footer-row">
                 {viewAllPrompt && (
                   <span className="ds-samavesh-banner__footer-prompt">{viewAllPrompt}</span>

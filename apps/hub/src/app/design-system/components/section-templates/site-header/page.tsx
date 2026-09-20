@@ -105,6 +105,22 @@ const SHAPES: PropDef[] = [
 
 const A11Y: A11yItem[] = [
   {
+    criterion: "2.4.11 Focus Not Obscured (Minimum)",
+    level: "AA",
+    description:
+      "Portal phone layers: scroll-padding clears the REVEALED masthead — accessibility bar plus working bar — so focus moving upward never lands under the bar that returns with it; focus entering the header reveals it and holds it while focus is inside.",
+    status: "verified",
+    evidence: "Playwright, E-Anudaan at 375×667, 2026-09-19: scroll-padding 107px, focus into the hidden masthead revealed it at top 54px.",
+  },
+  {
+    criterion: "1.4.10 Reflow",
+    level: "AA",
+    description:
+      "At 150% text the masthead adds no horizontal scroll: the Government of India label wraps rather than holding the bar wider than the viewport.",
+    status: "verified",
+    evidence: "Playwright at 375px, root font-size 150%: document width 377px on this branch and on main alike.",
+  },
+  {
     criterion: "2.4.1 Bypass Blocks",
     level: "A",
     description:
@@ -374,6 +390,49 @@ export default function SiteHeaderPage(): React.JSX.Element {
             </p>
           </section>
 
+          <section className="cdp__section" aria-labelledby="cdp-phone">
+            <h2 id="cdp-phone" className="cdp__h2">
+              The Portal on a Phone
+            </h2>
+            <p>
+              A portal that passes <code>service</code> — the service&apos;s name, its mark where it
+              has one, and where the name leads — gets three rows below 768, each with one job. The
+              department&apos;s Lockup 2 is complete on every phone, as DBIM 5.2.2 requires, because
+              no control competes with it for the row.
+            </p>
+            <MatrixTable
+              caption="The three rows, and how each leaves"
+              columns={["Row", "Carries", "On scroll"]}
+              rows={[
+                ["Accessibility bar", "Skip link, Government of India, accessibility, language", "Leaves first; returns with the working bar on any upward scroll"],
+                ["Identity row", "The emblem and the full lockup — Government of India, Ministry, Department — with BETA as a corner sash", "Leaves second, and stays away until the page is back at the top"],
+                ["Working bar", "Menu, the service's own mark (the emblem where it has none) and name, notifications, account", "Hides while the reader scrolls down; returns on any upward scroll of 12px or more"],
+              ]}
+            />
+            <p>
+              The masthead follows the gesture, not the position: reading down, it leaves the page
+              the whole screen; reaching up, the controls come back. Focus entering the header, or
+              any of its menus being open, holds it in place. Every movement is a transform, so the
+              page beneath never reflows. With reduced motion the rows arrive instead of travelling.
+            </p>
+            <Callout type="info" title="One accessibility door, and it is the bar's">
+              On these pages the floating accessibility button does not appear. The bar&apos;s icon
+              is on screen at the top of every page and comes back with any upward scroll, so a
+              floating copy could only ever be a second door or a button over content. The rule is
+              accessibility-entry-point.md 4b.
+            </Callout>
+            <p>
+              BETA is a 45° sash across the identity row&apos;s free corner, in the badge&apos;s own
+              colour and Label/label-3. It leaves with the row. From 768 up the badge stays in the
+              lockup — the sash exists only where the lockup has a corner to itself.
+            </p>
+            <Callout type="warning" title="Not on a scaled canvas">
+              PM-AJAY&apos;s dashboard scales a desktop canvas to fit a phone, so it is never a phone
+              surface, and it does not pass <code>service</code>. A portal that renders a phone
+              layout does.
+            </Callout>
+          </section>
+
           <section className="cdp__section" aria-labelledby="cdp-room">
             <h2 id="cdp-room" className="cdp__h2">
               When the Navigation Runs Out of Room
@@ -402,6 +461,7 @@ export default function SiteHeaderPage(): React.JSX.Element {
                 ["1024 and up", "The navigation row is shown, with dropdowns and mega-menus"],
                 ["Below 1024", "The navigation row collapses; a trigger in the brand row opens NavSheet"],
                 ["Below 900", "The search field hides; the condensed bar keeps a search icon"],
+                ["Below 768, portal passing service", "The three phone rows above: the identity row holds the complete lockup and no control; BETA becomes a corner sash; the working bar carries the menu, the service's own mark (the emblem where it has none) and name, notifications and the account"],
                 ["Below 768", "Co-branding marks hide; BETA moves onto the Government of India line; the account name, email and caret hide and the avatar steps to 40; on a portal every control on the row is 40; with a sidebar toggle the sheet trigger is not rendered and search lives at the head of the drawer (SidebarNav header); without one the search field waits behind a 40px button that opens it on its own row"],
                 ["Below 768, accessibility bar", "Font size leaves for the sheet and the widget; accessibility and language stay as 44px icon controls; the skip link shows on the first Tab press"],
                 [
@@ -550,6 +610,14 @@ export default function SiteHeaderPage(): React.JSX.Element {
               because the brand row hugs its content and a two-line lockup, a BETA badge or an
               account block all move it.
             </p>
+            <p>
+              In the phone layers the two variables part company. <code>--sa-header-pinned</code>,
+              which feeds <code>scroll-padding-top</code>, is the revealed height — accessibility bar
+              plus working bar — because that is the most the masthead can cover while scrolled.{" "}
+              <code>--sa-header-stuck</code>, the offset for anything pinned under the masthead,
+              follows the gesture: 0 while hidden, the revealed height while shown, the working bar
+              otherwise.
+            </p>
           </section>
         </>
       }
@@ -609,6 +677,11 @@ export default function SiteHeaderPage(): React.JSX.Element {
               the two things the widget does not own. Below the tablet anchor the bar sheds all
               three, and <code>NavSheet</code> picks them up — until that section existed, a phone
               user had no route to any of them.
+            </p>
+            <p>
+              A portal on the phone layers keeps all of them in the bar itself: the bar returns with
+              any upward scroll, so accessibility and language are one flick away from anywhere on
+              the page, and the floating button is not shown.
             </p>
           </section>
         </>

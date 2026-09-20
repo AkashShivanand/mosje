@@ -26,6 +26,10 @@ export function Navbar() {
         department: "Department of Social Justice & Empowerment",
       }}
       beta
+      /* NO `service`, deliberately. The PM-AJAY dashboard is a desktop canvas that
+         `.pm-app` scales to fit a phone (a 0.26 transform at 375), so it is never a
+         phone surface: the phone layers would draw a phone masthead inside a scaled
+         1440 canvas, and sticky pinning does not survive a transformed ancestor. */
       skipTo="#pm-main"
       govLink={{
         href: "https://india.gov.in/",

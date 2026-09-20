@@ -168,11 +168,15 @@ export function AdminShell({ children }: AdminShellProps) {
           variant="portal"
           sticky
           beta
+          /* The phone layers: the Lockup 2 whole, and this service named in the bar that pins. */
+          service={{ name: "NMBA", mark: <OrgLogo path="/portals/nmba" size="sm" />, href: "/portals/nmba/admin/dashboard" }}
           emblemSrc={`${BASE}/brand/national-emblem.svg`}
           brandLines={{
             org: "Government of India",
             ministry: "Ministry of Social Justice & Empowerment",
-            department: "Patient Data Monitoring System",
+            /* DBIM 5.2.2: this line names the Department. The Patient Data Monitoring System
+               is the application; NMBA is named as the service in the working bar. */
+            department: "Department of Social Justice & Empowerment",
           }}
           cobranding={[
             { src: `${BASE}/brand/digital-india.svg`, alt: "Digital India", href: "https://www.digitalindia.gov.in/", height: 34 },

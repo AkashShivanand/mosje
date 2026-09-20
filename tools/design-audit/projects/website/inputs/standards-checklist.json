@@ -1,0 +1,1492 @@
+[
+ {
+  "id": "DG1",
+  "standard": "DBIM-Generic",
+  "group": "A. Colours",
+  "checkpoint": "One colour group from the primary palette \u2014 1 key colour with its variants",
+  "ref": "2.1",
+  "may": "No",
+  "sep10": "No",
+  "sep10Evidence": "Two primaries coexist. `ux4g-min.css` declares `--bs-primary: #613AF5`, `--bs-blue: #613AF5` and `--bs-link-color: #613AF5` with a full violet ramp (`#FAEFFF` \u2192 `#392095`) as `.bg-primary-50\u2026900` utilities. `#0373DF` is applied by later overrides in `common.css`. Where no override was written the violet renders \u2014 the skip link and every accessibility-widget control."
+ },
+ {
+  "id": "DG2",
+  "standard": "DBIM-Generic",
+  "group": "A. Colours",
+  "checkpoint": "Other colours from the functional palette",
+  "ref": "2.2",
+  "may": "No",
+  "sep10": "No",
+  "sep10Evidence": "`#FFEDD5` \u2014 the exact colour NIC cited in May \u2014 is still in use, alongside nine further one-off tints: `#E6F8FA`, `#F4F3F9`, `#FDF0F5`, `#ECD0FF`, `#ECEEF5`, `#E7F0FD`, `#F8F9FA`, `#F9FAFB`, `#F5F5F5`."
+ },
+ {
+  "id": "DG3",
+  "standard": "DBIM-Generic",
+  "group": "A. Colours",
+  "checkpoint": "Icons in the key colour (darkest shade) or inclusive white",
+  "ref": "3.7",
+  "may": "No",
+  "sep10": "No",
+  "sep10Evidence": "`#F97316` \u2014 again the colour NIC cited \u2014 is still the SAMAVESH band ground with white marks on it. Brand-coloured social glyphs (`#1877F2`, `#C13584`) and violet widget icons also appear."
+ },
+ {
+  "id": "DG4",
+  "standard": "DBIM-Generic",
+  "group": "A. Colours",
+  "checkpoint": "Footer background is the key colour, darkest shade",
+  "ref": "5.6",
+  "may": "No",
+  "sep10": "No",
+  "sep10Evidence": "The footer body is `#0373DF`, the **base** shade. `#014B92`, the darker shade, is used only on a narrow bottom strip. See Observation C."
+ },
+ {
+  "id": "DG5",
+  "standard": "DBIM-Generic",
+  "group": "B. Iconography",
+  "checkpoint": "Icons follow a consistent icon style",
+  "ref": "3.3",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "Line-weight icons throughout, visually consistent."
+ },
+ {
+  "id": "DG6",
+  "standard": "DBIM-Generic",
+  "group": "B. Iconography",
+  "checkpoint": "Icons selected from the DBIM Toolkit unless unavailable",
+  "ref": "3.5",
+  "may": "Yes",
+  "sep10": "No",
+  "sep10Evidence": "The icon set is **Font Awesome 5 Free and Brands** (44 glyphs) plus Elementor `eicons` (8). Neither is the DBIM toolkit. *Assessed differently from May: this audit read the loaded font families rather than the rendered appearance.*"
+ },
+ {
+  "id": "DG7",
+  "standard": "DBIM-Generic",
+  "group": "B. Iconography",
+  "checkpoint": "Icons in PNG, SVG or WEBP format only",
+  "ref": "3.7",
+  "may": "Yes",
+  "sep10": "No",
+  "sep10Evidence": "**51 icons are webfont glyphs**, which is none of the three permitted formats. A webfont icon also inherits `color`, so it behaves differently from an SVG under the accessibility widget's high-contrast and hide-images modes."
+ },
+ {
+  "id": "DG8",
+  "standard": "DBIM-Generic",
+  "group": "B. Iconography",
+  "checkpoint": "Icon sizes 24\u00d724 / 32\u00d732 / 48\u00d748 / 64\u00d764 px",
+  "ref": "3.7",
+  "may": "No",
+  "sep10": "No",
+  "sep10Evidence": "**43 of 51 icons are off-scale.** Measured: 14px \u00d731, 12px \u00d74, 20px \u00d74, 25px \u00d74, 16px \u00d71. Only 5 sit at 24px. See Observation F."
+ },
+ {
+  "id": "DG9",
+  "standard": "DBIM-Generic",
+  "group": "B. Iconography",
+  "checkpoint": "Correct proportion retained; icon not compressed or stretched",
+  "ref": "3.7",
+  "may": "Yes",
+  "sep10": "No",
+  "sep10Evidence": "`open_in_new_icon.svg` is 12\u00d712 natural and renders at **12\u00d724** \u2014 stretched 2\u00d7 on one axis. `Indian-Flag.svg` is 33\u00d722 natural and renders at **33\u00d724**."
+ },
+ {
+  "id": "DG10",
+  "standard": "DBIM-Generic",
+  "group": "B. Iconography",
+  "checkpoint": "Sufficient contrast when an icon sits on an image or banner",
+  "ref": "3.7",
+  "may": "Yes",
+  "sep10": "No",
+  "sep10Evidence": "The SAMAVESH band's emblem and arrow sit on `#F97316` at the same 2.80:1 as its text. See Observation A."
+ },
+ {
+  "id": "DG11",
+  "standard": "DBIM-Generic",
+  "group": "C. Typography",
+  "checkpoint": "Typeface is Noto Sans",
+  "ref": "4.1",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "2,923 of 2,976 elements resolve to `\"Noto Sans\", sans-serif`. One stray `Roboto` declaration inside a third-party embed."
+ },
+ {
+  "id": "DG12",
+  "standard": "DBIM-Generic",
+  "group": "C. Typography",
+  "checkpoint": "Body text left-aligned; table alignment correct",
+  "ref": "4.1.1",
+  "may": "No",
+  "sep10": "Yes",
+  "sep10Evidence": "No centred body copy on any page sampled."
+ },
+ {
+  "id": "DG13",
+  "standard": "DBIM-Generic",
+  "group": "C. Typography",
+  "checkpoint": "No capital case for long sentences or paragraphs; no Hinglish",
+  "ref": "4.1.1",
+  "may": "No",
+  "sep10": "Yes",
+  "sep10Evidence": "Only short labels are capitalised \u2014 `COMMISSIONS`, `CORPORATIONS`, `FOUNDATION / AUTONOMOUS BODIES`, `SCHEME SPECIFIC THEMATIC PORTALS`, `CUMULATIVE DISBURSEMENT`. No Hinglish detected."
+ },
+ {
+  "id": "DG14",
+  "standard": "DBIM-Generic",
+  "group": "C. Typography",
+  "checkpoint": "Type scale as defined in DBIM",
+  "ref": "4.3.1",
+  "may": "No",
+  "sep10": "No",
+  "sep10Evidence": "DBIM specifies desktop H1 36 / H2 24 / H3 20. Measured: **no `<h1>` at all** on the home, search or Video Gallery pages; H2 28/32 w600; H3 28/40 \u2014 the same size as H2; H4 16/20; **H5 14/24 \u2014 smaller than H6's 16/20**, so the ramp inverts. H2's 32px leading on 28px type is **1.14**, below DBIM \u00a74 iii's 1.2\u20131.5 band. 86 elements render at 12px, 3 at 10px, 4 at 8px."
+ },
+ {
+  "id": "DG15",
+  "standard": "DBIM-Generic",
+  "group": "C. Typography",
+  "checkpoint": "Text colour per DBIM with optimal contrast",
+  "ref": "4.4",
+  "may": "No",
+  "sep10": "No",
+  "sep10Evidence": "Seven measured failures \u2014 see Observations A and C, and \u00a76 G9."
+ },
+ {
+  "id": "DG16",
+  "standard": "DBIM-Generic",
+  "group": "C. Typography",
+  "checkpoint": "Button sizes consistent with uniform padding",
+  "ref": "4.5",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "Consistent Bootstrap `.btn` sizing."
+ },
+ {
+  "id": "DG17",
+  "standard": "DBIM-Generic",
+  "group": "C. Typography",
+  "checkpoint": "Distinct button states \u2014 enabled, hover, focus, disabled",
+  "ref": "4.5",
+  "may": "No",
+  "sep10": "No",
+  "sep10Evidence": "Enabled, hover and disabled are distinct. **Focus is absent on the home page's own buttons** \u2014 see Observation B."
+ },
+ {
+  "id": "DG18",
+  "standard": "DBIM-Generic",
+  "group": "C. Typography",
+  "checkpoint": "Mouse hover prompts a noticeable change",
+  "ref": "4.5",
+  "may": "No",
+  "sep10": "Yes",
+  "sep10Evidence": "Colour and underline transitions on all clickable items."
+ },
+ {
+  "id": "DG19",
+  "standard": "DBIM-Generic",
+  "group": "D. Header and Footer",
+  "checkpoint": "Emblem obtained from the authorized source",
+  "ref": "5.1",
+  "may": "NA",
+  "sep10": "NA",
+  "sep10Evidence": "Provenance not verifiable externally."
+ },
+ {
+  "id": "DG20",
+  "standard": "DBIM-Generic",
+  "group": "D. Header and Footer",
+  "checkpoint": "Emblem in proper ratio, not scaled disproportionately",
+  "ref": "5.1",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "`National-Emblem-logo.svg` 32\u00d752 natural, rendered 32\u00d752."
+ },
+ {
+  "id": "DG21",
+  "standard": "DBIM-Generic",
+  "group": "D. Header and Footer",
+  "checkpoint": "Website naming per organisation type",
+  "ref": "5.2",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "\"Government of India / Ministry of Social Justice & Empowerment / **Department of Social Justice & Empowerment**\"."
+ },
+ {
+  "id": "DG22",
+  "standard": "DBIM-Generic",
+  "group": "D. Header and Footer",
+  "checkpoint": "Logo lockup black-on-white or white-on-dark",
+  "ref": "5.3",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "Both variants shipped."
+ },
+ {
+  "id": "DG23",
+  "standard": "DBIM-Generic",
+  "group": "D. Header and Footer",
+  "checkpoint": "Generic header components chosen from DBIM",
+  "ref": "5.4",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "Header structure conforms."
+ },
+ {
+  "id": "DG24",
+  "standard": "DBIM-Generic",
+  "group": "D. Header and Footer",
+  "checkpoint": "All subcomponents of the generic header enabled and accessible",
+  "ref": "5.4",
+  "may": "Yes",
+  "sep10": "No",
+  "sep10Evidence": "Three defects: the six top-level mega-menu items are `<a href=\"#\">` rather than buttons carrying `aria-expanded`; a **Search submit button is focusable at `top: -159941px`**; four zero-height `<output>` elements sit in the tab order. See Observation B."
+ },
+ {
+  "id": "DG25",
+  "standard": "DBIM-Generic",
+  "group": "D. Header and Footer",
+  "checkpoint": "Footer displays key information and lineage",
+  "ref": "5.6",
+  "may": "No",
+  "sep10": "Yes",
+  "sep10Evidence": "Complete \u2014 see \u00a73."
+ },
+ {
+  "id": "DG26",
+  "standard": "DBIM-Generic",
+  "group": "E. Logo",
+  "checkpoint": "Correct / accurate logos used",
+  "ref": "5.5",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "\u2014"
+ },
+ {
+  "id": "DG27",
+  "standard": "DBIM-Generic",
+  "group": "E. Logo",
+  "checkpoint": "Logos not scaled disproportionately",
+  "ref": "5.5",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "\u2014"
+ },
+ {
+  "id": "DG28",
+  "standard": "DBIM-Generic",
+  "group": "E. Logo",
+  "checkpoint": "Logos in JPEG/JPG, PNG, SVG or WEBP only",
+  "ref": "5.5",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "\u2014"
+ },
+ {
+  "id": "DG29",
+  "standard": "DBIM-Generic",
+  "group": "E. Logo",
+  "checkpoint": "Logos under 100 KB",
+  "ref": "5.5",
+  "may": "No",
+  "sep10": "No",
+  "sep10Evidence": "`National-Emblem-logo.svg` = **196 KB**; `National_Emblem_logo_white.svg` = **195 KB** \u2014 roughly 2\u00d7 the ceiling. `Indian-Flag.svg` = 33 KB (passes). Gzip brings the emblems to 71 / 67 KB on the wire, but DBIM measures the published asset. A two-colour emblem should compress to 10\u201320 KB."
+ },
+ {
+  "id": "DG30",
+  "standard": "DBIM-Generic",
+  "group": "F. Imagery",
+  "checkpoint": "Background images under 500 KB",
+  "ref": "6.1.1",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "\u2014"
+ },
+ {
+  "id": "DG31",
+  "standard": "DBIM-Generic",
+  "group": "F. Imagery",
+  "checkpoint": "Banner and header images under 500 KB",
+  "ref": "6.1.1",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "Hero banners 245\u2013291 KB (1800\u00d7600)."
+ },
+ {
+  "id": "DG32",
+  "standard": "DBIM-Generic",
+  "group": "F. Imagery",
+  "checkpoint": "Thumbnail images under 100 KB",
+  "ref": "6.1.1",
+  "may": "No",
+  "sep10": "Yes",
+  "sep10Evidence": "12\u201360 KB. *Advisory:* `schemes-768x768.jpg` is a 768\u00d7768 file drawn at 150\u00d7150, fetched six times."
+ },
+ {
+  "id": "DG33",
+  "standard": "DBIM-Generic",
+  "group": "F. Imagery",
+  "checkpoint": "High-resolution images under 5 MB",
+  "ref": "6.1.1",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "\u2014"
+ },
+ {
+  "id": "DG34",
+  "standard": "DBIM-Generic",
+  "group": "F. Imagery",
+  "checkpoint": "Images in JPEG/JPG, PNG or WEBP only",
+  "ref": "6.1.1",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "*Advisory:* no WEBP is served anywhere \u2014 a free ~30% saving on a 3.0 MB page."
+ },
+ {
+  "id": "DG35",
+  "standard": "DBIM-Generic",
+  "group": "F. Imagery",
+  "checkpoint": "Thumbnail provided for high-resolution images, with view/download",
+  "ref": "6.1.1",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "\u2014"
+ },
+ {
+  "id": "DG36",
+  "standard": "DBIM-Generic",
+  "group": "F. Imagery",
+  "checkpoint": "Images licensed; no third-party watermark",
+  "ref": "6.1.3",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "None observed."
+ },
+ {
+  "id": "DG37",
+  "standard": "DBIM-Generic",
+  "group": "F. Imagery",
+  "checkpoint": "Headshot images as defined in DBIM",
+  "ref": "6.1.4",
+  "may": "No",
+  "sep10": "No",
+  "sep10Evidence": "Source sizes are inconsistent: the Minister at 160\u00d7160 (rendered 153), the two Ministers of State at 96\u00d796. The Minister's portrait is upscaled by its container."
+ },
+ {
+  "id": "DG38",
+  "standard": "DBIM-Generic",
+  "group": "G. Content",
+  "checkpoint": "All content complete and up to date",
+  "ref": "A.5.6",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "\"Last Updated: 10 Sep 2026\" on every page."
+ },
+ {
+  "id": "DG39",
+  "standard": "DBIM-Generic",
+  "group": "G. Content",
+  "checkpoint": "Language free from spelling or grammatical error",
+  "ref": "7.1.3.3",
+  "may": "No",
+  "sep10": "No",
+  "sep10Evidence": "Two defects verified at character level. **(a)** A published notice reads \"**l**nviting Expression of **l**nterest-cum-proposal\" \u2014 U+006C, a lowercase L, in place of a capital I, twice. It is invisible in Noto Sans, and **it is baked into the permalink**: `/documents/lnviting-expression-of-lnterest-cum-pr\u2026`. **(b)** A live page is published at `/prioritization-guidelines-for-funding-projects-by-**vuluntary**-organisations/` \u2014 the correct spelling returns 404, so the misspelling is canonical. See Observation G."
+ },
+ {
+  "id": "DG40",
+  "standard": "DBIM-Generic",
+  "group": "G. Content",
+  "checkpoint": "Central Content Publishing System integrated",
+  "ref": "7.4",
+  "may": "No",
+  "sep10": "Yes",
+  "sep10Evidence": "CCPS live at `ccps.digifootprint.gov.in`."
+ },
+ {
+  "id": "DG41",
+  "standard": "DBIM-Generic",
+  "group": "G. Content",
+  "checkpoint": "Clear consent for personalisation in the user's preferred language",
+  "ref": "7.6.1",
+  "may": "No",
+  "sep10": "No",
+  "sep10Evidence": "No consent mechanism exists."
+ },
+ {
+  "id": "DG42",
+  "standard": "DBIM-Generic",
+  "group": "G. Content",
+  "checkpoint": "Cookie consent banner at the bottom of the page",
+  "ref": "7.6.1",
+  "may": "No",
+  "sep10": "No",
+  "sep10Evidence": "No element matching `cookie` or `consent` in class or id; the word \"cookie\" does not appear in the rendered page. Google Analytics (`G-097K5TMNKB`), a Facebook page plugin, X widgets and a MyScheme AI assistant all load **before consent could be given**."
+ },
+ {
+  "id": "DG43",
+  "standard": "DBIM-Generic",
+  "group": "H. Search functionality",
+  "checkpoint": "Search is working",
+  "ref": "9",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "`?s=scholarship` \u2192 *Found 119 results*."
+ },
+ {
+  "id": "DG44",
+  "standard": "DBIM-Generic",
+  "group": "H. Search functionality",
+  "checkpoint": "Relevant results across HTML, PDF and image metadata",
+  "ref": "9",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "Faceted by content type; documents indexed. Image metadata not verified."
+ },
+ {
+  "id": "DG45",
+  "standard": "DBIM-Generic",
+  "group": "H. Search functionality",
+  "checkpoint": "Metadata, persona tags and keywords provided",
+  "ref": "A.5.6",
+  "may": "Yes",
+  "sep10": "No",
+  "sep10Evidence": "Title \u2713, description \u2713, viewport \u2713, UTF-8 \u2713, `sitemap_index.xml` with 17 document sitemaps \u2713, `robots.txt` \u2713. But **no `<meta name=\"keywords\">` on any page**, **no persona tags**, no `hreflang` despite Bhashini translation, and `<html lang=\"en-US\">` on a Government of India property."
+ },
+ {
+  "id": "DG46",
+  "standard": "DBIM-Generic",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Website responsive across multiple screen sizes",
+  "ref": "10.2",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "At a 320px viewport `documentElement.scrollWidth` = 320. No horizontal scroll, nothing clipped. See Observation H."
+ },
+ {
+  "id": "DM**A**",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "**Information Architecture**",
+  "ref": "",
+  "may": "",
+  "sep10": "",
+  "sep10Evidence": ""
+ },
+ {
+  "id": "DM1",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Content presented per the Ministry-specific information architecture",
+  "ref": "A1",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "Department / Associated Organisations / Offerings / Documents / Events & Gallery / Connect."
+ },
+ {
+  "id": "DM**B**",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "**Identify the Ministry Personas**",
+  "ref": "",
+  "may": "",
+  "sep10": "",
+  "sep10Evidence": ""
+ },
+ {
+  "id": "DM2",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Personas shortlisted and displayed on the Home Page",
+  "ref": "A2",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "\"Explore User Personas\" is present. *Observation:* only **two** of DBIM's four \u2014 Beneficiary and Government Official. See Observation D."
+ },
+ {
+  "id": "DM3",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Persona-based navigation displays relevant content",
+  "ref": "A2",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "Both route to `/for-beneficiary/` and `/for-government-official/`."
+ },
+ {
+  "id": "DM4",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Relevant content tagging done for the personas",
+  "ref": "A3",
+  "may": "Yes",
+  "sep10": "No",
+  "sep10Evidence": "Scheme pages carry **topic** chips (\"adarsh gram\", \"Educational Infrastructure\", \"SC Community Development\"), not **persona** tags. Search offers no persona facet."
+ },
+ {
+  "id": "DM**C**",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "**Homepage**",
+  "ref": "",
+  "may": "",
+  "sep10": "",
+  "sep10Evidence": ""
+ },
+ {
+  "id": "DM5",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Homepage components as per DBIM",
+  "ref": "A4",
+  "may": "No",
+  "sep10": "No",
+  "sep10Evidence": "Substantially improved \u2014 hero carousel, latest-updates ticker, About Us, Our Offerings, Our Organisations, Recent Documents, personas, Activity Corner, social, support, footer. The **PM Quote component is absent**, which is a DBIM homepage component."
+ },
+ {
+  "id": "DM6",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Integration with social media handles",
+  "ref": "A4",
+  "may": "No",
+  "sep10": "No",
+  "sep10Evidence": "*Corrected 11 Sep after reconciliation with tracker T21 \u2014 see \u00a711.* Five handles are linked and the Facebook page and X timeline embeds render at 557px. **The Instagram column renders a 274px \u201cFollow on Instagram\u201d fallback card, not a feed.** See Observation J."
+ },
+ {
+  "id": "DM**D**",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "**PM Quote**",
+  "ref": "",
+  "may": "",
+  "sep10": "",
+  "sep10Evidence": ""
+ },
+ {
+  "id": "DM7",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "PM image has a transparent background",
+  "ref": "A4",
+  "may": "NA",
+  "sep10": "NA",
+  "sep10Evidence": "No PM Quote component exists."
+ },
+ {
+  "id": "DM8",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "PM image and quote from authorized sources",
+  "ref": "A4",
+  "may": "NA",
+  "sep10": "NA",
+  "sep10Evidence": "As above."
+ },
+ {
+  "id": "DM9",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "PM Quote relevant to the Department displayed on Home",
+  "ref": "A4",
+  "may": "NA",
+  "sep10": "NA",
+  "sep10Evidence": "As above. The home carousel carries a *Mann ki Baat* campaign banner, which is a campaign creative rather than the DBIM PM Quote component."
+ },
+ {
+  "id": "DM10",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "PM Quote displayed in the prescribed format",
+  "ref": "A4",
+  "may": "NA",
+  "sep10": "NA",
+  "sep10Evidence": "As above."
+ },
+ {
+  "id": "DM**E**",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "**Content Sections**",
+  "ref": "",
+  "may": "",
+  "sep10": "",
+  "sep10Evidence": ""
+ },
+ {
+  "id": "DM11",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Objectives and functions of the Department displayed as a List",
+  "ref": "A.5.1.1",
+  "may": "No",
+  "sep10": "No",
+  "sep10Evidence": "On `/about-us/` the Department's objective is a **paragraph**: \"Basic objective of the policies, programmes, law and institution of the Indian welfare system is to bring the target groups into the mainstream of development\u2026\". *Partial progress:* scheme pages **do** use lists \u2014 PM-AJAY renders \"The objectives of the Scheme are to:\" followed by a real `<ol>`."
+ },
+ {
+  "id": "DM12",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Correct names of Ministers and their portfolios",
+  "ref": "A.5.1.2",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "\u2014"
+ },
+ {
+  "id": "DM13",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Correct organisation hierarchy depicted",
+  "ref": "A.5.1.2",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "\u2014"
+ },
+ {
+  "id": "DM14",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Names of departments, organisations, attached offices correct",
+  "ref": "A.5.1.3",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "18 organisations listed across Commissions, Corporations, Foundations and thematic portals."
+ },
+ {
+  "id": "DM15",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Name/Title of the offering maximum 150 characters",
+  "ref": "A.5.2",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "Scheme titles are within limit. *Observation:* three home-page **update/event** titles run to 158, 208 and 245 characters \u2014 these fall under checkpoint 19's 250-character limit and pass it, but they overflow their cards."
+ },
+ {
+  "id": "DM16",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "All images in the Offerings section below 100 KB",
+  "ref": "A.5.2.1",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "29 KB."
+ },
+ {
+  "id": "DM17",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Tenders page: valid tender-portal link; Tender ID \u2264 50 chars, error free",
+  "ref": "A.5.2.3",
+  "may": "Yes",
+  "sep10": "No",
+  "sep10Evidence": "Tender ID `GEM/2025/B/6519656` \u2014 18 characters, error free \u2713. **No link to GeM, eProcure or any tender portal was found** on the Tenders listing or on the tender detail page examined."
+ },
+ {
+  "id": "DM18",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Periodic documents versioned with date of release",
+  "ref": "A.5.3",
+  "may": "No",
+  "sep10": "No",
+  "sep10Evidence": "*Corrected 11 Sep after reconciliation with tracker T36/T37 \u2014 see \u00a711.* The Annual Reports table publishes Title \u00b7 Organisation \u00b7 Year \u00b7 Size \u00b7 Start Publish Date \u00b7 End Publish Date \u2014 **there is no version column**, and the metadata is partly unpopulated: \u201cAnnual Report 2024-25\u201d carries Year 2026, and \u201cAnnual Report 2025-26 (English)\u201d carries Year NA and Start Publish Date NA. My original \u201cYes\u201d was drawn from a three-report sample on the home page."
+ },
+ {
+  "id": "DM19",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Documents and Resources titles suitable, maximum 250 characters",
+  "ref": "A.5.3 / A.5.4",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "Longest measured 245."
+ },
+ {
+  "id": "DM20",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Videos have appropriate captioning and date",
+  "ref": "A.5.4.2",
+  "may": "No",
+  "sep10": "NA",
+  "sep10Evidence": "The Video Gallery publishes **no video** \u2014 the page body is 1,378 characters of chrome around an embedded YouTube *channel*. Nothing to caption. *Observation:* an empty gallery page sits in the primary navigation."
+ },
+ {
+  "id": "DM21",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "CIO / Web Information Manager / Appellate Authority / PIO contacts accurate",
+  "ref": "A.5.5",
+  "may": "No",
+  "sep10": "No",
+  "sep10Evidence": "**\"Web Information Manager\", \"WIM\" and \"Chief Information Officer\" return zero occurrences across the entire site.** PIO, CVO and Appellate Authority are named for the subordinate corporations, and a CPIO Directory exists \u2014 so the RTI half is served and the GIGW half is not."
+ },
+ {
+  "id": "DM22",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Geotagging on Contact Us is correct",
+  "ref": "A.5.5",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "14 Google Map embeds."
+ },
+ {
+  "id": "DM**F**",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "**Mandatory Directives for Content**",
+  "ref": "",
+  "may": "",
+  "sep10": "",
+  "sep10Evidence": ""
+ },
+ {
+  "id": "DM23",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "All uploaded content complete and up to date",
+  "ref": "A.5.6",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "\u2014"
+ },
+ {
+  "id": "DM24",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Content accuracy ensured through a multi-level CMS workflow (\u22652 level)",
+  "ref": "A.5.6",
+  "may": "Yes",
+  "sep10": "NA",
+  "sep10Evidence": "Not verifiable from outside the organisation."
+ },
+ {
+  "id": "DM25",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Appropriate titles (Dr., Shri, Smt., Mr., Ms.) used uniformly",
+  "ref": "A.5.6",
+  "may": "No",
+  "sep10": "Yes",
+  "sep10Evidence": "\u2014"
+ },
+ {
+  "id": "DM26",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Documents, presentations and brochures uploaded as accessible PDF; no editable formats",
+  "ref": "A.5.6",
+  "may": "Yes",
+  "sep10": "No",
+  "sep10Evidence": "No editable formats are published \u2713. But of four PDFs sampled, **three carry no `/StructTreeRoot`, no `/MarkInfo /Marked true` and no `/Lang`** \u2014 they are untagged, so assistive technology receives an unstructured character stream at best. The worst is `Application_for_the_post_of_DD_TRG.pdf` (2.7 MB), produced by **\"Adobe Scan for iOS\"** \u2014 a photograph of a form with no text layer, published as a job application. The fourth, `advertisement-E-5-10.12.2025_1.pdf`, **is** properly tagged with `/Lang(en-IN)`, which proves the capability exists and is applied inconsistently."
+ },
+ {
+  "id": "DM27",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Date format follows day before month",
+  "ref": "A.5.6",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "`22 Apr 2026`, `23 Dec 2025`, `12 Aug 2026`, `10 Sep 2026`."
+ },
+ {
+  "id": "DM28",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "External and website links secure (HTTPS), identifiable, periodically validated",
+  "ref": "A.5.6",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "Zero `http://` links. **All 129 internal links resolve** \u2014 no 404s."
+ },
+ {
+  "id": "DM29",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Archival section included; archival date mentioned",
+  "ref": "A.5.6",
+  "may": "Yes",
+  "sep10": "No",
+  "sep10Evidence": "No archival section exists. `/archive/` returns 404, no page in `page-sitemap.xml` matches \"archiv\", and the word does not appear in the rendered site."
+ },
+ {
+  "id": "DM30",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Ministerial images and officer listings arranged by seniority",
+  "ref": "A.5.6",
+  "may": "Yes",
+  "sep10": "Yes",
+  "sep10Evidence": "Minister, then the two Ministers of State."
+ },
+ {
+  "id": "DM**G**",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "**Forms**",
+  "ref": "",
+  "may": "",
+  "sep10": "",
+  "sep10Evidence": ""
+ },
+ {
+  "id": "DM31",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Instructions for filling the form given at the start",
+  "ref": "B",
+  "may": "NA",
+  "sep10": "No",
+  "sep10Evidence": "Forms now exist. Search and the feedback panel rely on placeholder text alone."
+ },
+ {
+  "id": "DM32",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Forms keyboard-friendly",
+  "ref": "B",
+  "may": "NA",
+  "sep10": "Yes",
+  "sep10Evidence": "Both are fully keyboard operable."
+ },
+ {
+  "id": "DM33",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Mandatory fields marked with an asterisk or \"Required\"",
+  "ref": "B",
+  "may": "NA",
+  "sep10": "NA",
+  "sep10Evidence": "No public form on the site has mandatory fields."
+ },
+ {
+  "id": "DM34",
+  "standard": "DBIM-Ministry",
+  "group": "I. Performance enhancement",
+  "checkpoint": "Labels clickable to enable easy selection of the form field",
+  "ref": "B",
+  "may": "NA",
+  "sep10": "No",
+  "sep10Evidence": "Search inputs and both checkboxes are correctly labelled \u2713. The **two feedback textareas** \u2014 \"Describe your issues here\u2026\" and \"Suggested Feedback\" \u2014 have **no `<label>`, no `aria-label` and no `aria-labelledby`**. A placeholder is not a label and disappears on input."
+ },
+ {
+  "id": "G1",
+  "standard": "GIGW",
+  "group": "6.1 Accessibility \u2014 WCAG 2.2 Level AA (23 checkpoints \u00b7 26.1 %)",
+  "checkpoint": "`<html lang>` present and correct",
+  "ref": "3.1.1",
+  "may": null,
+  "sep10": "Partial",
+  "sep10Evidence": "Present on every page, but `en-US` on a Government of India property. Should be `en-IN`."
+ },
+ {
+  "id": "G2",
+  "standard": "GIGW",
+  "group": "6.1 Accessibility \u2014 WCAG 2.2 Level AA (23 checkpoints \u00b7 26.1 %)",
+  "checkpoint": "Exactly one `<h1>` per page",
+  "ref": "1.3.1",
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "**Zero `<h1>` on the home page, the search results page and the Video Gallery.** Interior pages have one \u2713. See Observation I."
+ },
+ {
+  "id": "G3",
+  "standard": "GIGW",
+  "group": "6.1 Accessibility \u2014 WCAG 2.2 Level AA (23 checkpoints \u00b7 26.1 %)",
+  "checkpoint": "Headings nest without skipping levels",
+  "ref": "1.3.1",
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "**Every page opens with eight `<h5>` elements** \u2014 the mega-menu's `COMMISSIONS` / `CORPORATIONS` / `FOUNDATION / AUTONOMOUS BODIES` / `SCHEME SPECIFIC THEMATIC PORTALS`, rendered twice \u2014 before any `<h1>`. The home outline runs `H5 \u00d78 \u2192 H2 \u2192 H4 \u2192 H6 \u2026`."
+ },
+ {
+  "id": "G4",
+  "standard": "GIGW",
+  "group": "6.1 Accessibility \u2014 WCAG 2.2 Level AA (23 checkpoints \u00b7 26.1 %)",
+  "checkpoint": "Landmark regions present",
+  "ref": "1.3.1",
+  "may": null,
+  "sep10": "PASS",
+  "sep10Evidence": "`header`, `nav`, `main`, `footer`, `role=\"contentinfo\"`."
+ },
+ {
+  "id": "G5",
+  "standard": "GIGW",
+  "group": "6.1 Accessibility \u2014 WCAG 2.2 Level AA (23 checkpoints \u00b7 26.1 %)",
+  "checkpoint": "Skip to main content link",
+  "ref": "2.4.1",
+  "may": null,
+  "sep10": "PASS",
+  "sep10Evidence": "Works and reveals on focus. *Advisory:* there are two, both targeting `#content`."
+ },
+ {
+  "id": "G6",
+  "standard": "GIGW",
+  "group": "6.1 Accessibility \u2014 WCAG 2.2 Level AA (23 checkpoints \u00b7 26.1 %)",
+  "checkpoint": "Keyboard operable, no trap",
+  "ref": "2.1.1 / 2.1.2",
+  "may": null,
+  "sep10": "PASS",
+  "sep10Evidence": "No trap found in a 28-stop tab walk."
+ },
+ {
+  "id": "G7",
+  "standard": "GIGW",
+  "group": "6.1 Accessibility \u2014 WCAG 2.2 Level AA (23 checkpoints \u00b7 26.1 %)",
+  "checkpoint": "Visible focus on every control",
+  "ref": "2.4.7",
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "`a.btn.btn-primary` (\"Admin Login\") and `a.btn` (\"Explore\") match `:focus-visible` yet compute to `outline-style: none` with `box-shadow: rgba(0,0,0,0) 0 0 0 0` \u2014 a fully transparent ring. See Observation B."
+ },
+ {
+  "id": "G8",
+  "standard": "GIGW",
+  "group": "6.1 Accessibility \u2014 WCAG 2.2 Level AA (23 checkpoints \u00b7 26.1 %)",
+  "checkpoint": "Focus indicator contrast \u2265 3:1",
+  "ref": "1.4.11",
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "`rgba(3,115,223,0.48)` composites over white to `rgb(133,188,240)` \u2014 **1.98:1** against the page and **2.27:1** against a `#0373DF` button."
+ },
+ {
+  "id": "G9",
+  "standard": "GIGW",
+  "group": "6.1 Accessibility \u2014 WCAG 2.2 Level AA (23 checkpoints \u00b7 26.1 %)",
+  "checkpoint": "Text contrast \u2265 4.5:1 (3:1 large)",
+  "ref": "1.4.3",
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "Seven measured pairs: `#E2E6EA` on `#0373DF` **3.70:1** (the whole footer link column, 14px) \u00b7 white on `#F97316` **2.80:1** (SAMAVESH band, 28px and 16px) \u00b7 `#0373DF` on `#E5EFF9` **3.99:1** (\"Get in Touch\") \u00b7 on `#E6F8FA` **4.24:1** (\"View all Schemes\") \u00b7 on `#F8F9FA` **4.41:1** (\"Know More\") \u00b7 on `#F9FAFB` **4.44:1** (\"View All Events\") \u00b7 `#1877F2` on `#E7F0FD` **3.69:1**. The middle four are one defect repeated: **`#0373DF` clears 4.5:1 on pure white (4.64:1) and fails on every pale tint it is paired with.**"
+ },
+ {
+  "id": "G10",
+  "standard": "GIGW",
+  "group": "6.1 Accessibility \u2014 WCAG 2.2 Level AA (23 checkpoints \u00b7 26.1 %)",
+  "checkpoint": "Non-text and UI contrast \u2265 3:1",
+  "ref": "1.4.11",
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "SAMAVESH band marks at 2.80:1."
+ },
+ {
+  "id": "G11",
+  "standard": "GIGW",
+  "group": "6.1 Accessibility \u2014 WCAG 2.2 Level AA (23 checkpoints \u00b7 26.1 %)",
+  "checkpoint": "Meaningful images carry alt text",
+  "ref": "1.1.1",
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "**Six `<img>` carry no `alt` attribute at all** (the scheme tiles). A further 80 of 96 carry `alt=\"\"`, including both persona tiles, the 1321\u00d7436 SAMAVESH banner and the Digital India mark \u2014 each the sole content of a link. See Observation E."
+ },
+ {
+  "id": "G12",
+  "standard": "GIGW",
+  "group": "6.1 Accessibility \u2014 WCAG 2.2 Level AA (23 checkpoints \u00b7 26.1 %)",
+  "checkpoint": "Form fields labelled; errors announced",
+  "ref": "3.3.1 / 3.3.2",
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "Two feedback textareas with no label of any kind."
+ },
+ {
+  "id": "G13",
+  "standard": "GIGW",
+  "group": "6.1 Accessibility \u2014 WCAG 2.2 Level AA (23 checkpoints \u00b7 26.1 %)",
+  "checkpoint": "Custom widgets carry correct ARIA",
+  "ref": "4.1.2",
+  "may": null,
+  "sep10": "Partial",
+  "sep10Evidence": "Carousel arrows are `<div role=\"button\" tabindex=\"0\" aria-label=\"Previous slide\">` and slide dots carry labels \u2713. The **six mega-menu triggers are `<a href=\"#\">`**, announced as links that go nowhere. Escape and arrow-key behaviour not verified."
+ },
+ {
+  "id": "G14",
+  "standard": "GIGW",
+  "group": "6.1 Accessibility \u2014 WCAG 2.2 Level AA (23 checkpoints \u00b7 26.1 %)",
+  "checkpoint": "`prefers-reduced-motion` respected",
+  "ref": "2.3.3",
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "**Zero `prefers-reduced-motion` rules** across `style.css`, `common.css` and `ux4gCustom.css`. Four Swiper carousels auto-advance, plus Elementor `fadeIn` entrance animations. *Mitigation:* the accessibility widget offers \"Pause Animation\", but that is opt-in and the OS preference is what the standard names."
+ },
+ {
+  "id": "G15",
+  "standard": "GIGW",
+  "group": "6.1 Accessibility \u2014 WCAG 2.2 Level AA (23 checkpoints \u00b7 26.1 %)",
+  "checkpoint": "Reflow at 320px; text resize to 200%",
+  "ref": "1.4.10 / 1.4.4",
+  "may": null,
+  "sep10": "PASS",
+  "sep10Evidence": "`scrollWidth` = 320 at a 320px viewport. See Observation H."
+ },
+ {
+  "id": "G16",
+  "standard": "GIGW",
+  "group": "6.1 Accessibility \u2014 WCAG 2.2 Level AA (23 checkpoints \u00b7 26.1 %)",
+  "checkpoint": "Target size \u2265 24\u00d724 px",
+  "ref": "2.5.8",
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "**56 targets on the home page measure under 24px.** Carousel pagination dots are **6\u00d76 px** with 6px gaps. UX4G asks for 44\u00d744."
+ },
+ {
+  "id": "G17",
+  "standard": "GIGW",
+  "group": "6.1 Accessibility \u2014 WCAG 2.2 Level AA (23 checkpoints \u00b7 26.1 %)",
+  "checkpoint": "Link purpose determinable from the accessible name",
+  "ref": "2.4.4",
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "**60 links have no accessible name** \u2014 the six scheme tiles, both persona tiles, the SAMAVESH banner, the Digital India mark and a row of partner-organisation logos."
+ },
+ {
+  "id": "G18",
+  "standard": "GIGW",
+  "group": "6.1 Accessibility \u2014 WCAG 2.2 Level AA (23 checkpoints \u00b7 26.1 %)",
+  "checkpoint": "New-window links warn the user",
+  "ref": "3.2.5",
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "26 `target=\"_blank\"` links on one scheme page carry no textual warning; the `open_in_new` icon has `alt=\"\"`, so the signal is purely visual."
+ },
+ {
+  "id": "G19",
+  "standard": "GIGW",
+  "group": "6.1 Accessibility \u2014 WCAG 2.2 Level AA (23 checkpoints \u00b7 26.1 %)",
+  "checkpoint": "Data tables use `scope` and `caption`",
+  "ref": "1.3.1",
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "**Zero of 63 `<th>` elements across four pages carry a `scope` attribute, and no table carries a `<caption>`.** Contact Us alone has 13 tables and 44 unscoped headers."
+ },
+ {
+  "id": "G20",
+  "standard": "GIGW",
+  "group": "6.1 Accessibility \u2014 WCAG 2.2 Level AA (23 checkpoints \u00b7 26.1 %)",
+  "checkpoint": "Documents published as accessible PDF",
+  "ref": "1.3.1 / 4.1.2",
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "Three of four sampled PDFs untagged; one is an image-only scan. See \u00a75 M26."
+ },
+ {
+  "id": "G21",
+  "standard": "GIGW",
+  "group": "6.1 Accessibility \u2014 WCAG 2.2 Level AA (23 checkpoints \u00b7 26.1 %)",
+  "checkpoint": "Accessibility widget integrated",
+  "ref": "GIGW / UX4G",
+  "may": null,
+  "sep10": "PASS",
+  "sep10Evidence": "19 features, on `Ctrl+F2`. The strongest single item in this audit."
+ },
+ {
+  "id": "G22",
+  "standard": "GIGW",
+  "group": "6.1 Accessibility \u2014 WCAG 2.2 Level AA (23 checkpoints \u00b7 26.1 %)",
+  "checkpoint": "Accessibility Statement published",
+  "ref": "GIGW",
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "`/accessibility/`, `/accessibility-statement/` and `/website-policies/` all return **404**, and no such link appears in the footer or anywhere on the home page."
+ },
+ {
+  "id": "G23",
+  "standard": "GIGW",
+  "group": "6.1 Accessibility \u2014 WCAG 2.2 Level AA (23 checkpoints \u00b7 26.1 %)",
+  "checkpoint": "Screen Reader Access page published",
+  "ref": "GIGW",
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "`/screen-reader-access/` returns **404**."
+ },
+ {
+  "id": "G24",
+  "standard": "GIGW",
+  "group": "6.2 Mandatory pages and policies (6 checkpoints \u00b7 66.7 %)",
+  "checkpoint": "Home \u00b7 Contact Us \u00b7 Help \u00b7 Sitemap \u00b7 Search",
+  "ref": null,
+  "may": null,
+  "sep10": "PASS",
+  "sep10Evidence": "All 200. Search at `?s=`."
+ },
+ {
+  "id": "G25",
+  "standard": "GIGW",
+  "group": "6.2 Mandatory pages and policies (6 checkpoints \u00b7 66.7 %)",
+  "checkpoint": "Feedback page",
+  "ref": null,
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "`/feedback/` returns **404**. Feedback exists only as a floating widget whose textareas are unlabelled."
+ },
+ {
+  "id": "G26",
+  "standard": "GIGW",
+  "group": "6.2 Mandatory pages and policies (6 checkpoints \u00b7 66.7 %)",
+  "checkpoint": "Grievance redressal",
+  "ref": null,
+  "may": null,
+  "sep10": "PASS",
+  "sep10Evidence": "`/grievance/` 200; CPGRAMS linked."
+ },
+ {
+  "id": "G27",
+  "standard": "GIGW",
+  "group": "6.2 Mandatory pages and policies (6 checkpoints \u00b7 66.7 %)",
+  "checkpoint": "Terms & Conditions \u00b7 Privacy \u00b7 Copyright \u00b7 Hyperlinking",
+  "ref": null,
+  "may": null,
+  "sep10": "PASS",
+  "sep10Evidence": "All four 200 and linked from the footer."
+ },
+ {
+  "id": "G28",
+  "standard": "GIGW",
+  "group": "6.2 Mandatory pages and policies (6 checkpoints \u00b7 66.7 %)",
+  "checkpoint": "Website Policies hub",
+  "ref": null,
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "No hub page exists; policies are linked individually from the footer only."
+ },
+ {
+  "id": "G29",
+  "standard": "GIGW",
+  "group": "6.2 Mandatory pages and policies (6 checkpoints \u00b7 66.7 %)",
+  "checkpoint": "RTI disclosure and \"Last Updated\" stamp",
+  "ref": null,
+  "may": null,
+  "sep10": "PASS",
+  "sep10Evidence": "`/rti/` 200 with a CPIO directory; \"Last Updated: 10 Sep 2026\" sitewide."
+ },
+ {
+  "id": "G30",
+  "standard": "GIGW",
+  "group": "6.3 Technology, security and performance (9 checkpoints \u00b7 66.7 %)",
+  "checkpoint": "HTTPS with valid TLS",
+  "ref": null,
+  "may": null,
+  "sep10": "PASS",
+  "sep10Evidence": "HTTP/2; certificate `CN=dosje.gov.in` (Amazon RSA 2048 M04) valid to 24 Dec 2026."
+ },
+ {
+  "id": "G31",
+  "standard": "GIGW",
+  "group": "6.3 Technology, security and performance (9 checkpoints \u00b7 66.7 %)",
+  "checkpoint": "Security headers",
+  "ref": null,
+  "may": null,
+  "sep10": "PASS",
+  "sep10Evidence": "`Strict-Transport-Security: max-age=31536000; includeSubDomains` \u00b7 `X-Frame-Options: SAMEORIGIN` \u00b7 `X-Content-Type-Options: nosniff` \u00b7 `X-XSS-Protection` \u00b7 `Referrer-Policy: strict-origin-when-cross-origin` \u00b7 `Permissions-Policy: geolocation=(self)` \u00b7 `frame-ancestors 'self'`."
+ },
+ {
+  "id": "G32",
+  "standard": "GIGW",
+  "group": "6.3 Technology, security and performance (9 checkpoints \u00b7 66.7 %)",
+  "checkpoint": "Content Security Policy effective",
+  "ref": null,
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "`script-src 'self' 'unsafe-inline' 'unsafe-eval' https:` permits inline script, `eval`, and any script from any HTTPS origin on the internet. As written the policy prevents almost no XSS."
+ },
+ {
+  "id": "G33",
+  "standard": "GIGW",
+  "group": "6.3 Technology, security and performance (9 checkpoints \u00b7 66.7 %)",
+  "checkpoint": "No broken links",
+  "ref": null,
+  "may": null,
+  "sep10": "PASS",
+  "sep10Evidence": "129 internal links crawled; **zero 404s**."
+ },
+ {
+  "id": "G34",
+  "standard": "GIGW",
+  "group": "6.3 Technology, security and performance (9 checkpoints \u00b7 66.7 %)",
+  "checkpoint": "Responsive, mobile-first",
+  "ref": null,
+  "may": null,
+  "sep10": "PASS",
+  "sep10Evidence": "\u2014"
+ },
+ {
+  "id": "G35",
+  "standard": "GIGW",
+  "group": "6.3 Technology, security and performance (9 checkpoints \u00b7 66.7 %)",
+  "checkpoint": "Hosted on gov.in / nic.in",
+  "ref": null,
+  "may": null,
+  "sep10": "PASS",
+  "sep10Evidence": "`dosje.gov.in`, served via CloudFront (`x-amz-cf-pop: DEL54-P2`)."
+ },
+ {
+  "id": "G36",
+  "standard": "GIGW",
+  "group": "6.3 Technology, security and performance (9 checkpoints \u00b7 66.7 %)",
+  "checkpoint": "Multilingual support via Unicode",
+  "ref": null,
+  "may": null,
+  "sep10": "PASS",
+  "sep10Evidence": "Noto Sans plus the Bhashini translation plugin; Hindi documents published alongside English."
+ },
+ {
+  "id": "G37",
+  "standard": "GIGW",
+  "group": "6.3 Technology, security and performance (9 checkpoints \u00b7 66.7 %)",
+  "checkpoint": "Page weight and performance",
+  "ref": null,
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "**160 requests, 3.0 MB, of which 1.28 MB is JavaScript.** The bundle includes jQuery, jQuery Migrate, Elementor Pro, Swiper \u00d72, DataTables with Buttons, **JSZip, pdfmake and its embedded `vfs_fonts`**, Fancybox, Bhashini, UX4G, Google Analytics, X and Facebook widgets. `pdfmake`, `jszip` and DataTables are export helpers for a data table, and they load on **the home page, which has no data table**."
+ },
+ {
+  "id": "G40",
+  "standard": "GIGW",
+  "group": "6.3 Technology, security and performance (9 checkpoints \u00b7 66.7 %)",
+  "checkpoint": "Web Information Manager designated and published",
+  "ref": null,
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "Zero occurrences sitewide."
+ },
+ {
+  "id": "U1",
+  "standard": "UX4G",
+  "group": "7.1 Typography (\u00a72)",
+  "checkpoint": "Noto Sans as the base UI typeface",
+  "ref": null,
+  "may": null,
+  "sep10": "PASS",
+  "sep10Evidence": "2,923 of 2,976 elements."
+ },
+ {
+  "id": "U2",
+  "standard": "UX4G",
+  "group": "7.1 Typography (\u00a72)",
+  "checkpoint": "Noto Sans Display for 36px and above",
+  "ref": null,
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "The 40px and 48px statistics are set in Noto Sans, not Noto Sans Display."
+ },
+ {
+  "id": "U3",
+  "standard": "UX4G",
+  "group": "7.1 Typography (\u00a72)",
+  "checkpoint": "Font sizes drawn from the UX4G type scale",
+  "ref": null,
+  "may": null,
+  "sep10": "Partial",
+  "sep10Evidence": "**91.6 % on scale** (597/652). Off-scale: 15px \u00d722, 13px \u00d717, 22px \u00d75, 23px \u00d74, 8px \u00d74, 10px \u00d73, 11px \u00d71."
+ },
+ {
+  "id": "U4",
+  "standard": "UX4G",
+  "group": "7.1 Typography (\u00a72)",
+  "checkpoint": "Minimum text size 12px (Body/XS, \"minimum usable size\")",
+  "ref": null,
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "Eight elements render below it \u2014 8px \u00d74, 10px \u00d73, plus one at 11px."
+ },
+ {
+  "id": "U5",
+  "standard": "UX4G",
+  "group": "7.1 Typography (\u00a72)",
+  "checkpoint": "Four font weights only (400/500/600/700)",
+  "ref": null,
+  "may": null,
+  "sep10": "PASS",
+  "sep10Evidence": "Exactly those four."
+ },
+ {
+  "id": "U6",
+  "standard": "UX4G",
+  "group": "7.1 Typography (\u00a72)",
+  "checkpoint": "Heading element \u2194 style mapping (h1 XXL \u2026 h6 XXS)",
+  "ref": null,
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "No `<h1>`; h5 renders 14/24 against Heading/XXS's 14/16; h3 renders 28/40 against Heading/M's 24/28; h5 is smaller than h6."
+ },
+ {
+  "id": "U7",
+  "standard": "UX4G",
+  "group": "7.2 Spacing, layout and shape (\u00a73)",
+  "checkpoint": "Base-4 spacing scale",
+  "ref": null,
+  "may": null,
+  "sep10": "Partial",
+  "sep10Evidence": "**80.9 % on scale** (2,105/2,602). Off-scale is dominated by two values: 5px \u00d7193 and 10px \u00d7191, then 9px \u00d738, 15px \u00d724, 70px \u00d718."
+ },
+ {
+  "id": "U8",
+  "standard": "UX4G",
+  "group": "7.2 Spacing, layout and shape (\u00a73)",
+  "checkpoint": "Corner radius None / 4 / 8 / 12 / Full",
+  "ref": null,
+  "may": null,
+  "sep10": "Partial",
+  "sep10Evidence": "8px \u00d7113, 12px \u00d74, 4px \u00d78 and 50% \u00d742 are on scale; 20px \u00d768, 16px \u00d743, 10px \u00d715 and 5px \u00d713 are not."
+ },
+ {
+  "id": "U11",
+  "standard": "UX4G",
+  "group": "7.2 Spacing, layout and shape (\u00a73)",
+  "checkpoint": "12-column grid; max content width 1200 / 1320 px",
+  "ref": null,
+  "may": null,
+  "sep10": "Partial",
+  "sep10Evidence": "Layout is grid-based and responsive; the exact container cap was not conclusively measured."
+ },
+ {
+  "id": "U13",
+  "standard": "UX4G",
+  "group": "7.2 Spacing, layout and shape (\u00a73)",
+  "checkpoint": "Touch targets \u2265 44\u00d744 px with 8px spacing",
+  "ref": null,
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "56 targets under 24px; carousel dots 6\u00d76 with 6px gaps."
+ },
+ {
+  "id": "U9",
+  "standard": "UX4G",
+  "group": "7.3 Elevation and layering (\u00a74)",
+  "checkpoint": "Elevation levels L1\u2013L4 as specified",
+  "ref": null,
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "Six ad-hoc shadows in use \u2014 `0 2px 8px rgba(0,0,0,.12)`, `0 7px 44px -24px rgba(0,0,0,.5)`, `0 2px 3px 1px`, `0 2px 10px`, `0 2px 6px` \u2014 **none** matching UX4G's Y1/B2, Y4/B8, Y8/B16 or Y16/B32."
+ },
+ {
+  "id": "U10",
+  "standard": "UX4G",
+  "group": "7.3 Elevation and layering (\u00a74)",
+  "checkpoint": "Z-index confined to the 1000\u20131090 scale",
+  "ref": null,
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "UX4G: *\"Don't use arbitrary z-index values outside the defined scale.\"* In use: **2147483620 \u00d712**, 9999999, 999999 \u00d75, 99999, 10000 \u00d72, 9999 \u00d78, 2000 \u00d74, 1002, 1001. Only `1000` is on scale."
+ },
+ {
+  "id": "U14",
+  "standard": "UX4G",
+  "group": "7.4 Iconography (\u00a75)",
+  "checkpoint": "Material Design Icons / Material Symbols",
+  "ref": null,
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "Font Awesome 5 Free and Brands, plus Elementor `eicons`."
+ },
+ {
+  "id": "U15",
+  "standard": "UX4G",
+  "group": "7.4 Iconography (\u00a75)",
+  "checkpoint": "Icon sizes on the UX4G utility scale (11\u201360px)",
+  "ref": null,
+  "may": null,
+  "sep10": "Partial",
+  "sep10Evidence": "14 / 12 / 20 / 16 / 24px are all on UX4G's scale \u2713 \u2014 **note this is a UX4G pass where DBIM fails**, because UX4G's icon scale is finer than DBIM's four sizes. 25px \u00d74 is off both."
+ },
+ {
+  "id": "U16",
+  "standard": "UX4G",
+  "group": "7.5 Accessibility (\u00a76)",
+  "checkpoint": "Contrast 4.5:1 normal, 3:1 large, 3:1 UI",
+  "ref": null,
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "Seven pairs \u2014 see G9."
+ },
+ {
+  "id": "U17",
+  "standard": "UX4G",
+  "group": "7.5 Accessibility (\u00a76)",
+  "checkpoint": "Focus ring: 4px, 2px offset, radius-matched, 3:1",
+  "ref": null,
+  "may": null,
+  "sep10": "Partial",
+  "sep10Evidence": "**The 4px ring width matches UX4G's specification exactly** and links carry `outline-offset: 5px`. But buttons render 0px offset, and at `rgba(3,115,223,0.48)` the ring measures 1.98:1 \u2014 failing UX4G's own 3:1 requirement. *Note:* UX4G's published spec value, `rgba(59,130,246,0.5)`, cannot reach 3:1 on white either \u2014 the site inherited a defect from the standard."
+ },
+ {
+  "id": "U18",
+  "standard": "UX4G",
+  "group": "7.5 Accessibility (\u00a76)",
+  "checkpoint": "Keyboard: Tab / Enter / Space / Arrows / Esc",
+  "ref": null,
+  "may": null,
+  "sep10": "Partial",
+  "sep10Evidence": "Tab and Enter verified; Space, Arrow and Escape handling in the mega-menu and carousels not verified."
+ },
+ {
+  "id": "U19",
+  "standard": "UX4G",
+  "group": "7.5 Accessibility (\u00a76)",
+  "checkpoint": "Semantic HTML in preference to div-based alternatives",
+  "ref": null,
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "`<div role=\"button\">` carousel controls; `<a href=\"#\">` disclosure triggers."
+ },
+ {
+  "id": "U20",
+  "standard": "UX4G",
+  "group": "7.5 Accessibility (\u00a76)",
+  "checkpoint": "Heading hierarchy h1 \u2192 h6",
+  "ref": null,
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "See G2 / G3."
+ },
+ {
+  "id": "U21",
+  "standard": "UX4G",
+  "group": "7.5 Accessibility (\u00a76)",
+  "checkpoint": "Forms: labels, required markers, `aria-describedby`, `aria-invalid`",
+  "ref": null,
+  "may": null,
+  "sep10": "FAIL",
+  "sep10Evidence": "Two unlabelled textareas; no required markers; no error wiring observed."
+ },
+ {
+  "id": "U22",
+  "standard": "UX4G",
+  "group": "7.6 Content design system (\u00a77)",
+  "checkpoint": "Plain language, Class 8\u201310 reading level",
+  "ref": null,
+  "may": null,
+  "sep10": "PASS",
+  "sep10Evidence": "Copy is plain, formal and specific throughout."
+ },
+ {
+  "id": "U24",
+  "standard": "UX4G",
+  "group": "7.6 Content design system (\u00a77)",
+  "checkpoint": "Consent templates; pre-checked boxes prohibited",
+  "ref": null,
+  "may": null,
+  "sep10": "Partial",
+  "sep10Evidence": "**No pre-checked boxes** \u2014 both checkboxes default to unchecked \u2713. But no consent mechanism exists at all, so UX4G's consent-template requirement is unmet."
+ },
+ {
+  "id": "U25",
+  "standard": "UX4G",
+  "group": "7.7 Components and patterns (\u00a79, \u00a710)",
+  "checkpoint": "UX4G component library adopted",
+  "ref": null,
+  "may": null,
+  "sep10": "PASS",
+  "sep10Evidence": "The UX4G Bootstrap build is loaded and its components are in use."
+ },
+ {
+  "id": "U26",
+  "standard": "UX4G",
+  "group": "7.7 Components and patterns (\u00a79, \u00a710)",
+  "checkpoint": "Accessibility component integrated",
+  "ref": null,
+  "may": null,
+  "sep10": "PASS",
+  "sep10Evidence": "19 features."
+ }
+]
