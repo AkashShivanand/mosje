@@ -117,3 +117,13 @@ docs/qc/portals/*/report-sections.json
 docs/qc/portals/*/package.json
 docs/qc/portals/*/package-lock.json
 .cache/
+
+# Next 16 writes these itself, in every checkout, on every `next dev`:
+# apps/hub/AGENTS.md carries the framework's own agent rules (its first line is
+# `<!-- BEGIN:nextjs-agent-rules -->`) and apps/hub/CLAUDE.md is a one-line
+# `@AGENTS.md` pointer to it. They are generated, they reappear in every git
+# worktree, and committing them would put the framework's copy under review every
+# time it changes. The estate's OWN guidance is the tracked AGENTS.md and
+# CLAUDE.md at the repo root.
+apps/hub/AGENTS.md
+apps/hub/CLAUDE.md
