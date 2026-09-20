@@ -47,7 +47,8 @@ function Portrait() {
       aria-label="Image slot for the Prime Minister's photograph, to be supplied from the DBIM Toolkit"
       className={`${box} flex shrink-0 items-end justify-center rounded-t-full border-2 border-dashed border-primary/40 bg-primary-50 text-primary-dark`}
     >
-      <Icon name="person" size={96} aria-hidden />
+      {/* 64 is the top of the icon scale; the placeholder box sets its own size. */}
+      <Icon name="person" size={64} aria-hidden />
     </div>
   );
 }
@@ -65,7 +66,7 @@ function Citation() {
         rel="noreferrer"
         className="mt-2 inline-flex items-center gap-1 font-semibold text-primary-900 underline-offset-2 hover:underline"
       >
-        Read the Full Address <Icon name="open_in_new" size={14} aria-hidden />
+        Read the Full Address <Icon name="open_in_new" size={16} aria-hidden />
         <span className="sr-only">(opens {PM_QUOTE.sourceName} in a new tab)</span>
       </a>
     </p>
