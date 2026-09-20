@@ -1,24 +1,26 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
-import { directoryColumns, directoryRows } from "@/data/website";
+import { OfficialsDirectory } from "@/components/website/templates/OfficialsDirectory";
+import { getContentSyncedDate, getOfficialsByOrganisation } from "@/lib/website/content";
+import { socialCard } from "@/lib/seo/social";
+
+const TITLE = "PM-AJAY Directory";
+const DESCRIPTION =
+  "Telephone directory of the Pradhan Mantri Anusuchit Jaati Abhyuday Yojana (PM-AJAY) — officers with intercom and contact details.";
 
 export const metadata: Metadata = {
-  title: "PM-AJAY Directory | Pradhan Mantri Anusuchit Jaati Abhyuday Yojana",
-  description:
-    "Telephone directory of the PM-AJAY (Pradhan Mantri Anusuchit Jaati Abhyuday Yojana) Project Management Unit — Mission Director, Project Directors, and officers with contact details.",
+  title: `${TITLE} | Pradhan Mantri Anusuchit Jaati Abhyuday Yojana`,
+  description: DESCRIPTION,
+  ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/pm-ajay-directory" }),
 };
 
 export default function Page() {
   return (
-    <ListingPage
-      title="PM-AJAY Directory"
-      breadcrumb={[{ label: "Associated Organisations" }, { label: "PM-AJAY Directory" }]}
-      lastUpdated="06 Jun 2026"
-      description="Telephone directory of the PM-AJAY (Pradhan Mantri Anusuchit Jaati Abhyuday Yojana) Project Management Unit — Mission Director, Project Directors, and officers with contact details."
-      columns={directoryColumns}
-      rows={directoryRows("pradhan-mantri-anusuchit-jaati-abhyuday-yojna")}
-      searchKeys={["name", "designation"]}
-      searchPlaceholder="Search by name or designation…"
+    <OfficialsDirectory
+      title={TITLE}
+      breadcrumb={[{ label: "Associated Organisations" }, { label: TITLE }]}
+      description={DESCRIPTION}
+      lastUpdated={getContentSyncedDate()}
+      officials={getOfficialsByOrganisation("PMAJAY")}
     />
   );
 }

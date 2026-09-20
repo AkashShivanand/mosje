@@ -1,18 +1,292 @@
 {
-  "generatedAt": "2026-08-24T22:34:36.359Z",
+  "generatedAt": "2026-09-18T00:56:28.381Z",
   "collections": [
     {
-      "name": "documents",
-      "sitemapCount": 1962,
-      "kept": 1962,
+      "name": "booking",
+      "sitemapCount": 12,
+      "kept": 12,
       "skipped": 0,
+      "restCount": 12,
+      "notInSitemap": 0,
+      "sitemapOnly": 0,
+      "withoutPageFields": 0,
       "skippedDetail": []
+    },
+    {
+      "name": "cpio",
+      "sitemapCount": 13,
+      "kept": 13,
+      "skipped": 0,
+      "restCount": 13,
+      "notInSitemap": 0,
+      "sitemapOnly": 0,
+      "withoutPageFields": 0,
+      "skippedDetail": []
+    },
+    {
+      "name": "documents",
+      "sitemapCount": 5994,
+      "kept": 5964,
+      "skipped": 47,
+      "files": [
+        {
+          "name": "documents",
+          "count": 3297
+        },
+        {
+          "name": "documents-central-list-of-obcs",
+          "count": 2667
+        }
+      ],
+      "restCount": 6011,
+      "notInSitemap": 17,
+      "sitemapOnly": 0,
+      "withoutPageFields": 0,
+      "skippedDetail": [
+        {
+          "slug": "addition-in-the-list-of-utter-pradesh-no-12011-13-97-bcc-2",
+          "reason": "duplicate of addition-in-the-list-of-utter-pradesh-no-12011-13-97-bcc"
+        },
+        {
+          "slug": "addition-in-the-lists-of-andhra-pradesh-kerala-madhya-pradesh-maharashtra-orissa-tamil-nadu-tripura-up-west-bengal-no-12011-96-94-bcc-2",
+          "reason": "duplicate of addition-in-the-lists-of-andhra-pradesh-kerala-madhya-pradesh-maharashtra-orissa-tamil-nadu-tripura-up-west-bengal-no-12011-96-94-bcc"
+        },
+        {
+          "slug": "addition-in-the-lists-of-bihar-goa-gujarat-haryana-orissa-uttar-pradesh-and-west-bengal-no-12011-44-96-bcc-2",
+          "reason": "duplicate of addition-in-the-lists-of-bihar-goa-gujarat-haryana-orissa-uttar-pradesh-and-west-bengal-no-12011-44-96-bcc"
+        },
+        {
+          "slug": "amendment-in-the-central-list-of-obcs-in-respect-of-odisha-20012-1-2017-bc-ii-2",
+          "reason": "duplicate of amendment-in-the-central-list-of-obcs-in-respect-of-odisha-20012-1-2017-bc-ii"
+        },
+        {
+          "slug": "amendment-in-the-central-list-of-obcs-in-respect-of-the-state-of-ut-of-puducherry-12011-13-2016-bc-ii-2",
+          "reason": "duplicate of amendment-in-the-central-list-of-obcs-in-respect-of-the-state-of-ut-of-puducherry-12011-13-2016-bc-ii"
+        },
+        {
+          "slug": "amendment-in-the-central-lists-of-obcs-in-respect-of-andhra-pradesh-12011-14-2016-bc-ii-2",
+          "reason": "duplicate of amendment-in-the-central-lists-of-obcs-in-respect-of-andhra-pradesh-12011-14-2016-bc-ii"
+        },
+        {
+          "slug": "amendment-in-the-central-lists-of-obcs-in-respect-of-kerala-haryana-chattisgarh-12011-15-2016-bc-ii-2",
+          "reason": "duplicate of amendment-in-the-central-lists-of-obcs-in-respect-of-kerala-haryana-chattisgarh-12011-15-2016-bc-ii"
+        },
+        {
+          "slug": "amendment-in-the-list-of-andhra-pradesh-bihar-delhi-gujarat-haryana-himachal-pradesh-karnataka-kerala-m-p-maharashtra-orissa-pondicherry-rajasthan-sikkim-tamil-nadu-tripura-up-west-be-2",
+          "reason": "duplicate of amendment-in-the-list-of-andhra-pradesh-bihar-delhi-gujarat-haryana-himachal-pradesh-karnataka-kerala-m-p-maharashtra-orissa-pondicherry-rajasthan-sikkim-tamil-nadu-tripura-up-west-be"
+        },
+        {
+          "slug": "amendment-in-the-list-of-andhra-pradesh-bihar-punjab-sikkim-tamil-nadu-uttar-pradesh-no-12011-1-2001-bcc-2",
+          "reason": "duplicate of amendment-in-the-list-of-andhra-pradesh-bihar-punjab-sikkim-tamil-nadu-uttar-pradesh-no-12011-1-2001-bcc"
+        },
+        {
+          "slug": "amendment-in-the-list-of-andhra-pradesh-bihar-punjab-sikkim-tamil-nadu-uttar-pradesh-no-12011-4-2002-bcc-2",
+          "reason": "duplicate of amendment-in-the-list-of-andhra-pradesh-bihar-punjab-sikkim-tamil-nadu-uttar-pradesh-no-12011-4-2002-bcc"
+        },
+        {
+          "slug": "amendment-in-the-list-of-andhra-pradesh-gujarat-haryana-himachal-pradesh-jk-karnataka-m-p-maharashtra-orissa-pondicherry-rajasthan-tamil-nadu-tripura-up-west-bengal-no-12015-9-2000-b-2",
+          "reason": "duplicate of amendment-in-the-list-of-andhra-pradesh-gujarat-haryana-himachal-pradesh-jk-karnataka-m-p-maharashtra-orissa-pondicherry-rajasthan-tamil-nadu-tripura-up-west-bengal-no-12015-9-2000-b"
+        },
+        {
+          "slug": "amendment-in-the-list-of-andhra-pradesh-no-12011-1-2007-bcc-2",
+          "reason": "duplicate of amendment-in-the-list-of-andhra-pradesh-no-12011-1-2007-bcc"
+        },
+        {
+          "slug": "amendment-in-the-list-of-kerala-no-12011-7-2014-bc-ii-2",
+          "reason": "duplicate of amendment-in-the-list-of-kerala-no-12011-7-2014-bc-ii"
+        },
+        {
+          "slug": "amendment-in-the-list-of-madhya-pradesh-no-12011-04-2014-bc-ii-2",
+          "reason": "duplicate of amendment-in-the-list-of-madhya-pradesh-no-12011-04-2014-bc-ii"
+        },
+        {
+          "slug": "amendment-inclusion-of-andhra-pradesh-goa-gujarat-haryana-karnataka-madhya-pradesh-orissa-pondicherry-rajasthan-tamil-nadu-uttar-pradesh-andwest-bengalno-12011-44-99-bcc-2",
+          "reason": "duplicate of amendment-inclusion-of-andhra-pradesh-goa-gujarat-haryana-karnataka-madhya-pradesh-orissa-pondicherry-rajasthan-tamil-nadu-uttar-pradesh-andwest-bengalno-12011-44-99-bcc"
+        },
+        {
+          "slug": "andhra-pradesh-bihar-nct-of-delhi-goa-gujarat-karnataka-m-p-maharashtra-orissa-pondicherry-and-u-p-no-12011-9-2004-bcc-2",
+          "reason": "duplicate of andhra-pradesh-bihar-nct-of-delhi-goa-gujarat-karnataka-m-p-maharashtra-orissa-pondicherry-and-u-p-no-12011-9-2004-bcc"
+        },
+        {
+          "slug": "bhatiyara-4",
+          "reason": "duplicate of bhatiyara"
+        },
+        {
+          "slug": "changar-2",
+          "reason": "duplicate of changar"
+        },
+        {
+          "slug": "chirimar-2",
+          "reason": "duplicate of chirimar"
+        },
+        {
+          "slug": "corrigendum-in-respect-of-andhra-pradesh-bihar-gujarat-harayana-himachal-pradesh-karnataka-kerala-madhya-pradesh-maharashtra-punjab-tamil-nadu-and-uttar-pradesh-no-12011-21-95-bcc-2",
+          "reason": "duplicate of corrigendum-in-respect-of-andhra-pradesh-bihar-gujarat-harayana-himachal-pradesh-karnataka-kerala-madhya-pradesh-maharashtra-punjab-tamil-nadu-and-uttar-pradesh-no-12011-21-95-bcc"
+        },
+        {
+          "slug": "corrigendum-in-respect-of-kerala-no-12011-12-96-bcc-2",
+          "reason": "duplicate of corrigendum-in-respect-of-kerala-no-12011-12-96-bcc"
+        },
+        {
+          "slug": "corrigendum-in-respect-of-sikkim-manipur-and-delhi-no-12011-7-1995-bcc-2",
+          "reason": "duplicate of corrigendum-in-respect-of-sikkim-manipur-and-delhi-no-12011-7-1995-bcc"
+        },
+        {
+          "slug": "corrigendum-in-respect-of-utter-pradesh-and-bihar-no-12011-68-93-bcc-2",
+          "reason": "duplicate of corrigendum-in-respect-of-utter-pradesh-and-bihar-no-12011-68-93-bcc"
+        },
+        {
+          "slug": "deletion-of-castes-in-punjab-orissano-12011-16-2007-bcc-2",
+          "reason": "duplicate of deletion-of-castes-in-punjab-orissano-12011-16-2007-bcc"
+        },
+        {
+          "slug": "dhobi-5",
+          "reason": "duplicate of dhobi"
+        },
+        {
+          "slug": "hansi-tanti-sukuli-vina-tulabhina-rangani-dera-dewanga-dewangulu-kosta-kusta-kustha-kostha-salia-patsalia-buna-bunkar-bunkara-bangali-tanti-bangiya-tanti-mativansa-tanti-asina-ta-2",
+          "reason": "duplicate of hansi-tanti-sukuli-vina-tulabhina-rangani-dera-dewanga-dewangulu-kosta-kusta-kustha-kostha-salia-patsalia-buna-bunkar-bunkara-bangali-tanti-bangiya-tanti-mativansa-tanti-asina-ta"
+        },
+        {
+          "slug": "inclusion-amendment-in-the-central-lists-of-obcs-in-respect-of-daman-diu-andaman-nicobar-uttarakhand-gujarat-maharashtra-no-12011-14-2004-bcc-2",
+          "reason": "duplicate of inclusion-amendment-in-the-central-lists-of-obcs-in-respect-of-daman-diu-andaman-nicobar-uttarakhand-gujarat-maharashtra-no-12011-14-2004-bcc"
+        },
+        {
+          "slug": "inclusion-amendment-in-the-list-of-chhattisgarh-jharkhand-himachal-pradesh-haryana-karnataka-and-daman-diu-and-rajasthan-no-12015-2-2007-bcc-2",
+          "reason": "duplicate of inclusion-amendment-in-the-list-of-chhattisgarh-jharkhand-himachal-pradesh-haryana-karnataka-and-daman-diu-and-rajasthan-no-12015-2-2007-bcc"
+        },
+        {
+          "slug": "inclusion-amendment-in-the-list-of-chhattisgarh-jharkhand-himanchal-pradesh-haryana-karnataka-rajasthan-and-daman-diu-no-12015-2-2007-bcc-2",
+          "reason": "duplicate of inclusion-amendment-in-the-list-of-chhattisgarh-jharkhand-himanchal-pradesh-haryana-karnataka-rajasthan-and-daman-diu-no-12015-2-2007-bcc"
+        },
+        {
+          "slug": "inclusion-in-the-central-lists-of-obcs-in-respect-of-himachal-pradesh-no-12015-05-2011-bc-ii-2",
+          "reason": "duplicate of inclusion-in-the-central-lists-of-obcs-in-respect-of-himachal-pradesh-no-12015-05-2011-bc-ii"
+        },
+        {
+          "slug": "inclusion-modification-andhra-pradesh-bihar-goa-gujarat-himachal-pradesh-karnataka-madhya-pradesh-maharashtra-orissa-rajasthan-tamil-nadu-uttar-pradesh-uttarakhand-west-bengal-andaman-2",
+          "reason": "duplicate of inclusion-modification-andhra-pradesh-bihar-goa-gujarat-himachal-pradesh-karnataka-madhya-pradesh-maharashtra-orissa-rajasthan-tamil-nadu-uttar-pradesh-uttarakhand-west-bengal-andaman"
+        },
+        {
+          "slug": "inclusion-of-adrakhi-caste-in-the-central-list-of-obcs-for-bihar-no-12018-6-2005-bcc-2",
+          "reason": "duplicate of inclusion-of-adrakhi-caste-in-the-central-list-of-obcs-for-bihar-no-12018-6-2005-bcc"
+        },
+        {
+          "slug": "johari-2",
+          "reason": "duplicate of johari"
+        },
+        {
+          "slug": "maurya-2",
+          "reason": "duplicate of maurya"
+        },
+        {
+          "slug": "ministry-of-social-justice-empowerments-resolution-no-17015-17-2008-ri-cell-dated-02-03-2009-prescribing-the-mandate-of-the-commission-2",
+          "reason": "duplicate of ministry-of-social-justice-empowerments-resolution-no-17015-17-2008-ri-cell-dated-02-03-2009-prescribing-the-mandate-of-the-commission"
+        },
+        {
+          "slug": "nalband-4",
+          "reason": "duplicate of nalband"
+        },
+        {
+          "slug": "notice-to-banks-for-an-investment-of-35-crores-in-fixed-deposit-2",
+          "reason": "duplicate of notice-to-banks-for-an-investment-of-35-crores-in-fixed-deposit"
+        },
+        {
+          "slug": "notification-dated-24-02-2004-for-continuation-of-the-commission-2",
+          "reason": "duplicate of notification-dated-24-02-2004-for-continuation-of-the-commission"
+        },
+        {
+          "slug": "oda-pradhan-and-odra-pradhan-2",
+          "reason": "duplicate of oda-pradhan-and-odra-pradhan"
+        },
+        {
+          "slug": "panchama-2",
+          "reason": "duplicate of panchama"
+        },
+        {
+          "slug": "rai-including-chamling-bharbhuja-dewan-patidar-banshi-barman-pahadia-muslim-2",
+          "reason": "duplicate of rai-including-chamling-bharbhuja-dewan-patidar-banshi-barman-pahadia-muslim"
+        },
+        {
+          "slug": "sain-as-a-synonym-of-nai-2",
+          "reason": "duplicate of sain-as-a-synonym-of-nai"
+        },
+        {
+          "slug": "shil-painak-2",
+          "reason": "duplicate of shil-painak"
+        },
+        {
+          "slug": "specification-of-obcs-in-respect-of-jk-manipur-sikkim-delhi-no-12011-7-95-bcc-2",
+          "reason": "duplicate of specification-of-obcs-in-respect-of-jk-manipur-sikkim-delhi-no-12011-7-95-bcc"
+        },
+        {
+          "slug": "state-wise-modification-in-the-central-list-of-obcs-no-12015-13-2010-bcc-2",
+          "reason": "duplicate of state-wise-modification-in-the-central-list-of-obcs-no-12015-13-2010-bcc"
+        },
+        {
+          "slug": "sy-2025-26-english-2",
+          "reason": "duplicate of sy-2025-26-english"
+        },
+        {
+          "slug": "sy-2025-26-hindi-2",
+          "reason": "duplicate of sy-2025-26-hindi"
+        }
+      ]
+    },
+    {
+      "name": "events",
+      "sitemapCount": 635,
+      "kept": 635,
+      "skipped": 0,
+      "restCount": 635,
+      "notInSitemap": 0,
+      "sitemapOnly": 0,
+      "withoutPageFields": 0,
+      "skippedDetail": []
+    },
+    {
+      "name": "gallery",
+      "sitemapCount": 590,
+      "kept": 590,
+      "skipped": 0,
+      "restCount": 590,
+      "notInSitemap": 0,
+      "sitemapOnly": 0,
+      "withoutPageFields": 0,
+      "skippedDetail": []
+    },
+    {
+      "name": "official",
+      "sitemapCount": 448,
+      "kept": 452,
+      "skipped": 1,
+      "restCount": 453,
+      "notInSitemap": 2,
+      "sitemapOnly": 0,
+      "withoutPageFields": 0,
+      "skippedDetail": [
+        {
+          "slug": "mahender-singh",
+          "reason": "duplicate of mahender-singh"
+        }
+      ]
     },
     {
       "name": "organisation",
       "sitemapCount": 426,
       "kept": 226,
       "skipped": 0,
+      "skippedDetail": []
+    },
+    {
+      "name": "scheme-documents",
+      "sitemapCount": 100,
+      "kept": 100,
+      "skipped": 0,
+      "restCount": 100,
+      "notInSitemap": 0,
+      "sitemapOnly": 0,
+      "withoutPageFields": 0,
       "skippedDetail": []
     },
     {
@@ -23,10 +297,43 @@
       "skippedDetail": []
     },
     {
+      "name": "sewer-death-cases",
+      "sitemapCount": 1361,
+      "kept": 1361,
+      "skipped": 0,
+      "restCount": 1361,
+      "notInSitemap": 0,
+      "sitemapOnly": 0,
+      "withoutPageFields": 0,
+      "skippedDetail": []
+    },
+    {
+      "name": "suo-moto-disclosure",
+      "sitemapCount": 14,
+      "kept": 14,
+      "skipped": 0,
+      "restCount": 14,
+      "notInSitemap": 0,
+      "sitemapOnly": 0,
+      "withoutPageFields": 0,
+      "skippedDetail": []
+    },
+    {
       "name": "tenders",
       "sitemapCount": 512,
       "kept": 312,
       "skipped": 0,
+      "skippedDetail": []
+    },
+    {
+      "name": "updates",
+      "sitemapCount": 9,
+      "kept": 9,
+      "skipped": 0,
+      "restCount": 9,
+      "notInSitemap": 0,
+      "sitemapOnly": 0,
+      "withoutPageFields": 0,
       "skippedDetail": []
     },
     {

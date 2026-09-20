@@ -43,7 +43,7 @@ export const DIVISIONS: Division[] = [
     directoryHref: "/website/scw-directory",
     links: [
       { label: "About the Division: Scheduled Caste Welfare", href: "/website/about-the-division" },
-      { label: "List of Scheduled Castes", href: "https://www.dosje.gov.in/list-of-scheduled-castes/" },
+      { label: "List of Scheduled Castes", href: "/website/list-of-scheduled-castes" },
       { label: "Policies / Acts / Rules / Circular", href: "/website/policies-acts-rules-circular" },
     ],
   },
@@ -78,7 +78,7 @@ export const DIVISIONS: Division[] = [
     id: "budget-and-account",
     name: "Budget And Account",
     links: [
-      { label: "Detailed Demand For Grant", href: "https://www.dosje.gov.in/detailed-demand-for-grant/" },
+      { label: "Detailed Demand for Grant", href: "/website/detailed-demand-for-grant" },
       { label: "Contact Person", href: "/website/contact-person" },
     ],
   },
@@ -110,7 +110,7 @@ export const DIVISIONS: Division[] = [
       { label: "SECC 2011", href: "https://secc.dord.gov.in/" },
       { label: "About the Division: Statistics Division", href: "/website/about-the-division-statistics-division" },
       { label: "List of Research Evaluation Studies", href: "/website/list-of-research-evaluation-studies" },
-      { label: "Handbook on Social Welfare Statistics", href: "https://www.dosje.gov.in/handbook-on-social-welfare-statistics/" },
+      { label: "Handbook on Social Welfare Statistics", href: "/website/handbook-on-social-welfare-statistics" },
     ],
   },
   {
@@ -127,7 +127,7 @@ export const DIVISIONS: Division[] = [
     name: "Parliamentary Matters",
     links: [
       { label: "Assurances", href: "/website/assurances" },
-      { label: "Special Mention / Matters Raised Under Rule 377", href: "https://www.dosje.gov.in/special-mention-matters-raised-under-377/" },
+      { label: "Special Mention / Matters Raised Under Rule 377", href: "/website/special-mention-matters-raised-under-377" },
     ],
   },
   {

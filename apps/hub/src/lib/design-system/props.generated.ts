@@ -14492,6 +14492,12 @@ export const GENERATED_PROPS = {
         "description": "Masthead search. Renders the shared DS `<Search>` — the same atom every other screen uses, and the same component the Figma masthead embeds. It used to be a `<button>` dressed as a search box, which is why the two drifted. The type is `HeaderSearchConfig`, shared with `NavSheet`, so the phone can no longer end up with a quietly reduced version of the same field."
       },
       {
+        "name": "service",
+        "type": "HeaderService",
+        "required": false,
+        "description": "The portal's own service identity. Passing it opts a `variant=\"portal\"` masthead into its phone layout (below `breakpoint/tablet`), three rows with one job each: 1. the accessibility bar — scrolls away first; 2. the department's Lockup 2, COMPLETE and holding no control — Government of India, the Ministry and the Department, as DBIM 5.2.2 requires, with BETA as a corner sash — scrolls away second; 3. the working bar — menu, this service's mark (the emblem where it has none) and name, bell, account — the only row that pins. The two upper rows leave by the page's own scroll (a negative sticky offset), not by a script-driven morph, so there is no height animation on a phone. Without it a portal keeps its single brand row on a phone. From 768 up nothing changes either way."
+      },
+      {
         "name": "skipTo",
         "type": "string",
         "required": false,

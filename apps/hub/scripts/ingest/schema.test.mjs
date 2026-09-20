@@ -19,3 +19,19 @@ test("valid file record passes", () => {
 test("file record missing title fails", () => {
   assert.throws(() => fileRecordSchema.parse({ slug: "t1", sourceUrl: "https://a" }));
 });
+
+import { documentRecordSchema, eventRecordSchema, sewerCaseRecordSchema } from "./schema.mjs";
+
+test("document record with page fields passes; an unknown key fails (strict)", () => {
+  const rec = { slug: "d", title: "D", sourceUrl: "https://a", date: "2026-01-01", types: ["Notice"], fileUrl: "https://cdn/x.pdf", fileSize: "1 MB" };
+  assert.doesNotThrow(() => documentRecordSchema.parse(rec));
+  assert.throws(() => documentRecordSchema.parse({ ...rec, surprise: 1 }));
+});
+
+test("event record rejects a non-ISO startDate", () => {
+  assert.throws(() => eventRecordSchema.parse({ slug: "e", title: "E", sourceUrl: "https://a", startDate: "Sep 1st" }));
+});
+
+test("sewer case requires a name", () => {
+  assert.throws(() => sewerCaseRecordSchema.parse({ slug: "s", title: "S", sourceUrl: "https://a" }));
+});

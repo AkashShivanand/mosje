@@ -21,7 +21,6 @@
 import {
   ORGANISATIONS,
   DIVISIONS,
-  getOfficials,
 } from "@/data/website";
 import {
   getSchemes,
@@ -29,8 +28,9 @@ import {
   getDocuments,
   getTenders,
   getVacancies,
+  getOfficials,
 } from "@/lib/website/content";
-import { STATIC_PAGES, DIRECTORY_PAGES } from "./static-pages.generated";
+import { STATIC_PAGES } from "./static-pages.generated";
 import { citizenKeywordsFor } from "./vocabulary";
 import type { WebsiteSearchEntry } from "./types";
 
@@ -144,21 +144,31 @@ function buildIndex(): WebsiteSearchEntry[] {
 
   /* ── Officials ────────────────────────────────────────────────────────────
      A person is findable by name, by post, and by the body they serve — three
-     things a citizen might know, of which they usually know one. The href is the
-     directory page that actually shows them, read out of that page's own
-     `directoryRows()` call by the generator. */
-  for (const directory of DIRECTORY_PAGES) {
-    for (const official of getOfficials(directory.ownerId)) {
-      entries.push({
-        title: official.name,
-        description: `${official.designation} — ${directory.title}`,
-        href: directory.href,
-        keywords: `${official.designation} ${slugWords(directory.ownerId)} ${official.email ?? ""} ${official.phone ?? ""} ${official.intercom ?? ""} contact phone number officer`,
-        type: "official",
-        section: "People",
-        iconName: "person",
-      });
-    }
+     things a citizen might know, of which they usually know one.
+
+     The href is the officer's OWN page, which `official/[slug]` prerenders for
+     every one of them. It used to be the body's directory page, resolved through
+     the generator's `directoryRows()` join over `data/website/officials.ts` — and
+     when the directories moved to the ingested register, the index kept reading
+     the old map. That is two answers to one question: a reader searching a name
+     could be sent to a page built from a different list of people than the one
+     that named them. The index now reads exactly what the pages render.
+
+     `data/website/officials.ts` is still there and is NOT the same data — it holds
+     eight NCBC officers where the register holds two, and seven for BJRNF where
+     the register holds four. Reconciling the two is content work, not a search
+     concern; until it is done the register is what the site shows, so it is what
+     the site finds. */
+  for (const official of getOfficials()) {
+    entries.push({
+      title: official.title,
+      description: [official.designation, official.organisationName].filter(Boolean).join(" — "),
+      href: `/website/official/${official.slug}`,
+      keywords: `${official.designation ?? ""} ${official.organisation ?? ""} ${official.organisationName ?? ""} ${official.email ?? ""} ${official.phoneOffice ?? ""} ${official.intercom ?? ""} contact phone number officer`,
+      type: "official",
+      section: "People",
+      iconName: "person",
+    });
   }
 
   /* ── Schemes ──────────────────────────────────────────────────────────────

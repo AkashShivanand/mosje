@@ -1,0 +1,157 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ==========================================================================
+     One record's own page.
+     ==========================================================================
+     A prose column and a rail carrying the record's files and its way back.
+     The rail goes UNDER the column on a phone rather than above it, because the
+     first thing a reader wants is the record, not the button that leaves it.
+     ========================================================================= */
+
+  .sa-record-detail {
+    padding-block: var(--sa-padding-40);
+  }
+
+  @media (min-width: 768px) {
+    .sa-record-detail {
+      padding-block: var(--sa-padding-56);
+    }
+  }
+
+  .sa-record-detail__grid {
+    display: grid;
+    gap: var(--sa-stack-40);
+  }
+
+  @media (min-width: 1024px) {
+    .sa-record-detail__grid {
+      grid-template-columns: minmax(0, 1fr) 20rem;
+    }
+  }
+
+  .sa-record-detail__main {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-32);
+  }
+
+  .sa-record-detail__facts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-16);
+  }
+
+  .sa-record-detail__aside {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-24);
+  }
+
+  .sa-record-detail__files {
+    padding: var(--sa-padding-20);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-subtler);
+  }
+
+  .sa-record-detail__aside-title {
+    margin-block-end: var(--sa-stack-12);
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .sa-record-detail__file-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sa-record-detail__nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+  }
+
+  .sa-record-detail__back,
+  .sa-record-detail__source {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-6);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-link-brand-default);
+  }
+
+  .sa-record-detail__back:hover,
+  .sa-record-detail__source:hover {
+    color: var(--sa-text-link-brand-hover);
+    text-decoration: underline;
+  }
+
+  /* The record's own prose, where a collection publishes any. */
+  .sa-record-detail__body :where(p, ul, ol) {
+    margin-block-end: var(--sa-stack-12);
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    color: var(--sa-text-neutral-base);
+  }
+
+  .sa-record-detail__body :where(ul, ol) {
+    padding-inline-start: var(--sa-padding-24);
+    list-style: revert;
+  }
+
+  .sa-record-detail__body a {
+    color: var(--sa-text-link-brand-default);
+    text-decoration: underline;
+  }
+
+  /* Media grids — gallery photographs, venue pictures, event videos. */
+  .sa-record-media {
+    display: grid;
+    gap: var(--sa-stack-16);
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sa-record-media__item {
+    overflow: hidden;
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-subtler);
+  }
+
+  .sa-record-media__item img,
+  .sa-record-media__item video {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .sa-record-media__caption {
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* An official's portrait, beside their contact card. */
+  .sa-record-portrait {
+    width: 12rem;
+    height: 12rem;
+    object-fit: cover;
+    border-radius: var(--sa-shape-12);
+    border: 1px solid var(--sa-border-neutral-subtle);
+  }
+}

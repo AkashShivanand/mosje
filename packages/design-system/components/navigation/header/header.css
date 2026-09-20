@@ -1484,26 +1484,21 @@
     height: 20px;
   }
 
-  /* ── The portal masthead on a phone: two names, not three, WHEN THE ROW IS FULL ──
-     Below `breakpoint/tablet` a portal's lockup stood about 150px tall where the row carries the
-     rail toggle, the bell and the avatar — BETA, "Government of India", "Ministry of Social Justice
-     & Empowerment" over two lines and the Department over three, in the ~140px of text column
-     those controls leave. With the Government of India bar above, a quarter of the first phone
-     screen was chrome before any content (e-Anudaan audit X-08).
+  /* ── The portal masthead on a phone, SINGLE ROW: two names, not three, WHEN THE ROW IS FULL ──
+     Applies to a portal that has not passed `service` — see the phone layers below, which
+     replace this for any portal that has. Below `breakpoint/tablet` a portal's lockup stood
+     about 150px tall where the row carries the rail toggle, the bell and the avatar.
 
      The MINISTRY line is the one that goes, and only when the lockup is narrower than the line
      itself needs (a container query on the lockup, not a viewport rule): a login page with no
-     trailing controls still has room for it and keeps it. The Department line directly beneath
-     repeats "Social Justice & Empowerment" word for word. The Government of India line, the
-     Department line and BETA stay, and the lockup's accessible name is unchanged. The website
-     masthead, every portal from 768 up and the condensed bar keep all three DBIM 5.2 lines.
+     trailing controls still has room for it and keeps it.
 
-     DIVERGENCE, recorded per standards-precedence.md: DBIM 5.2 lists the ministry line in the
-     lockup. Withheld on a crowded portal phone row for the legibility of the page; for the
-     Department to confirm. The emblem steps down with it so the row is not held open by the mark.
-     280px: the ministry line at label-2 is about 235px, plus the emblem and its gap. */
+     DIVERGENCE, recorded per standards-precedence.md: DBIM 5.2.2 lists the ministry line in the
+     lockup. Withheld on a crowded single-row phone masthead; the phone layers exist to retire
+     this, one portal at a time. 280px: the ministry line at label-2 is 234px, plus the emblem
+     and its gap. */
   @media (max-width: 767px) {
-    .ds-hdr[data-variant="portal"] .ds-hdr-brand__lockup {
+    .ds-hdr[data-variant="portal"]:not([data-layers]) .ds-hdr-brand__lockup {
       container: ds-hdr-lockup / inline-size;
     }
 
@@ -1515,6 +1510,274 @@
       .ds-hdr-lockup__emblem {
         height: 48px; /* the emblem ladder: 64 resting · 48 crowded portal phone · 44 compact · 32/28 condensed */
       }
+    }
+  }
+
+  /* ── The single-row portal phone masthead, audited 2026-09-17: ONE ROW, QUIET CONTROLS ──
+     At 320 the bell and avatar wrapped onto a second line under the toggle and the brand row
+     stood 145px (191 with the bar).
+
+     The toggle and the bell KEEP their outline, as at every other width and in Figma
+     (Navbar/MenuToggle, Navbar/NotificationBell). A ghost-on-phone variant was tried on
+     2026-09-17 and withdrawn on 2026-09-19: the same control drawn two ways by breakpoint
+     is two controls to learn, and the outline is what tells a first-time reader on a
+     government service that the glyph is a button (the reason the toggle got it at all).
+     THE ROW WRAPPED at 320 with a bell: toggle 40 · 12 · lockup floor · 12 · bell 40 · 8 ·
+        account 48 overran 288. Gaps go to 8 and the avatar's trigger loses its 4px padding (the
+        40px avatar IS the target). Every portal that carries a bell now passes `service` and
+        leaves this row entirely, so the lockup floor keeps main's value.
+     The Government of India line stays: DBIM 5.2.2 makes it part of the lockup, and the
+     accessibility bar's link to india.gov.in is not the lockup. */
+  @media (max-width: 767px) {
+    .ds-hdr[data-variant="portal"]:not([data-layers]) .ds-hdr-brand__in {
+      gap: var(--sa-stack-8);
+    }
+
+    .ds-hdr[data-variant="portal"] .ds-hdr-brand__in .ds-hdr-account.is-button {
+      padding: 0;
+    }
+  }
+
+  /* ── THE PORTAL PHONE LAYERS (a portal that passes `service`) ────────────────────────────
+     Three rows, one job each, leaving by the page's own scroll in order of permanence:
+
+       accessibility bar  — preferences          — scrolls away first
+       identity row       — who publishes this    — scrolls away second
+       working bar        — what the reader does  — the only row that pins
+
+     WHY. The single row made the department's Lockup 2 and the reader's controls fight for
+     288px, and every version of that fight cost DBIM a line: the ministry, then Government
+     of India. With no control beside it the lockup is COMPLETE at every phone width
+     (ministry 234px at label-2 fits the 236 a 320 screen leaves), and the controls get a row
+     whose only other occupant is the service's name.
+
+     NO MORPH. The header pins at minus (bar + identity) — `--sa-hdr-peel-h`, measured by
+     SiteHeader — so the two upper rows scroll off with the page and the working bar stops at
+     the top. Nothing animates a height on a phone; SiteHeader never condenses here.
+
+     Measured in the prototype (Noto Sans, these tokens): 196px at rest at 320 and 375, 180 at
+     412; 56 pinned (the condensed bar was 65). Council verdict and trade-off: the session
+     record for ds/portal-navbar-mobile. */
+  .ds-hdr-work,
+  .ds-hdr-sash {
+    display: none;
+  }
+
+  @media (max-width: 767px) {
+    .ds-hdr.is-sticky[data-layers] {
+      top: calc(-1 * var(--sa-hdr-peel-h, var(--sa-hdr-abar-h, 0px)));
+    }
+
+    /* The identity row holds the lockup and nothing else. Its controls move down a row. */
+    .ds-hdr[data-layers] .ds-hdr-brand {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ds-hdr[data-layers] .ds-hdr-brand__in > .ds-hdr-brand__toggle,
+    .ds-hdr[data-layers] .ds-hdr-brand__trailing {
+      display: none;
+    }
+
+    .ds-hdr[data-layers] .ds-hdr-brand__lockup {
+      align-items: center;
+    }
+
+    /* icon/size/48 — the emblem ladder's crowded-phone rung — so the ministry line keeps
+       ONE line at 320: 288 of row, less a 30px emblem and its 8px gap, leaves 250 for a
+       234px line. */
+    .ds-hdr[data-layers] .ds-hdr-brand__lockup .ds-hdr-lockup__emblem {
+      height: var(--sa-icon-size-48);
+    }
+
+    /* BETA leaves the stack, so Government of India is the stack's first line and spans. */
+    .ds-hdr[data-layers] .ds-hdr-brand__lockup .ds-hdr-badge {
+      display: none;
+    }
+
+    .ds-hdr[data-layers] .ds-hdr-brand__in .ds-hdr-lockup .ds-hdr-lockup__lines .ds-hdr-lockup__org {
+      grid-column: 1 / -1;
+    }
+
+    /* BETA, a 45° sash across the identity row's free corner. The badge's own tokens —
+       `cmp/badge/beta/bg` under neutral-1000 ink, 12.6:1 — at label-3, the badge's size.
+       Tucked so the band clears the lockup at every phone width: 16px at 320, 71 at 375. */
+    .ds-hdr[data-layers] .ds-hdr-sash {
+      display: block;
+      position: absolute;
+      inset-block-start: var(--sa-padding-6);
+      inset-inline-end: calc(var(--sa-padding-32) * -1);
+      inline-size: var(--sa-cmp-navbar-betaSash-length);
+      transform: rotate(45deg); /* the sash's geometry, not a design value: no token names an angle */
+      text-align: center;
+      background-color: var(--sa-cmp-badge-beta-bg);
+      color: var(--sa-color-neutralScale-1000);
+      /* Label/label-3, whole — the text style the Figma sash links. The 2px above and
+         below make the 20px band; the leading stays the style's own. */
+      padding-block: var(--sa-padding-2);
+      font-size: var(--sa-type-label-3-size);
+      line-height: var(--sa-type-label-3-lh);
+      font-weight: var(--sa-font-weight-medium);
+      text-transform: uppercase;
+      letter-spacing: var(--sa-type-caps-tracking);
+      pointer-events: none;
+    }
+
+    /* WHERE THE FILL IS DROPPED, THE BAND IS DRAWN. Forced colours remove background
+       colours, and so does printing by default — both left "BETA" floating on a
+       diagonal with nothing under it. The band's two long edges are ruled instead: in
+       the system's own ink under forced colours, in the text's ink on paper. */
+    @media (forced-colors: active) {
+      .ds-hdr[data-layers] .ds-hdr-sash {
+        forced-color-adjust: none;
+        background-color: Canvas;
+        color: CanvasText;
+        border-block: var(--sa-stroke-1) solid CanvasText;
+      }
+    }
+
+    @media print {
+      .ds-hdr[data-layers] .ds-hdr-sash {
+        border-block: var(--sa-stroke-1) solid currentcolor;
+      }
+    }
+
+    /* The working bar: the condensed bar's anatomy, at rest and pinned alike. */
+    .ds-hdr[data-layers] .ds-hdr-work {
+      display: flex;
+      align-items: center;
+      gap: var(--sa-stack-8);
+      min-height: var(--sa-cmp-navbar-workingBar-height);
+      padding: var(--sa-padding-8) var(--sa-grid-margin-page) var(--sa-padding-8) var(--sa-padding-8);
+      background-color: var(--sa-bg-neutral-base);
+      border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    }
+
+    .ds-hdr-work__toggle {
+      height: var(--sa-control-height-md);
+      width: var(--sa-control-height-md);
+      padding: var(--sa-padding-4);
+    }
+
+    .ds-hdr-work__service {
+      display: inline-flex;
+      align-items: center;
+      min-height: var(--sa-control-height-md);
+      border-radius: var(--sa-shape-4);
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .ds-hdr-work__service {
+      gap: var(--sa-inline-8);
+      min-width: 0;
+    }
+
+    .ds-hdr-work__service:focus-visible {
+      outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
+      outline-offset: var(--sa-focus-offset);
+    }
+
+    /* The service's mark is the estate's OrgLogo at size "sm" — a 32px tile, the same
+       mark the sidebar's identity block carries — so the slot takes its size from it. It
+       replaces the emblem rather than joining it, so it holds at every width, 320 included. */
+    .ds-hdr-work__mark {
+      display: inline-flex;
+      flex: 0 0 auto;
+    }
+
+    .ds-hdr-work__name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      /* Title/title-3 — the style the Figma layer links: 14/20 semibold. */
+      font-size: var(--sa-type-title-3-size);
+      line-height: var(--sa-type-title-3-lh);
+      font-weight: var(--sa-font-weight-semibold);
+    }
+
+    /* The reader's own controls are the masthead's everywhere else: outlined IconButtons. */
+    .ds-hdr-work .ds-hdr-account.is-button {
+      padding: 0;
+    }
+
+    .ds-hdr-work .ds-hdr-account__caret {
+      position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+      opacity: 0;
+    }
+
+    /* ── THE GESTURE STATES ─────────────────────────────────────────────────
+       SiteHeader writes `data-reveal` from the reader's scroll direction once the
+       masthead has scrolled past its own height (absent within it):
+
+         hidden  scrolling down — the working bar slides up and out too, and the page
+                 has the whole screen. The header is already stuck at minus
+                 (bar + identity), so one row's height takes the rest away.
+         shown   scrolling up, or focus in the header — the accessibility bar AND the
+                 working bar come back, stacked, and the identity row stays behind.
+
+       Every movement is a TRANSFORM, never a height or an offset: the header's box
+       and the page under it never move, so nothing reflows and there is nothing for
+       scroll anchoring to chase. For `shown` the header drops by the bar's height
+       and the bar drops a further identity-row's height, landing on top of the
+       identity row it passes over — which is hidden, so it can never flash through
+       the gap while they travel. */
+    .ds-hdr.is-sticky[data-layers],
+    .ds-hdr.is-sticky[data-layers] .sa-abar {
+      transition: transform var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+    }
+
+    .ds-hdr.is-sticky[data-layers][data-reveal="hidden"] {
+      transform: translateY(calc(-1 * var(--sa-hdr-work-h, var(--sa-cmp-navbar-workingBar-height))));
+    }
+
+    .ds-hdr.is-sticky[data-layers][data-reveal="shown"] {
+      transform: translateY(var(--sa-hdr-abar-h, 0));
+      box-shadow: var(--sa-elevation-card);
+    }
+
+    .ds-hdr.is-sticky[data-layers][data-reveal="shown"] .sa-abar {
+      position: relative;
+      z-index: var(--sa-z-raised);
+      transform: translateY(var(--sa-hdr-ident-h, 0));
+    }
+
+    .ds-hdr.is-sticky[data-layers][data-reveal="shown"] .ds-hdr-brand {
+      visibility: hidden;
+    }
+
+    /* ONE DOOR, AND IT IS THE BAR'S. On a layered portal phone the UX4G floating
+       button never shows: the bar's accessibility icon is on screen at the top of the
+       page and comes back with any upward scroll, so the floating copy would only ever
+       be a second door or a button over content. Hidden, never unmounted — the bar's
+       icon opens the panel by replaying a click on this very element
+       (accessibility-entry-point.md rules 2 and 4b). */
+    :root:has(.ds-hdr[data-layers]) #uw-widget-custom-trigger {
+      display: none !important;
+    }
+  }
+
+  /* Paper gets the masthead where the page puts it, whatever the reader had scrolled to —
+     SiteHeader also resets the state on beforeprint; this holds without script. */
+  @media print {
+    .ds-hdr.is-sticky[data-layers],
+    .ds-hdr.is-sticky[data-layers] .sa-abar {
+      transform: none;
+    }
+
+    .ds-hdr.is-sticky[data-layers] .ds-hdr-brand {
+      visibility: visible;
+    }
+  }
+
+  /* Reduced motion: the rows still come and go, but they arrive instead of travelling. */
+  @media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+    .ds-hdr.is-sticky[data-layers],
+    .ds-hdr.is-sticky[data-layers] .sa-abar {
+      transition: none;
     }
   }
 

@@ -1,10 +1,23 @@
 import { localiseDocumentLinks, sampleDocumentFor } from "../sample-documents";
-import type { SectionRecord, FileRecord } from "@/types/website/content";
+import type {
+  SectionRecord, FileRecord, DocumentRecord, EventRecord, GalleryRecord,
+  OfficialRecord, CpioRecord, BookingRecord, UpdateRecord, SewerDeathCaseRecord,
+} from "@/types/website/content";
 import organisationData from "@/content/website/organisation.json";
 import schemesData from "@/content/website/schemes.json";
 import tendersData from "@/content/website/tenders.json";
 import vacanciesData from "@/content/website/vacancies.json";
 import documentsData from "@/content/website/documents.json";
+import obcData from "@/content/website/documents-central-list-of-obcs.json";
+import schemeDocumentsData from "@/content/website/scheme-documents.json";
+import suoMotoData from "@/content/website/suo-moto-disclosure.json";
+import eventsData from "@/content/website/events.json";
+import galleryData from "@/content/website/gallery.json";
+import officialData from "@/content/website/official.json";
+import cpioData from "@/content/website/cpio.json";
+import bookingData from "@/content/website/booking.json";
+import updatesData from "@/content/website/updates.json";
+import sewerCasesData from "@/content/website/sewer-death-cases.json";
 import manifest from "@/content/website/manifest.json";
 
 /**
@@ -53,6 +66,29 @@ export function getOrganisation(slug: string): SectionRecord | undefined {
   return orgMap.get(slug);
 }
 
+/*
+ * A SLUG IS COMPARED DECODED.
+ *
+ * WordPress hands non-Latin slugs back percent-encoded — 101 gallery items, six
+ * events and five documents are stored as `%e0%a4%89…`. Next decodes a route
+ * param before the page sees it, so a lookup comparing the raw strings missed
+ * every one of them and each of those records answered 404. Every lookup below
+ * compares both sides decoded, and `routeSlug` is what `generateStaticParams`
+ * returns, so the prerendered path is the one a link actually requests.
+ */
+export function routeSlug(slug: string): string {
+  try {
+    return decodeURIComponent(slug);
+  } catch {
+    return slug;
+  }
+}
+
+function findBySlug<T extends { slug: string }>(rows: T[], slug: string): T | undefined {
+  const key = routeSlug(slug);
+  return rows.find((r) => routeSlug(r.slug) === key);
+}
+
 const schemes = schemesData as SectionRecord[];
 
 export function getSchemes(): SectionRecord[] {
@@ -60,7 +96,7 @@ export function getSchemes(): SectionRecord[] {
 }
 
 export function getScheme(slug: string): SectionRecord | undefined {
-  return schemes.find((s) => s.slug === slug);
+  return findBySlug(schemes, slug);
 }
 
 /*
@@ -89,10 +125,18 @@ export function getTenders(): FileRecord[] {
   return tenders;
 }
 
+export function getTender(slug: string): FileRecord | undefined {
+  return findBySlug(tenders, slug);
+}
+
 const vacancies = withLocalFile(vacanciesData as FileRecord[]);
 
 export function getVacancies(): FileRecord[] {
   return vacancies;
+}
+
+export function getVacancy(slug: string): FileRecord | undefined {
+  return findBySlug(vacancies, slug);
 }
 
 const documents = withLocalFile(documentsData as FileRecord[]);
@@ -103,4 +147,199 @@ export function getDocuments(): FileRecord[] {
 
 export function getDocumentsByType(category: string): FileRecord[] {
   return documents.filter((d) => d.category === category);
+}
+
+/*
+ * EVERY OTHER RECORD COLLECTION ON dosje.gov.in.
+ *
+ * These are the full ingested sets, with the site's own metadata: file URL, size
+ * and type, publish window, event venue and gallery images, an official's contact
+ * card. Every file and image URL points at the LIVE site — nothing is mirrored
+ * locally yet, so a consumer that needs a local asset must mirror it first.
+ */
+const centralListOfObcs = obcData as DocumentRecord[];
+
+/** The Central List of OBCs — 2,667 state-wise entries, kept in its own file. */
+export function getCentralListOfObcs(): DocumentRecord[] {
+  return centralListOfObcs;
+}
+
+const allDocuments: DocumentRecord[] = [
+  ...(documentsData as DocumentRecord[]),
+  ...centralListOfObcs,
+];
+
+/** Every document, the library's own rows plus the Central List of OBCs. */
+export function getAllDocuments(): DocumentRecord[] {
+  return allDocuments;
+}
+
+const allDocumentsBySlug = new Map(allDocuments.map((d) => [routeSlug(d.slug), d]));
+
+export function getDocument(slug: string): DocumentRecord | undefined {
+  return allDocumentsBySlug.get(routeSlug(slug));
+}
+
+/**
+ * Every document carrying a `documents-type` term, newest first.
+ *
+ * Matched on `types`, NOT on `category`. A record can hold several type terms
+ * and `category` keeps only the one with a listing page, so filtering a listing
+ * page by `category` silently drops records that also carry an unlisted type —
+ * which is the difference between the 62 Advertisement records the department
+ * publishes and the 51 a `category` filter returns.
+ */
+export function getDocumentsOfType(type: string): DocumentRecord[] {
+  return allDocuments
+    .filter((d) => d.types?.includes(type))
+    .sort((a, b) => (b.publishStart ?? b.date ?? "").localeCompare(a.publishStart ?? a.date ?? ""));
+}
+
+const schemeDocuments = schemeDocumentsData as DocumentRecord[];
+
+/** Documents attached to a scheme (each carries `scheme` / `schemeUrl`). */
+export function getSchemeDocuments(): DocumentRecord[] {
+  return schemeDocuments;
+}
+
+export function getSchemeDocument(slug: string): DocumentRecord | undefined {
+  return findBySlug(schemeDocuments, slug);
+}
+
+const suoMotoDisclosures = suoMotoData as DocumentRecord[];
+
+/** RTI section 4(1)(b) suo-moto disclosures. */
+export function getSuoMotoDisclosures(): DocumentRecord[] {
+  return suoMotoDisclosures;
+}
+
+export function getSuoMotoDisclosure(slug: string): DocumentRecord | undefined {
+  return findBySlug(suoMotoDisclosures, slug);
+}
+
+const events = eventsData as EventRecord[];
+
+export function getEvents(): EventRecord[] {
+  return events;
+}
+
+export function getEvent(slug: string): EventRecord | undefined {
+  return findBySlug(events, slug);
+}
+
+const gallery = galleryData as GalleryRecord[];
+
+export function getGalleryItems(): GalleryRecord[] {
+  return gallery;
+}
+
+/** Gallery items of one type: "Photos", "Videos" or "News". */
+export function getGalleryItemsByType(type: string): GalleryRecord[] {
+  return gallery.filter((g) => g.type === type);
+}
+
+export function getGalleryItem(slug: string): GalleryRecord | undefined {
+  return findBySlug(gallery, slug);
+}
+
+const officials = officialData as OfficialRecord[];
+
+export function getOfficials(): OfficialRecord[] {
+  return officials;
+}
+
+/** Officials of one organisation, by its abbreviation, e.g. "NCSK". */
+export function getOfficialsByOrganisation(organisation: string): OfficialRecord[] {
+  return officials.filter((o) => o.organisation === organisation);
+}
+
+export function getOfficial(slug: string): OfficialRecord | undefined {
+  return findBySlug(officials, slug);
+}
+
+const cpios = cpioData as CpioRecord[];
+
+/** Central Public Information Officers and appellate authorities (RTI). */
+export function getCpios(): CpioRecord[] {
+  return cpios;
+}
+
+export function getCpio(slug: string): CpioRecord | undefined {
+  return findBySlug(cpios, slug);
+}
+
+const bookings = bookingData as BookingRecord[];
+
+/** Bookable DAIC venues, with their rate cards. */
+export function getBookableVenues(): BookingRecord[] {
+  return bookings;
+}
+
+export function getBookableVenue(slug: string): BookingRecord | undefined {
+  return findBySlug(bookings, slug);
+}
+
+const updates = updatesData as UpdateRecord[];
+
+export function getUpdates(): UpdateRecord[] {
+  return updates;
+}
+
+export function getUpdate(slug: string): UpdateRecord | undefined {
+  return findBySlug(updates, slug);
+}
+
+/** Updates with a given component status, e.g. "Active" or "Archived". */
+export function getUpdatesByStatus(status: string): UpdateRecord[] {
+  return updates.filter((u) => u.status === status);
+}
+
+const sewerDeathCases = sewerCasesData as SewerDeathCaseRecord[];
+
+/** Sewer and septic-tank death cases recorded by the NCSK. */
+export function getSewerDeathCases(): SewerDeathCaseRecord[] {
+  return sewerDeathCases;
+}
+
+/** Sewer-death cases in one state, as the register names it. */
+export function getSewerDeathCasesByState(state: string): SewerDeathCaseRecord[] {
+  return sewerDeathCases.filter((c) => c.state === state);
+}
+
+/**
+ * Every document type that has a listing page of its own on this site.
+ *
+ * `/miscellaneous` is the department's catch-all — its live page holds 903
+ * records against a Type column — and the only honest definition of "the rest"
+ * is "everything not on a page of its own". Listed here rather than in the page
+ * so that adding a listing page removes its records from Miscellaneous in the
+ * same change, which is the failure this list exists to prevent: a document
+ * appearing on two pages, or on none.
+ */
+const TYPES_WITH_A_LISTING_PAGE = new Set([
+  "Advices",
+  "Annual Reports",
+  "Acts & Rules",
+  "Advertisement",
+  "Central List of OBC's",
+  "Circulars & Notifications",
+  "Forms & Templates",
+  "Meta Data",
+  "MOU",
+  "Newsletter",
+  "Notice",
+  "Parliament Questions",
+  "POLICY",
+  "Publications",
+  "Resources",
+  "RTI",
+  "Suo-Moto",
+  "Supreme Court Judgement",
+]);
+
+/** Documents that appear on no listing page of their own, newest first. */
+export function getMiscellaneousDocuments(): DocumentRecord[] {
+  return allDocuments
+    .filter((d) => !(d.types ?? []).some((t) => TYPES_WITH_A_LISTING_PAGE.has(t)))
+    .sort((a, b) => (b.publishStart ?? b.date ?? "").localeCompare(a.publishStart ?? a.date ?? ""));
 }

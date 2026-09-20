@@ -1,6 +1,6 @@
 "use client";
 
-import { SiteHeader, type SiteHeaderProps, SAMAVESH_COBRAND } from "@mosje/design-system";
+import { SiteHeader, type SiteHeaderProps, SAMAVESH_COBRAND, OrgLogo } from "@mosje/design-system";
 
 import Link from "next/link";
 
@@ -16,7 +16,7 @@ export interface NhapoaHeaderProps {
 }
 
 /**
- * Single-sourced NHAPOA Portal header — powered by @mosje/design-system SiteHeader
+ * Single-sourced SAMBAL portal header (route `nhapoa`) — powered by @mosje/design-system SiteHeader
  * (variant="portal"). The navy ground is the `data-brand` axis, not a
  * component prop — `tone` was retired.
  */
@@ -37,12 +37,15 @@ export function NhapoaHeader({
       emblemSrc={`${BASE}/brand/national-emblem.svg`}
       brandLines={{
         org: "Government of India",
-        ministry: "National Helpline Against Atrocities",
-        department: "SAMBAL",
-        // ds-exempt(hindi-source): SiteHeader renders departmentHi inside its own <span lang="hi">
-        departmentHi: "संबल",
+        /* DBIM 5.2.2 Lockup 2: the Ministry and the Department. SAMBAL — the National
+           Helpline Against Atrocities — is the SERVICE, named in the working bar
+           (`service`) and in the sidebar, not in the lockup. */
+        ministry: "Ministry of Social Justice & Empowerment",
+        department: "Department of Social Justice & Empowerment",
       }}
       beta
+      /* The phone layers: the Lockup 2 whole, and this service named in the bar that pins. */
+      service={{ name: "SAMBAL", mark: <OrgLogo path="/portals/nhapoa" size="sm" />, href: BASE }}
       skipTo="#main"
       govLink={{ href: "https://india.gov.in/", label: "Government of India" }}
       language={{ label: "English" }}

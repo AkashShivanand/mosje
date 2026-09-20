@@ -39,6 +39,13 @@
 //                        with the template and both disagreed with Figma.
 //   Profile           -> `account` present (the name / role block and avatar).
 //   Notifications     -> `notifications` present (with `account`) — the bell before the account.
+//   Service mark      -> `service.mark`, an <OrgLogo size="sm" />. In Figma it is a nested,
+//                        exposed org-logo slot, not a property: set its Org to the portal.
+//                        A portal left on Org=Emblem has no mark — omit `mark` and the
+//                        emblem stands in, as OrgLogo's own fallback does.
+//   Service name      -> `service.name` (added 2026-09-19). Passing `service` is what opts a
+//                        portal into its phone layers — the full Lockup 2, the BETA sash and
+//                        the working bar that the Device=Mobile variants draw.
 import figma from "figma";
 
 const instance = figma.selectedInstance;
@@ -48,6 +55,7 @@ const search = instance.getBoolean("Search#2210:0");
 const login = instance.getBoolean("Login Signup#2198:4");
 const profile = instance.getBoolean("Profile#56716:0");
 const notifications = instance.getBoolean("Notifications#58143:0");
+const serviceName = instance.getString("Service name#58589:0");
 
 export default {
   example: figma.code`<SiteHeader
@@ -56,6 +64,7 @@ export default {
   emblemSrc={\`\${basePath}/images/National-Emblem-logo.svg\`}
   brandLines={{ org: "Government of India", ministry: "…", department: "…" }}
   brandDivider
+  service={{ name: "${serviceName}", mark: <OrgLogo path="/portals/<slug>" size="sm" />, href: "/portals/<slug>" }}
   ${showMenu ? figma.code`onToggleNav={toggleSidebar}
   navExpanded={!sidebarCollapsed}
   navControlsId="portal-sidebar"` : "/* no sidebar here — omit onToggleNav (login screens) */"}
@@ -66,7 +75,7 @@ export default {
   ${notifications && profile ? figma.code`notifications={{ items, href: "/portals/<slug>/notifications", onMarkAllRead }}` : ""}
   nav={NAV}
 />`,
-  imports: ['import { SiteHeader } from "@mosje/design-system"'],
+  imports: ['import { SiteHeader, OrgLogo } from "@mosje/design-system"'],
   id: "site-header",
   metadata: { nestable: false },
 };

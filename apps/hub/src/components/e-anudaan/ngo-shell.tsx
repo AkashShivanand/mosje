@@ -134,6 +134,10 @@ export function NgoShell({ children }: { children: React.ReactNode }) {
             department: "Department of Social Justice & Empowerment",
           }}
           beta
+          /* The phone layers: the Lockup 2 whole, and this service named in the bar
+             that pins. E-Anudaan has no mark of its own, so none is passed and the
+             emblem stands in, as OrgLogo's own fallback does. */
+          service={{ name: "E-Anudaan", href: role.home }}
           /* The render prop is the fix: the masthead drives the rail through
              PortalPage's own state rather than a boolean this file keeps. */
           onToggleNav={nav.toggle}

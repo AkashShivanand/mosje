@@ -1501,7 +1501,7 @@
     {
       "node": "57340:5145",
       "where": "Navbar — Component record › 1 · Record — maintainers › property mapping",
-      "figma": "Device and State are CSS breakpoints and a scroll state, never props. Menu → onToggleNav present; Profile → account; Search → search; Login Signup → actions; Notifications → notifications (rendered only with account). NotificationBell Badge None · Count · Error → derived from items and status, never a prop. NavItem Density and the toggles' Size and State are decided by placement and interaction in CSS. Code-only: search opening in place in the condensed bar, and the navigation handing itself to the sheet when it runs out of room — both drawn from instances in 11 / ARRANGEMENTS.",
+      "figma": "Device and State are CSS breakpoints and a scroll state, never props. Menu → onToggleNav present; Profile → account; Search → search; Login Signup → actions; Notifications → notifications (rendered only with account); Service name → service.name; the Service mark slot → service.mark — an exposed org-logo set to the portal's Org, standing alone, and Org=Emblem where the portal has no mark (OrgLogo's own fallback); Navbar/BetaSash → drawn by SiteHeader itself (.ds-hdr-sash) when service and beta are set — a part, not a separate export. NotificationBell Badge None · Count · Error → derived from items and status, never a prop. NavItem Density and the toggles' Size and State are decided by placement and interaction in CSS. Code-only: search opening in place in the condensed bar, and the navigation handing itself to the sheet when it runs out of room — both drawn from instances in 12 / ARRANGEMENTS.",
       "expect": [
         {
           "kind": "text",

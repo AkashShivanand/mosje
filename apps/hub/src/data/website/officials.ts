@@ -39,6 +39,22 @@ export interface Official {
 /** Ministry offices that hold a directory but are neither an organisation nor a division. */
 export type MinistryOfficeId = "ministry-leadership" | "ministry-staff" | "chairpersons-office";
 
+/**
+ * SUPERSEDED, AND NOT YET RECONCILED — read this before using it.
+ *
+ * This hand-written map is no longer what any page renders. The directory pages
+ * and `official/[slug]` read the ingested register (`content/website/official.json`,
+ * 452 officers) through `getOfficialsByOrganisation()`, and since the search index
+ * moved to the same register nothing reads `OFFICIALS` at all.
+ *
+ * It is kept because the two are NOT the same list, so deleting it would lose
+ * people: it holds eight NCBC officers where the register holds two, and seven
+ * for BJRNF where the register holds four. Whether those officers are still in
+ * post — and which list is right — is a question for the Department, not one a
+ * merge can answer.
+ *
+ * `OFFICE_HOLDERS` below is a different matter: `whos-who` still renders it.
+ */
 export const OFFICIALS: Record<string, Official[]> = {
   "babu-jagjivan-ram-national-foundation": [
     {

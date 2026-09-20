@@ -1,24 +1,26 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
-import { directoryColumns, directoryRows } from "@/data/website";
+import { OfficialsDirectory } from "@/components/website/templates/OfficialsDirectory";
+import { getContentSyncedDate, getOfficialsByOrganisation } from "@/lib/website/content";
+import { socialCard } from "@/lib/seo/social";
+
+const TITLE = "Chairperson's Office";
+const DESCRIPTION =
+  "Directory of the National Commission for Scheduled Castes — the Chairperson, Members and supporting secretariat officers, with contact details.";
 
 export const metadata: Metadata = {
-  title: "Chairperson's Office | Ministry of Social Justice & Empowerment",
-  description:
-    "Directory of the Chairperson's Office under the Ministry of Social Justice & Empowerment — the Chairperson and supporting secretariat officers with contact details.",
+  title: `${TITLE} | National Commission for Scheduled Castes`,
+  description: DESCRIPTION,
+  ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/chairpersons-office" }),
 };
 
 export default function Page() {
   return (
-    <ListingPage
-      title="Chairperson's Office"
-      breadcrumb={[{ label: "Connect" }, { label: "Chairperson's Office" }]}
-      lastUpdated="06 Jun 2026"
-      description="Directory of the Chairperson's Office — the Chairperson and supporting secretariat officers with intercom and contact details."
-      columns={directoryColumns}
-      rows={directoryRows("chairpersons-office")}
-      searchKeys={["name", "designation"]}
-      searchPlaceholder="Search by name or designation…"
+    <OfficialsDirectory
+      title={TITLE}
+      breadcrumb={[{ label: "Connect" }, { label: TITLE }]}
+      description={DESCRIPTION}
+      lastUpdated={getContentSyncedDate()}
+      officials={getOfficialsByOrganisation("NCSC")}
     />
   );
 }

@@ -1,24 +1,26 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
-import { directoryColumns, directoryRows } from "@/data/website";
+import { OfficialsDirectory } from "@/components/website/templates/OfficialsDirectory";
+import { getContentSyncedDate, getOfficialsByOrganisation } from "@/lib/website/content";
+import { socialCard } from "@/lib/seo/social";
+
+const TITLE = "DAIC Directory";
+const DESCRIPTION =
+  "Telephone directory of the Dr. Ambedkar International Centre (DAIC) — officers with intercom and contact details.";
 
 export const metadata: Metadata = {
-  title: "DAIC Directory | Dr. Ambedkar International Centre",
-  description:
-    "Telephone directory of the Dr. Ambedkar International Centre (DAIC) — Director General, Directors, and officers with intercom and contact details.",
+  title: `${TITLE} | Dr. Ambedkar International Centre`,
+  description: DESCRIPTION,
+  ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/daic-directory" }),
 };
 
 export default function Page() {
   return (
-    <ListingPage
-      title="DAIC Directory"
-      breadcrumb={[{ label: "Associated Organisations" }, { label: "DAIC Directory" }]}
-      lastUpdated="06 Jun 2026"
-      description="Telephone directory of the Dr. Ambedkar International Centre (DAIC) — Director General, Directors, and officers with contact details."
-      columns={directoryColumns}
-      rows={directoryRows("dr-ambedkar-international-centre")}
-      searchKeys={["name", "designation"]}
-      searchPlaceholder="Search by name or designation…"
+    <OfficialsDirectory
+      title={TITLE}
+      breadcrumb={[{ label: "Associated Organisations" }, { label: TITLE }]}
+      description={DESCRIPTION}
+      lastUpdated={getContentSyncedDate()}
+      officials={getOfficialsByOrganisation("DAIC")}
     />
   );
 }
