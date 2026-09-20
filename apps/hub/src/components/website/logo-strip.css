@@ -1,0 +1,82 @@
+/* The homepage logo carousel. Layered like every component sheet, so a utility
+   can still override it (design-system-architecture.md §2a). */
+@layer theme, base, components, utilities;
+
+@layer components {
+  .sa-logo-strip {
+    position: relative;
+    padding-block: var(--sa-padding-32) var(--sa-padding-8);
+  }
+
+  .sa-logo-strip__viewport {
+    overflow: hidden;
+    /* Marks fade out at both edges instead of being cut hard, as the design clips them. */
+    mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  }
+
+  .sa-logo-strip__track {
+    display: flex;
+    width: max-content;
+    /* ~3.5s per mark keeps the drift slow enough to recognise each one. */
+    animation: sa-logo-strip-scroll calc(var(--sa-logo-strip-count) * 3.5s) linear infinite;
+  }
+
+  .sa-logo-strip__viewport[data-playing="false"] .sa-logo-strip__track,
+  .sa-logo-strip__viewport:hover .sa-logo-strip__track,
+  .sa-logo-strip__viewport:focus-within .sa-logo-strip__track {
+    animation-play-state: paused;
+  }
+
+  .sa-logo-strip__list {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-56);
+    margin: 0;
+
+    /* A trailing gap so the last mark does not butt the strip's edge as it scrolls. */
+    padding-inline: 0 var(--sa-inline-56);
+    list-style: none;
+  }
+
+  .sa-logo-strip__item {
+    flex: none;
+  }
+
+  .sa-logo-strip__link {
+    display: block;
+    border-radius: var(--sa-shape-4);
+    transition: opacity 150ms ease;
+  }
+  .sa-logo-strip__link:hover {
+    opacity: 0.8;
+  }
+  .sa-logo-strip__link:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .sa-logo-strip__controls {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sa-logo-strip__viewport {
+      overflow-x: auto;
+      mask-image: none;
+    }
+    .sa-logo-strip__track {
+      animation: none;
+    }
+    /* The duplicate exists only to make the loop seamless. */
+    .sa-logo-strip__list[aria-hidden="true"],
+    .sa-logo-strip__controls {
+      display: none;
+    }
+  }
+}
+
+@keyframes sa-logo-strip-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}

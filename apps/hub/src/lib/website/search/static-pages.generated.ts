@@ -350,6 +350,13 @@ export const STATIC_PAGES: StaticPageEntry[] = [
     "iconName": "article"
   },
   {
+    "title": "Homepage Options for Review",
+    "description": "",
+    "href": "/website/home-options",
+    "section": "Pages",
+    "iconName": "article"
+  },
+  {
     "title": "Hyperlinking Policy",
     "description": "Hyperlinking Policy covering links from this website to external sites and permission to link to this website of the Department of Social Justice & Empowerment (DoSJE), Government of India.",
     "href": "/website/hyperlinking-policy",
