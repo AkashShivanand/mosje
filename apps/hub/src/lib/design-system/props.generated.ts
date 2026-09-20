@@ -13111,6 +13111,13 @@ export const GENERATED_PROPS = {
         "description": "Portals shown in the drawer. Defaults to every LIVE portal in the registry."
       },
       {
+        "name": "showViewAll",
+        "type": "boolean",
+        "required": false,
+        "default": "true\n\nFigma's `View all` boolean. Turn it off where the drawer is the whole answer\n— a page that already IS the directory, or a drawer narrowed to one set of\nportals whose reader has no reason to leave it.",
+        "description": "Show the footer link to the portal directory."
+      },
+      {
         "name": "sticky",
         "type": "boolean",
         "required": false,
@@ -13156,8 +13163,8 @@ export const GENERATED_PROPS = {
         "name": "viewAllPrompt",
         "type": "string",
         "required": false,
-        "default": "\"Are you an officer or administrator?\"\n\nIT IS A SIGNPOST, NOT A CLAIM ABOUT THE LIST. Both surfaces currently show\nthe same live portals, so any copy promising MORE there is false — which is\nwhat \"Browse every portal, including those in development\" became the day the\ndirectory went live-only, and what \"Search and compare every portal\" was from\nthe start: nothing on `/portals` compares anything.\n\nWhat IS true is who the second route is for. A citizen has already arrived\nwhere they are going; an officer needs the directory to reach the portal they\nsign in to. Pass `viewAllPrompt=\"\"` to render the link with no question.",
-        "description": "The question above the footer link."
+        "default": "\"\" (none)\n\nEMPTY BY DEFAULT since the Secretary's review of 17 Sep 2026. It read \"Are you\nan officer or administrator?\", which made the directory an administrators'\ndoor; the website header's single \"Login\" now leads every reader to\n`/portals`, and each portal's sign-in chooses the role. The link says where\nit goes without the question.\n\nIf a surface does pass one, it must stay a signpost, not a claim about the\nlist: both surfaces show the same live portals, so copy promising MORE on\n`/portals` is false — \"Browse every portal, including those in development\"\nand \"Search and compare every portal\" both were.",
+        "description": "An optional question before the footer link."
       }
     ]
   },

@@ -3506,7 +3506,7 @@ and renders it only when `exportable`.
 
 #### SamaveshBanner
 **Purpose**: The canonical top banner and portal exploration drawer for SAMAVESH (Figma: the library set `56479:42386`, Tone × State; nodes `7116:33784` / `7298:29968` are the original handoff MOCKUPS, not a component, so Code Connect cannot resolve them). Consolidates the saffron identity bar with an interactive accordion drawer to discover and access the ministry's portals (SCW, SMILE-Transgender, NOS, NMBA, etc.).
-**Key props**: `defaultOpen`, `isOpen`, `onToggle`, `portals`, `sticky`, `tone`, `drawerTitle`, `viewAllHref`, `viewAllLabel`, `allLabel`, `logoSrc`, `title`, `subline`, `exploreLabel`
+**Key props**: `defaultOpen`, `isOpen`, `onToggle`, `portals`, `sticky`, `tone`, `drawerTitle`, `showViewAll`, `viewAllHref`, `viewAllLabel`, `viewAllPrompt`, `allLabel`, `logoSrc`, `title`, `subline`, `exploreLabel`
 **Rules**:
 - **Single Source of Truth.** Replaces all hand-rolled website banners with a unified token-driven component exported from `@mosje/design-system`.
 - **THE BAND HAS THREE TONES AND THE DEFAULT KNOWINGLY FAILS WCAG 2.** `tone` is `light` (default) | `dark` | `tint`. This is the single most consequential thing to know about the component, and it is a researched decision rather than a preference:
