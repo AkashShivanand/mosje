@@ -1,31 +1,29 @@
 import type { Metadata } from "next";
-import { DocumentCatalog } from "@/components/website/templates/DocumentCatalog";
-import { getDocumentsByType, getContentSyncedDate } from "@/lib/website/content";
+import { RecordLibrary } from "@/components/website/templates/RecordLibrary";
+import { getContentSyncedDate, getDocumentsOfType } from "@/lib/website/content";
+import { socialCard } from "@/lib/seo/social";
+
+const TITLE = "Circulars & Notifications";
+const DESCRIPTION =
+  "Circulars, office memoranda and notifications issued by the Department of Social Justice & Empowerment and its associated organisations.";
 
 export const metadata: Metadata = {
-  title: "Circulars & Notifications | DoSJE",
-  description:
-    "Official circulars, notifications, and gazette orders published by the Department of Social Justice & Empowerment.",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
+  ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/circulars-notifications" }),
 };
 
-export default function CircularsNotificationsPage() {
-  const docs = getDocumentsByType("Circulars & Notifications").map((d) => ({
-    slug: d.slug,
-    title: d.title,
-    date: d.date,
-    category: "Notification",
-    sourceUrl: d.fileUrl ?? d.sourceUrl,
-    fileSize: "PDF",
-  }));
-
+export default function Page() {
   return (
-    <DocumentCatalog
-      title="Circulars & Notifications"
-      description="Official administrative circulars, gazette notifications, and policy directives issued by the Department."
-      breadcrumb={[{ label: "Documents", href: "/website/circulars-notifications" }, { label: "Circulars & Notifications" }]}
+    <RecordLibrary
+      title={TITLE}
+      description={DESCRIPTION}
+      breadcrumb={[{ label: "Documents" }, { label: TITLE }]}
       lastUpdated={getContentSyncedDate()}
-      documents={docs}
-      categories={["Notification"]}
+      records={getDocumentsOfType("Circulars & Notifications")}
+      detailBase="/website/documents"
+      noun="circulars"
+      nounSingular="circular"
     />
   );
 }

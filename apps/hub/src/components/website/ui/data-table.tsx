@@ -1,7 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import NextLink from "next/link";
 import { Icon, Link, Pagination, Search } from "@mosje/design-system";
+import "@/components/website/templates/record-library.css";
 
 export interface ListingTableColumn {
   key: string;
@@ -9,9 +11,19 @@ export interface ListingTableColumn {
   sortable?: boolean;
   /** DBIM: left for text, right for numbers, center for column headers. */
   align?: "left" | "right" | "center";
-  /** Declarative cell type (serializable — safe to pass from server components). */
-  type?: "text" | "link";
-  /** For type "link": the row key holding the href (default "href"). */
+  /**
+   * Declarative cell type (serializable — safe to pass from server components).
+   *
+   * `link` is a file that leaves this site: it renders the external anchor with
+   * the download glyph, which is right for a PDF on the department's CDN.
+   * `record` is a page on THIS site — a tender, an officer, a venue — and
+   * renders the cell's own text as a `next/link`, so the click is a soft
+   * navigation and no reader is told they are leaving a site they are not.
+   * Getting those two the same way round was the whole reason this second type
+   * exists rather than a `linkLabel` on the first.
+   */
+  type?: "text" | "link" | "record";
+  /** For type "link"/"record": the row key holding the href (default "href"). */
   hrefKey?: string;
   /** For type "link": the visible label (default "View / Download"). */
   linkLabel?: string;
@@ -22,6 +34,17 @@ export interface ListingTableColumn {
 
 function Cell({ col, row }: { col: ListingTableColumn; row: Record<string, unknown> }) {
   if (col.render) return <>{col.render(row[col.key], row)}</>;
+  if (col.type === "record") {
+    const href = row[col.hrefKey ?? "href"];
+    const text = String(row[col.key] ?? "");
+    /* A row with no destination is still a row. Print it, do not fake a link. */
+    if (!href) return <>{text}</>;
+    return (
+      <NextLink href={String(href)} className="sa-record-link">
+        {text}
+      </NextLink>
+    );
+  }
   if (col.type === "link") {
     const href = String(row[col.hrefKey ?? "href"] ?? "#");
     return (
@@ -165,7 +188,10 @@ export function ListingTable({
             {pageRows.length === 0 ? (
               <tr>
                 <td colSpan={columns.length} className="px-4 py-10 text-center text-gray-500">
-                  No records found.
+                  {/* Filtered-to-nothing is not empty: name the search and how to undo it. */}
+                  {rows.length > 0 && query.trim()
+                    ? `No record matches “${query.trim()}”. Clear the search to see all ${rows.length.toLocaleString("en-IN")} records.`
+                    : "No records have been published."}
                 </td>
               </tr>
             ) : (

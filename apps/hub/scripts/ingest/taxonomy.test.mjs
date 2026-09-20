@@ -34,3 +34,15 @@ test("decodes HTML entities in resolved term names", async () => {
   const names = await resolveTermNames("decode-tax", [5], { fetchImpl: fakeFetch });
   assert.deepEqual(names, ["Notices & Tenders"]);
 });
+
+import { loadTermMap, namesFromMap } from "./taxonomy.mjs";
+
+test("loadTermMap reads a whole taxonomy once; namesFromMap keeps id order and drops unknown ids", async () => {
+  let calls = 0;
+  const fetchAll = async (tax, opts) => { calls++; assert.deepEqual(opts.fields, ["id", "name"]); return [{ id: 28, name: "Annual Reports" }, { id: 29, name: "Acts &amp; Rules" }]; };
+  const map = await loadTermMap("documents-type-test", { fetchAll });
+  await loadTermMap("documents-type-test", { fetchAll });
+  assert.equal(calls, 1);
+  assert.deepEqual(namesFromMap(map, [29, 999, 28]), ["Acts & Rules", "Annual Reports"]);
+  assert.deepEqual(namesFromMap(map, undefined), []);
+});

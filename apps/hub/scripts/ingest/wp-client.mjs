@@ -32,13 +32,13 @@ export async function fetchJson(url, { retries = 3, delayMs = 400, fetchImpl = f
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
       const res = await fetchImpl(url, { headers: { "User-Agent": "mosje-ingest/1.0" } });
-      if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+      if (!res.ok) { const e = new Error(`HTTP ${res.status} for ${url}`); e.status = res.status; e.retryAfter = res.headers.get?.("retry-after"); throw e; }
       const body = await res.json();
       await sleep(delayMs);
       return { body, headers: res.headers };
     } catch (err) {
       lastErr = err;
-      await sleep(delayMs * (attempt + 1) * 2);
+      await sleep(backoffMs(err, attempt, delayMs));
     }
   }
   throw lastErr;
@@ -76,4 +76,78 @@ export async function fetchSitemapUrls(type, { maxFiles = 5, ...opts } = {}) {
     }
   }
   return urls;
+}
+
+// How long to wait before retrying. The origin rate-limits (HTTP 429) at roughly
+// six concurrent requests, so a 429 backs off for Retry-After, else 30s × attempt.
+export function backoffMs(err, attempt, delayMs = 400) {
+  if (err?.status === 429) {
+    const ra = Number(err.retryAfter);
+    return Number.isFinite(ra) && ra > 0 ? ra * 1000 : 30_000 * (attempt + 1);
+  }
+  return delayMs * (attempt + 1) * 2;
+}
+
+// ── Record pages & listings ─────────────────────────────────────────────────
+// Most of the site's record metadata (file URL, size, year, event venue, gallery
+// images) is NOT exposed over REST — the ACF/theme fields are rendered only into
+// each record's page. These helpers fetch that HTML politely.
+
+// GET an HTML page with retry + polite delay. Returns the body text.
+export async function fetchHtml(url, { retries = 6, delayMs = 400, fetchImpl = fetch } = {}) {
+  let lastErr;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const res = await fetchImpl(url, { headers: { "User-Agent": "mosje-ingest/1.0" } });
+      if (!res.ok) { const e = new Error(`HTTP ${res.status} for ${url}`); e.status = res.status; e.retryAfter = res.headers.get("retry-after"); throw e; }
+      const body = await res.text();
+      await sleep(delayMs);
+      return body;
+    } catch (err) {
+      lastErr = err;
+      if (err?.status === 404 || err?.status === 410) break; // gone: do not retry
+      await sleep(backoffMs(err, attempt, delayMs));
+    }
+  }
+  throw lastErr;
+}
+
+// POST a form (the theme's admin-ajax listings) with retry + polite delay.
+export async function postForm(url, fields, { retries = 6, delayMs = 400, fetchImpl = fetch } = {}) {
+  let lastErr;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const body = new FormData();
+      for (const [k, v] of Object.entries(fields)) body.append(k, String(v ?? ""));
+      const res = await fetchImpl(url, { method: "POST", body, headers: { "User-Agent": "mosje-ingest/1.0" } });
+      if (!res.ok) { const e = new Error(`HTTP ${res.status} for POST ${url}`); e.status = res.status; e.retryAfter = res.headers.get("retry-after"); throw e; }
+      const text = await res.text();
+      await sleep(delayMs);
+      return text;
+    } catch (err) {
+      lastErr = err;
+      await sleep(backoffMs(err, attempt, delayMs));
+    }
+  }
+  throw lastErr;
+}
+
+// Sitemap file URLs for one post type in a Rank Math sitemap index
+// ("documents-sitemap1.xml" … or "booking-sitemap.xml").
+export function sitemapFilesForType(indexXml, type) {
+  const esc = type.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const re = new RegExp(`/${esc}-sitemap\\d*\\.xml$`);
+  return parseSitemapLocs(indexXml).filter((u) => re.test(u));
+}
+
+// Canonical URL set from the Rank Math index (sitemap_index.xml). The legacy
+// wp-sitemap-posts-<type>-N.xml URLs 301 to the same Rank Math file for every N,
+// which is why fetchSitemapUrls over-counts; new collections use this instead.
+export async function fetchRankMathSitemapUrls(type, opts = {}) {
+  const index = await fetchHtml(`${BASE}/sitemap_index.xml`, opts);
+  const urls = new Set();
+  for (const file of sitemapFilesForType(index, type)) {
+    for (const u of parseSitemapLocs(await fetchHtml(file, opts))) urls.add(u);
+  }
+  return [...urls];
 }

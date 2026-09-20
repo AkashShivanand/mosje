@@ -1,31 +1,29 @@
 import type { Metadata } from "next";
-import { DocumentCatalog } from "@/components/website/templates/DocumentCatalog";
-import { getDocumentsByType, getContentSyncedDate } from "@/lib/website/content";
+import { RecordLibrary } from "@/components/website/templates/RecordLibrary";
+import { getContentSyncedDate, getDocumentsOfType } from "@/lib/website/content";
+import { socialCard } from "@/lib/seo/social";
+
+const TITLE = "Public Notices";
+const DESCRIPTION =
+  "Public notices and administrative announcements issued by the Department of Social Justice & Empowerment and its associated organisations.";
 
 export const metadata: Metadata = {
-  title: "Public Notices | DoSJE",
-  description:
-    "Public notices, press advisories, and administrative announcements from the Department of Social Justice & Empowerment.",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
+  ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/notices" }),
 };
 
-export default function NoticesPage() {
-  const docs = getDocumentsByType("Notices").map((d) => ({
-    slug: d.slug,
-    title: d.title,
-    date: d.date,
-    category: "Public Notice",
-    sourceUrl: d.fileUrl ?? d.sourceUrl,
-    fileSize: "PDF",
-  }));
-
+export default function Page() {
   return (
-    <DocumentCatalog
-      title="Public Notices"
-      description="Important public advisories, announcements, and notices released by the Department of Social Justice & Empowerment."
-      breadcrumb={[{ label: "Documents", href: "/website/notices" }, { label: "Notices" }]}
+    <RecordLibrary
+      title={TITLE}
+      description={DESCRIPTION}
+      breadcrumb={[{ label: "Documents" }, { label: TITLE }]}
       lastUpdated={getContentSyncedDate()}
-      documents={docs}
-      categories={["Public Notice"]}
+      records={getDocumentsOfType("Notice")}
+      detailBase="/website/documents"
+      noun="notices"
+      nounSingular="notice"
     />
   );
 }

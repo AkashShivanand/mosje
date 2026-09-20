@@ -64,12 +64,29 @@ const fail = (msg) => {
 };
 
 // ── Slugs behind each dynamic route ─────────────────────────────────────────
-const jsonSlugs = (file) => {
-  const p = join(CONTENT, file);
-  if (!existsSync(p)) fail(`content file missing: ${relative(ROOT, p)}`);
-  const rows = JSON.parse(readFileSync(p, "utf8"));
-  if (!Array.isArray(rows)) fail(`expected an array in ${file}`);
-  return new Set(rows.map((r) => r.slug).filter(Boolean));
+const jsonSlugs = (...files) => {
+  const out = new Set();
+  for (const file of files) {
+    const p = join(CONTENT, file);
+    if (!existsSync(p)) fail(`content file missing: ${relative(ROOT, p)}`);
+    const rows = JSON.parse(readFileSync(p, "utf8"));
+    if (!Array.isArray(rows)) fail(`expected an array in ${file}`);
+    for (const r of rows) {
+      if (!r.slug) continue;
+      /*
+       * The page resolves a slug through `routeSlug()`, which percent-DECODES it,
+       * because 112 ingested records carry Devanagari slugs that arrive encoded.
+       * Comparing the raw stored slug would report every one of those as broken.
+       */
+      out.add(r.slug);
+      try {
+        out.add(decodeURIComponent(r.slug));
+      } catch {
+        /* a stored slug that is not valid percent-encoding is used as it stands */
+      }
+    }
+  }
+  return out;
 };
 
 /**
@@ -88,11 +105,36 @@ const inlineEventSlugs = () => {
   return slugs;
 };
 
-/** route prefix -> the slugs that route accepts. */
+/**
+ * route prefix -> the slugs that route accepts.
+ *
+ * Every entry names the CONTENT FILE its page reads, not a hand-kept list, so a
+ * record added to the register is accepted the same day. The ten record routes
+ * below arrived with the ingested collections; each one is declared against the
+ * file its own `generateStaticParams` iterates.
+ *
+ * `/website/documents/` reads two files, because the library's rows and the
+ * Central List of OBCs are merged into one set before the page sees them.
+ */
 const DYNAMIC = [
-  { prefix: "/website/organisation/", catchAll: true, slugs: () => jsonSlugs("organisation.json") },
-  { prefix: "/website/schemes-services/", catchAll: false, slugs: () => jsonSlugs("schemes.json") },
-  { prefix: "/website/events/", catchAll: false, slugs: () => inlineEventSlugs() },
+  { prefix: "/website/organisation/", catchAll: true, source: "organisation.json", slugs: () => jsonSlugs("organisation.json") },
+  { prefix: "/website/schemes-services/", catchAll: false, source: "schemes.json", slugs: () => jsonSlugs("schemes.json") },
+  { prefix: "/website/events/", catchAll: false, source: "the EVENTS record", slugs: () => inlineEventSlugs() },
+  { prefix: "/website/booking/", catchAll: false, source: "booking.json", slugs: () => jsonSlugs("booking.json") },
+  { prefix: "/website/cpio/", catchAll: false, source: "cpio.json", slugs: () => jsonSlugs("cpio.json") },
+  {
+    prefix: "/website/documents/",
+    catchAll: false,
+    source: "documents.json + documents-central-list-of-obcs.json",
+    slugs: () => jsonSlugs("documents.json", "documents-central-list-of-obcs.json"),
+  },
+  { prefix: "/website/gallery/", catchAll: false, source: "gallery.json", slugs: () => jsonSlugs("gallery.json") },
+  { prefix: "/website/official/", catchAll: false, source: "official.json", slugs: () => jsonSlugs("official.json") },
+  { prefix: "/website/scheme-documents/", catchAll: false, source: "scheme-documents.json", slugs: () => jsonSlugs("scheme-documents.json") },
+  { prefix: "/website/suo-moto-disclosure/", catchAll: false, source: "suo-moto-disclosure.json", slugs: () => jsonSlugs("suo-moto-disclosure.json") },
+  { prefix: "/website/tenders/", catchAll: false, source: "tenders.json", slugs: () => jsonSlugs("tenders.json") },
+  { prefix: "/website/updates/", catchAll: false, source: "updates.json", slugs: () => jsonSlugs("updates.json") },
+  { prefix: "/website/vacancies/", catchAll: false, source: "vacancies.json", slugs: () => jsonSlugs("vacancies.json") },
 ];
 for (const d of DYNAMIC) d.set = d.slugs();
 
@@ -158,6 +200,26 @@ for (const file of files) {
     if (!/^\/(website|portals)(\/|$)/.test(raw)) continue;
     const path = raw.split(/[?#]/)[0].replace(/\/$/, "");
 
+    /*
+     * A templated href — `/website/official/${o.slug}` — has no slug to look up,
+     * and reading `${o.slug}` as one reports every record row as broken. What CAN
+     * still be checked is the part that is written by hand, which is where this
+     * class of bug actually lives: the SMILE link 404'd because someone typed
+     * `/website/organisation/` in front of a slug that was perfectly real. So the
+     * prefix must resolve to a declared dynamic route, and the slug is left to
+     * the page's own `generateStaticParams`.
+     */
+    if (path.includes("${")) {
+      const prefix = path.slice(0, path.indexOf("${"));
+      if (DYNAMIC.some((d) => prefix === d.prefix || d.prefix.startsWith(prefix))) continue;
+      broken.push({
+        rel,
+        path,
+        why: "an interpolated slug under a prefix that is not a declared dynamic route",
+      });
+      continue;
+    }
+
     if (routes.has(path)) continue;
     if (existsSync(join(PUBLIC, path.replace(/^\//, "")))) continue;
 
@@ -167,7 +229,7 @@ for (const file of files) {
       if (dyn.set.has(slug)) continue;
       // A catch-all also serves its own parents: `a/b` is valid if `a` is.
       if (dyn.catchAll && [...dyn.set].some((s) => s.startsWith(slug + "/"))) continue;
-      broken.push({ rel, path, why: `no such slug — ${dyn.prefix}* is served from ${dyn.prefix.includes("organisation") ? "organisation.json" : dyn.prefix.includes("schemes") ? "schemes.json" : "the EVENTS record"}` });
+      broken.push({ rel, path, why: `no such slug — ${dyn.prefix}* is served from ${dyn.source}` });
       continue;
     }
     broken.push({ rel, path, why: "no route, no static file, and not under a known dynamic route" });

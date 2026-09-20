@@ -1,24 +1,26 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
-import { directoryColumns, directoryRows } from "@/data/website";
+import { OfficialsDirectory } from "@/components/website/templates/OfficialsDirectory";
+import { getContentSyncedDate, getOfficialsByOrganisation } from "@/lib/website/content";
+import { socialCard } from "@/lib/seo/social";
+
+const TITLE = "DAF Directory";
+const DESCRIPTION =
+  "Telephone directory of the Dr. Ambedkar Foundation (DAF) — officers with intercom and contact details.";
 
 export const metadata: Metadata = {
-  title: "DAF Directory | Dr. Ambedkar Foundation",
-  description:
-    "Telephone directory of the Dr. Ambedkar Foundation (DAF) — Member Secretary, Directors, and officers with intercom and contact details.",
+  title: `${TITLE} | Dr. Ambedkar Foundation`,
+  description: DESCRIPTION,
+  ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/daf-directory" }),
 };
 
 export default function Page() {
   return (
-    <ListingPage
-      title="DAF Directory"
-      breadcrumb={[{ label: "Associated Organisations" }, { label: "DAF Directory" }]}
-      lastUpdated="06 Jun 2026"
-      description="Telephone directory of the Dr. Ambedkar Foundation (DAF) — Member Secretary, Directors, and officers with contact details."
-      columns={directoryColumns}
-      rows={directoryRows("dr-ambedkar-foundation")}
-      searchKeys={["name", "designation"]}
-      searchPlaceholder="Search by name or designation…"
+    <OfficialsDirectory
+      title={TITLE}
+      breadcrumb={[{ label: "Associated Organisations" }, { label: TITLE }]}
+      description={DESCRIPTION}
+      lastUpdated={getContentSyncedDate()}
+      officials={getOfficialsByOrganisation("DAF")}
     />
   );
 }

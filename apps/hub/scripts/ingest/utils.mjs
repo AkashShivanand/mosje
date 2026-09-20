@@ -12,3 +12,17 @@ export function decodeEntities(s) {
     .replace(/&nbsp;/g, " ")
     .trim();
 }
+
+// Run `fn` over `items` with at most `concurrency` in flight; preserves order.
+export async function mapPool(items, concurrency, fn) {
+  const out = new Array(items.length);
+  let next = 0;
+  const worker = async () => {
+    while (next < items.length) {
+      const i = next++;
+      out[i] = await fn(items[i], i);
+    }
+  };
+  await Promise.all(Array.from({ length: Math.max(1, Math.min(concurrency, items.length)) }, worker));
+  return out;
+}

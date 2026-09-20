@@ -1,24 +1,26 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
-import { directoryColumns, directoryRows } from "@/data/website";
+import { OfficialsDirectory } from "@/components/website/templates/OfficialsDirectory";
+import { getContentSyncedDate, getOfficialsByOrganisation } from "@/lib/website/content";
+import { socialCard } from "@/lib/seo/social";
+
+const TITLE = "NCSK Directory";
+const DESCRIPTION =
+  "Telephone directory of the National Commission for Safai Karamcharis (NCSK) — officers with intercom and contact details.";
 
 export const metadata: Metadata = {
-  title: "NCSK Directory | National Commission for Safai Karamcharis",
-  description:
-    "Telephone directory of the National Commission for Safai Karamcharis (NCSK) — Chairman, Members, and supporting officers with intercom and contact details.",
+  title: `${TITLE} | National Commission for Safai Karamcharis`,
+  description: DESCRIPTION,
+  ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/ncsk-directory" }),
 };
 
 export default function Page() {
   return (
-    <ListingPage
-      title="NCSK Directory"
-      breadcrumb={[{ label: "Associated Organisations" }, { label: "NCSK Directory" }]}
-      lastUpdated="06 Jun 2026"
-      description="Telephone directory of the National Commission for Safai Karamcharis (NCSK) — Chairman, Members, and officers with contact details."
-      columns={directoryColumns}
-      rows={directoryRows("national-commission-for-safai-karamcharis")}
-      searchKeys={["name", "designation"]}
-      searchPlaceholder="Search by name or designation…"
+    <OfficialsDirectory
+      title={TITLE}
+      breadcrumb={[{ label: "Associated Organisations" }, { label: TITLE }]}
+      description={DESCRIPTION}
+      lastUpdated={getContentSyncedDate()}
+      officials={getOfficialsByOrganisation("NCSK")}
     />
   );
 }

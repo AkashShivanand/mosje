@@ -92,7 +92,7 @@ export function ContactPage({ office, mapSrc, officers = [], showForm = true, ..
             {showForm && (
               <aside id="feedback" className="scroll-mt-28">
                 <div className="rounded-xl border border-gray-200 bg-surface-muted p-6">
-                  <h2 className="mb-4 text-title-1 text-primary-dark">Send us a message</h2>
+                  <h2 className="mb-4 text-title-1 text-primary-dark">Send Us a Message</h2>
                   <FeedbackForm />
                 </div>
               </aside>

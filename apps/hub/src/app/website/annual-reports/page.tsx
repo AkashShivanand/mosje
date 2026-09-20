@@ -1,31 +1,29 @@
 import type { Metadata } from "next";
-import { DocumentCatalog } from "@/components/website/templates/DocumentCatalog";
-import { getDocumentsByType, getContentSyncedDate } from "@/lib/website/content";
+import { RecordLibrary } from "@/components/website/templates/RecordLibrary";
+import { getContentSyncedDate, getDocumentsOfType } from "@/lib/website/content";
+import { socialCard } from "@/lib/seo/social";
+
+const TITLE = "Annual Reports";
+const DESCRIPTION =
+  "Annual reports of the Department of Social Justice & Empowerment and of the commissions, corporations and autonomous bodies under it.";
 
 export const metadata: Metadata = {
-  title: "Annual Reports | DoSJE",
-  description:
-    "Annual reports of the Department of Social Justice & Empowerment and the National Commission for Safai Karamcharis.",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
+  ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/annual-reports" }),
 };
 
-export default function AnnualReportsPage() {
-  const docs = getDocumentsByType("Annual Reports").map((d) => ({
-    slug: d.slug,
-    title: d.title,
-    date: d.date,
-    category: "Annual Report",
-    sourceUrl: d.fileUrl ?? d.sourceUrl,
-    fileSize: "PDF (Approx. 5-15 MB)",
-  }));
-
+export default function Page() {
   return (
-    <DocumentCatalog
-      title="Annual Reports"
-      description="Access official Annual Reports of the Department of Social Justice & Empowerment and associated national statutory commissions."
-      breadcrumb={[{ label: "Documents", href: "/website/annual-reports" }, { label: "Annual Reports" }]}
+    <RecordLibrary
+      title={TITLE}
+      description={DESCRIPTION}
+      breadcrumb={[{ label: "Documents" }, { label: TITLE }]}
       lastUpdated={getContentSyncedDate()}
-      documents={docs}
-      categories={["Annual Report"]}
+      records={getDocumentsOfType("Annual Reports")}
+      detailBase="/website/documents"
+      noun="reports"
+      nounSingular="report"
     />
   );
 }

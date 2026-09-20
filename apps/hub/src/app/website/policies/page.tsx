@@ -1,31 +1,29 @@
 import type { Metadata } from "next";
-import { DocumentCatalog } from "@/components/website/templates/DocumentCatalog";
-import { getDocumentsByType, getContentSyncedDate } from "@/lib/website/content";
+import { RecordLibrary } from "@/components/website/templates/RecordLibrary";
+import { getContentSyncedDate, getDocumentsOfType } from "@/lib/website/content";
+import { socialCard } from "@/lib/seo/social";
+
+const TITLE = "Policies";
+const DESCRIPTION =
+  "Policies adopted by the Department of Social Justice & Empowerment and by the corporations and commissions under it.";
 
 export const metadata: Metadata = {
-  title: "Policies | DoSJE",
-  description:
-    "National policies, draft policy frameworks, and guidelines formulated by the Department of Social Justice & Empowerment.",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
+  ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/policies" }),
 };
 
-export default function PoliciesPage() {
-  const docs = getDocumentsByType("Policies").map((d) => ({
-    slug: d.slug,
-    title: d.title,
-    date: d.date,
-    category: "National Policy",
-    sourceUrl: d.fileUrl ?? d.sourceUrl,
-    fileSize: "PDF Document",
-  }));
-
+export default function Page() {
   return (
-    <DocumentCatalog
-      title="National Policies & Frameworks"
-      description="National policies, draft guidelines, and action plans formulated for the empowerment of targeted citizen groups."
-      breadcrumb={[{ label: "Documents", href: "/website/policies" }, { label: "Policies" }]}
+    <RecordLibrary
+      title={TITLE}
+      description={DESCRIPTION}
+      breadcrumb={[{ label: "Documents" }, { label: TITLE }]}
       lastUpdated={getContentSyncedDate()}
-      documents={docs}
-      categories={["National Policy"]}
+      records={getDocumentsOfType("POLICY")}
+      detailBase="/website/documents"
+      noun="policies"
+      nounSingular="policy"
     />
   );
 }
