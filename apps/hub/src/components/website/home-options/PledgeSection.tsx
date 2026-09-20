@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Icon, SectionTitle } from "@mosje/design-system";
+import { Icon, SectionTitle, orgLogoSrc } from "@mosje/design-system";
 import { PLEDGE_POINTS } from "@/lib/scw/mock-data";
 
 /**
@@ -40,7 +40,7 @@ const PLEDGES: Pledge[] = [
     key: "scw",
     title: "Pledge for Senior Citizens",
     scheme: "Senior Citizens Welfare",
-    mark: "/website/images/org-logos/scw.png",
+    mark: orgLogoSrc("scw"),
     line: PLEDGE_POINTS[0] ?? null,
     channels: [
       {
@@ -56,7 +56,7 @@ const PLEDGES: Pledge[] = [
     key: "nmba",
     title: "Pledge for a Drug-Free India",
     scheme: "Nasha Mukt Bharat Abhiyaan",
-    mark: "/website/images/org-logos/nmba.png",
+    mark: orgLogoSrc("nmba"),
     line: null,
     channels: [
       {
