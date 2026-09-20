@@ -4,17 +4,22 @@ import * as React from "react";
 import { cn } from "../../../utils/cn";
 import { AccessibilityBar } from "../../utilities/accessibility-bar";
 import { Icon } from "../../utilities/icon";
+import { IconButton } from "../../actions/icon-button";
+import { OrgLogo } from "../../brand/org-logo";
 import { BrandLockup } from "./brand-lockup";
 import { AccountMenu } from "./account-menu";
 import { NotificationBell } from "./notification-bell";
 import { MenuToggle, NavItemLink, SheetToggle } from "./nav-parts";
 import { NavSheet } from "./nav-sheet";
+import { navLinkRoutes, type NavTag } from "./nav-link-tag";
+import { nextReveal, type HeaderReveal } from "./header-reveal";
 import { Search } from "../../forms/search";
 import type {
   AccountMenuItem,
   BrandLines,
   BrandMark,
   HeaderAccount,
+  HeaderService,
   HeaderNotifications,
   HeaderSearchConfig,
   HeaderVariant,
@@ -122,6 +127,23 @@ export interface SiteHeaderProps {
   search?: HeaderSearchConfig;
   /** Cobranding marks in the trailing zone (Digital India, SAMAVESH …). */
   cobranding?: BrandMark[];
+  /**
+   * The portal's own service identity. Passing it opts a `variant="portal"` masthead
+   * into its phone layout (below `breakpoint/tablet`), three rows with one job each:
+   *
+   *   1. the accessibility bar — scrolls away first;
+   *   2. the department's Lockup 2, COMPLETE and holding no control — Government of
+   *      India, the Ministry and the Department, as DBIM 5.2.2 requires, with BETA
+   *      as a corner sash — scrolls away second;
+   *   3. the working bar — menu, this service's mark (the emblem where it has none)
+   *      and name, bell, account — the only row that pins.
+   *
+   * The two upper rows leave by the page's own scroll (a negative sticky offset),
+   * not by a script-driven morph, so there is no height animation on a phone.
+   * Without it a portal keeps its single brand row on a phone. From 768 up nothing
+   * changes either way.
+   */
+  service?: HeaderService;
   /** Portal account block (name / email + avatar). */
   account?: HeaderAccount;
   /** Account dropdown items. When provided, the account block opens a menu. */
@@ -255,6 +277,7 @@ export function SiteHeader({
   navControlsId,
   search,
   cobranding,
+  service,
   account,
   accountMenu,
   notifications,
@@ -267,6 +290,11 @@ export function SiteHeader({
 }: SiteHeaderProps): React.JSX.Element {
   const isPortal = variant === "portal";
   const isCompact = variant === "compact";
+  /** The portal's phone layout — see the `service` docs. The CSS decides WHERE it
+      applies (below 768); this only says whether the portal asked for it. */
+  const hasLayers = isPortal && !!service;
+  const serviceHref = service?.href ?? homeHref;
+  const ServiceTag: NavTag = navLinkRoutes({ href: serviceHref }, linkAs) ? (linkAs as NavTag) : "a";
   /* Pinned by default on every surface — see the `sticky` docs. */
   const isSticky = sticky ?? true;
   /* The compact bar is one 65px tier already; there is nothing to condense, and the
@@ -277,6 +305,14 @@ export function SiteHeader({
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const [scrolled, setScrolled] = React.useState(false);
+  /**
+   * Phone layers only — where the masthead is, driven by the reader's gesture:
+   *   "top"    within the first screen of masthead: every row where the page puts it
+   *   "hidden" scrolling DOWN past it: the whole masthead out of the way
+   *   "shown"  scrolling UP, or focus in the header: the accessibility bar and the
+   *            working bar back together, the identity row left behind
+   */
+  const [reveal, setReveal] = React.useState<HeaderReveal>("top");
   /** Held true across printing, so scroll anchoring cannot re-condense the header. */
   const printingRef = React.useRef(false);
   /** Held true across the condense/expand morph — see the effect that sets it. */
@@ -349,23 +385,70 @@ export function SiteHeader({
        `react-hooks/set-state-in-effect` is right that scheduling a render to
        clear it is work the render can just do. */
     if (!wantsScrollCollapse) return;
+    /* THE PHONE LAYERS NEVER CONDENSE. Their upper rows leave by the negative
+       sticky offset, so the working bar is already the pinned state; a morph on
+       top of that would crossfade the bar with a copy of itself 96px higher. */
+    const layered = hasLayers ? window.matchMedia("(max-width: 767px)") : null;
+    /* THE GESTURE, not the position, decides the phone layers. Down means reading:
+       the masthead leaves entirely. Up means reaching for something: the bar with
+       the accessibility and language controls comes back WITH the working bar, so
+       the bar's icon — the page's one door to the accessibility panel — is one
+       flick away from anywhere on the page, and the floating button is not needed.
+       A 12px travel threshold, accumulated, so a finger resting on the glass or a
+       momentum tail cannot flicker it. */
+    let lastY = window.scrollY;
+    let current: HeaderReveal = "top";
     let frame = 0;
+    const holding = () => {
+      const el = headerRef.current;
+      /* Never hide a masthead the reader is using: focus inside it (a keyboard
+         reader who tabbed back up), or any of its disclosures open. */
+      return !!el && (el.matches(":focus-within") || !!el.querySelector('[aria-expanded="true"]'));
+    };
+    const peelOf = () => parseFloat(headerRef.current?.style.getPropertyValue("--sa-hdr-peel-h") || "0");
     const read = () => {
       frame = 0;
       if (printingRef.current || morphingRef.current) return;
+      if (layered?.matches) {
+        setScrolled(false);
+        const r = nextReveal({ y: window.scrollY, lastY, peel: peelOf(), holding: holding(), current });
+        lastY = r.lastY;
+        if (r.reveal !== current) {
+          current = r.reveal;
+          setReveal(r.reveal);
+        }
+        return;
+      }
+      current = "top";
+      setReveal("top");
       const y = window.scrollY;
       setScrolled((was) => (was ? y > 40 : y > 120));
     };
+    /* Focus arriving from outside — Shift+Tab from the page — brings it back at once. */
+    const onFocusIn = () => {
+      if (!layered?.matches) return;
+      const r = nextReveal({ y: window.scrollY, lastY, peel: peelOf(), holding: true, current });
+      lastY = r.lastY;
+      current = r.reveal;
+      setReveal(r.reveal);
+    };
+    headerRef.current?.addEventListener("focusin", onFocusIn);
     const onScroll = () => {
       if (frame === 0) frame = window.requestAnimationFrame(read);
     };
     read();
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    layered?.addEventListener("change", read);
+    const header = headerRef.current;
     return () => {
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      header?.removeEventListener("focusin", onFocusIn);
+      layered?.removeEventListener("change", read);
       if (frame !== 0) window.cancelAnimationFrame(frame);
     };
-  }, [wantsScrollCollapse]);
+  }, [wantsScrollCollapse, hasLayers]);
 
   /**
    * Publish the masthead's own measurements, so nothing else has to guess them.
@@ -419,8 +502,23 @@ export function SiteHeader({
       const isCondensed = el.classList.contains("is-scrolled");
       const abar = el.querySelector<HTMLElement>(".sa-abar");
       const abarH = abar?.offsetHeight ?? 0;
-      const pinned = Math.max(0, el.offsetHeight - abarH);
+      /* What scrolls away before the header pins. Ordinarily the accessibility bar;
+         in the portal's phone layers, the identity row too — read off the DOM (is
+         the working bar laid out?), so the breakpoint lives in the CSS alone. */
+      const work = el.querySelector<HTMLElement>(".ds-hdr-work");
+      const layered = !!work && work.offsetHeight > 0;
+      const brand = layered ? el.querySelector<HTMLElement>(".ds-hdr-brand") : null;
+      const peel = abarH + (brand?.offsetHeight ?? 0);
+      /* In the phone layers the tallest thing that can cover the top of the viewport
+         while scrolled is the REVEALED state — the accessibility bar AND the working
+         bar — so that, not the bar alone, is what a scroll-padding must clear. At 57
+         a Shift+Tab upward could land focus under the returning accessibility bar
+         (WCAG 2.4.11). */
+      const pinned = layered ? abarH + work!.offsetHeight : Math.max(0, el.offsetHeight - peel);
       el.style.setProperty("--sa-hdr-abar-h", `${abarH}px`);
+      el.style.setProperty("--sa-hdr-peel-h", `${peel}px`);
+      el.style.setProperty("--sa-hdr-ident-h", `${brand?.offsetHeight ?? 0}px`);
+      el.style.setProperty("--sa-hdr-work-h", `${layered ? work!.offsetHeight : 0}px`);
       /* The panels hanging off the nav row are positioned at the header's bottom
          edge, so this is how much of the viewport they have left. While RESTING it
          is the whole header: the accessibility bar is still on screen for the first
@@ -431,7 +529,13 @@ export function SiteHeader({
          them, which is the defect this whole variable exists to close. */
       root.style.setProperty("--sa-header-bottom", `${isCondensed ? pinned : el.offsetHeight}px`);
       if (!isCondensed) root.style.setProperty("--sa-header-pinned", `${pinned}px`);
-      if (isSticky) root.style.setProperty("--sa-header-stuck", `${pinned}px`);
+      /* A sticky OFFSET follows the state the masthead is in NOW. In the phone layers
+         that is the gesture: nothing while hidden, bar + working bar while revealed,
+         the working bar otherwise — so a band pinned under the masthead rides up with
+         it instead of leaving a gap the height of a row. */
+      const reveal = el.dataset.reveal;
+      const stuck = !layered ? pinned : reveal === "hidden" ? 0 : reveal === "shown" ? abarH + work!.offsetHeight : work!.offsetHeight;
+      if (isSticky) root.style.setProperty("--sa-header-stuck", `${stuck}px`);
     };
     measure();
     const ro = new ResizeObserver(measure);
@@ -441,7 +545,7 @@ export function SiteHeader({
       ro.disconnect();
       window.removeEventListener("resize", measure);
     };
-  }, [condensed, isSticky]);
+  }, [condensed, isSticky, reveal]);
 
 
   /**
@@ -495,6 +599,9 @@ export function SiteHeader({
     const onBeforePrint = () => {
       printingRef.current = true;
       setScrolled(false);
+      /* The phone layers too: a masthead translated off the top of the viewport
+         would print as a blank band. */
+      setReveal("top");
     };
     const onAfterPrint = () => {
       printingRef.current = false;
@@ -1039,7 +1146,69 @@ export function SiteHeader({
               )}
             </div>
           </div>
+
+          {/* BETA AS A CORNER SASH, phone layers only. The identity row is the one
+              row with a free corner — the bar above ends in the language control,
+              the working bar below in the account — and a badge inside the lockup
+              adds a line DBIM 5.2.2 does not define. The slanted word is hidden
+              from the tree and spoken as a phrase instead; the lockup's badge is a
+              link's content under an aria-label, so it was never announced. */}
+          {hasLayers && beta && (
+            <span className="ds-hdr-sash">
+              <span aria-hidden="true">BETA</span>
+              <span className="ds-hdr-sr">Beta service</span>
+            </span>
+          )}
         </div>
+
+        {/* ── The working bar (phone layers) ──
+            The only row that pins on a phone: the rail toggle, the emblem as the
+            way home, the service's name, and the reader's own controls. The same
+            controls as the brand row's trailing cluster, which the CSS hides where
+            this shows — two copies in the DOM, one laid out at any width. */}
+        {hasLayers && (
+          <div className="ds-hdr-work">
+            {onToggleNav && (
+              <MenuToggle
+                expanded={navExpanded}
+                onToggle={onToggleNav}
+                controlsId={navControlsId}
+                className="ds-hdr-work__toggle"
+              />
+            )}
+            {/* ONE LINK, the service's mark and name together — the service's home. The
+                department's home is the lockup one row up.
+                THE MARK OR THE EMBLEM, NEVER BOTH. The emblem already heads the identity
+                row with the Ministry's name; here the portal is identified by its OWN
+                mark. The emblem appears only as the fallback for a service with none
+                (E-Anudaan, E-Utthan) — the same fallback OrgLogo uses. */}
+            <ServiceTag href={serviceHref} className="ds-hdr-work__service">
+              {/* One slot: the service's own OrgLogo, or OrgLogo with no org — which IS the
+                  State Emblem, from the registry. The same component either way, as Figma's
+                  Service mark is one org-logo instance set to Org=Emblem by default. */}
+              <span className="ds-hdr-work__mark" aria-hidden="true">
+                {service!.mark ?? <OrgLogo size="sm" />}
+              </span>
+              <span className="ds-hdr-work__name">{service!.name}</span>
+            </ServiceTag>
+            <span className="ds-hdr-cond__spacer" />
+            {search && !onToggleNav && (
+              /* The design system's IconButton — the same neutral, outlined, 40px control the
+                 bell is — not a button restyled with the condensed bar's classes. */
+              <IconButton
+                variant="neutral"
+                appearance="outlined"
+                size="md"
+                aria-label={mobileSearchOpen ? "Close search" : (search.placeholder ?? "Search")}
+                aria-expanded={mobileSearchOpen}
+                onClick={() => setMobileSearchOpen((o) => !o)}
+                icon={<Icon name={mobileSearchOpen ? "close" : "search"} size={24} />}
+              />
+            )}
+            {account && notifications && <NotificationBell notifications={notifications} linkAs={linkAs} />}
+            {account && <AccountMenu account={account} items={accountMenu} avatarSize={40} />}
+          </div>
+        )}
 
         {/* ── Tier 3: Navigation row (website / portal) ── */}
         {!isCompact && navRow}
@@ -1051,6 +1220,8 @@ export function SiteHeader({
       ref={headerRef}
       className={cn("ds-hdr", isSticky && "is-sticky", condensed && "is-scrolled", className)}
       data-variant={variant}
+      data-layers={hasLayers ? "" : undefined}
+      data-reveal={hasLayers && reveal !== "top" ? reveal : undefined}
       data-nav-overflow={condensed && hasNav && navOverflows ? "true" : undefined}
     >
       {/* ── Tier 1: Accessibility bar (the shared DS component) ──

@@ -101,6 +101,10 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
             department: "Department of Social Justice & Empowerment",
           }}
           beta
+          /* The phone layers: the Lockup 2 whole, and this service named in the bar
+             that pins. E-Anudaan has no mark of its own, so none is passed and the
+             emblem stands in, as OrgLogo's own fallback does. */
+          service={{ name: "E-Anudaan", href: role?.home ?? "/portals/e-anudaan/dashboard" }}
           onToggleNav={navState.toggle}
           navExpanded={navState.open}
           account={viewer ? { name: viewer.personName, role: viewer.label } : undefined}

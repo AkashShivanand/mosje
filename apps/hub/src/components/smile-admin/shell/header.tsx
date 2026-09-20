@@ -1,6 +1,6 @@
 "use client";
 
-import { Icon, SiteHeader } from "@mosje/design-system";
+import { Icon, SiteHeader, OrgLogo } from "@mosje/design-system";
 import Link from "next/link";
 import type { AccountMenuItem } from "@mosje/design-system";
 import { useApp } from "@/store/smile-admin/app-context";
@@ -60,6 +60,8 @@ export function Header() {
         department: "Department of Social Justice & Empowerment",
       }}
       beta
+      /* The phone layers: the Lockup 2 whole, and this service named in the bar that pins. */
+      service={{ name: "SMILE", mark: <OrgLogo path="/portals/smile-admin" size="sm" />, href: `${BP}/dashboard` }}
       onToggleNav={onToggleNav}
       /* Drives both the glyph (menu_open vs menu) and aria-expanded. The
          toggle is the sidebar's control, so it reads out the sidebar's state. */

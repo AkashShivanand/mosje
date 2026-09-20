@@ -68,6 +68,28 @@ by `docs/specs/samavesh-accessibility-consolidation.md`, and both apply at once.
    doors on every phone's first screen, the floating one sitting on content (the NMBA
    announcement band at 320–375px). Measured after the change, scrolled 0–1500px in 75px
    steps at 320, 360, 375, 390, 412 and 430 wide: exactly one door visible at every step.
+4b. **On a layered portal phone, the bar is the ONLY door, and it comes back on
+   intent. DECIDED 2026-09-19.** A portal masthead that passes `service` (the phone
+   layers — see `SiteHeader`) hides the floating button below `breakpoint/tablet` at
+   every scroll position, and keeps the bar's icon reachable instead:
+
+   - at the top of the page the bar is where the page puts it;
+   - scrolling DOWN takes the whole masthead away, so the page has the screen;
+   - ANY upward scroll of 12px or more brings the bar back with the working bar,
+     stacked at the top of the viewport;
+   - focus entering the header brings it back at once and holds it while focus is
+     inside, as does any open disclosure (account menu, drawer);
+   - it is only ever moved visually (a transform) — it stays in the DOM, in the tab
+     order and in the accessibility tree the whole time.
+
+   This supersedes 4a's "never neither" for these pages, deliberately: the door is
+   one flick away rather than always painted, and in exchange nothing floats over the
+   citizen's content and the language control (which never had a floating copy)
+   becomes reachable from anywhere on the page as well. Verified 2026-09-19 at 375×667
+   on E-Anudaan: hidden at 500px down, bar at y=0 after a 60px and a 30px flick, a 5px
+   jitter ignored, the icon opening the panel (`right: 0px`) from the revealed bar, and
+   the floating button `display: none` in every state. Portals without `service` keep 4a.
+
 5. **Government chrome uses the shared `AccessibilityBar`.** A hand-rolled top bar never
    sets the flag, so it produces two doors while looking correct in review. If a portal
    needs a government utility bar, it imports the DS component — as scw, tg, nhapoa, nmba

@@ -281,7 +281,11 @@ export const COMPONENT = new Set(["action", "control", "spinner", "button", "car
   // a rule and a chip. Tier 3 because the semantic layer has an on/* ink for a brand fill but no
   // muted ink, rule or chip for one, and those only mean anything on this surface. Lowercase
   // rather than `siteFooter`, per house style for new namespaces.
-  "sitefooter"]);
+  "sitefooter",
+  // 2026-09-19: `navbar` owns the two sizes the portal phone layers introduced — the working bar's
+  // height and the BETA sash's length. Tier 3 because neither is a shared step: the rest of the
+  // masthead binds control/height/md and icon/size/*.
+  "navbar"]);
 export const INTENT = new Set(["brand", "success", "destructive", "neutral", "light"]);
 export const ACTION_VARIANT = new Set(["primary", "secondary", "tertiary", "tonal"]);
 /**
