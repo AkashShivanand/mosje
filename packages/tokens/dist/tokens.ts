@@ -937,6 +937,7 @@ export const tokens = {
     "20": "1.25rem",
     "22": "1.375rem",
     "24": "1.5rem",
+    "26": "1.625rem",
     "28": "1.75rem",
     "32": "2rem",
     "36": "2.25rem",
@@ -1636,7 +1637,9 @@ export const tokens = {
     }
   },
   "chip": {
-    "radius": "8px"
+    "radius": "8px",
+    "heightSm": "1.625rem",
+    "dismissSize": "1.125rem"
   },
   "dialog": {
     "radius": "12px"

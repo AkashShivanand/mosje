@@ -1,0 +1,15 @@
+{
+  "$comment": "Every portal handoff page, measured by check.mjs against .claude/rules/figma-handoff-page-structure.md. Register a page the day it is created, conformant or not. rootDepth is 1 for a single-portal page, 0 when the page wraps several portals in #EAEAEA product sections.",
+  "pages": [
+    { "portal": "E-Anudaan", "file": "evmNmlK8g4VYwJVu2FwSGV", "page": "51313:165608", "rootDepth": 1 },
+    { "portal": "E-Utthan", "file": "gH2vQ62cfg4677YKWuOpLc", "page": "4226:36929", "rootDepth": 1 },
+    { "portal": "SCW", "file": "gH2vQ62cfg4677YKWuOpLc", "page": "4619:49381", "rootDepth": 1 },
+    { "portal": "NHAPOA", "file": "gH2vQ62cfg4677YKWuOpLc", "page": "5093:18512", "rootDepth": 1 },
+    { "portal": "PM-AJAY", "file": "gH2vQ62cfg4677YKWuOpLc", "page": "8943:41048", "rootDepth": 1 },
+    { "portal": "NMBA", "file": "gH2vQ62cfg4677YKWuOpLc", "page": "2136:20193", "rootDepth": 1 },
+    { "portal": "NOS", "file": "gH2vQ62cfg4677YKWuOpLc", "page": "2436:15957", "rootDepth": 1 },
+    { "portal": "SMILE Transgender", "file": "gH2vQ62cfg4677YKWuOpLc", "page": "13:401", "rootDepth": 1 },
+    { "portal": "SMILE Beggary", "file": "gH2vQ62cfg4677YKWuOpLc", "page": "7732:77842", "rootDepth": 1 },
+    { "portal": "Garima Greh", "file": "gH2vQ62cfg4677YKWuOpLc", "page": "7394:535", "rootDepth": 1 }
+  ]
+}
