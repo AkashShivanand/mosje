@@ -150,14 +150,47 @@ function readMetadata(src) {
   const block = src.match(/export const metadata[^=]*=\s*\{([\s\S]*?)\n\};/);
   if (!block) return null;
   const body = block[1];
-  const title = body.match(/\btitle:\s*"((?:[^"\\]|\\.)*)"/);
-  const description = body.match(/\bdescription:\s*\n?\s*"((?:[^"\\]|\\.)*)"/);
-  if (!title) return null;
   const unescape = (s) => s.replace(/\\"/g, '"').replace(/\\\\/g, "\\");
-  return {
-    title: unescape(title[1]),
-    description: description ? unescape(description[1]) : "",
+
+  /*
+   * Module-level string constants, so the two shapes this tree writes read alike.
+   *
+   * Most pages inline the literal. The record-library pages declare `const TITLE`
+   * and `const DESCRIPTION` first and spend them three times — the <title>, the
+   * visible heading, and the social card — precisely so those three cannot drift
+   * apart. Reading only the inline shape reported 45 such pages as having no
+   * readable title, and because an unreadable page is skipped before its
+   * `directoryRows()` call is collected, it ALSO reported fifteen bodies as
+   * having no directory page when every one of them had one.
+   */
+  const consts = new Map();
+  for (const m of src.matchAll(/^const ([A-Z][A-Z0-9_]*)\s*=\s*\n?\s*"((?:[^"\\]|\\.)*)";/gm)) {
+    consts.set(m[1], unescape(m[2]));
+  }
+
+  /** A literal, a bare constant, or a template that interpolates constants. */
+  const read = (field) => {
+    const literal = body.match(new RegExp(`\\b${field}:\\s*\\n?\\s*"((?:[^"\\\\]|\\\\.)*)"`));
+    if (literal) return unescape(literal[1]);
+
+    const ident = body.match(new RegExp(`\\b${field}:\\s*([A-Z][A-Z0-9_]*)\\s*,`));
+    if (ident && consts.has(ident[1])) return consts.get(ident[1]);
+
+    const template = body.match(new RegExp("\\b" + field + ":\\s*`([^`]*)`"));
+    if (template) {
+      let unresolved = false;
+      const filled = template[1].replace(/\$\{\s*([A-Za-z_$][\w$]*)\s*\}/g, (_, name) => {
+        if (!consts.has(name)) unresolved = true;
+        return consts.get(name) ?? "";
+      });
+      if (!unresolved) return filled;
+    }
+    return null;
   };
+
+  const title = read("title");
+  if (!title) return null;
+  return { title, description: read("description") ?? "" };
 }
 
 const problems = [];
@@ -195,15 +228,17 @@ for (const file of walk(PAGES).sort()) {
   /*
    * Which directory page shows which body's officials.
    *
-   * This join is made BY HAND in each page — `directoryRows("dr-ambedkar-foundation")`
-   * — and it cannot be reconstructed from the data layer, because the ids in
-   * `officials.ts` and `organisations.ts` disagree for five bodies (the
-   * organisation ids carry legacy slug tails: `…-jrf`, `…nbcfdc`). Reading the
-   * call out of the page is therefore the only derivation that is true by
-   * construction. Retyping the map would make a sixth copy of a join that has
-   * already drifted five times.
+   * Read out of the page's own call, which is the only derivation that is true by
+   * construction — retyping the map would make a second copy of a join that has
+   * already drifted. The call used to be `directoryRows("dr-ambedkar-foundation")`
+   * over `data/website/officials.ts`; the directory pages now read the ingested
+   * register by the body's ABBREVIATION, `getOfficialsByOrganisation("DAF")`, so
+   * that is what is read. Both shapes are accepted: a page still on the old call
+   * is still joined rather than silently dropped.
    */
-  const owner = source.match(/directoryRows\("([a-z0-9-]+)"\)/);
+  const owner =
+    source.match(/getOfficialsByOrganisation\("([A-Za-z0-9 -]+)"\)/) ??
+    source.match(/directoryRows\("([a-z0-9-]+)"\)/);
   if (owner) directories.push({ ownerId: owner[1], href, title });
 }
 
@@ -211,21 +246,36 @@ entries.sort((a, b) => a.href.localeCompare(b.href));
 directories.sort((a, b) => a.ownerId.localeCompare(b.ownerId));
 
 /*
- * Every body that HAS officials must have a page that shows them, or its people
- * are indexed pointing nowhere. Read the owner keys straight out of officials.ts
- * and check each one against the pages found above.
+ * A directory page must actually have people to show.
+ *
+ * The check this replaces asked the opposite question — every body in
+ * `data/website/officials.ts` must have a page — and it was the right question
+ * while that file was what the directories rendered. It is not any more: the
+ * pages read the ingested register, every officer in it is prerendered at
+ * `official/[slug]`, and the search index now points at those pages, so no person
+ * in the register can be indexed pointing nowhere.
+ *
+ * What CAN still go wrong is the other direction: a directory page naming a body
+ * code the register does not use — a typo, or a body whose officers were never
+ * ingested — renders an empty table and says nothing about why. That is what is
+ * asserted here.
+ *
+ * `data/website/officials.ts` is deliberately NOT read. It is a second, older
+ * register that disagrees with the ingested one about how many officers several
+ * bodies have, and reconciling them is content work recorded in the PR, not
+ * something this generator can decide.
  */
 {
-  const officialsSrc = readFileSync(join(ROOT, "apps/hub/src/data/website/officials.ts"), "utf8");
-  const block = officialsSrc.match(/export const OFFICIALS[^=]*=\s*\{([\s\S]*?)\n\};/);
-  const owners = block ? [...block[1].matchAll(/^  "([a-z0-9-]+)":/gm)].map((m) => m[1]) : [];
-  const covered = new Set(directories.map((d) => d.ownerId));
-  const orphaned = owners.filter((o) => !covered.has(o));
-  if (orphaned.length) {
+  const officialsJson = JSON.parse(
+    readFileSync(join(ROOT, "apps/hub/src/content/website/official.json"), "utf8"),
+  );
+  const inRegister = new Set(officialsJson.map((o) => o.organisation).filter(Boolean));
+  const empty = directories.filter((d) => !inRegister.has(d.ownerId));
+  if (empty.length) {
     problems.push(
-      `apps/hub/src/data/website/officials.ts\n      ${orphaned.length} body(ies) hold officials but no page under app/website calls\n` +
-        `      directoryRows() for them, so their people cannot be indexed:\n        ${orphaned.join("\n        ")}\n` +
-        `      Either add the directory page, or remove the officials.`,
+      `apps/hub/src/content/website/official.json\n      ${empty.length} directory page(s) name a body the officers register does not use,\n` +
+        `      so they render an empty table:\n        ${empty.map((d) => `${d.ownerId} — ${d.href}`).join("\n        ")}\n` +
+        `      Fix the code on the page, or ingest that body's officers.`,
     );
   }
 }

@@ -1745,6 +1745,16 @@ this is a real text input whose focus never leaves, so a screen reader announces
 editable and reads the remaining match count after each keystroke. It refuses
 unmatched text on blur — a box reading "Bankuraa" over a form value of "" is how a
 district goes missing between the screen and the database.
+Several answers from the same kind of long list — every district an NGO works in —
+is `<Combobox multiple>`: `value` becomes a `string[]`, chosen options sit in the field
+as removable chips, and the list stays open between choices. Several answers from a
+SHORT list are a `CheckboxGroup` or a row of `Chip`s, where every option is visible.
+It is a form field like any other: label, hint, messages (`error`, `warning`,
+`success`), `labelHelp`, `optional`, `readOnly` and `size` are `FormField`'s own, and the
+box is `.ds-input-shell`, so it lines up in a row of Inputs and Selects. For a list too
+long to send to the page, search the server with `onQueryChange` + `filterOptions={false}`
+and draw `loading` / `loadError`; `maxSelected` and `maxVisibleChips` bound a long answer;
+`name` posts with a native form.
 
 **A ranking or a breakdown with the figure printed per row: use `<RankedBarList>`.**
 "Top States by Pledges", "SLA Compliance by District", "Category Distribution",
@@ -3122,6 +3132,7 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 **Purpose**: The "Total Visits" figure a government footer carries (DBIM's illustrative footer shows one). Rendered inside `SiteFooter`'s `colophonSlot`, beside the copyright and last-updated.
 **Props**: `label`, `baseline`, `since`, `perDay`, `tickSeconds`
 **Rules**:
+- **On the website it is FROZEN at the Department's published total** — `baseline` from `lib/website/visitor-analytics.ts`, `perDay={0}`, `tickSeconds={0}` — so the footer and the Visitor Analytics page read one object and cannot disagree. The extrapolating defaults below remain for surfaces with no published figure.
 - **THE DATA IS MOCK, BY DESIGN, AND MUST STAY OBVIOUSLY SO.** There is no analytics backend on this estate. The figure is DERIVED — `baseline` counted at `since`, extrapolated at `perDay` — so it moves like a real counter and is reproducible from its inputs. It is **not** a measurement. Swap the props for a real feed before the site carries a number anyone might quote, and never reuse this component anywhere the number has consequences (a dashboard, a report, an RTI response).
 - Printing an invented constant was the alternative and was rejected: a fixed number on a government footer is a fabricated record, and a derived one at least declares its own arithmetic.
 - **The first paint is blank on purpose.** The value depends on the clock, so server and client would disagree and React would report a hydration mismatch. It renders a placeholder until mounted.
@@ -3427,27 +3438,29 @@ and renders it only when `exportable`.
   WCAG 2.4.1 outranks a structural preference. Recorded in the component spec.
 
 #### SiteFooter
-**Purpose**: The statutory footer for the estate, in two variants. `website` (default) renders the working footer (identity, address, social, four link columns, Related Links) above the statutory bar; `portal` renders the statutory bar alone.
+**Purpose**: The statutory footer for the estate, in two variants. `website` (default) renders the working footer (identity, address, social, four link columns, Related Links) above the statutory bar; `portal` renders ONE THIN STRIP — lineage and Last Updated beside the policy, Sitemap and Help links.
 **Key props**: `variant`, `emblem`, `organisation`, `address`, `social`, `columns`, `lineage`, `credits`, `policyLinks`, `sitemap`, `help`, `relatedLinks`, `copyright`, `lastUpdated`, `colophonSlot`, `linkAs`
 **Rules**:
-- **Required on both variants: `organisation`, `lineage`, `policyLinks`, `sitemap`, `help` and `copyright`.** DBIM 5.6 makes a footer without them not a government footer. `organisation` is required by the type but drawn only on `website`.
-- **`sitemap` and `help` draw only on `portal`.** On `website` they already sit in a link column, and the clause asks for each element to be present, not present twice. Related Links follows the same rule — a wide row in the working band on `website`, beside the policies on `portal`. An element may change place for layout; it is never dropped from a variant. **Never list Sitemap or Help inside `policyLinks`**, or the portal variant renders each twice.
-- **On `portal`, `emblem`, `address`, `social` and `columns` are ignored rather than erroring**, so one content object drives both variants.
-- **One component, not two.** The statutory bar must stay DBIM-compliant, and a separate portal footer would drift. The DS also ships `Footer`, a slim strip no portal adopted — use `variant="portal"` instead and do not extend `Footer`.
+- **Required by the type: `organisation`, `lineage`, `policyLinks`, `sitemap`, `help` and `copyright`.** DBIM 5.6 makes a footer without them not a government footer. `organisation` and `copyright` are drawn only on `website`; on `portal` the lineage states ownership.
+- **`sitemap` and `help` draw only on `portal`, in the strip.** On `website` the content already places them — the estate puts Sitemap in the Support column and Help in the policy row, as dosje.gov.in does — and the clause asks for each element to be present, not present twice. **On `portal`, never list Sitemap or Help inside `policyLinks`**, or each renders twice.
+- **The portal footer is one thin strip (decided 2026-09-17).** A portal is a workflow, not a front door: the strip says whose service it is (the lineage) and where the rules and help are (Terms & Conditions, Privacy Policy, Feedback, Sitemap, Help). `emblem`, `address`, `social`, `columns`, `credits`, `relatedLinks`, `copyright`, `lastUpdated` and `colophonSlot` are not drawn there — a portal screen is a workflow step, not a dated page of content — ignored rather than erroring, so one content object drives both variants. Related Links and the credit logos are left to the website on purpose.
+- **One component, not two.** The strip draws from the same statutory props as the website, and a separate portal footer would drift. The DS also ships `Footer`, a slim strip no portal adopted — use `variant="portal"` instead and do not extend `Footer`.
 - **There is no support strip.** A call to action is page content: place `ActionBanner` on a light band above the footer.
 - **The footer owns no width.** On `website` each band carries `.sa-container` (cap, margin and right-wall gutter from `foundations/layout.css`); on `portal` the bands are fluid and pad with `--sa-grid-margin-page`, as a portal `SiteHeader` does. Do not pass `maxWidth`.
 - **Structural, not content-bound.** Every label, href, logo and sentence is a prop. Never fork it to change wording.
 - **Never pass a background through `className`.** The ground is `bg/brand/primary/boldest` and the lead ink `on/bg/brand/primary/boldest`; every other colour is `cmp/sitefooter/*` — `ink/subtle` (links), `ink/subtler` (boilerplate), `rule/base` and `rule/subtle` (rung 500 at alpha 64 / 32), `chip/default` and `chip/hover` (rung 100 at alpha 16 / 24) — with `chip/size` (40) and `mark/height` (28). All are mode-aware, so the footer repaints for all eight brand modes. In `dbim-blue` the ground resolves to **#162F6A**, DBIM's published Blue shade 1.
 - **One ground, one hairline between the bands.** Two shades of navy at a 1.28:1 step read as a printing error, not as structure.
-- **Ink is same-hue, never white-alpha.** Worst case across all eight brand modes: 5.37:1 for boilerplate ink (dbim-green) against AA's 4.5:1, and 4.88:1 for the social glyph on its chip against 1.4.11's 3:1.
+- **Ink is same-hue, never white-alpha.** Worst case across all eight brand modes: 5.37:1 for boilerplate ink (dbim-green) against AA's 4.5:1.
+- **Every icon and every organisation line is white** (`on/bg/brand/primary/boldest`) — DBIM 3.0 §3.7 allows an icon only the key colour or inclusive white, and names white for text on a dark ground. The social glyph on its chip reads 7.88:1 in Blue and 5.73:1 at worst (dbim-green); hover is carried by the chip ground. Hierarchy in the organisation block is by weight: the Department line is Semi Bold.
 - **Social marks carry no ring at rest.** The 40px box satisfies WCAG 2.5.8 without being visible.
 - **No visible eyebrows on the policy and related navs**, which share one wrapped row; both keep their `aria-label`.
 - **`lastUpdated` is the CURRENT PAGE's date**, passed down from the page layout — never a site-wide build date.
-- **One destination, one label.** The two shared destinations that remain are role-distinct: the `ActionBanner` CTA vs the Help nav entry, and the Digital India related link vs its mandated credit mark.
+- **Every link in the dosje.gov.in footer is carried**, and what the live footer lacks is added only where DBIM 5.6 or GIGW 3.0 asks for it — Feedback, Related Links (National Portal of India, CPGRAMS, MyGov, Open Government Data; Digital India is linked by its logo instead) and the lineage sentence. Checked 2026-09-17; the table is on the documentation page. The one shared destination is the live site's own: "Vision & Mission" opens About Us, as it does there.
 - **Credit marks on the navy ground are `NeGD-Logo-White.svg` and `Digital-India-Reverse.svg`**; on a light ground use `NeGD-Logo-Colour.svg`. The Digital India swirl keeps its tricolour in both — it is the mark's identity.
 - **Accessibility:** a `contentinfo` landmark named by a visually hidden `<h2>`; every `<nav>` labelled; one focus ring defined once for the subtree. Hidden text uses `.ds-sr-only`, declared in `site-footer.css` — never Tailwind's `sr-only`, which exists only where a consumer loads Tailwind.
-- **Figma parity** — master `Site Footer` on the library's `Footer` page, Variant (Website | Portal) × Breakpoint (Desktop | Tablet | Mobile), Code Connect `site-footer.figma.ts`. Both sides bind the same tokens, and the master has no unbound fill, stroke, padding, gap, radius or text style. Three widths are drawn rather than bound: the lineage's 96ch measure (659px), the 180px Mobile address, and the credit boxes (77 and 71.7). Heights match on Portal (181 / 273 / 397) and Website Desktop (490). Website Tablet (886 vs 794) and Mobile (1274 vs 1138) differ only by two runtime affordances the master deliberately does not draw: the scroll-end safe area below 1336px (+92) and the right-wall gutter, which leaves 311px of content at 375 where the master draws 343 (+44).
-- **Still open:** `VisitorCounter` has no Figma master, so the colophon draws what it renders as plain layers; the legacy `Footer - Bottom Strip` set survives while ten `PortalLoginTemplate` instances still use it.
+- **Figma parity** — master `Site Footer` on the library's `Footer` page, Variant (Website | Portal) × Breakpoint (Desktop | Tablet | Mobile), Code Connect `site-footer.figma.ts`. Both sides bind the same tokens, and the master has no unbound fill, stroke, padding, gap, radius or text style. Three widths are drawn rather than bound: the lineage's 96ch measure (659px), the 180px Mobile address, and the credit boxes (77 and 71.7). The Portal strips match exactly (44 / 84 / 124). Website Desktop is 490 in both; Website Tablet (882 vs 790) and Mobile (1302 vs 1190, measured 2026-09-17) differ only by two runtime affordances the master deliberately does not draw: the scroll-end safe area below 1336px when the chat launcher is present (+92) and the right-wall gutter, which leaves 311px of content at 375 where the master draws 343 (+20).
+- **DBIM 3.0: 100 / 100 with four recorded deviations**, against every Annexure F Checklist 1 item that applies to a footer (29 items; Archives is not scored, §5.6 lists it as optional). Deviations, kept on purpose under `standards-precedence.md`: Material Symbols rather than DBIM Toolkit icons (items 6 and 7), the 16px location pin sized to its 14px address (8), and 16px Semi Bold column headings (14). The National Emblem ships at 89 KB (was 196 KB) — the same geometry at two-decimal precision, pixel-compared at 56, 112 and 520px. The item-by-item table is on the component's documentation page.
+- **Nothing is open (2026-09-17).** `VisitorCounter` has a Figma master (section 2 of the Footer page) and the website variants instance it; the ten `PortalLoginTemplate` components instance `Site Footer`, Variant=Portal, and the legacy `Footer - Bottom Strip` was deleted with no instance left.
 
 #### OrgLogo
 **Purpose**: An organisation or scheme mark — **the mark and nothing else** — and **the only place a mark's path is written**.

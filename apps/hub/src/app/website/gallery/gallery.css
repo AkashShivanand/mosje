@@ -65,9 +65,10 @@
   }
 
   .sa-gallery-card__title {
+    /* Body/body-2-semibold — the body roles carry 400 or 600, not 500. */
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: var(--sa-font-weight-medium);
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
 

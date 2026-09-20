@@ -2443,5 +2443,167 @@
       }
     },
     "deliberatelyOmitted": []
+  },
+  "Combobox": {
+    "nodeId": "58545:1291",
+    "captured": "2026-09-18",
+    "properties": {
+      "Label Text": {
+        "type": "TEXT"
+      },
+      "Required": {
+        "type": "BOOLEAN"
+      },
+      "Optional": {
+        "type": "BOOLEAN"
+      },
+      "Label Help": {
+        "type": "BOOLEAN"
+      },
+      "Placeholder": {
+        "type": "TEXT"
+      },
+      "Value": {
+        "type": "TEXT"
+      },
+      "Hint": {
+        "type": "BOOLEAN"
+      },
+      "Hint Text": {
+        "type": "TEXT"
+      },
+      "Message Text": {
+        "type": "TEXT"
+      },
+      "Size": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Small",
+          "Large",
+          "Extra Large"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Empty",
+          "Hover",
+          "Focused",
+          "Filled",
+          "Error",
+          "Warning",
+          "Success",
+          "Disabled",
+          "Read Only"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Value"
+    ]
+  },
+  "Combobox (multiple)": {
+    "nodeId": "58555:1985",
+    "captured": "2026-09-18",
+    "properties": {
+      "Label Text": {
+        "type": "TEXT"
+      },
+      "Required": {
+        "type": "BOOLEAN"
+      },
+      "Optional": {
+        "type": "BOOLEAN"
+      },
+      "Label Help": {
+        "type": "BOOLEAN"
+      },
+      "Placeholder": {
+        "type": "TEXT"
+      },
+      "Chip 3": {
+        "type": "BOOLEAN"
+      },
+      "Chip 4": {
+        "type": "BOOLEAN"
+      },
+      "Chip 5": {
+        "type": "BOOLEAN"
+      },
+      "Chip 6": {
+        "type": "BOOLEAN"
+      },
+      "More": {
+        "type": "BOOLEAN"
+      },
+      "More Text": {
+        "type": "TEXT"
+      },
+      "Hint": {
+        "type": "BOOLEAN"
+      },
+      "Hint Text": {
+        "type": "TEXT"
+      },
+      "Message Text": {
+        "type": "TEXT"
+      },
+      "Size": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Small",
+          "Large",
+          "Extra Large"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Filled",
+          "Empty",
+          "Hover",
+          "Focused",
+          "Error",
+          "Warning",
+          "Success",
+          "Disabled",
+          "Read Only"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Chip 3",
+      "Chip 4",
+      "Chip 5",
+      "Chip 6",
+      "More",
+      "More Text"
+    ]
+  },
+  "Chip (input)": {
+    "nodeId": "58542:819",
+    "captured": "2026-09-18",
+    "properties": {
+      "Label": {
+        "type": "TEXT"
+      },
+      "Removable": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "True",
+          "False"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Disabled"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
   }
 }

@@ -1,7 +1,7 @@
 {
   "note": "Selectors that style :hover and never :active. May only shrink.",
-  "generated": "2026-09-14",
-  "total": 96,
+  "generated": "2026-09-18",
+  "total": 95,
   "files": {
     "actions/button-group.css": [
       ".ds-btn"
@@ -83,9 +83,6 @@
     ],
     "forms/chip.css": [
       ".ds-chip__dismiss"
-    ],
-    "forms/combobox.css": [
-      ".ds-combobox__trigger"
     ],
     "forms/date-picker.css": [
       ".ds-datepicker__day",

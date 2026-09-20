@@ -104,6 +104,7 @@ export const FIGMA_NODES = {
   select: "55430:34472", // the Select set, on its own page since the split. Not `dropdown`
   //                        below, which is the separate Dropdown page — pointing Select's
   //                        documentation there sent a designer to a different component.
+  combobox: "58545:1291", // the single set; `Combobox / Multiple` is 58555:1985 on the same page
   otpInput: "55427:34365", // the OTP Input set — 2 lengths x 4 states
   otpBox: "55427:704", // its single-digit sub-part, published so a longer code can be built
   passwordStrengthMeter: "55432:795", // the Password Strength Meter set — 5 strengths
@@ -213,14 +214,19 @@ export const FIGMA_NODES = {
      library was created — four component sets, no Documentation frame, no
      Component record, no numbered sections — so BOTH footer docs pages declared
      a Figma absence while a stale page sat in the library. Three of those sets
-     were deleted after an instance census; `Footer - Bottom Strip` survives in a
-     Legacy section because ten PortalLoginTemplate components still instance it.
+     were deleted after an instance census. The fourth, `Footer - Bottom Strip`,
+     was deleted on 2026-09-17 once the ten PortalLoginTemplate components that
+     instanced it were moved onto Site Footer, Variant=Portal — the thin strip.
 
      NO `footer` KEY, deliberately. `check:ds-pages` derives the expected key from
      the route, so a `footer` entry would force /components/navigation/footer to
      link it — and the slim `Footer` strip has no master of its own. Its page
      states that absence and points here instead. */
   siteFooter: "57800:1922",
+  /* `Visitor Counter` — section "2 · Visitor Counter" on the "Footer" page, built
+     2026-09-17 for the website footer's colophon, where it was drawn as plain
+     layers. Text properties Label and Value. */
+  visitorCounter: "58522:63359",
   /* Navigation — page "Portal Card" between Pagination and Stepper, matching
      where the component lives in code. Status (Live|Planned). */
   portalCard: "56486:832",

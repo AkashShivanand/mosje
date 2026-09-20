@@ -97,7 +97,7 @@ export function RecordDetail({
                         variant="primary"
                         appearance="outlined"
                         size="sm"
-                        iconLeft={<Icon name="picture_as_pdf" size={18} />}
+                        iconLeft={<Icon name="picture_as_pdf" size={16} />}
                       >
                         {f.label ?? "Open Document"}
                       </Button>
@@ -109,7 +109,7 @@ export function RecordDetail({
 
             <div className="sa-record-detail__nav">
               <Link href={backHref} className="sa-record-detail__back">
-                <Icon name="arrow_left_alt" size={18} aria-hidden />
+                <Icon name="arrow_left_alt" size={16} aria-hidden />
                 {backLabel}
               </Link>
               {sourceUrl && (

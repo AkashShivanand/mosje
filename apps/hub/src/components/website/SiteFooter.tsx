@@ -12,6 +12,7 @@ import {
   Band,
 } from "@mosje/design-system";
 import { getContentSyncedDate } from "@/lib/website/content";
+import { VISITOR_ANALYTICS } from "@/lib/website/visitor-analytics";
 
 /*
  * DS Audit — website SiteFooter
@@ -30,56 +31,49 @@ import { getContentSyncedDate } from "@/lib/website/content";
  * navy, dbim and the five DBIM hues. The previous version painted `bg-navy`,
  * a literal that could not answer to the brand mode at all.
  *
- * DBIM 5.6 element coverage, all present below:
- *   Website Policy · Sitemap · Related Links · Help · Feedback · Last Updated On
- *   Social Media Links (optional) · hyperlinked lineage logos · lineage sentence
- * "Archives" is DBIM-optional — §5.6 lists it under "may also be included", though
- * Table 8 in §7.1.1 groups it with the rest without that qualifier. It has no page
- * on this estate and is not linked to something it is not. This comment used to say
- * the gap was "recorded in docs/guidelines"; it was not — an audit on 2026-09-07
- * went looking and found no such record. Do not claim a register entry without
- * making one.
+ * LINK COVERAGE — every link in the dosje.gov.in footer is here (checked
+ * 2026-09-17), and the only additions are what DBIM 3.0 §5.6 or GIGW 3.0
+ * requires and the live footer lacks:
+ *   Feedback              DBIM 5.6 required element; GIGW 3.0 homepage minimum (g)
+ *   Related Links         DBIM 5.6 required element — the National Portal of
+ *                         India (GIGW 3.0 requires it), CPGRAMS, MyGov and
+ *                         Open Government Data
+ *   lineage sentence      DBIM 5.6 prescribed wording
+ * Digital India left Related Links on 2026-09-17: its credit logo already links
+ * it. (The other three were removed the same day and restored — a Related Links
+ * row with one entry read as content that had failed to load.) "Help & Support" left the Support column for the
+ * live site's Help link in the policy row, which now opens a real Help page.
+ * The Accessibility Statement link left the footer the same day: neither
+ * standard asks for it there, and DBIM 5.6 defines Help as the home of
+ * "accessibility help", so the Help page links to it.
+ *
+ * "Archives" is DBIM-optional (§5.6: "may also be included") and the live
+ * footer has none, so there is none here.
  *
  * DBIM COVERAGE HOLDS ON BOTH VARIANTS. variant="portal" renders no columns, so
  * Sitemap and Help render in its statutory bar instead — see design.md → SiteFooter.
  */
-
-/**
- * Where "Help & Support" points.
- *
- * A citizen support portal is being built — the place to raise an issue WITH
- * the website or a portal, as distinct from contacting the department about a
- * scheme. Until it ships this aliases the contact page, which is the only real
- * destination that exists today.
- *
- * IT IS A CONSTANT SO THE SWITCH IS ONE LINE. When the portal lands, change
- * this and nothing else: the footer already models Help and Contact as two
- * separate entries precisely because they are about to become two separate
- * things. Linking both to the same page in the meantime is a transitional
- * alias with a stated end, not the duplication that was removed earlier —
- * that one had no end.
- */
-const SUPPORT_PORTAL_HREF = "/website/contact-us";
 
 const columns: SiteFooterColumn[] = [
   {
     heading: "Department",
     id: "footer-department",
     links: [
-      // "Vision & Mission" was here pointing at /website/about-us — the SAME
-      // page as "About Ministry" above it. Two labels, one destination, is a
-      // link that promises somewhere new and delivers the reader back where
-      // they were. Removed rather than re-pointed: there is no vision page.
       { label: "About Ministry", href: "/website/about-us" },
+      // The live footer points "Vision & Mission" at the About page too; it is
+      // kept so no live link is missing. The Department publishes no separate
+      // vision statement to give it a page of its own.
+      { label: "Vision & Mission", href: "/website/about-us" },
       { label: "Organisational Chart", href: "/website/whos-who" },
       { label: "Ministers & Officials", href: "/website/mosje-directory" },
+      { label: "Citizen Charter", href: "/website/citizen-charter" },
     ],
   },
   {
     heading: "Services",
     id: "footer-services",
     links: [
-      { label: "Schemes & Benefits", href: "/website/schemes-services" },
+      { label: "Schemes", href: "/website/schemes-services" },
       { label: "Tenders", href: "/website/tenders" },
       { label: "Vacancies", href: "/website/vacancies" },
     ],
@@ -88,11 +82,6 @@ const columns: SiteFooterColumn[] = [
     heading: "Support",
     id: "footer-support",
     links: [
-      // TWO entries, and they are about to be two destinations. "Help &
-      // Support" is where you report a problem WITH the site; "Contact Us" is
-      // where you reach the department about a scheme. DBIM 5.6 names Help as
-      // a required element in its own right, so it keeps its own row.
-      { label: "Help & Support", href: SUPPORT_PORTAL_HREF },
       { label: "Contact Us", href: "/website/contact-us" },
       { label: "RTI", href: "/website/rti" },
       { label: "Sitemap", href: "/website/sitemap" },
@@ -111,25 +100,34 @@ const columns: SiteFooterColumn[] = [
   },
 ];
 
-/** [DBIM 5.6] Related Links. Also carries the GIGW-mandated india.gov.in link. */
+/**
+ * [DBIM 5.6] Related Links. The National Portal of India is the one GIGW 3.0
+ * requires; the other three are the national platforms a citizen of this
+ * Department most often needs next — grievance redressal, participation and
+ * published data. Digital India is NOT here: its credit logo already links it.
+ */
 const relatedLinks: SiteFooterLink[] = [
   { label: "National Portal of India", href: "https://www.india.gov.in/", external: true },
+  { label: "CPGRAMS", href: "https://pgportal.gov.in/", external: true },
   { label: "MyGov", href: "https://www.mygov.in/", external: true },
   { label: "Open Government Data", href: "https://data.gov.in/", external: true },
-  { label: "Digital India", href: "https://www.digitalindia.gov.in/", external: true },
-  { label: "CPGRAMS", href: "https://pgportal.gov.in/", external: true },
 ];
 
-/** [DBIM 5.6] Website Policy + Help + Feedback + Sitemap. */
+/**
+ * [DBIM 5.6] Website Policy, Help and Feedback — in the live footer's order,
+ * then Feedback, which the live footer lacks. Sitemap is NOT repeated here: it
+ * is in the Support column, as it is on dosje.gov.in.
+ */
+const HELP: SiteFooterLink = { label: "Help", href: "/website/help" };
 const policyLinks: SiteFooterLink[] = [
+  { label: "Copyright Policy", href: "/website/copyright" },
+  { label: "Hyperlinking Policy", href: "/website/hyperlinking-policy" },
+  HELP,
   { label: "Terms & Conditions", href: "/website/terms-conditions" },
   { label: "Privacy Policy", href: "/website/privacy-policy" },
-  { label: "Copyright", href: "/website/copyright" },
-  { label: "Hyperlinking", href: "/website/hyperlinking-policy" },
-  { label: "Accessibility", href: "/website/accessibility" },
+  { label: "Cookies", href: "/website/cookies" },
+  { label: "Visitor Analytics", href: "/website/visitor-analytics" },
   { label: "Feedback", href: "/website/contact-us#feedback" },
-  // "Sitemap" is NOT repeated here — it is in the Support column, and DBIM 5.6
-  // asks for the element to be present in the footer, not present twice.
 ];
 
 /*
@@ -278,17 +276,27 @@ export function WebsiteSiteFooter({ lastUpdated }: SiteFooterProps = {}) {
       ]}
       address="8th Floor, GPOA-3, Netaji Nagar, New Delhi - 110023"
       social={social}
-      colophonSlot={<VisitorCounter />}
+      colophonSlot={
+        // The Department's published total, frozen: the same figure the
+        // Visitor Analytics page shows, never an extrapolation of it.
+        <VisitorCounter
+          baseline={VISITOR_ANALYTICS.total}
+          since={VISITOR_ANALYTICS.asOf}
+          perDay={0}
+          tickSeconds={0}
+        />
+      }
       columns={columns}
       lineage={LINEAGE}
       credits={credits}
       policyLinks={policyLinks}
-      // [DBIM 5.6] Required on both variants. The website DRAWS these in the
-      // Support column above, so the component does not draw them again; the
+      // [DBIM 5.6] Required on both variants. The website DRAWS these itself —
+      // Sitemap in Support, Help in the policy row — so the component does not
+      // draw them again; the
       // props guarantee the destinations exist for the portal variant, which
       // has no columns to put them in.
       sitemap={{ label: "Sitemap", href: "/website/sitemap" }}
-      help={{ label: "Help & Support", href: SUPPORT_PORTAL_HREF }}
+      help={HELP}
       relatedLinks={relatedLinks}
       copyright={`© ${new Date().getFullYear()} Department of Social Justice & Empowerment. All Rights Reserved.`}
       lastUpdated={lastUpdated ?? getContentSyncedDate()}

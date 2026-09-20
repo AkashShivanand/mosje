@@ -1,0 +1,42 @@
+{
+ "E-Anudaan": {
+  "identity": 0,
+  "visual": 0
+ },
+ "E-Utthan": {
+  "identity": 4,
+  "visual": 33
+ },
+ "SCW": {
+  "identity": 4,
+  "visual": 17
+ },
+ "NHAPOA": {
+  "identity": 96,
+  "visual": 22
+ },
+ "PM-AJAY": {
+  "identity": 17,
+  "visual": 7
+ },
+ "NMBA": {
+  "identity": 141,
+  "visual": 113
+ },
+ "NOS": {
+  "identity": 124,
+  "visual": 32
+ },
+ "SMILE Transgender": {
+  "identity": 94,
+  "visual": 21
+ },
+ "SMILE Beggary": {
+  "identity": 45,
+  "visual": 19
+ },
+ "Garima Greh": {
+  "identity": 68,
+  "visual": 45
+ }
+}
