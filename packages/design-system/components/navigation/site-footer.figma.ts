@@ -34,8 +34,10 @@
 //    carries the Department's columns, credits and lineage. Use this component
 //    directly only for a portal or a new site.
 // 2. `lineage`, `policyLinks`, `sitemap`, `help` AND `copyright` ARE REQUIRED on
-//    BOTH variants — DBIM 5.6. Never list Sitemap or Help inside `policyLinks`:
-//    on the portal variant each would render twice in one band.
+//    BOTH variants — DBIM 5.6. On `portal` the component draws Sitemap and Help
+//    from those props, so never list them inside `policyLinks` there: each would
+//    render twice in one band. On `website` the props are not drawn; the content
+//    places them (the hub: Sitemap in Support, Help in the policy row).
 // 3. THE FOOTER OWNS NO WIDTH. On `website` each band carries `.sa-container`
 //    (the 1200 / 1320 / 1440 ladder, the 16 / 24 / 32 margin, the right-wall
 //    gutter); on `portal` it is fluid and pads with `--sa-grid-margin-page`,
@@ -49,13 +51,18 @@
 //    a site-wide build date.
 // 6. PASS `linkAs={Link}` (next/link). Without it every footer link is a full
 //    document load. `npm run check:link-as` gates this.
-// 7. On `variant="portal"`, `emblem`, `address`, `social` and `columns` are ignored
-//    rather than erroring, so one content object can drive both variants.
-//    `organisation` is still REQUIRED by the type on portal, and is not drawn.
+// 7. `variant="portal"` IS ONE THIN STRIP: the lineage beside the
+//    policy, Sitemap and Help links. `emblem`, `address`, `social`, `columns`,
+//    `credits`, `relatedLinks`, `copyright`, `lastUpdated` and `colophonSlot` are not
+//    drawn there
+//    (ignored rather than erroring, so one content object drives both variants).
+//    `organisation` and `copyright` are still REQUIRED by the type. Keep a
+//    portal's `policyLinks` short — Terms & Conditions, Privacy Policy, Feedback.
 //
 // TOKENS
 //   ground        --sa-bg-brand-primary-boldest
-//   lead ink      --sa-on-bg-brand-primary-boldest
+//   lead ink      --sa-on-bg-brand-primary-boldest   also every organisation line and
+//                                                      every icon (DBIM 3.7: white, never a tint)
 //   links         --sa-cmp-sitefooter-ink-subtle     boilerplate  --sa-cmp-sitefooter-ink-subtler
 //   rules         --sa-cmp-sitefooter-rule-base      policy row   --sa-cmp-sitefooter-rule-subtle
 //   social chip   --sa-cmp-sitefooter-chip-default   hover        --sa-cmp-sitefooter-chip-hover
@@ -81,6 +88,8 @@ const websiteOnly = instance.getEnum("Variant", {
   address={ADDRESS}
   social={SOCIAL}
   columns={COLUMNS}
+  credits={CREDITS}
+  relatedLinks={RELATED_LINKS}
   colophonSlot={<VisitorCounter />}`,
   Portal: "",
 });
@@ -90,11 +99,9 @@ export default {
   linkAs={Link}
   organisation={ORGANISATION}${websiteOnly}
   lineage={LINEAGE}
-  credits={CREDITS}
   policyLinks={POLICY_LINKS}
   sitemap={{ label: "Sitemap", href: "/website/sitemap" }}
-  help={{ label: "Help & Support", href: "/website/contact-us" }}
-  relatedLinks={RELATED_LINKS}
+  help={{ label: "Help", href: "/website/help" }}
   copyright={COPYRIGHT}
   lastUpdated={page.lastUpdated}
 />`,

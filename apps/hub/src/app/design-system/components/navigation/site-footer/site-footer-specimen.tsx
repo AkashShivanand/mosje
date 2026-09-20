@@ -2,29 +2,38 @@ import * as React from "react";
 import { SiteFooter, VisitorCounter } from "@mosje/design-system";
 
 /*
- * Sitemap and Help are NOT here. They are their own props since 2026-09-07, and
- * a caller that also lists them among the policies gets each of them twice on
- * the portal variant — which is what this specimen did until the change was
- * verified in a browser. DBIM 5.6 asks for the element to be present, not
- * present twice.
+ * The website's policy row, in the dosje.gov.in footer's order. Help is in it
+ * because the website variant does not draw the `help` prop.
  */
-const POLICY = [
+const HELP = { label: "Help", href: "#" };
+const WEBSITE_POLICY = [
+  { label: "Copyright Policy", href: "#" },
+  { label: "Hyperlinking Policy", href: "#" },
+  HELP,
   { label: "Terms & Conditions", href: "#" },
   { label: "Privacy Policy", href: "#" },
-  { label: "Copyright", href: "#" },
-  { label: "Hyperlinking", href: "#" },
-  { label: "Accessibility", href: "#" },
+  { label: "Cookies", href: "#" },
+  { label: "Visitor Analytics", href: "#" },
   { label: "Feedback", href: "#" },
 ];
 
-/* The estate's own five, so the specimen wraps where the real footer wraps.
-   The first of them is the GIGW-mandated india.gov.in link. */
+/*
+ * The portal strip's policies: the two a citizen transacting on a portal is
+ * bound by, and Feedback. Sitemap and Help are drawn from their own props, so
+ * they are NOT listed here — they would render twice.
+ */
+const PORTAL_POLICY = [
+  { label: "Terms & Conditions", href: "#" },
+  { label: "Privacy Policy", href: "#" },
+  { label: "Feedback", href: "#" },
+];
+
+/* [DBIM 5.6] Related Links, as the website carries them. */
 const RELATED = [
   { label: "National Portal of India", href: "#", external: true },
+  { label: "CPGRAMS", href: "#", external: true },
   { label: "MyGov", href: "#", external: true },
   { label: "Open Government Data", href: "#", external: true },
-  { label: "Digital India", href: "#", external: true },
-  { label: "CPGRAMS", href: "#", external: true },
 ];
 
 /*
@@ -65,8 +74,8 @@ const CREDITS = [
 ];
 
 /**
- * The portal variant: the statutory bar alone, which is the half that must stay
- * DBIM-compliant and identical to the website's.
+ * The portal variant: one thin strip — the lineage beside
+ * the policy, Sitemap and Help links.
  */
 export function SiteFooterPortalSpecimen(): React.JSX.Element {
   return (
@@ -78,19 +87,15 @@ export function SiteFooterPortalSpecimen(): React.JSX.Element {
         "Department of Social Justice & Empowerment",
       ]}
       lineage={LINEAGE}
-      credits={CREDITS}
-      policyLinks={POLICY}
+      policyLinks={PORTAL_POLICY}
       sitemap={{ label: "Sitemap", href: "#" }}
-      help={{ label: "Help & Support", href: "#" }}
-      relatedLinks={RELATED}
-      copyright="© 2026 Department of Social Justice & Empowerment. All rights reserved."
-      lastUpdated="27 August 2026"
-      colophonSlot={<VisitorCounter />}
+      help={HELP}
+      copyright="© 2026 Department of Social Justice & Empowerment. All Rights Reserved."
     />
   );
 }
 
-/** The website variant: the same statutory bar, with the working footer above it. */
+/** The website variant: the working footer, and the statutory bar under it. */
 export function SiteFooterWebsiteSpecimen(): React.JSX.Element {
   return (
     <SiteFooter
@@ -100,57 +105,63 @@ export function SiteFooterWebsiteSpecimen(): React.JSX.Element {
         "Ministry of Social Justice & Empowerment",
         "Department of Social Justice & Empowerment",
       ]}
-      address="Shastri Bhawan, Dr. Rajendra Prasad Road, New Delhi 110001"
+      address="8th Floor, GPOA-3, Netaji Nagar, New Delhi - 110023"
       social={[
         { label: "Facebook", href: "#", icon: "facebook" },
         { label: "X (formerly Twitter)", href: "#", icon: "x" },
+        { label: "Instagram", href: "#", icon: "instagram" },
         { label: "YouTube", href: "#", icon: "youtube" },
+        { label: "WhatsApp Channel", href: "#", icon: "whatsapp" },
       ]}
       columns={[
         {
-          heading: "The Department",
-          id: "footer-department",
+          heading: "Department",
+          id: "specimen-footer-department",
           links: [
-            { label: "About Us", href: "#" },
-            { label: "Who’s Who", href: "#" },
-            { label: "Organisation Chart", href: "#" },
+            { label: "About Ministry", href: "#" },
+            { label: "Vision & Mission", href: "#" },
+            { label: "Organisational Chart", href: "#" },
+            { label: "Ministers & Officials", href: "#" },
+            { label: "Citizen Charter", href: "#" },
           ],
         },
         {
-          heading: "Schemes",
-          id: "footer-schemes",
+          heading: "Services",
+          id: "specimen-footer-services",
           links: [
-            { label: "PM-AJAY", href: "#" },
-            { label: "SMILE", href: "#" },
-            { label: "National Overseas Scholarship", href: "#" },
-          ],
-        },
-        {
-          heading: "Documents",
-          id: "footer-documents",
-          links: [
-            { label: "Annual Reports", href: "#" },
-            { label: "Guidelines", href: "#" },
+            { label: "Schemes", href: "#" },
             { label: "Tenders", href: "#" },
+            { label: "Vacancies", href: "#" },
           ],
         },
         {
-          heading: "Citizen Services",
-          id: "footer-services",
+          heading: "Support",
+          id: "specimen-footer-support",
           links: [
-            { label: "Grievance Redressal", href: "#" },
-            { label: "Right to Information", href: "#" },
             { label: "Contact Us", href: "#" },
+            { label: "RTI", href: "#" },
+            { label: "Sitemap", href: "#" },
+          ],
+        },
+        {
+          heading: "Resources",
+          id: "specimen-footer-resources",
+          links: [
+            { label: "Notices", href: "#" },
+            { label: "Acts & Rules", href: "#" },
+            { label: "Reports", href: "#" },
+            { label: "Publications", href: "#" },
+            { label: "Statistics", href: "#" },
           ],
         },
       ]}
       lineage={LINEAGE}
       credits={CREDITS}
-      policyLinks={POLICY}
+      policyLinks={WEBSITE_POLICY}
       sitemap={{ label: "Sitemap", href: "#" }}
-      help={{ label: "Help & Support", href: "#" }}
+      help={HELP}
       relatedLinks={RELATED}
-      copyright="© 2026 Department of Social Justice & Empowerment. All rights reserved."
+      copyright="© 2026 Department of Social Justice & Empowerment. All Rights Reserved."
       lastUpdated="27 August 2026"
       colophonSlot={<VisitorCounter />}
     />
