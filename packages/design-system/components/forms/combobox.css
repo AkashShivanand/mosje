@@ -19,65 +19,25 @@
     border: 0;
   }
 
+  /* THE FIELD IS FormField's AND THE BOX IS `.ds-input-shell`'s — label, hint,
+     messages, size, border, radius, focus, hover, disabled, read-only and
+     status all come from forms.css. This file only adds what a combobox has
+     and a text field does not: the trigger buttons, the chips and the popup.
+     It once restyled the label, the gap and the box itself, and sat 8px high,
+     6px short and 4px squarer than every field beside it. */
+
   .ds-combobox {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: var(--sa-stack-4);
-    font-family: var(--sa-font-latin);
   }
-
-  .ds-combobox__label {
-    color: var(--sa-text-neutral-bolder);
-    font-size: var(--sa-type-label-2-size);
-    line-height: var(--sa-type-label-2-lh);
-    font-weight: var(--sa-font-weight-semibold);
-  }
-
-  .ds-combobox__required {
-    margin-inline-start: var(--sa-inline-2);
-    color: var(--sa-text-status-error-bolder);
-  }
-
-  .ds-combobox__field {
-    display: flex;
-    align-items: center;
-    /* 3.06:1 on white — the subtle rung is 1.66 and fails WCAG 1.4.11 for a
-       control's boundary. Same correction FilterSelect and DatePicker needed. */
-    border: var(--sa-stroke-1) solid var(--sa-border-neutral-bolder-default);
-    border-radius: var(--sa-shape-4);
-    background: var(--sa-bg-neutral-base);
-    padding-inline-end: var(--sa-padding-4);
-  }
-
-  .ds-combobox__field:focus-within {
-    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
-    outline-offset: var(--sa-focus-offset);
-  }
-
-  .ds-combobox__field.is-invalid { border-color: var(--sa-border-status-error-base); }
-  .ds-combobox__field.is-disabled { background: var(--sa-bg-neutral-subtler); }
-
-  .ds-combobox__input {
-    flex: 1 1 auto;
-    min-inline-size: 0;
-    border: 0;
-    background: transparent;
-    padding: var(--sa-padding-8) var(--sa-padding-12);
-    color: var(--sa-text-neutral-bolder);
-    font: inherit;
-    font-size: var(--sa-type-body-2-size);
-    line-height: var(--sa-type-body-2-lh);
-  }
-
-  .ds-combobox__input:focus-visible { outline: none; }
 
   .ds-combobox__trigger {
     display: inline-flex;
+    flex: none;
     align-items: center;
     justify-content: center;
     min-inline-size: var(--sa-inline-32);
     min-block-size: var(--sa-stack-32);
+    margin-inline-end: calc(-1 * var(--sa-padding-4));
     border: 0;
     border-radius: var(--sa-shape-4);
     background: transparent;
@@ -85,17 +45,111 @@
     cursor: pointer;
   }
 
-  .ds-combobox__trigger:hover:not(:disabled) { background: var(--sa-bg-neutral-subtler); }
+  .ds-combobox__trigger + .ds-combobox__trigger { margin-inline-start: calc(-1 * var(--sa-inline-8)); }
 
-  .ds-combobox__hint,
-  .ds-combobox__error {
-    margin: 0;
-    font-size: var(--sa-type-body-3-size);
-    line-height: var(--sa-type-body-3-lh);
+  .ds-combobox__trigger:hover { background: var(--sa-bg-neutral-subtler); }
+
+  .ds-combobox__trigger:active { background: var(--sa-bg-neutral-active); }
+
+  /* ── multiple ──────────────────────────────────────────────────────────
+     Chips and the query share one box and wrap onto new lines. Two classes,
+     so this outranks the shell's own zero block padding whichever stylesheet
+     loads first. 2px, not more: the 32px trigger sets the row, and 2 + 32 + 2
+     plus the border stays inside `sm`'s 40px as well as `md`'s 44px. */
+  .ds-input-shell.ds-combobox__field--multiple {
+    align-items: center;
+    padding-block: var(--sa-padding-2);
+    padding-inline-start: var(--sa-padding-4);
+    cursor: text;
   }
 
-  .ds-combobox__hint { color: var(--sa-text-neutral-subtle); }
-  .ds-combobox__error { color: var(--sa-text-status-error-bolder); }
+  .ds-input-shell.ds-combobox__field--multiple[data-disabled],
+  .ds-input-shell.ds-combobox__field--multiple[data-readonly] { cursor: default; }
+
+  /* The chips and the query wrap inside their own box, so the buttons stay
+     pinned to the field's end instead of wrapping onto a line of their own. */
+  .ds-combobox__values {
+    position: relative;
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    min-inline-size: 0;
+    padding-block: var(--sa-padding-2);
+    /* THE CHIPS MUST NOT SIZE THE FIELD. A chip's ellipsis is only visual: its
+       nowrap label still reports its full width as the field's minimum, and in
+       any `1fr` grid column (which is `minmax(auto, 1fr)`) one long district
+       name widened the whole form past a 375px phone — 569px, found by
+       measuring. Containing the inline size makes this box take the width it
+       is given and wrap within it. */
+    contain: inline-size;
+  }
+
+  .ds-combobox__field--multiple .ds-combobox__input {
+    /* Never narrower than a short query, so a full row of chips pushes the
+       text box onto its own line rather than squeezing it to nothing. */
+    flex: 1 1 var(--sa-inline-64);
+    padding-inline: var(--sa-padding-8);
+  }
+
+  /* A read-only answer has no query to type: the empty box would only add a line. */
+  .ds-combobox__field--multiple[data-readonly] .ds-combobox__input { flex-basis: 0; }
+
+  /* A long name ends in an ellipsis inside its chip instead of widening the
+     field past its column; the full name is the chip's title and its
+     remove button's label. */
+  .ds-combobox__chip { max-inline-size: 100%; min-inline-size: 0; cursor: default; }
+
+  /* Block, not the chip's own inline-flex: an ellipsis applies to a line box,
+     and text inside a flex container has none, so the name was cut mid-letter. */
+  .ds-combobox__chip .ds-chip__label {
+    display: block;
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ds-combobox__more {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--sa-stack-24);
+    padding: 0 var(--sa-padding-8);
+    border: 0;
+    border-radius: var(--sa-shape-full);
+    background: transparent;
+    color: var(--sa-text-brand-primary-bolder);
+    font: inherit;
+    font-size: var(--sa-type-body-3-size);
+    font-weight: var(--sa-font-weight-semibold);
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .ds-combobox__more:hover { background: var(--sa-bg-brand-primary-base); }
+
+  /* One rung deeper than hover (primary 50 → 100), as neutral hover → active. */
+  .ds-combobox__more:active { background: var(--sa-bg-brand-primary-subtler); }
+
+  .ds-combobox__more:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  /* Native validation's anchor for a field whose text box is empty by design:
+     present to the browser, invisible and unreachable to everyone else. */
+  .ds-combobox__required-proxy {
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline-start: var(--sa-padding-12);
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    border: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
 
   .ds-combobox__list {
     position: absolute;
@@ -115,6 +169,65 @@
     border-radius: var(--sa-shape-8);
     background: var(--sa-bg-neutral-base);
     box-shadow: var(--sa-elevation-raised);
+  }
+
+  /* Near the foot of the viewport the list opens upward rather than off-screen. */
+  .ds-combobox__list[data-placement="top"] {
+    inset-block: auto 100%;
+    margin: 0 0 var(--sa-stack-4);
+  }
+
+  .ds-combobox__list--message { overflow: visible; }
+
+  .ds-combobox__message {
+    margin: 0;
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+
+  .ds-combobox__retry {
+    margin-inline-start: var(--sa-inline-8);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--sa-text-brand-primary-bolder);
+    font: inherit;
+    font-weight: var(--sa-font-weight-semibold);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .ds-combobox__skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-16);
+    padding: var(--sa-padding-12);
+  }
+
+  .ds-combobox__notice {
+    padding: var(--sa-padding-8);
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+
+  .ds-combobox__group { list-style: none; }
+
+  .ds-combobox__group-label {
+    display: block;
+    padding: var(--sa-padding-8) var(--sa-padding-8) var(--sa-padding-4);
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .ds-combobox__group-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
   .ds-combobox__option {
@@ -157,12 +270,16 @@
     color: var(--sa-text-brand-primary-bolder);
   }
 
-  .ds-combobox__nomatch {
-    padding: var(--sa-padding-8) var(--sa-padding-12);
-    color: var(--sa-text-neutral-subtle);
-    font-size: var(--sa-type-body-3-size);
-    line-height: var(--sa-type-body-3-lh);
+
+  .ds-combobox__option-check {
+    flex: none;
+    display: inline-flex;
+    align-self: center;
+    inline-size: var(--sa-inline-20);
+    color: var(--sa-text-brand-primary-bolder);
   }
+
+  .ds-combobox__option-check + .ds-combobox__option-label { flex: 1 1 auto; }
 
   @media (forced-colors: active) {
     .ds-combobox__option.is-active {

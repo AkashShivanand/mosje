@@ -1016,6 +1016,17 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "description": "24px"
       },
       {
+        "path": "size/26",
+        "tier": "ref",
+        "type": "dimension",
+        "css": "--sa-ref-size-26",
+        "value": "1.625rem",
+        "raw": "1.625rem",
+        "figma": "Space · ref/size/26",
+        "excluded": null,
+        "description": "The resting height of the small chip — 26px, two past the 24px WCAG 2.5.8 minimum target. Added 2026-09-18 for cmp/chip/heightSm; until then it was a literal in chip.css."
+      },
+      {
         "path": "size/28",
         "tier": "ref",
         "type": "dimension",
@@ -1369,13 +1380,13 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
       }
     ],
     "stats": {
-      "total": 42,
-      "ref": 22,
+      "total": 43,
+      "ref": 23,
       "sys": 20,
       "cmp": 0,
-      "figma": 42,
+      "figma": 43,
       "codeOnly": 0,
-      "described": 42
+      "described": 43
     }
   },
   "shape": {

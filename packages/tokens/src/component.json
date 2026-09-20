@@ -135,6 +135,16 @@
       "$type": "dimension",
       "$value": "{shape.8}",
       "$description": "The chip's corner at rest — the system default control shape, shape/8. The pill variant takes shape/full in the stylesheet."
+    },
+    "heightSm": {
+      "$type": "dimension",
+      "$value": "{size.26}",
+      "$description": "Minimum height of the small chip (size sm) — the chosen-option chip in a Combobox and dense filter rows. Was a 26px literal in chip.css until 2026-09-18, when the Figma Chip / Input master needed a variable to bind."
+    },
+    "dismissSize": {
+      "$type": "dimension",
+      "$value": "{size.18}",
+      "$description": "The remove (×) button of a chip — 18px square. Below the 24px target on its own and passes WCAG 2.5.8 by the spacing exception: the 24px circle around it clears every neighbouring target. Was a literal in chip.css until 2026-09-18."
     }
   },
   "dialog": {

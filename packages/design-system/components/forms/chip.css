@@ -81,7 +81,7 @@
     the padding alone, so the pill stays in proportion to what is in it.
   */
   .ds-chip--sm {
-    min-height: 26px;
+    min-height: var(--sa-cmp-chip-heightSm);
     gap: var(--sa-stack-6);
     padding: var(--sa-padding-2) var(--sa-padding-8);
     font-size: var(--sa-type-body-3-size);
@@ -307,8 +307,8 @@
     align-items: center;
     justify-content: center;
     flex: 0 0 auto;
-    width: 18px;
-    height: 18px;
+    width: var(--sa-cmp-chip-dismissSize);
+    height: var(--sa-cmp-chip-dismissSize);
     margin: 0 calc(-1 * var(--sa-padding-4)) 0 0;
     padding: 0;
     color: inherit;
