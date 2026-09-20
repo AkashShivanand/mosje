@@ -86,9 +86,31 @@
     color: var(--sa-text-link-brand-hover);
   }
 
+  /*
+   * THE ACTION COLUMN HAS A FLOOR TOO, FOR THE SAME REASON THE TITLE DOES.
+   *
+   * The title column's 18rem floor means every other column absorbs the squeeze,
+   * and the action cell absorbed it by BREAKING ITS BUTTONS' WORDS: at 1440 on a
+   * seven-column register "View" rendered as "Vi / e / w" down three lines and
+   * "Download" as "Downlo / ad". `white-space: nowrap` on the row of buttons did
+   * not stop it, because it is the label inside each button that wrapped, and the
+   * buttons were being shrunk below their content.
+   *
+   * So the cell is told not to wrap, and the buttons not to shrink. The table then
+   * overflows instead, which `DataTable` already handles with a tab stop, a name
+   * and the arrow keys.
+   */
+  .ds-table__cell--action {
+    white-space: nowrap;
+  }
+
   .sa-record-actions {
     display: inline-flex;
     gap: var(--sa-inline-8);
     white-space: nowrap;
+  }
+
+  .sa-record-actions > * {
+    flex: none;
   }
 }

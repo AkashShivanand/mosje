@@ -264,6 +264,7 @@ export function RecordLibrary({
     cols.push({
       key: "action",
       header: "Action",
+      className: "ds-table__cell--action",
       noExport: true,
       render: (r) => {
         const file = r.fileUrl ?? r.externalUrl;
