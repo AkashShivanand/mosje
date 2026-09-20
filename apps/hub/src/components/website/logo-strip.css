@@ -31,9 +31,10 @@
     display: flex;
     align-items: center;
     gap: var(--sa-inline-56);
-    padding-inline-end: var(--sa-inline-56);
     margin: 0;
-    padding-inline-start: 0;
+
+    /* A trailing gap so the last mark does not butt the strip's edge as it scrolls. */
+    padding-inline: 0 var(--sa-inline-56);
     list-style: none;
   }
 
