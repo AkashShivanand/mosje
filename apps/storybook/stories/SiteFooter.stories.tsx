@@ -45,6 +45,15 @@ import digitalIndiaMark from "../../hub/public/website/images/Digital-India-Reve
  * metadata, not identity, and grouping it with the other two provenance lines
  * stops it competing with the emblem. Lifecycle: **Stable**.
  */
+const HELP = { label: "Help", href: "/website/help" };
+
+/** The portal strip's policies. Sitemap and Help come from their own props there. */
+const PORTAL_POLICY = [
+  { label: "Terms & Conditions", href: "/website/terms-conditions" },
+  { label: "Privacy Policy", href: "/website/privacy-policy" },
+  { label: "Feedback", href: "/website/contact-us#feedback" },
+];
+
 const meta = {
   title: "Navigation/SiteFooter",
   component: SiteFooter,
@@ -62,15 +71,17 @@ const meta = {
         id: "sb-dept",
         links: [
           { label: "About Ministry", href: "/website/about-us" },
+          { label: "Vision & Mission", href: "/website/about-us" },
           { label: "Organisational Chart", href: "/website/whos-who" },
           { label: "Ministers & Officials", href: "/website/mosje-directory" },
+          { label: "Citizen Charter", href: "/website/citizen-charter" },
         ],
       },
       {
         heading: "Services",
         id: "sb-svc",
         links: [
-          { label: "Schemes & Benefits", href: "/website/schemes-services" },
+          { label: "Schemes", href: "/website/schemes-services" },
           { label: "Tenders", href: "/website/tenders" },
           { label: "Vacancies", href: "/website/vacancies" },
         ],
@@ -79,7 +90,7 @@ const meta = {
         heading: "Support",
         id: "sb-sup",
         links: [
-          { label: "Help & Support", href: "/website/contact-us" },
+          { label: "Contact Us", href: "/website/contact-us" },
           { label: "RTI", href: "/website/rti" },
           { label: "Sitemap", href: "/website/sitemap" },
         ],
@@ -90,29 +101,35 @@ const meta = {
         links: [
           { label: "Notices", href: "/website/notices" },
           { label: "Acts & Rules", href: "/website/acts-rules" },
-          { label: "Annual Reports", href: "/website/annual-reports" },
+          { label: "Reports", href: "/website/annual-reports" },
+          { label: "Publications", href: "/website/publications" },
+          { label: "Statistics", href: "/website/dashboard" },
         ],
       },
     ],
     lineage:
       "This website belongs to the Department of Social Justice & Empowerment, " +
       "Ministry of Social Justice & Empowerment, Government of India.",
-    sitemap: { label: "Sitemap", href: "#" },
-    help: { label: "Help & Support", href: "#" },
+    sitemap: { label: "Sitemap", href: "/website/sitemap" },
+    help: HELP,
+    // The website's policy row, in the dosje.gov.in footer's order. Help sits in
+    // it because the website variant does not draw the `help` prop; the portal
+    // story below passes its own shorter list, because the portal strip does.
     policyLinks: [
+      { label: "Copyright Policy", href: "/website/copyright" },
+      { label: "Hyperlinking Policy", href: "/website/hyperlinking-policy" },
+      HELP,
       { label: "Terms & Conditions", href: "/website/terms-conditions" },
       { label: "Privacy Policy", href: "/website/privacy-policy" },
-      { label: "Copyright", href: "/website/copyright" },
-      { label: "Hyperlinking", href: "/website/hyperlinking-policy" },
-      { label: "Accessibility", href: "/website/accessibility" },
+      { label: "Cookies", href: "/website/cookies" },
+      { label: "Visitor Analytics", href: "/website/visitor-analytics" },
       { label: "Feedback", href: "/website/contact-us#feedback" },
     ],
     relatedLinks: [
       { label: "National Portal of India", href: "https://www.india.gov.in/", external: true },
+      { label: "CPGRAMS", href: "https://pgportal.gov.in/", external: true },
       { label: "MyGov", href: "https://www.mygov.in/", external: true },
       { label: "Open Government Data", href: "https://data.gov.in/", external: true },
-      { label: "Digital India", href: "https://www.digitalindia.gov.in/", external: true },
-      { label: "CPGRAMS", href: "https://pgportal.gov.in/", external: true },
     ],
     copyright: "© 2026 Department of Social Justice & Empowerment. All Rights Reserved.",
     lastUpdated: "06 Jun 2026",
@@ -201,33 +218,13 @@ export const Minimal: Story = {
 };
 
 /**
- * `variant="portal"` — the statutory bar alone. No navigation columns, no social
- * rail, no address: a portal has its own navigation and the footer's job there
- * is to carry what DBIM 5.6 and GIGW require and get out of the way.
- * `emblem`, `address`, `social` and `columns` are ignored rather than erroring, so
- * the same content object can drive both variants; `organisation` is required by
- * the type and not drawn.
+ * `variant="portal"` — one thin strip: the lineage beside the policy, Sitemap and Help links. Columns, social rail, credit logos,
+ * Related Links, the copyright line and Last Updated are the website's and are not drawn, so
+ * one content object can still drive both variants.
  */
 export const PortalVariant: Story = {
   args: {
     variant: "portal",
-    credits: [
-      {
-        prefix: "Developed & maintained by",
-        src: negdMark,
-        alt: "National e-Governance Division (NeGD)",
-        href: "https://negd.gov.in/",
-        width: 143,
-        height: 52,
-      },
-      {
-        prefix: "Powered by",
-        src: digitalIndiaMark,
-        alt: "Digital India",
-        href: "https://www.digitalindia.gov.in/",
-        width: 105,
-        height: 41,
-      },
-    ],
+    policyLinks: PORTAL_POLICY,
   },
 };

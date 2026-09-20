@@ -3,6 +3,11 @@
 //   library : 3FF5l0SMNIwdpZrKkeyPTm  ·  page "SAMAVESH Banner" (Section Templates)
 //   set     : 56479:42386  key 11115436c68df8d7fe11c60949da9979bb4430b1
 //   axes    : Tone (Light | Dark | Tint) × State (Closed | Open) = 6 variants
+//   boolean : View all — the drawer's footer link to /portals (Open variants)
+//   width   : each variant is `ref/viewport/desktop` wide in the Viewport
+//             collection's Desktop XL mode; both rows hold a Container capped at
+//             `container/page` and padded by `grid/margin/page` — the Figma
+//             reading of `.sa-container`, as Navbar/Website draws it.
 //
 // It replaces the earlier target, node 7116:33784, which was a SECTION of screen
 // mockups in the handoff file — Code Connect maps a COMPONENT, so that mapping
@@ -38,6 +43,8 @@
 //   Title        (text)     -> title
 //   Subline      (text)     -> subline
 //   Drawer title (text)     -> drawerTitle
+//   View all     (boolean)  -> showViewAll     true -> omitted (the default) ·
+//                              false -> showViewAll={false}
 //
 // CODE PROPS WITH NO FIGMA PROPERTY, deliberately:
 //   sticky       -> BEHAVIOUR, not appearance. The band pins under the masthead
@@ -48,9 +55,13 @@
 //                   render a link or a non-link, from the estate registry.
 //                   Emitting the array would invite an agent to hand-write one and
 //                   lose the decision that stops a 404 reaching a citizen.
-//   viewAllHref  -> both default correctly (`/portals`, "Search and compare
-//   viewAllLabel    every portal"). A designer editing them in Figma would be
-//                   editing a route, which is not theirs to set.
+//   viewAllHref  -> both default correctly (`/portals`, "Find your portal"). A
+//   viewAllLabel    designer editing them in Figma would be editing a route, which
+//                   is not theirs to set. Whether the link SHOWS is theirs: `View all`.
+//   viewAllPrompt -> EMPTY BY DEFAULT and not drawn. It read "Are you an officer or
+//                   administrator?" until the Secretary's review of 17 Sep 2026 made
+//                   the header's single "Login" the door for everyone; a question
+//                   addressed to officers alone contradicted it.
 //   exploreLabel -> THE MASTER DRAWS THE WORD AND DOES NOT EXPOSE IT. This template
 //                   read an `Explore` text property until 16 Sep 2026; the set has
 //                   no such property, so `getString` returned undefined and the
@@ -139,6 +150,12 @@ const state = instance.getEnum("State", {
   Open: "\n  defaultOpen",
 });
 
+/* `true` is the component's default, so only switching the link OFF emits. */
+const viewAll = instance.getBoolean("View all", {
+  true: "",
+  false: "\n  showViewAll={false}",
+});
+
 /*
  * `portals` is deliberately absent from the emitted snippet. Omitting it takes
  * DEFAULT_SAMAVESH_PORTALS, whose status each resolves from the estate registry
@@ -151,6 +168,6 @@ export default {
 <SamaveshBanner
   title="${title}"
   subline="${subline}"
-  drawerTitle="${drawerTitle}"${tone}${state}
+  drawerTitle="${drawerTitle}"${tone}${state}${viewAll}
 />`,
 };

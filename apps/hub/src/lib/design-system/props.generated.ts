@@ -13111,6 +13111,13 @@ export const GENERATED_PROPS = {
         "description": "Portals shown in the drawer. Defaults to every LIVE portal in the registry."
       },
       {
+        "name": "showViewAll",
+        "type": "boolean",
+        "required": false,
+        "default": "true\n\nFigma's `View all` boolean. Turn it off where the drawer is the whole answer\n— a page that already IS the directory, or a drawer narrowed to one set of\nportals whose reader has no reason to leave it.",
+        "description": "Show the footer link to the portal directory."
+      },
+      {
         "name": "sticky",
         "type": "boolean",
         "required": false,
@@ -13156,8 +13163,8 @@ export const GENERATED_PROPS = {
         "name": "viewAllPrompt",
         "type": "string",
         "required": false,
-        "default": "\"Are you an officer or administrator?\"\n\nIT IS A SIGNPOST, NOT A CLAIM ABOUT THE LIST. Both surfaces currently show\nthe same live portals, so any copy promising MORE there is false — which is\nwhat \"Browse every portal, including those in development\" became the day the\ndirectory went live-only, and what \"Search and compare every portal\" was from\nthe start: nothing on `/portals` compares anything.\n\nWhat IS true is who the second route is for. A citizen has already arrived\nwhere they are going; an officer needs the directory to reach the portal they\nsign in to. Pass `viewAllPrompt=\"\"` to render the link with no question.",
-        "description": "The question above the footer link."
+        "default": "\"\" (none)\n\nEMPTY BY DEFAULT since the Secretary's review of 17 Sep 2026. It read \"Are you\nan officer or administrator?\", which made the directory an administrators'\ndoor; the website header's single \"Login\" now leads every reader to\n`/portals`, and each portal's sign-in chooses the role. The link says where\nit goes without the question.\n\nIf a surface does pass one, it must stay a signpost, not a claim about the\nlist: both surfaces show the same live portals, so copy promising MORE on\n`/portals` is false — \"Browse every portal, including those in development\"\nand \"Search and compare every portal\" both were.",
+        "description": "An optional question before the footer link."
       }
     ]
   },
@@ -14220,7 +14227,7 @@ export const GENERATED_PROPS = {
         "name": "copyright",
         "type": "string",
         "required": true,
-        "description": ""
+        "description": "Website variant only; on `portal` the lineage sentence states ownership."
       },
       {
         "name": "help",
@@ -14244,13 +14251,13 @@ export const GENERATED_PROPS = {
         "name": "policyLinks",
         "type": "SiteFooterLink[]",
         "required": true,
-        "description": "[DBIM 5.6] The website policies — terms of use, privacy, copyright, hyperlinking, accessibility, feedback. Required on both variants. DO NOT list Sitemap or Help here. They are their own props, and on the portal variant a duplicate renders twice in the same band."
+        "description": "[DBIM 5.6] The website policies — terms of use, privacy, copyright, hyperlinking, accessibility, feedback. Required on both variants. On `portal`, DO NOT list Sitemap or Help here: the component draws them from their own props, so a duplicate renders twice in the same band. On `website` those props are not drawn, and Help may sit here as it does on dosje.gov.in."
       },
       {
         "name": "sitemap",
         "type": "SiteFooterLink",
         "required": true,
-        "description": "[DBIM 5.6] Sitemap — REQUIRED, like `lineage` and `copyright`, and for the same reason: a footer without it is not a government footer. WHERE IT RENDERS DEPENDS ON THE VARIANT, and that is the whole point of the prop. On `website` the Sitemap already sits in a link column, so this is not drawn again — the clause asks for the element to be present, not present twice. On `portal` there are no columns, so it renders in the statutory bar. Passing it is how a caller proves the destination exists for both."
+        "description": "[DBIM 5.6] Sitemap — REQUIRED, like `lineage` and `copyright`, and for the same reason: a footer without it is not a government footer. WHERE IT RENDERS DEPENDS ON THE VARIANT, and that is the whole point of the prop. On `website` the content already places the Sitemap (a link column, or the policy row), so this is not drawn again — the clause asks for the element to be present, not present twice. On `portal` it renders in the strip. Passing it is how a caller proves the destination exists for both."
       },
       {
         "name": "address",
@@ -14262,7 +14269,7 @@ export const GENERATED_PROPS = {
         "name": "colophonSlot",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Slot in the colophon, beside the copyright and last-updated. The estate puts `<VisitorCounter />` here — a visit count is page metadata, not identity, and grouping it with the other provenance lines stops it competing with the emblem."
+        "description": "Slot in the colophon, beside the copyright and last-updated. The estate puts `<VisitorCounter />` here — a visit count is page metadata, not identity, and grouping it with the other provenance lines stops it competing with the emblem. Website variant only."
       },
       {
         "name": "columns",
@@ -14274,7 +14281,7 @@ export const GENERATED_PROPS = {
         "name": "credits",
         "type": "SiteFooterCredit[]",
         "required": false,
-        "description": "[DBIM 5.6] \"Hyperlinked logos\". Rendered on both variants."
+        "description": "[DBIM 5.6] \"Hyperlinked logos\". Website variant only."
       },
       {
         "name": "emblem",
@@ -14286,7 +14293,7 @@ export const GENERATED_PROPS = {
         "name": "lastUpdated",
         "type": "string",
         "required": false,
-        "description": "[DBIM 5.6] \"Last Updated On\" for the *respective page*."
+        "description": "[DBIM 5.6] \"Last Updated On\" for the *respective page*. Website variant only: a portal screen is a step in a workflow, not a page of content with a revision date."
       },
       {
         "name": "linkAs",
@@ -14305,7 +14312,7 @@ export const GENERATED_PROPS = {
         "name": "relatedLinks",
         "type": "SiteFooterLink[]",
         "required": false,
-        "description": "[DBIM 5.6] Required element. Other government platforms."
+        "description": "[DBIM 5.6] Required element. Other government platforms. Website variant only."
       },
       {
         "name": "social",

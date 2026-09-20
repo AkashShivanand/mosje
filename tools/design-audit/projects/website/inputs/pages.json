@@ -1,0 +1,868 @@
+[
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/",
+  "slug": "home",
+  "cloneRoute": "/"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/footer-carousel/",
+  "slug": "footer-carousel",
+  "cloneRoute": null
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/samavesh-citizen-portals/",
+  "slug": "samavesh-citizen-portals",
+  "cloneRoute": "/samavesh-citizen-portals"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/about-us/",
+  "slug": "about-us",
+  "cloneRoute": "/about-us"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/miscellaneous/",
+  "slug": "miscellaneous",
+  "cloneRoute": "/miscellaneous"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/meta-data/",
+  "slug": "meta-data",
+  "cloneRoute": null
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/mosje-directory/",
+  "slug": "mosje-directory",
+  "cloneRoute": "/mosje-directory"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/contact-us-2/",
+  "slug": "contact-us-2",
+  "cloneRoute": null
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/cookies/",
+  "slug": "cookies",
+  "cloneRoute": null
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/guidelines-for-assisting-ngos-voluntary-organisations/",
+  "slug": "guidelines-for-assisting-ngos-voluntary-organisations",
+  "cloneRoute": "/guidelines-for-assisting-ngos-voluntary-organisations"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/list-of-scheduled-castes/",
+  "slug": "list-of-scheduled-castes",
+  "cloneRoute": null
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/advertisement/",
+  "slug": "advertisement",
+  "cloneRoute": null
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/visitor-analytics/",
+  "slug": "visitor-analytics",
+  "cloneRoute": null
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/whos-who/",
+  "slug": "whos-who",
+  "cloneRoute": "/whos-who"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/bjrnf-directory/",
+  "slug": "bjrnf-directory",
+  "cloneRoute": "/bjrnf-directory"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/home-page/help/",
+  "slug": "help",
+  "cloneRoute": null
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/home-page/copyright-policy/",
+  "slug": "copyright-policy",
+  "cloneRoute": null
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/home-page/hyperlinking-policy/",
+  "slug": "hyperlinking-policy",
+  "cloneRoute": "/hyperlinking-policy"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/daic-directory/",
+  "slug": "daic-directory",
+  "cloneRoute": "/daic-directory"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/nisd-directory/",
+  "slug": "nisd-directory",
+  "cloneRoute": "/nisd-directory"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/samavesh-admin-portals/",
+  "slug": "samavesh-admin-portals",
+  "cloneRoute": "/samavesh-admin-portals"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/pm-ajay-directory/",
+  "slug": "pm-ajay-directory",
+  "cloneRoute": "/pm-ajay-directory"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/resources/",
+  "slug": "resources",
+  "cloneRoute": "/resources"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/nsfdc-directory/",
+  "slug": "nsfdc-directory",
+  "cloneRoute": "/nsfdc-directory"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/nhaa-directory/",
+  "slug": "nhaa-directory",
+  "cloneRoute": null
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/official-language-act/",
+  "slug": "official-language-act",
+  "cloneRoute": "/official-language-act"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/home-page/terms-conditions/",
+  "slug": "terms-conditions",
+  "cloneRoute": "/terms-conditions"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/updates/",
+  "slug": "updates",
+  "cloneRoute": null
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/vacancies/",
+  "slug": "vacancies",
+  "cloneRoute": "/vacancies"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/tenders/",
+  "slug": "tenders",
+  "cloneRoute": "/tenders"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/supreme-court-judgement/",
+  "slug": "supreme-court-judgement",
+  "cloneRoute": null
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/schemes-services/",
+  "slug": "schemes-services",
+  "cloneRoute": "/schemes-services"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/suo-moto-disclosure/",
+  "slug": "suo-moto-disclosure",
+  "cloneRoute": "/suo-moto-disclosure"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/policies/",
+  "slug": "policies",
+  "cloneRoute": "/policies"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/newsletter/",
+  "slug": "newsletter",
+  "cloneRoute": null
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/publications/",
+  "slug": "publications",
+  "cloneRoute": "/publications"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/notices/",
+  "slug": "notices",
+  "cloneRoute": "/notices"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/rti/",
+  "slug": "rti",
+  "cloneRoute": "/rti"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/mou/",
+  "slug": "mou",
+  "cloneRoute": "/mou"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/lok-sabha-question-answer/",
+  "slug": "lok-sabha-question-answer",
+  "cloneRoute": null
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/home-page/for-student/",
+  "slug": "for-student",
+  "cloneRoute": "/for-student"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/home-page/privacy-policy/",
+  "slug": "privacy-policy",
+  "cloneRoute": "/privacy-policy"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/home-page/sitemap/",
+  "slug": "sitemap",
+  "cloneRoute": "/sitemap"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/home-page/for-beneficiary/",
+  "slug": "for-beneficiary",
+  "cloneRoute": "/for-beneficiary"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/home-page/for-government-official/",
+  "slug": "for-government-official",
+  "cloneRoute": "/for-government-official"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/home-page/for-researchers/",
+  "slug": "for-researchers",
+  "cloneRoute": null
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/events/",
+  "slug": "events",
+  "cloneRoute": "/events"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/forms-templates/",
+  "slug": "forms-templates",
+  "cloneRoute": "/forms-templates"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/gallery/",
+  "slug": "gallery",
+  "cloneRoute": "/gallery"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/contact-us/",
+  "slug": "contact-us",
+  "cloneRoute": "/contact-us"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/dashboard/",
+  "slug": "dashboard",
+  "cloneRoute": "/dashboard"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/cpio/",
+  "slug": "cpio",
+  "cloneRoute": null
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/circulars-notifications/",
+  "slug": "circulars-notifications",
+  "cloneRoute": "/circulars-notifications"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/annual-reports/",
+  "slug": "annual-reports",
+  "cloneRoute": "/annual-reports"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/advices/",
+  "slug": "advices",
+  "cloneRoute": "/advices"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/acts-rules/",
+  "slug": "acts-rules",
+  "cloneRoute": "/acts-rules"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/social-defence-faqs/",
+  "slug": "social-defence-faqs",
+  "cloneRoute": "/social-defence-faqs"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/about-the-division-social-defence/",
+  "slug": "about-the-division-social-defence",
+  "cloneRoute": "/about-the-division-social-defence"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/daf-directory/",
+  "slug": "daf-directory",
+  "cloneRoute": "/daf-directory"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/chairpersons-office/",
+  "slug": "chairpersons-office",
+  "cloneRoute": "/chairpersons-office"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/nskfdc-directory/",
+  "slug": "nskfdc-directory",
+  "cloneRoute": "/nskfdc-directory"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/ncsk-directory/",
+  "slug": "ncsk-directory",
+  "cloneRoute": "/ncsk-directory"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/scw-directory/",
+  "slug": "scw-directory",
+  "cloneRoute": "/scw-directory"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/ncbc-directory/",
+  "slug": "ncbc-directory",
+  "cloneRoute": "/ncbc-directory"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/nbcfdc-directory/",
+  "slug": "nbcfdc-directory",
+  "cloneRoute": "/nbcfdc-directory"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/dwbdnc-directory/",
+  "slug": "dwbdnc-directory",
+  "cloneRoute": "/dwbdnc-directory"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/handbook-on-social-welfare-statistics/",
+  "slug": "handbook-on-social-welfare-statistics",
+  "cloneRoute": null
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/list-of-research-evaluation-studies/",
+  "slug": "list-of-research-evaluation-studies",
+  "cloneRoute": "/list-of-research-evaluation-studies"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/about-the-division-statistics-division/",
+  "slug": "about-the-division-statistics-division",
+  "cloneRoute": "/about-the-division-statistics-division"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/about-the-division-2/",
+  "slug": "about-the-division-2",
+  "cloneRoute": "/about-the-division-2"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/special-mention-matters-raised-under-377/",
+  "slug": "special-mention-matters-raised-under-377",
+  "cloneRoute": null
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/assurances/",
+  "slug": "assurances",
+  "cloneRoute": "/assurances"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/grants-in-aid-to-ngos-faqs/",
+  "slug": "grants-in-aid-to-ngos-faqs",
+  "cloneRoute": "/grants-in-aid-to-ngos-faqs"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/list-of-de-blacklisted-ngos/",
+  "slug": "list-of-de-blacklisted-ngos",
+  "cloneRoute": "/list-of-de-blacklisted-ngos"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/grants-suspended-list-blacklisted-ngos/",
+  "slug": "grants-suspended-list-blacklisted-ngos",
+  "cloneRoute": "/grants-suspended-list-blacklisted-ngos"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/minutes-of-screening-committees-2/",
+  "slug": "minutes-of-screening-committees-2",
+  "cloneRoute": null
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/activities-of-the-ministry-official-language/",
+  "slug": "activities-of-the-ministry-official-language",
+  "cloneRoute": "/activities-of-the-ministry-official-language"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/official-language-background/",
+  "slug": "official-language-background",
+  "cloneRoute": "/official-language-background"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/policies-acts-rules-codes-circular-social-defence/",
+  "slug": "policies-acts-rules-codes-circular-social-defence",
+  "cloneRoute": "/policies-acts-rules-codes-circular-social-defence"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/organisation-under-division-social-division/",
+  "slug": "organisation-under-division-social-division",
+  "cloneRoute": "/organisation-under-division-social-division"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/drug-division/",
+  "slug": "drug-division",
+  "cloneRoute": "/drug-division"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/welfare-of-the-other-backward-classes/",
+  "slug": "welfare-of-the-other-backward-classes",
+  "cloneRoute": "/welfare-of-the-other-backward-classes"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/cessation-of-voluntary-organisation-activities/",
+  "slug": "cessation-of-voluntary-organisation-activities",
+  "cloneRoute": "/cessation-of-voluntary-organisation-activities"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/penalties-in-case-of-misutilization-of-grands/",
+  "slug": "penalties-in-case-of-misutilization-of-grands",
+  "cloneRoute": null
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/inspection-and-monitoring-procedure/",
+  "slug": "inspection-and-monitoring-procedure",
+  "cloneRoute": "/inspection-and-monitoring-procedure"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/contact-person/",
+  "slug": "contact-person",
+  "cloneRoute": "/contact-person"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/detailed-demand-for-grant/",
+  "slug": "detailed-demand-for-grant",
+  "cloneRoute": null
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/minutes-of-screening-committees/",
+  "slug": "minutes-of-screening-committees",
+  "cloneRoute": "/minutes-of-screening-committees"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations/",
+  "slug": "procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations",
+  "cloneRoute": "/procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/prioritization-guidelines-for-funding-projects-by-vuluntary-organisations/",
+  "slug": "prioritization-guidelines-for-funding-projects-by-vuluntary-organisations",
+  "cloneRoute": null
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/policies-acts-rules-codes-circular/",
+  "slug": "policies-acts-rules-codes-circular",
+  "cloneRoute": "/policies-acts-rules-codes-circular"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/about-the-division-welfare-of-the-other-backward-classes/",
+  "slug": "about-the-division-welfare-of-the-other-backward-classes",
+  "cloneRoute": "/about-the-division-welfare-of-the-other-backward-classes"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/policies-acts-rules-circular/",
+  "slug": "policies-acts-rules-circular",
+  "cloneRoute": "/policies-acts-rules-circular"
+ },
+ {
+  "kind": "page",
+  "type": "page",
+  "path": "/about-the-division/",
+  "slug": "about-the-division",
+  "cloneRoute": "/about-the-division"
+ },
+ {
+  "kind": "template-sample",
+  "type": "booking",
+  "path": "/booking/conference-3/",
+  "slug": "booking--conference-3",
+  "recordCount": 12,
+  "cloneRoute": null
+ },
+ {
+  "kind": "template-sample",
+  "type": "booking",
+  "path": "/booking/vaishali/",
+  "slug": "booking--vaishali",
+  "recordCount": 12,
+  "cloneRoute": null
+ },
+ {
+  "kind": "template-sample",
+  "type": "cpio",
+  "path": "/cpio/shri-sumit-kumar/",
+  "slug": "cpio--shri-sumit-kumar",
+  "recordCount": 13,
+  "cloneRoute": null
+ },
+ {
+  "kind": "template-sample",
+  "type": "cpio",
+  "path": "/cpio/shri-vinesh-pachnanda/",
+  "slug": "cpio--shri-vinesh-pachnanda",
+  "recordCount": 13,
+  "cloneRoute": null
+ },
+ {
+  "kind": "template-sample",
+  "type": "documents",
+  "path": "/documents/corrigendum-to-pm-daksh-scheme-guidelines/",
+  "slug": "documents--corrigendum-to-pm-daksh-scheme-guideline",
+  "recordCount": 6000,
+  "cloneRoute": null
+ },
+ {
+  "kind": "template-sample",
+  "type": "documents",
+  "path": "/documents/expression-of-interest-eoi-for-rate-of-interest-for-investment-of-an-amount-of-rs-105-00-crore-in-fixed-deposit-from-public-and-private-sector-banks/",
+  "slug": "documents--expression-of-interest-eoi-for-rate-of-i",
+  "recordCount": 6000,
+  "cloneRoute": null
+ },
+ {
+  "kind": "template-sample",
+  "type": "events",
+  "path": "/events/ek-ped-maa-ke-naam-7/",
+  "slug": "events--ek-ped-maa-ke-naam-7",
+  "recordCount": 635,
+  "cloneRoute": null
+ },
+ {
+  "kind": "template-sample",
+  "type": "events",
+  "path": "/events/ek-ped-maa-ke-naam-6/",
+  "slug": "events--ek-ped-maa-ke-naam-6",
+  "recordCount": 635,
+  "cloneRoute": null
+ },
+ {
+  "kind": "template-sample",
+  "type": "gallery",
+  "path": "/gallery/14446-national-de-addiction-and-telecounseling-helpline-op-1/",
+  "slug": "gallery--14446-national-de-addiction-and-telecoun",
+  "recordCount": 590,
+  "cloneRoute": null
+ },
+ {
+  "kind": "template-sample",
+  "type": "gallery",
+  "path": "/gallery/role-of-parents-teachers-in-early-identification-prevention-and-treatment-of-substance-use/",
+  "slug": "gallery--role-of-parents-teachers-in-early-identi",
+  "recordCount": 590,
+  "cloneRoute": null
+ },
+ {
+  "kind": "template-sample",
+  "type": "official",
+  "path": "/official/shri-shailendra-kumar/",
+  "slug": "official--shri-shailendra-kumar",
+  "recordCount": 453,
+  "cloneRoute": null
+ },
+ {
+  "kind": "template-sample",
+  "type": "official",
+  "path": "/official/dr-swati-s-mishra/",
+  "slug": "official--dr-swati-s-mishra",
+  "recordCount": 453,
+  "cloneRoute": null
+ },
+ {
+  "kind": "template-sample",
+  "type": "organisation",
+  "path": "/organisation/senior-citizens-welfarescw/pearls-of-wisdom/",
+  "slug": "organisation--pearls-of-wisdom",
+  "recordCount": 248,
+  "cloneRoute": null
+ },
+ {
+  "kind": "template-sample",
+  "type": "organisation",
+  "path": "/organisation/national-commission-for-safai-karamcharis/contact-us/",
+  "slug": "organisation--contact-us",
+  "recordCount": 248,
+  "cloneRoute": null
+ },
+ {
+  "kind": "template-sample",
+  "type": "scheme-documents",
+  "path": "/scheme-documents/merger-order/",
+  "slug": "scheme-documents--merger-order",
+  "recordCount": 100,
+  "cloneRoute": null
+ },
+ {
+  "kind": "template-sample",
+  "type": "scheme-documents",
+  "path": "/scheme-documents/dr-ambedkar-national-merit-award-scheme-for-scs-students-for-class-12th-level/",
+  "slug": "scheme-documents--dr-ambedkar-national-merit-award-scheme-",
+  "recordCount": 100,
+  "cloneRoute": null
+ },
+ {
+  "kind": "template-sample",
+  "type": "schemes-and-services",
+  "path": "/schemes-and-services/top-class-education-in-colllege-for-obc-ebc-and-dnt-students/",
+  "slug": "schemes-and-services--top-class-education-in-colllege-for-obc-",
+  "recordCount": 138,
+  "cloneRoute": null
+ },
+ {
+  "kind": "template-sample",
+  "type": "schemes-and-services",
+  "path": "/schemes-and-services/geriatric-caregivers-training/",
+  "slug": "schemes-and-services--geriatric-caregivers-training",
+  "recordCount": 138,
+  "cloneRoute": null
+ },
+ {
+  "kind": "template-sample",
+  "type": "suo-moto-disclosure",
+  "path": "/suo-moto-disclosure/list-of-schemes-projects-programme-underway-in-nisd/",
+  "slug": "suo-moto-disclosure--list-of-schemes-projects-programme-under",
+  "recordCount": 14,
+  "cloneRoute": null
+ },
+ {
+  "kind": "template-sample",
+  "type": "suo-moto-disclosure",
+  "path": "/suo-moto-disclosure/security-audit-certificate/",
+  "slug": "suo-moto-disclosure--security-audit-certificate",
+  "recordCount": 14,
+  "cloneRoute": null
+ },
+ {
+  "kind": "template-sample",
+  "type": "tender",
+  "path": "/tender/investment-of-an-amount-of-rs-10-00-crore-in-fixed-reg-2/",
+  "slug": "tender--investment-of-an-amount-of-rs-10-00-cror",
+  "recordCount": 312,
+  "cloneRoute": null
+ },
+ {
+  "kind": "template-sample",
+  "type": "tender",
+  "path": "/tender/investment-of-an-amount-of-rs-174-00-crore-in-fixed-reg/",
+  "slug": "tender--investment-of-an-amount-of-rs-174-00-cro",
+  "recordCount": 312,
+  "cloneRoute": null
+ },
+ {
+  "kind": "template-sample",
+  "type": "updates",
+  "path": "/updates/3rd-national-lok-adalat-awareness-material-2026/",
+  "slug": "updates--3rd-national-lok-adalat-awareness-materi",
+  "recordCount": 9,
+  "cloneRoute": null
+ },
+ {
+  "kind": "template-sample",
+  "type": "updates",
+  "path": "/updates/pre-bid-meeting-tender-id-gem-2026-b-7743923/",
+  "slug": "updates--pre-bid-meeting-tender-id-gem-2026-b-774",
+  "recordCount": 9,
+  "cloneRoute": null
+ },
+ {
+  "kind": "template-sample",
+  "type": "vacancies",
+  "path": "/vacancies/short-term-internship-programme-at-daic-september-2026/",
+  "slug": "vacancies--short-term-internship-programme-at-daic-",
+  "recordCount": 164,
+  "cloneRoute": null
+ },
+ {
+  "kind": "template-sample",
+  "type": "vacancies",
+  "path": "/vacancies/short-term-internship-programme-at-dr-ambedkar-international-centre-15-janpath-new-delhi-110001-3/",
+  "slug": "vacancies--short-term-internship-programme-at-dr-am",
+  "recordCount": 164,
+  "cloneRoute": null
+ }
+]

@@ -2052,8 +2052,8 @@
   },
   "SamaveshBanner": {
     "nodeId": "56479:42386",
-    "captured": "2026-09-16",
-    "note": "6 variants = Tone 3 x State 2, plus three text properties. Re-captured 16 Sep 2026: the template had been reading an `Explore` text property the master does not have — it would have emitted undefined. The label is drawn in the master but not exposed, and the code's `exploreLabel` defaults to the same word, so the template no longer reads it. Expose it in Figma if a designer ever needs to change the word.",
+    "captured": "2026-09-17",
+    "note": "6 variants = Tone 3 x State 2, three text properties and the `View all` boolean. Re-captured 17 Sep 2026 when `View all` was added: the drawer's footer link to /portals is now switchable, mapped to `showViewAll`. The officer question above it was removed from the master and emptied as the code default, after the Secretary's review made the header's single Login the door for everyone.",
     "properties": {
       "Title": {
         "type": "TEXT"
@@ -2078,6 +2078,9 @@
           "Closed",
           "Open"
         ]
+      },
+      "View all": {
+        "type": "BOOLEAN"
       }
     },
     "deliberatelyOmitted": []
