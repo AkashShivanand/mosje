@@ -2,8 +2,8 @@
   "file": "3FF5l0SMNIwdpZrKkeyPTm",
   "indexPage": "56757:725",
   "indexFrame": "56757:726",
-  "capturedOn": "2026-09-17",
-  "statLine": "96 pages · 218 components · counted 16 September 2026",
+  "capturedOn": "2026-09-18",
+  "statLine": "97 pages · 223 components · counted 18 September 2026",
   "statuses": [
     "Ready",
     "Published",
@@ -65,6 +65,7 @@
     "Inline Edit",
     "Input Area",
     "Select",
+    "Combobox",
     "Number Input",
     "OTP Input",
     "Bot Check",
@@ -246,7 +247,7 @@
     },
     {
       "name": "Forms & Inputs",
-      "stated": 26,
+      "stated": 27,
       "cards": [
         {
           "name": "Input Field",
@@ -260,6 +261,11 @@
         },
         {
           "name": "Select",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Combobox",
           "status": "Ready",
           "linked": true
         },

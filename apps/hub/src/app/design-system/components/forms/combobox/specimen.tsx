@@ -1,9 +1,9 @@
 "use client";
 
-import { Combobox } from "@mosje/design-system";
+import { Combobox, type ComboboxOption } from "@mosje/design-system";
 import * as React from "react";
 
-const DISTRICTS = [
+const DISTRICTS: ComboboxOption[] = [
   { value: "ba", label: "Bankura", hint: "West Bengal" },
   { value: "bh", label: "Bhagalpur", hint: "Bihar" },
   { value: "na", label: "Nalanda", hint: "Bihar" },
@@ -24,6 +24,32 @@ export function ComboboxSpecimen(): React.JSX.Element {
         onChange={setDistrict}
         hint="Type any part of the district or state name."
       />
+    </div>
+  );
+}
+
+export function ComboboxMultipleSpecimen(): React.JSX.Element {
+  const [districts, setDistricts] = React.useState<string[]>(["ba", "ra"]);
+  return (
+    <div style={{ maxWidth: "22rem" }}>
+      <Combobox
+        multiple
+        label="Districts of Operation"
+        options={DISTRICTS}
+        value={districts}
+        onChange={setDistricts}
+        hint="Choose every district the organisation works in."
+      />
+    </div>
+  );
+}
+
+/** Both modes, side by side — the single field's answer, then several. */
+export function ComboboxSpecimens(): React.JSX.Element {
+  return (
+    <div style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-start", gap: "var(--sa-inline-32)" }}>
+      <ComboboxSpecimen />
+      <ComboboxMultipleSpecimen />
     </div>
   );
 }

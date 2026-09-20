@@ -104,6 +104,7 @@ export const FIGMA_NODES = {
   select: "55430:34472", // the Select set, on its own page since the split. Not `dropdown`
   //                        below, which is the separate Dropdown page — pointing Select's
   //                        documentation there sent a designer to a different component.
+  combobox: "58545:1291", // the single set; `Combobox / Multiple` is 58555:1985 on the same page
   otpInput: "55427:34365", // the OTP Input set — 2 lengths x 4 states
   otpBox: "55427:704", // its single-digit sub-part, published so a longer code can be built
   passwordStrengthMeter: "55432:795", // the Password Strength Meter set — 5 strengths
