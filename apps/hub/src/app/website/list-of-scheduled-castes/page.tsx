@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Icon, Link as DSLink, SectionTitle } from "@mosje/design-system";
-import { PageLayout } from "@/components/website/layout/PageLayout";
+import { PageLayout } from "@/components/website-next/layout/PageLayout";
 import { ListingTable, type ListingTableColumn } from "@/components/website/ui/data-table";
 import { NCSC_FUNCTION_CIRCULARS, SCHEDULED_CASTE_LISTS } from "@/data/website";
 import { socialCard } from "@/lib/seo/social";
@@ -61,7 +61,7 @@ export default function Page() {
 
       <section className="sa-container pb-14">
         <SectionTitle title="Functions of NCSC" as={2} />
-        <ul className="gov-prose">
+        <ul className="wn-prose">
           {NCSC_FUNCTION_CIRCULARS.map((c) => (
             <li key={`${c.label}-${c.href}`}>
               <DSLink

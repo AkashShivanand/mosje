@@ -1,0 +1,599 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   The 2026 website redesign — the site's own layer over SAMAVESH.
+
+   Every value is a SAMAVESH semantic token (--sa-*). No hex, no px that a token
+   names, no Tier-1 --sa-ref-* primitive. Scoped to [data-design="next"], which
+   only app/website/layout.tsx sets, so nothing here reaches the classic archive,
+   the portals or the design-system docs.
+
+   Class prefix: wn- (website, new).
+   ───────────────────────────────────────────────────────────────────────────── */
+@layer theme, base, components, utilities;
+
+@layer components {
+  [data-design="next"] {
+    color: var(--sa-text-neutral-base);
+    background: var(--sa-bg-neutral-base);
+    font-family: var(--sa-font-latin);
+  }
+
+  [data-design="next"] .wn-main {
+    flex: 1;
+    outline: none;
+  }
+  [data-design="next"] .wn-main:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: calc(var(--sa-focus-width) * -1);
+  }
+
+  /* Headings get anchor clearance under the sticky masthead. */
+  [data-design="next"] :is(h1, h2, h3, [id]) {
+    scroll-margin-top: calc(var(--sa-layout-bar-height, 46px) + var(--sa-stack-24));
+  }
+
+  /* ── Page header ─────────────────────────────────────────────────────────── */
+  .wn-pagehead {
+    background: var(--sa-bg-neutral-subtlest);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    padding-block: var(--sa-stack-20) var(--sa-section-40);
+  }
+  .wn-pagehead__body {
+    display: grid;
+    gap: var(--sa-stack-24);
+    margin-top: var(--sa-stack-24);
+    align-items: end;
+  }
+  @media (min-width: 1024px) {
+    .wn-pagehead__body { grid-template-columns: minmax(0, 1fr) auto; }
+    .wn-pagehead__body--media { grid-template-columns: minmax(0, 1fr) 420px; align-items: center; }
+    .wn-pagehead__body--media .wn-pagehead__actions { grid-column: 1; }
+  }
+  .wn-pagehead__text {
+    display: flex;
+    gap: var(--sa-inline-20);
+    align-items: flex-start;
+    min-width: 0;
+  }
+  .wn-pagehead__mark {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 88px;
+    height: 88px;
+    padding: var(--sa-padding-8);
+    background: var(--sa-bg-neutral-base);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+  }
+  .wn-pagehead__logo { width: 100%; height: 100%; object-fit: contain; }
+  .wn-pagehead__copy { min-width: 0; max-width: var(--sa-container-measure); }
+  .wn-pagehead__badge {
+    display: inline-block;
+    margin-bottom: var(--sa-stack-8);
+    padding: var(--sa-padding-2) var(--sa-padding-8);
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-bg-brand-primary-subtler);
+    color: var(--sa-text-brand-primary-bolder);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-medium);
+  }
+  .wn-pagehead__title {
+    font-size: var(--sa-type-headline-1-size);
+    line-height: var(--sa-type-headline-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    letter-spacing: var(--sa-type-heading-tracking);
+    color: var(--sa-text-neutral-bolder);
+    text-wrap: balance;
+  }
+  .wn-pagehead__lead {
+    margin-top: var(--sa-stack-12);
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    color: var(--sa-text-neutral-subtle);
+    text-wrap: pretty;
+  }
+  .wn-pagehead__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-6);
+    margin-top: var(--sa-stack-16);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+  .wn-pagehead__actions { display: flex; flex-wrap: wrap; gap: var(--sa-inline-12); }
+  .wn-pagehead__media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--sa-shape-16);
+    background: var(--sa-bg-neutral-subtle);
+  }
+
+  /* ── Body sections ───────────────────────────────────────────────────────── */
+  .wn-section { padding-block: var(--sa-section-48); }
+  @media (min-width: 768px) { .wn-section { padding-block: var(--sa-section-64); } }
+  .wn-section--muted { background: var(--sa-bg-neutral-subtlest); }
+  .wn-section--tight { padding-block: var(--sa-section-40); }
+
+  .wn-split {
+    display: grid;
+    gap: var(--sa-stack-40);
+  }
+  @media (min-width: 1024px) {
+    .wn-split { grid-template-columns: minmax(0, 1fr) 300px; gap: var(--sa-inline-64); }
+  }
+  .wn-aside { display: grid; gap: var(--sa-stack-24); align-content: start; }
+  @media (min-width: 1024px) {
+    .wn-aside--sticky { position: sticky; top: calc(var(--sa-layout-bar-height, 46px) + var(--sa-stack-24)); }
+  }
+
+  /* ── Prose: running text from the department ─────────────────────────────── */
+  .wn-prose,
+  [data-design="next"] .gov-prose {
+    max-width: var(--sa-container-measure);
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-para, var(--sa-type-body-1-lh));
+    color: var(--sa-text-neutral-base);
+    text-align: start;           /* never justified (issue TYP-07) */
+  }
+  .wn-prose > * + * { margin-top: var(--sa-stack-16); }
+  .wn-prose :is(h2) {
+    margin-top: var(--sa-stack-40);
+    font-size: var(--sa-type-headline-4-size);
+    line-height: var(--sa-type-headline-4-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+  .wn-prose :is(h3) {
+    margin-top: var(--sa-stack-32);
+    font-size: var(--sa-type-title-1-size);
+    line-height: var(--sa-type-title-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+  .wn-prose :is(h4) {
+    margin-top: var(--sa-stack-24);
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+  .wn-prose :is(h2, h3, h4) + * { margin-top: var(--sa-stack-8); }
+  .wn-prose :is(ul, ol) { padding-inline-start: var(--sa-padding-24); }
+  .wn-prose ul { list-style: disc; }
+  .wn-prose ol { list-style: decimal; }
+  .wn-prose li + li { margin-top: var(--sa-stack-8); }
+  .wn-prose li::marker { color: var(--sa-icon-neutral-subtle); }
+  /* Links in running text are underlined, not told apart by colour (ACC-18). */
+  .wn-prose a {
+    color: var(--sa-text-link-brand-default);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: var(--sa-stroke-1);
+  }
+  .wn-prose a:hover { color: var(--sa-text-link-brand-hover); text-decoration-thickness: var(--sa-stroke-2); }
+  .wn-prose strong { font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-neutral-bolder); }
+  .wn-prose em { font-style: italic; }
+  .wn-prose blockquote {
+    padding: var(--sa-padding-16) var(--sa-padding-24);
+    background: var(--sa-bg-neutral-subtlest);
+    border-radius: var(--sa-shape-12);
+    color: var(--sa-text-neutral-bolder);
+  }
+  .wn-prose img { max-width: 100%; height: auto; border-radius: var(--sa-shape-12); }
+  .wn-prose hr { border: 0; border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); margin-block: var(--sa-stack-32); }
+  /* Tables inside prose: one style, horizontally scrollable in a labelled region
+     (MOB-03), numbers right-aligned by the author via .num (TYP-05). */
+  .wn-prose table { width: 100%; border-collapse: collapse; font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); }
+  .wn-prose :is(th, td) { padding: var(--sa-padding-12) var(--sa-padding-16); border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); text-align: start; vertical-align: top; }
+  .wn-prose th { background: var(--sa-bg-neutral-subtlest); font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-neutral-bolder); }
+  .wn-prose :is(th, td).num { text-align: end; font-variant-numeric: tabular-nums; }
+  .wn-prose .wn-table-wrap { overflow-x: auto; border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); border-radius: var(--sa-shape-12); }
+  .wn-prose .wn-table-wrap table { margin: 0; }
+  .wn-prose .wn-table-wrap :is(tr:last-child) :is(td) { border-bottom: 0; }
+
+  /* ── Side panels (on this page, related links, downloads) ────────────────── */
+  .wn-panel {
+    padding: var(--sa-padding-20) var(--sa-padding-24);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-base);
+  }
+  .wn-panel__title {
+    font-size: var(--sa-type-title-3-size);
+    line-height: var(--sa-type-title-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+    margin-bottom: var(--sa-stack-12);
+  }
+  .wn-panel ul { display: grid; gap: var(--sa-stack-4); }
+  .wn-panel a {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    min-height: var(--sa-target-comfortable);
+    color: var(--sa-text-link-brand-default);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+  .wn-panel a:hover { color: var(--sa-text-link-brand-hover); text-decoration: underline; }
+
+  /* ── Footer additions ────────────────────────────────────────────────────── */
+  .wn-report {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--sa-target-min);
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    margin-inline-end: var(--sa-inline-24);
+  }
+
+  /* ── Print (issue LAY-04): the page, its address and its date; no chrome. ── */
+  @media print {
+    [data-design="next"] :is(header.sa-site-header, .sa-site-header, footer, nav, .wn-noprint, [data-sa-corner-occupant], [data-sa-wall-occupant]) { display: none !important; }
+    [data-design="next"] .wn-pagehead { background: none; border: 0; padding: 0; }
+    [data-design="next"] .wn-prose a::after { content: " (" attr(href) ")"; font-size: 0.85em; }
+    [data-design="next"] .wn-main::before { content: "Department of Social Justice & Empowerment, Government of India"; display: block; margin-bottom: 12pt; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-design="next"] *, [data-design="next"] *::before, [data-design="next"] *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Home page
+   ───────────────────────────────────────────────────────────────────────────── */
+@layer components {
+  /* Hero — the one bold move: the Department's deepest navy, the task first. */
+  .wn-hero {
+    background: var(--sa-bg-brand-primary-boldest);
+    color: var(--sa-on-bg-brand-primary-boldest);
+    padding-block: var(--sa-section-48) var(--sa-section-56);
+  }
+  .wn-hero__grid { display: grid; gap: var(--sa-stack-40); align-items: center; }
+  @media (min-width: 1024px) {
+    .wn-hero { padding-block: var(--sa-section-64) var(--sa-section-72); }
+    .wn-hero__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--sa-inline-64); }
+  }
+  .wn-hero__title {
+    font-family: var(--sa-font-display);
+    font-size: var(--sa-type-display-4-size);
+    line-height: var(--sa-type-display-4-lh);
+    font-weight: var(--sa-font-weight-displayMedium);
+    letter-spacing: var(--sa-type-heading-tracking);
+    text-wrap: balance;
+    max-width: 20ch;
+  }
+  .wn-hero__lead {
+    margin-top: var(--sa-stack-16);
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    max-width: var(--sa-container-measure);
+    color: var(--sa-on-bg-brand-primary-boldest);
+    opacity: 0.92;
+  }
+  .wn-hero__search { margin-top: var(--sa-stack-32); max-width: 640px; }
+  .wn-hero__label {
+    display: block;
+    margin-bottom: var(--sa-stack-8);
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-medium);
+  }
+  .wn-hero__field {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    padding: var(--sa-padding-6) var(--sa-padding-6) var(--sa-padding-6) var(--sa-padding-16);
+    background: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-base);
+    border-radius: var(--sa-shape-full);
+    box-shadow: var(--sa-elevation-raised);
+  }
+  .wn-hero__field :is(svg, .material-symbols-rounded) { color: var(--sa-icon-neutral-subtle); flex: none; }
+  .wn-hero__field input {
+    flex: 1;
+    min-width: 0;
+    min-height: var(--sa-target-comfortable);
+    border: 0;
+    background: transparent;
+    font-size: var(--sa-type-body-1-size);
+    color: var(--sa-text-neutral-bolder);
+  }
+  .wn-hero__field input::placeholder { color: var(--sa-text-neutral-subtle); }
+  .wn-hero__field input:focus { outline: none; }
+  .wn-hero__field:focus-within {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ringInner);
+    outline-offset: var(--sa-focus-offset);
+  }
+  .wn-hero__field button { flex: none; }
+  .wn-hero__tasks { margin-top: var(--sa-stack-24); }
+  .wn-hero__tasks ul { display: flex; flex-wrap: wrap; gap: var(--sa-inline-8); }
+  .wn-hero__tasks a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    min-height: var(--sa-target-comfortable);
+    padding-inline: var(--sa-padding-16);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-inverse-subtle);
+    border-radius: var(--sa-shape-full);
+    color: var(--sa-on-bg-brand-primary-boldest);
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-medium);
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+  .wn-hero__tasks a:hover { background: var(--sa-bg-brand-primary-bolder); border-color: var(--sa-border-neutral-inverse-default); }
+  .wn-hero__tasks a:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ringInner); outline-offset: var(--sa-focus-offset); }
+  .wn-hero__media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--sa-shape-24);
+    overflow: hidden;
+    background: var(--sa-bg-brand-primary-bolder);
+  }
+  @media (max-width: 767px) { .wn-hero__media { display: none; } }
+
+  /* Personas */
+  .wn-audiences {
+    display: grid;
+    gap: var(--sa-stack-12);
+    margin-top: var(--sa-stack-32);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 248px), 1fr));
+  }
+  .wn-audience {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-16);
+    height: 100%;
+    padding: var(--sa-padding-12) var(--sa-padding-16) var(--sa-padding-12) var(--sa-padding-12);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-16);
+    background: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-bolder);
+    transition: border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      box-shadow var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+  .wn-audience:hover { border-color: var(--sa-border-brand-primary-base); box-shadow: var(--sa-elevation-card); }
+  .wn-audience__mark {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-bg-brand-primary-subtler);
+    color: var(--sa-icon-brand-primary-bolder);
+    overflow: hidden;
+  }
+  .wn-audience__mark img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .wn-audience__label {
+    flex: 1;
+    font-size: var(--sa-type-title-3-size);
+    line-height: var(--sa-type-title-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+  .wn-audience__go { display: inline-flex; color: var(--sa-icon-brand-primary-base); flex: none; }
+  /* On a phone, eleven full-width rows is a scroll of 1,000px before the next
+     section. Two columns of stacked tiles halve it and keep the figure. */
+  @media (max-width: 639px) {
+    .wn-audiences { grid-template-columns: 1fr 1fr; gap: var(--sa-stack-8); }
+    .wn-audience { flex-direction: column; align-items: flex-start; gap: var(--sa-stack-8); padding: var(--sa-padding-12); }
+    .wn-audience__go { display: none; }
+    .wn-audience__label { font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); }
+  }
+  .wn-audience--all { background: var(--sa-bg-brand-primary-subtler); border-color: transparent; color: var(--sa-text-brand-primary-bolder); }
+  .wn-audience--all .wn-audience__mark { background: var(--sa-bg-neutral-base); }
+
+  /* Offerings */
+  .wn-offerings {
+    display: grid;
+    margin-top: var(--sa-stack-32);
+    gap: 0 var(--sa-inline-48);
+  }
+  @media (min-width: 768px) { .wn-offerings { grid-template-columns: 1fr 1fr; } }
+  .wn-offering {
+    display: flex;
+    gap: var(--sa-inline-16);
+    padding-block: var(--sa-padding-20);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    color: var(--sa-text-neutral-base);
+  }
+  .wn-offering__icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-base);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    color: var(--sa-icon-brand-primary-bolder);
+  }
+  .wn-offering__text { display: grid; gap: var(--sa-stack-2); }
+  .wn-offering__label {
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-link-brand-default);
+  }
+  .wn-offering:hover .wn-offering__label { text-decoration: underline; text-underline-offset: 0.2em; }
+  .wn-offering__sub { font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); color: var(--sa-text-neutral-subtle); }
+
+  /* Latest */
+  .wn-latest { display: grid; gap: var(--sa-stack-40); margin-top: var(--sa-stack-32); }
+  @media (min-width: 1024px) { .wn-latest { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sa-inline-40); } }
+  .wn-latest__title {
+    padding-bottom: var(--sa-padding-12);
+    border-bottom: var(--sa-stroke-2) solid var(--sa-border-brand-primary-base);
+    font-size: var(--sa-type-title-1-size);
+    line-height: var(--sa-type-title-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+  .wn-latest__list > li {
+    display: grid;
+    gap: var(--sa-stack-4);
+    padding-block: var(--sa-padding-16);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+  .wn-latest__date { font-size: var(--sa-type-label-2-size); line-height: var(--sa-type-label-2-lh); color: var(--sa-text-neutral-subtle); font-variant-numeric: tabular-nums; }
+  .wn-latest__link {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-medium);
+    color: var(--sa-text-neutral-bolder);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .wn-latest__link:hover { color: var(--sa-text-link-brand-hover); text-decoration: underline; }
+  .wn-latest__empty { padding-block: var(--sa-padding-16); color: var(--sa-text-neutral-subtle); }
+  .wn-latest__all {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--sa-target-comfortable);
+    margin-top: var(--sa-stack-8);
+    color: var(--sa-text-link-brand-default);
+    font-weight: var(--sa-font-weight-semibold);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  /* Campaign */
+  .wn-campaign { background: var(--sa-bg-neutral-subtlest); border-block: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); padding-block: var(--sa-section-48); }
+  @media (min-width: 768px) { .wn-campaign { padding-block: var(--sa-section-64); } }
+  .wn-campaign__grid { display: grid; gap: var(--sa-stack-32); align-items: center; }
+  @media (min-width: 1024px) { .wn-campaign__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--sa-inline-64); } }
+  .wn-campaign__media { position: relative; aspect-ratio: 3 / 2; border-radius: var(--sa-shape-24); overflow: hidden; background: var(--sa-bg-neutral-subtle); }
+  .wn-campaign__mark { width: 56px; height: 56px; object-fit: contain; }
+  .wn-campaign__title {
+    margin-top: var(--sa-stack-16);
+    font-size: var(--sa-type-headline-2-size);
+    line-height: var(--sa-type-headline-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+  .wn-campaign__lead { margin-top: var(--sa-stack-12); max-width: var(--sa-container-measure); color: var(--sa-text-neutral-base); }
+  .wn-campaign__actions { display: flex; flex-wrap: wrap; gap: var(--sa-inline-12); margin-top: var(--sa-stack-24); }
+  .wn-campaign__help { display: flex; align-items: center; gap: var(--sa-inline-8); margin-top: var(--sa-stack-24); color: var(--sa-text-neutral-base); }
+  .wn-campaign__help a { font-weight: var(--sa-font-weight-bold); color: var(--sa-text-link-brand-default); text-decoration: underline; }
+
+  /* Organisations */
+  .wn-orgs { display: grid; gap: var(--sa-stack-40); margin-top: var(--sa-stack-32); }
+  .wn-orgs__heading {
+    margin-bottom: var(--sa-stack-12);
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-subtle);
+  }
+  .wn-orgs__list { display: grid; gap: var(--sa-stack-12); grid-template-columns: repeat(auto-fill, minmax(min(100%, 272px), 1fr)); }
+  .wn-org {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-16);
+    height: 100%;
+    padding: var(--sa-padding-12) var(--sa-padding-16) var(--sa-padding-12) var(--sa-padding-12);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    color: var(--sa-text-neutral-bolder);
+    transition: border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+  .wn-org:hover { border-color: var(--sa-border-brand-primary-base); }
+  .wn-org:hover .wn-org__name { text-decoration: underline; text-underline-offset: 0.2em; }
+  .wn-org__mark {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    padding: var(--sa-padding-6);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-subtlest);
+  }
+  .wn-org__mark { overflow: hidden; }
+  .wn-org__mark img { width: 100%; height: 100%; max-height: 100%; object-fit: contain; }
+  .wn-org__name { font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); font-weight: var(--sa-font-weight-medium); }
+  .wn-org__abbr { color: var(--sa-text-neutral-subtle); font-weight: var(--sa-font-weight-regular); }
+
+  /* About + Ministers */
+  .wn-about { display: grid; gap: var(--sa-stack-40); align-items: start; }
+  @media (min-width: 1024px) { .wn-about { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--sa-inline-64); } }
+  .wn-about__title { font-size: var(--sa-type-headline-4-size); line-height: var(--sa-type-headline-4-lh); font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-neutral-bolder); }
+  .wn-about__lead { margin-top: var(--sa-stack-12); font-size: var(--sa-type-body-1-size); line-height: var(--sa-type-body-1-lh); color: var(--sa-text-neutral-base); }
+  .wn-about__links { margin-top: var(--sa-stack-24); border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); }
+  .wn-about__links a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: var(--sa-target-spacious, var(--sa-target-comfortable));
+    padding-block: var(--sa-padding-12);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    color: var(--sa-text-link-brand-default);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+  .wn-about__links a:hover span { text-decoration: underline; text-underline-offset: 0.2em; }
+  .wn-ministers { display: grid; gap: var(--sa-stack-24); grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); }
+  .wn-minister { display: grid; justify-items: start; gap: var(--sa-stack-4); }
+  .wn-minister__photo {
+    display: block;
+    width: 120px;
+    height: 120px;
+    margin-bottom: var(--sa-stack-12);
+    border-radius: var(--sa-shape-full);
+    overflow: hidden;
+    background: var(--sa-bg-neutral-subtle);
+  }
+  .wn-minister__photo img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .wn-minister__name { font-size: var(--sa-type-title-2-size); line-height: var(--sa-type-title-2-lh); font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-neutral-bolder); }
+  .wn-minister__role { font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); color: var(--sa-text-neutral-subtle); }
+
+  /* Helplines */
+  .wn-helplines { background: var(--sa-bg-neutral-base); padding-block: var(--sa-section-48) var(--sa-section-64); }
+  .wn-helplines__title { font-size: var(--sa-type-headline-4-size); line-height: var(--sa-type-headline-4-lh); font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-neutral-bolder); }
+  .wn-helplines__lead { margin-top: var(--sa-stack-4); color: var(--sa-text-neutral-subtle); }
+  .wn-helplines__list { display: grid; gap: var(--sa-stack-16); margin-top: var(--sa-stack-24); }
+  @media (min-width: 768px) { .wn-helplines__list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .wn-helpline {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--sa-stack-2) var(--sa-inline-12);
+    align-items: center;
+    height: 100%;
+    padding: var(--sa-padding-20) var(--sa-padding-24);
+    border-radius: var(--sa-shape-16);
+    background: var(--sa-bg-brand-primary-subtler);
+    color: var(--sa-text-neutral-bolder);
+  }
+  .wn-helpline:hover { background: var(--sa-bg-brand-primary-subtle); }
+  .wn-helpline__icon { color: var(--sa-icon-brand-primary-bolder); }
+  .wn-helpline__number {
+    font-family: var(--sa-font-display);
+    font-size: var(--sa-type-headline-2-size);
+    line-height: var(--sa-type-headline-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-brand-primary-bolder);
+    font-variant-numeric: tabular-nums;
+  }
+  .wn-helpline__name { grid-column: 1 / -1; font-weight: var(--sa-font-weight-semibold); }
+  .wn-helpline__sub { grid-column: 1 / -1; font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); color: var(--sa-text-neutral-subtle); }
+}
+
+/* UNLAYERED, deliberately: it overrides an unlayered rule in the design
+   system's layout.css, which reserves a right-hand gutter on every website
+   container for the classic "Important Links" wall tab. The redesign has no wall
+   tab (issue MOB-04: the tab covered content; its links are in the footer's
+   Related Links), so its margins are symmetric at every width. */
+[data-site="website"][data-design="next"] .sa-container {
+  padding-inline-end: var(--sa-grid-margin-page);
+}

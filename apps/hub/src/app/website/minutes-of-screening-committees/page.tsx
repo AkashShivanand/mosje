@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
+import { ListingPage } from "@/components/website-next/templates/ListingPage";
 import {
   grantDocumentColumns,
   grantDocumentRows,

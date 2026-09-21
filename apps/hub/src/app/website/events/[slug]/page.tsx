@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ContentPage } from "@/components/website/templates/ContentPage";
+import { ContentPage } from "@/components/website-next/templates/ContentPage";
 import { Icon } from "@mosje/design-system";
 import { socialCard } from "@/lib/seo/social";
 

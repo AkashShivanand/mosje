@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PageLayout } from "@/components/website/layout/PageLayout";
+import { PageLayout } from "@/components/website-next/layout/PageLayout";
 import { Icon } from "@mosje/design-system";
 
 export const metadata: Metadata = {

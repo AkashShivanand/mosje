@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { Card, CardBody, CardSubtitle, CardTitle, EmptyState, Icon } from "@mosje/design-system";
-import { PageLayout } from "@/components/website/layout/PageLayout";
+import { PageLayout } from "@/components/website-next/layout/PageLayout";
 import { getBookableVenues, getContentSyncedDate } from "@/lib/website/content";
 import { socialCard } from "@/lib/seo/social";
 import "@/components/website/templates/record-detail.css";

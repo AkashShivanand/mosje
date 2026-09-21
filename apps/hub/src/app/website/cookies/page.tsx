@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Link } from "@mosje/design-system";
-import { ContentPage } from "@/components/website/templates/ContentPage";
+import { ContentPage } from "@/components/website-next/templates/ContentPage";
 import { CookiePreferences } from "./cookie-preferences";
 import { socialCard } from "@/lib/seo/social";
 

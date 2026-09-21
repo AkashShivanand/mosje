@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ContentPage } from "@/components/website/templates/ContentPage";
+import { ContentPage } from "@/components/website-next/templates/ContentPage";
 
 export const metadata: Metadata = {
   title: "Prioritization Guidelines for Funding Projects by Voluntary Organisations",

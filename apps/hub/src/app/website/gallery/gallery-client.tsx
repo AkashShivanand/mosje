@@ -11,7 +11,7 @@ import {
   Search,
   Select,
 } from "@mosje/design-system";
-import { PageLayout } from "@/components/website/layout/PageLayout";
+import { PageLayout } from "@/components/website-next/layout/PageLayout";
 import type { GalleryRecord } from "@/types/website/content";
 import "@/components/website/templates/record-library.css";
 import "@/components/website/templates/record-detail.css";

@@ -5,6 +5,7 @@ import { resolveSamaveshBannerPlacement } from "@/lib/samavesh-banner/resolve";
 import { SamaveshBannerProvider } from "@/lib/samavesh-banner/context";
 import { OG_CARD_IMAGE } from "@/lib/seo/card";
 import "./website.css";
+import "@/components/website-next/website-next.css";
 
 const WEBSITE_DESCRIPTION =
   "Department of Social Justice & Empowerment (DoSJE), Ministry of Social Justice & Empowerment, Government of India.";
@@ -73,7 +74,7 @@ export default async function WebsiteLayout({
        for a translation, so pages that have not adopted <T> are unaffected. */
     <TranslationProvider>
       <SamaveshBannerProvider placement={placement}>
-        <div data-site="website" className="flex min-h-screen flex-col">
+        <div data-site="website" data-design="next" className="flex min-h-screen flex-col">
           {children}
         </div>
       </SamaveshBannerProvider>

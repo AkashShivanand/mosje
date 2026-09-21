@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ContentPage } from "@/components/website/templates/ContentPage";
+import { ContentPage } from "@/components/website-next/templates/ContentPage";
 
 export const metadata: Metadata = {
   title: "The Official Languages Act, 1963 | Department of Social Justice & Empowerment",

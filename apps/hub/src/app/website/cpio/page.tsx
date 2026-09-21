@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
+import { ListingPage } from "@/components/website-next/templates/ListingPage";
 import { getContentSyncedDate, getCpios } from "@/lib/website/content";
 import type { ListingTableColumn } from "@/components/website/ui/data-table";
 import { socialCard } from "@/lib/seo/social";

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Icon, Pagination } from "@mosje/design-system";
-import { PageLayout } from "@/components/website/layout/PageLayout";
+import { PageLayout } from "@/components/website-next/layout/PageLayout";
 import { SearchPageField } from "@/components/website/search/SearchPageField";
 import { ResultClickTracker } from "@/components/website/search/ResultClickTracker";
 import {

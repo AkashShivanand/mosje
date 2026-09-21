@@ -1,50 +1,44 @@
-import { Header } from "@/components/website/Header";
-import { WebsiteSamaveshBanner } from "@/components/website/website-samavesh-banner";
-import { HeroCarousel } from "@/components/website/HeroCarousel";
-import { AboutUs } from "@/components/website/AboutUs";
-import { Offerings } from "@/components/website/Offerings";
-import { Organisations } from "@/components/website/Organisations";
-import { NmbaHomeCompact } from "@/components/website/nmba/NmbaHomeCompact";
-import { SamaveshJusticeBanner } from "@/components/website/SamaveshJusticeBanner";
-import { RecentDocuments } from "@/components/website/RecentDocuments";
-import { DeaddictionMapSection } from "@/components/website/DeaddictionMapSection";
-import { ActivityCorner } from "@/components/website/ActivityCorner";
-import { SocialMedia } from "@/components/website/SocialMedia";
-import { SupportSection } from "@/components/website/SupportSection";
-import { LogoStrip } from "@/components/website/LogoStrip";
-import { WebsiteSiteFooter } from "@/components/website/SiteFooter";
-import { ImportantLinks } from "@/components/website/ImportantLinks";
+import type { Metadata } from "next";
+import { Masthead } from "@/components/website-next/chrome/Masthead";
+import { Footer } from "@/components/website-next/chrome/Footer";
+import { Hero } from "@/components/website-next/home/Hero";
+import { Audiences } from "@/components/website-next/home/Audiences";
+import { Offerings } from "@/components/website-next/home/Offerings";
+import { Latest } from "@/components/website-next/home/Latest";
+import { Campaign } from "@/components/website-next/home/Campaign";
+import { Organisations } from "@/components/website-next/home/Organisations";
+import { Leadership } from "@/components/website-next/home/Leadership";
+import { Helplines } from "@/components/website-next/home/Helplines";
 import { WebsiteCookieNotice } from "@/components/website/cookie-notice";
 import { resolveCookieBannerEnabled } from "@/lib/cookie-banner/resolve";
 
-export default async function Home() {
-  // Cache-tagged, so awaiting it here does not make the website home page
-  // render per request.
-  const cookieBanner = await resolveCookieBannerEnabled();
+export const metadata: Metadata = {
+  title: "Department of Social Justice & Empowerment, Government of India",
+  description:
+    "Schemes, services and support from the Department of Social Justice & Empowerment for Scheduled Castes, Other Backward Classes, senior citizens, transgender persons and other groups.",
+};
 
+/**
+ * The redesigned home page. Section order is task first, institution second:
+ * what can I do → who is it for → what is offered → what is new → the national
+ * campaign → who runs it → the Department → whom to call.
+ */
+export default async function Home() {
+  const cookieBanner = await resolveCookieBannerEnabled();
   return (
     <>
-      <Header />
-      {/* Site-wide chrome, so it sits BETWEEN the header and <main>. Inside <main>
-          its drawer heading is an <h2> that lands above the page's own <h1>. */}
-      <WebsiteSamaveshBanner />
-      <main id="main-content" className="flex-1">
-        <HeroCarousel />
-        <AboutUs />
+      <Masthead />
+      <main id="content" tabIndex={-1} className="wn-main">
+        <Hero />
+        <Audiences />
         <Offerings />
+        <Latest />
+        <Campaign />
         <Organisations />
-        <NmbaHomeCompact />
-        <SamaveshJusticeBanner />
-        <RecentDocuments />
-        <DeaddictionMapSection />
-        <ActivityCorner />
-        <SocialMedia />
-        <SupportSection />
-        <LogoStrip />
+        <Leadership />
+        <Helplines />
       </main>
-      <WebsiteSiteFooter />
-      <ImportantLinks />
-      {/* Switched off from /admin/portals while the banner is redesigned. */}
+      <Footer />
       {cookieBanner && <WebsiteCookieNotice />}
     </>
   );

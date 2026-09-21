@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ContentPage } from "@/components/website/templates/ContentPage";
+import { ContentPage } from "@/components/website-next/templates/ContentPage";
 
 export const metadata: Metadata = {
   title: "Sitemap — Department of Social Justice & Empowerment",

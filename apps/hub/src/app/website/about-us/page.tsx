@@ -9,7 +9,7 @@ import {
   VerticalTimeline,
   VerticalTimelineItem,
 } from "@mosje/design-system";
-import { PageLayout } from "@/components/website/layout/PageLayout";
+import { PageLayout } from "@/components/website-next/layout/PageLayout";
 
 const TARGET_GROUPS = [
   "Scheduled Castes",

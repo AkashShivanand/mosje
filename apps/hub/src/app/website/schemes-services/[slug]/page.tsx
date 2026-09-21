@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Button, Icon, Link } from "@mosje/design-system";
-import { PageLayout } from "@/components/website/layout/PageLayout";
+import { PageLayout } from "@/components/website-next/layout/PageLayout";
 import { getSchemes, getScheme, withAssetBasePath, getContentSyncedDate } from "@/lib/website/content";
 import { socialCard } from "@/lib/seo/social";
 
@@ -78,7 +78,7 @@ export default async function SchemeDetailPage({
       <section className="py-10 md:py-14 bg-white">
         <div className="sa-container grid gap-10 lg:grid-cols-[minmax(0,1fr)_340px]">
           {/* Main Content Sections */}
-          <article className="gov-prose min-w-0">
+          <article className="wn-prose min-w-0">
             {scheme.sections.length === 0 ? (
               <div className="rounded-xl border border-gray-200 p-8 bg-surface-muted">
                 <p className="text-ink-muted">

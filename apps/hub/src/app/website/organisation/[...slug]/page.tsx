@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import NextLink from "next/link";
 import { Button, Icon, Link, SectionTitle, buttonClasses } from "@mosje/design-system";
 import { OrganisationHelplineBadge } from "@/components/website/OrganisationHelplineBadge";
-import { PageLayout } from "@/components/website/layout/PageLayout";
+import { PageLayout } from "@/components/website-next/layout/PageLayout";
 import {
   OrganisationDetail,
   OrganisationContactBand,
@@ -465,7 +465,7 @@ export default async function OrganisationDetailPage({
       <PageLayout {...chrome}>
         <section className="py-10 md:py-14 bg-surface-muted/30">
           <div className="sa-container flex flex-col gap-6 lg:flex-row lg:items-start">
-            <article className="gov-prose sd-article min-w-0 lg:flex-1">
+            <article className="wn-prose sd-article min-w-0 lg:flex-1">
               {org.sections.map((s, i) => (
                 <section key={s.heading ?? i} className="mb-8">
                   {s.heading && slugify(s.heading) !== slugify(org.title) && (
@@ -570,7 +570,7 @@ export default async function OrganisationDetailPage({
                 )}
                 <div
                   dangerouslySetInnerHTML={{ __html: authored.aboutHtml }}
-                  className="gov-prose text-ink max-w-none"
+                  className="wn-prose text-ink max-w-none"
                 />
               </div>
             ) : org.sections.length === 0 && isContactPage && detail?.contact != null ? (
@@ -626,7 +626,7 @@ export default async function OrganisationDetailPage({
                       dangerouslySetInnerHTML={{
                         __html: withAssetBasePath(trimRedundantOpening(s.html)),
                       }}
-                      className="gov-prose text-ink max-w-none"
+                      className="wn-prose text-ink max-w-none"
                     />
                   </section>
                 ))}

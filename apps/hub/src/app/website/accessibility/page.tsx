@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import NextLink from "next/link";
 import { Link } from "@mosje/design-system";
-import { ContentPage } from "@/components/website/templates/ContentPage";
+import { ContentPage } from "@/components/website-next/templates/ContentPage";
 
 export const metadata: Metadata = {
   title: "Accessibility Statement — Department of Social Justice & Empowerment",
