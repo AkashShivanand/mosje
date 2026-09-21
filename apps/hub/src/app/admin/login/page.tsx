@@ -29,14 +29,15 @@ export const dynamic = "force-dynamic";
 export default async function AdminLoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; next?: string }>;
 }) {
   // No configured password means no admin surface at all — 404 rather than a
   // form that can never be satisfied.
   if (!adminConfigured()) notFound();
-  if (await isAdminAuthenticated()) redirect("/admin");
-
-  const { error } = await searchParams;
+  const { error, next } = await searchParams;
+  // Coming from the issue register: sign in again even if the admin cookie is
+  // live, because the register's editor cookie may predate this build.
+  if (!next && (await isAdminAuthenticated())) redirect("/admin");
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-surface-canvas px-6 py-16">
@@ -65,7 +66,7 @@ export default async function AdminLoginPage({
             Settings for the deployed prototype.
           </p>
 
-          <AdminLoginForm action={submitAdminLogin} invalid={error === "1"} />
+          <AdminLoginForm action={submitAdminLogin} invalid={error === "1"} next={next} />
         </div>
 
         <p className="mt-6 text-center text-body-3 text-ink-hint">

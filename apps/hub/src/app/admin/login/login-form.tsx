@@ -18,11 +18,14 @@ function SubmitButton() {
 export interface AdminLoginFormProps {
   action: (formData: FormData) => Promise<void>;
   invalid: boolean;
+  /** Where to return after sign-in; the action checks it against an allow-list. */
+  next?: string;
 }
 
-export function AdminLoginForm({ action, invalid }: AdminLoginFormProps) {
+export function AdminLoginForm({ action, invalid, next }: AdminLoginFormProps) {
   return (
     <form action={action} className="mt-6 flex flex-col gap-5">
+      {next ? <input type="hidden" name="next" value={next} /> : null}
       {invalid ? (
         <Alert status="error" title="Incorrect password">
           That admin password was not recognised.

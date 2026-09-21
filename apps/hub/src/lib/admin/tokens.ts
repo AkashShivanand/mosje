@@ -42,6 +42,26 @@ export const ADMIN_PREVIEW_COOKIE = "mosje-admin-preview";
 export const ADMIN_PREVIEW_COOKIE_PATH = "/";
 
 /**
+ * Issue-register editor: lets a signed-in admin change issue statuses on
+ * /reports/dosje-website, and nothing else.
+ *
+ * Scoped to that one path for the same reason ADMIN_COOKIE is scoped to /admin:
+ * the browser only sends it to the register, so an XSS elsewhere in the estate
+ * cannot drive status changes, and a leaked editor cookie opens no settings.
+ * Its own HMAC label, so it cannot be replayed as either admin cookie.
+ */
+export const ISSUES_EDITOR_COOKIE = "mosje-issues-editor";
+export const ISSUES_EDITOR_COOKIE_PATH = "/reports/dosje-website";
+const ISSUES_EDITOR_LABEL = "mosje-hub-issues-editor.v1";
+
+/** The token a valid issue-editor cookie must carry, or null when unconfigured. */
+export async function expectedIssuesEditorToken(): Promise<string | null> {
+  const password = process.env.ADMIN_PASSWORD?.trim();
+  if (!password) return null;
+  return hmacToken(password, ISSUES_EDITOR_LABEL);
+}
+
+/**
  * Paths a sign-out must clear the admin cookie from.
  *
  * "/" is here for migration, not because anything sets it: an earlier build of

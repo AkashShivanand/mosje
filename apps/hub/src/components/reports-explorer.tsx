@@ -13,13 +13,25 @@ interface PortalReport {
   href: string;
   date: string;
   screens: number;
-  findings: { Blocker: number; Major: number; Minor: number };
+  findings: { Blocker: number; Major: number; Minor: number; Nit?: number };
   suggestions: number;
   tags: string[];
   status: "Final" | "Draft" | "In Review";
 }
 
 const PORTALS: PortalReport[] = [
+  {
+    id: "dosje-website",
+    title: "dosje.gov.in — Website",
+    subtitle: "Issue register — every audit, with live status",
+    href: "/reports/dosje-website",
+    date: "2026-09-21",
+    screens: 392,
+    findings: { Blocker: 178, Major: 986, Minor: 759, Nit: 93 },
+    suggestions: 0,
+    tags: ["website", "dosje", "issues", "tracker", "september-2026"],
+    status: "In Review",
+  },
   {
     id: "scw",
     title: "SCW — Senior Citizens Welfare",
@@ -76,7 +88,7 @@ const SEV = {
 };
 
 function ReportCard({ p }: { p: PortalReport }) {
-  const total = p.findings.Blocker + p.findings.Major + p.findings.Minor;
+  const total = p.findings.Blocker + p.findings.Major + p.findings.Minor + (p.findings.Nit ?? 0);
   return (
     <Link
       href={p.href}
@@ -136,7 +148,7 @@ export function ReportsExplorer() {
   }, [query]);
 
   const totalFindings = PORTALS.reduce(
-    (s, p) => s + p.findings.Blocker + p.findings.Major + p.findings.Minor,
+    (s, p) => s + p.findings.Blocker + p.findings.Major + p.findings.Minor + (p.findings.Nit ?? 0),
     0,
   );
   const totalBlockers = PORTALS.reduce((s, p) => s + p.findings.Blocker, 0);
