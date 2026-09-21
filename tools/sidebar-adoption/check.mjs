@@ -20,7 +20,10 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = fileURLToPath(new URL("../..", import.meta.url));
 const SCOPES = ["apps/hub/src/components", "apps/hub/src/app/portals"];
-const SKIP = new Set(["node_modules", ".next", "website", "design-system"]);
+// "website" and "website-next" are the public website, not a portal: its asides are
+// filter panels, related-link panels and an organisation's list of its own pages —
+// none is a portal rail with a signed-in identity.
+const SKIP = new Set(["node_modules", ".next", "website", "website-next", "design-system"]);
 const ALLOW = new Map([
   ["apps/hub/src/components/smile-admin/dashboard/system-users-rail.tsx", "a card listing users on the dashboard, not navigation"],
   ["apps/hub/src/components/tg/citizen-shell.tsx", "its <aside> is the sign-in hero panel; the shell has no rail"],

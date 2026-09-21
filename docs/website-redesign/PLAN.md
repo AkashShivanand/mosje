@@ -88,10 +88,11 @@ Status: ☑ done · ◐ partly done (what remains is named) · ⊘ blocked (who 
 ### Phase 6 — Figma handoff
 - ☑ New file **MoSJE Website 2026 [Handoff]** (`yXEE9EHO8PYXLDEJeoHmWG`) in the UX4G –
   Digital India Corporation project 587332315
-- ☑ START HERE · SCREENS BY JOURNEY (8 sections, 13 screens incl. phone home) · SHARED
+- ☑ START HERE · SCREENS BY JOURNEY (8 sections, 15 screens: 12 desktop, 3 phone) · SHARED
   PARTS (12 local components + image library) · STATES · OLD SCREENS — DO NOT USE
 - ☑ Bound to SAMAVESH only; library gaps recorded on START HERE
-- ◐ Phone frames drawn for Home only; other journeys have desktop frames
+- ◐ Phone frames drawn for Home, Find a Scheme and Annual Reports; the other journeys have
+  desktop frames, and the code's phone layouts are the reference for them
 
 ## Content the Department must supply or correct
 
