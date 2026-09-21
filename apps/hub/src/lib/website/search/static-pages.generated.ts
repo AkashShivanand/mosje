@@ -715,7 +715,7 @@ export const STATIC_PAGES: StaticPageEntry[] = [
   },
   {
     "title": "Who's Who",
-    "description": "Directory of Ministers, Commissions, and Senior Administrative Officers under the Ministry of Social Justice & Empowerment.",
+    "description": "Discover the initiatives that drive national efforts to advance equality, protect rights, and empower disadvantaged and marginalised communities across India.",
     "href": "/website/whos-who",
     "section": "Contact & Directory",
     "iconName": "contacts"

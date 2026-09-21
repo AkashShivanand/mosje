@@ -55,6 +55,10 @@ export const ORGANISATIONS: Organisation[] = [
     name: "National Commission for Scheduled Castes",
     category: "commissions",
     profileHref: "/website/organisation/national-commission-for-scheduled-castes",
+    // The live site publishes NCSC's telephone directory at /chairpersons-office/ — its
+    // <title> is "NCSC Directory" and its Who's Who links NCSC's "View All" there. The clone
+    // had the page and filed it under the Ministry, so NCSC looked as if it had none.
+    directoryHref: "/website/chairpersons-office",
     logoSrc: "/website/images/org-logos/ncsc.png",
   },
   {
