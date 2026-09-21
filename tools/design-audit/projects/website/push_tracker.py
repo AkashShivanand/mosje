@@ -65,7 +65,14 @@ def coverage_rows():
 def main():
     apply = "--apply" in sys.argv
     wd = None       # withdrawn findings travel in the master's deferred[] (build_master.py)
-    cov = coverage_rows()
+    # The coverage ledger is built from the capture index. Without it (the captures were lost on
+    # 2026-09-21 and have not been re-taken) the ledger is left exactly as it is rather than rebuilt
+    # from nothing; only the findings tab moves.
+    if os.path.exists(os.path.join(BASE, "captures", "live", "_index.json")):
+        cov = coverage_rows()
+    else:
+        cov = None
+        print("note: no capture index — the Coverage tab is left untouched")
     for path, with_cov in ((REPO_XLSX, cov), (DRIVE_XLSX, None)):
         if not os.path.exists(path):
             print(f"!! not found: {path}")
