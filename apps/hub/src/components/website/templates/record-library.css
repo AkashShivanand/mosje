@@ -96,9 +96,14 @@
    * not stop it, because it is the label inside each button that wrapped, and the
    * buttons were being shrunk below their content.
    *
-   * So the cell is told not to wrap, and the buttons not to shrink. The table then
-   * overflows instead, which `DataTable` already handles with a tab stop, a name
-   * and the arrow keys.
+   * So the cell is told not to wrap, and the buttons not to shrink.
+   *
+   * And the row of buttons must REPORT its width. Without `width: max-content` the
+   * table sized the action column to 166px of content while the two buttons needed
+   * 195, so "Download" spilled 29px out of its own cell and pushed the register 13px
+   * wider than the page on Acts & Rules. Measured at 1440 with it: the register fits
+   * exactly (1270 of 1270), nothing spills, and the title column — the only one with
+   * room — gives up the 28px.
    */
   .ds-table__cell--action {
     white-space: nowrap;
@@ -107,6 +112,7 @@
   .sa-record-actions {
     display: inline-flex;
     gap: var(--sa-inline-8);
+    width: max-content;
     white-space: nowrap;
   }
 
