@@ -11,24 +11,23 @@ import {
   type Official,
 } from "@/data/website";
 
+/** The live page's own standfirst — dosje.gov.in/whos-who/, read 2026-09-21. */
+const DESCRIPTION =
+  "Discover the initiatives that drive national efforts to advance equality, protect rights, and empower disadvantaged and marginalised communities across India.";
+
 export const metadata: Metadata = {
   title: "Who's Who — Department of Social Justice & Empowerment",
-  description:
-    "Directory of Ministers, Commissions, and Senior Administrative Officers under the Ministry of Social Justice & Empowerment.",
+  description: DESCRIPTION,
 };
 
 /**
  * Each group is one body: its office-holders, and a link onward to its full directory.
  *
- * The officials come from officials.ts rather than a list kept here, and `viewAllHref`
- * prefers the body's telephone directory over its narrative profile. That ordering is the
- * fix for a real defect: three of the four "View All" links pointed at
- * /website/organisation/<slug>, which is an About page carrying no officials at all — so a
- * reader who clicked "View All" beneath a list of officials arrived somewhere with none,
- * while the purpose-built directory (daic-directory, ncbc-directory) sat unlinked.
- *
- * The profile is still the fallback, and it is the right one where a body publishes no
- * directory — NCSC has none.
+ * The groups are the live page's eleven teams, in the live page's order, and the officials
+ * are read from officials.ts, which mirrors that page. A title is the registry's name for
+ * the body, so it cannot drift from the rest of the site; `viewAllHref` prefers the body's
+ * telephone directory over its narrative profile, because "View All" beneath a list of
+ * officials must arrive somewhere that has officials.
  */
 
 interface OrganizationGroup {
@@ -37,37 +36,28 @@ interface OrganizationGroup {
   officials: Official[];
 }
 
-/** Bodies shown here, in protocol order, keyed by organisation id. */
-const GROUPS: { title: string; ownerId: string; profileHref: string }[] = [
-  {
-    title: "Ministry of Social Justice and Empowerment (MoSJE) Officials",
-    ownerId: "ministry-leadership",
-    profileHref: "/website/mosje-directory",
-  },
-  {
-    title: "Dr. Ambedkar International Centre (DAIC) Officials",
-    ownerId: "dr-ambedkar-international-centre",
-    profileHref: "/website/organisation/dr-ambedkar-international-centre",
-  },
-  {
-    title: "National Commission for Backward Classes (NCBC) Officials",
-    ownerId: "national-commission-for-backward-classes-ncbc",
-    profileHref: "/website/organisation/national-commission-for-backward-classes-ncbc",
-  },
-  {
-    title: "National Commission for Scheduled Castes (NCSC) Officials",
-    ownerId: "national-commission-for-scheduled-castes",
-    profileHref: "/website/organisation/national-commission-for-scheduled-castes",
-  },
-];
-
+/** The live page's teams, in its order. The Department's own team comes first. */
+const GROUP_IDS = [
+  "ministry-leadership",
+  "national-commission-for-scheduled-castes",
+  "national-commission-for-safai-karamcharis",
+  "national-commission-for-backward-classes-ncbc",
+  "national-scheduled-castes-finance-and-development-corporation",
+  "national-backward-classes-financeand-development-corporationnbcfdc",
+  "national-safai-karamcharis-finance-development-corporation",
+  "dr-ambedkar-foundation",
+  "dr-ambedkar-international-centre",
+  "babu-jagjivan-ram-national-foundation-jrf",
+  "national-institute-of-social-defence",
+] as const;
 
 /**
  * Every telephone directory the site publishes, gathered in one place.
  *
  * Fourteen of these pages existed and nothing linked to them — eleven organisation
  * directories, the Scheduled Caste Welfare division's, the Ministry's general staff
- * directory and the Chairperson's Office. This page is where a reader looking for a
+ * directory and the Chairperson's Office. (That last one is NCSC's directory — the live
+ * site titles it "NCSC Directory" — so it is listed with NCSC, from the registry.) This page is where a reader looking for a
  * government officer arrives, so it is where they belong. The organisation and division
  * entries are read from the registries, so a body that gains a directory appears here
  * without anyone remembering to add it.
@@ -75,7 +65,6 @@ const GROUPS: { title: string; ownerId: string; profileHref: string }[] = [
 const DIRECTORIES: { label: string; href: string; kind: string }[] = [
   { label: "Ministry Leadership", href: "/website/mosje-directory", kind: "Ministry" },
   { label: "General Staff Directory", href: "/website/directory", kind: "Ministry" },
-  { label: "Chairperson's Office", href: "/website/chairpersons-office", kind: "Ministry" },
   ...DIVISIONS_WITH_DIRECTORY.map((division) => ({
     label: division.name,
     href: division.directoryHref!,
@@ -88,19 +77,52 @@ const DIRECTORIES: { label: string; href: string; kind: string }[] = [
   })),
 ];
 
-const ORG_GROUPS: OrganizationGroup[] = GROUPS.map((g) => ({
-  title: g.title,
-  viewAllHref: getOrganisation(g.ownerId)?.directoryHref ?? g.profileHref,
-  officials: getOfficeHolders(g.ownerId),
-}));
+const ORG_GROUPS: OrganizationGroup[] = GROUP_IDS.map((id) => {
+  if (id === "ministry-leadership") {
+    return {
+      title: "Department of Social Justice & Empowerment (DoSJE)",
+      viewAllHref: "/website/mosje-directory",
+      officials: getOfficeHolders(id),
+    };
+  }
+  const org = getOrganisation(id);
+  if (!org) throw new Error(`whos-who: no organisation "${id}" in the registry`);
+  return {
+    title: `${org.name} (${org.abbr})`,
+    viewAllHref: org.directoryHref ?? org.profileHref,
+    officials: getOfficeHolders(id),
+  };
+});
+
+/** Whether a card has anything to show beneath the name — some officers publish nothing. */
+function hasContact(o: Official): boolean {
+  return Boolean(o.room || o.intercom || o.phone || o.email || o.address);
+}
+
+/**
+ * Wrap each telephone number so a line can break between numbers but never inside one.
+ * The Ministers' cards carry five numbers in one string, and without this "011-" ended one
+ * line and "23381669(Fax)" began the next — a number no one could dial from the page.
+ */
+function keepNumbersWhole(phone: string) {
+  return phone.split(/(\d[\d-]*\d(?:\s?\(Fax\))?)/).map((part, i) =>
+    i % 2 === 1 ? (
+      <span key={i} className="whitespace-nowrap">
+        {part}
+      </span>
+    ) : (
+      part
+    ),
+  );
+}
 
 export default function WhosWhoPage() {
   return (
     <PageLayout
       title="Who's Who"
       breadcrumb={[{ label: "Department" }, { label: "Who's Who" }]}
-      description="Discover the Commissions, Corporations, Institutes and Foundations that work collectively towards social justice, inclusion and empowerment across India."
-      lastUpdated="13 Jun 2026"
+      description={DESCRIPTION}
+      lastUpdated="21 Sep 2026"
     >
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 space-y-16">
         {ORG_GROUPS.map((group) => (
@@ -115,7 +137,7 @@ export default function WhosWhoPage() {
 
               <Link
                 href={group.viewAllHref}
-                className="inline-flex items-center gap-1.5 text-label-1 text-primary hover:text-primary-dark transition-colors self-start sm:self-auto px-3 py-1.5 rounded-lg border border-primary/30 bg-blue-50/50 hover:bg-blue-50"
+                className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-label-1 text-primary hover:text-primary-dark transition-colors self-start sm:self-auto px-3 py-1.5 rounded-lg border border-primary/30 bg-blue-50/50 hover:bg-blue-50"
               >
                 View All
                 <Icon name="chevron_right" size={16} />
@@ -149,7 +171,17 @@ export default function WhosWhoPage() {
                     )}
                     <div className="min-w-0 flex-1">
                       <h3 className="text-title-2 text-neutral-900">
-                        {official.name}
+                        {/* The live card links the name to the officer's record; so does this. */}
+                        {official.slug ? (
+                          <Link
+                            href={`/website/official/${official.slug}`}
+                            className="hover:text-primary hover:underline"
+                          >
+                            {official.name}
+                          </Link>
+                        ) : (
+                          official.name
+                        )}
                       </h3>
                       <p className="mt-0.5 text-label-2 text-primary">
                         {official.designation}
@@ -157,37 +189,58 @@ export default function WhosWhoPage() {
                     </div>
                   </div>
 
+                  {/*
+                    * Rows start at the top so a value that wraps keeps its icon beside its
+                    * first line. They used to truncate: an address such as the BJRNF Member
+                    * Secretary's, eighty characters long, was cut off at the card's edge.
+                    */}
+                  {hasContact(official) && (
                   <div className="space-y-2 pt-2 border-t border-neutral-100 text-body-3 text-neutral-600">
                     {official.room && (
-                      <div className="flex items-center gap-2">
-                        <Icon name="home" size={16} className="text-neutral-400 shrink-0" />
+                      <div className="flex items-start gap-2">
+                        <Icon name="home" size={16} className="mt-0.5 text-neutral-400 shrink-0" />
                         <span>Room {official.room}</span>
                       </div>
                     )}
+                    {official.intercom && (
+                      <div className="flex items-start gap-2">
+                        <Icon name="deskphone" size={16} className="mt-0.5 text-neutral-400 shrink-0" />
+                        <span>Intercom {official.intercom}</span>
+                      </div>
+                    )}
                     {official.phone && (
-                      <div className="flex items-center gap-2">
-                        <Icon name="call" size={16} className="text-neutral-400 shrink-0" />
-                        <span className="font-mono text-neutral-700">{official.phone}</span>
+                      <div className="flex items-start gap-2">
+                        <Icon name="call" size={16} className="mt-0.5 text-neutral-400 shrink-0" />
+                        <span className="min-w-0 font-mono text-neutral-700">
+                          {keepNumbersWhole(official.phone)}
+                        </span>
                       </div>
                     )}
                     {official.email && (
-                      <div className="flex items-center gap-2">
-                        <Icon name="mail" size={16} className="text-neutral-400 shrink-0" />
-                        <a
-                          href={`mailto:${official.email}`}
-                          className="text-primary hover:underline truncate"
-                        >
-                          {official.email}
-                        </a>
+                      <div className="flex items-start gap-2">
+                        <Icon name="mail" size={16} className="mt-0.5 text-neutral-400 shrink-0" />
+                        {/* Some officers publish two addresses; each is its own link. */}
+                        <span className="flex min-w-0 flex-col">
+                          {official.email.split(", ").map((address) => (
+                            <a
+                              key={address}
+                              href={`mailto:${address}`}
+                              className="text-primary hover:underline break-all"
+                            >
+                              {address}
+                            </a>
+                          ))}
+                        </span>
                       </div>
                     )}
                     {official.address && (
-                      <div className="flex items-center gap-2">
-                        <Icon name="location_on" size={16} className="text-neutral-400 shrink-0" />
-                        <span className="truncate">{official.address}</span>
+                      <div className="flex items-start gap-2">
+                        <Icon name="location_on" size={16} className="mt-0.5 text-neutral-400 shrink-0" />
+                        <span className="min-w-0">{official.address}</span>
                       </div>
                     )}
                   </div>
+                  )}
                 </div>
               ))}
             </div>

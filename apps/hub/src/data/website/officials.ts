@@ -31,132 +31,64 @@ export interface Official {
   /** Room number, where published separately from the address. */
   room?: string;
   photo?: string;
+  /**
+   * The officer's own page on this site, `/website/official/<slug>`. The live Who's Who
+   * links every name to `dosje.gov.in/official/<slug>`, and each of those records is in the
+   * ingested register, so the name here links to the same record the Department's does.
+   */
+  slug?: string;
 }
 
 /** Ministry offices that hold a directory but are neither an organisation nor a division. */
 export type MinistryOfficeId = "ministry-leadership" | "ministry-staff" | "chairpersons-office";
 
 /**
- * Office-holders — the senior post-holders a body publishes above its telephone directory.
- * whos-who renders these; the directory pages render the ingested register.
+ * Office-holders — the senior post-holders each body shows on the Who's Who page, above a
+ * link to its full directory.
  *
- * These are real, externally checkable people, and they are the one hand-kept list of
- * officials left on the website. (The mock secretariat this note used to be compared with
- * is gone; see the top of the file.)
+ * MIRRORED FROM THE LIVE PAGE, 2026-09-21. Every entry below is what dosje.gov.in/whos-who/
+ * shows — the same eleven teams, in the same order, the same people, posts, telephone,
+ * intercom, email, address, photograph and profile link. It was read from the page's own
+ * feed (`admin-ajax.php`, action `filter_membercard_list`), not retyped from the screen.
  *
- * CHECKED AGAINST LIVE DATA, 2026-08-23, using dosje.gov.in's own register
- * (`/wp-json/wp/v2/official`, 497 records, organisation read from `organisation_cat`):
+ * Two things were normalised, and nothing else: whitespace (a space before a comma
+ * removed, a space before an opening bracket added), and email addresses, which the
+ * Department prints as `name[at]gov[dot]in` and this page needs as real addresses to link.
+ * Every word, spelling and number is the Department's, including the ones that look wrong;
+ * those are listed for the Department in the PR that made this change, because a clone
+ * that quietly corrected them would stop being evidence of what the live site says.
  *
- *   confirmed, organisation agrees (7)  Dr. Virendra Kumar, Shri Ramdas Athawale and
- *                                       Shri B. L. Verma under MoSJE; Mr. Nandu Shaw under
- *                                       DAIC; Shri Kishor Makwana, Shri Love Kush Kumar and
- *                                       Shri Vaddepalli Ramchander under NCSC
- *   name matches, ORGANISATION DIFFERS  Shri Rajesh Kumar — under NCBC here, under DAIC on
- *                                       the live register. NOT changed: it is a very common
- *                                       name and these may be two different people. Needs a
- *                                       human to confirm before either entry moves.
- *   absent from the live register (6)   Shri V. Appa Rao, Shri Vikas Trivedi and
- *                                       Hemant Kumar Srivastava (DAIC); Shri Hansraj
- *                                       Gangaram Ahir, Shri Bhuvan Bhushan Kamal and
- *                                       Ms. Meeta Rajivlochan (NCBC)
- *
- * The NCBC Secretary conflict CANNOT be settled this way, and that is the finding. Neither
- * Ms. Meeta Rajivlochan nor Renuka Patil appears in the live register, and NCBC holds only
- * two records there — Shri Kiran Umesh Mahalle and Sadhvi Niranjan Jyoti — with no
- * designation recorded against either. The live Who's Who renders client-side from an
- * endpoint its HTML does not expose, so the roster behind it is not reachable. Settling this
- * needs NCBC's own published list, not another pass at the API.
- *
- * What the same check DID settle: every abbreviation in organisations.ts exists as a live
- * `organisation_cat` term, SCW included — the registry's names are the Department's own.
+ * WHAT THIS REPLACED. The previous record held fourteen people checked on 2026-08-23. Six
+ * were not in the register — and the register itself explains why: the Department reuses
+ * a departing officer's record for the successor, so the live page for the DAF Member
+ * Secretary, Shri Parveen Kumar Thind, still sits at `/official/shri-v-appa-rao-3/`. The
+ * clone was showing the predecessors.
  */
 export const OFFICE_HOLDERS: Record<string, Official[]> = {
   "ministry-leadership": [
     {
       name: "Dr. Virendra Kumar",
       designation: "Union Minister of Social Justice and Empowerment",
-      phone: "011-23381001, 23381390, 23381902(Fax)",
-      email: "min-sje@nic.in",
-      address: "201 C-Wing, Shastri Bhawan, New Delhi",
-      room: "110",
-      photo: "/website/images/Dr.-Virendra-Kumar.png",
-    },
-    {
-      name: "Shri Ramdas Athawale",
-      designation: "Minister of State for Social Justice & Empowerment",
-      phone: "011-23381656, 011-23381657, 011-23018978(Fax)",
-      email: "mos3-msje@gov.in",
-      address: "101C-Wing, Shastri Bhawan, New Delhi",
-      room: "125",
-      photo: "/website/images/Shri-Ramdas-Athawale.png",
+      phone: "Office - 011-23381001, 23381390, 23381902(Fax) / Mobile - 011-23012175,23012195",
+      photo: "https://www.dosje.gov.in/wp-content/uploads/2025/11/Dr.-Virendra-Kumar.png",
+      slug: "dr-virendra-kumar",
     },
     {
       name: "Shri B. L. Verma",
-      designation: "Minister of State for Social Justice & Empowerment",
-      phone: "011-23072192, 23072193",
+      designation: "Minister of State",
+      intercom: "110",
+      phone: "23072192, 23072193",
       email: "mosoffice-sje@gov.in",
-      address: "Room No. 623, A-Wing, Shastri Bhawan, New Delhi",
-      room: "141, 142",
-      photo: "/website/images/sri-l-b-verma.png",
-    },
-  ],
-  "dr-ambedkar-international-centre": [
-    {
-      name: "Shri V. Appa Rao",
-      designation: "Member Secretary",
-      phone: "011-23477499",
-      email: "dir-daic-mosje@gov.in",
-      address: "2nd Floor, DAIC, 15 Janpath, New Delhi",
+      photo: "https://www.dosje.gov.in/wp-content/uploads/2025/11/Image-2.png",
+      slug: "shri-b-l-verma",
     },
     {
-      name: "Shri Vikas Trivedi",
-      designation: "Director",
-      phone: "011-23477493",
-      email: "dir-daic-mosje@gov.in",
-      address: "2nd Floor, DAIC, 15 Janpath, New Delhi",
-    },
-    {
-      name: "Hemant Kumar Srivastava",
-      designation: "Financial Advisor",
-      phone: "011-23477499",
-      email: "dir-daic-mosje@gov.in",
-      address: "2nd Floor, DAIC, 15 Janpath, New Delhi",
-    },
-    {
-      name: "Mr. Nandu Shaw",
-      designation: "Sr. Accounts Officer",
-      phone: "011-23477499",
-      email: "dir-daic-mosje@gov.in",
-      address: "2nd Floor, DAIC, 15 Janpath, New Delhi",
-    },
-  ],
-  "national-commission-for-backward-classes-ncbc": [
-    {
-      name: "Shri Hansraj Gangaram Ahir",
-      designation: "Hon'ble Chairperson",
-      phone: "011-26183152, 011-26182388",
-      email: "chairman-office@ncbc.nic.in",
-      room: "101",
-    },
-    {
-      name: "Shri Bhuvan Bhushan Kamal",
-      designation: "Hon'ble Member",
-      phone: "011-26185478",
-      email: "member-office@ncbc.nic.in",
-      room: "103",
-    },
-    {
-      name: "Ms. Meeta Rajivlochan, I.A.S.",
-      designation: "Secretary",
-      phone: "011-26183190",
-      email: "secy-ncbc@nic.in",
-      room: "102",
-    },
-    {
-      name: "Shri Rajesh Kumar",
-      designation: "Advisor to the Commission",
-      phone: "011-26714874",
-      room: "212",
+      name: "Shri Ramdas Athawale",
+      designation: "Minister of State",
+      phone: "011-23381656, 011-23381657, 011-23381669(Fax), 011-23018975, 011-23018978 (Fax)",
+      email: "mos3-msje@gov.in, mosathawale@gmail.com",
+      photo: "https://www.dosje.gov.in/wp-content/uploads/2025/11/Shri-Ramdas-Athawale.png",
+      slug: "shri-ramdas-athawale",
     },
   ],
   "national-commission-for-scheduled-castes": [
@@ -165,18 +97,230 @@ export const OFFICE_HOLDERS: Record<string, Official[]> = {
       designation: "Chairperson",
       phone: "011-24620435",
       email: "chairman-ncsc@nic.in",
+      address: "5th Floor Lok Nayak Bhawan, Khan Market, New Delhi – 110 003. Phone: 011-24620435",
+      photo: "https://www.dosje.gov.in/wp-content/uploads/2025/11/Shri-Kishor-Makwana.png",
+      slug: "shri-kishor-makwana",
     },
     {
       name: "Shri Love Kush Kumar",
-      designation: "Hon'ble Member",
-      phone: "011-24623296",
-      email: "lovekush.ncsc@gov.in",
+      designation: "Member's office (LKK)",
+      phone: "011-24620435",
+      email: "lovekush.ncsc@ncsc.gov.in",
+      address: "5th Floor Lok Nayak Bhawan, Khan Market, New Delhi – 110 003. Phone: 011-24620435",
+      photo: "https://www.dosje.gov.in/wp-content/uploads/2025/11/Shri-Love-Kush-Kumar.png",
+      slug: "shri-love-kush-kumar",
     },
     {
       name: "Shri Vaddepalli Ramchander",
-      designation: "Hon'ble Member",
-      phone: "011-24624801",
-      email: "vaddepalli.ncsc@gov.in",
+      designation: "Member's office (VDR)",
+      phone: "011-24620435",
+      email: "chairman-ncsc@nic.in",
+      address: "5th Floor Lok Nayak Bhawan, Khan Market, New Delhi – 110 003. Phone: 011-24620435",
+      photo: "https://www.dosje.gov.in/wp-content/uploads/2025/11/Shri-Vaddepalli-Ramchander.png",
+      slug: "shri-vaddepalli-ramchander",
+    },
+    {
+      name: "Dr. Partha Biswas",
+      designation: "Member",
+      phone: "011-24626061",
+      email: "partha.biswas@ncsc.gov.in",
+      photo: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/04/Dr-Partha-Biswas.jpg",
+      slug: "dr-partha-biswas",
+    },
+  ],
+  "national-commission-for-safai-karamcharis": [
+    {
+      name: "Shri Bhagwat Prasad Makwana",
+      designation: "Chairperson (Rank of Union Minister of State)",
+      email: "chairperson.ncsk@gov.in",
+      photo: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/chairperson.jpeg",
+      slug: "vacant-cp",
+    },
+    {
+      name: "Shri Kaishab Bihari",
+      designation: "Vice-Chairperson (Rank of Secretary to the Government of India)",
+      email: "hvc.ncsk@gov.in",
+      photo: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/Kaisav-Bihari-HVC.jpg",
+      slug: "shri-hardeep-singh-gill-2",
+    },
+    {
+      name: "Shri Rahul Kashyap",
+      designation: "Secretary",
+      phone: "011-24648922",
+      email: "secy-ncsk@gov.in",
+      photo: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/WhatsApp-Image-2026-06-02-at-1.13.17-PM.jpeg",
+      slug: "shri-rahul-kashyap",
+    },
+  ],
+  "national-commission-for-backward-classes-ncbc": [
+    {
+      name: "Sadhvi Niranjan Jyoti",
+      designation: "Hon'ble Chairperson",
+      email: "chairman-office@ncbc.nic.in",
+      photo: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/04/Sadhvi-Niranjan-Jyoti-e1784101931886.png",
+      slug: "sadhvi-niranjan-jyoti",
+    },
+    {
+      name: "Shri Kiran Umesh Mahalle",
+      designation: "Member",
+      photo: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/04/Shri-Kiran-Umesh-Mahalle.jpeg",
+      slug: "shri-kiran-umesh-mahalle",
+    },
+  ],
+  "national-scheduled-castes-finance-and-development-corporation": [
+    {
+      name: "Shri Prabhat Tyagi",
+      designation: "Chairman-cum-Managing Director",
+      email: "prabhat.tyagi@nic.in",
+      address: "14th Floor Core 1 & 2 SCOPE Minar Laxmi Nagar District Centre Delhi-110092",
+      photo: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/CMD-Photo-Sh.-Prabhat-Tyagi.png",
+      slug: "shri-prabhat-tyagi",
+    },
+  ],
+  "national-backward-classes-financeand-development-corporationnbcfdc": [
+    {
+      name: "Shri Rajan Sehgal",
+      designation: "Managing Director",
+      phone: "01145854410",
+      address: "5th Floor, NCUI Building, 3, Siri Institutional Area, August Kranti Marg, New Delhi-110 016",
+      photo: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Rajan-Sehgal_1_0.png",
+      slug: "shri-rajan-sehgal",
+    },
+    {
+      name: "Ms. Debolina Thakur",
+      designation: "Director, Joint Secretary & FA",
+      address: "Ministry of Social Justice & Empowerment Shashtri Bhawan New Delhi-110 001.",
+      photo: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Ms.-Debolina-Thakur-Director.jpg",
+      slug: "ms-debolina-thakur-3",
+    },
+    {
+      name: "Shri Parveen Kumar Thind",
+      designation: "Director & Joint Secretary (BC) Govt. of India",
+      address: "Shashtri Bhavan, New Delhi-110001",
+      photo: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Board-of-Directors-Image.png",
+      slug: "shri-parveen-kumar-thind",
+    },
+  ],
+  "national-safai-karamcharis-finance-development-corporation": [
+    {
+      name: "Shri Prabhat Kumar Singh",
+      designation: "Managing Director",
+      photo: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/md_Pic-157x222-1-1.jpeg",
+      slug: "shri-prabhat-kumar-singh",
+    },
+    {
+      name: "Shri Rohit Kakkar",
+      designation: "Deputy Advisor (PHE)",
+      photo: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Rohit_kakkar-185x186-1-1.jpg",
+      slug: "shri-rohit-kakkar",
+    },
+    {
+      name: "Sh. Suresh Kumar",
+      designation: "Chief Manager (Admin)",
+      phone: "011-26382476, 26382477",
+      email: "suresh-nskfdc@nic.in",
+      photo: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Profile-Image-2.png",
+      slug: "sh-suresh-kumar",
+    },
+  ],
+  "dr-ambedkar-foundation": [
+    {
+      name: "Shri Parveen Kumar Thind",
+      designation: "Member Secretary",
+      email: "jsbcd-msje@gov.in",
+      address: "3rd Floor, Dr. Ambedkar International Centre, 15 Janpath, New Delhi - 110001",
+      photo: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/MS-Sir-Pic.png",
+      slug: "shri-v-appa-rao-3",
+    },
+    {
+      name: "Shri Vinesh Pachnanda",
+      designation: "Director",
+      email: "dir.daf-msje@gov.in",
+      address: "2nd Floor, Dr. Ambedkar International Centre, 15 Janpath, New Delhi - 110001",
+      photo: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/08/Shri-Vinesh-Pachnanda.jpeg",
+      slug: "shri-sudhanshu-kumar-pandey-2",
+    },
+  ],
+  "dr-ambedkar-international-centre": [
+    {
+      name: "Dr. Virendra Kumar",
+      designation: "Chairman Union Minister of Social Justice and Empowerment O/o Minister SJE",
+      intercom: "110",
+      phone: "011-24105009, 24105011, 26110251",
+      email: "min-sje@nic.in",
+      address: "Room No. 8605, 8th Floor, Zone-6, GPOA-3, Netaji Nagar, New Delhi-110023",
+      photo: "https://www.dosje.gov.in/wp-content/uploads/2025/11/Dr.-Virendra-Kumar.png",
+      slug: "dr-virendra-kumar-9",
+    },
+    {
+      name: "Shri Parveen Kumar Thind",
+      designation: "Member Secretary",
+      phone: "011-26113455, 011-26113428",
+      email: "jsbcd-msje@gov.in",
+      address: "Dr. Ambedkar International Centre, 15 Janpath, New Delhi - 110001",
+      photo: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/04/WhatsApp-Image-2026-09-08-at-2.54.12-PM.jpeg",
+      slug: "shri-shailendra-kumar",
+    },
+    {
+      name: "Akash Patil",
+      designation: "Director",
+      phone: "011-23477499",
+      email: "dir-daic-mosje@gov.in",
+      address: "Dr. Ambedkar International Centre, 15 Janpath, New Delhi - 110001",
+      photo: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/akash-patil.png",
+      slug: "akash-patil",
+    },
+  ],
+  "babu-jagjivan-ram-national-foundation-jrf": [
+    {
+      name: "Dr. Virendra Kumar",
+      designation: "Hon'ble Minister of Social Justice & Empowerment and President, BJRNF",
+      photo: "https://www.dosje.gov.in/wp-content/uploads/2025/11/Dr.-Virendra-Kumar.png",
+      slug: "dr-virendra-kumar-3",
+    },
+    {
+      name: "Smt. Swati Kumar",
+      designation: "Executive Vice-President, BJRNF",
+      email: "evp-bjrnf@jagjivanramfoundation.nic.in",
+      address: "6, Krishna Menon Marg, New Delhi- 110011",
+      photo: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/EVP-Mam-Pic.jpg",
+      slug: "smt-swati-kumar-2",
+    },
+    {
+      name: "Shri Parveen Kumar Thind",
+      designation: "Member Secretary, BJRNF",
+      email: "jsbcd-msje@gov.in",
+      address: "Ministry of Social Justice & Empowerment, Government of India, 8th Floor, Zone-5, GPOA-3, Netaji Nagar, New Delhi-110023",
+      photo: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/MS-Sir-Pic-1.png",
+      slug: "shri-parveen-kumar-thind-2",
+    },
+    {
+      name: "Shri Vinesh Pachnanda",
+      designation: "Director, BJRNF",
+      email: "vinesh.pachnanda@nic.in",
+      address: "6, Krishna Menon Marg, New Delhi- 110011",
+      photo: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/08/Shri-Vinesh-Pachnanda.jpeg",
+      slug: "shri-vinesh-pachnanda-2",
+    },
+  ],
+  "national-institute-of-social-defence": [
+    {
+      name: "Dr. Virendra Kumar",
+      designation: "Union Minister of Social Justice and Empowerment",
+      photo: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/minister_1.png",
+      slug: "dr-virendra-kumar-8",
+    },
+    {
+      name: "Shri Ramdas Athawale",
+      designation: "Minister of State of Social Justice & Empowerment",
+      photo: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/minister_2.png",
+      slug: "shri-ramdas-athawale-5-2",
+    },
+    {
+      name: "Shri B. L. Verma",
+      designation: "Minister of State of Social Justice & Empowerment",
+      photo: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/minister_3.png",
+      slug: "shri-b-l-verma-5-2",
     },
   ],
 };
