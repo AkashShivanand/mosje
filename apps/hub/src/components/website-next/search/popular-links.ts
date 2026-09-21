@@ -9,7 +9,7 @@
  */
 export const POPULAR_LINKS: { label: string; href: string; icon: string }[] = [
   { label: "Find a Scheme", href: "/website/schemes-services", icon: "volunteer_activism" },
-  { label: "Apply and Track on Citizen Portals", href: "/portals", icon: "assignment" },
+  { label: "Apply and Track Online", href: "/portals", icon: "assignment" },
   { label: "Annual Reports", href: "/website/annual-reports", icon: "menu_book" },
   { label: "Contact Us", href: "/website/contact-us", icon: "call" },
   { label: "Sitemap", href: "/website/sitemap", icon: "account_tree" },

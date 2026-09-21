@@ -16,11 +16,11 @@ const DESCRIPTION =
  * of this object with a regex. The constant is kept only for the social block.
  */
 export const metadata: Metadata = {
-  title: "Find a Scheme | DoSJE",
+  title: "Find a Scheme | Department of Social Justice & Empowerment",
   description:
     "Schemes of the Department of Social Justice & Empowerment, by who they are for and what they provide, with where to apply for each.",
   ...socialCard({
-    title: "Find a Scheme | DoSJE",
+    title: "Find a Scheme | Department of Social Justice & Empowerment",
     description: DESCRIPTION,
     url: "/website/schemes-services",
   }),

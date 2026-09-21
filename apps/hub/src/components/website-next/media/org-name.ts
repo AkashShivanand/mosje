@@ -11,7 +11,11 @@ const ALIAS: Record<string, string> = {
   PMAJAY: "PM-AJAY",
 };
 
+/** The Department itself is not in the organisation register. */
+const DEPARTMENT = new Set(["MoSJE", "DoSJE", "MSJE"]);
+
 export function organisationName(code?: string): string | undefined {
   if (!code) return undefined;
+  if (DEPARTMENT.has(code)) return "Department of Social Justice & Empowerment";
   return getOrganisationByAbbr(ALIAS[code] ?? code)?.name ?? code;
 }

@@ -197,10 +197,10 @@ export async function generateMetadata({
   const { slug } = await params;
   const key = slug.join("/");
   const found = getOrganisation(key);
-  if (!found) return { title: "Organisation — DoSJE" };
+  if (!found) return { title: "Organisation | Department of Social Justice & Empowerment" };
   const org = withTitleFix(found);
   const firstText = org.sections.find((s) => s.html)?.html.replace(/<[^>]+>/g, "").slice(0, 160);
-  const title = `${tidyTitle(org.title)} — DoSJE`;
+  const title = `${tidyTitle(org.title)} | Department of Social Justice & Empowerment`;
   // The organisation's own banner where it has one: a link to NCSK should show
   // NCSK, not the ministry lockup.
   const banner = getOrganisationDetail(key)?.featuredImage;

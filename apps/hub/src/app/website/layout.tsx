@@ -13,7 +13,7 @@ const WEBSITE_DESCRIPTION =
   "Department of Social Justice & Empowerment (DoSJE), Ministry of Social Justice & Empowerment, Government of India.";
 
 export const metadata: Metadata = {
-  title: "Ministry of Social Justice and Empowerment",
+  title: "Department of Social Justice & Empowerment, Government of India",
   description: WEBSITE_DESCRIPTION,
   icons: {
     icon: "/website/seo/favicon.png",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "Department of Social Justice & Empowerment",
     locale: "en_IN",
-    title: "Ministry of Social Justice and Empowerment",
+    title: "Department of Social Justice & Empowerment, Government of India",
     description: WEBSITE_DESCRIPTION,
     images: [OG_CARD_IMAGE],
   },

@@ -1,3 +1,4 @@
+import { organisationName } from "@/components/website-next/media/org-name";
 import Link from "next/link";
 import { DescriptionList, Icon, SectionTitle, buttonClasses, type DescriptionItem } from "@mosje/design-system";
 import { PageLayout } from "@/components/website-next/layout/PageLayout";
@@ -87,7 +88,10 @@ export function RecordDetail({
   const heading = tidyTitle(title);
 
   /* A sentence built only from the record's own fields — never invented. */
-  const org = factText(items, "Organisation");
+  // The full name leads, never the ingest's code (issue ACC-25).
+  const orgName = organisationName(factText(items, "Organisation"));
+  // "Published by the Department …", but "Published by NCSK" reads without an article.
+  const org = orgName && /^(Department|Ministry|National|Development)/.test(orgName) ? `the ${orgName}` : orgName;
   const date = factText(items, "Published", "Published From", "Record Date");
   const summary =
     description ??

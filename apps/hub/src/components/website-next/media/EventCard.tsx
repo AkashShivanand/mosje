@@ -9,7 +9,10 @@ import { organisationName } from "./org-name";
 const DEVANAGARI = /[ऀ-ॿ]/;
 
 /** The date an event HAPPENED. `date` is when it was posted, which can be months later. */
-export const eventDate = (e: EventRecord) => e.startDate ?? e.date;
+/* The register stores an unset start date as the Unix epoch (1970-01-01) on a
+   few records; that is "no start date", not an event held in 1970. */
+const realDate = (d?: string | null) => (d && !d.startsWith("1970-01-01") ? d : undefined);
+export const eventDate = (e: EventRecord) => realDate(e.startDate) ?? realDate(e.date);
 
 /**
  * One event in a list: a date block, the title as the card's one link, and the

@@ -28,12 +28,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const master = getMasterScheme(routeSlug(slug));
   if (master) {
-    const title = `${displayName(master)} | DoSJE`;
+    const title = `${displayName(master)} | Department of Social Justice & Empowerment`;
     return { title, description: master.provides, ...socialCard({ title, description: master.provides, url: `/website/schemes-services/${slug}` }) };
   }
   const scheme = getScheme(slug);
-  if (!scheme) return { title: "Scheme | DoSJE" };
-  const title = `${legacyTitle(scheme.title)} | DoSJE`;
+  if (!scheme) return { title: "Scheme | Department of Social Justice & Empowerment" };
+  const title = `${legacyTitle(scheme.title)} | Department of Social Justice & Empowerment`;
   const first = legacySections(scheme).find((s) => plain(s.html))?.html;
   const description = first ? plain(first).slice(0, 160) : undefined;
   return { title, description, ...socialCard({ title, description, url: `/website/schemes-services/${slug}` }) };

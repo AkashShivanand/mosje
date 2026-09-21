@@ -49,7 +49,7 @@ export const NAV: NavItem[] = [
       { label: "For Beneficiaries", href: "/website/for-beneficiary" },
       { label: "For Researchers", href: "/website/for-researcher" },
       { label: "For Government Officials", href: "/website/for-government-official" },
-      { label: "Apply and Track on Citizen Portals", href: "/portals" },
+      { label: "Apply and Track Online", href: "/portals" },
       { label: "Dashboard", href: "/website/dashboard" },
     ],
   },

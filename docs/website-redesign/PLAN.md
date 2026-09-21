@@ -37,61 +37,70 @@ Authority order: WCAG 2.2 AA → DBIM 3.0 → GIGW 3.0 → UX4G 3.0 (`standards-
 
 ## Checklist
 
-Status: ☐ todo · ◐ in progress · ☑ done · ⊘ blocked (reason given)
+Status: ☑ done · ◐ partly done (what remains is named) · ⊘ blocked (who unblocks it)
 
 ### Phase 0 — Foundations
-- ☑ Consolidate every issue, recommendation and decision (`issue-register-consolidated.md`)
-- ☑ Design read, principles, archive mechanism (this file)
-- ☐ Skills applied: design-taste-frontend (direction), frontend-design, ui-ux-pro-max,
-  refactoring-ui, emil-design-eng, apple-design (motion restraint), impeccable (polish),
-  web-accessibility + gov-compliance + accessibility-auditor (audit), Vercel Web Interface
-  Guidelines (read as reference; install was blocked by the permission classifier)
+- ☑ Every issue, recommendation and decision consolidated (`issue-register-consolidated.md`)
+- ☑ Design read, principles, archive mechanism; build spec (`DESIGN-SPEC.md`)
+- ◐ Skills: design-taste-frontend, frontend-design, figma-use, figma-generate-design,
+  figma-create-new-file and find-skills were used; the auditors ran as the estate's
+  accessibility-auditor and a creative-director/Secretary/citizen critic. Vercel's Web
+  Interface Guidelines were read as a reference. `npx skills add` was blocked by the
+  permission classifier, so no new skill was installed.
 
 ### Phase 1 — Archive & toggle
-- ☐ Move current site to `website-classic`, noindex it
-- ☐ Proxy rewrite on `sa-website-design=classic`
-- ☐ Demo rail "Website" tab with the toggle (reloads on change)
-- ☐ Gates/baselines updated for the moved tree (search index, links, ratchets)
+- ☑ Classic site archived at `app/website-classic` (noindex), reachable at the same addresses
+- ☑ Proxy rewrite on `sa-website-design=classic`; demo rail **Website** tab
+- ☑ Gates re-keyed for the moved tree (type, icon, org-logo baselines; link and search gates)
 
-### Phase 2 — Shell (every page)
-- ☐ Masthead: DS `SiteHeader`, National Emblem lockup, task-and-audience nav (≤ 7 entries,
-  one line at 1280), search that works, language, accessibility entry (one door), Login
-- ☐ Page header: breadcrumb · `h1` = tab title · one-line standfirst · last-updated · no 340px band
-- ☐ Footer: DBIM 5.6 four sections (Archives · Website Policy · Related Links · Feedback),
-  lineage, real last-updated, visitor counter, "Report a problem with this page", agency credit
-- ☐ Cookie consent that blocks non-essential scripts until accepted
-- ☐ Print stylesheet; `lang="en-IN"`; skip link lands on `main#content`
+### Phase 2 — Shell
+- ☑ Masthead (SAMAVESH `SiteHeader`, task-and-audience menu, one line at 1024, no BETA)
+- ☑ One page header (breadcrumb · h1 · standfirst · stored last-updated date)
+- ☑ Footer with DBIM 5.6's four sections, real date, "Report a problem with this page"
+- ☑ Cookie consent on the first page landed on; print stylesheet; skip link lands on `#content`
+- ☑ Closed UX4G panel made inert (it had taken the first Tab presses — ACC-01)
 
-### Phase 3 — Home page
-- ☐ Hero: one message, search-first, task row (Find a Scheme · Apply · Track · Grievance · Helplines)
-- ☐ Who is it for (persona entry, 11-group vocabulary, opens on Students)
-- ☐ What the Department offers (10 kinds of support) → schemes
-- ☐ Latest updates (paged, dated, newest first, not scrolling inside a card)
-- ☐ Organisations & scheme portals (whole logos, uniform box, full names first)
-- ☐ Campaign (NMBA / CCPS) band, PM Quote slot (awaiting authorised content)
-- ☐ Helplines & support band; social cards (static, no empty embeds)
+### Phase 3 — Home
+- ☑ Hero with working search and five tasks · eleven groups · ten kinds of support ·
+  latest updates · campaign · organisations · the Department · helplines
+- ⊘ PM Quote (DBIM): waits for an authorised quote and image from the Ministry
 
-### Phase 4 — Templates (all ~116 routes)
-- ☐ Content page (T1) · ☐ Listing/documents (T2) · ☐ Record library · ☐ Record detail (T7)
-- ☐ Directory / Who's Who (T3) · ☐ Persona landing (T4) · ☐ Policy pages (T5)
-- ☐ Contact (T6: Call · Write · Visit) · ☐ Schemes catalogue (facets) · ☐ Organisation detail
-- ☐ Gallery (albums) · ☐ Search results · ☐ 404 with search + popular links
-- ☐ Missing GIGW pages: Accessibility Statement · Screen Reader Access · Disclaimer ·
-  Website Policy hub · Feedback · Archives
+### Phase 4 — Templates (all routes)
+- ☑ Content · Listing/Record library · Record detail · Directory/Who's Who · Persona ·
+  Policy · Contact · Find a Scheme + scheme pages · Organisation · Events · Gallery albums ·
+  Search · 404/error · Dashboard · portal directories · List of Scheduled Castes
+- ☑ New pages: Accessibility Statement · Screen Reader Access · Disclaimer · Website
+  Policies · Feedback · Archives
+- ◐ Maps and PM-AJAY dashboards still use the classic data-viz components inside the new
+  layout (de-addiction locator rebuilt on the SAMAVESH India outline)
 
-### Phase 5 — Audit (creative director · senior QA · Secretary · citizen)
-- ☐ axe + keyboard + 200% zoom + 320px reflow on every template
-- ☐ Contrast, focus, target size, reduced motion, headings outline
-- ☐ Copy pass: Title Case, government register, no em-dash flourishes, no AI tells
-- ☐ Performance: LCP, CLS, payload; images sized
-- ☐ DBIM / GIGW / UX4G checklist re-scored against the redesign
-- ☐ `npm run ci` green
+### Phase 5 — Audit
+- ☑ axe-core, WCAG 2.2 AA: 52 route×viewport scans, 0 serious or critical findings after
+  fixes (one declared false positive: gallery pager "obscured" by its ellipsis) —
+  `tools/website-redesign/axe-scan.mjs`
+- ☑ Keyboard, 200% zoom, 320px reflow, headings, landmarks, forms (accessibility auditor)
+- ☑ Creative-director / Secretary / citizen review; all P0 findings fixed (search, legacy
+  scheme pages, Secretary, India map, floating widgets)
+- ☑ Every website gate green (links, search index, typography, icons, org logos, chrome,
+  link-as, shadow-ui, breakpoints, lint, stylelint, typecheck, 684 unit tests)
+- ☐ `npm run ci` (full) and a production build — run before the PR
 
 ### Phase 6 — Figma handoff
-- ☐ New file in the same project as `MoSJE [Handoff]` (`Ds5qx61QsI0ZkYSrLKxo0A`)
-- ☐ Pages: START HERE · Home · templates · states · mobile · OLD SCREENS — DO NOT USE
-- ☐ Bound to SAMAVESH `3FF5l0SMNIwdpZrKkeyPTm` only (instances, variables, text styles)
-- ☐ Handoff-structure gate + screenshot audit
+- ☑ New file **MoSJE Website 2026 [Handoff]** (`yXEE9EHO8PYXLDEJeoHmWG`) in the UX4G –
+  Digital India Corporation project 587332315
+- ☑ START HERE · SCREENS BY JOURNEY (8 sections, 13 screens incl. phone home) · SHARED
+  PARTS (12 local components + image library) · STATES · OLD SCREENS — DO NOT USE
+- ☑ Bound to SAMAVESH only; library gaps recorded on START HERE
+- ◐ Phone frames drawn for Home only; other journeys have desktop frames
+
+## Content the Department must supply or correct
+
+Recorded by the build and audit agents (details in commit messages): 53 tender titles cut
+at 12 characters in the source; Annual Report 2021-22 dated 2021; BJRNF 2024-25 report
+dated May 2024; NCSC Member email; Secretary portrait; switchboard, mailbox and office
+hours; official websites for seven corporations and foundations; one portrait set to one
+specification; missing NMBA gallery photographs; privacy policy lawful basis and grievance
+officer; the conflicting "Netaji Subhash Place, 110034" address on the classic Contact page.
 
 ## Decisions taken here (flag if wrong)
 
