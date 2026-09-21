@@ -10,11 +10,11 @@
 
 | | |
 |---|---|
-| Boards in the report | 105 |
-| Findings | **147** - 14 Blocker, 110 Major, 21 Minor, 2 Nit |
+| Boards in the report | 107 |
+| Findings | **152** - 14 Blocker, 112 Major, 24 Minor, 2 Nit |
 | Applies to every screen | 50 |
-| Specific to one screen | 97 |
-| Withdrawn, not raised, or noted about the design file | 196 |
+| Specific to one screen | 102 |
+| Withdrawn, not raised, or noted about the design file | 202 |
 
 Every page in dosje.gov.in's sitemap (94 standalone pages), one sample of every record template (documents, events, gallery, officials, tenders, organisations, vacancies, schemes, scheme documents, suo-moto disclosures, CPIO, bookings, updates) and 25 global states were captured at 1440×900 and 375×812 — 266 captures in all — with the computed CSS, accessibility tree, axe-core results, focus behaviour, target sizes and DBIM element inventory of every element recorded. Findings are measured, never eyeballed: each carries the element's real box and its measured value. Captures the server refused (HTTP 429) were rejected and re-taken. The design side is the MoSJE [Handoff] Figma file: 175 design↔build pairs were compared by specification — type size, weight, family and colour on text matched between the two sides — never by pixel diff, and never on width, height or dynamic data. Where one design frame serves many pages (an organisation template against 172 organisation pages), only shared-template properties are compared, not its sample copy. A breach measured on three or more pages is published once, as a Global finding. Out of scope for this report: the screen-reader walkthrough, Hindi content quality, and the 34 live views for which no design frame exists — those are in the separate design report.
 
@@ -1885,6 +1885,70 @@ Each has its own board in the PDF, showing the design and the build side by side
 
 [Figma frame](https://www.figma.com/design/Ds5qx61QsI0ZkYSrLKxo0A/MoSJE--Handoff-?node-id=3453-8801)
 
+## Whos Who · desktop · content accuracy
+
+### [Confirmed error] NCSC Members' cards — telephone, email and post
+
+`WEB-SCREEN-427` · **Major** · Content & Iconography · Scope: Whos Who · desktop · content accuracy
+
+| | |
+|---|---|
+| **Design says** | GIGW 3.0: page content is accurate, specific to the page, and in the Department's own register. |
+| **Build does** | [Confirmed error] Checked against NCSC's own directory (ncsc.nic.in/who-is-who) on 21 Sep 2026. Both Members are shown with the Chairperson's telephone, 011-24620435, on the card and again in the address line; NCSC lists Shri Love Kush Kumar on 011-24623266 and Shri Vaddepalli Ramchander on 011-24624801. Shri Vaddepalli Ramchander's email is also the Chairperson's (chairman-ncsc@nic.in); NCSC lists vaddepalli.ncsc@ncsc.gov.in. The posts read “Member's office (LKK)” and “Member's office (VDR)” — the section headings of NCSC's directory, carried into the post field; NCSC gives the post as Member. A citizen who rings either Member reaches the Chairperson's office. |
+| **Fix** | Correct the two officer records: Shri Love Kush Kumar — 011-24623266; Shri Vaddepalli Ramchander — 011-24624801 and vaddepalli.ncsc@ncsc.gov.in; post “Member” for both; remove “Phone: 011-24620435” from their address lines. Leave unchanged, checked correct: the Chairperson's number and email, Shri Love Kush Kumar's email, and Dr. Partha Biswas's details. |
+
+[Live page](https://www.dosje.gov.in/whos-who/)
+
+### [Confirmed error] NCBC cards — Member's title and contact details
+
+`WEB-SCREEN-426` · **Major** · Content & Iconography · Scope: Whos Who · desktop · content accuracy
+
+| | |
+|---|---|
+| **Design says** | GIGW 3.0: page content is accurate, specific to the page, and in the Department's own register. |
+| **Build does** | [Confirmed error] Checked against NCBC's own website (ncbc.nic.in — Present Commission and Contact pages) on 21 Sep 2026. The Member is shown as “Shri Kiran Umesh Mahalle”; NCBC names her Mrs. Kiran Umesh Mahalle (“Ms.” in its contact table). The photograph is correct; the title is not. Her card shows no contact details although NCBC publishes them: intercom 103, Room 113, 1st Floor, 011-26185478, member-office@ncbc.nic.in. The Chairperson's card shows only her email; NCBC also publishes intercom 101, Room 7, and 011-26183152, 011-26182388. |
+| **Fix** | Change the Member's title to “Mrs.”, as NCBC's Present Commission page gives it, and add her contact details; add the Chairperson's telephone numbers. Keep the photograph — it is correct. |
+
+[Live page](https://www.dosje.gov.in/whos-who/)
+
+### [To confirm with the Department] Personal email, NCBC Secretary, NISD team
+
+`WEB-SCREEN-430` · **Minor** · Content & Iconography · Scope: Whos Who · desktop · content accuracy
+
+| | |
+|---|---|
+| **Design says** | GIGW 3.0: page content is accurate, specific to the page, and in the Department's own register. |
+| **Build does** | [To confirm with the Department] Not provable as errors from public sources; each needs the Department's decision. (1) Shri Ramdas Athawale's card lists mosathawale@gmail.com beside mos3-msje@gov.in. Parliament's member record (sansad.in, Rajya Sabha) gives ramdas@sansad.nic.in; the two telephone numbers on the card match that record. (2) The NCBC team omits its Secretary, Mr. Sudhansh Pant, I.A.S. (NCBC contact page: Room 104, 011-26183190, secy-ncbc@nic.in), while the NCSK team lists its Secretary. (3) The NISD team shows only the three Ministers and no officer of NISD. |
+| **Fix** | Decide whether a personal address belongs on an official page, whether every team lists its Secretary, and who represents NISD on this page; record each decision so the page stays consistent. |
+
+[Live page](https://www.dosje.gov.in/whos-who/)
+
+### [Confirmed error] Placeholder photo, spelling, formatting and filter labels
+
+`WEB-SCREEN-429` · **Minor** · Content & Iconography · Scope: Whos Who · desktop · content accuracy
+
+| | |
+|---|---|
+| **Design says** | GIGW 3.0: page content is accurate, specific to the page, and in the Department's own register. |
+| **Build does** | [Confirmed error] Observed on the live page, 21 Sep 2026. (1) Sh. Suresh Kumar, Chief Manager (Admin), NSKFDC, has a grey placeholder silhouette, not a photograph. (2) “Shashtri Bhawan” and “Shashtri Bhavan” — the building is Shastri Bhawan. (3) Spacing: “Executive Vice-President , BJRNF”, “Director , BJRNF”, “Vice-Chairperson(Rank of…”, “Joint Secretary(BC)”. (4) The honorific is written both “Sh.” and “Shri”. (5) DAIC gives the Minister's post as “Chairman Union Minister of Social Justice and Empowerment O/o Minister SJE”. (6) Five email addresses are printed plainly and the rest as [at]/[dot]; jsbcd-msje appears both ways. (7) Telephone formats differ: “01145854410”; “23072192, 23072193” without the 011 code. (8) The designation filter's 86 options include office sections (“CASH SECTION”, “HINDI SECTION”), organisation names, a commission of inquiry and near-duplicates (“BJRNF Member” / “BJRNF/ Member”, three spellings of Minister of State); the organisation filter lists portals and schemes (E-Anudaan, E-UTTHAAN, NMBA, NOS, Smile Beggary, Transgender) as organisations. (9) The standfirst describes “initiatives”, not the officers the page lists. |
+| **Fix** | Upload the officer's photograph; correct the spelling and spacing in the officer records; use one honorific form; give the Minister's DAIC post in words; publish every email address the same way; write telephone numbers with the STD code; limit the designation filter to posts and the organisation filter to organisations; replace the standfirst with a description of who the page lists. |
+
+[Live page](https://www.dosje.gov.in/whos-who/)
+
+## Official  Shri Shailendra Kumar · desktop · content accuracy
+
+### [Confirmed error] Officer records reused and duplicated
+
+`WEB-SCREEN-428` · **Minor** · Content & Iconography · Scope: Official  Shri Shailendra Kumar · desktop · content accuracy
+
+| | |
+|---|---|
+| **Design says** | GIGW 3.0: page content is accurate, specific to the page, and in the Department's own register. |
+| **Build does** | [Confirmed error] Observed on 21 Sep 2026. When an officer changes, the record is edited in place, so the web address keeps the predecessor's name: this page for Shri Parveen Kumar Thind (DAIC Member Secretary) is /official/shri-shailendra-kumar/. The same holds for the DAF Member Secretary (/official/shri-v-appa-rao-3/), the DAF Director (/official/shri-sudhanshu-kumar-pandey-2/), the NCSK Chairperson (/official/vacant-cp/) and the NCSK Vice-Chairperson (/official/shri-hardeep-singh-gill-2/). One officer is also held as several records: Shri Parveen Kumar Thind has four (four photographs, three titles, three addresses), and Dr. Virendra Kumar and both Ministers of State have several each. A shared or bookmarked link names the wrong person, and search engines index the old names. |
+| **Fix** | Create a new record for a new officer instead of editing the predecessor's, and redirect the old address; keep one record per person and attach each post to it. |
+
+[Live page](https://www.dosje.gov.in/official/shri-shailendra-kumar/)
+
 ## For Student · desktop
 
 ### Audience page standfirst
@@ -2114,3 +2178,9 @@ Nothing here is a finding. Each was either raised in an earlier round and did no
 - **Home · mobile — Go to slide 2** - Merged into WEB-GLOBAL-111 / WEB-GLOBAL-110 / WEB-GLOBAL-112, which now carries this defect together with the others of the same kind — one fix, one row.
 - **Non-text control below 3:1 — Session Cookies always active** - The two 'always active' cookie switches are disabled checkboxes (<input type=checkbox disabled checked>, verified on the live page 18 Sep). WCAG 1.4.11 exempts inactive components.
 - **Content in the design is not in the build — Hemant Kumar Srivastava** - A sample officer's name in the design's directory card — data the live page fills with the real officer, not interface copy.
+- **[Checked — correct] NCBC Member's photograph** - NCBC's Present Commission page names the Member Mrs. Kiran Umesh Mahalle. The photograph on her Who's Who card is hers; only the title “Shri” is wrong (NCBC finding). Do not replace the photograph.
+- **[Checked — correct] NCSC Chairperson's telephone and email** - 011-24620435 and chairman-ncsc@nic.in are the Chairperson's own, per NCSC's directory. They are wrong only where they appear on the two Members' cards (NCSC finding).
+- **[Checked — correct] Shri Love Kush Kumar's email; Dr. Partha Biswas's details** - lovekush.ncsc@ncsc.gov.in, and Dr. Partha Biswas's 011-24626061 and partha.biswas@ncsc.gov.in, match NCSC's directory.
+- **[Checked — correct] Shri Ramdas Athawale's telephone numbers** - 011-23018975 and 011-23018978 match his Rajya Sabha member record on sansad.in. Only the personal email address is in question.
+- **[Checked — correct] Shri Parveen Kumar Thind in four teams** - One Joint Secretary holding ex-officio posts at DAF, DAIC, BJRNF and NBCFDC is expected, so appearing in four teams is not an error. The duplicated records behind those entries are (records finding).
+- **[Checked — correct] NCSC's “View All” destination** - /chairpersons-office/ is titled “NCSC Directory” and lists NCSC's officers, so the link reaches the right page. Only its address is misleading.

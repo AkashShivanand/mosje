@@ -109,10 +109,14 @@ def resolve_anchor(f):
     d = json.load(open(cap))
     boxes = []
     if f.get("anchorText"):
-        for e in d.get("elements", []):
-            if f["anchorText"].lower() in (e.get("text") or "").lower() and e.get("bbox", {}).get("w"):
-                boxes.append(e["bbox"])
-                break
+        # `anchorTag` narrows the match when the same text sits on more than one element. On a Who's
+        # Who card the officer's name is both the photo's alt text and the name link, and a finding
+        # about the NAME must not outline the photo — for the NCBC Member that is the part that is
+        # correct. Findings without it match the first element carrying the text, as before.
+        # A LIST of anchors outlines everything they span — the capture records a card's photo and
+        # contact lines but not the card, so "photo … last contact line" is how a card is marked.
+        anchors = f["anchorText"] if isinstance(f["anchorText"], list) else [f["anchorText"]]
+        boxes += _span(d, anchors, f.get("anchorTag"), f.get("anchorClass"))
     for needle in f.get("anchorHref") or []:
         for l in d.get("links", []):
             if needle in (l.get("href") or "") and l.get("bbox", {}).get("w") and l.get("visible", True):
@@ -123,7 +127,49 @@ def resolve_anchor(f):
         x1 = min(b["x"] for b in boxes); y1 = min(b["y"] for b in boxes)
         x2 = max(b["x"] + b["w"] for b in boxes); y2 = max(b["y"] + b["h"] for b in boxes)
         f["box"] = [round(x1), round(y1), round(x2), round(y2)]
+    # A finding about several cards outlines each one ("alsoMark"), each with its own label, so the
+    # board's crop takes them all in and no card the finding names is cut in half.
+    extra = []
+    for a in f.get("alsoMark") or []:
+        bs = _span(d, a.get("anchors") or [a], None, a.get("cls"))
+        if bs:
+            x1 = min(b["x"] for b in bs); y1 = min(b["y"] for b in bs)
+            x2 = max(b["x"] + b["w"] for b in bs); y2 = max(b["y"] + b["h"] for b in bs)
+            extra.append({"box": [round(x1), round(y1), round(x2), round(y2)], "label": a.get("label", "")})
+    if extra:
+        f["extraMarks"] = extra
     return f
+
+
+def _span(d, anchors, default_tag=None, cls=None):
+    """Boxes of every anchor in the list. An anchor is a text, or {text, tag, nth}: `nth` picks the
+    Nth element carrying the text, for text repeated verbatim — three NCSC cards share one address."""
+    out = []
+    for a in anchors:
+        a = a if isinstance(a, dict) else {"text": a}
+        e = _find_element(d, a["text"], a.get("tag", default_tag), cls, a.get("nth", 1))
+        if e:
+            out.append(e["bbox"])
+    return out
+
+
+def _find_element(d, text, tag=None, cls=None, nth=1):
+    """The first element carrying `text`, optionally narrowed by tag and by a class it must carry.
+
+    `tag` exists because an officer's name is both a photo's alt text and a link: a finding about the
+    NAME must not outline the photo. `cls` exists for marking a whole card — without it, the first
+    div holding the text is the page section that contains every card."""
+    tag = (tag or "").lower()
+    for e in d.get("elements", []):
+        if tag and (e.get("tag") or "").lower() != tag:
+            continue
+        if cls and cls not in (e.get("cls") or "").split():
+            continue
+        if text.lower() in (e.get("text") or "").lower() and e.get("bbox", {}).get("w"):
+            nth -= 1
+            if nth == 0:
+                return e
+    return None
 
 
 def withdrawn_rows(screens_now, merged_into=None):
@@ -422,6 +468,8 @@ def main():
                         liveBasis=f.get("liveBasis") or (1440 if viewport == "desktop" else 375))
             if f.get("box"):
                 item["liveMark"] = {"box": f["box"], "label": f["label"]}
+            if f.get("extraMarks"):
+                item["liveMarks"] = f["extraMarks"]
             if f.get("figmaBoxRaw"):
                 item["figmaMark"] = {"box": f["figmaBoxRaw"],
                                      "label": f.get("figmaLabel") or f["label"]}
@@ -499,7 +547,11 @@ def main():
                          "designPairsCompared": droll["pairsCompared"]},
         deferred=withdrawn_rows(screens, merged_map(screens)) + [
             {"id": "EXEMPT", "title": x["title"], "reason": x["reason"]}
-            for x in {x["reason"]: x for x in exempted}.values()],
+            for x in {x["reason"]: x for x in exempted}.values()] + [
+            # Points raised, checked against the body's own published source, and found CORRECT.
+            # Published so nobody "fixes" them later; the tracker skips them (no finding id).
+            {"id": "CHECKED", "title": x["title"], "reason": x["reason"]}
+            for x in json.load(open(os.path.join(BASE, "inputs", "verified-correct.json")))],
         screens=screens,
     )
     json.dump(am, open(os.path.join(OUT, "audit-master.json"), "w"), indent=1)
