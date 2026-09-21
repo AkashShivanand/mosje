@@ -83,7 +83,8 @@ Status: ☑ done · ◐ partly done (what remains is named) · ⊘ blocked (who 
   scheme pages, Secretary, India map, floating widgets)
 - ☑ Every website gate green (links, search index, typography, icons, org logos, chrome,
   link-as, shadow-ui, breakpoints, lint, stylelint, typecheck, 684 unit tests)
-- ☐ `npm run ci` (full) and a production build — run before the PR
+- ☑ `npm run ci:clean` (fresh lockfile install, production build, CI's axe step): 42 passed,
+  0 failed, 4 skipped (GitHub-event-only steps)
 
 ### Phase 6 — Figma handoff
 - ☑ New file **MoSJE Website 2026 [Handoff]** (`yXEE9EHO8PYXLDEJeoHmWG`) in the UX4G –
