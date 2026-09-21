@@ -26,7 +26,10 @@ import {
   ADMIN_MAX_AGE_SECONDS,
   ADMIN_PREVIEW_COOKIE,
   ADMIN_PREVIEW_COOKIE_PATH,
+  ISSUES_EDITOR_COOKIE,
+  ISSUES_EDITOR_COOKIE_PATH,
   expectedAdminToken,
+  expectedIssuesEditorToken,
   expectedPreviewToken,
   verifyAdminPassword,
 } from "./tokens.ts";
@@ -46,6 +49,17 @@ export async function isAdminAuthenticated(): Promise<boolean> {
   return Boolean(presented && safeEqual(presented, expected));
 }
 
+/**
+ * True when the caller may edit issue statuses on /reports/dosje-website. Only
+ * readable on that path — the cookie is not sent anywhere else.
+ */
+export async function isIssuesEditor(): Promise<boolean> {
+  const expected = await expectedIssuesEditorToken();
+  if (!expected) return false;
+  const presented = (await cookies()).get(ISSUES_EDITOR_COOKIE)?.value;
+  return Boolean(presented && safeEqual(presented, expected));
+}
+
 /** Redirects to the sign-in page unless the caller is an authenticated admin. */
 export async function requireAdmin(): Promise<void> {
   if (!(await isAdminAuthenticated())) redirect("/admin/login");
@@ -60,6 +74,9 @@ export async function signInAdmin(entered: string): Promise<boolean> {
 
   const preview = await expectedPreviewToken();
   if (!preview) return false;
+
+  const editor = await expectedIssuesEditorToken();
+  if (!editor) return false;
 
   const jar = await cookies();
   const shared = {
@@ -77,6 +94,8 @@ export async function signInAdmin(entered: string): Promise<boolean> {
     ...shared,
     path: ADMIN_PREVIEW_COOKIE_PATH,
   });
+  // Status editing on the website issue register, and only there.
+  jar.set(ISSUES_EDITOR_COOKIE, editor, { ...shared, path: ISSUES_EDITOR_COOKIE_PATH });
   return true;
 }
 
@@ -89,4 +108,5 @@ export async function signOutAdmin(): Promise<void> {
     jar.delete({ name: ADMIN_COOKIE, path });
   }
   jar.delete({ name: ADMIN_PREVIEW_COOKIE, path: ADMIN_PREVIEW_COOKIE_PATH });
+  jar.delete({ name: ISSUES_EDITOR_COOKIE, path: ISSUES_EDITOR_COOKIE_PATH });
 }
