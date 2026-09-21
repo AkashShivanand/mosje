@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import { ListingPage } from "@/components/website/templates/ListingPage";
 import { Link } from "@mosje/design-system";
@@ -32,7 +33,7 @@ export default function Page() {
             Department&rsquo;s own and carries the order number under which the decision was
             made; a few entries record action taken by another Ministry. An organisation
             that has since been restored appears on the{" "}
-            <a href="/website/list-of-de-blacklisted-ngos">List of De-Blacklisted NGOs</a>.
+            <Link href="/website/list-of-de-blacklisted-ngos">List of De-Blacklisted NGOs</Link>.
           </p>
           {BLACKLISTING_ORDERS.length > 0 && (
             <>

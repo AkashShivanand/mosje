@@ -1,6 +1,6 @@
 import { Masthead } from "@/components/website-next/chrome/Masthead";
-import { Footer } from "@/components/website-next/chrome/Footer";
-import { PageHeader, type PageHeaderProps } from "./PageHeader";
+import { WebsiteFooter } from "@/components/website-next/chrome/Footer";
+import { WebsitePageHeader, type PageHeaderProps } from "./PageHeader";
 
 export type PageHeroProps = PageHeaderProps;
 
@@ -26,10 +26,10 @@ export function PageLayout(props: PageLayoutProps) {
     <>
       <Masthead />
       <main id="content" tabIndex={-1} className="wn-main">
-        <PageHeader {...header} />
+        <WebsitePageHeader {...header} />
         {children}
       </main>
-      <Footer lastUpdated={header.lastUpdated} />
+      <WebsiteFooter lastUpdated={header.lastUpdated} />
     </>
   );
 }

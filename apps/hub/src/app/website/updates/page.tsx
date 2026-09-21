@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website-next/templates/ListingPage";
+import { ListingPage, type ListingColumn } from "@/components/website-next/templates/ListingPage";
 import { getContentSyncedDate, getUpdates } from "@/lib/website/content";
-import type { ListingTableColumn } from "@/components/website/ui/data-table";
-import { humanDate } from "@/lib/website/record-facts";
 import { socialCard } from "@/lib/seo/social";
 
 const TITLE = "Updates";
@@ -15,7 +13,7 @@ export const metadata: Metadata = {
   ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/updates" }),
 };
 
-const columns: ListingTableColumn[] = [
+const columns: ListingColumn[] = [
   {
     key: "title",
     label: "Title",
@@ -25,8 +23,8 @@ const columns: ListingTableColumn[] = [
     type: "record",
     hrefKey: "href",
   },
-  { key: "organisation", label: "Organisation", sortable: true, align: "center" },
-  { key: "date", label: "Published", sortable: true, align: "center" },
+  { key: "organisation", label: "Organisation", sortable: true },
+  { key: "date", label: "Published", type: "date", sortable: true },
 ];
 
 /**
@@ -50,21 +48,24 @@ export default function Page() {
     .sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""))
     .map((u) => ({
       title: u.title,
-      organisation: u.organisation ?? "—",
-      date: humanDate(u.date) ?? "—",
+      organisation: u.organisation,
+      date: u.date,
       href: `/website/updates/${u.slug}`,
     }));
 
   return (
     <ListingPage
       title={TITLE}
-      breadcrumb={[{ label: "Connect" }, { label: "Updates" }]}
+      breadcrumb={[{ label: "Media" }, { label: "Updates" }]}
       description={DESCRIPTION}
       lastUpdated={getContentSyncedDate()}
       columns={columns}
       rows={rows}
       searchKeys={["title", "organisation"]}
-      searchPlaceholder="Search updates by title…"
+      searchPlaceholder="Search updates by title"
+      filters={[{ key: "organisation", label: "Organisation", allLabel: "All Organisations" }]}
+      noun="updates"
+      nounSingular="update"
     />
   );
 }

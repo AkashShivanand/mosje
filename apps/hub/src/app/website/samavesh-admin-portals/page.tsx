@@ -1,99 +1,55 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { EmptyState, Icon, liveEntries } from "@mosje/design-system";
 import { PageLayout } from "@/components/website-next/layout/PageLayout";
-import { Icon } from "@mosje/design-system";
+import { PortalDirectory } from "@/components/website-next/media/PortalDirectory";
+import { resolvePortals } from "@/lib/registry/resolve";
+import "@/components/website-next/templates/media.css";
+
+const TITLE = "Administrative Portals";
+const DESCRIPTION =
+  "Portals used by officers of the Department, its organisations and implementing agencies to manage and monitor schemes. Sign-in is for authorised users.";
 
 export const metadata: Metadata = {
-  title: "SAMAVESH — Admin Portals — DoSJE",
-  description:
-    "Administrative consoles for MoSJE schemes and organisations (authorised access).",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
 };
 
-interface AdminConsole {
-  name: string;
-  description: string;
-  icon: string;
-  href: string;
-}
+/**
+ * Which registry entries are administrative consoles.
+ *
+ * The estate registry has no audience field, so this cannot be derived — it is
+ * the four entries whose OWN registry description names them a management,
+ * monitoring or MIS console:
+ *   /portals/eutthan-admin  "Scheme management & monitoring"
+ *   /portals/smile-admin    "Rehabilitation admin portal …"
+ *   /portals/pm-ajay        "MIS dashboard — …"
+ *   /portals/e-anudaan      "Grant-in-Aid Management — …"
+ * They are still read through the resolved registry, so one switched off at
+ * `/admin/portals` disappears here too.
+ *
+ * WHAT THIS REPLACED: six invented consoles, every one linking to "#".
+ */
+const ADMIN_PATHS = new Set(["/portals/eutthan-admin", "/portals/smile-admin", "/portals/pm-ajay", "/portals/e-anudaan"]);
 
-const CONSOLES: AdminConsole[] = [
-  {
-    name: "SMILE Admin Console",
-    description: "Manage transgender welfare and beggary rehabilitation case workflows.",
-    icon: "dashboard",
-    href: "#",
-  },
-  {
-    name: "PM-AJAY MIS",
-    description: "Component-wise fund tracking, Adarsh Gram and hostel monitoring.",
-    icon: "bar_chart",
-    href: "#",
-  },
-  {
-    name: "Scholarship Admin (NOS)",
-    description: "Review, sanction and disburse National Overseas Scholarship awards.",
-    icon: "school",
-    href: "#",
-  },
-  {
-    name: "NMBA Dashboard",
-    description: "Track outreach drives, master volunteers and district-level progress.",
-    icon: "verified_user",
-    href: "#",
-  },
-  {
-    name: "Grant-in-Aid Management",
-    description: "Process GIA proposals, releases and utilisation certificates.",
-    icon: "paid",
-    href: "#",
-  },
-  {
-    name: "NGO Monitoring Portal",
-    description: "Onboard, verify and audit implementing agencies and NGOs.",
-    icon: "group",
-    href: "#",
-  },
-];
-
-export default function AdminPortalsPage() {
+export default async function AdminPortalsPage() {
+  const portals = liveEntries(await resolvePortals()).filter((p) => ADMIN_PATHS.has(p.path));
   return (
-    <PageLayout
-      title="SAMAVESH — Admin Portals"
-      breadcrumb={[{ label: "SAMAVESH" }, { label: "Admin Portals" }]}
-      description="Administrative consoles for MoSJE schemes and organisations (authorised access)."
-    >
-      <section>
-        <div className="sa-container py-10 md:py-12">
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {CONSOLES.map(({ name, description, icon: iconName, href }) => (
-              <div
-                key={name}
-                className="flex flex-col rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
-              >
-                <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-surface-muted text-primary">
-                  <Icon name={iconName} aria-hidden="true" />
-                </span>
-                <h2 className="mt-4 text-title-2 text-primary-dark">
-                  {name}
-                </h2>
-                <p className="mt-1.5 flex-1 text-body-2 text-ink-muted">
-                  {description}
-                </p>
-                <a
-                  href={href}
-                  className="mt-4 inline-flex items-center gap-1.5 text-label-1 text-primary hover:text-primary-dark"
-                >
-                  Open Console
-                  <Icon name="arrow_outward" size={16} aria-hidden="true" />
-                </a>
-                <p className="mt-2 inline-flex items-center gap-1 text-body-3 text-gray-500">
-                  <Icon name="lock" size={12} aria-hidden="true" />
-                  Authorised access
-                </p>
-              </div>
-            ))}
-          </div>
+    <PageLayout title={TITLE} breadcrumb={[{ label: "Schemes & Services" }, { label: TITLE }]} description={DESCRIPTION}>
+      <div className="wn-section">
+        <div className="sa-container">
+          {portals.length === 0 ? (
+            <EmptyState
+              icon={<Icon name="admin_panel_settings" size={40} />}
+              title="No Administrative Portals Available"
+              description="No administrative portal is open at present."
+              action={<Link href="/website/samavesh-citizen-portals" className="wn-filters__clear">View Citizen Portals</Link>}
+            />
+          ) : (
+            <PortalDirectory portals={portals} />
+          )}
         </div>
-      </section>
+      </div>
     </PageLayout>
   );
 }

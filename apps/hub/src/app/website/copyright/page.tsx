@@ -1,74 +1,55 @@
 import type { Metadata } from "next";
 import { ContentPage } from "@/components/website-next/templates/ContentPage";
+import { PolicySidebar } from "@/components/website-next/templates/content/policies";
+
+const TITLE = "Copyright Policy";
+const DESCRIPTION = "The terms on which material on this website may be reproduced.";
 
 export const metadata: Metadata = {
-  title: "Copyright Policy — Department of Social Justice & Empowerment",
-  description:
-    "Copyright Policy for the material published on the official website of the Department of Social Justice & Empowerment (DoSJE), Government of India.",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
 };
 
-export default function CopyrightPage() {
+/*
+ * The Department's own Copyright Policy, dosje.gov.in/home-page/copyright-policy/, read
+ * 21 Sep 2026, replacing a paraphrase that added sections the Department never
+ * published ("Exceptions", "Trademarks"). The wording is unchanged; the three
+ * paragraphs are given headings so a reader can find the clause they need.
+ */
+export default function Page() {
   return (
     <ContentPage
-      title="Copyright Policy"
-      breadcrumb={[{ label: "Policies" }, { label: "Copyright Policy" }]}
-      description="Terms governing the reproduction and use of material published on this website of the Department of Social Justice & Empowerment."
+      title={TITLE}
+      breadcrumb={[{ label: "Website Policies", href: "/website/website-policies" }, { label: TITLE }]}
+      description={DESCRIPTION}
       lastUpdated="06 Jun 2026"
+      sidebar={<PolicySidebar current="/website/copyright" />}
     >
+      <h2 id="reproduction">Reproduction of Material</h2>
       <p>
-        Material featured on this website of the Department of Social Justice &amp; Empowerment (DoSJE),
-        Government of India, may be reproduced free of charge in any format or media without requiring
-        specific permission. This is subject to the material being reproduced accurately and not being used
-        in a derogatory manner or in a misleading context.
+        Material featured on Ministry of Social Justice and Empowerment (MSJE) site may be reproduced free of charge
+        in any format or media without requiring specific permission. This is subject to the material being
+        reproduced accurately and not being used in a derogatory manner or in a misleading context. Where the
+        material is being published or issued to others, the source must be prominently acknowledged. However, the
+        permission to reproduce this material does not extend to any material on this site, which is identified as
+        being the copyright of a third party. Authorization to reproduce such material must be obtained from the
+        copyright holders concerned.
       </p>
 
-      <h2>Conditions of Reproduction</h2>
+      <h2 id="law">Governing Law</h2>
       <p>
-        Where the material is being published or issued to others, the source must be prominently
-        acknowledged. The permission to reproduce material does not extend to any material on this website
-        that is identified as being the copyright of a third party. Authorisation to reproduce such material
-        must be obtained from the copyright holders concerned.
-      </p>
-      <ul>
-        <li>
-          The material must be reproduced accurately and must not be used in a derogatory manner or within a
-          false or misleading context.
-        </li>
-        <li>
-          Wherever the material is being reproduced, the Department of Social Justice &amp; Empowerment,
-          Government of India, must be identified and acknowledged as the source of the material.
-        </li>
-        <li>
-          The right to reproduce the material does not transfer ownership of the copyright in the material to
-          the user.
-        </li>
-      </ul>
-
-      <h2>Exceptions</h2>
-      <p>
-        This permission for free reproduction does not extend to:
-      </p>
-      <ul>
-        <li>
-          The National Emblem, the official emblems, logos and crests of the Department, its associated
-          organisations, and the Government of India;
-        </li>
-        <li>Any logos, emblems or insignia that are protected under the State Emblem of India (Prohibition
-          of Improper Use) Act, 2005, or any other applicable law;</li>
-        <li>Material that is explicitly identified as being the copyright of a third party.</li>
-      </ul>
-      <p>
-        Use of the National Emblem and official logos is governed by the relevant statutes and may not be
-        reproduced without prior written authorisation.
+        These terms and conditions shall be governed by and construed in accordance with the Indian Laws. Any
+        dispute arising under these terms and conditions shall be subject to the exclusive jurisdiction of the
+        courts of India.
       </p>
 
-      <h2>Trademarks</h2>
+      <h2 id="third-party">Content from Third Parties</h2>
       <p>
-        The names, images and logos identifying the Department of Social Justice &amp; Empowerment or third
-        parties and their products and services are subject to copyright, design rights and trademarks of
-        the Department and / or the third parties. Nothing contained in these terms shall be construed as
-        conferring any licence or right to use any trademark, patent, design or copyright of the Department
-        or any other third party.
+        While adding the contents by content contributor, there is a mechanism which checks if the content is
+        indigenous or taken from a third party source. If the content is indigenous, it automatically gets added and
+        published on the website after reviewed by content publisher or administrator. If it is from a third party
+        source, a disclaimer has to be provided by the content contributor that the required copyright has been
+        obtained from the said third party source for publishing the respective content.
       </p>
     </ContentPage>
   );

@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { SiteHeader, buttonClasses, type NavItem } from "@mosje/design-system";
+import { NATIONAL_EMBLEM, SiteHeader, buttonClasses, type NavItem } from "@mosje/design-system";
 
 import { LanguageDialog } from "@/components/i18n/language-dialog";
 import { useTranslation } from "@/components/i18n/translation-provider";
@@ -75,7 +75,7 @@ export function Masthead() {
         variant="website"
         beta={false}
         skipTo="#content"
-        emblemSrc="/website/images/National-Emblem-logo.svg"
+        emblemSrc={NATIONAL_EMBLEM}
         emblemAlt="National Emblem of India, Government of India"
         brandLines={{
           org: t("Government of India"),

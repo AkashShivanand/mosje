@@ -43,7 +43,7 @@ export interface PageHeaderProps {
  * last changed — on the content column's own left edge, and the first screen is
  * the page's content.
  */
-export function PageHeader({
+export function WebsitePageHeader({
   title,
   breadcrumb,
   description,

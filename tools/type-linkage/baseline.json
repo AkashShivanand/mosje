@@ -1619,6 +1619,21 @@
       "style-mixed": 0,
       "style-weight": 2,
       "style-weight-unset": 0
+    },
+    "apps/hub/src/app/website-classic/website.css": {
+      "size-off-ramp": 0,
+      "size": 0,
+      "leading": 0,
+      "tracking": 0,
+      "family": 0,
+      "utility-size": 0,
+      "utility-leading": 0,
+      "utility-tracking": 0,
+      "weight": 0,
+      "hindi-unmarked": 0,
+      "style-mixed": 0,
+      "style-weight": 1,
+      "style-weight-unset": 0
     }
   }
 }

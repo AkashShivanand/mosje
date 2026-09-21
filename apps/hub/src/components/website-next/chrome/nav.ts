@@ -38,7 +38,10 @@ export const NAV: NavItem[] = [
     ],
   },
   {
-    label: "Schemes & Services",
+    /* "Schemes" in the bar, "Schemes & Services" nowhere else needed: the menu it
+       opens holds the services. At 1024px the full label wrapped to two lines —
+       seven labels measured 867px against 976 available once the gaps are in. */
+    label: "Schemes",
     href: "#",
     children: [
       { label: "Find a Scheme", href: "/website/schemes-services" },

@@ -1,5 +1,6 @@
 import { PageLayout } from "@/components/website-next/layout/PageLayout";
 import type { PageHeaderProps } from "@/components/website-next/layout/PageHeader";
+import "./content.css";
 
 interface ContentPageProps extends PageHeaderProps {
   children: React.ReactNode;

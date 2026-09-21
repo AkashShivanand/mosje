@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Icon, Link as DSLink, SectionTitle } from "@mosje/design-system";
+import { Icon, SectionTitle } from "@mosje/design-system";
 import { PageLayout } from "@/components/website-next/layout/PageLayout";
-import { ListingTable, type ListingTableColumn } from "@/components/website/ui/data-table";
+import { StateRegister } from "@/components/website-next/media/StateRegister";
 import { NCSC_FUNCTION_CIRCULARS, SCHEDULED_CASTE_LISTS } from "@/data/website";
 import { socialCard } from "@/lib/seo/social";
+import "@/components/website-next/templates/media.css";
 
 const TITLE = "List of Scheduled Castes";
 const DESCRIPTION =
@@ -15,65 +16,67 @@ export const metadata: Metadata = {
   ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/list-of-scheduled-castes" }),
 };
 
-const columns: ListingTableColumn[] = [
-  { key: "sno", label: "S.No.", align: "center" },
-  {
-    key: "label",
-    label: "State / Union Territory",
-    sortable: true,
-    align: "left",
-    className: "min-w-[280px] font-medium text-ink",
-  },
-  { key: "action", label: "Action", align: "center", type: "link", hrefKey: "href", linkLabel: "View" },
-];
+/**
+ * STATE NAMES, CORRECTED (issue CON-11, a Blocker: "List of Scheduled Castes
+ * misspells States").
+ *
+ * The register (`data/website/scheduled-castes.ts`) transcribes the live page
+ * verbatim, misspellings included. The names of States and Union Territories
+ * are not the Department's to spell: they are fixed by the Constitution's First
+ * Schedule. Only these four labels are changed, and only for display — the
+ * gazette documents they link to are the Department's files, untouched:
+ *
+ *   Gujrat                  → Gujarat
+ *   Maharastra              → Maharashtra
+ *   Pondicherri/Puducherry  → Puducherry
+ *   Laddakh                 → Ladakh
+ *
+ * NOT changed: "Daman and Diu" and "Dadra and Nagar Haveli" were merged into
+ * one Union Territory in 2020, but each links to its own notified list, so both
+ * rows stay as published.
+ */
+const STATE_NAME_CORRECTIONS: Record<string, string> = {
+  Gujrat: "Gujarat",
+  Maharastra: "Maharashtra",
+  "Pondicherri/Puducherry": "Puducherry",
+  Laddakh: "Ladakh",
+};
 
 /**
- * Two registers on one page, as the department publishes them: the notified
+ * Two registers on one page, as the Department publishes them: the notified
  * lists, and the circulars that govern how a caste certificate is issued and
- * verified. The second is not a footnote to the first — it is what a citizen
- * holding a certificate actually needs — so it takes its own section heading.
+ * verified. The second is what a citizen holding a certificate needs, so it has
+ * its own section.
  */
 export default function Page() {
-  const rows = SCHEDULED_CASTE_LISTS.map((s, i) => ({ ...s, sno: i + 1 }));
+  const rows = SCHEDULED_CASTE_LISTS.map((s) => ({ state: STATE_NAME_CORRECTIONS[s.label] ?? s.label, href: s.href })).sort((a, b) =>
+    a.state.localeCompare(b.state),
+  );
 
   return (
-    <PageLayout
-      title={TITLE}
-      description={DESCRIPTION}
-      breadcrumb={[{ label: "Documents" }, { label: TITLE }]}
-      lastUpdated="18 Sep 2026"
-    >
-      <section className="sa-container py-10 md:py-14">
-        <SectionTitle
-          title="State-wise / UT-wise List of Scheduled Castes"
-          description="Updated up to 15 February 2024."
-          as={2}
-        />
-        <ListingTable
-          caption="State-wise and UT-wise lists of Scheduled Castes"
-          columns={columns}
-          rows={rows}
-          searchKeys={["label"]}
-          searchPlaceholder="Search by State or Union Territory…"
-          pageSize={15}
-        />
+    <PageLayout title={TITLE} description={DESCRIPTION} breadcrumb={[{ label: "Documents" }, { label: TITLE }]} lastUpdated="18 Sep 2026">
+      <section className="wn-section" aria-labelledby="sc-lists">
+        <div className="sa-container">
+          <SectionTitle as={2} headingId="sc-lists" title="State-wise / UT-wise List of Scheduled Castes" description="Updated up to 15 February 2024." />
+          <StateRegister rows={rows} caption="Lists of Scheduled Castes by State and Union Territory" documentName="the List of Scheduled Castes" />
+        </div>
       </section>
 
-      <section className="sa-container pb-14">
-        <SectionTitle title="Functions of NCSC" as={2} />
-        <ul className="wn-prose">
-          {NCSC_FUNCTION_CIRCULARS.map((c) => (
-            <li key={`${c.label}-${c.href}`}>
-              <DSLink
-                href={c.href}
-                external
-                iconLeft={<Icon name="picture_as_pdf" size={16} />}
-              >
-                {c.label}
-              </DSLink>
-            </li>
-          ))}
-        </ul>
+      <section className="wn-section wn-section--muted" aria-labelledby="ncsc-circulars">
+        <div className="sa-container">
+          <SectionTitle as={2} headingId="ncsc-circulars" title="Functions of NCSC" />
+          <ul className="wn-prose">
+            {NCSC_FUNCTION_CIRCULARS.map((c) => (
+              <li key={`${c.label}-${c.href}`}>
+                <a href={c.href} target="_blank" rel="noopener noreferrer">
+                  {c.label}
+                  <span className="sr-only"> (PDF, opens in a new window)</span>
+                </a>{" "}
+                <Icon name="open_in_new" size={16} aria-hidden />
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
     </PageLayout>
   );

@@ -1,50 +1,62 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ContentPage } from "@/components/website-next/templates/ContentPage";
 
+const TITLE = "Official Language: Background";
+const DESCRIPTION =
+  "The Hindi unit's responsibility for the Official Language policy and the officers and employees who execute it in the Department of Social Justice & Empowerment.";
+
 export const metadata: Metadata = {
-  title: "Official Language — Background | Department of Social Justice & Empowerment",
-  description:
-    "Constitutional and statutory background of the Official Language policy, including Articles 343 to 351 and the Official Languages Act, 1963, and its role in the Ministry.",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
 };
 
+const related = (
+  <nav className="wn-panel" aria-labelledby="related-title">
+    <h2 className="wn-panel__title" id="related-title">
+      Related Pages
+    </h2>
+    <ul>
+      <li>
+        <Link href="/website/official-language-act">The Official Languages Act, 1963</Link>
+      </li>
+      <li>
+        <Link href="/website/activities-of-the-ministry-official-language">
+          Official Language Activities of the Ministry
+        </Link>
+      </li>
+    </ul>
+  </nav>
+);
+
+/* Body text: dosje.gov.in/official-language-background/ as published, read 21 Sep 2026. No typos found to correct. */
 export default function Page() {
   return (
     <ContentPage
-      title="Official Language — Background"
-      breadcrumb={[{ label: "Department" }, { label: "Official Language — Background" }]}
-      description="The constitutional framework and statutory basis for the use of Hindi as the Official Language of the Union."
+      title={TITLE}
+      breadcrumb={[{ label: "About" }, { label: "Official Language", href: "/website/official-language-act" }, { label: TITLE }]}
+      description={DESCRIPTION}
       lastUpdated="06 Jun 2026"
+      sidebar={related}
     >
-      <h2>Constitutional Provisions</h2>
+      <h2>Background</h2>
       <p>
-        The Constitution of India deals with the Official Language in <strong>Part XVII</strong>,
-        spanning <strong>Articles 343 to 351</strong>. Article 343 declares Hindi in the Devanagari
-        script to be the Official Language of the Union, while permitting the continued use of
-        English for official purposes. Articles 344 and 351 provide for the constitution of a
-        Committee of Parliament on Official Language and for the directive to promote the spread and
-        development of Hindi so that it may serve as a medium of expression for the composite culture
-        of India.
+        Hindi unit is responsible for implementation of Official Language policy and the
+        progressive use of Official Language Hindi in the Department of Social Justice and
+        Empowerment and the Offices under its control. Equally important is the work of
+        translation of documents related to the Department and the material related to
+        Parliamentary Affairs and the addresses/speeches of the Ministers and Secretary.
       </p>
-
-      <h2>The Official Languages Act, 1963</h2>
       <p>
-        To give effect to these constitutional provisions, Parliament enacted the{" "}
-        <strong>Official Languages Act, 1963</strong>, which provides for the languages that may be
-        used for the official purposes of the Union, for transaction of business in Parliament, and
-        for communications between the Union and the States. The Act, together with the Official
-        Languages (Use for Official Purposes of the Union) Rules, 1976, guides the progressive use of
-        Hindi in government work.
+        The Department of Social Justice and Empowerment has the following Officers and Employees
+        to execute the jobs pertaining to the implementation of Official Language Policy:
       </p>
-
-      <h2>Role in the Ministry</h2>
-      <p>
-        Within the Department of Social Justice &amp; Empowerment, the Official Language Section is
-        responsible for implementing the constitutional and statutory provisions and the Annual
-        Programme issued by the Department of Official Language, Ministry of Home Affairs. Its work
-        includes promoting the progressive use of Hindi in official communications, organising
-        training and Hindi workshops, and ensuring compliance with the targets set for the use of
-        Hindi.
-      </p>
+      <ul>
+        <li>JS (Admn. &amp; Hindi)</li>
+        <li>DD (OL) (One)</li>
+        <li>AD (OL) (Two)</li>
+        <li>Five Translators (3 Senior &amp; 2 Junior)</li>
+      </ul>
     </ContentPage>
   );
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { DescriptionItem } from "@mosje/design-system";
-import { RecordDetail } from "@/components/website/templates/RecordDetail";
+import { RecordDetail } from "@/components/website-next/templates/RecordDetail";
 import { getAllDocuments, getContentSyncedDate, getDocument, routeSlug } from "@/lib/website/content";
 import { documentFacts, documentFiles } from "@/lib/website/record-facts";
 import { documentListingFor } from "@/lib/website/directories";

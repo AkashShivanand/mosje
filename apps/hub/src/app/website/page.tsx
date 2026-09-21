@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Masthead } from "@/components/website-next/chrome/Masthead";
-import { Footer } from "@/components/website-next/chrome/Footer";
+import { WebsiteFooter } from "@/components/website-next/chrome/Footer";
 import { Hero } from "@/components/website-next/home/Hero";
 import { Audiences } from "@/components/website-next/home/Audiences";
 import { Offerings } from "@/components/website-next/home/Offerings";
@@ -9,8 +9,6 @@ import { Campaign } from "@/components/website-next/home/Campaign";
 import { Organisations } from "@/components/website-next/home/Organisations";
 import { Leadership } from "@/components/website-next/home/Leadership";
 import { Helplines } from "@/components/website-next/home/Helplines";
-import { WebsiteCookieNotice } from "@/components/website/cookie-notice";
-import { resolveCookieBannerEnabled } from "@/lib/cookie-banner/resolve";
 
 export const metadata: Metadata = {
   title: "Department of Social Justice & Empowerment, Government of India",
@@ -23,8 +21,7 @@ export const metadata: Metadata = {
  * what can I do → who is it for → what is offered → what is new → the national
  * campaign → who runs it → the Department → whom to call.
  */
-export default async function Home() {
-  const cookieBanner = await resolveCookieBannerEnabled();
+export default function Home() {
   return (
     <>
       <Masthead />
@@ -38,8 +35,7 @@ export default async function Home() {
         <Leadership />
         <Helplines />
       </main>
-      <Footer />
-      {cookieBanner && <WebsiteCookieNotice />}
+      <WebsiteFooter />
     </>
   );
 }

@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
+import NextLink from "next/link";
 import { Link } from "@mosje/design-system";
 import { ContentPage } from "@/components/website-next/templates/ContentPage";
+import { PolicySidebar } from "@/components/website-next/templates/content/policies";
+import { TableWrap } from "@/components/website-next/templates/content/TableWrap";
 import { socialCard } from "@/lib/seo/social";
 
 const TITLE = "Help";
-const DESCRIPTION =
-  "How to view the file formats published on this website, and the screen readers with which its content has been made accessible.";
+const DESCRIPTION = "How to open the file formats in which documents on this website are published.";
 
 export const metadata: Metadata = {
   title: `${TITLE} | Department of Social Justice & Empowerment`,
@@ -14,21 +16,17 @@ export const metadata: Metadata = {
 };
 
 /**
- * The department's own Help page, in our design language.
- *
+ * The Department's own Help page, dosje.gov.in/home-page/help/ (read 2026-09-21).
  * [DBIM 3.0 §5.6] Help — "FAQs, screen reader access, accessibility help".
- * [GIGW 3.0] Help content: how to open files of certain formats, plug-ins required.
  *
- * Both tables are the department's — the plug-in list and the screen-reader list
- * — from dosje.gov.in/home-page/help/ (read 2026-09-17), and the wording is
- * theirs. `ui-restraint-and-copy.md` prefers the department's own words and this
- * page is entirely them.
+ * The plug-in table and its introduction are the Department's words ("your browser
+ * need to have" → "needs"). Its screen-reader half moved to the GIGW page built for it,
+ * /website/screen-reader-access (issue MAN-02): the live text opened "The National
+ * Website of India fully complies with Guidelines for Indian Government Websites",
+ * a sentence copied from india.gov.in that is neither about this site nor true of it.
  *
- * The ADDRESSES are ours to keep working: the live page still points NVDA, JAWS
- * and Supernova at addresses those products moved away from, so each is given the
- * publisher's current one. Window-Eyes is listed WITHOUT a link — the product was
- * discontinued and its address now resolves to a parked page, which GIGW's
- * broken-link rule does not allow a government page to send a reader to.
+ * The Adobe address is the publisher's current one; the Department's points at a
+ * regional "other versions" page.
  */
 const PLUGINS = [
   { type: "Portable Document Format (PDF) files", label: "Adobe Acrobat Reader", href: "https://get.adobe.com/reader/" },
@@ -41,106 +39,68 @@ const PLUGINS = [
   },
 ];
 
-const SCREEN_READERS: { name: string; href?: string; licence: "Free" | "Commercial" }[] = [
-  { name: "Screen Access For All (SAFA)", href: "https://safa-reader.software.informer.com/download/", licence: "Free" },
-  { name: "Non Visual Desktop Access (NVDA)", href: "https://www.nvaccess.org/", licence: "Free" },
-  { name: "System Access To Go", href: "https://www.satogo.com/en/", licence: "Free" },
-  { name: "JAWS", href: "https://vispero.com/jaws-screen-reader-software/", licence: "Commercial" },
-  { name: "Supernova", href: "https://yourdolphin.com/SuperNova", licence: "Commercial" },
-  { name: "Window-Eyes", licence: "Commercial" },
-];
-
 export default function Page() {
   return (
     <ContentPage
       title={TITLE}
-      breadcrumb={[{ label: "Support" }, { label: TITLE }]}
+      breadcrumb={[{ label: "Contact" }, { label: TITLE }]}
       description={DESCRIPTION}
       lastUpdated="18 Sep 2026"
+      sidebar={<PolicySidebar current="/website/help" />}
     >
-      <h2>Viewing Information in Various File Formats</h2>
+      <h2 id="file-formats">Viewing Information in Various File Formats</h2>
       <p>
-        The information provided by this website is available in various formats, such as Portable
-        Document Format (PDF), Word, and also in HTML format. To view the information properly, your
-        browser needs to have the required plug-ins or software. If your system does not have it, it
-        can be downloaded from the Internet free of charge.
+        The information provided by this website is available in various formats, such as Portable Document Format
+        (PDF), Word, and also in HTML format. To view the information properly, your browser needs to have the
+        required plug-ins or software. For example, the PDF reader software is required to view a document in PDF
+        format. In case your system does not have this software, you can download it from the Internet for free.
+        The table lists the plug-ins needed to view the information in various file formats.
       </p>
 
-      <table>
-        <caption className="sr-only">File formats used on this website and the software needed to open them</caption>
-        <thead>
-          <tr>
-            <th scope="col">Document Type</th>
-            <th scope="col">Plug-in for Download</th>
-          </tr>
-        </thead>
-        <tbody>
-          {PLUGINS.map((p) => (
-            <tr key={p.type}>
-              <td>{p.type}</td>
-              <td>
-                <Link href={p.href} external>
-                  {p.label}
-                </Link>
-              </td>
+      <TableWrap label="Software for each file format">
+        <table>
+          <caption className="sr-only">File formats used on this website and the software needed to open them</caption>
+          <thead>
+            <tr>
+              <th scope="col">Document Type</th>
+              <th scope="col">Plug-in for Download</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <h2>Screen Reader Access</h2>
-      <p>
-        This website complies with the Guidelines for Indian Government Websites and Apps (GIGW).
-        Visitors with visual impairments can access the website using assistive technologies such as
-        screen readers.
-      </p>
-      <p>
-        The information on this website is accessible with different screen readers, such as JAWS, NVDA,
-        SAFA, Supernova and Window-Eyes.
-      </p>
-
-      <table>
-        <caption className="sr-only">Screen readers with which this website has been tested</caption>
-        <thead>
-          <tr>
-            <th scope="col">Screen Reader</th>
-            <th scope="col">Free / Commercial</th>
-          </tr>
-        </thead>
-        <tbody>
-          {SCREEN_READERS.map((s) => (
-            <tr key={s.name}>
-              <td>
-                {s.href ? (
-                  <Link href={s.href} external>
-                    {s.name}
+          </thead>
+          <tbody>
+            {PLUGINS.map((p) => (
+              <tr key={p.type}>
+                <th scope="row">{p.type}</th>
+                <td>
+                  <Link href={p.href} external>
+                    {p.label}
                   </Link>
-                ) : (
-                  s.name
-                )}
-              </td>
-              <td>{s.licence}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </TableWrap>
 
-      <h2>Accessibility and Other Help</h2>
+      <h2 id="more-help">Accessibility and Other Help</h2>
       <ul>
         <li>
-          <Link href="/website/accessibility">Accessibility Statement</Link> — the accessibility
-          features of this website and how to report a barrier.
+          <NextLink href="/website/screen-reader-access">Screen Reader Access</NextLink>: screen readers that can be
+          used with this website.
         </li>
         <li>
-          <Link href="/website/grants-in-aid-to-ngos-faqs">Grants-in-Aid to NGOs: FAQs</Link> and{" "}
-          <Link href="/website/social-defence-faqs">Social Defence: FAQs</Link>.
+          <NextLink href="/website/accessibility-statement">Accessibility Statement</NextLink>: the accessibility
+          standard of this website and how to report a barrier.
         </li>
         <li>
-          <Link href="/website/sitemap">Sitemap</Link> — every section of this website on one page.
+          <NextLink href="/website/grants-in-aid-to-ngos-faqs">Grants-in-Aid to NGOs: Frequently Asked Questions</NextLink>{" "}
+          and <NextLink href="/website/social-defence-faqs">Social Defence: Frequently Asked Questions</NextLink>.
         </li>
         <li>
-          <Link href="/website/contact-us">Contact Us</Link> — to reach the Department about a scheme
-          or an application.
+          <NextLink href="/website/sitemap">Sitemap</NextLink>: every section of this website on one page.
+        </li>
+        <li>
+          <NextLink href="/website/contact-us">Contact Us</NextLink>: to reach the Department about a scheme or an
+          application.
         </li>
       </ul>
     </ContentPage>

@@ -1,62 +1,44 @@
 import type { Metadata } from "next";
 import { ContentPage } from "@/components/website-next/templates/ContentPage";
 
+const TITLE = "Organisations under the Social Defence Division";
+const DESCRIPTION =
+  "The National Institute of Social Defence, the nodal training and research institute in the field of social defence, functions under the Social Defence Division.";
+
 export const metadata: Metadata = {
-  title: "Organisations under Social Defence Division | Department of Social Justice & Empowerment",
-  description:
-    "Autonomous bodies, institutes and organisations functioning under the Social Defence Division of the Department of Social Justice & Empowerment.",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
 };
 
+/* Body text: dosje.gov.in/organisation-under-division-social-division/ as
+   published, read 21 Sep 2026. Title: the live h1 reads "Organisation under
+   Division: Social Division" — "Social Division" is the live page's own short
+   form of the Social Defence Division (the page's only content is the Social
+   Defence Division's autonomous body, NISD), so the title here reads
+   "Organisations under the Social Defence Division" for clarity; no other
+   wording changed. No typos found. */
 export default function Page() {
   return (
     <ContentPage
-      title="Organisations under Social Defence Division"
-      breadcrumb={[{ label: "Department" }, { label: "Organisations under Social Defence Division" }]}
-      description="Specialised institutes and bodies that support the delivery of the Social Defence Division's mandate."
+      title={TITLE}
+      breadcrumb={[{ label: "About" }, { label: "Divisions", href: "/website/about-the-division" }, { label: TITLE }]}
+      description={DESCRIPTION}
       lastUpdated="06 Jun 2026"
     >
-      <h2>Overview</h2>
+      <h2>National Institute of Social Defence, Ministry of Social Justice and Empowerment, Government of India</h2>
       <p>
-        The Social Defence Division works in partnership with a number of autonomous institutes and
-        organisations. These bodies provide specialised training, research, capacity building and
-        technical support that strengthen the planning and delivery of welfare programmes for senior
-        citizens, victims of substance abuse, transgender persons and persons in situations of
-        destitution.
+        National Institute of Social Defence is the nodal training and research institute in the field
+        of social defence. Though social defence covers the entire gamut of activities and programmes
+        for the protection of society, it is currently focusing on human resource development in the
+        areas of drug abuse prevention, welfare of senior citizens and transgenders, beggary prevention,
+        and other social defence issues.
       </p>
-
-      <h2>Institutes &amp; Bodies</h2>
-      <ul>
-        <li>
-          <a href="#">National Institute of Social Defence (NISD)</a> — the apex institute for
-          human-resource development in the field of social defence, undertaking training, research,
-          documentation and awareness in drug abuse prevention, welfare of senior citizens, and
-          transgender welfare.
-        </li>
-        <li>
-          <a href="#">National Institute of Social Defence — Regional Resource &amp; Training Centres</a>{" "}
-          — a network of centres delivering training and field support across regions.
-        </li>
-        <li>
-          <a href="#">Old Age Homes &amp; Senior Citizen Care Institutions</a> — supported under the
-          Atal Vayo Abhyuday Yojana for the care and welfare of the elderly.
-        </li>
-        <li>
-          <a href="#">Integrated Rehabilitation Centres for Addicts (IRCAs)</a> — voluntary-sector
-          institutions providing treatment and rehabilitation for substance-dependent persons.
-        </li>
-        <li>
-          <a href="#">Garima Greh — Shelter Homes for Transgender Persons</a> — providing shelter,
-          food, medical care, skill development and recreational facilities.
-        </li>
-      </ul>
-
-      <h2>Coordination</h2>
-      <p>
-        The Division coordinates with these organisations, State Governments and accredited voluntary
-        organisations to ensure that services reach the intended beneficiaries effectively. Periodic
-        monitoring, review and evaluation help maintain quality of care and accountability across the
-        network.
-      </p>
+      <ol>
+        <li>NISD is an Autonomous Body of the Ministry of Social Justice and Empowerment, Government of India.</li>
+        <li>NISD reviews and evaluates the implementation of the Social Defence policies and programs.</li>
+        <li>NISD coordinates and liaises with the Government and the Non-Government organisations at the State, National and International levels.</li>
+        <li>The institute develops preventive, curative and rehabilitative tools, programmes and policies in the field of social defence, and also undertakes research, training and capacity building, consultancy, documentation and publication in the field.</li>
+      </ol>
     </ContentPage>
   );
 }

@@ -1,56 +1,46 @@
 "use client";
 
 import { useEffect } from "react";
-import { Header } from "@/components/website/Header";
-import { WebsiteSamaveshBanner } from "@/components/website/website-samavesh-banner";
-import { WebsiteSiteFooter } from "@/components/website/SiteFooter";
-import { ImportantLinks } from "@/components/website/ImportantLinks";
-import { ErrorView } from "@mosje/design-system";
+import { Button } from "@mosje/design-system";
+import { Masthead } from "@/components/website-next/chrome/Masthead";
+import { WebsitePageHeader } from "@/components/website-next/layout/PageHeader";
+import { DeadEnd } from "@/components/website-next/search/DeadEnd";
 
-export default function WebsiteError({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}) {
+/**
+ * The website's error boundary (issue X-IA-10). It says the page did not load,
+ * offers Try Again, the site search and the five popular links — and nothing
+ * else. No status code, digest, message or stack reaches the page: those are
+ * for the server log, and the console line below keeps them there.
+ *
+ * WHY NO FOOTER. An error boundary must be a client component, and the site
+ * footer reads the content register on the server (`getContentSyncedDate`);
+ * importing it here would ship the whole ingested register to the browser in
+ * this chunk. The masthead is a client component and carries the full
+ * navigation, so the reader is not stranded. Recorded as a follow-up for the
+ * footer's owner: take the synced date as a prop and this page can render it.
+ */
+export default function WebsiteError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
-    // Log unexpected errors for client monitoring
     console.error("Website runtime error:", error);
   }, [error]);
 
   return (
     <>
-      <Header />
-      <WebsiteSamaveshBanner />
-      <main id="content" className="flex-1 bg-surface-base">
-        <div className="py-12 md:py-16">
-          <ErrorView
-            kind="500"
-            badge="500 · System Error"
-            title="Unable to Load This Page"
-            description="An unexpected error occurred while rendering this page. Our technical teams have received an automated log. You may try reloading the page or return to the Ministry homepage."
-            searchUrl="/website/search?q="
-            primaryAction={{
-              label: "Try Again",
-              onClick: reset,
-              icon: "refresh",
-            }}
-            secondaryAction={{
-              label: "Return to Homepage",
-              href: "/website",
-              icon: "home",
-            }}
-            errorDetails={
-              error.digest
-                ? `Error Digest: ${error.digest}\nMessage: ${error.message}`
-                : error.message || "Unknown error"
-            }
-          />
-        </div>
+      <Masthead />
+      <main id="content" tabIndex={-1} className="wn-main">
+        <WebsitePageHeader
+          title="This Page Could Not Be Loaded"
+          breadcrumb={[{ label: "Page Could Not Be Loaded" }]}
+          description="Something went wrong while this page was loading. Try again, or use the search and links below."
+        />
+        <DeadEnd
+          actions={
+            <Button variant="primary" size="md" onClick={reset}>
+              Try Again
+            </Button>
+          }
+        />
       </main>
-      <WebsiteSiteFooter />
-      <ImportantLinks />
     </>
   );
 }

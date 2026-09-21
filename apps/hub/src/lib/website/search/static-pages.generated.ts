@@ -15,7 +15,7 @@
  *   /nmba-options — internal design-option preview — variants of one page, not content
  *   /nmba-placement-preview — internal design-option preview — a layout sandbox, not content
  *   /search — the results page itself — a search result pointing at the search page is a loop
- *   /samavesh-citizen-portals — retired — redirects to /portals, which is the same directory with search and filters. A redirect has no title of its own and must not appear as a result: indexing it would put two entries in search for one destination.
+ *   /accessibility — a permanent redirect to /accessibility-statement, the canonical page (GIGW names it "Accessibility Statement"); indexing both would put two results on one destination.
  */
 
 export interface StaticPageEntry {
@@ -35,36 +35,36 @@ export const STATIC_PAGES: StaticPageEntry[] = [
     "iconName": "home"
   },
   {
-    "title": "About the Division — Welfare of Scheduled Castes",
-    "description": "Mandate, target group, key schemes and objectives of the Scheduled Castes Development Division under the Department of Social Justice & Empowerment.",
+    "title": "Scheduled Caste Welfare Division",
+    "description": "The Scheduled Castes Development (SCD) Bureau aims to promote the welfare of Scheduled Castes through their educational, economic and social empowerment.",
     "href": "/website/about-the-division",
     "section": "The Department",
     "iconName": "article"
   },
   {
-    "title": "About the Division — Administration & Coordination",
-    "description": "The Administration & Coordination Division of DoSJE handles establishment, personnel, coordination, vigilance and general administration functions of the Department.",
+    "title": "Plan Division",
+    "description": "Major activities of the Plan Division of the Department of Social Justice & Empowerment.",
     "href": "/website/about-the-division-2",
     "section": "The Department",
     "iconName": "article"
   },
   {
-    "title": "About the Division — Social Defence",
-    "description": "Mandate and functions of the Social Defence Division of DoSJE — covering senior citizens, victims of substance abuse, transgender persons and the prevention of beggary.",
+    "title": "Social Defence Division",
+    "description": "The Social Defence Division of the Department mainly caters to the requirements of senior citizens, victims of alcoholism and substance abuse, transgender persons, and persons engaged in beggary or destitution.",
     "href": "/website/about-the-division-social-defence",
     "section": "The Department",
     "iconName": "article"
   },
   {
-    "title": "About the Division — Statistics",
-    "description": "The Statistics Division of DoSJE is responsible for data collection, monitoring, evaluation and the publication of statistical material on the Department's schemes and target groups.",
+    "title": "Statistics Division",
+    "description": "The Statistics Division of the Department of Social Justice & Empowerment is primarily responsible for sponsoring evaluation and research studies on the schemes for its target groups.",
     "href": "/website/about-the-division-statistics-division",
     "section": "The Department",
     "iconName": "article"
   },
   {
-    "title": "About the Division — Welfare of OBC",
-    "description": "Structure, functions and working of the Backward Classes Division within the Department of Social Justice & Empowerment.",
+    "title": "Welfare of the Other Backward Classes Division",
+    "description": "Under the Backward Classes Bureau, the Department is mandated to look after the welfare of Backward Classes by implementing the schemes for Backward Classes.",
     "href": "/website/about-the-division-welfare-of-the-other-backward-classes",
     "section": "The Department",
     "iconName": "article"
@@ -78,14 +78,14 @@ export const STATIC_PAGES: StaticPageEntry[] = [
   },
   {
     "title": "Accessibility Statement",
-    "description": "Accessibility Statement for the website of the Department of Social Justice & Empowerment (DoSJE), Government of India — built to WCAG 2.1 Level AA and GIGW 3.0.",
-    "href": "/website/accessibility",
+    "description": "The accessibility standard this website is built to, how it is checked, its known limitations and how to report a barrier.",
+    "href": "/website/accessibility-statement",
     "section": "Site Policies",
     "iconName": "policy"
   },
   {
-    "title": "Official Language Activities of the Ministry",
-    "description": "Activities undertaken by the Ministry to promote the use of Hindi — Hindi Pakhwada, Rajbhasha committees, training and incentive schemes.",
+    "title": "Activities of the Ministry: Official Language",
+    "description": "The status of implementation of the Official Language Policy in the Department of Social Justice & Empowerment.",
     "href": "/website/activities-of-the-ministry-official-language",
     "section": "Pages",
     "iconName": "article"
@@ -126,8 +126,15 @@ export const STATIC_PAGES: StaticPageEntry[] = [
     "iconName": "menu_book"
   },
   {
-    "title": "Parliamentary Assurances",
-    "description": "Information on Parliamentary Assurances given by the Department of Social Justice & Empowerment — what they are and how they are tracked and fulfilled.",
+    "title": "Archives",
+    "description": "Tenders and vacancies move to the Archives twelve months after the date they were published.",
+    "href": "/website/archives",
+    "section": "Pages",
+    "iconName": "article"
+  },
+  {
+    "title": "Assurances",
+    "description": "Guidelines and instructions on handling Parliamentary Assurances given by the Department, with frequently asked questions.",
     "href": "/website/assurances",
     "section": "Documents",
     "iconName": "campaign"
@@ -148,7 +155,7 @@ export const STATIC_PAGES: StaticPageEntry[] = [
   },
   {
     "title": "Cessation of Voluntary Organisation Activities",
-    "description": "Procedure where a grant-aided voluntary organisation closes, withdraws from a project, or has its assistance discontinued by the Department.",
+    "description": "What happens to immovable assets created with the Ministry's assistance when a voluntary organisation permanently closes a project.",
     "href": "/website/cessation-of-voluntary-organisation-activities",
     "section": "NGOs & Grants",
     "iconName": "handshake"
@@ -175,29 +182,29 @@ export const STATIC_PAGES: StaticPageEntry[] = [
     "iconName": "article"
   },
   {
-    "title": "Contact Person — Grant-in-Aid",
-    "description": "Contact points in the Department of Social Justice & Empowerment for queries relating to grant-in-aid to NGOs and voluntary organisations.",
+    "title": "Contact Person",
+    "description": "Contact details of the accounts officers of the Department of Social Justice & Empowerment.",
     "href": "/website/contact-person",
     "section": "Contact & Directory",
     "iconName": "call"
   },
   {
     "title": "Contact Us",
-    "description": "Get in touch with the Department of Social Justice & Empowerment — office address, phone, email and key officers.",
+    "description": "Telephone, email and postal address of the Department of Social Justice & Empowerment, and the national helplines it runs.",
     "href": "/website/contact-us",
     "section": "Contact & Directory",
     "iconName": "call"
   },
   {
-    "title": "Cookies",
-    "description": "The cookies this website sets, what each one is for, and how to withdraw the acknowledgement stored in your browser.",
+    "title": "Cookie Policy",
+    "description": "What this website stores in your browser, why, and for how long.",
     "href": "/website/cookies",
     "section": "Pages",
     "iconName": "article"
   },
   {
     "title": "Copyright Policy",
-    "description": "Copyright Policy for the material published on the official website of the Department of Social Justice & Empowerment (DoSJE), Government of India.",
+    "description": "The terms on which material on this website may be reproduced.",
     "href": "/website/copyright",
     "section": "Site Policies",
     "iconName": "policy"
@@ -225,7 +232,7 @@ export const STATIC_PAGES: StaticPageEntry[] = [
   },
   {
     "title": "Dashboard",
-    "description": "Key welfare metrics and scheme performance at a glance.",
+    "description": "Progress of the Pradhan Mantri Anusuchit Jaati Abhyuday Yojana (PM-AJAY), as reported by the scheme's Management Information System.",
     "href": "/website/dashboard",
     "section": "Offerings",
     "iconName": "monitoring"
@@ -252,8 +259,15 @@ export const STATIC_PAGES: StaticPageEntry[] = [
     "iconName": "contacts"
   },
   {
-    "title": "Drug De-Addiction Division",
-    "description": "The Drug De-Addiction Division of DoSJE leads drug demand reduction through NAPDDR, the Nasha Mukt Bharat Abhiyaan and a national network of de-addiction centres.",
+    "title": "Disclaimer",
+    "description": "The limits of the Department's responsibility for the content of this website and of the websites it links to.",
+    "href": "/website/disclaimer",
+    "section": "Pages",
+    "iconName": "article"
+  },
+  {
+    "title": "Drug Division",
+    "description": "The sections of the Drug Division and the matters each handles, under the Department of Social Justice & Empowerment.",
     "href": "/website/drug-division",
     "section": "The Department",
     "iconName": "health_and_safety"
@@ -267,35 +281,42 @@ export const STATIC_PAGES: StaticPageEntry[] = [
   },
   {
     "title": "Events",
-    "description": "Conclaves, conferences and commemorative events organised by the Department of Social Justice & Empowerment, Government of India.",
+    "description": "Programmes, trainings and observances held by the Department of Social Justice & Empowerment and its associated organisations.",
     "href": "/website/events",
     "section": "Offerings",
     "iconName": "photo_library"
   },
   {
-    "title": "For Beneficiary",
-    "description": "Find schemes, acts, reports and the right office to help citizens access the Ministry's welfare and social justice services.",
+    "title": "Feedback",
+    "description": "Report a problem with this website, or suggest how it could be improved, to the Department of Social Justice & Empowerment.",
+    "href": "/website/feedback",
+    "section": "Pages",
+    "iconName": "article"
+  },
+  {
+    "title": "For Beneficiaries",
+    "description": "Schemes of the Department of Social Justice & Empowerment for each of the groups it serves, with helplines, Acts and the offices to contact.",
     "href": "/website/for-beneficiary",
     "section": "For You",
     "iconName": "person"
   },
   {
-    "title": "For Government Official",
-    "description": "Circulars, acts, RTI resources and the officer directory — tools and references for government officials.",
+    "title": "For Government Officials",
+    "description": "Circulars and notifications, Acts and rules, forms, tenders, the staff directory and grant-in-aid procedures of the Department of Social Justice & Empowerment.",
     "href": "/website/for-government-official",
     "section": "For You",
     "iconName": "person"
   },
   {
-    "title": "For Researcher",
-    "description": "Annual reports, publications, evaluation studies and statistical handbooks to support evidence-based research.",
+    "title": "For Researchers",
+    "description": "Publications, research and evaluation studies, the Handbook on Social Welfare Statistics, annual reports and open data of the Department of Social Justice & Empowerment.",
     "href": "/website/for-researcher",
     "section": "For You",
     "iconName": "person"
   },
   {
-    "title": "For Student",
-    "description": "Scholarships, application forms, notices and how-to-apply guidance to help students learn, grow and access support.",
+    "title": "For Students",
+    "description": "Scholarships, fellowships, residential schools, hostels and coaching of the Department of Social Justice & Empowerment for students, with where to apply.",
     "href": "/website/for-student",
     "section": "For You",
     "iconName": "person"
@@ -330,7 +351,7 @@ export const STATIC_PAGES: StaticPageEntry[] = [
   },
   {
     "title": "Guidelines for Assisting NGOs / Voluntary Organisations",
-    "description": "Eligibility conditions and terms under which the Department of Social Justice & Empowerment assists NGOs and voluntary organisations through grant-in-aid.",
+    "description": "Documents published by the Department under the Guidelines for Assisting NGOs / Voluntary Organisations.",
     "href": "/website/guidelines-for-assisting-ngos-voluntary-organisations",
     "section": "NGOs & Grants",
     "iconName": "handshake"
@@ -344,28 +365,21 @@ export const STATIC_PAGES: StaticPageEntry[] = [
   },
   {
     "title": "Help",
-    "description": "How to view the file formats published on this website, and the screen readers with which its content has been made accessible.",
+    "description": "How to open the file formats in which documents on this website are published.",
     "href": "/website/help",
     "section": "Pages",
     "iconName": "article"
   },
   {
-    "title": "Homepage Options for Review",
-    "description": "",
-    "href": "/website/home-options",
-    "section": "Pages",
-    "iconName": "article"
-  },
-  {
     "title": "Hyperlinking Policy",
-    "description": "Hyperlinking Policy covering links from this website to external sites and permission to link to this website of the Department of Social Justice & Empowerment (DoSJE), Government of India.",
+    "description": "Links from this website to other websites, and from other websites to this one.",
     "href": "/website/hyperlinking-policy",
     "section": "Site Policies",
     "iconName": "policy"
   },
   {
     "title": "Inspection and Monitoring Procedure",
-    "description": "How the Department of Social Justice & Empowerment inspects and monitors projects funded through grant-in-aid to voluntary organisations.",
+    "description": "How the Department inspects and monitors the working of voluntary organisations assisted through grant-in-aid.",
     "href": "/website/inspection-and-monitoring-procedure",
     "section": "NGOs & Grants",
     "iconName": "article"
@@ -378,8 +392,8 @@ export const STATIC_PAGES: StaticPageEntry[] = [
     "iconName": "handshake"
   },
   {
-    "title": "List of Research & Evaluation Studies",
-    "description": "A list of research and evaluation studies commissioned by the Department of Social Justice & Empowerment on its schemes and target groups.",
+    "title": "List of Research / Evaluation Studies",
+    "description": "Executive summaries of evaluation studies conducted during 2017-18, 2018-19, 2019-20 and 2021-22.",
     "href": "/website/list-of-research-evaluation-studies",
     "section": "Documents",
     "iconName": "menu_book"
@@ -505,28 +519,28 @@ export const STATIC_PAGES: StaticPageEntry[] = [
   },
   {
     "title": "The Official Languages Act, 1963",
-    "description": "An overview of the Official Languages Act, 1963 — its key sections, scope and the rules framed under it for the official use of Hindi and English.",
+    "description": "The Official Languages Act, 1963 (as amended, 1967), which provides for the languages that may be used for the official purposes of the Union.",
     "href": "/website/official-language-act",
     "section": "Documents",
     "iconName": "gavel"
   },
   {
-    "title": "Official Language — Background",
-    "description": "Constitutional and statutory background of the Official Language policy, including Articles 343 to 351 and the Official Languages Act, 1963, and its role in the Ministry.",
+    "title": "Official Language: Background",
+    "description": "The Hindi unit's responsibility for the Official Language policy and the officers and employees who execute it in the Department of Social Justice & Empowerment.",
     "href": "/website/official-language-background",
     "section": "Documents",
     "iconName": "article"
   },
   {
-    "title": "Organisations under Social Defence Division",
-    "description": "Autonomous bodies, institutes and organisations functioning under the Social Defence Division of the Department of Social Justice & Empowerment.",
+    "title": "Organisations under the Social Defence Division",
+    "description": "The National Institute of Social Defence, the nodal training and research institute in the field of social defence, functions under the Social Defence Division.",
     "href": "/website/organisation-under-division-social-division",
     "section": "The Department",
     "iconName": "article"
   },
   {
-    "title": "Penalties in Case of Misutilisation of Grants",
-    "description": "Consequences, recovery and blacklisting provisions where grant-in-aid released to voluntary organisations is mis-utilised.",
+    "title": "Penalties in Case of Misutilization of Grants",
+    "description": "The action taken against a voluntary organisation and its managing committee where grant-in-aid is mis-utilised, and how assets created from the grant are then treated.",
     "href": "/website/penalties-in-case-of-misutilisation-of-grants",
     "section": "NGOs & Grants",
     "iconName": "handshake"
@@ -546,43 +560,43 @@ export const STATIC_PAGES: StaticPageEntry[] = [
     "iconName": "gavel"
   },
   {
-    "title": "Policies, Acts, Rules & Circulars (SC Division)",
-    "description": "Key Acts, rules, policies and circulars administered by the Scheduled Castes Development Division of the Department of Social Justice & Empowerment.",
+    "title": "Policies / Acts / Rules / Circular",
+    "description": "Policies, Acts, rules and circulars published by the Department of Social Justice & Empowerment.",
     "href": "/website/policies-acts-rules-circular",
     "section": "Documents",
     "iconName": "gavel"
   },
   {
-    "title": "Policies, Acts, Rules, Codes & Circulars (OBC Division)",
-    "description": "Key Acts, rules, codes, policies and circulars administered by the Backward Classes Division of the Department of Social Justice & Empowerment.",
+    "title": "Policies / Acts / Rules / Codes / Circular",
+    "description": "Policies, Acts, rules, codes and circulars published by the Department of Social Justice & Empowerment.",
     "href": "/website/policies-acts-rules-codes-circular",
     "section": "Documents",
     "iconName": "gavel"
   },
   {
-    "title": "Policies, Acts, Rules & Circulars — Social Defence",
-    "description": "Legislation, rules, policies and circulars relevant to the Social Defence Division, including the Senior Citizens Act 2007 and the Transgender Persons (Protection of Rights) Act 2019.",
+    "title": "Policies / Acts / Rules / Codes / Circular: Social Defence",
+    "description": "Policies, Acts, rules, codes and circulars relevant to the Social Defence Division of the Department of Social Justice & Empowerment.",
     "href": "/website/policies-acts-rules-codes-circular-social-defence",
     "section": "Documents",
     "iconName": "gavel"
   },
   {
     "title": "Prioritization Guidelines for Funding Projects by Voluntary Organisations",
-    "description": "Criteria and priorities applied by the Department of Social Justice & Empowerment when funding projects of voluntary organisations through grant-in-aid.",
+    "description": "The criteria the Ministry applies when deciding which projects of voluntary organisations to fund, and for how long.",
     "href": "/website/prioritization-guidelines-for-funding-projects-by-voluntary-organisations",
     "section": "NGOs & Grants",
     "iconName": "handshake"
   },
   {
     "title": "Privacy Policy",
-    "description": "Privacy Policy describing how the Department of Social Justice & Empowerment (DoSJE), Government of India, handles information collected through this website.",
+    "description": "What information this website collects when you visit it, and how the Department uses it.",
     "href": "/website/privacy-policy",
     "section": "Site Policies",
     "iconName": "policy"
   },
   {
-    "title": "Procedure for Processing Grant-in-Aid Cases",
-    "description": "Step-by-step procedure followed by the Department of Social Justice & Empowerment for processing grant-in-aid cases of voluntary organisations.",
+    "title": "Procedure for Processing Grant-in-Aid Cases in Respect of Voluntary Organisations",
+    "description": "The stages by which the Ministry receives, processes and disburses grant-in-aid to voluntary organisations, from application to release of funds.",
     "href": "/website/procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations",
     "section": "NGOs & Grants",
     "iconName": "handshake"
@@ -609,9 +623,16 @@ export const STATIC_PAGES: StaticPageEntry[] = [
     "iconName": "info"
   },
   {
-    "title": "SAMAVESH — Admin Portals",
-    "description": "Administrative consoles for MoSJE schemes and organisations (authorised access).",
+    "title": "Administrative Portals",
+    "description": "Portals used by officers of the Department, its organisations and implementing agencies to manage and monitor schemes. Sign-in is for authorised users.",
     "href": "/website/samavesh-admin-portals",
+    "section": "Portals",
+    "iconName": "apps"
+  },
+  {
+    "title": "Citizen Portals",
+    "description": "Online portals of the Department and its organisations for applying to schemes, tracking applications and registering grievances.",
+    "href": "/website/samavesh-citizen-portals",
     "section": "Portals",
     "iconName": "apps"
   },
@@ -623,11 +644,18 @@ export const STATIC_PAGES: StaticPageEntry[] = [
     "iconName": "article"
   },
   {
-    "title": "Schemes & Services",
-    "description": "Flagship welfare schemes and scholarships offered by the Department of Social Justice & Empowerment for SC, OBC, EBC and DNT communities.",
+    "title": "Find a Scheme",
+    "description": "Schemes of the Department of Social Justice & Empowerment, by who they are for and what they provide, with where to apply for each.",
     "href": "/website/schemes-services",
     "section": "Offerings",
     "iconName": "volunteer_activism"
+  },
+  {
+    "title": "Screen Reader Access",
+    "description": "Screen readers that can be used to read this website, and where to obtain them.",
+    "href": "/website/screen-reader-access",
+    "section": "Pages",
+    "iconName": "article"
   },
   {
     "title": "SCW Directory",
@@ -638,14 +666,14 @@ export const STATIC_PAGES: StaticPageEntry[] = [
   },
   {
     "title": "Sitemap",
-    "description": "A structured map of the website of the Department of Social Justice & Empowerment (DoSJE), Government of India, grouping all major sections and pages.",
+    "description": "Every section of this website and the pages within it, arranged as in the main menu.",
     "href": "/website/sitemap",
     "section": "Site Policies",
     "iconName": "policy"
   },
   {
     "title": "Social Defence — FAQs",
-    "description": "Frequently asked questions about the Social Defence Division of DoSJE — senior citizens, drug demand reduction, transgender welfare and related schemes.",
+    "description": "Frequently asked questions about the Nasha Mukt Bharat Abhiyaan, the Department's nationwide campaign against substance abuse.",
     "href": "/website/social-defence-faqs",
     "section": "Pages",
     "iconName": "article"
@@ -659,7 +687,7 @@ export const STATIC_PAGES: StaticPageEntry[] = [
   },
   {
     "title": "Suo Moto Disclosure",
-    "description": "Proactive disclosures under Section 4 of the Right to Information Act, 2005 by the Department of Social Justice & Empowerment.",
+    "description": "Proactive disclosures under Section 4 of the Right to Information Act, 2005 by the Department of Social Justice & Empowerment and its associated organisations.",
     "href": "/website/suo-moto-disclosure",
     "section": "Right to Information",
     "iconName": "info"
@@ -672,15 +700,15 @@ export const STATIC_PAGES: StaticPageEntry[] = [
     "iconName": "article"
   },
   {
-    "title": "Tenders & RFPs",
-    "description": "Active tenders, e-procurement notices, and requests for proposals (RFPs) issued by the Department of Social Justice & Empowerment.",
+    "title": "Tenders",
+    "description": "Tender notices, expressions of interest and requests for proposal issued by the Department of Social Justice & Empowerment and its associated organisations.",
     "href": "/website/tenders",
     "section": "Opportunities",
     "iconName": "receipt_long"
   },
   {
     "title": "Terms & Conditions",
-    "description": "Terms of Use governing access to and use of the official website of the Department of Social Justice & Empowerment (DoSJE), Government of India.",
+    "description": "The terms on which this website of the Department of Social Justice & Empowerment may be used.",
     "href": "/website/terms-conditions",
     "section": "Site Policies",
     "iconName": "policy"
@@ -693,8 +721,8 @@ export const STATIC_PAGES: StaticPageEntry[] = [
     "iconName": "article"
   },
   {
-    "title": "Vacancies & Recruitments",
-    "description": "Current recruitment notifications, deputation circulars, and job openings under the Department of Social Justice & Empowerment.",
+    "title": "Vacancies",
+    "description": "Recruitment notices and deputation circulars issued by the Department of Social Justice & Empowerment and its associated organisations.",
     "href": "/website/vacancies",
     "section": "Opportunities",
     "iconName": "work"
@@ -707,15 +735,22 @@ export const STATIC_PAGES: StaticPageEntry[] = [
     "iconName": "article"
   },
   {
-    "title": "Welfare of Other Backward Classes",
-    "description": "Mandate, schemes and institutional framework for the welfare and empowerment of Other Backward Classes (OBCs) under the Department of Social Justice & Empowerment.",
+    "title": "Website Policies",
+    "description": "The policies that govern the use of this website, the information it collects and its accessibility.",
+    "href": "/website/website-policies",
+    "section": "Pages",
+    "iconName": "article"
+  },
+  {
+    "title": "Welfare of the Other Backward Classes FAQs",
+    "description": "Frequently asked questions on scholarships, hostels and funding for Other Backward Classes (OBCs), published by the Department of Social Justice & Empowerment.",
     "href": "/website/welfare-of-the-other-backward-classes",
     "section": "The Department",
     "iconName": "article"
   },
   {
     "title": "Who's Who",
-    "description": "Discover the initiatives that drive national efforts to advance equality, protect rights, and empower disadvantaged and marginalised communities across India.",
+    "description": "The Ministers of the Department of Social Justice & Empowerment and the office-holders of its commissions, corporations and institutions, with their official contact details.",
     "href": "/website/whos-who",
     "section": "Contact & Directory",
     "iconName": "contacts"

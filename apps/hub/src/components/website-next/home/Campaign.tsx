@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Icon, buttonClasses } from "@mosje/design-system";
+import { Icon, buttonClasses, orgLogoSrc } from "@mosje/design-system";
 
 /**
  * The Department's national campaign, Nasha Mukt Bharat Abhiyaan, as its own
@@ -24,7 +24,7 @@ export function Campaign() {
           />
         </div>
         <div className="wn-campaign__copy">
-          <Image src="/website/images/org-logos/nmba.png" alt="" width={56} height={56} className="wn-campaign__mark" />
+          <Image src={orgLogoSrc("nmba")} alt="" width={56} height={56} className="wn-campaign__mark" />
           <h2 id="campaign-title" className="wn-campaign__title">
             Nasha Mukt Bharat Abhiyaan
           </h2>

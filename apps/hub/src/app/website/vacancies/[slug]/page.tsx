@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { RecordDetail } from "@/components/website/templates/RecordDetail";
+import { RecordDetail } from "@/components/website-next/templates/RecordDetail";
 import { getContentSyncedDate, getVacancies, getVacancy } from "@/lib/website/content";
 import { facts, humanDate } from "@/lib/website/record-facts";
 import { socialCard } from "@/lib/seo/social";
+import { isArchived } from "@/components/website-next/ui/records";
 
 /** 163 vacancies — every one is prerendered. */
 export function generateStaticParams() {
@@ -29,18 +30,20 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   const { slug } = await params;
   const vacancy = getVacancy(slug);
   if (!vacancy) notFound();
+  /* Published more than 12 months ago: listed in the Archives, not on the Vacancies page (MAN-06). */
+  const archived = isArchived(vacancy.date);
 
   return (
     <RecordDetail
       title={vacancy.title}
       badge="Vacancy"
       breadcrumb={[
-        { label: "Offerings" },
-        { label: "Vacancies", href: "/website/vacancies" },
+        { label: "Tenders & Vacancies" },
+        archived ? { label: "Archives", href: "/website/archives" } : { label: "Vacancies", href: "/website/vacancies" },
         { label: vacancy.title },
       ]}
-      backHref="/website/vacancies"
-      backLabel="Back to Vacancies"
+      backHref={archived ? "/website/archives" : "/website/vacancies"}
+      backLabel={archived ? "Back to Archives" : "Back to Vacancies"}
       lastUpdated={getContentSyncedDate()}
       facts={facts([
         { term: "Category", value: vacancy.category },

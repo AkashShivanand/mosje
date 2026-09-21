@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { SectionTitle } from "@mosje/design-system";
-import { RecordDetail } from "@/components/website/templates/RecordDetail";
+import { RecordDetail } from "@/components/website-next/templates/RecordDetail";
 import { getContentSyncedDate, getGalleryItem, getGalleryItems, routeSlug } from "@/lib/website/content";
 import { facts, humanDate } from "@/lib/website/record-facts";
 import { socialCard } from "@/lib/seo/social";
@@ -72,7 +72,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       badge={item.type ?? "Gallery"}
       description={item.description}
       breadcrumb={[
-        { label: "Events & Gallery" },
+        { label: "Media" },
         { label: "Gallery", href: "/website/gallery" },
         { label: item.title },
       ]}
@@ -96,17 +96,17 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           width={960}
           height={640}
           sizes="(min-width: 1024px) 48rem, 100vw"
-          style={{ width: "100%", height: "auto", borderRadius: "var(--sa-shape-12)" }}
+          className="wn-rec-cover"
           priority
         />
       )}
 
       {images.length > 0 && (
-        <div>
+        <div className="wn-rec-section">
           <SectionTitle title="Photographs" as={2} count={images.length} />
-          <ul className="sa-record-media">
+          <ul className="wn-rec-media">
             {images.map((img) => (
-              <li key={img.url} className="sa-record-media__item">
+              <li key={img.url} className="wn-rec-media__item">
                 <Image
                   src={img.thumbnailUrl ?? img.url}
                   /*
@@ -121,7 +121,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                   height={360}
                   sizes="(min-width: 1024px) 22rem, 50vw"
                 />
-                {img.caption && <p className="sa-record-media__caption">{img.caption}</p>}
+                {img.caption && <p className="wn-rec-media__caption">{img.caption}</p>}
               </li>
             ))}
           </ul>
@@ -129,12 +129,12 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       )}
 
       {videos.length > 0 && (
-        <div>
+        <div className="wn-rec-section">
           <SectionTitle title="Videos" as={2} count={videos.length} />
-          <ul className="sa-record-media">
+          <ul className="wn-rec-media">
             {videos.map((v) =>
               v.kind === "youtube" ? (
-                <li key={v.url} className="sa-record-media__item">
+                <li key={v.url} className="wn-rec-media__item">
                   <iframe
                     src={v.url}
                     title={v.caption ?? item.title}
@@ -144,7 +144,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                   />
                 </li>
               ) : (
-                <li key={v.url} className="sa-record-media__item">
+                <li key={v.url} className="wn-rec-media__item">
                   {/* The department publishes no caption track for these files.
                       A `<track>` pointing at nothing is worse than none: it tells
                       assistive technology captions exist and then serves silence. */}

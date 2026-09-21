@@ -1,60 +1,41 @@
 import type { Metadata } from "next";
-import { ContactPage, type ContactOfficer } from "@/components/website/templates/ContactPage";
+import { ContactPage } from "@/components/website-next/templates/ContactPage";
+import { getContentSyncedDate } from "@/lib/website/content";
+import { socialCard } from "@/lib/seo/social";
+import { DEPARTMENT_CONTACT } from "./department-contact";
+
+const TITLE = "Contact Us";
+const DESCRIPTION =
+  "Telephone, email and postal address of the Department of Social Justice & Empowerment, and the national helplines it runs.";
 
 export const metadata: Metadata = {
-  title: "Contact Us | Department of Social Justice & Empowerment",
-  description:
-    "Get in touch with the Department of Social Justice & Empowerment — office address, phone, email and key officers.",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
+  ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/contact-us" }),
 };
 
-const ADDRESS =
-  "8th Floor, GPOA-3, Netaji Subhash Place, Wazirpur, New Delhi – 110034";
-
-const officers: ContactOfficer[] = [
-  {
-    role: "Chief Information Officer",
-    name: "Sh. Rajeev Menon",
-    phone: "011-24105012",
-    email: "rajeev.menon[at]nic[dot]in",
-    address: ADDRESS,
-  },
-  {
-    role: "Web Information Manager",
-    name: "Smt. Anjali Verma",
-    phone: "011-24105014",
-    email: "anjali.verma[at]nic[dot]in",
-    address: ADDRESS,
-  },
-  {
-    role: "Central Public Information Officer (CPIO)",
-    name: "Sh. Pradeep Kumar",
-    phone: "011-24105016",
-    email: "pradeep.kumar[at]nic[dot]in",
-    address: ADDRESS,
-  },
-  {
-    role: "First Appellate Authority",
-    name: "Dr. Sunita Rao",
-    phone: "011-24105018",
-    email: "sunita.rao[at]nic[dot]in",
-    address: ADDRESS,
-  },
-];
-
+/**
+ * ── WHAT CHANGED HERE, AND WHY IT HAD TO ─────────────────────────────────────
+ * This page named four officers — a Chief Information Officer, a Web Information
+ * Manager, a CPIO and a First Appellate Authority — with telephone numbers
+ * 011-24105012 to 011-24105018 and `@nic.in` addresses. None of the four names
+ * and none of those numbers is in the Department's register
+ * (`content/website/official.json`, 452 officers). They were placeholders, and
+ * they are gone. It also gave the address as "Netaji Subhash Place, Wazirpur,
+ * New Delhi – 110034", which disagrees with the footer, with MoSJE Contact and
+ * with every officer's record in the register: GPOA-3, Netaji Nagar, 110023.
+ *
+ * Every contact below is read from `department-contact.ts`, which reads the
+ * register, so this page and MoSJE Contact cannot disagree again.
+ */
 export default function ContactUsPage() {
   return (
     <ContactPage
-      title="Contact Us"
-      breadcrumb={[{ label: "Connect" }, { label: "Contact Us" }]}
-      description="Get in touch with the Department of Social Justice & Empowerment."
-      office={{
-        name: "Department of Social Justice & Empowerment",
-        address: ADDRESS,
-        phone: "011-24105009, 24105011",
-        email: "min-sje[at]nic[dot]in",
-      }}
-      mapSrc="https://www.google.com/maps?q=Netaji+Subhash+Place+New+Delhi&output=embed"
-      officers={officers}
+      title={TITLE}
+      breadcrumb={[{ label: "Connect" }, { label: TITLE }]}
+      description={DESCRIPTION}
+      lastUpdated={getContentSyncedDate()}
+      {...DEPARTMENT_CONTACT}
     />
   );
 }

@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Icon, Pagination } from "@mosje/design-system";
+import { Icon, Pagination, SectionTitle } from "@mosje/design-system";
 import { PageLayout } from "@/components/website-next/layout/PageLayout";
-import { SearchPageField } from "@/components/website/search/SearchPageField";
+import { SearchField } from "@/components/website-next/search/SearchField";
+import { SearchResult } from "@/components/website-next/search/SearchResult";
+import { POPULAR_LINKS } from "@/components/website-next/search/popular-links";
 import { ResultClickTracker } from "@/components/website/search/ResultClickTracker";
 import {
   searchIndex,
@@ -11,21 +13,19 @@ import {
   MIN_QUERY_LENGTH,
   RESULTS_PER_PAGE,
   POPULAR_SEARCHES,
-  type WebsiteSearchEntry,
   type WebsiteSearchType,
 } from "@/lib/website/search";
 import { recordSearch } from "@/lib/website/search/analytics";
 import { SEARCH_FACETS } from "@/lib/website/search/types";
-import { resolveRegistry } from "@/lib/registry/resolve";
-import { resolveChatbotPaths } from "@/lib/chatbot/resolve";
-import { chatbotEnabledAt } from "@/lib/chatbot/config";
+import "@/components/website-next/templates/media.css";
+import "@/components/website-next/search/search.css";
 
 export const metadata: Metadata = {
   title: "Search | Department of Social Justice & Empowerment",
   description:
     "Search schemes, organisations, documents, officials and pages across the website of the Department of Social Justice & Empowerment.",
-  // A results page is not a page: it has no content of its own, it changes with
-  // every query, and indexing it fills a search engine with our search engine.
+  // A results page has no content of its own and changes with every query;
+  // indexing it fills a search engine with this site's search engine.
   robots: { index: false, follow: true },
 };
 
@@ -49,142 +49,68 @@ function urlFor(query: string, type: WebsiteSearchType | null, page: number): st
   return qs ? `/website/search?${qs}` : "/website/search";
 }
 
-/** A link that leaves the site — documents live on dosje.gov.in, not here. */
-function isExternal(href: string): boolean {
-  return href.startsWith("http://") || href.startsWith("https://");
-}
-
-function ResultRow({ entry, index }: { entry: WebsiteSearchEntry; index: number }) {
-  const external = isExternal(entry.href);
+/** Search terms offered as links. Each is a real query, so each is a real results page. */
+function SuggestedSearches({ terms, headingId, title }: { terms: string[]; headingId: string; title: string }) {
   return (
-    <li className="border-b border-gray-200 last:border-b-0">
-      <a
-        href={entry.href}
-        data-result-index={index}
-        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-        className="group flex gap-4 py-5 focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
-      >
-        <span
-          className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-surface-muted text-primary"
-          aria-hidden="true"
-        >
-          <Icon name={entry.iconName} size={20} />
-        </span>
-        <span className="min-w-0">
-          <span className="mb-1 flex flex-wrap items-center gap-2">
-            <span className="rounded-full bg-surface-muted px-2 py-0.5 text-label-3 uppercase text-ink-muted">
-              {facetLabel(entry.type)}
-            </span>
-            <span className="text-body-3 text-ink-muted">{entry.section}</span>
-            {entry.updated && (
-              <span className="text-body-3 text-ink-muted">
-                · {new Date(entry.updated).toLocaleDateString("en-GB", {
-                  day: "2-digit",
-                  month: "short",
-                  year: "numeric",
-                })}
+    <section aria-labelledby={headingId} className="wn-search__block">
+      <h2 id={headingId} className="wn-search__subhead">
+        {title}
+      </h2>
+      <ul className="wn-search__chips">
+        {terms.map((term) => (
+          <li key={term}>
+            <Link href={`/website/search?q=${encodeURIComponent(term)}`} className="wn-search__chip">
+              <span aria-hidden className="wn-search__chip-icon">
+                <Icon name="search" size={16} />
               </span>
-            )}
-          </span>
-          <span className="block text-title-2 text-ink group-hover:text-primary group-hover:underline">
-            {entry.title}
-            {external && (
-              <>
-                {" "}
-                <Icon name="open_in_new" size={16} className="inline-block align-text-bottom" />
-                <span className="sr-only"> (opens on dosje.gov.in in a new tab)</span>
-              </>
-            )}
-          </span>
-          {entry.description && (
-            <span className="mt-1 block line-clamp-2 text-body-2 text-ink-muted">
-              {entry.description}
-            </span>
-          )}
-        </span>
-      </a>
-    </li>
+              {term}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 
-/** The chips offered on the empty and no-result states. Never a dead end. */
-function SuggestionChips({ terms }: { terms: string[] }) {
+/** The five places most readers want, the sitemap among them [GIGW 5.2]. Never a dead end. */
+function PopularLinks({ headingId }: { headingId: string }) {
   return (
-    <ul className="flex flex-wrap gap-2">
-      {terms.map((term) => (
-        <li key={term}>
-          <Link
-            href={`/website/search?q=${encodeURIComponent(term)}`}
-            className="inline-block rounded-full border border-gray-200 bg-white px-4 py-1.5 text-label-1 text-ink-muted transition hover:border-primary/40 hover:text-primary"
-          >
-            {term}
-          </Link>
-        </li>
-      ))}
-    </ul>
+    <section aria-labelledby={headingId} className="wn-search__block">
+      <h2 id={headingId} className="wn-search__subhead">
+        Popular Links
+      </h2>
+      <ul className="wn-search__links">
+        {POPULAR_LINKS.map((l) => (
+          <li key={l.href}>
+            <Link href={l.href}>
+              <span aria-hidden className="wn-search__link-icon">
+                <Icon name={l.icon} size={20} />
+              </span>
+              <span>{l.label}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 
 /**
- * The ways out of a dead end: the sitemap — the OTHER mechanism GIGW accepts for
- * Multiple Ways, so it must be reachable from here — the full scheme catalogue,
- * and a human. `[GIGW 5.2 / WCAG 2.4.5]`
+ * Search results — `/website/search?q=…&type=…&page=…` (issues X-SRCH-01,
+ * NAV-11). The URL is the state: a result set is shareable, the back button
+ * undoes a facet, and the page renders on the server so it works before the
+ * script arrives.
  *
- * `assistant` is passed in rather than assumed, because the assistant is a
- * SETTING (`/admin/portals`, `chatbot_config`). Pointing a reader at a launcher
- * that has been switched off is a worse dead end than the one they are already
- * in — so the mention is rendered only when it is really there. It is a mention
- * and not a link on purpose: the assistant has no URL, it is a launcher in the
- * bottom-right corner, and inventing an href for it would be a lie.
+ * FIVE STATES, each worded differently because each asks something different
+ * of the reader:
+ *   idle (no query)        → the field, focused, suggested searches, popular links
+ *   too short (< 2 chars)  → a prompt, not an error
+ *   results                → count echoing the query, facets in the URL, paged at 20
+ *   no results             → the query echoed, "did you mean", the nearest
+ *                            entries, suggested searches and popular links
+ *   facet to nothing       → the facet named, with the way back to all results
+ * Loading and error cannot occur: the index is built in-process on the server.
  */
-function WaysOut({ assistant }: { assistant: boolean }) {
-  return (
-    <>
-    <div className="mt-8 grid gap-4 sm:grid-cols-3">
-      {[
-        {
-          href: "/website/sitemap",
-          icon: "account_tree",
-          title: "Browse the sitemap",
-          body: "Every section of this website, listed in one place.",
-        },
-        {
-          href: "/website/schemes-services",
-          icon: "volunteer_activism",
-          title: "Browse all schemes",
-          body: "The full catalogue of schemes and services, filterable by category.",
-        },
-        {
-          href: "/website/contact-us",
-          icon: "call",
-          title: "Ask a person",
-          body: "Office addresses, phone numbers and email for the Department.",
-        },
-      ].map((card) => (
-        <Link
-          key={card.href}
-          href={card.href}
-          className="rounded-xl border border-gray-200 bg-white p-5 transition hover:border-primary/40"
-        >
-          <Icon name={card.icon} size={24} className="mb-2 text-primary" />
-          <span className="block font-semibold text-ink">{card.title}</span>
-          <span className="mt-1 block text-body-2 text-ink-muted">{card.body}</span>
-        </Link>
-      ))}
-    </div>
-    {assistant && (
-      <p className="mt-4 flex items-start gap-2 text-body-2 text-ink-muted">
-        <Icon name="support_agent" size={20} className="shrink-0 text-primary" />
-        <span>
-          Samajik Sahayak, the assistant, is in the bottom-right corner of this page.
-          It can walk you through five questions and suggest schemes that name you.
-        </span>
-      </p>
-    )}
-    </>
-  );
-}
-
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   const params = await searchParams;
   const query = (params.q ?? "").trim();
@@ -194,16 +120,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const index = searchIndex();
   const outcome = search(index, query, { type, page });
 
-  // Resolved the same way the root layout resolves it, through the same shared
-  // decision function, so the two cannot disagree about whether the assistant is
-  // on this surface.
-  const assistant = chatbotEnabledAt(
-    "/website/search",
-    await resolveChatbotPaths(await resolveRegistry()),
-  );
-
-  // Logged server-side, so it records what the site was actually asked for even
-  // when the reader never clicks anything. Zero-result queries are the backlog.
+  // Logged server-side: zero-result queries are the product backlog [DBIM 9.x].
   if (query.length >= MIN_QUERY_LENGTH) {
     recordSearch(query, outcome.totalAllTypes, type);
   }
@@ -211,6 +128,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const tooShort = query.length > 0 && query.length < MIN_QUERY_LENGTH;
   const hasQuery = query.length >= MIN_QUERY_LENGTH;
   const noResults = hasQuery && outcome.totalAllTypes === 0;
+  const activeFacets = outcome.facets.filter((f) => f.count > 0);
 
   return (
     <PageLayout
@@ -218,185 +136,147 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       description="Find schemes, organisations, documents, officials and pages across this website."
       breadcrumb={[{ label: "Search" }]}
     >
-      <section className="bg-white py-10 md:py-12">
+      <div className="wn-section">
         <div className="sa-container">
-          <div className="mx-auto max-w-3xl">
-            <SearchPageField initialQuery={query} autoFocus={!hasQuery} />
+          <div className="wn-search__field">
+            <SearchField initialQuery={query} autoFocus={!hasQuery} />
           </div>
 
-          {/* ── No query ──────────────────────────────────────────────────────
-              Never an empty page. A reader who clicked the magnifier has told you
-              they are looking for something; this is the best moment the site
-              gets to show what it holds. */}
+          {/* ── Idle: nothing asked yet ─────────────────────────────────── */}
           {!hasQuery && !tooShort && (
-            <div className="mx-auto mt-10 max-w-3xl">
-              <h2 className="mb-3 text-headline-2 text-ink">Popular searches</h2>
-              <SuggestionChips terms={POPULAR_SEARCHES} />
-              <p className="mt-8 text-body-2 text-ink-muted">
-                This search covers {index.length.toLocaleString("en-IN")}{" "}
-                schemes, organisations, documents, officials and pages. Try a word you
-                would use yourself — &ldquo;school money&rdquo; finds scholarships.
-              </p>
-              <WaysOut assistant={assistant} />
+            <div className="wn-search__idle">
+              <SuggestedSearches terms={POPULAR_SEARCHES} headingId="suggested" title="Suggested Searches" />
+              <PopularLinks headingId="popular" />
             </div>
           )}
 
-          {/* ── Query too short — a prompt, not an error ─────────────────────── */}
+          {/* ── Too short: a prompt, not an error ───────────────────────── */}
           {tooShort && (
-            <div className="mx-auto mt-10 max-w-3xl">
-              <p className="text-body-1 text-ink">
-                Keep typing — a search needs at least {MIN_QUERY_LENGTH} letters.
+            <div className="wn-search__idle">
+              <p className="wn-search__notice" role="status">
+                Enter at least {MIN_QUERY_LENGTH} letters to search.
               </p>
-              <div className="mt-6">
-                <SuggestionChips terms={POPULAR_SEARCHES.slice(0, 6)} />
+              <SuggestedSearches terms={POPULAR_SEARCHES.slice(0, 6)} headingId="suggested" title="Suggested Searches" />
+            </div>
+          )}
+
+          {/* ── No results anywhere ─────────────────────────────────────── */}
+          {noResults && (
+            <div className="wn-search__none">
+              <div className="wn-search__none-head">
+                <h2 className="wn-search__none-title" role="status">
+                  No results for <q>{query}</q>
+                </h2>
+                {outcome.didYouMean ? (
+                  <p className="wn-search__none-lead">
+                    Did you mean{" "}
+                    <Link href={`/website/search?q=${encodeURIComponent(outcome.didYouMean)}`} className="wn-search__inline-link">
+                      {outcome.didYouMean}
+                    </Link>
+                    ?
+                  </p>
+                ) : (
+                  <p className="wn-search__none-lead">Check the spelling, or try a shorter or more general word.</p>
+                )}
+              </div>
+
+              {outcome.nearest.length > 0 && (
+                <section aria-labelledby="nearest" className="wn-search__block">
+                  <h2 id="nearest" className="wn-search__subhead">
+                    Closest Matches
+                  </h2>
+                  <ul className="wn-results">
+                    {outcome.nearest.map((entry, i) => (
+                      <SearchResult key={entry.href} entry={entry} index={i} />
+                    ))}
+                  </ul>
+                </section>
+              )}
+
+              <div className="wn-search__idle">
+                <SuggestedSearches terms={POPULAR_SEARCHES.slice(0, 8)} headingId="suggested" title="Suggested Searches" />
+                <PopularLinks headingId="popular" />
               </div>
             </div>
           )}
 
-          {/* ── No results ──────────────────────────────────────────────────── */}
-          {noResults && (
-            <div className="mx-auto mt-10 max-w-3xl">
-              <h2 className="text-headline-2 text-ink">
-                No results for <span className="text-primary">{query}</span>
-              </h2>
-
-              {outcome.didYouMean && (
-                <p className="mt-3 text-body-1 text-ink">
-                  Did you mean{" "}
-                  <Link
-                    href={`/website/search?q=${encodeURIComponent(outcome.didYouMean)}`}
-                    className="font-semibold text-primary underline"
-                  >
-                    {outcome.didYouMean}
-                  </Link>
-                  ?
-                </p>
-              )}
-
-              {outcome.nearest.length > 0 && (
-                <div className="mt-6">
-                  <h3 className="mb-2 text-label-3 uppercase text-ink-muted">
-                    Closest matches
-                  </h3>
-                  <ul className="rounded-xl border border-gray-200 bg-white px-5">
-                    {outcome.nearest.map((entry, i) => (
-                      <ResultRow key={entry.href} entry={entry} index={i} />
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              <WaysOut assistant={assistant} />
-            </div>
-          )}
-
-          {/* ── Results ─────────────────────────────────────────────────────── */}
+          {/* ── Results ─────────────────────────────────────────────────── */}
           {hasQuery && !noResults && (
-            <div className="mt-10 grid gap-8 lg:grid-cols-[240px_minmax(0,1fr)]">
-              {/* Facets. Links, not buttons — the filter belongs in the URL, so a
-                  filtered result set can be shared and the back button undoes it.
-                  [DBIM 9.iv] */}
-              <nav aria-label="Filter results by category" className="lg:pt-1">
-                <h2 className="mb-3 text-label-3 uppercase text-ink-muted">
-                  Filter
-                </h2>
-                <ul className="flex flex-wrap gap-2 lg:flex-col lg:gap-1">
+            <div className="wn-search__results">
+              {/* Facets are links: the filter lives in the URL [DBIM 9.iv]. A
+                  facet with no results is not offered (NAV-15). */}
+              <nav aria-label="Filter results by type" className="wn-facets">
+                <h2 className="wn-facets__title">Filter by Type</h2>
+                <ul className="wn-facets__list">
                   <li>
-                    <Link
-                      href={urlFor(query, null, 1)}
-                      aria-current={type === null ? "true" : undefined}
-                      className={`flex items-center justify-between gap-3 rounded-lg px-3 py-2 text-label-1 transition ${
-                        type === null
-                          ? "bg-primary text-white"
-                          : "text-ink-muted hover:bg-surface-muted hover:text-ink"
-                      }`}
-                    >
-                      <span>All</span>
-                      <span className="text-body-3 tabular-nums opacity-80">{outcome.totalAllTypes}</span>
+                    <Link href={urlFor(query, null, 1)} aria-current={type === null ? "page" : undefined} className="wn-facet">
+                      <span>All Results</span>
+                      <span className="wn-facet__count">{outcome.totalAllTypes.toLocaleString("en-IN")}</span>
                     </Link>
                   </li>
-                  {outcome.facets.map((facet) => (
+                  {activeFacets.map((facet) => (
                     <li key={facet.type}>
                       <Link
                         href={urlFor(query, facet.type, 1)}
-                        aria-current={type === facet.type ? "true" : undefined}
-                        aria-disabled={facet.count === 0 ? "true" : undefined}
-                        className={`flex items-center justify-between gap-3 rounded-lg px-3 py-2 text-label-1 transition ${
-                          type === facet.type
-                            ? "bg-primary text-white"
-                            : facet.count === 0
-                              ? "text-ink-muted/50"
-                              : "text-ink-muted hover:bg-surface-muted hover:text-ink"
-                        }`}
+                        aria-current={type === facet.type ? "page" : undefined}
+                        className="wn-facet"
                       >
                         <span>{facet.label}</span>
-                        <span className="text-body-3 tabular-nums opacity-80">{facet.count}</span>
+                        <span className="wn-facet__count">{facet.count.toLocaleString("en-IN")}</span>
                       </Link>
                     </li>
                   ))}
                 </ul>
               </nav>
 
-              <div className="min-w-0">
-                {/* The count and the query, echoed back — so the reader can see
-                    what was actually searched for, typo and all. */}
-                <p
-                  className="mb-1 text-body-1 text-ink"
-                  role="status"
-                  aria-live="polite"
-                >
-                  <strong>{outcome.total.toLocaleString("en-IN")}</strong>{" "}
-                  {outcome.total === 1 ? "result" : "results"} for{" "}
-                  <strong className="text-primary">{query}</strong>
-                  {type && <> in {facetLabel(type)}</>}
+              <div className="wn-search__main">
+                <SectionTitle
+                  as={2}
+                  headingId="results-title"
+                  title={type ? `${facetLabel(type)} Matching “${query}”` : `Results for “${query}”`}
+                />
+                <p className="wn-count" role="status" aria-live="polite">
+                  {outcome.total === 0
+                    ? `No ${facetLabel(type!).toLowerCase()} match “${query}”.`
+                    : `${outcome.total.toLocaleString("en-IN")} ${outcome.total === 1 ? "result" : "results"}${
+                        outcome.totalPages > 1 ? `, page ${outcome.page} of ${outcome.totalPages}` : ""
+                      }`}
                 </p>
-                {outcome.totalPages > 1 && (
-                  <p className="mb-4 text-body-2 text-ink-muted">
-                    Page {outcome.page} of {outcome.totalPages}
-                  </p>
-                )}
 
                 {outcome.total === 0 ? (
-                  <div className="rounded-xl border border-gray-200 bg-surface-muted p-6">
-                    <p className="text-body-1 text-ink">
-                      No {type ? facetLabel(type).toLowerCase() : "results"} match{" "}
-                      <strong>{query}</strong>, but other categories do.
+                  <div className="wn-search__facet-empty">
+                    <p>
+                      Nothing in {facetLabel(type!)} matches <q>{query}</q>, but other types do.
                     </p>
-                    <Link
-                      href={urlFor(query, null, 1)}
-                      className="mt-3 inline-block font-semibold text-primary underline"
-                    >
-                      Show all {outcome.totalAllTypes} results
+                    <Link href={urlFor(query, null, 1)} className="wn-search__inline-link">
+                      Show All {outcome.totalAllTypes.toLocaleString("en-IN")} Results
                     </Link>
                   </div>
                 ) : (
                   <>
-                    <ul id={RESULTS_LIST_ID} className="border-t border-gray-200">
+                    <ul id={RESULTS_LIST_ID} className="wn-results" aria-labelledby="results-title">
                       {outcome.results.map((entry, i) => (
-                        <ResultRow
-                          key={`${entry.href}-${i}`}
-                          entry={entry}
-                          index={(outcome.page - 1) * RESULTS_PER_PAGE + i}
-                        />
+                        <SearchResult key={`${entry.href}-${i}`} entry={entry} index={(outcome.page - 1) * RESULTS_PER_PAGE + i} />
                       ))}
                     </ul>
                     <ResultClickTracker query={query} listId={RESULTS_LIST_ID} />
-
-                    <div className="mt-8">
-                      <Pagination
-                        page={outcome.page}
-                        totalPages={outcome.totalPages}
-                        hrefFor={(n) => urlFor(query, type, n)}
-                        label={`Search results, page ${outcome.page} of ${outcome.totalPages}`}
-                      />
-                    </div>
+                    {outcome.totalPages > 1 && (
+                      <div className="wn-pager">
+                        <Pagination
+                          page={outcome.page}
+                          totalPages={outcome.totalPages}
+                          hrefFor={(n) => urlFor(query, type, n)}
+                          label="Search result pages"
+                        />
+                      </div>
+                    )}
                   </>
                 )}
               </div>
             </div>
           )}
         </div>
-      </section>
+      </div>
     </PageLayout>
   );
 }

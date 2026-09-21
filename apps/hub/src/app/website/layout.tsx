@@ -6,6 +6,8 @@ import { SamaveshBannerProvider } from "@/lib/samavesh-banner/context";
 import { OG_CARD_IMAGE } from "@/lib/seo/card";
 import "./website.css";
 import "@/components/website-next/website-next.css";
+import { WebsiteCookieConsent } from "@/components/website-next/chrome/CookieConsent";
+import { resolveCookieBannerEnabled } from "@/lib/cookie-banner/resolve";
 
 const WEBSITE_DESCRIPTION =
   "Department of Social Justice & Empowerment (DoSJE), Ministry of Social Justice & Empowerment, Government of India.";
@@ -66,6 +68,8 @@ export default async function WebsiteLayout({
   children: React.ReactNode;
 }>) {
   const placement = await resolveSamaveshBannerPlacement();
+  // Switched from /admin/portals; shown on whichever page a visitor lands on first.
+  const cookieBanner = await resolveCookieBannerEnabled();
 
   return (
     /* TranslationProvider wraps the whole site, not just the masthead: `lang` and
@@ -76,6 +80,7 @@ export default async function WebsiteLayout({
       <SamaveshBannerProvider placement={placement}>
         <div data-site="website" data-design="next" className="flex min-h-screen flex-col">
           {children}
+          {cookieBanner && <WebsiteCookieConsent />}
         </div>
       </SamaveshBannerProvider>
     </TranslationProvider>

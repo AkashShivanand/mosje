@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { SectionTitle } from "@mosje/design-system";
-import { RecordDetail } from "@/components/website/templates/RecordDetail";
+import { RecordDetail } from "@/components/website-next/templates/RecordDetail";
 import { getContentSyncedDate, getOfficial, getOfficials } from "@/lib/website/content";
 import { facts } from "@/lib/website/record-facts";
 import { directoryHrefFor } from "@/lib/website/directories";
@@ -35,6 +35,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   if (!official) notFound();
 
   const back = directoryHrefFor(official.organisation);
+  /* Some records carry a placeholder ("1") in these fields; a value with no words is not published text. */
+  const hasText = (html?: string) => (html ?? "").replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim().length > 3;
 
   return (
     <RecordDetail
@@ -42,7 +44,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       badge={official.organisationName ?? official.organisation ?? "Who's Who"}
       description={official.designation}
       breadcrumb={[
-        { label: "Department" },
+        { label: "About" },
         { label: back.label, href: back.href },
         { label: official.title },
       ]}
@@ -64,7 +66,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     >
       {official.imageUrl && (
         <Image
-          className="sa-record-portrait"
+          className="wn-rec-portrait"
           src={official.imageUrl}
           alt={`Portrait of ${official.title}`}
           width={192}
@@ -78,21 +80,21 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         * responsible for — and it is the single most useful thing on the page
         * for a citizen deciding whom to write to.
         */}
-      {official.workAllocationHtml && (
-        <div>
+      {hasText(official.workAllocationHtml) && official.workAllocationHtml && (
+        <div className="wn-rec-section">
           <SectionTitle title="Work Allocation" as={2} />
           <div
-            className="sa-record-detail__body"
+            className="wn-prose"
             dangerouslySetInnerHTML={{ __html: official.workAllocationHtml }}
           />
         </div>
       )}
 
-      {official.additionalInfoHtml && (
-        <div>
+      {hasText(official.additionalInfoHtml) && official.additionalInfoHtml && (
+        <div className="wn-rec-section">
           <SectionTitle title="Additional Information" as={2} />
           <div
-            className="sa-record-detail__body"
+            className="wn-prose"
             dangerouslySetInnerHTML={{ __html: official.additionalInfoHtml }}
           />
         </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useSyncExternalStore } from "react";
-import { Alert, Button, DescriptionList } from "@mosje/design-system";
+import { Alert, Button } from "@mosje/design-system";
 
 const STORAGE_KEY = "mosje_cookie_consent";
 
@@ -23,21 +23,6 @@ const STORAGE_KEY = "mosje_cookie_consent";
  * private outcome available and needs no remedy.
  */
 type Consent = "unknown" | "stored" | "none";
-
-const ESSENTIAL = [
-  {
-    term: "Session cookies",
-    value:
-      "Keep your session on the site consistent while you move between pages. They are removed when the browser is closed. Always active.",
-    wide: true,
-  },
-  {
-    term: "Preference storage",
-    value:
-      "Remembers that you have seen the cookie notice, and any display settings you choose from the accessibility controls. Stored in this browser only; nothing about it is sent to the Department. Always active.",
-    wide: true,
-  },
-];
 
 function readConsent(): Consent {
   try {
@@ -67,31 +52,17 @@ export function CookiePreferences() {
   };
 
   return (
-    <>
-      <h2>Essential Cookies</h2>
-      <p>
-        These are required for the site to function and cannot be switched off. They store no personal
-        information.
-      </p>
-      <DescriptionList items={ESSENTIAL} columns={1} divided />
-
-      <h2>Optional Cookies</h2>
-      <p>
-        This site sets none. It carries no advertising, no analytics profile and no social-media
-        tracking script, so there is nothing here for you to turn off.
-      </p>
-
-      <h2>Your Acknowledgement</h2>
+    <div role="status" aria-live="polite">
       {withdrawn ? (
         <Alert status="success" title="Acknowledgement Withdrawn">
-          The cookie notice will be shown again the next time you open this site.
+          The cookie notice will be shown again the next time you open this website.
         </Alert>
       ) : (
         <p>
           {consent === "stored"
-            ? "This browser has acknowledged the cookie notice. You can withdraw that acknowledgement below; the notice will then be shown again."
+            ? "This browser has acknowledged the cookie notice. You can withdraw that acknowledgement; the notice will then be shown again."
             : consent === "none"
-              ? "This browser has not acknowledged the cookie notice, so the notice will be shown the next time you open the site."
+              ? "This browser has not acknowledged the cookie notice, so the notice will be shown the next time you open this website."
               : "Checking what this browser has stored…"}
         </p>
       )}
@@ -100,6 +71,6 @@ export function CookiePreferences() {
           Withdraw Acknowledgement
         </Button>
       )}
-    </>
+    </div>
   );
 }

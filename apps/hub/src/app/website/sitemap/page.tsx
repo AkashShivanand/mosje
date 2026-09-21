@@ -1,112 +1,94 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import type { NavItem } from "@mosje/design-system";
 import { ContentPage } from "@/components/website-next/templates/ContentPage";
+import { NAV } from "@/components/website-next/chrome/nav";
+import { POLICY_PAGES } from "@/components/website-next/templates/content/policies";
+
+const TITLE = "Sitemap";
+const DESCRIPTION = "Every section of this website and the pages within it, arranged as in the main menu.";
 
 export const metadata: Metadata = {
-  title: "Sitemap — Department of Social Justice & Empowerment",
-  description:
-    "A structured map of the website of the Department of Social Justice & Empowerment (DoSJE), Government of India, grouping all major sections and pages.",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
 };
 
-interface SitemapLink {
-  label: string;
-  href: string;
+/**
+ * GENERATED FROM THE NAVIGATION, NOT TYPED (issue X-GIGW-03, MAN-09).
+ *
+ * The previous sitemap was a hand list of 28 links that had already drifted from the
+ * menu: four of eighteen organisations, no Documents sub-sections, and an
+ * Accessibility Statement address that is now a redirect. This page reads the same
+ * `NAV` model the masthead renders, so a page added to the menu is on the sitemap the
+ * same day, and the Website Policy pages from the list their own hub reads.
+ *
+ * `lastUpdated` is the date this generated page was authored (21 Sep 2026).
+ *
+ * The footer's columns are not exported by Footer.tsx, so the pages only the footer
+ * links (Archives, Feedback) are reached here through Website Policies and Contact.
+ */
+interface Group {
+  heading?: string;
+  links: { label: string; href: string }[];
 }
 
-interface SitemapSection {
-  heading: string;
-  links: SitemapLink[];
+function groupsOf(item: NavItem): Group[] {
+  const groups: Group[] = [];
+  if (item.children?.length) {
+    groups.push({ links: item.children.filter((c) => c.href && c.href !== "#").map((c) => ({ label: c.label, href: c.href })) });
+  }
+  for (const col of item.columns ?? []) {
+    const links = [
+      ...(col.items ?? []).map((o) => ({ label: o.name, href: o.href })),
+      ...(col.links ?? []).map((l) => ({ label: l.label, href: l.href })),
+    ].filter((l) => l.href && l.href !== "#");
+    if (links.length) groups.push({ heading: col.heading, links });
+  }
+  return groups;
 }
 
-const SECTIONS: SitemapSection[] = [
-  {
-    heading: "Department",
-    links: [
-      { label: "About Us", href: "/website/about-us" },
-      { label: "Who's Who", href: "/website/whos-who" },
-      { label: "Directory", href: "/website/mosje-directory" },
-      { label: "Citizen Charter", href: "/website/citizen-charter" },
-    ],
-  },
-  {
-    heading: "Associated Organisations",
-    links: [
-      { label: "NCSC", href: "/website/organisation/national-commission-for-scheduled-castes" },
-      { label: "NCBC", href: "/website/organisation/national-commission-for-backward-classes-ncbc" },
-      { label: "NSFDC", href: "/website/organisation/national-scheduled-castes-finance-and-development-corporation" },
-      { label: "Dr. Ambedkar Foundation", href: "/website/organisation/dr-ambedkar-foundation" },
-    ],
-  },
-  {
-    heading: "Offerings",
-    links: [
-      { label: "Schemes & Services", href: "/website/schemes-services" },
-      { label: "Vacancies", href: "/website/vacancies" },
-      { label: "Tenders", href: "/website/tenders" },
-    ],
-  },
-  {
-    heading: "Documents",
-    links: [
-      { label: "Annual Reports", href: "/website/annual-reports" },
-      { label: "Acts & Rules", href: "/website/acts-rules" },
-      { label: "Policies", href: "/website/policies" },
-      { label: "Circulars", href: "/website/circulars-notifications" },
-      { label: "Notices", href: "/website/notices" },
-      { label: "Right to Information (RTI)", href: "/website/rti" },
-    ],
-  },
-  {
-    heading: "Events & Gallery",
-    links: [
-      { label: "Events", href: "/website/events" },
-      { label: "Gallery", href: "/website/gallery" },
-    ],
-  },
-  {
-    heading: "Connect",
-    links: [
-      { label: "Contact Us", href: "/website/contact-us" },
-      { label: "Help", href: "/website/help" },
-      { label: "Visitor Analytics", href: "/website/visitor-analytics" },
-    ],
-  },
-  {
-    heading: "Policies",
-    links: [
-      { label: "Terms & Conditions", href: "/website/terms-conditions" },
-      { label: "Privacy Policy", href: "/website/privacy-policy" },
-      { label: "Copyright Policy", href: "/website/copyright" },
-      { label: "Hyperlinking Policy", href: "/website/hyperlinking-policy" },
-      { label: "Accessibility Statement", href: "/website/accessibility" },
-      { label: "Cookies", href: "/website/cookies" },
-    ],
-  },
+const SECTIONS: { heading: string; groups: Group[] }[] = [
+  { heading: "Home", groups: [{ links: [{ label: "Home", href: "/website" }] }] },
+  ...NAV.map((item) => ({
+    heading: item.label === "Organisations" ? "Organisations and Scheme Portals" : item.label,
+    groups: groupsOf(item),
+  })),
+  { heading: "Website Policies", groups: [{ links: POLICY_PAGES.map((p) => ({ label: p.label, href: p.href })) }] },
 ];
 
-export default function SitemapPage() {
+const slug = (s: string) => s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
+export default function Page() {
   return (
-    <ContentPage
-      title="Sitemap"
-      breadcrumb={[{ label: "Sitemap" }]}
-      description="An overview of the structure of this website, with links to all the major sections and pages of the Department of Social Justice & Empowerment."
-      lastUpdated="06 Jun 2026"
-    >
-      <p>
-        This sitemap lists the major sections and pages of the website of the Department of Social Justice
-        &amp; Empowerment (DoSJE), Government of India, to help you find the information you need quickly.
-      </p>
+    <ContentPage title={TITLE} breadcrumb={[{ label: TITLE }]} description={DESCRIPTION} lastUpdated="21 Sep 2026">
+      <nav aria-labelledby="sitemap-contents" className="wn-toc">
+        <h2 className="wn-toc__title" id="sitemap-contents">
+          Sections
+        </h2>
+        <ol>
+          {SECTIONS.map((s) => (
+            <li key={s.heading}>
+              <a href={`#${slug(s.heading)}`}>{s.heading}</a>
+            </li>
+          ))}
+        </ol>
+      </nav>
       {SECTIONS.map((section) => (
-        <div key={section.heading}>
-          <h2>{section.heading}</h2>
-          <ul>
-            {section.links.map((link) => (
-              <li key={link.href}>
-                <Link href={link.href}>{link.label}</Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <section key={section.heading} aria-labelledby={slug(section.heading)}>
+          <h2 id={slug(section.heading)}>{section.heading}</h2>
+          {section.groups.map((g, i) => (
+            <div key={g.heading ?? i}>
+              {g.heading && <h3>{g.heading}</h3>}
+              <ul>
+                {g.links.map((l) => (
+                  <li key={l.href}>
+                    <Link href={l.href}>{l.label}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </section>
       ))}
     </ContentPage>
   );

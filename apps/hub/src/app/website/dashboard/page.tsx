@@ -1,136 +1,86 @@
 import type { Metadata } from "next";
+import { SectionTitle } from "@mosje/design-system";
 import { PageLayout } from "@/components/website-next/layout/PageLayout";
-import { Icon } from "@mosje/design-system";
+import { DashboardGlance } from "@/components/website-next/media/DashboardGlance";
+import { AdarshGramDashboard } from "@/components/website/AdarshGramDashboard";
+import { GiaDashboard } from "@/components/website/GiaDashboard";
+import { HostelDashboard } from "@/components/website/HostelDashboard";
+import { getAdarshGramCounts } from "@/lib/website/adarsh-gram-api";
+import { getGiaData, getGiaGender, getHostelData } from "@/lib/website/pmajay-api";
+import { socialCard } from "@/lib/seo/social";
+import "@/components/website-next/templates/media.css";
+
+const TITLE = "Dashboard";
+const DESCRIPTION =
+  "Progress of the Pradhan Mantri Anusuchit Jaati Abhyuday Yojana (PM-AJAY), as reported by the scheme's Management Information System.";
 
 export const metadata: Metadata = {
-  title: "Dashboard — DoSJE",
-  description: "Key welfare metrics and scheme performance at a glance.",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
+  ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/dashboard" }),
 };
 
-interface Kpi {
-  label: string;
-  value: string;
-  icon: string;
-}
+/**
+ * The website's dashboard (issue LAY-11).
+ *
+ * WHAT THIS REPLACED: four headline figures and two bar charts typed into this
+ * file — "₹67,977 Cr disbursed", "19.82 Cr beneficiaries", "33+ schemes" and a
+ * scheme-wise disbursement — with no source, no period and a footnote calling
+ * them illustrative. None of them is published anywhere this estate can read,
+ * so none of them is here (`live-data-fallback.md`: a metric neither source
+ * publishes is left off the design).
+ *
+ * WHAT IS HERE: the only departmental figures the estate has a feed for — the
+ * three PM-AJAY components' public report endpoints, live where they answer and
+ * from the committed, dated snapshot where they do not. The strip at the top
+ * gives four of them the same four parts (label, number, period, source), and
+ * each "View Details" jumps to the dashboard that draws it in full.
+ *
+ * The three section dashboards are the CLASSIC components the PM-AJAY
+ * organisation pages already use (`components/website/*Dashboard.tsx`), kept
+ * because they carry the merge, the provenance chips, the per-card states and
+ * the retry — rebuilding them is its own piece of work. They are wrapped in the
+ * redesign's section pattern, one per section, on the page ground (their sticky headers are white).
+ *
+ * Fetched on the server, each with a short timeout and an hourly revalidate;
+ * a feed that is down degrades to its snapshot, never to an error boundary.
+ */
+export default async function DashboardPage() {
+  const [adarshGram, gia, hostel] = await Promise.all([getAdarshGramCounts(), getGiaData(), getHostelData()]);
+  // The same total the PM-AJAY Grants-in-Aid page passes, so the illustrative
+  // gender split is scaled to the figure on screen.
+  const giaGender = await getGiaGender(gia.years.reduce((t, y) => t + (y.approvals.total ?? y.mock.totalApproved), 0));
 
-const KPIS: Kpi[] = [
-  { label: "Cumulative Disbursement", value: "₹67,977 Cr", icon: "payments" },
-  { label: "Beneficiaries Covered", value: "19.82 Cr", icon: "group" },
-  { label: "Schemes & Programmes", value: "33+", icon: "grid_view" },
-  { label: "Associated Organisations", value: "12", icon: "apartment" },
-];
-
-interface BarRow {
-  label: string;
-  value: string;
-  percent: number;
-}
-
-const SCHEME_DISBURSEMENT: BarRow[] = [
-  { label: "PM-AJAY", value: "₹21,450 Cr", percent: 100 },
-  { label: "Post-Matric SC", value: "₹16,820 Cr", percent: 78 },
-  { label: "Pre-Matric SC", value: "₹9,340 Cr", percent: 44 },
-  { label: "NSFDC Loans", value: "₹6,210 Cr", percent: 29 },
-  { label: "PM-YASASVI", value: "₹4,870 Cr", percent: 23 },
-];
-
-const BENEFICIARIES_BY_CATEGORY: BarRow[] = [
-  { label: "SC", value: "9.12 Cr", percent: 100 },
-  { label: "OBC", value: "7.04 Cr", percent: 77 },
-  { label: "Senior Citizens", value: "2.38 Cr", percent: 26 },
-  { label: "PwD / Others", value: "1.28 Cr", percent: 14 },
-];
-
-export default function DashboardPage() {
   return (
-    <PageLayout
-      title="Dashboard"
-      breadcrumb={[{ label: "Dashboard" }]}
-      description="Key welfare metrics and scheme performance at a glance."
-      lastUpdated="06 Jun 2026"
-    >
-      <section>
-        <div className="sa-container py-10 md:py-12">
-          {/* KPI stat cards */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {KPIS.map(({ label, value, icon: iconName }) => (
-              <div
-                key={label}
-                className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm"
-              >
-                <div className="flex items-start justify-between">
-                  <span className="text-headline-3 tabular-nums text-primary-dark">
-                    {value}
-                  </span>
-                  <span className="rounded-lg bg-surface-muted p-2 text-primary">
-                    <Icon name={iconName} size={20} aria-hidden="true" />
-                  </span>
-                </div>
-                <p className="mt-2 text-body-2 text-ink-muted">{label}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Bar panels */}
-          <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
-            {/* Scheme-wise disbursement */}
-            <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-              <h2 className="text-title-1 text-primary-dark">
-                Scheme-wise Disbursement
-              </h2>
-              <p className="mt-1 text-body-3 text-gray-500">Cumulative, current financial year (illustrative)</p>
-              <ul className="mt-5 space-y-4">
-                {SCHEME_DISBURSEMENT.map(({ label, value, percent }) => (
-                  <li key={label}>
-                    <div className="flex items-baseline justify-between text-body-2">
-                      <span className="font-medium text-ink">{label}</span>
-                      <span className="text-ink-muted">{value}</span>
-                    </div>
-                    <div className="mt-1.5 h-2.5 w-full overflow-hidden rounded-full bg-surface-muted">
-                      <div
-                        className="h-full rounded-full bg-primary"
-                        style={{ width: `${percent}%` }}
-                        role="img"
-                        aria-label={`${label}: ${value}`}
-                      />
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Beneficiaries by category */}
-            <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-              <h2 className="text-title-1 text-primary-dark">
-                Beneficiaries by Category
-              </h2>
-              <p className="mt-1 text-body-3 text-gray-500">Cumulative coverage across schemes (illustrative)</p>
-              <ul className="mt-5 space-y-4">
-                {BENEFICIARIES_BY_CATEGORY.map(({ label, value, percent }) => (
-                  <li key={label}>
-                    <div className="flex items-baseline justify-between text-body-2">
-                      <span className="font-medium text-ink">{label}</span>
-                      <span className="text-ink-muted">{value}</span>
-                    </div>
-                    <div className="mt-1.5 h-2.5 w-full overflow-hidden rounded-full bg-surface-muted">
-                      <div
-                        className="h-full rounded-full bg-saffron"
-                        style={{ width: `${percent}%` }}
-                        role="img"
-                        aria-label={`${label}: ${value}`}
-                      />
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          <p className="mt-6 text-body-3 text-gray-500">
-            All figures shown are illustrative and for demonstration purposes only.
-          </p>
+    <PageLayout title={TITLE} breadcrumb={[{ label: "Schemes & Services" }, { label: TITLE }]} description={DESCRIPTION}>
+      <section className="wn-section" aria-labelledby="glance-title">
+        <div className="sa-container">
+          <SectionTitle
+            as={2}
+            headingId="glance-title"
+            title="At a Glance"
+          />
+          <DashboardGlance adarshGram={adarshGram} gia={gia} hostel={hostel} />
         </div>
       </section>
+
+      <div className="wn-section">
+        <div className="sa-container">
+          <AdarshGramDashboard feed={adarshGram} />
+        </div>
+      </div>
+
+      <div className="wn-section">
+        <div className="sa-container">
+          <GiaDashboard data={gia} gender={giaGender} />
+        </div>
+      </div>
+
+      <div className="wn-section">
+        <div className="sa-container">
+          <HostelDashboard data={hostel} />
+        </div>
+      </div>
     </PageLayout>
   );
 }

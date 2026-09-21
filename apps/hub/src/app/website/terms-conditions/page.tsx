@@ -1,85 +1,66 @@
 import type { Metadata } from "next";
 import { ContentPage } from "@/components/website-next/templates/ContentPage";
+import { PolicySidebar } from "@/components/website-next/templates/content/policies";
+
+const TITLE = "Terms & Conditions";
+const DESCRIPTION = "The terms on which this website of the Department of Social Justice & Empowerment may be used.";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions — Department of Social Justice & Empowerment",
-  description:
-    "Terms of Use governing access to and use of the official website of the Department of Social Justice & Empowerment (DoSJE), Government of India.",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
 };
 
-export default function TermsPage() {
+/*
+ * The Department's own Terms & Conditions, dosje.gov.in/home-page/terms-conditions/,
+ * read 21 Sep 2026, replacing a paraphrase that carried clauses the Department never
+ * published (an "Amendments" section, "Content Ownership and Usage"). Edits: "Incase" →
+ * "In case", "Departmentand" → "Department and", "organisation" → "organisations"; the
+ * text is grouped under three headings so a reader can find the clause they need.
+ * The wording of every clause is unchanged.
+ */
+export default function Page() {
   return (
     <ContentPage
-      title="Terms & Conditions"
-      breadcrumb={[{ label: "Policies" }, { label: "Terms & Conditions" }]}
-      description="The terms and conditions of use governing access to and use of this website of the Department of Social Justice & Empowerment, Government of India."
+      title={TITLE}
+      breadcrumb={[{ label: "Website Policies", href: "/website/website-policies" }, { label: TITLE }]}
+      description={DESCRIPTION}
       lastUpdated="06 Jun 2026"
+      sidebar={<PolicySidebar current="/website/terms-conditions" />}
     >
       <p>
-        This website is owned, designed, developed and maintained by the Department of Social Justice
-        &amp; Empowerment (DoSJE), Ministry of Social Justice &amp; Empowerment, Government of India. By
-        accessing and using this website, you are agreeing to be bound by the following terms and
-        conditions of use. If you do not agree to these terms and conditions, please do not use this
-        website.
+        This website is designed, developed and maintained by Ministry of Social Justice and Empowerment,
+        Government of India.
       </p>
 
-      <h2>Content Ownership and Usage</h2>
+      <h2 id="accuracy">Accuracy and Liability</h2>
       <p>
-        The information posted on this website could include hypertext links or pointers to information
-        created and maintained by non-Government / private organisations. The Department provides these
-        links and pointers solely for your information and convenience. When you select a link to an
-        external website, you are leaving the Department&apos;s website and are subject to the privacy and
-        security policies of the owners / sponsors of the external website.
+        Though all efforts have been made to ensure the accuracy and currency of the content on this website, the
+        same should not be construed as a statement of law or used for any legal purposes. In case of any ambiguity
+        or doubts, users are advised to verify / check with the Department and / or other source, and to obtain
+        appropriate professional advice.
       </p>
-      <ul>
-        <li>
-          The documents and information displayed on this website are for reference purposes only and do
-          not purport to be a legal document.
-        </li>
-        <li>
-          In case of any variance between what has been stated on this website and the relevant Act,
-          Rules, Regulations, Policy Statements, etc., the latter shall prevail.
-        </li>
-        <li>
-          The Department does not warrant the accuracy or completeness of the information, text, graphics,
-          links or other items contained within these documents.
-        </li>
-      </ul>
-
-      <h2>Disclaimer of Warranties and Limitation of Liability</h2>
       <p>
-        Though all efforts have been made to ensure the accuracy and currency of the content on this
-        website, the same should not be construed as a statement of law or used for any legal purposes. The
-        Department accepts no responsibility in relation to the accuracy, completeness, usefulness or
-        otherwise, of the contents. In no event will the Department be liable for any expense, loss or
-        damage including, without limitation, indirect or consequential loss or damage, or any expense,
-        loss or damage whatsoever arising from use, or loss of use, of data, arising out of or in
-        connection with the use of this website.
+        Under no circumstances will this Department be liable for any expense, loss or damage including, without
+        limitation, indirect or consequential loss or damage, or any expense, loss or damage whatsoever arising from
+        use, or loss of use, of data, arising out of or in connection with the use of this website.
       </p>
 
-      <h2>Links to External Websites / Portals</h2>
+      <h2 id="law">Governing Law</h2>
       <p>
-        At many places on this website, you shall find links to other websites / portals. These links have
-        been placed for your convenience. The Department is not responsible for the contents and reliability
-        of the linked websites and does not necessarily endorse the views expressed in them. Mere presence
-        of the link or its listing on this website should not be assumed as endorsement of any kind. We
-        cannot guarantee that these links will work all the time and we have no control over the
-        availability of the linked pages.
+        These terms and conditions shall be governed by and construed in accordance with the Indian Laws. Any
+        dispute arising under these terms and conditions shall be subject to the jurisdiction of the courts of
+        India.
       </p>
 
-      <h2>Governing Law and Jurisdiction</h2>
+      <h2 id="links">Links to Other Websites</h2>
       <p>
-        These terms and conditions shall be governed by and construed in accordance with the laws of India.
-        Any dispute arising under these terms and conditions shall be subject to the exclusive jurisdiction
-        of the courts of India.
+        The information posted on this website could include hypertext links or pointers to information created
+        and maintained by non-Government / private organisations. Ministry of Social Justice and Empowerment is
+        providing these links and pointers solely for your information and convenience. When you select a link to
+        an outside website, you are leaving the Ministry of Social Justice and Empowerment website and are subject
+        to the privacy and security policies of the owners / sponsors of the outside website.
       </p>
-
-      <h2>Amendments</h2>
-      <p>
-        The Department reserves the right to revise these terms and conditions at any time without prior
-        notice. By continuing to access or use this website after any revisions become effective, you agree
-        to be bound by the revised terms.
-      </p>
+      <p>Ministry of Social Justice and Empowerment does not guarantee the availability of such linked pages at all times.</p>
     </ContentPage>
   );
 }

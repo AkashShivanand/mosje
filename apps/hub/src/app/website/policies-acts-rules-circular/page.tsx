@@ -1,68 +1,51 @@
 import type { Metadata } from "next";
 import { ContentPage } from "@/components/website-next/templates/ContentPage";
+import { DocumentTable, type DocumentRow } from "@/components/website-next/templates/content/DocumentTable";
+
+const TITLE = "Policies / Acts / Rules / Circular";
+const DESCRIPTION = "Policies, Acts, rules and circulars published by the Department of Social Justice & Empowerment.";
 
 export const metadata: Metadata = {
-  title: "Policies, Acts, Rules & Circulars (SC Division)",
-  description:
-    "Key Acts, rules, policies and circulars administered by the Scheduled Castes Development Division of the Department of Social Justice & Empowerment.",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
 };
+
+/*
+ * Body text: dosje.gov.in/policies-acts-rules-circular/ as published, read
+ * 21 Sep 2026. The live page repeats its own title as an h1, h2 and h5 above
+ * the table; kept once, as the body's h2. No typos corrected.
+ */
+const DOCS: DocumentRow[] = [
+  {
+    title: "The Scheduled Castes and the Scheduled Tribes (PoA) Rules, 2018",
+    published: "17 Sep 2024",
+    size: "1.20 MB",
+    href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/1.pdf",
+  },
+  {
+    title: "The Scheduled Castes and the Scheduled Tribes (PoA) Rules, 2016",
+    published: "17 Sep 2024",
+    size: "516.94 KB",
+    href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/2.pdf",
+  },
+  {
+    title: "Scheme guidelines CSS for PCR and PoA",
+    published: "28 Feb 2024",
+    size: "815.72 KB",
+    href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/3.pdf",
+  },
+];
 
 export default function Page() {
   return (
     <ContentPage
-      title="Policies, Acts, Rules & Circulars (SC Division)"
-      breadcrumb={[{ label: "Documents" }, { label: "Policies, Acts, Rules & Circulars (SC Division)" }]}
-      description="A consolidated reference to the principal legislation, rules and administrative circulars governing the welfare of Scheduled Castes."
+      title={TITLE}
+      breadcrumb={[{ label: "Documents" }, { label: TITLE }]}
+      description={DESCRIPTION}
       lastUpdated="06 Jun 2026"
     >
-      <h2>Introduction</h2>
-      <p>
-        This page brings together the principal Acts, rules, policies and administrative circulars that
-        govern the welfare and protection of Scheduled Castes and frame the schemes administered by the
-        Scheduled Castes Development Division. Documents are grouped by category for ease of reference.
-        Where a document is amended from time to time, the latest consolidated version should be treated as
-        authoritative.
-      </p>
-
-      <h2>Acts</h2>
-      <ul>
-        <li>
-          <a href="#">The Protection of Civil Rights Act, 1955</a> — abolition of untouchability and
-          punishment for its practice.
-        </li>
-        <li>
-          <a href="#">The Scheduled Castes and Scheduled Tribes (Prevention of Atrocities) Act, 1989</a> —
-          prevention of atrocities and provision for Special Courts and relief.
-        </li>
-        <li>
-          <a href="#">The Constitution (Scheduled Castes) Order, 1950</a> — notification of communities as
-          Scheduled Castes.
-        </li>
-      </ul>
-
-      <h2>Rules</h2>
-      <ul>
-        <li>
-          <a href="#">The SC and ST (Prevention of Atrocities) Rules, 1995</a> — procedure, relief norms
-          and monitoring mechanisms.
-        </li>
-        <li>
-          <a href="#">Post-Matric Scholarship Scheme Guidelines for SC Students</a>.
-        </li>
-      </ul>
-
-      <h2>Policies &amp; Circulars</h2>
-      <ul>
-        <li>
-          <a href="#">Circular on revised income ceiling for SC scholarship eligibility</a>.
-        </li>
-        <li>
-          <a href="#">Office Memorandum on direct benefit transfer of scholarship funds</a>.
-        </li>
-        <li>
-          <a href="#">Guidelines for grant-in-aid to voluntary organisations working for SCs</a>.
-        </li>
-      </ul>
+      <h2>Documents</h2>
+      <DocumentTable caption="Policies, Acts, Rules and Circulars" rows={DOCS} />
     </ContentPage>
   );
 }

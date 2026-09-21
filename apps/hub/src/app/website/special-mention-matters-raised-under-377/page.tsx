@@ -32,7 +32,7 @@ export default function Page() {
       columns={grantDocumentColumns}
       rows={rows}
       searchKeys={["title"]}
-      searchPlaceholder="Search records…"
+      searchPlaceholder="Search records by title"
     />
   );
 }

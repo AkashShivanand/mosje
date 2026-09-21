@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
+  NATIONAL_EMBLEM_INVERSE,
   SiteFooter as DsSiteFooter,
   VisitorCounter,
   type SiteFooterColumn,
@@ -118,13 +119,13 @@ const LINEAGE =
   "This website belongs to the Department of Social Justice & Empowerment, " +
   "Ministry of Social Justice & Empowerment, Government of India.";
 
-export function Footer({ lastUpdated }: { lastUpdated?: string }) {
+export function WebsiteFooter({ lastUpdated }: { lastUpdated?: string }) {
   return (
     <DsSiteFooter
       linkAs={Link}
       emblem={
         <Image
-          src="/website/images/National_Emblem_logo_white.svg"
+          src={NATIONAL_EMBLEM_INVERSE}
           alt="National Emblem of India"
           width={40}
           height={65}

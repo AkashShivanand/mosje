@@ -32,7 +32,9 @@ export default function Page() {
       columns={grantDocumentColumns}
       rows={grantDocumentRows(SCREENING_COMMITTEE_MINUTES)}
       searchKeys={["title"]}
-      searchPlaceholder="Search minutes by title…"
+      searchPlaceholder="Search minutes by title"
+      noun="minutes"
+      nounSingular="minutes"
     />
   );
 }

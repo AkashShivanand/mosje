@@ -16,6 +16,8 @@ export const DATA_MODE_ROUTES: string[] = [
   `${PMAJAY}/development-of-sc-dominated-villages-into-adarsh-gram`,
   `${PMAJAY}/grants-in-aid-to-state-districts`,
   `${PMAJAY}/construction-repair-of-hostels`,
+  // The redesign's Dashboard page renders the same three PM-AJAY dashboards.
+  "/website/dashboard",
 ];
 
 export function hasDataModes(pathname: string | null): boolean {

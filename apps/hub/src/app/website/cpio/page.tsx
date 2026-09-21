@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website-next/templates/ListingPage";
+import { ListingPage, type ListingColumn } from "@/components/website-next/templates/ListingPage";
 import { getContentSyncedDate, getCpios } from "@/lib/website/content";
-import type { ListingTableColumn } from "@/components/website/ui/data-table";
 import { socialCard } from "@/lib/seo/social";
 
 const TITLE = "CPIO";
@@ -22,7 +21,7 @@ export const metadata: Metadata = {
  * cell renders an external anchor with a download glyph. The name is rendered
  * as text and the last column carries the link.
  */
-const columns: ListingTableColumn[] = [
+const columns: ListingColumn[] = [
   { key: "office", label: "Office/Division", align: "left", className: "min-w-[240px]" },
   { key: "name", label: "Name", sortable: true, align: "left", className: "min-w-[180px] font-medium text-ink", type: "record", hrefKey: "href" },
   { key: "organisation", label: "Organisation", sortable: true, align: "center" },
@@ -32,24 +31,27 @@ const columns: ListingTableColumn[] = [
 
 export default function Page() {
   const rows = getCpios().map((c) => ({
-    office: c.office ?? "—",
+    office: c.office,
     name: c.name ?? c.title,
-    organisation: c.organisation ?? "—",
-    designation: c.designation ?? "—",
-    email: c.email ?? "—",
+    organisation: c.organisation,
+    designation: c.designation,
+    email: c.email,
     href: `/website/cpio/${c.slug}`,
   }));
 
   return (
     <ListingPage
       title={TITLE}
-      breadcrumb={[{ label: "Connect" }, { label: "CPIO" }]}
+      breadcrumb={[{ label: "Contact" }, { label: "CPIO" }]}
       description={DESCRIPTION}
       lastUpdated={getContentSyncedDate()}
       columns={columns}
       rows={rows}
       searchKeys={["name", "organisation", "designation", "office"]}
-      searchPlaceholder="Search by name, organisation or designation…"
+      searchPlaceholder="Search by name, organisation or designation"
+      filters={[{ key: "organisation", label: "Organisation", allLabel: "All Organisations" }]}
+      noun="officers"
+      nounSingular="officer"
       pageSize={25}
     />
   );

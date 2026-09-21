@@ -1,69 +1,60 @@
 import type { Metadata } from "next";
 import { ContentPage } from "@/components/website-next/templates/ContentPage";
 
+const TITLE = "Prioritization Guidelines for Funding Projects by Voluntary Organisations";
+const DESCRIPTION =
+  "The criteria the Ministry applies when deciding which projects of voluntary organisations to fund, and for how long.";
+
 export const metadata: Metadata = {
-  title: "Prioritization Guidelines for Funding Projects by Voluntary Organisations",
-  description:
-    "Criteria and priorities applied by the Department of Social Justice & Empowerment when funding projects of voluntary organisations through grant-in-aid.",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
 };
 
+/* This route 404s at its own slug on dosje.gov.in. The Department publishes the same page at
+   https://www.dosje.gov.in/prioritization-guidelines-for-funding-projects-by-vuluntary-organisations/
+   — a different slug, with its own typo ("vuluntary" for "voluntary") — found via the
+   WordPress search API and read 21 Sep 2026. Body text as published there, a single
+   eleven-item list, no sub-headings. No typos found in the body text itself. */
 export default function Page() {
   return (
     <ContentPage
-      title="Prioritization Guidelines for Funding Projects by Voluntary Organisations"
+      title={TITLE}
       breadcrumb={[
-        { label: "Department" },
-        { label: "Prioritization Guidelines for Funding Projects by Voluntary Organisations" },
+        { label: "Tenders & Vacancies" },
+        { label: "Grants to Voluntary Organisations", href: "/website/grants-in-aid-to-ngos-faqs" },
+        { label: TITLE },
       ]}
-      description="The priorities applied when considering proposals from voluntary organisations for grant-in-aid, to ensure that limited resources reach the most under-served groups and areas."
+      description={DESCRIPTION}
       lastUpdated="06 Jun 2026"
     >
-      <h2>Purpose</h2>
-      <p>
-        The Department supports voluntary organisations that supplement Government efforts for the welfare
-        of its target groups. As the demand for grant-in-aid normally exceeds available resources,
-        proposals are prioritised against transparent criteria so that assistance flows first to the most
-        deserving projects, groups and geographies.
-      </p>
-
-      <h2>Priority Areas</h2>
-      <ul>
-        <li>Projects benefitting Scheduled Castes, Other Backward Classes and other notified target groups.</li>
+      <ol>
+        <li>New projects will be favoured in rural areas, urban areas in cases of extreme need and in States where voluntary action has so far not been significant.</li>
         <li>
-          Projects located in <strong>aspirational districts</strong>, remote, hilly, tribal, border and
-          left-wing-extremism-affected areas.
+          In order to be eligible for assistance, a Voluntary Organization should have been registered
+          for a period of at least two years and should have been actively working in its sector for a
+          period of two years. Such projects will not be taken up for assistance where the activities
+          are proposed to commence after the project is sanctioned and funds released by the Ministry.
+          Besides, the NGO would be required to maintain its level of contribution at least at the
+          level of expenses that were being incurred by it before assistance from the Ministry
+          commenced. An undertaking in this regard would be required from the Voluntary Organization at
+          the time of submission of the initial application for grant.
         </li>
-        <li>Projects serving women, children, persons with disabilities and the elderly within target groups.</li>
-        <li>Educational, residential (hostel) and skill-development projects that improve livelihoods.</li>
-      </ul>
-
-      <h2>Prioritisation Criteria</h2>
-      <ul>
+        <li>Such projects will be favoured for sanction where the Voluntary Organization is locally based and its operations reflect involvement with the community.</li>
+        <li>Projects proposed for implementation by established Voluntary Organization in green field areas by setting up their local chapters, will be favoured.</li>
+        <li>A Project proposal complete in all respects (as per guidelines issued by the Ministry) will be funded initially for a period of one year at a time for five years.</li>
+        <li>No grants will be released for acquisition of immoveable assets or the construction of buildings during the initial five year period of assistance by the Ministry to any NGO.</li>
+        <li>Release of further grants will be conditional on satisfactory operation of the activities of the organization as established through monitoring reports and periodical inspections.</li>
         <li>
-          <strong>Need and coverage</strong> — extent of the gap the project fills and the number of
-          beneficiaries reached.
+          Voluntary Organizations would be expected to raise resources through donations from general
+          public, business houses etc. beyond initial requirement of 10% to be contributed by the
+          Voluntary Organization itself so that the activities of the project become self sustainable
+          and grants from the Ministry can be tapered off through a cut of around 15% every year after
+          the first five years.
         </li>
-        <li>
-          <strong>Track record</strong> — past performance, credibility and proper utilisation of earlier
-          grants by the organisation.
-        </li>
-        <li>
-          <strong>Cost-effectiveness</strong> — reasonableness of unit cost and the share of expenditure
-          reaching beneficiaries.
-        </li>
-        <li>
-          <strong>Sustainability</strong> — likelihood of the project continuing or producing lasting
-          outcomes beyond the funding period.
-        </li>
-      </ul>
-
-      <h2>Considerations</h2>
-      <p>
-        Proposals are appraised on documented need, the organisation&apos;s capacity, and the availability of
-        budget within the relevant scheme. Preference is given to organisations with a clean compliance and
-        audit record. Funding is not an entitlement; each proposal is assessed on merit by the competent
-        authority.
-      </p>
+        <li>Voluntary Organization would be expected to progressively professionalise their management and increase proportion of qualified staff.</li>
+        <li>The Ministry would release grant in aid for a project at a particular location for a maximum period of 10 years.</li>
+        <li>In case of Voluntary Organizations seeking grant for a new project it would be required to furnish complete information about all sources of funding and a list of projects financed / supported through such funding.</li>
+      </ol>
     </ContentPage>
   );
 }

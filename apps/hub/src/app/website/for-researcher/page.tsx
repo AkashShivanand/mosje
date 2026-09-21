@@ -1,55 +1,67 @@
 import type { Metadata } from "next";
-import { PersonaPage, type PersonaCard } from "@/components/website/templates/PersonaPage";
+import { PersonaPage, type PersonaSection } from "@/components/website-next/templates/PersonaPage";
 
 export const metadata: Metadata = {
-  title: "For Researcher | Department of Social Justice & Empowerment",
+  title: "For Researchers | Department of Social Justice & Empowerment",
   description:
-    "Annual reports, publications, evaluation studies and statistical handbooks to support evidence-based research.",
+    "Publications, research and evaluation studies, the Handbook on Social Welfare Statistics, annual reports and open data of the Department of Social Justice & Empowerment.",
 };
 
-const cards: PersonaCard[] = [
+const sections: PersonaSection[] = [
   {
-    icon: "assessment",
-    title: "Annual Reports",
-    description:
-      "Read detailed annual reports documenting the Ministry's programmes, outcomes and expenditure year on year.",
-    ctaLabel: "View Annual Reports",
-    href: "/website/annual-reports",
-  },
-  {
-    icon: "menu_book",
-    title: "Publications",
-    description:
-      "Browse official publications, journals and thematic documents on social justice and empowerment.",
-    ctaLabel: "View Publications",
-    href: "/website/publications",
-  },
-  {
-    icon: "science",
-    title: "Research & Evaluation Studies",
-    description:
-      "Access commissioned research and independent evaluation studies assessing scheme impact and effectiveness.",
-    ctaLabel: "View Studies",
-    href: "/website/list-of-research-evaluation-studies",
-  },
-  {
-    icon: "database",
-    title: "Statistics & Handbooks",
-    description:
-      "Find datasets, statistical handbooks and reference data for quantitative analysis and citation.",
-    ctaLabel: "View Statistics",
-    href: "/website/publications",
+    kind: "links",
+    id: "reports-and-data",
+    title: "Reports, Studies and Data",
+    links: [
+      {
+        title: "Research & Evaluation Studies",
+        description: "Studies commissioned by the Department on its schemes.",
+        href: "/website/list-of-research-evaluation-studies",
+        icon: "science",
+      },
+      {
+        title: "Handbook on Social Welfare Statistics",
+        description: "Compiled by the Statistics Division of the Department.",
+        href: "/website/handbook-on-social-welfare-statistics",
+        icon: "bar_chart",
+      },
+      {
+        title: "Annual Reports",
+        description: "Annual reports of the Department and of the bodies under it.",
+        href: "/website/annual-reports",
+        icon: "summarize",
+      },
+      {
+        title: "Publications",
+        description: "Publications, journals and thematic documents of the Department and its organisations.",
+        href: "/website/publications",
+        icon: "menu_book",
+      },
+      {
+        title: "Statistics Division",
+        description: "The division of the Department that compiles its statistics.",
+        href: "/website/about-the-division-statistics-division",
+        icon: "query_stats",
+      },
+      {
+        title: "Open Government Data Platform",
+        description: "data.gov.in, the Government of India's open data portal.",
+        href: "https://www.data.gov.in",
+        icon: "database",
+        external: true,
+      },
+    ],
   },
 ];
 
 export default function ForResearcherPage() {
   return (
     <PersonaPage
-      title="For Researcher"
-      breadcrumb={[{ label: "For You" }, { label: "Researcher" }]}
+      title="For Researchers"
+      breadcrumb={[{ label: "Schemes & Services" }, { label: "For Researchers" }]}
+      description="Reports, studies, statistics and data published by the Department."
       lastUpdated="06 Jun 2026"
-      tagline="Data, reports and studies to support your research."
-      cards={cards}
+      sections={sections}
     />
   );
 }

@@ -1,55 +1,81 @@
 import type { Metadata } from "next";
 import { ContentPage } from "@/components/website-next/templates/ContentPage";
+import type { DocumentRow } from "@/components/website-next/templates/content/DocumentTable";
+import { DocumentTable } from "@/components/website-next/templates/content/DocumentTable";
+
+const TITLE = "Drug Division";
+const DESCRIPTION =
+  "The sections of the Drug Division and the matters each handles, under the Department of Social Justice & Empowerment.";
 
 export const metadata: Metadata = {
-  title: "Drug De-Addiction Division | Department of Social Justice & Empowerment",
-  description:
-    "The Drug De-Addiction Division of DoSJE leads drug demand reduction through NAPDDR, the Nasha Mukt Bharat Abhiyaan and a national network of de-addiction centres.",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
 };
 
+const DOCS: DocumentRow[] = [
+  {
+    title: "NAPDDR (National Action Plan for Drug Demand Reduction) Scheme 5th Revised Guidelines w.e.f. 27-02-2023",
+    published: "1 Mar 2023",
+    size: "1.78 MB",
+    href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/12/NAPDDR-1.pdf",
+  },
+  {
+    title: "6th revised NAPDDR GUIDELINES wef 14-06-2023",
+    published: "17 Dec 2024",
+    size: "1.46 MB",
+    href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/12/NAPDDR2.pdf",
+  },
+];
+
+/* Body text: dosje.gov.in/drug-division/ as published, read 21 Sep 2026. The
+   live page numbers each section's points as "i)/ii)/iii)/iv)" typed inside
+   <p> tags and mislabels some of them (Section I repeats "vi)" for two
+   different points; Section III has no "ii)" and repeats "iii)" instead);
+   converted to real <ol type="i"> lists in the order published, so every point
+   is kept and correctly numbered by the list itself. No wording changed. */
 export default function Page() {
   return (
     <ContentPage
-      title="Drug De-Addiction Division"
-      breadcrumb={[{ label: "Department" }, { label: "Drug De-Addiction Division" }]}
-      description="Reducing the demand for narcotic drugs and psychotropic substances through awareness, treatment and community participation."
+      title={TITLE}
+      breadcrumb={[{ label: "About" }, { label: "Divisions", href: "/website/about-the-division" }, { label: TITLE }]}
+      description={DESCRIPTION}
       lastUpdated="06 Jun 2026"
     >
-      <h2>Overview</h2>
-      <p>
-        The Department of Social Justice &amp; Empowerment is the nodal department for drug demand
-        reduction in the country. The Drug De-Addiction Division works towards reducing the demand
-        for narcotic drugs and psychotropic substances through a balanced approach of preventive
-        education, awareness generation, identification, counselling, treatment and rehabilitation
-        of affected individuals, with the active involvement of communities and civil society.
-      </p>
+      <h2>Drug Prevention &ndash; I Section</h2>
+      <ol type="i">
+        <li>All Policy work of National Action Plan for Drug Demand Reduction (NAPDDR)</li>
+        <li>Release of Funds to State/UT Govt. for State Action Plan under NAPDDR scheme</li>
+        <li>Budget matters pertaining to DP Division</li>
+        <li>Selection of District De-Addiction Centres</li>
+        <li>Policy matters of Setting up of De-Addiction Centres in Central Jails</li>
+        <li>Programme Monitoring Unit</li>
+        <li>Matters/References pertaining to Standing Committee of Parliament</li>
+      </ol>
 
-      <h2>National Action Plan for Drug Demand Reduction (NAPDDR)</h2>
-      <p>
-        NAPDDR is the umbrella scheme through which the Department provides financial assistance to
-        State Governments, Union Territory Administrations and voluntary organisations for
-        prevention, treatment and rehabilitation activities. Under the scheme, the Department
-        supports <strong>Integrated Rehabilitation Centres for Addicts (IRCAs)</strong>,{" "}
-        <strong>Community-based Peer-led Intervention (CPLI)</strong> for children and adolescents,
-        outreach and drop-in centres, and District De-Addiction Centres in government hospitals.
-      </p>
+      <h2>Drug Prevention &ndash; II Section</h2>
+      <ol type="i">
+        <li>Nasha Mukt Bharat Abhiyaan (NMBA)</li>
+        <li>Addiction Treatment Facilities in Govt. Hospitals</li>
+        <li>International matters related to Drug Demand Reduction</li>
+        <li>Matters/References pertaining to Consultative Committee of Parliament</li>
+      </ol>
 
-      <h2>Nasha Mukt Bharat Abhiyaan (NMBA)</h2>
-      <p>
-        The Nasha Mukt Bharat Abhiyaan is a flagship mass-movement against substance abuse. It
-        focuses on awareness generation programmes, reaching out to dependent populations,
-        identification and counselling, and capacity building of service providers. The Abhiyaan
-        mobilises educational institutions, youth volunteers, Panchayati Raj Institutions and
-        community organisations to spread the message of a drug-free India.
-      </p>
+      <h2>Drug Prevention &ndash; III Section</h2>
+      <ol type="i">
+        <li>Release of grant in aid to NGOs and other eligible organizations working in various States/UTs for identification, counselling, treatment and rehabilitation of addicts.</li>
+        <li>Navchetna Modules</li>
+        <li>Administrative matters of National Institute for Social Defence</li>
+        <li>Policy matters and release of grant-in-aid to State Level Coordinating Agencies (SLCAs)</li>
+      </ol>
 
-      <h2>De-Addiction Centres</h2>
-      <p>
-        A nationwide network of de-addiction and rehabilitation facilities delivers services close
-        to those in need. These centres offer detoxification, medical and psycho-social treatment,
-        counselling, vocational training and follow-up support to help individuals achieve lasting
-        recovery and reintegrate into society with dignity.
-      </p>
+      <h2>Drug Prevention &ndash; IV Section</h2>
+      <ol type="i">
+        <li>Release of grant in aid to NGOs and other eligible organizations working in various States/UTs for identification, counselling, treatment and rehabilitation of addicts.</li>
+        <li>All policy matters pertaining to the welfare of Transgender Persons</li>
+      </ol>
+
+      <h2>Documents</h2>
+      <DocumentTable caption="Documents Published by the Drug Division" rows={DOCS} />
     </ContentPage>
   );
 }

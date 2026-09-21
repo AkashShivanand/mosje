@@ -199,15 +199,15 @@
       "offScale": 2,
       "classSized": 0
     },
-    "apps/hub/src/app/website/events/page.tsx": {
+    "apps/hub/src/app/website-classic/events/page.tsx": {
       "offScale": 1,
       "classSized": 0
     },
-    "apps/hub/src/app/website/nmba-options/page.tsx": {
+    "apps/hub/src/app/website-classic/nmba-options/page.tsx": {
       "offScale": 1,
       "classSized": 0
     },
-    "apps/hub/src/app/website/samavesh-admin-portals/page.tsx": {
+    "apps/hub/src/app/website-classic/samavesh-admin-portals/page.tsx": {
       "offScale": 1,
       "classSized": 0
     },

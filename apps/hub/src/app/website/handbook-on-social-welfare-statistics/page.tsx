@@ -33,7 +33,9 @@ export default function Page() {
       columns={grantDocumentColumns}
       rows={rows}
       searchKeys={["title"]}
-      searchPlaceholder="Search editions…"
+      searchPlaceholder="Search editions by title"
+      noun="editions"
+      nounSingular="edition"
     />
   );
 }

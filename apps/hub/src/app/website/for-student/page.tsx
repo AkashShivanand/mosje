@@ -1,55 +1,84 @@
 import type { Metadata } from "next";
-import { PersonaPage, type PersonaCard } from "@/components/website/templates/PersonaPage";
+import { PersonaPage, type PersonaSection } from "@/components/website-next/templates/PersonaPage";
+import { matchSchemes, type Scheme } from "@/lib/website-next/schemes";
+import { MASTER_DATE, groupByOffering } from "@/lib/website-next/scheme-view";
 
 export const metadata: Metadata = {
-  title: "For Student | Department of Social Justice & Empowerment",
+  title: "For Students | Department of Social Justice & Empowerment",
   description:
-    "Scholarships, application forms, notices and how-to-apply guidance to help students learn, grow and access support.",
+    "Scholarships, fellowships, residential schools, hostels and coaching of the Department of Social Justice & Empowerment for students, with where to apply.",
 };
 
-const cards: PersonaCard[] = [
+/* The schemes the master tags for students (X-IA-07: a real filtered list, not
+   an unfiltered one). The two largest kinds of support get a section each; the
+   rest share one, each scheme listed once. */
+const STUDENT = matchSchemes({ who: "student" });
+const groups = groupByOffering(STUDENT, { who: "student" });
+const lead = groups.filter((g) => g.id === "scholarship" || g.id === "schooling");
+const shown = new Set<string>();
+const leadSections: PersonaSection[] = lead.map((g) => {
+  const schemes = g.schemes.filter((s) => !shown.has(s.id));
+  schemes.forEach((s) => shown.add(s.id));
+  return { kind: "schemes", id: g.id, title: g.title, schemes, who: "student" };
+});
+const other: Scheme[] = STUDENT.filter((s) => !shown.has(s.id));
+
+const sections: PersonaSection[] = [
+  ...leadSections,
+  ...(other.length
+    ? [
+        {
+          kind: "schemes" as const,
+          id: "other-support",
+          title: "Other Support for Students",
+          schemes: other,
+          who: "student" as const,
+          viewAll: { label: "View All in Find a Scheme", href: "/website/schemes-services?who=student" },
+        },
+      ]
+    : []),
   {
-    icon: "school",
-    title: "Scholarships",
-    description:
-      "Explore pre-matric, post-matric and merit-based scholarships that fund your education and reduce financial barriers.",
-    ctaLabel: "View Scholarships",
-    href: "/website/schemes-services",
-  },
-  {
-    icon: "description",
-    title: "Forms & Templates",
-    description:
-      "Download the application forms, declarations and templates you need to apply for student schemes.",
-    ctaLabel: "Get Forms",
-    href: "/website/forms-templates",
-  },
-  {
-    icon: "notifications",
-    title: "Notices",
-    description:
-      "Stay updated with the latest deadlines, results and announcements relevant to students.",
-    ctaLabel: "View Notices",
-    href: "/website/notices",
-  },
-  {
-    icon: "help",
-    title: "How to Apply",
-    description:
-      "Follow a simple step-by-step guide on eligibility, documents and the online application process.",
-    ctaLabel: "Learn How to Apply",
-    href: "/website/schemes-services",
+    kind: "links",
+    id: "apply-and-documents",
+    title: "Applications and Documents",
+    links: [
+      {
+        title: "National Scholarship Portal",
+        description: "Scholarships from pre-matric to post-matric, in one place.",
+        href: "https://scholarships.gov.in",
+        icon: "language",
+        external: true,
+      },
+      {
+        title: "Scheme Documents",
+        description: "Guidelines, performance statements and circulars published against a scheme.",
+        href: "/website/scheme-documents",
+        icon: "description",
+      },
+      {
+        title: "Forms & Templates",
+        description: "Application forms, proformas and templates for the Department's schemes.",
+        href: "/website/forms-templates",
+        icon: "edit_document",
+      },
+      {
+        title: "Public Notices",
+        description: "Public notices and administrative announcements.",
+        href: "/website/notices",
+        icon: "campaign",
+      },
+    ],
   },
 ];
 
 export default function ForStudentPage() {
   return (
     <PersonaPage
-      title="For Student"
-      breadcrumb={[{ label: "For You" }, { label: "Student" }]}
-      lastUpdated="06 Jun 2026"
-      tagline="Scholarships and opportunities to help you learn and grow."
-      cards={cards}
+      title="For Students"
+      breadcrumb={[{ label: "Schemes & Services" }, { label: "For Students" }]}
+      description="Scholarships, fellowships, schools, hostels and coaching for students from the groups the Department serves."
+      lastUpdated={MASTER_DATE}
+      sections={sections}
     />
   );
 }
