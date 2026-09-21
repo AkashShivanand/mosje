@@ -230,15 +230,11 @@ for (const file of walk(PAGES).sort()) {
    *
    * Read out of the page's own call, which is the only derivation that is true by
    * construction — retyping the map would make a second copy of a join that has
-   * already drifted. The call used to be `directoryRows("dr-ambedkar-foundation")`
-   * over `data/website/officials.ts`; the directory pages now read the ingested
-   * register by the body's ABBREVIATION, `getOfficialsByOrganisation("DAF")`, so
-   * that is what is read. Both shapes are accepted: a page still on the old call
-   * is still joined rather than silently dropped.
+   * already drifted. The directory pages read the ingested register by the body's
+   * ABBREVIATION, `getOfficialsByOrganisation("DAF")`, so that is what is read.
+   * (The older `directoryRows()` call is gone with the placeholder rows it read.)
    */
-  const owner =
-    source.match(/getOfficialsByOrganisation\("([A-Za-z0-9 -]+)"\)/) ??
-    source.match(/directoryRows\("([a-z0-9-]+)"\)/);
+  const owner = source.match(/getOfficialsByOrganisation\("([A-Za-z0-9 -]+)"\)/);
   if (owner) directories.push({ ownerId: owner[1], href, title });
 }
 
@@ -260,10 +256,8 @@ directories.sort((a, b) => a.ownerId.localeCompare(b.ownerId));
  * ingested — renders an empty table and says nothing about why. That is what is
  * asserted here.
  *
- * `data/website/officials.ts` is deliberately NOT read. It is a second, older
- * register that disagrees with the ingested one about how many officers several
- * bodies have, and reconciling them is content work recorded in the PR, not
- * something this generator can decide.
+ * The hand-written secretariat that check used to read was placeholder data and
+ * has been deleted; the ingested register is the only list of officers there is.
  */
 {
   const officialsJson = JSON.parse(
@@ -311,7 +305,7 @@ export interface StaticPageEntry {
 
 export const STATIC_PAGES: StaticPageEntry[] = ${JSON.stringify(entries, null, 2)};
 
-/** Which page shows a given body's officials — read out of its \`directoryRows()\` call. */
+/** Which page shows a given body's officials — read out of its \`getOfficialsByOrganisation()\` call. */
 export interface DirectoryPage {
   ownerId: string;
   href: string;
