@@ -750,7 +750,7 @@ export const STATIC_PAGES: StaticPageEntry[] = [
   },
   {
     "title": "Who's Who",
-    "description": "The Ministers of the Department of Social Justice & Empowerment and the office-holders of its commissions, corporations and institutions, with their official contact details.",
+    "description": "The Ministers and the Secretary of the Department of Social Justice & Empowerment and the office-holders of its commissions, corporations and institutions, with their official contact details.",
     "href": "/website/whos-who",
     "section": "Contact & Directory",
     "iconName": "contacts"

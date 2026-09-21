@@ -12,6 +12,7 @@ import {
 import { getContentSyncedDate } from "@/lib/website/content";
 import { VISITOR_ANALYTICS } from "@/lib/website/visitor-analytics";
 import { ReportProblemLink } from "./ReportProblemLink";
+import { formatDate } from "@/components/website-next/ui/format";
 
 /**
  * The redesign's footer: the design system's `SiteFooter`, configured.
@@ -158,7 +159,7 @@ export function WebsiteFooter({ lastUpdated }: { lastUpdated?: string }) {
       help={HELP}
       relatedLinks={relatedLinks}
       copyright={`© ${new Date().getFullYear()} Department of Social Justice & Empowerment. All Rights Reserved.`}
-      lastUpdated={lastUpdated ?? getContentSyncedDate()}
+      lastUpdated={formatDate(lastUpdated ?? getContentSyncedDate())}
     />
   );
 }

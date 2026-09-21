@@ -17,11 +17,13 @@ import {
 } from "./OrganisationDocuments";
 import {
   actionLabel,
+  balancedColumns,
   cleanHtml,
   extractGlance,
   extractImages,
   extractSocial,
   extractUpdates,
+  formatFigure,
   isExternal,
   kindOf,
   platformName,
@@ -32,6 +34,8 @@ import {
   tidyTitle,
   titleCaseLabel,
   typeOfHref,
+  withoutNarration,
+  type FaqGroup,
   type GlanceFact,
   type SocialProfile,
   type UpdateItem,
@@ -55,6 +59,12 @@ import "./organisation.css";
  */
 
 const orgHref = (slug: string) => `/website/organisation/${slug}`;
+
+/**
+ * The column cap for a grid of `n` items, as the CSS custom property the grid
+ * reads (organisation.css, "Balanced grids"). Stops a row of six ending 4 + 2.
+ */
+const cols = (n: number, max: number) => ({ "--og-cols": balancedColumns(n, max) }) as React.CSSProperties;
 
 /* ── Small shared parts ────────────────────────────────────────────────────── */
 
@@ -116,7 +126,7 @@ function Glance({ title, facts, note }: { title: string; facts: GlanceFact[]; no
         {facts.map((f) => (
           <div key={f.label} className="og-glance__row">
             <dt>{f.label}</dt>
-            <dd>{f.value}</dd>
+            <dd>{formatFigure(f.value)}</dd>
           </div>
         ))}
       </dl>
@@ -181,7 +191,7 @@ export function OrganisationContact({
         {action && <SectionAction href={action.href} label={action.label} context={tidyTitle(contact.heading)} />}
       </SectionTitle>
       {cards.length > 0 && (
-        <ul className="og-contact">
+        <ul className="og-contact og-grid" style={cols(cards.length, 4)}>
           {cards.map((c) => (
             <li key={c.title} className="og-contact__card">
               <span className="og-contact__icon" aria-hidden="true">
@@ -350,7 +360,7 @@ interface CardItem {
 function CardGrid({ items, headingLevel }: { items: CardItem[]; headingLevel: 3 | 4 }) {
   const H = headingLevel === 3 ? "h3" : "h4";
   return (
-    <ul className="og-cards">
+    <ul className="og-cards og-grid" style={cols(items.length, 4)}>
       {items.map((c) => (
         <li key={c.title} className={`og-card${c.href ? " og-card--link" : ""}`}>
           {c.image ? (
@@ -559,7 +569,7 @@ export function OrganisationDetail({
       nav: "Leadership",
       body: (
         <>
-          <SectionTitle as={2} title={tidyTitle(l.heading)} description={l.description} headingId="leadership-title">
+          <SectionTitle as={2} title={tidyTitle(l.heading)} description={withoutNarration(l.description)} headingId="leadership-title">
             {l.action && <SectionAction href={l.action.href} label={l.action.label} context={tidyTitle(l.heading)} />}
           </SectionTitle>
           <ul className="og-leaders">
@@ -597,7 +607,7 @@ export function OrganisationDetail({
       nav: title,
       body: (
         <>
-          <SectionTitle as={2} title={title} description={s.description} headingId={`${id}-title`}>
+          <SectionTitle as={2} title={title} description={withoutNarration(s.description)} headingId={`${id}-title`}>
             {s.action && <SectionAction href={s.action.href} label={s.action.label} context={title} />}
           </SectionTitle>
           <CardGrid headingLevel={3} items={items} />
@@ -637,7 +647,7 @@ export function OrganisationDetail({
         nav: "Documents",
         body: (
           <>
-            <SectionTitle as={2} title={title} description={detail?.downloads?.description} headingId="documents-title" />
+            <SectionTitle as={2} title={title} description={withoutNarration(detail?.downloads?.description)} headingId="documents-title" />
             <OrganisationDocuments groups={groups} label={`${name} document types`} />
           </>
         ),
@@ -735,7 +745,7 @@ export function OrganisationDetail({
             <SectionTitle as={2} title={title} headingId="gallery-title">
               <SectionAction href={detail?.gallery?.viewAllHref ?? "/website/gallery"} label="View All" context={title} />
             </SectionTitle>
-            <ul className="og-gallery">
+            <ul className="og-gallery og-grid" style={cols(shots.length, 4)}>
               {shots.map((g) => (
                 <li key={g.src} className="og-shot">
                   <span className="og-shot__frame">
@@ -760,8 +770,8 @@ export function OrganisationDetail({
       nav: "Messages",
       body: (
         <>
-          <SectionTitle as={2} title={tidyTitle(ms.heading)} description={ms.description} headingId="messages-title" />
-          <ul className="og-messages">
+          <SectionTitle as={2} title={tidyTitle(ms.heading)} description={withoutNarration(ms.description)} headingId="messages-title" />
+          <ul className="og-messages og-grid" style={cols(ms.items.length, 3)}>
             {ms.items.map((m) => (
               <li key={m.name} className="og-message">
                 <figure>
@@ -793,7 +803,7 @@ export function OrganisationDetail({
         body: (
           <>
             <SectionTitle as={2} title="Social Media" headingId="social-title" />
-            <ul className="og-social">
+            <ul className="og-social og-grid" style={cols(profiles.length, 5)}>
               {profiles.map((p) => (
                 <li key={p.href} className="og-social__card">
                   <span className="og-social__glyph" aria-hidden="true">
@@ -959,6 +969,60 @@ export interface OrganisationSubPageProps {
   /** A full-width dashboard below the article. */
   dashboard?: React.ReactNode;
   isContactPage?: boolean;
+  /** The page's questions and answers, where the page is an FAQ page (`faqGroups`). */
+  faqs?: FaqGroup[] | null;
+}
+
+/**
+ * An FAQ page: a contents list, then one section per topic, each question an h3
+ * inside a native disclosure. The source printed all 223 answers open, 35,910px
+ * of text; closed, the page is a list of questions a reader can scan, and the
+ * browser's find-in-page still opens the answer that matches.
+ */
+function FaqPage({ groups, label }: { groups: FaqGroup[]; label: string }) {
+  return (
+    <div className="og-faqs">
+      <nav className="wn-panel og-faq-toc" aria-labelledby="faq-contents">
+        <h2 id="faq-contents" className="wn-panel__title">
+          Contents
+        </h2>
+        <ol>
+          {groups.map((g) => (
+            <li key={g.id}>
+              <a href={`#${g.id}`}>
+                <span>{g.title}</span>
+                <span className="og-faq-toc__count">
+                  {g.items.length}
+                  <span className="sr-only"> questions</span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+      {groups.map((g) => (
+        <section key={g.id} id={g.id} className="og-faq-group" aria-labelledby={`${g.id}-title`}>
+          <SectionTitle as={2} title={g.title} headingId={`${g.id}-title`} />
+          <div className="og-faq">
+            {g.items.map((f, i) => (
+              <details key={`${g.id}-${i}`} className="og-faq__item">
+                <summary className="og-faq__summary">
+                  <h3 className="og-faq__q">{f.question}</h3>
+                  <span className="og-faq__icon" aria-hidden="true">
+                    <Icon name="expand_more" size={24} />
+                  </span>
+                </summary>
+                <div
+                  className="og-faq__a wn-prose"
+                  dangerouslySetInnerHTML={{ __html: cleanHtml(f.answerHtml, { headingLevel: 3, label: `${label}: ${f.question}` }) }}
+                />
+              </details>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  );
 }
 
 export function OrganisationSubPage({
@@ -974,6 +1038,7 @@ export function OrganisationSubPage({
   siblings = [],
   dashboard,
   isContactPage = false,
+  faqs,
 }: OrganisationSubPageProps) {
   const pageTitle = tidyTitle(org.title);
   const rootSlug = rootOrg?.slug ?? org.slug.split("/")[0]!;
@@ -984,7 +1049,9 @@ export function OrganisationSubPage({
     .filter((s) => stripTags(s.html).length > 0 || /<img\b/i.test(s.html));
 
   let body: React.ReactNode;
-  if (parts.length === 0 && authored?.aboutHtml != null) {
+  if (faqs && faqs.length > 0) {
+    body = <FaqPage groups={faqs} label={pageTitle} />;
+  } else if (parts.length === 0 && authored?.aboutHtml != null) {
     body = (
       <div className="wn-prose og-prose" dangerouslySetInnerHTML={{ __html: cleanHtml(authored.aboutHtml, { headingLevel: 2, label: pageTitle }) }} />
     );

@@ -90,6 +90,21 @@
     color: var(--sa-text-neutral-bolder);
   }
   .wn-scheme__apply-icon { display: inline-flex; flex: none; color: var(--sa-icon-brand-primary-base); }
+  /* Raised above the title's ::after, so the route is its own target, not the card's. */
+  .wn-scheme__apply-link {
+    position: relative;
+    z-index: 1;
+    color: var(--sa-text-link-brand-default);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .wn-scheme__apply-link:hover { color: var(--sa-text-link-brand-hover); }
+  .wn-scheme__apply-link:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+    border-radius: var(--sa-shape-4);
+  }
+  .wn-scheme__apply-ext { display: inline-flex; vertical-align: -0.15em; margin-inline-start: var(--sa-inline-2); }
 
   /* ── Finder ──────────────────────────────────────────────────────────────── */
   .wn-finder { display: grid; gap: var(--sa-stack-24); align-items: start; }
@@ -198,12 +213,6 @@
     padding-bottom: var(--sa-padding-16);
     border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
-  .wn-finder__status {
-    font-size: var(--sa-type-body-2-size);
-    line-height: var(--sa-type-body-2-lh);
-    font-weight: var(--sa-font-weight-regular);
-    color: var(--sa-text-neutral-bolder);
-  }
   .wn-finder__groupby {
     display: inline-flex;
     flex-wrap: wrap;
@@ -257,6 +266,7 @@
   .wn-finder__pill-x { display: inline-flex; color: var(--sa-icon-neutral-subtle); }
 
   .wn-finder__group { display: grid; gap: var(--sa-stack-16); }
+  .wn-finder__more { display: flex; }
   .wn-finder__list,
   .wn-scheme-grid {
     display: grid;

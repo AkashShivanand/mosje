@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Icon } from "@mosje/design-system";
 import type { PersonaId, Scheme } from "@/lib/website-next/schemes";
-import { administeredBy, applyRoutes, offeringShort, offersTo } from "@/lib/website-next/scheme-view";
+import { administeredBy, applyRoutes, displayName, offeringShort, offersTo } from "@/lib/website-next/scheme-view";
 import "./schemes.css";
 
 interface SchemeCardProps {
@@ -14,9 +14,10 @@ interface SchemeCardProps {
 
 /**
  * One scheme, one link (LAY-07): the name is the anchor and its ::after covers
- * the card. Everything else is plain text, so the card is one Tab stop. The
- * apply routes are named here and linked on the scheme's own page (8 Sep
- * decision 6: apply links go to the portal or to the page that carries it).
+ * the card. The one exception is where to apply: a route with a confirmed
+ * address (a portal, a helpline number) is its own link, raised above the card's
+ * hit area (8 Sep decision 6: apply links go to the portal, or to the scheme page
+ * that carries it). A route with no confirmed address is named, not linked.
  */
 export function SchemeCard({ scheme: s, who, headingLevel = 3 }: SchemeCardProps) {
   const H = `h${headingLevel}` as const;
@@ -27,7 +28,7 @@ export function SchemeCard({ scheme: s, who, headingLevel = 3 }: SchemeCardProps
       {by && <p className="wn-scheme__by">{by}</p>}
       <H className="wn-scheme__title">
         <Link href={`/website/schemes-services/${s.id}`} className="wn-scheme__link">
-          {s.name}
+          {displayName(s)}
         </Link>
       </H>
       <p className="wn-scheme__provides">{s.provides}</p>
@@ -48,7 +49,32 @@ export function SchemeCard({ scheme: s, who, headingLevel = 3 }: SchemeCardProps
           <span className="wn-scheme__apply-icon" aria-hidden>
             <Icon name="how_to_reg" size={20} />
           </span>
-          <span>{routes.map((r) => r.action).join(" · ")}</span>
+          <span>
+            {routes.map((r, i) => (
+              <span key={r.id}>
+                {i > 0 && <span aria-hidden> · </span>}
+                {r.href ? (
+                  <a
+                    href={r.href}
+                    className="wn-scheme__apply-link"
+                    {...(r.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  >
+                    {r.action}
+                    {r.external && (
+                      <>
+                        <span className="wn-scheme__apply-ext" aria-hidden>
+                          <Icon name="open_in_new" size={16} />
+                        </span>
+                        <span className="sr-only"> (opens in a new window)</span>
+                      </>
+                    )}
+                  </a>
+                ) : (
+                  r.action
+                )}
+              </span>
+            ))}
+          </span>
         </p>
       )}
     </article>

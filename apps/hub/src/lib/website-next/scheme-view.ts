@@ -139,12 +139,47 @@ export function applyRoutes(s: Scheme): ApplyRoute[] {
     });
 }
 
-/** Other schemes that give the same kind of support, nearest first (same umbrella). */
+/**
+ * A scheme's name as the interface prints it. The master writes a few names with
+ * a spaced em dash ("SHRESHTA — Residential Education …"); UI copy uses a colon.
+ * The master itself is not changed: it is the record of the sources' wording.
+ */
+export function displayName(s: Pick<Scheme, "name">): string {
+  return s.name.replace(/\s+[—–]\s+/g, ": ");
+}
+
+/** The (group, kind of support) pairs a scheme actually provides, honouring
+ *  `offersFor`: a grant to an NGO is not support to the people it serves. The
+ *  NGO pairs count only on a scheme for NGOs alone; otherwise every scheme that
+ *  funds a voluntary organisation would relate a senior citizens' programme to
+ *  a residential school. */
+function pairs(s: Scheme): Set<string> {
+  const ngoOnly = s.who.every((w) => w === "ngo");
+  const out = new Set<string>();
+  for (const o of s.offers)
+    for (const w of s.offersFor?.[o] ?? s.who) if (ngoOnly || w !== "ngo") out.add(`${w}:${o}`);
+  return out;
+}
+
+/**
+ * Related schemes: those giving the SAME kind of support to the SAME group, at
+ * least once. Sharing only a group (Elderline and the PCR Act both name someone)
+ * or only a kind of support (protection for a senior citizen and for a victim of
+ * atrocity) is not a relation, and an empty list is shown as nothing rather than
+ * padded with weak matches. Nearest first: most shared pairs, then same umbrella.
+ */
 export function relatedSchemes(s: Scheme, limit = 6): Scheme[] {
-  const others = SCHEMES.filter((x) => x.id !== s.id && x.offers.some((o) => s.offers.includes(o)));
-  const same = others.filter((x) => s.umbrella && x.umbrella === s.umbrella);
-  const rest = others.filter((x) => !same.includes(x));
-  return [...same, ...rest].slice(0, limit);
+  const mine = pairs(s);
+  return SCHEMES.filter((x) => x.id !== s.id)
+    .map((x) => {
+      const shared = [...pairs(x)].filter((p) => mine.has(p)).length;
+      const umbrella = s.umbrella && x.umbrella === s.umbrella ? 1 : 0;
+      return { x, shared, umbrella };
+    })
+    .filter((r) => r.shared > 0)
+    .sort((a, b) => b.shared - a.shared || b.umbrella - a.umbrella)
+    .slice(0, limit)
+    .map((r) => r.x);
 }
 
 /** Citation codes, expanded as the master's own header defines them. */

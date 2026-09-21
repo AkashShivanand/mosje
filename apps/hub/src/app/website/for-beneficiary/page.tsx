@@ -13,7 +13,6 @@ const sections: PersonaSection[] = [
     kind: "groups",
     id: "groups",
     title: "Find Schemes for Your Group",
-    description: "Each group opens the schemes that name it.",
   },
   {
     kind: "links",

@@ -48,7 +48,9 @@ interface PhonePart {
 export function phoneParts(raw: string | undefined): PhonePart[] {
   if (!raw) return [];
   const parts: PhonePart[] = [];
-  const re = /(\+?\d[\d\s-]{4,}\d)(\s?\(\s*fax\s*\))?/gi;
+  // A space may sit inside a number ("2379 4307") but not between two whole ones
+  // ("23073246 23073173(F)"), so a space followed by eight digits ends the number.
+  const re = /(\+?\d(?:[\d-]|\s(?!\d{8}\b)){4,}\d)(\s?\(\s*(?:fax|f)\s*\))?/gi;
   let last = 0;
   let std: string | undefined;
   for (const m of raw.matchAll(re)) {
@@ -69,29 +71,123 @@ export function phoneParts(raw: string | undefined): PhonePart[] {
   return parts;
 }
 
-/** A published telephone field, each number its own tap-to-call link and never broken across lines. */
-export function PhoneNumbers({ value }: { value: string | undefined }) {
-  const parts = phoneParts(value);
-  if (parts.length === 0) return null;
+export type PhoneKind = "telephone" | "fax" | "mobile";
+
+/** One number, classified, with the published "(Fax)" marker taken off its text. */
+export interface PhoneNumber {
+  kind: PhoneKind;
+  text: string;
+  /** The number to dial; undefined for a fax. */
+  tel?: string;
+}
+
+const PHONE_LABEL: Record<PhoneKind, string> = { telephone: "Telephone", fax: "Fax", mobile: "Mobile" };
+const PHONE_ORDER: PhoneKind[] = ["telephone", "mobile", "fax"];
+
+/**
+ * A published telephone field sorted into telephone, mobile and fax numbers (CON-25).
+ *
+ * The register writes all three into one string — "Office - 011-23381001, 23381390,
+ * 23381902(Fax) / Mobile - 011-23012175,23012195" — and sometimes leaves a label with
+ * nothing after it ("/ Mobile -"). A number is a fax when it carries "(Fax)" or "(F)" or
+ * follows a "Fax" label (a bracketed "(Fax)" marks only its own number), a mobile when it follows a "Mobile" label, and a telephone
+ * otherwise. The Department's label is kept even where it looks wrong (the Union
+ * Minister's "Mobile" numbers carry the 011 STD code); that is reported, not corrected.
+ * Empty labels and connecting words are dropped. Digits are never changed.
+ */
+export function phoneGroups(raw: string | undefined): { kind: PhoneKind; label: string; numbers: PhoneNumber[] }[] {
+  if (!raw) return [];
+  const labels = [...raw.matchAll(/(?<!\(\s*)\b(office|tel(?:ephone)?|phone|mobile|mob|fax)\b(?!\s*\))\.?\s*[-:]?/gi)].map((m) => ({
+    at: m.index ?? 0,
+    kind: (/^mob/i.test(m[1] ?? "") ? "mobile" : /^fax/i.test(m[1] ?? "") ? "fax" : "telephone") as PhoneKind,
+  }));
+  const numbers: PhoneNumber[] = [];
+  let offset = 0;
+  for (const part of phoneParts(raw)) {
+    const at = offset;
+    offset += part.text.length;
+    if (!/\d{3}/.test(part.text)) continue;
+    const label = labels.filter((l) => l.at <= at).at(-1)?.kind ?? "telephone";
+    const markedFax = /\(\s*(?:fax|f)\s*\)/i.test(part.text);
+    const kind: PhoneKind = markedFax ? "fax" : label;
+    numbers.push({
+      kind,
+      text: part.text.replace(/\s*\(\s*(?:fax|f)\s*\)/i, "").trim(),
+      tel: kind === "fax" ? undefined : part.tel,
+    });
+  }
+  return PHONE_ORDER.map((kind) => ({
+    kind,
+    label: PHONE_LABEL[kind],
+    numbers: numbers.filter((n) => n.kind === kind),
+  })).filter((g) => g.numbers.length > 0);
+}
+
+function NumberList({ numbers }: { numbers: PhoneNumber[] }) {
   return (
     <span className="wn-people-phones">
-      {parts.map((p, i) =>
-        p.tel ? (
-          <a key={i} href={`tel:${p.tel}`} className="wn-people-link wn-people-nowrap">
-            {p.text.trim()}
-          </a>
-        ) : /\d/.test(p.text) ? (
-          <span key={i} className="wn-people-nowrap">
-            {p.text}
-          </span>
-        ) : (
-          // One notation for separators (CON-25): "a,b" and "a , b" both print "a, b",
-          // which also gives a long run of numbers somewhere to wrap on a phone.
-          <span key={i}>{p.text.replace(/\s*,\s*/g, ", ").replace(/\s*\/\s*/g, " / ")}</span>
-        ),
-      )}
+      {numbers.map((n, i) => (
+        <span key={`${n.text}-${i}`}>
+          {n.tel ? (
+            <a href={`tel:${n.tel}`} className="wn-people-link wn-people-nowrap">
+              {n.text}
+            </a>
+          ) : (
+            <span className="wn-people-nowrap">{n.text}</span>
+          )}
+          {i < numbers.length - 1 ? ", " : ""}
+        </span>
+      ))}
     </span>
   );
+}
+
+/**
+ * A published telephone field in one cell: telephone numbers first, then "Mobile" and
+ * "Fax" numbers each after their label. Each dialable number is its own tap-to-call link.
+ */
+export function PhoneNumbers({ value }: { value: string | undefined }) {
+  const groups = phoneGroups(value);
+  if (groups.length === 0) return null;
+  return (
+    <span className="wn-people-phones">
+      {groups.map((g, i) => (
+        <span key={g.kind}>
+          {i > 0 && " · "}
+          {g.kind !== "telephone" && <span className="wn-people-phone-label">{g.label} </span>}
+          <NumberList numbers={g.numbers} />
+        </span>
+      ))}
+    </span>
+  );
+}
+
+/** The same field as description-list rows — Telephone, Mobile, Fax — for a person's card. */
+export function PhoneFacts({ value }: { value: string | undefined }) {
+  return (
+    <>
+      {phoneGroups(value).map((g) => (
+        <div key={g.kind}>
+          <dt>{g.label}</dt>
+          <dd>
+            <NumberList numbers={g.numbers} />
+          </dd>
+        </div>
+      ))}
+    </>
+  );
+}
+
+/**
+ * A designation as the organisation itself publishes the post.
+ *
+ * The Department's Who's Who feed files two NCSC Members as "Member's office (LKK)" and
+ * "Member's office (VDR)" — the name of the office's inbox, not a post. The Commission's
+ * own site (ncsc.nic.in, read 22 Sep 2026) lists Shri Love Kush Kumar and Shri Vaddepalli
+ * Ramchander as "Member". Only that exact pattern is rewritten; the record is unchanged.
+ */
+export function publishedDesignation(designation: string): string {
+  return /^Member['’]s office \([A-Z]+\)$/i.test(designation.trim()) ? "Member" : designation;
 }
 
 /** Each official address as its own mail link; free-mail addresses are left out (CON-09). */

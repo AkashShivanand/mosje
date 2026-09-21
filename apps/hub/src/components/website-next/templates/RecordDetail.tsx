@@ -21,7 +21,11 @@ export interface RecordDetailProps {
   facts?: DescriptionItem[];
   /** Files the record attaches. The first becomes the page's one primary action. */
   files?: LabelledFile[];
-  /** The record's page on dosje.gov.in. */
+  /**
+   * Accepted for the page files' props and NOT rendered: this site is the
+   * Department's site, so a "View on dosje.gov.in" link sent the reader to a
+   * copy of the page they were already on.
+   */
   sourceUrl?: string;
   children?: React.ReactNode;
 }
@@ -47,6 +51,12 @@ function describeFile(f: LabelledFile) {
 const tidyFact = (item: DescriptionItem): DescriptionItem =>
   typeof item.value === "string" ? { ...item, value: item.value.replace(/\bSept\b/, "Sep") } : item;
 
+/*
+ * The register's own housekeeping, not facts about the record: every record is
+ * "Status: Active", and "Tags: MoSJE Document" is the CMS's filing label.
+ */
+const INTERNAL_TERMS = new Set(["Status", "Tags"]);
+
 const factText = (facts: DescriptionItem[], ...terms: string[]) => {
   const hit = facts.find((f) => terms.includes(f.term) && typeof f.value === "string");
   return hit ? (hit.value as string) : undefined;
@@ -59,8 +69,7 @@ const factText = (facts: DescriptionItem[], ...terms: string[]) => {
  * The first screen answers the three questions a near-empty record page left
  * open: what this is (the badge and title), who issued it and when (one derived
  * sentence), and where the document is (the one primary action). Then the
- * record's own content, then its fields, and beside them the way back and the
- * Department's source page.
+ * record's own content, then its fields, and beside them the way back.
  */
 export function RecordDetail({
   title,
@@ -72,10 +81,9 @@ export function RecordDetail({
   backLabel,
   facts = [],
   files = [],
-  sourceUrl,
   children,
 }: RecordDetailProps) {
-  const items = facts.map(tidyFact);
+  const items = facts.filter((f) => !INTERNAL_TERMS.has(f.term)).map(tidyFact);
   const heading = tidyTitle(title);
 
   /* A sentence built only from the record's own fields — never invented. */
@@ -173,13 +181,6 @@ export function RecordDetail({
                   <Icon name="arrow_back" size={20} aria-hidden />
                   {backLabel}
                 </Link>
-                {sourceUrl && (
-                  <a href={sourceUrl} target="_blank" rel="noopener noreferrer">
-                    <Icon name="open_in_new" size={20} aria-hidden />
-                    View on dosje.gov.in
-                    <span className="sr-only"> (opens in a new window)</span>
-                  </a>
-                )}
               </div>
             </nav>
           </aside>

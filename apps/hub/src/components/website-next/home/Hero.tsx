@@ -20,7 +20,7 @@ const TASKS = [
 
 export function Hero() {
   return (
-    <section className="wn-hero" aria-labelledby="hero-title">
+    <section className="wn-hero" aria-labelledby="hero-title" data-sa-rail-clear="">
       <div className="sa-container wn-hero__grid">
         <div className="wn-hero__copy">
           <h1 id="hero-title" className="wn-hero__title">

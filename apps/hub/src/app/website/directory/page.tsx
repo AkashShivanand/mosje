@@ -45,7 +45,7 @@ export default async function Page({
   return (
     <OfficialsDirectory
       title={TITLE}
-      breadcrumb={[{ label: "Connect" }, { label: TITLE }]}
+      breadcrumb={[{ label: "Contact" }, { label: TITLE }]}
       description={DESCRIPTION}
       lastUpdated={getContentSyncedDate()}
       officials={getOfficials()}

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { SectionTitle } from "@mosje/design-system";
 import { getTenders, getUpdates, getVacancies } from "@/lib/website/content";
 import { formatDate, isoDate } from "@/components/website-next/ui/format";
+import { displayNoticeTitle } from "@/components/website-next/ui/records";
 
 interface Row { title: string; href: string; date?: string }
 
@@ -49,7 +50,7 @@ function Column({ id, title, rows, viewAll }: { id: string; title: string; rows:
  */
 export function Latest() {
   const updates = newestFirst(getUpdates()).slice(0, 4).map((u) => ({ title: tidy(u.title), href: `/website/updates/${u.slug}`, date: u.date }));
-  const tenders = newestFirst(getTenders()).slice(0, 4).map((t) => ({ title: tidy(t.title), href: `/website/tenders/${t.slug}`, date: t.date }));
+  const tenders = newestFirst(getTenders()).slice(0, 4).map((t) => ({ title: displayNoticeTitle(tidy(t.title)), href: `/website/tenders/${t.slug}`, date: t.date }));
   const vacancies = newestFirst(getVacancies()).slice(0, 4).map((v) => ({ title: tidy(v.title), href: `/website/vacancies/${v.slug}`, date: v.date }));
 
   return (

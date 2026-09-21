@@ -16,6 +16,7 @@
 import type { BrandGlyphName } from "@mosje/design-system";
 import type { ContentSection } from "@/types/website/content";
 import { withAssetBasePath } from "@/lib/website/content";
+import { applyCorrections } from "@/lib/website-next/content-corrections";
 import { trimRedundantOpening } from "@/lib/website/organisation-prose";
 
 export const stripTags = (html: string) =>
@@ -138,7 +139,7 @@ export const sameLabel = (a: string, b: string) =>
  * focusable scroll region (MOB-03, ACC-16); external links marked (ACC-17).
  */
 export function cleanHtml(raw: string, opts: { headingLevel: 2 | 3; label: string }): string {
-  let html = withAssetBasePath(trimRedundantOpening(raw));
+  let html = applyCorrections(withAssetBasePath(trimRedundantOpening(raw)));
   html = html.replace(/<a(?![^>]*\shref=)[^>]*>([\s\S]*?)<\/a>/gi, "$1");
   html = html.replace(/<a\b[^>]*>((?:(?!<img)[\s\S])*?)<\/a>/gi, (m, inner: string) =>
     stripTags(inner) === "" ? "" : m,
@@ -299,4 +300,139 @@ export function typeOfHref(href: string): string {
   if (ext === "xlsx" || ext === "xls") return "Spreadsheet";
   if (ext === "docx" || ext === "doc") return "Word document";
   return "Web page";
+}
+
+/* ── Figures ───────────────────────────────────────────────────────────────── */
+
+const INDIAN = new Intl.NumberFormat("en-IN");
+
+/**
+ * A figure the record stores as a string, re-grouped the Indian way (issue: the
+ * NMBA counters printed "345,703,321" beside "28,29,661+"). Only a bare count —
+ * digits and grouping commas, an optional trailing "+" — is touched; "23 crore+",
+ * "755+", a date or a percentage is returned exactly as written.
+ */
+export function formatFigure(value: string): string {
+  const m = value.trim().match(/^(\d{1,3}(?:,\d{2,3})+|\d{5,})(\+?)$/);
+  if (!m) return value;
+  const n = Number(m[1]!.replace(/,/g, ""));
+  return Number.isSafeInteger(n) ? `${INDIAN.format(n)}${m[2]}` : value;
+}
+
+/* ── Card grids ────────────────────────────────────────────────────────────── */
+
+/**
+ * The most columns a grid of `n` cards may take so its last row is not left
+ * holding one or two orphans: 6 cards in a four-column row became 4 + 2, and
+ * are now 3 + 3. The CSS still wraps below this on a narrower screen; this only
+ * caps it. Ties go to the wider grid.
+ */
+export function balancedColumns(n: number, max: number): number {
+  if (n <= max) return Math.max(n, 2);
+  let best = max;
+  let bestGap = Infinity;
+  for (let c = max; c >= 2; c--) {
+    const gap = Math.ceil(n / c) * c - n;
+    if (gap < bestGap) {
+      best = c;
+      bestGap = gap;
+    }
+    if (gap === 0) break;
+  }
+  return best;
+}
+
+/* ── Copy ──────────────────────────────────────────────────────────────────── */
+
+/**
+ * A record's description without the sentences that narrate the page instead
+ * of describing the organisation (`ui-restraint-and-copy.md` §1): "Files open on
+ * the Department's own site, so a reader always gets the current version." The
+ * record is shared with the archived site, so it is filtered here, not edited.
+ */
+export function withoutNarration(text?: string): string | undefined {
+  if (!text) return text;
+  const kept = text
+    .split(/(?<=\.)\s+/)
+    .filter((s) => !/\b(files open|a reader|this page|on this site|below|click)\b/i.test(s));
+  return kept.join(" ").trim() || undefined;
+}
+
+/* ── Frequently asked questions ────────────────────────────────────────────── */
+
+export interface FaqItem {
+  question: string;
+  /** Answer markup, wrappers removed; run it through `cleanHtml` before rendering. */
+  answerHtml: string;
+}
+
+export interface FaqGroup {
+  id: string;
+  title: string;
+  items: FaqItem[];
+}
+
+/** Acronyms the NMBA FAQ headings set in capitals, kept so when the heading is title-cased. */
+const FAQ_ACRONYMS = new Set(["SUD", "NPS"]);
+
+function faqGroupTitle(raw: string): string {
+  const t = raw.replace(/^\s*frequently asked questions\s*:\s*/i, "").replace(/\s+/g, " ").trim();
+  return t
+    .split(" ")
+    .map((w, i) => {
+      const bare = w.replace(/[^A-Za-z]/g, "");
+      if (FAQ_ACRONYMS.has(bare)) return w;
+      const lower = w.toLowerCase();
+      if (i > 0 && SMALL.has(lower)) return lower;
+      return lower.replace(/[a-z]/, (ch) => ch.toUpperCase());
+    })
+    .join(" ");
+}
+
+/**
+ * The questions and answers out of the source's accordion widget. The source
+ * writes each pair as `<span><div>Question</div></span>` + an icon husk + the
+ * answer in nested divs, so the answer is everything up to the next question.
+ */
+export function extractFaqs(html: string): FaqItem[] {
+  const re = /<span>\s*<div>([\s\S]*?)<\/div>\s*<\/span>\s*<span>\s*(?:<span>\s*<i><\/i>\s*<\/span>\s*)+<\/span>/g;
+  const marks = [...html.matchAll(re)];
+  return marks
+    .map((m, i) => {
+      const start = m.index! + m[0].length;
+      const end = i + 1 < marks.length ? marks[i + 1]!.index! : html.length;
+      const answerHtml = html
+        .slice(start, end)
+        .replace(/<\/?div[^>]*>/gi, "")
+        .trim();
+      return { question: stripTags(m[1]!), answerHtml };
+    })
+    .filter((f) => f.question && stripTags(f.answerHtml));
+}
+
+/**
+ * Every FAQ section of a page as a group, or null when the page is not an FAQ
+ * page. An answer that repeats one given earlier on the page is dropped with its
+ * question. On the NMBA FAQs (General) the ICD-10 diagnostic criteria answer
+ * "How is Dependence or Addiction diagnosed?", and the source then lists "What
+ * are the different kinds of drugs/ substances of abuse?" TWICE: first with a
+ * word-for-word copy of the ICD-10 answer, then with its real answer. The copy
+ * is the one dropped; the question keeps its real answer.
+ */
+export function faqGroups(sections: ContentSection[]): FaqGroup[] | null {
+  if (sections.length === 0 || !sections.every((s) => /^\s*frequently asked questions/i.test(s.heading ?? ""))) return null;
+  const seen = new Set<string>();
+  const groups: FaqGroup[] = [];
+  for (const s of sections) {
+    const items = extractFaqs(s.html).filter((f) => {
+      const key = stripTags(f.answerHtml).toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+    if (items.length === 0) continue;
+    const title = faqGroupTitle(s.heading ?? "");
+    groups.push({ id: `faq-${slugify(title)}`, title, items });
+  }
+  return groups.length > 0 ? groups : null;
 }

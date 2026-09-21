@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ContentPage } from "@/components/website-next/templates/ContentPage";
 import { Collapsible, TableWrap } from "@/components/website-next/templates/content/TableWrap";
 import { localiseDocumentUrl } from "@/lib/website/sample-documents";
+import { getDepartmentSecretary } from "@/data/website";
 import { ABOUT_TABLES, type RefTable } from "./reference-tables";
 
 const TITLE = "About the Department";
@@ -40,11 +41,17 @@ export const metadata: Metadata = {
  * writes its name). The Allocation of Business Rules note, printed before the list it
  * refers to ("(i) to (iv) above"), is printed after it.
  *
- * NOT PUBLISHED HERE, DELIBERATELY: the name of the Secretary. dosje.gov.in's Overview
- * names Shri Sudhansh Pant; the site's own organisation text and officials registry
- * name Shri Amit Yadav, whose tenure the Former Secretaries table closes on 30.11.2025.
- * The Who's Who page is the single place officials are named.
+ * THE SECRETARY is named as the live page names him ("Shri Sudhansh Pant … is the
+ * Secretary of Department of Social Justice & Empowerment", dosje.gov.in/about-us/,
+ * read 22 Sep 2026; its Former Secretaries table closes Shri Amit Yadav's tenure on
+ * 30.11.2025). The name is read from the officials register (`getDepartmentSecretary()`
+ * in data/website/officials.ts), the one source Who's Who reads too, so the two pages
+ * cannot name different Secretaries. The live sentence's service and batch "(IAS,
+ * RJ:1991)" and its Additional Secretary and DEPwD Secretary are not reproduced: the
+ * register holds neither officer, and a name typed here would be a second source.
  */
+
+const SECRETARY = getDepartmentSecretary();
 
 const TARGET_GROUPS = [
   "Scheduled Castes",
@@ -442,8 +449,9 @@ export default function Page() {
       </p>
       <p>
         There are two departments viz. Department of Social Justice and Empowerment and Department of Empowerment of
-        Persons with Disabilities under the Ministry of Social Justice and Empowerment. The officers of the Department
-        are listed in <Link href="/website/whos-who">Who’s Who</Link>.
+        Persons with Disabilities under the Ministry of Social Justice and Empowerment. {SECRETARY.name} is the Secretary
+        of the Department of Social Justice &amp; Empowerment. The officers of the Department are listed in{" "}
+        <Link href="/website/whos-who">Who’s Who</Link>.
       </p>
       <Collapsible title={byId("bureau-allocation").title} meta="Allocation of work in the Department of Social Justice and Empowerment">
         <RefTableView table={byId("bureau-allocation")} />

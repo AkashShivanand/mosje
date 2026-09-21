@@ -77,7 +77,7 @@ const sections: PersonaSection[] = [
         icon: "fact_check",
       },
       {
-        title: "Grants-in-Aid to NGOs — FAQs",
+        title: "Grants-in-Aid to NGOs: FAQs",
         href: "/website/grants-in-aid-to-ngos-faqs",
         icon: "help",
       },
@@ -98,7 +98,6 @@ export default function ForGovernmentOfficialPage() {
       title="For Government Officials"
       breadcrumb={[{ label: "Schemes & Services" }, { label: "For Government Officials" }]}
       description="Orders, references, forms and grant-in-aid procedures of the Department."
-      lastUpdated="06 Jun 2026"
       sections={sections}
     />
   );

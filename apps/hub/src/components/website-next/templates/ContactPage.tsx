@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Icon, SectionTitle } from "@mosje/design-system";
 import { PageLayout } from "@/components/website-next/layout/PageLayout";
 import type { PageHeaderProps } from "@/components/website-next/layout/PageHeader";
-import { EmailLinks, PhoneNumbers, officialEmails, phoneParts } from "./people-format";
+import { EmailLinks, PhoneFacts, officialEmails, phoneParts } from "./people-format";
 import "./people.css";
 
 export interface ContactOfficer {
@@ -32,13 +32,18 @@ export interface ContactPageProps extends PageHeaderProps {
     email?: string;
     /** Who the telephone and email reach, where it is not the office as a whole. */
     phoneLabel?: string;
+    /** That person's record on this site, `/website/official/<slug>`. */
+    contactSlug?: string;
   };
-  /** A map embed searched by the office's address — never a pin placed by hand. */
-  mapSrc?: string;
-  /** A link that opens the address in a map application. */
+  /**
+   * A link that opens the address in a map application. There is deliberately no
+   * embed: a third-party map frame loads before cookie consent, and drew an empty box.
+   */
   mapHref?: string;
-  /** Named officers the Department publishes as contacts. */
+  /** Further offices or officers, shown after the Department's own contact. */
   officers?: ContactOfficer[];
+  /** The heading over `officers`. */
+  officersTitle?: string;
   /** National helplines, shown first under Call. */
   helplines?: ContactHelpline[];
   /** Accepted for the classic props; the redesign links the Feedback page instead of embedding a form. */
@@ -60,9 +65,9 @@ export interface ContactPageProps extends PageHeaderProps {
  */
 export function ContactPage({
   office,
-  mapSrc,
   mapHref,
   officers = [],
+  officersTitle = "Officers to Contact",
   helplines = [],
   showForm = true,
   ...header
@@ -84,6 +89,24 @@ export function ContactPage({
                 <SectionTitle headingId="call-title" title="Call" />
               </div>
               <ul className="wn-contact__grid">
+                {hasOfficePhone && (
+                  <li>
+                    <div className="wn-contact__call">
+                      <span className="wn-contact__call-name">{office.name}</span>
+                      {office.phoneLabel && <span className="wn-contact__call-sub">{office.phoneLabel}</span>}
+                      <span className="wn-contact__numbers">
+                        {phoneParts(office.phone)
+                          .filter((p) => p.tel)
+                          .map((p) => (
+                            <a key={p.tel} href={`tel:${p.tel}`} className="wn-contact__number">
+                              <Icon name="call" size={20} aria-hidden />
+                              <span className="wn-contact__u">{p.text.trim()}</span>
+                            </a>
+                          ))}
+                      </span>
+                    </div>
+                  </li>
+                )}
                 {helplines.map((h) => (
                   <li key={h.number}>
                     <div className="wn-contact__call">
@@ -102,23 +125,6 @@ export function ContactPage({
                     </div>
                   </li>
                 ))}
-                {hasOfficePhone && (
-                  <li>
-                    <div className="wn-contact__call">
-                      <span className="wn-contact__call-name">{office.phoneLabel ?? office.name}</span>
-                      <span className="wn-contact__numbers">
-                        {phoneParts(office.phone)
-                          .filter((p) => p.tel)
-                          .map((p) => (
-                            <a key={p.tel} href={`tel:${p.tel}`} className="wn-contact__number">
-                              <Icon name="call" size={20} aria-hidden />
-                              <span className="wn-contact__u">{p.text.trim()}</span>
-                            </a>
-                          ))}
-                      </span>
-                    </div>
-                  </li>
-                )}
               </ul>
             </section>
           )}
@@ -136,7 +142,17 @@ export function ContactPage({
                 <li>
                   <div className="wn-contact__card">
                     <h3 className="wn-contact__card-title">Email</h3>
-                    {office.phoneLabel && <p className="wn-contact__card-text">{office.phoneLabel}</p>}
+                    {office.phoneLabel && (
+                      <p className="wn-contact__card-text">
+                        {office.contactSlug ? (
+                          <Link href={`/website/official/${office.contactSlug}`} className="wn-people-link">
+                            {office.phoneLabel}
+                          </Link>
+                        ) : (
+                          office.phoneLabel
+                        )}
+                      </p>
+                    )}
                     <EmailLinks value={office.email} />
                   </div>
                 </li>
@@ -193,35 +209,27 @@ export function ContactPage({
               </span>
               <SectionTitle headingId="visit-title" title="Visit" />
             </div>
-            <div className="wn-contact__visit">
-              <div className="wn-contact__card">
-                <h3 className="wn-contact__card-title">{office.name}</h3>
-                <address className="wn-contact__address">{office.address}</address>
-                {mapHref && (
-                  <a href={mapHref} target="_blank" rel="noopener noreferrer" className="wn-contact__action">
-                    <span className="wn-contact__u">Open in Google Maps</span>
-                    <Icon name="open_in_new" size={20} aria-hidden />
-                    <span className="sr-only">(opens in a new window)</span>
-                  </a>
-                )}
-              </div>
-              {mapSrc && (
-                <div className="wn-contact__map">
-                  <iframe
-                    src={mapSrc}
-                    title={`Map of ${office.address}`}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  />
+            <ul className="wn-contact__grid">
+              <li>
+                <div className="wn-contact__card">
+                  <h3 className="wn-contact__card-title">{office.name}</h3>
+                  <address className="wn-contact__address">{office.address}</address>
+                  {mapHref && (
+                    <a href={mapHref} target="_blank" rel="noopener noreferrer" className="wn-contact__action">
+                      <span className="wn-contact__u">Open in Google Maps</span>
+                      <Icon name="open_in_new" size={20} aria-hidden />
+                      <span className="sr-only">(opens in a new window)</span>
+                    </a>
+                  )}
                 </div>
-              )}
-            </div>
+              </li>
+            </ul>
           </section>
 
           {/* ── Officers ─────────────────────────────────────────────────── */}
           {officers.length > 0 && (
             <section id="officers" aria-labelledby="officers-title">
-              <SectionTitle headingId="officers-title" title="Officers to Contact" />
+              <SectionTitle headingId="officers-title" title={officersTitle} />
               <ul className="wn-contact__grid">
                 {officers.map((o) => (
                   <li key={`${o.role}-${o.name}`}>
@@ -237,14 +245,7 @@ export function ContactPage({
                       </h3>
                       {o.name && <p className="wn-contact__card-text">{o.role}</p>}
                       <dl className="wn-people-facts">
-                        {o.phone && (
-                          <div>
-                            <dt>Telephone</dt>
-                            <dd>
-                              <PhoneNumbers value={o.phone} />
-                            </dd>
-                          </div>
-                        )}
+                        <PhoneFacts value={o.phone} />
                         {officialEmails(o.email).length > 0 && (
                           <div>
                             <dt>Email</dt>

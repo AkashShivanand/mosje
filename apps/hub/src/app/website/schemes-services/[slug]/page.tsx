@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { LegacySchemeDetail, SchemeDetail } from "@/components/website-next/templates/SchemeDetail";
 import { SCHEMES } from "@/lib/website-next/schemes";
-import { getMasterScheme } from "@/lib/website-next/scheme-view";
-import { getSchemes, getScheme, withAssetBasePath, getContentSyncedDate, routeSlug } from "@/lib/website/content";
+import { displayName, getMasterScheme } from "@/lib/website-next/scheme-view";
+import { legacyRedirect, legacySections, legacyTitle } from "@/lib/website-next/legacy-schemes";
+import { getSchemes, getScheme, getContentSyncedDate, routeSlug } from "@/lib/website/content";
 import { socialCard } from "@/lib/seo/social";
 
 /**
  * Every scheme in the Department's scheme master has a page here, at its master
  * id. Every listing carried over from the old site keeps its URL too, so no link
- * into the site 404s; where a master id and an old slug coincide (pm-daksh), the
- * master record wins.
+ * into the site 404s (a listing that is a master scheme, or has nothing on it,
+ * answers with a permanent redirect); where a master id and an old slug coincide
+ * (pm-daksh), the master record wins.
  */
 export function generateStaticParams() {
   const ids = new Set(SCHEMES.map((s) => s.id));
@@ -26,37 +28,24 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const master = getMasterScheme(routeSlug(slug));
   if (master) {
-    const title = `${master.name} | DoSJE`;
+    const title = `${displayName(master)} | DoSJE`;
     return { title, description: master.provides, ...socialCard({ title, description: master.provides, url: `/website/schemes-services/${slug}` }) };
   }
   const scheme = getScheme(slug);
   if (!scheme) return { title: "Scheme | DoSJE" };
-  const title = `${scheme.title.replace(/\s+/g, " ").trim()} | DoSJE`;
-  const first = scheme.sections.find((s) => s.html)?.html;
+  const title = `${legacyTitle(scheme.title)} | DoSJE`;
+  const first = legacySections(scheme).find((s) => plain(s.html))?.html;
   const description = first ? plain(first).slice(0, 160) : undefined;
   return { title, description, ...socialCard({ title, description, url: `/website/schemes-services/${slug}` }) };
 }
 
 /**
- * Ingested HTML, made fit for the redesign's content template:
- * - its own <h1> becomes an <h2>; the page header owns the only one (ACC-03);
- * - the old site's "Active / Archived" tab labels, which arrive as a bare list
- *   with no tabs behind them, are removed;
- * - a document table that says only "No documents found." is removed (the
- *   populated one beside it stays);
- * - every remaining table scrolls inside a labelled region, so a wide table
- *   scrolls on a phone instead of the page (MOB-03, ACC-16).
+ * A listing carried over from the old site takes one of three paths, decided in
+ * `legacy-schemes.ts` (the search index reads the same decision):
+ * - it IS a master scheme (legacy-scheme-map.generated.ts) → 308 to that page;
+ * - it has no meaningful body → 308 to Find a Scheme;
+ * - otherwise it renders, as the site published it, in the content template.
  */
-function tidyLegacyHtml(html: string): string {
-  return html
-    .replace(/<h1(\s|>)/gi, "<h2$1")
-    .replace(/<\/h1>/gi, "</h2>")
-    .replace(/<ul>\s*<li>\s*Active\s*<\/li>\s*<li>\s*Archived\s*<\/li>\s*<\/ul>/gi, "")
-    .replace(/<table>(?:(?!<\/table>)[\s\S])*No documents found\.(?:(?!<\/table>)[\s\S])*<\/table>/gi, "")
-    .replace(/<table/gi, '<div class="wn-table-wrap" role="region" aria-label="Table" tabindex="0"><table')
-    .replace(/<\/table>/gi, "</table></div>");
-}
-
 export default async function SchemePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const master = getMasterScheme(routeSlug(slug));
@@ -64,13 +53,12 @@ export default async function SchemePage({ params }: { params: Promise<{ slug: s
 
   const scheme = getScheme(slug);
   if (!scheme) notFound();
+  const target = legacyRedirect(scheme);
+  if (target) permanentRedirect(target);
   return (
     <LegacySchemeDetail
-      title={scheme.title.replace(/\s+/g, " ").trim()}
-      sections={scheme.sections
-        .map((s) => ({ heading: s.heading ?? undefined, html: tidyLegacyHtml(withAssetBasePath(s.html ?? "")) }))
-        .filter((s) => plain(s.html) || /<(img|table)/i.test(s.html))}
-      sourceUrl={scheme.sourceUrl}
+      title={legacyTitle(scheme.title)}
+      sections={legacySections(scheme)}
       website={scheme.website}
       lastUpdated={getContentSyncedDate()}
     />

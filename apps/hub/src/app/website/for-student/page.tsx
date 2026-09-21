@@ -44,7 +44,7 @@ const sections: PersonaSection[] = [
     links: [
       {
         title: "National Scholarship Portal",
-        description: "Scholarships from pre-matric to post-matric, in one place.",
+        description: "The Government of India portal for scholarship applications.",
         href: "https://scholarships.gov.in",
         icon: "language",
         external: true,

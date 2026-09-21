@@ -32,7 +32,7 @@ export default function ContactUsPage() {
   return (
     <ContactPage
       title={TITLE}
-      breadcrumb={[{ label: "Connect" }, { label: TITLE }]}
+      breadcrumb={[{ label: "Contact" }, { label: TITLE }]}
       description={DESCRIPTION}
       lastUpdated={getContentSyncedDate()}
       {...DEPARTMENT_CONTACT}

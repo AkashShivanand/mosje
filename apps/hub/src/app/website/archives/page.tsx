@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Icon, SectionTitle, buttonClasses } from "@mosje/design-system";
 import { PageLayout } from "@/components/website-next/layout/PageLayout";
 import { RecordTable, type RecordColumn } from "@/components/website-next/ui/RecordTable";
-import { archivedOn, isArchived, tidyTitle } from "@/components/website-next/ui/records";
+import { archivedOn, dedupeNotices, displayNoticeTitle, isArchived, tidyTitle } from "@/components/website-next/ui/records";
 import { getContentSyncedDate, getTenders, getVacancies } from "@/lib/website/content";
 import { socialCard } from "@/lib/seo/social";
 import "@/components/website-next/templates/records.css";
@@ -37,11 +37,12 @@ const columns: RecordColumn[] = [
 
 type FileRow = { slug: string; title: string; date?: string; fileUrl?: string };
 
-const toRows = (items: FileRow[], base: string) =>
-  items
+/* Tender titles: listed once, and a title cut by the ingest ends in an ellipsis (see /tenders). */
+const toRows = (items: FileRow[], base: string, notices = false) =>
+  (notices ? dedupeNotices(items) : items)
     .filter((i) => isArchived(i.date))
     .map((i) => ({
-      title: tidyTitle(i.title),
+      title: notices ? displayNoticeTitle(i.title) : tidyTitle(i.title),
       href: `${base}/${i.slug}`,
       published: i.date,
       archived: archivedOn(i.date),
@@ -50,7 +51,7 @@ const toRows = (items: FileRow[], base: string) =>
     }));
 
 export default function ArchivesPage() {
-  const tenders = toRows(getTenders(), "/website/tenders");
+  const tenders = toRows(getTenders(), "/website/tenders", true);
   const vacancies = toRows(getVacancies(), "/website/vacancies");
 
   return (

@@ -19,7 +19,7 @@ export function Audiences() {
         <SectionTitle
           headingId="audiences-title"
           title="Find Schemes for You"
-          description="Choose the group that describes you to see the schemes that name it."
+          description="Schemes of the Department for each group it serves."
         />
         <ul className="wn-audiences">
           {PERSONAS.map((p) => {

@@ -5,21 +5,20 @@ import { getOfficial } from "@/lib/website/content";
  * The Department's contact details, read from its own register — shared by
  * Contact Us and MoSJE Contact so the two pages cannot drift apart.
  *
- * - ADDRESS: the one the footer, MoSJE Contact and every officer's record in the
- *   register give (8th Floor, GPOA-3, Netaji Nagar, New Delhi-110023).
- * - TELEPHONE AND EMAIL: the register publishes no switchboard and no general
- *   departmental mailbox. The numbers and address it does publish for the whole
- *   Department's front office are those of the Office of the Union Minister
- *   (`dr-virendra-kumar-hmsje`: 011-24105009, 24105011, 26110251 ·
- *   min-sje[at]nic[dot]in), and they are labelled as that office, not as a
- *   switchboard. A switchboard number and office hours are content gaps for the
- *   Department to supply.
- * - OFFICER: the Department's own contact page names one officer, Ms. Kajal
- *   Singh, Director (`kajal-singh`).
+ * - LEAD CONTACT: the Department's own Contact Us page (dosje.gov.in/contact-us/,
+ *   read 22 Sep 2026) names one contact, "Ms. Kajal Singh, Director, 8th Floor,
+ *   GPOA-3, Netaji Nagar, New Delhi-110023". Her telephone and email are her
+ *   register record (`kajal-singh`: 011-26871001 · dir-src-dosje[at]gov[dot]in).
+ *   The register publishes no switchboard and no general mailbox; both, and office
+ *   hours, are content gaps for the Department to supply.
+ * - OFFICE OF THE UNION MINISTER: this page once led with it, which sent a citizen
+ *   to the Minister's office for a question the Department answers. It stays,
+ *   further down and labelled as that office (`dr-virendra-kumar-hmsje`).
  * - HELPLINES: the three national helplines on the home page, each from the
  *   Department's scheme master: 14446 AR §3.15; 14567 AR §3.14; 14566 PIB
  *   1780979 and the NHAA organisation page.
- * - MAP: searched by the address, never a hand-placed pin (issue CON-08).
+ * - MAP: a link that opens the address in Google Maps, not an embed. The embed
+ *   drew an empty grey box and loaded a third-party frame before cookie consent.
  */
 const ADDRESS = "8th Floor, GPOA-3, Netaji Nagar, New Delhi-110023";
 const MAP_QUERY = "GPOA-3, Netaji Nagar, New Delhi 110023";
@@ -27,25 +26,30 @@ const MAP_QUERY = "GPOA-3, Netaji Nagar, New Delhi 110023";
 const ministerOffice = getOfficial("dr-virendra-kumar-hmsje");
 const director = getOfficial("kajal-singh");
 
-export const DEPARTMENT_CONTACT: Pick<ContactPageProps, "office" | "mapSrc" | "mapHref" | "officers" | "helplines"> = {
+export const DEPARTMENT_CONTACT: Pick<
+  ContactPageProps,
+  "office" | "mapHref" | "officers" | "officersTitle" | "helplines"
+> = {
   office: {
     name: "Department of Social Justice & Empowerment",
     address: ADDRESS,
-    phone: ministerOffice?.phoneOffice,
-    email: ministerOffice?.email,
-    phoneLabel: "Office of the Union Minister of Social Justice and Empowerment",
+    phone: director?.phoneOffice,
+    email: director?.email,
+    // As dosje.gov.in/contact-us/ writes it; the register's title omits the "Ms.".
+    phoneLabel: director ? "Ms. Kajal Singh, Director" : undefined,
+    contactSlug: director?.slug,
   },
-  mapSrc: `https://www.google.com/maps?q=${encodeURIComponent(MAP_QUERY)}&output=embed`,
   mapHref: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(MAP_QUERY)}`,
-  officers: director
+  officersTitle: "Office of the Union Minister",
+  officers: ministerOffice
     ? [
         {
-          role: "Director",
-          name: director.title,
-          slug: director.slug,
-          phone: director.phoneOffice,
-          email: director.email,
-          address: director.address,
+          role: ministerOffice.designation ?? "Union Minister of Social Justice and Empowerment",
+          name: "Dr. Virendra Kumar",
+          slug: ministerOffice.slug,
+          phone: ministerOffice.phoneOffice,
+          email: ministerOffice.email,
+          address: ministerOffice.address,
         },
       ]
     : [],

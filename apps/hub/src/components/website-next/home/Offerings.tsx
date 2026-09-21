@@ -14,7 +14,6 @@ export function Offerings() {
         <SectionTitle
           headingId="offerings-title"
           title="What the Department Offers"
-          description="Support is grouped by what you receive, whoever you are."
         />
         <ul className="wn-offerings">
           {OFFERINGS.map((o) => (

@@ -4,7 +4,7 @@ import { useEffect, useId, useMemo, useState } from "react";
 import Link from "next/link";
 import { Button, Icon, Search, Select } from "@mosje/design-system";
 import type { Official } from "@/data/website";
-import { EmailLinks, PhoneNumbers, Portrait, officialEmails, tidyAddress } from "./people-format";
+import { EmailLinks, PhoneFacts, Portrait, officialEmails, phoneGroups, publishedDesignation, tidyAddress } from "./people-format";
 
 export interface WhosWhoTeam {
   id: string;
@@ -60,7 +60,7 @@ export function WhosWhoBrowser({ teams }: { teams: WhosWhoTeam[] }) {
         .map((t) => ({
           ...t,
           officials: q
-            ? t.officials.filter((o) => o.name.toLowerCase().includes(q) || o.designation.toLowerCase().includes(q))
+            ? t.officials.filter((o) => o.name.toLowerCase().includes(q) || publishedDesignation(o.designation).toLowerCase().includes(q))
             : t.officials,
         }))
         .filter((t) => t.officials.length > 0),
@@ -168,7 +168,7 @@ export function WhosWhoBrowser({ teams }: { teams: WhosWhoTeam[] }) {
                   <ul className="wn-who__grid">
                     {t.officials.map((o) => (
                       <li key={`${o.name}-${o.designation}`}>
-                        <OfficialCard official={o} />
+                        <OfficialCard official={o} chairEmails={chairEmails(t.officials)} />
                       </li>
                     ))}
                   </ul>
@@ -182,29 +182,44 @@ export function WhosWhoBrowser({ teams }: { teams: WhosWhoTeam[] }) {
   );
 }
 
-function OfficialCard({ official: o }: { official: Official }) {
+const CHAIR = /^(hon'ble\s+)?chair(person|man)\b/i;
+
+/** The addresses a body publishes for its Chairperson, from the Chairperson's own card. */
+function chairEmails(officials: Official[]): Set<string> {
+  return new Set(
+    officials
+      .filter((o) => CHAIR.test(o.designation.trim()))
+      .flatMap((o) => officialEmails(o.email).map((e) => e.toLowerCase())),
+  );
+}
+
+function OfficialCard({ official: o, chairEmails: chair }: { official: Official; chairEmails: Set<string> }) {
   const address = tidyAddress(o.address, o.phone);
-  const hasEmail = officialEmails(o.email).length > 0;
-  const hasFacts = Boolean(o.room || o.intercom || o.phone || hasEmail || address);
+  const designation = publishedDesignation(o.designation);
+  /*
+   * An officer who is not the Chairperson is never shown the Chairperson's address: the
+   * feed files NCSC Member Shri Vaddepalli Ramchander under chairman-ncsc@nic.in, which
+   * would send a citizen's letter for a Member to the Chairperson. No address is shown
+   * rather than a wrong one; the gap is reported to the Department.
+   */
+  const emails = CHAIR.test(o.designation.trim())
+    ? officialEmails(o.email)
+    : officialEmails(o.email).filter((e) => !chair.has(e.toLowerCase()));
+  const email = emails.join(", ");
+  const hasEmail = emails.length > 0;
+  const hasFacts = Boolean(o.room || o.intercom || phoneGroups(o.phone).length > 0 || hasEmail || address);
   return (
     <article className="wn-who__card">
-      <Portrait src={o.photo} alt={`${o.name}, ${o.designation}`} />
+      <Portrait src={o.photo} alt={`${o.name}, ${designation}`} />
       <div className="wn-who__who">
         <h3 className="wn-who__name">
           {o.slug ? <Link href={`/website/official/${o.slug}`}>{o.name}</Link> : o.name}
         </h3>
-        <p className="wn-who__role">{o.designation}</p>
+        <p className="wn-who__role">{designation}</p>
       </div>
       {hasFacts && (
         <dl className="wn-people-facts">
-          {o.phone && (
-            <div>
-              <dt>Telephone</dt>
-              <dd>
-                <PhoneNumbers value={o.phone} />
-              </dd>
-            </div>
-          )}
+          <PhoneFacts value={o.phone} />
           {o.intercom && (
             <div>
               <dt>Intercom</dt>
@@ -215,7 +230,7 @@ function OfficialCard({ official: o }: { official: Official }) {
             <div>
               <dt>Email</dt>
               <dd>
-                <EmailLinks value={o.email} />
+                <EmailLinks value={email} />
               </dd>
             </div>
           )}

@@ -8,12 +8,13 @@ import {
 } from "@/components/website-next/templates/OrganisationDetail";
 import {
   abbreviationOf,
+  faqGroups,
   firstSentence,
   tidyTitle,
 } from "@/components/website-next/templates/organisation-content";
 import type { PageHeaderProps } from "@/components/website-next/layout/PageHeader";
 /*
- * DATA-VIZ ONLY from the classic tree. These five are the feeds' own dashboards
+ * DATA-VIZ ONLY from the classic tree. These four are the feeds' own dashboards
  * and maps (live-first, mirrored-snapshot fallback, provenance chips); rebuilding
  * them is out of scope for the organisation template, so the new layout wraps
  * them in its own section. No classic LAYOUT component is imported here.
@@ -22,8 +23,8 @@ import { AdarshGramDashboard } from "@/components/website/AdarshGramDashboard";
 import { GiaDashboard } from "@/components/website/GiaDashboard";
 import { HostelDashboard } from "@/components/website/HostelDashboard";
 import { PmajayWorksMap } from "@/components/website/PmajayWorksMap";
-import { DeAddictionMap } from "@/components/website/nmba/DeAddictionMap";
 import "@/components/website/scheme-dashboard.css";
+import { CentreLocator } from "@/components/website-next/maps/CentreLocator";
 import { getAdarshGramCounts } from "@/lib/website/adarsh-gram-api";
 import {
   getGiaData,
@@ -195,8 +196,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const key = slug.join("/");
-  const org = getOrganisation(key);
-  if (!org) return { title: "Organisation — DoSJE" };
+  const found = getOrganisation(key);
+  if (!found) return { title: "Organisation — DoSJE" };
+  const org = withTitleFix(found);
   const firstText = org.sections.find((s) => s.html)?.html.replace(/<[^>]+>/g, "").slice(0, 160);
   const title = `${tidyTitle(org.title)} — DoSJE`;
   // The organisation's own banner where it has one: a link to NCSK should show
@@ -214,6 +216,21 @@ export async function generateMetadata({
   };
 }
 
+/*
+ * Page titles the ingest captured wrongly, corrected to the organisation's own
+ * name for the page. Only where the source is unambiguous:
+ *   volunteer-corner — ingested as "Corner"; the page's own heading on
+ *     dosje.gov.in is "Volunteer Corner", as is the NMBA menu entry.
+ *   pmu-corners — ingested as "PMU Corner’s" (a stray apostrophe); the NMBA
+ *     menu entry is "PMU Corner".
+ */
+const TITLE_FIX: Record<string, string> = {
+  "nasha-mukt-bharat-abhiyaan/volunteer-corner": "Volunteer Corner",
+  "nasha-mukt-bharat-abhiyaan/pmu-corners": "PMU Corner",
+};
+const withTitleFix = <T extends { slug: string; title: string }>(r: T): T =>
+  TITLE_FIX[r.slug] ? { ...r, title: TITLE_FIX[r.slug]! } : r;
+
 /** The registry's grouping, in the words the home page uses for it. */
 const CATEGORY_LABEL = {
   commissions: "Commissions",
@@ -229,11 +246,12 @@ export default async function OrganisationDetailPage({
 }) {
   const { slug } = await params;
   const key = slug.join("/");
-  const org = getOrganisation(key);
-  if (!org) notFound();
+  const found = getOrganisation(key);
+  if (!found) notFound();
+  const org = withTitleFix(found);
 
   const rootSlug = slug[0] ?? "";
-  const allOrgs = getOrganisations();
+  const allOrgs = getOrganisations().map(withTitleFix);
   const rootOrg = allOrgs.find((o) => o.slug === rootSlug);
   const relatedPages = allOrgs.filter((o) => o.slug === rootSlug || o.slug.startsWith(`${rootSlug}/`));
   const detail = getOrganisationDetail(key);
@@ -325,7 +343,20 @@ export default async function OrganisationDetailPage({
     badge: isSubPage ? abbr ?? rootTitle : registry ? CATEGORY_LABEL[registry.category] : undefined,
     description: isSubPage ? undefined : firstSentence(detail?.lead ?? intro),
     lastUpdated: getContentSyncedDate(),
-    logoSrc: detail?.logo ?? registry?.logoSrc ?? "/website/images/National-Emblem-logo.svg",
+    /*
+     * The organisation's own mark, never the National Emblem standing in for a
+     * missing one: the Emblem is the Government's, not the organisation's. With
+     * no mark, a neutral tile carries the abbreviation, or an icon where the
+     * record has none (E-Anudaan, List of Channelizing Agencies, Ministry and
+     * Scheme wise Financial Summary, Success Stories at the time of writing).
+     */
+    logoSrc: detail?.logo ?? registry?.logoSrc,
+    logoAside:
+      detail?.logo ?? registry?.logoSrc ? undefined : (
+        <span className="og-mark" aria-hidden="true">
+          {abbr && abbr.length <= 8 ? abbr : <Icon name="account_balance" size={32} />}
+        </span>
+      ),
     level: isSubPage ? "inner" : "landing",
     /*
      * No banner photograph. LAY-14 asks for a COMPACT header, and the banners the
@@ -364,6 +395,7 @@ export default async function OrganisationDetailPage({
         siblings={siblings}
         dashboard={dashboard}
         isContactPage={isContactPage}
+        faqs={faqGroups(org.sections)}
       />
     );
   }
@@ -378,16 +410,16 @@ export default async function OrganisationDetailPage({
     ? { title: "Scheme Coverage", body: <PmajayWorksMap data={reach} /> }
     : key === NMBA
       ? {
-          title: "De-addiction Facilities",
+          title: "De-Addiction Facilities",
           body: (
             <>
               <SectionTitle
                 as={2}
-                title="Geo-Tagged De-addiction Facilities"
+                title="Geo-Tagged De-Addiction Facilities"
                 description="Ministry-supported de-addiction and rehabilitation centres, at the locations recorded in the Abhiyaan’s register."
                 headingId="coverage-title"
               />
-              <DeAddictionMap compact />
+              <CentreLocator />
             </>
           ),
         }

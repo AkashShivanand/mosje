@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { RecordDetail } from "@/components/website-next/templates/RecordDetail";
 import { getContentSyncedDate, getVacancies, getVacancy } from "@/lib/website/content";
-import { facts, humanDate } from "@/lib/website/record-facts";
+import { facts } from "@/lib/website/record-facts";
+import { formatDate } from "@/components/website-next/ui/format";
 import { socialCard } from "@/lib/seo/social";
 import { isArchived } from "@/components/website-next/ui/records";
 
@@ -47,10 +48,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       lastUpdated={getContentSyncedDate()}
       facts={facts([
         { term: "Category", value: vacancy.category },
-        { term: "Published", value: humanDate(vacancy.date) },
+        { term: "Published", value: formatDate(vacancy.date) },
       ])}
       files={vacancy.fileUrl ? [{ label: "Open Vacancy Circular", url: vacancy.fileUrl }] : []}
-      sourceUrl={vacancy.sourceUrl}
     />
   );
 }

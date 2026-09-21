@@ -18,7 +18,7 @@ import {
  * header says what the page is for instead; the divergence is in the redesign report.
  */
 const DESCRIPTION =
-  "The Ministers of the Department of Social Justice & Empowerment and the office-holders of its commissions, corporations and institutions, with their official contact details.";
+  "The Ministers and the Secretary of the Department of Social Justice & Empowerment and the office-holders of its commissions, corporations and institutions, with their official contact details.";
 
 export const metadata: Metadata = {
   title: "Who's Who | Department of Social Justice & Empowerment",

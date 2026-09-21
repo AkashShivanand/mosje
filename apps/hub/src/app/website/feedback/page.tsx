@@ -26,7 +26,7 @@ export const metadata: Metadata = {
  */
 export default function FeedbackPage() {
   return (
-    <PageLayout title={TITLE} breadcrumb={[{ label: "Connect" }, { label: TITLE }]} description={DESCRIPTION}>
+    <PageLayout title={TITLE} breadcrumb={[{ label: "Contact" }, { label: TITLE }]} description={DESCRIPTION}>
       <div className="wn-section wn-section--tight">
         <div className="sa-container wn-split">
           <div className="wn-fb min-w-0">

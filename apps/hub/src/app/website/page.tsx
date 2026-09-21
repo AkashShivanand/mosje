@@ -11,7 +11,8 @@ import { Leadership } from "@/components/website-next/home/Leadership";
 import { Helplines } from "@/components/website-next/home/Helplines";
 
 export const metadata: Metadata = {
-  title: "Department of Social Justice & Empowerment, Government of India",
+  // The tab title starts with the page h1 (issue SEO-06, GIGW).
+  title: "Find Schemes, Services and Support | Department of Social Justice & Empowerment",
   description:
     "Schemes, services and support from the Department of Social Justice & Empowerment for Scheduled Castes, Other Backward Classes, senior citizens, transgender persons and other groups.",
 };

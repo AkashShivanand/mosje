@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { SectionTitle } from "@mosje/design-system";
 import { RecordDetail } from "@/components/website-next/templates/RecordDetail";
 import { getContentSyncedDate, getGalleryItem, getGalleryItems, routeSlug } from "@/lib/website/content";
-import { facts, humanDate } from "@/lib/website/record-facts";
+import { facts } from "@/lib/website/record-facts";
+import { formatDate } from "@/components/website-next/ui/format";
 import { socialCard } from "@/lib/seo/social";
 
 /** 590 gallery records — every one is prerendered. */
@@ -83,11 +84,10 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         { term: "Media", value: item.type },
         { term: "Organisation", value: item.organisation },
         { term: "Category", value: item.categories?.join(", ") },
-        { term: "Published", value: humanDate(item.date) },
+        { term: "Published", value: formatDate(item.date) },
         { term: "Source", value: item.source },
       ])}
       files={[...clippings, ...(item.sourceLink ? [{ label: "Visit Source", url: item.sourceLink }] : [])]}
-      sourceUrl={item.sourceUrl}
     >
       {showCover && item.imageUrl && (
         <Image

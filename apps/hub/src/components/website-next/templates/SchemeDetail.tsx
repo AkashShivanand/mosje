@@ -6,6 +6,7 @@ import {
   MASTER_DATE,
   SCHEME_STATUS,
   applyRoutes,
+  displayName,
   divisionsOf,
   expandSource,
   offeringLabel,
@@ -40,15 +41,16 @@ export function SchemeDetail({ scheme: s }: { scheme: Scheme }) {
   const divisions = divisionsOf(s);
   const personas = PERSONAS.filter((p) => s.who.includes(p.id));
   const related = relatedSchemes(s);
+  const name = displayName(s);
 
   return (
     <PageLayout
-      title={s.name}
+      title={name}
       badge={s.type}
       breadcrumb={[
         { label: "Schemes & Services" },
         { label: "Find a Scheme", href: "/website/schemes-services" },
-        { label: s.name },
+        { label: name },
       ]}
       lastUpdated={MASTER_DATE}
       actions={
@@ -206,22 +208,22 @@ interface LegacySection {
 }
 
 /**
- * A scheme listing carried over from the old site that is not in the scheme
- * master (a State scheme, a corporation's loan product, a document filed as a
- * scheme — issue X-IA-04). Its URL keeps working and its text is shown as the
- * site published it, in the redesign's content template. It is not listed by
- * the finder, which reads the master only.
+ * A scheme listing carried over from the old site that is not a master scheme (a
+ * corporation's loan product, an umbrella page, a Foundation scheme — issue
+ * X-IA-04) and has something on it. Listings that ARE master schemes, or are
+ * empty, never reach here: the route redirects them (legacy-schemes.ts). Its text
+ * is shown as the site published it, in the redesign's content template, with no
+ * standfirst (the old one was often copied from another page) and no link back
+ * to the old site.
  */
 export function LegacySchemeDetail({
   title,
   sections,
-  sourceUrl,
   website,
   lastUpdated,
 }: {
   title: string;
   sections: LegacySection[];
-  sourceUrl?: string;
   website?: string;
   lastUpdated?: string;
 }) {
@@ -238,12 +240,6 @@ export function LegacySchemeDetail({
       <div className="wn-section">
         <div className="sa-container wn-split">
           <article className="wn-prose wn-legacy min-w-0" aria-labelledby="page-title">
-            {sections.length === 0 && (
-              <p>
-                No details are published for this listing. See{" "}
-                <Link href="/website/schemes-services">Find a Scheme</Link> for the schemes of the Department.
-              </p>
-            )}
             {sections.map((sec, i) => (
               <section key={sec.heading ?? i}>
                 {sec.heading && <h2>{sec.heading}</h2>}
@@ -251,23 +247,13 @@ export function LegacySchemeDetail({
               </section>
             ))}
           </article>
-          {(website || sourceUrl) && (
+          {website && (
             <aside className="wn-aside wn-aside--sticky" aria-label="Related">
               <div className="wn-panel">
                 <h2 className="wn-panel__title">Related Links</h2>
                 <ul>
-                  {website && (
-                    <li>
-                      <External href={website}>Scheme Website</External>
-                    </li>
-                  )}
-                  {sourceUrl && (
-                    <li>
-                      <External href={sourceUrl}>This Page on dosje.gov.in</External>
-                    </li>
-                  )}
                   <li>
-                    <Link href="/website/schemes-services">Find a Scheme</Link>
+                    <External href={website}>Scheme Website</External>
                   </li>
                 </ul>
               </div>

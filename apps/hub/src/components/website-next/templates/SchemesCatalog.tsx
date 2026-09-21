@@ -26,9 +26,16 @@ import "./schemes.css";
  * route stays static: the server prerenders the unfiltered catalogue (the
  * Suspense fallback), and the URL is applied on hydration.
  *
- * Counts appear ONLY on the group headings and in the status line, computed
- * from the master at render (14 Sep decision; decision 2 of the register).
+ * Counts appear ONLY on the group headings, computed from the master at render
+ * (decisions 1 and 2 of the register). The number of results is announced to
+ * screen readers when a filter changes it, and is not printed.
+ *
+ * Each group shows its first GROUP_PREVIEW cards; a real disclosure button
+ * (aria-expanded) opens the rest, so an unfiltered visit is not an 11,000px
+ * page. The heading's count always states the whole group.
  */
+
+const GROUP_PREVIEW = 4;
 
 type GroupBy = "offer" | "admin";
 
@@ -126,7 +133,19 @@ function FinderView({ state, onChange }: { state: FinderState; onChange: (s: Par
     ? n === 0
       ? `No scheme matches ${active.map((a) => a.label).join(" and ")}.`
       : `${n} ${n === 1 ? "scheme matches" : "schemes match"} ${active.map((a) => a.label).join(" and ")}.`
-    : `${n} schemes of the Department.`;
+    : "";
+
+  // Opened groups close again when the result set changes, so a new filter
+  // never lands the reader in the middle of a long, previously opened list.
+  const resultKey = `${toQuery(state)}`;
+  const [opened, setOpened] = useState<{ key: string; ids: Set<string> }>({ key: resultKey, ids: new Set() });
+  const openIds = opened.key === resultKey ? opened.ids : new Set<string>();
+  const toggleGroup = (id: string) => {
+    const next = new Set(openIds);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    setOpened({ key: resultKey, ids: next });
+  };
 
   const panelId = `${uid}-filters`;
 
@@ -166,6 +185,17 @@ function FinderView({ state, onChange }: { state: FinderState; onChange: (s: Par
           </div>
         </div>
 
+        <Facet title="Type" defaultOpen>
+          <RadioGroup
+            name={`${uid}-type`}
+            legend="Type"
+            hideLegend
+            size="sm"
+            value={state.type ?? ""}
+            onChange={(v) => onChange({ type: v || undefined })}
+            options={[{ value: "", label: "All Types" }, ...SCHEME_TYPES.map((t) => ({ value: t, label: t }))]}
+          />
+        </Facet>
         <Facet title="Who It Is For" defaultOpen>
           <RadioGroup
             name={`${uid}-who`}
@@ -191,17 +221,6 @@ function FinderView({ state, onChange }: { state: FinderState; onChange: (s: Par
             ]}
           />
         </Facet>
-        <Facet title="Type" defaultOpen={Boolean(state.type)}>
-          <RadioGroup
-            name={`${uid}-type`}
-            legend="Type"
-            hideLegend
-            size="sm"
-            value={state.type ?? ""}
-            onChange={(v) => onChange({ type: v || undefined })}
-            options={[{ value: "", label: "All Types" }, ...SCHEME_TYPES.map((t) => ({ value: t, label: t }))]}
-          />
-        </Facet>
 
         {anyActive && (
           <Button variant="primary" appearance="outlined" size="sm" onClick={clearAll} className="wn-finder__clear">
@@ -212,7 +231,7 @@ function FinderView({ state, onChange }: { state: FinderState; onChange: (s: Par
 
       <div className="wn-finder__results">
         <div className="wn-finder__bar">
-          <p role="status" aria-live="polite" className="wn-finder__status">
+          <p role="status" aria-live="polite" className="sr-only">
             {statusText}
           </p>
           {n > 0 && (
@@ -273,16 +292,34 @@ function FinderView({ state, onChange }: { state: FinderState; onChange: (s: Par
         ) : (
           groups.map((g) => {
             const hid = `${uid}-g-${g.id}`;
+            const listId = `${uid}-l-${g.id}`;
+            const open = openIds.has(g.id);
+            const more = g.schemes.length > GROUP_PREVIEW;
+            const shown = open || !more ? g.schemes : g.schemes.slice(0, GROUP_PREVIEW);
             return (
               <section key={g.id} className="wn-finder__group" aria-labelledby={hid}>
                 <SectionTitle as={2} headingId={hid} title={g.title} count={g.schemes.length} />
-                <ul className="wn-finder__list">
-                  {g.schemes.map((s) => (
+                <ul className="wn-finder__list" id={listId}>
+                  {shown.map((s) => (
                     <li key={s.id}>
                       <SchemeCard scheme={s} who={state.who} />
                     </li>
                   ))}
                 </ul>
+                {more && (
+                  <p className="wn-finder__more">
+                    <Button
+                      variant="primary"
+                      appearance="outlined"
+                      size="md"
+                      aria-expanded={open}
+                      aria-controls={listId}
+                      onClick={() => toggleGroup(g.id)}
+                    >
+                      {open ? `Show Fewer in ${g.title}` : `Show All ${g.schemes.length} in ${g.title}`}
+                    </Button>
+                  </p>
+                )}
               </section>
             );
           })

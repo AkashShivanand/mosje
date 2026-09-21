@@ -19,6 +19,8 @@
   .wn-people-link:hover { color: var(--sa-text-link-brand-hover); text-decoration-thickness: var(--sa-stroke-2); }
   .wn-people-nowrap { white-space: nowrap; font-variant-numeric: tabular-nums; }
   .wn-people-break { overflow-wrap: anywhere; }
+  /* "Mobile" / "Fax" before the numbers they label, inside a single telephone cell. */
+  .wn-people-phone-label { color: var(--sa-text-neutral-subtle); }
   .wn-people-emails { display: grid; gap: var(--sa-stack-2); }
 
   /* Label sits within stack/2 of its value; stack/12 between facts (LAY-06). */
@@ -438,23 +440,12 @@
     font-weight: var(--sa-font-weight-semibold);
   }
   .wn-contact__action:hover { color: var(--sa-text-link-brand-hover); }
-  .wn-contact__visit { display: grid; gap: var(--sa-stack-24); margin-top: var(--sa-stack-20); }
-  @media (min-width: 1024px) { .wn-contact__visit { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: start; } }
   .wn-contact__address {
     font-size: var(--sa-type-body-1-size);
     line-height: var(--sa-type-body-1-lh);
     color: var(--sa-text-neutral-bolder);
     font-style: normal;
   }
-  .wn-contact__map {
-    position: relative;
-    min-height: 320px;
-    overflow: hidden;
-    border-radius: var(--sa-shape-16);
-    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
-    background: var(--sa-bg-neutral-subtlest);
-  }
-  .wn-contact__map iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
   .wn-contact__postal { font-style: normal; }
   .wn-contact__more { margin-top: var(--sa-stack-20); }
   .wn-contact__officer { display: flex; gap: var(--sa-inline-16); align-items: flex-start; }

@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { EmptyState, Icon, Pagination } from "@mosje/design-system";
 import { PageLayout } from "@/components/website-next/layout/PageLayout";
-import { EventCard, eventDate } from "@/components/website-next/media/EventCard";
+import { EventCard, EventGroupCard, eventDate } from "@/components/website-next/media/EventCard";
+import { groupEvents } from "@/components/website-next/media/event-groups";
 import { ListFilters } from "@/components/website-next/media/ListFilters";
 import { organisationName } from "@/components/website-next/media/org-name";
 import { getContentSyncedDate, getEvents } from "@/lib/website/content";
@@ -42,10 +43,10 @@ interface Props {
  * Filters) · empty (the register has none) · too much (paged, page in the URL).
  * Loading and error cannot occur: the register is imported JSON resolved here.
  *
- * NOT DONE (issue CON-15): repeat posts of one training programme — "Block
- * Level Training" appears 62 times across districts — are still listed one
- * per post. Grouping them needs a rule for when two posts are the same
- * programme, which the register does not carry.
+ * REPEAT POSTS (issue CON-15): posts with the same normalised title, the same
+ * organisation and the same month are one entry — one card with the count and
+ * a disclosure of each date and place. The rule, and why it is that narrow, is
+ * in `media/event-groups.ts`. Paging counts entries, not posts.
  */
 export default async function EventsPage({ searchParams }: Props) {
   const params = await searchParams;
@@ -60,7 +61,9 @@ export default async function EventsPage({ searchParams }: Props) {
   const org = orgCodes.includes(params.org ?? "") ? params.org! : "";
   const year = years.includes(params.year ?? "") ? params.year! : "";
 
-  const filtered = all.filter((e) => (!org || e.organisation === org) && (!year || eventDate(e)?.startsWith(year)));
+  const matching = all.filter((e) => (!org || e.organisation === org) && (!year || eventDate(e)?.startsWith(year)));
+  /* Grouped after filtering: a group never straddles an organisation or a year, so the filters cannot split one. */
+  const filtered = groupEvents(matching);
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const page = Math.min(totalPages, Math.max(1, Number(params.page) || 1));
   const shown = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -100,7 +103,7 @@ export default async function EventsPage({ searchParams }: Props) {
               ? filterActive
                 ? "No events match these filters."
                 : ""
-              : `Showing ${((page - 1) * PAGE_SIZE + 1).toLocaleString("en-IN")}–${Math.min(page * PAGE_SIZE, filtered.length).toLocaleString("en-IN")} of ${filtered.length.toLocaleString("en-IN")} events${filterActive ? ` (${filterWords})` : ""}`}
+              : `Showing ${((page - 1) * PAGE_SIZE + 1).toLocaleString("en-IN")}–${Math.min(page * PAGE_SIZE, filtered.length).toLocaleString("en-IN")} of ${filtered.length.toLocaleString("en-IN")} entries, covering ${matching.length.toLocaleString("en-IN")} events${filterActive ? ` (${filterWords})` : ""}`}
           </p>
 
           {all.length === 0 ? (
@@ -123,9 +126,13 @@ export default async function EventsPage({ searchParams }: Props) {
           ) : (
             <>
               <ul className="wn-events">
-                {shown.map((e) => (
-                  <EventCard key={e.slug} event={e} headingLevel={2} today={today} />
-                ))}
+                {shown.map((entry) =>
+                  entry.events.length > 1 ? (
+                    <EventGroupCard key={entry.key} events={entry.events} headingLevel={2} today={today} />
+                  ) : (
+                    <EventCard key={entry.key} event={entry.events[0]!} headingLevel={2} today={today} />
+                  ),
+                )}
               </ul>
               {totalPages > 1 && (
                 <div className="wn-pager">

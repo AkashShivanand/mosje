@@ -63,7 +63,7 @@ export function WebsitePageHeader({
   const showImage = level === "landing" && image;
 
   return (
-    <header className="wn-pagehead" data-level={level}>
+    <header className="wn-pagehead" data-level={level} data-sa-rail-clear="">
       <div className="sa-container">
         <Breadcrumb linkAs={Link} items={[{ label: "Home", href: "/website", icon: "home" }, ...breadcrumb]} />
         {afterBreadcrumb}

@@ -283,6 +283,68 @@ function nameSectionToggles(): void {
   apply();
 }
 
+/**
+ * Keep the CLOSED panel out of the Tab order (WCAG 2.4.1, 2.4.3; GIGW skip link).
+ *
+ * The vendor closes its panel by sliding it off-canvas (`position: fixed;
+ * right: -530px`) and leaves all 66 of its controls focusable. Measured
+ * 2026-09-22 on /website: the third Tab press landed on the hidden panel's
+ * close button, so the page's own "Skip to Main Content" never received focus
+ * and a keyboard user tabbed through an invisible dialog on every page.
+ *
+ * The panel is made `inert` whenever it is off-screen, which removes it from
+ * the Tab order and the accessibility tree without moving a pixel or touching
+ * the vendor's styles (accessibility-entry-point.md forbids restyling it).
+ * Opening must win the race with the vendor's own focus call, so `inert` is
+ * cleared in a document-level CAPTURE listener — it runs before the trigger's
+ * own click handler, including the click the AccessibilityBar's icon
+ * dispatches on the hidden trigger. The positive `tabindex="1"` the vendor puts
+ * on its trigger (issue ACC-10) is normalised to 0 at the same time.
+ */
+function keepClosedPanelOutOfTabOrder(): () => void {
+  let observer: MutationObserver | undefined;
+  let timer: number | undefined;
+  let attempts = 0;
+  const onScreen = (el: HTMLElement) => {
+    const r = el.getBoundingClientRect();
+    return r.width > 0 && r.left < window.innerWidth && r.right > 0;
+  };
+  const sync = () => {
+    const panel = document.getElementById("uw-main");
+    if (!panel) return;
+    panel.inert = !onScreen(panel);
+  };
+  const onClick = (e: MouseEvent) => {
+    const t = e.target as Element | null;
+    if (!t?.closest?.("#uw-widget-custom-trigger, [data-uw-trigger]")) return;
+    const panel = document.getElementById("uw-main");
+    if (panel) panel.inert = false;
+  };
+  const attach = () => {
+    const panel = document.getElementById("uw-main");
+    if (!panel) {
+      if (attempts++ < 40) timer = window.setTimeout(attach, 150);
+      return;
+    }
+    const trigger = document.getElementById("uw-widget-custom-trigger");
+    if (trigger?.getAttribute("tabindex") === "1") trigger.setAttribute("tabindex", "0");
+    sync();
+    // The slide-out is a transition, so position is read after it settles.
+    observer = new MutationObserver(() => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(sync, 450);
+    });
+    observer.observe(panel, { attributes: true, attributeFilter: ["class", "style"] });
+  };
+  document.addEventListener("click", onClick, true);
+  attach();
+  return () => {
+    document.removeEventListener("click", onClick, true);
+    observer?.disconnect();
+    window.clearTimeout(timer);
+  };
+}
+
 export interface UX4GAccessibilityWidgetProps {
   /** Override the widget script URL (e.g. to pin a version or self-host). */
   src?: string;
@@ -340,6 +402,11 @@ export function UX4GAccessibilityWidget({
   React.useEffect(() => {
     if (typeof document === "undefined") return;
     nameSectionToggles();
+  }, []);
+
+  React.useEffect(() => {
+    if (typeof document === "undefined") return;
+    return keepClosedPanelOutOfTabOrder();
   }, []);
 
   React.useEffect(() => {

@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { SectionTitle } from "@mosje/design-system";
 import { RecordDetail } from "@/components/website-next/templates/RecordDetail";
 import { getContentSyncedDate, getUpdate, getUpdates } from "@/lib/website/content";
-import { facts, humanDate } from "@/lib/website/record-facts";
+import { facts } from "@/lib/website/record-facts";
+import { formatDate } from "@/components/website-next/ui/format";
 import { socialCard } from "@/lib/seo/social";
 
 /** 9 updates — every one is prerendered. */
@@ -55,11 +56,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       lastUpdated={getContentSyncedDate()}
       facts={facts([
         { term: "Organisation", value: update.organisation },
-        { term: "Published", value: humanDate(update.date) },
-        { term: "Status", value: update.status },
+        { term: "Published", value: formatDate(update.date) },
       ])}
       files={update.attachments ?? []}
-      sourceUrl={update.sourceUrl}
     >
       {videos.length > 0 && (
         <section className="wn-rec-section" aria-labelledby="record-videos">

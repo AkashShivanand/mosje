@@ -60,7 +60,6 @@ export default function ForResearcherPage() {
       title="For Researchers"
       breadcrumb={[{ label: "Schemes & Services" }, { label: "For Researchers" }]}
       description="Reports, studies, statistics and data published by the Department."
-      lastUpdated="06 Jun 2026"
       sections={sections}
     />
   );

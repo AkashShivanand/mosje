@@ -116,6 +116,44 @@
   [data-design="next"] .wn-event__fact dt { flex: none; }
   [data-design="next"] .wn-event__icon { display: inline-flex; padding-top: var(--sa-padding-2); color: var(--sa-icon-neutral-subtle); }
 
+  /* A group of repeat posts (CON-15): no stretched link, one disclosure. */
+  [data-design="next"] .wn-event--group:hover { border-color: var(--sa-border-neutral-subtle); }
+  [data-design="next"] .wn-event__group { display: grid; gap: var(--sa-stack-8); }
+  [data-design="next"] .wn-event__summary {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    min-height: var(--sa-target-comfortable);
+    cursor: pointer;
+    list-style: none;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-link-brand-default);
+  }
+  [data-design="next"] .wn-event__summary::-webkit-details-marker { display: none; }
+  [data-design="next"] .wn-event__summary:hover { color: var(--sa-text-link-brand-hover); text-decoration: underline; text-underline-offset: 0.2em; }
+  [data-design="next"] .wn-event__chevron { display: inline-flex; }
+  [data-design="next"] .wn-event__group[open] .wn-event__chevron { transform: rotate(180deg); }
+  [data-design="next"] .wn-event__list { display: grid; gap: var(--sa-stack-8); padding: 0; margin: 0; list-style: none; }
+  [data-design="next"] .wn-event__item {
+    display: grid;
+    gap: var(--sa-stack-2);
+    padding-block: var(--sa-padding-8);
+    border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+  [data-design="next"] .wn-event__item-link {
+    justify-self: start;
+    font-weight: var(--sa-font-weight-medium);
+    color: var(--sa-text-link-brand-default);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  [data-design="next"] .wn-event__item-link:hover { color: var(--sa-text-link-brand-hover); }
+  [data-design="next"] .wn-event__item-place { color: var(--sa-text-neutral-subtle); overflow-wrap: anywhere; }
+
   /* ── Gallery albums ────────────────────────────────────────────────────── */
   [data-design="next"] .wn-gallery__tabs { margin-bottom: var(--sa-stack-24); }
   [data-design="next"] .wn-albums {

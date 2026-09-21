@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { DocumentCatalog } from "@/components/website-next/templates/DocumentCatalog";
-import { isArchived } from "@/components/website-next/ui/records";
+import { dedupeNotices, displayNoticeTitle, isArchived } from "@/components/website-next/ui/records";
 import { getTenders, getContentSyncedDate } from "@/lib/website/content";
 import { socialCard } from "@/lib/seo/social";
 
@@ -23,11 +23,19 @@ export const metadata: Metadata = {
  * and a filter of four categories no record carries; both are gone. The file
  * type is read from the file itself, and a filter appears only where the rows
  * give it more than one option.
+ *
+ * Notices the register publishes twice (same title, same date) are listed once
+ * (`dedupeNotices`). A title the ingest cut at twelve characters is shown with
+ * an ellipsis, never as though it were whole (`displayNoticeTitle`); the
+ * register holds no longer title to fall back to.
  */
 export default function TendersPage() {
-  const tenders = getTenders()
-    .filter((t) => !isArchived(t.date))
-    .map((t) => ({ slug: t.slug, title: t.title, date: t.date, sourceUrl: t.fileUrl }));
+  const tenders = dedupeNotices(getTenders().filter((t) => !isArchived(t.date))).map((t) => ({
+    slug: t.slug,
+    title: displayNoticeTitle(t.title),
+    date: t.date,
+    sourceUrl: t.fileUrl,
+  }));
 
   return (
     <DocumentCatalog
