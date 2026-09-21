@@ -722,7 +722,7 @@ export const STATIC_PAGES: StaticPageEntry[] = [
   }
 ];
 
-/** Which page shows a given body's officials — read out of its `directoryRows()` call. */
+/** Which page shows a given body's officials — read out of its `getOfficialsByOrganisation()` call. */
 export interface DirectoryPage {
   ownerId: string;
   href: string;
