@@ -575,14 +575,16 @@ export function OdicBeneficiaryForm({
                         Drug {i + 1}
                       </span>
                       {drugRows.length > 1 && (
-                        <button
-                          type="button"
-                          onClick={() => setDrugRows((prev) => prev.filter((_, idx) => idx !== i))}
+                        <Button
+                          variant="danger"
+                          appearance="text"
+                          size="sm"
+                          iconLeft={<Icon name="delete" size={16} />}
                           aria-label={`Remove drug ${i + 1}`}
-                          className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-label-2 font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
+                          onClick={() => setDrugRows((prev) => prev.filter((_, idx) => idx !== i))}
                         >
-                          <Icon name="delete" size={14} aria-hidden /> Remove
-                        </button>
+                          Remove
+                        </Button>
                       )}
                     </div>
                     <div className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -810,14 +812,15 @@ export function OdicBeneficiaryForm({
                   { to: 1, label: "Edit Substance Use" },
                   { to: 2, label: "Edit Assessment & Intervention" },
                 ].map((j) => (
-                  <button
+                  <Button
                     key={j.to}
-                    type="button"
+                    appearance="outlined"
+                    size="sm"
+                    iconLeft={<Icon name="edit" size={16} />}
                     onClick={() => jumpTo(j.to)}
-                    className="inline-flex items-center gap-1 rounded-lg border border-line bg-white px-3 py-1.5 text-label-2 font-semibold text-navy hover:bg-black/5"
                   >
-                    <Icon name="edit" size={12} aria-hidden /> {j.label}
-                  </button>
+                    {j.label}
+                  </Button>
                 ))}
               </div>
             </div>

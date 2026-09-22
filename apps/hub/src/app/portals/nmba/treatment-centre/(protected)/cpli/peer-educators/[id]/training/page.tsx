@@ -8,7 +8,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { Divider, Alert, Button, FormField, Icon, Input, Lightbox, Modal, Search, SideSheet, type LightboxItem } from "@mosje/design-system";
+import { Alert, Button, FormField, Icon, Input, Lightbox, MediaGalleryInput, MediaThumbnail, Modal, Search, SideSheet, SplitButton, type LightboxItem } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { useTCStore } from "@/lib/nmba/treatment-centre/store";
 import { DataTable, type ColumnDef } from "@/components/nmba/data-table";
@@ -59,19 +59,8 @@ function downloadBlob(content: string, mime: string, name: string) {
 // ---------------------------------------------------------------------------
 
 function ExportMenu({ rows, educatorId }: { rows: Row[]; educatorId: string }) {
-  const [open, setOpen] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
-  const ref = React.useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-
-  React.useEffect(() => {
-    if (!open) return;
-    const handler = (e: MouseEvent) => {
-      if (!ref.current?.contains(e.target as Node)) setOpen(false);
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, [open]);
 
   const handleCopy = async () => {
     try {
@@ -85,7 +74,6 @@ function ExportMenu({ rows, educatorId }: { rows: Row[]; educatorId: string }) {
   };
 
   const handleDownload = (fmt: "xls" | "csv") => {
-    setOpen(false);
     if (fmt === "csv") {
       downloadBlob(toCsv(rows), "text/csv;charset=utf-8;", `training-${educatorId}.csv`);
     } else {
@@ -95,58 +83,21 @@ function ExportMenu({ rows, educatorId }: { rows: Row[]; educatorId: string }) {
   };
 
   return (
-    <div ref={ref} className="relative shrink-0">
-      <div className="flex overflow-hidden rounded-lg border border-line bg-white shadow-sm">
-        <button
-          type="button"
-          onClick={handleCopy}
-          className="inline-flex items-center gap-1.5 px-3 py-[7px] text-label-1 text-ink-muted transition-colors duration-150 hover:bg-surface-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-navy"
-        >
-          {copied ? (
-            <Icon name="check" size={14} className="text-green-600" aria-hidden />
-          ) : (
-            <Icon name="content_copy" size={14} aria-hidden />
-          )}
-          {copied ? "Copied!" : "Copy"}
-        </button>
-        <Divider orientation="vertical" />
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-haspopup="menu"
-          aria-expanded={open}
-          aria-label="Export options"
-          className="inline-flex items-center px-2 py-[7px] transition-colors duration-150 hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-navy"
-        >
-          <Icon name="keyboard_arrow_down" size={14} className={`text-ink-muted transition-transform duration-150 ${open ? "rotate-180" : ""}`} aria-hidden />
-        </button>
-      </div>
-
-      {open && (
-        <div
-          role="menu"
-          aria-label="Export options"
-          className="absolute right-0 top-[calc(100%+4px)] z-20 min-w-44 overflow-hidden rounded-lg border border-line bg-white py-1 shadow-lg"
-        >
-          <button
-            role="menuitem"
-            type="button"
-            onClick={() => handleDownload("xls")}
-            className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-label-1 text-ink transition-colors hover:bg-surface-muted focus-visible:bg-surface-muted focus-visible:outline-none"
-          >
-            <Icon name="table_chart" size={16} className="text-ink-muted" aria-hidden /> Export as Excel
-          </button>
-          <button
-            role="menuitem"
-            type="button"
-            onClick={() => handleDownload("csv")}
-            className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-label-1 text-ink transition-colors hover:bg-surface-muted focus-visible:bg-surface-muted focus-visible:outline-none"
-          >
-            <Icon name="description" size={16} className="text-ink-muted" aria-hidden /> Export as CSV
-          </button>
-        </div>
-      )}
-    </div>
+    <SplitButton
+      label="Export options"
+      variant="neutral"
+      appearance="outlined"
+      size="sm"
+      iconLeft={<Icon name={copied ? "check" : "content_copy"} size={16} />}
+      onClick={handleCopy}
+      items={[
+        { id: "xls", label: "Export as Excel", icon: "table_chart" },
+        { id: "csv", label: "Export as CSV", icon: "description" },
+      ]}
+      onSelect={(id) => handleDownload(id === "csv" ? "csv" : "xls")}
+    >
+      {copied ? "Copied!" : "Copy"}
+    </SplitButton>
   );
 }
 
@@ -172,59 +123,14 @@ function PhotoBadge({
   photos: string[];
   onOpen: (idx: number) => void;
 }) {
-  if (!photos.length) {
-    return (
-      <span
-        className="inline-flex h-10 w-14 items-center justify-center rounded-lg border border-dashed border-line bg-surface-muted text-ink-hint"
-        aria-label="No photos uploaded"
-        title="No photos"
-      >
-        <Icon name="photo_camera" size={16} aria-hidden />
-      </span>
-    );
-  }
-
   return (
-    <button
-      type="button"
+    <MediaThumbnail
+      src={photos[0]}
+      count={photos.length}
+      label={`View ${photos.length} training photo${photos.length > 1 ? "s" : ""}`}
+      emptyLabel="No photos uploaded"
       onClick={() => onOpen(0)}
-      aria-label={`View ${photos.length} training photo${photos.length > 1 ? "s" : ""}`}
-      className="group relative inline-block shrink-0 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-1"
-    >
-      {/* Thumbnail */}
-      <span
-        className="relative block overflow-hidden rounded-lg border border-line/60 shadow-sm transition-transform duration-150 group-hover:scale-105 group-hover:shadow-md"
-        style={{ width: 64, height: 48 }}
-      >
-        {/* data:/blob: URI (synthetic or uploaded photo) — next/image's loader
-            can't optimize these, so a plain <img> is intentional here. */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={photos[0]}
-          alt={`Training photo 1 of ${photos.length}`}
-          width={64}
-          height={48}
-          className="block h-full w-full object-cover"
-        />
-        {/* Hover overlay */}
-        <span
-          className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-150 group-hover:bg-black/30"
-          aria-hidden
-        >
-          <Icon name="zoom_in" size={16} className="text-white opacity-0 drop-shadow transition-opacity duration-150 group-hover:opacity-100" />
-        </span>
-      </span>
-
-      {/* Count badge — overlaid on bottom-right corner, visible only for 2+ photos */}
-      {photos.length > 1 && (
-        <span
-          className="absolute -bottom-1.5 -right-1.5 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-navy px-1.5 text-label-2 font-bold text-white shadow ring-2 ring-white"
-          aria-hidden
-        >
-          +{photos.length - 1}
-        </span>
-      )}
-    </button>
+    />
   );
 }
 
@@ -232,6 +138,13 @@ function PhotoBadge({
 // Multi-photo upload field — used inside the form sheet
 // ---------------------------------------------------------------------------
 
+/**
+ * The training photos field. Until 2026-09-22 this was a hand-built picker — its
+ * own dashed drop zone, label, error line and a thumbnail grid whose remove control
+ * only appeared on hover. It is the design system's MediaGalleryInput inside a
+ * FormField now, so the label, hint, error wiring and the remove controls are the
+ * estate's own. The record still stores plain URLs; the field maps them.
+ */
 function PhotoUploadField({
   photos,
   onChange,
@@ -241,100 +154,18 @@ function PhotoUploadField({
   onChange: (next: string[]) => void;
   error?: string;
 }) {
-  const fileRef = React.useRef<HTMLInputElement>(null);
-  const fieldId = React.useId();
-  const errorId = `${fieldId}-error`;
-
-  const handleFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files ?? []);
-    if (!files.length) return;
-    Promise.all(
-      files.map(
-        (f) =>
-          new Promise<string>((resolve) => {
-            const reader = new FileReader();
-            reader.onload = (ev) => resolve(ev.target?.result as string);
-            reader.readAsDataURL(f);
-          }),
-      ),
-    ).then((urls) => onChange([...photos, ...urls]));
-    e.target.value = "";
-  };
-
-  const removePhoto = (i: number) => onChange(photos.filter((_, j) => j !== i));
-
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center justify-between">
-        <label htmlFor={fieldId} className="text-label-1 text-ink">
-          Photos <span className="text-danger-fg" aria-hidden>*</span>
-          <span className="sr-only">(required)</span>
-        </label>
-        <span className="text-body-3 text-ink-hint">JPG / PNG — up to 5 MB each</span>
-      </div>
-
-      {/* Drop zone / file picker */}
-      <button
-        type="button"
-        onClick={() => fileRef.current?.click()}
-        aria-controls={fieldId}
-        className={`flex w-full items-center justify-center gap-2 rounded-lg border-2 border-dashed px-4 py-3 text-label-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-1 ${
-          error
-            ? "border-danger-fg bg-danger-bg/30 text-danger-fg hover:bg-danger-bg/50"
-            : "border-navy/25 text-navy/70 hover:border-navy/50 hover:bg-navy/5"
-        }`}
-        aria-describedby={error ? errorId : undefined}
-      >
-        <Icon name="photo_camera" size={16} aria-hidden />
-        {photos.length === 0 ? "Select photos" : "Add more photos"}
-      </button>
-      <input
-        ref={fileRef}
-        id={fieldId}
-        type="file"
-        accept="image/jpeg,image/png,image/webp"
-        multiple
-        className="sr-only"
-        onChange={handleFiles}
-        aria-hidden="true"
-      />
-
-      {/* Error */}
-      {error && (
-        <p id={errorId} role="alert" className="text-label-2 text-danger-fg">
-          {error}
-        </p>
+    <FormField label="Photos" required hint="JPG or PNG, up to 5 MB each" error={error}>
+      {(c) => (
+        <MediaGalleryInput
+          {...c}
+          accept="image/jpeg,image/png,image/webp"
+          maxSizeMb={5}
+          value={photos.map((url, i) => ({ url, type: "image" as const, name: `Photo ${i + 1}` }))}
+          onChange={(items) => onChange(items.map((item) => item.url))}
+        />
       )}
-
-      {/* Preview grid */}
-      {photos.length > 0 && (
-        <div
-          role="list"
-          aria-label="Selected photos"
-          className="grid grid-cols-4 gap-2"
-        >
-          {photos.map((url, i) => (
-            <div key={i} role="listitem" className="group relative aspect-video overflow-hidden rounded-lg border border-line bg-surface-muted">
-              {/* blob: URI from a freshly-selected file input — not next/image-loadable. */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={url}
-                alt={`Selected photo ${i + 1}`}
-                className="h-full w-full object-cover"
-              />
-              <button
-                type="button"
-                onClick={() => removePhoto(i)}
-                aria-label={`Remove photo ${i + 1}`}
-                className="absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-black/60 text-white opacity-0 transition group-hover:opacity-100 hover:bg-black/80 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-              >
-                <Icon name="close" size={14} aria-hidden />
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+    </FormField>
   );
 }
 

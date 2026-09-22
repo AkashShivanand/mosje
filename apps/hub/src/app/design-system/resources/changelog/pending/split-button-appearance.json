@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "SPLITBUTTON TAKES `appearance` AND `iconLeft`, AND ITS TRIGGER IS A REAL ICON BUTTON. `appearance=\"outlined\"` is the quiet pair — Copy, with its export formats one press away, which NMBA had hand-built twice because this component only came filled; both halves take the same appearance. The trigger is now an IconButton carrying the library Icon instead of a \"▾\" text character. In Figma the set grows from 4 variants to 12 (Tone gains Neutral, a new Appearance axis), the trigger is an Icon Button instance rather than a hand-drawn frame, the join is stack/0 with one seam, and the trigger's 4px outer corners are 8 like the default action's. Existing callers are unchanged."
+}

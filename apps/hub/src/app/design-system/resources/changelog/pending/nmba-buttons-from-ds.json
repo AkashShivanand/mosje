@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "EVERY BUTTON IN THE NMBA PORTAL IS NOW A DESIGN-SYSTEM BUTTON — 71 hand-written <button> elements across its admin, public and treatment-centre pages replaced by Button, IconButton, ButtonGroup, SplitButton, Menu, ChartCard, MediaGalleryInput and MediaThumbnail. Three things a reader will notice: the treatment-centre dashboard's four \"Chart options\" buttons, which did nothing when pressed, are now ChartCard's working download menu; row edit actions are neutral rather than amber, because amber is the estate's warning signal and an edit is not a warning; and the pledge page's language switch announces हिंदी in Hindi. In Figma, the Icon Button set's 72 Disabled variants now keep their own paints at alpha/disabled, as Button and the code always have — a disabled Split Button no longer draws a grey trigger beside a faded action."
+}

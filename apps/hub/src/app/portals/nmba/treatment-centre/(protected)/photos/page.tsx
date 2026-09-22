@@ -7,7 +7,7 @@
 //     (a photo gallery is not a DataTable; it reuses DS atoms rather than TCListPage)
 
 import * as React from "react";
-import { Alert, Badge, Button, Checkbox, Chip, EmptyState, FormField, Icon, Input, Lightbox, MediaGalleryInput, Modal, Search, Select, SideSheet, Textarea, type GalleryMediaItem, type LightboxItem } from "@mosje/design-system";
+import { Alert, Badge, Button, ButtonGroup, Checkbox, Chip, EmptyState, FormField, Icon, IconButton, Input, Lightbox, MediaGalleryInput, MediaThumbnail, Modal, Search, Select, SideSheet, Textarea, type GalleryMediaItem, type LightboxItem } from "@mosje/design-system";
 import { useTCSession } from "@/lib/nmba/treatment-centre/session-context";
 import { useTCStore } from "@/lib/nmba/treatment-centre/store";
 import { useToast } from "@/components/nmba/toast";
@@ -282,17 +282,15 @@ function IconBtn({
   icon: iconName, label, onClick, danger,
 }: { icon: string; label: string; onClick: () => void; danger?: boolean }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
+    <IconButton
+      icon={<Icon name={iconName} size={16} />}
       aria-label={label}
-      title={label}
-      className={`flex h-8 w-8 items-center justify-center rounded-lg bg-white/95 shadow-sm transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy ${
-        danger ? "text-danger" : "text-navy"
-      }`}
-    >
-      <Icon name={iconName} size={16} />
-    </button>
+      tooltip
+      tone="inverse"
+      variant={danger ? "danger" : "primary"}
+      size="sm"
+      onClick={onClick}
+    />
   );
 }
 
@@ -316,36 +314,13 @@ function GalleryCard({
     >
       {/* Media */}
       <div className="relative aspect-[4/3] overflow-hidden bg-brandwash">
-        <button
-          type="button"
+        <MediaThumbnail
+          size="fill"
+          src={thumb}
+          kind={isVideo ? "video" : "image"}
+          label={selectMode ? `Select ${photo.caption}` : `View ${photo.caption}`}
           onClick={selectMode ? onToggleSelect : onOpen}
-          className="block h-full w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-inset"
-          aria-label={selectMode ? `Select ${photo.caption}` : `View ${photo.caption}`}
-        >
-          {/* data:/blob: URI (synthetic or uploaded photo) — not next/image-loadable. */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={thumb}
-            alt={photo.caption}
-            loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-          />
-          {/* hover scrim + zoom / play affordance */}
-          <span
-            className={`absolute inset-0 flex items-center justify-center transition-colors duration-200 ${
-              isVideo ? "bg-black/25" : "bg-black/0 group-hover:bg-black/25"
-            }`}
-            aria-hidden
-          >
-            {isVideo ? (
-              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-navy shadow">
-                <Icon name="play_arrow" size={20} fill />
-              </span>
-            ) : (
-              <Icon name="zoom_in" size={28} className="text-white opacity-0 drop-shadow transition-opacity duration-200 group-hover:opacity-100" />
-            )}
-          </span>
-        </button>
+        />
 
         {/* Selection checkbox */}
         {selectMode && (
@@ -413,21 +388,13 @@ function GalleryRow({
       {selectMode && (
         <Checkbox className="ml-1 shrink-0" size="sm" hideLabel label={`Select ${photo.caption}`} checked={selected} onChange={onToggleSelect} />
       )}
-      <button
-        type="button"
+      <MediaThumbnail
+        size="md"
+        src={thumb}
+        kind={isVideo ? "video" : "image"}
+        label={`View ${photo.caption}`}
         onClick={onOpen}
-        className="relative h-14 w-20 shrink-0 overflow-hidden rounded-lg bg-brandwash focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy"
-        aria-label={`View ${photo.caption}`}
-      >
-        {/* data:/blob: URI (synthetic or uploaded photo) — not next/image-loadable. */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={thumb} alt={photo.caption} className="h-full w-full object-cover" loading="lazy" />
-        {isVideo && (
-          <span className="absolute inset-0 flex items-center justify-center bg-black/30" aria-hidden>
-            <Icon name="play_arrow" size={16} className="text-white" fill />
-          </span>
-        )}
-      </button>
+      />
 
       <div className="min-w-0 flex-1">
         <p className="flex items-center gap-1.5 truncate text-title-3 text-ink" title={photo.caption}>
@@ -680,26 +647,10 @@ export default function CenterPhotosPage() {
               aria-label="Sort photos"
             />
           </div>
-          <div className="flex overflow-hidden rounded-lg border border-line">
-            <button
-              type="button"
-              onClick={() => setView("grid")}
-              aria-label="Grid view"
-              aria-pressed={view === "grid"}
-              className={`flex h-9 w-9 items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-inset ${view === "grid" ? "bg-navy text-white" : "bg-white text-ink-muted hover:bg-surface-muted"}`}
-            >
-              <Icon name="grid_view" size={16} />
-            </button>
-            <button
-              type="button"
-              onClick={() => setView("list")}
-              aria-label="List view"
-              aria-pressed={view === "list"}
-              className={`flex h-9 w-9 items-center justify-center border-l border-line transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-inset ${view === "list" ? "bg-navy text-white" : "bg-white text-ink-muted hover:bg-surface-muted"}`}
-            >
-              <Icon name="list" size={16} />
-            </button>
-          </div>
+          <ButtonGroup attached aria-label="View">
+            <IconButton icon={<Icon name="grid_view" size={16} />} aria-label="Grid view" variant="neutral" appearance="outlined" size="sm" aria-pressed={view === "grid"} onClick={() => setView("grid")} />
+            <IconButton icon={<Icon name="list" size={16} />} aria-label="List view" variant="neutral" appearance="outlined" size="sm" aria-pressed={view === "list"} onClick={() => setView("list")} />
+          </ButtonGroup>
         </div>
 
         {/* Album filter chips */}
@@ -730,13 +681,9 @@ export default function CenterPhotosPage() {
           className="sticky top-2 z-20 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-navy/30 bg-navy/5 px-4 py-2.5"
         >
           <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={toggleSelectAll}
-              className="text-label-1 font-semibold text-navy hover:underline"
-            >
+            <Button appearance="text" size="sm" onClick={toggleSelectAll}>
               {allVisibleSelected ? "Clear selection" : "Select all"}
-            </button>
+            </Button>
             <span className="text-body-2 text-ink-muted">{selectedIds.size} selected</span>
           </div>
           <div className="flex items-center gap-2">

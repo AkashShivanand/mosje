@@ -6,7 +6,7 @@
 // officer is only reviewing.
 
 import * as React from "react";
-import { Button, FormField, Icon, Input } from "@mosje/design-system";
+import { Button, FormField, Icon, IconButton, Input } from "@mosje/design-system";
 import { PdfUploadField } from "./pdf-upload-field";
 import { tierLabel } from "@/lib/nmba/committee/session";
 import type { CommitteeRecord, UploadedFile } from "@/lib/nmba/committee/types";
@@ -133,17 +133,18 @@ export function MinutesSection({ record, onAdd, canManage = true }: MinutesSecti
         >
           <div className="mb-3 flex items-center justify-between">
             <h4 className="text-title-3 text-ink">Add minutes for a meeting</h4>
-            <button
-              type="button"
+            <IconButton
+              icon={<Icon name="close" size={16} />}
+              aria-label="Close"
+              variant="neutral"
+              appearance="text"
+              size="sm"
+              shape="circle"
               onClick={() => {
                 resetForm();
                 setAdding(false);
               }}
-              aria-label="Close"
-              className="flex h-7 w-7 items-center justify-center rounded-full text-ink-muted hover:bg-black/5"
-            >
-              <Icon name="close" size={16} />
-            </button>
+            />
           </div>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

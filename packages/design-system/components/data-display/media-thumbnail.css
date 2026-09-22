@@ -1,0 +1,119 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* MediaThumbnail — a photo or video that opens when pressed.
+
+     Sizes are widths from the value-named space ladder with a 4:3 ratio, so the
+     height is derived rather than restated: sm 64 x 48, md 80 x 60. `fill` takes
+     the whole of the media area its card gives it — the card decides the shape. */
+  .ds-media-thumb {
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    padding: 0;
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-subtler);
+    color: var(--sa-icon-neutral-subtle);
+    font: inherit;
+    cursor: pointer;
+  }
+  .ds-media-thumb--sm { inline-size: var(--sa-stack-64); }
+  .ds-media-thumb--md { inline-size: var(--sa-stack-80); }
+  .ds-media-thumb--fill {
+    inline-size: 100%;
+    block-size: 100%;
+    aspect-ratio: auto;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .ds-media-thumb__img {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    transition: transform var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  /* The cue: a zoom glyph that appears on hover AND focus for an image — the
+     keyboard reader gets the same signal as the pointer — and a play glyph that
+     is always there for a video, because "this moves" is not a hover secret. */
+  .ds-media-thumb__cue {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--sa-icon-neutral-inverse);
+    background: transparent;
+    opacity: 0;
+    transition:
+      opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+  .ds-media-thumb:hover .ds-media-thumb__cue,
+  .ds-media-thumb:focus-visible .ds-media-thumb__cue,
+  .ds-media-thumb--video .ds-media-thumb__cue {
+    opacity: 1;
+    background: var(--sa-overlay-neutral-boldest);
+  }
+  .ds-media-thumb:hover .ds-media-thumb__img { transform: scale(1.05); }
+  /* Pressed: the hover zoom settles back, so a tap answers before the viewer opens. */
+  .ds-media-thumb:active .ds-media-thumb__img { transform: scale(1); }
+
+  .ds-media-thumb__glyph { display: inline-flex; }
+  .ds-media-thumb--fill.ds-media-thumb--video .ds-media-thumb__glyph {
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--sa-target-comfortable);
+    block-size: var(--sa-target-comfortable);
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-bg-neutral-base);
+    color: var(--sa-icon-neutral-base);
+    box-shadow: var(--sa-elevation-card);
+  }
+
+  .ds-media-thumb:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+  /* A filled thumbnail sits flush inside its card, which clips anything outside
+     it — so its ring is drawn inside the edge rather than lost to the clip. */
+  .ds-media-thumb--fill:focus-visible { outline-offset: calc(-1 * var(--sa-focus-width)); }
+
+  /* "+N": the items NOT shown. A solid paired fill, never a scrim, so its
+     contrast does not depend on the photograph underneath it. */
+  .ds-media-thumb__count {
+    position: absolute;
+    inset-block-end: var(--sa-padding-2);
+    inset-inline-end: var(--sa-padding-2);
+    padding-inline: var(--sa-padding-4);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-bg-neutral-bold);
+    color: var(--sa-on-bg-neutral-bold);
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: var(--sa-font-weight-medium);
+    letter-spacing: var(--sa-type-label-tracking);
+  }
+
+  .ds-media-thumb--empty {
+    border-style: dashed;
+    cursor: default;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-media-thumb__img,
+    .ds-media-thumb__cue { transition: none; }
+    .ds-media-thumb:hover .ds-media-thumb__img { transform: none; }
+  }
+  @media (forced-colors: active) {
+    .ds-media-thumb { border-color: ButtonText; }
+    .ds-media-thumb:focus-visible { outline-color: Highlight; }
+  }
+}
