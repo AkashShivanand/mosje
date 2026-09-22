@@ -188,3 +188,15 @@ The page now follows the live dosje.gov.in home order: banner → About with Min
 - axe finds 0 violations on `/website` at 1440 and 375.
 - There is no horizontal scroll at 320px or at 200% zoom.
 - Pictures: `pass4-*.jpg`.
+
+## 8. SAMAVESH band — creative-director review, 22 Sep 2026
+
+| # | Finding | Severity | Resolution |
+|---|---|---|---|
+| S1 | Full India Saffron band with near-black ink is the loudest surface on the page. It competes with the banner directly beneath and reads as a warning strip. | Major | Website uses the component's `tone="tint"`: pale saffron ground, saffron top rule and badge ring, 17.29:1 (was 6.5:1). Band and drawer now share one ground. |
+| S2 | "Choose a portal to visit" and "Find your portal" are sentence case (estate rule: Title Case). | Minor | Website passes `drawerTitle` and `viewAllLabel` in Title Case. **Open:** the component default and the Figma master are still sentence case and should move together. |
+| S3 | Green Explore button, green drawer heading and green link, with saffron portal codes and borders: three hues in one panel, and saffron and green on a pale ground sits close to a tricolour reading. | Minor | **Not changed.** The green is a recorded component decision (SAMAVESH's system colour; 6.72:1 on white text). Flagged for the design-system owner. |
+| S4 | Three portals show the national emblem in place of their own mark (e-Utthaan, e-Anudaan, SCW). | Minor | **Open:** needs the portals' marks. |
+| S5 | On a phone the drawer is eight full-width cards, about 2.5 screens. | Minor | **Open:** a compact phone variant of `PortalCard` would halve it. |
+
+The default tone (white on saffron, 2.91:1) still fails WCAG 1.4.3 for every other consumer of the component. axe finds 0 violations on `/website` after the change. Picture: `samavesh-band-before-after.jpg`.
