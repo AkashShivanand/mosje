@@ -154,6 +154,10 @@ export const FIGMA_NODES = {
   transferList: "57616:832",
   scheduleGrid: "57618:800",
   videoTile: "57620:781",
+  // "Media Thumbnail — Documentation", created 2026-09-22 on its own page after Figure. The set
+  // (58689:591) is Size 3 x Kind 3 x State 3 less Empty's two states per size = 21; it replaced
+  // five hand-drawn photo triggers in NMBA.
+  mediaThumbnail: "58690:447",
   cookieConsent: "57622:780",
   languageSwitcher: "57597:737",
   inlineEdit: "57599:772",

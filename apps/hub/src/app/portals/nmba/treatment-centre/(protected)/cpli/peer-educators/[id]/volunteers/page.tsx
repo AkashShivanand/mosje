@@ -8,7 +8,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { Divider, Alert, Button, FormField, Icon, Input, Modal, Search, SideSheet } from "@mosje/design-system";
+import { Alert, Button, FormField, Icon, Input, Modal, Search, SideSheet, SplitButton } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { useTCStore } from "@/lib/nmba/treatment-centre/store";
 import { DataTable, type ColumnDef } from "@/components/nmba/data-table";
@@ -55,19 +55,8 @@ function downloadBlob(content: string, mime: string, name: string) {
 // ---------------------------------------------------------------------------
 
 function ExportMenu({ rows, educatorId }: { rows: Row[]; educatorId: string }) {
-  const [open, setOpen] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
-  const ref = React.useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-
-  React.useEffect(() => {
-    if (!open) return;
-    const handler = (e: MouseEvent) => {
-      if (!ref.current?.contains(e.target as Node)) setOpen(false);
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, [open]);
 
   const handleCopy = async () => {
     try {
@@ -81,7 +70,6 @@ function ExportMenu({ rows, educatorId }: { rows: Row[]; educatorId: string }) {
   };
 
   const handleDownload = (fmt: "xls" | "csv") => {
-    setOpen(false);
     if (fmt === "csv") {
       downloadBlob(toCsv(rows), "text/csv;charset=utf-8;", `volunteers-${educatorId}.csv`);
     } else {
@@ -91,64 +79,21 @@ function ExportMenu({ rows, educatorId }: { rows: Row[]; educatorId: string }) {
   };
 
   return (
-    <div ref={ref} className="relative">
-      {/* Split button container */}
-      <div className="flex overflow-hidden rounded-lg border border-line bg-white">
-        {/* Left: Copy (primary action — executes immediately) */}
-        <button
-          type="button"
-          onClick={handleCopy}
-          className="inline-flex items-center gap-1.5 px-3 py-[7px] text-label-1 text-ink-muted transition-colors duration-150 hover:bg-surface-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-navy"
-        >
-          {copied ? (
-            <Icon name="check" size={14} className="text-green-600" aria-hidden />
-          ) : (
-            <Icon name="content_copy" size={14} aria-hidden />
-          )}
-          {copied ? "Copied!" : "Copy"}
-        </button>
-
-        {/* Divider */}
-        <Divider orientation="vertical" />
-
-        {/* Right: dropdown trigger (Excel / CSV only) */}
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-haspopup="menu"
-          aria-expanded={open}
-          aria-label="Export options"
-          className="inline-flex items-center px-2 py-[7px] transition-colors duration-150 hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-navy"
-        >
-          <Icon name="keyboard_arrow_down" size={14} className={`text-ink-muted transition-transform duration-150 ${open ? "rotate-180" : ""}`} aria-hidden />
-        </button>
-      </div>
-
-      {open && (
-        <div
-          role="menu"
-          aria-label="Export options"
-          className="absolute right-0 top-[calc(100%+4px)] z-20 min-w-44 overflow-hidden rounded-lg border border-line bg-white py-1 shadow-lg"
-        >
-          <button
-            role="menuitem"
-            type="button"
-            onClick={() => handleDownload("xls")}
-            className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-label-1 text-ink transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:bg-surface-muted"
-          >
-            <Icon name="table_chart" size={16} className="text-ink-muted" aria-hidden /> Export as Excel
-          </button>
-          <button
-            role="menuitem"
-            type="button"
-            onClick={() => handleDownload("csv")}
-            className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-label-1 text-ink transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:bg-surface-muted"
-          >
-            <Icon name="description" size={16} className="text-ink-muted" aria-hidden /> Export as CSV
-          </button>
-        </div>
-      )}
-    </div>
+    <SplitButton
+      label="Export options"
+      variant="neutral"
+      appearance="outlined"
+      size="sm"
+      iconLeft={<Icon name={copied ? "check" : "content_copy"} size={16} />}
+      onClick={handleCopy}
+      items={[
+        { id: "xls", label: "Export as Excel", icon: "table_chart" },
+        { id: "csv", label: "Export as CSV", icon: "description" },
+      ]}
+      onSelect={(id) => handleDownload(id === "csv" ? "csv" : "xls")}
+    >
+      {copied ? "Copied!" : "Copy"}
+    </SplitButton>
   );
 }
 

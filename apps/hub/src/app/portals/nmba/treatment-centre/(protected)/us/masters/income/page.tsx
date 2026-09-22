@@ -91,14 +91,15 @@ export default function USIncomeMasterPage() {
         searchKeys={["label", "value"]}
         fileName="income-slab-master"
         action={
-          <button
-            type="button"
+          <Button
+            tone="inverse"
+            size="sm"
+            iconLeft={<Icon name="add" size={16} />}
             aria-haspopup="dialog"
             onClick={handleOpenAdd}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-label-1 font-semibold text-navy transition hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
           >
-            <Icon name="add" size={16} aria-hidden /> Add New Income Slab
-          </button>
+            Add New Income Slab
+          </Button>
         }
       />
 

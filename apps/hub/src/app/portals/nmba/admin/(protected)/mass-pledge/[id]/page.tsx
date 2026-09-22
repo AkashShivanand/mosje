@@ -8,7 +8,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { Alert, ApprovalTimeline, Button, Card, EmptyState, FormField, GeoPhotoInput, Icon, Input, Lightbox, Modal, Textarea, formatCoordinates, type GeoPhoto } from "@mosje/design-system";
+import { Alert, ApprovalTimeline, Button, Card, EmptyState, formatCoordinates, FormField, GeoPhotoInput, Icon, Input, Lightbox, MediaThumbnail, Modal, Textarea, type GeoPhoto } from "@mosje/design-system";
 import { AdminShell } from "@/components/nmba/admin-shell";
 import { StatusBadge, VerificationBadge } from "@/components/nmba/mass-pledge/status-badge";
 import { useToast } from "@/components/nmba/toast";
@@ -276,18 +276,16 @@ export default function MassPledgeDetailPage() {
                     const located = photo.lat !== null && photo.lng !== null;
                     return (
                       <li key={photo.id}>
-                        <button
-                          type="button"
-                          onClick={() => setLightbox(i)}
-                          className="group w-full overflow-hidden rounded-lg border border-line text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy"
-                        >
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={photo.thumbDataUrl}
-                            alt={photo.originalName}
-                            className="aspect-[4/3] w-full object-cover"
-                          />
-                          <span className="flex items-center gap-1 px-2 py-1.5 text-body-3 text-ink-muted">
+                        <figure className="overflow-hidden rounded-lg border border-line">
+                          <div className="aspect-[4/3]">
+                            <MediaThumbnail
+                              size="fill"
+                              src={photo.thumbDataUrl}
+                              label={`View ${photo.originalName}`}
+                              onClick={() => setLightbox(i)}
+                            />
+                          </div>
+                          <figcaption className="flex items-center gap-1 px-2 py-1.5 text-body-3 text-ink-muted">
                             {located ? (
                               <>
                                 <Icon name="location_on" size={12} className="shrink-0" aria-hidden="true" />
@@ -301,8 +299,8 @@ export default function MassPledgeDetailPage() {
                                 <span className="text-await-fg">No location</span>
                               </>
                             )}
-                          </span>
-                        </button>
+                          </figcaption>
+                        </figure>
                       </li>
                     );
                   })}

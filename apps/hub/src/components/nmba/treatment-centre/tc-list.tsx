@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Icon, Search } from "@mosje/design-system";
+import { Button, Icon, Search } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { DataTable, type ColumnDef } from "@/components/nmba/data-table";
 
@@ -119,30 +119,36 @@ export function TCListPage<T extends Record<string, unknown>>({
             />
           </div>
           <div className="ml-auto flex items-center gap-1">
-            <button
-              type="button"
-              onClick={handleCopy}
+            <Button
+              variant="neutral"
+              appearance="text"
+              size="sm"
+              iconLeft={<Icon name="content_copy" size={16} />}
               aria-label={`Copy ${title} table to clipboard`}
-              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-label-2 font-semibold text-ink-muted transition-colors hover:bg-surface-muted"
+              onClick={handleCopy}
             >
-              <Icon name="content_copy" size={14} aria-hidden /> Copy
-            </button>
-            <button
-              type="button"
-              onClick={() => handleDownload("xls")}
+              Copy
+            </Button>
+            <Button
+              variant="neutral"
+              appearance="text"
+              size="sm"
+              iconLeft={<Icon name="table_chart" size={16} />}
               aria-label={`Export ${title} as an Excel spreadsheet`}
-              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-label-2 font-semibold text-ink-muted transition-colors hover:bg-surface-muted"
+              onClick={() => handleDownload("xls")}
             >
-              <Icon name="table_chart" size={14} aria-hidden /> Excel
-            </button>
-            <button
-              type="button"
-              onClick={() => handleDownload("csv")}
+              Excel
+            </Button>
+            <Button
+              variant="neutral"
+              appearance="text"
+              size="sm"
+              iconLeft={<Icon name="description" size={16} />}
               aria-label={`Export ${title} as CSV`}
-              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-label-2 font-semibold text-ink-muted transition-colors hover:bg-surface-muted"
+              onClick={() => handleDownload("csv")}
             >
-              <Icon name="description" size={14} aria-hidden /> CSV
-            </button>
+              CSV
+            </Button>
           </div>
         </div>
 

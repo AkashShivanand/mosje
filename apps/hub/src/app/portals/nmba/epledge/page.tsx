@@ -5,7 +5,7 @@ import { PublicShell } from "@/components/nmba/public-shell";
 import { PledgeForm } from "@/components/nmba/pledge-form";
 import { PLEDGE_TEXT_EN, PLEDGE_TEXT_HI, DASHBOARD_STATS } from "@/lib/nmba/mock-data";
 import { useToast } from "@/components/nmba/toast";
-import { Icon } from "@mosje/design-system";
+import { Button, ButtonGroup, Icon } from "@mosje/design-system";
 
 export default function EPledgePage() {
   const { toast } = useToast();
@@ -47,23 +47,14 @@ export default function EPledgePage() {
             <h2 className="text-title-2 text-navy">
               Nasha Mukt Bharat Abhiyaan Pledge
             </h2>
-            <div className="flex rounded-lg border border-navy/20 overflow-hidden text-label-2 font-semibold">
-              <button
-                onClick={() => setLang("en")}
-                aria-pressed={lang === "en"}
-                className={`px-3 py-1.5 transition-colors ${lang === "en" ? "bg-navy text-white" : "bg-white text-navy hover:bg-brandwash"}`}
-              >
+            <ButtonGroup attached aria-label="Pledge language">
+              <Button appearance="outlined" size="sm" aria-pressed={lang === "en"} onClick={() => setLang("en")}>
                 EN
-              </button>
-              <button
-                onClick={() => setLang("hi")}
-                aria-pressed={lang === "hi"}
-                lang="hi"
-                className={`px-3 py-1.5 transition-colors ${lang === "hi" ? "bg-navy text-white" : "bg-white text-navy hover:bg-brandwash"}`}
-              >
+              </Button>
+              <Button appearance="outlined" size="sm" aria-pressed={lang === "hi"} lang="hi" onClick={() => setLang("hi")}>
                 हिंदी
-              </button>
-            </div>
+              </Button>
+            </ButtonGroup>
           </div>
           <p lang={lang === "hi" ? "hi" : undefined} className="whitespace-pre-line text-body-2 text-ink">
             {lang === "en" ? PLEDGE_TEXT_EN : PLEDGE_TEXT_HI}
@@ -81,13 +72,15 @@ export default function EPledgePage() {
             <p className="mt-1 text-body-2 text-green-700">
               Download your certificate directly once the backend is connected.
             </p>
-            <button
+            <Button
+              variant="success"
+              appearance="outlined"
+              iconLeft={<Icon name="download" size={16} />}
               onClick={handleDownload}
-              className="mt-4 inline-flex items-center gap-2 rounded-lg border border-green-600 px-4 py-2 text-label-1 font-semibold text-green-700 hover:bg-green-100"
+              className="mt-4"
             >
-              <Icon name="download" size={16} />
               Download Certificate
-            </button>
+            </Button>
           </div>
         )}
       </div>

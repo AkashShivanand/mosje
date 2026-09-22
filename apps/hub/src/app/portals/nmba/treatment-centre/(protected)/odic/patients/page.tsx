@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Icon, Modal } from "@mosje/design-system";
+import { Button, Icon, Modal } from "@mosje/design-system";
 import { useTCStore } from "@/lib/nmba/treatment-centre/store";
 import { useTCSession } from "@/lib/nmba/treatment-centre/session-context";
 import { TCListPage } from "@/components/nmba/treatment-centre/tc-list";
@@ -54,13 +54,9 @@ export default function OdicPatientsPage() {
       key: "registrationNumber",
       header: "Registration Number",
       render: (r) => (
-        <button
-          type="button"
-          onClick={() => setViewing(r)}
-          className="font-mono text-navy hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy"
-        >
+        <Button appearance="text" size="sm" nowrap onClick={() => setViewing(r)}>
           {r.registrationNumber}
-        </button>
+        </Button>
       ),
     },
     { key: "treatmentCenter", header: "Treatment Center" },
@@ -79,13 +75,9 @@ export default function OdicPatientsPage() {
       header: "Action",
       noExport: true,
       render: (r) => (
-        <button
-          type="button"
-          onClick={() => setViewing(r)}
-          className="inline-flex items-center gap-1 rounded bg-navy/10 px-2 py-1 text-label-2 font-semibold text-navy hover:bg-navy/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy"
-        >
+        <Button appearance="outlined" size="sm" nowrap onClick={() => setViewing(r)}>
           View Details
-        </button>
+        </Button>
       ),
     },
   ];

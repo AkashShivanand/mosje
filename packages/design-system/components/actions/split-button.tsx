@@ -3,7 +3,9 @@
 import * as React from "react";
 import { Button, type ButtonProps } from "./button";
 import { ButtonGroup } from "./button-group";
+import { IconButton } from "./icon-button";
 import { Menu, type MenuEntry } from "./menu";
+import { Icon } from "../utilities/icon";
 
 export interface SplitButtonProps {
   /** The default action's label — the one most people want. */
@@ -22,6 +24,17 @@ export interface SplitButtonProps {
   label: string;
   /** @default "primary" */
   variant?: ButtonProps["variant"];
+  /**
+   * Prominence, exactly as on Button. @default "filled"
+   *
+   * Added 2026-09-22 for the quieter case — a Copy action with its export formats
+   * beside it in a table toolbar — which had been hand-built twice in NMBA because
+   * this component only came filled. Both halves take the same appearance; a pair
+   * whose halves disagree on weight reads as two unrelated controls.
+   */
+  appearance?: ButtonProps["appearance"];
+  /** A glyph before the default action's label, as on Button. Decorative. */
+  iconLeft?: React.ReactNode;
   /** @default "md" */
   size?: ButtonProps["size"];
   disabled?: boolean;
@@ -57,26 +70,30 @@ export function SplitButton({
   onSelect,
   label,
   variant = "primary",
+  appearance = "filled",
+  iconLeft,
   size = "md",
   disabled = false,
   className,
 }: SplitButtonProps): React.JSX.Element {
   return (
     <ButtonGroup aria-label={label} attached className={className}>
-      <Button variant={variant} size={size} disabled={disabled} onClick={onClick}>
+      <Button variant={variant} appearance={appearance} size={size} iconLeft={iconLeft} disabled={disabled} onClick={onClick}>
         {children}
       </Button>
       <Menu items={items} label={label} onSelect={onSelect} align="end" disabled={disabled}>
-        <Button
+        {/* The trigger has one glyph and no words, so it is an IconButton with a name
+            of its own — "Approve this application" would repeat the group's. The
+            glyph is the library Icon: until 2026-09-22 it was a "▾" text character,
+            which neither scaled with the icon ladder nor matched Figma. */}
+        <IconButton
+          icon={<Icon name="keyboard_arrow_down" size={16} />}
           variant={variant}
+          appearance={appearance}
           size={size}
           disabled={disabled}
-          // The trigger has one glyph and no words, so it needs a name of its
-          // own — "Approve this application" would repeat the group's.
           aria-label={`More ways to ${String(children).toLowerCase()}`}
-        >
-          <span aria-hidden>▾</span>
-        </Button>
+        />
       </Menu>
     </ButtonGroup>
   );

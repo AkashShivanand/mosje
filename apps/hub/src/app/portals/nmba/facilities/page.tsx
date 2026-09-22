@@ -6,7 +6,7 @@ import { PublicShell } from "@/components/nmba/public-shell";
 import { FACILITIES } from "@/lib/nmba/mock-data";
 import type { Facility } from "@/lib/nmba/types";
 import { useToast } from "@/components/nmba/toast";
-import { Icon } from "@mosje/design-system";
+import { Button, Icon } from "@mosje/design-system";
 
 const FacilityMap = dynamic(
   () => import("@/components/nmba/facility-map").then((m) => m.FacilityMap),
@@ -56,14 +56,15 @@ export default function FacilitiesPage() {
             className="w-full rounded-lg border border-line pl-9 pr-3 py-2 text-body-2 text-ink placeholder:text-ink-hint focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15"
           />
         </div>
-        <button
+        <Button
+          variant="neutral"
+          appearance="outlined"
+          iconLeft={<Icon name="location_on" size={16} />}
+          aria-label="Near Me — find facilities near my location"
           onClick={() => toast("Location access would be requested here.", "info")}
-          className="inline-flex items-center gap-2 rounded-lg border border-line bg-white px-4 py-2 text-label-1 text-ink hover:bg-surface-muted"
-          aria-label="Find facilities near my location"
         >
-          <Icon name="location_on" size={16} className="text-navy" />
           Near Me
-        </button>
+        </Button>
       </div>
 
       <FacilityMap facilities={filtered} legendCollapsible className="mb-6" />

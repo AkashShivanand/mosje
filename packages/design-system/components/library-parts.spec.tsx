@@ -6,6 +6,7 @@ import { ChartCard } from "./dashboard/chart-card";
 import { BulkActionsBar } from "./data-display/bulk-actions-bar";
 import { MetricCard } from "./data-display/metric-card";
 import { VideoTile } from "./data-display/video-tile";
+import { SplitButton } from "./actions/split-button";
 import { Chatbot } from "./feedback/chatbot";
 import { FeedbackWidget } from "./feedback/feedback-widget";
 import { DateRangePicker } from "./forms/date-range-picker";
@@ -99,6 +100,17 @@ describe("design-system components use the library parts", () => {
     );
     expect(out).toMatch(/class="ds-badge ds-badge--success ds-badge--sm[^"]*ds-metric-card__pill"/);
     expect(out).toMatch(/class="ds-badge ds-badge--danger ds-badge--sm[^"]*ds-metric-card__status"/);
+  });
+
+  it("SplitButton: the trigger is an IconButton with the library Icon, and appearance reaches both halves", () => {
+    const out = html(
+      <SplitButton label="Export options" variant="neutral" appearance="outlined" onClick={noop} items={[{ id: "csv", label: "CSV" }]} onSelect={noop}>
+        Copy
+      </SplitButton>,
+    );
+    expect(out).toMatch(/class="ds-btn ds-btn--neutral ds-btn--outlined ds-btn--md[^"]*"[^>]*>Copy/);
+    expect(out).toMatch(/class="ds-btn ds-btn--neutral ds-btn--outlined ds-btn--md[^"]*ds-icon-btn[^"]*"[\s\S]*keyboard_arrow_down/);
+    expect(out).not.toContain("▾");
   });
 
   it("VideoTile: the state word is a Badge, and live carries its dot", () => {

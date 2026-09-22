@@ -9424,6 +9424,57 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "MediaThumbnailProps": {
+    "source": "packages/design-system/components/data-display/media-thumbnail.tsx",
+    "inheritsNative": true,
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "REQUIRED. What pressing it does, naming what it opens — \"View 3 training photos\", \"View Camp at Bankura\". This is the control's only name: the image inside is decorative, because a thumbnail's alt text and its action are the same sentence and a screen reader should hear it once."
+      },
+      {
+        "name": "count",
+        "type": "number",
+        "required": false,
+        "description": "How many items this opens. Two or more draw a \"+N\" corner badge, N being the ones not shown."
+      },
+      {
+        "name": "emptyLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"No media\"",
+        "description": "The empty state's accessible name."
+      },
+      {
+        "name": "kind",
+        "type": "MediaThumbnailKind = \"image\" | \"video\"",
+        "required": false,
+        "default": "\"image\"",
+        "description": "A video draws a play glyph at all times; an image shows a zoom cue on hover and focus."
+      },
+      {
+        "name": "onClick",
+        "type": "React.MouseEventHandler<HTMLButtonElement>",
+        "required": false,
+        "description": "Opens the item — usually a `Lightbox` at this item's index. Not called for the empty tile, which is not a button."
+      },
+      {
+        "name": "size",
+        "type": "MediaThumbnailSize = \"sm\" | \"md\" | \"fill\"",
+        "required": false,
+        "default": "\"sm\"",
+        "description": "`sm` 64 × 48 for a table cell, `md` 80 × 60 for a list row, `fill` to take the whole of a card's media area — the card sets the shape."
+      },
+      {
+        "name": "src",
+        "type": "string",
+        "required": false,
+        "description": "The image, or a video's poster frame. Omit when there is nothing yet: the empty state renders instead, and it is not a button."
+      }
+    ]
+  },
   "MediaUploadProps": {
     "source": "packages/design-system/components/forms/media-upload.tsx",
     "inheritsNative": false,
@@ -15077,6 +15128,13 @@ export const GENERATED_PROPS = {
         "description": "Called with the chosen alternative's `id`."
       },
       {
+        "name": "appearance",
+        "type": "ButtonProps[\"appearance\"]",
+        "required": false,
+        "default": "\"filled\"\n\nAdded 2026-09-22 for the quieter case — a Copy action with its export formats\nbeside it in a table toolbar — which had been hand-built twice in NMBA because\nthis component only came filled. Both halves take the same appearance; a pair\nwhose halves disagree on weight reads as two unrelated controls.",
+        "description": "Prominence, exactly as on Button."
+      },
+      {
         "name": "className",
         "type": "string",
         "required": false,
@@ -15088,6 +15146,12 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "false",
         "description": ""
+      },
+      {
+        "name": "iconLeft",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A glyph before the default action's label, as on Button. Decorative."
       },
       {
         "name": "size",

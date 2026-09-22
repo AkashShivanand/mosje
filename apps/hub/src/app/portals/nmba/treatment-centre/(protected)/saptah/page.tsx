@@ -8,7 +8,7 @@
 //   MediaStack (table thumbnail cell) → page-local (wired to this page's lightbox state)
 
 import * as React from "react";
-import { Divider, Alert, Button, FormField, Icon, Input, Lightbox, MediaGalleryInput, Modal, Select, SideSheet, type GalleryMediaItem, type LightboxItem } from "@mosje/design-system";
+import { Alert, Button, Divider, FormField, Icon, Input, Lightbox, MediaGalleryInput, MediaThumbnail, Modal, Select, SideSheet, type GalleryMediaItem, type LightboxItem } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { useTCStore } from "@/lib/nmba/treatment-centre/store";
 import { useTCSession } from "@/lib/nmba/treatment-centre/session-context";
@@ -470,69 +470,17 @@ function ActivitySheet({
 // -------------------------------------------------------------------------
 
 function MediaBadge({ media, onOpen }: { media?: SaptahMedia[]; onOpen: (index: number) => void }) {
-  if (!media || media.length === 0) {
-    return (
-      <span
-        className="inline-flex h-10 w-14 items-center justify-center rounded-lg border border-dashed border-line bg-surface-muted text-ink-hint"
-        aria-label="No media uploaded"
-        title="No media"
-      >
-        <Icon name="photo_camera" size={16} aria-hidden />
-      </span>
-    );
-  }
-
-  const first = media[0];
-  if (!first) return null;
-  const isVideo = first.type === "video";
-
+  const first = media?.[0];
+  const isVideo = first?.type === "video";
   return (
-    <button
-      type="button"
+    <MediaThumbnail
+      src={first ? (isVideo ? (first.poster ?? first.url) : first.url) : undefined}
+      kind={isVideo ? "video" : "image"}
+      count={media?.length ?? 0}
+      label={`View ${media?.length ?? 0} attachment${(media?.length ?? 0) > 1 ? "s" : ""}`}
+      emptyLabel="No media uploaded"
       onClick={() => onOpen(0)}
-      aria-label={`View ${media.length} attachment${media.length > 1 ? "s" : ""}`}
-      className="group relative inline-block shrink-0 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-1"
-    >
-      {/* Thumbnail */}
-      <span
-        className="relative block overflow-hidden rounded-lg border border-line/60 shadow-sm transition-transform duration-150 group-hover:scale-105 group-hover:shadow-md"
-        style={{ width: 64, height: 48 }}
-      >
-        {/* data:/blob: URI (synthetic or uploaded media) — not next/image-loadable. */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={isVideo ? (first.poster ?? first.url) : first.url}
-          alt={first.name ?? `Attachment 1 of ${media.length}`}
-          width={64}
-          height={48}
-          className="block h-full w-full object-cover"
-          loading="lazy"
-        />
-        {/* Video → persistent play glyph; image → zoom-in on hover */}
-        <span
-          className={`absolute inset-0 flex items-center justify-center transition-colors duration-150 ${
-            isVideo ? "bg-black/30" : "bg-black/0 group-hover:bg-black/30"
-          }`}
-          aria-hidden
-        >
-          {isVideo ? (
-            <Icon name="play_arrow" size={16} className="text-white drop-shadow" fill />
-          ) : (
-            <Icon name="zoom_in" size={16} className="text-white opacity-0 drop-shadow transition-opacity duration-150 group-hover:opacity-100" />
-          )}
-        </span>
-      </span>
-
-      {/* Count badge — bottom-right corner, shown only for 2+ items */}
-      {media.length > 1 && (
-        <span
-          className="absolute -bottom-1.5 -right-1.5 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-navy px-1.5 text-label-2 font-bold text-white shadow ring-2 ring-white"
-          aria-hidden
-        >
-          +{media.length - 1}
-        </span>
-      )}
-    </button>
+    />
   );
 }
 
@@ -646,13 +594,9 @@ export default function SaptahPage() {
         searchKeys={["activity", "coordinatingDept", "treatmentCenter"]}
         fileName="nmb-saptah-2026"
         action={
-          <button
-            type="button"
-            onClick={openAdd}
-            className="inline-flex items-center rounded-lg bg-white px-4 py-2 text-label-1 font-semibold text-navy hover:bg-slate-100"
-          >
-            + Add New Activity
-          </button>
+          <Button tone="inverse" size="sm" iconLeft={<Icon name="add" size={16} />} onClick={openAdd}>
+            Add New Activity
+          </Button>
         }
       />
 

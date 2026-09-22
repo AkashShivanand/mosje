@@ -8,7 +8,7 @@ import * as React from "react";
 import { cn } from "@/lib/nmba/utils";
 import { ACCEPTED_UPLOAD_MIME, MAX_UPLOAD_BYTES } from "@/lib/nmba/committee/masters";
 import type { UploadedFile } from "@/lib/nmba/committee/types";
-import { Icon } from "@mosje/design-system";
+import { Icon, IconButton } from "@mosje/design-system";
 
 function formatSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
@@ -104,14 +104,15 @@ export function PdfUploadField({
                 View
               </a>
             )}
-            <button
-              type="button"
-              onClick={clear}
+            <IconButton
+              icon={<Icon name="close" size={16} />}
               aria-label="Remove file"
-              className="flex h-8 w-8 items-center justify-center rounded-full text-ink-muted hover:bg-black/5"
-            >
-              <Icon name="close" size={16} />
-            </button>
+              variant="neutral"
+              appearance="text"
+              size="sm"
+              shape="circle"
+              onClick={clear}
+            />
           </span>
         </div>
       ) : (
