@@ -1,4 +1,0 @@
-{
-  "kind": "Changed",
-  "text": "`SamaveshBanner`'s drawer no longer asks \"Are you an officer or administrator?\". Following the Secretary's review of 17 September 2026, the website header's single Login and this link both lead every reader to /portals, where each portal's sign-in chooses the role. `viewAllPrompt` now defaults to empty, and the new `showViewAll` (Figma: `View all`, on by default) switches the Find your portal link off. In Figma the six variants take their width from `ref/viewport/desktop` in the Viewport collection's Desktop XL mode, and both rows sit in a Container capped at `container/page` with `grid/margin/page` padding, matching `.sa-container`. The footer link is rebuilt from tokens and the library Icon."
-}
