@@ -1,4 +1,0 @@
-{
-  "kind": "Changed",
-  "text": "THE BUTTON'S ICON SIDE IS DOCUMENTED, AND FIGMA NOW DRAWS IT. A glyph is drawn inside its own bearing, so the side carrying one has stepped down a rung since 2026-09-03 — 24 to 16 at md and lg, 16 to 12 at sm, per side, with the spinner counting as a leading glyph. The rule was in the CSS and nowhere a reader would look: the Buttons page said nothing and the Figma masters padded both sides equally. The Button page now states it with the measurements, the Figma set draws it through a `label` frame that carries the difference, and the documentation frame's new section 08 is pinned to the CSS by check:figma-docs. The rendered component is unchanged."
-}
