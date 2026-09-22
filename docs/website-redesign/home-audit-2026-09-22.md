@@ -134,3 +134,34 @@ Content errors on the page:
 - 684 unit tests pass.
 - Gates pass: typecheck, stylelint, eslint, `check:props`, breakpoints, website links, link-as, chrome, shadow-ui, icon scale, template adoption, sidebar adoption and ds-pages.
 - An independent critique (a separate agent that did not build the page) was run, and its findings were applied as described above.
+
+## 6. DBIM, GIGW and design-system pass — 22 Sep 2026
+
+The layout is unchanged except for the banner and ticker added at the top. The other changes put design-system components and tokens in place of hand-built parts. Pictures: `shots/home-audit/pass3-*.jpg`.
+
+| Item | Before | After |
+|---|---|---|
+| DBIM §A.4.1 ii, §7.4.1 — top banner carousel, CCPS banner first | None | `Carousel` at 1800×600. The first slide is the CCPS banner, read from the feed where one is configured and otherwise from a copy of what dosje.gov.in serves (Mann Ki Baat, as on 22 Sep 2026, `lib/website-next/ccps.ts`). Then the live site's four banners. No auto-advance. |
+| DBIM §A.4.1 iii — announcements ticker | None | The design-system `Ticker`, showing the newest What's New items with their kind and issuer. It can be paused and stops under reduced motion. |
+| DBIM §3.7 — icons in the darkest shade or white | Glyphs in rung 600 | White glyphs on the key colour's darkest shade, inside `ActionTile`. |
+| DBIM §2.1 — one primary colour group | Campaign band on India green | Campaign band on the brand tint. The green stays in the NMBA mark only. |
+| DBIM §A.4.1 vi — five of each | 3 tenders, 3 vacancies | 5 and 5 |
+| DBIM §A.4.1 viii — Recent Documents | Annual Reports only | The four latest documents of every citizen-facing type, plus links to the five document collections |
+| GIGW — bilingual | Hindi set `lang="hi"` and translated nothing on the page | The page's own copy is opted into Bhashini through `<T>` (verified: the strings reach `/api/bhashini/translate`). Register text is marked `lang="en"`. Real Hindi needs the Bhashini key on the deployment. |
+| Language dialog | Right column overflowed the dialog by 4px | `minmax(0, 1fr)`, so options wrap |
+| Reflow at 320px | 6px horizontal scroll (hero grid) | None |
+| Hand-built surfaces | Section bands, task/group/role/helpline/document/social tiles, the figures and type labels | `Band` (gains `brandBold` and `xl`), new `ActionTile`, `FactStrip` (gains `note`), `Badge` |
+| Typed values equal to tokens | 1.5rem, 0.8 opacity, and 40/48/64/44px boxes | Gone from the page; the tile sizes bind `--sa-icon-size-*` inside `ActionTile` |
+
+**Kept hand-built, and why:**
+- **The hero search** stays a plain GET form. The design-system `Search` is a controlled client component, and this form must work before any script loads.
+- **The Minister cards** stay page-built. `Avatar` stops at 48px.
+- **The link lists** stay plain `next/link` lists. The design-system `Link` has no router support.
+
+**Checks:** axe finds 0 violations on `/website` at 1440 and 375. In the keyboard pass every tile is one Tab stop with a visible ring. There is no horizontal scroll at 320px or at 200% zoom, and `npm run check` passes.
+
+**Still open:**
+- **Needs a person:** the Bhashini key on the deployment, a CCPS subscription (the snapshot stands in until then), an authorised PM Quote, and one headshot set (DBIM §6.1.4).
+- **`ActionTile` has no Figma master yet**; it is recorded in design.md.
+- **The SAMAVESH band's default tone still fails contrast** (2.91:1) wherever another page uses it.
+- **Source-register typos are shown as published**, for example "31st Sugust".

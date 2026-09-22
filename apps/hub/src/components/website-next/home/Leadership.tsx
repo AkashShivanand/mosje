@@ -1,6 +1,7 @@
+import { T } from "@/components/i18n/translation-provider";
 import Image from "next/image";
 import Link from "next/link";
-import { Icon, SectionTitle } from "@mosje/design-system";
+import { Band, Icon, SectionTitle } from "@mosje/design-system";
 import { MANDATE } from "./facts";
 
 /**
@@ -11,7 +12,9 @@ import { MANDATE } from "./facts";
  * The divisions list replaces the classic "Important Links" wall tab, which
  * covered content on a phone (MOB-04): the same division pages, in the page.
  * Portrait names and designations are the alt text (ACC-04). One portrait set
- * to one specification is still owed by the Department (BRD-07).
+ * to one specification is still owed by the Department (BRD-07, DBIM §6.1.4).
+ * The cards are this page's own: the design system's Avatar stops at 48px, and
+ * a Minister's headshot is not an avatar.
  */
 const MINISTERS = [
   {
@@ -63,65 +66,64 @@ const DIVISIONS = [
 
 export function Leadership() {
   return (
-    <section
-      className="wn-home-band wn-home-band--tint"
-      aria-labelledby="about-title"
-    >
-      <div className="sa-container">
-        <div className="wn-home-about">
-          <div className="wn-home-about__copy">
-            <SectionTitle
-              size="display"
-              headingId="about-title"
-              title="About the Department"
-            />
-            <p className="wn-home-about__lead">{MANDATE}</p>
-            <ul className="wn-home-about__links">
-              {LINKS.map((l) => (
-                <li key={l.href}>
-                  <Link href={l.href}>
-                    <span>{l.label}</span>
-                    <Icon name="arrow_forward" size={20} aria-hidden />
+    <Band as="section" tone="muted" spacing="xl" aria-labelledby="about-title">
+      <div className="wn-home-about">
+        <div className="wn-home-about__copy">
+          <SectionTitle
+            size="display"
+            headingId="about-title"
+            title={<T>About the Department</T>}
+          />
+          <p className="wn-home-about__lead">{MANDATE}</p>
+          <ul className="wn-home-links">
+            {LINKS.map((l) => (
+              <li key={l.href}>
+                <Link href={l.href} className="wn-home-link">
+                  <span className="wn-home-link__label">
+                    <T>{l.label}</T>
+                  </span>
+                  <Icon name="chevron_right" size={20} aria-hidden />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="wn-home-about__side">
+          <ul className="wn-home-ministers" aria-label="Ministers">
+            {MINISTERS.map((m) => (
+              <li key={m.name} className="wn-home-minister">
+                <span className="wn-home-minister__photo">
+                  <Image
+                    src={m.img}
+                    alt={`${m.name}, ${m.role}`}
+                    width={200}
+                    height={200}
+                  />
+                </span>
+                <span className="wn-home-minister__name">{m.name}</span>
+                <span className="wn-home-minister__role">{m.role}</span>
+              </li>
+            ))}
+          </ul>
+          <nav className="wn-home-divisions" aria-labelledby="divisions-title">
+            <h3 id="divisions-title" className="wn-home-divisions__title">
+              <T>Divisions of the Department</T>
+            </h3>
+            <ul className="wn-home-links wn-home-links--two">
+              {DIVISIONS.map((d) => (
+                <li key={d.href}>
+                  <Link href={d.href} className="wn-home-link">
+                    <span className="wn-home-link__label">
+                      <T>{d.label}</T>
+                    </span>
+                    <Icon name="chevron_right" size={20} aria-hidden />
                   </Link>
                 </li>
               ))}
             </ul>
-          </div>
-          <div className="wn-home-about__side">
-            <ul className="wn-home-ministers" aria-label="Ministers">
-              {MINISTERS.map((m) => (
-                <li key={m.name} className="wn-home-minister">
-                  <span className="wn-home-minister__photo">
-                    <Image
-                      src={m.img}
-                      alt={`${m.name}, ${m.role}`}
-                      width={200}
-                      height={200}
-                    />
-                  </span>
-                  <span className="wn-home-minister__name">{m.name}</span>
-                  <span className="wn-home-minister__role">{m.role}</span>
-                </li>
-              ))}
-            </ul>
-            <nav
-              className="wn-home-divisions"
-              aria-labelledby="divisions-title"
-            >
-              <h3 id="divisions-title" className="wn-home-divisions__title">
-                Divisions of the Department
-              </h3>
-              <ul>
-                {DIVISIONS.map((d) => (
-                  <li key={d.href}>
-                    <Link href={d.href}>{d.label}</Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </div>
+          </nav>
         </div>
       </div>
-    </section>
+    </Band>
   );
 }

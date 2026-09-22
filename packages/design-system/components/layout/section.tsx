@@ -5,10 +5,13 @@ import "./section.css";
 export interface SectionTitleProps {
   /** Small uppercase kicker above the title. */
   eyebrow?: string;
-  /** The section heading text. */
-  title?: string;
-  /** Supporting sentence below the title. */
-  description?: string;
+  /**
+   * The section heading text. A node, so a translated string (`<T>`) can be
+   * passed; it renders inside the heading, so keep it phrasing content.
+   */
+  title?: React.ReactNode;
+  /** Supporting sentence below the title. Phrasing content, like `title`. */
+  description?: React.ReactNode;
   /** Count pill rendered beside the title (e.g. number of rows). */
   count?: number | string;
   /**

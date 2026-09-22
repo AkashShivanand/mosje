@@ -20,7 +20,10 @@
 
   @media (min-width: 768px) {
     .lang-dialog__list {
-      grid-template-columns: 1fr 1fr;
+      /* minmax(0, …): a plain 1fr cannot shrink below its longest option
+         ("മലയാളം Malayalam Live site"), which pushed the right column 4px past
+         the dialog's edge at every width. */
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
@@ -29,9 +32,11 @@
     align-items: baseline;
     gap: var(--sa-inline-8);
     width: 100%;
+    min-width: 0;
+    flex-wrap: wrap;
     /* 48px of height at rest — the estate's touch target, and these rows carry
        scripts a reader may be squinting at. */
-    min-height: 48px;
+    min-height: var(--sa-target-spacious);
     padding: var(--sa-padding-12) var(--sa-padding-16);
     border: 1px solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-8);

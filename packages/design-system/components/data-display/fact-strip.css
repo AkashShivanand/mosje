@@ -316,6 +316,14 @@
     margin-bottom: 0;
   }
 
+  .ds-fact-strip__note {
+    order: 3;
+    margin: var(--sa-stack-4) 0 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
   .ds-fact-strip--extended .ds-fact-strip__value {
     grid-column: 2;
     grid-row: 1;
@@ -331,6 +339,8 @@
      */
     font-variant-numeric: tabular-nums;
   }
+
+  .ds-fact-strip--extended .ds-fact-strip__note { grid-column: 2; grid-row: 3; }
 
   .ds-fact-strip--extended .ds-fact-strip__label {
     grid-column: 2;

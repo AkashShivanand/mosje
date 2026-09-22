@@ -924,6 +924,14 @@ export type {
   IllustrationTier,
   SceneName,
 } from "./components/brand/illustration";
+export { ActionTile } from "./components/navigation/action-tile";
+export type {
+  ActionTileProps,
+  ActionTileLayout,
+  ActionTileTone,
+  ActionTileShape,
+  ActionTileMediaSize,
+} from "./components/navigation/action-tile";
 export { PortalCard } from "./components/navigation/portal-card";
 export type { PortalCardProps, PortalCardVariant } from "./components/navigation/portal-card";
 export {

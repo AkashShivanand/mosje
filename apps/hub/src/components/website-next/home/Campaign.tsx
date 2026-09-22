@@ -1,19 +1,32 @@
+import { T } from "@/components/i18n/translation-provider";
 import Image from "next/image";
 import Link from "next/link";
-import { Icon, buttonClasses, orgLogoSrc } from "@mosje/design-system";
+import {
+  Band,
+  Icon,
+  SectionTitle,
+  buttonClasses,
+  orgLogoSrc,
+} from "@mosje/design-system";
 
 /**
- * The Department's national campaign, Nasha Mukt Bharat Abhiyaan, as its own
- * band rather than a slide in a carousel (issue ACC-11).
+ * The national campaign band — Nasha Mukt Bharat Abhiyaan.
  *
- * No pledge counts: they were typed snapshots with no live source on this site,
- * and a figure without a source does not go on the page (live-data-fallback.md).
- * Helpline 14446: Annual Report 2025-26 §3.15.
+ * On the brand's own tint, not the campaign's green: DBIM §2.1 asks for one
+ * primary colour group used consistently, so the campaign's colour lives in
+ * its own mark and photograph, not in the page. No pledge counts: they were
+ * typed snapshots with no live source on this site. Helpline 14446: Annual
+ * Report 2025-26 §3.15.
  */
 export function Campaign() {
   return (
-    <section className="wn-home-campaign" aria-labelledby="campaign-title">
-      <div className="sa-container wn-home-campaign__grid">
+    <Band
+      as="section"
+      tone="brand"
+      spacing="xl"
+      aria-labelledby="campaign-title"
+    >
+      <div className="wn-home-campaign__grid">
         <div className="wn-home-campaign__media">
           <Image
             src="/website/content/organisation/nmba-gallery-youth-awareness.jpg"
@@ -24,20 +37,37 @@ export function Campaign() {
           />
         </div>
         <div className="wn-home-campaign__copy">
-          <Image src={orgLogoSrc("nmba")} alt="" width={56} height={56} className="wn-home-campaign__mark" />
-          <h2 id="campaign-title" className="wn-home-campaign__title">
-            Nasha Mukt Bharat Abhiyaan
-          </h2>
-          <p className="wn-home-campaign__lead">
-            The national campaign for a drug-free India. Take the pledge, volunteer as a Nasha Mukti Mitr, or
-            find a de-addiction centre near you.
-          </p>
+          <Image
+            src={orgLogoSrc("nmba")}
+            alt=""
+            width={64}
+            height={64}
+            className="wn-home-campaign__mark"
+          />
+          <SectionTitle
+            size="display"
+            headingId="campaign-title"
+            title={<T>Nasha Mukt Bharat Abhiyaan</T>}
+            description={
+              <T>
+                The national campaign for a drug-free India. Take the pledge,
+                volunteer as a Nasha Mukti Mitr, or find a de-addiction centre
+                near you.
+              </T>
+            }
+          />
           <div className="wn-home-campaign__actions">
-            <Link href="/portals/nmba/epledge" className={buttonClasses("primary", "filled", "md", undefined, "inverse")}>
-              Take the Pledge
+            <Link
+              href="/portals/nmba/epledge"
+              className={buttonClasses("primary", "filled", "md")}
+            >
+              <T>Take the Pledge</T>
             </Link>
-            <Link href="/website/de-addiction-centres" className={buttonClasses("primary", "outlined", "md", undefined, "inverse")}>
-              Find a De-addiction Centre
+            <Link
+              href="/website/de-addiction-centres"
+              className={buttonClasses("primary", "outlined", "md")}
+            >
+              <T>Find a De-addiction Centre</T>
             </Link>
           </div>
           <p className="wn-home-campaign__help">
@@ -48,6 +78,6 @@ export function Campaign() {
           </p>
         </div>
       </div>
-    </section>
+    </Band>
   );
 }

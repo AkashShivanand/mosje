@@ -10,6 +10,11 @@ export interface FactStripItem {
   value: string;
   /** What the fact is — "Headquarters", "Components". Rendered small. */
   label: string;
+  /**
+   * The published caption beneath the label — "Provisional, 14.3% above the
+   * previous year". Optional; a fact that needs no qualification carries none.
+   */
+  note?: string;
 }
 
 /**
@@ -148,6 +153,7 @@ export function FactStrip({
             </span>
             <dt className="ds-fact-strip__label">{item.label}</dt>
             <dd className="ds-fact-strip__value">{item.value}</dd>
+            {item.note && <dd className="ds-fact-strip__note">{item.note}</dd>}
           </div>
         ))}
       </dl>

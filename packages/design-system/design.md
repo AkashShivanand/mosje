@@ -3480,6 +3480,18 @@ and renders it only when `exportable`.
 - **THREE GAPS IN THE ARTWORK, recorded rather than papered over.** NCSK, DAF, DWBDNC and SCW share one image hash (the State Emblem) — a correct fallback, but if any has its own crest it was never supplied. DAIC carries two stacked image fills. SAMBAL had no usable export until 2026-08-31: its device sat under a 74-node, one-text-node-per-character strapline inside the 56px box, so it had never been exported and `/portals/nhapoa` fell back to the emblem. Repaired in the library and exported; do not re-add a strapline at this size.
 - **The fallback is the State Emblem and it is CORRECT, not a placeholder.** A portal with no bespoke mark is still a Government of India property. Never substitute a grey box, an initial or a generic icon — which is exactly what `/portals` did, drawing a derived two-letter code in a coloured box where the department has an actual crest.
 
+#### ActionTile
+**Purpose**: One destination as a tile — a task on a home page, a group of people a scheme serves, a role, an account to follow, a helpline to call, a report to open. Added for the website home page (2026-09-22), which had grown six hand-built tiles differing only in arrangement.
+**Key props**: `href`, `title`, `description`, `value`, `media`, `mediaSize` (40 · 48 · 64 · 88), `action`, `layout` (`row` · `stack` · `block`), `tone` (`default` · `tint` · `solid` · `inverse`), `shape` (`card` · `pill`), `external`, `trailing`, `linkAs`
+**Rules**:
+- **One link, one tab stop, one name.** The whole tile is the anchor; nothing inside it is separately interactive. `action` ("Call") is TEXT saying what the link does, not a second control.
+- **Pass `linkAs={Link}`** — without it every internal tile is a full document load (`check:link-as`).
+- **Glyphs are white on the key colour's darkest shade** (DBIM §3.7 allows the darkest shade or white; the semantic layer has no icon token at the darkest shade). An `<img>` in the well gets a light brand ground instead, for illustrated figures.
+- **Choose `tone` by the GROUND the tile sits on**: `default`/`tint` on white or pale bands, `solid` for the one tile that must lead a light grid, `inverse` on a navy band.
+- **`value` renders in `block` layout only** — a helpline number beside its glyph. `pill` applies to `row` only.
+- **Not `PortalCard`** (a portal, with its saffron rule and code) **and not `Card`** (content, not a destination).
+- **Figma**: code-only at present — no library master yet. Recorded as an open item; a designer places the nearest drawn tile and names `ActionTile` in the handoff note.
+
 #### PortalCard
 **Purpose**: One portal in a grid of them, in two densities. Used by the SAMAVESH banner drawer, the `/portals` directory, and the change-portal side sheet on a login page.
 **Key props**: `variant`, `code`, `name`, `href`, `path`, `org`, `description`, `category`, `ctaLabel`, `selected`, `external`

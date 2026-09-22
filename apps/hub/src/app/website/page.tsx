@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import { Masthead } from "@/components/website-next/chrome/Masthead";
 import { SamaveshBand } from "@/components/website-next/chrome/SamaveshBand";
 import { WebsiteFooter } from "@/components/website-next/chrome/Footer";
+import { Banner } from "@/components/website-next/home/Banner";
+import { Announcements } from "@/components/website-next/home/Announcements";
 import { Hero } from "@/components/website-next/home/Hero";
+import { whatsNew } from "@/lib/website-next/whats-new";
+import { formatDate, isoDate } from "@/components/website-next/ui/format";
 import { WhatsNew } from "@/components/website-next/home/WhatsNew";
 import { Audiences } from "@/components/website-next/home/Audiences";
 import { Offerings } from "@/components/website-next/home/Offerings";
@@ -17,7 +21,8 @@ import "@/components/website-next/home/home.css";
 
 export const metadata: Metadata = {
   // The tab title starts with the page h1 (issue SEO-06, GIGW).
-  title: "Find Schemes, Services and Support | Department of Social Justice & Empowerment",
+  title:
+    "Find Schemes, Services and Support | Department of Social Justice & Empowerment",
   description:
     "Schemes, services and support from the Department of Social Justice & Empowerment for Scheduled Castes, Other Backward Classes, senior citizens, transgender persons and other groups.",
 };
@@ -31,7 +36,10 @@ const JSON_LD = {
     {
       "@type": "GovernmentOrganization",
       name: "Department of Social Justice & Empowerment",
-      parentOrganization: { "@type": "GovernmentOrganization", name: "Ministry of Social Justice & Empowerment, Government of India" },
+      parentOrganization: {
+        "@type": "GovernmentOrganization",
+        name: "Ministry of Social Justice & Empowerment, Government of India",
+      },
       url: "https://dosje.gov.in/",
       address: {
         "@type": "PostalAddress",
@@ -40,7 +48,12 @@ const JSON_LD = {
         postalCode: "110023",
         addressCountry: "IN",
       },
-      sameAs: ["https://www.facebook.com/goimsje", "https://x.com/msjegoi", "https://www.instagram.com/msjegoi", "https://www.youtube.com/@ministryofsocialjustice511"],
+      sameAs: [
+        "https://www.facebook.com/goimsje",
+        "https://x.com/msjegoi",
+        "https://www.instagram.com/msjegoi",
+        "https://www.youtube.com/@ministryofsocialjustice511",
+      ],
     },
     {
       "@type": "WebSite",
@@ -57,14 +70,30 @@ const JSON_LD = {
  * Every section the live home page carries, in the order a citizen needs it
  * (independent review, 22 Sep 2026: helplines and Ministers moved up).
  */
-export default function Home() {
+export default async function Home() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
+      />
       <Masthead />
       {/* Site-wide chrome, so it sits between the masthead and <main>. */}
       <SamaveshBand />
       <main id="content" tabIndex={-1} className="wn-main">
+        <Banner />
+        <Announcements
+          items={whatsNew()
+            .slice(0, 6)
+            .map((n) => ({
+              id: n.key,
+              title: n.title,
+              description: n.org ? `${n.kind} · ${n.org}` : n.kind,
+              date: formatDate(n.date),
+              dateTime: isoDate(n.date),
+              href: n.href,
+            }))}
+        />
         <Hero />
         <WhatsNew />
         <Helplines />

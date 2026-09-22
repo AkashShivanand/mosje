@@ -81,6 +81,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "notifications"
   },
   {
+    "title": "Action Tile",
+    "section": "Navigation",
+    "href": "/design-system/components/navigation/action-tile",
+    "keywords": "action tile navigation   tokens wcag accessibility",
+    "description": "One destination as a tile: a task, a group of people, a role, an account, a helpline or a report.",
+    "type": "component",
+    "iconName": "navigation"
+  },
+  {
     "title": "AI design context (design.md)",
     "section": "Resources",
     "href": "/design-system/resources/design-context",
