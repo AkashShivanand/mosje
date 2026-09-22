@@ -3,7 +3,7 @@
   "indexPage": "56757:725",
   "indexFrame": "56757:726",
   "capturedOn": "2026-09-22",
-  "statLine": "99 pages · 209 components · counted 22 September 2026",
+  "statLine": "98 pages · 209 components · counted 22 September 2026",
   "statuses": [
     "Ready",
     "Published",
@@ -16,8 +16,7 @@
     "Older format"
   ],
   "excludedPages": {
-    "Changelog & Governance": "An empty page. Recorded as open item 03 on `Index — Component record`; New in 2.0 carries the change log instead.",
-    "Archive — Deprecated": "Holds 24 retired masters (⛔, \"deprecated, do not place\") moved off their component pages on 22 September 2026, so the live pages carry only what may be placed. A retired component gets no Index card: a card is a route to something to use."
+    "Changelog & Governance": "An empty page. Recorded as open item 03 on `Index — Component record`; New in 2.0 carries the change log instead."
   },
   "pageExclusionRules": {
     "divider": "-------------------------------",
@@ -35,8 +34,10 @@
     ],
     "special": [
       "Thumbnail",
-      "Index"
-    ]
+      "Index",
+      "Archive — Deprecated"
+    ],
+    "$note": "`Archive — Deprecated` (2026-09-22) is scaffolding: it holds retired masters that nothing new may place, so it has no card."
   },
   "contentPages": [
     "Get Started",
@@ -136,8 +137,7 @@
     "Sidebar",
     "Portal Login Template",
     "Screen Templates",
-    "Roadmap",
-    "Archive — Deprecated"
+    "Roadmap"
   ],
   "groups": [
     {
