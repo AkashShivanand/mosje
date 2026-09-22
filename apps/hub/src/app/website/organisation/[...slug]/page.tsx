@@ -182,7 +182,7 @@ function slugify(text: string) {
 }
 
 export function generateStaticParams() {
-  return getOrganisations().map((o) => ({ slug: o.slug.split("/") }));
+  return getOrganisations().map((o) => ({ slug: o.slug.split("/") })).slice(0, 0); // rendered on first visit, not at build — free-tier budget, see documents/[slug]/page.tsx
 }
 
 export async function generateMetadata({

@@ -7,7 +7,7 @@ import { socialCard } from "@/lib/seo/social";
 
 /** 312 tenders — every one is prerendered. */
 export function generateStaticParams() {
-  return getTenders().map((t) => ({ slug: t.slug }));
+  return getTenders().map((t) => ({ slug: t.slug })).slice(0, 0); // rendered on first visit, not at build — free-tier budget, see documents/[slug]/page.tsx
 }
 
 export async function generateMetadata(
