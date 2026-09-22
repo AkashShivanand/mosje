@@ -10,7 +10,7 @@ import { socialCard } from "@/lib/seo/social";
 
 /** 452 officers — every one is prerendered; the set is small and fully linked. */
 export function generateStaticParams() {
-  return getOfficials().map((o) => ({ slug: o.slug }));
+  return getOfficials().map((o) => ({ slug: o.slug })).slice(0, 0); // rendered on first visit, not at build — free-tier budget, see documents/[slug]/page.tsx
 }
 
 export async function generateMetadata(

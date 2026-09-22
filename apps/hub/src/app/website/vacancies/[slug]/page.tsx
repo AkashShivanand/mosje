@@ -7,7 +7,7 @@ import { socialCard } from "@/lib/seo/social";
 
 /** 163 vacancies — every one is prerendered. */
 export function generateStaticParams() {
-  return getVacancies().map((v) => ({ slug: v.slug }));
+  return getVacancies().map((v) => ({ slug: v.slug })).slice(0, 0); // rendered on first visit, not at build — free-tier budget, see documents/[slug]/page.tsx
 }
 
 export async function generateMetadata(
