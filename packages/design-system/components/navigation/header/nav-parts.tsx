@@ -28,7 +28,6 @@ import "./header.css";
    ========================================================================== */
 
 const IcCaret = () => <Icon name="keyboard_arrow_down" size={16} className="ds-hdr-ic" />;
-const IcMegaChevron = () => <Icon name="chevron_right" size={24} className="ds-hdr-ic" />;
 
 /** WCAG 3.2.5 — a link that leaves the tab has to say so, visibly and to AT. */
 export const NewTabHint = (): React.JSX.Element => (
@@ -272,7 +271,6 @@ export function MegaMenuItem({ item, onSelect, linkAs, className }: MegaMenuItem
         <span className="ds-hdr-mega-item__abbr">{item.abbr}</span>
         <span className="ds-hdr-mega-item__name">{item.name}</span>
       </span>
-      <IcMegaChevron />
     </Tag>
   );
 }
@@ -351,12 +349,10 @@ export function NavItemLink({ item, open = false, onOpenChange, linkAs, classNam
   const CLOSE_MS = 300;
   const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const liRef = React.useRef<HTMLLIElement>(null);
-  const linkRef = React.useRef<HTMLAnchorElement>(null);
-  /* An entry that OWNS a menu carries `href="#"`, so `navLinkTag` returns a plain
-     anchor for it and the router element is never handed a non-destination. Where an
-     entry has both a menu and a real page, the `onClick` below calls
-     `preventDefault()` and `next/link` honours that — it does not navigate on an
-     already-defaulted event. */
+  const linkRef = React.useRef<HTMLElement>(null);
+  /* The tag for an entry WITHOUT a menu. An entry that owns a menu renders a
+     `<button>` instead (below), so the router element is never handed a
+     non-destination; its page, where it has one, is the panel's overview row. */
   const Tag: NavTag = item.disabled
     ? ("span" as NavTag)
     : navLinkRoutes(item, linkAs)
@@ -400,7 +396,7 @@ export function NavItemLink({ item, open = false, onOpenChange, linkAs, classNam
    * ARROW KEYS INTO AND AROUND THE PANEL.
    *
    * This is the ARIA Disclosure Navigation pattern, which is why the trigger is a
-   * link and not a `menuitem` — but APG's own note is that arrow support is what
+   * `<button aria-expanded>` and not a `menuitem` — but APG's own note is that arrow support is what
    * makes a large disclosure usable, and the organisations panel runs to thirty
    * rows. Without it the only way past "Associated Organisations" to "Offerings"
    * was thirty presses of Tab. Tab still walks the panel exactly as before; these
@@ -482,38 +478,47 @@ export function NavItemLink({ item, open = false, onOpenChange, linkAs, classNam
       onMouseLeave={() => hasMenu && schedule(false, CLOSE_MS)}
       onKeyDown={onKeyDown}
     >
-      <Tag
-        ref={linkRef}
-        href={item.disabled ? undefined : item.href}
-        {...navDisabledAria(item.disabled)}
-        className={cn(
-          "ds-hdr-nav__link",
-          item.active && "is-active",
-          item.disabled && "is-disabled",
-        )}
-        aria-disabled={item.disabled || undefined}
-        target={item.external && !item.disabled ? "_blank" : undefined}
-        rel={item.external && !item.disabled ? "noreferrer" : undefined}
-        aria-expanded={hasMenu ? open : undefined}
-        aria-controls={hasMenu && open ? dropId : undefined}
-        /* "page" only when this entry IS a page. An entry that owns a menu carries
-           `href="#"` and is a SECTION — it is active because the reader is somewhere
-           beneath it, not because they are on it. Announcing "current page" there
-           names a destination that does not exist; `true` says "the current one of
-           these", which is what is true. */
-        aria-current={item.active ? (hasMenu ? true : "page") : undefined}
-        onClick={(e) => {
-          if (hasMenu) {
-            e.preventDefault();
+      {hasMenu ? (
+        /* A MENU TRIGGER IS A BUTTON (ACC-12, 2026-09-22). It was `<a href="#">` that
+           cancelled its own click, so a screen reader announced "link" for a control
+           that goes nowhere — the APG disclosure-navigation pattern uses a button, and
+           NavSheet's group rows already did. The section's own page is still reachable:
+           `NavOverview` offers it as the panel's first row. */
+        <button
+          ref={linkRef as React.Ref<HTMLButtonElement>}
+          type="button"
+          className={cn("ds-hdr-nav__link", item.active && "is-active")}
+          aria-expanded={open}
+          aria-controls={open ? dropId : undefined}
+          /* `true`, not "page": the reader is somewhere beneath this section, not on it. */
+          aria-current={item.active ? true : undefined}
+          onClick={() => {
             clear();
             onOpenChange?.(!open);
-          }
-        }}
-      >
-        {item.label}
-        {hasMenu && <IcCaret />}
-        {item.external && !item.disabled && <NewTabHint />}
-      </Tag>
+          }}
+        >
+          {item.label}
+          <IcCaret />
+        </button>
+      ) : (
+        <Tag
+          ref={linkRef as React.Ref<HTMLAnchorElement>}
+          href={item.disabled ? undefined : item.href}
+          {...navDisabledAria(item.disabled)}
+          className={cn(
+            "ds-hdr-nav__link",
+            item.active && "is-active",
+            item.disabled && "is-disabled",
+          )}
+          aria-disabled={item.disabled || undefined}
+          target={item.external && !item.disabled ? "_blank" : undefined}
+          rel={item.external && !item.disabled ? "noreferrer" : undefined}
+          aria-current={item.active ? "page" : undefined}
+        >
+          {item.label}
+          {item.external && !item.disabled && <NewTabHint />}
+        </Tag>
+      )}
 
       {hasChildren && open && (
         <NavDropdown id={dropId} label={item.label} items={item.children!} overview={overview} onSelect={close} linkAs={linkAs} />

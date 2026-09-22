@@ -41,18 +41,27 @@ const A11Y: A11yItem[] = [
     level: "AA",
     description:
       "White on the brand fill measures 6.36:1. The brand ink #0373DF was rejected as a fill for this bar at 4.64:1 against white content.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (color-contrast) on /design-system/components/utilities/accessibility-bar; manual screen-reader check outstanding",
   },
   {
     criterion: "2.1.1 Keyboard",
     level: "A",
     description:
       "The text-size buttons, the accessibility entry and the language selector are real buttons and links, each with an accessible name; the text-size group is a labelled group.",
+    status: "partial",
+    evidence:
+      "Keyboard smoke test (Playwright, Chromium 1440x900), 2026-09-22: tabbed through the specimen on /design-system/components/utilities/accessibility-bar - 21 focusable elements, each with a focus indicator that disappears on blur, focus left the specimen with no trap; manual screen-reader check outstanding",
   },
   {
     criterion: "2.4.7 Focus Visible",
     level: "AA",
     description:
       "Every control draws a 2px inverse-ink outline on `:focus-visible`, offset 2, and the stylesheet never removes it. Deliberately not `--sa-focus-ring`: that is #0373DF and measures 1.37:1 on this bar's #005EB9 fill.",
+    status: "partial",
+    evidence:
+      "Keyboard smoke test (Playwright, Chromium 1440x900), 2026-09-22: tabbed through the specimen on /design-system/components/utilities/accessibility-bar - 21 focusable elements, each with a focus indicator that disappears on blur, focus left the specimen with no trap; manual screen-reader check outstanding",
   },
   {
     criterion: "1.4.11 Non-text Contrast",
@@ -65,12 +74,18 @@ const A11Y: A11yItem[] = [
     level: "AA",
     description:
       "Text-size steppers are 24×24 and icon buttons 28×28, measured live. The Figma master carried bare 20×20 glyphs until 2026-08-18 and gained matching transparent hit-area frames — the target grew, the look did not. 44×44 is 2.5.5 Enhanced (AAA) and is not claimed.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (target-size) on /design-system/components/utilities/accessibility-bar; manual screen-reader check outstanding",
   },
   {
     criterion: "4.1.2 Name, Role, Value",
     level: "A",
     description:
       "The reset button carries no `aria-pressed`, deliberately: it is an action, not a toggle. The state a screen-reader user needs is the current size, so the accessible name carries it — \"Text size: 100% (default)\" at rest, \"Reset text size to default — currently 110%\" when deviated. It stays enabled at the default, because disabling it on reset would destroy focus at the moment the reader activated it.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (aria-allowed-attr, aria-conditional-attr, aria-deprecated-role, aria-hidden-focus, aria-prohibited-attr, aria-required-attr, aria-roles, aria-valid-attr, aria-valid-attr-value, button-name, link-name, nested-interactive) on /design-system/components/utilities/accessibility-bar; manual screen-reader check outstanding",
   },
   {
     criterion: "GIGW 3.0 — Mandatory features",

@@ -22,12 +22,18 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       "The image challenge carries an `alt`, and the text challenge carries `role=\"img\"` with a label — so neither is silently skipped. Neither, however, gives a non-sighted reader a way to answer.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (role-img-alt) on /design-system/components/forms/captcha-field; manual screen-reader check outstanding",
   },
   {
     criterion: "3.3.2 Labels or Instructions",
     level: "A",
     description:
       "The refresh button's accessible name states its full effect — that it also clears anything the reader has typed — rather than saying only \"Refresh\".",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (form-field-multiple-labels) on /design-system/components/forms/captcha-field; manual screen-reader check outstanding",
   },
   {
     criterion: "3.3.1 Error Identification",
@@ -39,6 +45,9 @@ const A11Y: A11yItem[] = [
     criterion: "4.1.2 Name, Role, Value",
     level: "A",
     description: "The answer field is a real Input with an accessible name; the refresh control is a real button.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (aria-allowed-attr, aria-conditional-attr, aria-deprecated-role, aria-hidden-focus, aria-prohibited-attr, aria-required-attr, aria-roles, aria-valid-attr, aria-valid-attr-value, button-name, duplicate-id-aria, label, nested-interactive) on /design-system/components/forms/captcha-field; manual screen-reader check outstanding",
   },
 ];
 

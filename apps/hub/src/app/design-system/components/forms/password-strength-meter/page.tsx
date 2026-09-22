@@ -40,6 +40,9 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       "Passing `id` and referencing it from the password field's `aria-describedby` connects the meter to the field it describes, rather than leaving it as loose text below.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (form-field-multiple-labels) on /design-system/components/forms/password-strength-meter; manual screen-reader check outstanding",
   },
   {
     criterion: "3.3.8 Accessible Authentication (Minimum)",

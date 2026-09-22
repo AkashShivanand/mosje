@@ -12,7 +12,8 @@
 // hierarchy of the institution.
 //
 // PROPERTY COVERAGE
-//   Show beta     -> beta
+//   Show beta     -> beta. The badge is a nested Navbar/BetaSash instance in
+//                    Figma (hugging, unrotated) — one BETA component, two placements.
 //   Show org      -> omit lines.org
 //   Show ministry -> omit lines.ministry
 //   Size          -> compact
@@ -20,7 +21,7 @@
 //                    Pinning one would freeze the lockup at a single width.
 //
 // THE ROWS STACK FLUSH — gap 0 — and the masthead's height is derived from that:
-// BETA 20 + org 16 + ministry 16 + department 24 = 76, plus the brand row's 12px
+// BETA 20 + org 16 + ministry 16 + department 24 (headline-6, 16/24) = 76, plus the brand row's 12px
 // padding = the 100px "Logo and CTAs" tier. A gap here silently retunes the whole
 // masthead, which is how it once sat at 88 (Figma's ON SCROLL height) at rest.
 //

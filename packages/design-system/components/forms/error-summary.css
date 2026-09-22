@@ -56,7 +56,7 @@
   }
 
   .ds-error-summary__link:hover {
-    text-decoration-thickness: 2px;
+    text-decoration-thickness: var(--sa-stroke-2);
   }
 
   .ds-error-summary__link:focus-visible {

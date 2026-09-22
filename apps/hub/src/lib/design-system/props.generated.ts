@@ -1373,7 +1373,7 @@ export const GENERATED_PROPS = {
         "type": "boolean",
         "required": false,
         "default": "false",
-        "description": "Show the BETA badge above the text stack."
+        "description": "Show the BETA badge above the text stack (Figma: a `Navbar/BetaSash` instance)."
       },
       {
         "name": "className",
@@ -14381,8 +14381,8 @@ export const GENERATED_PROPS = {
         "name": "beta",
         "type": "boolean",
         "required": false,
-        "default": "false",
-        "description": "Show the BETA badge."
+        "default": "true",
+        "description": "Show the BETA badge. On by default: BETA is part of the masthead's default state until the department asks for it to go."
       },
       {
         "name": "brandDivider",

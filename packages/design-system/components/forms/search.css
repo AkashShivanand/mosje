@@ -218,8 +218,8 @@
   .ds-search__listbox {
     position: absolute;
     top: 100%;
-    left: -1px;
-    right: -1px;
+    left: calc(-1 * var(--sa-stroke-1));
+    right: calc(-1 * var(--sa-stroke-1));
     /* Beats sticky product chrome and a masthead's own stacking, and nothing
        more. This is a popover anchored to a field, not a floating widget on one
        of the two rails in .claude/rules/floating-element-placement.md, so it

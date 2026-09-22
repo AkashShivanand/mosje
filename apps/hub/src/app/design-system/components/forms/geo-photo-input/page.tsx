@@ -39,6 +39,9 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       "The dropzone, the add tile and every remove control are real buttons. Dragging is an addition, never the only route.",
+    status: "partial",
+    evidence:
+      "Keyboard smoke test (Playwright, Chromium 1440x900), 2026-09-22: tabbed through the specimen on /design-system/components/forms/geo-photo-input - 4 focusable elements, each with a focus indicator that disappears on blur, focus left the specimen with no trap; manual screen-reader check outstanding",
   },
   {
     criterion: "2.5.7 Dragging Movements",

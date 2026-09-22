@@ -74,6 +74,9 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       'Each toast carries its own role: role="alert" for an error, which is assertive and interrupts, and role="status" for the other three, which waits. A failure and a confirmation are not the same urgency and are not announced the same way.',
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (aria-allowed-attr, aria-conditional-attr, aria-prohibited-attr, aria-valid-attr, aria-valid-attr-value, button-name, label, nested-interactive, select-name) on /design-system/components/feedback/toast; manual screen-reader check outstanding",
   },
   {
     criterion: "1.4.1 Use of Colour",
@@ -86,6 +89,9 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       'Every toast carries a real close button with aria-label="Dismiss notification", so it can be removed before its timer expires without a pointer.',
+    status: "partial",
+    evidence:
+      "Keyboard smoke test (Playwright, Chromium 1440x900), 2026-09-22: tabbed through the specimen on /design-system/components/feedback/toast - 4 focusable elements, each with a focus indicator that disappears on blur, focus left the specimen with no trap; manual screen-reader check outstanding",
   },
 ];
 

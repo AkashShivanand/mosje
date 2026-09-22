@@ -312,7 +312,7 @@
     border-radius: var(--sa-shape-full);
     padding: var(--sa-padding-2);
     flex-shrink: 0;
-    box-shadow: 0 0 0 2px var(--_badge-ring), var(--sa-elevation-card);
+    box-shadow: 0 0 0 var(--sa-stroke-2) var(--_badge-ring), var(--sa-elevation-card);
   }
 
   @media (min-width: 768px) {

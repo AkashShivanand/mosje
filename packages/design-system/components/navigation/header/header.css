@@ -33,8 +33,8 @@
      ============================================================================ */
 
   /* ── Brand lockup (shared) — UX4G / Portal Navbar spec ─────────────────────
-     Emblem 52×32 · optional blue gradient divider · BETA badge on its own row,
-     then GoI 12px · Ministry 14px · Department 20px bold. */
+     Emblem 40×64 · BETA (the Navbar/BetaSash component) on its own row, then
+     GoI 12/16 · Ministry 12/16 · Department 16/24 SemiBold (14/20 below 768). */
   .ds-hdr-lockup {
     display: flex;
     align-items: flex-end;
@@ -118,9 +118,13 @@
     color: var(--sa-text-neutral-base);
   }
 
+  /* Headline/headline-6, 16/24 — Figma Navbar/BrandLockup Tablet and Desktop since
+     2026-09-22. It was headline-5, whose FLUID size (18–20px, lh up to 28) also
+     made the stack a different height at every viewport; headline-6 is flat, so
+     the 76px stack the masthead height is derived from now holds at every width. */
   .ds-hdr-lockup__dept {
-    font-size: var(--sa-type-headline-5-size);
-    line-height: var(--sa-type-headline-5-lh);
+    font-size: var(--sa-type-headline-6-size);
+    line-height: var(--sa-type-headline-6-lh);
     letter-spacing: var(--sa-type-heading-tracking);
     font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
@@ -137,15 +141,19 @@
     line-height: var(--sa-type-title-3-lh);
   }
 
-  /* BETA badge — dedicated badge/beta component token, its own row above the text stack */
+  /* BETA badge — its own row above the text stack. In Figma this is an INSTANCE of
+     Navbar/BetaSash (hugging, unrotated, shape/2 corners), the same component the
+     phone sash below draws — so its paint and type are the sash's: Label/label-3
+     (Medium, caps tracking) in text/neutral/base on cmp/badge/beta/bg. It carried
+     SemiBold on neutralScale-1000 (pure black), which the library never had. */
   .ds-hdr-badge {
     align-self: flex-start;
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
-    font-weight: var(--sa-font-weight-semibold);
+    font-weight: var(--sa-font-weight-medium);
     text-transform: uppercase;
     letter-spacing: var(--sa-type-caps-tracking);
-    color: var(--sa-color-neutralScale-1000);
+    color: var(--sa-text-neutral-base);
     background-color: var(--sa-cmp-badge-beta-bg);
     border-radius: var(--sa-shape-2);
     padding: var(--sa-padding-2) var(--sa-padding-4);
@@ -855,11 +863,19 @@
     line-height: var(--sa-type-label-1-lh);
     font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-base);
+    /* A menu trigger is a <button> (ACC-12): clear the UA box so it draws exactly as
+       the link beside it. */
+    border: 0;
+    background: none;
+    font-family: inherit;
+    text-align: start;
   }
 
   /* Figma Navbar/NavItem Type=Dropdown is padded [16,8,16,12] — the caret sits
-     closer to the edge than a plain label does. Type=Default keeps 12 both sides. */
-  .ds-hdr-nav__link[aria-haspopup] {
+     closer to the edge than a plain label does. Type=Default keeps 12 both sides.
+     Keyed on `aria-expanded`, which every menu trigger carries; this read
+     `[aria-haspopup]`, which nothing set, so the rule had never applied. */
+  .ds-hdr-nav__link[aria-expanded] {
     padding-right: var(--sa-padding-8);
     text-decoration: none;
     cursor: pointer;
@@ -888,9 +904,12 @@
     border-radius: var(--sa-shape-4);
   }
 
+  /* Figma Navbar/NavItem Active=True keeps Label/label-1 MEDIUM: the current page is
+     marked by the blue and the 4px bar below, not by weight. Semibold here made the
+     active label wider than its neighbours, so the row shifted as you moved between
+     pages. Aligned 2026-09-22. */
   .ds-hdr-nav__link.is-active {
     color: var(--sa-text-brand-primary-base);
-    font-weight: var(--sa-font-weight-semibold);
   }
 
   /* THE INDICATOR WAS PAINTED IN THE TINT, NOT THE BRAND BLUE.
@@ -935,16 +954,17 @@
     margin-top: var(--sa-padding-2);
     padding: var(--sa-padding-8) 0;
     list-style: none;
-    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-base); /* Figma NavDropdown: border/neutral/base */
     border-radius: var(--sa-shape-8);
     background-color: var(--sa-bg-neutral-base);
-    box-shadow: var(--sa-elevation-modal);
+    box-shadow: var(--sa-elevation-dropdown); /* BRD-17: a menu is a dropdown, not a modal */
   }
 
   .ds-hdr-nav__drop-link {
     display: block;
     padding: var(--sa-padding-8) var(--sa-padding-16);
     font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh); /* Body/body-2, 14/20 → the 36px Figma row */
     color: var(--sa-text-neutral-base);
     text-decoration: none;
   }
@@ -952,8 +972,15 @@
   @media (hover: hover) and (pointer: fine) {
     .ds-hdr-nav__drop-link:hover {
       background-color: var(--sa-bg-neutral-subtler);
-      color: var(--sa-text-brand-primary-base);
+      color: var(--sa-text-link-brand-hover); /* Figma DropdownItem State=Hover */
     }
+  }
+
+  /* Figma DropdownItem Active=True: the current page's row is brand blue. The class was
+     always set by NavDropdown; nothing styled it, so the page you were on looked like
+     every other row. */
+  .ds-hdr-nav__drop-link.is-active {
+    color: var(--sa-text-brand-primary-base);
   }
 
   /* Mega-menu — multi-column dropdown for org-heavy nav items
@@ -1027,9 +1054,9 @@
     margin-top: var(--sa-padding-2);
     padding: var(--sa-padding-24) var(--sa-padding-12);
     border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
-    border-radius: var(--sa-shape-20);
+    border-radius: var(--sa-shape-8); /* HP-05: was 20 — matches the simple dropdown */
     background-color: var(--sa-bg-neutral-base);
-    box-shadow: var(--sa-elevation-modal);
+    box-shadow: var(--sa-elevation-dropdown); /* BRD-17 */
   }
 
   /* The simple dropdown needs the same ceiling for the same reason — it is short
@@ -1139,7 +1166,7 @@
     align-items: center;
     gap: var(--sa-stack-12);
     padding: var(--sa-padding-12) var(--sa-padding-20) var(--sa-padding-12) var(--sa-padding-12);
-    border-radius: var(--sa-shape-16);
+    border-radius: var(--sa-shape-8); /* HP-05: was 16, inside an 8px panel */
     text-decoration: none;
     transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), box-shadow var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
@@ -1179,7 +1206,7 @@
   .ds-hdr-mega-item__abbr {
     font-size: var(--sa-type-title-2-size);
     line-height: var(--sa-type-title-2-lh, 24px);
-    font-weight: var(--sa-font-weight-medium);
+    font-weight: var(--sa-font-weight-semibold); /* Title/title-2 is SemiBold in Figma */
     color: var(--sa-text-neutral-base);
   }
 
@@ -1198,12 +1225,6 @@
     color: var(--sa-text-neutral-subtle);
   }
 
-  .ds-hdr-mega-item .ds-hdr-ic {
-    flex: 0 0 auto;
-    opacity: 0;
-    color: var(--sa-text-neutral-subtle);
-    transition: opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
-  }
 
   /* Figma State=Hover carries a 1px stroke and NO effect; the elevation that used
      to be here was code's own addition. State=Focused is the reverse — a drop
@@ -1211,26 +1232,18 @@
   .ds-hdr-mega-item:focus-visible {
     outline: none;
     background-color: var(--sa-bg-neutral-base);
-    box-shadow: inset 0 0 0 1px var(--sa-border-neutral-subtle);
+    box-shadow: inset 0 0 0 var(--sa-stroke-1) var(--sa-border-neutral-subtle);
   }
 
   @media (hover: hover) and (pointer: fine) {
     .ds-hdr-mega-item:hover {
       outline: none;
       background-color: var(--sa-bg-neutral-base);
-      box-shadow: inset 0 0 0 1px var(--sa-border-neutral-subtle);
+      box-shadow: inset 0 0 0 var(--sa-stroke-1) var(--sa-border-neutral-base); /* Figma State=Hover stroke */
     }
   }
 
-  .ds-hdr-mega-item:focus-visible .ds-hdr-ic {
-    opacity: 1;
-  }
 
-  @media (hover: hover) and (pointer: fine) {
-    .ds-hdr-mega-item:hover .ds-hdr-ic {
-      opacity: 1;
-    }
-  }
 
   /* Figma ships a State=Disabled variant for MegaMenuItem, DropdownItem and NavItem
      (both Types). It is expressed as colour, not opacity — the emblem keeps its own
@@ -1248,14 +1261,16 @@
     color: var(--sa-text-neutral-disabled);
   }
 
-  .ds-hdr-mega-item.is-disabled .ds-hdr-ic,
   .ds-hdr-nav__link.is-disabled .ds-hdr-ic {
     color: var(--sa-icon-neutral-disabled);
   }
 
-  .ds-hdr-mega-item.is-active {
-    box-shadow: inset 0 0 0 1px var(--sa-border-neutral-subtle);
-    background-color: var(--sa-bg-neutral-base);
+  /* Figma MegaMenuItem Active=True: no ground and no stroke — the abbreviation and the
+     full name turn brand blue. The outline this drew was the hover treatment, so the
+     current organisation looked permanently hovered. */
+  .ds-hdr-mega-item.is-active .ds-hdr-mega-item__abbr,
+  .ds-hdr-mega-item.is-active .ds-hdr-mega-item__name {
+    color: var(--sa-text-brand-primary-base);
   }
 
   .ds-hdr-mega-item:focus-visible {
@@ -1600,7 +1615,7 @@
     }
 
     /* BETA, a 45° sash across the identity row's free corner. The badge's own tokens —
-       `cmp/badge/beta/bg` under neutral-1000 ink, 12.6:1 — at label-3, the badge's size.
+       `cmp/badge/beta/bg` under text/neutral/base, 11.2:1 — at label-3, the badge's size.
        Tucked so the band clears the lockup at every phone width: 16px at 320, 71 at 375. */
     .ds-hdr[data-layers] .ds-hdr-sash {
       display: block;
@@ -1611,7 +1626,7 @@
       transform: rotate(45deg); /* the sash's geometry, not a design value: no token names an angle */
       text-align: center;
       background-color: var(--sa-cmp-badge-beta-bg);
-      color: var(--sa-color-neutralScale-1000);
+      color: var(--sa-text-neutral-base);
       /* Label/label-3, whole — the text style the Figma sash links. The 2px above and
          below make the 20px band; the leading stays the style's own. */
       padding-block: var(--sa-padding-2);
@@ -2327,7 +2342,7 @@
   }
 
   .ds-navsheet__search {
-    padding: var(--sa-padding-16) var(--sa-padding-24);
+    padding: var(--sa-padding-16); /* one 16px edge with the header and the rows (Figma NavSheet) */
     border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
@@ -2376,7 +2391,7 @@
 
   .ds-navsheet__actions {
     display: flex;
-    padding: var(--sa-padding-16) var(--sa-padding-24);
+    padding: var(--sa-padding-16); /* one 16px edge with the header and the rows (Figma NavSheet) */
     border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
@@ -2397,7 +2412,9 @@
     gap: var(--sa-stack-12);
     width: 100%;
     min-height: 56px;
-    padding: var(--sa-padding-16) var(--sa-padding-24);
+    /* 16 all round — Figma NavSheetRow, and the same inset as the sheet header above it.
+       At 24 the rows and the header started at different x. */
+    padding: var(--sa-padding-16);
     border: none;
     background: transparent;
     font: inherit;
@@ -2415,7 +2432,19 @@
 
   .ds-navsheet__link.is-active {
     color: var(--sa-text-brand-primary-base);
-    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  /* Figma NavSheetRow Type=Group, Open=True: the open group's row is solid
+     bg/brand/primary/bolder under inverse text, so the reader sees which group the
+     rows beneath belong to. Code had no open state at all. White on primary-600 is
+     6.4:1. */
+  .ds-navsheet__link[aria-expanded="true"] {
+    background-color: var(--sa-bg-brand-primary-bolder);
+    color: var(--sa-text-neutral-inverse);
+  }
+
+  .ds-navsheet__link[aria-expanded="true"] .ds-navsheet__caret {
+    color: var(--sa-icon-neutral-inverse);
   }
 
   .ds-navsheet__caret {
@@ -2430,11 +2459,14 @@
     background-color: var(--sa-bg-neutral-subtler);
   }
 
+  /* Figma NavSheetRow Type=Sub: 56px, 16/16/16/32, Body/body-1 in text/neutral/base. */
   .ds-navsheet__sublink {
-    display: block;
-    padding: var(--sa-padding-12) var(--sa-padding-24) var(--sa-padding-12) var(--sa-padding-40);
+    display: flex;
+    align-items: center;
+    min-height: 56px;
+    padding: var(--sa-padding-16) var(--sa-padding-16) var(--sa-padding-16) var(--sa-padding-32);
     text-decoration: none;
-    color: var(--sa-text-neutral-subtle);
+    color: var(--sa-text-neutral-base);
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -2584,7 +2616,7 @@
    the resting desktop website masthead — the tallest of the variants, so a page
    whose script has not measured yet over-pads rather than under-pads. */
 :root:has(.ds-hdr.is-sticky) {
-  scroll-padding-top: calc(var(--sa-header-pinned, 204px) + 4px);
+  scroll-padding-top: calc(var(--sa-header-pinned, 204px) + var(--sa-stack-4));
 }
 
 @layer components {

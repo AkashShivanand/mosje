@@ -51,7 +51,7 @@
   }
 
   .ds-btn-group--attached > .ds-btn:not(:first-child) {
-    margin-inline-start: -1px;
+    margin-inline-start: calc(-1 * var(--sa-stroke-1));
   }
 
   .ds-btn-group--attached > .ds-btn:not(:first-child, :last-child) {

@@ -165,9 +165,9 @@
      nothing outside this rule. Without it a selected card grows 2px and shoves
      its neighbours in the grid, which is a layout shift caused by a selection. */
   .ds-portal-card--selected {
-    border-width: 2px;
+    border-width: var(--sa-stroke-2);
     box-shadow: var(--sa-elevation-card);
-    padding: calc(var(--sa-padding-16) - 1px);
+    padding: calc(var(--sa-padding-16) - var(--sa-stroke-1));
     /* NO WASH. A saffron-to-white gradient used to sit here; the Figma master
        dropped it on 2026-09-06 and the code follows. The 2px rule and the check
        already say "this one" — a tint on top of them is a third signal for one
@@ -207,7 +207,7 @@
   }
 
   .ds-portal-card--detailed.ds-portal-card--selected {
-    padding: calc(var(--sa-padding-20) - 1px);
+    padding: calc(var(--sa-padding-20) - var(--sa-stroke-1));
   }
   /* ds-exempt-end */
 

@@ -392,18 +392,27 @@ export default function SamaveshBannerDocPage(): React.JSX.Element {
                           level: "A",
                           description:
                             "The Explore toggle is a native button with full keyboard focus indicators, and pressing Escape automatically closes the open drawer.",
+                          status: "partial",
+                          evidence:
+                            "Keyboard smoke test (Playwright, Chromium 1440x900), 2026-09-22: tabbed through the specimen on /design-system/components/navigation/samavesh-banner - 11 focusable elements, each with a focus indicator that disappears on blur, focus left the specimen with no trap; manual screen-reader check outstanding",
                         },
                         {
                           criterion: "4.1.2 Name, Role, Value",
                           level: "A",
                           description:
                             "aria-expanded and aria-controls communicate the drawer state. The portal cards are a real <ul>/<li> of <a> inside a named <nav> \u2014 never role=\"listitem\" on the anchor, which REPLACES its link role and announces four list items with no links between them.",
+                          status: "partial",
+                          evidence:
+                            "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (aria-allowed-attr, aria-command-name, aria-conditional-attr, aria-deprecated-role, aria-hidden-focus, aria-prohibited-attr, aria-required-attr, aria-roles, aria-valid-attr, aria-valid-attr-value, button-name, duplicate-id-aria, link-name, nested-interactive) on /design-system/components/navigation/samavesh-banner; manual screen-reader check outstanding",
                         },
                         {
                           criterion: "1.3.1 Info and Relationships",
                           level: "A",
                           description:
                             "The drawer title is a <p> naming the <nav>, not an <h2>. The banner renders before every page's <h1>, so a heading here would invert the document outline \u2014 and mounting it outside <main> does not fix that, because heading order is a property of the document rather than of the landmark.",
+                          status: "partial",
+                          evidence:
+                            "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (list, listitem) on /design-system/components/navigation/samavesh-banner; manual screen-reader check outstanding",
                         },
                         {
                           criterion: "1.4.3 Contrast (Minimum)",

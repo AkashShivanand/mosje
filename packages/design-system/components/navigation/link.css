@@ -24,7 +24,7 @@
     /* Underline offset and thickness rather than the browser default, which crowds
        Devanagari descenders badly enough to touch the mark. */
     text-underline-offset: 3px;
-    text-decoration-thickness: 1px;
+    text-decoration-thickness: var(--sa-stroke-1);
     transition:
       color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
       text-decoration-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);

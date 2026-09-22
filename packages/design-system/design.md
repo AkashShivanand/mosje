@@ -3622,12 +3622,11 @@ and renders it only when `exportable`.
 
 #### BrandLockup
 **Purpose**: The National Emblem plus the government text stack — BETA badge on its
-own row, then `org` (12/16) · `ministry` (14/20) · `department` (20/24 **SemiBold**) —
-matching Figma `Navbar/BrandLockup` exactly. The emblem is the one dimension that varies
-by device: **45 mobile · 52 tablet · 58 desktop** (it was pinned at the tablet value until
-v0.30.0, and `department` was Bold 20/20, a half-step heavier and a line tighter than the
-library).  
-**Key props**: `emblemSrc`, `lines`, `href`, `beta`, `compact`, `divider`, `textHiddenOnMobile`  
+own row, then `org` (12/16) · `ministry` (12/16) · `department` (**16/24 SemiBold**,
+Headline 6; Title 3, 14/20, below 768) — matching Figma `Navbar/BrandLockup`. The four
+rows stack flush (20 + 16 + 16 + 24 = 76) beside a 40×64 emblem. `department` was
+Headline 5 (a fluid 18–20px) until 2026-09-22, when the library took it down to 16.  
+**Key props**: `emblemSrc`, `lines`, `href`, `linkAs`, `beta`, `compact`, `inverse`, `textHiddenOnMobile`  
 **Rules**:
 - **Always the National Emblem, never an invented or abstract mark.** This is an
   estate rule, not a component preference — see CLAUDE.md.
@@ -3637,8 +3636,14 @@ library).
   "upgrade" it to `next/image`: that couples the design system to Next and breaks
   the zones.
 - `SiteHeader` composes it for you. Reach for it directly only when building a
-  surface that is not a `SiteHeader` — a gate page, a standalone print header —
-  not to rebuild a masthead beside one.
+  surface that is not a `SiteHeader` — a gate page, a sign-in page, a standalone
+  print header — not to rebuild a masthead beside one. `/admin/login` hand-rolled
+  an emblem-and-text pair until 2026-09-22; it now renders `<BrandLockup compact />`.
+- **BETA is one component in two placements.** In Figma the badge is a nested
+  `Navbar/BetaSash` instance — hugging and unrotated in the lockup, a 45° sash on the
+  portal phone layers — so `.ds-hdr-badge` and `.ds-hdr-sash` share one treatment:
+  Label 3 **Medium**, caps tracking, `text/neutral/base` on `cmp/badge/beta/bg`
+  (11.2:1). Change one and the other must follow.
 
 #### AccountMenu
 **Purpose**: The portal header's account block — name / email plus a 48px avatar,

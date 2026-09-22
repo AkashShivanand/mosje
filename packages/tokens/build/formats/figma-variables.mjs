@@ -277,7 +277,7 @@ function collectionFor(path, tier, type) {
   if (head === "accessibilityBar") {
     const ABAR_DIMENSIONS = new Set([
       "height", "flagWidth", "flagHeight", "dividerWidth", "dividerHeight",
-      "pillSize", "stepSize", "launchIconSize", "iconButtonSize",
+      "pillSize", "stepSize", "launchIconSize", "iconButtonSize", "dividerLength",
     ]);
     return ABAR_DIMENSIONS.has(String(rest[0] ?? "")) ? "Space" : "Color";
   }

@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "NAVBAR AUDIT ITEMS RESOLVED, IN FIGMA AND CODE. Menu triggers are <button aria-expanded> (ACC-12), and the 8px trailing padding Figma gives them now applies — the rule was keyed on an attribute nothing set. The mega-menu hover arrow is gone (NAV-18), both menus use elevation/dropdown (BRD-17) and the mega menu's panel and rows are 8px-rounded like the simple dropdown (HP-05). The department line stays at Headline 6, 16/24 (TYP-10: the ramp has no fixed step between 16 and 20). New tokens cmp/accessibilityBar/dividerLength and cmp/divider/length replace a literal 20 on both sides, and Navbar/NavSheetRow gains an Active state matching the code's current-page row."
+}

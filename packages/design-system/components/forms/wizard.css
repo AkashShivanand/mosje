@@ -153,7 +153,7 @@
          tint: a translucent or tinted bar over a white form reads as a misprint. */
       background-color: var(--sa-bg-neutral-base);
       padding-block-end: calc(var(--sa-padding-16) + env(safe-area-inset-bottom, 0px));
-      box-shadow: 0 -1px 0 0 var(--sa-border-neutral-subtle);
+      box-shadow: 0 calc(-1 * var(--sa-stroke-1)) 0 0 var(--sa-border-neutral-subtle);
     }
 
     /* The last field is never under the bar: the body reserves the bar's height, so the end of

@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "BRANDLOCKUP FOLLOWS THE LIBRARY AGAIN. The department line is Headline 6, 16/24 SemiBold, on tablet and desktop (14/20 on a phone is unchanged) — the Figma library took it down from 20 on 2026-09-22, and the code's Headline 5 was a fluid 18–20px that also moved the masthead's height with the viewport. The BETA badge is now the library's Navbar/BetaSash component in both placements, so the lockup's badge takes the sash's treatment: Label 3 Medium in text/neutral/base on the beta yellow, where it was SemiBold in pure black. /admin/login renders BrandLockup instead of a hand-rolled emblem-and-text pair."
+}

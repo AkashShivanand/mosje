@@ -303,6 +303,7 @@
      Trailing dismiss button
      -------------------------------------------------------------------------- */
   .ds-chip__dismiss {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -319,6 +320,19 @@
     -webkit-appearance: none;
     appearance: none;
     transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  /* WCAG 2.5.8 TARGET SIZE. The glyph stays 18px — the chip is 24/32 tall and a bigger
+     circle would crowd the label — but the POINTER TARGET is 24×24, centred on it, drawn
+     by a transparent pseudo-element. Nothing moves; only what a finger may hit changes.
+     Found by an axe-core scan (target-size, serious) on 2026-09-22. */
+  .ds-chip__dismiss::after {
+    content: "";
+    position: absolute;
+    inset: 50% auto auto 50%;
+    inline-size: var(--sa-icon-size-24);
+    block-size: var(--sa-icon-size-24);
+    transform: translate(-50%, -50%);
   }
 
   .ds-chip__dismiss:hover {

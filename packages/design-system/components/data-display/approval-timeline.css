@@ -42,9 +42,9 @@
   /* The rail, drawn behind every item except the last. */
   .ds-timeline__item::before {
     position: absolute;
-    top: 16px;
+    top: var(--sa-stack-16);
     bottom: 0;
-    left: 6px;
+    left: var(--sa-inline-6);
     width: 2px;
     content: "";
     background-color: var(--sa-border-neutral-subtle);

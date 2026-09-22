@@ -40,6 +40,9 @@ const A11Y: A11yItem[] = [
     level: "AA",
     description:
       "The focus ring is inverse ink rather than `--sa-focus-ring`. The ring token is #0373DF and measures 1.37:1 on this bar, so the standard ring would all but disappear here.",
+    status: "partial",
+    evidence:
+      "Keyboard smoke test (Playwright, Chromium 1440x900), 2026-09-22: tabbed through the specimen on /design-system/components/feedback/ticker - 13 focusable elements, each with a focus indicator that disappears on blur, focus left the specimen with no trap; manual screen-reader check outstanding",
   },
   {
     criterion: "1.4.10 Reflow",
@@ -52,6 +55,9 @@ const A11Y: A11yItem[] = [
     level: "AA",
     description:
       "The ground is `primaryScale/600`, not `/500`, and that is a fix rather than a preference. White on /500 measures 4.64:1 and any dimming fails outright — 90% is 4.06:1, 80% is 3.52:1. On /600 the title is 6.36:1 and the subtitle 4.66:1, which is what makes the two-line structure possible at all.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (color-contrast) on /design-system/components/feedback/ticker; manual screen-reader check outstanding",
   },
   {
     criterion: "2.3.3 Animation from Interactions",

@@ -114,7 +114,9 @@ export interface AccessibilityBarProps {
  * number here rather than CSS.
  */
 const LAUNCH_ICON_SIZE = 12;
-const DIVIDER_LENGTH = 20;
+/** The separators' length, `cmp/accessibilityBar/dividerLength` — a CSS length, which
+ *  `Divider`'s `length` prop takes as-is. It was a bare 20 until 2026-09-22. */
+const DIVIDER_LENGTH = "var(--sa-cmp-accessibilityBar-dividerLength)";
 
 export function AccessibilityBar({
   govLink = { href: "https://india.gov.in/", label: "Government of India" },

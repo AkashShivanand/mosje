@@ -1623,10 +1623,12 @@ export const tokens = {
     "hoverBg": "#ffffff",
     "stepSize": "1.5rem",
     "launchIconSize": "0.75rem",
-    "iconButtonSize": "1.75rem"
+    "iconButtonSize": "1.75rem",
+    "dividerLength": "1.25rem"
   },
   "divider": {
-    "width": "1px"
+    "width": "1px",
+    "length": "1.25rem"
   },
   "avatar": {
     "size": {
