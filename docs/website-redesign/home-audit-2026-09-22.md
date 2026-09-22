@@ -221,3 +221,5 @@ Audited at 1920, 1440, 1024, 768, 375 and 320, and every state of the carousel: 
 | B10 | Phone: a tap stuck the Explore pill's green hover across the whole band, hiding the mark and title | Interaction | The stretched control never takes the pill's hover or press |
 
 Left as found: the CCPS artwork is illegible at a phone's 125px banner height (text baked into the image by MyGov; the alt text carries it). The first Tab on any page opens the UX4G accessibility widget's skip overlay, which dims the page — third-party, statutory, not ours to change.
+
+**Figma, same day.** `Carousel / Controls` (57548:1159) gained a `Placement` axis — `Below` (the existing round-arrow row) and `Overlay` (the navy pill, 8 variants) — and its `Autoplay=On` variants now draw the running timer on the current dot. The Carousel documentation counts 16 variants on 3 axes and shows both overlay states in its arrangements section. The Page Header's `Media=Carousel` master now places a library `Overlay` instance, replacing the hand-drawn arrows that failed `check:figma-hand-rolled`. Code Connect maps `Placement=Overlay` to `controls="overlay"`.

@@ -19,6 +19,11 @@ const autoPlay = instance.getEnum("Autoplay", {
   On: "on",
 });
 
+const placement = instance.getEnum("Placement", {
+  Below: "below",
+  Overlay: "overlay",
+});
+
 const current = instance.getEnum("Current", {
   "1": "1",
   "2": "2",
@@ -31,6 +36,7 @@ export default {
     <Carousel
       label="Schemes for senior citizens"
       ${autoPlay === "on" ? figma.code`autoPlay interval={7}` : ""}
+      ${placement === "overlay" ? figma.code`controls="overlay"` : ""}
       showDots
     >
       <Slide />

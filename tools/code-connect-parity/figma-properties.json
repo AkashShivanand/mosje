@@ -1576,9 +1576,16 @@
   },
   "Carousel": {
     "nodeId": "57548:1159",
-    "captured": "2026-09-06",
-    "note": "Figma publishes the controls; code publishes the carousel. Current is read so the template can be checked against the master, but it maps to no prop — the component holds its own position.",
+    "captured": "2026-09-22",
+    "note": "Figma publishes the controls; code publishes the carousel. Current is read so the template can be checked against the master, but it maps to no prop — the component holds its own position. Placement (added 2026-09-22) maps to the controls prop: Overlay is the navy pill a full-width banner carries.",
     "properties": {
+      "Placement": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Below",
+          "Overlay"
+        ]
+      },
       "Autoplay": {
         "type": "VARIANT",
         "variantOptions": [
