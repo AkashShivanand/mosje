@@ -200,3 +200,24 @@ The page now follows the live dosje.gov.in home order: banner → About with Min
 | S5 | On a phone the drawer is eight full-width tiles, about 2.5 screens. | Minor | Below tablet the drawer is a list of compact rows: 688px for eight portals, down from about 970px. The phone band's hover wash no longer sticks after a tap. Picture: `samavesh-band-phone-list.jpg`. |
 
 The default tone (white on saffron, 2.91:1) still fails WCAG 1.4.3 for every other consumer of the component. axe finds 0 violations on `/website` after the change. Picture: `samavesh-band-before-after.jpg`.
+
+## 9. First fold and the banner carousel — design-director review, 22 Sep 2026
+
+Audited at 1920, 1440, 1024, 768, 375 and 320, and every state of the carousel: rotating, held by pointer, held by focus, paused, each control hovered, each control focused, a tap on a phone, reduced motion. Shots: `shots/home-audit/banner-states-before-after.png`.
+
+**Is this the best the first fold can be?** Structurally, yes, within the brief (the live site's 1800×600 banner, CCPS first). At 1440×900 the masthead (204px) and SAMAVESH band (85px) leave the banner whole with the announcements bar as the fold's last line; at 1366×768 the banner still fits. What was wrong was the widget, not the layout.
+
+| # | Finding | Severity | Resolution |
+|---|---|---|---|
+| B1 | The control pill was neutral near-black — the one colour in the first screen from no part of the palette; it read as a video player's controls | Visual | Brand navy (`bg/brand/primary/boldest`) |
+| B2 | The pill hung 16px from the photograph's edge, outside the column the Login button and announcements bar end on, at every width | Visual | Right edge bound to the page column (container + margin, wall-rail clearance below 1280) |
+| B3 | Hover on the pill was an 8% white wash on black — practically invisible | Interaction | Lighter brand blue under the pointer |
+| B4 | On a phone the arrow's grey hover stuck after a tap (the "dull grey" reported) | Interaction | Hover gated to a fine pointer; press uses the brand tint |
+| B5 | Nothing showed the banner was rotating or how long a slide would stay | Clarity / WCAG 2.2.2 | The current dot fills over the 7s interval; solid when held or paused |
+| B6 | The live region announced "Slide N of 5" every 7s to screen-reader users reading elsewhere | A11y | `aria-live="off"` while rotating, `polite` when the reader is in control |
+| B7 | A link on slide 1 stayed tabbable while another slide showed; tabbing to it scrolled the track back | A11y | Slides out of view are `inert` |
+| B8 | Focus rings: the dot's was a square round a round mark; the Previous arrow's ran into the current dot | Visual / A11y | Dot ring drawn on the mark; pill rings inset |
+| B9 | Phone: open SAMAVESH drawer — the bar's shadow drew a fold through one surface | Visual | Hairline instead of shadow when open on the tint |
+| B10 | Phone: a tap stuck the Explore pill's green hover across the whole band, hiding the mark and title | Interaction | The stretched control never takes the pill's hover or press |
+
+Left as found: the CCPS artwork is illegible at a phone's 125px banner height (text baked into the image by MyGov; the alt text carries it). The first Tab on any page opens the UX4G accessibility widget's skip overlay, which dims the page — third-party, statutory, not ours to change.

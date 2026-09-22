@@ -424,9 +424,11 @@
     text-decoration: none;
   }
 
-  .ds-samavesh-banner__explore-btn:hover {
-    background-color: var(--sa-color-status-success);
-    box-shadow: var(--sa-elevation-raised);
+  @media (hover: hover) and (pointer: fine) {
+    .ds-samavesh-banner__explore-btn:hover {
+      background-color: var(--sa-color-status-success);
+      box-shadow: var(--sa-elevation-raised);
+    }
   }
 
   /*
@@ -464,6 +466,14 @@
       border: none;
       border-radius: 0;
       color: var(--_band-ink);
+    }
+
+    /* The pill's own green hover and press must not reach the band. Left in,
+       a tap stuck the button's green across the whole band on a phone and hid
+       the SAMAVESH mark and title under it until the next touch elsewhere. */
+    .ds-samavesh-banner__explore-btn:is(:hover, :active) {
+      background: none;
+      box-shadow: none;
     }
 
     /* A fine pointer only: on a touchscreen :hover sticks after the tap and
@@ -868,6 +878,14 @@
      drawer heading takes plain ink and the footer link the link blue, so the
      one green on the pale ground is the control that opens the drawer rather
      than three green things competing with the saffron portal codes. */
+  /* OPEN ON THE TINT, THE BAR AND THE DRAWER ARE ONE SURFACE. They share the
+     ground, so the bar's raised shadow drew a fold through the middle of one
+     panel — a lip that says "two things" where there is one. A hairline keeps
+     the heading's edge; closed, the shadow still lifts the band off the page. */
+  .ds-samavesh-banner--tint.ds-samavesh-banner--open .ds-samavesh-banner__bar {
+    box-shadow: none;
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
   .ds-samavesh-banner--tint .ds-samavesh-banner__drawer-heading { color: var(--sa-text-neutral-bolder); }
   .ds-samavesh-banner--tint .ds-samavesh-banner__view-all { color: var(--sa-text-link-brand-default); }
   .ds-samavesh-banner--tint .ds-samavesh-banner__view-all:hover { color: var(--sa-text-link-brand-hover); background-color: var(--sa-overlay-neutral-hover); }

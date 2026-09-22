@@ -1,7 +1,7 @@
 {
   "note": "Selectors that style :hover and never :active. May only shrink.",
-  "generated": "2026-09-18",
-  "total": 95,
+  "generated": "2026-09-22",
+  "total": 94,
   "files": {
     "actions/button-group.css": [
       ".ds-btn"
@@ -171,7 +171,6 @@
       ".is-current"
     ],
     "navigation/samavesh-banner.css": [
-      ".ds-samavesh-banner__explore-btn",
       ".ds-samavesh-banner__view-all"
     ],
     "navigation/sidebar/sidebar.css": [

@@ -53,6 +53,22 @@
   .wn-home-banner { background: var(--sa-bg-neutral-base); padding-bottom: var(--sa-padding-12); }
   .wn-home-banner .ds-carousel__viewport { border-radius: 0; }
   .wn-home-banner .ds-carousel__controls { padding-inline: var(--sa-grid-margin-page); }
+  /* From tablet the controls ride the banner in a pill. Its right edge is the
+     PAGE's right edge — the edge the Login button and the announcements bar
+     above and below it end on — not 16px from a full-bleed photograph's edge,
+     where it hung outside the column at every width. Below 1280 the website
+     column also clears the right-wall rail, and so does the pill. */
+  @media (min-width: 768px) {
+    .wn-home-banner .ds-carousel__controls {
+      padding-inline: var(--sa-padding-4);
+      inset-inline-end: calc(max(0px, (100% - var(--sa-container-page)) / 2) + var(--sa-wall-clearance));
+    }
+  }
+  @media (min-width: 1280px) {
+    .wn-home-banner .ds-carousel__controls {
+      inset-inline-end: calc(max(0px, (100% - var(--sa-container-page)) / 2) + var(--sa-grid-margin-page));
+    }
+  }
   .wn-home-banner__img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 1; object-fit: cover; }
   .wn-home-banner a:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: calc(-1 * var(--sa-focus-width)); }
 

@@ -173,9 +173,26 @@ export function Carousel({
     return <div className={cn("ds-carousel", className)} />;
   }
 
+  /*
+   * RUNNING is the one state a reader cannot otherwise see: the carousel is
+   * moving on its own and nothing is holding it. It drives two things — the
+   * current dot fills over the interval, so the reader can see that it moves
+   * and when; and the live region goes quiet, because announcing "Slide 3 of
+   * 5" every seven seconds to someone reading the rest of the page is exactly
+   * the interruption WAI-ARIA's carousel pattern tells a rotating carousel to
+   * avoid (`aria-live="off"` while rotating, `polite` otherwise).
+   */
+  const running = autoPlay && playing && !held && !reducedMotion && count > 1;
+
   return (
     <section
-      className={cn("ds-carousel", controls === "overlay" && "ds-carousel--overlay", className)}
+      className={cn(
+        "ds-carousel",
+        controls === "overlay" && "ds-carousel--overlay",
+        running && "ds-carousel--running",
+        className,
+      )}
+      style={{ "--_interval": `${Math.max(2, interval)}s` } as React.CSSProperties}
       aria-roledescription="carousel"
       aria-label={label}
       onMouseEnter={() => setHeld(true)}
@@ -225,6 +242,14 @@ export function Carousel({
               role="group"
               aria-roledescription="slide"
               aria-label={`${i + 1} of ${count}`}
+              /*
+               * A slide out of view is out of reach. Without this, a link on
+               * slide 1 stays in the tab order while slide 4 is showing, and
+               * tabbing to it scrolls the track back underneath the reader.
+               * The track itself stays scrollable — `inert` is on the slides,
+               * not on it — so a swipe still reaches every slide.
+               */
+              inert={i !== index}
             >
               {slide}
             </div>
@@ -401,7 +426,7 @@ export function Carousel({
 
       {/* Moving by button changes nothing a screen reader would notice on its
           own, so the new position is announced politely. */}
-      <p className="ds-carousel__status" role="status" aria-live="polite">
+      <p className="ds-carousel__status" role="status" aria-live={running ? "off" : "polite"}>
         {`Slide ${index + 1} of ${count}`}
       </p>
     </section>
