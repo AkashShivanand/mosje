@@ -4,7 +4,7 @@ import Link from "next/link";
 import { portalLink } from "./eutthan-shared";
 import { tableScreens } from "@/lib/eutthan/portal-data";
 import { CellContent, StaticPager } from "./eutthan-cells";
-import { Icon } from "@mosje/design-system";
+import { Button, Icon, Select } from "@mosje/design-system";
 
 export function TablePage({ path }: { path: string }) {
   const screen = tableScreens[path];
@@ -24,18 +24,9 @@ export function TablePage({ path }: { path: string }) {
       <div className="table-title-row">
         <h2 className="page-title">{screen.title}</h2>
         {screen.addLabel && screen.addLabel !== "Export" && (
-          <Link
-            href={portalLink(`${path}/add`)}
-            className="primary-button"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "var(--sa-inline-8)",
-              textDecoration: "none",
-            }}
-          >
-            <Icon name="add" size={16} /> {screen.addLabel}
-          </Link>
+          <Button href={portalLink(`${path}/add`)} linkAs={Link} iconLeft={<Icon name="add" size={16} />}>
+            {screen.addLabel}
+          </Button>
         )}
       </div>
       <div className="data-card">
@@ -45,9 +36,7 @@ export function TablePage({ path }: { path: string }) {
             <input placeholder={screen.searchPlaceholder} aria-label="Search records" />
           </div>
           {screen.filters?.map((f) => (
-            <button key={f} type="button" className="filter-button">
-              {f} <Icon name="keyboard_arrow_down" size={14} />
-            </button>
+            <Select key={f} appearance="filter" aria-label={`Filter: ${f}`} options={[{ value: f, label: f }]} defaultValue={f} />
           ))}
         </div>
         <div className="table-wrap table-wrap--wide">

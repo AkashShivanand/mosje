@@ -1,6 +1,7 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { Icon } from "../utilities/icon";
+import { navLinkRoutes } from "../navigation/header/nav-link-tag";
 import "./button.css";
 
 /**
@@ -61,6 +62,22 @@ export interface ButtonProps
   iconRight?: React.ReactNode;
   /** When set, the button renders as an anchor (`<a href>`) for link CTAs. */
   href?: string;
+  /**
+   * Link form only — the app's router link, `next/link` in the hub. Pass it with
+   * `href` and an INTERNAL destination routes client-side instead of reloading the
+   * whole document.
+   *
+   * ADDED 2026-09-22. `href` has rendered a bare `<a>` since the link form existed,
+   * so 37 internal `<Button href>` call sites across the hub each cost a full page
+   * load per click — the defect `check:link-as` was built to stop, invisible to it
+   * because this component never took the prop. It is decided by the same
+   * `navLinkRoutes` rule as every other `linkAs` component: a disabled, external,
+   * scheme-carrying or `#` href stays a plain `<a>`, and so does a download or a
+   * new-tab link, whatever is passed.
+   *
+   * linkAs-gate(href-only): a Button with no `href` is an action, not a link, and needs no router link.
+   */
+  linkAs?: React.ElementType;
   /**
    * Link form only — where the anchor opens. Ignored without `href`.
    *
@@ -163,6 +180,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       className,
       type = "button",
       href,
+      linkAs,
       // Pulled out of `rest` so the button form never emits anchor attributes onto a
       // <button>, which React would pass straight through to invalid DOM.
       target,
@@ -309,8 +327,13 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
        */
       const resolvedTarget = target ?? (external ? "_blank" : undefined);
       const rel = relProp ?? (resolvedTarget === "_blank" ? "noopener noreferrer" : undefined);
+      /* Routes through the app's link only where navLinkRoutes says a nav item would —
+         and never for a download or a new-tab link, which are the browser's to open. */
+      const routed =
+        download == null && resolvedTarget == null && navLinkRoutes({ disabled: isDisabled, external, href }, linkAs);
+      const Anchor: React.ElementType = routed ? linkAs! : "a";
       return (
-        <a
+        <Anchor
           className={classes}
           {...anchorRest}
           {...(resolvedTarget != null ? { target: resolvedTarget } : {})}
@@ -322,7 +345,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             : { href })}
         >
           {content}
-        </a>
+        </Anchor>
       );
     }
 
@@ -374,8 +397,12 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
 /**
  * Returns the CSS class string for a button variant without rendering the button.
- * Use when you need a `next/link` or other element styled as a DS button:
- *   <Link href="/path" className={buttonClasses("primary", "filled", "md")}>Label</Link>
+ *
+ * FOR A ROUTED LINK, PREFER `<Button href="/path" linkAs={Link}>` (since 2026-09-22).
+ * This helper gives the colours and the size, but not the icon slot — a glyph placed
+ * inside the element misses the icon-side padding and the disabled handling that
+ * Button draws. Keep it for an element Button cannot become:
+ *   <summary className={buttonClasses("neutral", "outlined", "sm")}>More filters</summary>
  */
 export function buttonClasses(
   variant: ButtonVariant = "primary",

@@ -111,7 +111,7 @@ export default async function AdminPage({
               everything about a portal is in one place.
             </p>
             <div className="mt-4">
-              <Button href="/admin/portals" appearance="outlined">
+              <Button linkAs={Link} href="/admin/portals" appearance="outlined">
                 Open estate registry
               </Button>
             </div>

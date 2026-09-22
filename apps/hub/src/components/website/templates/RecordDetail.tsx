@@ -91,7 +91,7 @@ export function RecordDetail({
                 <ul className="sa-record-detail__file-list">
                   {files.map((f) => (
                     <li key={f.url}>
-                      <Button
+                      <Button linkAs={Link}
                         href={f.url}
                         external={isHttp(f.url)}
                         variant="primary"

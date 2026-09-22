@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { tableScreens } from "@/lib/eutthan/portal-data";
 import { StaticPager } from "./eutthan-cells";
-import { Icon } from "@mosje/design-system";
+import { Button, Icon, Select } from "@mosje/design-system";
 
 export function Statement10APage() {
   const screen = tableScreens["/reports/statement-10a"]!;
@@ -27,12 +27,12 @@ export function Statement10APage() {
           )}
         </div>
         <div className="export-buttons">
-          <button type="button" className="icon-button">
-            <Icon name="download" size={14} /> Export CSV
-          </button>
-          <button type="button" className="icon-button">
-            <Icon name="description" size={14} /> Export PDF
-          </button>
+          <Button variant="neutral" appearance="outlined" size="sm" iconLeft={<Icon name="download" size={16} />}>
+              Export CSV
+            </Button>
+          <Button variant="neutral" appearance="outlined" size="sm" iconLeft={<Icon name="description" size={16} />}>
+              Export PDF
+            </Button>
         </div>
       </div>
 
@@ -60,9 +60,7 @@ export function Statement10APage() {
             >
               Financial Year
             </span>
-            <button type="button" className="filter-button" aria-labelledby="s10a-fy-label">
-              2025-2026 <Icon name="keyboard_arrow_down" size={14} />
-            </button>
+            <Select appearance="filter" aria-labelledby="s10a-fy-label" options={[{ value: "2025-2026", label: "2025-2026" }]} defaultValue="2025-2026" />
           </div>
           <div
             role="group"
@@ -79,17 +77,9 @@ export function Statement10APage() {
             >
               Ministry/Department
             </span>
-            <button type="button" className="filter-button" aria-labelledby="s10a-ministry-label">
-              -- All Ministries -- <Icon name="keyboard_arrow_down" size={14} />
-            </button>
+            <Select appearance="filter" aria-labelledby="s10a-ministry-label" options={[{ value: "all", label: "All Ministries" }]} defaultValue="all" />
           </div>
-          <button
-            type="button"
-            className="primary-button"
-            onClick={() => setLoaded(true)}
-          >
-            View
-          </button>
+          <Button onClick={() => setLoaded(true)}>View</Button>
         </div>
       </div>
 

@@ -56,7 +56,7 @@
     "weight": 0,
     "hindi-unmarked": 0,
     "style-mixed": 3,
-    "style-weight": 223,
+    "style-weight": 222,
     "style-weight-unset": 173
   },
   "files": {
@@ -237,7 +237,7 @@
       "weight": 0,
       "hindi-unmarked": 0,
       "style-mixed": 0,
-      "style-weight": 8,
+      "style-weight": 7,
       "style-weight-unset": 5
     },
     "apps/hub/src/app/portals/pm-ajay/pm-ajay.css": {

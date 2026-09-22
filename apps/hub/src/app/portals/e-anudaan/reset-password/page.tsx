@@ -16,6 +16,7 @@ import {
   NewPasswordFields,
   PortalLoginShell,
 } from "@mosje/design-system";
+import Link from "next/link";
 
 const BASE = "/portals/e-anudaan";
 
@@ -100,7 +101,7 @@ export default function EAnudaanResetPasswordPage(): React.JSX.Element {
           heading="Password Reset Successful!"
           description="Your password has been reset successfully. You can now log in with your new password."
           action={
-            <Button
+            <Button linkAs={Link}
               href={`${BASE}/login`}
               appearance="outlined"
               fullWidth

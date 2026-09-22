@@ -120,7 +120,7 @@ export default async function AdminPortalsPage({
         emblemSrc="/images/National-Emblem-logo.svg"
         brandLines={{ ministry: "MoSJE", department: "Portal administration" }}
         actions={
-          <Button href="/admin" appearance="outlined" size="sm">
+          <Button linkAs={Link} href="/admin" appearance="outlined" size="sm">
             Settings
           </Button>
         }

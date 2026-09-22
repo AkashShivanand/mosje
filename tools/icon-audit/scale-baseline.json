@@ -15,7 +15,7 @@
     "page, re-run --update-baseline in the same change."
   ],
   "totals": {
-    "offScale": 169,
+    "offScale": 142,
     "classSized": 4
   },
   "files": {
@@ -180,7 +180,7 @@
       "classSized": 1
     },
     "apps/hub/src/app/reports/eutthan-admin/page.tsx": {
-      "offScale": 6,
+      "offScale": 3,
       "classSized": 0
     },
     "apps/hub/src/app/reports/scw/page.tsx": {
@@ -200,35 +200,7 @@
       "classSized": 0
     },
     "apps/hub/src/components/eutthan/eutthan-cells.tsx": {
-      "offScale": 9,
-      "classSized": 0
-    },
-    "apps/hub/src/components/eutthan/eutthan-financial.tsx": {
-      "offScale": 3,
-      "classSized": 0
-    },
-    "apps/hub/src/components/eutthan/eutthan-form.tsx": {
       "offScale": 2,
-      "classSized": 0
-    },
-    "apps/hub/src/components/eutthan/eutthan-map.tsx": {
-      "offScale": 1,
-      "classSized": 0
-    },
-    "apps/hub/src/components/eutthan/eutthan-pfms.tsx": {
-      "offScale": 3,
-      "classSized": 0
-    },
-    "apps/hub/src/components/eutthan/eutthan-physical.tsx": {
-      "offScale": 3,
-      "classSized": 0
-    },
-    "apps/hub/src/components/eutthan/eutthan-statement10a.tsx": {
-      "offScale": 4,
-      "classSized": 0
-    },
-    "apps/hub/src/components/eutthan/eutthan-table.tsx": {
-      "offScale": 1,
       "classSized": 0
     },
     "apps/hub/src/components/nhapoa/case-views.tsx": {

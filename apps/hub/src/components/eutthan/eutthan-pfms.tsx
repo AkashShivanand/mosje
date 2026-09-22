@@ -2,7 +2,7 @@
 
 import { tableScreens } from "@/lib/eutthan/portal-data";
 import { CellContent, StaticPager } from "./eutthan-cells";
-import { Icon } from "@mosje/design-system";
+import { Button, Icon, Input, Select } from "@mosje/design-system";
 
 export function PfmsLogsPage() {
   const screen = tableScreens["/pfms-logs"]!;
@@ -12,33 +12,25 @@ export function PfmsLogsPage() {
       <div className="table-title-row">
         <h2 className="page-title">{screen.title}</h2>
         <div style={{ display: "flex", gap: "var(--sa-inline-8)" }}>
-          <button type="button" className="secondary-button">
-            <Icon name="refresh" size={14} /> Refresh
-          </button>
-          <button type="button" className="primary-button">
-            <Icon name="database" size={14} /> Trigger PFMS Refresh
-          </button>
+          <Button appearance="outlined" iconLeft={<Icon name="refresh" size={16} />}>
+            Refresh
+          </Button>
+          <Button iconLeft={<Icon name="database" size={16} />}>
+            Trigger PFMS Refresh
+          </Button>
         </div>
       </div>
       <div className="data-card">
         <div className="toolbar" style={{ flexWrap: "wrap" }}>
           {screen.filters?.map((f) => (
-            <button key={f} type="button" className="filter-button">
-              {f} <Icon name="keyboard_arrow_down" size={14} />
-            </button>
+            <Select key={f} appearance="filter" aria-label={`Filter: ${f}`} options={[{ value: f, label: f }]} defaultValue={f} />
           ))}
-          <input
-            type="date"
-            className="filter-button"
-            style={{ padding: "var(--sa-padding-8) var(--sa-padding-12)" }}
-            aria-label="From date"
-          />
-          <input
-            type="date"
-            className="filter-button"
-            style={{ padding: "var(--sa-padding-8) var(--sa-padding-12)" }}
-            aria-label="To date"
-          />
+          <div className="filter-date">
+            <Input type="date" size="sm" aria-label="From date" />
+          </div>
+          <div className="filter-date">
+            <Input type="date" size="sm" aria-label="To date" />
+          </div>
         </div>
         <div className="table-wrap table-wrap--wide">
           <table style={{ minWidth: 1500 }}>

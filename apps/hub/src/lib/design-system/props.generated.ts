@@ -1680,6 +1680,12 @@ export const GENERATED_PROPS = {
         "description": "Icon rendered after the label."
       },
       {
+        "name": "linkAs",
+        "type": "React.ElementType",
+        "required": false,
+        "description": "Link form only — the app's router link, `next/link` in the hub. Pass it with `href` and an INTERNAL destination routes client-side instead of reloading the whole document. ADDED 2026-09-22. `href` has rendered a bare `<a>` since the link form existed, so 37 internal `<Button href>` call sites across the hub each cost a full page load per click — the defect `check:link-as` was built to stop, invisible to it because this component never took the prop. It is decided by the same `navLinkRoutes` rule as every other `linkAs` component: a disabled, external, scheme-carrying or `#` href stays a plain `<a>`, and so does a download or a new-tab link, whatever is passed. linkAs-gate(href-only): a Button with no `href` is an action, not a link, and needs no router link."
+      },
+      {
         "name": "loading",
         "type": "boolean",
         "required": false,
@@ -7920,6 +7926,12 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": "When set, the button renders as an anchor (`<a href>`) for link CTAs."
+      },
+      {
+        "name": "linkAs",
+        "type": "React.ElementType",
+        "required": false,
+        "description": "Link form only — the app's router link, `next/link` in the hub. Pass it with `href` and an INTERNAL destination routes client-side instead of reloading the whole document. ADDED 2026-09-22. `href` has rendered a bare `<a>` since the link form existed, so 37 internal `<Button href>` call sites across the hub each cost a full page load per click — the defect `check:link-as` was built to stop, invisible to it because this component never took the prop. It is decided by the same `navLinkRoutes` rule as every other `linkAs` component: a disabled, external, scheme-carrying or `#` href stays a plain `<a>`, and so does a download or a new-tab link, whatever is passed. linkAs-gate(href-only): a Button with no `href` is an action, not a link, and needs no router link."
       },
       {
         "name": "loading",
