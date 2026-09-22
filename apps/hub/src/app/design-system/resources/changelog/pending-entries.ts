@@ -26,10 +26,17 @@ import { CHANGE_KINDS, type ChangeEntry } from "./entry";
 /** `next build` and `next dev` both run with `apps/hub` as the working directory. */
 const HERE = "src/app/design-system/resources/changelog/pending";
 
+/* `turbopackIgnore`: these are directory paths read with `readdirSync`, which the
+   file tracer cannot follow, so without it the tracer ships the WHOLE PROJECT
+   with the changelog's function ("Dynamic filesystem access causes tracing of the
+   whole project" — 4,931 traced files). The page is prerendered, so the read only
+   ever happens at build time, where the directory is on disk. If this page is
+   ever made dynamic, these files must be named in `outputFileTracingIncludes`
+   instead — see docs/audit/vercel-storage-2026-09-08.md. */
 const CANDIDATES = [
-  join(process.cwd(), HERE),
+  join(/* turbopackIgnore: true */ process.cwd(), HERE),
   // A runner that starts from the repo root instead of the app.
-  join(process.cwd(), "apps", "hub", HERE),
+  join(/* turbopackIgnore: true */ process.cwd(), "apps", "hub", HERE),
 ];
 
 function pendingDir(): string | null {

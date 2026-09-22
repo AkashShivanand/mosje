@@ -4,7 +4,7 @@ import * as React from "react";
 import { useToast } from "@/components/nmba/toast";
 import { STATES, STATE_DISTRICTS } from "@/lib/nmba/states";
 import { ACTIVITY_TYPES } from "@/lib/nmba/mock-data";
-import { Button, FormField, Icon, Input, Select } from "@mosje/design-system";
+import { Button, FormField, Icon, IconButton, Input, Select } from "@mosje/design-system";
 
 interface AddEventModalProps {
   open: boolean;
@@ -49,9 +49,14 @@ export function AddEventModal({ open, onClose }: AddEventModalProps) {
       <div className="relative z-10 w-full max-w-2xl rounded-2xl bg-white p-6 shadow-pop">
         <div className="mb-5 flex items-center justify-between">
           <h2 id="modal-title" className="text-title-1 text-ink">Add Event</h2>
-          <button onClick={onClose} aria-label="Close modal" className="rounded-lg p-1.5 text-ink-hint hover:bg-black/5">
-            <Icon name="close" size={20} />
-          </button>
+          <IconButton
+            icon={<Icon name="close" size={20} />}
+            aria-label="Close modal"
+            variant="neutral"
+            appearance="text"
+            shape="circle"
+            onClick={onClose}
+          />
         </div>
 
         <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-2">

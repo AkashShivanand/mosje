@@ -248,9 +248,6 @@
     background: var(--sa-bg-neutral-subtle);
     cursor: zoom-in;
   }
-  [data-design="next"] .wn-photos__button:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: var(--sa-focus-offset); }
-  [data-design="next"] .wn-photos__img { object-fit: cover; transition: opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing); }
-  [data-design="next"] .wn-photos__button:hover .wn-photos__img { opacity: 0.88; }
 
   /* ── Facts panel (event details) ───────────────────────────────────────── */
   [data-design="next"] .wn-facts { display: grid; gap: var(--sa-stack-16); }

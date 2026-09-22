@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useTCStore } from "@/lib/nmba/treatment-centre/store";
 import { TCListPage } from "@/components/nmba/treatment-centre/tc-list";
-import { FormField, Input, Modal, Button } from "@mosje/design-system";
+import { Button, FormField, Input, Modal } from "@mosje/design-system";
 import type { ColumnDef } from "@/components/nmba/data-table";
 
 type CentreSummary = {
@@ -101,13 +101,9 @@ export default function USCentresReportPage() {
       key: "actions",
       header: "Action",
       render: (r) => (
-        <button
-          type="button"
-          onClick={() => setDrillDownCentre(r)}
-          className="rounded bg-navy/10 px-2.5 py-1 text-label-2 font-semibold text-navy hover:bg-navy/20"
-        >
+        <Button appearance="outlined" size="sm" nowrap onClick={() => setDrillDownCentre(r)}>
           View Roster
-        </button>
+        </Button>
       ),
     },
   ];

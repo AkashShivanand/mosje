@@ -362,10 +362,9 @@ export function CentreLocator({ headingLevel = 3 }: CentreLocatorProps) {
                   : "Loading centres"}
             </p>
             {ready && (hasFilters || userLoc) && (
-              <button type="button" className="cl-link" onClick={clearAll}>
-                <Icon name="close" size={16} aria-hidden />
+              <Button variant="primary" appearance="text" size="sm" className="cl-link" onClick={clearAll} iconLeft={<Icon name="close" size={16} aria-hidden />}>
                 Clear Filters
-              </button>
+              </Button>
             )}
           </div>
 
@@ -414,16 +413,18 @@ export function CentreLocator({ headingLevel = 3 }: CentreLocatorProps) {
                       </p>
                       <p className="cl-item__actions">
                         {isPlottable(c) && (
-                          <button
-                            type="button"
+                          <Button
+                            variant="primary"
+                            appearance="text"
+                            size="sm"
                             className="cl-link"
                             aria-pressed={isSel}
                             onClick={() => setSelected(isSel ? null : key)}
+                            iconLeft={<Icon name="location_on" size={16} aria-hidden />}
                           >
-                            <Icon name="location_on" size={16} aria-hidden />
                             {isSel ? "Shown on Map" : "Show on Map"}
                             <span className="sr-only">: {c.name}</span>
-                          </button>
+                          </Button>
                         )}
                         {isPlottable(c) && (
                           <a
@@ -495,10 +496,16 @@ export function CentreLocator({ headingLevel = 3 }: CentreLocatorProps) {
           />
           {ready && f.state && (
             <p className="cl-map__back">
-              <button type="button" className="cl-link" onClick={() => { update({ state: "", district: "" }); setSelected(null); }}>
-                <Icon name="zoom_out_map" size={16} aria-hidden />
+              <Button
+                variant="primary"
+                appearance="text"
+                size="sm"
+                className="cl-link"
+                onClick={() => { update({ state: "", district: "" }); setSelected(null); }}
+                iconLeft={<Icon name="zoom_out_map" size={16} aria-hidden />}
+              >
                 Show All of India
-              </button>
+              </Button>
             </p>
           )}
         </div>

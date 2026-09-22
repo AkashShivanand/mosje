@@ -1,8 +1,7 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
-import { Lightbox, type LightboxItem } from "@mosje/design-system";
+import { Lightbox, MediaThumbnail, type LightboxItem } from "@mosje/design-system";
 import type { AlbumPhoto } from "./albums";
 
 interface AlbumPhotoGridProps {
@@ -14,7 +13,7 @@ interface AlbumPhotoGridProps {
 /**
  * An album's photographs, each opening the DS Lightbox (issue DES-D-06).
  *
- * Every thumbnail is a BUTTON, not a link to the raw CDN file — the classic
+ * Every thumbnail is the DS MediaThumbnail — a BUTTON, not a link to the raw CDN file — the classic
  * gallery opened a bare image in the tab, with no way back and no caption. The
  * Lightbox pages with ← / →, closes on Esc, traps focus while open and returns
  * it to the thumbnail that opened it. Every photograph carries alt text, and
@@ -38,18 +37,13 @@ export function AlbumPhotoGrid({ photos, label }: AlbumPhotoGridProps) {
       <ul className="wn-photos" aria-label={label}>
         {photos.map((p, i) => (
           <li key={p.src}>
-            <button type="button" className="wn-photos__button" onClick={() => setOpen(i)}>
-              <Image
-                src={p.thumb}
-                alt=""
-                fill
-                sizes="(min-width: 1024px) 240px, (min-width: 640px) 33vw, 50vw"
-                className="wn-photos__img"
-              />
-              <span className="sr-only">
-                Open photograph {i + 1} of {photos.length}: {p.alt}
-              </span>
-            </button>
+            <MediaThumbnail
+              size="fill"
+              className="wn-photos__button"
+              src={p.thumb}
+              label={`Open photograph ${i + 1} of ${photos.length}: ${p.alt}`}
+              onClick={() => setOpen(i)}
+            />
           </li>
         ))}
       </ul>

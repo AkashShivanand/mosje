@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { SplitButton } from "@mosje/design-system";
+import { Icon, SplitButton } from "@mosje/design-system";
 
 /**
  * **Split Button** — one default action, with its alternatives one press away.
@@ -82,3 +82,23 @@ export const Destructive: Story = {
 
 /** Disabled. Both halves go together — a live menu beside a dead action is a trap. */
 export const Disabled: Story = { args: { disabled: true } };
+
+/**
+ * The quiet case: `appearance="outlined"` with an `iconLeft` — Copy, with its
+ * export formats one press away, in a table toolbar. Both halves take the same
+ * appearance; a pair whose halves disagree on weight reads as two controls.
+ */
+export const Quiet: Story = {
+  args: {
+    children: "Copy",
+    label: "Export options",
+    variant: "neutral",
+    appearance: "outlined",
+    size: "sm",
+    iconLeft: <Icon name="content_copy" size={16} />,
+    items: [
+      { id: "xls", label: "Export as Excel", icon: "table_chart" },
+      { id: "csv", label: "Export as CSV", icon: "description" },
+    ],
+  },
+};

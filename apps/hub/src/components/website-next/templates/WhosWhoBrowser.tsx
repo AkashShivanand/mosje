@@ -143,18 +143,23 @@ export function WhosWhoBrowser({ teams }: { teams: WhosWhoTeam[] }) {
               <section key={t.id} className="wn-who__team" data-open={isOpen} aria-labelledby={headingId}>
                 <div className="wn-who__team-head">
                   <h2 className="wn-who__team-title" id={headingId}>
-                    <button
-                      type="button"
+                    {/* A DS text Button as the heading's disclosure; it keeps the
+                        heading's own type (people.css), the chevron is its trailing icon. */}
+                    <Button
+                      variant="neutral"
+                      appearance="text"
                       className="wn-who__toggle"
                       aria-expanded={isOpen}
                       aria-controls={bodyId}
                       onClick={() => setOpen((s) => ({ ...s, [t.id]: !isOpen }))}
+                      iconRight={
+                        <span className="wn-who__toggle-icon" aria-hidden="true">
+                          <Icon name="expand_more" size={24} />
+                        </span>
+                      }
                     >
-                      <span>{t.title}</span>
-                      <span className="wn-who__toggle-icon" aria-hidden="true">
-                        <Icon name="expand_more" size={24} />
-                      </span>
-                    </button>
+                      {t.title}
+                    </Button>
                     <span className="wn-who__title-static">{t.title}</span>
                   </h2>
                   <Link href={t.viewAllHref} className="wn-who__all">

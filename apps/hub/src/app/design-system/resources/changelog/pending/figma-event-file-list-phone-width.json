@@ -1,4 +1,0 @@
-{
-  "kind": "Fixed",
-  "text": "THE FIGMA `Event List / Row` AND `File List / Row` MASTERS HOLD TOGETHER AT A PHONE'S WIDTH. At 291px an event row used to run 189px out of its card and a file row's actions 47px out of the row; both now wrap the way the portal does — the event's subject moves under its action, a file's actions move under its details, 12 below and against the right edge. `File List / Row` also takes the code's 12px vertical padding, which makes each master 8px shorter. `Metric Card` needed no change: the portal draws it full width on a phone, and the master already holds at that width."
-}

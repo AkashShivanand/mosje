@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Button, Icon, RadioGroup, SectionTitle } from "@mosje/design-system";
+import { Button, Chip, Icon, RadioGroup, SectionTitle, SegmentedControl } from "@mosje/design-system";
 import { OFFERINGS, PERSONAS, isOffering, isPersona } from "@/lib/website-next/schemes";
 import {
   SCHEME_TYPES,
@@ -151,19 +151,18 @@ function FinderView({ state, onChange }: { state: FinderState; onChange: (s: Par
 
   return (
     <div className="wn-finder">
-      <button
-        type="button"
+      <Button
+        variant="neutral"
+        appearance="outlined"
         className="wn-finder__toggle"
         aria-expanded={panelOpen}
         aria-controls={panelId}
         onClick={() => setPanelOpen((o) => !o)}
+        iconLeft={<Icon name="tune" size={20} />}
       >
-        <span aria-hidden className="wn-finder__toggle-icon">
-          <Icon name="tune" size={20} />
-        </span>
         <span>{panelOpen ? "Hide Filters" : "Show Filters"}</span>
         {anyActive && <span className="wn-finder__toggle-note">{active.map((a) => a.label).join(", ")}</span>}
-      </button>
+      </Button>
 
       <aside id={panelId} className="wn-finder__panel" data-open={panelOpen} aria-label="Filter schemes">
         <div className="wn-finder__search">
@@ -235,16 +234,19 @@ function FinderView({ state, onChange }: { state: FinderState; onChange: (s: Par
             {statusText}
           </p>
           {n > 0 && (
-            <div className="wn-finder__groupby" role="group" aria-label="Group results by">
+            <div className="wn-finder__groupby">
               <span className="wn-finder__groupby-label" aria-hidden>
                 Group By
               </span>
-              <button type="button" aria-pressed={state.by === "offer"} onClick={() => onChange({ by: "offer" })}>
-                What You Get
-              </button>
-              <button type="button" aria-pressed={state.by === "admin"} onClick={() => onChange({ by: "admin" })}>
-                Administered By
-              </button>
+              <SegmentedControl<GroupBy>
+                ariaLabel="Group results by"
+                value={state.by}
+                options={[
+                  { value: "offer", label: "What You Get" },
+                  { value: "admin", label: "Administered By" },
+                ]}
+                onChange={(by) => onChange({ by })}
+              />
             </div>
           )}
         </div>
@@ -253,10 +255,10 @@ function FinderView({ state, onChange }: { state: FinderState; onChange: (s: Par
           <ul className="wn-finder__active" aria-label="Filters applied">
             {active.map((a) => (
               <li key={a.key}>
-                <button
-                  type="button"
-                  className="wn-finder__pill"
-                  onClick={() => {
+                <Chip
+                  size="sm"
+                  dismissLabel={`Remove filter: ${a.label}`}
+                  onDismiss={() => {
                     if (a.key === "q") {
                       setQ("");
                       lastPushed.current = "";
@@ -264,12 +266,8 @@ function FinderView({ state, onChange }: { state: FinderState; onChange: (s: Par
                     onChange({ [a.key]: undefined });
                   }}
                 >
-                  <span>{a.label}</span>
-                  <span className="sr-only">, remove this filter</span>
-                  <span aria-hidden className="wn-finder__pill-x">
-                    <Icon name="close" size={16} />
-                  </span>
-                </button>
+                  {a.label}
+                </Chip>
               </li>
             ))}
           </ul>
@@ -335,12 +333,21 @@ function Facet({ title, defaultOpen, children }: { title: string; defaultOpen?: 
   return (
     <div className="wn-facet">
       <div className="wn-facet__heading">
-        <button type="button" aria-expanded={open} aria-controls={id} onClick={() => setOpen((o) => !o)}>
-          <span>{title}</span>
-          <span aria-hidden className="wn-facet__chev" data-open={open}>
-            <Icon name="expand_more" size={20} />
-          </span>
-        </button>
+        <Button
+          variant="neutral"
+          appearance="text"
+          className="wn-facet__toggle"
+          aria-expanded={open}
+          aria-controls={id}
+          onClick={() => setOpen((o) => !o)}
+          iconRight={
+            <span aria-hidden className="wn-facet__chev" data-open={open}>
+              <Icon name="expand_more" size={20} />
+            </span>
+          }
+        >
+          {title}
+        </Button>
       </div>
       <div id={id} hidden={!open} className="wn-facet__body">
         {children}

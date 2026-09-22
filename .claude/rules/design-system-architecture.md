@@ -93,6 +93,22 @@ destination, anything carrying a scheme or a protocol-relative host, and any `"#
 fragment. The last is load-bearing: a nav entry that owns a menu carries
 `href="#"` and cancels its own click.
 
+## 2c. Every button is a design-system button
+
+A native `<button>` in app code is a hand-rolled component — its own padding, colour,
+focus ring and disabled look, and none of the fixes the design system ships. Use
+`Button`, `IconButton`, `SplitButton`, `ButtonGroup`, `Tabs`, `Toggle`, `Chip`,
+`SegmentedControl`, `Menu`, `Accordion`, `Select` or `Combobox`; a link that looks like
+a button is `Button href` or `buttonClasses()`. If none fits, add the component to the
+design system first.
+
+**`npm run check:raw-button` is the gate** — a ratchet over every raw `<button>` in
+`apps/hub/src` and `packages/design-system/components`, baselined at 383 on 2026-09-22
+and migrated area by area. Two exemptions exist, declared on the tag:
+`raw-button-ok(primitive)` inside the design system, where the native button IS the
+component, and `raw-button-ok(specimen)` on a documentation page. Detail and the
+replacement table: `tools/raw-button/check.mjs`.
+
 ## 3. Visual Regression & Quality Assurance
 - **Playwright VRT:** Components and internal pages are verified using Playwright. When altering a core component, ensure you run the visual suite (`npm run test:e2e`) to catch unintended drifts across the estate.
 - **Figma Code Connect:** We use `@figma/code-connect`. When building a new component that has a Figma counterpart, you MUST create a `.figma.ts` file in the component's directory to map the React props to the Figma component properties. This ensures the "Source of Truth" between Figma and Code remains unbroken.

@@ -7,7 +7,7 @@ import { socialCard } from "@/lib/seo/social";
 
 /** 100 records — every one is prerendered. */
 export function generateStaticParams() {
-  return getSchemeDocuments().map((d) => ({ slug: d.slug }));
+  return getSchemeDocuments().map((d) => ({ slug: d.slug })).slice(0, 0); // rendered on first visit, not at build — free-tier budget, see documents/[slug]/page.tsx
 }
 
 export async function generateMetadata(

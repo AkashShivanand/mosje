@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Icon, Modal } from "@mosje/design-system";
+import { Button, Icon, Modal } from "@mosje/design-system";
 import { useTCStore } from "@/lib/nmba/treatment-centre/store";
 import { TCListPage } from "@/components/nmba/treatment-centre/tc-list";
 import { ProgressBadge } from "@/components/nmba/treatment-centre/tc-form";
@@ -24,13 +24,9 @@ export default function IrcaPatientsPage() {
       key: "registrationNumber",
       header: "Registration Number",
       render: (r) => (
-        <button
-          type="button"
-          onClick={() => setViewing(r)}
-          className="font-mono text-navy hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy"
-        >
+        <Button appearance="text" size="sm" nowrap onClick={() => setViewing(r)}>
           {r.registrationNumber}
-        </button>
+        </Button>
       ),
     },
     { key: "name", header: "Patient Name", render: (r) => <span className="font-semibold text-ink">{r.name}</span> },

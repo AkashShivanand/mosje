@@ -95,6 +95,16 @@ export default function SplitButtonPage(): React.JSX.Element {
               <code>Menu</code>, where none of them is pre-selected by the layout.
             </p>
           </section>
+          <section className="cdp__section" aria-labelledby="cdp-quiet">
+            <h2 id="cdp-quiet" className="cdp__h2">The Quiet Pair</h2>
+            <p>
+              <code>appearance=&quot;outlined&quot;</code> (or <code>text</code>) is for a secondary
+              default &mdash; Copy, with its export formats one press away, in a table toolbar. Both
+              halves take the same appearance, because a pair whose halves disagree on weight reads
+              as two unrelated controls. <code>iconLeft</code> puts a glyph before the default
+              action&rsquo;s label, as on Button.
+            </p>
+          </section>
         </>
       }
       code={

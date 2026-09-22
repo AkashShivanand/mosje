@@ -1290,6 +1290,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "edit_note"
   },
   {
+    "title": "Media Thumbnail — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/media-thumbnail",
+    "keywords": "media thumbnail — design system data display one control, drawn five times before named for what it opens empty is drawn, not omitted the badge counts what is not shown  tokens wcag accessibility",
+    "description": "A photo or video that opens when pressed — the trigger for a Lightbox, in a table cell, a list row or a card.",
+    "type": "component",
+    "iconName": "bar_chart"
+  },
+  {
     "title": "Media Upload — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/media-upload",
@@ -1895,7 +1904,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Split Button — Design System",
     "section": "Actions",
     "href": "/design-system/components/actions/split-button",
-    "keywords": "split button — design system actions two buttons, not one it draws no seam of its own only where there is a default example two controls need two names  tokens wcag accessibility",
+    "keywords": "split button — design system actions two buttons, not one it draws no seam of its own only where there is a default the quiet pair example two controls need two names  tokens wcag accessibility",
     "description": "One default action with its alternatives one press away — two real buttons joined by ButtonGroup, never one control that behaves differently depending on which half was hit.",
     "type": "component",
     "iconName": "widgets"

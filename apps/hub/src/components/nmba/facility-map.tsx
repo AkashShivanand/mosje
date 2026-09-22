@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Icon, IconButton } from "@mosje/design-system";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -119,13 +120,15 @@ export function FacilityMap({ facilities, className, mini = false, legendCollaps
         <div className="flex items-center justify-between gap-2">
           <span className="text-label-2 font-semibold text-ink">Legend</span>
           {legendCollapsible && (
-            <button
-              onClick={() => setLegendOpen((o) => !o)}
+            <IconButton
+              icon={<Icon name={legendOpen ? "remove" : "add"} size={16} />}
               aria-label={legendOpen ? "Minimize legend" : "Expand legend"}
-              className="text-label-2 text-ink-muted hover:text-ink"
-            >
-              {legendOpen ? "−" : "+"}
-            </button>
+              aria-expanded={legendOpen}
+              variant="neutral"
+              appearance="text"
+              size="sm"
+              onClick={() => setLegendOpen((o) => !o)}
+            />
           )}
         </div>
         {legendOpen && (

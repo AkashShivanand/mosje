@@ -1,7 +1,7 @@
 import { T } from "@/components/i18n/translation-provider";
 import Link from "next/link";
 import { HeroSearchInput } from "./HeroSearchInput";
-import { ActionTile, Icon, buttonClasses } from "@mosje/design-system";
+import { ActionTile, Button, Icon } from "@mosje/design-system";
 
 /**
  * The citizen's starting point (issue NAV-01), in a compact band under the
@@ -60,12 +60,9 @@ export function Hero() {
             <div className="wn-home-hero__field">
               <Icon name="search" size={24} aria-hidden />
               <HeroSearchInput />
-              <button
-                type="submit"
-                className={buttonClasses("primary", "filled", "md")}
-              >
+              <Button type="submit" variant="primary" appearance="filled" size="md">
                 <T>Search</T>
-              </button>
+              </Button>
             </div>
           </form>
         </div>

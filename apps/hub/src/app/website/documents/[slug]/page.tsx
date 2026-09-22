@@ -22,7 +22,9 @@ import { socialCard } from "@/lib/seo/social";
  */
 export const dynamicParams = true;
 
-const PRERENDERED = 400;
+// 0 since 2026-09-22: at 400 this tree was still a large share of every build,
+// and both free-tier storage limits hit 100% with only 19 deployments kept.
+const PRERENDERED = 0;
 
 export function generateStaticParams() {
   return [...getAllDocuments()]

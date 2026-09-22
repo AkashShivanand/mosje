@@ -340,6 +340,8 @@ export { Figure } from "./components/data-display/figure";
 export type { FigureProps, FigureRatio } from "./components/data-display/figure";
 export { ScheduleGrid } from "./components/data-display/schedule-grid";
 export type { ScheduleGridProps, ScheduleEntry, ScheduleAxis } from "./components/data-display/schedule-grid";
+export { MediaThumbnail } from "./components/data-display/media-thumbnail";
+export type { MediaThumbnailProps, MediaThumbnailSize, MediaThumbnailKind } from "./components/data-display/media-thumbnail";
 export { VideoTile } from "./components/data-display/video-tile";
 export type { VideoTileProps, VideoTileState } from "./components/data-display/video-tile";
 export { SignaturePad } from "./components/forms/signature-pad";

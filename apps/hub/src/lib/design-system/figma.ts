@@ -76,6 +76,12 @@ export const FIGMA_NODES = {
   //                          with 16 text nodes, ZERO on a published style, describing a
   //                          component that does not exist ("Primary · Secondary · Outlined
   //                          · Ghost"). The set has Type x Sub-type, not those words.
+  // "08 The icon side sits closer than the label side" — added 2026-09-22, the section that
+  // brought Figma level with a code rule that had been invisible in the library since
+  // 2026-09-03. The set expresses it with a `label` frame carrying the difference, because
+  // padding is per VARIANT in Figma while the icon slots are booleans; the alternative was
+  // reinstating the Icon variant axis retired on 2026-08-27, which is what paid for Tone.
+  buttonOpticalPadding: "58662:956",
   buttonRecord: "56164:1805", // "Button — Component record" — the maintainer frame. The
   //                          FIRST one in the library; figma-code-sync.md records that no
   //                          page had one, which is why open work kept being rediscovered.
@@ -148,6 +154,10 @@ export const FIGMA_NODES = {
   transferList: "57616:832",
   scheduleGrid: "57618:800",
   videoTile: "57620:781",
+  // "Media Thumbnail — Documentation", created 2026-09-22 on its own page after Figure. The set
+  // (58689:591) is Size 3 x Kind 3 x State 3 less Empty's two states per size = 21; it replaced
+  // five hand-drawn photo triggers in NMBA.
+  mediaThumbnail: "58690:447",
   cookieConsent: "57622:780",
   languageSwitcher: "57597:737",
   inlineEdit: "57599:772",

@@ -1,0 +1,58 @@
+# Daily production deploy — the scheduled half of the free-tier build budget.
+#
+# Vercel's Hobby plan charges Deployment Storage and Function Storage (10 GB each)
+# for build output created in a rolling window. main used to build on every merge,
+# 5–12 times a day; with DAILY_DEPLOY=1 set on the Vercel project, the Ignored
+# Build Step (scripts/vercel-ignore-build.sh, "Rule 0") skips those and lets this
+# nightly deploy through instead. See docs/audit/vercel-storage-2026-09-08.md.
+#
+# SETUP, once, by a person — this repo's agents do not create or handle secrets:
+#   1. Vercel → mosje-samavesh → Settings → Git → Deploy Hooks: create a hook
+#      for branch `main` and copy its URL.
+#   2. GitHub → Settings → Secrets and variables → Actions: add it as
+#      VERCEL_DEPLOY_HOOK.
+#   3. Only then set DAILY_DEPLOY=1 in the Vercel project's Production
+#      environment. Before step 3 nothing changes; without steps 1–2, step 3
+#      would stop main reaching production at all.
+#
+# Until the secret exists every run exits cleanly and says so.
+name: Daily production deploy
+
+on:
+  schedule:
+    - cron: "30 20 * * *" # 20:30 UTC = 02:00 IST, inside the gate's 20:00–23:59 UTC window
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    # Scheduled and manual runs only. Local CI (`npm run ci`) skips any job whose
+    # condition names the GitHub event, so running CI never fires a deploy.
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy main if it changed in the last 24 hours
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+          GH_TOKEN: ${{ github.token }}
+          MANUAL: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::notice::VERCEL_DEPLOY_HOOK is not set yet, so nothing was deployed. See the setup steps at the top of this file."
+            exit 0
+          fi
+          # A day with no merges needs no build — every build is charged.
+          # A manual run skips this check, but NOTE: once DAILY_DEPLOY=1 is set,
+          # the Ignored Build Step lets production build only inside the nightly
+          # window (20:00–23:59 UTC), so a manual run outside it is skipped by
+          # Vercel. To ship a merge immediately, put [deploy] in its PR title.
+          SINCE="$(date -u -d '24 hours ago' +%Y-%m-%dT%H:%M:%SZ)"
+          CHANGED="$(gh api "repos/${GITHUB_REPOSITORY}/commits?sha=main&since=${SINCE}&per_page=1" --jq 'length')"
+          if [ "$MANUAL" != "true" ] && [ "$CHANGED" = "0" ]; then
+            echo "main has not changed since ${SINCE}; no deploy needed."
+            exit 0
+          fi
+          curl -fsS -X POST "$HOOK" > /dev/null
+          echo "Deploy requested for main."

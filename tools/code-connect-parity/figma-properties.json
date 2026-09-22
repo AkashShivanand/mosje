@@ -1706,14 +1706,22 @@
   },
   "SplitButton": {
     "nodeId": "57606:762",
-    "captured": "2026-09-06",
-    "note": "Built 6 September 2026 alongside the code. The set publishes variants only — every non-variant option in this component is data the caller supplies, not a Figma property.",
+    "captured": "2026-09-22",
+    "note": "Built 6 September 2026 alongside the code; rebuilt 22 September 2026. Tone 3 (Neutral added, which the code always accepted) x Appearance 2 (Filled, Outlined — added with the code prop) x State 2 = 12. The trigger is an Icon Button instance carrying the library Icon, no longer a hand-drawn frame holding a text glyph.",
     "properties": {
       "Tone": {
         "type": "VARIANT",
         "variantOptions": [
           "Primary",
-          "Danger"
+          "Danger",
+          "Neutral"
+        ]
+      },
+      "Appearance": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Filled",
+          "Outlined"
         ]
       },
       "State": {
@@ -2630,5 +2638,46 @@
       }
     },
     "deliberatelyOmitted": []
+  },
+  "MediaThumbnail": {
+    "nodeId": "58689:591",
+    "captured": "2026-09-22",
+    "note": "Built 22 September 2026 with the code. Size 3 x Kind 3 x State 3, less Empty's Hover and Focused in each size = 21. State has no prop — the browser drives hover and focus. The accessible label has no Figma property because nothing in the picture shows it.",
+    "properties": {
+      "Show count": {
+        "type": "BOOLEAN"
+      },
+      "Count": {
+        "type": "TEXT"
+      },
+      "Size": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Small",
+          "Medium",
+          "Fill"
+        ]
+      },
+      "Kind": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Image",
+          "Video",
+          "Empty"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Focused"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "State",
+      "Count"
+    ]
   }
 }

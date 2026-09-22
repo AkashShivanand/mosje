@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { BarChart, DonutChart, Icon, MetricCard, Select, type ChartDatum, type MetricCardChange } from "@mosje/design-system";
+import { BarChart, ChartCard, DonutChart, Icon, MetricCard, Select, type ChartDatum, type MetricCardChange } from "@mosje/design-system";
 import { useTCSession } from "@/lib/nmba/treatment-centre/session-context";
 import { useTCStore } from "@/lib/nmba/treatment-centre/store";
 import { DASHBOARD_CARDS, type DashboardMetric } from "@/lib/nmba/treatment-centre/roles";
@@ -75,18 +75,6 @@ function tally(values: string[]): ChartDatum[] {
 }
 
 /** Decorative chart-options affordance (matches the Figma kebab menu). */
-function CardMenuButton() {
-  return (
-    <button
-      type="button"
-      aria-label="Chart options"
-      className="inline-flex h-9 w-9 items-center justify-center rounded-md text-ink-muted transition-colors hover:bg-black/5"
-    >
-      <Icon name="more_vert" size={16} aria-hidden />
-    </button>
-  );
-}
-
 export default function TreatmentCentreDashboard() {
   const session = useTCSession();
   const store = useTCStore();
@@ -101,10 +89,6 @@ export default function TreatmentCentreDashboard() {
     setToday(new Date().toISOString().slice(0, 10));
   }, []);
 
-  const pieHeadingId   = React.useId();
-  const barHeadingId   = React.useId();
-  const stateHeadingId = React.useId();
-  const ageHeadingId   = React.useId();
 
   const counts: Record<DashboardMetric, number> = {
     patients:           store.patients.length,
@@ -275,67 +259,50 @@ export default function TreatmentCentreDashboard() {
         ))}
       </section>
 
-      {/* Charts */}
+      {/* Charts — the design system's ChartCard. Until 2026-09-22 each was a
+          hand-built card whose "Chart options" button had no handler at all: a
+          control that looked operable and did nothing. ChartCard's `exportable`
+          gives it a real download menu. */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <section aria-labelledby={pieHeadingId} className="rounded-xl border border-line bg-white p-5">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-            <h2 id={pieHeadingId} className="text-title-2 text-ink">Analytical Report</h2>
-            <div className="flex items-center gap-2">
-              <Select
-                aria-label="Analytical report filter"
-                value={filter}
-                onChange={(e) => setFilter(e.target.value as AnalyticalFilter)}
-                options={[
-                  { label: "Gender",             value: "gender" },
-                  { label: "Place of Residence", value: "residence" },
-                  { label: "Treatment Taken",    value: "treatment" },
-                ]}
-              />
-              <CardMenuButton />
-            </div>
-          </div>
+        <ChartCard title="Analytical Report" exportable actions={
+          <Select
+          aria-label="Analytical report filter"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value as AnalyticalFilter)}
+          options={[
+          { label: "Gender",             value: "gender" },
+          { label: "Place of Residence", value: "residence" },
+          { label: "Treatment Taken",    value: "treatment" },
+          ]}
+          />
+        }>
           <DonutChart data={pieDataColored} title="Analytical report distribution" />
-        </section>
-
-        <section aria-labelledby={barHeadingId} className="rounded-xl border border-line bg-white p-5">
-          <div className="mb-4 flex items-center justify-between gap-3">
-            <h2 id={barHeadingId} className="text-title-2 text-ink">Drug Distribution</h2>
-            <CardMenuButton />
-          </div>
+        </ChartCard>
+        <ChartCard title="Drug Distribution" exportable>
           <BarChart
-            data={drugDataColored}
-            title="Drug distribution"
-            yLabel="Number of Patients"
-            orientation="horizontal"
-            showValues
+          data={drugDataColored}
+          title="Drug distribution"
+          yLabel="Number of Patients"
+          orientation="horizontal"
+          showValues
           />
-        </section>
-
-        <section aria-labelledby={stateHeadingId} className="rounded-xl border border-line bg-white p-5 lg:col-span-2">
-          <div className="mb-4 flex items-center justify-between gap-3">
-            <h2 id={stateHeadingId} className="text-title-2 text-ink">State Wise Report</h2>
-            <CardMenuButton />
-          </div>
+        </ChartCard>
+        <ChartCard title="State Wise Report" exportable className="lg:col-span-2">
           <BarChart
-            data={stateDataColored}
-            title="State wise patient/beneficiary count"
-            yLabel="Number of Patients"
-            showValues
+          data={stateDataColored}
+          title="State wise patient/beneficiary count"
+          yLabel="Number of Patients"
+          showValues
           />
-        </section>
-
-        <section aria-labelledby={ageHeadingId} className="rounded-xl border border-line bg-white p-5 lg:col-span-2">
-          <div className="mb-4 flex items-center justify-between gap-3">
-            <h2 id={ageHeadingId} className="text-title-2 text-ink">Age Wise Report</h2>
-            <CardMenuButton />
-          </div>
+        </ChartCard>
+        <ChartCard title="Age Wise Report" exportable className="lg:col-span-2">
           <BarChart
-            data={ageDataColored}
-            title="Age wise patient/beneficiary count"
-            yLabel="Number of Patients"
-            showValues
+          data={ageDataColored}
+          title="Age wise patient/beneficiary count"
+          yLabel="Number of Patients"
+          showValues
           />
-        </section>
+        </ChartCard>
       </div>
     </div>
   );

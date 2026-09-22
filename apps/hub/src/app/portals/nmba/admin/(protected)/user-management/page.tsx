@@ -6,7 +6,7 @@ import { DataTable } from "@/components/nmba/data-table";
 import { ADMIN_USERS, USERS_TOTAL } from "@/lib/nmba/mock-data";
 import type { AdminUser } from "@/lib/nmba/types";
 import { useToast } from "@/components/nmba/toast";
-import { Button, FormField, Icon, Input, Select } from "@mosje/design-system";
+import { Button, FormField, Icon, IconButton, Input, Select } from "@mosje/design-system";
 
 const ROLES: AdminUser["role"][] = ["Admin", "State Nodal Officer", "District Nodal Officer"];
 
@@ -28,9 +28,7 @@ function AddUserModal({ open, onClose }: { open: boolean; onClose: () => void })
       <div className="w-full max-w-md rounded-2xl bg-white shadow-2xl">
         <div className="flex items-center justify-between border-b border-line px-6 py-4">
           <h2 id="add-user-title" className="text-title-2 text-ink">Add User</h2>
-          <button onClick={onClose} aria-label="Close" className="rounded p-1 text-ink-hint hover:bg-black/5">
-            <Icon name="close" size={16} />
-          </button>
+          <IconButton icon={<Icon name="close" size={16} />} aria-label="Close" variant="neutral" appearance="text" size="sm" shape="circle" onClick={onClose} />
         </div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-6">
           <FormField label="Name" id="user-name" required>
@@ -95,12 +93,8 @@ export default function UserManagementPage() {
       header: "Actions",
       render: () => (
         <div className="flex items-center gap-2">
-          <button onClick={() => toast("Action coming soon.", "info")} aria-label="Edit user" className="rounded p-1 text-ink-hint hover:bg-black/5">
-            <Icon name="edit" size={14} />
-          </button>
-          <button onClick={() => toast("Action coming soon.", "info")} aria-label="Delete user" className="rounded p-1 text-red-400 hover:bg-red-50">
-            <Icon name="delete" size={14} />
-          </button>
+          <IconButton icon={<Icon name="edit" size={16} />} aria-label="Edit user" tooltip variant="neutral" appearance="text" size="sm" onClick={() => toast("Action coming soon.", "info")} />
+          <IconButton icon={<Icon name="delete" size={16} />} aria-label="Delete user" tooltip variant="danger" appearance="text" size="sm" onClick={() => toast("Action coming soon.", "info")} />
         </div>
       ),
     },

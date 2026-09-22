@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Select } from "@mosje/design-system";
+import { Button, Select } from "@mosje/design-system";
 import { useTCStore } from "@/lib/nmba/treatment-centre/store";
 import { TCListPage } from "@/components/nmba/treatment-centre/tc-list";
 import type { ColumnDef } from "@/components/nmba/data-table";
@@ -47,13 +47,9 @@ export default function ActivitiesPage() {
           />
         </div>
         {category && (
-          <button
-            type="button"
-            onClick={() => setCategory("")}
-            className="rounded-lg border border-line bg-white px-3 py-1.5 text-label-2 font-semibold text-ink-muted hover:bg-surface-muted"
-          >
+          <Button variant="neutral" appearance="outlined" size="sm" onClick={() => setCategory("")}>
             Reset
-          </button>
+          </Button>
         )}
       </div>
 

@@ -1,4 +1,0 @@
-{
-  "kind": "Added",
-  "text": "DOCUMENTROW GAINS `layout=\"stacked\"`, AND AN APPLICANT'S COMMANDS COME OUT OF THE MENU. The title owns the first line and the status, file name, size and date share the second, so a 90-character title stops wrapping to three lines beside a blank strip and the status words start at one edge on every row. On a phone the status, the file and its size each take a line and the commands become one toolbar. On the e-Anudaan upload, review and correction screens View and the row's main command are drawn on every row, always in that order; only Upload History, Check Again and Remove stay in the menu — before, a row that looked right showed nothing a reader could do with it. A stacked row with no menu keeps the menu's place, so every row's commands end at one edge. The officer's column layout is unchanged."
-}

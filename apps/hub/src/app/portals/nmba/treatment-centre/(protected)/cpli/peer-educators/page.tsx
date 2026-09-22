@@ -251,13 +251,9 @@ function UploadVolunteersSheet({
             <Icon name="table_chart" size={14} className="shrink-0 text-ink-hint" aria-hidden />
             Expected columns: <span className="font-mono text-ink">Name, Mobile, Status</span>
           </p>
-          <button
-            type="button"
-            onClick={downloadSample}
-            className="inline-flex items-center gap-1.5 rounded text-label-2 font-semibold text-navy hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-1"
-          >
-            <Icon name="download" size={14} aria-hidden /> Download sample CSV
-          </button>
+          <Button appearance="text" size="sm" iconLeft={<Icon name="download" size={16} />} onClick={downloadSample}>
+            Download sample CSV
+          </Button>
         </div>
 
         {previewRows.length > 0 && (
@@ -354,14 +350,9 @@ export default function CpliPeerEducatorsPage() {
           </span>
         }
         action={
-          <button
-            type="button"
-            aria-haspopup="dialog"
-            onClick={() => { setSelectedEducator(null); setAddOpen(true); }}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-label-1 font-semibold text-navy transition hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
-          >
-            <Icon name="add" size={16} aria-hidden /> Add New Peer Educator
-          </button>
+          <Button tone="inverse" size="sm" iconLeft={<Icon name="add" size={16} />} aria-haspopup="dialog" onClick={() => { setSelectedEducator(null); setAddOpen(true); }}>
+            Add New Peer Educator
+          </Button>
         }
       />
 

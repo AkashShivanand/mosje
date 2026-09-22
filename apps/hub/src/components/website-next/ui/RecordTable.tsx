@@ -415,14 +415,22 @@ export function RecordTable({
                         className={`wn-rt__th${t === "number" ? " wn-rt__num" : ""}${t === "link" ? " wn-rt__th--action" : ""}`}
                       >
                         {c.sortable ? (
-                          <button type="button" className="wn-rt__sort" onClick={() => toggleSort(c)}>
+                          <Button
+                            variant="neutral"
+                            appearance="text"
+                            size="sm"
+                            className="wn-rt__sort"
+                            onClick={() => toggleSort(c)}
+                            iconRight={
+                              <Icon
+                                name={isSorted ? (sortDir === "asc" ? "arrow_upward" : "arrow_downward") : "unfold_more"}
+                                size={16}
+                                aria-hidden
+                              />
+                            }
+                          >
                             {c.label}
-                            <Icon
-                              name={isSorted ? (sortDir === "asc" ? "arrow_upward" : "arrow_downward") : "unfold_more"}
-                              size={16}
-                              aria-hidden
-                            />
-                          </button>
+                          </Button>
                         ) : (
                           c.label
                         )}

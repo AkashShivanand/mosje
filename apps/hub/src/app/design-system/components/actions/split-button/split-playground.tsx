@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { SplitButton, type MenuEntry } from "@mosje/design-system";
+import { Icon, SplitButton, type MenuEntry } from "@mosje/design-system";
 
 const APPROVE: MenuEntry[] = [
   { id: "remarks", label: "Approve with remarks", icon: "edit_note",
@@ -15,7 +15,7 @@ const REJECT: MenuEntry[] = [
     description: "The applicant can amend and resubmit." },
 ];
 
-/** Every arrangement: the default action, a destructive default, and disabled. */
+/** Every arrangement: the default action, a destructive default, disabled, and the quiet outlined pair. */
 export function SplitPlayground(): React.JSX.Element {
   const [last, setLast] = React.useState<string | null>(null);
   return (
@@ -56,6 +56,20 @@ export function SplitPlayground(): React.JSX.Element {
           onSelect={() => {}}
         >
           Approve
+        </SplitButton>
+        <SplitButton
+          label="Export options"
+          variant="neutral"
+          appearance="outlined"
+          iconLeft={<Icon name="content_copy" size={16} />}
+          items={[
+            { id: "xls", label: "Export as Excel", icon: "table_chart" },
+            { id: "csv", label: "Export as CSV", icon: "description" },
+          ]}
+          onClick={() => setLast("copy")}
+          onSelect={setLast}
+        >
+          Copy
         </SplitButton>
       </div>
       <p
