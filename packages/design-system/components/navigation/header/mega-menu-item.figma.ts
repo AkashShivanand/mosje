@@ -8,11 +8,13 @@
 //   Org logo -> item.iconSrc   (a URL, not an import: each zone is mounted under its
 //               own basePath and the design system cannot resolve one)
 //   Active   -> item.active
+//   External -> item.external
 //   State    -> deliberatelyOmitted. Hover / Focused / Disabled are CSS states.
 import figma from "figma";
 
 const instance = figma.selectedInstance;
 const active = instance.getEnum("Active", { True: "true", False: "false" });
+const external = instance.getBoolean("External#58753:0");
 
 export default {
   example: figma.code`<MegaMenuItem
@@ -22,6 +24,7 @@ export default {
     href: "/website/organisation/…",
     iconSrc: \`\${basePath}/images/org-logos/ncsc.png\`,
     active: ${active},
+    external: ${external},
   }}
   onSelect={close}
 />`,

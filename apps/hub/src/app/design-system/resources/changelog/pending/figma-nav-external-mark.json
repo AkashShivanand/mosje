@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "NAVBAR/MEGAMENUITEM AND NAVBAR/DROPDOWNITEM TAKE AN `External` BOOLEAN IN FIGMA, drawing the open_in_new mark for a destination that leaves the site — the Figma half of the code fix, so a designer can mark an off-site row instead of a developer discovering it. On the organisation row the mark is pinned to the right edge on the abbreviation's line, outside the auto-layout flow, so the row measures the same either way; on the dropdown row it follows the label at inline/4. Both map to `item.external` through Code Connect."
+}

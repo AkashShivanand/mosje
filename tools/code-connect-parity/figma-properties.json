@@ -496,8 +496,12 @@
   },
   "DropdownItem": {
     "nodeId": "4299:1940",
-    "captured": "2026-08-22",
+    "captured": "2026-09-23",
     "properties": {
+      "External#58753:8": {
+        "type": "BOOLEAN",
+        "defaultValue": false
+      },
       "State": {
         "type": "VARIANT",
         "variantOptions": [
@@ -652,11 +656,15 @@
   },
   "MegaMenuItem": {
     "nodeId": "4258:33604",
-    "captured": "2026-08-22",
+    "captured": "2026-09-23",
     "properties": {
       "Org logo#4359:0": {
         "type": "INSTANCE_SWAP",
         "defaultValue": "4273:696"
+      },
+      "External#58753:0": {
+        "type": "BOOLEAN",
+        "defaultValue": false
       },
       "State": {
         "type": "VARIANT",
