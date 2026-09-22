@@ -2,7 +2,9 @@
 
 /* PM-AJAY Dashboard — app shell: routing, filters, drill-down scaling, responsive stage. */
 
-import { useState, useMemo, useRef, useEffect, useLayoutEffect, Fragment, type CSSProperties } from "react";
+import { useState, useMemo, useRef, useEffect, useLayoutEffect, type CSSProperties } from "react";
+import Link from "next/link";
+import { Breadcrumb } from "@mosje/design-system";
 import { Navbar } from "@/components/pm-ajay/shell/navbar";
 import { Sidebar, DrillDownFilters, DashboardFooter, type Filters } from "./ui";
 import { VIEW_COMPONENTS, type LevelRow } from "./views";
@@ -211,24 +213,11 @@ export function DashboardApp() {
           <Sidebar view={view} />
           <div className="pm-content">
             <div className="pm-head">
-              <nav className="pm-crumbs" aria-label="Breadcrumb">
-                {crumbs.map((c, i) => (
-                  <Fragment key={i}>
-                    {c.onClick ? (
-                      <button type="button" onClick={c.onClick}>
-                        {c.label}
-                      </button>
-                    ) : (
-                      <span className={i === crumbs.length - 1 ? "cur" : ""}>{c.label}</span>
-                    )}
-                    {i < crumbs.length - 1 && (
-                      <span className="material-symbols-rounded" aria-hidden="true">
-                        chevron_right
-                      </span>
-                    )}
-                  </Fragment>
-                ))}
-              </nav>
+              <Breadcrumb
+                linkAs={Link}
+                className="pm-crumbs"
+                items={crumbs.map((c) => ({ label: c.label, onSelect: c.onClick }))}
+              />
               <h1>{meta.title}</h1>
               <p className="desc">{meta.desc}</p>
               {meta.banner && !scope && (

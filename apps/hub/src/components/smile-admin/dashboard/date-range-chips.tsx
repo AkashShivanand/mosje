@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { cn } from "@/lib/smile-admin/utils";
-import { Divider, Button, Icon } from "@mosje/design-system";
+import { Button, Chip, Icon } from "@mosje/design-system";
 
 const RANGES = [
   "Today",
@@ -18,44 +17,23 @@ export function DateRangeChips({ initial = "Current FY" }: { initial?: Range }) 
   const [active, setActive] = useState<Range>(initial);
   return (
     <div className="flex flex-wrap items-center justify-between gap-sm md:gap-md">
-      <div
-        role="tablist"
-        aria-label="Date range"
-        className="inline-flex flex-wrap items-center gap-0.5 rounded-md border border-stroke-200 bg-white p-1 shadow-xs"
-      >
-        {RANGES.map((r) => (
-          <button
+      {/* Chips, not a segmented control: seven ranges do not fit one row on a
+          phone, and a chip row wraps where a segmented control squeezes. */}
+      <div role="group" aria-label="Date range" className="flex flex-wrap items-center gap-xs">
+        {[...RANGES, "Custom" as const].map((r) => (
+          <Chip
             key={r}
-            role="tab"
-            aria-selected={active === r}
-            onClick={() => setActive(r)}
-            className={cn(
-              "rounded-sm px-sm py-1 text-label-1 transition-colors duration-150",
-              active === r
-                ? "bg-primary text-white shadow-xs"
-                : "text-ink-muted hover:bg-neutral-100 hover:text-ink",
-            )}
+            emphasis="solid"
+            selected={active === r}
+            onSelectedChange={() => setActive(r)}
+            leadingIcon={r === "Custom" ? <Icon name="calendar_today" size={16} /> : undefined}
           >
             {r}
-          </button>
+          </Chip>
         ))}
-        <Divider orientation="vertical" length={16} className="mx-0.5" />
-        <button
-          role="tab"
-          aria-selected={active === "Custom"}
-          onClick={() => setActive("Custom")}
-          className={cn(
-            "inline-flex items-center gap-xs rounded-sm px-sm py-1 text-label-1 transition-colors duration-150",
-            active === "Custom"
-              ? "bg-primary text-white shadow-xs"
-              : "text-ink-muted hover:bg-neutral-100 hover:text-ink",
-          )}
-        >
-          <Icon name="calendar_today" size={14} /> Custom
-        </button>
       </div>
-      <Button appearance="outlined" size="sm">
-        <Icon name="tune" size={14} /> Filters
+      <Button appearance="outlined" size="sm" iconLeft={<Icon name="tune" size={16} />}>
+        Filters
       </Button>
     </div>
   );

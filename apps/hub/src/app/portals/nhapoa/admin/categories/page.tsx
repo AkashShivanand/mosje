@@ -61,7 +61,7 @@ export default function CategoriesPage() {
                   <span className={`inline-flex rounded-full px-2.5 py-0.5 text-label-2 font-semibold ${c.active ? "bg-approve-bg text-approve-fg" : "bg-slate-100 text-slate-500"}`}>{c.active ? "Active" : "Deactivated"}</span>
                 </td>
                 <td className="px-5 py-4 text-right">
-                  <button type="button" onClick={() => toggleCategory(c.id)} className="rounded-lg border border-line px-3 py-1.5 text-label-2 font-semibold text-navy hover:bg-navy/5">{c.active ? "Deactivate" : "Reactivate"}</button>
+                  <Button variant="neutral" appearance="outlined" size="sm" nowrap onClick={() => toggleCategory(c.id)}>{c.active ? "Deactivate" : "Reactivate"}</Button>
                 </td>
               </tr>
             ))}

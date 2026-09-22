@@ -1,9 +1,7 @@
 "use client";
 
-import * as React from "react";
-import Link from "next/link";
-import { cn } from "@/lib/scw/utils";
-import { Icon } from "@mosje/design-system";
+import { useRouter } from "next/navigation";
+import { AccountMenu, Icon } from "@mosje/design-system";
 
 export interface AccountUser {
   name: string;
@@ -12,7 +10,12 @@ export interface AccountUser {
   initials?: string;
 }
 
-/** Avatar + dropdown shown in the masthead when "logged in". */
+/**
+ * Avatar + dropdown shown in the masthead when "logged in" — the design
+ * system's AccountMenu. Until 2026-09-22 this was a raw button over a
+ * hand-built panel with its own outside-click listener: no keyboard
+ * navigation, no Escape, no menu semantics.
+ */
 export function UserMenu({
   user,
   showProfile = false,
@@ -20,66 +23,17 @@ export function UserMenu({
   user: AccountUser;
   showProfile?: boolean;
 }) {
-  const [open, setOpen] = React.useState(false);
-  const ref = React.useRef<HTMLDivElement>(null);
-
-  React.useEffect(() => {
-    const close = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    };
-    document.addEventListener("mousedown", close);
-    return () => document.removeEventListener("mousedown", close);
-  }, []);
-
-  const initials =
-    user.initials ??
-    user.name
-      .split(" ")
-      .map((p) => p[0])
-      .slice(0, 2)
-      .join("")
-      .toUpperCase();
-
+  const router = useRouter();
   return (
-    <div className="relative" ref={ref}>
-      <button
-        onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-2.5 rounded-lg px-1 py-1 hover:bg-black/5"
-      >
-        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-navy-100 text-title-3 text-navy">
-          {initials}
-        </span>
-        <span className="hidden text-left sm:block">
-          <span className="block text-title-3 text-ink">{user.name}</span>
-          {(user.role || user.email) && (
-            <span className="block text-body-3 text-ink-muted">{user.role ?? user.email}</span>
-          )}
-        </span>
-      </button>
-      {open && (
-        <div
-          className={cn(
-            "absolute right-0 top-full z-50 mt-2 w-48 overflow-hidden rounded-lg border border-line bg-white py-1 shadow-pop"
-          )}
-        >
-          {showProfile && (
-            <Link
-              href="/portals/scw/admin/profile"
-              className="flex items-center gap-2 px-4 py-2.5 text-label-1 text-ink-muted hover:bg-black/5"
-            >
-              <Icon name="settings" size={16} />
-              Profile Settings
-            </Link>
-          )}
-          <Link
-            href="/portals/scw/login"
-            className="flex items-center gap-2 px-4 py-2.5 text-label-1 text-red-600 hover:bg-red-50"
-          >
-            <Icon name="logout" size={16} />
-            Logout
-          </Link>
-        </div>
-      )}
-    </div>
+    <AccountMenu
+      avatarSize={40}
+      account={{ name: user.name, email: user.email, role: user.role }}
+      items={[
+        ...(showProfile
+          ? [{ label: "Profile Settings", icon: <Icon name="settings" size={16} />, onSelect: () => router.push("/portals/scw/admin/profile") }]
+          : []),
+        { label: "Logout", icon: <Icon name="logout" size={16} />, danger: true, onSelect: () => router.push("/portals/scw/login") },
+      ]}
+    />
   );
 }

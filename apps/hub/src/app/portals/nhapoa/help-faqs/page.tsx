@@ -3,14 +3,12 @@
 import * as React from "react";
 import Link from "next/link";
 import { CitizenShell } from "@/components/nhapoa/citizen-shell";
-import { cn } from "@/lib/nhapoa/utils";
 import { FAQS, FAQ_CATEGORIES } from "@/lib/nhapoa/citizen-data";
-import { Icon , Card} from "@mosje/design-system";
+import { Accordion, AccordionItem, Card, Chip, Icon } from "@mosje/design-system";
 
 export default function HelpFaqsPage() {
   const [cat, setCat] = React.useState<(typeof FAQ_CATEGORIES)[number]>("All");
   const [query, setQuery] = React.useState("");
-  const [open, setOpen] = React.useState<number | null>(0);
 
   const filtered = FAQS.filter(
     (f) =>
@@ -37,39 +35,23 @@ export default function HelpFaqsPage() {
               className="w-full rounded-lg border border-line bg-white py-2.5 pl-10 pr-3 text-body-2 text-ink placeholder:text-ink-hint focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15"
             />
           </div>
-          <div className="mb-5 flex flex-wrap gap-2">
+          <div className="mb-5 flex flex-wrap gap-2" role="group" aria-label="FAQ category">
             {FAQ_CATEGORIES.map((c) => (
-              <button
-                key={c}
-                type="button"
-                onClick={() => setCat(c)}
-                className={cn(
-                  "rounded-full border px-4 py-1.5 text-label-1 font-semibold transition-colors",
-                  cat === c ? "border-navy bg-navy text-white" : "border-line text-ink-muted hover:bg-black/5",
-                )}
-              >
+              <Chip key={c} emphasis="solid" selected={cat === c} onSelectedChange={() => setCat(c)}>
                 {c}
-              </button>
+              </Chip>
             ))}
           </div>
 
           {/* Accordion */}
           <div className="space-y-3">
-            {filtered.map((f, i) => (
-              <Card key={f.q} className="overflow-hidden">
-                <button
-                  type="button"
-                  onClick={() => setOpen(open === i ? null : i)}
-                  aria-expanded={open === i}
-                  aria-controls={`faq-answer-${i}`}
-                  className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
-                >
-                  <span className="text-title-3 text-ink">{f.q}</span>
-                  <Icon name="keyboard_arrow_down" aria-hidden="true" className={cn("h-4 w-4 shrink-0 text-ink-hint transition-transform", open === i && "rotate-180")} />
-                </button>
-                {open === i && <p id={`faq-answer-${i}`} className="border-t border-line px-5 py-4 text-body-2 text-ink-muted">{f.a}</p>}
-              </Card>
-            ))}
+            <Accordion>
+              {filtered.map((f, i) => (
+                <AccordionItem key={f.q} title={f.q} defaultOpen={i === 0}>
+                  {f.a}
+                </AccordionItem>
+              ))}
+            </Accordion>
             {filtered.length === 0 && <p className="rounded-lg border border-dashed border-line px-4 py-8 text-center text-body-2 text-ink-hint">No FAQs match your search.</p>}
           </div>
         </div>

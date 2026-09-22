@@ -24,6 +24,13 @@ export interface Account {
 
 interface AuthState {
   account: Account | null;
+  /**
+   * False until the stored session has been read. A page that redirects on
+   * `!account` must wait for this: on a full page load the first render has no
+   * account yet, and redirecting then sent every direct visit to /unified back
+   * to the login page, which forwarded it to the home dashboard.
+   */
+  restored: boolean;
   signIn: (employeeId: string, password: string) => { ok: boolean; reason?: string };
   signOut: () => void;
 }
@@ -63,6 +70,7 @@ const AuthContext = createContext<AuthState | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [account, setAccount] = useState<Account | null>(null);
+  const [restored, setRestored] = useState(false);
 
   // Restore session from localStorage on mount
   useEffect(() => {
@@ -78,6 +86,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch {
       /* ignore malformed session */
     }
+    setRestored(true);
   }, []);
 
   const signIn = useCallback((employeeId: string, password: string) => {
@@ -102,7 +111,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch { /* ignore */ }
   }, []);
 
-  return <AuthContext.Provider value={{ account, signIn, signOut }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ account, restored, signIn, signOut }}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth(): AuthState {

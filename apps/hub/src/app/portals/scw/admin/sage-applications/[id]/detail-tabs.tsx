@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { FieldGrid, SectionEyebrow } from "@/components/scw/ui";
-import { cn } from "@/lib/scw/utils";
+import { Tabs } from "@mosje/design-system";
 
 type SageDetail = {
   company: [string, string][];
@@ -24,22 +24,15 @@ export function DetailTabs({ detail }: { detail: SageDetail }) {
 
   return (
     <div>
-      <div className="mb-6 flex flex-wrap gap-x-6 border-b border-line">
-        {TABS.map((tab) => (
-          <button
-            key={tab}
-            type="button"
-            onClick={() => setActive(tab)}
-            className={cn(
-              "-mb-px border-b-2 px-1 py-3 text-label-1 transition-colors",
-              active === tab
-                ? "border-navy text-navy"
-                : "border-transparent text-ink-muted hover:text-ink"
-            )}
-          >
-            {tab}
-          </button>
-        ))}
+      <div className="mb-6">
+        <Tabs
+          idBase="sage-application"
+          ariaLabel="Application sections"
+          divider
+          tabs={TABS.map((t) => ({ id: t, label: t }))}
+          active={Math.max(0, TABS.indexOf(active))}
+          onChange={(i) => setActive(TABS[i]!)}
+        />
       </div>
 
       {active === "Company Information" && (

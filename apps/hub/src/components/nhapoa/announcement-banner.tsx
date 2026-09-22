@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { RENAME, RENAME_KEYS, RENAME_MESSAGE, campaignActive } from "@/lib/nhapoa/rename-campaign";
-import { Icon } from "@mosje/design-system";
+import { Icon, IconButton } from "@mosje/design-system";
 
 /**
  * Floating rename ribbon — one of the two artefacts the OM (06.07.2026)
@@ -61,17 +61,19 @@ export function AnnouncementBanner() {
             — same helpline, same number ({RENAME.helpline} · {RENAME.shortCode}).
           </span>
         </p>
-        <button
-          type="button"
+        <IconButton
+          icon={<Icon name="close" size={16} />}
+          aria-label="Dismiss name change notice"
+          variant="neutral"
+          appearance="text"
+          tone="inverse"
+          size="sm"
+          shape="circle"
           onClick={() => {
             localStorage.setItem(RENAME_KEYS.bannerDismissed, "1");
             setShow(false);
           }}
-          aria-label="Dismiss name change notice"
-          className="grid h-6 w-6 shrink-0 place-items-center rounded hover:bg-white/10"
-        >
-          <Icon name="close" size={16} />
-        </button>
+        />
       </div>
       {/* Announce once to assistive tech without stealing focus. */}
       <span className="sr-only" role="status">
