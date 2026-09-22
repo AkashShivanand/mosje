@@ -92,6 +92,7 @@ Status: ☑ done · ◐ partly done (what remains is named) · ⊘ blocked (who 
 - ☑ START HERE · SCREENS BY JOURNEY (8 sections, 15 screens: 12 desktop, 3 phone) · SHARED
   PARTS (12 local components + image library) · STATES · OLD SCREENS — DO NOT USE
 - ☑ Bound to SAMAVESH only; library gaps recorded on START HERE
+- ☑ Home rebuilt 22 Sep 2026 in the live site's order, Desktop 1440 and Mobile 375, from SAMAVESH parts (Carousel, SAMAVESH Banner, Ticker, Fact Strip, Button, Link, Badge) plus local Action Tile, Link Row and Update Row; the v1 Home screens moved to OLD SCREENS. Library gaps (Action Tile master, SAMAVESH Banner phone layout, Fact Strip note line) recorded on START HERE
 - ◐ Phone frames drawn for Home, Find a Scheme and Annual Reports; the other journeys have
   desktop frames, and the code's phone layouts are the reference for them
 
@@ -111,5 +112,5 @@ officer; the conflicting "Netaji Subhash Place, 110034" address on the classic C
 | D1 | Primary nav is task-and-audience shaped: About · Schemes & Services · Organisations & Scheme Portals · Documents · Media · Connect | Menu option pending with the Ministry (M1b/M2/M2b); this adopts M1b's label and gives Schemes its own entry (M2b), the two the review leaned towards |
 | D2 | No counts on discovery screens, except the grouped Schemes page headings (computed) | 8 & 14 Sep decisions |
 | D3 | Personas use the 11-group vocabulary and open on Students | 8 Sep decision |
-| D4 | No hero carousel; one static hero, campaigns as their own band | WCAG 2.2.2, CA P0 #8/#10, NAV-05 |
+| D4 | ~~No hero carousel~~ Superseded 22 Sep 2026: the live site's 1800×600 banner carousel returns (CCPS first, DBIM A.4.1), auto-advancing with a visible Pause, a filling timer and rotation held on hover and focus; the search-and-tasks hero follows it | Structure kept close to the live site at the Ministry's request; WCAG 2.2.2 met by the Carousel itself |
 | D5 | PM Quote slot built, content left for the Ministry to authorise | BRD-11; no unauthorised quote is invented |
