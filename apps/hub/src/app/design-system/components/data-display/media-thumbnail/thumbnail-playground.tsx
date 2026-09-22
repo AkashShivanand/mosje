@@ -8,9 +8,9 @@ const CAPTION: React.CSSProperties = {
 };
 
 const ITEMS: LightboxItem[] = [
-  { type: "image", src: "/website/images/Banner-6.png", alt: "Awareness session at a community hall", caption: "Awareness session, Purulia" },
-  { type: "image", src: "/website/images/Banner-7.png", alt: "Volunteers at a pledge drive", caption: "Pledge drive, Bankura" },
-  { type: "image", src: "/website/images/Banner-6.png", alt: "Awareness session, second angle", caption: "Awareness session, Purulia" },
+  { type: "image", src: "/images/specimen-photo-1.jpg", alt: "Awareness session at a community hall", caption: "Awareness session, Purulia" },
+  { type: "image", src: "/images/specimen-photo-2.jpg", alt: "Volunteers at a pledge drive", caption: "Pledge drive, Bankura" },
+  { type: "image", src: "/images/specimen-photo-1.jpg", alt: "Awareness session, second angle", caption: "Awareness session, Purulia" },
 ];
 
 /** Every size, the count badge, a video, and the empty tile — each opening a real Lightbox. */

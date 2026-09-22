@@ -30,17 +30,17 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
-  args: { src: "/website/images/Banner-6.png", count: 3, label: "View 3 training photos", size: "sm" },
+  args: { src: "/images/specimen-photo-1.jpg", count: 3, label: "View 3 training photos", size: "sm" },
 };
 
 /** A list row's thumbnail. */
 export const Medium: Story = {
-  args: { src: "/website/images/Banner-7.png", label: "View Pledge drive, Bankura", size: "md" },
+  args: { src: "/images/specimen-photo-2.jpg", label: "View Pledge drive, Bankura", size: "md" },
 };
 
 /** A video: the play glyph is always drawn, never a hover secret. */
 export const Video: Story = {
-  args: { src: "/website/images/Banner-6.png", kind: "video", label: "Play Awareness session, Purulia", size: "md" },
+  args: { src: "/images/specimen-photo-1.jpg", kind: "video", label: "Play Awareness session, Purulia", size: "md" },
 };
 
 /** Nothing uploaded yet. Drawn, not omitted, and not focusable. */
