@@ -197,27 +197,17 @@
     background: var(--sa-bg-neutral-subtler);
     list-style: none;
   }
-  .icon-catalogue__tile {
-    display: flex;
+  /* Each tile is a design-system Button, which brings the border, hover, press and focus
+     ring. This only turns it into a tile: icon over name, full cell width. Scoped by the
+     button's own class so it outranks the row layout inside the same layer. */
+  .icon-catalogue__grid .ds-btn.icon-catalogue__tile {
     flex-direction: column;
-    align-items: center;
     gap: var(--sa-stack-4);
     width: 100%;
+    height: auto;
+    min-height: 0;
     padding: var(--sa-padding-16) var(--sa-padding-8);
-    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
-    border-radius: var(--sa-shape-8);
-    background: var(--sa-bg-neutral-base);
-    color: var(--sa-icon-neutral-base);
-    cursor: pointer;
-    transition: border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
-  }
-  .icon-catalogue__tile:hover {
-    border-color: var(--sa-border-brand-primary-base);
-    color: var(--sa-icon-brand-primary-base);
-  }
-  .icon-catalogue__tile:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-    outline-offset: var(--sa-focus-offset);
+    white-space: normal;
   }
   .icon-catalogue__name {
     font-size: var(--sa-type-label-3-size);

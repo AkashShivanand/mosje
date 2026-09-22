@@ -11,23 +11,8 @@
   border: 1px solid var(--sa-border-neutral-subtle); padding: .05em .4em; border-radius: var(--sa-shape-4); }
 
 /* ── surface toggle ─────────────────────────────────────────── */
-.ty-toggle {
-  display: grid; grid-template-columns: 1fr 1fr; gap: var(--sa-stack-8);
-  max-width: 620px; margin-bottom: var(--sa-stack-24);
-}
-.ty-seg {
-  text-align: left; cursor: pointer; padding: var(--sa-padding-12) var(--sa-padding-16);
-  background: var(--sa-bg-neutral-base); border: 1.5px solid var(--sa-border-neutral-subtle); border-radius: var(--sa-shape-8);
-  display: flex; flex-direction: column; gap: var(--sa-padding-2); transition: border-color .15s, background .15s, box-shadow .15s;
-}
-.ty-seg:hover { border-color: var(--sa-border-neutral-base); }
-.ty-seg__label { font-weight: var(--sa-font-weight-bold); font-size: var(--sa-type-body-1-size); color: var(--sa-text-neutral-base); }
-.ty-seg__note { font-size: var(--sa-type-label-2-size); color: var(--sa-text-neutral-subtle); }
-.ty-seg[data-active] { border-color: var(--sa-border-brand-primary-base); background: var(--sa-bg-brand-primary-subtler);
-  box-shadow: 0 0 0 1px var(--sa-color-action-primary-default) inset; }
-.ty-seg[data-active][data-surface-key="portal"] { border-color: var(--sa-color-text-default); background: var(--sa-bg-neutral-subtler);
-  box-shadow: 0 0 0 1px var(--sa-color-text-default) inset; }
-.ty-seg:focus-visible { outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base); outline-offset: var(--sa-focus-offset); }
+/* The design system's card RadioGroup; this only bounds its width. */
+.ty-toggle { max-width: 620px; margin-bottom: var(--sa-stack-24); }
 
 /* ── copy token chip ────────────────────────────────────────── */
 .ty-copy {
@@ -37,11 +22,8 @@
   max-width: 100%;
 }
 .ty-copy code { font-size: var(--sa-type-label-3-size); font-family: inherit; overflow-wrap: anywhere; }
-.ty-copy__icon { opacity: 0; font-size: 11px; color: var(--sa-text-neutral-subtle); transition: opacity .12s; }
 .ty-copy:hover { background: var(--sa-bg-neutral-subtler); border-color: var(--sa-border-neutral-subtle); }
-.ty-copy:hover .ty-copy__icon { opacity: 1; }
 .ty-copy[data-done] { color: var(--sa-text-status-success-base); }
-.ty-copy[data-done] .ty-copy__icon { opacity: 1; color: var(--sa-text-status-success-base); }
 .ty-copy:focus-visible { outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base); outline-offset: var(--sa-focus-offset); }
 
 /* ── live ramp ──────────────────────────────────────────────── */
@@ -105,13 +87,6 @@
   padding-top: var(--sa-padding-12); }
 
 /* ── token reference (tabs + table) ─────────────────────────── */
-.ty-tabs { display: flex; flex-wrap: wrap; gap: var(--sa-stack-4); margin-bottom: var(--sa-stack-16);
-  border-bottom: 1px solid var(--sa-border-neutral-subtle); padding-bottom: var(--sa-padding-8); }
-.ty-tab { cursor: pointer; background: transparent; border: 1px solid transparent; border-radius: var(--sa-shape-6);
-  padding: var(--sa-padding-8) var(--sa-padding-12); font-size: var(--sa-type-label-1-size); font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-neutral-subtle); }
-.ty-tab:hover { color: var(--sa-text-neutral-base); background: var(--sa-bg-neutral-subtler); }
-.ty-tab[data-active] { color: var(--sa-text-brand-primary-base); background: var(--sa-bg-brand-primary-subtler); }
-.ty-tab:focus-visible { outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base); outline-offset: var(--sa-focus-offset); }
 .ty-table-scroll { overflow-x: auto; border: 1px solid var(--sa-border-neutral-subtle); border-radius: var(--sa-shape-8); }
 .ty-table { width: 100%; border-collapse: collapse; min-width: 460px; }
 .ty-table th { text-align: left; font-size: var(--sa-type-label-3-size); text-transform: uppercase; letter-spacing: .07em;
@@ -139,11 +114,11 @@
   .ty-row__meta { position: static; }
   .ty-specs { flex-flow: row wrap; gap: var(--sa-stack-8) var(--sa-stack-16); }
   .ty-specs dt { width: auto; }
-  .ty-toggle, .ty-compare { grid-template-columns: 1fr; }
+  .ty-compare { grid-template-columns: 1fr; }
   .ty-fluid__stage { width: 100% !important; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .ty-fluid__stage, .ty-seg, .ty-copy__icon { transition: none; }
+  .ty-fluid__stage { transition: none; }
 }
 
 /* ── a11y helper ────────────────────────────────────────────── */

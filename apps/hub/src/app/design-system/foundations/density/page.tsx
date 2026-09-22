@@ -45,6 +45,7 @@ const remToPx = (v: string | null | undefined): number => Number((v ?? "0").repl
 function DemoControls(): React.JSX.Element {
   return (
     <div className="de-controls">
+      {/* raw-button-ok(specimen): a bare control resolving only the density tokens — a design-system Button would bring its own sizing and hide what the tokens alone do */}
       <button type="button" className="de-button">
         Submit
       </button>

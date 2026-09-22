@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Icon, SectionTitle } from "@mosje/design-system";
+import { Button, Icon, IconButton, SectionTitle, Tabs } from "@mosje/design-system";
 import type { ExplorationModule, ExplorationOption } from "@/lib/explorations/registry";
 import { OptionArrive, OptionFlight } from "./nmba/CampaignBandOptions";
 import { OptionOneBand, OptionOneBandAuto, OptionTwoBands } from "./nmba/TopBandsOptions";
@@ -101,6 +101,15 @@ const STATUS_WORD: Record<ExplorationOption["status"], string> = {
 };
 
 /**
+ * The fragment `Tabs` builds a tab's and its panel's ids from. The STATUS leads
+ * it, so `explorations.css` can draw the status dot from `[id*="-tab-chosen--"]`
+ * — `Tabs` renders a string label and has no slot for a mark of our own.
+ */
+function tabId(option: ExplorationOption): string {
+  return `${option.status}--${option.id}`;
+}
+
+/**
  * "Chosen" alone is a lie in `documents`, where two options won on different
  * surfaces. Where the register scopes a win, the scope is part of the word.
  */
@@ -159,6 +168,7 @@ export function ExplorationViewer({
   // Bumped by "Reset", and part of the frame's key. Switching options already
   // remounts; this is for the reviewer who wants to watch the same one twice.
   const [run, setRun] = React.useState(0);
+  const idBase = `xpl-${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
 
   /**
    * SELECT, AND SAY SO IN THE URL.
@@ -196,57 +206,44 @@ export function ExplorationViewer({
 
   return (
     <div className="xpl-viewer">
-      <div className="xpl-viewer__switch" role="tablist" aria-label={`Options for ${module.title}`}>
-        {module.options.map((o) => (
-          <button
-            key={o.id}
-            type="button"
-            role="tab"
-            id={`xpl-tab-${o.id}`}
-            aria-selected={o.id === active}
-            aria-controls={`xpl-panel-${o.id}`}
-            tabIndex={o.id === active ? 0 : -1}
-            className="xpl-viewer__tab"
-            onClick={() => select(o.id)}
-            onKeyDown={(e) => {
-              const i = module.options.findIndex((x) => x.id === o.id);
-              const next =
-                e.key === "ArrowRight"
-                  ? (i + 1) % module.options.length
-                  : e.key === "ArrowLeft"
-                    ? (i - 1 + module.options.length) % module.options.length
-                    : -1;
-              if (next < 0) return;
-              e.preventDefault();
-              const id = module.options[next]?.id;
-              if (!id) return;
-              select(id);
-              document.getElementById(`xpl-tab-${id}`)?.focus();
-            }}
-          >
-            {/*
-             * A DOT, NOT THE SENTENCE — and the sentence is still in the
-             * accessible name, because a coloured mark on its own is status
-             * conveyed by colour alone (WCAG 1.4.1). What decodes it for a
-             * sighted reader is the legend in the module header directly above
-             * this row, which is the same dot beside the same word.
-             *
-             * The word had to go: six tabs measured 222px each against a 1,272px
-             * container, so the row wrapped to two lines even after the labels
-             * were shortened — and "Awaiting a decision" appeared five times in
-             * one row, saying nothing the header could not say once.
-             */}
-            <span className={`xpl-dot xpl-dot--${o.status}`} aria-hidden />
-            <span className="xpl-viewer__tab-title">{o.label}</span>
-            <span className="xpl-sr-only">{statusWord(o)}</span>
-          </button>
-        ))}
+      <div className="xpl-viewer__switch">
+        {/*
+         * The design system's `Tabs`, which owns the roving tabindex and the
+         * Arrow / Home / End model this row used to hand-roll.
+         *
+         * A DOT, NOT THE SENTENCE. `Tabs` takes a string label, so the status dot
+         * is drawn by the stylesheet from the tab's id — the status is the first
+         * segment of `tabId` — rather than as a child. What decodes it for a
+         * sighted reader is the legend in the module header directly above this
+         * row, which is the same dot beside the same word; the status word itself
+         * is announced by the option bar's live region on every change.
+         *
+         * The word had to go: six tabs measured 222px each against a 1,272px
+         * container, so the row wrapped to two lines even after the labels were
+         * shortened — and "Awaiting a decision" appeared five times in one row,
+         * saying nothing the header could not say once.
+         */}
+        <Tabs
+          idBase={idBase}
+          ariaLabel={`Options for ${module.title}`}
+          indicator="pill"
+          track="none"
+          size="s"
+          divider={false}
+          overflow
+          tabs={module.options.map((o) => ({ id: tabId(o), label: o.label }))}
+          active={Math.max(0, module.options.findIndex((o) => o.id === active))}
+          onChange={(i) => {
+            const id = module.options[i]?.id;
+            if (id) select(id);
+          }}
+        />
       </div>
 
       <div
         role="tabpanel"
-        id={`xpl-panel-${option.id}`}
-        aria-labelledby={`xpl-tab-${option.id}`}
+        id={`${idBase}-panel-${tabId(option)}`}
+        aria-labelledby={`${idBase}-tab-${tabId(option)}`}
         className="xpl-viewer__panel"
       >
         {/*
@@ -262,17 +259,19 @@ export function ExplorationViewer({
          */}
         <div className="xpl-viewer__bar">
           {many && previous ? (
-            <button
-              type="button"
+            <IconButton
+              variant="neutral"
+              appearance="outlined"
+              size="sm"
+              shape="circle"
               className="xpl-viewer__step"
               onClick={() => select(previous.id)}
               /* The DESTINATION, not the direction. "Previous" alone tells a
                  screen-reader user which way the control goes and nothing about
                  where it lands, which is the thing they cannot see. */
               aria-label={`Previous option: ${previous.label}`}
-            >
-              <Icon name="chevron_left" size={20} aria-hidden />
-            </button>
+              icon={<Icon name="chevron_left" size={20} />}
+            />
           ) : null}
 
           <p className="xpl-viewer__bar-now" aria-live="polite">
@@ -287,28 +286,33 @@ export function ExplorationViewer({
           </p>
 
           {Prototype ? (
-            <button
-              type="button"
+            <Button
+              variant="primary"
+              appearance="text"
+              size="sm"
+              nowrap
               className="xpl-viewer__bar-reset"
               onClick={() => setRun((n) => n + 1)}
               /* Named on the button rather than by its span, because the span is
                  visually hidden below 640 and the glyph is decorative. */
               aria-label="Reset this prototype"
+              iconLeft={<Icon name="refresh" size={16} />}
             >
-              <Icon name="refresh" size={16} aria-hidden />
               <span className="xpl-viewer__bar-reset-label">Reset</span>
-            </button>
+            </Button>
           ) : null}
 
           {many && following ? (
-            <button
-              type="button"
+            <IconButton
+              variant="neutral"
+              appearance="outlined"
+              size="sm"
+              shape="circle"
               className="xpl-viewer__step"
               onClick={() => select(following.id)}
               aria-label={`Next option: ${following.label}`}
-            >
-              <Icon name="chevron_right" size={20} aria-hidden />
-            </button>
+              icon={<Icon name="chevron_right" size={20} />}
+            />
           ) : null}
         </div>
 
