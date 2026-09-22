@@ -441,6 +441,67 @@
       ]
     },
     {
+      "node": "58662:963",
+      "where": "Button — Documentation › 08 The icon side sits closer than the label side › The rule",
+      "figma": "Size=Default and Size=Large pad 24 to the label and 16 to a glyph. Size=Small pads 16 to the label and 12 to a glyph. It applies per side, so a button with only a trailing arrow keeps its full 24 on the leading side. Loading counts as a leading glyph, because the spinner takes the leading slot so the control does not change width the moment it is pressed.",
+      "expect": [
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/actions/button.css",
+          "pattern": "\\.ds-btn--sm:not\\(\\.ds-icon-btn\\):has\\(> :is\\(\\.ds-btn__icon--start, \\.ds-btn__spinner\\)\\) \\{\\s*padding-inline-start: var\\(--sa-padding-12\\)",
+          "flags": "s",
+          "hint": "Small steps 16 -> 12 on the leading side, and the spinner is in the same :is() as the icon because Loading counts as a leading glyph."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/actions/button.css",
+          "pattern": "\\.ds-btn--lg:not\\(\\.ds-icon-btn\\):has\\(> :is\\(\\.ds-btn__icon--start, \\.ds-btn__spinner\\)\\) \\{\\s*padding-inline-start: var\\(--sa-padding-16\\)",
+          "flags": "s",
+          "hint": "Default and Large step 24 -> 16. If this stops matching, the section is quoting a number the component no longer draws."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/actions/button.css",
+          "pattern": "\\.ds-btn--(?:md|lg):not\\(\\.ds-icon-btn\\):has\\(> \\.ds-btn__icon--end\\)",
+          "flags": "s",
+          "hint": "PER SIDE. The trailing rule matches the end icon only — never the spinner, which is always leading — so a button with one icon compensates one side."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/actions/button.css",
+          "pattern": ":has\\(> :is\\(\\.ds-btn__icon:last-child",
+          "absent": true,
+          "hint": "Never positional. The label is a bare text node, so a LEADING icon is also the last element child and a :last-child rule compensates both sides of a single-icon button."
+        },
+        {
+          "kind": "text",
+          "value": "per side"
+        }
+      ]
+    },
+    {
+      "node": "58662:966",
+      "where": "Button — Documentation › 08 The icon side sits closer than the label side › How the set draws it",
+      "figma": "Padding is per variant in Figma while the icon slots are booleans, so the button pads 16 (12 at Small) and the label frame inside it carries the remaining 8 (4 at Small). Switching Show Left Icon or Show Right Icon then moves the geometry with no Icon variant axis — the axis retired on 2026-08-27, which is what paid for Tone. Do not flatten the label frame or re-pad a variant to 24 on both sides: that frame is the compensation, not a stray value.",
+      "expect": [
+        {
+          "kind": "token",
+          "token": "--sa-padding-8",
+          "hint": "The 8px the label frame carries in Figma is the same rung the code spends when it steps 24 down to 16; if the rung moves, the two surfaces stop agreeing."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/actions/button.css",
+          "pattern": "gap: var\\(--sa-stack-8\\)",
+          "hint": "Figma reaches the same 8px gap as stack/0 on the button plus 8 on the label frame (stack/4 plus 4 at Small). The code holds it in one declaration."
+        },
+        {
+          "kind": "text",
+          "value": "label frame"
+        }
+      ]
+    },
+    {
       "node": "56524:1664",
       "where": "SAMAVESH Banner — Documentation › 07 Tokens › What the masthead publishes",
       "figma": "--sa-header-stuck is the header's CURRENT pinned height and exists only on sticky headers. --sa-header-bottom is where the header ends right now. The distinction is the whole fix: the gap was about WHICH variable, never about when the band pins.",

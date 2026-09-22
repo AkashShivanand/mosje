@@ -279,6 +279,33 @@ export default function ButtonPage(): React.JSX.Element {
               </Button>
             </p>
 
+            <p>
+              <strong>The side carrying the glyph sits closer.</strong> A letterform begins close to the edge of its own box. A Material Symbols glyph
+              does not &mdash; it is drawn inside a square em-box with its own bearing, so the
+              mark a reader sees starts inset from the box the layout measures. Give both sides
+              the same geometric padding and the icon side <em>reads</em> as the roomier one, so
+              the side carrying a glyph loses one step. It is applied per side: a button with
+              only a trailing arrow keeps its full leading padding. Material 3, Carbon and
+              Polaris each compensate the same way.
+            </p>
+            <MatrixTable
+              caption="Horizontal Padding, by Size and by What That Side Carries"
+              columns={["size", "Label side", "Glyph side"]}
+              rows={[
+                ["sm", "16px", "12px"],
+                ["md", "24px", "16px"],
+                ["lg", "24px", "16px"],
+              ]}
+            />
+            <Callout type="info" title="The Spinner Counts as a Leading Glyph">
+              <code>loading</code> puts the spinner in the leading icon&rsquo;s place so the
+              control keeps its width while it is busy. The compensation follows the spinner for
+              that reason: matching the icon alone would make an iconed button jump 8px the
+              moment it is pressed, reintroducing through the padding the very mis-click the
+              icon slot avoids. <code>IconButton</code> is excluded &mdash; it is square, its
+              padding is 0, and its glyph <em>is</em> the label.
+            </Callout>
+
             <h3 className="cdp__h3">Prominence &mdash; the <code>appearance</code> axis</h3>
             <p>
               <Button variant="primary" appearance="filled">Filled</Button>{" "}
@@ -635,8 +662,9 @@ import { buttonClasses } from "@mosje/design-system";
                 { token: "--sa-focus-width", value: "2px", description: "Thickness of the focus ring." },
                 { token: "--sa-focus-offset", value: "2px", description: "Gap held between the control and its focus ring." },
                 { token: "--sa-shape-8", value: "8px", description: "Corner radius of the container. The focus outline follows it." },
-                { token: "--sa-padding-16", value: "16px", description: "Horizontal padding, size sm." },
-                { token: "--sa-padding-24", value: "24px", description: "Horizontal padding, sizes md and lg." },
+                { token: "--sa-padding-12", value: "12px", description: "Horizontal padding on the side carrying a glyph, size sm." },
+                { token: "--sa-padding-16", value: "16px", description: "Horizontal padding, size sm — and the side carrying a glyph at md and lg." },
+                { token: "--sa-padding-24", value: "24px", description: "Horizontal padding, sizes md and lg, on the side carrying the label." },
                 { token: "--sa-stack-8", value: "8px", description: "Gap between the label and either icon." },
               ]}
             />
@@ -691,6 +719,20 @@ import { buttonClasses } from "@mosje/design-system";
                   The master
                 </a>{" "}
                 &mdash; the published component set, on Type × Sub-type axes.
+              </li>
+              <li>
+                <a
+                  href={figmaUrl(FIGMA_NODES.buttonOpticalPadding)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Optical padding
+                </a>{" "}
+                &mdash; how the set draws the tighter glyph side. Padding is per variant in
+                Figma while the icon slots are booleans, so the button pads 16 (12 at Small) and
+                a <code>label</code> frame inside it carries the remaining 8 (4 at Small). The
+                measurements match this page in every combination; the frame is the
+                compensation, not a stray value.
               </li>
               <li>
                 <a href={figmaUrl(FIGMA_NODES.buttonRecord)} target="_blank" rel="noopener noreferrer">
