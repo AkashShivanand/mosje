@@ -1222,7 +1222,14 @@
     color: var(--sa-text-neutral-subtle);
   }
 
-  .ds-hdr-mega-item .ds-hdr-ic {
+  /* WCAG 3.2.5 — the new-tab mark is a statement about the destination, not an
+     affordance revealed on hover, and a touch screen never hovers. It stays on. */
+  .ds-hdr-mega-item .ds-hdr-ic--newtab {
+    flex: 0 0 auto;
+    opacity: 1;
+  }
+
+  .ds-hdr-mega-item .ds-hdr-ic:not(.ds-hdr-ic--newtab) {
     flex: 0 0 auto;
     opacity: 0;
     color: var(--sa-text-neutral-subtle);
@@ -1246,12 +1253,12 @@
     }
   }
 
-  .ds-hdr-mega-item:focus-visible .ds-hdr-ic {
+  .ds-hdr-mega-item:focus-visible .ds-hdr-ic:not(.ds-hdr-ic--newtab) {
     opacity: 1;
   }
 
   @media (hover: hover) and (pointer: fine) {
-    .ds-hdr-mega-item:hover .ds-hdr-ic {
+    .ds-hdr-mega-item:hover .ds-hdr-ic:not(.ds-hdr-ic--newtab) {
       opacity: 1;
     }
   }
@@ -2452,6 +2459,15 @@
     padding: 0 0 var(--sa-padding-8) 0;
     list-style: none;
     background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  /* The new-tab mark flows with the text in a block-level row, so it takes its
+     own breathing space and sits on the text baseline; a flex row gets both
+     from the row's own gap and alignment. */
+  .ds-hdr-nav__drop-link .ds-hdr-ic--newtab,
+  .ds-navsheet__sublink .ds-hdr-ic--newtab {
+    margin-inline-start: var(--sa-inline-4);
+    vertical-align: text-bottom;
   }
 
   .ds-navsheet__sublink {

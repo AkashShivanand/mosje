@@ -34,7 +34,7 @@ const IcMegaChevron = () => <Icon name="chevron_right" size={24} className="ds-h
 /** WCAG 3.2.5 — a link that leaves the tab has to say so, visibly and to AT. */
 export const NewTabHint = (): React.JSX.Element => (
   <>
-    <Icon name="open_in_new" size={16} className="ds-hdr-ic" />
+    <Icon name="open_in_new" size={16} className="ds-hdr-ic ds-hdr-ic--newtab" />
     <span className="ds-hdr-sr">(opens in a new tab)</span>
   </>
 );
@@ -273,7 +273,9 @@ export function MegaMenuItem({ item, onSelect, linkAs, className }: MegaMenuItem
         <span className="ds-hdr-mega-item__abbr">{item.abbr}</span>
         <span className="ds-hdr-mega-item__name">{item.name}</span>
       </span>
-      <IcMegaChevron />
+      {/* An off-site row says so instead of pointing further in: the chevron means
+          "opens a panel deeper in this site", which is the wrong promise. */}
+      {item.external && !item.disabled ? <NewTabHint /> : <IcMegaChevron />}
     </Tag>
   );
 }

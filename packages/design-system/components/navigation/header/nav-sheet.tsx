@@ -9,7 +9,7 @@ import { Icon } from "../../utilities/icon";
 import { Button } from "../../actions/button";
 import { AccessibilityControls } from "../../utilities/accessibility-controls";
 import { BrandLockup } from "./brand-lockup";
-import { MegaMenuItem } from "./nav-parts";
+import { MegaMenuItem, NewTabHint } from "./nav-parts";
 import { Search } from "../../forms/search";
 import type { BrandLines, HeaderSearchConfig, NavItem } from "./types";
 import "./header.css";
@@ -343,6 +343,7 @@ export function NavSheet({
                     onClick={onClose}
                   >
                     <span>{item.label}</span>
+                    {item.external && <NewTabHint />}
                   </ItemTag>
                 )}
 
@@ -379,6 +380,7 @@ export function NavSheet({
                                   onClick={c.disabled ? undefined : onClose}
                                 >
                                   {c.label}
+                                  {c.external && !c.disabled && <NewTabHint />}
                                 </Tag>
                               </li>
                               );
@@ -424,6 +426,7 @@ export function NavSheet({
                           onClick={c.disabled ? undefined : onClose}
                         >
                           {c.label}
+                          {c.external && !c.disabled && <NewTabHint />}
                         </Tag>
                       </li>
                       );
