@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { Icon, Modal, Textarea, Card, Button } from "@mosje/design-system";
+import { Icon, Modal, Textarea, Card, Button, Tabs } from "@mosje/design-system";
 import { StatusPill, Field } from "@/components/nhapoa/ui";
 import { SlaPill, PriorityBadge } from "@/components/nhapoa/case-views";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
@@ -77,17 +77,15 @@ export default function CaseDetailPage() {
       </div>
 
       {/* Tabs */}
-      <div className="mt-6 flex flex-wrap gap-1 border-b border-line">
-        {TABS.map((t) => (
-          <button
-            key={t.key}
-            type="button"
-            onClick={() => setTab(t.key)}
-            className={`-mb-px border-b-2 px-4 py-2.5 text-label-1 font-semibold transition-colors ${tab === t.key ? "border-navy text-navy" : "border-transparent text-ink-muted hover:text-ink"}`}
-          >
-            {t.label}
-          </button>
-        ))}
+      <div className="mt-6">
+        <Tabs
+          idBase="do-case"
+          ariaLabel="Case sections"
+          divider
+          tabs={TABS.map((t) => ({ id: t.key, label: t.label }))}
+          active={Math.max(0, TABS.findIndex((t) => t.key === tab))}
+          onChange={(i) => setTab(TABS[i]!.key)}
+        />
       </div>
 
       <div className="mt-6">

@@ -76,14 +76,11 @@
 
 import {
   useState,
-  useRef,
-  useEffect,
   useMemo,
-  useId,
   type CSSProperties,
   type ReactNode,
 } from "react";
-import { Badge, SidebarNav, Sparkline, type BadgeStatus, type SidebarNavGroup, OrgLogo } from "@mosje/design-system";
+import { Badge, Button, Icon, IconButton, Select, SidebarNav, Sparkline, type BadgeStatus, type SidebarNavGroup, OrgLogo } from "@mosje/design-system";
 import { useAuth } from "@/store/pm-ajay/auth-context";
 import {
   STATES,
@@ -220,99 +217,23 @@ export function DrillDownSelect({
   options: string[];
   onChange: (v: string) => void;
 }) {
-  const [open, setOpen] = useState(false);
-  const [hl, setHl] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const reactId = useId();
-  const uid = "sel" + reactId.replace(/:/g, "");
-  useEffect(() => {
-    if (!open) return;
-    const h = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    };
-    document.addEventListener("mousedown", h);
-    return () => document.removeEventListener("mousedown", h);
-  }, [open]);
-  const openWith = () => {
-    setHl(Math.max(0, options.indexOf(value)));
-    setOpen(true);
-  };
-  const choose = (i: number) => {
-    onChange(options[i] ?? "");
-    setOpen(false);
-    ref.current?.querySelector<HTMLButtonElement>(".pm-select-btn")?.focus();
-  };
-  const onKey = (e: React.KeyboardEvent) => {
-    if (!open) {
-      if (["Enter", " ", "ArrowDown", "ArrowUp"].includes(e.key)) {
-        e.preventDefault();
-        openWith();
-      }
-      return;
-    }
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      setHl((h) => (h + 1) % options.length);
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      setHl((h) => (h - 1 + options.length) % options.length);
-    } else if (e.key === "Home") {
-      e.preventDefault();
-      setHl(0);
-    } else if (e.key === "End") {
-      e.preventDefault();
-      setHl(options.length - 1);
-    } else if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      choose(hl);
-    } else if (e.key === "Escape" || e.key === "Tab") {
-      setOpen(false);
-    }
-  };
+  /*
+   * The design system's filter Select. Until 2026-09-22 this was a raw button
+   * over a hand-built listbox — its own outside-click listener, arrow keys and
+   * highlight state. A native <select> gives every one of those for free, and
+   * on a phone it opens the platform's own picker. The key stays visible in
+   * each option's label, so the closed control still reads "FY: 2025-26".
+   */
   const isDefault = value === options[0];
   return (
-    <div className="pm-select" ref={ref}>
-      <button
-        type="button"
-        className={"pm-select-btn" + (isDefault ? "" : " on")}
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        aria-label={`${k}: ${value}`}
-        onClick={() => (open ? setOpen(false) : openWith())}
-        onKeyDown={onKey}
-      >
-        <span className="k" aria-hidden="true">
-          {k}
-        </span>
-        <span>{value}</span>
-        <span className="material-symbols-rounded" aria-hidden="true">
-          {open ? "expand_less" : "expand_more"}
-        </span>
-      </button>
-      {open && (
-        <ul className="pm-menu" role="listbox" aria-label={k} aria-activedescendant={`${uid}-${hl}`} tabIndex={-1}>
-          {options.map((o, i) => (
-            <li key={o} role="presentation">
-              <button
-                type="button"
-                id={`${uid}-${i}`}
-                role="option"
-                aria-selected={o === value}
-                className={(o === value ? "sel" : "") + (i === hl ? " hl" : "")}
-                onMouseEnter={() => setHl(i)}
-                onClick={() => choose(i)}
-              >
-                {o}
-                {o === value && (
-                  <span className="material-symbols-rounded" aria-hidden="true">
-                    check
-                  </span>
-                )}
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
+    <div className={"pm-select" + (isDefault ? "" : " on")}>
+      <Select
+        appearance="filter"
+        aria-label={k}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        options={options.map((o) => ({ value: o, label: `${k}: ${o}` }))}
+      />
     </div>
   );
 }
@@ -367,12 +288,9 @@ export function DrillDownFilters({
         </span>
       )}
       {applied && (
-        <button type="button" className="pm-reset" onClick={reset}>
-          <span className="material-symbols-rounded" aria-hidden="true">
-            restart_alt
-          </span>
-          Reset filters
-        </button>
+        <Button appearance="text" size="sm" iconLeft={<Icon name="restart_alt" size={16} />} onClick={reset}>
+          Reset Filters
+        </Button>
       )}
       <span className="grow" />
       <span className="pm-updated">Data refreshed weekly · Last sync 04 Jun 2026</span>
@@ -412,15 +330,15 @@ export function Sidebar({ view }: { view: ViewId }) {
             <div className="nm">{account?.name ?? "—"}</div>
             <div className="rl">{account?.designation ?? ""}</div>
           </div>
-          <button
-            type="button"
-            className="pm-signout-btn"
-            onClick={signOut}
+          <IconButton
+            icon={<Icon name="logout" size={16} />}
             aria-label="Sign out"
-            title="Sign out"
-          >
-            <span className="material-symbols-rounded" aria-hidden="true">logout</span>
-          </button>
+            tooltip
+            variant="neutral"
+            appearance="text"
+            size="sm"
+            onClick={signOut}
+          />
         </div>
       }
     />
@@ -588,12 +506,23 @@ export function SortableTable<T extends { __label?: string }>({
               {c.sortable === false ? (
                 c.label
               ) : (
-                <button type="button" onClick={() => toggle(c.key)}>
+                <Button
+                  variant="neutral"
+                  appearance="text"
+                  size="sm"
+                  nowrap
+                  className="pm-sort"
+                  iconRight={
+                    <Icon
+                      name={sort && sort.key === c.key ? (sort.dir === "asc" ? "arrow_upward" : "arrow_downward") : "unfold_more"}
+                      size={16}
+                      className="sortic"
+                    />
+                  }
+                  onClick={() => toggle(c.key)}
+                >
                   {c.label}
-                  <span className="material-symbols-rounded sortic" aria-hidden="true">
-                    {sort && sort.key === c.key ? (sort.dir === "asc" ? "arrow_upward" : "arrow_downward") : "unfold_more"}
-                  </span>
-                </button>
+                </Button>
               )}
             </th>
           ))}

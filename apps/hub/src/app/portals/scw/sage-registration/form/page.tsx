@@ -3,7 +3,7 @@
 import * as React from "react";
 import { UserShell } from "@/components/scw/user-shell";
 import { TableShell, Field, TextInput } from "@/components/scw/ui";
-import { Icon, Stepper, Card, Button } from "@mosje/design-system";
+import { Icon, IconButton, Stepper, Card, Button } from "@mosje/design-system";
 
 const STEPS = [
   { label: "Company Information" },
@@ -66,13 +66,9 @@ function SageDocumentRow({ label, filename }: { label: string; filename: string 
         <div className="text-label-1 text-ink">{label}</div>
         <div className="mt-0.5 text-body-3 text-ink-hint">{filename}</div>
       </div>
-      <button
-        type="button"
-        className="inline-flex items-center gap-1.5 text-label-1 text-navy hover:underline"
-      >
-        <Icon name="download" size={16} />
+      <Button appearance="text" size="sm" nowrap iconLeft={<Icon name="download" size={16} />}>
         Download
-      </button>
+      </Button>
     </div>
   );
 }
@@ -162,13 +158,7 @@ function StepProductService() {
           <td className="px-6 py-4 text-ink">zxcvbnm</td>
           <td className="px-6 py-4 text-ink-muted">2022</td>
           <td className="px-6 py-4 text-right">
-            <button
-              type="button"
-              className="inline-flex items-center text-navy hover:text-navy-800"
-              aria-label="View product"
-            >
-              <Icon name="visibility" size={16} />
-            </button>
+            <IconButton icon={<Icon name="visibility" size={16} />} aria-label="View product" tooltip variant="neutral" appearance="text" size="sm" />
           </td>
         </tr>
       </TableShell>
@@ -197,13 +187,7 @@ function StepTeamFounders() {
           <td className="px-6 py-4 text-ink-muted">malluvikram333@gmail.com</td>
           <td className="px-6 py-4 text-ink-muted">4</td>
           <td className="px-6 py-4 text-right">
-            <button
-              type="button"
-              className="inline-flex items-center text-navy hover:text-navy-800"
-              aria-label="View member"
-            >
-              <Icon name="visibility" size={16} />
-            </button>
+            <IconButton icon={<Icon name="visibility" size={16} />} aria-label="View member" tooltip variant="neutral" appearance="text" size="sm" />
           </td>
         </tr>
       </TableShell>

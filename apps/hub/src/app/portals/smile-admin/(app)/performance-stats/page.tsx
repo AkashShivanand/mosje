@@ -7,7 +7,7 @@ import { ScopeBanner } from "@/components/smile-admin/shell/scope-banner";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
 import { GENDER_DISTRIBUTION, PERF_MONTHLY, PERF_TOP_AGENCIES, SHELTER_HOMES_BY_STATE, STATE_DISTRIBUTION } from "@/lib/smile-admin/mock-data";
 import { cn, formatNumber } from "@/lib/smile-admin/utils";
-import { Badge, Button, Card, CardBody, CardHeader, CardTitle, DataTable, Icon, type DataTableColumn } from "@mosje/design-system";
+import { Badge, Button, Card, CardBody, CardHeader, CardTitle, Chip, DataTable, Icon, type DataTableColumn } from "@mosje/design-system";
 
 interface TopState {
   stateId: number;
@@ -172,18 +172,11 @@ export default function PerformanceStatsPage() {
       />
       <ScopeBanner />
 
-      <div className="flex flex-wrap items-center gap-xs">
+      <div role="group" aria-label="Period" className="flex flex-wrap items-center gap-xs">
         {PERIODS.map((p) => (
-          <button
-            key={p}
-            onClick={() => setPeriod(p)}
-            className={cn(
-              "rounded-md border px-md py-1.5 text-label-1 transition",
-              p === period ? "border-primary bg-primary text-white" : "border-stroke-200 bg-white text-ink-muted hover:text-primary"
-            )}
-          >
+          <Chip key={p} emphasis="solid" selected={p === period} onSelectedChange={() => setPeriod(p)}>
             {p}
-          </button>
+          </Chip>
         ))}
       </div>
 

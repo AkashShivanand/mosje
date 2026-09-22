@@ -28,7 +28,7 @@ export default function QueryPage() {
           <p className="mt-1 text-body-2 text-ink-muted">The query has been added to the query log.</p>
           <div className="mt-5 flex justify-center gap-2">
             <Link href="/portals/nhapoa/call-center/queries" className="rounded-lg bg-navy px-4 py-2 text-label-1 font-semibold text-white hover:bg-navy-800">View Query Log</Link>
-            <button type="button" onClick={() => { setDone(false); setSubject(""); setMobile(""); }} className="rounded-lg border border-navy/30 px-4 py-2 text-label-1 font-semibold text-navy hover:bg-navy/5">Log another</button>
+            <Button appearance="outlined" onClick={() => { setDone(false); setSubject(""); setMobile(""); }}>Log Another</Button>
           </div>
         </Card>
       </div>

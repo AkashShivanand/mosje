@@ -5,8 +5,7 @@ import { PortalPageHeader, SearchInput } from "@/components/nhapoa/ui";
 import { CaseTable } from "@/components/nhapoa/case-views";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { doQueue } from "@/lib/nhapoa/case-helpers";
-import { cn } from "@/lib/nhapoa/utils";
-import { Icon, Button } from "@mosje/design-system";
+import { Icon, Button, Tabs } from "@mosje/design-system";
 
 type Tab = "all" | "new" | "action";
 
@@ -38,25 +37,22 @@ export default function DOCasesPage() {
       <PortalPageHeader
         title="My Cases"
         meta={`${queue.length} cases assigned to your district`}
-        actions={<Button appearance="outlined"><Icon name="download" size={16} /> Export</Button>}
+        actions={<Button appearance="outlined" iconLeft={<Icon name="download" size={16} />}>Export</Button>}
       />
 
       <SearchInput placeholder="Search by ID, citizen name, category…" value={q} onChange={(e) => setQ(e.target.value)} className="mb-4 max-w-2xl" />
 
-      <div className="mb-5 flex flex-wrap gap-2">
-        {tabs.map((t) => (
-          <button
-            key={t.key}
-            type="button"
-            onClick={() => setTab(t.key)}
-            className={cn(
-              "rounded-lg border px-4 py-2 text-label-1 font-semibold transition-colors",
-              tab === t.key ? "border-navy bg-navy text-white" : "border-line text-ink-muted hover:bg-black/5",
-            )}
-          >
-            {t.label} ({t.count})
-          </button>
-        ))}
+      <div className="mb-5">
+        <Tabs
+          idBase="do-cases"
+          ariaLabel="Case status"
+          indicator="pill"
+          track="none"
+          size="s"
+          tabs={tabs.map((t) => ({ id: t.key, label: `${t.label} (${t.count})` }))}
+          active={Math.max(0, tabs.findIndex((t) => t.key === tab))}
+          onChange={(i) => setTab(tabs[i]!.key)}
+        />
       </div>
 
       <CaseTable cases={filtered} detailBase="/portals/nhapoa/district-officer/cases" />
