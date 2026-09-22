@@ -32,9 +32,12 @@ function destinations(item: NavItem): string[] {
  * the website's: the navigation model (nav.ts), the search route and the
  * language dialog.
  *
+ * BETA is shown: the site is in beta, and the badge is part of the masthead's
+ * default state until the department explicitly asks for it to go (standing
+ * instruction, 2026-09-22). The condensed on-scroll bar carries the department
+ * line alone, so BETA drops out there by design.
+ *
  * Deliberately absent, against the classic masthead:
- *  - the BETA badge (issue BRD-09: a live Government of India site is not in beta;
- *    the Ministry decides, and the default is not to claim it);
  *  - a Home nav entry (the emblem is Home).
  */
 export function Masthead() {
@@ -73,7 +76,7 @@ export function Masthead() {
         linkAs={Link}
         homeHref="/website"
         variant="website"
-        beta={false}
+        beta
         skipTo="#content"
         emblemSrc={NATIONAL_EMBLEM}
         emblemAlt="National Emblem of India, Government of India"

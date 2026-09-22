@@ -1,10 +1,10 @@
 # dosje.gov.in — Consolidated Issue & Recommendation Register (for the redesign)
 
-Compiled 2026-09-21. De-duplicated: the website issue register (2,016 issues, itself the merge of the Drive QC tracker, the Friday design report, the design-QC of build vs Figma and the 10 Sep compliance audit) is the backbone; items from other docs appear only where the register has no sitewide row.
+Compiled 2026-09-21. De-duplicated: the website issue register (2,015 issues, itself the merge of the Drive QC tracker, the Friday design report, the design-QC of build vs Figma and the 10 Sep compliance audit) is the backbone; items from other docs appear only where the register has no sitewide row.
 
 **Source keys** — REG = issue register `apps/hub/src/data/website-issues/issues.json` (branch commit b4eafc5b, worktree `…/15b366b8…/scratchpad/wt-issue-register`; NOT on main) · CA = `docs/audit/dosje-gov-in-compliance-audit-2026-09-10.md` · FR = Friday design report HP/AU/OD/OF/DO/EG/CT points (`…/15b366b8…/scratchpad/friday/website-design-audit.html`, `consol/friday-points.json`) · DR = `docs/qc/portals/website/design/DESIGN-REPORT.md` · QA = `docs/qc/portals/website/DESIGN-QA-REPORT.md` (152 build-vs-design findings, folded into REG scope "Build vs design") · IA = `docs/research/website-ia-persona-discoverability-2026-08.md` · SP = `docs/audit/website-schemes-placement-2026-09-09.md` · SIA = `docs/plans/schemes-section-ia-2026-09-09.md` · SR = `docs/research/schemes-review-2026-09-14.md` · SD = `docs/audit/service-discovery-2026-09-09-director-audit.md` · GOV = `docs/plans/2026-09-03-dosje-governance-and-cms-plan-of-action.md` · SB = `docs/specs/website-search-brief.md` · CC = `docs/compliance/COMPLIANCE-CHECKLIST.md`.
 
-**Scale.** REG: 2,016 issues — 178 Blocker · 986 Major · 759 Minor · 93 Nit; 188 sitewide/template rows (listed below) + 1,828 page-level rows (P/T/Q ids) rolled up in §1b. Broken links: 586 URLs (495 docs/images 403/404, 48 external dead). Duplicates: 824 pages/records in duplicate groups. Scores (CA, 10 Sep): DBIM 51.3% · GIGW 42.1% (WCAG subset 26.1%) · UX4G 37.5%.
+**Scale.** REG: 2,015 issues — 178 Blocker · 986 Major · 758 Minor · 93 Nit; 187 sitewide/template rows (listed below) + 1,828 page-level rows (P/T/Q ids) rolled up in §1b. Broken links: 586 URLs (495 docs/images 403/404, 48 external dead). Duplicates: 824 pages/records in duplicate groups. Scores (CA, 10 Sep): DBIM 51.3% · GIGW 42.1% (WCAG subset 26.1%) · UX4G 37.5%.
 
 ## 1. Issues by category (sitewide / template level)
 
@@ -38,7 +38,7 @@ Compiled 2026-09-21. De-duplicated: the website issue register (2,016 issues, it
 | NAV-08 | No breadcrumb on organisation pages | Minor | REG | Add the breadcrumb to every page below the home page. |
 | NAV-09 | The 404 page offers no way back | Minor | REG | Add the search field and five popular links. |
 | NAV-10 | The address without “www” redirects with “:443” in it | Minor | REG | Redirect to https://www.dosje.gov.in/ with no port. |
-| NAV-18 | Menu arrows suggest a submenu that is not there | Minor | REG, FR HP-04 | Remove the arrow; the hover highlight is enough. |
+| NAV-18 | Menu arrows suggest a submenu that is not there | Minor | REG, FR HP-04 | Remove the arrow; the hover highlight is enough. **Resolved in the design system 2026-09-22:** the mega-menu hover arrow is removed from `Navbar/MegaMenuItem` and the code. |
 | COD-06 | Leftover placeholder markup in the footer | Nit | REG | Delete it. |
 | X-IA-01 | Two live ministry sites (dosje.gov.in, socialjustice.gov.in) with divergent menus and non-overlapping schemes (PM-SURAJ, TAPAS absent from dosje) | Major | IA | Consolidate to one site; 301 legacy; one taxonomy (R8) |
 | X-IA-02 | Top nav is division/artefact-shaped (6 of 7 menus name things the Ministry has); no task entry (eligible/apply/track/complain) | Major | IA, REG NAV-01 | Task-and-audience primary nav: Find Support · Apply & Track · Our Organisations · Rules & Reports · Tenders & Careers · About (R2) — subject to stakeholder menu decision (see §2) |
@@ -103,7 +103,7 @@ Compiled 2026-09-21. De-duplicated: the website issue register (2,016 issues, it
 | ACC-07 | Blue text on light tints fails contrast | Major | REG | Set these texts to text/link/brand/default on light tints, and cookie descriptions to text/neutral/subtle. |
 | ACC-10 | Elements forced into the Tab order with tabindex above 0 | Major | REG | Remove every positive tabindex; use 0 (focusable in order) or -1 (focusable by script only). |
 | ACC-11 | Carousels, logo strip and ticker cannot be paused | Major | REG, CA | Add a visible Pause/Play button before each moving region; pause on hover and on keyboard focus; do not auto-advance when prefers-reduced-motion is set. |
-| ACC-12 | Header controls: menu links, hidden search button and empty outputs in the Tab order | Major | REG, CA | Make each menu trigger a <button aria-expanded>; remove the off-screen search button from the Tab order while hidden; delete the four empty <output> elements. |
+| ACC-12 | Header controls: menu links, hidden search button and empty outputs in the Tab order | Major | REG, CA | Make each menu trigger a <button aria-expanded>; remove the off-screen search button from the Tab order while hidden; delete the four empty <output> elements. **Partly resolved 2026-09-22:** menu triggers are now `<button aria-expanded>` in the design system; the hidden-search-button and empty-output items are still open. |
 | ACC-13 | “Important Links” tab cannot be reached by keyboard | Major | REG | Make the trigger a <button> named “Important Links” with aria-expanded; manage the drawer as a dialog — focus moves in, stays in, Escape closes it and focus returns to the tab. |
 | ACC-14 | Accessibility and language buttons vanish in High Contrast mode | Major | REG | Draw both icons as inline SVG in currentColor, with a text label. |
 | ACC-15 | Tap targets are too small | Major | REG, CA | Give every control a hit area of at least target/min, aiming for target/comfortable, keeping the drawn size (padding or an invisible ::before). |
@@ -144,7 +144,7 @@ Compiled 2026-09-21. De-duplicated: the website issue register (2,016 issues, it
 | X-GIGW-03 | No Feedback page and no Website Policies hub | Major | CA P2 #30, REG MAN-03 | /feedback/ page; Website Policy hub linking all policy pages |
 | X-GIGW-04 | Scanned job-application form instead of an HTML form | Major | CA P0 #11 | Accessible HTML form |
 
-### DBIM 3.0 (brand) — 16
+### DBIM 3.0 (brand) — 15
 
 | ID | Issue | Sev | Source | Redesign must |
 |---|---|---|---|---|
@@ -158,7 +158,6 @@ Compiled 2026-09-21. De-duplicated: the website issue register (2,016 issues, it
 | TYP-01 | Heading sizes are on neither DBIM's nor UX4G's scale | Major | REG, CA | Choose one scale (tracker T05) and map every text style to the type tokens: type/headline/1–6, type/title/1–3, type/body/1–3, type/label/1–3. |
 | BRD-05 | Icon sizes outside DBIM's four | Minor | REG, CA | Render every icon at 24, 32, 48 or 64. |
 | BRD-06 | Two icons are stretched | Minor | REG, CA | Draw each at its own proportions (set one dimension, or object-fit: contain). |
-| BRD-09 | “BETA” badge on the live masthead | Minor | REG | Decide whether the site is still in beta. |
 | TYP-03 | Fonts other than Noto Sans | Minor | REG, CA | Set every text style to ref/font/family/latin (Noto Sans); paste into the editor as plain text. |
 | TYP-04 | Large headings do not use Noto Sans Display | Minor | REG, CA | Use ref/font/family/display for text type/display/4 and larger. |
 | X-DBIM-01 | DBIM overall 51.3% (57.5% like-for-like); 15 checkpoints failed May and still fail; 3 of 4 tracker "Done" tasks do not verify | Major | CA §2.1, §11 | Redesign scored against all 80 DBIM checkpoints; tracker merged with GIGW/UX4G rows |
@@ -190,7 +189,7 @@ Compiled 2026-09-21. De-duplicated: the website issue register (2,016 issues, it
 | BRD-08 | A 1.74 MB photo drawn 100px wide | Minor | REG, CA | Point the strip at Babuji-Photo-150x150.png. |
 | BRD-14 | Gallery photographs cropped inconsistently | Minor | REG | Use one crop ratio for thumbnails and use photographs, not screenshots or posters. |
 | BRD-16 | Partner logo strip looks pasted together | Minor | REG, FR HP-16 | Put every logo in the same size box, centred, with equal padding; use official logos with transparent backgrounds at their own proportions. |
-| BRD-17 | Mega menu is grey while the header is white | Minor | REG, FR HP-03 | Make the menu bg/neutral/base with a thin border/neutral/subtle edge and elevation/dropdown. |
+| BRD-17 | Mega menu is grey while the header is white | Minor | REG, FR HP-03 | Make the menu bg/neutral/base with a thin border/neutral/subtle edge and elevation/dropdown. **Resolved in the design system 2026-09-22:** `bg/neutral/base`, a `border/neutral/subtle` edge and `elevation/dropdown` (was `elevation/modal`), in Figma and code. |
 | BRD-18 | Gallery tabs are black | Minor | REG, FR EG-04 | Use the site's standard tab style (the one under Our Offerings). |
 | BRD-19 | Missing images show a “No Image” box | Minor | REG | Design a fallback (a neutral tile with the organisation's mark or a category icon), or drop the image area when there is no image. |
 | BRD-20 | Organisation page sections all sit on white | Minor | REG, FR OD-03 | Alternate bg/neutral/base and bg/neutral/subtlest in the same order on every organisation page. |
@@ -215,7 +214,7 @@ Compiled 2026-09-21. De-duplicated: the website issue register (2,016 issues, it
 | TYP-07 | Justified text and paragraphs in capitals | Minor | REG | Left-align body text; write paragraphs in sentence case. |
 | TYP-08 | Section introductions look like body text | Minor | REG | Use one section-heading pattern: title (type/headline/*), a short description (type/body/2 in text/neutral/subtle), then body text. |
 | TYP-09 | Whole statements set in italics | Minor | REG | Set them in regular type; keep italics for short emphasis. |
-| TYP-10 | Department name in the header is large and tight | Minor | REG, FR HP-02 | Set it one step down (type/title/1) with normal leading, and keep clear space between the name, search and Login. |
+| TYP-10 | Department name in the header is large and tight | Minor | REG, FR HP-02 | Set it one step down (type/title/1) with normal leading, and keep clear space between the name, search and Login. **Resolved 2026-09-22:** the ramp has no fixed step between 16 and 20 (Headline 5 and Title 1 are fluid, 18–20 and 18–22), so the department line went to Headline 6, 16/24 SemiBold — flat, so the masthead height no longer moves with the viewport. |
 | X-VIS-01 | UX4G depth system not adopted: 0% elevation conformance (6 ad-hoc shadows), ~15% z-index on scale, 36% radii off-scale, 19% spacing off base-4 (5px/10px) | Minor | CA §2.3 | Elevation L1–L4, z ladder, shape/*, base-4 spacing tokens only |
 
 ### Performance — 7
@@ -325,7 +324,7 @@ Compiled 2026-09-21. De-duplicated: the website issue register (2,016 issues, it
 | 13 | Question whether WordPress is the right configuration ("same info entered in many places") | Lead, early Sep | GOV §0 B |
 | 14 | Present decks live, never mail them ahead | 8 Sep review | SD §2 #18 |
 | 15 | Personas carousel minimum fix: "2 of 5" count, arrows beside persona name, illustrations not photographs | Friday design report HP-14 | REG NAV-05 |
-| 16 | Pending Ministry decisions: one-colour-group palette incl. retiring UX4G violet (tracker T01); type scale DBIM vs UX4G (T05); PM Quote content; BETA badge; SAMAVESH band option A/B; WIM designation; NCBC Secretary / Minister Gmail listing; State schemes publish or withdraw; Foundation schemes placement; 11 target groups (Students, Victims of Atrocities, Voluntary Organisations) to confirm | Ministry — 14 of 41 tracker tasks awaiting confirmation | CA §11.2, §11.6; REG BRD-01, TYP-01, BRD-09, ACC-06, CON-26; SIA §9; SR #11 |
+| 16 | Pending Ministry decisions: one-colour-group palette incl. retiring UX4G violet (tracker T01); type scale DBIM vs UX4G (T05); PM Quote content; SAMAVESH band option A/B; WIM designation; NCBC Secretary / Minister Gmail listing; State schemes publish or withdraw; Foundation schemes placement; 11 target groups (Students, Victims of Atrocities, Voluntary Organisations) to confirm | Ministry — 14 of 41 tracker tasks awaiting confirmation | CA §11.2, §11.6; REG BRD-01, TYP-01, ACC-06, CON-26; SIA §9; SR #11 |
 | 17 | Standing: Title Case for all titles (applies to dept titles too); government register copy; no tricolour motif; Noto Sans; National Emblem as logo; dbim brand mode code-only | Standing instructions 2026-06-13 / 08-11 / 09-01 | CLAUDE.md, .claude/rules/ui-restraint-and-copy.md |
 
 ## 3. Mandatory page inventory (live IA the redesign must cover)
@@ -360,7 +359,7 @@ Live sitemap (`tools/design-audit/projects/website/inputs/live-sitemap.tsv`, 8,7
 | Content | 28 | 4 | 32 |
 | Accessibility / WCAG 2.2 AA | 28 | 3 | 31 |
 | GIGW 3.0 (mandatory pages, governance, interoperability) | 10 | 4 | 14 |
-| DBIM 3.0 (brand) | 13 | 3 | 16 |
+| DBIM 3.0 (brand) | 12 | 3 | 15 |
 | Visual design / UX4G / components | 47 | 1 | 48 |
 | Performance | 7 | 0 | 7 |
 | SEO / Metadata | 6 | 0 | 6 |
@@ -369,4 +368,4 @@ Live sitemap (`tools/design-audit/projects/website/inputs/live-sitemap.tsv`, 8,7
 | Mobile | 5 | 0 | 5 |
 | Trust / Security / Privacy | 8 | 0 | 8 |
 | Data freshness / Archival | 4 | 3 | 7 |
-| **Total** | **188** | **32** | **220** |
+| **Total** | **187** | **32** | **219** |

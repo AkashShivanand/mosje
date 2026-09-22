@@ -1,8 +1,8 @@
 # Website Redesign 2026 — Plan & Tracker
 
 Branch `feat/website-redesign`. Owner: design director / UI-UX lead (this session).
-Inputs: `issue-register-consolidated.md` (220 site-wide issues, 17 stakeholder decisions,
-page inventory) · `apps/hub/src/data/website-issues/issues.json` (2,016 issues) ·
+Inputs: `issue-register-consolidated.md` (219 site-wide issues, 17 stakeholder decisions,
+page inventory) · `apps/hub/src/data/website-issues/issues.json` (2,015 issues) ·
 `docs/audit/dosje-gov-in-compliance-audit-2026-09-10.md` · `docs/guidelines/` (GIGW 3.0, DBIM 3.0, UX4G 3.0).
 
 ## Design read
