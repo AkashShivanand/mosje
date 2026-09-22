@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { FactStrip, Icon, SitePageHeader, buttonClasses, orgLogoSrc } from "@mosje/design-system";
+import { FactStrip, Icon, IconButton, SitePageHeader, buttonClasses, orgLogoSrc } from "@mosje/design-system";
 import { PageTrail } from "@/components/website/layout/page-trail";
 import "./campaign-band.css";
 
@@ -165,10 +165,16 @@ export function Fold({
 
 export function Dismiss({ onClick, label }: { onClick: () => void; label: string }) {
   return (
-    <button type="button" className="xband__dismiss" onClick={onClick}>
-      <Icon name="close" size={20} aria-hidden />
-      <span className="ds-sr-only">{label}</span>
-    </button>
+    <IconButton
+      variant="neutral"
+      appearance="text"
+      tone="inverse"
+      size="sm"
+      className="xband__dismiss"
+      onClick={onClick}
+      aria-label={label}
+      icon={<Icon name="close" size={20} />}
+    />
   );
 }
 
@@ -344,10 +350,15 @@ export function Ribbon({ onDismiss }: { onDismiss: () => void }) {
             </a>
           </span>
         </div>
-        <button type="button" className="xrib__dismiss" onClick={onDismiss}>
-          <Icon name="close" size={20} aria-hidden />
-          <span className="ds-sr-only">Dismiss the anniversary notice</span>
-        </button>
+        <IconButton
+          variant="neutral"
+          appearance="text"
+          size="sm"
+          className="xrib__dismiss"
+          onClick={onDismiss}
+          aria-label="Dismiss the anniversary notice"
+          icon={<Icon name="close" size={20} />}
+        />
       </div>
     </section>
   );

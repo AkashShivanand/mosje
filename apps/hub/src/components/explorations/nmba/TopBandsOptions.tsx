@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Icon, buttonClasses } from "@mosje/design-system";
+import { Icon, IconButton, Tabs, buttonClasses } from "@mosje/design-system";
 import { Campaign, Dismiss, Fold, Helpline, NMBA, Ribbon } from "./fold";
 import "./campaign-band.css";
 
@@ -61,7 +61,7 @@ const PANELS = ["campaign", "notice"] as const;
 export function OptionOneBand() {
   const [i, setI] = React.useState(0);
   const [gone, setGone] = React.useState(false);
-  const tabsRef = React.useRef<HTMLDivElement>(null);
+  const idBase = `xband-${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
 
   /*
    * NOTHING ROTATES ON ITS OWN, AND THAT IS NOT A CONVENIENCE.
@@ -79,7 +79,7 @@ export function OptionOneBand() {
   function go(next: number) {
     const n = (next + PANELS.length) % PANELS.length;
     setI(n);
-    tabsRef.current?.querySelector<HTMLButtonElement>(`[data-panel="${n}"]`)?.focus();
+    // Focus follows selection inside `Tabs` itself, so nothing is focused here.
   }
 
   if (gone) return <Fold band={null} />;
@@ -96,12 +96,22 @@ export function OptionOneBand() {
              */}
             <div className="xband__panels" role="group" aria-live="polite">
               {i === 0 ? (
-                <div className="xband__panel">
+                <div
+                  className="xband__panel"
+                  role="tabpanel"
+                  id={`${idBase}-panel-campaign`}
+                  aria-labelledby={`${idBase}-tab-campaign`}
+                >
                   <Campaign />
                   <Helpline />
                 </div>
               ) : (
-                <div className="xband__panel xband__panel--notice">
+                <div
+                  className="xband__panel xband__panel--notice"
+                  role="tabpanel"
+                  id={`${idBase}-panel-notice`}
+                  aria-labelledby={`${idBase}-tab-notice`}
+                >
                   <div className="xband__copy">
                     <p className="xband__heading">{NMBA.ribbon.eyebrow}</p>
                     <p className="xband__text">{NMBA.ribbon.text}</p>
@@ -127,27 +137,21 @@ export function OptionOneBand() {
              * "previous" and "next" — a reader wants the OTHER one, and a pair of
              * chevrons makes them work out which chevron that is.
              */}
-            <div className="xband__tabs" role="tablist" aria-label="Announcements" ref={tabsRef}>
-              {PANELS.map((p, n) => (
-                <button
-                  key={p}
-                  type="button"
-                  role="tab"
-                  data-panel={n}
-                  aria-selected={n === i}
-                  tabIndex={n === i ? 0 : -1}
-                  className="xband__tab"
-                  onClick={() => setI(n)}
-                  onKeyDown={(e) => {
-                    if (e.key === "ArrowRight") { e.preventDefault(); go(i + 1); }
-                    if (e.key === "ArrowLeft") { e.preventDefault(); go(i - 1); }
-                  }}
-                >
-                  <span className="ds-sr-only">
-                    {p === "campaign" ? NMBA.banner.heading : NMBA.ribbon.eyebrow}
-                  </span>
-                </button>
-              ))}
+            <div className="xband__tabs">
+              <Tabs
+                idBase={idBase}
+                ariaLabel="Announcements"
+                indicator="pill"
+                track="none"
+                size="s"
+                divider={false}
+                tabs={PANELS.map((p) => ({
+                  id: p,
+                  label: p === "campaign" ? NMBA.banner.heading : NMBA.ribbon.eyebrow,
+                }))}
+                active={i}
+                onChange={(n) => go(n)}
+              />
             </div>
 
             <Dismiss onClick={() => setGone(true)} label="Dismiss the announcements" />
@@ -176,7 +180,7 @@ export function OptionOneBandAuto() {
    *  band and then moves the mouse away must not have it start moving again. */
   const [hovered, setHovered] = React.useState(false);
   const [focused, setFocused] = React.useState(false);
-  const tabsRef = React.useRef<HTMLDivElement>(null);
+  const idBase = `xband-${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
 
   /*
    * REDUCED MOTION DOES NOT AUTOPLAY AT ALL.
@@ -207,7 +211,7 @@ export function OptionOneBandAuto() {
        has said which one they want; taking it away four seconds later is the
        thing autoplay is most often blamed for. */
     setPlaying(false);
-    tabsRef.current?.querySelector<HTMLButtonElement>(`[data-panel="${n}"]`)?.focus();
+    // Focus follows selection inside `Tabs` itself, so nothing is focused here.
   }
 
   if (gone) return <Fold band={null} />;
@@ -245,7 +249,12 @@ export function OptionOneBandAuto() {
               aria-live={running ? "off" : "polite"}
             >
               {notice ? (
-                <div className="xband__panel xband__panel--notice">
+                <div
+                  className="xband__panel xband__panel--notice"
+                  role="tabpanel"
+                  id={`${idBase}-panel-notice`}
+                  aria-labelledby={`${idBase}-tab-notice`}
+                >
                   <div className="xband__copy">
                     <p className="xband__heading">{NMBA.ribbon.eyebrow}</p>
                     <p className="xband__text">{NMBA.ribbon.text}</p>
@@ -264,7 +273,12 @@ export function OptionOneBandAuto() {
                   </div>
                 </div>
               ) : (
-                <div className="xband__panel">
+                <div
+                  className="xband__panel"
+                  role="tabpanel"
+                  id={`${idBase}-panel-campaign`}
+                  aria-labelledby={`${idBase}-tab-campaign`}
+                >
                   <Campaign />
                   <Helpline />
                 </div>
@@ -272,27 +286,21 @@ export function OptionOneBandAuto() {
             </div>
 
             <div className="xband__controls">
-              <div className="xband__tabs" role="tablist" aria-label="Announcements" ref={tabsRef}>
-                {AUTO_PANELS.map((p, n) => (
-                  <button
-                    key={p}
-                    type="button"
-                    role="tab"
-                    data-panel={n}
-                    aria-selected={n === i}
-                    tabIndex={n === i ? 0 : -1}
-                    className="xband__tab"
-                    onClick={() => go(n)}
-                    onKeyDown={(e) => {
-                      if (e.key === "ArrowRight") { e.preventDefault(); go(i + 1); }
-                      if (e.key === "ArrowLeft") { e.preventDefault(); go(i - 1); }
-                    }}
-                  >
-                    <span className="ds-sr-only">
-                      {p === "notice" ? NMBA.ribbon.eyebrow : NMBA.banner.heading}
-                    </span>
-                  </button>
-                ))}
+              <div className="xband__tabs">
+                <Tabs
+                  idBase={idBase}
+                  ariaLabel="Announcements"
+                  indicator="pill"
+                  track="none"
+                  size="s"
+                  divider={false}
+                  tabs={AUTO_PANELS.map((p) => ({
+                    id: p,
+                    label: p === "notice" ? NMBA.ribbon.eyebrow : NMBA.banner.heading,
+                  }))}
+                  active={i}
+                  onChange={(n) => go(n)}
+                />
               </div>
 
               {/*
@@ -309,17 +317,18 @@ export function OptionOneBandAuto() {
                * somebody is reading it.
                */}
               {reduced ? null : (
-                <button
-                  type="button"
+                <IconButton
+                  variant="neutral"
+                  appearance="outlined"
+                  tone="inverse"
+                  size="sm"
+                  shape="circle"
                   className="xband__play"
                   aria-pressed={!playing}
                   onClick={() => setPlaying((p) => !p)}
-                >
-                  <Icon name={playing ? "pause" : "play_arrow"} size={20} aria-hidden />
-                  <span className="ds-sr-only">
-                    {playing ? "Pause the announcements" : "Play the announcements"}
-                  </span>
-                </button>
+                  aria-label={playing ? "Pause the announcements" : "Play the announcements"}
+                  icon={<Icon name={playing ? "pause" : "play_arrow"} size={20} />}
+                />
               )}
             </div>
 

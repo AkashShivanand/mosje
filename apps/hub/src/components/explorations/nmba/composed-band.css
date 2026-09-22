@@ -388,20 +388,59 @@
   .cband__dots {
     display: flex;
     align-items: center;
-    gap: var(--sa-inline-2);
   }
 
-  /* A 24px target with a small mark inside it — §2.5.8's floor, met by the
-     control rather than by the spacing clause. */
-  .cband__dot {
+  /*
+   * THE DOTS ARE THE DESIGN SYSTEM'S `Tabs`, skinned. `Tabs` owns the roving
+   * tabindex, the arrow keys and the ARIA; this only draws each tab as a 32px
+   * round target with a dot inside, and hides the label visually (it stays the
+   * tab's accessible name). The DS indicator is not used — the dot is the mark.
+   *
+   * `Tabs` also renders a polite status region, which would announce every
+   * automatic turn; the band's own stage already carries the live region, off
+   * while it rotates and polite once it does not, so the DS one is withdrawn.
+   */
+  .cband__dots > [role="status"] {
+    display: none;
+  }
+
+  .cband__dots .ds-tabs.ds-tabs--horizontal {
+    gap: var(--sa-inline-2);
+    /* The list scrolls when it overflows, which would clip the focus ring. */
+    overflow: visible;
+  }
+
+  .cband__dots .ds-tabs .ds-tabs__indicator {
+    display: none;
+  }
+
+  .cband__dots .ds-tabs .ds-tabs__tab {
     display: grid;
     place-items: center;
     inline-size: var(--sa-control-height-sm);
     block-size: var(--sa-control-height-sm);
+    padding: 0;
     border-radius: var(--sa-shape-full);
   }
 
-  .cband__dot::before {
+  .cband__dots .ds-tabs .ds-tabs__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .cband__dots .ds-tabs .ds-tabs__tab:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .cband__dots .ds-tabs .ds-tabs__tab::before {
     content: "";
     inline-size: var(--sa-padding-6);
     block-size: var(--sa-padding-6);
@@ -417,33 +456,17 @@
 
   /* The current dot lengthens into a bar — a shape change reads at a glance
      where a brightness change alone does not. */
-  .cband__dot[aria-selected="true"]::before {
+  .cband__dots .ds-tabs .ds-tabs__tab[aria-selected="true"]::before {
     inline-size: var(--sa-padding-20);
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-text-neutral-inverse);
   }
 
-  /* The pause reads as a peer of the dots, not a ghost beside them: a filled
-     well at rest, because at 78% ink on a dark ground it was a hairline. */
+  /* The pause reads as a peer of the dots, not a ghost beside them — the DS
+     `IconButton`, outlined on the inverse tone, because at 78% ink on a dark
+     ground a bare glyph was a hairline. */
   .cband__play {
-    display: grid;
-    place-items: center;
-    inline-size: var(--sa-control-height-sm);
-    block-size: var(--sa-control-height-sm);
     margin-inline-start: var(--sa-inline-8);
-    border-radius: var(--sa-shape-full);
-    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 14%, transparent);
-    color: var(--sa-text-neutral-inverse);
-    transition:
-      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
-      color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .cband__play:hover {
-      background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 16%, transparent);
-      color: var(--sa-text-neutral-inverse);
-    }
   }
 
   /* ── The band's own dismiss, at the band's own corner ─────────────────── */
@@ -460,31 +483,9 @@
    * wrong scope. (The 24px either side of the band is the container's own
    * padding and was never the asymmetry it looked like.)
    */
+  /* The DS `IconButton` (text, inverse tone) draws the control. */
   .cband__dismiss {
-    display: grid;
-    place-items: center;
     align-self: start;
-    inline-size: var(--sa-control-height-sm);
-    block-size: var(--sa-control-height-sm);
-    border-radius: var(--sa-shape-8);
-    color: color-mix(in srgb, var(--sa-text-neutral-inverse) 72%, transparent);
-    transition:
-      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
-      color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .cband__dismiss:hover {
-      background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 16%, transparent);
-      color: var(--sa-text-neutral-inverse);
-    }
-  }
-
-  .cband__dot:focus-visible,
-  .cband__play:focus-visible,
-  .cband__dismiss:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
-    outline-offset: var(--sa-focus-offset);
   }
 
   @media (prefers-reduced-motion: reduce) {

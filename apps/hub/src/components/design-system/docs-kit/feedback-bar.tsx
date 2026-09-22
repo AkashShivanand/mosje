@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Icon } from "@mosje/design-system";
+import { Button, Icon } from "@mosje/design-system";
 
 interface FeedbackBarProps {
   componentName?: string;
@@ -50,44 +50,26 @@ export function FeedbackBar({
           </span>
         ) : (
           <div style={{ display: "flex", gap: "var(--sa-stack-8)" }}>
-            <button
-              type="button"
+            <Button
+              variant="neutral"
+              appearance="outlined"
+              size="sm"
+              iconLeft={<Icon name="thumb_up" size={16} />}
               onClick={() => setFeedbackGiven("yes")}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "var(--sa-stack-4)",
-                padding: "var(--sa-padding-4) var(--sa-padding-12)",
-                borderRadius: "var(--sa-shape-6)",
-                border: "1px solid var(--sa-border-neutral-base)",
-                background: "var(--sa-bg-neutral-base)",
-                color: "var(--sa-text-neutral-base)",
-                fontSize: "var(--sa-type-body-3-size)",
-                cursor: "pointer",
-              }}
               aria-label="Yes, this page was helpful"
             >
-              <Icon name="thumb_up" size={16} /> Yes
-            </button>
-            <button
-              type="button"
+              Yes
+            </Button>
+            <Button
+              variant="neutral"
+              appearance="outlined"
+              size="sm"
+              iconLeft={<Icon name="thumb_down" size={16} />}
               onClick={() => setFeedbackGiven("no")}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "var(--sa-stack-4)",
-                padding: "var(--sa-padding-4) var(--sa-padding-12)",
-                borderRadius: "var(--sa-shape-6)",
-                border: "1px solid var(--sa-border-neutral-base)",
-                background: "var(--sa-bg-neutral-base)",
-                color: "var(--sa-text-neutral-base)",
-                fontSize: "var(--sa-type-body-3-size)",
-                cursor: "pointer",
-              }}
               aria-label="No, this page was not helpful"
             >
-              <Icon name="thumb_down" size={16} /> No
-            </button>
+              No
+            </Button>
           </div>
         )}
       </div>

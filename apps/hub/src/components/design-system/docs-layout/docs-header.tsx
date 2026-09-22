@@ -2,7 +2,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Icon } from "@mosje/design-system";
+import { Button, Icon, IconButton } from "@mosje/design-system";
 import { NAV } from "@/lib/design-system/nav";
 
 interface DocsHeaderProps {
@@ -61,16 +61,16 @@ export function DocsHeader({ onSearchOpen, navOpen, onMenuToggle }: DocsHeaderPr
 
   return (
     <header className="docs-header" role="banner">
-      <button
+      <IconButton
         className="docs-header__menu"
+        icon={<Icon name={navOpen ? "close" : "menu"} size={20} />}
         onClick={onMenuToggle}
         aria-label={navOpen ? "Close navigation menu" : "Open navigation menu"}
         aria-expanded={navOpen ?? false}
         aria-controls="docs-sidebar"
-        type="button"
-      >
-        <Icon name={navOpen ? "close" : "menu"} size={20} />
-      </button>
+        variant="neutral"
+        appearance="text"
+      />
       <nav className="docs-header__breadcrumb" aria-label="Breadcrumb">
         <Link href="/design-system" className="docs-header__breadcrumb-home">
           SAMAVESH
@@ -84,16 +84,18 @@ export function DocsHeader({ onSearchOpen, navOpen, onMenuToggle }: DocsHeaderPr
           </>
         )}
       </nav>
-      <button
+      <Button
         className="docs-header__search-btn"
+        variant="neutral"
+        appearance="outlined"
+        size="sm"
+        iconLeft={<Icon name="search" size={16} />}
         onClick={onSearchOpen}
         aria-label={`Search documentation (${isMac ? "Cmd K" : "Ctrl K"})`}
-        type="button"
       >
-        <Icon name="search" size={16} />
         <span className="docs-header__search-label">Search docs…</span>
         <kbd className="docs-header__search-kbd">{isMac ? "⌘K" : "Ctrl K"}</kbd>
-      </button>
+      </Button>
     </header>
   );
 }

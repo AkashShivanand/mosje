@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { Icon, Modal, buttonClasses } from "@mosje/design-system";
+import { Button, Icon, IconButton, Modal, Tabs, buttonClasses } from "@mosje/design-system";
 import { Fold, NMBA } from "./fold";
 import "./standing-band.css";
 
@@ -116,7 +116,7 @@ export function StandingBand() {
   const [playing, setPlaying] = React.useState(true);
   const [hovered, setHovered] = React.useState(false);
   const [focused, setFocused] = React.useState(false);
-  const dotsRef = React.useRef<HTMLDivElement>(null);
+  const idBase = `sband-${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
   const [zoom, setZoom] = React.useState(false);
 
   /* `OFFERS[i]` is indexed access; the modulo above guarantees it resolves, and
@@ -147,7 +147,7 @@ export function StandingBand() {
     const n = (next + OFFERS.length) % OFFERS.length;
     setI(n);
     setPlaying(false);
-    dotsRef.current?.querySelector<HTMLButtonElement>(`[data-i="${n}"]`)?.focus();
+    // Focus follows selection inside `Tabs` itself, so nothing is focused here.
   }
 
   if (gone) return <Fold band={null} />;
@@ -190,6 +190,9 @@ export function StandingBand() {
                 <div
                   key={o.id}
                   className="sband__offer"
+                  role="tabpanel"
+                  id={`${idBase}-panel-${o.id}`}
+                  aria-labelledby={`${idBase}-tab-${o.id}`}
                   data-accent={o.accent}
                   data-active={n === i || undefined}
                   {...(n === i ? {} : { inert: true })}
@@ -233,8 +236,9 @@ export function StandingBand() {
                        * the button is already named, and announcing the picture
                        * as well would say the same thing twice.
                        */}
-                      <button
-                        type="button"
+                      <Button
+                        variant="neutral"
+                        appearance="text"
                         className="sband__mark sband__mark--code"
                         onClick={() => setZoom(true)}
                         aria-label="Show the registration code at a size a camera can read"
@@ -243,7 +247,7 @@ export function StandingBand() {
                         <span className="sband__mark-badge" aria-hidden>
                           <Icon name="zoom_in" size={16} />
                         </span>
-                      </button>
+                      </Button>
                       <span className="sband__mark sband__mark--glyph sband__mark--phone" aria-hidden>
                         <Icon name={o.icon} size={40} />
                       </span>
@@ -329,25 +333,20 @@ export function StandingBand() {
                * swallows every click on them.
                */}
               <div className="sband__pager" data-running={running || undefined}>
-                <div className="sband__dots" role="tablist" aria-label="Announcements" ref={dotsRef}>
-                  {OFFERS.map((o, n) => (
-                    <button
-                      key={o.id}
-                      type="button"
-                      role="tab"
-                      data-i={n}
-                      aria-selected={n === i}
-                      tabIndex={n === i ? 0 : -1}
-                      className="sband__dot"
-                      onClick={() => go(n)}
-                      onKeyDown={(e) => {
-                        if (e.key === "ArrowRight") { e.preventDefault(); go(i + 1); }
-                        if (e.key === "ArrowLeft") { e.preventDefault(); go(i - 1); }
-                      }}
-                    >
-                      <span className="ds-sr-only">{o.name}</span>
-                    </button>
-                  ))}
+                {/* The DS `Tabs` owns the roving tabindex and the arrow keys; the
+                    stylesheet skins it as the band's dots. */}
+                <div className="sband__dots">
+                  <Tabs
+                    idBase={idBase}
+                    ariaLabel="Announcements"
+                    indicator="pill"
+                    track="none"
+                    size="s"
+                    divider={false}
+                    tabs={OFFERS.map((o) => ({ id: o.id, label: o.name }))}
+                    active={i}
+                    onChange={(n) => go(n)}
+                  />
                 </div>
 
                 {/* WCAG 2.2 §2.2.2: anything auto-updating past five seconds
@@ -355,17 +354,18 @@ export function StandingBand() {
                     so this control is what makes the band lawful — and it stops
                     the dwell indicator with it. */}
                 {reduced ? null : (
-                  <button
-                    type="button"
+                  <IconButton
+                    variant="neutral"
+                    appearance="text"
+                    tone="inverse"
+                    size="sm"
+                    shape="circle"
                     className="sband__play"
                     aria-pressed={!playing}
                     onClick={() => setPlaying((p) => !p)}
-                  >
-                    <Icon name={playing ? "pause" : "play_arrow"} size={20} aria-hidden />
-                    <span className="ds-sr-only">
-                      {playing ? "Pause the announcements" : "Play the announcements"}
-                    </span>
-                  </button>
+                    aria-label={playing ? "Pause the announcements" : "Play the announcements"}
+                    icon={<Icon name={playing ? "pause" : "play_arrow"} size={20} />}
+                  />
                 )}
               </div>
             </div>
@@ -389,14 +389,16 @@ export function StandingBand() {
 
             {/* The dismiss is the BAND'S, so it sits on the band's own ground —
                 outside both cards, sharing their top edge. */}
-            <button
-              type="button"
+            <IconButton
+              variant="neutral"
+              appearance="text"
+              tone="inverse"
+              size="sm"
               className="sband__dismiss"
               onClick={() => setGone(true)}
               aria-label="Dismiss the announcements"
-            >
-              <Icon name="close" size={20} aria-hidden />
-            </button>
+              icon={<Icon name="close" size={20} />}
+            />
           </div>
         </section>
 

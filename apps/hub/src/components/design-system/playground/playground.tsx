@@ -84,9 +84,16 @@ export function Playground({
         <div className="playground-code">
           <div className="playground-code__header">
             <span>{codeMode === "html" ? "HTML (Vanilla)" : "JSX (React)"}</span>
-            <button className="playground-code__copy" onClick={copy} type="button">
-              {copied ? "Copied!" : "Copy code"}
-            </button>
+            <DS.Button
+              variant="neutral"
+              appearance="text"
+              size="sm"
+              className="playground-code__copy"
+              iconLeft={<DS.Icon name={copied ? "check" : "content_copy"} size={16} />}
+              onClick={copy}
+            >
+              {copied ? "Copied" : "Copy Code"}
+            </DS.Button>
           </div>
           {codeMode === "jsx" ? (
             <LiveEditor />
