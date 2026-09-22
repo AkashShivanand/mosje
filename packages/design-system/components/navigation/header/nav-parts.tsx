@@ -483,7 +483,8 @@ export function NavItemLink({ item, open = false, onOpenChange, linkAs, classNam
            cancelled its own click, so a screen reader announced "link" for a control
            that goes nowhere — the APG disclosure-navigation pattern uses a button, and
            NavSheet's group rows already did. The section's own page is still reachable:
-           `NavOverview` offers it as the panel's first row. */
+           `NavOverview` offers it as the panel's first row.
+           raw-button-ok(primitive): the menu trigger IS this component's nav item */
         <button
           ref={linkRef as React.Ref<HTMLButtonElement>}
           type="button"
