@@ -1,8 +1,9 @@
 # Button
 
-The estate's most-used component: **565 consumers** — 494 `<Button>`, 63
-`buttonClasses()`, 8 raw `.ds-btn`. Every decision here is multiplied by that,
-and so is every defect.
+The estate's most-used component: **625 consumers** — 544 `<Button>` and 81
+`buttonClasses()` in `apps/hub/src`, design-system docs excluded, no raw `.ds-btn`
+left (counted 2026-09-22; it was 565 on 2026-08-27). Every decision here is
+multiplied by that, and so is every defect.
 
 - **Code** — `packages/design-system/components/actions/button.{tsx,css}`
 - **Figma** — `Button` set `609:283111`, page *Buttons* `2141:296705`
@@ -37,8 +38,8 @@ the chatbot's reset shipped **outlined in the estate's rejection red** for what
 is housekeeping. On a portal where red means "your application was rejected",
 spending it on a reset devalues the signal.
 
-It is the **only variant bound to Tier 3** (`cmp/action/neutral/*`). The other
-three still reach into Tier-1 `ref/color/*/source`; see Open below.
+It was the first variant bound to Tier 3 (`cmp/action/neutral/*`); since the
+migration of 2026-08-27 all four intents are, and none reaches Tier-1 `ref/*`.
 
 ---
 
@@ -46,14 +47,55 @@ three still reach into Tier-1 `ref/color/*/source`; see Open below.
 
 | Property | Source | State |
 |---|---|---|
-| Radius | `shape/8` | ✅ 720/720 bound in Figma |
-| `neutral` colour | `cmp/action/neutral/<appearance>/<state>/<bg\|text\|border>` | ✅ Tier 3 |
-| `primary` / `success` / `danger` colour | `bg/*`, `text/*`, `on/*` in code; **Tier-1 `ref/*` in Figma** | ⚠️ open |
-| Height | raw `32/40/48px` | ⚠️ open — and a fixed `height`, see A11y |
-| Padding (code) | `padding/16`, `padding/24` | ✅ |
-| Padding (Figma) | **`Font Size/*` — the Type collection** | ⚠️ open, 1,440 bindings |
+| Radius | `shape/8` | ✅ 360/360 bound in Figma |
+| Colour, every intent | `cmp/action/<intent>/<appearance>/<state>/<bg\|text\|border>` | ✅ Tier 3 — 1,120 of 1,120 Figma bindings on `cmp/*`, none on `ref/*` (counted 2026-09-22) |
+| Height | `min-height` 32/40/48px plus vertical `padding/4·6·8` | ✅ grows with 200% text, see A11y |
+| Padding (code) | `padding/12`, `padding/16`, `padding/24` — asymmetric, see below | ✅ |
+| Padding (Figma) | `padding/*` on the Space collection, 1,440 of 1,440 | ✅ since 2026-09-22 |
 | Focus ring | `--sa-focus-ring`, or a per-variant `--_ring` for success/danger | ✅ |
 | Press feedback | `scale(0.97)`, suppressed under `prefers-reduced-motion` | ✅ |
+
+---
+
+## Optical padding — the glyph side is one step tighter
+
+A letterform starts close to the edge of its own box; a Material Symbols glyph does
+not. It is drawn inside a square em-box with its own bearing, so the visible mark
+begins inset from the box the layout measures, and equal geometric padding *reads* as
+more space on the icon side. Material 3 (16dp leading against 24dp trailing), Carbon
+and Polaris all correct it the same way.
+
+| size | Label side | Glyph side |
+|---|---|---|
+| `sm` | 16px | 12px |
+| `md` | 24px | 16px |
+| `lg` | 24px | 16px |
+
+Applied **per side**, so a button with only a trailing arrow keeps its full leading
+padding. Three things that are load-bearing rather than tidy:
+
+- **The spinner counts as a leading glyph.** `loading` puts the spinner in the leading
+  icon's place so the control does not change width when pressed; compensating only
+  `.ds-btn__icon` would make an iconed button jump 8px on going busy.
+- **The side is named in the class, not inferred from position.** The label is a bare
+  text node, so a leading icon is also the last *element* child — `:last-child`
+  compensated both sides of a single-icon button. The spans carry `--start` / `--end`.
+- **`IconButton` is excluded**: square, zero padding, and its glyph is the label.
+
+**Figma draws the same geometry** (2026-09-22). Padding is per variant there while the
+icon slots are booleans, so the button pads 16 (12 at `Small`) and a `label` frame
+inside it carries the remaining 8 (4 at `Small`). Switching `Show Left Icon` or
+`Show Right Icon` therefore moves the geometry with no Icon variant axis — the axis
+retired on 2026-08-27, which is what paid for `Tone`. Documentation frame section
+`08 The icon side sits closer than the label side` (`58662:956`) states the rule and
+draws all three cases. Do not flatten the `label` frame or re-pad a variant to 24 on
+both sides.
+
+**One thing Figma cannot enforce.** In code the spinner *replaces* the left icon
+(`iconLeft != null && !loading`). Figma has no inverse boolean, so a designer can switch
+`Loading` and `Show Left Icon` on together and draw a state the code never renders. The
+set description (rule 10) and documentation section 04 both say not to; the claim is
+pinned in `tools/figma-doc-parity/claims.json`.
 
 ---
 

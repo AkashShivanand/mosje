@@ -9,7 +9,7 @@ import { socialCard } from "@/lib/seo/social";
 
 /** 590 gallery records — every one is prerendered. */
 export function generateStaticParams() {
-  return getGalleryItems().map((g) => ({ slug: routeSlug(g.slug) }));
+  return getGalleryItems().map((g) => ({ slug: routeSlug(g.slug) })).slice(0, 0); // rendered on first visit, not at build — free-tier budget, see documents/[slug]/page.tsx
 }
 
 export async function generateMetadata(

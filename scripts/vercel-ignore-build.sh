@@ -72,6 +72,43 @@ if [ "$ENVIRONMENT" != "production" ] && [ "$WANTS_PREVIEW" -eq 1 ]; then
   exit $BUILD
 fi
 
+# Rule 0 — PRODUCTION DEPLOYS ONCE A DAY, when the project sets DAILY_DEPLOY=1.
+#
+# Off unless that Vercel environment variable says so, deliberately: it is only
+# safe once `.github/workflows/daily-deploy.yml` has a deploy hook to call. Switch
+# it on before the schedule exists and main simply stops reaching production.
+#
+# Why it exists: on 2026-09-22 both Hobby storage limits hit 100% again with only
+# 19 deployments retained. What they charge for is build output CREATED in a
+# rolling window, so the count of builds matters as much as their size — and main
+# was building 5–12 times a day, one per merge.
+#
+# In daily mode a production build happens when:
+#   - it is inside the nightly window, which is when the scheduled deploy hook
+#     fires (20:30 UTC, 02:00 IST). Vercel does not tell a hook-triggered build
+#     apart from a push, so the window is the signal. It runs 20:00–23:59 UTC
+#     because GitHub can start a scheduled job late; a merge that lands inside
+#     it also builds, which at that hour in India is rare. Rule 2 is NOT applied
+#     here: the nightly build must carry the whole day, and judging it by the
+#     last commit alone could skip a day of code behind a docs-only merge.
+#   - or someone asks for it now: `[deploy]` in the commit subject, or in the
+#     first line of its body — which on a GitHub merge commit is the PR TITLE, so
+#     "Fix the login copy [deploy]" as a PR title ships that merge immediately.
+if [ "$ENVIRONMENT" = "production" ] && [ "${DAILY_DEPLOY:-}" = "1" ]; then
+  FIRST_BODY_LINE="$(printf '%s\n' "$MESSAGE" | sed -n '2,$p' | grep -m1 -v '^[[:space:]]*$' || true)"
+  case "$SUBJECT
+$FIRST_BODY_LINE" in
+    *"[deploy]"*) say "BUILD: this merge asked to go live now."; exit $BUILD ;;
+  esac
+  HOUR="$(date -u +%H)"
+  if [ "$HOUR" -ge 20 ] && [ "$HOUR" -le 23 ]; then
+    say "BUILD: inside the nightly deploy window (20:00–23:59 UTC)."
+    exit $BUILD
+  fi
+  say "SKIP: production deploys once a day at 02:00 IST. Put [deploy] in the PR title to ship a merge now."
+  exit $SKIP
+fi
+
 # Rule 2 — did this push touch anything the deployment can actually see?
 #
 # Compare against the previous head where Vercel tells us what it was and the

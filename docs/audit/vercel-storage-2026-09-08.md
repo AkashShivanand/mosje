@@ -203,6 +203,99 @@ The remaining lever with a large, certain saving is prerendering fewer pages:
 the first hit, at the price of that first hit. Offered on 2026-09-08 and declined
 for now.
 
+## 2026-09-22 — both limits at 100% again, with 19 deployments retained
+
+The emails came back at 03:03 IST. Retained deployments were **19 team-wide**
+(from 1,250 on 2026-09-08), so pruning was already exhausted, and the premise of
+everything above — that the count of kept deployments drives the bill — was
+wrong. What is charged is **build output created in the rolling window**: every
+production build counts, even after it is deleted. Only two levers remain,
+**smaller builds and fewer builds**, and at this estate's pace neither is enough
+alone (1 build a day at the old size is still ~14 GB a month).
+
+**The build had also nearly tripled.** `.next/server` measured **1,345 MB**
+against 480 MB on 2026-09-08, with 2,378 prerendered pages against 880 — the
+website's gallery (590 pages), officials (450), documents (400), tenders (312),
+vacancies (163) and scheme documents (100) had all been added in between. The
+website tree alone was 997 MB.
+
+### What changed
+
+- **Seven website trees render on first visit instead of at build** —
+  organisation, gallery, official, documents, tenders, vacancies, scheme
+  documents. Each `generateStaticParams` now yields nothing — `.slice(0, 0)` on its
+  existing expression, or for `documents` its existing `PRERENDERED` budget set to 0; `dynamicParams` stays at its default
+  of true, so every slug still resolves and caches after the first request, and
+  an unknown one still reaches `notFound()`. The edit is ONE LINE per file and
+  leaves imports alone, because PR #580 (the website redesign, 421 files) rewrites
+  all of these pages: a first version that tidied the imports conflicted in six
+  files; this one merges with #580 cleanly, proven with `git merge-tree`.
+- **Production deploys once a day**, in the Ignored Build Step ("Rule 0"), OFF
+  until the project sets `DAILY_DEPLOY=1`. A nightly workflow
+  (`.github/workflows/daily-deploy.yml`, 20:30 UTC / 02:00 IST) calls a Vercel
+  deploy hook when main changed that day; `[deploy]` in a PR title ships a merge
+  immediately. Setup needs a person — see the top of that workflow.
+
+### Measured, on a full production build
+
+| | Before | After |
+|---|---|---|
+| `.next/server` | 1,345 MB | **633 MB** (−53%) |
+| website tree | 997 MB | 193 MB |
+| Prerendered pages | 2,378 | 735 |
+
+Served from the standalone build: all seven trees answer 200 with their real
+content, a first render takes 23–77 ms (not the 1–2 s first estimated), repeat
+requests come back `x-nextjs-cache: HIT` with the same `Cache-Control` as a page
+built ahead, and an unknown slug in each tree still returns 404.
+
+### Deliberately NOT changed, and why
+
+- **`website/schemes-services` stays prerendered (~63 MB)** for now. PR #580
+  rewrites exactly its `generateStaticParams` line (adding legacy slugs), so the
+  same edit would conflict for certain. Apply it after #580 lands.
+- **The design-system docs stay prerendered.** Tried and reverted:
+  `dynamic = "force-dynamic"` in `design-system/layout.tsx` saved only ~29 MB
+  (the tree is mostly trace and code files, not HTML), and it had two costs that
+  were not acceptable. A layout's `force-dynamic` OVERRIDES a page's
+  `force-static`, so `tokens` and `design-context` — which read files from disk
+  and are meant to be static — went dynamic too. And the changelog's
+  `readdirSync` over a computed path made Turbopack trace **the whole project**
+  into its function (4,945 files, 243 MB, `public/` included), which would have
+  inflated Function Storage, the other limit. Worth knowing before anyone tries
+  it again: `pending-entries.ts` is safe only while the changelog is static.
+
+## 2026-09-22, later — production had been failing to deploy since #579
+
+Two production builds in a row failed after `next build` had succeeded, while
+uploading: *"the build container ran out of disk space (ENOSPC)"*, with
+**2,614 MB** of output on #579 and 1,534 MB on #581. The live site stayed on #578.
+
+**The cause was two over-broad file reads, and they had been inflating EVERY
+function, not just two.**
+
+- `app/opengraph-image.tsx` read `join(process.cwd(), "public", SAMAVESH_MARK)`.
+  The last part is an imported constant the tracer cannot resolve, so it assumed
+  the read could be any file under `public/` and shipped all 12,420 of them. The
+  route sits at the root of the tree, and that trace reached every page's function.
+  #579's 2,018 evidence images were what tipped the container over its disk.
+- The changelog's `pending-entries.ts` did `readdirSync` on a computed path —
+  "Dynamic filesystem access causes tracing of the whole project".
+
+Both run only at build time (the OG route is `force-static`; the changelog is
+prerendered), so both are marked `/* turbopackIgnore: true */`. Measured:
+
+| | Before | After |
+|---|---|---|
+| A typical page's function trace | ~3,365 files / ~230 MB | **~250 files / 24–46 MB** |
+| The changelog's function | 4,931 files / 244 MB | 251 files / 25 MB |
+| `.next/server` | 633 MB | **418 MB** |
+| Build warnings | 2 | 0 |
+
+This is very likely what filled **Function Storage** from the start: every
+deployment carried a copy of `public/` in its functions. Nothing on the page
+changes — the social card and the changelog render exactly as before.
+
 ## The measurements behind this
 
 | Where the numbers came from | |
