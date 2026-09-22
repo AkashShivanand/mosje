@@ -103,7 +103,7 @@ a button is `Button href` or `buttonClasses()`. If none fits, add the component 
 design system first.
 
 **`npm run check:raw-button` is the gate** — a ratchet over every raw `<button>` in
-`apps/hub/src` and `packages/design-system/components`, baselined at 408 on 2026-09-22
+`apps/hub/src` and `packages/design-system/components`, baselined at 383 on 2026-09-22
 and migrated area by area. Two exemptions exist, declared on the tag:
 `raw-button-ok(primitive)` inside the design system, where the native button IS the
 component, and `raw-button-ok(specimen)` on a documentation page. Detail and the

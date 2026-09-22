@@ -3,11 +3,11 @@
  *
  * A native `<button>` written in app code is a hand-rolled component: it carries its
  * own padding, its own colour, its own focus ring (or none), its own disabled look,
- * and none of the fixes the design system ships. On 2026-09-22 the estate had 301 of
+ * and none of the fixes the design system ships. On 2026-09-22 the estate had 276 of
  * them in app code — roughly three in four plain actions, the rest tabs, toggles and
  * menu or disclosure triggers — plus 107 inside the design-system components
  * themselves. The icon-side padding rule the Button gained on 2026-09-03 reached none
- * of the 301.
+ * of the 276.
  *
  * DECIDED 2026-09-22, and it supersedes the deferral written into
  * tools/shadow-ui/check.mjs for this one case: buttons are migrated now, area by
@@ -73,13 +73,21 @@ function* walk(dir) {
   }
 }
 
-/* Blank out comments but keep every newline, so line numbers stay true. A
-   `<button` inside a comment is prose, not a use site. The exemption marker lives
-   in a comment, so markers are read from the ORIGINAL source. */
+/* Blank out comments AND string contents but keep every newline, so line numbers
+   stay true. A `<button` inside a comment is prose, and one inside a string is a
+   code sample or an accessibility note on a documentation page — neither is a use
+   site. A JSX `<button>` is never inside quotes. The exemption marker lives in a
+   comment, so markers are read from the ORIGINAL source. Template literals go
+   first because they span lines; the other two quotes stop at a line end so an
+   apostrophe in JSX text cannot swallow the rest of a file. */
+const blank = (m) => m.replace(/[^\n]/g, " ");
 function stripComments(src) {
   return src
-    .replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\n]/g, " "))
-    .replace(/(^|[^:"'`])\/\/[^\n]*/g, (m, p) => p + " ".repeat(m.length - p.length));
+    .replace(/\/\*[\s\S]*?\*\//g, blank)
+    .replace(/(^|[^:"'`])\/\/[^\n]*/g, (m, p) => p + " ".repeat(m.length - p.length))
+    .replace(/`(?:\\[\s\S]|[^`\\])*`/g, blank)
+    .replace(/"(?:\\.|[^"\\\n])*"/g, blank)
+    .replace(/'(?:\\.|[^'\\\n])*'/g, blank);
 }
 
 const MARKER = /raw-button-ok\((\w+)\)\s*:\s*\S/;
