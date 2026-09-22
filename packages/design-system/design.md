@@ -2112,13 +2112,15 @@ a `danger` or inverse icon button cannot be drawn even though the code supports 
 
 #### SplitButton
 **Purpose**: one default action with its alternatives one press away — "Approve", beside a trigger offering "Approve with remarks".
-**Props**: `children` (the default action's label) · `onClick` · `items` (`MenuEntry[]`) · `onSelect(id)` · `label` (**required**) · `variant` · `size` · `disabled`
+**Props**: `children` (the default action's label) · `onClick` · `items` (`MenuEntry[]`) · `onSelect(id)` · `label` (**required**) · `variant` · `appearance` (`filled` | `outlined` | `text`, default `filled`) · `iconLeft` · `size` · `disabled`
 **Rules**:
 - **It is TWO buttons, not one.** The default action activates on Enter and Space; the trigger is a separate control with its own name and its own `aria-expanded`. Merging them into one control that behaves differently depending on which half was hit is how this pattern is usually built, and it is unusable from a keyboard — there is no key press for "the right-hand eighth of this button".
 - **It draws NO seam of its own.** It composes `ButtonGroup attached`, so the join, the collapsed inner corners and the group's role and name are the ones the estate already publishes and cannot drift from them.
 - **Only where there IS a default.** The wide half is the easy half; where the alternatives are equally likely, putting one there makes it the path of least resistance — on a screen where an officer approves or rejects a citizen's application, that is a thumb on the scale. Use `Menu` when no option is obvious.
 - **Two controls need two names.** The trigger derives its own from the default action's label ("More ways to approve"), so a screen reader never hears the same string twice.
 - Disabling disables BOTH halves. A live menu beside a dead action is a trap.
+- **Both halves share one appearance.** `appearance="outlined"` is the quiet case — Copy with its export formats in a table toolbar, hand-built twice in NMBA before 2026-09-22 because this component only came filled. A pair whose halves disagree on weight reads as two unrelated controls.
+- The trigger is an `IconButton` carrying the library `Icon` (`keyboard_arrow_down`), never a text glyph — the "▾" it drew until 2026-09-22 neither scaled with the icon ladder nor matched Figma.
 
 #### Menu
 **Purpose**: the WAI-ARIA menu-button pattern — a trigger opens a list of **commands**, focus lands on the first, and the arrow keys move between them. The dense-table `⋮` is the shape it was built for.
@@ -2813,6 +2815,17 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - **It scrolls in its own labelled region with a tab stop**, never inside a card: a scrolling box with no tab stop cannot be reached without a pointer.
 - Tone colours the entry's leading rule only; a grid of coloured blocks is unreadable.
 - An entry with no `href` is a record, not a control.
+
+#### MediaThumbnail
+**Purpose**: a photo or video that opens when pressed — the trigger for a `Lightbox`, in a table cell, a list row or a card's media area.
+**Props**: `label` (**required**) · `src` · `kind` (`image` | `video`) · `count` · `size` (`sm` 64×48 | `md` 80×60 | `fill`) · `emptyLabel` · native button attributes
+**Rules**:
+- **It is a BUTTON named for what it opens** — "View 3 training photos". The image inside is decorative (`alt=""`), because its alt text and the action are the same sentence and a screen reader should hear it once.
+- **Where the picture leads to another PAGE, it is the wrong component** — use a link around a `Figure`. A picture with nothing to open is a `Figure` too.
+- **Empty is drawn, not omitted.** No `src` renders a dashed tile carrying `emptyLabel`, and it is not focusable: there is nothing to open.
+- **The badge counts what is NOT shown.** Three photos draw "+2". It is a solid paired fill (`bg/neutral/bold`), never a scrim, so its contrast does not depend on the photograph.
+- **No hover secrets.** The zoom cue shows on focus as well as hover; a video's play glyph is always drawn.
+- `fill` draws its focus ring inside the edge, because the card around it clips anything outside.
 
 #### VideoTile
 **Purpose**: one camera or one recording, with the four states a feed is actually in.

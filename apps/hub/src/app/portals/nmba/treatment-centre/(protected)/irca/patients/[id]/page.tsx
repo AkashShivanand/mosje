@@ -132,14 +132,9 @@ function SessionCardList({
                 Session {row.sessionNo}
               </span>
               {rows.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => onRemove(idx)}
-                  aria-label={`Remove session ${row.sessionNo}`}
-                  className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-label-2 font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
-                >
-                  <Icon name="delete" size={14} aria-hidden /> Remove
-                </button>
+                <Button variant="danger" appearance="text" size="sm" iconLeft={<Icon name="delete" size={16} />} aria-label={`Remove session ${row.sessionNo}`} onClick={() => onRemove(idx)}>
+                  Remove
+                </Button>
               )}
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -621,14 +616,9 @@ export default function ClinicalWizardPage() {
                       Entry {idx + 1}
                     </span>
                     {dosageLog.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeDosageRow(idx)}
-                        aria-label={`Remove entry ${idx + 1}`}
-                        className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-label-2 font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
-                      >
-                        <Icon name="delete" size={14} aria-hidden /> Remove
-                      </button>
+                      <Button variant="danger" appearance="text" size="sm" iconLeft={<Icon name="delete" size={16} />} aria-label={`Remove entry ${idx + 1}`} onClick={() => removeDosageRow(idx)}>
+                  Remove
+                </Button>
                     )}
                   </div>
 
@@ -773,14 +763,9 @@ export default function ClinicalWizardPage() {
                         Visit {idx + 1}
                       </span>
                       {homeVisits.length > 1 && (
-                        <button
-                          type="button"
-                          onClick={() => removeHomeVisitRow(idx)}
-                          aria-label={`Remove visit ${idx + 1}`}
-                          className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-label-2 font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
-                        >
-                          <Icon name="delete" size={14} aria-hidden /> Remove
-                        </button>
+                        <Button variant="danger" appearance="text" size="sm" iconLeft={<Icon name="delete" size={16} />} aria-label={`Remove visit ${idx + 1}`} onClick={() => removeHomeVisitRow(idx)}>
+                  Remove
+                </Button>
                       )}
                     </div>
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

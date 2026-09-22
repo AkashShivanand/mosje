@@ -11,7 +11,7 @@ import {
 } from "@/lib/nmba/mock-data";
 import type { ActivityRow } from "@/lib/nmba/types";
 import { useToast } from "@/components/nmba/toast";
-import { Button, Icon, MetricCard, Search } from "@mosje/design-system";
+import { Button, Icon, IconButton, MetricCard, Search } from "@mosje/design-system";
 
 const columns = [
   { key: "state" as const, header: "State" },
@@ -47,13 +47,15 @@ export default function AdminDashboard() {
       key: "actions" as const,
       header: "Action",
       render: () => (
-        <button
-          onClick={() => toast("Action coming soon.", "info")}
+        <IconButton
+          icon={<Icon name="more_horiz" size={16} />}
           aria-label="Row actions"
-          className="rounded-lg p-1 text-ink-hint hover:bg-black/5"
-        >
-          <Icon name="more_horiz" size={16} />
-        </button>
+          tooltip
+          variant="neutral"
+          appearance="text"
+          size="sm"
+          onClick={() => toast("Action coming soon.", "info")}
+        />
       ),
     },
   ];

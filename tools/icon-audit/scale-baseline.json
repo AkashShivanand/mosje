@@ -15,7 +15,7 @@
     "page, re-run --update-baseline in the same change."
   ],
   "totals": {
-    "offScale": 192,
+    "offScale": 169,
     "classSized": 4
   },
   "files": {
@@ -67,36 +67,24 @@
       "offScale": 2,
       "classSized": 0
     },
-    "apps/hub/src/app/portals/nmba/admin/(protected)/user-management/page.tsx": {
-      "offScale": 2,
-      "classSized": 0
-    },
     "apps/hub/src/app/portals/nmba/page.tsx": {
       "offScale": 2,
       "classSized": 0
     },
     "apps/hub/src/app/portals/nmba/treatment-centre/(protected)/cpli/peer-educators/[id]/training/page.tsx": {
-      "offScale": 7,
+      "offScale": 3,
       "classSized": 0
     },
     "apps/hub/src/app/portals/nmba/treatment-centre/(protected)/cpli/peer-educators/[id]/volunteers/page.tsx": {
-      "offScale": 6,
+      "offScale": 3,
       "classSized": 0
     },
     "apps/hub/src/app/portals/nmba/treatment-centre/(protected)/cpli/peer-educators/page.tsx": {
-      "offScale": 3,
-      "classSized": 0
-    },
-    "apps/hub/src/app/portals/nmba/treatment-centre/(protected)/irca/patients/[id]/page.tsx": {
-      "offScale": 3,
-      "classSized": 0
-    },
-    "apps/hub/src/app/portals/nmba/treatment-centre/(protected)/irca/register/page.tsx": {
       "offScale": 2,
       "classSized": 0
     },
     "apps/hub/src/app/portals/nmba/treatment-centre/(protected)/photos/page.tsx": {
-      "offScale": 4,
+      "offScale": 3,
       "classSized": 0
     },
     "apps/hub/src/app/portals/scw/page.tsx": {
@@ -253,18 +241,6 @@
     },
     "apps/hub/src/components/nmba/committee/minutes-section.tsx": {
       "offScale": 1,
-      "classSized": 0
-    },
-    "apps/hub/src/components/nmba/treatment-centre/odic-form.tsx": {
-      "offScale": 2,
-      "classSized": 0
-    },
-    "apps/hub/src/components/nmba/treatment-centre/outreach-patient-form.tsx": {
-      "offScale": 2,
-      "classSized": 0
-    },
-    "apps/hub/src/components/nmba/treatment-centre/tc-list.tsx": {
-      "offScale": 3,
       "classSized": 0
     },
     "apps/hub/src/components/scw/ui.tsx": {

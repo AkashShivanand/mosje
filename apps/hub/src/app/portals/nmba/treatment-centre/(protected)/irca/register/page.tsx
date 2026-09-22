@@ -590,9 +590,9 @@ export default function IrcaRegisterPage() {
         <Alert status="info">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <span>We restored your unsaved draft from this session. The photo needs to be re-attached.</span>
-            <button type="button" onClick={clearDraft} className="font-semibold text-navy hover:underline">
+            <Button appearance="text" size="sm" onClick={clearDraft}>
               Start fresh
-            </button>
+            </Button>
           </div>
         </Alert>
       )}
@@ -757,14 +757,9 @@ export default function IrcaRegisterPage() {
                         Drug {i + 1}
                       </span>
                       {drugRows.length > 1 && (
-                        <button
-                          type="button"
-                          onClick={() => setDrugRows((prev) => prev.filter((_, idx) => idx !== i))}
-                          aria-label={`Remove drug ${i + 1}`}
-                          className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-label-2 font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
-                        >
-                          <Icon name="delete" size={14} aria-hidden /> Remove
-                        </button>
+                        <Button variant="danger" appearance="text" size="sm" iconLeft={<Icon name="delete" size={16} />} aria-label={`Remove drug ${i + 1}`} onClick={() => setDrugRows((prev) => prev.filter((_, idx) => idx !== i))}>
+                  Remove
+                </Button>
                       )}
                     </div>
 
@@ -1029,14 +1024,9 @@ export default function IrcaRegisterPage() {
                   { to: 2, label: "Edit Substance Use" },
                   { to: 3, label: "Edit Assessment" },
                 ].map((j) => (
-                  <button
-                    key={j.to}
-                    type="button"
-                    onClick={() => jumpTo(j.to)}
-                    className="inline-flex items-center gap-1 rounded-lg border border-line bg-white px-3 py-1.5 text-label-2 font-semibold text-navy hover:bg-black/5"
-                  >
-                    <Icon name="edit" size={12} aria-hidden /> {j.label}
-                  </button>
+                  <Button key={j.to} appearance="outlined" size="sm" iconLeft={<Icon name="edit" size={16} />} onClick={() => jumpTo(j.to)}>
+                    {j.label}
+                  </Button>
                 ))}
               </div>
             </div>

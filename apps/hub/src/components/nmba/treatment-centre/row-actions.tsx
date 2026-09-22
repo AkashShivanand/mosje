@@ -1,26 +1,22 @@
 "use client";
 
 import * as React from "react";
-import { Divider, Icon } from "@mosje/design-system";
+import { Divider, Icon, IconButton } from "@mosje/design-system";
 
 /**
  * Shared row-action primitives for treatment-centre list tables.
  *
  * Dense data tables read best when per-row actions are compact icon buttons
- * with a clear tone hierarchy (neutral views → amber edit → red delete) rather
- * than a wrapping row of text chips. Every action carries an accessible label,
- * a native tooltip, and a visible keyboard focus ring (WCAG 2.1 / GIGW).
+ * rather than a wrapping row of text chips. Each one is the design system's
+ * IconButton, so the focus ring, target size, disabled treatment and tooltip are
+ * the estate's own rather than a local copy of them.
+ *
+ * TONE. Until 2026-09-22 this drew three local tones — neutral views, AMBER edit,
+ * red delete. The design system has no amber button on purpose: amber is the
+ * estate's warning signal, and an edit is not a warning. `warning` is kept in the
+ * type so no caller breaks, and renders neutral; only `danger` carries a colour.
  */
-
-// Focus rings use the SOLID token (not an alpha tint): a translucent ring on a
-// white row falls below the 3:1 non-text-contrast floor (WCAG 1.4.11 / 2.4.11).
-const ACTION_TONES = {
-  neutral: "text-ink-muted hover:bg-navy/10 hover:text-navy focus-visible:ring-navy",
-  warning: "text-await-fg hover:bg-await-bg focus-visible:ring-await-fg",
-  danger: "text-danger-fg hover:bg-danger-bg focus-visible:ring-danger-fg",
-} as const;
-
-export type RowActionTone = keyof typeof ACTION_TONES;
+export type RowActionTone = "neutral" | "warning" | "danger";
 
 export interface IconActionProps {
   /** Material Symbols name for the DS <Icon>. */
@@ -35,16 +31,16 @@ export interface IconActionProps {
 
 export function IconAction({ icon: iconName, label, onClick, tone = "neutral", disabled }: IconActionProps) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
+    <IconButton
+      icon={<Icon name={iconName} size={16} />}
       aria-label={label}
-      title={label}
+      tooltip
+      variant={tone === "danger" ? "danger" : "neutral"}
+      appearance="text"
+      size="sm"
       disabled={disabled}
-      className={`inline-flex h-9 w-9 items-center justify-center rounded-md transition active:scale-95 disabled:pointer-events-none disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 ${ACTION_TONES[tone]}`}
-    >
-      <Icon name={iconName} size={16} aria-hidden />
-    </button>
+      onClick={onClick}
+    />
   );
 }
 

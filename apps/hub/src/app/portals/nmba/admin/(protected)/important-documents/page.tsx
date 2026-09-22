@@ -4,7 +4,7 @@ import * as React from "react";
 import { AdminShell } from "@/components/nmba/admin-shell";
 import { IMPORTANT_DOCUMENTS } from "@/lib/nmba/mock-data";
 import { useToast } from "@/components/nmba/toast";
-import { Badge, Button, FormField, Icon, Input } from "@mosje/design-system";
+import { Badge, Button, FormField, Icon, IconButton, Input } from "@mosje/design-system";
 
 function AddDocumentModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { toast } = useToast();
@@ -24,7 +24,7 @@ function AddDocumentModal({ open, onClose }: { open: boolean; onClose: () => voi
       <div className="w-full max-w-sm rounded-2xl bg-white shadow-2xl">
         <div className="flex items-center justify-between border-b border-line px-6 py-4">
           <h2 id="add-doc-title" className="text-title-2 text-ink">Add Document</h2>
-          <button onClick={onClose} aria-label="Close" className="rounded p-1 text-ink-hint hover:bg-black/5"><Icon name="close" size={16} /></button>
+          <IconButton icon={<Icon name="close" size={16} />} aria-label="Close" variant="neutral" appearance="text" size="sm" shape="circle" onClick={onClose} />
         </div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-6">
           <FormField label="Document Name" id="doc-name" required>
