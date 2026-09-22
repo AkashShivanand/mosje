@@ -1,4 +1,0 @@
-{
-  "kind": "Changed",
-  "text": "THE WEBSITE HEADER'S \"Admin Login\" IS NOW \"Login\" AND OPENS THE PORTAL LISTING. Per the Secretary's review of 17 September 2026 the header offers one sign-in door rather than an administrators' one: it leads to /portals, where each portal's login opens on its citizen tab and an officer switches role there. The /website/admin page is unchanged, and the `hideAdminLogin` prop keeps its name."
-}

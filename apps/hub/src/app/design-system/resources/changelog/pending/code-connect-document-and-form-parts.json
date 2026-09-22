@@ -1,4 +1,0 @@
-{
-  "kind": "Added",
-  "text": "EIGHT MORE COMPONENTS NOW HAND DEVELOPERS A SNIPPET IN FIGMA. Declaration Checkbox, Document Checklist, Document Findings, Document Row, Document Tile, Form Panel, Form Section and Review Section each gained a Code Connect template, so Dev Mode shows the real component with the properties a designer set instead of generated markup. Every Figma property is either mapped or declared omitted with its reason: Document Findings' column count and Document Row's width are decided by the component's own width in CSS, so no snippet can choose them. The parity ledger now counts all eight as mapped rather than designed-and-never-built, and ReviewSection gained a named ReviewSectionProps interface so its props are checked like every other component's."
-}
