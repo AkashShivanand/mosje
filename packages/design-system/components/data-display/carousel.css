@@ -331,6 +331,21 @@
     animation: ds-carousel-progress var(--_interval, 7s) linear forwards;
   }
 
+  /* PAST SIX SLIDES THERE IS NO DOT TO FILL, so the counter carries the timer:
+     a hairline under "3 / 9" that fills over the interval, in the same two
+     colours as the dot's track and fill. Without it a long set rotating on its
+     own gave no sign that it moved, or when. */
+  .ds-carousel--running .ds-carousel__counter {
+    background:
+      linear-gradient(var(--_dot-fill), var(--_dot-fill)) no-repeat 0 100% / 0% var(--sa-stroke-2),
+      linear-gradient(var(--_dot-track), var(--_dot-track)) no-repeat 0 100% / 100% var(--sa-stroke-2);
+    animation: ds-carousel-counter var(--_interval, 7s) linear forwards;
+  }
+
+  @keyframes ds-carousel-counter {
+    to { background-size: 100% var(--sa-stroke-2), 100% var(--sa-stroke-2); }
+  }
+
   @keyframes ds-carousel-progress {
     to { background-size: 100% 100%, auto; }
   }

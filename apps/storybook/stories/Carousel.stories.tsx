@@ -147,7 +147,11 @@ export const WithoutDots: Story = {
   args: { showDots: false },
 };
 
-/** A single slide. The controls still work and simply wrap onto themselves. */
+/**
+ * **A single slide renders as that slide — no controls, no carousel.** Arrows
+ * that move nowhere and a Pause for something that cannot move are three
+ * controls with nothing to do.
+ */
 export const OneSlide: Story = {
   args: {
     children: (
@@ -160,5 +164,32 @@ export const OneSlide: Story = {
         <p style={{ marginBottom: 0 }}>Institutions may apply until 31 October 2026.</p>
       </div>
     ),
+  },
+};
+
+/**
+ * **A long banner set on the overlay pill, rotating.** Past six slides the pill
+ * shows "3 / 9", and with no dot to fill, a hairline under the counter is the
+ * timer.
+ */
+export const OverlayLongSet: Story = {
+  args: {
+    autoPlay: true,
+    controls: "overlay",
+    label: "Banners",
+    children: Array.from({ length: 9 }, (_, i) => (
+      <div
+        key={i}
+        style={{
+          aspectRatio: "3 / 1",
+          background: i % 2 ? "var(--sa-bg-brand-primary-bolder)" : "var(--sa-bg-neutral-inverse)",
+          color: "var(--sa-text-neutral-inverse)",
+          display: "grid",
+          placeItems: "center",
+        }}
+      >
+        Banner {i + 1} of 9
+      </div>
+    )),
   },
 };

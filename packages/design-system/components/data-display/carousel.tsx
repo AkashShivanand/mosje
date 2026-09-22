@@ -174,6 +174,20 @@ export function Carousel({
   }
 
   /*
+   * ONE SLIDE IS NOT A CAROUSEL. It used to draw the whole control bar anyway —
+   * arrows that moved nowhere, a single dot, a Pause for something that could
+   * not move — three controls and a "carousel" announcement for a picture.
+   * A band that has shrunk to one banner renders as that banner.
+   */
+  if (count === 1) {
+    return (
+      <div className={cn("ds-carousel", "ds-carousel--single", className)}>
+        <div className="ds-carousel__viewport">{slides[0]}</div>
+      </div>
+    );
+  }
+
+  /*
    * RUNNING is the one state a reader cannot otherwise see: the carousel is
    * moving on its own and nothing is holding it. It drives two things — the
    * current dot fills over the interval, so the reader can see that it moves
@@ -404,7 +418,9 @@ export function Carousel({
              * honest to offer: a set this long has no way to reach slide 9
              * directly that is better than pressing Next.
              */
-            <p className="ds-carousel__counter">
+            // Keyed on the position so the timer beneath it restarts with each
+            // slide, as the current dot's does.
+            <p className="ds-carousel__counter" key={index}>
               <span aria-hidden="true">{`${index + 1} / ${count}`}</span>
               <span className="ds-carousel__sr">{`Slide ${index + 1} of ${count}`}</span>
             </p>

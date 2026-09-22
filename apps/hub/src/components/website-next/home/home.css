@@ -69,7 +69,9 @@
       inset-inline-end: calc(max(0px, (100% - var(--sa-container-page)) / 2) + var(--sa-grid-margin-page));
     }
   }
-  .wn-home-banner__img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 1; object-fit: cover; }
+  /* The ground shows while a banner decodes on a slow connection, and stays if
+     it never arrives — a tinted 3:1 band, not a white hole in the page. */
+  .wn-home-banner__img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 1; object-fit: cover; background-color: var(--sa-bg-neutral-subtler); }
   .wn-home-banner a:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: calc(-1 * var(--sa-focus-width)); }
 
   /* ── Announcements ticker (DBIM §A.4.1 iii) ──────────────────────────────── */
