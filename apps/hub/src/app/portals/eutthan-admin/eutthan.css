@@ -70,7 +70,9 @@ body {
   font-family: var(--sa-font-latin, "Noto Sans", system-ui, sans-serif);
 }
 
-a {
+/* Design-system link-buttons (.ds-*) are excluded: unlayered, this rule would
+   outrank their layered ink and draw every Button href in the surrounding text colour. */
+a:not([class*="ds-"]) {
   color: inherit;
   text-decoration: none;
 }
@@ -100,9 +102,11 @@ textarea {
   outline-offset: 2px;
 }
 
-button:focus-visible,
-a:focus-visible,
-input:focus-visible,
+/* Design-system controls (.ds-*) are excluded: this rule is unlayered, so it would
+   outrank their own layered focus ring and draw the portal's instead. */
+button:not([class*="ds-"]):focus-visible,
+a:not([class*="ds-"]):focus-visible,
+input:not([class*="ds-"]):focus-visible,
 textarea:focus-visible,
 main:focus-visible {
   outline: var(--sa-focus-width) solid var(--primary);
@@ -409,21 +413,6 @@ button {
   font-weight: var(--sa-font-weight-semibold);
 }
 
-.select-button,
-.filter-button,
-.secondary-button {
-  display: inline-flex;
-  min-height: 36px;
-  align-items: center;
-  justify-content: center;
-  gap: var(--sa-inline-8);
-  border: 1px solid var(--stroke-200);
-  border-radius: var(--sa-shape-6);
-  padding: var(--sa-padding-8) var(--sa-padding-12);
-  color: var(--text);
-  background: white;
-}
-
 .progress-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -520,32 +509,11 @@ button {
   gap: var(--sa-inline-16);
 }
 
-.primary-button,
-.secondary-button,
-.text-action,
-.row-actions button {
-  display: inline-flex;
-  min-height: 40px;
-  align-items: center;
-  justify-content: center;
-  gap: var(--sa-inline-8);
-  border-radius: var(--radius-md);
-  padding: var(--sa-padding-8) var(--sa-padding-16);
-  font-size: var(--sa-type-label-1-size);
-  line-height: var(--sa-type-label-1-lh);
-  font-weight: var(--sa-font-weight-semibold);
-}
-
-.primary-button {
-  border: 0;
-  color: var(--sa-text-neutral-inverse);
-  background: var(--primary);
-}
-
-.secondary-button {
-  color: var(--primary);
-  background: white;
-}
+/* The portal's own button kit — .primary-button, .secondary-button, .text-action,
+   .filter-button, .icon-button, .danger-action and the `.row-actions button` restyle —
+   was removed on 2026-09-22. Every control is a design-system component now, and an
+   unlayered rule here outranks the design system's layered CSS, so a leftover
+   `.row-actions button` would have re-skinned every Button placed in a table row. */
 
 .data-card {
   padding: var(--sa-padding-16);
@@ -650,24 +618,20 @@ tr.selected-row td {
   background: var(--danger);
 }
 
-.text-action,
-.row-actions button {
-  border: 0;
-  color: var(--primary);
-  background: transparent;
-}
-
 .row-actions {
   gap: var(--sa-inline-8);
   white-space: nowrap;
 }
 
-.row-actions button:first-child {
-  background: var(--primary-tonal);
-}
-
-.danger-action {
-  color: var(--danger) !important;
+/* A date filter shares the toolbar row with the Selects. It starts from nothing and
+   grows into what the row has left, between two space rungs, so both dates sit on the
+   row beside the Selects and wrap only when the row cannot give them 120 each. (A
+   360 basis wrapped first: a wrapping row breaks lines before it shrinks.) The
+   design-system Input fills its container, so the container sets the width. */
+.filter-date {
+  flex: 1 1 0;
+  min-inline-size: var(--sa-padding-120);
+  max-inline-size: var(--sa-padding-360);
 }
 
 .pagination {
@@ -923,27 +887,6 @@ tr.selected-row td {
   flex-wrap: wrap;
 }
 
-.icon-button {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sa-inline-4);
-  padding: var(--sa-padding-6) var(--sa-padding-12);
-  border: 1px solid var(--stroke-200);
-  border-radius: var(--radius-md);
-  background: white;
-  color: var(--text);
-  font-size: var(--sa-type-label-1-size);
-  line-height: var(--sa-type-label-1-lh);
-  font-weight: var(--sa-font-weight-medium);
-  cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
-}
-
-.icon-button:hover {
-  background: var(--surface-muted);
-  border-color: var(--stroke-300);
-}
-
 /* ── Extra badge variants ──────────────────────────────────── */
 .badge.warning {
   background: var(--warning-strong);
@@ -951,16 +894,6 @@ tr.selected-row td {
 
 .badge.neutral {
   background: var(--text-muted);
-}
-
-/* ── Danger text-action (Unmap) ───────────────────────────── */
-.text-action--danger {
-  color: var(--danger) !important;
-}
-
-/* ── row-actions — use Link instead of button ─────────────── */
-.row-actions a.text-action {
-  background: var(--primary-tonal);
 }
 
 /* ── panel-head (reuse for sub-section inside data-card) ──── */
@@ -1007,9 +940,9 @@ tr.selected-row td {
    Same footprint as the shadow it stands in for; later source order with equal
    specificity is what lets it beat the `outline: none` above. */
 @media (forced-colors: active) {
-  button:focus-visible,
-  a:focus-visible,
-  input:focus-visible,
+  button:not([class*="ds-"]):focus-visible,
+  a:not([class*="ds-"]):focus-visible,
+  input:not([class*="ds-"]):focus-visible,
   textarea:focus-visible,
   main:focus-visible {
     outline: var(--sa-focus-width) solid Highlight;

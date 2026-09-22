@@ -14,6 +14,7 @@ import {
   OtpVerifyFields,
   PortalLoginShell,
 } from "@mosje/design-system";
+import Link from "next/link";
 
 const BASE = "/portals/nhapoa";
 const LOGIN_HREF = `${BASE}/login`;
@@ -59,7 +60,7 @@ export default function VerifyOtpPage() {
           heading="OTP Verified"
           description="The code has been verified."
           action={
-            <Button href={LOGIN_HREF} fullWidth>
+            <Button linkAs={Link} href={LOGIN_HREF} fullWidth>
               Back to Login
             </Button>
           }

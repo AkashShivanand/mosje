@@ -444,7 +444,7 @@ export default async function OrganisationDetailPage({
         })}
       </div>
     ) : (org.website ?? rootOrg?.website) ? (
-      <Button
+      <Button linkAs={NextLink}
         href={org.website ?? rootOrg?.website}
         external
         variant="primary"

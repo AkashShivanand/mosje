@@ -57,6 +57,7 @@ import {
   type DarpanReturn,
 } from "@/lib/e-anudaan/darpan-sign-in";
 import { EANUDAAN_LOGIN_CHROME } from "./login-chrome";
+import Link from "next/link";
 
 /* ── Shared ────────────────────────────────────────────────────────────────── */
 
@@ -135,10 +136,10 @@ export function DarpanStartView(): React.JSX.Element {
           description="This browser is not allowing the portal to store the sign-in request. Allow site data for this portal and try again, or sign in with your username and password."
           action={
             <>
-              <Button href={DARPAN_ROUTES.start} fullWidth>
+              <Button linkAs={Link} href={DARPAN_ROUTES.start} fullWidth>
                 Try Again
               </Button>
-              <Button href={DARPAN_ROUTES.login} appearance="outlined" fullWidth>
+              <Button linkAs={Link} href={DARPAN_ROUTES.login} appearance="outlined" fullWidth>
                 {CREDENTIALS_LABEL}
               </Button>
             </>
@@ -356,12 +357,12 @@ function renderReturn(
   confirmLink: (profile: DarpanProfile) => void,
 ): React.ReactNode {
   const retry = (label: string) => (
-    <Button href={DARPAN_ROUTES.start} fullWidth>
+    <Button linkAs={Link} href={DARPAN_ROUTES.start} fullWidth>
       {label}
     </Button>
   );
   const credentials = (
-    <Button href={DARPAN_ROUTES.login} appearance="outlined" fullWidth>
+    <Button linkAs={Link} href={DARPAN_ROUTES.login} appearance="outlined" fullWidth>
       {CREDENTIALS_LABEL}
     </Button>
   );
@@ -414,7 +415,7 @@ function renderReturn(
           description={`${outcome.profile.organisationName} (NGO-DARPAN Unique ID ${outcome.profile.darpanId}) does not have an e-Anudaan account. Register the organisation to apply for grant-in-aid.`}
           action={
             <>
-              <Button href={DARPAN_ROUTES.register} fullWidth>
+              <Button linkAs={Link} href={DARPAN_ROUTES.register} fullWidth>
                 Register the Organisation
               </Button>
               <AuthHelpLine href={DARPAN_ROUTES.login}>Back to Login</AuthHelpLine>
@@ -432,7 +433,7 @@ function renderReturn(
           heading={suspended ? "NGO-DARPAN Registration Suspended" : "NGO-DARPAN Registration Inactive"}
           description={`The NGO-DARPAN registration of ${outcome.profile.organisationName} is ${suspended ? "suspended" : "inactive"}. E-Anudaan accepts sign-in only from organisations with an active registration. ${suspended ? "Resolve the suspension with NGO-DARPAN" : "Renew the registration on NGO-DARPAN"}, then sign in again.`}
           action={
-            <Button href={DARPAN_ROUTES.login} appearance="outlined" fullWidth>
+            <Button linkAs={Link} href={DARPAN_ROUTES.login} appearance="outlined" fullWidth>
               Back to Login
             </Button>
           }
@@ -519,7 +520,7 @@ export function DarpanRegisterView(): React.JSX.Element {
         description="Registration on e-Anudaan uses the organisation's NGO-DARPAN details. Sign in with NGO-DARPAN to begin."
         action={
           <>
-            <Button href={DARPAN_ROUTES.start} fullWidth>
+            <Button linkAs={Link} href={DARPAN_ROUTES.start} fullWidth>
               Sign In with NGO-DARPAN
             </Button>
             <AuthHelpLine href={DARPAN_ROUTES.login}>Back to Login</AuthHelpLine>
@@ -536,7 +537,7 @@ export function DarpanRegisterView(): React.JSX.Element {
         description={`${profile.organisationName} already has an e-Anudaan account. Sign in with NGO-DARPAN to continue.`}
         action={
           <>
-            <Button href={DARPAN_ROUTES.start} fullWidth>
+            <Button linkAs={Link} href={DARPAN_ROUTES.start} fullWidth>
               Sign In with NGO-DARPAN
             </Button>
             <AuthHelpLine href={DARPAN_ROUTES.login}>Back to Login</AuthHelpLine>

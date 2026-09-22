@@ -4,7 +4,7 @@ import Link from "next/link";
 import { portalLink } from "./eutthan-shared";
 import { tableScreens } from "@/lib/eutthan/portal-data";
 import { StaticPager } from "./eutthan-cells";
-import { Icon } from "@mosje/design-system";
+import { Button, Icon, Select } from "@mosje/design-system";
 
 export function PhysicalProgressPage() {
   const screen = tableScreens["/ministry/physical-progress-data"]!;
@@ -21,24 +21,15 @@ export function PhysicalProgressPage() {
             flexWrap: "wrap",
           }}
         >
-          <button type="button" className="icon-button">
-            <Icon name="download" size={14} /> Download Sample Template
-          </button>
-          <button type="button" className="icon-button">
-            <Icon name="upload" size={14} /> Import Achievements Data
-          </button>
-          <Link
-            href={portalLink("/ministry/physical-progress-data/add")}
-            className="primary-button"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "var(--sa-inline-8)",
-              textDecoration: "none",
-            }}
-          >
-            <Icon name="add" size={16} /> Add Progress +
-          </Link>
+          <Button variant="neutral" appearance="outlined" size="sm" iconLeft={<Icon name="download" size={16} />}>
+              Download Sample Template
+            </Button>
+          <Button variant="neutral" appearance="outlined" size="sm" iconLeft={<Icon name="upload" size={16} />}>
+              Import Achievements Data
+            </Button>
+          <Button href={portalLink("/ministry/physical-progress-data/add")} linkAs={Link} iconLeft={<Icon name="add" size={16} />}>
+            Add Progress +
+          </Button>
         </div>
       </div>
       <div className="data-card">
@@ -48,9 +39,7 @@ export function PhysicalProgressPage() {
             <input placeholder={screen.searchPlaceholder} aria-label="Search records" />
           </div>
           {screen.filters?.map((f) => (
-            <button key={f} type="button" className="filter-button">
-              {f} <Icon name="keyboard_arrow_down" size={14} />
-            </button>
+            <Select key={f} appearance="filter" aria-label={`Filter: ${f}`} options={[{ value: f, label: f }]} defaultValue={f} />
           ))}
         </div>
         <div className="table-wrap table-wrap--wide">

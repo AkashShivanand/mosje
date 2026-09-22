@@ -56,7 +56,8 @@ rule more specific *inside* the layer. Never move a rule out of the layer to win
 **`linkAs` is how a framework-agnostic component gets the app's router link.** The
 design system has no Next dependency and is not gaining one, so `SiteHeader`,
 `NavSheet`, `BrandLockup`, `PortalCard`, `SamaveshBanner`, `SiteFooter`,
-`ContentNav`, `Breadcrumb`, `Ticker` and the five Navbar parts each take a
+`ContentNav`, `Breadcrumb`, `Ticker`, the five Navbar parts and — since 2026-09-22 —
+`Button` (only where it carries an `href`) each take a
 `linkAs` prop and default to a plain `<a>`.
 
 **Pass it. `import Link from "next/link"` and `linkAs={Link}`.**

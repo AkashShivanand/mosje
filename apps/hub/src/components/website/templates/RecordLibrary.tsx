@@ -284,7 +284,7 @@ export function RecordLibrary({
         }
         return (
           <span className="sa-record-actions">
-            <Button
+            <Button linkAs={Link}
               href={file}
               external={isHttp(file)}
               variant="primary"
@@ -293,7 +293,7 @@ export function RecordLibrary({
             >
               View
             </Button>
-            <Button
+            <Button linkAs={Link}
               href={file}
               target={isHttp(file) ? "_blank" : undefined}
               download

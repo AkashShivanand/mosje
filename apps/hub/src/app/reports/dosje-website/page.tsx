@@ -131,7 +131,7 @@ export default async function WebsiteIssuesPage({ searchParams }: { searchParams
           title="dosje.gov.in Website Issues"
           lede={`Every open issue on www.dosje.gov.in from all audits, checked on the live site between 18 and 21 September 2026. ${ISSUES.length.toLocaleString("en-IN")} issues.`}
         >
-          <Button href={META.reportPdf} variant="neutral" appearance="outlined" size="md">
+          <Button linkAs={Link} href={META.reportPdf} variant="neutral" appearance="outlined" size="md">
             Issues Report (PDF)
           </Button>
           <Button href={`${BASE}/export${filterHref({ ...f, page: 1 }, "")}`} variant="primary" size="md">
@@ -254,7 +254,7 @@ function IssuesView({
         {editor ? (
           <span className="text-body-3 text-ink-muted">Signed in to edit</span>
         ) : (
-          <Button href={`/admin/login?next=${encodeURIComponent(BASE)}`} variant="neutral" appearance="outlined" size="sm">
+          <Button linkAs={Link} href={`/admin/login?next=${encodeURIComponent(BASE)}`} variant="neutral" appearance="outlined" size="sm">
             Sign In to Update Statuses
           </Button>
         )}
@@ -292,7 +292,7 @@ function IssuesView({
         <EmptyState
           title="No issue matches these filters."
           description={f.q ? `Nothing matches “${f.q}” with the filters chosen.` : "Try removing a filter."}
-          action={<Button href={BASE} variant="neutral" appearance="outlined" size="sm">Clear Filters</Button>}
+          action={<Button linkAs={Link} href={BASE} variant="neutral" appearance="outlined" size="sm">Clear Filters</Button>}
         />
       ) : (
         <form action={updateMany} className="flex flex-col gap-4">
@@ -408,7 +408,7 @@ function SimpleList({
         {q ? <Link href={`${BASE}?view=${view}`} className="text-label-1 text-link-brand-default hover:underline">Clear</Link> : null}
       </form>
       {matched.length === 0 ? (
-        <EmptyState title={`Nothing matches “${q}”.`} action={<Button href={`${BASE}?view=${view}`} variant="neutral" appearance="outlined" size="sm">Clear Search</Button>} />
+        <EmptyState title={`Nothing matches “${q}”.`} action={<Button linkAs={Link} href={`${BASE}?view=${view}`} variant="neutral" appearance="outlined" size="sm">Clear Search</Button>} />
       ) : (
         <ListTable head={head} rows={p.slice.map(render)} />
       )}

@@ -110,7 +110,7 @@ export function RecentDocuments() {
                   Recent Documents
                 </h2>
                 {/* Outlined button, not a text link [WEB-G-05]. */}
-                <Button
+                <Button linkAs={Link}
                   appearance="outlined"
                   size="sm"
                   href="/website/annual-reports"

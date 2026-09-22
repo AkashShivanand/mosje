@@ -6,6 +6,7 @@ import { PublicShell } from "@/components/nmba/public-shell";
 import { PUBLIC_DASHBOARD_STATS, PROGRAMME_STATS, PUBLIC_ACTIVITIES, FACILITIES } from "@/lib/nmba/mock-data";
 import { STATES, STATE_DISTRICTS } from "@/lib/nmba/states";
 import { Badge, Button, Icon, MetricCard, Select } from "@mosje/design-system";
+import Link from "next/link";
 
 const BASE = "/portals/nmba";
 
@@ -185,7 +186,7 @@ export default function NmbaHome() {
                 Locate verified Integrated Rehabilitation Centres (IRCA), Outreach Centres (ODIC), and Addiction Treatment Facilities (ATF) in your district.
               </p>
             </div>
-            <Button href={`${BASE}/facilities`} iconRight={<Icon name="arrow_forward" size={16} />}>
+            <Button linkAs={Link} href={`${BASE}/facilities`} iconRight={<Icon name="arrow_forward" size={16} />}>
               View Facility Map
             </Button>
           </div>
