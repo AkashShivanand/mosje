@@ -105,6 +105,7 @@ export function ChartExport({
 
   return (
     <div ref={rootRef} className={`ds-chart-export${className ? ` ${className}` : ""}`}>
+      {/* raw-button-ok(primitive): the download menu's aria-haspopup="menu" trigger — it owns the menu's expanded state and its busy glyph */}
       <button
         type="button"
         className="ds-chart-export__trigger"
@@ -121,6 +122,7 @@ export function ChartExport({
         <div id={menuId} role="menu" className="ds-chart-export__menu">
           <p className="ds-chart-export__heading">Download</p>
           {available.map((f) => (
+            /* raw-button-ok(primitive): a menuitem in the download menu — its role belongs to the menu, and its two-line label is not a button label */
             <button
               key={f}
               type="button"

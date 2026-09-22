@@ -170,6 +170,7 @@ export function TabsOverflow({ tabs, active, size, onSelect, ariaLabel }: TabsOv
 
   return (
     <>
+      {/* raw-button-ok(primitive): the overflow trigger of a role="menu" popup — aria-haspopup, aria-expanded and the arrow-key model are this component's */}
       <button
         ref={triggerRef}
         type="button"
@@ -211,6 +212,7 @@ export function TabsOverflow({ tabs, active, size, onSelect, ariaLabel }: TabsOv
             {tabs.map((t, index) => {
               const pos = index;
               return (
+                /* raw-button-ok(primitive): a menuitemradio inside the overflow menu — its role and aria-checked belong to the menu, not to a button */
                 <button
                   key={t.id}
                   ref={(el) => {

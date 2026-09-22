@@ -73,53 +73,52 @@
     margin: 0 var(--sa-padding-2);
   }
 
-  .ds-lightbox__close {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border: 0;
-    border-radius: var(--sa-shape-full);
+  /* The close and the two arrows are the library's `IconButton`, circular, on the
+     inverse tone — the axis the button ladder provides for a control standing on
+     a solid ground. The reset, the press give and the disabled treatment all
+     come from button.css now.
+
+     WHAT STAYS IS WHAT THE SCRIM NEEDS. `inverseText` is transparent at rest,
+     and a transparent control over a photograph has no edge at all: the viewer
+     gives its controls a translucent white disc so they read against a light
+     image as well as a dark one. The sizes stay too — the arrows are 52px, which
+     is off the 32/40/48 ladder, and deliberately so on a full-screen surface.
+
+     `.ds-icon-btn` is named in every selector so these outrank button.css inside
+     the shared `components` layer, where the two files are peers and specificity
+     decides. */
+  .ds-lightbox__close.ds-icon-btn {
     background: color-mix(in oklab, var(--sa-bg-neutral-base) 10%, transparent);
     color: var(--sa-color-neutralScale-0);
-    cursor: pointer;
-    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
-  .ds-lightbox__close:hover { background: color-mix(in oklab, var(--sa-bg-neutral-base) 22%, transparent); }
-  .ds-lightbox__close:focus-visible {
+  .ds-lightbox__close.ds-icon-btn:hover, .ds-lightbox__close.ds-icon-btn:active { background: color-mix(in oklab, var(--sa-bg-neutral-base) 22%, transparent); }
+  /* A SOLID white ring, not the inverse ladder's 55% one. That mix is tuned for a
+     brand-colour band; here the ring can land on any photograph the reader has
+     opened, and only full white is reliably findable against all of them. */
+  .ds-lightbox__close.ds-icon-btn:focus-visible,
+  .ds-lightbox__nav.ds-icon-btn:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-color-neutralScale-0);
     outline-offset: var(--sa-focus-offset);
   }
 
   /* ---- Slidenav arrows ---- */
-  .ds-lightbox__nav {
+  .ds-lightbox__nav.ds-icon-btn {
     z-index: 2;
     align-self: center;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    min-width: 52px;
     width: 52px;
     height: 52px;
+    min-height: 52px;
     margin: 0 var(--sa-padding-12);
-    border: 0;
-    border-radius: var(--sa-shape-full);
     background: color-mix(in oklab, var(--sa-bg-neutral-base) 10%, transparent);
     color: var(--sa-color-neutralScale-0);
-    cursor: pointer;
-    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), transform var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-lightbox__nav--prev { grid-area: prev; }
   .ds-lightbox__nav--next { grid-area: next; }
 
-  .ds-lightbox__nav:hover { background: color-mix(in oklab, var(--sa-bg-neutral-base) 22%, transparent); }
-  .ds-lightbox__nav:active { transform: scale(0.94); }
-  .ds-lightbox__nav:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-color-neutralScale-0);
-    outline-offset: var(--sa-focus-offset);
-  }
+  .ds-lightbox__nav.ds-icon-btn:hover, .ds-lightbox__nav.ds-icon-btn:active { background: color-mix(in oklab, var(--sa-bg-neutral-base) 22%, transparent); }
 
   /* ---- Stage ---- */
   .ds-lightbox__stage {
@@ -221,7 +220,7 @@
   }
 
   @media (max-width: 640px) {
-    .ds-lightbox__nav { width: 40px; height: 40px; margin: 0 var(--sa-padding-4); }
+    .ds-lightbox__nav.ds-icon-btn { min-width: 40px; width: 40px; height: 40px; min-height: 40px; margin: 0 var(--sa-padding-4); }
     .ds-lightbox__thumb { width: 48px; height: 36px; }
   }
 

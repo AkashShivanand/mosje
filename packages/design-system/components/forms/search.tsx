@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { IconButton } from "../actions/icon-button";
 import { Icon } from "../utilities/icon";
 import { cn } from "../../utils/cn";
 import "./search.css";
@@ -201,14 +202,16 @@ export const Search = React.forwardRef<HTMLInputElement, SearchProps>(
         )}
       >
         {canSubmit ? (
-          <button
+          <IconButton
             type="button"
+            variant="neutral"
+            appearance="text"
+            size="sm"
             className="ds-search__icon ds-search__icon--action"
             onClick={() => onSubmit!(value)}
             aria-label="Search"
-          >
-            <Icon name="search" size={20} />
-          </button>
+            icon={<Icon name="search" size={20} />}
+          />
         ) : (
           <span className="ds-search__icon" aria-hidden="true">
             <Icon name="search" size={20} />
@@ -279,14 +282,17 @@ export const Search = React.forwardRef<HTMLInputElement, SearchProps>(
             : {})}
         />
         {showClear && (
-          <button
+          <IconButton
             type="button"
+            variant="neutral"
+            appearance="text"
+            size="sm"
+            shape="circle"
             className="ds-search__clear"
             onClick={onClear}
             aria-label="Clear search"
-          >
-            <Icon name="close" size={16} />
-          </button>
+            icon={<Icon name="close" size={16} />}
+          />
         )}
 
         {hasAutocomplete && (

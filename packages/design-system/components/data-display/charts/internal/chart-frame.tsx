@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "../../../../utils/cn";
+import { Button } from "../../../actions/button";
 import { CardState, actionForState, type CardStateKind } from "../../../dashboard/card-state";
 import { ChartTextureDefs } from "./texture";
 import type { ChartTable } from "../types";
@@ -182,15 +183,18 @@ export function ChartStateFigure({
    * "empty" card with a Retry button invites a reader to press it forever.
    */
   const kind = state === "loading" ? null : actionForState(state);
+  /* The library's Button, neutral and outlined — which is what this control was
+     already drawing by hand: a white box with a neutral border and a semibold
+     label. `.ds-chart__retry` now only carries the chart's smaller type. */
   const action =
     kind === "retry" && onRetry ? (
-      <button type="button" className="ds-chart__retry" onClick={onRetry}>
+      <Button variant="neutral" appearance="outlined" size="sm" className="ds-chart__retry" onClick={onRetry}>
         Try again
-      </button>
+      </Button>
     ) : kind === "clear" && onRetry ? (
-      <button type="button" className="ds-chart__retry" onClick={onRetry}>
+      <Button variant="neutral" appearance="outlined" size="sm" className="ds-chart__retry" onClick={onRetry}>
         {filterLabel ? `Clear ${filterLabel}` : "Clear filters"}
-      </button>
+      </Button>
     ) : null;
   // "Filtered to nothing" names the filter, because the reader caused this
   // state and is the only one who can undo it.
@@ -362,15 +366,22 @@ export function ChartFrame({
       {caption && <figcaption className="ds-chart__caption">{caption}</figcaption>}
       {table && tableView === "toggle" && (
         <>
-          <button
-            type="button"
+          {/* The library's Button in its quietest appearance. It is a labelled
+              disclosure, not part of a compound widget — `aria-expanded` and
+              `aria-controls` ride on the component unchanged. The underline that
+              tells a reader this one reveals text rather than acting stays in
+              charts.css. */}
+          <Button
+            variant="primary"
+            appearance="text"
+            size="sm"
             className="ds-chart__tabletoggle"
             aria-expanded={tableOpen}
             aria-controls={tableId}
             onClick={() => setTableOpen((v) => !v)}
           >
             {tableOpen ? "Hide Table" : "View as Table"}
-          </button>
+          </Button>
           {/*
             EXACTLY ONE TABLE REACHES THE ACCESSIBILITY TREE. When the visible
             one is open it IS the accessible one; when it is closed the

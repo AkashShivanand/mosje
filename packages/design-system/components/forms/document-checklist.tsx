@@ -325,9 +325,16 @@ export function DocumentChecklist({
               </Button>
             </p>
             <p className="ds-doccheck__drop-label ds-doccheck__drop-label--touch">
-              <button type="button" className="ds-doccheck__touch-choose" onClick={() => input.current?.click()}>
+              {/* The same control as the pointer copy above, so it is the same Button. */}
+              <Button
+                type="button"
+                appearance="text"
+                size="sm"
+                className="ds-doccheck__touch-choose"
+                onClick={() => input.current?.click()}
+              >
                 {touchLabel}
-              </button>
+              </Button>
             </p>
             {dropHint != null && !compactDrop && <p className="ds-doccheck__drop-hint">{dropHint}</p>}
             {formatsInDrop && <p className="ds-doccheck__drop-formats">{formats}</p>}

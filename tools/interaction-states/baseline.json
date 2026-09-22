@@ -1,7 +1,7 @@
 {
   "note": "Selectors that style :hover and never :active. May only shrink.",
-  "generated": "2026-09-18",
-  "total": 95,
+  "generated": "2026-09-22",
+  "total": 77,
   "files": {
     "actions/button-group.css": [
       ".ds-btn"
@@ -27,8 +27,6 @@
       ".ds-chart__cell",
       ".ds-chart__mark",
       ".ds-chart__region",
-      ".ds-chart__retry",
-      ".ds-chart__tabletoggle",
       ".is-off"
     ],
     "data-display/charts/ranked-bar-list.css": [
@@ -56,37 +54,17 @@
     "feedback/error-view.css": [
       ".ds-error-view"
     ],
-    "feedback/feedback.css": [
-      ".ds-alert__close"
-    ],
     "feedback/lightbox.css": [
-      ".ds-lightbox__close",
       ".ds-lightbox__thumb"
-    ],
-    "feedback/modal.css": [
-      ".ds-modal__close"
-    ],
-    "feedback/side-sheet.css": [
-      ".ds-sheet__close"
     ],
     "feedback/stepper.css": [
       ".ds-stepper__button"
-    ],
-    "feedback/toast.css": [
-      ".ds-toast__close"
-    ],
-    "forms/auth-fields.css": [
-      ".ds-captcha__refresh"
-    ],
-    "forms/biometric-capture.css": [
-      ".ds-biometric__go"
     ],
     "forms/chip.css": [
       ".ds-chip__dismiss"
     ],
     "forms/date-picker.css": [
       ".ds-datepicker__day",
-      ".ds-datepicker__navbtn",
       ".ds-datepicker__trigger"
     ],
     "forms/error-summary.css": [
@@ -96,7 +74,6 @@
       ".ds-filter-select__trigger"
     ],
     "forms/forms.css": [
-      ".ds-field__help-toggle",
       ".ds-input",
       ".ds-input-shell",
       ".ds-select__el",
@@ -110,27 +87,16 @@
     "forms/india-id.css": [
       ".ds-otp__box"
     ],
-    "forms/inline-edit.css": [
-      ".ds-inline__trigger"
-    ],
     "forms/media-gallery-input.css": [
       ".ds-gallery__add",
       ".ds-gallery__dropzone",
       ".ds-gallery__remove"
     ],
     "forms/media-upload.css": [
-      ".ds-media-upload__action",
       ".ds-media-upload__dropzone"
     ],
     "forms/number-input.css": [
       ".ds-number__step"
-    ],
-    "forms/password-input.css": [
-      ".ds-password__toggle"
-    ],
-    "forms/search.css": [
-      ".ds-search__clear",
-      ".ds-search__icon--action"
     ],
     "forms/selection-control.css": [
       ".ds-selection--card"
@@ -159,7 +125,6 @@
       ".ds-hdr-nav__drop-link",
       ".ds-hdr-nav__link",
       ".ds-hdr-nav__overview",
-      ".ds-navsheet__close",
       ".ds-navsheet__link",
       ".ds-navsheet__sublink",
       ".is-danger"
@@ -193,9 +158,6 @@
     "utilities/accessibility-bar.css": [
       ".sa-abar__gov",
       ".sa-abar__skip"
-    ],
-    "utilities/back-to-top.css": [
-      ".ds-back-to-top"
     ],
     "utilities/ux4g-accessibility-widget.css": [
       ".ux4g-accessibility-help-form-container",

@@ -3,6 +3,7 @@
 import * as React from "react";
 import { createPortal } from "react-dom";
 import { cn } from "../../utils/cn";
+import { IconButton } from "../actions/icon-button";
 import "./lightbox.css";
 
 export type LightboxMediaType = "image" | "video";
@@ -233,20 +234,35 @@ export function Lightbox({
             {current + 1} <span className="ds-lightbox__counter-sep">/</span> {count}
           </span>
         )}
-        <button type="button" className="ds-lightbox__close" aria-label="Close viewer" onClick={onClose}>
-          <IcClose />
-        </button>
+        {/* The library's IconButton, on the viewer's dark scrim: `tone="inverse"`
+            is the axis for a control on a solid ground, and `shape="circle"` is
+            what a viewer's close has always drawn. The translucent resting disc
+            is the only part that stays local — see lightbox.css. */}
+        <IconButton
+          className="ds-lightbox__close"
+          variant="neutral"
+          appearance="text"
+          tone="inverse"
+          size="md"
+          shape="circle"
+          aria-label="Close viewer"
+          onClick={onClose}
+          icon={<IcClose />}
+        />
       </div>
 
       {hasMany && (
-        <button
-          type="button"
+        <IconButton
           className="ds-lightbox__nav ds-lightbox__nav--prev"
+          variant="neutral"
+          appearance="text"
+          tone="inverse"
+          size="lg"
+          shape="circle"
           aria-label="Previous item"
           onClick={() => go(current - 1)}
-        >
-          <IcPrev />
-        </button>
+          icon={<IcPrev />}
+        />
       )}
 
       <div className="ds-lightbox__stage" ref={stageRef} tabIndex={-1}>
@@ -293,14 +309,17 @@ export function Lightbox({
       </div>
 
       {hasMany && (
-        <button
-          type="button"
+        <IconButton
           className="ds-lightbox__nav ds-lightbox__nav--next"
+          variant="neutral"
+          appearance="text"
+          tone="inverse"
+          size="lg"
+          shape="circle"
           aria-label="Next item"
           onClick={() => go(current + 1)}
-        >
-          <IcNext />
-        </button>
+          icon={<IcNext />}
+        />
       )}
 
       <div className="ds-lightbox__footer">
@@ -313,6 +332,9 @@ export function Lightbox({
         {hasMany && (
           <div className="ds-lightbox__thumbs" role="tablist" aria-label="Gallery thumbnails">
             {items.map((item, i) => (
+              /* The gallery strip owns `role="tab"`, `aria-selected` and the selection,
+                 and a Button wrapper would put a second control inside the tab. */
+              /* raw-button-ok(primitive): the thumbnail IS a tab in this tablist */
               <button
                 key={`${item.src}-${i}`}
                 type="button"

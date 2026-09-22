@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { IconButton } from "../actions/icon-button";
 import "./side-sheet.css";
 
 export type SideSheetSize = "sm" | "md" | "lg";
@@ -124,9 +125,17 @@ export function SideSheet({
       >
         <div className="ds-sheet__header">
           <h2 id={titleId} className="ds-sheet__title">{title}</h2>
-          <button type="button" className="ds-sheet__close" aria-label="Close panel" onClick={onClose}>
-            <IcClose />
-          </button>
+          {/* The library's IconButton — the panel's close was a native <button>
+              re-deriving the transparent icon control the estate already ships. */}
+          <IconButton
+            className="ds-sheet__close"
+            variant="neutral"
+            appearance="text"
+            size="sm"
+            aria-label="Close panel"
+            onClick={onClose}
+            icon={<IcClose />}
+          />
         </div>
         <div className="ds-sheet__body">{children}</div>
         {footer && <div className="ds-sheet__footer">{footer}</div>}

@@ -119,29 +119,23 @@
     color: var(--sa-text-neutral-base);
   }
 
-  .ds-modal__close {
-    appearance: none;
-    border: 0;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
+  /* The close is the library's `IconButton` (neutral · text · sm) — 32px square
+     already, which is exactly the `sm` rung, so only the dialog's own corner and
+     ink are stated here. The reset, the press give and the focus ring (including
+     the forced-colors one) come from button.css.
+
+     `.ds-icon-btn` is named in the selector so these outrank button.css inside
+     the shared `components` layer, where specificity rather than import order
+     decides which of two peer stylesheets wins. */
+  .ds-modal__close.ds-icon-btn {
     border-radius: var(--sa-shape-6);
-    background: transparent;
     color: var(--sa-text-neutral-subtle);
-    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
-  .ds-modal__close:hover {
+  .ds-modal__close.ds-icon-btn:hover,
+  .ds-modal__close.ds-icon-btn:active {
     background-color: var(--sa-bg-neutral-subtler);
     color: var(--sa-text-neutral-base);
-  }
-
-  .ds-modal__close:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring, var(--sa-border-brand-primary-base));
-    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-modal__body {

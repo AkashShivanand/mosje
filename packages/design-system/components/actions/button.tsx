@@ -372,6 +372,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     return (
+      /* raw-button-ok(primitive): this IS the Button — everything else on the estate wraps this element */
       <button
         ref={ref}
         type={softDisabled ? "button" : type}

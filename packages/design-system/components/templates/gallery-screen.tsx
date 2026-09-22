@@ -139,6 +139,7 @@ export function GalleryScreen({
         {onLayoutChange ? (
           <div className="sa-gallery__layout" role="group" aria-label="Layout">
             {(["grid", "list"] as const).map((option) => (
+              /* raw-button-ok(primitive): a layout choice in the toolbar's role="group" aria-pressed pair — a toggle set, not two standalone actions */
               <button
                 key={option}
                 type="button"
@@ -166,6 +167,7 @@ export function GalleryScreen({
           <ul className="sa-gallery__items" data-layout={layout} aria-label={label}>
             {items.map((item, index) => (
               <li key={item.id} className="sa-gallery__item">
+                {/* raw-button-ok(primitive): the thumbnail IS the control — the whole tile opens the lightbox and holds the focus returned to it on close */}
                 <button
                   type="button"
                   ref={(node) => {

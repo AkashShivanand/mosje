@@ -120,14 +120,29 @@
     gap: var(--sa-inline-12);
   }
 
-  .ds-carousel__arrow,
-  .ds-carousel__play {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+  /* The arrows are the library's `IconButton` (neutral · outlined · md · circle)
+     and the rotation control is its `Button` (neutral · text · md), so the reset,
+     the press give, the focus ring and the disabled treatment all come from
+     button.css.
+
+     `.ds-btn` is named in every selector below so what is genuinely local to a
+     carousel outranks it: both files sit in `@layer components`, where the two
+     are peers and specificity — not import order — decides.
+
+     THE PRESSED FILL IS SUPPRESSED on the rotation control. `aria-pressed` is
+     what tells a screen reader the carousel is paused, and
+     `.ds-btn--text[aria-pressed="true"]` would answer it with a solid neutral
+     block — turning the row's quietest control into its loudest at exactly the
+     moment the reader has stopped the motion. The word on the control already
+     reports the state, which is the whole reason it is a word and not a glyph
+     (see the note in carousel.tsx). */
+  .ds-carousel__arrow.ds-btn,
+  .ds-carousel__play.ds-btn,
+  .ds-carousel__play.ds-btn[aria-pressed="true"] {
     /* The full control height rather than the 24x24 floor: these are the only
        way most readers reach slide two. */
     min-width: var(--sa-control-height-md);
+    min-height: var(--sa-control-height-md);
     height: var(--sa-control-height-md);
     padding: 0;
     border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
@@ -148,10 +163,12 @@
       border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
-  .ds-carousel__arrow:hover,
-  .ds-carousel__play:hover {
+  .ds-carousel__arrow.ds-btn:hover,
+  .ds-carousel__play.ds-btn:hover,
+  .ds-carousel__play.ds-btn[aria-pressed="true"]:hover {
     background-color: var(--sa-bg-neutral-hover);
     border-color: var(--sa-border-neutral-bolder-default);
+    filter: none;
   }
 
   /* THE ROTATION CONTROL IS NOT A THIRD ARROW.
@@ -163,7 +180,11 @@
   /* The label sets the width, so the box pads rather than squares off. Its
      width changing between "Pause" and "Play" is harmless now: it lives in a
      side zone that fills, and the dots are centred by the middle column. */
-  .ds-carousel__play {
+  .ds-carousel__play.ds-btn,
+  .ds-carousel__play.ds-btn[aria-pressed="true"] {
+    /* `min-width` is the button ladder's 64px rhythm floor, which is wider than
+       "Play". The label sets this control's width on purpose — see above. */
+    min-width: 0;
     padding: 0 var(--sa-padding-12);
     border-color: transparent;
     background-color: transparent;
@@ -172,17 +193,19 @@
     font-weight: var(--sa-font-weight-semibold);
   }
 
-  .ds-carousel__play:hover {
+  .ds-carousel__play.ds-btn:hover,
+  .ds-carousel__play.ds-btn[aria-pressed="true"]:hover {
     border-color: transparent;
     background-color: var(--sa-bg-neutral-hover);
     color: var(--sa-text-neutral-bolder);
+    filter: none;
   }
 
   /* A press has to be acknowledged on the press. On a touch screen there is no
      hover at all, so without this the only feedback a tap produced was the
      slide arriving — which on a slow connection is the wrong side of a wait. */
-  .ds-carousel__arrow:active,
-  .ds-carousel__play:active {
+  .ds-carousel__arrow.ds-btn:active,
+  .ds-carousel__play.ds-btn:active {
     background-color: var(--sa-bg-neutral-active);
   }
 
@@ -190,8 +213,8 @@
     transform: scale(0.9);
   }
 
-  .ds-carousel__arrow:focus-visible,
-  .ds-carousel__play:focus-visible,
+  .ds-carousel__arrow.ds-btn:focus-visible,
+  .ds-carousel__play.ds-btn:focus-visible,
   .ds-carousel__dot:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-focus-ring);
     outline-offset: var(--sa-focus-offset);
@@ -333,10 +356,21 @@
      gain in accuracy. 44 is written as a literal, as it is in button.css: it is
      a thumb measurement from an external standard, not a rung on our scale. */
   @media (pointer: coarse) {
-    .ds-carousel__arrow,
-    .ds-carousel__play {
+    .ds-carousel__arrow.ds-btn,
+    .ds-carousel__play.ds-btn {
       min-width: 44px;
+      min-height: 44px;
       height: 44px;
+    }
+
+    /* Both are `.ds-btn`s now, and button.css draws an invisible 44px ::after
+       under every one of them for exactly the reason above. Here the boxes
+       themselves are already 44, so the pseudo-element would only reach past
+       them — switched off so the cluster's real geometry is what the reader
+       presses. */
+    .ds-carousel__arrow.ds-btn::after,
+    .ds-carousel__play.ds-btn::after {
+      content: none;
     }
 
     .ds-carousel__controls-lead,

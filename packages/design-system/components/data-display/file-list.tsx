@@ -126,12 +126,14 @@ export function FileList({
                 </a>
               ) : null}
               {onRetry && state === "failed" ? (
+                /* raw-button-ok(primitive): the retry action of a file row — an underlined text link drawn by the same rule as the .ds-files__link anchor beside it */
                 <button type="button" className="ds-files__button" onClick={() => onRetry(file.id)}>
                   <span aria-hidden>Try again</span>
                   <span className="ds-files__sr">Try uploading {file.name} again</span>
                 </button>
               ) : null}
               {onRemove ? (
+                /* raw-button-ok(primitive): the remove action of a file row — the danger tone of the same underlined text link as its neighbours */
                 <button
                   type="button"
                   className="ds-files__button ds-files__button--danger"

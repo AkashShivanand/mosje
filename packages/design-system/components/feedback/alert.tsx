@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { IconButton } from "../actions/icon-button";
 import "./feedback.css";
 
 export type AlertStatus = "success" | "warning" | "info" | "error";
@@ -128,27 +129,35 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         </div>
 
         {dismissible && (
-          <button
-            type="button"
+          /* The library's IconButton, quiet and neutral. It was a native
+             <button> re-deriving a transparent icon control the estate already
+             ships; `.ds-alert__close` now only carries the 24px box and the
+             banner's own ink, which are the two things that are genuinely local
+             to a status banner. */
+          <IconButton
             className="ds-alert__close"
+            variant="neutral"
+            appearance="text"
+            size="sm"
             onClick={onDismiss}
             aria-label="Dismiss"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              width="18"
-              height="18"
-              fill="none"
-              aria-hidden="true"
-            >
-              <path
-                d="M6 6l12 12M18 6 6 18"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
-          </button>
+            icon={
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M6 6l12 12M18 6 6 18"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
+            }
+          />
         )}
       </div>
     );

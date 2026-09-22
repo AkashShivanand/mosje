@@ -497,6 +497,7 @@ export function Tabs({
               {inner}
             </a>
           ) : (
+            /* raw-button-ok(primitive): the tab IS this component — Tabs owns role="tab", the roving tabindex and the selected state */
             <button
               {...shared}
               type="button"

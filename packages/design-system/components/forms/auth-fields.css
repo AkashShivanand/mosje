@@ -118,25 +118,16 @@
     height: auto;
   }
 
-  .ds-captcha__refresh {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--sa-target-comfortable);
-    height: var(--sa-target-comfortable);
+  /* An outlined neutral `IconButton`. Border, ink, hover and the focus ring come
+     from button.css; this holds the square at `--sa-target-comfortable` (44px),
+     which is UX4G's thumb target and one rung above the `md` ladder's 40px — the
+     size this control has always been drawn at beside the challenge. THREE classes,
+     not two: `.ds-icon-btn.ds-btn--md` is itself two, so a two-class selector only
+     ties it and the winner would be whichever stylesheet loaded last. */
+  .ds-captcha__refresh.ds-icon-btn.ds-btn--md {
     flex: none;
-    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
-    border-radius: var(--sa-control-radius);
-    background-color: var(--sa-bg-neutral-base);
-    color: var(--sa-icon-neutral-base);
-    cursor: pointer;
-  }
-
-  .ds-captcha__refresh:hover { background-color: var(--sa-bg-neutral-hover); }
-
-  .ds-captcha__refresh:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-    outline-offset: var(--sa-focus-offset);
+    min-width: var(--sa-target-comfortable);
+    min-height: var(--sa-target-comfortable);
   }
 
   .ds-captcha__error {

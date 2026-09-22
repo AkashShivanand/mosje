@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { Button } from "../actions/button";
 import "./media-upload.css";
 
 const UploadGlyph = () => (
@@ -126,29 +127,37 @@ export const MediaUpload = React.forwardRef<HTMLButtonElement, MediaUploadProps>
               <p className="ds-media-upload__name">{fileName || "Selected file"}</p>
               <p className="ds-media-upload__sub">File attached</p>
               <div className="ds-media-upload__actions">
-                <button
+                <Button
                   ref={ref}
                   id={id}
                   type="button"
+                  variant="primary"
+                  appearance="text"
+                  size="sm"
                   className="ds-media-upload__action"
                   onClick={openPicker}
                   disabled={disabled}
                   aria-describedby={describedBy}
                 >
                   Replace
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
-                  className="ds-media-upload__action ds-media-upload__action--danger"
+                  variant="danger"
+                  appearance="text"
+                  size="sm"
+                  className="ds-media-upload__action"
                   onClick={handleClear}
                   disabled={disabled}
+                  iconLeft={<XGlyph />}
                 >
-                  <XGlyph /> Remove
-                </button>
+                  Remove
+                </Button>
               </div>
             </div>
           </div>
         ) : (
+          /* raw-button-ok(primitive): a 132px dashed drop SURFACE taking dragover/dragleave/drop and its own invalid state — a drop target that happens to be keyboard-operable */
           <button
             ref={ref}
             id={id}
