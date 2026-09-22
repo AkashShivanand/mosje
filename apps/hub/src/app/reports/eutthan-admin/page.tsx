@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState, useMemo } from "react";
 import auditRaw from "@/data/eutthan-admin-audit.json";
 import figureManifest from "@/data/eutthan-admin-figures.json";
-import { Divider, Icon } from "@mosje/design-system";
+import { Button, Chip, Divider, Icon, Search, Tabs } from "@mosje/design-system";
 
 // Annotation boards that actually exist on disk (public/reports/eutthan-admin/
 // figures). The audit data generates more (slug-section) combinations than were
@@ -483,44 +483,34 @@ export default function EutthanAdminReport() {
           <span className="text-border">/</span>
           <span className="text-label-2 font-semibold text-ink">eUtthan Admin</span>
 
-          <div className="ml-4 flex items-center gap-1 rounded-lg bg-surface-muted p-1">
-            {(
-              [
-                { key: "qc",          label: "Design QC",          badge: allFindings.length },
-                { key: "suggestions", label: "Design Suggestions",  badge: SUGGESTIONS.length },
-              ] as const
-            ).map(({ key, label, badge }) => (
-              <button
-                key={key}
-                onClick={() => setTab(key)}
-                className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-label-2 font-semibold transition ${
-                  tab === key ? "bg-white text-ink shadow-sm" : "text-ink-muted hover:text-ink"
-                }`}
-              >
-                {label}
-                <span
-                  className={`rounded-full px-1.5 py-0.5 text-label-2 font-semibold ${
-                    tab === key ? "bg-primary text-white" : "bg-border text-ink-muted"
-                  }`}
-                >
-                  {badge}
-                </span>
-              </button>
-            ))}
+          <div className="ml-4 shrink-0">
+            <Tabs
+              idBase="eutthan-report"
+              ariaLabel="Report"
+              indicator="pill"
+              track="none"
+              size="s"
+              tabs={[
+                { id: "qc", label: `Design QC ${allFindings.length}` },
+                { id: "suggestions", label: `Design Suggestions ${SUGGESTIONS.length}` },
+              ]}
+              active={tab === "qc" ? 0 : 1}
+              onChange={(i) => setTab(i === 0 ? "qc" : "suggestions")}
+            />
           </div>
 
           <div className="ml-auto flex items-center gap-2">
-            <a
-              href={
-                tab === "qc"
-                  ? "/reports/eUtthan-Admin-Design-QC-Report.pdf"
-                  : "/reports/eUtthan-Admin-Design-Suggestions.pdf"
-              }
+            <Button
+              href={tab === "qc" ? "/reports/eUtthan-Admin-Design-QC-Report.pdf" : "/reports/eUtthan-Admin-Design-Suggestions.pdf"}
+              linkAs={Link}
               download
-              className="flex items-center gap-1.5 rounded-lg border border-border bg-surface px-3 py-1.5 text-label-2 font-semibold text-ink transition hover:bg-surface-muted"
+              variant="neutral"
+              appearance="outlined"
+              size="sm"
+              iconLeft={<Icon name="download" size={16} />}
             >
-              <Icon name="download" size={14} /> Download PDF
-            </a>
+              Download PDF
+            </Button>
           </div>
         </div>
       </header>
@@ -531,23 +521,15 @@ export default function EutthanAdminReport() {
           {/* Sticky filter bar */}
           <div className="sticky top-[49px] z-10 border-b border-border bg-white/95 backdrop-blur">
             <div className="sa-container py-3 space-y-2">
-              <div className="relative w-full max-w-md">
-                <Icon name="search" size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted" />
-                <input
-                  type="search"
-                  placeholder="Search findings, elements, axis…"
+              <div className="w-full max-w-md">
+                <Search
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  className="w-full rounded-lg border border-border bg-surface py-2 pl-8 pr-8 text-body-3 text-ink placeholder:text-ink-muted focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                  onClear={() => setQuery("")}
+                  placeholder="Search findings, elements, axis…"
+                  aria-label="Search findings"
+                  size="sm"
                 />
-                {query && (
-                  <button
-                    onClick={() => setQuery("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-muted hover:text-ink"
-                  >
-                    <Icon name="close" size={12} />
-                  </button>
-                )}
               </div>
 
               <div className="flex flex-wrap items-center gap-1.5">
@@ -561,36 +543,30 @@ export default function EutthanAdminReport() {
                       ? allFindings.length
                       : audit.screens.find((s) => s.slug === slug)?.findings.length ?? 0;
                   return (
-                    <button
+                    <Chip
                       key={slug}
-                      onClick={() => setActiveScreen(slug)}
-                      className={`rounded-full px-2.5 py-0.5 text-label-2 font-semibold transition ${
-                        activeScreen === slug
-                          ? "bg-primary text-white"
-                          : "bg-surface-muted text-ink-muted hover:text-ink"
-                      }`}
+                      size="sm"
+                      selected={activeScreen === slug}
+                      onSelectedChange={() => setActiveScreen(slug)}
+                      count={cnt}
+                      countLabel="findings"
                     >
-                      {name} <span className="opacity-70">{cnt}</span>
-                    </button>
+                      {name}
+                    </Chip>
                   );
                 })}
 
                 <span className="ml-3 text-body-3 text-ink-muted">Severity:</span>
                 {(["All", "Blocker", "Major", "Minor", "Nit"] as const).map((sev) => (
-                  <button
+                  <Chip
                     key={sev}
-                    onClick={() => setActiveSev(sev)}
-                    className={`rounded-full px-2.5 py-0.5 text-label-2 font-semibold transition ${
-                      activeSev === sev
-                        ? sev === "All"
-                          ? "bg-ink text-white"
-                          : SEV[sev as Sev].pill + " ring-1 ring-offset-1 ring-current"
-                        : "bg-surface-muted text-ink-muted hover:text-ink"
-                    }`}
+                    size="sm"
+                    selected={activeSev === sev}
+                    onSelectedChange={() => setActiveSev(sev)}
+                    {...(sev !== "All" ? { count: counts[sev as Sev], countLabel: "findings" } : {})}
                   >
                     {sev}
-                    {sev !== "All" && <span className="ml-1 opacity-70">{counts[sev as Sev]}</span>}
-                  </button>
+                  </Chip>
                 ))}
 
                 <span className="ml-auto text-body-3 text-ink-muted">
@@ -633,12 +609,14 @@ export default function EutthanAdminReport() {
                 <Icon name="search" size={40} className="text-ink-muted/30 mb-4" />
                 <p className="text-title-3 text-ink">No findings match your filters</p>
                 <p className="text-body-3 text-ink-muted mt-1">Try adjusting the search or filter criteria.</p>
-                <button
+                <Button
+                  appearance="text"
+                  size="sm"
+                  className="mt-4"
                   onClick={() => { setQuery(""); setActiveScreen("ALL"); setActiveSev("All"); }}
-                  className="mt-4 text-label-2 font-semibold text-primary hover:underline"
                 >
                   Clear all filters
-                </button>
+                </Button>
               </div>
             ) : (
               filteredScreens.map(({ screen, findings }) => (

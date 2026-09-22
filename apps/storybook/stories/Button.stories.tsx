@@ -152,7 +152,9 @@ export const WithIcons: Story = {
 };
 
 /**
- * `href` renders an `<a>`. Reach for it only when the control navigates — a
+ * `href` renders an `<a>`; pass `linkAs={Link}` (next/link) with an internal `href`
+ * so it routes client-side instead of reloading the page — Storybook has no router,
+ * so the story below shows the plain anchor. Reach for it only when the control navigates — a
  * link styled as a button is still a link, and users expect it to behave like
  * one.
  */

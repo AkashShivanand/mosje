@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "E-UTTHAN'S OWN BUTTON KIT IS GONE; EVERY CONTROL IS A DESIGN-SYSTEM COMPONENT. The portal styled its buttons and links with .primary-button, .secondary-button, .text-action, .filter-button and .icon-button — 34 uses in nine files plus 30 raw <button> elements, and a `.row-actions button` rule that, being unlayered, would have re-skinned any design-system Button placed in a table row. They are Button, IconButton, Toggle, Select, Input, Tabs, Chip, Search and ErrorView now, and the kit's rules are deleted from eutthan.css. The role's active switch was a tinted button with no state; it is a Toggle that switches. The filter controls, which showed a value and opened nothing, are filter Selects holding exactly that value. The audit report's tabs, filter chips and search box are the design system's, and the portal's error page matches every other boundary in the estate."
+}

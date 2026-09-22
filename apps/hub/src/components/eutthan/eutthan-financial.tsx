@@ -2,7 +2,7 @@
 
 import { tableScreens } from "@/lib/eutthan/portal-data";
 import { StaticPager } from "./eutthan-cells";
-import { Icon } from "@mosje/design-system";
+import { Button, Icon, Select } from "@mosje/design-system";
 
 export function FinancialSummaryPage() {
   const screen = tableScreens["/reports/financial-summary"]!;
@@ -19,16 +19,14 @@ export function FinancialSummaryPage() {
             flexWrap: "wrap",
           }}
         >
-          <button type="button" className="filter-button">
-            {screen.filters?.[0]} <Icon name="keyboard_arrow_down" size={14} />
-          </button>
+          <Select appearance="filter" aria-label={`Filter: ${screen.filters?.[0] ?? ""}`} options={[{ value: screen.filters?.[0] ?? "", label: screen.filters?.[0] ?? "" }]} defaultValue={screen.filters?.[0]} />
           <div className="export-buttons">
-            <button type="button" className="icon-button">
-              <Icon name="download" size={14} /> Export CSV
-            </button>
-            <button type="button" className="icon-button">
-              <Icon name="description" size={14} /> Export PDF
-            </button>
+            <Button variant="neutral" appearance="outlined" size="sm" iconLeft={<Icon name="download" size={16} />}>
+              Export CSV
+            </Button>
+            <Button variant="neutral" appearance="outlined" size="sm" iconLeft={<Icon name="description" size={16} />}>
+              Export PDF
+            </Button>
           </div>
         </div>
       </div>

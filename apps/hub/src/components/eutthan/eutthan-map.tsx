@@ -4,7 +4,7 @@ import Link from "next/link";
 import { portalLink } from "./eutthan-shared";
 import { tableScreens } from "@/lib/eutthan/portal-data";
 import { CellContent, StaticPager } from "./eutthan-cells";
-import { Icon } from "@mosje/design-system";
+import { Icon, Select } from "@mosje/design-system";
 
 export function MapPage({ path }: { path: string }) {
   const isSchemas = path === "/map-schema";
@@ -42,9 +42,7 @@ export function MapPage({ path }: { path: string }) {
             <input placeholder={screen.searchPlaceholder} aria-label="Search records" />
           </div>
           {screen.filters?.map((f) => (
-            <button key={f} type="button" className="filter-button">
-              {f} <Icon name="keyboard_arrow_down" size={14} />
-            </button>
+            <Select key={f} appearance="filter" aria-label={`Filter: ${f}`} options={[{ value: f, label: f }]} defaultValue={f} />
           ))}
         </div>
         <div className="table-wrap table-wrap--wide">

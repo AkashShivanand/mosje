@@ -218,7 +218,7 @@ export function Offerings() {
 
           {/* An outlined button, not a bare text link — the design's secondary
               CTA, and it clears the 24x24 target minimum [WEB-G-05, WCAG 2.5.8]. */}
-          <Button
+          <Button linkAs={Link}
             appearance="outlined"
             size="sm"
             href={current.viewAllHref}

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { portalLink } from "./eutthan-shared";
 import { formDefs } from "@/lib/eutthan/portal-data";
-import { Icon } from "@mosje/design-system";
+import { Button, Icon } from "@mosje/design-system";
 
 export function FormPage({ path }: { path: string }) {
   const form = formDefs[path];
@@ -12,21 +12,9 @@ export function FormPage({ path }: { path: string }) {
   if (!form) {
     return (
       <div className="page-stack">
-        <Link
-          href={portalLink(backPath)}
-          className="text-action"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "var(--sa-inline-8)",
-            background: "var(--primary-tonal)",
-            padding: "var(--sa-padding-8) var(--sa-padding-12)",
-            borderRadius: "var(--sa-shape-8)",
-            marginBottom: "var(--sa-stack-12)",
-          }}
-        >
-          <Icon name="arrow_back" size={15} /> Back
-        </Link>
+        <Button href={portalLink(backPath)} linkAs={Link} appearance="outlined" size="sm" iconLeft={<Icon name="arrow_back" size={16} />}>
+          Back
+        </Button>
         <p style={{ color: "var(--text-muted)" }}>
           Form not configured for: {path}
         </p>
@@ -37,21 +25,9 @@ export function FormPage({ path }: { path: string }) {
   return (
     <div className="page-stack">
       <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-inline-12)" }}>
-        <Link
-          href={portalLink(backPath)}
-          className="text-action"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "var(--sa-inline-6)",
-            background: "var(--primary-tonal)",
-            minHeight: 36,
-            padding: "var(--sa-padding-6) var(--sa-padding-12)",
-            borderRadius: "var(--sa-shape-8)",
-          }}
-        >
-          <Icon name="arrow_back" size={15} /> Back
-        </Link>
+        <Button href={portalLink(backPath)} linkAs={Link} appearance="outlined" size="sm" iconLeft={<Icon name="arrow_back" size={16} />}>
+          Back
+        </Button>
         <h2 className="page-title">{form.title}</h2>
       </div>
 
@@ -113,12 +89,10 @@ export function FormPage({ path }: { path: string }) {
           })}
         </div>
         <div className="form-actions">
-          <Link href={portalLink(backPath)} className="secondary-button">
+          <Button href={portalLink(backPath)} linkAs={Link} appearance="outlined">
             Cancel
-          </Link>
-          <button type="submit" className="primary-button">
-            {form.submitLabel}
-          </button>
+          </Button>
+          <Button type="submit">{form.submitLabel}</Button>
         </div>
       </div>
     </div>
