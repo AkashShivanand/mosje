@@ -251,7 +251,7 @@ export default async function IssuePage({ params, searchParams }: Props) {
                       { term: "Note", value: st?.note },
                     ]}
                   />
-                  <Button href={`/admin/login?next=${encodeURIComponent(`${BASE}/${i.id}`)}`} variant="neutral" appearance="outlined" size="sm">
+                  <Button linkAs={Link} href={`/admin/login?next=${encodeURIComponent(`${BASE}/${i.id}`)}`} variant="neutral" appearance="outlined" size="sm">
                     Sign In to Update
                   </Button>
                 </>

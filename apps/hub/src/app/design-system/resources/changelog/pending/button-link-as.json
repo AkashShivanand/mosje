@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "BUTTON TAKES `linkAs`, SO A LINK-BUTTON ROUTES INSTEAD OF RELOADING THE PAGE. `<Button href>` has rendered a bare `<a>` since the link form existed, so 37 internal call sites across the hub — the website's record libraries, the DOSJE reports, E-Anudaan's sign-in, the admin console — each cost a full document load per click. `linkAs={Link}` routes an internal `href` through the app's router; a disabled, external, scheme or `#` href, a download and a new-tab link stay a plain `<a>`, decided by the same rule as every other `linkAs` component. `check:link-as` now demands it wherever a Button carries an `href`, and all 37 pass it. For a link that looks like a button, prefer `<Button href linkAs>` to `<Link className={buttonClasses()}>`: the helper gives the colours but not the icon slot, so its glyph misses the icon-side padding."
+}

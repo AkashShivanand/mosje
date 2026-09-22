@@ -12,6 +12,7 @@ import {
   IdentifierFields,
   PortalLoginShell,
 } from "@mosje/design-system";
+import Link from "next/link";
 
 const BASE = "/portals/e-anudaan";
 
@@ -105,7 +106,7 @@ export default function EAnudaanForgotPasswordPage(): React.JSX.Element {
                   device as smile-admin's forget-password screen, and the only
                   honest way to make a link-gated screen reachable without
                   pretending mail was delivered. */}
-              <Button href={`${BASE}/reset-password`} fullWidth>
+              <Button linkAs={Link} href={`${BASE}/reset-password`} fullWidth>
                 Continue to Set New Password
               </Button>
               <AuthHelpLine href={`${BASE}/login`}>Back to Login</AuthHelpLine>

@@ -123,7 +123,7 @@ export function ActivityCorner() {
           {/* ONE view-all control. There were three: this link, plus "View All
               Events" and "View All Press Releases" stacked below the grid
               [WEB-T-05]. It is the designed outlined button [WEB-G-05]. */}
-          <Button
+          <Button linkAs={Link}
             appearance="outlined"
             size="sm"
             href="/website/events"

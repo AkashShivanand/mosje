@@ -27,6 +27,7 @@ import {
   type SdScheme,
 } from "@/lib/explorations/service-discovery-master";
 import "./scheme-finder.css";
+import NextLink from "next/link";
 
 /**
  * FIND SCHEMES FOR YOU — the home-page finder, as a website section.
@@ -408,7 +409,7 @@ function SchemeRow({ scheme: s }: { scheme: SdScheme }) {
           )}
           {route &&
             (route.href ? (
-              <Button
+              <Button linkAs={NextLink}
                 size="sm"
                 appearance="outlined"
                 href={route.href}

@@ -4,6 +4,7 @@ import { useMemo, useRef, useState } from "react";
 import { Button, Icon, Pagination } from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
 import type { Crumb } from "@/components/website/layout/page-trail";
+import Link from "next/link";
 
 /** A destination that leaves this site, and therefore opens in a new tab. */
 const isHttp = (href: string | undefined) => /^https?:\/\//.test(href ?? "");
@@ -241,7 +242,7 @@ export function DocumentCatalog({
                       * reader who has learnt the warning is honest starts
                       * relying on it.
                       */}
-                    <Button
+                    <Button linkAs={Link}
                       href={doc.sourceUrl ?? "#"}
                       external={isHttp(doc.sourceUrl)}
                       variant="primary"
@@ -251,7 +252,7 @@ export function DocumentCatalog({
                     >
                       View Online
                     </Button>
-                    <Button
+                    <Button linkAs={Link}
                       href={doc.sourceUrl ?? "#"}
                       /* A local file downloads in place; only a remote one needs
                          a tab of its own. */

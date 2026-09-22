@@ -4,6 +4,7 @@ import { Button, Icon, Link } from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
 import { getSchemes, getScheme, withAssetBasePath, getContentSyncedDate } from "@/lib/website/content";
 import { socialCard } from "@/lib/seo/social";
+import NextLink from "next/link";
 
 export function generateStaticParams() {
   return getSchemes().map((s) => ({ slug: s.slug }));
@@ -48,7 +49,7 @@ export default async function SchemeDetailPage({
       actions={
         <div className="flex items-center gap-2">
           {scheme.website && (
-            <Button
+            <Button linkAs={NextLink}
               href={scheme.website}
               external
               variant="primary"
@@ -60,7 +61,7 @@ export default async function SchemeDetailPage({
             </Button>
           )}
           {scheme.sourceUrl && (
-            <Button
+            <Button linkAs={NextLink}
               href={scheme.sourceUrl}
               external
               variant="primary"

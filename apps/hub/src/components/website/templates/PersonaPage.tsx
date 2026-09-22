@@ -1,6 +1,7 @@
 import { Button, Card, Icon } from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
 import type { PageHeroProps } from "@/components/website/layout/PageHero";
+import Link from "next/link";
 
 export interface PersonaCard {
   title: string;
@@ -40,7 +41,7 @@ export function PersonaPage({ tagline, cards, ...hero }: PersonaPageProps) {
                   </span>
                   <h3 className="text-title-1 text-primary-dark">{card.title}</h3>
                   <p className="mt-2 flex-1 text-body-2 text-ink-muted">{card.description}</p>
-                  <Button
+                  <Button linkAs={Link}
                     href={card.href}
                     appearance="text"
                     size="sm"

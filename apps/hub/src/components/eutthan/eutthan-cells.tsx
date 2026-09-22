@@ -1,8 +1,9 @@
 "use client";
 
+import * as React from "react";
 import Link from "next/link";
 import { portalLink } from "./eutthan-shared";
-import { Icon } from "@mosje/design-system";
+import { Button, Icon, IconButton, Toggle } from "@mosje/design-system";
 
 export function CellContent({
   col,
@@ -28,14 +29,14 @@ export function CellContent({
   if (val === "menu") {
     return (
       <div className="row-actions">
-        <button
-          type="button"
-          className="text-action"
-          style={{ background: "var(--primary-tonal)" }}
+        <IconButton
+          icon={<Icon name="more_horiz" size={16} />}
           aria-label="More options"
-        >
-          •••
-        </button>
+          tooltip
+          variant="neutral"
+          appearance="text"
+          size="sm"
+        />
       </div>
     );
   }
@@ -43,97 +44,59 @@ export function CellContent({
   if (val === "role-actions") {
     return (
       <div className="row-actions">
-        <button
-          type="button"
-          className="text-action"
-          style={{ background: "var(--success-tonal)" }}
-          aria-label="Toggle role"
-        >
-          <Icon name="toggle_on" size={18} style={{ color: "var(--success)" }} />
-        </button>
-        <button
-          type="button"
-          className="text-action"
-          style={{
-            background: "var(--primary-tonal)",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "var(--sa-inline-4)",
-          }}
-          aria-label="Edit role"
-        >
-          <Icon name="edit" size={14} /> Edit
-        </button>
-        <button
-          type="button"
-          className="text-action danger-action"
-          style={{ display: "inline-flex", alignItems: "center", gap: "var(--sa-inline-4)" }}
-          aria-label="Delete role"
-        >
-          <Icon name="delete" size={14} /> Delete
-        </button>
+        <RoleActiveToggle />
+        <Button appearance="outlined" size="sm" nowrap iconLeft={<Icon name="edit" size={16} />} aria-label="Edit role">
+          Edit
+        </Button>
+        <Button variant="danger" appearance="text" size="sm" nowrap iconLeft={<Icon name="delete" size={16} />} aria-label="Delete role">
+          Delete
+        </Button>
       </div>
     );
   }
 
   if (val === "Unmap") {
     return (
-      <button
-        type="button"
-        className="text-action text-action--danger"
-        style={{ background: "var(--danger-tonal)" }}
+      <Button
+        variant="danger"
+        appearance="outlined"
+        size="sm" nowrap
         aria-label={rowLabel ? `Unmap ${rowLabel}` : "Unmap this entry"}
       >
         Unmap
-      </button>
+      </Button>
     );
   }
 
   if (val === "View") {
     return (
-      <button
-        type="button"
-        className="text-action"
-        style={{
-          background: "var(--primary-tonal)",
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "var(--sa-inline-6)",
-        }}
+      <Button
+        appearance="outlined"
+        size="sm" nowrap
+        iconLeft={<Icon name="visibility" size={16} />}
         aria-label={rowLabel ? `View details for ${rowLabel}` : "View details"}
       >
-        <Icon name="visibility" size={14} /> View
-      </button>
+        View
+      </Button>
     );
   }
 
   if (val === "Edit Delete") {
     return (
       <div className="row-actions">
-        <Link
+        <Button
           href={portalLink(`${basePath}/edit`)}
-          className="text-action"
-          style={{
-            background: "var(--primary-tonal)",
-            minHeight: 36,
-            padding: "var(--sa-padding-6) var(--sa-padding-12)",
-            borderRadius: "var(--sa-shape-8)",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "var(--sa-inline-6)",
-          }}
+          linkAs={Link}
+          appearance="outlined"
+          size="sm" nowrap
+          iconLeft={<Icon name="edit" size={16} />}
           aria-label="Edit this entry"
         >
-          <Icon name="edit" size={14} /> Edit
-        </Link>
-        <button
-          type="button"
-          className="text-action danger-action"
-          style={{ display: "inline-flex", alignItems: "center", gap: "var(--sa-inline-6)" }}
-          aria-label="Delete this entry"
-        >
-          <Icon name="delete" size={14} /> Delete
-        </button>
+          Edit
+        </Button>
+        <Button variant="danger" appearance="text" size="sm" nowrap iconLeft={<Icon name="delete" size={16} />} aria-label="Delete this entry">
+          Delete
+        </Button>
       </div>
     );
   }
@@ -141,22 +104,16 @@ export function CellContent({
   if (val === "Edit") {
     return (
       <div className="row-actions">
-        <Link
+        <Button
           href={portalLink(`${basePath}/edit`)}
-          className="text-action"
-          style={{
-            background: "var(--primary-tonal)",
-            minHeight: 36,
-            padding: "var(--sa-padding-6) var(--sa-padding-12)",
-            borderRadius: "var(--sa-shape-8)",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "var(--sa-inline-6)",
-          }}
+          linkAs={Link}
+          appearance="outlined"
+          size="sm" nowrap
+          iconLeft={<Icon name="edit" size={16} />}
           aria-label="Edit this entry"
         >
-          <Icon name="edit" size={14} /> Edit
-        </Link>
+          Edit
+        </Button>
       </div>
     );
   }
@@ -218,4 +175,14 @@ export function StaticPager({ total }: { total: number }) {
       </span>
     </div>
   );
+}
+
+/**
+ * The role's active switch. Until 2026-09-22 this was a tinted button holding a
+ * toggle_on glyph with no state at all — it looked like a switch and did nothing.
+ * It is the design system's Toggle now, and it switches.
+ */
+function RoleActiveToggle() {
+  const [active, setActive] = React.useState(true);
+  return <Toggle size="small" checked={active} onChange={(e) => setActive(e.target.checked)} aria-label="Role active" />;
 }

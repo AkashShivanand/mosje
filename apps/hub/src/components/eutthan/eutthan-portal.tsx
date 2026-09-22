@@ -33,7 +33,7 @@ const FormPage = dynamic(() =>
 );
 
 import { tableScreens } from "@/lib/eutthan/portal-data";
-import { Icon, PortalPage } from "@mosje/design-system";
+import { Button, Icon, PortalPage } from "@mosje/design-system";
 
 export default function EutthanPortal() {
   const pathname = usePathname();
@@ -139,19 +139,9 @@ export default function EutthanPortal() {
         <p style={{ color: "var(--text-muted)" }}>
           The path <code>{path}</code> could not be found.
         </p>
-        <Link
-          href={portalLink("/dashboard")}
-          className="primary-button"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "var(--sa-inline-8)",
-            textDecoration: "none",
-            width: "fit-content",
-          }}
-        >
-          <Icon name="arrow_back" size={16} /> Back to Dashboard
-        </Link>
+        <Button href={portalLink("/dashboard")} linkAs={Link} iconLeft={<Icon name="arrow_back" size={16} />}>
+            Back to Dashboard
+          </Button>
       </div>
     );
   }
