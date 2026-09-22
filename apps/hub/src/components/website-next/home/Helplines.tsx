@@ -1,36 +1,58 @@
-import { Icon } from "@mosje/design-system";
+import Link from "next/link";
+import { Icon, SectionTitle, buttonClasses } from "@mosje/design-system";
+import { HELPLINES } from "./facts";
 
 /**
- * National helplines, tap to call (issue MAN-07). Each number is taken from the
- * Department's scheme master, which cites its source: 14446 AR §3.15; 14567
- * AR §3.14; 14566 PIB 1780979 and the NHAA organisation page.
+ * National helplines, tap to call (MAN-07), then the live home page's "Need
+ * Support?" — the three numbers that most need to be found, on the page's
+ * deepest ground, so they read as the most important thing on it.
  */
-const HELPLINES = [
-  { number: "14446", name: "Nasha Mukt Bharat Abhiyaan", sub: "Drug de-addiction counselling and referral", icon: "self_improvement" },
-  { number: "14567", name: "Elderline", sub: "National helpline for senior citizens", icon: "elderly" },
-  { number: "14566", name: "National Helpline Against Atrocities", sub: "For Scheduled Castes and Scheduled Tribes", icon: "shield_person" },
-];
-
 export function Helplines() {
   return (
-    <section id="helplines" className="wn-helplines" aria-labelledby="helplines-title">
+    <section id="helplines" className="wn-home-help" aria-labelledby="helplines-title">
       <div className="sa-container">
-        <h2 id="helplines-title" className="wn-helplines__title">
-          National Helplines
-        </h2>
-        <p className="wn-helplines__lead">Toll-free from any phone in India.</p>
-        <ul className="wn-helplines__list">
+        <div className="wn-home-help__head">
+          <SectionTitle size="display" tone="inverse" headingId="helplines-title" title="National Helplines" description="Toll-free from any phone in India." />
+        </div>
+        <ul className="wn-home-help__list">
           {HELPLINES.map((h) => (
             <li key={h.number}>
-              <a href={`tel:${h.number}`} className="wn-helpline">
-                <Icon name={h.icon} size={24} aria-hidden className="wn-helpline__icon" />
-                <span className="wn-helpline__number">{h.number}</span>
-                <span className="wn-helpline__name">{h.name}</span>
-                <span className="wn-helpline__sub">{h.sub}</span>
+              <a href={`tel:${h.number}`} className="wn-home-helpline">
+                <span className="wn-home-helpline__icon" aria-hidden>
+                  <Icon name={h.icon} size={24} />
+                </span>
+                <span className="wn-home-helpline__number">{h.number}</span>
+                <span className="wn-home-helpline__name">{h.name}</span>
+                <span className="wn-home-helpline__sub">{h.sub}</span>
+                <span className="wn-home-helpline__call">
+                  <Icon name="call" size={20} aria-hidden />
+                  Call
+                </span>
               </a>
             </li>
           ))}
         </ul>
+        <div className="wn-home-support">
+          <div>
+            <h3 className="wn-home-support__title">Need Support?</h3>
+            <p className="wn-home-support__lead">Write to the Department, or lodge a grievance on CPGRAMS.</p>
+          </div>
+          <div className="wn-home-support__actions">
+            <Link href="/website/contact-us" className={buttonClasses("primary", "filled", "md", undefined, "inverse")}>
+              Contact Us
+            </Link>
+            <a
+              href="https://pgportal.gov.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={buttonClasses("primary", "outlined", "md", undefined, "inverse")}
+            >
+              File a Grievance
+              <Icon name="open_in_new" size={20} aria-hidden />
+              <span className="sr-only"> (opens in a new window)</span>
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -12,35 +12,35 @@ import { Icon, buttonClasses, orgLogoSrc } from "@mosje/design-system";
  */
 export function Campaign() {
   return (
-    <section className="wn-campaign" aria-labelledby="campaign-title">
-      <div className="sa-container wn-campaign__grid">
-        <div className="wn-campaign__media">
+    <section className="wn-home-campaign" aria-labelledby="campaign-title">
+      <div className="sa-container wn-home-campaign__grid">
+        <div className="wn-home-campaign__media">
           <Image
             src="/website/content/organisation/nmba-gallery-youth-awareness.jpg"
             alt="Young people at a Nasha Mukt Bharat Abhiyaan awareness programme"
             fill
             sizes="(min-width: 1024px) 560px, 100vw"
-            className="object-cover"
+            className="wn-home-campaign__img"
           />
         </div>
-        <div className="wn-campaign__copy">
-          <Image src={orgLogoSrc("nmba")} alt="" width={56} height={56} className="wn-campaign__mark" />
-          <h2 id="campaign-title" className="wn-campaign__title">
+        <div className="wn-home-campaign__copy">
+          <Image src={orgLogoSrc("nmba")} alt="" width={56} height={56} className="wn-home-campaign__mark" />
+          <h2 id="campaign-title" className="wn-home-campaign__title">
             Nasha Mukt Bharat Abhiyaan
           </h2>
-          <p className="wn-campaign__lead">
+          <p className="wn-home-campaign__lead">
             The national campaign for a drug-free India. Take the pledge, volunteer as a Nasha Mukti Mitr, or
             find a de-addiction centre near you.
           </p>
-          <div className="wn-campaign__actions">
-            <Link href="/portals/nmba/epledge" className={buttonClasses("primary", "filled", "md")}>
+          <div className="wn-home-campaign__actions">
+            <Link href="/portals/nmba/epledge" className={buttonClasses("primary", "filled", "md", undefined, "inverse")}>
               Take the Pledge
             </Link>
-            <Link href="/website/de-addiction-centres" className={buttonClasses("primary", "outlined", "md")}>
+            <Link href="/website/de-addiction-centres" className={buttonClasses("primary", "outlined", "md", undefined, "inverse")}>
               Find a De-addiction Centre
             </Link>
           </div>
-          <p className="wn-campaign__help">
+          <p className="wn-home-campaign__help">
             <Icon name="call" size={20} aria-hidden />
             <span>
               Toll-free helpline <a href="tel:14446">14446</a>

@@ -1,14 +1,19 @@
 import type { Metadata } from "next";
 import { Masthead } from "@/components/website-next/chrome/Masthead";
+import { SamaveshBand } from "@/components/website-next/chrome/SamaveshBand";
 import { WebsiteFooter } from "@/components/website-next/chrome/Footer";
 import { Hero } from "@/components/website-next/home/Hero";
+import { WhatsNew } from "@/components/website-next/home/WhatsNew";
 import { Audiences } from "@/components/website-next/home/Audiences";
 import { Offerings } from "@/components/website-next/home/Offerings";
-import { Latest } from "@/components/website-next/home/Latest";
 import { Campaign } from "@/components/website-next/home/Campaign";
+import { Documents } from "@/components/website-next/home/Documents";
+import { Activity } from "@/components/website-next/home/Activity";
 import { Organisations } from "@/components/website-next/home/Organisations";
 import { Leadership } from "@/components/website-next/home/Leadership";
+import { Social } from "@/components/website-next/home/Social";
 import { Helplines } from "@/components/website-next/home/Helplines";
+import "@/components/website-next/home/home.css";
 
 export const metadata: Metadata = {
   // The tab title starts with the page h1 (issue SEO-06, GIGW).
@@ -17,24 +22,60 @@ export const metadata: Metadata = {
     "Schemes, services and support from the Department of Social Justice & Empowerment for Scheduled Castes, Other Backward Classes, senior citizens, transgender persons and other groups.",
 };
 
+/* Structured data for the home page (issue SEO-04): who publishes the site.
+   No SearchAction yet: the search address differs between this prototype and
+   dosje.gov.in, and a search box pointing at neither would be a broken promise. */
+const JSON_LD = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "GovernmentOrganization",
+      name: "Department of Social Justice & Empowerment",
+      parentOrganization: { "@type": "GovernmentOrganization", name: "Ministry of Social Justice & Empowerment, Government of India" },
+      url: "https://dosje.gov.in/",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "8th Floor, GPOA-3, Netaji Nagar",
+        addressLocality: "New Delhi",
+        postalCode: "110023",
+        addressCountry: "IN",
+      },
+      sameAs: ["https://www.facebook.com/goimsje", "https://x.com/msjegoi", "https://www.instagram.com/msjegoi", "https://www.youtube.com/@ministryofsocialjustice511"],
+    },
+    {
+      "@type": "WebSite",
+      name: "Department of Social Justice & Empowerment",
+      url: "https://dosje.gov.in/",
+    },
+  ],
+};
+
 /**
- * The redesigned home page. Section order is task first, institution second:
- * what can I do → who is it for → what is offered → what is new → the national
- * campaign → who runs it → the Department → whom to call.
+ * The home page. Task first; then what is new and the numbers to call; who it
+ * is for, what is offered, and who leads the Department; the campaign; the
+ * record (reports, events, press); its organisations; where to follow it.
+ * Every section the live home page carries, in the order a citizen needs it
+ * (independent review, 22 Sep 2026: helplines and Ministers moved up).
  */
 export default function Home() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
       <Masthead />
+      {/* Site-wide chrome, so it sits between the masthead and <main>. */}
+      <SamaveshBand />
       <main id="content" tabIndex={-1} className="wn-main">
         <Hero />
+        <WhatsNew />
+        <Helplines />
         <Audiences />
         <Offerings />
-        <Latest />
-        <Campaign />
-        <Organisations />
         <Leadership />
-        <Helplines />
+        <Campaign />
+        <Documents />
+        <Activity />
+        <Organisations />
+        <Social />
       </main>
       <WebsiteFooter />
     </>

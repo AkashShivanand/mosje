@@ -20,6 +20,15 @@ export interface SectionTitleProps {
   headingId?: string;
   /** Trailing actions (buttons, filters) aligned to the right. */
   children?: React.ReactNode;
+  /**
+   * Type scale. `default` is the UI scale a portal screen or a docs page needs
+   * (Headline 4 over Body 3). `display` is for a landing page's sections, where
+   * the heading is the reader's way through a long page (Headline 2 over
+   * Body 1). @default "default"
+   */
+  size?: "default" | "display";
+  /** Ground the title sits on. `inverse` for a navy or green band. @default "default" */
+  tone?: "default" | "inverse";
   className?: string;
 }
 
@@ -42,12 +51,21 @@ export function SectionTitle({
   as = 2,
   headingId,
   children,
+  size = "default",
+  tone = "default",
   className,
 }: SectionTitleProps): React.JSX.Element {
   const Heading = `h${as}` as const;
 
   return (
-    <div className={cn("ds-section-title", className)}>
+    <div
+      className={cn(
+        "ds-section-title",
+        size === "display" && "ds-section-title--display",
+        tone === "inverse" && "ds-section-title--inverse",
+        className,
+      )}
+    >
       <div className="ds-section-title__text">
         {eyebrow != null && (
           <div className="ds-section-title__eyebrow">{eyebrow}</div>

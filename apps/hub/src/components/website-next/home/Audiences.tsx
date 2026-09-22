@@ -6,54 +6,77 @@ import { PERSONAS, PERSONA_ART, PERSONA_ICON } from "@/lib/website-next/schemes"
 /**
  * Persona entry (DBIM home-page component; issues NAV-05 and X-IA-07).
  *
- * The classic site showed two of four personas in a carousel, linking to
- * unfiltered lists. Here are all eleven groups from the Department's mandate
- * (the 8 Sep review's single vocabulary), each opening the scheme finder
- * already filtered to it. The sequence opens on Students, drawn as a young
- * woman (8 Sep decision). No counts on this screen (8 Sep decision).
+ * Two questions, answered in order. "Which schemes are for me?" — the eleven
+ * groups of the Department's mandate (8 Sep decision), each opening the scheme
+ * finder filtered to it. "What is here for someone in my role?" — the four
+ * DBIM personas the live site links to, including Student and Researcher,
+ * which the classic home page left out.
  */
+const ROLES = [
+  { label: "Students", href: "/website/for-student", img: "/website/images/Student.png" },
+  { label: "Beneficiaries", href: "/website/for-beneficiary", img: "/website/images/Beneficiary.png" },
+  { label: "Researchers", href: "/website/for-researcher", img: "/website/images/Researcher.png" },
+  { label: "Government Officials", href: "/website/for-government-official", img: "/website/images/Government-Official.png" },
+] as const;
+
 export function Audiences() {
   return (
-    <section className="wn-section" aria-labelledby="audiences-title">
+    <section className="wn-home-band wn-home-band--tint" aria-labelledby="audiences-title">
       <div className="sa-container">
         <SectionTitle
+          size="display"
           headingId="audiences-title"
           title="Find Schemes for You"
-          description="Schemes of the Department for each group it serves."
+          description="Choose the group you belong to, and see the schemes of the Department for it."
         />
-        <ul className="wn-audiences">
+        <ul className="wn-home-groups">
           {PERSONAS.map((p) => {
             const art = PERSONA_ART[p.id];
             return (
               <li key={p.id}>
-                <Link href={`/website/schemes-services?who=${p.id}`} className="wn-audience">
-                  <span className="wn-audience__mark" aria-hidden>
+                <Link href={`/website/schemes-services?who=${p.id}`} className="wn-home-group">
+                  <span className="wn-home-group__art" aria-hidden>
                     {art ? (
-                      <Image src={art} alt="" width={64} height={64} />
+                      <Image src={art} alt="" width={88} height={88} />
                     ) : (
-                      <Icon name={PERSONA_ICON[p.id] ?? "groups"} size={32} />
+                      <Icon name={PERSONA_ICON[p.id] ?? "groups"} size={40} />
                     )}
                   </span>
-                  <span className="wn-audience__label">{p.label}</span>
-                  <span className="wn-audience__go" aria-hidden>
-                    <Icon name="chevron_right" size={20} />
-                  </span>
+                  <span className="wn-home-group__label">{p.label}</span>
                 </Link>
               </li>
             );
           })}
           <li>
-            <Link href="/website/schemes-services" className="wn-audience wn-audience--all">
-              <span className="wn-audience__mark" aria-hidden>
-                <Icon name="apps" size={32} />
+            <Link href="/website/schemes-services" className="wn-home-group wn-home-group--all">
+              <span className="wn-home-group__art" aria-hidden>
+                <Icon name="apps" size={40} />
               </span>
-              <span className="wn-audience__label">View All Schemes</span>
-              <span className="wn-audience__go" aria-hidden>
-                    <Icon name="chevron_right" size={20} />
-                  </span>
+              <span className="wn-home-group__label">View All Schemes</span>
             </Link>
           </li>
         </ul>
+
+        <section className="wn-home-roles" aria-labelledby="roles-title">
+          <h3 id="roles-title" className="wn-home-roles__title">
+            Information by Role
+          </h3>
+          <ul className="wn-home-roles__list">
+            {ROLES.map((r) => (
+              <li key={r.href}>
+                <Link href={r.href} className="wn-home-role">
+                  <span className="wn-home-role__art" aria-hidden>
+                    <Image src={r.img} alt="" width={56} height={56} />
+                  </span>
+                  <span className="wn-home-role__label">For {r.label}</span>
+                  <span className="wn-home-role__go" aria-hidden>
+                    <Icon name="arrow_forward" size={20} />
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
       </div>
     </section>
   );

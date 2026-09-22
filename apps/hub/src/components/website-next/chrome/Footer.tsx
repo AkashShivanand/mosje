@@ -27,6 +27,8 @@ import { formatDate } from "@/components/website-next/ui/format";
  * chrome: it repeated "Contact" on every page, and the home page carries the
  * helplines where they are the answer.
  */
+const HELP: SiteFooterLink = { label: "Help", href: "/website/help" };
+
 const columns: SiteFooterColumn[] = [
   {
     heading: "About",
@@ -34,8 +36,32 @@ const columns: SiteFooterColumn[] = [
     links: [
       { label: "About the Department", href: "/website/about-us" },
       { label: "Who’s Who", href: "/website/whos-who" },
+      { label: "Directory", href: "/website/directory" },
       { label: "Citizen’s Charter", href: "/website/citizen-charter" },
       { label: "Right to Information", href: "/website/rti" },
+      { label: "CPIO", href: "/website/cpio" },
+    ],
+  },
+  /* The live footer's "Services" and "Resources" columns (home audit
+     2026-09-22): the eleven destinations the first pass of this footer dropped. */
+  {
+    heading: "Services",
+    id: "footer-services",
+    links: [
+      { label: "Schemes", href: "/website/schemes-services" },
+      { label: "Tenders", href: "/website/tenders" },
+      { label: "Vacancies", href: "/website/vacancies" },
+      { label: "Dashboard", href: "/website/dashboard" },
+    ],
+  },
+  {
+    heading: "Resources",
+    id: "footer-resources",
+    links: [
+      { label: "Notices", href: "/website/notices" },
+      { label: "Acts & Rules", href: "/website/acts-rules" },
+      { label: "Annual Reports", href: "/website/annual-reports" },
+      { label: "Publications", href: "/website/publications" },
     ],
   },
   {
@@ -54,7 +80,6 @@ const columns: SiteFooterColumn[] = [
     id: "footer-archives",
     links: [
       { label: "Archived Tenders and Vacancies", href: "/website/archives" },
-      { label: "Annual Reports", href: "/website/annual-reports" },
       { label: "Past Events", href: "/website/events" },
     ],
   },
@@ -64,7 +89,7 @@ const columns: SiteFooterColumn[] = [
     links: [
       { label: "Give Feedback", href: "/website/feedback" },
       { label: "Contact Us", href: "/website/contact-us" },
-      { label: "Help", href: "/website/help" },
+      HELP,
       { label: "Sitemap", href: "/website/sitemap" },
     ],
   },
@@ -78,14 +103,13 @@ const relatedLinks: SiteFooterLink[] = [
   { label: "Open Government Data", href: "https://data.gov.in/", external: true },
 ];
 
-const HELP: SiteFooterLink = { label: "Help", href: "/website/help" };
 
 const policyLinks: SiteFooterLink[] = [
   { label: "Copyright Policy", href: "/website/copyright" },
   { label: "Hyperlinking Policy", href: "/website/hyperlinking-policy" },
   { label: "Terms & Conditions", href: "/website/terms-conditions" },
   { label: "Cookie Policy", href: "/website/cookies" },
-  HELP,
+  { label: "Visitor Analytics", href: "/website/visitor-analytics" },
 ];
 
 const social: SiteFooterSocial[] = [

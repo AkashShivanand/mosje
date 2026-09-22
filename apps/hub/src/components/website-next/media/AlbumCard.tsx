@@ -20,7 +20,18 @@ const DEVANAGARI = /[ऀ-ॿ]/;
  * opens the album's own page (DES-D-06, LAY-07). An album with no photograph
  * gets a neutral tile with its kind's icon (BRD-19).
  */
-export function AlbumCard({ album, eager = false }: { album: Album; /** First row: above the fold, so the LCP image. */ eager?: boolean }) {
+export function AlbumCard({
+  album,
+  eager = false,
+  headingLevel = 2,
+}: {
+  album: Album;
+  /** First row: above the fold, so the LCP image. */
+  eager?: boolean;
+  /** h3 where the album list sits under a section h2 (the home page). */
+  headingLevel?: 2 | 3;
+}) {
+  const Heading = headingLevel === 2 ? "h2" : "h3";
   const contents = albumContents(album);
   const organisation = organisationName(album.organisation);
   return (
@@ -50,11 +61,11 @@ export function AlbumCard({ album, eager = false }: { album: Album; /** First ro
         )}
       </div>
       <div className="wn-album__body">
-        <h2 className="wn-album__title" lang={DEVANAGARI.test(album.title) ? "hi" : undefined}>
+        <Heading className="wn-album__title" lang={DEVANAGARI.test(album.title) ? "hi" : undefined}>
           <Link href={`/website/gallery/${routeSlug(album.slug)}`} className="wn-album__link">
             {album.title}
           </Link>
-        </h2>
+        </Heading>
         <p className="wn-album__meta">
           {album.date && <time dateTime={isoDate(album.date)}>{formatDate(album.date)}</time>}
           {album.date && organisation && <span aria-hidden> · </span>}

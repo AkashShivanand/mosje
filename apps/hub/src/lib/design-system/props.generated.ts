@@ -13640,10 +13640,24 @@ export const GENERATED_PROPS = {
         "description": "Set on the heading so a table/list can point `aria-labelledby` at it."
       },
       {
+        "name": "size",
+        "type": "\"default\" | \"display\"",
+        "required": false,
+        "default": "\"default\"",
+        "description": "Type scale. `default` is the UI scale a portal screen or a docs page needs (Headline 4 over Body 3). `display` is for a landing page's sections, where the heading is the reader's way through a long page (Headline 2 over Body 1)."
+      },
+      {
         "name": "title",
         "type": "string",
         "required": false,
         "description": "The section heading text."
+      },
+      {
+        "name": "tone",
+        "type": "\"default\" | \"inverse\"",
+        "required": false,
+        "default": "\"default\"",
+        "description": "Ground the title sits on. `inverse` for a navy or green band."
       }
     ]
   },

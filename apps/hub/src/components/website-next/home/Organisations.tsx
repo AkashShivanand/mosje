@@ -20,9 +20,10 @@ const GROUPS: { key: OrganisationCategory; title: string }[] = [
  */
 export function Organisations() {
   return (
-    <section className="wn-section" aria-labelledby="orgs-title">
+    <section className="wn-home-band" aria-labelledby="orgs-title">
       <div className="sa-container">
         <SectionTitle
+          size="display"
           headingId="orgs-title"
           title="Organisations & Scheme Portals"
           description="The commissions, corporations and bodies that work with the Department, and the portals of its national schemes."
