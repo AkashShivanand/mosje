@@ -413,7 +413,7 @@
     {
       "node": "56162:1816",
       "where": "Button — Documentation › 04 States",
-      "figma": "Default, hover, pressed, focused and disabled are drawn here as variants so a designer can see them. In CODE there is no state prop — CSS drives hover, active and disabled. Never add one. Loading IS a prop as of 2026-08-27: loading sets aria-busy and disables the control, but it deliberately does not swap the label — pass “Submitting…” yourself.",
+      "figma": "Default, hover, pressed, focused and disabled are drawn here as variants so a designer can see them. In CODE there is no state prop — CSS drives hover, active and disabled. Never add one. Loading IS a prop: it sets aria-busy, disables the control, keeps full opacity with a progress cursor, and draws a spinner in the LEADING ICON'S PLACE. In Figma, never switch Loading and Show Left Icon on together — the code never draws both. The label is not swapped; pass “Submitting…” yourself.",
       "expect": [
         {
           "kind": "text",
@@ -437,6 +437,18 @@
           "file": "packages/design-system/components/actions/button.tsx",
           "pattern": "const isDisabled = disabled === true \\|\\| loading",
           "hint": "Busy implies disabled. A button that says “Submitting…” and still submits is the double-submission this prop exists to prevent."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/actions/button.tsx",
+          "pattern": "iconLeft != null && !loading",
+          "hint": "The spinner REPLACES the left icon. Figma cannot express an inverse boolean, so the page tells the designer instead; if the code ever draws both, this sentence becomes false."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/actions/button.css",
+          "pattern": "\\.ds-btn\\[aria-busy=\"true\"\\]:disabled[\\s\\S]{0,120}cursor: progress",
+          "hint": "Busy keeps full opacity and shows a progress cursor rather than the disabled wash."
         }
       ]
     },
