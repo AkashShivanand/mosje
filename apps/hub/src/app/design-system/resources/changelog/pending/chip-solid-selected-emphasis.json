@@ -1,4 +1,0 @@
-{
-  "kind": "Added",
-  "text": "A SOLID SELECTED CHIP. `Chip` takes `emphasis=\"solid\"`, which fills a selected brand chip with `bg/brand/primary/bolder` and white ink (6.36:1) and darkens to `boldest` on hover. It is for a single-choice row whose selection decides what is shown beneath it — the home page’s Type of Applicant row, where a tonal pill among ten outlined ones did not read as the answer. `subtle` stays the default, so every existing chip is unchanged; `success` and `neutral` ignore it"
-}
