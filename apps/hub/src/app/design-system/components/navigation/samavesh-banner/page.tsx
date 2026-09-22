@@ -268,6 +268,7 @@ export default function SamaveshBannerDocPage(): React.JSX.Element {
             defaultOpen={true}
             sticky={false}
             portals={SPECIMEN_PORTALS}
+            aria-label="SAMAVESH Portal Directory — Specimen"
           />
         </div>
       </section>
@@ -286,7 +287,7 @@ export default function SamaveshBannerDocPage(): React.JSX.Element {
             <div key={a.id}>
               <p style={eyebrowStyle}>{a.eyebrow}</p>
               <div style={a.open ? openFrameStyle : closedFrameStyle}>
-                <SamaveshBanner sticky={false} {...a.props} />
+                <SamaveshBanner sticky={false} {...a.props} aria-label={`SAMAVESH Portal Directory — ${a.eyebrow}`} />
               </div>
               <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)", fontSize: "var(--sa-type-body-2-size)", lineHeight: "var(--sa-type-body-2-lh)" }}>
                 {a.caption}
@@ -451,7 +452,7 @@ export default function SamaveshBannerDocPage(): React.JSX.Element {
       {/* ── Variants & the research behind them ── */}
       <section style={sectionStyle} aria-labelledby="variants-heading">
         <h2 id="variants-heading" style={h2Style}>
-          Band tones, and why the default fails contrast on purpose
+          Band Tones, and Why the Default Is Dark
         </h2>
         <p style={proseStyle}>
           {
@@ -475,8 +476,8 @@ export default function SamaveshBannerDocPage(): React.JSX.Element {
             </thead>
             <tbody>
               {[
-                ["light (default)", "#ffffff on #ff671f", "2.91 \u2717", "59.8", "fails both", "fails WCAG, passes APCA"],
-                ["dark", "#0e1114 on #ff671f", "6.50 \u2713", "48.9", "passes WCAG only", "passes both"],
+                ["light", "#ffffff on #ff671f", "2.91 \u2717", "59.8", "fails both", "fails WCAG, passes APCA"],
+                ["dark (default)", "#0e1114 on #ff671f", "6.50 \u2713", "48.9", "passes WCAG only", "passes both"],
                 ["tint", "#0e1114 on #fff2ed", "17.29 \u2713", "99.1", "passes both", "passes both"],
               ].map((row) => (
                 <tr key={row[0]}>
@@ -496,8 +497,8 @@ export default function SamaveshBannerDocPage(): React.JSX.Element {
             trade-off is visible rather than arguable. */}
         <div style={{ marginTop: "var(--sa-stack-32)", display: "flex", flexDirection: "column", gap: "var(--sa-stack-24)" }}>
           {([
-            ["light", "Default. Matches Figma. 2.91:1 \u2014 fails WCAG 2. Best APCA score on this ground (Lc 59.8)."],
-            ["dark", "Compliant on the saffron band: 6.50:1. APCA Lc 48.9 \u2014 headline only, not body."],
+            ["dark", "Default. Compliant on the saffron band: 6.50:1. APCA Lc 48.9 \u2014 headline only, not body."],
+            ["light", "Opt-in only. 2.91:1 \u2014 fails WCAG 2. Best APCA score on this ground (Lc 59.8). The default until 2026-09-22."],
             ["tint", "Clears both standards for body text: 17.29:1, APCA Lc 99.1. Saffron becomes the accent."],
           ] as const).map(([tone, note]) => (
             <div key={tone}>
@@ -513,7 +514,7 @@ export default function SamaveshBannerDocPage(): React.JSX.Element {
                 <span style={{ fontWeight: "var(--sa-font-weight-regular)", color: "var(--sa-text-neutral-subtle)" }}>{note}</span>
               </p>
               <div style={{ borderRadius: "var(--sa-shape-16)", border: "1px solid var(--sa-border-neutral-subtle)", overflow: "hidden" }}>
-                <SamaveshBanner tone={tone} sticky={false} portals={SPECIMEN_PORTALS} />
+                <SamaveshBanner tone={tone} sticky={false} portals={SPECIMEN_PORTALS} aria-label={`SAMAVESH Portal Directory — Tone ${tone}`} />
               </div>
             </div>
           ))}
@@ -551,7 +552,7 @@ export default function SamaveshBannerDocPage(): React.JSX.Element {
         </h3>
         <p style={proseStyle}>
           {
-            "APCA was removed from WCAG 3 consideration in 2023 and was only ever exploratory content; WCAG 3\u2019s contrast algorithm is still undecided and no Recommendation is expected before roughly 2028. WCAG 2.1/2.2 AA remains the enforceable standard, and GIGW 3.0 binds this estate to it. The default tone is therefore a recorded NON-CONFORMANCE chosen for reference fidelity and perceptual legibility \u2014 not a conformance argument. It is entry 8 in the divergence register at docs/guidelines/README.md, and `tone=\"tint\"` is the one-word remedy if an audit challenges it."
+            "APCA was removed from WCAG 3 consideration in 2023 and was only ever exploratory content; WCAG 3\u2019s contrast algorithm is still undecided and no Recommendation is expected before roughly 2028. WCAG 2.1/2.2 AA remains the enforceable standard, and GIGW 3.0 binds this estate to it. The light tone is therefore a recorded NON-CONFORMANCE, and since 2026-09-22 it is no longer the default: `dark` (6.50:1) is. It is entry 8 in the divergence register at docs/guidelines/README.md, and `tone=\"tint\"` clears both standards."
           }
         </p>
       </section>

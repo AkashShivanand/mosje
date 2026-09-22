@@ -144,3 +144,22 @@
     outline-offset: var(--sa-focus-offset);
   }
 }
+
+/* The editor is a focusable, editable <pre>, and it drew no focus indicator at all
+   (WCAG 2.4.7). The panel clips its overflow, so the ring sits INSIDE the edge, and
+   on the dark editor ground it is the light inner-ring token, not the blue one.
+   `!important` because react-live writes `outline: none` inline. */
+.playground-code .prism-code:focus-visible {
+  /* Longhands, not the shorthand: `!important` would read as a fourth value to
+     check:focus-ring, and the inline `outline: none` needs beating on all three. */
+  /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
+  outline-width: var(--sa-focus-width) !important;
+  outline-style: solid !important;
+  outline-color: var(--sa-focus-ringInner) !important;
+  outline-offset: calc(var(--sa-focus-offset) * -2);
+}
+@media (forced-colors: active) {
+  .playground-code .prism-code:focus-visible {
+    outline-color: Highlight !important;
+  }
+}

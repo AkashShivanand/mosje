@@ -105,6 +105,14 @@ export interface AccessibilityBarProps {
   device?: AccessibilityBarDevice;
   /** Notified whenever the reader changes the font scale (0.9 – 1.2). */
   onFontScaleChange?: (scale: number) => void;
+  /**
+   * The bar's region name. A page has one bar, so the default is right in
+   * production; a page that shows several (documentation, a comparison) must give
+   * each its own, because two landmarks with the same role and name cannot be told
+   * apart in a screen reader's landmark list.
+   * @default "Accessibility toolbar"
+   */
+  label?: string;
   className?: string;
 }
 
@@ -132,6 +140,7 @@ export function AccessibilityBar({
   maxWidth,
   device = "auto",
   onFontScaleChange,
+  label = "Accessibility toolbar",
   className,
 }: AccessibilityBarProps): React.JSX.Element {
   /* The bar no longer OWNS the scale — `font-scale.ts` does, and it applies the
@@ -144,7 +153,7 @@ export function AccessibilityBar({
   }, [scale, onFontScaleChange]);
 
   return (
-    <div className={cn("sa-abar", `layout-${layout}`, `device-${device}`, className)} role="region" aria-label="Accessibility toolbar">
+    <div className={cn("sa-abar", `layout-${layout}`, `device-${device}`, className)} role="region" aria-label={label}>
       <div className="sa-abar__in" style={maxWidth ? { maxWidth } : undefined}>
         <a className="sa-abar__gov" href={govLink.href} target="_blank" rel="noreferrer">
           {govLink.flagSrc && (

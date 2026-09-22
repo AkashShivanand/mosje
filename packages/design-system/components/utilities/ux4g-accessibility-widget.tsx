@@ -283,6 +283,35 @@ function nameSectionToggles(): void {
   apply();
 }
 
+/**
+ * Stop the panel's section heads announcing as page banners.
+ *
+ * Each of the panel's five sections opens with a bare `<header>`. A header that
+ * is not inside `<main>` or a sectioning element is a `banner` landmark, and the
+ * panel lives in a `role="dialog"` appended to `<body>` — so every page of the
+ * estate carried SIX banners: the masthead and these five. A screen reader's
+ * landmark list offered five "banner" entries leading into a closed widget, and
+ * axe reported `landmark-no-duplicate-banner` on every page that loads it.
+ *
+ * `role="none"` is a permitted role for `<header>` (ARIA in HTML). It removes the
+ * wrong landmark and nothing else: the heading text, its visual, the controls
+ * beneath it and the vendor's own behaviour are untouched. Like
+ * `nameSectionToggles`, this corrects semantics; it suppresses nothing, so
+ * `accessibility-entry-point.md` rule 7 is not engaged.
+ */
+function unbannerSectionHeads(): void {
+  let attempts = 0;
+  const apply = (): void => {
+    const heads = document.querySelectorAll(".ux4g-accessibility-uwaw header:not([role])");
+    if (heads.length === 0) {
+      if (attempts++ < 20) window.setTimeout(apply, 100);
+      return;
+    }
+    heads.forEach((h) => h.setAttribute("role", "none"));
+  };
+  apply();
+}
+
 export interface UX4GAccessibilityWidgetProps {
   /** Override the widget script URL (e.g. to pin a version or self-host). */
   src?: string;
@@ -320,6 +349,7 @@ export function UX4GAccessibilityWidget({
       document.dispatchEvent(new Event("DOMContentLoaded", { bubbles: true, cancelable: true }));
       if (isMacPlatform()) relabelMacShortcut();
       nameSectionToggles();
+      unbannerSectionHeads();
     });
     document.body.appendChild(script);
     // Intentionally not removed on unmount — the widget is a page-level,
@@ -340,6 +370,7 @@ export function UX4GAccessibilityWidget({
   React.useEffect(() => {
     if (typeof document === "undefined") return;
     nameSectionToggles();
+    unbannerSectionHeads();
   }, []);
 
   React.useEffect(() => {

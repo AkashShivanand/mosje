@@ -34,8 +34,8 @@
 // See .claude/rules/component-authoring.md §12.
 //
 // PROPERTY COVERAGE — every Figma property is mapped or its absence is explained.
-//   Tone         (variant)  -> tone            Light -> "light" (the DEFAULT, and
-//                              omitted from the snippet) · Dark -> "dark" ·
+//   Tone         (variant)  -> tone            Dark -> "dark" (the DEFAULT, and
+//                              omitted from the snippet) · Light -> "light" ·
 //                              Tint -> "tint". Exhaustive: the set has no fourth.
 //   State        (variant)  -> defaultOpen     Closed -> omitted · Open -> set
 //                              (uncontrolled; pass `isOpen` + `onToggle` instead
@@ -135,13 +135,13 @@ const subline = instance.getString("Subline");
 const drawerTitle = instance.getString("Drawer title");
 
 /*
- * Both variant axes, mapped exhaustively. `Light` and `Closed` are the component's
- * own defaults, so they emit nothing — a snippet that spelled out `tone="light"`
+ * Both variant axes, mapped exhaustively. `Dark` and `Closed` are the component's
+ * own defaults, so they emit nothing — a snippet that spelled out `tone="dark"`
  * would teach an agent to pass the default explicitly everywhere.
  */
 const tone = instance.getEnum("Tone", {
-  Light: "",
-  Dark: '\n  tone="dark"',
+  Light: '\n  tone="light"',
+  Dark: "",
   Tint: '\n  tone="tint"',
 });
 

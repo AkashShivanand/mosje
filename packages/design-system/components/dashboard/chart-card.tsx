@@ -141,7 +141,9 @@ export function ChartCard({
        card growing a prop for every such need. `title` and `children` are the
        card's own and are excluded from the section attributes above. */
     <section {...rest} className={cn("ds-chart-card", className)} style={style}>
-      <header className="ds-chart-card__head">
+            {/* A div, not a <header>: outside <main> a header is a `banner` landmark,
+          and a dashboard of cards read as a page with a dozen banners. */}
+      <div className="ds-chart-card__head">
         <div className="ds-chart-card__titles">
           <Heading className="ds-chart-card__title">{title}</Heading>
           {subtitle && <p className="ds-chart-card__subtitle">{subtitle}</p>}
@@ -154,7 +156,7 @@ export function ChartCard({
             )}
           </div>
         )}
-      </header>
+      </div>
       {/* KEYED ON WHAT IS BEING SHOWN, so React remounts the body when the card
           moves between loading, a state and its content — and the crossfade in
           the stylesheet gets something to fade. Without the key the swap is a

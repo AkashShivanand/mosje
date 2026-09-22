@@ -631,7 +631,7 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
             the panel and adds a fresh start under what is already there. That
             is what makes three icons in one corner safe.
           */}
-          <header className="ds-chatbot__header">
+          <div className="ds-chatbot__header">
             <ChatbotMascot className="ds-chatbot__brand-mark" size={40} />
             <span className="ds-chatbot__brand">
               <h2 className="ds-chatbot__title" id={titleId}>
@@ -690,7 +690,7 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
             >
               <Icon name="close" size={20} />
             </button>
-          </header>
+          </div>
 
           <div className="ds-chatbot__log" ref={logRef}>
             <div

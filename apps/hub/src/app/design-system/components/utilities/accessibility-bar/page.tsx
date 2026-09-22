@@ -195,13 +195,13 @@ export default function AccessibilityBarPage(): React.JSX.Element {
                   type: "do",
                   label:
                     "Keep the skip link the first interactive element, pointing at a real #main-content landmark on the page.",
-                  preview: <AccessibilityBarPreview />,
+                  preview: <AccessibilityBarPreview label="Accessibility Toolbar — Do" />,
                 },
                 {
                   type: "dont",
                   label:
                     "Don't surface the same property in both the bar and the widget's floating button. One property, one visible door: text size is the bar's, contrast and spacing are the widget's, and the floating button is hidden — not unmounted — where the bar already offers the entry.",
-                  preview: <AccessibilityBarFontSizePreview />,
+                  preview: <AccessibilityBarFontSizePreview label="Accessibility Toolbar — Don't" />,
                 },
               ]}
             />

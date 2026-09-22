@@ -120,6 +120,13 @@ export const GENERATED_PROPS = {
         "description": "Top-left \"Government of India\" link."
       },
       {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "default": "\"Accessibility toolbar\"",
+        "description": "The bar's region name. A page has one bar, so the default is right in production; a page that shows several (documentation, a comparison) must give each its own, because two landmarks with the same role and name cannot be told apart in a screen reader's landmark list."
+      },
+      {
         "name": "language",
         "type": "{ label?: string; /** BCP-47 tag of the LABEL's own language (e.g. \"hi\" for हिंदी) so a screen reader voices it correctly. */ lang?: string; onClick?: () => void } | false",
         "required": false,
@@ -13142,8 +13149,8 @@ export const GENERATED_PROPS = {
         "name": "tone",
         "type": "SamaveshBannerTone = \"light\" | \"dark\" | \"tint\"",
         "required": false,
-        "default": "\"light\"",
-        "description": "Band colouring. See `SamaveshBannerTone` — the default fails WCAG 2 contrast deliberately and that deviation is recorded, so do not change it casually."
+        "default": "\"dark\"",
+        "description": "Band colouring. See `SamaveshBannerTone`. The default passes WCAG 2 AA; `light` does not, and is an opt-in recorded deviation."
       },
       {
         "name": "viewAllHref",
