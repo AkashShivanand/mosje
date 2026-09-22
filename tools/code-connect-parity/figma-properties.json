@@ -1577,8 +1577,20 @@
   "Carousel": {
     "nodeId": "57548:1159",
     "captured": "2026-09-22",
-    "note": "Figma publishes the controls; code publishes the carousel. Current is read so the template can be checked against the master, but it maps to no prop — the component holds its own position. Placement (added 2026-09-22) maps to the controls prop: Overlay is the navy pill a full-width banner carries.",
+    "note": "Figma publishes the controls; code publishes the carousel. Rebuilt 2026-09-22: 42 variants from the Arrow, Rotation, Dot and Counter parts. Placement maps to controls; Autoplay Running and Paused both map to autoPlay; Pagination and Current describe what the component derives from its children. The Dot 3–6 booleans draw how many slides there are — the children decide that in code, so they map to no prop.",
     "properties": {
+      "Dot 3": {
+        "type": "BOOLEAN"
+      },
+      "Dot 4": {
+        "type": "BOOLEAN"
+      },
+      "Dot 5": {
+        "type": "BOOLEAN"
+      },
+      "Dot 6": {
+        "type": "BOOLEAN"
+      },
       "Placement": {
         "type": "VARIANT",
         "variantOptions": [
@@ -1590,7 +1602,15 @@
         "type": "VARIANT",
         "variantOptions": [
           "Off",
-          "On"
+          "Running",
+          "Paused"
+        ]
+      },
+      "Pagination": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Dots",
+          "Counter"
         ]
       },
       "Current": {
@@ -1599,11 +1619,18 @@
           "1",
           "2",
           "3",
-          "4"
+          "4",
+          "5",
+          "6"
         ]
       }
     },
-    "deliberatelyOmitted": []
+    "deliberatelyOmitted": [
+      "Dot 3",
+      "Dot 4",
+      "Dot 5",
+      "Dot 6"
+    ]
   },
   "LanguageSwitcher": {
     "nodeId": "57596:752",

@@ -16,7 +16,8 @@ const instance = figma.selectedInstance;
  */
 const autoPlay = instance.getEnum("Autoplay", {
   Off: "off",
-  On: "on",
+  Running: "on",
+  Paused: "on",
 });
 
 const placement = instance.getEnum("Placement", {
@@ -24,11 +25,24 @@ const placement = instance.getEnum("Placement", {
   Overlay: "overlay",
 });
 
+/**
+ * `Pagination` is not a prop either: the component draws dots up to six slides and
+ * the counter past them, so the choice follows the number of children. `Paused` is
+ * a moment in an auto-rotating carousel, not a different carousel, so it maps to
+ * `autoPlay` like `Running`.
+ */
+const pagination = instance.getEnum("Pagination", {
+  Dots: "dots",
+  Counter: "counter",
+});
+
 const current = instance.getEnum("Current", {
   "1": "1",
   "2": "2",
   "3": "3",
   "4": "4",
+  "5": "5",
+  "6": "6",
 });
 
 export default {
@@ -39,6 +53,7 @@ export default {
       ${placement === "overlay" ? figma.code`controls="overlay"` : ""}
       showDots
     >
+      {/* ${pagination === "counter" ? "seven or more slides" : "two to six slides"}, current ${current} */}
       <Slide />
     </Carousel>
   `,
