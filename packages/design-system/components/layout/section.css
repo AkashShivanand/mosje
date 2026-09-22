@@ -102,6 +102,7 @@
   .ds-section-title--display .ds-section-title__heading {
     font-size: var(--sa-type-headline-2-size);
     line-height: var(--sa-type-headline-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
   .ds-section-title--display .ds-section-title__description {
