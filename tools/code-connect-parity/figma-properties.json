@@ -1577,7 +1577,7 @@
   "Carousel": {
     "nodeId": "57548:1159",
     "captured": "2026-09-22",
-    "note": "Figma publishes the controls; code publishes the carousel. Rebuilt 2026-09-22: 42 variants from the Arrow, Rotation, Dot and Counter parts. Placement maps to controls; Autoplay Running and Paused both map to autoPlay; Pagination and Current describe what the component derives from its children. The Dot 3–6 booleans draw how many slides there are — the children decide that in code, so they map to no prop.",
+    "note": "Figma publishes the controls; code publishes the carousel. Optimised 2026-09-22 to 4 variants (Placement × Pagination) with a Rotation switch and exposed nested parts: the current dot, Pause/Play, arrow size and state are set on the parts. Rotation maps to autoPlay; Placement to controls; Pagination is derived from the children in code. The Dot 3–6 switches draw the slide count, which the children decide, so they map to no prop.",
     "properties": {
       "Dot 3": {
         "type": "BOOLEAN"
@@ -1591,6 +1591,9 @@
       "Dot 6": {
         "type": "BOOLEAN"
       },
+      "Rotation": {
+        "type": "BOOLEAN"
+      },
       "Placement": {
         "type": "VARIANT",
         "variantOptions": [
@@ -1598,30 +1601,11 @@
           "Overlay"
         ]
       },
-      "Autoplay": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Off",
-          "Running",
-          "Paused"
-        ]
-      },
       "Pagination": {
         "type": "VARIANT",
         "variantOptions": [
           "Dots",
           "Counter"
-        ]
-      },
-      "Current": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6"
         ]
       }
     },
