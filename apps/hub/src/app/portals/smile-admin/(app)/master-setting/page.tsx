@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { StatPill } from "@/components/smile-admin/data/stat-pill";
 import { MASTER_TABS } from "@/lib/smile-admin/masters";
-import { DataTable, Icon, type DataTableColumn } from "@mosje/design-system";
+import { Chip, DataTable, Icon, type DataTableColumn } from "@mosje/design-system";
 
 type Row = Record<string, string>;
 
@@ -66,29 +66,21 @@ export default function MasterSettingsPage() {
         <StatPill label="Master tables" value={MASTER_TABS.length} icon="settings" tone="success" />
       </div>
 
-      {/* The tab rail wraps rather than scrolls: ten tabs do not fit one row at
-          1440, and a rail that scrolls sideways hides the tabs at its end. */}
-      <div role="tablist" aria-label="Master tables" className="flex flex-wrap gap-xs">
-        {MASTER_TABS.map((t) => {
-          const active = t.id === tabId;
-          return (
-            <button
-              key={t.id}
-              type="button"
-              role="tab"
-              aria-selected={active}
-              onClick={() => setTabId(t.id)}
-              className={
-                active
-                  ? "inline-flex items-center gap-xs rounded-md bg-primary px-md py-xs text-label-1 font-semibold text-white"
-                  : "inline-flex items-center gap-xs rounded-md border border-stroke-200 bg-white px-md py-xs text-label-1 text-ink-muted shadow-xs hover:border-stroke-300 hover:text-ink"
-              }
-            >
-              {t.label}
-              {t.locked ? <Icon name="lock" size={16} aria-hidden /> : null}
-            </button>
-          );
-        })}
+      {/* Ten master tables do not fit one row at 1440, and every one must stay
+          visible — so a wrapping row of design-system Chips, not a tab rail that
+          scrolls or folds the tables at its end out of sight. */}
+      <div role="group" aria-label="Master tables" className="flex flex-wrap gap-xs">
+        {MASTER_TABS.map((t) => (
+          <Chip
+            key={t.id}
+            emphasis="solid"
+            selected={t.id === tabId}
+            onSelectedChange={() => setTabId(t.id)}
+            leadingIcon={t.locked ? <Icon name="lock" size={16} aria-label="Locked" /> : undefined}
+          >
+            {t.label}
+          </Chip>
+        ))}
       </div>
 
       <div className="rounded-lg border border-stroke-200 bg-white p-md shadow-xs">

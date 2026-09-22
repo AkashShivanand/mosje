@@ -39,9 +39,9 @@ export default function UsersPage() {
       key: "actions",
       header: "Actions",
       render: (u: UserRecord) => (
-        <button type="button" onClick={() => toggleUser(u.id)} className="font-semibold text-navy hover:underline">
+        <Button appearance="text" size="sm" nowrap onClick={() => toggleUser(u.id)}>
           {u.active ? "Disable" : "Enable"}
-        </button>
+        </Button>
       ),
     },
   ];

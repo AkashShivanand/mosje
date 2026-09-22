@@ -5,7 +5,7 @@ import Link from "next/link";
 import { PortalPageHeader, SearchInput } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtDate } from "@/lib/nhapoa/case-helpers";
-import { Icon , Card} from "@mosje/design-system";
+import { Icon, Card, Button } from "@mosje/design-system";
 
 export default function QueryLogPage() {
   const { state, resolveQuery } = useNhapoa();
@@ -41,7 +41,7 @@ export default function QueryLogPage() {
                   <td className="px-5 py-4 max-w-[360px]"><span className="line-clamp-2 text-ink">{x.subject}</span></td>
                   <td className="px-5 py-4 text-ink-muted">{fmtDate(x.at)}</td>
                   <td className="px-5 py-4"><span className={`inline-flex rounded-full px-2.5 py-0.5 text-label-2 font-semibold ${x.status === "RESOLVED" ? "bg-approve-bg text-approve-fg" : "bg-await-bg text-await-fg"}`}>{x.status === "RESOLVED" ? "Resolved" : "Open"}</span></td>
-                  <td className="px-5 py-4 text-right">{x.status === "OPEN" ? <button type="button" onClick={() => resolveQuery(x.id)} className="rounded-lg border border-line px-3 py-1.5 text-label-2 font-semibold text-navy hover:bg-navy/5">Mark Resolved</button> : <span className="text-body-3 text-ink-hint">—</span>}</td>
+                  <td className="px-5 py-4 text-right">{x.status === "OPEN" ? <Button variant="neutral" appearance="outlined" size="sm" nowrap onClick={() => resolveQuery(x.id)}>Mark Resolved</Button> : <span className="text-body-3 text-ink-hint">—</span>}</td>
                 </tr>
               ))}
             </tbody>

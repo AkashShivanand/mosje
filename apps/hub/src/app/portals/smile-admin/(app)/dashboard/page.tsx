@@ -27,7 +27,7 @@ import {
   SURVEY_ACTIVITY,
   SYSTEM_USERS_ALL,
 } from "@/lib/smile-admin/mock-data";
-import { Card, CardBody, CardHeader, CardTitle, Icon, IndiaMap, SectionTitle } from "@mosje/design-system";
+import { Card, CardBody, CardHeader, CardTitle, Icon, IndiaMap, SectionTitle, SegmentedControl } from "@mosje/design-system";
 
 const TABS = [
   { id: "identified", label: "Identified" },
@@ -211,21 +211,12 @@ export default function DashboardPage() {
               Heat map across India · click a state to drill down
             </p>
           </div>
-          <div className="inline-flex rounded-md border border-stroke-200 bg-white p-1 shadow-xs">
-            {TABS.map((t) => (
-              <button
-                key={t.id}
-                onClick={() => setTab(t.id)}
-                className={`rounded-sm px-md py-1 text-label-1 transition-colors ${
-                  tab === t.id
-                    ? "bg-primary text-white shadow-xs"
-                    : "text-ink-muted hover:bg-neutral-100 hover:text-ink"
-                }`}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
+          <SegmentedControl
+            ariaLabel="Measure"
+            options={TABS.map((t) => ({ value: t.id, label: t.label }))}
+            value={tab}
+            onChange={setTab}
+          />
         </div>
         <CardBody className="grid grid-cols-1 gap-lg p-lg lg:grid-cols-[1.4fr_1fr]">
           <div className="relative overflow-hidden rounded-md border border-stroke-100 bg-gradient-to-br from-primary-50/50 to-primary-50/10 p-md">

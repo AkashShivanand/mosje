@@ -51,7 +51,7 @@ export default function UsersPage() {
                 <td className="px-5 py-4 text-ink">{ROLES[u.role as Exclude<RoleId, "citizen">]?.label ?? u.role}</td>
                 <td className="px-5 py-4 text-ink-muted">{[u.district, u.state].filter(Boolean).join(", ") || "—"}</td>
                 <td className="px-5 py-4"><span className={`inline-flex rounded-full px-2.5 py-0.5 text-label-2 font-semibold ${u.active ? "bg-approve-bg text-approve-fg" : "bg-slate-100 text-slate-500"}`}>{u.active ? "Active" : "Disabled"}</span></td>
-                <td className="px-5 py-4 text-right"><button type="button" onClick={() => toggleUser(u.id)} className="rounded-lg border border-line px-3 py-1.5 text-label-2 font-semibold text-navy hover:bg-navy/5">{u.active ? "Disable" : "Enable"}</button></td>
+                <td className="px-5 py-4 text-right"><Button variant="neutral" appearance="outlined" size="sm" nowrap onClick={() => toggleUser(u.id)}>{u.active ? "Disable" : "Enable"}</Button></td>
               </tr>
             ))}
           </tbody>

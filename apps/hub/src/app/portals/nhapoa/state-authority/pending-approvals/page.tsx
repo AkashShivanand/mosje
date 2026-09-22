@@ -1,12 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { Icon, Modal, Textarea, Card, Button } from "@mosje/design-system";
+import { Icon, Modal, Textarea, Card, Button, Tabs } from "@mosje/design-system";
 import { PortalPageHeader, SearchInput, Field, TextInput, StatusPill } from "@/components/nhapoa/ui";
 import { SlaPill, PriorityBadge } from "@/components/nhapoa/case-views";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtDate, fmtINR, priorityOf } from "@/lib/nhapoa/case-helpers";
-import { cn } from "@/lib/nhapoa/utils";
 import type { Case } from "@/lib/nhapoa/store/types";
 
 type Tab = "all" | "urgent" | "escalated";
@@ -58,12 +57,17 @@ export default function PendingApprovalsPage() {
 
       <SearchInput placeholder="Search by ID, citizen name, category…" value={q} onChange={(e) => setQ(e.target.value)} className="mb-4 max-w-2xl" />
 
-      <div className="mb-5 flex flex-wrap gap-2">
-        {tabs.map((t) => (
-          <button key={t.key} type="button" onClick={() => setTab(t.key)} className={cn("rounded-lg border px-4 py-2 text-label-1 font-semibold transition-colors", tab === t.key ? "border-navy bg-navy text-white" : "border-line text-ink-muted hover:bg-black/5")}>
-            {t.label} ({t.count})
-          </button>
-        ))}
+      <div className="mb-5">
+        <Tabs
+          idBase="sa-pending"
+          ariaLabel="Approval type"
+          indicator="pill"
+          track="none"
+          size="s"
+          tabs={tabs.map((t) => ({ id: t.key, label: `${t.label} (${t.count})` }))}
+          active={Math.max(0, tabs.findIndex((t) => t.key === tab))}
+          onChange={(i) => setTab(tabs[i]!.key)}
+        />
       </div>
 
       {filtered.length === 0 ? (

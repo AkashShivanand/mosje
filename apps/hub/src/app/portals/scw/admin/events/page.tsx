@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { TableShell, StaticPager, PortalPageHeader, SearchInput } from "@/components/scw/ui";
 import { EVENTS, EVENTS_TOTAL } from "@/lib/scw/mock-data";
-import { Icon, Button } from "@mosje/design-system";
+import { Icon, IconButton, Button } from "@mosje/design-system";
 
 const COLUMNS = [
   { key: "sno", label: "S.No" },
@@ -46,12 +46,7 @@ export default function EventsPage() {
               {e.address}
             </td>
             <td className="px-6 py-4">
-              <button
-                aria-label="Event actions"
-                className="rounded-md p-1.5 text-ink-muted hover:bg-black/5"
-              >
-                <Icon name="more_vert" size={16} />
-              </button>
+              <IconButton icon={<Icon name="more_vert" size={16} />} aria-label="Event actions" tooltip variant="neutral" appearance="text" size="sm" />
             </td>
           </tr>
         ))}

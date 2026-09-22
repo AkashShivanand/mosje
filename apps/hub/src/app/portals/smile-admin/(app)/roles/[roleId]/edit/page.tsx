@@ -72,8 +72,10 @@ export default function RoleEditPage() {
               <div key={group.group} className="overflow-hidden rounded-md border border-stroke-200">
                 <header className="flex items-center justify-between bg-neutral-50 px-md py-sm">
                   <div className="text-label-3 uppercase text-ink-muted">{group.group}</div>
-                  <button
-                    className="text-label-1 text-info-600 hover:underline"
+                  <Button
+                    appearance="text"
+                    size="sm"
+                    nowrap
                     onClick={() => {
                       const allOn = group.permissions.every((p) => p.granted);
                       const next = matrix.map((g, idx) =>
@@ -82,8 +84,8 @@ export default function RoleEditPage() {
                       setMatrix(next);
                     }}
                   >
-                    Toggle all
-                  </button>
+                    Toggle All
+                  </Button>
                 </header>
                 <ul className="divide-y divide-stroke-100">
                   {group.permissions.map((p, pi) => (

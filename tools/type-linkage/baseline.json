@@ -56,8 +56,8 @@
     "weight": 0,
     "hindi-unmarked": 0,
     "style-mixed": 3,
-    "style-weight": 222,
-    "style-weight-unset": 173
+    "style-weight": 217,
+    "style-weight-unset": 172
   },
   "files": {
     "apps/hub/src/app/design-system/components/brand/org-logo/org-logo-docs.css": {
@@ -252,8 +252,8 @@
       "weight": 0,
       "hindi-unmarked": 0,
       "style-mixed": 0,
-      "style-weight": 31,
-      "style-weight-unset": 4
+      "style-weight": 27,
+      "style-weight-unset": 3
     },
     "apps/hub/src/app/portals/smile-admin/smile-admin.css": {
       "size-off-ramp": 0,
@@ -507,7 +507,7 @@
       "weight": 0,
       "hindi-unmarked": 0,
       "style-mixed": 0,
-      "style-weight": 9,
+      "style-weight": 8,
       "style-weight-unset": 1
     },
     "apps/hub/src/components/website/data-mode.css": {

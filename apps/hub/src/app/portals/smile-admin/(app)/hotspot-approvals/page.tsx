@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { HOTSPOT_FORMS, type HotspotForm, type HotspotStatus } from "@/lib/smile-admin/mock-data";
-import { Badge, Button, WorklistScreen, type WorklistColumn } from "@mosje/design-system";
+import { Badge, Button, Tabs, WorklistScreen, type WorklistColumn } from "@mosje/design-system";
 
 const TABS = [
   { id: "Hotspot", label: "Hotspot forms" },
@@ -72,24 +72,16 @@ export default function HotspotApprovalsPage() {
       title="Hotspot Approvals"
       meta="Review the Implementing Agency hotspot declarations — the sub-locations recorded against each survey-location type — and the re-inspections filed against them."
       actions={
-        <div role="tablist" aria-label="Form type" className="inline-flex gap-xs rounded-lg border border-stroke-200 bg-white p-xs shadow-xs">
-          {TABS.map((t) => (
-            <button
-              key={t.id}
-              role="tab"
-              type="button"
-              aria-selected={tab === t.id}
-              onClick={() => setTab(t.id)}
-              className={
-                tab === t.id
-                  ? "rounded-md bg-primary px-md py-xs text-label-1 font-semibold text-white"
-                  : "rounded-md px-md py-xs text-label-1 text-ink-muted hover:bg-neutral-100 hover:text-ink"
-              }
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
+        <Tabs
+          idBase="hotspot-form"
+          ariaLabel="Form type"
+          indicator="pill"
+          track="none"
+          size="s"
+          tabs={TABS.map((t) => ({ id: t.id, label: t.label }))}
+          active={Math.max(0, TABS.findIndex((t) => t.id === tab))}
+          onChange={(i) => setTab(TABS[i]!.id)}
+        />
       }
       filters={
         <label htmlFor="hotspot-status" className="flex items-center gap-xs text-label-2 text-ink-muted">

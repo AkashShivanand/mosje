@@ -6,7 +6,7 @@ import {
 } from "@/components/scw/ui";
 import { ADMIN_USERS, USERS_TOTAL } from "@/lib/scw/mock-data";
 import { AddUserDrawer } from "./add-user-drawer";
-import { Icon } from "@mosje/design-system";
+import { Icon, IconButton } from "@mosje/design-system";
 
 const COLUMNS = [
   { key: "name", label: "Name" },
@@ -34,18 +34,8 @@ export default function UserManagementPage() {
             <td className="px-6 py-4 text-ink-muted">{u.role}</td>
             <td className="px-6 py-4">
               <div className="flex items-center gap-2">
-                <button
-                  aria-label="Edit user"
-                  className="rounded-md p-1.5 text-amber-500 hover:bg-amber-50"
-                >
-                  <Icon name="edit" size={16} />
-                </button>
-                <button
-                  aria-label="Delete user"
-                  className="rounded-md p-1.5 text-red-500 hover:bg-red-50"
-                >
-                  <Icon name="delete" size={16} />
-                </button>
+                <IconButton icon={<Icon name="edit" size={16} />} aria-label="Edit user" tooltip variant="neutral" appearance="text" size="sm" />
+                <IconButton icon={<Icon name="delete" size={16} />} aria-label="Delete user" tooltip variant="danger" appearance="text" size="sm" />
               </div>
             </td>
           </tr>

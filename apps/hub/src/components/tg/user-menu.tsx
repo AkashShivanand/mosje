@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { useTg } from "@/lib/tg/store/store";
-import { Icon } from "@mosje/design-system";
+import { Button, Icon } from "@mosje/design-system";
 
 /** Compact user chip + logout for the admin shell topbar. */
 export function UserMenu({ name, roleLabel, loginHref }: { name: string; roleLabel: string; loginHref: string }) {
@@ -27,18 +27,18 @@ export function UserMenu({ name, roleLabel, loginHref }: { name: string; roleLab
           <div className="text-body-3 text-ink-muted">{roleLabel}</div>
         </div>
       </div>
-      <button
-        type="button"
-        aria-label="Log out"
+      <Button
+        variant="neutral"
+        appearance="outlined"
+        size="sm"
+        iconLeft={<Icon name="logout" size={16} />}
         onClick={() => {
           logout();
           router.push(loginHref);
         }}
-        className="flex items-center gap-1.5 rounded-lg border border-line px-3 py-2 text-label-2 font-semibold text-ink-muted transition-colors hover:bg-black/5"
       >
-        <Icon name="logout" size={16} aria-hidden="true" />
-        <span className="hidden sm:inline">Logout</span>
-      </button>
+        Logout
+      </Button>
     </div>
   );
 }

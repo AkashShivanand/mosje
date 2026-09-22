@@ -12,7 +12,7 @@ import { DrillDownFilters, Status, DashboardFooter, pillClass, type Filters } fr
 // basePath is applied automatically by Next.js to <Link>/<Image>/router —
 // keep in-app paths basePath-relative (empty prefix) so it is not doubled.
 const BASE = "/portals/pm-ajay";
-import { Sparkline } from "@mosje/design-system";
+import { Button, Chip, Icon, Search, Sparkline, Tabs } from "@mosje/design-system";
 import { Donut, Funnel, LineArea, C } from "./charts";
 import {
   FY,
@@ -207,14 +207,15 @@ function SchemeMod({
         <div className="ud-prog-track"><div className="ud-prog-fill" style={{ width: cfg.prog.pct + "%", background: progColor(cfg.prog.pct) }} /></div>
       </div>
       <div className="ud-scheme-actions">
-        <button type="button" className={"ud-scheme-scope" + (active ? " on" : "")} onClick={onScope}
-          aria-pressed={active} aria-label={active ? `Clear ${cfg.label} filter` : `Filter whole dashboard to ${cfg.label}`}>
-          <span className="material-symbols-rounded" aria-hidden="true">{active ? "filter_alt_off" : "filter_alt"}</span>
-          {active ? "Filtering — clear" : "Filter dashboard"}
-        </button>
-        <button type="button" className="ud-scheme-link" onClick={onOpen} aria-label={`Open all 10 ${cfg.label} indicators`}>
-          10 indicators<span className="material-symbols-rounded" aria-hidden="true">arrow_forward</span>
-        </button>
+        <Button size="sm" appearance="outlined" nowrap onClick={onScope}
+          aria-pressed={active} aria-label={active ? `Clear ${cfg.label} filter` : `Filter whole dashboard to ${cfg.label}`}
+          iconLeft={<Icon name={active ? "filter_alt_off" : "filter_alt"} size={16} />}>
+          {active ? "Filtering — Clear" : "Filter Dashboard"}
+        </Button>
+        <Button size="sm" appearance="text" nowrap onClick={onOpen} aria-label={`Open all 10 ${cfg.label} indicators`}
+          iconRight={<Icon name="arrow_forward" size={16} />}>
+          10 Indicators
+        </Button>
       </div>
     </div>
   );
@@ -463,24 +464,34 @@ export function UnifiedDashboard() {
                 <div className="ud-scope">
                   <span className="lbl">Showing</span>
                   {scopeChips.map((c) => (
-                    <span className="ud-chip act" key={c.k}>
-                      <span className="k">{c.k}</span>{c.v}
-                      <button type="button" onClick={c.clear} aria-label={"Clear " + c.k}><span className="material-symbols-rounded" aria-hidden="true">close</span></button>
-                    </span>
+                    <Chip key={c.k} size="sm" selected onDismiss={c.clear} dismissLabel={"Clear " + c.k}>
+                      {c.k}: {c.v}
+                    </Chip>
                   ))}
-                  <button type="button" className="clearall" onClick={reset}><span className="material-symbols-rounded" aria-hidden="true">restart_alt</span>Reset</button>
+                  <Button appearance="text" size="sm" iconLeft={<Icon name="restart_alt" size={16} />} onClick={reset}>Reset</Button>
                 </div>
               ) : (
                 <span className="ud-scope-empty">Showing <b>All India</b> · FY {filters.fy} · All schemes</span>
               )}
               <div className="ud-viewbar-r">
                 <div className="ud-export" role="group" aria-label="Export">
-                  <button type="button" onClick={exportCSV}><span className="material-symbols-rounded" aria-hidden="true">download</span>CSV</button>
-                  <button type="button" onClick={printView}><span className="material-symbols-rounded" aria-hidden="true">print</span>Print / PDF</button>
+                  <Button variant="neutral" appearance="text" size="sm" iconLeft={<Icon name="download" size={16} />} onClick={exportCSV}>CSV</Button>
+                  <Button variant="neutral" appearance="text" size="sm" iconLeft={<Icon name="print" size={16} />} onClick={printView}>Print / PDF</Button>
                 </div>
-                <div className="ud-toggle" role="tablist" aria-label="Dashboard view">
-                  <button type="button" role="tab" aria-selected={view === "dash"} className={view === "dash" ? "on" : ""} onClick={() => setView("dash")}><span className="material-symbols-rounded" aria-hidden="true">dashboard</span>Dashboard</button>
-                  <button type="button" role="tab" aria-selected={view === "all"} className={view === "all" ? "on" : ""} onClick={() => setView("all")}><span className="material-symbols-rounded" aria-hidden="true">grid_view</span>All Indicators (60)</button>
+                <div className="ud-toggle">
+                  <Tabs
+                    idBase="ud-view"
+                    ariaLabel="Dashboard view"
+                    indicator="pill"
+                    track="none"
+                    size="s"
+                    tabs={[
+                      { id: "dash", label: "Dashboard", icon: "dashboard" },
+                      { id: "all", label: "All Indicators (60)", icon: "grid_view" },
+                    ]}
+                    active={view === "dash" ? 0 : 1}
+                    onChange={(i) => setView(i === 0 ? "dash" : "all")}
+                  />
                 </div>
               </div>
             </div>
@@ -493,10 +504,8 @@ export function UnifiedDashboard() {
             {view === "all" ? (
               <div className="ud-allwrap">
                 <div className="ud-allbar">
-                  <div className="ud-search">
-                    <span className="material-symbols-rounded" aria-hidden="true">search</span>
-                    <input type="text" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search 60 indicators…" aria-label="Search indicators" />
-                    {q && <button type="button" className="clr" onClick={() => setQ("")} aria-label="Clear search"><span className="material-symbols-rounded" aria-hidden="true">close</span></button>}
+                  <div className="ud-searchbox">
+                    <Search value={q} onChange={(e) => setQ(e.target.value)} onClear={() => setQ("")} placeholder="Search 60 indicators…" aria-label="Search indicators" size="sm" />
                   </div>
                   <div className="ud-allbar-r">
                     <label className="ud-fld"><span>Group</span>
@@ -538,7 +547,9 @@ export function UnifiedDashboard() {
                     <span className="material-symbols-rounded" aria-hidden="true">search_off</span>
                     <div className="tt">No indicators match “{q}”</div>
                     <div className="ds">Try a different term or clear the filters.</div>
-                    <button type="button" onClick={() => { setQ(""); setGrpFilter("all"); }}>Clear search &amp; filters</button>
+                    <div className="mt-2">
+                      <Button appearance="outlined" size="sm" onClick={() => { setQ(""); setGrpFilter("all"); }}>Clear Search &amp; Filters</Button>
+                    </div>
                   </div>
                 )}
               </div>
@@ -602,7 +613,7 @@ export function UnifiedDashboard() {
                   <div className="ud-tile" style={{ gridColumn: "span 7" }}>
                     <div className="ud-tile-h"><span className="t"><span className="material-symbols-rounded" aria-hidden="true">public</span>{scope ? `${scope.name} — District Utilisation` : "State-wise Utilisation"}</span>
                       {scope ? (
-                        <button type="button" className="ud-back" onClick={() => (district ? set("district", "All Districts") : set("state", "All India"))}><span className="material-symbols-rounded" aria-hidden="true">arrow_back</span>{district ? "All districts" : "All states"}</button>
+                        <Button appearance="text" size="sm" nowrap iconLeft={<Icon name="arrow_back" size={16} />} onClick={() => (district ? set("district", "All Districts") : set("state", "All India"))}>{district ? "All Districts" : "All States"}</Button>
                       ) : (
                         <span className="meta">Click a state to drill into districts</span>
                       )}

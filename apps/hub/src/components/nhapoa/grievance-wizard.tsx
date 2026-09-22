@@ -144,28 +144,21 @@ export function GrievanceWizard({
                 <TextInput value={d.firNumber} onChange={(e) => set("firNumber", e.target.value)} placeholder="e.g. PS/2026/145" />
               </Field>
             )}
-            <div role="group" aria-label="Registration of Grievance By">
-              <p className="mb-3 text-label-3 uppercase text-ink-hint">Registration of Grievance By</p>
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                {SUBMISSION_ROLES.map((r) => {
-                  const iconName = ROLE_ICON[r.id as keyof typeof ROLE_ICON];
-                  const active = d.role === r.id;
-                  return (
-                    <button
-                      type="button"
-                      key={r.id}
-                      aria-pressed={active}
-                      onClick={() => set("role", r.id)}
-                      className={`rounded-xl border p-4 text-left transition-colors ${active ? "border-navy bg-brandwash" : "border-line hover:border-navy/30"}`}
-                    >
-                      <span className={`flex h-9 w-9 items-center justify-center rounded-lg ${active ? "bg-navy text-white" : "bg-navy/10 text-navy"}`}><Icon name={iconName} size={20} /></span>
-                      <p className="mt-3 text-title-3 text-ink">{r.label}</p>
-                      <p className="mt-1 text-body-3 text-ink-muted">{r.desc}</p>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+            <RadioGroup
+              legend="Registration of Grievance By"
+              required
+              name="role"
+              variant="card"
+              orientation="vertical"
+              options={SUBMISSION_ROLES.map((r) => ({
+                value: r.id,
+                label: r.label,
+                description: r.desc,
+                icon: <Icon name={ROLE_ICON[r.id as keyof typeof ROLE_ICON]} size={20} />,
+              }))}
+              value={d.role || undefined}
+              onChange={(v) => set("role", v as ComplainantRole)}
+            />
             <div>
               <p className="mb-3 text-label-3 uppercase text-ink-hint">Identity Verification</p>
               <Field label="Mobile No." required>
@@ -218,9 +211,14 @@ export function GrievanceWizard({
             <Field label="Description" required className="sm:col-span-2"><Textarea rows={4} value={d.description} onChange={(e) => set("description", e.target.value)} placeholder="Describe what happened in your own words" /></Field>
             <div className="sm:col-span-2">
               <p className="mb-1.5 text-label-1 text-ink">Supporting Documents</p>
-              <button type="button" onClick={() => set("documents", [...d.documents, `evidence-${d.documents.length + 1}.pdf`])} className="flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-navy/30 bg-white px-4 py-6 text-label-1 font-semibold text-navy hover:bg-navy/5">
-                <Icon name="cloud_upload" size={20} /> Add a document (max 5 MB · PDF/JPG/PNG)
-              </button>
+              <Button
+                appearance="outlined"
+                fullWidth
+                iconLeft={<Icon name="cloud_upload" size={20} />}
+                onClick={() => set("documents", [...d.documents, `evidence-${d.documents.length + 1}.pdf`])}
+              >
+                Add a Document (Max 5 MB · PDF/JPG/PNG)
+              </Button>
               {d.documents.map((f) => <p key={f} className="mt-2 rounded bg-surface-muted px-3 py-1.5 text-body-3 text-ink-muted">{f}</p>)}
             </div>
           </StepForm>

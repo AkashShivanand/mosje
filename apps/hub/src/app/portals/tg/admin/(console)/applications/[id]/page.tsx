@@ -3,12 +3,11 @@
 import * as React from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { Icon, Modal, Textarea, Card, Button } from "@mosje/design-system";
+import { Icon, Modal, Textarea, Card, Button, Tabs } from "@mosje/design-system";
 import { StatusPill, SlaBadge, cnField } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import { ROLES } from "@/lib/tg/roles";
 import { canTransition, ROLE_ACTS_ON, type Stage } from "@/lib/tg/store/types";
-import { cn } from "@/lib/tg/utils";
 
 /** The "approve/forward" target for the current stage. */
 function forwardTarget(stage: Stage): { to: Stage; label: string } | null {
@@ -135,40 +134,22 @@ export default function ApplicationDetailPage() {
         </div>
       </Card>
 
-      {/* Tabs (WAI-ARIA APG Tabs pattern: roving focus + arrow keys) */}
-      <div role="tablist" aria-label="Application sections" className="mb-4 flex gap-1 border-b border-line">
-        {TABS.map((t) => (
-          <button
-            key={t.id}
-            type="button"
-            role="tab"
-            id={`tab-${t.id}`}
-            aria-selected={tab === t.id}
-            aria-controls={`panel-${t.id}`}
-            tabIndex={tab === t.id ? 0 : -1}
-            onClick={() => setTab(t.id)}
-            onKeyDown={(e) => {
-              if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
-              e.preventDefault();
-              const i = TABS.findIndex((x) => x.id === tab);
-              const next = TABS[(i + (e.key === "ArrowRight" ? 1 : TABS.length - 1)) % TABS.length];
-              if (!next) return;
-              setTab(next.id);
-              document.getElementById(`tab-${next.id}`)?.focus();
-            }}
-            className={cn(
-              "border-b-2 px-4 py-2.5 text-label-1 font-semibold transition-colors",
-              tab === t.id ? "border-navy text-navy" : "border-transparent text-ink-muted hover:text-navy",
-            )}
-          >
-            {t.label}
-          </button>
-        ))}
+      {/* The design system's Tabs: roving focus and arrow keys, as the hand-built
+          tablist here implemented for itself. */}
+      <div className="mb-4">
+        <Tabs
+          idBase="tg-application"
+          ariaLabel="Application sections"
+          divider
+          tabs={TABS.map((t) => ({ id: t.id, label: t.label }))}
+          active={Math.max(0, TABS.findIndex((t) => t.id === tab))}
+          onChange={(i) => setTab(TABS[i]!.id)}
+        />
       </div>
 
       {/* Applicant details / documents tab panels */}
       {tab === "details" ? (
-        <div role="tabpanel" id="panel-details" aria-labelledby="tab-details" className="grid gap-6 md:grid-cols-2">
+        <div role="tabpanel" id="tg-application-panel-details" aria-labelledby="tg-application-tab-details" tabIndex={0} className="grid gap-6 md:grid-cols-2">
           <Card className="p-5">
             <h3 className="mb-2 text-label-3 uppercase text-ink-hint">Self-Perceived Identity</h3>
             <dl className="divide-y divide-line">
@@ -204,7 +185,7 @@ export default function ApplicationDetailPage() {
           </div>
         </div>
       ) : (
-        <div role="tabpanel" id="panel-documents" aria-labelledby="tab-documents">
+        <div role="tabpanel" id="tg-application-panel-documents" aria-labelledby="tg-application-tab-documents" tabIndex={0}>
         <Card className="divide-y divide-line">
           {app.documents.map((d) => (
             <div key={d.filename} className="flex items-center gap-3 px-5 py-3.5">
@@ -213,9 +194,9 @@ export default function ApplicationDetailPage() {
                 <div className="truncate text-body-2 font-medium text-ink">{d.type}</div>
                 <div className="text-body-3 text-ink-hint">{d.filename} • {d.sizeKb} KB</div>
               </div>
-              <button type="button" className="ml-auto inline-flex items-center gap-1 text-label-1 font-semibold text-navy hover:underline">
-                <Icon name="download" size={16} /> View
-              </button>
+              <Button appearance="text" size="sm" nowrap className="ml-auto" iconLeft={<Icon name="download" size={16} />}>
+                View
+              </Button>
             </div>
           ))}
         </Card>
