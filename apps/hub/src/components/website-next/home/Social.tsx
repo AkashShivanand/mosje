@@ -16,7 +16,12 @@ import { SOCIAL } from "./facts";
  */
 export function Social() {
   return (
-    <Band as="section" tone="muted" spacing="xl" aria-labelledby="social-title">
+    <Band
+      as="section"
+      tone="default"
+      spacing="xl"
+      aria-labelledby="social-title"
+    >
       <SectionTitle
         size="display"
         headingId="social-title"

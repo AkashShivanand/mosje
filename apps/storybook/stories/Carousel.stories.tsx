@@ -63,6 +63,7 @@ const meta = {
     autoPlay: { control: "boolean" },
     interval: { control: { type: "number", min: 2, max: 30 } },
     showDots: { control: "boolean" },
+    controls: { control: "inline-radio", options: ["below", "overlay"] },
     children: { control: false },
   },
   decorators: [
@@ -88,6 +89,27 @@ export const Playground: Story = {};
  */
 export const AutoRotating: Story = {
   args: { autoPlay: true, interval: 4 },
+};
+
+/**
+ * **`controls="overlay"` — a full-width banner.** The controls ride the slide's
+ * bottom-end corner in a solid pill, so a banner does not spend a row of the first
+ * screen on them and they stay attached to what they move. The pill is solid
+ * rather than a translucent scrim, so its contrast never depends on the photo.
+ * Use it for a banner of images; keep `below` for slides of text, where the
+ * pill would sit on the words.
+ */
+export const OverlayControls: Story = {
+  args: {
+    autoPlay: true,
+    controls: "overlay",
+    label: "Banners",
+    children: ["var(--sa-bg-brand-primary-boldest)", "var(--sa-bg-brand-primary-bolder)", "var(--sa-bg-neutral-inverse)"].map((c, i) => (
+      <div key={c} style={{ aspectRatio: "3 / 1", background: c, color: "white", display: "grid", placeItems: "center" }}>
+        Banner {i + 1} of 3
+      </div>
+    )),
+  },
 };
 
 /**

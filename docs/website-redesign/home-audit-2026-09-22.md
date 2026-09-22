@@ -165,3 +165,26 @@ The layout is unchanged except for the banner and ticker added at the top. The o
 - **`ActionTile` has no Figma master yet**; it is recorded in design.md.
 - **The SAMAVESH band's default tone still fails contrast** (2.91:1) wherever another page uses it.
 - **Source-register typos are shown as published**, for example "31st Sugust".
+
+## 7. Live-site order, rotating banner, prototype Hindi — 22 Sep 2026
+
+The page now follows the live dosje.gov.in home order: banner → About with Ministers and the statistics strip → Offerings → What's New → Organisations → Nasha Mukt Bharat → Recent Documents → personas → Events and Media → social → Need Support with helplines. Two additions are kept for stated reasons:
+- **The DBIM announcements ticker** (§A.4.1 iii).
+- **A compact search-and-tasks band** (NAV-01: the live site gives a citizen no starting task). It has no photograph, since the banner carries the imagery.
+
+**Banner.**
+- It advances every 7 seconds, as the live site's does. Pause, hold-on-hover, hold-on-focus and reduced motion all come from `Carousel`.
+- A new design-system option, `Carousel controls="overlay"`, puts the controls in a solid pill in the banner's bottom-right corner. They sit clear of the CCPS banner's text.
+- On phones the controls return to a row below, because the banner is only about 125px tall there.
+
+**Hindi (mock, by instruction).**
+- `lib/bhashini/prototype-hi.ts` holds Hindi for the home page and its menus. The translation route uses it only while Bhashini is not configured.
+- Fixed in the translation provider: a page with more than 100 strings was refused (HTTP 413), and the provider then re-requested it in a loop — 70+ requests in 8 seconds. It now sends batches of up to 100 and asks for each string once per language. After the fix the page makes 2 requests, both succeed, and the masthead, headings, tiles, About and Ministers switch to Hindi.
+
+**CCPS (mock, by instruction).** The stored copy of the live banner is the first slide (`lib/website-next/ccps.ts`).
+
+**Checks:**
+- `npm run check` passes.
+- axe finds 0 violations on `/website` at 1440 and 375.
+- There is no horizontal scroll at 320px or at 200% zoom.
+- Pictures: `pass4-*.jpg`.

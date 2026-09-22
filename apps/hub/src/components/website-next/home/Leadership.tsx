@@ -1,8 +1,14 @@
 import { T } from "@/components/i18n/translation-provider";
 import Image from "next/image";
 import Link from "next/link";
-import { Band, Icon, SectionTitle } from "@mosje/design-system";
-import { MANDATE } from "./facts";
+import {
+  Band,
+  Icon,
+  SectionTitle,
+  FactStrip,
+  buttonClasses,
+} from "@mosje/design-system";
+import { GLANCE, MANDATE } from "./facts";
 
 /**
  * About the Department: its mandate in its own words, its Ministers, and its
@@ -66,7 +72,7 @@ const DIVISIONS = [
 
 export function Leadership() {
   return (
-    <Band as="section" tone="muted" spacing="xl" aria-labelledby="about-title">
+    <Band as="section" tone="brand" spacing="xl" aria-labelledby="about-title">
       <div className="wn-home-about">
         <div className="wn-home-about__copy">
           <SectionTitle
@@ -74,7 +80,9 @@ export function Leadership() {
             headingId="about-title"
             title={<T>About the Department</T>}
           />
-          <p className="wn-home-about__lead">{MANDATE}</p>
+          <p className="wn-home-about__lead">
+            <T>{MANDATE}</T>
+          </p>
           <ul className="wn-home-links">
             {LINKS.map((l) => (
               <li key={l.href}>
@@ -100,8 +108,12 @@ export function Leadership() {
                     height={200}
                   />
                 </span>
-                <span className="wn-home-minister__name">{m.name}</span>
-                <span className="wn-home-minister__role">{m.role}</span>
+                <span className="wn-home-minister__name">
+                  <T>{m.name}</T>
+                </span>
+                <span className="wn-home-minister__role">
+                  <T>{m.role}</T>
+                </span>
               </li>
             ))}
           </ul>
@@ -123,6 +135,30 @@ export function Leadership() {
             </ul>
           </nav>
         </div>
+      </div>
+      {/* The live page's statistics strip sits under About; so does this one. */}
+      <div className="wn-home-glance">
+        <FactStrip
+          ariaLabel="The Department at a Glance"
+          items={GLANCE.map((g) => ({
+            icon: g.icon,
+            value: g.value,
+            label: g.label,
+            note: g.note,
+          }))}
+        />
+        <Link
+          href="/website/dashboard"
+          className={buttonClasses(
+            "primary",
+            "outlined",
+            "md",
+            "wn-home-glance__cta",
+          )}
+        >
+          <T>View Dashboard</T>
+          <Icon name="arrow_forward" size={20} aria-hidden />
+        </Link>
       </div>
     </Band>
   );

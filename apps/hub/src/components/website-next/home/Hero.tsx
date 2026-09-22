@@ -1,21 +1,15 @@
 import { T } from "@/components/i18n/translation-provider";
-import Image from "next/image";
 import Link from "next/link";
-import {
-  ActionTile,
-  FactStrip,
-  Icon,
-  buttonClasses,
-} from "@mosje/design-system";
-import { GLANCE } from "./facts";
+import { HeroSearchInput } from "./HeroSearchInput";
+import { ActionTile, Icon, buttonClasses } from "@mosje/design-system";
 
 /**
- * The home page's first screen: what a citizen can DO here (issue NAV-01), and
- * the three figures the Department publishes about its reach (DBIM statistics
- * strip), under the banner carousel and the announcements ticker. The search
- * is a plain GET form rather than the design system's `Search`: `Search` is a
+ * The citizen's starting point (issue NAV-01), in a compact band under the
+ * banner carousel and the announcements ticker — the one addition to the live
+ * home page's structure, because the live page offers no task at all. The
+ * headline and the search share a row; the five tasks follow. The search is a
+ * plain GET form rather than the design system's `Search`: `Search` is a
  * controlled client component, and this one must work before any script loads.
- * Five tasks as ActionTiles, then the figures as a FactStrip.
  */
 const TASKS = [
   {
@@ -53,43 +47,27 @@ export function Hero() {
                 transgender persons and every group the Department serves.
               </T>
             </p>
-            <form
-              className="wn-home-hero__search"
-              action="/website/search"
-              method="get"
-              role="search"
-            >
-              <label htmlFor="hero-q" className="sr-only">
-                <T>Search schemes, services and documents</T>
-              </label>
-              <div className="wn-home-hero__field">
-                <Icon name="search" size={24} aria-hidden />
-                <input
-                  id="hero-q"
-                  name="q"
-                  type="search"
-                  autoComplete="off"
-                  spellCheck={false}
-                  placeholder="Search schemes and services"
-                />
-                <button
-                  type="submit"
-                  className={buttonClasses("primary", "filled", "md")}
-                >
-                  <T>Search</T>
-                </button>
-              </div>
-            </form>
           </div>
-          <div className="wn-home-hero__media">
-            <Image
-              src="/website/images/samavesh-citizens-4x3.jpg"
-              alt="People of different ages and communities, including a wheelchair user, standing together"
-              fill
-              sizes="(min-width: 1024px) 480px, 100vw"
-              className="wn-home-hero__img"
-            />
-          </div>
+          <form
+            className="wn-home-hero__search"
+            action="/website/search"
+            method="get"
+            role="search"
+          >
+            <label htmlFor="hero-q" className="sr-only">
+              <T>Search schemes, services and documents</T>
+            </label>
+            <div className="wn-home-hero__field">
+              <Icon name="search" size={24} aria-hidden />
+              <HeroSearchInput />
+              <button
+                type="submit"
+                className={buttonClasses("primary", "filled", "md")}
+              >
+                <T>Search</T>
+              </button>
+            </div>
+          </form>
         </div>
 
         <nav aria-label="Common tasks" className="wn-home-tasks">
@@ -108,31 +86,6 @@ export function Hero() {
             ))}
           </ul>
         </nav>
-
-        <div className="wn-home-glance">
-          <FactStrip
-            ariaLabel="The Department at a Glance"
-            items={GLANCE.map((g) => ({
-              icon: g.icon,
-              value: g.value,
-              label: g.label,
-              note: g.note,
-            }))}
-          />
-          <Link
-            href="/website/dashboard"
-            className={buttonClasses(
-              "primary",
-              "outlined",
-              "md",
-              "wn-home-glance__cta",
-              "inverse",
-            )}
-          >
-            <T>View Dashboard</T>
-            <Icon name="arrow_forward" size={20} aria-hidden />
-          </Link>
-        </div>
       </div>
     </section>
   );

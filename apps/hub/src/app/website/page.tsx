@@ -64,11 +64,13 @@ const JSON_LD = {
 };
 
 /**
- * The home page. Task first; then what is new and the numbers to call; who it
- * is for, what is offered, and who leads the Department; the campaign; the
- * record (reports, events, press); its organisations; where to follow it.
- * Every section the live home page carries, in the order a citizen needs it
- * (independent review, 22 Sep 2026: helplines and Ministers moved up).
+ * The home page, in the live dosje.gov.in order: banner carousel, About with
+ * the Ministers and the statistics strip, Offerings with What's New, the
+ * Organisations, the national campaign, Recent Documents, the personas, the
+ * Activity Corner, social media, and Need Support with the helplines.
+ * Two additions, each for a stated reason: the DBIM announcements ticker
+ * (§A.4.1 iii), and the task band under it (issue NAV-01: the live page
+ * offers a citizen no starting task).
  */
 export default async function Home() {
   return (
@@ -95,16 +97,16 @@ export default async function Home() {
             }))}
         />
         <Hero />
-        <WhatsNew />
-        <Helplines />
-        <Audiences />
-        <Offerings />
         <Leadership />
+        <Offerings />
+        <WhatsNew />
+        <Organisations />
         <Campaign />
         <Documents />
+        <Audiences />
         <Activity />
-        <Organisations />
         <Social />
+        <Helplines />
       </main>
       <WebsiteFooter />
     </>

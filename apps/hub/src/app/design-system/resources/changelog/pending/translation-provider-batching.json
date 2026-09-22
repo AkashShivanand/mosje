@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "Translation provider: a page registering more than 100 strings was refused by /api/bhashini/translate (413) and then re-requested it in a loop — over 70 requests in 8 seconds on the website home page. Strings now go in batches of at most 100, and each is asked for once per language."
+}

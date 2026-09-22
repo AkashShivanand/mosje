@@ -365,4 +365,48 @@
       scroll-behavior: auto;
     }
   }
+
+  /* ── OVERLAY CONTROLS ───────────────────────────────────────────────────
+     A full-width banner: the controls ride the slide's bottom edge in a solid
+     pill on the neutral inverse ground, so every control keeps its contrast
+     whatever the photograph is. Solid, not a translucent scrim — a scrim's
+     contrast is the photograph's to decide. It sits in the bottom-END corner:
+     banners set their words on the left or across the middle, and a centred
+     pill landed on the last line of the CCPS banner's text. The three-zone
+     grid collapses to one row: the pause control leads, arrows and dots follow. */
+  /* From tablet up only. A phone's banner is about 125px tall, and a pill of
+     controls would cover most of it — there the controls stay in the row below. */
+  @media (min-width: 768px) {
+    .ds-carousel--overlay { position: relative; gap: 0; }
+    .ds-carousel--overlay .ds-carousel__controls {
+      position: absolute;
+      inset-inline-end: var(--sa-stack-16);
+      inset-block-end: var(--sa-stack-16);
+      display: flex;
+      align-items: center;
+      gap: var(--sa-inline-4);
+      padding: var(--sa-padding-4);
+      border-radius: var(--sa-shape-full);
+      background-color: var(--sa-bg-neutral-inverse);
+    }
+    .ds-carousel--overlay .ds-carousel__controls-trail { display: none; }
+    .ds-carousel--overlay .ds-carousel__controls-lead { min-height: 0; }
+    .ds-carousel--overlay .ds-carousel__controls-main { flex-wrap: nowrap; gap: var(--sa-inline-4); }
+    .ds-carousel--overlay .ds-carousel__arrow,
+    .ds-carousel--overlay .ds-carousel__play {
+      border-color: transparent;
+      background-color: transparent;
+      color: var(--sa-text-neutral-inverse);
+    }
+    .ds-carousel--overlay .ds-carousel__arrow:hover,
+    .ds-carousel--overlay .ds-carousel__play:hover { background-color: var(--sa-overlay-brand-hover); color: var(--sa-text-neutral-inverse); }
+    .ds-carousel--overlay .ds-carousel__arrow:active,
+    .ds-carousel--overlay .ds-carousel__play:active { background-color: var(--sa-overlay-brand-active); }
+    .ds-carousel--overlay .ds-carousel__dot::before { background-color: var(--sa-border-neutral-inverse-subtle); }
+    .ds-carousel--overlay .ds-carousel__dot:hover::before { background-color: var(--sa-text-neutral-inverse); }
+    .ds-carousel--overlay .ds-carousel__dot--current::before,
+    .ds-carousel--overlay .ds-carousel__dot--current:hover::before { background-color: var(--sa-text-neutral-inverse); }
+    .ds-carousel--overlay :is(.ds-carousel__arrow, .ds-carousel__play, .ds-carousel__dot):focus-visible { outline-color: var(--sa-focus-ringInner); }
+    .ds-carousel--overlay .ds-carousel__counter { color: var(--sa-text-neutral-inverse); }
+  }
 }

@@ -11,21 +11,20 @@ import { HELPLINES } from "./facts";
 
 /**
  * National helplines, tap to call (MAN-07), then the live home page's "Need
- * Support?" — the three numbers that most need to be found, on the key
- * colour's darkest shade, so they read as the most important thing on the page.
+ * Support?" — the three numbers that most need to be found, on the brand tint just
+ * above the footer (a navy band would run into the navy footer).
  */
 export function Helplines() {
   return (
     <Band
       as="section"
-      tone="brandBold"
+      tone="brand"
       spacing="xl"
       id="helplines"
       aria-labelledby="helplines-title"
     >
       <SectionTitle
         size="display"
-        tone="inverse"
         headingId="helplines-title"
         title={<T>National Helplines</T>}
         description={<T>Toll-free from any phone in India.</T>}
@@ -37,14 +36,13 @@ export function Helplines() {
             <ActionTile
               href={`tel:${h.number}`}
               layout="block"
-              tone="inverse"
               value={h.number}
               title={<T>{h.name}</T>}
               description={<T>{h.sub}</T>}
               media={<Icon name={h.icon} size={24} />}
               action={
                 <>
-                  <Icon name="call" size={20} aria-hidden /> Call
+                  <Icon name="call" size={20} aria-hidden /> <T>Call</T>
                 </>
               }
             />
@@ -53,7 +51,9 @@ export function Helplines() {
       </ul>
       <div className="wn-home-support">
         <div>
-          <h3 className="wn-home-support__title">Need Support?</h3>
+          <h3 className="wn-home-support__title">
+            <T>Need Support?</T>
+          </h3>
           <p className="wn-home-support__lead">
             <T>Write to the Department, or lodge a grievance on CPGRAMS.</T>
           </p>
@@ -61,13 +61,7 @@ export function Helplines() {
         <div className="wn-home-support__actions">
           <Link
             href="/website/contact-us"
-            className={buttonClasses(
-              "primary",
-              "filled",
-              "md",
-              undefined,
-              "inverse",
-            )}
+            className={buttonClasses("primary", "filled", "md")}
           >
             <T>Contact Us</T>
           </Link>
@@ -75,13 +69,7 @@ export function Helplines() {
             href="https://pgportal.gov.in/"
             target="_blank"
             rel="noopener noreferrer"
-            className={buttonClasses(
-              "primary",
-              "outlined",
-              "md",
-              undefined,
-              "inverse",
-            )}
+            className={buttonClasses("primary", "outlined", "md")}
           >
             <T>File a Grievance</T>
             <Icon name="open_in_new" size={20} aria-hidden />

@@ -2919,8 +2919,9 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 
 #### Carousel
 **Purpose**: a band of slides the reader moves through — announcements, photographs, a handful of promotional cards.
-**Props**: `children` (each child becomes one slide) · `label` (**required**) · `autoPlay` (default **false**) · `interval` · `showDots`
+**Props**: `children` (each child becomes one slide) · `label` (**required**) · `autoPlay` (default **false**) · `interval` · `showDots` · `controls` (`below` default · `overlay`)
 **Rules**:
+- **`controls="overlay"` is for a full-width banner only.** It puts the controls in a solid neutral-inverse pill in the slide's bottom-end corner (solid, so contrast never depends on the photograph; the corner, because banners set their words left or centre). Below `breakpoint/tablet` the controls return to the row beneath. The website home banner is the one consumer, and it also turns `autoPlay` on at 7s — a DBIM §A.4.1 banner carousel whose slides two to five are otherwise never seen.
 - **Auto-rotation is OFF by default and the default should be respected.** A carousel that moves on its own takes the sentence a citizen is reading away mid-sentence, and it does that most to the slowest readers. WCAG 2.2.2 is met when it is on — pause control, halts on hover and on focus, disabled outright under `prefers-reduced-motion` — but meeting the criterion is not the same as it being a good idea.
 - **Everything essential must ALSO exist outside the carousel.** Slides two onwards are in practice unread: they sit behind an interaction most people never perform.
 - **The scroll-snap track is the source of truth for position.** The component reads the track's scroll offset back, so a swipe and a button press cannot disagree about which slide is current.

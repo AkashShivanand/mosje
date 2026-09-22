@@ -44,6 +44,16 @@ export interface CarouselProps {
   interval?: number;
   /** Show the dot indicators under the track. @default true */
   showDots?: boolean;
+  /**
+   * Where the controls sit. `below` is a row under the slides. `overlay` puts
+   * them in a dark pill on the slide's bottom edge — for a full-width banner,
+   * where a row below costs the first screen its height and detaches the
+   * controls from what they move. The pill is solid, so its contrast does not
+   * depend on the photograph behind it. Below `breakpoint/tablet` the controls
+   * stay in the row, because a phone's banner is too short to carry them.
+   * @default "below"
+   */
+  controls?: "below" | "overlay";
   className?: string;
 }
 
@@ -77,6 +87,7 @@ export function Carousel({
   autoPlay = false,
   interval = 7,
   showDots = true,
+  controls = "below",
   className,
 }: CarouselProps): React.JSX.Element {
   const slides = React.Children.toArray(children).filter(Boolean);
@@ -164,7 +175,7 @@ export function Carousel({
 
   return (
     <section
-      className={cn("ds-carousel", className)}
+      className={cn("ds-carousel", controls === "overlay" && "ds-carousel--overlay", className)}
       aria-roledescription="carousel"
       aria-label={label}
       onMouseEnter={() => setHeld(true)}

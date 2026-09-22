@@ -63,27 +63,29 @@
   .wn-home-hero {
     background: var(--sa-bg-brand-primary-boldest);
     color: var(--sa-on-bg-brand-primary-boldest);
-    padding-block: var(--sa-section-40) var(--sa-section-48);
+    padding-block: var(--sa-section-32) var(--sa-section-40);
   }
-  @media (min-width: 1024px) { .wn-home-hero { padding-block: var(--sa-section-48); } }
-  .wn-home-hero__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sa-stack-32); align-items: center; }
-  @media (min-width: 1024px) { .wn-home-hero__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--sa-inline-64); } }
+  @media (min-width: 1024px) { .wn-home-hero { padding-block: var(--sa-section-40); } }
+  /* Headline and search share a row; the tasks follow. No photograph: the
+     banner above already carries the page's imagery. */
+  .wn-home-hero__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sa-stack-24); align-items: end; }
+  @media (min-width: 1024px) { .wn-home-hero__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--sa-inline-48); } }
   .wn-home-hero__title {
     font-family: var(--sa-font-display);
-    font-size: var(--sa-type-display-4-size);
-    line-height: var(--sa-type-display-4-lh);
+    font-size: var(--sa-type-display-6-size);
+    line-height: var(--sa-type-display-6-lh);
     font-weight: var(--sa-font-weight-displayMedium);
     letter-spacing: var(--sa-type-heading-tracking);
     text-wrap: balance;
   }
   .wn-home-hero__lead {
-    margin-top: var(--sa-stack-16);
+    margin-top: var(--sa-stack-8);
     max-width: var(--sa-container-measure);
     font-size: var(--sa-type-body-1-size);
     line-height: var(--sa-type-body-1-lh);
   }
   /* The search's measure: 640px of field is enough for a scheme's name. */
-  .wn-home-hero__search { margin-top: var(--sa-stack-32); max-width: 640px; }
+  .wn-home-hero__search { max-width: 640px; }
   .wn-home-hero__field {
     display: flex;
     align-items: center;
@@ -110,16 +112,13 @@
   .wn-home-hero__field input:focus { outline: none; }
   .wn-home-hero__field:focus-within { outline: var(--sa-focus-width) solid var(--sa-focus-ringInner); outline-offset: var(--sa-focus-offset); }
   .wn-home-hero__field button { flex: none; }
-  .wn-home-hero__media { position: relative; aspect-ratio: 3 / 2; border-radius: var(--sa-shape-24); overflow: hidden; background: var(--sa-bg-brand-primary-bolder); }
-  .wn-home-hero__img { object-fit: cover; }
-  @media (max-width: 1023px) { .wn-home-hero__media { display: none; } }
 
-  .wn-home-tasks { margin-top: var(--sa-stack-32); }
+  .wn-home-tasks { margin-top: var(--sa-stack-24); }
   .wn-home-tasks ul { display: grid; gap: var(--sa-stack-12); grid-template-columns: repeat(2, minmax(0, 1fr)); }
   @media (min-width: 768px) { .wn-home-tasks ul { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
   @media (min-width: 1024px) { .wn-home-tasks ul { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
 
-  .wn-home-glance { display: grid; gap: var(--sa-stack-16); margin-top: var(--sa-stack-32); }
+  .wn-home-glance { display: grid; gap: var(--sa-stack-16); margin-top: var(--sa-stack-48); }
   @media (min-width: 1024px) { .wn-home-glance { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--sa-inline-32); } }
   .wn-home-glance__cta { justify-self: start; }
 
@@ -148,7 +147,7 @@
   .wn-home-news__main > .wn-home-more,
   .wn-home-news__side > .wn-home-more { margin-top: var(--sa-stack-8); }
   .wn-home-news__aside { display: grid; gap: var(--sa-stack-24); align-content: start; }
-  .wn-home-news__side { padding: var(--sa-padding-24); border-radius: var(--sa-shape-16); background: var(--sa-bg-neutral-subtlest); border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); }
+  .wn-home-news__side { padding: var(--sa-padding-24); border-radius: var(--sa-shape-16); background: var(--sa-bg-neutral-base); border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); }
   .wn-home-news__side-title { margin-bottom: var(--sa-stack-8); font-size: var(--sa-type-title-1-size); line-height: var(--sa-type-title-1-lh); font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-neutral-bolder); }
   .wn-home-news__side .wn-home-news__list { border-top: 0; }
   .wn-home-news__side .wn-home-news__item:last-child { border-bottom: 0; }

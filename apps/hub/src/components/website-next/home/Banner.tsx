@@ -10,9 +10,10 @@ import { getCcpsBanners } from "@/lib/website-next/ccps";
  * Department's own banners, the four the live home page carries. The images hold no text (DBIM: banner text is
  * HTML, never baked in), so each carries a description of what it shows.
  *
- * It does not advance by itself: `Carousel` defaults to still, with previous,
- * next and a dot for each slide, so nothing moves that a reader did not move
- * (WCAG 2.2.2). The live site's carousel auto-advanced.
+ * It advances every seven seconds, as the live site's does, with the
+ * controls on the banner's bottom edge (`controls="overlay"`). WCAG 2.2.2 is
+ * met by the Carousel itself: a visible Pause, rotation held while the
+ * pointer or focus is on it, and no motion at all under reduced motion.
  */
 const SLIDES = [
   {
@@ -37,7 +38,7 @@ export async function Banner() {
   const ccps = await getCcpsBanners();
   return (
     <div className="wn-home-banner">
-      <Carousel label="Banners">
+      <Carousel label="Banners" autoPlay interval={7} controls="overlay">
         {ccps.map((b) => {
           const img = (
             <Image

@@ -122,7 +122,7 @@ export function WhatsNew() {
     }));
 
   return (
-    <Band as="section" tone="default" spacing="xl" aria-labelledby="news-title">
+    <Band as="section" tone="muted" spacing="xl" aria-labelledby="news-title">
       <SectionTitle
         size="display"
         headingId="news-title"

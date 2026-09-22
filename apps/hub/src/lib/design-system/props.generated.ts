@@ -2007,6 +2007,13 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "controls",
+        "type": "\"below\" | \"overlay\"",
+        "required": false,
+        "default": "\"below\"",
+        "description": "Where the controls sit. `below` is a row under the slides. `overlay` puts them in a dark pill on the slide's bottom edge — for a full-width banner, where a row below costs the first screen its height and detaches the controls from what they move. The pill is solid, so its contrast does not depend on the photograph behind it. Below `breakpoint/tablet` the controls stay in the row, because a phone's banner is too short to carry them."
+      },
+      {
         "name": "interval",
         "type": "number",
         "required": false,
