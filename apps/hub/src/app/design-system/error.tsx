@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { Button, Icon } from "@mosje/design-system";
 
 /**
  * The documentation's own error boundary.
@@ -38,9 +39,9 @@ export default function DesignSystemError({
           system is unaffected — the navigation beside this message still works.
         </p>
         <div className="cdp__meta">
-          <button type="button" className="cdp__figma" onClick={reset}>
-            Try again
-          </button>
+          <Button appearance="outlined" size="sm" iconLeft={<Icon name="refresh" size={16} />} onClick={reset}>
+            Try Again
+          </Button>
         </div>
       </header>
     </article>

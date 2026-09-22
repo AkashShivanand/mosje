@@ -2,7 +2,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Icon } from "@mosje/design-system";
+import { Button, Icon, Search } from "@mosje/design-system";
 import { NAV, type NavGroup, type NavItem } from "@/lib/design-system/nav";
 
 const ROOT = "/design-system";
@@ -66,27 +66,14 @@ export function DocsNav(): React.JSX.Element {
     <div className="docs-sidebar__container">
       {/* Quick Filter Search Box */}
       <div className="docs-sidebar__filter">
-        <div className="docs-sidebar__filter-wrap">
-          <Icon name="search" size={16} className="docs-sidebar__filter-icon" />
-          <input
-            type="text"
-            className="docs-sidebar__filter-input"
-            placeholder="Filter components..."
-            value={filterQuery}
-            onChange={(e) => setFilterQuery(e.target.value)}
-            aria-label="Filter documentation links"
-          />
-          {filterQuery && (
-            <button
-              type="button"
-              className="docs-sidebar__filter-clear"
-              onClick={() => setFilterQuery("")}
-              aria-label="Clear filter"
-            >
-              <Icon name="close" size={16} />
-            </button>
-          )}
-        </div>
+        <Search
+          value={filterQuery}
+          onChange={(e) => setFilterQuery(e.target.value)}
+          onClear={() => setFilterQuery("")}
+          placeholder="Filter components..."
+          aria-label="Filter documentation links"
+          size="sm"
+        />
       </div>
 
       <nav className="docs-sidebar__nav" aria-label="Documentation navigation">
@@ -98,24 +85,27 @@ export function DocsNav(): React.JSX.Element {
               key={group.title}
               className={`docs-nav__group${isCollapsed && !filterQuery ? " is-collapsed" : ""}`}
             >
-              <button
-                type="button"
+              <Button
+                variant="neutral"
+                appearance="text"
+                size="sm"
+                fullWidth
                 className="docs-nav__group-header"
                 onClick={() => toggleGroup(group.title)}
                 aria-expanded={!isCollapsed || Boolean(filterQuery)}
+                iconRight={
+                  <Icon
+                    name={isCollapsed && !filterQuery ? "expand_more" : "expand_less"}
+                    size={16}
+                    className="docs-nav__group-chevron"
+                  />
+                }
               >
                 <span className="docs-nav__group-title">
                   {group.title}
-                  <span className="docs-nav__group-count">
-                    ({group.items.length})
-                  </span>
+                  <span className="docs-nav__group-count">({group.items.length})</span>
                 </span>
-                <Icon
-                  name={isCollapsed && !filterQuery ? "expand_more" : "expand_less"}
-                  size={16}
-                  className="docs-nav__group-chevron"
-                />
-              </button>
+              </Button>
 
               {(!isCollapsed || Boolean(filterQuery)) && (
                 <div className="docs-nav__group-items">

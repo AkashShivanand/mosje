@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Tabs } from "@mosje/design-system";
 
 export interface DocsTabsProps {
   tabs: {
@@ -37,84 +38,33 @@ function TabsShell({
   activeTabId: string | null | undefined;
   onTabChange?: (id: string) => void;
 }): React.JSX.Element {
-  const listRef = React.useRef<HTMLDivElement>(null);
-
-  /**
-   * ROVING TAB INDEX NEEDS ARROW KEYS, OR IT IS A TRAP.
-   *
-   * `tabIndex={-1}` on the unselected tabs takes them out of the Tab sequence —
-   * which is correct, and is half of the WAI-ARIA tabs pattern. The other half
-   * is that Left/Right then move between them. Without it a keyboard reader
-   * reaches the selected tab and there is no key, anywhere, that selects
-   * another one: the Design panel is all they will ever see.
-   *
-   * This shipped on 95 of the estate's documentation pages, which means the
-   * Code and Accessibility panels of the design system — including every props
-   * table and every accessibility checklist — were unreachable without a
-   * mouse. WCAG 2.1.1.
-   *
-   * Home/End are part of the same pattern and cost one line each.
+  /*
+   * The design system's Tabs: roving focus, arrow keys, Home and End, selection
+   * following focus — the keyboard model this file used to implement for itself.
+   * `idBase="docs"` keeps the ids the panels below are labelled by.
    */
-  const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    const keys = ["ArrowLeft", "ArrowRight", "Home", "End"];
-    if (!keys.includes(event.key) || !onTabChange) return;
-
-    const current = tabs.findIndex((t) => t.id === activeTabId);
-    if (current < 0) return;
-
-    let next = current;
-    if (event.key === "ArrowLeft") next = (current - 1 + tabs.length) % tabs.length;
-    if (event.key === "ArrowRight") next = (current + 1) % tabs.length;
-    if (event.key === "Home") next = 0;
-    if (event.key === "End") next = tabs.length - 1;
-
-    const target = tabs[next];
-    if (!target) return;
-
-    event.preventDefault();
-    onTabChange(target.id);
-    // Selection follows focus, so the newly selected tab must receive it.
-    // Reading the node from the list rather than holding a ref array keeps this
-    // correct when the tab set changes between renders.
-    const buttons = listRef.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]');
-    buttons?.[next]?.focus();
-  };
-
+  const active = Math.max(0, tabs.findIndex((t) => t.id === activeTabId));
   return (
     <div className="docs-tabs-container">
-      <div
-        className="docs-tabs-list"
-        role="tablist"
-        aria-label="Component documentation"
-        ref={listRef}
-        onKeyDown={onKeyDown}
-      >
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            /*
-             * `id` and `aria-controls` are what tell assistive technology which
-             * panel this tab owns. Without the pair a screen reader announces
-             * "tab" and "tab panel" as unrelated regions, so a reader who moves
-             * to the panel has no way to know which tab produced it.
-             */
-            id={`docs-tab-${tab.id}`}
-            aria-controls={`docs-tabpanel-${tab.id}`}
-            role="tab"
-            aria-selected={activeTabId === tab.id}
-            tabIndex={activeTabId === tab.id ? 0 : -1}
-            onClick={onTabChange ? () => onTabChange(tab.id) : undefined}
-            className={`docs-tabs-trigger ${activeTabId === tab.id ? "active" : ""}`}
-          >
-            {tab.label}
-          </button>
-        ))}
+      <div className="docs-tabs-list">
+        <Tabs
+          idBase="docs"
+          ariaLabel="Component documentation"
+          divider
+          panel
+          tabs={tabs.map((t) => ({ id: t.id, label: t.label }))}
+          active={active}
+          onChange={(i) => {
+            const id = tabs[i]?.id;
+            if (id && onTabChange) onTabChange(id);
+          }}
+        />
       </div>
       <div className="docs-tabs-content">
         {tabs.map((tab) => (
           <div
             key={tab.id}
-            id={`docs-tabpanel-${tab.id}`}
+            id={`docs-panel-${tab.id}`}
             aria-labelledby={`docs-tab-${tab.id}`}
             role="tabpanel"
             /*

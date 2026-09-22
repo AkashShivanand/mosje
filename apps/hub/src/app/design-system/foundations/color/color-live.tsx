@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Chip } from "@mosje/design-system";
 
 /**
  * The two things the web can do that a Figma page cannot.
@@ -59,24 +60,22 @@ export function BrandSwitcher(): React.JSX.Element {
       <span className="color-brandbar__label" id="brandbar-label">
         Repaint this page
       </span>
-      <div className="color-brandbar__options" role="radiogroup" aria-labelledby="brandbar-label">
+      <div className="color-brandbar__options" role="group" aria-labelledby="brandbar-label">
         {BRANDS.map((b) => (
-          <button
+          <Chip
             key={b.id}
-            type="button"
-            role="radio"
-            aria-checked={brand === b.id}
-            className="color-brandbar__option"
-            data-active={brand === b.id ? "true" : undefined}
-            onClick={() => setBrand(b.id)}
+            size="sm"
+            emphasis="solid"
+            selected={brand === b.id}
+            onSelectedChange={() => setBrand(b.id)}
+            /* The dot carries the brand it represents, so it resolves THAT brand's own
+               primary from the [data-brand] block in tokens.css. No hex, no lookup table —
+               the swatch is the system explaining itself. */
+            leadingIcon={<span className="color-brandbar__dot" data-brand={b.id} aria-hidden="true" />}
           >
-            {/* The dot carries the brand it represents, so it resolves THAT brand's own
-                primary from the [data-brand] block in tokens.css. No hex, no lookup table —
-                the swatch is the system explaining itself. */}
-            <span className="color-brandbar__dot" data-brand={b.id} aria-hidden="true" />
             {b.label}
             {b.note ? <span className="color-brandbar__note">{b.note}</span> : null}
-          </button>
+          </Chip>
         ))}
       </div>
       <p className="color-brandbar__hint">

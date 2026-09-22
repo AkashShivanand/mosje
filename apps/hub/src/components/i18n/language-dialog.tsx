@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Modal } from "@mosje/design-system";
+import { Button, Modal } from "@mosje/design-system";
 
 import { LANGUAGES, PROTOTYPE_MODE } from "@/lib/bhashini/languages";
 import { useTranslation } from "./translation-provider";
@@ -45,8 +45,10 @@ export function LanguageDialog({
 }): React.JSX.Element {
   const { lang, setLang, t } = useTranslation();
 
+  // `lg`: two columns of language rows need 640px. At `md` (448px) the second column
+  // overflowed the dialog and was cut off at its edge.
   return (
-    <Modal open={open} onClose={onClose} title={t("Select language")} size="md">
+    <Modal open={open} onClose={onClose} title={t("Select language")} size="lg">
       <p className="lang-dialog__lede">
         {t("Translation is provided by Bhashini, the Government of India's national language platform.")}
       </p>
@@ -65,8 +67,10 @@ export function LanguageDialog({
           const current = l.code === lang;
           return (
             <li key={l.code}>
-              <button
-                type="button"
+              <Button
+                variant="neutral"
+                appearance="outlined"
+                fullWidth
                 className="lang-dialog__option"
                 lang={l.code}
                 dir={l.dir}
@@ -94,7 +98,7 @@ export function LanguageDialog({
                     </span>
                   )
                 )}
-              </button>
+              </Button>
             </li>
           );
         })}

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Icon } from "@mosje/design-system";
+import { Button, Icon } from "@mosje/design-system";
 
 interface TerminalCodeProps {
   title?: string;
@@ -31,24 +31,18 @@ export function TerminalCode({ title = "bash", codeText, children }: TerminalCod
           <span className="terminal-code__dot terminal-code__dot--green" />
         </div>
         <span className="terminal-code__title">{title}</span>
-        <button 
-          type="button" 
-          className="terminal-code__copy" 
+        <Button
+          variant="neutral"
+          appearance="text"
+          tone="inverse"
+          size="sm"
+          className="terminal-code__copy"
           onClick={handleCopy}
           aria-label={copied ? "Copied code" : "Copy code"}
+          iconLeft={<Icon name={copied ? "check" : "content_copy"} size={16} />}
         >
-          {copied ? (
-            <>
-              <Icon name="check" size={16} style={{ color: "var(--sa-text-status-success-base)" }} />
-              <span>Copied!</span>
-            </>
-          ) : (
-            <>
-              <Icon name="content_copy" size={16} />
-              <span>Copy</span>
-            </>
-          )}
-        </button>
+          {copied ? "Copied" : "Copy"}
+        </Button>
       </div>
       <pre className="terminal-code__body" style={{ margin: 0 }}>
         <code>{children}</code>

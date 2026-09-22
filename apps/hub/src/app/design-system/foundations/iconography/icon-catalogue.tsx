@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Icon } from "@mosje/design-system";
+import { Button, Icon } from "@mosje/design-system";
 import { ICON_CATALOGUE } from "./icon-catalogue.data";
 
 /**
@@ -83,8 +83,9 @@ export function IconCatalogue(): React.JSX.Element {
         <ul className="icon-catalogue__grid">
           {shown.map((name) => (
             <li key={name}>
-              <button
-                type="button"
+              <Button
+                variant="neutral"
+                appearance="outlined"
                 className="icon-catalogue__tile"
                 onClick={() => copy(name)}
                 aria-label={`Copy icon name ${name}`}
@@ -94,7 +95,7 @@ export function IconCatalogue(): React.JSX.Element {
                 <span className="icon-catalogue__copied" aria-hidden={copied !== name}>
                   {copied === name ? "Copied" : ""}
                 </span>
-              </button>
+              </Button>
             </li>
           ))}
         </ul>

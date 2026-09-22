@@ -263,38 +263,10 @@
 .docs-tabs-container {
   margin-top: var(--sa-section-48);
 }
+/* Holds the design system's Tabs, which draw the tabs, the underline, the divider and
+   their forced-colors treatment. */
 .docs-tabs-list {
-  display: flex;
-  gap: var(--sa-stack-24);
-  border-bottom: 1px solid var(--sa-border-neutral-subtle);
   margin-bottom: var(--sa-section-48);
-}
-.docs-tabs-trigger {
-  background: none;
-  border: none;
-  padding: var(--sa-padding-12) 0;
-  font-size: var(--sa-type-body-1-size);
-  font-weight: var(--sa-font-weight-semibold);
-  color: var(--sa-text-neutral-subtle);
-  cursor: pointer;
-  position: relative;
-  transition: color 0.2s ease;
-}
-.docs-tabs-trigger:hover {
-  color: var(--sa-text-neutral-base);
-}
-.docs-tabs-trigger.active {
-  color: var(--sa-text-brand-primary-bolder);
-}
-.docs-tabs-trigger.active::after {
-  content: "";
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--sa-border-brand-primary-base);
-  border-radius: var(--sa-shape-2) var(--sa-shape-2) 0 0;
 }
 .docs-tabs-panel {
   animation: fade-in 0.3s ease;
@@ -880,23 +852,10 @@
 }
 
 
-/* ── Docs tabs: forced colours and reduced motion ─────────────────────────────
-   The active tab was signalled only by `background` on an ::after rule and by
-   `color` — both of which Windows High Contrast repaints, leaving NO indication
-   of which tab is open on a page whose Accessibility panel is one of the three.
-   And the panel's enter animation translates, with no reduced-motion path, in a
-   file whose sibling stylesheets all carry one.
+/* ── Docs tabs: reduced motion ────────────────────────────────────────────────
+   The panel's enter animation translates, and the preference is about exactly
+   that. (The tabs' forced-colors treatment is the design system's own now.)
    ========================================================================== */
-@media (forced-colors: active) {
-  .docs-tabs-trigger.active::after {
-    forced-color-adjust: none;
-    background: Highlight;
-  }
-  .docs-tabs-trigger.active {
-    /* A second, redundant cue, because ::after can be suppressed. */
-    border-bottom: 2px solid Highlight;
-  }
-}
 @media (prefers-reduced-motion: reduce) {
   .docs-tabs-panel {
     /* Opacity alone is the reduced path; the translate is what the preference

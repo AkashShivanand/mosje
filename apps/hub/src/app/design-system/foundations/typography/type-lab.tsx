@@ -1,14 +1,17 @@
 "use client";
 
 import * as React from "react";
+import { Button, Icon, RadioGroup, TabPanel, Tabs } from "@mosje/design-system";
 import { ROLES, SURFACES, type Surface } from "./typography-data";
 
 /* ── copy-to-clipboard token chip ─────────────────────────────── */
 function Copy({ text }: { text: string }): React.JSX.Element {
   const [done, setDone] = React.useState(false);
   return (
-    <button
-      type="button"
+    <Button
+      variant="neutral"
+      appearance="text"
+      size="sm"
       className="ty-copy"
       data-done={done || undefined}
       onClick={() => {
@@ -17,33 +20,27 @@ function Copy({ text }: { text: string }): React.JSX.Element {
         window.setTimeout(() => setDone(false), 1100);
       }}
       aria-label={`Copy ${text}`}
+      iconRight={<Icon name={done ? "check" : "content_copy"} size={16} />}
     >
       <code>{text}</code>
-      <span className="ty-copy__icon" aria-hidden="true">{done ? "✓" : "⧉"}</span>
-    </button>
+    </Button>
   );
 }
 
 /* ── surface segmented control ────────────────────────────────── */
 function SurfaceToggle({ surface, onChange }: { surface: Surface; onChange: (s: Surface) => void }): React.JSX.Element {
   return (
-    <div className="ty-toggle" role="radiogroup" aria-label="Surface">
-      {SURFACES.map((s) => (
-        <button
-          key={s.key}
-          type="button"
-          role="radio"
-          aria-checked={surface === s.key}
-          className="ty-seg"
-          data-active={surface === s.key || undefined}
-          data-surface-key={s.key}
-          onClick={() => onChange(s.key)}
-        >
-          <span className="ty-seg__label">{s.label}</span>
-          <span className="ty-seg__note">{s.note}</span>
-        </button>
-      ))}
-    </div>
+    <RadioGroup
+      legend="Surface"
+      hideLegend
+      name="type-surface"
+      variant="card"
+      orientation="vertical"
+      className="ty-toggle"
+      options={SURFACES.map((s) => ({ value: s.key, label: s.label, description: s.note }))}
+      value={surface}
+      onChange={(v) => onChange(v as Surface)}
+    />
   );
 }
 
@@ -233,15 +230,17 @@ export function TokenReference(): React.JSX.Element {
   const [tab, setTab] = React.useState<Prop>("size");
   return (
     <div className="ty-ref">
-      <div className="ty-tabs" role="tablist" aria-label="Token property">
-        {PROP_TABS.map((t) => (
-          <button key={t.key} type="button" role="tab" aria-selected={tab === t.key}
-            className="ty-tab" data-active={tab === t.key || undefined} onClick={() => setTab(t.key)}>
-            {t.label}
-          </button>
-        ))}
-      </div>
-      <RefTable prop={tab} />
+      <Tabs
+        idBase="ty-ref"
+        ariaLabel="Token property"
+        panel
+        tabs={PROP_TABS.map((t) => ({ id: t.key, label: t.label }))}
+        active={Math.max(0, PROP_TABS.findIndex((t) => t.key === tab))}
+        onChange={(i) => setTab(PROP_TABS[i]!.key)}
+      />
+      <TabPanel idBase="ty-ref" tabId={tab}>
+        <RefTable prop={tab} />
+      </TabPanel>
       {tab === "tracking" && (
         <p className="ty-hint">Website tracking is <b>0</b> at every tier. Portal uses negative tracking on the Display tier only (it scales with the fluid size); Headline/Title/Body/Label share one <code>0</code> token each (<code>heading/title/body/label</code>).</p>
       )}

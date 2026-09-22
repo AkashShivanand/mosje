@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Icon } from "@mosje/design-system";
+import { Button, Chip, Icon } from "@mosje/design-system";
 import type { ExplorationStatus, ExplorationSurface } from "@/lib/explorations/registry";
 import { STATUS_TALLY, optionTally } from "@/lib/explorations/registry";
 import "./explorations.css";
@@ -113,16 +113,19 @@ export function ExplorationIndex({
     <>
       <div className="xpl-filters" role="group" aria-label="Filter decisions by the state of their options">
         {FILTERS.map((f) => (
-          <button
+          <Chip
             key={f.id}
-            type="button"
-            className="xpl-filter"
-            aria-pressed={filter === f.id}
-            onClick={() => setFilter(f.id)}
+            size="sm"
+            emphasis="solid"
+            selected={filter === f.id}
+            // A filter row is single-choice: pressing the chip that is already on
+            // leaves it on, so the row can never be pressed into "nothing chosen".
+            onSelectedChange={() => setFilter(f.id)}
+            count={chipCounts[f.id]}
+            countLabel="options"
           >
-            <span>{f.label}</span>
-            <span className="xpl-filter__count">{chipCounts[f.id]}</span>
-          </button>
+            {f.label}
+          </Chip>
         ))}
       </div>
 
@@ -135,9 +138,9 @@ export function ExplorationIndex({
       {shown.length === 0 ? (
         <p className="xpl-nothing">
           No decision has an option {FILTER_PHRASE[filter]}.{" "}
-          <button type="button" className="xpl-nothing__clear" onClick={() => setFilter("all")}>
-            Show every decision
-          </button>
+          <Button appearance="text" size="sm" onClick={() => setFilter("all")}>
+            Show Every Decision
+          </Button>
         </p>
       ) : null}
 

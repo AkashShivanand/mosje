@@ -1,6 +1,6 @@
 "use client";
 
-import { COLOR_MODES, ColorModeProvider, useColorMode } from "@mosje/design-system";
+import { COLOR_MODES, ColorModeProvider, SegmentedControl, useColorMode } from "@mosje/design-system";
 import * as React from "react";
 
 /** The provider renders nothing of its own; this reads back what it supplied. */
@@ -11,11 +11,12 @@ function Readout(): React.JSX.Element {
       <span>
         Current mode: <strong>{mode}</strong>
       </span>
-      {COLOR_MODES.map((m) => (
-        <button key={m.id} type="button" onClick={() => setMode(m.id)}>
-          {m.label}
-        </button>
-      ))}
+      <SegmentedControl
+        ariaLabel="Colour mode"
+        options={COLOR_MODES.map((m) => ({ value: m.id, label: m.label }))}
+        value={mode}
+        onChange={setMode}
+      />
     </div>
   );
 }

@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import Fuse from "fuse.js";
-import { Icon } from "@mosje/design-system";
+import { Button, Chip, Icon, IconButton } from "@mosje/design-system";
 import { SEARCH_DATA, type SearchEntry } from "@/lib/design-system/search-data.generated";
 import "./cmd-search.css";
 
@@ -162,18 +162,20 @@ export function CmdSearch({ onClose }: CmdSearchProps): React.JSX.Element {
             role="combobox"
           />
           {query.length > 0 && (
-            <button
+            <IconButton
               className="cmd-clear-btn"
+              icon={<Icon name="close" size={16} />}
+              aria-label="Clear search input"
+              variant="neutral"
+              appearance="text"
+              size="sm"
+              shape="circle"
               onClick={() => {
                 setQuery("");
                 setFocusIdx(0);
                 inputRef.current?.focus();
               }}
-              aria-label="Clear search input"
-              type="button"
-            >
-              <Icon name="close" size={16} />
-            </button>
+            />
           )}
           <kbd onClick={onClose} className="cmd-esc-badge" title="Close search (Esc)">
             Esc
@@ -181,27 +183,23 @@ export function CmdSearch({ onClose }: CmdSearchProps): React.JSX.Element {
         </div>
 
         {/* Category Filter Chips */}
-        <div className="cmd-categories" role="tablist" aria-label="Filter results by category">
-          {CATEGORIES.map((tab) => {
-            const isSelected = category === tab.id;
-            return (
-              <button
-                key={tab.id}
-                role="tab"
-                aria-selected={isSelected}
-                className={`cmd-cat-pill${isSelected ? " is-active" : ""}`}
-                onClick={() => {
-                  setCategory(tab.id);
-                  setFocusIdx(0);
-                  inputRef.current?.focus();
-                }}
-                type="button"
-              >
-                <Icon name={tab.icon} size={16} />
-                <span>{tab.label}</span>
-              </button>
-            );
-          })}
+        <div className="cmd-categories" role="group" aria-label="Filter results by category">
+          {CATEGORIES.map((tab) => (
+            <Chip
+              key={tab.id}
+              size="sm"
+              emphasis="solid"
+              selected={category === tab.id}
+              leadingIcon={<Icon name={tab.icon} size={16} />}
+              onSelectedChange={() => {
+                setCategory(tab.id);
+                setFocusIdx(0);
+                inputRef.current?.focus();
+              }}
+            >
+              {tab.label}
+            </Chip>
+          ))}
         </div>
 
         {/* Screen Reader Result Announcement */}
@@ -231,18 +229,19 @@ export function CmdSearch({ onClose }: CmdSearchProps): React.JSX.Element {
               <div className="cmd-empty__suggestions">
                 <span className="cmd-empty__suggestion-label">Suggested searches:</span>
                 {["Button", "Color", "Accessibility Bar", "Tabs", "Tokens"].map((term) => (
-                  <button
+                  <Button
                     key={term}
-                    className="cmd-empty__chip"
+                    variant="neutral"
+                    appearance="outlined"
+                    size="sm"
                     onClick={() => {
                       setQuery(term);
                       setFocusIdx(0);
                       inputRef.current?.focus();
                     }}
-                    type="button"
                   >
                     {term}
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>

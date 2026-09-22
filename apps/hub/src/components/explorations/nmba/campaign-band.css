@@ -380,18 +380,19 @@
     --sa-btn-edge: var(--sa-text-neutral-inverse);
   }
 
+  /* The DS `IconButton` (text, inverse tone) draws the control; this keeps it
+     from stretching in the band's grid cell and gives it the band's own soft
+     well, so it reads as a control rather than a stray glyph. Two classes, and
+     the hover three, so the well holds whatever the stylesheet order. */
   .xband__dismiss {
-    display: grid;
-    place-items: center;
-    inline-size: var(--sa-control-height-sm);
-    block-size: var(--sa-control-height-sm);
-    border-radius: var(--sa-shape-8);
-    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 12%, transparent);
-    color: var(--sa-text-neutral-inverse);
-    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+    justify-self: center;
   }
 
-  .xband__dismiss:hover {
+  .xband .xband__dismiss {
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 12%, transparent);
+  }
+
+  .xband .xband__dismiss:hover {
     background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 24%, transparent);
   }
 
@@ -510,13 +511,9 @@
     text-underline-offset: 0.2em;
   }
 
+  /* The DS `IconButton` (neutral, text) draws the control. */
   .xrib__dismiss {
-    display: grid;
-    place-items: center;
-    inline-size: var(--sa-control-height-sm);
-    block-size: var(--sa-control-height-sm);
-    border-radius: var(--sa-shape-8);
-    color: var(--sa-text-neutral-subtle);
+    flex: none;
   }
 
   /* ── One band, two panels ─────────────────────────────────────────────── */
@@ -583,18 +580,59 @@
   .xband__tabs {
     display: flex;
     align-items: center;
-    gap: var(--sa-inline-4);
   }
 
-  .xband__tab {
+  /*
+   * THE DOTS ARE THE DESIGN SYSTEM'S `Tabs`, skinned. `Tabs` owns the roving
+   * tabindex, the arrow keys and the ARIA; this only draws each tab as a 32px
+   * round target with a dot inside, and hides the label visually (it stays the
+   * tab's accessible name). The DS indicator is not used — the dot is the mark.
+   *
+   * `Tabs` also renders a polite status region, which would announce every
+   * automatic turn; the band's own stage already carries the live region, off
+   * while it rotates and polite once it does not, so the DS one is withdrawn.
+   */
+  .xband__tabs > [role="status"] {
+    display: none;
+  }
+
+  .xband__tabs .ds-tabs.ds-tabs--horizontal {
+    gap: var(--sa-inline-4);
+    /* The list scrolls when it overflows, which would clip the focus ring. */
+    overflow: visible;
+  }
+
+  .xband__tabs .ds-tabs .ds-tabs__indicator {
+    display: none;
+  }
+
+  .xband__tabs .ds-tabs .ds-tabs__tab {
     display: grid;
     place-items: center;
     inline-size: var(--sa-control-height-sm);
     block-size: var(--sa-control-height-sm);
+    padding: 0;
     border-radius: var(--sa-shape-full);
   }
 
-  .xband__tab::before {
+  .xband__tabs .ds-tabs .ds-tabs__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .xband__tabs .ds-tabs .ds-tabs__tab:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .xband__tabs .ds-tabs .ds-tabs__tab::before {
     content: "";
     inline-size: var(--sa-padding-8);
     block-size: var(--sa-padding-8);
@@ -603,7 +641,7 @@
     transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
-  .xband__tab[aria-selected="true"]::before {
+  .xband__tabs .ds-tabs .ds-tabs__tab[aria-selected="true"]::before {
     background-color: var(--sa-text-neutral-inverse);
   }
 
@@ -847,18 +885,16 @@
     }
   }
 
+  /* The DS `IconButton` (text, inverse tone), on the band's soft well. */
   .xnudge__dismiss {
-    display: grid;
-    place-items: center;
-    inline-size: var(--sa-control-height-md);
-    block-size: var(--sa-control-height-md);
-    border-radius: var(--sa-shape-8);
-    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 12%, transparent);
-    color: var(--sa-text-neutral-inverse);
-    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+    align-self: start;
   }
 
-  .xnudge__dismiss:hover {
+  .xnudge .xnudge__dismiss {
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 12%, transparent);
+  }
+
+  .xnudge .xnudge__dismiss:hover {
     background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 24%, transparent);
   }
 
@@ -1103,26 +1139,8 @@
     gap: var(--sa-inline-8);
   }
 
+  /* The DS `IconButton` (outlined, inverse tone) draws the pause control. */
   .xband__play {
-    display: grid;
-    place-items: center;
-    inline-size: var(--sa-control-height-sm);
-    block-size: var(--sa-control-height-sm);
-    border-radius: var(--sa-shape-full);
-    color: var(--sa-text-neutral-inverse);
-    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 12%, transparent);
-    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .xband__play:hover {
-      background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 24%, transparent);
-    }
-  }
-
-  .xband__play:focus-visible,
-  .xband__tab:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
-    outline-offset: var(--sa-focus-offset);
+    flex: none;
   }
 }

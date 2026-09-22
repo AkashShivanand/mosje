@@ -3,6 +3,8 @@
 import * as React from "react";
 import {
   BotCheck,
+  Button,
+  Icon,
   useBotCheck,
   type BotCheckMode,
   type BotCheckStatus,
@@ -47,9 +49,11 @@ export function BotCheckPlayground(): React.JSX.Element {
             ))}
           </select>
         </label>
-        <button type="button" onClick={check.solve} style={{ alignSelf: "end" }}>
-          Run it again
-        </button>
+        <div style={{ alignSelf: "end" }}>
+          <Button appearance="outlined" size="sm" iconLeft={<Icon name="refresh" size={16} />} onClick={check.solve}>
+            Run It Again
+          </Button>
+        </div>
       </div>
 
       <BotCheck

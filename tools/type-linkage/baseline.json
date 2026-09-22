@@ -56,8 +56,8 @@
     "weight": 0,
     "hindi-unmarked": 0,
     "style-mixed": 3,
-    "style-weight": 217,
-    "style-weight-unset": 172
+    "style-weight": 214,
+    "style-weight-unset": 167
   },
   "files": {
     "apps/hub/src/app/design-system/components/brand/org-logo/org-logo-docs.css": {
@@ -118,7 +118,7 @@
       "hindi-unmarked": 0,
       "style-mixed": 0,
       "style-weight": 4,
-      "style-weight-unset": 39
+      "style-weight-unset": 38
     },
     "apps/hub/src/app/design-system/foundations/density/density.css": {
       "size-off-ramp": 0,
@@ -222,8 +222,8 @@
       "weight": 0,
       "hindi-unmarked": 0,
       "style-mixed": 0,
-      "style-weight": 5,
-      "style-weight-unset": 10
+      "style-weight": 3,
+      "style-weight-unset": 9
     },
     "apps/hub/src/app/portals/eutthan-admin/eutthan.css": {
       "size-off-ramp": 0,
@@ -342,7 +342,7 @@
       "weight": 0,
       "hindi-unmarked": 0,
       "style-mixed": 0,
-      "style-weight": 6,
+      "style-weight": 5,
       "style-weight-unset": 2
     },
     "apps/hub/src/components/design-system/hero/hero.css": {
@@ -388,7 +388,7 @@
       "hindi-unmarked": 0,
       "style-mixed": 0,
       "style-weight": 2,
-      "style-weight-unset": 5
+      "style-weight-unset": 4
     },
     "apps/hub/src/components/explorations/explorations.css": {
       "size-off-ramp": 0,
@@ -403,7 +403,7 @@
       "hindi-unmarked": 0,
       "style-mixed": 0,
       "style-weight": 4,
-      "style-weight-unset": 4
+      "style-weight-unset": 2
     },
     "apps/hub/src/components/explorations/nmba/campaign-band.css": {
       "size-off-ramp": 0,

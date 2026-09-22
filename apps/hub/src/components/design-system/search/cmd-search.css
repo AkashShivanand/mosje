@@ -124,34 +124,8 @@
   display: none;
 }
 
-.cmd-cat-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sa-stack-6);
-  padding: var(--sa-padding-4) var(--sa-padding-12);
-  border-radius: var(--sa-shape-full);
-  border: 1px solid transparent;
-  background: transparent;
-  font-size: var(--sa-type-label-2-size);
-  font-weight: var(--sa-font-weight-medium);
-  color: var(--sa-text-neutral-subtle);
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.1s ease;
-}
 
-.cmd-cat-pill:hover {
-  color: var(--sa-text-neutral-base);
-  background: var(--sa-bg-neutral-base);
-}
 
-.cmd-cat-pill.is-active {
-  background: var(--sa-bg-neutral-base);
-  color: var(--sa-text-brand-primary-bolder);
-  border-color: var(--sa-border-neutral-subtle);
-  font-weight: var(--sa-font-weight-semibold);
-  box-shadow: 0 1px 2px color-mix(in oklab, var(--sa-border-neutral-bolder-default) 10%, transparent);
-}
 
 /* ── Screen Reader Status ── */
 .cmd-sr-status {
@@ -354,21 +328,7 @@
   width: 100%;
 }
 
-.cmd-empty__chip {
-  background: var(--sa-bg-neutral-subtler);
-  border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-full);
-  padding: var(--sa-padding-4) var(--sa-padding-12);
-  font-size: var(--sa-type-label-2-size);
-  color: var(--sa-text-brand-primary-bolder);
-  cursor: pointer;
-  transition: all 0.1s;
-}
 
-.cmd-empty__chip:hover {
-  background: var(--sa-bg-brand-primary-subtler);
-  border-color: var(--sa-border-brand-primary-base);
-}
 
 /* ── Footer ── */
 .cmd-footer {
@@ -405,3 +365,8 @@
   font-weight: var(--sa-font-weight-medium);
 }
 
+
+/* The field has its own clear button; the browser's native search "×" was a second one. */
+.cmd-search-input::-webkit-search-cancel-button {
+  appearance: none;
+}
