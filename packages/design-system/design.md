@@ -3590,6 +3590,7 @@ and renders it only when `exportable`.
 **Variants**: `website` (static three-tier masthead) | `portal` (sticky, sidebar toggle, account) | `compact` (one 64px tier for hub index surfaces)  
 **Key props**: `emblemSrc`, `brandLines`, `homeHref`, `nav`, `variant`, `search`, `account`, `actions`, `onToggleNav`, `navExpanded`, `service`  
 **Rules**:
+- **A mega-menu column can close with an action and lay its rows two across** (22 Sep 2026, from the Ministry's finalised Offerings menu, Figma M2): `NavColumn.action` draws a full-width outlined Button under the column ("View All Schemes" under the scheme portals), on desktop and in the NavSheet; `NavColumn.wide` lays rich rows two across so seven portals do not run past the fold. The SAMAVESH `Navbar/MegaMenu` master does not model either yet.
 - **Choose the variant by PLACEMENT, not by taste.** `website` for public pages, `portal`
   for signed-in app shells, `compact` for internal index / wayfinding surfaces (the hub
   landing, `/portals`, `/reports`) that carry no government masthead. `compact` drops the

@@ -4,6 +4,7 @@ import * as React from "react";
 import { navDisabledAria, navLinkRoutes, type NavTag } from "./nav-link-tag";
 import { cn } from "../../../utils/cn";
 import { Icon } from "../../utilities/icon";
+import { Button } from "../../actions/button";
 import type { NavColumn, NavItem, NavLink, NavMegaItem } from "./types";
 import "./header.css";
 
@@ -295,10 +296,10 @@ export function MegaMenu({ id, label, columns, overview, onSelect, linkAs, class
     <div className={cn("ds-hdr-nav__drop-wrap is-mega", className)}>
       <div id={id} className="ds-hdr-nav__mega" role="group" aria-label={label}>
         {columns.map((col, ci) => (
-          <div key={col.heading ?? ci} className="ds-hdr-nav__mega-col">
+          <div key={col.heading ?? ci} className={cn("ds-hdr-nav__mega-col", col.wide && "is-wide")}>
             {col.heading && <p className="ds-hdr-nav__mega-head">{col.heading}</p>}
             {col.items?.length ? (
-              <ul className="ds-hdr-nav__mega-list is-rich">
+              <ul className={cn("ds-hdr-nav__mega-list is-rich", col.wide && "is-grid")}>
                 {col.items.map((it) => (
                   <li key={it.abbr}>
                     <MegaMenuItem item={it} onSelect={onSelect} linkAs={linkAs} />
@@ -313,6 +314,20 @@ export function MegaMenu({ id, label, columns, overview, onSelect, linkAs, class
                   </li>
                 ))}
               </ul>
+            )}
+            {col.action && (
+              <Button
+                href={col.action.href}
+                external={col.action.external}
+                linkAs={linkAs}
+                variant="primary"
+                appearance="outlined"
+                size="sm"
+                className="ds-hdr-nav__mega-action"
+                onClick={onSelect}
+              >
+                {col.action.label}
+              </Button>
             )}
           </div>
         ))}

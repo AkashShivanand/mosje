@@ -6,6 +6,7 @@ import { createPortal } from "react-dom";
 import { navDisabledAria, navLinkRoutes, type NavTag } from "./nav-link-tag";
 import { cn } from "../../../utils/cn";
 import { Icon } from "../../utilities/icon";
+import { Button } from "../../actions/button";
 import { AccessibilityControls } from "../../utilities/accessibility-controls";
 import { BrandLockup } from "./brand-lockup";
 import { MegaMenuItem } from "./nav-parts";
@@ -383,6 +384,20 @@ export function NavSheet({
                               );
                             })}
                           </ul>
+                        )}
+                        {col.action && (
+                          <Button
+                            href={col.action.href}
+                            external={col.action.external}
+                            linkAs={linkAs}
+                            variant="primary"
+                            appearance="outlined"
+                            size="sm"
+                            className="ds-navsheet__mega-action"
+                            onClick={onClose}
+                          >
+                            {col.action.label}
+                          </Button>
                         )}
                       </div>
                     ))}

@@ -109,7 +109,7 @@ officer; the conflicting "Netaji Subhash Place, 110034" address on the classic C
 
 | # | Decision | Why |
 |---|---|---|
-| D1 | Primary nav is task-and-audience shaped: About · Schemes & Services · Organisations & Scheme Portals · Documents · Media · Connect | Menu option pending with the Ministry (M1b/M2/M2b); this adopts M1b's label and gives Schemes its own entry (M2b), the two the review leaned towards |
+| D1 | ~~Task-and-audience menu~~ Withdrawn 22 Sep 2026: the masthead carries the live site's menu (Home · Department · Associated Organisations · Offerings · Documents · Events & Gallery · Connect) with one change the Ministry finalised — the scheme portals move from Associated Organisations to Offerings (option M2), with “View All Schemes” as a full-width button and an Opportunities column (Vacancies, Tenders, Apply Online for PMU). The task-first menu remains a proposal for the Ministry | The menu is the Ministry's to change; the brief is to keep the live structure unless a change adds great value |
 | D2 | No counts on discovery screens, except the grouped Schemes page headings (computed) | 8 & 14 Sep decisions |
 | D3 | Personas use the 11-group vocabulary and open on Students | 8 Sep decision |
 | D4 | ~~No hero carousel~~ Superseded 22 Sep 2026: the live site's 1800×600 banner carousel returns (CCPS first, DBIM A.4.1), auto-advancing with a visible Pause, a filling timer and rotation held on hover and focus; the search-and-tasks hero follows it | Structure kept close to the live site at the Ministry's request; WCAG 2.2.2 met by the Carousel itself |

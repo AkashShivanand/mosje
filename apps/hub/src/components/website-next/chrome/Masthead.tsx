@@ -64,6 +64,7 @@ export function Masthead() {
       heading: col.heading ? t(col.heading) : col.heading,
       items: col.items?.map((o) => ({ ...o, name: t(o.name), active: onPath(o.href) })),
       links: col.links?.map((l) => ({ ...l, label: t(l.label), active: onPath(l.href) })),
+      action: col.action ? { ...col.action, label: t(col.action.label) } : undefined,
     })),
   }));
 

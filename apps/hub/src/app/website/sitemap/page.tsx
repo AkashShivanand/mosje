@@ -39,7 +39,9 @@ function groupsOf(item: NavItem): Group[] {
   }
   for (const col of item.columns ?? []) {
     const links = [
-      ...(col.items ?? []).map((o) => ({ label: o.name, href: o.href })),
+      // A portal row's title is its name ("Senior Citizens Welfare"); an organisation row's is its abbreviation.
+      ...(col.items ?? []).map((o) => ({ label: /\s/.test(o.abbr) ? o.abbr : o.name, href: o.href })),
+      ...(col.action ? [{ label: col.action.label, href: col.action.href }] : []),
       ...(col.links ?? []).map((l) => ({ label: l.label, href: l.href })),
     ].filter((l) => l.href && l.href !== "#");
     if (links.length) groups.push({ heading: col.heading, links });
@@ -47,12 +49,40 @@ function groupsOf(item: NavItem): Group[] {
   return groups;
 }
 
+/*
+ * PAGES THE MENU DOES NOT LIST. The masthead carries the live site's menu (restored
+ * 22 Sep 2026), which is narrower than the pages this site has; these are reached
+ * from the home page, the footer and the pages themselves, and a sitemap must still
+ * name them (GIGW).
+ */
+const OTHER_PAGES = [
+  { label: "Divisions", href: "/website/about-the-division" },
+  { label: "Citizen’s Charter", href: "/website/citizen-charter" },
+  { label: "Official Language", href: "/website/official-language-act" },
+  { label: "For Students", href: "/website/for-student" },
+  { label: "For Beneficiaries", href: "/website/for-beneficiary" },
+  { label: "For Researchers", href: "/website/for-researcher" },
+  { label: "For Government Officials", href: "/website/for-government-official" },
+  { label: "Schemes and Services", href: "/website/schemes-services" },
+  { label: "Citizen Portals", href: "/portals" },
+  { label: "Dashboard", href: "/website/dashboard" },
+  { label: "Latest Updates", href: "/website/updates" },
+  { label: "Newsletter", href: "/website/newsletter" },
+  { label: "Research and Evaluation Studies", href: "/website/list-of-research-evaluation-studies" },
+  { label: "Parliament Questions", href: "/website/lok-sabha-question-answer" },
+  { label: "Grants to Voluntary Organisations", href: "/website/grants-in-aid-to-ngos-faqs" },
+  { label: "Feedback", href: "/website/feedback" },
+  { label: "Help", href: "/website/help" },
+];
+
 const SECTIONS: { heading: string; groups: Group[] }[] = [
   { heading: "Home", groups: [{ links: [{ label: "Home", href: "/website" }] }] },
-  ...NAV.map((item) => ({
-    heading: item.label === "Organisations" ? "Organisations and Scheme Portals" : item.label,
+  // Home is the first section already; a menu entry with no menu adds nothing here.
+  ...NAV.filter((item) => item.children?.length || item.columns?.length).map((item) => ({
+    heading: item.label,
     groups: groupsOf(item),
   })),
+  { heading: "Other Pages", groups: [{ links: OTHER_PAGES }] },
   { heading: "Website Policies", groups: [{ links: POLICY_PAGES.map((p) => ({ label: p.label, href: p.href })) }] },
 ];
 

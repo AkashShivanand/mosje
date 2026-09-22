@@ -2,22 +2,21 @@ import type { NavItem } from "@mosje/design-system";
 import { getOrganisationByAbbr } from "@/data/website";
 
 /**
- * The redesign's primary navigation — task and audience first, institution second.
+ * The redesign's primary navigation — THE LIVE SITE'S MENU, restored 22 Sep 2026.
  *
- * WHY THESE SEVEN (docs/website-redesign/PLAN.md, decision D1):
- *  - The live menu named things the Ministry HAS (Department, Offerings,
- *    Documents, Connect). Six of seven entries were artefact-shaped and none was
- *    a task (issue X-IA-02). A citizen arrives with a need, so the scheme entry
- *    comes straight after About and owns its own menu (the Ministry's option M2b).
- *  - "Associated Organisations" becomes "Organisations" here and "Organisations &
- *    Scheme Portals" as the menu's own heading (option M1b). The full label is
- *    30 characters and does not fit a seven-entry row at 1280px; the menu it
- *    opens carries it in full. Recorded in the plan as a fit decision, pending
- *    the Ministry's choice of menu option.
- *  - Tenders and vacancies get their own entry: they are the most-visited
- *    records after schemes, and under "Offerings" they were two levels deep.
+ * The first redesign pass replaced it with a task-first menu (About · Schemes ·
+ * Organisations · Documents · Tenders & Vacancies · Media · Contact). That was
+ * withdrawn: the menu is the Ministry's to change, and the brief is to keep the
+ * live structure unless a change adds great value. The task-first menu stays on
+ * record as a proposal (docs/website-redesign/PLAN.md, D1).
  *
- * The emblem is Home. A Home entry would be an eighth item doing the emblem's job.
+ * ONE CHANGE FROM THE LIVE MENU, AND IT IS THE MINISTRY'S: the scheme portals
+ * leave "Associated Organisations" for "Offerings" — option M2, finalised after
+ * the 14 September review (Figma: [AI R&D] MoSJE [WIP] › Scheme Discovery ›
+ * "M2 · Offerings Menu with Scheme Portals"). Each row names the portal and the
+ * scheme it opens, no row shows a count, "View All Schemes" is a full-width
+ * outlined button under the portals, and Vacancies, Tenders and the PMU form keep
+ * a column of their own. Associated Organisations keeps its three columns.
  *
  * Organisation marks are READ FROM THE REGISTRY (data/website/organisations.ts),
  * never retyped, so the menu cannot drift from the organisation pages.
@@ -25,36 +24,18 @@ import { getOrganisationByAbbr } from "@/data/website";
 const mark = (abbr: string) => getOrganisationByAbbr(abbr)?.logoSrc;
 
 export const NAV: NavItem[] = [
+  { label: "Home", href: "/website" },
   {
-    label: "About",
+    label: "Department",
     href: "#",
     children: [
-      { label: "About the Department", href: "/website/about-us" },
+      { label: "About Us", href: "/website/about-us" },
       { label: "Who’s Who", href: "/website/whos-who" },
-      { label: "Divisions", href: "/website/about-the-division" },
-      { label: "Citizen’s Charter", href: "/website/citizen-charter" },
-      { label: "Official Language", href: "/website/official-language-act" },
       { label: "Directory", href: "/website/mosje-directory" },
     ],
   },
   {
-    /* "Schemes" in the bar, "Schemes & Services" nowhere else needed: the menu it
-       opens holds the services. At 1024px the full label wrapped to two lines —
-       seven labels measured 867px against 976 available once the gaps are in. */
-    label: "Schemes",
-    href: "#",
-    children: [
-      { label: "Find a Scheme", href: "/website/schemes-services" },
-      { label: "For Students", href: "/website/for-student" },
-      { label: "For Beneficiaries", href: "/website/for-beneficiary" },
-      { label: "For Researchers", href: "/website/for-researcher" },
-      { label: "For Government Officials", href: "/website/for-government-official" },
-      { label: "Apply and Track Online", href: "/portals" },
-      { label: "Dashboard", href: "/website/dashboard" },
-    ],
-  },
-  {
-    label: "Organisations",
+    label: "Associated Organisations",
     href: "#",
     columns: [
       {
@@ -66,7 +47,7 @@ export const NAV: NavItem[] = [
         ],
       },
       {
-        heading: "Finance and Development Corporations",
+        heading: "Corporations",
         items: [
           { abbr: "NSFDC", name: "National Scheduled Castes Finance and Development Corporation", href: "/website/organisation/national-scheduled-castes-finance-and-development-corporation", iconSrc: mark("NSFDC") },
           { abbr: "NSKFDC", name: "National Safai Karamcharis Finance and Development Corporation", href: "/website/organisation/national-safai-karamcharis-finance-development-corporation", iconSrc: mark("NSKFDC") },
@@ -74,7 +55,7 @@ export const NAV: NavItem[] = [
         ],
       },
       {
-        heading: "Foundations and Autonomous Bodies",
+        heading: "Foundation / Autonomous Bodies",
         items: [
           { abbr: "DAF", name: "Dr. Ambedkar Foundation", href: "/website/organisation/dr-ambedkar-foundation", iconSrc: mark("DAF") },
           { abbr: "DAIC", name: "Dr. Ambedkar International Centre", href: "/website/organisation/dr-ambedkar-international-centre", iconSrc: mark("DAIC") },
@@ -83,15 +64,36 @@ export const NAV: NavItem[] = [
           { abbr: "NISD", name: "National Institute of Social Defence", href: "/website/organisation/national-institute-of-social-defence", iconSrc: mark("NISD") },
         ],
       },
+    ],
+  },
+  {
+    label: "Offerings",
+    href: "#",
+    columns: [
       {
+        /* Option M2. A row opens the scheme's portal where this estate runs one;
+           NOS lives off the site and is marked so; the begging strand of SMILE has
+           no portal, so it opens its scheme page. */
         heading: "Scheme Portals",
+        wide: true,
         items: [
-          { abbr: "SCW", name: "Senior Citizens Welfare", href: "/website/organisation/senior-citizens-welfarescw" },
-          { abbr: "PM-AJAY", name: "Pradhan Mantri Anusuchit Jaati Abhyuday Yojana", href: "/website/organisation/pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay" },
-          { abbr: "SMILE", name: "National Portal for Transgender Persons", href: "/website/organisation/national-portal-for-transgender-persons" },
-          { abbr: "NOS", name: "National Overseas Scholarship", href: "/website/organisation/national-overseas-scholarship" },
-          { abbr: "NMBA", name: "Nasha Mukt Bharat Abhiyaan", href: "/website/organisation/nasha-mukt-bharat-abhiyaan" },
-          { abbr: "NHAA", name: "National Helpline Against Atrocities", href: "/portals/nhapoa" },
+          { abbr: "PM-AJAY", name: "Pradhan Mantri Anusuchit Jaati Abhyuday Yojana", href: "/portals/pm-ajay", iconSrc: mark("PM-AJAY") },
+          { abbr: "National Overseas Scholarship", name: "For Scheduled Castes and Others", href: "https://nosmsje.gov.in", external: true, iconSrc: mark("NOS") },
+          { abbr: "SMILE — Transgender Persons", name: "Comprehensive Rehabilitation for Welfare of Transgender Persons", href: "/portals/tg", iconSrc: mark("SMILE") },
+          { abbr: "SMILE — Persons Engaged in Begging", name: "Comprehensive Rehabilitation of Persons Engaged in Begging", href: "/website/schemes-services/support-for-marginalized-individuals-for-livelihood-and-enterprise-smile", iconSrc: mark("SMILE") },
+          { abbr: "Senior Citizens Welfare", name: "Atal Vayo Abhyuday Yojana", href: "/portals/scw", iconSrc: mark("SCW") },
+          { abbr: "Nasha Mukt Bharat Abhiyaan", name: "National Action Plan for Drug Demand Reduction", href: "/portals/nmba", iconSrc: mark("NMBA") },
+          { abbr: "National Helpline Against Atrocities", name: "Helpline 14566", href: "/portals/nhapoa", iconSrc: mark("NHAA") },
+        ],
+        action: { label: "View All Schemes", href: "/website/schemes-services" },
+      },
+      {
+        heading: "Opportunities",
+        links: [
+          { label: "Vacancies", href: "/website/vacancies" },
+          { label: "Tenders", href: "/website/tenders" },
+          // The live site's own link: the PMU recruitment form, hosted by the recruiter.
+          { label: "Apply Online for PMU", href: "https://cdn.digialm.com/EForms/configuredHtml/1258/96176/Index.html", external: true },
         ],
       },
     ],
@@ -99,72 +101,38 @@ export const NAV: NavItem[] = [
   {
     label: "Documents",
     href: "#",
-    columns: [
-      {
-        heading: "Reports and Publications",
-        links: [
-          { label: "Annual Reports", href: "/website/annual-reports" },
-          { label: "Publications", href: "/website/publications" },
-          { label: "Newsletter", href: "/website/newsletter" },
-          { label: "Research and Evaluation Studies", href: "/website/list-of-research-evaluation-studies" },
-        ],
-      },
-      {
-        heading: "Acts, Rules and Policies",
-        links: [
-          { label: "Acts and Rules", href: "/website/acts-rules" },
-          { label: "Policies", href: "/website/policies" },
-          { label: "Circulars and Notifications", href: "/website/circulars-notifications" },
-          { label: "Notices", href: "/website/notices" },
-        ],
-      },
-      {
-        heading: "Forms and Resources",
-        links: [
-          { label: "Forms and Templates", href: "/website/forms-templates" },
-          { label: "Resources", href: "/website/resources" },
-          { label: "MoU", href: "/website/mou" },
-          { label: "Advices", href: "/website/advices" },
-        ],
-      },
-      {
-        heading: "Right to Information",
-        links: [
-          { label: "RTI", href: "/website/rti" },
-          { label: "Suo Motu Disclosure", href: "/website/suo-moto-disclosure" },
-          { label: "Parliament Questions", href: "/website/lok-sabha-question-answer" },
-          { label: "Miscellaneous", href: "/website/miscellaneous" },
-        ],
-      },
+    children: [
+      { label: "Annual Reports", href: "/website/annual-reports" },
+      { label: "Acts & Rules", href: "/website/acts-rules" },
+      { label: "Policies", href: "/website/policies" },
+      { label: "Resources", href: "/website/resources" },
+      { label: "Circulars & Notifications", href: "/website/circulars-notifications" },
+      { label: "Forms & Templates", href: "/website/forms-templates" },
+      { label: "Publications", href: "/website/publications" },
+      { label: "Notices", href: "/website/notices" },
+      { label: "RTI", href: "/website/rti" },
+      { label: "Suo Moto Disclosure", href: "/website/suo-moto-disclosure" },
+      { label: "MOU", href: "/website/mou" },
+      { label: "Advices", href: "/website/advices" },
+      { label: "Miscellaneous", href: "/website/miscellaneous" },
     ],
   },
   {
-    label: "Tenders & Vacancies",
+    label: "Events & Gallery",
     href: "#",
     children: [
-      { label: "Tenders", href: "/website/tenders" },
-      { label: "Vacancies", href: "/website/vacancies" },
-      { label: "Grants to Voluntary Organisations", href: "/website/grants-in-aid-to-ngos-faqs" },
-    ],
-  },
-  {
-    label: "Media",
-    href: "#",
-    children: [
-      { label: "Latest Updates", href: "/website/updates" },
       { label: "Events", href: "/website/events" },
-      { label: "Photo Gallery", href: "/website/gallery" },
+      { label: "Gallery", href: "/website/gallery" },
     ],
   },
   {
-    label: "Contact",
+    label: "Connect",
     href: "#",
     children: [
-      { label: "Contact Us", href: "/website/contact-us" },
+      { label: "CPIO", href: "/website/cpio" },
       { label: "Directory", href: "/website/mosje-directory" },
-      { label: "Public Information Officers", href: "/website/cpio" },
-      { label: "Feedback", href: "/website/feedback" },
-      { label: "Help", href: "/website/help" },
+      { label: "Contact Us", href: "/website/contact-us" },
+      { label: "Ministry Contact", href: "/website/mosje-contact" },
     ],
   },
 ];
