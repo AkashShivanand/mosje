@@ -44,7 +44,10 @@ jobs:
             exit 0
           fi
           # A day with no merges needs no build — every build is charged.
-          # A manual run deploys regardless.
+          # A manual run skips this check, but NOTE: once DAILY_DEPLOY=1 is set,
+          # the Ignored Build Step lets production build only inside the nightly
+          # window (20:00–23:59 UTC), so a manual run outside it is skipped by
+          # Vercel. To ship a merge immediately, put [deploy] in its PR title.
           SINCE="$(date -u -d '24 hours ago' +%Y-%m-%dT%H:%M:%SZ)"
           CHANGED="$(gh api "repos/${GITHUB_REPOSITORY}/commits?sha=main&since=${SINCE}&per_page=1" --jq 'length')"
           if [ "$MANUAL" != "true" ] && [ "$CHANGED" = "0" ]; then

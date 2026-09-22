@@ -41,8 +41,9 @@ export const contentType = "image/png";
 /**
  * Prerendered, not rendered on demand — load-bearing, not a performance tweak.
  *
- * The roundel is read off disk from `public/`, which exists during the build but
- * is not traced into a serverless function. Pinning the route static guarantees
+ * The roundel is read off disk from `public/`, which exists during the build.
+ * The read is excluded from file tracing (see `turbopackIgnore` below), so the
+ * file is NOT available to a serverless function. Pinning the route static guarantees
  * the read happens where the file is, so a later change that made an ancestor
  * dynamic cannot quietly turn this into a runtime read that fails in production.
  * A social card is the definition of static anyway: the same picture for every
@@ -62,7 +63,18 @@ export const dynamic = "force-static";
 export default async function OpenGraphImage() {
   // `SAMAVESH_MARK` is a public URL path ("/design-system/…"), so it is joined
   // onto `public/` to reach the file the estate actually serves.
-  const roundel = await readFile(join(process.cwd(), "public", SAMAVESH_MARK));
+  //
+  // `turbopackIgnore` is NOT optional. The path's last part is an imported
+  // constant, which the file tracer cannot resolve, so without it the tracer
+  // assumes this could read ANY file under `public/` and ships all of them with
+  // the route — 12,420 files on 2026-09-21. That is what pushed production
+  // builds past the build container's disk ("ENOSPC", 2,614 MB of output) and
+  // took main off production from #579 until this line. The route is
+  // force-static, so the read only ever happens at build time, where `public/`
+  // is on disk anyway; nothing needs to be traced for it.
+  const roundel = await readFile(
+    join(/* turbopackIgnore: true */ process.cwd(), "public", SAMAVESH_MARK),
+  );
   const roundelSrc = `data:image/png;base64,${roundel.toString("base64")}`;
 
   return new ImageResponse(

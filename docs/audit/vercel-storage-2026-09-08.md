@@ -265,6 +265,37 @@ built ahead, and an unknown slug in each tree still returns 404.
   inflated Function Storage, the other limit. Worth knowing before anyone tries
   it again: `pending-entries.ts` is safe only while the changelog is static.
 
+## 2026-09-22, later — production had been failing to deploy since #579
+
+Two production builds in a row failed after `next build` had succeeded, while
+uploading: *"the build container ran out of disk space (ENOSPC)"*, with
+**2,614 MB** of output on #579 and 1,534 MB on #581. The live site stayed on #578.
+
+**The cause was two over-broad file reads, and they had been inflating EVERY
+function, not just two.**
+
+- `app/opengraph-image.tsx` read `join(process.cwd(), "public", SAMAVESH_MARK)`.
+  The last part is an imported constant the tracer cannot resolve, so it assumed
+  the read could be any file under `public/` and shipped all 12,420 of them. The
+  route sits at the root of the tree, and that trace reached every page's function.
+  #579's 2,018 evidence images were what tipped the container over its disk.
+- The changelog's `pending-entries.ts` did `readdirSync` on a computed path —
+  "Dynamic filesystem access causes tracing of the whole project".
+
+Both run only at build time (the OG route is `force-static`; the changelog is
+prerendered), so both are marked `/* turbopackIgnore: true */`. Measured:
+
+| | Before | After |
+|---|---|---|
+| A typical page's function trace | ~3,365 files / ~230 MB | **~250 files / 24–46 MB** |
+| The changelog's function | 4,931 files / 244 MB | 251 files / 25 MB |
+| `.next/server` | 633 MB | **418 MB** |
+| Build warnings | 2 | 0 |
+
+This is very likely what filled **Function Storage** from the start: every
+deployment carried a copy of `public/` in its functions. Nothing on the page
+changes — the social card and the changelog render exactly as before.
+
 ## The measurements behind this
 
 | Where the numbers came from | |
