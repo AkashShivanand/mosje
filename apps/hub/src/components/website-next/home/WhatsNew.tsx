@@ -9,7 +9,9 @@ import {
 } from "@/lib/website-next/whats-new";
 import { formatDate, isoDate } from "@/components/website-next/ui/format";
 import {
+  dedupeNotices,
   displayNoticeTitle,
+  isTruncatedTitle,
   tidyTitle,
 } from "@/components/website-next/ui/records";
 
@@ -23,6 +25,21 @@ const DEVANAGARI = /[ऀ-ॿ]/;
  * for work; recorded for the Department in home-audit-2026-09-22.md.
  */
 const NOT_A_TENDER = /pakhwada/i;
+
+/*
+ * A tender whose name the register lost does not take one of the five slots
+ * here. Fifty-three tender titles stop at the twelfth character ("Annual
+ * Contr", "Appointment"), and the cut is in the Department's own record: its
+ * page at dosje.gov.in carries the same twelve characters as the page title,
+ * the slug was made from them, and the attached document is named
+ * "tender-document-42-1.pdf", so the full name is nowhere to recover from.
+ * A supplier cannot tell from "Annual Contr…" whether the notice is worth
+ * opening, and on 24 Sep 2026 two of the five most recent tenders on this page
+ * were exactly that. They keep their place in the full register at
+ * /website/tenders, where the list is complete and the ellipsis says the name
+ * was cut; this section shows the five most recent tenders that name
+ * themselves. Same call, and the same reason, as the observance filtered above.
+ */
 
 /* Each kind carries its own mark, so the kinds differ by shape and word, not
    by colour (status colours are reserved for status; WCAG 1.4.1). */
@@ -100,7 +117,15 @@ function Side({
 export function WhatsNew() {
   const news = whatsNew().slice(0, 8);
   const tenders = newestFirst(
-    getTenders().filter((t) => !NOT_A_TENDER.test(t.title)),
+    /* Deduped as /website/tenders does it: the register publishes the same
+       notice twice often enough that, once the unnamed tenders stopped taking
+       slots, two identical "Appointment as Internal Auditors … NBCFDC" rows of
+       4 February 2026 surfaced side by side in the five. */
+    dedupeNotices(
+      getTenders().filter(
+        (t) => !NOT_A_TENDER.test(t.title) && !isTruncatedTitle(t.title),
+      ),
+    ),
   )
     .slice(0, 5)
     .map((t) => ({

@@ -149,11 +149,13 @@
   .wn-home-news__meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sa-inline-12); }
   .wn-home-news__kind { gap: var(--sa-inline-4); }
   .wn-home-news__date { font-size: var(--sa-type-label-2-size); line-height: var(--sa-type-label-2-lh); font-weight: var(--sa-font-weight-medium); color: var(--sa-text-neutral-subtle); font-variant-numeric: tabular-nums; }
+  /* NO LINE CLAMP. It was two lines, which cut a government notice's name
+     mid-word — "EXPRESSION OF INTEREST (EOI) FOR RATE OF INTEREST FOR
+     INVESTMENT OF AN…" on the desktop list, and six lines cut to two on a
+     phone. A citizen deciding whether a notice concerns them has only the
+     title to go on, so it wraps in full and the rows take the height they
+     need; the list is capped by its item count, not by clipping each row. */
   .wn-home-news__link {
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
     font-weight: var(--sa-font-weight-semibold);
