@@ -297,6 +297,21 @@ export interface CornerRailOptions {
    * @default "--sa-corner-rail-bottom"
    */
   property?: string;
+  /**
+   * Whether the ref'd element is MOUNTED RIGHT NOW. A widget that renders
+   * itself conditionally — a transient one, which is most of what this rail is
+   * for — has a null ref on the first render, and a ref object's identity never
+   * changes, so the effect below would bail once and never run again. It is in
+   * the dependency list precisely so the measurement happens when the control
+   * appears.
+   *
+   * Found by measuring: `BackToTop` mounts past 800px of scroll, so the rail
+   * wrote nothing onto it and the control rendered at the rail's resting 32px —
+   * on top of the assistant's 84px launcher, which is what the rail exists to
+   * prevent. A widget that is always rendered can leave this alone.
+   * @default true
+   */
+  active?: boolean;
 }
 
 /**
@@ -328,7 +343,7 @@ export function useCornerRailOffset(
   ref: React.RefObject<HTMLElement | null>,
   options: CornerRailOptions = {},
 ): void {
-  const { selectors, property = "--sa-corner-rail-bottom" } = options;
+  const { selectors, property = "--sa-corner-rail-bottom", active = true } = options;
 
   // Stable across renders so the effect below does not re-subscribe on
   // every parent render just because an array literal was passed inline.
@@ -336,7 +351,7 @@ export function useCornerRailOffset(
 
   React.useEffect(() => {
     const element = ref.current;
-    if (!element || typeof window === "undefined") return;
+    if (!element || typeof window === "undefined" || !active) return;
 
     const allSelectors = [
       ...BUILT_IN_SELECTORS,
@@ -442,5 +457,5 @@ export function useCornerRailOffset(
       bodyObserver.disconnect();
       resizeObserver?.disconnect();
     };
-  }, [ref, selectorKey, property]);
+  }, [ref, selectorKey, property, active]);
 }

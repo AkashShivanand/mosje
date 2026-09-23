@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "BACK TO TOP IS ON EVERY WEBSITE PAGE, AND THE CORNER RAIL NOW MEASURES A CONTROL THAT ARRIVES LATE. The home page runs to about ten screens and the organisation pages are longer; Figma's reference frame carries the control and the design system had it built and unused. Mounted in the website layout, it appears past 800px, sits at the top of the corner stack above the assistant, moves focus to `<main>` as well as the scroll position, and honours `prefers-reduced-motion`. `useCornerRailOffset` gains `active`: a control that renders itself conditionally has a null ref on the first render and a ref object's identity never changes, so the rail measured once, wrote nothing, and this landed ON the assistant's launcher at the rail's resting 32px — exactly what the rail exists to prevent. `BackToTop` also takes `useRailClearance` now, so it steps aside over a surface marked `data-sa-rail-clear` rather than covering it."
+}
