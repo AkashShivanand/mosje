@@ -68,10 +68,13 @@ by `docs/specs/samavesh-accessibility-consolidation.md`, and both apply at once.
    doors on every phone's first screen, the floating one sitting on content (the NMBA
    announcement band at 320–375px). Measured after the change, scrolled 0–1500px in 75px
    steps at 320, 360, 375, 390, 412 and 430 wide: exactly one door visible at every step.
-4b. **On a layered portal phone, the bar is the ONLY door, and it comes back on
-   intent. DECIDED 2026-09-19.** A portal masthead that passes `service` (the phone
-   layers — see `SiteHeader`) hides the floating button below `breakpoint/tablet` at
-   every scroll position, and keeps the bar's icon reachable instead:
+4b. **On ANY phone masthead that runs the gesture, the bar is the ONLY door, and it
+   comes back on intent. DECIDED 2026-09-19; extended to the website 2026-09-23.**
+   A masthead runs the gesture when it is sticky and carries `data-gesture`: a portal
+   that passes `service` (the phone layers — see `SiteHeader`), and the website, whose
+   pinned row is its condensed bar. It hides the floating button below
+   `breakpoint/tablet` at every scroll position, and keeps the bar's icon reachable
+   instead:
 
    - at the top of the page the bar is where the page puts it;
    - scrolling DOWN takes the whole masthead away, so the page has the screen;
@@ -88,7 +91,15 @@ by `docs/specs/samavesh-accessibility-consolidation.md`, and both apply at once.
    becomes reachable from anywhere on the page as well. Verified 2026-09-19 at 375×667
    on E-Anudaan: hidden at 500px down, bar at y=0 after a 60px and a 30px flick, a 5px
    jitter ignored, the icon opening the panel (`right: 0px`) from the revealed bar, and
-   the floating button `display: none` in every state. Portals without `service` keep 4a.
+   the floating button `display: none` in every state. Re-verified on the website at
+   375×812 on 2026-09-23: the masthead gone at 900px down, the bar back at y=0 after a
+   120px flick, and the floating button `display: none` at rest, hidden and revealed alike.
+
+   **The website ran 4a until 2026-09-23, and it cost more than a second door.** The
+   floating button sat at 285,718 on a 375px screen — on top of the assistant's launcher
+   at 275,696 — so the assistant read as missing from the page. A door that must be
+   painted permanently will take the corner from whatever else the page needs there.
+   A masthead with neither `service` nor a condensed bar to pin keeps 4a.
 
 5. **Government chrome uses the shared `AccessibilityBar`.** A hand-rolled top bar never
    sets the flag, so it produces two doors while looking correct in review. If a portal
@@ -134,8 +145,10 @@ a rule that lives only on an unmerged branch does not exist at all.
 - [ ] The portal's top bar is the shared `AccessibilityBar`, not a hand-rolled copy
 - [ ] With the bar on screen, the vendor's floating button computes `display: none` and a
       0×0 rect — check it, do not assume it
-- [ ] On a phone, scroll until the masthead condenses: the floating button comes back as
-      the bar's icon leaves, and at no scroll position are both or neither visible
+- [ ] On a phone with a gesture masthead, the floating button computes `display: none`
+      at every scroll position, and an upward flick brings the bar back
+- [ ] Nothing else the page puts in the bottom-right corner is covered by it —
+      compare the rects, do not look
 - [ ] The bar's accessibility icon still opens the panel (`right: -530px → 0px`)
 - [ ] On a page with no bar, the floating button is visible and opens the panel
 - [ ] On a page rendering several bars, unmounting one does not un-hide the button

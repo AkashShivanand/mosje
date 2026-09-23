@@ -182,6 +182,13 @@
     width: 100%;
     background-color: var(--sa-bg-neutral-base);
     font-family: var(--sa-font-latin);
+    /* THE RESERVE. The masthead is in flow, so condensing would take its lost
+       height out of the DOCUMENT — content under it moving up by 89px on desktop
+       and 135px on a phone, with the scroll position dragged after it. SiteHeader
+       measures the resting height and writes the difference here while condensed,
+       so the document's height never changes and nothing under the header moves.
+       The reserved strip is above the fold by definition, so it is never seen. */
+    margin-bottom: var(--sa-hdr-reserve, 0);
   }
 
   /* PINNED AT A NEGATIVE OFFSET, so the accessibility bar scrolls away and the
@@ -1752,9 +1759,25 @@
        and the bar drops a further identity-row's height, landing on top of the
        identity row it passes over — which is hidden, so it can never flash through
        the gap while they travel. */
-    .ds-hdr.is-sticky[data-layers],
-    .ds-hdr.is-sticky[data-layers] .sa-abar {
+    .ds-hdr.is-sticky[data-gesture],
+    .ds-hdr.is-sticky[data-gesture] .sa-abar {
       transition: transform var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+    }
+
+    /* THE WEBSITE'S HALF OF THE GESTURE. Same two states, different pinned row:
+       a portal pins its working bar, the website its condensed bar. Hidden takes
+       that bar up and out by whatever it currently measures; shown drops the
+       masthead by the accessibility bar's height, which puts the bar back on
+       screen above it — the page's one door to the accessibility panel, a flick
+       away from anywhere (accessibility-entry-point.md rule 4b). Transforms only:
+       the header's box and the page under it never move. */
+    .ds-hdr.is-sticky[data-gesture]:not([data-layers])[data-reveal="hidden"] {
+      transform: translateY(calc(-1 * var(--sa-header-bottom, 0)));
+    }
+
+    .ds-hdr.is-sticky[data-gesture]:not([data-layers])[data-reveal="shown"] {
+      transform: translateY(var(--sa-hdr-abar-h, 0));
+      box-shadow: var(--sa-elevation-card);
     }
 
     .ds-hdr.is-sticky[data-layers][data-reveal="hidden"] {
@@ -1782,7 +1805,7 @@
        be a second door or a button over content. Hidden, never unmounted — the bar's
        icon opens the panel by replaying a click on this very element
        (accessibility-entry-point.md rules 2 and 4b). */
-    :root:has(.ds-hdr[data-layers]) #uw-widget-custom-trigger {
+    :root:has(.ds-hdr[data-gesture]) #uw-widget-custom-trigger {
       display: none !important;
     }
   }
@@ -1790,9 +1813,13 @@
   /* Paper gets the masthead where the page puts it, whatever the reader had scrolled to —
      SiteHeader also resets the state on beforeprint; this holds without script. */
   @media print {
-    .ds-hdr.is-sticky[data-layers],
-    .ds-hdr.is-sticky[data-layers] .sa-abar {
+    .ds-hdr.is-sticky[data-gesture],
+    .ds-hdr.is-sticky[data-gesture] .sa-abar {
       transform: none;
+    }
+
+    .ds-hdr {
+      margin-bottom: 0;
     }
 
     .ds-hdr.is-sticky[data-layers] .ds-hdr-brand {
