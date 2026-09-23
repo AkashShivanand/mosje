@@ -73,10 +73,47 @@
   .wn-home-banner__img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 1; object-fit: cover; background-color: var(--sa-bg-neutral-subtler); }
   .wn-home-banner a:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: calc(-1 * var(--sa-focus-width)); }
 
-  /* ── About the Department: the figures strip and its action ──────────────── */
+  /* ── The figures strip and its action, under the scheme portals ─────────── */
   .wn-home-glance { display: grid; gap: var(--sa-stack-16); margin-top: var(--sa-stack-48); }
   @media (min-width: 1024px) { .wn-home-glance { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--sa-inline-32); } }
   .wn-home-glance__cta { justify-self: start; }
+
+  /* ── Scheme Portals ──────────────────────────────────────────────────────
+     Six cards on one row at desktop, the mark over the abbreviation over the
+     full name, as the design draws them. The abbreviation leads because that is
+     what the portal is called; the name under it answers "which one is that?".
+     The count is fixed at six by the registry, so the track count is stated
+     rather than auto-fitted — auto-fit puts five on a row and one alone. */
+  .wn-home-portals {
+    display: grid;
+    gap: var(--sa-stack-16);
+    margin-top: var(--sa-stack-32);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @media (min-width: 768px) { .wn-home-portals { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 1024px) { .wn-home-portals { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--sa-inline-16); } }
+  .wn-home-portals > li { display: grid; }
+  .wn-home-portal {
+    display: grid;
+    justify-items: center;
+    align-content: start;
+    gap: var(--sa-stack-8);
+    height: 100%;
+    padding: var(--sa-padding-20) var(--sa-padding-12);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-bolder);
+    text-align: center;
+    transition: border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+  .wn-home-portal:hover { border-color: var(--sa-border-brand-primary-base); }
+  .wn-home-portal:hover .wn-home-portal__abbr { text-decoration: underline; text-underline-offset: 0.2em; }
+  .wn-home-portal:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: var(--sa-focus-offset); }
+  .wn-home-portal__mark { display: grid; place-items: center; width: 56px; height: 56px; overflow: hidden; }
+  .wn-home-portal__mark img { width: 100%; height: 100%; object-fit: contain; }
+  .wn-home-portal__abbr { font-size: var(--sa-type-title-2-size); line-height: var(--sa-type-title-2-lh); font-weight: var(--sa-font-weight-semibold); }
+  .wn-home-portal__name { font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); color: var(--sa-text-neutral-subtle); }
 
   /* ── What's New ──────────────────────────────────────────────────────────── */
   .wn-home-news { display: grid; gap: var(--sa-stack-40); margin-top: var(--sa-stack-32); }

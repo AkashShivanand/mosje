@@ -11,11 +11,15 @@ const GROUPS: { key: OrganisationCategory; title: string }[] = [
   { key: "commissions", title: "Commissions" },
   { key: "corporations", title: "Finance and Development Corporations" },
   { key: "foundations", title: "Foundations and Autonomous Bodies" },
-  { key: "schemes", title: "Scheme Portals" },
 ];
 
 /**
- * Organisations & Scheme Portals (14 Sep menu option M1b's label).
+ * Our Organisations.
+ *
+ * The scheme portals left this section on 24 Sep 2026 for one of their own,
+ * where the design puts them — above the statistics and below About Us. A
+ * citizen looking for somewhere to apply was scrolling past three groups of
+ * commissions and corporations to reach them.
  *
  * Every mark whole, in one fixed box on one ground (the lead's instruction,
  * issues BRD-15 and BRD-16); the full name first and the abbreviation after it
@@ -28,11 +32,11 @@ export function Organisations() {
       <SectionTitle
         size="display"
         headingId="orgs-title"
-        title={<T>Organisations & Scheme Portals</T>}
+        title={<T>Our Organisations</T>}
         description={
           <T>
-            The commissions, corporations and bodies that work with the
-            Department, and the portals of its national schemes.
+            The commissions, corporations and bodies the Department works
+            through.
           </T>
         }
       />

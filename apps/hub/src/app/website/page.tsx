@@ -10,6 +10,7 @@ import { Offerings } from "@/components/website-next/home/Offerings";
 import { Documents } from "@/components/website-next/home/Documents";
 import { Activity } from "@/components/website-next/home/Activity";
 import { Organisations } from "@/components/website-next/home/Organisations";
+import { SchemePortals } from "@/components/website-next/home/SchemePortals";
 import { Leadership } from "@/components/website-next/home/Leadership";
 import { PmQuote } from "@/components/website-next/home/PmQuote";
 import { Centres } from "@/components/website-next/home/Centres";
@@ -108,16 +109,20 @@ export default async function Home() {
         {/* DBIM 3.0 §7.3(iv): after the banner, before the Ministry section. */}
         <PmQuote />
         <Leadership />
+        {/* The design's order from here: the portals and the figures, then the
+            pledges, then Our Offerings. */}
+        <SchemePortals />
+        {/* The pledges and volunteering of every campaign, gathered as Figma's
+            own section does, in the design's own place for it — fourth, under
+            the figures. The NMBA band that used to stand above this was removed
+            on 24 Sep 2026: once the pledges and the centre finder each became a
+            section, it was a third door to the same campaign, carrying one link
+            and a helpline the helplines section already lists. Figma switched
+            its own copy of that band off for the same reason. */}
+        <Pledges />
         <Offerings />
         <WhatsNew />
         <Organisations />
-        {/* The pledges and volunteering of every campaign, gathered as Figma's
-            own section does. The NMBA band that used to stand above this was
-            removed on 24 Sep 2026: once the pledges and the centre finder each
-            became a section, it was a third door to the same campaign, carrying
-            one link and a helpline the helplines section already lists. Figma
-            switched its own copy of that band off for the same reason. */}
-        <Pledges />
         {/* The live page and Figma both place it here: after the pledges, before
             Recent Documents. */}
         <SamaveshJusticeBanner />
