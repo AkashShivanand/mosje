@@ -237,6 +237,111 @@
   .wn-home-support__lead { margin-top: var(--sa-stack-4); font-size: var(--sa-type-body-1-size); line-height: var(--sa-type-body-1-lh); }
   .wn-home-support__actions { display: flex; flex-wrap: wrap; gap: var(--sa-inline-12); }
 
+  /* ── The Prime Minister's quote (DBIM 3.0 §7.3 iv) ───────────────────────────
+     Figma "05 · PM Quote — Options", Option 1: the department's own pale brand
+     tint, the quote in the darkest brand ink DBIM asks for, the photograph at the
+     right on a chakra that is ornament and nothing else. The band is full-bleed
+     and the content takes `.sa-container`, like every other website section. */
+  .wn-pmq { background-color: var(--sa-bg-brand-primary-subtler); }
+
+  .wn-pmq__in {
+    display: grid;
+    align-items: center;
+    gap: var(--sa-stack-24);
+    padding-top: var(--sa-padding-40);
+    padding-bottom: var(--sa-padding-40);
+  }
+
+  @media (min-width: 768px) {
+    .wn-pmq__in {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 432px);
+      gap: var(--sa-inline-56);
+      padding-top: var(--sa-padding-56);
+      padding-bottom: var(--sa-padding-56);
+    }
+  }
+
+  .wn-pmq__quote { display: grid; gap: var(--sa-stack-24); }
+
+  /* The mark leads the quote rather than sitting behind it: at the band's own
+     `bold` rung it is legible ornament, not a watermark competing with the ink. */
+  .wn-pmq__mark {
+    color: var(--sa-bg-brand-primary-bold);
+    transform: rotate(180deg);
+    justify-self: start;
+  }
+
+  .wn-pmq__text { margin: 0; }
+
+  .wn-pmq__text p {
+    margin: 0;
+    /* Headline 3 in Figma. `text-wrap: pretty` only tidies the last line; the
+       measure is set by the column, which is what keeps it under 80 characters. */
+    font-size: var(--sa-type-headline-3-size);
+    line-height: var(--sa-type-headline-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-brand-primary-bolder);
+    text-wrap: pretty;
+  }
+
+  .wn-pmq__copy {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-stack-16) var(--sa-inline-32);
+    padding-top: var(--sa-padding-12);
+    border-top: var(--sa-stroke-1) solid var(--sa-border-brand-primary-base);
+  }
+
+  .wn-pmq__who {
+    margin: 0;
+    font-size: var(--sa-type-headline-5-size);
+    line-height: var(--sa-type-headline-5-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-base);
+  }
+
+  .wn-pmq__where {
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* The portrait sits on the chakra, both bottom-aligned to the band's floor. */
+  .wn-pmq__figure {
+    position: relative;
+    display: grid;
+    place-items: end center;
+    /* The column, not the image, sets the box: a figure that hugs its content
+       cannot answer `width: min(100%, …)` and the portrait stayed at 200px. */
+    width: 100%;
+  }
+
+  /* Behind the head, not behind the whole figure: at the band's own tint it is a
+     ground for the portrait to stand on, and it must never read as a second mark
+     competing with the emblem in the masthead. */
+  .wn-pmq__chakra {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 8%;
+    width: 78%;
+    height: auto;
+    opacity: 0.6;
+  }
+
+  .wn-pmq__portrait {
+    position: relative;
+    align-self: end;
+    width: min(100%, 240px);
+    height: auto;
+  }
+
+  @media (min-width: 768px) {
+    .wn-pmq__figure { min-height: 300px; }
+    .wn-pmq__portrait { width: min(100%, 360px); }
+  }
+
   /* ── Social ──────────────────────────────────────────────────────────────── */
   .wn-home-social { display: grid; gap: var(--sa-stack-12); margin-top: var(--sa-stack-32); grid-template-columns: repeat(auto-fill, minmax(min(100%, 208px), 1fr)); }
 }

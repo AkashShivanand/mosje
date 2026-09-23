@@ -15,6 +15,7 @@ import { Documents } from "@/components/website-next/home/Documents";
 import { Activity } from "@/components/website-next/home/Activity";
 import { Organisations } from "@/components/website-next/home/Organisations";
 import { Leadership } from "@/components/website-next/home/Leadership";
+import { PmQuote } from "@/components/website-next/home/PmQuote";
 import { Social } from "@/components/website-next/home/Social";
 import { Helplines } from "@/components/website-next/home/Helplines";
 import "@/components/website-next/home/home.css";
@@ -97,6 +98,8 @@ export default async function Home() {
             }))}
         />
         <Hero />
+        {/* DBIM 3.0 §7.3(iv): after the banner, before the Ministry section. */}
+        <PmQuote />
         <Leadership />
         <Offerings />
         <WhatsNew />
