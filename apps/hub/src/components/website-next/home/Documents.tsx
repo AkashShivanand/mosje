@@ -6,6 +6,7 @@ import { formatDate } from "@/components/website-next/ui/format";
 import {
   dateValue,
   fileMeta,
+  latestOfEachSeries,
   tidyTitle,
 } from "@/components/website-next/ui/records";
 
@@ -17,6 +18,12 @@ import {
  * filed in the hundreds and would fill the row with case numbers. Size and
  * type are shown where the register states them; "0 MB" is unknown, not zero
  * (CON-07).
+ *
+ * ONE EDITION PER SERIES (`latestOfEachSeries`). The NCSK's standing returns are
+ * published monthly under one name with the period in a trailing bracket, and
+ * the whole month's batch is uploaded on one day — so two of these four slots
+ * went to the same return for July and for August, and the July one is
+ * superseded. Every edition stays in the collections linked below.
  */
 const CASE_REGISTERS = new Set([
   "Advices",
@@ -39,10 +46,11 @@ const COLLECTIONS = [
 ];
 
 export function Documents() {
-  const docs = getAllDocuments()
-    .filter((d) => d.category && !CASE_REGISTERS.has(d.category) && d.title)
-    .sort((a, b) => dateValue(b.date) - dateValue(a.date))
-    .slice(0, 4);
+  const docs = latestOfEachSeries(
+    getAllDocuments()
+      .filter((d) => d.category && !CASE_REGISTERS.has(d.category) && d.title)
+      .sort((a, b) => dateValue(b.date) - dateValue(a.date)),
+  ).slice(0, 4);
 
   return (
     <Band as="section" tone="default" spacing="xl" aria-labelledby="docs-title">

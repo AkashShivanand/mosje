@@ -4,12 +4,33 @@
  */
 
 /**
+ * A word the register misspells, corrected here and nowhere else.
+ *
+ * The estate does not rewrite what the Department publishes. This is the one
+ * exception and it is deliberately a LIST OF EXACT WORDS, not a spell-checker:
+ * a month name that does not exist makes a document's own coverage period
+ * unreadable, and the period is the only thing that tells one monthly return
+ * from the next. "List of cases where of sewer deaths legal heirs could not be
+ * traced despite best efforts [up to 31st Sugust, 2026]" is published at
+ * dosje.gov.in/documents/…-up-to-31st-sugust-2026/ (noticed 24 Sep 2026); the
+ * Department spells it "August" in the sibling return uploaded the same day.
+ * Recorded in docs/website-redesign/home-audit-2026-09-22.md, and to be deleted
+ * the day the register is corrected. Nothing else in a title is touched —
+ * grammar, case and the Department's own phrasing all stand.
+ */
+const MISSPELLINGS: ReadonlyArray<readonly [RegExp, string]> = [
+  [/\bSugust\b/g, "August"],
+];
+
+/**
  * Record titles arrive with runs of spaces, surrounding quotes and a trailing
- * full stop or colon (issue CON-20). Tidy the punctuation; never rewrite words.
+ * full stop or colon (issue CON-20). Tidy the punctuation; never rewrite words,
+ * beyond the one recorded misspelling above.
  */
 export function tidyTitle(value: string | undefined | null): string {
   if (!value) return "";
   let t = value.replace(/\s+/g, " ").trim();
+  for (const [re, fix] of MISSPELLINGS) t = t.replace(re, fix);
   const quoted = /^["'“‘](.*)["'”’]$/.exec(t);
   /* Only a single wrapping pair: “A”, “B” is two quoted names, not one quoted title. */
   if (quoted && !/["“”‘’]/.test(quoted[1] ?? "")) t = (quoted[1] ?? "").trim();
@@ -165,6 +186,80 @@ export function isTruncatedTitle(title: string | undefined | null): boolean {
 export function displayNoticeTitle(title: string): string {
   const t = tidyTitle(title);
   return isTruncatedTitle(title) ? `${t}…` : t;
+}
+
+/**
+ * ONE EDITION PER SERIES.
+ *
+ * The Department publishes standing returns monthly under one name, the period
+ * in a trailing bracket: "… despite best efforts [up to 31st July, 2026]" and
+ * "… [up to 31st August, 2026]" are the same return two months apart. They are
+ * uploaded together, so on a list of the four most recently published documents
+ * two of the four slots went to one return — and the older of the two told the
+ * reader something the newer one supersedes.
+ *
+ * So a list that shows a FEW documents shows the newest edition of each series
+ * and nothing else. A list that shows ALL of them does not call this: the
+ * register is a register, and an earlier period is a document in its own right.
+ *
+ * The series is the title with its trailing bracket removed; the edition is
+ * ranked by the date the register gives it and then by the period the title
+ * states, because a batch uploaded on one day carries one date for every
+ * edition in it. A period nobody can read ranks below one that can be.
+ */
+const MONTHS = [
+  "january", "february", "march", "april", "may", "june",
+  "july", "august", "september", "october", "november", "december",
+];
+
+const TRAILING_BRACKET = /\s*[[(][^\])]*[\])]\s*$/;
+
+export function seriesKey(title: string): string {
+  return tidyTitle(title)
+    .replace(TRAILING_BRACKET, "")
+    .replace(/[\s:;,.\-–—]+$/, "")
+    .toLowerCase();
+}
+
+/** The period a title states, as YYYYMMDD; 0 where it states none we can read. */
+export function periodValue(title: string): number {
+  const bracket = TRAILING_BRACKET.exec(tidyTitle(title));
+  const text = (bracket ? bracket[0] : "").toLowerCase();
+  if (!text) return 0;
+  /* 31.08.2026 / 31-08-2026 / 31/08/2026 */
+  const numeric = /(\d{1,2})[./-](\d{1,2})[./-](\d{4})/.exec(text);
+  if (numeric) {
+    return Number(numeric[3]) * 10000 + Number(numeric[2]) * 100 + Number(numeric[1]);
+  }
+  /* 31st August, 2026 — and "August 2026" with no day, which ranks as the 1st. */
+  const named = new RegExp(
+    `(?:(\\d{1,2})(?:st|nd|rd|th)?\\s+)?(${MONTHS.join("|")})[a-z]*,?\\s+(\\d{4})`,
+  ).exec(text);
+  if (named) {
+    const month = MONTHS.indexOf(named[2] ?? "") + 1;
+    return Number(named[3]) * 10000 + month * 100 + Number(named[1] ?? 1);
+  }
+  return 0;
+}
+
+export function latestOfEachSeries<T extends { title: string; date?: string }>(
+  items: T[],
+): T[] {
+  const best = new Map<string, T>();
+  for (const item of items) {
+    const key = seriesKey(item.title);
+    const held = best.get(key);
+    if (!held) {
+      best.set(key, item);
+      continue;
+    }
+    const newer =
+      dateValue(item.date) - dateValue(held.date) ||
+      periodValue(item.title) - periodValue(held.title);
+    if (newer > 0) best.set(key, item);
+  }
+  const kept = new Set(best.values());
+  return items.filter((i) => kept.has(i));
 }
 
 /**
