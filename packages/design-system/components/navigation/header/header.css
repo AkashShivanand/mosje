@@ -2191,6 +2191,37 @@
     }
   }
 
+  /* THE DEPARTMENT'S NAME STAYS ON THE WEBSITE'S CONDENSED BAR FROM 1440.
+     An emblem alone identifies the page only to a reader who knows the emblem, and
+     the masthead's own name is the first thing the scroll takes away. What decides
+     the width is the inline nav: seven entries measure 828px at every desktop width,
+     leaving 93px spare at 1280, 213 at 1440 and 317 at 1920 — while the Department's
+     name is 355px on ONE line at 14px. So it shows from 1440, where it can wrap onto
+     two 24px rows inside the 64px bar, and stays off at 1280 where taking 200px would
+     push the nav into the sheet and cost the reader the menu.
+
+     THE DEPARTMENT LINE ALONE, and that is a deliberate divergence from DBIM 5.2's
+     three-line lockup: the resting masthead above carries all three, and there is no
+     width here for `Government of India · Ministry …` as well. A portal's condensed
+     bar still shows all three — its nav is the sidebar, so the row is empty. */
+  @media (min-width: 1440px) {
+    .ds-hdr[data-variant="website"] .ds-hdr-cond__lockup .ds-hdr-lockup__lines {
+      display: grid;
+    }
+
+    .ds-hdr[data-variant="website"] .ds-hdr-cond__lockup .ds-hdr-lockup__org,
+    .ds-hdr[data-variant="website"] .ds-hdr-cond__lockup .ds-hdr-lockup__ministry {
+      display: none;
+    }
+
+    .ds-hdr[data-variant="website"] .ds-hdr-cond__lockup .ds-hdr-lockup__dept {
+      /* Two rows of the bar's own 14/20 type, capped so the wrap falls between
+         words rather than at whatever width is left over. */
+      max-width: 208px;
+      white-space: normal;
+    }
+  }
+
   .ds-hdr-cond__spacer {
     flex: 1 1 auto;
     min-width: var(--sa-stack-8);
