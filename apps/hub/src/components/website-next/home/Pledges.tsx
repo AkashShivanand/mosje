@@ -62,8 +62,11 @@ const VOLUNTEERING = [
 ] as const;
 
 export function Pledges() {
+  /* Muted, not white: Figma paints this section #F6F7F8, and with the NMBA band
+     gone, Organisations above it is the page’s other white band — two in a row
+     read as one long stretch with no edge between them. */
   return (
-    <Band as="section" tone="default" spacing="xl" aria-labelledby="pledges-title">
+    <Band as="section" tone="muted" spacing="xl" aria-labelledby="pledges-title">
       <SectionTitle
         size="display"
         headingId="pledges-title"

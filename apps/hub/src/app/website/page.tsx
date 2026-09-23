@@ -10,7 +10,6 @@ import { formatDate, isoDate } from "@/components/website-next/ui/format";
 import { WhatsNew } from "@/components/website-next/home/WhatsNew";
 import { Audiences } from "@/components/website-next/home/Audiences";
 import { Offerings } from "@/components/website-next/home/Offerings";
-import { Campaign } from "@/components/website-next/home/Campaign";
 import { Documents } from "@/components/website-next/home/Documents";
 import { Activity } from "@/components/website-next/home/Activity";
 import { Organisations } from "@/components/website-next/home/Organisations";
@@ -76,7 +75,7 @@ const JSON_LD = {
 /**
  * The home page, in the live dosje.gov.in order: banner carousel, About with
  * the Ministers and the statistics strip, Offerings with What's New, the
- * Organisations, the national campaign, Recent Documents, the personas, the
+ * Organisations, the pledges, Recent Documents, the personas, the
  * Activity Corner, social media, and Need Support with the helplines.
  * Two additions, each for a stated reason: the DBIM announcements ticker
  * (§A.4.1 iii), and the task band under it (issue NAV-01: the live page
@@ -113,11 +112,14 @@ export default async function Home() {
         <Offerings />
         <WhatsNew />
         <Organisations />
-        <Campaign />
-        {/* The campaign band above introduces NMBA; this gathers the pledges and
-            volunteering of every campaign, as Figma's own section does. */}
+        {/* The pledges and volunteering of every campaign, gathered as Figma's
+            own section does. The NMBA band that used to stand above this was
+            removed on 24 Sep 2026: once the pledges and the centre finder each
+            became a section, it was a third door to the same campaign, carrying
+            one link and a helpline the helplines section already lists. Figma
+            switched its own copy of that band off for the same reason. */}
         <Pledges />
-        {/* The live page and Figma both place it here: after the campaign, before
+        {/* The live page and Figma both place it here: after the pledges, before
             Recent Documents. */}
         <SamaveshJusticeBanner />
         <Documents />

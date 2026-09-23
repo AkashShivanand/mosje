@@ -191,16 +191,6 @@
   .wn-home-schemes > li { display: grid; }
   .wn-home-kinds { margin-top: var(--sa-stack-48); }
 
-  /* ── Campaign ────────────────────────────────────────────────────────────── */
-  .wn-home-campaign__grid { display: grid; gap: var(--sa-stack-32); align-items: center; }
-  @media (min-width: 1024px) { .wn-home-campaign__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--sa-inline-64); } }
-  .wn-home-campaign__media { position: relative; aspect-ratio: 3 / 2; border-radius: var(--sa-shape-24); overflow: hidden; background: var(--sa-bg-neutral-subtle); }
-  .wn-home-campaign__img { object-fit: cover; }
-  .wn-home-campaign__mark { width: var(--sa-icon-size-64); height: var(--sa-icon-size-64); margin-bottom: var(--sa-stack-16); padding: var(--sa-padding-4); border-radius: var(--sa-shape-full); background: var(--sa-bg-neutral-base); object-fit: contain; }
-  .wn-home-campaign__actions { display: flex; flex-wrap: wrap; gap: var(--sa-inline-12); margin-top: var(--sa-stack-24); }
-  .wn-home-campaign__help { display: flex; align-items: center; gap: var(--sa-inline-8); margin-top: var(--sa-stack-24); color: var(--sa-text-neutral-base); }
-  .wn-home-campaign__help a { font-weight: var(--sa-font-weight-bold); color: var(--sa-text-link-brand-default); text-decoration: underline; text-underline-offset: 0.2em; }
-
   /* ── Documents ───────────────────────────────────────────────────────────── */
   .wn-home-docs { display: grid; gap: var(--sa-stack-16); margin-top: var(--sa-stack-32); }
   @media (min-width: 768px) { .wn-home-docs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
@@ -405,11 +395,16 @@
   /* The volunteering row: quieter ground, a mark, and the copy beside it. */
   .wn-home-pledges--volunteer { margin-top: var(--sa-stack-16); }
 
+  /* NO FILL, as Figma draws it: the two pledges are white cards on the band's
+     grey and the volunteering row is the quieter pair beneath them, held by its
+     border alone. It was `--sa-bg-neutral-subtler`, which reads as a card only
+     while the band behind it is white — and the band is grey since the NMBA
+     campaign band was removed on 24 Sep 2026. */
   .wn-home-pledge--volunteer {
     grid-template-columns: auto minmax(0, 1fr);
     align-items: start;
     gap: var(--sa-stack-8) var(--sa-inline-16);
-    background-color: var(--sa-bg-neutral-subtler);
+    background-color: transparent;
   }
 
   .wn-home-pledge--volunteer > a { grid-column: 2; }
