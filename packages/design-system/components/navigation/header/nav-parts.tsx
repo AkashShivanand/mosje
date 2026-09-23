@@ -29,7 +29,6 @@ import "./header.css";
    ========================================================================== */
 
 const IcCaret = () => <Icon name="keyboard_arrow_down" size={16} className="ds-hdr-ic" />;
-const IcMegaChevron = () => <Icon name="chevron_right" size={24} className="ds-hdr-ic" />;
 
 /** WCAG 3.2.5 — a link that leaves the tab has to say so, visibly and to AT. */
 export const NewTabHint = (): React.JSX.Element => (
@@ -275,9 +274,10 @@ export function MegaMenuItem({ item, onSelect, linkAs, className }: MegaMenuItem
         <span className="ds-hdr-mega-item__abbr">{item.abbr}</span>
         <span className="ds-hdr-mega-item__name">{item.name}</span>
       </span>
-      {/* An off-site row says so instead of pointing further in: the chevron means
-          "opens a panel deeper in this site", which is the wrong promise. */}
-      {item.external && !item.disabled ? <NewTabHint /> : <IcMegaChevron />}
+      {/* The only trailing mark this row carries. There was a hover-revealed
+          chevron here; it promised a submenu that never opens (issue register
+          NAV-18), and the row's own hover lift already says it is clickable. */}
+      {item.external && !item.disabled && <NewTabHint />}
     </Tag>
   );
 }

@@ -226,7 +226,7 @@ export interface SiteHeaderProps {
 }
 
 /* ── Glyphs ────────────────────────────────────────────────────────────────
-   The nav row's glyphs (caret, mega chevron, new-tab hint) and the two triggers
+   The nav row's glyphs (caret, new-tab hint) and the two triggers
    moved to nav-parts.tsx, where the components that own them live. Nothing is
    left inline here: every glyph in this file is the shared <Icon>. */
 

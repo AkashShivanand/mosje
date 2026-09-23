@@ -1229,12 +1229,8 @@
     opacity: 1;
   }
 
-  .ds-hdr-mega-item .ds-hdr-ic:not(.ds-hdr-ic--newtab) {
-    flex: 0 0 auto;
-    opacity: 0;
-    color: var(--sa-text-neutral-subtle);
-    transition: opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
-  }
+  /* The row carries no other trailing icon: the hover chevron was removed with
+     NAV-18, so there is nothing left here to reveal or fade. */
 
   /* Figma State=Hover carries a 1px stroke and NO effect; the elevation that used
      to be here was code's own addition. State=Focused is the reverse — a drop
@@ -1250,16 +1246,6 @@
       outline: none;
       background-color: var(--sa-bg-neutral-base);
       box-shadow: inset 0 0 0 1px var(--sa-border-neutral-subtle);
-    }
-  }
-
-  .ds-hdr-mega-item:focus-visible .ds-hdr-ic:not(.ds-hdr-ic--newtab) {
-    opacity: 1;
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .ds-hdr-mega-item:hover .ds-hdr-ic:not(.ds-hdr-ic--newtab) {
-      opacity: 1;
     }
   }
 
@@ -1279,7 +1265,6 @@
     color: var(--sa-text-neutral-disabled);
   }
 
-  .ds-hdr-mega-item.is-disabled .ds-hdr-ic,
   .ds-hdr-nav__link.is-disabled .ds-hdr-ic {
     color: var(--sa-icon-neutral-disabled);
   }
