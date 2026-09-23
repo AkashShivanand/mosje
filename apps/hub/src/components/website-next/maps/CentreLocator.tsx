@@ -76,6 +76,7 @@ import "./centre-locator.css";
  * mirror, and `useCentres` rejects an empty parse as an error.
  */
 
+/** Rows per page where the locator is the whole page. `pageSize` overrides it. */
 const PAGE_SIZE = 10;
 const fmt = new Intl.NumberFormat("en-IN");
 
@@ -131,9 +132,16 @@ function writeUrl(f: Filters) {
 export interface CentreLocatorProps {
   /** Heading level of each centre's name: 3 under a page's h2, 2 where the locator is the page. */
   headingLevel?: 2 | 3;
+  /**
+   * Rows per page. The home page shows five rather than ten: the locator is one
+   * section of a page that already runs to ten screens, and five rows still
+   * answer "is there one near me" without turning the section into a directory.
+   * The map, the filters and the paging are the same in both places.
+   */
+  pageSize?: number;
 }
 
-export function CentreLocator({ headingLevel = 3 }: CentreLocatorProps) {
+export function CentreLocator({ headingLevel = 3, pageSize = PAGE_SIZE }: CentreLocatorProps) {
   const H = headingLevel === 2 ? "h2" : "h3";
   const [f, setF] = React.useState<Filters>(NO_FILTERS);
   const [selected, setSelected] = React.useState<string | null>(null);
@@ -194,9 +202,9 @@ export function CentreLocator({ headingLevel = 3 }: CentreLocatorProps) {
     return m;
   }, [placeMatches]);
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const page = Math.min(f.page, totalPages);
-  const shown = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const shown = filtered.slice((page - 1) * pageSize, page * pageSize);
 
   const pins: MapPin[] = React.useMemo(() => {
     const out = filtered

@@ -16,6 +16,7 @@ import { Activity } from "@/components/website-next/home/Activity";
 import { Organisations } from "@/components/website-next/home/Organisations";
 import { Leadership } from "@/components/website-next/home/Leadership";
 import { PmQuote } from "@/components/website-next/home/PmQuote";
+import { Centres } from "@/components/website-next/home/Centres";
 import { Social } from "@/components/website-next/home/Social";
 import { Helplines } from "@/components/website-next/home/Helplines";
 import "@/components/website-next/home/home.css";
@@ -107,6 +108,9 @@ export default async function Home() {
         <Campaign />
         <Documents />
         <Audiences />
+        {/* The live page and Figma both carry the locator here, after the
+            personas and before the Activity Corner. */}
+        <Centres />
         <Activity />
         <Social />
         <Helplines />
