@@ -17,6 +17,10 @@ import { Organisations } from "@/components/website-next/home/Organisations";
 import { Leadership } from "@/components/website-next/home/Leadership";
 import { PmQuote } from "@/components/website-next/home/PmQuote";
 import { Centres } from "@/components/website-next/home/Centres";
+/* The marquee is shared with the classic home page rather than copied: one list of
+   marks, one set of links, one pause control. It moves into website-next when the
+   classic tree is retired. */
+import { LogoStrip } from "@/components/website/LogoStrip";
 import { Social } from "@/components/website-next/home/Social";
 import { Helplines } from "@/components/website-next/home/Helplines";
 import "@/components/website-next/home/home.css";
@@ -114,6 +118,8 @@ export default async function Home() {
         <Activity />
         <Social />
         <Helplines />
+        {/* Last band before the footer, as on the live page and in Figma. */}
+        <LogoStrip />
       </main>
       <WebsiteFooter />
     </>
