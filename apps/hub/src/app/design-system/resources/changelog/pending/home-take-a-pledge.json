@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "TAKE A PLEDGE IS A SECTION OF ITS OWN, AND THE CAMPAIGN BAND STOPS REPEATING IT. Figma's home frame gives the pledges a section; the redesign had one pledge link inside the Nasha Mukt Bharat band, and the Senior Citizens pledge and both volunteering registers were reachable only from their portals. The section carries the two pledges — each in the portal's own words — and the two volunteer registers beneath them. Two things Figma draws are deliberately absent: the pledge counts, because no feed on this site publishes them and no snapshot is committed (live-data-fallback.md — a figure with no source does not go on the page), and the split into \"I'm a non-user\" and \"I'm a recovered user\", because the pledge form asks for neither and both doors would land on the same form. The campaign band's two buttons duplicated this section and the de-addiction locator, so it now carries one: the campaign portal."
+}

@@ -17,6 +17,7 @@ import { Organisations } from "@/components/website-next/home/Organisations";
 import { Leadership } from "@/components/website-next/home/Leadership";
 import { PmQuote } from "@/components/website-next/home/PmQuote";
 import { Centres } from "@/components/website-next/home/Centres";
+import { Pledges } from "@/components/website-next/home/Pledges";
 /* The marquee is shared with the classic home page rather than copied: one list of
    marks, one set of links, one pause control. It moves into website-next when the
    classic tree is retired. */
@@ -110,6 +111,9 @@ export default async function Home() {
         <WhatsNew />
         <Organisations />
         <Campaign />
+        {/* The campaign band above introduces NMBA; this gathers the pledges and
+            volunteering of every campaign, as Figma's own section does. */}
+        <Pledges />
         <Documents />
         <Audiences />
         {/* The live page and Figma both carry the locator here, after the

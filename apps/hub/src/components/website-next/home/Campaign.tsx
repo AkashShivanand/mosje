@@ -50,24 +50,23 @@ export function Campaign() {
             title={<T>Nasha Mukt Bharat Abhiyaan</T>}
             description={
               <T>
-                The national campaign for a drug-free India. Take the pledge,
-                volunteer as a Nasha Mukti Mitr, or find a de-addiction centre
-                near you.
+                The national campaign for a drug-free India, run with the States
+                across every district.
               </T>
             }
           />
+          {/* ONE ACTION, and it is the campaign itself. This band used to carry
+              "Take the Pledge" and "Find a De-addiction Centre"; both now have a
+              section of their own further down the page — the pledges are gathered
+              with the Senior Citizens pledge and the volunteering registers, and the
+              locator is the whole tool rather than a link to it. Three doors to two
+              destinations is the duplication ui-restraint-and-copy.md §1 bans. */}
           <div className="wn-home-campaign__actions">
             <Link
-              href="/portals/nmba/epledge"
+              href="/portals/nmba"
               className={buttonClasses("primary", "filled", "md")}
             >
-              <T>Take the Pledge</T>
-            </Link>
-            <Link
-              href="/website/de-addiction-centres"
-              className={buttonClasses("primary", "outlined", "md")}
-            >
-              <T>Find a De-addiction Centre</T>
+              <T>Go to the campaign portal</T>
             </Link>
           </div>
           <p className="wn-home-campaign__help">

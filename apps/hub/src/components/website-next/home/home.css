@@ -342,6 +342,88 @@
     .wn-pmq__portrait { width: min(100%, 360px); }
   }
 
+  /* ── Take a Pledge ───────────────────────────────────────────────────────────
+     Two rows: the pledges themselves, then the volunteering registers, which ask
+     for more than a signature and are weighted a step below them. No counts —
+     see the component for why. */
+  .wn-home-pledges {
+    display: grid;
+    gap: var(--sa-stack-16);
+    margin: var(--sa-stack-32) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 768px) {
+    .wn-home-pledges {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--sa-stack-24);
+    }
+  }
+
+  .wn-home-pledge {
+    display: grid;
+    align-content: start;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-24);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-16);
+    background-color: var(--sa-bg-neutral-base);
+  }
+
+  .wn-home-pledge > a {
+    justify-self: start;
+    margin-top: var(--sa-stack-8);
+  }
+
+  .wn-home-pledge__eyebrow {
+    margin: 0;
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: var(--sa-font-weight-medium);
+    letter-spacing: var(--sa-type-caps-tracking);
+    text-transform: uppercase;
+    color: var(--sa-text-brand-primary-base);
+  }
+
+  .wn-home-pledge__title {
+    margin: 0;
+    font-size: var(--sa-type-title-1-size);
+    line-height: var(--sa-type-title-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .wn-home-pledge__body {
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-subtle);
+    text-wrap: pretty;
+  }
+
+  /* The volunteering row: quieter ground, a mark, and the copy beside it. */
+  .wn-home-pledges--volunteer { margin-top: var(--sa-stack-16); }
+
+  .wn-home-pledge--volunteer {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: var(--sa-stack-8) var(--sa-inline-16);
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  .wn-home-pledge--volunteer > a { grid-column: 2; }
+
+  .wn-home-pledge__mark {
+    display: inline-grid;
+    place-items: center;
+    inline-size: var(--sa-control-height-md);
+    block-size: var(--sa-control-height-md);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-brand-primary-subtler);
+    color: var(--sa-text-brand-primary-bolder);
+  }
+
   /* ── Social ──────────────────────────────────────────────────────────────── */
   .wn-home-social { display: grid; gap: var(--sa-stack-12); margin-top: var(--sa-stack-32); grid-template-columns: repeat(auto-fill, minmax(min(100%, 208px), 1fr)); }
 }
