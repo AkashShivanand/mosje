@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Button, Card, Icon } from "@mosje/design-system";
-import { cn } from "@/lib/website/utils";
+import { Button, Card, Icon, Tabs } from "@mosje/design-system";
 
 type TabKey = "events" | "press" | "gallery";
 
@@ -56,6 +55,7 @@ const EVENTS: EventItem[] = [EVENTS_FEATURED_FIRST, ...EVENTS_REST];
 
 export function ActivityCorner() {
   const [activeTab, setActiveTab] = useState<TabKey>("events");
+  const ACTIVITY_TABS: TabKey[] = ["events", "press", "gallery"];
 
   return (
     <section className="bg-surface py-12 md:py-16">
@@ -68,56 +68,24 @@ export function ActivityCorner() {
         </h2>
 
         <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div
-            role="tablist"
-            aria-label="Activity Corner"
-            className="inline-flex items-center gap-1 self-start rounded-lg bg-surface-muted p-1"
-          >
-              <button
-                key="events"
-                type="button"
-                role="tab"
-                aria-selected={activeTab === "events"}
-                onClick={() => setActiveTab("events")}
-                className={cn(
-                  "rounded-md px-4 py-1.5 text-label-1 transition",
-                  activeTab === "events"
-                    ? "bg-primary text-white shadow-xs"
-                    : "text-ink-muted hover:text-ink"
-                )}
-              >
-                Events
-              </button>
-              <button
-                key="press"
-                type="button"
-                role="tab"
-                aria-selected={activeTab === "press"}
-                onClick={() => setActiveTab("press")}
-                className={cn(
-                  "rounded-md px-4 py-1.5 text-label-1 transition",
-                  activeTab === "press"
-                    ? "bg-primary text-white shadow-xs"
-                    : "text-ink-muted hover:text-ink"
-                )}
-              >
-                Press Releases
-              </button>
-              <button
-                key="gallery"
-                type="button"
-                role="tab"
-                aria-selected={activeTab === "gallery"}
-                onClick={() => setActiveTab("gallery")}
-                className={cn(
-                  "rounded-md px-4 py-1.5 text-label-1 transition",
-                  activeTab === "gallery"
-                    ? "bg-primary text-white shadow-xs"
-                    : "text-ink-muted hover:text-ink"
-                )}
-              >
-                Gallery
-              </button>
+          {/* The tinted track is this section's own; the tabs inside it are the design
+              system's. `track="none"`: an enclosed track stretches every tab to an equal
+              share, which clipped "Press Releases" and "Vacancies" to "Press R…". */}
+          <div className="inline-flex items-center self-start rounded-lg bg-surface-muted p-1">
+            <Tabs
+              idBase="activity-corner"
+              ariaLabel="Activity Corner"
+              indicator="pill"
+              track="none"
+              size="s"
+              tabs={[
+                { id: "events", label: "Events" },
+                { id: "press", label: "Press Releases" },
+                { id: "gallery", label: "Gallery" },
+              ]}
+              active={ACTIVITY_TABS.indexOf(activeTab)}
+              onChange={(i) => setActiveTab(ACTIVITY_TABS[i]!)}
+            />
           </div>
 
           {/* ONE view-all control. There were three: this link, plus "View All

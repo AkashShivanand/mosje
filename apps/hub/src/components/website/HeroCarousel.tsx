@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
-import { Icon, Link } from "@mosje/design-system";
+import { Icon, IconButton, Link } from "@mosje/design-system";
 import { CarouselIndicators } from "./CarouselIndicators";
 
 export function HeroCarousel() {
@@ -116,30 +116,39 @@ export function HeroCarousel() {
       </div>
 
       {/* Navigation Arrows */}
-      <button
-        onClick={() => go(index - 1)}
+      <IconButton
+        icon={<Icon name="keyboard_arrow_left" size={24} />}
         aria-label="Previous slide"
-        className="absolute left-3 top-1/2 z-20 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full bg-white/80 text-ink shadow-md transition hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
-      >
-        <Icon name="keyboard_arrow_left" size={24} />
-      </button>
-      <button
-        onClick={() => go(index + 1)}
+        variant="neutral"
+        shape="circle"
+        size="md"
+        onClick={() => go(index - 1)}
+        className="absolute left-3 top-1/2 z-20 -translate-y-1/2 bg-white/80 text-ink shadow-md hover:bg-white"
+      />
+      <IconButton
+        icon={<Icon name="keyboard_arrow_right" size={24} />}
         aria-label="Next slide"
-        className="absolute right-3 top-1/2 z-20 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full bg-white/80 text-ink shadow-md transition hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
-      >
-        <Icon name="keyboard_arrow_right" size={24} />
-      </button>
+        variant="neutral"
+        shape="circle"
+        size="md"
+        onClick={() => go(index + 1)}
+        className="absolute right-3 top-1/2 z-20 -translate-y-1/2 bg-white/80 text-ink shadow-md hover:bg-white"
+      />
 
       {/* Play/Pause & Dots Indicator */}
       <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 items-center gap-3 rounded-full bg-black/50 px-3.5 py-1.5 backdrop-blur-xs">
-        <button
-          onClick={() => setIsPlaying((p) => !p)}
+        <IconButton
+          icon={<Icon name={isPlaying ? "pause" : "play_arrow"} size={16} />}
           aria-label={isPlaying ? "Pause slide rotation" : "Play slide rotation"}
-          className="grid h-6 w-6 place-items-center rounded-full bg-white/20 text-white transition hover:bg-white hover:text-ink"
-        >
-          <Icon name={isPlaying ? "pause" : "play_arrow"} size={16} />
-        </button>
+          aria-pressed={!isPlaying}
+          variant="neutral"
+          appearance="text"
+          tone="inverse"
+          size="sm"
+          shape="circle"
+          onClick={() => setIsPlaying((p) => !p)}
+          className="size-6 min-h-0 min-w-0 bg-white/20"
+        />
 
         {/* Was a hand-written copy of the same dots the persona card had, at a
             different size and opacity. Both now come from one component, whose

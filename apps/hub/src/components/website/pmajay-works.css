@@ -165,50 +165,25 @@
     `min-width: 0` and an ellipsis, because the reader is looking at that level
     and the heading above already names it.
   */
+  /*
+    THE TRAIL IS THE DESIGN SYSTEM'S `Breadcrumb` NOW, at `wrap={false}` — the
+    shape its own stylesheet was written for, down to the note about a 304px
+    rail. It brings the ordered list, the chevrons, the ancestor/current
+    treatments, the single `aria-current` and the 24px targets, so everything
+    this file used to draw for them has gone.
+
+    WHAT IS LEFT HERE IS THE RAIL'S OWN CONSTRAINT: the nav must be allowed to
+    shrink, or the current crumb's ellipsis never engages — a flex item will not
+    go below its content unless every ancestor down to the truncating box says
+    it may.
+
+    ONE THING CHANGED ON SCREEN AND IT IS DELIBERATE: the trail is 14px rather
+    than the 13 this file set by hand. The design system states the case for
+    body-2 in its own file — a trail is chrome, but it is also the only thing on
+    the page that says where you are — and matching it is the point of moving.
+  */
   .pmw__crumbs {
-    display: flex;
-    align-items: center;
-    flex-wrap: nowrap;
-    font-size: var(--sa-type-body-3-size);
     min-width: 0;
-  }
-
-  .pmw__crumb {
-    flex: 0 0 auto;
-    white-space: nowrap;
-  }
-
-  /* The level you are on is the one that gives — see `.pmw__crumbs`. */
-  .pmw__crumb--here {
-    flex: 0 1 auto;
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .pmw__crumb {
-    padding: var(--sa-padding-2) var(--sa-padding-4);
-    border-radius: var(--sa-shape-4);
-    color: var(--sa-text-brand-primary-base);
-    font-weight: var(--sa-font-weight-semibold);
-    cursor: pointer;
-  }
-
-  .pmw__crumb:hover:not(:disabled) {
-    background-color: var(--sa-bg-brand-primary-base);
-  }
-
-  .pmw__crumb:disabled {
-    color: var(--sa-text-neutral-subtle);
-    font-weight: var(--sa-font-weight-regular);
-    cursor: default;
-  }
-
-  .pmw__crumb--here {
-    color: var(--sa-text-neutral-base);
-    font-weight: var(--sa-font-weight-semibold);
-    padding: var(--sa-padding-2) var(--sa-padding-4);
   }
 
   /*
@@ -216,14 +191,12 @@
     box, so the glyph's own side bearing adds ~5px of air on each side that no
     spacing token can see. Measured before and after: "India" to "West Bengal"
     was 30px of space around a 6px arrow — 6px of crumb padding, 4px of list
-    gap and 5px of bearing, twice over. Pulling 4px back on each side, with
-    the gap dropped and the padding at 4, leaves 5px a side, which is what the
-    breadcrumb looked like it should have had all along.
+    gap and 5px of bearing, twice over. Pulling 4px back on each side leaves 5px
+    a side, which is what the breadcrumb looked like it should have had all
+    along. The DS draws the separator; this only takes the air back.
   */
-  .pmw__crumbsep {
-    flex: none;
+  .pmw__crumbs .ds-breadcrumb__sep {
     margin-inline: -4px;
-    color: var(--sa-icon-neutral-subtler);
   }
 
   /*
@@ -515,14 +488,30 @@
     line-height: var(--sa-type-body-3-lh);
   }
 
-  /* The retry inside the error sentence — a link in prose, not a button box. */
-  .pmw__retry {
+  /* The retry inside the error sentence — a link in prose, not a button box.
+     It is the DS `Button` at `text`, so the box it would otherwise draw is
+     taken back to nothing here. Three classes, so the reset wins over the
+     button's own variant/appearance pairs whatever the stylesheet order turns
+     out to be. */
+  .pmw__retry.ds-btn.ds-btn--text {
+    display: inline;
+    min-width: 0;
+    min-height: 0;
     padding: 0;
+    border: 0;
+    border-radius: 0;
     font: inherit;
     color: var(--sa-text-brand-primary-base);
     font-weight: var(--sa-font-weight-semibold);
     text-decoration: underline;
     cursor: pointer;
+  }
+
+  /* A word in a sentence takes no hover ground; the underline is the affordance. */
+  .pmw__retry.ds-btn.ds-btn--text:hover,
+  .pmw__retry.ds-btn.ds-btn--text:active {
+    background-color: transparent;
+    color: var(--sa-text-brand-primary-bolder);
   }
 
   .pmw__retry:focus-visible {
@@ -711,15 +700,26 @@
     AVAILABLE — a heading with no mark at all reads as plain text, which is
     exactly what these were before.
   */
-  .pmw__colbtn {
+  /* The heading IS the DS `Button` (neutral, text, sm). Everything below takes
+     its box back to the heading row's own rhythm — 11px caps in a 24px target —
+     which the button's `sm` size (32px, 12px padding, its own font) would
+     otherwise set. Three classes, so the reset wins over the button's
+     variant/appearance pairs whatever the stylesheet order turns out to be. */
+  .pmw__colbtn.ds-btn.ds-btn--text {
     display: inline-flex;
     align-items: center;
+    /* The first heading is stretched by its 1fr track, and the button's own
+       `center` then floated "BY STATE" into the middle of a column whose rows
+       are all left-aligned. The numeric two take `flex-end` below. */
+    justify-content: flex-start;
     gap: var(--sa-inline-2);
     /* 24px tall — the WCAG 2.2 SC 2.5.8 minimum, in a heading row that has
        only 11px type to justify its height. */
+    min-width: 0;
     min-height: 24px;
     padding: var(--sa-padding-2) var(--sa-padding-4);
     margin-inline: calc(var(--sa-padding-4) * -1);
+    border: 0;
     border-radius: var(--sa-shape-4);
     color: inherit;
     font: inherit;
@@ -728,7 +728,7 @@
     cursor: pointer;
   }
 
-  .pmw__colbtn:hover {
+  .pmw__colbtn.ds-btn:hover {
     background-color: var(--sa-bg-neutral-subtler);
     color: var(--sa-text-neutral-base);
   }
@@ -740,7 +740,7 @@
 
   /* The active column is the only one in full ink, so which column the list
      is ordered by reads before the arrow does. */
-  .pmw__colbtn.is-active {
+  .pmw__colbtn.ds-btn.is-active {
     color: var(--sa-text-neutral-base);
   }
 
@@ -764,7 +764,7 @@
     digits sit under the words rather than under the arrows. The thing that
     moves is the one with no fixed position of its own.
   */
-  .pmw__colbtn--num {
+  .pmw__colbtn--num.ds-btn.ds-btn--text {
     justify-content: flex-end;
   }
 
@@ -906,6 +906,27 @@
     cursor: pointer;
   }
 
+  /*
+    A VILLAGE ROW IS THE DS `Button` (neutral, text) WEARING THE LIST'S TRACK.
+
+    Everything above is the row; this only out-specifies the parts of `.ds-btn`
+    that would otherwise redraw it — the inline-flex box, the centred content,
+    the 8px gap, the 64px width floor, the 8px radius and the button's own type
+    ramp. Three classes, so it wins whatever order the two stylesheets land in.
+  */
+  .pmw__rowinner.ds-btn.ds-btn--text {
+    display: grid;
+    justify-content: normal;
+    gap: var(--sa-inline-8);
+    min-width: 0;
+    min-height: 0;
+    border: 0;
+    border-radius: var(--sa-shape-6);
+    color: inherit;
+    font: inherit;
+  }
+
+  .pmw__rowinner.ds-btn:hover,
   .pmw__rowinner:hover {
     background-color: var(--sa-bg-neutral-subtler);
   }

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import dynamic from "next/dynamic";
-import { Icon, Link, Search, Select } from "@mosje/design-system";
+import { Button, Chip, Icon, Link, Search, Select } from "@mosje/design-system";
 import { cn } from "@/lib/website/utils";
 import {
   CENTRE_TYPE_META,
@@ -190,48 +190,59 @@ export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddicti
               ))}
             </Select>
           </div>
-          <button
-            type="button"
+          {/* `loading` is the DS spelling of the spinner-and-disable this used to
+              hand-roll: it swaps the spinner into the leading icon's place, so the
+              control does not change width the moment it is pressed, and it implies
+              disabled — a button that says "Locating…" and still asks for a second
+              fix is the double-request the prop exists to prevent. */}
+          <Button
             onClick={locate}
-            disabled={!ready || locating}
-            className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-label-1 text-white transition-colors hover:bg-primary-dark disabled:opacity-70"
+            disabled={!ready}
+            loading={locating}
+            iconLeft={<Icon name="my_location" size={16} aria-hidden />}
+            nowrap
+            className="shrink-0"
           >
-            {locating ? <Icon name="progress_activity" size={16} className="animate-spin" aria-hidden /> : <Icon name="my_location" size={16} aria-hidden />}
             {locating ? "Locating…" : "Use my location"}
-          </button>
+          </Button>
         </div>
 
         <div className="mt-3 flex flex-wrap items-center gap-1.5">
-          <button
-            type="button"
-            onClick={() => setType("")}
-            aria-pressed={type === ""}
+          {/* The count is the DS `count` prop rather than a span in the label, so a
+              screen reader hears "IRCA, 282 centres" instead of a bare number, and
+              every chip on the estate renders its figure the same way. */}
+          <Chip
+            size="sm"
+            emphasis="solid"
+            selected={type === ""}
+            onSelectedChange={() => setType("")}
             disabled={!ready}
-            className={cn(
-              "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-label-2 transition-colors",
-              type === "" ? "bg-primary text-white" : "bg-surface-muted text-ink-muted hover:bg-primary/10 hover:text-primary-dark",
-            )}
+            count={TOTAL_CENTRES}
+            countLabel="centres"
+            countLabelOne="centre"
           >
-            All <span className={type === "" ? "text-white" : "text-ink"}>{TOTAL_CENTRES}</span>
-          </button>
+            All
+          </Chip>
           {CENTRE_TYPE_ORDER.map((t) => {
             const active = type === t;
             return (
-              <button
+              <Chip
                 key={t}
-                type="button"
-                onClick={() => setType(active ? "" : t)}
-                aria-pressed={active}
+                size="sm"
+                emphasis="solid"
+                selected={active}
+                onSelectedChange={() => setType(active ? "" : t)}
                 disabled={!ready}
                 title={CENTRE_TYPE_META[t].label}
-                className={cn(
-                  "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-label-2 transition-colors",
-                  active ? "bg-primary text-white" : "bg-surface-muted text-ink-muted hover:bg-primary/10 hover:text-primary-dark",
-                )}
+                count={CENTRE_TYPE_META[t].count}
+                countLabel="centres"
+                countLabelOne="centre"
+                leadingIcon={
+                  <span className="block h-2 w-2 rounded-full" style={{ background: CENTRE_TYPE_META[t].color }} />
+                }
               >
-                <span className="h-2 w-2 rounded-full" style={{ background: CENTRE_TYPE_META[t].color }} aria-hidden />
-                {t} <span className={active ? "text-white" : "text-ink"}>{CENTRE_TYPE_META[t].count}</span>
-              </button>
+                {t}
+              </Chip>
             );
           })}
         </div>
@@ -270,8 +281,10 @@ export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddicti
               )}
             </span>
             {ready && (query || state || type || userLoc) && (
-              <button
-                type="button"
+              <Button
+                appearance="text"
+                size="sm"
+                nowrap
                 onClick={() => {
                   setQuery("");
                   setState("");
@@ -280,10 +293,11 @@ export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddicti
                   setUserLoc(null);
                   setSelected(null);
                 }}
-                className="inline-flex items-center gap-1 text-label-2 text-primary hover:text-primary-dark"
+                iconLeft={<Icon name="close" size={12} aria-hidden />}
+                className="-my-1 gap-1 px-1.5 text-label-2"
               >
-                <Icon name="close" size={12} /> Reset
-              </button>
+                Reset
+              </Button>
             )}
           </div>
 
@@ -301,14 +315,14 @@ export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddicti
                   </a>
                   .
                 </p>
-                <button
-                  type="button"
+                <Button
+                  size="sm"
+                  nowrap
                   onClick={retry}
-                  className="inline-flex h-9 items-center gap-2 rounded-lg bg-primary px-4 text-label-1 text-white transition-colors hover:bg-primary-dark"
+                  iconLeft={<Icon name="refresh" size={16} aria-hidden />}
                 >
-                  <Icon name="refresh" size={16} aria-hidden />
                   Try again
-                </button>
+                </Button>
               </div>
             ) : (
               /* LOADING — a skeleton in the SHAPE of the result, so nothing
@@ -353,8 +367,14 @@ export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddicti
               <p className="text-body-2 text-ink-muted">
                 No centres match this search. Try a wider filter, or call the helpline.
               </p>
-              <button
-                type="button"
+              {/* 16, not the 12 the Reset control above it uses. That 12 is
+                  grandfathered debt on the icon-scale ratchet; copying it into
+                  a new control is how debt grows, and 16 is the right step
+                  beside label-2 text anyway. */}
+              <Button
+                appearance="text"
+                size="sm"
+                nowrap
                 onClick={() => {
                   setQuery("");
                   setState("");
@@ -363,14 +383,11 @@ export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddicti
                   setUserLoc(null);
                   setSelected(null);
                 }}
-                className="inline-flex items-center gap-1 text-label-2 text-primary hover:text-primary-dark"
+                iconLeft={<Icon name="close" size={16} aria-hidden />}
+                className="gap-1 text-label-2"
               >
-                {/* 16, not the 12 the Reset control above it uses. That 12 is
-                    grandfathered debt on the icon-scale ratchet; copying it into
-                    a new control is how debt grows, and 16 is the right step
-                    beside label-2 text anyway. */}
-                <Icon name="close" size={16} /> Clear filters
-              </button>
+                Clear filters
+              </Button>
             </div>
           ) : (
             <ul
@@ -386,11 +403,24 @@ export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddicti
                 const dist = (c as { _d?: number })._d;
                 return (
                   <li key={`${centreKey(c)}#${i}`} data-key={centreKey(c)}>
-                    <button
-                      type="button"
+                    {/* NOT `ListRow`, and the reason is the row's own contents.
+                        `ListGroup`/`ListRow` is the design system's row and was the
+                        first thing tried: it renders the whole row as one control,
+                        which is right — but it takes title / description / trailing,
+                        and this row carries a distance badge inline with a truncated
+                        name, a type line in the centre's own key colour, two address
+                        lines, and a "Get directions" link that appears INSIDE the row
+                        once it is selected. Forcing that into three slots would either
+                        change what the row shows or need the row's layout overriding
+                        slot by slot, which is a fork of the component wearing its
+                        class names. So it stays the design system's `Button` in its
+                        quietest appearance, carrying the row's own layout — one
+                        control, one focus ring, no hand-rolled button. */}
+                    <Button
+                      appearance="text"
                       onClick={() => setSelected(c)}
                       className={cn(
-                        "flex w-full items-start gap-2.5 px-4 py-3 text-left transition-colors",
+                        "flex w-full items-start justify-start gap-2.5 rounded-none border-0 px-4 py-3 text-left font-normal transition-colors",
                         active ? "bg-primary/[0.06]" : "hover:bg-surface-muted",
                       )}
                     >
@@ -424,7 +454,7 @@ export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddicti
                           </Link>
                         )}
                       </span>
-                    </button>
+                    </Button>
                   </li>
                 );
               })}
