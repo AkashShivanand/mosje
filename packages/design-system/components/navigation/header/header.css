@@ -118,9 +118,14 @@
     color: var(--sa-text-neutral-base);
   }
 
+  /* Headline 6 — 16/24, FLAT. The library's BrandLockup sets the department line
+     to `Headline/headline-6` on Device=Tablet and =Desktop and to `Title/title-3`
+     on =Mobile and on every Compact and Condensed variant, and the rules below
+     carry those two. Headline 5 stood here and is fluid 18–20, so the masthead's
+     height moved with the viewport — issue register TYP-10. */
   .ds-hdr-lockup__dept {
-    font-size: var(--sa-type-headline-5-size);
-    line-height: var(--sa-type-headline-5-lh);
+    font-size: var(--sa-type-headline-6-size);
+    line-height: var(--sa-type-headline-6-lh);
     letter-spacing: var(--sa-type-heading-tracking);
     font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
@@ -938,7 +943,10 @@
     border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-8);
     background-color: var(--sa-bg-neutral-base);
-    box-shadow: var(--sa-elevation-modal);
+    /* A menu panel is a dropdown, not a modal: `Navbar/NavDropdown` and
+       `Navbar/MegaMenu` both bind `elevation/dropdown` in the library, and the
+       heavier modal shadow read as a floating sheet — issue register BRD-17. */
+    box-shadow: var(--sa-elevation-dropdown);
   }
 
   .ds-hdr-nav__drop-link {
@@ -1029,7 +1037,10 @@
     border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-20);
     background-color: var(--sa-bg-neutral-base);
-    box-shadow: var(--sa-elevation-modal);
+    /* A menu panel is a dropdown, not a modal: `Navbar/NavDropdown` and
+       `Navbar/MegaMenu` both bind `elevation/dropdown` in the library, and the
+       heavier modal shadow read as a floating sheet — issue register BRD-17. */
+    box-shadow: var(--sa-elevation-dropdown);
   }
 
   /* The simple dropdown needs the same ceiling for the same reason — it is short
