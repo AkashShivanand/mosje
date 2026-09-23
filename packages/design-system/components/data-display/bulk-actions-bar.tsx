@@ -89,6 +89,7 @@ export function BulkActionsBar({
       </span>
 
       {canExtend ? (
+        /* raw-button-ok(primitive): an inline text link extending the selection — the bar's real actions beside it are DS Buttons, and a third pill would compete with them */
         <button type="button" className="ds-bulk__link" onClick={onSelectAll}>
           Select all {total} {plural}
         </button>

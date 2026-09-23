@@ -2383,24 +2383,29 @@
     line-height: var(--sa-type-title-3-lh);
   }
 
-  .ds-navsheet__close {
-    display: inline-grid;
-    place-items: center;
+  /* The sheet's dismissal is the library `IconButton` (neutral / text / md); the
+     display, border, radius, cursor and transition it used to restate all come from
+     button.css now. What stays is what the SHEET owns and the size ladder would
+     otherwise decide for it.
+
+     THREE CLASSES, DELIBERATELY. `.ds-icon-btn.ds-btn--md { min-width: 40px }` is a
+     two-class rule in the same `components` layer, so a two-class selector here would
+     be a tie broken by whichever stylesheet the bundler injected first — which is not
+     a thing to bet a touch target on. */
+  .ds-navsheet__close.ds-btn.ds-icon-btn {
     flex: 0 0 auto;
     /* 44px target — the sheet's only dismissal, so it gets the comfortable size. */
-    height: 44px;
-    width: 44px;
-    padding: var(--sa-padding-8);
-    border: none;
-    border-radius: var(--sa-shape-8);
-    background: transparent;
+    block-size: 44px;
+    inline-size: 44px;
+    min-block-size: 44px;
+    min-inline-size: 44px;
     color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
-    cursor: pointer;
-    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   @media (hover: hover) and (pointer: fine) {
-    .ds-navsheet__close:hover {
+    /* The sheet's own hover wash, not the text appearance's 8% of the ink. */
+    .ds-navsheet__close.ds-btn.ds-icon-btn:hover,
+  .ds-navsheet__close.ds-btn.ds-icon-btn:active {
       background-color: var(--sa-bg-neutral-subtler);
     }
   }
@@ -2484,7 +2489,10 @@
     }
   }
 
-  .ds-navsheet__close:focus-visible,
+  /* The close is a `.ds-btn` now, and `.ds-btn:focus-visible` is a one-class rule in
+     the same layer — so this one carries the extra class rather than leaving the
+     sheet's inset brand ring to a cascade coin-toss. */
+  .ds-navsheet__close.ds-btn:focus-visible,
   .ds-navsheet__link:focus-visible,
   .ds-navsheet__sublink:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);

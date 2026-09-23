@@ -176,6 +176,7 @@ export function ListRow({
   if (onClick && !disabled) {
     return (
       <li className="ds-list__item">
+        {/* raw-button-ok(primitive): the row IS the control — the button form of the .ds-list__row--interactive anchor above it */}
         <button
           type="button"
           className={cn(inner, "ds-list__row--interactive")}

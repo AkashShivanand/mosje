@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { IconButton } from "../actions/icon-button";
 import { useCornerRailOffset } from "../../foundations/corner-rail";
 import "./back-to-top.css";
 
@@ -120,8 +121,16 @@ export function BackToTop({
           be resolved even while the control itself is not rendered. */}
       <span ref={anchorRef} hidden />
       {shown ? (
-    <button
+    <IconButton
       type="button"
+      /* The library's icon button rather than a fifth hand-rolled round control.
+         `.ds-back-to-top` still owns everything that makes this one different —
+         it is fixed to the corner rail, opaque so it can float over content, and
+         carries the rail's own shadow. */
+      variant="neutral"
+      appearance="outlined"
+      size="lg"
+      shape="circle"
       className={cn("ds-back-to-top", className)}
       // The corner rail measures live occupancy; this attribute is how the rail
       // knows the control is here, and it is added WITH the control rather than
@@ -130,9 +139,10 @@ export function BackToTop({
       data-sa-corner-occupant=""
       aria-label={label}
       onClick={toTop}
-    >
-      <span aria-hidden>↑</span>
-    </button>
+      /* The arrow stays a text glyph, not a Material ligature: it is set in the
+         estate's own face at title-3 and is what this control has always drawn. */
+      icon={<span>↑</span>}
+    />
       ) : null}
     </>
   );

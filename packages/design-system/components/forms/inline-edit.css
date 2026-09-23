@@ -31,35 +31,18 @@
     color: var(--sa-text-neutral-subtle);
   }
 
-  .ds-inline__trigger {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--sa-inline-4);
-    min-block-size: var(--sa-target-min);
+  /* A text `Button` at `sm` carrying the pencil as `iconLeft`. Ink, hover, focus
+     ring and the disabled treatment are button.css's.
+
+     THREE CLASSES, not two: `.ds-btn:not(.ds-icon-btn, .ds-btn--full)` already counts
+     as two, so a two-class selector would only tie its 64px floor and the winner
+     would be whichever stylesheet the bundler injected last. The trigger sits on the same line as the label and the
+     value, and a 64px minimum on the word "Edit" pushes a long value out of a
+     narrow row for no gain — the button's own coarse-pointer target still covers
+     the thumb. The side padding is trimmed to match for the same reason. */
+  .ds-inline__trigger.ds-btn.ds-btn--sm {
+    min-width: 0;
     padding-inline: var(--sa-padding-8);
-    border: 0;
-    border-radius: var(--sa-shape-4);
-    background: transparent;
-    color: var(--sa-text-link-brand-default);
-    font-family: var(--sa-font-latin);
-    font-size: var(--sa-type-label-2-size);
-    line-height: var(--sa-type-label-2-lh);
-    font-weight: var(--sa-font-weight-medium);
-    cursor: pointer;
-  }
-
-  .ds-inline__trigger:hover:not(:disabled) {
-    background: var(--sa-bg-neutral-hover);
-  }
-
-  .ds-inline__trigger:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-    outline-offset: var(--sa-focus-offset);
-  }
-
-  .ds-inline__trigger:disabled {
-    color: var(--sa-text-neutral-disabled);
-    cursor: not-allowed;
   }
 
   .ds-inline__readonly {

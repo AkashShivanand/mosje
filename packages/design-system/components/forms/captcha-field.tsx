@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { IconButton } from "../actions/icon-button";
 import { Icon } from "../utilities/icon";
 import { Input } from "./input";
 import "./auth-fields.css";
@@ -78,15 +79,17 @@ export function CaptchaField({
             {challenge.characters}
           </span>
         )}
-        <button
+        <IconButton
           type="button"
+          variant="neutral"
+          appearance="outlined"
+          size="md"
           className="ds-captcha__refresh"
           onClick={onRefresh}
           disabled={disabled}
           aria-label="Get a new security check. This clears anything you have typed."
-        >
-          <Icon name="refresh" size={24} aria-hidden />
-        </button>
+          icon={<Icon name="refresh" size={24} />}
+        />
       </div>
       <Input
         id={fieldId}

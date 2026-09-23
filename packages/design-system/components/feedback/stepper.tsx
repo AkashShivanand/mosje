@@ -215,6 +215,12 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(function S
               aria-current={status === "current" ? "step" : undefined}
             >
               {selectable ? (
+                /* The <li> around it carries `aria-current="step"`; the marker, label,
+                   description and screen-reader status are one composed body, and the
+                   same node renders as a plain <span> when the stage cannot be
+                   revisited. A Button here would put a control inside the list item that
+                   already is the control. */
+                /* raw-button-ok(primitive): the stage IS this component's row, not a Button in it */
                 <button
                   type="button"
                   className="ds-stepper__button"

@@ -178,6 +178,7 @@ export function PortalList({
            sentence names the filter and offers the way back. */
         <p className="ds-portal-list__note">
           No portal is listed under {filter}.{" "}
+          {/* raw-button-ok(primitive): the clear-filter link inside the filtered-to-nothing sentence — inline text, not a control beside the text */}
           <button type="button" className="ds-portal-list__clear" onClick={() => setFilter(ALL)}>
             Show all portals
           </button>

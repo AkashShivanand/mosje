@@ -67,6 +67,7 @@ export function MenuToggle({
   className,
 }: MenuToggleProps): React.JSX.Element {
   return (
+    /* raw-button-ok(primitive): MenuToggle IS this component — the sidebar's trigger, sized and placed by the header's brand row */
     <button
       type="button"
       className={cn("ds-hdr-brand__toggle", className)}
@@ -108,6 +109,7 @@ export function SheetToggle({
   className,
 }: SheetToggleProps): React.JSX.Element {
   return (
+    /* raw-button-ok(primitive): SheetToggle IS this component — the mobile NavSheet's trigger, sized and placed by the header's brand row */
     <button
       type="button"
       className={cn("ds-hdr-burger", className)}

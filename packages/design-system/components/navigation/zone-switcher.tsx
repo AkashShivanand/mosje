@@ -153,6 +153,7 @@ export function AppSwitcher({
         </div>
       )}
 
+      {/* raw-button-ok(primitive): the app switcher's aria-haspopup="dialog" trigger — it owns the panel's expanded state and its own fixed corner geometry */}
       <button
         ref={triggerRef}
         type="button"

@@ -196,6 +196,7 @@ export function MediaGalleryInput({
     <div className={cn("ds-gallery", className)}>
       {isEmpty ? (
         /* ---- Empty: full-width drop-zone (unified with MediaUpload) ---- */
+        /* raw-button-ok(primitive): a dashed drop SURFACE taking dragover/dragleave/drop as well as clicks — a drop target that happens to be keyboard-operable, not an action */
         <button
           id={id}
           type="button"
@@ -239,6 +240,7 @@ export function MediaGalleryInput({
                       <PlayGlyph />
                     </span>
                   )}
+                  {/* raw-button-ok(primitive): a 24px scrim disc painted ON a thumbnail — white on a translucent neutral, danger red on hover, with a white focus ring because the ground is an image */}
                   <button
                     type="button"
                     className="ds-gallery__remove"
@@ -254,6 +256,7 @@ export function MediaGalleryInput({
             })}
 
             {!atCapacity && (
+              /* raw-button-ok(primitive): the add TILE — a cell of the thumbnail grid that is also a drop target, sized by the grid rather than by a size ladder */
               <button
                 id={id}
                 type="button"

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { IconButton } from "../actions/icon-button";
 import { Icon } from "../utilities/icon";
 import { useFieldCopy, useFieldPolicy } from "./field-policy";
 import type { FieldStatus } from "./field-types";
@@ -185,17 +186,28 @@ export interface FieldHelpToggleProps
 export const FieldHelpToggle = React.forwardRef<HTMLButtonElement, FieldHelpToggleProps>(
   function FieldHelpToggle({ open, labelText, icon, className, ...rest }, ref) {
     const copy = useFieldCopy();
+    // `children` was never rendered — the JSX children always won over a spread
+    // one — so it is dropped here rather than handed to a component that has no
+    // slot for it.
+    const { children: _ignored, ...buttonProps } = rest;
     return (
-      <button
+      <IconButton
         ref={ref}
         type="button"
+        {...buttonProps}
+        variant="neutral"
+        appearance="text"
+        size="sm"
+        shape="circle"
         className={cn("ds-field__help-toggle", className)}
         aria-expanded={open}
-        {...rest}
-      >
-        {icon ?? <Icon name="help" size={20} aria-hidden="true" />}
-        <span className="ds-sr-only">{copy.helpToggleLabel(labelText, open)}</span>
-      </button>
+        /* The name was an `sr-only` span before. It says the same words and it
+           still changes with `open`, so a reader is told whether pressing this
+           will show or hide the help — it is simply the name IconButton
+           requires, rather than text smuggled in beside the glyph. */
+        aria-label={copy.helpToggleLabel(labelText, open)}
+        icon={icon ?? <Icon name="help" size={20} />}
+      />
     );
   },
 );

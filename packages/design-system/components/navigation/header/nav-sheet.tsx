@@ -7,6 +7,7 @@ import { navDisabledAria, navLinkRoutes, type NavTag } from "./nav-link-tag";
 import { cn } from "../../../utils/cn";
 import { Icon } from "../../utilities/icon";
 import { Button } from "../../actions/button";
+import { IconButton } from "../../actions/icon-button";
 import { AccessibilityControls } from "../../utilities/accessibility-controls";
 import { BrandLockup } from "./brand-lockup";
 import { MegaMenuItem, NewTabHint } from "./nav-parts";
@@ -263,14 +264,19 @@ export function NavSheet({
             lines={brandLines}
             href={homeHref}
           />
-          <button
-            type="button"
+          {/* The library's icon button, not a second implementation of one. It
+              keeps `.ds-navsheet__close`, which still owns the 44px target the
+              sheet's only dismissal is entitled to — header.css raises that rule
+              above the size ladder so the DS `md` rung cannot shrink it. */}
+          <IconButton
+            variant="neutral"
+            appearance="text"
+            size="md"
             className="ds-navsheet__close"
             aria-label="Close navigation menu"
             onClick={onClose}
-          >
-            <Icon name="close" size={24} />
-          </button>
+            icon={<Icon name="close" size={24} />}
+          />
         </div>
 
         {search && (
@@ -319,6 +325,7 @@ export function NavSheet({
             return (
               <li key={item.label} className="ds-navsheet__row">
                 {hasSub ? (
+                  /* raw-button-ok(primitive): a sheet menu row with a sub-menu — the disclosure form of the .ds-navsheet__link anchor beside it */
                   <button
                     type="button"
                     className={cn("ds-navsheet__link", item.active && "is-active")}

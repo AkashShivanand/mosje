@@ -113,6 +113,7 @@ export function SegmentedControl<T extends string>({
       {options.map((opt, index) => {
         const selected = opt.value === value;
         return (
+          /* raw-button-ok(primitive): a role="radio" option in a radiogroup — SegmentedControl owns the roving tabindex and aria-checked */
           <button
             key={opt.value}
             type="button"

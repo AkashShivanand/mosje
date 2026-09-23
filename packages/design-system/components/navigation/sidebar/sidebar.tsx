@@ -228,6 +228,7 @@ function ChildEntry({
   }
   return (
     <li className="ds-sidebar__sub ds-sidebar__sub--l2" data-active={active || undefined}>
+      {/* raw-button-ok(primitive): a level-2 sidebar group row — a navigation item whose disclosure state and row geometry the sidebar owns */}
       <button
         type="button"
         aria-expanded={open}
@@ -458,6 +459,7 @@ function MainItem({
     return (
       <li>
         <Tooltip content={item.label} side="right" duplicatesTriggerName disabled={flyoutOpen}>
+          {/* raw-button-ok(primitive): a collapsed sidebar rail item opening its flyout — the row IS the control, sized by the rail */}
           <button
             ref={setAnchorEl}
             type="button"
@@ -520,6 +522,7 @@ function MainItem({
 
   return (
     <li>
+      {/* raw-button-ok(primitive): a sidebar group row — a navigation item, drawn by the same rowClass as the leaf link beside it */}
       <button
         type="button"
         aria-expanded={open}

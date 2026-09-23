@@ -5,6 +5,7 @@ import { cn } from "../../utils/cn";
 import { useCornerRailOffset, useRailClearance } from "../../foundations/corner-rail";
 import { Icon } from "../utilities/icon";
 import { Chip } from "../forms/chip";
+import { IconButton } from "../actions/icon-button";
 import { ChatbotMascot } from "./chatbot-mascot";
 import "./chatbot.css";
 
@@ -660,36 +661,39 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
               trade is finally the right way round.
             */}
             {canEndChat && messages.length > 0 && (
-              <button
-                type="button"
+              <IconButton
                 className="ds-chatbot__icon-btn ds-chatbot__end"
+                variant="neutral"
+                appearance="text"
+                size="sm"
                 aria-label={endChatLabel}
                 title={endChatLabel}
                 onClick={handleEndChat}
-              >
-                <Icon name="restart_alt" size={20} />
-              </button>
+                icon={<Icon name="restart_alt" size={20} />}
+              />
             )}
-            <button
-              type="button"
+            <IconButton
               className="ds-chatbot__icon-btn"
+              variant="neutral"
+              appearance="text"
+              size="sm"
               aria-label={expanded ? "Restore panel size" : "Expand panel"}
               aria-pressed={expanded}
               onClick={() => setExpanded((v) => !v)}
-            >
-              <Icon name={expanded ? "close_fullscreen" : "open_in_full"} size={20} />
-            </button>
-            <button
-              type="button"
+              icon={<Icon name={expanded ? "close_fullscreen" : "open_in_full"} size={20} />}
+            />
+            <IconButton
               className="ds-chatbot__icon-btn"
+              variant="neutral"
+              appearance="text"
+              size="sm"
               aria-label="Minimise chat"
               onClick={() => {
                 setOpen(false);
                 launcherRef.current?.focus();
               }}
-            >
-              <Icon name="close" size={20} />
-            </button>
+              icon={<Icon name="close" size={20} />}
+            />
           </header>
 
           <div className="ds-chatbot__log" ref={logRef}>
@@ -807,14 +811,16 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
                   placeholder={composerPlaceholder}
                   autoComplete="off"
                 />
-                <button
+                <IconButton
                   type="submit"
                   className="ds-chatbot__send"
+                  appearance="filled"
+                  size="sm"
+                  shape="circle"
                   aria-label="Send"
                   disabled={draft.trim().length === 0}
-                >
-                  <Icon name="send" size={16} />
-                </button>
+                  icon={<Icon name="send" size={16} />}
+                />
               </form>
             )}
 
@@ -842,6 +848,14 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
         </div>
       )}
 
+      {/* raw-button-ok(primitive): the launcher IS the floating widget the corner rail
+          measures — an 84px disc carrying the mascot and the close glyph as two
+          crossfading children plus an unread dot, sized by `--ds-chatbot-launcher` and
+          keyed by `data-state`. `IconButton` takes ONE icon and imposes the button
+          ladder's box, so wrapping it would change what `useCornerRailOffset` reads and
+          what the `data-sa-rail-yield` rules target. See
+          .claude/rules/floating-element-placement.md. */}
+      {/* raw-button-ok(primitive): the launcher IS the corner-rail widget, not a Button in one */}
       <button
         type="button"
         ref={launcherRef}

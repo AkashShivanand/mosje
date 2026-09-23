@@ -2,6 +2,8 @@
 
 import * as React from "react";
 import { Icon } from "../utilities/icon";
+import { Button } from "../actions/button";
+import { IconButton } from "../actions/icon-button";
 import { cn } from "../../utils/cn";
 import "./carousel.css";
 
@@ -287,8 +289,10 @@ export function Carousel({
       <div className="ds-carousel__controls">
         <div className="ds-carousel__controls-lead">
           {autoPlay && !reducedMotion ? (
-            <button
-              type="button"
+            <Button
+              variant="neutral"
+              appearance="text"
+              size="md"
               className="ds-carousel__play"
               // WCAG 2.2.2: anything that moves for more than five seconds needs
               // a way to stop it, and the control has to say which state pressing
@@ -319,19 +323,25 @@ export function Carousel({
             >
               {playing ? "Pause" : "Play"}
               <span className="ds-carousel__sr">{` rotating ${label}`}</span>
-            </button>
+            </Button>
           ) : null}
         </div>
 
         <div className="ds-carousel__controls-main">
-          <button
-            type="button"
+          {/* The library's IconButton, circular. The round shape and the white
+              ground stay in carousel.css — they are what separates a carousel's
+              own step controls from the rectangular Buttons a slide's content
+              holds. */}
+          <IconButton
             className="ds-carousel__arrow"
+            variant="neutral"
+            appearance="outlined"
+            size="md"
+            shape="circle"
             aria-label={`Previous slide, ${label}`}
             onClick={() => goTo(index - 1)}
-          >
-            <Icon name="chevron_left" size={20} />
-          </button>
+            icon={<Icon name="chevron_left" size={20} />}
+          />
 
           {showDots && count <= MAX_DOTS ? (
             /*
@@ -356,6 +366,11 @@ export function Carousel({
              */
             <div className="ds-carousel__dots" role="group" aria-label={`${label} — slides`} ref={dotsRef}>
               {slides.map((_, i) => (
+                /* The group owns a roving tabindex, `aria-current` and the arrow-key
+                   handling; the mark itself is a `::before` pseudo-element rather than a
+                   label, and a Button's own box would replace the 24px target the
+                   padding creates. */
+                /* raw-button-ok(primitive): the dot IS this row's control, not a Button in it */
                 <button
                   key={i}
                   type="button"
@@ -426,14 +441,16 @@ export function Carousel({
             </p>
           ) : null}
 
-          <button
-            type="button"
+          <IconButton
             className="ds-carousel__arrow"
+            variant="neutral"
+            appearance="outlined"
+            size="md"
+            shape="circle"
             aria-label={`Next slide, ${label}`}
             onClick={() => goTo(index + 1)}
-          >
-            <Icon name="chevron_right" size={20} />
-          </button>
+            icon={<Icon name="chevron_right" size={20} />}
+          />
         </div>
 
         {/* Balances the lead zone so the centre column really is centred. */}

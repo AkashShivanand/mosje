@@ -204,6 +204,7 @@ export function AccountMenu({
 
   return (
     <div ref={rootRef} className={cn("ds-hdr-acct", className)}>
+      {/* raw-button-ok(primitive): the account menu's aria-haspopup="menu" trigger — it wraps the identity block and owns the menu's expanded state */}
       <button
         ref={triggerRef}
         type="button"
@@ -257,6 +258,7 @@ export function AccountMenu({
             onKeyDown={onMenuKeyDown}
           >
             {items.map((item, i) => (
+              /* raw-button-ok(primitive): a menuitem in the account menu — its role and roving tabindex belong to the menu */
               <button
                 key={item.label}
                 ref={(el) => {

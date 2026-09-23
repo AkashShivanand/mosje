@@ -14,7 +14,16 @@
      why the permanent controls sit beneath it and never the other way round.
      ============================================================================ */
 
-  .ds-back-to-top {
+  /* IT IS A LIBRARY `IconButton` (neutral / outlined / lg / circle) wearing this
+     class, so the flex centring, the cursor and the circle all come from
+     button.css and icon-button.css now. What stays here is what the CORNER RAIL
+     needs and the size ladder must not decide.
+
+     THREE CLASSES, DELIBERATELY. `.ds-btn--outlined` paints a TRANSPARENT ground,
+     and this control floats over page content — it has to be opaque. That rule and
+     `.ds-icon-btn.ds-btn--lg` live in the same `components` layer, so a one- or
+     two-class selector here would be a tie broken by stylesheet injection order. */
+  .ds-back-to-top.ds-btn.ds-icon-btn {
     position: fixed;
     /* 32px from the edge — the rail's resting inset, bound rather than typed. */
     inset-inline-end: var(--sa-padding-32);
@@ -25,28 +34,19 @@
        same resting inset. */
     bottom: var(--sa-corner-rail-bottom, var(--sa-padding-32));
     z-index: var(--sa-z-launcher);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--sa-control-height-lg);
-    height: var(--sa-control-height-lg);
+    inline-size: var(--sa-control-height-lg);
+    block-size: var(--sa-control-height-lg);
     border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
-    border-radius: var(--sa-shape-full);
+    /* Opaque, because it floats over whatever the reader was reading. */
     background-color: var(--sa-bg-neutral-base);
     color: var(--sa-text-neutral-bolder);
-    font-family: var(--sa-font-latin);
     font-size: var(--sa-type-title-3-size);
     line-height: var(--sa-type-title-3-lh);
     box-shadow: var(--sa-elevation-dropdown);
-    cursor: pointer;
   }
 
-  .ds-back-to-top:hover {
+  .ds-back-to-top.ds-btn.ds-icon-btn:hover,
+  .ds-back-to-top.ds-btn.ds-icon-btn:active {
     background-color: var(--sa-bg-neutral-hover);
-  }
-
-  .ds-back-to-top:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-    outline-offset: var(--sa-focus-offset);
   }
 }

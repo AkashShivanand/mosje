@@ -15,6 +15,7 @@
 import * as React from "react";
 import { Icon } from "../utilities/icon";
 import { cn } from "../../utils/cn";
+import { Button } from "../actions/button";
 import "./pagination.css";
 
 export type PaginationSize = "sm" | "md";
@@ -292,6 +293,7 @@ export function Pagination({
         {content}
       </a>
     ) : (
+      /* raw-button-ok(primitive): the button form of a pager step — it must be indistinguishable from the <a> the link form draws with the same class */
       <button
         type="button"
         className="ds-pagination__step"
@@ -343,6 +345,7 @@ export function Pagination({
                     {n}
                   </span>
                 ) : (
+                  /* raw-button-ok(primitive): the current page in the pager, inert and carrying aria-current — a page marker, not an action */
                   <button
                     type="button"
                     className="ds-pagination__page is-current"
@@ -358,6 +361,7 @@ export function Pagination({
                   {n}
                 </a>
               ) : (
+                /* raw-button-ok(primitive): a page in the pager — the button form of the numbered <a> above it */
                 <button
                   type="button"
                   className="ds-pagination__page"
@@ -427,9 +431,20 @@ export function Pagination({
           <span id={`${baseId}-jump-range`} className="ds-pagination__sr">
             {`between 1 and ${last}`}
           </span>
-          <button type="submit" className="ds-pagination__jump-go" disabled={loading}>
+          {/* The library Button, not a fourth hand-rolled outlined control. The
+              pager's own steps and pages have to match the ANCHORS the link form
+              draws, which is why they stay native — this one submits a form and
+              has no link twin, so it is simply a button and now looks like one. */}
+          <Button
+            type="submit"
+            variant="neutral"
+            appearance="outlined"
+            size={size}
+            className="ds-pagination__jump-go"
+            disabled={loading}
+          >
             Go
-          </button>
+          </Button>
         </form>
       ) : null}
 

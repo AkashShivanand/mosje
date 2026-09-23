@@ -245,6 +245,7 @@ export function DocumentRow({
   // actions on a narrow one, where a line of its own made every folded row a line taller. The
   // hidden copy is display: none, so a screen reader meets exactly one.
   const expandToggle = (at: "status" | "actions") => (
+    /* raw-button-ok(primitive): the row's own inline disclosure at the row's 24px rhythm — a Button's 32px height, 16px side padding and 64px minimum width each change every row on a list */
     <button
       type="button"
       className={cn("ds-docrow__disclosure", "ds-docrow__expand", `ds-docrow__expand--${at}`)}
@@ -390,6 +391,7 @@ export function DocumentRow({
               </p>
             )}
             {findings != null && showFindingsToggle && (
+              /* raw-button-ok(primitive): the findings disclosure — the same inline control at the same 24px row rhythm as the Details toggle above */
               <button
                 type="button"
                 className="ds-docrow__disclosure"
