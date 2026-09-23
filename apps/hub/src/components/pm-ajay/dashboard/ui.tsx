@@ -306,7 +306,12 @@ export function DrillDownFilters({
  * matches against is the same shape; the Unified Dashboard is a real route.
  * The account chip and sign-out ride in the rail's footer slot.
  */
-export function Sidebar({ view }: { view: ViewId }) {
+/**
+ * The dashboards rail. `onNavigate` is passed only by the phone drawer: a chosen
+ * destination has to close the sheet, and the rail draws its own anchors, so the
+ * click is taken on the way out rather than threaded through every item.
+ */
+export function Sidebar({ view, onNavigate, collapsed = false }: { view: ViewId; onNavigate?: () => void; collapsed?: boolean }) {
   const { account, signOut } = useAuth();
   const groups: SidebarNavGroup[] = [
     {
@@ -315,10 +320,11 @@ export function Sidebar({ view }: { view: ViewId }) {
     },
     { items: [{ label: "Unified Dashboard", href: `${BASE}/unified`, icon: "dashboard_customize" }] },
   ];
-  return (
+  const rail = (
     <SidebarNav
       identity={{ name: "PM-AJAY", expansion: "Pradhan Mantri Anusuchit Jaati Abhyuday Yojana", mark: <OrgLogo path="/portals/pm-ajay" />, href: BASE }}
       groups={groups}
+      collapsed={collapsed}
       pathname={`#${view}`}
       label="Dashboards"
       footer={
@@ -342,6 +348,12 @@ export function Sidebar({ view }: { view: ViewId }) {
         </div>
       }
     />
+  );
+  if (!onNavigate) return rail;
+  return (
+    /* Not a control: it listens for a click that has already landed on one of the
+       rail's own links, and keyboard activation of a link fires click too. */
+    <div onClick={(e) => { if ((e.target as HTMLElement).closest("a")) onNavigate(); }}>{rail}</div>
   );
 }
 
@@ -492,6 +504,10 @@ export function SortableTable<T extends { __label?: string }>({
       </div>
     );
   return (
+    /* The wrapper scrolls, and is focusable so a keyboard reaches the columns it
+       hides — a scroll container with no focusable child is unreachable without
+       a pointer (WCAG 2.1.1). */
+    <div className="pm-tablewrap" tabIndex={0} role="group" aria-label={caption}>
     <table className="pm-table">
       {caption && <caption className="sr-only">{caption}</caption>}
       <thead>
@@ -560,5 +576,6 @@ export function SortableTable<T extends { __label?: string }>({
         })}
       </tbody>
     </table>
+    </div>
   );
 }
