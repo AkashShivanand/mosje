@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
+import { T } from "@/components/i18n/translation-provider";
 import { Masthead } from "@/components/website-next/chrome/Masthead";
 import { SamaveshBand } from "@/components/website-next/chrome/SamaveshBand";
 import { WebsiteFooter } from "@/components/website-next/chrome/Footer";
 import { Banner } from "@/components/website-next/home/Banner";
-import { Announcements } from "@/components/website-next/home/Announcements";
-import { Hero } from "@/components/website-next/home/Hero";
-import { whatsNew } from "@/lib/website-next/whats-new";
-import { formatDate, isoDate } from "@/components/website-next/ui/format";
 import { WhatsNew } from "@/components/website-next/home/WhatsNew";
 import { Audiences } from "@/components/website-next/home/Audiences";
 import { Offerings } from "@/components/website-next/home/Offerings";
@@ -31,7 +28,7 @@ import "@/components/website-next/home/home.css";
 export const metadata: Metadata = {
   // The tab title starts with the page h1 (issue SEO-06, GIGW).
   title:
-    "Find Schemes, Services and Support | Department of Social Justice & Empowerment",
+    "Department of Social Justice & Empowerment | Schemes, Services and Support",
   description:
     "Schemes, services and support from the Department of Social Justice & Empowerment for Scheduled Castes, Other Backward Classes, senior citizens, transgender persons and other groups.",
 };
@@ -77,9 +74,16 @@ const JSON_LD = {
  * the Ministers and the statistics strip, Offerings with What's New, the
  * Organisations, the pledges, Recent Documents, the personas, the
  * Activity Corner, social media, and Need Support with the helplines.
- * Two additions, each for a stated reason: the DBIM announcements ticker
- * (§A.4.1 iii), and the task band under it (issue NAV-01: the live page
- * offers a citizen no starting task).
+ * NOTHING HERE IS OURS. On 24 Sep 2026 the three sections this page carried
+ * that the Figma reference does not — the announcements ticker, the task band
+ * under it, and the Nasha Mukt Bharat Abhiyaan band — were removed on the
+ * instruction that the page match the design. Two of them were added for a
+ * reason, and the reasons are recorded rather than lost: the ticker answered
+ * DBIM 3.0 §A.4.1 iii, which asks a departmental home page for an
+ * announcements ticker, and the task band answered issue NAV-01, that the live
+ * page offers a citizen no starting task. Both divergences are written up in
+ * docs/website-redesign/home-audit-2026-09-22.md. The page's h1 came with the
+ * task band, so it is now a screen-reader heading above the carousel.
  */
 export default async function Home() {
   return (
@@ -92,20 +96,15 @@ export default async function Home() {
       {/* Site-wide chrome, so it sits between the masthead and <main>. */}
       <SamaveshBand />
       <main id="content" tabIndex={-1} className="wn-main">
+        {/* The page's heading, for a screen reader and for search: the design
+            opens on the banner carousel and carries no page headline, and a
+            page without an h1 is a GIGW and WCAG failure whatever it looks
+            like. It names what this page is — the Department — rather than
+            describing the first section under it. */}
+        <h1 className="sr-only">
+          <T>Department of Social Justice &amp; Empowerment</T>
+        </h1>
         <Banner />
-        <Announcements
-          items={whatsNew()
-            .slice(0, 6)
-            .map((n) => ({
-              id: n.key,
-              title: n.title,
-              description: n.org ? `${n.kind} · ${n.org}` : n.kind,
-              date: formatDate(n.date),
-              dateTime: isoDate(n.date),
-              href: n.href,
-            }))}
-        />
-        <Hero />
         {/* DBIM 3.0 §7.3(iv): after the banner, before the Ministry section. */}
         <PmQuote />
         <Leadership />

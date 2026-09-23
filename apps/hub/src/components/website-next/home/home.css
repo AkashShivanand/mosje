@@ -3,10 +3,9 @@
 
    Every surface on this page is a design-system component: Band for the
    sections, ActionTile for the tiles, FactStrip for the figures, Carousel for
-   the banners, Ticker for the announcements, Badge for What's New, SectionTitle
-   for the headings. This file places them. The literals left are layout
-   geometry no token models (a column minimum, the hero search's measure, an
-   image ratio, a portrait box) — each named where it sits.
+   the banners, Badge for What's New, SectionTitle for the headings. This file
+   places them. The literals left are layout geometry no token models (a column
+   minimum, an image ratio, a portrait box) — each named where it sits.
    Prefix: wn-home-.
    ───────────────────────────────────────────────────────────────────────────── */
 @layer theme, base, components, utilities;
@@ -74,68 +73,7 @@
   .wn-home-banner__img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 1; object-fit: cover; background-color: var(--sa-bg-neutral-subtler); }
   .wn-home-banner a:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: calc(-1 * var(--sa-focus-width)); }
 
-  /* ── Announcements ticker (DBIM §A.4.1 iii) ──────────────────────────────── */
-  .wn-home-ticker { background: var(--sa-bg-neutral-base); padding-block: var(--sa-padding-8) var(--sa-padding-16); }
-
-  /* ── Hero ────────────────────────────────────────────────────────────────── */
-  .wn-home-hero {
-    background: var(--sa-bg-brand-primary-boldest);
-    color: var(--sa-on-bg-brand-primary-boldest);
-    padding-block: var(--sa-section-32) var(--sa-section-40);
-  }
-  @media (min-width: 1024px) { .wn-home-hero { padding-block: var(--sa-section-40); } }
-  /* Headline and search share a row; the tasks follow. No photograph: the
-     banner above already carries the page's imagery. */
-  .wn-home-hero__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sa-stack-24); align-items: end; }
-  @media (min-width: 1024px) { .wn-home-hero__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--sa-inline-48); } }
-  .wn-home-hero__title {
-    font-family: var(--sa-font-display);
-    font-size: var(--sa-type-display-6-size);
-    line-height: var(--sa-type-display-6-lh);
-    font-weight: var(--sa-font-weight-displayMedium);
-    letter-spacing: var(--sa-type-heading-tracking);
-    text-wrap: balance;
-  }
-  .wn-home-hero__lead {
-    margin-top: var(--sa-stack-8);
-    max-width: var(--sa-container-measure);
-    font-size: var(--sa-type-body-1-size);
-    line-height: var(--sa-type-body-1-lh);
-  }
-  /* The search's measure: 640px of field is enough for a scheme's name. */
-  .wn-home-hero__search { max-width: 640px; }
-  .wn-home-hero__field {
-    display: flex;
-    align-items: center;
-    gap: var(--sa-inline-12);
-    min-height: var(--sa-target-spacious);
-    padding: var(--sa-padding-4) var(--sa-padding-4) var(--sa-padding-4) var(--sa-padding-16);
-    border-radius: var(--sa-shape-full);
-    background: var(--sa-bg-neutral-base);
-    color: var(--sa-text-neutral-bolder);
-    box-shadow: var(--sa-elevation-raised);
-  }
-  .wn-home-hero__field :is(svg, .material-symbols-rounded) { flex: none; color: var(--sa-icon-neutral-subtle); }
-  .wn-home-hero__field input {
-    flex: 1;
-    min-width: 0;
-    height: var(--sa-target-comfortable);
-    border: 0;
-    background: transparent;
-    font-size: var(--sa-type-body-1-size);
-    line-height: var(--sa-type-body-1-lh);
-    color: var(--sa-text-neutral-bolder);
-  }
-  .wn-home-hero__field input::placeholder { color: var(--sa-text-neutral-subtle); }
-  .wn-home-hero__field input:focus { outline: none; }
-  .wn-home-hero__field:focus-within { outline: var(--sa-focus-width) solid var(--sa-focus-ringInner); outline-offset: var(--sa-focus-offset); }
-  .wn-home-hero__field button { flex: none; }
-
-  .wn-home-tasks { margin-top: var(--sa-stack-24); }
-  .wn-home-tasks ul { display: grid; gap: var(--sa-stack-12); grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  @media (min-width: 768px) { .wn-home-tasks ul { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-  @media (min-width: 1024px) { .wn-home-tasks ul { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
-
+  /* ── About the Department: the figures strip and its action ──────────────── */
   .wn-home-glance { display: grid; gap: var(--sa-stack-16); margin-top: var(--sa-stack-48); }
   @media (min-width: 1024px) { .wn-home-glance { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--sa-inline-32); } }
   .wn-home-glance__cta { justify-self: start; }
