@@ -39,7 +39,7 @@ export async function Banner() {
   return (
     <div className="wn-home-banner">
       <Carousel label="Banners" autoPlay interval={7} controls="overlay">
-        {ccps.map((b) => {
+        {ccps.map((b, i) => {
           const img = (
             <Image
               src={b.src}
@@ -47,6 +47,11 @@ export async function Banner() {
               width={1800}
               height={600}
               unoptimized
+              /* THE FIRST SLIDE IS THE LARGEST CONTENTFUL PAINT on this page, and
+                 Next said so in the dev log. Without this it is lazy like the rest,
+                 so the biggest thing above the fold waits for the loader. Only the
+                 first: the others are behind it and must stay lazy. */
+              priority={i === 0}
               className="wn-home-banner__img"
             />
           );
@@ -64,7 +69,7 @@ export async function Banner() {
             <div key={b.src}>{img}</div>
           );
         })}
-        {SLIDES.map((s) => (
+        {SLIDES.map((s, i) => (
           <Image
             key={s.src}
             src={s.src}
@@ -72,6 +77,9 @@ export async function Banner() {
             width={1800}
             height={600}
             sizes="100vw"
+            /* Only when the department's own banners are absent does this become
+               the first slide, and therefore the LCP. */
+            priority={ccps.length === 0 && i === 0}
             className="wn-home-banner__img"
           />
         ))}

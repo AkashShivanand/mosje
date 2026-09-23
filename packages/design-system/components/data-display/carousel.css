@@ -205,6 +205,13 @@
     /* `min-width` is the button ladder's 64px rhythm floor, which is wider than
        "Play". The label sets this control's width on purpose — see above. */
     min-width: 0;
+    /* AND IT MAY NOT WRAP. The row is a `1fr auto 1fr` grid, so at 375 the lead
+       column squeezed this control to 52px and "Pause" broke across two lines —
+       "Pa / use" on the first screen of every phone visit. The label is what sets
+       this control's width (see above), so it keeps its line and the dot cluster
+       gives up the space instead; the dots already wrap to a second row by design. */
+    flex: 0 0 auto;
+    white-space: nowrap;
     padding: 0 var(--sa-padding-12);
     border-color: transparent;
     background-color: transparent;
