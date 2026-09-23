@@ -1017,6 +1017,7 @@ export function SiteHeader({
         <span className="ds-hdr-cond__spacer" />
 
         {search && (
+          /* raw-button-ok(primitive): the condensed bar's search disclosure — 40px chrome whose size, border and print hiding header.css owns */
           <button
             type="button"
             className="ds-hdr-cond__iconbtn"
@@ -1117,6 +1118,7 @@ export function SiteHeader({
                   to the same room, and the 52px it costs is the difference between an
                   identity that wraps to two lines and one that wraps to four. */}
               {isPortal && search && !onToggleNav && (
+                /* raw-button-ok(primitive): the portal brand row's search disclosure — header.css switches it on and off by `display`, which a DS button's own display would fight */
                 <button
                   type="button"
                   className="ds-hdr-brand__searchbtn"

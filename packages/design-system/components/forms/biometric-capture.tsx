@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { Button } from "../actions/button";
 import "./biometric-capture.css";
 
 /** What is being captured. Each has its own instruction and its own glyph. */
@@ -151,9 +152,16 @@ export function BiometricCapture({
 
         <div className="ds-biometric__actions">
           {canAct ? (
-            <button type="button" className="ds-biometric__go" onClick={onCapture}>
+            <Button
+              type="button"
+              variant="primary"
+              appearance="filled"
+              size="md"
+              className="ds-biometric__go"
+              onClick={onCapture}
+            >
               {state === "failed" ? "Try again" : `Capture ${noun.toLowerCase()}`}
-            </button>
+            </Button>
           ) : null}
           {/* The alternative is offered in EVERY state, including success. A
               citizen who has just been captured may still be the wrong person

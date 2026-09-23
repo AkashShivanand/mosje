@@ -166,35 +166,41 @@
     text-align: center;
   }
 
-  .ds-pagination__jump-go {
-    height: var(--sa-control-height-md);
+  /* GO is a library `Button` (neutral / outlined). Its focus ring, its disabled
+     treatment and its cursor come from button.css; what stays here is the half that
+     makes it match the FIELD standing next to it rather than a button standing on
+     its own — the field's 6px corner, the field's border colour, the field's opaque
+     ground and the field's type. A Button's own 8px corner and 24px padding beside a
+     5ch input reads as two unrelated controls.
+
+     Two classes, so the size ladder's `.ds-btn--md` padding cannot take it back. */
+  .ds-pagination__jump-go.ds-btn {
     padding: 0 var(--sa-padding-12);
-    border: var(--sa-stroke-1) solid var(--sa-border-neutral-base);
+    border-color: var(--sa-border-neutral-base);
     border-radius: var(--sa-shape-6);
     background-color: var(--sa-bg-neutral-base);
     color: var(--sa-text-neutral-bolder);
-    font: inherit;
+    font-size: inherit;
+    line-height: inherit;
     font-weight: var(--sa-font-weight-semibold);
-    cursor: pointer;
   }
 
-  .ds-pagination__jump-go:hover {
+  .ds-pagination__jump-go.ds-btn:hover {
     background-color: var(--sa-bg-neutral-hover);
+    border-color: var(--sa-border-neutral-base);
   }
 
-  .ds-pagination__jump-go:active {
+  .ds-pagination__jump-go.ds-btn:active {
     background-color: var(--sa-bg-neutral-active);
     transform: scale(0.97);
   }
 
-  .ds-pagination__jump-field:focus-visible,
-  .ds-pagination__jump-go:focus-visible {
+  .ds-pagination__jump-field:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-focus-ring);
     outline-offset: var(--sa-focus-offset);
   }
 
-  .ds-pagination__jump-field:disabled,
-  .ds-pagination__jump-go:disabled {
+  .ds-pagination__jump-field:disabled {
     opacity: var(--sa-alpha-disabled);
     cursor: not-allowed;
   }

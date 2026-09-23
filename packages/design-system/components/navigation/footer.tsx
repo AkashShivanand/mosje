@@ -50,6 +50,7 @@ export const Footer = React.forwardRef<HTMLElement, FooterProps>(function Footer
                 </li>
               ) : (
                 <li key={link.label}>
+                  {/* raw-button-ok(primitive): the handler form of a footer link — the same .ds-footer__link as the <a> in the sibling <li> */}
                   <button type="button" className="ds-footer__link" onClick={link.onClick}>
                     {link.label}
                   </button>

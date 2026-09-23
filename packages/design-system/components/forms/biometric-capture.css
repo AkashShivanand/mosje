@@ -135,24 +135,10 @@
     margin-block-start: var(--sa-stack-4);
   }
 
-  .ds-biometric__go {
-    height: var(--sa-control-height-md);
-    padding: 0 var(--sa-padding-20);
-    border: 0;
-    border-radius: var(--sa-control-radius);
-    background-color: var(--sa-cmp-button-primary-bg);
-    color: var(--sa-cmp-button-primary-text);
-    font-family: inherit;
-    font-size: var(--sa-type-label-1-size);
-    font-weight: var(--sa-font-weight-medium);
-    cursor: pointer;
-  }
+  /* The capture action is a filled primary `Button` at `md` — the same 40px box,
+     the same brand fill and the same label type this rule used to restate by hand.
+     It needs no rules of its own; only the fallback link below still does. */
 
-  .ds-biometric__go:hover {
-    background-color: var(--sa-cmp-button-primary-bgHover);
-  }
-
-  .ds-biometric__go:focus-visible,
   .ds-biometric__fallback:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-focus-ring);
     outline-offset: var(--sa-focus-offset);

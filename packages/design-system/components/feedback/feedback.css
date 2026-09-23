@@ -133,30 +133,32 @@
     margin-top: var(--sa-padding-4);
   }
 
-  .ds-alert__close {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+  /* The dismiss control is the library's `IconButton` (neutral · text · sm), so
+     the box model, the press give, the focus ring and the disabled treatment all
+     come from button.css and are not re-derived here.
+
+     WHAT STAYS IS WHAT IS LOCAL TO A BANNER, and it is carried on a selector that
+     also names `.ds-icon-btn` so it outranks button.css's own size and colour
+     rules inside the same cascade layer — the layer makes the two files peers, so
+     specificity is what decides, not import order.
+
+     The 24px box is deliberate: the control sits in a row with the banner's icon
+     and its title, and the 32px `sm` square would set the height of a
+     single-line alert. 24x24 is still the WCAG 2.2 §2.5.8 floor, and the
+     pointer-coarse 44px target button.css draws underneath applies unchanged. */
+  .ds-alert__close.ds-icon-btn {
     flex: 0 0 auto;
+    min-width: 24px;
     width: 24px;
     height: 24px;
-    padding: 0;
-    background: transparent;
-    border: none;
+    min-height: 24px;
     border-radius: var(--sa-shape-6);
     color: var(--sa-text-neutral-subtle);
-    cursor: pointer;
-    -webkit-appearance: none;
-    appearance: none;
-    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
-  .ds-alert__close:hover {
+  .ds-alert__close.ds-icon-btn:hover,
+  .ds-alert__close.ds-icon-btn:active {
     background-color: color-mix(in srgb, var(--sa-color-text-default) 8%, transparent);
     color: var(--sa-text-neutral-base);
-  }
-  .ds-alert__close:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-    outline-offset: var(--sa-focus-offset);
   }
 
   /* ============================================================================
@@ -333,16 +335,8 @@
   }
 }
 
-@layer components {
-  /* forced-colors mode does not paint `box-shadow`, so the ring above is not
-     drawn there at all. An `outline` IS painted, and `Highlight` is the
-     system's own focus colour, so the ring follows the theme the reader chose.
-     Same footprint as the shadow it stands in for; later source order with equal
-     specificity is what lets it beat the `outline: none` above. */
-  @media (forced-colors: active) {
-    .ds-alert__close:focus-visible {
-      outline: var(--sa-focus-width) solid Highlight;
-      outline-offset: var(--sa-focus-offset);
-    }
-  }
-}
+/* The forced-colors focus ring for `.ds-alert__close` used to be restated here.
+   It is not needed any more: the control is a real `IconButton`, and button.css
+   already paints `outline: var(--sa-focus-width) solid Highlight` on every
+   `.ds-btn:focus-visible` under `forced-colors: active`. A second copy of that
+   decision in this file is a copy that can drift. */

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Icon } from "../utilities/icon";
-import { buttonClasses } from "../actions/button";
+import { Button, buttonClasses } from "../actions/button";
 import { cn } from "../../utils/cn";
 import "./error-view.css";
 
@@ -191,12 +191,18 @@ export function ErrorView({
               className="ds-error-view__search-input"
               aria-label="Search MoSJE Portal"
             />
-            <button
+            {/* The component, not the class helper. `buttonClasses` exists for the
+                elements a React component cannot be — an anchor, a router link —
+                and a submit button is not one of them. */}
+            <Button
               type="submit"
-              className={buttonClasses("primary", "filled", "sm", "shrink-0 rounded-full px-4")}
+              variant="primary"
+              appearance="filled"
+              size="sm"
+              className="shrink-0 rounded-full px-4"
             >
               Search
-            </button>
+            </Button>
           </div>
         </form>
       )}
@@ -204,49 +210,71 @@ export function ErrorView({
       {/* 4. Action Buttons Row */}
       <div className="ds-error-view__actions">
         {resolvedPrimary.href ? (
+          /* A LINK, SO IT KEEPS `buttonClasses` — the design system has no router to
+             hand it. What it does NOT keep is a hand-rolled flex row: the icon now
+             sits in `.ds-btn__icon--start`, the slot the ladder's optical-padding
+             rule looks for, so a link-button and a real Button carrying the same
+             glyph are the same width. Without it the two sat 8px apart in one row. */
           <a
             href={resolvedPrimary.href}
-            className={buttonClasses("primary", "filled", "md", "flex items-center gap-2 font-medium shadow-sm active:scale-[0.98]")}
+            className={buttonClasses("primary", "filled", "md", "shadow-sm")}
           >
-            {resolvedPrimary.icon && <Icon name={resolvedPrimary.icon} size={20} />}
-            <span>{resolvedPrimary.label}</span>
+            {resolvedPrimary.icon && (
+              <span className="ds-btn__icon ds-btn__icon--start" aria-hidden="true">
+                <Icon name={resolvedPrimary.icon} size={20} />
+              </span>
+            )}
+            {resolvedPrimary.label}
           </a>
         ) : (
-          <button
-            type="button"
+          /* The component. The icon moves to `iconLeft`, where the ladder owns the
+             slot and its optical padding, and the flex/gap/weight/press utilities
+             go with it — `.ds-btn` already draws every one of them. The sibling
+             <a> above keeps `buttonClasses`: it is a link, and the design system
+             cannot hand it the app's router. */
+          <Button
+            appearance="filled"
+            size="md"
             onClick={resolvedPrimary.onClick}
-            className={buttonClasses("primary", "filled", "md", "flex items-center gap-2 font-medium shadow-sm active:scale-[0.98]")}
+            className="shadow-sm"
+            iconLeft={resolvedPrimary.icon ? <Icon name={resolvedPrimary.icon} size={20} /> : undefined}
           >
-            {resolvedPrimary.icon && <Icon name={resolvedPrimary.icon} size={20} />}
-            <span>{resolvedPrimary.label}</span>
-          </button>
+            {resolvedPrimary.label}
+          </Button>
         )}
 
         {resolvedSecondary.href ? (
           <a
             href={resolvedSecondary.href}
-            className={buttonClasses("neutral", "outlined", "md", "flex items-center gap-2 active:scale-[0.98]")}
+            className={buttonClasses("neutral", "outlined", "md")}
           >
-            {resolvedSecondary.icon && <Icon name={resolvedSecondary.icon} size={20} />}
-            <span>{resolvedSecondary.label}</span>
+            {resolvedSecondary.icon && (
+              <span className="ds-btn__icon ds-btn__icon--start" aria-hidden="true">
+                <Icon name={resolvedSecondary.icon} size={20} />
+              </span>
+            )}
+            {resolvedSecondary.label}
           </a>
         ) : (
-          <button
-            type="button"
+          <Button
+            variant="neutral"
+            appearance="outlined"
+            size="md"
             onClick={resolvedSecondary.onClick}
-            className={buttonClasses("neutral", "outlined", "md", "flex items-center gap-2 active:scale-[0.98]")}
+            iconLeft={resolvedSecondary.icon ? <Icon name={resolvedSecondary.icon} size={20} /> : undefined}
           >
-            {resolvedSecondary.icon && <Icon name={resolvedSecondary.icon} size={20} />}
-            <span>{resolvedSecondary.label}</span>
-          </button>
+            {resolvedSecondary.label}
+          </Button>
         )}
 
         <a
           href="/website/contact-us"
-          className={buttonClasses("neutral", "text", "md", "flex items-center gap-2 text-ink-subtle hover:text-ink")}
+          className={buttonClasses("neutral", "text", "md", "text-ink-subtle hover:text-ink")}
         >
-          <Icon name="help_outline" size={20} />
-          <span>Helpdesk</span>
+          <span className="ds-btn__icon ds-btn__icon--start" aria-hidden="true">
+            <Icon name="help_outline" size={20} />
+          </span>
+          Helpdesk
         </a>
       </div>
 

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { IconButton } from "../actions/icon-button";
 import { Icon } from "../utilities/icon";
 import { Input, type InputProps } from "./input";
 import "./password-input.css";
@@ -77,8 +78,13 @@ export const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputPro
     return (
       <div className={cn("ds-password", className)}>
         <Input ref={ref} type={revealed ? "text" : "password"} disabled={disabled} {...rest} />
-        <button
+        <IconButton
           type="button"
+          variant="neutral"
+          appearance="text"
+          // `md` is 40x40 — the size this control was drawn at by hand, and what
+          // keeps it inside the 44px field with a gutter either side.
+          size="md"
           className="ds-password__toggle"
           onClick={() => setRevealed((v) => !v)}
           aria-label={revealed ? hideLabel : showLabel}
@@ -87,9 +93,8 @@ export const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputPro
           // Keeps the caret where it was: without this the field loses focus to
           // the button on click, and the user has to click back into it.
           onMouseDown={(event) => event.preventDefault()}
-        >
-          <Icon name={revealed ? "visibility_off" : "visibility"} size={20} aria-hidden />
-        </button>
+          icon={<Icon name={revealed ? "visibility_off" : "visibility"} size={20} />}
+        />
       </div>
     );
   },

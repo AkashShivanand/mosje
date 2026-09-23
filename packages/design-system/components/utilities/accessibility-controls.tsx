@@ -227,6 +227,7 @@ export function AccessibilityControls({
           <div className="sa-a11yc__row">
             <span className="sa-a11yc__label" id="sa-a11yc-fs">Text size</span>
             <div className="sa-a11yc__steps" role="group" aria-labelledby="sa-a11yc-fs">
+              {/* raw-button-ok(primitive): a step in the sheet's role="group" text-size stepper — a statutory control whose 44px target and lit-direction state accessibility-bar.css owns */}
               <button
                 type="button"
                 className={cn("sa-a11yc__step", index < DEFAULT_SCALE_INDEX && "is-active")}
@@ -236,9 +237,11 @@ export function AccessibilityControls({
               >
                 <Icon name="text_decrease" size={ICON_SIZE} aria-hidden />
               </button>
+              {/* raw-button-ok(primitive): the sheet's text-size reset — the middle of the same three-part stepper, and the same fixed target */}
               <button type="button" className="sa-a11yc__step" onClick={reset} aria-label={resetLabel}>
                 <Icon name="font_download" size={ICON_SIZE} aria-hidden />
               </button>
+              {/* raw-button-ok(primitive): a step in the sheet's role="group" text-size stepper — a statutory control whose 44px target and lit-direction state accessibility-bar.css owns */}
               <button
                 type="button"
                 className={cn("sa-a11yc__step", index > DEFAULT_SCALE_INDEX && "is-active")}
@@ -253,6 +256,7 @@ export function AccessibilityControls({
         )}
 
         {accessibility && (
+          /* raw-button-ok(primitive): a full-width row in the accessibility sheet, and an aria-haspopup="dialog" trigger for the UX4G widget */
           <button type="button" className="sa-a11yc__action" aria-haspopup="dialog" onClick={handleAccessibility}>
             <Icon name="accessibility_new" size={24} aria-hidden />
             <span>Accessibility options</span>
@@ -260,6 +264,7 @@ export function AccessibilityControls({
         )}
 
         {language && (
+          /* raw-button-ok(primitive): a full-width row in the accessibility sheet — a list row carrying a label and its current value, not an action button */
           <button type="button" className="sa-a11yc__action" onClick={language.onClick}>
             <Icon name="translate_indic" size={24} aria-hidden />
             <span>Language</span>
@@ -276,6 +281,7 @@ export function AccessibilityControls({
       {fontSize && (
         <>
           <div className="sa-abar__fs" role="group" aria-label="Text size">
+            {/* raw-button-ok(primitive): a step in the bar's role="group" text-size stepper — a statutory control sized by --sa-cmp-accessibilityBar-stepSize and inheriting the bar's inverse ink */}
             <button
               type="button"
               className={cn("sa-abar__fsbtn", index < DEFAULT_SCALE_INDEX && "is-active")}
@@ -304,9 +310,11 @@ export function AccessibilityControls({
               a no-op: disabling it on reset would destroy focus at the exact moment the
               reader activated it.
             */}
+            {/* raw-button-ok(primitive): the bar's text-size reset — the pill in the middle of the same stepper, sized by --sa-cmp-accessibilityBar-pillSize */}
             <button type="button" className={cn("sa-abar__fsbtn", "is-current")} onClick={reset} aria-label={resetLabel}>
               <Icon name="font_download" size={ICON_SIZE} aria-hidden />
             </button>
+            {/* raw-button-ok(primitive): a step in the bar's role="group" text-size stepper — a statutory control sized by --sa-cmp-accessibilityBar-stepSize and inheriting the bar's inverse ink */}
             <button
               type="button"
               className={cn("sa-abar__fsbtn", index > DEFAULT_SCALE_INDEX && "is-active")}
@@ -323,6 +331,7 @@ export function AccessibilityControls({
 
       {accessibility && (
         <>
+          {/* raw-button-ok(primitive): the statutory accessibility entry point — an aria-haspopup="dialog" trigger whose measured size and id the UX4G widget and the corner rail both depend on */}
           <button
             ref={a11yButtonRef}
             type="button"
@@ -339,6 +348,7 @@ export function AccessibilityControls({
       )}
 
       {language && (
+        /* raw-button-ok(primitive): the bar's language control — a composite of a glyph, a label and a caret, sized by --sa-cmp-accessibilityBar-iconButtonSize */
         <button type="button" className="sa-abar__icbtn has-text" aria-label="Select language" title="Select language" onClick={language.onClick}>
           {/* Glyph + label are the master's `Label` frame — 4px apart, not the 8px
               the row uses between that unit and the caret. */}

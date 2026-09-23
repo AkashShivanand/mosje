@@ -795,18 +795,32 @@
      drives the `opsz` optical-size axis, so the glyph is DRAWN for the size it
      is displayed at. A width/height rule sets the box and leaves the drawing
      wrong. */
-  .ds-chatbot__icon-btn {
-    display: grid;
-    flex: none;
-    place-items: center;
-    width: var(--sa-icon-size-32);
-    height: var(--sa-icon-size-32);
-    padding: var(--sa-padding-0);
-    border: 0;
+  /* All three header controls are the library's `IconButton` (neutral · text ·
+     sm), so the reset, the press give, the focus ring and the disabled treatment
+     come from button.css. `sm` is already the 32px rung this block asked for.
+
+     `.ds-icon-btn` is named in every selector so these outrank button.css inside
+     the shared `components` layer, where the two files are peers and specificity,
+     not import order, is what decides.
+
+     THE PRESSED FILL IS SUPPRESSED, DELIBERATELY. Expand carries `aria-pressed`,
+     and `.ds-btn--text[aria-pressed="true"]` paints the filled treatment — which
+     would make one of three identical glyphs in a single corner turn into a solid
+     block while the panel is expanded. The note further down this file says that
+     making one of the three look different is worse than the problem it solves,
+     and the control already reports its state twice: `aria-pressed` for a screen
+     reader and a glyph that swaps between `open_in_full` and `close_fullscreen`
+     for everyone else. */
+  .ds-chatbot__icon-btn.ds-icon-btn,
+  .ds-chatbot__icon-btn.ds-icon-btn[aria-pressed="true"] {
     border-radius: var(--sa-shape-8);
     background: transparent;
+    /* The pressed rule sets the BORDER as well as the fill, and leaving that one
+       declaration out drew a visible box around Expand the moment the panel was
+       expanded — the exact "one of three looks different" defect this block exists
+       to prevent. Found in the screenshot, not in the source. */
+    border-color: transparent;
     color: var(--sa-color-text-muted);
-    cursor: pointer;
     transition:
       background-color var(--ds-chatbot-press) var(--ds-chatbot-ease),
       color var(--ds-chatbot-press) var(--ds-chatbot-ease),
@@ -814,19 +828,17 @@
   }
 
   @media (hover: hover) and (pointer: fine) {
-    .ds-chatbot__icon-btn:hover {
+    .ds-chatbot__icon-btn.ds-icon-btn:hover,
+    .ds-chatbot__icon-btn.ds-icon-btn[aria-pressed="true"]:hover {
       background: var(--sa-bg-neutral-subtler);
+      border-color: transparent;
       color: var(--sa-color-text-default);
+      filter: none;
     }
   }
 
-  .ds-chatbot__icon-btn:active {
+  .ds-chatbot__icon-btn.ds-icon-btn:active {
     transform: scale(0.94);
-  }
-
-  .ds-chatbot__icon-btn:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-chatbot__title {
@@ -1144,9 +1156,9 @@
       transform: none;
     }
 
-    /* `__end` is absent: it is a DS `Button` now, and `.ds-btn` carries its own
-       `prefers-reduced-motion` rule that drops the press scale. Restating it
-       here would be a second copy of a decision that lives in button.css. */
+    /* `__end` is not named on its own: it is an `__icon-btn` like its two
+       neighbours and is covered by the block below, which restates only the
+       chatbot's own deeper press scale. */
     .ds-chatbot__launcher,
     .ds-chatbot__launcher:hover,
     .ds-chatbot__launcher:active {
@@ -1174,10 +1186,14 @@
       transition: opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
     }
 
-    .ds-chatbot__icon-btn,
-    .ds-chatbot__icon-btn:active,
-    .ds-chatbot__send,
-    .ds-chatbot__send:not(:disabled):active {
+    /* Both are `IconButton`s, and button.css already drops the ladder's own press
+       scale under reduced motion. What is restated here is the CHATBOT's deeper
+       0.94 give, which is this file's own decision and so has to be undone by this
+       file — at the same raised specificity the rules above use. */
+    .ds-chatbot__icon-btn.ds-icon-btn,
+    .ds-chatbot__icon-btn.ds-icon-btn:active,
+    .ds-chatbot__send.ds-icon-btn,
+    .ds-chatbot__send.ds-icon-btn:not(:disabled, [aria-disabled="true"]):active {
       transform: none;
     }
   }
@@ -1339,39 +1355,31 @@
     outline: none;
   }
 
-  .ds-chatbot__send {
-    display: grid;
-    flex: none;
-    place-items: center;
-    width: var(--sa-icon-size-32);
-    height: var(--sa-icon-size-32);
-    padding: var(--sa-padding-0);
-    border: 0;
-    border-radius: var(--sa-shape-full);
-    /* Same literal, same consequence as the user bubble: a primary ACTION that
-       stayed navy while the brand around it changed. Not artwork — the mascot
-       disc and the close disc are, and those two keep the literal on purpose. */
+  /* Send is the library's `IconButton` — primary · filled · sm · circle — so the
+     32px box, the round corner, the focus ring and the disabled treatment all
+     come from button.css.
+
+     What stays is the brand ground. `--sa-bg-brand-primary-bolder` is the deeper
+     rung the panel's own header and user bubbles use, not the button ladder's
+     primary fill, and the composer's send has to sit in that family rather than
+     in the page's. Same literal, same consequence as the user bubble: a primary
+     ACTION that stayed navy while the brand around it changed. Not artwork — the
+     mascot disc and the close disc are, and those two keep the literal on purpose.
+
+     DISABLED IS NOW THE LADDER'S, NOT A 35% WASH. This rule used to dim the
+     brand fill to `opacity: 0.35`; button.css paints the Figma master's own
+     disabled grey instead (the 13 Sep 2026 decision in that file), which still
+     leaves the control visible — the point of the rule this replaces — and does
+     it the way every other filled button in the estate does. */
+  .ds-chatbot__send.ds-icon-btn:not(:disabled, [aria-disabled="true"]) {
     background: var(--sa-bg-brand-primary-bolder);
     color: var(--sa-on-bg-brand-primary-bolder);
-    cursor: pointer;
     transition:
       opacity var(--ds-chatbot-press) var(--ds-chatbot-ease),
       transform var(--ds-chatbot-press) var(--ds-chatbot-ease);
   }
 
-  /* Dimmed, never hidden. A send button that vanishes when the field is empty
-     removes the affordance that tells you the field is a message box at all. */
-  .ds-chatbot__send:disabled {
-    opacity: 0.35;
-    cursor: default;
-  }
-
-  .ds-chatbot__send:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-    outline-offset: var(--sa-focus-offset);
-  }
-
-  .ds-chatbot__send:not(:disabled):active {
+  .ds-chatbot__send.ds-icon-btn:not(:disabled, [aria-disabled="true"]):active {
     transform: scale(0.94);
   }
 

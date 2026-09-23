@@ -682,37 +682,21 @@
     0%, 100% { opacity: 0.55; }
     50% { opacity: 1; }
   }
-  .ds-chart__retry {
-    border: var(--sa-stroke-1) solid var(--sa-border-neutral-base);
-    border-radius: var(--sa-shape-8);
-    background: var(--sa-bg-neutral-base);
-    color: var(--sa-text-neutral-base);
-    padding: var(--sa-padding-8) var(--sa-padding-16);
-    font: inherit;
+  /* Retry / clear-filters is the library's `Button` (neutral · outlined · sm),
+     which is the same control this block used to draw by hand — and the same
+     three words `ScreenBody` uses for its own retry, so the two now agree by
+     construction rather than by coincidence.
+
+     The border, the fill, the 32px height, the focus ring (including the
+     forced-colors one) and the coarse-pointer 44px target all come from
+     button.css. What is left is the chart's own smaller type: a control inside a
+     state figure reads at body-3 beside the figure's caption, not at the button
+     ladder's label size. `.ds-btn` is named so it outranks button.css inside the
+     shared `components` layer. */
+  .ds-chart__retry.ds-btn {
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
     font-weight: var(--sa-font-weight-semibold);
-    cursor: pointer;
-    /* 2.5.8 Target Size (Minimum) is 24; this clears it with room for a coarse pointer. */
-    min-height: 32px;
-  }
-  .ds-chart__retry:hover {
-    background: var(--sa-bg-neutral-subtler);
-  }
-  .ds-chart__retry:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-    outline-offset: var(--sa-focus-offset);
-  }
-  @media (pointer: coarse) {
-    .ds-chart__retry { min-height: 44px; }
-  }
-  /* `box-shadow` is not painted in forced-colors mode, so any focus ring built
-     from one disappears for exactly the readers that mode exists to serve. */
-  @media (forced-colors: active) {
-    .ds-chart__retry:focus-visible {
-      outline: var(--sa-focus-width) solid Highlight;
-      outline-offset: var(--sa-focus-offset);
-    }
   }
   @media (prefers-reduced-motion: reduce) {
     .ds-chart__skeleton-bars { animation: none; }
@@ -724,32 +708,44 @@
      A chart's numbers must be reachable without reading the chart: by a
      colour-blind reader whose two series measure ΔE 1.5 apart, on paper, and on
      a connection that never painted the SVG. */
-  .ds-chart__tabletoggle {
+  /* The toggle is the library's `Button` (primary · text · sm), so the reset,
+     the press give, the focus ring and the disabled treatment come from
+     button.css. `.ds-btn` is named in every selector below so what is genuinely
+     local outranks it inside the shared `components` layer.
+
+     WHAT IS LOCAL IS THAT THIS READS AS A WAY OUT OF THE PICTURE, NOT AS AN
+     ACTION. It sits under a chart, underlined, at the caption's size, and it must
+     not acquire the 64px rhythm minimum or the 32px control height that would
+     make it look like a second Retry. The `ds-btn` layout stays; only the box and
+     the type are pulled back. */
+  .ds-chart__tabletoggle.ds-btn {
     align-self: flex-start;
     margin-block-start: var(--sa-stack-8);
-    /* 24px is the WCAG 2.2 AA floor for a target (2.5.8); the padding takes the
-       real box past it without making a text button look like a control.
-       There is no `target/*` family, and this is a BLOCK-axis length, so it
-       binds the block-axis 24 rung — exact value, right axis, per the estate's
-       bind-by-property-and-axis rule. */
-    min-block-size: var(--sa-stack-24);
+    /* The 24px block minimum this rule used to carry is GONE, and nothing was
+       lost: `.ds-btn--sm` floors the control at `--sa-control-height-sm` (32),
+       which is the height this toggle already drew and comfortably past WCAG
+       2.2 §2.5.8. Restating a smaller minimum here only fought it.
+
+       `min-width` is reset because the ladder's 64px rhythm floor is for
+       actions standing in a row; this one is a way out of the picture and takes
+       the width of its words. */
+    min-width: 0;
     padding: var(--sa-padding-4) var(--sa-padding-8);
-    border: 0;
     border-radius: var(--sa-shape-4);
-    background: transparent;
     color: var(--sa-text-brand-primary-bolder);
     font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
     font-weight: var(--sa-font-weight-semibold);
     text-decoration: underline;
     text-underline-offset: 0.2em;
-    cursor: pointer;
   }
 
-  .ds-chart__tabletoggle:hover {
+  .ds-chart__tabletoggle.ds-btn:hover,
+  .ds-chart__tabletoggle.ds-btn:active {
     background: var(--sa-bg-neutral-subtler);
   }
 
-  .ds-chart__tabletoggle:focus-visible {
+  .ds-chart__tabletoggle.ds-btn:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
     outline-offset: var(--sa-focus-offset);
   }
