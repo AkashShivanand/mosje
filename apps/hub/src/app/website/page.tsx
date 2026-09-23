@@ -22,6 +22,9 @@ import { Pledges } from "@/components/website-next/home/Pledges";
    marks, one set of links, one pause control. It moves into website-next when the
    classic tree is retired. */
 import { LogoStrip } from "@/components/website/LogoStrip";
+/* Shared with the classic page for the same reason as the marquee: one banner,
+   one set of words, one image pair. It moves into website-next with the rest. */
+import { SamaveshJusticeBanner } from "@/components/website/SamaveshJusticeBanner";
 import { Social } from "@/components/website-next/home/Social";
 import { Helplines } from "@/components/website-next/home/Helplines";
 import "@/components/website-next/home/home.css";
@@ -114,6 +117,9 @@ export default async function Home() {
         {/* The campaign band above introduces NMBA; this gathers the pledges and
             volunteering of every campaign, as Figma's own section does. */}
         <Pledges />
+        {/* The live page and Figma both place it here: after the campaign, before
+            Recent Documents. */}
+        <SamaveshJusticeBanner />
         <Documents />
         <Audiences />
         {/* The live page and Figma both carry the locator here, after the
