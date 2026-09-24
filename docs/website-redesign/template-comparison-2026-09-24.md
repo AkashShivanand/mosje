@@ -109,3 +109,64 @@ asks for. Nothing to compare; keep.
 a permanent redirect to `/accessibility-statement`, the address GIGW auditors
 look for, so the twelve lines are the whole page doing its job. Checked before
 ranking it, which is the check every other row still needs.
+
+---
+
+## CORRECTION, same day — the line-count ranking was wrong
+
+`/organisation/[...slug]` topped the list at −247 lines. It was checked first,
+and it does **not** need restoring: rendered side by side it is RICHER than the
+classic — 8,252px against 6,518 on the NMBA page, with a "More from …" sub-page
+nav, Latest Updates and Social Media that the classic does not draw. The 247
+lines are prose the classic holds inline and the redesign reads from shared
+content. Two deltas remain and neither is a loss: the classic's row of ten
+outbound tag links (dropped deliberately — the estate treats CMS tags as filing
+labels, not facts about a record) and the order of What's New.
+
+**So line count does not measure this.** The instrument that does is comparing
+the SECTION HEADINGS each side renders. That was run against Bands 1 and 2 and
+found real, specific losses on sixteen of eighteen templates. That list, below,
+supersedes the ranking above.
+
+## The real list — sections the classic renders and the redesign does not
+
+Measured by loading both pages and diffing their `<h2>`s. Every classic page
+named here was confirmed to be a real page, not a stub.
+
+| Template | Sections the redesign lost |
+|---|---|
+| `/samavesh-admin-portals` | SMILE Admin Console · PM-AJAY MIS · Scholarship Admin (NOS) · NMBA Dashboard · Grant-in-Aid Management · NGO Monitoring Portal |
+| `/terms-conditions` | Content Ownership and Usage · Disclaimer of Warranties · Links to External Websites · Governing Law and Jurisdiction · Amendments |
+| `/prioritization-guidelines-…` | Purpose · Priority Areas · Prioritisation Criteria · Considerations |
+| `/policies-acts-rules-codes-circular` | Introduction · Acts · Rules & Codes · Policies & Circulars |
+| `/policies-acts-rules-circular` | Introduction · Acts · Rules · Policies & Circulars |
+| `/penalties-in-case-of-misutilisation-of-grants` | What Constitutes Misutilisation · Consequences · Procedure Before Penal Action |
+| `/cessation-of-voluntary-organisation-activities` | Circumstances of Cessation · Procedure on Closure or Withdrawal · Discontinuance by the Department |
+| `/hyperlinking-policy` | Links to External Websites · No Endorsement Implied · Conditions for Linking |
+| `/copyright` | Conditions of Reproduction · Exceptions · Trademarks |
+| `/organisation-under-division-social-division` | Overview · Institutes & Bodies · Coordination |
+| `/contact-us` and `/mosje-contact` | the Department's address block · Key Officers · Send Us a Message |
+| `/dashboard` | Scheme-wise Disbursement · Beneficiaries by Category |
+| `/help` | Screen Reader Access |
+| `/whos-who` | Dr. Ambedkar Foundation (DAF) |
+| `/search` | Popular searches |
+
+The pattern in the policy pages is one thing repeated: the prose came across and
+its **section structure did not**. On a policy document the headings are not
+decoration — they are how a reader finds the clause that applies to them, and
+how a screen-reader user navigates at all.
+
+## Revised order
+
+1. `/samavesh-admin-portals` — six whole sections gone; the page has no content left.
+2. The policy set, which share one cause and probably one fix: `/terms-conditions`,
+   `/prioritization-…`, both `/policies-acts-rules-…`, `/penalties-…`,
+   `/cessation-…`, `/hyperlinking-policy`, `/copyright`,
+   `/organisation-under-division-social-division`.
+3. `/contact-us` and `/mosje-contact` — Key Officers and the contact form.
+4. `/dashboard`, `/whos-who`, `/help`, `/search` — one named section each.
+5. Band 3's 56 catalogue wrappers, still one decision rather than 56.
+6. `/organisation/[...slug]` — **no action**, it is already better.
+
+Bands 3 and 4 have not been measured this way yet. They should be before anyone
+works on them.
