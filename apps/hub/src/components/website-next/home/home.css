@@ -541,6 +541,79 @@
   .wn-off__news-link:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ringInner); outline-offset: var(--sa-focus-offset); }
   .wn-off__news-meta { margin-top: var(--sa-stack-4); font-size: var(--sa-type-label-2-size); line-height: var(--sa-type-label-2-lh); font-weight: var(--sa-font-weight-medium); opacity: 0.85; }
 
+  /* ── Our Organisations ───────────────────────────────────────────────────
+     What they are on the left, the chips and the chosen set on the right. */
+  .wn-orgs2 { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sa-stack-32); }
+  @media (min-width: 1024px) { .wn-orgs2 { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: var(--sa-inline-48); align-items: start; } }
+  .wn-orgs2__copy { min-width: 0; }
+  .wn-orgpick { min-width: 0; }
+  .wn-orgpick__chips { display: flex; flex-wrap: wrap; gap: var(--sa-inline-8); }
+  /* The count rides inside the chip, a size down and quieter than its label —
+     it qualifies the category rather than competing with it. */
+  .wn-orgpick__count { margin-inline-start: var(--sa-inline-8); font-size: var(--sa-type-label-2-size); line-height: var(--sa-type-label-2-lh); font-weight: var(--sa-font-weight-medium); font-variant-numeric: tabular-nums; opacity: 0.75; }
+  .wn-orgpick__grid { display: grid; gap: var(--sa-stack-12); margin-top: var(--sa-stack-24); grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 768px) { .wn-orgpick__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 1280px) { .wn-orgpick__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .wn-orgpick__grid > li { display: grid; }
+  .wn-orgpick__card {
+    display: grid;
+    align-content: start;
+    gap: var(--sa-stack-12);
+    height: 100%;
+    padding: var(--sa-padding-16);
+    border: var(--sa-stroke-1) solid var(--sa-border-brand-primary-base);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-brand-primary-base);
+    color: var(--sa-text-neutral-bolder);
+    transition: border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+  .wn-orgpick__card:hover { border-color: var(--sa-border-brand-primary-bolder); }
+  .wn-orgpick__card:hover .wn-orgpick__name { text-decoration: underline; text-underline-offset: 0.2em; }
+  .wn-orgpick__card:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: var(--sa-focus-offset); }
+  .wn-orgpick__mark { display: grid; place-items: center; width: var(--sa-icon-size-40); height: var(--sa-icon-size-40); overflow: hidden; }
+  .wn-orgpick__mark img { width: 100%; height: 100%; object-fit: contain; }
+  .wn-orgpick__name { font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); font-weight: var(--sa-font-weight-semibold); }
+  .wn-orgpick__abbr { color: var(--sa-text-neutral-subtle); font-weight: var(--sa-font-weight-regular); }
+
+  /* ── Activity Corner ─────────────────────────────────────────────────────
+     Two cards across from 768, each a date block beside its title, with the
+     "Read More" at the row's end — the design's shape. */
+  .wn-act { margin-top: var(--sa-stack-32); }
+  .wn-act__bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sa-inline-16); }
+  .wn-act__list { display: grid; gap: var(--sa-stack-16); margin-top: var(--sa-stack-24); }
+  @media (min-width: 768px) { .wn-act__list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .wn-act__item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-content: start;
+    gap: var(--sa-stack-8) var(--sa-inline-16);
+    padding: var(--sa-padding-16);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-base);
+  }
+  /* The date block: the day large on its own line, the month and year under
+     it, both inside one <time> so it is read as one date. */
+  .wn-act__date {
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    grid-row: 1 / span 2;
+    min-width: var(--sa-control-height-lg);
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-subtler);
+  }
+  .wn-act__day { font-size: var(--sa-type-headline-2-size); line-height: var(--sa-type-headline-2-lh); font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-neutral-bolder); font-variant-numeric: tabular-nums; }
+  .wn-act__month { font-size: var(--sa-type-label-2-size); line-height: var(--sa-type-label-2-lh); font-weight: var(--sa-font-weight-medium); color: var(--sa-text-neutral-subtle); }
+  .wn-act__body { min-width: 0; }
+  .wn-act__title { font-size: var(--sa-type-title-2-size); line-height: var(--sa-type-title-2-lh); font-weight: var(--sa-font-weight-semibold); }
+  .wn-act__title a { color: var(--sa-text-neutral-bolder); }
+  .wn-act__title a:hover { color: var(--sa-text-link-brand-hover); text-decoration: underline; text-underline-offset: 0.2em; }
+  .wn-act__title a:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: var(--sa-focus-offset); border-radius: var(--sa-shape-4); }
+  .wn-act__org { margin-top: var(--sa-stack-4); font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); color: var(--sa-text-neutral-subtle); }
+  .wn-act__more { grid-column: 2; justify-self: end; }
+
   /* ── Social ──────────────────────────────────────────────────────────────── */
   .wn-home-social { display: grid; gap: var(--sa-stack-12); margin-top: var(--sa-stack-32); grid-template-columns: repeat(auto-fill, minmax(min(100%, 208px), 1fr)); }
 }
