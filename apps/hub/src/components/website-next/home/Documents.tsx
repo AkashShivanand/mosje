@@ -65,7 +65,10 @@ export function Documents() {
   ).slice(0, 4);
 
   return (
-    <Band as="section" tone="default" spacing="xl" aria-labelledby="docs-title">
+    /* Muted for the same reason Our Organisations is: this and the centre
+       finder below it ran to 1,929px of white with no edge between them, so the
+       two read as one section until the second heading arrived. */
+    <Band as="section" tone="muted" spacing="xl" aria-labelledby="docs-title">
       <div className="wn-home-docgrid">
         <div className="wn-home-docgrid__main">
           <SectionTitle
