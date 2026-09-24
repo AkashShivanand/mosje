@@ -9,7 +9,7 @@ overflow at 375 and 320, target sizes against SC 2.5.8, a 58-stop keyboard walk,
 Evidence: `shots/home-audit/` and the section sheets captured with this pass.
 
 > **Resolved the same day.** The eleven short link rows in §1 were fixed in
-> `e1` — every standalone target on the page now measures at least 24px at both
+> `5f9452d2` — every standalone target on the page now measures at least 24px at both
 > widths. The section is kept as the record of what was found.
 
 ## Verdict
