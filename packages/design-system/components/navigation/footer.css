@@ -70,6 +70,12 @@
     border: 0;
     background: transparent;
     cursor: pointer;
+    /* WCAG 2.2 2.5.8: a policy link in the footer is a target like any other. At the
+       footer's 12px type the text box is 17px tall, so the link carries the minimum
+       height itself and centres its own text rather than relying on the row. */
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--sa-target-min);
     font: inherit;
     font-size: var(--sa-type-body-3-size);
     color: color-mix(in srgb, var(--sa-on-bg-brand-primary-bolder) 82%, transparent);

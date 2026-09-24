@@ -67,6 +67,13 @@
     align-items: center;
     text-decoration-line: none;
     font-weight: var(--sa-font-weight-medium);
+    /* WCAG 2.2 2.5.8: a standalone link is a target on its own — a card's "Read more",
+       a row in a list of reports — and at the label sizes below its text box is 17-20px
+       tall. It carries the minimum height itself, centring its own text, rather than
+       depending on whatever row it lands in. An inline link inside a sentence is NOT
+       given this: there the sentence's line height is the target, and the criterion's
+       inline exception covers it. */
+    min-height: var(--sa-target-min);
   }
   .ds-link--standalone:hover,
   .ds-link--standalone:focus-visible {

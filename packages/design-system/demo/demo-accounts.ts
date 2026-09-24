@@ -118,7 +118,7 @@ export const DEMO_ACCOUNTS: readonly DemoAccountSet[] = [
     ],
   },
   {
-    // All five accounts in apps/hub/src/store/pm-ajay/auth-context.tsx, labelled
+    // Every account in apps/hub/src/store/pm-ajay/auth-context.tsx, labelled
     // by each account's designation there.
     path: "/portals/pm-ajay",
     idLabel: "Employee ID",
@@ -128,6 +128,9 @@ export const DEMO_ACCOUNTS: readonly DemoAccountSet[] = [
       { role: "Section Officer · Maharashtra", id: "SO003", password: "Password@123" },
       { role: "Section Officer · Tamil Nadu", id: "SO004", password: "Password@123" },
       { role: "District Officer · Gujarat", id: "DO005", password: "Password@123" },
+      /* The Adarsh Gram district officer — the live portal's AGDistrict role, whose
+         twenty-seven screens the district workspace reproduces. */
+      { role: "District Welfare Officer · Adarsh Gram", id: "AGDistrict", password: "Password@123" },
     ],
   },
   {

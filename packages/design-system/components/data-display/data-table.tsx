@@ -28,6 +28,16 @@ export interface DataTableColumn<T> {
   /** Exclude this column from copy/export (e.g. action buttons). */
   noExport?: boolean;
   /**
+   * Which edge the column reads from. `"end"` for a column of FIGURES — a count,
+   * an amount, a percentage — so the digits line up on their last place and the
+   * column can be scanned down. The table already sets `tabular-nums`; alignment
+   * is the other half of that, and without it a column of populations reads as a
+   * ragged list of words. Leave unset for text.
+   *
+   * @default "start"
+   */
+  align?: "start" | "center" | "end";
+  /**
    * Make the column sortable. The header becomes a button and the `<th>` carries
    * `aria-sort`, which this table had on NO column — so a screen-reader user was
    * never told a register was ordered, or by what.
@@ -103,6 +113,11 @@ export interface DataTableProps<T> {
  * row (sentence-case, not shouty uppercase), brandwash row-hover, and an
  * outlined current-page chip. Token-driven `.ds-table*` CSS — no Tailwind.
  */
+/** The class for a column's alignment. `start` is the default and needs none. */
+function alignClass(align: DataTableColumn<never>["align"]): string | undefined {
+  return align === "end" ? "ds-table__cell--end" : align === "center" ? "ds-table__cell--center" : undefined;
+}
+
 export function DataTable<T extends Record<string, unknown>>({
   columns,
   data,
@@ -272,7 +287,11 @@ export function DataTable<T extends Record<string, unknown>>({
               {columns.map((col) => {
                 if (!col.sortable) {
                   return (
-                    <th key={col.key} scope="col" className={cn("ds-table__th", col.className)}>
+                    <th
+                      key={col.key}
+                      scope="col"
+                      className={cn("ds-table__th", alignClass(col.align), col.className)}
+                    >
                       {col.headerNode ?? col.header}
                     </th>
                   );
@@ -288,7 +307,7 @@ export function DataTable<T extends Record<string, unknown>>({
                      * column rather than only when focus lands on the control.
                      */
                     aria-sort={active ? (sort.direction === "asc" ? "ascending" : "descending") : "none"}
-                    className={cn("ds-table__th", "ds-table__th--sortable", col.className)}
+                    className={cn("ds-table__th", "ds-table__th--sortable", alignClass(col.align), col.className)}
                   >
                     {/*
                       A BUTTON, not a click handler on the `<th>`. A cell with an
@@ -326,7 +345,7 @@ export function DataTable<T extends Record<string, unknown>>({
                 return (
                   <tr key={rowKey} className="ds-table__row">
                     {columns.map((col) => (
-                      <td key={col.key} className={cn("ds-table__td", col.className)}>
+                      <td key={col.key} className={cn("ds-table__td", alignClass(col.align), col.className)}>
                         {col.render ? col.render(row) : String(row[col.key] ?? "")}
                       </td>
                     ))}
