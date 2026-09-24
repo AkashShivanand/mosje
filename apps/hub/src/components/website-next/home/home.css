@@ -509,7 +509,18 @@
   @media (min-width: 768px) { .wn-off__scheme { grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: var(--sa-inline-24); } }
   .wn-off__scheme-kind { font-size: var(--sa-type-label-2-size); line-height: var(--sa-type-label-2-lh); font-weight: var(--sa-font-weight-medium); text-transform: uppercase; letter-spacing: var(--sa-type-label-tracking); color: var(--sa-text-brand-primary-base); }
   .wn-off__scheme-name { margin-top: var(--sa-stack-4); font-size: var(--sa-type-title-2-size); line-height: var(--sa-type-title-2-lh); font-weight: var(--sa-font-weight-semibold); }
-  .wn-off__scheme-name a { color: var(--sa-text-neutral-bolder); }
+  /* 24px is the WCAG 2.2 AA floor for a pointer target (SC 2.5.8), and a link
+     that is its own row does not get the criterion's "inline" exception — that
+     is for a target inside a sentence. `title-2` gives these a 22px line box,
+     so the minimum is asked for on the LINK: a row tall enough while its link
+     is not still fails. `inline-flex` is what the estate's other links of this
+     kind use (breadcrumb, document row); the text still wraps inside it. */
+  .wn-off__scheme-name a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--sa-target-min);
+    color: var(--sa-text-neutral-bolder);
+  }
   .wn-off__scheme-name a:hover { color: var(--sa-text-link-brand-hover); text-decoration: underline; text-underline-offset: 0.2em; }
   .wn-off__scheme-name a:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: var(--sa-focus-offset); border-radius: var(--sa-shape-4); }
   .wn-off__scheme-provides { margin-top: var(--sa-stack-4); font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); color: var(--sa-text-neutral-base); }
@@ -532,11 +543,29 @@
   }
   .wn-off__news-head { display: flex; align-items: center; justify-content: space-between; gap: var(--sa-inline-12); padding-bottom: var(--sa-padding-16); border-bottom: var(--sa-stroke-1) solid var(--sa-bg-brand-primary-bolder); }
   .wn-off__news-title { display: inline-flex; align-items: center; gap: var(--sa-inline-8); font-size: var(--sa-type-title-1-size); line-height: var(--sa-type-title-1-lh); font-weight: var(--sa-font-weight-semibold); }
-  .wn-off__news-all { font-size: var(--sa-type-label-1-size); line-height: var(--sa-type-label-1-lh); font-weight: var(--sa-font-weight-medium); text-decoration: underline; text-underline-offset: 0.2em; }
+  /* Same floor, same reason — see the scheme titles above. */
+  .wn-off__news-all {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--sa-target-min);
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-medium);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
   .wn-off__news-all:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ringInner); outline-offset: var(--sa-focus-offset); }
   .wn-off__news-list > li { padding-block: var(--sa-padding-12); border-bottom: var(--sa-stroke-1) solid var(--sa-bg-brand-primary-bolder); }
   .wn-off__news-list > li:last-child { border-bottom: 0; }
-  .wn-off__news-link { font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); font-weight: var(--sa-font-weight-semibold); color: var(--sa-on-bg-brand-primary-boldest); }
+  .wn-off__news-link {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--sa-target-min);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-on-bg-brand-primary-boldest);
+  }
   .wn-off__news-link:hover { text-decoration: underline; text-underline-offset: 0.2em; }
   .wn-off__news-link:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ringInner); outline-offset: var(--sa-focus-offset); }
   .wn-off__news-meta { margin-top: var(--sa-stack-4); font-size: var(--sa-type-label-2-size); line-height: var(--sa-type-label-2-lh); font-weight: var(--sa-font-weight-medium); opacity: 0.85; }
@@ -608,7 +637,12 @@
   .wn-act__month { font-size: var(--sa-type-label-2-size); line-height: var(--sa-type-label-2-lh); font-weight: var(--sa-font-weight-medium); color: var(--sa-text-neutral-subtle); }
   .wn-act__body { min-width: 0; }
   .wn-act__title { font-size: var(--sa-type-title-2-size); line-height: var(--sa-type-title-2-lh); font-weight: var(--sa-font-weight-semibold); }
-  .wn-act__title a { color: var(--sa-text-neutral-bolder); }
+  .wn-act__title a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--sa-target-min);
+    color: var(--sa-text-neutral-bolder);
+  }
   .wn-act__title a:hover { color: var(--sa-text-link-brand-hover); text-decoration: underline; text-underline-offset: 0.2em; }
   .wn-act__title a:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: var(--sa-focus-offset); border-radius: var(--sa-shape-4); }
   .wn-act__org { margin-top: var(--sa-stack-4); font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); color: var(--sa-text-neutral-subtle); }
