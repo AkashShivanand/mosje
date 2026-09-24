@@ -526,6 +526,11 @@
   .wn-off__scheme-provides { margin-top: var(--sa-stack-4); font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); color: var(--sa-text-neutral-base); }
   .wn-off__all { padding: var(--sa-padding-16) var(--sa-padding-20); border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); }
 
+  /* A register that published nothing says so, rather than drawing a rule with
+     no rows under it. */
+  .wn-off__none { padding-block: var(--sa-padding-16); color: var(--sa-text-neutral-subtle); }
+  .wn-off__news-empty { padding-block: var(--sa-padding-16); font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); }
+
   .wn-off__notices { margin-top: var(--sa-stack-24); border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); }
   .wn-off__notice { display: grid; gap: var(--sa-stack-4); padding-block: var(--sa-padding-16); border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); color: var(--sa-text-neutral-bolder); }
   .wn-off__notice:hover .wn-off__notice-title { color: var(--sa-text-link-brand-hover); text-decoration: underline; text-underline-offset: 0.2em; }

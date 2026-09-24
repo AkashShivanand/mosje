@@ -51,6 +51,16 @@ const TABS = [
   { value: "tenders" as const, label: "Tenders" },
 ];
 
+/* Every state a list can be in gets a rendering, and "the register published
+   nothing" is the one that otherwise reads as a broken page — an empty <ol>
+   with a rule across the top and no rows under it
+   (`data-state-completeness.md` §1). `ActivityTabs` carries the same map. */
+const EMPTY: Record<Tab, string> = {
+  schemes: "No schemes are listed for this group yet.",
+  vacancies: "No vacancies are open at present.",
+  tenders: "No tenders are open at present.",
+};
+
 const VIEW_ALL: Record<Tab, { label: string; href: string }> = {
   schemes: { label: "View All Schemes", href: "/website/schemes-services" },
   vacancies: { label: "View All Vacancies", href: "/website/vacancies" },
@@ -90,6 +100,7 @@ export function OfferingsExplorer({
   const [tab, setTab] = React.useState<Tab>("schemes");
   const [who, setWho] = React.useState(personas[0]?.id ?? "");
   const persona = personas.find((p) => p.id === who) ?? personas[0];
+  const rows = tab === "tenders" ? tenders : tab === "vacancies" ? vacancies : [];
   const all = VIEW_ALL[tab];
 
   return (
@@ -169,6 +180,12 @@ export function OfferingsExplorer({
                 </div>
               )}
 
+              {persona.schemes.length === 0 && (
+                <p className="wn-off__none">
+                  <T>{EMPTY.schemes}</T>
+                </p>
+              )}
+
               <ul className="wn-off__schemes">
                 {persona.schemes.map((s) => (
                   <li key={s.id} className="wn-off__scheme">
@@ -199,9 +216,15 @@ export function OfferingsExplorer({
           </>
         )}
 
-        {tab !== "schemes" && (
+        {tab !== "schemes" && rows.length === 0 && (
+          <p className="wn-home-news__empty">
+            <T>{EMPTY[tab]}</T>
+          </p>
+        )}
+
+        {tab !== "schemes" && rows.length > 0 && (
           <ol className="wn-off__notices">
-            {(tab === "tenders" ? tenders : vacancies).map((n) => (
+            {rows.map((n) => (
               <li key={n.key}>
                 <Link href={n.href} className="wn-off__notice">
                   <span className="wn-off__notice-title">{n.title}</span>
@@ -225,6 +248,11 @@ export function OfferingsExplorer({
             <T>View All</T>
           </Link>
         </div>
+        {news.length === 0 && (
+          <p className="wn-off__news-empty">
+            <T>Nothing has been published in the last twelve months.</T>
+          </p>
+        )}
         <ol className="wn-off__news-list">
           {news.map((n) => (
             <li key={n.key}>
