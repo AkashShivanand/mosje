@@ -12,6 +12,14 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-24 · System version: v0.70.0 (FACTSTRIP HAS A THIRD SHAPE, AND IT IS
+  ASKED FOR BY NAME. `variant="bar"` is the brand-blue band the website home page carries under
+  its scheme portals — no marks, the caption above the figure, a rule between the cells and an
+  `action` in a cell of its own. It inverts, so no item count may select it. `unit` sets a
+  figure's unit a size down beside it, because "₹67,977 Crore" in `value` is 330px of type in a
+  270px cell. The bar is flat where the design draws a gradient: gov-blue has no Tier-2
+  background token, and the library has no `Type=Bar` variant yet.)
+
   Last reviewed: 2026-09-16 · System version: v0.69.0 (`SiteFooter` OWNS NO WIDTH, AND FIGMA AND CODE
   DRAW ONE FOOTER. The website footer takes `.sa-container` and the portal footer is fluid, as
   `SiteHeader` is; the restated 1280px cap put the footer 20px off the masthead's edge at 1440. List
@@ -2934,12 +2942,18 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 
 #### Carousel
 **Purpose**: a band of slides the reader moves through — announcements, photographs, a handful of promotional cards.
-**Props**: `children` (each child becomes one slide) · `label` (**required**) · `autoPlay` (default **false**) · `interval` · `showDots`
+**Props**: `children` (each child becomes one slide) · `label` (**required**) · `autoPlay` (default **false**) · `interval` · `showDots` · `controls` (`below` default · `overlay`)
 **Rules**:
+- **`controls="overlay"` is for a full-width banner only.** It puts the controls in a solid brand-navy (`bg/brand/primary/boldest`; was neutral-inverse until 22 Sep 2026) pill in the slide's bottom-end corner (solid, so contrast never depends on the photograph; the corner, because banners set their words left or centre). Below `breakpoint/tablet` the controls return to the row beneath. The website home banner is the one consumer, and it also turns `autoPlay` on at 7s — a DBIM §A.4.1 banner carousel whose slides two to five are otherwise never seen.
 - **Auto-rotation is OFF by default and the default should be respected.** A carousel that moves on its own takes the sentence a citizen is reading away mid-sentence, and it does that most to the slowest readers. WCAG 2.2.2 is met when it is on — pause control, halts on hover and on focus, disabled outright under `prefers-reduced-motion` — but meeting the criterion is not the same as it being a good idea.
 - **Everything essential must ALSO exist outside the carousel.** Slides two onwards are in practice unread: they sit behind an interaction most people never perform.
 - **The scroll-snap track is the source of truth for position.** The component reads the track's scroll offset back, so a swipe and a button press cannot disagree about which slide is current.
 - Moving by button announces "Slide N of M" through a **visually hidden** live region — the dots already show the position, and printing it again on screen is the interface narrating itself.
+- **While it rotates on its own, the current dot is the timer** (22 Sep 2026): the pill fills over `interval`, so a reader can see that it moves and how long they have. Held (pointer on it, focus in it, Pause pressed) the pill is solid and the fill resets exactly when the timer does. While rotating, the live region is `aria-live="off"` (WAI-ARIA carousel pattern); it is `polite` whenever the reader is in control.
+- **Slides out of view are `inert`.** A link on slide 1 must not be reachable while slide 4 is showing — tabbing to it scrolled the track back under the reader. The track itself stays scrollable, so a swipe still reaches every slide.
+- **Hover is gated to a fine pointer; press is not.** Ungated, the grey hover stuck on the arrow a phone reader had just tapped. Hover and press are the brand's own tint, not a neutral grey. A dot's focus ring is drawn on its mark, so it takes the pill's or dot's shape.
+- **One slide is not a carousel** (22 Sep 2026): it renders the slide alone — no controls, no carousel semantics. **Past six slides** the counter replaces the dots, and while rotating a hairline under it is the timer.
+- **Figma** (Carousel page, rebuilt and optimised 22 Sep 2026 — 129 variants, down from 175, with more coverage): `Carousel` (58 — Layout Pill/Row × Slides 5/9/1 × Rotation Running/Stopped × Current; Pill is tablet-and-up and resizes at a locked 3:1; autoplay OFF is Stopped with the nested controls' `Rotation` switched off; 276 prototype connections); `Carousel / Controls` (4 — Placement × Pagination, with `Rotation` and `Dot 3`–`Dot 6` switches; the current dot, Pause/Play, sizes and states are set on the exposed nested parts); parts `Arrow`, `Rotation`, `Dot`, `Counter`, `Slide` (Default/Hover/Pressed/Focus, `Size=Touch` 44px — no hover on touch). The timer is real in a prototype: `Dot Current=Running` and `Counter Running=Yes` start empty and change, After delay, to their `(end)` variant with a linear 7 s Smart Animate — the carousel's own interval. In each running Carousel variant the current dot (or counter) carries a slide-specific layer name — `dot N · timer, slide N` — because Figma keeps a nested part's finished state across parent variants whose layer names match; with plain names the timers stayed full on later slides. The nine deprecated carousel masters were deleted, not reused: they baked slogans into the picture.
 - **The dots are buttons with `aria-current`, NOT tabs.** A tablist promises panels that stay put and a roving arrow-key model; claiming the role without the behaviour is worse than not claiming it.
 - Arrows take the full control height and each dot draws an 8px mark inside a 32px button — the mark is small, the target is not.
 
@@ -3112,12 +3126,15 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 
 #### FactStrip
 **Purpose**: The row of standing facts under a page hero — headquarters, number of components, who a scheme serves. One card, not a row of cards.
-**Key props**: `items` (`{icon, value, label}[]`), `overlap`, `variant`, `ariaLabel`
+**Key props**: `items` (`{icon, value, label, note?, unit?}[]`), `overlap`, `variant`, `action`, `ariaLabel`
 **Rules**:
 - **NOT `MetricCard`.** A metric is a measurement that moves and carries a trend; MetricCard has the change pill to prove it. These are facts that never trend, so the two differ in what they may *contain*, not only in how they look. Giving MetricCard a centred variant would have put a change arrow one prop away from a headquarters address.
 - **One surface, not four cards.** Separate cards read as four things to compare; one surface reads as one summary of one organisation, which is what it is. There is no rule between the cells — the icons already give the row its rhythm, and four vertical hairlines add furniture to the calmest band on the page. (This line said "divided by hairlines" until 10 Sep 2026, months after they were taken out.)
 - **It has a Figma home now, and it did not before.** `Fact Strip` was published to SAMAVESH on 10 September 2026 — its own page in Data Display, two sets (`Fact Strip` with `Type=Compact | Extended`, and the nested `Fact Strip / Fact` cell carrying Value, Label and the Icon swap), a documentation frame, a component record and an Index card. Until then it was drawn inside the site header's frame and published nowhere, which is why its docs page declared `figma={{ absent: … }}`. Figma says `Type` where code says `variant`: designer-facing Title Case, mapped by Code Connect, deliberately not the same string.
-- **TWO SHAPES, AND THE ITEM COUNT PICKS ONE.** `variant` defaults to `compact` up to five facts and `extended` above. The threshold is arithmetic: `minmax(200px, 1fr)` fits at most five tracks in the widest content column on the estate, so six is the first count that cannot be one row. Pass `variant` only to override that.
+- **A THIRD SHAPE IS ASKED FOR BY NAME, NEVER INFERRED.** `variant="bar"` is the brand-blue band the website home page carries under its scheme portals: no marks, the caption above the figure, a hairline between the cells, and — through `action` — a control in a cell of its own. It **inverts**, white type on `bg/brand/primary/bolder`, which is exactly why no item count may select it: a set that fell into it by arithmetic would put white on blue with nobody deciding to. `action` is ignored by the other two shapes; a strip of facts has nothing after it, and a cell holding a button would have to borrow a fact's width. A control placed there is `tone="inverse"`, because the ground under it is brand. Added 24 Sep 2026.
+- **`unit` belongs to the bar, and reads as part of `value` everywhere else.** The bar sets the figure at `display-5` (48px at 1440), where "₹67,977 Crore" written into `value` is 330px of type in a 270px cell and wraps. Supplied as `unit`, "Crore" is set a size down beside the number — `headline-2` complete, weight and all, so the unit is never lighter than the figure it qualifies. The estate publishes no 500-weight role below 40px, so a 500-weight unit is not expressible; a size from one style with a weight from nowhere is what `check:type-linkage` refuses.
+- **The bar is FLAT where the design draws a gradient, and that is a missing token rather than a preference.** The handoff paints #0260B8 → #0373DF left to right. The first stop is `bg/brand/primary/bolder` to within two points; the second is gov-blue, `primaryScale-500`, and **no Tier-2 background token resolves to it** — the `bg/brand/primary/*` ramp runs 50, 100, 200, 300, 600, 800 and skips 500. Component CSS may not reach past the semantic layer, so the choice was the rung we have or a raw hex. The ramp wants a background at 500 before this can carry the gradient. **The SAMAVESH library has no `Type=Bar` variant either** — Figma was unreachable when this shipped; the set and its documentation page owe one.
+- **TWO SHAPES ARE PICKED BY THE ITEM COUNT.** `variant` defaults to `compact` up to five facts and `extended` above. The threshold is arithmetic: `minmax(200px, 1fr)` fits at most five tracks in the widest content column on the estate, so six is the first count that cannot be one row. Pass `variant` only to override that.
 - **`compact`** is the handoff's strip — one row, each cell a centred stack of mark over value over label. Right for the three or four standing facts under a page hero.
 - **`extended`** is what a set becomes once it is too long for a row, and three things change together because they are one decision. The cells **wrap to a balanced column count** (4, or 3 where the count divides by three and not four) so the last row is full — `auto-fit` laid eight out 5 + 3, which reads as a grid that ran out of content. Each cell **turns on its side**, mark in its own column, figure and caption beside it, so a row scans left to right. And the **figure steps up** from `headline-5` to `headline-2` against a `body-2` caption — 2.3:1 where compact is 1.25:1, which is the weakest hierarchy two sizes can have.
 - **The mark keeps its chip in `extended`, at 8 of padding rather than 12** — a 48px tile against a 60px copy block, spanning the figure and its caption rather than sitting above them. It was briefly demoted to a bare glyph on the reasoning that a tile competes with a 32px figure; that is true of the COMPACT tile (56px, stacked above a 20px value, the widest thing in its own cell) and not of this one. **The height saving comes from the layout, not from dropping anything**: a side-on cell costs 60px a row against 116 stacked, which is why an extended card holding eight counters at 32px is shorter than a compact one holding the same eight at 20px — 220 against 312.
@@ -3495,6 +3512,18 @@ and renders it only when `exportable`.
 - **THREE GAPS IN THE ARTWORK, recorded rather than papered over.** NCSK, DAF, DWBDNC and SCW share one image hash (the State Emblem) — a correct fallback, but if any has its own crest it was never supplied. DAIC carries two stacked image fills. SAMBAL had no usable export until 2026-08-31: its device sat under a 74-node, one-text-node-per-character strapline inside the 56px box, so it had never been exported and `/portals/nhapoa` fell back to the emblem. Repaired in the library and exported; do not re-add a strapline at this size.
 - **The fallback is the State Emblem and it is CORRECT, not a placeholder.** A portal with no bespoke mark is still a Government of India property. Never substitute a grey box, an initial or a generic icon — which is exactly what `/portals` did, drawing a derived two-letter code in a coloured box where the department has an actual crest.
 
+#### ActionTile
+**Purpose**: One destination as a tile — a task on a home page, a group of people a scheme serves, a role, an account to follow, a helpline to call, a report to open. Added for the website home page (2026-09-22), which had grown six hand-built tiles differing only in arrangement.
+**Key props**: `href`, `title`, `description`, `value`, `media`, `mediaSize` (40 · 48 · 64 · 88), `action`, `layout` (`row` · `stack` · `block`), `tone` (`default` · `tint` · `solid` · `inverse`), `shape` (`card` · `pill`), `external`, `trailing`, `linkAs`
+**Rules**:
+- **One link, one tab stop, one name.** The whole tile is the anchor; nothing inside it is separately interactive. `action` ("Call") is TEXT saying what the link does, not a second control.
+- **Pass `linkAs={Link}`** — without it every internal tile is a full document load (`check:link-as`).
+- **Glyphs are white on the key colour's darkest shade** (DBIM §3.7 allows the darkest shade or white; the semantic layer has no icon token at the darkest shade). An `<img>` in the well gets a light brand ground instead, for illustrated figures.
+- **Choose `tone` by the GROUND the tile sits on**: `default`/`tint` on white or pale bands, `solid` for the one tile that must lead a light grid, `inverse` on a navy band.
+- **`value` renders in `block` layout only** — a helpline number beside its glyph. `pill` applies to `row` only.
+- **Not `PortalCard`** (a portal, with its saffron rule and code) **and not `Card`** (content, not a destination).
+- **Figma**: code-only at present — no library master yet. Recorded as an open item; a designer places the nearest drawn tile and names `ActionTile` in the handoff note.
+
 #### PortalCard
 **Purpose**: One portal in a grid of them, in two densities. Used by the SAMAVESH banner drawer, the `/portals` directory, and the change-portal side sheet on a login page.
 **Key props**: `variant`, `code`, `name`, `href`, `path`, `org`, `description`, `category`, `ctaLabel`, `selected`, `external`
@@ -3523,6 +3552,9 @@ and renders it only when `exportable`.
 **Purpose**: The canonical top banner and portal exploration drawer for SAMAVESH (Figma: the library set `56479:42386`, Tone × State; nodes `7116:33784` / `7298:29968` are the original handoff MOCKUPS, not a component, so Code Connect cannot resolve them). Consolidates the saffron identity bar with an interactive accordion drawer to discover and access the ministry's portals (SCW, SMILE-Transgender, NOS, NMBA, etc.).
 **Key props**: `defaultOpen`, `isOpen`, `onToggle`, `portals`, `sticky`, `tone`, `drawerTitle`, `showViewAll`, `viewAllHref`, `viewAllLabel`, `viewAllPrompt`, `allLabel`, `logoSrc`, `title`, `subline`, `exploreLabel`
 **Rules**:
+- **Open on the tint, the bar and the drawer are one surface** (22 Sep 2026): the bar drops its raised shadow for a hairline, which a shadow through the middle of one panel was misreporting as two. On a phone the stretched Explore control never takes the pill's green hover or press — a tap used to stick green across the whole band and hide the mark.
+- **The Explore button is India Green in every tone** — SAMAVESH's brand is saffron and green (decided 22 Sep 2026). Under `tone="tint"` the drawer heading takes plain ink and the footer link the link blue, so the button is the one green on the pale ground.
+- **Below `breakpoint/tablet` the drawer is a list**: portal cards drop to 12px padding, a 12px radius, no two-line name reserve and the 14px body pair, so eight portals take about 690px instead of about 970px.
 - **Single Source of Truth.** Replaces all hand-rolled website banners with a unified token-driven component exported from `@mosje/design-system`.
 - **THE BAND HAS THREE TONES AND THE DEFAULT KNOWINGLY FAILS WCAG 2.** `tone` is `light` (default) | `dark` | `tint`. This is the single most consequential thing to know about the component, and it is a researched decision rather than a preference:
 
@@ -3569,6 +3601,7 @@ and renders it only when `exportable`.
 **Variants**: `website` (static three-tier masthead) | `portal` (sticky, sidebar toggle, account) | `compact` (one 64px tier for hub index surfaces)  
 **Key props**: `emblemSrc`, `brandLines`, `homeHref`, `nav`, `variant`, `search`, `account`, `actions`, `onToggleNav`, `navExpanded`, `service`  
 **Rules**:
+- **A mega-menu column can close with an action and lay its rows two across** (22 Sep 2026, from the Ministry's finalised Offerings menu, Figma M2): `NavColumn.action` draws a full-width outlined Button under the column ("View All Schemes" under the scheme portals), on desktop and in the NavSheet; `NavColumn.wide` lays rich rows two across so seven portals do not run past the fold. The SAMAVESH `Navbar/MegaMenu` master does not model either yet.
 - **Choose the variant by PLACEMENT, not by taste.** `website` for public pages, `portal`
   for signed-in app shells, `compact` for internal index / wayfinding surfaces (the hub
   landing, `/portals`, `/reports`) that carry no government masthead. `compact` drops the

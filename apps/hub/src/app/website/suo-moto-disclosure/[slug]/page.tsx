@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { RecordDetail } from "@/components/website/templates/RecordDetail";
+import { RecordDetail } from "@/components/website-next/templates/RecordDetail";
 import { getContentSyncedDate, getSuoMotoDisclosures, getSuoMotoDisclosure } from "@/lib/website/content";
 import { documentFacts, documentFiles } from "@/lib/website/record-facts";
 import { socialCard } from "@/lib/seo/social";

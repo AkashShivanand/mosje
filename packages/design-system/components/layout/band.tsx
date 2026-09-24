@@ -4,9 +4,15 @@ import { Container, type ContainerSize } from "./container";
 import "./layout.css";
 
 /** Background tone the band paints edge to edge. */
-export type BandTone = "default" | "muted" | "brand" | "inverse";
+/**
+ * `brandBold` is the key colour's darkest shade with inverse ink — DBIM's own
+ * ground for a band that must read as the Department's (§2.1, §5.6); `inverse`
+ * is the neutral near-black.
+ */
+export type BandTone = "default" | "muted" | "brand" | "brandBold" | "inverse";
 /** Vertical rhythm, from the section spacing scale. */
-export type BandSpacing = "none" | "s" | "m" | "l";
+/** `xl` is a landing page's rhythm: `section/56` on a phone, `section/80` from 1024. */
+export type BandSpacing = "none" | "s" | "m" | "l" | "xl";
 
 export interface BandProps extends React.HTMLAttributes<HTMLElement> {
   /** @default "default" */

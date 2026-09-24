@@ -6,10 +6,11 @@ import { createPortal } from "react-dom";
 import { navDisabledAria, navLinkRoutes, type NavTag } from "./nav-link-tag";
 import { cn } from "../../../utils/cn";
 import { Icon } from "../../utilities/icon";
+import { Button } from "../../actions/button";
 import { IconButton } from "../../actions/icon-button";
 import { AccessibilityControls } from "../../utilities/accessibility-controls";
 import { BrandLockup } from "./brand-lockup";
-import { MegaMenuItem } from "./nav-parts";
+import { MegaMenuItem, NewTabHint } from "./nav-parts";
 import { Search } from "../../forms/search";
 import type { BrandLines, HeaderSearchConfig, NavItem } from "./types";
 import "./header.css";
@@ -349,6 +350,7 @@ export function NavSheet({
                     onClick={onClose}
                   >
                     <span>{item.label}</span>
+                    {item.external && <NewTabHint />}
                   </ItemTag>
                 )}
 
@@ -385,11 +387,26 @@ export function NavSheet({
                                   onClick={c.disabled ? undefined : onClose}
                                 >
                                   {c.label}
+                                  {c.external && !c.disabled && <NewTabHint />}
                                 </Tag>
                               </li>
                               );
                             })}
                           </ul>
+                        )}
+                        {col.action && (
+                          <Button
+                            href={col.action.href}
+                            external={col.action.external}
+                            linkAs={linkAs}
+                            variant="primary"
+                            appearance="outlined"
+                            size="sm"
+                            className="ds-navsheet__mega-action"
+                            onClick={onClose}
+                          >
+                            {col.action.label}
+                          </Button>
                         )}
                       </div>
                     ))}
@@ -416,6 +433,7 @@ export function NavSheet({
                           onClick={c.disabled ? undefined : onClose}
                         >
                           {c.label}
+                          {c.external && !c.disabled && <NewTabHint />}
                         </Tag>
                       </li>
                       );

@@ -90,6 +90,29 @@ export const OFFICE_HOLDERS: Record<string, Official[]> = {
       photo: "https://www.dosje.gov.in/wp-content/uploads/2025/11/Shri-Ramdas-Athawale.png",
       slug: "shri-ramdas-athawale",
     },
+    /*
+     * THE SECRETARY — the one place on this site the Secretary is named; every page that
+     * names the post reads `getDepartmentSecretary()` below.
+     *
+     * Verified 22 Sep 2026 against the live site:
+     *  - dosje.gov.in/about-us/ — "Shri Sudhansh Pant (IAS, RJ:1991) is the Secretary of
+     *    Department of Social Justice & Empowerment", and its Former Secretaries table closes
+     *    No. 27, Shri Amit Yadav, on 30.11.2025.
+     *  - dosje.gov.in/official/sudhansh-pant-ias/ — designation "Secretary", intercom 121,
+     *    011-26115006, secywel[at]nic[dot]in, Room No. 8201 (the register record of that slug).
+     * The live Who's Who does not show him, which is why the mirror above omitted him. That
+     * record publishes no photograph, so none is shown; the portrait is the designed
+     * placeholder. The name is written as the About Us sentence writes it.
+     */
+    {
+      name: "Shri Sudhansh Pant",
+      designation: "Secretary",
+      intercom: "121",
+      phone: "011-26115006",
+      email: "secywel@nic.in",
+      address: "Room No. 8201, 8th Floor, Zone-2, GPOA-3, Netaji Nagar, New Delhi-110023",
+      slug: "sudhansh-pant-ias",
+    },
   ],
   "national-commission-for-scheduled-castes": [
     {
@@ -328,6 +351,17 @@ export const OFFICE_HOLDERS: Record<string, Official[]> = {
 /** Senior post-holders of one body — what whos-who shows above its "View All" link. */
 export function getOfficeHolders(ownerId: string): Official[] {
   return OFFICE_HOLDERS[ownerId] ?? [];
+}
+
+/**
+ * The Secretary of the Department of Social Justice & Empowerment — the single source for
+ * every page that names the post. Throws at build time rather than let a page print a
+ * sentence with no name in it.
+ */
+export function getDepartmentSecretary(): Official {
+  const secretary = OFFICE_HOLDERS["ministry-leadership"]?.find((o) => o.designation === "Secretary");
+  if (!secretary) throw new Error("officials: no Secretary in ministry-leadership");
+  return secretary;
 }
 
 /** Bodies that publish office-holders, in registry order. */

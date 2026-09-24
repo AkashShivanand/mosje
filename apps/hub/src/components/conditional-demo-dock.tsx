@@ -3,6 +3,7 @@ import { usePathname } from "next/navigation";
 import { DemoDock, type AppEntry, type DemoDockTab } from "@mosje/design-system";
 import { DataModePanel } from "@/components/website/DataModePanel";
 import { hasDataModes } from "@/lib/data-mode/routes";
+import { WebsiteDesignPanel } from "@/components/website-design-panel";
 import { DemoFillPanel, schemeFromPath } from "@/components/e-anudaan/demo-fill-panel";
 import { DemoFormsPanel } from "@/components/e-anudaan/demo-forms-panel";
 import { formsForPath } from "@/lib/e-anudaan/demo-forms";
@@ -54,6 +55,10 @@ export function ConditionalDemoDock({
   // Errors: every catalogued request failure, on any E-Anudaan screen (error-catalogue.ts).
   if (pathname.startsWith("/portals/e-anudaan")) {
     tabs.push({ id: "errors", label: "Errors", content: <DemoErrorsPanel /> });
+  }
+  // The redesign and the archived classic design share every /website address.
+  if (pathname === "/website" || pathname.startsWith("/website/") || pathname.startsWith("/website-classic")) {
+    tabs.push({ id: "website-design", label: "Website", content: <WebsiteDesignPanel /> });
   }
   if (hasDataModes(pathname)) {
     tabs.push({ id: "data", label: "Data", content: <DataModePanel /> });

@@ -48,11 +48,16 @@ const Ctx = React.createContext<TranslationState | null>(null);
 
 const STORAGE_KEY = "mosje.lang";
 const cacheKey = (lang: string) => `mosje.translations.${lang}`;
+/** Matches MAX_STRINGS in app/api/bhashini/translate/route.ts. */
+const BATCH = 100;
 
 function readCache(lang: string): Record<string, string> {
   if (typeof window === "undefined") return {};
   try {
-    return JSON.parse(sessionStorage.getItem(cacheKey(lang)) ?? "{}") as Record<string, string>;
+    return JSON.parse(sessionStorage.getItem(cacheKey(lang)) ?? "{}") as Record<
+      string,
+      string
+    >;
   } catch {
     return {};
   }
@@ -66,7 +71,11 @@ function writeCache(lang: string, map: Record<string, string>): void {
   }
 }
 
-export function TranslationProvider({ children }: { children: React.ReactNode }): React.JSX.Element {
+export function TranslationProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}): React.JSX.Element {
   const [lang, setLangState] = React.useState(SOURCE_LANGUAGE);
   const [table, setTable] = React.useState<Record<string, string>>({});
   const [busy, setBusy] = React.useState(false);
@@ -76,7 +85,17 @@ export function TranslationProvider({ children }: { children: React.ReactNode })
   const seen = React.useRef<Set<string>>(new Set());
   /** Strings registered since the last flush. */
   const queue = React.useRef<Set<string>>(new Set());
-  const flushTimer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const flushTimer = React.useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
+  /**
+   * Strings already asked for in the current language, answered or not. Without
+   * it a refused or partial answer left every string unknown, the next render
+   * queued them all again, and the page sent the same request dozens of times a
+   * second — measured on the home page, 22 Sep 2026. Cleared when the language
+   * changes, so a reader who switches away and back gets a real second attempt.
+   */
+  const asked = React.useRef<Set<string>>(new Set());
 
   // `lang` and `dir` on <html> are not decoration: assistive technology picks its
   // voice from them (WCAG 3.1.1), and `dir` is what turns the interface around
@@ -87,38 +106,49 @@ export function TranslationProvider({ children }: { children: React.ReactNode })
     document.documentElement.dir = meta?.dir ?? "ltr";
   }, [lang]);
 
+  /** One request of at most BATCH strings. */
+  const send = React.useCallback(async (strings: string[], target: string) => {
+    setBusy(true);
+    try {
+      const res = await fetch("/api/bhashini/translate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ target, strings }),
+      });
+      if (!res.ok) return;
+      const json = (await res.json()) as {
+        translations?: Record<string, string>;
+        notice?: string;
+        target?: string;
+      };
+      // The reader may have switched again while this was in flight.
+      if (json.target !== target) return;
+      const next = json.translations ?? {};
+      setTable((prev) => {
+        const merged = { ...prev, ...next };
+        writeCache(target, merged);
+        return merged;
+      });
+      setNotice(json.notice ?? null);
+    } catch {
+      /* Offline. The English source is already on screen; leave it there. */
+    } finally {
+      setBusy(false);
+    }
+  }, []);
+
   const request = React.useCallback(
-    async (strings: string[], target: string) => {
-      if (strings.length === 0 || target === SOURCE_LANGUAGE) return;
-      setBusy(true);
-      try {
-        const res = await fetch("/api/bhashini/translate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ target, strings }),
-        });
-        if (!res.ok) return;
-        const json = (await res.json()) as {
-          translations?: Record<string, string>;
-          notice?: string;
-          target?: string;
-        };
-        // The reader may have switched again while this was in flight.
-        if (json.target !== target) return;
-        const next = json.translations ?? {};
-        setTable((prev) => {
-          const merged = { ...prev, ...next };
-          writeCache(target, merged);
-          return merged;
-        });
-        setNotice(json.notice ?? null);
-      } catch {
-        /* Offline. The English source is already on screen; leave it there. */
-      } finally {
-        setBusy(false);
-      }
+    async (all: string[], target: string) => {
+      if (all.length === 0 || target === SOURCE_LANGUAGE) return;
+      all.forEach((s) => asked.current.add(s));
+      // The route takes at most BATCH strings a request (a page is not a label);
+      // a page with more labels than that sends several requests, not one refused one.
+      const batches: string[][] = [];
+      for (let i = 0; i < all.length; i += BATCH)
+        batches.push(all.slice(i, i + BATCH));
+      await Promise.all(batches.map((strings) => send(strings, target)));
     },
-    [],
+    [send],
   );
 
   const flush = React.useCallback(() => {
@@ -134,8 +164,8 @@ export function TranslationProvider({ children }: { children: React.ReactNode })
       const hit = table[source];
       if (hit !== undefined) return hit;
 
-      // Unknown: register it and show the English meanwhile.
-      if (!queue.current.has(source)) {
+      // Unknown: register it (once per language) and show the English meanwhile.
+      if (!queue.current.has(source) && !asked.current.has(source)) {
         queue.current.add(source);
         if (flushTimer.current === undefined) {
           flushTimer.current = setTimeout(() => {
@@ -155,6 +185,7 @@ export function TranslationProvider({ children }: { children: React.ReactNode })
       window.localStorage.setItem(STORAGE_KEY, code);
       setNotice(null);
       setLangState(code);
+      asked.current.clear();
 
       if (code === SOURCE_LANGUAGE) {
         setTable({});
@@ -192,7 +223,14 @@ export function TranslationProvider({ children }: { children: React.ReactNode })
   }, [setLang]);
 
   const value = React.useMemo<TranslationState>(
-    () => ({ lang, dir: findLanguage(lang)?.dir ?? "ltr", busy, notice, setLang, t }),
+    () => ({
+      lang,
+      dir: findLanguage(lang)?.dir ?? "ltr",
+      busy,
+      notice,
+      setLang,
+      t,
+    }),
     [lang, busy, notice, setLang, t],
   );
 

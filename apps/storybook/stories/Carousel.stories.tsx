@@ -63,6 +63,7 @@ const meta = {
     autoPlay: { control: "boolean" },
     interval: { control: { type: "number", min: 2, max: 30 } },
     showDots: { control: "boolean" },
+    controls: { control: "inline-radio", options: ["below", "overlay"] },
     children: { control: false },
   },
   decorators: [
@@ -88,6 +89,27 @@ export const Playground: Story = {};
  */
 export const AutoRotating: Story = {
   args: { autoPlay: true, interval: 4 },
+};
+
+/**
+ * **`controls="overlay"` — a full-width banner.** The controls ride the slide's
+ * bottom-end corner in a solid pill, so a banner does not spend a row of the first
+ * screen on them and they stay attached to what they move. The pill is solid
+ * rather than a translucent scrim, so its contrast never depends on the photo.
+ * Use it for a banner of images; keep `below` for slides of text, where the
+ * pill would sit on the words.
+ */
+export const OverlayControls: Story = {
+  args: {
+    autoPlay: true,
+    controls: "overlay",
+    label: "Banners",
+    children: ["var(--sa-bg-brand-primary-boldest)", "var(--sa-bg-brand-primary-bolder)", "var(--sa-bg-neutral-inverse)"].map((c, i) => (
+      <div key={c} style={{ aspectRatio: "3 / 1", background: c, color: "white", display: "grid", placeItems: "center" }}>
+        Banner {i + 1} of 3
+      </div>
+    )),
+  },
 };
 
 /**
@@ -125,7 +147,11 @@ export const WithoutDots: Story = {
   args: { showDots: false },
 };
 
-/** A single slide. The controls still work and simply wrap onto themselves. */
+/**
+ * **A single slide renders as that slide — no controls, no carousel.** Arrows
+ * that move nowhere and a Pause for something that cannot move are three
+ * controls with nothing to do.
+ */
 export const OneSlide: Story = {
   args: {
     children: (
@@ -138,5 +164,32 @@ export const OneSlide: Story = {
         <p style={{ marginBottom: 0 }}>Institutions may apply until 31 October 2026.</p>
       </div>
     ),
+  },
+};
+
+/**
+ * **A long banner set on the overlay pill, rotating.** Past six slides the pill
+ * shows "3 / 9", and with no dot to fill, a hairline under the counter is the
+ * timer.
+ */
+export const OverlayLongSet: Story = {
+  args: {
+    autoPlay: true,
+    controls: "overlay",
+    label: "Banners",
+    children: Array.from({ length: 9 }, (_, i) => (
+      <div
+        key={i}
+        style={{
+          aspectRatio: "3 / 1",
+          background: i % 2 ? "var(--sa-bg-brand-primary-bolder)" : "var(--sa-bg-neutral-inverse)",
+          color: "var(--sa-text-neutral-inverse)",
+          display: "grid",
+          placeItems: "center",
+        }}
+      >
+        Banner {i + 1} of 9
+      </div>
+    )),
   },
 };

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { RecordLibrary } from "@/components/website/templates/RecordLibrary";
+import { RecordLibrary } from "@/components/website-next/templates/RecordLibrary";
 import { getContentSyncedDate, getDocumentsOfType } from "@/lib/website/content";
 import { socialCard } from "@/lib/seo/social";
 
@@ -13,6 +13,14 @@ export const metadata: Metadata = {
   ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/annual-reports" }),
 };
 
+/*
+ * The register files five NBCFDC "MGT-7" company returns under Annual Reports.
+ * An MGT-7 is the annual return a company files under the Companies Act, not
+ * an annual report; it stays listed, marked as what it is and separable by the
+ * Type filter.
+ */
+const kindOf = (r: { title: string }) => (/\bMGT-?7\b/i.test(r.title) ? "Annual Return (MGT-7)" : undefined);
+
 export default function Page() {
   return (
     <RecordLibrary
@@ -24,6 +32,11 @@ export default function Page() {
       detailBase="/website/documents"
       noun="reports"
       nounSingular="report"
+      /* The register's `year` is the upload year; the year a report covers is in its title. */
+      yearFromTitle
+      leadOrganisation="MoSJE"
+      kindOf={kindOf}
+      defaultKind="Annual Report"
     />
   );
 }

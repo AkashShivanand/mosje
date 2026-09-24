@@ -1,20 +1,30 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import NextLink from "next/link";
-import { Button, Icon, Link, SectionTitle, buttonClasses } from "@mosje/design-system";
-import { OrganisationHelplineBadge } from "@/components/website/OrganisationHelplineBadge";
-import { PageLayout } from "@/components/website/layout/PageLayout";
+import { Icon, SectionTitle, buttonClasses } from "@mosje/design-system";
 import {
   OrganisationDetail,
-  OrganisationContactBand,
-  hasOverlappingFactCard,
-} from "@/components/website/templates/OrganisationDetail";
+  OrganisationSubPage,
+} from "@/components/website-next/templates/OrganisationDetail";
+import {
+  abbreviationOf,
+  faqGroups,
+  firstSentence,
+  tidyTitle,
+} from "@/components/website-next/templates/organisation-content";
+import type { PageHeaderProps } from "@/components/website-next/layout/PageHeader";
+/*
+ * DATA-VIZ ONLY from the classic tree. These four are the feeds' own dashboards
+ * and maps (live-first, mirrored-snapshot fallback, provenance chips); rebuilding
+ * them is out of scope for the organisation template, so the new layout wraps
+ * them in its own section. No classic LAYOUT component is imported here.
+ */
 import { AdarshGramDashboard } from "@/components/website/AdarshGramDashboard";
 import { GiaDashboard } from "@/components/website/GiaDashboard";
 import { HostelDashboard } from "@/components/website/HostelDashboard";
 import { PmajayWorksMap } from "@/components/website/PmajayWorksMap";
-import { OrganisationAnnouncementBand } from "@/components/website/OrganisationAnnouncementBand";
-import { DeAddictionMap } from "@/components/website/nmba/DeAddictionMap";
+import "@/components/website/scheme-dashboard.css";
+import { CentreLocator } from "@/components/website-next/maps/CentreLocator";
 import { getAdarshGramCounts } from "@/lib/website/adarsh-gram-api";
 import {
   getGiaData,
@@ -22,17 +32,15 @@ import {
   getHostelData,
   getPmajayReach,
 } from "@/lib/website/pmajay-api";
-import "@/components/website/scheme-dashboard.css";
 import {
   getOrganisationDetail,
   ORGANISATION_DETAILS,
 } from "@/content/website/organisation-details";
-import { trimRedundantOpening } from "@/lib/website/organisation-prose";
+import { getOrganisation as getRegistryOrganisation } from "@/data/website/organisations";
 import {
   getOrganisations,
   getOrganisation,
   getDocuments,
-  withAssetBasePath,
   getContentSyncedDate,
 } from "@/lib/website/content";
 import { socialCard } from "@/lib/seo/social";
@@ -177,10 +185,6 @@ const GLANCE: Record<string, GlanceFact[]> = {
 };
 
 
-function slugify(text: string) {
-  return text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-}
-
 export function generateStaticParams() {
   return getOrganisations().map((o) => ({ slug: o.slug.split("/") })).slice(0, 0); // rendered on first visit, not at build — free-tier budget, see documents/[slug]/page.tsx
 }
@@ -192,13 +196,13 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const key = slug.join("/");
-  const org = getOrganisation(key);
-  if (!org) return { title: "Organisation — DoSJE" };
+  const found = getOrganisation(key);
+  if (!found) return { title: "Organisation | Department of Social Justice & Empowerment" };
+  const org = withTitleFix(found);
   const firstText = org.sections.find((s) => s.html)?.html.replace(/<[^>]+>/g, "").slice(0, 160);
-  const title = `${org.title} — DoSJE`;
-  // The organisation's own banner where it has one. This is the one family of
-  // pages where a page-specific picture beats the estate card: a link to NCSK
-  // should show NCSK, not the ministry lockup.
+  const title = `${tidyTitle(org.title)} | Department of Social Justice & Empowerment`;
+  // The organisation's own banner where it has one: a link to NCSK should show
+  // NCSK, not the ministry lockup.
   const banner = getOrganisationDetail(key)?.featuredImage;
   return {
     title,
@@ -212,6 +216,29 @@ export async function generateMetadata({
   };
 }
 
+/*
+ * Page titles the ingest captured wrongly, corrected to the organisation's own
+ * name for the page. Only where the source is unambiguous:
+ *   volunteer-corner — ingested as "Corner"; the page's own heading on
+ *     dosje.gov.in is "Volunteer Corner", as is the NMBA menu entry.
+ *   pmu-corners — ingested as "PMU Corner’s" (a stray apostrophe); the NMBA
+ *     menu entry is "PMU Corner".
+ */
+const TITLE_FIX: Record<string, string> = {
+  "nasha-mukt-bharat-abhiyaan/volunteer-corner": "Volunteer Corner",
+  "nasha-mukt-bharat-abhiyaan/pmu-corners": "PMU Corner",
+};
+const withTitleFix = <T extends { slug: string; title: string }>(r: T): T =>
+  TITLE_FIX[r.slug] ? { ...r, title: TITLE_FIX[r.slug]! } : r;
+
+/** The registry's grouping, in the words the home page uses for it. */
+const CATEGORY_LABEL = {
+  commissions: "Commissions",
+  corporations: "Finance and Development Corporations",
+  foundations: "Foundations and Autonomous Bodies",
+  schemes: "Scheme Portals",
+} as const;
+
 export default async function OrganisationDetailPage({
   params,
 }: {
@@ -219,469 +246,195 @@ export default async function OrganisationDetailPage({
 }) {
   const { slug } = await params;
   const key = slug.join("/");
-  const org = getOrganisation(key);
-  if (!org) notFound();
+  const found = getOrganisation(key);
+  if (!found) notFound();
+  const org = withTitleFix(found);
 
   const rootSlug = slug[0] ?? "";
-  const allOrgs = getOrganisations();
+  const allOrgs = getOrganisations().map(withTitleFix);
   const rootOrg = allOrgs.find((o) => o.slug === rootSlug);
   const relatedPages = allOrgs.filter((o) => o.slug === rootSlug || o.slug.startsWith(`${rootSlug}/`));
   const detail = getOrganisationDetail(key);
-  /** Exact-slug record only — see the sub-page empty state below. */
+  /** Exact-slug record only — never the root's, or a child would inherit its parent's text. */
   const authored = ORGANISATION_DETAILS[key];
-  /**
-   * Is this child page the organisation's contact page? Matched on the last
-   * segment, which the source spells both `contact` and `contact-us`.
-   */
-  const isContactPage = /^contact(-us)?$/.test(slug[slug.length - 1] ?? "");
+  const registry = getRegistryOrganisation(rootSlug);
   const isSubPage = slug.length > 1;
+  /** The source spells a contact page both `contact` and `contact-us`. */
+  const isContactPage = /^contact(-us)?$/.test(slug[slug.length - 1] ?? "");
 
-  const adarshGram = key === ADARSH_GRAM_SLUG ? await getAdarshGramCounts() : null;
-  const gia = key === GIA_SLUG ? await getGiaData() : null;
-  const giaGender = gia
-    ? await getGiaGender(
-        gia.years.reduce((t, y) => t + (y.approvals.total ?? y.mock.totalApproved), 0),
-      )
-    : null;
-  const hostel = key === HOSTEL_SLUG ? await getHostelData() : null;
-
-  /*
-   * The reach map, on PM-AJAY's own page and nowhere else.
-   *
-   * Gated on the exact slug rather than on "has a detail record", because the
-   * feed behind it publishes PM-AJAY's villages and hostels — there is nothing
-   * in it for the other 177 organisations, and fetching 3.5 MB on their pages to
-   * discover that would be a cost paid 177 times for no result.
-   */
-  const reach = key === PMAJAY ? await getPmajayReach() : null;
-
-  /*
-   * NMBA'S GEO-TAGGED FACILITIES, on its own page and nowhere else.
-   *
-   * The source page draws an India map of every Ministry-supported centre with
-   * a six-way colour key beside it. The ingest captured the key and the 768
-   * total as prose and, having no way to capture a map, left the key standing
-   * alone — a legend for a picture that was not there.
-   *
-   * The map itself already existed: `DeAddictionMap`, 487 geo-tagged centres
-   * from the Abhiyaan's own endpoint, shipping on the site home and at
-   * /website/de-addiction-centres. This is that component finally appearing on
-   * the page the source puts it on, not a second one built to match.
-   *
-   * The two ingested husks are suppressed by `hideIngestedSections` on the NMBA
-   * record, so the heading and the key appear once, here.
-   */
-  const isNmba = key === NMBA;
-
-  /*
-   * The other two components, for the "Other PM-AJAY components" card.
-   *
-   * MATCHED BY SLUG, NOT BY PATH SHAPE. This used to test
-   * `slug.includes("/components/")`, which was true only while the three pages
-   * lived under an invented `/components/` segment. Moving them onto the source
-   * site's own flat paths silently emptied this list and the card disappeared
-   * from all three pages — no error, no failing check, just a missing card.
-   *
-   * These three slugs are already declared above because the dashboards key off
-   * them, so matching against that set costs nothing and cannot rot when a URL
-   * changes again.
-   */
-  const COMPONENT_SLUGS = new Set([ADARSH_GRAM_SLUG, GIA_SLUG, HOSTEL_SLUG]);
-  const siblingComponents = COMPONENT_SLUGS.has(key)
-    ? relatedPages.filter((p) => p.slug !== key && COMPONENT_SLUGS.has(p.slug))
-    : [];
-  const glance = GLANCE[key];
-
+  const rootTitle = tidyTitle(rootOrg?.title ?? org.title);
+  const abbr = registry?.abbr ?? abbreviationOf(rootTitle);
   const orgHref = (s: string) => `/website/organisation/${s}`;
 
-  const chrome = {
-    // This route KNOWS which header level it is rendering, so it says rather
-    // than letting PageHero guess from whether an image happens to exist.
-    level: (isSubPage ? "inner" : "landing") as "inner" | "landing",
-    // Only a sub-page has somewhere to go back TO.
-    backHref: isSubPage ? orgHref(rootSlug) : undefined,
-    /*
-     * The template draws a fact card that straddles the band's lower edge —
-     * asked of the template rather than re-derived here, because the card is
-     * not always the curated `facts` (see `impact.placement`) and a route that
-     * guesses wrong takes the band's 64px of reserved padding away from a card
-     * that is still there.
-     */
-    hasOverlappingFacts: hasOverlappingFactCard(detail),
-    /*
-     * The helpline, beside the mark, once the campaign band is dismissed —
-     * rendered here rather than inside the band because it has to OUTLIVE it.
-     * Only where the record actually publishes one; an organisation with no
-     * helpline gets nothing, not an empty slot.
-     */
-    logoAside: detail?.joinBanner?.helplineNumber ? (
-      <OrganisationHelplineBadge
-        label={detail.joinBanner.helplineLabel}
-        number={detail.joinBanner.helplineNumber}
-      />
-    ) : undefined,
-    title: org.title,
-    badge: isSubPage ? (rootOrg?.title ?? "Associated Organisation") : "Associated Organisation",
-    // "Associated Organisations" carries NO href. It used to point at /website —
-    // the site home, which is exactly where the "Home" crumb beside it already
-    // goes, so the trail read Home › Home › … A crumb that lies about its
-    // destination is worse than one that does not offer to travel. There is no
-    // listing page to point it at either: the header entry of that name is a
-    // mega-menu (`href: "#"`), not a route. Label-only is the honest form, and
-    // PageLayout already renders crumbs without an href.
-    breadcrumb: isSubPage
-      ? [
-          { label: "Associated Organisations" },
-          { label: rootOrg?.title ?? "Organisation", href: orgHref(rootSlug) },
-          { label: org.title },
-        ]
-      : [
-          { label: "Associated Organisations" },
-          { label: org.title },
-        ],
-    lastUpdated: getContentSyncedDate(),
-    // The campaign call to action the source prints above the page title —
-    // under the breadcrumb, which stays the first thing on every page.
-    /*
-     * ONE BAND, ABOVE THE HERO, CARRYING BOTH ANNOUNCEMENTS.
-     *
-     * It was two stacked bands until 9 September — a permanent campaign in green
-     * and a temporary observance in saffron — costing 154px of a 760px fold
-     * before the page had said what it was, with two grounds and two dismisses
-     * 50px apart. `OrganisationAnnouncementBand` is the option chosen from
-     * `nmba/top-bands`: one band that turns, 150px, with the temporary
-     * announcement leading because it is the one a reader can still miss.
-     *
-     * ABOVE the hero, and that placement is a measurement rather than a
-     * preference. The observance shipped between the fact strip and the page's
-     * data, which is where the 7 September review asked for it — "between the
-     * blue section and the data section" — and two commit messages then claimed
-     * it was high on the page. It was not. Measured at four real viewports on 8
-     * September it was BELOW THE FOLD on every one: 1440x760, 1512x820, 1920x955
-     * and a 390x664 phone. A time-limited call to action nobody scrolls to is
-     * worse than none, because it costs the page height and returns nothing.
-     */
-    afterBreadcrumb:
-      !isSubPage && (detail?.joinBanner != null || detail?.eventRibbon != null) ? (
-        <OrganisationAnnouncementBand
-          banner={detail?.joinBanner}
-          ribbon={detail?.eventRibbon}
-        />
-      ) : undefined,
-    logoSrc: detail?.logo ?? (rootOrg as { logo?: string })?.logo ?? "/website/images/National-Emblem-logo.svg",
-    featuredImage: detail?.featuredImage ?? org.featuredImage ?? rootOrg?.featuredImage,
-    // The carousel variant of the landing header, where the record supplies
-    // photographs. Root page only — a child page has no hero of its own.
-    heroSlides: !isSubPage ? detail?.heroSlides : undefined,
-    heroSlidesLabel: !isSubPage && detail?.heroSlides ? `${org.title} photographs` : undefined,
-    description:
-      (org as { description?: string }).description ??
-      detail?.lead,
-    /*
-     * THE HERO'S QUICK ACTIONS ARE DESIGN-SYSTEM BUTTONS, and until 8 Sep 2026
-     * they were 90 characters of hand-written Tailwind pretending to be one.
-     *
-     * The old class list reached past the token system in four separate ways:
-     * `bg-amber-400` / `hover:bg-amber-300` / `text-slate-900` are Tailwind's
-     * own palette rather than the estate's ramps; `text-[var(--sa-color-
-     * primaryScale-600)]` reached a colour through an arbitrary value; and
-     * `rounded-lg`, `shadow-sm` and `shadow-md` are Tailwind's radius and
-     * elevation scales, not the DS ones. None of it was caught by a gate,
-     * because `check:ds-linkage` reads raw values and these were class names.
-     *
-     * `buttonClasses` gained a `tone` parameter on 3 September for exactly this
-     * case — its own note says the helper "could express three of the
-     * component's four axes, so a next/link styled as a button on a navy header
-     * had no way to ask for the inverse treatment and consumers hand-wrote the
-     * class." This was one of those consumers. `tone="inverse"` is what the band
-     * needs; the DS then owns the fill, the ink, the radius, the elevation, the
-     * hover, the press and the focus ring.
-     */
-    actions: detail?.quickActions && detail.quickActions.length > 0 ? (
-      <div className="flex flex-wrap gap-2.5 items-center mt-2">
-        {detail.quickActions.map((qa) => {
-          const isExternal = qa.external || qa.href.startsWith("http");
-          /*
-           * `primary` is the filled invitation, `danger` the one that must not
-           * be missed, and everything else the quiet companion. Mapped here
-           * rather than stored in the record, because the record describes what
-           * an action IS and the template decides how a button looks.
-           */
-          const appearance = qa.variant === "primary" || qa.variant === "danger" ? "filled" : "outlined";
-          const variant = qa.variant === "danger" ? "danger" : "primary";
-          return (
-            <a
-              key={qa.href}
-              href={qa.href}
-              target={isExternal ? "_blank" : undefined}
-              rel={isExternal ? "noreferrer" : undefined}
-              /*
-                * `md`, because the handoff's instances are Size=Default, which
-                * is 40px — `sm` is its Small (32) and was a guess. Read off the
-                * component properties on 51586:22056/22061/22066 rather than
-                * measured off a screenshot.
-                */
-              className={buttonClasses(variant, appearance, "md", undefined, "inverse")}
-            >
-              {qa.icon && <Icon name={qa.icon} size={16} />}
-              <span>{qa.label}</span>
-              {isExternal ? (
+  /*
+   * THE OFFICIAL WEBSITE IS NOT `org.website`. The ingest filled that field with
+   * whatever the source page linked first — a Minister's profile on eight pages,
+   * a circulars listing on two, a Telangana agriculture site on one — and the
+   * classic header offered it as "Visit Official Portal". Only the registry's
+   * `externalUrl` and a record's own "Official … Portal" link are trusted.
+   */
+  const officialSite =
+    registry?.externalUrl ??
+    detail?.nav
+      ?.flatMap((g) => g.items)
+      .find((i) => /official/i.test(i.label) && /^https?:\/\//.test(i.href))?.href;
+
+  /* The header's one primary action, and at most one quiet companion. */
+  const primaryTask = detail?.quickActions?.find((q) => q.variant === "primary");
+  const helpline = detail?.joinBanner;
+  const actionLinks: { label: string; href: string; primary: boolean; icon?: string; srLabel?: string }[] = [];
+  if (!isSubPage) {
+    if (primaryTask) actionLinks.push({ label: primaryTask.label, href: primaryTask.href, primary: true, icon: primaryTask.icon });
+    else if (officialSite) actionLinks.push({ label: "Visit Official Website", href: officialSite, primary: true });
+    if (helpline?.helplineNumber) {
+      actionLinks.push({
+        label: `Call ${helpline.helplineNumber}`,
+        href: `tel:${helpline.helplineNumber.replace(/[^+\d]/g, "")}`,
+        primary: false,
+        icon: "call",
+        srLabel: `${helpline.helplineLabel}: call ${helpline.helplineNumber}`,
+      });
+    } else if (primaryTask && officialSite) {
+      actionLinks.push({ label: "Visit Official Website", href: officialSite, primary: false });
+    }
+  }
+  const actions =
+    actionLinks.length > 0 ? (
+      <>
+        {actionLinks.map((a) => {
+          const ext = /^https?:\/\//.test(a.href);
+          const cls = buttonClasses("primary", a.primary ? "filled" : "outlined", "md");
+          const inner = (
+            <>
+              {a.icon && <Icon name={a.icon} size={20} aria-hidden />}
+              <span aria-hidden={a.srLabel ? true : undefined}>{a.label}</span>
+              {a.srLabel && <span className="sr-only">{a.srLabel}</span>}
+              {ext && (
                 <>
                   <Icon name="open_in_new" size={16} aria-hidden />
-                  {/*
-                    * THE GLYPH IS NOT THE WARNING. `open_in_new` is decorative
-                    * to anyone who cannot see it, so these were the only links
-                    * on the page that left for another site without saying so
-                    * (WCAG G201).
-                    */}
-                  <span className="sr-only"> (opens in a new tab)</span>
+                  <span className="sr-only"> (opens in a new window)</span>
                 </>
-              ) : (
-                <Icon name="arrow_forward" size={16} aria-hidden />
               )}
+            </>
+          );
+          return ext || a.href.startsWith("tel:") ? (
+            <a key={a.href} href={a.href} className={cls} target={ext ? "_blank" : undefined} rel={ext ? "noopener noreferrer" : undefined}>
+              {inner}
             </a>
+          ) : (
+            <NextLink key={a.href} href={a.href} className={cls}>
+              {inner}
+            </NextLink>
           );
         })}
-      </div>
-    ) : (org.website ?? rootOrg?.website) ? (
-      <Button linkAs={NextLink}
-        href={org.website ?? rootOrg?.website}
-        external
-        variant="primary"
-        appearance="filled"
-        size="sm"
-        className="text-label-2 px-4 py-2"
-      >
-        Visit Official Portal
-      </Button>
-    ) : undefined,
+      </>
+    ) : undefined;
+
+  /* One line on what the body is: the record's own lead, else the source's intro. */
+  const intro = rootOrg?.sections.find((s) => s.html.replace(/<[^>]+>/g, "").trim().length > 40)?.html
+    .replace(/<h4[\s\S]*$/i, "");
+
+  const header: PageHeaderProps = {
+    title: isSubPage ? tidyTitle(org.title) : rootTitle,
+    // Label-only first crumb: the header menu entry of that name is a menu, not a page.
+    breadcrumb: isSubPage
+      ? [{ label: "Organisations" }, { label: rootTitle, href: orgHref(rootSlug) }, { label: tidyTitle(org.title) }]
+      : [{ label: "Organisations" }, { label: rootTitle }],
+    badge: isSubPage ? abbr ?? rootTitle : registry ? CATEGORY_LABEL[registry.category] : undefined,
+    description: isSubPage ? undefined : firstSentence(detail?.lead ?? intro),
+    lastUpdated: getContentSyncedDate(),
+    /*
+     * The organisation's own mark, never the National Emblem standing in for a
+     * missing one: the Emblem is the Government's, not the organisation's. With
+     * no mark, a neutral tile carries the abbreviation, or an icon where the
+     * record has none (E-Anudaan, List of Channelizing Agencies, Ministry and
+     * Scheme wise Financial Summary, Success Stories at the time of writing).
+     */
+    logoSrc: detail?.logo ?? registry?.logoSrc,
+    logoAside:
+      detail?.logo ?? registry?.logoSrc ? undefined : (
+        <span className="og-mark" aria-hidden="true">
+          {abbr && abbr.length <= 8 ? abbr : <Icon name="account_balance" size={32} />}
+        </span>
+      ),
+    level: isSubPage ? "inner" : "landing",
+    /*
+     * No banner photograph. LAY-14 asks for a COMPACT header, and the banners the
+     * records carry are generic stock scenes (NCSC's is a classroom), not the
+     * organisation's own. The images stay on the records for social cards.
+     */
+    actions,
   };
 
-  /*
-   * THE PM-AJAY COMPONENT PAGES KEEP THEIR OWN 2-COLUMN DASHBOARD LAYOUT (Figma 51858:48299).
-   */
-  if (glance) {
-    return (
-      <PageLayout {...chrome}>
-        <section className="py-10 md:py-14 bg-surface-muted/30">
-          <div className="sa-container flex flex-col gap-6 lg:flex-row lg:items-start">
-            <article className="gov-prose sd-article min-w-0 lg:flex-1">
-              {org.sections.map((s, i) => (
-                <section key={s.heading ?? i} className="mb-8">
-                  {s.heading && slugify(s.heading) !== slugify(org.title) && (
-                    <h2 id={slugify(s.heading)} className="text-headline-2 text-primary-dark pb-2 mb-6 scroll-mt-28">
-                      {s.heading}
-                    </h2>
-                  )}
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: withAssetBasePath(trimRedundantOpening(s.html)),
-                    }}
-                    className="text-body-1 text-ink"
-                  />
-                </section>
-              ))}
-            </article>
-
-            <div className="sd-aside">
-              <aside className="sd-aside__card sd-aside__card--facts" aria-labelledby="sd-aside-title">
-                <h2 id="sd-aside-title" className="sd-aside__title">
-                  At a glance
-                </h2>
-                <dl className="sd-aside__list">
-                  {glance.map((f) => (
-                    <div key={f.term} className="sd-aside__row">
-                      <dt>{f.term}</dt>
-                      <dd>{f.detail}</dd>
-                    </div>
-                  ))}
-                </dl>
-              </aside>
-
-              {siblingComponents.length > 0 && (
-                <nav className="sd-aside__card sd-aside__card--nav" aria-labelledby="sd-aside-more">
-                  <h2 id="sd-aside-more" className="sd-aside__subtitle">
-                    Other PM-AJAY components
-                  </h2>
-                  <ul className="sd-aside__links">
-                    {siblingComponents.map((c) => (
-                      <li key={c.slug}>
-                        <NextLink href={`/website/organisation/${c.slug}`} className="sd-aside__link">
-                          <span className="sd-aside__link-text">{c.title}</span>
-                          <span className="sd-aside__link-arrow" aria-hidden>
-                            <Icon name="arrow_forward" size={16} />
-                          </span>
-                        </NextLink>
-                      </li>
-                    ))}
-                  </ul>
-                </nav>
-              )}
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-white py-12 md:py-14">
-          <div className="sa-container">
-            {adarshGram && <AdarshGramDashboard feed={adarshGram} />}
-            {gia && giaGender && <GiaDashboard data={gia} gender={giaGender} />}
-            {hostel && <HostelDashboard data={hostel} />}
-          </div>
-        </section>
-      </PageLayout>
-    );
-  }
-
-  /*
-   * CANONICAL SUBPAGE LAYOUT (Figma node 3751:7943).
-   *
-   * Renders the complete, authentic scraped content for the subpage in full-width
-   * structured container sections without synthetic fabrication or artificial 2-column squeezing.
-   */
   if (isSubPage) {
+    const glance = GLANCE[key];
+    const COMPONENT_SLUGS = new Set([ADARSH_GRAM_SLUG, GIA_SLUG, HOSTEL_SLUG]);
+    const siblings = COMPONENT_SLUGS.has(key) ? relatedPages.filter((p) => p.slug !== key && COMPONENT_SLUGS.has(p.slug)) : [];
+    const adarshGram = key === ADARSH_GRAM_SLUG ? await getAdarshGramCounts() : null;
+    const gia = key === GIA_SLUG ? await getGiaData() : null;
+    const giaGender = gia
+      ? await getGiaGender(gia.years.reduce((t, y) => t + (y.approvals.total ?? y.mock.totalApproved), 0))
+      : null;
+    const hostel = key === HOSTEL_SLUG ? await getHostelData() : null;
+    const dashboard =
+      adarshGram ? <AdarshGramDashboard feed={adarshGram} />
+      : gia && giaGender ? <GiaDashboard data={gia} gender={giaGender} />
+      : hostel ? <HostelDashboard data={hostel} />
+      : undefined;
     return (
-      <PageLayout {...chrome}>
-        <section className="py-10 md:py-14 bg-surface-muted/30">
-          <div className="sa-container max-w-7xl mx-auto">
-            {org.sections.length === 0 && authored?.aboutHtml != null ? (
-              /*
-               * THE SCRAPE RETURNED NOTHING, BUT THE SOURCE PUBLISHES SOMETHING.
-               *
-               * Two NMBA child pages — Contact Us and the PMU Corner — came back
-               * with zero sections while the source page carried an address, two
-               * named officers and eleven PMU officers with their allocated
-               * States. They rendered the "being prepared" notice below, which
-               * told a reader the Department had not written the page when in
-               * fact the Department had.
-               *
-               * `authored` is an EXACT lookup, never the root-record fallback:
-               * without that, an empty child page of any organisation would
-               * inherit its parent's About text and publish it as the child's
-               * own content.
-               */
-              <div className="bg-white p-6 md:p-10 rounded-2xl shadow-sm border border-neutral-subtle">
-                {authored.aboutHeading != null && (
-                  <h2
-                    id={slugify(authored.aboutHeading)}
-                    className="text-headline-2 text-primary-dark pb-3 mb-6 border-b border-neutral-subtle scroll-mt-28"
-                  >
-                    {authored.aboutHeading}
-                  </h2>
-                )}
-                <div
-                  dangerouslySetInnerHTML={{ __html: authored.aboutHtml }}
-                  className="gov-prose text-ink max-w-none"
-                />
-              </div>
-            ) : org.sections.length === 0 && isContactPage && detail?.contact != null ? (
-              /*
-               * A CONTACT PAGE WHOSE DETAILS THE ESTATE ALREADY HOLDS.
-               *
-               * Twenty child pages came back from the ingest empty and rendered
-               * the notice below — telling a reader the Department had not
-               * written the page. Eighteen of them are contact pages, and for
-               * four the parent organisation's record already carries the
-               * address, the telephone, the hours and the officers: NCBC, NCSK,
-               * NCSC and NISD. The information was on the estate, one page away,
-               * behind a notice saying it did not exist.
-               *
-               * It renders through `OrganisationContactBand`, the same component
-               * the parent page's contact band uses, so the two cannot drift.
-               *
-               * Gated on the page ACTUALLY BEING a contact page — matched on the
-               * slug's last segment — because `detail` falls back to the root
-               * record for every child, and without the gate an empty "Creamy
-               * Layer" or "Training Calendars" page would publish the
-               * organisation's switchboard as its content.
-               */
-              <div className="bg-white p-6 md:p-10 rounded-2xl shadow-sm border border-neutral-subtle">
-                <OrganisationContactBand contact={detail.contact} orgSlug={rootSlug} />
-              </div>
-            ) : org.sections.length === 0 ? (
-              <div className="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-neutral-subtle">
-                <p className="orgd__empty">
-                  This page is being prepared. In the meantime the source page is available on{" "}
-                  <Link href={org.sourceUrl} external>
-                    dosje.gov.in
-                  </Link>
-                  .
-                </p>
-              </div>
-            ) : (
-              <div className="flex flex-col gap-8">
-                {org.sections.map((s, i) => (
-                  <section
-                    key={s.heading ?? i}
-                    className="bg-white p-6 md:p-10 rounded-2xl shadow-sm border border-neutral-subtle"
-                  >
-                    {s.heading && slugify(s.heading) !== slugify(org.title) && (
-                      <h2
-                        id={slugify(s.heading)}
-                        className="text-headline-2 text-primary-dark pb-3 mb-6 border-b border-neutral-subtle scroll-mt-28"
-                      >
-                        {s.heading}
-                      </h2>
-                    )}
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: withAssetBasePath(trimRedundantOpening(s.html)),
-                      }}
-                      className="gov-prose text-ink max-w-none"
-                    />
-                  </section>
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
-      </PageLayout>
+      <OrganisationSubPage
+        header={header}
+        org={org}
+        rootOrg={rootOrg}
+        detail={detail}
+        authored={authored}
+        relatedPages={relatedPages}
+        abbr={abbr}
+        directoryHref={registry?.directoryHref}
+        glance={glance}
+        siblings={siblings}
+        dashboard={dashboard}
+        isContactPage={isContactPage}
+        faqs={faqGroups(org.sections)}
+      />
     );
   }
 
-  return (
-    <PageLayout {...chrome}>
-      <OrganisationDetail
-        org={org}
-        detail={detail}
-        relatedPages={relatedPages}
-        documents={getDocuments()}
-        reachSlot={
-          reach ? (
-            <PmajayWorksMap data={reach} />
-          ) : isNmba ? (
+  /*
+   * One organisation's own map, on its own page and nowhere else: the feeds
+   * behind them publish PM-AJAY's villages and hostels and NMBA's centres, and
+   * fetching them for the other organisations would be a cost with no result.
+   */
+  const reach = key === PMAJAY ? await getPmajayReach() : null;
+  const coverage = reach
+    ? { title: "Scheme Coverage", body: <PmajayWorksMap data={reach} /> }
+    : key === NMBA
+      ? {
+          title: "De-Addiction Facilities",
+          body: (
             <>
               <SectionTitle
                 as={2}
-                title="Geo-Tagged De-addiction Facilities"
-                description={
-                  /*
-                   * NO COUNTS HERE, AND THAT IS THE FIX.
-                   *
-                   * This line used to reconcile two of the three figures —
-                   * "Of the 768 centres the Ministry publishes, the 487 with
-                   * recorded coordinates are plotted here" — which was written
-                   * to settle a disagreement between the heading and the map's
-                   * key. It settled that one and created another: the map's own
-                   * footer derives the count of what it ACTUALLY drew and reads
-                   * "482 centres plotted, of 487 geo-tagged and 768 published
-                   * nationwide", so the page carried "487 are plotted here" six
-                   * hundred pixels above "482 centres plotted".
-                   *
-                   * `data-state-completeness.md` §2 asks for one expression, not
-                   * two agreeing ones — and only one of these two can be
-                   * derived, because the plotted count is not known until the
-                   * register arrives. So the footer is the single answer and the
-                   * heading says what the section IS.
-                   */
-                  "Ministry-supported de-addiction and rehabilitation centres, at the locations recorded in the Abhiyaan\u2019s register."
-                }
-                headingId="deaddiction-map-heading"
+                title="Geo-Tagged De-Addiction Facilities"
+                description="Ministry-supported de-addiction and rehabilitation centres, at the locations recorded in the Abhiyaan’s register."
+                headingId="coverage-title"
               />
-              <DeAddictionMap compact />
+              <CentreLocator />
             </>
-          ) : null
+          ),
         }
-      />
-    </PageLayout>
+      : undefined;
+
+  return (
+    <OrganisationDetail
+      header={header}
+      org={org}
+      detail={detail}
+      relatedPages={relatedPages}
+      documents={getDocuments()}
+      abbr={abbr}
+      directoryHref={registry?.directoryHref}
+      coverage={coverage}
+    />
   );
 }
