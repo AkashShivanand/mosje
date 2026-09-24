@@ -83,7 +83,17 @@ const fmt = new Intl.NumberFormat("en-IN");
 /** Pins stop being individual keyboard stops once there are too many to be worth landing on. */
 const INDIVIDUAL_PIN_LIMIT = 40;
 
-const centreKey = (c: DeAddictionCentre) => `${c.name}|${c.lat}|${c.lng}|${c.district}`;
+/**
+ * What makes one centre different from another, and the name and the point are
+ * not enough. Eight pairs in the register share both: "Sankalp Sanskritik
+ * Samiti" in Raipur is an IRCA on a building's ground floor and an SLCA on its
+ * first, at one set of coordinates. Keyed on name and point alone they were one
+ * key for two centres — two map pins carrying one id, which React reports as a
+ * duplicate key and may answer by dropping one of them. The type and the
+ * address are what tell them apart, so they are in the key.
+ */
+const centreKey = (c: DeAddictionCentre) =>
+  `${c.type}|${c.name}|${c.address}|${c.lat}|${c.lng}|${c.district}`;
 
 function distanceKm(a: [number, number], b: [number, number]) {
   const R = 6371;
