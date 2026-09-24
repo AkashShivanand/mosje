@@ -6,9 +6,9 @@
 
 /** The live home page's statistics strip (DBIM home-page component). */
 export const GLANCE = [
-  { icon: "payments", label: "Cumulative Disbursement", value: "₹67,977 Crore", note: "Scholarships for Scheduled Castes" },
-  { icon: "groups", label: "Beneficiary Coverage", value: "19.82 Crore", note: "Cumulative across all schemes" },
-  { icon: "account_balance", label: "Release of Funds, FY 2025–26", value: "₹8,731 Crore", note: "Provisional, 14.3% above the previous year" },
+  { icon: "payments", label: "Cumulative Disbursement", value: "₹67,977", unit: "Crore", note: "Scholarships for Scheduled Castes" },
+  { icon: "groups", label: "Beneficiary Coverage", value: "19.82", unit: "Crore", note: "Cumulative across all schemes" },
+  { icon: "account_balance", label: "Release of Funds, FY 2025–26", value: "₹8,731", unit: "Crore", note: "Provisional, 14.3% above the previous year" },
 ] as const;
 
 /**

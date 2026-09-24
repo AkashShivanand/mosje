@@ -6466,6 +6466,12 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "action",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The control that follows the figures — \"View Dashboard\", almost always a link styled as a button. `\"bar\"` only: the other two shapes are a row of facts with nothing after them, and a cell holding a button would have to borrow a fact's width."
+      },
+      {
         "name": "overlap",
         "type": "boolean",
         "required": false,
@@ -6474,10 +6480,10 @@ export const GENERATED_PROPS = {
       },
       {
         "name": "variant",
-        "type": "\"compact\" | \"extended\"",
+        "type": "\"compact\" | \"extended\" | \"bar\"",
         "required": false,
         "default": "`items.length > 5 ? \"extended\" : \"compact\"`",
-        "description": "WHICH SHAPE THE STRIP TAKES. Derived from the item count unless you say. `\"compact\"` — the treatment the handoff draws: as many 200px cells as the width allows, on one row, each one a centred stack of mark over value over label. Right for the three or four standing facts under a page hero. `\"extended\"` — for a set too long to sit on one row. The cells go to a fixed, balanced column count and wrap; each one turns on its side, with the mark in a chip of its own and the value and label flush beside it; and the value steps up from `headline-5` to `headline-2` so it reads as a figure rather than as a line of text that happens to be numeric. THE DEFAULT IS THE COUNT, and the threshold is arithmetic rather than taste. `minmax(200px, 1fr)` fits at most FIVE tracks in the widest content column this estate has (1120px of grid inside the card), so six is the first count that cannot be one row. At six the compact shape stops being a strip and becomes a grid of identical tiles, which is a shape the eye has to enter once per tile. Pass it only to override that — a six-item strip that must stay compact, or a four-item one that must read as figures."
+        "description": "WHICH SHAPE THE STRIP TAKES. Derived from the item count unless you say. `\"compact\"` — the treatment the handoff draws: as many 200px cells as the width allows, on one row, each one a centred stack of mark over value over label. Right for the three or four standing facts under a page hero. `\"extended\"` — for a set too long to sit on one row. The cells go to a fixed, balanced column count and wrap; each one turns on its side, with the mark in a chip of its own and the value and label flush beside it; and the value steps up from `headline-5` to `headline-2` so it reads as a figure rather than as a line of text that happens to be numeric. THE DEFAULT IS THE COUNT, and the threshold is arithmetic rather than taste. `minmax(200px, 1fr)` fits at most FIVE tracks in the widest content column this estate has (1120px of grid inside the card), so six is the first count that cannot be one row. At six the compact shape stops being a strip and becomes a grid of identical tiles, which is a shape the eye has to enter once per tile. Pass it only to override that — a six-item strip that must stay compact, or a four-item one that must read as figures. `\"bar\"` — the brand-blue band the website home page carries under its scheme portals: no marks, the caption above the figure, hairline rules between the cells and, where one is given, an `action` in a cell of its own. It is never chosen by the count — a bar is a deliberate treatment for the two or three figures a department leads with, and it is the one shape that inverts, so a set that fell into it by accident would put white type on blue without anybody deciding to."
       }
     ]
   },

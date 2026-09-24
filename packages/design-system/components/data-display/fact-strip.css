@@ -209,6 +209,142 @@
   }
 
   /* ══════════════════════════════════════════════════════════════════════════
+     BAR — the brand band a department leads with
+     ══════════════════════════════════════════════════════════════════════════
+
+     Asked for by name, never inferred (see `variant`). It inverts, so nothing
+     may fall into it by item count.
+
+     THE GROUND IS FLAT WHERE THE HANDOFF DRAWS A GRADIENT, and the reason is a
+     missing token rather than a preference. The handoff paints a left-to-right
+     linear gradient from #0260B8 to #0373DF. The first stop is
+     `bg/brand/primary/bolder` to within two points per channel (#005EB9). The
+     second is the estate's gov-blue, `primaryScale-500` — and NO Tier-2
+     background token resolves to it: the `bg/brand/primary/*` ramp runs 50, 100,
+     200, 300, 600, 800 and skips 500 entirely. Component CSS may not reach past
+     the semantic layer to a Palette rung
+     (`design-system-architecture.md` §2), so the choice was a flat bar at the
+     rung we have or a raw hex, and a raw hex is a defect. Recorded on the
+     component record: the ramp wants a background at 500 before this can carry
+     the gradient the design draws.
+
+     White on #005EB9 is 6.3:1, so the caption, the figure and the note all clear
+     AA at every size here. */
+  .ds-fact-strip--bar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    padding: 0;
+    overflow: hidden;
+    border-radius: var(--sa-shape-20);
+    background-color: var(--sa-bg-brand-primary-bolder);
+    box-shadow: none;
+  }
+  @media (min-width: 768px) {
+    .ds-fact-strip--bar { grid-template-columns: minmax(0, 1fr) auto; }
+  }
+
+  .ds-fact-strip--bar .ds-fact-strip__list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+  @media (min-width: 768px) {
+    .ds-fact-strip--bar .ds-fact-strip__list {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+  }
+
+  /*
+     THE RULE IS AN INSET SHADOW, NOT A BORDER.
+
+     A border on every cell but the first draws a line the full height of the
+     TALLEST cell in the row, which is what the handoff draws — but on a single
+     column (a phone) the same selector would draw a vertical line above each
+     cell's own text. `box-shadow` with a negative spread cannot happen by
+     accident in the wrong axis: the rule below is re-declared per breakpoint,
+     so the phone gets a horizontal rule between stacked cells and the desktop a
+     vertical one between cells in a row.
+
+     #DCDEE1 against the handoff's #E5E7EB — the same hairline to within a few
+     points, and the only neutral border rung this estate publishes. */
+  .ds-fact-strip--bar .ds-fact-strip__item {
+    align-items: start;
+    text-align: start;
+    gap: var(--sa-stack-4);
+    padding: var(--sa-padding-24);
+  }
+  .ds-fact-strip--bar .ds-fact-strip__item + .ds-fact-strip__item {
+    box-shadow: inset 0 var(--sa-stroke-1) 0 0 var(--sa-border-neutral-subtle);
+  }
+  @media (min-width: 768px) {
+    .ds-fact-strip--bar .ds-fact-strip__item + .ds-fact-strip__item {
+      box-shadow: inset var(--sa-stroke-1) 0 0 0 var(--sa-border-neutral-subtle);
+    }
+  }
+
+  /* The caption leads, because on this shape it is the question the figure
+     answers and the reader meets it first. Upper case at label-1/500, as drawn. */
+  .ds-fact-strip--bar .ds-fact-strip__label {
+    order: 0;
+    text-transform: uppercase;
+    letter-spacing: var(--sa-type-label-tracking);
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-medium);
+    color: var(--sa-on-bg-brand-primary-bolder);
+  }
+
+  /* display-5 tops out at 48px, which is what the handoff sets, and the display
+     tier is weight 500 — one published text style, not a size and a weight
+     picked apart (`check:type-linkage`). */
+  .ds-fact-strip--bar .ds-fact-strip__value {
+    order: 1;
+    font-size: var(--sa-type-display-5-size);
+    line-height: var(--sa-type-display-5-lh);
+    font-weight: var(--sa-font-weight-displayMedium);
+    font-variant-numeric: tabular-nums;
+    color: var(--sa-on-bg-brand-primary-bolder);
+  }
+
+  /* A size down from the figure and on the same line, as the design sets it
+     and as a unit is normally set. Everywhere else the span inherits, so a unit
+     supplied this way reads exactly as one written into `value`.
+
+     `headline-2` COMPLETE — size, leading and its own weight of 600. The figure
+     beside it is `display-5` at 500, so the unit is not lighter than the number
+     it qualifies, which is the one thing a smaller unit must not be; the estate
+     publishes no 500-weight role below 40px, and a size taken from one style
+     with a weight taken from nowhere is exactly what `check:type-linkage`
+     exists to refuse. */
+  .ds-fact-strip--bar .ds-fact-strip__unit {
+    font-size: var(--sa-type-headline-2-size);
+    line-height: var(--sa-type-headline-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .ds-fact-strip--bar .ds-fact-strip__note {
+    order: 2;
+    margin-top: 0;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-medium);
+    color: var(--sa-on-bg-brand-primary-bolder);
+  }
+
+  /* The action sits in a cell of the same shape as a fact's, so the rule
+     between it and the last figure lands where every other rule does. */
+  .ds-fact-strip--bar .ds-fact-strip__action {
+    display: grid;
+    place-items: center;
+    padding: var(--sa-padding-24);
+    box-shadow: inset 0 var(--sa-stroke-1) 0 0 var(--sa-border-neutral-subtle);
+  }
+  @media (min-width: 768px) {
+    .ds-fact-strip--bar .ds-fact-strip__action {
+      box-shadow: inset var(--sa-stroke-1) 0 0 0 var(--sa-border-neutral-subtle);
+    }
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════════
      EXTENDED — the shape a set takes once it is too long to be one row
      ══════════════════════════════════════════════════════════════════════════
 

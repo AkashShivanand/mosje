@@ -80,29 +80,39 @@ export function SchemePortals() {
         ))}
       </ul>
 
-      <div className="wn-home-glance">
-        <FactStrip
-          ariaLabel="The Department at a Glance"
-          items={GLANCE.map((g) => ({
-            icon: g.icon,
-            value: g.value,
-            label: g.label,
-            note: g.note,
-          }))}
-        />
-        <Link
-          href="/website/dashboard"
-          className={buttonClasses(
-            "primary",
-            "outlined",
-            "md",
-            "wn-home-glance__cta",
-          )}
-        >
-          <T>View Dashboard</T>
-          <Icon name="arrow_forward" size={20} aria-hidden />
-        </Link>
-      </div>
+      {/* The brand bar the design draws, and the one shape of FactStrip that
+          takes an action: white on blue, the caption over the figure, a rule
+          between the cells and "View Dashboard" in a cell of its own. The
+          button is `tone="inverse"` because the ground under it is brand — the
+          estate's own answer to a control on a dark surface, rather than a
+          white button hand-painted here. */}
+      <FactStrip
+        variant="bar"
+        className="wn-home-glance"
+        ariaLabel="The Department at a Glance"
+        items={GLANCE.map((g) => ({
+          icon: g.icon,
+          value: g.value,
+          unit: g.unit,
+          label: g.label,
+          note: g.note,
+        }))}
+        action={
+          <Link
+            href="/website/dashboard"
+            className={buttonClasses(
+              "primary",
+              "filled",
+              "md",
+              undefined,
+              "inverse",
+            )}
+          >
+            <T>View Dashboard</T>
+            <Icon name="arrow_forward" size={20} aria-hidden />
+          </Link>
+        }
+      />
     </Band>
   );
 }

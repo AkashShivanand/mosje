@@ -15,6 +15,18 @@ export interface FactStripItem {
    * previous year". Optional; a fact that needs no qualification carries none.
    */
   note?: string;
+  /**
+   * The unit the figure is counted in — "Crore", "km", "days" — where the
+   * figure and its unit are two things rather than one string.
+   *
+   * It exists for `variant="bar"`, which sets the figure at 48px: "₹67,977
+   * Crore" written into `value` is 330px of type and wraps in a cell that is
+   * 270px wide, while the design sets the unit a size down beside the number,
+   * as a figure's unit is normally set. The other two shapes render it as part
+   * of the same line at the same size, so a strip that has always written the
+   * unit into `value` reads identically whichever way it supplies it.
+   */
+  unit?: string;
 }
 
 /**
@@ -66,9 +78,24 @@ export interface FactStripProps extends React.HTMLAttributes<HTMLDivElement> {
    * Pass it only to override that — a six-item strip that must stay compact,
    * or a four-item one that must read as figures.
    *
+   * `"bar"` — the brand-blue band the website home page carries under its
+   * scheme portals: no marks, the caption above the figure, hairline rules
+   * between the cells and, where one is given, an `action` in a cell of its
+   * own. It is never chosen by the count — a bar is a deliberate treatment for
+   * the two or three figures a department leads with, and it is the one shape
+   * that inverts, so a set that fell into it by accident would put white type
+   * on blue without anybody deciding to.
+   *
    * @default `items.length > 5 ? "extended" : "compact"`
    */
-  variant?: "compact" | "extended";
+  variant?: "compact" | "extended" | "bar";
+  /**
+   * The control that follows the figures — "View Dashboard", almost always a
+   * link styled as a button. `"bar"` only: the other two shapes are a row of
+   * facts with nothing after them, and a cell holding a button would have to
+   * borrow a fact's width.
+   */
+  action?: React.ReactNode;
   /**
    * Names the list for assistive technology, e.g. "Key facts about PM-AJAY".
    * Required, because "New Delhi, Headquarters, 3, Components" read as a bare
@@ -98,6 +125,12 @@ export interface FactStripProps extends React.HTMLAttributes<HTMLDivElement> {
  * becomes a wrapped grid of side-on cells with the figure stepped up to read as
  * a figure. Nothing about the data changes between them.
  *
+ * A THIRD SHAPE IS ASKED FOR, NEVER INFERRED: `variant="bar"` is the brand-blue
+ * band, drawn on the website home page under the scheme portals. It inverts —
+ * white type on the brand ground — so it is the one shape a set must not be
+ * able to fall into by item count alone, and it is the only one that takes an
+ * `action`.
+ *
  * ACCESSIBILITY: renders as a `<dl>` — each fact is a label/value pair, and
  * that is exactly what a description list is for. The value comes first
  * visually via `order`, so the DOM keeps `<dt>` (label) before `<dd>` (value)
@@ -117,6 +150,7 @@ export function FactStrip({
   items,
   overlap = false,
   variant,
+  action,
   ariaLabel,
   className,
   style,
@@ -129,6 +163,7 @@ export function FactStrip({
    */
   const shape = variant ?? (items.length > 5 ? "extended" : "compact");
   const columns = shape === "extended" ? extendedColumns(items.length) : undefined;
+  const isBar = shape === "bar";
 
   return (
     <div
@@ -136,6 +171,7 @@ export function FactStrip({
         "ds-fact-strip",
         overlap && "ds-fact-strip--overlap",
         shape === "extended" && "ds-fact-strip--extended",
+        isBar && "ds-fact-strip--bar",
         className,
       )}
       style={
@@ -148,15 +184,32 @@ export function FactStrip({
       <dl className="ds-fact-strip__list" aria-label={ariaLabel}>
         {items.map((item) => (
           <div className="ds-fact-strip__item" key={item.label + item.value}>
-            <span className="ds-fact-strip__icon" aria-hidden="true">
-              <Icon name={item.icon} size={32} />
-            </span>
+            {/* NO MARK ON THE BAR. Its cells are a caption over a figure with a
+                rule between them, and a tile in front of white-on-blue type
+                would be a second thing competing for the cell's left edge. The
+                item still carries its `icon` — the same facts render in all
+                three shapes, and only this one declines to draw it. */}
+            {!isBar && (
+              <span className="ds-fact-strip__icon" aria-hidden="true">
+                <Icon name={item.icon} size={32} />
+              </span>
+            )}
             <dt className="ds-fact-strip__label">{item.label}</dt>
-            <dd className="ds-fact-strip__value">{item.value}</dd>
+            <dd className="ds-fact-strip__value">
+              {item.value}
+              {item.unit && (
+                <span className="ds-fact-strip__unit"> {item.unit}</span>
+              )}
+            </dd>
             {item.note && <dd className="ds-fact-strip__note">{item.note}</dd>}
           </div>
         ))}
       </dl>
+      {/* Outside the list on purpose: it is not a fact, and a `<div>` holding a
+          button inside a `<dl>` is neither a term nor a description. */}
+      {isBar && action != null && (
+        <div className="ds-fact-strip__action">{action}</div>
+      )}
     </div>
   );
 }
