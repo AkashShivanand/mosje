@@ -296,12 +296,23 @@
      the page in competition with them; and the portrait is a cut-out, which on
      a bare band had nothing behind it and read as a sticker. The card holds it.
      The section keeps its tint so the white card has a ground to sit on. */
-  .wn-pmq { background-color: var(--sa-bg-brand-primary-base); padding-block: var(--sa-section-40); }
+  /* THE SECTION HAS NO GROUND OF ITS OWN. The Figma frame carries a blue
+     gradient whose `visible` flag is false, so the card is drawn on the page,
+     and 32 above and below it is the design's own padding. A pale-blue band
+     stood here and put a third ground between the hero photograph and the
+     card, which is what read as a gap rather than as a section. */
+  .wn-pmq { background-color: var(--sa-bg-neutral-base); padding-block: var(--sa-section-32); }
 
+  /* The hairline is what holds a white card on a white page. The design draws
+     it at #FFC1BC, which is not on the secondary ramp (50 #FFF2ED, 100
+     #FFD4C4, 200 #FFB498) and there is no `border/brand/secondary` rung to
+     bind to — a gap already recorded against the library. This takes the
+     nearest published rung, the same way the mark takes a surface rung. */
   .wn-pmq__card {
     position: relative;
     display: grid;
     gap: var(--sa-stack-24);
+    border: var(--sa-stroke-1) solid var(--sa-bg-brand-secondary-subtler);
     border-radius: var(--sa-shape-24);
     background: var(--sa-bg-neutral-base);
     box-shadow: var(--sa-elevation-modal);
@@ -313,15 +324,33 @@
   }
 
   /* THE MARK IS BEHIND THE WORDS, at the saffron rung the design draws
-     (#FF9167 = secondary/300). The secondary family publishes no icon rung
-     there — it has one, at 600 — so this binds to the surface rung of the same
-     value, the way the pull-quote's bar in About Us does. */
+     (#FF9167 = secondary/300) and at the 40% it draws it at — a watermark the
+     first line sits over, not a glyph standing above the quotation. The
+     secondary family publishes no icon rung there — it has one, at 600 — so
+     this binds to the surface rung of the same value, the way the pull-quote's
+     bar in About Us does. The 128 the design draws is off the icon scale, so
+     it is written as two of its largest rung rather than as a literal. */
   .wn-pmq__mark {
     position: absolute;
     inset-block-start: var(--sa-stack-12);
     inset-inline-start: var(--sa-inline-16);
-    color: var(--sa-bg-brand-secondary-bold);
+    /* The mark has to stay BIG RELATIVE TO THE TEXT or it stops reading as a
+       watermark and starts reading as a smudge behind the first word: the
+       design's ratio is 128 against 28px type, so the phone's 22px type gets
+       96, not 64. */
+    inline-size: calc(var(--sa-icon-size-64) * 1.5);
+    block-size: calc(var(--sa-icon-size-64) * 1.5);
+    fill: var(--sa-bg-brand-secondary-bold);
+    opacity: var(--sa-alpha-40);
     pointer-events: none;
+  }
+  @media (min-width: 1024px) {
+    .wn-pmq__mark {
+      inset-block-start: var(--sa-stack-20);
+      inset-inline-start: var(--sa-inline-20);
+      inline-size: calc(var(--sa-icon-size-64) * 2);
+      block-size: calc(var(--sa-icon-size-64) * 2);
+    }
   }
 
   .wn-pmq__body {
@@ -329,9 +358,13 @@
     display: grid;
     align-content: center;
     gap: var(--sa-stack-24);
-    padding: var(--sa-padding-32) var(--sa-padding-24);
+    /* The top reserves the mark's height: the design gives the quote column 88
+       above it against a mark inset 20, so the words begin over its tail. */
+    padding: var(--sa-padding-64) var(--sa-padding-24) var(--sa-padding-32);
   }
-  @media (min-width: 1024px) { .wn-pmq__body { padding: var(--sa-padding-40); } }
+  @media (min-width: 1024px) {
+    .wn-pmq__body { padding: var(--sa-padding-80) var(--sa-padding-40) var(--sa-padding-40); }
+  }
 
   .wn-pmq__text { margin: 0; }
   /* headline-3 tops out at 28px, which is what the design sets, and the
@@ -350,7 +383,7 @@
   .wn-pmq__foot {
     display: grid;
     gap: var(--sa-stack-16);
-    padding-block-start: var(--sa-padding-16);
+    padding-block-start: var(--sa-padding-24);
     border-block-start: var(--sa-stroke-1) solid var(--sa-border-brand-primary-base);
   }
   @media (min-width: 768px) {
@@ -366,7 +399,11 @@
     place-items: end center;
     background: var(--sa-bg-brand-secondary-base);
   }
-  .wn-pmq__portrait { width: min(100%, 320px); height: auto; object-fit: contain; }
+  /* Stacked, the portrait is a block of its own under the words rather than a
+     column beside them, so it takes the smaller of the two sizes: at 320 it
+     stood 340px tall on a 390 phone and outweighed the quotation it belongs to. */
+  .wn-pmq__portrait { width: min(100%, 240px); height: auto; object-fit: contain; }
+  @media (min-width: 1024px) { .wn-pmq__portrait { width: min(100%, 320px); } }
 
   /* ── Take a Pledge ───────────────────────────────────────────────────────────
      Two rows: the pledges themselves, then the volunteering registers, which ask

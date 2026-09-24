@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Button, Icon } from "@mosje/design-system";
+import { Button } from "@mosje/design-system";
 
 import { T } from "@/components/i18n/translation-provider";
 
@@ -60,19 +60,30 @@ export function PmQuote() {
         <T>Quote from the Prime Minister</T>
       </h2>
       <div className="sa-container">
-        {/* A CARD, NOT A BAND. The quotation is the most quotable thing on the
-            page and the page already carries several tinted bands, so a band
-            of its own put it in competition with them. The card gives it an
-            edge of its own, and it holds the portrait — which floated on the
-            band before, a cut-out with nothing behind it. */}
+        {/* A CARD ON THE PAGE'S OWN GROUND, which is what the design draws:
+            the section frame carries a blue gradient that is switched OFF in
+            the file, so the card sits on white and its hairline, its shadow
+            and the portrait's panel are the whole of its edge. A tinted band
+            was tried under it and read as a seam between the hero photograph
+            and the card — a third ground in 40px — and the page already
+            carries several tinted bands for the card to compete with. */}
         <div className="wn-pmq__card">
-          {/* Decorative: the quotation is already marked up as a blockquote. */}
-          <Icon
-            name="format_quote"
-            size={64}
+          {/* THE QUOTATION MARK IS DRAWN, NOT SET AS AN <Icon>, and that is the
+              one deliberate divergence in this card. The design draws an
+              OPENING mark at 128px behind the first line; Material Symbols
+              publishes only `format_quote`, which is a closing mark, and the
+              estate's icon scale tops out at 64 — a contract `check:icon-audit`
+              holds per file. Neither is worth breaking for one ornament, so
+              the mark is the vector the design itself uses. It is decorative:
+              the quotation is already marked up as a blockquote. */}
+          <svg
             className="wn-pmq__mark"
+            viewBox="0 0 24 24"
             aria-hidden
-          />
+            focusable="false"
+          >
+            <path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-4v-10h9.983zm14.017 0v7.391c0 5.704-3.748 9.571-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3.983v-10h9.983z" />
+          </svg>
 
           <div className="wn-pmq__body">
             <blockquote className="wn-pmq__text" cite={SOURCE}>
