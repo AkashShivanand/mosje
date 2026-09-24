@@ -133,9 +133,11 @@ export default async function Home() {
         <Centres />
         <Activity />
         <Social />
-        <Helplines />
-        {/* Last band before the footer, as on the live page and in Figma. */}
+        {/* The marquee, then the support band — the design's own order, and the
+            live page's. The two were the other way round until 24 Sep 2026: a
+            page should end on the offer of help, not on a row of partner marks. */}
         <LogoStrip />
+        <Helplines />
       </main>
       <WebsiteFooter />
     </>
