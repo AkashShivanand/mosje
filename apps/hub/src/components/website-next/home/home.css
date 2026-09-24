@@ -115,55 +115,10 @@
   .wn-home-portal__abbr { font-size: var(--sa-type-title-2-size); line-height: var(--sa-type-title-2-lh); font-weight: var(--sa-font-weight-semibold); }
   .wn-home-portal__name { font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); color: var(--sa-text-neutral-subtle); }
 
-  /* ── What's New ──────────────────────────────────────────────────────────── */
-  .wn-home-news { display: grid; gap: var(--sa-stack-40); margin-top: var(--sa-stack-32); }
-  @media (min-width: 1024px) { .wn-home-news { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--sa-inline-48); } }
-  .wn-home-news__list { border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); }
-  .wn-home-news__item { display: grid; gap: var(--sa-stack-4); padding-block: var(--sa-padding-16); border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); }
-  .wn-home-news__list--lead .wn-home-news__item { padding-block: var(--sa-padding-20); }
-  .wn-home-news__meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sa-inline-12); }
-  .wn-home-news__kind { gap: var(--sa-inline-4); }
-  .wn-home-news__date { font-size: var(--sa-type-label-2-size); line-height: var(--sa-type-label-2-lh); font-weight: var(--sa-font-weight-medium); color: var(--sa-text-neutral-subtle); font-variant-numeric: tabular-nums; }
-  /* NO LINE CLAMP. It was two lines, which cut a government notice's name
-     mid-word — "EXPRESSION OF INTEREST (EOI) FOR RATE OF INTEREST FOR
-     INVESTMENT OF AN…" on the desktop list, and six lines cut to two on a
-     phone. A citizen deciding whether a notice concerns them has only the
-     title to go on, so it wraps in full and the rows take the height they
-     need; the list is capped by its item count, not by clipping each row. */
-  .wn-home-news__link {
-    font-size: var(--sa-type-body-2-size);
-    line-height: var(--sa-type-body-2-lh);
-    font-weight: var(--sa-font-weight-semibold);
-    color: var(--sa-text-neutral-bolder);
-  }
-  .wn-home-news__list--lead .wn-home-news__link { font-size: var(--sa-type-title-2-size); line-height: var(--sa-type-title-2-lh); font-weight: var(--sa-font-weight-semibold); }
-  .wn-home-news__link:hover { color: var(--sa-text-link-brand-hover); text-decoration: underline; text-underline-offset: 0.2em; }
-  .wn-home-news__link:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: var(--sa-focus-offset); border-radius: var(--sa-shape-4); }
-  .wn-home-news__main > .wn-home-more,
-  .wn-home-news__side > .wn-home-more { margin-top: var(--sa-stack-8); }
-  .wn-home-news__aside { display: grid; gap: var(--sa-stack-24); align-content: start; }
-  .wn-home-news__side { padding: var(--sa-padding-24); border-radius: var(--sa-shape-16); background: var(--sa-bg-neutral-base); border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); }
-  .wn-home-news__side-title { margin-bottom: var(--sa-stack-8); font-size: var(--sa-type-title-1-size); line-height: var(--sa-type-title-1-lh); font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-neutral-bolder); }
-  .wn-home-news__side .wn-home-news__list { border-top: 0; }
-  .wn-home-news__side .wn-home-news__item:last-child { border-bottom: 0; }
+  /* The one rule left from the old What's New section: a list that has nothing
+     to say. Activity and Recent Documents both render it; What's New itself
+     became the column inside Our Offerings on 24 Sep 2026. */
   .wn-home-news__empty { padding-block: var(--sa-padding-16); color: var(--sa-text-neutral-subtle); }
-
-  /* ── Groups and roles ────────────────────────────────────────────────────── */
-  .wn-home-groups { display: grid; gap: var(--sa-stack-12); margin-top: var(--sa-stack-32); grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  @media (min-width: 768px) { .wn-home-groups { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-  @media (min-width: 1024px) { .wn-home-groups { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sa-stack-16); } }
-  @media (min-width: 1280px) { .wn-home-groups { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
-  /* `.wn-home-roles*` went with the role pills on 24 Sep 2026 — the roles are
-     the panel beside Recent Documents now (`.wn-roles`). */
-  .wn-home-kinds__title,
-  .wn-home-divisions__title { font-size: var(--sa-type-title-1-size); line-height: var(--sa-type-title-1-lh); font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-neutral-bolder); }
-
-  /* ── Schemes ─────────────────────────────────────────────────────────────── */
-  .wn-home-schemes { display: grid; gap: var(--sa-stack-16); margin-top: var(--sa-stack-32); }
-  @media (min-width: 768px) { .wn-home-schemes { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  @media (min-width: 1024px) { .wn-home-schemes { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sa-stack-24); } }
-  .wn-home-schemes > li { display: grid; }
-  .wn-home-kinds { margin-top: var(--sa-stack-48); }
 
   /* ── Documents ───────────────────────────────────────────────────────────── */
   /* Two columns from 1024, as the design draws them: the documents, and the
@@ -521,6 +476,71 @@
     color: var(--sa-text-brand-primary-bolder);
   }
 
+  /* ── Our Offerings ───────────────────────────────────────────────────────
+     Two columns from 1024: the tabs and their lists, and What's New beside
+     them. `minmax(0, …)` on both tracks, because a chip row and a notice list
+     both report a min-content wider than a phone. */
+  .wn-off { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sa-stack-40); margin-top: var(--sa-stack-32); }
+  @media (min-width: 1024px) { .wn-off { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: var(--sa-inline-40); align-items: start; } }
+  .wn-off__main { min-width: 0; }
+  .wn-off__bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sa-inline-16); }
+
+  .wn-off__chips { display: flex; flex-wrap: wrap; gap: var(--sa-inline-8); margin-top: var(--sa-stack-24); }
+
+  .wn-off__panel {
+    margin-top: var(--sa-stack-24);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-16);
+    overflow: hidden;
+  }
+  /* The chosen group, on the brand tint: who the rows beneath are for. */
+  .wn-off__who { display: flex; align-items: center; gap: var(--sa-inline-16); padding: var(--sa-padding-20); background: var(--sa-bg-brand-primary-base); }
+  .wn-off__who img { flex: none; width: var(--sa-icon-size-64); height: var(--sa-icon-size-64); object-fit: contain; }
+  .wn-off__who-name { font-size: var(--sa-type-title-1-size); line-height: var(--sa-type-title-1-lh); font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-neutral-bolder); }
+  .wn-off__who-sub { font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); color: var(--sa-text-neutral-subtle); }
+
+  /* Where the group applies, on the saffron wash — one action, above the list
+     of what it can be applied for. */
+  .wn-off__portal { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sa-inline-16); padding: var(--sa-padding-16) var(--sa-padding-20); background: var(--sa-bg-brand-secondary-base); }
+  .wn-off__portal-name { font-size: var(--sa-type-title-2-size); line-height: var(--sa-type-title-2-lh); font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-neutral-bolder); }
+  .wn-off__portal-blurb { font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); color: var(--sa-text-neutral-subtle); }
+
+  .wn-off__scheme { display: grid; gap: var(--sa-stack-8); padding: var(--sa-padding-20); border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); }
+  @media (min-width: 768px) { .wn-off__scheme { grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: var(--sa-inline-24); } }
+  .wn-off__scheme-kind { font-size: var(--sa-type-label-2-size); line-height: var(--sa-type-label-2-lh); font-weight: var(--sa-font-weight-medium); text-transform: uppercase; letter-spacing: var(--sa-type-label-tracking); color: var(--sa-text-brand-primary-base); }
+  .wn-off__scheme-name { margin-top: var(--sa-stack-4); font-size: var(--sa-type-title-2-size); line-height: var(--sa-type-title-2-lh); font-weight: var(--sa-font-weight-semibold); }
+  .wn-off__scheme-name a { color: var(--sa-text-neutral-bolder); }
+  .wn-off__scheme-name a:hover { color: var(--sa-text-link-brand-hover); text-decoration: underline; text-underline-offset: 0.2em; }
+  .wn-off__scheme-name a:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: var(--sa-focus-offset); border-radius: var(--sa-shape-4); }
+  .wn-off__scheme-provides { margin-top: var(--sa-stack-4); font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); color: var(--sa-text-neutral-base); }
+  .wn-off__all { padding: var(--sa-padding-16) var(--sa-padding-20); border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); }
+
+  .wn-off__notices { margin-top: var(--sa-stack-24); border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); }
+  .wn-off__notice { display: grid; gap: var(--sa-stack-4); padding-block: var(--sa-padding-16); border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); color: var(--sa-text-neutral-bolder); }
+  .wn-off__notice:hover .wn-off__notice-title { color: var(--sa-text-link-brand-hover); text-decoration: underline; text-underline-offset: 0.2em; }
+  .wn-off__notice:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: var(--sa-focus-offset); }
+  .wn-off__notice-title { font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); font-weight: var(--sa-font-weight-semibold); }
+  .wn-off__notice-meta { font-size: var(--sa-type-label-2-size); line-height: var(--sa-type-label-2-lh); font-weight: var(--sa-font-weight-medium); color: var(--sa-text-neutral-subtle); font-variant-numeric: tabular-nums; }
+
+  /* What's New, in the brand column the design draws. */
+  .wn-off__news {
+    min-width: 0;
+    padding: var(--sa-padding-20);
+    border-radius: var(--sa-shape-16);
+    background: var(--sa-bg-brand-primary-boldest);
+    color: var(--sa-on-bg-brand-primary-boldest);
+  }
+  .wn-off__news-head { display: flex; align-items: center; justify-content: space-between; gap: var(--sa-inline-12); padding-bottom: var(--sa-padding-16); border-bottom: var(--sa-stroke-1) solid var(--sa-bg-brand-primary-bolder); }
+  .wn-off__news-title { display: inline-flex; align-items: center; gap: var(--sa-inline-8); font-size: var(--sa-type-title-1-size); line-height: var(--sa-type-title-1-lh); font-weight: var(--sa-font-weight-semibold); }
+  .wn-off__news-all { font-size: var(--sa-type-label-1-size); line-height: var(--sa-type-label-1-lh); font-weight: var(--sa-font-weight-medium); text-decoration: underline; text-underline-offset: 0.2em; }
+  .wn-off__news-all:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ringInner); outline-offset: var(--sa-focus-offset); }
+  .wn-off__news-list > li { padding-block: var(--sa-padding-12); border-bottom: var(--sa-stroke-1) solid var(--sa-bg-brand-primary-bolder); }
+  .wn-off__news-list > li:last-child { border-bottom: 0; }
+  .wn-off__news-link { font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); font-weight: var(--sa-font-weight-semibold); color: var(--sa-on-bg-brand-primary-boldest); }
+  .wn-off__news-link:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+  .wn-off__news-link:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ringInner); outline-offset: var(--sa-focus-offset); }
+  .wn-off__news-meta { margin-top: var(--sa-stack-4); font-size: var(--sa-type-label-2-size); line-height: var(--sa-type-label-2-lh); font-weight: var(--sa-font-weight-medium); opacity: 0.85; }
+
   /* ── Social ──────────────────────────────────────────────────────────────── */
   .wn-home-social { display: grid; gap: var(--sa-stack-12); margin-top: var(--sa-stack-32); grid-template-columns: repeat(auto-fill, minmax(min(100%, 208px), 1fr)); }
 }
@@ -529,10 +549,10 @@
    "View All" link; nothing is reachable only on a desktop. ───────────────── */
 @layer components {
   @media (max-width: 767px) {
-    .wn-home-news__list--lead .wn-home-news__item:nth-child(n + 5) { display: none; }
-    .wn-home-news__side { padding: var(--sa-padding-16); }
-    .wn-home-news__side .wn-home-news__item:nth-child(n + 4) { display: none; }
-    .wn-home-schemes > li:nth-child(n + 4) { display: none; }
+    /* Our Offerings keeps three of its five notices and four of its six
+       updates on a phone; each list still carries its own "View All". */
+    .wn-off__notices > li:nth-child(n + 4) { display: none; }
+    .wn-off__news-list > li:nth-child(n + 5) { display: none; }
     [data-design="next"] .wn-events.wn-home-activity__events > li:nth-child(n + 4) { display: none; }
     [data-design="next"] .wn-home-activity__albums .wn-album__meta { display: none; }
     .wn-home-ministers { grid-template-columns: 1fr; gap: var(--sa-stack-8); }

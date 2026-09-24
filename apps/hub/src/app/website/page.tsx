@@ -4,8 +4,6 @@ import { Masthead } from "@/components/website-next/chrome/Masthead";
 import { SamaveshBand } from "@/components/website-next/chrome/SamaveshBand";
 import { WebsiteFooter } from "@/components/website-next/chrome/Footer";
 import { Banner } from "@/components/website-next/home/Banner";
-import { WhatsNew } from "@/components/website-next/home/WhatsNew";
-import { Audiences } from "@/components/website-next/home/Audiences";
 import { Offerings } from "@/components/website-next/home/Offerings";
 import { Documents } from "@/components/website-next/home/Documents";
 import { Activity } from "@/components/website-next/home/Activity";
@@ -120,12 +118,10 @@ export default async function Home() {
             and a helpline the helplines section already lists. Figma switched
             its own copy of that band off for the same reason. */}
         <Pledges />
+        {/* Our Offerings carries the eleven groups as its chips and What's New
+            in the column beside it, as the design draws it — three sections
+            doing one job, merged on 24 Sep 2026. */}
         <Offerings />
-        {/* The eleven groups sit with the offerings, as the design's own
-            audience chips do; they move INSIDE that section when it gains its
-            tabs and filtered list. */}
-        <Audiences />
-        <WhatsNew />
         <Organisations />
         {/* The live page and Figma both place it here: after the pledges, before
             Recent Documents. */}
