@@ -36,7 +36,7 @@ import {
   type ErrorSummaryItem,
   type WorklistColumn,
 } from "@mosje/design-system";
-import { BLOCKS, DISTRICT_SCOPE, PROVENANCE_LINE, VILLAGES, type VillageRecord } from "@/lib/pm-ajay/district/registers";
+import { BLOCKS, DISTRICT_SCOPE, VILLAGES, type VillageRecord } from "@/lib/pm-ajay/district/registers";
 import { REMOVAL_REQUESTS, type RemovalStatus } from "@/lib/pm-ajay/district/removals";
 
 const ALL_BLOCKS = "All Blocks";
@@ -156,7 +156,7 @@ export default function RemoveVillagePage() {
       <WorklistScreen
         eyebrow="Manage Adarsh Gram"
         title="Removal of Selected Village"
-        meta={`Villages selected for Adarsh Gram in ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}, and any request to remove one from the scheme. On approval, the Adarsh Gram and VDP details recorded for that village are also removed from the portal. ${PROVENANCE_LINE}`}
+        meta={`Villages selected for Adarsh Gram in ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}, and any request to remove one from the scheme. On approval, the Adarsh Gram and VDP details recorded for that village are also removed from the portal.`}
         filters={
           <>
             <Search

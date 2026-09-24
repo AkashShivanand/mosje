@@ -40,7 +40,7 @@ import {
   type StepperStep,
 } from "@mosje/design-system";
 import { DISTRICT_BASE } from "@/lib/pm-ajay/district/nav";
-import { DISTRICT_SCOPE, PROVENANCE_LINE, VILLAGES, type VillageRecord } from "@/lib/pm-ajay/district/registers";
+import { DISTRICT_SCOPE, VILLAGES, type VillageRecord } from "@/lib/pm-ajay/district/registers";
 
 interface OfficerDraft {
   id: string;
@@ -406,7 +406,7 @@ export default function SubmitProgressFormat7Page() {
     <WizardScreen
       eyebrow="Adarsh Gram — District · Submit Progress"
       title="Format VII – Reporting Format for District"
-      description={`The district's own quarterly return to the state — ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}, FY ${DISTRICT_SCOPE.financialYear}. ${PROVENANCE_LINE}`}
+      description={`The district's own quarterly return to the state — ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}, FY ${DISTRICT_SCOPE.financialYear}.`}
       steps={STEPS}
       current={current}
       onBack={handleBack}

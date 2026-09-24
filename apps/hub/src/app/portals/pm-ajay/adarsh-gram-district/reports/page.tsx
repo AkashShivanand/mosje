@@ -29,7 +29,6 @@
 
 import { Grid, GridItem, Icon, Link, PageHeader, SectionTitle } from "@mosje/design-system";
 import { DISTRICT_BASE } from "@/lib/pm-ajay/district/nav";
-import { PROVENANCE_LINE } from "@/lib/pm-ajay/district/registers";
 
 interface ReportLink {
   title: string;
@@ -119,7 +118,7 @@ export default function ReportsPage() {
       <PageHeader
         eyebrow="Adarsh Gram District"
         title="All Reports"
-        meta={`Reports on villages, works, households and beneficiaries under the scheme, drawn from the district's own registers and grouped by subject. ${PROVENANCE_LINE}`}
+        meta={`Reports on villages, works, households and beneficiaries under the scheme, drawn from the district's own registers and grouped by subject.`}
       />
 
       {REPORT_GROUPS.map((group) => {

@@ -12,7 +12,9 @@
       numbers are clickable and which district is shown. The numbers here ARE links,
       and the district is in the page header, so the narration is gone —
       `.claude/rules/ui-restraint-and-copy.md` §1.
-   2. Figures carry a provenance chip, because they are illustrative. */
+   2. No source line under a card. The live dashboard has none, and where the data
+      came from is recorded in docs/specs/pm-ajay-portal-rebuild.md and on the Figma
+      hand-off page — outside the UI, per `ui-restraint-and-copy.md` §1. */
 
 import * as React from "react";
 import Link from "next/link";
@@ -23,7 +25,6 @@ import {
   OverviewScreen,
   Progress,
   Select,
-  type DataProvenance,
 } from "@mosje/design-system";
 import { DISTRICT_BASE } from "@/lib/pm-ajay/district/nav";
 import {
@@ -31,7 +32,6 @@ import {
   DISTRICT_SCOPE,
   INDICATOR_DOMAINS,
   INDICATOR_STATUS,
-  PROVENANCE_LINE,
   count,
   lakh,
 } from "@/lib/pm-ajay/district/registers";
@@ -39,11 +39,6 @@ import {
 /* One line, on the panels only. It read eight times on this page when every KPI card
    carried it as well, and `ui-restraint-and-copy.md` allows the mark, not the paragraph:
    the sentence itself is in the page's meta, once. */
-const PROVENANCE: DataProvenance = {
-  source: "Illustrative district register",
-  asOf: DISTRICT_SCOPE.asOf,
-  status: "provisional",
-};
 
 const ALL = "All Indicators";
 
@@ -78,7 +73,7 @@ export default function DistrictDashboardPage() {
     <OverviewScreen
       eyebrow="Adarsh Gram — District"
       title="Dashboard"
-      meta={`${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state} · FY ${DISTRICT_SCOPE.financialYear} · eligibility, village plans, works and the fund cascade. ${PROVENANCE_LINE}`}
+      meta={`${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state} · FY ${DISTRICT_SCOPE.financialYear} · eligibility, village plans, works and the fund cascade.`}
       kpis={[
         {
           label: "Eligible Villages",
@@ -115,7 +110,6 @@ export default function DistrictDashboardPage() {
           key="journey"
           title="Adarsh Gram Progress"
           subtitle="Eligibility → VDP → DLCC approval → declaration"
-          provenance={PROVENANCE}
         >
           <Progress label={`Eligible Villages — ${count(eligible)}`} value={eligible} max={eligible} showValue />
           <Progress label={`VDP Drafted — ${count(DASHBOARD.vdpDrafted)}`} value={DASHBOARD.vdpDrafted} max={eligible} showValue />
@@ -127,7 +121,6 @@ export default function DistrictDashboardPage() {
           key="pendency"
           title="Pendency Status"
           subtitle="Where villages are held up, and what each one needs next"
-          provenance={PROVENANCE}
         >
           <Progress
             label={`VDP Not Generated — ${count(DASHBOARD.vdpNotGenerated)}`}
@@ -156,7 +149,6 @@ export default function DistrictDashboardPage() {
           key="indicators"
           title="Monitorable Indicator Progress"
           subtitle={indicator === ALL ? "Across all ten indicator domains" : indicator}
-          provenance={PROVENANCE}
           actions={
             <div className="pm-district-toolbar">
               <FormField label="Monitorable Indicator" id="indicator-filter" labelHidden>
@@ -194,7 +186,6 @@ export default function DistrictDashboardPage() {
           key="funds"
           title="Financial Progress"
           subtitle="Sanction → release → utilisation, in ₹ lakh"
-          provenance={PROVENANCE}
         >
           <Progress
             label={`Sanctioned — ${lakh(DASHBOARD.fundsSanctioned)}`}

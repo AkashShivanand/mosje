@@ -28,7 +28,6 @@ import {
   AGENCIES,
   AGENCY_TYPES,
   DISTRICT_SCOPE,
-  PROVENANCE_LINE,
   type AgencyRecord,
 } from "@/lib/pm-ajay/district/registers";
 
@@ -62,7 +61,7 @@ export default function AgencyListPage() {
     <WorklistScreen
       eyebrow="Adarsh Gram — District"
       title="Agency Master"
-      meta={`Agencies that carry out Adarsh Gram works in ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}. ${PROVENANCE_LINE}`}
+      meta={`Agencies that carry out Adarsh Gram works in ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}.`}
       actions={
         <Button href={`${DISTRICT_BASE}/agency/add`} linkAs={Link} iconLeft={<Icon name="add" size={20} />}>
           Add Agency

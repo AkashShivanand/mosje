@@ -26,7 +26,6 @@ import {
   DECLARATION_REQUESTS,
   DISTRICT_SCOPE,
   GRAM_PANCHAYATS,
-  PROVENANCE_LINE,
   VILLAGES,
   type DeclarationRequest,
 } from "@/lib/pm-ajay/district/registers";
@@ -102,7 +101,7 @@ export default function AdarshGramDeclarationRequestsPage() {
     <WorklistScreen
       eyebrow="Adarsh Gram — District"
       title="Villages Submitted to State for Adarsh Gram Declaration"
-      meta={`Declarations raised to the state for ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}, and the state's decision on each. ${PROVENANCE_LINE}`}
+      meta={`Declarations raised to the state for ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}, and the state's decision on each.`}
       filters={
         <>
           <FormField label="Block" id="requests-block">

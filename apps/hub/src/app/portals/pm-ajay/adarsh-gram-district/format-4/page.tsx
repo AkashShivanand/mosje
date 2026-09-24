@@ -33,7 +33,6 @@ import {
   BLOCKS,
   DISTRICT_SCOPE,
   GRAM_PANCHAYATS,
-  PROVENANCE_LINE,
   VILLAGES,
   WORKS,
   lakh,
@@ -102,7 +101,7 @@ export default function Format4Page() {
       asked={villageChosen}
       eyebrow="Village Format — Adarsh Gram, District"
       title="Format – IV: Action Plan and Progress Report of Infrastructure Works"
-      meta={`Infrastructure works sanctioned for the chosen village, ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}. ${PROVENANCE_LINE}`}
+      meta={`Infrastructure works sanctioned for the chosen village, ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}.`}
       actions={
         villageChosen ? (
           <Button href={addHref} linkAs={Link} iconLeft={<Icon name="add" size={20} />}>

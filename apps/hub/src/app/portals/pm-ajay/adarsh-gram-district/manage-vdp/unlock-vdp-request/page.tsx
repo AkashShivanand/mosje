@@ -31,7 +31,6 @@ import {
 } from "@mosje/design-system";
 import {
   DISTRICT_SCOPE,
-  PROVENANCE_LINE,
   VDP_UNLOCK_REQUESTS,
   VILLAGES,
   type VdpUnlockRequest,
@@ -138,7 +137,7 @@ export default function UnlockVdpRequestPage() {
       <WorklistScreen
         eyebrow="Adarsh Gram — District"
         title="Unlock VDP Request"
-        meta={`Requests to reopen a finalised Village Development Plan, raised to the state, for ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}. ${PROVENANCE_LINE}`}
+        meta={`Requests to reopen a finalised Village Development Plan, raised to the state, for ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}.`}
         actions={
           <Button iconLeft={<Icon name="add" size={20} />} onClick={openModal}>
             Add Unlock VDP Request

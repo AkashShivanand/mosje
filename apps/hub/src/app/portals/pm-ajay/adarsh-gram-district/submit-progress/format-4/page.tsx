@@ -35,7 +35,6 @@ import {
   BLOCKS,
   DISTRICT_SCOPE,
   GRAM_PANCHAYATS,
-  PROVENANCE_LINE,
   VILLAGES,
   WORKS,
   lakh,
@@ -211,7 +210,7 @@ export default function SubmitProgressFormat4Page() {
       <WorklistScreen
         eyebrow="Adarsh Gram — District · Submit Progress"
         title="Format – IV: Action Plan and Progress Report of Infrastructure Works"
-        meta={`Report progress against each work sanctioned for the chosen village, ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state} — FY ${DISTRICT_SCOPE.financialYear}. ${PROVENANCE_LINE}`}
+        meta={`Report progress against each work sanctioned for the chosen village, ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state} — FY ${DISTRICT_SCOPE.financialYear}.`}
         asked={asked}
         filters={
           <>

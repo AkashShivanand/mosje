@@ -34,7 +34,6 @@ import {
   DISTRICT_SCOPE,
   GRAM_PANCHAYATS,
   INDICATOR_DOMAINS,
-  PROVENANCE_LINE,
   VILLAGES,
   lakh,
 } from "@/lib/pm-ajay/district/registers";
@@ -217,7 +216,7 @@ export default function SubmitProgressFormat5Page() {
       <WorklistScreen
         eyebrow="Adarsh Gram — District · Submit Progress"
         title="Format – V: Action Plan and Progress Report for Beneficiary Oriented Initiatives"
-        meta={`Details of households and beneficiaries where need has been identified, ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state} — FY ${DISTRICT_SCOPE.financialYear}. ${PROVENANCE_LINE}`}
+        meta={`Details of households and beneficiaries where need has been identified, ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state} — FY ${DISTRICT_SCOPE.financialYear}.`}
         asked={asked}
         filters={
           <>

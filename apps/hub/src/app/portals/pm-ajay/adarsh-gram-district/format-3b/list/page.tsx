@@ -44,7 +44,6 @@ import {
   DISTRICT_SCOPE,
   GRAM_PANCHAYATS,
   INDICATOR_DOMAINS,
-  PROVENANCE_LINE,
   VILLAGES,
   lakh,
   type BeneficiaryRecord,
@@ -120,7 +119,7 @@ export default function Format3bListPage() {
     <WorklistScreen
       eyebrow="Village Format"
       title="Format – III(B): Consolidation of Household Data for Beneficiary Oriented Initiatives and Action Plan for Fulfilling Needs"
-      meta={`Beneficiary-level records under Adarsh Gram initiatives in ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}. ${PROVENANCE_LINE}`}
+      meta={`Beneficiary-level records under Adarsh Gram initiatives in ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}.`}
       asked={complete}
       actions={
         <Button

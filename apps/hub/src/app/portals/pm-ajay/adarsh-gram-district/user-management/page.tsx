@@ -30,7 +30,7 @@ import {
   type ErrorSummaryItem,
   type WorklistColumn,
 } from "@mosje/design-system";
-import { DISTRICT_SCOPE, PROVENANCE_LINE, USERS, type PortalUser } from "@/lib/pm-ajay/district/registers";
+import { DISTRICT_SCOPE, USERS, type PortalUser } from "@/lib/pm-ajay/district/registers";
 
 const LEVELS: PortalUser["level"][] = ["District", "Block", "Village"];
 
@@ -121,7 +121,7 @@ export default function UserManagementPage() {
       <WorklistScreen
         eyebrow="Adarsh Gram"
         title="User Management"
-        meta={`District, block and village-level accounts with access to this portal, for ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}. ${PROVENANCE_LINE}`}
+        meta={`District, block and village-level accounts with access to this portal, for ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}.`}
         actions={
           <Button iconLeft={<Icon name="person_add" size={20} />} onClick={openAdd}>
             Add User

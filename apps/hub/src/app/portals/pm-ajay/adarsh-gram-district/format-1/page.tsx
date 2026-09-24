@@ -38,7 +38,6 @@ import {
   BLOCKS,
   DISTRICT_SCOPE,
   GRAM_PANCHAYATS,
-  PROVENANCE_LINE,
   VILLAGES,
   type VdpStage,
   type VillageRecord,
@@ -107,7 +106,7 @@ export default function Format1ListPage() {
     <WorklistScreen
       eyebrow="Adarsh Gram — District · Village Format I to IV"
       title="Format – I: Village Level Data"
-      meta={`Population, households and VDP status recorded for every village taken up under Adarsh Gram in ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}. ${PROVENANCE_LINE}`}
+      meta={`Population, households and VDP status recorded for every village taken up under Adarsh Gram in ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}.`}
       actions={
         <Button href={`${DISTRICT_BASE}/format-1/add`} linkAs={Link} iconLeft={<Icon name="add" size={20} />}>
           Add Village Data

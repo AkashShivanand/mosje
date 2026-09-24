@@ -35,11 +35,14 @@ export interface PortalFooterProps {
 export function PortalFooter({ lastUpdated }: PortalFooterProps) {
   return (
     <Footer
+      /* One sentence. DBIM §5.6 asks for the lineage and GIGW for the date; everything
+         else a footer used to carry here — a developer credit, a ministry named twice, a
+         copyright held by a design system — is not what a reader needs at the foot of a
+         working screen. */
       copyright={
         <>
-          This portal belongs to the Department of Social Justice &amp; Empowerment, Ministry of
-          Social Justice &amp; Empowerment, Government of India. Designed and developed by the
-          National e-Governance Division, MeitY. Content last updated on {lastUpdated}.
+          This portal belongs to the Department of Social Justice &amp; Empowerment, Government of
+          India. Last updated {lastUpdated}.
         </>
       }
       /* Every one of these is a page the estate actually publishes. The pair this

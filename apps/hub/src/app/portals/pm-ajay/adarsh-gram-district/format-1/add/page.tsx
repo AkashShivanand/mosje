@@ -38,7 +38,6 @@ import {
   BLOCKS,
   DISTRICT_SCOPE,
   GRAM_PANCHAYATS,
-  PROVENANCE_LINE,
   VILLAGES,
 } from "@/lib/pm-ajay/district/registers";
 
@@ -209,7 +208,7 @@ export default function Format1AddPage() {
       ]}
       eyebrow="Adarsh Gram — District · Village Format I to IV"
       title="Create – Format I: Village Level Data"
-      meta={`Population, households and VLCC committee details recorded once for each village taken up under Adarsh Gram in ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}. ${PROVENANCE_LINE}`}
+      meta={`Population, households and VLCC committee details recorded once for each village taken up under Adarsh Gram in ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}.`}
       errors={errors}
       onSubmit={onSubmit}
       submitLabel="Submit"

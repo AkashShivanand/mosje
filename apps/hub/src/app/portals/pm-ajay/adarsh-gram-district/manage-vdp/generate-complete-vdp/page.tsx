@@ -37,7 +37,6 @@ import {
   BLOCKS,
   DISTRICT_SCOPE,
   GRAM_PANCHAYATS,
-  PROVENANCE_LINE,
   VILLAGES,
   count,
   type VdpStage,
@@ -134,7 +133,7 @@ export default function GenerateCompleteVdpPage() {
       ]}
       eyebrow="Adarsh Gram — District"
       title="Generate Complete VDP"
-      meta={`Generate and finalise the Village Development Plan for a village in ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}. ${PROVENANCE_LINE}`}
+      meta={`Generate and finalise the Village Development Plan for a village in ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}.`}
       errors={errors}
       onSubmit={onSubmit}
       submitLabel={action?.label ?? "Generate VDP"}

@@ -42,7 +42,6 @@ import {
   GRAM_PANCHAYATS,
   HOUSEHOLDS,
   INDICATOR_DOMAINS,
-  PROVENANCE_LINE,
   VILLAGES,
   type HouseholdRecord,
 } from "@/lib/pm-ajay/district/registers";
@@ -160,7 +159,7 @@ export default function ManageSurveyPage() {
       <WorklistScreen
         eyebrow="Adarsh Gram — District"
         title="Format – III(A): Manage Survey"
-        meta={`Correct a household's submitted Format III(A) survey. ${PROVENANCE_LINE}`}
+        meta={`Correct a household's submitted Format III(A) survey.`}
         summary={
           confirmation ? (
             <Alert status="success" dismissible onDismiss={() => setConfirmation(null)}>

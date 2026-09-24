@@ -32,7 +32,6 @@ import {
   BLOCKS,
   GRAM_PANCHAYATS,
   HOUSEHOLDS,
-  PROVENANCE_LINE,
   VILLAGES,
   type HouseholdRecord,
 } from "@/lib/pm-ajay/district/registers";
@@ -90,7 +89,7 @@ export default function ManageHouseholdPage() {
     <WorklistScreen
       eyebrow="Adarsh Gram — District"
       title="Format – III(A): Manage Household"
-      meta={`The household register for Adarsh Gram villages, with each household's Format III(A) survey status. ${PROVENANCE_LINE}`}
+      meta={`The household register for Adarsh Gram villages, with each household's Format III(A) survey status.`}
       actions={
         <>
           <Button href={`${DISTRICT_BASE}/dashboard`} linkAs={Link} appearance="outlined" iconLeft={<Icon name="arrow_back" size={20} />}>

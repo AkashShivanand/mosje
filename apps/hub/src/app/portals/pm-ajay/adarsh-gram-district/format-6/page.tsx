@@ -42,7 +42,7 @@ import {
   statusTone,
   type IndicatorScoreRow,
 } from "@/lib/pm-ajay/district/indicator-scorecard";
-import { BLOCKS, DISTRICT_SCOPE, PROVENANCE_LINE } from "@/lib/pm-ajay/district/registers";
+import { BLOCKS, DISTRICT_SCOPE } from "@/lib/pm-ajay/district/registers";
 
 const COLUMNS: WorklistColumn<IndicatorScoreRow>[] = [
   { key: "domain", header: "Indicator Domain", priority: 1 },
@@ -71,7 +71,7 @@ export default function Format6Page() {
     <WorklistScreen
       eyebrow="Adarsh Gram — District"
       title="Format-VI: Status of Monitorable Indicators"
-      meta={`${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state} · the ten monitorable-indicator domains for a chosen village. ${PROVENANCE_LINE}`}
+      meta={`${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state} · the ten monitorable-indicator domains for a chosen village.`}
       actions={
         <Button
           href={`${DISTRICT_BASE}/dashboard`}
@@ -142,7 +142,6 @@ export default function Format6Page() {
             progress={{ value: villageScore, max: 100 }}
             tone={scoreTone(villageScore)}
             status={{ label: scoreBand(villageScore), tone: scoreTone(villageScore) }}
-            provenance={{ source: "Illustrative district register", asOf: DISTRICT_SCOPE.asOf, status: "provisional", note: PROVENANCE_LINE }}
           />
         ) : undefined
       }

@@ -36,7 +36,6 @@ import { isInfrastructureDomain } from "@/lib/pm-ajay/district/infrastructure-pl
 import {
   BLOCKS,
   DISTRICT_SCOPE,
-  PROVENANCE_LINE,
   WORKS,
   lakh,
   type WorkRecord,
@@ -76,7 +75,7 @@ export default function Format2Page() {
     <WorklistScreen
       eyebrow="Adarsh Gram — District"
       title="Format – II: Infrastructure Development & Action Plan"
-      meta={`${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state} · the infrastructure works planned for a chosen village. ${PROVENANCE_LINE}`}
+      meta={`${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state} · the infrastructure works planned for a chosen village.`}
       actions={
         <>
           <Button href={`${DISTRICT_BASE}/format-2/create`} linkAs={Link} iconLeft={<Icon name="add" size={20} />}>

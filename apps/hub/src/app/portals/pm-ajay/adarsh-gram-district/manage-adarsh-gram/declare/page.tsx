@@ -30,7 +30,6 @@ import {
   DECLARATION_REQUESTS,
   DISTRICT_SCOPE,
   GRAM_PANCHAYATS,
-  PROVENANCE_LINE,
   VILLAGES,
 } from "@/lib/pm-ajay/district/registers";
 import {
@@ -123,7 +122,7 @@ export default function DeclareAdarshGramPage() {
     <WorklistScreen
       eyebrow="Adarsh Gram — District"
       title={'Declaration of Selected Villages as "Adarsh Gram"'}
-      meta={`Villages ready to be put forward as Adarsh Gram, for ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}. ${PROVENANCE_LINE}`}
+      meta={`Villages ready to be put forward as Adarsh Gram, for ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}.`}
       summary={
         <>
           <Alert status="info" title="Villages Eligible for Declaration Are Listed Here When:">

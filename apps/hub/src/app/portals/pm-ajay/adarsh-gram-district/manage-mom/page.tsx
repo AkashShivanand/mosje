@@ -35,7 +35,7 @@ import {
   screenCopy,
   type WorklistColumn,
 } from "@mosje/design-system";
-import { DISTRICT_SCOPE, MOMS, PROVENANCE_LINE, type MomRecord } from "@/lib/pm-ajay/district/registers";
+import { DISTRICT_SCOPE, MOMS, type MomRecord } from "@/lib/pm-ajay/district/registers";
 
 const MAX_IMAGES = 10;
 
@@ -108,7 +108,7 @@ export default function ManageMomPage() {
       <WorklistScreen
         eyebrow="Adarsh Gram — District"
         title="Manage MoM"
-        meta={`Minutes of the DLCC, Gram Sabha and block convergence meetings held for ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}. ${PROVENANCE_LINE}`}
+        meta={`Minutes of the DLCC, Gram Sabha and block convergence meetings held for ${DISTRICT_SCOPE.district}, ${DISTRICT_SCOPE.state}.`}
         columns={COLUMNS}
         rows={moms}
         registerTotal={moms.length}

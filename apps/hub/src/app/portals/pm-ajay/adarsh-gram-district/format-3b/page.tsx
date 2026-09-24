@@ -35,7 +35,6 @@ import {
   Progress,
   Select,
   screenCopy,
-  type DataProvenance,
 } from "@mosje/design-system";
 import { DISTRICT_BASE } from "@/lib/pm-ajay/district/nav";
 import {
@@ -43,19 +42,12 @@ import {
   DISTRICT_SCOPE,
   GRAM_PANCHAYATS,
   INDICATOR_DOMAINS,
-  PROVENANCE_LINE,
   VILLAGES,
   count,
   lakh,
 } from "@/lib/pm-ajay/district/registers";
 import { MONITORABLE_INDICATORS, consolidatedPosition } from "@/lib/pm-ajay/district/format-3b";
 
-const PROVENANCE: DataProvenance = {
-  source: "Illustrative district register",
-  asOf: DISTRICT_SCOPE.asOf,
-  status: "provisional",
-  note: PROVENANCE_LINE,
-};
 
 export default function Format3bPage() {
   const [block, setBlock] = React.useState("");
@@ -221,7 +213,6 @@ export default function Format3bPage() {
                 key="coverage"
                 title="Coverage Position"
                 subtitle={`${village.village} — ${domain} — ${indicator}`}
-                provenance={PROVENANCE}
               >
                 <Progress
                   label="Households Covered"
