@@ -47,6 +47,7 @@ interface RemovalRow extends VillageRecord {
   reason: string | null;
   requestedOn: string | null;
   stateRemarks: string | null;
+  ministryRemarks: string | null;
 }
 
 const STATUS_TONE: Record<RemovalStatus, BadgeStatus> = {
@@ -79,6 +80,7 @@ export default function RemoveVillagePage() {
           reason: request?.reason ?? null,
           requestedOn: request?.requestedOn ?? null,
           stateRemarks: request?.stateRemarks ?? null,
+          ministryRemarks: request?.ministryRemarks ?? null,
         };
       }),
     [requests],
@@ -125,6 +127,7 @@ export default function RemoveVillagePage() {
         reason: reason.trim(),
         requestedOn: today(),
         stateRemarks: null,
+        ministryRemarks: null,
       },
     ]);
     closeModal();
@@ -141,6 +144,11 @@ export default function RemoveVillagePage() {
       render: (row) => <Badge status={STATUS_TONE[row.removalStatus]}>{row.removalStatus}</Badge>,
     },
     { key: "requestedOn", header: "Requested Date", priority: 3, render: (row) => row.requestedOn ?? "—" },
+    /* The live table heads these "State Remarks, if any" / "Ministry Remarks, if any".
+       "If any" is what an empty cell already says, so the header names the column and the
+       cell says nothing was written. */
+    { key: "stateRemarks", header: "State Remarks", priority: 3, render: (row) => row.stateRemarks ?? "—" },
+    { key: "ministryRemarks", header: "Ministry Remarks", priority: 3, render: (row) => row.ministryRemarks ?? "—" },
   ];
 
   return (

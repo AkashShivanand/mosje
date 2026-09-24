@@ -25,6 +25,8 @@ export interface RemovalRequest {
   requestedOn: string;
   /** The state's own note — set only once it has acted. */
   stateRemarks: string | null;
+  /** The ministry's note, where the removal has travelled that far. */
+  ministryRemarks: string | null;
 }
 
 /** Seed data: three of the twelve selected villages already have a removal in flight. */
@@ -35,13 +37,15 @@ export const REMOVAL_REQUESTS: RemovalRequest[] = [
     reason: "Village re-verified as not SC-majority after the 2026 household re-survey.",
     requestedOn: "12 Sep 2026",
     stateRemarks: null,
+    ministryRemarks: null,
   },
   {
     villageId: "v-09",
     status: "Pending with State",
     reason: "Duplicate entry — Konch was also declared under an adjoining district's Adarsh Gram list.",
     requestedOn: "05 Sep 2026",
-    stateRemarks: null,
+    stateRemarks: "Forwarded to the ministry on 09 Sep 2026.",
+    ministryRemarks: "Held pending the adjoining district's confirmation.",
   },
   {
     villageId: "v-12",
@@ -49,5 +53,6 @@ export const REMOVAL_REQUESTS: RemovalRequest[] = [
     reason: "Boundary dispute with the neighbouring Naima gram panchayat, raised by the block office.",
     requestedOn: "18 Aug 2026",
     stateRemarks: "Attach the block-level boundary verification report before resubmitting.",
+    ministryRemarks: null,
   },
 ];

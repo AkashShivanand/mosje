@@ -11,7 +11,7 @@ import { OrgLogo, PortalPage, SiteHeader, SAMAVESH_COBRAND } from "@mosje/design
 import { useAuth } from "@/store/pm-ajay/auth-context";
 import { DISTRICT_NAV, DISTRICT_BASE } from "@/lib/pm-ajay/district/nav";
 import { DISTRICT_SCOPE } from "@/lib/pm-ajay/district/registers";
-import { DistrictFooter } from "./district-footer";
+import { PortalFooter } from "@/components/pm-ajay/shell/portal-footer";
 
 const PORTAL = "/portals/pm-ajay";
 
@@ -46,7 +46,7 @@ export function DistrictShell({ children }: { children: React.ReactNode }) {
       }}
       nav={DISTRICT_NAV}
       mainId="pm-main"
-      footer={<DistrictFooter />}
+      footer={<PortalFooter lastUpdated={DISTRICT_SCOPE.asOf} />}
       header={(nav) => (
         <SiteHeader
           linkAs={Link}
