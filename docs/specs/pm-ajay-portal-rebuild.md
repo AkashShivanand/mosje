@@ -85,7 +85,25 @@ Waves, each one landing as its own PR, each screen built with its live capture b
 6. **Parity pass** — every screen checked against its live original, `status` moved to
    `verified`, and the differences we chose recorded here.
 
-## 6. What blocks the rebuild today
+## 6. Where the built screens live in Figma
+
+The district's twenty-seven screens are on the **PM-AJAY page of `MoSJE Portal [Handoff]`**
+(`evmNmlK8g4VYwJVu2FwSGV`), in a section of their own to the right of the designers' work:
+**Adarsh Gram — District · Built Screens (24 Sep 2026)**. One sub-section per journey, in the
+order the work happens, and a read-me card saying what they are.
+
+Nothing that was already on that page was moved, renamed or archived — the rule
+(`figma-handoff-page-structure.md` §3) forbids it, and these are **built** screens, not designs:
+they record what the code renders, beside what was drawn.
+
+**Two Figma files are named `MoSJE Portal [Handoff]`.** The live one is
+`evmNmlK8g4VYwJVu2FwSGV` — twelve pages, the September dev syncs, and the file the audit config
+already used. `gH2vQ62cfg4677YKWuOpLc` is an older duplicate whose PM-AJAY page holds two sections
+against the live one's six. `tools/figma-handoff-structure/pages.json` registered PM-AJAY against
+the duplicate and now points at the live file; **E-Utthan, SCW and NHAPOA still point at the
+duplicate** and want the same check by someone who knows which is current.
+
+## 7. What blocks the rebuild today
 
 **The dev logins in the "Roles and Access" sheet are rejected.** Tested 2026-09-24 on
 `https://pmajay-dev.mosje.in/auth/sign-in` with the Ministry, GIA District Maker, Hostel
@@ -101,3 +119,12 @@ Until they work:
   reminder, not as a reference.
 
 **What is needed:** working dev accounts for the twelve roles, in the same sheet.
+
+**Resolved for two roles, 24 Sep 2026.** Production accounts for the Ministry and the Adarsh Gram
+district officer were supplied (`pm-ajay.dosje.gov.in`), and the district's twenty-seven screens
+were captured read-only and rebuilt. The dev accounts are still needed for the other ten roles.
+
+Because the capture is from **production**, two rules held throughout: nothing that could write was
+ever clicked — navigation and tabs only, never submit, approve, reject, delete or upload — and no
+captured screen is published anywhere outside this repository's ignored scratch space. The screens
+pushed to Figma are of OUR rebuild, which carries illustrative data, not of the live registers.
