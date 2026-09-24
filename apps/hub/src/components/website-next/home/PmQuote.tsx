@@ -37,6 +37,21 @@ const EVENT = "Address to the Nation on the 79th Independence Day, Red Fort";
 const DATE = "15 August 2025";
 const DATE_TIME = "2025-08-15";
 const SOURCE = "https://pib.gov.in/PressReleasePage.aspx?PRID=2156749";
+/**
+ * THE LINK LANDS ON THE SENTENCE, not at the top of a long address.
+ *
+ * A text fragment (`#:~:text=start,end`) tells the browser to scroll to the
+ * quoted passage and highlight it. The release runs to thousands of words and
+ * the quotation sits in its middle; without this a reader who follows the link
+ * to check what was said has to hunt for it.
+ *
+ * Verified against the live release before it was written: the passage appears
+ * verbatim, "We emphasize saturation … rightfully theirs." A fragment that does
+ * not match is IGNORED — the reader lands at the top, exactly as before — so
+ * this degrades to the plain link in browsers that do not implement it, and the
+ * day PIB re-words the page.
+ */
+const SOURCE_PASSAGE = `${SOURCE}#:~:text=We%20emphasize%20saturation,rightfully%20theirs.`;
 
 export function PmQuote() {
   return (
@@ -44,52 +59,58 @@ export function PmQuote() {
       <h2 id="wn-pmq-title" className="ds-hdr-sr">
         <T>Quote from the Prime Minister</T>
       </h2>
-      <div className="sa-container wn-pmq__in">
-        <div className="wn-pmq__quote">
+      <div className="sa-container">
+        {/* A CARD, NOT A BAND. The quotation is the most quotable thing on the
+            page and the page already carries several tinted bands, so a band
+            of its own put it in competition with them. The card gives it an
+            edge of its own, and it holds the portrait — which floated on the
+            band before, a cut-out with nothing behind it. */}
+        <div className="wn-pmq__card">
           {/* Decorative: the quotation is already marked up as a blockquote. */}
-          <Icon name="format_quote" size={64} className="wn-pmq__mark" aria-hidden="true" />
-          <blockquote className="wn-pmq__text" cite={SOURCE}>
-            <p>{QUOTE}</p>
-          </blockquote>
-          <div className="wn-pmq__copy">
-            <div>
-              <p className="wn-pmq__who">{ATTRIBUTION}</p>
-              <p className="wn-pmq__where">
-                {EVENT} · <time dateTime={DATE_TIME}>{DATE}</time>
-              </p>
-            </div>
-            <Button
-              href={SOURCE}
-              external
-              linkAs={Link}
-              variant="primary"
-              appearance="outlined"
-              size="sm"
-              className="wn-pmq__action"
-            >
-              <T>Read the Full Address</T>
-            </Button>
-          </div>
-        </div>
+          <Icon
+            name="format_quote"
+            size={64}
+            className="wn-pmq__mark"
+            aria-hidden
+          />
 
-        <div className="wn-pmq__figure">
-          <Image
-            src="/website/images/pm-quote/ashoka-chakra.png"
-            alt=""
-            aria-hidden="true"
-            width={600}
-            height={600}
-            className="wn-pmq__chakra"
-          />
-          <Image
-            src="/website/images/pm-quote/prime-minister.png"
-            alt="Shri Narendra Modi, Prime Minister of India"
-            width={500}
-            height={532}
-            sizes="(max-width: 767px) 60vw, 432px"
-            className="wn-pmq__portrait"
-            priority={false}
-          />
+          <div className="wn-pmq__body">
+            <blockquote className="wn-pmq__text" cite={SOURCE}>
+              <p>{QUOTE}</p>
+            </blockquote>
+
+            <div className="wn-pmq__foot">
+              <div>
+                <p className="wn-pmq__who">{ATTRIBUTION}</p>
+                <p className="wn-pmq__where">
+                  {EVENT} · <time dateTime={DATE_TIME}>{DATE}</time>
+                </p>
+              </div>
+              <Button
+                href={SOURCE_PASSAGE}
+                external
+                linkAs={Link}
+                variant="primary"
+                appearance="filled"
+                size="sm"
+                className="wn-pmq__action"
+              >
+                <T>Read the Full Address</T>
+              </Button>
+            </div>
+          </div>
+
+          <div className="wn-pmq__figure">
+            <Image
+              src="/website/images/pm-quote/prime-minister.png"
+              alt="Shri Narendra Modi, Prime Minister of India"
+              width={500}
+              height={532}
+              sizes="(max-width: 767px) 60vw, 351px"
+              className="wn-pmq__portrait"
+              priority={false}
+            />
+          </div>
         </div>
       </div>
     </section>

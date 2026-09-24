@@ -4,24 +4,31 @@ import { Masthead } from "@/components/website-next/chrome/Masthead";
 import { SamaveshBand } from "@/components/website-next/chrome/SamaveshBand";
 import { WebsiteFooter } from "@/components/website-next/chrome/Footer";
 import { Banner } from "@/components/website-next/home/Banner";
-import { Offerings } from "@/components/website-next/home/Offerings";
-import { Documents } from "@/components/website-next/home/Documents";
-import { Activity } from "@/components/website-next/home/Activity";
-import { Organisations } from "@/components/website-next/home/Organisations";
-import { SchemePortals } from "@/components/website-next/home/SchemePortals";
-import { Leadership } from "@/components/website-next/home/Leadership";
 import { PmQuote } from "@/components/website-next/home/PmQuote";
-import { Centres } from "@/components/website-next/home/Centres";
-import { Pledges } from "@/components/website-next/home/Pledges";
 /* The marquee is shared with the classic home page rather than copied: one list of
    marks, one set of links, one pause control. It moves into website-next when the
    classic tree is retired. */
 import { LogoStrip } from "@/components/website/LogoStrip";
+/* THE SECTIONS COME BACK FROM THE CLASSIC SITE, which is where this design is
+   fully drawn: scheme cards with their photographs, the updates panel, the
+   pledge counts, the organisation chips with their totals. The versions that
+   stood here between 24 Sep 2026 morning and evening were reduced retellings of
+   these, and they are gone. Two things stay from the rebuild because they were
+   improved rather than reduced — the hero carousel and the SAMAVESH banner —
+   and every correction made that day is kept, ported into these components
+   where it belongs. */
+import { AboutUs } from "@/components/website/AboutUs";
+import { Offerings } from "@/components/website/Offerings";
+import { Organisations } from "@/components/website/Organisations";
+import { NmbaHomeCompact } from "@/components/website/nmba/NmbaHomeCompact";
+import { RecentDocuments } from "@/components/website/RecentDocuments";
+import { DeaddictionMapSection } from "@/components/website/DeaddictionMapSection";
+import { ActivityCorner } from "@/components/website/ActivityCorner";
+import { SocialMedia } from "@/components/website/SocialMedia";
+import { SupportSection } from "@/components/website/SupportSection";
 /* Shared with the classic page for the same reason as the marquee: one banner,
    one set of words, one image pair. It moves into website-next with the rest. */
 import { SamaveshJusticeBanner } from "@/components/website/SamaveshJusticeBanner";
-import { Social } from "@/components/website-next/home/Social";
-import { Helplines } from "@/components/website-next/home/Helplines";
 import "@/components/website-next/home/home.css";
 
 export const metadata: Metadata = {
@@ -106,38 +113,17 @@ export default async function Home() {
         <Banner />
         {/* DBIM 3.0 §7.3(iv): after the banner, before the Ministry section. */}
         <PmQuote />
-        <Leadership />
-        {/* The design's order from here: the portals and the figures, then the
-            pledges, then Our Offerings. */}
-        <SchemePortals />
-        {/* The pledges and volunteering of every campaign, gathered as Figma's
-            own section does, in the design's own place for it — fourth, under
-            the figures. The NMBA band that used to stand above this was removed
-            on 24 Sep 2026: once the pledges and the centre finder each became a
-            section, it was a third door to the same campaign, carrying one link
-            and a helpline the helplines section already lists. Figma switched
-            its own copy of that band off for the same reason. */}
-        <Pledges />
-        {/* Our Offerings carries the eleven groups as its chips and What's New
-            in the column beside it, as the design draws it — three sections
-            doing one job, merged on 24 Sep 2026. */}
+        <AboutUs />
         <Offerings />
         <Organisations />
-        {/* The live page and Figma both place it here: after the pledges, before
-            Recent Documents. */}
+        <NmbaHomeCompact />
         <SamaveshJusticeBanner />
-        {/* Recent Documents carries the four roles beside it, as one section. */}
-        <Documents />
-        {/* The live page and Figma both carry the locator here, after the
-            personas and before the Activity Corner. */}
-        <Centres />
-        <Activity />
-        <Social />
-        {/* The marquee, then the support band — the design's own order, and the
-            live page's. The two were the other way round until 24 Sep 2026: a
-            page should end on the offer of help, not on a row of partner marks. */}
+        <RecentDocuments />
+        <DeaddictionMapSection />
+        <ActivityCorner />
+        <SocialMedia />
+        <SupportSection />
         <LogoStrip />
-        <Helplines />
       </main>
       <WebsiteFooter />
     </>

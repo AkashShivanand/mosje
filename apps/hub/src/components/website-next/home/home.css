@@ -289,41 +289,55 @@
      tint, the quote in the darkest brand ink DBIM asks for, the photograph at the
      right on a chakra that is ornament and nothing else. The band is full-bleed
      and the content takes `.sa-container`, like every other website section. */
-  .wn-pmq { background-color: var(--sa-bg-brand-primary-subtler); }
+  /* ── The Prime Minister's quote — a card on a tint ───────────────────────
+     Figma "PM Quote — Options", the card option (51601:56401). It replaced the
+     full-bleed band on 24 Sep 2026 for two reasons: the page already carries
+     several tinted bands, so a band of its own put the most quotable thing on
+     the page in competition with them; and the portrait is a cut-out, which on
+     a bare band had nothing behind it and read as a sticker. The card holds it.
+     The section keeps its tint so the white card has a ground to sit on. */
+  .wn-pmq { background-color: var(--sa-bg-brand-primary-base); padding-block: var(--sa-section-40); }
 
-  .wn-pmq__in {
+  .wn-pmq__card {
+    position: relative;
     display: grid;
-    align-items: center;
     gap: var(--sa-stack-24);
-    padding-top: var(--sa-padding-40);
-    padding-bottom: var(--sa-padding-40);
+    border-radius: var(--sa-shape-24);
+    background: var(--sa-bg-neutral-base);
+    box-shadow: var(--sa-elevation-modal);
+    overflow: hidden;
+  }
+  @media (min-width: 1024px) {
+    /* The portrait panel is a fixed column, as drawn: 351 of a 1320 card. */
+    .wn-pmq__card { grid-template-columns: minmax(0, 1fr) 351px; gap: 0; align-items: stretch; }
   }
 
-  @media (min-width: 768px) {
-    .wn-pmq__in {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 432px);
-      gap: var(--sa-inline-56);
-      padding-top: var(--sa-padding-56);
-      padding-bottom: var(--sa-padding-56);
-    }
-  }
-
-  .wn-pmq__quote { display: grid; gap: var(--sa-stack-24); }
-
-  /* The mark leads the quote rather than sitting behind it: at the band's own
-     `bold` rung it is legible ornament, not a watermark competing with the ink. */
+  /* THE MARK IS BEHIND THE WORDS, at the saffron rung the design draws
+     (#FF9167 = secondary/300). The secondary family publishes no icon rung
+     there — it has one, at 600 — so this binds to the surface rung of the same
+     value, the way the pull-quote's bar in About Us does. */
   .wn-pmq__mark {
-    color: var(--sa-bg-brand-primary-bold);
-    transform: rotate(180deg);
-    justify-self: start;
+    position: absolute;
+    inset-block-start: var(--sa-stack-12);
+    inset-inline-start: var(--sa-inline-16);
+    color: var(--sa-bg-brand-secondary-bold);
+    pointer-events: none;
   }
+
+  .wn-pmq__body {
+    position: relative;
+    display: grid;
+    align-content: center;
+    gap: var(--sa-stack-24);
+    padding: var(--sa-padding-32) var(--sa-padding-24);
+  }
+  @media (min-width: 1024px) { .wn-pmq__body { padding: var(--sa-padding-40); } }
 
   .wn-pmq__text { margin: 0; }
-
+  /* headline-3 tops out at 28px, which is what the design sets, and the
+     headline tier is weight 600 — one published style, not a size and a weight
+     picked apart (`check:type-linkage`). */
   .wn-pmq__text p {
-    margin: 0;
-    /* Headline 3 in Figma. `text-wrap: pretty` only tidies the last line; the
-       measure is set by the column, which is what keeps it under 80 characters. */
     font-size: var(--sa-type-headline-3-size);
     line-height: var(--sa-type-headline-3-lh);
     font-weight: var(--sa-font-weight-semibold);
@@ -331,63 +345,28 @@
     text-wrap: pretty;
   }
 
-  .wn-pmq__copy {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--sa-stack-16) var(--sa-inline-32);
-    padding-top: var(--sa-padding-12);
-    border-top: var(--sa-stroke-1) solid var(--sa-border-brand-primary-base);
+  /* The rule ties the attribution to the quote above it — without it the name
+     and the button read as two things floating under a paragraph. */
+  .wn-pmq__foot {
+    display: grid;
+    gap: var(--sa-stack-16);
+    padding-block-start: var(--sa-padding-16);
+    border-block-start: var(--sa-stroke-1) solid var(--sa-border-brand-primary-base);
   }
-
-  .wn-pmq__who {
-    margin: 0;
-    font-size: var(--sa-type-headline-5-size);
-    line-height: var(--sa-type-headline-5-lh);
-    font-weight: var(--sa-font-weight-semibold);
-    color: var(--sa-text-neutral-base);
+  @media (min-width: 768px) {
+    .wn-pmq__foot { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--sa-inline-24); }
   }
+  .wn-pmq__who { font-size: var(--sa-type-title-2-size); line-height: var(--sa-type-title-2-lh); font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-neutral-bolder); }
+  .wn-pmq__where { margin-top: var(--sa-stack-4); font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); color: var(--sa-text-neutral-subtle); }
+  .wn-pmq__action { justify-self: start; }
 
-  .wn-pmq__where {
-    margin: 0;
-    font-size: var(--sa-type-body-2-size);
-    line-height: var(--sa-type-body-2-lh);
-    color: var(--sa-text-neutral-subtle);
-  }
-
-  /* The portrait sits on the chakra, both bottom-aligned to the band's floor. */
+  /* The portrait's own panel, on the saffron wash the design gives it. */
   .wn-pmq__figure {
-    position: relative;
     display: grid;
     place-items: end center;
-    /* The column, not the image, sets the box: a figure that hugs its content
-       cannot answer `width: min(100%, …)` and the portrait stayed at 200px. */
-    width: 100%;
+    background: var(--sa-bg-brand-secondary-base);
   }
-
-  /* Behind the head, not behind the whole figure: at the band's own tint it is a
-     ground for the portrait to stand on, and it must never read as a second mark
-     competing with the emblem in the masthead. */
-  .wn-pmq__chakra {
-    position: absolute;
-    inset-block-start: 0;
-    inset-inline-end: 8%;
-    width: 78%;
-    height: auto;
-    opacity: 0.6;
-  }
-
-  .wn-pmq__portrait {
-    position: relative;
-    align-self: end;
-    width: min(100%, 240px);
-    height: auto;
-  }
-
-  @media (min-width: 768px) {
-    .wn-pmq__figure { min-height: 300px; }
-    .wn-pmq__portrait { width: min(100%, 360px); }
-  }
+  .wn-pmq__portrait { width: min(100%, 320px); height: auto; object-fit: contain; }
 
   /* ── Take a Pledge ───────────────────────────────────────────────────────────
      Two rows: the pledges themselves, then the volunteering registers, which ask
