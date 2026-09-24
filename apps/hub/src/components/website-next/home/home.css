@@ -247,11 +247,73 @@
 
   /* ── About the Department ────────────────────────────────────────────────── */
   .wn-home-about { display: grid; gap: var(--sa-stack-40); align-items: start; }
-  @media (min-width: 1024px) { .wn-home-about { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--sa-inline-64); } }
+  /* The copy takes the larger column, as the design draws it (793 against 456
+     on a 1440 frame). It was the other way round, which squeezed the three
+     links into cells too narrow for "Our Ministry" to stay on one line. */
+  @media (min-width: 1024px) { .wn-home-about { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--sa-inline-64); } }
   .wn-home-about__lead { margin-top: var(--sa-stack-16); font-size: var(--sa-type-body-1-size); line-height: var(--sa-type-body-1-lh); color: var(--sa-text-neutral-base); }
+
+  /* The Ministry's own line, quoted: a saffron wash behind it and the brand's
+     secondary rule down its leading edge, as the design draws it. Italic
+     because it is quoted speech, not the page's own voice. */
+  .wn-home-about__quote {
+    margin-top: var(--sa-stack-24);
+    padding: var(--sa-padding-16) var(--sa-padding-20);
+    /* THE EDGE IS A PAINTED SURFACE, SO IT BINDS TO ONE. The estate publishes
+       no `border/brand/secondary/*` rung at all — the secondary family has
+       `bg/*`, `on-bg/*` and one `icon/*` and nothing else — and a 4px saffron
+       bar is a filled shape rather than a hairline, so it takes the background
+       rung whose value the design draws. The ramp wants a secondary border
+       family; recorded here rather than solved with a hex. */
+    border-inline-start: var(--sa-stroke-4) solid var(--sa-bg-brand-secondary-bolder);
+    background: var(--sa-bg-brand-secondary-base);
+    color: var(--sa-on-bg-brand-secondary-base);
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    font-style: italic;
+  }
+
+  /* Three doors in a row, each a bordered cell with a chevron — the design's
+     shape, and the reason they are not the plain ruled list the divisions use:
+     these three are the section's own actions, not a directory. */
+  .wn-home-about__links { display: grid; gap: var(--sa-stack-12); margin-top: var(--sa-stack-24); }
+  @media (min-width: 768px) { .wn-home-about__links { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .wn-home-about__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-inline-12);
+    min-height: var(--sa-target-spacious);
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-base);
+    color: var(--sa-text-link-brand-default);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+  .wn-home-about__link:hover { border-color: var(--sa-border-brand-primary-base); text-decoration: underline; text-underline-offset: 0.2em; }
+  .wn-home-about__link:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: var(--sa-focus-offset); }
+
   .wn-home-about__side { display: grid; gap: var(--sa-stack-32); }
-  .wn-home-ministers { display: grid; gap: var(--sa-stack-16); grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); }
-  .wn-home-minister { display: grid; justify-items: center; gap: var(--sa-stack-4); padding: var(--sa-padding-24) var(--sa-padding-16); border-radius: var(--sa-shape-16); background: var(--sa-bg-neutral-base); text-align: center; }
+  /* Two across, with the Union Minister's card spanning both. */
+  .wn-home-ministers { display: grid; gap: var(--sa-stack-16); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* The saffron edge binds to the secondary surface rung for the same reason
+     the pull-quote's bar does — see the note there. */
+  .wn-home-minister { display: grid; justify-items: center; gap: var(--sa-stack-4); padding: var(--sa-padding-24) var(--sa-padding-16); border: var(--sa-stroke-1) solid var(--sa-bg-brand-secondary-subtle); border-radius: var(--sa-shape-16); background: var(--sa-bg-neutral-base); text-align: center; }
+  /* The Union Minister: the full width of the pair, portrait beside the name
+     rather than above it, on the saffron wash the design gives him. */
+  .wn-home-minister--lead {
+    grid-column: 1 / -1;
+    grid-template-columns: auto minmax(0, 1fr);
+    place-items: center start;
+    /* The name and the designation are one block beside the portrait, so the
+       rows hug rather than spreading over the portrait's height. */
+    align-content: center;
+    gap: var(--sa-stack-4) var(--sa-inline-24);
+    background: var(--sa-bg-brand-secondary-base);
+    text-align: start;
+  }
+  .wn-home-minister--lead .wn-home-minister__photo { grid-row: 1 / span 2; margin-bottom: 0; }
   /* A headshot box: DBIM §6.1.4's circular crop, at a size no token models. */
   .wn-home-minister__photo { display: block; width: 144px; height: 144px; margin-bottom: var(--sa-stack-12); border-radius: var(--sa-shape-full); overflow: hidden; background: var(--sa-bg-neutral-subtle); }
   .wn-home-minister__photo img { width: 100%; height: 100%; object-fit: cover; object-position: top; }

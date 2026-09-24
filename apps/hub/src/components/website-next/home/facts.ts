@@ -12,12 +12,31 @@ export const GLANCE = [
 ] as const;
 
 /**
- * About Us, first two sentences. Verbatim except "We implement" → "It
- * implements": the estate speaks about the Department, not as it. The third
- * sentence (on demographic data) is left to the About page.
+ * About Us, verbatim except "We implement" → "It implements": the estate speaks
+ * about the Department, not as it.
+ *
+ * The third sentence was cut until 24 Sep 2026 and is back. It was left to the
+ * About page on the reasoning that the home page wants the short form — but the
+ * design draws the whole paragraph, and the clause carries the one thing in it a
+ * reader could not guess: that the Department works without current demographic
+ * data.
  */
 export const MANDATE =
-  "The Department of Social Justice & Empowerment (DoSJE) is mandated to ensure the empowerment and welfare of India’s most vulnerable groups, including Scheduled Castes, OBCs, Senior Citizens, Transgender Persons, and victims of substance abuse. It implements various targeted schemes for their social, educational, and economic development.";
+  "The Department of Social Justice & Empowerment (DoSJE) is mandated to ensure the empowerment and welfare of India’s most vulnerable groups, including Scheduled Castes, OBCs, Senior Citizens, Transgender Persons, and victims of substance abuse. It implements various targeted schemes for their social, educational, and economic development, ensuring their inclusion despite challenges like the lack of updated demographic data.";
+
+/**
+ * The line the Ministry prints under the mandate on its own home page, quoted
+ * verbatim (dosje.gov.in, read 24 Sep 2026), and drawn as a pull-quote in the
+ * design.
+ *
+ * It was left off until 24 Sep 2026 as a restatement of the mandate above it —
+ * which it partly is. It is back because it is the Ministry speaking about
+ * itself rather than about the Department, which is a different sentence, and
+ * because the design gives it a place of its own rather than a second
+ * paragraph.
+ */
+export const MINISTRY_LINE =
+  "The Ministry of Social Justice & Empowerment works to uplift India’s most vulnerable communities through targeted initiatives, inclusive growth, and compassionate governance.";
 
 /**
  * Helplines, tap to call (issue MAN-07). Sources, from the scheme master:
