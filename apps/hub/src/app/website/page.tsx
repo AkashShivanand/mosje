@@ -121,13 +121,17 @@ export default async function Home() {
             its own copy of that band off for the same reason. */}
         <Pledges />
         <Offerings />
+        {/* The eleven groups sit with the offerings, as the design's own
+            audience chips do; they move INSIDE that section when it gains its
+            tabs and filtered list. */}
+        <Audiences />
         <WhatsNew />
         <Organisations />
         {/* The live page and Figma both place it here: after the pledges, before
             Recent Documents. */}
         <SamaveshJusticeBanner />
+        {/* Recent Documents carries the four roles beside it, as one section. */}
         <Documents />
-        <Audiences />
         {/* The live page and Figma both carry the locator here, after the
             personas and before the Activity Corner. */}
         <Centres />

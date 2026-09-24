@@ -153,13 +153,10 @@
   @media (min-width: 768px) { .wn-home-groups { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
   @media (min-width: 1024px) { .wn-home-groups { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sa-stack-16); } }
   @media (min-width: 1280px) { .wn-home-groups { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
-  .wn-home-roles { margin-top: var(--sa-stack-40); }
-  .wn-home-roles__title,
+  /* `.wn-home-roles*` went with the role pills on 24 Sep 2026 — the roles are
+     the panel beside Recent Documents now (`.wn-roles`). */
   .wn-home-kinds__title,
   .wn-home-divisions__title { font-size: var(--sa-type-title-1-size); line-height: var(--sa-type-title-1-lh); font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-neutral-bolder); }
-  .wn-home-roles__list { display: grid; gap: var(--sa-stack-12); margin-top: var(--sa-stack-16); }
-  @media (min-width: 768px) { .wn-home-roles__list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  @media (min-width: 1024px) { .wn-home-roles__list { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sa-stack-16); } }
 
   /* ── Schemes ─────────────────────────────────────────────────────────────── */
   .wn-home-schemes { display: grid; gap: var(--sa-stack-16); margin-top: var(--sa-stack-32); }
@@ -169,10 +166,76 @@
   .wn-home-kinds { margin-top: var(--sa-stack-48); }
 
   /* ── Documents ───────────────────────────────────────────────────────────── */
+  /* Two columns from 1024, as the design draws them: the documents, and the
+     roles beside them. One column below that — the role panel is a card of its
+     own and reads perfectly well under the documents on a phone. */
+  /* `minmax(0, 1fr)`, NOT the implicit `auto` track. An auto track takes the
+     largest min-content of its items, and the role panel's carousel reports the
+     width of all four slides laid end to end — 944px inside a 343px phone, so
+     the documents column and the heading beside it were both cut off at the
+     right edge. The same reason `.wn-roles` is min-width 0: a grid item's
+     default `min-width: auto` refuses to shrink below its content. */
+  .wn-home-docgrid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sa-stack-40); }
+  @media (min-width: 1024px) { .wn-home-docgrid { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: var(--sa-inline-40); align-items: start; } }
+  .wn-home-docgrid__main { min-width: 0; }
+
+  /* Two across inside the left column, never four: the column is two thirds of
+     the page now, and four cards in it are 150px wide. */
   .wn-home-docs { display: grid; gap: var(--sa-stack-16); margin-top: var(--sa-stack-32); }
   @media (min-width: 768px) { .wn-home-docs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  @media (min-width: 1024px) { .wn-home-docs { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sa-stack-24); } }
+  .wn-home-doc {
+    display: grid;
+    align-content: start;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-20);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-base);
+  }
+  .wn-home-doc__title { font-size: var(--sa-type-title-2-size); line-height: var(--sa-type-title-2-lh); font-weight: var(--sa-font-weight-semibold); }
+  .wn-home-doc__link { color: var(--sa-text-neutral-bolder); }
+  .wn-home-doc__link:hover { color: var(--sa-text-link-brand-hover); text-decoration: underline; text-underline-offset: 0.2em; }
+  .wn-home-doc__link:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: var(--sa-focus-offset); border-radius: var(--sa-shape-4); }
+  .wn-home-doc__meta { font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); color: var(--sa-text-neutral-subtle); }
+  /* The actions sit at the foot of the card whatever the title's length, so a
+     row of cards has one line of buttons rather than four heights of them. */
+  .wn-home-doc__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--sa-inline-8); margin-top: auto; padding-top: var(--sa-padding-8); }
+
   .wn-home-doclinks ul { display: flex; flex-wrap: wrap; gap: 0 var(--sa-inline-24); margin-top: var(--sa-stack-16); }
+
+  /* ── Explore Specific Benefits — the roles, one at a time ────────────────── */
+  .wn-roles {
+    min-width: 0;
+    padding: var(--sa-padding-24);
+    border-radius: var(--sa-shape-20);
+    background: var(--sa-bg-brand-primary-bolder);
+    color: var(--sa-on-bg-brand-primary-bolder);
+    text-align: center;
+  }
+  .wn-roles__title { font-size: var(--sa-type-headline-4-size); line-height: var(--sa-type-headline-4-lh); font-weight: var(--sa-font-weight-semibold); }
+  .wn-roles__lede {
+    margin-top: var(--sa-stack-12);
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-bg-brand-primary-boldest);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+  .wn-roles__carousel { margin-top: var(--sa-stack-16); }
+  .wn-role {
+    display: grid;
+    justify-items: center;
+    gap: var(--sa-stack-12);
+    padding: var(--sa-padding-16);
+    border-radius: var(--sa-shape-16);
+    background: var(--sa-bg-brand-primary-boldest);
+    color: var(--sa-on-bg-brand-primary-boldest);
+  }
+  .wn-role__art { display: grid; place-items: center; width: 180px; height: 180px; }
+  .wn-role__art img { width: 100%; height: 100%; object-fit: contain; }
+  .wn-role__label { display: inline-flex; align-items: center; gap: var(--sa-inline-8); font-size: var(--sa-type-title-2-size); line-height: var(--sa-type-title-2-lh); font-weight: var(--sa-font-weight-semibold); }
+  .wn-role:hover .wn-role__label { text-decoration: underline; text-underline-offset: 0.2em; }
+  .wn-role:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ringInner); outline-offset: var(--sa-focus-offset); }
 
   /* ── Events and media ────────────────────────────────────────────────────── */
   .wn-home-activity { display: grid; gap: var(--sa-stack-40); margin-top: var(--sa-stack-32); }

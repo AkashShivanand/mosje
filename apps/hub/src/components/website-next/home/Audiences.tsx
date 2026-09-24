@@ -11,34 +11,14 @@ import {
 /**
  * Persona entry (DBIM home-page component; issues NAV-05 and X-IA-07).
  *
- * Two questions, answered in order. "Which schemes are for me?" — the eleven
- * groups of the Department's mandate (8 Sep decision), each opening the scheme
- * finder filtered to it. "What is here for someone in my role?" — the four
- * DBIM personas the live site links to (DBIM §A.4.1 ix).
+ * "Which schemes are for me?" — the eleven groups of the Department's mandate
+ * (8 Sep decision), each opening the scheme finder filtered to it.
+ *
+ * The second question this section used to answer — "what is here for someone
+ * in my role?" — left on 24 Sep 2026 for the panel beside Recent Documents,
+ * where the design puts it. Four job titles at the foot of a section a reader
+ * had already answered were four more choices with nothing explaining them.
  */
-const ROLES = [
-  {
-    label: "Students",
-    href: "/website/for-student",
-    img: "/website/images/Student.png",
-  },
-  {
-    label: "Beneficiaries",
-    href: "/website/for-beneficiary",
-    img: "/website/images/Beneficiary.png",
-  },
-  {
-    label: "Researchers",
-    href: "/website/for-researcher",
-    img: "/website/images/Researcher.png",
-  },
-  {
-    label: "Government Officials",
-    href: "/website/for-government-official",
-    img: "/website/images/Government-Official.png",
-  },
-] as const;
-
 export function Audiences() {
   return (
     <Band
@@ -92,27 +72,6 @@ export function Audiences() {
           />
         </li>
       </ul>
-
-      <section className="wn-home-roles" aria-labelledby="roles-title">
-        <h3 id="roles-title" className="wn-home-roles__title">
-          <T>Information by Role</T>
-        </h3>
-        <ul className="wn-home-roles__list">
-          {ROLES.map((r) => (
-            <li key={r.href}>
-              <ActionTile
-                linkAs={Link}
-                href={r.href}
-                shape="pill"
-                tone="solid"
-                mediaSize={48}
-                title={<T>{`For ${r.label}`}</T>}
-                media={<Image src={r.img} alt="" width={48} height={48} />}
-              />
-            </li>
-          ))}
-        </ul>
-      </section>
     </Band>
   );
 }
