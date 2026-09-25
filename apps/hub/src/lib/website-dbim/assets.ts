@@ -19,11 +19,15 @@ export interface DbimImage {
   height: number;
 }
 
-/** The home banner carousel, in the reference's order. */
+/**
+ * The home banner carousel. The reference's order, except that the Mann Ki Baat
+ * campaign (from the central campaign pool, ccps.digifootprint.gov.in) leads — the
+ * Department's instruction of 25 Sep 2026.
+ */
 export const DBIM_BANNERS: (DbimImage & { href?: string })[] = [
+  { src: `${D}/banners/banner-03.jpg`, alt: "Share your ideas and suggestions with the Prime Minister for Mann Ki Baat", width: 1920, height: 640, href: "https://www.mygov.in/" },
   { src: `${D}/banners/banner-01.jpg`, alt: "Launch of the Senior Citizen Welfare Portal by the Hon'ble President of India, Smt. Droupadi Murmu, on 2 May 2025", width: 1920, height: 640, href: "https://scw.dosje.gov.in/" },
   { src: `${D}/banners/banner-02.jpg`, alt: "8 Rules for Respecting the Elderly — Elder Line, National Helpline for Senior Citizens, Toll Free 14567", width: 1920, height: 640 },
-  { src: `${D}/banners/banner-03.jpg`, alt: "Share your ideas and suggestions with the Prime Minister for Mann Ki Baat", width: 1920, height: 640, href: "https://www.mygov.in/" },
   { src: `${D}/banners/banner-04.jpg`, alt: "National Helpline Against Atrocities on Scheduled Castes and Scheduled Tribes, 14566", width: 1920, height: 640 },
   { src: `${D}/banners/banner-05.jpg`, alt: "Nasha Mukt Bharat Abhiyaan", width: 1920, height: 640, href: "https://nmba.dosje.gov.in/" },
   { src: `${D}/banners/banner-06.jpg`, alt: "Swachhotsav — Swachhata Hi Seva 2025, a Swachh Bharat Mission initiative, 17 September to 2 October 2025", width: 1920, height: 640 },
