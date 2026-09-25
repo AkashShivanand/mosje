@@ -393,17 +393,21 @@
   .wn-pmq__where { margin-top: var(--sa-stack-4); font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); color: var(--sa-text-neutral-subtle); }
   .wn-pmq__action { justify-self: start; }
 
-  /* The portrait's own panel, on the saffron wash the design gives it. */
+  /* The portrait's own panel, on the saffron wash the design gives it. The
+     photograph fills it — the design stretches and crops the image to the
+     panel rather than centring a cut-out inside it. */
   .wn-pmq__figure {
-    display: grid;
-    place-items: end center;
+    position: relative;
+    overflow: hidden;
     background: var(--sa-bg-brand-secondary-base);
+    /* Stacked, the panel has no column to take its height from. 4:3 is the
+       phone's own decision, not the design's 350x373: at the drawn ratio the
+       photograph stood 379px tall under the words and outweighed them. */
+    aspect-ratio: 4 / 3;
   }
-  /* Stacked, the portrait is a block of its own under the words rather than a
-     column beside them, so it takes the smaller of the two sizes: at 320 it
-     stood 340px tall on a 390 phone and outweighed the quotation it belongs to. */
-  .wn-pmq__portrait { width: min(100%, 240px); height: auto; object-fit: contain; }
-  @media (min-width: 1024px) { .wn-pmq__portrait { width: min(100%, 320px); } }
+  @media (min-width: 1024px) { .wn-pmq__figure { aspect-ratio: auto; } }
+  .wn-pmq__portrait { object-fit: cover; object-position: center top; }
+  @media (min-width: 1024px) { .wn-pmq__portrait { object-position: center bottom; } }
 
   /* ── Take a Pledge ───────────────────────────────────────────────────────────
      Two rows: the pledges themselves, then the volunteering registers, which ask
