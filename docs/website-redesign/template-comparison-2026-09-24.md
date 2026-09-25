@@ -170,3 +170,64 @@ how a screen-reader user navigates at all.
 
 Bands 3 and 4 have not been measured this way yet. They should be before anyone
 works on them.
+
+---
+
+# SECOND CORRECTION, 25 Sep 2026 — the revised order was wrong too, and the list is empty
+
+**Every one of the sixteen templates above was checked page by page against the
+classic. None of them needs restoring.** The work queued by the section above
+does not exist.
+
+The rendered-`<h2>` comparison replaced line count because line count could not
+tell a rich page from a thin one. It cannot tell a **sourced** page from an
+**invented** one — and on a Government of India site that is the distinction
+that matters. Every "lost section" below turned out to be one of four things.
+
+## 1. Fabricated content, correctly removed — 10 templates
+
+| Template | What the "lost sections" actually were |
+|---|---|
+| `/samavesh-admin-portals` | Six invented consoles — SMILE Admin Console, PM-AJAY MIS, Scholarship Admin (NOS), NMBA Dashboard, Grant-in-Aid Management, NGO Monitoring Portal — **every one linking to `#`**. The redesign lists the four consoles that exist in the registry and route. Dead links: classic 6, redesign 0. |
+| `/cessation-…` | Three sections of procedural rule the Department does not publish: advance written intimation, refund of unspent balances with interest, disposal of assets. The redesign carries the one paragraph dosje.gov.in actually publishes, and says so in a comment. |
+| `/penalties-…` | Same shape. The Department publishes a two-item list at a different slug; the classic carried three authored sections. |
+| `/terms-conditions`, `/hyperlinking-policy`, `/copyright`, `/privacy-policy`, `/prioritization-…` | Each redesign page's own header says it replaces "a paraphrase that carried clauses the Department never published", naming the source URL and read date. |
+| both `/policies-acts-rules-…` | "Acts", "Rules & Codes", "Policies & Circulars" were lists of links to nowhere — **8 dead `#` links on each page**. The redesign draws a Documents list that resolves. |
+| `/organisation-under-division-social-division` | 5 dead `#` links; the redesign names the institute and links it. |
+
+**Restoring any of these would have put invented legal text and dead links back
+onto a Government of India site.** That is the opposite of the instruction.
+
+## 2. Moved to a better address — 1 template
+
+`/help` lost "Screen Reader Access" because it now lives at
+**`/website/screen-reader-access`** — the address GIGW auditors look for (issue
+MAN-02) — with its six-row reader table intact, and `/help` links to it.
+
+## 3. Renamed — 1 template
+
+`/search`: "Popular searches" → "Suggested Searches" + "Popular Links". 18
+working links against 16.
+
+## 4. The redesign is simply bigger — 4 templates
+
+| Template | Classic | Redesign |
+|---|---|---|
+| `/dashboard` | 82 words, two empty chart headings | **1,572 words**, four figure sections |
+| `/whos-who` | 806 words, 82 links | **971 words, 103 links** — and DAF is present in both |
+| `/contact-us`, `/mosje-contact` | 143 / 66 words, 1 link, a "Send Us a Message" form that posts nowhere | **210 / 207 words, 16 links** |
+| `/organisation/[...slug]` | 6,518px | **8,252px** (established 24 Sep) |
+
+## What to measure instead
+
+Three instruments have now been tried and two discarded:
+
+1. **Line count** — discarded 24 Sep. Cannot tell rich from thin.
+2. **Rendered `<h2>` sets** — discarded 25 Sep. Cannot tell sourced from invented.
+3. **Dead-link count, word provenance, and the page's own sourcing comment** —
+   what actually answered it. A classic section with a `#` link or with no
+   traceable source is not content that was lost.
+
+**Nothing on this list is pending.** Anyone reaching for it should start by
+asking, of each classic section, *where did the Department publish this?* — and
+should expect the answer, often, to be nowhere.
