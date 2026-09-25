@@ -31,6 +31,13 @@ const noop = () => () => {};
  * mismatches). Only when React is creating the element in the browser does it render as a
  * `type="text/x-color-mode-init"` data block — React does not warn about data blocks, and
  * a second run would be pointless: by then `RouteColorModeProvider` owns the attribute.
+ *
+ * THE ONE PATH WITHOUT A FIRST-PAINT GUARANTEE is that same browser-built one. There the
+ * server sent Next's error shell (`<html id="__next_error__">`), which carries no init
+ * script at all, so `data-brand` arrives only when `RouteColorModeProvider` mounts — the
+ * default palette can show for a frame on those error pages. That was equally true before
+ * this component (measured 25 Sep 2026: no attribute at <body> on /website/no-such-page,
+ * before and after); the inline script never ran on that path, it only warned.
  */
 export function ColorModeInitScript() {
   const inBrowserRender = React.useSyncExternalStore(

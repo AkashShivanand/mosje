@@ -107,7 +107,7 @@ by `docs/specs/samavesh-accessibility-consolidation.md`, and both apply at once.
    and smile-admin all do.
 6. **Never open the widget with `[data-uw-trigger="true"]`.** It is the vendor's own
    documented hook and it does not work: v3.28 binds an opener that honours it and a
-   closer that does not, so the same click opens the panel and immediately closes it —
+   closer that does not — still true of v3.36, re-read in its source on 25 Sep 2026 — so the same click opens the panel and immediately closes it —
    a bug that presents exactly as "the button does nothing". Replay the click on the
    vendor's trigger element instead, which satisfies both listeners. Defer it to the next
    task (`setTimeout(…, 0)`); opening inline loses the race against the closer every time.
