@@ -352,7 +352,14 @@
     fill: var(--sa-bg-brand-secondary-bold);
     opacity: var(--sa-alpha-40);
     pointer-events: none;
+    /* BEHIND THE WORDS, not over them. An absolutely positioned element paints
+       above its in-flow siblings by default, so at 40% the mark was tinting
+       the first two words rather than sitting under them. Local order inside
+       the body's own stacking context — not a rung on the estate's ladder. */
+    z-index: 0;
   }
+  .wn-pmq__text,
+  .wn-pmq__foot { position: relative; z-index: 1; }
   @media (min-width: 1024px) {
     .wn-pmq__mark {
       inset-block-start: var(--sa-stack-20);
