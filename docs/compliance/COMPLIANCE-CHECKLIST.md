@@ -9,7 +9,7 @@ The single enforceable checklist for every MoSJE page/portal, merging three stan
 | **UX4G** — User Experience for Government | Design system, components, accessibility widget, UX principles | [`docs/guidelines/UX4G-3.0/`](../guidelines/UX4G-3.0/) · ux4g.gov.in · doc.ux4g.gov.in |
 | **GuDApps** — e-Governance application development | Portal data quality, authentication, forms, reports | [`docs/guidelines/GuDApps/`](../guidelines/GuDApps/) — best practice, not a gate |
 
-> **Every audit we have been sent lives in [`docs/audits-received/`](../audits-received/).**
+> **Every audit of this estate, ours and theirs, is in [`docs/audit-reports/`](../audit-reports/).**
 > Its register lists who sent what, when, and whether we have replied — read it before
 > answering a new observation, because the same point has often been raised before.
 
