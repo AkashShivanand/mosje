@@ -63,6 +63,10 @@
   }
 
   [data-design="dbim"] .db-hb-social__body {
+    /* Positioned, so the feeds' visually-hidden "(opens in a new tab)" text is clipped
+       by this scroll box. Unpositioned, it escaped to its static place ~1,900px below
+       and stretched the home page far past the footer. */
+    position: relative;
     height: 310px; /* .socialmediaheight */
     overflow: hidden auto; /* Instagram's embed insists on 326px; the card is narrower */
     padding: var(--sa-padding-12);
@@ -121,6 +125,23 @@
     color: var(--sa-color-primaryScale-600);
     text-decoration: underline;
     text-underline-offset: 2px;
+  }
+
+  /* "Show Latest Posts" — the reference's outlined VIEW MORE button, so the card reads
+     as part of the same template before any feed is loaded. */
+  [data-design="dbim"] .db-hb-feed__load {
+    margin-top: var(--sa-stack-16);
+    border: 1px solid var(--sa-color-primaryScale-800);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-neutralScale-0);
+    color: var(--sa-color-primaryScale-800);
+    font-size: 0.875rem; /* 14px */
+    font-weight: var(--sa-font-weight-medium);
+    text-transform: uppercase;
+  }
+
+  [data-design="dbim"] .db-hb-feed__load:hover:not(:disabled) {
+    background: var(--sa-color-primaryScale-100);
   }
 
   [data-design="dbim"] .db-hb-feed__more:hover {

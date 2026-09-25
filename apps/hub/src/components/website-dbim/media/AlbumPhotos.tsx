@@ -31,7 +31,7 @@ export function DbimAlbumPhotos({ photos }: { photos: AlbumPhoto[] }) {
           <li key={p.src} className="db-media-card">
             <Button ref={(el) => { tiles.current[i] = el; }} appearance="text" className="db-photo" onClick={() => setOpen(i)} aria-label={`View photograph ${i + 1} of ${photos.length}: ${p.alt}`}>
               <span className="db-media-frame">
-                <Image src={p.thumb} alt="" fill sizes="(min-width: 992px) 30vw, (min-width: 768px) 45vw, 100vw" className="db-media-img" />
+                <Image src={p.thumb} alt="" fill sizes="(min-width: 992px) 30vw, (min-width: 768px) 45vw, 100vw" className="db-media-img" priority={i < 3} />
                 <span className="db-album-arrow" aria-hidden="true">
                   <Icon name="zoom_in" size={24} aria-hidden />
                 </span>

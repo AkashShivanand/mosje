@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Button } from "@mosje/design-system";
 
 import {
   DBIM_FACEBOOK_POSTS,
@@ -34,36 +35,38 @@ interface EmbedWindow {
 
 /**
  * One card body of "In Social Media": a named, focusable 310px region holding the
- * network's own embeds. Nothing is requested from the network until the card is
- * within 400px of the viewport and the browser is online; until then — and as the
- * last item once it is live — the card names the account and links to it.
+ * network's own embeds.
+ *
+ * NOTHING IS REQUESTED FROM THE NETWORK UNTIL THE READER ASKS. The card first names the
+ * account and links to it; "Show Latest Posts" loads that one network's embeds. It used
+ * to go live on approach (within 400px of the viewport), which put X's, Facebook's and
+ * Instagram's scripts — and their own console errors, trackers and ~100 background
+ * requests a minute — on every visit to the home page, for a band most readers scroll
+ * past. Gated on intent, as data-state-completeness.md §5.1 asks of anything heavy.
  */
 export function DbimSocialFeed({ feed }: { feed: Feed }) {
   const ref = useRef<HTMLDivElement>(null);
   const embeds = useRef<HTMLDivElement>(null);
   const [live, setLive] = useState(false);
+  const [offline, setOffline] = useState(false);
 
+  // An offline reader keeps the account card; the button says why it cannot load.
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    let near = false;
-    const tryGoLive = () => {
-      if (near && navigator.onLine !== false) setLive(true);
-    };
-    const io = new IntersectionObserver(
-      (entries) => {
-        near = entries.some((e) => e.isIntersecting);
-        tryGoLive();
-      },
-      { rootMargin: "400px 0px" },
-    );
-    io.observe(el);
-    window.addEventListener("online", tryGoLive);
+    const sync = () => setOffline(navigator.onLine === false);
+    sync();
+    window.addEventListener("online", sync);
+    window.addEventListener("offline", sync);
     return () => {
-      io.disconnect();
-      window.removeEventListener("online", tryGoLive);
+      window.removeEventListener("online", sync);
+      window.removeEventListener("offline", sync);
     };
   }, []);
+
+  // The button that asked disappears with the account card; keep a keyboard reader in
+  // the region it loaded rather than dropping focus to the page.
+  useEffect(() => {
+    if (live) ref.current?.focus();
+  }, [live]);
 
   useEffect(() => {
     if (!live || !embeds.current) return;
@@ -108,7 +111,7 @@ export function DbimSocialFeed({ feed }: { feed: Feed }) {
                   loading="lazy"
                   title={`Video ${i + 1} from the Department's YouTube channel`}
                   src={`https://www.youtube-nocookie.com/embed/videoseries?list=${DBIM_YOUTUBE_UPLOADS.playlist}&index=${i + 1}`}
-                  allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                 />
               ))}
@@ -123,7 +126,7 @@ export function DbimSocialFeed({ feed }: { feed: Feed }) {
                   loading="lazy"
                   title={`Facebook ${p.kind === "video" ? "video" : "post"} ${i + 1} from the Department`}
                   src={`https://www.facebook.com/plugins/${p.kind}.php?href=${encodeURIComponent(p.href)}&show_text=true&width=500`}
-                  allow="clipboard-write; encrypted-media; picture-in-picture; web-share"
+                  allow="clipboard-write; encrypted-media; picture-in-picture"
                   allowFullScreen
                 />
               ))}
@@ -136,6 +139,16 @@ export function DbimSocialFeed({ feed }: { feed: Feed }) {
           <p className="db-hb-feed__name">{DBIM_SOCIAL_ACCOUNT}</p>
           <p className="db-hb-feed__handle">{feed.handle}</p>
           {more}
+          <Button
+            variant="primary"
+            appearance="outlined"
+            size="sm"
+            className="db-hb-feed__load"
+            disabled={offline}
+            onClick={() => setLive(true)}
+          >
+            {offline ? "Posts Load When You Are Back Online" : "Show Latest Posts"}
+          </Button>
         </div>
       )}
     </div>

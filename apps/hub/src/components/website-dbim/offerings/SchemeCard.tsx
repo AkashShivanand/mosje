@@ -13,15 +13,16 @@ export function DbimSchemeCard({ card, priority = false }: { card: Card; priorit
   const href = dbimHref(`/offerings/schemes-and-services/${card.id}`);
   return (
     <article className="db-scheme-card">
-      <Image
-        className="db-scheme-card__img"
-        src={card.art}
-        alt=""
-        width={643}
-        height={216}
-        sizes="(min-width: 768px) 50vw, 100vw"
-        priority={priority}
-      />
+      <div className="db-scheme-card__media">
+        <Image
+          className="db-scheme-card__img"
+          src={card.art}
+          alt=""
+          fill
+          sizes="(min-width: 768px) 50vw, 100vw"
+          priority={priority}
+        />
+      </div>
       <div className="db-scheme-card__body">
         <div className="db-scheme-card__head">
           <h2 className="db-scheme-card__title">{card.name}</h2>

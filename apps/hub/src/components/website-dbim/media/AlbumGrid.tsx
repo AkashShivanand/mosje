@@ -49,11 +49,11 @@ export function DbimAlbumGrid({ albums }: { albums: DbimAlbumCard[] }) {
         />
       ) : (
         <ul className="db-media-grid">
-          {listing.visible.map((a) => (
+          {listing.visible.map((a, i) => (
             <li key={a.slug} className="db-media-card">
               <Link href={dbimHref(`/media/photos/${a.slug}`)} className="db-album">
                 <span className="db-media-frame">
-                  <Image src={a.cover} alt="" fill sizes="(min-width: 992px) 30vw, (min-width: 768px) 45vw, 100vw" className="db-media-img" />
+                  <Image src={a.cover} alt="" fill sizes="(min-width: 992px) 30vw, (min-width: 768px) 45vw, 100vw" className="db-media-img" priority={i < 3} />
                   <span className="db-album-arrow" aria-hidden="true">
                     <Icon name="arrow_right_alt" size={24} aria-hidden />
                   </span>

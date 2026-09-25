@@ -81,7 +81,9 @@ export interface DbimSocialLink {
 
 /** Header and footer marks. */
 export const DBIM_BRAND = {
-  digitalIndia: { src: `${D}/brand/digital-india.png`, alt: "Digital India — Power To Empower", width: 150, height: 58 },
+  // The estate's vector mark (the redesign's masthead uses the same file), not the reference's
+  // 150px PNG, which was soft on every high-density screen. Shown at the reference's 150px.
+  digitalIndia: { src: "/website/images/digital-india-logo.svg", alt: "Digital India — Power To Empower", width: 150, height: 58 },
   /*
    * The second partner logo in DBIM Header 1, which the DBIM review team allowed on
    * 25 Sep 2026 ("either replacing Digital India or next to it"; the orange band ruled

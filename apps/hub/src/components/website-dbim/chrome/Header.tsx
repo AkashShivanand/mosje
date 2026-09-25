@@ -105,7 +105,7 @@ function DigitalIndia() {
         className="db-di"
         aria-label="Digital India (opens in a new tab)"
       >
-        <Image src={di.src} alt="" width={di.width} height={di.height} priority />
+        <Image src={di.src} alt="" width={di.width} height={di.height} unoptimized priority />
       </a>
       <Image src={sv.src} alt={sv.alt} width={sv.width} height={sv.height} className="db-partner-samavesh" unoptimized priority />
     </span>

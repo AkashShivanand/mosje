@@ -76,15 +76,13 @@ export function DbimPage({ title, crumbs, hero, heroHeight, spacing = "default",
     <>
       <section className={`db-hero${hasTabs ? " db-hero--tabs" : ""}`} aria-labelledby="db-page-title">
         <div className="db-hero__banner" style={heroHeight ? { height: heroHeight } : undefined}>
-          <Image
-            src={src}
-            alt=""
-            width={size.width}
-            height={size.height}
-            sizes="100vw"
-            priority
-            className={heroHeight ? "db-hero__img db-hero__img--fill" : "db-hero__img"}
-          />
+          {heroHeight ? (
+            // A fixed-height banner is a frame the photograph fills; sizing it as an
+            // intrinsic image with only its height overridden tripped Next's aspect check.
+            <Image src={src} alt="" fill sizes="100vw" priority className="db-hero__img db-hero__img--fill" />
+          ) : (
+            <Image src={src} alt="" width={size.width} height={size.height} sizes="100vw" priority className="db-hero__img" />
+          )}
           <div className="db-container db-hero__container">
             <div className="db-hero__text">
               <nav aria-label="Breadcrumb">
