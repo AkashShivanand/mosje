@@ -1,0 +1,258 @@
+{
+ "note": "Baseline statuses synced from the audit trackers. The Supabase store wins where a status has been set in the browser.",
+ "synced": "2026-09-25",
+ "rows": {
+  "ACC-04": {
+   "status": "Open",
+   "from": [
+    "dbim-observations-2026-09:17=Open"
+   ]
+  },
+  "ACC-05": {
+   "status": "Open",
+   "from": [
+    "dbim-observations-2026-09:12=Open",
+    "dbim-observations-2026-09:17=Open"
+   ]
+  },
+  "ACC-08": {
+   "status": "Open",
+   "from": [
+    "nic-dbim-2026-05:T12=Done",
+    "dbim-observations-2026-09:12=Open"
+   ]
+  },
+  "ACC-12": {
+   "status": "Open",
+   "from": [
+    "dbim-observations-2026-09:12=Open"
+   ]
+  },
+  "ACC-20": {
+   "status": "Open",
+   "from": [
+    "dbim-observations-2026-09:12=Open"
+   ]
+  },
+  "ACC-22": {
+   "status": "Fixed",
+   "from": [
+    "nic-dbim-2026-05:T20=Done"
+   ]
+  },
+  "BRD-01": {
+   "status": "Open",
+   "from": [
+    "nic-dbim-2026-05:T01=Awaiting confirmation",
+    "nic-dbim-2026-05:T22=Blocked",
+    "dbim-observations-2026-09:20=Open"
+   ]
+  },
+  "BRD-02": {
+   "status": "Open",
+   "from": [
+    "nic-dbim-2026-05:T01=Awaiting confirmation",
+    "nic-dbim-2026-05:T02=Awaiting confirmation",
+    "nic-dbim-2026-05:T06=Awaiting confirmation",
+    "nic-dbim-2026-05:T22=Blocked",
+    "nic-dbim-2026-05:T23=Blocked",
+    "dbim-observations-2026-09:20=Open"
+   ]
+  },
+  "BRD-03": {
+   "status": "Open",
+   "from": [
+    "nic-dbim-2026-05:T01=Awaiting confirmation",
+    "nic-dbim-2026-05:T04=Awaiting confirmation",
+    "nic-dbim-2026-05:T25=Blocked",
+    "dbim-observations-2026-09:20=Open"
+   ]
+  },
+  "BRD-04": {
+   "status": "Needs decision",
+   "from": [
+    "nic-dbim-2026-05:T03=Awaiting confirmation",
+    "nic-dbim-2026-05:T24=Blocked"
+   ]
+  },
+  "BRD-05": {
+   "status": "Fixed",
+   "from": [
+    "nic-dbim-2026-05:T07=Done",
+    "nic-dbim-2026-05:T27=Done"
+   ]
+  },
+  "BRD-07": {
+   "status": "Needs decision",
+   "from": [
+    "nic-dbim-2026-05:T08=Awaiting confirmation",
+    "nic-dbim-2026-05:T31=Blocked"
+   ]
+  },
+  "BRD-11": {
+   "status": "Open",
+   "from": [
+    "nic-dbim-2026-05:T09=Awaiting confirmation",
+    "nic-dbim-2026-05:T28=Blocked",
+    "nic-dbim-2026-05:T30=Blocked",
+    "dbim-observations-2026-09:6=Open"
+   ]
+  },
+  "BRD-12": {
+   "status": "Fixed",
+   "from": [
+    "nic-dbim-2026-05:T21=Done"
+   ]
+  },
+  "BRD-13": {
+   "status": "Needs decision",
+   "from": [
+    "nic-dbim-2026-05:T34=Blocked"
+   ]
+  },
+  "BRD-22": {
+   "status": "Open",
+   "from": [
+    "dbim-observations-2026-09:5=Open"
+   ]
+  },
+  "BRD-23": {
+   "status": "Open",
+   "from": [
+    "dbim-observations-2026-09:7=Open"
+   ]
+  },
+  "BRD-24": {
+   "status": "Open",
+   "from": [
+    "dbim-observations-2026-09:16a=Open",
+    "dbim-observations-2026-09:16b=Open"
+   ]
+  },
+  "BRD-25": {
+   "status": "Fixed",
+   "from": [
+    "nic-dbim-2026-05:T13=Done"
+   ]
+  },
+  "BRD-26": {
+   "status": "Fixed",
+   "from": [
+    "nic-dbim-2026-05:T40=Done"
+   ]
+  },
+  "BRD-P020": {
+   "status": "Fixed",
+   "from": [
+    "nic-dbim-2026-05:T38=Done"
+   ]
+  },
+  "CON-10": {
+   "status": "Fixed",
+   "from": [
+    "nic-dbim-2026-05:T15=Done"
+   ]
+  },
+  "CON-17": {
+   "status": "Needs decision",
+   "from": [
+    "nic-dbim-2026-05:T35=Blocked"
+   ]
+  },
+  "CON-18": {
+   "status": "Needs decision",
+   "from": [
+    "nic-dbim-2026-05:T36=Blocked",
+    "nic-dbim-2026-05:T37=Blocked"
+   ]
+  },
+  "CON-20": {
+   "status": "Fixed",
+   "from": [
+    "nic-dbim-2026-05:T19=Done"
+   ]
+  },
+  "CON-28": {
+   "status": "Open",
+   "from": [
+    "dbim-observations-2026-09:14=Open"
+   ]
+  },
+  "CON-T008": {
+   "status": "Open",
+   "from": [
+    "dbim-observations-2026-09:8a=Open"
+   ]
+  },
+  "CON-T134": {
+   "status": "Fixed",
+   "from": [
+    "nic-dbim-2026-05:T17=Done"
+   ]
+  },
+  "LNG-04": {
+   "status": "Fixed",
+   "from": [
+    "dbim-observations-2026-09:1=Done"
+   ]
+  },
+  "MAN-03": {
+   "status": "Open",
+   "from": [
+    "nic-dbim-2026-05:T10=To Do",
+    "nic-dbim-2026-05:T29=To Do",
+    "nic-dbim-2026-05:T32=Blocked"
+   ]
+  },
+  "MAN-07": {
+   "status": "Needs decision",
+   "from": [
+    "nic-dbim-2026-05:T33=Blocked"
+   ]
+  },
+  "MAN-12": {
+   "status": "Open",
+   "from": [
+    "dbim-observations-2026-09:8b=Open"
+   ]
+  },
+  "MAN-13": {
+   "status": "In progress",
+   "from": [
+    "nic-dbim-2026-05:T39=In Progress"
+   ]
+  },
+  "NAV-22": {
+   "status": "Open",
+   "from": [
+    "dbim-observations-2026-09:3=Open"
+   ]
+  },
+  "NAV-23": {
+   "status": "Open",
+   "from": [
+    "dbim-observations-2026-09:10=Open"
+   ]
+  },
+  "PRF-07": {
+   "status": "Fixed",
+   "from": [
+    "nic-dbim-2026-05:T14=Done"
+   ]
+  },
+  "TYP-01": {
+   "status": "Open",
+   "from": [
+    "nic-dbim-2026-05:T05=In Progress",
+    "nic-dbim-2026-05:T26=To Do"
+   ]
+  },
+  "TYP-05": {
+   "status": "In progress",
+   "from": [
+    "nic-dbim-2026-05:T18=Done",
+    "dbim-observations-2026-09:9=In Progress"
+   ]
+  }
+ }
+}
