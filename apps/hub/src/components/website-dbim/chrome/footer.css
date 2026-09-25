@@ -114,6 +114,7 @@
   [data-design="dbim"] .db-footer__social a {
     display: block;
     line-height: 0;
+    color: var(--sa-color-neutralScale-0);
   }
 
   [data-design="dbim"] .db-footer__badges {

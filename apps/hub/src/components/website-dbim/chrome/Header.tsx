@@ -88,17 +88,26 @@ export function DbimHeader() {
   );
 }
 
+/**
+ * DBIM Header 1's partner logos: Digital India (the reference's), then SAMAVESH, which the
+ * DBIM review team allowed beside it on 25 Sep 2026. SAMAVESH steps out between 992 and
+ * 1359px, where the row has no room for it beside the three controls (chrome.css).
+ */
 function DigitalIndia() {
   const di = DBIM_BRAND.digitalIndia;
+  const sv = DBIM_BRAND.samavesh;
   return (
-    <a
-      href="https://www.digitalindia.gov.in/"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="db-di"
-      aria-label="Digital India (opens in a new tab)"
-    >
-      <Image src={di.src} alt="" width={di.width} height={di.height} priority />
-    </a>
+    <span className="db-partners">
+      <a
+        href="https://www.digitalindia.gov.in/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="db-di"
+        aria-label="Digital India (opens in a new tab)"
+      >
+        <Image src={di.src} alt="" width={di.width} height={di.height} priority />
+      </a>
+      <Image src={sv.src} alt={sv.alt} width={sv.width} height={sv.height} className="db-partner-samavesh" unoptimized priority />
+    </span>
   );
 }

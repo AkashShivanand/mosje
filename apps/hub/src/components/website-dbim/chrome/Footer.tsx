@@ -48,7 +48,7 @@ export function DbimFooter() {
               {DBIM_BRAND.social.map((s) => (
                 <li key={s.label}>
                   <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={`${s.label} (opens in a new tab)`}>
-                    <Image src={s.src} alt="" width={24} height={24} />
+                    {s.src ? <Image src={s.src} alt="" width={24} height={24} /> : <WhatsAppOutline />}
                   </a>
                 </li>
               ))}
@@ -66,5 +66,30 @@ export function DbimFooter() {
         </div>
       </div>
     </footer>
+  );
+}
+
+/**
+ * WhatsApp as an OUTLINE glyph in one colour (`currentColor`, the footer's white), so it
+ * sits with the reference's four line icons — never the filled green mark.
+ */
+function WhatsAppOutline() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={24}
+      height={24}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+      strokeLinejoin="round"
+      strokeLinecap="round"
+      aria-hidden="true"
+      focusable="false"
+      className="db-footer__glyph"
+    >
+      <path d="M6.55 19.28A9.5 9.5 0 1 0 3.77 16.25L2.6 21.2Z" />
+      <path transform="translate(12 11.5) scale(1.2) translate(-12 -11.5)" vectorEffect="non-scaling-stroke" d="M9.1 8.3c.25-.55.6-.7.95-.7h.35c.25 0 .45.15.55.4l.6 1.45c.1.25.05.5-.1.7l-.5.6c.45.95 1.35 1.85 2.3 2.3l.6-.5c.2-.15.45-.2.7-.1l1.45.6c.25.1.4.3.4.55v.35c0 .35-.15.7-.7.95-.6.3-1.35.35-2.05.15-2.1-.6-3.9-2.4-4.5-4.5-.2-.7-.15-1.45.15-2.05Z" />
+    </svg>
   );
 }

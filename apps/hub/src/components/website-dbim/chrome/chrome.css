@@ -42,9 +42,12 @@
     margin: 0 -7.5px; /* the reference's Bootstrap row gutter */
   }
 
+  /* The main column may give way (its names wrap, its search narrows) so the partner
+     logos and the three controls never overlap it — the reference itself collides at
+     1024. The partner column takes its content; the tools column the rest. */
   [data-design="dbim"] .db-header__main {
     display: flex;
-    flex: 0 0 66.6667%;
+    flex: 0 1 66.6667%;
     order: 1;
     align-items: flex-end;
     min-width: 0;
@@ -70,7 +73,7 @@
   }
 
   [data-design="dbim"] .db-header__di--desktop {
-    flex: 0 0 16.6667%;
+    flex: 0 0 auto;
     order: 2;
     padding-top: 33px; /* reference 31px margin; our PNG box sits 2px higher */
     padding-right: 7.5px;
@@ -94,9 +97,28 @@
     height: 58px;
   }
 
+  [data-design="dbim"] .db-partners {
+    display: inline-flex;
+    gap: var(--sa-stack-16);
+    align-items: center;
+  }
+
+  [data-design="dbim"] .db-partner-samavesh {
+    flex: none;
+    width: 58px;
+    height: 58px;
+  }
+
+  /* 992–1359: no room for a second logo beside the controls — measured, 2026-09-25. */
+  @media (min-width: 992px) and (max-width: 1359px) {
+    [data-design="dbim"] .db-partner-samavesh {
+      display: none;
+    }
+  }
+
   [data-design="dbim"] .db-header__tools {
     display: flex;
-    flex: 0 0 16.6667%;
+    flex: 1 0 auto;
     order: 3;
     justify-content: flex-end;
     padding-top: 31px;
@@ -147,7 +169,9 @@
     display: flex;
     gap: var(--sa-stack-8);
     align-items: center;
-    width: 16.5rem; /* 264px — the reference's shrink-to-fit box */
+    flex: 0 1 16.5rem; /* 264px — the reference's shrink-to-fit box… */
+    min-width: 0;
+    max-width: calc(100% - 5px); /* …which its column narrows (≈185 at 1024) */
     height: 44px;
     padding: 0 10px;
     background: var(--sa-color-neutralScale-0);

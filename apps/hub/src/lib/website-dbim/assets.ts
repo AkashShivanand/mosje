@@ -65,9 +65,29 @@ export const DBIM_PEOPLE = {
   ],
 } as const;
 
+/** A footer social account: the reference's white PNG, or an inline outline glyph where it has none. */
+export interface DbimSocialLink {
+  label: string;
+  href: string;
+  /** The reference's own 24×24 white icon. */
+  src?: string;
+  /** An outline glyph drawn in `currentColor` (the footer's white), for accounts the reference does not carry. */
+  icon?: "whatsapp";
+}
+
 /** Header and footer marks. */
 export const DBIM_BRAND = {
   digitalIndia: { src: `${D}/brand/digital-india.png`, alt: "Digital India — Power To Empower", width: 150, height: 58 },
+  /*
+   * The second partner logo in DBIM Header 1, which the DBIM review team allowed on
+   * 25 Sep 2026 ("either replacing Digital India or next to it"; the orange band ruled
+   * out). The estate's canonical vector mark — the roundel, which carries the name in
+   * both scripts. The horizontal lockup (design-system/samavesh-lockup.png, 563×121)
+   * would be 270px wide at the 58px partner height with a 9px tagline: too wide for
+   * the header's free space and not legible. Not linked: the estate has no public
+   * SAMAVESH address inside this design.
+   */
+  samavesh: { src: "/design-system/samavesh-logo.svg", alt: "SAMAVESH", width: 58, height: 58 },
   indiaGovIn: { src: `${D}/brand/india-gov-in.svg`, alt: "National Portal of India", href: "https://www.india.gov.in/" },
   myGov: { src: `${D}/brand/mygov-meri-sarkar.png`, alt: "MyGov — Meri Sarkar", href: "https://www.mygov.in/" },
   social: [
@@ -75,7 +95,10 @@ export const DBIM_BRAND = {
     { label: "X", src: `${D}/icons/x.png`, href: "https://x.com/msjegoi" },
     { label: "YouTube", src: `${D}/icons/youtube.png`, href: "https://www.youtube.com/@ministryofsocialjustice511" },
     { label: "Instagram", src: `${D}/icons/instagram.png`, href: "https://www.instagram.com/msjegoi/" },
-  ],
+    // Allowed by the DBIM review team on 25 Sep 2026; the channel is the Department's own
+    // (components/website-next/chrome/Footer.tsx). Outline, one colour, like the four above.
+    { label: "WhatsApp Channel", icon: "whatsapp", href: "https://whatsapp.com/channel/0029Vb7GfwH6mYPMHOvTd51W" },
+  ] satisfies readonly DbimSocialLink[] as readonly DbimSocialLink[],
 } as const;
 
 /** The three tiles of the home page's campaign row (two central campaigns, one Department item). */
