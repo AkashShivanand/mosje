@@ -296,135 +296,128 @@
      the page in competition with them; and the portrait is a cut-out, which on
      a bare band had nothing behind it and read as a sticker. The card holds it.
      The section keeps its tint so the white card has a ground to sit on. */
-  /* THE SECTION HAS NO GROUND OF ITS OWN. The Figma frame carries a blue
-     gradient whose `visible` flag is false, so the card is drawn on the page,
-     and 32 above and below it is the design's own padding. A pale-blue band
-     stood here and put a third ground between the hero photograph and the
-     card, which is what read as a gap rather than as a section. */
-  .wn-pmq { background-color: var(--sa-bg-neutral-base); padding-block: var(--sa-section-32); }
+  /* ── PM Quote ────────────────────────────────────────────────────────────
+     Built from the reference sheet of 25 Sep 2026, with every value taken from
+     the design system rather than from the sheet's hexes and pixels. The sheet
+     and the tokens agree exactly on colour — #ECF4FF, #DCDEE1, #FFF2ED,
+     #005EB9, #C34700, #004B96, #1E2124, #3A3D41 are all published rungs — so
+     nothing here is a literal that merely equals a token.
 
-  /* The hairline is what holds a white card on a white page. The design draws
-     it at #FFC1BC, which is not on the secondary ramp (50 #FFF2ED, 100
-     #FFD4C4, 200 #FFB498) and there is no `border/brand/secondary` rung to
-     bind to — a gap already recorded against the library. This takes the
-     nearest published rung, the same way the mark takes a surface rung. */
+     TWO EARLIER DECISIONS ARE REVERSED BY THE SHEET, deliberately: the card
+     stood on white (the Figma frame's tint is switched off in the file) and it
+     now stands on the brand's palest blue; and the photograph sat on the right
+     and now leads on the left.
+
+     THE SHEET'S LABEL AND ITS SOURCE LINE ARE NOT BUILT. "Prime Minister's
+     Message" over a card that is visibly a quotation from the Prime Minister
+     restates it, and "Source: Press Information Bureau (Release ID …)" is a
+     second citation beside the one DBIM actually asks for — a link to where
+     the address was delivered, which is the button. The layout, the colours
+     and the type ARE the sheet's. */
+  .wn-pmq {
+    background-color: var(--sa-bg-brand-primary-base);
+    padding-block: var(--sa-section-40);
+  }
+
   .wn-pmq__card {
-    position: relative;
     display: grid;
-    gap: var(--sa-stack-24);
-    border: var(--sa-stroke-1) solid var(--sa-bg-brand-secondary-subtler);
+    gap: var(--sa-stack-16);
+    padding: var(--sa-padding-16);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-24);
     background: var(--sa-bg-neutral-base);
     box-shadow: var(--sa-elevation-modal);
-    overflow: hidden;
   }
   @media (min-width: 1024px) {
-    /* The portrait panel is a fixed column, as drawn: 351 of a 1320 card.
-       The photograph comes FIRST in the document because it leads the phone
-       card; the two are placed by column here rather than reordered with
-       `order`, so the reading order a screen reader follows and the order a
-       sighted reader sees do not come apart (WCAG 1.3.2). */
-    .wn-pmq__card { grid-template-columns: minmax(0, 1fr) 351px; gap: 0; align-items: stretch; }
-    .wn-pmq__body { grid-column: 1; grid-row: 1; }
-    .wn-pmq__figure { grid-column: 2; grid-row: 1; }
+    /* The photograph's panel is a fixed column, as the sheet draws it. There is
+       no width rung in the token set for 360, so it is the one number here that
+       is not a token — the same exception the 351 column was. */
+    .wn-pmq__card {
+      grid-template-columns: 360px minmax(0, 1fr);
+      gap: 0;
+      padding: 0;
+      align-items: stretch;
+      overflow: hidden;
+    }
   }
 
-  /* THE MARK IS BEHIND THE WORDS, at the saffron rung the design draws
-     (#FF9167 = secondary/300) and at the 40% it draws it at — a watermark the
-     first line sits over, not a glyph standing above the quotation. The
-     secondary family publishes no icon rung there — it has one, at 600 — so
-     this binds to the surface rung of the same value, the way the pull-quote's
-     bar in About Us does. The 128 the design draws is off the icon scale, so
-     it is written as two of its largest rung rather than as a literal.
-     IT IS POSITIONED AGAINST THE WORDS, not against the card: on a phone the
-     photograph is the top of the card, and a mark pinned to the card would
-     land on the photograph instead of on the quotation it opens. */
-  .wn-pmq__mark {
-    position: absolute;
-    inset-block-start: var(--sa-stack-12);
-    inset-inline-start: var(--sa-inline-16);
-    /* The mark has to stay BIG RELATIVE TO THE TEXT or it stops reading as a
-       watermark and starts reading as a smudge behind the first word: the
-       design's ratio is 128 against 28px type, so the phone's 22px type gets
-       96, not 64. */
-    inline-size: calc(var(--sa-icon-size-64) * 1.5);
-    block-size: calc(var(--sa-icon-size-64) * 1.5);
-    fill: var(--sa-bg-brand-secondary-bold);
-    opacity: var(--sa-alpha-40);
-    pointer-events: none;
-    /* BEHIND THE WORDS, not over them. An absolutely positioned element paints
-       above its in-flow siblings by default, so at 40% the mark was tinting
-       the first two words rather than sitting under them. Local order inside
-       the body's own stacking context — not a rung on the estate's ladder. */
-    z-index: 0;
+  /* Stacked, the photograph is an inset panel with an edge of its own; beside
+     the words it runs to the card's own edge and the card's radius clips it. */
+  .wn-pmq__figure {
+    display: grid;
+    place-items: end center;
+    overflow: hidden;
+    border-radius: var(--sa-shape-16);
+    background: var(--sa-bg-brand-secondary-base);
   }
-  .wn-pmq__text,
-  .wn-pmq__foot { position: relative; z-index: 1; }
+  @media (min-width: 1024px) { .wn-pmq__figure { border-radius: 0; } }
+
+  /* On a phone the photograph keeps its own proportions across the panel's
+     width. Beside the words the sheet draws a PORTRAIT crop, 280x336, standing
+     on the foot of its panel — the source is landscape, so the sides are the
+     part that goes. Never upscaled: 280 wide asks less of a 488 source than
+     the panel's full width would. */
+  .wn-pmq__portrait { width: 100%; height: auto; }
   @media (min-width: 1024px) {
-    .wn-pmq__mark {
-      inset-block-start: var(--sa-stack-20);
-      inset-inline-start: var(--sa-inline-20);
-      inline-size: calc(var(--sa-icon-size-64) * 2);
-      block-size: calc(var(--sa-icon-size-64) * 2);
+    .wn-pmq__portrait {
+      width: 280px;
+      height: 336px;
+      object-fit: cover;
+      object-position: center top;
     }
   }
 
   .wn-pmq__body {
-    position: relative;
     display: grid;
     align-content: center;
-    gap: var(--sa-stack-24);
-    /* The top reserves the mark's height: the design gives the quote column 88
-       above it against a mark inset 20, so the words begin over its tail. */
-    padding: var(--sa-padding-64) var(--sa-padding-24) var(--sa-padding-32);
+    gap: var(--sa-stack-16);
+    padding: var(--sa-padding-24) var(--sa-padding-8) var(--sa-padding-8);
   }
-  @media (min-width: 1024px) {
-    .wn-pmq__body { padding: var(--sa-padding-80) var(--sa-padding-40) var(--sa-padding-40); }
+  @media (min-width: 1024px) { .wn-pmq__body { padding: var(--sa-padding-48); } }
+
+  /* An opening mark above the quotation, at the icon scale's 40 rung. It used
+     to be a 128 watermark behind the words; the sheet draws it solid and small,
+     so there is nothing left to sit behind and no stacking order to set. */
+  .wn-pmq__mark {
+    inline-size: var(--sa-icon-size-40);
+    block-size: var(--sa-icon-size-40);
+    fill: var(--sa-bg-brand-secondary-bold);
   }
 
   .wn-pmq__text { margin: 0; }
-  /* headline-3 tops out at 28px, which is what the design sets, and the
-     headline tier is weight 600 — one published style, not a size and a weight
-     picked apart (`check:type-linkage`). */
   .wn-pmq__text p {
-    font-size: var(--sa-type-headline-3-size);
-    line-height: var(--sa-type-headline-3-lh);
+    font-size: var(--sa-type-headline-2-size);
+    line-height: var(--sa-type-headline-2-lh);
     font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-brand-primary-bolder);
     text-wrap: pretty;
   }
 
-  /* The rule ties the attribution to the quote above it — without it the name
-     and the button read as two things floating under a paragraph. */
   .wn-pmq__foot {
     display: grid;
     gap: var(--sa-stack-16);
     padding-block-start: var(--sa-padding-24);
-    border-block-start: var(--sa-stroke-1) solid var(--sa-border-brand-primary-base);
+    border-block-start: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     .wn-pmq__foot { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--sa-inline-24); }
   }
-  .wn-pmq__who { font-size: var(--sa-type-title-2-size); line-height: var(--sa-type-title-2-lh); font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-neutral-bolder); }
-  .wn-pmq__where { margin-top: var(--sa-stack-4); font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); color: var(--sa-text-neutral-subtle); }
-  .wn-pmq__action { justify-self: start; }
-
-  /* The portrait's own panel, on the saffron wash the design gives it. The
-     photograph fills it — the design stretches and crops the image to the
-     panel rather than centring a cut-out inside it. */
-  .wn-pmq__figure {
-    position: relative;
-    overflow: hidden;
-    background: var(--sa-bg-brand-secondary-base);
-    /* Stacked, the panel has no column to take its height from. 3:2 is the
-       phone's own decision, not the design's 350x373: leading the card, the
-       photograph wants to be a band rather than a block, and at the drawn
-       ratio it stood 379px tall and outweighed the quotation under it. */
-    aspect-ratio: 3 / 2;
+  .wn-pmq__credit { display: grid; gap: var(--sa-stack-4); }
+  .wn-pmq__who {
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-base);
   }
-  @media (min-width: 1024px) { .wn-pmq__figure { aspect-ratio: auto; } }
-  .wn-pmq__portrait { object-fit: cover; object-position: center 18%; }
-  @media (min-width: 1024px) { .wn-pmq__portrait { object-position: center bottom; } }
+  .wn-pmq__where {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* Full width on a phone, as drawn; its own size beside the attribution. */
+  .wn-pmq__action { justify-self: stretch; }
+  @media (min-width: 1024px) { .wn-pmq__action { justify-self: end; } }
 
   /* ── Take a Pledge ───────────────────────────────────────────────────────────
      Two rows: the pledges themselves, then the volunteering registers, which ask
