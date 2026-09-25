@@ -1,0 +1,482 @@
+/* ds-exempt-start(third-party): type sizes, leading and tracking are transcribed from the DBIM 3.0 reference template (master-socialjustice.digifootprint.gov.in, root 62.5%, rems divided by 1.6), which the DBIM review team mandated on 25 Sep 2026; colour stays token-bound */
+/* ─────────────────────────────────────────────────────────────────────────────
+   Home, bottom three sections: In Social Media · the campaign row · partners.
+   Values measured from the reference (home@1440 / home@390, used.css); the spec is
+   docs/research/dbim-reference/components/home-bottom.spec.md.
+
+   `container-fluid.py-80` is 40px top and bottom at EVERY width in the reference
+   (its `.container-fluid.py-80` rule outranks the media steps), so it is not a var.
+   The social cards and the campaign tiles share one grid: four columns, 15px gap
+   (Bootstrap's 7.5 + 7.5 gutter; no 15 token exists).
+   ───────────────────────────────────────────────────────────────────────────── */
+@layer theme, base, components, utilities;
+
+@layer components {
+  [data-design="dbim"] :is(.db-hb-social, .db-hb-campaigns) {
+    --db-hb-gap: 15px; /* Bootstrap gutter 2 × 7.5px — no 15 token */
+  }
+
+  /* ── In Social Media ───────────────────────────────────────────────────── */
+  [data-design="dbim"] .db-hb-social {
+    padding: var(--sa-padding-40) var(--db-gutter);
+    background: var(--sa-color-primaryScale-800);
+    color: var(--sa-color-neutralScale-0);
+  }
+
+  /* The heading row is 48px (its 48px icon), 32px on a phone, then 30px (row-gap-5,
+     3rem at the reference's 10px root) to the cards. */
+  [data-design="dbim"] .db-hb-social__head {
+    display: flex;
+    align-items: center;
+    min-height: var(--sa-stack-48);
+    margin-bottom: 30px;
+    color: var(--sa-color-neutralScale-0);
+  }
+
+  [data-design="dbim"] .db-hb-social__head :is(h2, h3) {
+    margin: 0;
+  }
+
+  [data-design="dbim"] .db-hb-social__cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px var(--db-hb-gap); /* row-gap-5 between rows, gutter between columns */
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-hb-social__card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  [data-design="dbim"] .db-hb-social__title {
+    margin: 0;
+    padding: var(--sa-padding-16);
+    border-radius: var(--sa-shape-4) var(--sa-shape-4) 0 0;
+    background: var(--sa-color-neutralScale-0);
+    color: var(--sa-color-primaryScale-800);
+    font-size: var(--db-fs-h3);
+    font-weight: var(--sa-font-weight-medium);
+    line-height: 1.2;
+  }
+
+  [data-design="dbim"] .db-hb-social__body {
+    height: 310px; /* .socialmediaheight */
+    overflow: hidden auto; /* Instagram's embed insists on 326px; the card is narrower */
+    padding: var(--sa-padding-12);
+    border-radius: 0 0 var(--sa-shape-4) var(--sa-shape-4);
+    background: var(--sa-color-neutralScale-0);
+    color: var(--sa-color-text-default);
+    scrollbar-width: thin;
+    scrollbar-color: var(--sa-color-primaryScale-600) var(--sa-color-neutralScale-0);
+  }
+
+  [data-design="dbim"] .db-hb-social__body::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  [data-design="dbim"] .db-hb-social__body::-webkit-scrollbar-track {
+    border: 0.5px solid var(--sa-color-primaryScale-200);
+    border-radius: 15px; /* reference value; no token */
+    background: var(--sa-color-neutralScale-0);
+  }
+
+  [data-design="dbim"] .db-hb-social__body::-webkit-scrollbar-thumb {
+    border-radius: 15px;
+    background: var(--sa-color-primaryScale-600);
+  }
+
+  [data-design="dbim"] .db-hb-social__body:focus-visible {
+    outline: var(--sa-stroke-2) solid var(--sa-color-primaryScale-400);
+    outline-offset: var(--sa-stroke-2);
+  }
+
+  /* Feed content */
+  [data-design="dbim"] .db-hb-feed__account {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sa-stack-4);
+    padding: var(--sa-padding-4);
+  }
+
+  [data-design="dbim"] .db-hb-feed__name {
+    margin: 0;
+    font-size: var(--db-fs-p);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-color-text-default);
+  }
+
+  [data-design="dbim"] .db-hb-feed__handle {
+    margin: 0 0 var(--sa-stack-8);
+    font-size: var(--db-fs-p);
+    color: var(--sa-color-text-muted);
+  }
+
+  [data-design="dbim"] .db-hb-feed__more {
+    font-size: var(--db-fs-p);
+    font-weight: var(--sa-font-weight-medium);
+    color: var(--sa-color-primaryScale-600);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  [data-design="dbim"] .db-hb-feed__more:hover {
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-hb-feed__end {
+    margin: var(--sa-stack-12) 0 var(--sa-stack-4);
+  }
+
+  [data-design="dbim"] .db-hb-feed__quote {
+    margin: 0 0 var(--sa-stack-12);
+    padding: var(--sa-padding-12);
+    border-left: var(--sa-stroke-3) solid var(--sa-color-primaryScale-200);
+    font-size: var(--db-fs-p);
+  }
+
+  /* Instagram's pre-render blockquote, until (or unless) embed.js replaces it */
+  [data-design="dbim"] .db-hb-feed__ig blockquote {
+    margin: 0 0 var(--sa-stack-12);
+    padding: var(--sa-padding-12);
+    border-left: var(--sa-stroke-3) solid var(--sa-color-primaryScale-200);
+    font-size: var(--db-fs-p);
+  }
+
+  [data-design="dbim"] :is(.db-hb-feed__quote, .db-hb-feed__ig blockquote) a {
+    color: var(--sa-color-primaryScale-600);
+  }
+
+  [data-design="dbim"] .db-hb-feed__yt {
+    display: block;
+    width: 100%;
+    height: 150px; /* the reference's iframe height, in a 200px slot */
+    margin-bottom: 50px;
+    border: 0;
+  }
+
+  [data-design="dbim"] .db-hb-feed__fb {
+    display: block;
+    width: 100%;
+    height: 500px; /* the reference's post-plugin height */
+    margin-bottom: var(--sa-stack-6);
+    border: 0;
+    overflow: hidden;
+  }
+
+  [data-design="dbim"] :is(.db-hb-feed__more, .db-hb-feed__quote a, .db-hb-feed__ig a):focus-visible {
+    outline: var(--sa-stroke-2) solid var(--sa-color-primaryScale-400);
+    outline-offset: var(--sa-stroke-2);
+  }
+
+  /* Carousel controls — a phone only */
+  [data-design="dbim"] .db-hb-social__carousel {
+    position: relative;
+  }
+
+  [data-design="dbim"] .db-hb-social__controls {
+    display: none;
+  }
+
+  @media (max-width: 767.5px) {
+    /* room for the slick controls hanging under the card */
+    [data-design="dbim"] .db-hb-social {
+      padding-bottom: 46px; /* the reference band: 40 + the dots' overhang */
+    }
+
+    [data-design="dbim"] .db-hb-social__head {
+      min-height: var(--sa-stack-32); /* the icon steps down to 32px */
+    }
+
+    [data-design="dbim"] .db-hb-social__slide:not([data-active]) {
+      display: none;
+    }
+
+    [data-design="dbim"] .db-hb-social__controls {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: var(--sa-inline-6);
+      margin-top: var(--sa-stack-4);
+    }
+  }
+
+  [data-design="dbim"] .db-hb-social__dots {
+    display: flex;
+    margin: var(--sa-stack-8) 0 0; /* slick's dots sit 10px below its arrows */
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-hb-social__arrow.ds-btn,
+  [data-design="dbim"] .db-hb-social__dot.ds-btn {
+    width: 20px; /* slick's 20px hit box, as the reference draws it */
+    min-width: 0;
+    height: 20px;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--sa-shape-full);
+    background: transparent;
+    color: var(--sa-color-neutralScale-0);
+  }
+
+  [data-design="dbim"] .db-hb-social__arrow.ds-btn {
+    width: 24px; /* the 24px material glyph; slick's box is 20 and the glyph overflows it */
+    height: 24px;
+    margin-top: -2px;
+  }
+
+  [data-design="dbim"] .db-hb-social__dot.ds-btn {
+    margin: 0 5px; /* slick: li margin 0 5px */
+    opacity: 0.25;
+  }
+
+  [data-design="dbim"] .db-hb-social__dot.ds-btn::before {
+    content: "";
+    width: 10px; /* the slick "•" glyph at 1.2rem */
+    height: 10px;
+    border-radius: var(--sa-shape-full);
+    background: currentcolor;
+  }
+
+  [data-design="dbim"] .db-hb-social__dot.ds-btn[aria-current="true"] {
+    opacity: 0.75;
+  }
+
+  [data-design="dbim"] :is(.db-hb-social__arrow, .db-hb-social__dot).ds-btn:focus-visible {
+    outline: var(--sa-stroke-2) solid var(--sa-color-neutralScale-0);
+    outline-offset: var(--sa-stroke-1);
+    opacity: 1;
+  }
+
+  @media (min-width: 768px) {
+    [data-design="dbim"] .db-hb-social__cards {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    [data-design="dbim"] .db-hb-social__cards {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  /* ── Campaign row ──────────────────────────────────────────────────────── */
+  [data-design="dbim"] .db-hb-campaigns {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--db-hb-gap);
+    align-items: start;
+    padding: var(--sa-padding-40) var(--db-gutter);
+  }
+
+  [data-design="dbim"] .db-hb-campaigns__pair {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--db-hb-gap);
+  }
+
+  [data-design="dbim"] .db-hb-campaigns__link {
+    display: block;
+  }
+
+  [data-design="dbim"] .db-hb-campaigns__link img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  [data-design="dbim"] .db-hb-campaigns__dpdp {
+    border-radius: var(--sa-shape-4);
+  }
+
+  [data-design="dbim"] .db-hb-campaigns__audit img {
+    border-radius: 10px; /* rounded-4 = 1rem at the reference's 10px root; no 10 token */
+  }
+
+  [data-design="dbim"] .db-hb-campaigns__link:focus-visible {
+    outline: var(--sa-stroke-2) solid var(--sa-color-primaryScale-600);
+    outline-offset: var(--sa-stroke-2);
+  }
+
+  [data-design="dbim"] .db-hb-campaigns__video {
+    position: relative;
+    aspect-ratio: 358 / 277; /* the poster's frame, as the reference shows it on a phone */
+  }
+
+  [data-design="dbim"] .db-hb-campaigns__video video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--sa-shape-12);
+    /* #ADBDEB in the reference; nearest token is primary-200 (#A3BBF3) */
+    background: var(--sa-color-primaryScale-200);
+    object-fit: contain;
+  }
+
+  @media (min-width: 992px) {
+    [data-design="dbim"] .db-hb-campaigns {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    [data-design="dbim"] .db-hb-campaigns__pair {
+      grid-column: 1 / -1;
+      grid-template-columns: subgrid;
+    }
+
+    [data-design="dbim"] .db-hb-campaigns__pair > :first-child {
+      grid-column: span 2;
+    }
+
+    /* The video takes the image's height, as `h-100` does in the reference. */
+    [data-design="dbim"] .db-hb-campaigns__video {
+      aspect-ratio: auto;
+    }
+
+    [data-design="dbim"] .db-hb-campaigns__audit {
+      grid-column: 2;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    [data-design="dbim"] .db-hb-campaigns {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    [data-design="dbim"] .db-hb-campaigns__pair {
+      grid-column: span 3;
+    }
+
+    [data-design="dbim"] .db-hb-campaigns__audit {
+      grid-column: auto;
+    }
+  }
+
+  /* ── Partners ──────────────────────────────────────────────────────────── */
+  [data-design="dbim"] .db-hb-partners {
+    display: flex;
+    justify-content: center;
+    padding: 30px 0 0; /* pt-5: 3rem at the reference's 10px root */
+    border-top: var(--sa-stroke-2) solid var(--sa-color-neutralScale-100);
+  }
+
+  [data-design="dbim"] .db-hb-partners__slider {
+    position: relative;
+    width: 100%;
+    padding: 0 7.5px; /* the column's gutter */
+  }
+
+  [data-design="dbim"] .db-hb-partners__track {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+
+  [data-design="dbim"] .db-hb-partners__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  [data-design="dbim"] .db-hb-partners__slide {
+    flex: 0 0 50%;
+    padding: 0 10px 30px; /* px-3 and mb-5 at the reference's 10px root; no 10 or 30 token */
+    scroll-snap-align: start;
+  }
+
+  [data-design="dbim"] .db-hb-partners__card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    padding: 10px; /* reference value; no 10 token */
+    border: var(--sa-stroke-1) solid var(--sa-color-neutralScale-100);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-neutralScale-0);
+    /* rgba(35,35,47,.06/.08): the reference's neutral shadow, drawn in the ink token */
+    box-shadow:
+      0 1px 2px 0 color-mix(in srgb, var(--sa-color-text-default) 6%, transparent),
+      0 4px 8px 0 color-mix(in srgb, var(--sa-color-text-default) 8%, transparent);
+  }
+
+  [data-design="dbim"] a.db-hb-partners__card:focus-visible {
+    outline: var(--sa-stroke-2) solid var(--sa-color-primaryScale-600);
+    outline-offset: var(--sa-stroke-2);
+  }
+
+  [data-design="dbim"] .db-hb-partners__logo {
+    position: relative;
+    display: block;
+    width: 125px; /* the reference's logo box */
+    max-width: 100%;
+    height: 85px;
+  }
+
+  [data-design="dbim"] .db-hb-partners__logo img {
+    object-fit: contain;
+  }
+
+  [data-design="dbim"] .db-hb-partners__arrow.ds-btn {
+    position: absolute;
+    top: 39px; /* chevron centred 55px down the card, as slick places it */
+    display: none;
+    width: 32px;
+    min-width: 0;
+    height: 32px;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-hb-partners__arrow.ds-btn:focus-visible {
+    outline: var(--sa-stroke-2) solid var(--sa-color-primaryScale-600);
+    outline-offset: var(--sa-stroke-1);
+  }
+
+  [data-design="dbim"] .db-hb-partners__arrow--prev.ds-btn {
+    left: -17.5px; /* slick's −25px from the track, which starts 7.5px in */
+  }
+
+  [data-design="dbim"] .db-hb-partners__arrow--next.ds-btn {
+    left: calc(100% - 2.5px); /* slick's left: 950px on a 945px track */
+  }
+
+  [data-design="dbim"] .db-hb-partners__arrow--pause.ds-btn {
+    left: calc(100% + 30px);
+  }
+
+  @media (min-width: 576px) {
+    [data-design="dbim"] .db-hb-partners__slide {
+      flex-basis: calc(100% / 3);
+    }
+  }
+
+  @media (min-width: 992px) {
+    [data-design="dbim"] .db-hb-partners__slider {
+      width: calc(100% * 8 / 12); /* col-lg-8 */
+    }
+
+    [data-design="dbim"] .db-hb-partners__slide {
+      flex-basis: 20%;
+    }
+
+    [data-design="dbim"] .db-hb-partners__arrow.ds-btn {
+      display: inline-flex;
+    }
+  }
+}
+/* ds-exempt-end */

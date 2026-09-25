@@ -1,0 +1,201 @@
+/* ds-exempt-start(third-party): type sizes, leading and tracking are transcribed from the DBIM 3.0 reference template (master-socialjustice.digifootprint.gov.in, root 62.5%, rems divided by 1.6), which the DBIM review team mandated on 25 Sep 2026; colour stays token-bound */
+/* ─────────────────────────────────────────────────────────────────────────────
+   DBIM design — Media: photo albums, one album, videos (.photos-card).
+   Values: docs/research/dbim-reference/components/media-connect.spec.md §1–2.
+   Reference rems are ÷1.6 here. Colours are tokens (dbim.css header has the map).
+   ───────────────────────────────────────────────────────────────────────────── */
+@layer theme, base, components, utilities;
+
+@layer components {
+  [data-design="dbim"] .db-media-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--sa-stack-24) 15px; /* row 24; columns: 440 cols less 15 of gutter */
+    margin: 0 0 var(--sa-padding-24);
+    padding: var(--sa-padding-24) 0 0;
+    list-style: none;
+  }
+
+  @media (max-width: 991.5px) {
+    [data-design="dbim"] .db-media-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 767.5px) {
+    [data-design="dbim"] .db-media-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  [data-design="dbim"] .db-media-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  [data-design="dbim"] .db-album {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-album:focus-visible,
+  [data-design="dbim"] .db-photo.ds-btn:focus-visible,
+  [data-design="dbim"] .db-video-play.ds-btn:focus-visible {
+    outline: 2px solid var(--sa-color-primaryScale-800);
+    outline-offset: 3px;
+    border-radius: var(--sa-shape-8);
+  }
+
+  /* The photo: 196px, cover, top-anchored, radius 8 (.photos-img) */
+  [data-design="dbim"] .db-media-frame {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 196px; /* reference */
+    overflow: hidden;
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-color-neutralScale-100);
+  }
+
+  [data-design="dbim"] .db-media-frame .db-media-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    border: 0;
+  }
+
+  @media (max-width: 767.5px) {
+    [data-design="dbim"] .db-media-frame {
+      height: auto;
+      aspect-ratio: 4 / 3; /* the reference's phone card: full width, ~265px at 358 */
+    }
+  }
+
+  /* White arrow on black 62%, 40×40, 10px from the corner (.photos-btn) */
+  [data-design="dbim"] .db-album-arrow {
+    position: absolute;
+    right: 10px; /* reference */
+    bottom: 10px; /* reference */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--sa-padding-40);
+    height: var(--sa-padding-40);
+    border-radius: var(--sa-shape-4);
+    background: color-mix(in srgb, var(--sa-color-neutralScale-1000) 62%, transparent);
+    color: var(--sa-color-neutralScale-0);
+    transition: background-color 0.15s ease;
+  }
+
+  [data-design="dbim"] :is(.db-album, .db-photo):hover .db-album-arrow {
+    background: var(--sa-color-primaryScale-800);
+  }
+
+  /* Title: 12px/20px, two lines (.photos-card-title) */
+  [data-design="dbim"] .db-media-title {
+    display: -webkit-box;
+    margin: var(--sa-padding-4) 0 0;
+    overflow: hidden;
+    color: var(--sa-color-text-default);
+    font-size: var(--db-fs-h4);
+    font-weight: var(--sa-font-weight-regular);
+    line-height: 20px;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  [data-design="dbim"] .db-album:hover .db-media-title {
+    text-decoration: underline;
+  }
+
+  /* Footer: date left, count right — 10px/600 uppercase, 0.6px (.ptype) */
+  [data-design="dbim"] .db-media-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-stack-8);
+    margin: auto 0 0;
+    padding-top: var(--sa-padding-8);
+    /* #3D4043 in the reference; the nearest DBIM neutral */
+    color: var(--sa-color-neutralScale-700);
+    font-size: var(--db-fs-small);
+    font-weight: var(--sa-font-weight-semibold);
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+  }
+
+  /* ── One album: each photo is a button opening the lightbox ─────────────── */
+  [data-design="dbim"] .db-photo.ds-btn {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    height: auto;
+    padding: 0;
+    border: 0;
+    border-radius: var(--sa-shape-8);
+    background: none;
+  }
+
+  [data-design="dbim"] .db-photo.ds-btn:hover {
+    background: none;
+  }
+
+  [data-design="dbim"] .db-album-meta {
+    margin: 0;
+    color: var(--sa-color-neutralScale-700);
+    font-size: var(--db-fs-small);
+    font-weight: var(--sa-font-weight-semibold);
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+  }
+
+  /* ── Videos: a letterboxed player sits on black, as the reference's does ── */
+  [data-design="dbim"] .db-video-frame {
+    background: var(--sa-color-neutralScale-1000);
+  }
+
+  [data-design="dbim"] .db-video-frame video.db-media-img {
+    object-fit: contain;
+  }
+
+  [data-design="dbim"] .db-video-play.ds-btn {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+  }
+
+  [data-design="dbim"] .db-video-play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--sa-padding-64);
+    height: var(--sa-padding-48);
+    border-radius: var(--sa-shape-12);
+    background: color-mix(in srgb, var(--sa-color-neutralScale-1000) 62%, transparent);
+    color: var(--sa-color-neutralScale-0);
+    transform: translate(-50%, -50%);
+  }
+
+  [data-design="dbim"] .db-video-play.ds-btn:hover .db-video-play-icon {
+    background: var(--sa-color-primaryScale-800);
+  }
+}
+/* ds-exempt-end */

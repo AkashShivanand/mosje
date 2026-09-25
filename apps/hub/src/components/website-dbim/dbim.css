@@ -1,0 +1,76 @@
+/* ds-exempt-start(third-party): type sizes, leading and tracking are transcribed from the DBIM 3.0 reference template (master-socialjustice.digifootprint.gov.in, root 62.5%, rems divided by 1.6), which the DBIM review team mandated on 25 Sep 2026; colour stays token-bound */
+/* ─────────────────────────────────────────────────────────────────────────────
+   The DBIM design of the website — a clone of the DBIM 3.0 reference build
+   (master-socialjustice.digifootprint.gov.in, captured 25 Sep 2026).
+
+   COLOUR: every colour is a SAMAVESH token. The subtree carries data-brand="dbim",
+   which binds the primary ramp to DBIM Colour Group 5, so the reference's values
+   are reached through tokens, never typed:
+     #162F6A → --sa-color-primaryScale-800    #214AAB → --sa-color-primaryScale-600
+     #5279D7 → --sa-color-primaryScale-400    #A3BBF3 → --sa-color-primaryScale-200
+     #D2DFFF → --sa-color-primaryScale-100    #150202 → --sa-color-text-default
+     #FFFFFF → --sa-color-neutralScale-0      #EBEAEA → --sa-color-neutralScale-100
+     #C6C6C6 → --sa-color-neutralScale-200    #000000 → --sa-color-neutralScale-1000
+
+   TYPE: the reference sets html { font-size: 62.5% } (1rem = 10px) and steps its
+   scale down below 1537px. The hub root is 16px, so its rems are converted here
+   (reference 1.4rem = 14px = 0.875rem) and held in --db-fs-* so one breakpoint
+   switches the whole scale, as the reference's does.
+
+   Class prefix: db-. Scoped to [data-design="dbim"], which only
+   app/website-dbim/layout.tsx sets.
+   ───────────────────────────────────────────────────────────────────────────── */
+@layer theme, base, components, utilities;
+
+@layer components {
+  [data-design="dbim"] {
+    /* ≥1537px: the reference's large scale */
+    --db-fs-h1: 2.25rem;   /* 36px */
+    --db-fs-h2: 1.5rem;    /* 24px */
+    --db-fs-h3: 1.25rem;   /* 20px */
+    --db-fs-h4: 0.875rem;  /* 14px */
+    --db-fs-p: 1rem;       /* 16px */
+    --db-fs-small: 0.75rem;/* 12px */
+    /* The reference's gutters: 120px ≥1537, 64px 1280–1536, 16px on a phone */
+    --db-gutter: var(--sa-padding-120);
+
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: "Noto Sans", var(--sa-font-latin);
+    font-size: var(--db-fs-p);
+    color: var(--sa-color-text-default);
+    background: var(--sa-color-neutralScale-0);
+    overflow-x: clip;
+    /* The hub root sets antialiased smoothing; the reference leaves the browser's
+       default, which draws white-on-primary text (footer, banner, tabs) visibly
+       heavier. Restored here so the dark bands read as the reference does. */
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
+  }
+
+  @media (max-width: 1536px) {
+    [data-design="dbim"] {
+      --db-fs-h1: 1.5rem;    /* 24px */
+      --db-fs-h2: 1.25rem;   /* 20px */
+      --db-fs-h3: 1rem;      /* 16px */
+      --db-fs-h4: 0.75rem;   /* 12px */
+      --db-fs-p: 0.875rem;   /* 14px */
+      --db-fs-small: 0.625rem;/* 10px */
+      --db-gutter: var(--sa-padding-64);
+    }
+  }
+
+  @media (max-width: 767.5px) {
+    [data-design="dbim"] {
+      --db-gutter: var(--sa-padding-16);
+    }
+  }
+
+  [data-design="dbim"] .db-main {
+    flex: 1;
+    outline: none;
+  }
+
+}
+/* ds-exempt-end */

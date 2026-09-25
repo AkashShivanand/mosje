@@ -85,6 +85,76 @@ export function openUx4gWidget(): boolean {
   return true;
 }
 
+/**
+ * Claim the page's ONE accessibility door for a control other than the UX4G
+ * widget's own floating button (`.claude/rules/accessibility-entry-point.md`).
+ *
+ * While `active`, it sets `data-sa-abar-a11y="1"` on the root — which
+ * `accessibility-bar.css` reads to hide `#uw-widget-custom-trigger` from
+ * `breakpoint/tablet` up — and, if a `ref` to the door is given, keeps
+ * `data-sa-abar-a11y-onscreen` while that element is on screen, which is what
+ * hides the floating button on a phone (rule 4a). Both flags are REFCOUNTED, so a
+ * page with several doors (the documentation previews render three bars) only
+ * clears them when the last one leaves.
+ *
+ * Extracted verbatim from `AccessibilityControls` on 2026-09-25 so a design whose
+ * masthead is not the `AccessibilityBar` — the DBIM website header — can be the
+ * door without hand-setting the attribute, which rule 3 forbids. The door must
+ * still OPEN the panel, with `openUx4gWidget()` deferred to the next task.
+ */
+export function useAccessibilityEntryClaim(
+  active: boolean,
+  ref?: React.RefObject<HTMLElement | null>,
+): void {
+  React.useEffect(() => {
+    if (!active) return;
+    const root = document.documentElement;
+    a11yEntryCount += 1;
+    root.dataset.saAbarA11y = "1";
+    return () => {
+      a11yEntryCount -= 1;
+      if (a11yEntryCount <= 0) {
+        a11yEntryCount = 0;
+        delete root.dataset.saAbarA11y;
+      }
+    };
+  }, [active]);
+
+  /* …and whether that door is ON SCREEN. Below `breakpoint/tablet` the vendor's
+     floating button is hidden only while it is, so a phone shows exactly one door
+     whether the masthead is expanded or has condensed the bar away — see
+     `accessibility-bar.css` and `accessibility-entry-point.md`. An icon that is
+     `display: none` never intersects, so a bar that hides it never hides the
+     floating button on its behalf. */
+  React.useEffect(() => {
+    if (!active) return;
+    const button = ref?.current;
+    if (!button || typeof IntersectionObserver === "undefined") return;
+    const root = document.documentElement;
+    let counted = false;
+    const setOnscreen = (onscreen: boolean) => {
+      if (onscreen === counted) return;
+      counted = onscreen;
+      a11yOnscreenCount += onscreen ? 1 : -1;
+      if (a11yOnscreenCount > 0) {
+        root.dataset.saAbarA11yOnscreen = "1";
+      } else {
+        a11yOnscreenCount = 0;
+        delete root.dataset.saAbarA11yOnscreen;
+      }
+    };
+    const observer = new IntersectionObserver((entries) => {
+      const entry = entries[entries.length - 1];
+      if (entry) setOnscreen(entry.isIntersecting);
+    });
+    observer.observe(button);
+    return () => {
+      observer.disconnect();
+      setOnscreen(false);
+    };
+  }, [active, ref]);
+}
+
 const ICON_SIZE = 20;
 /**
  * The separators' length. Figma draws them at 20 — the height of the glyph beside
@@ -130,57 +200,13 @@ export function AccessibilityControls({
   const { index, percent, decrease, increase, reset } = useFontScale();
 
   /* Tell the stylesheet a BAR is on the page offering the widget entry, so the
-     vendor's floating button can be hidden. The sheet deliberately does not claim
-     this: it is transient, and hiding the page's floating entry on behalf of a
-     panel that is closed most of the time would put us back where we started. */
-  React.useEffect(() => {
-    if (variant !== "bar" || !accessibility) return;
-    const root = document.documentElement;
-    a11yEntryCount += 1;
-    root.dataset.saAbarA11y = "1";
-    return () => {
-      a11yEntryCount -= 1;
-      if (a11yEntryCount <= 0) {
-        a11yEntryCount = 0;
-        delete root.dataset.saAbarA11y;
-      }
-    };
-  }, [variant, accessibility]);
-
-  /* …and whether that icon is ON SCREEN. Below `breakpoint/tablet` the vendor's
-     floating button is hidden only while it is, so a phone shows exactly one door
-     whether the masthead is expanded or has condensed the bar away — see
-     `accessibility-bar.css` and `accessibility-entry-point.md`. An icon that is
-     `display: none` never intersects, so a bar that hides it never hides the
-     floating button on its behalf. */
+     vendor's floating button can be hidden — and whether its icon is on screen.
+     The sheet deliberately does not claim this: it is transient, and hiding the
+     page's floating entry on behalf of a panel that is closed most of the time
+     would put us back where we started. The mechanism is `useAccessibilityEntryClaim`
+     below, shared with any other chrome that is a page's one door. */
   const a11yButtonRef = React.useRef<HTMLButtonElement>(null);
-  React.useEffect(() => {
-    if (variant !== "bar" || !accessibility) return;
-    const button = a11yButtonRef.current;
-    if (!button || typeof IntersectionObserver === "undefined") return;
-    const root = document.documentElement;
-    let counted = false;
-    const setOnscreen = (onscreen: boolean) => {
-      if (onscreen === counted) return;
-      counted = onscreen;
-      a11yOnscreenCount += onscreen ? 1 : -1;
-      if (a11yOnscreenCount > 0) {
-        root.dataset.saAbarA11yOnscreen = "1";
-      } else {
-        a11yOnscreenCount = 0;
-        delete root.dataset.saAbarA11yOnscreen;
-      }
-    };
-    const observer = new IntersectionObserver((entries) => {
-      const entry = entries[entries.length - 1];
-      if (entry) setOnscreen(entry.isIntersecting);
-    });
-    observer.observe(button);
-    return () => {
-      observer.disconnect();
-      setOnscreen(false);
-    };
-  }, [variant, accessibility]);
+  useAccessibilityEntryClaim(variant === "bar" && accessibility, a11yButtonRef);
 
   /**
    * Open the UX4G widget; only navigate to the statement page if it isn't there.

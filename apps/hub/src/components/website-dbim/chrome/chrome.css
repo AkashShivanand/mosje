@@ -1,0 +1,671 @@
+/* ds-exempt-start(third-party): type sizes, leading and tracking are transcribed from the DBIM 3.0 reference template (master-socialjustice.digifootprint.gov.in, root 62.5%, rems divided by 1.6), which the DBIM review team mandated on 25 Sep 2026; colour stays token-bound */
+/* ─────────────────────────────────────────────────────────────────────────────
+   DBIM chrome — header, menu row, mobile menu, footer, cookie bar, back to top.
+   Values are the reference's computed styles (docs/research/dbim-reference/
+   components/chrome.spec.md). Reference rem ÷ 1.6 = ours. Colours are tokens under
+   data-brand="dbim" (see dbim.css for the map); anything else says what it is.
+
+   DS components restyled here (Button, IconButton, Input, SideSheet, BackToTop) are
+   matched with a scope class PLUS their own class, so these rules outrank the
+   design system's own in the same layer whatever order the files load in.
+   ───────────────────────────────────────────────────────────────────────────── */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ── The pinned block ──────────────────────────────────────────────────────
+     Below 1537 only the menu row is sticky, so this wrapper steps out of the box
+     tree and the row's sticky box is the page. From 1537 the reference pins the
+     whole header. */
+  [data-design="dbim"] .db-top {
+    display: contents;
+  }
+
+  @media (min-width: 1537px) {
+    [data-design="dbim"] .db-top {
+      position: sticky;
+      top: 0;
+      z-index: var(--sa-z-sticky);
+      display: block;
+    }
+  }
+
+  /* ── Header ──────────────────────────────────────────────────────────────── */
+  [data-design="dbim"] .db-header {
+    padding: 15px var(--sa-padding-120); /* reference 1.5rem / 12rem at ≥1537 */
+    background: var(--sa-color-neutralScale-0);
+  }
+
+  [data-design="dbim"] .db-header__row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 0 -7.5px; /* the reference's Bootstrap row gutter */
+  }
+
+  [data-design="dbim"] .db-header__main {
+    display: flex;
+    flex: 0 0 66.6667%;
+    order: 1;
+    align-items: flex-end;
+    min-width: 0;
+    padding-left: 7.5px;
+  }
+
+  [data-design="dbim"] .db-header__brand {
+    flex: 0 0 66.6667%;
+    min-width: 0;
+    padding-right: 5px;
+  }
+
+  [data-design="dbim"] .db-header__search {
+    position: relative;
+    left: -20px;
+    display: flex;
+    flex: 0 0 33.3333%;
+    gap: 5px;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 15px;
+    padding-bottom: var(--sa-padding-6);
+  }
+
+  [data-design="dbim"] .db-header__di--desktop {
+    flex: 0 0 16.6667%;
+    order: 2;
+    padding-top: 33px; /* reference 31px margin; our PNG box sits 2px higher */
+    padding-right: 7.5px;
+  }
+
+  [data-design="dbim"] .db-header__di--desktop .db-di {
+    margin-left: 15px;
+  }
+
+  [data-design="dbim"] .db-header__di--mobile {
+    display: none;
+  }
+
+  [data-design="dbim"] .db-di {
+    display: inline-block;
+    line-height: 0;
+  }
+
+  [data-design="dbim"] .db-di img {
+    width: 150px;
+    height: 58px;
+  }
+
+  [data-design="dbim"] .db-header__tools {
+    display: flex;
+    flex: 0 0 16.6667%;
+    order: 3;
+    justify-content: flex-end;
+    padding-top: 31px;
+    padding-right: 7.5px;
+  }
+
+  /* Emblem + names */
+  [data-design="dbim"] .db-logo {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    color: var(--sa-color-neutralScale-1000);
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-logo__emblem {
+    flex: none;
+    width: 57px;
+    height: 100px;
+  }
+
+  [data-design="dbim"] .db-logo__text {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: var(--sa-padding-6);
+    line-height: 1.25;
+  }
+
+  [data-design="dbim"] .db-logo__gov {
+    font-size: 1.25rem; /* 20px */
+    font-weight: var(--sa-font-weight-regular);
+    letter-spacing: -0.08px;
+  }
+
+  [data-design="dbim"] .db-logo__dept {
+    margin-right: 10px;
+    font-size: var(--db-fs-h2);
+    font-weight: var(--sa-font-weight-bold);
+  }
+
+  [data-design="dbim"] .db-logo:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  /* Search */
+  [data-design="dbim"] .db-search {
+    display: flex;
+    gap: var(--sa-stack-8);
+    align-items: center;
+    width: 16.5rem; /* 264px — the reference's shrink-to-fit box */
+    height: 44px;
+    padding: 0 10px;
+    background: var(--sa-color-neutralScale-0);
+    border: 2px solid var(--sa-color-neutralScale-100);
+    border-bottom: 3px solid var(--sa-color-primaryScale-800);
+    border-radius: var(--sa-shape-12) var(--sa-shape-12) 0 0;
+  }
+
+  [data-design="dbim"] .db-search:focus-within {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  [data-design="dbim"] .db-search input.db-search__input.ds-input {
+    flex: 1 1 auto;
+    width: 1%;
+    min-width: 0;
+    height: 31.5px;
+    min-height: 0;
+    padding: 3.75px 7.5px 3.75px 0;
+    font-size: 1rem; /* 16px */
+    color: var(--sa-color-text-default);
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+  }
+
+  [data-design="dbim"] .db-search input.db-search__input.ds-input::placeholder {
+    color: var(--sa-color-text-default);
+    opacity: 0.8;
+  }
+
+  [data-design="dbim"] .db-search .db-search__btn.ds-btn {
+    justify-content: flex-start;
+    width: 47px;
+    min-width: 0;
+    height: 39px;
+    min-height: 0;
+    margin-left: -1px;
+    padding: 0 0 0 15px;
+    color: var(--sa-color-primaryScale-800);
+    background: transparent;
+    border: 0;
+    border-left: 1px solid var(--sa-color-neutralScale-100);
+    border-radius: 0;
+  }
+
+  /* Hamburger — only below 992 */
+  [data-design="dbim"] .db-header__search .db-hamburger.ds-btn {
+    display: none;
+  }
+
+  /* The three tools */
+  [data-design="dbim"] .db-tools {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-tools > li {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 0 var(--sa-padding-4);
+    border-right: 1px solid var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-tools > li:last-child {
+    border-right: 0;
+  }
+
+  [data-design="dbim"] .db-tools .db-tools__btn,
+  [data-design="dbim"] .db-tools .db-tools__btn.ds-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    min-width: 0;
+    height: 40px;
+    min-height: 0;
+    padding: 0;
+    color: var(--sa-color-primaryScale-800);
+    background: transparent;
+    border: 0;
+    border-radius: var(--sa-shape-4);
+  }
+
+  [data-design="dbim"] .db-tools > li:last-child .db-tools__btn.ds-btn {
+    width: 40px;
+  }
+
+  [data-design="dbim"] .db-tools .db-tools__btn:hover {
+    background: var(--sa-color-primaryScale-100);
+  }
+
+  [data-design="dbim"] .db-tools .db-tools__btn:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: calc(var(--sa-focus-width) * -1);
+  }
+
+  [data-design="dbim"] .db-tools__glyph {
+    width: 32px;
+    height: 32px;
+  }
+
+  @media (min-width: 1280px) and (max-width: 1536px) {
+    [data-design="dbim"] .db-header {
+      padding: 10px var(--sa-padding-64);
+    }
+  }
+
+  /* ≤1280 the reference drops the search's 20px pull and its bottom padding. */
+  @media (max-width: 1280px) {
+    [data-design="dbim"] .db-header__search {
+      left: 0;
+      padding: var(--sa-padding-12) 0 0;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1279px) {
+    [data-design="dbim"] .db-header {
+      padding: 10px 67px 10px 92px; /* the reference's own asymmetric inset */
+    }
+  }
+
+  /* ── Header below 992: stacked, tools top-right, Digital India centred ──── */
+  @media (max-width: 991px) {
+    [data-design="dbim"] .db-header {
+      padding: 10px 80px;
+    }
+
+    [data-design="dbim"] .db-header__row {
+      flex-direction: column;
+      align-items: stretch;
+      margin: 0;
+    }
+
+    [data-design="dbim"] .db-header__main {
+      flex-direction: column;
+      flex-basis: auto;
+      align-items: stretch;
+      padding-left: 0;
+    }
+
+    [data-design="dbim"] .db-header__brand {
+      flex-basis: auto;
+      padding-top: 14px;
+    }
+
+    [data-design="dbim"] .db-header__di--desktop {
+      display: none;
+    }
+
+    [data-design="dbim"] .db-header__di--mobile {
+      display: flex;
+      justify-content: center;
+      padding: 5px 0 5px 15px;
+    }
+
+    [data-design="dbim"] .db-header__search {
+      flex-basis: auto;
+    }
+
+    [data-design="dbim"] .db-search {
+      flex: 1 1 auto;
+      width: auto;
+    }
+
+    [data-design="dbim"] .db-header__search .db-hamburger.ds-btn {
+      display: inline-flex;
+      width: 24px;
+      min-width: 0;
+      height: 24px;
+      min-height: 0;
+      margin-top: 7px;
+      padding: 0;
+      color: var(--sa-color-primaryScale-800);
+      background: transparent;
+      border: 0;
+    }
+
+    [data-design="dbim"] .db-header__tools {
+      position: absolute;
+      top: 8px;
+      right: 0;
+      padding: 0;
+    }
+
+    [data-design="dbim"] .db-logo__dept {
+      font-size: 0.9375rem; /* 15px */
+    }
+
+    [data-design="dbim"] .db-tools > li {
+      height: 32px;
+    }
+
+    /* The reference shrinks the skip and accessibility glyphs to 24 here but not
+       the language one, which stays 32 in a 44 button. */
+    [data-design="dbim"] .db-tools .db-tools__btn,
+    [data-design="dbim"] .db-tools .db-tools__btn.ds-btn {
+      width: 36px;
+      height: 32px;
+    }
+
+    [data-design="dbim"] .db-tools > li:nth-child(2) .db-tools__btn.ds-btn {
+      width: 44px;
+    }
+
+    [data-design="dbim"] .db-tools > li:last-child .db-tools__btn.ds-btn {
+      width: 40px;
+    }
+
+    [data-design="dbim"] .db-tools > li:not(:nth-child(2)) .db-tools__glyph {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    [data-design="dbim"] .db-header {
+      padding: 0 40px 10px;
+    }
+  }
+
+  @media (max-width: 460px) {
+    [data-design="dbim"] .db-header__brand {
+      padding-top: 45px;
+    }
+  }
+
+  @media (max-width: 440px) {
+    [data-design="dbim"] .db-header {
+      padding: 0 20px 10px 10px;
+    }
+
+    [data-design="dbim"] .db-header__tools {
+      right: -17px; /* the reference's cluster runs into the right inset */
+    }
+
+    [data-design="dbim"] .db-header__search .db-hamburger.ds-btn {
+      margin-right: -8px; /* …and so does its hamburger */
+    }
+  }
+
+  /* ── Menu row (≥992) ─────────────────────────────────────────────────────── */
+  [data-design="dbim"] .db-nav {
+    position: sticky;
+    top: -1px;
+    z-index: var(--sa-z-sticky);
+    display: flex;
+    padding: 0 38px;
+    background: var(--sa-color-neutralScale-0);
+    border-top: 1px solid var(--sa-color-neutralScale-100);
+    border-bottom: 2px solid var(--sa-color-primaryScale-800);
+    /* reference: rgba(35,35,47,.08) — ink at 8% */
+    box-shadow: 0 4px 8px 0 color-mix(in srgb, var(--sa-color-neutralScale-1000) 8%, transparent);
+  }
+
+  [data-design="dbim"] .db-top > .db-nav {
+    top: -1px;
+  }
+
+  [data-design="dbim"] .db-nav__list {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-nav__item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 240px;
+    min-height: 58px;
+  }
+
+  [data-design="dbim"] .db-nav__item:hover,
+  [data-design="dbim"] .db-nav__item.is-open {
+    background: var(--sa-color-primaryScale-100);
+  }
+
+  [data-design="dbim"] .db-nav__label {
+    font-size: 1.25rem; /* 20px */
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: normal;
+    color: var(--sa-color-text-default);
+    text-align: center;
+  }
+
+  [data-design="dbim"] .db-nav__home {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 58px;
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-nav .db-nav__trigger.ds-btn {
+    gap: 2.5px;
+    align-items: center;
+    align-self: center;
+    width: auto;
+    min-width: 0;
+    height: 105%;
+    min-height: 0;
+    padding: 1px 6px;
+    color: var(--sa-color-text-default);
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+  }
+
+  [data-design="dbim"] .db-nav__chevron {
+    margin-top: 5px;
+    color: var(--sa-color-text-default);
+  }
+
+  /* Active: bold primary, the 8px bar on the label's own box, which is 105% tall so
+     the text rides 4px higher than its neighbours — as the reference draws it. */
+  [data-design="dbim"] .db-nav__home.is-active .db-nav__label,
+  [data-design="dbim"] .db-nav__item.is-active .db-nav__label {
+    display: flex;
+    align-items: center;
+    align-self: stretch;
+    height: 105%;
+    font-size: 1.5rem; /* 24px */
+    font-weight: var(--sa-font-weight-bold);
+    color: var(--sa-color-primaryScale-800);
+    border-bottom: 8px solid var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-nav__item.is-active .db-nav__chevron {
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-nav__home:focus-visible,
+  [data-design="dbim"] .db-nav .db-nav__trigger.ds-btn:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: calc(var(--sa-focus-width) * -1);
+  }
+
+  [data-design="dbim"] .db-nav__panel {
+    position: absolute;
+    top: 58px;
+    left: 0;
+    z-index: var(--sa-z-dropdown);
+    display: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    text-align: center;
+    list-style: none;
+    /* reference: rgba(0,0,0,.7) + blur(5px) — ink at 70% */
+    background: color-mix(in srgb, var(--sa-color-neutralScale-1000) 70%, transparent);
+    backdrop-filter: blur(5px);
+    border-radius: 0 0 var(--sa-shape-6) var(--sa-shape-6);
+  }
+
+  [data-design="dbim"] .db-nav__item.is-open > .db-nav__panel {
+    display: block;
+  }
+
+  [data-design="dbim"] .db-nav__panel a {
+    display: block;
+    padding: var(--sa-padding-12);
+    font-size: 0.875rem; /* 14px */
+    font-weight: var(--sa-font-weight-regular);
+    line-height: 1.3125rem; /* 21px */
+    color: var(--sa-color-neutralScale-0);
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-nav__panel li:hover,
+  [data-design="dbim"] .db-nav__panel li:focus-within {
+    background: var(--sa-color-primaryScale-100);
+  }
+
+  [data-design="dbim"] .db-nav__panel li:hover a,
+  [data-design="dbim"] .db-nav__panel a:focus-visible {
+    color: var(--sa-color-text-default);
+  }
+
+  [data-design="dbim"] .db-nav__panel a:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: calc(var(--sa-focus-width) * -1);
+  }
+
+  @media (max-width: 1536px) {
+    [data-design="dbim"] .db-nav__item {
+      width: 160px;
+    }
+
+    [data-design="dbim"] .db-nav__label,
+    [data-design="dbim"] .db-nav__item.is-active .db-nav__label {
+      font-size: 1rem; /* 16px */
+    }
+
+    [data-design="dbim"] .db-nav__home.is-active .db-nav__label {
+      font-size: 1.25rem; /* 20px */
+    }
+  }
+
+  @media (min-width: 1280px) and (max-width: 1536px) {
+    [data-design="dbim"] .db-nav {
+      padding: 0 14px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    [data-design="dbim"] .db-nav {
+      display: none;
+    }
+  }
+
+  /* ── Mobile menu: the DS SideSheet, edge to edge ─────────────────────────── */
+  [data-design="dbim"] .db-mnav.ds-sheet {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 0;
+  }
+
+  [data-design="dbim"] .db-mnav .ds-sheet__header {
+    justify-content: flex-end;
+    min-height: 0;
+    padding: var(--sa-padding-8) var(--sa-padding-12) 0;
+    border-bottom: 0;
+  }
+
+  [data-design="dbim"] .db-mnav .ds-sheet__close svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* The dialog keeps its name; the reference draws no title. */
+  [data-design="dbim"] .db-mnav .ds-sheet__title {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  [data-design="dbim"] .db-mnav .ds-sheet__body {
+    padding: 0;
+  }
+
+  [data-design="dbim"] .db-mnav__list {
+    margin: 0;
+    padding: 0 21px;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-mnav__section {
+    margin: 30px 0;
+  }
+
+  [data-design="dbim"] .db-mnav .db-mnav__toggle.ds-btn {
+    justify-content: space-between;
+    width: 100%;
+    min-width: 0;
+    min-height: 26px;
+    padding: 1px 6px;
+    font-size: 1rem; /* 16px */
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-color-text-default);
+    background: transparent;
+    border: 0;
+  }
+
+  [data-design="dbim"] .db-mnav__links {
+    margin: 5px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-mnav__links a {
+    display: block;
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    font-size: 1rem; /* 16px */
+    color: var(--sa-color-text-default);
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-mnav__links a[aria-current="page"] {
+    font-weight: var(--sa-font-weight-bold);
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-mnav__links a:hover {
+    background: var(--sa-color-primaryScale-100);
+  }
+
+  [data-design="dbim"] .db-mnav__links a:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: calc(var(--sa-focus-width) * -1);
+  }
+
+  /* ── Back to top: the DS control in the reference's dress ────────────────── */
+  [data-design="dbim"] .db-totop.ds-back-to-top.ds-btn.ds-icon-btn {
+    color: var(--sa-color-neutralScale-0);
+    background-color: var(--sa-color-primaryScale-800);
+    border-color: var(--sa-color-primaryScale-800);
+    /* reference: rgba(0,0,0,.1) 0 4px 8px */
+    box-shadow: 0 4px 8px color-mix(in srgb, var(--sa-color-neutralScale-1000) 10%, transparent);
+  }
+
+  [data-design="dbim"] .db-totop.ds-back-to-top.ds-btn.ds-icon-btn:hover {
+    background-color: var(--sa-color-primaryScale-600);
+  }
+}
+/* ds-exempt-end */

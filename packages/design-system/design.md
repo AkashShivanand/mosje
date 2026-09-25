@@ -12,7 +12,14 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-09-24 · System version: v0.70.0 (FACTSTRIP HAS A THIRD SHAPE, AND IT IS
+  Last reviewed: 2026-09-25 · System version: v0.71.0 (A HEADER THAT IS NOT `AccessibilityBar` CAN BE
+  THE PAGE'S ONE ACCESSIBILITY DOOR. `openUx4gWidget()` opens the UX4G panel by dispatching a click on
+  its trigger, and `useAccessibilityEntryClaim(active, ref?)` is the refcounted claim that sets
+  `data-sa-abar-a11y` (and `-onscreen`) so the widget's floating button hides while the claiming
+  control is mounted. Both were private to `AccessibilityControls`, which now calls the same hook —
+  its behaviour is unchanged. First consumer: the website's DBIM design header
+  (apps/hub/src/components/website-dbim/chrome). Never set the attribute by hand; claim it.)
+  Previously v0.70.0 — FACTSTRIP HAS A THIRD SHAPE, AND IT IS
   ASKED FOR BY NAME. `variant="bar"` is the brand-blue band the website home page carries under
   its scheme portals — no marks, the caption above the figure, a rule between the cells and an
   `action` in a cell of its own. It inverts, so no item count may select it. `unit` sets a

@@ -1,0 +1,730 @@
+/* ds-exempt-start(third-party): type sizes, leading and tracking are transcribed from the DBIM 3.0 reference template (master-socialjustice.digifootprint.gov.in, root 62.5%, rems divided by 1.6), which the DBIM review team mandated on 25 Sep 2026; colour stays token-bound */
+/* ─────────────────────────────────────────────────────────────────────────────
+   DBIM design — Offerings: Schemes and Services, scheme details, Vacancies,
+   Tenders. Spec: docs/research/dbim-reference/components/offerings.spec.md.
+   Values are the reference's computed styles at 1440; its rem (1rem = 10px) is
+   converted to ours (÷1.6). Every colour is a token (see dbim.css header).
+   ───────────────────────────────────────────────────────────────────────────── */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ── Shared list chrome ─────────────────────────────────────────────────── */
+  /* The hub balances headings; the reference wraps them greedily. */
+  [data-design="dbim"] :is(.db-scheme-card__title, .db-vac-card__title, .db-sd__name h2, .db-sd__h) {
+    text-wrap: wrap;
+  }
+
+  /* A visually hidden label sits at its link's text end; the link must contain it,
+     or a long one-line title pushes it past the viewport and the page scrolls sideways. */
+  [data-design="dbim"] :is(.db-off-view, .db-vac-card__file, .db-vac-card__all, .db-sd__visit, .db-sd__link, .db-sd__prose a) {
+    position: relative;
+  }
+
+  [data-design="dbim"] .db-off > ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* The reference's `.row.mt-5`: empty · pager centred · View Archive right. */
+  [data-design="dbim"] .db-off-foot {
+    display: grid;
+    grid-template-columns: 1fr;
+    place-items: center;
+    gap: var(--sa-stack-8);
+    margin-top: 30px; /* 30px: Bootstrap mt-5 at the reference's 10px root */
+  }
+
+  @media (min-width: 768px) {
+    [data-design="dbim"] .db-off-foot {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+    [data-design="dbim"] .db-off-foot__pager {
+      grid-column: 2;
+    }
+    [data-design="dbim"] .db-off-foot__end {
+      grid-column: 3;
+      justify-self: end;
+    }
+  }
+
+  [data-design="dbim"] .db-off-archive {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    min-height: 42px; /* 42px: the reference's button height */
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    border: 1px solid var(--sa-color-primaryScale-800);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-neutralScale-0);
+    color: var(--sa-color-primaryScale-800);
+    font-size: 0.75rem; /* 12px */
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: 1.125rem; /* 18px */
+    letter-spacing: 0.12px;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  @media (min-width: 768px) {
+    [data-design="dbim"] .db-off-archive {
+      margin-right: var(--sa-padding-40);
+    }
+  }
+
+  /* The reference's filled `a.download-btn` — "View", "View All Documents". */
+  [data-design="dbim"] .db-off-view,
+  [data-design="dbim"] .db-vac-card__all {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-primaryScale-100);
+    color: var(--sa-color-primaryScale-800);
+    font-size: 0.75rem; /* 12px */
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: 1.125rem; /* 18px */
+    letter-spacing: 0.12px;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  [data-design="dbim"] .db-off-view {
+    min-height: var(--sa-padding-40);
+  }
+
+  [data-design="dbim"] .db-off-archive:hover,
+  [data-design="dbim"] .db-off-view:hover,
+  [data-design="dbim"] .db-vac-card__all:hover {
+    background: var(--sa-color-primaryScale-200);
+  }
+
+  [data-design="dbim"] :is(.db-off-archive, .db-off-view, .db-vac-card__all, .db-scheme-card__go, .db-vac-card__file, .db-sd__visit, .db-sd__link, .db-sd__prose a):focus-visible {
+    outline: 2px solid var(--sa-color-primaryScale-800);
+    outline-offset: 2px;
+  }
+
+  [data-design="dbim"] .db-off-noresults {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sa-stack-12);
+    padding: var(--sa-padding-40) 0;
+    text-align: center;
+  }
+
+  [data-design="dbim"] .db-off-noresults p {
+    margin: 0;
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  [data-design="dbim"] .db-pdf-icon {
+    flex: none;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  /* ── Schemes and Services: the card grid ────────────────────────────────── */
+  [data-design="dbim"] .db-scheme-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px; /* 15px: the reference's row gutter (g-4 at a 10px root) */
+  }
+
+  @media (min-width: 768px) {
+    [data-design="dbim"] .db-scheme-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  [data-design="dbim"] .db-scheme-grid > li {
+    display: flex;
+  }
+
+  [data-design="dbim"] .db-scheme-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border: 1px solid var(--sa-color-neutralScale-100);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-color-neutralScale-0);
+  }
+
+  [data-design="dbim"] .db-scheme-card__img {
+    display: block;
+    width: 100%;
+    height: 216px; /* 216px: the reference's photograph height at every width */
+    object-fit: cover;
+    border-radius: var(--sa-shape-12) var(--sa-shape-12) 0 0;
+  }
+
+  [data-design="dbim"] .db-scheme-card__body {
+    flex: 1;
+    padding: var(--sa-padding-20) var(--sa-padding-24);
+  }
+
+  [data-design="dbim"] .db-scheme-card__head {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 85px; /* 85px: the reference's title-logo box, logo or not */
+  }
+
+  @media (min-width: 768px) {
+    [data-design="dbim"] .db-scheme-card__head {
+      flex-direction: row;
+      justify-content: space-between;
+      gap: var(--sa-inline-8);
+    }
+  }
+
+  [data-design="dbim"] .db-scheme-card__title {
+    margin: 0 0 5px; /* 5px: the reference's p margin */
+    font-size: var(--db-fs-h3);
+    font-weight: var(--sa-font-weight-medium);
+    line-height: 1.5rem; /* 24px */
+    color: var(--sa-color-text-default);
+  }
+
+  [data-design="dbim"] .db-scheme-card__logo {
+    flex: none;
+    width: 168px; /* 168×84: the reference's logo box */
+    height: 84px;
+    object-fit: contain;
+  }
+
+  [data-design="dbim"] .db-scheme-card__line {
+    display: -webkit-box;
+    height: 100px; /* 100px: the reference's five-line box */
+    margin: 0 0 5px;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+    line-clamp: 5;
+    font-size: 0.75rem; /* 12px */
+    line-height: 1.25rem; /* 20px */
+  }
+
+  [data-design="dbim"] .db-scheme-card__foot {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px; /* 10px: the reference's footer offset */
+    padding: 0 var(--sa-padding-24) var(--sa-padding-20);
+  }
+
+  [data-design="dbim"] .db-scheme-card__go {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--sa-padding-40);
+    height: var(--sa-padding-40);
+    padding: var(--sa-padding-8);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-primaryScale-200);
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-scheme-card__go:hover {
+    background: var(--sa-color-primaryScale-100);
+  }
+
+  /* ── Vacancies: the card grid ───────────────────────────────────────────── */
+  [data-design="dbim"] .db-vac-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px 25px; /* 15px rows; 25px columns = 15 gutter + the cards' 5px side margins */
+  }
+
+  @media (min-width: 768px) {
+    [data-design="dbim"] .db-vac-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 992px) {
+    [data-design="dbim"] .db-vac-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  [data-design="dbim"] .db-vac-grid > li {
+    display: flex;
+    min-width: 0;
+  }
+
+  [data-design="dbim"] .db-vac-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+    width: 100%;
+    min-width: 0;
+    padding: var(--sa-padding-20) var(--sa-padding-24) var(--sa-padding-24);
+    border: 1px solid var(--sa-color-neutralScale-100);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-color-neutralScale-0);
+  }
+
+  [data-design="dbim"] .db-vac-card__title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 57px; /* 57px: two 19.2px lines + the chip's padding */
+    margin: 0;
+    padding: var(--sa-padding-8) 10px; /* 10px: the reference's chip side padding */
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-primaryScale-200);
+    font-size: var(--db-fs-h3);
+    font-weight: var(--sa-font-weight-medium);
+    line-height: 1.2;
+    text-align: center;
+    color: var(--sa-color-text-default);
+  }
+
+  [data-design="dbim"] .db-vac-card__title span {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  [data-design="dbim"] .db-vac-card__dates {
+    display: grid;
+    gap: var(--sa-stack-8);
+    margin: var(--sa-padding-16) 0 0;
+  }
+
+  [data-design="dbim"] .db-vac-card__date {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-inline-8);
+  }
+
+  [data-design="dbim"] .db-vac-card__date dt {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* 5px: the reference's ms-2 */
+    font-size: 0.625rem; /* 10px */
+    font-weight: var(--sa-font-weight-medium);
+    line-height: 1.125rem; /* 18px */
+    letter-spacing: 0.12px;
+    text-transform: uppercase;
+  }
+
+  [data-design="dbim"] .db-vac-card__date dt .material-symbols-rounded {
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-vac-card__date dd {
+    margin: 0;
+    font-size: 0.625rem; /* 10px */
+    line-height: 0.9375rem; /* 15px */
+    text-align: right;
+  }
+
+  [data-design="dbim"] .db-vac-card__docs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px; /* 5px: the reference's mt-2 */
+    margin-top: auto;
+    padding-top: var(--sa-padding-12);
+  }
+
+  [data-design="dbim"] .db-vac-card__file {
+    align-self: stretch;
+    overflow: hidden;
+    font-size: 0.625rem; /* 10px */
+    line-height: 1.5rem; /* 24px row */
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--sa-color-primaryScale-600); /* #0D6EFD in the reference → nearest token blue */
+    text-decoration: underline;
+  }
+
+  [data-design="dbim"] .db-vac-card__all {
+    min-height: 34px; /* 34px: the reference's button */
+  }
+
+  /* ── Tenders: card-row table ────────────────────────────────────────────── */
+  [data-design="dbim"] .db-tender__head {
+    /* Below 992 the reference hides the header; it stays in the accessibility tree. */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  [data-design="dbim"] .db-tender__head small,
+  [data-design="dbim"] .db-tender__label {
+    font-size: 0.625rem; /* 10px */
+    font-weight: var(--sa-font-weight-semibold);
+    letter-spacing: 0.48px;
+    text-transform: uppercase;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-tender__row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* 10px: the reference's row-gap-3 at its 10px root */
+    margin-bottom: 6px; /* 6px: the reference's row spacing */
+    padding: var(--sa-padding-8) var(--sa-padding-32);
+    border: 1px solid var(--sa-color-neutralScale-100);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-color-neutralScale-0);
+  }
+
+  [data-design="dbim"] .db-tender__cell {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-width: 0;
+  }
+
+  [data-design="dbim"] .db-tender__label {
+    flex: 0 0 33.333%;
+    padding: 0 7.5px; /* 7.5px: the reference's col-4 padding */
+    line-height: normal;
+  }
+
+  /* Below 992 the file and its View button take their own line under the label. */
+  [data-design="dbim"] .db-tender__cell--file .db-tender__file {
+    flex-basis: 100%;
+    padding-left: 7.5px;
+  }
+
+  [data-design="dbim"] .db-tender__cell p {
+    margin: 0;
+    font-size: var(--db-fs-p);
+    line-height: 1.5rem; /* 24px */
+  }
+
+  [data-design="dbim"] .db-tender__meta {
+    font-size: 0.625rem; /* 10px */
+    font-weight: var(--sa-font-weight-semibold);
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--sa-color-text-muted); /* #3D4043 in the reference → nearest token */
+  }
+
+  [data-design="dbim"] .db-tender__cell--file {
+    flex-wrap: wrap;
+  }
+
+  [data-design="dbim"] .db-tender__file {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+  }
+
+  [data-design="dbim"] .db-tender__type {
+    display: inline-flex;
+    align-items: center;
+    gap: 15px; /* 15px: the reference's gap-4 */
+  }
+
+  [data-design="dbim"] .db-tender__type small {
+    font-size: 0.625rem; /* 10px */
+    font-weight: var(--sa-font-weight-semibold);
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  @media (min-width: 992px) {
+    [data-design="dbim"] .db-tender__head {
+      position: static;
+      display: grid;
+      grid-template-columns: var(--db-cols);
+      align-items: center;
+      width: auto;
+      height: auto;
+      overflow: visible;
+      clip-path: none;
+      margin-bottom: var(--sa-padding-16);
+      padding: var(--sa-padding-12) var(--sa-padding-32);
+      border-radius: var(--sa-shape-4);
+      background: var(--sa-color-primaryScale-200);
+    }
+    [data-design="dbim"] .db-tender__head > div {
+      padding: 0 7.5px; /* 7.5px: the reference's column padding */
+    }
+    [data-design="dbim"] .db-tender__row {
+      display: grid;
+      grid-template-columns: var(--db-cols);
+      align-items: center;
+      gap: 0;
+      padding: var(--sa-padding-8) var(--sa-padding-32);
+    }
+    [data-design="dbim"] .db-tender__cell {
+      padding: 0 7.5px;
+    }
+    [data-design="dbim"] .db-tender__label {
+      display: none;
+    }
+    [data-design="dbim"] .db-tender__cell--file .db-tender__file {
+      flex-basis: auto;
+      padding-left: 0;
+    }
+  }
+
+  /* ── Scheme details ─────────────────────────────────────────────────────── */
+  [data-design="dbim"] .db-sd {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px; /* 30px: the reference's g-5 gutter */
+    /* -30px: the reference's .row.g-5 pulls its columns up by its own gutter, so the
+       details page starts at the section's 32px padding, without the list pages' 30px. */
+    margin-top: -30px;
+  }
+
+  @media (min-width: 992px) {
+    [data-design="dbim"] .db-sd {
+      /* 415 : 860 — the reference's col-lg-4 / col-lg-8 content widths at 1440 */
+      grid-template-columns: minmax(0, 415fr) minmax(0, 860fr);
+    }
+    [data-design="dbim"] .db-sd__rail {
+      position: sticky;
+      top: 140px; /* 140px: clears the reference's sticky header */
+      align-self: start;
+    }
+  }
+
+  [data-design="dbim"] .db-sd__name {
+    padding: var(--sa-padding-32);
+    border-radius: 10px; /* 10px: the reference's .visionbox radius */
+    background: var(--sa-color-neutralScale-100);
+  }
+
+  [data-design="dbim"] .db-sd__name h2 {
+    margin: 0;
+    font-size: var(--db-fs-h2);
+    font-weight: var(--sa-font-weight-medium);
+    line-height: 2.25rem; /* 36px */
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-sd__visit {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+    margin: 10px 0; /* 10px: the reference's my-3 */
+    padding: 10px var(--sa-padding-16);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-primaryScale-400);
+    color: var(--sa-color-primaryScale-800);
+    font-size: 0.875rem; /* 14px */
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: 1.25rem; /* 20px */
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-sd__visit:hover {
+    background: var(--sa-color-primaryScale-200);
+  }
+
+  [data-design="dbim"] .db-sd__links {
+    margin: 10px 0;
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-color-neutralScale-100);
+  }
+
+  [data-design="dbim"] .db-sd__links-title {
+    margin: 0 0 5px;
+    font-size: 0.875rem; /* 14px */
+    font-weight: var(--sa-font-weight-bold);
+    line-height: 1.25rem; /* 20px */
+    color: var(--sa-color-primaryScale-600);
+  }
+
+  [data-design="dbim"] .db-sd__links-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  [data-design="dbim"] .db-sd__link {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    margin: 0;
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    border: 1px solid var(--sa-color-primaryScale-600);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-neutralScale-0);
+    color: var(--sa-color-primaryScale-600);
+    font-size: 0.75rem; /* 12px */
+    font-weight: var(--sa-font-weight-bold);
+    line-height: 1.125rem; /* 18px */
+    letter-spacing: 0.12px;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-sd__link--plain {
+    border-color: var(--sa-color-neutralScale-200);
+    color: var(--sa-color-text-default);
+  }
+
+  [data-design="dbim"] .db-sd__main {
+    min-width: 0;
+  }
+
+  [data-design="dbim"] .db-sd__h {
+    margin: 0 0 5px;
+    font-size: var(--db-fs-h2);
+    font-weight: var(--sa-font-weight-regular);
+    line-height: 2rem; /* 32px */
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-sd__prose {
+    margin-bottom: 10px;
+    font-size: var(--db-fs-p);
+    line-height: 1.5rem; /* 24px */
+    text-align: justify;
+  }
+
+  [data-design="dbim"] .db-sd__prose :is(p, ul, ol, table) {
+    margin: 0 0 10px;
+  }
+
+  [data-design="dbim"] .db-sd__prose :is(ul, ol) {
+    padding-left: var(--sa-padding-20);
+  }
+
+  [data-design="dbim"] .db-sd__prose ul {
+    list-style: disc;
+  }
+
+  [data-design="dbim"] .db-sd__prose ol {
+    list-style: decimal;
+  }
+
+  [data-design="dbim"] .db-sd__prose :is(h2, h3, h4) {
+    margin: 0 0 5px;
+    font-size: var(--db-fs-h2);
+    font-weight: var(--sa-font-weight-medium);
+    line-height: 1.2;
+    text-align: left;
+  }
+
+  [data-design="dbim"] .db-sd__prose :is(h3, h4) {
+    font-size: var(--db-fs-h3);
+  }
+
+  [data-design="dbim"] .db-sd__prose strong {
+    font-weight: var(--sa-font-weight-bold);
+  }
+
+  [data-design="dbim"] .db-sd__prose a {
+    color: var(--sa-color-primaryScale-600);
+    text-decoration: underline;
+  }
+
+  [data-design="dbim"] .db-sd__prose img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  [data-design="dbim"] .db-sd__prose .wn-table-wrap {
+    overflow-x: auto;
+  }
+
+  [data-design="dbim"] .db-sd__prose table {
+    border-collapse: collapse;
+    font-size: 0.875rem; /* 14px */
+    text-align: left;
+  }
+
+  [data-design="dbim"] .db-sd__prose :is(th, td) {
+    padding: var(--sa-padding-8);
+    border: 1px solid var(--sa-color-neutralScale-200);
+  }
+
+  /* A register lifted out of an ingested page: the prose table look, paged. */
+  [data-design="dbim"] .db-sd__register {
+    margin-bottom: 10px;
+  }
+
+  [data-design="dbim"] .db-sd__register .wn-table-wrap {
+    overflow-x: auto;
+  }
+
+  [data-design="dbim"] .db-sd__register table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.5rem; /* 24px */
+  }
+
+  [data-design="dbim"] .db-sd__register :is(th, td) {
+    padding: var(--sa-padding-8);
+    border: 1px solid var(--sa-color-neutralScale-200);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  [data-design="dbim"] .db-sd__register th {
+    background: var(--sa-color-primaryScale-100);
+    color: var(--sa-color-primaryScale-800);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  [data-design="dbim"] .db-sd__register .wn-table-wrap:focus-visible {
+    outline: 2px solid var(--sa-color-primaryScale-800);
+    outline-offset: 2px;
+  }
+
+  [data-design="dbim"] .db-sd__docs {
+    margin-top: var(--sa-padding-32);
+  }
+
+  [data-design="dbim"] .db-sd__docs ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-sd__doc {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    gap: var(--sa-stack-8);
+    margin: var(--sa-padding-12) 0;
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    border: 1px solid var(--sa-color-neutralScale-100); /* #E0D9CF in the reference → nearest token */
+    border-radius: var(--sa-shape-8);
+  }
+
+  @media (min-width: 768px) {
+    [data-design="dbim"] .db-sd__doc {
+      grid-template-columns: 6fr 4fr 2fr;
+      gap: 0;
+    }
+    [data-design="dbim"] .db-sd__doc > * {
+      padding: 0 7.5px; /* 7.5px: the reference's column padding */
+    }
+    [data-design="dbim"] .db-sd__doc .db-off-view {
+      justify-self: end;
+      padding: var(--sa-padding-8) var(--sa-padding-12);
+    }
+  }
+
+  [data-design="dbim"] .db-sd__doc p {
+    margin: 0;
+    font-size: var(--db-fs-p);
+    line-height: 1.5rem; /* 24px */
+  }
+}
+/* ds-exempt-end */

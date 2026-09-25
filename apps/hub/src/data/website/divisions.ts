@@ -49,17 +49,17 @@ export const DIVISIONS: Division[] = [
   },
   {
     id: "welfare-of-other-backward-classes",
-    name: "Welfare Of The Other Backward Classes",
+    name: "Welfare of the Other Backward Classes",
     aboutHref: "/website/about-the-division-welfare-of-the-other-backward-classes",
     links: [
-      { label: "About the Division: Welfare Of The Other Backward Classes", href: "/website/about-the-division-welfare-of-the-other-backward-classes" },
+      { label: "About the Division: Welfare of the Other Backward Classes", href: "/website/about-the-division-welfare-of-the-other-backward-classes" },
       { label: "Policies / Acts / Rules / Codes / Circular", href: "/website/policies-acts-rules-codes-circular" },
-      { label: "Welfare Of The Other Backward Classes FAQs", href: "/website/welfare-of-the-other-backward-classes" },
+      { label: "Welfare of the Other Backward Classes FAQs", href: "/website/welfare-of-the-other-backward-classes" },
     ],
   },
   {
     id: "grants-in-aid-to-ngos",
-    name: "Grants-In-Aid To NGOs",
+    name: "Grants-in-Aid to NGOs",
     links: [
       { label: "Prioritization Guidelines for funding Projects by Voluntary Organisations", href: "/website/prioritization-guidelines-for-funding-projects-by-voluntary-organisations" },
       { label: "Procedure for processing Grant-in-Aid Cases for Voluntary Organisations", href: "/website/procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations" },
@@ -70,13 +70,13 @@ export const DIVISIONS: Division[] = [
       { label: "Minutes of Screening Committees", href: "/website/minutes-of-screening-committees" },
       { label: "Grants Suspended List / Blacklisted NGOs", href: "/website/grants-suspended-list-blacklisted-ngos" },
       { label: "List of De-Blacklisted NGOs", href: "/website/list-of-de-blacklisted-ngos" },
-      { label: "Grants-In-Aid To NGOs: FAQs", href: "/website/grants-in-aid-to-ngos-faqs" },
+      { label: "Grants-in-Aid to NGOs: FAQs", href: "/website/grants-in-aid-to-ngos-faqs" },
       { label: "Online Portal for Grant in Aid Schemes (e-Anudaan)", href: "https://grants-msje.gov.in/ngo-login" },
     ],
   },
   {
     id: "budget-and-account",
-    name: "Budget And Account",
+    name: "Budget and Account",
     links: [
       { label: "Detailed Demand for Grant", href: "/website/detailed-demand-for-grant" },
       { label: "Contact Person", href: "/website/contact-person" },

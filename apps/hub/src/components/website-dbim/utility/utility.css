@@ -1,0 +1,603 @@
+/* ds-exempt-start(third-party): type sizes, leading and tracking are transcribed from the DBIM 3.0 reference template (master-socialjustice.digifootprint.gov.in, root 62.5%, rems divided by 1.6), which the DBIM review team mandated on 25 Sep 2026; colour stays token-bound */
+/* ─────────────────────────────────────────────────────────────────────────────
+   DBIM design — the utility pages (policies, related / important links, sitemap,
+   help, cookies, feedback, search, personas). Spec:
+   docs/research/dbim-reference/components/utility.spec.md.
+
+   Every colour is a token (the subtree is data-brand="dbim", Colour Group 5); the
+   mapping is in dbim.css. Reference rems are converted (÷1.6). Values that are not on
+   the spacing scale are px literals with a comment naming the reference value.
+   ───────────────────────────────────────────────────────────────────────────── */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* Related Links spaces its search 24px above the list (the reference's
+     .filterbox); Important Links, with the per-page select, 10px. */
+  [data-design="dbim"] .db-u-list--spaced > .db-filter {
+    margin-bottom: var(--sa-stack-24);
+  }
+
+  /* ── Policy text — the reference's .policyContent ───────────────────────── */
+  [data-design="dbim"] .db-u-prose {
+    color: var(--sa-color-text-default);
+    font-size: var(--db-fs-p);
+    line-height: 1.375rem; /* 22px */
+    letter-spacing: 0.01rem; /* 0.16px */
+  }
+
+  [data-design="dbim"] .db-u-prose p {
+    margin: 0 0 10px; /* reference p margin-bottom 10px */
+  }
+
+  [data-design="dbim"] .db-u-prose h2 {
+    margin: 0 0 10px;
+    color: var(--sa-color-primaryScale-800);
+    font-size: var(--db-fs-h2);
+    font-weight: var(--sa-font-weight-regular);
+    line-height: 1.35;
+    letter-spacing: -0.0075rem; /* -0.12px */
+  }
+
+  [data-design="dbim"] .db-u-prose ul {
+    margin: 0 0 10px;
+    padding-left: var(--sa-padding-32);
+  }
+
+  [data-design="dbim"] .db-u-prose li {
+    margin-bottom: var(--sa-stack-4);
+  }
+
+  [data-design="dbim"] :is(.db-u-prose, .db-u-cookies) a {
+    color: var(--sa-color-primaryScale-600);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  [data-design="dbim"] :is(.db-u-prose, .db-u-cookies) a:hover {
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  :is(
+      [data-design="dbim"] .db-u-prose a,
+      [data-design="dbim"] .db-u-cookies a,
+      [data-design="dbim"] .db-u-pill,
+      [data-design="dbim"] .db-u-sitemap a,
+      [data-design="dbim"] .db-u-persona__tile,
+      [data-design="dbim"] .db-u-table-wrap
+    ):focus-visible {
+    outline: var(--sa-stroke-2) solid var(--sa-color-primaryScale-800);
+    outline-offset: 2px;
+  }
+
+  /* ── Link rows — the reference's .announcementbox ───────────────────────── */
+  [data-design="dbim"] .db-u-rows {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-u-row {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* reference row-gap-2 */
+    min-height: 3.625rem; /* 58px */
+    margin-bottom: var(--sa-stack-6);
+    padding: var(--sa-padding-8) var(--sa-padding-32);
+    border: var(--sa-stroke-1) solid var(--sa-color-neutralScale-100);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-color-neutralScale-0);
+  }
+
+  [data-design="dbim"] .db-u-row__text {
+    flex: 1;
+    min-width: 0;
+    padding-inline: var(--sa-padding-8);
+  }
+
+  [data-design="dbim"] .db-u-row__title {
+    margin: 0;
+    color: var(--sa-color-text-default);
+    font-size: var(--db-fs-p);
+    font-weight: var(--sa-font-weight-regular);
+    line-height: 1.5rem; /* 24px */
+  }
+
+  [data-design="dbim"] .db-u-row__detail {
+    display: -webkit-box;
+    margin: var(--sa-stack-2) 0 0;
+    overflow: hidden;
+    color: var(--sa-color-text-muted);
+    font-size: var(--db-fs-small);
+    line-height: 1.125rem; /* 18px */
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  [data-design="dbim"] .db-u-row__action {
+    display: flex;
+    flex: none;
+    justify-content: flex-end;
+    padding-inline: var(--sa-padding-8);
+  }
+
+  @media (max-width: 991.5px) {
+    [data-design="dbim"] .db-u-row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+
+  /* The pill — the reference's .download-btn */
+  [data-design="dbim"] .db-u-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-primaryScale-100);
+    color: var(--sa-color-primaryScale-800);
+    font-size: 0.75rem; /* 12px */
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: 1.125rem; /* 18px */
+    letter-spacing: 0.0075rem; /* 0.12px */
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  [data-design="dbim"] .db-u-pill:hover {
+    background: var(--sa-color-primaryScale-200);
+  }
+
+  /* ── Design-system buttons, restyled to the reference ───────────────────── */
+  [data-design="dbim"] .db-u-btn.ds-btn {
+    min-width: 0;
+    min-height: 0;
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    border: 0;
+    border-radius: var(--sa-shape-4);
+    font-family: inherit;
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: 1.125rem; /* 18px */
+    letter-spacing: 0.0075rem; /* 0.12px */
+  }
+
+  [data-design="dbim"] .db-u-btn--pill.ds-btn {
+    background: var(--sa-color-primaryScale-100);
+    color: var(--sa-color-primaryScale-800);
+    font-size: 0.75rem; /* 12px */
+  }
+
+  [data-design="dbim"] .db-u-btn--pill.ds-btn:hover {
+    background: var(--sa-color-primaryScale-200);
+  }
+
+  [data-design="dbim"] .db-u-btn--solid.ds-btn {
+    background: var(--sa-color-primaryScale-800);
+    color: var(--sa-color-neutralScale-0);
+    font-size: 1rem; /* 16px */
+  }
+
+  [data-design="dbim"] .db-u-btn--solid.ds-btn:hover {
+    background: var(--sa-color-primaryScale-600);
+  }
+
+  [data-design="dbim"] .db-u-btn--primary.ds-btn {
+    background: transparent;
+    color: var(--sa-color-primaryScale-800);
+    font-size: var(--db-fs-p);
+    text-decoration: underline;
+  }
+
+  [data-design="dbim"] .db-u-btn.ds-btn:focus-visible {
+    outline: var(--sa-stroke-2) solid var(--sa-color-primaryScale-800);
+    outline-offset: 2px;
+  }
+
+  /* Filtered to nothing */
+  [data-design="dbim"] .db-u-filtered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-32) 0;
+    text-align: center;
+  }
+
+  [data-design="dbim"] .db-u-filtered__text {
+    margin: 0;
+    font-size: var(--db-fs-p);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  /* ── Sitemap ─────────────────────────────────────────────────────────────── */
+  [data-design="dbim"] .db-u-sitemap a {
+    color: var(--sa-color-text-default);
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-u-sitemap a:hover {
+    color: var(--sa-color-primaryScale-600);
+    text-decoration: underline;
+  }
+
+  [data-design="dbim"] .db-u-sitemap {
+    padding-top: var(--sa-padding-24); /* the reference's empty filter row, 24px */
+  }
+
+  [data-design="dbim"] .db-u-sitemap__home,
+  [data-design="dbim"] .db-u-sitemap__title {
+    margin: 0 0 var(--sa-stack-24);
+    padding-bottom: 10px; /* reference 10px */
+    border-bottom: var(--sa-stroke-1) solid var(--sa-color-neutralScale-100);
+    font-size: var(--db-fs-p);
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: 1.3125rem; /* 21px */
+  }
+
+  [data-design="dbim"] .db-u-sitemap__home a {
+    display: flex;
+    align-items: flex-end;
+  }
+
+  [data-design="dbim"] .db-u-sitemap__title {
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-u-sitemap__list {
+    margin: 0 0 10px; /* reference 10px */
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-u-sitemap__item {
+    display: flex;
+    align-items: center;
+    padding: var(--sa-padding-8) var(--sa-padding-32);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-color-neutralScale-100);
+    font-size: var(--db-fs-p);
+    line-height: 1.3125rem; /* 21px */
+  }
+
+  [data-design="dbim"] .db-u-sitemap__chev {
+    flex: none;
+    color: var(--sa-color-primaryScale-600);
+  }
+
+  /* ── Help ────────────────────────────────────────────────────────────────── */
+  [data-design="dbim"] .db-u-help__heading {
+    margin: 25px 0 36px; /* reference: 10px filter margin + mt-4 15px (they do not collapse there); 36px below */
+    color: var(--sa-color-text-default);
+    font-size: var(--db-fs-h2);
+    font-weight: var(--sa-font-weight-medium);
+    line-height: 1.35;
+  }
+
+  [data-design="dbim"] .db-u-help__sub {
+    margin: 0 0 10px;
+    font-size: var(--db-fs-p);
+    font-weight: var(--sa-font-weight-bold);
+    line-height: 1.375rem; /* 22px */
+  }
+
+  [data-design="dbim"] .db-u-table-wrap {
+    /* Positioned, so the table's visually-hidden text is clipped by this scroll box
+       instead of widening the page at 390. */
+    position: relative;
+    margin-bottom: 10px;
+    overflow-x: auto;
+  }
+
+  [data-design="dbim"] .db-u-table {
+    width: 100%;
+    min-width: 32rem; /* scrolls in its own region on a phone rather than crushing */
+    border-collapse: collapse;
+    color: var(--sa-color-neutralScale-1000);
+    font-size: 1rem; /* 16px, as the reference's table */
+    line-height: 1.5;
+    letter-spacing: normal;
+  }
+
+  [data-design="dbim"] .db-u-table thead th {
+    padding: 5px; /* reference 5px */
+    border: var(--sa-stroke-1) solid var(--sa-color-neutralScale-200); /* #DEE2E6 → nearest neutral-200 */
+    font-weight: var(--sa-font-weight-bold);
+    text-align: left;
+  }
+
+  [data-design="dbim"] .db-u-table thead th:first-child {
+    width: 35%; /* reference 459 of 1305 */
+  }
+
+  [data-design="dbim"] .db-u-table tbody :is(th, td) {
+    padding: var(--sa-padding-8);
+    border: var(--sa-stroke-1) solid var(--sa-color-neutralScale-1000);
+    font-weight: var(--sa-font-weight-regular);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  /* ── Cookies ─────────────────────────────────────────────────────────────── */
+  [data-design="dbim"] .db-u-cookies {
+    color: var(--sa-color-text-default);
+    font-size: var(--db-fs-p);
+  }
+
+  [data-design="dbim"] .db-u-cookies p {
+    margin: 0 0 10px;
+    line-height: 1.3125rem; /* 21px */
+  }
+
+  [data-design="dbim"] .db-u-cookies__groups {
+    display: flex;
+    flex-direction: column;
+    gap: 36px; /* reference 36px */
+    margin: 36px 0;
+  }
+
+  [data-design="dbim"] .db-u-cookies__h2 {
+    margin: 0 0 10px;
+    font-size: var(--db-fs-h2);
+    font-weight: var(--sa-font-weight-medium);
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  [data-design="dbim"] .db-u-cookies__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-u-setting {
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    border: var(--sa-stroke-1) solid var(--sa-color-neutralScale-100);
+    border-radius: var(--sa-shape-8);
+  }
+
+  [data-design="dbim"] .db-u-cookies .db-u-setting__label {
+    font-weight: var(--sa-font-weight-bold);
+    line-height: 1.5rem; /* 24px */
+  }
+
+  [data-design="dbim"] .db-u-setting__row {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--sa-inline-16);
+  }
+
+  [data-design="dbim"] .db-u-setting__text p {
+    margin: 0;
+    line-height: 1.5rem; /* 24px */
+  }
+
+  [data-design="dbim"] .db-u-setting__text p:last-child {
+    margin-bottom: 10px;
+  }
+
+  [data-design="dbim"] .db-u-switch {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: 5px; /* reference gap-2 */
+    align-self: flex-start;
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.25rem; /* 20px */
+    cursor: not-allowed;
+  }
+
+  /* The reference's form-switch: a 36×20 pill with a white knob. */
+  [data-design="dbim"] .db-u-switch__input {
+    width: 2.25rem; /* 36px */
+    height: 1.25rem; /* 20px */
+    margin: 0;
+    border-radius: var(--sa-shape-12);
+    background: radial-gradient(circle at 10px 50%, var(--sa-color-neutralScale-0) 7px, transparent 7.5px),
+      var(--sa-color-primaryScale-200);
+    appearance: none;
+    cursor: not-allowed;
+  }
+
+  [data-design="dbim"] .db-u-switch__input:checked {
+    background: radial-gradient(circle at 26px 50%, var(--sa-color-neutralScale-0) 7px, transparent 7.5px),
+      var(--sa-color-primaryScale-800);
+    opacity: 0.5;
+  }
+
+  [data-design="dbim"] .db-u-consent {
+    margin-bottom: 36px;
+  }
+
+  [data-design="dbim"] .db-u-cookies__more {
+    margin-top: 36px;
+  }
+
+  /* ── Feedback ────────────────────────────────────────────────────────────── */
+  [data-design="dbim"] .db-u-fb {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px; /* reference my-5; the top 30px is DbimPage's container */
+  }
+
+  [data-design="dbim"] .db-u-fb__card {
+    width: 100%;
+    max-width: 40.3125rem; /* 645px — col-md-6 of the 1320 container */
+    padding: 25px; /* reference p-4 15px + card-body 10px */
+    border-radius: 10px; /* reference rounded-4 */
+    background: var(--sa-color-neutralScale-0);
+    box-shadow: 0 5px 10px color-mix(in srgb, var(--sa-color-neutralScale-1000) 15%, transparent);
+    color: var(--sa-color-text-default);
+  }
+
+  [data-design="dbim"] .db-u-fb__note {
+    margin: 0 0 30px;
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.3125rem; /* 21px */
+    text-align: right;
+  }
+
+  [data-design="dbim"] .db-u-req {
+    color: var(--sa-color-dangerScale-500); /* #DC3545 → nearest danger-500 */
+  }
+
+  [data-design="dbim"] .db-u-fb__field {
+    margin-bottom: 10px;
+  }
+
+  [data-design="dbim"] .db-u-fb__label {
+    display: inline-block;
+    margin-bottom: 5px;
+    font-size: 1rem; /* 16px */
+    font-weight: var(--sa-font-weight-bold);
+    line-height: 1.5rem; /* 24px */
+  }
+
+  [data-design="dbim"] .db-u-fb__control {
+    display: block;
+    width: 100%;
+    height: 2.125rem; /* 34px */
+    padding: var(--sa-padding-4) var(--sa-padding-8);
+    border: var(--sa-stroke-1) solid var(--sa-color-neutralScale-200); /* #DEE2E6 → nearest neutral-200 */
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-neutralScale-0);
+    color: var(--sa-color-text-default);
+    font: inherit;
+    font-size: 1rem; /* 16px */
+    line-height: 1.5;
+  }
+
+  [data-design="dbim"] textarea.db-u-fb__control {
+    height: 5rem; /* 80px */
+    resize: vertical;
+  }
+
+  [data-design="dbim"] .db-u-fb__control::placeholder {
+    color: var(--sa-color-text-muted);
+    opacity: 1;
+  }
+
+  [data-design="dbim"] .db-u-fb__control:focus-visible {
+    outline: var(--sa-stroke-2) solid var(--sa-color-primaryScale-800);
+    outline-offset: 0;
+  }
+
+  [data-design="dbim"] .db-u-fb__control[aria-invalid="true"] {
+    border-color: var(--sa-color-dangerScale-600);
+  }
+
+  [data-design="dbim"] .db-u-fb__error {
+    margin: 5px 0 0;
+    color: var(--sa-color-dangerScale-600);
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.3125rem; /* 21px */
+  }
+
+  [data-design="dbim"] .db-u-fb__actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+
+  [data-design="dbim"] .db-u-fb__done:focus {
+    outline: none;
+  }
+
+  [data-design="dbim"] .db-u-fb__done-title {
+    margin: 0 0 var(--sa-stack-12);
+    color: var(--sa-color-primaryScale-800);
+    font-size: var(--db-fs-h2);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  [data-design="dbim"] .db-u-fb__done p {
+    margin: 0 0 10px;
+    font-size: var(--db-fs-p);
+  }
+
+  [data-design="dbim"] .db-u-fb__done a {
+    color: var(--sa-color-primaryScale-600);
+  }
+
+  /* ── Search ──────────────────────────────────────────────────────────────── */
+  [data-design="dbim"] .db-u-search__title {
+    margin: 0 0 var(--sa-stack-8);
+    color: var(--sa-color-text-default);
+    font-size: var(--db-fs-h2);
+    font-weight: var(--sa-font-weight-medium);
+    line-height: 1.35;
+  }
+
+  [data-design="dbim"] .db-u-search__count {
+    margin: 0 0 var(--sa-stack-16);
+    color: var(--sa-color-text-default);
+    font-size: var(--db-fs-p);
+  }
+
+  /* ── Persona tiles — the reference's .seekerbox ─────────────────────────── */
+  [data-design="dbim"] .db-u-persona {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sa-stack-24) 15px; /* reference 24px below each tile, 15px column gutter */
+    max-width: 54.0625rem; /* 865px — col-md-8 of the 1320 container */
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-u-persona__tile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-12);
+    height: 100%;
+    min-height: 6.25rem; /* 100px */
+    padding: var(--sa-padding-16);
+    border: var(--sa-stroke-1) solid var(--sa-color-primaryScale-400);
+    border-radius: 10px; /* reference 10px */
+    background: var(--sa-color-neutralScale-0);
+    color: var(--sa-color-primaryScale-800);
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-u-persona__tile:hover {
+    border-color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-u-persona__icon {
+    flex: none;
+    width: 3rem;
+    height: 3rem;
+    object-fit: contain;
+  }
+
+  [data-design="dbim"] .db-u-persona__text {
+    margin-bottom: 10px; /* reference p margin-bottom 10px */
+    font-size: var(--db-fs-p);
+    font-weight: var(--sa-font-weight-medium);
+    line-height: 1.625rem; /* 26px */
+  }
+
+  [data-design="dbim"] .db-u-persona__text strong {
+    font-weight: var(--sa-font-weight-bold);
+  }
+
+  [data-design="dbim"] .db-u-persona__arrow {
+    position: absolute;
+    right: var(--sa-padding-8);
+    bottom: 5px; /* reference 5px */
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-primaryScale-200);
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  @media (max-width: 991.5px) {
+    [data-design="dbim"] .db-u-persona {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}
+/* ds-exempt-end */
