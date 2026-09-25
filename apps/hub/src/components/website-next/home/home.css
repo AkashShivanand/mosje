@@ -319,8 +319,14 @@
     overflow: hidden;
   }
   @media (min-width: 1024px) {
-    /* The portrait panel is a fixed column, as drawn: 351 of a 1320 card. */
+    /* The portrait panel is a fixed column, as drawn: 351 of a 1320 card.
+       The photograph comes FIRST in the document because it leads the phone
+       card; the two are placed by column here rather than reordered with
+       `order`, so the reading order a screen reader follows and the order a
+       sighted reader sees do not come apart (WCAG 1.3.2). */
     .wn-pmq__card { grid-template-columns: minmax(0, 1fr) 351px; gap: 0; align-items: stretch; }
+    .wn-pmq__body { grid-column: 1; grid-row: 1; }
+    .wn-pmq__figure { grid-column: 2; grid-row: 1; }
   }
 
   /* THE MARK IS BEHIND THE WORDS, at the saffron rung the design draws
@@ -329,7 +335,10 @@
      secondary family publishes no icon rung there — it has one, at 600 — so
      this binds to the surface rung of the same value, the way the pull-quote's
      bar in About Us does. The 128 the design draws is off the icon scale, so
-     it is written as two of its largest rung rather than as a literal. */
+     it is written as two of its largest rung rather than as a literal.
+     IT IS POSITIONED AGAINST THE WORDS, not against the card: on a phone the
+     photograph is the top of the card, and a mark pinned to the card would
+     land on the photograph instead of on the quotation it opens. */
   .wn-pmq__mark {
     position: absolute;
     inset-block-start: var(--sa-stack-12);
@@ -400,13 +409,14 @@
     position: relative;
     overflow: hidden;
     background: var(--sa-bg-brand-secondary-base);
-    /* Stacked, the panel has no column to take its height from. 4:3 is the
-       phone's own decision, not the design's 350x373: at the drawn ratio the
-       photograph stood 379px tall under the words and outweighed them. */
-    aspect-ratio: 4 / 3;
+    /* Stacked, the panel has no column to take its height from. 3:2 is the
+       phone's own decision, not the design's 350x373: leading the card, the
+       photograph wants to be a band rather than a block, and at the drawn
+       ratio it stood 379px tall and outweighed the quotation under it. */
+    aspect-ratio: 3 / 2;
   }
   @media (min-width: 1024px) { .wn-pmq__figure { aspect-ratio: auto; } }
-  .wn-pmq__portrait { object-fit: cover; object-position: center top; }
+  .wn-pmq__portrait { object-fit: cover; object-position: center 18%; }
   @media (min-width: 1024px) { .wn-pmq__portrait { object-position: center bottom; } }
 
   /* ── Take a Pledge ───────────────────────────────────────────────────────────
