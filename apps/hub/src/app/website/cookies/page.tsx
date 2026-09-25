@@ -25,7 +25,7 @@ export const metadata: Metadata = {
  *   mosje_cookie_consent   localStorage    components/website/cookie-notice.tsx
  *   mosje.lang             localStorage    components/i18n/translation-provider.tsx
  *   mosje.translations.*   sessionStorage  components/i18n/translation-provider.tsx
- *   accessibilitySettings  cookie, 30 days  the UX4G accessibility widget (v3.28 source)
+ *   accessibilitySettings  cookie, 30 days  the UX4G accessibility widget (v3.36 source)
  *   ux4g_trigger_position  localStorage    the UX4G widget
  *   ux4g_session_id        sessionStorage  the UX4G widget; its telemetry is disabled by
  *                                          ux4g-accessibility-widget.tsx
