@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { Button, Icon, IconButton } from "@mosje/design-system";
 
 import type { DbimImage } from "@/lib/website-dbim/assets";
@@ -13,6 +13,25 @@ const INTERVAL_MS = 5000;
 const isExternal = (href: string) => /^https?:\/\//.test(href);
 
 /**
+ * Does the reader ask for reduced motion?
+ *
+ * Read as an EXTERNAL STORE, not set into state from an effect. `setState` in an
+ * effect body cascades renders (`react-hooks/set-state-in-effect`), and a lazy
+ * initial state cannot be used either: the server renders `false`, so a client
+ * that resolves `true` would hydrate to different markup. `getServerSnapshot`
+ * keeps the first client render matching the server's, and subscribing means the
+ * carousel also obeys the setting if it is changed while the page is open.
+ */
+const REDUCE = "(prefers-reduced-motion: reduce)";
+const subscribeReduce = (onChange: () => void) => {
+  const mq = window.matchMedia?.(REDUCE);
+  mq?.addEventListener("change", onChange);
+  return () => mq?.removeEventListener("change", onChange);
+};
+const readReduce = () => window.matchMedia?.(REDUCE).matches ?? false;
+const readReduceOnServer = () => false;
+
+/**
  * The home banner carousel — the reference's fading, full-bleed slides with square arrows,
  * a dot pager and a round pause button. WAI-ARIA carousel pattern: autoplay stops while
  * the pointer or keyboard focus is inside, stops for good on Pause, and never starts for
@@ -21,14 +40,13 @@ const isExternal = (href: string) => /^https?:\/\//.test(href);
 export function BannerCarousel({ slides }: { slides: (DbimImage & { href?: string })[] }) {
   const n = slides.length;
   const [index, setIndex] = useState(0);
-  const [stopped, setStopped] = useState(false);
+  /** `null` follows the reader's own motion preference; a press of Pause/Play overrides it. */
+  const [wanted, setWanted] = useState<boolean | null>(null);
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
+  const reduce = useSyncExternalStore(subscribeReduce, readReduce, readReduceOnServer);
+  const stopped = wanted === null ? reduce : !wanted;
   const playing = !stopped && !hovered && !focused && n > 1;
-
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) setStopped(true);
-  }, []);
 
   useEffect(() => {
     if (!playing) return;
@@ -98,7 +116,7 @@ export function BannerCarousel({ slides }: { slides: (DbimImage & { href?: strin
         className="db-carousel__play"
         aria-label={stopped ? "Play slides" : "Pause slides"}
         icon={<Icon name={stopped ? "play_arrow" : "pause"} size={24} />}
-        onClick={() => setStopped((v) => !v)}
+        onClick={() => setWanted(stopped)}
       />
       <IconButton
         appearance="filled"

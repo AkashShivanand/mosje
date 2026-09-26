@@ -92,6 +92,10 @@ export const DBIM_BRAND = {
    * would be 270px wide at the 58px partner height with a 9px tagline: too wide for
    * the header's free space and not legible. Not linked: the estate has no public
    * SAMAVESH address inside this design.
+   *
+   * org-logo-exempt(portal-local): the SAMAVESH roundel is the design system's OWN mark, not an
+   * organisation mark, so the OrgLogo registry holds no entry to resolve it through. This is the
+   * hub's single copy of that file — the same one `DEFAULT_LOGIN_MARKS.samaveshLogoSrc` names.
    */
   samavesh: { src: "/design-system/samavesh-logo.svg", alt: "SAMAVESH", width: 58, height: 58 },
   indiaGovIn: { src: `${D}/brand/india-gov-in.svg`, alt: "National Portal of India", href: "https://www.india.gov.in/" },
