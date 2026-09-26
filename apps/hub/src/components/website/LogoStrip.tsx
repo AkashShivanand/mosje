@@ -138,7 +138,16 @@ export function LogoStrip() {
   );
 
   return (
-    <section className="sa-logo-strip bg-surface" aria-label="Schemes, Organisations and Government Platforms">
+    /* `data-sa-rail-clear`: the pause control sits at this band's right edge, which is
+       exactly where the corner rail's transient occupants float. Measured at 375 —
+       the assistant's launcher covered it outright, and a WCAG 2.2.2 control that
+       cannot be reached is the same as no control. The launcher yields while the two
+       overlap and comes straight back (floating-element-placement.md). */
+    <section
+      className="sa-logo-strip bg-surface"
+      aria-label="Schemes, Organisations and Government Platforms"
+      data-sa-rail-clear=""
+    >
       <div className="sa-logo-strip__viewport" data-playing={playing ? "true" : "false"}>
         <div
           className="sa-logo-strip__track"

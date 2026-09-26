@@ -97,6 +97,26 @@
     flex-shrink: 0;
   }
 
+  /* Display scale — a landing page's sections (the website home page). */
+  .ds-section-title--display .ds-section-title__text { gap: var(--sa-stack-8); }
+  .ds-section-title--display .ds-section-title__heading {
+    font-size: var(--sa-type-headline-2-size);
+    line-height: var(--sa-type-headline-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+  .ds-section-title--display .ds-section-title__description {
+    max-width: var(--sa-container-measure);
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    color: var(--sa-text-neutral-base);
+  }
+
+  /* Inverse — on a navy or green band. */
+  .ds-section-title--inverse .ds-section-title__heading,
+  .ds-section-title--inverse .ds-section-title__eyebrow { color: var(--sa-text-neutral-inverse); }
+  .ds-section-title--inverse .ds-section-title__description { color: var(--sa-text-neutral-inverse); }
+
   /* Stack on narrow viewports so the actions don't crush the heading. */
   @media (max-width: 640px) {
     .ds-section-title {

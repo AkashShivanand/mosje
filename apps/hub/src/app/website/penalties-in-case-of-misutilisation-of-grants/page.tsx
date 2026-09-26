@@ -1,57 +1,47 @@
 import type { Metadata } from "next";
-import { ContentPage } from "@/components/website/templates/ContentPage";
+import { ContentPage } from "@/components/website-next/templates/ContentPage";
+
+const TITLE = "Penalties in Case of Misutilization of Grants";
+const DESCRIPTION =
+  "The action taken against a voluntary organisation and its managing committee where grant-in-aid is mis-utilised, and how assets created from the grant are then treated.";
 
 export const metadata: Metadata = {
-  title: "Penalties in Case of Misutilisation of Grants",
-  description:
-    "Consequences, recovery and blacklisting provisions where grant-in-aid released to voluntary organisations is mis-utilised.",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
 };
 
+/* This route 404s at its own slug on dosje.gov.in. The Department publishes the same page at
+   https://www.dosje.gov.in/penalties-in-case-of-misutilization-of-grands/ — a different slug,
+   with its own typo ("Grands" for "Grants") — found via the WordPress search API and read
+   21 Sep 2026. Body text as published there, a single two-item list, no sub-headings.
+   Typo corrected: the live page's title spells "Misutilization" (American) where this route's
+   slug spells "misutilisation" (British); kept the Department's own spelling in the title, and
+   fixed only "Grands" -> "Grants". No other typos found. */
 export default function Page() {
   return (
     <ContentPage
-      title="Penalties in Case of Misutilisation of Grants"
-      breadcrumb={[{ label: "Department" }, { label: "Penalties in Case of Misutilisation of Grants" }]}
-      description="The action taken by the Department where grant-in-aid is diverted, mis-utilised or not accounted for, including recovery and debarment."
+      title={TITLE}
+      breadcrumb={[
+        { label: "Tenders & Vacancies" },
+        { label: "Grants to Voluntary Organisations", href: "/website/grants-in-aid-to-ngos-faqs" },
+        { label: TITLE },
+      ]}
+      description={DESCRIPTION}
       lastUpdated="06 Jun 2026"
     >
-      <h2>What Constitutes Misutilisation</h2>
-      <p>
-        Misutilisation occurs where a grant is used for a purpose other than that sanctioned, where funds
-        remain unspent without authorisation, where accounts are falsified, or where the conditions of the
-        sanction are violated. It also covers failure to furnish utilisation certificates or to permit
-        inspection.
-      </p>
-
-      <h2>Consequences</h2>
-      <ul>
+      <ol>
         <li>
-          <strong>Recovery</strong> — the mis-utilised amount is recovered, together with interest at the
-          rate prescribed under the General Financial Rules, from the date of release.
+          The members of the executive of the Voluntary Organization would be liable for recovery of
+          misused grants. The V.O. as well as members of its Managing Committee would also be
+          blacklisted by the Ministry.
         </li>
         <li>
-          <strong>Stoppage of further grants</strong> — pending and future instalments and renewals are
-          withheld until the matter is resolved.
+          All immovable assets created out of the funds from the Govt. shall be in the name of the
+          Govt. and ownership shall be with the Ministry of Social Justice and Empowerment. Immovable
+          assets created from the funds of the Ministry, if not utilized as envisaged in the scheme,
+          would be taken over by the local body / State Government / body prescribed by Ministry.
         </li>
-        <li>
-          <strong>Blacklisting / debarment</strong> — the organisation may be blacklisted and debarred from
-          receiving assistance from the Department, and from other Government departments through the
-          NGO Darpan flag.
-        </li>
-        <li>
-          <strong>Legal action</strong> — where warranted, civil recovery proceedings or criminal complaints
-          for misappropriation or fraud may be initiated.
-        </li>
-      </ul>
-
-      <h2>Procedure Before Penal Action</h2>
-      <p>
-        Before penal action is taken, the organisation is issued a notice setting out the alleged
-        irregularity and is given a reasonable opportunity to explain. If the explanation is unsatisfactory,
-        the competent authority passes a speaking order specifying the amount to be recovered and the action
-        to be taken. Recovery may be effected by adjustment against other dues, by demand, or through the
-        State Government as arrears of land revenue.
-      </p>
+      </ol>
     </ContentPage>
   );
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { OfficialsDirectory } from "@/components/website/templates/OfficialsDirectory";
+import { OfficialsDirectory } from "@/components/website-next/templates/OfficialsDirectory";
 import { getContentSyncedDate, getOfficialsByOrganisation } from "@/lib/website/content";
 import { socialCard } from "@/lib/seo/social";
 
@@ -8,7 +8,7 @@ const DESCRIPTION =
   "Telephone directory of the Ministry of Social Justice & Empowerment — Ministers, secretariat officers and section officers, with intercom and contact details.";
 
 export const metadata: Metadata = {
-  title: `${TITLE} | Ministry of Social Justice & Empowerment`,
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
   description: DESCRIPTION,
   ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/mosje-directory" }),
 };

@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "SamaveshBanner: under tone=\"tint\" the drawer heading takes plain ink and the footer link the link blue, leaving the India Green Explore button as the one green on the pale ground. Below breakpoint/tablet the drawer's portal cards become compact rows (about 690px for eight portals, was about 970px). The phone band's hover wash is gated to fine pointers, so it no longer sticks after a tap."
+}

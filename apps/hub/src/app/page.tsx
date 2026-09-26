@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Icon } from "@mosje/design-system";
 import { HubSiteHeader } from "@/components/hub-site-header";
 import { HubFooter } from "@/components/site-footer";
@@ -100,12 +101,12 @@ export default async function HomePage() {
                 Browse the portals
                 <Icon name="arrow_forward" size={16} aria-hidden="true" />
               </a>
-              <a
+              <Link
                 href="/website"
                 className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-5 py-3 text-label-1 font-semibold text-ink transition-colors hover:border-border-strong hover:bg-surface-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
                 Visit the website
-              </a>
+              </Link>
             </div>
           </div>
         </section>

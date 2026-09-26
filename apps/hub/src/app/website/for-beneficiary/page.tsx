@@ -1,54 +1,60 @@
 import type { Metadata } from "next";
-import { PersonaPage, type PersonaCard } from "@/components/website/templates/PersonaPage";
+import { PersonaPage, type PersonaSection } from "@/components/website-next/templates/PersonaPage";
+import { MASTER_DATE } from "@/lib/website-next/scheme-view";
 
 export const metadata: Metadata = {
-  title: "For Beneficiary | Department of Social Justice & Empowerment",
+  title: "For Beneficiaries | Department of Social Justice & Empowerment",
   description:
-    "Find schemes, acts, reports and the right office to help citizens access the Ministry's welfare and social justice services.",
+    "Schemes of the Department of Social Justice & Empowerment for each of the groups it serves, with helplines, Acts and the offices to contact.",
 };
 
-const cards: PersonaCard[] = [
+const sections: PersonaSection[] = [
   {
-    icon: "auto_awesome",
-    title: "Explore Schemes",
-    description:
-      "Discover all welfare initiatives, social justice schemes, and citizen services offered by the Ministry and its departments.",
-    ctaLabel: "Explore Schemes",
-    href: "/website/schemes-services",
+    kind: "groups",
+    id: "groups",
+    title: "Find Schemes for Your Group",
   },
   {
-    icon: "balance",
-    title: "View Acts & Policies",
-    description:
-      "Browse the key legislations, policy frameworks, and government guidelines that protect rights and drive inclusive development.",
-    ctaLabel: "View Acts & Policies",
-    href: "/website/acts-rules",
-  },
-  {
-    icon: "assessment",
-    title: "View Reports",
-    description:
-      "Access annual, financial, and performance reports — track progress, transparency, and impact.",
-    ctaLabel: "View Reports",
-    href: "/website/annual-reports",
-  },
-  {
-    icon: "mail",
-    title: "Contact Us",
-    description: "Reach the right office for help with services, schemes or grievances.",
-    ctaLabel: "Contact Us",
-    href: "/website/contact-us",
+    kind: "links",
+    id: "help",
+    title: "Help and Information",
+    links: [
+      {
+        title: "Find a Scheme",
+        description: "Every scheme of the Department, by who it is for and what it provides.",
+        href: "/website/schemes-services",
+        icon: "search",
+      },
+      {
+        title: "Acts & Rules",
+        description: "Acts of Parliament, rules and statutory instruments administered by the Department.",
+        href: "/website/acts-rules",
+        icon: "balance",
+      },
+      {
+        title: "Annual Reports",
+        description: "Annual reports of the Department and of the bodies under it.",
+        href: "/website/annual-reports",
+        icon: "summarize",
+      },
+      {
+        title: "Contact Us",
+        description: "The Department's offices and how to reach them.",
+        href: "/website/contact-us",
+        icon: "call",
+      },
+    ],
   },
 ];
 
 export default function ForBeneficiaryPage() {
   return (
     <PersonaPage
-      title="For Beneficiary"
-      breadcrumb={[{ label: "For You" }, { label: "Beneficiary" }]}
-      lastUpdated="06 Jun 2026"
-      tagline="Here's how the Ministry empowers citizens like you."
-      cards={cards}
+      title="For Beneficiaries"
+      breadcrumb={[{ label: "Schemes & Services" }, { label: "For Beneficiaries" }]}
+      description="The schemes of the Department for each of the groups it serves."
+      lastUpdated={MASTER_DATE}
+      sections={sections}
     />
   );
 }

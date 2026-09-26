@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "SiteHeader: a mega-menu column takes `action` — a full-width outlined Button closing the column, on desktop and in the NavSheet — and `wide`, which lays its rich rows two across. Built for the Ministry's finalised Offerings menu (Figma M2): seven scheme portals, then \"View All Schemes\"."
+}

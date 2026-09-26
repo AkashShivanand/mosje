@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "A MENU ROW THAT LEAVES THE SITE NOW SAYS SO EVERYWHERE IT APPEARS. The new-tab mark reached the simple dropdown only: the NavSheet's three kinds of row carried none, and a `MegaMenuItem` never carried one at all, so the mobile menu's off-site rows were unmarked against WCAG 3.2.5. An external mega row now shows the mark, and it stays visible rather than appearing on hover, because a touch screen never hovers."
+}

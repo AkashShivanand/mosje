@@ -1,16 +1,21 @@
 import type { Metadata } from "next";
 
+import { BackToTop } from "@mosje/design-system";
+
 import { TranslationProvider } from "@/components/i18n/translation-provider";
 import { resolveSamaveshBannerPlacement } from "@/lib/samavesh-banner/resolve";
 import { SamaveshBannerProvider } from "@/lib/samavesh-banner/context";
 import { OG_CARD_IMAGE } from "@/lib/seo/card";
 import "./website.css";
+import "@/components/website-next/website-next.css";
+import { WebsiteCookieConsent } from "@/components/website-next/chrome/CookieConsent";
+import { resolveCookieBannerEnabled } from "@/lib/cookie-banner/resolve";
 
 const WEBSITE_DESCRIPTION =
   "Department of Social Justice & Empowerment (DoSJE), Ministry of Social Justice & Empowerment, Government of India.";
 
 export const metadata: Metadata = {
-  title: "Ministry of Social Justice and Empowerment",
+  title: "Department of Social Justice & Empowerment, Government of India",
   description: WEBSITE_DESCRIPTION,
   icons: {
     icon: "/website/seo/favicon.png",
@@ -30,7 +35,7 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "Department of Social Justice & Empowerment",
     locale: "en_IN",
-    title: "Ministry of Social Justice and Empowerment",
+    title: "Department of Social Justice & Empowerment, Government of India",
     description: WEBSITE_DESCRIPTION,
     images: [OG_CARD_IMAGE],
   },
@@ -65,6 +70,8 @@ export default async function WebsiteLayout({
   children: React.ReactNode;
 }>) {
   const placement = await resolveSamaveshBannerPlacement();
+  // Switched from /admin/portals; shown on whichever page a visitor lands on first.
+  const cookieBanner = await resolveCookieBannerEnabled();
 
   return (
     /* TranslationProvider wraps the whole site, not just the masthead: `lang` and
@@ -73,8 +80,16 @@ export default async function WebsiteLayout({
        for a translation, so pages that have not adopted <T> are unaffected. */
     <TranslationProvider>
       <SamaveshBannerProvider placement={placement}>
-        <div data-site="website" className="flex min-h-screen flex-col">
+        <div data-site="website" data-design="next" className="flex min-h-screen flex-col">
           {children}
+          {/* Every website page, not only the home: the home runs to ten screens
+              and the organisation and scheme pages are longer still. It appears
+              past 800px and sits at the TOP of the corner stack, above the
+              assistant — it comes and goes with the scroll, and anything under a
+              transient control moves every time it appears
+              (floating-element-placement.md). */}
+          <BackToTop />
+          {cookieBanner && <WebsiteCookieConsent />}
         </div>
       </SamaveshBannerProvider>
     </TranslationProvider>

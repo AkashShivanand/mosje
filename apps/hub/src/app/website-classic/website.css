@@ -1,0 +1,329 @@
+/* ── DoSJE website theme (was apps/dosje/src/app/globals.css) ──────────────────
+   The website is now a native route group in the hub, so there is exactly ONE
+   Tailwind build for the whole estate. This file therefore carries only the
+   website's OWN rules, scoped to its subtree via `data-site="website"` on the
+   layout wrapper. The hub's globals.css declares the utility NAMES; this file
+   binds the website's VALUES — the same contract the portals use.
+
+   Dropped from the original, deliberately:
+   • `@import "tailwindcss"`, `@import "tw-animate-css"`,
+     `@import "@mosje/design-system/tokens.css"` — the hub's globals.css already
+     loads all three app-wide.
+   • `@import "shadcn/tailwind.css"` — it only ships accordion keyframes, the
+     `data-*` custom variants and `no-scrollbar`. Verified: the website uses NONE
+     of them (no `data-open:`/`data-closed:`/… variant, no `no-scrollbar`, no
+     accordion), so nothing needs re-homing into the hub.
+   • `@custom-variant dark (&:is(.dark *))` — the website has no `dark:` utility
+     and never sets a `.dark` class, so the variant was dead. Nor does the hub
+     define a replacement: there is NO `dark` variant anywhere in the estate, by
+     decision — see the "NO DARK APPEARANCE AXIS" note at the top of globals.css.
+     (This comment previously said the hub's attribute-based
+     `dark (&:where([data-theme="dark"], …))` "stands"; that variant was removed
+     with the appearance axis and saying otherwise invited someone to write a
+     `dark:` utility that would silently never apply.)
+   • the `.dark { … }` block — unreachable for the same reason (nothing applies
+     `.dark`), and as an UNSCOPED global rule it could only ever leak.
+   • the `@theme inline` block — `@theme` only registers utilities in the Tailwind
+     entrypoint, which is now the hub's globals.css. Every name the website
+     actually uses is already declared there (identically, or via a
+     `var(--portal-X, var(--sa-X))` slot that falls back to the DS value outside a
+     portal — which is exactly what the website wants); the only genuinely new
+     name, `--color-border-ds`, was added there. The rest of the block was shadcn
+     boilerplate for utilities the website never uses (bg-card,
+     text-muted-foreground, bg-primary, the chart and sidebar scales, …).
+   ───────────────────────────────────────────────────────────────────────────── */
+
+[data-site="website"] {
+  /* --- MoSJE brand palette — sourced from @mosje/design-system (UX4G DS) --- */
+  --primary: var(--sa-color-action-primary-default);        /* #0373DF primary */
+  --primary-dark: var(--sa-color-action-primary-hover);
+  --navy: var(--sa-color-brand-navy);
+  --saffron: var(--sa-color-brand-saffron);
+  --saffron-dark: var(--sa-color-brand-saffronDark);
+  --saffron-light: var(--sa-color-brand-saffronLight);
+  --yellow: var(--sa-color-brand-yellow);
+  --gov-green: var(--sa-color-status-success);       /* unified to DS success #2E7D32 */
+  --ink: var(--sa-color-text-default);                 /* #212121 */
+  --ink-muted: var(--sa-color-text-muted);     /* #343A40 */
+  --surface-muted: var(--sa-bg-neutral-subtler);
+
+  /* shadcn's oklch var layer. SCOPED, not `:root` as in the standalone app:
+     smile-admin.css declares --border/--ring/--foreground/--primary/--surface*
+     in a GLOBAL :root, so two unscoped blocks would fight over them and whichever
+     stylesheet loaded last would repaint the other app. Scoping keeps each side
+     resolving its own values. */
+  --background: oklch(100% 0 0deg);
+  --foreground: oklch(20.5% 0.012 264deg);   /* ~#1f2937 ink-muted */
+  --card: oklch(100% 0 0deg);
+  --card-foreground: oklch(20.5% 0.012 264deg);
+  --popover: oklch(100% 0 0deg);
+  --popover-foreground: oklch(20.5% 0.012 264deg);
+  /* NOT redeclared here. This block used to carry
+     `--primary: oklch(58.5% 0.176 252deg)`, and because it sits in the SAME rule
+     as the brand palette above, it won — so the website's primary was a
+     hand-converted approximation of #0373DF rather than the token, and it could
+     not follow a brand switch. shadcn's components read the same `--primary`
+     the brand palette already binds. */
+  --primary-foreground: oklch(100% 0 0deg);
+  --secondary: oklch(97% 0 0deg);
+  --secondary-foreground: oklch(20.5% 0 0deg);
+  --muted: oklch(97% 0 0deg);
+  --muted-foreground: oklch(55.6% 0 0deg);
+  --accent: oklch(97% 0 0deg);
+  --accent-foreground: oklch(20.5% 0 0deg);
+  --destructive: oklch(57.7% 0.245 27.325deg);
+  --border: oklch(92.2% 0 0deg);
+  --input: oklch(92.2% 0 0deg);
+  --ring: oklch(70.8% 0 0deg);
+  --chart-1: oklch(87% 0 0deg);
+  --chart-2: oklch(55.6% 0 0deg);
+  --chart-3: oklch(43.9% 0 0deg);
+  --chart-4: oklch(37.1% 0 0deg);
+  --chart-5: oklch(26.9% 0 0deg);
+  --radius: 0.625rem;
+  --sidebar: oklch(98.5% 0 0deg);
+  --sidebar-foreground: oklch(14.5% 0 0deg);
+  --sidebar-primary: oklch(20.5% 0 0deg);
+  --sidebar-primary-foreground: oklch(98.5% 0 0deg);
+  --sidebar-accent: oklch(97% 0 0deg);
+  --sidebar-accent-foreground: oklch(20.5% 0 0deg);
+  --sidebar-border: oklch(92.2% 0 0deg);
+  --sidebar-ring: oklch(70.8% 0 0deg);
+
+  /* `border-border` (2 call sites) must resolve to the shadcn --border above, not
+     to the DS border the hub defaults to. The hub declares --color-border as
+     `var(--portal-border, var(--sa-border-neutral-subtle))` in an `@theme inline` block, so the
+     value is inlined into the utility and re-pointing --color-border here would do
+     nothing — filling the slot is the only scoped way in. Same mechanism
+     smile-admin uses. */
+  --portal-border: var(--border);
+
+  /* borderRadius — the website derives its scale from --radius (10px), which is
+     NOT the stock Tailwind scale the hub otherwise gets. Only the three that
+     actually differ AND are used are re-bound; these are stock var()-based names,
+     so they scope directly (no --portal-* slot needed).
+       lg  stock 8px  → 10px    (24 call sites)
+       xl  stock 12px → 14px    (24 call sites)
+       2xl stock 16px → 18px    (3 call sites)
+     NOT re-bound: `md` (0.8 × 10px = 8px) and `sm` (0.6 × 10px = 6px) already
+     equal the hub's --sa-shape-8/--sa-shape-6 exactly, and 3xl/4xl are
+     unused. */
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+}
+
+/* Was `* { @apply border-border outline-ring/50 }` (shadcn boilerplate). Two
+   things about this rule are load-bearing:
+
+   1. SCOPED to the subtree — an unscoped `*` border-color rule would override
+      `border` on every portal and the hub home.
+   2. It MUST stay inside `@layer base`. Unlayered CSS beats every `@layer`
+      regardless of specificity, so an unlayered `*` rule here outranks Tailwind's
+      `@layer utilities` and silently paints EVERY `border-*` utility in the site
+      grey — `border-primary` included. (Verified in the browser: it rendered
+      lab(90.952…) instead of #0373DF.) The layer order is established by the
+      hub's globals.css, which Next loads first as the root layout's stylesheet;
+      naming the layer here just appends to it, so utilities still win.
+
+   Tailwind v4 needs `@import "tailwindcss"`/`@reference` in a file to resolve
+   `@apply`, which this file deliberately does not have (no portal CSS does
+   either), so the declarations are inlined as the plain CSS Tailwind would emit. */
+@layer base {
+  /* Was `body { @apply bg-background text-foreground }`. On the wrapper rather
+     than <body>: the hub's own body is `bg-surface-muted text-ink` and an
+     unscoped body rule here would repaint the hub home and every portal. The
+     wrapper is min-h-screen, so it still covers the viewport. */
+  [data-site="website"] {
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+
+  [data-site="website"] * {
+    border-color: var(--border);
+    outline-color: color-mix(in oklab, var(--ring) 50%, transparent);
+  }
+}
+
+/* `html { @apply font-sans }` is NOT carried over — the hub's root layout already
+   puts `font-sans` (Noto Sans) on <body>, which the website inherits. */
+
+/* Readable long-form content for inner/content pages (DBIM typography: left-aligned, Noto Sans). */
+.gov-prose {
+  color: var(--ink-muted);
+  font-size: var(--sa-type-body-1-size);
+  line-height: var(--sa-type-body-1-lh);
+  text-align: left;
+}
+/* The scraped organisation content arrives inside a nested wrapper div, so its
+   paragraphs are grandchildren of .gov-prose and the direct-child combinator
+   never reached them: Preflight's reset won and the paragraphs ran together
+   with no gap at all. Spacing belongs on the block elements themselves, at any
+   depth, so injected HTML gets the same rhythm as authored markup. */
+.gov-prose > * + * { margin-top: var(--sa-stack-16); }
+.gov-prose :is(p, ul, ol, blockquote, table, pre) + :is(p, ul, ol, blockquote, table, pre) {
+  margin-top: var(--sa-stack-16);
+}
+.gov-prose h2 {
+  color: var(--primary-dark);
+  font-size: var(--sa-type-headline-4-size);
+  font-weight: var(--sa-font-weight-semibold);
+  line-height: var(--sa-type-headline-4-lh);
+  margin-top: var(--sa-stack-32);
+}
+.gov-prose h3 {
+  color: var(--ink);
+  font-size: var(--sa-type-headline-5-size);
+  line-height: var(--sa-type-headline-5-lh);
+  font-weight: var(--sa-font-weight-semibold);
+  margin-top: var(--sa-stack-24);
+}
+.gov-prose h4 {
+  color: var(--primary-dark);
+  font-size: var(--sa-type-headline-6-size);
+  line-height: var(--sa-type-headline-6-lh);
+  font-weight: var(--sa-font-weight-semibold);
+  margin-top: var(--sa-stack-20);
+}
+.gov-prose p { color: var(--ink-muted); }
+.gov-prose a { color: var(--primary); text-decoration: underline; }
+.gov-prose a:hover { color: var(--primary-dark); }
+.gov-prose ul { list-style: disc; padding-left: var(--sa-padding-24); }
+.gov-prose ol { list-style: decimal; padding-left: var(--sa-padding-24); }
+.gov-prose li { margin-top: var(--sa-stack-6); }
+.gov-prose strong { color: var(--ink); font-weight: var(--sa-font-weight-semibold); }
+.gov-prose hr { border-color: var(--sa-border-neutral-base); margin: var(--sa-stack-24) 0; }
+
+/* ── Tables inside prose (WCAG 2.2 AA compliant, design token responsive tables) ── */
+.gov-prose table {
+  width: 100%;
+  margin-top: var(--sa-stack-20);
+  margin-bottom: var(--sa-stack-24);
+  border-collapse: collapse;
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-cmp-card-radius);
+  background-color: var(--sa-bg-neutral-base);
+  overflow: hidden;
+}
+
+.gov-prose thead th {
+  background-color: var(--sa-bg-neutral-subtler);
+  font-size: var(--sa-type-label-2-size);
+  line-height: var(--sa-type-label-2-lh);
+  font-weight: var(--sa-font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--sa-type-caps-tracking);
+  color: var(--sa-text-neutral-bolder);
+  padding: var(--sa-padding-12) var(--sa-padding-16);
+  text-align: left;
+  border-bottom: 1px solid var(--sa-border-neutral-subtle);
+  white-space: nowrap;
+}
+
+.gov-prose th,
+.gov-prose td {
+  padding: var(--sa-padding-12) var(--sa-padding-16);
+  text-align: left;
+  vertical-align: top;
+  color: var(--sa-text-neutral-base);
+  border-bottom: 1px solid var(--sa-border-neutral-subtle);
+}
+
+.gov-prose tbody tr:last-child td,
+.gov-prose tbody tr:last-child th {
+  border-bottom: none;
+}
+
+.gov-prose tbody tr:nth-child(even) {
+  background-color: color-mix(in srgb, var(--sa-bg-neutral-subtler) 40%, transparent);
+}
+
+.gov-prose tbody tr:hover {
+  background-color: var(--sa-bg-neutral-subtler);
+}
+
+.gov-prose table a {
+  color: var(--sa-text-link-brand-default);
+  text-decoration: none;
+  font-weight: var(--sa-font-weight-medium);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sa-inline-4);
+}
+
+.gov-prose table a:hover {
+  color: var(--sa-text-link-brand-hover);
+  text-decoration: underline;
+}
+
+/* Responsive table wrapper for horizontal scroll without breaking viewport */
+.table-responsive,
+.orgd__tablewrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: var(--sa-stack-16);
+  margin-bottom: var(--sa-stack-24);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-cmp-card-radius);
+  background-color: var(--sa-bg-neutral-base);
+}
+
+.table-responsive > table,
+.orgd__tablewrap > table {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+}
+
+/* ── Organisation article, matched to Figma "Organisation Details" (51858:48298)
+
+   The template specifies Headline/headline-3 for the section heading and
+   Body/body-1 for the copy, where `.gov-prose` carries the website's older ramp
+   (22/700 heading, 15/1.7 body). These overrides live HERE, beside the rules
+   they modify and equally unlayered, because `.gov-prose` sits outside
+   `@layer base` — an override in `@layer components` loses to it no matter how
+   specific it is, which is exactly what happened on the first attempt.
+
+   Known divergence: Figma sets 0.5px body tracking; the estate's type tokens
+   define tracking as 0 for both body and headings. Bound to the token, so this
+   is a token conversation rather than a literal. */
+.sd-article :is(h1, h2) {
+  font-size: var(--sa-type-headline-3-size);
+  line-height: var(--sa-type-headline-3-lh);
+  letter-spacing: var(--sa-type-heading-tracking);
+  font-weight: var(--sa-font-weight-semibold);
+  color: var(--sa-color-action-primary-hover);
+  margin-top: 0;
+  /* Figma 51858:48299 puts a 24px gap between the heading and the copy. The
+     paragraph-spacing rule only reaches sibling blocks, and the heading is not
+     one of them, so the gap has to be stated here. */
+  margin-bottom: var(--sa-stack-24);
+}
+
+.sd-article :is(p, li) {
+  font-size: var(--sa-type-body-1-size);
+  line-height: var(--sa-type-body-1-lh);
+  letter-spacing: var(--sa-type-body-tracking);
+  color: var(--sa-text-neutral-base);
+}
+
+/* ds-exempt-start(portal-palette): the NMBA campaign's own reds and green, and three
+   ambient shadow tints. NMBA is a national campaign with its own published identity;
+   the estate's --sa-color-status-danger is a STATUS colour and using it here would
+   say "error" where the design says "Nasha Mukt Bharat". Registered in
+   docs/guidelines/README.md. Covers the definitions only. */
+:root {
+  --nmba-red-deep: #881337;      /* the headline's darkest red */
+  --nmba-red: #991b1b;           /* the headline's accent word */
+  --nmba-red-cta: #dc2626;       /* the campaign call to action */
+  --nmba-red-cta-hover: #b91c1c; /* its hover */
+  --nmba-green-wash: rgba(47, 109, 95, 0.06);   /* the aesthetic option's left rail */
+  --nmba-green-rule: rgba(47, 109, 95, 0.18);   /* that rail's border */
+  --shadow-ambient-04: rgb(0 0 0 / 4%);   /* the lightest card lift */
+  --shadow-ambient-12: rgb(0 0 0 / 12%);  /* a raised control */
+  --shadow-ambient-22: rgb(0 0 0 / 22%);  /* a floating control */
+}
+/* ds-exempt-end */

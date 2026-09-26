@@ -46,6 +46,16 @@ export interface CarouselProps {
   interval?: number;
   /** Show the dot indicators under the track. @default true */
   showDots?: boolean;
+  /**
+   * Where the controls sit. `below` is a row under the slides. `overlay` puts
+   * them in a dark pill on the slide's bottom edge — for a full-width banner,
+   * where a row below costs the first screen its height and detaches the
+   * controls from what they move. The pill is solid, so its contrast does not
+   * depend on the photograph behind it. Below `breakpoint/tablet` the controls
+   * stay in the row, because a phone's banner is too short to carry them.
+   * @default "below"
+   */
+  controls?: "below" | "overlay";
   className?: string;
 }
 
@@ -79,6 +89,7 @@ export function Carousel({
   autoPlay = false,
   interval = 7,
   showDots = true,
+  controls = "below",
   className,
 }: CarouselProps): React.JSX.Element {
   const slides = React.Children.toArray(children).filter(Boolean);
@@ -164,9 +175,40 @@ export function Carousel({
     return <div className={cn("ds-carousel", className)} />;
   }
 
+  /*
+   * ONE SLIDE IS NOT A CAROUSEL. It used to draw the whole control bar anyway —
+   * arrows that moved nowhere, a single dot, a Pause for something that could
+   * not move — three controls and a "carousel" announcement for a picture.
+   * A band that has shrunk to one banner renders as that banner.
+   */
+  if (count === 1) {
+    return (
+      <div className={cn("ds-carousel", "ds-carousel--single", className)}>
+        <div className="ds-carousel__viewport">{slides[0]}</div>
+      </div>
+    );
+  }
+
+  /*
+   * RUNNING is the one state a reader cannot otherwise see: the carousel is
+   * moving on its own and nothing is holding it. It drives two things — the
+   * current dot fills over the interval, so the reader can see that it moves
+   * and when; and the live region goes quiet, because announcing "Slide 3 of
+   * 5" every seven seconds to someone reading the rest of the page is exactly
+   * the interruption WAI-ARIA's carousel pattern tells a rotating carousel to
+   * avoid (`aria-live="off"` while rotating, `polite` otherwise).
+   */
+  const running = autoPlay && playing && !held && !reducedMotion && count > 1;
+
   return (
     <section
-      className={cn("ds-carousel", className)}
+      className={cn(
+        "ds-carousel",
+        controls === "overlay" && "ds-carousel--overlay",
+        running && "ds-carousel--running",
+        className,
+      )}
+      style={{ "--_interval": `${Math.max(2, interval)}s` } as React.CSSProperties}
       aria-roledescription="carousel"
       aria-label={label}
       onMouseEnter={() => setHeld(true)}
@@ -216,6 +258,14 @@ export function Carousel({
               role="group"
               aria-roledescription="slide"
               aria-label={`${i + 1} of ${count}`}
+              /*
+               * A slide out of view is out of reach. Without this, a link on
+               * slide 1 stays in the tab order while slide 4 is showing, and
+               * tabbing to it scrolls the track back underneath the reader.
+               * The track itself stays scrollable — `inert` is on the slides,
+               * not on it — so a swipe still reaches every slide.
+               */
+              inert={i !== index}
             >
               {slide}
             </div>
@@ -383,7 +433,9 @@ export function Carousel({
              * honest to offer: a set this long has no way to reach slide 9
              * directly that is better than pressing Next.
              */
-            <p className="ds-carousel__counter">
+            // Keyed on the position so the timer beneath it restarts with each
+            // slide, as the current dot's does.
+            <p className="ds-carousel__counter" key={index}>
               <span aria-hidden="true">{`${index + 1} / ${count}`}</span>
               <span className="ds-carousel__sr">{`Slide ${index + 1} of ${count}`}</span>
             </p>
@@ -407,7 +459,7 @@ export function Carousel({
 
       {/* Moving by button changes nothing a screen reader would notice on its
           own, so the new position is announced politely. */}
-      <p className="ds-carousel__status" role="status" aria-live="polite">
+      <p className="ds-carousel__status" role="status" aria-live={running ? "off" : "polite"}>
         {`Slide ${index + 1} of ${count}`}
       </p>
     </section>

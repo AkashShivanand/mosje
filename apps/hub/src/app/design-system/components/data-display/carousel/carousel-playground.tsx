@@ -23,8 +23,9 @@ const LONG_SET = [
 ];
 
 /**
- * Three arrangements: reader-driven (the default), auto-rotating with its pause
- * control, and a set long enough that the dots become a counter.
+ * Five arrangements: reader-driven (the default), auto-rotating with its pause
+ * control, a set long enough that the dots become a counter, the same long set
+ * as a rotating full-width banner on the overlay pill, and a single slide.
  */
 export function CarouselPlayground(): React.JSX.Element {
   const slides = SLIDES.map((s) => (
@@ -72,6 +73,26 @@ export function CarouselPlayground(): React.JSX.Element {
           </div>
         ))}
       </Carousel>
+      {/* A full-width banner set past six slides, rotating: the pill shows the
+          counter, and the hairline under it is the timer. */}
+      <Carousel label="Banners" autoPlay controls="overlay">
+        {LONG_SET.map((name, i) => (
+          <div
+            key={name}
+            style={{
+              aspectRatio: "3 / 1",
+              display: "grid",
+              placeItems: "center",
+              background: i % 2 ? "var(--sa-bg-brand-primary-bolder)" : "var(--sa-bg-neutral-inverse)",
+              color: "var(--sa-text-neutral-inverse)",
+            }}
+          >
+            {name}
+          </div>
+        ))}
+      </Carousel>
+      {/* One slide is not a carousel: no arrows, no dots, no Pause. */}
+      <Carousel label="Single announcement">{slides.slice(0, 1)}</Carousel>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { fallbackFor, PROTECTED } from "@/lib/bhashini/fallback";
+import { PROTOTYPE_HI } from "@/lib/bhashini/prototype-hi";
 import { findLanguage, SOURCE_LANGUAGE } from "@/lib/bhashini/languages";
 import { isConfigured, translateStrings } from "@/lib/bhashini/server";
 
@@ -97,9 +98,12 @@ export async function POST(request: Request): Promise<NextResponse> {
   }
 
   if (!isConfigured()) {
+    // The prototype's mock (lib/bhashini/prototype-hi.ts): with no credentials, the
+    // home page and its menus still switch to Hindi. Only here — once Bhashini is
+    // configured it answers, and this table is never consulted.
     // Untranslated strings keep their English source. A blank government label is
     // worse than an English one.
-    for (const s of needsApi) translations[s] = s;
+    for (const s of needsApi) translations[s] = (target === "hi" && PROTOTYPE_HI[s]) || s;
     return NextResponse.json({
       configured: false,
       target,

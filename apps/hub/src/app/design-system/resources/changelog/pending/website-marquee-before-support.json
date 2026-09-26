@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "THE LOGO MARQUEE MOVES ABOVE THE SUPPORT BAND on the website home page, which is the order the design draws and the order the live page uses. The page ends on the offer of help — the three national helplines and \"Need Support?\" — rather than on a row of partner marks. Nothing else moved. Alongside it, `.claude/launch.json` gains a `hub-alt` configuration on 3008: Next 16's dev lock is per DIRECTORY rather than per port, so a second working tree may run its own `next dev` and only needs a port of its own when another session already holds 3007. `hub-attach` remains the right answer when the running server is this same directory's."
+}

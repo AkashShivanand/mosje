@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
+import { ListingPage, type ListingColumn } from "@/components/website-next/templates/ListingPage";
 import { DETAILED_DEMAND_FOR_GRANT } from "@/data/website";
-import type { ListingTableColumn } from "@/components/website/ui/data-table";
 import { socialCard } from "@/lib/seo/social";
 
 const TITLE = "Detailed Demand for Grant";
@@ -14,10 +13,10 @@ export const metadata: Metadata = {
   ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/detailed-demand-for-grant" }),
 };
 
-const columns: ListingTableColumn[] = [
+const columns: ListingColumn[] = [
   { key: "sno", label: "S.No.", align: "center" },
   { key: "label", label: "Financial Year", sortable: true, align: "left", className: "min-w-[320px] font-medium text-ink" },
-  { key: "action", label: "Action", align: "center", type: "link", hrefKey: "href", linkLabel: "View" },
+  { key: "action", label: "Action", align: "center", type: "link", hrefKey: "href", linkLabel: "View Document" },
 ];
 
 export default function Page() {
@@ -32,7 +31,9 @@ export default function Page() {
       columns={columns}
       rows={rows}
       searchKeys={["label"]}
-      searchPlaceholder="Search by financial year…"
+      searchPlaceholder="Search by financial year"
+      noun="demands for grants"
+      nounSingular="demand for grants"
       pageSize={15}
     />
   );

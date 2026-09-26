@@ -74,6 +74,10 @@
   .sa-band--default { background: var(--sa-bg-neutral-base); }
   .sa-band--muted { background: var(--sa-bg-neutral-subtler); }
   .sa-band--brand { background: var(--sa-bg-brand-primary-base); }
+  .sa-band--brandBold {
+    background: var(--sa-bg-brand-primary-boldest);
+    color: var(--sa-on-bg-brand-primary-boldest);
+  }
   .sa-band--inverse {
     background: var(--sa-bg-neutral-inverse);
     color: var(--sa-text-neutral-inverse);
@@ -83,6 +87,8 @@
   .sa-band--s { padding-block: var(--sa-section-32); }
   .sa-band--m { padding-block: var(--sa-section-48); }
   .sa-band--l { padding-block: var(--sa-section-56); }
+  .sa-band--xl { padding-block: var(--sa-section-56); }
+  @media (min-width: 1024px) { .sa-band--xl { padding-block: var(--sa-section-80); } }
 
   /* ---- PageHeader -----------------------------------------------------------
      HUGS. Title, optional meta line, optional actions. Wraps rather than

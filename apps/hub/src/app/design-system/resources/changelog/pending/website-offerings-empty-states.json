@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "OUR OFFERINGS DRAWS ITS EMPTY STATES. The pre-merge review of PR #580 found the section rendering a bordered list with no rows in it when a register publishes nothing — the Vacancies and Tenders tabs, a group with no schemes, and the What's New column. `data-state-completeness.md` §1 names empty as one of the four states that always get skipped, and a blank panel with a rule across the top reads as a broken page rather than as an answer. Each now says what it means: \"No tenders are open at present\", \"No schemes are listed for this group yet\", \"Nothing has been published in the last twelve months\". The sibling Activity Corner already carried the same map; this brings the two into line. Nothing changes with today's data — every register is populated, and the messages are for the day one is not."
+}

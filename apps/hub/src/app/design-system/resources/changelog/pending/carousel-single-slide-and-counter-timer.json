@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "Carousel: a single slide renders as that slide, with no controls and no carousel semantics; past six slides, a hairline under the \"3 / 9\" counter is the rotation timer, since there is no dot to fill. New story OverlayLongSet. Figma: the carousel is rebuilt as parts (Arrow, Rotation, Dot, Counter, Slide), controls and a full Carousel for desktop, tablet and phone, prototype-ready."
+}
