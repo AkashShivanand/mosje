@@ -5,6 +5,7 @@ import { RadioGroup } from "@mosje/design-system";
 import {
   WEBSITE_DESIGN_COOKIE,
   WEBSITE_DESIGNS,
+  parseWebsiteDesign,
   type WebsiteDesign,
 } from "@/lib/website-design/constants";
 import "@/components/website/data-mode.css";
@@ -14,7 +15,7 @@ const serverDesign = (): WebsiteDesign => "new";
 
 function readDesign(): WebsiteDesign {
   const hit = document.cookie.split("; ").find((c) => c.startsWith(`${WEBSITE_DESIGN_COOKIE}=`));
-  return hit?.split("=")[1] === "classic" ? "classic" : "new";
+  return parseWebsiteDesign(hit?.split("=")[1]);
 }
 
 /**

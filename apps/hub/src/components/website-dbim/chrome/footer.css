@@ -1,0 +1,272 @@
+/* ds-exempt-start(third-party): type sizes, leading and tracking are transcribed from the DBIM 3.0 reference template (master-socialjustice.digifootprint.gov.in, root 62.5%, rems divided by 1.6), which the DBIM review team mandated on 25 Sep 2026; colour stays token-bound */
+/* DBIM footer and cookie bar — reference computed values at 1440, used.css for the
+   other widths (docs/research/dbim-reference/components/chrome.spec.md). */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ── Footer ──────────────────────────────────────────────────────────────── */
+  [data-design="dbim"] .db-footer {
+    padding: 33px 60px; /* reference 3.3rem / 6rem */
+    color: var(--sa-color-neutralScale-0);
+    background: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-footer__row {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 15px;
+    justify-content: space-between;
+  }
+
+  [data-design="dbim"] .db-footer__links {
+    flex: 0 0 calc(58.3333% - 7.5px);
+    max-width: 100%;
+  }
+
+  [data-design="dbim"] .db-footer__heading {
+    margin: 0 0 30px;
+    font-size: var(--db-footer-heading, 1.25rem);
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: 1.25rem; /* 20px */
+    color: var(--sa-color-neutralScale-100);
+    text-transform: uppercase;
+  }
+
+  [data-design="dbim"] .db-footer__list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px var(--sa-stack-16);
+    margin: 0 0 37px;
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-footer__list li {
+    display: flex;
+    align-items: center;
+    transform: translateX(-5px);
+  }
+
+  [data-design="dbim"] .db-footer__chev {
+    width: 16px;
+    overflow: hidden;
+    line-height: 1.25rem;
+    color: var(--sa-color-neutralScale-0);
+  }
+
+  [data-design="dbim"] .db-footer__list a {
+    font-size: var(--db-footer-link, 1.25rem);
+    font-weight: var(--sa-font-weight-regular);
+    line-height: 1.25rem; /* 20px */
+    color: var(--sa-color-neutralScale-100);
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-footer a:hover {
+    text-decoration: underline;
+  }
+
+  [data-design="dbim"] .db-footer a:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-color-neutralScale-0);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  [data-design="dbim"] .db-footer__owner {
+    margin: 0 0 0 5px;
+    font-size: var(--db-fs-h3);
+    line-height: normal;
+    color: var(--sa-color-neutralScale-100);
+  }
+
+  [data-design="dbim"] .db-footer__aside {
+    display: flex;
+    flex: 0 0 calc(25% - 7.5px);
+    flex-direction: column;
+    gap: 15px;
+    justify-content: space-between;
+    text-align: right;
+  }
+
+  [data-design="dbim"] .db-footer__subscribe {
+    margin: 0 0 20px;
+    padding-right: 7.5px;
+    font-size: var(--db-fs-h3);
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: 1.125rem; /* 18px */
+    letter-spacing: 0.16px;
+    color: var(--sa-color-neutralScale-0);
+    text-transform: uppercase;
+  }
+
+  [data-design="dbim"] .db-footer__social {
+    display: flex;
+    gap: var(--sa-stack-16);
+    justify-content: flex-end;
+    margin: 0 0 10px;
+    padding: 0 7.5px 0 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-footer__social li {
+    transform: translateX(-5px); /* the reference nudges every footer list item */
+  }
+
+  [data-design="dbim"] .db-footer__social a {
+    display: block;
+    line-height: 0;
+    color: var(--sa-color-neutralScale-0);
+  }
+
+  [data-design="dbim"] .db-footer__badges {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  [data-design="dbim"] .db-footer__badge {
+    display: block;
+    padding: 2px var(--sa-padding-8);
+    line-height: 0;
+    background: var(--sa-color-neutralScale-0);
+    border-radius: var(--sa-shape-4);
+  }
+
+  [data-design="dbim"] .db-footer__badge img {
+    width: 100px;
+    height: 40px;
+    object-fit: contain;
+  }
+
+  [data-design="dbim"] .db-footer__updated {
+    margin: 10px 0 0;
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.125rem; /* 18px */
+    letter-spacing: 0.16px;
+  }
+
+  /* Heading 20 ≥1537 and <1280, 14 in between; links 20 except 16 in between. */
+  @media (min-width: 1280px) and (max-width: 1536px) {
+    [data-design="dbim"] .db-footer {
+      --db-footer-heading: 0.875rem;
+      --db-footer-link: 1rem;
+    }
+  }
+
+  @media (max-width: 1279px) {
+    [data-design="dbim"] .db-footer {
+      --db-footer-heading: 1rem;
+    }
+  }
+
+  @media (max-width: 991px) {
+    [data-design="dbim"] .db-footer__links,
+    [data-design="dbim"] .db-footer__aside {
+      flex-basis: 100%;
+    }
+  }
+
+  @media (max-width: 767px) {
+    [data-design="dbim"] .db-footer {
+      padding: var(--sa-padding-16);
+    }
+
+    [data-design="dbim"] .db-footer__aside {
+      align-items: center;
+      text-align: center;
+    }
+
+    [data-design="dbim"] .db-footer__social {
+      justify-content: center;
+    }
+  }
+
+  /* ── Cookie bar ──────────────────────────────────────────────────────────── */
+  [data-design="dbim"] .db-cookie {
+    position: sticky;
+    bottom: 0;
+    z-index: var(--sa-z-fixed);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 30px;
+    align-items: flex-start;
+    padding: 0 15px;
+    color: var(--sa-color-text-default);
+    background: var(--sa-color-neutralScale-0);
+    box-shadow: 0 -4px 8px 0 color-mix(in srgb, var(--sa-color-neutralScale-1000) 8%, transparent);
+  }
+
+  [data-design="dbim"] .db-cookie__text {
+    flex: 1 0 300px;
+    padding: 30px 0 10px;
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.3125rem; /* 21px */
+  }
+
+  [data-design="dbim"] .db-cookie__text p {
+    margin: 0 0 10px;
+  }
+
+  [data-design="dbim"] .db-cookie__text p:last-child {
+    margin: 0;
+  }
+
+  [data-design="dbim"] .db-cookie__lead {
+    font-weight: var(--sa-font-weight-bold);
+  }
+
+  [data-design="dbim"] .db-cookie__text a {
+    /* reference: Bootstrap's link blue, which DBIM's palette has no rung for */
+    color: var(--sa-color-primaryScale-600);
+    text-decoration: underline;
+  }
+
+  [data-design="dbim"] .db-cookie__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    align-items: flex-start;
+    padding-top: 25px;
+  }
+
+  [data-design="dbim"] .db-cookie .db-cookie__btn,
+  [data-design="dbim"] .db-cookie .db-cookie__btn.ds-btn {
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
+    min-height: 0;
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    font-size: 0.75rem; /* 12px */
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: 1.125rem; /* 18px */
+    letter-spacing: 0.12px; /* computed on the live bar: .customize-cookies-link's, not .CookieConsent button's */
+    color: var(--sa-color-primaryScale-800);
+    text-decoration: none;
+    text-transform: uppercase;
+    background: var(--sa-color-primaryScale-100);
+    border: 0;
+    border-radius: var(--sa-shape-4);
+  }
+
+  [data-design="dbim"] .db-cookie a.db-cookie__btn {
+    margin-top: 3px;
+  }
+
+  [data-design="dbim"] .db-cookie .db-cookie__btn:hover,
+  [data-design="dbim"] .db-cookie .db-cookie__btn.ds-btn:hover {
+    background: var(--sa-color-primaryScale-200);
+  }
+
+  [data-design="dbim"] .db-cookie .db-cookie__btn:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  @media (max-width: 767px) {
+    [data-design="dbim"] .db-cookie__actions {
+      gap: var(--sa-stack-8);
+      padding: 0 0 15px;
+    }
+  }
+}
+/* ds-exempt-end */

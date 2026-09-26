@@ -1,0 +1,316 @@
+/* ds-exempt-start(third-party): type sizes, leading and tracking are transcribed from the DBIM 3.0 reference template (master-socialjustice.digifootprint.gov.in, root 62.5%, rems divided by 1.6), which the DBIM review team mandated on 25 Sep 2026; colour stays token-bound */
+/* ─────────────────────────────────────────────────────────────────────────────
+   DBIM design — document tables: Documents tabs, series pages, What's New,
+   Archives. Values are the reference's computed styles (spec:
+   docs/research/dbim-reference/components/documents.spec.md). Reference rems are
+   ÷1.6 here. Colours are tokens (dbim.css header has the map).
+   ───────────────────────────────────────────────────────────────────────────── */
+@layer theme, base, components, utilities;
+
+@layer components {
+  [data-design="dbim"] .db-doc {
+    --db-doc-cell-pad: 7.5px; /* Bootstrap half-gutter the reference's grid uses */
+  }
+
+  /* ── Table header (.tableheader) ─────────────────────────────────────────── */
+  [data-design="dbim"] .db-doc__head {
+    display: grid;
+    align-items: center;
+    min-height: 48px; /* reference height */
+    margin-bottom: var(--sa-padding-16);
+    padding: var(--sa-padding-12) var(--sa-padding-32);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-primaryScale-200);
+  }
+
+  [data-design="dbim"] .db-doc__head > span {
+    padding-inline: var(--db-doc-cell-pad);
+    font-size: var(--db-fs-small);
+    font-weight: var(--sa-font-weight-semibold);
+    letter-spacing: 0.48px;
+    text-transform: uppercase;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  /* ── Row (.announcementbox) ──────────────────────────────────────────────── */
+  [data-design="dbim"] .db-doc__row {
+    display: grid;
+    align-items: center;
+    row-gap: 5px; /* Bootstrap row-gap-2 at the reference's 10px rem */
+    min-height: 58px; /* reference height */
+    margin-bottom: var(--sa-padding-6);
+    padding: var(--sa-padding-8) var(--sa-padding-32);
+    border: 1px solid var(--sa-color-neutralScale-100);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-color-neutralScale-0);
+  }
+
+  /* Column spans on the 12-column grid: What's New 6·2·2·2; Documents tabs, series
+     pages and archives 7·2·3 (the 3 holds the type/size and the pill). */
+  [data-design="dbim"] .db-doc--news .db-doc__head,
+  [data-design="dbim"] .db-doc--news .db-doc__row {
+    grid-template-columns: 6fr 2fr 2fr 2fr;
+  }
+
+  [data-design="dbim"] .db-doc--files .db-doc__head,
+  [data-design="dbim"] .db-doc--files .db-doc__row {
+    grid-template-columns: 7fr 2fr 3fr;
+  }
+
+  [data-design="dbim"] .db-doc__cell {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Bootstrap gap-2 */
+    min-width: 0;
+    padding-inline: var(--db-doc-cell-pad);
+  }
+
+  [data-design="dbim"] .db-doc__cell--title {
+    align-items: flex-start;
+  }
+
+  [data-design="dbim"] .db-doc__cell--action {
+    justify-content: flex-end;
+  }
+
+  /* The per-cell label is the phone's column header; the desktop has the head row. */
+  [data-design="dbim"] .db-doc__label {
+    display: none;
+  }
+
+  [data-design="dbim"] .db-doc__folder-icon {
+    flex: none;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-doc__title {
+    margin: 0;
+    font-size: var(--db-fs-p);
+    font-weight: var(--sa-font-weight-regular);
+    line-height: 1.5rem; /* 24px */
+    color: var(--sa-color-text-default);
+    overflow-wrap: anywhere;
+  }
+
+  /* .counter-box */
+  [data-design="dbim"] .db-doc__count {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    min-width: 25px; /* reference box */
+    height: 25px;
+    padding: var(--sa-padding-2) var(--sa-padding-6);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-primaryScale-200);
+    font-size: 0.75rem; /* 12px */
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: 0.75rem;
+    letter-spacing: -0.24px;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  /* .ptype — the date. #3D4043 in the reference → neutralScale-700 (#454545), the
+     nearest DBIM neutral. */
+  [data-design="dbim"] .db-doc__date {
+    font-size: var(--db-fs-small);
+    font-weight: var(--sa-font-weight-semibold);
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--sa-color-neutralScale-700);
+  }
+
+  /* .type-size */
+  [data-design="dbim"] .db-doc__type {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Bootstrap gap-4 */
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-doc__type svg {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    fill: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-doc__size {
+    font-size: var(--db-fs-small);
+    font-weight: var(--sa-font-weight-semibold);
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  [data-design="dbim"] .db-doc__file {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+    width: 100%;
+  }
+
+  /* .download-btn */
+  [data-design="dbim"] .db-doc__btn {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: var(--sa-padding-8);
+    height: 40px; /* reference height */
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-primaryScale-100);
+    font-size: 0.75rem; /* 12px */
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: 1.125rem; /* 18px */
+    letter-spacing: 0.12px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--sa-color-primaryScale-800);
+    white-space: nowrap;
+  }
+
+  [data-design="dbim"] .db-doc__btn:hover {
+    background: var(--sa-color-primaryScale-200);
+  }
+
+  [data-design="dbim"] .db-doc__btn:focus-visible,
+  [data-design="dbim"] .db-doc__archive:focus-visible {
+    outline: 2px solid var(--sa-color-primaryScale-800);
+    outline-offset: 2px;
+  }
+
+  /* ── View Archive (.download-outline-btn.archivemr) ──────────────────────── */
+  [data-design="dbim"] .db-doc__archive-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 30px; /* Bootstrap mt-5 at the reference's 10px rem */
+  }
+
+  [data-design="dbim"] .db-doc__archive {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-padding-8);
+    height: 42px; /* reference height */
+    margin-right: 47.5px; /* .archivemr 40px + the column's 7.5px gutter */
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    border: 1px solid var(--sa-color-primaryScale-800);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-neutralScale-0);
+    font-size: 0.75rem; /* 12px */
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: 1.125rem; /* 18px */
+    letter-spacing: 0.12px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-doc__archive:hover {
+    background: var(--sa-color-primaryScale-100);
+  }
+
+  /* ── Filtered to nothing ─────────────────────────────────────────────────── */
+  [data-design="dbim"] .db-doc__nomatch {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sa-padding-8);
+    padding: var(--sa-padding-40) 0;
+    font-weight: var(--sa-font-weight-semibold);
+    text-align: center;
+  }
+
+  [data-design="dbim"] .db-doc__pager {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--sa-padding-16);
+  }
+
+  /* ── What's New groups ───────────────────────────────────────────────────── */
+  /* The reference's What's New container has no mt-5, unlike every other inner
+     page, so its search sits 32px under the banner rather than 62px. */
+  [data-design="dbim"] .db-news {
+    margin-top: -30px; /* cancels .db-page__container's 30px */
+  }
+
+  [data-design="dbim"] .db-news__slot {
+    margin: 30px 0 10px; /* .whats-new-announcements mt-5 mb-3 */
+    padding: var(--sa-padding-16) var(--sa-padding-24);
+  }
+
+  [data-design="dbim"] .db-news__rule {
+    margin: 10px 0; /* reference hr */
+    border: 0;
+    border-top: 1px solid var(--sa-color-text-default);
+    opacity: 0.25;
+  }
+
+  /* .subsection-title */
+  [data-design="dbim"] .db-news__h2 {
+    margin: 36px 0 var(--sa-padding-12); /* reference margins */
+    font-size: var(--db-fs-h2);
+    font-weight: var(--sa-font-weight-medium);
+    line-height: 1.5rem; /* 24px */
+    color: var(--sa-color-text-default);
+  }
+
+  [data-design="dbim"] .db-news__group-head {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 30px 0 10px; /* mt-5 mb-3 */
+  }
+
+  [data-design="dbim"] .db-news__h3 {
+    margin: 0;
+    font-size: var(--db-fs-h3);
+    font-weight: var(--sa-font-weight-medium);
+    line-height: 1.2;
+    color: var(--sa-color-text-default);
+  }
+
+  /* ── Phone and tablet: rows stack, each cell carries its label ───────────── */
+  @media (max-width: 991.5px) {
+    [data-design="dbim"] .db-doc__head {
+      display: none;
+    }
+
+    [data-design="dbim"] .db-doc--news .db-doc__row,
+    [data-design="dbim"] .db-doc--files .db-doc__row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    [data-design="dbim"] .db-doc__label {
+      display: block;
+      flex: none;
+      width: 33.333%; /* Bootstrap col-4 */
+      font-size: var(--db-fs-small);
+      font-weight: var(--sa-font-weight-semibold);
+      letter-spacing: 0.48px;
+      text-transform: uppercase;
+      /* .table-column #0B2641 → primaryScale-900, the nearest DBIM blue */
+      color: var(--sa-color-primaryScale-900);
+    }
+
+    /* An archive row drops the glyph, size and pill to their own line under the
+       Type/Size label, as the reference's archive rows do. */
+    [data-design="dbim"] .db-doc--archive .db-doc__row > .db-doc__cell:last-child {
+      flex-wrap: wrap;
+    }
+
+    [data-design="dbim"] .db-doc__cell--action:empty {
+      display: none;
+    }
+  }
+
+  @media (max-width: 767.5px) {
+    [data-design="dbim"] .db-doc__archive {
+      margin-right: var(--sa-padding-56);
+    }
+  }
+}
+/* ds-exempt-end */

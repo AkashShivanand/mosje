@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Band, Icon, SectionTitle } from "@mosje/design-system";
 import { MANDATE, MINISTRY_LINE } from "./facts";
+import { DBIM_PEOPLE } from "@/lib/website-dbim/assets";
 
 /**
  * About Us — the Department's mandate in its own words, the Ministry's line
@@ -23,24 +24,26 @@ import { MANDATE, MINISTRY_LINE } from "./facts";
  *
  * The divisions list replaces the classic "Important Links" wall tab, which
  * covered content on a phone (MOB-04): the same division pages, in the page.
- * Portrait names and designations are the alt text (ACC-04). One portrait set
- * to one specification is still owed by the Department (BRD-07, DBIM §6.1.4).
+ * Portrait names and designations are the alt text (ACC-04). The three are ONE
+ * portrait set to one specification (BRD-07, DBIM §6.1.4): the Department's own
+ * DBIM build carries it, fetched 25 Sep 2026 (lib/website-dbim/assets.ts) — the
+ * set this card used before mixed a flag, a pink and a grey backdrop.
  * The cards are this page's own: the design system's Avatar stops at 48px, and
  * a Minister's headshot is not an avatar.
  */
 const MINISTERS = [
   {
-    img: "/website/content/organisation/Dr.-Virendra-Kumar.png",
+    img: DBIM_PEOPLE.ministers[0].src,
     name: "Dr. Virendra Kumar",
     role: "Union Minister of Social Justice and Empowerment",
   },
   {
-    img: "/website/content/organisation/Shri-Ramdas-Athawale.png",
+    img: DBIM_PEOPLE.ministers[1].src,
     name: "Shri Ramdas Athawale",
     role: "Minister of State for Social Justice and Empowerment",
   },
   {
-    img: "/website/content/organisation/minister_3.png",
+    img: DBIM_PEOPLE.ministers[2].src,
     name: "Shri B. L. Verma",
     role: "Minister of State for Social Justice and Empowerment",
   },

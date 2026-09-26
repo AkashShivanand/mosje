@@ -56,8 +56,8 @@ export function ConditionalDemoDock({
   if (pathname.startsWith("/portals/e-anudaan")) {
     tabs.push({ id: "errors", label: "Errors", content: <DemoErrorsPanel /> });
   }
-  // The redesign and the archived classic design share every /website address.
-  if (pathname === "/website" || pathname.startsWith("/website/") || pathname.startsWith("/website-classic")) {
+  // The redesign, the archived classic design and the DBIM clone share every /website address.
+  if (pathname === "/website" || pathname.startsWith("/website/") || pathname.startsWith("/website-classic") || pathname.startsWith("/website-dbim")) {
     tabs.push({ id: "website-design", label: "Website", content: <WebsiteDesignPanel /> });
   }
   if (hasDataModes(pathname)) {

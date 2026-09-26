@@ -1,0 +1,766 @@
+/* ds-exempt-start(third-party): type sizes, leading and tracking are transcribed from the DBIM 3.0 reference template (master-socialjustice.digifootprint.gov.in, root 62.5%, rems divided by 1.6), which the DBIM review team mandated on 25 Sep 2026; colour stays token-bound */
+/* ─────────────────────────────────────────────────────────────────────────────
+   DBIM design — the Ministry pages (About Us, Our Team, Our Division, Our
+   Organisation, Our Performance). Values from the reference's computed styles at
+   1440; every one is traced in docs/research/dbim-reference/components/ministry.spec.md.
+
+   Colours beyond the contract's list (spec §7): #999 → neutral-400, #3D4043 →
+   text-muted, #DEE2E6 → neutral-100, the rgba stripe → neutral-25, the .25 hr →
+   neutral-200 — the nearest tokens.
+
+   Off-scale literals, each the reference's own: 30px (the reference's `mt-5` and
+   column gutter), 15px (its grid gutter, `g-4`), 10px (paragraph and hr margins,
+   `.visionbox` radius), 5px (its `gap-2` and `p` margin), 7px (the tile badge inset).
+   ───────────────────────────────────────────────────────────────────────────── */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ── Shared ─────────────────────────────────────────────────────────────── */
+
+  [data-design="dbim"] .db-min-arrow {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: var(--sa-padding-8);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-primaryScale-200);
+    color: var(--sa-color-primaryScale-800);
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] :is(.db-min-arrow, .db-min-view, .db-min-docrow--link, .db-min-rich a, .db-min-office a):focus-visible {
+    outline: 2px solid var(--sa-color-primaryScale-800);
+    outline-offset: 2px;
+  }
+
+  [data-design="dbim"] .db-min-ptype {
+    display: block;
+    font-size: var(--db-fs-small);
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--sa-color-text-muted);
+  }
+
+  [data-design="dbim"] .db-min-upper {
+    text-transform: uppercase;
+  }
+
+  /* ── §1 Detail layout: summary box + rich text ──────────────────────────── */
+
+  [data-design="dbim"] .db-min-detail {
+    display: grid;
+    gap: 30px;
+    margin-top: 30px;
+    margin-bottom: 28px; /* last row's 16px + 28 → the reference's 80px above the footer */
+  }
+
+  @media (min-width: 992px) {
+    [data-design="dbim"] .db-min-detail {
+      /* the reference's col-lg-4 / col-lg-8 with a 30px gutter: 415 + 30 + 860 at 1440 */
+      grid-template-columns: calc((100% + 30px) / 3 - 30px) minmax(0, 1fr);
+      align-items: start;
+    }
+
+    [data-design="dbim"] .db-min-detail--single {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    [data-design="dbim"] .db-min-detail__aside {
+      position: sticky;
+      top: 140px; /* the reference's computed `top` */
+    }
+  }
+
+  [data-design="dbim"] .db-min-vision {
+    padding: var(--sa-padding-32);
+    border-radius: 10px;
+    background: var(--sa-color-neutralScale-100);
+  }
+
+  [data-design="dbim"] .db-min-vision p {
+    margin: 0 0 10px;
+    font-size: var(--db-fs-p);
+    line-height: 1.5;
+  }
+
+  [data-design="dbim"] .db-min-rich {
+    min-width: 0;
+    text-align: justify;
+  }
+
+  [data-design="dbim"] .db-min-rich h2 {
+    margin: 0 0 10px;
+    font-size: var(--db-fs-h2);
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.12px;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-min-rich h3 {
+    margin: var(--sa-stack-16) 0 10px;
+    font-size: var(--db-fs-h3);
+    font-weight: 500;
+    line-height: normal;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-min-rich p {
+    margin: 0 0 10px;
+    font-size: var(--db-fs-p);
+    line-height: 1.5;
+  }
+
+  [data-design="dbim"] .db-min-rich :is(ul, ol) {
+    margin: 0 0 10px;
+    padding-left: var(--sa-padding-20);
+  }
+
+  [data-design="dbim"] .db-min-rich ul {
+    list-style: disc;
+  }
+
+  [data-design="dbim"] .db-min-rich ol {
+    list-style: decimal;
+  }
+
+  [data-design="dbim"] .db-min-rich ol[type="i"] {
+    list-style: lower-roman;
+  }
+
+  [data-design="dbim"] .db-min-rich li {
+    font-size: 1rem; /* 16px — the body size, as the reference's list items keep */
+    line-height: 1.5;
+  }
+
+  [data-design="dbim"] .db-min-rich li :is(ul, ol) {
+    margin: 0;
+  }
+
+  [data-design="dbim"] .db-min-rich :is(strong, b) {
+    font-weight: 700;
+  }
+
+  [data-design="dbim"] .db-min-rich a:not([class]) {
+    color: var(--sa-color-primaryScale-600);
+    text-decoration: underline;
+  }
+
+  [data-design="dbim"] .db-min-rich img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Rich-text tables — bootstrap `table-bordered table-striped` */
+  [data-design="dbim"] :is(.db-min-tablewrap, .db-min-rich [role="region"]) {
+    max-width: 100%;
+    margin: 0 0 10px;
+    overflow-x: auto;
+  }
+
+  [data-design="dbim"] .db-min-rich table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1rem; /* 16px */
+    line-height: 1.5;
+    color: var(--sa-color-neutralScale-1000);
+  }
+
+  [data-design="dbim"] .db-min-rich :is(th, td) {
+    padding: 5px;
+    border: 1px solid var(--sa-color-neutralScale-100);
+    vertical-align: top;
+    text-align: left;
+  }
+
+  [data-design="dbim"] .db-min-rich th {
+    font-weight: 700;
+    background: var(--sa-color-neutralScale-25);
+  }
+
+  [data-design="dbim"] .db-min-rich tbody tr:nth-child(even) td:not([rowspan]) {
+    background: var(--sa-color-neutralScale-25);
+  }
+
+  /* Document row `.box.row`: cols 6 / 2 / 2 / 2 */
+  [data-design="dbim"] .db-min-docrow {
+    display: grid;
+    grid-template-columns: 6fr 2fr 2fr 2fr;
+    align-items: center;
+    gap: 5px 15px;
+    margin: 0 0 var(--sa-stack-16);
+    padding: var(--sa-padding-16) var(--sa-padding-24);
+    border: 1px solid var(--sa-color-neutralScale-100);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-color-neutralScale-0);
+    text-align: left;
+  }
+
+  [data-design="dbim"] .db-min-docrow__title {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    margin: 0;
+    font-size: var(--db-fs-p);
+    line-height: 1.5;
+    color: var(--sa-color-text-default);
+  }
+
+  [data-design="dbim"] .db-min-docrow__title .material-symbols-rounded,
+  [data-design="dbim"] .db-min-docrow__size .material-symbols-rounded {
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-min-docrow__size {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  [data-design="dbim"] .db-min-size {
+    font-size: var(--db-fs-small);
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-min-docrow__action {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  [data-design="dbim"] .db-min-view {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    height: 40px;
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-primaryScale-100);
+    color: var(--sa-color-primaryScale-800);
+    font-size: 0.75rem; /* 12px */
+    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: 0.12px;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-min-docrow--link {
+    grid-template-columns: minmax(0, 1fr) auto;
+    color: var(--sa-color-text-default);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  [data-design="dbim"] .db-min-expand > summary {
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-min-expand > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  [data-design="dbim"] .db-min-expand[open] > summary .db-min-arrow {
+    transform: rotate(90deg);
+  }
+
+  [data-design="dbim"] .db-min-expand__body {
+    margin: 0 0 var(--sa-stack-16);
+  }
+
+  @media (max-width: 991.5px) {
+    [data-design="dbim"] .db-min-docrow:not(.db-min-docrow--link) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* ── §2 Our Team ───────────────────────────────────────────────────────── */
+
+  [data-design="dbim"] .db-min-team {
+    margin-top: 30px;
+  }
+
+  [data-design="dbim"] .db-min-chart {
+    /* breaks out of the page container to 30px from the viewport edge, as the reference's container-fluid */
+    margin-inline: calc(50% - 50vw + 30px);
+    padding: 15px;
+    border-radius: var(--sa-shape-24);
+    background: var(--sa-color-primaryScale-100);
+  }
+
+  [data-design="dbim"] .db-min-chart__list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 34px 0 58px; /* first portrait 34px under the panel; last card 58px above the rule */
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-min-chart__node {
+    position: relative;
+    width: 320px;
+    padding-top: 60px; /* the portrait's upper half */
+  }
+
+  [data-design="dbim"] .db-min-chart__node + .db-min-chart__node {
+    margin-top: 137px; /* card tops 350 apart: 350 − 153 card − 60 */
+  }
+
+  [data-design="dbim"] .db-min-chart__node + .db-min-chart__node::before {
+    content: "";
+    position: absolute;
+    top: -137px;
+    left: 50%;
+    width: 1px;
+    height: 197px;
+    background: var(--sa-color-neutralScale-400);
+  }
+
+  [data-design="dbim"] .db-min-profile {
+    position: relative;
+    z-index: 1;
+    padding: 72px var(--sa-padding-24) var(--sa-padding-24);
+    border: 2px solid transparent;
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-color-neutralScale-0);
+    box-shadow: var(--sa-elevation-card);
+    text-align: center;
+  }
+
+  [data-design="dbim"] .db-min-profile:hover {
+    border-color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-min-profile__img {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 120px;
+    height: 120px;
+    border: 1px solid var(--sa-color-neutralScale-0);
+    border-radius: 50%;
+    background: var(--sa-color-neutralScale-0);
+    object-fit: cover;
+    transform: translate(-50%, -50%);
+  }
+
+  [data-design="dbim"] .db-min-profile__role {
+    display: block;
+    font-size: var(--db-fs-small);
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-min-profile__name {
+    margin: 0 0 5px;
+    font-size: var(--db-fs-h4);
+    font-weight: 500;
+    line-height: 24px;
+    color: var(--sa-color-text-default);
+  }
+
+  [data-design="dbim"] .db-min-chart__rule {
+    margin: 10px 0;
+    border: 0;
+    border-top: 1px solid var(--sa-color-neutralScale-200);
+  }
+
+  @media (max-width: 767.5px) {
+    [data-design="dbim"] .db-min-chart {
+      margin-inline: calc(50% - 50vw + 10px);
+      padding: 15px 5px;
+    }
+
+    [data-design="dbim"] .db-min-chart__list {
+      padding: 60px 0 6px;
+    }
+
+    [data-design="dbim"] .db-min-chart__node {
+      width: 156px;
+      padding-top: 32.5px; /* half the 65px portrait */
+    }
+
+    [data-design="dbim"] .db-min-chart__node + .db-min-chart__node {
+      margin-top: 85.5px; /* card tops 240 apart */
+    }
+
+    [data-design="dbim"] .db-min-chart__node + .db-min-chart__node::before {
+      top: -85.5px;
+      height: 118px;
+    }
+
+    [data-design="dbim"] .db-min-profile {
+      min-height: 120px;
+      padding: var(--sa-padding-40) 10px 10px;
+    }
+
+    [data-design="dbim"] .db-min-profile__img {
+      width: 65px;
+      height: 65px;
+    }
+
+    [data-design="dbim"] .db-min-profile__name {
+      font-size: 0.75rem; /* 12px */
+      line-height: 15px;
+    }
+  }
+
+  /* Office tables `.our-team-list-container` */
+  [data-design="dbim"] .db-min-office__bar {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    margin: var(--sa-stack-32) 0 0;
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-primaryScale-600);
+    color: var(--sa-color-neutralScale-0);
+    font-size: var(--db-fs-p);
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+  }
+
+  [data-design="dbim"] :is(.db-min-office__head, .db-min-office__row) {
+    display: grid;
+    grid-template-columns: 4fr 5fr 3fr;
+    column-gap: 15px;
+  }
+
+  [data-design="dbim"] .db-min-office__head {
+    margin-top: var(--sa-stack-4);
+    padding: var(--sa-padding-4) var(--sa-padding-8);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-primaryScale-100);
+    color: var(--sa-color-primaryScale-600);
+    line-height: 24px;
+  }
+
+  [data-design="dbim"] .db-min-office__head small {
+    font-size: var(--db-fs-small);
+    font-weight: 600;
+    letter-spacing: 0.48px;
+    text-transform: uppercase;
+  }
+
+  [data-design="dbim"] .db-min-office__row {
+    padding: var(--sa-padding-12) var(--sa-padding-8);
+    border-bottom: 1px solid var(--sa-color-neutralScale-100);
+    color: var(--sa-color-text-default);
+  }
+
+  [data-design="dbim"] .db-min-office__cell {
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+    min-width: 0;
+  }
+
+  [data-design="dbim"] .db-min-office__label {
+    display: none;
+  }
+
+  [data-design="dbim"] .db-min-office__value {
+    margin: 0;
+    min-width: 0;
+    font-size: 1rem; /* the designation is a bare text node at the body size, 16/24 */
+    line-height: 1.5;
+  }
+
+  [data-design="dbim"] p.db-min-office__value,
+  [data-design="dbim"] .db-min-office__name,
+  [data-design="dbim"] .db-min-contact p {
+    font-size: var(--db-fs-p);
+    line-height: normal;
+  }
+
+  [data-design="dbim"] .db-min-office__name {
+    margin: 0;
+    font-weight: 700;
+  }
+
+  [data-design="dbim"] .db-min-contact {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 24px;
+  }
+
+  [data-design="dbim"] .db-min-contact p {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  [data-design="dbim"] .db-min-office a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-min-office a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 991.5px) {
+    [data-design="dbim"] .db-min-office__head {
+      display: none;
+    }
+
+    [data-design="dbim"] .db-min-office__row {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: 15px;
+    }
+
+    [data-design="dbim"] .db-min-office__cell {
+      align-items: center;
+    }
+
+    [data-design="dbim"] .db-min-office__label {
+      display: block;
+      flex: none;
+      width: 33.333%;
+      font-size: var(--db-fs-small);
+      line-height: normal;
+      text-transform: uppercase;
+    }
+  }
+
+  /* ── §3–4 Division and organisation grids ─────────────────────────────── */
+
+  [data-design="dbim"] .db-min-list {
+    margin-top: 30px;
+  }
+
+  [data-design="dbim"] .db-min-grid {
+    display: grid;
+    gap: 15px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 768px) {
+    [data-design="dbim"] .db-min-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  [data-design="dbim"] .db-min-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid var(--sa-color-neutralScale-100);
+    background: var(--sa-color-neutralScale-0);
+  }
+
+  [data-design="dbim"] .db-min-card__title {
+    margin: 0;
+    color: var(--sa-color-text-default);
+  }
+
+  [data-design="dbim"] .db-min-card__desc {
+    flex: 1;
+  }
+
+  [data-design="dbim"] .db-min-card__desc p {
+    margin: 0;
+    font-size: var(--db-fs-p);
+  }
+
+  [data-design="dbim"] .db-min-card__foot {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  /* `.our-division-card` */
+  [data-design="dbim"] .db-min-card--division {
+    border-radius: var(--sa-shape-12);
+  }
+
+  [data-design="dbim"] .db-min-card--division .db-min-card__head {
+    padding: var(--sa-padding-12) var(--sa-padding-24) 0;
+  }
+
+  [data-design="dbim"] .db-min-card--division .db-min-card__title {
+    margin-bottom: var(--sa-stack-24);
+    font-size: var(--db-fs-p);
+    font-weight: 500;
+    line-height: 24px;
+  }
+
+  [data-design="dbim"] .db-min-card--division .db-min-card__desc {
+    padding: 0 var(--sa-padding-24);
+  }
+
+  [data-design="dbim"] .db-min-card--division .db-min-card__desc p {
+    margin-bottom: var(--sa-stack-16);
+    line-height: 20px;
+  }
+
+  [data-design="dbim"] .db-min-card--division .db-min-card__foot {
+    padding: var(--sa-padding-12) var(--sa-padding-24) var(--sa-padding-24);
+  }
+
+  /* `.organisation-card` */
+  [data-design="dbim"] .db-min-card--organisation {
+    gap: var(--sa-inline-8);
+    padding: var(--sa-padding-16) var(--sa-padding-32);
+    border-radius: var(--sa-shape-8);
+  }
+
+  [data-design="dbim"] .db-min-card--organisation .db-min-card__head {
+    display: flex;
+    align-items: center;
+    min-height: 115px;
+  }
+
+  [data-design="dbim"] .db-min-card--organisation .db-min-card__title {
+    margin-bottom: 5px;
+    font-size: var(--db-fs-h3);
+    font-weight: 500;
+    line-height: 24px;
+    color: var(--sa-color-primaryScale-600);
+  }
+
+  [data-design="dbim"] .db-min-card--organisation .db-min-card__desc {
+    min-height: 130px;
+  }
+
+  [data-design="dbim"] .db-min-card--organisation .db-min-card__desc p {
+    display: -webkit-box;
+    margin-bottom: 10px;
+    overflow: hidden;
+    line-height: 1.5;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+  }
+
+  @media (max-width: 991.5px) {
+    [data-design="dbim"] .db-min-card--organisation .db-min-card__head {
+      flex-direction: column-reverse;
+      align-items: flex-start;
+    }
+
+    [data-design="dbim"] .db-min-card--organisation .db-min-card__desc p {
+      -webkit-line-clamp: 8; /* the reference's character cut runs to eight lines on a phone */
+    }
+  }
+
+  /* On a phone the tab bar no longer overlaps the content; the reference's first
+     block sits ~13px under it, which the page container's own padding already gives. */
+  @media (max-width: 767.5px) {
+    [data-design="dbim"] :is(.db-min-detail, .db-min-team, .db-min-list, .db-min-perf) {
+      margin-top: 0;
+    }
+  }
+
+  [data-design="dbim"] .db-min-noresults {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sa-stack-16);
+    padding: var(--sa-padding-40) 0;
+    text-align: center;
+  }
+
+  [data-design="dbim"] .db-min-noresults p {
+    margin: 0;
+    font-weight: 600;
+  }
+
+  [data-design="dbim"] .db-min-pager {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+  }
+
+  /* ── §5 Our Performance ────────────────────────────────────────────────── */
+
+  [data-design="dbim"] .db-min-perf {
+    margin: 30px 0 60px; /* the reference's my-5 plus its empty pager row (mt-5) */
+  }
+
+  [data-design="dbim"] .db-min-perf__title {
+    margin: 0 0 5px;
+    font-size: var(--db-fs-h3);
+    font-weight: 700;
+    line-height: 24px;
+    color: var(--sa-color-primaryScale-600);
+  }
+
+  [data-design="dbim"] .db-min-perf__grid {
+    display: grid;
+    gap: var(--sa-stack-24) 15px;
+    margin: 0 0 var(--sa-stack-24);
+    padding: var(--sa-padding-24) 0 0;
+    list-style: none;
+  }
+
+  @media (min-width: 768px) {
+    [data-design="dbim"] .db-min-perf__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 992px) {
+    [data-design="dbim"] .db-min-perf__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  [data-design="dbim"] .db-min-tile {
+    display: flex;
+    flex-direction: column;
+  }
+
+  [data-design="dbim"] .db-min-tile__media {
+    position: relative;
+  }
+
+  [data-design="dbim"] .db-min-tile__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 315 / 257;
+    border-radius: var(--sa-shape-8);
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  [data-design="dbim"] .db-min-tile__img--contain {
+    padding: var(--sa-padding-24);
+    border: 1px solid var(--sa-color-neutralScale-100);
+    background: var(--sa-color-neutralScale-0);
+    object-fit: contain;
+    object-position: center;
+  }
+
+  [data-design="dbim"] .db-min-tile__btn {
+    position: absolute;
+    right: 7px;
+    bottom: 7px;
+  }
+
+  [data-design="dbim"] .db-min-tile__title {
+    margin: 5px 0;
+    font-size: var(--db-fs-h3);
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--sa-color-text-default);
+  }
+
+  [data-design="dbim"] .db-min-tile .db-min-ptype {
+    margin-top: var(--sa-stack-8);
+  }
+}
+/* ds-exempt-end */

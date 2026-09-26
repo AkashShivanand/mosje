@@ -1,0 +1,310 @@
+/* ds-exempt-start(third-party): type sizes, leading and tracking are transcribed from the DBIM 3.0 reference template (master-socialjustice.digifootprint.gov.in, root 62.5%, rems divided by 1.6), which the DBIM review team mandated on 25 Sep 2026; colour stays token-bound */
+/* DBIM shared kit — section heading, View More, filter bar, pager, empty state.
+   Reference values: docs/research/dbim-reference/components/chrome.spec.md. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ── Section heading ─────────────────────────────────────────────────────── */
+  [data-design="dbim"] .db-heading {
+    display: flex;
+    gap: var(--sa-stack-16);
+    align-items: center;
+    margin: 0;
+    font-size: var(--db-fs-h2);
+    font-weight: var(--sa-font-weight-bold);
+    line-height: normal;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-heading__icon {
+    flex: none;
+    width: 48px;
+    height: 48px;
+  }
+
+  [data-design="dbim"] .db-heading--inverse {
+    font-weight: var(--sa-font-weight-medium);
+    color: var(--sa-color-neutralScale-0);
+  }
+
+  [data-design="dbim"] .db-heading__link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-heading__link:hover {
+    text-decoration: underline;
+  }
+
+  [data-design="dbim"] .db-heading__link:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  @media (max-width: 991px) {
+    [data-design="dbim"] .db-heading--compact .db-heading__icon {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    [data-design="dbim"] .db-heading--inverse .db-heading__icon {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  /* ── View More ───────────────────────────────────────────────────────────── */
+  [data-design="dbim"] .db-viewmore {
+    display: inline-flex;
+    gap: var(--sa-stack-8);
+    align-items: center;
+    height: 36px;
+    padding: var(--sa-padding-4) var(--sa-padding-6) var(--sa-padding-6) var(--sa-padding-12);
+    font-size: 1rem; /* 16px */
+    font-weight: var(--sa-font-weight-regular);
+    line-height: normal;
+    color: var(--sa-color-primaryScale-800);
+    text-decoration: none;
+    text-transform: uppercase;
+    background: var(--sa-color-neutralScale-0);
+    border: 1px solid var(--sa-color-primaryScale-800);
+    border-radius: var(--sa-shape-4);
+  }
+
+  [data-design="dbim"] .db-viewmore--sm {
+    padding-left: var(--sa-padding-8);
+    font-size: var(--db-fs-p);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  @media (min-width: 1280px) and (max-width: 1536px) {
+    [data-design="dbim"] .db-viewmore--sm {
+      font-size: 0.75rem; /* 12px */
+    }
+  }
+
+  [data-design="dbim"] .db-viewmore:hover {
+    background: var(--sa-color-primaryScale-100);
+  }
+
+  [data-design="dbim"] .db-viewmore:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  /* ── Filter bar ──────────────────────────────────────────────────────────── */
+  [data-design="dbim"] .db-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin: 0 0 10px;
+  }
+
+  [data-design="dbim"] .db-filter__lead {
+    display: flex;
+    flex: 0 1 375px;
+    gap: 5px;
+    min-width: 0;
+  }
+
+  [data-design="dbim"] .db-filter--wide {
+    margin-bottom: var(--sa-stack-24);
+  }
+
+  [data-design="dbim"] .db-filter--wide .db-filter__lead {
+    flex-basis: 41.6667%;
+  }
+
+  [data-design="dbim"] .db-filter--wide .db-field--search {
+    max-width: none;
+  }
+
+  [data-design="dbim"] .db-filter__rest {
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: flex-end;
+  }
+
+  [data-design="dbim"] .db-field {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: stretch;
+    width: 100%;
+    height: 42px;
+    border-radius: var(--sa-shape-4);
+  }
+
+  [data-design="dbim"] .db-field--sort { max-width: 270px; }
+  [data-design="dbim"] .db-field--perpage { max-width: 180px; }
+
+  [data-design="dbim"] .db-field:focus-within {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  [data-design="dbim"] .db-field__icon {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 41px;
+    color: var(--sa-color-primaryScale-400);
+    border: 1px solid var(--sa-color-primaryScale-400);
+    border-radius: var(--sa-shape-4) 0 0 var(--sa-shape-4);
+  }
+
+  [data-design="dbim"] .db-field .ds-select {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  [data-design="dbim"] .db-field .db-field__control.ds-input,
+  [data-design="dbim"] .db-field .db-field__control.ds-select__el {
+    width: 100%;
+    height: 42px;
+    min-height: 0;
+    margin-left: -1px;
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    font-size: 1rem; /* 16px */
+    line-height: 1.5;
+    color: var(--sa-color-text-default);
+    background: var(--sa-color-neutralScale-0);
+    border: 1px solid var(--sa-color-primaryScale-400);
+    border-left: 0;
+    border-radius: 0 var(--sa-shape-4) var(--sa-shape-4) 0;
+    box-shadow: none;
+    outline: none;
+  }
+
+  [data-design="dbim"] .db-field .db-field__control.ds-select__el {
+    padding-right: 28px; /* the chevron's lane; the reference lets "10 per page" run to 16px */
+  }
+
+  [data-design="dbim"] .db-field .db-field__control.ds-input {
+    flex: 1 1 auto;
+  }
+
+  [data-design="dbim"] .db-field .db-field__control::placeholder {
+    color: var(--sa-color-text-default);
+    opacity: 0.8;
+  }
+
+  [data-design="dbim"] .db-field .ds-select__chevron {
+    color: var(--sa-color-text-default);
+  }
+
+  [data-design="dbim"] .db-filter .db-filter__toggle.ds-btn {
+    display: none;
+    flex: none;
+    width: 42px;
+    min-width: 0;
+    height: 42px;
+    min-height: 0;
+    padding: 0;
+    color: var(--sa-color-primaryScale-800);
+    background: transparent;
+    border: 1px solid var(--sa-color-primaryScale-800);
+    border-radius: 5px; /* the reference's own radius */
+  }
+
+  @media (max-width: 991px) {
+    [data-design="dbim"] .db-filter__lead,
+    [data-design="dbim"] .db-filter__rest {
+      flex-basis: 100%;
+    }
+
+    [data-design="dbim"] .db-field--sort,
+    [data-design="dbim"] .db-field--perpage {
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 767px) {
+    [data-design="dbim"] .db-filter .db-filter__toggle.ds-btn {
+      display: inline-flex;
+    }
+
+    [data-design="dbim"] .db-filter__rest {
+      display: none;
+      flex-direction: column;
+    }
+
+    [data-design="dbim"] .db-filter__rest.is-open {
+      display: flex;
+    }
+  }
+
+  /* ── Pager ───────────────────────────────────────────────────────────────── */
+  [data-design="dbim"] .db-pager__list {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    justify-content: center;
+    margin: var(--sa-padding-16) 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-pager .db-pager__page.ds-btn,
+  [data-design="dbim"] .db-pager__gap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    min-width: 0;
+    height: 35px;
+    min-height: 0;
+    padding: 0;
+    font-size: 0.875rem; /* 14px */
+    font-weight: var(--sa-font-weight-bold);
+    line-height: 1.3125rem; /* 21px */
+    color: var(--sa-color-primaryScale-800);
+    background: transparent;
+    border: 0;
+    border-radius: 50%;
+  }
+
+  [data-design="dbim"] .db-pager .db-pager__page.ds-btn:hover,
+  [data-design="dbim"] .db-pager .db-pager__page.is-current.ds-btn {
+    background: var(--sa-color-primaryScale-200);
+  }
+
+  [data-design="dbim"] .db-pager .db-pager__step.ds-btn {
+    width: 36px;
+    min-width: 0;
+    height: 30px;
+    min-height: 0;
+    padding: 0;
+    color: var(--sa-color-primaryScale-800);
+    background: transparent;
+    border: 0;
+  }
+
+  [data-design="dbim"] .db-pager .db-pager__step.ds-btn:disabled,
+  [data-design="dbim"] .db-pager .db-pager__step.ds-btn[aria-disabled="true"] {
+    color: var(--sa-color-neutralScale-300);
+    background: transparent;
+  }
+
+  /* ── Empty state ─────────────────────────────────────────────────────────── */
+  /* The reference's `p.no-data.fw-bold.fs-3`: 1.75rem of its 10px root, bold. */
+  [data-design="dbim"] .db-no-data {
+    margin: 0 0 10px;
+    font-size: 1.0938rem; /* 17.5px */
+    font-weight: var(--sa-font-weight-bold);
+    line-height: 1.5;
+    color: var(--sa-color-text-default);
+    text-align: center;
+  }
+
+  [data-design="dbim"] .db-no-data .db-error__text {
+    margin: 0 0 var(--sa-stack-16);
+  }
+}
+/* ds-exempt-end */
