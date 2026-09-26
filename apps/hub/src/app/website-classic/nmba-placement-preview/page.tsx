@@ -15,6 +15,7 @@ import { SocialMedia } from "@/components/website/SocialMedia";
 import { LogoStrip } from "@/components/website/LogoStrip";
 import { WebsiteSiteFooter } from "@/components/website/SiteFooter";
 import { NashaMuktBharat } from "@/components/website/nmba/NashaMuktBharat";
+import { SegmentedControl } from "@mosje/design-system";
 
 type Option = "A" | "B" | "C";
 
@@ -35,23 +36,15 @@ export default function NmbaPlacementPreview() {
           <span className="text-label-3 uppercase text-ink-muted">
             NMBA placement preview
           </span>
-          <div className="flex overflow-hidden rounded-lg border border-border-ds text-label-1">
-            {OPTIONS.map((o) => (
-              <button
-                key={o.id}
-                type="button"
-                onClick={() => setOption(o.id)}
-                aria-pressed={option === o.id}
-                className={`px-3 py-1.5 transition-colors ${
-                  option === o.id
-                    ? "bg-primary text-white"
-                    : "bg-white text-ink hover:bg-surface-muted"
-                }`}
-              >
-                {o.label}
-              </button>
-            ))}
-          </div>
+          {/* The design system's segmented control: one tab stop for the group and
+              the arrow keys between the three options, which the attached row of
+              `aria-pressed` buttons it replaces did not have. */}
+          <SegmentedControl
+            ariaLabel="Placement option"
+            value={option}
+            onChange={setOption}
+            options={OPTIONS.map((o) => ({ value: o.id, label: o.label }))}
+          />
           <span className="text-body-3 text-ink-muted">
             {OPTIONS.find((o) => o.id === option)?.note}
           </span>

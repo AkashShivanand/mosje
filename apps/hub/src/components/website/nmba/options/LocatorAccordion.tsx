@@ -3,7 +3,7 @@
 import * as React from "react";
 import { CENTRE_TYPE_META, type DeAddictionCentre } from "@/content/website/deaddiction-centres";
 import { CentreMapDynamic, centreKey, filterCentres, useLocatorRows } from "./locator-shared";
-import { Icon, Link, Search } from "@mosje/design-system";
+import { Button, Icon, Link, Search } from "@mosje/design-system";
 
 export function LocatorAccordion() {
   const [query, setQuery] = React.useState("");
@@ -42,14 +42,24 @@ export function LocatorAccordion() {
           const isOpen = open === st;
           return (
             <div key={st}>
-              <button type="button" onClick={() => { setOpen(isOpen ? null : st); setSelected(null); }}
-                className="flex w-full items-center justify-between px-4 py-3 text-left transition-colors hover:bg-surface-muted/50">
+              {/* NOT the design system's `Accordion` / `AccordionItem`, and the
+                  reason is state ownership: `AccordionItem` opens and closes itself
+                  from its own `useState`, so it cannot be told that another state
+                  has just been opened and it cannot clear the selected centre on
+                  close. This option's whole point is that exactly one state is open
+                  at a time and the mini-map follows it. So the header row is the DS
+                  `Button` in its quietest appearance, carrying the row's own layout
+                  and — new here — the `aria-expanded` the hand-rolled button never
+                  had. */}
+              <Button appearance="text" onClick={() => { setOpen(isOpen ? null : st); setSelected(null); }}
+                aria-expanded={isOpen}
+                className="flex w-full items-center justify-between rounded-none border-0 px-4 py-3 text-left font-normal transition-colors hover:bg-surface-muted/50">
                 <span className="text-title-2 text-ink">{st}</span>
                 <span className="flex items-center gap-3">
                   <span className="rounded-full bg-surface-muted px-2 py-0.5 text-label-2 text-ink-muted">{centres.length}</span>
                   <Icon name="keyboard_arrow_down" size={16} className={`text-ink-muted transition-transform ${isOpen ? "rotate-180" : ""}`} />
                 </span>
-              </button>
+              </Button>
               {isOpen && (
                 <div className="grid gap-4 border-t border-gray-100 bg-surface-muted/20 p-4 lg:grid-cols-[1fr_1fr]">
                   <ul className="max-h-[300px] space-y-1 overflow-y-auto">
@@ -57,8 +67,8 @@ export function LocatorAccordion() {
                       const active = selected ? centreKey(selected) === centreKey(c) : false;
                       return (
                         <li key={`${centreKey(c)}#${i}`}>
-                          <button type="button" onClick={() => setSelected(c)}
-                            className={`flex w-full items-start gap-2.5 rounded-lg px-2.5 py-2 text-left transition-colors ${active ? "bg-primary/[0.06]" : "hover:bg-white"}`}>
+                          <Button appearance="text" onClick={() => setSelected(c)}
+                            className={`flex w-full items-start justify-start gap-2.5 rounded-lg border-0 px-2.5 py-2 text-left font-normal transition-colors ${active ? "bg-primary/[0.06]" : "hover:bg-white"}`}>
                             <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: CENTRE_TYPE_META[c.type].color }} />
                             <span className="min-w-0">
                               <span className="block truncate text-title-3 text-ink">{c.name}</span>
@@ -68,7 +78,7 @@ export function LocatorAccordion() {
                                   className="mt-1 text-label-2" iconLeft={<Icon name="navigation" size={12} />}>Directions</Link>
                               )}
                             </span>
-                          </button>
+                          </Button>
                         </li>
                       );
                     })}

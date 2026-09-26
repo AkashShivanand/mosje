@@ -3,8 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Card, Icon } from "@mosje/design-system";
-import { cn } from "@/lib/website/utils";
+import { Card, Chip, Icon } from "@mosje/design-system";
 import {
   ORGANISATIONS,
   organisationCategoryTabs,
@@ -90,30 +89,16 @@ export function Organisations() {
               {organisationCategoryTabs().map((cat) => {
                 const isActive = cat.key === activeCategory;
                 return (
-                  <button
+                  <Chip
                     key={cat.key}
-                    type="button"
-                    aria-pressed={isActive}
-                    onClick={() => setActiveCategory(cat.key)}
-                    className={cn(
-                      "rounded-full px-4 py-1.5 text-label-1 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
-                      isActive
-                        ? "bg-primary text-white shadow-sm"
-                        : // Outlined BLUE when inactive, per the design — the
-                          // build had a grey hairline that read as disabled
-                          // rather than as an available filter [WEB-N-04].
-                          // primary-dark, not gov-blue: 7.52:1 on surface-muted
-                          // against gov-blue's 4.07:1, which is under AA.
-                          "border border-primary-dark/45 bg-transparent text-primary-dark hover:bg-primary/10"
-                    )}
+                    emphasis="solid"
+                    selected={isActive}
+                    onSelectedChange={() => setActiveCategory(cat.key)}
+                    count={cat.count}
+                    countLabel="organisations"
                   >
-                    {cat.label}{" "}
-                    {/* No opacity on the count: at 70% the white-on-gov-blue
-                        active chip fell to 3.04:1. */}
-                    <span className={isActive ? "" : "text-primary-dark/75"}>
-                      {cat.count}
-                    </span>
-                  </button>
+                    {cat.label}
+                  </Chip>
                 );
               })}
             </div>

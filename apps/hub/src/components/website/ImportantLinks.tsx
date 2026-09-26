@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { Icon } from "@mosje/design-system";
+import { Button, Icon, IconButton } from "@mosje/design-system";
 import { DIVISIONS } from "@/data/website";
 
 /**
@@ -43,8 +43,7 @@ export function ImportantLinks() {
 
   return (
     <>
-      <button
-        type="button"
+      <Button
         aria-label="Open Important Links"
         aria-haspopup="dialog"
         aria-expanded={isOpen}
@@ -62,9 +61,12 @@ export function ImportantLinks() {
            full strength over a dimmed page while a dialog was open.
            The variant keeps the override in the same layer as the value it is
            overriding, which is the only place it can win from. */
-        className="fixed right-0 top-[42%] z-[var(--sa-z-rail)] [html[data-sa-dialog-open]_&]:z-[var(--sa-z-base)] flex flex-col items-center gap-2 rounded-l-lg bg-primary px-2 py-4 text-white shadow-md transition-colors hover:bg-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+        /* The rail tab's own shape: a vertical stack against the right wall, which
+           no Button size draws. The design system supplies the ground, the ink, the
+           press and the focus ring. */
+        className="fixed right-0 top-[42%] z-[var(--sa-z-rail)] [html[data-sa-dialog-open]_&]:z-[var(--sa-z-base)] h-auto min-h-0 flex-col items-center gap-2 rounded-l-lg rounded-r-none px-2 py-4 shadow-md"
+        iconLeft={<Icon name="link" size={20} aria-hidden="true" />}
       >
-        <Icon name="link" size={20} aria-hidden="true" />
         {/* Dropped when the right wall runs out of room, leaving the icon
             and the full hit area. The button keeps its `aria-label`, so the
             accessible name survives the label going — a screen reader is
@@ -76,7 +78,7 @@ export function ImportantLinks() {
         >
           Important Links
         </span>
-      </button>
+      </Button>
 
       {isOpen && (
         <div
@@ -99,20 +101,24 @@ export function ImportantLinks() {
               >
                 Important Links Directory
               </h2>
-              <button
-                type="button"
+              <IconButton
                 aria-label="Close Important Links"
                 onClick={() => setIsOpen(false)}
-                className="flex h-8 w-8 items-center justify-center rounded-md transition-colors hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
-              >
-                <Image
-                  src="/website/images/close-icon-white.svg"
-                  alt=""
-                  width={20}
-                  height={20}
-                  aria-hidden="true"
-                />
-              </button>
+                variant="neutral"
+                appearance="text"
+                tone="inverse"
+                size="sm"
+                className="size-8 min-h-0 min-w-0"
+                icon={
+                  <Image
+                    src="/website/images/close-icon-white.svg"
+                    alt=""
+                    width={20}
+                    height={20}
+                    aria-hidden="true"
+                  />
+                }
+              />
             </div>
 
             <div className="max-h-[70vh] divide-y divide-gray-100 overflow-y-auto p-5">
