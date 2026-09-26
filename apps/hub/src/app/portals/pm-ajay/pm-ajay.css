@@ -110,7 +110,11 @@
   --pm-slate: #374151;
   --pm-muted: #5B6573;         /* AA on white (5.2:1) */
   --pm-hint: #6B7280;          /* AA on white (4.8:1) — lighter labels */
-  --pm-faint: #9CA3AF;         /* decorative / non-text only */
+  --pm-faint: #9CA3AF;         /* decorative / non-text only — icons, rules */
+  /* The TEXT tier the faint grey used to be used for. #9CA3AF measured 2.5:1
+     on white (PMH-004); this is the design system's own subtler text colour,
+     and the five rules that set secondary text point here, not there. */
+  --pm-faint-ink: var(--sa-text-neutral-subtler);
   --pm-line: #E5E7EB;
   --pm-canvas: #F9FAFB;
   --pm-footer: #04203f;
@@ -230,12 +234,31 @@ body { background: var(--pm-stage-canvas); font-family: var(--font-sans); color:
 
 /* visible focus for keyboard users only */
 :focus-visible { outline: none; box-shadow: var(--pm-ring); border-radius: var(--sa-shape-8); }
-.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+/* A TABLE treats `width` as a MINIMUM, so a table that carries this class itself
+   still lays out at its content width — 774px inside a 1px box, which scrolled the
+   whole page sideways on a phone. Hide a table by WRAPPING it in this class. */
 
-/* ---- Scale-to-fit stage (fixed 1440 design, never clips/scrolls) ---- */
-.pm-stage { width: 100%; display: flex; justify-content: center; align-items: flex-start; background: var(--pm-stage-canvas); overflow: hidden; }
-.pm-app { width: 1440px; flex: none; transform-origin: top center; background: var(--neutral-0); box-shadow: 0 0 0 1px var(--pm-shadow-app); }
-.pm-body { display: grid; grid-template-columns: var(--sa-layout-sidebar-width) 1fr; align-items: stretch; }
+/* ---- Page frame ------------------------------------------------------------
+   A portal surface takes NO cap and pads with `--sa-grid-margin-page`
+   (CLAUDE.md, 2026-09-05). This used to be a fixed 1440 canvas that a transform
+   scaled to fit — 0.26 at 375, which drew every label about 4px tall and put
+   every control below the 24px target minimum (PMH-002). The layout reflows now,
+   so text zoom works and the masthead's own phone layers can pin again. */
+.pm-stage { width: 100%; background: var(--pm-stage-canvas); }
+.pm-app { width: 100%; background: var(--neutral-0); }
+.pm-body { display: grid; grid-template-columns: minmax(0, 1fr); align-items: stretch; }
+
+/* The rail is a column only where there is room for one; below the tablet anchor
+   it is the masthead's drawer — the contract AppShell states, at its breakpoint,
+   because a narrowed column leaves the labels unreadable. */
+.pm-side { display: none; }
+@media (min-width: 768px) {
+  .pm-body { grid-template-columns: var(--sa-layout-sidebar-width) minmax(0, 1fr); }
+  /* The two widths the rail has and the only two — 300 and the 88px icon rail. */
+  .pm-body.is-nav-collapsed { grid-template-columns: var(--sa-layout-sidebar-collapsedWidth) minmax(0, 1fr); }
+  .pm-side { display: block; }
+}
 
 /* ---- Navbar (MoSJE chrome) ---- */
 .pm-nav-utility { background: var(--pm-navy); color: var(--neutral-0); }
@@ -275,7 +298,7 @@ body { background: var(--pm-stage-canvas); font-family: var(--font-sans); color:
 .pm-content { border-left: 1px solid var(--pm-line); background: var(--pm-canvas); min-width: 0; display: flex; flex-direction: column; }
 
 /* page head */
-.pm-head { padding: var(--sa-padding-24) var(--sa-padding-32) 0; }
+.pm-head { padding: var(--sa-padding-24) var(--sa-grid-margin-page) 0; }
 .pm-crumbs { display: flex; align-items: center; gap: var(--sa-inline-6); font-weight: var(--sa-font-weight-regular); font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); font-family: var(--sa-font-latin); color: var(--pm-muted); margin-bottom: var(--sa-stack-12); }
 .pm-crumbs .material-symbols-rounded { font-size: 16px; color: var(--pm-faint); }
 .pm-crumbs .cur { color: var(--pm-slate); }
@@ -290,7 +313,7 @@ body { background: var(--pm-stage-canvas); font-family: var(--font-sans); color:
 .pm-info span { font-weight: var(--sa-font-weight-regular); font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); font-family: var(--sa-font-latin); color: var(--pm-accent); }
 
 /* ---- Filter bar ---- */
-.pm-filters { display: flex; align-items: center; gap: var(--sa-inline-12); flex-wrap: wrap; padding: var(--sa-padding-16) var(--sa-padding-32); }
+.pm-filters { display: flex; align-items: center; gap: var(--sa-inline-12); flex-wrap: wrap; padding: var(--sa-padding-16) var(--sa-grid-margin-page); }
 .pm-filters .fl { font-weight: var(--sa-font-weight-semibold); font-size: var(--sa-type-label-3-size); line-height: var(--sa-type-label-3-lh); font-family: var(--sa-font-latin); letter-spacing: var(--sa-type-caps-tracking); text-transform: uppercase; color: var(--pm-hint); margin-right: var(--sa-inline-2); }
 .pm-select { position: relative; }
 /* The filter is the design system's Select, in this portal's skin: an 8px corner and
@@ -306,7 +329,7 @@ body { background: var(--pm-stage-canvas); font-family: var(--font-sans); color:
 .pm-estimate .material-symbols-rounded { font-size: 14px; }
 
 /* ---- Page body ---- */
-.pm-page { padding: var(--sa-padding-4) var(--sa-padding-32) var(--sa-padding-32); display: flex; flex-direction: column; gap: var(--sa-stack-24); }
+.pm-page { padding: var(--sa-padding-4) var(--sa-grid-margin-page) var(--sa-padding-32); display: flex; flex-direction: column; gap: var(--sa-stack-24); }
 .pm-secthead { display: flex; align-items: center; gap: var(--sa-inline-12); }
 .pm-secthead h2 { font-weight: var(--sa-font-weight-semibold); font-size: var(--sa-type-headline-6-size); line-height: var(--sa-type-headline-6-lh); font-family: var(--sa-font-latin); color: var(--pm-slate); margin: 0; white-space: nowrap; }
 .pm-secthead .rule { flex: 1; height: 1px; background: var(--pm-line); }
@@ -347,7 +370,10 @@ body { background: var(--pm-stage-canvas); font-family: var(--font-sans); color:
 .pm-panel-head .sub { font-weight: var(--sa-font-weight-regular); font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); font-family: var(--sa-font-latin); color: var(--pm-muted); margin-top: var(--sa-stack-2); }
 
 /* ---- Table ---- */
-.pm-table { width: 100%; border-collapse: collapse; }
+/* A table is paged, never squeezed: below its natural width the wrapper scrolls
+   rather than the columns crushing into each other. */
+.pm-tablewrap { overflow-x: auto; }
+.pm-table { width: 100%; min-width: 560px; border-collapse: collapse; }
 .pm-table th { text-align: left; font-weight: var(--sa-font-weight-semibold); font-size: var(--sa-type-label-3-size); line-height: var(--sa-type-label-3-lh); font-family: var(--sa-font-latin); letter-spacing: var(--sa-type-caps-tracking); text-transform: uppercase; color: var(--pm-muted); padding: 0 var(--sa-padding-12) var(--sa-padding-12); border-bottom: 1px solid var(--pm-line); }
 .pm-table th.num, .pm-table td.num { text-align: right; }
 .pm-table th.sortable { cursor: pointer; user-select: none; }
@@ -387,7 +413,11 @@ body { background: var(--pm-stage-canvas); font-family: var(--font-sans); color:
 /* footer */
 .pm-footer { background: var(--pm-footer); color: var(--pm-on-navy-88); padding: var(--sa-padding-16) var(--sa-padding-40); display: flex; align-items: center; justify-content: space-between; gap: var(--sa-inline-16); font-weight: var(--sa-font-weight-regular); font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); font-family: var(--sa-font-latin); }
 .pm-footer .lnk { display: flex; gap: var(--sa-inline-16); align-items: center; flex: none; }
-.pm-footer a { color: var(--neutral-0); text-decoration: none; }
+.pm-footer a { color: var(--neutral-0); text-decoration: none; display: inline-flex; align-items: center; min-height: var(--sa-target-min); }
+/* WCAG 2.2 2.5.8: a column-sort control and a footer link are targets, so they
+   clear the 24px minimum. On the scaled canvas everything on the page was under
+   it; these two were under it at full size as well. */
+.pm-table th .ds-btn { min-height: var(--sa-target-min); }
 .pm-footer a:hover { text-decoration: underline; }
 .pm-footer .vline { width: 1px; height: 14px; background: var(--pm-on-navy-30); }
 
@@ -417,7 +447,7 @@ body { background: var(--pm-stage-canvas); font-family: var(--font-sans); color:
    ═════════════════════════════════════════════════════════════════════════ */
 
 .ud-content { background: var(--pm-canvas); min-width: 0; display: flex; flex-direction: column; }
-.ud-wrap { padding: var(--sa-padding-20) var(--sa-padding-32) var(--sa-padding-32); display: flex; flex-direction: column; gap: var(--sa-stack-16); }
+.ud-wrap { padding: var(--sa-padding-20) var(--sa-grid-margin-page) var(--sa-padding-32); display: flex; flex-direction: column; gap: var(--sa-stack-16); }
 
 .ud-toolbar { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--sa-inline-24); flex-wrap: wrap; }
 .ud-back-link { display: inline-flex; align-items: center; gap: var(--sa-inline-4); font-weight: var(--sa-font-weight-medium); font-size: var(--sa-type-label-2-size); line-height: var(--sa-type-label-2-lh); font-family: var(--sa-font-latin); color: var(--pm-muted); text-decoration: none; margin-bottom: var(--sa-stack-8); transition: color .15s; }
@@ -494,12 +524,12 @@ body { background: var(--pm-stage-canvas); font-family: var(--font-sans); color:
 
 .ud-sec { display: flex; align-items: center; gap: var(--sa-inline-8); margin: var(--sa-stack-4) 0 -2px; }
 .ud-sec h2 { font-weight: var(--sa-font-weight-semibold); font-size: var(--sa-type-label-3-size); line-height: var(--sa-type-label-3-lh); font-family: var(--sa-font-latin); letter-spacing: var(--sa-type-caps-tracking); text-transform: uppercase; color: var(--pm-hint); margin: 0; white-space: nowrap; }
-.ud-sec .hint { font-weight: var(--sa-font-weight-regular); font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); font-family: var(--sa-font-latin); color: var(--pm-faint); }
+.ud-sec .hint { font-weight: var(--sa-font-weight-regular); font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); font-family: var(--sa-font-latin); color: var(--pm-faint-ink); }
 
 .ud-rank { display: flex; flex-direction: column; }
 .ud-rank-row { display: grid; grid-template-columns: 22px 138px 1fr 52px 88px; align-items: center; gap: var(--sa-stack-12); padding: var(--sa-padding-8); margin: 0 -10px; border-radius: var(--sa-shape-8); cursor: pointer; transition: background .12s; }
 .ud-rank-row:hover { background: var(--pm-row-hover); }
-.ud-rank-row .rk { font-weight: var(--sa-font-weight-semibold); font-size: var(--sa-type-label-2-size); line-height: var(--sa-type-label-2-lh); font-family: var(--sa-font-latin); font-variant-numeric: tabular-nums; color: var(--pm-faint); text-align: center; }
+.ud-rank-row .rk { font-weight: var(--sa-font-weight-semibold); font-size: var(--sa-type-label-2-size); line-height: var(--sa-type-label-2-lh); font-family: var(--sa-font-latin); font-variant-numeric: tabular-nums; color: var(--pm-faint-ink); text-align: center; }
 .ud-rank-row .nm { font-weight: var(--sa-font-weight-medium); font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); font-family: var(--sa-font-latin); color: var(--pm-ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ud-rank-row .nm .material-symbols-rounded { font-size: 15px; color: var(--pm-faint); vertical-align: middle; margin-left: var(--sa-inline-2); }
 .ud-rank-row:hover .nm .material-symbols-rounded { color: var(--pm-accent); }
@@ -507,7 +537,7 @@ body { background: var(--pm-stage-canvas); font-family: var(--font-sans); color:
 .ud-rank-fill { height: 100%; border-radius: var(--sa-shape-full); transition: width .5s ease; }
 .ud-rank-row .pct { font-weight: var(--sa-font-weight-bold); font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); font-family: var(--sa-font-latin); font-variant-numeric: tabular-nums; text-align: right; color: var(--pm-ink); }
 .ud-rank-divider { display: flex; align-items: center; gap: var(--sa-inline-8); padding: var(--sa-padding-8) 0 var(--sa-padding-4); }
-.ud-rank-divider span { font-weight: var(--sa-font-weight-semibold); font-size: var(--sa-type-label-3-size); line-height: var(--sa-type-label-3-lh); font-family: var(--sa-font-latin); letter-spacing: var(--sa-type-caps-tracking); text-transform: uppercase; color: var(--pm-faint); }
+.ud-rank-divider span { font-weight: var(--sa-font-weight-semibold); font-size: var(--sa-type-label-3-size); line-height: var(--sa-type-label-3-lh); font-family: var(--sa-font-latin); letter-spacing: var(--sa-type-caps-tracking); text-transform: uppercase; color: var(--pm-faint-ink); }
 .ud-rank-divider .r { flex: 1; height: 1px; background: var(--pm-line); }
 
 .ud-viewbar { display: flex; align-items: center; justify-content: space-between; gap: var(--sa-inline-16); flex-wrap: wrap; }
@@ -529,7 +559,7 @@ body { background: var(--pm-stage-canvas); font-family: var(--font-sans); color:
 .ud-grouphead h2 { font-weight: var(--sa-font-weight-semibold); font-size: var(--sa-type-headline-5-size); line-height: var(--sa-type-headline-5-lh); color: var(--pm-slate); margin: 0; white-space: nowrap; }
 .ud-grouphead .ct { font-weight: var(--sa-font-weight-medium); font-size: var(--sa-type-label-2-size); line-height: var(--sa-type-label-2-lh); font-family: var(--sa-font-latin); color: var(--pm-hint); background: var(--neutral-0); border: 1px solid var(--pm-line); padding: var(--sa-padding-4) var(--sa-padding-8); border-radius: var(--sa-shape-full); white-space: nowrap; }
 .ud-grouphead .rule { flex: 1; height: 1px; background: var(--pm-line); }
-.ud-grouphead .src { display: inline-flex; align-items: center; gap: var(--sa-inline-4); font-weight: var(--sa-font-weight-regular); font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); font-family: var(--sa-font-latin); color: var(--pm-faint); white-space: nowrap; }
+.ud-grouphead .src { display: inline-flex; align-items: center; gap: var(--sa-inline-4); font-weight: var(--sa-font-weight-regular); font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); font-family: var(--sa-font-latin); color: var(--pm-faint-ink); white-space: nowrap; }
 .ud-grouphead .src .material-symbols-rounded { font-size: 14px; }
 .ud-kpigrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--sa-stack-12); }
 .ud-kpi { background: var(--neutral-0); border: 1px solid var(--pm-line); border-radius: var(--sa-shape-12); padding: var(--sa-padding-16); box-shadow: 0 1px 2px var(--pm-shadow-ink-03); display: flex; flex-direction: column; min-width: 0; }
@@ -585,26 +615,61 @@ body { background: var(--pm-stage-canvas); font-family: var(--font-sans); color:
 
 .ud-kpi-h { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--sa-inline-8); }
 .ud-kpi-h .lab { flex: 1; }
-.ud-kpi-src { display: inline-flex; align-items: center; gap: var(--sa-inline-4); margin-top: var(--sa-stack-12); padding-top: var(--sa-padding-8); border-top: 1px dashed var(--pm-line); font-weight: var(--sa-font-weight-regular); font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); font-family: var(--sa-font-latin); color: var(--pm-faint); }
+.ud-kpi-src { display: inline-flex; align-items: center; gap: var(--sa-inline-4); margin-top: var(--sa-stack-12); padding-top: var(--sa-padding-8); border-top: 1px dashed var(--pm-line); font-weight: var(--sa-font-weight-regular); font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); font-family: var(--sa-font-latin); color: var(--pm-faint-ink); }
 .ud-kpi-src .material-symbols-rounded { font-size: 13px; }
 
-/* responsive reflow */
-.pm-app.fluid { width: 100%; }
-.pm-app.fluid .ud-wrap { padding: var(--sa-padding-16) var(--sa-padding-12) var(--sa-padding-24); }
-.pm-app.fluid .ud-ribbon { grid-template-columns: repeat(2, 1fr); }
-.pm-app.fluid .ud-bento { grid-template-columns: 1fr; }
-.pm-app.fluid .ud-bento .ud-tile { grid-column: auto !important; }
-.pm-app.fluid .ud-schemes { grid-template-columns: 1fr; }
-.pm-app.fluid .ud-kpigrid { grid-template-columns: repeat(2, 1fr); }
-@media (max-width: 540px) {
-  .pm-app.fluid .ud-ribbon, .pm-app.fluid .ud-kpigrid { grid-template-columns: 1fr; }
-  .pm-app.fluid .ud-stat { border-left: none; border-top: 1px solid var(--pm-line); }
-  .pm-app.fluid .ud-stat:first-child { border-top: none; }
+/* ---- Responsive reflow ------------------------------------------------------
+   These used to hang off a `.fluid` class the script added below 880px, while
+   everything above that width was one scaled picture. The canvas is fluid at
+   every width now, so the steps are media queries and they apply to BOTH
+   dashboards. Track counts only ever fall as the viewport narrows.
+
+   The steps sit on the estate's ladder — 1279 · 1023 · 767, the max-width
+   complements of 1280 · 1024 · 768. The script's own cuts were 879 and 599,
+   which `check:breakpoints` refuses as new off-ladder literals. Each moved UP to
+   the next rung, so every column count now falls a little EARLIER than it did:
+   a card gets more width than the old cut gave it, never less. */
+@media (max-width: 1279px) {
+  .pm-kpis, .pm-kpis.cols4 { grid-template-columns: repeat(3, 1fr); }
+  .pm-grid.main { grid-template-columns: minmax(0, 1fr); }
+  .ud-ribbon, .ud-kpigrid { grid-template-columns: repeat(3, 1fr); }
+  .ud-schemes { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 1023px) {
+  /* A nowrap meta line is wider than a phone; it wraps under its heading instead. */
+  .pm-secthead { flex-wrap: wrap; }
+  .pm-secthead h2, .pm-secthead .meta, .ud-sec .meta, .ud-tile-h .meta { white-space: normal; }
+  .pm-secthead .rule { display: none; }
+  /* The footer's two rows stack: side by side they need 430px at a 320 viewport. */
+  .pm-footer { flex-wrap: wrap; padding-left: var(--sa-grid-margin-page); padding-right: var(--sa-grid-margin-page); }
+  .pm-footer .lnk { flex: 0 1 auto; flex-wrap: wrap; }
+  .pm-kpis, .pm-kpis.cols4, .pm-kpis.cols3 { grid-template-columns: repeat(2, 1fr); }
+  .pm-grid.c2 { grid-template-columns: minmax(0, 1fr); }
+  .ud-ribbon, .ud-kpigrid { grid-template-columns: repeat(2, 1fr); }
+  .ud-bento { grid-template-columns: minmax(0, 1fr); }
+  .ud-bento .ud-tile { grid-column: auto; }
+  .ud-schemes { grid-template-columns: minmax(0, 1fr); }
+  /* The rank row's fixed 138px name column cannot hold a district name beside a
+     bar, a percentage and a status on a phone, so the name takes its own line
+     and the figures sit under it. */
+  .ud-rank-row { grid-template-columns: 22px minmax(0, 1fr) 52px 76px; row-gap: var(--sa-stack-4); }
+  .ud-rank-row .nm { grid-column: 2 / -1; }
+  .ud-rank-row .ud-rank-track { grid-column: 2; grid-row: 2; }
+  .ud-rank-row .pct { grid-column: 3; grid-row: 2; }
+  .ud-rank-row > :last-child { grid-column: 4; grid-row: 2; }
+}
+
+@media (max-width: 767px) {
+  .pm-kpis, .pm-kpis.cols4, .pm-kpis.cols3 { grid-template-columns: minmax(0, 1fr); }
+  .ud-ribbon, .ud-kpigrid { grid-template-columns: minmax(0, 1fr); }
+  .ud-stat { border-left: none; border-top: 1px solid var(--pm-line); }
+  .ud-stat:first-child { border-top: none; }
 }
 
 @media print {
   .pm-stage { background: var(--neutral-0) !important; overflow: visible !important; height: auto !important; }
-  .pm-app { transform: none !important; width: 100% !important; box-shadow: none !important; }
+  .pm-app { width: 100% !important; box-shadow: none !important; }
   .ud-export, .ud-toggle, .ud-fresh { display: none !important; }
   .ud-bento { display: block !important; }
   .ud-bento .ud-tile { grid-column: auto !important; margin-bottom: var(--sa-stack-12); }

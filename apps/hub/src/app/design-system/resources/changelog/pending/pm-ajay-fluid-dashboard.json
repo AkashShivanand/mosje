@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "THE PM-AJAY DASHBOARD IS LAID OUT, NOT SCALED. It was a fixed 1440px canvas that a transform shrank to fit — 0.26 at 375px, which drew every label about 4px tall and put every control under the 24px target minimum. It is fluid now: full width with no cap, page edges padded with grid/margin/page, the rail a column from 768px and the masthead's drawer below it, and the masthead's phone layers back on. Nothing scrolls sideways from 320 to 1920. The Unified Dashboard's secondary text — rank numbers, hints and source lines — was #9CA3AF at 2.5:1 and now binds text/neutral/subtler at 4.6:1."
+}
