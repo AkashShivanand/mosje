@@ -21,11 +21,17 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       "An interactive chip takes a `tabIndex` and handles Enter and Space. The dismiss button is a real `<button>` with its own tab stop.",
+    status: "partial",
+    evidence:
+      "Keyboard smoke test (Playwright, Chromium 1440x900), 2026-09-22: tabbed through the specimen on /design-system/components/forms/chip - 11 focusable elements, each with a focus indicator that disappears on blur, focus left the specimen with no trap; manual screen-reader check outstanding",
   },
   {
     criterion: "2.4.7 Focus Visible",
     level: "AA",
     description: "Focus is drawn on the pill itself, and separately on the dismiss button inside it.",
+    status: "partial",
+    evidence:
+      "Keyboard smoke test (Playwright, Chromium 1440x900), 2026-09-22: tabbed through the specimen on /design-system/components/forms/chip - 11 focusable elements, each with a focus indicator that disappears on blur, focus left the specimen with no trap; manual screen-reader check outstanding",
   },
   {
     criterion: "2.5.8 Target Size (Minimum)",

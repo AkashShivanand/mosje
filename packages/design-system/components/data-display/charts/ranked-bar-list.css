@@ -160,7 +160,7 @@
     .ds-ranked__fill,
     .ds-inline-bar__fill { background-color: CanvasText; }
     .ds-ranked__track,
-    .ds-inline-bar { border: 1px solid CanvasText; }
+    .ds-inline-bar { border: var(--sa-stroke-1) solid CanvasText; }
   }
 
   /* Print: the figure is already text; the bars survive as ink. */

@@ -294,7 +294,7 @@
   .ds-select__chevron {
     position: absolute;
     top: 50%;
-    right: 12px;
+    right: var(--sa-inline-12);
     width: 18px;
     height: 18px;
     transform: translateY(-50%);

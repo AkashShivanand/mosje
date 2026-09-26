@@ -33,6 +33,9 @@ const A11Y: A11yItem[] = [
     level: "AA",
     description:
       "A bound label extends the control's hit area, which is what takes a 20px checkbox or radio past the 24×24 minimum.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (target-size) on /design-system/components/forms/label; manual screen-reader check outstanding",
   },
   {
     criterion: "1.4.1 Use of Colour",

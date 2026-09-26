@@ -28,18 +28,27 @@ const A11Y: A11yItem[] = [
     level: "AA",
     description:
       "The first box carries `autocomplete=\"one-time-code\"` so iOS and Android offer the code from the message. Only the first, because advertising it on all six makes the platform prompt repeatedly.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (autocomplete-valid) on /design-system/components/forms/otp-input; manual screen-reader check outstanding",
   },
   {
     criterion: "2.1.1 Keyboard",
     level: "A",
     description:
       "Arrow keys move between boxes, Backspace on an empty box steps back and clears the previous one, and Delete clears the current one. Nothing strands the caret.",
+    status: "partial",
+    evidence:
+      "Keyboard smoke test (Playwright, Chromium 1440x900), 2026-09-22: tabbed through the specimen on /design-system/components/forms/otp-input - 26 focusable elements, each with a focus indicator that disappears on blur (1 element(s) animate, so their indicator could not be measured by pixel comparison), focus left the specimen with no trap; manual screen-reader check outstanding",
   },
   {
     criterion: "2.5.8 Target Size (Minimum)",
     level: "AA",
     description:
       "Every box is at least 44px tall. Below 380px the boxes narrow rather than pushing the page sideways, which keeps the target on the axis that matters.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (target-size) on /design-system/components/forms/otp-input; manual screen-reader check outstanding",
   },
   {
     criterion: "3.3.1 Error Identification",
@@ -57,6 +66,9 @@ const A11Y: A11yItem[] = [
     criterion: "4.1.2 Name, Role, Value",
     level: "A",
     description: "The group has a name, and each box has its own position-bearing name and value.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (aria-allowed-attr, aria-conditional-attr, aria-deprecated-role, aria-hidden-focus, aria-prohibited-attr, aria-required-attr, aria-roles, aria-valid-attr, aria-valid-attr-value, duplicate-id-aria, label, nested-interactive, select-name) on /design-system/components/forms/otp-input; manual screen-reader check outstanding",
   },
 ];
 

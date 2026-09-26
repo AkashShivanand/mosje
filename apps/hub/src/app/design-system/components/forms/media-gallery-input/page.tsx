@@ -21,6 +21,9 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       "Both the empty dropzone and the add tile are real buttons, and every item's remove control is a real button. Dragging is an addition, never the only route.",
+    status: "partial",
+    evidence:
+      "Keyboard smoke test (Playwright, Chromium 1440x900), 2026-09-22: tabbed through the specimen on /design-system/components/forms/media-gallery-input - 4 focusable elements, each with a focus indicator that disappears on blur, focus left the specimen with no trap; manual screen-reader check outstanding",
   },
   {
     criterion: "2.5.7 Dragging Movements",
@@ -43,12 +46,18 @@ const A11Y: A11yItem[] = [
     criterion: "2.5.8 Target Size (Minimum)",
     level: "AA",
     description: "The add tile is a large block target, and each item's remove control clears 24×24.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (target-size) on /design-system/components/forms/media-gallery-input; manual screen-reader check outstanding",
   },
   {
     criterion: "4.1.2 Name, Role, Value",
     level: "A",
     description:
       "The operable control carries the `id` Form Field generated, so the visible label names the add tile rather than the hidden file input.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (aria-allowed-attr, aria-conditional-attr, aria-hidden-focus, aria-prohibited-attr, aria-valid-attr, aria-valid-attr-value, button-name, duplicate-id-aria, label, nested-interactive) on /design-system/components/forms/media-gallery-input; manual screen-reader check outstanding",
   },
 ];
 

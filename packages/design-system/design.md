@@ -3564,18 +3564,18 @@ and renders it only when `exportable`.
 - **The Explore button is India Green in every tone** — SAMAVESH's brand is saffron and green (decided 22 Sep 2026). Under `tone="tint"` the drawer heading takes plain ink and the footer link the link blue, so the button is the one green on the pale ground.
 - **Below `breakpoint/tablet` the drawer is a list**: portal cards drop to 12px padding, a 12px radius, no two-line name reserve and the 14px body pair, so eight portals take about 690px instead of about 970px.
 - **Single Source of Truth.** Replaces all hand-rolled website banners with a unified token-driven component exported from `@mosje/design-system`.
-- **THE BAND HAS THREE TONES AND THE DEFAULT KNOWINGLY FAILS WCAG 2.** `tone` is `light` (default) | `dark` | `tint`. This is the single most consequential thing to know about the component, and it is a researched decision rather than a preference:
+- **THE BAND HAS THREE TONES, AND ONE OF THEM FAILS WCAG 2.** `tone` is `dark` (default since 2026-09-22) | `light` | `tint`. Until 2026-09-22 the default was `light`, a recorded non-conformance; it became `dark` because the default is the variant that passes (`ds-documentation-standard.md` §6) and Figma's set already led with `Tone=Dark`. `light` stays as an opt-in only. The evidence behind all three:
 
   | tone | ink on ground | WCAG 2 | APCA Lc | body | large |
   |---|---|---|---|---|---|
-  | `light` **(default)** | `#ffffff` on `#ff671f` | **2.91 ✗** | 59.8 | fails both | fails WCAG, passes APCA |
-  | `dark` | `#0e1114` on `#ff671f` | 6.50 ✓ | 48.9 | WCAG only | passes both |
+  | `light` (opt-in) | `#ffffff` on `#ff671f` | **2.91 ✗** | 59.8 | fails both | fails WCAG, passes APCA |
+  | `dark` **(default)** | `#0e1114` on `#ff671f` | 6.50 ✓ | 48.9 | WCAG only | passes both |
   | `tint` | `#0e1114` on `#fff2ed` | 17.29 ✓ | 99.1 | **passes both** | **passes both** |
 
   - **The ground is the constraint, not the ink.** India Saffron is a saturated mid-tone — too light for white, too vivid and dark for reading-size dark text. Scanning ~700,000 colours against `#ff671f` found **ZERO** that clear WCAG 2's 4.5:1 *and* APCA's Lc 75 for the 14px subline; still zero relaxed to Lc 60. For the large bold wordmark, 34,887 clear both. The black-versus-white argument cannot be won on this band.
   - **Why the standards disagree.** WCAG 2 measures relative luminance only; the Helmholtz–Kohlrausch effect makes saturated colours read far brighter than their luminance, so WCAG 2 misjudges vivid mid-tones. This is a named field problem — "the orange button problem" — and APCA ranks the inks in the opposite order.
   - **User testing sides with APCA.** 61% of ~20 colour-blind participants preferred white, 71% among protanopia (Bounteous/Seastrand); the monochrome participant preferred black. Both a "halo effect" around dark text and white "falling into the background" are real and affect different people, which is why alternatives ship rather than one answer.
-  - **APCA is NOT a compliance defence.** Removed from WCAG 3 consideration in 2023, only ever exploratory; WCAG 2.1/2.2 AA remains enforceable and GIGW binds this estate to it. The default is a **recorded non-conformance** — entry 8 in `docs/guidelines/README.md` — chosen for reference fidelity and perceptual legibility. `tone="tint"` is the one-word remedy if an audit challenges it, and needs no redesign.
+  - **APCA is NOT a compliance defence.** Removed from WCAG 3 consideration in 2023, only ever exploratory; WCAG 2.1/2.2 AA remains enforceable and GIGW binds this estate to it. `light` is a **recorded non-conformance** — entry 8 in `docs/guidelines/README.md`, resolved 2026-09-22 by making `dark` the default — originally chosen for reference fidelity and perceptual legibility. `tone="tint"` is the one-word remedy if an audit challenges it, and needs no redesign.
   - **Do not substitute the brand green for `dark`.** `--sa-color-status-successStrong` measures 4.85:1 and Lc **43.9** — below APCA's 45 headline floor, making it the worst of the credible dark inks despite looking the most on-brand.
   - **The saffron itself is never altered by any tone.** Only the ink and the ground's role change. Figma node 7116:33784 draws the `light` tone.
 - **The Explore CTA is `--sa-brand-samavesh-green`** (India Green, white at 6.72:1), not `--sa-color-status-success`. It is simultaneously closer to the Figma reference's mid-green and more accessible than it — the reference's own #198754 measures 4.53:1.
@@ -3678,12 +3678,11 @@ and renders it only when `exportable`.
 
 #### BrandLockup
 **Purpose**: The National Emblem plus the government text stack — BETA badge on its
-own row, then `org` (12/16) · `ministry` (14/20) · `department` (20/24 **SemiBold**) —
-matching Figma `Navbar/BrandLockup` exactly. The emblem is the one dimension that varies
-by device: **45 mobile · 52 tablet · 58 desktop** (it was pinned at the tablet value until
-v0.30.0, and `department` was Bold 20/20, a half-step heavier and a line tighter than the
-library).  
-**Key props**: `emblemSrc`, `lines`, `href`, `beta`, `compact`, `divider`, `textHiddenOnMobile`  
+own row, then `org` (12/16) · `ministry` (12/16) · `department` (**16/24 SemiBold**,
+Headline 6; Title 3, 14/20, below 768) — matching Figma `Navbar/BrandLockup`. The four
+rows stack flush (20 + 16 + 16 + 24 = 76) beside a 40×64 emblem. `department` was
+Headline 5 (a fluid 18–20px) until 2026-09-22, when the library took it down to 16.  
+**Key props**: `emblemSrc`, `lines`, `href`, `linkAs`, `beta`, `compact`, `inverse`, `textHiddenOnMobile`  
 **Rules**:
 - **Always the National Emblem, never an invented or abstract mark.** This is an
   estate rule, not a component preference — see CLAUDE.md.
@@ -3693,8 +3692,14 @@ library).
   "upgrade" it to `next/image`: that couples the design system to Next and breaks
   the zones.
 - `SiteHeader` composes it for you. Reach for it directly only when building a
-  surface that is not a `SiteHeader` — a gate page, a standalone print header —
-  not to rebuild a masthead beside one.
+  surface that is not a `SiteHeader` — a gate page, a sign-in page, a standalone
+  print header — not to rebuild a masthead beside one. `/admin/login` hand-rolled
+  an emblem-and-text pair until 2026-09-22; it now renders `<BrandLockup compact />`.
+- **BETA is one component in two placements.** In Figma the badge is a nested
+  `Navbar/BetaSash` instance — hugging and unrotated in the lockup, a 45° sash on the
+  portal phone layers — so `.ds-hdr-badge` and `.ds-hdr-sash` share one treatment:
+  Label 3 **Medium**, caps tracking, `text/neutral/base` on `cmp/badge/beta/bg`
+  (11.2:1). Change one and the other must follow.
 
 #### AccountMenu
 **Purpose**: The portal header's account block — name / email plus a 48px avatar,

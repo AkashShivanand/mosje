@@ -125,7 +125,7 @@
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     text-transform: uppercase;
     letter-spacing: var(--sa-type-caps-tracking);
     color: var(--sa-text-neutral-subtle);
@@ -170,7 +170,7 @@
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     position: relative;
     transition:
       background var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
@@ -285,7 +285,7 @@
   .ds-sidebar__sub::before {
     content: "";
     position: absolute;
-    left: 24px; /* 16px left of the level-2 pill at inline/40 — the handoff's geometry */
+    left: var(--sa-inline-24); /* 16px left of the level-2 pill at inline/40 — the handoff's geometry */
     top: calc(-1 * var(--sa-stack-4));
     bottom: calc(-1 * var(--sa-stack-4));
     width: var(--sa-cmp-divider-width);
@@ -300,8 +300,8 @@
   .ds-sidebar__sub::after {
     content: "";
     position: absolute;
-    left: 24px;
-    top: 16px;
+    left: var(--sa-inline-24);
+    top: var(--sa-stack-16);
     width: 16px;
     height: 6px;
     border-left: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
@@ -317,7 +317,7 @@
      the rail), the arm reaching the pill at 24 (64 in the rail). */
   .ds-sidebar__sub--l3 { padding-left: var(--sa-inline-24); }
   .ds-sidebar__sub--l3::before,
-  .ds-sidebar__sub--l3::after { left: 8px; }
+  .ds-sidebar__sub--l3::after { left: var(--sa-inline-8); }
 
   /*
    * The path to the current page. One SVG per list, drawn over the neutral
@@ -378,7 +378,7 @@
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 400;
+    font-weight: var(--sa-font-weight-regular);
     transition:
       background var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
       color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
@@ -437,7 +437,7 @@
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-title-3-size);
     line-height: var(--sa-type-title-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
     padding: var(--sa-padding-8) var(--sa-padding-8) var(--sa-padding-4);
   }
