@@ -1,61 +1,62 @@
 import type { Metadata } from "next";
-import { ContentPage } from "@/components/website/templates/ContentPage";
+import { ContentPage } from "@/components/website-next/templates/ContentPage";
+import { DocumentTable, type DocumentRow } from "@/components/website-next/templates/content/DocumentTable";
+
+const TITLE = "Guidelines for Assisting NGOs / Voluntary Organisations";
+const DESCRIPTION =
+  "Documents published by the Department under the Guidelines for Assisting NGOs / Voluntary Organisations.";
 
 export const metadata: Metadata = {
-  title: "Guidelines for Assisting NGOs / Voluntary Organisations",
-  description:
-    "Eligibility conditions and terms under which the Department of Social Justice & Empowerment assists NGOs and voluntary organisations through grant-in-aid.",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
 };
 
+const DOCS: DocumentRow[] = [
+  {
+    title: "Instructions to NGOs regarding submission of proper documents for release of grant-in-aid under AVYAY",
+    published: "2 Dec 2024",
+    size: "1.05 MB",
+    href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/25001733129405.pdf",
+  },
+  {
+    title: "Scheme guidelines: Atal Vayo Abhyuday Yojana",
+    published: "6 May 2025",
+    size: "663.65 KB",
+    href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/04/display-avyay.pdf",
+  },
+  {
+    title: "Letter regarding Sanction of Funds for Celebration of International Day of Older Persons IDOP – reg",
+    published: "26 Sep 2024",
+    size: "442.59 KB",
+    href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/47981727345002.pdf",
+  },
+  {
+    title: "21 June 2025 – Celebration of International Day of Yoga – reg",
+    published: "21 May 2025",
+    size: "788.06 KB",
+    href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/18521758543759.pdf",
+  },
+];
+
+/* Body text: dosje.gov.in/guidelines-for-assisting-ngos-voluntary-organisations/ as published,
+   read 21 Sep 2026. The live page is a document table (its own h3 reads "Grants-in-Aid to NGOs
+   - Guidelines for Assisting NGOs / Voluntary Organisations"), not the prose this route
+   previously carried — replaced in full. Titles kept verbatim except trimming the trailing
+   "– reg" spacing already published by the Department. */
 export default function Page() {
   return (
     <ContentPage
-      title="Guidelines for Assisting NGOs / Voluntary Organisations"
+      title={TITLE}
       breadcrumb={[
-        { label: "Department" },
-        { label: "Guidelines for Assisting NGOs / Voluntary Organisations" },
+        { label: "Tenders & Vacancies" },
+        { label: "Grants to Voluntary Organisations", href: "/website/grants-in-aid-to-ngos-faqs" },
+        { label: TITLE },
       ]}
-      description="The eligibility requirements and standard conditions governing grant-in-aid to non-governmental and voluntary organisations."
+      description={DESCRIPTION}
       lastUpdated="06 Jun 2026"
     >
-      <h2>Eligibility</h2>
-      <p>
-        An organisation seeking assistance must satisfy the following baseline requirements before its
-        proposal can be considered:
-      </p>
-      <ul>
-        <li>
-          It must be a <strong>registered body</strong> under the Societies Registration Act, the Indian
-          Trusts Act, the relevant Public Trust Act, or as a Section 8 company, and registered on
-          <strong> NGO Darpan</strong>.
-        </li>
-        <li>It must have been in existence and engaged in welfare work for at least the prescribed period (normally three years).</li>
-        <li>It must have a properly constituted managing body and maintain audited accounts.</li>
-        <li>It must work for one or more of the Department&apos;s notified target groups on a no-profit basis.</li>
-        <li>It must not have been blacklisted by any Central or State Government department.</li>
-      </ul>
-
-      <h2>Conditions of Assistance</h2>
-      <ul>
-        <li>The grant shall be utilised solely for the sanctioned purpose and within the sanctioned period.</li>
-        <li>The organisation shall contribute its share of the project cost where a matching contribution is prescribed.</li>
-        <li>
-          Separate accounts shall be maintained for the grant, and assets created shall not be disposed of
-          or encumbered without prior approval.
-        </li>
-        <li>
-          The organisation shall furnish <strong>utilisation certificates</strong>, audited statements and
-          progress reports in the prescribed forms.
-        </li>
-        <li>It shall permit inspection of its premises, records and beneficiaries by authorised officers.</li>
-      </ul>
-
-      <h2>General Principles</h2>
-      <p>
-        Assistance is supplementary to the organisation&apos;s own resources and is not an entitlement. The
-        Department reserves the right to vary, reduce or withhold assistance in the public interest, and to
-        recover any amount found to have been mis-utilised, together with interest.
-      </p>
+      <h2>Documents</h2>
+      <DocumentTable caption="Guidelines for Assisting NGOs / Voluntary Organisations" rows={DOCS} />
     </ContentPage>
   );
 }

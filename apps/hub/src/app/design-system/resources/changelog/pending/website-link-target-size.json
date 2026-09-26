@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "ELEVEN LINK ROWS ON THE HOME PAGE WERE TOO SMALL TO TAP RELIABLY. The 24 September audit measured them at 19–22px tall against WCAG 2.2 SC 2.5.8's 24px minimum: three scheme titles and four What's New rows in Our Offerings, and four card titles in Activity Corner. A link that is its own row does not get the criterion's \"inline\" exception — that is for a target inside a sentence — so each of the four kinds now asks for the floor on the LINK rather than on its row, because a row tall enough while its link is not still fails. `inline-flex` with `min-block-size: var(--sa-target-min)`, which is what the estate's breadcrumb and document row already use; the text still wraps inside it, so nothing about the layout moves. Every standalone target on the page now measures at least 24px at 1440 and at 375, and the page is the same height to within twenty pixels."
+}

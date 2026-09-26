@@ -3,7 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { SectionTitle } from "@mosje/design-system";
 import { RateCard, type Rate } from "./rate-card";
-import { RecordDetail } from "@/components/website/templates/RecordDetail";
+import { RecordDetail } from "@/components/website-next/templates/RecordDetail";
 import { getBookableVenue, getBookableVenues, getContentSyncedDate } from "@/lib/website/content";
 import { facts } from "@/lib/website/record-facts";
 import { socialCard } from "@/lib/seo/social";
@@ -42,7 +42,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       badge="Venue Booking"
       description={venue.description}
       breadcrumb={[
-        { label: "Associated Organisations" },
+        { label: "Organisations" },
         { label: "Venue Booking", href: "/website/booking" },
         { label: venue.title },
       ]}
@@ -59,11 +59,11 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       sourceUrl={venue.sourceUrl}
     >
       {images.length > 0 && (
-        <div>
+        <div className="wn-rec-section">
           <SectionTitle title="Photographs" as={2} />
-          <ul className="sa-record-media">
+          <ul className="wn-rec-media">
             {images.map((src) => (
-              <li key={src} className="sa-record-media__item">
+              <li key={src} className="wn-rec-media__item">
                 <Image
                   src={src}
                   alt=""
@@ -78,7 +78,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       )}
 
       {rates.length > 0 && (
-        <div>
+        <div className="wn-rec-section">
           <SectionTitle title="Rate Card" as={2} />
           <RateCard venue={venue.title} rates={rates} />
         </div>

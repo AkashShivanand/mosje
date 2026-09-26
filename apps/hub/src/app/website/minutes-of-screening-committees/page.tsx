@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
+import { ListingPage } from "@/components/website-next/templates/ListingPage";
 import {
   grantDocumentColumns,
   grantDocumentRows,
@@ -32,7 +32,9 @@ export default function Page() {
       columns={grantDocumentColumns}
       rows={grantDocumentRows(SCREENING_COMMITTEE_MINUTES)}
       searchKeys={["title"]}
-      searchPlaceholder="Search minutes by title…"
+      searchPlaceholder="Search minutes by title"
+      noun="minutes"
+      nounSingular="minutes"
     />
   );
 }

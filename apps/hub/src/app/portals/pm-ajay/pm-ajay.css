@@ -622,7 +622,13 @@ body { background: var(--pm-stage-canvas); font-family: var(--font-sans); color:
    These used to hang off a `.fluid` class the script added below 880px, while
    everything above that width was one scaled picture. The canvas is fluid at
    every width now, so the steps are media queries and they apply to BOTH
-   dashboards. Track counts only ever fall as the viewport narrows. */
+   dashboards. Track counts only ever fall as the viewport narrows.
+
+   The steps sit on the estate's ladder — 1279 · 1023 · 767, the max-width
+   complements of 1280 · 1024 · 768. The script's own cuts were 879 and 599,
+   which `check:breakpoints` refuses as new off-ladder literals. Each moved UP to
+   the next rung, so every column count now falls a little EARLIER than it did:
+   a card gets more width than the old cut gave it, never less. */
 @media (max-width: 1279px) {
   .pm-kpis, .pm-kpis.cols4 { grid-template-columns: repeat(3, 1fr); }
   .pm-grid.main { grid-template-columns: minmax(0, 1fr); }
@@ -630,7 +636,7 @@ body { background: var(--pm-stage-canvas); font-family: var(--font-sans); color:
   .ud-schemes { grid-template-columns: repeat(2, 1fr); }
 }
 
-@media (max-width: 879px) {
+@media (max-width: 1023px) {
   /* A nowrap meta line is wider than a phone; it wraps under its heading instead. */
   .pm-secthead { flex-wrap: wrap; }
   .pm-secthead h2, .pm-secthead .meta, .ud-sec .meta, .ud-tile-h .meta { white-space: normal; }
@@ -654,7 +660,7 @@ body { background: var(--pm-stage-canvas); font-family: var(--font-sans); color:
   .ud-rank-row > :last-child { grid-column: 4; grid-row: 2; }
 }
 
-@media (max-width: 599px) {
+@media (max-width: 767px) {
   .pm-kpis, .pm-kpis.cols4, .pm-kpis.cols3 { grid-template-columns: minmax(0, 1fr); }
   .ud-ribbon, .ud-kpigrid { grid-template-columns: minmax(0, 1fr); }
   .ud-stat { border-left: none; border-top: 1px solid var(--pm-line); }

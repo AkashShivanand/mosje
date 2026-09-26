@@ -28,7 +28,8 @@ const meta = {
   args: {
     eyebrow: "Nasha Mukt Bharat Abhiyaan",
     title: "District submissions",
-    description: "Reports filed by block nodal officers for the 18 August 2026 Mass Pledge.",
+    description:
+      "Reports filed by block nodal officers for the 18 August 2026 Mass Pledge.",
     count: 36,
     as: 2,
   },
@@ -85,8 +86,20 @@ export const HeadingLevels: Story = {
   render: (args) => (
     <div style={{ display: "grid", gap: 32 }}>
       <SectionTitle {...args} as={2} title="Section (h2)" count={undefined} />
-      <SectionTitle {...args} as={3} title="Sub-section (h3)" count={undefined} eyebrow={undefined} />
-      <SectionTitle {...args} as={4} title="Sub-sub-section (h4)" count={undefined} eyebrow={undefined} />
+      <SectionTitle
+        {...args}
+        as={3}
+        title="Sub-section (h3)"
+        count={undefined}
+        eyebrow={undefined}
+      />
+      <SectionTitle
+        {...args}
+        as={4}
+        title="Sub-sub-section (h4)"
+        count={undefined}
+        eyebrow={undefined}
+      />
     </div>
   ),
 };
@@ -98,10 +111,16 @@ export const NamingATable: Story = {
       <SectionTitle {...args} headingId="sb-district-submissions" count={4} />
       <table
         aria-labelledby="sb-district-submissions"
-        style={{ width: "100%", borderCollapse: "collapse", color: "var(--sa-color-text-default)" }}
+        style={{
+          width: "100%",
+          borderCollapse: "collapse",
+          color: "var(--sa-color-text-default)",
+        }}
       >
         <thead>
-          <tr style={{ textAlign: "left", color: "var(--sa-color-text-muted)" }}>
+          <tr
+            style={{ textAlign: "left", color: "var(--sa-color-text-muted)" }}
+          >
             <th style={{ padding: "8px 12px 8px 0" }}>District</th>
             <th style={{ padding: "8px 12px 8px 0" }}>Blocks reporting</th>
             <th style={{ padding: "8px 12px 8px 0" }}>Participants</th>
@@ -114,7 +133,10 @@ export const NamingATable: Story = {
             ["Nagpur", "13 of 13", "2,98,105"],
             ["Kolhapur", "9 of 12", "1,52,470"],
           ].map(([district, blocks, participants]) => (
-            <tr key={district} style={{ borderTop: "1px solid var(--sa-border-neutral-subtle)" }}>
+            <tr
+              key={district}
+              style={{ borderTop: "1px solid var(--sa-border-neutral-subtle)" }}
+            >
               <td style={{ padding: "10px 12px 10px 0" }}>{district}</td>
               <td style={{ padding: "10px 12px 10px 0" }}>{blocks}</td>
               <td style={{ padding: "10px 12px 10px 0" }}>{participants}</td>
@@ -122,6 +144,43 @@ export const NamingATable: Story = {
           ))}
         </tbody>
       </table>
+    </div>
+  ),
+};
+
+/**
+ * A landing page's sections: `size="display"` (Headline 2 over Body 1), and
+ * `tone="inverse"` on a navy or green band. The website home page uses both;
+ * a portal screen or a docs page keeps the default UI scale.
+ */
+export const DisplayAndInverse: Story = {
+  render: (args) => (
+    <div style={{ display: "grid", gap: 24 }}>
+      <SectionTitle
+        {...args}
+        size="display"
+        eyebrow={undefined}
+        count={undefined}
+        title="What’s New"
+        description="Updates, circulars, notices and results from the Department."
+      />
+      <div
+        style={{
+          padding: 32,
+          borderRadius: 16,
+          background: "var(--sa-bg-brand-primary-boldest)",
+        }}
+      >
+        <SectionTitle
+          {...args}
+          size="display"
+          tone="inverse"
+          eyebrow={undefined}
+          count={undefined}
+          title="National Helplines"
+          description="Toll-free from any phone in India."
+        />
+      </div>
     </div>
   ),
 };

@@ -261,6 +261,11 @@ export const NAV: NavGroup[] = [
         "badge": "Stable"
       },
       {
+        "label": "Action Tile",
+        "href": "/design-system/components/navigation/action-tile",
+        "badge": "New"
+      },
+      {
         "label": "App Switcher Panel",
         "href": "/design-system/components/navigation/app-switcher-panel",
         "badge": "Stable"

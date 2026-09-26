@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "THE HOME PAGE'S THREE PUBLISHED FIGURES ARE THE BRAND BAR THE DESIGN DRAWS. They were a white card with the marks above the figures and the dashboard link floating beside it; they are now `FactStrip variant=\"bar\"` — white on blue, the caption above each figure, a rule between the cells, \"Crore\" set a size down beside its number, and \"View Dashboard\" in a cell of its own with `tone=\"inverse\"` because the ground under it is brand. On a phone the cells stack with a horizontal rule between them and the action falls to the foot."
+}

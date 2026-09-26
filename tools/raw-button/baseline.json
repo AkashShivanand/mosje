@@ -3,8 +3,8 @@
   "capturedOn": "2026-09-22",
   "total": 53,
   "files": {
-    "apps/hub/src/app/website/nmba-options/page.tsx": 1,
-    "apps/hub/src/app/website/nmba-placement-preview/page.tsx": 1,
+    "apps/hub/src/app/website-classic/nmba-options/page.tsx": 1,
+    "apps/hub/src/app/website-classic/nmba-placement-preview/page.tsx": 1,
     "apps/hub/src/components/website/ActivityCorner.tsx": 3,
     "apps/hub/src/components/website/CarouselIndicators.tsx": 1,
     "apps/hub/src/components/website/DataModePanel.tsx": 2,

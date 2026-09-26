@@ -3,7 +3,7 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { IconButton } from "../actions/icon-button";
-import { useCornerRailOffset } from "../../foundations/corner-rail";
+import { useCornerRailOffset, useRailClearance } from "../../foundations/corner-rail";
 import "./back-to-top.css";
 
 export interface BackToTopProps {
@@ -71,7 +71,15 @@ export function BackToTop({
   // Writes --sa-corner-rail-bottom onto the element from live occupancy. Never
   // hard-code the offset: the chatbot panel's max-height subtracts it, and the
   // one time it was assumed the panel opened with its header off-screen.
-  useCornerRailOffset(ref);
+  /* `active` is what makes this work at all: the control is not in the DOM until
+     the reader has scrolled past `showAfter`, and without it the rail measured a
+     null ref once and never again — so this landed on the assistant's launcher
+     instead of above it. */
+  useCornerRailOffset(ref, { active: shown });
+  /* Transient, so it gives way over a surface marked `data-sa-rail-clear`
+     (floating-element-placement.md). The statutory accessibility control never
+     does; this is not that. */
+  useRailClearance(ref, shown);
 
   /**
    * The scroller is resolved LAZILY, not once at mount.

@@ -2,8 +2,10 @@
  * Builds the website's search index by DERIVING it from the content layer.
  *
  * Nothing here retypes a fact. Organisations, divisions and officials come from
- * `data/website/`; schemes, documents, tenders, vacancies and organisation
- * profiles come from the ingested catalogue in `content/website/`; the 81 static
+ * `data/website/`; schemes from the scheme master (`lib/website-next/schemes.ts`)
+ * and the old-site listings that are pages of their own; documents, tenders,
+ * vacancies and organisation profiles from the ingested catalogue in
+ * `content/website/`; the 81 static
  * routes come from `static-pages.generated.ts`, which is generated from the pages
  * themselves and gated by `npm run check:search-index`.
  *
@@ -30,6 +32,9 @@ import {
   getVacancies,
   getOfficials,
 } from "@/lib/website/content";
+import { SCHEMES } from "@/lib/website-next/schemes";
+import { displayName, offeringLabel, personaLabel } from "@/lib/website-next/scheme-view";
+import { isIndexableLegacy, legacyTitle, legacyTitlesByMaster } from "@/lib/website-next/legacy-schemes";
 import { STATIC_PAGES } from "./static-pages.generated";
 import { citizenKeywordsFor } from "./vocabulary";
 import type { WebsiteSearchEntry } from "./types";
@@ -64,6 +69,15 @@ function snippet(sections: { html: string }[] | undefined, max = 180): string {
 function slugWords(slug: string): string {
   return slug.replace(/[/-]/g, " ");
 }
+
+/**
+ * A master scheme whose title contains the query outranks an old-site listing
+ * whose title starts with it (400 × 1.25 × 1.6 = 800 against 600 × 1.25 × 0.6 =
+ * 450). A listing whose title IS the query (750) still outranks a master scheme
+ * that matches only on its keywords (500): the reader typed that listing's name.
+ */
+const MASTER_SCHEME_BOOST = 1.6;
+const LEGACY_SCHEME_BOOST = 0.6;
 
 function buildIndex(): WebsiteSearchEntry[] {
   const entries: WebsiteSearchEntry[] = [];
@@ -171,20 +185,56 @@ function buildIndex(): WebsiteSearchEntry[] {
     });
   }
 
-  /* ── Schemes ──────────────────────────────────────────────────────────────
-     The part the vocabulary exists for. Every scheme inherits the citizen words
-     of every concept its title or text matches, so "school money" reaches a
-     pre-matric scholarship whose own title contains neither word. */
-  for (const scheme of getSchemes()) {
-    const body = snippet(scheme.sections);
+  /* ── Schemes of the Department, from the scheme master ───────────────────
+     The 38 Annual Report-sourced schemes are the answer to "which scheme", so
+     they are first-class results at their own pages and outrank every old-site
+     listing (the boost). Everything the finder shows is searchable here too: the
+     umbrella, what it provides, whom it names, the groups and kinds of support.
+     The old-site listings that ARE one of these schemes are not indexed on their
+     own (they redirect to it); their titles become this entry's other names, so
+     "Central Sector Scheme of National Overseas Scholarship" still finds NOS. */
+  const aliases = legacyTitlesByMaster();
+  for (const scheme of SCHEMES) {
+    const other = aliases.get(scheme.id) ?? [];
     entries.push({
-      title: scheme.title,
+      title: displayName(scheme),
+      description: scheme.provides,
+      href: `/website/schemes-services/${scheme.id}`,
+      keywords: [
+        "scheme yojana योजना",
+        slugWords(scheme.id),
+        scheme.umbrella ?? "",
+        scheme.type,
+        scheme.named,
+        scheme.who.map(personaLabel).join(" "),
+        scheme.offers.map(offeringLabel).join(" "),
+        other.join(" "),
+        citizenKeywordsFor(scheme.name, `${scheme.provides} ${scheme.named} ${other.join(" ")}`),
+      ].join(" "),
+      type: "scheme",
+      section: "Find a Scheme",
+      iconName: "volunteer_activism",
+      boost: MASTER_SCHEME_BOOST,
+    });
+  }
+
+  /* ── Old-site scheme listings that are pages of their own ──────────────────
+     Only those that are not a master scheme, not a State Government scheme and
+     not empty (legacy-schemes.ts decides, and the scheme route reads the same
+     decision). They rank below the master schemes at the same match strength. */
+  for (const scheme of getSchemes()) {
+    if (!isIndexableLegacy(scheme)) continue;
+    const body = snippet(scheme.sections);
+    const title = legacyTitle(scheme.title);
+    entries.push({
+      title,
       description: body,
       href: `/website/schemes-services/${scheme.slug}`,
-      keywords: `scheme yojana योजना ${slugWords(scheme.slug)} ${scheme.targetGroup?.join(" ") ?? ""} ${citizenKeywordsFor(scheme.title, body)}`,
+      keywords: `scheme yojana योजना ${slugWords(scheme.slug)} ${scheme.targetGroup?.join(" ") ?? ""} ${citizenKeywordsFor(title, body)}`,
       type: "scheme",
       section: scheme.category ?? "Schemes",
       iconName: "volunteer_activism",
+      boost: LEGACY_SCHEME_BOOST,
     });
   }
 

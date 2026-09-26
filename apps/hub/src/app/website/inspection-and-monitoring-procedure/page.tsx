@@ -1,62 +1,83 @@
 import type { Metadata } from "next";
-import { ContentPage } from "@/components/website/templates/ContentPage";
+import { ContentPage } from "@/components/website-next/templates/ContentPage";
+
+const TITLE = "Inspection and Monitoring Procedure";
+const DESCRIPTION =
+  "How the Department inspects and monitors the working of voluntary organisations assisted through grant-in-aid.";
 
 export const metadata: Metadata = {
-  title: "Inspection and Monitoring Procedure",
-  description:
-    "How the Department of Social Justice & Empowerment inspects and monitors projects funded through grant-in-aid to voluntary organisations.",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
 };
 
+/* Body text: dosje.gov.in/inspection-and-monitoring-procedure/ as published, read 21 Sep 2026 —
+   a single numbered list, no sub-headings on the live page. Typos corrected: "State Panel /
+   State Government.The" -> "State Panel / State Government. The" (missing space after full
+   stop); "such tasks.Keeping" -> "such tasks. Keeping"; "on half yearly basis.This shall
+   enable comparisonwith" -> "on half yearly basis. This shall enable comparison with";
+   "Institues" -> "Institutes"; "assisted Voluntary Organization.These agencies" -> "assisted
+   Voluntary Organization. These agencies". */
 export default function Page() {
   return (
     <ContentPage
-      title="Inspection and Monitoring Procedure"
-      breadcrumb={[{ label: "Department" }, { label: "Inspection and Monitoring Procedure" }]}
-      description="The mechanisms used to verify that grant-aided projects are implemented as sanctioned and deliver intended benefits to the target groups."
+      title={TITLE}
+      breadcrumb={[
+        { label: "Tenders & Vacancies" },
+        { label: "Grants to Voluntary Organisations", href: "/website/grants-in-aid-to-ngos-faqs" },
+        { label: TITLE },
+      ]}
+      description={DESCRIPTION}
       lastUpdated="06 Jun 2026"
     >
-      <h2>Purpose</h2>
-      <p>
-        Inspection and monitoring ensure that funds released to voluntary organisations are used for the
-        sanctioned purpose, that projects are implemented to standard, and that the intended beneficiaries
-        actually receive the benefits. Monitoring is continuous and combines documentary review with field
-        verification.
-      </p>
-
-      <h2>Methods of Monitoring</h2>
-      <ul>
+      <ol>
         <li>
-          <strong>Documentary monitoring</strong> — examination of progress reports, utilisation
-          certificates, audited accounts and beneficiary data submitted by the organisation.
+          State-wise panels would be prepared by each Bureau / NGO Division. The application for the
+          new projects would be sanctioned on the recommendation of the State Panel / State Government.
         </li>
         <li>
-          <strong>Field inspection</strong> — site visits by officers of the Department, the State
-          Government, or the District administration to verify physical and financial progress.
+          The assisted voluntary organization would be required to submit annual reports in the
+          prescribed format indicating physical achievements and utilization progress regarding
+          released funds.
         </li>
         <li>
-          <strong>Third-party evaluation</strong> — periodic independent evaluation of major or
-          long-running projects by accredited institutions.
+          In addition, voluntary organizations shall be required to incorporate in their report the
+          actual number of beneficiaries who may have been rehabilitated in different callings where
+          the voluntary organizations are involved in such tasks. Keeping data on this aspect also
+          would help the Ministry to make an assessment of the impact of its policies on the ultimate
+          beneficiary and also help in grading voluntary organizations.
         </li>
         <li>
-          <strong>Portal-based tracking</strong> — online monitoring of releases and outcomes through PFMS
-          and the scheme management system.
+          The Annual Report that would be submitted shall include the details of the entire gamut of
+          their activities and the financial assistance they may be receiving from all the sources for
+          all the projects they are undertaking. Financial assistance received under any head may also
+          be included in the report with the purpose for which the assistance may have been extended.
         </li>
-      </ul>
-
-      <h2>Inspection Process</h2>
-      <ul>
-        <li>Inspections may be scheduled or conducted at short notice; the organisation shall extend full cooperation.</li>
-        <li>Inspecting officers verify records, attendance, infrastructure, and a sample of beneficiaries.</li>
-        <li>An inspection report is prepared noting compliance, shortfalls and corrective action required.</li>
-        <li>The organisation is given an opportunity to respond to observations and rectify deficiencies.</li>
-      </ul>
-
-      <h2>Follow-up</h2>
-      <p>
-        Findings feed directly into decisions on the release of further instalments and on renewal of
-        assistance. Persistent or serious irregularities are escalated for recovery, suspension or other
-        action in accordance with the applicable guidelines.
-      </p>
+        <li>Periodic interaction on regional basis between voluntary organizations, beneficiaries, and Ministry&apos;s officials should be arranged.</li>
+        <li>Whenever funds are released, information about it should be sent to the District authorities, Zila Parishad, the MP and MLA representing the region.</li>
+        <li>
+          In a prescribed format, the voluntary organization should report the progress achieved on
+          half yearly basis. This shall enable comparison with the project projections that may have
+          made at the beginning of the year.
+        </li>
+        <li>
+          State-wise panels of designated agencies would be prepared by each bureau/NGO Division for
+          carrying out periodic physical inspection of the working of the assisted Voluntary
+          Organization. These agencies could be the National Institutes, Institutes of Social work
+          Universities etc. in the respective States.
+        </li>
+        <li>For ongoing projects, inspection would be carried out by teams deputed by the designated agency for this purpose.</li>
+        <li>Inspection would be carried out by Ministry officials each year in 5% of the cases.</li>
+        <li>
+          The designated agency would be released an amount of Rs. 3000/- per month or the amount that
+          may be agreed upon for the maintenance of records and would perform its role as such for a
+          period of two years.
+        </li>
+        <li>
+          The inspection team from the designated agency shall also be paid remuneration that would not
+          exceed 1% of the assistance that is being given to the NGO and which would further be subject
+          to the ceilings prescribed from time to time by the Ministry.
+        </li>
+      </ol>
     </ContentPage>
   );
 }

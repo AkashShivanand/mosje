@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "THE MASTHEAD'S DEPARTMENT LINE AND THE MENU PANELS' SHADOW NOW MATCH THE LIBRARY. Two register items were written up as resolved in Figma and code when only Figma had changed. TYP-10: `BrandLockup` publishes the department line at `Headline/headline-6` (16/24, flat) on tablet and desktop, while the code carried `headline-5` — fluid 18–20 — so the masthead's height moved with the viewport; the mobile and compact rungs were already `Title/title-3` and are unchanged. BRD-17: `Navbar/MegaMenu` and `Navbar/NavDropdown` both bind `elevation/dropdown`, while both panels in code drew `elevation/modal`; a menu panel is a dropdown, not a sheet, so both are corrected together."
+}

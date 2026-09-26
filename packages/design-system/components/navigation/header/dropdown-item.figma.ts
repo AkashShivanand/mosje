@@ -5,17 +5,19 @@
 // One row inside a simple nav dropdown.
 //
 // PROPERTY COVERAGE
-//   Active -> item.active
+//   Active   -> item.active
+//   External -> item.external
 //   State  -> deliberatelyOmitted. Hover / Focused / Disabled are CSS states, not
 //             props a caller sets.
 import figma from "figma";
 
 const instance = figma.selectedInstance;
 const active = instance.getEnum("Active", { True: "true", False: "false" });
+const external = instance.getBoolean("External#58753:8");
 
 export default {
   example: figma.code`<DropdownItem
-  item={{ label: "About Us", href: "/about-us", active: ${active} }}
+  item={{ label: "About Us", href: "/about-us", active: ${active}, external: ${external} }}
   onSelect={close}
 />`,
   imports: ['import { DropdownItem } from "@mosje/design-system"'],

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { RecordDetail } from "@/components/website/templates/RecordDetail";
+import { RecordDetail } from "@/components/website-next/templates/RecordDetail";
 import { getContentSyncedDate, getCpio, getCpios } from "@/lib/website/content";
 import { facts } from "@/lib/website/record-facts";
 import { socialCard } from "@/lib/seo/social";
@@ -42,7 +42,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       title={officer.name ?? officer.title}
       badge="Central Public Information Officer"
       breadcrumb={[
-        { label: "Connect" },
+        { label: "Contact" },
         { label: "CPIO", href: "/website/cpio" },
         { label: officer.name ?? officer.title },
       ]}

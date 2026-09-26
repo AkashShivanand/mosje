@@ -37,11 +37,15 @@ import {
  *
  * ── WHAT IT CANNOT ANSWER, AND WHERE THAT IS SAID ───────────────────────────
  *
- * 487 of the 768 centres published nationally carry usable coordinates, and 8
- * of those 487 are published at a point outside India. Those 8 keep their place
+ * 483 of the 768 centres published nationally carry usable coordinates, and 5
+ * of those 483 are published at a point outside India. Those 5 keep their place
  * in the LIST — they are real centres with real addresses — and are not drawn.
  * `normaliseGeo` and `isPlottable` own that, and they are applied here at unpack
  * time so no caller can forget them.
+ *
+ * The figures were 487 and 8 until 24 Sep 2026, counted off the feed's rows
+ * rather than off its centres: four rows are exact copies of another, three of
+ * them among the eight sitting outside India.
  */
 
 /** The committed asset's shape. `asOn` is the day the feed was last mirrored. */
@@ -77,15 +81,39 @@ export interface CentresIndex {
   retry: () => void;
 }
 
-/** Rows → the shape the UI reads, geo-corrected once, here. */
+/**
+ * Rows → the shape the UI reads, geo-corrected AND de-duplicated once, here.
+ *
+ * THE FEED PUBLISHES FOUR CENTRES TWICE. 487 rows carry 483 distinct centres:
+ * four ODIC records repeat with every field identical — same name, type,
+ * address, district, state and coordinates. A record with nothing to tell it
+ * from another is not a second centre, it is the same one listed twice, and
+ * shipping it that way puts one centre in the list twice and stacks two pins on
+ * one point. It is the same call `dedupeNotices` makes for a notice the
+ * register publishes twice.
+ *
+ * NOTHING THAT DIFFERS IS TOUCHED. Eight more pairs share a name and a point
+ * while differing in type or address — an IRCA on the ground floor of a
+ * building and an SLCA on its first floor are two centres a citizen may need
+ * separately, so the comparison is every field, not a chosen few.
+ *
+ * Here, at unpack time, so no caller can forget it — as `normaliseGeo` is.
+ */
 function unpack(body: CentresAsset | null): DeAddictionCentre[] {
   const rows = Array.isArray(body?.centres) ? body.centres : [];
+  const seen = new Set<string>();
   return rows
     .filter(
       (c): c is DeAddictionCentre =>
         !!c && typeof c.name === "string" && typeof c.state === "string",
     )
-    .map(normaliseGeo);
+    .map(normaliseGeo)
+    .filter((c) => {
+      const whole = `${c.type}|${c.name}|${c.address}|${c.district}|${c.state}|${c.lat}|${c.lng}`;
+      if (seen.has(whole)) return false;
+      seen.add(whole);
+      return true;
+    });
 }
 
 function load(signal: AbortSignal): Promise<DeAddictionCentre[]> {

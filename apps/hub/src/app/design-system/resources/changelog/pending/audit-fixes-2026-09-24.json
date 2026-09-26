@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "THREE FINDINGS FROM THE HOME-PAGE AUDIT. (1) The carousel's rotation control wrapped: the controls row is a `1fr auto 1fr` grid, so at 375 the lead column squeezed the control to 52px and \"Pause\" broke to \"Pa / use\" on the first screen of every phone visit. The label sets that control's width by design, so it now refuses to wrap and the dot cluster gives up the space — the dots already wrap to a second row. (2) The first banner slide loads eagerly: Next had been reporting it as the Largest Contentful Paint while it waited behind the lazy loader; only the first, since the rest sit behind it. (3) The SAMAVESH banner's mark declared 78x80 for a file that is 120x120 square, so Next computed its width from an aspect ratio the image does not have — it declares the real size now, and CSS still sets the drawn size."
+}

@@ -2,8 +2,8 @@
   "file": "3FF5l0SMNIwdpZrKkeyPTm",
   "indexPage": "56757:725",
   "indexFrame": "56757:726",
-  "capturedOn": "2026-09-18",
-  "statLine": "97 pages · 223 components · counted 18 September 2026",
+  "capturedOn": "2026-09-22",
+  "statLine": "98 pages · 209 components · counted 22 September 2026",
   "statuses": [
     "Ready",
     "Published",
@@ -34,8 +34,10 @@
     ],
     "special": [
       "Thumbnail",
-      "Index"
-    ]
+      "Index",
+      "Archive — Deprecated"
+    ],
+    "$note": "`Archive — Deprecated` (2026-09-22) is scaffolding: it holds retired masters that nothing new may place, so it has no card."
   },
   "contentPages": [
     "Get Started",
@@ -57,7 +59,7 @@
     "Split Button",
     "Link",
     "Checkbox",
-    "Chips",
+    "Chip",
     "Color Picker",
     "Date-Time Picker",
     "Date Range Picker",
@@ -84,7 +86,7 @@
     "Document Placement Tray",
     "Document History Sheet",
     "Accordion",
-    "Breadcrumbs",
+    "Breadcrumb",
     "Language Switcher",
     "Menu",
     "Pagination",
@@ -92,28 +94,29 @@
     "Stepper",
     "Tabs",
     "Action Banner",
-    "Alerts/Toasts",
+    "Alert & Toast",
     "Chatbot",
     "Empty State",
     "Feedback Widget",
     "Cookie Consent",
     "Loader",
-    "Progress Indicators",
+    "Progress Indicator",
     "Ticker",
     "Modal",
     "Side Sheet",
     "Popover",
     "Tooltip",
-    "Avatars",
-    "Badges",
+    "Avatar",
+    "Badge",
     "Bulk Actions Bar",
     "Card",
-    "Charts & Graphs",
+    "Chart",
     "Comment",
     "Description List",
     "Event List",
     "Fact Strip",
     "Figure",
+    "Media Thumbnail",
     "List",
     "File List",
     "Map of India",
@@ -121,7 +124,7 @@
     "Transfer List",
     "Schedule Grid",
     "Video Tile",
-    "Tables",
+    "Table",
     "Accessibility Bar",
     "Back to Top",
     "Cursor",
@@ -300,7 +303,7 @@
           "linked": true
         },
         {
-          "name": "Chips",
+          "name": "Chip",
           "status": "Published",
           "linked": true
         },
@@ -396,7 +399,7 @@
           "linked": true
         },
         {
-          "name": "Breadcrumbs",
+          "name": "Breadcrumb",
           "status": "Published",
           "linked": true
         },
@@ -442,12 +445,12 @@
           "linked": true
         },
         {
-          "name": "Alerts/Toasts",
+          "name": "Alert & Toast",
           "status": "Published",
           "linked": true
         },
         {
-          "name": "Progress Indicators",
+          "name": "Progress Indicator",
           "status": "Published",
           "linked": true
         },
@@ -511,7 +514,7 @@
     },
     {
       "name": "Data Display",
-      "stated": 18,
+      "stated": 19,
       "cards": [
         {
           "name": "Card",
@@ -519,7 +522,7 @@
           "linked": true
         },
         {
-          "name": "Tables",
+          "name": "Table",
           "status": "Ready",
           "linked": true
         },
@@ -529,7 +532,7 @@
           "linked": true
         },
         {
-          "name": "Charts & Graphs",
+          "name": "Chart",
           "status": "Ready",
           "linked": true
         },
@@ -539,12 +542,12 @@
           "linked": true
         },
         {
-          "name": "Avatars",
+          "name": "Avatar",
           "status": "Published",
           "linked": true
         },
         {
-          "name": "Badges",
+          "name": "Badge",
           "status": "Published",
           "linked": true
         },
@@ -565,6 +568,11 @@
         },
         {
           "name": "Figure",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Media Thumbnail",
           "status": "Ready",
           "linked": true
         },

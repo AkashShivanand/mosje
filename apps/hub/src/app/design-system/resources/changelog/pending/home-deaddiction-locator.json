@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "THE HOME PAGE CARRIES THE DE-ADDICTION CENTRE LOCATOR. The live home page has it and so does Figma (\"Home — Secretary Review\", the Nasha Mukt Bharat Abhiyaan Map block); the redesign had built the tool and then mounted it only on its own page, so the one thing on the home page a citizen may be looking for at the moment they need it was two clicks away. It sits after the personas and before the Activity Corner, where both the live page and Figma put it. `CentreLocator` gains `pageSize`: five rows on the home, ten where the locator is the whole page. Weight is unchanged for a reader who never scrolls that far — the register is fetched only as the section nears the viewport, and nothing is bundled for it."
+}

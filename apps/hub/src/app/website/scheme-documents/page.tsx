@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { RecordLibrary } from "@/components/website/templates/RecordLibrary";
+import { RecordLibrary } from "@/components/website-next/templates/RecordLibrary";
 import { getContentSyncedDate, getSchemeDocuments } from "@/lib/website/content";
 import { socialCard } from "@/lib/seo/social";
 

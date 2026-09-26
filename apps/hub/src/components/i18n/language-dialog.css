@@ -20,7 +20,10 @@
 
   @media (min-width: 768px) {
     .lang-dialog__list {
-      grid-template-columns: 1fr 1fr;
+      /* minmax(0, …): a plain 1fr cannot shrink below its longest option
+         ("മലയാളം Malayalam Live site"), which pushed the right column 4px past
+         the dialog's edge at every width. */
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
@@ -32,10 +35,13 @@
     align-items: baseline;
     justify-content: flex-start;
     gap: var(--sa-inline-8);
+    width: 100%;
+    min-width: 0;
     /* 48px of height at rest — the estate's touch target, and these rows carry
-       scripts a reader may be squinting at. */
+       scripts a reader may be squinting at. `height: auto` undoes the Button's
+       own fixed height, which would otherwise clip a wrapped row. */
     height: auto;
-    min-height: 48px;
+    min-height: var(--sa-target-spacious);
     padding: var(--sa-padding-12) var(--sa-padding-16);
     text-align: start;
     white-space: normal;

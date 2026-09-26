@@ -1,0 +1,675 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   The website home page — LAYOUT ONLY.
+
+   Every surface on this page is a design-system component: Band for the
+   sections, ActionTile for the tiles, FactStrip for the figures, Carousel for
+   the banners, Badge for What's New, SectionTitle for the headings. This file
+   places them. The literals left are layout geometry no token models (a column
+   minimum, an image ratio, a portrait box) — each named where it sits.
+   Prefix: wn-home-.
+   ───────────────────────────────────────────────────────────────────────────── */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* "View All …" beside a heading or under a list: standalone, not in running
+     text, so it carries an arrow at rest and the underline answers the pointer. */
+  .wn-home-more {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    min-height: var(--sa-target-comfortable);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-link-brand-default);
+    text-decoration: none;
+  }
+  .wn-home-more:hover { color: var(--sa-text-link-brand-hover); text-decoration: underline; text-underline-offset: 0.25em; }
+  .wn-home-more:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: var(--sa-focus-offset); border-radius: var(--sa-shape-4); }
+
+  /* A list of plain links, one per row, with a rule between — support kinds,
+     About links, divisions. */
+  .wn-home-links { display: grid; margin-top: var(--sa-stack-16); border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); }
+  @media (min-width: 768px) {
+    .wn-home-links--two { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--sa-inline-32); border-top: 0; }
+    .wn-home-links--two > li:nth-child(-n + 2) { border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); }
+  }
+  .wn-home-links > li { border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); }
+  .wn-home-link {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--sa-inline-12);
+    min-height: var(--sa-target-spacious);
+    padding-block: var(--sa-padding-8);
+    color: var(--sa-text-link-brand-default);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+  .wn-home-link:has(.wn-home-link__icon) { grid-template-columns: auto minmax(0, 1fr) auto; }
+  .wn-home-link__icon { display: inline-flex; color: var(--sa-icon-brand-primary-bolder); }
+  .wn-home-link:hover .wn-home-link__label { text-decoration: underline; text-underline-offset: 0.2em; }
+  .wn-home-link:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: var(--sa-focus-offset); }
+
+  /* ── Banner carousel, 1800×600 (DBIM §A.4.1 ii) ──────────────────────────── */
+  .wn-home-banner { background: var(--sa-bg-neutral-base); padding-bottom: var(--sa-padding-12); }
+  .wn-home-banner .ds-carousel__viewport { border-radius: 0; }
+  .wn-home-banner .ds-carousel__controls { padding-inline: var(--sa-grid-margin-page); }
+  /* From tablet the controls ride the banner in a pill. Its right edge is the
+     PAGE's right edge — the edge the Login button and the announcements bar
+     above and below it end on — not 16px from a full-bleed photograph's edge,
+     where it hung outside the column at every width. Below 1280 the website
+     column also clears the right-wall rail, and so does the pill. */
+  @media (min-width: 768px) {
+    .wn-home-banner .ds-carousel__controls {
+      padding-inline: var(--sa-padding-4);
+      inset-inline-end: calc(max(0px, (100% - var(--sa-container-page)) / 2) + var(--sa-wall-clearance));
+    }
+  }
+  @media (min-width: 1280px) {
+    .wn-home-banner .ds-carousel__controls {
+      inset-inline-end: calc(max(0px, (100% - var(--sa-container-page)) / 2) + var(--sa-grid-margin-page));
+    }
+  }
+  /* The ground shows while a banner decodes on a slow connection, and stays if
+     it never arrives — a tinted 3:1 band, not a white hole in the page. */
+  .wn-home-banner__img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 1; object-fit: cover; background-color: var(--sa-bg-neutral-subtler); }
+  .wn-home-banner a:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: calc(-1 * var(--sa-focus-width)); }
+
+  /* ── The figures bar, under the scheme portals ───────────────────────────
+     The bar is `FactStrip variant="bar"`, which owns its own ground, its rules
+     and its cells; all this adds is the space between it and the portals. */
+  .wn-home-glance { margin-top: var(--sa-stack-48); }
+
+  /* ── Scheme Portals ──────────────────────────────────────────────────────
+     Six cards on one row at desktop, the mark over the abbreviation over the
+     full name, as the design draws them. The abbreviation leads because that is
+     what the portal is called; the name under it answers "which one is that?".
+     The count is fixed at six by the registry, so the track count is stated
+     rather than auto-fitted — auto-fit puts five on a row and one alone. */
+  .wn-home-portals {
+    display: grid;
+    gap: var(--sa-stack-16);
+    margin-top: var(--sa-stack-32);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @media (min-width: 768px) { .wn-home-portals { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 1024px) { .wn-home-portals { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--sa-inline-16); } }
+  .wn-home-portals > li { display: grid; }
+  .wn-home-portal {
+    display: grid;
+    justify-items: center;
+    align-content: start;
+    gap: var(--sa-stack-8);
+    height: 100%;
+    padding: var(--sa-padding-20) var(--sa-padding-12);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-bolder);
+    text-align: center;
+    transition: border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+  .wn-home-portal:hover { border-color: var(--sa-border-brand-primary-base); }
+  .wn-home-portal:hover .wn-home-portal__abbr { text-decoration: underline; text-underline-offset: 0.2em; }
+  .wn-home-portal:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: var(--sa-focus-offset); }
+  .wn-home-portal__mark { display: grid; place-items: center; width: 56px; height: 56px; overflow: hidden; }
+  .wn-home-portal__mark img { width: 100%; height: 100%; object-fit: contain; }
+  .wn-home-portal__abbr { font-size: var(--sa-type-title-2-size); line-height: var(--sa-type-title-2-lh); font-weight: var(--sa-font-weight-semibold); }
+  .wn-home-portal__name { font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); color: var(--sa-text-neutral-subtle); }
+
+  /* The one rule left from the old What's New section: a list that has nothing
+     to say. Activity and Recent Documents both render it; What's New itself
+     became the column inside Our Offerings on 24 Sep 2026. */
+  .wn-home-news__empty { padding-block: var(--sa-padding-16); color: var(--sa-text-neutral-subtle); }
+
+  /* ── Documents ───────────────────────────────────────────────────────────── */
+  /* Two columns from 1024, as the design draws them: the documents, and the
+     roles beside them. One column below that — the role panel is a card of its
+     own and reads perfectly well under the documents on a phone. */
+  /* `minmax(0, 1fr)`, NOT the implicit `auto` track. An auto track takes the
+     largest min-content of its items, and the role panel's carousel reports the
+     width of all four slides laid end to end — 944px inside a 343px phone, so
+     the documents column and the heading beside it were both cut off at the
+     right edge. The same reason `.wn-roles` is min-width 0: a grid item's
+     default `min-width: auto` refuses to shrink below its content. */
+  .wn-home-docgrid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sa-stack-40); }
+  @media (min-width: 1024px) { .wn-home-docgrid { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: var(--sa-inline-40); align-items: start; } }
+  .wn-home-docgrid__main { min-width: 0; }
+
+  /* Two across inside the left column, never four: the column is two thirds of
+     the page now, and four cards in it are 150px wide. */
+  .wn-home-docs { display: grid; gap: var(--sa-stack-16); margin-top: var(--sa-stack-32); }
+  @media (min-width: 768px) { .wn-home-docs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .wn-home-doc {
+    display: grid;
+    align-content: start;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-20);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-base);
+  }
+  .wn-home-doc__title { font-size: var(--sa-type-title-2-size); line-height: var(--sa-type-title-2-lh); font-weight: var(--sa-font-weight-semibold); }
+  .wn-home-doc__link { color: var(--sa-text-neutral-bolder); }
+  .wn-home-doc__link:hover { color: var(--sa-text-link-brand-hover); text-decoration: underline; text-underline-offset: 0.2em; }
+  .wn-home-doc__link:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: var(--sa-focus-offset); border-radius: var(--sa-shape-4); }
+  .wn-home-doc__meta { font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); color: var(--sa-text-neutral-subtle); }
+  /* The actions sit at the foot of the card whatever the title's length, so a
+     row of cards has one line of buttons rather than four heights of them. */
+  .wn-home-doc__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--sa-inline-8); margin-top: auto; padding-top: var(--sa-padding-8); }
+
+  .wn-home-doclinks ul { display: flex; flex-wrap: wrap; gap: 0 var(--sa-inline-24); margin-top: var(--sa-stack-16); }
+
+  /* ── Explore Specific Benefits — the roles, one at a time ────────────────── */
+  .wn-roles {
+    min-width: 0;
+    padding: var(--sa-padding-24);
+    border-radius: var(--sa-shape-20);
+    background: var(--sa-bg-brand-primary-bolder);
+    color: var(--sa-on-bg-brand-primary-bolder);
+    text-align: center;
+  }
+  .wn-roles__title { font-size: var(--sa-type-headline-4-size); line-height: var(--sa-type-headline-4-lh); font-weight: var(--sa-font-weight-semibold); }
+  .wn-roles__lede {
+    margin-top: var(--sa-stack-12);
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-bg-brand-primary-boldest);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+  .wn-roles__carousel { margin-top: var(--sa-stack-16); }
+  .wn-role {
+    display: grid;
+    justify-items: center;
+    gap: var(--sa-stack-12);
+    padding: var(--sa-padding-16);
+    border-radius: var(--sa-shape-16);
+    background: var(--sa-bg-brand-primary-boldest);
+    color: var(--sa-on-bg-brand-primary-boldest);
+  }
+  .wn-role__art { display: grid; place-items: center; width: 180px; height: 180px; }
+  .wn-role__art img { width: 100%; height: 100%; object-fit: contain; }
+  .wn-role__label { display: inline-flex; align-items: center; gap: var(--sa-inline-8); font-size: var(--sa-type-title-2-size); line-height: var(--sa-type-title-2-lh); font-weight: var(--sa-font-weight-semibold); }
+  .wn-role:hover .wn-role__label { text-decoration: underline; text-underline-offset: 0.2em; }
+  .wn-role:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ringInner); outline-offset: var(--sa-focus-offset); }
+
+  /* ── Events and media ────────────────────────────────────────────────────── */
+  .wn-home-activity { display: grid; gap: var(--sa-stack-40); margin-top: var(--sa-stack-32); }
+  @media (min-width: 1024px) { .wn-home-activity { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--sa-inline-48); } }
+  .wn-home-activity__col { display: grid; align-content: start; gap: var(--sa-stack-16); }
+  .wn-home-activity__title { font-size: var(--sa-type-title-1-size); line-height: var(--sa-type-title-1-lh); font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-neutral-bolder); }
+  [data-design="next"] .wn-events.wn-home-activity__events { margin: 0; grid-template-columns: 1fr; }
+  [data-design="next"] .wn-albums.wn-home-activity__albums { margin: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  /* ── About the Department ────────────────────────────────────────────────── */
+  .wn-home-about { display: grid; gap: var(--sa-stack-40); align-items: start; }
+  /* The copy takes the larger column, as the design draws it (793 against 456
+     on a 1440 frame). It was the other way round, which squeezed the three
+     links into cells too narrow for "Our Ministry" to stay on one line. */
+  @media (min-width: 1024px) { .wn-home-about { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--sa-inline-64); } }
+  .wn-home-about__lead { margin-top: var(--sa-stack-16); font-size: var(--sa-type-body-1-size); line-height: var(--sa-type-body-1-lh); color: var(--sa-text-neutral-base); }
+
+  /* The Ministry's own line, quoted: a saffron wash behind it and the brand's
+     secondary rule down its leading edge, as the design draws it. Italic
+     because it is quoted speech, not the page's own voice. */
+  .wn-home-about__quote {
+    margin-top: var(--sa-stack-24);
+    padding: var(--sa-padding-16) var(--sa-padding-20);
+    /* THE EDGE IS A PAINTED SURFACE, SO IT BINDS TO ONE. The estate publishes
+       no `border/brand/secondary/*` rung at all — the secondary family has
+       `bg/*`, `on-bg/*` and one `icon/*` and nothing else — and a 4px saffron
+       bar is a filled shape rather than a hairline, so it takes the background
+       rung whose value the design draws. The ramp wants a secondary border
+       family; recorded here rather than solved with a hex. */
+    border-inline-start: var(--sa-stroke-4) solid var(--sa-bg-brand-secondary-bolder);
+    background: var(--sa-bg-brand-secondary-base);
+    color: var(--sa-on-bg-brand-secondary-base);
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    font-style: italic;
+  }
+
+  /* Three doors in a row, each a bordered cell with a chevron — the design's
+     shape, and the reason they are not the plain ruled list the divisions use:
+     these three are the section's own actions, not a directory. */
+  .wn-home-about__links { display: grid; gap: var(--sa-stack-12); margin-top: var(--sa-stack-24); }
+  @media (min-width: 768px) { .wn-home-about__links { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .wn-home-about__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-inline-12);
+    min-height: var(--sa-target-spacious);
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-base);
+    color: var(--sa-text-link-brand-default);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+  .wn-home-about__link:hover { border-color: var(--sa-border-brand-primary-base); text-decoration: underline; text-underline-offset: 0.2em; }
+  .wn-home-about__link:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: var(--sa-focus-offset); }
+
+  .wn-home-about__side { display: grid; gap: var(--sa-stack-32); }
+  /* Two across, with the Union Minister's card spanning both. */
+  .wn-home-ministers { display: grid; gap: var(--sa-stack-16); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* The saffron edge binds to the secondary surface rung for the same reason
+     the pull-quote's bar does — see the note there. */
+  .wn-home-minister { display: grid; justify-items: center; gap: var(--sa-stack-4); padding: var(--sa-padding-24) var(--sa-padding-16); border: var(--sa-stroke-1) solid var(--sa-bg-brand-secondary-subtle); border-radius: var(--sa-shape-16); background: var(--sa-bg-neutral-base); text-align: center; }
+  /* The Union Minister: the full width of the pair, portrait beside the name
+     rather than above it, on the saffron wash the design gives him. */
+  .wn-home-minister--lead {
+    grid-column: 1 / -1;
+    grid-template-columns: auto minmax(0, 1fr);
+    place-items: center start;
+    /* The name and the designation are one block beside the portrait, so the
+       rows hug rather than spreading over the portrait's height. */
+    align-content: center;
+    gap: var(--sa-stack-4) var(--sa-inline-24);
+    background: var(--sa-bg-brand-secondary-base);
+    text-align: start;
+  }
+  .wn-home-minister--lead .wn-home-minister__photo { grid-row: 1 / span 2; margin-bottom: 0; }
+  /* A headshot box: DBIM §6.1.4's circular crop, at a size no token models. */
+  .wn-home-minister__photo { display: block; width: 144px; height: 144px; margin-bottom: var(--sa-stack-12); border-radius: var(--sa-shape-full); overflow: hidden; background: var(--sa-bg-neutral-subtle); }
+  .wn-home-minister__photo img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .wn-home-minister__name { font-size: var(--sa-type-title-2-size); line-height: var(--sa-type-title-2-lh); font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-neutral-bolder); }
+  .wn-home-minister__role { font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); color: var(--sa-text-neutral-subtle); text-wrap: balance; }
+  .wn-home-divisions { padding-top: var(--sa-padding-24); border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); }
+
+  /* ── Helplines and support ───────────────────────────────────────────────── */
+  .wn-home-help__list { display: grid; gap: var(--sa-stack-16); margin-top: var(--sa-stack-32); }
+  @media (min-width: 768px) { .wn-home-help__list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sa-stack-24); } }
+  .wn-home-support { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sa-stack-24); margin-top: var(--sa-stack-40); padding-top: var(--sa-padding-32); border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-inverse-subtle); }
+  .wn-home-support__title { font-size: var(--sa-type-headline-4-size); line-height: var(--sa-type-headline-4-lh); font-weight: var(--sa-font-weight-semibold); }
+  .wn-home-support__lead { margin-top: var(--sa-stack-4); font-size: var(--sa-type-body-1-size); line-height: var(--sa-type-body-1-lh); }
+  .wn-home-support__actions { display: flex; flex-wrap: wrap; gap: var(--sa-inline-12); }
+
+  /* ── The Prime Minister's quote (DBIM 3.0 §7.3 iv) ───────────────────────────
+     Figma "05 · PM Quote — Options", Option 1: the department's own pale brand
+     tint, the quote in the darkest brand ink DBIM asks for, the photograph at the
+     right on a chakra that is ornament and nothing else. The band is full-bleed
+     and the content takes `.sa-container`, like every other website section. */
+  .wn-pmq { background-color: var(--sa-bg-brand-primary-subtler); }
+
+  .wn-pmq__in {
+    display: grid;
+    align-items: center;
+    gap: var(--sa-stack-24);
+    padding-top: var(--sa-padding-40);
+    padding-bottom: var(--sa-padding-40);
+  }
+
+  @media (min-width: 768px) {
+    .wn-pmq__in {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 432px);
+      gap: var(--sa-inline-56);
+      padding-top: var(--sa-padding-56);
+      padding-bottom: var(--sa-padding-56);
+    }
+  }
+
+  .wn-pmq__quote { display: grid; gap: var(--sa-stack-24); }
+
+  /* The mark leads the quote rather than sitting behind it: at the band's own
+     `bold` rung it is legible ornament, not a watermark competing with the ink. */
+  .wn-pmq__mark {
+    color: var(--sa-bg-brand-primary-bold);
+    transform: rotate(180deg);
+    justify-self: start;
+  }
+
+  .wn-pmq__text { margin: 0; }
+
+  .wn-pmq__text p {
+    margin: 0;
+    /* Headline 3 in Figma. `text-wrap: pretty` only tidies the last line; the
+       measure is set by the column, which is what keeps it under 80 characters. */
+    font-size: var(--sa-type-headline-3-size);
+    line-height: var(--sa-type-headline-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-brand-primary-bolder);
+    text-wrap: pretty;
+  }
+
+  .wn-pmq__copy {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-stack-16) var(--sa-inline-32);
+    padding-top: var(--sa-padding-12);
+    border-top: var(--sa-stroke-1) solid var(--sa-border-brand-primary-base);
+  }
+
+  .wn-pmq__who {
+    margin: 0;
+    font-size: var(--sa-type-headline-5-size);
+    line-height: var(--sa-type-headline-5-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-base);
+  }
+
+  .wn-pmq__where {
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* The portrait sits on the chakra, both bottom-aligned to the band's floor. */
+  .wn-pmq__figure {
+    position: relative;
+    display: grid;
+    place-items: end center;
+    /* The column, not the image, sets the box: a figure that hugs its content
+       cannot answer `width: min(100%, …)` and the portrait stayed at 200px. */
+    width: 100%;
+  }
+
+  /* Behind the head, not behind the whole figure: at the band's own tint it is a
+     ground for the portrait to stand on, and it must never read as a second mark
+     competing with the emblem in the masthead. */
+  .wn-pmq__chakra {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 8%;
+    width: 78%;
+    height: auto;
+    opacity: 0.6;
+  }
+
+  .wn-pmq__portrait {
+    position: relative;
+    align-self: end;
+    width: min(100%, 240px);
+    height: auto;
+  }
+
+  @media (min-width: 768px) {
+    .wn-pmq__figure { min-height: 300px; }
+    .wn-pmq__portrait { width: min(100%, 360px); }
+  }
+
+  /* ── Take a Pledge ───────────────────────────────────────────────────────────
+     Two rows: the pledges themselves, then the volunteering registers, which ask
+     for more than a signature and are weighted a step below them. No counts —
+     see the component for why. */
+  .wn-home-pledges {
+    display: grid;
+    gap: var(--sa-stack-16);
+    margin: var(--sa-stack-32) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 768px) {
+    .wn-home-pledges {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--sa-stack-24);
+    }
+  }
+
+  .wn-home-pledge {
+    display: grid;
+    align-content: start;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-24);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-16);
+    background-color: var(--sa-bg-neutral-base);
+  }
+
+  .wn-home-pledge > a {
+    justify-self: start;
+    margin-top: var(--sa-stack-8);
+  }
+
+  .wn-home-pledge__eyebrow {
+    margin: 0;
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: var(--sa-font-weight-medium);
+    letter-spacing: var(--sa-type-caps-tracking);
+    text-transform: uppercase;
+    color: var(--sa-text-brand-primary-base);
+  }
+
+  .wn-home-pledge__title {
+    margin: 0;
+    font-size: var(--sa-type-title-1-size);
+    line-height: var(--sa-type-title-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .wn-home-pledge__body {
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-subtle);
+    text-wrap: pretty;
+  }
+
+  /* The volunteering row: quieter ground, a mark, and the copy beside it. */
+  .wn-home-pledges--volunteer { margin-top: var(--sa-stack-16); }
+
+  /* NO FILL, as Figma draws it: the two pledges are white cards on the band's
+     grey and the volunteering row is the quieter pair beneath them, held by its
+     border alone. It was `--sa-bg-neutral-subtler`, which reads as a card only
+     while the band behind it is white — and the band is grey since the NMBA
+     campaign band was removed on 24 Sep 2026. */
+  .wn-home-pledge--volunteer {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: var(--sa-stack-8) var(--sa-inline-16);
+    background-color: transparent;
+  }
+
+  .wn-home-pledge--volunteer > a { grid-column: 2; }
+
+  .wn-home-pledge__mark {
+    display: inline-grid;
+    place-items: center;
+    inline-size: var(--sa-control-height-md);
+    block-size: var(--sa-control-height-md);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-brand-primary-subtler);
+    color: var(--sa-text-brand-primary-bolder);
+  }
+
+  /* ── Our Offerings ───────────────────────────────────────────────────────
+     Two columns from 1024: the tabs and their lists, and What's New beside
+     them. `minmax(0, …)` on both tracks, because a chip row and a notice list
+     both report a min-content wider than a phone. */
+  .wn-off { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sa-stack-40); margin-top: var(--sa-stack-32); }
+  @media (min-width: 1024px) { .wn-off { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: var(--sa-inline-40); align-items: start; } }
+  .wn-off__main { min-width: 0; }
+  .wn-off__bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sa-inline-16); }
+
+  .wn-off__chips { display: flex; flex-wrap: wrap; gap: var(--sa-inline-8); margin-top: var(--sa-stack-24); }
+
+  .wn-off__panel {
+    margin-top: var(--sa-stack-24);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-16);
+    overflow: hidden;
+  }
+  /* The chosen group, on the brand tint: who the rows beneath are for. */
+  .wn-off__who { display: flex; align-items: center; gap: var(--sa-inline-16); padding: var(--sa-padding-20); background: var(--sa-bg-brand-primary-base); }
+  .wn-off__who img { flex: none; width: var(--sa-icon-size-64); height: var(--sa-icon-size-64); object-fit: contain; }
+  .wn-off__who-name { font-size: var(--sa-type-title-1-size); line-height: var(--sa-type-title-1-lh); font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-neutral-bolder); }
+  .wn-off__who-sub { font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); color: var(--sa-text-neutral-subtle); }
+
+  /* Where the group applies, on the saffron wash — one action, above the list
+     of what it can be applied for. */
+  .wn-off__portal { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sa-inline-16); padding: var(--sa-padding-16) var(--sa-padding-20); background: var(--sa-bg-brand-secondary-base); }
+  .wn-off__portal-name { font-size: var(--sa-type-title-2-size); line-height: var(--sa-type-title-2-lh); font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-neutral-bolder); }
+  .wn-off__portal-blurb { font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); color: var(--sa-text-neutral-subtle); }
+
+  .wn-off__scheme { display: grid; gap: var(--sa-stack-8); padding: var(--sa-padding-20); border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); }
+  @media (min-width: 768px) { .wn-off__scheme { grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: var(--sa-inline-24); } }
+  .wn-off__scheme-kind { font-size: var(--sa-type-label-2-size); line-height: var(--sa-type-label-2-lh); font-weight: var(--sa-font-weight-medium); text-transform: uppercase; letter-spacing: var(--sa-type-label-tracking); color: var(--sa-text-brand-primary-base); }
+  .wn-off__scheme-name { margin-top: var(--sa-stack-4); font-size: var(--sa-type-title-2-size); line-height: var(--sa-type-title-2-lh); font-weight: var(--sa-font-weight-semibold); }
+  /* 24px is the WCAG 2.2 AA floor for a pointer target (SC 2.5.8), and a link
+     that is its own row does not get the criterion's "inline" exception — that
+     is for a target inside a sentence. `title-2` gives these a 22px line box,
+     so the minimum is asked for on the LINK: a row tall enough while its link
+     is not still fails. `inline-flex` is what the estate's other links of this
+     kind use (breadcrumb, document row); the text still wraps inside it. */
+  .wn-off__scheme-name a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--sa-target-min);
+    color: var(--sa-text-neutral-bolder);
+  }
+  .wn-off__scheme-name a:hover { color: var(--sa-text-link-brand-hover); text-decoration: underline; text-underline-offset: 0.2em; }
+  .wn-off__scheme-name a:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: var(--sa-focus-offset); border-radius: var(--sa-shape-4); }
+  .wn-off__scheme-provides { margin-top: var(--sa-stack-4); font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); color: var(--sa-text-neutral-base); }
+  .wn-off__all { padding: var(--sa-padding-16) var(--sa-padding-20); border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); }
+
+  /* A register that published nothing says so, rather than drawing a rule with
+     no rows under it. */
+  .wn-off__none { padding-block: var(--sa-padding-16); color: var(--sa-text-neutral-subtle); }
+  .wn-off__news-empty { padding-block: var(--sa-padding-16); font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); }
+
+  .wn-off__notices { margin-top: var(--sa-stack-24); border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); }
+  .wn-off__notice { display: grid; gap: var(--sa-stack-4); padding-block: var(--sa-padding-16); border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); color: var(--sa-text-neutral-bolder); }
+  .wn-off__notice:hover .wn-off__notice-title { color: var(--sa-text-link-brand-hover); text-decoration: underline; text-underline-offset: 0.2em; }
+  .wn-off__notice:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: var(--sa-focus-offset); }
+  .wn-off__notice-title { font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); font-weight: var(--sa-font-weight-semibold); }
+  .wn-off__notice-meta { font-size: var(--sa-type-label-2-size); line-height: var(--sa-type-label-2-lh); font-weight: var(--sa-font-weight-medium); color: var(--sa-text-neutral-subtle); font-variant-numeric: tabular-nums; }
+
+  /* What's New, in the brand column the design draws. */
+  .wn-off__news {
+    min-width: 0;
+    padding: var(--sa-padding-20);
+    border-radius: var(--sa-shape-16);
+    background: var(--sa-bg-brand-primary-boldest);
+    color: var(--sa-on-bg-brand-primary-boldest);
+  }
+  .wn-off__news-head { display: flex; align-items: center; justify-content: space-between; gap: var(--sa-inline-12); padding-bottom: var(--sa-padding-16); border-bottom: var(--sa-stroke-1) solid var(--sa-bg-brand-primary-bolder); }
+  .wn-off__news-title { display: inline-flex; align-items: center; gap: var(--sa-inline-8); font-size: var(--sa-type-title-1-size); line-height: var(--sa-type-title-1-lh); font-weight: var(--sa-font-weight-semibold); }
+  /* Same floor, same reason — see the scheme titles above. */
+  .wn-off__news-all {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--sa-target-min);
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-medium);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .wn-off__news-all:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ringInner); outline-offset: var(--sa-focus-offset); }
+  .wn-off__news-list > li { padding-block: var(--sa-padding-12); border-bottom: var(--sa-stroke-1) solid var(--sa-bg-brand-primary-bolder); }
+  .wn-off__news-list > li:last-child { border-bottom: 0; }
+  .wn-off__news-link {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--sa-target-min);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-on-bg-brand-primary-boldest);
+  }
+  .wn-off__news-link:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+  .wn-off__news-link:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ringInner); outline-offset: var(--sa-focus-offset); }
+  .wn-off__news-meta { margin-top: var(--sa-stack-4); font-size: var(--sa-type-label-2-size); line-height: var(--sa-type-label-2-lh); font-weight: var(--sa-font-weight-medium); opacity: 0.85; }
+
+  /* ── Our Organisations ───────────────────────────────────────────────────
+     What they are on the left, the chips and the chosen set on the right. */
+  .wn-orgs2 { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sa-stack-32); }
+  @media (min-width: 1024px) { .wn-orgs2 { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: var(--sa-inline-48); align-items: start; } }
+  .wn-orgs2__copy { min-width: 0; }
+  .wn-orgpick { min-width: 0; }
+  .wn-orgpick__chips { display: flex; flex-wrap: wrap; gap: var(--sa-inline-8); }
+  /* The count rides inside the chip, a size down and quieter than its label —
+     it qualifies the category rather than competing with it. */
+  .wn-orgpick__count { margin-inline-start: var(--sa-inline-8); font-size: var(--sa-type-label-2-size); line-height: var(--sa-type-label-2-lh); font-weight: var(--sa-font-weight-medium); font-variant-numeric: tabular-nums; opacity: 0.75; }
+  .wn-orgpick__grid { display: grid; gap: var(--sa-stack-12); margin-top: var(--sa-stack-24); grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 768px) { .wn-orgpick__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 1280px) { .wn-orgpick__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .wn-orgpick__grid > li { display: grid; }
+  .wn-orgpick__card {
+    display: grid;
+    align-content: start;
+    gap: var(--sa-stack-12);
+    height: 100%;
+    padding: var(--sa-padding-16);
+    border: var(--sa-stroke-1) solid var(--sa-border-brand-primary-base);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-brand-primary-base);
+    color: var(--sa-text-neutral-bolder);
+    transition: border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+  .wn-orgpick__card:hover { border-color: var(--sa-border-brand-primary-bolder); }
+  .wn-orgpick__card:hover .wn-orgpick__name { text-decoration: underline; text-underline-offset: 0.2em; }
+  .wn-orgpick__card:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: var(--sa-focus-offset); }
+  .wn-orgpick__mark { display: grid; place-items: center; width: var(--sa-icon-size-40); height: var(--sa-icon-size-40); overflow: hidden; }
+  .wn-orgpick__mark img { width: 100%; height: 100%; object-fit: contain; }
+  .wn-orgpick__name { font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); font-weight: var(--sa-font-weight-semibold); }
+  .wn-orgpick__abbr { color: var(--sa-text-neutral-subtle); font-weight: var(--sa-font-weight-regular); }
+
+  /* ── Activity Corner ─────────────────────────────────────────────────────
+     Two cards across from 768, each a date block beside its title, with the
+     "Read More" at the row's end — the design's shape. */
+  .wn-act { margin-top: var(--sa-stack-32); }
+  .wn-act__bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sa-inline-16); }
+  .wn-act__list { display: grid; gap: var(--sa-stack-16); margin-top: var(--sa-stack-24); }
+  @media (min-width: 768px) { .wn-act__list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .wn-act__item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-content: start;
+    gap: var(--sa-stack-8) var(--sa-inline-16);
+    padding: var(--sa-padding-16);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-base);
+  }
+  /* The date block: the day large on its own line, the month and year under
+     it, both inside one <time> so it is read as one date. */
+  .wn-act__date {
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    grid-row: 1 / span 2;
+    min-width: var(--sa-control-height-lg);
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-subtler);
+  }
+  .wn-act__day { font-size: var(--sa-type-headline-2-size); line-height: var(--sa-type-headline-2-lh); font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-neutral-bolder); font-variant-numeric: tabular-nums; }
+  .wn-act__month { font-size: var(--sa-type-label-2-size); line-height: var(--sa-type-label-2-lh); font-weight: var(--sa-font-weight-medium); color: var(--sa-text-neutral-subtle); }
+  .wn-act__body { min-width: 0; }
+  .wn-act__title { font-size: var(--sa-type-title-2-size); line-height: var(--sa-type-title-2-lh); font-weight: var(--sa-font-weight-semibold); }
+  .wn-act__title a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--sa-target-min);
+    color: var(--sa-text-neutral-bolder);
+  }
+  .wn-act__title a:hover { color: var(--sa-text-link-brand-hover); text-decoration: underline; text-underline-offset: 0.2em; }
+  .wn-act__title a:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: var(--sa-focus-offset); border-radius: var(--sa-shape-4); }
+  .wn-act__org { margin-top: var(--sa-stack-4); font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); color: var(--sa-text-neutral-subtle); }
+  .wn-act__more { grid-column: 2; justify-self: end; }
+
+  /* ── Social ──────────────────────────────────────────────────────────────── */
+  .wn-home-social { display: grid; gap: var(--sa-stack-12); margin-top: var(--sa-stack-32); grid-template-columns: repeat(auto-fill, minmax(min(100%, 208px), 1fr)); }
+}
+
+/* ── Phones: the same page, shorter. Each list keeps its first items and its
+   "View All" link; nothing is reachable only on a desktop. ───────────────── */
+@layer components {
+  @media (max-width: 767px) {
+    /* Our Offerings keeps three of its five notices and four of its six
+       updates on a phone; each list still carries its own "View All". */
+    .wn-off__notices > li:nth-child(n + 4) { display: none; }
+    .wn-off__news-list > li:nth-child(n + 5) { display: none; }
+    [data-design="next"] .wn-events.wn-home-activity__events > li:nth-child(n + 4) { display: none; }
+    [data-design="next"] .wn-home-activity__albums .wn-album__meta { display: none; }
+    .wn-home-ministers { grid-template-columns: 1fr; gap: var(--sa-stack-8); }
+    .wn-home-minister { grid-template-columns: var(--sa-icon-size-64) minmax(0, 1fr); place-items: center start; gap: 0 var(--sa-inline-16); padding: var(--sa-padding-12); text-align: start; }
+    .wn-home-minister__photo { grid-row: 1 / span 2; width: var(--sa-icon-size-64); height: var(--sa-icon-size-64); margin: 0; }
+    .wn-home-social { grid-template-columns: 1fr; gap: var(--sa-stack-8); }
+  }
+}

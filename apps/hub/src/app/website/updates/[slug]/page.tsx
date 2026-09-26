@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { RecordDetail } from "@/components/website/templates/RecordDetail";
+import { SectionTitle } from "@mosje/design-system";
+import { RecordDetail } from "@/components/website-next/templates/RecordDetail";
 import { getContentSyncedDate, getUpdate, getUpdates } from "@/lib/website/content";
-import { facts, humanDate } from "@/lib/website/record-facts";
+import { facts } from "@/lib/website/record-facts";
+import { formatDate } from "@/components/website-next/ui/format";
 import { socialCard } from "@/lib/seo/social";
 
 /** 9 updates — every one is prerendered. */
@@ -45,7 +47,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       title={update.title}
       badge="Update"
       breadcrumb={[
-        { label: "Connect" },
+        { label: "Media" },
         { label: "Updates", href: "/website/updates" },
         { label: update.title },
       ]}
@@ -54,20 +56,16 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       lastUpdated={getContentSyncedDate()}
       facts={facts([
         { term: "Organisation", value: update.organisation },
-        { term: "Published", value: humanDate(update.date) },
-        { term: "Status", value: update.status },
+        { term: "Published", value: formatDate(update.date) },
       ])}
       files={update.attachments ?? []}
-      sourceUrl={update.sourceUrl}
     >
       {videos.length > 0 && (
-        <div>
-          <h2 className="sa-record-detail__aside-title">
-            {videos.length === 1 ? "Video" : "Videos"}
-          </h2>
-          <ul className="sa-record-media">
+        <section className="wn-rec-section" aria-labelledby="record-videos">
+          <SectionTitle headingId="record-videos" title={videos.length === 1 ? "Video" : "Videos"} />
+          <ul className="wn-rec-media">
             {videos.map((v) => (
-              <li key={v.url} className="sa-record-media__item">
+              <li key={v.url} className="wn-rec-media__item">
                 {/* The department publishes no caption track for these files.
                     A `<track>` pointing at nothing is worse than none: it tells
                     assistive technology captions exist and then serves silence. */}
@@ -75,7 +73,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               </li>
             ))}
           </ul>
-        </div>
+        </section>
       )}
     </RecordDetail>
   );

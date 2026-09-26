@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ContentPage } from "@/components/website/templates/ContentPage";
+import { ContentPage } from "@/components/website-next/templates/ContentPage";
 import { VISITOR_ANALYTICS as V } from "@/lib/website/visitor-analytics";
 
 export const metadata: Metadata = {

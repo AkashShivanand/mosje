@@ -55,7 +55,9 @@ const WRITE = process.argv.includes("--baseline");
 
 const PAGES_ROOT = "apps/hub/src/app/portals";
 const SHELLS_ROOT = "apps/hub/src/components";
-const SKIP = new Set(["node_modules", ".next", "website", "design-system", "i18n"]);
+// "website" and "website-next" are the public website, not a portal: its
+// masthead composes SiteHeader and its pages compose the website templates.
+const SKIP = new Set(["node_modules", ".next", "website", "website-next", "design-system", "i18n"]);
 
 /** Tier-B templates. A page rendering any one of these is composed, not assembled. */
 const SCREENS = /<(?:Worklist|Record|Wizard|Overview|Form|Checklist|Review|Chooser|Decision|Catalogue|Gallery|Search|Inbox|Settings|Report|Confirmation|Status|Auth)Screen\b/;
