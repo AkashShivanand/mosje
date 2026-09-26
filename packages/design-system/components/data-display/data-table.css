@@ -127,6 +127,11 @@
     font-variant-numeric: tabular-nums;
   }
 
+  /* A column of figures reads from its last digit, not its first. Paired with the
+     tabular figures above, this is what makes a register of amounts scannable. */
+  .ds-table__cell--end { text-align: right; }
+  .ds-table__cell--center { text-align: center; }
+
   .ds-table__empty {
     padding: var(--sa-section-48) var(--sa-padding-16);
     text-align: center;

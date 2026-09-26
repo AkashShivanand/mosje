@@ -1,0 +1,402 @@
+{
+  "note": [
+    "Per content page of the SAMAVESH library: inside component masters (and everything beneath them),",
+    "remoteVariableBindings = node × variable pairs bound to a variable from ANOTHER library (id `VariableID:<key>/<n>:<n>`),",
+    "remoteInstances = INSTANCE nodes whose component the REST `components` map marks remote (or does not list); counted once, not descended.",
+    "Excluded: instances named `SAMAVESH seal` (documented remote, ds-documentation-standard.md §5) and artwork",
+    "(instance/component/set names matching /org-?logo|Emblem|Digital India|logo/i), with their contents.",
+    "Written by `check:figma-linkage:sync`. A ratchet: counts may only go down, and going down fails until re-synced."
+  ],
+  "file": "3FF5l0SMNIwdpZrKkeyPTm",
+  "recordedOn": "2026-09-22",
+  "pages": {
+    "Accessibility Bar": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Accordion": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Action Banner": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Alert & Toast": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Avatar": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Back to Top": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Badge": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Biometric Capture": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Bot Check": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Brand": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Breadcrumb": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Bulk Actions Bar": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Button": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Button Group": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Card": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Carousel": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Changelog & Governance": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Chart": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Chatbot": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Checkbox": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Chip": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Color": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Color Picker": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Combobox": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Comment": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Cookie Consent": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Cursor": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Date Range Picker": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Date-Time Picker": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Density": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Description List": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Divider": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Document Checklist": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Document Findings": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Document History Sheet": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Document Placement Tray": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Document Row": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Effects": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Empty State": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Event List": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Fact Strip": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Feedback Widget": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Figure": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "File List": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Footer": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Form Layout": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Get Started": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Icon Button": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Iconography": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Inline Edit": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Input Area": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Input Field": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Language Switcher": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Layout Grid": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Link": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "List": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Loader": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Map of India": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Menu": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Modal": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Motion": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Navbar": {
+      "remoteVariableBindings": 1,
+      "remoteInstances": 0
+    },
+    "New in 2.0": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Number Input": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "OTP Input": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Page Header": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Pagination": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Popover": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Portal Card": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Portal Login Template": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Progress Indicator": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Radio": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Radius": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Roadmap": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "SAMAVESH Banner": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Schedule Grid": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Screen Templates": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Search": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Select": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Selection Card": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Side Sheet": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Sidebar": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Signature Pad": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Slider": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Spacing": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Split Button": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Stepper": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Table": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Tabs": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Ticker": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Time Slot": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Toggle": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Tooltip": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Transfer List": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Tree": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Typography": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    },
+    "Video Tile": {
+      "remoteVariableBindings": 0,
+      "remoteInstances": 0
+    }
+  }
+}

@@ -4,7 +4,7 @@ import * as React from "react";
 import { cn } from "@/lib/website/utils";
 import { CENTRE_TYPE_META, CENTRE_TYPE_ORDER, type CentreType, type DeAddictionCentre } from "@/content/website/deaddiction-centres";
 import { CentreMapDynamic, centreKey, filterCentres, useLocatorRows } from "./locator-shared";
-import { Icon, Link, Search } from "@mosje/design-system";
+import { Button, Chip, Icon, IconButton, Link, Search } from "@mosje/design-system";
 
 export function LocatorMapFirst() {
   const [query, setQuery] = React.useState("");
@@ -37,39 +37,50 @@ export function LocatorMapFirst() {
           {(["", ...CENTRE_TYPE_ORDER] as const).map((t) => {
             const active = type === t;
             return (
-              <button key={t || "all"} type="button" onClick={() => setType(t as CentreType | "")}
-                className={cn("rounded-full px-2.5 py-1 text-label-2 shadow-sm transition-colors",
-                  active ? "bg-primary text-white" : "bg-white/95 text-ink-muted hover:text-primary-dark")}>
+              /* The white ground and the shadow stay: these pills float over a map,
+                 and the Chip's own translucent-on-white ground would leave the
+                 unselected ones unreadable over a satellite tile. */
+              <Chip key={t || "all"} size="sm" emphasis="solid" selected={active}
+                onSelectedChange={() => setType(t as CentreType | "")}
+                className={cn("shadow-sm", !active && "border-transparent bg-white/95")}>
                 {t === "" ? "All" : t}
-              </button>
+              </Chip>
             );
           })}
         </div>
       </div>
 
       {/* List toggle */}
-      <button type="button" onClick={() => setListOpen((v) => !v)}
-        className="absolute right-3 top-3 z-10 inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-label-1 text-white shadow-sm">
-        <Icon name="list" size={16} /> {listOpen ? "Hide" : "List"} ({filtered.length})
-      </button>
+      <Button size="sm" nowrap onClick={() => setListOpen((v) => !v)}
+        iconLeft={<Icon name="list" size={16} aria-hidden />}
+        aria-expanded={listOpen}
+        className="absolute right-3 top-3 z-10 shadow-sm">
+        {listOpen ? "Hide" : "List"} ({filtered.length})
+      </Button>
 
       {/* Slide-over list */}
       {listOpen && (
         <div className="absolute bottom-0 right-0 top-0 z-20 flex w-80 max-w-[85%] flex-col border-l border-gray-200 bg-white shadow-xl">
           <div className="flex items-center justify-between border-b border-gray-100 px-4 py-2.5">
             <span className="text-title-3 text-ink">{filtered.length} centres</span>
-            <button type="button" onClick={() => setListOpen(false)} aria-label="Close list"><Icon name="close" size={16} className="text-ink-muted" /></button>
+            <IconButton appearance="text" variant="neutral" size="sm" shape="circle"
+              onClick={() => setListOpen(false)} aria-label="Close list"
+              icon={<Icon name="close" size={16} />} />
           </div>
           <ul className="flex-1 divide-y divide-gray-100 overflow-y-auto">
             {filtered.slice(0, 120).map((c, i) => (
               <li key={`${centreKey(c)}#${i}`}>
-                <button type="button" onClick={() => { setSelected(c); }} className="flex w-full items-start gap-2 px-4 py-2.5 text-left hover:bg-surface-muted">
+                {/* A slide-over row, kept as the DS Button in its quietest appearance
+                    rather than `ListRow`: the row's coloured key dot and truncated
+                    two-line body are the option's own look, and this page exists to
+                    compare the five locator designs side by side. */}
+                <Button appearance="text" onClick={() => { setSelected(c); }} className="flex w-full items-start justify-start gap-2 rounded-none border-0 px-4 py-2.5 text-left font-normal hover:bg-surface-muted">
                   <span className="mt-1 h-2 w-2 shrink-0 rounded-full" style={{ background: CENTRE_TYPE_META[c.type].color }} />
                   <span className="min-w-0">
                     <span className="block truncate text-title-3 text-ink">{c.name}</span>
                     <span className="block text-body-3 text-ink-muted">{c.type} · {c.district}, {c.state}</span>
                   </span>
-                </button>
+                </Button>
               </li>
             ))}
           </ul>
@@ -82,7 +93,9 @@ export function LocatorMapFirst() {
           <div className="flex items-start justify-between">
             <span className="inline-flex rounded-full px-2 py-0.5 text-label-2"
               style={{ background: `${CENTRE_TYPE_META[selected.type].color}1a`, color: CENTRE_TYPE_META[selected.type].color }}>{selected.type}</span>
-            <button type="button" onClick={() => setSelected(null)} aria-label="Close"><Icon name="close" size={16} className="text-ink-muted" /></button>
+            <IconButton appearance="text" variant="neutral" size="sm" shape="circle"
+              onClick={() => setSelected(null)} aria-label="Close centre details"
+              icon={<Icon name="close" size={16} />} />
           </div>
           <p className="mt-2 text-title-3 text-ink">{selected.name}</p>
           <p className="mt-1 text-body-3 text-ink-muted">{selected.address}</p>

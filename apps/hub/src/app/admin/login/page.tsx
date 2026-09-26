@@ -1,6 +1,7 @@
 /**
  * DS Audit: Button ✅ existing · PasswordInput ✅ existing (added with the gate)
- *           · FormField ✅ existing · Alert ✅ existing · page layout ➕ app-local.
+ *           · FormField ✅ existing · Alert ✅ existing · BrandLockup ✅ existing
+ *           (was a hand-rolled emblem + text pair) · page layout ➕ app-local.
  *
  * Deliberately plainer than /gate. The gate is the threshold and is dressed
  * accordingly; this is back-of-house and should look like a tool, not a door.
@@ -9,6 +10,8 @@
  */
 
 import type { Metadata } from "next";
+import Link from "next/link";
+import { BrandLockup } from "@mosje/design-system";
 import { notFound, redirect } from "next/navigation";
 import { adminConfigured, isAdminAuthenticated } from "@/lib/admin/auth";
 import { submitAdminLogin } from "./actions";
@@ -42,23 +45,15 @@ export default async function AdminLoginPage({
   return (
     <main className="flex min-h-screen items-center justify-center bg-surface-canvas px-6 py-16">
       <div className="w-full max-w-[26rem]">
-        <div className="flex items-center gap-3.5">
-          {/* eslint-disable-next-line @next/next/no-img-element -- /admin sits
-              outside the gate, and next/image's endpoint is not in its allowlist. */}
-          <img
-            src="/images/National-Emblem-logo.svg"
-            alt="National Emblem of India"
-            width={24}
-            height={39}
-            className="estate-emblem h-9 w-auto"
-          />
-          <span className="flex flex-col border-l border-border pl-3.5">
-            <span className="text-title-2 text-ink">MoSJE</span>
-            <span className="mt-1.5 text-label-3 uppercase text-ink-muted">
-              Hub administration
-            </span>
-          </span>
-        </div>
+        {/* The same compact lockup /admin carries in its masthead, so signing in and
+            the settings page read as one place. */}
+        <BrandLockup
+          compact
+          linkAs={Link}
+          href="/admin"
+          emblemSrc="/images/National-Emblem-logo.svg"
+          lines={{ ministry: "MoSJE", department: "Hub administration" }}
+        />
 
         <div className="mt-7 rounded-xl border border-border bg-surface p-7 shadow-xs">
           <h1 className="text-headline-3 text-ink">Sign in</h1>

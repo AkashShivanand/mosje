@@ -5,6 +5,8 @@
  * changes day to day, and that lives in the status store.
  */
 
+import type { SourceRef } from "./sources";
+
 export const STATUSES = ["Open", "In progress", "Needs decision", "Fixed", "Verified", "Won't fix"] as const;
 export type IssueStatus = (typeof STATUSES)[number];
 
@@ -52,6 +54,8 @@ export interface Issue {
   evidence: Evidence[];
   /** Page of the issues report PDF, where the issue is printed there. */
   reportPage: number | null;
+  /** Every report that raised this issue. Never empty — see ./sources.ts. */
+  sources: SourceRef[];
   related: string[];
   figma: string | null;
   affectedCount: number;

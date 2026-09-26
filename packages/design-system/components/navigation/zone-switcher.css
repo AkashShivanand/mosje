@@ -29,8 +29,8 @@
   /* ── Root container ── */
   .ds-appsw {
     position: fixed;
-    left: 20px;
-    bottom: 20px;
+    left: var(--sa-inline-20);
+    bottom: var(--sa-stack-20);
     z-index: var(--sa-z-demo);
     font-family: var(--sa-font-latin);
   }

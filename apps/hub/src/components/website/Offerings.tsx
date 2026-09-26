@@ -3,9 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Button, Card, Icon } from "@mosje/design-system";
+import { Button, Card, Icon, Tabs } from "@mosje/design-system";
 import { LatestUpdates } from "@/components/website/LatestUpdates";
-import { cn } from "@/lib/website/utils";
 
 type TabKey = "schemes" | "vacancies" | "tenders";
 
@@ -186,34 +185,21 @@ export function Offerings() {
         <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           {/* The design groups the tabs inside one tinted container rather than
               floating them as loose pills, and each carries an icon [WEB-O-03]. */}
-          <div
-            role="tablist"
-            aria-label="Our Offerings"
-            className="inline-flex flex-wrap items-center gap-1 self-start rounded-xl bg-white/70 p-1"
-          >
-            {tabs.map((tab) => {
-              const isActive = tab.key === activeTab;
-              return (
-                <button
-                  key={tab.key}
-                  id={`tab-${tab.key}`}
-                  type="button"
-                  role="tab"
-                  aria-selected={isActive}
-                  aria-controls={`tabpanel-${tab.key}`}
-                  onClick={() => setActiveTab(tab.key)}
-                  className={cn(
-                    "flex items-center gap-2 rounded-lg px-4 py-2 text-label-1 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
-                    isActive
-                      ? "bg-primary text-white shadow-xs"
-                      : "text-ink-muted hover:bg-primary-50 hover:text-ink",
-                  )}
-                >
-                  <Icon name={tab.icon} size={20} aria-hidden />
-                  {tab.label}
-                </button>
-              );
-            })}
+          {/* The tinted track is this section's own; the tabs inside it are the design
+              system's. `track="none"`: an enclosed track stretches every tab to an equal
+              share, which clipped "Press Releases" and "Vacancies" to "Press R…". */}
+          <div className="inline-flex flex-wrap items-center self-start rounded-xl bg-white/70 p-1">
+            <Tabs
+              idBase="offerings"
+              ariaLabel="Our Offerings"
+              indicator="pill"
+              track="none"
+              size="s"
+              panel
+              tabs={tabs.map((tab) => ({ id: tab.key, label: tab.label, icon: tab.icon }))}
+              active={Math.max(0, tabs.findIndex((t) => t.key === activeTab))}
+              onChange={(i) => setActiveTab(tabs[i]!.key)}
+            />
           </div>
 
           {/* An outlined button, not a bare text link — the design's secondary
@@ -236,9 +222,9 @@ export function Offerings() {
 
         {/* Offerings Grid */}
         <div
-          id={`tabpanel-${activeTab}`}
+          id={`offerings-panel-${activeTab}`}
           role="tabpanel"
-          aria-labelledby={`tab-${activeTab}`}
+          aria-labelledby={`offerings-tab-${activeTab}`}
           className="mt-8"
         >
           {/* AN 8/4 SPLIT THAT COSTS THE CARDS NOTHING.

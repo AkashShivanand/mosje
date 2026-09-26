@@ -244,7 +244,7 @@
     box-shadow:
       var(--sa-elevation-toast),
       var(--sa-elevation-raised),
-      0 0 0 1px var(--sa-border-neutral-subtle);
+      0 0 0 var(--sa-stroke-1) var(--sa-border-neutral-subtle);
     transition:
       transform var(--ds-chatbot-hover) ease,
       filter var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);

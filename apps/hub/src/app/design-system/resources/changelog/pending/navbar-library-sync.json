@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "THE NAVBAR MATCHES ITS LIBRARY. In Figma, every Navbar part now binds to SAMAVESH alone — 224 bindings that pointed at another library's look-alike variables were re-pointed, a remote emblem was swapped for the local one, and raw palette values were replaced by semantic tokens. In code, the parts that had drifted were brought to the library: the active nav item is Medium, not SemiBold; the dropdown panel takes the base border, 36px rows and a blue current-page row; the mega-menu item's abbreviation is SemiBold, its hover outline is the base border, its chevron is brand blue and its active state is blue text rather than a permanent outline; and the phone menu's rows sit on one 16px edge with the open group drawn solid blue, as Figma draws it."
+}

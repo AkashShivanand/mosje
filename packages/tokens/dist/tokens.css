@@ -1058,7 +1058,9 @@
   --sa-cmp-accessibilityBar-stepSize: var(--sa-ref-size-24);
   --sa-cmp-accessibilityBar-launchIconSize: var(--sa-ref-size-12);
   --sa-cmp-accessibilityBar-iconButtonSize: var(--sa-ref-size-28);
+  --sa-cmp-accessibilityBar-dividerLength: var(--sa-ref-size-20);
   --sa-cmp-divider-width: var(--sa-ref-border-width-sm);
+  --sa-cmp-divider-length: var(--sa-ref-size-20);
   --sa-cmp-avatar-size-xs: var(--sa-ref-size-24);
   --sa-cmp-avatar-size-sm: var(--sa-ref-size-32);
   --sa-cmp-avatar-size-md: var(--sa-ref-size-40);

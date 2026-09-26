@@ -28,6 +28,9 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       "The group takes its name from the required `ariaLabel`; each option is a real `<button>` with its label as its accessible name and its selection as `aria-checked`.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (aria-allowed-attr, aria-conditional-attr, aria-deprecated-role, aria-hidden-focus, aria-prohibited-attr, aria-required-attr, aria-roles, aria-valid-attr, aria-valid-attr-value, button-name, nested-interactive, select-name) on /design-system/components/dashboard/filter-bar; manual screen-reader check outstanding",
   },
   {
     criterion: "2.4.3 Focus Order",
@@ -38,6 +41,9 @@ const A11Y: A11yItem[] = [
     criterion: "2.4.7 Focus Visible",
     level: "AA",
     description: "Each segment draws a focus ring on `:focus-visible`; the stylesheet never removes the outline.",
+    status: "partial",
+    evidence:
+      "Keyboard smoke test (Playwright, Chromium 1440x900), 2026-09-22: tabbed through the specimen on /design-system/components/dashboard/filter-bar - 3 focusable elements, each with a focus indicator that disappears on blur, focus left the specimen with no trap; manual screen-reader check outstanding",
   },
   {
     criterion: "1.4.10 Reflow",

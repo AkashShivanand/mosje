@@ -303,6 +303,7 @@
      Trailing dismiss button
      -------------------------------------------------------------------------- */
   .ds-chip__dismiss {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -319,6 +320,19 @@
     -webkit-appearance: none;
     appearance: none;
     transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  /* WCAG 2.5.8 TARGET SIZE. The glyph stays 18px — the chip is 24/32 tall and a bigger
+     circle would crowd the label — but the POINTER TARGET is 24×24, centred on it, drawn
+     by a transparent pseudo-element. Nothing moves; only what a finger may hit changes.
+     Found by an axe-core scan (target-size, serious) on 2026-09-22. */
+  .ds-chip__dismiss::after {
+    content: "";
+    position: absolute;
+    inset: 50% auto auto 50%;
+    inline-size: var(--sa-icon-size-24);
+    block-size: var(--sa-icon-size-24);
+    transform: translate(-50%, -50%);
   }
 
   .ds-chip__dismiss:hover {
@@ -373,6 +387,30 @@
     .ds-chip__dismiss:focus-visible {
       outline: var(--sa-focus-width) solid Highlight;
       outline-offset: var(--sa-focus-offset);
+    }
+  }
+}
+
+@layer components {
+  /* The inner toggle of a chip that is both toggleable and dismissible — see
+     `split` in chip.tsx. It carries the role, the focus and the key handling;
+     the pill keeps every visual, so its ring is drawn on the pill. */
+  .ds-chip__action {
+    display: inline-flex;
+    align-items: center;
+    gap: inherit;
+    border-radius: inherit;
+    outline: none;
+  }
+
+  .ds-chip:has(> .ds-chip__action:focus-visible) {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  @media (forced-colors: active) {
+    .ds-chip:has(> .ds-chip__action:focus-visible) {
+      outline: var(--sa-focus-width) solid Highlight;
     }
   }
 }

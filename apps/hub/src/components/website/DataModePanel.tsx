@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { RadioGroup, Toggle } from "@mosje/design-system";
+import { Chip, RadioGroup, SegmentedControl, Toggle } from "@mosje/design-system";
 import { useDataMode } from "@/lib/data-mode/context";
 import type { DataMode, PreviewState } from "@/lib/data-mode/types";
 import "./data-mode.css";
@@ -99,16 +99,20 @@ export function DataModePanel() {
       <section className="dm-panel__group">
         <h3 className="dm-panel__legend">Preview an edge state</h3>
         <div className="dm-panel__chips" role="group" aria-label="Preview an edge state">
+          {/* The DS `Chip`, which is this row's shape exactly: a pill that
+              stays visible whether or not it is chosen, carrying `aria-pressed`
+              as the hand-rolled pills did. `solid` because the selection here
+              decides what every card below shows. */}
           {PREVIEWS.map((p) => (
-            <button
+            <Chip
               key={p.id}
-              type="button"
-              className={`dm-panel__chip${preview === p.id ? " is-on" : ""}`}
-              aria-pressed={preview === p.id}
-              onClick={() => setPreview(p.id)}
+              size="sm"
+              emphasis="solid"
+              selected={preview === p.id}
+              onSelectedChange={() => setPreview(p.id)}
             >
               {p.label}
-            </button>
+            </Chip>
           ))}
         </div>
         {preview !== "normal" && (
@@ -121,24 +125,22 @@ export function DataModePanel() {
              what it belongs to. */
           <div className="dm-panel__sub">
             <span className="dm-panel__sub-label">Apply to</span>
-            <div className="dm-panel__seg" role="group" aria-label="Apply the edge state to">
-              {(
-                [
-                  ["all", "Whole dashboard"],
-                  ["one", "First card"],
-                ] as const
-              ).map(([id, label]) => (
-                <button
-                  key={id}
-                  type="button"
-                  className={`dm-panel__seg-btn${previewScope === id ? " is-on" : ""}`}
-                  aria-pressed={previewScope === id}
-                  onClick={() => setPreviewScope(id)}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
+            {/* The DS `SegmentedControl` — the estate's own drawing of the
+                object this comment describes: one track, two positions, a
+                raised thumb on the current one. It is an ARIA radio group, so
+                the pair is one tab stop and the arrow keys move between them,
+                where the two hand-rolled `aria-pressed` buttons were two stops
+                and no arrows. */}
+            <SegmentedControl
+              className="dm-panel__seg"
+              ariaLabel="Apply the edge state to"
+              options={[
+                { value: "all", label: "Whole dashboard" },
+                { value: "one", label: "First card" },
+              ]}
+              value={previewScope}
+              onChange={(v) => setPreviewScope(v)}
+            />
             <p className="dm-panel__hint">
               {previewScope === "one"
                 ? "A partial failure: one card in trouble while the rest of the page stays trustworthy."

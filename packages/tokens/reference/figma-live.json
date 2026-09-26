@@ -728,7 +728,9 @@
     "cmp/accessibilityBar/stepSize",
     "cmp/accessibilityBar/launchIconSize",
     "cmp/accessibilityBar/iconButtonSize",
+    "cmp/accessibilityBar/dividerLength",
     "cmp/divider/width",
+    "cmp/divider/length",
     "cmp/avatar/size/xs",
     "cmp/avatar/size/sm",
     "cmp/avatar/size/md",
@@ -1840,10 +1842,10 @@
   },
   "$valueChecksums": {
     "note": "Per-collection checksum over `name|mode|value`, computed by build/figma-value-parity.mjs. The rest of this file records NAMES, and every check built on it compares names — which is why the library could hold 13 component tokens bound to the wrong palette rung, a reverted webfont, and 54 fluid-type variables carrying the old tablet curve, all under the correct names, with nothing noticing. `payload` is what the build produces; `figmaObserved` is a verified read of the library. They are expected to be EQUAL, and figma-value-parity.test.mjs fails when the payload moves without this record being refreshed.",
-    "recordedAt": "2026-09-20",
-    "$lastChange": "2026-09-20, THE MERGE OF THE NAVBAR AND CHIP PUSHES — AND NEITHER BRANCH'S NUMBER SURVIVED IT. ds/portal-navbar-mobile added cmp/navbar/workingBar/height (alias ref/size/56) and cmp/navbar/betaSash/length (96) and recorded Space at 156, deliberately excluding the three the chip branch had pushed and main did not yet carry. main then landed those three — ref/size/26, cmp/chip/heightSm, cmp/chip/dismissSize — and recorded 157. Both records were true of the library the branch could see and false of the merged one, which holds all five: 159. So the merged payload was rebuilt and the whole Space collection read back live in the checksum's own shape (name|mode|value; descriptions HTML-decoded; the four ref/viewport/* canvas widths excluded, 163 in the library, 159 counted). Payload and library agree on all five checksums: value b9b32814:159, description 7db3c087:159, codeSyntax 3d211783:159, scopes 91875021:159, hidden 82464006:159. Nothing was pushed to Figma for this merge — both branches had already pushed their own variables, and the read is the evidence that the union is what the library holds. PREVIOUSLY: 2026-09-19, THE TWO cmp/navbar/* VARIABLES — workingBar/height (alias ref/size/56) and betaSash/length (96) — created in Space from the payload by use_figma, then the whole collection read back in the checksum's own shape (name|mode|value; descriptions HTML-decoded, as the reader does; ref/viewport/* excluded). Payload and library agree on all five checksums: value f99968cb:156, description c1994f3e:156, codeSyntax 1ab341ef:156, scopes faab1198:156, hidden a3f3b18e:156. The read also excludes three variables ANOTHER branch pushed and main does not yet carry — ref/size/26, cmp/chip/heightSm, cmp/chip/dismissSize (the chip work); they are that branch's to record. PREVIOUSLY: 2026-09-16, THE TWELVE SECONDARY BORDERS — MOVED TWICE IN ONE DAY, AND THE LIBRARY ENDS WHERE IT STARTED. cmp/action/{brand,destructive,neutral,success}/secondary/{default,hover,active}/border. Sequence, because the round trip is the evidence: the library held ramp 500/600/700; a merge showed the code on 400/500/600 and main's record claiming that push had happened, so it was pushed — twelve variables, read back at 305b9d4e:518. Within the hour main landed #515: rung 400 was measured against WHITE, and white is not the ground this estate's buttons stand on — on the portal shell's bg/neutral/subtler (#eef0f3) rung 400 is 2.94:1 (brand) and 2.68:1 (neutral), both FAILING WCAG 1.4.11, which semantic.json had already recorded for this exact rung on this exact ground when form-control borders moved 400 -> 500 on 2026-09-04. So the twelve were restored to 500/600/700 and the collection read back 89e8684e:518, byte-equal to the merged payload, Space unchanged at 9b50f568:154. THE LIBRARY WAS RIGHT ALL ALONG; what was wrong was main's earlier record, which asserted a push that never happened and sent a correct value backwards. Read live, group by group, at every step: nine of the ten top-level Color groups and the whole Space collection were byte-equal throughout, so these twelve were always the entire difference.",
+    "recordedAt": "2026-09-22",
+    "$lastChange": "2026-09-22, TWO SPACE VARIABLES ADDED — cmp/accessibilityBar/dividerLength and cmp/divider/length, both aliasing ref/size/20 (the separators in the accessibility bar and the Divider master's resting length, each a literal 20 on both sides until now). Created in the library by use_figma with the payload's description, codeSyntax, scope (WIDTH_HEIGHT) and visibility, then the whole Space collection read back in the checksum's own shape (name|mode|value; descriptions HTML-decoded; the four ref/viewport/* canvas widths excluded, 165 in the library, 161 counted). Payload and library agree on all five checksums: value 40a3e24b:161, description 4fa2e637:161, codeSyntax 3e91e703:161, scopes 7d11745e:161, hidden 3fbd5f39:161. PREVIOUSLY: 2026-09-20, THE MERGE OF THE NAVBAR AND CHIP PUSHES — AND NEITHER BRANCH'S NUMBER SURVIVED IT. ds/portal-navbar-mobile added cmp/navbar/workingBar/height (alias ref/size/56) and cmp/navbar/betaSash/length (96) and recorded Space at 156, deliberately excluding the three the chip branch had pushed and main did not yet carry. main then landed those three — ref/size/26, cmp/chip/heightSm, cmp/chip/dismissSize — and recorded 157. Both records were true of the library the branch could see and false of the merged one, which holds all five: 159. So the merged payload was rebuilt and the whole Space collection read back live in the checksum's own shape (name|mode|value; descriptions HTML-decoded; the four ref/viewport/* canvas widths excluded, 163 in the library, 159 counted). Payload and library agree on all five checksums: value b9b32814:159, description 7db3c087:159, codeSyntax 3d211783:159, scopes 91875021:159, hidden 82464006:159. Nothing was pushed to Figma for this merge — both branches had already pushed their own variables, and the read is the evidence that the union is what the library holds. PREVIOUSLY: 2026-09-19, THE TWO cmp/navbar/* VARIABLES — workingBar/height (alias ref/size/56) and betaSash/length (96) — created in Space from the payload by use_figma, then the whole collection read back in the checksum's own shape (name|mode|value; descriptions HTML-decoded, as the reader does; ref/viewport/* excluded). Payload and library agree on all five checksums: value f99968cb:156, description c1994f3e:156, codeSyntax 1ab341ef:156, scopes faab1198:156, hidden a3f3b18e:156. The read also excludes three variables ANOTHER branch pushed and main does not yet carry — ref/size/26, cmp/chip/heightSm, cmp/chip/dismissSize (the chip work); they are that branch's to record. PREVIOUSLY: 2026-09-16, THE TWELVE SECONDARY BORDERS — MOVED TWICE IN ONE DAY, AND THE LIBRARY ENDS WHERE IT STARTED. cmp/action/{brand,destructive,neutral,success}/secondary/{default,hover,active}/border. Sequence, because the round trip is the evidence: the library held ramp 500/600/700; a merge showed the code on 400/500/600 and main's record claiming that push had happened, so it was pushed — twelve variables, read back at 305b9d4e:518. Within the hour main landed #515: rung 400 was measured against WHITE, and white is not the ground this estate's buttons stand on — on the portal shell's bg/neutral/subtler (#eef0f3) rung 400 is 2.94:1 (brand) and 2.68:1 (neutral), both FAILING WCAG 1.4.11, which semantic.json had already recorded for this exact rung on this exact ground when form-control borders moved 400 -> 500 on 2026-09-04. So the twelve were restored to 500/600/700 and the collection read back 89e8684e:518, byte-equal to the merged payload, Space unchanged at 9b50f568:154. THE LIBRARY WAS RIGHT ALL ALONG; what was wrong was main's earlier record, which asserted a push that never happened and sent a correct value backwards. Read live, group by group, at every step: nine of the ten top-level Color groups and the whole Space collection were byte-equal throughout, so these twelve were always the entire difference.",
     "payload": {
-      "Space": "b9b32814:159",
+      "Space": "40a3e24b:161",
       "Palette": "cad6826c:286",
       "Color": "89e8684e:518",
       "Type": "bf306572:678",
@@ -1854,7 +1856,7 @@
       "Viewport": "2f223056:12"
     },
     "figmaObserved": {
-      "Space": "b9b32814:159",
+      "Space": "40a3e24b:161",
       "Palette": "cad6826c:286",
       "Color": "89e8684e:518",
       "Type": "bf306572:678",
@@ -2072,16 +2074,16 @@
       "text/link/brand/default": "Contrast 5.57:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: text (WCAG 1.4.3 AA)."
     }
   },
-  "$namesRefreshed": "2026-09-20 — Space re-derived when ds/portal-navbar-mobile merged main: the branch's two cmp/navbar/* and main's three chip variables are both kept, 159 counted plus the four library-only ref/viewport/* widths. Previously: 2026-09-16 — Color and Space re-derived after the eight cmp/sitefooter/* variables were pushed to the library and read back (Color 512 → 518, Space 156 → 158 names incl. the four library-only viewport widths). 2026-09-06 — Palette re-derived after color/transparent/secondary/0 was pushed to the library and read back (138 → 139). 2026-09-06 — Space re-derived after the four cmp/stepper/* variables were pushed to the library and read back. 2026-09-05 — every collection's name array re-derived from the eleventh live read (1,058 variables): the payload's names plus the four library-only ref/viewport/* canvas widths in Space. The arrays had been three weeks stale for Space (90 vs 146), Palette (164 vs 138) and Color (484 vs 493), which made the payload's `status` field call 104 existing Space variables new.",
+  "$namesRefreshed": "2026-09-22 — Space gains cmp/accessibilityBar/dividerLength and cmp/divider/length: 161 counted plus the four library-only ref/viewport/* widths. Previously: 2026-09-20 — Space re-derived when ds/portal-navbar-mobile merged main: the branch's two cmp/navbar/* and main's three chip variables are both kept, 159 counted plus the four library-only ref/viewport/* widths. Previously: 2026-09-16 — Color and Space re-derived after the eight cmp/sitefooter/* variables were pushed to the library and read back (Color 512 → 518, Space 156 → 158 names incl. the four library-only viewport widths). 2026-09-06 — Palette re-derived after color/transparent/secondary/0 was pushed to the library and read back (138 → 139). 2026-09-06 — Space re-derived after the four cmp/stepper/* variables were pushed to the library and read back. 2026-09-05 — every collection's name array re-derived from the eleventh live read (1,058 variables): the payload's names plus the four library-only ref/viewport/* canvas widths in Space. The arrays had been three weeks stale for Space (90 vs 146), Palette (164 vs 138) and Color (484 vs 493), which made the payload's `status` field call 104 existing Space variables new.",
   "$fieldChecksums": {
     "$note": "Per-collection, per-FIELD checksums over `name=value` entries (build/figma-value-parity.mjs collectionFieldChecksums). Added 2026-09-05 because the value checksum alone let 253 escaped descriptions, five dead codeSyntax lines and 164 visibility disagreements sit under equal numbers. The reader excludes the library-only ref/viewport/* widths, skips scopes on TIMING/EASING (unsettable; Figma reports ALL_SCOPES) and decodes the Plugin API's HTML-entity encoding of descriptions (&#39; &amp; &quot; &gt; &lt;) before hashing — the API escapes on write and reads back escaped, so a raw read never equals the payload.",
-    "recordedAt": "2026-09-20",
+    "recordedAt": "2026-09-22",
     "payload": {
       "Space": {
-        "description": "7db3c087:159",
-        "codeSyntax": "3d211783:159",
-        "scopes": "91875021:159",
-        "hidden": "82464006:159"
+        "description": "4fa2e637:161",
+        "codeSyntax": "3e91e703:161",
+        "scopes": "7d11745e:161",
+        "hidden": "3fbd5f39:161"
       },
       "Palette": {
         "description": "3a15999b:143",
@@ -2134,10 +2136,10 @@
     },
     "figmaObserved": {
       "Space": {
-        "description": "7db3c087:159",
-        "codeSyntax": "3d211783:159",
-        "scopes": "91875021:159",
-        "hidden": "82464006:159"
+        "description": "4fa2e637:161",
+        "codeSyntax": "3e91e703:161",
+        "scopes": "7d11745e:161",
+        "hidden": "3fbd5f39:161"
       },
       "Palette": {
         "description": "3a15999b:143",

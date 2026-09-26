@@ -56,7 +56,7 @@
     "weight": 0,
     "hindi-unmarked": 0,
     "style-mixed": 3,
-    "style-weight": 214,
+    "style-weight": 213,
     "style-weight-unset": 166
   },
   "files": {
@@ -286,6 +286,21 @@
       "style-weight-unset": 0
     },
     "apps/hub/src/app/website/website.css": {
+      "size-off-ramp": 0,
+      "size": 0,
+      "leading": 0,
+      "tracking": 0,
+      "family": 0,
+      "utility-size": 0,
+      "utility-leading": 0,
+      "utility-tracking": 0,
+      "weight": 0,
+      "hindi-unmarked": 0,
+      "style-mixed": 0,
+      "style-weight": 1,
+      "style-weight-unset": 0
+    },
+    "apps/hub/src/app/website-classic/website.css": {
       "size-off-ramp": 0,
       "size": 0,
       "leading": 0,
@@ -1452,7 +1467,7 @@
       "weight": 0,
       "hindi-unmarked": 0,
       "style-mixed": 0,
-      "style-weight": 3,
+      "style-weight": 1,
       "style-weight-unset": 5
     },
     "packages/design-system/components/navigation/language-switcher.css": {
@@ -1603,21 +1618,6 @@
       "hindi-unmarked": 0,
       "style-mixed": 0,
       "style-weight": 2,
-      "style-weight-unset": 0
-    },
-    "apps/hub/src/app/website-classic/website.css": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 0,
-      "tracking": 0,
-      "family": 0,
-      "utility-size": 0,
-      "utility-leading": 0,
-      "utility-tracking": 0,
-      "weight": 0,
-      "hindi-unmarked": 0,
-      "style-mixed": 0,
-      "style-weight": 1,
       "style-weight-unset": 0
     }
   }

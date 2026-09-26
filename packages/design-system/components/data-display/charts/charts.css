@@ -797,7 +797,7 @@
   .ds-chart__target-label {
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-label-3-size);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     fill: var(--sa-chart-axis);
   }
 
@@ -867,14 +867,14 @@
     }
     .ds-chart > table.ds-sr-only caption {
       text-align: start;
-      font-weight: 600;
+      font-weight: var(--sa-font-weight-semibold);
       padding-block-end: var(--sa-padding-4);
     }
     .ds-chart > table.ds-sr-only thead { display: table-header-group; }
     .ds-chart > table.ds-sr-only th,
     .ds-chart > table.ds-sr-only td {
       padding: var(--sa-padding-4) var(--sa-padding-8);
-      border-block-end: 1px solid var(--sa-border-neutral-subtle);
+      border-block-end: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
       text-align: start;
     }
     .ds-chart__skeleton-bars,

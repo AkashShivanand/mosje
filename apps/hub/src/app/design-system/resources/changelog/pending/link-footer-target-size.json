@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "STANDALONE LINKS AND FOOTER LINKS ARE 24px TARGETS. A standalone link — a card's \"Read more\", a row in a list of reports — and the footer's policy links drew a 17-20px text box, under the WCAG 2.2 minimum. Each now carries the minimum height itself and centres its own text. An inline link inside a sentence is untouched: there the line is the target, and the criterion's inline exception covers it."
+}

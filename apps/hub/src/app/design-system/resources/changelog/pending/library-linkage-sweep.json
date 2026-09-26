@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "THE LIBRARY BINDS TO SAMAVESH, AND ONLY SAMAVESH. A sweep of all 97 component pages re-pointed 320 bindings that reached into another Figma library, detached every part built from another file (976 instances), removed the ghost masters left behind by deleted components, and replaced ~5,600 raw palette and ref/* bindings with the semantic token for the layer's role. Where the library and the code disagreed, Figma moved to the code: Button and Icon Button hover/pressed grounds, the Modal's border, backdrop and shadow, Card and Portal Card elevation, Accordion and Pagination borders, the date picker's field border, the Table header ink and the Input Area's warning border. Detaching exposed Roboto, Inter and Druk Wide Trial inside components that were never ours; every text layer is Noto Sans on a published style again. 24 deprecated masters moved to a new Archive — Deprecated page, and eight page names lost their plurals."
+}

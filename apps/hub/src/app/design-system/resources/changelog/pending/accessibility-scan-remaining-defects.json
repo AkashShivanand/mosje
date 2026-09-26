@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "THE LAST AXE DEFECTS FROM THE COMPONENT SCAN. The SAMAVESH banner now defaults to tone=\"dark\" (6.50:1), not white on saffron (2.91:1, below AA), matching the Figma set, which already led with Dark; light stays as an opt-in and the deviation register records it as resolved. A chip that is both toggleable and removable no longer nests its remove button inside another button: the toggle moves to an inner control, and the pill looks and clicks exactly as before. ChartCard, PageHeader, NotificationCentre and the chatbot panel draw their headings in a div, not a <header>, so none of them announces as a second page banner. AccessibilityBar takes a label, so a page with several bars can name each one. The UX4G widget's five section headers no longer register as page banners (nothing in its panel is hidden or changed). The docs playground's editable code block now shows a focus ring."
+}

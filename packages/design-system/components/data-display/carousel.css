@@ -392,7 +392,7 @@
 
     .ds-carousel__dot--current::before {
       background-color: Highlight;
-      outline: 1px solid ButtonText;
+      outline: var(--sa-stroke-1) solid ButtonText;
     }
   }
 

@@ -21,24 +21,36 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       "The view is a section labelled by its own title, and the title is the page's h1 — so the error is the document's heading rather than a styled paragraph.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (list, listitem) on /design-system/components/feedback/error-view; manual screen-reader check outstanding",
   },
   {
     criterion: "3.3.2 Labels or Instructions",
     level: "A",
     description:
       'The search input carries aria-label="Search MoSJE Portal" and sits in a form with role="search", so it is reachable by landmark and named without depending on its placeholder.',
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (form-field-multiple-labels) on /design-system/components/feedback/error-view; manual screen-reader check outstanding",
   },
   {
     criterion: "2.4.4 Link Purpose (In Context)",
     level: "A",
     description:
       "Each wayfinding card is one link carrying a title and a sentence, so what it leads to is announced with it. External destinations open in a new tab and carry the open-in-new mark.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (link-name) on /design-system/components/feedback/error-view; manual screen-reader check outstanding",
   },
   {
     criterion: "2.1.1 Keyboard",
     level: "A",
     description:
       "Every control is a real button, link or input — including the diagnostics disclosure, which is a native details element and therefore operable and announced as expanded or collapsed without any ARIA of its own.",
+    status: "partial",
+    evidence:
+      "Keyboard smoke test (Playwright, Chromium 1440x900), 2026-09-22: tabbed through the specimen on /design-system/components/feedback/error-view - 13 focusable elements, each with a focus indicator that disappears on blur, focus left the specimen with no trap; manual screen-reader check outstanding",
   },
 ];
 

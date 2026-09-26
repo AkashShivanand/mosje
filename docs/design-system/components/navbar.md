@@ -122,8 +122,9 @@ Target **WCAG 2.1 AA + GIGW 3.0**:
 - **1.4.3 Contrast** — AA on the real surface.
 - **2.5.8 Target Size** — controls meet `target/min`.
 
-Semantics: `nav[aria-label]` landmark · `aria-current="page"` on the active item ·
-`aria-expanded` + `aria-haspopup="menu"` on triggers · `role="menu"`/`menuitem` on rows.
+Semantics: `nav[aria-label]` landmark · `aria-current="page"` on the active item (`true` on a
+section trigger) · menu triggers are `<button aria-expanded aria-controls>` — the APG
+disclosure-navigation pattern, so rows are plain links, not `role="menu"`/`menuitem`.
 
 ## Changed in 2.3.0
 
@@ -189,6 +190,49 @@ Semantics: `nav[aria-label]` landmark · `aria-current="page"` on the active ite
 6. **The legacy AccessibilityBar v1 set could not be labelled deprecated** — it is not
    reachable from the Navbar or Accessibility Bar pages, so its home page is unknown. Zero
    Navbar instances reference it.
+7. ~~Divider length has no token.~~ **Resolved 2026-09-22:** `cmp/accessibilityBar/dividerLength`
+   (the bar's separators) and `cmp/divider/length` (the Divider master's resting length) added
+   to `@mosje/tokens` and the library, both aliasing `ref/size/20`; the 25 bar separators, the
+   six Divider variants and `DIVIDER_LENGTH` in `accessibility-bar.tsx` bind them.
+8. ~~NavSheetRow has no current-page state.~~ **Resolved 2026-09-22:** an `Active` variant
+   property; Link, Sub and a closed Group carry `Active=True` with the label in
+   `text/brand/primary/base` (an open Group is already solid brand).
+9. **Audit requests that conflicted with the library — resolved 2026-09-22:**
+   - TYP-10 asked for the department line one step down from 20px. The ramp has no fixed step
+     between 16 and 20 — Headline 5 is a fluid 18–20 and Title 1 a fluid 18–22, both of which
+     would have moved the masthead height with the viewport again — so it went to Headline 6,
+     16/24, which is flat. Resolved at 16.
+   - NAV-18 / HP-04: the mega-menu hover chevron is removed in Figma and code.
+   - BRD-17 / HP-03: both menus now use `elevation/dropdown` (was `elevation/modal`).
+   - HP-05: the mega menu's panel (20) and rows (16) are `shape/8`, the simple dropdown's radius.
+   - ACC-12: menu triggers are `<button aria-expanded>`. The `[aria-haspopup]` rule that was
+     meant to give them Figma's 8px trailing padding had never matched anything; it now keys on
+     `[aria-expanded]`.
+10. **Outside the Navbar page, not changed here:** the `Button` and `IconButton` sets bind
+    their hover/pressed tints to raw `Palette › color/transparent/*` (144 and 24 variants);
+    the `Search` box's magnifier comes from a `search` component that sits on no page, so its
+    glyph colour cannot be linked at the source.
+
+## Library sync — 22 September 2026
+
+Every Navbar component now binds to this library only: 224 bindings that pointed at another
+library's same-named variables (MegaMenu, NavSheet, NavSheetRow, Portal) were re-pointed to
+SAMAVESH's own, the Portal's `Service mark` emblem was swapped from a remote `org-logo` to
+the local set, and every `Palette › color/*` and `ref/*` binding on the page was replaced by
+its semantic token. Code was aligned to the library at the same time:
+
+| Part | Was (code) | Now (matches Figma) |
+|---|---|---|
+| NavItem, active | SemiBold | Medium; blue + 4px bar mark the page |
+| NavDropdown panel border | `border/neutral/subtle` | `border/neutral/base` |
+| DropdownItem | 21px leading (37px row); no active style | `body-2` 20px (36px row); active row brand blue; hover `text/link/brand/hover` |
+| MegaMenuItem | abbreviation Medium; hover stroke subtle; grey chevron; active drew the hover outline | SemiBold; hover stroke `border/neutral/base`; brand chevron; active = brand text, no outline |
+| NavSheet rows | 24px inset (header was 16); open group unstyled | 16px inset throughout; open group solid `bg/brand/primary/bolder`, inverse text |
+| NavSheet sub-rows | 12/24/12/40, subtle ink | 56px, 16/16/16/32, `text/neutral/base` |
+
+Figma was aligned to code where the library held a raw palette value that the code had
+already expressed semantically: the DropdownItem hover ground (`bg/neutral/subtler`) and the
+avatar initials (`text/brand/primary/bolder`).
 
 ## Scroll behaviour — added 27 August 2026
 

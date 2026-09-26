@@ -179,33 +179,32 @@ export const Chip = React.forwardRef<HTMLDivElement, ChipProps>(function Chip(
     }
   };
 
+  /* The split chip's inner toggle. The consumer's `onKeyDown` stays on the pill,
+     where it already hears this event as it bubbles, so it is not called twice. */
+  const handleActionKeyDown = (event: React.KeyboardEvent<HTMLSpanElement>) => {
+    if (disabled) return;
+    if (event.key === "Enter" || event.key === " " || event.key === "Spacebar") {
+      event.preventDefault();
+      toggle();
+    }
+  };
+
   const handleDismiss = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     if (disabled) return;
     onDismiss?.();
   };
 
-  return (
-    <div
-      ref={ref}
-      className={cn(
-        "ds-chip",
-        `ds-chip--${size}`,
-        selected && "ds-chip--selected",
-        selected && tone !== "brand" && `ds-chip--selected-${tone}`,
-        selected && tone === "brand" && emphasis === "solid" && "ds-chip--selected-solid",
-        disabled && "ds-chip--disabled",
-        interactive && "ds-chip--interactive",
-        className,
-      )}
-      role={interactive ? "button" : undefined}
-      tabIndex={interactive && !disabled ? 0 : undefined}
-      aria-pressed={interactive ? selected : undefined}
-      aria-disabled={disabled || undefined}
-      onClick={handleClick}
-      onKeyDown={handleKeyDown}
-      {...rest}
-    >
+  /* A toggle chip that is ALSO dismissible cannot be a `role="button"` itself: its
+     remove button would be an interactive control nested inside another, which
+     screen readers flatten or skip (axe `nested-interactive`, WCAG 4.1.2). So the
+     toggle role moves onto an inner span wrapping the content, and the remove
+     button becomes its sibling. The pill looks identical; a click anywhere on it
+     still toggles, and the focus ring is drawn on the pill via `:has()`. */
+  const split = interactive && onDismiss != null;
+
+  const content = (
+    <>
       {leadingIcon != null && (
         <span className="ds-chip__icon" aria-hidden="true">
           {leadingIcon}
@@ -238,35 +237,78 @@ export const Chip = React.forwardRef<HTMLDivElement, ChipProps>(function Chip(
           </svg>
         </span>
       )}
-      {onDismiss != null && (
-        /* An 18px glyph drawn in the Chip's OWN ink: `color: inherit` is what carries it
-           through every tone, the selected state and the disabled wash. A Button would bring
-           its own palette and its own size ladder, and holding both back leaves nothing of
-           it. */
-        /* raw-button-ok(primitive): an 18px ✕ in the Chip's own inherited ink, sized by the chip */
-        <button
-          type="button"
-          className="ds-chip__dismiss"
-          aria-label={dismissLabel}
-          tabIndex={disabled ? -1 : 0}
-          disabled={disabled}
-          onClick={handleDismiss}
-        >
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.25"
-            strokeLinecap="round"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <path d="M6 6l12 12M18 6L6 18" />
-          </svg>
-        </button>
+    </>
+  );
+
+  const dismiss = onDismiss != null && (
+    /* An 18px glyph drawn in the Chip's OWN ink: `color: inherit` is what carries it
+       through every tone, the selected state and the disabled wash. A Button would bring
+       its own palette and its own size ladder, and holding both back leaves nothing of
+       it. */
+    /* raw-button-ok(primitive): an 18px ✕ in the Chip's own inherited ink, sized by the chip */
+    <button
+      type="button"
+      className="ds-chip__dismiss"
+      aria-label={dismissLabel}
+      tabIndex={disabled ? -1 : 0}
+      disabled={disabled}
+      onClick={handleDismiss}
+    >
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.25"
+        strokeLinecap="round"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path d="M6 6l12 12M18 6L6 18" />
+      </svg>
+    </button>
+  );
+
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "ds-chip",
+        `ds-chip--${size}`,
+        selected && "ds-chip--selected",
+        selected && tone !== "brand" && `ds-chip--selected-${tone}`,
+        selected && tone === "brand" && emphasis === "solid" && "ds-chip--selected-solid",
+        disabled && "ds-chip--disabled",
+        interactive && "ds-chip--interactive",
+        className,
       )}
+      role={interactive && !split ? "button" : undefined}
+      tabIndex={interactive && !split && !disabled ? 0 : undefined}
+      aria-pressed={interactive && !split ? selected : undefined}
+      aria-disabled={split ? undefined : disabled || undefined}
+      /* On a split chip this click is a pointer convenience — the whole pill
+         toggles, as it always has — and the keyboard route is the inner
+         `role="button"`, so nothing here is mouse-only. */
+      onClick={handleClick}
+      onKeyDown={split ? onKeyDown : handleKeyDown}
+      {...rest}
+    >
+      {split ? (
+        <span
+          className="ds-chip__action"
+          role="button"
+          tabIndex={disabled ? -1 : 0}
+          aria-pressed={selected}
+          aria-disabled={disabled || undefined}
+          onKeyDown={handleActionKeyDown}
+        >
+          {content}
+        </span>
+      ) : (
+        content
+      )}
+      {dismiss}
     </div>
   );
 });

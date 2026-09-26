@@ -46,8 +46,28 @@ import * as React from "react";
 import "./ux4g-accessibility-widget.css";
 
 /**
- * Official UX4G accessibility widget CDN (current: v3.28 — the build
+ * Official UX4G accessibility widget CDN (current: v3.36 — the build
  * ux4g.gov.in itself serves).
+ *
+ * UX4G DELETES OLD BUILDS FROM ITS CDN. On 25 Sep 2026 v3.36 was published
+ * (Last-Modified 10:21 GMT) and `accessibility-v3.28/accessibility-widget.js`
+ * began answering 404 with a `text/html` body and `X-Content-Type-Options:
+ * nosniff`. A script request receiving that is cut off by the browser's
+ * Opaque Response Blocking (`net::ERR_BLOCKED_BY_ORB`), so the widget — the
+ * estate's one accessibility panel — silently never loaded, on every route. It
+ * was not a duplicate request or a preload mismatch: this effect is the only
+ * requester and it guards on `data-ux4g-a11y`. If the panel disappears again,
+ * `curl -I` this URL first; the fix is to re-pin to the version ux4g.gov.in's
+ * own page loads (read its script tags), then re-check the brand skin.
+ *
+ * v3.36 keeps every hook this estate depends on — `#uw-widget-custom-trigger`,
+ * `#uw-main`, `window.__ux4g_accessibility_loaded`, `.ux4g-accessibility-short-key`,
+ * `.ux4g-accessibility-icon-chevron`, `window.UX4G_Analytics.config`, the Ctrl+F2
+ * binding and the `accessibilitySettings` cookie — and now loads its own
+ * `accessibility-widget.css` from beside the script. It also initialises itself
+ * when injected after the document has parsed (`ux4gOnReady`), so the synthetic
+ * DOMContentLoaded below is no longer needed by it; it is kept, harmless, for
+ * any v3.x build that still gates init on the event.
  *
  * Upgraded from `accessibility-beta-v1.15`, which had two defects this estate
  * had to work around in code, both fixed upstream in v3.x:
@@ -62,7 +82,7 @@ import "./ux4g-accessibility-widget.css";
  *      v3.28's own source; the seeding workaround is gone with it.
  */
 export const UX4G_A11Y_WIDGET_SRC =
-  "https://cdn.ux4g.gov.in/accessibility-v3.28/accessibility-widget.js";
+  "https://cdn.ux4g.gov.in/accessibility-v3.36/accessibility-widget.js";
 
 /**
  * Dead key left behind by the v1.15 workaround.
@@ -345,6 +365,35 @@ function keepClosedPanelOutOfTabOrder(): () => void {
   };
 }
 
+/**
+ * Stop the panel's section heads announcing as page banners.
+ *
+ * Each of the panel's five sections opens with a bare `<header>`. A header that
+ * is not inside `<main>` or a sectioning element is a `banner` landmark, and the
+ * panel lives in a `role="dialog"` appended to `<body>` — so every page of the
+ * estate carried SIX banners: the masthead and these five. A screen reader's
+ * landmark list offered five "banner" entries leading into a closed widget, and
+ * axe reported `landmark-no-duplicate-banner` on every page that loads it.
+ *
+ * `role="none"` is a permitted role for `<header>` (ARIA in HTML). It removes the
+ * wrong landmark and nothing else: the heading text, its visual, the controls
+ * beneath it and the vendor's own behaviour are untouched. Like
+ * `nameSectionToggles`, this corrects semantics; it suppresses nothing, so
+ * `accessibility-entry-point.md` rule 7 is not engaged.
+ */
+function unbannerSectionHeads(): void {
+  let attempts = 0;
+  const apply = (): void => {
+    const heads = document.querySelectorAll(".ux4g-accessibility-uwaw header:not([role])");
+    if (heads.length === 0) {
+      if (attempts++ < 20) window.setTimeout(apply, 100);
+      return;
+    }
+    heads.forEach((h) => h.setAttribute("role", "none"));
+  };
+  apply();
+}
+
 export interface UX4GAccessibilityWidgetProps {
   /** Override the widget script URL (e.g. to pin a version or self-host). */
   src?: string;
@@ -382,6 +431,7 @@ export function UX4GAccessibilityWidget({
       document.dispatchEvent(new Event("DOMContentLoaded", { bubbles: true, cancelable: true }));
       if (isMacPlatform()) relabelMacShortcut();
       nameSectionToggles();
+      unbannerSectionHeads();
     });
     document.body.appendChild(script);
     // Intentionally not removed on unmount — the widget is a page-level,
@@ -402,6 +452,7 @@ export function UX4GAccessibilityWidget({
   React.useEffect(() => {
     if (typeof document === "undefined") return;
     nameSectionToggles();
+    unbannerSectionHeads();
   }, []);
 
   React.useEffect(() => {

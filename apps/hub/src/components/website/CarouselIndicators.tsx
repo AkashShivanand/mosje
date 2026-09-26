@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { IconButton } from "@mosje/design-system";
 import { cn } from "@/lib/website/utils";
 
 import "./carousel-indicators.css";
@@ -88,16 +89,18 @@ export function CarouselIndicators({
       aria-label={label}
     >
       {items.map((i) => (
-        <button
+        <IconButton
           key={i}
-          type="button"
           className="sa-carousel-indicators__button"
+          variant="neutral"
+          appearance="text"
+          size="sm"
+          shape="circle"
+          icon={<span className="sa-carousel-indicators__dot" data-active={i === activeIndex || undefined} />}
           aria-label={`Go to ${itemNoun} ${i + 1} of ${count}`}
           aria-current={i === activeIndex ? "true" : undefined}
           onClick={() => onSelect(i)}
-        >
-          <span className="sa-carousel-indicators__dot" data-active={i === activeIndex || undefined} />
-        </button>
+        />
       ))}
     </div>
   );

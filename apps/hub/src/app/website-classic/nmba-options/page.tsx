@@ -12,7 +12,7 @@ import { PledgeSplit, PledgeToggle, PledgeBanner } from "@/components/website/nm
 import { RegisterSplitHero, RegisterPoints, RegisterMiniForm } from "@/components/website/nmba/options/RegisterOptions";
 import { CombinedTwinCards, CombinedUnifiedPanel, CombinedPledgeForward } from "@/components/website/nmba/options/CombinedOptions";
 import { AestheticWatermark, AestheticEdgeVine, AestheticGreenBand, AestheticSeal } from "@/components/website/nmba/options/AestheticOptions";
-import { Icon } from "@mosje/design-system";
+import { Icon, TabPanel, Tabs } from "@mosje/design-system";
 
 interface Variant {
   label: string;
@@ -73,6 +73,8 @@ function Section({ title, variants }: { title: string; variants: Variant[] }) {
   const [i, setI] = React.useState(0);
   const [action, setAction] = React.useState<{ text: string; href: string } | null>(null);
   const active = variants[i]!;
+  const idBase = React.useId();
+  const tabId = (label: string) => label.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
   // Intercept link clicks so reviewing stays on this page; report the destination.
   const onCapture = (e: React.MouseEvent) => {
@@ -89,13 +91,21 @@ function Section({ title, variants }: { title: string; variants: Variant[] }) {
         <h2 className="text-headline-2 text-primary-dark">{title}</h2>
         <span className="text-body-2 text-ink-muted">{active.note}</span>
       </div>
-      <div className="mt-3 flex flex-wrap gap-2">
-        {variants.map((v, idx) => (
-          <button key={v.label} type="button" onClick={() => { setI(idx); setAction(null); }} aria-pressed={i === idx}
-            className={`rounded-lg px-3.5 py-1.5 text-label-1 transition-colors ${i === idx ? "bg-primary text-white" : "bg-surface-muted text-ink-muted hover:bg-primary/10 hover:text-primary-dark"}`}>
-            {v.label}
-          </button>
-        ))}
+      {/* One row of options, one panel below — which is a tablist. The design
+          system's `Tabs` brings the arrow-key roving focus and the tab/panel
+          wiring the row of `aria-pressed` buttons never had. */}
+      <div className="mt-3">
+        <Tabs
+          idBase={idBase}
+          ariaLabel={title}
+          size="s"
+          track="none"
+          indicator="pill"
+          divider={false}
+          active={i}
+          onChange={(idx) => { setI(idx); setAction(null); }}
+          tabs={variants.map((v) => ({ id: tabId(v.label), label: v.label }))}
+        />
       </div>
 
       {/* Behaviour readout */}
@@ -111,7 +121,9 @@ function Section({ title, variants }: { title: string; variants: Variant[] }) {
         )}
       </div>
 
-      <div className="mt-5" onClickCapture={onCapture}>{active.render()}</div>
+      <div className="mt-5" onClickCapture={onCapture}>
+        <TabPanel idBase={idBase} tabId={tabId(active.label)}>{active.render()}</TabPanel>
+      </div>
     </section>
   );
 }

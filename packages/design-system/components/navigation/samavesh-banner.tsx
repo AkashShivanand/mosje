@@ -27,11 +27,13 @@ import "./samavesh-banner.css";
  * scan that proves no ink clears both on this ground) is in the header of
  * `samavesh-banner.css` and on the component's documentation page.
  *
- * - `light` — white on saffron. DEFAULT, and matches the Figma reference.
- *   WCAG 2 **2.91:1, which FAILS AA**; APCA Lc 59.8, the best perceptual score
- *   available on this ground. A deliberate, recorded deviation.
- * - `dark` — near-black on the same saffron. WCAG 6.50:1 passes; APCA Lc 48.9
- *   clears headline but not body text. The compliant choice.
+ * - `dark` — near-black on the same saffron. DEFAULT since 2026-09-22. WCAG
+ *   6.50:1 passes AA; APCA Lc 48.9 clears headline but not body text. Figma's set
+ *   already led with `Tone=Dark` (ds-documentation-standard §6: the default is
+ *   the variant that PASSES).
+ * - `light` — white on saffron. WCAG 2 **2.91:1, which FAILS AA**; APCA Lc 59.8,
+ *   the best perceptual score on this ground. Kept as an opt-in, recorded
+ *   deviation — never a default, and not for a citizen-facing page.
  * - `tint` — near-black on pale saffron, with saffron as a top rule and a badge
  *   ring. WCAG 17.29:1, APCA Lc 99.1. The only tone that clears BOTH standards
  *   for body text, and the recommended one.
@@ -151,9 +153,9 @@ export interface SamaveshBannerProps
   /** Explore button label. @default "Explore" */
   exploreLabel?: string;
   /**
-   * Band colouring. See `SamaveshBannerTone` — the default fails WCAG 2 contrast
-   * deliberately and that deviation is recorded, so do not change it casually.
-   * @default "light"
+   * Band colouring. See `SamaveshBannerTone`. The default passes WCAG 2 AA;
+   * `light` does not, and is an opt-in recorded deviation.
+   * @default "dark"
    */
   tone?: SamaveshBannerTone;
   /**
@@ -190,12 +192,10 @@ export interface SamaveshBannerProps
  * not a component. They are the reference this was built from, not a live mapping,
  * and Code Connect cannot resolve them.
  *
- * THE BAND HAS THREE TONES and the default (`light`, white on saffron) matches
- * the Figma reference and KNOWINGLY FAILS WCAG 2 contrast at 2.91:1. That is a
- * recorded deviation, not an oversight: on this ground no ink clears both WCAG 2
- * and APCA for body text, white is the best perceptual option of the ones that
- * exist, and `tone="tint"` is provided as the tone that clears both. See
- * `SamaveshBannerTone` and the header of `samavesh-banner.css`.
+ * THE BAND HAS THREE TONES. The default, `dark`, passes WCAG 2 AA at 6.50:1.
+ * `light` (white on saffron, 2.91:1) FAILS and is an opt-in, recorded deviation;
+ * `tint` clears both WCAG 2 and APCA. See `SamaveshBannerTone` and the header of
+ * `samavesh-banner.css`.
  *
  * Two further divergences from the reference, both upward:
  *
@@ -223,7 +223,7 @@ export function SamaveshBanner({
   title = "SAMAVESH",
   subline = "Single Access Mechanism for All Verticals of Empowerment & Social Harmony",
   exploreLabel = "Explore",
-  tone = "light",
+  tone = "dark",
   sticky = true,
   className,
   ...rest

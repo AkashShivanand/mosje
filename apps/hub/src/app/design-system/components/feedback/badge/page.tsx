@@ -27,6 +27,9 @@ const A11Y: A11yItem[] = [
     level: "AA",
     description:
       "Each status pairs a tonal background with ink from the same token family, so the pair moves together across brand modes rather than one being fixed against the other.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (color-contrast) on /design-system/components/feedback/badge; manual screen-reader check outstanding",
   },
   {
     criterion: "1.1.1 Non-text Content",
@@ -39,6 +42,9 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       "A badge is a label, not a control: it renders a plain span with no role, no tab stop and no handler. Anything clickable is a Button or a Chip.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (aria-allowed-attr, aria-conditional-attr, aria-deprecated-role, aria-prohibited-attr, aria-required-attr, aria-roles, aria-valid-attr, aria-valid-attr-value, button-name, duplicate-id-aria, label, nested-interactive, select-name) on /design-system/components/feedback/badge; manual screen-reader check outstanding",
   },
   {
     criterion: "2.2.2 Pause, Stop, Hide",

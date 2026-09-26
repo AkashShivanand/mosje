@@ -21,17 +21,26 @@ const A11Y: A11yItem[] = [
     level: "AA",
     description:
       "`autocomplete` is set to \"off\" deliberately. There is no standard token for a PAN, and a wrong guess would autofill a different identity number into it.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (autocomplete-valid) on /design-system/components/forms/pan-input; manual screen-reader check outstanding",
   },
   {
     criterion: "2.1.1 Keyboard",
     level: "A",
     description:
       "A real `<input type=\"text\">`. Autocorrect, autocapitalisation and spellcheck are all turned off, because a PAN is not a word and each of them fights the reader.",
+    status: "partial",
+    evidence:
+      "Keyboard smoke test (Playwright, Chromium 1440x900), 2026-09-22: tabbed through the specimen on /design-system/components/forms/pan-input - 4 focusable elements, each with a focus indicator that disappears on blur, focus left the specimen with no trap; manual screen-reader check outstanding",
   },
   {
     criterion: "2.5.8 Target Size (Minimum)",
     level: "AA",
     description: "The field inherits the 44px minimum height of Input.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (target-size) on /design-system/components/forms/pan-input; manual screen-reader check outstanding",
   },
   {
     criterion: "3.3.1 Error Identification",

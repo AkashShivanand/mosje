@@ -123,18 +123,27 @@ const A11Y: A11yItem[] = [
     level: "AA",
     description:
       "The OTP's first box carries `autocomplete=\"one-time-code\"` so the platform can offer the code. Aadhaar and PAN set `autocomplete=\"off\"` deliberately — neither has a standard token, and a wrong guess would autofill the wrong identity number.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (autocomplete-valid) on /design-system/components/forms/identity-inputs; manual screen-reader check outstanding",
   },
   {
     criterion: "2.1.1 Keyboard",
     level: "A",
     description:
       "All three are real inputs. The OTP adds arrow-key movement between boxes and a Backspace that steps back rather than stranding the caret.",
+    status: "partial",
+    evidence:
+      "Keyboard smoke test (Playwright, Chromium 1440x900), 2026-09-22: tabbed through the specimen on /design-system/components/forms/identity-inputs - 9 focusable elements, each with a focus indicator that disappears on blur (1 element(s) animate, so their indicator could not be measured by pixel comparison), focus left the specimen with no trap; manual screen-reader check outstanding",
   },
   {
     criterion: "2.5.8 Target Size (Minimum)",
     level: "AA",
     description:
       "Every OTP box is at least 44px tall; below 380px the boxes narrow rather than pushing the page sideways, keeping the target on the axis that matters. Aadhaar and PAN inherit Input's 44px minimum.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (target-size) on /design-system/components/forms/identity-inputs; manual screen-reader check outstanding",
   },
   {
     criterion: "3.3.1 Error Identification",
@@ -153,6 +162,9 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       'The OTP is a labelled group and each box is numbered ("Digit 3 of 6"), so a screen-reader user always knows where they are in the code.',
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (aria-allowed-attr, aria-conditional-attr, aria-deprecated-role, aria-hidden-focus, aria-prohibited-attr, aria-required-attr, aria-roles, aria-valid-attr, aria-valid-attr-value, duplicate-id-aria, label) on /design-system/components/forms/identity-inputs; manual screen-reader check outstanding",
   },
   {
     criterion: "Data protection (DPDP Act 2023)",

@@ -59,7 +59,8 @@ let a11yOnscreenCount = 0;
  * OWN trigger element, so open/close/focus behaviour stays exactly the vendor's.
  *
  * WHY IT IS DONE THIS WAY — read before "simplifying" it. The v3.28 script binds
- * two competing listeners on `document`:
+ * two competing listeners on `document`, and v3.36 still does (re-read in its source
+ * on 25 Sep 2026 — the closer's exemption list is unchanged):
  *
  *   opener: `event.target.closest('#uw-widget-custom-trigger, [data-uw-trigger="true"]')`
  *           → openPanel()
