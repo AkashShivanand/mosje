@@ -39,6 +39,11 @@ export interface WebsiteSearchEntry {
   /** ISO date (YYYY-MM-DD), where the source records one. Sorts the date facet. */
   updated?: string;
   iconName: string;
+  /**
+   * Multiplies the score within a type. Used to rank the Department's master
+   * schemes above old-site scheme listings at the same match strength.
+   */
+  boost?: number;
 }
 
 /** The facets offered on the results page, in the order they are shown. */

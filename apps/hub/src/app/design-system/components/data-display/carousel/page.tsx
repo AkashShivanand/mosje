@@ -153,6 +153,40 @@ export default function CarouselPage(): React.JSX.Element {
               list, not a carousel.
             </p>
           </section>
+          <section className="cdp__section" aria-labelledby="cdp-overlay">
+            <h2 id="cdp-overlay" className="cdp__h2">A Full-Width Banner Carries Its Controls in a Pill</h2>
+            <p>
+              <code>controls=&quot;overlay&quot;</code> puts the controls in a solid navy pill on the
+              banner&apos;s bottom-end corner, from tablet width up. Solid, so their contrast never
+              depends on the photograph; bottom-end, because banners set their words on the left or
+              across the middle. Below tablet width a banner is about 125px tall, which a pill would
+              mostly cover, so the controls return to the row beneath it at 44px thumb targets.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-timer">
+            <h2 id="cdp-timer" className="cdp__h2">When It Rotates, the Reader Can See the Timer</h2>
+            <p>
+              While the carousel moves on its own, the current dot fills over the interval — or, past
+              six slides, a hairline under the counter does. The moment the reader holds it (pointer on
+              it, focus in it, Pause pressed) the mark is solid again, and the timer restarts from
+              empty when rotation resumes, so the drawing and the timer never disagree.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-states">
+            <h2 id="cdp-states" className="cdp__h2">Every State and Edge Case</h2>
+            <ul>
+              <li><strong>No slides</strong> — renders nothing.</li>
+              <li><strong>One slide</strong> — renders the slide alone: no arrows, no dots, no Pause, no carousel announcement.</li>
+              <li><strong>Two to six slides</strong> — dots; the current one is a wider pill.</li>
+              <li><strong>Seven or more</strong> — the counter <code>3 / 9</code> replaces the dots, however many there are.</li>
+              <li><strong>Rotating, held, paused</strong> — timer filling; solid mark; solid mark with the control reading Play.</li>
+              <li><strong>Reduced motion</strong> — never rotates, and the Pause control is not drawn.</li>
+              <li><strong>Pointer and touch</strong> — hover only on a mouse, so nothing stays highlighted after a tap; every press is acknowledged; arrows grow to 44px on a touch screen.</li>
+              <li><strong>Keyboard</strong> — one stop for the track, one for Pause, one per arrow and one for the whole dot row (arrow keys move within it). Slides out of view are inert, so a link on another slide is never reached by accident.</li>
+              <li><strong>Loading</strong> — a banner that has not arrived shows a tinted 3:1 ground, never a white hole.</li>
+              <li><strong>Last slide</strong> — Next returns to the first, and the move is announced.</li>
+            </ul>
+          </section>
           <section className="cdp__section" aria-labelledby="cdp-track">
             <h2 id="cdp-track" className="cdp__h2">The Track Is the Source of Truth</h2>
             <p>
@@ -189,6 +223,15 @@ export default function CarouselPage(): React.JSX.Element {
               region carries &ldquo;Slide 3 of 4&rdquo; so a screen-reader user learns that the
               press did something — without the position being printed on screen a second time,
               where the dots already show it.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-quiet">
+            <h2 id="cdp-quiet" className="cdp__h2">Quiet While It Rotates</h2>
+            <p>
+              The live region is switched off while the carousel moves on its own — announcing a new
+              slide every seven seconds to someone reading elsewhere is the interruption the WAI-ARIA
+              carousel pattern warns against — and switched back on the moment the reader takes
+              control.
             </p>
           </section>
           <section className="cdp__section" aria-labelledby="cdp-dots">

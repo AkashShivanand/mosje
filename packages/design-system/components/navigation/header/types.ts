@@ -57,6 +57,18 @@ export interface NavColumn {
   heading?: string;
   links?: NavLink[];
   items?: NavMegaItem[];
+  /**
+   * Lay the rich `items` two across. For a long list of portals (the Offerings
+   * menu's Scheme Portals, Figma M2): seven rows in one column would push the
+   * panel past the fold.
+   */
+  wide?: boolean;
+  /**
+   * A full-width outlined button closing the column — "View All Schemes" under the
+   * scheme portals (Figma M2, 14 September review). As a small heading link it
+   * undersold the schemes; as a row it read as one more portal.
+   */
+  action?: NavLink;
 }
 
 /**

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
+import { ListingPage } from "@/components/website-next/templates/ListingPage";
 import {
   grantDocumentColumns,
   grantDocumentRows,
@@ -33,7 +33,9 @@ export default function Page() {
       columns={grantDocumentColumns}
       rows={grantDocumentRows(DE_BLACKLISTED_NGO_ORDERS)}
       searchKeys={["title"]}
-      searchPlaceholder="Search by organisation name…"
+      searchPlaceholder="Search by organisation name"
+      noun="orders"
+      nounSingular="order"
     />
   );
 }

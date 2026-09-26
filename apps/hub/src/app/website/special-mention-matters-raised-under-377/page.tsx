@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ListingPage } from "@/components/website/templates/ListingPage";
+import { ListingPage } from "@/components/website-next/templates/ListingPage";
 import { SPECIAL_MENTION_MATTERS } from "@/data/website";
 import { grantDocumentColumns } from "@/data/website/columns";
 import { socialCard } from "@/lib/seo/social";
@@ -32,7 +32,7 @@ export default function Page() {
       columns={grantDocumentColumns}
       rows={rows}
       searchKeys={["title"]}
-      searchPlaceholder="Search records…"
+      searchPlaceholder="Search records by title"
     />
   );
 }

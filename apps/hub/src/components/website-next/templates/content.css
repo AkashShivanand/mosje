@@ -1,0 +1,241 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Content pages (T1) and policy pages (T5): the pieces running text needs that
+   website-next.css does not carry — collapsible reference tables, the contents
+   list, the About Us timeline and people row, and a few table helpers.
+   Tokens only (--sa-*). A literal is layout geometry no token models.
+   Prefixes: wn-disclosure, wn-toc, wn-timeline, wn-people, wn-nowrap.
+   ───────────────────────────────────────────────────────────────────────────── */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ── MEASURE. Running text keeps the reading measure; tables and collapsible
+     reference tables take the whole content column, so a ten-column statistical
+     table is not squeezed into 36rem and scrolled when the column has room. */
+  article.wn-prose { max-width: none; }
+  article.wn-prose > :is(p, ul:not(.wn-people), ol, h2, h3, h4, blockquote, hr, .wn-toc),
+  article.wn-prose > section > :is(p, ul, ol, h2, h3, h4) { max-width: var(--sa-container-measure); }
+
+
+  /* ── Table helpers ───────────────────────────────────────────────────────── */
+  .wn-prose .wn-nowrap { white-space: nowrap; }
+  /* A document title must stay readable on a phone; the table scrolls instead. */
+  .wn-prose .wn-doc-table td.wn-doc-title { min-width: 14rem; }
+  .wn-prose .wn-table-wrap:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+  .wn-prose caption.wn-caption {
+    caption-side: top;
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    text-align: start;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+  .wn-prose thead tr + tr th { border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); text-align: end; }
+  .wn-prose th[colspan] { text-align: center; }
+  /* A cell spanning rows reads as a group label; give it the rule on its right. */
+  .wn-prose tbody td[rowspan] { border-inline-end: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); }
+  .wn-prose p.wn-source {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── Collapsible reference tables (LAY-12) ───────────────────────────────── */
+  .wn-disclosure {
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-base);
+  }
+  .wn-prose .wn-disclosure + .wn-disclosure { margin-top: var(--sa-stack-12); }
+  .wn-disclosure__summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: var(--sa-inline-16);
+    align-items: center;
+    min-height: var(--sa-target-comfortable);
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    cursor: pointer;
+    list-style: none;
+    border-radius: var(--sa-shape-12);
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+  .wn-disclosure__summary::-webkit-details-marker { display: none; }
+  .wn-disclosure__icon {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    display: inline-flex;
+    color: var(--sa-icon-neutral-subtle);
+    transition: transform var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+  .wn-disclosure[open] > .wn-disclosure__summary .wn-disclosure__icon { transform: rotate(180deg); }
+  @media (prefers-reduced-motion: reduce) { .wn-disclosure__icon { transition: none; } }
+  .wn-disclosure[open] > .wn-disclosure__summary { border-end-start-radius: 0; border-end-end-radius: 0; }
+  .wn-disclosure__summary:hover { background: var(--sa-bg-neutral-subtlest); }
+  .wn-disclosure__summary:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+  .wn-disclosure__title {
+    grid-column: 1;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+  .wn-disclosure__meta {
+    grid-column: 1;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+  .wn-disclosure__body { padding: 0 var(--sa-padding-16) var(--sa-padding-16); }
+  .wn-disclosure__body > * + * { margin-top: var(--sa-stack-12); }
+  .wn-prose .wn-disclosure__body .wn-table-wrap { border-radius: var(--sa-shape-8); }
+
+  /* ── Contents list at the top of a long page (LAY-12) ────────────────────── */
+  .wn-prose .wn-toc {
+    padding: var(--sa-padding-16) var(--sa-padding-20);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-subtlest);
+  }
+  .wn-prose .wn-toc__title {
+    margin: 0;
+    font-size: var(--sa-type-title-3-size);
+    line-height: var(--sa-type-title-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+  .wn-prose .wn-toc ol {
+    margin-top: var(--sa-stack-8);
+    display: grid;
+    gap: var(--sa-stack-4) var(--sa-inline-24);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+  @media (min-width: 768px) { .wn-prose .wn-toc ol { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .wn-prose .wn-toc li + li { margin-top: 0; }
+  .wn-prose .wn-toc a { display: inline-flex; align-items: center; min-height: var(--sa-target-min); }
+
+  /* ── Timeline (About Us history, LAY-12) ─────────────────────────────────── */
+  .wn-prose .wn-timeline { list-style: none; padding: 0; position: relative; }
+  .wn-prose .wn-timeline::before {
+    content: "";
+    position: absolute;
+    inset-block: var(--sa-stack-8);
+    inset-inline-start: 7px;
+    border-inline-start: var(--sa-stroke-2) solid var(--sa-border-neutral-subtle);
+  }
+  .wn-prose .wn-timeline > li { position: relative; padding-inline-start: var(--sa-padding-40); }
+  .wn-prose .wn-timeline > li + li { margin-top: var(--sa-stack-24); }
+  .wn-prose .wn-timeline > li::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0;
+    top: 6px;
+    width: 16px;
+    height: 16px;
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-bg-neutral-base);
+    border: var(--sa-stroke-2) solid var(--sa-border-brand-primary-base);
+  }
+  .wn-prose .wn-timeline__date {
+    display: block;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-medium);
+    color: var(--sa-text-neutral-subtle);
+  }
+  .wn-prose .wn-timeline h3 {
+    margin-top: var(--sa-stack-4);
+    font-size: var(--sa-type-title-2-size); font-weight: var(--sa-font-weight-semibold);
+    line-height: var(--sa-type-title-2-lh);
+  }
+  .wn-prose .wn-timeline__more { margin-top: var(--sa-stack-8); }
+  .wn-prose .wn-timeline__more > summary {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--sa-target-min);
+    cursor: pointer;
+    color: var(--sa-text-link-brand-default);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    font-size: var(--sa-type-body-2-size);
+  }
+  .wn-prose .wn-timeline__more > summary:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+    border-radius: var(--sa-shape-4);
+  }
+  .wn-prose .wn-timeline__more[open] > summary { margin-bottom: var(--sa-stack-8); }
+  .wn-prose .wn-timeline__more > div > * + * { margin-top: var(--sa-stack-12); }
+
+  /* ── People row (About Us ministers) ─────────────────────────────────────── */
+  .wn-prose .wn-people {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--sa-stack-16);
+  }
+  @media (min-width: 768px) { .wn-prose .wn-people { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); } }
+  .wn-prose .wn-people > li + li { margin-top: 0; }
+  .wn-prose .wn-people figure {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: var(--sa-inline-12);
+    align-items: center;
+    height: 100%;
+    padding: var(--sa-padding-12);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    margin: 0;
+  }
+  .wn-prose .wn-people img {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    object-position: top;
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-bg-neutral-subtlest);
+  }
+  .wn-prose .wn-people figcaption { font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); }
+  .wn-prose .wn-people figcaption strong { display: block; }
+  .wn-prose .wn-people figcaption span { color: var(--sa-text-neutral-subtle); }
+}
+
+@layer components {
+  /* The page a side panel is on: named, not only coloured (WCAG 1.4.1). */
+  .wn-panel a[aria-current="page"] {
+    color: var(--sa-text-neutral-bolder);
+    font-weight: var(--sa-font-weight-semibold);
+    text-decoration: none;
+  }
+}
+
+@layer components {
+  /* ── Website Policies hub: one row per policy, the name then one line ────── */
+  .wn-prose .wn-policy-list { list-style: none; padding: 0; border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); }
+  .wn-prose .wn-policy-list > li {
+    margin: 0;
+    padding-block: var(--sa-padding-16);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+  .wn-prose .wn-policy-list a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--sa-target-min);
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+  .wn-prose .wn-policy-list p {
+    margin-top: var(--sa-stack-4);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+}

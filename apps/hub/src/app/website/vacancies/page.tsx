@@ -1,31 +1,42 @@
 import type { Metadata } from "next";
-import { DocumentCatalog } from "@/components/website/templates/DocumentCatalog";
+import { DocumentCatalog } from "@/components/website-next/templates/DocumentCatalog";
+import { isArchived } from "@/components/website-next/ui/records";
 import { getVacancies, getContentSyncedDate } from "@/lib/website/content";
+import { socialCard } from "@/lib/seo/social";
+
+const TITLE = "Vacancies";
+const DESCRIPTION =
+  "Recruitment notices and deputation circulars issued by the Department of Social Justice & Empowerment and its associated organisations.";
 
 export const metadata: Metadata = {
-  title: "Vacancies & Recruitments | DoSJE",
-  description:
-    "Current recruitment notifications, deputation circulars, and job openings under the Department of Social Justice & Empowerment.",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
+  ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/vacancies" }),
 };
 
+/*
+ * Current vacancies only: a circular published more than twelve months ago
+ * moves to the Archives (issue MAN-06). The register publishes no closing date.
+ * The classic page's invented size label ("PDF (Application Proforma
+ * Included)") and category filter are gone.
+ */
 export default function VacanciesPage() {
-  const vacancies = getVacancies().map((v) => ({
-    slug: v.slug,
-    title: v.title,
-    date: v.date,
-    category: v.category ?? "Recruitment Circular",
-    sourceUrl: v.fileUrl ?? v.sourceUrl,
-    fileSize: "PDF (Application Proforma Included)",
-  }));
+  const vacancies = getVacancies()
+    .filter((v) => !isArchived(v.date))
+    .map((v) => ({ slug: v.slug, title: v.title, date: v.date, sourceUrl: v.fileUrl }));
 
   return (
     <DocumentCatalog
-      title="Vacancies &amp; Career Opportunities"
-      description="Latest recruitment notifications, deputation circulars, and consultant openings across the Department and its autonomous organizations."
-      breadcrumb={[{ label: "Offerings", href: "/website/vacancies" }, { label: "Vacancies" }]}
+      title={TITLE}
+      description={DESCRIPTION}
+      breadcrumb={[{ label: "Tenders & Vacancies" }, { label: TITLE }]}
       lastUpdated={getContentSyncedDate()}
       documents={vacancies}
-      categories={["Recruitment Circular", "Deputation", "Consultant"]}
+      detailBase="/website/vacancies"
+      noun="vacancies"
+      nounSingular="vacancy"
+      archive={{ href: "/website/archives", text: "Vacancies published more than 12 months ago are kept in the Archives." }}
+      emptyMessage="No vacancy has been published in the last 12 months. Earlier vacancies are in the Archives."
     />
   );
 }

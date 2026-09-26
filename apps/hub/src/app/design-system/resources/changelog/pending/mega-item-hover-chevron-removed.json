@@ -1,0 +1,4 @@
+{
+  "kind": "Removed",
+  "text": "THE MEGA-MENU ROW'S HOVER CHEVRON IS GONE, IN CODE AS WELL AS FIGMA. It appeared on hover and focus at the end of an organisation row and promised a submenu that never opens — issue register NAV-18, raised against the live site and carried into the redesign. Figma removed it on 2026-09-22 and the code did not follow until now, so the two disagreed for a day. The row's hover lift and outline already say it is clickable; the only trailing mark a row can carry now is the new-tab mark on an off-site destination."
+}

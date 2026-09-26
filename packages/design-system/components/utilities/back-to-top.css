@@ -49,4 +49,18 @@
   .ds-back-to-top.ds-btn.ds-icon-btn:active {
     background-color: var(--sa-bg-neutral-hover);
   }
+
+  /* YIELDING. While the control would sit on a surface marked
+     `data-sa-rail-clear`, `useRailClearance` puts this attribute on it and the
+     control steps aside — visually and for taps only. It stays in the tab order
+     and the accessibility tree, and it comes back on focus, because where a
+     control happens to sit on screen means nothing to a screen reader.
+
+     `filter: opacity(0)`, never `opacity: 0`: both rails MEASURE this element,
+     and an `opacity: 0` occupant is treated as absent, so the neighbours would
+     slide into its slot and back every time it yielded. */
+  .ds-back-to-top.ds-btn.ds-icon-btn[data-sa-rail-yield]:not(:focus-visible) {
+    filter: opacity(0);
+    pointer-events: none;
+  }
 }

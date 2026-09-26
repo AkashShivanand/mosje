@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "Carousel: the overlay pill is brand navy, not neutral near-black; while it rotates on its own the current dot fills over the interval as a visible timer and the live region goes quiet; slides out of view are inert; hover is gated to a fine pointer and hover/press use the brand tint instead of a grey that stuck after a tap; a dot's focus ring follows its mark. SamaveshBanner: open on the tint tone the bar trades its shadow for a hairline, and on a phone a tap no longer sticks the Explore button's green across the whole band."
+}

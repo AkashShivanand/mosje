@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { DocumentCatalog } from "@/components/website/templates/DocumentCatalog";
+import { DocumentCatalog } from "@/components/website-next/templates/DocumentCatalog";
 import { localiseDocumentUrl } from "@/lib/website/sample-documents";
 
 export const metadata: Metadata = {
-  title: "Citizen Charter | DoSJE",
+  title: "Citizen Charter | Department of Social Justice & Empowerment",
   description: "The Citizen Charter of the Ministry of Social Justice & Empowerment.",
 };
 
@@ -21,19 +21,20 @@ export default function CitizenCharterPage() {
     <DocumentCatalog
       title="Citizen Charter"
       description="The Citizen Charter of the Ministry of Social Justice & Empowerment."
-      breadcrumb={[{ label: "Department" }, { label: "Citizen Charter" }]}
+      breadcrumb={[{ label: "About" }, { label: "Citizen Charter" }]}
       lastUpdated="17 Sep 2026"
       documents={[
         {
           slug: "citizen-charter",
           title: "Citizen Charter",
-          category: "Citizen Charter",
+          organisation: "MoSJE",
           date: "2024-01-26",
           sourceUrl: localiseDocumentUrl(SOURCE, "Citizen Charter"),
-          fileSize: "PDF (738 KB)",
+          fileSize: "738 KB",
         },
       ]}
-      categories={["Citizen Charter"]}
+      noun="documents"
+      nounSingular="document"
     />
   );
 }

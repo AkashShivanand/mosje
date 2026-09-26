@@ -7,7 +7,6 @@
   "apps/hub/src/app/design-system/components/navigation/samavesh-banner/page.tsx": 4,
   "apps/hub/src/app/design-system/components/section-templates/site-header/header-preview.tsx": 1,
   "apps/hub/src/app/website/admin/admin-login.tsx": 1,
-  "apps/hub/src/app/website/organisation/[...slug]/page.tsx": 1,
   "apps/hub/src/components/design-system/docs-layout/docs-layout.tsx": 1,
   "apps/hub/src/components/design-system/hero/hero.tsx": 1,
   "apps/hub/src/components/eutthan/eutthan-shell.tsx": 1,
@@ -30,5 +29,7 @@
   "packages/design-system/components/navigation/header/nav-sheet.figma.ts": 1,
   "packages/design-system/components/navigation/header/site-header.figma.ts": 1,
   "apps/storybook/stories/NavSheet.stories.tsx": 1,
-  "apps/storybook/stories/SamaveshBanner.stories.tsx": 1
+  "apps/storybook/stories/SamaveshBanner.stories.tsx": 1,
+  "apps/hub/src/app/website-classic/admin/admin-login.tsx": 1,
+  "apps/hub/src/app/website-classic/organisation/[...slug]/page.tsx": 1
 }

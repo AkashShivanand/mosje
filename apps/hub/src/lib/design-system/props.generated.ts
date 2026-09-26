@@ -354,6 +354,97 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "ActionTileProps": {
+    "source": "packages/design-system/components/navigation/action-tile.tsx",
+    "inheritsNative": true,
+    "props": [
+      {
+        "name": "href",
+        "type": "string",
+        "required": true,
+        "description": "Where the tile goes. The whole tile is the one link."
+      },
+      {
+        "name": "title",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The tile's name — its accessible name starts here."
+      },
+      {
+        "name": "action",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A call to action drawn inside the tile — \"Call\". Not a second control: the tile is one link, so this is text that says what the link does."
+      },
+      {
+        "name": "description",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "One supporting line."
+      },
+      {
+        "name": "external",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Opens in a new tab: the arrow becomes `open_in_new` and the accessible name gains \"(opens in a new window)\" (GIGW)."
+      },
+      {
+        "name": "layout",
+        "type": "ActionTileLayout = \"row\" | \"stack\" | \"block\"",
+        "required": false,
+        "default": "\"row\"",
+        "description": "`row` — media, text, trailing arrow in one line (a task, an account). `stack` — centred media over the title (a group of people). `block` — left-aligned column: media and value, then title, description, action (a helpline, a document)."
+      },
+      {
+        "name": "linkAs",
+        "type": "React.ElementType",
+        "required": false,
+        "default": "\"a\"",
+        "description": "Router-aware link for internal hrefs — pass `next/link`."
+      },
+      {
+        "name": "media",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "An icon or an image, drawn in a round well. Pass `<Icon>` or an `<img>` with `alt=\"\"`: the title names the tile, and the media is decoration."
+      },
+      {
+        "name": "mediaSize",
+        "type": "ActionTileMediaSize = 40 | 48 | 64 | 88",
+        "required": false,
+        "default": "40",
+        "description": "The well's size."
+      },
+      {
+        "name": "shape",
+        "type": "ActionTileShape = \"card\" | \"pill\"",
+        "required": false,
+        "default": "\"card\"",
+        "description": "`pill` rounds the tile fully; `row` layout only."
+      },
+      {
+        "name": "tone",
+        "type": "ActionTileTone = \"default\" | \"tint\" | \"solid\" | \"inverse\"",
+        "required": false,
+        "default": "\"default\"",
+        "description": "The ground the tile sits on, and so its own fill. `default` — white with a hairline, on a white, tint or grey band. `tint` — the brand's lightest fill, on white. `solid` — the key colour's darkest shade, on a light band. `inverse` — a lighter navy with an inverse hairline, on a navy band."
+      },
+      {
+        "name": "trailing",
+        "type": "boolean",
+        "required": false,
+        "default": "true for `row`, false otherwise",
+        "description": "Show the trailing arrow."
+      },
+      {
+        "name": "value",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A figure set large above the title — a helpline number. `block` layout only, where it sits beside the media."
+      }
+    ]
+  },
   "AlertProps": {
     "source": "packages/design-system/components/feedback/alert.tsx",
     "inheritsNative": true,
@@ -990,14 +1081,14 @@ export const GENERATED_PROPS = {
       },
       {
         "name": "spacing",
-        "type": "BandSpacing = \"none\" | \"s\" | \"m\" | \"l\"",
+        "type": "BandSpacing = \"none\" | \"s\" | \"m\" | \"l\" | \"xl\"",
         "required": false,
         "default": "\"m\" — `section/m`, the standard gap between website sections.",
         "description": ""
       },
       {
         "name": "tone",
-        "type": "BandTone = \"default\" | \"muted\" | \"brand\" | \"inverse\"",
+        "type": "BandTone = \"default\" | \"muted\" | \"brand\" | \"brandBold\" | \"inverse\"",
         "required": false,
         "default": "\"default\"",
         "description": ""
@@ -1920,6 +2011,13 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": ""
+      },
+      {
+        "name": "controls",
+        "type": "\"below\" | \"overlay\"",
+        "required": false,
+        "default": "\"below\"",
+        "description": "Where the controls sit. `below` is a row under the slides. `overlay` puts them in a dark pill on the slide's bottom edge — for a full-width banner, where a row below costs the first screen its height and detaches the controls from what they move. The pill is solid, so its contrast does not depend on the photograph behind it. Below `breakpoint/tablet` the controls stay in the row, because a phone's banner is too short to carry them."
       },
       {
         "name": "interval",
@@ -6368,6 +6466,12 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "action",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The control that follows the figures — \"View Dashboard\", almost always a link styled as a button. `\"bar\"` only: the other two shapes are a row of facts with nothing after them, and a cell holding a button would have to borrow a fact's width."
+      },
+      {
         "name": "overlap",
         "type": "boolean",
         "required": false,
@@ -6376,10 +6480,10 @@ export const GENERATED_PROPS = {
       },
       {
         "name": "variant",
-        "type": "\"compact\" | \"extended\"",
+        "type": "\"compact\" | \"extended\" | \"bar\"",
         "required": false,
         "default": "`items.length > 5 ? \"extended\" : \"compact\"`",
-        "description": "WHICH SHAPE THE STRIP TAKES. Derived from the item count unless you say. `\"compact\"` — the treatment the handoff draws: as many 200px cells as the width allows, on one row, each one a centred stack of mark over value over label. Right for the three or four standing facts under a page hero. `\"extended\"` — for a set too long to sit on one row. The cells go to a fixed, balanced column count and wrap; each one turns on its side, with the mark in a chip of its own and the value and label flush beside it; and the value steps up from `headline-5` to `headline-2` so it reads as a figure rather than as a line of text that happens to be numeric. THE DEFAULT IS THE COUNT, and the threshold is arithmetic rather than taste. `minmax(200px, 1fr)` fits at most FIVE tracks in the widest content column this estate has (1120px of grid inside the card), so six is the first count that cannot be one row. At six the compact shape stops being a strip and becomes a grid of identical tiles, which is a shape the eye has to enter once per tile. Pass it only to override that — a six-item strip that must stay compact, or a four-item one that must read as figures."
+        "description": "WHICH SHAPE THE STRIP TAKES. Derived from the item count unless you say. `\"compact\"` — the treatment the handoff draws: as many 200px cells as the width allows, on one row, each one a centred stack of mark over value over label. Right for the three or four standing facts under a page hero. `\"extended\"` — for a set too long to sit on one row. The cells go to a fixed, balanced column count and wrap; each one turns on its side, with the mark in a chip of its own and the value and label flush beside it; and the value steps up from `headline-5` to `headline-2` so it reads as a figure rather than as a line of text that happens to be numeric. THE DEFAULT IS THE COUNT, and the threshold is arithmetic rather than taste. `minmax(200px, 1fr)` fits at most FIVE tracks in the widest content column this estate has (1120px of grid inside the card), so six is the first count that cannot be one row. At six the compact shape stops being a strip and becomes a grid of identical tiles, which is a shape the eye has to enter once per tile. Pass it only to override that — a six-item strip that must stay compact, or a four-item one that must read as figures. `\"bar\"` — the brand-blue band the website home page carries under its scheme portals: no marks, the caption above the figure, hairline rules between the cells and, where one is given, an `action` in a cell of its own. It is never chosen by the count — a bar is a deliberate treatment for the two or three figures a department leads with, and it is the one shape that inverts, so a set that fell into it by accident would put white type on blue without anybody deciding to."
       }
     ]
   },
@@ -13686,9 +13790,9 @@ export const GENERATED_PROPS = {
       },
       {
         "name": "description",
-        "type": "string",
+        "type": "React.ReactNode",
         "required": false,
-        "description": "Supporting sentence below the title."
+        "description": "Supporting sentence below the title. Phrasing content, like `title`."
       },
       {
         "name": "eyebrow",
@@ -13703,10 +13807,24 @@ export const GENERATED_PROPS = {
         "description": "Set on the heading so a table/list can point `aria-labelledby` at it."
       },
       {
-        "name": "title",
-        "type": "string",
+        "name": "size",
+        "type": "\"default\" | \"display\"",
         "required": false,
-        "description": "The section heading text."
+        "default": "\"default\"",
+        "description": "Type scale. `default` is the UI scale a portal screen or a docs page needs (Headline 4 over Body 3). `display` is for a landing page's sections, where the heading is the reader's way through a long page (Headline 2 over Body 1)."
+      },
+      {
+        "name": "title",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The section heading text. A node, so a translated string (`<T>`) can be passed; it renders inside the heading, so keep it phrasing content."
+      },
+      {
+        "name": "tone",
+        "type": "\"default\" | \"inverse\"",
+        "required": false,
+        "default": "\"default\"",
+        "description": "Ground the title sits on. `inverse` for a navy or green band."
       }
     ]
   },

@@ -1,0 +1,162 @@
+@layer theme, base, components, utilities;
+
+/* ============================================================================
+   MoSJE / SAMAVESH — ActionTile
+   One destination as a tile, in three arrangements and four grounds.
+   Tokens only; the media well sizes are the icon scale's own steps (40/48/64),
+   plus 88 for an illustrated figure, which the scale has no step for.
+
+   GLYPHS ARE WHITE ON THE KEY COLOUR. DBIM §3.7 allows an icon in the key
+   colour's darkest shade or in white; the semantic layer has no icon token at
+   the darkest shade (icon/brand/primary/bolder is rung 600), so the glyph is
+   white and its well is the darkest shade — both halves compliant, and one
+   treatment on every ground.
+   ============================================================================ */
+
+@layer components {
+  .ds-action-tile {
+    --_tile-bg: var(--sa-bg-neutral-base);
+    --_tile-border: var(--sa-border-neutral-subtle);
+    --_tile-border-hover: var(--sa-border-brand-primary-base);
+    --_tile-ink: var(--sa-text-neutral-bolder);
+    --_tile-muted: var(--sa-text-neutral-subtle);
+    --_well-bg: var(--sa-bg-brand-primary-boldest);
+    --_well-ink: var(--sa-icon-neutral-inverse);
+    --_accent: var(--sa-text-brand-primary-bolder);
+    --_focus: var(--sa-focus-ring);
+
+    position: relative;
+    display: grid;
+    gap: var(--sa-stack-4) var(--sa-inline-12);
+    height: 100%;
+    min-height: var(--sa-target-spacious);
+    padding: var(--sa-padding-16);
+    border: var(--sa-stroke-1) solid var(--_tile-border);
+    border-radius: var(--sa-shape-16);
+    background: var(--_tile-bg);
+    color: var(--_tile-ink);
+    font-family: var(--sa-font-latin);
+    text-decoration: none;
+    transition:
+      border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      box-shadow var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  /* Hover is gated to a fine pointer: ungated, :hover STICKS after a tap on a
+     touchscreen. The press below is ungated — it is a touch reader's only feedback. */
+  @media (hover: hover) and (pointer: fine) {
+    .ds-action-tile:hover { border-color: var(--_tile-border-hover); box-shadow: var(--sa-elevation-card); }
+    .ds-action-tile:hover .ds-action-tile__title,
+    .ds-action-tile:hover .ds-action-tile__action { text-decoration: underline; text-underline-offset: 0.2em; }
+    .ds-action-tile--solid:hover,
+    .ds-action-tile--inverse:hover { box-shadow: none; }
+  }
+  .ds-action-tile:active { transform: translateY(1px); }
+  .ds-action-tile:focus-visible { outline: var(--sa-focus-width) solid var(--_focus); outline-offset: var(--sa-focus-offset); }
+  @media (prefers-reduced-motion: reduce) { .ds-action-tile:active { transform: none; } }
+
+  /* ── Grounds ───────────────────────────────────────────────────────────── */
+  .ds-action-tile--tint { --_tile-bg: var(--sa-bg-brand-primary-base); --_tile-border: transparent; }
+  .ds-action-tile--solid {
+    --_tile-bg: var(--sa-bg-brand-primary-boldest);
+    --_tile-border: transparent;
+    --_tile-border-hover: var(--sa-bg-brand-primary-boldest);
+    --_tile-ink: var(--sa-text-neutral-inverse);
+    --_tile-muted: var(--sa-text-neutral-inverse);
+    --_well-bg: var(--sa-bg-brand-primary-bolder);
+    --_accent: var(--sa-text-neutral-inverse);
+  }
+  .ds-action-tile--inverse {
+    --_tile-bg: var(--sa-bg-brand-primary-bolder);
+    --_tile-border: var(--sa-border-neutral-inverse-subtle);
+    --_tile-border-hover: var(--sa-border-neutral-inverse-default);
+    --_tile-ink: var(--sa-text-neutral-inverse);
+    --_tile-muted: var(--sa-text-neutral-inverse);
+    --_well-bg: var(--sa-bg-brand-primary-boldest);
+    --_accent: var(--sa-text-neutral-inverse);
+    --_focus: var(--sa-focus-ringInner);
+  }
+  /* ── Media well ────────────────────────────────────────────────────────── */
+  .ds-action-tile__media {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    overflow: hidden;
+    border-radius: var(--sa-shape-full);
+    background: var(--_well-bg);
+    color: var(--_well-ink);
+  }
+  .ds-action-tile__media:has(img) { background: var(--sa-bg-brand-primary-subtler); }
+  .ds-action-tile__media :is(img) { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .ds-action-tile__media--40 { width: var(--sa-icon-size-40); height: var(--sa-icon-size-40); }
+  .ds-action-tile__media--48 { width: var(--sa-icon-size-48); height: var(--sa-icon-size-48); }
+  .ds-action-tile__media--64 { width: var(--sa-icon-size-64); height: var(--sa-icon-size-64); }
+  /* An illustrated figure: the scale has no step this size, so it is geometry. */
+  .ds-action-tile__media--88 { width: 88px; height: 88px; }
+  @media (max-width: 767px) { .ds-action-tile__media--88 { width: var(--sa-icon-size-64); height: var(--sa-icon-size-64); } }
+
+  /* ── Text ──────────────────────────────────────────────────────────────── */
+  /* A register title can carry an unbreakable run ("Karamcharis/Designated");
+     it wraps at any point rather than overflowing the tile. */
+  .ds-action-tile__text { display: grid; gap: var(--sa-stack-2); min-width: 0; overflow-wrap: anywhere; }
+  .ds-action-tile__title {
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    text-wrap: balance;
+  }
+  .ds-action-tile__description {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--_tile-muted);
+  }
+  .ds-action-tile__value {
+    font-family: var(--sa-font-display);
+    font-size: var(--sa-type-display-5-size);
+    line-height: var(--sa-type-display-5-lh);
+    font-weight: var(--sa-font-weight-displayMedium);
+    font-variant-numeric: tabular-nums;
+  }
+  .ds-action-tile__action {
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    min-height: var(--sa-target-spacious);
+    margin-top: var(--sa-stack-8);
+    padding: 0 var(--sa-padding-20);
+    border-radius: var(--sa-shape-full);
+    background: var(--_well-bg);
+    color: var(--_well-ink);
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-medium);
+  }
+  .ds-action-tile__trailing { display: inline-flex; color: var(--_accent); }
+
+  /* ── Layouts ───────────────────────────────────────────────────────────── */
+  .ds-action-tile--row { grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; }
+  .ds-action-tile--row:not(:has(.ds-action-tile__media)) { grid-template-columns: minmax(0, 1fr) auto; }
+  .ds-action-tile--pill { border-radius: var(--sa-shape-full); padding-block: var(--sa-padding-12); }
+
+  .ds-action-tile--stack { justify-items: center; align-content: start; gap: var(--sa-stack-12); padding: var(--sa-padding-20) var(--sa-padding-12); text-align: center; }
+  .ds-action-tile--stack .ds-action-tile__title { font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); }
+
+  .ds-action-tile--block { grid-template-columns: auto minmax(0, 1fr); align-content: start; padding: var(--sa-padding-24); }
+  .ds-action-tile--block .ds-action-tile__text,
+  .ds-action-tile--block .ds-action-tile__action { grid-column: 1 / -1; }
+  .ds-action-tile--block .ds-action-tile__value { align-self: center; }
+  .ds-action-tile--block:not(:has(.ds-action-tile__value)) .ds-action-tile__media { grid-column: 1 / -1; }
+
+  /* The phone: a row keeps its words, not its arrow. */
+  @media (max-width: 767px) {
+    .ds-action-tile--row:not(.ds-action-tile--pill) .ds-action-tile__trailing { display: none; }
+    .ds-action-tile--row:not(.ds-action-tile--pill) { grid-template-columns: auto minmax(0, 1fr); padding-inline: var(--sa-padding-12); }
+    .ds-action-tile--block { padding: var(--sa-padding-16); }
+  }
+
+  @media (forced-colors: active) {
+    .ds-action-tile { border-color: CanvasText; }
+  }
+}

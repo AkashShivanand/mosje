@@ -226,7 +226,7 @@ export interface SiteHeaderProps {
 }
 
 /* ── Glyphs ────────────────────────────────────────────────────────────────
-   The nav row's glyphs (caret, mega chevron, new-tab hint) and the two triggers
+   The nav row's glyphs (caret, new-tab hint) and the two triggers
    moved to nav-parts.tsx, where the components that own them live. Nothing is
    left inline here: every glyph in this file is the shared <Icon>. */
 
@@ -300,6 +300,16 @@ export function SiteHeader({
   /* The compact bar is one 65px tier already; there is nothing to condense, and the
      old default turned the state on for it anyway, where it did nothing at all. */
   const wantsScrollCollapse = (collapseOnScroll ?? isSticky) && isSticky && !isCompact;
+  /**
+   * THE PHONE GESTURE — hide on the way down, come back on the way up — is not the
+   * layered portal's alone. A sticky website masthead runs it too: its accessibility
+   * bar is the page's one door to the panel (accessibility-entry-point.md rule 4b),
+   * so the door has to be one flick away rather than permanently painted, and the
+   * floating copy is then never needed. What differs is only WHAT pins underneath —
+   * a portal's working bar, the website's condensed bar — and the CSS reads that off
+   * `data-layers`, not off this.
+   */
+  const hasPhoneGesture = hasLayers || (!isPortal && isSticky && wantsScrollCollapse);
 
   const [openLabel, setOpenLabel] = React.useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
@@ -331,6 +341,8 @@ export function SiteHeader({
   const condListRef = React.useRef<HTMLUListElement>(null);
   /** The morphing box, and the two faces it crossfades between. */
   const morphRef = React.useRef<HTMLDivElement>(null);
+  /** The masthead's height while RESTING — what the condensed state gives back. */
+  const restRef = React.useRef(0);
   const restFaceRef = React.useRef<HTMLDivElement>(null);
   const condFaceRef = React.useRef<HTMLDivElement>(null);
   // Portal = FLUID (no cap; the rows pad with --sa-grid-margin-page and run edge to
@@ -388,7 +400,7 @@ export function SiteHeader({
     /* THE PHONE LAYERS NEVER CONDENSE. Their upper rows leave by the negative
        sticky offset, so the working bar is already the pinned state; a morph on
        top of that would crossfade the bar with a copy of itself 96px higher. */
-    const layered = hasLayers ? window.matchMedia("(max-width: 767px)") : null;
+    const layered = hasPhoneGesture ? window.matchMedia("(max-width: 767px)") : null;
     /* THE GESTURE, not the position, decides the phone layers. Down means reading:
        the masthead leaves entirely. Up means reaching for something: the bar with
        the accessibility and language controls comes back WITH the working bar, so
@@ -405,12 +417,19 @@ export function SiteHeader({
          reader who tabbed back up), or any of its disclosures open. */
       return !!el && (el.matches(":focus-within") || !!el.querySelector('[aria-expanded="true"]'));
     };
-    const peelOf = () => parseFloat(headerRef.current?.style.getPropertyValue("--sa-hdr-peel-h") || "0");
+    const peelOf = () =>
+      parseFloat(
+        headerRef.current?.style.getPropertyValue(hasLayers ? "--sa-hdr-peel-h" : "--sa-hdr-rest-h") || "0",
+      );
     const read = () => {
       frame = 0;
       if (printingRef.current || morphingRef.current) return;
       if (layered?.matches) {
-        setScrolled(false);
+        /* The portal's layers ARE the pinned state, so they never condense. The
+           website's pinned state is the condensed bar, so it still condenses —
+           the gesture then carries that bar off and back. */
+        if (hasLayers) setScrolled(false);
+        else setScrolled((was) => (was ? window.scrollY > 40 : window.scrollY > 120));
         const r = nextReveal({ y: window.scrollY, lastY, peel: peelOf(), holding: holding(), current });
         lastY = r.lastY;
         if (r.reveal !== current) {
@@ -448,7 +467,7 @@ export function SiteHeader({
       layered?.removeEventListener("change", read);
       if (frame !== 0) window.cancelAnimationFrame(frame);
     };
-  }, [wantsScrollCollapse, hasLayers]);
+  }, [wantsScrollCollapse, hasLayers, hasPhoneGesture]);
 
   /**
    * Publish the masthead's own measurements, so nothing else has to guess them.
@@ -515,6 +534,25 @@ export function SiteHeader({
          a Shift+Tab upward could land focus under the returning accessibility bar
          (WCAG 2.4.11). */
       const pinned = layered ? abarH + work!.offsetHeight : Math.max(0, el.offsetHeight - peel);
+      /* THE RESERVE — why the page does not jump when the masthead condenses.
+         The header is in flow, so a state that is 135px shorter takes 135px out of
+         the DOCUMENT: content under it moves up by that much and the browser drags
+         the scroll position with it. Measured on the website home — desktop 89px,
+         phone 135px, and the scroll position landing at y=16 after a scroll back to
+         the top. So the resting height is remembered while resting, and the
+         difference is given back as margin while condensed: the header paints
+         short, the document stays exactly as tall as it was, and nothing under it
+         moves. The reserved strip sits above the fold, where it cannot be seen.
+         Measured, never a constant: it differs by width, by font scale and by how
+         many rows the masthead is carrying. */
+      if (!isCondensed) restRef.current = el.offsetHeight;
+      const reserve = isCondensed ? Math.max(0, restRef.current - el.offsetHeight) : 0;
+      el.style.setProperty("--sa-hdr-reserve", `${reserve}px`);
+      /* What the phone gesture measures from. The portal peels its bar and identity
+         row; the website's masthead has to have gone entirely before a flick may
+         take its condensed bar away, or the bar leaves while the reader is still
+         inside the first screen. */
+      el.style.setProperty("--sa-hdr-rest-h", `${restRef.current}px`);
       el.style.setProperty("--sa-hdr-abar-h", `${abarH}px`);
       el.style.setProperty("--sa-hdr-peel-h", `${peel}px`);
       el.style.setProperty("--sa-hdr-ident-h", `${brand?.offsetHeight ?? 0}px`);
@@ -1223,7 +1261,8 @@ export function SiteHeader({
       className={cn("ds-hdr", isSticky && "is-sticky", condensed && "is-scrolled", className)}
       data-variant={variant}
       data-layers={hasLayers ? "" : undefined}
-      data-reveal={hasLayers && reveal !== "top" ? reveal : undefined}
+      data-gesture={hasPhoneGesture ? "" : undefined}
+      data-reveal={hasPhoneGesture && reveal !== "top" ? reveal : undefined}
       data-nav-overflow={condensed && hasNav && navOverflows ? "true" : undefined}
     >
       {/* ── Tier 1: Accessibility bar (the shared DS component) ──

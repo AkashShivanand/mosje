@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { FactStrip } from "@mosje/design-system";
+import { Button, FactStrip } from "@mosje/design-system";
 
 /**
  * **FactStrip** — the row of standing facts that sits under a page hero.
@@ -16,7 +16,7 @@ import { FactStrip } from "@mosje/design-system";
  * rhythm, and vertical hairlines under a hero add furniture to the calmest band
  * on the page.
  *
- * **`variant` has two shapes, and the item count picks one.** Up to five facts
+ * **`variant` has three shapes, and the item count picks between two of them.** Up to five facts
  * it is `compact` — one row of centred stacks, the treatment the handoff draws.
  * Above five it cannot BE one row, so it becomes `extended`: the cells wrap to a
  * balanced column count, each turns on its side with the mark in a column of its
@@ -26,6 +26,16 @@ import { FactStrip } from "@mosje/design-system";
  * in the widest content column on the estate. Pass `variant` only to override
  * the count: a six-item strip that must stay compact, or a four-item one that
  * must read as figures.
+ *
+ * **The third shape is asked for by name and never inferred.** `variant="bar"`
+ * is the brand-blue band the website home page carries under its scheme
+ * portals: no marks, the caption above the figure, a hairline between the cells
+ * and — through `action` — a control in a cell of its own. It inverts, so it is
+ * the one shape a set must not be able to fall into by item count, and `action`
+ * is ignored by the other two: a strip of facts has nothing after it, and a
+ * cell holding a button would have to borrow a fact's width. Use `unit` on the
+ * items here rather than writing "Crore" into `value` — the bar sets the figure
+ * at 48px, and the unit a size down beside it as a unit is normally set.
  *
  * `overlap` pulls the card up so it straddles the band above — the treatment
  * under a coloured page hero, and the reason the banner and the facts read as
@@ -162,4 +172,53 @@ export const Extended: Story = {
  */
 export const ExtendedByOverride: Story = {
   args: { variant: "extended" },
+};
+
+/**
+ * **`variant="bar"` with an `action`.** The Department's three published figures
+ * as the website home page draws them, under the scheme portals: the caption
+ * leads, the figure carries its unit a size down, and "View Dashboard" sits in
+ * a cell of its own behind the last rule. The button is `tone="inverse"`
+ * because the ground under it is brand.
+ */
+export const Bar: Story = {
+  args: {
+    variant: "bar",
+    ariaLabel: "The Department at a Glance",
+    items: [
+      {
+        icon: "payments",
+        value: "\u20b967,977",
+        unit: "Crore",
+        label: "Cumulative Disbursement",
+        note: "Scholarships for Scheduled Castes",
+      },
+      {
+        icon: "groups",
+        value: "19.82",
+        unit: "Crore",
+        label: "Beneficiary Coverage",
+        note: "Cumulative across all schemes",
+      },
+      {
+        icon: "account_balance",
+        value: "\u20b98,731",
+        unit: "Crore",
+        label: "Release of Funds, FY 2025\u201326",
+        note: "Provisional, 14.3% above the previous year",
+      },
+    ],
+    action: (
+      <Button variant="primary" appearance="filled" size="md" tone="inverse">
+        View Dashboard
+      </Button>
+    ),
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: 1272, margin: "0 auto", padding: 24 }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
