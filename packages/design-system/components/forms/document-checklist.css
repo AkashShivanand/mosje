@@ -177,30 +177,24 @@
     }
   }
 
-  .ds-doccheck__touch-choose {
-    min-block-size: var(--sa-target-min);
-    padding: 0;
-    background: none;
-    border: 0;
-    font: inherit;
-    color: var(--sa-text-link-brand-default);
-    text-decoration: underline;
-    text-underline-offset: var(--sa-stroke-2);
-    cursor: pointer;
-  }
+  /* The touch wording's "choose a file" is the SAME control as the pointer wording's,
+     so it is the same `Button` — text appearance, `sm` — rather than the hand-drawn
+     underlined link it used to be, which is why the two halves of this drop zone did
+     not look like one control.
 
-  .ds-doccheck__touch-choose:hover {
-    color: var(--sa-text-link-brand-hover);
-  }
-
-  .ds-doccheck__touch-choose:active {
-    color: var(--sa-text-link-brand-active);
-  }
-
-  .ds-doccheck__touch-choose:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-    outline-offset: var(--sa-focus-offset);
-    border-radius: var(--sa-shape-2);
+     THREE CLASSES, because `.ds-btn:not(.ds-icon-btn, .ds-btn--full)` already counts as
+     two. What is held back is the type and the side padding, and both for the same
+     reason: on touch this label IS the whole prompt, so it has to keep the drop zone's
+     own body-1 semibold and start on the same left edge as the sentence beneath it. A
+     text button's 16px side padding indents it out of that column, and its `sm` label
+     size shrinks the one thing on the panel a thumb is meant to press. The 32px height
+     it does keep is the touch target, and it is welcome. */
+  .ds-doccheck__touch-choose.ds-btn.ds-btn--sm {
+    min-width: 0;
+    padding-inline: 0;
+    font-size: inherit;
+    line-height: inherit;
+    font-weight: inherit;
   }
 
   /* The accepted types, INSIDE the drop zone — where the files are chosen, not across the page in

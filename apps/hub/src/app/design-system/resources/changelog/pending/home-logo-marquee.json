@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "THE ORGANISATION LOGO MARQUEE IS BACK ON THE HOME PAGE, AND ITS PAUSE CONTROL IS REACHABLE. The live page and Figma both close the page with it — the scheme portals, then the Government of India platforms, then the Ministry's bodies, each mark opening its own destination. The redesign dropped it; it is now the last band before the footer. The existing `LogoStrip` is SHARED with the classic page rather than copied, so there is one list of marks, one set of links and one pause control; it moves into website-next when the classic tree is retired. The strip also gains `data-sa-rail-clear`: measured at 375, the assistant's launcher covered the pause button outright, and a WCAG 2.2.2 control that cannot be reached is the same as no control — the launcher now yields while the two overlap."
+}

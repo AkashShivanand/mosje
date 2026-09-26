@@ -3,6 +3,7 @@
 import * as React from "react";
 
 import { cn } from "../../utils/cn";
+import { Button } from "../actions/button";
 import { Skeleton } from "../feedback/skeleton";
 import { Icon } from "../utilities/icon";
 import { Chip } from "./chip";
@@ -474,9 +475,16 @@ function ComboboxList({
           <p className="ds-combobox__message">
             {loadError}
             {onRetry ? (
-              <button type="button" className="ds-combobox__retry" onClick={onRetry}>
+              <Button
+                type="button"
+                variant="primary"
+                appearance="text"
+                size="sm"
+                className="ds-combobox__retry"
+                onClick={onRetry}
+              >
                 Try again
-              </button>
+              </Button>
             ) : null}
           </p>
         ) : (
@@ -765,6 +773,7 @@ function SingleCombobox({
           }}
         />
         {interactive ? (
+          /* raw-button-ok(primitive): the combobox's own listbox disclosure (WAI-ARIA combobox pattern) — out of the tab order, inside the field's border, placed by the field's stylesheet */
           <button
             type="button"
             className="ds-combobox__trigger"
@@ -1031,6 +1040,7 @@ function MultiCombobox({
             </Chip>
           ))}
           {folds ? (
+            /* raw-button-ok(primitive): the chip row's own overflow disclosure, sized to the 24px chip rhythm inside the field */
             <button
               type="button"
               className="ds-combobox__more"
@@ -1081,6 +1091,7 @@ function MultiCombobox({
           />
         </div>
         {chips.length > 0 && interactive ? (
+          /* raw-button-ok(primitive): the same in-field trigger as the chevron beside it — same class, same 32px box, paired by `.ds-combobox__trigger + .ds-combobox__trigger` */
           <button
             type="button"
             className="ds-combobox__trigger"
@@ -1099,6 +1110,7 @@ function MultiCombobox({
           </button>
         ) : null}
         {interactive ? (
+          /* raw-button-ok(primitive): the multiple-select form of the same listbox disclosure — see the single-select chevron above */
           <button
             type="button"
             className="ds-combobox__trigger"

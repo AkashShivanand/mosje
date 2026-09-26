@@ -176,37 +176,10 @@
     }
   }
 
+  /* The field itself is the design system's Search; this only sizes it in the row. */
   .portals-gw__search-box {
-    display: flex;
-    align-items: center;
-    gap: var(--sa-inline-8);
     flex: 1;
     max-width: 520px;
-    padding: var(--sa-padding-8) var(--sa-padding-16);
-    border-radius: var(--sa-shape-full);
-    background-color: var(--sa-bg-neutral-base);
-    border: 1.5px solid var(--sa-border-neutral-subtle);
-    box-shadow: var(--sa-elevation-card);
-    transition: border-color 150ms ease, box-shadow 150ms ease;
-  }
-
-  .portals-gw__search-box:focus-within {
-    border-color: var(--sa-border-brand-primary-base);
-    outline: var(--sa-focus-width) solid var(--sa-bg-brand-primary-subtler);
-    outline-offset: var(--sa-focus-offset);
-  }
-
-  .portals-gw__search-input {
-    flex: 1;
-    border: none;
-    background: transparent;
-    font-size: var(--sa-type-body-2-size);
-    color: var(--sa-text-neutral-bolder);
-    outline: none;
-  }
-
-  .portals-gw__search-input::placeholder {
-    color: var(--sa-text-neutral-subtle);
   }
 
   .portals-gw__status-filter {
@@ -259,51 +232,7 @@
     display: none;
   }
 
-  .portals-gw__category-tab {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--sa-inline-6);
-    padding: var(--sa-padding-6) var(--sa-padding-16);
-    border-radius: var(--sa-shape-full);
-    border: 1px solid var(--sa-border-neutral-subtle);
-    background-color: var(--sa-bg-neutral-base);
-    font-size: var(--sa-type-body-3-size);
-    font-weight: var(--sa-font-weight-semibold);
-    color: var(--sa-text-neutral-base);
-    white-space: nowrap;
-    cursor: pointer;
-    transition: all 150ms ease;
-  }
-
-  .portals-gw__category-tab:hover {
-    border-color: var(--sa-border-brand-primary-base);
-    color: var(--sa-text-brand-primary-base);
-  }
-
-  .portals-gw__category-tab--active {
-    background-color: var(--sa-bg-brand-primary-bolder);
-    color: var(--sa-text-neutral-inverse);
-    border-color: var(--sa-bg-brand-primary-bolder);
-  }
-
-  .portals-gw__category-count {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 var(--sa-padding-6);
-    height: 18px;
-    border-radius: var(--sa-shape-full);
-    font-size: var(--sa-type-label-2-size);
-    line-height: var(--sa-type-label-2-lh);
-    font-weight: var(--sa-font-weight-bold);
-    background-color: var(--sa-bg-neutral-subtler);
-    color: var(--sa-text-neutral-bolder);
-  }
-
-  .portals-gw__category-tab--active .portals-gw__category-count {
-    background-color: rgba(255, 255, 255, 0.25);
-    color: var(--sa-text-neutral-inverse);
-  }
+  /* Each category is a design-system Chip, carrying its count. */
 
   /* ── Portal Grid ─────────────────────────────────────────────────────────── */
 
@@ -506,16 +435,3 @@
   }
 }
 
-@layer components {
-  /* forced-colors mode does not paint `box-shadow`, so the ring above is not
-     drawn there at all. An `outline` IS painted, and `Highlight` is the
-     system's own focus colour, so the ring follows the theme the reader chose.
-     Same footprint as the shadow it stands in for; later source order with equal
-     specificity is what lets it beat the `outline: none` above. */
-  @media (forced-colors: active) {
-    .portals-gw__search-box:focus-within {
-      outline: var(--sa-focus-width) solid Highlight;
-      outline-offset: var(--sa-focus-offset);
-    }
-  }
-}

@@ -79,7 +79,7 @@ export default function RegisterRescuePage() {
           <div className="sm:col-span-2">
             <div className="mb-2 flex items-center justify-between">
               <p className="text-label-3 uppercase text-ink-hint">Location</p>
-              <button type="button" className="inline-flex items-center gap-1 text-label-2 font-semibold text-navy hover:underline"><Icon name="location_on" size={14} /> Use my current location</button>
+              <Button appearance="text" size="sm" iconLeft={<Icon name="location_on" size={16} />}>Use My Current Location</Button>
             </div>
           </div>
           <Field label="Pincode"><TextInput inputMode="numeric" maxLength={6} value={pincode} onChange={(e) => setPincode(e.target.value.replace(/\D/g, ""))} placeholder="6-digit Pincode" /></Field>

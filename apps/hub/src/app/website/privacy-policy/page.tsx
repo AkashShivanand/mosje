@@ -1,93 +1,102 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ContentPage } from "@/components/website/templates/ContentPage";
+import { ContentPage } from "@/components/website-next/templates/ContentPage";
+import { PolicySidebar } from "@/components/website-next/templates/content/policies";
+
+const TITLE = "Privacy Policy";
+const DESCRIPTION = "What information this website collects when you visit it, and how the Department uses it.";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — Department of Social Justice & Empowerment",
-  description:
-    "Privacy Policy describing how the Department of Social Justice & Empowerment (DoSJE), Government of India, handles information collected through this website.",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
 };
 
-export default function PrivacyPage() {
+/*
+ * The Department's own Privacy Policy, dosje.gov.in/home-page/privacy-policy/, read
+ * 21 Sep 2026. The previous version of this file was a paraphrase with clauses the
+ * Department never published ("We do not sell, trade or rent…"); it is replaced by the
+ * Department's text. Edits, each deliberate:
+ *  - its first two paragraphs are printed twice on the live page; once here;
+ *  - "it's only used to -fulfill" → "it is only used to fulfil"; the dangling "and" at
+ *    the end of the list is removed; headings set in Title Case (TYP-06);
+ *  - the "MUST" and "NOT" set in capitals are set in ordinary case (TYP-07);
+ *  - COOKIES (issue SEC-02). The live policy says only per-session cookies are used,
+ *    while dosje.gov.in sets 400-day analytics cookies. This website sets no analytics
+ *    or advertising cookie (Vercel Web Analytics is cookieless) and keeps the reader's
+ *    preferences in the browser; that is what the section now says, with the detail on
+ *    the Cookie Policy page. The Department should confirm the section before launch.
+ *  - The Department states no lawful basis for processing and names no grievance
+ *    officer for privacy. Neither is invented here; the contact routes are the
+ *    Feedback and Contact Us pages. Recorded as a content gap.
+ */
+export default function Page() {
   return (
     <ContentPage
-      title="Privacy Policy"
-      breadcrumb={[{ label: "Policies" }, { label: "Privacy Policy" }]}
-      description="How the Department of Social Justice & Empowerment handles the information you provide while using this website."
+      title={TITLE}
+      breadcrumb={[{ label: "Website Policies", href: "/website/website-policies" }, { label: TITLE }]}
+      description={DESCRIPTION}
       lastUpdated="06 Jun 2026"
+      sidebar={<PolicySidebar current="/website/privacy-policy" />}
     >
       <p>
-        The Department of Social Justice &amp; Empowerment (DoSJE), Government of India, does not
-        automatically capture any specific personal information from you (such as name, phone number or
-        email address) that allows us to identify you individually, when you visit this website. This
-        Privacy Policy explains what information may be collected, how it is used, and how it is protected.
+        We do not collect personal information, like names or addresses, when you visit our website. If you
+        choose to provide that information to us, it is only used to fulfil your request for information.
+      </p>
+      <p>
+        We do collect some technical information when you visit to make your visit seamless. The section below
+        explains how we handle and collect technical information when you visit our website.
       </p>
 
-      <h2>Information Collected Automatically</h2>
+      <h2 id="automatic">Information Collected and Stored Automatically</h2>
       <p>
-        If you visit our website to read or download information, certain technical and navigation
-        information may be automatically gathered and stored. This information does not identify you
-        personally and is used only for statistical and site-improvement purposes. It may include:
+        When you browse, read pages, or download information on the website of the Department of Social Justice
+        &amp; Empowerment, we automatically gather and store certain technical information about your visit. This
+        information never identifies who you are. The information we collect and store about your visit is listed
+        below:
       </p>
       <ul>
-        <li>The name of the domain and host from which you access the Internet;</li>
-        <li>The Internet Protocol (IP) address of the device used to access the website;</li>
-        <li>The type and version of browser and operating system used to access the website;</li>
-        <li>The date and time of your visit and the pages you accessed;</li>
-        <li>The address of the previous website you visited, if you linked to us from another site.</li>
-      </ul>
-
-      <h2>Information Collected Voluntarily</h2>
-      <p>
-        We collect personal information from you only if you specifically and knowingly provide it — for
-        example, when you complete a feedback or grievance form, register for a service or scheme, or send
-        us an email. Such information may include your name, email address, postal address and telephone
-        number. The information so collected is used only for the purpose for which it was provided and is
-        not disclosed to any third party, except where required by law.
-      </p>
-
-      <h2>Cookies</h2>
-      <p>
-        A cookie is a small piece of data sent to your browser by a website you visit. This website may use
-        cookies and similar technologies to remember your preferences and to gather aggregate, anonymous
-        information about how visitors use the site. You may configure your browser to refuse cookies, or
-        to alert you when cookies are being sent. If you do so, some parts of the website may not function
-        as intended.
-      </p>
-
-      <h2>Use and Disclosure of Information</h2>
-      <ul>
-        <li>We do not sell, trade or rent your personal information to any third party.</li>
         <li>
-          We do not share your personal information with any other Government agency or organisation unless
-          you have specifically requested a service that requires such sharing, or unless we are required to
-          do so by law.
+          The IP address (a number that is automatically assigned to your computer whenever you are surfing the
+          web) from which you access our website;
         </li>
-        <li>
-          Information you provide will be retained only for as long as is necessary to fulfil the purpose
-          for which it was collected.
-        </li>
+        <li>The type of browser and operating system used to access our site;</li>
+        <li>The date and time you accessed our site;</li>
+        <li>The pages you have visited.</li>
       </ul>
-
-      <h2>Security</h2>
       <p>
-        This website has reasonable security measures in place to protect against the loss, misuse and
-        alteration of the information under our control. All information transmitted through this website is
-        handled in line with the security standards applicable to Government of India websites. However, no
-        transmission over the Internet can be guaranteed to be completely secure.
+        This information is only used to help us make the site more useful for you. With this data, we learn about
+        the number of visitors to our site and the types of technology our visitors use. We never track or record
+        information about individuals and their visits.
       </p>
 
-      <h2>Links to External Websites</h2>
+      <h2 id="cookies">Cookies</h2>
       <p>
-        This website contains links to other websites. This Privacy Policy applies solely to this website.
-        When you follow a link to an external website, you are subject to the privacy policy of that website,
-        for which the Department is not responsible.
+        This website sets no cookie that identifies you, and none for advertising or for tracking your visits. It
+        keeps the choices you make in your own browser: that you have seen the cookie notice, the language you
+        have chosen, and the display settings you choose from the accessibility button. What each one is and how long it is kept is set out in the{" "}
+        <Link href="/website/cookies">Cookie Policy</Link>.
       </p>
 
-      <h2>Contact</h2>
+      <h2 id="personal-information">If You Send Us Personal Information</h2>
       <p>
-        If you have any questions regarding this Privacy Policy or the handling of your information, please
-        contact us through the details provided on the <Link href="/website/contact-us">Contact Us</Link> page.
+        We do not collect personal information for any purpose other than to respond to you (for example, to
+        respond to your questions or provide subscriptions you have chosen). If you choose to provide us with
+        personal information, like filling out a Contact Us form with an e-mail address and pin code and
+        submitting it to us through the website, we use that information to respond to your message, and to help
+        get you the information you have requested. We only share the information you give us with another
+        government agency if your question relates to that agency, or as otherwise required by law.
+      </p>
+      <p>
+        Our website never collects information or creates individual profiles for commercial marketing. While you
+        must provide an e-mail address for a localised response to any incoming questions or comments to us, we
+        recommend that you do not include any other personal information.
+      </p>
+
+      <h2 id="contact">Questions About This Policy</h2>
+      <p>
+        Questions about this policy, or about information you have provided through this website, can be sent
+        through the <Link href="/website/feedback">Feedback</Link> page. The Department&rsquo;s postal address and
+        telephone numbers are on the <Link href="/website/contact-us">Contact Us</Link> page.
       </p>
     </ContentPage>
   );

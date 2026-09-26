@@ -2,6 +2,8 @@
 
 import * as React from "react";
 import { Icon } from "../utilities/icon";
+import { Button } from "../actions/button";
+import { IconButton } from "../actions/icon-button";
 import { cn } from "../../utils/cn";
 import "./carousel.css";
 
@@ -44,6 +46,16 @@ export interface CarouselProps {
   interval?: number;
   /** Show the dot indicators under the track. @default true */
   showDots?: boolean;
+  /**
+   * Where the controls sit. `below` is a row under the slides. `overlay` puts
+   * them in a dark pill on the slide's bottom edge — for a full-width banner,
+   * where a row below costs the first screen its height and detaches the
+   * controls from what they move. The pill is solid, so its contrast does not
+   * depend on the photograph behind it. Below `breakpoint/tablet` the controls
+   * stay in the row, because a phone's banner is too short to carry them.
+   * @default "below"
+   */
+  controls?: "below" | "overlay";
   className?: string;
 }
 
@@ -77,6 +89,7 @@ export function Carousel({
   autoPlay = false,
   interval = 7,
   showDots = true,
+  controls = "below",
   className,
 }: CarouselProps): React.JSX.Element {
   const slides = React.Children.toArray(children).filter(Boolean);
@@ -162,9 +175,40 @@ export function Carousel({
     return <div className={cn("ds-carousel", className)} />;
   }
 
+  /*
+   * ONE SLIDE IS NOT A CAROUSEL. It used to draw the whole control bar anyway —
+   * arrows that moved nowhere, a single dot, a Pause for something that could
+   * not move — three controls and a "carousel" announcement for a picture.
+   * A band that has shrunk to one banner renders as that banner.
+   */
+  if (count === 1) {
+    return (
+      <div className={cn("ds-carousel", "ds-carousel--single", className)}>
+        <div className="ds-carousel__viewport">{slides[0]}</div>
+      </div>
+    );
+  }
+
+  /*
+   * RUNNING is the one state a reader cannot otherwise see: the carousel is
+   * moving on its own and nothing is holding it. It drives two things — the
+   * current dot fills over the interval, so the reader can see that it moves
+   * and when; and the live region goes quiet, because announcing "Slide 3 of
+   * 5" every seven seconds to someone reading the rest of the page is exactly
+   * the interruption WAI-ARIA's carousel pattern tells a rotating carousel to
+   * avoid (`aria-live="off"` while rotating, `polite` otherwise).
+   */
+  const running = autoPlay && playing && !held && !reducedMotion && count > 1;
+
   return (
     <section
-      className={cn("ds-carousel", className)}
+      className={cn(
+        "ds-carousel",
+        controls === "overlay" && "ds-carousel--overlay",
+        running && "ds-carousel--running",
+        className,
+      )}
+      style={{ "--_interval": `${Math.max(2, interval)}s` } as React.CSSProperties}
       aria-roledescription="carousel"
       aria-label={label}
       onMouseEnter={() => setHeld(true)}
@@ -214,6 +258,14 @@ export function Carousel({
               role="group"
               aria-roledescription="slide"
               aria-label={`${i + 1} of ${count}`}
+              /*
+               * A slide out of view is out of reach. Without this, a link on
+               * slide 1 stays in the tab order while slide 4 is showing, and
+               * tabbing to it scrolls the track back underneath the reader.
+               * The track itself stays scrollable — `inert` is on the slides,
+               * not on it — so a swipe still reaches every slide.
+               */
+              inert={i !== index}
             >
               {slide}
             </div>
@@ -237,8 +289,10 @@ export function Carousel({
       <div className="ds-carousel__controls">
         <div className="ds-carousel__controls-lead">
           {autoPlay && !reducedMotion ? (
-            <button
-              type="button"
+            <Button
+              variant="neutral"
+              appearance="text"
+              size="md"
               className="ds-carousel__play"
               // WCAG 2.2.2: anything that moves for more than five seconds needs
               // a way to stop it, and the control has to say which state pressing
@@ -269,19 +323,25 @@ export function Carousel({
             >
               {playing ? "Pause" : "Play"}
               <span className="ds-carousel__sr">{` rotating ${label}`}</span>
-            </button>
+            </Button>
           ) : null}
         </div>
 
         <div className="ds-carousel__controls-main">
-          <button
-            type="button"
+          {/* The library's IconButton, circular. The round shape and the white
+              ground stay in carousel.css — they are what separates a carousel's
+              own step controls from the rectangular Buttons a slide's content
+              holds. */}
+          <IconButton
             className="ds-carousel__arrow"
+            variant="neutral"
+            appearance="outlined"
+            size="md"
+            shape="circle"
             aria-label={`Previous slide, ${label}`}
             onClick={() => goTo(index - 1)}
-          >
-            <Icon name="chevron_left" size={20} />
-          </button>
+            icon={<Icon name="chevron_left" size={20} />}
+          />
 
           {showDots && count <= MAX_DOTS ? (
             /*
@@ -306,6 +366,11 @@ export function Carousel({
              */
             <div className="ds-carousel__dots" role="group" aria-label={`${label} — slides`} ref={dotsRef}>
               {slides.map((_, i) => (
+                /* The group owns a roving tabindex, `aria-current` and the arrow-key
+                   handling; the mark itself is a `::before` pseudo-element rather than a
+                   label, and a Button's own box would replace the 24px target the
+                   padding creates. */
+                /* raw-button-ok(primitive): the dot IS this row's control, not a Button in it */
                 <button
                   key={i}
                   type="button"
@@ -368,20 +433,24 @@ export function Carousel({
              * honest to offer: a set this long has no way to reach slide 9
              * directly that is better than pressing Next.
              */
-            <p className="ds-carousel__counter">
+            // Keyed on the position so the timer beneath it restarts with each
+            // slide, as the current dot's does.
+            <p className="ds-carousel__counter" key={index}>
               <span aria-hidden="true">{`${index + 1} / ${count}`}</span>
               <span className="ds-carousel__sr">{`Slide ${index + 1} of ${count}`}</span>
             </p>
           ) : null}
 
-          <button
-            type="button"
+          <IconButton
             className="ds-carousel__arrow"
+            variant="neutral"
+            appearance="outlined"
+            size="md"
+            shape="circle"
             aria-label={`Next slide, ${label}`}
             onClick={() => goTo(index + 1)}
-          >
-            <Icon name="chevron_right" size={20} />
-          </button>
+            icon={<Icon name="chevron_right" size={20} />}
+          />
         </div>
 
         {/* Balances the lead zone so the centre column really is centred. */}
@@ -390,7 +459,7 @@ export function Carousel({
 
       {/* Moving by button changes nothing a screen reader would notice on its
           own, so the new position is announced politely. */}
-      <p className="ds-carousel__status" role="status" aria-live="polite">
+      <p className="ds-carousel__status" role="status" aria-live={running ? "off" : "polite"}>
         {`Slide ${index + 1} of ${count}`}
       </p>
     </section>

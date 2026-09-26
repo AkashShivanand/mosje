@@ -8,7 +8,7 @@ import { Chip } from "../forms/chip";
 import { Divider } from "../layout/divider";
 import { PortalCard } from "./portal-card";
 import { SAMAVESH_MARK } from "../brand/org-logo-registry";
-import { buttonClasses } from "../actions/button";
+import { Button } from "../actions/button";
 import {
   DEFAULT_APPS,
   isLiveEntry,
@@ -618,29 +618,37 @@ export function SamaveshBanner({
             put the same action in the accessibility tree twice.
           */}
           <div className="ds-samavesh-banner__actions">
-            <button
+            {/* THE LIBRARY BUTTON ITSELF, not its class string. `buttonClasses`
+                gave this control the green filled appearance and nothing else —
+                no icon slot, no disabled handling — so the icon sat in the label
+                and missed the trailing optical padding. The class list is
+                unchanged, so `.ds-samavesh-banner__explore-btn` below still owns
+                the band's own fill, radius and the mobile full-band stretch. */}
+            <Button
               ref={toggleRef}
               type="button"
-              className={buttonClasses(
-                "success",
-                "filled",
-                "md",
-                "ds-samavesh-banner__explore-btn",
-              )}
+              variant="success"
+              appearance="filled"
+              size="md"
+              className="ds-samavesh-banner__explore-btn"
               onClick={handleToggle}
               aria-expanded={open}
               aria-controls={drawerId}
               aria-label={open ? `Collapse ${title} portals` : `${exploreLabel} ${title} portals`}
+              /* ONE glyph that rotates, not two that swap. Swapping is a
+                 discrete jump at the midpoint of a continuous gesture; rotating
+                 the same chevron keeps the feedback continuous and lets the
+                 motion be interrupted and reversed without a flicker. The
+                 rotating wrapper stays inside the icon slot so the CSS that
+                 turns it on `--open` keeps its selector. */
+              iconRight={
+                <span className="ds-samavesh-banner__btn-icon">
+                  <Icon name="expand_more" size={20} />
+                </span>
+              }
             >
               <span className="ds-samavesh-banner__explore-label">{exploreLabel}</span>
-              {/* ONE glyph that rotates, not two that swap. Swapping is a
-                  discrete jump at the midpoint of a continuous gesture; rotating
-                  the same chevron keeps the feedback continuous and lets the
-                  motion be interrupted and reversed without a flicker. */}
-              <span className="ds-samavesh-banner__btn-icon" aria-hidden="true">
-                <Icon name="expand_more" size={20} />
-              </span>
-            </button>
+            </Button>
           </div>
         </div>
       </div>

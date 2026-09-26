@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "THE ACCESSIBILITY PANEL LOADS AGAIN. UX4G deleted `accessibility-v3.28` from its CDN on 25 Sep 2026; the URL began answering 404 with an HTML body that the browser blocks as a script (`ERR_BLOCKED_BY_ORB`), so `UX4GAccessibilityWidget` silently never loaded, on every route. It is re-pinned to v3.36 — the build ux4g.gov.in itself serves — which keeps every hook the estate relies on (the trigger and panel ids, the analytics switch, the Ctrl+F2 binding, the settings cookie) and still takes the brand skin."
+}

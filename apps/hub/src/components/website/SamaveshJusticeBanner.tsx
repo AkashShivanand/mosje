@@ -77,8 +77,12 @@ export function SamaveshJusticeBanner() {
                 src="/website/images/samavesh.png"
                 alt=""
                 aria-hidden="true"
-                width={78}
-                height={80}
+                /* The file is 120x120 — square. Declaring 78x80 gave it an aspect
+                   ratio the image does not have, which is what Next was warning
+                   about: the height class sizes it and the width was then computed
+                   from the wrong ratio. CSS still sets the drawn size. */
+                width={120}
+                height={120}
                 className="h-[44px] w-auto sm:h-[60px] lg:h-[6.29cqw]"
               />
               <div>

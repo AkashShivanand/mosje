@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useMemo } from "react";
-import { Icon } from "@mosje/design-system";
+import { Button, Icon, Search } from "@mosje/design-system";
 
 // ─── Portal report registry ───────────────────────────────────────────────────
 
@@ -178,26 +178,15 @@ export function ReportsExplorer() {
 
       {/* Search */}
       <div className="mb-6 flex items-center gap-4">
-        <div className="relative w-full max-w-xs">
-          <Icon name="search" size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted" aria-hidden="true" />
-          <input
-            type="search"
-            placeholder="Search reports or tags…"
+        <div className="w-full max-w-xs">
+          <Search
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onClear={() => setQuery("")}
+            placeholder="Search reports or tags…"
             aria-label="Search reports"
-            className="w-full rounded-lg border border-border bg-surface py-2 pl-9 pr-9 text-body-2 text-ink placeholder:text-ink-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+            size="sm"
           />
-          {query && (
-            <button
-              type="button"
-              onClick={() => setQuery("")}
-              aria-label="Clear search"
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded p-0.5 text-ink-muted hover:text-ink"
-            >
-              <Icon name="close" size={16} aria-hidden="true" />
-            </button>
-          )}
         </div>
         <p className="ml-auto text-body-3 text-ink-muted" role="status" aria-live="polite">
           {filtered.length} of {PORTALS.length}
@@ -209,13 +198,11 @@ export function ReportsExplorer() {
         <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border py-20 text-center">
           <Icon name="description" size={40} className="mb-3 text-ink-muted/40" aria-hidden="true" />
           <p className="text-title-3 text-ink">No reports match your search</p>
-          <button
-            type="button"
-            onClick={() => setQuery("")}
-            className="mt-3 text-label-2 font-semibold text-primary hover:underline"
-          >
-            Clear search
-          </button>
+          <div className="mt-3">
+            <Button appearance="text" size="sm" onClick={() => setQuery("")}>
+              Clear Search
+            </Button>
+          </div>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">

@@ -1,6 +1,6 @@
 import { TableShell, StaticPager, PortalPageHeader } from "@/components/scw/ui";
 import { ASSISTED_DEVICES, DEVICES_TOTAL } from "@/lib/scw/mock-data";
-import { Badge, Icon, Button } from "@mosje/design-system";
+import { Badge, Icon, IconButton, Button } from "@mosje/design-system";
 
 const COLUMNS = [
   { key: "title", label: "Title" },
@@ -37,12 +37,7 @@ export default function AssistedDevicesPage() {
               </Badge>
             </td>
             <td className="px-6 py-4">
-              <button
-                aria-label="Device actions"
-                className="rounded-md p-1.5 text-ink-muted hover:bg-black/5"
-              >
-                <Icon name="more_vert" size={16} />
-              </button>
+              <IconButton icon={<Icon name="more_vert" size={16} />} aria-label="Device actions" tooltip variant="neutral" appearance="text" size="sm" />
             </td>
           </tr>
         ))}

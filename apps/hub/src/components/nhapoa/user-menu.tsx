@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
-import { Icon } from "@mosje/design-system";
+import { Button, Icon } from "@mosje/design-system";
 
 /** Compact user chip + logout for the admin shell topbar. */
 export function UserMenu({ name, roleLabel }: { name: string; roleLabel: string }) {
@@ -27,17 +27,18 @@ export function UserMenu({ name, roleLabel }: { name: string; roleLabel: string 
           <div className="text-body-3 text-ink-muted">{roleLabel}</div>
         </div>
       </div>
-      <button
-        type="button"
+      <Button
+        variant="neutral"
+        appearance="outlined"
+        size="sm"
+        iconLeft={<Icon name="logout" size={16} />}
         onClick={() => {
           logout();
           router.push("/portals/nhapoa/login");
         }}
-        className="flex items-center gap-1.5 rounded-lg border border-line px-3 py-2 text-label-2 font-semibold text-ink-muted transition-colors hover:bg-black/5"
       >
-        <Icon name="logout" size={16} />
-        <span className="hidden sm:inline">Logout</span>
-      </button>
+        Logout
+      </Button>
     </div>
   );
 }

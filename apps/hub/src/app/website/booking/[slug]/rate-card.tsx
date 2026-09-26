@@ -18,8 +18,8 @@ export type Rate = { label?: string; rate?: string };
  * that until the table moved here.
  */
 const rateColumns: DataTableColumn<Rate>[] = [
-  { key: "label", header: "Hirer", render: (r) => r.label ?? "—" },
-  { key: "rate", header: "Rate per Day (₹)", render: (r) => r.rate ?? "—" },
+  { key: "label", header: "Hirer", render: (r) => r.label ?? "–" },
+  { key: "rate", header: "Rate per Day (₹)", className: "text-right tabular-nums", render: (r) => r.rate ?? "–" },
 ];
 
 export function RateCard({ venue, rates }: { venue: string; rates: Rate[] }) {

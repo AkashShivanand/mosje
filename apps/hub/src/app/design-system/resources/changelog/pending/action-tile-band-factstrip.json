@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "ActionTile: one destination as a tile (task, group, role, account, helpline, report) in three layouts (row, stack, block) and four grounds; one link, one tab stop, glyphs white on the key colour's darkest shade (DBIM §3.7). Band gains tone=\"brandBold\" (the key colour's darkest shade) and spacing=\"xl\"; FactStrip items gain an optional note; SectionTitle title and description accept a node, so a translated <T> string can be passed. Code-only: ActionTile has no Figma master yet."
+}

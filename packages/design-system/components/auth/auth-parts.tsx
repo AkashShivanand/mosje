@@ -124,6 +124,7 @@ export function ResendTimer({
       {ready ? (
         <>
           <span>{readyLabel}</span>
+          {/* raw-button-ok(primitive): the resend action, set inside a sentence at the surrounding text's size — a pill in a <p> is not what this line is */}
           <button type="button" className="ds-auth-resend__action" onClick={onResend}>
             {actionLabel}
           </button>
@@ -182,6 +183,7 @@ export function MaskedContactRow({
         <span className="ds-auth-sentto__prompt">{prompt}</span>
         <span className="ds-auth-sentto__value">{maskedValue}</span>
       </span>
+      {/* raw-button-ok(primitive): the edit action of the masked-contact row — an inline text link at the row's own size */}
       <button type="button" className="ds-auth-sentto__action" onClick={onEdit}>
         {actionLabel}
       </button>
@@ -293,6 +295,7 @@ export function SSOButton({
   }
 
   return (
+    /* raw-button-ok(primitive): the SSO card IS this component — the button form of the <a> above it, both drawn as the whole .ds-auth-sso card */
     <button type="button" className={cn("ds-auth-sso", className)} {...rest}>
       {inner}
     </button>

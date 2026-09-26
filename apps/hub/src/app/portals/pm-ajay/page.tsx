@@ -12,11 +12,11 @@ const BASE = "/portals/pm-ajay";
 
 export default function Page() {
   const router = useRouter();
-  const { account } = useAuth();
+  const { account, restored } = useAuth();
 
   useEffect(() => {
-    if (!account) router.replace(`${BASE}/login`);
-  }, [account, router]);
+    if (restored && !account) router.replace(`${BASE}/login`);
+  }, [account, restored, router]);
 
   if (!account) {
     return (

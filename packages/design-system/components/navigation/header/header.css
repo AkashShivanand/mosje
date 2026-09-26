@@ -118,10 +118,11 @@
     color: var(--sa-text-neutral-base);
   }
 
-  /* Headline/headline-6, 16/24 — Figma Navbar/BrandLockup Tablet and Desktop since
-     2026-09-22. It was headline-5, whose FLUID size (18–20px, lh up to 28) also
-     made the stack a different height at every viewport; headline-6 is flat, so
-     the 76px stack the masthead height is derived from now holds at every width. */
+  /* Headline 6 — 16/24, FLAT. The library's BrandLockup sets the department line
+     to `Headline/headline-6` on Device=Tablet and =Desktop and to `Title/title-3`
+     on =Mobile and on every Compact and Condensed variant, and the rules below
+     carry those two. Headline 5 stood here and is fluid 18–20, so the masthead's
+     height moved with the viewport — issue register TYP-10. */
   .ds-hdr-lockup__dept {
     font-size: var(--sa-type-headline-6-size);
     line-height: var(--sa-type-headline-6-lh);
@@ -185,6 +186,13 @@
     width: 100%;
     background-color: var(--sa-bg-neutral-base);
     font-family: var(--sa-font-latin);
+    /* THE RESERVE. The masthead is in flow, so condensing would take its lost
+       height out of the DOCUMENT — content under it moving up by 89px on desktop
+       and 135px on a phone, with the scroll position dragged after it. SiteHeader
+       measures the resting height and writes the difference here while condensed,
+       so the document's height never changes and nothing under the header moves.
+       The reserved strip is above the fold by definition, so it is never seen. */
+    margin-bottom: var(--sa-hdr-reserve, 0);
   }
 
   /* PINNED AT A NEGATIVE OFFSET, so the accessibility bar scrolls away and the
@@ -957,7 +965,10 @@
     border: var(--sa-stroke-1) solid var(--sa-border-neutral-base); /* Figma NavDropdown: border/neutral/base */
     border-radius: var(--sa-shape-8);
     background-color: var(--sa-bg-neutral-base);
-    box-shadow: var(--sa-elevation-dropdown); /* BRD-17: a menu is a dropdown, not a modal */
+    /* A menu panel is a dropdown, not a modal: `Navbar/NavDropdown` and
+       `Navbar/MegaMenu` both bind `elevation/dropdown` in the library, and the
+       heavier modal shadow read as a floating sheet — issue register BRD-17. */
+    box-shadow: var(--sa-elevation-dropdown);
   }
 
   .ds-hdr-nav__drop-link {
@@ -1056,7 +1067,10 @@
     border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-8); /* HP-05: was 20 — matches the simple dropdown */
     background-color: var(--sa-bg-neutral-base);
-    box-shadow: var(--sa-elevation-dropdown); /* BRD-17 */
+    /* A menu panel is a dropdown, not a modal: `Navbar/NavDropdown` and
+       `Navbar/MegaMenu` both bind `elevation/dropdown` in the library, and the
+       heavier modal shadow read as a floating sheet — issue register BRD-17. */
+    box-shadow: var(--sa-elevation-dropdown);
   }
 
   /* The simple dropdown needs the same ceiling for the same reason — it is short
@@ -1161,6 +1175,30 @@
     }
   }
 
+  /* A WIDE column lays its rows two across (Figma M2, the Offerings menu's seven
+     scheme portals): two of the ordinary rich columns side by side. */
+  .ds-hdr-nav__mega-col.is-wide {
+    width: calc(400px * 2);
+  }
+
+  @media (max-width: 1279px) {
+    .ds-hdr-nav__mega-col.is-wide {
+      width: calc(360px * 2);
+    }
+  }
+
+  .ds-hdr-nav__mega-list.is-rich.is-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* The column's closing action — "View All Schemes" — a full-width outlined
+     button under the rows (Figma M2, 14 September review). */
+  .ds-hdr-nav__mega-action {
+    width: 100%;
+    margin-top: var(--sa-stack-8);
+  }
+
   .ds-hdr-mega-item {
     display: flex;
     align-items: center;
@@ -1225,6 +1263,15 @@
     color: var(--sa-text-neutral-subtle);
   }
 
+  /* WCAG 3.2.5 — the new-tab mark is a statement about the destination, not an
+     affordance revealed on hover, and a touch screen never hovers. It stays on. */
+  .ds-hdr-mega-item .ds-hdr-ic--newtab {
+    flex: 0 0 auto;
+    opacity: 1;
+  }
+
+  /* The row carries no other trailing icon: the hover chevron was removed with
+     NAV-18, so there is nothing left here to reveal or fade. */
 
   /* Figma State=Hover carries a 1px stroke and NO effect; the elevation that used
      to be here was code's own addition. State=Focused is the reverse — a drop
@@ -1242,8 +1289,6 @@
       box-shadow: inset 0 0 0 var(--sa-stroke-1) var(--sa-border-neutral-base); /* Figma State=Hover stroke */
     }
   }
-
-
 
   /* Figma ships a State=Disabled variant for MegaMenuItem, DropdownItem and NavItem
      (both Types). It is expressed as colour, not opacity — the emblem keeps its own
@@ -1740,9 +1785,25 @@
        and the bar drops a further identity-row's height, landing on top of the
        identity row it passes over — which is hidden, so it can never flash through
        the gap while they travel. */
-    .ds-hdr.is-sticky[data-layers],
-    .ds-hdr.is-sticky[data-layers] .sa-abar {
+    .ds-hdr.is-sticky[data-gesture],
+    .ds-hdr.is-sticky[data-gesture] .sa-abar {
       transition: transform var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+    }
+
+    /* THE WEBSITE'S HALF OF THE GESTURE. Same two states, different pinned row:
+       a portal pins its working bar, the website its condensed bar. Hidden takes
+       that bar up and out by whatever it currently measures; shown drops the
+       masthead by the accessibility bar's height, which puts the bar back on
+       screen above it — the page's one door to the accessibility panel, a flick
+       away from anywhere (accessibility-entry-point.md rule 4b). Transforms only:
+       the header's box and the page under it never move. */
+    .ds-hdr.is-sticky[data-gesture]:not([data-layers])[data-reveal="hidden"] {
+      transform: translateY(calc(-1 * var(--sa-header-bottom, 0)));
+    }
+
+    .ds-hdr.is-sticky[data-gesture]:not([data-layers])[data-reveal="shown"] {
+      transform: translateY(var(--sa-hdr-abar-h, 0));
+      box-shadow: var(--sa-elevation-card);
     }
 
     .ds-hdr.is-sticky[data-layers][data-reveal="hidden"] {
@@ -1770,7 +1831,7 @@
        be a second door or a button over content. Hidden, never unmounted — the bar's
        icon opens the panel by replaying a click on this very element
        (accessibility-entry-point.md rules 2 and 4b). */
-    :root:has(.ds-hdr[data-layers]) #uw-widget-custom-trigger {
+    :root:has(.ds-hdr[data-gesture]) #uw-widget-custom-trigger {
       display: none !important;
     }
   }
@@ -1778,9 +1839,13 @@
   /* Paper gets the masthead where the page puts it, whatever the reader had scrolled to —
      SiteHeader also resets the state on beforeprint; this holds without script. */
   @media print {
-    .ds-hdr.is-sticky[data-layers],
-    .ds-hdr.is-sticky[data-layers] .sa-abar {
+    .ds-hdr.is-sticky[data-gesture],
+    .ds-hdr.is-sticky[data-gesture] .sa-abar {
       transform: none;
+    }
+
+    .ds-hdr {
+      margin-bottom: 0;
     }
 
     .ds-hdr.is-sticky[data-layers] .ds-hdr-brand {
@@ -2152,6 +2217,37 @@
     }
   }
 
+  /* THE DEPARTMENT'S NAME STAYS ON THE WEBSITE'S CONDENSED BAR FROM 1440.
+     An emblem alone identifies the page only to a reader who knows the emblem, and
+     the masthead's own name is the first thing the scroll takes away. What decides
+     the width is the inline nav: seven entries measure 828px at every desktop width,
+     leaving 93px spare at 1280, 213 at 1440 and 317 at 1920 — while the Department's
+     name is 355px on ONE line at 14px. So it shows from 1440, where it can wrap onto
+     two 24px rows inside the 64px bar, and stays off at 1280 where taking 200px would
+     push the nav into the sheet and cost the reader the menu.
+
+     THE DEPARTMENT LINE ALONE, and that is a deliberate divergence from DBIM 5.2's
+     three-line lockup: the resting masthead above carries all three, and there is no
+     width here for `Government of India · Ministry …` as well. A portal's condensed
+     bar still shows all three — its nav is the sidebar, so the row is empty. */
+  @media (min-width: 1440px) {
+    .ds-hdr[data-variant="website"] .ds-hdr-cond__lockup .ds-hdr-lockup__lines {
+      display: grid;
+    }
+
+    .ds-hdr[data-variant="website"] .ds-hdr-cond__lockup .ds-hdr-lockup__org,
+    .ds-hdr[data-variant="website"] .ds-hdr-cond__lockup .ds-hdr-lockup__ministry {
+      display: none;
+    }
+
+    .ds-hdr[data-variant="website"] .ds-hdr-cond__lockup .ds-hdr-lockup__dept {
+      /* Two rows of the bar's own 14/20 type, capped so the wrap falls between
+         words rather than at whatever width is left over. */
+      max-width: 208px;
+      white-space: normal;
+    }
+  }
+
   .ds-hdr-cond__spacer {
     flex: 1 1 auto;
     min-width: var(--sa-stack-8);
@@ -2367,24 +2463,29 @@
     line-height: var(--sa-type-title-3-lh);
   }
 
-  .ds-navsheet__close {
-    display: inline-grid;
-    place-items: center;
+  /* The sheet's dismissal is the library `IconButton` (neutral / text / md); the
+     display, border, radius, cursor and transition it used to restate all come from
+     button.css now. What stays is what the SHEET owns and the size ladder would
+     otherwise decide for it.
+
+     THREE CLASSES, DELIBERATELY. `.ds-icon-btn.ds-btn--md { min-width: 40px }` is a
+     two-class rule in the same `components` layer, so a two-class selector here would
+     be a tie broken by whichever stylesheet the bundler injected first — which is not
+     a thing to bet a touch target on. */
+  .ds-navsheet__close.ds-btn.ds-icon-btn {
     flex: 0 0 auto;
     /* 44px target — the sheet's only dismissal, so it gets the comfortable size. */
-    height: 44px;
-    width: 44px;
-    padding: var(--sa-padding-8);
-    border: none;
-    border-radius: var(--sa-shape-8);
-    background: transparent;
+    block-size: 44px;
+    inline-size: 44px;
+    min-block-size: 44px;
+    min-inline-size: 44px;
     color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
-    cursor: pointer;
-    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   @media (hover: hover) and (pointer: fine) {
-    .ds-navsheet__close:hover {
+    /* The sheet's own hover wash, not the text appearance's 8% of the ink. */
+    .ds-navsheet__close.ds-btn.ds-icon-btn:hover,
+  .ds-navsheet__close.ds-btn.ds-icon-btn:active {
       background-color: var(--sa-bg-neutral-subtler);
     }
   }
@@ -2460,6 +2561,15 @@
   }
 
   /* Figma NavSheetRow Type=Sub: 56px, 16/16/16/32, Body/body-1 in text/neutral/base. */
+  /* The new-tab mark flows with the text in a block-level row, so it takes its
+     own breathing space and sits on the text baseline; a flex row gets both
+     from the row's own gap and alignment. */
+  .ds-hdr-nav__drop-link .ds-hdr-ic--newtab,
+  .ds-navsheet__sublink .ds-hdr-ic--newtab {
+    margin-inline-start: var(--sa-inline-4);
+    vertical-align: text-bottom;
+  }
+
   .ds-navsheet__sublink {
     display: flex;
     align-items: center;
@@ -2476,7 +2586,10 @@
     }
   }
 
-  .ds-navsheet__close:focus-visible,
+  /* The close is a `.ds-btn` now, and `.ds-btn:focus-visible` is a one-class rule in
+     the same layer — so this one carries the extra class rather than leaving the
+     sheet's inset brand ring to a cascade coin-toss. */
+  .ds-navsheet__close.ds-btn:focus-visible,
   .ds-navsheet__link:focus-visible,
   .ds-navsheet__sublink:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
@@ -2501,6 +2614,11 @@
     display: flex;
     flex-direction: column;
     gap: var(--sa-stack-8);
+  }
+
+  .ds-navsheet__mega-action {
+    width: 100%;
+    margin-top: var(--sa-stack-8);
   }
 
   .ds-navsheet__mega-head {

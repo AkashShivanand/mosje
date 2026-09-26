@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Icon, buttonClasses } from "@mosje/design-system";
+import { Button, Icon, buttonClasses } from "@mosje/design-system";
 import { Campaign, Dismiss, Fold, HelplineCard, NMBA } from "./fold";
 import "./campaign-band.css";
 
@@ -75,10 +75,15 @@ export function HelplineRinging() {
         }
       />
       <p className="xhc-replay">
-        <button type="button" className="xpl-viewer__reset-btn" onClick={() => setRun((n) => n + 1)}>
-          <Icon name="restart_alt" size={20} aria-hidden />
-          <span>Play the arrival ring again</span>
-        </button>
+        <Button
+          variant="primary"
+          appearance="text"
+          size="sm"
+          onClick={() => setRun((n) => n + 1)}
+          iconLeft={<Icon name="restart_alt" size={20} />}
+        >
+          Play the Arrival Ring Again
+        </Button>
       </p>
     </>
   );

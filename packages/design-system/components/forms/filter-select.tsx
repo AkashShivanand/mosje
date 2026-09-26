@@ -207,6 +207,7 @@ export function FilterSelect({
       <span className="ds-filter-select__label" id={labelId}>
         {label}
       </span>
+      {/* raw-button-ok(primitive): an aria-haspopup="listbox" trigger — it IS the combobox, carrying the popup's state and a name assembled from the label and the current value */}
       <button
         ref={triggerRef}
         id={triggerId}

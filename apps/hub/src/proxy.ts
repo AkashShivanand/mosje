@@ -4,6 +4,7 @@ import { GATE_COOKIE, GATE_EMBLEM_SRC, resolveGateToken, safeEqual } from "@/lib
 import { ADMIN_PREVIEW_COOKIE, expectedPreviewToken } from "@/lib/admin/tokens";
 import type { RegistryConfig } from "@mosje/design-system/registry";
 import { blockedEntry, hiddenFrom, readRegistryConfig } from "@/lib/registry/config";
+import { WEBSITE_DESIGN_COOKIE, classicRewriteTarget } from "@/lib/website-design/constants";
 
 /**
  * Multi-zone resilience (dev-time safeguard).
@@ -359,6 +360,21 @@ export async function proxy(req: NextRequest): Promise<NextResponse> {
    */
   const finish =
     hidden?.kind === "admin-pass" ? noStore : (response: NextResponse) => response;
+
+  /*
+   * The archived website design, served at the website's own addresses while the
+   * demo rail's Website tab says "Classic" (lib/website-design/constants.ts). A
+   * rewrite, not a redirect: the address a reviewer shares opens the same page in
+   * whichever design the recipient has chosen.
+   */
+  if (req.cookies.get(WEBSITE_DESIGN_COOKIE)?.value === "classic") {
+    const target = classicRewriteTarget(pathname);
+    if (target) {
+      const url = req.nextUrl.clone();
+      url.pathname = target;
+      return finish(NextResponse.rewrite(url));
+    }
+  }
 
   {
     const alias = E_ANUDAAN_ALIASES[pathname.replace(/\/$/, "")];

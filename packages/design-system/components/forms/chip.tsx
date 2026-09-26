@@ -241,6 +241,11 @@ export const Chip = React.forwardRef<HTMLDivElement, ChipProps>(function Chip(
   );
 
   const dismiss = onDismiss != null && (
+    /* An 18px glyph drawn in the Chip's OWN ink: `color: inherit` is what carries it
+       through every tone, the selected state and the disabled wash. A Button would bring
+       its own palette and its own size ladder, and holding both back leaves nothing of
+       it. */
+    /* raw-button-ok(primitive): an 18px ✕ in the Chip's own inherited ink, sized by the chip */
     <button
       type="button"
       className="ds-chip__dismiss"

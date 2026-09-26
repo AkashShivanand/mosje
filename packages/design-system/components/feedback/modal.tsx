@@ -3,6 +3,7 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { Button } from "../actions/button";
+import { IconButton } from "../actions/icon-button";
 import "./modal.css";
 
 /**
@@ -442,9 +443,19 @@ export function Modal({
         <div className="ds-modal__header">
           <h2 id={titleId} className="ds-modal__title">{title}</h2>
           {!hideClose && (
-            <button type="button" className="ds-modal__close" aria-label="Close dialog" onClick={requestClose}>
-              <IcClose />
-            </button>
+            /* The library's IconButton. A dialog's close is the exact control
+               `shape="circle"` names, but this one stays square: it sits at the
+               end of a header row beside a heading, where the estate's 8px
+               control corner is what every other header control draws. */
+            <IconButton
+              className="ds-modal__close"
+              variant="neutral"
+              appearance="text"
+              size="sm"
+              aria-label="Close dialog"
+              onClick={requestClose}
+              icon={<IcClose />}
+            />
           )}
         </div>
         <div className="ds-modal__body">{children}</div>

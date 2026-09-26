@@ -46,8 +46,28 @@ import * as React from "react";
 import "./ux4g-accessibility-widget.css";
 
 /**
- * Official UX4G accessibility widget CDN (current: v3.28 — the build
+ * Official UX4G accessibility widget CDN (current: v3.36 — the build
  * ux4g.gov.in itself serves).
+ *
+ * UX4G DELETES OLD BUILDS FROM ITS CDN. On 25 Sep 2026 v3.36 was published
+ * (Last-Modified 10:21 GMT) and `accessibility-v3.28/accessibility-widget.js`
+ * began answering 404 with a `text/html` body and `X-Content-Type-Options:
+ * nosniff`. A script request receiving that is cut off by the browser's
+ * Opaque Response Blocking (`net::ERR_BLOCKED_BY_ORB`), so the widget — the
+ * estate's one accessibility panel — silently never loaded, on every route. It
+ * was not a duplicate request or a preload mismatch: this effect is the only
+ * requester and it guards on `data-ux4g-a11y`. If the panel disappears again,
+ * `curl -I` this URL first; the fix is to re-pin to the version ux4g.gov.in's
+ * own page loads (read its script tags), then re-check the brand skin.
+ *
+ * v3.36 keeps every hook this estate depends on — `#uw-widget-custom-trigger`,
+ * `#uw-main`, `window.__ux4g_accessibility_loaded`, `.ux4g-accessibility-short-key`,
+ * `.ux4g-accessibility-icon-chevron`, `window.UX4G_Analytics.config`, the Ctrl+F2
+ * binding and the `accessibilitySettings` cookie — and now loads its own
+ * `accessibility-widget.css` from beside the script. It also initialises itself
+ * when injected after the document has parsed (`ux4gOnReady`), so the synthetic
+ * DOMContentLoaded below is no longer needed by it; it is kept, harmless, for
+ * any v3.x build that still gates init on the event.
  *
  * Upgraded from `accessibility-beta-v1.15`, which had two defects this estate
  * had to work around in code, both fixed upstream in v3.x:
@@ -62,7 +82,7 @@ import "./ux4g-accessibility-widget.css";
  *      v3.28's own source; the seeding workaround is gone with it.
  */
 export const UX4G_A11Y_WIDGET_SRC =
-  "https://cdn.ux4g.gov.in/accessibility-v3.28/accessibility-widget.js";
+  "https://cdn.ux4g.gov.in/accessibility-v3.36/accessibility-widget.js";
 
 /**
  * Dead key left behind by the v1.15 workaround.
@@ -284,6 +304,68 @@ function nameSectionToggles(): void {
 }
 
 /**
+ * Keep the CLOSED panel out of the Tab order (WCAG 2.4.1, 2.4.3; GIGW skip link).
+ *
+ * The vendor closes its panel by sliding it off-canvas (`position: fixed;
+ * right: -530px`) and leaves all 66 of its controls focusable. Measured
+ * 2026-09-22 on /website: the third Tab press landed on the hidden panel's
+ * close button, so the page's own "Skip to Main Content" never received focus
+ * and a keyboard user tabbed through an invisible dialog on every page.
+ *
+ * The panel is made `inert` whenever it is off-screen, which removes it from
+ * the Tab order and the accessibility tree without moving a pixel or touching
+ * the vendor's styles (accessibility-entry-point.md forbids restyling it).
+ * Opening must win the race with the vendor's own focus call, so `inert` is
+ * cleared in a document-level CAPTURE listener — it runs before the trigger's
+ * own click handler, including the click the AccessibilityBar's icon
+ * dispatches on the hidden trigger. The positive `tabindex="1"` the vendor puts
+ * on its trigger (issue ACC-10) is normalised to 0 at the same time.
+ */
+function keepClosedPanelOutOfTabOrder(): () => void {
+  let observer: MutationObserver | undefined;
+  let timer: number | undefined;
+  let attempts = 0;
+  const onScreen = (el: HTMLElement) => {
+    const r = el.getBoundingClientRect();
+    return r.width > 0 && r.left < window.innerWidth && r.right > 0;
+  };
+  const sync = () => {
+    const panel = document.getElementById("uw-main");
+    if (!panel) return;
+    panel.inert = !onScreen(panel);
+  };
+  const onClick = (e: MouseEvent) => {
+    const t = e.target as Element | null;
+    if (!t?.closest?.("#uw-widget-custom-trigger, [data-uw-trigger]")) return;
+    const panel = document.getElementById("uw-main");
+    if (panel) panel.inert = false;
+  };
+  const attach = () => {
+    const panel = document.getElementById("uw-main");
+    if (!panel) {
+      if (attempts++ < 40) timer = window.setTimeout(attach, 150);
+      return;
+    }
+    const trigger = document.getElementById("uw-widget-custom-trigger");
+    if (trigger?.getAttribute("tabindex") === "1") trigger.setAttribute("tabindex", "0");
+    sync();
+    // The slide-out is a transition, so position is read after it settles.
+    observer = new MutationObserver(() => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(sync, 450);
+    });
+    observer.observe(panel, { attributes: true, attributeFilter: ["class", "style"] });
+  };
+  document.addEventListener("click", onClick, true);
+  attach();
+  return () => {
+    document.removeEventListener("click", onClick, true);
+    observer?.disconnect();
+    window.clearTimeout(timer);
+  };
+}
+
+/**
  * Stop the panel's section heads announcing as page banners.
  *
  * Each of the panel's five sections opens with a bare `<header>`. A header that
@@ -371,6 +453,11 @@ export function UX4GAccessibilityWidget({
     if (typeof document === "undefined") return;
     nameSectionToggles();
     unbannerSectionHeads();
+  }, []);
+
+  React.useEffect(() => {
+    if (typeof document === "undefined") return;
+    return keepClosedPanelOutOfTabOrder();
   }, []);
 
   React.useEffect(() => {

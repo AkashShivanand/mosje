@@ -1,7 +1,8 @@
 // De-addiction Centre (Nasha Mukti Kendra) constants for the public locator on the
 // DoSJE home page and /website/de-addiction-centres.
 //
-// THE 487 CENTRES ARE NOT HERE. They live in
+// THE CENTRES ARE NOT HERE. The feed's 487 rows — 483 centres, four of them
+// published twice — live in
 // `apps/hub/public/website/data/deaddiction-centres.json` and are FETCHED, not
 // imported — see `@/lib/website/deaddiction-centres`. Measured before the split,
 // the array was 114,392 of this file's 118,639 bytes, and it reached the browser
@@ -17,7 +18,7 @@
 //
 // Counts are from the same national feed as the rows and are published figures,
 // not derived from the array: they render before the fetch resolves and must not
-// wait for it. To refresh both, re-fetch https://nmba.dosje.gov.in/mapSchData and
+// wait for it. They count DISTINCT centres — see TOTAL_CENTRES. To refresh both, re-fetch https://nmba.dosje.gov.in/mapSchData and
 // regenerate the JSON asset; update `asOn` there in the same pass.
 
 export type CentreType = "IRCA" | "DDAC" | "ATF" | "ODIC" | "SLCA" | "CPLI";
@@ -47,7 +48,15 @@ export const CENTRE_TYPE_META: Record<
 export const CENTRE_TYPE_ORDER: CentreType[] = ["IRCA", "DDAC", "ATF", "ODIC", "SLCA", "CPLI"];
 
 // 487 geo-tagged centres shown on the map; 768 is the published national total.
-export const TOTAL_CENTRES = 487;
+/**
+ * Geo-tagged centres, DISTINCT. The feed returns 487 rows and four of them are
+ * exact copies of another row — same name, type, address, district, state and
+ * point — so it carries 483 centres. `unpack` drops the copies, and this figure
+ * has to agree with the list it captions: a typed 487 above a list of 483 is
+ * two answers to one question (`data-state-completeness.md` §2). Recount both
+ * when the feed is re-mirrored.
+ */
+export const TOTAL_CENTRES = 483;
 export const PUBLISHED_TOTAL = 768;
 export const HELPLINE = "14446";
 

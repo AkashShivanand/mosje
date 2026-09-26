@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { IconButton } from "../actions/icon-button";
 import "./toast.css";
 
 export type ToastVariant = "success" | "info" | "warning" | "error";
@@ -66,9 +67,17 @@ export function ToastProvider({ children, durationMs = 3000 }: { children: React
           <div key={t.id} className={cn("ds-toast", `ds-toast--${t.variant}`)} role={t.variant === "error" ? "alert" : "status"}>
             <span className="ds-toast__icon">{ICONS[t.variant]}</span>
             <p className="ds-toast__msg">{t.message}</p>
-            <button type="button" className="ds-toast__close" aria-label="Dismiss notification" onClick={() => dismiss(t.id)}>
-              <IcClose />
-            </button>
+            {/* The library's IconButton — it was a native <button> re-deriving
+                the transparent icon control the estate already ships. */}
+            <IconButton
+              className="ds-toast__close"
+              variant="neutral"
+              appearance="text"
+              size="sm"
+              aria-label="Dismiss notification"
+              onClick={() => dismiss(t.id)}
+              icon={<IcClose />}
+            />
           </div>
         ))}
       </div>

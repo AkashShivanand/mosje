@@ -116,7 +116,7 @@ function scoreEntry(entry: WebsiteSearchEntry, query: string, queryTokens: strin
     score += queryTokens.filter((t) => hasWord(title, t)).length * 20;
   }
 
-  return score === 0 ? 0 : score * TYPE_WEIGHT[entry.type];
+  return score === 0 ? 0 : score * TYPE_WEIGHT[entry.type] * (entry.boost ?? 1);
 }
 
 /** Levenshtein distance, capped — used only for "did you mean". */

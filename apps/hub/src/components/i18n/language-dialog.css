@@ -20,40 +20,44 @@
 
   @media (min-width: 768px) {
     .lang-dialog__list {
-      grid-template-columns: 1fr 1fr;
+      /* minmax(0, …): a plain 1fr cannot shrink below its longest option
+         ("മലയാളം Malayalam Live site"), which pushed the right column 4px past
+         the dialog's edge at every width. */
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
-  .lang-dialog__option {
-    display: flex;
+  /* Each option is a design-system Button, which brings the border, hover, press and
+     focus ring. This turns it into a row that reads left to right in its own script:
+     native name, English name, and the state at the far end. Scoped by the button's
+     own class so it outranks the centred single-line layout in the same layer. */
+  .lang-dialog__list .ds-btn.lang-dialog__option {
     align-items: baseline;
+    justify-content: flex-start;
     gap: var(--sa-inline-8);
     width: 100%;
+    min-width: 0;
     /* 48px of height at rest — the estate's touch target, and these rows carry
-       scripts a reader may be squinting at. */
-    min-height: 48px;
+       scripts a reader may be squinting at. `height: auto` undoes the Button's
+       own fixed height, which would otherwise clip a wrapped row. */
+    height: auto;
+    min-height: var(--sa-target-spacious);
     padding: var(--sa-padding-12) var(--sa-padding-16);
-    border: 1px solid var(--sa-border-neutral-subtle);
-    border-radius: var(--sa-shape-8);
-    background-color: var(--sa-bg-neutral-base);
-    color: var(--sa-text-neutral-base);
     text-align: start;
-    cursor: pointer;
-    transition: background-color var(--sa-motion-exit-duration) ease;
+    white-space: normal;
+    flex-wrap: wrap;
+    overflow-wrap: normal;
+    word-break: normal;
   }
 
-  .lang-dialog__option:hover {
-    background-color: var(--sa-bg-neutral-subtler);
-  }
-
-  .lang-dialog__option:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
-    outline-offset: var(--sa-focus-offset);
+  /* A language's name never breaks inside itself; the row wraps between names. */
+  .lang-dialog__option > span {
+    white-space: nowrap;
   }
 
   /* The current language is marked by more than colour — a border weight and the
      word "Current" — so it survives a contrast mode and a monochrome screen. */
-  .lang-dialog__option[aria-current="true"] {
+  .lang-dialog__list .ds-btn.lang-dialog__option[aria-current="true"] {
     border-color: var(--sa-border-brand-primary-base);
     background-color: var(--sa-bg-brand-primary-subtler);
   }
@@ -95,9 +99,4 @@
     letter-spacing: 0.04em;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .lang-dialog__option {
-      transition: none;
-    }
-  }
 }

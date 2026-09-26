@@ -144,6 +144,7 @@ export function Breadcrumb({
             );
           } else if (item.onSelect) {
             content = (
+              /* raw-button-ok(primitive): a crumb that changes client state — it must read as the trail's link, drawn by the same rule as the <a> beside it */
               <button
                 type="button"
                 className="ds-breadcrumb__crumb ds-breadcrumb__link"

@@ -172,7 +172,8 @@ export const ORGANISATIONS: Organisation[] = [
   {
     id: "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay",
     abbr: "PM-AJAY",
-    name: "Pradhan Mantri Anusuchit Jaati Abhyuday Yojna",
+    // "Yojna" on dosje.gov.in; the scheme's own name is "Yojana" (AR 2025-26, PIB).
+    name: "Pradhan Mantri Anusuchit Jaati Abhyuday Yojana",
     category: "schemes",
     profileHref: "/website/organisation/pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay",
     directoryHref: "/website/pm-ajay-directory",

@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import { Button, ButtonGroup } from "@mosje/design-system";
 
 interface PlaygroundToolbarProps {
   density: string;
@@ -25,61 +26,38 @@ export function PlaygroundToolbar({
       </div>
 
       <div className="playground-toolbar__controls">
-        {/* Density Toggle */}
-        <div className="pg-toggle-group" role="group" aria-label="Density">
+        {/* Each switch is the design system's segmented control: an attached
+            ButtonGroup whose Buttons carry aria-pressed. */}
+        <ButtonGroup attached aria-label="Density">
           {(["comfortable", "compact"] as const).map((d) => (
-            <button
-              key={d}
-              className={`pg-toggle${density === d ? " is-active" : ""}`}
-              onClick={() => onDensityChange(d)}
-              type="button"
-            >
+            <Button key={d} appearance="outlined" size="sm" aria-pressed={density === d} onClick={() => onDensityChange(d)}>
               {d === "comfortable" ? "Comfortable" : "Compact"}
-            </button>
+            </Button>
           ))}
-        </div>
+        </ButtonGroup>
 
         {/* Bilingual Language Switcher */}
         {onLangChange && (
-          <div className="pg-toggle-group" role="group" aria-label="Language Preview">
-            <button
-              type="button"
-              className={`pg-toggle${lang === "en" ? " is-active" : ""}`}
-              onClick={() => onLangChange("en")}
-              title="English specimen"
-            >
+          <ButtonGroup attached aria-label="Language Preview">
+            <Button appearance="outlined" size="sm" aria-pressed={lang === "en"} title="English specimen" onClick={() => onLangChange("en")}>
               EN
-            </button>
-            <button
-              type="button"
-              className={`pg-toggle${lang === "hi" ? " is-active" : ""}`}
-              onClick={() => onLangChange("hi")}
-              title="हिन्दी (Devanagari specimen)"
-              lang="hi"
-            >
+            </Button>
+            <Button appearance="outlined" size="sm" aria-pressed={lang === "hi"} title="हिन्दी (Devanagari specimen)" lang="hi" onClick={() => onLangChange("hi")}>
               हिन्दी
-            </button>
-          </div>
+            </Button>
+          </ButtonGroup>
         )}
 
         {/* Code Format Switcher */}
         {onCodeModeChange && (
-          <div className="pg-toggle-group" role="group" aria-label="Code format">
-            <button
-              type="button"
-              className={`pg-toggle${codeMode === "jsx" ? " is-active" : ""}`}
-              onClick={() => onCodeModeChange("jsx")}
-            >
+          <ButtonGroup attached aria-label="Code format">
+            <Button appearance="outlined" size="sm" aria-pressed={codeMode === "jsx"} onClick={() => onCodeModeChange("jsx")}>
               JSX
-            </button>
-            <button
-              type="button"
-              className={`pg-toggle${codeMode === "html" ? " is-active" : ""}`}
-              onClick={() => onCodeModeChange("html")}
-            >
+            </Button>
+            <Button appearance="outlined" size="sm" aria-pressed={codeMode === "html"} onClick={() => onCodeModeChange("html")}>
               HTML
-            </button>
-          </div>
+            </Button>
+          </ButtonGroup>
         )}
       </div>
     </div>

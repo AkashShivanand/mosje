@@ -204,6 +204,16 @@
     border-color: var(--sa-border-brand-primary-base) !important;
   }
 
+  /* ONE DOOR (accessibility-entry-point.md), for the keyboard too. The vendor
+     injects its own "Open the accessibility option" button as the first thing in
+     <body>, so the first Tab on every page landed on it instead of the page's
+     "Skip to Main Content" (issue ACC-01 / GIGW skip-link order). Where the
+     AccessibilityBar's icon is the door, this second door is hidden the same way
+     the floating button is: display:none, never removed. */
+  :root[data-sa-abar-a11y="1"] .ux4g-accessibility-skip-link {
+    display: none !important;
+  }
+
   .ux4g-accessibility-uwaw-text-reading-guide,
   .ux4g-accessibility-reading-mask-horizontal::before {
     background-color: var(--sa-bg-brand-primary-bolder) !important;

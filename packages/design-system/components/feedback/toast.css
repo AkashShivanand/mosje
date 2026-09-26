@@ -62,23 +62,32 @@
     color: var(--sa-text-neutral-base);
   }
 
-  .ds-toast__close {
-    appearance: none;
-    border: 0;
-    cursor: pointer;
+  /* The dismiss is the library's `IconButton` (neutral · text · sm), so the
+     border, the appearance reset, the press give and the focus ring all come
+     from button.css. What is left here is what belongs to a toast: the row's
+     no-shrink rule, the small radius that matches the toast's own corners, and
+     the quiet ink a transient notice uses.
+
+     `.ds-icon-btn` is named in the selector so these outrank button.css's size
+     and colour rules — both files sit in `@layer components`, so specificity
+     decides rather than import order.
+
+     The box is 24px rather than the 32px `sm` square: this control sits beside a
+     20px status glyph in a padded row, and the full square would set the toast's
+     height. It was 20x20 before, so this also lifts it onto WCAG 2.2 §2.5.8's
+     24x24 floor. */
+  .ds-toast__close.ds-icon-btn {
     flex-shrink: 0;
-    padding: var(--sa-padding-2);
+    min-width: 24px;
+    width: 24px;
+    height: 24px;
+    min-height: 24px;
     border-radius: var(--sa-shape-4);
-    background: transparent;
     color: var(--sa-text-neutral-subtle);
-    transition: color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
-  .ds-toast__close:hover { color: var(--sa-text-neutral-base); }
-  .ds-toast__close:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring, var(--sa-border-brand-primary-base));
-    outline-offset: var(--sa-focus-offset);
-  }
+  .ds-toast__close.ds-icon-btn:hover,
+  .ds-toast__close.ds-icon-btn:active { color: var(--sa-text-neutral-base); }
 
   /* Variant accents (border + icon colour). */
   .ds-toast--success { border-color: color-mix(in srgb, var(--sa-border-status-success-base) 30%, transparent); background-color: var(--sa-bg-status-success-subtler); }

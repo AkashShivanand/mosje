@@ -295,6 +295,7 @@ export function DataTable<T extends Record<string, unknown>>({
                       onClick is unreachable by keyboard and has no role, which is
                       how a sortable table ends up sortable only by mouse.
                     */}
+                    {/* raw-button-ok(primitive): the sortable column header — the button IS the <th>'s content, and the cell above it carries aria-sort */}
                     <button
                       type="button"
                       className="ds-table__sort"
@@ -344,6 +345,7 @@ export function DataTable<T extends Record<string, unknown>>({
             <>
           <span>Showing</span>
           {pageSizes.map((size) => (
+            /* raw-button-ok(primitive): a page-size choice in the footer's aria-pressed set — a toggle group, not a standalone action */
             <button
               key={size}
               type="button"

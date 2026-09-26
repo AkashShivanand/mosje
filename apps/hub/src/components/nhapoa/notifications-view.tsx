@@ -4,7 +4,7 @@ import { PortalPageHeader } from "@/components/nhapoa/ui";
 import { cn } from "@/lib/nhapoa/utils";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import type { RoleId } from "@/lib/nhapoa/store/types";
-import { Icon , Card} from "@mosje/design-system";
+import { Button, Icon, Card } from "@mosje/design-system";
 
 /** Shared notifications list for any admin role. Reads role-scoped items from the store. */
 export function NotificationsView({ role }: { role: RoleId }) {
@@ -23,12 +23,10 @@ export function NotificationsView({ role }: { role: RoleId }) {
       ) : (
         <div className="space-y-3">
           {items.map((n) => (
-            <button
+            <div
               key={n.id}
-              type="button"
-              onClick={() => markNotificationRead(n.id)}
               className={cn(
-                "flex w-full items-start gap-3 rounded-2xl border bg-white p-4 text-left shadow-card transition-colors hover:bg-surface-muted/60",
+                "flex w-full items-start gap-3 rounded-2xl border bg-white p-4 shadow-card",
                 n.read ? "border-line" : "border-navy/30",
               )}
             >
@@ -38,12 +36,19 @@ export function NotificationsView({ role }: { role: RoleId }) {
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   <p className="text-title-3 text-ink">{n.title}</p>
-                  {!n.read && <span className="h-2 w-2 rounded-full bg-saffron" />}
+                  {!n.read && <span className="h-2 w-2 rounded-full bg-saffron" aria-label="Unread" role="img" />}
                 </div>
                 <p className="mt-0.5 text-body-2 text-ink-muted">{n.body}</p>
                 <p className="mt-1 text-body-3 text-ink-hint">{new Date(n.at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}</p>
               </div>
-            </button>
+              {/* Was: the whole card a button that marked it read on any click, with
+                  nothing saying so. The action is now named where it applies. */}
+              {!n.read && (
+                <Button variant="neutral" appearance="text" size="sm" nowrap onClick={() => markNotificationRead(n.id)}>
+                  Mark as Read
+                </Button>
+              )}
+            </div>
           ))}
         </div>
       )}

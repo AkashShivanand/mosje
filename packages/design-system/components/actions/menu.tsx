@@ -326,6 +326,7 @@ export function Menu({
                   <span className="ds-menu__rule" />
                 </div>
               ) : (
+                /* raw-button-ok(primitive): a menuitem in a role="menu" — Menu owns its role, its roving tabindex and its checked state */
                 <button
                   key={entry.id}
                   type="button"

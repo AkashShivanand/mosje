@@ -172,6 +172,11 @@ export function NumberInput({
         {suffix ? <span className="ds-number__affix" aria-hidden>{suffix}</span> : null}
         {!hideSteppers ? (
           <span className="ds-number__steppers">
+            {/* The steppers are half-height segments of the field's own chrome, not actions in a
+                row: aria-hidden, out of the tab order (the spinbutton role carries the
+                increment), and each filling half of the field's 40px box — which a Button's
+                32px size floor would turn into 64px. */}
+            {/* raw-button-ok(primitive): half of the field's own 40px box, aria-hidden and out of the tab order */}
             <button
               type="button"
               className="ds-number__step"
@@ -185,6 +190,7 @@ export function NumberInput({
             >
               +
             </button>
+            {/* raw-button-ok(primitive): the decrement half of the same field chrome — see above */}
             <button
               type="button"
               className="ds-number__step"

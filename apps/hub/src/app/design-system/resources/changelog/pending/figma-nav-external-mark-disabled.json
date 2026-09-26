@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "A DISABLED NAV ROW NO LONGER DRAWS THE NEW-TAB MARK IN FIGMA. The `External` boolean added to Navbar/MegaMenuItem and Navbar/DropdownItem showed the mark on the Disabled variant too, where the code drops it: a row that cannot be followed has nothing to warn about. The mark is gone from both Disabled variants, so External has no effect there, and both masters' descriptions say so. Repaired in the same pass: the MegaMenuItem description carried doubly-escaped entities (`&amp;amp;#39;`) from an earlier round-trip, per the never-round-trip-description rule."
+}

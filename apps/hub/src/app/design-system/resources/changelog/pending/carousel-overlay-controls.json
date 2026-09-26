@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "Carousel gains controls=\"overlay\": the controls ride a full-width banner's bottom-end corner in a solid neutral-inverse pill, so the banner spends no row of the first screen on them and their contrast never depends on the photograph. Below breakpoint/tablet they return to the row beneath. Default stays \"below\"."
+}

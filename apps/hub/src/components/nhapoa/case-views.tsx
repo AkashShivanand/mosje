@@ -6,7 +6,7 @@ import { cn } from "@/lib/nhapoa/utils";
 import { StatusPill } from "./ui";
 import { slaDaysLeft, slaTone, slaLabel, priorityOf, fmtDate } from "@/lib/nhapoa/case-helpers";
 import type { Case } from "@/lib/nhapoa/store/types";
-import { Icon } from "@mosje/design-system";
+import { Button, Icon, IconButton } from "@mosje/design-system";
 
 const SLA_TONE_CLASS = {
   approve: "bg-approve-bg text-approve-fg",
@@ -109,8 +109,8 @@ export function CaseTable({ cases, detailBase }: { cases: Case[]; detailBase: st
               <td className="px-5 py-4 align-top"><StatusPill status={c.status} /></td>
               <td className="px-5 py-4 align-top">
                 <div className="flex items-center justify-end gap-2">
-                  <Link href={`${detailBase}/${c.id}`} className="rounded-lg border border-line px-3 py-1.5 text-label-2 font-semibold text-navy hover:bg-navy/5">View</Link>
-                  <button type="button" aria-label="Download case" className="grid h-8 w-8 place-items-center rounded-lg border border-line text-ink-hint hover:bg-black/5"><Icon name="download" size={16} /></button>
+                  <Button href={`${detailBase}/${c.id}`} linkAs={Link} variant="neutral" appearance="outlined" size="sm" nowrap>View</Button>
+                  <IconButton icon={<Icon name="download" size={16} />} aria-label="Download case" tooltip variant="neutral" appearance="outlined" size="sm" />
                 </div>
               </td>
             </tr>

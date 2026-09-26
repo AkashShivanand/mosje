@@ -34,6 +34,7 @@ export const AccordionItem = React.forwardRef<HTMLDivElement, AccordionItemProps
 
     return (
       <div ref={ref} className={cn("sa-accordion-item", className)} {...props}>
+        {/* raw-button-ok(primitive): the accordion header IS this component — it owns aria-expanded, aria-controls and the panel it discloses */}
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}

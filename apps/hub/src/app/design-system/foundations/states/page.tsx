@@ -93,12 +93,15 @@ export default function StatesPage(): React.JSX.Element {
             "Hover, press and focus the live button; the other four are shown at rest. Every colour is a role, every transition a pair, and the ring is an outline — so what you see here is what every component in the estate does.",
           content: (
             <div className="is-specimens">
+              {/* raw-button-ok(specimen): "built only from tokens" — bare elements show the state roles themselves, not a component's use of them */}
               <button type="button" className="is-btn">
                 Live — hover, press, Tab to focus
               </button>
+              {/* raw-button-ok(specimen): the selected state role, drawn bare */}
               <button type="button" className="is-btn is-btn--selected" aria-pressed="true">
                 Selected
               </button>
+              {/* raw-button-ok(specimen): the disabled state role, drawn bare */}
               <button type="button" className="is-btn" disabled>
                 Disabled
               </button>

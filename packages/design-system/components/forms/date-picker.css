@@ -136,20 +136,10 @@
     margin-block-end: var(--sa-stack-8);
   }
 
-  .ds-datepicker__navbtn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-inline-size: var(--sa-inline-32);
-    min-block-size: var(--sa-stack-32);
-    border: 0;
-    border-radius: var(--sa-shape-4);
-    background: transparent;
-    color: var(--sa-text-neutral-bolder);
-    cursor: pointer;
-  }
-
-  .ds-datepicker__navbtn:hover { background: var(--sa-bg-neutral-hover); }
+  /* The two month arrows are neutral text `IconButton`s at `sm`, which is the same
+     32x32 box this rule used to draw by hand. Everything they need — ink, hover
+     wash, focus ring, the coarse-pointer thumb target — comes from button.css, so
+     nothing is restated here. */
 
   .ds-datepicker__month {
     color: var(--sa-text-neutral-bolder);

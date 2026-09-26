@@ -1,4 +1,0 @@
-{
-  "kind": "Added",
-  "text": "MEDIATHUMBNAIL — A PHOTO OR VIDEO THAT OPENS WHEN PRESSED. The trigger for a Lightbox, at 64 × 48 for a table cell, 80 × 60 for a list row, or filling a card's media area. It is a button named for its action (`label`, required), with a decorative image; `count` draws a \"+N\" badge counting the items not shown, on a solid paired fill (9.73:1) rather than a scrim; `kind=\"video\"` always draws its play glyph, on a disc at fill size; and with no `src` it draws a dashed empty tile that is not focusable. NMBA had drawn this five times by hand. In Figma: a new Media Thumbnail page after Figure — 21 variants (Size × Kind × State), Show count and Count properties, a documentation frame, a component record, an Index card and Code Connect."
-}

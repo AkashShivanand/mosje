@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "THE WEBSITE'S CONDENSED BAR CARRIES THE DEPARTMENT'S NAME FROM 1440. Scrolling used to take the department's name off the page entirely, leaving an emblem that identifies the site only to a reader who knows the emblem. What decides the width is the inline nav: seven entries measure 828px at every desktop width, leaving 93px spare at 1280, 213 at 1440 and 317 at 1920, against a name that is 355px on one line. So it shows from 1440, wrapped onto two of the bar's 20px rows, and stays off at 1280 where taking 200px would push the nav into the sheet and cost the reader the menu. The Department line alone — a deliberate divergence from DBIM 5.2's three-line lockup, since the resting masthead above carries all three. Figma's Navbar/Website On Scroll variant cannot draw this yet (BrandLockup's condensed size hugs its row); recorded as an open item on Navbar — Component record."
+}

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { OfficialsDirectory } from "@/components/website/templates/OfficialsDirectory";
+import { OfficialsDirectory } from "@/components/website-next/templates/OfficialsDirectory";
 import { getContentSyncedDate, getOfficials } from "@/lib/website/content";
 import { socialCard } from "@/lib/seo/social";
 
@@ -45,7 +45,7 @@ export default async function Page({
   return (
     <OfficialsDirectory
       title={TITLE}
-      breadcrumb={[{ label: "Connect" }, { label: TITLE }]}
+      breadcrumb={[{ label: "Contact" }, { label: TITLE }]}
       description={DESCRIPTION}
       lastUpdated={getContentSyncedDate()}
       officials={getOfficials()}

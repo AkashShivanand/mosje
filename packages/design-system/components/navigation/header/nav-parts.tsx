@@ -4,6 +4,7 @@ import * as React from "react";
 import { navDisabledAria, navLinkRoutes, type NavTag } from "./nav-link-tag";
 import { cn } from "../../../utils/cn";
 import { Icon } from "../../utilities/icon";
+import { Button } from "../../actions/button";
 import type { NavColumn, NavItem, NavLink, NavMegaItem } from "./types";
 import "./header.css";
 
@@ -32,7 +33,7 @@ const IcCaret = () => <Icon name="keyboard_arrow_down" size={16} className="ds-h
 /** WCAG 3.2.5 — a link that leaves the tab has to say so, visibly and to AT. */
 export const NewTabHint = (): React.JSX.Element => (
   <>
-    <Icon name="open_in_new" size={16} className="ds-hdr-ic" />
+    <Icon name="open_in_new" size={16} className="ds-hdr-ic ds-hdr-ic--newtab" />
     <span className="ds-hdr-sr">(opens in a new tab)</span>
   </>
 );
@@ -65,6 +66,7 @@ export function MenuToggle({
   className,
 }: MenuToggleProps): React.JSX.Element {
   return (
+    /* raw-button-ok(primitive): MenuToggle IS this component — the sidebar's trigger, sized and placed by the header's brand row */
     <button
       type="button"
       className={cn("ds-hdr-brand__toggle", className)}
@@ -106,6 +108,7 @@ export function SheetToggle({
   className,
 }: SheetToggleProps): React.JSX.Element {
   return (
+    /* raw-button-ok(primitive): SheetToggle IS this component — the mobile NavSheet's trigger, sized and placed by the header's brand row */
     <button
       type="button"
       className={cn("ds-hdr-burger", className)}
@@ -271,6 +274,10 @@ export function MegaMenuItem({ item, onSelect, linkAs, className }: MegaMenuItem
         <span className="ds-hdr-mega-item__abbr">{item.abbr}</span>
         <span className="ds-hdr-mega-item__name">{item.name}</span>
       </span>
+      {/* The only trailing mark this row carries. There was a hover-revealed
+          chevron here; it promised a submenu that never opens (issue register
+          NAV-18), and the row's own hover lift already says it is clickable. */}
+      {item.external && !item.disabled && <NewTabHint />}
     </Tag>
   );
 }
@@ -293,10 +300,10 @@ export function MegaMenu({ id, label, columns, overview, onSelect, linkAs, class
     <div className={cn("ds-hdr-nav__drop-wrap is-mega", className)}>
       <div id={id} className="ds-hdr-nav__mega" role="group" aria-label={label}>
         {columns.map((col, ci) => (
-          <div key={col.heading ?? ci} className="ds-hdr-nav__mega-col">
+          <div key={col.heading ?? ci} className={cn("ds-hdr-nav__mega-col", col.wide && "is-wide")}>
             {col.heading && <p className="ds-hdr-nav__mega-head">{col.heading}</p>}
             {col.items?.length ? (
-              <ul className="ds-hdr-nav__mega-list is-rich">
+              <ul className={cn("ds-hdr-nav__mega-list is-rich", col.wide && "is-grid")}>
                 {col.items.map((it) => (
                   <li key={it.abbr}>
                     <MegaMenuItem item={it} onSelect={onSelect} linkAs={linkAs} />
@@ -311,6 +318,20 @@ export function MegaMenu({ id, label, columns, overview, onSelect, linkAs, class
                   </li>
                 ))}
               </ul>
+            )}
+            {col.action && (
+              <Button
+                href={col.action.href}
+                external={col.action.external}
+                linkAs={linkAs}
+                variant="primary"
+                appearance="outlined"
+                size="sm"
+                className="ds-hdr-nav__mega-action"
+                onClick={onSelect}
+              >
+                {col.action.label}
+              </Button>
             )}
           </div>
         ))}

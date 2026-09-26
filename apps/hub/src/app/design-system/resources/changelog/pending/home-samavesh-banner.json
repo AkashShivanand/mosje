@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "THE SAMAVESH BANNER IS BACK ON THE HOME PAGE, BETWEEN THE CAMPAIGN AND RECENT DOCUMENTS — where the live page and Figma's reference frame both place it. The redesign had dropped it. The existing `SamaveshJusticeBanner` is SHARED with the classic page rather than redrawn: it is the version that split the Figma comp into a decorative sky and a matted group so every word on the card is real text, after the flat raster shipped the headline, subline and button as pixels — unresizable, untranslatable and without a text alternative, which on a public government page is a WCAG 1.4.5 failure rather than a fidelity gap. It moves into website-next with the marquee when the classic tree is retired."
+}

@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "SectionTitle gains size=\"display\" (Headline 2 over Body 1) for a landing page's sections and tone=\"inverse\" for a navy or green band. The default stays the UI scale a portal screen needs. First consumer: the website home page, whose 24px headings over 12px descriptions let its sections run together (home audit, 22 Sep 2026)."
+}

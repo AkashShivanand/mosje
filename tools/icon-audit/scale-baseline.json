@@ -15,7 +15,7 @@
     "page, re-run --update-baseline in the same change."
   ],
   "totals": {
-    "offScale": 142,
+    "offScale": 138,
     "classSized": 4
   },
   "files": {
@@ -48,7 +48,7 @@
       "classSized": 0
     },
     "apps/hub/src/app/portals/nhapoa/register-rescue/page.tsx": {
-      "offScale": 2,
+      "offScale": 1,
       "classSized": 0
     },
     "apps/hub/src/app/portals/nhapoa/state-authority/dashboard/page.tsx": {
@@ -187,15 +187,15 @@
       "offScale": 2,
       "classSized": 0
     },
-    "apps/hub/src/app/website/events/page.tsx": {
+    "apps/hub/src/app/website-classic/events/page.tsx": {
       "offScale": 1,
       "classSized": 0
     },
-    "apps/hub/src/app/website/nmba-options/page.tsx": {
+    "apps/hub/src/app/website-classic/nmba-options/page.tsx": {
       "offScale": 1,
       "classSized": 0
     },
-    "apps/hub/src/app/website/samavesh-admin-portals/page.tsx": {
+    "apps/hub/src/app/website-classic/samavesh-admin-portals/page.tsx": {
       "offScale": 1,
       "classSized": 0
     },
@@ -219,10 +219,6 @@
       "offScale": 1,
       "classSized": 0
     },
-    "apps/hub/src/components/smile-admin/dashboard/date-range-chips.tsx": {
-      "offScale": 2,
-      "classSized": 0
-    },
     "apps/hub/src/components/smile-admin/dashboard/kpi-card.tsx": {
       "offScale": 2,
       "classSized": 0
@@ -230,10 +226,6 @@
     "apps/hub/src/components/smile-admin/dashboard/system-users-rail.tsx": {
       "offScale": 0,
       "classSized": 1
-    },
-    "apps/hub/src/components/smile-admin/data/data-toolbar.tsx": {
-      "offScale": 1,
-      "classSized": 0
     },
     "apps/hub/src/components/smile-admin/data/export-menu.tsx": {
       "offScale": 2,

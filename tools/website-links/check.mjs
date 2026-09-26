@@ -94,7 +94,10 @@ const jsonSlugs = (...files) => {
  * `content/website`, so its slugs are the keys of that object literal.
  */
 const inlineEventSlugs = () => {
-  const p = join(APP, "website/events/[slug]/page.tsx");
+  // The ARCHIVED classic design keeps its inline records; the redesign reads
+  // events.json. Both are served at /website/events/<slug> (the classic one
+  // through the demo rail), so the route accepts the union.
+  const p = join(APP, "website-classic/events/[slug]/page.tsx");
   if (!existsSync(p)) fail("events/[slug]/page.tsx missing");
   const src = readFileSync(p, "utf8");
   const block = src.match(/const EVENTS[^=]*=\s*\{([\s\S]*?)\n\};/);
@@ -103,6 +106,13 @@ const inlineEventSlugs = () => {
   for (const m of block[1].matchAll(/^\s{2}["']?([a-z0-9-]+)["']?\s*:\s*\{/gm)) slugs.add(m[1]);
   if (slugs.size === 0) fail("parsed the EVENTS record but found no slugs");
   return slugs;
+};
+
+/** Scheme ids in the Department's scheme master (lib/website-next/schemes.ts). */
+const masterSchemeIds = () => {
+  const p = join(APP, "..", "content/website/scheme-master.json");
+  if (!existsSync(p)) fail("content/website/scheme-master.json missing");
+  return new Set(JSON.parse(readFileSync(p, "utf8")).schemes.map((s) => s.id));
 };
 
 /**
@@ -118,8 +128,19 @@ const inlineEventSlugs = () => {
  */
 const DYNAMIC = [
   { prefix: "/website/organisation/", catchAll: true, source: "organisation.json", slugs: () => jsonSlugs("organisation.json") },
-  { prefix: "/website/schemes-services/", catchAll: false, source: "schemes.json", slugs: () => jsonSlugs("schemes.json") },
-  { prefix: "/website/events/", catchAll: false, source: "the EVENTS record", slugs: () => inlineEventSlugs() },
+  {
+    prefix: "/website/schemes-services/",
+    catchAll: false,
+    source: "schemes.json + scheme-master.json",
+    // The redesign also addresses every scheme in the Department's master by its id.
+    slugs: () => new Set([...jsonSlugs("schemes.json"), ...masterSchemeIds()]),
+  },
+  {
+    prefix: "/website/events/",
+    catchAll: false,
+    source: "events.json + the classic EVENTS record",
+    slugs: () => new Set([...jsonSlugs("events.json"), ...inlineEventSlugs()]),
+  },
   { prefix: "/website/booking/", catchAll: false, source: "booking.json", slugs: () => jsonSlugs("booking.json") },
   { prefix: "/website/cpio/", catchAll: false, source: "cpio.json", slugs: () => jsonSlugs("cpio.json") },
   {
@@ -165,6 +186,10 @@ if (routes.size === 0) fail("found no routes at all — the scan is broken");
 
 // Any dynamic route we did NOT declare above is an unknown we must not wave through.
 const declared = DYNAMIC.map((d) => d.prefix.replace(/\/$/, ""));
+/* `/website/[...missing]` is the redesign's 404: it exists to answer addresses
+   that are NOT pages, so it must never make a link count as valid. */
+const NOT_FOUND_ROUTE = "/website/[...missing]";
+dynamicDirs.delete(NOT_FOUND_ROUTE);
 const undeclared = [...dynamicDirs].filter(
   (d) => d.startsWith("/website/") && !declared.some((p) => d.startsWith(p)),
 );

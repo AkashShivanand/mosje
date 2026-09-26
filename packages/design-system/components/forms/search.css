@@ -123,38 +123,27 @@
     appearance: none;
   }
 
-  .ds-search__clear {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+  /* A round `IconButton` — fill, ink, hover, focus ring, radius and the
+     coarse-pointer 44px thumb target all come from button.css, so this only has to
+     say where the control sits and how big it is.
+
+     24px is the WCAG 2.2 §2.5.8 minimum, and it is what keeps the control clear of
+     the field's own padding inside a 40px `sm` shell. The thumb target is a
+     transparent pseudo-element, so it grows the target without growing the box.
+
+     THREE CLASSES, not two: `.ds-icon-btn.ds-btn--sm` is itself two, so a two-class
+     selector only TIES its 32px floor and the winner would be whichever stylesheet
+     the bundler injected last. */
+  .ds-search__clear.ds-icon-btn.ds-btn--sm {
     flex: 0 0 auto;
-    width: 24px;
-    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
     margin: 0;
-    padding: 0;
-    border: 0;
-    border-radius: var(--sa-shape-full);
-    background: transparent;
-    color: var(--sa-text-neutral-subtle);
-    cursor: pointer;
-    transition:
-      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
-      color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-search__clear svg {
     width: 16px;
     height: 16px;
-  }
-
-  .ds-search__clear:hover {
-    background-color: var(--sa-bg-neutral-subtler);
-    color: var(--sa-text-neutral-base);
-  }
-
-  .ds-search__clear:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-    outline-offset: var(--sa-focus-offset);
   }
 
   /* Disabled */
@@ -170,29 +159,17 @@
 
   /* Leading icon as a submit control — present only when `onSubmit` is passed
      (the masthead case). Without it the icon stays a decorative <span>, so a
-     plain filter field gains no phantom button. */
-  .ds-search__icon--action {
-    display: inline-grid;
-    place-items: center;
+     plain filter field gains no phantom button.
+
+     It is an `IconButton` at `sm`, which is the same 32x32 box this rule used to
+     set by hand; radius, hover wash, focus ring and the coarse-pointer target are
+     button.css's. Only the flex behaviour and the ink are stated here, and the ink
+     takes TWO classes to outrank `.ds-btn--text`'s: the glyph inherits the field's
+     ink, exactly as the decorative `<span>` form of this same icon does, so a
+     portal that retints the field retints both. */
+  .ds-search__icon--action.ds-icon-btn {
     flex: 0 0 auto;
-    height: 32px;
-    width: 32px;
-    padding: 0;
-    border: none;
-    border-radius: var(--sa-shape-8);
-    background: transparent;
     color: inherit;
-    cursor: pointer;
-    transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
-  }
-
-  .ds-search__icon--action:hover {
-    background-color: var(--sa-bg-neutral-subtler);
-  }
-
-  .ds-search__icon--action:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
-    outline-offset: calc(var(--sa-focus-offset) * -1);
   }
 
   /* ============================================================================

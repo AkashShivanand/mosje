@@ -187,16 +187,16 @@
     line-height: var(--sa-type-body-3-lh);
   }
 
-  .ds-combobox__retry {
-    margin-inline-start: var(--sa-inline-8);
-    padding: 0;
-    border: 0;
-    background: transparent;
-    color: var(--sa-text-brand-primary-bolder);
-    font: inherit;
-    font-weight: var(--sa-font-weight-semibold);
-    text-decoration: underline;
-    cursor: pointer;
+  /* A `Button` — ink, hover, focus ring and the size ladder are button.css's.
+
+     THREE CLASSES, because `.ds-btn:not(.ds-icon-btn, .ds-btn--full)` already counts as
+     two. The retry sits at the end of the failure sentence inside a popup as narrow as
+     the field, and a 64px minimum width with 16px each side pushed it onto a line of its
+     own — which doubled the height of the panel a reader is looking at precisely when
+     something has gone wrong. */
+  .ds-combobox__retry.ds-btn.ds-btn--sm {
+    min-width: 0;
+    padding-inline: var(--sa-padding-4);
   }
 
   .ds-combobox__skeleton {

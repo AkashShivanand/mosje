@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { Icon, buttonClasses } from "@mosje/design-system";
+import { Icon, IconButton, buttonClasses } from "@mosje/design-system";
 import { CampaignCopy, CampaignCta, Dismiss, Fold, HelplineCard, NMBA } from "./fold";
 import "./campaign-band.css";
 
@@ -125,14 +125,16 @@ export function LayoutCtasBelow() {
               </div>
             </div>
 
-            <button
-              type="button"
+            <IconButton
+              variant="neutral"
+              appearance="text"
+              tone="inverse"
+              size="md"
               className="xnudge__dismiss"
               onClick={() => setGone(true)}
               aria-label={`Dismiss the ${NMBA.banner.heading} announcement`}
-            >
-              <Icon name="close" size={20} aria-hidden />
-            </button>
+              icon={<Icon name="close" size={20} />}
+            />
           </div>
         </section>
       }

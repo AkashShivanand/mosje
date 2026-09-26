@@ -16,6 +16,14 @@
       "port": 3007
     },
     {
+      "_comment": "A SECOND hub, on 3008, for when another session already owns 3007 FROM A DIFFERENT WORKTREE. Next 16's dev lock is per DIRECTORY, not per port, so this working tree may run its own `next dev` — it just cannot have 3007 while the other one holds it. Use `hub-attach` instead when the running server is this same directory's.",
+      "name": "hub-alt",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "apps/hub", "run", "dev", "--", "--port", "3008"],
+      "port": 3008,
+      "autoPort": false
+    },
+    {
       "_comment": "The site gate, end to end. Needs a standalone build FIRST — `npm run build --prefix apps/hub` — or node exits immediately with a missing-server error. Password is local-preview, admin is local-admin.",
       "name": "hub-gated",
       "runtimeExecutable": "bash",

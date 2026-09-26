@@ -312,6 +312,7 @@ export function GeoPhotoInput({
       />
 
       {value.length === 0 ? (
+        /* raw-button-ok(primitive): a dashed drop SURFACE taking dragover/dragleave/drop as well as clicks — a drop target that happens to be keyboard-operable, not an action */
         <button
           id={id}
           type="button"
@@ -351,6 +352,7 @@ export function GeoPhotoInput({
                     </span>
                   </span>
                   {!disabled && (
+                    /* raw-button-ok(primitive): a 26px scrim disc painted ON a photograph — white on a neutral overlay turning danger red on hover, which no Button variant draws */
                     <button
                       type="button"
                       data-geophoto-remove=""
@@ -367,6 +369,7 @@ export function GeoPhotoInput({
 
             {!atCapacity && !disabled && (
               <li className="ds-geophoto__item ds-geophoto__item--add">
+                /* raw-button-ok(primitive): the add TILE — a cell of the photo grid that is also a drop target, sized by the grid rather than by a size ladder */
                 <button
                   type="button"
                   id={id}

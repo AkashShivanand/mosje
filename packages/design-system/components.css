@@ -51,6 +51,7 @@
 @import "./components/forms/time-slot.css";
 @import "./components/forms/toggle.css";
 @import "./components/forms/wizard.css";
+@import "./components/navigation/action-tile.css";
 @import "./components/navigation/app-switcher-panel.css";
 @import "./components/navigation/breadcrumb.css";
 @import "./components/navigation/content-nav.css";

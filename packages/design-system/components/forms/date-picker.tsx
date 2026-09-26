@@ -3,6 +3,7 @@
 import * as React from "react";
 
 import { cn } from "../../utils/cn";
+import { IconButton } from "../actions/icon-button";
 import { Icon } from "../utilities/icon";
 import { isoToDisplay, parseTypedDate, typedDateError } from "./date-typing";
 import "./date-picker.css";
@@ -283,6 +284,7 @@ export function DatePicker({
             }
           }}
         />
+        {/* raw-button-ok(primitive): an aria-haspopup="dialog" trigger inside the field's border, owning the calendar's open state and sized by the field */}
         <button
           type="button"
           className="ds-datepicker__trigger"
@@ -314,25 +316,29 @@ export function DatePicker({
       {open ? (
         <div id={dialogId} role="dialog" aria-modal="false" aria-label="Choose a date" className="ds-datepicker__dialog">
           <div className="ds-datepicker__nav">
-            <button
+            <IconButton
               type="button"
+              variant="neutral"
+              appearance="text"
+              size="sm"
               className="ds-datepicker__navbtn"
               aria-label="Previous month"
               onClick={() => shift(0, -1)}
-            >
-              <Icon name="chevron_left" size={20} />
-            </button>
+              icon={<Icon name="chevron_left" size={20} />}
+            />
             <span className="ds-datepicker__month" aria-live="polite">
               {MONTHS[focusDate.getMonth()]} {focusDate.getFullYear()}
             </span>
-            <button
+            <IconButton
               type="button"
+              variant="neutral"
+              appearance="text"
+              size="sm"
               className="ds-datepicker__navbtn"
               aria-label="Next month"
               onClick={() => shift(0, 1)}
-            >
-              <Icon name="chevron_right" size={20} />
-            </button>
+              icon={<Icon name="chevron_right" size={20} />}
+            />
           </div>
 
           <div
@@ -362,6 +368,7 @@ export function DatePicker({
                   const isActive = toIso(d) === toIso(focusDate);
                   const blocked = outOfRange(d);
                   return (
+                    /* raw-button-ok(primitive): the day IS this cell — role="gridcell" and the grid's roving tabindex belong to the calendar */
                     <button
                       key={toIso(d)}
                       type="button"

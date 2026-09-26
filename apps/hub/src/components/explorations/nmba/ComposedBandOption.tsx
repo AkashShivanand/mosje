@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { Icon, buttonClasses } from "@mosje/design-system";
+import { Icon, IconButton, Tabs, buttonClasses } from "@mosje/design-system";
 import { Fold, NMBA } from "./fold";
 import "./composed-band.css";
 
@@ -83,7 +83,7 @@ export function ComposedBand() {
   const [playing, setPlaying] = React.useState(true);
   const [hovered, setHovered] = React.useState(false);
   const [focused, setFocused] = React.useState(false);
-  const dotsRef = React.useRef<HTMLDivElement>(null);
+  const idBase = `cband-${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
 
   const [reduced] = React.useState(
     () =>
@@ -106,7 +106,7 @@ export function ComposedBand() {
     const n = (next + OFFERS.length) % OFFERS.length;
     setI(n);
     setPlaying(false);
-    dotsRef.current?.querySelector<HTMLButtonElement>(`[data-i="${n}"]`)?.focus();
+    // Focus follows selection inside `Tabs` itself, so nothing is focused here.
   }
 
   if (gone) return <Fold band={null} />;
@@ -159,6 +159,9 @@ export function ComposedBand() {
                 <div
                   key={o.id}
                   className="cband__offer"
+                  role="tabpanel"
+                  id={`${idBase}-panel-${o.id}`}
+                  aria-labelledby={`${idBase}-tab-${o.id}`}
                   data-accent={o.accent}
                   data-active={n === i || undefined}
                   {...(n === i ? {} : { inert: true })}
@@ -219,54 +222,52 @@ export function ComposedBand() {
                * control's scope a reader ever reads.
                */}
               <div className="cband__pager">
-                <div className="cband__dots" role="tablist" aria-label="Announcements" ref={dotsRef}>
-                  {OFFERS.map((o, n) => (
-                    <button
-                      key={o.id}
-                      type="button"
-                      role="tab"
-                      data-i={n}
-                      aria-selected={n === i}
-                      tabIndex={n === i ? 0 : -1}
-                      className="cband__dot"
-                      onClick={() => go(n)}
-                      onKeyDown={(e) => {
-                        if (e.key === "ArrowRight") { e.preventDefault(); go(i + 1); }
-                        if (e.key === "ArrowLeft") { e.preventDefault(); go(i - 1); }
-                      }}
-                    >
-                      <span className="ds-sr-only">{o.eyebrow}</span>
-                    </button>
-                  ))}
+                {/* The DS `Tabs` owns the roving tabindex and the arrow keys; the
+                    stylesheet skins it as the band's dots. */}
+                <div className="cband__dots">
+                  <Tabs
+                    idBase={idBase}
+                    ariaLabel="Announcements"
+                    indicator="pill"
+                    track="none"
+                    size="s"
+                    divider={false}
+                    tabs={OFFERS.map((o) => ({ id: o.id, label: o.eyebrow }))}
+                    active={i}
+                    onChange={(n) => go(n)}
+                  />
                 </div>
 
                 {/* WCAG 2.2 §2.2.2: anything auto-updating past five seconds
                     needs a way to stop it. A 6s dwell is over that line. */}
                 {reduced ? null : (
-                  <button
-                    type="button"
+                  <IconButton
+                    variant="neutral"
+                    appearance="outlined"
+                    tone="inverse"
+                    size="sm"
+                    shape="circle"
                     className="cband__play"
                     aria-pressed={!playing}
                     onClick={() => setPlaying((p) => !p)}
-                  >
-                    <Icon name={playing ? "pause" : "play_arrow"} size={20} aria-hidden />
-                    <span className="ds-sr-only">
-                      {playing ? "Pause the announcements" : "Play the announcements"}
-                    </span>
-                  </button>
+                    aria-label={playing ? "Pause the announcements" : "Play the announcements"}
+                    icon={<Icon name={playing ? "pause" : "play_arrow"} size={20} />}
+                  />
                 )}
               </div>
             </div>
 
             {/* The dismiss is the BAND'S, so it sits at the band's corner. */}
-            <button
-              type="button"
+            <IconButton
+              variant="neutral"
+              appearance="text"
+              tone="inverse"
+              size="sm"
               className="cband__dismiss"
               onClick={() => setGone(true)}
               aria-label="Dismiss the announcements"
-            >
-              <Icon name="close" size={20} aria-hidden />
-            </button>
+              icon={<Icon name="close" size={20} />}
+            />
           </div>
         </section>
       }

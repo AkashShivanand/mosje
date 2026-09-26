@@ -565,27 +565,17 @@
     color: var(--sa-text-neutral-subtle);
   }
 
-  .ds-field__help-toggle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-inline-size: var(--sa-inline-24);
-    min-block-size: var(--sa-stack-24);
-    padding: 0;
-    color: var(--sa-text-neutral-subtle);
-    background: none;
-    border: none;
-    border-radius: var(--sa-shape-full);
-    cursor: pointer;
-  }
+  /* A round neutral text `IconButton`. Ink, hover wash, focus ring and the
+     coarse-pointer thumb target come from button.css.
 
-  .ds-field__help-toggle:hover {
-    color: var(--sa-text-brand-primary-base);
-  }
-
-  .ds-field__help-toggle:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-color-action-primary-default);
-    outline-offset: var(--sa-focus-offset);
+     THREE CLASSES, not two: `.ds-icon-btn.ds-btn--sm` is itself two, so a two-class
+     selector only TIES its 32px floor and the winner would be whichever stylesheet
+     the bundler injected last. 24px is the WCAG 2.2 §2.5.8
+     minimum and it is what keeps the glyph on the label's own line instead of
+     setting the line height of every labelled field in the estate. */
+  .ds-field__help-toggle.ds-icon-btn.ds-btn--sm {
+    min-width: var(--sa-inline-24);
+    min-height: var(--sa-stack-24);
   }
 
   .ds-field__help {

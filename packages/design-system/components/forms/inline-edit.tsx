@@ -134,17 +134,20 @@ export function InlineEdit({
         {readOnlyReason ? (
           <span className="ds-inline__readonly">{readOnlyReason}</span>
         ) : (
-          <button
+          <Button
             ref={triggerRef}
             type="button"
+            variant="primary"
+            appearance="text"
+            size="sm"
             className="ds-inline__trigger"
             onClick={open}
             disabled={disabled}
+            iconLeft={<Icon name="edit" size={16} />}
           >
-            <Icon name="edit" size={16} />
             <span className="ds-inline__sr">Edit {label}</span>
             <span aria-hidden="true">Edit</span>
-          </button>
+          </Button>
         )}
       </div>
     );

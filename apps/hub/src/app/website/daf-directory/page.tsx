@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { OfficialsDirectory } from "@/components/website/templates/OfficialsDirectory";
+import { OfficialsDirectory } from "@/components/website-next/templates/OfficialsDirectory";
 import { getContentSyncedDate, getOfficialsByOrganisation } from "@/lib/website/content";
 import { socialCard } from "@/lib/seo/social";
 

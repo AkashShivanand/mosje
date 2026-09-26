@@ -81,6 +81,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "notifications"
   },
   {
+    "title": "Action Tile",
+    "section": "Navigation",
+    "href": "/design-system/components/navigation/action-tile",
+    "keywords": "action tile navigation   tokens wcag accessibility",
+    "description": "One destination as a tile: a task, a group of people, a role, an account, a helpline or a report.",
+    "type": "component",
+    "iconName": "navigation"
+  },
+  {
     "title": "AI design context (design.md)",
     "section": "Resources",
     "href": "/design-system/resources/design-context",
@@ -356,7 +365,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Carousel — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/carousel",
-    "keywords": "carousel — design system data display auto-rotation is off, and should stay off everything essential lives outside it too the dots stay under the middle of the band past six slides the dots become a counter the track is the source of truth example moving is announced the dots are buttons, not tabs  tokens wcag accessibility",
+    "keywords": "carousel — design system data display auto-rotation is off, and should stay off everything essential lives outside it too the dots stay under the middle of the band past six slides the dots become a counter a full-width banner carries its controls in a pill when it rotates, the reader can see the timer every state and edge case the track is the source of truth example moving is announced quiet while it rotates the dots are buttons, not tabs  tokens wcag accessibility",
     "description": "A band of slides the reader moves through, with auto-rotation off by default and a pause control whenever it is on.",
     "type": "component",
     "iconName": "bar_chart"

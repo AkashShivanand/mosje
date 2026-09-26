@@ -1,179 +1,66 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { Button, Icon, Link } from "@mosje/design-system";
-import { PageLayout } from "@/components/website/layout/PageLayout";
-import { getSchemes, getScheme, withAssetBasePath, getContentSyncedDate } from "@/lib/website/content";
+import { notFound, permanentRedirect } from "next/navigation";
+import { LegacySchemeDetail, SchemeDetail } from "@/components/website-next/templates/SchemeDetail";
+import { SCHEMES } from "@/lib/website-next/schemes";
+import { displayName, getMasterScheme } from "@/lib/website-next/scheme-view";
+import { legacyRedirect, legacySections, legacyTitle } from "@/lib/website-next/legacy-schemes";
+import { getSchemes, getScheme, getContentSyncedDate, routeSlug } from "@/lib/website/content";
 import { socialCard } from "@/lib/seo/social";
-import NextLink from "next/link";
 
+/**
+ * Every scheme in the Department's scheme master has a page here, at its master
+ * id. Every listing carried over from the old site keeps its URL too, so no link
+ * into the site 404s (a listing that is a master scheme, or has nothing on it,
+ * answers with a permanent redirect); where a master id and an old slug coincide
+ * (pm-daksh), the master record wins.
+ */
 export function generateStaticParams() {
-  return getSchemes().map((s) => ({ slug: s.slug }));
+  const ids = new Set(SCHEMES.map((s) => s.id));
+  const legacy = getSchemes()
+    .map((s) => routeSlug(s.slug))
+    .filter((slug) => !ids.has(slug));
+  return [...ids, ...legacy].map((slug) => ({ slug }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
+const plain = (html: string) => html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
+  const master = getMasterScheme(routeSlug(slug));
+  if (master) {
+    const title = `${displayName(master)} | Department of Social Justice & Empowerment`;
+    return { title, description: master.provides, ...socialCard({ title, description: master.provides, url: `/website/schemes-services/${slug}` }) };
+  }
   const scheme = getScheme(slug);
-  if (!scheme) return { title: "Scheme — DoSJE" };
-  const firstText = scheme.sections.find((s) => s.html)?.html.replace(/<[^>]+>/g, "").slice(0, 160);
-  const title = `${scheme.title} — DoSJE`;
-  return {
-    title,
-    description: firstText,
-    ...socialCard({ title, description: firstText, url: `/website/schemes-services/${slug}` }),
-  };
+  if (!scheme) return { title: "Scheme | Department of Social Justice & Empowerment" };
+  const title = `${legacyTitle(scheme.title)} | Department of Social Justice & Empowerment`;
+  const first = legacySections(scheme).find((s) => plain(s.html))?.html;
+  const description = first ? plain(first).slice(0, 160) : undefined;
+  return { title, description, ...socialCard({ title, description, url: `/website/schemes-services/${slug}` }) };
 }
 
-export default async function SchemeDetailPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+/**
+ * A listing carried over from the old site takes one of three paths, decided in
+ * `legacy-schemes.ts` (the search index reads the same decision):
+ * - it IS a master scheme (legacy-scheme-map.generated.ts) → 308 to that page;
+ * - it has no meaningful body → 308 to Find a Scheme;
+ * - otherwise it renders, as the site published it, in the content template.
+ */
+export default async function SchemePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  const master = getMasterScheme(routeSlug(slug));
+  if (master) return <SchemeDetail scheme={master} />;
+
   const scheme = getScheme(slug);
   if (!scheme) notFound();
-
+  const target = legacyRedirect(scheme);
+  if (target) permanentRedirect(target);
   return (
-    <PageLayout
-      title={scheme.title}
-      badge={scheme.category ?? "National Welfare Scheme"}
-      breadcrumb={[
-        { label: "Offerings", href: "/website/schemes-services" },
-        { label: "Schemes & Services", href: "/website/schemes-services" },
-        { label: scheme.title },
-      ]}
+    <LegacySchemeDetail
+      title={legacyTitle(scheme.title)}
+      sections={legacySections(scheme)}
+      website={scheme.website}
       lastUpdated={getContentSyncedDate()}
-      actions={
-        <div className="flex items-center gap-2">
-          {scheme.website && (
-            <Button linkAs={NextLink}
-              href={scheme.website}
-              external
-              variant="primary"
-              appearance="filled"
-              size="sm"
-              className="text-label-2 px-4 py-2"
-            >
-              Apply Online
-            </Button>
-          )}
-          {scheme.sourceUrl && (
-            <Button linkAs={NextLink}
-              href={scheme.sourceUrl}
-              external
-              variant="primary"
-              appearance="outlined"
-              size="sm"
-              className="text-label-2 px-3.5 py-2"
-              iconRight={<Icon name="arrow_outward" size={16} />}
-            >
-              Portal
-            </Button>
-          )}
-        </div>
-      }
-    >
-      <section className="py-10 md:py-14 bg-white">
-        <div className="sa-container grid gap-10 lg:grid-cols-[minmax(0,1fr)_340px]">
-          {/* Main Content Sections */}
-          <article className="gov-prose min-w-0">
-            {scheme.sections.length === 0 ? (
-              <div className="rounded-xl border border-gray-200 p-8 bg-surface-muted">
-                <p className="text-ink-muted">
-                  Full details and application procedures for this scheme are available on the official Ministry portal.
-                </p>
-                <Link
-                  href={scheme.sourceUrl}
-                  external
-                  variant="standalone"
-                  size="sm"
-                  className="mt-4 font-semibold"
-                >
-                  View on dosje.gov.in
-                </Link>
-              </div>
-            ) : (
-              scheme.sections.map((s, i) => (
-                <section key={s.heading ?? i} className="mb-8">
-                  {s.heading && (
-                    <h2 className="text-headline-2 text-primary-dark border-b border-gray-200 pb-2 mb-4">
-                      {s.heading}
-                    </h2>
-                  )}
-                  {/* Sanitized HTML content */}
-                  <div
-                    dangerouslySetInnerHTML={{ __html: withAssetBasePath(s.html) }}
-                    className="text-body-1 text-ink"
-                  />
-                </section>
-              ))
-            )}
-          </article>
-
-          {/* Sidebar Info Card */}
-          <aside className="space-y-6">
-            <div className="rounded-2xl border border-gray-200 bg-surface-muted p-6 shadow-xs">
-              <h2 className="text-title-1 text-primary-dark border-b border-gray-200/80 pb-3">
-                Key Details
-              </h2>
-              <dl className="mt-4 space-y-4 text-body-2">
-                {scheme.category && (
-                  <div>
-                    <dt className="font-bold text-ink">Category</dt>
-                    <dd className="mt-0.5 text-ink-muted">{scheme.category}</dd>
-                  </div>
-                )}
-                {scheme.targetGroup && scheme.targetGroup.length > 0 && (
-                  <div>
-                    <dt className="font-bold text-ink">Target Beneficiaries</dt>
-                    <dd className="mt-0.5 text-ink-muted">
-                      {scheme.targetGroup.join(", ")}
-                    </dd>
-                  </div>
-                )}
-                {scheme.website && (
-                  <div>
-                    <dt className="font-bold text-ink">Application Portal</dt>
-                    <dd className="mt-0.5">
-                      <Link
-                        href={scheme.website}
-                        external
-                        variant="standalone"
-                        className="font-semibold"
-                      >
-                        {scheme.website.replace(/^https?:\/\//, "").replace(/\/$/, "")}
-                      </Link>
-                    </dd>
-                  </div>
-                )}
-                <div>
-                  <dt className="font-bold text-ink">Official Source</dt>
-                  <dd className="mt-0.5">
-                    <Link href={scheme.sourceUrl} external variant="standalone">
-                      dosje.gov.in
-                    </Link>
-                  </dd>
-                </div>
-              </dl>
-            </div>
-
-            {/* Helpline / Quick Assistance Box */}
-            <div className="rounded-2xl bg-gradient-to-br from-primary-dark to-primary p-6 text-white shadow-xs">
-              <h3 className="text-title-1 text-white">Need Assistance?</h3>
-              <p className="mt-1.5 text-body-3 text-white/90">
-                Reach out to the scheme helpline for queries related to application status and eligibility.
-              </p>
-              <div className="mt-4 pt-3 border-t border-white/20 flex items-center justify-between text-label-2">
-                <span>National Helpline</span>
-                <span className="text-white font-bold">14446 / 14566</span>
-              </div>
-            </div>
-          </aside>
-        </div>
-      </section>
-    </PageLayout>
+    />
   );
 }

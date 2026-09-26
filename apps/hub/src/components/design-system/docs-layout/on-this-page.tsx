@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { usePathname } from "next/navigation";
-import { Icon } from "@mosje/design-system";
+import { Button, Icon, SideSheet } from "@mosje/design-system";
 
 interface Heading {
   id: string;
@@ -144,63 +144,40 @@ export function OnThisPage(): React.JSX.Element {
 
       {/* Mobile Floating TOC Trigger */}
       <div className="docs-mobile-toc-bar">
-        <button
-          type="button"
+        <Button
           className="docs-mobile-toc-btn"
+          size="sm"
+          iconLeft={<Icon name="list" size={20} />}
           onClick={() => setMobileOpen(true)}
           aria-label="Table of contents"
           aria-expanded={mobileOpen}
         >
-          <Icon name="list" size={20} />
-          <span>On this page ({headings.length})</span>
-        </button>
+          On This Page ({headings.length})
+        </Button>
       </div>
 
-      {/* Mobile TOC Bottom Sheet / Drawer */}
-      {mobileOpen && (
-        <div
-          className="docs-mobile-toc-scrim"
-          onClick={() => setMobileOpen(false)}
-          role="dialog"
-          aria-modal="true"
-          aria-label="On this page navigation"
-        >
-          <div
-            className="docs-mobile-toc-sheet"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="docs-mobile-toc-header">
-              <span className="docs-mobile-toc-title">On this page</span>
-              <button
-                type="button"
-                className="docs-mobile-toc-close"
-                onClick={() => setMobileOpen(false)}
-                aria-label="Close table of contents"
+      {/* The design system's SideSheet from the bottom edge: it owns the scrim, the
+          focus trap, Escape and scroll lock the hand-built sheet here lacked. */}
+      <SideSheet open={mobileOpen} onClose={() => setMobileOpen(false)} title="On This Page" side="bottom">
+        <ul className="docs-mobile-toc-list">
+          {headings.map((h) => (
+            <li key={h.id}>
+              <a
+                href={`#${h.id}`}
+                onClick={(e) => handleLinkClick(e, h.id)}
+                className={`docs-mobile-toc-link${activeId === h.id ? " is-active" : ""}`}
+                style={
+                  h.level === 3
+                    ? { paddingLeft: "var(--sa-padding-24)" }
+                    : undefined
+                }
               >
-                <Icon name="close" size={20} />
-              </button>
-            </div>
-            <ul className="docs-mobile-toc-list">
-              {headings.map((h) => (
-                <li key={h.id}>
-                  <a
-                    href={`#${h.id}`}
-                    onClick={(e) => handleLinkClick(e, h.id)}
-                    className={`docs-mobile-toc-link${activeId === h.id ? " is-active" : ""}`}
-                    style={
-                      h.level === 3
-                        ? { paddingLeft: "var(--sa-padding-24)" }
-                        : undefined
-                    }
-                  >
-                    {h.text}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      )}
+                {h.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </SideSheet>
     </>
   );
 }

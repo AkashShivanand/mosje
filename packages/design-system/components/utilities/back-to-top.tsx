@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { useCornerRailOffset } from "../../foundations/corner-rail";
+import { IconButton } from "../actions/icon-button";
+import { useCornerRailOffset, useRailClearance } from "../../foundations/corner-rail";
 import "./back-to-top.css";
 
 export interface BackToTopProps {
@@ -70,7 +71,15 @@ export function BackToTop({
   // Writes --sa-corner-rail-bottom onto the element from live occupancy. Never
   // hard-code the offset: the chatbot panel's max-height subtracts it, and the
   // one time it was assumed the panel opened with its header off-screen.
-  useCornerRailOffset(ref);
+  /* `active` is what makes this work at all: the control is not in the DOM until
+     the reader has scrolled past `showAfter`, and without it the rail measured a
+     null ref once and never again — so this landed on the assistant's launcher
+     instead of above it. */
+  useCornerRailOffset(ref, { active: shown });
+  /* Transient, so it gives way over a surface marked `data-sa-rail-clear`
+     (floating-element-placement.md). The statutory accessibility control never
+     does; this is not that. */
+  useRailClearance(ref, shown);
 
   /**
    * The scroller is resolved LAZILY, not once at mount.
@@ -120,8 +129,16 @@ export function BackToTop({
           be resolved even while the control itself is not rendered. */}
       <span ref={anchorRef} hidden />
       {shown ? (
-    <button
+    <IconButton
       type="button"
+      /* The library's icon button rather than a fifth hand-rolled round control.
+         `.ds-back-to-top` still owns everything that makes this one different —
+         it is fixed to the corner rail, opaque so it can float over content, and
+         carries the rail's own shadow. */
+      variant="neutral"
+      appearance="outlined"
+      size="lg"
+      shape="circle"
       className={cn("ds-back-to-top", className)}
       // The corner rail measures live occupancy; this attribute is how the rail
       // knows the control is here, and it is added WITH the control rather than
@@ -130,9 +147,10 @@ export function BackToTop({
       data-sa-corner-occupant=""
       aria-label={label}
       onClick={toTop}
-    >
-      <span aria-hidden>↑</span>
-    </button>
+      /* The arrow stays a text glyph, not a Material ligature: it is set in the
+         estate's own face at title-3 and is what this control has always drawn. */
+      icon={<span>↑</span>}
+    />
       ) : null}
     </>
   );

@@ -56,8 +56,8 @@
     "weight": 0,
     "hindi-unmarked": 0,
     "style-mixed": 3,
-    "style-weight": 220,
-    "style-weight-unset": 173
+    "style-weight": 213,
+    "style-weight-unset": 166
   },
   "files": {
     "apps/hub/src/app/design-system/components/brand/org-logo/org-logo-docs.css": {
@@ -118,7 +118,7 @@
       "hindi-unmarked": 0,
       "style-mixed": 0,
       "style-weight": 4,
-      "style-weight-unset": 39
+      "style-weight-unset": 38
     },
     "apps/hub/src/app/design-system/foundations/density/density.css": {
       "size-off-ramp": 0,
@@ -222,8 +222,8 @@
       "weight": 0,
       "hindi-unmarked": 0,
       "style-mixed": 0,
-      "style-weight": 5,
-      "style-weight-unset": 10
+      "style-weight": 3,
+      "style-weight-unset": 9
     },
     "apps/hub/src/app/portals/eutthan-admin/eutthan.css": {
       "size-off-ramp": 0,
@@ -252,8 +252,8 @@
       "weight": 0,
       "hindi-unmarked": 0,
       "style-mixed": 0,
-      "style-weight": 31,
-      "style-weight-unset": 4
+      "style-weight": 27,
+      "style-weight-unset": 3
     },
     "apps/hub/src/app/portals/smile-admin/smile-admin.css": {
       "size-off-ramp": 0,
@@ -286,6 +286,21 @@
       "style-weight-unset": 0
     },
     "apps/hub/src/app/website/website.css": {
+      "size-off-ramp": 0,
+      "size": 0,
+      "leading": 0,
+      "tracking": 0,
+      "family": 0,
+      "utility-size": 0,
+      "utility-leading": 0,
+      "utility-tracking": 0,
+      "weight": 0,
+      "hindi-unmarked": 0,
+      "style-mixed": 0,
+      "style-weight": 1,
+      "style-weight-unset": 0
+    },
+    "apps/hub/src/app/website-classic/website.css": {
       "size-off-ramp": 0,
       "size": 0,
       "leading": 0,
@@ -342,7 +357,7 @@
       "weight": 0,
       "hindi-unmarked": 0,
       "style-mixed": 0,
-      "style-weight": 6,
+      "style-weight": 5,
       "style-weight-unset": 2
     },
     "apps/hub/src/components/design-system/hero/hero.css": {
@@ -388,7 +403,7 @@
       "hindi-unmarked": 0,
       "style-mixed": 0,
       "style-weight": 2,
-      "style-weight-unset": 5
+      "style-weight-unset": 4
     },
     "apps/hub/src/components/explorations/explorations.css": {
       "size-off-ramp": 0,
@@ -403,7 +418,7 @@
       "hindi-unmarked": 0,
       "style-mixed": 0,
       "style-weight": 4,
-      "style-weight-unset": 4
+      "style-weight-unset": 2
     },
     "apps/hub/src/components/explorations/nmba/campaign-band.css": {
       "size-off-ramp": 0,
@@ -507,7 +522,7 @@
       "weight": 0,
       "hindi-unmarked": 0,
       "style-mixed": 0,
-      "style-weight": 9,
+      "style-weight": 8,
       "style-weight-unset": 1
     },
     "apps/hub/src/components/website/data-mode.css": {
@@ -1559,21 +1574,6 @@
       "style-mixed": 1,
       "style-weight": 1,
       "style-weight-unset": 0
-    },
-    "packages/design-system/components/utilities/back-to-top.css": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 0,
-      "tracking": 0,
-      "family": 0,
-      "utility-size": 0,
-      "utility-leading": 0,
-      "utility-tracking": 0,
-      "weight": 0,
-      "hindi-unmarked": 0,
-      "style-mixed": 0,
-      "style-weight": 0,
-      "style-weight-unset": 1
     },
     "packages/design-system/demo/demo-accounts-panel.css": {
       "size-off-ramp": 0,

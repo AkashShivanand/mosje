@@ -3,14 +3,16 @@
 import * as React from "react";
 import Link from "next/link";
 import {
+  Button,
+  Chip,
   Icon,
   isLiveEntry,
+  Search,
   PortalCard,
   portalLabel,
   portalSummary,
   portalCategoriesIn,
   type AppEntry,
-  buttonClasses,
 } from "@mosje/design-system";
 import "./portals-gateway.css";
 
@@ -179,50 +181,35 @@ export function PortalsExplorer({ portals }: PortalsExplorerProps) {
       <section className="portals-gw__toolbar" aria-label="Portals filtering and search">
         <div className="portals-gw__search-row">
           <div className="portals-gw__search-box">
-            <Icon name="search" size={20} className="text-neutral-subtle shrink-0" />
-            <input
-              type="search"
+            <Search
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              onClear={() => setQuery("")}
               placeholder="Search portals by scheme name, acronym (e.g. SMILE, PM-AJAY), or department..."
-              className="portals-gw__search-input"
               aria-label="Search workflow portals"
               autoComplete="off"
-              spellCheck="false"
+              spellCheck={false}
+              size="lg"
             />
-            {query && (
-              <button
-                type="button"
-                onClick={() => setQuery("")}
-                className="text-neutral-subtle hover:text-ink p-1 flex items-center justify-center rounded-full"
-                aria-label="Clear search"
-              >
-                <Icon name="close" size={16} />
-              </button>
-            )}
           </div>
 
         </div>
 
         {/* Category Tabs — absent while every portal shares one category. */}
         {categories.length > 0 && (
-        <div className="portals-gw__category-tabs" role="tablist" aria-label="Portal categories">
-          {categories.map((cat) => {
-            const isActive = category === cat.id;
-            const count = categoryCounts[cat.id] ?? 0;
-            return (
-              <button
-                key={cat.id}
-                role="tab"
-                aria-selected={isActive}
-                onClick={() => setCategory(cat.id)}
-                className={`portals-gw__category-tab ${isActive ? "portals-gw__category-tab--active" : ""}`}
-              >
-                <span>{cat.label}</span>
-                <span className="portals-gw__category-count">{count}</span>
-              </button>
-            );
-          })}
+        <div className="portals-gw__category-tabs" role="group" aria-label="Portal categories">
+          {categories.map((cat) => (
+            <Chip
+              key={cat.id}
+              emphasis="solid"
+              selected={category === cat.id}
+              onSelectedChange={() => setCategory(cat.id)}
+              count={categoryCounts[cat.id] ?? 0}
+              countLabel="portals"
+            >
+              {cat.label}
+            </Chip>
+          ))}
         </div>
         )}
       </section>
@@ -271,16 +258,18 @@ export function PortalsExplorer({ portals }: PortalsExplorerProps) {
             <p className="text-body-2 text-neutral-subtle mt-1 max-w-md mx-auto">
               We could not find any portals matching &ldquo;{query}&rdquo; in this category. Try resetting your search or selecting &ldquo;All Portals&rdquo;.
             </p>
-            <button
-              type="button"
-              onClick={() => {
-                setQuery("");
-                setCategory("all");
-              }}
-              className={buttonClasses("primary", "outlined", "sm", "mt-4")}
-            >
-              Reset Filters
-            </button>
+            <div className="mt-4">
+              <Button
+                appearance="outlined"
+                size="sm"
+                onClick={() => {
+                  setQuery("");
+                  setCategory("all");
+                }}
+              >
+                Reset Filters
+              </Button>
+            </div>
           </div>
         )}
       </section>

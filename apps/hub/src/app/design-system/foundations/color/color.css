@@ -17,34 +17,14 @@
   margin-bottom: var(--sa-stack-8);
 }
 .color-brandbar__options { display: flex; flex-wrap: wrap; gap: var(--sa-inline-8); }
-.color-brandbar__option {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sa-inline-4);
-  padding: var(--sa-padding-4) var(--sa-padding-12);
-  border: 1px solid var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-full);
-  background: var(--sa-bg-neutral-base);
-  color: var(--sa-text-neutral-base);
-  font-size: var(--sa-type-label-2-size);
-  cursor: pointer;
-}
-.color-brandbar__option[data-active] {
-  background: var(--sa-bg-brand-primary-bolder);
-  color: var(--sa-on-bg-brand-primary-bolder);
-  border-color: var(--sa-bg-brand-primary-bolder);
-}
-.color-brandbar__option:focus-visible {
-  outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-  outline-offset: var(--sa-focus-offset);
-}
+/* Each brand option is a design-system Chip; the dot and note below sit inside it. */
 .color-brandbar__dot {
   width: 12px; height: 12px;
   border-radius: var(--sa-shape-full);
   border: 1px solid var(--sa-border-neutral-base);
   background: var(--sa-color-primaryScale-500);
 }
-.color-brandbar__note { font-size: var(--sa-type-label-3-size); opacity: 0.75; }
+.color-brandbar__note { margin-inline-start: var(--sa-inline-4); font-size: var(--sa-type-label-3-size); opacity: 0.75; }
 .color-brandbar__hint {
   margin: var(--sa-stack-8) 0 0;
   font-size: var(--sa-type-body-3-size);
@@ -216,9 +196,6 @@
 .color-chart-scale__strip { display: flex; gap: var(--sa-padding-2); }
 .color-chart-scale__cell { flex: 1; height: 36px; border-radius: var(--sa-shape-4); }
 
-@media (prefers-reduced-motion: reduce) {
-  .color-brandbar__option { transition: none; }
-}
 
 /* ── 2026-09-04 redesign — the status matrix, the specimens, the colour-vision rows and the
    modes table. Every value is a token. ─────────────────────────────────────────────────── */

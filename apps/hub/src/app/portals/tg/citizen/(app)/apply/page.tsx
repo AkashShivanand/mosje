@@ -78,22 +78,29 @@ export default function ApplyPage() {
   if (phase === "type") {
     return (
       <Wrap title="How would you like to proceed?" subtitle="Selecting the correct option helps us verify your details and process your request.">
-        <div className="grid gap-4 sm:grid-cols-2">
-          <SelectCard
-            icon="badge"
-            active={type === "New"}
-            title="New Transgender Certificate & ID"
-            desc="Apply here if you are registering for the first time. This covers the Identity Card."
-            onClick={() => setType("New")}
-          />
-          <SelectCard
-            icon="refresh"
-            active={type === "Revised"}
-            title="Revised Certificate (Post-Medical Intervention)"
-            desc="Choose this if you already have a Transgender Certificate but need to update your details."
-            onClick={() => setType("Revised")}
-          />
-        </div>
+        <RadioGroup
+          legend="How would you like to proceed?"
+          hideLegend
+          name="application-type"
+          variant="card"
+          orientation="vertical"
+          options={[
+            {
+              value: "New",
+              label: "New Transgender Certificate & ID",
+              description: "Apply here if you are registering for the first time. This covers the Identity Card.",
+              icon: <Icon name="badge" size={20} />,
+            },
+            {
+              value: "Revised",
+              label: "Revised Certificate (Post-Medical Intervention)",
+              description: "Choose this if you already have a Transgender Certificate but need to update your details.",
+              icon: <Icon name="refresh" size={20} />,
+            },
+          ]}
+          value={type}
+          onChange={(v) => setType(v as ApplicationType)}
+        />
         <div className="mt-6 flex justify-end">
           <Button onClick={() => setPhase(OFFERS_DIGILOCKER ? "method" : "form")}>Continue with Selection <Icon name="arrow_forward" size={16} /></Button>
         </div>
@@ -109,22 +116,29 @@ export default function ApplyPage() {
         subtitle="You can either fetch your verified identity details automatically via DigiLocker, or enter them manually."
         onBack={() => setPhase("type")}
       >
-        <div className="grid gap-4 sm:grid-cols-2">
-          <SelectCard
-            icon="verified_user"
-            active={viaDigiLocker}
-            title="Fetch details with DigiLocker"
-            desc="Securely retrieve your verified identity details (Name, Date of Birth, Gender) directly."
-            onClick={() => setViaDigiLocker(true)}
-          />
-          <SelectCard
-            icon="edit"
-            active={!viaDigiLocker}
-            title="Enter details manually"
-            desc="Fill in your personal and identity details yourself. You will need to upload supporting documents."
-            onClick={() => setViaDigiLocker(false)}
-          />
-        </div>
+        <RadioGroup
+          legend="How would you like to enter your details?"
+          hideLegend
+          name="identity-method"
+          variant="card"
+          orientation="vertical"
+          options={[
+            {
+              value: "digilocker",
+              label: "Fetch Details with DigiLocker",
+              description: "Securely retrieve your verified identity details (Name, Date of Birth, Gender) directly.",
+              icon: <Icon name="verified_user" size={20} />,
+            },
+            {
+              value: "manual",
+              label: "Enter Details Manually",
+              description: "Fill in your personal and identity details yourself. You will need to upload supporting documents.",
+              icon: <Icon name="edit" size={20} />,
+            },
+          ]}
+          value={viaDigiLocker ? "digilocker" : "manual"}
+          onChange={(v) => setViaDigiLocker(v === "digilocker")}
+        />
         <div className="mt-6 flex justify-end">
           <Button onClick={() => setPhase(viaDigiLocker ? "form" : "manual")}>
             Continue <Icon name="arrow_forward" size={16} />
@@ -325,33 +339,18 @@ export default function ApplyPage() {
 /* ------------------------------------------------------------------ helpers */
 function Wrap({ title, subtitle, onBack, children }: { title: string; subtitle: string; onBack?: () => void; children: React.ReactNode }) {
   return (
-    <div className="mx-auto max-w-3xl">
+    <div className="mx-auto w-full max-w-3xl">
       {onBack && (
-        <button type="button" onClick={onBack} className="mb-4 inline-flex items-center gap-1.5 text-label-1 font-semibold text-ink-muted hover:text-navy">
-          <Icon name="arrow_back" size={16} /> Back
-        </button>
+        <div className="mb-4">
+          <Button variant="neutral" appearance="text" size="sm" iconLeft={<Icon name="arrow_back" size={16} />} onClick={onBack}>
+            Back
+          </Button>
+        </div>
       )}
       <h1 className="text-headline-1 text-ink">{title}</h1>
       <p className="mt-1 mb-6 text-body-2 text-ink-muted">{subtitle}</p>
       {children}
     </div>
-  );
-}
-
-function SelectCard({ icon: iconName, title, desc, active, onClick }: { icon: string; title: string; desc: string; active: boolean; onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-      className={`flex flex-col items-start rounded-2xl border-2 p-5 text-left transition ${active ? "border-navy bg-navy/5" : "border-line bg-white hover:border-navy/40"}`}
-    >
-      <span className={`mb-3 flex h-11 w-11 items-center justify-center rounded-xl ${active ? "bg-navy text-white" : "bg-navy/10 text-navy"}`}>
-        <Icon name={iconName} size={20} />
-      </span>
-      <span className="text-title-2 text-ink">{title}</span>
-      <span className="mt-1 text-body-2 text-ink-muted">{desc}</span>
-    </button>
   );
 }
 
