@@ -52,6 +52,9 @@ export function DistrictShell({ children }: { children: React.ReactNode }) {
           linkAs={Link}
           homeHref={PORTAL}
           variant="portal"
+          // org-logo-exempt(portal-local): the National Emblem, not an organisation mark,
+          // and pm-ajay serves its own copy under its own basePath, as this portal's
+          // navbar.tsx does. The registry holds organisation marks.
           emblemSrc={`${PORTAL}/images/National-Emblem-logo.svg`}
           brandLines={{
             org: "Government of India",

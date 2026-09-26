@@ -5,10 +5,14 @@
    Nothing added. No local state, so no "use client" (`.claude/rules/…` — a page with no
    interaction is a server component).
 
-   Neither CatalogueScreen (a single ranked or dated list; this is grouped, not ranked) nor
-   an invented "ActionTile" (no such component exists in `@mosje/design-system`) fits a page
-   whose whole job is grouping report links by subject. SectionTitle + Grid, both existing
-   exports, reproduce the grouping without hand-rolling a card, a table or a button.
+   CatalogueScreen. This page was first assembled by hand from SectionTitle + Grid, on the
+   reading that a catalogue is "a single ranked or dated list" and this one is grouped. That
+   is not the distinction the decision table draws: a catalogue is many records the reader
+   BROWSES, and ranking is what separates it from SearchScreen
+   (`docs/design-system/screen-templates.md` §2, §2a). Grouping is a presentation of the same
+   data, so the subject travels with each report as its meta line instead of as a heading —
+   and the screen gains the loading, empty and error states `check:template-adoption` exists
+   to stop every page re-deciding.
 
    The live page groups 32 report links under eight subject headings. Of those, 22 point to
    a register this role actually has a screen for — Village Level Data, Household, VDP,
@@ -27,7 +31,7 @@
    fixed here, since a misspelling on a government page is a defect to carry forward, not a
    department wording choice to preserve (`.claude/rules/ui-restraint-and-copy.md`). */
 
-import { Grid, GridItem, Icon, Link, PageHeader, SectionTitle } from "@mosje/design-system";
+import { CatalogueScreen } from "@mosje/design-system";
 import { DISTRICT_BASE } from "@/lib/pm-ajay/district/nav";
 
 interface ReportLink {
@@ -113,35 +117,26 @@ const REPORT_GROUPS: ReportGroup[] = [
 ];
 
 export default function ReportsPage() {
-  return (
-    <div className="sa-screen">
-      <PageHeader
-        eyebrow="Adarsh Gram District"
-        title="All Reports"
-        meta={`Reports on villages, works, households and beneficiaries under the scheme, drawn from the district's own registers and grouped by subject.`}
-      />
+  /* The subject a report belongs to travels with it, so the grouping the live page shows as
+     headings is still readable row by row. Ids stay stable per group and position. */
+  const items = REPORT_GROUPS.flatMap((group) =>
+    group.items.map((item, index) => ({
+      id: `${group.id}-${index}`,
+      title: item.title,
+      meta: group.title,
+      href: item.href,
+    })),
+  );
 
-      {REPORT_GROUPS.map((group) => {
-        const headingId = `reports-${group.id}`;
-        return (
-          <section key={group.id} aria-labelledby={headingId}>
-            <SectionTitle as={2} title={group.title} headingId={headingId} />
-            <Grid>
-              {group.items.map((item, index) => (
-                <GridItem span={{ base: 12, md: 6, lg: 4 }} key={`${group.id}-${index}`}>
-                  <Link
-                    href={item.href}
-                    variant="standalone"
-                    iconLeft={<Icon name="description" size={20} aria-hidden />}
-                  >
-                    {item.title}
-                  </Link>
-                </GridItem>
-              ))}
-            </Grid>
-          </section>
-        );
-      })}
-    </div>
+  return (
+    <CatalogueScreen
+      eyebrow="Adarsh Gram District"
+      title="All Reports"
+      meta="Reports on villages, works, households and beneficiaries under the scheme, drawn from the district's own registers."
+      items={items}
+      layout="rows"
+      noun="report"
+      pluralNoun="reports"
+    />
   );
 }

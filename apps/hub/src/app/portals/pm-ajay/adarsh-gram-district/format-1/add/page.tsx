@@ -401,7 +401,7 @@ export default function Format1AddPage() {
                   appearance="text"
                   variant="neutral"
                   size="sm"
-                  iconLeft={<Icon name="close" size={18} />}
+                  iconLeft={<Icon name="close" size={16} />}
                   onClick={() => removeMember(m.id)}
                   aria-label={`Remove Member ${i + 1}`}
                 >

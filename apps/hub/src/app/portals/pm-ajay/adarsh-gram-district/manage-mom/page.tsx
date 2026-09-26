@@ -119,7 +119,7 @@ export default function ManageMomPage() {
           <Button
             size="sm"
             appearance={row.status === "Uploaded" ? "outlined" : "filled"}
-            iconLeft={<Icon name={row.status === "Uploaded" ? "sync" : "upload"} size={18} />}
+            iconLeft={<Icon name={row.status === "Uploaded" ? "sync" : "upload"} size={16} />}
             onClick={() => openModal(row)}
           >
             {row.status === "Uploaded" ? "Replace Minutes" : "Upload Minutes"}
@@ -208,7 +208,7 @@ export default function ManageMomPage() {
                   meta="Image attached"
                   actions={
                     <IconButton
-                      icon={<Icon name="close" size={18} />}
+                      icon={<Icon name="close" size={16} />}
                       aria-label={`Remove ${image.name}`}
                       variant="danger"
                       appearance="text"
