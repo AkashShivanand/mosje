@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "A DATATABLE COLUMN CAN READ FROM ITS LAST DIGIT. Columns take align: \"end\" (or \"center\"), so a column of populations, amounts or percentages lines up on its last place and can be scanned down. The table already set tabular figures; alignment was the missing half, and without it a register of figures read as a ragged list of words."
+}

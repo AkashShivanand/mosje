@@ -82,6 +82,7 @@ import {
 } from "react";
 import { Badge, Button, Icon, IconButton, Select, SidebarNav, Sparkline, type BadgeStatus, type SidebarNavGroup, OrgLogo } from "@mosje/design-system";
 import { useAuth } from "@/store/pm-ajay/auth-context";
+import { PortalFooter } from "@/components/pm-ajay/shell/portal-footer";
 import {
   STATES,
   FY,
@@ -357,20 +358,11 @@ export function Sidebar({ view, onNavigate, collapsed = false }: { view: ViewId;
   );
 }
 
+/* One credit line for the whole portal — see components/pm-ajay/shell/portal-footer.
+   What was here was a hand-rolled bar naming a different developer from the district
+   screens, dated 2025, with both links pointing at "#" (PMH-015). */
 export function DashboardFooter() {
-  return (
-    <footer className="pm-footer">
-      <span>
-        © 2025 — Department of Social Justice &amp; Empowerment. Content owned by MoSJE. Designed, developed &amp;
-        hosted by NIC.
-      </span>
-      <span className="lnk">
-        <a href="#">Terms &amp; Conditions</a>
-        <span className="vline" aria-hidden="true" />
-        <a href="#">Privacy Policy</a>
-      </span>
-    </footer>
-  );
+  return <PortalFooter lastUpdated="04 June 2026" />;
 }
 
 /**

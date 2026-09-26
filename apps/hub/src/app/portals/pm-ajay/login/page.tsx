@@ -46,9 +46,11 @@ export default function LoginPage() {
   const [fieldErrors, setFieldErrors] = useState<PortalLoginFieldErrors | null>(null);
   const [busy, setBusy] = useState(false);
 
-  // Already signed in, or just signed in: go to the dashboard.
+  /* Signing in lands where the ROLE works, not on one shared home: the MIS accounts
+     open the ministry dashboards, the Adarsh Gram district officer opens the district
+     workspace. `account.home` carries it, so the login page holds no route table. */
   useEffect(() => {
-    if (account) router.replace(BASE + "/");
+    if (account) router.replace(BASE + account.home);
   }, [account, router]);
 
   return (
