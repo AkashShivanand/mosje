@@ -23,7 +23,16 @@ import { Organisations } from "@/components/website/Organisations";
 import { NmbaHomeCompact } from "@/components/website/nmba/NmbaHomeCompact";
 import { RecentDocuments } from "@/components/website/RecentDocuments";
 import { DeaddictionMapSection } from "@/components/website/DeaddictionMapSection";
-import { ActivityCorner } from "@/components/website/ActivityCorner";
+/* ACTIVITY CORNER KEEPS THE REBUILD'S VERSION, by this pass's own rule —
+   whatever is demonstrably better in the redesign is kept. The classic section
+   carries four events written into the file by hand, with descriptions nobody
+   sourced, and a tab row whose other two tabs change nothing: `activeTab` is
+   set and never read, and its `aria-controls` points at a panel that is not in
+   the document, which axe reports as a critical violation on this page. The
+   rebuild's section reads the Department's own registers — 635 events, 164
+   circulars — marks a Devanagari title as Hindi, and has an empty state for
+   each register. */
+import { Activity } from "@/components/website-next/home/Activity";
 import { SocialMedia } from "@/components/website/SocialMedia";
 import { SupportSection } from "@/components/website/SupportSection";
 /* Shared with the classic page for the same reason as the marquee: one banner,
@@ -120,7 +129,7 @@ export default async function Home() {
         <SamaveshJusticeBanner />
         <RecentDocuments />
         <DeaddictionMapSection />
-        <ActivityCorner />
+        <Activity />
         <SocialMedia />
         <SupportSection />
         <LogoStrip />
