@@ -21,6 +21,9 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       "Escape closes the viewer and the left and right arrows page through the gallery, so the whole component is operable without a pointer. The stage is focused on open, which is what makes those keys land.",
+    status: "partial",
+    evidence:
+      "Keyboard smoke test (Playwright, Chromium 1440x900), 2026-09-22: tabbed through the specimen on /design-system/components/feedback/lightbox - 2 focusable elements, each with a focus indicator that disappears on blur, focus left the specimen with no trap; manual screen-reader check outstanding",
   },
   {
     criterion: "1.1.1 Non-text Content",

@@ -31,7 +31,11 @@ function SrData({
   rows: string[][];
 }) {
   return (
-    <table className="sr-only">
+    /* The visually-hidden box is the WRAPPER, not the table: a table treats
+       `width` as a minimum, so a hidden table still laid out at its content
+       width and scrolled the page sideways on a phone. */
+    <div className="sr-only">
+    <table>
       <caption>{caption}</caption>
       <thead>
         <tr>
@@ -50,6 +54,7 @@ function SrData({
         ))}
       </tbody>
     </table>
+    </div>
   );
 }
 

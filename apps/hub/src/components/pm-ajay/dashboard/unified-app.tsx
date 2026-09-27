@@ -4,7 +4,7 @@
    Distils all 60 KPIs into one curated bento dashboard with live drill-down.
    Faithful port of the Claude Design handoff unified-app.jsx. */
 
-import { useState, useMemo, useRef, useLayoutEffect, type CSSProperties } from "react";
+import { useState, useMemo, type CSSProperties } from "react";
 import Link from "next/link";
 import { Navbar } from "@/components/pm-ajay/shell/navbar";
 import { DrillDownFilters, Status, DashboardFooter, pillClass, type Filters } from "./ui";
@@ -298,8 +298,6 @@ export function UnifiedDashboard() {
   const [q, setQ] = useState("");
   const [sortBy, setSortBy] = useState("default");
   const [grpFilter, setGrpFilter] = useState("all");
-  const stageRef = useRef<HTMLDivElement>(null);
-  const appRef = useRef<HTMLDivElement>(null);
 
   const set = (k: keyof Filters, v: string) =>
     setFilters((f) => ({ ...f, [k]: v, ...(k === "state" ? { district: "All Districts" } : {}) }));
@@ -357,28 +355,6 @@ export function UnifiedDashboard() {
   if (filters.period !== "Annual") scopeChips.push({ k: "Period", v: filters.period, clear: () => set("period", "Annual") });
   const anyScope = scopeChips.length > 0;
 
-  useLayoutEffect(() => {
-    const fit = () => {
-      if (!appRef.current || !stageRef.current) return;
-      const w = window.innerWidth;
-      const fluid = w < 880;
-      appRef.current.classList.toggle("fluid", fluid);
-      if (fluid) {
-        appRef.current.style.transform = "none";
-        stageRef.current.style.height = "auto";
-      } else {
-        const s = Math.min(1, w / 1440);
-        appRef.current.style.transform = `scale(${s})`;
-        stageRef.current.style.height = appRef.current.offsetHeight * s + "px";
-      }
-    };
-    fit();
-    window.addEventListener("resize", fit);
-    const ro = new ResizeObserver(fit);
-    if (appRef.current) ro.observe(appRef.current);
-    return () => { window.removeEventListener("resize", fit); ro.disconnect(); };
-  });
-
   const scopeLabel = district ? district.name : scope ? scope.name : "All India";
   const scopeFull = scopeLabel + (schemeSel ? " · " + filters.scheme : "");
 
@@ -426,10 +402,9 @@ export function UnifiedDashboard() {
   const trendU = UTILIZED_M.map((v) => v * fCross);
 
   return (
-    <div className="pm-stage" ref={stageRef}>
+    <div className="pm-stage">
       <div
         className="pm-app"
-        ref={appRef}
         style={{ "--pm-accent": ACCENT, "--pm-accent-bg": ACCENT_BG, "--pm-canvas": "var(--sa-bg-neutral-subtler)" } as CSSProperties}
       >
         <Navbar />

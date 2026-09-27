@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Button, Divider, Icon, buttonClasses } from "@mosje/design-system";
+import { Button, Divider, Icon, IconButton, buttonClasses } from "@mosje/design-system";
 import { CarouselIndicators } from "./CarouselIndicators";
 
 interface DocumentItem {
@@ -207,18 +207,18 @@ export function RecentDocuments() {
               <div className="mt-3">
                 <Divider className="opacity-40" />
                 <div className="mt-3 flex items-center justify-between">
-                  <button
-                    type="button"
+                  <IconButton
+                    icon={<Icon name="arrow_back" size={24} />}
+                    aria-label="Previous persona"
+                    variant="neutral"
+                    appearance="text"
+                    tone="inverse"
                     onClick={() =>
                       setPersonaIndex(
                         (i) => (i - 1 + personas.length) % personas.length
                       )
                     }
-                    aria-label="Previous persona"
-                    className="flex size-10 items-center justify-center rounded-lg text-white transition hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
-                  >
-                    <Icon name="arrow_back" size={24} aria-hidden="true" />
-                  </button>
+                  />
 
                   <CarouselIndicators
                     count={personas.length}
@@ -228,16 +228,16 @@ export function RecentDocuments() {
                     itemNoun="persona"
                   />
 
-                  <button
-                    type="button"
+                  <IconButton
+                    icon={<Icon name="arrow_forward" size={24} />}
+                    aria-label="Next persona"
+                    variant="neutral"
+                    appearance="text"
+                    tone="inverse"
                     onClick={() =>
                       setPersonaIndex((i) => (i + 1) % personas.length)
                     }
-                    aria-label="Next persona"
-                    className="flex size-10 items-center justify-center rounded-lg text-white transition hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
-                  >
-                    <Icon name="arrow_forward" size={24} aria-hidden="true" />
-                  </button>
+                  />
                 </div>
               </div>
             </div>

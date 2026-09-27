@@ -27,12 +27,18 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       "Focus opens the tooltip immediately and blur closes it, so a keyboard user reaches the hint by the same Tab that reaches the control.",
+    status: "partial",
+    evidence:
+      "Keyboard smoke test (Playwright, Chromium 1440x900), 2026-09-22: tabbed through the specimen on /design-system/components/feedback/tooltip - 5 focusable elements, each with a focus indicator that disappears on blur, focus left the specimen with no trap; manual screen-reader check outstanding",
   },
   {
     criterion: "4.1.2 Name, Role, Value",
     level: "A",
     description:
       'The bubble carries role="tooltip" and the trigger gains aria-describedby only while it is open — describedby rather than labelledby, because a hint supplements the control\'s name and must not replace it.',
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (aria-hidden-focus, button-name, duplicate-id-aria, label, nested-interactive, select-name) on /design-system/components/feedback/tooltip; manual screen-reader check outstanding",
   },
   {
     criterion: "1.3.1 Info and Relationships",

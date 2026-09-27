@@ -17,6 +17,9 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       "A real `<section>` labelled by its own heading (an `<h3>` by default) through `aria-labelledby`, so the group is a named region nested under the panel's heading.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (list, listitem) on /design-system/components/forms/form-card; manual screen-reader check outstanding",
   },
   {
     criterion: "1.4.1 Use of Colour",
@@ -35,6 +38,9 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       "`headingId` lets a child inside the body take the heading as its own accessible name, which is how a data table in a sub-section is named without repeating the title.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (aria-allowed-attr, aria-conditional-attr, aria-hidden-focus, aria-prohibited-attr, aria-valid-attr, aria-valid-attr-value, button-name, duplicate-id-aria, label, nested-interactive) on /design-system/components/forms/form-card; manual screen-reader check outstanding",
   },
   {
     criterion: "GIGW 3.0 — Forms",

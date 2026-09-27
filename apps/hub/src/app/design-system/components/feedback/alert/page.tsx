@@ -21,6 +21,9 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       'The root carries role="alert", so assistive technology is told what the region is and announces its content when it is inserted into the page.',
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (aria-allowed-attr, aria-conditional-attr, aria-deprecated-role, aria-hidden-focus, aria-prohibited-attr, aria-required-attr, aria-roles, aria-valid-attr, aria-valid-attr-value, button-name, duplicate-id-aria, label, nested-interactive, select-name) on /design-system/components/feedback/alert; manual screen-reader check outstanding",
   },
   {
     criterion: "1.4.1 Use of Colour",
@@ -39,12 +42,18 @@ const A11Y: A11yItem[] = [
     level: "AA",
     description:
       'The dismiss control is a real button carrying aria-label="Dismiss", so it is reachable by keyboard and named without depending on the glyph.',
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (target-size) on /design-system/components/feedback/alert; manual screen-reader check outstanding",
   },
   {
     criterion: "1.4.3 Contrast (Minimum)",
     level: "AA",
     description:
       "Text and controls resolve through the status token families, so the tint and its ink move together across brand modes rather than one being fixed against the other.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (color-contrast) on /design-system/components/feedback/alert; manual screen-reader check outstanding",
   },
 ];
 

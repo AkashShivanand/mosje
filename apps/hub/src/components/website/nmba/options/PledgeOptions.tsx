@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { PLEDGE_STATS } from "@/content/website/deaddiction-centres";
-import { Icon } from "@mosje/design-system";
+import { Icon, SegmentedControl } from "@mosje/design-system";
 
 // Pledge design options. Each links to the NMBA portal e-Pledge via a distinct channel.
 // Plain <a> — cross-app link that bypasses this site's `/website` basePath.
@@ -51,14 +51,19 @@ export function PledgeToggle() {
     : { href: RECOVERED, title: "I'm a recovered user", blurb: "Pledge to stay on your recovery journey and inspire others to seek help and rebuild their lives.", count: PLEDGE_STATS.recoveredPledges };
   return (
     <div className="mx-auto max-w-xl rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-      <div className="flex rounded-lg bg-surface-muted p-1">
-        {(["non", "rec"] as const).map((t) => (
-          <button key={t} type="button" onClick={() => setTab(t)} aria-pressed={tab === t}
-            className={`flex-1 rounded-md px-3 py-2 text-label-1 transition-colors ${tab === t ? "bg-white text-primary-dark shadow-sm" : "text-ink-muted hover:text-ink"}`}>
-            {t === "non" ? "Non-user" : "Recovered user"}
-          </button>
-        ))}
-      </div>
+      {/* The design system's segmented control, which brings the WAI-ARIA radio-group
+          keyboard behaviour the hand-rolled pair never had: one tab stop for the group
+          and the arrow keys to move between the two options. */}
+      <SegmentedControl
+        ariaLabel="Which pledge applies to you"
+        value={tab}
+        onChange={setTab}
+        options={[
+          { value: "non", label: "Non-user" },
+          { value: "rec", label: "Recovered user" },
+        ]}
+        className="flex w-full [&>button]:flex-1"
+      />
       <p className="mt-5 text-title-1 text-ink">{data.title}</p>
       <p className="mt-2 text-body-1 text-ink-muted">{data.blurb}</p>
       <p className="mt-4 text-body-2 text-ink-muted"><span className="font-bold text-primary-dark">{data.count}</span> people have taken this pledge</p>

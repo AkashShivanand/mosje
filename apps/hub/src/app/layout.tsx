@@ -5,7 +5,6 @@ import { UX4GAccessibilityWidget } from "@mosje/design-system";
 import { RouteColorModeProvider } from "@/components/route-color-mode-provider";
 import { DataModeProvider } from "@/lib/data-mode/context";
 import { NotInEmbed } from "@/components/conditional-embed-chrome";
-import { colorModeInitScript } from "@mosje/design-system/color-mode";
 import { ConditionalChatbot } from "@/components/conditional-chatbot";
 import { ConditionalDemoDock } from "@/components/conditional-demo-dock";
 import { resolveChatbotPaths } from "@/lib/chatbot/resolve";
@@ -16,6 +15,7 @@ import "./globals.css";
 // Material Symbols Rounded — the SAMAVESH icon system. Loaded ONCE here because
 // the hub is now the single app hosting every natively-mounted portal.
 import "@mosje/design-system/icons.css";
+import { ColorModeInitScript } from "@/components/color-mode-init-script";
 
 /**
  * `devanagari` is in the subset list because the estate ships Hindi and nothing was loading it.
@@ -152,7 +152,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: colorModeInitScript() }} />
+        {/* An inline, parser-blocking script, so first paint already has the right
+            data-brand — see the component for why it is not next/script. */}
+        <ColorModeInitScript />
       </head>
       {/* suppressHydrationWarning: browser extensions (e.g. Grammarly) inject
           attributes onto <body> before React hydrates — benign, React-recommended. */}

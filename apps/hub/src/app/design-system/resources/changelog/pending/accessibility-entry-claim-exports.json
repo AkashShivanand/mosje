@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "ANY HEADER CAN BE THE PAGE'S ONE ACCESSIBILITY DOOR. `openUx4gWidget()` and `useAccessibilityEntryClaim(active, ref?)` are exported from the barrel. They were private to `AccessibilityControls`, which now calls the same hook with unchanged behaviour. A control that claims the entry hides the UX4G floating button while it is mounted, so a page never shows two doors. First consumer: the website's DBIM design header."
+}

@@ -4,7 +4,29 @@
  * works with no script at all. The page and the download read the same filters.
  */
 
+import seedRaw from "@/data/website-issues/status-seed.json";
 import { SCOPES, SEVERITIES, STATUSES, type Issue, type IssueStatus, type StatusRecord } from "./types";
+
+/**
+ * Baseline statuses carried over from the audit trackers the reports were worked
+ * in — the May DBIM remediation tracker and the September observations sheet.
+ *
+ * Without this every row read "Open", including the twelve NIC recorded as done
+ * months ago, and the register contradicted the sheet the team actually updates.
+ * The store still wins: a status set in the browser is a later fact than a
+ * spreadsheet export, and only rows nobody has touched fall back to the seed.
+ *
+ * Where two trackers disagree the seed carries the LEAST advanced of the two,
+ * because a row is not fixed while any report still has it open. Table
+ * alignment is the live example: May marks it done, September marks it in
+ * progress, and the register says in progress.
+ */
+const SEED = (seedRaw as { rows: Record<string, { status: string }> }).rows;
+
+function seededStatus(id: string): IssueStatus | null {
+  const s = SEED[id]?.status;
+  return s && (STATUSES as readonly string[]).includes(s) ? (s as IssueStatus) : null;
+}
 
 export const STANDARD_FAMILIES = ["WCAG", "GIGW", "DBIM", "UX4G", "Other"] as const;
 
@@ -37,7 +59,7 @@ export function parseFilters(sp: Params): IssueFilters {
 }
 
 export function statusOf(id: string, statuses: Record<string, StatusRecord>): IssueStatus {
-  return statuses[id]?.status ?? "Open";
+  return statuses[id]?.status ?? seededStatus(id) ?? "Open";
 }
 
 function family(id: string): string {

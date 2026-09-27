@@ -27,22 +27,34 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       "Arrow keys move the highlight, Enter chooses the highlighted row or submits, Escape hides the list without clearing the text. Every control is reachable by Tab.",
+    status: "partial",
+    evidence:
+      "Keyboard smoke test (Playwright, Chromium 1440x900), 2026-09-22: tabbed through the specimen on /design-system/components/forms/search - 7 focusable elements, each with a focus indicator that disappears on blur, focus left the specimen with no trap; manual screen-reader check outstanding",
   },
   {
     criterion: "2.4.7 Focus Visible",
     level: "AA",
     description: "Focus is drawn on the field, on the leading submit button and on the clear button separately.",
+    status: "partial",
+    evidence:
+      "Keyboard smoke test (Playwright, Chromium 1440x900), 2026-09-22: tabbed through the specimen on /design-system/components/forms/search - 7 focusable elements, each with a focus indicator that disappears on blur, focus left the specimen with no trap; manual screen-reader check outstanding",
   },
   {
     criterion: "2.5.8 Target Size (Minimum)",
     level: "AA",
     description: "All three sizes clear 24×24, and the clear and submit controls are sized with the field.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (target-size) on /design-system/components/forms/search; manual screen-reader check outstanding",
   },
   {
     criterion: "4.1.2 Name, Role, Value",
     level: "A",
     description:
       "With suggestions the field carries `role=\"combobox\"`, `aria-expanded`, `aria-controls`, `aria-autocomplete` and `aria-activedescendant`. Without them it carries none of these, so a plain filter field never announces itself as a combobox with no options.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (aria-allowed-attr, aria-conditional-attr, aria-hidden-focus, aria-prohibited-attr, aria-valid-attr, aria-valid-attr-value, button-name, duplicate-id-aria, label, nested-interactive, select-name) on /design-system/components/forms/search; manual screen-reader check outstanding",
   },
   {
     criterion: "4.1.3 Status Messages",

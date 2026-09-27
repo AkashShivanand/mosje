@@ -1,0 +1,741 @@
+/* ds-exempt-start(third-party): type sizes, leading and tracking are transcribed from the DBIM 3.0 reference template (master-socialjustice.digifootprint.gov.in, root 62.5%, rems divided by 1.6), which the DBIM review team mandated on 25 Sep 2026; colour stays token-bound */
+/* ─────────────────────────────────────────────────────────────────────────────
+   DBIM home — the top three sections: Banner (carousel + Announcements), PM Quote,
+   About Us. Values are the reference's computed styles (ref3/styles/home.json,
+   used.css §430–507, §718–732, §805–808); spec: docs/research/dbim-reference/
+   components/home-top.spec.md. Colours are tokens (the subtree is data-brand="dbim").
+   Selectors carry three parts so they outrank the design system's two-class
+   `.ds-btn` rules inside the same layer, whatever order the files load in.
+   ───────────────────────────────────────────────────────────────────────────── */
+@layer theme, base, components, utilities;
+
+@layer components {
+  [data-design="dbim"] .db-hometop-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* ── Banner carousel ─────────────────────────────────────────────────────── */
+  [data-design="dbim"] .db-carousel {
+    position: relative;
+    width: 100%;
+  }
+
+  /* Every slide in one grid cell: the fade needs them stacked, and the cell keeps the
+     artwork's own 3:1 box so nothing moves when a slide changes. */
+  [data-design="dbim"] .db-carousel .db-carousel__slides {
+    display: grid;
+  }
+
+  [data-design="dbim"] .db-carousel .db-carousel__slide {
+    grid-area: 1 / 1;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+  }
+
+  [data-design="dbim"] .db-carousel .db-carousel__slide[data-active] {
+    opacity: 1;
+  }
+
+  [data-design="dbim"] .db-carousel .db-carousel__link {
+    display: block;
+  }
+
+  [data-design="dbim"] .db-carousel .db-carousel__link:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: calc(-1 * var(--sa-focus-width) - 2px); /* inside the full-bleed image */
+  }
+
+  [data-design="dbim"] .db-carousel .db-carousel__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 1;
+    object-fit: cover;
+  }
+
+  /* Square black arrows, 35px, 30px in from the edges (24px ≤991). */
+  [data-design="dbim"] .db-carousel .db-carousel__arrow {
+    --sa-btn-fill: var(--sa-color-neutralScale-1000);
+    --sa-btn-ink: var(--sa-color-neutralScale-0);
+    position: absolute;
+    top: 50%;
+    z-index: var(--sa-z-raised);
+    width: 35px; /* reference */
+    min-width: 0;
+    height: 35px;
+    min-height: 0;
+    padding: 0;
+    overflow: visible;
+    border-radius: var(--sa-shape-2);
+    transform: translateY(-50%);
+  }
+
+  [data-design="dbim"] .db-carousel .db-carousel__arrow--prev {
+    left: 30px; /* reference */
+  }
+
+  [data-design="dbim"] .db-carousel .db-carousel__arrow--next {
+    right: 30px; /* reference */
+  }
+
+  /* The play/pause disc: 40px, the ink colour, 45px from the right at 1280–1500. */
+  [data-design="dbim"] .db-carousel .db-carousel__play {
+    --sa-btn-fill: var(--sa-color-text-default);
+    --sa-btn-ink: var(--sa-color-neutralScale-0);
+    position: absolute;
+    right: 105px; /* reference */
+    bottom: var(--sa-padding-8);
+    z-index: var(--sa-z-raised);
+    width: var(--sa-padding-40);
+    min-width: 0;
+    height: var(--sa-padding-40);
+    min-height: 0;
+    padding: 0;
+  }
+
+  [data-design="dbim"] .db-carousel .db-carousel__play,
+  [data-design="dbim"] .db-carousel .db-carousel__arrow {
+    border: 0;
+  }
+
+  [data-design="dbim"] .db-carousel .db-carousel__play:hover,
+  [data-design="dbim"] .db-carousel .db-carousel__arrow:hover {
+    filter: none;
+  }
+
+  /* The dot tray: primary-100 pill, 18px up, 160px in from the right. */
+  [data-design="dbim"] .db-carousel .db-carousel__dots {
+    position: absolute;
+    right: 160px; /* reference */
+    bottom: 18px; /* reference */
+    z-index: var(--sa-z-raised);
+    display: flex;
+    gap: var(--sa-stack-16);
+    padding: var(--sa-padding-4);
+    background: var(--sa-color-primaryScale-100);
+    border-radius: var(--sa-shape-8);
+  }
+
+  [data-design="dbim"] .db-carousel .db-carousel__dot {
+    width: var(--sa-padding-12);
+    min-width: 0;
+    height: var(--sa-padding-12);
+    min-height: 0;
+    padding: 0;
+    background: var(--sa-color-primaryScale-400);
+    border: 0;
+    border-radius: var(--sa-shape-full);
+  }
+
+  [data-design="dbim"] .db-carousel .db-carousel__dot[aria-current="true"] {
+    background: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-carousel .db-carousel__dot:hover {
+    background: var(--sa-color-primaryScale-600);
+  }
+
+  @media (min-width: 1280px) and (max-width: 1500px) {
+    [data-design="dbim"] .db-carousel .db-carousel__play {
+      right: 45px; /* reference */
+    }
+  }
+
+  @media (max-width: 991.5px) {
+    [data-design="dbim"] .db-carousel .db-carousel__arrow--prev {
+      left: var(--sa-padding-24);
+    }
+
+    [data-design="dbim"] .db-carousel .db-carousel__arrow--next {
+      right: var(--sa-padding-24);
+    }
+
+    [data-design="dbim"] .db-carousel .db-carousel__arrow .material-symbols-rounded {
+      font-size: 2rem !important; /* 32px — overrides the Icon's inline size */
+    }
+  }
+
+  @media (max-width: 768px) {
+    [data-design="dbim"] .db-carousel .db-carousel__dots {
+      right: 50%;
+      transform: translateX(50%);
+    }
+
+    [data-design="dbim"] .db-carousel .db-carousel__play {
+      right: var(--sa-padding-20);
+      transform: translateX(50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-design="dbim"] .db-carousel .db-carousel__slide {
+      transition: none;
+    }
+  }
+
+  /* ── Announcements bar ───────────────────────────────────────────────────── */
+  [data-design="dbim"] .db-announce {
+    display: flex;
+    align-items: center;
+    min-height: 49px; /* reference */
+    padding: 11px var(--db-gutter); /* 11px: reference */
+    background: var(--sa-color-neutralScale-200);
+  }
+
+  [data-design="dbim"] .db-announce .db-announce__head {
+    display: flex;
+    flex: 0 0 auto;
+    gap: var(--sa-stack-8);
+    align-items: center;
+    margin-right: 30px; /* reference, Bootstrap me-5 at a 10px root */
+  }
+
+  [data-design="dbim"] .db-announce .db-announce__title {
+    margin: 0 0 5px; /* reference */
+    font-size: var(--db-fs-h3);
+    font-weight: 900; /* reference: a <strong> inside a 600 heading computes to 900 */
+    line-height: normal;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-announce .db-announce__icon {
+    width: 25px; /* reference */
+    height: 25px;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-announce .db-announce__viewport {
+    position: relative;
+    flex: 1 1 auto;
+    min-width: 0;
+    height: var(--sa-padding-24);
+    overflow: hidden;
+    font-size: 1rem; /* 16px */
+    line-height: var(--sa-padding-24);
+  }
+
+  [data-design="dbim"] .db-announce .db-announce__track {
+    display: flex;
+    width: max-content;
+    white-space: nowrap;
+    animation: db-marquee var(--db-marquee-duration, 40s) linear infinite;
+  }
+
+  [data-design="dbim"] .db-announce .db-announce__list {
+    display: flex;
+    flex: 0 0 auto;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* A bullet between items and between the two copies, 48px either side. */
+  [data-design="dbim"] .db-announce .db-announce__item::after {
+    margin: 0 var(--sa-stack-48);
+    content: "•";
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-announce .db-announce__link {
+    color: var(--sa-color-primaryScale-800);
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-announce .db-announce__link:hover {
+    text-decoration: underline;
+  }
+
+  [data-design="dbim"] .db-announce .db-announce__link:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: calc(-1 * var(--sa-focus-width));
+  }
+
+  [data-design="dbim"] .db-announce .db-announce__empty {
+    margin: 0;
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  /* Stops where it is: on Pause, and while the pointer is over it. */
+  [data-design="dbim"] .db-announce .db-announce__viewport[data-paused] .db-announce__track,
+  [data-design="dbim"] .db-announce .db-announce__viewport:hover .db-announce__track {
+    animation-play-state: paused;
+  }
+
+  /* A keyboard reader never chases a moving link: with focus inside, the strip stops
+     animating and scrolls natively, so the focused link is scrolled into view. The
+     same, permanently, for a reader who asked for reduced motion. */
+  [data-design="dbim"] .db-announce .db-announce__viewport:has(:focus-visible) {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  [data-design="dbim"] .db-announce .db-announce__viewport:has(:focus-visible) .db-announce__track {
+    animation: none;
+  }
+
+  [data-design="dbim"] .db-announce .db-announce__viewport:has(:focus-visible) [data-copy] {
+    display: none;
+  }
+
+  [data-design="dbim"] .db-announce .db-announce__toggle {
+    --sa-btn-edge: var(--sa-color-primaryScale-800);
+    flex: 0 0 auto;
+    width: var(--sa-padding-24);
+    min-width: 0;
+    height: var(--sa-padding-24);
+    min-height: 0;
+    margin-left: 30px; /* reference, Bootstrap ms-5 at a 10px root */
+    padding: 0;
+    border-radius: var(--sa-shape-2);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-design="dbim"] .db-announce .db-announce__viewport {
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    [data-design="dbim"] .db-announce .db-announce__track {
+      animation: none;
+    }
+
+    [data-design="dbim"] .db-announce [data-copy] {
+      display: none;
+    }
+  }
+
+  @media (max-width: 767.5px) {
+    [data-design="dbim"] .db-announce .db-announce__head {
+      margin-right: var(--sa-stack-8);
+    }
+
+    [data-design="dbim"] .db-announce .db-announce__toggle {
+      margin-left: var(--sa-stack-8);
+    }
+  }
+
+  @keyframes db-marquee {
+    /* The reference runs translateX(35%) → (-100%) over an empty strip; with two
+       copies the loop is half the track, and starts with the first item in view. */
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* ── PM Quote ────────────────────────────────────────────────────────────── */
+  [data-design="dbim"] .db-pmq {
+    padding: var(--sa-padding-40) 0;
+    background: var(--sa-color-neutralScale-100);
+  }
+
+  /* The reference's Bootstrap .container ladder (1320 / 1140 / 960 / 720 / 540). */
+  [data-design="dbim"] .db-pmq .db-pmq__in {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    align-items: center;
+    width: 100%;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0 7.5px; /* reference */
+  }
+
+  [data-design="dbim"] .db-pmq .db-pmq__figure {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: 260px; /* reference */
+  }
+
+  [data-design="dbim"] .db-pmq .db-pmq__portrait {
+    width: 260px; /* reference */
+    height: 260px;
+    object-fit: cover;
+    background: var(--sa-color-neutralScale-0);
+    border-radius: var(--sa-shape-full);
+    box-shadow: var(--sa-elevation-dropdown); /* nearest token to the reference 0 2px 4px + 0 6px 12px rgb(35 35 47 / 6–8%) */
+  }
+
+  [data-design="dbim"] .db-pmq .db-pmq__body {
+    margin: 0;
+    padding: 10px; /* reference card-body */
+  }
+
+  [data-design="dbim"] .db-pmq .db-pmq__mark {
+    height: var(--sa-padding-40);
+    padding-top: 17px; /* places the glyph where the reference's 44px “ sits */
+    margin-left: -6px; /* the glyph's own side bearing, so the mark aligns with the text */
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-pmq .db-pmq__mark > span {
+    transform: rotate(180deg);
+  }
+
+  [data-design="dbim"] .db-pmq .db-pmq__quote {
+    margin: 0 0 15px; /* reference, mb-4 at a 10px root */
+  }
+
+  [data-design="dbim"] .db-pmq .db-pmq__quote p {
+    margin: 0 0 10px; /* reference */
+    font-size: 1.5rem; /* 24px */
+    font-weight: var(--sa-font-weight-medium);
+    line-height: 29px; /* reference */
+    letter-spacing: -0.12px;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-pmq .db-pmq__rule {
+    border-top: var(--sa-stroke-1) solid var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-pmq .db-pmq__foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px; /* reference */
+    justify-content: space-between;
+    margin-top: 15px; /* reference */
+  }
+
+  [data-design="dbim"] .db-pmq .db-pmq__foot > div {
+    width: 49%; /* reference .gpaiSubmit */
+  }
+
+  [data-design="dbim"] .db-pmq .db-pmq__meta {
+    margin: 0;
+    font-size: var(--db-fs-p);
+    font-weight: var(--sa-font-weight-medium);
+    line-height: 1.5;
+    text-transform: uppercase;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-pmq .db-pmq__action {
+    display: inline-flex;
+    gap: var(--sa-stack-8);
+    align-items: center;
+    align-self: flex-start;
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    font-size: 0.75rem; /* 12px */
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: 18px; /* reference */
+    letter-spacing: 0.12px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--sa-color-primaryScale-800);
+    background: var(--sa-color-neutralScale-0);
+    border: var(--sa-stroke-1) solid var(--sa-color-primaryScale-800);
+    border-radius: var(--sa-shape-4);
+  }
+
+  [data-design="dbim"] .db-pmq .db-pmq__action:hover {
+    background: var(--sa-color-primaryScale-100);
+  }
+
+  [data-design="dbim"] .db-pmq .db-pmq__action:focus-visible,
+  [data-design="dbim"] .db-about .db-about__tile:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  @media (min-width: 1537px) {
+    [data-design="dbim"] .db-pmq {
+      padding: 45px 0; /* reference */
+    }
+  }
+
+  @media (max-width: 1399.5px) {
+    [data-design="dbim"] .db-pmq .db-pmq__in {
+      max-width: 1140px;
+    }
+  }
+
+  @media (max-width: 1199.5px) {
+    [data-design="dbim"] .db-pmq .db-pmq__in {
+      max-width: 960px;
+    }
+  }
+
+  @media (max-width: 991.5px) {
+    [data-design="dbim"] .db-pmq .db-pmq__in {
+      grid-template-columns: 1fr;
+      max-width: 720px;
+    }
+
+    [data-design="dbim"] .db-pmq .db-pmq__quote p {
+      font-size: 1.25rem; /* 20px */
+    }
+  }
+
+  @media (max-width: 767.5px) {
+    [data-design="dbim"] .db-pmq {
+      padding: var(--sa-padding-24) 0;
+    }
+
+    [data-design="dbim"] .db-pmq .db-pmq__in {
+      max-width: 540px;
+    }
+
+    [data-design="dbim"] .db-pmq .db-pmq__quote p {
+      font-size: 0.875rem; /* 14px, as the reference draws it at 390 */
+    }
+
+    [data-design="dbim"] .db-pmq .db-pmq__foot {
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    [data-design="dbim"] .db-pmq .db-pmq__foot > div {
+      width: 100%;
+    }
+
+    [data-design="dbim"] .db-pmq .db-pmq__action {
+      align-self: flex-end;
+    }
+  }
+
+  @media (max-width: 575.5px) {
+    [data-design="dbim"] .db-pmq .db-pmq__in {
+      max-width: none;
+    }
+  }
+
+  /* The reference keeps a 260px frame round a 170px portrait on a phone. */
+  @media (max-width: 565.5px) {
+    [data-design="dbim"] .db-pmq .db-pmq__figure {
+      align-items: flex-start;
+    }
+
+    [data-design="dbim"] .db-pmq .db-pmq__portrait {
+      width: 170px; /* reference */
+      height: 170px;
+    }
+  }
+
+  /* ── About Us ────────────────────────────────────────────────────────────── */
+  [data-design="dbim"] .db-about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 30px; /* reference, Bootstrap g-5 */
+    align-items: start;
+    padding: var(--sa-padding-40) calc(var(--db-gutter) + 15px); /* 15px: the reference's column padding */
+    background: var(--sa-color-neutralScale-0);
+  }
+
+  [data-design="dbim"] .db-about .db-about__heading {
+    grid-column: 1 / -1;
+  }
+
+  [data-design="dbim"] .db-about .db-about__heading > * {
+    margin: 0;
+  }
+
+  /* A flex column, as the reference's is, so the copy's 40px and the tiles' 18px add
+     up rather than collapse. */
+  [data-design="dbim"] .db-about .db-about__left {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px; /* reference */
+  }
+
+  [data-design="dbim"] .db-about .db-about__copy {
+    margin-bottom: var(--sa-stack-40);
+    font-size: 1rem; /* 16px */
+    line-height: 30px; /* reference */
+    letter-spacing: -0.1px;
+    /* The reference justifies this block; with a full sentence in it that opens rivers
+       between words (WCAG 1.4.8), so it is set ragged-right. */
+    text-align: start;
+  }
+
+  [data-design="dbim"] .db-about .db-about__copy p {
+    margin: 0;
+  }
+
+  [data-design="dbim"] .db-about .db-about__copy strong {
+    font-weight: var(--sa-font-weight-bold);
+  }
+
+  [data-design="dbim"] .db-about .db-about__tiles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px; /* reference */
+    margin: 18px 0 0; /* reference */
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-about .db-about__tile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 60px; /* reference */
+    height: 100%;
+    padding: var(--sa-padding-12) var(--sa-padding-8);
+    font-size: 1rem; /* 16px */
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: 22px; /* reference */
+    text-align: center;
+    text-decoration: none;
+    color: var(--sa-color-text-default);
+    background: var(--sa-color-neutralScale-0);
+    border: var(--sa-stroke-1) solid var(--sa-color-primaryScale-800);
+    border-radius: var(--sa-shape-2);
+    box-shadow: var(--sa-elevation-raised); /* nearest token to the reference 0 1px 2px + 0 4px 8px rgb(35 35 47 / 6–8%) */
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  [data-design="dbim"] .db-about .db-about__tile-icon {
+    width: var(--sa-padding-32);
+    height: var(--sa-padding-32);
+    margin-bottom: var(--sa-stack-8);
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-about .db-about__tile:hover {
+    color: var(--sa-color-neutralScale-0);
+    background: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-about .db-about__tile:hover .db-about__tile-icon {
+    color: var(--sa-color-neutralScale-0);
+  }
+
+  [data-design="dbim"] .db-about .db-about__ministers {
+    display: flex;
+    gap: var(--sa-stack-20);
+    justify-content: center;
+    margin: 30px 0 0; /* reference */
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-about .db-about__minister {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  [data-design="dbim"] .db-about .db-about__portrait {
+    width: auto;
+    height: 200px; /* reference max-height */
+    object-fit: contain;
+    border-width: 2px 2px 6px; /* reference */
+    border-style: solid;
+    border-color: var(--sa-color-neutralScale-100) var(--sa-color-neutralScale-100) var(--sa-color-primaryScale-800);
+    border-radius: 2.75px 2.75px 0 0; /* reference */
+  }
+
+  [data-design="dbim"] .db-about .db-about__name {
+    min-height: 25px; /* reference */
+    margin: 10px 0; /* reference */
+    font-size: var(--db-fs-h3);
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: normal;
+    letter-spacing: -0.12px;
+    text-align: center;
+  }
+
+  [data-design="dbim"] .db-about .db-about__role {
+    margin: 0;
+    font-size: var(--db-fs-p);
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  @media (min-width: 1537px) {
+    [data-design="dbim"] .db-about {
+      padding-block: var(--sa-padding-80);
+    }
+
+    [data-design="dbim"] .db-about .db-about__copy {
+      font-size: 1.25rem; /* 20px */
+    }
+
+    [data-design="dbim"] .db-about .db-about__tile {
+      font-size: 1.25rem; /* 20px */
+    }
+  }
+
+  @media (min-width: 1280px) and (max-width: 1536.5px) {
+    [data-design="dbim"] .db-about .db-about__portrait {
+      width: 172px; /* reference */
+      height: 172px;
+    }
+  }
+
+  @media (max-width: 1400px) {
+    [data-design="dbim"] .db-about .db-about__ministers {
+      gap: var(--sa-stack-12);
+    }
+  }
+
+  @media (max-width: 1199.5px) {
+    [data-design="dbim"] .db-about {
+      grid-template-columns: 1fr;
+    }
+
+    [data-design="dbim"] .db-about .db-about__ministers {
+      gap: var(--sa-stack-8);
+    }
+  }
+
+  @media (max-width: 991.5px) {
+    [data-design="dbim"] .db-about .db-about__copy {
+      font-size: 0.875rem; /* 14px */
+      line-height: 21px; /* reference */
+    }
+
+    [data-design="dbim"] .db-about .db-about__tiles {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    [data-design="dbim"] .db-about .db-about__ministers {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  @media (max-width: 767.5px) {
+    [data-design="dbim"] .db-about {
+      padding: var(--sa-padding-32) calc(var(--sa-padding-16) + 15px); /* 15px: column padding */
+    }
+
+    [data-design="dbim"] .db-about .db-about__copy {
+      margin-bottom: var(--sa-stack-16);
+    }
+
+    [data-design="dbim"] .db-about .db-about__tile {
+      flex-direction: row;
+    }
+
+    /* The reference pads the 32px icon on the right, which shrinks the glyph to 24. */
+    [data-design="dbim"] .db-about .db-about__tile-icon {
+      margin-bottom: 0;
+      padding-right: var(--sa-padding-8);
+    }
+
+    [data-design="dbim"] .db-about .db-about__name {
+      margin: var(--sa-stack-8) 0 0;
+    }
+  }
+
+  @media (max-width: 575.5px) {
+    [data-design="dbim"] .db-about .db-about__tiles {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+/* ds-exempt-end */

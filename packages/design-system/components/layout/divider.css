@@ -55,6 +55,11 @@
      * worked there either.
      */
     align-self: stretch;
+    /* A floor, not a length: `cmp/divider/length` (20px), the length the Figma master is
+       drawn at. Outside flex and grid `stretch` does nothing and an unlength'd vertical
+       rule collapsed to 0 — invisible. In a row it changes nothing unless the row is
+       shorter than 20px; every vertical rule in the estate sits in a taller one. */
+    min-block-size: var(--sa-cmp-divider-length);
   }
 
   /* ── Tone ─────────────────────────────────────────────────────────────────────

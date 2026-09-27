@@ -1,10 +1,11 @@
 "use client";
 
-/* PM-AJAY Dashboard — app shell: routing, filters, drill-down scaling, responsive stage. */
+/* PM-AJAY Dashboard — app shell: routing, filters, drill-down. The page is fluid:
+   the rail is a column from 768px and the masthead's drawer below it. */
 
-import { useState, useMemo, useRef, useEffect, useLayoutEffect, type CSSProperties } from "react";
+import { useState, useMemo, useEffect, type CSSProperties } from "react";
 import Link from "next/link";
-import { Breadcrumb } from "@mosje/design-system";
+import { Breadcrumb, SideSheet } from "@mosje/design-system";
 import { Navbar } from "@/components/pm-ajay/shell/navbar";
 import { Sidebar, DrillDownFilters, DashboardFooter, type Filters } from "./ui";
 import { VIEW_COMPONENTS, type LevelRow } from "./views";
@@ -123,8 +124,16 @@ function initialView(): ViewId {
 export function DashboardApp() {
   const [view, setView] = useState<ViewId>(initialView);
   const [filters, setFilters] = useState<Filters>(DEFAULTS);
-  const stageRef = useRef<HTMLDivElement>(null);
-  const appRef = useRef<HTMLDivElement>(null);
+  const [navOpen, setNavOpen] = useState(false);
+  const [navCollapsed, setNavCollapsed] = useState(false);
+  /* What the masthead's menu button does, and it is not one thing: above the
+     tablet anchor the rail is a column and the button collapses it; below it
+     there is no column, so the button opens the drawer. The same split
+     `PortalPage` makes, so a reader meets one behaviour across the estate. */
+  const toggleNav = () =>
+    window.matchMedia("(min-width: 768px)").matches
+      ? setNavCollapsed((c) => !c)
+      : setNavOpen((o) => !o);
 
   const set = (k: keyof Filters, v: string) =>
     setFilters((f) => ({ ...f, [k]: v, ...(k === "state" ? { district: "All Districts" } : {}) }));
@@ -165,24 +174,6 @@ export function DashboardApp() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [view, filters.fy, filters.state, filters.district, filters.scheme, filters.period]);
 
-  // responsive: scale the fixed 1440 canvas to fit viewport width
-  useLayoutEffect(() => {
-    const fit = () => {
-      if (!appRef.current || !stageRef.current) return;
-      const s = Math.min(1, window.innerWidth / 1440);
-      appRef.current.style.transform = `scale(${s})`;
-      stageRef.current.style.height = appRef.current.offsetHeight * s + "px";
-    };
-    fit();
-    window.addEventListener("resize", fit);
-    const ro = new ResizeObserver(fit);
-    if (appRef.current) ro.observe(appRef.current);
-    return () => {
-      window.removeEventListener("resize", fit);
-      ro.disconnect();
-    };
-  }, []);
-
   const ViewComp = VIEW_COMPONENTS[view];
   const meta = META[view];
 
@@ -195,11 +186,10 @@ export function DashboardApp() {
   if (district) crumbs.push({ label: district.name });
 
   return (
-    <div className="pm-stage" ref={stageRef}>
+    <div className="pm-stage">
       <div
         className="pm-app"
         data-density={DENSITY}
-        ref={appRef}
         style={
           {
             "--pm-accent": ACCENT,
@@ -208,9 +198,16 @@ export function DashboardApp() {
           } as CSSProperties
         }
       >
-        <Navbar />
-        <div className="pm-body">
-          <Sidebar view={view} />
+        <Navbar navExpanded={navOpen} onToggleNav={toggleNav} />
+        {/* Below 768px the column is not drawn and the same rail is the masthead's
+            drawer — one control, and never a rail narrowed past its labels. */}
+        <SideSheet open={navOpen} onClose={() => setNavOpen(false)} side="left" size="sm" title="Dashboards">
+          <Sidebar view={view} onNavigate={() => setNavOpen(false)} />
+        </SideSheet>
+        <div className={navCollapsed ? "pm-body is-nav-collapsed" : "pm-body"}>
+          <div className="pm-side">
+            <Sidebar view={view} collapsed={navCollapsed} />
+          </div>
           <div className="pm-content">
             <div className="pm-head">
               <Breadcrumb

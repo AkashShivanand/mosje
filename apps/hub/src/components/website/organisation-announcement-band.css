@@ -433,6 +433,24 @@
    * So the image fills the tile edge to edge and its own margin does the job.
    * The white fill stays behind it as the ground while the file loads.
    */
+  /*
+   * The tile is the DS `Button` (neutral, text) holding the code, so the
+   * button's own box is reset here: no padding, no minimum size, no border, and
+   * the white ground kept on hover rather than the text appearance's tint.
+   * Three classes, so it wins over the button's variant/appearance pairs
+   * whatever the stylesheet order turns out to be.
+   */
+  .orgab__mark.orgab__mark--code,
+  .orgab__mark.orgab__mark--code:hover {
+    display: grid;
+    min-width: 0;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--sa-shape-8);
+    background-color: var(--sa-bg-neutral-base);
+  }
+
   .orgab__mark--code {
     position: relative;
     background-color: var(--sa-bg-neutral-base);
@@ -996,10 +1014,70 @@
   .orgab__dots {
     display: flex;
     align-items: center;
-    gap: var(--sa-inline-2);
     /* Fading in and out, so the hold arrives as a state rather than a flicker
        under a pointer that is only passing over the card. */
     transition: opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  /*
+   * THE DOTS ARE THE DESIGN SYSTEM'S `Tabs`, SKINNED. `Tabs` owns the roving
+   * tabindex, the arrow keys and the ARIA; everything below only draws each tab
+   * as a dot, the current one as the dwell's track, and hides the label
+   * visually — it stays the tab's accessible name.
+   *
+   * `Tabs` also renders a polite status region, which would announce every
+   * automatic turn. The band's own stage already carries a live region, off
+   * while it rotates and polite once it does not, so the DS one is withdrawn.
+   */
+  .orgab__dots > [role="status"] {
+    display: none;
+  }
+
+  .orgab__dots .ds-tabs.ds-tabs--horizontal {
+    gap: var(--sa-inline-2);
+    /* The list scrolls when it overflows, which would clip the focus ring. */
+    overflow: visible;
+  }
+
+  /* The dot is the mark; the DS indicator has nothing to do here. */
+  .orgab__dots .ds-tabs .ds-tabs__indicator {
+    display: none;
+  }
+
+  /*
+   * THE LABEL IS HIDDEN, AND IT HAS TO MEASURE AS UNTRUNCATED.
+   *
+   * `Tabs` rescues a clipped label with a tooltip, and it decides a label is
+   * clipped by comparing `scrollWidth` with `clientWidth`. The usual
+   * visually-hidden recipe is a 1px box with the text still in it, so every dot
+   * measured as truncated and every one of them got a `Tooltip` — a blue bubble
+   * carrying the whole announcement's name, opening on hover AND on focus, over
+   * the card's own action. Seen on the second panel: "Join Nasha Mukt Bharat
+   * Abhiyaan" painted across the button of the same name.
+   *
+   * The rescue is right and the measurement is what is wrong: a label that was
+   * deliberately hidden is not a label that ran out of room. `font-size: 0`
+   * makes the two agree — the text has no width to be clipped — and the name
+   * stays in the accessibility tree, which is the only place it was ever meant
+   * to be read. The bubble is portalled to `<body>`, so there is no selector
+   * from here that could have hidden it instead.
+   */
+  .orgab__dots .ds-tabs .ds-tabs__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+    font-size: 0;
+  }
+
+  .orgab__dots .ds-tabs .ds-tabs__tab:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
   }
 
   /* A 24px target with a small mark inside it — §2.5.8's floor, met by the
@@ -1020,12 +1098,14 @@
    * transitioned — the pill expanding as the panel takes over is the same
    * gesture the bar itself makes.
    */
-  .orgab__dot {
+  .orgab__dots .ds-tabs .ds-tabs__tab {
     position: relative;
     display: grid;
     place-items: center;
     inline-size: var(--sa-padding-24);
     block-size: var(--sa-padding-24);
+    min-block-size: 0;
+    padding: 0;
     border-radius: var(--sa-shape-full);
     transition: inline-size var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
   }
@@ -1042,11 +1122,11 @@
    * had — and both dots still clear §2.5.8's 24x24 floor by the control itself,
    * the active one by a wide margin.
    */
-  .orgab__dot[aria-selected="true"] {
+  .orgab__dots .ds-tabs .ds-tabs__tab[aria-selected="true"] {
     inline-size: var(--sa-padding-40);
   }
 
-  .orgab__dot::before {
+  .orgab__dots .ds-tabs .ds-tabs__tab::before {
     content: "";
     inline-size: var(--sa-padding-6);
     block-size: var(--sa-padding-6);
@@ -1075,7 +1155,7 @@
    * A dark groove separates them by lightness instead of by opacity, and the
    * fill reads at a glance without being any brighter than it was.
    */
-  .orgab__dot[aria-selected="true"]::before {
+  .orgab__dots .ds-tabs .ds-tabs__tab[aria-selected="true"]::before {
     inline-size: var(--sa-padding-40);
     background-color: color-mix(in srgb, var(--sa-color-successScale-950) 42%, transparent);
     box-shadow: inset 0 0 0 var(--sa-stroke-1)
@@ -1165,7 +1245,7 @@
    * round and the window's radius finishes the other end. A real element rather
    * than another pseudo-element because a pseudo-element cannot contain one.
    */
-  .orgab__dot[aria-selected="true"] .orgab__fill {
+  .orgab__dots .ds-tabs .ds-tabs__tab[aria-selected="true"] .ds-tabs__badge {
     position: absolute;
     inline-size: var(--sa-padding-40);
     block-size: var(--sa-padding-6);
@@ -1173,7 +1253,7 @@
     overflow: hidden;
   }
 
-  .orgab__fill::before {
+  .orgab__dots .ds-tabs__badge::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -1186,12 +1266,12 @@
     animation-play-state: paused;
   }
 
-  .orgab__pager[data-running] .orgab__fill::before {
+  .orgab__pager[data-running] .ds-tabs__badge::before {
     animation-play-state: running;
   }
 
   /* Picked up partway — the same negative delay as before, on the new element. */
-  .orgab__pager[data-resume] .orgab__fill::before {
+  .orgab__pager[data-resume] .ds-tabs__badge::before {
     animation-delay: calc(-1 * var(--orgab-resume, 0ms));
   }
 
@@ -1200,7 +1280,7 @@
    * percentage — at 0 it covers everything, at 100% it has left entirely — so
    * the held value goes straight in with no arithmetic.
    */
-  .orgab__pager[data-held] .orgab__fill::before {
+  .orgab__pager[data-held] .ds-tabs__badge::before {
     animation: none;
     /* Held at p% means the pill is (100 - p)% still to travel. */
     transform: translateX(calc(var(--orgab-held, 0%) - 100%));
@@ -1229,12 +1309,22 @@
    * estate's usual 0.94, because a transport control that does not answer the
    * click feels broken however fast it acts.
    */
-  .orgab__play {
+  /* The DS `IconButton`, text on the inverse tone. Its box is taken back to the
+     pager's own 24px rhythm — the button's `sm` size is 32 — and its resting ink
+     is dimmed, because a transport control is a peer of the dots beside it and
+     not the loudest thing in the pill. Two classes, so the reset wins over
+     `.ds-btn` and `.ds-btn--inverseText` whatever order the stylesheets land
+     in. */
+  .orgab__play.ds-btn {
     display: grid;
     place-items: center;
     inline-size: var(--sa-padding-24);
     block-size: var(--sa-padding-24);
+    min-inline-size: 0;
+    min-block-size: 0;
+    padding: 0;
     margin-inline-start: var(--sa-inline-2);
+    border: 0;
     border-radius: var(--sa-shape-full);
     background-color: transparent;
     color: color-mix(in srgb, var(--sa-text-neutral-inverse) 62%, transparent);
@@ -1244,18 +1334,20 @@
       transform var(--sa-motion-press-duration) var(--sa-motion-press-easing);
   }
 
-  .orgab__play:active {
+  /* 0.94 rather than the estate's 0.97: at 24px the smaller press is the one
+     that reads. */
+  .orgab__play.ds-btn:active {
     transform: scale(0.94);
   }
 
   /* Keyboard readers cannot hover, and the circle is the target made visible. */
-  .orgab__play:focus-visible {
+  .orgab__play.ds-btn:focus-visible {
     background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 20%, transparent);
     color: var(--sa-text-neutral-inverse);
   }
 
   @media (hover: hover) and (pointer: fine) {
-    .orgab__play:hover {
+    .orgab__play.ds-btn:hover {
       background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 20%, transparent);
       color: var(--sa-text-neutral-inverse);
     }
@@ -1271,7 +1363,7 @@
      * reader's pointer passed over it, and back when it left. Same specificity
      * as the groove rule and later in the file, so it won.
      */
-    .orgab__dot[aria-selected="false"]:hover::before {
+    .orgab__dots .ds-tabs .ds-tabs__tab[aria-selected="false"]:hover::before {
       background-color: var(--sa-text-neutral-inverse);
     }
   }
@@ -1406,13 +1498,20 @@
      gap it would relate to nothing, which is what once made the band's right end
      read as unfinished. */
 
-  .orgab__dismiss {
+  /* The DS `IconButton`, text on the inverse tone. The square it draws is the
+     one this corner already had; the reset only stops the button's own minimum
+     width and padding from widening it. */
+  .orgab__dismiss.ds-btn {
     grid-column: 3;
     display: grid;
     place-items: center;
     align-self: start;
     inline-size: var(--sa-control-height-sm);
     block-size: var(--sa-control-height-sm);
+    min-inline-size: 0;
+    min-block-size: 0;
+    padding: 0;
+    border: 0;
     border-radius: var(--sa-shape-8);
     color: color-mix(in srgb, var(--sa-text-neutral-inverse) 72%, transparent);
     transition:
@@ -1421,15 +1520,18 @@
   }
 
   @media (hover: hover) and (pointer: fine) {
-    .orgab__dismiss:hover {
+    .orgab__dismiss.ds-btn:hover {
       background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 16%, transparent);
       color: var(--sa-text-neutral-inverse);
     }
   }
 
-  .orgab__dot:focus-visible,
-  .orgab__play:focus-visible,
-  .orgab__dismiss:focus-visible,
+  /* White, because every one of these sits on the band's green — the estate's
+     blue focus ring is the one colour that disappears there. The two
+     `IconButton`s carry `.ds-btn`, whose own focus rule is the same weight, so
+     they name it here to win on order rather than by luck. */
+  .orgab__play.ds-btn:focus-visible,
+  .orgab__dismiss.ds-btn:focus-visible,
   .orgab__helpline:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
     outline-offset: var(--sa-focus-offset);
@@ -1473,16 +1575,16 @@
        a sliding cover. Both left the bar EMPTY — the opposite of what it
        promises — because each named the mechanism the fill had just stopped
        using. It is the cover that has to be sent away now. */
-    .orgab__fill::before {
+    .orgab__dots .ds-tabs__badge::before {
       animation: none;
       transform: translateX(0);
     }
 
-    /* There is no turn to cover, so nothing leaves. */
-    .orgab__dot[data-leaving]::after {
-      animation: none;
-      content: none;
-    }
+    /* The rule that stopped the leaving dot's exit stood here, and it was
+       already styling nothing: the `::after` it quieted was withdrawn when the
+       pager stopped fading out on every turn (see `.orgab__pager[data-turning]`
+       above), so there was no exit left to stop. It has gone with the
+       `data-leaving` attribute that selected it. */
 
     .orgab__helpline-glyph,
     .orgab__helpline-glyph::before,
@@ -1664,7 +1766,10 @@
       justify-self: start;
     }
 
-    .orgab__dismiss {
+    /* Two classes, matching the base rule's weight — it names `.ds-btn` so the
+       button's own box cannot redraw it, and a single class here would lose to
+       its `grid-column: 3`. */
+    .orgab__dismiss.ds-btn {
       grid-row: 1;
       grid-column: 2;
     }
@@ -1801,10 +1906,12 @@
       --spark-reach: 0.45;
     }
 
-    .orgab__dot,
-    .orgab__play {
+    .orgab__dots .ds-tabs .ds-tabs__tab,
+    .orgab__pager .orgab__play.ds-btn {
       inline-size: var(--sa-padding-24);
       block-size: var(--sa-padding-24);
+      min-inline-size: 0;
+      min-block-size: 0;
     }
 
     /* Still the 24x24 §2.5.8 floor, met by the control itself. */
@@ -1831,7 +1938,9 @@
       gap: var(--sa-stack-12) var(--sa-inline-8);
     }
 
-    .orgab__mark--code {
+    /* Same weight as the tile's own reset above, and later, so it wins: the
+       tile is a DS `Button`, whose `display` would otherwise decide this. */
+    .orgab__mark.orgab__mark--code {
       display: none;
     }
 

@@ -1,13 +1,12 @@
 {
   "$comment": "Off-ladder media-query literal count; may only fall. Re-record with --baseline after a real reduction.",
-  "recordedAt": "2026-09-15",
-  "offLadder": 38,
+  "recordedAt": "2026-09-26",
+  "offLadder": 37,
   "distinct": [
     380,
     479,
     480,
     520,
-    540,
     560,
     600,
     639,

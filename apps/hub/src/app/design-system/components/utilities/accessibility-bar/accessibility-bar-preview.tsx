@@ -34,10 +34,10 @@ function Frame({ children }: { children: React.ReactNode }): React.JSX.Element {
 }
 
 /** Live AccessibilityBar — the default blue masthead bar, all four controls. */
-export function AccessibilityBarPreview(): React.JSX.Element {
+export function AccessibilityBarPreview({ label = "Accessibility Toolbar — Default" }: { label?: string } = {}): React.JSX.Element {
   return (
     <Frame>
-      <AccessibilityBar
+      <AccessibilityBar label={label}
         layout="fluid"
         govLink={GOV_LINK}
         accessibilityHref="#"
@@ -52,7 +52,7 @@ export function AccessibilityBarNavyPreview(): React.JSX.Element {
   return (
     <Frame>
       <div data-brand="navy">
-        <AccessibilityBar
+        <AccessibilityBar label="Accessibility Toolbar — Navy"
           layout="fluid"
           govLink={GOV_LINK}
           accessibilityHref="#"
@@ -67,11 +67,11 @@ export function AccessibilityBarNavyPreview(): React.JSX.Element {
  * Live font-size demo — the A−/A/A+ stepper drives a `--sa-font-scale` variable;
  * the paragraph below reflows with the reader's chosen size.
  */
-export function AccessibilityBarFontSizePreview(): React.JSX.Element {
+export function AccessibilityBarFontSizePreview({ label = "Accessibility Toolbar — Font Size" }: { label?: string } = {}): React.JSX.Element {
   const [scale, setScale] = React.useState(1);
   return (
     <Frame>
-      <AccessibilityBar
+      <AccessibilityBar label={label}
         layout="fluid"
         govLink={GOV_LINK}
         showSkip={false}
@@ -105,14 +105,14 @@ export function AccessibilityBarArrangementsPreview(): React.JSX.Element {
     <div style={{ display: "grid", gap: "var(--sa-stack-16)" }}>
       <div style={{ maxWidth: 412 }}>
         <Frame>
-          <AccessibilityBar device="mobile" layout="fluid" govLink={GOV_LINK} accessibilityHref="#" language={{ label: "English" }} />
+          <AccessibilityBar label="Accessibility Toolbar — Mobile, Fluid" device="mobile" layout="fluid" govLink={GOV_LINK} accessibilityHref="#" language={{ label: "English" }} />
         </Frame>
       </div>
       <Frame>
-        <AccessibilityBar layout="narrow" govLink={GOV_LINK} accessibilityHref="#" language={false} fontSize={false} />
+        <AccessibilityBar label="Accessibility Toolbar — Narrow" layout="narrow" govLink={GOV_LINK} accessibilityHref="#" language={false} fontSize={false} />
       </Frame>
       <Frame>
-        <AccessibilityBar layout="fluid" govLink={GOV_LINK} accessibilityHref="#" showSkip={false} language={{ label: "हिंदी", lang: "hi" }} />
+        <AccessibilityBar label="Accessibility Toolbar — Fluid, Hindi" layout="fluid" govLink={GOV_LINK} accessibilityHref="#" showSkip={false} language={{ label: "हिंदी", lang: "hi" }} />
       </Frame>
     </div>
   );

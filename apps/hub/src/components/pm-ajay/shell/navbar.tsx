@@ -5,7 +5,7 @@
    "Website" / public-brand variant) so the National Emblem lockup, GoI utility
    bar, and Government marks stay in lockstep with the rest of the estate. */
 
-import { SiteHeader, SAMAVESH_COBRAND } from "@mosje/design-system";
+import { OrgLogo, SiteHeader, SAMAVESH_COBRAND } from "@mosje/design-system";
 
 import Link from "next/link";
 
@@ -13,7 +13,14 @@ import Link from "next/link";
 // a plain <img>, so srcs are prefixed explicitly.
 const IMG_BASE = "/portals/pm-ajay";
 
-export function Navbar() {
+export interface NavbarProps {
+  /** The phone drawer is open. Drives the working bar's menu button. */
+  navExpanded?: boolean;
+  /** Open or close the phone drawer. Omit on a page that has no rail. */
+  onToggleNav?: () => void;
+}
+
+export function Navbar({ navExpanded, onToggleNav }: NavbarProps = {}) {
   return (
     <SiteHeader
       linkAs={Link}
@@ -26,10 +33,13 @@ export function Navbar() {
         department: "Department of Social Justice & Empowerment",
       }}
       beta
-      /* NO `service`, deliberately. The PM-AJAY dashboard is a desktop canvas that
-         `.pm-app` scales to fit a phone (a 0.26 transform at 375), so it is never a
-         phone surface: the phone layers would draw a phone masthead inside a scaled
-         1440 canvas, and sticky pinning does not survive a transformed ancestor. */
+      /* The phone layers are back. They were switched off while `.pm-app` scaled a
+         fixed 1440 canvas to fit — a phone masthead drawn inside a scaled canvas,
+         and sticky pinning does not survive a transformed ancestor. The canvas is
+         fluid now, so the working bar pins and carries the rail's menu button. */
+      service={{ name: "PM-AJAY", mark: <OrgLogo path={IMG_BASE} size="sm" />, href: IMG_BASE }}
+      navExpanded={navExpanded}
+      onToggleNav={onToggleNav}
       skipTo="#pm-main"
       govLink={{
         href: "https://india.gov.in/",

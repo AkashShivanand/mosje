@@ -1,0 +1,133 @@
+{
+ "note": "Baseline statuses from the audit trackers. Fixed is withdrawn where a report dated after the fix still raises the issue — see \"reopened\". The Supabase store overrides this wherever a status has been set in the browser.",
+ "synced": "2026-09-25",
+ "rows": {
+  "ACC-22": {
+   "status": "Open",
+   "from": [
+    "2026-05-09 T16=Done",
+    "2026-05-09 T20=Done"
+   ],
+   "reopened": "marked done 2026-05-09, still raised by internal-sweep"
+  },
+  "BRD-04": {
+   "status": "Needs decision",
+   "from": [
+    "2026-05-09 T03=Awaiting confirmation",
+    "2026-05-09 T24=Blocked"
+   ]
+  },
+  "BRD-05": {
+   "status": "Open",
+   "from": [
+    "2026-05-09 T07=Done",
+    "2026-05-09 T27=Done"
+   ],
+   "reopened": "marked done 2026-05-09, still raised by internal-sweep"
+  },
+  "BRD-07": {
+   "status": "Needs decision",
+   "from": [
+    "2026-05-09 T08=Awaiting confirmation",
+    "2026-05-09 T31=Blocked"
+   ]
+  },
+  "BRD-12": {
+   "status": "Open",
+   "from": [
+    "2026-05-09 T21=Done"
+   ],
+   "reopened": "marked done 2026-05-09, still raised by design-audit-v1, internal-sweep, ux4g-manual"
+  },
+  "BRD-13": {
+   "status": "Needs decision",
+   "from": [
+    "2026-05-09 T34=Blocked"
+   ]
+  },
+  "BRD-25": {
+   "status": "Fixed",
+   "from": [
+    "2026-05-09 T13=Done"
+   ]
+  },
+  "BRD-26": {
+   "status": "Fixed",
+   "from": [
+    "2026-05-09 T40=Done"
+   ]
+  },
+  "BRD-P020": {
+   "status": "Open",
+   "from": [
+    "2026-05-09 T38=Done"
+   ],
+   "reopened": "marked done 2026-05-09, still raised by internal-sweep"
+  },
+  "CON-10": {
+   "status": "Open",
+   "from": [
+    "2026-05-09 T15=Done"
+   ],
+   "reopened": "marked done 2026-05-09, still raised by internal-sweep"
+  },
+  "CON-17": {
+   "status": "Needs decision",
+   "from": [
+    "2026-05-09 T35=Blocked"
+   ]
+  },
+  "CON-18": {
+   "status": "Needs decision",
+   "from": [
+    "2026-05-09 T36=Blocked",
+    "2026-05-09 T37=Blocked"
+   ]
+  },
+  "CON-20": {
+   "status": "Open",
+   "from": [
+    "2026-05-09 T19=Done"
+   ],
+   "reopened": "marked done 2026-05-09, still raised by internal-sweep"
+  },
+  "CON-T134": {
+   "status": "Open",
+   "from": [
+    "2026-05-09 T17=Done"
+   ],
+   "reopened": "marked done 2026-05-09, still raised by internal-sweep"
+  },
+  "LNG-04": {
+   "status": "Fixed",
+   "from": [
+    "2026-09-23 1=Done"
+   ]
+  },
+  "MAN-07": {
+   "status": "Needs decision",
+   "from": [
+    "2026-05-09 T33=Blocked"
+   ]
+  },
+  "MAN-13": {
+   "status": "In progress",
+   "from": [
+    "2026-05-09 T39=In Progress"
+   ]
+  },
+  "PRF-07": {
+   "status": "Fixed",
+   "from": [
+    "2026-05-09 T14=Done"
+   ]
+  },
+  "TYP-05": {
+   "status": "In progress",
+   "from": [
+    "2026-05-09 T18=Done",
+    "2026-09-23 9=In Progress"
+   ]
+  }
+ }
+}

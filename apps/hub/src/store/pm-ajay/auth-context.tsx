@@ -13,13 +13,30 @@ import {
   type ReactNode,
 } from "react";
 
+/**
+ * The roles the live PM-AJAY MIS signs in, named as it names them.
+ *
+ * `ministry-mis` is ours alone — the six MIS dashboards this prototype started as.
+ * The rest mirror the live portal, and each one reaches a different set of screens.
+ */
+export type PmAjayRole =
+  | "ministry-mis"
+  | "ministry"
+  | "adarsh-gram-district"
+  | "adarsh-gram-state"
+  | "adarsh-gram-village";
+
 export interface Account {
   name: string;
   designation: string;
   employeeId: string;
-  scope: "national" | "state" | "district";
+  scope: "national" | "state" | "district" | "village";
   scopeLabel: string;
   avatar: string; // initials
+  /** Which portal this account signs into. Decides the rail and the landing screen. */
+  role: PmAjayRole;
+  /** Where signing in lands, relative to the portal root. */
+  home: string;
 }
 
 interface AuthState {
@@ -38,23 +55,29 @@ interface AuthState {
 const DEMO_ACCOUNTS: Record<string, { demoPin: string; account: Account }> = {
   "JS001": {
     demoPin: "Password@123",
-    account: { name: "Sachin Malhotra", designation: "Joint Secretary · MoSJE", employeeId: "JS001", scope: "national", scopeLabel: "All India", avatar: "SM" },
+    account: { name: "Sachin Malhotra", designation: "Joint Secretary · MoSJE", employeeId: "JS001", scope: "national", scopeLabel: "All India", avatar: "SM", role: "ministry-mis", home: "/" },
+  },
+  /* The district officer of the Adarsh Gram component — the live portal's own
+     AGDistrict role, whose twenty-seven screens this build reproduces. */
+  "AGDISTRICT": {
+    demoPin: "Password@123",
+    account: { name: "Ramesh Kumar", designation: "District Welfare Officer · Adarsh Gram", employeeId: "AGDISTRICT", scope: "district", scopeLabel: "Anantapur, Andhra Pradesh", avatar: "RK", role: "adarsh-gram-district", home: "/adarsh-gram-district/dashboard" },
   },
   "DS002": {
     demoPin: "Password@123",
-    account: { name: "Priya Sharma", designation: "Deputy Secretary · MoSJE", employeeId: "DS002", scope: "national", scopeLabel: "All India", avatar: "PS" },
+    account: { name: "Priya Sharma", designation: "Deputy Secretary · MoSJE", employeeId: "DS002", role: "ministry-mis", home: "/", scope: "national", scopeLabel: "All India", avatar: "PS" },
   },
   "SO003": {
     demoPin: "Password@123",
-    account: { name: "Arjun Verma", designation: "Section Officer · MH", employeeId: "SO003", scope: "state", scopeLabel: "Maharashtra", avatar: "AV" },
+    account: { name: "Arjun Verma", designation: "Section Officer · MH", employeeId: "SO003", role: "ministry-mis", home: "/", scope: "state", scopeLabel: "Maharashtra", avatar: "AV" },
   },
   "SO004": {
     demoPin: "Password@123",
-    account: { name: "Meena Rajan", designation: "Section Officer · TN", employeeId: "SO004", scope: "state", scopeLabel: "Tamil Nadu", avatar: "MR" },
+    account: { name: "Meena Rajan", designation: "Section Officer · TN", employeeId: "SO004", role: "ministry-mis", home: "/", scope: "state", scopeLabel: "Tamil Nadu", avatar: "MR" },
   },
   "DO005": {
     demoPin: "Password@123",
-    account: { name: "Rajesh Patel", designation: "District Officer · Gujarat", employeeId: "DO005", scope: "district", scopeLabel: "Ahmedabad, Gujarat", avatar: "RP" },
+    account: { name: "Rajesh Patel", designation: "District Officer · Gujarat", employeeId: "DO005", role: "ministry-mis", home: "/", scope: "district", scopeLabel: "Ahmedabad, Gujarat", avatar: "RP" },
   },
 };
 

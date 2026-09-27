@@ -69,7 +69,7 @@ export interface SiteHeaderProps {
   emblemAlt?: string;
   /** Government text stack beside the emblem. */
   brandLines: BrandLines;
-  /** Show the BETA badge. @default false */
+  /** Show the BETA badge. On by default: BETA is part of the masthead's default state until the department asks for it to go. @default true */
   beta?: boolean;
   /**
    * Where the brand lockup links. **Always pass this.**

@@ -28,7 +28,12 @@
      variant. Adding a tone is two lines, not fifteen. */
 
   .ds-sla {
-    --sla-ink: var(--sa-color-action-primary-default);
+    /* RAMP 600, NOT 500 (2026-09-22). `action/primary/default` is #0373df, which is
+       4.64:1 on white but 4.06:1 on bg/neutral/subtler — the ground this estate's cards
+       and dashboards actually sit on — so the summary line ("17 days left") failed WCAG
+       1.4.3 there. Found by an axe-core scan of the documentation page. 600 measures
+       5.57:1 on that ground, the same reasoning semantic.json records for text links. */
+    --sla-ink: var(--sa-text-brand-primary-base);
     --sla-fill: var(--sa-color-action-primary-default);
     --sla-soft: var(--sa-color-action-primary-tonal);
   }

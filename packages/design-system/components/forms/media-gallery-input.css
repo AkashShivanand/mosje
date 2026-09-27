@@ -160,8 +160,8 @@
 
   .ds-gallery__remove {
     position: absolute;
-    top: 4px;
-    right: 4px;
+    top: var(--sa-stack-4);
+    right: var(--sa-inline-4);
     display: inline-flex;
     align-items: center;
     justify-content: center;

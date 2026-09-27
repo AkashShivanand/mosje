@@ -20,6 +20,9 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       'Every variant carries role="progressbar" with aria-valuenow, aria-valuemin, aria-valuemax and aria-labelledby pointing at the label, so the indicator is named and its value is exposed.',
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (aria-allowed-attr, aria-conditional-attr, aria-deprecated-role, aria-prohibited-attr, aria-required-attr, aria-roles, aria-valid-attr, aria-valid-attr-value, duplicate-id-aria, nested-interactive) on /design-system/components/feedback/sla-progress; manual screen-reader check outstanding",
   },
   {
     criterion: "1.4.1 Use of Colour",

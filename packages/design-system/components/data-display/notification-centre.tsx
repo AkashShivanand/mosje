@@ -156,7 +156,8 @@ export function NotificationCentre({
       aria-labelledby={headingId}
       aria-busy={status === "loading" || undefined}
     >
-      <header className="ds-notices__head">
+      {/* A div, not a <header> — a header here would be a second `banner` landmark. */}
+      <div className="ds-notices__head">
         <Title id={headingId} className="ds-notices__title">
           {label}
         </Title>
@@ -168,7 +169,7 @@ export function NotificationCentre({
             {markAllLabel}
           </Button>
         ) : null}
-      </header>
+      </div>
 
       {status === "loading" ? (
         <div className="ds-notices__loading" aria-hidden="true">

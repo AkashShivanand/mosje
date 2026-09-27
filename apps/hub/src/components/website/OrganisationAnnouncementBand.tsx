@@ -3,7 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import NextLink from "next/link";
-import { Icon, Modal, buttonClasses } from "@mosje/design-system";
+import { Button, Icon, IconButton, Modal, Tabs, buttonClasses } from "@mosje/design-system";
 import type { OrganisationDetail } from "@/content/website/organisation-details";
 import { dismissCampaign } from "@/lib/website/campaign-dismissed";
 import "./organisation-announcement-band.css";
@@ -18,6 +18,8 @@ import "./organisation-announcement-band.css";
  * cost, are recorded there.
  *
  * DS Audit: Icon ✅ existing · Modal ✅ existing · buttonClasses ✅ existing ·
+ * Button ✅ existing (the code tile) · IconButton ✅ existing (the pause and the
+ * dismiss) · Tabs ✅ existing (the dot strip, skinned) ·
  * the band itself ➕ built here, because its shape is the organisation record's
  * (`joinBanner` + `eventRibbon`) rather than anything the design system knows
  * about. Nothing in it is hand-rolled that the DS already publishes.
@@ -208,6 +210,9 @@ export function OrganisationAnnouncementBand({
    */
   const [resumeFrom, setResumeFrom] = React.useState<number | null>(null);
   const dotsRef = React.useRef<HTMLDivElement>(null);
+  /* `Tabs` builds its ids from this. Stripped of the colons `useId` emits,
+     because they are legal in an id and illegal in a CSS selector. */
+  const idBase = `orgab-${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
 
   /*
    * Read straight off the rendered pseudo-element, because the animation is the
@@ -221,7 +226,9 @@ export function OrganisationAnnouncementBand({
    * already solid and there is no rotation to stop.
    */
   function fillOnScreen(): number | null {
-    const fill = dotsRef.current?.querySelector<HTMLElement>(".orgab__fill");
+    /* The selected tab's badge — see the note on the dot strip for why the
+       badge is the fill. */
+    const fill = dotsRef.current?.querySelector<HTMLElement>(".ds-tabs__badge");
     if (!fill) return null;
     /*
      * The pill sits one full width to the left when empty and at zero when
@@ -268,7 +275,9 @@ export function OrganisationAnnouncementBand({
    * mid-way by a negative delay, and a bar already full.
    */
   function dwellRemainingMs(): number | null {
-    const dot = dotsRef.current?.querySelector<HTMLElement>('.orgab__dot[aria-selected="true"]');
+    const dot = dotsRef.current?.querySelector<HTMLElement>(
+      '.ds-tabs__tab[aria-selected="true"]',
+    );
     if (!dot) return null;
     const dwell = dot
       .getAnimations({ subtree: true })
@@ -370,8 +379,16 @@ export function OrganisationAnnouncementBand({
 
   const rotates = panels.length > 1;
   const i = panels.length ? turn % panels.length : 0;
-  /* The panel the card is turning away from — the one whose fill has to leave. */
-  const prev = panels.length ? (turn - 1 + panels.length) % panels.length : 0;
+  /*
+   * THE DOT THE FILL IS LEAVING is now named in the stylesheet rather than
+   * here. It used to be a `data-leaving` attribute on one dot, computed as
+   * `turning && n === prev`; `Tabs` draws the dots and takes no per-tab
+   * attributes, so the same dot is reached as the UNSELECTED one while the
+   * pager is turning. That is the same dot for as long as a band holds at most
+   * two announcements, which is what `panels` can hold — the record publishes
+   * an `eventRibbon` and a `joinBanner` and nothing else. A third would need
+   * the index back, and this is the line that would have to give it.
+   */
   const current = panels[i] ?? panels[0];
 
   /*
@@ -543,7 +560,10 @@ export function OrganisationAnnouncementBand({
     /* Pressing a dot stops the rotation for good: a reader who chose a panel has
        said which one they want. */
     setPlaying(false);
-    dotsRef.current?.querySelector<HTMLButtonElement>(`[data-i="${n}"]`)?.focus();
+    /* `Tabs` moves focus itself on an arrow key; this is the click, where it
+       deliberately does not — and the dot the reader pressed is the one they
+       should still be on. */
+    dotsRef.current?.querySelectorAll<HTMLButtonElement>(".ds-tabs__tab")[n]?.focus();
   }
 
   /*
@@ -749,8 +769,9 @@ export function OrganisationAnnouncementBand({
                        * The image stays `alt=""`: the button is already named, and
                        * announcing the picture as well says the same thing twice.
                        */}
-                      <button
-                        type="button"
+                      <Button
+                        variant="neutral"
+                        appearance="text"
                         className="orgab__mark orgab__mark--code"
                         onClick={() => setZoom(true)}
                         aria-label="Show the registration code at a size a camera can read"
@@ -775,7 +796,7 @@ export function OrganisationAnnouncementBand({
                         <span className="orgab__mark-zoom" aria-hidden>
                           <Icon name="zoom_in" size={20} fill weight={400} />
                         </span>
-                      </button>
+                      </Button>
                       {/*
                        * THE CODE ONLY EXISTS WHERE IT CAN BE SCANNED. A code is
                        * read by a SECOND device, so on a phone — the device
@@ -914,48 +935,43 @@ export function OrganisationAnnouncementBand({
                   }
                 >
                   {rotates ? (
-                  <div
-                    className="orgab__dots"
-                    role="tablist"
-                    aria-label="Announcements"
-                    ref={dotsRef}
-                  >
-                    {panels.map((o, n) => (
-                      <button
-                        key={o.id}
-                        type="button"
-                        role="tab"
-                        data-i={n}
-                        aria-selected={n === i}
-                        /*
-                         * THE DOT THE FILL IS LEAVING, for as long as the card
-                         * is turning. Without it the bar had no exit: one frame
-                         * a full 40px white bar, the next frame gone, with an
-                         * empty bar appearing in the other dot. Nothing joined
-                         * the two states, so the indicator teleported rather
-                         * than moved and the eye had to find it again every
-                         * cycle.
-                         */
-                        data-leaving={turning && n === prev ? "" : undefined}
-                        tabIndex={n === i ? 0 : -1}
-                        className="orgab__dot"
-                        onClick={() => go(n)}
-                        onKeyDown={(e) => {
-                          if (e.key === "ArrowRight") { e.preventDefault(); go(i + 1); }
-                          if (e.key === "ArrowLeft") { e.preventDefault(); go(i - 1); }
-                        }}
-                      >
-                        <span className="ds-sr-only">{o.name}</span>
-                        {/*
-                         * A REAL ELEMENT, because the dwell needs a box it can
-                         * clip with and a child it can move. The fill used to be
-                         * the dot's `::after` animating `clip-path`, and a
-                         * pseudo-element cannot hold another one — see the note
-                         * in the stylesheet for why that had to change.
-                         */}
-                        {n === i ? <span className="orgab__fill" aria-hidden /> : null}
-                      </button>
-                    ))}
+                  /*
+                   * THE DOTS ARE THE DESIGN SYSTEM'S `Tabs`, SKINNED — the same
+                   * move the exploration this band came from already made.
+                   * `Tabs` owns `role="tablist"`, the roving tabindex, the
+                   * arrow keys and the selected state; the stylesheet draws each
+                   * tab as a dot and the current one as the dwell's track.
+                   *
+                   * `panel={false}`, because the announcements are faces of a
+                   * flipper rather than tabpanels — an `aria-controls` pointing
+                   * at an id that does not exist is a critical violation, and
+                   * these dots never carried one.
+                   *
+                   * `badge` IS THE FILL. The dwell needs a real element it can
+                   * clip with and a child it can move — a pseudo-element cannot
+                   * hold another one, which is the whole reason the fill stopped
+                   * being one (see the stylesheet). `Tabs` renders exactly one
+                   * spare element inside a tab, the badge dot, and only where it
+                   * is asked for; so the fill is the badge of the selected tab
+                   * and of no other.
+                   */
+                  <div className="orgab__dots" ref={dotsRef}>
+                    <Tabs
+                      idBase={idBase}
+                      ariaLabel="Announcements"
+                      indicator="pill"
+                      track="none"
+                      size="s"
+                      divider={false}
+                      panel={false}
+                      tabs={panels.map((o, n) => ({
+                        id: o.id,
+                        label: o.name,
+                        badge: n === i,
+                      }))}
+                      active={i}
+                      onChange={(n) => go(n)}
+                    />
                   </div>
                   ) : null}
 
@@ -970,10 +986,18 @@ export function OrganisationAnnouncementBand({
                       control is read as a shape at 16px, and a 300-weight outline
                       of two bars is a shape you have to look at twice. */}
                   {reduced ? null : (
-                    <button
-                      type="button"
+                    /* The DS `IconButton` on the inverse tone — the pager sits
+                       on the card's green. Its `aria-label` carries the name the
+                       sr-only span used to. */
+                    <IconButton
+                      variant="neutral"
+                      appearance="text"
+                      tone="inverse"
+                      size="sm"
+                      shape="circle"
                       className="orgab__play"
                       aria-pressed={!playing}
+                      aria-label={playing ? "Pause the announcements" : "Play the announcements"}
                       onClick={() => {
                         const next = !playing;
                         setPlaying(next);
@@ -984,12 +1008,8 @@ export function OrganisationAnnouncementBand({
                           setHeld(null);
                         }
                       }}
-                    >
-                      <Icon name={playing ? "pause" : "play_arrow"} size={16} fill weight={400} aria-hidden />
-                      <span className="ds-sr-only">
-                        {playing ? "Pause the announcements" : "Play the announcements"}
-                      </span>
-                    </button>
+                      icon={<Icon name={playing ? "pause" : "play_arrow"} size={16} fill weight={400} />}
+                    />
                   )}
                 </div>
               ) : null}
@@ -1029,14 +1049,18 @@ export function OrganisationAnnouncementBand({
             {/* The dismiss is the BAND'S, so it sits on the band's own ground —
                 outside both cards, sharing their top edge. Inside the glass card
                 it would say it dismisses the announcement rather than the band. */}
-            <button
-              type="button"
+            {/* The DS `IconButton`, text on the inverse tone: the band's ground
+                is the page's green. */}
+            <IconButton
+              variant="neutral"
+              appearance="text"
+              tone="inverse"
+              size="sm"
               className="orgab__dismiss"
               onClick={dismiss}
               aria-label={rotates ? "Dismiss the announcements" : "Dismiss the announcement"}
-            >
-              <Icon name="close" size={20} aria-hidden />
-            </button>
+              icon={<Icon name="close" size={20} />}
+            />
           </div>
           </div>
         </section>

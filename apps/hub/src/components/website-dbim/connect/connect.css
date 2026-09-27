@@ -1,0 +1,606 @@
+/* ds-exempt-start(third-party): type sizes, leading and tracking are transcribed from the DBIM 3.0 reference template (master-socialjustice.digifootprint.gov.in, root 62.5%, rems divided by 1.6), which the DBIM review team mandated on 25 Sep 2026; colour stays token-bound */
+/* ─────────────────────────────────────────────────────────────────────────────
+   DBIM design — Connect pages (Contact Us, Directory, RTI, Grievance Redressal,
+   Parliament Questions, Events) and the list states Media shares.
+   Values: docs/research/dbim-reference/components/media-connect.spec.md.
+   Reference rems are ÷1.6 here. Colours are tokens (dbim.css header has the map).
+   ───────────────────────────────────────────────────────────────────────────── */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ── Shared list states ──────────────────────────────────────────────────── */
+  [data-design="dbim"] .db-mc-nomatch {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-40) 0;
+    font-size: var(--db-fs-p);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  [data-design="dbim"] .db-mc-pager {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--sa-padding-32);
+  }
+
+  [data-design="dbim"] :is(.db-dir, .db-media, .db-events) {
+    scroll-margin-top: var(--sa-padding-120);
+  }
+
+  /* ── Directory: A–Z strip (.alphabetBox) ─────────────────────────────────── */
+  [data-design="dbim"] .db-dir-letters {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 37px 0; /* reference */
+    padding: var(--sa-padding-8) var(--sa-padding-24);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-neutralScale-100);
+  }
+
+  [data-design="dbim"] .db-dir-letters ul {
+    display: flex;
+    gap: var(--sa-stack-8);
+    margin: 0;
+    padding: 0 0 0 var(--sa-padding-20);
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-dir-letter.ds-btn {
+    min-width: 0;
+    min-height: 0;
+    height: 27px; /* reference */
+    padding: 0 10px; /* reference */
+    border: 0;
+    border-radius: var(--sa-shape-2);
+    background: none;
+    color: var(--sa-color-primaryScale-800);
+    font-family: inherit;
+    font-size: 1.25rem; /* 20px */
+    font-weight: var(--sa-font-weight-regular);
+    line-height: 27px;
+    letter-spacing: -0.1px;
+  }
+
+  [data-design="dbim"] .db-dir-letter.ds-btn:hover:not(:disabled) {
+    background: var(--sa-color-primaryScale-100);
+  }
+
+  [data-design="dbim"] .db-dir-letter.ds-btn[aria-pressed="true"] {
+    background: var(--sa-color-primaryScale-200);
+    font-weight: var(--sa-font-weight-bold);
+  }
+
+  [data-design="dbim"] .db-dir-letter.ds-btn:disabled {
+    color: var(--sa-color-neutralScale-500);
+    opacity: 1;
+  }
+
+  [data-design="dbim"] .db-dir-letter.ds-btn:focus-visible {
+    outline: 2px solid var(--sa-color-primaryScale-800);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 767.5px) {
+    [data-design="dbim"] .db-dir-letters {
+      justify-content: flex-start;
+      overflow-x: auto;
+      margin: var(--sa-padding-32) 0;
+    }
+
+    [data-design="dbim"] .db-dir-letters ul {
+      padding-left: var(--sa-padding-24);
+    }
+  }
+
+  /* ── Directory rows (.directoryBox) ──────────────────────────────────────── */
+  [data-design="dbim"] .db-dir-rows {
+    margin: 0 -7.5px; /* the reference's row gutter */
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-dir-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    padding: var(--sa-padding-16) var(--sa-padding-20);
+    border-bottom: 1px solid var(--sa-color-primaryScale-400);
+  }
+
+  [data-design="dbim"] .db-dir-col {
+    min-width: 0;
+    min-height: 0;
+    padding: 0 7.5px; /* reference */
+  }
+
+  [data-design="dbim"] .db-dir-row p {
+    margin: 0;
+  }
+
+  [data-design="dbim"] .db-dir-designation {
+    color: var(--sa-color-primaryScale-800);
+    font-size: var(--db-fs-small);
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: 18px;
+    letter-spacing: 0.12px;
+    text-transform: uppercase;
+  }
+
+  [data-design="dbim"] .db-dir-row .db-dir-name {
+    margin-bottom: 10px; /* reference */
+    font-size: var(--db-fs-p);
+    line-height: 22px;
+    letter-spacing: 0.16px;
+  }
+
+  [data-design="dbim"] .db-dir-chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px; /* reference */
+  }
+
+  [data-design="dbim"] .db-dir-chip {
+    padding: var(--sa-padding-4) var(--sa-padding-8);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-color-primaryScale-200);
+    color: var(--sa-color-primaryScale-800);
+    font-size: var(--db-fs-small);
+    line-height: 18px;
+    letter-spacing: 0.12px;
+  }
+
+  [data-design="dbim"] .db-dir-row .db-dir-line {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* reference */
+    margin-bottom: 5px; /* reference */
+    font-size: var(--db-fs-h4);
+    line-height: 20px;
+    overflow-wrap: anywhere;
+  }
+
+  [data-design="dbim"] .db-dir-line > [aria-hidden="true"] {
+    flex: none;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-dir-row .db-dir-line--mail {
+    margin-top: var(--sa-padding-12);
+  }
+
+  [data-design="dbim"] .db-dir-row .db-dir-line--intercom {
+    margin-bottom: 0;
+    font-size: var(--db-fs-p);
+    line-height: 21px;
+  }
+
+  [data-design="dbim"] .db-dir-row .db-dir-line--address {
+    align-items: flex-start;
+  }
+
+  @media (max-width: 767.5px) {
+    [data-design="dbim"] .db-dir-row {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: var(--sa-stack-24);
+      padding: var(--sa-padding-24) var(--sa-padding-20);
+    }
+  }
+
+  /* ── Two-column pages: RTI, Grievance, Events (col-lg-4 | col-lg-8, g-5) ─── */
+  [data-design="dbim"] .db-split,
+  [data-design="dbim"] .db-contact {
+    display: grid;
+    grid-template-columns: calc((100% + 30px) / 3 - 30px) minmax(0, 1fr); /* 415 | 860 at 1305 */
+    gap: 30px; /* Bootstrap g-5 */
+    align-items: start;
+  }
+
+  [data-design="dbim"] .db-split__side {
+    position: sticky;
+    top: 140px; /* reference .stickybox */
+  }
+
+  [data-design="dbim"] .db-split__side--static {
+    position: static;
+  }
+
+  @media (max-width: 991.5px) {
+    [data-design="dbim"] .db-split,
+    [data-design="dbim"] .db-contact {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    [data-design="dbim"] .db-split__side {
+      position: static;
+    }
+  }
+
+  [data-design="dbim"] .db-heading {
+    margin: 0 0 10px; /* reference */
+    color: var(--sa-color-primaryScale-800);
+    font-size: var(--db-fs-h2);
+    font-weight: var(--sa-font-weight-regular);
+    line-height: 27px;
+    letter-spacing: -0.12px;
+  }
+
+  [data-design="dbim"] .db-prose p {
+    margin: 0 0 10px; /* reference */
+    font-size: var(--db-fs-p);
+    line-height: 21px;
+  }
+
+  [data-design="dbim"] .db-prose--justify p {
+    text-align: justify;
+  }
+
+  [data-design="dbim"] .db-prose--rti {
+    margin: 15px 0 30px; /* reference: h2 → text 15, text → accordions 30 */
+  }
+
+  [data-design="dbim"] .db-prose--rti p {
+    line-height: 22px;
+    letter-spacing: 0.16px;
+  }
+
+  /* Grey box with the lead sentence (.visionbox) */
+  [data-design="dbim"] .db-lead-box {
+    padding: var(--sa-padding-32);
+    border-radius: 10px; /* reference */
+    background: var(--sa-color-neutralScale-100);
+  }
+
+  [data-design="dbim"] .db-lead-box h2 {
+    margin: 0;
+    color: var(--sa-color-primaryScale-800);
+    font-size: var(--db-fs-h2);
+    font-weight: var(--sa-font-weight-medium);
+    line-height: 36px;
+  }
+
+  /* Soft button-link (.download-btn) */
+  [data-design="dbim"] .db-soft-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-primaryScale-100);
+    color: var(--sa-color-primaryScale-800);
+    font-size: var(--db-fs-h4);
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: 18px;
+    letter-spacing: 0.12px;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  [data-design="dbim"] .db-soft-btn:hover {
+    background: var(--sa-color-primaryScale-200);
+  }
+
+  [data-design="dbim"] :is(.db-soft-btn, .db-pq a, .db-event a, .db-rti-nav a, .db-table a, .db-rti-more a):focus-visible {
+    outline: 2px solid var(--sa-color-primaryScale-800);
+    outline-offset: 2px;
+  }
+
+  /* ── Contact Us (.addressbox | .mapbox) ─────────────────────────────────── */
+  [data-design="dbim"] .db-contact__address {
+    display: flex;
+    align-items: flex-start;
+    gap: 5px; /* reference */
+  }
+
+  [data-design="dbim"] .db-contact__address > [aria-hidden="true"] {
+    flex: none;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-contact__address h2 {
+    margin: 0 0 5px; /* reference */
+    font-size: var(--db-fs-h2);
+    font-weight: var(--sa-font-weight-medium);
+    line-height: 24px;
+  }
+
+  [data-design="dbim"] .db-contact__address p {
+    margin: 0 0 10px;
+    font-size: var(--db-fs-p);
+    line-height: 21px;
+  }
+
+  [data-design="dbim"] .db-contact__reach span {
+    display: block;
+  }
+
+  [data-design="dbim"] .db-contact__reach .sr-only {
+    display: inline;
+  }
+
+  [data-design="dbim"] .db-contact__map iframe {
+    display: block;
+    width: 100%;
+    height: 156px; /* reference: the iframe's own 150 on its line box */
+    border: 0;
+  }
+
+  @media (max-width: 991.5px) {
+    [data-design="dbim"] .db-contact {
+      row-gap: var(--sa-stack-48);
+    }
+  }
+
+  /* ── RTI: the side menu (.rti-accordion) — DS Accordion, restyled ─────────── */
+  [data-design="dbim"] .db-rti-nav .sa-accordion-item {
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    border: 0;
+    border-radius: 10px; /* reference */
+    background: var(--sa-color-neutralScale-50);
+  }
+
+  [data-design="dbim"] .db-rti-nav .sa-accordion-item__trigger,
+  [data-design="dbim"] .db-rti-nav .sa-accordion-item__trigger:hover {
+    min-height: 30px;
+    padding: 0;
+    background: none;
+  }
+
+  [data-design="dbim"] .db-rti-nav .sa-accordion-item__title {
+    color: var(--sa-color-text-default);
+    font-size: var(--db-fs-h4);
+    font-weight: var(--sa-font-weight-regular);
+    line-height: 20px;
+  }
+
+  [data-design="dbim"] .db-rti-nav .sa-accordion-item__icon,
+  [data-design="dbim"] .db-rti-acc .sa-accordion-item__icon {
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-rti-nav .sa-accordion-item__content {
+    margin-top: var(--sa-padding-8);
+    padding: 0;
+    border-top: 2px solid var(--sa-color-primaryScale-800);
+    background: none;
+  }
+
+  [data-design="dbim"] .db-rti-nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-rti-nav li a {
+    display: block;
+    padding: var(--sa-padding-8) var(--sa-padding-32);
+    border-bottom: 0.5px solid var(--sa-color-primaryScale-800);
+    color: var(--sa-color-text-default);
+    font-size: var(--db-fs-h4);
+    line-height: 20px;
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-rti-nav li a:hover {
+    text-decoration: underline;
+  }
+
+  /* ── RTI: the CPIO / FAA accordions (.department-accordian) ──────────────── */
+  [data-design="dbim"] .db-rti-acc {
+    gap: 21px; /* reference margin-bottom */
+  }
+
+  [data-design="dbim"] .db-rti-acc .sa-accordion-item {
+    border: 1px solid var(--sa-color-neutralScale-100);
+    border-radius: var(--sa-shape-8);
+  }
+
+  [data-design="dbim"] .db-rti-acc .sa-accordion-item__trigger {
+    padding: 17px var(--sa-padding-32); /* 16 + 1 border = the reference's 58px row */
+  }
+
+  [data-design="dbim"] .db-rti-acc .sa-accordion-item__title {
+    color: var(--sa-color-primaryScale-800);
+    font-size: var(--db-fs-h3);
+    font-weight: var(--sa-font-weight-medium);
+    line-height: 24px;
+  }
+
+  [data-design="dbim"] .db-rti-acc .sa-accordion-item__content {
+    padding: 0 var(--sa-padding-32) var(--sa-padding-16);
+    border-top: 0;
+  }
+
+  [data-design="dbim"] .db-rti-more {
+    margin: var(--sa-padding-12) 0 0;
+    font-size: var(--db-fs-p);
+  }
+
+  [data-design="dbim"] .db-rti-more a,
+  [data-design="dbim"] .db-table a {
+    color: var(--sa-color-primaryScale-600);
+  }
+
+  [data-design="dbim"] .db-table-wrap {
+    overflow-x: auto;
+  }
+
+  [data-design="dbim"] .db-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--db-fs-h4);
+    line-height: 18px;
+  }
+
+  [data-design="dbim"] .db-table th {
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    background: var(--sa-color-primaryScale-100);
+    color: var(--sa-color-primaryScale-800);
+    font-weight: var(--sa-font-weight-semibold);
+    text-align: left;
+  }
+
+  [data-design="dbim"] .db-table td {
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    border-bottom: 1px solid var(--sa-color-neutralScale-100);
+    vertical-align: top;
+    overflow-wrap: anywhere;
+  }
+
+  @media (max-width: 991.5px) {
+    [data-design="dbim"] .db-rti-acc .sa-accordion-item__trigger {
+      padding-inline: var(--sa-padding-32);
+    }
+  }
+
+  /* ── Parliament Questions (.parliamentquesbox) ───────────────────────────── */
+  [data-design="dbim"] .db-pq {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 535px));
+    justify-content: center;
+    gap: 15px; /* reference: two col-md-5 with the 7.5px half-gutters */
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-pq__card {
+    padding-bottom: var(--sa-padding-12);
+    overflow: hidden;
+    border: 1px solid var(--sa-color-neutralScale-100);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-color-neutralScale-0);
+  }
+
+  [data-design="dbim"] .db-pq__img {
+    display: block;
+    width: 100%;
+    height: 185px; /* reference */
+    object-fit: cover;
+  }
+
+  [data-design="dbim"] .db-pq__body {
+    padding: var(--sa-padding-12) var(--sa-padding-24);
+  }
+
+  [data-design="dbim"] .db-pq__title {
+    margin: 0 0 5px; /* reference */
+    color: var(--sa-color-text-default);
+    font-size: var(--db-fs-h3);
+    font-weight: var(--sa-font-weight-medium);
+    line-height: 24px;
+  }
+
+  [data-design="dbim"] .db-pq__row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--sa-stack-16);
+  }
+
+  [data-design="dbim"] .db-pq__url {
+    min-width: 0;
+    min-height: 0;
+    color: var(--sa-color-neutralScale-700);
+    font-size: var(--db-fs-h4);
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: 18px;
+    letter-spacing: 0.1px;
+    text-decoration: underline;
+    overflow-wrap: anywhere;
+  }
+
+  [data-design="dbim"] .db-pq__go {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--sa-padding-40);
+    height: var(--sa-padding-40);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-primaryScale-200);
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-pq__go:hover {
+    background: var(--sa-color-primaryScale-100);
+  }
+
+  @media (max-width: 767.5px) {
+    [data-design="dbim"] .db-pq {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--sa-stack-16);
+    }
+  }
+
+  /* ── Events ─────────────────────────────────────────────────────────────── */
+  [data-design="dbim"] .db-event-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-event {
+    margin-bottom: 25px; /* reference */
+    padding: 15px; /* reference */
+    border: 5px solid var(--sa-color-neutralScale-50);
+    text-align: justify;
+  }
+
+  [data-design="dbim"] .db-event h3 {
+    margin: 0 0 5px;
+    font-size: var(--db-fs-h3);
+    font-weight: var(--sa-font-weight-medium);
+    line-height: 1.2;
+  }
+
+  [data-design="dbim"] .db-event p,
+  [data-design="dbim"] .db-event__body :is(p, li) {
+    margin: 0 0 10px;
+    font-size: var(--db-fs-p);
+    line-height: 21px;
+  }
+
+  [data-design="dbim"] .db-event__body :is(ul, ol) {
+    margin: 0 0 10px;
+    padding-left: var(--sa-padding-24);
+  }
+
+  [data-design="dbim"] .db-event__body img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* The reference's Bootstrap link blue (#0D6EFD) is not a DBIM colour; 600 is the group's link. */
+  [data-design="dbim"] .db-event a {
+    color: var(--sa-color-primaryScale-600);
+    text-decoration: underline;
+  }
+
+  [data-design="dbim"] .db-upcoming {
+    margin: var(--sa-padding-16) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-upcoming li + li {
+    margin-top: var(--sa-padding-16);
+    padding-top: var(--sa-padding-16);
+    border-top: 1px solid var(--sa-color-neutralScale-200);
+  }
+
+  [data-design="dbim"] .db-upcoming p {
+    margin: 0;
+    font-size: var(--db-fs-p);
+    line-height: 21px;
+  }
+
+  [data-design="dbim"] .db-upcoming .db-upcoming__title {
+    color: var(--sa-color-primaryScale-800);
+    font-weight: var(--sa-font-weight-medium);
+  }
+}
+/* ds-exempt-end */

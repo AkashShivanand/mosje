@@ -28,6 +28,9 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       "The hero's SAMAVESH lockup is `aria-hidden`, because it is decorative branding a screen-reader user would otherwise hear before reaching the form; the Signing Into strip beside it is content and stays exposed, so the reader is told which portal this is. The footer is a `<nav>` with its own accessible name.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (aria-required-children, aria-required-parent) on /design-system/components/auth/portal-login-shell; manual screen-reader check outstanding",
   },
   {
     criterion: "2.4.3 Focus Order",

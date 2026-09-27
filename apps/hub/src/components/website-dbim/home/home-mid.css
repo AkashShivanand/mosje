@@ -1,0 +1,528 @@
+/* ds-exempt-start(third-party): type sizes, leading and tracking are transcribed from the DBIM 3.0 reference template (master-socialjustice.digifootprint.gov.in, root 62.5%, rems divided by 1.6), which the DBIM review team mandated on 25 Sep 2026; colour stays token-bound */
+/* ─────────────────────────────────────────────────────────────────────────────
+   DBIM home — the middle sections: Key Offerings + What's New (grey band) and
+   Recent Documents + Explore User Personas + Important Links (white band).
+   Values are the reference's computed styles at 1440 and its raw stylesheet for the
+   other buckets; spec: docs/research/dbim-reference/components/home-mid.spec.md.
+   Colours are tokens (the subtree is data-brand="dbim"). Selectors carry three parts
+   so they outrank the design system's two-class `.ds-btn` rules in the same layer.
+   ───────────────────────────────────────────────────────────────────────────── */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* Icon sets its size inline; the chevrons read this so a breakpoint can change it. */
+  [data-design="dbim"] .db-hm {
+    --db-hm-chev: 24px; /* reference: arrow_forward_ios 2.4rem */
+    --db-hm-col-pad: 15px; /* reference: Bootstrap g-5 half-gutter */
+  }
+
+  [data-design="dbim"] .db-hm ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-hm a:focus-visible {
+    outline: var(--sa-stroke-2) solid var(--sa-color-text-default);
+    outline-offset: var(--sa-padding-2);
+  }
+
+  [data-design="dbim"] .db-hm .db-hm-head {
+    margin-bottom: 30px; /* reference: 3rem */
+  }
+
+  [data-design="dbim"] .db-hm .db-hm-more {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: var(--sa-stack-12);
+  }
+
+  /* ── Band 1: Key Offerings + What's New ─────────────────────────────────── */
+  [data-design="dbim"] .db-hm-offer {
+    padding: var(--sa-padding-40) var(--db-gutter);
+    background: var(--sa-color-neutralScale-100);
+  }
+
+  /* Bootstrap `row g-5` with col-xl-8 / col-xl-4: each column padded, not gapped,
+     which is what gives the reference its 845 / 407 split at 1440. */
+  [data-design="dbim"] .db-hm-offer .db-hm-offer__row {
+    display: grid;
+    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+  }
+
+  [data-design="dbim"] .db-hm-offer .db-hm-offer__main,
+  [data-design="dbim"] .db-hm-offer .db-hm-offer__side {
+    display: flex;
+    flex-direction: column;
+    padding-inline: var(--db-hm-col-pad);
+  }
+
+  /* The panel takes the column's height, so both View More buttons share a line. */
+  [data-design="dbim"] .db-hm-offer .db-hm-news {
+    flex: 1 1 auto;
+    min-height: 301px; /* reference: max-height 301 at 1280–1536 */
+    padding: var(--sa-padding-16) var(--sa-padding-24);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-primaryScale-800);
+    color: var(--sa-color-neutralScale-0);
+  }
+
+  [data-design="dbim"] .db-hm-offer .db-hm-news .db-no-data {
+    color: var(--sa-color-neutralScale-0);
+  }
+
+  /* Tabs — two equal halves, 46 high, 1px primary-800 frame. */
+  [data-design="dbim"] .db-hm-tabs .db-hm-tabs__list {
+    display: flex;
+  }
+
+  [data-design="dbim"] .db-hm-tabs .db-hm-tab {
+    --sa-btn-fill: var(--sa-color-neutralScale-0);
+    --sa-btn-ink: var(--sa-color-primaryScale-800);
+    --sa-btn-edge: var(--sa-color-primaryScale-800);
+    /* Bootstrap width:100% on both: equal halves until a label needs more, as
+       "Schemes and Services" does on a phone (214 / 144 at 390). */
+    flex: 1 1 100%;
+    min-width: min-content;
+    height: 46px; /* reference */
+    min-height: 0;
+    padding: 0 var(--sa-padding-20);
+    border: var(--sa-stroke-1) solid var(--sa-color-primaryScale-800);
+    border-radius: 0;
+    background: var(--sa-color-neutralScale-0);
+    color: var(--sa-color-primaryScale-800);
+    font-size: 1rem; /* 16px: 1.6rem !important at every width */
+    font-weight: var(--sa-font-weight-regular);
+    line-height: normal;
+    white-space: nowrap;
+  }
+
+  [data-design="dbim"] .db-hm-tabs .db-hm-tab:first-child {
+    border-radius: var(--sa-shape-4) 0 0 var(--sa-shape-4);
+  }
+
+  [data-design="dbim"] .db-hm-tabs .db-hm-tab:last-child {
+    border-radius: 0 var(--sa-shape-4) var(--sa-shape-4) 0;
+  }
+
+  [data-design="dbim"] .db-hm-tabs .db-hm-tab[aria-selected="true"] {
+    --sa-btn-fill: var(--sa-color-primaryScale-800);
+    --sa-btn-ink: var(--sa-color-neutralScale-0);
+    background: var(--sa-color-primaryScale-800);
+    color: var(--sa-color-neutralScale-0);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  [data-design="dbim"] .db-hm-tabs .db-hm-tab:focus-visible {
+    outline: var(--sa-stroke-2) solid var(--sa-color-text-default);
+    outline-offset: var(--sa-padding-2);
+  }
+
+  /* Both columns share a height, and each box fills it, so the two View More
+     buttons always sit on one line whichever list is longer. */
+  [data-design="dbim"] .db-hm-offer .db-hm-tabs,
+  [data-design="dbim"] .db-hm-offer .db-hm-tabs__panel:not([hidden]) {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+  }
+
+  [data-design="dbim"] .db-hm-offer .db-hm-tabs__panel .db-hm-list {
+    flex: 1 1 auto;
+  }
+
+  /* List — white box, rows ruled in primary-200. */
+  /* The reference's box: 245px at 1440, holding four rows (300px at ≤500). No
+     scroll — the rows shown are the rows that fit, and View More carries the rest. */
+  [data-design="dbim"] .db-hm-offer .db-hm-list {
+    min-height: 245px; /* reference */
+    margin-top: var(--sa-stack-12);
+    padding: 0 var(--sa-padding-16);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-neutralScale-0);
+  }
+
+  [data-design="dbim"] .db-hm-list .db-hm-list__row {
+    margin-right: 10px; /* reference: me-3 */
+    border-bottom: var(--sa-stroke-1) solid var(--sa-color-primaryScale-200);
+  }
+
+  [data-design="dbim"] .db-hm-list .db-hm-list__row:not(:last-child) {
+    margin-bottom: var(--sa-stack-8);
+  }
+
+  [data-design="dbim"] .db-hm-list .db-hm-list__row:last-child {
+    border-bottom: 0;
+  }
+
+  /* The reference's box ends 10px under its fourth row's glyph. */
+  [data-design="dbim"] .db-hm-list .db-hm-list__row:last-child .db-hm-list__link {
+    padding-bottom: 10px; /* reference */
+  }
+
+  /* Bootstrap col-10 / col-2 inside a 24px-padded row, 7.5px column padding. */
+  [data-design="dbim"] .db-hm-list .db-hm-list__link {
+    display: grid;
+    grid-template-columns: minmax(0, 10fr) minmax(0, 2fr);
+    align-items: center;
+    padding: var(--sa-padding-16) 31.5px; /* reference: 24 + 7.5 */
+    color: var(--sa-color-text-default);
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-hm-list .db-hm-list__title {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 0.875rem; /* 14px */
+    line-height: normal;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
+  [data-design="dbim"] .db-hm-list .db-hm-list__link:hover .db-hm-list__title {
+    text-decoration: underline;
+  }
+
+  [data-design="dbim"] .db-hm-list .db-hm-list__chev {
+    display: flex;
+    justify-content: flex-end;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  /* What's New items — the reference's populated rules (the capture was empty). */
+  [data-design="dbim"] .db-hm-news .db-hm-news__item {
+    border-bottom: var(--sa-stroke-1) solid var(--sa-color-neutralScale-0);
+  }
+
+  [data-design="dbim"] .db-hm-news .db-hm-news__item:last-child {
+    border-bottom: 0;
+  }
+
+  [data-design="dbim"] .db-hm-news .db-hm-news__link {
+    display: flex;
+    gap: var(--sa-inline-12);
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px var(--sa-padding-16); /* reference */
+    color: var(--sa-color-neutralScale-0);
+    font-size: var(--db-fs-p);
+    line-height: normal;
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-hm-news .db-hm-news__link:hover .db-hm-news__title {
+    text-decoration: underline;
+  }
+
+  [data-design="dbim"] .db-hm-news .db-hm-news__link:focus-visible {
+    outline-color: var(--sa-color-neutralScale-0);
+  }
+
+  [data-design="dbim"] .db-hm-news .db-hm-news__title {
+    display: -webkit-box;
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  /* ── Band 2: Recent Documents · Explore User Personas · Important Links ─── */
+  [data-design="dbim"] .db-hm-docs {
+    padding: var(--sa-padding-80) var(--sa-padding-120);
+    background: var(--sa-color-neutralScale-0);
+  }
+
+  /* Bootstrap 6 / 3 / 3 with 7.5px column padding: 592.5 · 288.75 · 288.75 at 1440. */
+  [data-design="dbim"] .db-hm-docs .db-hm-docs__row {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+    row-gap: 30px; /* reference: row-gap-5 */
+    margin-inline: -7.5px; /* reference */
+  }
+
+  [data-design="dbim"] .db-hm-docs .db-hm-docs__col {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding-inline: 7.5px; /* reference */
+  }
+
+  [data-design="dbim"] .db-hm-docs .db-hm-head--center {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Cards: 2×2, inset 20 from the column, 15 apart across and 20 down. */
+  [data-design="dbim"] .db-hm-docs .db-hm-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sa-stack-20) 15px; /* reference: g-4 */
+    padding-left: var(--sa-padding-20);
+  }
+
+  [data-design="dbim"] .db-hm-cards .db-hm-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    box-sizing: border-box;
+    height: 100%;
+    min-height: 140px; /* reference */
+    padding: var(--sa-padding-24);
+    border: var(--sa-stroke-1) solid var(--sa-color-primaryScale-800);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-neutralScale-0);
+    /* reference: 0 6 12 / 0 2 4 rgba(35,35,47,.08/.06) → the nearest elevation */
+    box-shadow: var(--sa-elevation-raised);
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-hm-cards .db-hm-card__cat {
+    color: var(--sa-color-primaryScale-800);
+    font-size: var(--db-fs-h3);
+    font-weight: var(--sa-font-weight-bold);
+    line-height: normal;
+    text-transform: capitalize;
+  }
+
+  [data-design="dbim"] .db-hm-cards .db-hm-card__title {
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--sa-color-text-default);
+    font-size: var(--db-fs-p);
+    line-height: normal;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
+  [data-design="dbim"] .db-hm-cards .db-hm-card:hover .db-hm-card__title {
+    text-decoration: underline;
+  }
+
+  [data-design="dbim"] .db-hm-docs .db-hm-more--docs {
+    margin-top: 22px; /* reference: list mb 10 + 12 */
+  }
+
+  /* Persona carousel */
+  [data-design="dbim"] .db-hm-persona .db-hm-persona__link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-hm-persona .db-hm-persona__img {
+    width: 260px; /* reference: .carousel-img */
+    height: 260px;
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-color-primaryScale-200);
+    object-fit: cover;
+  }
+
+  [data-design="dbim"] .db-hm-persona .db-hm-persona__name {
+    margin: 30px 0; /* reference: mt 30, mb-5 */
+    color: var(--sa-color-primaryScale-800);
+    font-size: var(--db-fs-h3);
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: 26px; /* reference */
+    letter-spacing: 0.18px; /* reference */
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  [data-design="dbim"] .db-hm-persona .db-hm-persona__link:hover .db-hm-persona__name {
+    text-decoration: underline;
+  }
+
+  [data-design="dbim"] .db-hm-persona .db-hm-persona__controls {
+    display: flex;
+    gap: 10px; /* reference */
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0; /* reference: my-3 */
+  }
+
+  [data-design="dbim"] .db-hm-persona .db-hm-persona__dots {
+    display: flex;
+    gap: 15px; /* reference: gap-4 */
+  }
+
+  [data-design="dbim"] .db-hm-persona .db-hm-persona__arrow {
+    --sa-btn-ink: var(--sa-color-primaryScale-800);
+    width: var(--sa-padding-24);
+    min-width: 0;
+    height: 28px; /* reference */
+    min-height: 0;
+    padding: 0;
+    border-radius: var(--sa-shape-full);
+    background: transparent;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-hm-persona .db-hm-persona__dot {
+    --sa-btn-fill: var(--sa-color-primaryScale-600);
+    width: var(--sa-padding-12);
+    min-width: 0;
+    height: var(--sa-padding-12);
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-color-primaryScale-600);
+  }
+
+  [data-design="dbim"] .db-hm-persona .db-hm-persona__dot[aria-current="true"] {
+    border-radius: 0;
+    background: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-hm-persona .db-hm-persona__arrow:focus-visible,
+  [data-design="dbim"] .db-hm-persona .db-hm-persona__dot:focus-visible {
+    outline: var(--sa-stroke-2) solid var(--sa-color-text-default);
+    outline-offset: var(--sa-padding-2);
+  }
+
+  /* Important Links */
+  [data-design="dbim"] .db-hm-docs .db-hm-links {
+    padding-right: var(--sa-padding-12);
+  }
+
+  [data-design="dbim"] .db-hm-links .db-hm-links__item {
+    padding: 18px 0; /* reference */
+    /* reference: Bootstrap's #DEE2E6 → the nearest neutral border token */
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+
+  [data-design="dbim"] .db-hm-links .db-hm-links__link {
+    display: flex;
+    gap: var(--sa-inline-16);
+    align-items: center;
+    justify-content: space-between;
+    color: var(--sa-color-text-default);
+    font-size: 1rem; /* 16px; 14px at 1280–1536, below */
+    line-height: normal;
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-hm-links .db-hm-links__link:hover span:first-child {
+    text-decoration: underline;
+  }
+
+  /* ── Breakpoints (the reference's: 1537 · 1280 · 1200 · 992 · 768 · 500) ── */
+  @media (max-width: 1536.5px) {
+    [data-design="dbim"] .db-hm-persona .db-hm-persona__img {
+      width: 200px; /* reference: 200 !important at 1280–1536 */
+      height: 200px;
+    }
+
+    [data-design="dbim"] .db-hm-links .db-hm-links__link {
+      font-size: 0.875rem; /* 14px */
+    }
+  }
+
+  @media (max-width: 1279.5px) {
+    [data-design="dbim"] .db-hm-persona .db-hm-persona__img {
+      width: 260px;
+      height: 260px;
+    }
+
+    [data-design="dbim"] .db-hm-links .db-hm-links__link {
+      font-size: 1rem; /* 16px */
+    }
+  }
+
+  @media (max-width: 1199.5px) {
+    [data-design="dbim"] .db-hm-offer .db-hm-offer__row,
+    [data-design="dbim"] .db-hm-docs .db-hm-docs__row {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: 30px; /* reference: g-5 / row-gap-5 */
+    }
+
+    [data-design="dbim"] .db-hm-docs .db-hm-head--center {
+      justify-content: flex-start;
+    }
+  }
+
+  @media (max-width: 991.5px) {
+    [data-design="dbim"] .db-hm-docs {
+      padding: var(--sa-padding-32) var(--sa-padding-16);
+    }
+  }
+
+  @media (max-width: 768px) {
+    [data-design="dbim"] .db-hm {
+      --db-hm-chev: 16px; /* reference: 1.6rem */
+    }
+
+    [data-design="dbim"] .db-hm-offer .db-hm-news {
+      padding-block: 0;
+    }
+
+    [data-design="dbim"] .db-hm-news .db-hm-news__link {
+      padding-inline: 0;
+      font-size: 0.875rem; /* 14px */
+    }
+  }
+
+  @media (max-width: 767.5px) {
+    [data-design="dbim"] .db-hm {
+      --db-hm-col-pad: 0px;
+    }
+
+    [data-design="dbim"] .db-hm .db-hm-head {
+      margin-bottom: var(--sa-stack-16);
+    }
+
+    /* .paddingRemove: on a phone a row's text starts at the list's own 16px. */
+    [data-design="dbim"] .db-hm-list .db-hm-list__link {
+      padding-inline: 0 7.5px; /* reference: the chevron column keeps its padding */
+    }
+
+    [data-design="dbim"] .db-hm-offer .db-hm-tabs {
+      margin-top: 14px; /* reference: tabs mt 30 less the heading's 16 */
+    }
+
+    [data-design="dbim"] .db-hm .db-hm-more {
+      margin-top: var(--sa-stack-8);
+    }
+
+    [data-design="dbim"] .db-hm-docs .db-hm-cards {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 5px; /* reference: row-gap-2 */
+    }
+
+    /* On a phone a card keeps only its bottom rule, and no shadow. */
+    [data-design="dbim"] .db-hm-cards .db-hm-card {
+      padding: var(--sa-padding-16);
+      border-width: 0 0 var(--sa-stroke-1);
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    [data-design="dbim"] .db-hm-docs .db-hm-more--docs {
+      margin-top: 18px; /* reference: list mb 10 + 8 */
+    }
+  }
+
+  @media (max-width: 500.5px) {
+    [data-design="dbim"] .db-hm-offer .db-hm-list {
+      min-height: 300px; /* reference */
+      margin-top: var(--sa-stack-8);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    [data-design="dbim"] .db-hm-persona .db-hm-persona__link {
+      animation: db-hm-fade 0.3s ease-in-out;
+    }
+  }
+
+  @keyframes db-hm-fade {
+    from { opacity: 0.4; }
+    to { opacity: 1; }
+  }
+}
+/* ds-exempt-end */

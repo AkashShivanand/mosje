@@ -24,6 +24,10 @@ const ROOT = fileURLToPath(new URL("../..", import.meta.url));
 const SCOPES = ["packages/design-system", "apps/hub/src"];
 const SKIP = new Set(["node_modules", ".next", "dist", "storybook-static", "public", "coverage"]);
 const BASELINE = join(ROOT, "tools/breakpoint-ladder/baseline.json");
+/** Path prefix → why its media queries follow a ladder that is not the estate's. Counted and reported, never silently. */
+const THIRD_PARTY = new Map([
+  ["apps/hub/src/components/website-dbim/", "the DBIM design switches layout where the DBIM 3.0 reference template does (1537 · 1280 · 992 · 768 · 440), transcribed from it; the DBIM review team mandated the template on 25 Sep 2026"],
+]);
 
 const tokens = readFileSync(join(ROOT, "packages/design-system/tokens.css"), "utf8");
 const ladder = [...tokens.matchAll(/--sa-ref-breakpoint-[a-zA-Z]+:\s*(\d+)px/g)].map((m) => Number(m[1]));
@@ -42,6 +46,7 @@ const strip = (s) => s.replace(/\/\*[\s\S]*?\*\//g, " ");
 
 const offLadder = {};
 let total = 0;
+let thirdParty = 0;
 for (const scope of SCOPES) for (const file of walk(join(ROOT, scope))) {
   const src = strip(readFileSync(file, "utf8"));
   for (const m of src.matchAll(/@media[^{]*?\((?:min|max)-width:\s*(\d+)px\)/g)) {
@@ -49,6 +54,7 @@ for (const scope of SCOPES) for (const file of walk(join(ROOT, scope))) {
     const px = Number(m[1]);
     if (allowed.has(px)) continue;
     const rel = relative(ROOT, file);
+    if ([...THIRD_PARTY.keys()].some((k) => rel.startsWith(k))) { thirdParty++; continue; }
     (offLadder[rel] ??= []).push(px);
   }
 }
@@ -71,3 +77,4 @@ if (count < base.offLadder) {
   process.exit(1);
 }
 console.log(`✔ breakpoint ladder: ${total} media queries, ${count} off-ladder literal(s) — at the baseline (${distinct.join(", ")}). Ladder ${ladder.join(" · ")}.`);
+if (thirdParty) for (const [k, why] of THIRD_PARTY) console.log(`  ℹ ${thirdParty} query literal(s) under ${k} follow a third-party ladder — ${why}.`);

@@ -23,6 +23,9 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       "The mark renders with alt=\"\" by default, because it sits beside the organisation's name in real text. Passing `name` sets a real alt, and is only correct where the mark stands alone.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (image-alt) on /design-system/components/brand/org-logo; manual screen-reader check outstanding",
   },
   {
     criterion: "H67 Decorative Images",

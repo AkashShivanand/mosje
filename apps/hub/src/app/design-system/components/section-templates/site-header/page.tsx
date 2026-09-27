@@ -49,7 +49,7 @@ const SHAPES: PropDef[] = [
     name: "BrandLines · department",
     type: "string",
     required: true,
-    description: "The primary line, 20/24 SemiBold. The full official name, never an acronym.",
+    description: "The primary line, 16/24 SemiBold (Headline 6; 14/20 on a phone). The full official name, never an acronym.",
   },
   { name: "BrandLines · ministry", type: "string", description: "“Ministry of Social Justice & Empowerment”, 12/16, muted." },
   { name: "BrandLines · org", type: "string", description: "“Government of India”, 12/16, muted." },

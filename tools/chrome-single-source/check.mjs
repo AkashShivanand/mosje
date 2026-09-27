@@ -43,6 +43,10 @@ const EXEMPT = new Map([
     "packages/design-system/components/utilities/accessibility-controls.tsx",
     "IS the accessibility bar's control cluster — the stepper this gate looks for. Extracted so NavSheet can render the same three controls below breakpoint/tablet, where the bar drops them.",
   ],
+  // The website's DBIM design renders DBIM Header 1 — emblem, search, partner mark and exactly
+  // three controls in one row — which SiteHeader and AccessibilityBar do not draw. It is still the
+  // page's single accessibility door, through the DS's own useAccessibilityEntryClaim.
+  ["apps/hub/src/components/website-dbim/", "the DBIM design is a clone of the DBIM 3.0 reference template (master-socialjustice.digifootprint.gov.in) that the DBIM review team mandated on 25 Sep 2026; its values are transcribed from that template, not chosen"],
   // Documentation ABOUT the chrome quotes it; that is the page's subject.
   ["apps/hub/src/app/design-system/", "design-system documentation — quoting the chrome is the subject"],
   ["apps/storybook/stories/", "stories demonstrate the components"],

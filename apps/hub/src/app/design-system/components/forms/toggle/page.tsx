@@ -27,23 +27,35 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       "A real `<input type=\"checkbox\">` sits behind the track, so Tab reaches it and Space toggles it. No key handling is re-implemented.",
+    status: "partial",
+    evidence:
+      "Keyboard smoke test (Playwright, Chromium 1440x900), 2026-09-22: tabbed through the specimen on /design-system/components/forms/toggle - 4 focusable elements, each with a focus indicator that disappears on blur, focus left the specimen with no trap; manual screen-reader check outstanding",
   },
   {
     criterion: "2.4.7 Focus Visible",
     level: "AA",
     description: "The hidden input's focus is drawn on the track through `:focus-visible`.",
+    status: "partial",
+    evidence:
+      "Keyboard smoke test (Playwright, Chromium 1440x900), 2026-09-22: tabbed through the specimen on /design-system/components/forms/toggle - 4 focusable elements, each with a focus indicator that disappears on blur, focus left the specimen with no trap; manual screen-reader check outstanding",
   },
   {
     criterion: "2.5.8 Target Size (Minimum)",
     level: "AA",
     description:
       "The label is part of the target, and both sizes clear 24×24 on the track alone. A switch rendered with no label does not meet this comfortably on its own.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (target-size) on /design-system/components/forms/toggle; manual screen-reader check outstanding",
   },
   {
     criterion: "4.1.2 Name, Role, Value",
     level: "A",
     description:
       "`role=\"switch\"` with `aria-checked` announces the control as on or off rather than as checked, which is what distinguishes it from a checkbox to a screen-reader user.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (aria-allowed-attr, aria-conditional-attr, aria-deprecated-role, aria-hidden-focus, aria-prohibited-attr, aria-required-attr, aria-roles, aria-valid-attr, aria-valid-attr-value, duplicate-id-aria, label, nested-interactive, select-name) on /design-system/components/forms/toggle; manual screen-reader check outstanding",
   },
   {
     criterion: "1.4.1 Use of Colour",

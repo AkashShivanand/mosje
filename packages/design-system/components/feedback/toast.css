@@ -27,8 +27,8 @@
 
   .ds-toast__viewport {
     position: fixed;
-    bottom: 24px;
-    right: 24px;
+    bottom: var(--sa-stack-24);
+    right: var(--sa-inline-24);
     z-index: var(--sa-z-dropdown);
     display: flex;
     flex-direction: column;

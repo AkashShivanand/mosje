@@ -1,7 +1,10 @@
 "use client";
 
 import * as React from "react";
+import NextLink from "next/link";
 import {
+  Breadcrumb,
+  Button,
   Chip,
   cn,
   Icon,
@@ -114,10 +117,23 @@ function SortHeader({
         ? word(first === "asc" ? "desc" : "asc")
         : "the default order";
   return (
-    <button
-      type="button"
+    /* The DS `Button` at its quietest — neutral text — so the heading keeps the
+       uppercase label and the sort glyph it always had while the press, focus
+       ring and disabled treatment come from the one button in the estate. */
+    <Button
+      variant="neutral"
+      appearance="text"
+      size="sm"
       className={cn("pmw__colbtn", active && "is-active", numeric && "pmw__colbtn--num")}
       onClick={() => onSort(sortKey)}
+      iconRight={
+        <Icon
+          name={dir == null ? "unfold_more" : dir === "desc" ? "arrow_downward" : "arrow_upward"}
+          size={16}
+          className="pmw__colsort"
+          aria-hidden
+        />
+      }
       aria-label={
         dir == null
           ? `Sort by ${what}, ${next}`
@@ -125,13 +141,7 @@ function SortHeader({
       }
     >
       <span>{label}</span>
-      <Icon
-        name={dir == null ? "unfold_more" : dir === "desc" ? "arrow_downward" : "arrow_upward"}
-        size={16}
-        className="pmw__colsort"
-        aria-hidden
-      />
-    </button>
+    </Button>
   );
 }
 
@@ -1023,56 +1033,59 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
               takes the full width on its own line.
             */}
             <div className="pmw__railhead">
-                <nav className="pmw__crumbs" aria-label="Map area">
-                  <button
-                    type="button"
-                    className="pmw__crumb"
-                    onClick={() => {
-                      setFocus(null);
-                      setDistrict(null);
-                      resetPaging();
-                    }}
-                    aria-current={focus == null ? "true" : undefined}
-                    disabled={focus == null}
-                  >
-                    India
-                  </button>
-                  {focus != null && (
-                    <>
-                      <Icon name="chevron_right" size={16} className="pmw__crumbsep" aria-hidden />
-                      {/*
-                        The state crumb becomes a LINK once a district is open,
-                        and stays plain text otherwise. A trail whose middle
-                        step is inert when it is the way back is a trail that
-                        only goes one way.
-                      */}
-                      {district == null ? (
-                        <span className="pmw__crumb pmw__crumb--here" aria-current="true">
-                          {focus}
-                        </span>
-                      ) : (
-                        <button
-                          type="button"
-                          className="pmw__crumb"
-                          onClick={() => {
-                            setDistrict(null);
-                            resetPaging();
-                          }}
-                        >
-                          {focus}
-                        </button>
-                      )}
-                    </>
-                  )}
-                  {district != null && (
-                    <>
-                      <Icon name="chevron_right" size={16} className="pmw__crumbsep" aria-hidden />
-                      <span className="pmw__crumb pmw__crumb--here" aria-current="true">
-                        {district}
-                      </span>
-                    </>
-                  )}
-                </nav>
+                {/*
+                  The DS `Breadcrumb`, whose `onSelect` crumb exists for exactly
+                  this — a trail over a view that drills in place rather than
+                  changing the URL. It brings the ordered list, the chevrons, the
+                  single `aria-current` on the last crumb and the 24px targets.
+
+                  The LAST crumb is never interactive, which is what the two
+                  hand-rolled shapes here were doing by other means: "India" was
+                  a disabled button at the top level, and the level you are on
+                  was a plain span. A crumb only takes a handler where it is
+                  genuinely the way back — the state crumb once a district is
+                  open, never when it is the level on show.
+                */}
+                <Breadcrumb
+                  className="pmw__crumbs"
+                  label="Map area"
+                  wrap={false}
+                  /* Every crumb here drills in place, so none of them is a link
+                     today. It is passed anyway: the day one of these levels
+                     gains a URL, it routes rather than reloading the page, and
+                     nobody has to remember this line. */
+                  linkAs={NextLink}
+                  items={[
+                    {
+                      label: "India",
+                      ...(focus == null
+                        ? {}
+                        : {
+                            onSelect: () => {
+                              setFocus(null);
+                              setDistrict(null);
+                              resetPaging();
+                            },
+                          }),
+                    },
+                    ...(focus != null
+                      ? [
+                          {
+                            label: focus,
+                            ...(district == null
+                              ? {}
+                              : {
+                                  onSelect: () => {
+                                    setDistrict(null);
+                                    resetPaging();
+                                  },
+                                }),
+                          },
+                        ]
+                      : []),
+                    ...(district != null ? [{ label: district }] : []),
+                  ]}
+                />
 
               {/*
                 "28 of 36" means 28 of the country's 36 States and UTs have
@@ -1276,9 +1289,17 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
               ) : villageIndex.status === "error" ? (
                 <p className="pmw__empty" role="status">
                   The village register could not be loaded.{" "}
-                  <button type="button" className="pmw__retry" onClick={villageIndex.retry}>
+                  {/* The DS `Button` at `text`, reset by `.pmw__retry` to sit in
+                      the sentence rather than beside it. */}
+                  <Button
+                    variant="primary"
+                    appearance="text"
+                    size="sm"
+                    className="pmw__retry"
+                    onClick={villageIndex.retry}
+                  >
                     Try again
-                  </button>
+                  </Button>
                 </p>
               ) : villageHits.length === 0 ? (
                 /*
@@ -1323,8 +1344,15 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                           </span>
                         </div>
                       ) : (
-                        <button
-                          type="button"
+                        /* The DS `Button`, neutral and text, reset by
+                           `.pmw__rowinner` to the list's own grid track. The
+                           chevron stays a CHILD rather than `iconRight`: it is
+                           absolutely positioned in the row's right padding so it
+                           costs the village name no width, and an icon slot
+                           would put it back in the flow. */
+                        <Button
+                          variant="neutral"
+                          appearance="text"
                           className="pmw__rowinner pmw__rowinner--village"
                           onClick={() => {
                             // A village has no view of its own; the honest
@@ -1340,7 +1368,7 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                             <span className="pmw__villageplace">{`${v.district}, ${v.state}`}</span>
                           </span>
                           <Icon name="chevron_right" size={16} className="pmw__go" aria-hidden />
-                        </button>
+                        </Button>
                       )}
                     </li>
                   ))}
@@ -1376,13 +1404,22 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                   const opensDistrict =
                     focus != null && !namelessState ? r.name : null;
                   const clickable = opens != null || opensDistrict != null;
-                  const Row = clickable ? "button" : "div";
+                  /*
+                    A clickable row is the design system's Button (neutral, text)
+                    wearing the list's track, exactly as the village row below is;
+                    a row with nothing to open is a plain div and takes no control
+                    semantics. `.pmw__rowinner.ds-btn.ds-btn--text` re-states the
+                    parts of the button box the track owns.
+                  */
+                  const Row = clickable ? Button : "div";
                   return (
                     <li key={r.key} className="pmw__row">
                       <Row
                         {...(clickable
                           ? {
                               type: "button" as const,
+                              variant: "neutral" as const,
+                              appearance: "text" as const,
                               onClick: () => {
                                 if (opens != null) setFocus(opens);
                                 else setDistrict(opensDistrict);

@@ -18,7 +18,7 @@ export interface BrandLockupProps {
    * costs a full document load. Defaults to `<a>`. See `navLinkTag`.
    */
   linkAs?: React.ElementType;
-  /** Show the BETA badge above the text stack. @default false */
+  /** Show the BETA badge above the text stack (Figma: a `Navbar/BetaSash` instance). @default false */
   beta?: boolean;
   /** Compact lockup for the app-shell header (smaller emblem + tighter type). */
   compact?: boolean;
@@ -39,8 +39,10 @@ export interface BrandLockupProps {
 /**
  * SAMAVESH BrandLockup — the National Emblem + government text stack, matching the
  * UX4G / Portal Navbar Figma: a BETA badge on its own row above "Government of
- * India" (12/16) · "Ministry …" (12/16) · "Department …" (20/24 SemiBold), the four
- * rows flush at gap 0. Emblem 40x64. Measured against Figma 4235:3652.
+ * India" (12/16) · "Ministry …" (12/16) · "Department …" (16/24 SemiBold, Headline/
+ * headline-6; 14/20 below 768), the four rows flush at gap 0. Emblem 40x64. The
+ * BETA badge is the `Navbar/BetaSash` component in Figma, so it shares the sash's
+ * paint and type. Measured against Figma 4235:3652 on 2026-09-22.
  *
  * Server-safe; renders a plain <a>/<img> so it works in any basePath-ed zone.
  * Per estate rule, always the National Emblem — never an invented mark.

@@ -9,6 +9,10 @@ The single enforceable checklist for every MoSJE page/portal, merging three stan
 | **UX4G** — User Experience for Government | Design system, components, accessibility widget, UX principles | [`docs/guidelines/UX4G-3.0/`](../guidelines/UX4G-3.0/) · ux4g.gov.in · doc.ux4g.gov.in |
 | **GuDApps** — e-Governance application development | Portal data quality, authentication, forms, reports | [`docs/guidelines/GuDApps/`](../guidelines/GuDApps/) — best practice, not a gate |
 
+> **Every audit of this estate, ours and theirs, is in [`docs/audit-reports/`](../audit-reports/).**
+> Its register lists who sent what, when, and whether we have replied — read it before
+> answering a new observation, because the same point has often been raised before.
+
 > **This checklist is the gate; [`docs/guidelines/`](../guidelines/) is the source.** Read the source when a clause needs quoting exactly or the checklist compresses an area you're working in. Its README carries the precedence ladder and the register of **deliberate divergences** — check it before reporting a failure, so an intentional decision isn't logged as a defect.
 
 Legend: each item is `[ ]` checkable. **Source tags:** `[DBIM n.n]`, `[GIGW]`, `[UX4G]`. Items the MoSJE audit flagged as **failing** are marked ⚠️ (fix these first).

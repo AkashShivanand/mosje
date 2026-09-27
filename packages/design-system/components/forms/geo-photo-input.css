@@ -151,9 +151,9 @@
   /* ---- Location chip ---- */
   .ds-geophoto__chip {
     position: absolute;
-    right: 6px;
-    bottom: 6px;
-    left: 6px;
+    right: var(--sa-inline-6);
+    bottom: var(--sa-stack-6);
+    left: var(--sa-inline-6);
     display: flex;
     gap: var(--sa-stack-4);
     align-items: center;
@@ -187,8 +187,8 @@
   /* ---- Remove ---- */
   .ds-geophoto__remove {
     position: absolute;
-    top: 6px;
-    right: 6px;
+    top: var(--sa-stack-6);
+    right: var(--sa-inline-6);
     display: flex;
     align-items: center;
     justify-content: center;

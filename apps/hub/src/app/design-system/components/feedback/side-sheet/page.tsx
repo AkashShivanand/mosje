@@ -21,12 +21,18 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       'The panel carries role="dialog" with aria-modal="true", and aria-labelledby points at the generated id of the title, so it is always announced by name.',
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (button-name, nested-interactive) on /design-system/components/feedback/side-sheet; manual screen-reader check outstanding",
   },
   {
     criterion: "2.1.2 No Keyboard Trap",
     level: "A",
     description:
       "Tab and Shift+Tab cycle within the panel while it is open, and Escape leaves it. The confinement is deliberate and always has a key that releases it.",
+    status: "partial",
+    evidence:
+      "Keyboard smoke test (Playwright, Chromium 1440x900), 2026-09-22: tabbed through the specimen on /design-system/components/feedback/side-sheet - 2 focusable elements, each with a focus indicator that disappears on blur, focus left the specimen with no trap; manual screen-reader check outstanding",
   },
   {
     criterion: "2.4.3 Focus Order",

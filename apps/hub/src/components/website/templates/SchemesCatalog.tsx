@@ -2,10 +2,9 @@
 
 import { useMemo, useState } from "react";
 import NextLink from "next/link";
-import { Card, Icon, Link, buttonClasses } from "@mosje/design-system";
+import { ButtonGroup, Card, Chip, Icon, IconButton, Link, buttonClasses } from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
 import type { Crumb } from "@/components/website/layout/page-trail";
-import { cn } from "@/lib/website/utils";
 
 export interface SchemeItem {
   slug: string;
@@ -96,35 +95,35 @@ export function SchemesCatalog({
                 />
               </div>
 
-              {/* View Switcher */}
-              <div className="flex items-center rounded-lg bg-gray-200/80 p-1 self-end sm:self-auto">
-                <button
-                  type="button"
-                  onClick={() => setViewMode("grid")}
+              {/* View Switcher — an attached `ButtonGroup` of two `IconButton`s,
+                  which is the design system's shape for a pair of alternatives:
+                  one seam, rounded only at the ends, and `aria-pressed` saying
+                  which view is on. `SegmentedControl` takes text options only,
+                  and these two controls are glyphs. */}
+              <ButtonGroup
+                attached
+                aria-label="Scheme view"
+                className="self-end sm:self-auto"
+              >
+                <IconButton
+                  variant="neutral"
+                  appearance="outlined"
+                  size="sm"
                   aria-label="Grid view"
-                  className={cn(
-                    "rounded-md p-1.5 transition",
-                    viewMode === "grid"
-                      ? "bg-white text-primary shadow-xs"
-                      : "text-ink-muted hover:text-ink"
-                  )}
-                >
-                  <Icon name="grid_view" size={20} />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setViewMode("table")}
+                  aria-pressed={viewMode === "grid"}
+                  onClick={() => setViewMode("grid")}
+                  icon={<Icon name="grid_view" size={20} />}
+                />
+                <IconButton
+                  variant="neutral"
+                  appearance="outlined"
+                  size="sm"
                   aria-label="Table view"
-                  className={cn(
-                    "rounded-md p-1.5 transition",
-                    viewMode === "table"
-                      ? "bg-white text-primary shadow-xs"
-                      : "text-ink-muted hover:text-ink"
-                  )}
-                >
-                  <Icon name="table_rows" size={20} />
-                </button>
-              </div>
+                  aria-pressed={viewMode === "table"}
+                  onClick={() => setViewMode("table")}
+                  icon={<Icon name="table_rows" size={20} />}
+                />
+              </ButtonGroup>
             </div>
 
             {/* Category Filter Pills */}
@@ -132,24 +131,19 @@ export function SchemesCatalog({
               <span className="text-label-3 uppercase text-ink-muted mr-1">
                 Filter:
               </span>
-              {CATEGORIES.map((cat) => {
-                const isActive = cat === activeCategory;
-                return (
-                  <button
-                    key={cat}
-                    type="button"
-                    onClick={() => setActiveCategory(cat)}
-                    className={cn(
-                      "rounded-full px-4 py-1.5 text-label-2 transition",
-                      isActive
-                        ? "bg-primary text-white shadow-xs"
-                        : "bg-white border border-gray-200 text-ink-muted hover:border-primary/40 hover:text-primary"
-                    )}
-                  >
-                    {cat}
-                  </button>
-                );
-              })}
+              {/* The DS `Chip`: a filter row where every option stays visible,
+                  and where the selection decides the list below — which is what
+                  `solid` is for. */}
+              {CATEGORIES.map((cat) => (
+                <Chip
+                  key={cat}
+                  emphasis="solid"
+                  selected={cat === activeCategory}
+                  onSelectedChange={() => setActiveCategory(cat)}
+                >
+                  {cat}
+                </Chip>
+              ))}
             </div>
           </div>
 

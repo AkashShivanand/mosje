@@ -47,12 +47,12 @@
    enforceable standard, and GIGW 3.0 binds this estate to it.
 
    THE THREE TONES.
-     tone="light"  DEFAULT. White on saffron. Matches the Figma reference.
+     tone="light"  Opt-in. White on saffron. Was the default until 2026-09-22.
                    WCAG 2.91 FAIL (needs 4.5 body / 3 large) · APCA Lc 59.8, the
                    best perceptual score available on this ground. A DELIBERATE,
                    RECORDED DEVIATION — see docs/guidelines/README.md.
-     tone="dark"   Near-black on the same saffron. WCAG 6.50 PASS · APCA 48.9,
-                   which clears headline but NOT body. The compliant choice.
+     tone="dark"   DEFAULT. Near-black on the same saffron. WCAG 6.50 PASS · APCA
+                   48.9, which clears headline but NOT body. Figma leads with it.
      tone="tint"   Near-black on pale saffron, saffron as a top rule and a badge
                    ring. WCAG 17.29 · APCA Lc 99.1. The ONLY tone that clears
                    both standards for body text, and the recommended one.
@@ -71,7 +71,9 @@
     top of this file and on /design-system/components/navigation/samavesh-banner.
   */
   .ds-samavesh-banner {
-    /* tone="light" — the default. White on India Saffron. */
+    /* tone="light" — white on India Saffron. The BASE declarations, which the
+       default `dark` modifier overrides; kept here so each tone stays a block
+       of variables. */
     --_band-bg: var(--sa-color-brand-saffron);
     --_band-ink: var(--sa-color-text-onPrimary);
     --_band-ink-muted: var(--sa-color-text-onPrimary);
@@ -312,7 +314,7 @@
     border-radius: var(--sa-shape-full);
     padding: var(--sa-padding-2);
     flex-shrink: 0;
-    box-shadow: 0 0 0 2px var(--_badge-ring), var(--sa-elevation-card);
+    box-shadow: 0 0 0 var(--sa-stroke-2) var(--_badge-ring), var(--sa-elevation-card);
   }
 
   @media (min-width: 768px) {

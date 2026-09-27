@@ -1,0 +1,97 @@
+/* ds-exempt-start(third-party): type sizes, leading and tracking are transcribed from the DBIM 3.0 reference template (master-socialjustice.digifootprint.gov.in, root 62.5%, rems divided by 1.6), which the DBIM review team mandated on 25 Sep 2026; colour stays token-bound */
+/*
+ * The PM-AJAY dashboard page in the DBIM design (`app/website-dbim/dashboard`).
+ *
+ * The three section dashboards bring their own stylesheet
+ * (`components/website/scheme-dashboard.css`, unscoped) and colour through the `--sa-*`
+ * contract, which `data-brand="dbim"` re-binds to Colour Group 5. The At a Glance strip
+ * (`DashboardGlance`) is styled only under `[data-design="next"]` in the 2026 design's
+ * media.css, so its rules are re-stated here under `[data-design="dbim"]` — the same
+ * tokens, with the DBIM heading colour.
+ */
+@layer theme, base, components, utilities;
+
+@layer components {
+  [data-design="dbim"] .db-dash {
+    display: grid;
+    gap: var(--sa-stack-48);
+    padding-block-end: var(--sa-padding-48);
+  }
+
+  [data-design="dbim"] .db-dash__section {
+    min-width: 0;
+  }
+
+  /* ── At a Glance ─────────────────────────────────────────────────────────── */
+  [data-design="dbim"] .wn-glance {
+    display: grid;
+    gap: var(--sa-stack-16);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); /* layout geometry */
+    margin-top: var(--sa-stack-24);
+  }
+
+  [data-design="dbim"] .wn-glance__item {
+    display: grid;
+    align-content: start;
+    gap: var(--sa-stack-4);
+    padding: var(--sa-padding-20);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-base);
+  }
+
+  [data-design="dbim"] .wn-glance__label {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  [data-design="dbim"] .wn-glance__value {
+    font-size: var(--sa-type-headline-3-size);
+    line-height: var(--sa-type-headline-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-color-primaryScale-800);
+    font-variant-numeric: tabular-nums;
+  }
+
+  [data-design="dbim"] .wn-glance__period,
+  [data-design="dbim"] .wn-glance__source {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  [data-design="dbim"] .wn-glance__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-inline-8);
+    margin-top: var(--sa-stack-8);
+    padding-top: var(--sa-stack-12);
+    border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+
+  [data-design="dbim"] .wn-glance__more {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--sa-target-min);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-color-primaryScale-600);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  [data-design="dbim"] .wn-glance__more:hover {
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .wn-glance__more:focus-visible {
+    outline: var(--sa-stroke-2) solid var(--sa-color-primaryScale-600);
+    outline-offset: var(--sa-stack-2);
+  }
+}
+/* ds-exempt-end */

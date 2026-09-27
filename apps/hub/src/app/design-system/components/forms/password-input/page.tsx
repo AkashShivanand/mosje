@@ -27,16 +27,25 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       "The toggle sits after the field in DOM order, so tabbing goes field, toggle, submit. It is not a tab trap.",
+    status: "partial",
+    evidence:
+      "Keyboard smoke test (Playwright, Chromium 1440x900), 2026-09-22: tabbed through the specimen on /design-system/components/forms/password-input - 5 focusable elements, each with a focus indicator that disappears on blur, focus left the specimen with no trap; manual screen-reader check outstanding",
   },
   {
     criterion: "2.4.7 Focus Visible",
     level: "AA",
     description: "Focus is drawn on the field and on the toggle separately.",
+    status: "partial",
+    evidence:
+      "Keyboard smoke test (Playwright, Chromium 1440x900), 2026-09-22: tabbed through the specimen on /design-system/components/forms/password-input - 5 focusable elements, each with a focus indicator that disappears on blur, focus left the specimen with no trap; manual screen-reader check outstanding",
   },
   {
     criterion: "2.5.8 Target Size (Minimum)",
     level: "AA",
     description: "The field inherits the 44px minimum height of Input, and the toggle is sized within it past 24×24.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (target-size) on /design-system/components/forms/password-input; manual screen-reader check outstanding",
   },
   {
     criterion: "3.3.8 Accessible Authentication (Minimum)",
@@ -49,6 +58,9 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       "The toggle is a real `<button type=\"button\">` carrying `aria-pressed` for the current state alongside an action-shaped name.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (aria-allowed-attr, aria-conditional-attr, aria-hidden-focus, aria-prohibited-attr, aria-valid-attr, aria-valid-attr-value, button-name, duplicate-id-aria, label, nested-interactive) on /design-system/components/forms/password-input; manual screen-reader check outstanding",
   },
 ];
 

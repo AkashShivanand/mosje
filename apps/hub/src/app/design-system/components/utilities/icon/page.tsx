@@ -28,6 +28,9 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       "A labelled icon is announced as an image with that name. An icon-only control takes its name from the control, not from the glyph, so the name is announced once rather than twice.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (aria-hidden-focus) on /design-system/components/utilities/icon; manual screen-reader check outstanding",
   },
   {
     criterion: "1.4.4 Resize Text",

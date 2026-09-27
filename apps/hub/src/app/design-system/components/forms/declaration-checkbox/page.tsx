@@ -21,6 +21,9 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       "The whole statement is bound to the checkbox through `aria-describedby`, so a screen-reader user hears the text they are attesting to when they reach the control — not only if they happen to read upward.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (list, listitem) on /design-system/components/forms/declaration-checkbox; manual screen-reader check outstanding",
   },
   {
     criterion: "2.4.1 Bypass Blocks",
@@ -39,12 +42,18 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       "The lead line states what the checkbox commits the reader to before the statement itself, in the department's own register.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (form-field-multiple-labels) on /design-system/components/forms/declaration-checkbox; manual screen-reader check outstanding",
   },
   {
     criterion: "4.1.2 Name, Role, Value",
     level: "A",
     description:
       "The control is a real checkbox with a visible confirming label of its own, so its name is not the entire legal statement.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (aria-allowed-attr, aria-conditional-attr, aria-hidden-focus, aria-prohibited-attr, aria-valid-attr, aria-valid-attr-value, duplicate-id-aria, label, nested-interactive) on /design-system/components/forms/declaration-checkbox; manual screen-reader check outstanding",
   },
   {
     criterion: "GIGW 3.0 — Forms",

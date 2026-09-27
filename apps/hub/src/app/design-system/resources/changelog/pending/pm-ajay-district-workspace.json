@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "PM-AJAY HAS A DISTRICT WORKSPACE. All twenty-seven screens the Adarsh Gram district officer reads on the live MIS are rebuilt in the hub from the design system: the dashboard, Formats I to IV, VI and VII, the household and beneficiary registers, village development plans, declaration, minutes, village removal, users and reports. Every register carries its loading, empty, filtered-to-nothing and error states from WorklistScreen, every form its error summary and sticky actions from FormScreen, and the rail is the design system's own — a column from 768px and the masthead's drawer below it. Sign in as AGDistrict."
+}

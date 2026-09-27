@@ -119,7 +119,7 @@ export default function UX4GAccessibilityWidgetPage(): React.JSX.Element {
               than be torn down and rebuilt on every navigation.
             </p>
             <Callout type="info" title="Telemetry is off, and that is this estate's choice, not the upstream default">
-              v3.28 beacons the full URL, pathname, referrer, user agent, language, screen
+              v3.x beacons the full URL, pathname, referrer, user agent, language, screen
               resolution and a session id on load, then tracks panel opens and feature toggles.
               This estate&rsquo;s portals are authenticated workflow applications whose URLs carry
               application and beneficiary identifiers, so <code>analytics</code> defaults to{" "}

@@ -99,6 +99,9 @@
     "check:figma-hand-rolled": "node tools/figma-hand-rolled/check.mjs",
     "check:figma-hand-rolled:live": "node tools/figma-hand-rolled/check.mjs --verify-figma",
     "check:figma-hand-rolled:sync": "node tools/figma-hand-rolled/check.mjs --verify-figma --sync",
+    "check:figma-linkage": "node tools/figma-library-linkage/check.mjs",
+    "check:figma-linkage:live": "node tools/figma-library-linkage/check.mjs --verify-figma",
+    "check:figma-linkage:sync": "node tools/figma-library-linkage/check.mjs --verify-figma --sync",
     "figma:connect": "figma connect publish",
     "figma:connect:check": "figma connect publish --dry-run --exit-on-unreadable-files",
     "lint:css": "stylelint '**/*.css'",
@@ -159,12 +162,12 @@
     "stylelint": "^17.15.0",
     "stylelint-config-standard": "^40.0.0",
     "stylelint-declaration-strict-value": "^1.12.1",
-    "typescript-eslint": "^8.69.0",
+    "typescript-eslint": "^8.70.0",
     "yaml": "^2.9.0"
   },
   "dependencies": {
     "pdf-lib": "^1.17.1",
-    "puppeteer-core": "^25.3.0"
+    "puppeteer-core": "^25.11.0"
   },
   "overrides": {
     "eslint-plugin-react-hooks": {

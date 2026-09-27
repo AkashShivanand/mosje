@@ -39,6 +39,9 @@ const A11Y: A11yItem[] = [
     level: "AA",
     description:
       "The panel resolves its colour through `--sa-color-primaryScale-*`, so it follows `data-brand` in every mode rather than carrying a fixed hex that is only checked in one.",
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (color-contrast) on /design-system/components/feedback/action-banner; manual screen-reader check outstanding",
   },
 ];
 

@@ -33,7 +33,7 @@ const TARGET_COMFORTABLE = targetPx("comfortable");
  * importing it yields a client reference, not the string — and the URL is mirrored here
  * instead. The version below is derived from this one string so the two cannot disagree.
  */
-const UX4G_A11Y_WIDGET_SRC = "https://cdn.ux4g.gov.in/accessibility-v3.28/accessibility-widget.js";
+const UX4G_A11Y_WIDGET_SRC = "https://cdn.ux4g.gov.in/accessibility-v3.36/accessibility-widget.js";
 const WIDGET_VERSION = /accessibility-v([\d.]+)\//.exec(UX4G_A11Y_WIDGET_SRC)?.[1] ?? "3";
 
 const WIDGET_IMPORT_SNIPPET = `import { UX4GAccessibilityWidget } from "@mosje/design-system";

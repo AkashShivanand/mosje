@@ -222,5 +222,12 @@ module.exports = {
     // token-lint gate catches them; `--fix` cheerfully "corrected" it, which
     // would have quietly disarmed the test it exists to be.
     "packages/tokens/test/lint-fixture.css",
+    // CAPTURED third-party CSS, kept as research evidence: the stylesheet the DBIM 3.0
+    // reference template actually serves, saved beside the screenshots taken from it so a
+    // value in our clone can be traced to the value it was transcribed from. Same rule as
+    // the bundles above — it is not ours, it is not hand-written here, and the fix for
+    // anything "wrong" in it is not ours to make. It accounted for 389 of this gate's
+    // errors on its own.
+    "docs/research/**/*.css",
   ],
 };

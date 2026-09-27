@@ -73,6 +73,25 @@ SCREENS BY WHO USES THEM                               area
   has moved on, the screens stay where they are and the difference is written on the Status page; a person
   decides whether they are replaced. (17 Sep 2026: an NGO sign-in flow was archived this way and had to be restored.)
 
+## 3a. A hand-off frame shows the PRODUCT, never the prototype's scaffolding
+(standing instruction, 24 Sep 2026)
+
+**Only what would ship goes into a hand-off frame.** The demo dock and its flask button, the
+brand switcher, the account picker and any other prototype rail are how a reviewer drives the
+prototype; they are not part of the service, and a screen pushed with one on it tells a
+developer to build it.
+
+So a capture taken for Figma hides them first:
+
+```js
+// before the screenshot
+document.head.insertAdjacentHTML("beforeend",
+  "<style>.ds-demo-fab, .ds-demodock, [class*=demodock], [class*=demo-fab]{display:none!important}</style>");
+```
+
+What stays is everything a citizen or an officer would actually see, including the statutory
+accessibility control — that ships.
+
 ## 4. Names — plain words, no codes (decided 17 Sep 2026)
 
 Every name is read by reviewers who were not in the room, so every name is plain English in Title Case,

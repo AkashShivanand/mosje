@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Icon, Link, Search, Select } from "@mosje/design-system";
+import { Button, Chip, Icon, Link, Pagination, Search, Select } from "@mosje/design-system";
 import { cn } from "@/lib/website/utils";
 import { CENTRE_TYPE_META, CENTRE_TYPE_ORDER, type CentreType, type DeAddictionCentre } from "@/content/website/deaddiction-centres";
 import { CentreMapDynamic, centreKey, filterCentres, statesOf, useLocatorRows } from "./locator-shared";
@@ -45,11 +45,12 @@ export function LocatorTable() {
         </div>
         <div className="mt-3 flex flex-wrap gap-1.5">
           {(["", ...CENTRE_TYPE_ORDER] as const).map((t) => (
-            <button key={t || "all"} type="button" onClick={() => { setType(t as CentreType | ""); setPage(0); }}
-              className={cn("rounded-full px-3 py-1 text-label-2 transition-colors",
-                type === t ? "bg-primary text-white" : "bg-surface-muted text-ink-muted hover:text-primary-dark")}>
-              {t === "" ? `All ${filtered.length}` : `${t} ${CENTRE_TYPE_META[t].count}`}
-            </button>
+            <Chip key={t || "all"} size="sm" emphasis="solid" selected={type === t}
+              onSelectedChange={() => { setType(t as CentreType | ""); setPage(0); }}
+              count={t === "" ? filtered.length : CENTRE_TYPE_META[t].count}
+              countLabel="centres" countLabelOne="centre">
+              {t === "" ? "All" : t}
+            </Chip>
           ))}
         </div>
       </div>
@@ -85,7 +86,7 @@ export function LocatorTable() {
                     <td className="px-4 py-2.5 text-ink-muted">{c.state}</td>
                     <td className="whitespace-nowrap px-4 py-2.5 text-right">
                       <span className="inline-flex items-center gap-2">
-                        <button type="button" onClick={(e) => { e.stopPropagation(); setSelected(c); }} className="inline-flex items-center gap-1 text-label-2 text-primary hover:text-primary-dark"><Icon name="location_on" size={14} /> Map</button>
+                        <Button appearance="text" size="sm" nowrap onClick={(e) => { e.stopPropagation(); setSelected(c); }} iconLeft={<Icon name="location_on" size={14} aria-hidden />} className="min-h-0 gap-1 border-0 px-1.5 py-0 text-label-2">Map</Button>
                         <Link href={`https://www.google.com/maps/search/?api=1&query=${c.lat},${c.lng}`} external variant="standalone" onClick={(e) => e.stopPropagation()} className="text-label-2" iconLeft={<Icon name="navigation" size={14} />}>Directions</Link>
                       </span>
                     </td>
@@ -96,12 +97,22 @@ export function LocatorTable() {
             </tbody>
           </table>
         </div>
-        <div className="flex items-center justify-between border-t border-gray-100 px-4 py-2.5 text-body-3 text-ink-muted">
-          <span>{filtered.length} centres · page {page + 1} of {pages}</span>
-          <span className="flex gap-1.5">
-            <button type="button" disabled={page === 0} onClick={() => setPage((p) => p - 1)} className="rounded-md border border-gray-200 px-2.5 py-1 font-medium text-ink disabled:opacity-40">Prev</button>
-            <button type="button" disabled={page >= pages - 1} onClick={() => setPage((p) => p + 1)} className="rounded-md border border-gray-200 px-2.5 py-1 font-medium text-ink disabled:opacity-40">Next</button>
-          </span>
+        {/* The hand-rolled Prev/Next pair is the design system's `Pagination` in its
+            steps-only form — the same two controls, plus the keyboard and screen-reader
+            behaviour the pair never had: the steps stay mounted and go `aria-disabled`
+            at the ends rather than dropping focus to the top of the document, and the
+            new position is announced. `Pagination` prints "Page 1 of 41" itself, so the
+            line beside it no longer repeats it. */}
+        <div className="flex items-center justify-between gap-3 border-t border-gray-100 px-4 py-2.5 text-body-3 text-ink-muted">
+          <span>{filtered.length} centres</span>
+          <Pagination
+            size="sm"
+            showNumbers={false}
+            label="Centre directory pages"
+            page={page + 1}
+            totalPages={pages}
+            onPageChange={(next) => setPage(next - 1)}
+          />
         </div>
       </div>
     </div>

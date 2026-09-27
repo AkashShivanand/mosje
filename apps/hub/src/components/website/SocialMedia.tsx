@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { BrandGlyph, Icon, Link, type BrandGlyphName } from "@mosje/design-system";
+import { BrandGlyph, Button, Icon, Link, type BrandGlyphName } from "@mosje/design-system";
 import { cn } from "@/lib/website/utils";
 
 type SocialTab = "facebook" | "x" | "youtube";
@@ -198,22 +198,20 @@ export function SocialMedia() {
           {SOCIAL_TABS.map((tab) => {
             const isActive = tab.key === activeTab;
             return (
-              <button
+              <Button
                 key={tab.key}
-                type="button"
-                onClick={() => setActiveTab(tab.key)}
+                variant={isActive ? "primary" : "neutral"}
+                appearance={isActive ? "filled" : "text"}
+                size="sm"
+                fullWidth
                 aria-label={tab.name}
                 aria-pressed={isActive}
-                className={cn(
-                  "flex flex-1 items-center justify-center gap-2 rounded-lg px-3 py-2 text-label-1 transition sm:px-6",
-                  isActive
-                    ? "bg-primary text-white shadow-xs"
-                    : "text-ink-muted hover:text-ink"
-                )}
+                onClick={() => setActiveTab(tab.key)}
+                className="flex-1 rounded-lg"
+                iconLeft={<BrandGlyph name={tab.icon} size={20} />}
               >
-                <BrandGlyph name={tab.icon} size={20} />
                 <span className="hidden sm:inline">{tab.name}</span>
-              </button>
+              </Button>
             );
           })}
         </div>

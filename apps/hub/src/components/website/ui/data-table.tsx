@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import NextLink from "next/link";
-import { Icon, Link, Pagination, Search } from "@mosje/design-system";
+import { Button, Icon, Link, Pagination, Search } from "@mosje/design-system";
 import "@/components/website/templates/record-library.css";
 
 export interface ListingTableColumn {
@@ -165,17 +165,37 @@ export function ListingTable({
                     className="whitespace-nowrap px-4 py-3 text-center font-semibold"
                   >
                     {c.sortable ? (
-                      <button
+                      /* The DS `Button` on the inverse tone — the header row is
+                         a solid brand-blue ground, which is exactly what
+                         `tone="inverse"` is for.
+
+                         The utilities take the button's own box back to the
+                         heading it replaces: no padding, no 64px width floor,
+                         no 32px height, no border and the cell's own type. A
+                         header that gains 32px of side padding takes it from
+                         the title column beside it — measured, "Organisation"
+                         and "Published" each claimed ~30px more and the longest
+                         update titles wrapped a line earlier. Tailwind's
+                         utilities layer sits above the design system's
+                         components layer, so these win without a bump. */
+                      <Button
+                        variant="neutral"
+                        appearance="text"
+                        tone="inverse"
+                        size="sm"
+                        nowrap
                         onClick={() => toggleSort(c.key)}
-                        className="inline-flex items-center gap-1 hover:underline"
+                        className="min-h-0 min-w-0 gap-1 border-0 p-0 text-body-2 font-semibold text-inherit hover:underline"
+                        iconRight={
+                          isSorted ? (
+                            sortDir === "asc" ? <Icon name="keyboard_arrow_up" size={14} /> : <Icon name="keyboard_arrow_down" size={14} />
+                          ) : (
+                            <Icon name="unfold_more" size={14} className="opacity-60" />
+                          )
+                        }
                       >
                         {c.label}
-                        {isSorted ? (
-                          sortDir === "asc" ? <Icon name="keyboard_arrow_up" size={14} /> : <Icon name="keyboard_arrow_down" size={14} />
-                        ) : (
-                          <Icon name="unfold_more" size={14} className="opacity-60" />
-                        )}
-                      </button>
+                      </Button>
                     ) : (
                       c.label
                     )}

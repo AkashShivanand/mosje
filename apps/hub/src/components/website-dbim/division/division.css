@@ -1,0 +1,31 @@
+/* ds-exempt-start(third-party): type sizes, leading and tracking are transcribed from the DBIM 3.0 reference template (master-socialjustice.digifootprint.gov.in, root 62.5%, rems divided by 1.6), which the DBIM review team mandated on 25 Sep 2026; colour stays token-bound */
+/*
+ * A division's register page (`/ministry/our-division/<division>/<register>`): one or
+ * two DBIM document lists, and the NGO enforcement table. The lists and the table bring
+ * their own styles (documents.css, ministry.css); this file only stacks them and sets the
+ * heading a page with two lists gives each — the reference's inner-page h2
+ * (`.db-min-rich h2`: 24px / 400, Colour Group 5 shade 1).
+ */
+@layer theme, base, components, utilities;
+
+@layer components {
+  [data-design="dbim"] .db-register {
+    display: grid;
+    gap: var(--sa-stack-40);
+    padding-block-end: var(--sa-padding-40);
+  }
+
+  [data-design="dbim"] .db-register__section {
+    min-width: 0;
+  }
+
+  [data-design="dbim"] .db-register__h2 {
+    margin: 0 0 10px; /* the reference's h2 margin */
+    font-size: var(--db-fs-h2);
+    font-weight: var(--sa-font-weight-regular);
+    line-height: normal;
+    letter-spacing: -0.12px; /* the reference's */
+    color: var(--sa-color-primaryScale-800);
+  }
+}
+/* ds-exempt-end */

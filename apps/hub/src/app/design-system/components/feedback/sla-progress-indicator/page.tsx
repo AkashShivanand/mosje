@@ -27,6 +27,9 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       'All three variants carry role="progressbar" with aria-valuenow, aria-valuemin, aria-valuemax and aria-labelledby pointing at the label — the badge included, which is why it is a progressbar rather than a coloured pill.',
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (aria-allowed-attr, aria-conditional-attr, aria-deprecated-role, aria-hidden-focus, aria-prohibited-attr, aria-required-attr, aria-roles, aria-valid-attr, aria-valid-attr-value, duplicate-id-aria, nested-interactive) on /design-system/components/feedback/sla-progress-indicator; manual screen-reader check outstanding",
   },
   {
     criterion: "1.4.1 Use of Colour",
@@ -45,6 +48,9 @@ const A11Y: A11yItem[] = [
     level: "A",
     description:
       'The ring SVG, the badge dot and the divider are aria-hidden and focusable="false", so the shape is never announced separately from the value it draws.',
+    status: "partial",
+    evidence:
+      "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (aria-progressbar-name) on /design-system/components/feedback/sla-progress-indicator; manual screen-reader check outstanding",
   },
 ];
 

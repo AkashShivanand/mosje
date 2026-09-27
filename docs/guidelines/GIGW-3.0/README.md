@@ -18,8 +18,14 @@ the compliance floor.
 | --- | --- |
 | `GIGW_3.0.md` | Faithful transcription. Each guideline keeps its original **Statement / Benefit / Government organisation action / Developer action / Evaluator action / Reference** structure — that structure is the point, so don't flatten it when quoting. |
 | `GIGW_3.0.pdf` | The original. |
-| `supplementary/Compliance-and-Certification-Handbook.pdf` | The certification process — what an evaluator actually checks, and how CQW certification is obtained. |
+| `supplementary/Compliance-and-Certification-Handbook.pdf` | The certification process — what an evaluator actually checks, and how CQW certification is obtained. NIC, Dec 2023; source: <https://cdnbbsr.s3waas.gov.in/s3c92a10324374fac681719d63979d00fe/uploads/2023/12/2023122166.pdf> (byte-identical, re-checked 25 Sep 2026). |
+| `supplementary/Compliance-and-Certification-Handbook.md` | Transcription of the handbook, including the 88-item **Compliance Matrix** (§6.1) and the **ten policy templates** (§5, 5.4.3a–k) a department fills in for STQC. The matrix is GIGW 3.0's own **Annexure II** (pp. 100–115), reprinted; a word-level diff of the two PDFs finds the same 88 checkpoints in the same order. Beware: the handbook prints "14" twice (the second is 15), and Annexure II orders Quality items 21–24 differently from the clause numbers (5.1.21 is the domain, 5.1.22 API integration). Cite the clause (5.x.y); the transcription notes both. |
 | `supplementary/Creating-Accessible-Documents.pdf` | How to produce accessible PDFs and office documents. Directly relevant: the estate publishes a lot of downloadable documents, and an inaccessible PDF fails GIGW just as a page would. |
+
+All 88 checkpoints were checked against www.dosje.gov.in on 25 Sep 2026 and recorded in the
+Website QC tracker's existing tabs: failures in *Issues*, passes and not-applicable in *Resolved &
+Withdrawn*, Department items in *Dependencies*. The write-up is
+`docs/audit/gigw-handbook-matrix-coverage-2026-09-25.md`.
 
 ## The four focus areas
 

@@ -1,0 +1,301 @@
+/* ds-exempt-start(third-party): type sizes, leading and tracking are transcribed from the DBIM 3.0 reference template (master-socialjustice.digifootprint.gov.in, root 62.5%, rems divided by 1.6), which the DBIM review team mandated on 25 Sep 2026; colour stays token-bound */
+/* DBIM inner page — banner, breadcrumb, h1, sub-tab bar, page container.
+   Reference: .Innerbaner / .innernav / .maincontent on ministry_our_division, media,
+   archives_page_tenders (docs/research/dbim-reference/components/chrome.spec.md). */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* The reference's Bootstrap .container: 540 / 720 / 960 / 1140 / 1320. */
+  [data-design="dbim"] .db-container {
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: 7.5px;
+  }
+
+  @media (min-width: 576px) {
+    [data-design="dbim"] .db-container { max-width: 540px; }
+  }
+
+  @media (min-width: 768px) {
+    [data-design="dbim"] .db-container { max-width: 720px; }
+  }
+
+  @media (min-width: 992px) {
+    [data-design="dbim"] .db-container { max-width: 960px; }
+  }
+
+  @media (min-width: 1200px) {
+    [data-design="dbim"] .db-container { max-width: 1140px; }
+  }
+
+  @media (min-width: 1400px) {
+    [data-design="dbim"] .db-container { max-width: 1320px; }
+  }
+
+  /* ── Banner ──────────────────────────────────────────────────────────────── */
+  [data-design="dbim"] .db-hero {
+    position: relative;
+  }
+
+  [data-design="dbim"] .db-hero__banner {
+    position: relative;
+    background: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-hero__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 60px;
+    object-fit: cover;
+  }
+
+  [data-design="dbim"] .db-hero__img--fill {
+    height: 100%;
+  }
+
+  [data-design="dbim"] .db-hero__banner::before {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    content: "";
+    background: linear-gradient(90deg, var(--sa-color-primaryScale-800) 20%, transparent 70%);
+  }
+
+  [data-design="dbim"] .db-hero__text {
+    position: absolute;
+    bottom: 25%;
+    z-index: 2;
+    width: 85%;
+  }
+
+  [data-design="dbim"] .db-crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    font-size: 1rem; /* 16px */
+    line-height: 1.5rem; /* 24px */
+    color: var(--sa-color-neutralScale-0);
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-crumbs li + li {
+    padding-left: 5px;
+  }
+
+  [data-design="dbim"] .db-crumbs li + li::before {
+    float: left;
+    padding-right: 5px;
+    content: "/";
+  }
+
+  [data-design="dbim"] .db-crumbs a,
+  [data-design="dbim"] .db-crumbs span {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-crumbs .is-last {
+    border-bottom: 1px solid var(--sa-color-neutralScale-0);
+  }
+
+  [data-design="dbim"] .db-crumbs a:hover {
+    text-decoration: underline;
+  }
+
+  [data-design="dbim"] .db-crumbs a:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-color-neutralScale-0);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  [data-design="dbim"] .db-hero__title {
+    max-width: 75ch;
+    margin: 0;
+    font-size: var(--db-fs-h1);
+    font-weight: var(--sa-font-weight-bold);
+    line-height: 1.5;
+    color: var(--sa-color-neutralScale-0);
+    overflow-wrap: break-word;
+  }
+
+  /* ── Sub-tab bar: overlaps the banner's foot by 39px, hangs 30px below it ── */
+  [data-design="dbim"] .db-tabs {
+    position: absolute;
+    top: calc(100% - 39px);
+    left: 0;
+    z-index: 3;
+    width: 100%;
+  }
+
+  /* The reference's tab container is `.container.px-0`: the bar is the full 1320. */
+  [data-design="dbim"] .db-tabs__container {
+    padding-inline: 0;
+  }
+
+  [data-design="dbim"] .db-tabs__bar {
+    display: flex;
+    gap: var(--sa-stack-8);
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--sa-padding-16);
+    background: var(--sa-color-primaryScale-800);
+    border-radius: var(--sa-shape-12);
+  }
+
+  [data-design="dbim"] .db-tabs__list {
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: nowrap;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+    list-style: none;
+    scrollbar-width: none;
+  }
+
+  [data-design="dbim"] .db-tabs__list::-webkit-scrollbar {
+    display: none;
+  }
+
+  [data-design="dbim"] .db-tabs__list > li {
+    flex: none;
+  }
+
+  [data-design="dbim"] .db-tabs__link {
+    position: relative;
+    display: block;
+    padding: 5px 10px;
+    font-size: 1.25rem; /* 20px */
+    font-weight: var(--sa-font-weight-regular);
+    line-height: normal;
+    letter-spacing: -0.1px;
+    color: var(--sa-color-neutralScale-0);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  [data-design="dbim"] .db-tabs__link.is-active {
+    margin-left: var(--sa-padding-16);
+    font-weight: var(--sa-font-weight-bold);
+  }
+
+  /* The reference's six-dot drag-indicator glyph (its own SVG, used as a mask so
+     the text colour paints it). */
+  [data-design="dbim"] .db-tabs__link.is-active::before {
+    position: absolute;
+    top: 4px;
+    left: -8px;
+    width: 12px;
+    height: 28px;
+    content: "";
+    background-color: currentColor;
+    mask: url("data:image/svg+xml,%3Csvg width='12' height='28' viewBox='0 0 12 28' xmlns='http://www.w3.org/2000/svg'%3E%3Cg%3E%3Ccircle cx='10.178' cy='3.068' r='1.822'/%3E%3Ccircle cx='10.178' cy='10.356' r='1.822'/%3E%3Ccircle cx='10.178' cy='17.644' r='1.822'/%3E%3Ccircle cx='10.178' cy='24.932' r='1.822'/%3E%3Ccircle cx='2.89' cy='3.068' r='1.822'/%3E%3Ccircle cx='2.89' cy='10.356' r='1.822'/%3E%3Ccircle cx='2.89' cy='17.644' r='1.822'/%3E%3Ccircle cx='2.89' cy='24.932' r='1.822'/%3E%3C/g%3E%3C/svg%3E") no-repeat center / contain;
+  }
+
+  [data-design="dbim"] .db-tabs__link:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-color-neutralScale-0);
+    outline-offset: calc(var(--sa-focus-width) * -1);
+  }
+
+  [data-design="dbim"] .db-tabs .db-tabs__scroll.ds-btn {
+    flex: none;
+    width: 40px;
+    min-width: 0;
+    height: 40px;
+    min-height: 0;
+    padding: var(--sa-padding-8);
+    color: var(--sa-color-neutralScale-0);
+    background: var(--sa-color-primaryScale-400);
+    border: 0;
+    border-radius: var(--sa-shape-4);
+  }
+
+  /* ── Page body: 32px padding and 30px margin, as .maincontent > .container.mt-5 ── */
+  /* min-height: the reference's 50vh, so a short page's footer does not ride up. */
+  [data-design="dbim"] .db-page {
+    min-height: 50vh;
+    padding: var(--sa-padding-32) 0;
+  }
+
+  [data-design="dbim"] .db-page__container--default,
+  [data-design="dbim"] .db-page__container--block {
+    margin-top: 30px;
+  }
+
+  [data-design="dbim"] .db-page__container--block {
+    margin-bottom: 30px;
+  }
+
+  @media (min-width: 1537px) {
+    [data-design="dbim"] .db-hero__title {
+      line-height: 1.5;
+    }
+  }
+
+  @media (max-width: 991px) {
+    [data-design="dbim"] .db-tabs__bar {
+      padding: var(--sa-padding-8);
+    }
+
+    /* The reference's 40px chevron overhangs the 37px row rather than growing the
+       bar: the bar stays 53 tall. */
+    [data-design="dbim"] .db-tabs .db-tabs__scroll.ds-btn {
+      margin-block: -1.5px;
+    }
+  }
+
+  /* Below 768 the bar no longer overlaps: it sits under the banner, full width. */
+  @media (max-width: 767px) {
+    /* Under the banner, riding 6px up over its foot as the reference's does. */
+    [data-design="dbim"] .db-tabs {
+      position: relative;
+      top: auto;
+      margin-top: -6px;
+    }
+
+    [data-design="dbim"] .db-tabs__container {
+      max-width: none;
+    }
+
+    [data-design="dbim"] .db-hero--tabs + .db-page {
+      padding-top: 13px;
+    }
+
+    [data-design="dbim"] .db-hero--tabs + .db-page .db-page__container.db-page__container {
+      margin-top: 0;
+    }
+
+    [data-design="dbim"] .db-page {
+      padding-inline: 10px;
+    }
+
+    [data-design="dbim"] .db-hero__text {
+      left: 20px;
+    }
+
+    [data-design="dbim"] .db-crumbs {
+      font-size: 0.625rem; /* 10px */
+      line-height: 1rem;
+    }
+
+    [data-design="dbim"] .db-hero__title {
+      font-size: 0.9375rem; /* 15px */
+      line-height: 1.4;
+    }
+  }
+
+  @media (max-width: 575px) {
+    [data-design="dbim"] .db-tabs__bar {
+      border-radius: 0;
+    }
+  }
+
+  @media (max-width: 474px) {
+    [data-design="dbim"] .db-hero__text {
+      bottom: 8px;
+    }
+  }
+}
+/* ds-exempt-end */

@@ -235,6 +235,9 @@ export default function PortalCardPage() {
                         level: "A",
                         description:
                           "Wrap it in a real <li>. NEVER put role=\"listitem\" on the card — an explicit role REPLACES the implicit link one, and screen readers then announce list items with no links between them. That shipped once.",
+                        status: "partial",
+                        evidence:
+                          "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (aria-allowed-attr, aria-conditional-attr, aria-hidden-focus, aria-prohibited-attr, aria-valid-attr, aria-valid-attr-value, duplicate-id-aria, link-name) on /design-system/components/navigation/portal-card; manual screen-reader check outstanding",
                       },
                       {
                         criterion: "1.4.11 Non-text Contrast",
@@ -247,6 +250,9 @@ export default function PortalCardPage() {
                         level: "A",
                         description:
                           "The code and the full name are both inside the link, so its accessible name is “SCW Senior Citizens Welfare” rather than a bare abbreviation.",
+                        status: "partial",
+                        evidence:
+                          "axe-core 4.13.0 automated scan, 2026-09-22, 0 violations (link-name) on /design-system/components/navigation/portal-card; manual screen-reader check outstanding",
                       },
                       {
                         criterion: "3.2.5 Change on Request",

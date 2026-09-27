@@ -16,19 +16,20 @@
   /* The 24x24 target WCAG 2.2 AA 2.5.8 asks for. It is transparent: the painted
      dot inside keeps the size the design specified, and the extra area is what
      makes the control reachable. Do not shrink this to tighten the spacing. */
-  .sa-carousel-indicators__button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  /* The control is the design system's IconButton, which brings the press, the
+     disabled state and the focus ring. `.ds-icon-btn` is named so these outrank
+     its own 32px square inside the shared `components` layer, where specificity
+     rather than import order decides between two peer stylesheets. */
+  .sa-carousel-indicators__button.ds-icon-btn {
+    inline-size: var(--sa-inline-24);
+    block-size: var(--sa-inline-24);
     min-inline-size: var(--sa-inline-24);
     min-block-size: var(--sa-inline-24);
     padding: var(--sa-inline-0);
-    border: 0;
     background: none;
-    cursor: pointer;
   }
 
-  .sa-carousel-indicators__button:focus-visible {
+  .sa-carousel-indicators__button.ds-icon-btn:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
     outline-offset: var(--sa-focus-offset);
     border-radius: var(--sa-shape-full);

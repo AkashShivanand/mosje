@@ -1,10 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@/lib/website/utils";
 import { CENTRE_TYPE_META, CENTRE_TYPE_ORDER, type CentreType, type DeAddictionCentre } from "@/content/website/deaddiction-centres";
 import { CentreMapDynamic, centreKey, filterCentres, useLocatorRows } from "./locator-shared";
-import { Icon, Link, Search } from "@mosje/design-system";
+import { Button, Chip, Icon, IconButton, Link, Search } from "@mosje/design-system";
 
 const CAP = 48;
 
@@ -29,11 +28,12 @@ export function LocatorGallery() {
         />
         <div className="mt-3 flex flex-wrap gap-1.5">
           {(["", ...CENTRE_TYPE_ORDER] as const).map((t) => (
-            <button key={t || "all"} type="button" onClick={() => setType(t as CentreType | "")}
-              className={cn("rounded-full px-3 py-1 text-label-2 transition-colors",
-                type === t ? "bg-primary text-white" : "bg-surface-muted text-ink-muted hover:text-primary-dark")}>
-              {t === "" ? `All ${filtered.length}` : `${t} ${CENTRE_TYPE_META[t].count}`}
-            </button>
+            <Chip key={t || "all"} size="sm" emphasis="solid" selected={type === t}
+              onSelectedChange={() => setType(t as CentreType | "")}
+              count={t === "" ? filtered.length : CENTRE_TYPE_META[t].count}
+              countLabel="centres" countLabelOne="centre">
+              {t === "" ? "All" : t}
+            </Chip>
           ))}
         </div>
       </div>
@@ -42,8 +42,12 @@ export function LocatorGallery() {
         {filtered.slice(0, CAP).map((c, i) => {
           const meta = CENTRE_TYPE_META[c.type];
           return (
-            <button key={`${centreKey(c)}#${i}`} type="button" onClick={() => setModal(c)}
-              className="group flex flex-col rounded-xl border border-gray-200 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+            /* The whole tile is the control. A card `RadioGroup` is the design
+               system's answer where a tile PICKS one of a set; this one opens a
+               detail view instead, so it is the DS Button in its quietest
+               appearance carrying the tile's own card treatment. */
+            <Button key={`${centreKey(c)}#${i}`} appearance="text" onClick={() => setModal(c)}
+              className="group flex flex-col items-stretch justify-start gap-0 rounded-xl border border-gray-200 bg-white p-4 text-left font-normal shadow-sm transition hover:-translate-y-0.5 hover:bg-white hover:shadow-md">
               <span className="inline-flex w-fit items-center gap-1.5 rounded-full px-2 py-0.5 text-label-2" style={{ background: `${meta.color}1a`, color: meta.color }}>
                 <span className="h-2 w-2 rounded-full" style={{ background: meta.color }} />{c.type}
               </span>
@@ -53,7 +57,7 @@ export function LocatorGallery() {
                 <span className="text-label-2 text-ink">{c.district}, {c.state}</span>
                 <Icon name="arrow_outward" size={16} className="text-primary transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </span>
-            </button>
+            </Button>
           );
         })}
       </div>
@@ -63,13 +67,16 @@ export function LocatorGallery() {
       {modal && (
         <div className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/50 p-4" onClick={() => setModal(null)}>
           <div className="w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl" onClick={(e) => e.stopPropagation()}>
-            <div className="h-56 w-full">
+            {/* `overflow-hidden`: Leaflet sizes its own container to 380px whatever this
+                wrapper asks for, and without the clip it painted over the name, the
+                address and the close control below it. */}
+            <div className="h-56 w-full overflow-hidden">
               <CentreMapDynamic centres={[modal]} selected={modal} userLoc={null} onSelect={() => {}} />
             </div>
             <div className="p-5">
               <div className="flex items-start justify-between">
                 <span className="inline-flex rounded-full px-2 py-0.5 text-label-2" style={{ background: `${CENTRE_TYPE_META[modal.type].color}1a`, color: CENTRE_TYPE_META[modal.type].color }}>{modal.type} · {CENTRE_TYPE_META[modal.type].label}</span>
-                <button type="button" onClick={() => setModal(null)} aria-label="Close"><Icon name="close" size={20} className="text-ink-muted" /></button>
+                <IconButton appearance="text" variant="neutral" size="sm" shape="circle" onClick={() => setModal(null)} aria-label="Close centre details" icon={<Icon name="close" size={20} />} />
               </div>
               <p className="mt-2 text-title-1 text-ink">{modal.name}</p>
               <p className="mt-1.5 text-body-2 text-ink-muted">{modal.address}</p>

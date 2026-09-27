@@ -37,7 +37,7 @@ const BRAND_LINES_SHAPE: PropDef[] = [
     type: "string",
     required: true,
     description:
-      "The primary line, 20/24 SemiBold — “Department of Social Justice & Empowerment”. Use the full official name; never abbreviate it to an acronym in the masthead.",
+      "The primary line, 16/24 SemiBold (Headline 6; 14/20 on a phone) — “Department of Social Justice & Empowerment”. Use the full official name; never abbreviate it to an acronym in the masthead.",
   },
   {
     name: "ministry",
@@ -143,10 +143,10 @@ export default function BrandLockupPage(): React.JSX.Element {
               caption="The lockup, top to bottom"
               columns={["Row", "Source", "Treatment"]}
               rows={[
-                ["BETA badge", "beta", "Its own row above the text, opt-in per property"],
+                ["BETA badge", "beta", "Its own row above the text, opt-in per property. The same component as the phone sash: Label 3 Medium, caps, on the beta yellow"],
                 ["Government of India", "lines.org", "12/16, muted"],
                 ["Ministry of Social Justice & Empowerment", "lines.ministry", "12/16, muted"],
-                ["Department of Social Justice & Empowerment", "lines.department", "20/24, SemiBold — the primary line"],
+                ["Department of Social Justice & Empowerment", "lines.department", "16/24, SemiBold (Headline 6) — the primary line; 14/20 below 768px"],
               ]}
             />
             <p>

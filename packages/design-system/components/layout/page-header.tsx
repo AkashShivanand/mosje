@@ -63,8 +63,11 @@ export function PageHeader({
   ...rest
 }: PageHeaderProps): React.JSX.Element {
   const Heading = (as === 1 ? "h1" : "h2") as "h1" | "h2";
+  /* A div, not a <header>: a PageHeader is usually rendered outside <main> in
+     docs and shells, where <header> becomes a second `banner` landmark beside
+     the site masthead. The masthead is the page's only banner. */
   return (
-    <header className={cn("sa-page-header", size === "compact" && "sa-page-header--compact", className)} {...rest}>
+    <div className={cn("sa-page-header", size === "compact" && "sa-page-header--compact", className)} {...rest}>
       <div className="sa-page-header__text">
         {eyebrow ? <p className="sa-page-header__eyebrow">{eyebrow}</p> : null}
         <Heading id={headingId} className="sa-page-header__title">
@@ -73,6 +76,6 @@ export function PageHeader({
         {meta ? <p className="sa-page-header__meta">{meta}</p> : null}
       </div>
       {actions ? <div className="sa-page-header__actions">{actions}</div> : null}
-    </header>
+    </div>
   );
 }

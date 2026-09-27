@@ -144,7 +144,7 @@
     align-items: center;
     gap: var(--sa-inline-12);
     padding-block-start: var(--sa-padding-24);
-    border-block-start: 1px solid var(--sa-border-neutral-inverse-subtle);
+    border-block-start: var(--sa-stroke-1) solid var(--sa-border-neutral-inverse-subtle);
   }
 
   /* The Change button never gives up width to the portal's name. A long name —
