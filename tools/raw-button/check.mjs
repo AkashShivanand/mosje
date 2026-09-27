@@ -77,16 +77,26 @@ function* walk(dir) {
    stay true. A `<button` inside a comment is prose, and one inside a string is a
    code sample or an accessibility note on a documentation page — neither is a use
    site. A JSX `<button>` is never inside quotes. The exemption marker lives in a
-   comment, so markers are read from the ORIGINAL source. Template literals go
-   first because they span lines; the other two quotes stop at a line end so an
-   apostrophe in JSX text cannot swallow the rest of a file. */
+   comment, so markers are read from the ORIGINAL source.
+
+   ORDER: double quotes, then template literals, then single quotes. Double
+   quotes go first even though template literals are the ones that span lines,
+   because a double-quoted string STOPS AT A LINE END and so can never swallow
+   the rest of a file — while a backtick inside one can. Prose that quotes a tag
+   as `<button>` lives inside a double-quoted string on this estate (a changelog
+   entry, a docs note), and with backticks stripped first those quote marks were
+   read as a template literal, which ran to the NEXT backtick somewhere else in
+   the file and left a real string exposed. That is how one changelog sentence
+   about SSOButton started failing this gate the day another entry was folded in
+   above it. Single quotes stay last, and line-bounded, so an apostrophe in JSX
+   text cannot swallow anything either. */
 const blank = (m) => m.replace(/[^\n]/g, " ");
 function stripComments(src) {
   return src
     .replace(/\/\*[\s\S]*?\*\//g, blank)
     .replace(/(^|[^:"'`])\/\/[^\n]*/g, (m, p) => p + " ".repeat(m.length - p.length))
-    .replace(/`(?:\\[\s\S]|[^`\\])*`/g, blank)
     .replace(/"(?:\\.|[^"\\\n])*"/g, blank)
+    .replace(/`(?:\\[\s\S]|[^`\\])*`/g, blank)
     .replace(/'(?:\\.|[^'\\\n])*'/g, blank);
 }
 
