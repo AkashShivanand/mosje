@@ -57,7 +57,11 @@ export function Organisations() {
   );
 
   return (
-    <Band as="section" tone="default" spacing="xl" aria-labelledby="orgs-title">
+    /* MUTED, AND THE SECTIONS EITHER SIDE ARE THE REASON. The page alternates
+       its grounds so a reader knows one section ended before reaching the next
+       heading. After the reorder of 24 Sep 2026 this sat in 1,444px of unbroken
+       white with Our Offerings above it. The ground is the edge. */
+    <Band as="section" tone="muted" spacing="xl" aria-labelledby="orgs-title">
       <div className="wn-orgs2">
         <div className="wn-orgs2__copy">
           <SectionTitle

@@ -289,105 +289,135 @@
      tint, the quote in the darkest brand ink DBIM asks for, the photograph at the
      right on a chakra that is ornament and nothing else. The band is full-bleed
      and the content takes `.sa-container`, like every other website section. */
-  .wn-pmq { background-color: var(--sa-bg-brand-primary-subtler); }
+  /* ── The Prime Minister's quote — a card on a tint ───────────────────────
+     Figma "PM Quote — Options", the card option (51601:56401). It replaced the
+     full-bleed band on 24 Sep 2026 for two reasons: the page already carries
+     several tinted bands, so a band of its own put the most quotable thing on
+     the page in competition with them; and the portrait is a cut-out, which on
+     a bare band had nothing behind it and read as a sticker. The card holds it.
+     The section keeps its tint so the white card has a ground to sit on. */
+  /* ── PM Quote ────────────────────────────────────────────────────────────
+     Built from the reference sheet of 25 Sep 2026, with every value taken from
+     the design system rather than from the sheet's hexes and pixels. The sheet
+     and the tokens agree exactly on colour — #ECF4FF, #DCDEE1, #FFF2ED,
+     #005EB9, #C34700, #004B96, #1E2124, #3A3D41 are all published rungs — so
+     nothing here is a literal that merely equals a token.
 
-  .wn-pmq__in {
-    display: grid;
-    align-items: center;
-    gap: var(--sa-stack-24);
-    padding-top: var(--sa-padding-40);
-    padding-bottom: var(--sa-padding-40);
+     TWO EARLIER DECISIONS ARE REVERSED BY THE SHEET, deliberately: the card
+     stood on white (the Figma frame's tint is switched off in the file) and it
+     now stands on the brand's palest blue; and the photograph sat on the right
+     and now leads on the left.
+
+     THE SHEET'S LABEL AND ITS SOURCE LINE ARE NOT BUILT. "Prime Minister's
+     Message" over a card that is visibly a quotation from the Prime Minister
+     restates it, and "Source: Press Information Bureau (Release ID …)" is a
+     second citation beside the one DBIM actually asks for — a link to where
+     the address was delivered, which is the button. The layout, the colours
+     and the type ARE the sheet's. */
+  .wn-pmq {
+    background-color: var(--sa-bg-brand-primary-base);
+    padding-block: var(--sa-section-40);
   }
 
-  @media (min-width: 768px) {
-    .wn-pmq__in {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 432px);
-      gap: var(--sa-inline-56);
-      padding-top: var(--sa-padding-56);
-      padding-bottom: var(--sa-padding-56);
+  .wn-pmq__card {
+    display: grid;
+    gap: var(--sa-stack-16);
+    padding: var(--sa-padding-16);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-24);
+    background: var(--sa-bg-neutral-base);
+    box-shadow: var(--sa-elevation-modal);
+  }
+  @media (min-width: 1024px) {
+    /* The photograph's panel is a fixed column, as the sheet draws it. There is
+       no width rung in the token set for 360, so it is the one number here that
+       is not a token — the same exception the 351 column was. */
+    .wn-pmq__card {
+      grid-template-columns: 360px minmax(0, 1fr);
+      gap: 0;
+      padding: 0;
+      align-items: stretch;
+      overflow: hidden;
     }
   }
 
-  .wn-pmq__quote { display: grid; gap: var(--sa-stack-24); }
+  /* Stacked, the photograph is an inset panel with an edge of its own; beside
+     the words it runs to the card's own edge and the card's radius clips it. */
+  .wn-pmq__figure {
+    display: grid;
+    place-items: end center;
+    overflow: hidden;
+    border-radius: var(--sa-shape-16);
+    background: var(--sa-bg-brand-secondary-base);
+  }
+  @media (min-width: 1024px) { .wn-pmq__figure { border-radius: 0; } }
 
-  /* The mark leads the quote rather than sitting behind it: at the band's own
-     `bold` rung it is legible ornament, not a watermark competing with the ink. */
+  /* On a phone the photograph keeps its own proportions across the panel's
+     width. Beside the words the sheet draws a PORTRAIT crop, 280x336, standing
+     on the foot of its panel — the source is landscape, so the sides are the
+     part that goes. Never upscaled: 280 wide asks less of a 488 source than
+     the panel's full width would. */
+  .wn-pmq__portrait { width: 100%; height: auto; }
+  @media (min-width: 1024px) {
+    .wn-pmq__portrait {
+      width: 280px;
+      height: 336px;
+      object-fit: cover;
+      object-position: center top;
+    }
+  }
+
+  .wn-pmq__body {
+    display: grid;
+    align-content: center;
+    gap: var(--sa-stack-16);
+    padding: var(--sa-padding-24) var(--sa-padding-8) var(--sa-padding-8);
+  }
+  @media (min-width: 1024px) { .wn-pmq__body { padding: var(--sa-padding-48); } }
+
+  /* An opening mark above the quotation, at the icon scale's 40 rung. It used
+     to be a 128 watermark behind the words; the sheet draws it solid and small,
+     so there is nothing left to sit behind and no stacking order to set. */
   .wn-pmq__mark {
-    color: var(--sa-bg-brand-primary-bold);
-    transform: rotate(180deg);
-    justify-self: start;
+    inline-size: var(--sa-icon-size-40);
+    block-size: var(--sa-icon-size-40);
+    fill: var(--sa-bg-brand-secondary-bold);
   }
 
   .wn-pmq__text { margin: 0; }
-
   .wn-pmq__text p {
-    margin: 0;
-    /* Headline 3 in Figma. `text-wrap: pretty` only tidies the last line; the
-       measure is set by the column, which is what keeps it under 80 characters. */
-    font-size: var(--sa-type-headline-3-size);
-    line-height: var(--sa-type-headline-3-lh);
+    font-size: var(--sa-type-headline-2-size);
+    line-height: var(--sa-type-headline-2-lh);
     font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-brand-primary-bolder);
     text-wrap: pretty;
   }
 
-  .wn-pmq__copy {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--sa-stack-16) var(--sa-inline-32);
-    padding-top: var(--sa-padding-12);
-    border-top: var(--sa-stroke-1) solid var(--sa-border-brand-primary-base);
+  .wn-pmq__foot {
+    display: grid;
+    gap: var(--sa-stack-16);
+    padding-block-start: var(--sa-padding-24);
+    border-block-start: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
-
+  @media (min-width: 1024px) {
+    .wn-pmq__foot { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--sa-inline-24); }
+  }
+  .wn-pmq__credit { display: grid; gap: var(--sa-stack-4); }
   .wn-pmq__who {
-    margin: 0;
-    font-size: var(--sa-type-headline-5-size);
-    line-height: var(--sa-type-headline-5-lh);
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
     font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
   }
-
   .wn-pmq__where {
-    margin: 0;
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
     color: var(--sa-text-neutral-subtle);
   }
 
-  /* The portrait sits on the chakra, both bottom-aligned to the band's floor. */
-  .wn-pmq__figure {
-    position: relative;
-    display: grid;
-    place-items: end center;
-    /* The column, not the image, sets the box: a figure that hugs its content
-       cannot answer `width: min(100%, …)` and the portrait stayed at 200px. */
-    width: 100%;
-  }
-
-  /* Behind the head, not behind the whole figure: at the band's own tint it is a
-     ground for the portrait to stand on, and it must never read as a second mark
-     competing with the emblem in the masthead. */
-  .wn-pmq__chakra {
-    position: absolute;
-    inset-block-start: 0;
-    inset-inline-end: 8%;
-    width: 78%;
-    height: auto;
-    opacity: 0.6;
-  }
-
-  .wn-pmq__portrait {
-    position: relative;
-    align-self: end;
-    width: min(100%, 240px);
-    height: auto;
-  }
-
-  @media (min-width: 768px) {
-    .wn-pmq__figure { min-height: 300px; }
-    .wn-pmq__portrait { width: min(100%, 360px); }
-  }
+  /* Full width on a phone, as drawn; its own size beside the attribution. */
+  .wn-pmq__action { justify-self: stretch; }
+  @media (min-width: 1024px) { .wn-pmq__action { justify-self: end; } }
 
   /* ── Take a Pledge ───────────────────────────────────────────────────────────
      Two rows: the pledges themselves, then the volunteering registers, which ask
