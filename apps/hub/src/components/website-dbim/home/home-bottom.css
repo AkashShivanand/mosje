@@ -57,9 +57,9 @@
     border-radius: var(--sa-shape-4) var(--sa-shape-4) 0 0;
     background: var(--sa-color-neutralScale-0);
     color: var(--sa-color-primaryScale-800);
-    font-size: var(--db-fs-h3);
+    font-size: var(--db-fs-h3); /* Heading 3 Medium */
     font-weight: var(--sa-font-weight-medium);
-    line-height: 1.2;
+    line-height: var(--db-lh-h3);
   }
 
   [data-design="dbim"] .db-hb-social__body {

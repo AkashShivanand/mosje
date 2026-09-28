@@ -184,8 +184,14 @@
   /* A scheme's name is shown whole, as the handoff draws it: on a phone the longest
      runs to six lines, and cutting it at three left "…and the…" as the link's text. */
   [data-design="dbim"] .db-hm-list .db-hm-list__title {
-    font-size: 0.875rem; /* 14px */
-    line-height: normal;
+    font-size: 0.875rem; /* 14px: Paragraph 2 on desktop, Paragraph 1 on a phone */
+    line-height: var(--db-lh-p2); /* 20 */
+  }
+
+  @media (max-width: 991.5px) {
+    [data-design="dbim"] .db-hm-list .db-hm-list__title {
+      line-height: var(--db-lh-p); /* 21 */
+    }
   }
 
   [data-design="dbim"] .db-hm-list .db-hm-list__link:hover .db-hm-list__title {
