@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import Fuse from "fuse.js";
-import { Button, Chip, Icon, IconButton } from "@mosje/design-system";
+import { Button, Chip, Icon, IconButton, useDialogLayer } from "@mosje/design-system";
 import { SEARCH_DATA, type SearchEntry } from "@/lib/design-system/search-data.generated";
 import "./cmd-search.css";
 
@@ -70,6 +70,8 @@ interface CmdSearchProps {
 
 export function CmdSearch({ onClose }: CmdSearchProps): React.JSX.Element {
   const router = useRouter();
+  // Mounted only while open. aria-modal: the floating rails step under it (DS foundations/dialog-layer.ts).
+  useDialogLayer(true);
   const [query, setQuery] = React.useState("");
   const [category, setCategory] = React.useState<CategoryFilter>("all");
   const [focusIdx, setFocusIdx] = React.useState(0);

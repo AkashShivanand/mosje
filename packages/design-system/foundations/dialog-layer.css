@@ -1,0 +1,56 @@
+/* Declared first so this sheet cannot register `components` ahead of Tailwind's
+   `base` when it loads as its own CSS root. See .claude/rules/design-system-architecture.md §2a. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /*
+   * WHILE A DIALOG IS OPEN, THE FLOATING RAILS STAND DOWN.
+   *
+   * `[data-sa-dialog-open]` is set on <html> by `foundations/dialog-layer.ts`, which every
+   * page-blocking dialog calls — Modal, Lightbox, SideSheet, NavSheet. Each of those
+   * imports this sheet, so the rule arrives with whichever dialog a page happens to use.
+   * It lived in modal.css until 28 Sep 2026, and only Modal set the attribute, so the chat
+   * launcher and the demo dock floated over every other dialog.
+   *
+   * The wall rail and the corner stack sit at 1000 and 1010, above every product
+   * layer — correct for a launcher, which only has to beat page chrome, and
+   * exactly wrong once a dialog owns the screen. Important Links and the chat
+   * launcher went on floating at full strength over a dimmed page, so the scrim
+   * covered everything except the two things most obviously sitting on it.
+   *
+   * WHY THE RAILS STEP DOWN RATHER THAN THE DIALOG STEPPING UP. The ladder puts `toast`
+   * (700) above the dialogs on purpose — a save confirmation must be readable while a
+   * dialog is open — so a dialog raised past 1010 would climb over the toasts on the way
+   * and buy one fix with a second defect.
+   *
+   * KEYED ON THE OCCUPANCY ATTRIBUTES, not on a list of component classes.
+   * `floating-element-placement.md` already requires every fixed widget on
+   * either rail to declare itself with one of these two — and both are gated on
+   * the widget actually being `position: fixed`, so an inline specimen on a
+   * documentation page is untouched. A rail widget added tomorrow is covered the
+   * same day with nothing to remember here, which is the same reason the rails
+   * measure live occupancy rather than carrying a table of known widgets.
+   *
+   * THIS INCLUDES AN OPEN CHAT PANEL. `--sa-z-top` keeps it above anything decorative;
+   * a page-blocking dialog is not decorative, and `aria-modal` has just told assistive
+   * technology that everything outside the dialog is inert.
+   *
+   * THE STATUTORY PANEL IS DELIBERATELY NOT INCLUDED. The UX4G accessibility
+   * widget is third-party markup at 999999 and carries neither attribute — the
+   * rails know it by id. It stays above the scrim, which is what a statutory
+   * control should do; pushing an accessibility panel behind a dialog would be a
+   * worse defect than the one this fixes.
+   *
+   * `base`, not a negative: these are fixed elements in their own right, and the
+   * point is to put them back in the ordinary stack under the scrim, not to
+   * bury them beneath the page.
+   *
+   * A rail widget whose z-index comes from a Tailwind utility sits in the `utilities`
+   * layer and outranks this rule; it has to repeat the override there, as
+   * `ImportantLinks` does with `[html[data-sa-dialog-open]_&]:z-[var(--sa-z-base)]`.
+   */
+  :root[data-sa-dialog-open] [data-sa-wall-occupant],
+  :root[data-sa-dialog-open] [data-sa-corner-occupant] {
+    z-index: var(--sa-z-base);
+  }
+}

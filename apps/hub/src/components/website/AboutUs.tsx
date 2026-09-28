@@ -1,64 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Icon, buttonClasses } from "@mosje/design-system";
+import { ABOUT_US } from "@/lib/website-shared/home";
 
-interface Minister {
-  img: string;
-  name: string;
-  designation: string;
-  primary?: boolean;
-}
-
-interface Stat {
-  label: string;
-  value: string;
-  /** The line under the figure that says what it is measured against. */
-  caption: string;
-}
-
-const ministers: Minister[] = [
-  {
-    img: "/website/images/Dr.-Virendra-Kumar.png",
-    name: "Dr. Virendra Kumar",
-    designation: "Union Minister of Social Justice and Empowerment",
-    primary: true,
-  },
-  {
-    img: "/website/images/Shri-Ramdas-Athawale.png",
-    name: "Shri Ramdas Athawale",
-    designation: "Minister of State of Social Justice and Empowerment",
-  },
-  {
-    img: "/website/images/sri-l-b-verma.png",
-    name: "Shri B. L. Verma",
-    designation: "Minister of State of Social Justice and Empowerment",
-  },
-];
-
-/**
- * The design sets each cell as label -> figure -> sub-caption, in that order.
- * The build dropped the sub-caption and put the label UNDER the figure, which
- * left three large numbers with no statement of what they measured until after
- * you had read them [WEB-A-05]. "Financial Assistance" was also the wrong
- * label for the third: the design names it as the FY 2025-26 release.
- */
-const stats: Stat[] = [
-  {
-    label: "Cumulative Disbursement",
-    value: "₹67,977 Crore",
-    caption: "Scholarships for Scheduled Castes",
-  },
-  {
-    label: "Beneficiary Coverage",
-    value: "19.82 Crore",
-    caption: "Cumulative across all schemes",
-  },
-  {
-    label: "Release of Funds, FY 2025–26",
-    value: "₹8,731 Crore",
-    caption: "Provisional · 14.3% above previous year",
-  },
-];
+/* Every word, figure and portrait here is shared with the other designs of the
+   website — lib/website-shared/home.ts, read from the live home page. This file
+   owns the layout only. The stat cells are label -> figure -> sub-caption, in
+   that order: a large number with no statement of what it measures until after
+   you have read it is the defect WEB-A-05 recorded. */
+const { title, intro, quote, links, ministers, stats, dashboard } = ABOUT_US;
 
 export function AboutUs() {
   return (
@@ -67,19 +17,11 @@ export function AboutUs() {
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
           <div>
             <h2 className="text-headline-2 text-primary-dark">
-              About Us
+              {title}
             </h2>
-            <p className="mt-5 text-body-1 text-ink-muted">
-              The Department of Social Justice &amp; Empowerment (DoSJE) is
-              mandated to ensure the empowerment and welfare of India&apos;s most
-              vulnerable groups, including Scheduled Castes, OBCs, Senior
-              Citizens, Transgender Persons, and victims of substance abuse. We
-              implement various targeted schemes for their social, educational,
-              and economic development, ensuring their inclusion despite
-              challenges like the lack of updated demographic data.
-            </p>
+            <p className="mt-5 text-body-1 text-ink-muted">{intro}</p>
             <blockquote className="mt-6 border-l-4 border-saffron bg-saffron/10 p-4 rounded-r-lg italic text-body-1 text-ink">
-              “The Ministry of Social Justice &amp; Empowerment works to uplift India&apos;s most vulnerable communities through targeted initiatives, inclusive growth, and compassionate governance.”
+              “{quote}”
             </blockquote>
 
             <div className="mt-6 flex flex-wrap gap-3">
@@ -101,27 +43,16 @@ export function AboutUs() {
             </div>
 
             <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
-              <Link
-                href="/website/whos-who"
-                className="flex items-center justify-between rounded-lg border border-border bg-surface p-3 text-label-1 text-ink transition hover:border-primary hover:text-primary"
-              >
-                <span>Our Team</span>
-                <Icon name="chevron_right" size={16} />
-              </Link>
-              <Link
-                href="/website/about-us"
-                className="flex items-center justify-between rounded-lg border border-border bg-surface p-3 text-label-1 text-ink transition hover:border-primary hover:text-primary"
-              >
-                <span>Our Ministry</span>
-                <Icon name="chevron_right" size={16} />
-              </Link>
-              <Link
-                href="/website/annual-reports"
-                className="flex items-center justify-between rounded-lg border border-border bg-surface p-3 text-label-1 text-ink transition hover:border-primary hover:text-primary"
-              >
-                <span>Our Reports</span>
-                <Icon name="chevron_right" size={16} />
-              </Link>
+              {links.map((l) => (
+                <Link
+                  key={l.label}
+                  href={l.href}
+                  className="flex items-center justify-between rounded-lg border border-border bg-surface p-3 text-label-1 text-ink transition hover:border-primary hover:text-primary"
+                >
+                  <span>{l.label}</span>
+                  <Icon name="chevron_right" size={16} />
+                </Link>
+              ))}
             </div>
           </div>
 
@@ -133,7 +64,7 @@ export function AboutUs() {
             {ministers[0] && (
             <div className="rounded-lg border border-saffron-500/25 bg-saffron-50 p-5 shadow-sm transition hover:shadow-md sm:flex sm:items-center sm:gap-5">
               <Image
-                src={ministers[0].img}
+                src={ministers[0].photo}
                 alt={ministers[0].name}
                 width={140}
                 height={140}
@@ -157,7 +88,7 @@ export function AboutUs() {
                   className="flex flex-col items-center rounded-lg border border-gray-200 bg-white p-5 text-center shadow-sm transition hover:shadow-md"
                 >
                   <Image
-                    src={minister.img}
+                    src={minister.photo}
                     alt={minister.name}
                     width={140}
                     height={140}
@@ -193,10 +124,10 @@ export function AboutUs() {
               ))}
             </dl>
             <Link
-              href="/website/dashboard"
+              href={dashboard.href}
               className={buttonClasses("primary", "filled", "md", "bg-white text-primary hover:bg-white/90 whitespace-nowrap self-center shrink-0")}
             >
-              View Dashboard
+              {dashboard.label}
               <span className="ds-btn__icon" aria-hidden="true">
                 <Icon name="arrow_forward" size={16} />
               </span>
