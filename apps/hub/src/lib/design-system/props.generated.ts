@@ -5171,7 +5171,7 @@ export const GENERATED_PROPS = {
         "name": "extraTabs",
         "type": "DemoDockTab[]",
         "required": false,
-        "description": "Route-specific tabs, shown ahead of Apps and Colour. Like `Sign in`, these are the reason a reviewer opens the dock on the route that supplies them, so they lead. They get no door on the rail — the rail's three doors are fixed, for the same reason `Sign in` has none: a door that appears and vanishes by route is the defect the bottom-left FAB was moved for."
+        "description": "Route-specific tabs, shown ahead of Apps and Colour (or after them, with `placement: \"end\"`). Like `Sign in`, lead tabs are the reason a reviewer opens the dock on the route that supplies them, so they lead. They get no door on the rail — the rail's three doors are fixed, for the same reason `Sign in` has none: a door that appears and vanishes by route is the defect the bottom-left FAB was moved for."
       },
       {
         "name": "label",
@@ -5179,6 +5179,12 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"Demo tools\"",
         "description": "FAB label, and the panel's header title."
+      },
+      {
+        "name": "notice",
+        "type": "string | null",
+        "required": false,
+        "description": "A short confirmation shown beside the rail for as long as it is set — \"Screenshot saved\", \"DBIM Design\". For an action taken by keyboard shortcut with the panel closed, which otherwise happens with no visible answer. The caller clears it. Announced politely; it belongs to the dock, so it never lands in a page capture."
       }
     ]
   },

@@ -181,6 +181,51 @@
     line-height: var(--sa-type-body-3-lh);
   }
 
+  /* ── The Capture tab (demo-capture.tsx) ─────────────────────────────── */
+
+  .dm-panel__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-8);
+  }
+
+  /* A generated file name has no spaces to break at. */
+  .dm-panel__file {
+    overflow-wrap: anywhere;
+    color: var(--sa-text-neutral-base);
+  }
+
+  .dm-panel__keys {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--sa-stack-6) var(--sa-inline-12);
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-base);
+  }
+
+  .dm-panel__keys dd {
+    margin: 0;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .dm-panel__kbd {
+    display: inline-block;
+    padding: 0 var(--sa-padding-6);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-bottom-width: 2px;
+    border-radius: var(--sa-shape-4);
+    background-color: var(--sa-bg-neutral-subtle);
+    font-family: inherit;
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: var(--sa-font-weight-medium);
+    color: var(--sa-text-neutral-base);
+  }
+
   .dm-panel__note {
     margin: 0;
     padding-top: var(--sa-padding-12);

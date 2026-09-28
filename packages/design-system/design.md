@@ -4008,7 +4008,12 @@ doesn't change as modes are added.
 **Props**: `pathname` (drives "Currently in", which accounts exist for the
 path via `findDemoAccounts`, and whether Sign in renders via `isLoginRoute`),
 `apps` (registry override, default `DEFAULT_APPS`), `label` (default
-`"Demo tools"`).
+`"Demo tools"`), `extraTabs` (route tabs; each leads the strip unless it sets
+`placement: "end"`, for a tool offered on every route — the hub's Capture tab —
+which must never become the lead door's label), `notice` (a short
+confirmation shown beside the flask while set, drawn like its tooltip and
+announced politely — the answer to a shortcut pressed with the panel closed;
+the caller clears it).
 **Rule**: Mounted **exactly once**, by the hub's root layout via
 `ConditionalDemoDock` — never per portal, never per page. Requires a
 `ColorModeProvider` ancestor (the Colour tab throws without one). Gated
