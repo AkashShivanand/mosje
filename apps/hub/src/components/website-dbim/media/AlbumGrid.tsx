@@ -59,11 +59,9 @@ export function DbimAlbumGrid({ albums }: { albums: DbimAlbumCard[] }) {
                   </span>
                 </span>
                 <span className="db-media-title">{a.title}</span>
-                <span className="db-media-foot">
-                  <span>{a.when}</span>
-                  <span>
-                    {a.count} {a.count === 1 ? "Item" : "Items"}
-                  </span>
+                {/* The count alone, under the title (DBIM 3.0 Figure 77); the date is on the album's page. */}
+                <span className="db-media-foot db-media-foot--under">
+                  {a.count} {a.count === 1 ? "Item" : "Items"}
                 </span>
               </Link>
             </li>

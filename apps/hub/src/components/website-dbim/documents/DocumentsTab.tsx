@@ -22,13 +22,16 @@ export function DocumentsTab({ tab }: { tab: DbimDocTab }) {
       tabs={DBIM_MENU.find((m) => m.path === "/documents")?.children}
       activeTab={t.path}
     >
-      <SeriesList series={documentSeries(tab)} label={t.label} />
-      <div className="db-doc__archive-row">
-        <Link className="db-doc__archive" href={dbimHref(archivePath)} aria-label={`View archive of ${t.label}`}>
-          <Icon name="archive" size={24} weight={400} />
-          View Archive
-        </Link>
-      </div>
+      <SeriesList
+        series={documentSeries(tab)}
+        label={t.label}
+        end={
+          <Link className="db-doc__archive" href={dbimHref(archivePath)} aria-label={`View archive of ${t.label}`}>
+            <Icon name="archive" size={24} weight={400} />
+            View Archive
+          </Link>
+        }
+      />
     </DbimPage>
   );
 }

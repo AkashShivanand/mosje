@@ -183,10 +183,29 @@
   }
 
   /* ── View Archive (.download-outline-btn.archivemr) ──────────────────────── */
-  [data-design="dbim"] .db-doc__archive-row {
-    display: flex;
-    justify-content: flex-end;
+  /* Pager and View Archive on one row: empty · pager centred · archive right
+     (DBIM 3.0 Figure 75); stacked, archive under the pager, on a phone. */
+  [data-design="dbim"] .db-doc__foot {
+    display: grid;
+    grid-template-columns: 1fr;
+    place-items: center;
+    gap: var(--sa-stack-8);
     margin-top: 30px; /* Bootstrap mt-5 at the reference's 10px rem */
+  }
+
+  @media (min-width: 768px) {
+    [data-design="dbim"] .db-doc__foot {
+      grid-template-columns: 1fr auto 1fr;
+    }
+
+    [data-design="dbim"] .db-doc__foot-pager {
+      grid-column: 2;
+    }
+
+    [data-design="dbim"] .db-doc__foot-end {
+      grid-column: 3;
+      justify-self: end;
+    }
   }
 
   [data-design="dbim"] .db-doc__archive {
@@ -194,7 +213,8 @@
     align-items: center;
     gap: var(--sa-padding-8);
     height: 42px; /* reference height */
-    margin-right: 47.5px; /* .archivemr 40px + the column's 7.5px gutter */
+    /* Flush with the list's right edge (DBIM 3.0 Figure 75); the reference's
+       .archivemr held it 47.5px in. */
     padding: var(--sa-padding-8) var(--sa-padding-12);
     border: 1px solid var(--sa-color-primaryScale-800);
     border-radius: var(--sa-shape-4);
@@ -304,12 +324,6 @@
 
     [data-design="dbim"] .db-doc__cell--action:empty {
       display: none;
-    }
-  }
-
-  @media (max-width: 767.5px) {
-    [data-design="dbim"] .db-doc__archive {
-      margin-right: var(--sa-padding-56);
     }
   }
 }

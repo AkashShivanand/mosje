@@ -324,13 +324,19 @@
   [data-design="dbim"] .db-contact__map iframe {
     display: block;
     width: 100%;
-    height: 156px; /* reference: the iframe's own 150 on its line box */
+    /* The reference's 156 is an unsized iframe's default 150px, not a design: a map
+       that short shows one street. 360 matches the address column's reading height. */
+    height: 360px;
     border: 0;
   }
 
   @media (max-width: 991.5px) {
     [data-design="dbim"] .db-contact {
       row-gap: var(--sa-stack-48);
+    }
+
+    [data-design="dbim"] .db-contact__map iframe {
+      height: 280px;
     }
   }
 
