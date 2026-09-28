@@ -49,9 +49,13 @@
     transform: translateX(-5px);
   }
 
+  /* A 24px chevron (DBIM 3.0 §3.4), drawn 4px into its neighbours on each side so the
+     link text keeps its place — the glyph's own padding is that wide. */
   [data-design="dbim"] .db-footer__chev {
-    width: 16px;
-    overflow: hidden;
+    width: 24px;
+    height: var(--db-lh-h3) !important; /* the row keeps the text's leading (22 on a phone); the glyph overhangs it by 1px */
+    margin: 0 -4px;
+    overflow: visible;
     line-height: var(--db-lh-h3);
     color: var(--sa-color-neutralScale-0);
   }

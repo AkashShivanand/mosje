@@ -131,13 +131,18 @@
   /* "Show Latest Posts" — the reference's outlined VIEW MORE button, so the card reads
      as part of the same template before any feed is loaded. */
   [data-design="dbim"] .db-hb-feed__load {
+    box-sizing: border-box;
+    height: var(--sa-padding-40); /* the DBIM Button, Type=Outline */
+    min-height: 0;
     margin-top: var(--sa-stack-16);
+    padding: var(--sa-padding-8) var(--sa-padding-16);
     border: 1px solid var(--sa-color-primaryScale-800);
     border-radius: var(--sa-shape-4);
     background: var(--sa-color-neutralScale-0);
     color: var(--sa-color-primaryScale-800);
-    font-size: 0.875rem; /* 14px */
-    font-weight: var(--sa-font-weight-semibold); /* Paragraph 2: Regular, Semi Bold or Bold (Table 3) */
+    font-size: var(--db-fs-button); /* Label/button: 14, 12 on a phone */
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: var(--db-lh-p2);
     text-transform: uppercase;
   }
 
@@ -146,7 +151,7 @@
   }
 
   [data-design="dbim"] .db-hb-feed__more:hover {
-    color: var(--sa-color-primaryScale-800);
+    color: var(--sa-color-primaryScale-600); /* Blue 2, the handoff's Text Link hover */
   }
 
   [data-design="dbim"] .db-hb-feed__end {
@@ -483,11 +488,11 @@
 
   [data-design="dbim"] .db-hb-partners__arrow.ds-btn {
     position: absolute;
-    top: 39px; /* chevron centred 55px down the card, as slick places it */
+    top: 37px; /* the handoff's Pagination Item: a 40px target centred on the card */
     display: none;
-    width: 32px;
+    width: var(--sa-padding-40);
     min-width: 0;
-    height: 32px;
+    height: var(--sa-padding-40);
     min-height: 0;
     padding: 0;
     border: 0;
@@ -501,15 +506,15 @@
   }
 
   [data-design="dbim"] .db-hb-partners__arrow--prev.ds-btn {
-    left: -17.5px; /* slick's −25px from the track, which starts 7.5px in */
+    left: -21.5px; /* slick's −25px from the track, re-centred for a 40px target */
   }
 
   [data-design="dbim"] .db-hb-partners__arrow--next.ds-btn {
-    left: calc(100% - 2.5px); /* slick's left: 950px on a 945px track */
+    left: calc(100% - 6.5px); /* slick's 950 on a 945 track, re-centred for 40 */
   }
 
   [data-design="dbim"] .db-hb-partners__arrow--pause.ds-btn {
-    left: calc(100% + 30px);
+    left: calc(100% + 26px); /* its glyph stays where it was in the 40px box */
   }
 
   @media (min-width: 576px) {

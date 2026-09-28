@@ -122,14 +122,14 @@ export function BannerCarousel({ slides }: { slides: (DbimImage & { href?: strin
         appearance="filled"
         className="db-carousel__arrow db-carousel__arrow--prev"
         aria-label="Previous slide"
-        icon={<Icon name="chevron_left" size={48} />}
+        icon={<Icon name="chevron_left" size={24} />}
         onClick={() => go(index - 1)}
       />
       <IconButton
         appearance="filled"
         className="db-carousel__arrow db-carousel__arrow--next"
         aria-label="Next slide"
-        icon={<Icon name="chevron_right" size={48} />}
+        icon={<Icon name="chevron_right" size={24} />}
         onClick={() => go(index + 1)}
       />
       <div className="db-carousel__dots">

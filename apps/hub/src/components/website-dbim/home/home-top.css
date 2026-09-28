@@ -69,9 +69,9 @@
     position: absolute;
     top: 50%;
     z-index: var(--sa-z-raised);
-    width: 35px; /* reference */
+    width: var(--sa-padding-40); /* the handoff's Icon Button, Type=Filled: 40 with a 24 glyph */
     min-width: 0;
-    height: 35px;
+    height: var(--sa-padding-40);
     min-height: 0;
     padding: 0;
     overflow: visible;
@@ -80,11 +80,11 @@
   }
 
   [data-design="dbim"] .db-carousel .db-carousel__arrow--prev {
-    left: 30px; /* reference */
+    left: 28px; /* the reference's 30 on a 35px box, re-centred for 40 */
   }
 
   [data-design="dbim"] .db-carousel .db-carousel__arrow--next {
-    right: 30px; /* reference */
+    right: 28px;
   }
 
   /* The play/pause disc: 40px, the ink colour, 45px from the right at 1280–1500. */
@@ -170,15 +170,11 @@
 
   @media (max-width: 991.5px) {
     [data-design="dbim"] .db-carousel .db-carousel__arrow--prev {
-      left: var(--sa-padding-24);
+      left: 22px; /* the reference's 24 on a 35px box, re-centred for 40 */
     }
 
     [data-design="dbim"] .db-carousel .db-carousel__arrow--next {
-      right: var(--sa-padding-24);
-    }
-
-    [data-design="dbim"] .db-carousel .db-carousel__arrow .material-symbols-rounded {
-      font-size: 2rem !important; /* 32px — overrides the Icon's inline size */
+      right: 22px;
     }
   }
 
@@ -446,10 +442,12 @@
     gap: var(--sa-stack-8);
     align-items: center;
     align-self: flex-start;
-    padding: var(--sa-padding-8) var(--sa-padding-12);
-    font-size: 0.75rem; /* 12px */
+    box-sizing: border-box;
+    height: var(--sa-padding-40); /* the DBIM Button, Type=Outline, leading Open In New */
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    font-size: var(--db-fs-button);
     font-weight: var(--sa-font-weight-semibold);
-    line-height: 18px; /* reference */
+    line-height: var(--db-lh-p2);
     letter-spacing: 0.12px;
     text-transform: uppercase;
     text-decoration: none;
@@ -464,9 +462,10 @@
   }
 
   [data-design="dbim"] .db-pmq .db-pmq__action:focus-visible,
+  /* Focus: a 2px key-colour border over the tile's own 1px one. */
   [data-design="dbim"] .db-about .db-about__tile:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-    outline-offset: var(--sa-focus-offset);
+    outline: var(--sa-stroke-2) solid var(--sa-color-primaryScale-800);
+    outline-offset: calc(-1 * var(--sa-stroke-1));
   }
 
   @media (min-width: 1537px) {
@@ -606,13 +605,9 @@
     color: var(--sa-color-primaryScale-800);
   }
 
+  /* The handoff's About Tile Hover: Blue 5 ground; the label and icon keep their colours. */
   [data-design="dbim"] .db-about .db-about__tile:hover {
-    color: var(--sa-color-neutralScale-0);
-    background: var(--sa-color-primaryScale-800);
-  }
-
-  [data-design="dbim"] .db-about .db-about__tile:hover .db-about__tile-icon {
-    color: var(--sa-color-neutralScale-0);
+    background: var(--sa-color-primaryScale-100);
   }
 
   [data-design="dbim"] .db-about .db-about__ministers {

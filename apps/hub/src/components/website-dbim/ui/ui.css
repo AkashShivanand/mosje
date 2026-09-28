@@ -58,15 +58,19 @@
   }
 
   /* ── View More ───────────────────────────────────────────────────────────── */
+  /* The DBIM Button, Type=Outline (handoff "Button", DBIM 3.0 §4.5, Figs 18–19): 40 tall,
+     8 / 16 padding, the Label/button style — Paragraph 2 Semi Bold in capitals, 14px
+     (12 on a phone) — and a 24px trailing chevron. */
   [data-design="dbim"] .db-viewmore {
     display: inline-flex;
     gap: var(--sa-stack-8);
     align-items: center;
-    height: 36px;
-    padding: var(--sa-padding-4) var(--sa-padding-6) var(--sa-padding-6) var(--sa-padding-12);
-    font-size: 1rem; /* 16px */
-    font-weight: var(--sa-font-weight-regular);
-    line-height: normal;
+    box-sizing: border-box;
+    height: var(--sa-padding-40);
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    font-size: var(--db-fs-button);
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: var(--db-lh-p2);
     color: var(--sa-color-primaryScale-800);
     text-decoration: none;
     text-transform: uppercase;

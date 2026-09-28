@@ -34,7 +34,7 @@ export function DbimFooter() {
           <ul className="db-footer__list">
             {DBIM_FOOTER_LINKS.map((l) => (
               <li key={l.path}>
-                <Icon name="chevron_right" size={20} className="db-footer__chev" />
+                <Icon name="chevron_right" size={24} className="db-footer__chev" />
                 <Link href={dbimHref(l.path)}>{l.label}</Link>
               </li>
             ))}
