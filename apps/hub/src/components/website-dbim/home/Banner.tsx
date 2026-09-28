@@ -1,6 +1,7 @@
 import { getHomeBanners } from "@/lib/website-shared/home-banners";
 import { whatsNew } from "@/lib/website-next/whats-new";
 import { whatsNewTarget } from "@/lib/website-dbim/documents";
+import { dbimFeedTitle } from "@/lib/website-dbim/home-mid";
 import { DbimIcon } from "@/components/website-dbim/ui/icons";
 
 import { BannerCarousel } from "./BannerCarousel";
@@ -22,7 +23,7 @@ export async function DbimBanner() {
   const items: AnnouncementItem[] = whatsNew()
     .flatMap((n): AnnouncementItem[] => {
       const t = whatsNewTarget(n);
-      return t ? [{ key: n.key, title: n.title, ...t }] : [];
+      return t ? [{ key: n.key, title: dbimFeedTitle(n.title), ...t }] : [];
     })
     .slice(0, ANNOUNCEMENT_COUNT);
 

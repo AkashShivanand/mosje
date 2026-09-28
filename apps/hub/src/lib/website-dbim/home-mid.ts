@@ -93,9 +93,53 @@ export function dbimHomeNews(limit = 4): DbimHomeLink[] {
   return whatsNew()
     .flatMap((n): DbimHomeLink[] => {
       const t = whatsNewTarget(n);
-      return t ? [{ key: n.key, title: n.title, ...t }] : [];
+      return t ? [{ key: n.key, title: dbimFeedTitle(n.title), ...t }] : [];
     })
     .slice(0, limit);
+}
+
+/** Acronyms the Department's feed prints in capitals, kept so when a title is sentence-cased. */
+const FEED_ACRONYMS = new Set([
+  "AJAY", "DAIC", "DANM", "DNT", "EBC", "EOI", "GIA", "NBCFDC", "NCSC", "NGO", "NGOS", "NOS",
+  "NSFDC", "NSKFDC", "OBC", "OBCS", "PM", "RTI", "SC", "SCS", "SSE", "ST", "UT", "UTS",
+]);
+
+/** Words a Title Case title keeps lowercase unless they open it (ui-restraint-and-copy.md §2). */
+const SMALL_WORDS = new Set(["a", "an", "the", "and", "or", "but", "to", "of", "in", "into", "for", "on", "with", "at", "by", "from", "as"]);
+
+/**
+ * A feed title as the DBIM home prints it (decided 28 Sep 2026; the source data is
+ * untouched, and the divergence is recorded in docs/audit/dbim-home-figma-parity-2026-09-28.md):
+ *
+ * - DBIM 3.0 §4.1.1 ii: "All capital text must not be used for long sentences". A title
+ *   whose letters are 80% or more capitals is set in Title Case, the estate's rule for
+ *   titles. Acronyms (the list above, or a short word in parentheses), anything with a
+ *   digit and tokens that already mix cases (Rs.5.00, RRs) are kept as published.
+ * - §7.1.3, no spelling errors: "lnviting" and "lnterest" — a lowercase L where the
+ *   Department typed a capital I — read "Inviting" and "Interest". No English word opens
+ *   with "ln", so the repair cannot touch a correct one. Other misspellings are left.
+ */
+export function dbimFeedTitle(title: string): string {
+  const fixed = title.replace(/\bln(?=[a-z])/g, "In");
+  const letters = fixed.replace(/[^A-Za-z]/g, "");
+  if (letters.length < 16 || letters.replace(/[^A-Z]/g, "").length / letters.length < 0.8) return fixed;
+  const word = (w: string, first: boolean): string => {
+    const bare = w.replace(/[^A-Za-z]/g, "");
+    if (!bare || /\d/.test(w) || /[a-z]/.test(w) || FEED_ACRONYMS.has(bare.toUpperCase())) return w;
+    if (/^\(.*\)$/.test(w.replace(/[^A-Za-z()]/g, "")) && bare.length <= 6) return w;
+    const lower = w.toLowerCase();
+    if (!first && SMALL_WORDS.has(bare.toLowerCase())) return lower;
+    return lower.replace(/[a-z]/, (c) => c.toUpperCase());
+  };
+  let first = true;
+  return fixed.replace(/\S+/g, (token) => {
+    const out = token
+      .split(/([-/])/)
+      .map((part, i) => (i % 2 ? part : word(part, first && i === 0)))
+      .join("");
+    if (/[A-Za-z]/.test(token)) first = false;
+    return out;
+  });
 }
 
 /* ── Recent Documents ──────────────────────────────────────────────────── */

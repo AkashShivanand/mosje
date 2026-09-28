@@ -243,3 +243,39 @@ export const WithExtraTabs: Story = {
     ],
   },
 };
+
+/**
+ * **`placement: "end"`** — a tab offered on EVERY route goes after Apps and
+ * Colour, so it never becomes the lead door's label. The hub's Capture tab is
+ * the case: were it a lead tab, every page would name the flask "Capture".
+ */
+export const WithEndTab: Story = {
+  args: {
+    pathname: "/website",
+    extraTabs: [
+      {
+        id: "capture",
+        label: "Capture",
+        placement: "end",
+        content: (
+          <p style={{ margin: 0, fontSize: "var(--sa-type-body-2-size)", lineHeight: "var(--sa-type-body-2-lh)" }}>
+            Save the visible area or the full page as a PNG.
+          </p>
+        ),
+      },
+    ],
+  },
+};
+
+/**
+ * **`notice`** — a short confirmation beside the flask, for as long as it is
+ * set. The answer to a keyboard shortcut used with the panel closed ("Screenshot
+ * saved", "DBIM Design"); the caller clears it. Hidden while the panel is open,
+ * where the panel itself answers.
+ */
+export const WithNotice: Story = {
+  args: {
+    pathname: "/website",
+    notice: "Screenshot saved",
+  },
+};
