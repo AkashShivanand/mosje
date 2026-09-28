@@ -15,13 +15,14 @@ import "server-only";
 import {
   OFFERING_TENDERS, OFFERING_VACANCIES, offeringSchemesInOrder,
 } from "@/lib/website-shared/offerings";
+import { RECENT_DOCUMENTS } from "@/lib/website-shared/documents";
 import { localiseDocumentUrl } from "@/lib/website/sample-documents";
 import { whatsNew } from "@/lib/website-next/whats-new";
 import { dbimHref } from "./nav";
 import { DBIM_PERSONA_ART } from "./assets";
 import { DBIM_IMPORTANT_LINKS, DBIM_PERSONAS } from "./utility";
 import {
-  DBIM_DOC_TABS, documentSeries, seriesDocuments, whatsNewTarget, type DbimDocTab,
+  documentSeries, whatsNewTarget,
 } from "./documents";
 
 export interface DbimHomeLink {
@@ -104,34 +105,22 @@ export interface DbimRecentDoc extends DbimHomeLink {
   category: string;
 }
 
-/*
- * The reference's mix — one Reports card, one Orders and Notices, two Publications —
- * each the newest live document of its tab. A card opens the document's series page
- * (`/documents/<tab>/<series>`), where it heads the list.
+/**
+ * The live site's four Recent Documents, shared with every design
+ * (lib/website-shared/documents.ts) — the reference build's mix of one Report, one
+ * Order and two Publications, each the newest of its tab, is gone. A card's bold first
+ * line is the live card's "Type:", and it opens the series page that holds it here.
  */
-const RECENT_MIX: [DbimDocTab, number][] = [["reports", 1], ["orders-and-notices", 1], ["publications", 2]];
-
-function newestInTab(tab: DbimDocTab, n: number): DbimRecentDoc[] {
-  const label = DBIM_DOC_TABS.find((t) => t.key === tab)?.label ?? "";
-  // The newest file of a tab lives in one of its newest folders; three is ample for two picks.
-  const rows = documentSeries(tab)
-    .slice(0, 3)
-    .flatMap((s) => (seriesDocuments(tab, s.slug)?.rows.slice(0, n) ?? []).map((r) => ({ r, s })))
-    .sort((a, b) => (b.r.date ?? "").localeCompare(a.r.date ?? ""));
-  const seen = new Set<string>();
-  return rows
-    .filter(({ r }) => !seen.has(r.key) && !!seen.add(r.key))
-    .slice(0, n)
-    .map(({ r, s }) => ({
-      key: `${tab}-${r.key}`,
-      category: label,
-      title: r.title,
-      href: dbimHref(`/documents/${tab}/${s.slug}`),
-    }));
-}
-
 export function dbimRecentDocuments(): DbimRecentDoc[] {
-  return RECENT_MIX.flatMap(([tab, n]) => newestInTab(tab, n));
+  return RECENT_DOCUMENTS.map((d) => {
+    const series = documentSeries("reports").find((s) => s.title.toLowerCase() === d.type.toLowerCase());
+    return {
+      key: d.slug,
+      category: d.type,
+      title: d.title,
+      href: series ? dbimHref(`/documents/reports/${series.slug}`) : dbimHref("/documents"),
+    };
+  });
 }
 
 /* ── Explore User Personas ─────────────────────────────────────────────── */

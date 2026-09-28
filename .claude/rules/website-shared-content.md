@@ -38,6 +38,7 @@ differ in layout. **They may not differ in content.**
 | Minister photographs | `home.ts` `ABOUT_US.ministers[].photo` — the live photographs at the DBIM handoff file's resolution (instruction, 28 Sep 2026) | ✅ | ✅ | ✅ |
 | PM quote — quotation, citation, photograph | `home.ts` `PM_QUOTE` (source: PIB; the live site carries no PM quote) | ✅ | layout-options page only | ✅ |
 | Offerings — scheme groups, vacancies, tenders | `offerings.ts` (a dated snapshot: the live lists are hand-picked, not register rows) | ✅ | ✅ | ✅ Key Offerings, five a tab (DBIM 3.0 §A.4.1 vi) |
+| Recent Documents | `documents.ts` (a dated snapshot of the live selection) | ✅ | ✅ | ✅ |
 | What's New | `whatsNew()` in `lib/website-next/whats-new.ts` — a feed, as live runs it | ✅ | ✅ | ✅ |
 | Organisations — words, tab labels, order, the 18 bodies | `organisations.ts` + the registry `data/website/organisations.ts` | ✅ | ✅ | ✅ **not on the home page** — Ministry › Our Organisation (DBIM 3.0 §A.5.1.3) |
 
@@ -47,7 +48,7 @@ five entries a Key Offerings tab — the section moves; its content still comes 
 here.
 
 Sections still carried per design, to be moved here as they are next touched:
-Recent Documents, Social Media, partner logos, and the DBIM Ministry page's Minister
+Social Media, partner logos, and the DBIM Ministry page's Minister
 chart (`DBIM_PEOPLE.ministers`).
 
 ## Checklist

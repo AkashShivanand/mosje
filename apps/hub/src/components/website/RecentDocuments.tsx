@@ -5,20 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button, Divider, Icon, IconButton, buttonClasses } from "@mosje/design-system";
 import { CarouselIndicators } from "./CarouselIndicators";
-
-interface DocumentItem {
-  title: string;
-  date: string;
-  href: string;
-  /**
-   * Document class, shown as "Type: X" [WEB-D-02, partially].
-   * The design also shows a one-line description and "File: PDF (2.4 MB)".
-   * `content/website/documents.json` carries neither — it holds only slug,
-   * title, sourceUrl, date and category — so neither is rendered rather than
-   * being fabricated for a government page.
-   */
-  type: string;
-}
+import { RECENT_DOCUMENTS, RECENT_DOCUMENTS_SECTION } from "@/lib/website-shared/documents";
+import { localiseDocumentUrl } from "@/lib/website/sample-documents";
 
 interface Persona {
   img: string;
@@ -26,32 +14,11 @@ interface Persona {
   href: string;
 }
 
-const documents: DocumentItem[] = [
-  {
-    title: "Annual Report 2025-26 (English)",
-    type: "Report",
-    date: "22 Apr 2026",
-    href: "/website/annual-reports",
-  },
-  {
-    title: "Annual Report 2025-26 (Hindi)",
-    type: "Report",
-    date: "22 Apr 2026",
-    href: "/website/annual-reports",
-  },
-  {
-    title: "Result of National Overseas Scholarship (NOS) for SC candidates 2025-26 (2nd Round)",
-    type: "Result",
-    date: "18 Apr 2026",
-    href: "/website/annual-reports",
-  },
-  {
-    title: "Acceptance of Transgender Identity Certificate/Card in EPFO Records",
-    type: "Circular",
-    date: "15 Apr 2026",
-    href: "/website/notices",
-  },
-];
+/* The four documents are shared with every design (lib/website-shared/documents.ts):
+   the live section's own, with its type, format and size. Until 28 Sep 2026 this
+   file kept a list of its own — two of its four were not the live site's — and
+   printed no file size because the register it was written from carries none. */
+const documents = RECENT_DOCUMENTS.map((d) => ({ ...d, href: localiseDocumentUrl(d.file, d.title) }));
 
 /**
  * The four audiences the Department publishes a page for.
@@ -107,7 +74,7 @@ export function RecentDocuments() {
             <div>
               <div className="flex items-center justify-between border-b border-gray-200 pb-4">
                 <h2 className="text-headline-2 text-primary-dark">
-                  Recent Documents
+                  {RECENT_DOCUMENTS_SECTION.title}
                 </h2>
                 {/* Outlined button, not a text link [WEB-G-05]. */}
                 <Button linkAs={Link}
@@ -131,12 +98,12 @@ export function RecentDocuments() {
                     <h3 className="text-title-2 text-ink">
                       {doc.title}
                     </h3>
-                    <p className="mt-1 text-body-3 text-ink-muted">{doc.date}</p>
-
-                    {/* The design also carries a description here. It is not in
-                        the document data — see DocumentItem.type. */}
+                    <p className="mt-1 text-body-3 text-ink-muted">
+                      <time dateTime={doc.dateTime}>{doc.date}</time>
+                    </p>
                     <p className="mt-3 text-body-3 text-ink-muted">
                       Type: <span className="font-medium text-ink">{doc.type}</span>
+                      {" • "}File: <span className="font-medium text-ink">{doc.format} ({doc.size})</span>
                     </p>
 
                     <div className="mt-4 flex items-center justify-end gap-2 pt-1">
@@ -154,12 +121,7 @@ export function RecentDocuments() {
                         )}
                       >
                         View Online
-                      </Link>
-                      <Link
-                        href={doc.href}
-                        className={buttonClasses("primary", "filled", "sm", "text-label-2 px-3.5 py-1.5 whitespace-nowrap")}
-                      >
-                        Download
+                        <span className="sr-only">: {doc.title}</span>
                       </Link>
                     </div>
                   </div>
