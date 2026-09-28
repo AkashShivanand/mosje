@@ -2055,7 +2055,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "500",
         "figma": null,
         "excluded": "code-only — Figma has no z-axis property, so layering cannot be bound on a canvas",
-        "description": "A dialog or side sheet that owns the screen. Sits on its own scrim."
+        "description": "A dialog or side sheet that owns the screen. Sits on its own scrim. While any aria-modal dialog is open the floating rails step down under it (useDialogLayer, floating-element-placement.md); the dialog never climbs past them."
       },
       {
         "path": "z/popover",
@@ -2099,7 +2099,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "1000",
         "figma": null,
         "excluded": "code-only — Figma has no z-axis property, so layering cannot be bound on a canvas",
-        "description": "The right-wall rail and its occupants (Important Links, DemoDock trigger). Fixed chrome that must beat product overlays."
+        "description": "The right-wall rail and its occupants (Important Links, DemoDock trigger). Fixed chrome that must beat product chrome — and steps down to base under an open aria-modal dialog, which marks <html> data-sa-dialog-open."
       },
       {
         "path": "z/launcher",
@@ -2110,7 +2110,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "1010",
         "figma": null,
         "excluded": "code-only — Figma has no z-axis property, so layering cannot be bound on a canvas",
-        "description": "Closed launchers in the bottom-right corner rail — the chatbot button. Above the wall rail, and deliberately UNDER the statutory panel: a chat launcher has no business sitting on an accessibility control."
+        "description": "Closed launchers in the bottom-right corner rail — the chatbot button. Above the wall rail, and deliberately UNDER the statutory panel: a chat launcher has no business sitting on an accessibility control. Steps down to base under an open aria-modal dialog."
       },
       {
         "path": "z/statutory",
@@ -2132,7 +2132,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "2147483000",
         "figma": null,
         "excluded": "code-only — Figma has no z-axis property, so layering cannot be bound on a canvas",
-        "description": "Demo scaffolding — the DemoDock. The reason this number is grotesque: it must beat the statutory panel while the estate is a prototype. Retire with the dock."
+        "description": "Demo scaffolding — the DemoDock. The reason this number is grotesque: it must beat the statutory panel while the estate is a prototype. It still steps down under an open aria-modal dialog (demo-dock.css). Retire with the dock."
       },
       {
         "path": "z/top",
@@ -2143,7 +2143,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "2147483001",
         "figma": null,
         "excluded": "code-only — Figma has no z-axis property, so layering cannot be bound on a canvas",
-        "description": "The one layer above the dock: a panel the citizen deliberately summoned (the open chatbot). Nothing decorative may cover it."
+        "description": "The one layer above the dock: a panel the citizen deliberately summoned (the open chatbot). Nothing decorative may cover it — a page-blocking dialog is not decorative, and puts it under its scrim like every rail occupant."
       }
     ],
     "stats": {

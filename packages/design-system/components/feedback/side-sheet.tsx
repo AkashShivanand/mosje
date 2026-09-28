@@ -3,6 +3,7 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { IconButton } from "../actions/icon-button";
+import { useDialogLayer } from "../../foundations/use-dialog-layer";
 import "./side-sheet.css";
 
 export type SideSheetSize = "sm" | "md" | "lg";
@@ -75,6 +76,8 @@ export function SideSheet({
 }: SideSheetProps) {
   const panelRef = React.useRef<HTMLDivElement>(null);
   const titleId = React.useId();
+  // The floating rails step under the scrim while the sheet owns the screen (foundations/dialog-layer.ts).
+  useDialogLayer(open);
 
   React.useEffect(() => {
     if (!open) return;

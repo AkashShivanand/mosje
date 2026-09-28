@@ -451,6 +451,17 @@
     }
   }
 
+  /* …and at EVERY width and scroll position where the claim says its control is the
+     page's ONLY door (`useAccessibilityEntryClaim(…, { soleDoor: true })`, rule 4c) —
+     the DBIM website, whose owner decided on 2026-09-28 that the header icon is the one
+     route and the bottom-right corner belongs to the chat launcher. On a phone the
+     floating button came back at 285,718 once the header scrolled away, on top of the
+     launcher's corner. Hidden, never removed: the header icon opens the panel by
+     clicking this element. */
+  :root[data-sa-abar-a11y="1"][data-sa-abar-a11y-sole] #uw-widget-custom-trigger {
+    display: none !important;
+  }
+
   /* …and at ANY width while NavSheet is open, because the sheet carries the same
      control and the FAB's corner is underneath it. `NavSheet` sets the flag. */
   :root[data-sa-navsheet-open] #uw-widget-custom-trigger {
