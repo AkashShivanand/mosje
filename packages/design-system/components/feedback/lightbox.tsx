@@ -207,7 +207,15 @@ export function Lightbox({
       // cleanup the ref may already point at a different node (or null), which
       // would make this test ask about the wrong element — the exact hazard
       // react-hooks warns about for refs in cleanups.
-      if (!root || root.contains(document.activeElement)) {
+      //
+      // ON CLOSE THE PORTAL IS ALREADY GONE when this runs — `open` false makes
+      // the render return null, and React removes the DOM before it runs passive
+      // cleanups — so focus has fallen to <body> and `root.contains` is false.
+      // Testing containment alone meant the restore never fired on the one
+      // occasion it exists for: found 2026-09-28 closing the home page's
+      // infographic viewer. Focus on <body> is focus nobody placed.
+      const active = document.activeElement;
+      if (!root || !active || active === document.body || root.contains(active)) {
         opener?.focus?.();
       }
     };
