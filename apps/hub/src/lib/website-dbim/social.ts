@@ -9,11 +9,13 @@
  * where every design can reach them.
  */
 
-export type DbimSocialNetwork = "x" | "youtube" | "facebook" | "instagram";
+import { SOCIAL_ACCOUNTS, type SocialNetwork } from "@/lib/website-shared/social";
+
+export type DbimSocialNetwork = SocialNetwork;
 
 export interface DbimSocialFeed {
   network: DbimSocialNetwork;
-  /** The card title, verbatim from the reference. */
+  /** The card title — the live site's name for the platform. */
   title: string;
   /** The network's name in running text ("View on YouTube"). */
   networkName: string;
@@ -25,13 +27,19 @@ export interface DbimSocialFeed {
 const ACCOUNT = "Department of Social Justice and Empowerment";
 export const DBIM_SOCIAL_ACCOUNT = ACCOUNT;
 
-/** In the reference's order: X, Youtube, Facebook, Instagram. */
-export const DBIM_SOCIAL_FEEDS: DbimSocialFeed[] = [
-  { network: "x", title: "X", networkName: "X", handle: "@msjegoi", href: "https://x.com/msjegoi" },
-  { network: "youtube", title: "Youtube", networkName: "YouTube", handle: "@ministryofsocialjustice511", href: "https://www.youtube.com/@ministryofsocialjustice511" },
-  { network: "facebook", title: "Facebook", networkName: "Facebook", handle: "goimsje", href: "https://www.facebook.com/goimsje" },
-  { network: "instagram", title: "Instagram", networkName: "Instagram", handle: "@msjegoi", href: "https://www.instagram.com/msjegoi/" },
-];
+/**
+ * The four accounts, from the content every design shares (lib/website-shared/social.ts):
+ * the live site's three, in its order, and YouTube, which DBIM 3.0's "at least four
+ * platforms" asks this design to add. Names, handles and links are the live site's —
+ * until 28 Sep 2026 this list kept its own, in the reference build's order.
+ */
+export const DBIM_SOCIAL_FEEDS: DbimSocialFeed[] = SOCIAL_ACCOUNTS.map((a) => ({
+  network: a.network,
+  title: a.name,
+  networkName: a.network === "x" ? "X" : a.name,
+  handle: a.handle,
+  href: a.href,
+}));
 
 /** Five posts on X, newest first, as the reference embeds them. */
 export const DBIM_X_POSTS = [

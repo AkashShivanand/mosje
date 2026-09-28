@@ -39,16 +39,20 @@ differ in layout. **They may not differ in content.**
 | PM quote — quotation, citation, photograph | `home.ts` `PM_QUOTE` (source: PIB; the live site carries no PM quote) | ✅ | layout-options page only | ✅ |
 | Offerings — scheme groups, vacancies, tenders | `offerings.ts` (a dated snapshot: the live lists are hand-picked, not register rows) | ✅ | ✅ | ✅ Key Offerings, five a tab (DBIM 3.0 §A.4.1 vi) |
 | Recent Documents | `documents.ts` (a dated snapshot of the live selection) | ✅ | ✅ | ✅ |
+| Social Media — heading, accounts, handles, links | `social.ts` (live's three; YouTube as DBIM's fourth) | ✅ | ✅ | ✅ four platforms (DBIM Toolkit, "Citizen Engagement") |
 | What's New | `whatsNew()` in `lib/website-next/whats-new.ts` — a feed, as live runs it | ✅ | ✅ | ✅ |
 | Organisations — words, tab labels, order, the 18 bodies | `organisations.ts` + the registry `data/website/organisations.ts` | ✅ | ✅ | ✅ **not on the home page** — Ministry › Our Organisation (DBIM 3.0 §A.5.1.3) |
 
 **The DBIM design follows the DBIM 3.0 manual for layout.** Where the manual places a
 section differently — Our Organisations under Ministry rather than on the home page,
-five entries a Key Offerings tab — the section moves; its content still comes from
-here.
+five entries a Key Offerings tab, at least four social platforms — the section moves or
+grows; its content still comes from here.
 
-Sections still carried per design, to be moved here as they are next touched:
-Social Media, partner logos, and the DBIM Ministry page's Minister
+**Nothing is invented to fill a layout.** Where the live section carries no posts, no
+photographs or no figures, neither does a design — nine invented social posts, with
+like counts, stood on the New and Classic home pages until 28 Sep 2026.
+
+Sections still carried per design, to be moved here as they are next touched: partner logos, and the DBIM Ministry page's Minister
 chart (`DBIM_PEOPLE.ministers`).
 
 ## Checklist
