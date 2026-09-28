@@ -94,13 +94,17 @@ export const DBIM_MENU: DbimMenu[] = [
   },
 ];
 
-/** The footer's "Useful Links", in the reference's order. */
+/**
+ * The footer's "Useful Links", in the reference's order, then Feedback: DBIM 3.0 §5.6
+ * says the footer "must contain" it (and Table 12 lists it), which the reference omits.
+ */
 export const DBIM_FOOTER_LINKS: DbimLink[] = [
   { label: "Archives", path: "/archives" },
   { label: "Website Policies", path: "/policies" },
   { label: "Related Links", path: "/related-links" },
   { label: "Sitemap", path: "/sitemap" },
   { label: "Help", path: "/help" },
+  { label: "Feedback", path: "/feedback" },
 ];
 
 /** The policies page's own sub-tabs (reference: Terms of Use, Privacy Policy, Hyperlink Policy). */

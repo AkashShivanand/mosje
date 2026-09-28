@@ -22,8 +22,10 @@
     height: 48px;
   }
 
+  /* Bold, as every other home-section heading is: the handoff sets all of them in one
+     Heading 2 Bold style (DBIM 3.0 §4.3.1 allows Bold, Semi Bold or Medium; one page
+     uses one). The reference set this one at 500. */
   [data-design="dbim"] .db-heading--inverse {
-    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-color-neutralScale-0);
   }
 
@@ -73,12 +75,9 @@
     border-radius: var(--sa-shape-4);
   }
 
-  [data-design="dbim"] .db-viewmore--sm {
-    padding-left: var(--sa-padding-8);
-    font-size: var(--db-fs-p);
-    font-weight: var(--sa-font-weight-semibold);
-  }
-
+  /* Under Recent Documents the handoff draws the same View More as everywhere else —
+     regular weight, 12px in — at 1920 and at 390. Only the reference's 1280–1536 size
+     step is kept, a width the handoff does not draw. */
   @media (min-width: 1280px) and (max-width: 1536px) {
     [data-design="dbim"] .db-viewmore--sm {
       font-size: 0.75rem; /* 12px */
