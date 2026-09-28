@@ -4,7 +4,7 @@ import * as React from "react";
 import { useToast } from "@/components/nmba/toast";
 import { STATES, STATE_DISTRICTS } from "@/lib/nmba/states";
 import { ACTIVITY_TYPES } from "@/lib/nmba/mock-data";
-import { Button, FormField, Icon, IconButton, Input, Select } from "@mosje/design-system";
+import { Button, FormField, Icon, IconButton, Input, Select, useDialogLayer } from "@mosje/design-system";
 
 interface AddEventModalProps {
   open: boolean;
@@ -13,6 +13,8 @@ interface AddEventModalProps {
 
 export function AddEventModal({ open, onClose }: AddEventModalProps) {
   const { toast } = useToast();
+  // aria-modal: the floating rails step under this dialog while it is open (DS foundations/dialog-layer.ts).
+  useDialogLayer(open);
   const [state, setState] = React.useState("");
   const [district, setDistrict] = React.useState("");
   const [submitting, setSubmitting] = React.useState(false);

@@ -3,7 +3,7 @@
  *
  * Everything the site knows about organisations, divisions, officials and the NGO grants
  * register is defined once, here, and read from here. Before this, the same facts were
- * retyped into whichever page or component needed them — 17 organisations across four
+ * retyped into whichever page or component needed them — 18 organisations across four
  * hand-written lists, 115 officials across 15 page files, a rail of division links that had
  * silently lost nine entries. Drift was not a risk; it had already happened.
  *

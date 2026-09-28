@@ -160,6 +160,11 @@ stories**; the static build takes precedence at `/storybook` until you rebuild
   keyboard nav, visible focus, AA contrast. Run the `accessibility-auditor` agent before
   shipping a page.
 - **Real content, real assets** — no lorem/placeholder in production pages.
+- **The three website designs share one content source** (2026-09-28). A section
+  that appears in more than one of New / Classic / DBIM reads its content from
+  `apps/hub/src/lib/website-shared/`, and that content is the live dosje.gov.in's
+  unless explicitly specified. The first home slide is always the CCPS banner.
+  → `.claude/rules/website-shared-content.md`
 - **Nothing on the screen the screen does not need, and copy in a government
   register.** The interface shows the citizen's information; it never narrates
   its own construction. Feed diagnostics, absence notes and instructions for

@@ -128,11 +128,8 @@
     color: var(--sa-color-primaryScale-800);
   }
 
-  [data-design="dbim"] .db-doc__type svg {
+  [data-design="dbim"] .db-doc__type .db-icon {
     flex: none;
-    width: 18px;
-    height: 18px;
-    fill: var(--sa-color-primaryScale-800);
   }
 
   [data-design="dbim"] .db-doc__size {

@@ -1,4 +1,4 @@
-import { DBIM_BANNERS } from "@/lib/website-dbim/assets";
+import { getHomeBanners } from "@/lib/website-shared/home-banners";
 import { whatsNew } from "@/lib/website-next/whats-new";
 import { whatsNewTarget } from "@/lib/website-dbim/documents";
 import { DbimIcon } from "@/components/website-dbim/ui/icons";
@@ -12,9 +12,12 @@ const ANNOUNCEMENT_COUNT = 10;
 
 /**
  * The home banner: the reference's full-width carousel, then its grey Announcements
- * bar. DBIM makes Announcements mandatory, so the bar renders even with nothing in it.
+ * bar. The slides are shared with every design (lib/website-shared/home.ts) — the
+ * CCPS banner first, then the live site's own — not the reference build's six. DBIM makes
+ * Announcements mandatory, so the bar renders even with nothing in it.
  */
-export function DbimBanner() {
+export async function DbimBanner() {
+  const slides = await getHomeBanners();
   // Each item opens where the What's New page sends it (`whatsNewTarget`), never at the feed's own href.
   const items: AnnouncementItem[] = whatsNew()
     .flatMap((n): AnnouncementItem[] => {
@@ -25,11 +28,11 @@ export function DbimBanner() {
 
   return (
     <div className="db-banner">
-      <BannerCarousel slides={DBIM_BANNERS} />
+      <BannerCarousel slides={slides} />
       <div className="db-announce">
         <div className="db-announce__head">
           <h2 className="db-announce__title">Announcements</h2>
-          <DbimIcon name="announcements" size={25} className="db-announce__icon" />
+          <DbimIcon name="announcement" size={24} className="db-announce__icon" />
         </div>
         <AnnouncementsMarquee items={items} />
       </div>

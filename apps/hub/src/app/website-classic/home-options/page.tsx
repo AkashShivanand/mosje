@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Header } from "@/components/website/Header";
 import { WebsiteSamaveshBanner } from "@/components/website/website-samavesh-banner";
 import { HeroCarousel } from "@/components/website/HeroCarousel";
+import { getHomeBanners } from "@/lib/website-shared/home-banners";
 import { AboutUs } from "@/components/website/AboutUs";
 import { Offerings } from "@/components/website/Offerings";
 import { Organisations } from "@/components/website/Organisations";
@@ -80,7 +81,7 @@ export default async function HomeOptions({ searchParams }: { searchParams: Sear
       <Header />
       <WebsiteSamaveshBanner />
       <main id="main-content" className="flex-1">
-        <HeroCarousel />
+        <HeroCarousel slides={await getHomeBanners()} />
         {chosen.schemes === "strip" ? <SchemePortalsStrip /> : <SchemePortalsRail />}
         <PmQuoteBand />
         <AboutUs />

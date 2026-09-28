@@ -51,6 +51,22 @@ let a11yEntryCount = 0;
 /** How many bars' accessibility icons are on screen right now — refcounted for
  *  the same reason as the entry count: a page can render several bars. */
 let a11yOnscreenCount = 0;
+/** How many claims have made their control the page's ONLY door at every width and
+ *  scroll position — refcounted like the other two (rule 4c). */
+let a11ySoleCount = 0;
+
+export interface AccessibilityEntryClaimOptions {
+  /**
+   * This control is the page's ONLY accessibility door, at every width and every scroll
+   * position: the UX4G floating button stays hidden even on a phone after the control
+   * has scrolled away. For a design whose owner has decided the header icon is the one
+   * route and the bottom-right corner belongs to the chat launcher — the DBIM website,
+   * decided 2026-09-28 (`accessibility-entry-point.md` rule 4c). Without it, rule 4a
+   * applies: on a phone the floating button returns once the control is off screen.
+   * @default false
+   */
+  soleDoor?: boolean;
+}
 
 /**
  * Open the official UX4G accessibility widget, returning whether it was there.
@@ -106,7 +122,9 @@ export function openUx4gWidget(): boolean {
 export function useAccessibilityEntryClaim(
   active: boolean,
   ref?: React.RefObject<HTMLElement | null>,
+  options: AccessibilityEntryClaimOptions = {},
 ): void {
+  const soleDoor = options.soleDoor ?? false;
   React.useEffect(() => {
     if (!active) return;
     const root = document.documentElement;
@@ -120,6 +138,21 @@ export function useAccessibilityEntryClaim(
       }
     };
   }, [active]);
+
+  /* …whether it is the ONLY door, at every width and scroll position (rule 4c)… */
+  React.useEffect(() => {
+    if (!active || !soleDoor) return;
+    const root = document.documentElement;
+    a11ySoleCount += 1;
+    root.dataset.saAbarA11ySole = "1";
+    return () => {
+      a11ySoleCount -= 1;
+      if (a11ySoleCount <= 0) {
+        a11ySoleCount = 0;
+        delete root.dataset.saAbarA11ySole;
+      }
+    };
+  }, [active, soleDoor]);
 
   /* …and whether that door is ON SCREEN. Below `breakpoint/tablet` the vendor's
      floating button is hidden only while it is, so a phone shows exactly one door

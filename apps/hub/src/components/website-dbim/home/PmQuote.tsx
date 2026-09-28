@@ -1,17 +1,20 @@
 import Image from "next/image";
 import { Icon } from "@mosje/design-system";
 
-import { DBIM_PEOPLE } from "@/lib/website-dbim/assets";
-import { DBIM_PM_QUOTE as Q } from "@/lib/website-dbim/home-top";
+import { PM_QUOTE as Q } from "@/lib/website-shared/home";
+import { DbimIcon } from "@/components/website-dbim/ui/icons";
 import "./home-top.css";
 
 /**
  * The Prime Minister's quote band (DBIM 3.0 §7.3(iv)) — the reference's layout, the
  * Department's quotation: round portrait left, the quote in the darkest shade of the
  * colour group, a rule, then the event and date and a link to where it was delivered.
+ * The quotation and photograph are shared with every design (lib/website-shared/home.ts);
+ * only the date's dd.mm.yyyy form is this layout's own, as the reference prints it.
  */
 export function DbimPmQuote() {
-  const pm = DBIM_PEOPLE.primeMinister;
+  const pm = Q.image.portrait;
+  const [y, m, d] = Q.dateTime.split("-");
   return (
     <section className="db-pmq" aria-labelledby="db-pmq-title">
       <h2 id="db-pmq-title" className="db-hometop-sr">
@@ -19,15 +22,15 @@ export function DbimPmQuote() {
       </h2>
       <div className="db-pmq__in">
         <div className="db-pmq__figure">
-          <Image src={pm.src} alt={pm.alt} width={260} height={260} sizes="260px" className="db-pmq__portrait" />
+          <Image src={pm.src} alt={Q.image.alt} width={260} height={260} sizes="260px" className="db-pmq__portrait" />
         </div>
         <figure className="db-pmq__body">
-          {/* Decorative: the quotation is marked up as a blockquote. The opening mark
-              only, set as text, as DBIM 3.0 Figure 54 draws it. */}
-          <div className="db-pmq__mark" aria-hidden="true">
-            “
+          {/* Decorative (DbimIcon is aria-hidden): the quotation is marked up as a
+              blockquote. The opening mark only — see home-top.css. */}
+          <div className="db-pmq__mark">
+            <DbimIcon name="format-quote" size={32} />
           </div>
-          <blockquote className="db-pmq__quote" cite={Q.href}>
+          <blockquote className="db-pmq__quote" cite={Q.source.href}>
             <p>{Q.quote}</p>
           </blockquote>
           <div className="db-pmq__rule" />
@@ -38,10 +41,10 @@ export function DbimPmQuote() {
                 {Q.event}
               </p>
               <p className="db-pmq__meta">
-                <time dateTime={Q.dateTime}>{Q.date}</time>
+                <time dateTime={Q.dateTime}>{`${d}.${m}.${y}`}</time>
               </p>
             </div>
-            <a href={Q.href} target="_blank" rel="noopener noreferrer" className="db-pmq__action">
+            <a href={Q.source.href} target="_blank" rel="noopener noreferrer" className="db-pmq__action">
               <Icon name="open_in_new" size={24} />
               View Event
               <span className="db-hometop-sr">: {Q.event} (opens in a new tab)</span>

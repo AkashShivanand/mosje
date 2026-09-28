@@ -1,7 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@mosje/design-system";
-import { DBIM_PERSONA_ICONS } from "@/lib/website-dbim/assets";
+import { DbimIcon } from "@/components/website-dbim/ui/icons";
 import { dbimHref } from "@/lib/website-dbim/nav";
 import type { DbimPersona, DbimPersonaTile } from "@/lib/website-dbim/utility";
 
@@ -27,7 +26,7 @@ export function DbimPersonaGrid({ persona }: { persona: DbimPersona }) {
       {persona.tiles.map((tile) => {
         const body = (
           <>
-            <Image src={DBIM_PERSONA_ICONS[tile.icon]} alt="" width={48} height={48} className="db-u-persona__icon" />
+            <DbimIcon name={tile.icon} size={48} className="db-u-persona__icon" />
             <span className="db-u-persona__text">
               <Sentence tile={tile} />
               {tile.href && <span className="sr-only"> (opens in a new tab)</span>}

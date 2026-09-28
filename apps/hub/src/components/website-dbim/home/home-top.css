@@ -124,23 +124,39 @@
     border-radius: var(--sa-shape-8);
   }
 
+  /* A 12px disc in a 24px button (WCAG 2.2 2.5.8: the dots sit on the banner's own
+     link, so the spacing exception does not apply). The -6px margin keeps the tray and
+     the 28px pitch exactly as drawn. */
   [data-design="dbim"] .db-carousel .db-carousel__dot {
-    width: var(--sa-padding-12);
+    --sa-btn-fill: transparent;
+    --db-dot: var(--sa-color-primaryScale-400);
+    display: grid;
+    place-items: center;
+    width: var(--sa-padding-24);
     min-width: 0;
-    height: var(--sa-padding-12);
+    height: var(--sa-padding-24);
     min-height: 0;
+    margin: -6px;
     padding: 0;
-    background: var(--sa-color-primaryScale-400);
+    background: transparent;
     border: 0;
     border-radius: var(--sa-shape-full);
   }
 
+  [data-design="dbim"] .db-carousel .db-carousel__dot::before {
+    width: var(--sa-padding-12);
+    height: var(--sa-padding-12);
+    border-radius: var(--sa-shape-full);
+    background: var(--db-dot);
+    content: "";
+  }
+
   [data-design="dbim"] .db-carousel .db-carousel__dot[aria-current="true"] {
-    background: var(--sa-color-primaryScale-800);
+    --db-dot: var(--sa-color-primaryScale-800);
   }
 
   [data-design="dbim"] .db-carousel .db-carousel__dot:hover {
-    background: var(--sa-color-primaryScale-600);
+    --db-dot: var(--sa-color-primaryScale-600);
   }
 
   @media (min-width: 1280px) and (max-width: 1500px) {
@@ -207,8 +223,8 @@
   }
 
   [data-design="dbim"] .db-announce .db-announce__icon {
-    width: 25px; /* reference */
-    height: 25px;
+    width: 24px; /* DBIM 3.0 §3.4 — the reference drew 25 */
+    height: 24px;
     color: var(--sa-color-primaryScale-800);
   }
 
@@ -372,12 +388,14 @@
     padding: 10px; /* reference card-body */
   }
 
-  /* The opening mark only, set as text (DBIM 3.0 Figure 54; the reference's 44px “). */
+  /* The opening mark only (DBIM 3.0 Figure 54): Material's format_quote, FILLED and
+     turned half a circle so it opens. The reference sets a 44px “ character, which
+     no Material Symbols build carries, so it falls back to whatever the system has.
+     32px (§3.4), at the foot of the reference's 40px slot, just above the quotation. */
   [data-design="dbim"] .db-pmq .db-pmq__mark {
+    display: flex;
+    align-items: flex-end;
     height: var(--sa-padding-40);
-    font-size: 2.75rem; /* 44px */
-    font-weight: var(--sa-font-weight-bold);
-    line-height: 1;
     color: var(--sa-color-primaryScale-800);
   }
 
@@ -564,8 +582,9 @@
     margin: 0;
   }
 
-  [data-design="dbim"] .db-about .db-about__copy strong {
-    font-weight: var(--sa-font-weight-bold);
+  /* The live About Us is two paragraphs — the mandate, then the Ministry's line. */
+  [data-design="dbim"] .db-about .db-about__copy p + p {
+    margin-top: var(--sa-stack-12);
   }
 
   [data-design="dbim"] .db-about .db-about__tiles {
@@ -623,20 +642,30 @@
     list-style: none;
   }
 
+  /* Three equal 240px columns (the DBIM handoff's Minister card), shrinking together
+     when the column is narrower, so the last card's edge IS the content edge. Sized by
+     their words, the cards were 256 / 264 / 264 and the last portrait stopped 34px
+     short of it. */
   [data-design="dbim"] .db-about .db-about__minister {
     display: flex;
+    flex: 0 1 240px; /* handoff */
     flex-direction: column;
     align-items: center;
+    min-width: 0;
   }
 
+  /* The handoff's photo frame: 206 high, muted ground, 1px grey rule, the photograph
+     fitted 200 high and a 4px key-colour bar under it. */
   [data-design="dbim"] .db-about .db-about__portrait {
-    width: auto;
-    height: 200px; /* reference max-height */
+    box-sizing: border-box;
+    width: 100%;
+    height: 206px; /* handoff */
+    padding-bottom: var(--sa-padding-4);
     object-fit: contain;
-    border-width: 2px 2px 6px; /* reference */
-    border-style: solid;
-    border-color: var(--sa-color-neutralScale-100) var(--sa-color-neutralScale-100) var(--sa-color-primaryScale-800);
-    border-radius: 2.75px 2.75px 0 0; /* reference */
+    object-position: bottom; /* standing on the bar when the card is narrower than 200 */
+    background: var(--sa-color-neutralScale-50);
+    border: var(--sa-stroke-1) solid var(--sa-color-neutralScale-200);
+    box-shadow: inset 0 calc(-1 * var(--sa-padding-4)) 0 var(--sa-color-primaryScale-800);
   }
 
   [data-design="dbim"] .db-about .db-about__name {
@@ -670,26 +699,9 @@
     }
   }
 
-  @media (min-width: 1280px) and (max-width: 1536.5px) {
-    [data-design="dbim"] .db-about .db-about__portrait {
-      width: 172px; /* reference */
-      height: 172px;
-    }
-  }
-
-  @media (max-width: 1400px) {
-    [data-design="dbim"] .db-about .db-about__ministers {
-      gap: var(--sa-stack-12);
-    }
-  }
-
   @media (max-width: 1199.5px) {
     [data-design="dbim"] .db-about {
       grid-template-columns: 1fr;
-    }
-
-    [data-design="dbim"] .db-about .db-about__ministers {
-      gap: var(--sa-stack-8);
     }
   }
 
@@ -706,6 +718,12 @@
     [data-design="dbim"] .db-about .db-about__ministers {
       flex-direction: column;
       align-items: center;
+    }
+
+    /* Stacked, each card is the handoff's 183 wide, and the role wraps inside it. */
+    [data-design="dbim"] .db-about .db-about__minister {
+      flex: 0 0 auto;
+      width: 183px; /* handoff, Mobile 390 */
     }
   }
 

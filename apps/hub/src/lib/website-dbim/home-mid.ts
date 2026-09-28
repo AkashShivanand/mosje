@@ -4,21 +4,25 @@ import "server-only";
  * The DBIM home page's middle sections — Key Offerings, What's New, Recent Documents,
  * Explore User Personas and Important Links — read from the estate's own content.
  *
- * SOURCE: the scheme master (`@/lib/website-next/schemes`), the vacancy, document and
+ * SOURCE: Key Offerings, the live site's own lists shared with every design
+ * (`@/lib/website-shared/offerings`); the document and
  * update registers (`@/lib/website/content`, through the DBIM Offerings and Documents
  * modules so a row means the same thing on the home page as on its own page), the
  * Department's divisions (`@/data/website`) and the DBIM reference build's persona
  * drawings (`DBIM_PERSONA_ART`). Mapping and reasoning:
  * docs/research/dbim-reference/components/home-mid.spec.md.
  */
-import { SCHEMES } from "@/lib/website-next/schemes";
+import {
+  OFFERING_TENDERS, OFFERING_VACANCIES, offeringSchemesInOrder,
+} from "@/lib/website-shared/offerings";
+import { RECENT_DOCUMENTS } from "@/lib/website-shared/documents";
+import { localiseDocumentUrl } from "@/lib/website/sample-documents";
 import { whatsNew } from "@/lib/website-next/whats-new";
 import { dbimHref } from "./nav";
 import { DBIM_PERSONA_ART } from "./assets";
 import { DBIM_IMPORTANT_LINKS, DBIM_PERSONAS } from "./utility";
-import { dbimTenders, dbimVacancies } from "./offerings";
 import {
-  DBIM_DOC_TABS, documentSeries, seriesDocuments, whatsNewTarget, type DbimDocTab,
+  documentSeries, whatsNewTarget,
 } from "./documents";
 
 export interface DbimHomeLink {
@@ -31,43 +35,48 @@ export interface DbimHomeLink {
 
 /* ── Key Offerings ─────────────────────────────────────────────────────── */
 
-/*
- * THE RULE FOR THE FOUR SCHEMES — four, because the reference's 245px box shows four
- * rows (View More carries the rest): the reference's own first four, matched to the scheme
- * master wherever the Department runs that scheme, in the reference's order —
- * AVYAY (its lead component, the Integrated Programme for Senior Citizens), the
- * National Action Plan for Drug Demand Reduction and SHRESHTA. The reference's fourth, "National Awards … Prevention of Alcoholism", is
- * not in the master, so its slot goes to the Post Matric Scholarship for SCs, the
- * Department's largest scheme (Demand for Grants 2026-27). The redesign picks per
- * audience group (`Offerings.tsx`), which a four-row list with no groups cannot use.
+/**
+ * FIVE ROWS A TAB, from the live site's own Offerings (lib/website-shared/offerings.ts)
+ * — the lists every design shows. DBIM 3.0 §A.4.1 vi asks for "the five most recent
+ * entries in each category"; the reference build showed four schemes it chose itself
+ * and the four newest register rows.
+ *
+ * Schemes: the live section's schemes in the order it first names them (the live site
+ * dates none, so its order stands for "most recent"). A scheme the master holds opens
+ * its DBIM page; one it does not opens the scheme list; a document opens the document.
+ * Vacancies and tenders: the live section's own, each opening its page here.
  */
-const KEY_SCHEME_IDS = ["avyay-ipsrc", "napddr", "shreshta", "pms-sc"] as const;
+export const KEY_OFFERING_ROWS = 5;
 
 export function dbimKeySchemes(): DbimHomeLink[] {
-  return KEY_SCHEME_IDS.flatMap((id) => {
-    const s = SCHEMES.find((x) => x.id === id);
-    return s ? [{ key: s.id, title: s.name, href: dbimHref(`/offerings/schemes-and-services/${s.id}`) }] : [];
-  });
+  return offeringSchemesInOrder()
+    .slice(0, KEY_OFFERING_ROWS)
+    .map((s) => ({
+      key: s.slug ?? s.file ?? s.title,
+      title: s.title,
+      href: s.masterId
+        ? dbimHref(`/offerings/schemes-and-services/${s.masterId}`)
+        : s.file
+          ? localiseDocumentUrl(s.file, s.title)
+          : dbimHref("/offerings"),
+    }));
 }
 
-/** Rows the reference's Key Offerings box holds (245px at 1440). */
-export const KEY_OFFERING_ROWS = 4;
-
-/** The four newest vacancies not yet archived; each opens the Vacancies page. */
 export function dbimKeyVacancies(): DbimHomeLink[] {
-  return dbimVacancies()
-    .slice(0, KEY_OFFERING_ROWS)
-    .map((v) => ({ key: v.slug, title: v.title, href: dbimHref("/offerings/vacancies") }));
+  return OFFERING_VACANCIES.slice(0, KEY_OFFERING_ROWS).map((v) => ({
+    key: v.file,
+    title: v.title,
+    href: dbimHref("/offerings/vacancies"),
+  }));
 }
 
-/**
- * The four newest tenders not yet archived; each opens the Tenders page. The third tab is
- * DBIM 3.0 Figure 56 (Schemes · Vacancies · Tenders); the reference build shows two.
- */
+/** The third tab is DBIM 3.0 Figure 56 (Schemes · Vacancies · Tenders). */
 export function dbimKeyTenders(): DbimHomeLink[] {
-  return dbimTenders()
-    .slice(0, KEY_OFFERING_ROWS)
-    .map((t) => ({ key: t.slug, title: t.title, href: dbimHref("/offerings/tenders") }));
+  return OFFERING_TENDERS.slice(0, KEY_OFFERING_ROWS).map((t) => ({
+    key: t.file,
+    title: t.title,
+    href: dbimHref("/offerings/tenders"),
+  }));
 }
 
 /* ── What's New ────────────────────────────────────────────────────────── */
@@ -96,34 +105,22 @@ export interface DbimRecentDoc extends DbimHomeLink {
   category: string;
 }
 
-/*
- * The reference's mix — one Reports card, one Orders and Notices, two Publications —
- * each the newest live document of its tab. A card opens the document's series page
- * (`/documents/<tab>/<series>`), where it heads the list.
+/**
+ * The live site's four Recent Documents, shared with every design
+ * (lib/website-shared/documents.ts) — the reference build's mix of one Report, one
+ * Order and two Publications, each the newest of its tab, is gone. A card's bold first
+ * line is the live card's "Type:", and it opens the series page that holds it here.
  */
-const RECENT_MIX: [DbimDocTab, number][] = [["reports", 1], ["orders-and-notices", 1], ["publications", 2]];
-
-function newestInTab(tab: DbimDocTab, n: number): DbimRecentDoc[] {
-  const label = DBIM_DOC_TABS.find((t) => t.key === tab)?.label ?? "";
-  // The newest file of a tab lives in one of its newest folders; three is ample for two picks.
-  const rows = documentSeries(tab)
-    .slice(0, 3)
-    .flatMap((s) => (seriesDocuments(tab, s.slug)?.rows.slice(0, n) ?? []).map((r) => ({ r, s })))
-    .sort((a, b) => (b.r.date ?? "").localeCompare(a.r.date ?? ""));
-  const seen = new Set<string>();
-  return rows
-    .filter(({ r }) => !seen.has(r.key) && !!seen.add(r.key))
-    .slice(0, n)
-    .map(({ r, s }) => ({
-      key: `${tab}-${r.key}`,
-      category: label,
-      title: r.title,
-      href: dbimHref(`/documents/${tab}/${s.slug}`),
-    }));
-}
-
 export function dbimRecentDocuments(): DbimRecentDoc[] {
-  return RECENT_MIX.flatMap(([tab, n]) => newestInTab(tab, n));
+  return RECENT_DOCUMENTS.map((d) => {
+    const series = documentSeries("reports").find((s) => s.title.toLowerCase() === d.type.toLowerCase());
+    return {
+      key: d.slug,
+      category: d.type,
+      title: d.title,
+      href: series ? dbimHref(`/documents/reports/${series.slug}`) : dbimHref("/documents"),
+    };
+  });
 }
 
 /* ── Explore User Personas ─────────────────────────────────────────────── */
@@ -162,10 +159,11 @@ export const DBIM_HOME_PERSONAS: DbimPersonaSlide[] = DBIM_PERSONAS.flatMap((p) 
 
 /*
  * The first four rows of the Department's Important Links (`DBIM_IMPORTANT_LINKS`,
- * one per Division), the same list the Important Links page shows — so one list feeds
- * both. That list leads with the three the reference leads with (Scheduled Caste
- * Welfare, Social Defence, Grants-in-Aid to NGOs); the reference's fourth,
- * "Inauguration", is a webcast link with no source in the estate.
+ * one per Division plus the Social Audit MIS Portal), the same list the Important Links
+ * page shows — so one list feeds both. That list leads with the three the reference
+ * leads with (Scheduled Caste Welfare, Social Defence, Grants-in-Aid to NGOs); the
+ * reference's fourth, "Inauguration", is a webcast link with no source in the estate,
+ * so the fourth is the Social Audit MIS Portal, moved from the posts row.
  */
 export function dbimHomeImportantLinks(): DbimHomeLink[] {
   return DBIM_IMPORTANT_LINKS.slice(0, 4).flatMap((l): DbimHomeLink[] => {

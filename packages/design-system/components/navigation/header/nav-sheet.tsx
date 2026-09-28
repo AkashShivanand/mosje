@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useHydrated } from "../../../foundations/use-hydrated";
+import { useDialogLayer } from "../../../foundations/use-dialog-layer";
 import { createPortal } from "react-dom";
 import { navDisabledAria, navLinkRoutes, type NavTag } from "./nav-link-tag";
 import { cn } from "../../../utils/cn";
@@ -139,6 +140,8 @@ export function NavSheet({
   const ref = React.useRef<HTMLDivElement>(null);
   /** Whatever had focus when the sheet opened — almost always the SheetToggle. */
   const returnTo = React.useRef<HTMLElement | null>(null);
+  // The floating rails step under the scrim while the sheet owns the screen (foundations/dialog-layer.ts).
+  useDialogLayer(open);
 
   // Escape, the focus trap, and returning focus where it came from.
   React.useEffect(() => {

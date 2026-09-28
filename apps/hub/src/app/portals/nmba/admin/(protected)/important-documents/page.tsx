@@ -4,10 +4,12 @@ import * as React from "react";
 import { AdminShell } from "@/components/nmba/admin-shell";
 import { IMPORTANT_DOCUMENTS } from "@/lib/nmba/mock-data";
 import { useToast } from "@/components/nmba/toast";
-import { Badge, Button, FormField, Icon, IconButton, Input } from "@mosje/design-system";
+import { Badge, Button, FormField, Icon, IconButton, Input, useDialogLayer } from "@mosje/design-system";
 
 function AddDocumentModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { toast } = useToast();
+  // aria-modal: the floating rails step under this dialog while it is open (DS foundations/dialog-layer.ts).
+  useDialogLayer(open);
   const [name, setName] = React.useState("");
 
   if (!open) return null;

@@ -27,7 +27,7 @@ export function DbimDocumentsRow() {
       <div className="db-hm-docs__row">
         <div className="db-hm-docs__col db-hm-docs__col--docs">
           <div className="db-hm-head">
-            <DbimSectionHeading icon="documents" title="Recent Documents" />
+            <DbimSectionHeading icon="recent-documents" title="Recent Documents" />
           </div>
           {docs.length ? (
             <ul className="db-hm-cards">
@@ -50,7 +50,7 @@ export function DbimDocumentsRow() {
 
         <div className="db-hm-docs__col db-hm-docs__col--personas">
           <div className="db-hm-head db-hm-head--center">
-            <DbimSectionHeading icon="personas" title="Explore User Personas" />
+            <DbimSectionHeading icon="user-personas" title="Explore User Personas" />
           </div>
           {DBIM_HOME_PERSONAS.length ? <PersonaCarousel slides={DBIM_HOME_PERSONAS} /> : <DbimEmptyState />}
         </div>
@@ -63,10 +63,20 @@ export function DbimDocumentsRow() {
             <ul className="db-hm-links">
               {links.map((l) => (
                 <li key={l.key} className="db-hm-links__item">
-                  <Link href={l.href} className="db-hm-links__link">
-                    <span>{l.title}</span>
-                    <Icon name="arrow_forward_ios" size={24} weight={400} style={CHEV} />
-                  </Link>
+                  {/* An outside address leaves in a new tab and says so, as the
+                      Important Links page does (utility/LinkRow.tsx). */}
+                  {l.external ? (
+                    <a href={l.href} target="_blank" rel="noopener noreferrer" className="db-hm-links__link">
+                      <span>{l.title}</span>
+                      <span className="sr-only"> (opens in a new tab)</span>
+                      <Icon name="arrow_forward_ios" size={24} weight={400} style={CHEV} />
+                    </a>
+                  ) : (
+                    <Link href={l.href} className="db-hm-links__link">
+                      <span>{l.title}</span>
+                      <Icon name="arrow_forward_ios" size={24} weight={400} style={CHEV} />
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>

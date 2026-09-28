@@ -78,6 +78,16 @@
   font-family: var(--sa-font-latin);
 }
 
+/* WHILE A PAGE-BLOCKING DIALOG IS OPEN, THE DOCK STEPS UNDER ITS SCRIM TOO.
+   `--sa-z-demo` exists so review tooling beats the statutory panel, not so it can sit
+   on a Modal or a Lightbox — a reviewer screenshotting a dialog got the dock's flask
+   floating over the dimmed page (28 Sep 2026). The dock cannot mark itself
+   `data-sa-wall-occupant` (it is the element that MEASURES the wall), so it follows
+   the same `[data-sa-dialog-open]` flag from here. Close the dialog and it is back. */
+:root[data-sa-dialog-open] .ds-demodock {
+  z-index: var(--sa-z-base);
+}
+
 /* Legacy — kept for backward compatibility, not because DemoDock still needs
    it. Three production login pages (scw, nhapoa, tg admin —
    `bottom-[var(--cmp-appsw-safe-area)]` on their own footer dividers) reserve
