@@ -21,7 +21,7 @@ export const LATEST_OLDEST = {
 const searchText = (s: DbimSeries) => s.title;
 const categoryOf = (s: DbimSeries) => s.title;
 
-export function SeriesList({ series, label }: { series: DbimSeries[]; label: string }) {
+export function SeriesList({ series, label, end }: { series: DbimSeries[]; label: string; end?: React.ReactNode }) {
   const listing = useListing(series, { searchText, category: categoryOf, sorts: LATEST_OLDEST });
   const top = React.useRef<HTMLDivElement>(null);
 
@@ -49,7 +49,7 @@ export function SeriesList({ series, label }: { series: DbimSeries[]; label: str
           </div>
         )}
       </div>
-      <Pager listing={listing} target={top} />
+      <Pager listing={listing} target={top} end={end} />
     </div>
   );
 }
