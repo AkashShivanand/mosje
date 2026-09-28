@@ -10,13 +10,15 @@ import { dbimHref } from "@/lib/website-dbim/nav";
  * The header's three controls, as the reference draws them: skip to main content,
  * language, accessibility — 32px glyphs separated by thin primary rules.
  *
- * ACCESSIBILITY IS THE PAGE'S ONE DOOR (`.claude/rules/accessibility-entry-point.md`).
- * `useAccessibilityEntryClaim` hides the UX4G widget's floating button while this
- * header is mounted (from tablet up), and on a phone while this icon is on screen —
- * the header is not pinned there, so once it scrolls away the floating button comes
- * back and the page is never left with neither door. The click replays on the
- * widget's own trigger on the NEXT task; opening inline loses to the widget's
- * outside-click closer (see `openUx4gWidget`).
+ * ACCESSIBILITY IS THE PAGE'S ONE DOOR, AND ON THIS DESIGN IT IS THE ONLY ONE
+ * (`.claude/rules/accessibility-entry-point.md`, rule 4c). `soleDoor` keeps the UX4G
+ * widget's floating button hidden at every width and scroll position — decided
+ * 28 Sep 2026: the panel opens from this header icon only, as on the website's other
+ * designs, and the bottom-right corner belongs to the chat launcher. Until then a phone
+ * got the floating button back once the header scrolled away (rule 4a), at 285,718 —
+ * the launcher's corner. The click replays on the widget's own trigger on the NEXT
+ * task; opening inline loses to the widget's outside-click closer (see
+ * `openUx4gWidget`).
  */
 export function DbimHeaderTools({
   skipIcon,
@@ -29,7 +31,7 @@ export function DbimHeaderTools({
 }) {
   const [langOpen, setLangOpen] = React.useState(false);
   const a11yRef = React.useRef<HTMLButtonElement>(null);
-  useAccessibilityEntryClaim(true, a11yRef);
+  useAccessibilityEntryClaim(true, a11yRef, { soleDoor: true });
 
   const openAccessibility = (e: React.MouseEvent) => {
     e.stopPropagation();
