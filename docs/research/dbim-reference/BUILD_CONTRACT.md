@@ -37,6 +37,7 @@ figure placed beside every template.
 | Documents tabs — View Archive | its own row, 47.5px in from the edge | on the pager's row, flush with the list edge | 75 |
 | Photos — album card | date left, count right, pushed to the card foot | the count alone, directly under the title | 77 |
 | Contact Us — map | 156px (an unsized iframe's default) | 360px, 280px under 992 | — (quality, not the manual) |
+| Scheme detail — documents | the Department's scraped "Documents" tables, then the Documents list of the same files | the Documents list only (where the register has files; 16 of 38 schemes) | — (one answer, not the manual) |
 
 ## Where things are
 

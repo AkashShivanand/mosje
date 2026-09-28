@@ -234,15 +234,21 @@ export function dbimSchemeDetail(id: string): DbimSchemeDetail | undefined {
     return [{ label: applyLabel(r), href: web }];
   });
   const firstWeb = apply.find((a) => a.href);
+  const documents = schemeDocuments(s.id);
+  /* The Department's page carries its own "Documents" section — the same files as
+     raw HTML tables. Where the scheme-documents register lists them, the page's
+     Documents list is the one answer and the scraped copy goes; where it lists
+     nothing, the scraped section stays, so no scheme loses its files. */
+  const sections = ingestedSections(s)?.filter((x) => !(documents.length && x.heading && /^documents?$/i.test(x.heading.trim()))) ?? null;
   return {
     scheme: s,
     name: displayName(s),
     visit: firstWeb ? { href: firstWeb.href!, label: firstWeb.label } : undefined,
     apply,
-    sections: ingestedSections(s),
+    sections: sections?.length ? sections : null,
     administeredBy: administeredBy(s),
     sources: s.sources.map(expandSource),
-    documents: schemeDocuments(s.id),
+    documents,
   };
 }
 
