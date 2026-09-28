@@ -372,15 +372,13 @@
     padding: 10px; /* reference card-body */
   }
 
+  /* The opening mark only, set as text (DBIM 3.0 Figure 54; the reference's 44px “). */
   [data-design="dbim"] .db-pmq .db-pmq__mark {
     height: var(--sa-padding-40);
-    padding-top: 17px; /* places the glyph where the reference's 44px “ sits */
-    margin-left: -6px; /* the glyph's own side bearing, so the mark aligns with the text */
+    font-size: 2.75rem; /* 44px */
+    font-weight: var(--sa-font-weight-bold);
+    line-height: 1;
     color: var(--sa-color-primaryScale-800);
-  }
-
-  [data-design="dbim"] .db-pmq .db-pmq__mark > span {
-    transform: rotate(180deg);
   }
 
   [data-design="dbim"] .db-pmq .db-pmq__quote {
@@ -511,10 +509,13 @@
     }
   }
 
-  /* The reference keeps a 260px frame round a 170px portrait on a phone. */
+  /* A 170px portrait on a phone, and the frame closes round it; the reference keeps
+     its 260px frame, which left 90px of empty band under the photo. */
   @media (max-width: 565.5px) {
     [data-design="dbim"] .db-pmq .db-pmq__figure {
       align-items: flex-start;
+      height: auto;
+      margin-bottom: var(--sa-stack-16);
     }
 
     [data-design="dbim"] .db-pmq .db-pmq__portrait {
@@ -529,7 +530,7 @@
     grid-template-columns: 1fr 1fr;
     column-gap: 30px; /* reference, Bootstrap g-5 */
     align-items: start;
-    padding: var(--sa-padding-40) calc(var(--db-gutter) + 15px); /* 15px: the reference's column padding */
+    padding: var(--sa-padding-40) var(--db-gutter); /* one content edge, DBIM 3.0 Figure 50 */
     background: var(--sa-color-neutralScale-0);
   }
 
@@ -617,7 +618,7 @@
   [data-design="dbim"] .db-about .db-about__ministers {
     display: flex;
     gap: var(--sa-stack-20);
-    justify-content: center;
+    justify-content: flex-end; /* to the content edge, DBIM 3.0 Figure 55 */
     margin: 30px 0 0; /* reference */
     padding: 0;
     list-style: none;
@@ -711,7 +712,7 @@
 
   @media (max-width: 767.5px) {
     [data-design="dbim"] .db-about {
-      padding: var(--sa-padding-32) calc(var(--sa-padding-16) + 15px); /* 15px: column padding */
+      padding: var(--sa-padding-32) var(--sa-padding-16);
     }
 
     [data-design="dbim"] .db-about .db-about__copy {

@@ -16,7 +16,7 @@ import { whatsNew } from "@/lib/website-next/whats-new";
 import { dbimHref } from "./nav";
 import { DBIM_PERSONA_ART } from "./assets";
 import { DBIM_IMPORTANT_LINKS, DBIM_PERSONAS } from "./utility";
-import { dbimVacancies } from "./offerings";
+import { dbimTenders, dbimVacancies } from "./offerings";
 import {
   DBIM_DOC_TABS, documentSeries, seriesDocuments, whatsNewTarget, type DbimDocTab,
 } from "./documents";
@@ -58,6 +58,16 @@ export function dbimKeyVacancies(): DbimHomeLink[] {
   return dbimVacancies()
     .slice(0, KEY_OFFERING_ROWS)
     .map((v) => ({ key: v.slug, title: v.title, href: dbimHref("/offerings/vacancies") }));
+}
+
+/**
+ * The four newest tenders not yet archived; each opens the Tenders page. The third tab is
+ * DBIM 3.0 Figure 56 (Schemes · Vacancies · Tenders); the reference build shows two.
+ */
+export function dbimKeyTenders(): DbimHomeLink[] {
+  return dbimTenders()
+    .slice(0, KEY_OFFERING_ROWS)
+    .map((t) => ({ key: t.slug, title: t.title, href: dbimHref("/offerings/tenders") }));
 }
 
 /* ── What's New ────────────────────────────────────────────────────────── */

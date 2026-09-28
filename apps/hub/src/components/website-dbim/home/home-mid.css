@@ -13,7 +13,11 @@
   /* Icon sets its size inline; the chevrons read this so a breakpoint can change it. */
   [data-design="dbim"] .db-hm {
     --db-hm-chev: 24px; /* reference: arrow_forward_ios 2.4rem */
-    --db-hm-col-pad: 15px; /* reference: Bootstrap g-5 half-gutter */
+    /* One content edge for every band (DBIM 3.0 Figure 50): the page gutter, no column
+       padding inside it, and a 32px gap between columns. The reference's 15px / 7.5px
+       Bootstrap half-gutters put the sections on three different left edges. */
+    --db-hm-col-pad: 0px;
+    --db-hm-col-gap: var(--sa-stack-32);
   }
 
   [data-design="dbim"] .db-hm ul {
@@ -48,6 +52,7 @@
   [data-design="dbim"] .db-hm-offer .db-hm-offer__row {
     display: grid;
     grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+    column-gap: var(--db-hm-col-gap);
   }
 
   [data-design="dbim"] .db-hm-offer .db-hm-offer__main,
@@ -71,7 +76,7 @@
     color: var(--sa-color-neutralScale-0);
   }
 
-  /* Tabs — two equal halves, 46 high, 1px primary-800 frame. */
+  /* Tabs — three equal thirds (DBIM 3.0 Figure 56), 46 high, 1px primary-800 frame. */
   [data-design="dbim"] .db-hm-tabs .db-hm-tabs__list {
     display: flex;
   }
@@ -231,7 +236,7 @@
 
   /* ── Band 2: Recent Documents · Explore User Personas · Important Links ─── */
   [data-design="dbim"] .db-hm-docs {
-    padding: var(--sa-padding-80) var(--sa-padding-120);
+    padding: var(--sa-padding-80) var(--db-gutter);
     background: var(--sa-color-neutralScale-0);
   }
 
@@ -239,15 +244,13 @@
   [data-design="dbim"] .db-hm-docs .db-hm-docs__row {
     display: grid;
     grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
-    row-gap: 30px; /* reference: row-gap-5 */
-    margin-inline: -7.5px; /* reference */
+    gap: 30px var(--db-hm-col-gap); /* rows: reference row-gap-5 */
   }
 
   [data-design="dbim"] .db-hm-docs .db-hm-docs__col {
     display: flex;
     flex-direction: column;
     min-width: 0;
-    padding-inline: 7.5px; /* reference */
   }
 
   [data-design="dbim"] .db-hm-docs .db-hm-head--center {
@@ -260,7 +263,7 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--sa-stack-20) 15px; /* reference: g-4 */
-    padding-left: var(--sa-padding-20);
+    /* Flush with the heading above it (DBIM 3.0 Figure 58); the reference insets 20. */
   }
 
   [data-design="dbim"] .db-hm-cards .db-hm-card {
@@ -362,20 +365,21 @@
     color: var(--sa-color-primaryScale-800);
   }
 
+  /* Round dots, the current one in the key colour and the rest grey (DBIM 3.0 Figure 59). */
   [data-design="dbim"] .db-hm-persona .db-hm-persona__dot {
-    --sa-btn-fill: var(--sa-color-primaryScale-600);
-    width: var(--sa-padding-12);
+    --sa-btn-fill: var(--sa-color-neutralScale-300);
+    width: var(--sa-padding-8);
     min-width: 0;
-    height: var(--sa-padding-12);
+    height: var(--sa-padding-8);
     min-height: 0;
     padding: 0;
     border: 0;
     border-radius: var(--sa-shape-full);
-    background: var(--sa-color-primaryScale-600);
+    background: var(--sa-color-neutralScale-300);
   }
 
   [data-design="dbim"] .db-hm-persona .db-hm-persona__dot[aria-current="true"] {
-    border-radius: 0;
+    --sa-btn-fill: var(--sa-color-primaryScale-800);
     background: var(--sa-color-primaryScale-800);
   }
 
@@ -464,6 +468,19 @@
     [data-design="dbim"] .db-hm-news .db-hm-news__link {
       padding-inline: 0;
       font-size: 0.875rem; /* 14px */
+    }
+  }
+
+  /* Three tabs on a phone: a label wraps rather than being clipped, and every tab
+     takes the tallest one's height. */
+  @media (max-width: 767.5px) {
+    [data-design="dbim"] .db-hm-tabs .db-hm-tab {
+      min-width: 0;
+      height: auto;
+      min-height: 46px; /* reference */
+      padding: var(--sa-padding-8);
+      font-size: 0.875rem; /* 14px */
+      white-space: normal;
     }
   }
 
