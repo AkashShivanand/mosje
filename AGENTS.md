@@ -154,6 +154,11 @@ estate, Storybook included, on **port 3007**. There is no per-portal dev server.
 - `next/image` for images; `<Icon>` from `@mosje/design-system` for icons
   (Material Symbols Rounded, weight 300, size 24).
 - **Real content, real assets** — no lorem/placeholder in production pages.
+- **The three website designs share one content source** (2026-09-28). A section
+  that appears in more than one of New / Classic / DBIM reads its content from
+  `apps/hub/src/lib/website-shared/`, and that content is the live dosje.gov.in's
+  unless explicitly specified. The first home slide is always the CCPS banner.
+  → `.claude/rules/website-shared-content.md`
 - Mobile-first responsive; content max-width **1280px**.
 - **No Indian tricolour band/stripe motif** in UI chrome unless explicitly asked.
 - **Visual audit is mandatory** — screenshot and audit every component/page change

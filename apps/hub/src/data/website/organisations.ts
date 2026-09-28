@@ -31,6 +31,12 @@ export interface Organisation {
   /** Stable key — the slug of the organisation's profile page. */
   id: string;
   abbr: string;
+  /**
+   * The label the Department's home page prints over the name, where it is not
+   * `abbr` — the two SMILE portals share an abbreviation and the live cards tell
+   * them apart ("SMILE - Transgender", "SMILE Beggary").
+   */
+  cardLabel?: string;
   name: string;
   category: OrganisationCategory;
   /** Narrative profile, rendered from ingested content. */
@@ -47,6 +53,9 @@ export interface Organisation {
   /** The organisation's own live portal, where it runs one. */
   externalUrl?: string;
 }
+
+/** SMILE's one mark, carried by both of its portals. */
+const SMILE_MARK = "/website/images/org-logos/smile.png";
 
 export const ORGANISATIONS: Organisation[] = [
   {
@@ -138,6 +147,15 @@ export const ORGANISATIONS: Organisation[] = [
     wordmarkSrc: "/website/images/NBCFDC.png",
   },
   {
+    id: "development-and-welfare-board-for-de-notified-nomadic-and-semi-nomadic",
+    abbr: "DWBDNC",
+    name: "Development and Welfare Board for De-notified, Nomadic, and Semi-Nomadic Communities",
+    category: "foundations",
+    profileHref: "/website/organisation/development-and-welfare-board-for-de-notified-nomadic-and-semi-nomadic",
+    directoryHref: "/website/dwbdnc-directory",
+    logoSrc: "/website/images/org-logos/dwbdnc.png",
+  },
+  {
     id: "national-institute-of-social-defence",
     abbr: "NISD",
     name: "National Institute of Social Defence",
@@ -151,15 +169,6 @@ export const ORGANISATIONS: Organisation[] = [
     directoryHref: "/website/nisd-directory",
     logoSrc: "/website/images/org-logos/nisd.png",
     wordmarkSrc: "/website/images/NISD-.png",
-  },
-  {
-    id: "development-and-welfare-board-for-de-notified-nomadic-and-semi-nomadic",
-    abbr: "DWBDNC",
-    name: "Development and Welfare Board for De-notified, Nomadic, and Semi-Nomadic Communities",
-    category: "foundations",
-    profileHref: "/website/organisation/development-and-welfare-board-for-de-notified-nomadic-and-semi-nomadic",
-    directoryHref: "/website/dwbdnc-directory",
-    logoSrc: "/website/images/org-logos/dwbdnc.png",
   },
   {
     id: "senior-citizens-welfarescw",
@@ -183,11 +192,24 @@ export const ORGANISATIONS: Organisation[] = [
   {
     id: "national-portal-for-transgender-persons",
     abbr: "SMILE",
+    cardLabel: "SMILE - Transgender",
     name: "National Portal for Transgender Persons",
     category: "schemes",
     profileHref: "/website/organisation/national-portal-for-transgender-persons",
-    logoSrc: "/website/images/org-logos/smile.png",
+    logoSrc: SMILE_MARK,
     wordmarkSrc: "/website/images/Logo-Transgender-Portal-1.png",
+  },
+  {
+    /* The live home page's eighteenth organisation, added 28 Sep 2026: SMILE's
+       component for persons engaged in begging. The masthead menu already listed
+       it; the registry did not. Its profile is ingested at this id. */
+    id: "support-for-marginalized-individuals-for-livelihood-and-enterprise-smile",
+    abbr: "SMILE",
+    cardLabel: "SMILE Beggary",
+    name: "Support for Marginalized Individuals for Livelihood and Enterprise",
+    category: "schemes",
+    profileHref: "/website/organisation/support-for-marginalized-individuals-for-livelihood-and-enterprise-smile",
+    logoSrc: SMILE_MARK,
   },
   {
     id: "national-overseas-scholarship",
@@ -233,14 +255,19 @@ export function getOrganisationByAbbr(abbr: string): Organisation | undefined {
   return ORGANISATIONS.find((o) => o.abbr === abbr);
 }
 
-/** Category tabs with counts DERIVED from the registry, never hand-maintained. */
+/**
+ * The live home page's own tab labels, in its order — which is also the order the
+ * tabs render in (`organisationCategoryTabs`) and the DBIM design's Our
+ * Organisation page lists the types in. Read 28 Sep 2026.
+ */
 export const ORGANISATION_CATEGORY_LABELS: Record<OrganisationCategory, string> = {
-  commissions: "Commissions",
+  commissions: "Commission",
   corporations: "Corporations",
-  foundations: "Foundations & Autonomous Bodies",
-  schemes: "Schemes & Portals",
+  foundations: "Foundation & Autonomous Bodies",
+  schemes: "Scheme Portals",
 };
 
+/** Category tabs with counts DERIVED from the registry, never hand-maintained. */
 export function organisationCategoryTabs(): { key: OrganisationCategory | "all"; label: string; count: number }[] {
   const keys = Object.keys(ORGANISATION_CATEGORY_LABELS) as OrganisationCategory[];
   return [

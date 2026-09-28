@@ -1,6 +1,7 @@
 import { Header } from "@/components/website/Header";
 import { WebsiteSamaveshBanner } from "@/components/website/website-samavesh-banner";
 import { HeroCarousel } from "@/components/website/HeroCarousel";
+import { getHomeBanners } from "@/lib/website-shared/home-banners";
 import { AboutUs } from "@/components/website/AboutUs";
 import { Offerings } from "@/components/website/Offerings";
 import { Organisations } from "@/components/website/Organisations";
@@ -29,7 +30,7 @@ export default async function Home() {
           its drawer heading is an <h2> that lands above the page's own <h1>. */}
       <WebsiteSamaveshBanner />
       <main id="main-content" className="flex-1">
-        <HeroCarousel />
+        <HeroCarousel slides={await getHomeBanners()} />
         <AboutUs />
         <Offerings />
         <Organisations />
