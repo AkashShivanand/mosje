@@ -8,13 +8,16 @@ import type * as React from "react";
  * are DBIM's Functional Icons, and are drawn from the same font DBIM exported them
  * from — see `dbim.css` (`--sa-font-icon`).
  *
- * The files in /website/dbim/icons/library/ are the library's SVGs with four defects
- * repaired and nothing redrawn (audit: docs/audit/dbim-icon-library-audit-2026-09-28.md):
+ * The files in /website/dbim/icons/library/ are the library's drawings with five defects
+ * repaired (audit: docs/audit/dbim-icon-library-audit-2026-09-28.md). They are EXPORTED
+ * from the DBIM Figma handoff file (xdv8nEd7PhnRhahASd9UPY, page Icons & Logos) — edit the
+ * glyph there, then re-export; do not hand-edit these files:
  *   - fixed greys (#2D2D2D / #2B2B2B) → currentColor, so §3.7 iii (key colour or white)
  *     is decided by a token, not by the file;
  *   - canvases of eight different sizes → one 64 × 64 square, never stretched (§3.7 iv);
  *   - art running to the edge → inset to the §3.4 Figure 8 frame (2px in 24, 5.33 in 64);
- *   - see-through layers and full-canvas clip wrappers from auto-tracing → removed.
+ *   - see-through layers and full-canvas clip wrappers from auto-tracing → removed;
+ *   - line weights from 1.5 to 5.3 units → one weight, 3.0 units at 64 (1.5px at 32).
  *
  * Painted as a CSS mask over currentColor: the colour follows the text colour exactly as
  * an inline SVG would, while the traced paths (up to 12 KB each) are fetched once and

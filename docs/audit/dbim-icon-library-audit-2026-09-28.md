@@ -80,13 +80,15 @@ Eleven are the same Material drawing published in the contextual bank — `apart
 (the contextual exports are lighter, see §1.2). `picture_as_pdf` and `home` differ from
 their DBIM drawings and now use the library's *PDF* and *Home* SVGs.
 
-### Contextual icons — 25 library icons, cleaned, nothing redrawn
+### Contextual icons — 25 library icons, repaired
 
 `apps/hub/public/website/dbim/icons/library/*.svg`, painted by `DbimIcon` as a CSS mask over
-`currentColor`. Four repairs, applied to every file: fixed greys → `currentColor`; one
+`currentColor`. Five repairs, applied to every file: fixed greys → `currentColor`; one
 64×64 canvas, proportions kept; art inset to the §3.4 padding (only ever shrunk, never
-enlarged, so Material keylines survive); see-through layers and clip wrappers removed.
-The 25 files weigh 132 KB on disk; the home page fetches 19 of them (34.6 KB).
+enlarged, so Material keylines survive); see-through layers and clip wrappers removed;
+one line weight (see *One line weight* below). The files are exported from the Figma
+glyphs, so Figma is their source. The 25 files weigh 224 KB on disk (the vector offset
+adds points).
 
 | Library icon | Key | Defects in the library file | Scale applied |
 |---|---|---|---|
@@ -153,6 +155,36 @@ Chevron Down (the functional `expand_more`):
 - each set's description is an agent briefing: library title, code key, and four rules
   (sizes, colour, no stretching, no glyph from outside the library).
 
+The page is organised the way the file's other component pages are — a `Label ·` heading
+and a `Description ·` line over each group, groups in reading order, layers in the same
+order: **Section Heading Icons · Header Control Icons · Content Icons · Persona Tile
+Icons · File and Navigation Icons · Social Media Icons**, then **Logos** on their own.
+The four logos had been sitting in the icon grid.
+
+### One line weight
+
+The library draws its icons at five-fold different weights. Measured as the median line
+thickness on the 64-unit canvas (distance transform over a 512px render):
+
+| | Thinnest | Thickest | Spread |
+|---|---|---|---|
+| Library, as cleaned | Job Opportunity 1.5 | Performance 5.33 (its axis line; the bars are solid) | 1.5 – 5.33 |
+| After | Social Media Marketing 2.5 | — | **3.0 ± 0.25** for 23 of 25 |
+
+The target is **3.0 units** — 1.1px at 24, 1.5px at 32, 2.25px at 48. Three weights were
+previewed on all 25 (3.0, 3.25, 3.5); above 3.0 the traced drawings (Offerings, Recent
+Documents, Schemes) close their counters. DBIM's Functional Icons measure 5.3 (2px at 24);
+matching them would fill in most contextual drawings, so the two banks stay different
+weights, as they are in the library.
+
+Each glyph was offset as a **vector**, in Figma: an outline stroke of half the difference,
+unioned to thicken or subtracted to thin, then re-fitted to the §3.4 live area. Thickening
+is capped at +1.0 (+0.75 for the four most detailed drawings), which is why Social Media
+Marketing stays at 2.5. The site's 25 SVGs are **exported from those Figma glyphs** by the
+REST API (`format=svg`, fill → `currentColor`), so the file and the code cannot drift.
+Chevron Down is not offset: it is a Functional Icon, drawn on the site by the Outlined font,
+and must match every other arrow there.
+
 ## 4. Still open
 
 | Item | Why it stays | Owner |
@@ -160,7 +192,8 @@ Chevron Down (the functional `expand_more`):
 | 16px and 20px inline arrows (news links, footer links, carousel pause) | The estate's recorded decision: 16 beside 14px text, 20 in dense controls (`standards-precedence.md`). DBIM §3.4 governs the asset bank; its 24 frame contains a 20px glyph. | — (documented divergence) |
 | Grey `#AAAAAA` on a disabled carousel arrow | A disabled state, exempt from contrast rules; not a brand colour. | — |
 | DS `Select` chevron at 18px | A design-system form-control affordance drawn as SVG, shared by all designs; changing it belongs to the DS, not to one design. | Design system |
-| Filled `format_quote` on the PM quote | Removed by the open PR on `fix/dbim-home-manual-alignment` (DBIM Figure 54). The static font already draws it in line style here. | That PR |
+| Filled `format_quote` on the PM quote | Removed on `main` by `fix/dbim-home-manual-alignment` (DBIM Figure 54). | Done on `main` |
+| Social Media Marketing at 2.5, below the 3.0 line weight | Thickening it further fills in its detail; the drawing needs simplifying at source. | DBIM Toolkit |
 | Social Media Marketing at 24px | DBIM's drawing is illegible below 48; used only at 48. | DBIM Toolkit (report upstream) |
 | Library defects in §1 | Not ours to fix; worth reporting to the DBIM Toolkit team. | DBIM Toolkit |
 | Figma *Iconography* style-guide page | Not re-audited in this pass. | Next Figma pass |
