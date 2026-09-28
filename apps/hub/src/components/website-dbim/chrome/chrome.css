@@ -493,7 +493,7 @@
 
   [data-design="dbim"] .db-nav__chevron {
     margin-top: 5px;
-    color: var(--sa-color-text-default);
+    color: var(--sa-color-primaryScale-800); /* DBIM 3.0 §3.7 iii — the key colour, not the menu text colour */
   }
 
   /* Active: bold primary, the 8px bar on the label's own box, which is 105% tall so
@@ -609,9 +609,18 @@
     border-bottom: 0;
   }
 
+  /* DBIM's Close (Functional Icons) in the key colour, painted over the design
+     system's own drawn X, which is hidden — the SideSheet itself is untouched. */
   [data-design="dbim"] .db-mnav .ds-sheet__close svg {
     width: 24px;
     height: 24px;
+    color: var(--sa-color-primaryScale-800);
+    background-color: currentColor;
+    mask: url("/website/dbim/icons/library/close.svg") center / contain no-repeat;
+  }
+
+  [data-design="dbim"] .db-mnav .ds-sheet__close svg > * {
+    display: none;
   }
 
   /* The dialog keeps its name; the reference draws no title. */

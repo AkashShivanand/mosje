@@ -2,6 +2,7 @@ import type * as React from "react";
 import Link from "next/link";
 import { Icon } from "@mosje/design-system";
 import { dbimHref } from "@/lib/website-dbim/nav";
+import { DbimIcon } from "../ui/icons";
 import type { DbimDocRow } from "@/lib/website-dbim/ministry";
 
 /**
@@ -19,7 +20,7 @@ export function DbimDocRowView({ doc }: { doc: DbimDocRow }) {
       <span className="db-min-docrow__size">
         {doc.type || doc.size ? (
           <>
-            <Icon name="picture_as_pdf" size={20} weight={400} aria-hidden="true" />
+            <DbimIcon name="pdf" size={24} />
             {doc.size ? <small className="db-min-size">{doc.size}</small> : <small className="db-min-size">{doc.type}</small>}
           </>
         ) : null}

@@ -24,7 +24,7 @@ export function DbimAboutUs() {
   return (
     <section className="db-about" aria-labelledby="db-about-title">
       <div className="db-about__heading">
-        <DbimSectionHeading icon="about" title={ABOUT_US.title} id="db-about-title" />
+        <DbimSectionHeading icon="department" title={ABOUT_US.title} id="db-about-title" />
       </div>
       <div className="db-about__left">
         <div className="db-about__copy">

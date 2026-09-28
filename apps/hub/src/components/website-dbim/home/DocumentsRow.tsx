@@ -27,7 +27,7 @@ export function DbimDocumentsRow() {
       <div className="db-hm-docs__row">
         <div className="db-hm-docs__col db-hm-docs__col--docs">
           <div className="db-hm-head">
-            <DbimSectionHeading icon="documents" title="Recent Documents" />
+            <DbimSectionHeading icon="recent-documents" title="Recent Documents" />
           </div>
           {docs.length ? (
             <ul className="db-hm-cards">
@@ -50,7 +50,7 @@ export function DbimDocumentsRow() {
 
         <div className="db-hm-docs__col db-hm-docs__col--personas">
           <div className="db-hm-head db-hm-head--center">
-            <DbimSectionHeading icon="personas" title="Explore User Personas" />
+            <DbimSectionHeading icon="user-personas" title="Explore User Personas" />
           </div>
           {DBIM_HOME_PERSONAS.length ? <PersonaCarousel slides={DBIM_HOME_PERSONAS} /> : <DbimEmptyState />}
         </div>

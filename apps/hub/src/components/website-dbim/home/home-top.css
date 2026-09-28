@@ -223,8 +223,8 @@
   }
 
   [data-design="dbim"] .db-announce .db-announce__icon {
-    width: 25px; /* reference */
-    height: 25px;
+    width: 24px; /* DBIM 3.0 §3.4 — the reference drew 25 */
+    height: 24px;
     color: var(--sa-color-primaryScale-800);
   }
 
@@ -388,24 +388,15 @@
     padding: 10px; /* reference card-body */
   }
 
-  /* THE MARK IS MATERIAL'S format_quote, TURNED HALF A CIRCLE, so it opens.
-     The DBIM Toolkit, and meity.gov.in, which is built on it, set a “ character in
-     Material Symbols (`p.quote`, 44px/66px) — but no Material Symbols build carries a
-     “ glyph (checked 28 Sep 2026: Google's Rounded and MeitY's own Outlined woff2), so
-     what a visitor sees there is whatever font the operating system falls back to.
-     format_quote is the Material icon for a quotation; rotated, it is the same small
-     opening mark, the same everywhere. 32px at the standard weight matches the
-     reference's footprint; it sits at the foot of the reference's 40px slot, just
-     above the quotation, where the reference's glyph lands. */
+  /* The opening mark only (DBIM 3.0 Figure 54): Material's format_quote, FILLED and
+     turned half a circle so it opens. The reference sets a 44px “ character, which
+     no Material Symbols build carries, so it falls back to whatever the system has.
+     32px (§3.4), at the foot of the reference's 40px slot, just above the quotation. */
   [data-design="dbim"] .db-pmq .db-pmq__mark {
     display: flex;
     align-items: flex-end;
     height: var(--sa-padding-40);
     color: var(--sa-color-primaryScale-800);
-  }
-
-  [data-design="dbim"] .db-pmq .db-pmq__mark .material-symbols-rounded {
-    transform: rotate(180deg);
   }
 
   [data-design="dbim"] .db-pmq .db-pmq__quote {

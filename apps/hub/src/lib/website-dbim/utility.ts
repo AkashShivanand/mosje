@@ -336,7 +336,7 @@ export const DBIM_STORED: { name: string; purpose: string; where: string; kept: 
 /* ── Personas ───────────────────────────────────────────────────────────── */
 
 export interface DbimPersonaTile {
-  icon: keyof typeof DBIM_PERSONA_ICONS;
+  icon: (typeof DBIM_PERSONA_ICONS)[number];
   /** The sentence, with `{}` where the bold link word goes. */
   sentence: string;
   strong: string;
@@ -366,7 +366,7 @@ export const DBIM_PERSONAS: DbimPersona[] = [
       { icon: "schemes", sentence: "Learn more about the {} we provide", strong: "Scholarships", path: "/offerings" },
       { icon: "tenders", sentence: "Apply on the {}", strong: "National Scholarship Portal", href: "https://scholarships.gov.in/" },
       { icon: "publications", sentence: "View our {}", strong: "Orders and Notices", path: "/documents/orders-and-notices" },
-      { icon: "vacancies", sentence: "Explore new {}", strong: "Vacancies", path: "/offerings/vacancies" },
+      { icon: "job-opportunity", sentence: "Explore new {}", strong: "Vacancies", path: "/offerings/vacancies" },
     ],
   },
   {
@@ -377,7 +377,7 @@ export const DBIM_PERSONAS: DbimPersona[] = [
       { icon: "schemes", sentence: "Learn more about the {} we provide", strong: "Schemes and Services", path: "/offerings" },
       { icon: "publications", sentence: "Read our {}", strong: "Annual Reports", path: "/documents" },
       { icon: "tenders", sentence: "Reach the Department through {}", strong: "Contact Us", path: "/connect" },
-      { icon: "vacancies", sentence: "Register a {}", strong: "Grievance", path: "/connect/grievance-redressal" },
+      { icon: "job-opportunity", sentence: "Register a {}", strong: "Grievance", path: "/connect/grievance-redressal" },
     ],
   },
   {
@@ -387,7 +387,7 @@ export const DBIM_PERSONAS: DbimPersona[] = [
     tiles: [
       { icon: "publications", sentence: "View our {}", strong: "Orders and Notices", path: "/documents/orders-and-notices" },
       { icon: "tenders", sentence: "Learn more about our {}", strong: "Tenders", path: "/offerings/tenders" },
-      { icon: "vacancies", sentence: "Find officers in the {}", strong: "Directory", path: "/ministry/directory" },
+      { icon: "job-opportunity", sentence: "Find officers in the {}", strong: "Directory", path: "/ministry/directory" },
       { icon: "schemes", sentence: "Apply for grants on {}", strong: "e-Anudaan", href: "https://grants-msje.gov.in/" },
     ],
   },
@@ -399,7 +399,7 @@ export const DBIM_PERSONAS: DbimPersona[] = [
       { icon: "publications", sentence: "View our {}", strong: "Publications", path: "/documents/publications" },
       { icon: "schemes", sentence: "Read our {}", strong: "Annual Reports", path: "/documents" },
       { icon: "tenders", sentence: "Explore the {}", strong: "Open Government Data Platform", href: "https://www.data.gov.in/" },
-      { icon: "vacancies", sentence: "See our {}", strong: "Performance", path: "/ministry/our-performance" },
+      { icon: "job-opportunity", sentence: "See our {}", strong: "Performance", path: "/ministry/our-performance" },
     ],
   },
 ];

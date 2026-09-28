@@ -32,7 +32,7 @@ export async function DbimBanner() {
       <div className="db-announce">
         <div className="db-announce__head">
           <h2 className="db-announce__title">Announcements</h2>
-          <DbimIcon name="announcements" size={25} className="db-announce__icon" />
+          <DbimIcon name="announcement" size={24} className="db-announce__icon" />
         </div>
         <AnnouncementsMarquee items={items} />
       </div>
