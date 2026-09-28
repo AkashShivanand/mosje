@@ -15,7 +15,7 @@ import { getDocument, getOfficialsByOrganisation, getOrganisation } from "@/lib/
 import { localiseDocumentUrl } from "@/lib/website/sample-documents";
 import { phoneGroups } from "@/components/website-next/templates/people-format";
 import { cleanHtml, firstSentence, kindOf, stripTags } from "@/components/website-next/templates/organisation-content";
-import { DBIM_CAMPAIGNS } from "./assets";
+import { DBIM_SOCIAL_AUDIT } from "./assets";
 import { DBIM_REGISTERS, registerPath } from "./division-registers";
 
 /* ── About Us ──────────────────────────────────────────────────────────────── */
@@ -514,8 +514,8 @@ export interface DbimDashboardTile {
 export const DBIM_DASHBOARDS: DbimDashboardTile[] = [
   {
     title: "Social Audit",
-    image: { src: DBIM_CAMPAIGNS.socialAudit.src, alt: DBIM_CAMPAIGNS.socialAudit.alt },
-    href: DBIM_CAMPAIGNS.socialAudit.href,
+    image: { src: DBIM_SOCIAL_AUDIT.src, alt: DBIM_SOCIAL_AUDIT.alt },
+    href: DBIM_SOCIAL_AUDIT.href,
     external: true,
     // SOURCE: the reference's tile, master-socialjustice.digifootprint.gov.in/ministry/our-performance, 25 Sep 2026.
     date: "24.10.2025",

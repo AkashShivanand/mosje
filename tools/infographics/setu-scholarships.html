@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SETU Scholarships Infographic</title>
+<!-- Source: https://www.dosje.gov.in/dashboard/ (Beneficiary Dashboard), read 2026-09-28.
+     Derived sums (same source, same period): SC 4,896 + 46,676 = 51,572;
+     PM-YASASVI 2,163 + 12,118 = 14,281; Top Class Education 117 + 810 = 927.
+     The figures here must match apps/hub/src/lib/website/infographics.ts — that list is
+     the image's text version. Change one, change both, and re-render.
+
+     DESIGN, 28 Sep 2026. The picture is seen at two sizes: whole, in the full-size
+     viewer, and at about a quarter of that as the DBIM home page's posts-row tile. It
+     is drawn for the smaller one first — a title and two figures that still read at
+     ~250px — and carries the detail for the larger one. Type, not boxes: rules
+     divide the four smaller schemes, so nothing is a card inside a card. Colours are
+     the DBIM palette (data-brand="dbim"), because that is where it is placed. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Display:wght@600;700;800&display=block">
+<link rel="stylesheet" href="../../packages/tokens/dist/tokens.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1080px; height: 1080px; }
+  body { background: var(--sa-bg-neutral-subtlest); -webkit-font-smoothing: antialiased; }
+
+  .canvas {
+    width: 1080px; height: 1080px;
+    display: grid; grid-template-rows: auto 1fr auto;
+    font-family: var(--sa-ref-font-family-latin);
+    color: var(--sa-text-neutral-bolder);
+    background: var(--sa-bg-neutral-subtlest);
+  }
+  .num { font-family: var(--sa-ref-font-family-display); font-weight: var(--sa-font-weight-bold); font-variant-numeric: lining-nums; letter-spacing: -0.02em; }
+
+  /* ── The field: identity, title, the two figures that must survive the tile ── */
+  .field {
+    background: var(--sa-bg-brand-primary-boldest);
+    color: var(--sa-text-neutral-inverse);
+    padding: 52px 72px 40px;
+  }
+  .mast { display: flex; align-items: center; gap: 16px; }
+  .mast img { height: 56px; width: auto; }
+  .mast b { display: block; font-size: 19px; font-weight: var(--sa-font-weight-semibold); line-height: 1.25; }
+  .mast span { display: block; font-size: 15px; line-height: 1.35; color: var(--sa-bg-brand-primary-subtle); }
+
+  .kicker {
+    margin-top: 34px;
+    font-size: 17px; font-weight: var(--sa-font-weight-semibold); letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--sa-bg-brand-secondary-bold);
+  }
+  h1 {
+    margin-top: 10px;
+    font-family: var(--sa-ref-font-family-display);
+    font-size: 64px; line-height: 1.02; font-weight: var(--sa-font-weight-bold); letter-spacing: -0.015em;
+  }
+
+  .duo { display: grid; grid-template-columns: 1fr 1fr; margin-top: 32px; }
+  .duo > div { padding-right: 40px; }
+  .duo > div + div { padding: 0 0 0 40px; border-left: 1px solid var(--sa-border-neutral-inverse-subtle); }
+  .scheme { font-size: 19px; font-weight: var(--sa-font-weight-semibold); line-height: 1.25; }
+  .who { font-size: 16px; line-height: 1.3; color: var(--sa-bg-brand-primary-subtle); }
+  .big { margin-top: 10px; display: flex; align-items: baseline; gap: 12px; }
+  .big .num { font-size: 136px; line-height: 0.9; }
+  .big .unit { font-size: 30px; font-weight: var(--sa-font-weight-semibold); line-height: 1.1; }
+  .unit small { display: block; font-size: 17px; font-weight: var(--sa-font-weight-regular); color: var(--sa-bg-brand-primary-subtle); }
+
+  /* ── The split: where the money went, as a proportion ── */
+  .money { margin-top: 26px; }
+  .money .num { font-size: 34px; letter-spacing: -0.01em; }
+  .money .num small { font-family: var(--sa-ref-font-family-latin); font-size: 17px; font-weight: var(--sa-font-weight-regular); letter-spacing: 0; color: var(--sa-bg-brand-primary-subtle); margin-left: 6px; }
+  .bar { display: flex; gap: 3px; height: 10px; margin-top: 12px; }
+  .bar i { display: block; border-radius: 2px; }
+  .bar .pre { background: var(--sa-bg-brand-secondary-bold); }
+  .bar .post { background: var(--sa-bg-brand-primary-subtle); }
+  .legend { display: flex; justify-content: space-between; margin-top: 10px; font-size: 15px; color: var(--sa-bg-brand-primary-subtle); }
+  .legend b { color: var(--sa-text-neutral-inverse); font-weight: var(--sa-font-weight-semibold); }
+  .legend .k { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 7px; vertical-align: 0; }
+
+  /* ── The four smaller schemes: set as type on a ruled grid ── */
+  .more {
+    display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
+    padding: 8px 72px 0;
+  }
+  .more > div { display: flex; flex-direction: column; justify-content: center; padding: 20px 32px 20px 0; border-bottom: 1px solid var(--sa-border-neutral-subtle); }
+  .more > div:nth-child(even) { padding-left: 32px; padding-right: 0; border-left: 1px solid var(--sa-border-neutral-subtle); }
+  .more > div:nth-child(n + 3) { border-bottom: 0; }
+  .more .scheme { font-size: 17px; color: var(--sa-text-brand-primary-bolder); }
+  /* Label UNDER its figure in every cell, so one cell can hold two figures and all
+     four read the same way. */
+  .more .fig { margin-top: 10px; display: flex; gap: 44px; }
+  .more .fig .num { display: block; font-size: 52px; line-height: 1; color: var(--sa-text-brand-primary-bolder); }
+  .more .fig .lbl { display: block; margin-top: 6px; font-size: 17px; color: var(--sa-text-neutral-bolder); }
+  .more .fund { margin-top: 12px; font-size: 16px; color: var(--sa-text-neutral-subtle); }
+  .more .fund b { color: var(--sa-text-neutral-bolder); font-weight: var(--sa-font-weight-semibold); }
+
+  .foot {
+    display: flex; justify-content: space-between; align-items: center;
+    margin: 0 72px; padding: 16px 0 24px;
+    border-top: 2px solid var(--sa-bg-brand-primary-boldest);
+    font-size: 15px; color: var(--sa-text-neutral-subtle);
+  }
+  .foot b { color: var(--sa-text-neutral-bolder); font-weight: var(--sa-font-weight-semibold); }
+</style>
+</head>
+<body>
+<div class="canvas" data-brand="dbim">
+  <section class="field">
+    <div class="mast">
+      <img src="../../apps/hub/public/website/images/National_Emblem_logo_white.svg" alt="State Emblem of India">
+      <div>
+        <b>Department of Social Justice and Empowerment</b>
+        <span>Ministry of Social Justice and Empowerment, Government of India</span>
+      </div>
+    </div>
+
+    <p class="kicker">SETU · 2014–15 to 2025–26</p>
+    <h1>Scholarships and Fellowships</h1>
+
+    <div class="duo">
+      <div data-fit>
+        <p class="scheme">Scholarships for SC Students</p>
+        <p class="who">Pre-Matric and Post-Matric</p>
+        <p class="big"><span class="num">9</span><span class="unit">Crore<small>student beneficiaries</small></span></p>
+        <div class="money">
+          <p class="num">₹51,572 Cr<small>in scholarships</small></p>
+          <div class="bar"><i class="pre" style="flex:4896"></i><i class="post" style="flex:46676"></i></div>
+          <p class="legend"><span><i class="k" style="background:var(--sa-bg-brand-secondary-bold)"></i>Pre-Matric <b>₹4,896 Cr</b></span><span><i class="k" style="background:var(--sa-bg-brand-primary-subtle)"></i>Post-Matric <b>₹46,676 Cr</b></span></p>
+        </div>
+      </div>
+      <div data-fit>
+        <p class="scheme">PM-YASASVI Scholarships</p>
+        <p class="who">OBC, EBC and DNT Students</p>
+        <p class="big"><span class="num">11</span><span class="unit">Crore<small>student beneficiaries</small></span></p>
+        <div class="money">
+          <p class="num">₹14,281 Cr<small>in scholarships</small></p>
+          <div class="bar"><i class="pre" style="flex:2163"></i><i class="post" style="flex:12118"></i></div>
+          <p class="legend"><span><i class="k" style="background:var(--sa-bg-brand-secondary-bold)"></i>Pre-Matric <b>₹2,163 Cr</b></span><span><i class="k" style="background:var(--sa-bg-brand-primary-subtle)"></i>Post-Matric <b>₹12,118 Cr</b></span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="more">
+    <div data-fit>
+      <p class="scheme">SHREYAS National Fellowship for OBCs</p>
+      <p class="fig"><span><span class="num">14,757</span><span class="lbl">scholars funded</span></span></p>
+      <p class="fund"><b>₹640 Cr</b> fund released</p>
+    </div>
+    <div data-fit>
+      <p class="scheme">Hostels for OBC Boys and Girls</p>
+      <p class="fig"><span><span class="num">28,865</span><span class="lbl">seats sanctioned</span></span></p>
+      <p class="fund"><b>₹347 Cr</b> disbursed</p>
+    </div>
+    <div data-fit>
+      <p class="scheme">Top Class Education for OBC, EBC and DNT</p>
+      <p class="fig"><span><span class="num">45,228</span><span class="lbl">schools</span></span><span><span class="num">37,937</span><span class="lbl">colleges</span></span></p>
+      <p class="fund"><b>₹927 Cr</b> fund released</p>
+    </div>
+    <div data-fit>
+      <p class="scheme">Interest Subsidy for Overseas Studies</p>
+      <p class="fig"><span><span class="num">29,015</span><span class="lbl">OBC and EBC students</span></span></p>
+      <p class="fund"><b>₹210 Cr</b> disbursed</p>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <span>Source: <b>Beneficiary Dashboard</b>, dosje.gov.in/dashboard</span>
+    <span>Cr = Crore</span>
+  </footer>
+</div>
+</body>
+</html>

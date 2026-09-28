@@ -1,6 +1,6 @@
 /* ds-exempt-start(third-party): type sizes, leading and tracking are transcribed from the DBIM 3.0 reference template (master-socialjustice.digifootprint.gov.in, root 62.5%, rems divided by 1.6), which the DBIM review team mandated on 25 Sep 2026; colour stays token-bound */
 /* ─────────────────────────────────────────────────────────────────────────────
-   Home, bottom three sections: In Social Media · the campaign row · partners.
+   Home, bottom three sections: In Social Media · the posts row (two central posts and the infographic) · partners.
    Values measured from the reference (home@1440 / home@390, used.css); the spec is
    docs/research/dbim-reference/components/home-bottom.spec.md.
 
@@ -319,8 +319,17 @@
     border-radius: var(--sa-shape-4);
   }
 
-  [data-design="dbim"] .db-hb-campaigns__audit img {
+  /* The infographic: square wherever it has a column to itself, shown whole
+     (contain, never cropped — a crop removes figures), and opened full size by the
+     DS MediaThumbnail. */
+  [data-design="dbim"] .db-hb-campaigns__infographic {
+    aspect-ratio: 1;
+    overflow: hidden;
     border-radius: 10px; /* rounded-4 = 1rem at the reference's 10px root; no 10 token */
+  }
+
+  [data-design="dbim"] .db-hb-campaigns__infographic .ds-media-thumb__img {
+    object-fit: contain;
   }
 
   [data-design="dbim"] .db-hb-campaigns__link:focus-visible {
@@ -363,7 +372,7 @@
       aspect-ratio: auto;
     }
 
-    [data-design="dbim"] .db-hb-campaigns__audit {
+    [data-design="dbim"] .db-hb-campaigns__infographic {
       grid-column: 2;
     }
   }
@@ -377,19 +386,19 @@
       grid-column: span 3;
     }
 
-    /* One row, one height (DBIM 3.0 Figure 62): the poster takes the row the banner
-       sets instead of its own taller aspect. */
-    [data-design="dbim"] .db-hb-campaigns__audit {
+    /* One row, one height (DBIM 3.0 Figure 62): the infographic takes the row the
+       banner sets instead of its own square, and sits whole inside it. */
+    [data-design="dbim"] .db-hb-campaigns__infographic {
       position: relative;
       grid-column: auto;
       align-self: stretch;
+      aspect-ratio: auto;
     }
 
-    [data-design="dbim"] .db-hb-campaigns__audit img {
+    /* Out of flow, so the square picture cannot set the row's height itself. */
+    [data-design="dbim"] .db-hb-campaigns__infographic .ds-media-thumb {
       position: absolute;
       inset: 0;
-      height: 100%;
-      object-fit: cover;
     }
   }
 

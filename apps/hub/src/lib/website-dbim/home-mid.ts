@@ -159,10 +159,11 @@ export const DBIM_HOME_PERSONAS: DbimPersonaSlide[] = DBIM_PERSONAS.flatMap((p) 
 
 /*
  * The first four rows of the Department's Important Links (`DBIM_IMPORTANT_LINKS`,
- * one per Division), the same list the Important Links page shows — so one list feeds
- * both. That list leads with the three the reference leads with (Scheduled Caste
- * Welfare, Social Defence, Grants-in-Aid to NGOs); the reference's fourth,
- * "Inauguration", is a webcast link with no source in the estate.
+ * one per Division plus the Social Audit MIS Portal), the same list the Important Links
+ * page shows — so one list feeds both. That list leads with the three the reference
+ * leads with (Scheduled Caste Welfare, Social Defence, Grants-in-Aid to NGOs); the
+ * reference's fourth, "Inauguration", is a webcast link with no source in the estate,
+ * so the fourth is the Social Audit MIS Portal, moved from the posts row.
  */
 export function dbimHomeImportantLinks(): DbimHomeLink[] {
   return DBIM_IMPORTANT_LINKS.slice(0, 4).flatMap((l): DbimHomeLink[] => {

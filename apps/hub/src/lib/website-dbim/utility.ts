@@ -9,7 +9,7 @@
  * while the DBIM design is chosen, and most redesign paths do not exist there.
  */
 import { DIVISIONS } from "@/data/website";
-import { DBIM_PERSONA_ICONS } from "./assets";
+import { DBIM_PERSONA_ICONS, DBIM_SOCIAL_AUDIT } from "./assets";
 import { DBIM_POLICY_TABS, type DbimLink } from "./nav";
 
 /* ── Rich text ──────────────────────────────────────────────────────────── */
@@ -270,13 +270,27 @@ const leadRank = (id: string) => {
   return i < 0 ? LEAD_DIVISIONS.length : i;
 };
 
-export const DBIM_IMPORTANT_LINKS: DbimLinkRow[] = [...DIVISIONS].sort((a, b) => leadRank(a.id) - leadRank(b.id)).map((d) => {
+const DIVISION_LINKS: DbimLinkRow[] = [...DIVISIONS].sort((a, b) => leadRank(a.id) - leadRank(b.id)).map((d) => {
   const internal = d.links.some((l) => !l.href.startsWith("http"));
   const external = d.links.find((l) => l.href.startsWith("http"));
   return internal || !external
     ? { label: d.name, path: `/ministry/our-division/${d.id}` }
     : { label: d.name, href: external.href };
 });
+
+/*
+ * THE SOCIAL AUDIT MIS PORTAL IS FOURTH, after the three lead divisions — moved here
+ * on 28 Sep 2026 from the home page's posts row, whose third slot became the
+ * Infographics (DBIM 3.0 §7.3 xiii). Fourth so it stays on the home page, which shows
+ * four rows; the reference's own fourth ("Inauguration") was not a division either.
+ */
+const SOCIAL_AUDIT: DbimLinkRow = { label: DBIM_SOCIAL_AUDIT.label, href: DBIM_SOCIAL_AUDIT.href };
+
+export const DBIM_IMPORTANT_LINKS: DbimLinkRow[] = [
+  ...DIVISION_LINKS.slice(0, LEAD_DIVISIONS.length),
+  SOCIAL_AUDIT,
+  ...DIVISION_LINKS.slice(LEAD_DIVISIONS.length),
+];
 
 /* ── Help ───────────────────────────────────────────────────────────────── */
 
