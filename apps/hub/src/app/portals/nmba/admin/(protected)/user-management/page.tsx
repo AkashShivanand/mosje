@@ -6,12 +6,14 @@ import { DataTable } from "@/components/nmba/data-table";
 import { ADMIN_USERS, USERS_TOTAL } from "@/lib/nmba/mock-data";
 import type { AdminUser } from "@/lib/nmba/types";
 import { useToast } from "@/components/nmba/toast";
-import { Button, FormField, Icon, IconButton, Input, Select } from "@mosje/design-system";
+import { Button, FormField, Icon, IconButton, Input, Select, useDialogLayer } from "@mosje/design-system";
 
 const ROLES: AdminUser["role"][] = ["Admin", "State Nodal Officer", "District Nodal Officer"];
 
 function AddUserModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { toast } = useToast();
+  // aria-modal: the floating rails step under this dialog while it is open (DS foundations/dialog-layer.ts).
+  useDialogLayer(open);
   const [form, setForm] = React.useState({ name: "", mobile: "", email: "", role: ROLES[1] as AdminUser["role"] });
 
   if (!open) return null;

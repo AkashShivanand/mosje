@@ -46,6 +46,8 @@ export { useScrollReveal } from "./foundations/reveal";
 export { useOnlineStatus } from "./foundations/online-status";
 export { useStickyRange } from "./foundations/sticky-range";
 export type { StickyRangeOptions, StickyState } from "./foundations/sticky-range";
+export { openDialogLayer, useDialogLayer } from "./foundations/use-dialog-layer";
+export type { DialogLayerRoot } from "./foundations/use-dialog-layer";
 
 // ---- Components: Icon -------------------------------------------------------
 // Material Symbols Rounded, weight 300 — the official icon system for all MoSJE apps.

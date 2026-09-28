@@ -9,6 +9,7 @@
    Hand-maintained, this file held 26 imports against 69 stylesheets, so a consumer
    following the documented path silently received a design system missing its modal,
    its toast, its data table and its tabs. It is generated now. */
+@import "./foundations/dialog-layer.css";
 @import "./foundations/layout.css";
 @import "./foundations/reveal.css";
 @import "./components/actions/button-group.css";
