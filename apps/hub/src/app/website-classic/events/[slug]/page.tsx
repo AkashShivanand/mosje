@@ -1,202 +1,134 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { notFound } from "next/navigation";
-import { ContentPage } from "@/components/website/templates/ContentPage";
-import { Icon } from "@mosje/design-system";
+import { SectionTitle } from "@mosje/design-system";
+import { RecordDetail } from "@/components/website/templates/RecordDetail";
+import { eventDate } from "@/components/website-next/media/EventCard";
+import { tidyTitle } from "@/components/website-next/media/albums";
+import { organisationName } from "@/components/website-next/media/org-name";
+import { formatDate } from "@/components/website-next/ui/format";
+import { getContentSyncedDate, getEvent, getEvents, routeSlug, withAssetBasePath } from "@/lib/website/content";
+import { facts } from "@/lib/website/record-facts";
 import { socialCard } from "@/lib/seo/social";
 
-interface EventDetail {
-  title: string;
-  short: string;
-  date: string;
-  venue: string;
-  organiser: string;
-  about: string[];
-  highlights: string[];
-}
-
-const EVENTS: Record<string, EventDetail> = {
-  "chintan-shivir-2026": {
-    title: "Chintan Shivir 2026 on Social Justice & Empowerment",
-    short: "Chintan Shivir 2026",
-    date: "18–19 May 2026",
-    venue: "Dr. Ambedkar International Centre, New Delhi",
-    organiser: "Department of Social Justice & Empowerment, Government of India",
-    about: [
-      "The Chintan Shivir 2026 brought together Union and State officials, domain experts and civil-society partners to deliberate on the next phase of social-justice programmes under the Department.",
-      "Over two days, working groups reviewed the implementation of flagship schemes, identified field-level challenges and framed actionable recommendations to strengthen last-mile delivery for the most marginalised communities.",
-    ],
-    highlights: [
-      "Inaugural address by the Hon'ble Union Minister for Social Justice & Empowerment",
-      "Thematic sessions on scholarships, financial empowerment and de-addiction",
-      "Release of the consolidated implementation dashboard for PM-AJAY",
-      "Adoption of a joint State–Centre action plan for 2026–27",
-    ],
-  },
-  "national-de-addiction-conclave-2026": {
-    title: "National De-Addiction Conclave 2026 under NMBA",
-    short: "De-Addiction Conclave",
-    date: "26 June 2026",
-    venue: "Vigyan Bhawan, New Delhi",
-    organiser: "Nasha Mukt Bharat Abhiyaan (NMBA), DoSJE",
-    about: [
-      "Held to mark the International Day Against Drug Abuse and Illicit Trafficking, the National De-Addiction Conclave 2026 showcased the achievements of the Nasha Mukt Bharat Abhiyaan and the network of de-addiction centres across the country.",
-      "The conclave provided a platform for de-addiction professionals, volunteers and beneficiaries to share best practices in prevention, treatment and rehabilitation.",
-    ],
-    highlights: [
-      "Felicitation of district administrations excelling under NMBA",
-      "Panel discussions with rehabilitation experts and recovered beneficiaries",
-      "Launch of community-outreach toolkits for Maanas helpline volunteers",
-      "Pledge ceremony for a drug-free India by participating institutions",
-    ],
-  },
-  "ambedkar-jayanti-samaroh-2026": {
-    title: "Ambedkar Jayanti Samaroh 2026",
-    short: "Ambedkar Jayanti 2026",
-    date: "14 April 2026",
-    venue: "Dr. Ambedkar National Memorial, 26 Alipur Road, New Delhi",
-    organiser: "Dr. Ambedkar Foundation, DoSJE",
-    about: [
-      "The Ambedkar Jayanti Samaroh 2026 commemorated the birth anniversary of Bharat Ratna Dr. B. R. Ambedkar with floral tributes, cultural programmes and the conferment of the Dr. Ambedkar National Awards.",
-      "Dignitaries, scholars and citizens gathered to reaffirm their commitment to the constitutional values of liberty, equality and fraternity championed by Dr. Ambedkar.",
-    ],
-    highlights: [
-      "Floral tributes at the Dr. Ambedkar National Memorial",
-      "Conferment of the Dr. Ambedkar National Award for Social Understanding & Upliftment of Weaker Sections",
-      "Cultural performances depicting Dr. Ambedkar's life and ideals",
-      "Exhibition on the making of the Constitution of India",
-    ],
-  },
-  "scholarship-outreach-camp-2026": {
-    title: "National Scholarship Outreach Camp 2026",
-    short: "Scholarship Outreach Camp",
-    date: "08 March 2026",
-    venue: "Select districts across India",
-    organiser: "Department of Social Justice & Empowerment, Government of India",
-    about: [
-      "The National Scholarship Outreach Camp 2026 took the Department's scholarship schemes to the doorstep of students through district-level camps across the country.",
-      "Volunteers and officials helped SC, OBC and DNT students register on the National Scholarship Portal, verify documents and complete their applications for pre-matric, post-matric and top-class scholarships.",
-    ],
-    highlights: [
-      "On-the-spot registration assistance on the National Scholarship Portal",
-      "Document verification and grievance-redressal desks",
-      "Awareness sessions on eligibility and timelines",
-      "Special focus on first-generation learners",
-    ],
-  },
-  "smile-skill-mela-2026": {
-    title: "SMILE Skilling & Livelihood Mela 2026",
-    short: "SMILE Skilling Mela",
-    date: "21 February 2026",
-    venue: "NISD Campus, New Delhi",
-    organiser: "Social Defence Division (SMILE), DoSJE",
-    about: [
-      "The SMILE Skilling & Livelihood Mela 2026 connected beneficiaries under the SMILE scheme with skill-development providers and prospective employers.",
-      "The event focused on dignified livelihoods for transgender persons and people engaged in begging, offering counselling, skilling and placement support under one roof.",
-    ],
-    highlights: [
-      "Skill-development counselling and enrolment",
-      "On-site placement and self-employment guidance",
-      "Health, identity-document and welfare-linkage camps",
-      "Showcase of beneficiary success stories",
-    ],
-  },
-  "constitution-day-observance-2025": {
-    title: "Constitution Day Observance 2025",
-    short: "Constitution Day 2025",
-    date: "26 November 2025",
-    venue: "Dr. Ambedkar International Centre, New Delhi",
-    organiser: "Dr. Ambedkar Foundation, DoSJE",
-    about: [
-      "Constitution Day (Samvidhan Divas) 2025 was observed to commemorate the adoption of the Constitution of India on 26 November 1949.",
-      "The observance reaffirmed the Department's commitment to the constitutional values of justice, liberty, equality and fraternity through a reading of the Preamble and related programmes.",
-    ],
-    highlights: [
-      "Collective reading of the Preamble to the Constitution",
-      "Exhibition on the framing of the Constitution",
-      "Lectures on constitutional safeguards for weaker sections",
-      "Participation by students and officials",
-    ],
-  },
-};
-
+/**
+ * One event, from the ingested register (`events.json`).
+ *
+ * WHAT THIS REPLACED: six events whose venues, organisers and "highlights" were
+ * written into this file and are not in the register. Every fact below is the
+ * record's own; a field the record does not carry is not drawn. The organiser's
+ * personal email and mobile number, which some records carry, are left off the
+ * page, as on the redesign: the Department's contact route is the Contact page.
+ */
 export function generateStaticParams() {
-  return Object.keys(EVENTS).map((slug) => ({ slug }));
+  return getEvents().map((e) => ({ slug: routeSlug(e.slug) }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
+const DEVANAGARI = /[ऀ-ॿ]/;
+const isPicture = (u?: string) => Boolean(u && /\.(jpe?g|png|webp|gif|avif)(\?|$)/i.test(u));
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const event = EVENTS[slug];
-  if (!event) return { title: "Event — DoSJE" };
-  const title = `${event.title} — DoSJE`;
+  const event = getEvent(slug);
+  if (!event) return { title: "Event Not Found | Department of Social Justice & Empowerment" };
+  const title = tidyTitle(event.title);
+  const description = [formatDate(eventDate(event)), event.location].filter(Boolean).join(", ") || title;
   return {
-    title,
-    description: event.about[0],
-    ...socialCard({ title, description: event.about[0], url: `/website/events/${slug}` }),
+    title: `${title} | Department of Social Justice & Empowerment`,
+    description,
+    ...socialCard({ title, description, url: `/website/events/${routeSlug(event.slug)}` }),
   };
 }
 
-export default async function EventDetailPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const event = EVENTS[slug];
+  const event = getEvent(slug);
   if (!event) notFound();
 
+  const title = tidyTitle(event.title);
+  const start = formatDate(eventDate(event));
+  const end = event.endDate && event.endDate !== event.startDate ? formatDate(event.endDate) : undefined;
+  const photos = (event.photos ?? []).filter((p, i, all) => isPicture(p.url) && all.findIndex((q) => q.url === p.url) === i);
+  const videos = (event.videos ?? []).filter((v) => v.url);
+
   return (
-    <ContentPage
-      title={event.title}
-      breadcrumb={[
-        { label: "Events & Gallery" },
-        { label: "Events", href: "/website/events" },
-        { label: event.short },
+    <RecordDetail
+      title={title}
+      badge="Event"
+      breadcrumb={[{ label: "Events & Gallery" }, { label: "Events", href: "/website/events" }, { label: title }]}
+      backHref="/website/events"
+      backLabel="Back to Events"
+      lastUpdated={getContentSyncedDate()}
+      facts={facts([
+        { term: "Date", value: start && end ? `${start} to ${end}` : start },
+        { term: "Place", value: event.location?.replace(/\s+/g, " ").trim() },
+        { term: "Mode", value: event.mode },
+        { term: "Organisation", value: organisationName(event.organisation) },
+        { term: "Organised By", value: event.organizer },
+      ])}
+      files={[
+        ...(event.pdfUrl ? [{ label: "Event Document", url: event.pdfUrl }] : []),
+        ...(event.pdfUrlHi ? [{ label: "Event Document (Hindi)", url: event.pdfUrlHi }] : []),
       ]}
-      description={event.about[0]}
-      lastUpdated="06 Jun 2026"
-      sidebar={
-        <div className="rounded-xl border border-gray-200 bg-surface-muted p-5 text-body-2">
-          <h2 className="mb-4 text-title-1 text-primary-dark">Event Details</h2>
-          <dl className="space-y-4">
-            <div className="flex items-start gap-3">
-              <Icon name="calendar_month" size={20} className="mt-0.5 shrink-0 text-primary" aria-hidden="true" />
-              <div>
-                <dt className="font-semibold text-ink">Date</dt>
-                <dd className="text-ink-muted">{event.date}</dd>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <Icon name="location_on" size={20} className="mt-0.5 shrink-0 text-primary" aria-hidden="true" />
-              <div>
-                <dt className="font-semibold text-ink">Venue</dt>
-                <dd className="text-ink-muted">{event.venue}</dd>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <Icon name="group" size={20} className="mt-0.5 shrink-0 text-primary" aria-hidden="true" />
-              <div>
-                <dt className="font-semibold text-ink">Organiser</dt>
-                <dd className="text-ink-muted">{event.organiser}</dd>
-              </div>
-            </div>
-          </dl>
-        </div>
-      }
+      sourceUrl={event.sourceUrl}
     >
-      <h2>About the Event</h2>
-      {event.about.map((p, i) => (
-        <p key={i}>{p}</p>
-      ))}
-      <h2>Highlights</h2>
-      <ul>
-        {event.highlights.map((h) => (
-          <li key={h}>{h}</li>
-        ))}
-      </ul>
-    </ContentPage>
+      {event.descriptionHtml && (
+        <div
+          lang={DEVANAGARI.test(event.descriptionHtml) ? "hi" : undefined}
+          dangerouslySetInnerHTML={{ __html: withAssetBasePath(event.descriptionHtml) }}
+        />
+      )}
+
+      {photos.length > 0 && (
+        <div>
+          <SectionTitle title="Photographs" as={2} count={photos.length} />
+          <ul className="sa-record-media">
+            {photos.map((p) => (
+              <li key={p.url} className="sa-record-media__item">
+                <Image
+                  src={isPicture(p.thumbnailUrl) ? p.thumbnailUrl! : p.url}
+                  /* The register publishes no alternative text; the caption is used where there is one. */
+                  alt={p.alt ?? p.caption ?? ""}
+                  width={480}
+                  height={360}
+                  sizes="(min-width: 1024px) 22rem, 50vw"
+                />
+                {p.caption && <p className="sa-record-media__caption">{p.caption}</p>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {videos.length > 0 && (
+        <div>
+          <SectionTitle title="Videos" as={2} count={videos.length} />
+          <ul className="sa-record-media">
+            {videos.map((v) =>
+              v.kind === "youtube" ? (
+                <li key={v.url} className="sa-record-media__item">
+                  <iframe
+                    src={v.url}
+                    title={v.caption ?? title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    style={{ width: "100%", aspectRatio: "16 / 9", border: 0 }}
+                  />
+                </li>
+              ) : (
+                <li key={v.url} className="sa-record-media__item">
+                  {/* The Department publishes no caption track for these files. */}
+                  <video controls preload="none" poster={v.poster ?? event.imageUrl} src={v.url} />
+                </li>
+              ),
+            )}
+          </ul>
+        </div>
+      )}
+
+      {!event.descriptionHtml && photos.length === 0 && videos.length === 0 && !event.pdfUrl && (
+        <p>The Department has published no further details of this event.</p>
+      )}
+    </RecordDetail>
   );
 }

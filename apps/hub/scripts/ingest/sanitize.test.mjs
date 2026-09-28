@@ -16,3 +16,10 @@ test("keeps img src/alt and table markup", () => {
   assert.ok(!/onerror/.test(out));
   assert.match(out, /<td>c<\/td>/);
 });
+
+test("sanitize keeps the label of a link with no real address as plain text", () => {
+  const out = sanitize(`<p><a href="PLACEHOLDER_URL_1" target="_blank">View</a> <a href="">Empty</a> <a href="https://x.gov.in/a.pdf">Real</a></p>`);
+  assert.ok(!out.includes("PLACEHOLDER_URL_1"));
+  assert.ok(out.includes("<span>View</span>") && out.includes("<span>Empty</span>"));
+  assert.ok(out.includes('href="https://x.gov.in/a.pdf"'));
+});

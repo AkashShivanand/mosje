@@ -101,13 +101,20 @@ export function isArchived(date: string | undefined, now: Date = new Date()): bo
   return t !== Number.NEGATIVE_INFINITY && t < archiveCutoff(now);
 }
 
-/** The date an item moved to the Archives under the twelve-month rule, as YYYY-MM-DD. */
-export function archivedOn(date: string | undefined): string | undefined {
-  const t = dateValue(date);
-  if (t === Number.NEGATIVE_INFINITY) return undefined;
-  const d = new Date(t);
-  d.setUTCMonth(d.getUTCMonth() + ARCHIVE_MONTHS);
-  return d.toISOString().slice(0, 10);
+/**
+ * Whether a record belongs in the Archives. Live decides this with its own tag
+ * (`component_status`: Active / Archived), set by the Department by hand and not
+ * by date — a 2022 tender can still be open, a month-old one already closed. So
+ * the tag wins wherever the record carries one, and the twelve-month rule is only
+ * the fallback for a record ingested without it.
+ */
+export function isArchivedRecord(
+  record: { status?: string; date?: string },
+  now: Date = new Date(),
+): boolean {
+  if (record.status === "Archived") return true;
+  if (record.status === "Active") return false;
+  return isArchived(record.date, now);
 }
 
 /* ── Annual reports ─────────────────────────────────────────────────────── */

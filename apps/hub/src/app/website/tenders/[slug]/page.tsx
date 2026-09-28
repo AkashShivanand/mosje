@@ -5,7 +5,7 @@ import { getContentSyncedDate, getTender, getTenders } from "@/lib/website/conte
 import { facts } from "@/lib/website/record-facts";
 import { formatDate } from "@/components/website-next/ui/format";
 import { socialCard } from "@/lib/seo/social";
-import { displayNoticeTitle, isArchived } from "@/components/website-next/ui/records";
+import { displayNoticeTitle, isArchivedRecord } from "@/components/website-next/ui/records";
 
 /** 312 tenders — every one is prerendered. */
 export function generateStaticParams() {
@@ -33,7 +33,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   const tender = getTender(slug);
   if (!tender) notFound();
   /* Published more than 12 months ago: listed in the Archives, not on the Tenders page (MAN-06). */
-  const archived = isArchived(tender.date);
+  const archived = isArchivedRecord(tender);
   /* A title the ingest cut short ends in an ellipsis, never reads as whole. */
   const title = displayNoticeTitle(tender.title);
 

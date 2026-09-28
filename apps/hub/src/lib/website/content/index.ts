@@ -242,7 +242,15 @@ export function getGalleryItem(slug: string): GalleryRecord | undefined {
   return findBySlug(gallery, slug);
 }
 
-const officials = officialData as OfficialRecord[];
+/**
+ * A record the Department's CMS left behind as a test entry — `test(Copy)`,
+ * "Chief Manager abc" under NSFDC — is not an officer, and is dropped here once
+ * so no design can list it (the redesign and DBIM each filtered it themselves;
+ * Classic did not).
+ */
+const isCmsTestOfficial = (o: OfficialRecord) =>
+  /^test\b/i.test(o.title.trim()) || /\babc$/i.test((o.designation ?? "").trim());
+const officials = (officialData as OfficialRecord[]).filter((o) => !isCmsTestOfficial(o));
 
 export function getOfficials(): OfficialRecord[] {
   return officials;

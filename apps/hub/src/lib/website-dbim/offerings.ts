@@ -12,7 +12,7 @@ import {
   displayNoticeTitle,
   fileTypeOf,
   formatFileSize,
-  isArchived,
+  isArchivedRecord,
 } from "@/components/website-next/ui/records";
 import { DBIM_SCHEME_ART, DBIM_SCHEME_ART_FALLBACK } from "./assets";
 
@@ -26,9 +26,9 @@ import { DBIM_SCHEME_ART, DBIM_SCHEME_ART_FALLBACK } from "./assets";
  * so a scheme, a tender or a vacancy is the same thing in every design:
  *   - the scheme master is the list of the Department's schemes (the reference's
  *     own list is not — issue X-IA-04);
- *   - tenders and vacancies published more than twelve months ago are in the
- *     Archives (`isArchived`, issue MAN-06) — the register publishes no closing
- *     date, so the publish date is the only date the rule can read;
+ *   - a tender or vacancy is in the Archives when live tags it Archived
+ *     (`isArchivedRecord`); the twelve-month rule (issue MAN-06) only decides for
+ *     a record ingested without the tag;
  *   - notices published twice are listed once, and a title the ingest cut short
  *     ends in an ellipsis (`dedupeNotices`, `displayNoticeTitle`).
  */
@@ -288,10 +288,10 @@ const newestFirst = (a: DbimNotice, b: DbimNotice) => b.time - a.time;
 
 /** Vacancies not yet in the Archives, newest first. */
 export function dbimVacancies(): DbimNotice[] {
-  return getVacancies().filter((v) => !isArchived(v.date)).map(toNotice).sort(newestFirst);
+  return getVacancies().filter((v) => !isArchivedRecord(v)).map(toNotice).sort(newestFirst);
 }
 
 /** Tenders not yet in the Archives, listed once each, newest first. */
 export function dbimTenders(): DbimNotice[] {
-  return dedupeNotices(getTenders().filter((t) => !isArchived(t.date))).map(toNotice).sort(newestFirst);
+  return dedupeNotices(getTenders().filter((t) => !isArchivedRecord(t))).map(toNotice).sort(newestFirst);
 }

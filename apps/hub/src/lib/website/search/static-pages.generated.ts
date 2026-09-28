@@ -127,7 +127,7 @@ export const STATIC_PAGES: StaticPageEntry[] = [
   },
   {
     "title": "Archives",
-    "description": "Tenders and vacancies move to the Archives twelve months after the date they were published.",
+    "description": "Tenders and vacancies the Department has marked as archived.",
     "href": "/website/archives",
     "section": "Pages",
     "iconName": "article"
@@ -150,6 +150,13 @@ export const STATIC_PAGES: StaticPageEntry[] = [
     "title": "Venue Booking",
     "description": "Halls, conference rooms and open spaces at the Dr. Ambedkar International Centre that may be booked by Government departments, public sector undertakings, voluntary organisations and private bodies.",
     "href": "/website/booking",
+    "section": "Pages",
+    "iconName": "article"
+  },
+  {
+    "title": "Central List of OBCs",
+    "description": "Castes and communities notified in the Central List of Other Backward Classes, State by State, with the notification under which each entry was made.",
+    "href": "/website/central-list-of-obcs",
     "section": "Pages",
     "iconName": "article"
   },

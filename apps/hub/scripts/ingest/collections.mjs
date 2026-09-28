@@ -14,25 +14,28 @@ export const COLLECTIONS = [
     restBase: "schemes-and-services",
     sitemapType: "schemes-and-services",
     basePath: "schemes-and-services",
-    taxonomies: { category: "scheme-category", targetGroup: "target-group" },
+    // `status` is live's own Active/Archived tag (`component_status`). Live decides a
+    // scheme's, tender's or vacancy's bucket by that tag, never by date — see
+    // `isArchivedRecord` in components/website-next/ui/records.ts.
+    taxonomies: { category: "scheme-category", targetGroup: "target-group", status: "component_status" },
     // "scheme-category"/"target-group" are WP REST field names returning term-ID arrays (resolved to names via the `taxonomies` map).
-    fields: ["id", "slug", "title", "link", "content", "scheme-category", "target-group"],
+    fields: ["id", "slug", "title", "link", "content", "scheme-category", "target-group", "component_status"],
   },
   {
     name: "tenders",
     restBase: "tender",
     sitemapType: "tender",
     kind: "file",
-    taxonomies: { category: "tender-category" },
-    fields: ["id", "slug", "title", "link", "date", "content", "tender-category"],
+    taxonomies: { category: "tender-category", status: "component_status" },
+    fields: ["id", "slug", "title", "link", "date", "content", "tender-category", "component_status"],
   },
   {
     name: "vacancies",
     restBase: "vacancies",
     sitemapType: "vacancies",
     kind: "file",
-    taxonomies: { category: "vacancy-category" },
-    fields: ["id", "slug", "title", "link", "date", "content", "vacancy-category"],
+    taxonomies: { category: "vacancy-category", status: "component_status" },
+    fields: ["id", "slug", "title", "link", "date", "content", "vacancy-category", "component_status"],
   },
   // ── Rich collections (kind ∈ kinds.mjs) ──────────────────────────────────
   // REST gives title/date/terms; the file URL, size, venue, images etc. are only

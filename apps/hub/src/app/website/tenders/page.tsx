@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { DocumentCatalog } from "@/components/website-next/templates/DocumentCatalog";
-import { dedupeNotices, displayNoticeTitle, isArchived } from "@/components/website-next/ui/records";
+import { dedupeNotices, displayNoticeTitle, isArchivedRecord } from "@/components/website-next/ui/records";
 import { getTenders, getContentSyncedDate } from "@/lib/website/content";
 import { socialCard } from "@/lib/seo/social";
 
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
  * register holds no longer title to fall back to.
  */
 export default function TendersPage() {
-  const tenders = dedupeNotices(getTenders().filter((t) => !isArchived(t.date))).map((t) => ({
+  const tenders = dedupeNotices(getTenders().filter((t) => !isArchivedRecord(t))).map((t) => ({
     slug: t.slug,
     title: displayNoticeTitle(t.title),
     date: t.date,

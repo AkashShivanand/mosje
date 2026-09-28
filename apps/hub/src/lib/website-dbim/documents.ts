@@ -21,7 +21,7 @@
 import { getAllDocuments, getDocument, getTenders, getVacancies, getUpdates } from "@/lib/website/content";
 import { localiseDocumentUrl } from "@/lib/website/sample-documents";
 import { whatsNew, type NewsItem } from "@/lib/website-next/whats-new";
-import { dateValue, isArchived, tidyTitle, dedupeNotices, displayNoticeTitle } from "@/components/website-next/ui/records";
+import { dateValue, isArchived, isArchivedRecord, tidyTitle, dedupeNotices, displayNoticeTitle } from "@/components/website-next/ui/records";
 import type { DocumentRecord } from "@/types/website/content";
 import { dbimHref, type DbimLink } from "@/lib/website-dbim/nav";
 
@@ -184,13 +184,13 @@ export const DBIM_ARCHIVE_TABS: (DbimLink & { key: DbimArchiveKind })[] = [
 ];
 
 /**
- * Tenders and vacancies leave their live page twelve months after publication —
- * the rule the classic Archives page and the redesign's /tenders apply
- * (`isArchived`), so an item is on exactly one of the two.
+ * A tender or vacancy is archived when live tags it Archived — the rule the
+ * redesign's /tenders and /archives apply (`isArchivedRecord`), so an item is on
+ * exactly one of the two.
  */
-function archivedFiles(rows: { slug: string; title: string; date?: string; fileUrl?: string; sourceUrl: string }[], notices: boolean): DbimDocRow[] {
+function archivedFiles(rows: { slug: string; title: string; date?: string; fileUrl?: string; sourceUrl: string; status?: string }[], notices: boolean): DbimDocRow[] {
   return (notices ? dedupeNotices(rows) : rows)
-    .filter((r) => isArchived(r.date))
+    .filter((r) => isArchivedRecord(r))
     .map((r) => ({
       key: r.slug,
       title: notices ? displayNoticeTitle(r.title) : tidyTitle(r.title),
