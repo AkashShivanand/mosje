@@ -99,11 +99,11 @@ export const ORGANISATIONS: Organisation[] = [
     wordmarkSrc: "/website/images/DAIC-LOGO-.png",
   },
   {
-    id: "babu-jagjivan-ram-national-foundation-jrf",
+    id: "babu-jagjivan-ram-national-foundation-bjrnf",
     abbr: "BJRNF",
     name: "Babu Jagjivan Ram National Foundation",
     category: "foundations",
-    profileHref: "/website/organisation/babu-jagjivan-ram-national-foundation-jrf",
+    profileHref: "/website/organisation/babu-jagjivan-ram-national-foundation-bjrnf",
     directoryHref: "/website/bjrnf-directory",
     logoSrc: "/website/images/org-logos/jrf.png",
   },

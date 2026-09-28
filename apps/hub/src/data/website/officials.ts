@@ -294,7 +294,7 @@ export const OFFICE_HOLDERS: Record<string, Official[]> = {
       slug: "akash-patil",
     },
   ],
-  "babu-jagjivan-ram-national-foundation-jrf": [
+  "babu-jagjivan-ram-national-foundation-bjrnf": [
     {
       name: "Dr. Virendra Kumar",
       designation: "Hon'ble Minister of Social Justice & Empowerment and President, BJRNF",

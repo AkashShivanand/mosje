@@ -46,7 +46,7 @@ const GROUP_IDS = [
   "national-safai-karamcharis-finance-development-corporation",
   "dr-ambedkar-foundation",
   "dr-ambedkar-international-centre",
-  "babu-jagjivan-ram-national-foundation-jrf",
+  "babu-jagjivan-ram-national-foundation-bjrnf",
   "national-institute-of-social-defence",
 ] as const;
 

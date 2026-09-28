@@ -44,6 +44,35 @@
     "address": "Room No. 8421, 8th Floor, Zone-4, GPOA-3, Netaji Nagar, New Delhi-110023"
   },
   {
+    "slug": "abhishek-bhagat",
+    "title": "Abhishek Bhagat",
+    "sourceUrl": "https://www.dosje.gov.in/official/abhishek-bhagat/",
+    "date": "2026-09-23",
+    "organisation": "MoSJE",
+    "organisationName": "Ministry of Social Justice & Empowerment",
+    "organisationUrl": "https://www.dosje.gov.in/",
+    "designation": "PA to Economic Adviser-(Eco. ID, Plan Division, DWBDNCs, NSFDC, NBCFDC)",
+    "group": "ECONOMIC ADVISER / DEPUTY DIRECTOR GENERAL STATISTICS",
+    "intercom": "237",
+    "phoneOffice": "011-26119242",
+    "address": "Zone-5, 8th Floor, GPOA-3, Netaji Nagar, New Delhi-110023Zone-5, 8th Floor, GPOA-3, Netaji Nagar, New Delhi-110023"
+  },
+  {
+    "slug": "abhishek-nath",
+    "title": "Shri Abhishek Nath",
+    "sourceUrl": "https://www.dosje.gov.in/official/abhishek-nath/",
+    "date": "2026-09-19",
+    "officialType": "Member",
+    "organisation": "NCSK",
+    "organisationName": "National Commission for Safai Karamcharis (NCSK)",
+    "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "designation": "PA to Member",
+    "commission": "Current Commission",
+    "phoneOffice": "011-24653805",
+    "email": "pa-member01[dot]ncsk[at]gov[dot]in",
+    "address": "Room No.-10, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
+  },
+  {
     "slug": "abhishek-sahgal",
     "title": "Abhishek Sahgal",
     "sourceUrl": "https://www.dosje.gov.in/official/abhishek-sahgal/",
@@ -638,7 +667,7 @@
   },
   {
     "slug": "chirag-rajoria",
-    "title": "CHIRAG RAJORIA",
+    "title": "Chirag Rajoria",
     "sourceUrl": "https://www.dosje.gov.in/official/chirag-rajoria/",
     "date": "2026-05-13",
     "organisation": "MoSJE",
@@ -936,6 +965,22 @@
     "imageUrl": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Dr.-Saurabh-Kumar-Suman_RA.jpeg"
   },
   {
+    "slug": "dr-sushama-goriyal",
+    "title": "Dr. Sushama Goriyal",
+    "sourceUrl": "https://www.dosje.gov.in/official/dr-sushama-goriyal/",
+    "date": "2026-09-23",
+    "officialType": "Member",
+    "organisation": "NCSK",
+    "organisationName": "National Commission for Safai Karamcharis (NCSK)",
+    "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "designation": "Member (Rank of Secretary to the Government of India)",
+    "tenure": "08/09/2026 - 31/03/2028",
+    "phoneOffice": "011-24649356",
+    "phoneResidence": "011-24649356",
+    "email": "member04[dot]ncsk[at]gov[dot]in",
+    "address": "Room No.-05, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
+  },
+  {
     "slug": "dr-swati-s-mishra",
     "title": "Dr. Swati S. Mishra",
     "sourceUrl": "https://www.dosje.gov.in/official/dr-swati-s-mishra/",
@@ -987,6 +1032,7 @@
     "designation": "Hon'ble Minister of Social Justice & Empowerment and Chairman, Dr. Ambedkar Foundation",
     "commission": "Current Commission",
     "imageUrl": "https://www.dosje.gov.in/wp-content/uploads/2025/11/Dr.-Virendra-Kumar.png",
+    "phoneOffice": "011-2410 5009, 011- 2410 5011",
     "email": "min-sje[at]nic[dot]in",
     "address": "3rd Floor, Dr. Ambedkar International Centre, 15 Janpath, New Delhi - 110001"
   },
@@ -1202,11 +1248,11 @@
     "organisation": "MoSJE",
     "organisationName": "Ministry of Social Justice & Empowerment",
     "organisationUrl": "https://www.dosje.gov.in/",
-    "designation": "US-(SHRESHTA-SC (SCD-III) & SHREYAS-SC (SCD-I/NOS))",
+    "designation": "US-(Post and Pre Matric Scholarship)",
     "group": "UNDER SECRETARY",
     "intercom": "235",
     "phoneOffice": "011-24105013",
-    "email": "usscd3-dosje[at]gov[dot]in & usshreyas-dosje[at]gov[dot]in",
+    "email": "usscd5-dosje[at]gov[dot]in",
     "address": "Room No. 8617, 8th Floor, Zone-6, GPOA-3, Netaji Nagar, New Delhi-110023"
   },
   {
@@ -1666,7 +1712,7 @@
     "organisation": "MoSJE",
     "organisationName": "Ministry of Social Justice & Empowerment",
     "organisationUrl": "https://www.dosje.gov.in/",
-    "designation": "Joint Secretary (PM-DAKSH, Media, CDN, DWBDNCs)",
+    "designation": "Joint Secretary (PM-DAKSH, Media, Coordination)",
     "group": "JOINT SECRETARY",
     "intercom": "203",
     "phoneOffice": "011-26119226, 011-26118837",
@@ -2092,7 +2138,7 @@
     "organisation": "MoSJE",
     "organisationName": "Ministry of Social Justice & Empowerment",
     "organisationUrl": "https://www.dosje.gov.in/",
-    "designation": "PPS to JS-(PM-DAKSH, Media, CDN, DWBDNCs)",
+    "designation": "PPS to JS-(PM-DAKSH, Media, CDN)",
     "group": "JOINT SECRETARY",
     "intercom": "403",
     "phoneOffice": "011-26119226, 011-26118837",
@@ -2317,7 +2363,7 @@
     "organisation": "MoSJE",
     "organisationName": "Ministry of Social Justice & Empowerment",
     "organisationUrl": "https://www.dosje.gov.in/",
-    "designation": "Deputy Director General (Statistics & Economic Inclusion Division)",
+    "designation": "Deputy Director General (Statistics Division)",
     "group": "ECONOMIC ADVISER / DEPUTY DIRECTOR GENERAL STATISTICS",
     "intercom": "120",
     "phoneOffice": "011-24369836, 011-24671374",
@@ -2491,8 +2537,8 @@
     "organisation": "MoSJE",
     "organisationName": "Ministry of Social Justice & Empowerment",
     "organisationUrl": "https://www.dosje.gov.in/",
-    "designation": "DWBDNC, NBCFDC, NSFDC and Samras Cell",
-    "group": "DIRECTOR",
+    "designation": "Economic Adviser-(Economic Inclusion Division, Plan Division, DWBDNCs, NSFDC, NBCFDC)",
+    "group": "ECONOMIC ADVISER / DEPUTY DIRECTOR GENERAL STATISTICS",
     "intercom": "237",
     "phoneOffice": "011-26119242",
     "email": "rahees[dot]m[at]nic[dot]in",
@@ -2656,6 +2702,21 @@
     "group": "Justice Balakrishnan Commission of Inquiry",
     "email": "rajesh[dot]css[at]gov[dot]in",
     "address": "Dr Ambedkar International Centre, 3rd Floor, 15 Janpath, New Delhi"
+  },
+  {
+    "slug": "ram-lakhan-shukla",
+    "title": "Ram Lakhan Shukla",
+    "sourceUrl": "https://www.dosje.gov.in/official/ram-lakhan-shukla/",
+    "date": "2026-09-24",
+    "organisation": "MoSJE",
+    "organisationName": "Ministry of Social Justice & Empowerment",
+    "organisationUrl": "https://www.dosje.gov.in/",
+    "designation": "2nd PA to HMSJE",
+    "group": "UNION CABINET MINISTER OF SOCIAL JUSTICE & EMPOWERMENT",
+    "intercom": "110",
+    "phoneOffice": "011-24105009, 24105011, 26110251",
+    "email": "min-sje[at]nic[dot]in",
+    "address": "8th Floor, Zone-6, GPOA-3, Netaji Nagar, New Delhi-110023"
   },
   {
     "slug": "ramakanwar",
@@ -3795,9 +3856,9 @@
     "organisation": "MoSJE",
     "organisationName": "Ministry of Social Justice & Empowerment",
     "organisationUrl": "https://www.dosje.gov.in/",
-    "designation": "US-(Post and Pre Matric Scholarship)",
+    "designation": "SHRESHTA-SC (SCD-III) & SHREYAS-SC (SCD-I/NOS)",
     "group": "UNDER SECRETARY",
-    "email": "usscd5-dosje[at]gov[dot]in",
+    "email": "usscd3-dosje[at]gov[dot]in & usshreyas-dosje[at]gov[dot]in",
     "address": "Room No. 8418, 8th Floor, Zone-4, GPOA-3, Netaji Nagar, New Delhi-110023"
   },
   {
@@ -3848,7 +3909,9 @@
     "organisation": "NCSK",
     "organisationName": "National Commission for Safai Karamcharis (NCSK)",
     "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
-    "designation": "PA to VC"
+    "designation": "PA to VC",
+    "phoneOffice": "011-24601707",
+    "address": "Room No.-16, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
   },
   {
     "slug": "shri-ajit-kumar-samal",
@@ -3872,8 +3935,10 @@
     "organisationName": "National Commission for Safai Karamcharis (NCSK)",
     "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
     "designation": "Asstt. Director",
+    "phoneOffice": "011-24648921",
     "phoneResidence": "011-24648921",
-    "email": "ankush[dot]chugh86[at]gov[dot]in"
+    "email": "ankush[dot]chugh86[at]gov[dot]in",
+    "address": "Room No.-19, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
   },
   {
     "slug": "shri-anuj-kumar-2",
@@ -4011,7 +4076,7 @@
       "Private Secretary"
     ],
     "commission": "Current Commission",
-    "imageUrl": "https://www.dosje.gov.in/wp-content/uploads/2025/11/DacuAfIhlG1o6WNDTmWY2tgoIXJC5trtWklPY94J.jpg"
+    "imageUrl": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Shri-B-Ram-Mohan.jpg"
   },
   {
     "slug": "shri-banamali-naik",
@@ -4024,7 +4089,7 @@
     "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/",
     "designation": "Deputy Secretary (HOD)",
     "commission": "Current Commission",
-    "imageUrl": "https://www.dosje.gov.in/wp-content/uploads/2025/11/gTToDEawX4I0HNVIrHxW04CMA8N2DMUiWh7Vl1Id-1.jpg",
+    "imageUrl": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Shri-Banamali-Naik.jpg",
     "phoneOffice": "011-24606835",
     "email": "bnaik[dot]ayush[at]nic[dot]in"
   },
@@ -4040,20 +4105,6 @@
     "designation": "Section Officer",
     "phoneOffice": "011-24606835",
     "email": "bharat[dot]bhushan19[at]nic[dot]in"
-  },
-  {
-    "slug": "shri-bharatbhai-babubhai-patni",
-    "title": "Shri Bharatbhai Babubhai Patni",
-    "sourceUrl": "https://www.dosje.gov.in/official/shri-bharatbhai-babubhai-patni/",
-    "date": "2026-04-19",
-    "officialType": "Member",
-    "organisation": "DWBDNC",
-    "organisationName": "Development and Welfare Board for De-Notified Nomadic and Semi Nomadic Communities (DWBDNC)",
-    "organisationUrl": "https://www.dosje.gov.in/organisation/development-and-welfare-board-for-de-notified-nomadic-and-semi-nomadic/",
-    "designation": "Member, DWBDNC",
-    "phoneOffice": "+91-8401925755",
-    "email": "bharat[dot]patni[at]gov[dot]in",
-    "address": "Room No. 15, 2nd Floor 2nd Wing West Block-8, Sector-1, RK Puram, New Delhi-66"
   },
   {
     "slug": "shri-bhim-prakash",
@@ -4202,16 +4253,15 @@
   },
   {
     "slug": "shri-hardeep-singh-gill",
-    "title": "Shri Kaishab Bihari",
+    "title": "Vacant(SO)",
     "sourceUrl": "https://www.dosje.gov.in/official/shri-hardeep-singh-gill/",
-    "date": "2026-05-12",
-    "officialType": "Member",
+    "date": "2026-05-20",
     "organisation": "NCSK",
     "organisationName": "National Commission for Safai Karamcharis (NCSK)",
     "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
-    "designation": "Vice-Chairperson(Rank of Secretary to the Government of India)",
-    "imageUrl": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/Kaisav-Bihari-HVC.jpg",
-    "email": "hvc[dot]ncsk[at]gov[dot]in"
+    "designation": "Section Officer",
+    "phoneOffice": "011-24618119",
+    "address": "Room No.-17, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
   },
   {
     "slug": "shri-hardeep-singh-gill-2",
@@ -4225,7 +4275,10 @@
     "designation": "Vice-Chairperson(Rank of Secretary to the Government of India)",
     "commission": "Current Commission",
     "imageUrl": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/Kaisav-Bihari-HVC.jpg",
-    "email": "hvc[dot]ncsk[at]gov[dot]in"
+    "tenure": "08/09/2026 - 31/03/2028",
+    "phoneOffice": "011-24601707",
+    "email": "hvc[dot]ncsk[at]gov[dot]in",
+    "address": "Room No.-03, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
   },
   {
     "slug": "shri-hemant-kumar-bhatia",
@@ -4267,7 +4320,6 @@
     "organisationName": "National Commission for Scheduled Castes (NCSC)",
     "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/",
     "designation": "PS to Chairperson",
-    "imageUrl": "https://www.dosje.gov.in/wp-content/uploads/2026/04/YnuiNRP5PJnl7ZOFV9oKoHdjuAi1JQOWonjWb62Y.jpg",
     "phoneOffice": "011-24606803",
     "email": "jn[dot]meena1977[at]gov[dot]in"
   },
@@ -4313,6 +4365,22 @@
     "imageUrl": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/bHhO2a5Zxp7GO6BOpMbJ0zAaIeB5hXq41hOP5jy9.jpg",
     "phoneResidence": "011-24606835/839",
     "email": "kc[dot]joshi30[at]gov[dot]in"
+  },
+  {
+    "slug": "shri-kaishab-bihari",
+    "title": "Shri Kaishab Bihari",
+    "sourceUrl": "https://www.dosje.gov.in/official/shri-kaishab-bihari/",
+    "date": "2026-05-12",
+    "officialType": "Member",
+    "organisation": "NCSK",
+    "organisationName": "National Commission for Safai Karamcharis (NCSK)",
+    "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "designation": "Vice-Chairperson(Rank of Secretary to the Government of India)",
+    "imageUrl": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/Kaisav-Bihari-HVC.jpg",
+    "tenure": "08/09/2026 - 31/03/2028",
+    "phoneOffice": "011-24601707",
+    "email": "hvc[dot]ncsk[at]gov[dot]in",
+    "address": "Room No.-02, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
   },
   {
     "slug": "shri-kalloo-ram",
@@ -4368,24 +4436,27 @@
     "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
     "designation": "Member (Rank of Secretary to the Government of India)",
     "imageUrl": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/Hardeep_Singh_Gill.jpg",
+    "tenure": "23/02/2026 - 31/03/2028",
     "phoneOffice": "011-24653805",
-    "email": "member01[dot]ncsk[at]gov[dot]in"
+    "phoneResidence": "011-24653805",
+    "email": "member01[dot]ncsk[at]gov[dot]in",
+    "address": "Room No.-06, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
   },
   {
-    "slug": "shri-karam-singh-karma-2",
-    "title": "Shri Hardeep Singh Gill",
-    "sourceUrl": "https://www.dosje.gov.in/official/shri-karam-singh-karma-2/",
-    "date": "2026-05-20",
-    "officialType": "Leadership",
+    "slug": "shri-karam-singh-karma-3",
+    "title": "Shri Karam Singh Karma",
+    "sourceUrl": "https://www.dosje.gov.in/official/shri-karam-singh-karma-3/",
+    "date": "2026-09-23",
+    "officialType": "Member",
     "organisation": "NCSK",
     "organisationName": "National Commission for Safai Karamcharis (NCSK)",
     "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
     "designation": "Member (Rank of Secretary to the Government of India)",
-    "commission": "Current Commission",
-    "imageUrl": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/Hardeep_Singh_Gill.jpg",
-    "tenure": "23/02/2026",
+    "tenure": "23/02/2026 - 31/03/2028",
     "phoneOffice": "011-24648923",
-    "email": "member02[dot]ncsk[at]gov[dot]in"
+    "phoneResidence": "011-24648923",
+    "email": "member02[dot]ncsk[at]gov[dot]in",
+    "address": "Room No.-03, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
   },
   {
     "slug": "shri-kaushal-kumar",
@@ -4433,18 +4504,6 @@
     "designation": "Section Officer",
     "phoneOffice": "011-24606835",
     "email": "kl[dot]meena68[at]gov[dot]in"
-  },
-  {
-    "slug": "shri-kiran-umesh-mahalle",
-    "title": "Shri Kiran Umesh Mahalle",
-    "sourceUrl": "https://www.dosje.gov.in/official/shri-kiran-umesh-mahalle/",
-    "date": "2026-04-23",
-    "officialType": "Leadership",
-    "organisation": "NCBC",
-    "organisationName": "National Commission for Backward Classes (NCBC)",
-    "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-backward-classes-ncbc/",
-    "designation": "Member",
-    "imageUrl": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/04/Shri-Kiran-Umesh-Mahalle.jpeg"
   },
   {
     "slug": "shri-kishor-makwana",
@@ -4497,6 +4556,22 @@
     "commission": "Current Commission",
     "email": "jharsi[dot]mp[at]prasarbhrati[dot]gov[dot]in",
     "address": "Room No. 6, 2nd Floor 2nd Wing West Block-8, Sector-1, RK Puram, New Delhi-66"
+  },
+  {
+    "slug": "shri-manoj-kumar-balmiki",
+    "title": "Shri Manoj Kumar Balmiki",
+    "sourceUrl": "https://www.dosje.gov.in/official/shri-manoj-kumar-balmiki/",
+    "date": "2026-05-12",
+    "officialType": "Member",
+    "organisation": "NCSK",
+    "organisationName": "National Commission for Safai Karamcharis (NCSK)",
+    "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "designation": "Member (Rank of Secretary to the Government of India)",
+    "tenure": "07/09/2026 - 31/03/2028",
+    "phoneOffice": "011-24649357",
+    "phoneResidence": "011-24649357",
+    "email": "member03[dot]ncsk[at]gov[dot]in",
+    "address": "Room No.-07, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
   },
   {
     "slug": "shri-manoj-kumar-tiwari",
@@ -4599,7 +4674,7 @@
     "organisationName": "National Commission for Scheduled Castes (NCSC)",
     "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/",
     "designation": "APS to Chairperson",
-    "imageUrl": "https://www.dosje.gov.in/wp-content/uploads/2026/04/R42e696rOkoJtd9pk3VmEUBPhtiu3phJMM6EwhN5.png",
+    "imageUrl": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/04/Nitish-Kumar.png",
     "phoneOffice": "011-24620435",
     "email": "nitish[dot]ncsc[at]ncsc[dot]gov[dot]in"
   },
@@ -4631,7 +4706,8 @@
     "organisationName": "National Commission for Safai Karamcharis (NCSK)",
     "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
     "designation": "(Contract) PS to Secretary",
-    "phoneOffice": "011-24649352"
+    "phoneOffice": "011-24649352",
+    "address": "Room No.-09, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
   },
   {
     "slug": "shri-parveen-kumar-thind",
@@ -4661,6 +4737,21 @@
     "imageUrl": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/MS-Sir-Pic-1.png",
     "email": "jsbcd-msje@gov.in",
     "address": "Ministry of Social Justice & Empowerment, Government of India, 8th Floor, Zone-5, GPOA-3, Netaji Nagar, New Delhi-110023"
+  },
+  {
+    "slug": "shri-parveen-kumar-thind-3",
+    "title": "Shri Parveen Kumar Thind",
+    "sourceUrl": "https://www.dosje.gov.in/official/shri-parveen-kumar-thind-3/",
+    "date": "2026-04-23",
+    "officialType": "Leadership",
+    "organisation": "DAIC",
+    "organisationName": "Dr. Ambedkar International Centre (DAIC)",
+    "organisationUrl": "https://www.dosje.gov.in/organisation/dr-ambedkar-international-centre/",
+    "designation": "Member Secretary",
+    "imageUrl": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/04/WhatsApp-Image-2026-09-08-at-2.54.12-PM.jpeg",
+    "phoneOffice": "011-26113455, 011-26113428",
+    "email": "jsbcd-msje[at]gov[dot]in",
+    "address": "Dr. Ambedkar International Centre, 15 Janpath, New Delhi - 110001"
   },
   {
     "slug": "shri-prabhat-kumar-singh",
@@ -4743,24 +4834,6 @@
     "address": "2nd Floor, Dr. Ambedkar International Centre, 15 Janpath, New Delhi - 110001"
   },
   {
-    "slug": "shri-pravin-shivajirao-ghuge",
-    "title": "Shri Pravin Shivajirao Ghuge",
-    "sourceUrl": "https://www.dosje.gov.in/official/shri-pravin-shivajirao-ghuge/",
-    "date": "2025-11-21",
-    "officialType": "Member",
-    "organisation": "DWBDNC",
-    "organisationName": "Development and Welfare Board for De-Notified Nomadic and Semi Nomadic Communities (DWBDNC)",
-    "organisationUrl": "https://www.dosje.gov.in/organisation/development-and-welfare-board-for-de-notified-nomadic-and-semi-nomadic/",
-    "designation": "Member Member, DWBDNC",
-    "designationTerms": [
-      "Member"
-    ],
-    "commission": "Current Commission",
-    "phoneOffice": "+91-9423780044",
-    "email": "pravin[dot]ghuge[at]gov[dot]in",
-    "address": "Room No. 14, 2nd Floor 2nd Wing West Block-8, Sector-1, RK Puram, New Delhi-66"
-  },
-  {
     "slug": "shri-r-k-tripathy",
     "title": "Shri R.K. Tripathy",
     "sourceUrl": "https://www.dosje.gov.in/official/shri-r-k-tripathy/",
@@ -4773,7 +4846,7 @@
     "commission": "Current Commission",
     "imageUrl": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/mr.rktripathy.png",
     "phoneOffice": "011-2332 0582",
-    "email": "ravi[dot]tripathy321[at]gov [dot]in",
+    "email": "ravi[dot]tripathy321[at]gov[dot]in",
     "address": "2nd Floor, Dr. Ambedkar International Centre, 15 Janpath, New Delhi - 110001"
   },
   {
@@ -4789,9 +4862,10 @@
     "commission": "Current Commission",
     "imageUrl": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/WhatsApp-Image-2026-06-02-at-1.13.17-PM.jpeg",
     "tenure": "01/05/2024",
-    "phoneOffice": "011-24648922",
+    "phoneOffice": "011-24649352",
     "phoneResidence": "011-24649352",
-    "email": "secy-ncsk[at]gov[dot]in"
+    "email": "secy-ncsk[at]gov[dot]in",
+    "address": "Room No.-08, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
   },
   {
     "slug": "shri-raj-kapil",
@@ -4804,7 +4878,8 @@
     "designation": "Under Secretary",
     "commission": "Current Commission",
     "phoneOffice": "011-24649354",
-    "email": "raaj[dot]kapil01[at]gov[dot]in"
+    "email": "raaj[dot]kapil01[at]gov[dot]in",
+    "address": "Room No.-18, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
   },
   {
     "slug": "shri-rajan-sehgal",
@@ -4955,6 +5030,22 @@
     "imageUrl": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/12/Board-of-Directors-Ranjeet.jpg"
   },
   {
+    "slug": "shri-ravi-ramu-kalose",
+    "title": "Shri Ravi Ramu Kalose",
+    "sourceUrl": "https://www.dosje.gov.in/official/shri-ravi-ramu-kalose/",
+    "date": "2026-09-23",
+    "officialType": "Member",
+    "organisation": "NCSK",
+    "organisationName": "National Commission for Safai Karamcharis (NCSK)",
+    "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "designation": "Member (Rank of Secretary to the Government of India)",
+    "tenure": "09/09/2026 - 31/03/2028",
+    "phoneOffice": "011-24648922",
+    "phoneResidence": "011-24648922",
+    "email": "member05[dot]ncsk[at]gov[dot]in",
+    "address": "Room No.-04, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
+  },
+  {
     "slug": "shri-rohit-kakkar",
     "title": "Shri Rohit Kakkar",
     "sourceUrl": "https://www.dosje.gov.in/official/shri-rohit-kakkar/",
@@ -5027,21 +5118,6 @@
     "designation": "Under Secretary",
     "group": "PM-AJAY",
     "email": "sewak.paul[at]nic.in"
-  },
-  {
-    "slug": "shri-shailendra-kumar",
-    "title": "Shri Parveen Kumar Thind",
-    "sourceUrl": "https://www.dosje.gov.in/official/shri-shailendra-kumar/",
-    "date": "2026-04-23",
-    "officialType": "Leadership",
-    "organisation": "DAIC",
-    "organisationName": "Dr. Ambedkar International Centre (DAIC)",
-    "organisationUrl": "https://www.dosje.gov.in/organisation/dr-ambedkar-international-centre/",
-    "designation": "Member Secretary",
-    "imageUrl": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/04/WhatsApp-Image-2026-09-08-at-2.54.12-PM.jpeg",
-    "phoneOffice": "011-26113455, 011-26113428",
-    "email": "jsbcd-msje[at]gov[dot]in",
-    "address": "Dr. Ambedkar International Centre, 15 Janpath, New Delhi - 110001"
   },
   {
     "slug": "shri-shailendra-kumar-3",
@@ -5208,6 +5284,7 @@
     "designation": "Director",
     "commission": "Current Commission",
     "imageUrl": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/08/Shri-Vinesh-Pachnanda.jpeg",
+    "phoneOffice": "011-2332 0571",
     "email": "dir[dot]daf-msje[at]gov[dot]in",
     "address": "2nd Floor, Dr. Ambedkar International Centre, 15 Janpath, New Delhi - 110001"
   },
@@ -5317,6 +5394,19 @@
     "phoneOffice": "01145854418"
   },
   {
+    "slug": "shri-swaroop-singh-banjara",
+    "title": "Shri Swaroop Singh Banjara",
+    "sourceUrl": "https://www.dosje.gov.in/official/shri-swaroop-singh-banjara/",
+    "date": "2026-04-19",
+    "officialType": "Member",
+    "organisation": "DWBDNC",
+    "organisationName": "Development and Welfare Board for De-Notified Nomadic and Semi Nomadic Communities (DWBDNC)",
+    "organisationUrl": "https://www.dosje.gov.in/organisation/development-and-welfare-board-for-de-notified-nomadic-and-semi-nomadic/",
+    "designation": "Member, DWBDNC",
+    "phoneOffice": "+91-9818044450",
+    "address": "Room No. 14, 2nd Floor 2nd Wing West Block-8, Sector-1, RK Puram, New Delhi-66"
+  },
+  {
     "slug": "shri-tanpravesh",
     "title": "Shri Tanpravesh",
     "sourceUrl": "https://www.dosje.gov.in/official/shri-tanpravesh/",
@@ -5359,6 +5449,7 @@
     "designation": "Member Secretary",
     "commission": "Current Commission",
     "imageUrl": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/MS-Sir-Pic.png",
+    "phoneOffice": "011- 2611 3428, 011- 2611 3455",
     "email": "jsbcd-msje[at]gov[dot]in",
     "address": "3rd Floor, Dr. Ambedkar International Centre, 15 Janpath, New Delhi - 110001"
   },
@@ -5636,22 +5727,34 @@
     "email": "ayushi[dot]rastogi[at]nic[dot]in"
   },
   {
-    "slug": "smt-mona-k-khandhar",
-    "title": "Smt. Mona K. Khandhar",
-    "sourceUrl": "https://www.dosje.gov.in/official/smt-mona-k-khandhar/",
+    "slug": "smt-kiran-umesh-mahalle",
+    "title": "Smt. Kiran Umesh Mahalle",
+    "sourceUrl": "https://www.dosje.gov.in/official/smt-kiran-umesh-mahalle/",
+    "date": "2026-04-23",
+    "officialType": "Leadership",
+    "organisation": "NCBC",
+    "organisationName": "National Commission for Backward Classes (NCBC)",
+    "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-backward-classes-ncbc/",
+    "designation": "Member",
+    "imageUrl": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/04/Shri-Kiran-Umesh-Mahalle.jpeg"
+  },
+  {
+    "slug": "smt-monali-p-dhakate",
+    "title": "Smt. Monali P. Dhakate",
+    "sourceUrl": "https://www.dosje.gov.in/official/smt-monali-p-dhakate/",
     "date": "2025-11-21",
     "officialType": "Member",
     "organisation": "DWBDNC",
     "organisationName": "Development and Welfare Board for De-Notified Nomadic and Semi Nomadic Communities (DWBDNC)",
     "organisationUrl": "https://www.dosje.gov.in/organisation/development-and-welfare-board-for-de-notified-nomadic-and-semi-nomadic/",
-    "designation": "Additional Secretary",
+    "designation": "Joint Secretary",
     "designationTerms": [
-      "Additional Secretary"
+      "Joint Secretary"
     ],
     "commission": "Current Commission",
-    "phoneOffice": "+91-11-24102192",
-    "email": "as2-msje[at]gov[dot]in",
-    "address": "Room No. 8504, 8th Floor, Zone-5, GPOA-3, Netaji Nagar, New Delhi-110023"
+    "phoneOffice": "+91-11-26119226",
+    "email": "jscdn-dosje[at]gov[dot]in",
+    "address": "Room No. 8204, 8th Floor, Zone-2, GPOA-3, Netaji Nagar, New Delhi-110023"
   },
   {
     "slug": "smt-nidhi-gupta",
@@ -5794,7 +5897,8 @@
     "organisationName": "National Commission for Safai Karamcharis (NCSK)",
     "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
     "designation": "PS to Member",
-    "phoneOffice": "011-24653805"
+    "phoneOffice": "011-24653805",
+    "address": "Room No.-10, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
   },
   {
     "slug": "smt-sushma-manisha-ekka",
@@ -6015,7 +6119,7 @@
     "organisation": "MoSJE",
     "organisationName": "Ministry of Social Justice & Empowerment",
     "organisationUrl": "https://www.dosje.gov.in/",
-    "designation": "Secretary",
+    "designation": "Secretary, DoSJE",
     "group": "SECRETARY (DEPARTMENT OF SOCIAL JUSTICE & EMPOWERMENT)",
     "intercom": "121",
     "phoneOffice": "011-26115006",
@@ -6030,7 +6134,7 @@
     "organisation": "MoSJE",
     "organisationName": "Ministry of Social Justice & Empowerment",
     "organisationUrl": "https://www.dosje.gov.in/",
-    "designation": "Secretary",
+    "designation": "Secretary, DoSJE",
     "group": "SECRETARY (DEPARTMENT OF SOCIAL JUSTICE & EMPOWERMENT)",
     "intercom": "121",
     "phoneOffice": "011-26115006",
@@ -6194,6 +6298,21 @@
     "address": "6th Floor, GPOA-II, KG Marg, New Delhi"
   },
   {
+    "slug": "sushma-gautam",
+    "title": "Mrs. Sushma Gautam",
+    "sourceUrl": "https://www.dosje.gov.in/official/sushma-gautam/",
+    "date": "2026-09-14",
+    "officialType": "Member",
+    "organisation": "NCSK",
+    "organisationName": "National Commission for Safai Karamcharis (NCSK)",
+    "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "designation": "PA to Member",
+    "phoneOffice": "011-24648923",
+    "phoneResidence": "011-24648923",
+    "email": "pa-member02[dot]ncsk[at]gov[dot]in",
+    "address": "Room No.-16, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
+  },
+  {
     "slug": "swati",
     "title": "Amit",
     "sourceUrl": "https://www.dosje.gov.in/official/swati/",
@@ -6239,56 +6358,141 @@
     "title": "Shri Bhagwat Prasad Makwana",
     "sourceUrl": "https://www.dosje.gov.in/official/vacant-cp/",
     "date": "2026-05-12",
-    "officialType": "Member",
+    "officialType": "Leadership",
     "organisation": "NCSK",
     "organisationName": "National Commission for Safai Karamcharis (NCSK)",
     "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
     "designation": "Chairperson (Rank of Union Minister of State)",
-    "commission": "Current Commission"
+    "commission": "Current Commission",
+    "imageUrl": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/chairperson.jpeg",
+    "tenure": "09/09/2026 - 31/03/2028",
+    "phoneOffice": "011-24648924",
+    "phoneResidence": "011-24648924",
+    "email": "chairperson[dot]ncsk[at]gov[dot]in",
+    "address": "Room No.-01, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
   },
   {
     "slug": "vacant-pps",
-    "title": "Vacant",
+    "title": "Vacant(PPS)",
     "sourceUrl": "https://www.dosje.gov.in/official/vacant-pps/",
     "date": "2026-05-12",
     "officialType": "Member",
     "organisation": "NCSK",
     "organisationName": "National Commission for Safai Karamcharis (NCSK)",
     "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
-    "designation": "PPS to Chairperson"
-  },
-  {
-    "slug": "vacant-ps-to-vs",
-    "title": "Vacant",
-    "sourceUrl": "https://www.dosje.gov.in/official/vacant-ps-to-vs/",
-    "date": "2026-05-12",
-    "officialType": "Member",
-    "organisation": "NCSK",
-    "organisationName": "National Commission for Safai Karamcharis (NCSK)",
-    "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/"
+    "designation": "PPS to Chairperson",
+    "phoneOffice": "011-24634484",
+    "address": "Room No.-12, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
   },
   {
     "slug": "vacant-sgc",
-    "title": "Vacant",
+    "title": "Vacant(Steno)",
     "sourceUrl": "https://www.dosje.gov.in/official/vacant-sgc/",
     "date": "2026-05-12",
     "officialType": "Member",
     "organisation": "NCSK",
     "organisationName": "National Commission for Safai Karamcharis (NCSK)",
     "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
-    "designation": "Steno Grade ‘D’ to Chairperson"
+    "designation": "Steno Grade ‘D’ to Chairperson",
+    "phoneOffice": "011-24634484",
+    "address": "Room No.-12, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
   },
   {
-    "slug": "vacantpa-to-member1",
-    "title": "Vacant(PA to Member1)",
-    "sourceUrl": "https://www.dosje.gov.in/official/vacantpa-to-member1/",
-    "date": "2026-09-14",
-    "officialType": "Member",
+    "slug": "vacantpa-to-member03",
+    "title": "Vacant(PA to Member03)",
+    "sourceUrl": "https://www.dosje.gov.in/official/vacantpa-to-member03/",
+    "date": "2026-09-23",
     "organisation": "NCSK",
     "organisationName": "National Commission for Safai Karamcharis (NCSK)",
     "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
     "designation": "PA to Member",
-    "commission": "Current Commission"
+    "phoneOffice": "011-24649357",
+    "address": "Room No.-11, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
+  },
+  {
+    "slug": "vacantpa-to-member04",
+    "title": "Vacant(PA to Member04)",
+    "sourceUrl": "https://www.dosje.gov.in/official/vacantpa-to-member04/",
+    "date": "2026-09-23",
+    "organisation": "NCSK",
+    "organisationName": "National Commission for Safai Karamcharis (NCSK)",
+    "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "designation": "PA to Member",
+    "phoneOffice": "011-24649356",
+    "address": "Room No.-05, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
+  },
+  {
+    "slug": "vacantpa-to-member05",
+    "title": "Vacant(PA to Member05)",
+    "sourceUrl": "https://www.dosje.gov.in/official/vacantpa-to-member05/",
+    "date": "2026-09-23",
+    "organisation": "NCSK",
+    "organisationName": "National Commission for Safai Karamcharis (NCSK)",
+    "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "designation": "PA to Member",
+    "phoneOffice": "011-24648922",
+    "address": "Room No.-16, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
+  },
+  {
+    "slug": "vacantps-to-member03",
+    "title": "Vacant(PS To Member03)",
+    "sourceUrl": "https://www.dosje.gov.in/official/vacantps-to-member03/",
+    "date": "2026-09-23",
+    "organisation": "NCSK",
+    "organisationName": "National Commission for Safai Karamcharis (NCSK)",
+    "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "designation": "PS to Member",
+    "phoneOffice": "011-24649357",
+    "phoneResidence": "011-24649357",
+    "address": "Room No.-11, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
+  },
+  {
+    "slug": "vacantps-to-member04",
+    "title": "Vacant(PS to Member04)",
+    "sourceUrl": "https://www.dosje.gov.in/official/vacantps-to-member04/",
+    "date": "2026-09-23",
+    "organisation": "NCSK",
+    "organisationName": "National Commission for Safai Karamcharis (NCSK)",
+    "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "designation": "PS to Member",
+    "phoneOffice": "011-24649356",
+    "address": "Room No.-05, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
+  },
+  {
+    "slug": "vacantps-to-member2",
+    "title": "Vacant(PS to Member2)",
+    "sourceUrl": "https://www.dosje.gov.in/official/vacantps-to-member2/",
+    "date": "2026-09-23",
+    "organisation": "NCSK",
+    "organisationName": "National Commission for Safai Karamcharis (NCSK)",
+    "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "designation": "PS to Member",
+    "phoneOffice": "011-24648923",
+    "address": "Room No.-16, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
+  },
+  {
+    "slug": "vacantps-to-member5",
+    "title": "Vacant(PS to Member5)",
+    "sourceUrl": "https://www.dosje.gov.in/official/vacantps-to-member5/",
+    "date": "2026-09-23",
+    "organisation": "NCSK",
+    "organisationName": "National Commission for Safai Karamcharis (NCSK)",
+    "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "designation": "PS to Member",
+    "phoneOffice": "011-24648922",
+    "address": "Room No.-16, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
+  },
+  {
+    "slug": "vacantps-to-vc",
+    "title": "Vacant(PS to VC)",
+    "sourceUrl": "https://www.dosje.gov.in/official/vacantps-to-vc/",
+    "date": "2026-09-23",
+    "organisation": "NCSK",
+    "organisationName": "National Commission for Safai Karamcharis (NCSK)",
+    "organisationUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "designation": "PS to VC",
+    "phoneOffice": "011-24601707",
+    "address": "Room No.-16, \"B\" Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi - 110003"
   },
   {
     "slug": "vicky-vikash-sinha",

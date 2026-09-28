@@ -2239,11 +2239,11 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
     ],
   },
 
-  "babu-jagjivan-ram-national-foundation-jrf": {
+  "babu-jagjivan-ram-national-foundation-bjrnf": {
     logo: "/website/images/org-logos/jrf.png",
     lead: "Babu Jagjivan Ram National Foundation (BJRNF) was established to propagate the ideals and philosophy of Babu Jagjivan Ram, working towards social justice, equality, eradication of untouchability, and the empowerment of disadvantaged sections of society.",
     aboutHeading: "About BJRNF",
-    aboutAction: { label: "Know More →", href: "/website/organisation/babu-jagjivan-ram-national-foundation-jrf/about-bjrnf" },
+    aboutAction: { label: "Know More →", href: "/website/organisation/babu-jagjivan-ram-national-foundation-bjrnf/about-bjrnf" },
     facts: [
       { icon: "history_edu", value: "Social Justice Legacy", label: "Core mission" },
       { icon: "location_on", value: "New Delhi", label: "Headquarters" },
@@ -2255,7 +2255,7 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
         label: "About Foundation",
         items: [
           { label: "About BJRNF", href: "#about-the-scheme" },
-          { label: "Overview Details", href: "/website/organisation/babu-jagjivan-ram-national-foundation-jrf/about-bjrnf" },
+          { label: "Overview Details", href: "/website/organisation/babu-jagjivan-ram-national-foundation-bjrnf/about-bjrnf" },
         ],
       },
     ],
