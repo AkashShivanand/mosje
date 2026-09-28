@@ -111,7 +111,7 @@ visible.
 | Header not pinned on a phone | **Fixed** | The search and menu row stays pinned; the offset is measured. |
 | Footer and PM Quote off the page edge | **Fixed** | Both on `--db-gutter` (120 at 1920). |
 | Cookie bar hides focus (2.4.11) | **Fixed** | The page reserves the bar's height as `scroll-padding-bottom` while the bar is shown. |
-| PM portrait not transparent | **Fixed** | The shared transparent cut-out. |
+| PM portrait not transparent | **Kept, by decision** | The original photograph stays (instruction of 28 Sep 2026); the only transparent cut-out on file is a different photograph. |
 | "Explore our Social Media Platforms" | **Fixed** | "In Social Media" (Figure 61), on the DBIM design only. |
 | All-caps feed titles, "lnviting / lnterest" | **Fixed on display** | `dbimFeedTitle`: Title Case for titles ≥80% capitals, acronyms kept, the ln→In typo repaired. The Department's data is unchanged. |
 | Logo files over 100 KB | **Open** | Rounding coordinates gets 196→144 KB and 761→511 KB. Getting under 100 KB needs an SVG optimiser or re-export from source artwork. |
