@@ -38,7 +38,11 @@ export function DbimFooter() {
               </li>
             ))}
           </ul>
-          <p className="db-footer__owner">This Website belong to Department of Social Justice and Empowerment</p>
+          {/* DBIM 3.0 §5.6 ii, a Central Government Department's lineage, word for word. */}
+          <p className="db-footer__owner">
+            The website belongs to Department of Social Justice and Empowerment, Ministry of Social Justice and
+            Empowerment, Government of India
+          </p>
         </div>
 
         <div className="db-footer__aside">

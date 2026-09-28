@@ -175,14 +175,11 @@
     text-decoration: none;
   }
 
+  /* A scheme's name is shown whole, as the handoff draws it: on a phone the longest
+     runs to six lines, and cutting it at three left "…and the…" as the link's text. */
   [data-design="dbim"] .db-hm-list .db-hm-list__title {
-    display: -webkit-box;
-    overflow: hidden;
     font-size: 0.875rem; /* 14px */
     line-height: normal;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    -webkit-box-orient: vertical;
   }
 
   [data-design="dbim"] .db-hm-list .db-hm-list__link:hover .db-hm-list__title {
@@ -348,9 +345,12 @@
     margin: 10px 0; /* reference: my-3 */
   }
 
+  /* Each dot is an 8px disc (DBIM 3.0 Figure 59) drawn inside a 24px button, the
+     smallest target WCAG 2.2 2.5.8 allows when targets sit this close — so the discs
+     land 16px apart. The reference's 12px squares 15px apart failed it too. */
   [data-design="dbim"] .db-hm-persona .db-hm-persona__dots {
     display: flex;
-    gap: 15px; /* reference: gap-4 */
+    gap: 0;
   }
 
   [data-design="dbim"] .db-hm-persona .db-hm-persona__arrow {
@@ -367,20 +367,30 @@
 
   /* Round dots, the current one in the key colour and the rest grey (DBIM 3.0 Figure 59). */
   [data-design="dbim"] .db-hm-persona .db-hm-persona__dot {
-    --sa-btn-fill: var(--sa-color-neutralScale-300);
-    width: var(--sa-padding-8);
+    --sa-btn-fill: transparent;
+    --db-dot: var(--sa-color-neutralScale-300);
+    display: grid;
+    place-items: center;
+    width: var(--sa-padding-24);
     min-width: 0;
-    height: var(--sa-padding-8);
+    height: var(--sa-padding-24);
     min-height: 0;
     padding: 0;
     border: 0;
     border-radius: var(--sa-shape-full);
-    background: var(--sa-color-neutralScale-300);
+    background: transparent;
+  }
+
+  [data-design="dbim"] .db-hm-persona .db-hm-persona__dot::before {
+    width: var(--sa-padding-8);
+    height: var(--sa-padding-8);
+    border-radius: var(--sa-shape-full);
+    background: var(--db-dot);
+    content: "";
   }
 
   [data-design="dbim"] .db-hm-persona .db-hm-persona__dot[aria-current="true"] {
-    --sa-btn-fill: var(--sa-color-primaryScale-800);
-    background: var(--sa-color-primaryScale-800);
+    --db-dot: var(--sa-color-primaryScale-800);
   }
 
   [data-design="dbim"] .db-hm-persona .db-hm-persona__arrow:focus-visible,
@@ -396,8 +406,9 @@
 
   [data-design="dbim"] .db-hm-links .db-hm-links__item {
     padding: 18px 0; /* reference */
-    /* reference: Bootstrap's #DEE2E6 → the nearest neutral border token */
-    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    /* The handoff's border/grey (#C6C6C6), the rule every other grey line on the page
+       uses; the reference's Bootstrap #DEE2E6 was a fourth grey. */
+    border-bottom: var(--sa-stroke-1) solid var(--sa-color-neutralScale-200);
   }
 
   [data-design="dbim"] .db-hm-links .db-hm-links__link {
@@ -478,8 +489,9 @@
       min-width: 0;
       height: auto;
       min-height: 46px; /* reference */
-      padding: var(--sa-padding-8);
+      padding: var(--sa-padding-12) var(--sa-padding-8); /* handoff, Mobile 390 */
       font-size: 0.875rem; /* 14px */
+      line-height: 21px; /* handoff: 14 / 21 */
       white-space: normal;
     }
   }
@@ -494,8 +506,14 @@
     }
 
     /* .paddingRemove: on a phone a row's text starts at the list's own 16px. */
+    /* On a phone the rows close up to 7px above and below the title, as the reference's
+       390 capture and the handoff draw them (53px for a two-line name, not 71). */
     [data-design="dbim"] .db-hm-list .db-hm-list__link {
-      padding-inline: 0 7.5px; /* reference: the chevron column keeps its padding */
+      padding: 7px 7.5px 7px 0; /* handoff; reference: the chevron column keeps its padding */
+    }
+
+    [data-design="dbim"] .db-hm-list .db-hm-list__row:last-child .db-hm-list__link {
+      padding-bottom: 7px; /* handoff */
     }
 
     [data-design="dbim"] .db-hm-offer .db-hm-tabs {
