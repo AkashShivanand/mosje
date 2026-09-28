@@ -22,10 +22,10 @@ export function DbimPmQuote() {
           <Image src={pm.src} alt={pm.alt} width={260} height={260} sizes="260px" className="db-pmq__portrait" />
         </div>
         <figure className="db-pmq__body">
-          {/* Decorative: the quotation is marked up as a blockquote. Material's closing
-              quote turned half a circle is the reference's heavy opening “. */}
+          {/* Decorative: the quotation is marked up as a blockquote. The opening mark
+              only, set as text, as DBIM 3.0 Figure 54 draws it. */}
           <div className="db-pmq__mark" aria-hidden="true">
-            <Icon name="format_quote" fill size={32} />
+            “
           </div>
           <blockquote className="db-pmq__quote" cite={Q.href}>
             <p>{Q.quote}</p>

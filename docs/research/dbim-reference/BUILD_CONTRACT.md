@@ -13,6 +13,27 @@ the estate's own data modules. Where the reference shows something we have no da
 the reference's own content (fetched 25 Sep 2026, in `lib/website-dbim/assets.ts`) is
 used, never lorem, never invented.
 
+## Where the manual overrides the reference (decided 28 Sep 2026)
+
+Where a DBIM 3.0 manual figure and the reference build disagree, **the manual wins**
+(instruction of 28 Sep 2026). Each departure is marked in the CSS/TSX beside the rule
+with the figure it follows. The Figma handoff file (`xdv8nEd7PhnRhahASd9UPY`, pages
+Templates — Desktop 1920 / Mobile 390) carries the same decisions, with the manual's
+figure placed beside every template.
+
+| Where | Reference | Now | Figure |
+|---|---|---|---|
+| Home — Key Offerings tabs | Schemes and Services · Vacancies | adds **Tenders** (four newest, `dbimKeyTenders`) | 56 |
+| Home — every band's content edge | 120 / 135 / 140px (Bootstrap half-gutters) | one edge, `--db-gutter`, 32px column gaps | 50 |
+| Home — Recent Documents cards | inset 20px from the heading | flush with the heading | 58 |
+| Home — minister portraits | centred in their column | aligned to the content edge | 55 |
+| Home — persona dots | 12px, current one square | 8px round, current in the key colour, others grey | 59 |
+| Home — PM quote mark | Material `format_quote` turned 180° | the text “, opening mark only | 54 |
+| Home — PM quote on a phone | 260px frame round a 170px portrait | frame closes round the portrait | — (layout defect) |
+| Home — campaign row | poster at its own taller aspect | one row, one height | 62 |
+| Home — Key Offerings tabs on a phone | one line, clipped | label wraps, equal heights | 56 |
+| Detail pages — side statement | body text | 20px medium, key colour | 66, 71 |
+
 ## Where things are
 
 | What | Path |

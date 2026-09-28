@@ -5,7 +5,7 @@ import { DbimSectionHeading } from "@/components/website-dbim/ui/SectionHeading"
 import { DbimViewMore } from "@/components/website-dbim/ui/ViewMore";
 import { DbimEmptyState } from "@/components/website-dbim/ui/EmptyState";
 import {
-  dbimHomeNews, dbimKeySchemes, dbimKeyVacancies, type DbimHomeLink,
+  dbimHomeNews, dbimKeySchemes, dbimKeyTenders, dbimKeyVacancies, type DbimHomeLink,
 } from "@/lib/website-dbim/home-mid";
 import { OfferingsTabs } from "./OfferingsTabs";
 import "./home-mid.css";
@@ -14,13 +14,15 @@ import "./home-mid.css";
 const CHEV = { fontSize: "var(--db-hm-chev)" } as const;
 
 /**
- * Home — Key Offerings (tabs: Schemes and Services | Vacancies) beside What's New,
+ * Home — Key Offerings (tabs: Schemes and Services | Vacancies | Tenders, per DBIM 3.0
+ * Figure 56; the reference build shows the first two) beside What's New,
  * on the reference's grey band (`.whats-new-container`). Spec:
  * docs/research/dbim-reference/components/home-mid.spec.md §1.
  */
 export function DbimOfferingsAndNews() {
   const schemes = dbimKeySchemes();
   const vacancies = dbimKeyVacancies();
+  const tenders = dbimKeyTenders();
   const news = dbimHomeNews();
 
   return (
@@ -41,6 +43,11 @@ export function DbimOfferingsAndNews() {
                 id: "vacancies",
                 label: "Vacancies",
                 panel: <OfferingPanel rows={vacancies} path="/offerings/vacancies" more="View more vacancies" />,
+              },
+              {
+                id: "tenders",
+                label: "Tenders",
+                panel: <OfferingPanel rows={tenders} path="/offerings/tenders" more="View more tenders" />,
               },
             ]}
           />
