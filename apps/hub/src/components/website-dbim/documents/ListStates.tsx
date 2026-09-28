@@ -21,22 +21,31 @@ export function NoMatch({ listing, noun }: { listing: { query: string; clear: ()
   );
 }
 
-/** The pager, and focus back to the top of the list when the page turns. */
-export function Pager({ listing, target }: {
+/**
+ * The pager, and focus back to the top of the list when the page turns. With `end`
+ * (the tab's View Archive), the two share one row — pager centred, `end` at the
+ * right — as DBIM 3.0 Figure 75 draws it.
+ */
+export function Pager({ listing, target, end }: {
   listing: { page: number; pageCount: number; setPage: (n: number) => void };
   target: React.RefObject<HTMLElement | null>;
+  end?: React.ReactNode;
 }) {
-  if (listing.pageCount <= 1) return null;
+  const pager = listing.pageCount > 1 ? (
+    <DbimPagination
+      page={listing.page}
+      pageCount={listing.pageCount}
+      onChange={(p) => {
+        listing.setPage(p);
+        target.current?.scrollIntoView({ block: "start", behavior: "smooth" });
+      }}
+    />
+  ) : null;
+  if (!end) return pager ? <div className="db-doc__pager">{pager}</div> : null;
   return (
-    <div className="db-doc__pager">
-      <DbimPagination
-        page={listing.page}
-        pageCount={listing.pageCount}
-        onChange={(p) => {
-          listing.setPage(p);
-          target.current?.scrollIntoView({ block: "start", behavior: "smooth" });
-        }}
-      />
+    <div className="db-doc__foot">
+      <div className="db-doc__foot-pager">{pager}</div>
+      <div className="db-doc__foot-end">{end}</div>
     </div>
   );
 }

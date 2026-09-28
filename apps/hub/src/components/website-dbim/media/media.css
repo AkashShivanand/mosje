@@ -131,6 +131,13 @@
     text-transform: uppercase;
   }
 
+  /* An album's count, a video's running time: directly under the title
+     (DBIM 3.0 Figures 77, 78). */
+  [data-design="dbim"] .db-media-foot--under {
+    margin: 0;
+    padding-top: var(--sa-padding-4);
+  }
+
   /* ── One album: each photo is a button opening the lightbox ─────────────── */
   [data-design="dbim"] .db-photo.ds-btn {
     display: block;

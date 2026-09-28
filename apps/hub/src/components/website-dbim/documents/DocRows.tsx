@@ -18,6 +18,14 @@ export function formatDocDate(date: string | undefined, sep = "/"): string {
   return m ? [m[3], m[2], m[1]].join(sep) : "";
 }
 
+/**
+ * The date as its column names it: a "Published Year" column prints the year alone, as
+ * DBIM 3.0 Figure 75 does; every other date column prints the full date.
+ */
+function docDateFor(label: string, date: string | undefined, sep = "/"): string {
+  return label === "Published Year" ? (/^(\d{4})/.exec(date ?? "")?.[1] ?? "") : formatDocDate(date, sep);
+}
+
 /** The reference's PDF glyph (its own path, filled with the text colour). */
 export function PdfGlyph() {
   return (
@@ -71,7 +79,7 @@ export function FileRow({ row, dateSep = "/", dateLabel }: { row: DbimDocRow; da
       </div>
       <div className="db-doc__cell" role="cell">
         <span className="db-doc__label">{dateLabel}:</span>
-        <span className="db-doc__date">{formatDocDate(row.date, dateSep)}</span>
+        <span className="db-doc__date">{docDateFor(dateLabel, row.date, dateSep)}</span>
       </div>
       <div className="db-doc__cell" role="cell">
         <span className="db-doc__label">Type/Size:</span>
@@ -135,7 +143,7 @@ export function FolderRow({ series, layout, dateLabel }: { series: DbimSeries; l
         <FolderTitle series={series} />
         <div className="db-doc__cell" role="cell">
           <span className="db-doc__label">{dateLabel}:</span>
-          <span className="db-doc__date">{formatDocDate(series.date)}</span>
+          <span className="db-doc__date">{docDateFor(dateLabel, series.date)}</span>
         </div>
         <div className="db-doc__cell" role="cell">
           <span className="db-doc__label">Type/Size:</span>
@@ -152,7 +160,7 @@ export function FolderRow({ series, layout, dateLabel }: { series: DbimSeries; l
       <FolderTitle series={series} />
       <div className="db-doc__cell" role="cell">
         <span className="db-doc__label">{dateLabel}:</span>
-        <span className="db-doc__date">{formatDocDate(series.date)}</span>
+        <span className="db-doc__date">{docDateFor(dateLabel, series.date)}</span>
       </div>
       <div className="db-doc__cell" role="cell">
         <span className="db-doc__label">Type/Size:</span>
