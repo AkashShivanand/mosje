@@ -556,6 +556,7 @@ export type {
 // the bar (accessibility-entry-point.md): open the panel, and claim the entry so the
 // widget's floating button hides. Behaviour is AccessibilityControls' own, unchanged.
 export { openUx4gWidget, useAccessibilityEntryClaim } from "./components/utilities/accessibility-controls";
+export type { AccessibilityEntryClaimOptions } from "./components/utilities/accessibility-controls";
 
 // Navbar — SiteHeader (the SAMAVESH Navbar: Website + Portal variants, 3-tier).
 export { SAMAVESH_COBRAND } from "./components/navigation/header/samavesh-cobrand";

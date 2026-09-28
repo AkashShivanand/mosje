@@ -101,6 +101,25 @@ by `docs/specs/samavesh-accessibility-consolidation.md`, and both apply at once.
    painted permanently will take the corner from whatever else the page needs there.
    A masthead with neither `service` nor a condensed bar to pin keeps 4a.
 
+4c. **On the DBIM website design, the header icon is the ONLY door, at every width and
+   scroll position. DECIDED 2026-09-28 by the product owner.** The design's header is
+   not pinned and has no gesture to bring it back, so rule 4a returned the floating
+   button on a phone once the header scrolled away — at 285,718 on a 375px screen, the
+   chat launcher's corner, three stacked controls with back-to-top. The owner's call:
+   the panel opens from the top icon only, as on the website's other designs, and the
+   bottom-right corner belongs to the chat launcher. `DbimHeaderTools` claims the entry
+   with `useAccessibilityEntryClaim(true, ref, { soleDoor: true })`, which keeps a third
+   refcounted flag, `data-sa-abar-a11y-sole`, and `accessibility-bar.css` hides the
+   floating button at every width while it is set.
+
+   Like 4b, this supersedes 4a's "never neither" for that design, deliberately, and it
+   is narrower than 4b: the door is at the top of every page, reached by scrolling up,
+   not one flick away. The trigger is still only HIDDEN (rule 2) — the header icon opens
+   the panel by clicking it. Verified 2026-09-28 at 375, 768 and 1440 on the DBIM home
+   page, at the top, middle and bottom: the floating button hidden in all nine, and the
+   header icon opening the panel (`right: 0px`) at each width. **Use `soleDoor` only on
+   the owner's instruction for that design**; every other header keeps 4a or 4b.
+
 5. **Government chrome uses the shared `AccessibilityBar`.** A hand-rolled top bar never
    sets the flag, so it produces two doors while looking correct in review. If a portal
    needs a government utility bar, it imports the DS component — as scw, tg, nhapoa, nmba
