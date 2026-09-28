@@ -108,10 +108,8 @@ function VideoCard({ video }: { video: DbimVideoCard }) {
       <p className="db-media-title" id={titleId}>
         {video.title}
       </p>
-      <p className="db-media-foot">
-        <span>{video.when}</span>
-        {duration && <span>{duration}</span>}
-      </p>
+      {/* The running time alone, under the title (DBIM 3.0 Figure 78). */}
+      {duration && <p className="db-media-foot db-media-foot--under">{duration}</p>}
     </li>
   );
 }

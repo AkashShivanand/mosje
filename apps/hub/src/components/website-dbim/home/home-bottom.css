@@ -377,8 +377,19 @@
       grid-column: span 3;
     }
 
+    /* One row, one height (DBIM 3.0 Figure 62): the poster takes the row the banner
+       sets instead of its own taller aspect. */
     [data-design="dbim"] .db-hb-campaigns__audit {
+      position: relative;
       grid-column: auto;
+      align-self: stretch;
+    }
+
+    [data-design="dbim"] .db-hb-campaigns__audit img {
+      position: absolute;
+      inset: 0;
+      height: 100%;
+      object-fit: cover;
     }
   }
 
