@@ -74,3 +74,74 @@
 
 }
 /* ds-exempt-end */
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   ICONS — DBIM 3.0 §3. Audit: docs/audit/dbim-icon-library-audit-2026-09-28.md
+
+   Functional icons. DBIM's Functional Icons are Google's Material Symbols exported
+   as `<name>_FILL0_wght400_GRAD0_opsz24` — Outlined, weight 400, line, 24px optical
+   size. This loads that one static instance (316 KB, every glyph) and points the
+   design system's icon family token at it, so every `Icon` in this design — ours
+   and the design system's own — draws DBIM's glyph, at one weight, in line style
+   (§3.3). The instance has no axes, so an `Icon`'s `weight`/`fill` props cannot
+   produce a second style here. The rest of the estate keeps Material Symbols
+   Rounded; nothing outside [data-design="dbim"] reads this.
+
+   Contextual icons. `DbimIcon` paints a DBIM Visual Library SVG as a mask over
+   currentColor (ui/icons.tsx).
+   ───────────────────────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: "DBIM Material Symbols Outlined";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("https://fonts.gstatic.com/s/materialsymbolsoutlined/v374/kJF1BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzaxHMPdY43zj-jCxv3fzvRNU22ZXGJpEpjC_1v-p_4MrImHCIJIZrDCvHOejbd5zrDAt.woff2")
+    format("woff2");
+}
+
+@layer components {
+  /* body too, so the widgets that float over this design from outside its subtree
+     (the chat launcher) draw the same glyphs — and the page never downloads the
+     5.3 MB Rounded font for one close button. body, not :root: tokens.css declares
+     the token on :root outside any layer, which this layered rule cannot outrank.
+     This stylesheet only loads on the DBIM design's routes. */
+  body:has([data-design="dbim"]),
+  [data-design="dbim"] {
+    --sa-font-icon: "DBIM Material Symbols Outlined", sans-serif;
+  }
+
+  /* The default size has no specificity, so a component's own sizing class
+     (.db-heading__icon 48, .db-tools__glyph 32 …) always wins. */
+  :where([data-design="dbim"] .db-icon) {
+    width: 24px;
+    height: 24px;
+  }
+
+  [data-design="dbim"] .db-icon {
+    display: inline-block;
+    flex: none;
+    vertical-align: middle;
+    background-color: currentColor;
+    mask: var(--db-icon-src) center / contain no-repeat;
+  }
+
+  /* Forced colours repaint backgrounds, which would turn a mask into a solid tile. */
+  @media (forced-colors: active) {
+    [data-design="dbim"] .db-icon {
+      forced-color-adjust: none;
+      background-color: CanvasText;
+    }
+  }
+
+  /* §3.7 iii — an icon is the key colour or inclusive white. These glyphs inherited
+     the body text colour (#150202) or a lighter rung of the ramp. */
+  [data-design="dbim"] .db-hm-links__link .material-symbols-rounded,
+  [data-design="dbim"] .db-news__group-head .material-symbols-rounded,
+  [data-design="dbim"] .db-doc__folder-icon,
+  [data-design="dbim"] .db-min-contact .material-symbols-rounded,
+  [data-design="dbim"] .db-u-sitemap__home .db-icon,
+  [data-design="dbim"] .ds-chart-export__trigger .material-symbols-rounded,
+  [data-design="dbim"] .ds-select__chevron {
+    color: var(--sa-color-primaryScale-800);
+  }
+}

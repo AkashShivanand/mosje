@@ -69,14 +69,12 @@ export const DBIM_PEOPLE = {
   ],
 } as const;
 
-/** A footer social account: the reference's white PNG, or an inline outline glyph where it has none. */
+/** A footer social account, drawn with the DBIM Visual Library's own mark for the platform. */
 export interface DbimSocialLink {
   label: string;
   href: string;
-  /** The reference's own 24×24 white icon. */
-  src?: string;
-  /** An outline glyph drawn in `currentColor` (the footer's white), for accounts the reference does not carry. */
-  icon?: "whatsapp";
+  /** A `DbimIcon` name — the library's line mark, painted in the footer's white. */
+  icon: "facebook" | "x" | "youtube" | "instagram" | "whatsapp";
 }
 
 /** Header and footer marks. */
@@ -101,12 +99,12 @@ export const DBIM_BRAND = {
   indiaGovIn: { src: `${D}/brand/india-gov-in.svg`, alt: "National Portal of India", href: "https://www.india.gov.in/" },
   myGov: { src: `${D}/brand/mygov-meri-sarkar.png`, alt: "MyGov — Meri Sarkar", href: "https://www.mygov.in/" },
   social: [
-    { label: "Facebook", src: `${D}/icons/facebook.png`, href: "https://www.facebook.com/goimsje" },
-    { label: "X", src: `${D}/icons/x.png`, href: "https://x.com/msjegoi" },
-    { label: "YouTube", src: `${D}/icons/youtube.png`, href: "https://www.youtube.com/@ministryofsocialjustice511" },
-    { label: "Instagram", src: `${D}/icons/instagram.png`, href: "https://www.instagram.com/msjegoi/" },
+    { label: "Facebook", icon: "facebook", href: "https://www.facebook.com/goimsje" },
+    { label: "X", icon: "x", href: "https://x.com/msjegoi" },
+    { label: "YouTube", icon: "youtube", href: "https://www.youtube.com/@ministryofsocialjustice511" },
+    { label: "Instagram", icon: "instagram", href: "https://www.instagram.com/msjegoi/" },
     // Allowed by the DBIM review team on 25 Sep 2026; the channel is the Department's own
-    // (components/website-next/chrome/Footer.tsx). Outline, one colour, like the four above.
+    // (components/website-next/chrome/Footer.tsx).
     { label: "WhatsApp Channel", icon: "whatsapp", href: "https://whatsapp.com/channel/0029Vb7GfwH6mYPMHOvTd51W" },
   ] satisfies readonly DbimSocialLink[] as readonly DbimSocialLink[],
 } as const;
@@ -125,13 +123,11 @@ export const DBIM_CAMPAIGNS = {
 /** The three persona illustrations of "Explore User Personas", in carousel order. */
 export const DBIM_PERSONA_ART = [`${D}/personas/persona-1.png`, `${D}/personas/persona-2.png`, `${D}/personas/persona-3.png`] as const;
 
-/** The four tile icons of a persona page. */
-export const DBIM_PERSONA_ICONS = {
-  schemes: `${D}/personas/icon-schemes.png`,
-  tenders: `${D}/personas/icon-tenders.png`,
-  publications: `${D}/personas/icon-publications.png`,
-  vacancies: `${D}/personas/icon-vacancies.png`,
-} as const;
+/**
+ * The four tile icons of a persona page — DBIM Visual Library icons (`DbimIcon` names),
+ * the same four drawings the reference shipped as purple PNGs, now in the key colour.
+ */
+export const DBIM_PERSONA_ICONS = ["schemes", "tenders", "publications", "job-opportunity"] as const;
 
 /** Scheme card photographs from the reference, keyed by a word that appears in the scheme's name. */
 export const DBIM_SCHEME_ART: { match: RegExp; src: string }[] = [

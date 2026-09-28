@@ -40,7 +40,7 @@ persona_For_20IT_20Professional_IDM5MTMtQWa`
 |---|---|---|
 | `DbimPage` | `@/components/website-dbim/layout/DbimPage` | `{ title, crumbs, path, hero?, tabs?, activeTab?, children }` — the inner-page banner (photo + gradient, breadcrumb, h1), the dark rounded sub-tab bar overlapping its foot, and the page container. **Every inner page is `<DbimPage>`.** |
 | `DbimSectionHeading` | `@/components/website-dbim/ui/SectionHeading` | `{ icon, title, as?, tone?, id? }` — home-section heading: DBIM icon + blue title |
-| `DbimIcon`, `DbimEmblem` | `@/components/website-dbim/ui/icons` | `name`: about · offerings · whats-new · documents · personas · important-links · social · team · division · organisation · announcements · skip-to-content · language · accessibility |
+| `DbimIcon`, `DbimEmblem` | `@/components/website-dbim/ui/icons` | `name`: a DBIM Visual Library title slug — department · offerings · whats-new · recent-documents · user-personas · important-links · social-media-marketing · announcement · skip-to-content · language · accessibility · groups · organisation · performance · schemes · tenders · publications · job-opportunity · pdf · home · facebook · x · youtube · instagram · whatsapp (`DBIM_ICON_LIBRARY`; files in `public/website/dbim/icons/library/`, audit `docs/audit/dbim-icon-library-audit-2026-09-28.md`) |
 | `DbimViewMore` | `@/components/website-dbim/ui/ViewMore` | `{ path, label?, ariaLabel?, size? }` — outlined "VIEW MORE ›" link |
 | `DbimFilterBar` | `@/components/website-dbim/ui/FilterBar` | `{ search, sort?, category?, perPage? }` — the reference's search / Sort by / Category / "10 per page" row |
 | `DbimPagination` | `@/components/website-dbim/ui/Pagination` | `{ page, pageCount, onChange }` |
