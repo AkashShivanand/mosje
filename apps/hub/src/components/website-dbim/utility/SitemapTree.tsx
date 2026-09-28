@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Icon } from "@mosje/design-system";
 import { DBIM_FOOTER_LINKS, DBIM_MENU, DBIM_POLICY_TABS, dbimHref, type DbimLink } from "@/lib/website-dbim/nav";
 import { DBIM_PERSONAS, DBIM_UTILITY_LINKS } from "@/lib/website-dbim/utility";
+import { DbimIcon } from "../ui/icons";
 
 interface SitemapSection {
   title: string;
@@ -32,7 +33,7 @@ export function DbimSitemapTree() {
     <nav className="db-u-sitemap" aria-label="Sitemap">
       <p className="db-u-sitemap__home">
         <Link href={dbimHref("/")}>
-          <Icon name="home" size={24} weight={400} aria-hidden />
+          <DbimIcon name="home" size={24} />
           Home
         </Link>
       </p>

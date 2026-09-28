@@ -154,7 +154,7 @@
     align-items: center;
     justify-content: center;
     width: 41px;
-    color: var(--sa-color-primaryScale-400);
+    color: var(--sa-color-primaryScale-800); /* DBIM 3.0 §3.7 iii: icons in the key colour */
     border: 1px solid var(--sa-color-primaryScale-400);
     border-radius: var(--sa-shape-4) 0 0 var(--sa-shape-4);
   }
@@ -196,7 +196,7 @@
   }
 
   [data-design="dbim"] .db-field .ds-select__chevron {
-    color: var(--sa-color-text-default);
+    color: var(--sa-color-primaryScale-800); /* DBIM 3.0 §3.7 iii — was the body text colour */
   }
 
   [data-design="dbim"] .db-filter .db-filter__toggle.ds-btn {

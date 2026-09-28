@@ -216,7 +216,7 @@
   }
 
   [data-design="dbim"] .db-min-docrow__title .material-symbols-rounded,
-  [data-design="dbim"] .db-min-docrow__size .material-symbols-rounded {
+  [data-design="dbim"] .db-min-docrow__size .db-icon {
     color: var(--sa-color-primaryScale-800);
   }
 

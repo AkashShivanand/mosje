@@ -261,7 +261,7 @@
 
   [data-design="dbim"] .db-u-sitemap__chev {
     flex: none;
-    color: var(--sa-color-primaryScale-600);
+    color: var(--sa-color-primaryScale-800); /* DBIM 3.0 §3.7 iii — was shade 2 */
   }
 
   /* ── Help ────────────────────────────────────────────────────────────────── */
