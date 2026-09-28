@@ -17,9 +17,8 @@ import "./home-top.css";
  * The words and the Ministers are the live site's, shared with every design
  * (lib/website-shared/home.ts). The reference's "Sector overview at a glance" sub-line
  * and its one-sentence introduction are gone: the live site carries neither. The
- * photographs are the live site's too (the Department's instruction, 28 Sep 2026),
- * although at 96–160px they are drawn up to twice their size in this 200px frame;
- * larger originals have to come from the Department.
+ * photographs are shared too — the live site's photographs, at the resolution of the
+ * DBIM handoff file's copies (the Department's instruction, 28 Sep 2026).
  */
 export function DbimAboutUs() {
   return (
@@ -46,7 +45,7 @@ export function DbimAboutUs() {
       <ul className="db-about__ministers" aria-label="Ministers">
         {ABOUT_US.ministers.map((m) => (
           <li key={m.name} className="db-about__minister">
-            <Image src={m.photo} alt={m.name} width={m.size} height={m.size} className="db-about__portrait" />
+            <Image src={m.photo} alt={m.name} width={m.size} height={m.size} sizes="200px" className="db-about__portrait" />
             <p className="db-about__name">{m.name}</p>
             <p className="db-about__role">{m.designation}</p>
           </li>

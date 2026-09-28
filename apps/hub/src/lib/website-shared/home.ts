@@ -138,11 +138,15 @@ export interface HomeMinister {
   name: string;
   designation: string;
   /**
-   * The photograph the live home page shows, byte-identical to dosje.gov.in's
-   * file — the Department's original upload; it publishes nothing larger.
+   * The Minister's photograph — the same photograph the live home page shows,
+   * taken instead from the DBIM handoff file (Figma `xdv8nEd7PhnRhahASd9UPY`,
+   * node 189:20930) on the Department's instruction of 28 Sep 2026: the live
+   * uploads are 96–160px, the handoff's are clean cut-outs of 400–575px.
+   * Exported as the handoff crops them, square, at 320px — the most all three
+   * sources give without enlarging any of them.
    */
   photo: string;
-  /** The photograph's own pixel size. Every design draws it larger than this. */
+  /** The photograph's pixel size, square. */
   size: number;
   /** The Union Minister leads; the Ministers of State follow. */
   primary?: boolean;
@@ -171,21 +175,21 @@ export const ABOUT_US = {
     {
       name: "Dr. Virendra Kumar",
       designation: "Union Minister of Social Justice and Empowerment",
-      photo: "/website/images/Dr.-Virendra-Kumar.png",
-      size: 160,
+      photo: "/website/images/ministers/virendra-kumar.png",
+      size: 320,
       primary: true,
     },
     {
       name: "Shri Ramdas Athawale",
       designation: "Minister of State of Social Justice and Empowerment",
-      photo: "/website/images/Shri-Ramdas-Athawale.png",
-      size: 96,
+      photo: "/website/images/ministers/ramdas-athawale.png",
+      size: 320,
     },
     {
       name: "Shri B. L. Verma",
       designation: "Minister of State of Social Justice and Empowerment",
-      photo: "/website/images/sri-l-b-verma.png",
-      size: 96,
+      photo: "/website/images/ministers/b-l-verma.png",
+      size: 320,
     },
   ] satisfies HomeMinister[],
   stats: [

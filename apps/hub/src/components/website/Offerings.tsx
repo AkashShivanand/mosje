@@ -1,328 +1,66 @@
-"use client";
+import {
+  OFFERINGS_SECTION,
+  OFFERING_GROUPS,
+  OFFERING_TENDERS,
+  OFFERING_VACANCIES,
+  type OfferingNotice,
+  type OfferingScheme,
+} from "@/lib/website-shared/offerings";
+import { localiseDocumentUrl } from "@/lib/website/sample-documents";
+import { LatestUpdates } from "./LatestUpdates";
+import { OfferingsExplorer, type ExplorerGroup, type ExplorerNotice } from "./OfferingsExplorer";
 
-import { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { Button, Card, Icon, Tabs } from "@mosje/design-system";
-import { LatestUpdates } from "@/components/website/LatestUpdates";
+/**
+ * Our Offerings — the live home page's section, in this design's layout.
+ *
+ * EVERY WORD AND LINK IS SHARED with the other designs
+ * (lib/website-shared/offerings.ts): the eleven groups with the schemes the
+ * live site picks for each, and its five vacancies and four tenders. Until
+ * 28 Sep 2026 this file typed in six schemes of its own, each illustrated with
+ * a reused banner photograph, and vacancy and tender cards whose pictures had
+ * nothing to do with them; the live cards carry no photographs, and nor do these.
+ *
+ * The rail is What's New, from the estate's one feed (`LatestUpdates`).
+ *
+ * This half runs on the server: it resolves every link, so only the rows
+ * themselves cross to the browser, and the rail — which reads the content
+ * library — is handed over already rendered.
+ */
+const schemeHref = (s: OfferingScheme) =>
+  s.slug ? `/website/schemes-services/${s.slug}` : localiseDocumentUrl(s.file ?? "", s.title);
 
-type TabKey = "schemes" | "vacancies" | "tenders";
-
-interface OfferingItem {
-  title: string;
-  href: string;
-  image?: string;
-  tag?: string;
-  /**
-   * One-sentence summary shown under the title [WEB-O-02]. Written from the
-   * scheme's own text in `content/website/schemes.json`, not composed here.
-   * Optional: vacancies and tenders are notices and carry no summary.
-   */
-  description?: string;
-}
-
-interface OfferingTab {
-  key: TabKey;
-  label: string;
-  /** Material Symbol shown in the tab, per the design's tab group [WEB-O-03]. */
-  icon: string;
-  cardLink: string;
-  viewAllLabel: string;
-  viewAllHref: string;
-  items: OfferingItem[];
-}
-
-const tabs: OfferingTab[] = [
-  {
-    key: "schemes",
-    icon: "menu_book",
-    label: "Schemes",
-    cardLink: "Know More",
-    viewAllLabel: "View all Schemes",
-    viewAllHref: "/website/schemes-services",
-    items: [
-      {
-        title: "Pradhan Mantri Anusuchit Jaati Abhyuday Yojna (PM-AJAY)",
-        description:
-          "Reduces poverty in Scheduled Caste communities through skill development, income-generating schemes and infrastructure in SC-majority villages.",
-        href: "/website/schemes-services",
-        image: "/website/images/Banner-7.png",
-        tag: "Scholarship & Livelihood",
-      },
-      {
-        title:
-          "PM YOUNG ACHIEVERS SCHOLARSHIP AWARD SCHEME FOR VIBRANT INDIA (PM-YASASVI)",
-        description:
-          "An umbrella scheme for OBC, EBC and DNT students, bringing the existing scholarship and hostel schemes together into five sub-schemes.",
-        href: "/website/schemes-services",
-        image: "/website/images/Banner-8.png",
-        tag: "Education",
-      },
-      {
-        title:
-          "Centrally Sponsored Scheme for implementation of the Protection of Civil Rights Act",
-        description:
-          "Supports States and UTs in enforcing the Protection of Civil Rights Act 1955 and the SC/ST (Prevention of Atrocities) Act 1989.",
-        href: "/website/schemes-services",
-        image: "/website/images/Banner-9.png",
-        tag: "Social Justice",
-      },
-      {
-        title: "Top Class Education in College for OBC, EBC and DNT Students",
-        description:
-          "Financial support for OBC, EBC and DNT students pursuing courses at notified premier institutions.",
-        href: "/website/schemes-services",
-        image: "/website/images/3-300x251.jpg",
-        tag: "Higher Education",
-      },
-      {
-        title: "Pre-Matric Scholarships Scheme for Scheduled Castes & Others",
-        description:
-          "A centrally sponsored scheme run through State Governments and UT administrations for Scheduled Caste students before matriculation.",
-        href: "/website/schemes-services",
-        image: "/website/images/4-1-300x133.jpg",
-        tag: "School Education",
-      },
-      {
-        title: "Post-Matric Scholarship for SC students",
-        description:
-          "Raises the gross enrolment ratio of Scheduled Caste students in higher education, with a focus on the poorest households.",
-        href: "/website/schemes-services",
-        image: "/website/images/5-234x300.jpg",
-        tag: "Higher Education",
-      },
-    ],
-  },
-  {
-    key: "vacancies",
-    icon: "group",
-    label: "Vacancies",
-    cardLink: "View Pdf",
-    viewAllLabel: "View all Vacancies",
-    viewAllHref: "/website/vacancies",
-    items: [
-      {
-        title:
-          "Date further Extended for submission of application for the post of Financial Advisor on Deputation Basis at DAIC",
-        href: "/website/vacancies",
-        image: "/website/images/DAIC-LOGO-.png",
-      },
-      {
-        title:
-          "Extension of Application Submission Date for Financial Adviser (FA) Post at DAF and BJRNF",
-        href: "/website/vacancies",
-        image: "/website/images/Banner-10.png",
-      },
-      {
-        title:
-          "Recruitment Notification for Deputy General Manager (Finance) – E-5 Level",
-        href: "/website/vacancies",
-        image: "/website/images/nsfdc-1.png",
-      },
-      {
-        title: "Sales Executives And Supervisors",
-        href: "/website/vacancies",
-        image: "/website/images/Banner-7.png",
-      },
-      {
-        title: "Senior Relationship Manager",
-        href: "/website/vacancies",
-        image: "/website/images/Banner-8.png",
-      },
-      {
-        title: "Telecalling Executive",
-        href: "/website/vacancies",
-        image: "/website/images/Banner-9.png",
-      },
-    ],
-  },
-  {
-    key: "tenders",
-    icon: "business_center",
-    label: "Tenders",
-    cardLink: "View Pdf",
-    viewAllLabel: "View all Tenders",
-    viewAllHref: "/website/tenders",
-    items: [
-      {
-        title: "Hindi Pakhwada 14 September to 28 September 2024",
-        href: "/website/tenders",
-        image: "/website/images/Banner-6.png",
-      },
-      {
-        title:
-          "Tender for Security Guards for parking arrangement in Lok Nayak Bhawan, Khan Market, New Delhi",
-        href: "/website/tenders",
-        image: "/website/images/Banner-7.png",
-      },
-      {
-        title:
-          "Proposals are invited for Annual Personal Contract of IT Associates",
-        href: "/website/tenders",
-        image: "/website/images/Banner-8.png",
-      },
-    ],
-  },
-];
+const notice = (n: OfferingNotice): ExplorerNotice => ({
+  ...n,
+  href: localiseDocumentUrl(n.file, n.title),
+});
 
 export function Offerings() {
-  const [activeTab, setActiveTab] = useState<TabKey>("schemes");
-  const current = tabs.find((tab) => tab.key === activeTab) ?? tabs[0]!;
+  const groups: ExplorerGroup[] = OFFERING_GROUPS.map((g) => ({
+    id: g.id,
+    label: g.label,
+    icon: g.icon,
+    schemes: g.schemes.map((s) => ({
+      tag: s.tag,
+      title: s.title,
+      description: s.description,
+      href: schemeHref(s),
+    })),
+  }));
 
   return (
-    <section className="bg-primary-50 py-12 md:py-16">
+    <section className="bg-primary-50 py-12 md:py-16" aria-labelledby="offerings-title">
       <div className="sa-container">
-        <div>
-          <h2 className="text-headline-2 text-primary-dark">
-            Our Offerings
-          </h2>
-          <p className="mt-2 text-body-1 text-ink-muted">
-            Discover our schemes, careers, and partnerships.
-          </p>
-        </div>
+        <h2 id="offerings-title" className="text-headline-2 text-primary-dark">
+          {OFFERINGS_SECTION.title}
+        </h2>
+        <p className="mt-2 text-body-1 text-ink-muted">{OFFERINGS_SECTION.intro}</p>
 
-        {/* Tab Header with Tabs and View All Link */}
-        <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          {/* The design groups the tabs inside one tinted container rather than
-              floating them as loose pills, and each carries an icon [WEB-O-03]. */}
-          {/* The tinted track is this section's own; the tabs inside it are the design
-              system's. `track="none"`: an enclosed track stretches every tab to an equal
-              share, which clipped "Press Releases" and "Vacancies" to "Press R…". */}
-          <div className="inline-flex flex-wrap items-center self-start rounded-xl bg-white/70 p-1">
-            <Tabs
-              idBase="offerings"
-              ariaLabel="Our Offerings"
-              indicator="pill"
-              track="none"
-              size="s"
-              panel
-              tabs={tabs.map((tab) => ({ id: tab.key, label: tab.label, icon: tab.icon }))}
-              active={Math.max(0, tabs.findIndex((t) => t.key === activeTab))}
-              onChange={(i) => setActiveTab(tabs[i]!.key)}
-            />
-          </div>
-
-          {/* An outlined button, not a bare text link — the design's secondary
-              CTA, and it clears the 24x24 target minimum [WEB-G-05, WCAG 2.5.8]. */}
-          <Button linkAs={Link}
-            appearance="outlined"
-            size="sm"
-            href={current.viewAllHref}
-            iconRight={<Icon name="arrow_forward" size={16} aria-hidden />}
-            /* gov-blue is 4.19:1 on this section's primary-50 ground — under AA
-               for 14px text. primary-dark is 7.75:1. The DS button's own colour
-               is correct on white; this overrides it only where the ground is
-               tinted, and wins without !important because component CSS sits in
-               @layer components and utilities come after it. */
-            className="self-start border-primary-dark text-primary-dark sm:self-auto"
-          >
-            {current.viewAllLabel}
-          </Button>
-        </div>
-
-        {/* Offerings Grid */}
-        <div
-          id={`offerings-panel-${activeTab}`}
-          role="tabpanel"
-          aria-labelledby={`offerings-tab-${activeTab}`}
-          className="mt-8"
-        >
-          {/* AN 8/4 SPLIT THAT COSTS THE CARDS NOTHING.
-              The container is 1272 at desktop, so a 12-column grid on gap-6 has
-              84px columns: the cards' 8 columns come to 840, and two 408px
-              cards plus one 24px gutter is exactly 840 — the same card width
-              they had at three-up. They reflow from 3x2 to 2x3 and the section
-              grows by one row; nothing is squeezed. The remaining 4 columns are
-              408 too, which is the rail. */}
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:col-span-8">
-            {current.items.map((item) => (
-              <Link
-                key={item.title}
-                href={item.href}
-                className="group block h-full"
-              >
-                <Card className="flex h-full flex-row gap-4 overflow-hidden rounded-xl border border-gray-200 bg-white p-4 shadow-xs transition hover:border-primary/40 hover:shadow-md">
-                  {/* Square thumbnail on the LEFT. The design's card is horizontal;
-                    the build had a full-bleed 16:9 image stacked on top [WEB-O-01]. */}
-                  <div className="relative h-[104px] w-[104px] shrink-0 overflow-hidden rounded-lg border border-gray-150 bg-gray-100">
-                    {item.image ? (
-                      <Image
-                        src={item.image}
-                        alt=""
-                        fill
-                        sizes="104px"
-                        className="object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center bg-primary/5 text-primary">
-                        <Icon name="school" size={32} aria-hidden />
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Content column */}
-                  <div className="flex min-w-0 flex-1 flex-col">
-                    {item.tag && (
-                      <span className="mb-1 text-label-3 uppercase text-ink-muted">
-                        {item.tag}
-                      </span>
-                    )}
-                    <h3 className="text-title-2 text-ink transition-colors line-clamp-3 group-hover:text-primary">
-                      {item.title}
-                    </h3>
-                    {item.description && (
-                      <p className="mt-1.5 text-body-2 text-ink-muted line-clamp-4">
-                        {item.description}
-                      </p>
-                    )}
-
-                    <span className="mt-auto flex items-center justify-end gap-1 pt-3 text-label-2 text-primary group-hover:underline">
-                      {current.cardLink}
-                      <Icon
-                        name="arrow_forward"
-                        size={16}
-                        aria-hidden
-                        className="transition-transform group-hover:translate-x-1"
-                      />
-                    </span>
-                  </div>
-                </Card>
-              </Link>
-            ))}
-            </div>
-
-            {/* The updates rail. It lives HERE rather than as a full-bleed strip
-                under the hero for two reasons: the strip stacked a third
-                coloured band on top of the saffron SAMAVESH bar and the hero,
-                and it put a second pause control 65px below the carousel's own.
-                Beside the offerings it is also better placed in meaning — a
-                citizen reading what the department offers sees what has just
-                changed about it. */}
-            {/* THE RAIL IS TAKEN OUT OF FLOW AT `lg`, and it has to be. The
-                panel is set to take the row's height — but a grid item's own
-                content is what sizes the row, so a 24-notice list made the row
-                2,616px tall and then obligingly filled it. Absolute positioning
-                breaks the circle: the CARDS decide how tall the row is, the
-                rail matches it, and the panel scrolls whatever does not fit.
-                Below `lg` the grid is one column and it returns to normal flow,
-                where standing at its own height is the right answer. */}
-            {/* BELOW `lg` THE RAIL MUST BOUND ITS OWN HEIGHT, or `fill` has
-                nothing to fill against and grows to fit every notice: measured
-                at 2,016px on a 834px viewport and 2,936px on a 390px one — a
-                wall of 24 headlines with no pause control, because a list that
-                never overflows its window is never found to be scrolling. It
-                is the precondition the panel's own documentation states, and
-                this rail was breaking it at exactly the widths nobody checked.
-                A fixed height here restores the overflow, and with it the
-                scroll and the control that stops it. */}
-            <div className="relative h-[28rem] sm:h-[32rem] lg:col-span-4 lg:h-auto">
-              <div className="absolute inset-0">
-                <LatestUpdates />
-              </div>
-            </div>
-          </div>
-        </div>
+        <OfferingsExplorer
+          groups={groups}
+          vacancies={OFFERING_VACANCIES.map(notice)}
+          tenders={OFFERING_TENDERS.map(notice)}
+          rail={<LatestUpdates />}
+        />
       </div>
     </section>
   );
