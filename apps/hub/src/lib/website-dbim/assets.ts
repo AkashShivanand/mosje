@@ -25,40 +25,17 @@ export interface DbimImage {
  * public/website/dbim/banners/ and are no longer shown.
  */
 
-/** The partner-logo carousel above the footer, in the reference's order. */
-export const DBIM_PARTNERS: { src: string; label: string; href?: string }[] = [
-  { src: `${D}/partners/partner-01.png`, label: "Pradhan Mantri Matru Vandana Yojana", href: "https://pmmvy.wcd.gov.in/" },
-  { src: `${D}/partners/partner-02.png`, label: "Child Marriage Free Bharat", href: "https://stopchildmarriage.wcd.gov.in/" },
-  { src: `${D}/partners/partner-03.png`, label: "Right to Information", href: "https://rtionline.gov.in/" },
-  { src: `${D}/partners/partner-04.png`, label: "e-SamikSha", href: "https://esamiksha.gov.in/" },
-  { src: `${D}/partners/partner-05.png`, label: "National Commission for Women Helpline, 7827170170", href: "https://ncw.nic.in/" },
-  { src: `${D}/partners/partner-06.jpg`, label: "National Helpdesk for Prevention of Atrocities, 14566", href: "https://nhapoa.gov.in/" },
-  { src: `${D}/partners/partner-07.png`, label: "Open Government Data Platform India", href: "https://data.gov.in/" },
-  { src: `${D}/partners/partner-08.png`, label: "Digital India", href: "https://www.digitalindia.gov.in/" },
-  { src: `${D}/partners/partner-09.png`, label: "Elder Line, National Helpline for Senior Citizens, 14567", href: "https://elderline.dosje.gov.in/" },
-  { src: `${D}/partners/partner-10.png`, label: "Department of Empowerment of Persons with Disabilities", href: "https://depwd.gov.in/" },
-  { src: `${D}/partners/partner-11.png`, label: "SEED — Scheme for Economic Empowerment of DNTs", href: "https://seed.dosje.gov.in/" },
-  { src: `${D}/partners/partner-12.png`, label: "e-Anudaan", href: "https://grants-msje.gov.in/" },
-  { src: `${D}/partners/partner-13.png`, label: "Emergency Response Support System, 112", href: "https://112.gov.in/" },
-  { src: `${D}/partners/partner-14.png`, label: "Childline, 1098" },
-  { src: `${D}/partners/partner-15.png`, label: "Women Helpline, 181" },
-  { src: `${D}/partners/partner-16.png`, label: "Sakhi One Stop Centre" },
-  { src: `${D}/partners/partner-17.png`, label: "Shakti Sadans" },
-  { src: `${D}/partners/partner-18.png`, label: "National Toll free Deaddiction Helpline (NMBA)", href: "https://nmba.dosje.gov.in/" },
-  { src: `${D}/partners/partner-19.png`, label: "india gov in", href: "https://www.india.gov.in/" },
-  { src: `${D}/partners/partner-20.png`, label: "Pradhan Mantri Adarsh Gram Yojana" },
-  { src: `${D}/partners/partner-21.png`, label: "CPGRAMS", href: "https://pgportal.gov.in/" },
-  { src: `${D}/partners/partner-22.png`, label: "MY Gov", href: "https://www.mygov.in/" },
-];
+/*
+ * The partner-logo carousel is NOT here. It shows the live site's carousel, shared by
+ * every design — lib/website-shared/partners.ts. The reference build's 22 marks are
+ * still at public/website/dbim/partners/ and are no longer shown.
+ */
 
-/** Portraits, square, as the reference crops them. */
-export const DBIM_PEOPLE = {
-  ministers: [
-    { name: "Dr. Virendra Kumar", role: "Hon'ble Union Minister", src: `${D}/people/virendra-kumar.png` },
-    { name: "Shri Ramdas Athawale", role: "Hon'ble Minister of State", src: `${D}/people/ramdas-athawale.png` },
-    { name: "Shri B. L. Verma", role: "Hon'ble Minister of State", src: `${D}/people/b-l-verma.png` },
-  ],
-} as const;
+/*
+ * The Ministers are NOT here. Every design — this one's home page and its Our Team
+ * chart included — reads them from lib/website-shared/home.ts. The reference build's
+ * portraits are still at public/website/dbim/people/ and are no longer shown.
+ */
 
 /** A footer social account: the reference's white PNG, or an inline outline glyph where it has none. */
 export interface DbimSocialLink {

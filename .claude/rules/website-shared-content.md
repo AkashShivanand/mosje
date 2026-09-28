@@ -35,11 +35,12 @@ differ in layout. **They may not differ in content.**
 |---|---|---|---|---|
 | Home banners (CCPS first) | `home.ts` `CCPS_SNAPSHOT`, `HOME_BANNERS`; `home-banners.ts` `getHomeBanners()` | ✅ | ✅ | ✅ |
 | About Us — text, Ministers, figures, links | `home.ts` `ABOUT_US` | ✅ | ✅ | ✅ (no figures strip in this layout) |
-| Minister photographs | `home.ts` `ABOUT_US.ministers[].photo` — the live photographs at the DBIM handoff file's resolution (instruction, 28 Sep 2026) | ✅ | ✅ | ✅ |
+| Minister photographs (and DBIM's Ministry › Our Team chart) | `home.ts` `ABOUT_US.ministers[]` — the live photographs at the DBIM handoff file's resolution (instruction, 28 Sep 2026) | ✅ | ✅ | ✅ |
 | PM quote — quotation, citation, photograph | `home.ts` `PM_QUOTE` (source: PIB; the live site carries no PM quote) | ✅ | layout-options page only | ✅ |
 | Offerings — scheme groups, vacancies, tenders | `offerings.ts` (a dated snapshot: the live lists are hand-picked, not register rows) | ✅ | ✅ | ✅ Key Offerings, five a tab (DBIM 3.0 §A.4.1 vi) |
 | Recent Documents | `documents.ts` (a dated snapshot of the live selection) | ✅ | ✅ | ✅ |
 | Social Media — heading, accounts, handles, links | `social.ts` (live's three; YouTube as DBIM's fourth) | ✅ | ✅ | ✅ four platforms (DBIM Toolkit, "Citizen Engagement") |
+| Partner logos — the carousel above the footer | `partners.ts` (live's 42, in live order; names ours, as live's alt text is empty) | ✅ | ✅ | ✅ |
 | What's New | `whatsNew()` in `lib/website-next/whats-new.ts` — a feed, as live runs it | ✅ | ✅ | ✅ |
 | Organisations — words, tab labels, order, the 18 bodies | `organisations.ts` + the registry `data/website/organisations.ts` | ✅ | ✅ | ✅ **not on the home page** — Ministry › Our Organisation (DBIM 3.0 §A.5.1.3) |
 
@@ -52,8 +53,7 @@ grows; its content still comes from here.
 photographs or no figures, neither does a design — nine invented social posts, with
 like counts, stood on the New and Classic home pages until 28 Sep 2026.
 
-Sections still carried per design, to be moved here as they are next touched: partner logos, and the DBIM Ministry page's Minister
-chart (`DBIM_PEOPLE.ministers`).
+Every section the designs share now reads from here. A new shared section starts here.
 
 ## Checklist
 
