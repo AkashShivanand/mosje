@@ -12,9 +12,17 @@ export const metadata: Metadata = {
 
 const RELEASES: Release[] = [
   {
+    version: "v0.155.0",
+    date: "2026-09-28",
+    current: true,
+    changes: [
+      { kind: "Changed", text: "THE THREE WEBSITE DESIGNS SHOW ONE SET OF BANNERS, ONE ABOUT US, ONE PM QUOTE, ONE OFFERINGS, ONE ORGANISATIONS, ONE RECENT DOCUMENTS, ONE SOCIAL MEDIA AND ONE PARTNER CAROUSEL. New, Classic and DBIM read these sections from lib/website-shared/, taken from the live dosje.gov.in: the CCPS banner always first, then the live site's four banners; the live About Us with the Ministers' photographs from the DBIM handoff file at 320px; the live Offerings \u2014 eleven beneficiary groups with the schemes the live site picks, its five vacancies and four tenders \u2014 beside the estate's one What's New feed; the live Recent Documents \u2014 its four annual reports, with type, format and size; the live Social Media accounts \u2014 New and Classic drop nine invented posts and show the live site's three account cards, DBIM shows the same accounts plus YouTube as the manual's fourth; the live partner carousel \u2014 its 42 marks in its order, each named for the site it opens; the DBIM PM quote's mark as Material's format_quote turned to open, matching meity.gov.in; DBIM's Ministry \u203a Our Team chart with the shared Ministers, designations and photographs; and the live Organisations words, tab labels and order, with the eighteenth body (SMILE, for persons engaged in begging) added to the registry. The DBIM design follows the DBIM 3.0 manual for layout: five entries a Key Offerings tab, and Our Organisations under Ministry, not on the home page. Rule: .claude/rules/website-shared-content.md." },
+    ],
+  },
+  {
     version: "v0.154.0",
     date: "2026-09-27",
-    current: true,
+    current: false,
     changes: [
       { kind: "Added", text: "ANY HEADER CAN BE THE PAGE'S ONE ACCESSIBILITY DOOR. `openUx4gWidget()` and `useAccessibilityEntryClaim(active, ref?)` are exported from the barrel. They were private to `AccessibilityControls`, which now calls the same hook with unchanged behaviour. A control that claims the entry hides the UX4G floating button while it is mounted, so a page never shows two doors. First consumer: the website's DBIM design header." },
       { kind: "Fixed", text: "THE LAST AXE DEFECTS FROM THE COMPONENT SCAN. The SAMAVESH banner now defaults to tone=\"dark\" (6.50:1), not white on saffron (2.91:1, below AA), matching the Figma set, which already led with Dark; light stays as an opt-in and the deviation register records it as resolved. A chip that is both toggleable and removable no longer nests its remove button inside another button: the toggle moves to an inner control, and the pill looks and clicks exactly as before. ChartCard, PageHeader, NotificationCentre and the chatbot panel draw their headings in a div, not a <header>, so none of them announces as a second page banner. AccessibilityBar takes a label, so a page with several bars can name each one. The UX4G widget's five section headers no longer register as page banners (nothing in its panel is hidden or changed). The docs playground's editable code block now shows a focus ring." },
