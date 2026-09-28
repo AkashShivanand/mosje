@@ -12,7 +12,7 @@
 @layer components {
   /* Icon sets its size inline; the chevrons read this so a breakpoint can change it. */
   [data-design="dbim"] .db-hm {
-    --db-hm-chev: 24px; /* reference: arrow_forward_ios 2.4rem */
+    --db-hm-chev: 24px; /* at every width: DBIM 3.0 §3.4 sizes are 24 / 32 / 48 / 64 (the reference dropped to 16 on a phone) */
     /* One content edge for every band (DBIM 3.0 Figure 50): the page gutter, no column
        padding inside it, and a 32px gap between columns. The reference's 15px / 7.5px
        Bootstrap half-gutters put the sections on three different left edges. */
@@ -472,10 +472,6 @@
   }
 
   @media (max-width: 768px) {
-    [data-design="dbim"] .db-hm {
-      --db-hm-chev: 16px; /* reference: 1.6rem */
-    }
-
     [data-design="dbim"] .db-hm-offer .db-hm-news {
       padding-block: 0;
     }
