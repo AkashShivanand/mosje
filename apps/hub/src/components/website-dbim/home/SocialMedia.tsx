@@ -1,13 +1,15 @@
 import { DbimSectionHeading } from "@/components/website-dbim/ui/SectionHeading";
 import { DBIM_SOCIAL_FEEDS } from "@/lib/website-dbim/social";
+import { SOCIAL_SECTION } from "@/lib/website-shared/social";
 
 import { DbimSocialCarousel } from "./SocialCarousel";
 import { DbimSocialFeed } from "./SocialFeed";
 import "./home-bottom.css";
 
 /**
- * "In Social Media" — the dark band of four feed cards (X, Youtube, Facebook,
- * Instagram). Four columns at ≥1280, two at 768–1279, one card at a time with
+ * The social-media band — the reference's dark band of four feed cards, under the
+ * live site's heading and with the live site's accounts (lib/website-shared/social.ts):
+ * Facebook, X, Instagram, and YouTube as the fourth DBIM asks for. Four columns at ≥1280, two at 768–1279, one card at a time with
  * chevrons and dots on a phone, as the reference does.
  *
  * The feeds are the networks' own embeds and load only when the band nears the
@@ -27,7 +29,7 @@ export function DbimSocialMedia() {
   return (
     <section className="db-hb-social" aria-labelledby="db-social-title">
       <div className="db-hb-social__head">
-        <DbimSectionHeading id="db-social-title" icon="social" title="In Social Media" tone="inverse" />
+        <DbimSectionHeading id="db-social-title" icon="social" title={SOCIAL_SECTION.title} tone="inverse" />
       </div>
       <DbimSocialCarousel labels={DBIM_SOCIAL_FEEDS.map((f) => f.title)} slides={slides} />
     </section>

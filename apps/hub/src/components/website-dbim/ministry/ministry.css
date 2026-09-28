@@ -356,11 +356,16 @@
     transform: translate(-50%, -50%);
   }
 
+  /* The live site's full designations wrap to two or three lines here, where the
+     reference's "Hon'ble Minister of State" took one; its 24px line spread a wrapped
+     label into what read as separate lines. 1.5 keeps the lines of one label together,
+     and the margin keeps the reference's space before the name. */
   [data-design="dbim"] .db-min-profile__role {
     display: block;
+    margin-bottom: var(--sa-padding-4);
     font-size: var(--db-fs-small);
     font-weight: 500;
-    line-height: 24px;
+    line-height: 1.5;
     letter-spacing: 0.7px;
     text-transform: uppercase;
     color: var(--sa-color-primaryScale-800);
