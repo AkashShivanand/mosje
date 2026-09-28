@@ -322,46 +322,46 @@ function nameSectionToggles(): void {
  * on its trigger (issue ACC-10) is normalised to 0 at the same time.
  */
 function keepClosedPanelOutOfTabOrder(): () => void {
-  let observer: MutationObserver | undefined;
-  let timer: number | undefined;
-  let attempts = 0;
-  const onScreen = (el: HTMLElement) => {
-    const r = el.getBoundingClientRect();
-    return r.width > 0 && r.left < window.innerWidth && r.right > 0;
-  };
-  const sync = () => {
-    const panel = document.getElementById("uw-main");
-    if (!panel) return;
-    panel.inert = !onScreen(panel);
-  };
+  let waiting: MutationObserver | undefined;
+  let visibility: IntersectionObserver | undefined;
   const onClick = (e: MouseEvent) => {
     const t = e.target as Element | null;
     if (!t?.closest?.("#uw-widget-custom-trigger, [data-uw-trigger]")) return;
     const panel = document.getElementById("uw-main");
     if (panel) panel.inert = false;
   };
-  const attach = () => {
+  const attach = (): boolean => {
     const panel = document.getElementById("uw-main");
-    if (!panel) {
-      if (attempts++ < 40) timer = window.setTimeout(attach, 150);
-      return;
-    }
+    if (!panel) return false;
+    // Inert from the moment it exists: until the browser has told us where it is,
+    // an off-canvas panel must not be the first thing a keyboard reaches.
+    panel.inert = true;
     const trigger = document.getElementById("uw-widget-custom-trigger");
     if (trigger?.getAttribute("tabindex") === "1") trigger.setAttribute("tabindex", "0");
-    sync();
-    // The slide-out is a transition, so position is read after it settles.
-    observer = new MutationObserver(() => {
-      window.clearTimeout(timer);
-      timer = window.setTimeout(sync, 450);
+    // The browser reports whether the panel is in the viewport, whatever moved it —
+    // the vendor's stylesheet arriving late, its slide transition, a resize. The
+    // previous version read the position only when the panel's own attributes
+    // changed and searched for the panel for six seconds, so on a slow load it gave
+    // up and /website kept all 17 hidden controls ahead of the skip link.
+    visibility = new IntersectionObserver((entries) => {
+      for (const entry of entries) panel.inert = !entry.isIntersecting;
     });
-    observer.observe(panel, { attributes: true, attributeFilter: ["class", "style"] });
+    visibility.observe(panel);
+    return true;
   };
   document.addEventListener("click", onClick, true);
-  attach();
+  if (!attach()) {
+    // The widget script is deferred and appends the panel to <body> whenever it
+    // arrives; wait for it rather than polling for a fixed time.
+    waiting = new MutationObserver(() => {
+      if (attach()) waiting?.disconnect();
+    });
+    waiting.observe(document.body, { childList: true, subtree: true });
+  }
   return () => {
     document.removeEventListener("click", onClick, true);
-    observer?.disconnect();
-    window.clearTimeout(timer);
+    waiting?.disconnect();
+    visibility?.disconnect();
   };
 }
 

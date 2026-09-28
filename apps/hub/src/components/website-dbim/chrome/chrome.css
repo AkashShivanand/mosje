@@ -364,8 +364,23 @@
       padding: 0;
     }
 
+    /* The Department is the emphasised line of the lock-up (DBIM 3.0 §5.2): at 20px
+       the Government and Ministry lines out-sized a 15px Department. Mobile scale:
+       Paragraph 1 (14) over Heading 3 Bold (16), Table 4. */
+    [data-design="dbim"] .db-logo__gov {
+      font-size: var(--db-fs-p);
+    }
+
     [data-design="dbim"] .db-logo__dept {
-      font-size: 0.9375rem; /* 15px */
+      font-size: var(--db-fs-h3);
+    }
+
+    /* Sticky, drawn up by the height above the search row (MobileMenu measures it),
+       so only the search and menu row stays pinned — DBIM 3.0 A.4.1.2 i. */
+    [data-design="dbim"] .db-header {
+      position: sticky;
+      top: var(--db-header-pin, 0);
+      z-index: var(--sa-z-sticky);
     }
 
     [data-design="dbim"] .db-tools > li {
@@ -567,18 +582,11 @@
     outline-offset: calc(var(--sa-focus-width) * -1);
   }
 
+  /* The labels keep the desktop scale down to the phone menu (DBIM 3.0 §4.3.1): the
+     reference's 16px SemiBold at 1280–1536 is a weight Table 3 does not allow at 16. */
   @media (max-width: 1536px) {
     [data-design="dbim"] .db-nav__item {
       width: 160px;
-    }
-
-    [data-design="dbim"] .db-nav__label,
-    [data-design="dbim"] .db-nav__item.is-active .db-nav__label {
-      font-size: 1rem; /* 16px */
-    }
-
-    [data-design="dbim"] .db-nav__home.is-active .db-nav__label {
-      font-size: 1.25rem; /* 20px */
     }
   }
 
