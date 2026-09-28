@@ -1,4 +1,0 @@
-{
-  "kind": "Fixed",
-  "text": "LIGHTBOX RETURNS FOCUS TO WHAT OPENED IT. The restore tested whether focus was still inside the dialog, but by the time it ran on close the dialog had already been removed and focus had fallen to the page body, so it never fired: a keyboard or screen-reader user who closed the viewer was sent back to the top of the page (WCAG 2.4.3). Focus left on the body now counts as focus nobody placed, and goes back to the opener."
-}

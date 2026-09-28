@@ -1,4 +1,0 @@
-{
-  "kind": "Fixed",
-  "text": "THE DBIM DESIGN'S HOME PAGE AND ITS FIGMA HANDOFF NOW MEASURE THE SAME at 1920 and 390: every band starts and ends on the same pixel. The Ministers are three equal 240px cards, flush with the content edge, in the handoff's photo frame. Important Links take the page's one grey rule. Recent Documents' View More matches the other View More buttons. The social-media heading is bold like every other section heading. Scheme names in Key Offerings are shown in full, and on a phone the rows and tabs close up to the handoff's spacing. The footer now carries Feedback and the Department's lineage in DBIM 3.0 §5.6's own words. The banner and persona dots keep their drawn size inside 24px targets, which clears WCAG 2.2 2.5.8. In Figma the captured artefacts (empty spacers, doubled row rules, a search field that had lost its key-colour rule, a 31px phone edge) are corrected in the components."
-}
