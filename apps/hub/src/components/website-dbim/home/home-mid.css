@@ -27,7 +27,7 @@
   }
 
   [data-design="dbim"] .db-hm a:focus-visible {
-    outline: var(--sa-stroke-2) solid var(--sa-color-text-default);
+    outline: var(--sa-stroke-2) solid var(--sa-color-primaryScale-800); /* the handoff's 2px key-colour ring */
     outline-offset: var(--sa-padding-2);
   }
 
@@ -125,7 +125,7 @@
   }
 
   [data-design="dbim"] .db-hm-tabs .db-hm-tab:focus-visible {
-    outline: var(--sa-stroke-2) solid var(--sa-color-text-default);
+    outline: var(--sa-stroke-2) solid var(--sa-color-primaryScale-800);
     outline-offset: var(--sa-padding-2);
   }
 
@@ -177,7 +177,7 @@
     grid-template-columns: minmax(0, 10fr) minmax(0, 2fr);
     align-items: center;
     padding: var(--sa-padding-16) 31.5px; /* reference: 24 + 7.5 */
-    color: var(--sa-color-text-default);
+    color: var(--sa-color-primaryScale-800); /* the handoff's Text Link: the key colour */
     text-decoration: none;
   }
 
@@ -192,6 +192,10 @@
     [data-design="dbim"] .db-hm-list .db-hm-list__title {
       line-height: var(--db-lh-p); /* 21 */
     }
+  }
+
+  [data-design="dbim"] .db-hm-list .db-hm-list__link:hover {
+    color: var(--sa-color-primaryScale-600); /* Blue 2 */
   }
 
   [data-design="dbim"] .db-hm-list .db-hm-list__link:hover .db-hm-list__title {
@@ -367,9 +371,9 @@
 
   [data-design="dbim"] .db-hm-persona .db-hm-persona__arrow {
     --sa-btn-ink: var(--sa-color-primaryScale-800);
-    width: var(--sa-padding-24);
+    width: var(--sa-padding-40); /* the handoff's Pagination Item: a 40px target, 24 glyph */
     min-width: 0;
-    height: 28px; /* reference */
+    height: var(--sa-padding-40);
     min-height: 0;
     padding: 0;
     border-radius: var(--sa-shape-full);
@@ -428,10 +432,14 @@
     gap: var(--sa-inline-16);
     align-items: center;
     justify-content: space-between;
-    color: var(--sa-color-text-default);
+    color: var(--sa-color-primaryScale-800); /* the handoff's Text Link: the key colour */
     font-size: var(--db-fs-p); /* Paragraph 1, DBIM 3.0 Tables 3/4 */
     line-height: var(--db-lh-p);
     text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-hm-links .db-hm-links__link:hover {
+    color: var(--sa-color-primaryScale-600); /* Blue 2 */
   }
 
   [data-design="dbim"] .db-hm-links .db-hm-links__link:hover span:first-child {

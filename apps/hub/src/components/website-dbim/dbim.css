@@ -39,6 +39,7 @@
     --db-lh-p: 1.5rem;     /* 24px */
     --db-lh-p2: 1.25rem;   /* 20px */
     --db-lh-small: 1.125rem;/* 18px */
+    --db-fs-button: 0.875rem; /* 14px: the handoff's Label/button style */
     /* The reference's gutters: 120px ≥1537, 64px 1280–1536, 16px on a phone */
     --db-gutter: var(--sa-padding-120);
 
@@ -77,6 +78,7 @@
       --db-lh-p: 1.3125rem;  /* 21px */
       --db-lh-p2: 1.125rem;  /* 18px */
       --db-lh-small: 0.9375rem;/* 15px */
+      --db-fs-button: 0.75rem; /* 12px */
     }
   }
 

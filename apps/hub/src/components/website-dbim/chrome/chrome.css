@@ -511,6 +511,18 @@
     color: var(--sa-color-primaryScale-800); /* DBIM 3.0 §3.7 iii — the key colour, not the menu text colour */
   }
 
+  /* The handoff's Nav Item states: Hover, Blue 5 ground with the label in the key
+     colour; Focus, a 2px key-colour border. */
+  [data-design="dbim"] .db-nav__item:hover .db-nav__label {
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-nav .db-nav__trigger.ds-btn:focus-visible,
+  [data-design="dbim"] .db-nav .db-nav__home:focus-visible {
+    outline: var(--sa-stroke-2) solid var(--sa-color-primaryScale-800);
+    outline-offset: calc(-1 * var(--sa-stroke-2));
+  }
+
   /* Active: bold primary, the 8px bar on the label's own box, which is 105% tall so
      the text rides 4px higher than its neighbours — as the reference draws it. */
   [data-design="dbim"] .db-nav__home.is-active .db-nav__label,
