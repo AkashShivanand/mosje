@@ -3,6 +3,7 @@ import { Icon } from "@mosje/design-system";
 
 import { DBIM_PEOPLE } from "@/lib/website-dbim/assets";
 import { DBIM_PM_QUOTE as Q } from "@/lib/website-dbim/home-top";
+import { DbimIcon } from "@/components/website-dbim/ui/icons";
 import "./home-top.css";
 
 /**
@@ -22,10 +23,10 @@ export function DbimPmQuote() {
           <Image src={pm.src} alt={pm.alt} width={260} height={260} sizes="260px" className="db-pmq__portrait" />
         </div>
         <figure className="db-pmq__body">
-          {/* Decorative: the quotation is marked up as a blockquote. The opening mark
-              only, set as text, as DBIM 3.0 Figure 54 draws it. */}
-          <div className="db-pmq__mark" aria-hidden="true">
-            “
+          {/* Decorative (DbimIcon is aria-hidden): the quotation is marked up as a
+              blockquote. The opening mark only — see home-top.css. */}
+          <div className="db-pmq__mark">
+            <DbimIcon name="format-quote" size={32} />
           </div>
           <blockquote className="db-pmq__quote" cite={Q.href}>
             <p>{Q.quote}</p>

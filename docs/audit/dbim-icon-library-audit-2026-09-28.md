@@ -185,18 +185,59 @@ REST API (`format=svg`, fill → `currentColor`), so the file and the code canno
 Chevron Down is not offset: it is a Functional Icon, drawn on the site by the Outlined font,
 and must match every other arrow there.
 
+### Used across the whole DBIM version
+
+**Website — 126 pages, desktop 1440 and mobile 375, the mobile menu opened on each.**
+Every page reachable from the DBIM home was crawled and every rendered icon classified
+(8,250 on the first pass). After this pass: every font glyph is the DBIM Outlined instance
+and its name is in a DBIM bank; every contextual icon is a library file; every icon is the
+key colour or white. The things the page-by-page crawl found that the 29-route scan had
+not, all fixed in the DBIM stylesheets only:
+
+| Where | Was | Now |
+|---|---|---|
+| Desktop menu arrows (Ministry ▾ …) — every page | menu text colour `#150202` | key colour |
+| Mobile menu section toggles | `#150202` | key colour |
+| Scheme-detail link arrows (`open_in_new`) | shade 2 `#214AAB` | key colour |
+| Disabled carousel / pager arrows | grey `#AAAAAA` | key colour; the button's `--sa-alpha-disabled` fade marks it disabled |
+| Every Select's chevron | the design system's own 18px SVG | DBIM *Expand More* at 24px, as a mask, from `library/expand-more.svg` (exported from the Figma Chevron Down) |
+| Mobile menu close (✕) | the design system's own stroke SVG in body text colour | DBIM *Close* at 24px, key colour, from `library/close.svg` |
+| Photo viewer (Lightbox) close, previous, next, video badge | the design system's own SVGs at 22 / 26 / 14px | DBIM *Close*, *Chevron Left*, *Chevron Right*, *Play Arrow* at 24px (badge 16px), white. The viewer is portalled to `<body>`, so it is reached through `body:has([data-design="dbim"])` |
+| PM quote mark | a “ character, which the reference sets in Material Symbols but no Material build carries — so it fell back to Noto Sans Bold | Material *format_quote*, **filled**, turned 180° so it opens, 32px key colour, from `library/format-quote.svg` |
+
+Out of scope, and why: the UX4G accessibility widget's own buttons (third-party markup,
+statutory, drawn on every design) and the demo rail (prototype scaffolding, not part of the
+DBIM design).
+
+**Figma — every page of the handoff file.** The templates and component masters drew
+their functional icons as **Material Symbols Rounded text** (over 1,100 glyphs across the
+two template pages) because Figma offers no Outlined font. They are now **instances of 29
+Functional Icon sets** built from DBIM's own functional files (Material Outlined 400
+where DBIM publishes the name only as a contextual icon — the glyph the site's font
+draws), sizes 16 · 20 · 24 · 32 · 48 · 64, bound to `icon/key`, each carrying the colour
+of the text it replaced:
+
+| Where | Replaced |
+|---|---|
+| Component masters (Chrome, Home Sections, Inner Page, Lists & Data, Cards, Forms & Utility) | 174 glyphs, 8 footer social image fills, 4 persona tile image fills |
+| Loose on the templates (Desktop 132, Mobile 141) | 273 glyphs |
+| Persona tiles | each tile's icon follows its link, as on the site: Schemes, Tenders, Publications, Job Opportunity |
+| PM quote mark | the Rounded `format_quote` glyph → an instance of the new **Icon/Format Quote** set (filled, turned to open, 32px) — the same drawing as the site file |
+
+Verified afterwards on every template, component and style-guide page: **zero** icon-font
+text nodes and **zero** image icons remain.
+
 ## 4. Still open
 
 | Item | Why it stays | Owner |
 |---|---|---|
 | 16px and 20px inline arrows (news links, footer links, carousel pause) | The estate's recorded decision: 16 beside 14px text, 20 in dense controls (`standards-precedence.md`). DBIM §3.4 governs the asset bank; its 24 frame contains a 20px glyph. | — (documented divergence) |
-| Grey `#AAAAAA` on a disabled carousel arrow | A disabled state, exempt from contrast rules; not a brand colour. | — |
-| DS `Select` chevron at 18px | A design-system form-control affordance drawn as SVG, shared by all designs; changing it belongs to the DS, not to one design. | Design system |
 | Filled `format_quote` on the PM quote | Removed on `main` by `fix/dbim-home-manual-alignment` (DBIM Figure 54). | Done on `main` |
 | Social Media Marketing at 2.5, below the 3.0 line weight | Thickening it further fills in its detail; the drawing needs simplifying at source. | DBIM Toolkit |
 | Social Media Marketing at 24px | DBIM's drawing is illegible below 48; used only at 48. | DBIM Toolkit (report upstream) |
 | Library defects in §1 | Not ours to fix; worth reporting to the DBIM Toolkit team. | DBIM Toolkit |
-| Figma *Iconography* style-guide page | Not re-audited in this pass. | Next Figma pass |
+| UX4G accessibility widget icons (`#212121`, 20px) | Third-party, statutory, the same on every design. | — |
+| Figma *Iconography* style-guide page | Holds no icon-font text or image icons; its prose was not re-read in this pass. | Next Figma pass |
 
 ## 5. How it was checked
 

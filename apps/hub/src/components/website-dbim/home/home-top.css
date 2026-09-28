@@ -372,12 +372,14 @@
     padding: 10px; /* reference card-body */
   }
 
-  /* The opening mark only, set as text (DBIM 3.0 Figure 54; the reference's 44px “). */
+  /* The opening mark only (DBIM 3.0 Figure 54): Material's format_quote, FILLED and
+     turned half a circle so it opens. The reference sets a 44px “ character, which
+     no Material Symbols build carries, so it falls back to whatever the system has.
+     32px (§3.4), at the foot of the reference's 40px slot, just above the quotation. */
   [data-design="dbim"] .db-pmq .db-pmq__mark {
+    display: flex;
+    align-items: flex-end;
     height: var(--sa-padding-40);
-    font-size: 2.75rem; /* 44px */
-    font-weight: var(--sa-font-weight-bold);
-    line-height: 1;
     color: var(--sa-color-primaryScale-800);
   }
 

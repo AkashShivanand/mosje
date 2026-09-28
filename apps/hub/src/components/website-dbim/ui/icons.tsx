@@ -49,6 +49,17 @@ export const DBIM_ICON_LIBRARY = {
   // Files and navigation
   "pdf": "PDF",
   "home": "Home",
+  // Functional Icons drawn as files, for design-system parts that are not an `Icon`:
+  // the Select chevron, the mobile menu's close and the photo viewer's controls (dbim.css,
+  // chrome.css)
+  "expand-more": "Expand More",
+  "close": "Close",
+  "chevron-left": "Chevron Left",
+  "chevron-right": "Chevron Right",
+  "play-arrow": "Play Arrow",
+  // Material's format_quote, FILLED, turned half a circle so it opens — the PM quote
+  // band's mark (home/PmQuote.tsx). The static Outlined instance is FILL0 only.
+  "format-quote": "Format Quote",
   // Social platforms (footer)
   "facebook": "Facebook",
   "x": "X",
