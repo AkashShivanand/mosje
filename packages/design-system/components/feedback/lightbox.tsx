@@ -4,6 +4,7 @@ import * as React from "react";
 import { createPortal } from "react-dom";
 import { cn } from "../../utils/cn";
 import { IconButton } from "../actions/icon-button";
+import { useDialogLayer } from "../../foundations/use-dialog-layer";
 import "./lightbox.css";
 
 export type LightboxMediaType = "image" | "video";
@@ -95,6 +96,8 @@ export function Lightbox({
   const stageRef = React.useRef<HTMLDivElement>(null);
   const titleId = React.useId();
   const count = items.length;
+  // The floating rails step under the scrim while the viewer owns the screen (foundations/dialog-layer.ts).
+  useDialogLayer(open && count > 0);
 
   /**
    * Re-syncs to the requested start index each time the lightbox is (re)opened,

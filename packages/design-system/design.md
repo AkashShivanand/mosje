@@ -1557,6 +1557,7 @@ for composing something those two do not cover.
 | Always include a close button (`×`) in the top-right corner. | Do not close modals on backdrop click for destructive confirmations — data loss risk. |
 | Use `size="sm"` for simple confirm dialogs; `size="lg"` for complex multi-field forms. | Do not nest a full page-level flow inside a modal. Link to a dedicated page instead. |
 | Ensure `Escape` key always closes the modal and returns focus to the trigger. | Do not trap focus in a modal that requires clicking outside to close. |
+| Call `useDialogLayer(open)` in any `aria-modal` dialog you build — Modal, Lightbox, SideSheet and NavSheet already do. The chat launcher, Important Links, back-to-top and the demo dock then step under its scrim; only the UX4G accessibility control stays above. | Do not raise a dialog's `z-index` past the rails to cover them — it climbs over the toasts too. Do not call it for a Popover, DatePicker or menu: the page is still usable, so the launcher stays. |
 
 ---
 
