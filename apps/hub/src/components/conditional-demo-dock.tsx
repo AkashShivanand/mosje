@@ -10,6 +10,11 @@ import { formsForPath } from "@/lib/e-anudaan/demo-forms";
 import { DemoDarpanPanel } from "@/components/e-anudaan/demo-darpan-panel";
 import { isDarpanDemoRoute } from "@/lib/e-anudaan/darpan-sign-in";
 import { DemoErrorsPanel } from "@/components/e-anudaan/demo-errors-panel";
+import { DemoCapturePanel, useDemoShortcuts } from "@/components/demo-capture";
+
+/** The redesign, the archived classic design and the DBIM clone share every /website address. */
+const isWebsitePath = (p: string) =>
+  p === "/website" || p.startsWith("/website/") || p.startsWith("/website-classic") || p.startsWith("/website-dbim");
 
 /**
  * Mounts the demo dock, if an admin has it switched on.
@@ -31,10 +36,15 @@ export function ConditionalDemoDock({
   enabled?: boolean;
 }) {
   const pathname = usePathname();
-  if (!enabled) return null;
+  const onWebsite = isWebsitePath(pathname);
   // Hidden on the hub root (it *is* the portals index), on the site gate, and
   // across the admin surface, where it offers nothing relevant.
-  if (pathname === "/" || pathname === "/gate" || pathname.startsWith("/admin")) return null;
+  const shown =
+    enabled && !(pathname === "/" || pathname === "/gate" || pathname.startsWith("/admin"));
+  // Before the early return, as a hook must be. Its shortcuts are off wherever the dock is,
+  // so a key chord never does something on a page with no dock to answer it.
+  const shortcuts = useDemoShortcuts({ pathname, onWebsite, enabled: shown });
+  if (!shown) return null;
   // The Data tab appears only where a dashboard reads a report feed — the same
   // route-specific rule Sign in already follows. On every other page the switch
   // would control nothing, and a control that does nothing is worse than none.
@@ -56,16 +66,25 @@ export function ConditionalDemoDock({
   if (pathname.startsWith("/portals/e-anudaan")) {
     tabs.push({ id: "errors", label: "Errors", content: <DemoErrorsPanel /> });
   }
-  // The redesign, the archived classic design and the DBIM clone share every /website address.
-  if (pathname === "/website" || pathname.startsWith("/website/") || pathname.startsWith("/website-classic") || pathname.startsWith("/website-dbim")) {
+  if (onWebsite) {
     tabs.push({ id: "website-design", label: "Website", content: <WebsiteDesignPanel /> });
   }
   if (hasDataModes(pathname)) {
     tabs.push({ id: "data", label: "Data", content: <DataModePanel /> });
   }
-  const extraTabs: DemoDockTab[] | undefined = tabs.length > 0 ? tabs : undefined;
+  // Capture is offered on every route, so it sits AFTER Apps and Colour: a lead tab names the
+  // flask, and "Capture" on every page would bury the tab a route actually brought.
+  tabs.push({
+    id: "capture",
+    label: "Capture",
+    placement: "end",
+    content: (
+      <DemoCapturePanel capture={shortcuts.capture} captureState={shortcuts.captureState} onWebsite={onWebsite} />
+    ),
+  });
+  const extraTabs: DemoDockTab[] = tabs;
 
   // `apps` is the registry with the admin's overrides already applied, resolved
   // server-side in the root layout. Omitting it falls back to DEFAULT_APPS.
-  return <DemoDock pathname={pathname} apps={apps} extraTabs={extraTabs} />;
+  return <DemoDock pathname={pathname} apps={apps} extraTabs={extraTabs} notice={shortcuts.notice} />;
 }
