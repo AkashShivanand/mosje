@@ -702,41 +702,4 @@
     .wn-home-minister__photo { grid-row: 1 / span 2; width: var(--sa-icon-size-64); height: var(--sa-icon-size-64); margin: 0; }
     .wn-home-social { grid-template-columns: 1fr; gap: var(--sa-stack-8); }
   }
-
-  /* Infographics — the picture beside its figures as text. The image column
-     is capped at 480px (a layout measure no token models): a square graphic
-     wider than that pushes its own text version below the fold. */
-  .wn-home-infographic {
-    display: grid;
-    gap: var(--sa-stack-32);
-    margin-top: var(--sa-stack-32);
-  }
-  @media (min-width: 768px) {
-    .wn-home-infographic {
-      grid-template-columns: minmax(0, 480px) minmax(0, 1fr);
-      gap: var(--sa-inline-48);
-      align-items: start;
-    }
-  }
-  .wn-home-infographic__figure a { color: var(--sa-text-link-brand-default); text-decoration: underline; text-underline-offset: 0.2em; }
-  .wn-home-infographic__figure a:hover { color: var(--sa-text-link-brand-hover); }
-  .wn-home-infographic__title { font-size: var(--sa-type-headline-4-size); line-height: var(--sa-type-headline-4-lh); font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-neutral-bolder); }
-  .wn-home-infographic__subtitle { margin-top: var(--sa-stack-4); font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); color: var(--sa-text-neutral-subtle); }
-  .wn-home-infographic__figures { margin-top: var(--sa-stack-20); border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); }
-  .wn-home-infographic__row {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--sa-stack-2) var(--sa-inline-16);
-    padding-block: var(--sa-padding-12);
-    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
-  }
-  @media (min-width: 1024px) {
-    .wn-home-infographic__row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-    .wn-home-infographic__row > dd { grid-column: 2; }
-    .wn-home-infographic__row > dt { grid-row: 1 / span 3; }
-  }
-  .wn-home-infographic__scheme { display: block; font-size: var(--sa-type-title-3-size); line-height: var(--sa-type-title-3-lh); font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-neutral-bolder); }
-  .wn-home-infographic__audience { display: block; font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); color: var(--sa-text-neutral-subtle); }
-  .wn-home-infographic__row > dd { margin: 0; font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); color: var(--sa-text-neutral-bolder); }
-  .wn-home-infographic__actions { display: flex; flex-wrap: wrap; gap: var(--sa-inline-12); margin-top: var(--sa-stack-24); }
 }

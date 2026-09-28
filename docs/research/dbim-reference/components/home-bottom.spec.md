@@ -65,6 +65,14 @@ reference's poster, `title` and `aria-label` naming it. No captions exist at the
 992–1279: the image and video share a row (8/12 · 4/12), the audit tile sits alone
 centred at 4/12 (`col-lg-4`, `justify-content-center`).
 
+**Ours, since 28 Sep 2026: col 4 is the Infographics slot.** The two central posts stay
+(DBIM 3.0 §7.3 xii); the Social Audit MIS poster gives its place to the Department's
+infographic (§7.3 xiii, `lib/website/infographics.ts`) and becomes the fourth Important
+Link. The tile is the DS `MediaThumbnail` at `fill`, the whole picture contained in the
+row's height at ≥1280 and square below it, opening the DS `Lightbox`; the viewer image's
+alt text carries every figure. Any other design that takes the infographics takes them in
+this same row.
+
 ## 3 · Partners — `.greybg.homeLogoSlider`
 
 | Element | 1440 | 390 |

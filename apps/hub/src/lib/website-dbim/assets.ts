@@ -111,7 +111,18 @@ export const DBIM_BRAND = {
   ] satisfies readonly DbimSocialLink[] as readonly DbimSocialLink[],
 } as const;
 
-/** The three tiles of the home page's campaign row (two central campaigns, one Department item). */
+/**
+ * The Department's Social Audit MIS portal: its poster on Ministry › Our Performance,
+ * and a row of Important Links. It sat in the home page's posts row until 28 Sep 2026.
+ */
+export const DBIM_SOCIAL_AUDIT = {
+  src: `${D}/home/social-audit-mis.png`,
+  alt: "Social Audit MIS Portal of the Department of Social Justice and Empowerment",
+  label: "Social Audit MIS Portal",
+  href: "https://socialaudit.dosje.gov.in/",
+} as const;
+
+/** The two CCPS central posts of the home page's posts row; the infographic beside them comes from lib/website/infographics.ts. */
 export const DBIM_CAMPAIGNS = {
   myGovDpdp: { src: `${D}/home/mygov-dpdp-rules-2025.png`, alt: "MyGov — inviting feedback on the Digital Personal Data Protection Rules 2025", href: "https://www.mygov.in/" },
   scholarshipVideo: {
@@ -119,7 +130,6 @@ export const DBIM_CAMPAIGNS = {
     src: "https://playhls.media.nic.in/igot_vod/MyGov/NOV24/video/studentmustknow.mp4",
     title: "The Scholarship Every Indian Student Must Know",
   },
-  socialAudit: { src: `${D}/home/social-audit-mis.png`, alt: "Social Audit MIS Portal of the Department of Social Justice and Empowerment", href: "https://socialaudit.dosje.gov.in/" },
 } as const;
 
 /** The three persona illustrations of "Explore User Personas", in carousel order. */

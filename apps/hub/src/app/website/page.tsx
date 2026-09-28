@@ -34,7 +34,6 @@ import { DeaddictionMapSection } from "@/components/website/DeaddictionMapSectio
    each register. */
 import { Activity } from "@/components/website-next/home/Activity";
 import { SocialMedia } from "@/components/website/SocialMedia";
-import { Infographics } from "@/components/website-next/home/Infographics";
 import { SupportSection } from "@/components/website/SupportSection";
 /* Shared with the classic page for the same reason as the marquee: one banner,
    one set of words, one image pair. It moves into website-next with the rest. */
@@ -89,11 +88,8 @@ const JSON_LD = {
  * The home page, in the live dosje.gov.in order: banner carousel, About with
  * the Ministers and the statistics strip, Offerings with What's New, the
  * Organisations, the pledges, Recent Documents, the personas, the
- * Activity Corner, social media, the infographics, and Need Support with the
- * helplines. The infographics are the one section the Figma reference does not
- * draw: DBIM 3.0 §7.3 xiii asks for them and issue BRD-24 records their absence,
- * so they were added on instruction on 28 Sep 2026.
- * NOTHING ELSE HERE IS OURS. On 24 Sep 2026 the three sections this page carried
+ * Activity Corner, social media, and Need Support with the helplines.
+ * NOTHING HERE IS OURS. On 24 Sep 2026 the three sections this page carried
  * that the Figma reference does not — the announcements ticker, the task band
  * under it, and the Nasha Mukt Bharat Abhiyaan band — were removed on the
  * instruction that the page match the design. Two of them were added for a
@@ -135,9 +131,6 @@ export default async function Home() {
         <DeaddictionMapSection />
         <Activity />
         <SocialMedia />
-        {/* DBIM 3.0 §7.3 xiii and Figure 49: after citizen engagement, before
-            the footer carousel (issue BRD-24). */}
-        <Infographics />
         <SupportSection />
         <LogoStrip />
       </main>

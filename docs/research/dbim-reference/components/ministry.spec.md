@@ -141,7 +141,7 @@ opens the helpline portal.
 | Title | 16px / 500 / 19.2, mt 5 | same |
 | Date `small.ptype` | 10px/600 ls .6 uppercase `#3D4043` | `--sa-color-text-muted` |
 
-**Content.** The Department's dashboards: the Social Audit MIS portal (`DBIM_CAMPAIGNS.socialAudit`,
+**Content.** The Department's dashboards: the Social Audit MIS portal (`DBIM_SOCIAL_AUDIT`,
 date 24.10.2025 as the reference publishes it) and the PM-AJAY dashboard of this website
 (`/dashboard`). No date is drawn where none is published.
 

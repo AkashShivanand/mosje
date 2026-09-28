@@ -2,10 +2,15 @@
  * The home page's infographics (DBIM 3.0 §7.3 xiii: "visually presents
  * Ministry/Department-specific important data"; issue BRD-24).
  *
+ * WHERE THEY GO, decided 28 Sep 2026: in the posts row — two CCPS central posts,
+ * then the infographic — and for now on the DBIM design only
+ * (components/website-dbim/home/Campaigns.tsx). Any other design that takes
+ * them takes them in the same row.
+ *
  * Each image is rendered from `tools/infographics/<id>.html` by
  * `node tools/infographics/render.mjs`. THE FIGURES BELOW ARE THE IMAGE'S TEXT
- * VERSION and must say exactly what the image says: a picture of numbers is an
- * image of text (WCAG 1.4.5), so the page carries the same figures as text.
+ * VERSION and must say exactly what the image says: a picture of numbers cannot
+ * be read aloud, so `infographicText` turns them into the viewer's alt text.
  * Change one, change both, and re-render.
  */
 
@@ -26,10 +31,16 @@ export interface Infographic {
   src: string;
   width: number;
   height: number;
-  /** Short: the figures are on the page beside it, so the alt only names it. */
-  alt: string;
   source: { label: string; href: string };
   figures: InfographicFigure[];
+}
+
+/** Everything the picture says, as one passage — the full-size image's alt text. */
+export function infographicText(info: Infographic): string {
+  const rows = info.figures.map(
+    (f) => `${f.scheme}${f.audience ? ` (${f.audience})` : ""}: ${f.values.join(", ")}.`,
+  );
+  return [`Infographic: ${info.title}. ${info.subtitle}.`, ...rows, `Source: ${info.source.label}.`].join(" ");
 }
 
 export const INFOGRAPHICS: Infographic[] = [
@@ -41,7 +52,6 @@ export const INFOGRAPHICS: Infographic[] = [
     src: "/website/images/infographics/setu-scholarships.png",
     width: 2160,
     height: 2160,
-    alt: "Infographic: Scholarships and Fellowships, 2014–15 to 2025–26. Its figures are listed as text with it.",
     // Read 28 Sep 2026. Three totals are sums of the dashboard's own parts for
     // the same period: 4,896 + 46,676; 2,163 + 12,118; 117 + 810.
     source: {
