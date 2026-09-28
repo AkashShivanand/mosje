@@ -110,12 +110,18 @@
     border-radius: 0 var(--sa-shape-4) var(--sa-shape-4) 0;
   }
 
+  /* §4.5 iv: an unselected tab takes the lightest shade under the pointer. */
+  [data-design="dbim"] .db-hm-tabs .db-hm-tab:not([aria-selected="true"]):hover {
+    --sa-btn-fill: var(--sa-color-primaryScale-100);
+    background: var(--sa-color-primaryScale-100);
+  }
+
   [data-design="dbim"] .db-hm-tabs .db-hm-tab[aria-selected="true"] {
     --sa-btn-fill: var(--sa-color-primaryScale-800);
     --sa-btn-ink: var(--sa-color-neutralScale-0);
     background: var(--sa-color-primaryScale-800);
     color: var(--sa-color-neutralScale-0);
-    font-weight: var(--sa-font-weight-semibold);
+    font-weight: var(--sa-font-weight-bold); /* Paragraph 1: Regular or Bold only (Table 3) */
   }
 
   [data-design="dbim"] .db-hm-tabs .db-hm-tab:focus-visible {
@@ -368,7 +374,7 @@
   /* Round dots, the current one in the key colour and the rest grey (DBIM 3.0 Figure 59). */
   [data-design="dbim"] .db-hm-persona .db-hm-persona__dot {
     --sa-btn-fill: transparent;
-    --db-dot: var(--sa-color-neutralScale-300);
+    --db-dot: var(--sa-color-neutralScale-400); /* Grey 02 #8E8E8E, DBIM 3.0 Table 1; 3.3:1 on white (WCAG 1.4.11) */
     display: grid;
     place-items: center;
     width: var(--sa-padding-24);
@@ -417,8 +423,8 @@
     align-items: center;
     justify-content: space-between;
     color: var(--sa-color-text-default);
-    font-size: 1rem; /* 16px; 14px at 1280–1536, below */
-    line-height: normal;
+    font-size: var(--db-fs-p); /* Paragraph 1, DBIM 3.0 Tables 3/4 */
+    line-height: var(--db-lh-p);
     text-decoration: none;
   }
 
@@ -432,20 +438,12 @@
       width: 200px; /* reference: 200 !important at 1280–1536 */
       height: 200px;
     }
-
-    [data-design="dbim"] .db-hm-links .db-hm-links__link {
-      font-size: 0.875rem; /* 14px */
-    }
   }
 
   @media (max-width: 1279.5px) {
     [data-design="dbim"] .db-hm-persona .db-hm-persona__img {
       width: 260px;
       height: 260px;
-    }
-
-    [data-design="dbim"] .db-hm-links .db-hm-links__link {
-      font-size: 1rem; /* 16px */
     }
   }
 

@@ -6,7 +6,9 @@
 @layer components {
   /* ── Footer ──────────────────────────────────────────────────────────────── */
   [data-design="dbim"] .db-footer {
-    padding: 33px 60px; /* reference 3.3rem / 6rem */
+    /* On the page's one content edge (DBIM 3.0 Figure 50); the reference's 60px left
+       the footer 60px outside every band above it at 1920. */
+    padding: 33px var(--db-gutter); /* 33: reference 3.3rem */
     color: var(--sa-color-neutralScale-0);
     background: var(--sa-color-primaryScale-800);
   }
@@ -25,10 +27,10 @@
 
   [data-design="dbim"] .db-footer__heading {
     margin: 0 0 30px;
-    font-size: var(--db-footer-heading, 1.25rem);
+    font-size: var(--db-fs-h3); /* Heading 3 Semi Bold */
     font-weight: var(--sa-font-weight-semibold);
-    line-height: 1.25rem; /* 20px */
-    color: var(--sa-color-neutralScale-100);
+    line-height: var(--db-lh-h3); /* was 20 on 20, 1.0× (§4.5 iii) */
+    color: var(--sa-color-neutralScale-0); /* Inclusive White on the key colour, §2.2 */
     text-transform: uppercase;
   }
 
@@ -50,15 +52,15 @@
   [data-design="dbim"] .db-footer__chev {
     width: 16px;
     overflow: hidden;
-    line-height: 1.25rem;
+    line-height: var(--db-lh-h3);
     color: var(--sa-color-neutralScale-0);
   }
 
   [data-design="dbim"] .db-footer__list a {
-    font-size: var(--db-footer-link, 1.25rem);
-    font-weight: var(--sa-font-weight-regular);
-    line-height: 1.25rem; /* 20px */
-    color: var(--sa-color-neutralScale-100);
+    font-size: var(--db-fs-h3); /* Heading 3 Medium: Table 3 gives 20px no Regular */
+    font-weight: var(--sa-font-weight-medium);
+    line-height: var(--db-lh-h3);
+    color: var(--sa-color-neutralScale-0);
     text-decoration: none;
   }
 
@@ -73,9 +75,9 @@
 
   [data-design="dbim"] .db-footer__owner {
     margin: 0 0 0 5px;
-    font-size: var(--db-fs-h3);
-    line-height: normal;
-    color: var(--sa-color-neutralScale-100);
+    font-size: var(--db-fs-p); /* Paragraph 1 Regular: a sentence, not a heading */
+    line-height: var(--db-lh-p);
+    color: var(--sa-color-neutralScale-0);
   }
 
   [data-design="dbim"] .db-footer__aside {
@@ -92,7 +94,7 @@
     padding-right: 7.5px;
     font-size: var(--db-fs-h3);
     font-weight: var(--sa-font-weight-semibold);
-    line-height: 1.125rem; /* 18px */
+    line-height: var(--db-lh-h3); /* was 18 on 20, 0.9× (§4.5 iii) */
     letter-spacing: 0.16px;
     color: var(--sa-color-neutralScale-0);
     text-transform: uppercase;
@@ -113,8 +115,16 @@
 
   [data-design="dbim"] .db-footer__social a {
     display: block;
+    border-radius: var(--sa-shape-4);
     line-height: 0;
     color: var(--sa-color-neutralScale-0);
+  }
+
+  /* §4.5 iv: the icons had no hover change. A tile of the colour group's 2nd shade
+     appears behind the glyph, which stays Inclusive White (§3.7). */
+  [data-design="dbim"] .db-footer__social a:hover {
+    background: var(--sa-color-primaryScale-600);
+    box-shadow: 0 0 0 var(--sa-padding-4) var(--sa-color-primaryScale-600);
   }
 
   [data-design="dbim"] .db-footer__badges {
@@ -141,22 +151,8 @@
   [data-design="dbim"] .db-footer__updated {
     margin: 10px 0 0;
     font-size: 0.875rem; /* 14px */
-    line-height: 1.125rem; /* 18px */
+    line-height: 1.25rem; /* 20px, Paragraph 2 */
     letter-spacing: 0.16px;
-  }
-
-  /* Heading 20 ≥1537 and <1280, 14 in between; links 20 except 16 in between. */
-  @media (min-width: 1280px) and (max-width: 1536px) {
-    [data-design="dbim"] .db-footer {
-      --db-footer-heading: 0.875rem;
-      --db-footer-link: 1rem;
-    }
-  }
-
-  @media (max-width: 1279px) {
-    [data-design="dbim"] .db-footer {
-      --db-footer-heading: 1rem;
-    }
   }
 
   @media (max-width: 991px) {

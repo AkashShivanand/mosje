@@ -76,13 +76,8 @@
   }
 
   /* Under Recent Documents the handoff draws the same View More as everywhere else —
-     regular weight, 12px in — at 1920 and at 390. Only the reference's 1280–1536 size
-     step is kept, a width the handoff does not draw. */
-  @media (min-width: 1280px) and (max-width: 1536px) {
-    [data-design="dbim"] .db-viewmore--sm {
-      font-size: 0.75rem; /* 12px */
-    }
-  }
+     regular weight, 12px in — at every width (the reference's 12px step at 1280–1536
+     was the mobile scale reaching a laptop; DBIM 3.0 §4.3.1). */
 
   [data-design="dbim"] .db-viewmore:hover {
     background: var(--sa-color-primaryScale-100);

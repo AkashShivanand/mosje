@@ -109,20 +109,21 @@
   [data-design="dbim"] .db-hb-feed__name {
     margin: 0;
     font-size: var(--db-fs-p);
-    font-weight: var(--sa-font-weight-semibold);
+    font-weight: var(--sa-font-weight-bold); /* Paragraph 1: Regular or Bold only (Table 3) */
     color: var(--sa-color-text-default);
   }
 
   [data-design="dbim"] .db-hb-feed__handle {
     margin: 0 0 var(--sa-stack-8);
     font-size: var(--db-fs-p);
-    color: var(--sa-color-text-muted);
+    color: var(--sa-color-neutralScale-600); /* Grey 03 #606060, DBIM 3.0 Table 1 */
   }
 
+  /* Paragraph 1 Regular in the key colour — a hyperlink colour §2.2 allows. */
   [data-design="dbim"] .db-hb-feed__more {
     font-size: var(--db-fs-p);
-    font-weight: var(--sa-font-weight-medium);
-    color: var(--sa-color-primaryScale-600);
+    font-weight: var(--sa-font-weight-regular);
+    color: var(--sa-color-primaryScale-800);
     text-decoration: underline;
     text-underline-offset: 2px;
   }
@@ -136,7 +137,7 @@
     background: var(--sa-color-neutralScale-0);
     color: var(--sa-color-primaryScale-800);
     font-size: 0.875rem; /* 14px */
-    font-weight: var(--sa-font-weight-medium);
+    font-weight: var(--sa-font-weight-semibold); /* Paragraph 2: Regular, Semi Bold or Bold (Table 3) */
     text-transform: uppercase;
   }
 
@@ -332,6 +333,13 @@
     object-fit: contain;
   }
 
+  /* DBIM 3.0 §4.5 iv: a clickable item changes under the pointer. A key-colour ring,
+     drawn outside the picture so no figure in it is covered. */
+  [data-design="dbim"] .db-hb-campaigns__link:hover img,
+  [data-design="dbim"] .db-hb-campaigns__infographic:hover {
+    box-shadow: 0 0 0 var(--sa-stroke-2) var(--sa-color-primaryScale-400);
+  }
+
   [data-design="dbim"] .db-hb-campaigns__link:focus-visible {
     outline: var(--sa-stroke-2) solid var(--sa-color-primaryScale-600);
     outline-offset: var(--sa-stroke-2);
@@ -450,6 +458,10 @@
     box-shadow:
       0 1px 2px 0 color-mix(in srgb, var(--sa-color-text-default) 6%, transparent),
       0 4px 8px 0 color-mix(in srgb, var(--sa-color-text-default) 8%, transparent);
+  }
+
+  [data-design="dbim"] a.db-hb-partners__card:hover {
+    border-color: var(--sa-color-primaryScale-400); /* §4.5 iv */
   }
 
   [data-design="dbim"] a.db-hb-partners__card:focus-visible {

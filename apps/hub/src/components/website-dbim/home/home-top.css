@@ -63,7 +63,8 @@
 
   /* Square black arrows, 35px, 30px in from the edges (24px ≤991). */
   [data-design="dbim"] .db-carousel .db-carousel__arrow {
-    --sa-btn-fill: var(--sa-color-neutralScale-1000);
+    /* The key colour: §2.2 reserves Black for the State Emblem. */
+    --sa-btn-fill: var(--sa-color-primaryScale-800);
     --sa-btn-ink: var(--sa-color-neutralScale-0);
     position: absolute;
     top: 50%;
@@ -88,7 +89,7 @@
 
   /* The play/pause disc: 40px, the ink colour, 45px from the right at 1280–1500. */
   [data-design="dbim"] .db-carousel .db-carousel__play {
-    --sa-btn-fill: var(--sa-color-text-default);
+    --sa-btn-fill: var(--sa-color-primaryScale-800); /* was the text colour used as a fill */
     --sa-btn-ink: var(--sa-color-neutralScale-0);
     position: absolute;
     right: 105px; /* reference */
@@ -106,8 +107,10 @@
     border: 0;
   }
 
+  /* §4.5 iv: the next shade up under the pointer (the reference showed no change). */
   [data-design="dbim"] .db-carousel .db-carousel__play:hover,
   [data-design="dbim"] .db-carousel .db-carousel__arrow:hover {
+    --sa-btn-fill: var(--sa-color-primaryScale-600);
     filter: none;
   }
 
@@ -217,7 +220,7 @@
   [data-design="dbim"] .db-announce .db-announce__title {
     margin: 0 0 5px; /* reference */
     font-size: var(--db-fs-h3);
-    font-weight: 900; /* reference: a <strong> inside a 600 heading computes to 900 */
+    font-weight: var(--sa-font-weight-bold); /* DBIM 3.0 §4.1.1 iii: Bold is the heaviest weight; the reference computed 900 */
     line-height: normal;
     color: var(--sa-color-primaryScale-800);
   }
@@ -356,15 +359,15 @@
     background: var(--sa-color-neutralScale-100);
   }
 
-  /* The reference's Bootstrap .container ladder (1320 / 1140 / 960 / 720 / 540). */
+  /* On the page's one content edge (DBIM 3.0 Figure 50), not the reference's
+     Bootstrap .container ladder (1320 / 1140 / 960 / 720 / 540), which put this band
+     180px inside every other one at 1920. */
   [data-design="dbim"] .db-pmq .db-pmq__in {
     display: grid;
     grid-template-columns: 1fr 2fr;
     align-items: center;
     width: 100%;
-    max-width: 1320px;
-    margin: 0 auto;
-    padding: 0 7.5px; /* reference */
+    padding: 0 var(--db-gutter);
   }
 
   [data-design="dbim"] .db-pmq .db-pmq__figure {
@@ -385,7 +388,7 @@
 
   [data-design="dbim"] .db-pmq .db-pmq__body {
     margin: 0;
-    padding: 10px; /* reference card-body */
+    padding: 10px 0; /* reference card-body, less the inset that took it off the edge */
   }
 
   /* The opening mark only (DBIM 3.0 Figure 54): Material's format_quote, FILLED and
@@ -405,9 +408,9 @@
 
   [data-design="dbim"] .db-pmq .db-pmq__quote p {
     margin: 0 0 10px; /* reference */
-    font-size: 1.5rem; /* 24px */
+    font-size: var(--db-fs-h2); /* Heading 2 Medium, DBIM 3.0 Tables 3/4 */
     font-weight: var(--sa-font-weight-medium);
-    line-height: 29px; /* reference */
+    line-height: var(--db-lh-h2);
     letter-spacing: -0.12px;
     color: var(--sa-color-primaryScale-800);
   }
@@ -428,11 +431,12 @@
     width: 49%; /* reference .gpaiSubmit */
   }
 
+  /* Paragraph 1 allows Regular or Bold only (Table 3); the reference set it Medium. */
   [data-design="dbim"] .db-pmq .db-pmq__meta {
     margin: 0;
     font-size: var(--db-fs-p);
-    font-weight: var(--sa-font-weight-medium);
-    line-height: 1.5;
+    font-weight: var(--sa-font-weight-regular);
+    line-height: var(--db-lh-p);
     text-transform: uppercase;
     color: var(--sa-color-primaryScale-800);
   }
@@ -471,26 +475,9 @@
     }
   }
 
-  @media (max-width: 1399.5px) {
-    [data-design="dbim"] .db-pmq .db-pmq__in {
-      max-width: 1140px;
-    }
-  }
-
-  @media (max-width: 1199.5px) {
-    [data-design="dbim"] .db-pmq .db-pmq__in {
-      max-width: 960px;
-    }
-  }
-
   @media (max-width: 991.5px) {
     [data-design="dbim"] .db-pmq .db-pmq__in {
       grid-template-columns: 1fr;
-      max-width: 720px;
-    }
-
-    [data-design="dbim"] .db-pmq .db-pmq__quote p {
-      font-size: 1.25rem; /* 20px */
     }
   }
 
@@ -499,12 +486,11 @@
       padding: var(--sa-padding-24) 0;
     }
 
-    [data-design="dbim"] .db-pmq .db-pmq__in {
-      max-width: 540px;
-    }
-
+    /* Heading 3 Medium on a phone (16 / 22): the reference's 14px Medium is a
+       weight Table 4 does not allow at 14, and its 29px leading was 2.07×. */
     [data-design="dbim"] .db-pmq .db-pmq__quote p {
-      font-size: 0.875rem; /* 14px, as the reference draws it at 390 */
+      font-size: var(--db-fs-h3);
+      line-height: var(--db-lh-h3);
     }
 
     [data-design="dbim"] .db-pmq .db-pmq__foot {
@@ -518,12 +504,6 @@
 
     [data-design="dbim"] .db-pmq .db-pmq__action {
       align-self: flex-end;
-    }
-  }
-
-  @media (max-width: 575.5px) {
-    [data-design="dbim"] .db-pmq .db-pmq__in {
-      max-width: none;
     }
   }
 
@@ -568,10 +548,12 @@
     margin-top: 10px; /* reference */
   }
 
+  /* Body copy is Paragraph 1 (16 / 24, 14 / 21 on a phone). The reference set it at
+     20px Regular, a size Table 3 gives only to headings, which must be Medium or heavier. */
   [data-design="dbim"] .db-about .db-about__copy {
     margin-bottom: var(--sa-stack-40);
-    font-size: 1rem; /* 16px */
-    line-height: 30px; /* reference */
+    font-size: var(--db-fs-p);
+    line-height: var(--db-lh-p);
     letter-spacing: -0.1px;
     /* The reference justifies this block; with a full sentence in it that opens rivers
        between words (WCAG 1.4.8), so it is set ragged-right. */
@@ -604,9 +586,9 @@
     min-height: 60px; /* reference */
     height: 100%;
     padding: var(--sa-padding-12) var(--sa-padding-8);
-    font-size: 1rem; /* 16px */
+    font-size: var(--db-fs-h3); /* Heading 3 Semi Bold */
     font-weight: var(--sa-font-weight-semibold);
-    line-height: 22px; /* reference */
+    line-height: var(--db-lh-h3); /* was 22 on 20, 1.1× (§4.5 iii) */
     text-align: center;
     text-decoration: none;
     color: var(--sa-color-text-default);
@@ -689,14 +671,6 @@
     [data-design="dbim"] .db-about {
       padding-block: var(--sa-padding-80);
     }
-
-    [data-design="dbim"] .db-about .db-about__copy {
-      font-size: 1.25rem; /* 20px */
-    }
-
-    [data-design="dbim"] .db-about .db-about__tile {
-      font-size: 1.25rem; /* 20px */
-    }
   }
 
   @media (max-width: 1199.5px) {
@@ -706,11 +680,6 @@
   }
 
   @media (max-width: 991.5px) {
-    [data-design="dbim"] .db-about .db-about__copy {
-      font-size: 0.875rem; /* 14px */
-      line-height: 21px; /* reference */
-    }
-
     [data-design="dbim"] .db-about .db-about__tiles {
       grid-template-columns: repeat(2, 1fr);
     }

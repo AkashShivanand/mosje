@@ -24,13 +24,21 @@
 
 @layer components {
   [data-design="dbim"] {
-    /* ≥1537px: the reference's large scale */
+    /* DBIM 3.0 §4.3.1 Table 3, the desktop view: H1 36 · H2 24 · H3 20 · P1 16 ·
+       P2 14 · S1 12, with the leading the handoff's type styles bind (1.2–1.5×,
+       §4.5 iii). The reference dropped to the mobile scale at 1536px, so a 1440
+       laptop read 20px headings over 14px body; the manual has two views, not three. */
     --db-fs-h1: 2.25rem;   /* 36px */
     --db-fs-h2: 1.5rem;    /* 24px */
     --db-fs-h3: 1.25rem;   /* 20px */
     --db-fs-h4: 0.875rem;  /* 14px */
     --db-fs-p: 1rem;       /* 16px */
     --db-fs-small: 0.75rem;/* 12px */
+    --db-lh-h2: 2rem;      /* 32px */
+    --db-lh-h3: 1.75rem;   /* 28px */
+    --db-lh-p: 1.5rem;     /* 24px */
+    --db-lh-p2: 1.25rem;   /* 20px */
+    --db-lh-small: 1.125rem;/* 18px */
     /* The reference's gutters: 120px ≥1537, 64px 1280–1536, 16px on a phone */
     --db-gutter: var(--sa-padding-120);
 
@@ -51,13 +59,24 @@
 
   @media (max-width: 1536px) {
     [data-design="dbim"] {
+      --db-gutter: var(--sa-padding-64);
+    }
+  }
+
+  /* DBIM 3.0 §4.3.2 Table 4, the mobile view — below the reference's 992 large breakpoint. */
+  @media (max-width: 991.5px) {
+    [data-design="dbim"] {
       --db-fs-h1: 1.5rem;    /* 24px */
       --db-fs-h2: 1.25rem;   /* 20px */
       --db-fs-h3: 1rem;      /* 16px */
       --db-fs-h4: 0.75rem;   /* 12px */
       --db-fs-p: 0.875rem;   /* 14px */
       --db-fs-small: 0.625rem;/* 10px */
-      --db-gutter: var(--sa-padding-64);
+      --db-lh-h2: 1.75rem;   /* 28px */
+      --db-lh-h3: 1.375rem;  /* 22px */
+      --db-lh-p: 1.3125rem;  /* 21px */
+      --db-lh-p2: 1.125rem;  /* 18px */
+      --db-lh-small: 0.9375rem;/* 15px */
     }
   }
 

@@ -96,3 +96,27 @@ controls. Home section order follows Figure 49. The Minister headshots are 1:1, 
 seniority and carry alt text. The cookie bar gives accept, decline and customise equal weight. There
 is one h1, heading order is correct, `lang="en"` is set, the skip link works, and focus rings are
 visible.
+
+## Compliance pass (branch `fix/dbim-home-compliance`)
+
+| Item | Status | Change |
+|---|---|---|
+| Closed UX4G panel in the Tab order | **Fixed** (estate-wide) | The panel is inert from the moment it exists. An `IntersectionObserver` tracks whether it is on screen, replacing a 6-second poll that gave up on slow loads. `/website` had never recovered. |
+| Mobile type scale at 1280–1536 | **Fixed** | Desktop scale (Table 3) from 992px up; Table 4 below it. The nav and View More overrides are removed. |
+| Illegal size/weight pairs | **Fixed** | Selected tab, social name → P1 Bold. "View on" link, PM caption → P1 Regular. "Show Latest Posts" → P2 Semi Bold. Footer links → H3 Medium. Announcements → Bold. About copy and footer lineage → P1 Regular. |
+| Leading outside 1.2–1.5 | **Fixed** | Footer heading, links and subscribe line; tiles; PM quote on a phone. All now take the role leadings of the Figma styles. |
+| Off-palette colours | **Fixed** | Inactive dot → Grey 02, handle → Grey 03, banner arrows and play → key colour. Footer text → Inclusive White. Links → key colour. |
+| No hover change | **Fixed** | Banner arrows and play, inactive tabs, partner cards, campaign tiles, footer icons. |
+| Phone lock-up hierarchy | **Fixed** | Government and Ministry lines P1 (14); Department H3 Bold (16). |
+| Header not pinned on a phone | **Fixed** | The search and menu row stays pinned; the offset is measured. |
+| Footer and PM Quote off the page edge | **Fixed** | Both on `--db-gutter` (120 at 1920). |
+| Cookie bar hides focus (2.4.11) | **Fixed** | The page reserves the bar's height as `scroll-padding-bottom` while the bar is shown. |
+| PM portrait not transparent | **Fixed** | The shared transparent cut-out. |
+| "Explore our Social Media Platforms" | **Fixed** | "In Social Media" (Figure 61), on the DBIM design only. |
+| All-caps feed titles, "lnviting / lnterest" | **Fixed on display** | `dbimFeedTitle`: Title Case for titles ≥80% capitals, acronyms kept, the ln→In typo repaired. The Department's data is unchanged. |
+| Logo files over 100 KB | **Open** | Rounding coordinates gets 196→144 KB and 761→511 KB. Getting under 100 KB needs an SVG optimiser or re-export from source artwork. |
+| Stale first banner slide | **Open, by decision** | Kept until the CCPS feed is connected. |
+| Campaign video captions | **Open, by decision** | Player kept; no transcript exists. |
+| CCPS banner and posts feed | **Open** | Needs the CCPS API from the DBIM programme. |
+| Newer PM quote | **Open** | Needs the Department's material. |
+| Infographic section | **Fixed upstream** | PR #613 put the SETU infographic in the posts row. |

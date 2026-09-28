@@ -13,7 +13,8 @@ import "./home-top.css";
  * only the date's dd.mm.yyyy form is this layout's own, as the reference prints it.
  */
 export function DbimPmQuote() {
-  const pm = Q.image.portrait;
+  // The transparent cut-out (DBIM 3.0 A.4.1.2 iv: "PM image with a transparent background").
+  const pm = Q.image.cutout;
   const [y, m, d] = Q.dateTime.split("-");
   return (
     <section className="db-pmq" aria-labelledby="db-pmq-title">

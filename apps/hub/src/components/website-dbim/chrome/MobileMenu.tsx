@@ -24,10 +24,13 @@ export function DbimMobileMenu() {
   const current = dbimMenuFor(path)?.path;
   const [expanded, setExpanded] = React.useState<string | undefined>(current);
   const close = React.useCallback(() => setOpen(false), []);
+  const hamburger = React.useRef<HTMLButtonElement>(null);
+  usePinnedSearchRow(hamburger);
 
   return (
     <>
       <IconButton
+        ref={hamburger}
         variant="neutral"
         appearance="text"
         className="db-hamburger"
@@ -81,4 +84,27 @@ export function DbimMobileMenu() {
       </SideSheet>
     </>
   );
+}
+
+/**
+ * Keeps the search-and-menu row on screen below 992px (DBIM 3.0 A.4.1.2 i: the header
+ * and navigation "should stay sticky"). The whole header is sticky there
+ * (chrome.css), pulled up by exactly the height above that row, so the names and
+ * emblem scroll away and the row the reader needs stays. The distance depends on how
+ * the names wrap, so it is measured rather than typed, and re-measured on resize.
+ */
+function usePinnedSearchRow(anchor: React.RefObject<HTMLElement | null>) {
+  React.useEffect(() => {
+    const row = anchor.current?.closest<HTMLElement>(".db-header__search");
+    const header = row?.closest<HTMLElement>(".db-header");
+    if (!row || !header) return;
+    const measure = () => {
+      const offset = row.getBoundingClientRect().top - header.getBoundingClientRect().top;
+      header.style.setProperty("--db-header-pin", `${-Math.round(offset)}px`);
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(header);
+    return () => observer.disconnect();
+  }, [anchor]);
 }
