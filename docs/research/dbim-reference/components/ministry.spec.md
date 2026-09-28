@@ -1,4 +1,4 @@
-# Ministry — About Us, Our Team, Our Division, Our Organisation, Our Performance, Directory
+# Ministry — About Us, Our Team, Our Division, Our Organisation, Our Scheme Portals, Our Performance, Directory
 
 Reference stems: `ministry`, `ministry_our_team`, `ministry_our_division`, `ministry_our_organisation`,
 `ministry_our_performance`, `ministry_directory`. Values are computed at 1440 (the reference's
@@ -77,7 +77,13 @@ breaks out of the container to 30px from the viewport edge (10px ≤767).
 | Address | 14px | same |
 | <992 | each cell becomes label (`small`, uppercase, 33% wide) + value | same |
 
-**Content.** Ministers: `DBIM_PEOPLE.ministers` (portraits fetched from the reference). Offices:
+**Chart hierarchy (DBIM 3.0 §A.5.1.2, checklist 13).** Three levels, not one chain: the
+Union Minister; the two Ministers of State side by side under a bar; the Secretary
+(`getDepartmentSecretary()`, portrait placeholder — no photograph is published). The
+reference's single vertical chain put one Minister of State above the other.
+
+**Content.** Ministers: `ABOUT_US.ministers` (lib/website-shared/home.ts). Office order is the
+reference's except that AS & FA follows the Additional Secretary (seniority, checklist 30). Offices:
 the Department's register (`getOfficialsByOrganisation("MoSJE")`, 162 records), grouped by the
 register's `group`, in the reference's office order; an office the reference does not list goes
 after, alphabetically. Inside an office: the head first (a post that is not a staff post), then
@@ -112,7 +118,8 @@ exist only as JSX in the redesign's page files and are not duplicated here.
 ## 4. `/ministry/our-organisation` and `/ministry/our-organisation/[slug]`
 
 **Decision:** our registry DOES type its organisations (`category`: commissions · corporations
-· foundations · schemes), so the page follows the reference — one card per type, opening a
+· foundations · schemes), so the page follows the reference — for the first three types. The
+fourth, `schemes`, is its own tab since 28 Sep 2026 (§4a) — one card per type, opening a
 listing of that type's organisations; each organisation card opens its detail page. One
 dynamic segment serves both: a type key renders the listing, an organisation id the detail.
 
@@ -126,9 +133,22 @@ dynamic segment serves both: a type key renders the listing, an organisation id 
 
 **Content.** Type card description = the names of the organisations in it, from the registry
 (no invented prose). Organisation detail = `getOrganisation(id)` from `@/lib/website/content`:
-prose sections only (`kindOf()`), cleaned with `cleanHtml()`, section headings as blue h2s,
-summary box = the first section's lead paragraph, which then leaves the body so it is said once. NHAA has no ingested record; its card
-opens the helpline portal.
+prose sections only (`kindOf()`) **from the body's first "About…" section onward** — what the
+live page shows above it is a ticker, a banner or a counter strip, not prose — cleaned with
+`cleanHtml()`, section headings as blue h2s. Summary box and card description = the body's
+lead from `content/website/organisation-details.ts` (the one the New design's organisation
+pages use), else the "About…" section's first paragraph, which then leaves the body so it is
+said once. Cards take its first sentence.
+
+## 4a. `/ministry/our-scheme-portals` and `/ministry/our-scheme-portals/[slug]`
+
+The Department's addition to DBIM's second level (28 Sep 2026). The scheme portals left the
+organisations list on the New design's home page and masthead; this design follows. Same
+card grid and detail layout as §4. Portals and order: `schemePortals()` in
+`lib/website-shared/organisations.ts` (shared with the New home page). The detail page ends in
+a "Portal" link row to the registry's `portalHref` (also read by the masthead's Scheme
+Portals column). `/ministry/our-organisation/schemes` and
+`/ministry/our-organisation/<scheme id>` redirect (308) here.
 
 ## 5. `/ministry/our-performance`
 
@@ -142,8 +162,8 @@ opens the helpline portal.
 | Date `small.ptype` | 10px/600 ls .6 uppercase `#3D4043` | `--sa-color-text-muted` |
 
 **Content.** The Department's dashboards: the Social Audit MIS portal (`DBIM_SOCIAL_AUDIT`,
-date 24.10.2025 as the reference publishes it) and the PM-AJAY dashboard of this website
-(`/dashboard`). No date is drawn where none is published.
+date 24.10.2025 as the reference publishes it), the live site's Beneficiary Dashboard
+(dosje.gov.in/dashboard/) and the PM-AJAY dashboard of this website (`/dashboard`). No date is drawn where none is published.
 
 ## 6. `/ministry/directory`
 

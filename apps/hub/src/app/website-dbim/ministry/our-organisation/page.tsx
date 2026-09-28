@@ -7,10 +7,10 @@ import { organisationTypeCards } from "@/lib/website-dbim/ministry";
 
 export const metadata: Metadata = {
   title: "Our Organisation | Department of Social Justice and Empowerment",
-  description: "The commissions, corporations, foundations and scheme portals of the Department of Social Justice and Empowerment.",
+  description: "The commissions, corporations, foundations and autonomous bodies of the Department of Social Justice and Empowerment.",
 };
 
-/** Ministry › Our Organisation — one card per type of body (spec §4). */
+/** Ministry › Our Organisation — one card per type of body (spec §4). The scheme portals have a tab of their own. */
 export default function DbimOurOrganisationPage() {
   return (
     <DbimPage title="Our Organisation" crumbs={[{ label: "Ministry", path: "/ministry" }]} path="/ministry/our-organisation" tabs={DBIM_MENU[0]!.children}>

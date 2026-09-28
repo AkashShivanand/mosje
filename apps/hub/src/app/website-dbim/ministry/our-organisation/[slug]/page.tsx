@@ -1,22 +1,22 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { DbimPage } from "@/components/website-dbim/layout/DbimPage";
 import { DbimCardGrid } from "@/components/website-dbim/ministry/CardGrid";
-import { DbimDetailLayout } from "@/components/website-dbim/ministry/DetailLayout";
-import { DbimLinkRow } from "@/components/website-dbim/ministry/DocRow";
-import { DBIM_MENU } from "@/lib/website-dbim/nav";
+import { DbimOrganisationBody } from "@/components/website-dbim/ministry/OrganisationBody";
+import { DBIM_MENU, dbimHref } from "@/lib/website-dbim/nav";
 import {
+  SCHEME_PORTALS_PATH,
   isOrganisationType,
+  isSchemePortal,
   organisationCards,
   organisationDetail,
   organisationIds,
   organisationTypeLabel,
 } from "@/lib/website-dbim/ministry";
-import { withAssetBasePath } from "@/lib/website/content";
 
 type Props = { params: Promise<{ slug: string }> };
 
-const TYPES = ["commissions", "foundations", "corporations", "schemes"];
+const TYPES = ["commissions", "foundations", "corporations"];
 const CRUMBS = [
   { label: "Ministry", path: "/ministry" },
   { label: "Our Organisation", path: "/ministry/our-organisation" },
@@ -38,6 +38,11 @@ export default async function DbimOrganisationPage({ params }: Props) {
   const { slug } = await params;
   const tabs = DBIM_MENU[0]!.children;
 
+  /* The scheme portals moved to a tab of their own on 28 Sep 2026; their old
+     addresses here keep working. */
+  if (slug === "schemes") permanentRedirect(dbimHref(SCHEME_PORTALS_PATH));
+  if (isSchemePortal(slug)) permanentRedirect(dbimHref(`${SCHEME_PORTALS_PATH}/${slug}`));
+
   if (isOrganisationType(slug)) {
     const label = organisationTypeLabel(slug);
     return (
@@ -57,21 +62,7 @@ export default async function DbimOrganisationPage({ params }: Props) {
       activeTab="/ministry/our-organisation"
       tabs={tabs}
     >
-      <DbimDetailLayout summary={o.summary}>
-        {o.sections.map((s, i) => (
-          <section key={i} aria-label={s.heading ?? o.title}>
-            {s.heading ? <h2>{s.heading}</h2> : null}
-            {/* Ingested prose from dosje.gov.in, cleaned by cleanHtml() (asset paths, links, headings, tables). */}
-            <div dangerouslySetInnerHTML={{ __html: withAssetBasePath(s.html) }} />
-          </section>
-        ))}
-        {o.externalUrl ? (
-          <section aria-labelledby="org-portal">
-            <h2 id="org-portal">Portal</h2>
-            <DbimLinkRow label={o.title} href={o.externalUrl} external />
-          </section>
-        ) : null}
-      </DbimDetailLayout>
+      <DbimOrganisationBody o={o} />
     </DbimPage>
   );
 }

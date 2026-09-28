@@ -1,5 +1,5 @@
 import type { NavItem } from "@mosje/design-system";
-import { getOrganisationByAbbr } from "@/data/website";
+import { getOrganisation, getOrganisationByAbbr } from "@/data/website";
 
 /**
  * The redesign's primary navigation — THE LIVE SITE'S MENU, restored 22 Sep 2026.
@@ -22,6 +22,8 @@ import { getOrganisationByAbbr } from "@/data/website";
  * never retyped, so the menu cannot drift from the organisation pages.
  */
 const mark = (abbr: string) => getOrganisationByAbbr(abbr)?.logoSrc;
+/** A scheme's portal, from the registry — the DBIM design's Our Scheme Portals reads the same field. */
+const portal = (id: string) => getOrganisation(id)?.portalHref ?? "#";
 
 export const NAV: NavItem[] = [
   { label: "Home", href: "/website" },
@@ -77,13 +79,13 @@ export const NAV: NavItem[] = [
         heading: "Scheme Portals",
         wide: true,
         items: [
-          { abbr: "PM-AJAY", name: "Pradhan Mantri Anusuchit Jaati Abhyuday Yojana", href: "/portals/pm-ajay", iconSrc: mark("PM-AJAY") },
-          { abbr: "National Overseas Scholarship", name: "For Scheduled Castes and Others", href: "https://nosmsje.gov.in", external: true, iconSrc: mark("NOS") },
-          { abbr: "SMILE — Transgender Persons", name: "Comprehensive Rehabilitation for Welfare of Transgender Persons", href: "/portals/tg", iconSrc: mark("SMILE") },
+          { abbr: "PM-AJAY", name: "Pradhan Mantri Anusuchit Jaati Abhyuday Yojana", href: portal("pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay"), iconSrc: mark("PM-AJAY") },
+          { abbr: "National Overseas Scholarship", name: "For Scheduled Castes and Others", href: portal("national-overseas-scholarship"), external: true, iconSrc: mark("NOS") },
+          { abbr: "SMILE — Transgender Persons", name: "Comprehensive Rehabilitation for Welfare of Transgender Persons", href: portal("national-portal-for-transgender-persons"), iconSrc: mark("SMILE") },
           { abbr: "SMILE — Persons Engaged in Begging", name: "Comprehensive Rehabilitation of Persons Engaged in Begging", href: "/website/schemes-services/support-for-marginalized-individuals-for-livelihood-and-enterprise-smile", iconSrc: mark("SMILE") },
-          { abbr: "Senior Citizens Welfare", name: "Atal Vayo Abhyuday Yojana", href: "/portals/scw", iconSrc: mark("SCW") },
-          { abbr: "Nasha Mukt Bharat Abhiyaan", name: "National Action Plan for Drug Demand Reduction", href: "/portals/nmba", iconSrc: mark("NMBA") },
-          { abbr: "National Helpline Against Atrocities", name: "Helpline 14566", href: "/portals/nhapoa", iconSrc: mark("NHAA") },
+          { abbr: "Senior Citizens Welfare", name: "Atal Vayo Abhyuday Yojana", href: portal("senior-citizens-welfarescw"), iconSrc: mark("SCW") },
+          { abbr: "Nasha Mukt Bharat Abhiyaan", name: "National Action Plan for Drug Demand Reduction", href: portal("nasha-mukt-bharat-abhiyaan"), iconSrc: mark("NMBA") },
+          { abbr: "National Helpline Against Atrocities", name: "Helpline 14566", href: portal("national-helpline-against-atrocities"), iconSrc: mark("NHAA") },
         ],
         action: { label: "View All Schemes", href: "/website/schemes-services" },
       },
