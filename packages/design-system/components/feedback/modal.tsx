@@ -4,17 +4,9 @@ import * as React from "react";
 import { cn } from "../../utils/cn";
 import { Button } from "../actions/button";
 import { IconButton } from "../actions/icon-button";
+import { openDialogLayer } from "../../foundations/use-dialog-layer";
 import "./modal.css";
 
-/**
- * Set on `<html>` for as long as ANY dialog is open. The floating rails read it
- * and stand down — see the `[data-sa-dialog-open]` rule in `modal.css`.
- *
- * The UX4G accessibility panel is deliberately NOT covered by that rule: it is
- * third-party markup at 999999, statutory, and not ours to push behind a scrim.
- */
-const DIALOG_OPEN_ATTR = "data-sa-dialog-open";
-let OPEN_DIALOGS = 0;
 
 export type ModalSize = "sm" | "md" | "lg";
 
@@ -257,11 +249,10 @@ export function Modal({
      * that climbed over the rails would climb over toasts on the way, and buy
      * one fix with a second defect.
      *
-     * A COUNTER, not a boolean: a dialog opened from inside another must not
-     * hand the page back when the inner one closes.
+     * The counter, and the reason it is one, live in `foundations/dialog-layer.ts`,
+     * shared with every other page-blocking dialog.
      */
-    OPEN_DIALOGS += 1;
-    document.documentElement.setAttribute(DIALOG_OPEN_ATTR, "");
+    const releaseDialogLayer = openDialogLayer();
 
     /*
      * THE LAST CONTROL FOCUSED INSIDE, so a Tab can be computed from where the reader actually
@@ -411,8 +402,7 @@ export function Modal({
       document.removeEventListener("mousedown", onDown);
       document.removeEventListener("mouseup", onUp);
       document.body.style.overflow = prevOverflow;
-      OPEN_DIALOGS = Math.max(0, OPEN_DIALOGS - 1);
-      if (OPEN_DIALOGS === 0) document.documentElement.removeAttribute(DIALOG_OPEN_ATTR);
+      releaseDialogLayer();
       opener?.focus?.();
     };
   }, [open, requestClose, keepEditing]);

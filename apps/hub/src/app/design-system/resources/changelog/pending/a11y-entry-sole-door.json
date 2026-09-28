@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "A HEADER CAN BE THE PAGE'S ONLY ACCESSIBILITY DOOR. `useAccessibilityEntryClaim(active, ref, { soleDoor: true })` keeps the UX4G floating button hidden at every width and scroll position, not only while the claiming icon is on screen. First and only consumer: the website's DBIM design header, where a phone got the floating button back once the header scrolled away — at 285,718, stacked with back-to-top over the chat launcher's corner. Decided by the product owner on 28 Sep 2026: the panel opens from the top icon only. Without the option nothing changes: every other header keeps rule 4a or 4b of accessibility-entry-point.md."
+}

@@ -46,6 +46,8 @@ export { useScrollReveal } from "./foundations/reveal";
 export { useOnlineStatus } from "./foundations/online-status";
 export { useStickyRange } from "./foundations/sticky-range";
 export type { StickyRangeOptions, StickyState } from "./foundations/sticky-range";
+export { openDialogLayer, useDialogLayer } from "./foundations/use-dialog-layer";
+export type { DialogLayerRoot } from "./foundations/use-dialog-layer";
 
 // ---- Components: Icon -------------------------------------------------------
 // Material Symbols Rounded, weight 300 — the official icon system for all MoSJE apps.
@@ -556,6 +558,7 @@ export type {
 // the bar (accessibility-entry-point.md): open the panel, and claim the entry so the
 // widget's floating button hides. Behaviour is AccessibilityControls' own, unchanged.
 export { openUx4gWidget, useAccessibilityEntryClaim } from "./components/utilities/accessibility-controls";
+export type { AccessibilityEntryClaimOptions } from "./components/utilities/accessibility-controls";
 
 // Navbar — SiteHeader (the SAMAVESH Navbar: Website + Portal variants, 3-tier).
 export { SAMAVESH_COBRAND } from "./components/navigation/header/samavesh-cobrand";

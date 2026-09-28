@@ -131,6 +131,40 @@ about; the product rungs (dropdown 100 … tooltip 800) live on the foundation p
 split is deliberate; do not collapse it to one blanket maximum. Inside a component's
 own stacking context, `--sa-z-raised` (1) and a literal 2 are local order, not layering.
 
+### While a dialog is open (decided 2026-09-28)
+
+**A page-blocking dialog covers both rails. The rails step down; the dialog does not
+step up.** While any `aria-modal="true"` dialog is open, `<html>` carries
+`data-sa-dialog-open`, and every element marked `data-sa-wall-occupant` or
+`data-sa-corner-occupant` drops to `--sa-z-base`, under the dialog's scrim. Close the
+dialog and they come back.
+
+| Under an open dialog | What happens | Why |
+|---|---|---|
+| Chat launcher, Important Links, back-to-top, cookie bar | step under the scrim | `aria-modal` has told assistive technology the page is inert; a launcher still floating on it is clickable chrome on a page that claims to be unavailable |
+| The **open** chat panel | steps under too | `--sa-z-top` protects it from anything decorative; a dialog the reader opened is not decorative |
+| Demo dock | steps under, from its own stylesheet | it cannot carry `data-sa-wall-occupant` — it is the element that measures the wall |
+| UX4G accessibility control | **stays on top** | statutory and third-party; pushing it behind a scrim would be the worse defect |
+
+**Why not raise the dialog instead.** The ladder puts `toast` (700) above the dialogs
+so a save confirmation is readable while one is open. A dialog lifted past 1010 would
+climb over the toasts on the way. And the rails already sit high for one reason —
+beating product chrome — which stops being true the moment a dialog owns the screen.
+
+**How a dialog takes part: one call.** `useDialogLayer(open)` (or `openDialogLayer()`
+in an effect) from `@mosje/design-system` — it counts, so a dialog opened from inside
+another does not hand the page back when the inner one closes, and it brings the
+stylesheet with it. Modal, Lightbox, SideSheet and NavSheet call it. An app's own
+`aria-modal` dialog calls it too. A NON-modal surface — Popover, DatePicker, a menu —
+must not: the page is still usable, and the launcher should stay.
+
+Until 2026-09-28 only Modal set the attribute, from a private copy of the counter, so
+the chat launcher and the demo dock floated over the Lightbox, the side sheet and the
+mobile navigation sheet. A widget whose z-index comes from a Tailwind utility sits in
+the `utilities` layer and outranks the design system's rule; it must repeat the
+override there, as `ImportantLinks` does with
+`[html[data-sa-dialog-open]_&]:z-[var(--sa-z-base)]`.
+
 ## Narrow viewports
 
 The stack grows upward, so three occupants plus a 32px inset is 268px of the
@@ -176,7 +210,10 @@ Four things the attribute does not enforce for you:
 - [ ] The attribute is gated on the element actually being `position: fixed`
 - [ ] Its offset is read from the rail, never hard-coded
 - [ ] Its place in the corner stack follows permanence — transient on top
-- [ ] Its z-index is a literal with a comment saying what it must beat and why
+- [ ] Its z-index is a `--sa-z-*` rung, with a comment saying what it must beat and why
+- [ ] It steps under an open dialog — checked with a Modal AND a Lightbox open; a
+      Tailwind `z-*` on it needs the `[html[data-sa-dialog-open]_&]` override too
+- [ ] A new `aria-modal` dialog calls `useDialogLayer(open)`; a non-modal one does not
 - [ ] It does not make a fourth corner occupant without a breakpoint decision
 - [ ] Verified with something else already in the corner, not on an empty page
 - [ ] If transient, it honours `data-sa-rail-clear` via `useRailClearance` — checked at

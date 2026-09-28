@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "AN OPEN DIALOG NOW COVERS THE FLOATING RAILS, WHICHEVER DIALOG IT IS. Only Modal told the page a dialog owned it, from a private copy of a counter, so the chat launcher and the demo dock floated clickable over the Lightbox, the side sheet and the mobile navigation sheet — seen with a scholarship infographic open full size. `useDialogLayer(open)` and `openDialogLayer()` are now exported from `foundations/use-dialog-layer`; Modal, Lightbox, SideSheet, NavSheet and four app dialogs (docs search, NMBA add-event, NMBA add-document, NMBA add-user) call it, and the rule that drops every `data-sa-wall-occupant` and `data-sa-corner-occupant` to `z/base` travels with it instead of living in modal.css. The demo dock steps down from its own stylesheet; the UX4G accessibility control deliberately stays on top. Decision and reasons: floating-element-placement.md § \"While a dialog is open\"."
+}

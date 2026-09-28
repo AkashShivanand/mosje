@@ -24,6 +24,8 @@ export function LatestUpdatesPanel({ items }: LatestUpdatesPanelProps) {
       // Without it the panel is reachable by landmark but invisible to heading
       // navigation — on a notice board, the thing people most want to jump to.
       labelAs="h3"
+      // The live site's name for this rail, shared by every design.
+      label="What's New"
       // It shares the Offerings row with the scheme cards, so it takes the
       // row's height rather than standing at its own — `rows` is the floor.
       height="fill"
@@ -31,7 +33,7 @@ export function LatestUpdatesPanel({ items }: LatestUpdatesPanelProps) {
       items={items}
       linkAs={Link}
       action={
-        <Link href="/website/notices" className={buttonClasses("primary", "inverseOutlined", "sm")}>
+        <Link href="/website/updates" className={buttonClasses("primary", "inverseOutlined", "sm")}>
           View All
         </Link>
       }

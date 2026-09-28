@@ -10,12 +10,12 @@
  * Server-only in practice: it reads the officials register and the ingested
  * organisation pages. Pages pass the trimmed rows below to client lists.
  */
-import { DIVISIONS, ORGANISATIONS, getDepartmentSecretary, type OrganisationCategory } from "@/data/website";
+import { DIVISIONS, ORGANISATIONS, ORGANISATION_CATEGORY_LABELS, getDepartmentSecretary, type OrganisationCategory } from "@/data/website";
 import { getDocument, getOfficialsByOrganisation, getOrganisation } from "@/lib/website/content";
 import { localiseDocumentUrl } from "@/lib/website/sample-documents";
 import { phoneGroups } from "@/components/website-next/templates/people-format";
 import { cleanHtml, firstSentence, kindOf, stripTags } from "@/components/website-next/templates/organisation-content";
-import { DBIM_CAMPAIGNS } from "./assets";
+import { DBIM_SOCIAL_AUDIT } from "./assets";
 import { DBIM_REGISTERS, registerPath } from "./division-registers";
 
 /* ── About Us ──────────────────────────────────────────────────────────────── */
@@ -418,14 +418,11 @@ export function divisionDetail(slug: string) {
 /* ── Our Organisation ──────────────────────────────────────────────────────── */
 
 /** The registry's category names, which the redesign's Organisations page uses too. */
-const TYPE_LABEL: Record<OrganisationCategory, string> = {
-  commissions: "Commissions",
-  corporations: "Corporations",
-  foundations: "Foundations & Autonomous Bodies",
-  schemes: "Schemes & Portals",
-};
-
-const TYPE_ORDER: OrganisationCategory[] = ["commissions", "foundations", "corporations", "schemes"];
+/* The type labels and their order are the live home page's, shared with every
+   design through the registry (data/website/organisations.ts): Commission,
+   Corporations, Foundation & Autonomous Bodies, Scheme Portals. */
+const TYPE_LABEL = ORGANISATION_CATEGORY_LABELS;
+const TYPE_ORDER = Object.keys(ORGANISATION_CATEGORY_LABELS) as OrganisationCategory[];
 
 export function isOrganisationType(slug: string): slug is OrganisationCategory {
   return (TYPE_ORDER as string[]).includes(slug);
@@ -517,8 +514,8 @@ export interface DbimDashboardTile {
 export const DBIM_DASHBOARDS: DbimDashboardTile[] = [
   {
     title: "Social Audit",
-    image: { src: DBIM_CAMPAIGNS.socialAudit.src, alt: DBIM_CAMPAIGNS.socialAudit.alt },
-    href: DBIM_CAMPAIGNS.socialAudit.href,
+    image: { src: DBIM_SOCIAL_AUDIT.src, alt: DBIM_SOCIAL_AUDIT.alt },
+    href: DBIM_SOCIAL_AUDIT.href,
     external: true,
     // SOURCE: the reference's tile, master-socialjustice.digifootprint.gov.in/ministry/our-performance, 25 Sep 2026.
     date: "24.10.2025",

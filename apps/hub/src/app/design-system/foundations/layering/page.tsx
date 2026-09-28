@@ -75,6 +75,31 @@ export default function LayeringPage(): React.JSX.Element {
           ),
         },
         {
+          id: "dialogs",
+          keyword: "DIALOGS",
+          title: "An Open Dialog Covers the Rails",
+          description:
+            "While any page-blocking dialog is open, the floating rails step down under its scrim — the chat launcher, Important Links, back-to-top, the cookie bar, an open chat panel and the demo dock. Only the statutory accessibility control stays above it.",
+          content: (
+            <>
+              <p>
+                The rails sit at 1000 and above to beat product chrome, which stops being their job the moment a dialog owns the
+                screen. A dialog calls <code>useDialogLayer(open)</code>; that marks <code>&lt;html&gt;</code> with{" "}
+                <code>data-sa-dialog-open</code>, and every element carrying <code>data-sa-wall-occupant</code> or{" "}
+                <code>data-sa-corner-occupant</code> drops to <code>z/base</code> until the dialog closes. The rails step down rather
+                than the dialog stepping up, because a dialog lifted past them would also climb over <code>z/toast</code>.
+              </p>
+              <DoDont
+                cards={[
+                  { type: "do", preview: <code>useDialogLayer(open)</code>, label: "Every aria-modal dialog — Modal, Lightbox, SideSheet, NavSheet, and an app's own." },
+                  { type: "dont", preview: <code>.my-dialog {"{"} z-index: 5000; {"}"}</code>, label: "Climbing past the rails also climbs past the toasts a dialog must stay under." },
+                  { type: "dont", preview: <code>useDialogLayer(open) // in a Popover</code>, label: "A non-modal surface leaves the page usable, so the launcher stays." },
+                ]}
+              />
+            </>
+          ),
+        },
+        {
           id: "local",
           keyword: "LOCAL",
           title: "Inside a Component, 1 and 2 Are Order, Not Layer",
