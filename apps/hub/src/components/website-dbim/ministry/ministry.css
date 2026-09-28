@@ -687,7 +687,18 @@
   [data-design="dbim"] .db-min-card--organisation .db-min-card__head {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 10px; /* MeitY's organisation-card-title; off the inline scale */
     min-height: 115px;
+  }
+
+  /* MeitY's mark: 84 tall, its own width up to 191. The registry's marks are square. */
+  [data-design="dbim"] .db-min-card__logo {
+    flex-shrink: 0;
+    width: auto;
+    max-width: 191px;
+    height: 84px;
+    object-fit: contain;
   }
 
   [data-design="dbim"] .db-min-card--organisation .db-min-card__title {

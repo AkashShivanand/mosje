@@ -117,22 +117,28 @@ exist only as JSX in the redesign's page files and are not duplicated here.
 
 ## 4. `/ministry/our-organisation` and `/ministry/our-organisation/[slug]`
 
-**Decision:** our registry DOES type its organisations (`category`: commissions · corporations
-· foundations · schemes), so the page follows the reference — for the first three types. The
-fourth, `schemes`, is its own tab since 28 Sep 2026 (§4a) — one card per type, opening a
+**Decision (revised 28 Sep 2026, benchmarked against meity.gov.in/ministry/our-organisation):**
+one flat list of every organisation, with a **Category** select (the registry's type labels:
+Commission · Corporations · Foundation & Autonomous Bodies) beside search and per-page, and
+each body's mark at the right of its title box — as MeitY draws it. The reference build's
+type cards made a reader open a second page to see any body at all; the per-type addresses
+(`/ministry/our-organisation/<type>`) redirect to the list. The fourth type, `schemes`, is its
+own tab (§4a).
+
+~~Superseded:~~ the page used to follow the reference — one card per type, opening a
 listing of that type's organisations; each organisation card opens its detail page. One
 dynamic segment serves both: a type key renders the listing, an organisation id the detail.
 
 | Part | Reference | Ours |
 |---|---|---|
 | Card `.organisation-card` | border 1px neutral-100, radius 8, padding 16 32, gap 8 | same |
-| Title box | min-height 115, title centred vertically | same |
+| Title box | min-height 115, title centred vertically | same; `justify-content: space-between`, gap 10 |
+| Mark (MeitY) | `img` height 84, width auto, max-width 191, right of the title; above it < 992 | `next/image` 84, decorative (`alt=""` — the name beside it says whose); none where the registry's mark is the National Emblem stand-in (NHAA) |
 | Title `p.h3` | 16px (`--db-fs-h3`) / 500 / 24, `#214AAB` (primary-600) | `h2` |
 | Description | min-height 130; p 14/21 | same, clamped to 4 lines as the reference truncates |
 | Arrow | right-aligned 40×40 | same |
 
-**Content.** Type card description = the names of the organisations in it, from the registry
-(no invented prose). Organisation detail = `getOrganisation(id)` from `@/lib/website/content`:
+**Content.** Organisation detail = `getOrganisation(id)` from `@/lib/website/content`:
 prose sections only (`kindOf()`) **from the body's first "About…" section onward** — what the
 live page shows above it is a ticker, a banner or a counter strip, not prose — cleaned with
 `cleanHtml()`, section headings as blue h2s. Summary box and card description = the body's

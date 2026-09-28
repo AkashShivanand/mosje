@@ -333,6 +333,10 @@ export interface DbimCardItem {
   /** A path inside the DBIM tree, or an absolute URL. */
   href: string;
   external?: boolean;
+  /** For a list with a Category filter: the label the filter shows. */
+  category?: string;
+  /** The body's own mark, drawn beside its name (MeitY's organisation card). */
+  logo?: string;
 }
 
 export function divisionCards(): DbimCardItem[] {
@@ -426,14 +430,16 @@ export function divisionDetail(slug: string) {
 
 /*
  * Two tabs, one registry. Our Organisation lists the commissions, corporations and
- * foundations by type; Our Scheme Portals lists the registry's `schemes`, in the
+ * foundations, filterable by type; Our Scheme Portals lists the registry's `schemes`, in the
  * order every design shares (lib/website-shared/organisations.ts). The portals left
  * the organisations list on the New design's home page (24 Sep 2026) and in its
  * masthead (22 Sep 2026); until 28 Sep 2026 this design still carried them as a
  * fourth "type of organisation".
  *
- * The type labels and their order are the live home page's, shared with every
- * design through the registry (data/website/organisations.ts).
+ * The type labels are the live home page's, shared with every design through the
+ * registry (data/website/organisations.ts); they name the Category filter's options.
+ * The per-type pages (`/ministry/our-organisation/<type>`) retired with MeitY's flat
+ * list and redirect to it, which is all `isOrganisationType` is still for.
  */
 const TYPE_LABEL = ORGANISATION_CATEGORY_LABELS;
 const ORGANISATION_TYPES = (Object.keys(ORGANISATION_CATEGORY_LABELS) as OrganisationCategory[]).filter(
@@ -447,30 +453,10 @@ export function isOrganisationType(slug: string): slug is OrganisationType {
   return (ORGANISATION_TYPES as string[]).includes(slug);
 }
 
-export function organisationTypeLabel(type: OrganisationCategory): string {
-  return TYPE_LABEL[type];
-}
-
 /** The DBIM page of one of the Department's bodies: its tab follows its category. */
 export function dbimOrganisationPath(id: string): string {
   const entry = ORGANISATIONS.find((o) => o.id === id);
   return entry?.category === "schemes" ? `${SCHEME_PORTALS_PATH}/${id}` : `/ministry/our-organisation/${id}`;
-}
-
-/** "A, B and C." */
-function nameList(names: string[]): string {
-  if (names.length <= 1) return names.join("");
-  return `${names.slice(0, -1).join(", ")} and ${names.at(-1)}.`;
-}
-
-/** One card per type; the description names the bodies it holds, read from the registry. */
-export function organisationTypeCards(): DbimCardItem[] {
-  return ORGANISATION_TYPES.filter((t) => ORGANISATIONS.some((o) => o.category === t)).map((t) => ({
-    slug: t,
-    title: TYPE_LABEL[t],
-    description: nameList(ORGANISATIONS.filter((o) => o.category === t).map((o) => o.name)),
-    href: `/ministry/our-organisation/${t}`,
-  }));
 }
 
 /*
@@ -512,6 +498,10 @@ function organisationSummary(id: string): { text?: string; fromBody: boolean } {
   return { text: firstParagraph(body[0]?.html)?.text ?? firstSentence(body[0]?.html), fromBody: true };
 }
 
+/* The National Emblem stands in for a missing mark in the registry (NHAA). It is the
+   Government's, not the body's, so a card without a mark of its own draws none. */
+const EMBLEM = /National-Emblem/i;
+
 function bodyCard(o: Organisation, path: string): DbimCardItem {
   const record = getOrganisation(o.id);
   const outside = o.portalHref ?? o.externalUrl ?? o.profileHref;
@@ -521,12 +511,20 @@ function bodyCard(o: Organisation, path: string): DbimCardItem {
     description: firstSentence(organisationSummary(o.id).text),
     href: record ? `${path}/${o.id}` : outside,
     external: !record,
+    category: TYPE_LABEL[o.category],
+    logo: EMBLEM.test(o.logoSrc) ? undefined : o.logoSrc,
   };
 }
 
-/** One card per organisation of a type. A body with no ingested page opens its own portal. */
-export function organisationCards(type: OrganisationType): DbimCardItem[] {
-  return ORGANISATIONS.filter((o) => o.category === type).map((o) => bodyCard(o, "/ministry/our-organisation"));
+/**
+ * Every organisation, in registry order, each with its type for the Category filter.
+ * One list rather than a card per type, as MeitY's Our Organisations draws it
+ * (meity.gov.in/ministry/our-organisation, read 28 Sep 2026) — the DBIM reference
+ * build's type cards made a reader open a second page to see any body at all.
+ * A body with no ingested page opens its own site.
+ */
+export function organisationCards(): DbimCardItem[] {
+  return ORGANISATIONS.filter((o) => o.category !== "schemes").map((o) => bodyCard(o, "/ministry/our-organisation"));
 }
 
 /** One card per scheme portal, in the order every design shares. */
