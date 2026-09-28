@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Band, Icon, SectionTitle } from "@mosje/design-system";
 import { MANDATE, MINISTRY_LINE } from "./facts";
-import { DBIM_PEOPLE } from "@/lib/website-dbim/assets";
+import { ABOUT_US } from "@/lib/website-shared/home";
 
 /**
  * About Us — the Department's mandate in its own words, the Ministry's line
@@ -31,23 +31,8 @@ import { DBIM_PEOPLE } from "@/lib/website-dbim/assets";
  * The cards are this page's own: the design system's Avatar stops at 48px, and
  * a Minister's headshot is not an avatar.
  */
-const MINISTERS = [
-  {
-    img: DBIM_PEOPLE.ministers[0].src,
-    name: "Dr. Virendra Kumar",
-    role: "Union Minister of Social Justice and Empowerment",
-  },
-  {
-    img: DBIM_PEOPLE.ministers[1].src,
-    name: "Shri Ramdas Athawale",
-    role: "Minister of State for Social Justice and Empowerment",
-  },
-  {
-    img: DBIM_PEOPLE.ministers[2].src,
-    name: "Shri B. L. Verma",
-    role: "Minister of State for Social Justice and Empowerment",
-  },
-];
+/* The Ministers every design shows: lib/website-shared/home.ts. */
+const MINISTERS = ABOUT_US.ministers.map((m) => ({ img: m.photo, name: m.name, role: m.designation }));
 
 /* The three the Department itself offers here, in its own words and order.
    "Citizen's Charter" was a fourth; it is in the footer, and the design's row

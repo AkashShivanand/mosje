@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Icon, IconButton } from "@mosje/design-system";
 
 interface Partner {
@@ -81,19 +82,24 @@ export function DbimPartnerCarousel({ partners }: { partners: Partner[] }) {
         onClick={() => step(-1)}
       />
       <ul id={trackId} ref={track} className="db-hb-partners__track">
-        {partners.map((p) => {
+        {partners.map((p, i) => {
           const logo = (
             <span className="db-hb-partners__logo">
               <Image src={p.src} alt={p.label} fill sizes="125px" />
             </span>
           );
           return (
-            <li key={p.src} className="db-hb-partners__slide">
-              {p.href ? (
+            <li key={`${i}-${p.src}`} className="db-hb-partners__slide">
+              {p.href && /^https?:\/\//.test(p.href) ? (
                 <a className="db-hb-partners__card" href={p.href} target="_blank" rel="noopener noreferrer">
                   {logo}
                   <span className="sr-only"> (opens in a new tab)</span>
                 </a>
+              ) : p.href ? (
+                /* One of the Department's own bodies: its page here, in the same tab. */
+                <Link className="db-hb-partners__card" href={p.href}>
+                  {logo}
+                </Link>
               ) : (
                 <span className="db-hb-partners__card">{logo}</span>
               )}

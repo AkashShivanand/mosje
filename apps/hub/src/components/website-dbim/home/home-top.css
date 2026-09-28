@@ -372,13 +372,24 @@
     padding: 10px; /* reference card-body */
   }
 
-  /* The opening mark only, set as text (DBIM 3.0 Figure 54; the reference's 44px “). */
+  /* THE MARK IS MATERIAL'S format_quote, TURNED HALF A CIRCLE, so it opens.
+     The DBIM Toolkit, and meity.gov.in, which is built on it, set a “ character in
+     Material Symbols (`p.quote`, 44px/66px) — but no Material Symbols build carries a
+     “ glyph (checked 28 Sep 2026: Google's Rounded and MeitY's own Outlined woff2), so
+     what a visitor sees there is whatever font the operating system falls back to.
+     format_quote is the Material icon for a quotation; rotated, it is the same small
+     opening mark, the same everywhere. 32px at the standard weight matches the
+     reference's footprint; it sits at the foot of the reference's 40px slot, just
+     above the quotation, where the reference's glyph lands. */
   [data-design="dbim"] .db-pmq .db-pmq__mark {
+    display: flex;
+    align-items: flex-end;
     height: var(--sa-padding-40);
-    font-size: 2.75rem; /* 44px */
-    font-weight: var(--sa-font-weight-bold);
-    line-height: 1;
     color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-pmq .db-pmq__mark .material-symbols-rounded {
+    transform: rotate(180deg);
   }
 
   [data-design="dbim"] .db-pmq .db-pmq__quote {
@@ -564,8 +575,9 @@
     margin: 0;
   }
 
-  [data-design="dbim"] .db-about .db-about__copy strong {
-    font-weight: var(--sa-font-weight-bold);
+  /* The live About Us is two paragraphs — the mandate, then the Ministry's line. */
+  [data-design="dbim"] .db-about .db-about__copy p + p {
+    margin-top: var(--sa-stack-12);
   }
 
   [data-design="dbim"] .db-about .db-about__tiles {
