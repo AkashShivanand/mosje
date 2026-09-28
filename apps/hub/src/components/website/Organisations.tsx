@@ -9,6 +9,7 @@ import {
   organisationCategoryTabs,
   type OrganisationCategory,
 } from "@/data/website";
+import { ORGANISATIONS_SECTION } from "@/lib/website-shared/organisations";
 
 /**
  * The 17 organisations and the category tabs both come from the data layer now.
@@ -24,24 +25,20 @@ import {
  * `"schemes"`, and the tab list picks them up on its own.
  */
 
-/**
- * The four claims the design sets beside the list [WEB-N-02]. They are the
- * section's own copy from the Handoff frame, not a summary written here.
- */
-const NARRATIVE = [
-  "Promotes equality and social participation for all communities.",
-  "Builds skills and education pathways for self-reliance.",
-  "Enables financial inclusion and livelihood opportunities.",
-  "Provides rehabilitation and welfare support for vulnerable groups.",
-];
+/* The words around the list — heading, sub-line, introduction and the four
+   claims — are shared with the other designs (lib/website-shared/organisations.ts)
+   and are the live home page's. So are the tabs: its four categories in its
+   order, Commission first, with no "All" tab, because the live section has none. */
+const { title, subtitle, intro, claims } = ORGANISATIONS_SECTION;
+const CATEGORY_TABS = organisationCategoryTabs().filter(
+  (t): t is { key: OrganisationCategory; label: string; count: number } => t.key !== "all",
+);
 
 export function Organisations() {
-  const [activeCategory, setActiveCategory] = useState<OrganisationCategory | "all">("all");
-
-  const filtered =
-    activeCategory === "all"
-      ? ORGANISATIONS
-      : ORGANISATIONS.filter((org) => org.category === activeCategory);
+  const [activeCategory, setActiveCategory] = useState<OrganisationCategory>(
+    CATEGORY_TABS[0]?.key ?? "commissions",
+  );
+  const filtered = ORGANISATIONS.filter((org) => org.category === activeCategory);
 
   return (
     <section className="bg-surface-muted">
@@ -54,25 +51,15 @@ export function Organisations() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-10">
           {/* ---- Left: heading, narrative ---- */}
           <div className="lg:col-span-4">
-            <h2 className="text-headline-2 text-primary-dark">
-              Our Organisations
-            </h2>
-            {/* This subtitle belongs here. It was rendering under Activity
-                Corner, where it described the wrong section [WEB-N-03/T-04]. */}
-            <p className="mt-1 text-label-1 text-ink-muted">
-              Explore our affiliated bodies
-            </p>
-            <p className="mt-4 text-body-1 text-ink-muted">
-              The Ministry of Social Justice and Empowerment works through key
-              organisations that drive social inclusion, economic empowerment, and
-              equal opportunity across India.
-            </p>
+            <h2 className="text-headline-2 text-primary-dark">{title}</h2>
+            <p className="mt-1 text-label-1 text-ink-muted">{subtitle}</p>
+            <p className="mt-4 text-body-1 text-ink-muted">{intro}</p>
 
             {/* `list-inside` puts the marker in the text flow, so a wrapped
                 second line runs back under the bullet. Markers stay outside and
                 the list carries the indent instead, giving a real hanging indent. */}
             <ul className="mt-6 list-disc space-y-3 border-l-2 border-primary/25 py-1 pl-9">
-              {NARRATIVE.map((claim) => (
+              {claims.map((claim) => (
                 <li
                   key={claim}
                   className="text-body-2 italic text-ink-muted marker:text-primary/60"
@@ -86,7 +73,7 @@ export function Organisations() {
           {/* ---- Right: filters and the organisations ---- */}
           <div className="lg:col-span-8">
             <div className="flex flex-wrap gap-2">
-              {organisationCategoryTabs().map((cat) => {
+              {CATEGORY_TABS.map((cat) => {
                 const isActive = cat.key === activeCategory;
                 return (
                   <Chip
@@ -122,7 +109,11 @@ export function Organisations() {
                           />
                         </span>
                       )}
+                      {/* The live card prints the abbreviation over the name. */}
                       <h3 className="min-w-0 flex-1 text-title-2 text-ink transition-colors group-hover:text-primary">
+                        <span className="block text-label-2 text-primary-dark">
+                          {org.cardLabel ?? org.abbr}
+                        </span>
                         {org.name}
                       </h3>
                       <Icon

@@ -10,7 +10,7 @@
  * Server-only in practice: it reads the officials register and the ingested
  * organisation pages. Pages pass the trimmed rows below to client lists.
  */
-import { DIVISIONS, ORGANISATIONS, getDepartmentSecretary, type OrganisationCategory } from "@/data/website";
+import { DIVISIONS, ORGANISATIONS, ORGANISATION_CATEGORY_LABELS, getDepartmentSecretary, type OrganisationCategory } from "@/data/website";
 import { getDocument, getOfficialsByOrganisation, getOrganisation } from "@/lib/website/content";
 import { localiseDocumentUrl } from "@/lib/website/sample-documents";
 import { phoneGroups } from "@/components/website-next/templates/people-format";
@@ -418,14 +418,11 @@ export function divisionDetail(slug: string) {
 /* ── Our Organisation ──────────────────────────────────────────────────────── */
 
 /** The registry's category names, which the redesign's Organisations page uses too. */
-const TYPE_LABEL: Record<OrganisationCategory, string> = {
-  commissions: "Commissions",
-  corporations: "Corporations",
-  foundations: "Foundations & Autonomous Bodies",
-  schemes: "Schemes & Portals",
-};
-
-const TYPE_ORDER: OrganisationCategory[] = ["commissions", "foundations", "corporations", "schemes"];
+/* The type labels and their order are the live home page's, shared with every
+   design through the registry (data/website/organisations.ts): Commission,
+   Corporations, Foundation & Autonomous Bodies, Scheme Portals. */
+const TYPE_LABEL = ORGANISATION_CATEGORY_LABELS;
+const TYPE_ORDER = Object.keys(ORGANISATION_CATEGORY_LABELS) as OrganisationCategory[];
 
 export function isOrganisationType(slug: string): slug is OrganisationCategory {
   return (TYPE_ORDER as string[]).includes(slug);
