@@ -2,18 +2,26 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
-import { Icon, IconButton, Link } from "@mosje/design-system";
+import { Icon, IconButton } from "@mosje/design-system";
+import { HOME_CAROUSEL_SNAPSHOT, type HomeBanner } from "@/lib/website-shared/home";
 import { CarouselIndicators } from "./CarouselIndicators";
 
-export function HeroCarousel() {
+/**
+ * The classic design's home carousel. Its slides are shared with every design
+ * (lib/website-shared/home.ts): the CCPS banner first, then the live site's own.
+ * The page passes them in from `getHomeBanners()`, so a configured CCPS feed
+ * leads here as it does in the others. Until 28 Sep 2026 this held four slides of its own, the first a Mann Ki
+ * Baat panel dated 26 Oct 2025.
+ */
+export function HeroCarousel({ slides = HOME_CAROUSEL_SNAPSHOT }: { slides?: readonly HomeBanner[] }) {
   const [index, setIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
-  const count = 4;
+  const count = slides.length;
 
   const go = useCallback((next: number) => setIndex((next + count) % count), [count]);
 
   useEffect(() => {
-    if (!isPlaying) return;
+    if (!isPlaying || count < 2) return;
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (mediaQuery.matches) return;
 
@@ -23,96 +31,40 @@ export function HeroCarousel() {
 
   return (
     <section className="relative w-full overflow-hidden bg-gray-50 border-b border-gray-200" aria-roledescription="carousel" aria-label="Highlights">
-      <div className="relative min-h-[300px] sm:min-h-[380px] md:min-h-[440px] w-full">
-        {/* Slide 0: Mann Ki Baat Banner matching Figma node 8137:48670 */}
-        <div
-          className={`absolute inset-0 transition-opacity duration-700 ${index === 0 ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"}`}
-          aria-hidden={index !== 0}
-          inert={index !== 0}
-        >
-          <div className="h-full w-full bg-white grid grid-cols-1 md:grid-cols-12 items-center">
-            {/* Left Content */}
-            <div className="md:col-span-6 px-8 py-10 md:px-16 lg:px-24 flex flex-col justify-center">
-              <h1 className="text-display-3 font-display text-[var(--nmba-red-deep)]">
-                Mann<br />
-                <span className="text-[var(--nmba-red)]">Ki Baat</span>
-              </h1>
-              <p className="mt-2 text-title-1 text-gray-800">
-                on 26<sup className="text-body-3">th</sup> Oct 2025
-              </p>
-
-              <div className="mt-6 flex flex-wrap items-center gap-4">
-                <div className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 text-label-1 text-gray-700">
-                  <Icon name="schedule" size={20} className="text-gray-500" />
-                  TIME : 11 AM
-                </div>
-
-                <Link
-                  href="https://pmindia.gov.in"
-                  external
-                  variant="standalone"
-                  className="rounded-lg bg-[var(--nmba-red-cta)] px-5 py-2 text-label-1 text-white shadow-sm transition hover:bg-[var(--nmba-red-cta-hover)]"
-                  iconLeft={<Icon name="play_arrow" size={20} />}
-                >
-                  WATCH LIVE
-                </Link>
-              </div>
+      {/* The banners are 3:1, so the frame is too — nothing is cropped at any width. */}
+      <div className="relative aspect-[3/1] w-full">
+        {slides.map((s, i) => {
+          const img = (
+            <Image
+              src={s.src}
+              alt={s.alt}
+              fill
+              sizes="100vw"
+              priority={i === 0}
+              unoptimized={/^https?:\/\//.test(s.src)}
+              className="object-cover"
+            />
+          );
+          return (
+            <div
+              key={s.src}
+              className={`absolute inset-0 transition-opacity duration-700 ${index === i ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"}`}
+              aria-roledescription="slide"
+              aria-label={`${i + 1} of ${count}`}
+              aria-hidden={index !== i}
+              inert={index !== i}
+            >
+              {s.href ? (
+                <a href={s.href} target="_blank" rel="noopener noreferrer" className="block h-full w-full">
+                  {img}
+                  <span className="sr-only"> (opens in a new window)</span>
+                </a>
+              ) : (
+                img
+              )}
             </div>
-
-            {/* Right Photo */}
-            <div className="md:col-span-6 h-[260px] md:h-full relative min-h-[300px]">
-              <Image
-                src="/website/images/Banner-6.png"
-                alt="Hon'ble Prime Minister with citizens"
-                fill
-                priority
-                className="object-cover object-center"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Slide 1 */}
-        <div
-          className={`absolute inset-0 transition-opacity duration-700 ${index === 1 ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"}`}
-          aria-hidden={index !== 1}
-          inert={index !== 1}
-        >
-          <Image
-            src="/website/images/Banner-7.png"
-            alt="Department Highlights"
-            fill
-            className="object-cover"
-          />
-        </div>
-
-        {/* Slide 2 */}
-        <div
-          className={`absolute inset-0 transition-opacity duration-700 ${index === 2 ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"}`}
-          aria-hidden={index !== 2}
-          inert={index !== 2}
-        >
-          <Image
-            src="/website/images/Banner-8.png"
-            alt="Empowerment Schemes"
-            fill
-            className="object-cover"
-          />
-        </div>
-
-        {/* Slide 3 */}
-        <div
-          className={`absolute inset-0 transition-opacity duration-700 ${index === 3 ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"}`}
-          aria-hidden={index !== 3}
-          inert={index !== 3}
-        >
-          <Image
-            src="/website/images/Banner-9.png"
-            alt="Scholarships and Welfare"
-            fill
-            className="object-cover"
-          />
-        </div>
+          );
+        })}
       </div>
 
       {/* Navigation Arrows */}
@@ -123,7 +75,7 @@ export function HeroCarousel() {
         shape="circle"
         size="md"
         onClick={() => go(index - 1)}
-        className="absolute left-3 top-1/2 z-20 -translate-y-1/2 bg-white/80 text-ink shadow-md hover:bg-white"
+        className="absolute left-3 top-1/2 z-20 hidden -translate-y-1/2 sm:inline-flex bg-white/80 text-ink shadow-md hover:bg-white"
       />
       <IconButton
         icon={<Icon name="keyboard_arrow_right" size={24} />}
@@ -132,11 +84,15 @@ export function HeroCarousel() {
         shape="circle"
         size="md"
         onClick={() => go(index + 1)}
-        className="absolute right-3 top-1/2 z-20 -translate-y-1/2 bg-white/80 text-ink shadow-md hover:bg-white"
+        className="absolute right-3 top-1/2 z-20 hidden -translate-y-1/2 sm:inline-flex bg-white/80 text-ink shadow-md hover:bg-white"
       />
 
       {/* Play/Pause & Dots Indicator */}
-      <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 items-center gap-3 rounded-full bg-black/50 px-3.5 py-1.5 backdrop-blur-xs">
+      {/* Bottom-right, not centred: the CCPS banner prints its own text along the
+          bottom of its left half, and a centred pill sat on top of it. On a phone
+          the 3:1 banner is 125px tall, so the pill sits under it instead and the
+          side arrows give way to it — the dots already move between slides. */}
+      <div className="relative z-20 mx-auto my-2 flex w-fit items-center sm:absolute sm:bottom-4 sm:right-6 sm:m-0 gap-3 rounded-full bg-black/50 px-3.5 py-1.5 backdrop-blur-xs">
         <IconButton
           icon={<Icon name={isPlaying ? "pause" : "play_arrow"} size={16} />}
           aria-label={isPlaying ? "Pause slide rotation" : "Play slide rotation"}

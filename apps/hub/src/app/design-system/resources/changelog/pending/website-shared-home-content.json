@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "THE THREE WEBSITE DESIGNS SHOW ONE SET OF BANNERS, ONE ABOUT US AND ONE PM QUOTE. New, Classic and DBIM read the home carousel, the About Us section and the Prime Minister's quote from lib/website-shared/, taken from the live dosje.gov.in: the CCPS banner always first, then the live site's four banners. Classic loses its own four slides (a Mann Ki Baat panel dated 26 Oct 2025 among them) and DBIM the reference build's six; DBIM's About Us now carries the live text, Ministers' designations and photographs, and Classic's PM quote band shows the photograph it had left as an empty slot. Rule: .claude/rules/website-shared-content.md."
+}

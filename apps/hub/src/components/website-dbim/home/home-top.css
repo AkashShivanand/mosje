@@ -563,8 +563,9 @@
     margin: 0;
   }
 
-  [data-design="dbim"] .db-about .db-about__copy strong {
-    font-weight: var(--sa-font-weight-bold);
+  /* The live About Us is two paragraphs — the mandate, then the Ministry's line. */
+  [data-design="dbim"] .db-about .db-about__copy p + p {
+    margin-top: var(--sa-stack-12);
   }
 
   [data-design="dbim"] .db-about .db-about__tiles {
