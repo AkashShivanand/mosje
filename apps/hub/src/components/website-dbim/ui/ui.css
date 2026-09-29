@@ -294,7 +294,7 @@
   /* The reference's `p.no-data.fw-bold.fs-3`: 1.75rem of its 10px root, bold. */
   [data-design="dbim"] .db-no-data {
     margin: 0 0 10px;
-    font-size: 1.0938rem; /* 17.5px */
+    font-size: var(--db-fs-h3); /* was the reference's 17.5px, off DBIM 3.0 Tables 3 and 4 */
     font-weight: var(--sa-font-weight-bold);
     line-height: 1.5;
     color: var(--sa-color-text-default);

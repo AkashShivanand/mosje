@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "DBIM PHONE VIEW FOLLOWS THE MOBILE TYPE SCALE AND ICON SIZES. Inner-page titles were 15px on a phone, off DBIM 3.0 Table 4; they now take its 24px H1, and the banner grows with the title as the handoff's phone Page Hero does, so a long scheme name no longer runs out of the top of a 60px strip. The PM-AJAY dashboard's titles and figures (22.2, 37.2 and 20.1px from the fluid ramp) take the handoff's phone sizes below 992px — 24/32 for titles and headline figures, 20/28 paired, 16/22 reference. The Page Not Found message is H3 (16px on a phone, 20 on desktop) instead of 17.5px. The chart download glyph and the partner carousel's pause glyph are 24px (§3.4), up from 20."
+}
