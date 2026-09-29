@@ -204,6 +204,49 @@ Password label and the card carries an arrow, as in the build. The **wrong usern
 (desktop and phone). Nine NGO-DARPAN screens showed the placeholder "Signing into Organisation Name" and now read
 "E-Anudaan".
 
+## 5b. PFMS payment leg — 30 Sep 2026
+
+The payment leg of the NeGD BRD (*Integration of PFMS with the e-Anudaan Portal*, v1.0) was drawn from the
+SAMAVESH library to the page's standard. Every part is a library instance, bound to SAMAVESH variables and
+text styles; the content is the prototype's seeded case (Sankalp Seva Sansthan, `SAN/2026-27/04609`,
+₹25,50,000) unless a screen shows a different case on purpose.
+
+| User group (column) | Journey | Desktop | Mobile | Dialogs |
+|---|---|---|---|---|
+| Programme Division — Paying a Sanctioned Grant | Preparing a Payment Advice | 13 | 7 | — |
+| | Authorising a Payment Advice — *Needs Discussion* | 4 | 2 | 8 |
+| | Following a Payment — *Needs Discussion* | 5 | 1 | 1 |
+| Bureau — Setting Up PFMS | Completing Legacy Files — *Needs Discussion* | 1 | 1 | 1 |
+| | Keeping PFMS Set-Up Current | 8 | 1 | 2 |
+| NGO — Getting Paid | PFMS Payee Code and Payment — *Needs Discussion* | 5 | 1 | — |
+| Officers — Payment Reports | Payment Reports | 6 | 1 | — |
+
+**Why the NGO journey is its own column.** Adding it to `NGO — After Applying` would have made ten journeys in
+one column; the rule allows nine. The credit is the last thing that happens to a grant, so the column sits after
+the Bureau's.
+
+**Red, and why.** Four journeys carry a note, each tracing to `docs/plans/2026-09-29-e-anudaan-pfms.md` §4:
+questions 1, 2, 5 and 10 (authorising), 3 and 6 (following a payment), 8 (legacy files) and 7 (the NGO's
+view). Questions 4, 9, 11 and 12 do not change a screen and are listed on the Status page instead.
+
+**Old screens were not moved.** The earlier `Payment Status` (Officers — Records and Reports), `Project Bank
+Accounts` and `Application Details` screens stay where they were. The PFMS journeys draw their new versions,
+and the Status page asks a person to decide whether the old ones are replaced.
+
+**New shared part.** `Form Step Content / SHRESHTA Mode 2 New Application / Step 4 — Bank, Beneficiaries & Grant
+— PFMS Payee Code` sits beside the original in `SHARED PARTS`. It adds the typed-twice account number, the PFMS
+registration question, the payee code and its confirmation tick (FR-NGO-001/002). The original is unchanged, so
+no existing screen moved.
+
+**Two library gaps, recorded on the Status page.**
+- SAMAVESH has no current `Loader`, only a deprecated one. The Signing dialog shows a `ProgressBar` instead.
+- The library `Chart` cannot move a bar inside an instance, so it cannot show the single real reading
+  (July 2026 — 1 error). Failure Trend shows it as a `Ranked Bar Row`; the build draws a bar chart.
+
+**Build notes found while drawing.** A `use_figma` call that clones a frame and then edits instances inside a
+cloned slot (side-menu items, sizing) often does not keep those edits. A second pass is needed, and one was run
+over every new frame. Alert body text keeps a stale line break until its characters are reset after resizing.
+
 ## 6. Adding to the page
 
 - **A screen:** into the right row of its flow; name `Role / Screen / State`; phone version ends ` · Mobile`.

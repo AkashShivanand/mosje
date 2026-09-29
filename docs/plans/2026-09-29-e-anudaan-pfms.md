@@ -65,7 +65,7 @@ The review-and-sanction chain before it is unchanged.
 
 ## 4. Open questions for NeGD and the Ministry
 
-Each one is drawn as a red note on the Figma handoff page. The prototype takes the position in the right-hand column until someone decides otherwise.
+Questions 1, 2, 3, 5, 6, 7, 8 and 10 could change screens and are red notes on their journeys on the Figma handoff page; 4, 9, 11 and 12 are listed on its Status page. The prototype takes the position in the right-hand column until someone decides otherwise.
 
 | # | Question | Prototype's position |
 |---|---|---|
