@@ -631,16 +631,18 @@
     min-width: 0;
   }
 
-  /* The handoff's photo frame: 206 high, muted ground, 1px grey rule, the photograph
-     fitted 200 high and a 4px key-colour bar under it. */
+  /* The photo frame: square and white (DBIM 3.0 §6.1.4 i–ii), a 1px grey rule so the
+     white frame keeps its edge on the white band, the photograph fitted inside and a
+     4px key-colour bar under it. Was 206 high on the muted ground. */
   [data-design="dbim"] .db-about .db-about__portrait {
     box-sizing: border-box;
     width: 100%;
-    height: 206px; /* handoff */
+    height: auto;
+    aspect-ratio: 1 / 1;
     padding-bottom: var(--sa-padding-4);
     object-fit: contain;
-    object-position: bottom; /* standing on the bar when the card is narrower than 200 */
-    background: var(--sa-color-neutralScale-50);
+    object-position: bottom; /* standing on the bar */
+    background: var(--sa-color-neutralScale-0);
     border: var(--sa-stroke-1) solid var(--sa-color-neutralScale-200);
     box-shadow: inset 0 calc(-1 * var(--sa-padding-4)) 0 var(--sa-color-primaryScale-800);
   }
