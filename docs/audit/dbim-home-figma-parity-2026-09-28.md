@@ -114,9 +114,9 @@ visible.
 | PM portrait not transparent | **Kept, by decision** | The original photograph stays (instruction of 28 Sep 2026); the only transparent cut-out on file is a different photograph. |
 | "Explore our Social Media Platforms" | **Fixed** | "In Social Media" (Figure 61), on the DBIM design only. |
 | All-caps feed titles, "lnviting / lnterest" | **Fixed on display** | `dbimFeedTitle`: Title Case for titles ≥80% capitals, acronyms kept, the ln→In typo repaired. The Department's data is unchanged. |
-| Logo files over 100 KB | **Open** | Rounding coordinates gets 196→144 KB and 761→511 KB. Getting under 100 KB needs an SVG optimiser or re-export from source artwork. |
-| Stale first banner slide | **Open, by decision** | Kept until the CCPS feed is connected. |
+| Logo files over 100 KB | **Fixed** | Emblem: path data rewritten as relative coordinates on a 0.01-unit grid, 196 → 89.5 KB; at 10× it differs from the original on 53 edge pixels of 176,641. SAMAVESH: the header takes a 174px PNG (8 KB), 3× its 58px display. The 761 KB vector is traced artwork that no grid gets under 100 KB, and the other surfaces keep it. |
+| Stale first banner slide | **Kept, by decision** | The prototype's CCPS slide is a mock (below). |
 | Campaign video captions | **Open, by decision** | Player kept; no transcript exists. |
-| CCPS banner and posts feed | **Open** | Needs the CCPS API from the DBIM programme. |
+| CCPS banner and posts feed | **Mocked, by decision** (28 Sep 2026) | The prototype mocks CCPS; the real API belongs to the live production website only. |
 | Newer PM quote | **Open** | Needs the Department's material. |
 | Infographic section | **Fixed upstream** | PR #613 put the SETU infographic in the posts row. |

@@ -60,10 +60,14 @@ export const DBIM_BRAND = {
    * SAMAVESH address inside this design.
    *
    * org-logo-exempt(portal-local): the SAMAVESH roundel is the design system's OWN mark, not an
-   * organisation mark, so the OrgLogo registry holds no entry to resolve it through. This is the
-   * hub's single copy of that file — the same one `DEFAULT_LOGIN_MARKS.samaveshLogoSrc` names.
+   * organisation mark, so the OrgLogo registry holds no entry to resolve it through.
+   *
+   * A 174px PNG (8 KB), 3× the 58px it is drawn at, rendered from the estate's canonical
+   * vector (design-system/samavesh-logo.svg). The vector is 761 KB of traced curves — no
+   * precision short of redrawing it gets under DBIM 3.0 §5.5 iv's 100 KB — and this design is
+   * held to that limit. The other surfaces keep the vector.
    */
-  samavesh: { src: "/design-system/samavesh-logo.svg", alt: "SAMAVESH", width: 58, height: 58 },
+  samavesh: { src: `${D}/brand/samavesh-logo.png`, alt: "SAMAVESH", width: 58, height: 58 },
   indiaGovIn: { src: `${D}/brand/india-gov-in.svg`, alt: "National Portal of India", href: "https://www.india.gov.in/" },
   myGov: { src: `${D}/brand/mygov-meri-sarkar.png`, alt: "MyGov — Meri Sarkar", href: "https://www.mygov.in/" },
   social: [
