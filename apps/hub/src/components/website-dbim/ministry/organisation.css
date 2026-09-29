@@ -233,7 +233,7 @@
     text-decoration: underline;
   }
 
-  [data-design="dbim"] .db-org :is(.db-org__action, .db-org__index a, .db-org__more, .db-org-people__link, .db-org-chip, .db-org-social__card, .db-org-contact a):focus-visible {
+  [data-design="dbim"] .db-org :is(.db-org__action, .db-org__index a, .db-org__more, .db-org-people__link, .db-org-chip, .db-org-contact a):focus-visible {
     outline: var(--sa-stroke-2) solid var(--sa-color-primaryScale-800);
     outline-offset: var(--sa-padding-2);
   }
@@ -437,53 +437,13 @@
     color: var(--sa-color-text-default);
   }
 
-  /* ── Social accounts: one card per platform ─────────────────────────────── */
+  /* ── Social accounts: the home page's feed card, framed for a white page ── */
 
-  [data-design="dbim"] .db-org .db-org-social__card {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--sa-stack-4);
-    height: 100%;
-    padding: var(--sa-padding-16);
+  /* On the home page the card sits on the dark band; here it needs its own edge. */
+  [data-design="dbim"] .db-org .db-org-social .db-hb-social__card {
+    overflow: hidden;
     border: var(--sa-stroke-1) solid var(--sa-color-neutralScale-100);
-    border-radius: var(--sa-shape-12);
-    color: var(--sa-color-text-default);
-    text-decoration: none;
-  }
-
-  [data-design="dbim"] .db-org .db-org-social__card:hover {
-    border-color: var(--sa-color-primaryScale-800);
-  }
-
-  [data-design="dbim"] .db-org .db-org-social__icon {
-    margin-bottom: var(--sa-stack-8);
-    color: var(--sa-color-primaryScale-800);
-  }
-
-  [data-design="dbim"] .db-org .db-org-social__name {
-    font-size: 1rem;
-    font-weight: var(--sa-font-weight-semibold);
-    line-height: 1.5;
-  }
-
-  [data-design="dbim"] .db-org .db-org-social__handle {
-    font-size: var(--db-fs-p);
-    line-height: 1.5;
-    color: var(--sa-color-text-muted);
-  }
-
-  [data-design="dbim"] .db-org .db-org-social__cta {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--sa-inline-4);
-    margin-top: auto;
-    padding-top: var(--sa-padding-8);
-    color: var(--sa-color-primaryScale-600);
-    font-size: 0.75rem; /* 12px — the View button's size */
-    font-weight: var(--sa-font-weight-semibold);
-    letter-spacing: 0.12px;
-    text-transform: uppercase;
+    border-radius: var(--sa-shape-8);
   }
 
   /* ── Contact: icon, label, lines ────────────────────────────────────────── */

@@ -5,9 +5,10 @@ import { Icon } from "@mosje/design-system";
 import { DbimDocRowView } from "@/components/website-dbim/ministry/DocRow";
 import { OfferingsTabs } from "@/components/website-dbim/home/OfferingsTabs";
 import { DbimEmptyState } from "@/components/website-dbim/ui/EmptyState";
-import { DbimIcon } from "@/components/website-dbim/ui/icons";
+import { DbimSocialFeed } from "@/components/website-dbim/home/SocialFeed";
 import type { DbimOrgBlock, DbimOrgLink, DbimOrgProfile, DbimOrgSection } from "@/lib/website-dbim/organisation";
 import "@/components/website-dbim/home/home-mid.css"; // the DBIM tab set (Figure 56), shared with Key Offerings
+import "@/components/website-dbim/home/home-bottom.css"; // the home page's social feed card
 import "./ministry.css";
 import "./organisation.css";
 
@@ -22,7 +23,7 @@ import "./organisation.css";
  * a commission with state offices and a foundation with a gallery. Spec §4b.
  *
  * DS Audit: Icon ✅ · DbimDocRowView / DbimLinkRow ✅ (Ministry) · OfferingsTabs ✅ (home,
- * label made a prop) · DbimEmptyState ✅ · DbimIcon ✅ · profile card `.db-min-profile` ✅
+ * label made a prop) · DbimEmptyState ✅ · DbimSocialFeed ✅ (home, account + offerPosts made props) · profile card `.db-min-profile` ✅
  * (Our Team) · organisation.css ➕ for the parts no DBIM page had: figures, scheme cards,
  * activity tiles, gallery, account cards, contact list, page index.
  */
@@ -88,7 +89,7 @@ export function DbimOrganisationProfile({ o }: { o: DbimOrgProfile }) {
           </div>
         ) : null}
         {o.sections.map((s) => (
-          <OrgSection key={s.anchor} s={s} />
+          <OrgSection key={s.anchor} s={s} org={o.title} />
         ))}
       </div>
     </div>
@@ -127,7 +128,7 @@ export function OrgLinkRow({ link }: { link: DbimOrgLink }) {
   );
 }
 
-function OrgSection({ s }: { s: DbimOrgSection }) {
+function OrgSection({ s, org }: { s: DbimOrgSection; org: string }) {
   return (
     <section id={s.anchor} className="db-org__section" aria-labelledby={`${s.anchor}-h`}>
       <div className="db-org__head">
@@ -143,13 +144,13 @@ function OrgSection({ s }: { s: DbimOrgSection }) {
       {/* Ingested prose from dosje.gov.in, cleaned by cleanHtml() (links, headings, tables). */}
       {s.intro ? <div dangerouslySetInnerHTML={{ __html: s.intro }} /> : null}
       {s.blocks.map((b, i) => (
-        <OrgBlock key={i} b={b} label={s.heading} />
+        <OrgBlock key={i} b={b} label={s.heading} org={org} />
       ))}
     </section>
   );
 }
 
-function OrgBlock({ b, label }: { b: DbimOrgBlock; label: string }) {
+function OrgBlock({ b, label, org }: { b: DbimOrgBlock; label: string; org: string }) {
   switch (b.kind) {
     case "prose":
       return <div dangerouslySetInnerHTML={{ __html: b.html }} />;
@@ -264,20 +265,14 @@ function OrgBlock({ b, label }: { b: DbimOrgBlock; label: string }) {
       );
 
     case "social":
+      // The home page's feed card (In Social Media), naming the body's account. It
+      // offers no "Show Latest Posts": the posts that loads are the Department's.
       return (
         <ul className="db-org-social">
           {b.items.map((s) => (
-            <li key={s.href}>
-              <a className="db-org-social__card" href={s.href} target="_blank" rel="noopener noreferrer">
-                <DbimIcon name={s.icon} size={32} className="db-org-social__icon" />
-                <span className="db-org-social__name">{s.name}</span>
-                {s.handle ? <span className="db-org-social__handle">{s.handle}</span> : null}
-                <span className="db-org-social__cta">
-                  Follow on {s.name}
-                  <Icon name="open_in_new" size={16} weight={400} aria-hidden="true" />
-                </span>
-                <span className="sr-only"> (opens in a new tab)</span>
-              </a>
+            <li key={s.href} className="db-hb-social__card">
+              <h3 className="db-hb-social__title">{s.name}</h3>
+              <DbimSocialFeed feed={{ network: s.network, title: s.name, networkName: s.name, handle: s.handle ?? "", href: s.href }} account={org} offerPosts={false} />
             </li>
           ))}
         </ul>

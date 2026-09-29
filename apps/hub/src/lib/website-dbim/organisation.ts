@@ -139,9 +139,11 @@ const CONTACT_ICON: [RegExp, string][] = [
  * 29 Sep 2026). Chosen from the tile's own title; every live tile is listed.
  */
 const TILE_ICON: [RegExp, string][] = [
-  [/spot visit/i, "pin_drop"], // NCSC
-  [/state review/i, "map"], // NCSC
-  [/psu|psb|bank/i, "account_balance"], // NCSC
+  // NCSC — the three the DBIM icon library holds (Icon/Location On, List Alt, Apartment),
+  // so the build and the handoff file draw the same glyph.
+  [/spot visit/i, "location_on"],
+  [/state review/i, "list_alt"],
+  [/psu|psb|bank/i, "apartment"],
   [/academic/i, "school"], // DAIC
   [/booking/i, "event_available"], // DAIC
   [/panchteerth|memorial|teerth/i, "temple_buddhist"], // DAIC — the five sites associated with Dr. Ambedkar
@@ -163,7 +165,7 @@ export type DbimOrgBlock =
   | { kind: "links"; items: DbimOrgLink[] }
   | { kind: "tiles"; items: { title: string; icon: string; link?: DbimOrgLink }[] }
   | { kind: "gallery"; items: { src: string; full?: string; caption: string }[] }
-  | { kind: "social"; items: { name: string; icon: DbimIconName; handle?: string; href: string }[] }
+  | { kind: "social"; items: { name: string; network: "facebook" | "x" | "instagram" | "youtube"; icon: DbimIconName; handle?: string; href: string }[] }
   | { kind: "contact"; items: { label: string; icon: string; values: DbimContactLine[] }[] }
   | {
       kind: "tabs";
@@ -215,7 +217,7 @@ function shapeBlock(b: OrgProfileBlock, label: string, here: string, pageTitle: 
       const items = b.items
         .map((s) => {
           const match = SOCIAL_ICON.find(([re]) => re.test(s.platform));
-          return match && s.href ? { name: match[2], icon: match[1], handle: s.handle, href: s.href } : undefined;
+          return match && s.href ? { name: match[2], network: match[1] as "facebook" | "x" | "instagram" | "youtube", icon: match[1], handle: s.handle, href: s.href } : undefined;
         })
         .filter(defined);
       return items.length ? { kind: "social", items } : undefined;
