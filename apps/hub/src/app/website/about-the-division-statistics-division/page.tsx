@@ -5,7 +5,7 @@ import { DocumentTable } from "@/components/website-next/templates/content/Docum
 
 const TITLE = "Statistics Division";
 const DESCRIPTION =
-  "The Statistics Division of the Department of Social Justice & Empowerment is primarily responsible for sponsoring evaluation and research studies on the schemes for its target groups.";
+  "Statistics Division of the Department of Social Justice & Empowerment is primarily responsible for sponsoring evaluation/research studies on schemes of its target groups namely Scheduled Castes, Other Backward Classes (OBCs), Senior Citizens and Victims of Substance Abuse.";
 
 export const metadata: Metadata = {
   title: `${TITLE} | Department of Social Justice & Empowerment`,

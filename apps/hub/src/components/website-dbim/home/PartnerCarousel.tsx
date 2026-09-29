@@ -119,7 +119,7 @@ export function DbimPartnerCarousel({ partners }: { partners: Partner[] }) {
         appearance="text"
         className="db-hb-partners__arrow db-hb-partners__arrow--pause"
         aria-label={playing ? "Pause partner websites" : "Play partner websites"}
-        icon={<Icon name={playing ? "pause" : "play_arrow"} size={20} />}
+        icon={<Icon name={playing ? "pause" : "play_arrow"} size={24} />}
         onClick={() => setPlaying((v) => !v)}
       />
     </div>
