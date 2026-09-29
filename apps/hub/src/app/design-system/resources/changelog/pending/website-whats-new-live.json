@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "WHAT'S NEW NOW SHOWS THE LIVE WEBSITE'S LIST, IN EVERY DESIGN. Each design used to compose What's New from the content registers, which put FAQs, an SOP and a bank EOI first where dosje.gov.in leads with the 3rd National Lok Adalat material, the NAPDDR expression of interest and the NOS result. The live list (20 items, read 29 Sep 2026) is now one shared record, `WHATS_NEW` in `lib/website-shared/whats-new.ts`, with its labels and dates; New, Classic and DBIM home pages and the DBIM Announcements bar all read it. The full What's New pages keep the twelve-month register feed (`recentNotices()`), which is what the live View All holds. The Announcements bar carries What's New only until the Department supplies an announcements list."
+}

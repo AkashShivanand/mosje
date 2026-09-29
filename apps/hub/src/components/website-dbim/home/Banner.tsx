@@ -16,6 +16,10 @@ const ANNOUNCEMENT_COUNT = 10;
  * bar. The slides are shared with every design (lib/website-shared/home.ts) — the
  * CCPS banner first, then the live site's own — not the reference build's six. DBIM makes
  * Announcements mandatory, so the bar renders even with nothing in it.
+ *
+ * DATA STILL NEEDED FROM THE DEPARTMENT: dosje.gov.in publishes no announcements list of
+ * its own, so this bar carries the live What's New items (lib/website-shared/whats-new.ts)
+ * as a stand-in. The production website takes the Department's announcements instead.
  */
 export async function DbimBanner() {
   const slides = await getHomeBanners();
