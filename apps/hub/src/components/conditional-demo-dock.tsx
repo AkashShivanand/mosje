@@ -10,6 +10,7 @@ import { formsForPath } from "@/lib/e-anudaan/demo-forms";
 import { DemoDarpanPanel } from "@/components/e-anudaan/demo-darpan-panel";
 import { isDarpanDemoRoute } from "@/lib/e-anudaan/darpan-sign-in";
 import { DemoErrorsPanel } from "@/components/e-anudaan/demo-errors-panel";
+import { DemoPfmsPanel, isPfmsDemoRoute } from "@/components/e-anudaan/demo-pfms-panel";
 import { DemoCapturePanel, useDemoShortcuts } from "@/components/demo-capture";
 
 /** The redesign, the archived classic design and the DBIM clone share every /website address. */
@@ -61,6 +62,10 @@ export function ConditionalDemoDock({
   }
   if (isDarpanDemoRoute(pathname)) {
     tabs.push({ id: "darpan", label: "NGO-DARPAN", content: <DemoDarpanPanel /> });
+  }
+  // PFMS: stands in for PFMS on the payment leg's screens (docs/plans/2026-09-29-e-anudaan-pfms.md).
+  if (isPfmsDemoRoute(pathname)) {
+    tabs.push({ id: "pfms", label: "PFMS", content: <DemoPfmsPanel pathname={pathname} /> });
   }
   // Errors: every catalogued request failure, on any E-Anudaan screen (error-catalogue.ts).
   if (pathname.startsWith("/portals/e-anudaan")) {

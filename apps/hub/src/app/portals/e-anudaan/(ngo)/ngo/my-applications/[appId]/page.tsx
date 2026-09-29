@@ -33,6 +33,10 @@
  *    note answers save when the applicant leaves the box, so "Submit Correction" is the one
  *    button that sends anything;
  *  • each submitted document can be opened, and the history names the office that acted.
+ *
+ * A sanctioned file carries a Payment card (PFMS BRD §2.4, FR-STS-003): where the grant's payment
+ * has reached, in the NGO's four words, and once credited the date, amount and UTR.
+ * DS Audit adds: StageBadge (e-Anudaan payment-ui, a DS Badge) ✅ — nothing new.
  */
 
 import * as React from "react";
@@ -89,6 +93,10 @@ import { SanctionedFilePanel } from "@/components/e-anudaan/sanctioned-file-pane
 import { useDemoFormFill } from "@/components/e-anudaan/use-demo-form-fill";
 import { correctedValueOf } from "@/lib/e-anudaan/demo-forms/correct-application";
 import { sampleChoices } from "@/lib/e-anudaan/sample-files";
+import { usePfms } from "@/lib/e-anudaan/pfms/store";
+import { paymentCase } from "@/lib/e-anudaan/pfms/selectors";
+import { allCredited, latestRequest } from "@/lib/e-anudaan/pfms/stages";
+import { StageBadge, exact } from "@/components/e-anudaan/pfms/payment-ui";
 
 /** A demo dock fill for Correct Your Application (lib/e-anudaan/demo-forms/correct-application.ts). */
 type CorrectionFill = { n: number; values: Readonly<Record<string, string>> };
@@ -199,6 +207,7 @@ function ApplicationDetail() {
           {/* Summary first, then what is asked of the applicant (verify N5). */}
           <SummaryCard app={app} schemeName={scheme?.name ?? app.schemeCode} />
           {open && <CorrectionSummary app={app} items={open.items ?? []} />}
+          <PaymentCard app={app} />
           <SanctionedFilePanel app={app} />
           <ApplicationData app={app} />
           <Documents app={app} />
@@ -932,6 +941,69 @@ function SummaryCard({ app, schemeName }: { app: GrantApplication; schemeName: s
             { term: "Submitted On", value: app.submittedAt ? formatDate(app.submittedAt) : "" },
           ]}
         />
+      </CardBody>
+    </Card>
+  );
+}
+
+/**
+ * Where the grant's payment has reached, on the NGO's own application.
+ *
+ * Design proposal for open question 7 of the PFMS integration plan (docs/plans/2026-09-29-e-anudaan-pfms.md
+ * §4): the NGO follows the payment here, when it chooses to look, instead of being sent a
+ * notification at each PFMS stage. The one notification stays the credit, which the main store
+ * already sends (FR-NTF-001) — nothing here sends anything. The stage is `paymentCase()`'s, the
+ * same reading the officers' queues use, told in the NGO's words (`STAGE_INFO[…].ngoLabel`):
+ * Sanctioned · Payment in Process · Grant Credited · Payment Returned.
+ */
+function PaymentCard({ app }: { app: GrantApplication }) {
+  const { state } = useEAnudaan();
+  const { pfms, hydrated } = usePfms();
+  const router = useRouter();
+  if (!app.sanction || !hydrated) return null;
+
+  const c = paymentCase(state, pfms, app);
+  const req = c.advice ? latestRequest(c.advice) : undefined;
+  const paid = c.stage === "paid" || c.stage === "closed";
+  // Credit details are read from the bank's own confirmation — every beneficiary's UTR — or, for a
+  // grant released before the integration, from the release on the file (which carries no UTR).
+  const credit =
+    paid && req && allCredited(req)
+      ? {
+          at: req.payments.map((p) => p.scrollDate ?? "").sort().at(-1) ?? "",
+          amount: req.payments.reduce((sum, p) => sum + p.amount, 0),
+          utr: req.payments.map((p) => p.utr).join(", "),
+        }
+      : paid && c.paidBeforeIntegration && app.release
+        ? { at: app.release.releasedAt, amount: app.release.amount, utr: "" }
+        : undefined;
+  const accounts = "/portals/e-anudaan/ngo/bank-accounts";
+
+  return (
+    <Card variant="outlined">
+      <CardBody className="space-y-3">
+        <SectionTitle title="Payment" />
+        <DescriptionList
+          columns={credit ? 2 : 1}
+          items={[
+            { term: "Status", value: <StageBadge stage={c.stage} audience="ngo" size="sm" /> },
+            ...(credit
+              ? [
+                  { term: "Credited On", value: credit.at ? formatDate(credit.at) : "" },
+                  { term: "Amount Credited", value: <span className="tabular-nums">{exact(credit.amount)}</span> },
+                  ...(credit.utr ? [{ term: "Bank Transaction Reference (UTR)", value: <span className="break-all font-mono">{credit.utr}</span> }] : []),
+                ]
+              : []),
+          ]}
+        />
+        {c.blocker === "needs-payee-code" && (
+          <p className="text-body-2 text-ink">
+            The payment cannot be sent until your PFMS payee code is on record.{" "}
+            <Link href={accounts} onClick={routeOnClick(router, accounts)}>
+              Add it on Project Bank Accounts
+            </Link>
+          </p>
+        )}
       </CardBody>
     </Card>
   );

@@ -678,6 +678,46 @@ export function releaseFunds(app: GrantApplication, roleId: RoleId, clock: Clock
   };
 }
 
+/** A bank credit PFMS has confirmed, as the payment leg reports it (PFMS BRD FR-STS-003). */
+export interface PfmsCredit {
+  amount: number;
+  /** The scroll date the bank confirmed the credit on. ISO. */
+  at: string;
+  /** Bank Transaction ID(s), one per beneficiary. */
+  utr: string;
+  /** The officer who authorised the payment advice with a DSC. */
+  authorisedBy: RoleId;
+}
+
+/**
+ * Record a credit confirmed through PFMS — the payment leg's replacement for the one-click release.
+ *
+ * It writes the same `release` record and the same "Grant Released" audit entry the Under
+ * Secretary's release did, so every screen that already reads a release (the Instalments panel,
+ * the next instalment's opening, the NGO's "Grant Released") gives the same answer — and it is the
+ * ONLY place the NGO is told the money has moved, and only once a UTR exists (BR-NTF-001). The
+ * notice carries the sanction number, the amount and the UTR (FR-NTF-002).
+ */
+export function recordPfmsCredit(app: GrantApplication, credit: PfmsCredit, clock: Clock): ActResult {
+  if (!app.sanction) return { ok: false, error: "A credit can be recorded only against a sanction order." };
+  if (app.release) return { ok: false, error: `This grant was already credited on ${formatDate(app.release.releasedAt)}.` };
+  if (!credit.utr) return { ok: false, error: "A credit is recorded only once the bank has returned a UTR." };
+  const at = { ...clock, now: credit.at };
+  return {
+    ok: true,
+    app: {
+      ...app,
+      status: "Released",
+      updatedAt: credit.at,
+      release: { amount: credit.amount, releasedAt: credit.at, releasedBy: credit.authorisedBy },
+      audit: [
+        ...app.audit,
+        stayEntry(app, credit.authorisedBy, "releaseFunds", `${rupees(credit.amount)} credited against sanction order ${app.sanction.orderNo}; UTR ${credit.utr}`, at),
+      ],
+    },
+  };
+}
+
 /**
  * Open the next instalment for the NGO to claim (live "Open for claim"). It opens only once this
  * file's funds are released — live: "Opens once the previous instalment is released."

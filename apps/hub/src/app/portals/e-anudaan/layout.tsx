@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./e-anudaan.css";
 import { ToastProvider } from "@mosje/design-system";
 import { EAnudaanProvider } from "@/lib/e-anudaan/store/store";
+import { PfmsProvider } from "@/lib/e-anudaan/pfms/store";
 
 export const metadata: Metadata = {
   title: "E-Anudaan — Grant-in-Aid Management | SAMAVESH · MoSJE",
@@ -28,7 +29,10 @@ export default function EAnudaanLayout({ children }: { children: React.ReactNode
   return (
     <div data-portal="e-anudaan" data-surface="portal">
       <ToastProvider>
-        <EAnudaanProvider>{children}</EAnudaanProvider>
+        <EAnudaanProvider>
+          {/* The PFMS payment leg reads the grant files and hands a confirmed credit back to them. */}
+          <PfmsProvider>{children}</PfmsProvider>
+        </EAnudaanProvider>
       </ToastProvider>
     </div>
   );

@@ -190,8 +190,11 @@ test("the seeded store fits in the browser with room for the applicant's work", 
   // where no officer could read it — the ceiling moved 1.90M → 1.91M for both (audit batch B8).
   // +12,800 on 17 Sep 2026 for five worked CCTV records (camera register, certificate, retention,
   // uptime declarations), one per compliance state an officer must be able to see — 1.91M → 1.925M.
+  // +66,000 on 29 Sep 2026 for six projects sanctioned this year and not yet paid, so the PFMS
+  // payment leg (PD Maker, PD Checker, PFMS) has files in flight — 1.925M → 2.0M. Their payment
+  // state is kept under its own key (`pfms/store.tsx`), not in this copy.
   const size = JSON.stringify(seed()).length;
-  assert.ok(size < 1_925_000, `seeded store is ${size.toLocaleString("en-IN")} characters`);
+  assert.ok(size < 2_000_000, `seeded store is ${size.toLocaleString("en-IN")} characters`);
 });
 
 test("a schema-11 copy is carried to 12: the NGO's own CCTV setups kept, seeded ones given their register", () => {

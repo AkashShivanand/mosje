@@ -19,6 +19,17 @@
  *    record.
  *  • The full account number is never shown back — last four digits, IFSC and branch are what an
  *    applicant needs to recognise it.
+ *
+ * The PFMS payee code (PFMS BRD FR-NGO-001/002). A payment advice names the NGO by its PFMS unique
+ * (payee) code, so each project's current account shows the code on record — entered here by the
+ * NGO, or back-filled by the Bureau for a legacy file — and, where there is none, asks for it in
+ * place, with a confirmation that it is the organisation's own. A sanctioned grant held for want of
+ * the code is named at the top of the page, because nothing else tells the NGO the Ministry is
+ * waiting on it. DS Audit adds: Checkbox ✅.
+ *
+ * A code on record is PFMS's own proof of registration, so the row then reads "PFMS Registered"
+ * whatever was declared when the account was added; the declaration still decides the badge for
+ * an account with no code yet.
  */
 
 import * as React from "react";
@@ -28,6 +39,7 @@ import {
   Button,
   Card,
   CardBody,
+  Checkbox,
   DescriptionList,
   EmptyState,
   ErrorSummary,
@@ -52,14 +64,25 @@ import { formatDate } from "@/lib/e-anudaan/format";
 import { requestStatusLabel, requestStatusTone } from "@/lib/e-anudaan/change-requests";
 import type { BankChangeRequest, Institution, ProjectAccount } from "@/lib/e-anudaan/types";
 import { useDemoFormFill } from "@/components/e-anudaan/use-demo-form-fill";
+import { usePfms } from "@/lib/e-anudaan/pfms/store";
+import { paymentCases } from "@/lib/e-anudaan/pfms/selectors";
+import { PAYEE_CODE } from "@/lib/e-anudaan/pfms/masters";
+import type { PayeeRecord } from "@/lib/e-anudaan/pfms/types";
 
 const IFSC = /^[A-Z]{4}0[A-Z0-9]{6}$/;
 const PAGE = 10;
 
 export default function ProjectBankAccountsPage() {
   const { state } = useEAnudaan();
+  const { pfms, hydrated: pfmsHydrated } = usePfms();
   const ngo = state.ngos[0];
   const projects = ngo ? projectsOf(state, ngo.id) : [];
+  // Projects with a sanctioned grant held until the NGO gives its PFMS payee code (BR-NGO-001).
+  const awaitingCode = pfmsHydrated && ngo
+    ? [...new Set(paymentCases(state, pfms).filter((c) => c.blocker === "needs-payee-code" && c.app.ngoId === ngo.id).map((c) => c.app.institutionId))]
+        .map((id) => projects.find((p) => p.id === id))
+        .filter((p): p is Institution => !!p)
+    : [];
   const [changing, setChanging] = React.useState<Institution | null>(null);
   /** A demo dock fill for the dialog, applied as it opens; `n` remounts it for a second fill. */
   const [demo, setDemo] = React.useState<{ n: number; values: Readonly<Record<string, string>>; tried: boolean } | null>(null);
@@ -92,6 +115,30 @@ export default function ProjectBankAccountsPage() {
         title="Project Bank Accounts"
         meta="Each project is paid into its own bank account. To change one, raise a request — the current account stays in use until the Ministry approves the change."
       />
+
+      {awaitingCode.length > 0 && (
+        <Alert status="warning" title="A Sanctioned Grant Is Waiting for Your PFMS Payee Code">
+          <span className="block">
+            The Ministry cannot send the payment to PFMS until the code is on record for{" "}
+            {awaitingCode.map((p) => projectName(p)).join("; ")}. Enter it under the project below.
+          </span>
+          {projects.length > PAGE &&
+            awaitingCode.map((p) => (
+              <span key={p.id} className="mt-2 block">
+                <Button
+                  appearance="outlined"
+                  size="sm"
+                  onClick={() => {
+                    setQ(p.id);
+                    setPage(1);
+                  }}
+                >
+                  Show {p.id}
+                </Button>
+              </span>
+            ))}
+        </Alert>
+      )}
 
       <Card variant="outlined">
         <CardBody className="space-y-3">
@@ -136,6 +183,8 @@ export default function ProjectBankAccountsPage() {
                 key={p.id}
                 project={p}
                 accounts={accountsFor(state, p.id)}
+                payee={pfms.payees.find((x) => x.accountId === accountsFor(state, p.id).current?.id)}
+                pfmsReady={pfmsHydrated}
                 pending={bankRequests.find((r) => r.projectId === p.id && r.status === "Pending")}
                 decided={bankRequests
                   .filter((r) => r.projectId === p.id && r.status !== "Pending" && r.decidedAt)
@@ -179,12 +228,18 @@ function accountLine(a: { bank: string; last4: string; ifsc: string; branch: str
 function ProjectRow({
   project,
   accounts,
+  payee,
+  pfmsReady,
   pending,
   decided,
   onChange,
 }: {
   project: Institution;
   accounts: { current?: ProjectAccount; previous: ProjectAccount[] };
+  /** The PFMS payee code on record for the current account (FR-NGO-001). */
+  payee?: PayeeRecord;
+  /** The payee record is read from this device; until it is, neither the code nor the form is drawn. */
+  pfmsReady: boolean;
   pending?: BankChangeRequest;
   /** The latest request the Ministry has decided on this project, with its remarks. */
   decided?: BankChangeRequest;
@@ -203,14 +258,21 @@ function ProjectRow({
             <span className="block text-ink">
               {accountLine(current)}
               <span className="ml-2 inline-flex align-middle">
-                <Badge status={current.pfmsRegistered ? "success" : "neutral"} size="sm">
-                  {current.pfmsRegistered ? "PFMS Registered" : "PFMS Not Declared"}
+                <Badge status={current.pfmsRegistered || payee ? "success" : "neutral"} size="sm">
+                  {current.pfmsRegistered || payee ? "PFMS Registered" : "PFMS Not Declared"}
                 </Badge>
               </span>
             </span>
           ) : (
             <span className="block">No account recorded for this project.</span>
           )}
+          {current && pfmsReady && payee && (
+            <span className="mt-1 block">
+              PFMS Payee Code <span className="font-mono text-ink">{payee.payeeCode}</span>
+              {payee.source === "bureau" ? " · recorded by the Ministry" : ` · confirmed ${formatDate(payee.confirmedAt)}`}
+            </span>
+          )}
+          {current && pfmsReady && !payee && <PayeeCodeForm account={current} project={project} />}
           {pending && (
             <span className="mt-1 block">
               <Badge status="warning" size="sm">Change Under Examination</Badge>{" "}
@@ -272,6 +334,70 @@ function ProjectRow({
         )
       }
     />
+  );
+}
+
+/** FR-NGO-001/002: the NGO enters its PFMS unique (payee) code once, and confirms it is its own. */
+function PayeeCodeForm({ account, project }: { account: ProjectAccount; project: Institution }) {
+  const { setPayeeCode } = usePfms();
+  const { toast } = useToast();
+  const [code, setCode] = React.useState("");
+  const [confirmed, setConfirmed] = React.useState(false);
+  const [tried, setTried] = React.useState(false);
+  const [refused, setRefused] = React.useState<string | null>(null);
+  const idBase = `payee-${account.id}`;
+
+  const codeError = !PAYEE_CODE.test(code) ? "Enter the PFMS payee code as it appears on your PFMS registration: two letters and ten digits." : refused;
+  const confirmError = !confirmed ? "Confirm that this is your organisation's PFMS payee code." : undefined;
+
+  const save = () => {
+    setTried(true);
+    if (codeError || confirmError) return;
+    const res = setPayeeCode(account.id, project.id, code);
+    if (!res.ok) {
+      setRefused(res.error);
+      return;
+    }
+    toast("PFMS payee code saved.", "success");
+  };
+
+  return (
+    <span className="mt-3 block space-y-3 rounded-md border border-line p-3">
+      <span className="block font-semibold text-ink">PFMS Payee Code Needed</span>
+      <FormField
+        label="PFMS Payee Code"
+        id={`${idBase}-code`}
+        required
+        hint="Two letters and ten digits, as shown on your PFMS registration."
+        error={tried ? (codeError ?? undefined) : undefined}
+      >
+        {(c) => (
+          <Input
+            {...c}
+            className="max-w-[16rem] font-mono"
+            autoComplete="off"
+            value={code}
+            onChange={(e) => {
+              setRefused(null);
+              setCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 12));
+            }}
+          />
+        )}
+      </FormField>
+      <Checkbox
+        id={`${idBase}-confirm`}
+        checked={confirmed}
+        onCheckedChange={setConfirmed}
+        required
+        label="I confirm this is our organisation's PFMS unique (payee) code"
+        error={tried ? confirmError : undefined}
+      />
+      <span className="block">
+        <Button size="sm" onClick={save} aria-label={`Save the PFMS payee code for ${projectName(project)}`}>
+          Save Payee Code
+        </Button>
+      </span>
+    </span>
   );
 }
 
