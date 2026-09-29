@@ -151,10 +151,11 @@
     background: var(--sa-color-neutralScale-0);
   }
 
-  /* The photograph fills a 216px frame — the reference's height at every width. */
+  /* The live listing's image, framed at the reference's desktop card (643 × 216) at
+     every width, so the State Emblem shows alone and the words set into the image never do. */
   [data-design="dbim"] .db-scheme-card__media {
     position: relative;
-    height: 216px;
+    aspect-ratio: 643 / 216;
     overflow: hidden;
     border-radius: var(--sa-shape-12) var(--sa-shape-12) 0 0;
   }
@@ -172,7 +173,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    min-height: 85px; /* 85px: the reference's title-logo box, logo or not */
+    min-height: 85px; /* 85px: the reference's title box; a one- to three-line name leaves "Who It Is For" level along a row */
   }
 
   @media (min-width: 768px) {
@@ -198,14 +199,16 @@
     object-fit: contain;
   }
 
+  /* "Who It Is For": a line or two, so the box takes its content — the reference's
+     five-line box held a description the live listing does not publish. The card body
+     grows, so the arrows still line up along a row. */
   [data-design="dbim"] .db-scheme-card__line {
     display: -webkit-box;
-    height: 100px; /* 100px: the reference's five-line box */
     margin: 0 0 5px;
     overflow: hidden;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 5;
-    line-clamp: 5;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
     font-size: 0.75rem; /* 12px */
     line-height: 1.25rem; /* 20px */
   }
