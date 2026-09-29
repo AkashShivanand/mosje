@@ -449,6 +449,9 @@ type OrganisationType = Exclude<OrganisationCategory, "schemes">;
 
 export const SCHEME_PORTALS_PATH = "/ministry/our-scheme-portals";
 
+/** PM-AJAY's registry id: its page under Our Scheme Portals carries the scheme's dashboard. */
+export const PMAJAY_PORTAL_ID = "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay";
+
 export function isOrganisationType(slug: string): slug is OrganisationType {
   return (ORGANISATION_TYPES as string[]).includes(slug);
 }
@@ -584,21 +587,16 @@ export interface DbimDashboardTile {
 }
 
 /**
- * The Department's performance dashboards (DBIM 3.0 §A.5.1.4). The Social Audit tile
- * and its date are the reference's (it is the Department's own portal); the
- * Beneficiary Dashboard is the live site's (dosje.gov.in/dashboard/, linked from its
- * home page's "View Dashboard" and its footer's "Statistics"), missing here until
- * 28 Sep 2026; the PM-AJAY dashboard is this website's, reading the scheme's MIS feeds.
+ * The Department's performance dashboards (DBIM 3.0 §A.5.1.4) — the Department's
+ * own, not a scheme's. The Beneficiary Dashboard is the live site's
+ * (dosje.gov.in/dashboard/, its home page's "View Dashboard" and its footer's
+ * "Statistics"); the Social Audit tile and its date are the reference's (the
+ * Department's own portal).
+ *
+ * The PM-AJAY dashboard is NOT here (the Department's instruction, 29 Sep 2026): it is
+ * the scheme's, and sits on the PM-AJAY page under Our Scheme Portals.
  */
 export const DBIM_DASHBOARDS: DbimDashboardTile[] = [
-  {
-    title: "Social Audit",
-    image: { src: DBIM_SOCIAL_AUDIT.src, alt: DBIM_SOCIAL_AUDIT.alt },
-    href: DBIM_SOCIAL_AUDIT.href,
-    external: true,
-    // SOURCE: the reference's tile, master-socialjustice.digifootprint.gov.in/ministry/our-performance, 25 Sep 2026.
-    date: "24.10.2025",
-  },
   {
     title: "Beneficiary Dashboard",
     // The live page's first screen — Scholarships and Fellowship — captured 28 Sep 2026.
@@ -607,9 +605,11 @@ export const DBIM_DASHBOARDS: DbimDashboardTile[] = [
     external: true,
   },
   {
-    title: "PM-AJAY Dashboard",
-    image: { src: "/website/images/PM-AJAY-logo.png", alt: "Pradhan Mantri Anusuchit Jaati Abhyuday Yojana (PM-AJAY)", contain: true },
-    href: "/dashboard",
-    external: false,
+    title: "Social Audit",
+    image: { src: DBIM_SOCIAL_AUDIT.src, alt: DBIM_SOCIAL_AUDIT.alt },
+    href: DBIM_SOCIAL_AUDIT.href,
+    external: true,
+    // SOURCE: the reference's tile, master-socialjustice.digifootprint.gov.in/ministry/our-performance, 25 Sep 2026.
+    date: "24.10.2025",
   },
 ];
