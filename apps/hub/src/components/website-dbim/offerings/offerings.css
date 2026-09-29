@@ -713,7 +713,7 @@
 
   @media (min-width: 768px) {
     [data-design="dbim"] .db-sd__doc {
-      grid-template-columns: 6fr 4fr 2fr;
+      grid-template-columns: 6fr 2fr 2fr 2fr; /* title · release date · file · View — About Us's document row */
       gap: 0;
     }
     [data-design="dbim"] .db-sd__doc > * {
@@ -723,6 +723,14 @@
       justify-self: end;
       padding: var(--sa-padding-8) var(--sa-padding-12);
     }
+  }
+
+  /* The release date, set as About Us's document row sets it (.db-min-ptype). */
+  [data-design="dbim"] .db-sd__doc-date small {
+    font-size: var(--db-fs-small);
+    font-weight: var(--sa-font-weight-semibold);
+    letter-spacing: 0.6px;
+    color: var(--sa-color-text-muted);
   }
 
   [data-design="dbim"] .db-sd__doc p {
