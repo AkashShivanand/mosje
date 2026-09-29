@@ -15,7 +15,7 @@
  * Our Organisation and Our Performance. The icons keep the reference's order.
  */
 export const DBIM_ABOUT_TILES = [
-  { label: "Our Team", path: "/ministry/our-team", icon: "groups" },
+  { label: "Our Team", path: "/ministry/our-team", icon: "our-team" },
   { label: "Our Organisation", path: "/ministry/our-organisation", icon: "organisation" },
   { label: "Our Performance", path: "/ministry/our-performance", icon: "performance" },
 ] as const;

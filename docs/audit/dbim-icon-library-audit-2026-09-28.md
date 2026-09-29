@@ -249,3 +249,19 @@ text nodes and **zero** image icons remain.
 - `tsc`, ESLint, Stylelint, `check:icon-scale`, `check:ds-linkage`, `check:type-linkage`,
   `check:raw-button`, `check:link-as`, `check:org-logos`, `check:dangling-vars` — all pass.
 - The New design, loaded with `sa-website-design=new`, still downloads Rounded only.
+
+## 29 Sep 2026 — two section glyphs follow the manual's figures
+
+The DBIM 3.0 manual draws the home page's Social Media section and Ministry tiles with
+specific glyphs. The bank swap above replaced two of them, so the page no longer matched
+the manual. On instruction to follow DBIM strictly, the manual's drawings are restored:
+
+| Where | Bank glyph (28 Sep) | Now | Source |
+|---|---|---|---|
+| In Social Media heading | Social Media Marketing (megaphone) | globe with a video player | Figure 61 |
+| Our Team tile | Groups (three figures) | two figures, "Who's who" | Figure 55 |
+
+Both are the reference template's original paths, set into the 64 × 64 frame with the
+§3.4 inset in Figma (Icons & Logos: `Icon/Social Media`, `Icon/Our Team`, all four sizes)
+and exported from there as `social-media.svg` and `our-team.svg`. Announcements, Our
+Organisation (Divisions) and Our Performance already match Figures 53 and 55.

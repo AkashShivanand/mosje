@@ -19,6 +19,12 @@ import type * as React from "react";
  *   - see-through layers and full-canvas clip wrappers from auto-tracing → removed;
  *   - line weights from 1.5 to 5.3 units → one weight, 3.0 units at 64 (1.5px at 32).
  *
+ * Two glyphs are the DBIM 3.0 manual's own figures rather than the downloadable bank,
+ * because the manual draws these exact sections with them and the design follows the
+ * manual (instruction, 29 Sep 2026): `our-team` is the two-figure "Who's who" of Figure 55,
+ * `social-media` the globe-and-player of Figure 61. They were the reference template's
+ * glyphs until 28 Sep 2026, when the bank's Groups and Social Media Marketing replaced them.
+ *
  * Painted as a CSS mask over currentColor: the colour follows the text colour exactly as
  * an inline SVG would, while the traced paths (up to 12 KB each) are fetched once and
  * cached instead of being written into every page's HTML and RSC payload.
@@ -32,13 +38,13 @@ export const DBIM_ICON_LIBRARY = {
   "recent-documents": "Recent Documents",
   "user-personas": "User Personas",
   "important-links": "Important Links",
-  "social-media-marketing": "Social Media Marketing",
+  "social-media": "Social Media", // DBIM 3.0 Figure 61
   "announcement": "Announcement",
   "skip-to-content": "Skip to Content",
   "language": "Language",
   "accessibility": "Accessibility",
   // About Us tiles
-  "groups": "Groups",
+  "our-team": "Our Team", // DBIM 3.0 Figure 55, "Who's who"
   "organisation": "Organisation",
   "performance": "Performance",
   // Persona tiles
