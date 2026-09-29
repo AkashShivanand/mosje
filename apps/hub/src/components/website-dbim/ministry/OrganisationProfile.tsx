@@ -83,11 +83,8 @@ export function DbimOrganisationProfile({ o }: { o: DbimOrgProfile }) {
       </aside>
 
       <div className="db-min-rich db-org__main">
-        {o.banner ? (
-          <div className="db-org__banner">
-            <Image src={o.banner} alt="" fill sizes="(min-width: 992px) 860px, 100vw" priority />
-          </div>
-        ) : null}
+        {/* The live page's banner photograph is kept in the data (o.banner) but not drawn:
+            the handoff keeps it as a hidden layer (the Department's decision, 29 Sep 2026). */}
         {o.sections.map((s) => (
           <OrgSection key={s.anchor} s={s} org={o.title} />
         ))}
