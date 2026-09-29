@@ -429,11 +429,24 @@
     color: var(--sa-color-text-default);
   }
 
+  /* Left-aligned: body text is never right-aligned (DBIM 3.0 §4.1.1 i). */
   [data-design="dbim"] .db-u-fb__note {
     margin: 0 0 30px;
     font-size: 0.875rem; /* 14px */
     line-height: 1.3125rem; /* 21px */
-    text-align: right;
+  }
+
+  [data-design="dbim"] .db-u-fb__note p {
+    margin: 0 0 var(--sa-stack-8);
+  }
+
+  [data-design="dbim"] .db-u-fb__note p:last-child {
+    margin: 0;
+  }
+
+  [data-design="dbim"] .db-u-fb__note a {
+    color: var(--sa-color-primaryScale-800);
+    text-decoration: underline;
   }
 
   [data-design="dbim"] .db-u-req {
@@ -531,6 +544,19 @@
     margin: 0 0 var(--sa-stack-16);
     color: var(--sa-color-text-default);
     font-size: var(--db-fs-p);
+  }
+
+  [data-design="dbim"] .db-u-search__count a {
+    color: var(--sa-color-primaryScale-800);
+    text-decoration: underline;
+  }
+
+  [data-design="dbim"] .db-u-search__near {
+    margin: var(--sa-stack-24) 0 var(--sa-stack-8);
+    color: var(--sa-color-text-default);
+    font-size: var(--db-fs-h3);
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: var(--db-lh-h3);
   }
 
   /* ── Persona tiles — the reference's .seekerbox ─────────────────────────── */
