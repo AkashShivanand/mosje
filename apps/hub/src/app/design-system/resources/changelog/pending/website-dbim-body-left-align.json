@@ -1,4 +1,0 @@
-{
-  "kind": "Fixed",
-  "text": "THE DBIM DESIGN'S BODY TEXT IS LEFT-ALIGNED. DBIM 3.0 §4.1.1 i says body text must be left-aligned, and its checklist item 12 checks for it. The design justified it in four places, copied from the reference build: the Ministry text pages (About Us and the organisation and scheme pages), a scheme's detail page under Offerings, Connect › Grievance Redressal, and the Connect event cards. All four are now left-aligned, and the `.db-prose--justify` modifier, used only on Grievance Redressal, is gone. The Figma file was corrected the same way on 29 Sep 2026."
-}

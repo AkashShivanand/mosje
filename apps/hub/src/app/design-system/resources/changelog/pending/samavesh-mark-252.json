@@ -1,4 +1,0 @@
-{
-  "kind": "Fixed",
-  "text": "THE SAMAVESH MARK NO LONGER LOADS AS A 761 KB FILE ON THE PORTAL LOGIN SCREENS. `SAMAVESH_MARK` is now a 252px raster (12.6 KB), 3× the 84px login seal, the largest surface that draws it small. It was 156px, too small for that seal, so every portal login, the design-system hero and sidebar, and Storybook loaded the 743 KB traced vector instead, seven times DBIM 3.0's 100 KB limit for a logo. The login shell's default, the five portals (NHAPOA, e-Anudaan, SCW, NMBA, TG), the hero, the docs sidebar and Storybook now use it. `SAMAVESH_MARK_VECTOR` stays for large drawings only (the lightbox specimen)."
-}

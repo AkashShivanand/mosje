@@ -1,4 +1,0 @@
-{
-  "kind": "Fixed",
-  "text": "THE DBIM DESIGN'S LOGOS ARE UNDER DBIM 3.0'S 100 KB LIMIT (§5.5 iv). The State Emblem's path data is rewritten as relative coordinates on a 0.01-unit grid (196 → 89.5 KB); at ten times its size it differs from the original on 53 edge pixels of 176,641. The SAMAVESH roundel in the header is a 174px PNG, 3× its 58px display (761 KB → 8 KB); its vector is traced artwork that no precision gets under the limit, so the design system and the portals keep the vector."
-}
