@@ -312,3 +312,22 @@ test("deductions reduce the net payable and cannot exceed the gross (FR-PDM-004,
   const blank = { ...a, beneficiaries: [{ ...a.beneficiaries[0]!, deductions: [{ id: "d1", amount: 10 }] }] };
   assert.ok(validateAdvice(blank, ctx).some((i) => i.field === "ben-0-ded-0-function"));
 });
+
+/* ── The application form (FR-NGO-001/002) ──────────────────────────────── */
+
+test("the application form asks for the payee code and a typed-twice account where the account is new", async () => {
+  const { wizardFor, stepFields, fieldVisible, validateStep } = await import("../form-schema.ts");
+  const w = wizardFor("SHRESHTA_M2")!;
+  const step = w.steps.find((s) => s.kind !== "documents" && s.kind !== "review" && stepFields(s).some((f) => f.name === "fld_pfms_payee_code"))!;
+  const f = (name: string) => stepFields(step).find((x) => x.name === name)!;
+  const fresh = { claim_stage: "", fld_pfms_on_record: "", fld_pfms_registered: "Yes", fld_bank_account_number: "30112233445566" };
+  assert.ok(fieldVisible(f("fld_pfms_payee_code"), fresh) && fieldVisible(f("fld_pfms_payee_confirm"), fresh));
+  assert.ok(fieldVisible(f("fld_bank_account_confirm"), fresh));
+  // Not registered: the Ministry registers it later, and the code is asked on Project Bank Accounts.
+  assert.ok(!fieldVisible(f("fld_pfms_payee_code"), { ...fresh, fld_pfms_registered: "No" }));
+  // Already on record: nothing is asked again.
+  assert.ok(!fieldVisible(f("fld_pfms_payee_code"), { ...fresh, fld_pfms_on_record: "Yes" }));
+  const errors = validateStep(step, { ...fresh, fld_bank_account_confirm: "30112233445567", fld_pfms_payee_code: "MH12" });
+  assert.match(errors.fld_bank_account_confirm ?? "", /do not match/);
+  assert.match(errors.fld_pfms_payee_code ?? "", /two letters and ten digits/);
+});

@@ -113,6 +113,14 @@ export function configFor(configs: readonly SchemePfmsConfig[], schemeCode: stri
   return configs.find((c) => c.schemeCode === schemeCode);
 }
 
+/** Illustrative PFMS payee code: the project's state letters and ten digits from its serial. */
+export function derivedPayeeCode(projectId: string, salt = 0): string {
+  const state = projectId.split("/")[1] ?? "IN";
+  let h = 7 + salt;
+  for (const ch of projectId) h = (h * 31 + ch.charCodeAt(0)) % 9_999_999_967;
+  return `${state.toUpperCase().slice(0, 2)}${String(h).padStart(10, "0").slice(-10)}`;
+}
+
 /** PFMS unique (payee) codes are two letters and ten digits in this prototype. Illustrative shape. */
 export const PAYEE_CODE = /^[A-Z]{2}[0-9]{10}$/;
 export const IFSC = /^[A-Z]{4}0[A-Z0-9]{6}$/;

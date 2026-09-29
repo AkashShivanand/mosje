@@ -15,6 +15,7 @@
  */
 
 import { applyAction, deficiencyItemsFrom, releaseFunds, type Clock, type WorkflowAction } from "../workflow.ts";
+import { derivedPayeeCode } from "../pfms/masters.ts";
 import { seedCctvDetail } from "../cctv.ts";
 import {
   GRADES,
@@ -2054,6 +2055,11 @@ export function buildSeed(): {
         camera_live_feed: "No",
         prior_grant_received: "No",
         fld_bank_joint_operators: `${ngo.secretary}, Secretary, and ${ngo.treasurer}, Treasurer — Registered office, ${ngo.district}, ${ngo.state}`,
+        // PFMS BRD FR-NGO-001/002: the account typed twice, and the payee code the payment leg holds
+        // for this project (`pfms/seed.ts` derives the same one), confirmed.
+        fld_bank_account_confirm: v.fld_bank_account_number,
+        fld_pfms_payee_code: derivedPayeeCode(inst.id),
+        fld_pfms_payee_confirm: "true",
       };
       for (let pass = 0; pass < 4; pass++) {
         let changed = false;

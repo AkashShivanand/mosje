@@ -13,7 +13,7 @@
 
 import type { EAnudaanState, GrantApplication, ProjectAccount } from "../types.ts";
 import { accountsFor } from "../applicant.ts";
-import { SEED_SCHEME_CONFIG, configFor, seedMasters } from "./masters.ts";
+import { SEED_SCHEME_CONFIG, configFor, derivedPayeeCode, seedMasters } from "./masters.ts";
 import { createAdvice, nextBillNumber, pfmsFinancialYear } from "./advice.ts";
 import { drawBatch, type ReleaseEntry } from "./reports.ts";
 import type {
@@ -55,14 +55,6 @@ export const PFMS_SCHEMA_VERSION = 1;
 
 const DAY = 86_400_000;
 const INTEGRATION_FROM = "2026-04-01";
-
-/** Illustrative PFMS payee code: the project's state letters and ten digits from its serial. */
-export function derivedPayeeCode(projectId: string, salt = 0): string {
-  const state = projectId.split("/")[1] ?? "IN";
-  let h = 7 + salt;
-  for (const ch of projectId) h = (h * 31 + ch.charCodeAt(0)) % 9_999_999_967;
-  return `${state.toUpperCase().slice(0, 2)}${String(h).padStart(10, "0").slice(-10)}`;
-}
 
 /** A plausible-looking Base64 SHA-256 for a seeded file. A real upload hashes its bytes. */
 export function seededHash(name: string): string {

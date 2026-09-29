@@ -4,7 +4,7 @@
  * Heads of Account — each scheme's PFMS scheme code and coded heads (PFMS BRD FR-HOA-001,
  * FR-HOA-002, §3.1 B, §9).
  *
- * DS Audit: PageHeader ✅ existing · Card ✅ · SectionTitle ✅ · DataTable ✅ · Alert ✅ · Button ✅ ·
+ * DS Audit: SettingsScreen ✅ existing · Card ✅ · SectionTitle ✅ · DataTable ✅ · Alert ✅ · Button ✅ ·
  * Modal ✅ · FormField ✅ · Input ✅ · Select ✅ · ErrorSummary ✅ · Skeleton ✅ · EmptyState ✅ ·
  * useToast ✅ — composed, nothing new.
  *
@@ -30,10 +30,9 @@ import {
   Icon,
   Input,
   Modal,
-  PageHeader,
   SectionTitle,
   Select,
-  Skeleton,
+  SettingsScreen,
   useToast,
   type DataTableColumn,
 } from "@mosje/design-system";
@@ -65,15 +64,6 @@ export default function HeadsOfAccountPage() {
   const [adding, setAdding] = React.useState<string | null>(null);
   const [removing, setRemoving] = React.useState<{ schemeCode: string; index: number } | null>(null);
 
-  if (!hydrated) {
-    return (
-      <div className="space-y-4" role="status" aria-label="Loading heads of account">
-        <Skeleton className="h-8 w-1/2" />
-        <Skeleton className="h-64 w-full" />
-        <Skeleton className="h-64 w-full" />
-      </div>
-    );
-  }
 
   const removingCfg = removing ? pfms.configs.find((c) => c.schemeCode === removing.schemeCode) : undefined;
   const removingHead = removing && removingCfg ? removingCfg.heads[removing.index] : undefined;
@@ -89,16 +79,29 @@ export default function HeadsOfAccountPage() {
   const addingCfg = adding ? pfms.configs.find((c) => c.schemeCode === adding) : undefined;
 
   return (
-    <div className="space-y-6">
-      <PageHeader title="Heads of Account" meta="The PFMS scheme code and the coded heads of account a payment advice may use, by scheme." />
-
-      {pfms.configs.length === 0 ? (
-        <EmptyState title="No Scheme Configured" description="No scheme is set up for payment through PFMS." />
-      ) : (
-        pfms.configs.map((cfg) => (
-          <SchemeCard key={cfg.schemeCode} cfg={cfg} masters={pfms.masters} onAdd={() => setAdding(cfg.schemeCode)} onRemove={(index) => setRemoving({ schemeCode: cfg.schemeCode, index })} />
-        ))
-      )}
+    <>
+      <SettingsScreen
+        title="Heads of Account"
+        meta="The PFMS scheme code and the coded heads of account a payment advice may use, by scheme."
+        loading={!hydrated}
+        sections={[
+          {
+            id: "schemes",
+            title: "Schemes",
+            description: "Each scheme's PFMS code and the heads the Maker may choose from.",
+            children:
+              pfms.configs.length === 0 ? (
+                <EmptyState title="No Scheme Configured" description="No scheme is set up for payment through PFMS." />
+              ) : (
+                <div className="space-y-5">
+                  {pfms.configs.map((cfg) => (
+                    <SchemeCard key={cfg.schemeCode} cfg={cfg} masters={pfms.masters} onAdd={() => setAdding(cfg.schemeCode)} onRemove={(index) => setRemoving({ schemeCode: cfg.schemeCode, index })} />
+                  ))}
+                </div>
+              ),
+          },
+        ]}
+      />
 
       {addingCfg && <AddHeadDialog key={addingCfg.schemeCode} cfg={addingCfg} masters={pfms.masters} onClose={() => setAdding(null)} />}
 
@@ -135,7 +138,7 @@ export default function HeadsOfAccountPage() {
           </div>
         )}
       </Modal>
-    </div>
+    </>
   );
 }
 

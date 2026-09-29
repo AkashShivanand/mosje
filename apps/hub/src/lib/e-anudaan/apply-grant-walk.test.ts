@@ -53,7 +53,9 @@ function answerFor(f: FieldDef, values: Record<string, string>): string {
     case "pin": return "110001";
     case "nameAndPhone": return "Anita Kulkarni, 9876543210";
     case "lettersOnly": return "Anita Kulkarni";
-    case "accountNumber": return "30112233445566";
+    case "accountNumber":
+    case "confirmAccount": return "30112233445566";
+    case "payeeCode": return "MH1234567890";
     case "notFuture": return "2012-06-01";
     case "afterRegistration": return "2035-12-31";
     case "afterPeriodFrom": return "2026-03-31";

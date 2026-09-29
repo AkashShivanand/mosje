@@ -49,13 +49,22 @@ export interface PaymentCase {
 export type Payee = Omit<BeneficiaryLine, "id" | "gross" | "deductions" | "remarks" | "claimReference">;
 
 /**
- * The payee code on record for a project's current account — confirmed by the NGO on Project Bank
- * Accounts or back-filled by the Bureau (FR-NGO-001/003). One lookup, so the bank page and the Maker
- * never disagree about it.
+ * The payee code on record for a project's current account: the one confirmed on Project Bank
+ * Accounts or back-filled by the Bureau, else the one the NGO gave and confirmed on its latest
+ * application for the project (FR-NGO-001/003). One lookup, so the bank page and the Maker never
+ * disagree about it.
  */
 export function payeeRecordFor(main: EAnudaanState, pfms: Pick<PfmsState, "payees">, projectId: string): PayeeRecord | undefined {
   const acct = accountsFor(main, projectId).current;
-  return acct ? pfms.payees.find((p) => p.accountId === acct.id) : undefined;
+  if (!acct) return undefined;
+  const own = pfms.payees.find((p) => p.accountId === acct.id);
+  if (own) return own;
+  const filed = main.applications
+    .filter((a) => a.institutionId === projectId && a.status !== "Draft" && a.formValues?.fld_pfms_payee_code && a.formValues.fld_pfms_payee_confirm === "true")
+    .sort((x, y) => (y.submittedAt ?? "").localeCompare(x.submittedAt ?? ""))[0];
+  const code = filed?.formValues?.fld_pfms_payee_code;
+  if (!filed || !code) return undefined;
+  return { accountId: acct.id, projectId, payeeCode: code.trim().toUpperCase(), source: "ngo", confirmedAt: filed.submittedAt ?? filed.updatedAt };
 }
 
 /** The NGO's payee details as the Maker would pre-fill them, or null with the reason. */

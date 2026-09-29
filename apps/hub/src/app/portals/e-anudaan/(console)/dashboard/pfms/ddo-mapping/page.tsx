@@ -4,7 +4,7 @@
  * DDO & Division Codes — the DDOs PFMS knows, and which of them pays each scheme (PFMS BRD
  * FR-MDM-001, FR-MDM-003, FR-MDM-004, §3.1 B).
  *
- * DS Audit: PageHeader ✅ existing · Card ✅ · SectionTitle ✅ · DataTable ✅ · Badge ✅ ·
+ * DS Audit: SettingsScreen ✅ existing · Card ✅ · SectionTitle ✅ · DataTable ✅ · Badge ✅ ·
  * CheckboxGroup ✅ · Button ✅ · Skeleton ✅ · useToast ✅ — composed, nothing new.
  *
  * The DDO list is read-only: it is PFMS master data (GetDDO, GetPAO, GetPDCode,
@@ -15,7 +15,7 @@
  */
 
 import * as React from "react";
-import { Badge, Button, Card, CardBody, CheckboxGroup, DataTable, PageHeader, SectionTitle, Skeleton, useToast, type DataTableColumn } from "@mosje/design-system";
+import { Badge, Button, Card, CardBody, CheckboxGroup, DataTable, SettingsScreen, useToast, type DataTableColumn } from "@mosje/design-system";
 import { usePfms } from "@/lib/e-anudaan/pfms/store";
 import { schemeLabel } from "@/lib/e-anudaan/selectors";
 import { formatDateTime } from "@/lib/e-anudaan/format";
@@ -36,15 +36,6 @@ type DdoRow = {
 export default function DdoMappingPage() {
   const { pfms, hydrated } = usePfms();
 
-  if (!hydrated) {
-    return (
-      <div className="space-y-4" role="status" aria-label="Loading DDO and division codes">
-        <Skeleton className="h-8 w-1/2" />
-        <Skeleton className="h-64 w-full" />
-        <Skeleton className="h-48 w-full" />
-      </div>
-    );
-  }
 
   const m = pfms.masters;
   const rows: DdoRow[] = m.ddos.map((d) => ({
@@ -95,7 +86,7 @@ export default function DdoMappingPage() {
     { key: "landing", header: "Sanction Lands", render: (r) => r.landing },
     {
       key: "pd",
-      header: "PD Codes",
+      header: "Division Codes",
       exportValue: (r) => r.pdCodes.map((p) => p.code).join(", "),
       render: (r) =>
         r.pdCodes.length === 0 ? (
@@ -114,29 +105,34 @@ export default function DdoMappingPage() {
   ];
 
   return (
-    <div className="space-y-6">
-      <PageHeader title="DDO & Division Codes" meta={`As published by PFMS, last synchronised ${formatDateTime(m.syncedAt)}.`} />
-
-      <Card variant="outlined">
-        <CardBody className="space-y-4">
-          <SectionTitle as={2} title="Drawing & Disbursing Officers" description="With their Pay & Accounts Office, e-Bill status and division codes." count={rows.length} />
-          <DataTable<DdoRow> caption="Drawing and Disbursing Officers from PFMS master data" columns={columns} data={rows} total={rows.length} emptyLabel="No DDO is in the PFMS master data. Refresh the master data." />
-        </CardBody>
-      </Card>
-
-      <section aria-labelledby="scheme-ddos" className="space-y-4">
-        <SectionTitle as={2} headingId="scheme-ddos" title="DDOs by Scheme" description="The DDOs a Maker may choose on a payment advice for each scheme." />
-        {pfms.configs.length === 0 ? (
-          <p className="text-body-2 text-ink-muted">No scheme is set up for payment through PFMS.</p>
-        ) : (
-          <div className="grid gap-4 lg:grid-cols-2">
-            {pfms.configs.map((cfg) => (
-              <SchemeDdos key={cfg.schemeCode} cfg={cfg} masters={m} />
-            ))}
-          </div>
-        )}
-      </section>
-    </div>
+    <SettingsScreen
+      title="DDO & Division Codes"
+      meta={`As published by PFMS, last synchronised ${formatDateTime(m.syncedAt)}.`}
+      loading={!hydrated}
+      sections={[
+        {
+          id: "ddos",
+          title: "Drawing & Disbursing Officers",
+          description: "With their Pay & Accounts Office, e-Bill status and division codes.",
+          children: <DataTable<DdoRow> caption="Drawing and Disbursing Officers from PFMS master data" columns={columns} data={rows} total={rows.length} emptyLabel="No DDO is in the PFMS master data. Refresh the master data." />,
+        },
+        {
+          id: "schemes",
+          title: "DDOs by Scheme",
+          description: "The DDOs a Maker may choose on a payment advice for each scheme.",
+          children:
+            pfms.configs.length === 0 ? (
+              <p className="text-body-2 text-ink-muted">No scheme is set up for payment through PFMS.</p>
+            ) : (
+              <div className="grid gap-4 lg:grid-cols-2">
+                {pfms.configs.map((cfg) => (
+                  <SchemeDdos key={cfg.schemeCode} cfg={cfg} masters={m} />
+                ))}
+              </div>
+            ),
+        },
+      ]}
+    />
   );
 }
 

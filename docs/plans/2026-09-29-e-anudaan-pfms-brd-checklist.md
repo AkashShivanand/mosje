@@ -21,14 +21,13 @@
 
 | Group | Rows | ✅ | 🟡 | 🔧 | ⏸ | ❌ |
 |---|---|---|---|---|---|---|
-| §5 functional requirements (FR-*) | 44 | 40 | 2 | 2 | 0 | 0 |
+| §5 functional requirements (FR-*) | 44 | 42 | 0 | 2 | 0 | 0 |
 | §7 business rules (BR-*) | 14 | 13 | 0 | 1 | 0 | 0 |
-| **Every row, §2–§13** | **147** | **124** | **8** | **12** | **3** | **0** |
+| **Every row, §2–§13** | **147** | **130** | **2** | **12** | **3** | **0** |
 
-The eight partial rows come from **three** gaps:
-- **The payee code, its confirmation tick and a typed-twice account number are not yet on the application form.** Six rows: 2.2a, 3.1 A1, 3.1 A2, FR-NGO-001, FR-NGO-002, and workflow step 1.
-- **How long supporting documents are kept** (6.3d) is a Ministry decision.
-- **Bill types other than RPR-34** (6.4b) are fixed rather than configurable.
+The two partial rows are both outside what a screen can settle:
+- **How long supporting documents are kept** (6.3d) is a Ministry decision. The prototype expires view links after 7 days.
+- **Bill types other than RPR-34** (6.4b) are fixed rather than configurable. The BRD needs only RPR-34 now.
 
 ---
 
@@ -41,7 +40,7 @@ The eight partial rows come from **three** gaps:
 | 2.1c | Less turnaround and reconciliation effort | ✅ | Reports › Reconciliation, Turnaround |
 | 2.1d | Auditability, one traceable e-sanction per bill | ✅ | Request identifiers and history on every case · T "one call per bill" |
 | 2.1e | Built once, scheme by configuration | ✅ | `SchemePfmsConfig`; Bureau › Heads of Account, DDO & Division Codes |
-| 2.2a | Payee code and bank details confirmed before sanction | 🟡 | See FR-NGO-001/002 |
+| 2.2a | Payee code and bank details confirmed before sanction | ✅ | FR-NGO-001/002 below |
 | 2.2b | Maker–Checker on the payment advice | ✅ | Maker and Checker sign-ins; T "the Maker cannot sign their own advice" |
 | 2.2c | One ReceiveSanctionData call per bill | ✅ | T "one call per bill" |
 | 2.2d | Track bill, PAO and payment; capture UTR | ✅ | T "advancing reaches Paid exactly once" · S 17, 18 |
@@ -66,8 +65,8 @@ The eight partial rows come from **three** gaps:
 
 | # | Item | Mark | Where / evidence |
 |---|---|---|---|
-| 3.1 A1 | Payee code with the NGO's confirmation tick | 🟡 | On Project Bank Accounts, not in the application form (FR-NGO-001) |
-| 3.1 A2 | Bank account and IFSC confirmed; no sanction without both | 🟡 | Sanction is blocked without them (T, FR-NGO-002). The account is not typed twice on the form |
+| 3.1 A1 | Payee code with the NGO's confirmation tick | ✅ | Application form, every scheme; also Project Bank Accounts (FR-NGO-001) |
+| 3.1 A2 | Bank account and IFSC confirmed; no sanction without both | ✅ | Account typed twice on the form; sanction blocked without account and IFSC (FR-NGO-002) |
 | 3.1 B1 | Coded head of account per scheme | ✅ | Bureau › Heads of Account |
 | 3.1 B2 | DDO, PAO and PD codes from PFMS; DDO mapped per scheme | ✅ | Bureau › DDO & Division Codes |
 | 3.1 B3 | DSC custody; who signs | ✅ | Bureau and Under Secretary › Maker & Checker (designation, certificate, expiry) |
@@ -94,8 +93,8 @@ The eight partial rows come from **three** gaps:
 
 | ID | Requirement | Mark | Where / evidence |
 |---|---|---|---|
-| FR-NGO-001 | Payee code on the application form, with a confirmation tick | 🟡 | Captured with the tick on **Project Bank Accounts**, which the Maker reads. **Not yet in the application form**: adding it there leaves 391 seeded applications with unanswered required questions and needs new edit-policy groups. Separate change |
-| FR-NGO-002 | Bank account and IFSC confirmed on the form; no sanction if incomplete | 🟡 | **Sanction blocked** when either is missing (`sanctionBankGap`, T). Account is **not typed twice** on the form (same reason) |
+| FR-NGO-001 | Payee code on the application form, with a confirmation tick | ✅ | **Application form**, Bank Account Details, every scheme: "PFMS Unique (Payee) Code" and a confirmation tick. Asked where the NGO says the account is PFMS-registered and the registration is not already on record. Also on Project Bank Accounts. One lookup (`payeeRecordFor`) reads both · T "the application form asks for the payee code …" · S 55 |
+| FR-NGO-002 | Bank account and IFSC confirmed on the form; no sanction if incomplete | ✅ | "Re-enter Account Number" on a new account, checked against the first entry (S 56); **sanction blocked** when account or IFSC is missing (`sanctionBankGap`) · T |
 | FR-NGO-003 | Bureau back-fills older files | ✅ | Legacy Files › Bank Details Needed; only the last four digits are kept |
 | FR-MDM-001 | Controller, PAO and DDO sync | ✅ | Master Data |
 | FR-MDM-002 | Grant, Function, Object, Category sync | ✅ | Master Data; coded pickers in step 2 |
@@ -180,7 +179,7 @@ The eight partial rows come from **three** gaps:
 
 | Step (§8.1 / §8.6) | Mark | Where |
 |---|---|---|
-| 1 NGO bank, IFSC, payee code | 🟡 | Project Bank Accounts (see FR-NGO-001) |
+| 1 NGO bank, IFSC, payee code | ✅ | Application form, Bank Account Details (FR-NGO-001/002) |
 | 2 Review chain unchanged | ✅ | Not touched |
 | 3 US-PD sanction | ✅ | Unchanged; now opens the payment leg |
 | 4 Maker prepares | ✅ | Payment Advices |
@@ -238,7 +237,6 @@ The eight partial rows come from **three** gaps:
 
 ## Open
 
-**Still to build:**
-1. **FR-NGO-001/002 on the application form.** Adding the payee code, its confirmation tick and a typed-twice account number to the shared bank section of every scheme's form. Needs answers seeded for 391 submitted applications, new edit-policy groups, and updated demo presets.
-2. **The Figma handoff screens** (P-18 in the delivery tracker).
-3. **The 12 open questions for NeGD** (record §4). Questions 1, 2, 3 and 7 change screens.
+**Still to do:**
+1. **The Figma handoff screens** (P-18 in the delivery tracker).
+2. **The 12 open questions for NeGD** (record §4). Questions 1, 2, 3 and 7 change screens.

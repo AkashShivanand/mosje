@@ -99,7 +99,7 @@ annexure, with its evidence — is [`2026-09-29-e-anudaan-pfms-brd-checklist.md`
 
 | BRD | Where it is met |
 |---|---|
-| FR-NGO-001/002, BR-NGO-001 | NGO Project Bank Accounts: payee code with confirmation; payee check in `validateAdvice`; sanction blocked without bank account and IFSC (`sanctionBankGap`). **Partial:** not yet on the application form itself |
+| FR-NGO-001/002, BR-NGO-001 | Application form (Bank Account Details, every scheme): payee code with a confirmation tick and the account typed twice; Project Bank Accounts for an account already on record; payee check in `validateAdvice`; sanction blocked without bank account and IFSC (`sanctionBankGap`) |
 | FR-NGO-003, BR-BAK-001 | Bureau Legacy Files; the "Bank Details Needed" hold |
 | FR-MDM-001…005, BR-MDM-001 | Bureau Master Data, DDO & Division Codes; stale-master block |
 | FR-HOA-001…003 | Bureau Heads of Account; the four linked pickers in the Maker's step 2 |

@@ -3,9 +3,10 @@
 /**
  * Prepare Payment Advice — the Maker's workspace for one sanctioned file (PFMS BRD §5.4, Annexure F).
  *
- * DS Audit: Wizard ✅ · ErrorSummary ✅ · Alert ✅ · Button ✅ · Card ✅ · Skeleton ✅ · EmptyState ✅ ·
- * useToast ✅ — composed with the steps in `components/e-anudaan/pfms/advice-steps` and the read-only
- * `AdviceSummary`, which the Checker also reads.
+ * DS Audit: WizardScreen ✅ existing (one record, editable, more than eight fields) · RecordScreen ✅
+ * (the advice once it has left the Maker, or a file on hold) · ErrorSummary ✅ · Alert ✅ · Button ✅ ·
+ * EmptyState ✅ · useToast ✅ — composed with the steps in `components/e-anudaan/pfms/advice-steps` and
+ * the read-only `AdviceSummary`, which the Checker also reads.
  *
  * The order is the order PFMS needs the data: header → heads of account → beneficiary →
  * documents → review (NFR §6.5). "Save and Continue" saves as it moves; "Save as Draft" leaves
@@ -19,7 +20,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { Alert, Button, EmptyState, ErrorSummary, Icon, Skeleton, Wizard, buttonClasses, useToast } from "@mosje/design-system";
+import { Alert, Button, EmptyState, ErrorSummary, Icon, RecordScreen, WizardScreen, buttonClasses, useToast } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { usePfms } from "@/lib/e-anudaan/pfms/store";
 import { ROLES } from "@/lib/e-anudaan/roles";
@@ -32,7 +33,16 @@ import { pfmsError } from "@/lib/e-anudaan/pfms/errors";
 import type { AdviceStep, PaymentAdvice, ValidationIssue } from "@/lib/e-anudaan/pfms/types";
 import { AdviceSummary } from "@/components/e-anudaan/pfms/advice-summary";
 import { BeneficiaryStep, DocumentsStep, HeadsStep, HeaderStep, issueLookup } from "@/components/e-anudaan/pfms/advice-steps";
-import { CaseHeader, StageBadge, statusHref } from "@/components/e-anudaan/pfms/payment-ui";
+import { StageBadge, statusHref } from "@/components/e-anudaan/pfms/payment-ui";
+import { RefText } from "@/components/e-anudaan/worklist-table";
+import { schemeLabel } from "@/lib/e-anudaan/selectors";
+
+/** The file this page is about — the same three lines every payment-leg page heads with. */
+interface Head {
+  title: string;
+  meta: React.ReactNode;
+}
+const BREADCRUMB = [{ label: "Payment Advices", href: "/portals/e-anudaan/dashboard/payments/prepare" }, { label: "Payment Advice" }];
 
 const QUEUE = "/portals/e-anudaan/dashboard/payments/prepare";
 
@@ -67,30 +77,47 @@ export default function PrepareAdvicePage() {
   }, [pfmsHydrated, app, advice, c?.blocker, openAdvice, toast]);
 
   if (!hydrated || !pfmsHydrated || (!advice && app && !c?.blocker)) {
-    return (
-      <div className="space-y-4" role="status" aria-label="Opening the payment advice">
-        <Skeleton className="h-8 w-2/3" />
-        <Skeleton className="h-24 w-full" />
-        <Skeleton className="h-96 w-full" />
-      </div>
-    );
+    return <WizardScreen title="Payment Advice" steps={STEP_ORDER.map((st) => ({ label: STEP_LABEL[st] }))} current={0} loading onBack={() => {}} onNext={() => {}} onSubmit={() => {}}>{null}</WizardScreen>;
   }
   if (!app || !app.sanction) {
     return <EmptyState title="Sanctioned File Not Found" description="This application is not in the register of sanctioned files." action={<Link href={QUEUE} className={buttonClasses("primary", "outlined", "md")}>Back to Payment Advices</Link>} />;
   }
   const ngoName = state.ngos.find((n) => n.id === app.ngoId)?.name ?? app.ngoId;
-  const header = (actions?: React.ReactNode) => (
-    <CaseHeader app={app} ngoName={ngoName} projectTitle={projectTitleFor(state, app)} eyebrow="Payment Advice" back={{ label: "Payment Advices", href: QUEUE }} actions={actions} />
-  );
+  const header: Head = {
+    title: ngoName,
+    meta: (
+      <span className="block space-y-1">
+        <span className="block text-body-2 text-ink">
+          {projectTitleFor(state, app)} · {schemeLabel(app.schemeCode)} · FY {app.financialYear}
+        </span>
+        <span className="block text-body-3 text-ink-muted">
+          Application No. <RefText value={app.id} className="text-ink" /> · Project ID {app.institutionId}
+        </span>
+      </span>
+    ),
+  };
 
   if (c?.blocker) {
+    const blocker = c.blocker;
     return (
-      <div className="space-y-5">
-        {header()}
-        <Alert status="warning" title={BLOCKER_TEXT[c.blocker].label}>
-          {BLOCKER_TEXT[c.blocker].body}
-        </Alert>
-      </div>
+      <RecordScreen
+        breadcrumb={BREADCRUMB}
+        eyebrow="Payment Advice"
+        title={header.title}
+        meta={header.meta}
+        status={<StageBadge stage="awaiting-advice" />}
+        tabs={[
+          {
+            id: "hold",
+            label: "On Hold",
+            render: () => (
+              <Alert status="warning" title={BLOCKER_TEXT[blocker].label}>
+                {BLOCKER_TEXT[blocker].body}
+              </Alert>
+            ),
+          },
+        ]}
+      />
     );
   }
   if (!advice) return null;
@@ -103,7 +130,7 @@ export default function PrepareAdvicePage() {
 
 /* ── The locked record, once the advice has left the Maker ───────────────── */
 
-function LockedAdvice({ advice, header }: { advice: PaymentAdvice; header: (a?: React.ReactNode) => React.ReactNode }) {
+function LockedAdvice({ advice, header }: { advice: PaymentAdvice; header: Head }) {
   const { pfms } = usePfms();
   const lead: Record<string, { title: string; body: string }> = {
     submitted: { title: "With the Checker", body: "This advice is waiting for the Checker's authorisation. It cannot be changed unless the Checker returns it." },
@@ -113,20 +140,32 @@ function LockedAdvice({ advice, header }: { advice: PaymentAdvice; header: (a?: 
   };
   const l = lead[advice.state] ?? lead.submitted!;
   return (
-    <div className="space-y-5">
-      {header(
-        <>
-          <StageBadge stage={advice.state === "submitted" ? "awaiting-authorisation" : advice.state === "queued" ? "waiting-to-resend" : advice.state === "cancelled" ? "cancelled" : "received"} />
-          <Link href={statusHref(advice.appId)} className={buttonClasses("primary", "outlined", "sm", "whitespace-nowrap")}>
-            <Icon name="timeline" size={16} aria-hidden /> Payment Status
-          </Link>
-        </>,
-      )}
-      <Alert status={advice.state === "cancelled" ? "error" : "info"} title={l.title}>
-        {l.body}
-      </Alert>
-      <AdviceSummary advice={advice} masters={pfms.masters} />
-    </div>
+    <RecordScreen
+      breadcrumb={BREADCRUMB}
+      eyebrow="Payment Advice"
+      title={header.title}
+      meta={header.meta}
+      status={<StageBadge stage={advice.state === "submitted" ? "awaiting-authorisation" : advice.state === "queued" ? "waiting-to-resend" : advice.state === "cancelled" ? "cancelled" : "received"} />}
+      actions={
+        <Link href={statusHref(advice.appId)} className={buttonClasses("primary", "outlined", "sm", "whitespace-nowrap")}>
+          <Icon name="timeline" size={16} aria-hidden /> Payment Status
+        </Link>
+      }
+      tabs={[
+        {
+          id: "advice",
+          label: "Payment Advice",
+          render: () => (
+            <div className="space-y-5">
+              <Alert status={advice.state === "cancelled" ? "error" : "info"} title={l.title}>
+                {l.body}
+              </Alert>
+              <AdviceSummary advice={advice} masters={pfms.masters} />
+            </div>
+          ),
+        },
+      ]}
+    />
   );
 }
 
@@ -141,7 +180,7 @@ function AdviceWizard({
   onDone,
 }: {
   advice: PaymentAdvice;
-  header: (a?: React.ReactNode) => React.ReactNode;
+  header: Head;
   saveAdvice: ReturnType<typeof usePfms>["saveAdvice"];
   submit: ReturnType<typeof usePfms>["submit"];
   now: () => string;
@@ -217,84 +256,71 @@ function AdviceWizard({
   const ddo = pfms.masters.ddos.find((d) => d.code === draft.header.ddoCode);
 
   return (
-    <div className="space-y-5">
-      {header(
-        <>
-          <StageBadge stage={advice.state === "returned" ? "returned-by-checker" : advice.state === "not-accepted" ? "not-accepted" : "in-preparation"} />
-          <Button
-            appearance="outlined"
-            size="sm"
-            iconLeft={<Icon name="save" size={16} aria-hidden />}
-            onClick={() => {
-              if (persist()) toast(`Saved as a draft at ${formatDateTime(now())}.`, "success");
-            }}
-          >
-            Save as Draft
-          </Button>
-        </>,
-      )}
-
+    <WizardScreen
+      eyebrow="Payment Advice"
+      title={header.title}
+      description={header.meta}
+      notices={
+        <div className="space-y-4">
+          <div className="flex flex-wrap items-center gap-3">
+            <StageBadge stage={advice.state === "returned" ? "returned-by-checker" : advice.state === "not-accepted" ? "not-accepted" : "in-preparation"} />
+            <Button
+              appearance="outlined"
+              size="sm"
+              iconLeft={<Icon name="save" size={16} aria-hidden />}
+              onClick={() => {
+                if (persist()) toast(`Saved as a draft at ${formatDateTime(now())}.`, "success");
+              }}
+            >
+              Save as Draft
+            </Button>
+          </div>
       {pageLevel.map((i) => (
-        <Alert key={i.field} status="warning" title={i.field === "hdr-scheme" ? "Scheme Code Awaited" : "Master Data Out of Date"}>
-          {i.message}
-        </Alert>
-      ))}
+            <Alert key={i.field} status="warning" title={i.field === "hdr-scheme" ? "Scheme Code Awaited" : "Master Data Out of Date"}>
+              {i.message}
+            </Alert>
+          ))}
 
-      {advice.state === "returned" && advice.checkerRemark && (
-        <Alert status="warning" title="Returned by the Checker">
-          {advice.checkerRemark}
-        </Alert>
-      )}
-      {advice.state === "not-accepted" && (
-        <Alert status="error" title="PFMS Did Not Accept This Advice">
-          <span className="block">Nothing was created at PFMS. Correct the following and submit it again; the Checker signs it again before it is resent.</span>
-          <ul className="mt-2 list-disc space-y-1 pl-5">
-            {pfmsIssues.map((i) => {
-              const e = pfmsError(i.pfmsCode ?? "", pfms.errorOverrides);
-              return (
-                <li key={i.pfmsCode}>
-                  {e.message}{" "}
-                  <Button appearance="text" size="sm" onClick={() => go(STEP_ORDER.indexOf(e.step))}>
-                    Go to {STEP_LABEL[e.step]}
-                  </Button>
-                </li>
-              );
-            })}
-          </ul>
-        </Alert>
-      )}
+          {advice.state === "returned" && advice.checkerRemark && (
+            <Alert status="warning" title="Returned by the Checker">
+              {advice.checkerRemark}
+            </Alert>
+          )}
+          {advice.state === "not-accepted" && (
+            <Alert status="error" title="PFMS Did Not Accept This Advice">
+              <span className="block">Nothing was created at PFMS. Correct the following and submit it again; the Checker signs it again before it is resent.</span>
+              <ul className="mt-2 list-disc space-y-1 pl-5">
+                {pfmsIssues.map((i) => {
+                  const e = pfmsError(i.pfmsCode ?? "", pfms.errorOverrides);
+                  return (
+                    <li key={i.pfmsCode}>
+                      {e.message}{" "}
+                      <Button appearance="text" size="sm" onClick={() => go(STEP_ORDER.indexOf(e.step))}>
+                        Go to {STEP_LABEL[e.step]}
+                      </Button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </Alert>
+          )}
 
-      <Wizard
-        steps={steps}
-        current={current}
-        title={STEP_LABEL[step]}
-        description={
-          step === "header"
-            ? "Choose the DDO and the division code. Everything else comes from the sanction order."
-            : step === "heads"
-              ? "Choose the coded head of account. The amounts must add up to the sanction."
-              : step === "beneficiary"
-                ? "Confirm the amount payable to the NGO and the remarks PFMS prints on the payment."
-                : step === "documents"
-                  ? "Upload the supporting documents. PFMS receives their fingerprints."
-                  : "Check the payment advice before it goes to the Checker."
-        }
-        onBack={() => go(Math.max(current - 1, 0))}
-        onCancel={() => {
-          persist();
-          onDone();
-        }}
-        cancelLabel="Back to Payment Advices"
-        onNext={next}
-        onSubmit={doSubmit}
-        nextLabel="Save and Continue"
-        submitLabel="Submit for Authorisation"
-        nextDisabled={step === "review" && pageLevel.length > 0}
-        nextBlockedReason={pageLevel[0]?.message}
-        stepperCollapse="auto"
-        error={shown.length > 0 ? `${shown.length === 1 ? "One thing needs" : `${shown.length} things need`} attention on this step.` : undefined}
-        errorRef={errorRef}
-      >
+        </div>
+      }
+      steps={steps}
+      current={current}
+      onBack={() => go(Math.max(current - 1, 0))}
+      onCancel={() => {
+        persist();
+        onDone();
+      }}
+      onNext={next}
+      onSubmit={doSubmit}
+      nextLabel="Save and Continue"
+      submitLabel="Submit for Authorisation"
+      error={shown.length > 0 ? `${shown.length === 1 ? "One thing needs" : `${shown.length} things need`} attention on this step.` : undefined}
+      errorRef={errorRef}
+    >
         {shown.length > 0 && <ErrorSummary errors={shown.map((i) => ({ fieldId: controlId(i.field), message: i.message }))} headingLevel={3} />}
         {step === "header" && (
           <HeaderStep
@@ -348,8 +374,7 @@ function AdviceWizard({
             <AdviceSummary advice={working} masters={pfms.masters} onEdit={(s) => go(STEP_ORDER.indexOf(s))} flaggedSteps={flagged} />
           </div>
         )}
-      </Wizard>
-    </div>
+    </WizardScreen>
   );
 }
 
