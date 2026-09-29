@@ -306,7 +306,7 @@ export interface PortalBrandAssets {
   emblemSrc?: string;
   /** Digital India logo path — defaults to "/website/images/digital-india-logo.svg" */
   digitalIndiaSrc?: string;
-  /** SAMAVESH logo path — defaults to "/design-system/samavesh-logo.svg" */
+  /** SAMAVESH logo path — defaults to `SAMAVESH_MARK` ("/design-system/samavesh-logo-252.png") */
   samaveshLogoSrc?: string;
   /** Optional portal-specific icon / seal path */
   portalLogoSrc?: string;

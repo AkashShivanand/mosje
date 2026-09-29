@@ -11,6 +11,7 @@ import {
   Button,
   IdentifierFields,
   PortalLoginShell,
+  SAMAVESH_MARK,
 } from "@mosje/design-system";
 import Link from "next/link";
 
@@ -74,7 +75,7 @@ export default function EAnudaanForgotPasswordPage(): React.JSX.Element {
       // migration, not two: when that portal's chrome moves to the registry both
       // pages move together, and splitting it would leave a portal whose sign-in
       // and password recovery load their emblem from different roots.
-      samaveshLogoSrc={`${BASE}/brand/samavesh-logo.svg`}
+      samaveshLogoSrc={SAMAVESH_MARK}
       /* The same photograph as the login page this is reached from. A recovery
          step that drops the hero would read as a different site at the exact
          moment a citizen is already unsure. */

@@ -9,7 +9,7 @@ export default create({
   brandTitle: 'SAMAVESH Design System',
   brandUrl: '/',
   // You can set an external image URL for brandImage
-  brandImage: '/design-system/samavesh-logo.svg',
+  brandImage: '/design-system/samavesh-logo-252.png', // SAMAVESH_MARK: 12.6 KB, not the 743 KB vector
   brandTarget: '_self',
 
   // Colors

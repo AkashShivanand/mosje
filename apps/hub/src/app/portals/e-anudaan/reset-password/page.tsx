@@ -15,6 +15,7 @@ import {
   Icon,
   NewPasswordFields,
   PortalLoginShell,
+  SAMAVESH_MARK,
 } from "@mosje/design-system";
 import Link from "next/link";
 
@@ -85,7 +86,7 @@ export default function EAnudaanResetPasswordPage(): React.JSX.Element {
       // login and forgot-password pages beside this one write the identical
       // paths. One migration, not three — when that portal's chrome moves to the
       // registry all of them move together.
-      samaveshLogoSrc={`${BASE}/brand/samavesh-logo.svg`}
+      samaveshLogoSrc={SAMAVESH_MARK}
       heroImageSrc="/portals/login-hero/e-anudaan.jpg"
       signingInto="E-Anudaan"
       changeHref="/portals"

@@ -10,6 +10,7 @@ import {
   PortalLoginTemplate,
   type PortalLoginConfig,
   type PortalLoginFieldErrors,
+  SAMAVESH_MARK,
 } from "@mosje/design-system";
 import { RenameNotice } from "@/components/nhapoa/rename-notice";
 import { roleByUsername } from "@/lib/nhapoa/roles";
@@ -38,7 +39,7 @@ const CONFIG: PortalLoginConfig = {
     digitalIndiaSrc: `${BASE}/brand/digital-india.svg`,
     // org-logo-exempt(portal-local): SAMBAL serves its own copy of the chrome
     // marks from its brand folder, byte-identical to the estate's.
-    samaveshLogoSrc: `${BASE}/brand/samavesh-logo.svg`,
+    samaveshLogoSrc: SAMAVESH_MARK,
   },
   roles: [
     {

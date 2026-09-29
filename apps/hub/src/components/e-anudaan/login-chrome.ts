@@ -1,3 +1,4 @@
+import { SAMAVESH_MARK } from "@mosje/design-system";
 /**
  * E-Anudaan's sign-in chrome, in one place.
  *
@@ -18,7 +19,7 @@ export const EANUDAAN_LOGIN_CHROME = {
     // org-logo-exempt(portal-local): E-Anudaan serves its own copies of the three chrome marks from
     // `public/portals/e-anudaan/brand/`, as its forgot- and reset-password pages do. Moved here
     // from the login page unchanged, so the sign-in screens share one set of paths.
-    samaveshLogoSrc: `${BASE}/brand/samavesh-logo.svg`,
+    samaveshLogoSrc: SAMAVESH_MARK,
     /* The handoff's Portal Hero photograph (52380:187201), exported from the design at its native
        1254 square — the source's ceiling, so it is shipped whole rather than upscaled. Served from
        the shared login-hero directory beside SMILE's, because a hero photograph belongs to the

@@ -1,3 +1,4 @@
+import { SAMAVESH_MARK } from "@mosje/design-system";
 import type { PortalLoginConfig } from "@mosje/design-system";
 
 /**
@@ -24,7 +25,7 @@ export const SCW_LOGIN_CHROME = {
     digitalIndiaSrc: `${BASE}/brand/digital-india.svg`,
     // org-logo-exempt(portal-local): SCW serves its own copy of the chrome marks
     // under /portals/scw/brand, as the portal's pages always have.
-    samaveshLogoSrc: `${BASE}/brand/samavesh-logo.svg`,
+    samaveshLogoSrc: SAMAVESH_MARK,
   },
 } satisfies Pick<PortalLoginConfig, "portalId" | "portalName" | "changeHref" | "brandAssets">;
 

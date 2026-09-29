@@ -16,6 +16,7 @@ import {
   Alert,
   Avatar,
   Loader,
+  SAMAVESH_MARK,
 } from "@mosje/design-system";
 import "./hero.css";
 
@@ -167,7 +168,7 @@ export function HeroShowcase(): React.JSX.Element {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className="hero-seal"
-            src="/design-system/samavesh-logo.svg"
+            src={SAMAVESH_MARK}
             alt="SAMAVESH logo"
             width={512}
             height={514}

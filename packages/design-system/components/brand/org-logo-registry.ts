@@ -114,12 +114,17 @@ export const ORG_LOGO_FALLBACK = "/images/National-Emblem-logo.svg";
  * being written as a string literal at the point of use, so a mark could be
  * replaced in one place and stay stale in five others.
  *
- * `SAMAVESH_MARK` is a 13 KB raster and it is the DEFAULT ON PURPOSE. The master
+ * `SAMAVESH_MARK` is a 12.6 KB raster and it is the DEFAULT ON PURPOSE. The master
  * `samavesh-logo.svg` is a traced 80-path emblem at 743 KB, which was being
  * loaded eagerly on every page of the website to render at 44px. Reach for
  * `SAMAVESH_MARK_VECTOR` only where the mark is drawn large.
+ *
+ * 252px: 3× the largest surface that draws the mark small — the 84px seal on the
+ * portal login hero (the estate's resolution rule). It was 156px, 3× a 52px use,
+ * and the login screens loaded the 743 KB vector instead because the raster was
+ * too small for them; DBIM 3.0 §5.5 iv caps a logo at 100 KB.
  */
-export const SAMAVESH_MARK = "/design-system/samavesh-logo-156.png";
+export const SAMAVESH_MARK = "/design-system/samavesh-logo-252.png";
 export const SAMAVESH_MARK_VECTOR = "/design-system/samavesh-logo.svg";
 export const NATIONAL_EMBLEM = ORG_LOGO_FALLBACK;
 export const NATIONAL_EMBLEM_INVERSE = "/images/National_Emblem_logo_white.svg";

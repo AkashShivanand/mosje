@@ -13,6 +13,7 @@ import {
   Button,
   OtpVerifyFields,
   PortalLoginShell,
+  SAMAVESH_MARK,
 } from "@mosje/design-system";
 import Link from "next/link";
 
@@ -25,7 +26,7 @@ const CHROME = {
   digitalIndiaSrc: `${BASE}/brand/digital-india.svg`,
   // org-logo-exempt(portal-local): SAMBAL serves its own copy of the chrome
   // marks from its brand folder, byte-identical to the estate's.
-  samaveshLogoSrc: `${BASE}/brand/samavesh-logo.svg`,
+  samaveshLogoSrc: SAMAVESH_MARK,
   signingInto: "SAMBAL",
   portalTagline: "Smart Access for Mainstreaming of Beneficiaries through Augmented Linkages",
   changeHref: "/portals",
