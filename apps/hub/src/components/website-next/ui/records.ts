@@ -63,9 +63,10 @@ export function fileTypeOf(url: string | undefined | null, declared?: string | n
  */
 export function formatFileSize(value: string | undefined | null): string | undefined {
   if (isBlank(value)) return undefined;
-  const m = /([\d.]+)\s*(KB|MB|GB|B)\b/i.exec(String(value));
+  /* The register prints a thousands separator ("1,014.26 KB", since Sep 2026); read past it. */
+  const m = /(\d[\d,]*(?:\.\d+)?)\s*(KB|MB|GB|B)\b/i.exec(String(value));
   if (!m) return undefined;
-  const n = Number.parseFloat(m[1] ?? "");
+  const n = Number.parseFloat((m[1] ?? "").replace(/,/g, ""));
   if (!Number.isFinite(n) || n <= 0) return undefined;
   const unit = (m[2] ?? "").toUpperCase();
   const kb = unit === "GB" ? n * 1024 * 1024 : unit === "MB" ? n * 1024 : unit === "KB" ? n : n / 1024;
