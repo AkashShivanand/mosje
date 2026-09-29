@@ -135,11 +135,6 @@
     min-width: 0;
   }
 
-  [data-design="dbim"] .db-hb-feed__who--below {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
   [data-design="dbim"] .db-hb-feed__avatar {
     flex: none;
     width: var(--sa-padding-40);
