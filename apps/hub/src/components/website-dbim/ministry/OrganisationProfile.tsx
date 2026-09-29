@@ -234,7 +234,7 @@ function OrgBlock({ b, label, org }: { b: DbimOrgBlock; label: string; org: stri
           {b.items.map((t) => (
             <li key={t.title} className="db-org-tile">
               <span className="db-org-tile__icon" aria-hidden="true">
-                <Icon name={t.icon} size={32} weight={300} />
+                <Icon name={t.icon} size={24} weight={400} />
               </span>
               <span className="db-org-tile__title">{t.title}</span>
               {t.link ? (

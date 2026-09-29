@@ -341,7 +341,7 @@
     margin: 0;
   }
 
-  [data-design="dbim"] .db-org :is(.db-org-card__arrow, .db-org-tile__arrow) {
+  [data-design="dbim"] .db-org .db-org-card__arrow {
     align-self: flex-end;
     margin-top: auto;
   }
@@ -386,13 +386,18 @@
     }
   }
 
+  /* Icon beside its label, both centred, as the handoff's Persona Tile draws it. */
   [data-design="dbim"] .db-org .db-org-tile {
     display: flex;
-    flex-direction: column;
-    gap: var(--sa-stack-12);
-    padding: var(--sa-padding-16) var(--sa-padding-24);
-    border: var(--sa-stroke-1) solid var(--sa-color-neutralScale-100);
-    border-radius: var(--sa-shape-12);
+    align-items: center;
+    gap: var(--sa-inline-12);
+    padding: var(--sa-padding-16);
+    border: var(--sa-stroke-1) solid var(--sa-color-primaryScale-400);
+    border-radius: var(--sa-shape-8);
+  }
+
+  [data-design="dbim"] .db-org .db-org-tile__title {
+    flex: 1;
   }
 
   [data-design="dbim"] .db-org :is(.db-org-tile__img, .db-org-gallery__frame) {
@@ -411,10 +416,11 @@
   /* The tile's icon, in the contact list's light-blue circle, at the section-icon size. */
   [data-design="dbim"] .db-org .db-org-tile__icon {
     display: inline-flex;
+    flex: none;
     align-items: center;
     justify-content: center;
-    width: 64px;
-    height: 64px;
+    width: 48px;
+    height: 48px;
     border-radius: var(--sa-shape-full);
     background: var(--sa-color-primaryScale-100);
     color: var(--sa-color-primaryScale-800);
@@ -565,6 +571,16 @@
     [data-design="dbim"] .db-org .db-org-tabs .db-hm-tab {
       flex: 1 1 40%;
       border-radius: 0;
+    }
+  }
+
+  /* ── Document rows: the title takes what the date, size and View leave ─── */
+
+  /* The Ministry's 6/2/2/2 row wraps a long report title to four lines in the 860
+     column; here the date column hugs its date, as the handoff's rows do. */
+  @media (min-width: 992px) {
+    [data-design="dbim"] .db-org .db-min-docrow:not(.db-min-docrow--link, .db-org-event) {
+      grid-template-columns: minmax(0, 1fr) auto 150px auto;
     }
   }
 
