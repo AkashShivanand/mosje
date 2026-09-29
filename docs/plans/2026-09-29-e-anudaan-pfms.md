@@ -94,9 +94,12 @@ The Bureau has not finalised the heads (§9, on the critical path), and the prot
 
 ## 6. Traceability
 
+The full line-by-line check — every objective, scope item, requirement, rule, workflow step, KPI and
+annexure, with its evidence — is [`2026-09-29-e-anudaan-pfms-brd-checklist.md`](./2026-09-29-e-anudaan-pfms-brd-checklist.md).
+
 | BRD | Where it is met |
 |---|---|
-| FR-NGO-001/002, BR-NGO-001 | NGO Project Bank Accounts: payee code with confirmation; payee check in `validateAdvice` |
+| FR-NGO-001/002, BR-NGO-001 | NGO Project Bank Accounts: payee code with confirmation; payee check in `validateAdvice`; sanction blocked without bank account and IFSC (`sanctionBankGap`). **Partial:** not yet on the application form itself |
 | FR-NGO-003, BR-BAK-001 | Bureau Legacy Files; the "Bank Details Needed" hold |
 | FR-MDM-001…005, BR-MDM-001 | Bureau Master Data, DDO & Division Codes; stale-master block |
 | FR-HOA-001…003 | Bureau Heads of Account; the four linked pickers in the Maker's step 2 |

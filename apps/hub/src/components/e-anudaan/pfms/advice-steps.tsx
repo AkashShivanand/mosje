@@ -114,6 +114,7 @@ export function HeaderStep({
           },
           { term: "Bill Date", value: header.billDate ? formatDate(header.billDate) : "" },
           ...FIXED_VALUES.map((f) => ({ term: f.term, value: f.value })),
+          { term: "Request Identifier", value: <span className="text-ink-muted">Generated when the Checker sends the advice to PFMS</span> },
         ]}
       />
 
@@ -286,8 +287,22 @@ export function HeadsStep({
 
 /* ── 3 · Beneficiary Payment ─────────────────────────────────────────────── */
 
-export function BeneficiaryStep({ beneficiaries, onChange, sanctionAmount, issue }: { beneficiaries: BeneficiaryLine[]; onChange: (b: BeneficiaryLine[]) => void; sanctionAmount: number; issue: IssueFor }) {
+export function BeneficiaryStep({
+  beneficiaries,
+  onChange,
+  sanctionAmount,
+  masters,
+  issue,
+}: {
+  beneficiaries: BeneficiaryLine[];
+  onChange: (b: BeneficiaryLine[]) => void;
+  sanctionAmount: number;
+  masters: Masters;
+  issue: IssueFor;
+}) {
   const set = (i: number, patch: Partial<BeneficiaryLine>) => onChange(beneficiaries.map((b, j) => (j === i ? { ...b, ...patch } : b)));
+  const setDed = (i: number, k: number, patch: Partial<HeadLine>) =>
+    set(i, { deductions: beneficiaries[i]!.deductions.map((d, j) => (j === k ? { ...d, ...patch } : d)) });
   return (
     <div className="space-y-5">
       {beneficiaries.map((b, i) => (
@@ -325,6 +340,53 @@ export function BeneficiaryStep({ beneficiaries, onChange, sanctionAmount, issue
               />
               <DescriptionList size="sm" items={[{ term: "Net Amount Payable", value: <span className="text-headline-3 font-semibold tabular-nums">{exact(netOf(b))}</span> }]} />
             </div>
+
+            {/* Beneficiary-wise deductions (Annexure A.3 AccountHeadDetails, AccountType D) — only
+                where one applies, so the section starts empty and says so. FR-PDM-004, F.3. */}
+            <section aria-labelledby={`ben-${i}-ded-title`} className="space-y-3">
+              <SectionTitle as={4} headingId={`ben-${i}-ded-title`} title="Deductions" description={b.deductions.length ? "Each deduction is booked to its own head of account and reduces the net payable." : "None. Add one only where a deduction applies to this payment."} />
+              {b.deductions.map((d, k) => (
+                <div key={d.id} className="space-y-3 rounded-md border border-line p-4">
+                  <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                    {([
+                      ["function", "Function Head", "functionHead", masters.functionHeads],
+                      ["object", "Object Head", "objectHead", masters.objectHeads],
+                      ["category", "Category", "category", masters.categories],
+                      ["grant", "Grant Number", "grantNumber", masters.grantNumbers],
+                    ] as const).map(([key, label, prop, list]) => (
+                      <FormField key={key} label={label} id={`ben-${i}-ded-${k}-${key}`} required error={key === "function" ? issue(`ben-${i}-ded-${k}-function`) : undefined}>
+                        {(c) => (
+                          <Select {...c} value={d[prop] ?? ""} onChange={(e) => setDed(i, k, { [prop]: e.target.value })}>
+                            <option value="">Select</option>
+                            {list.map((o) => (
+                              <option key={o.code} value={o.code}>
+                                {o.code} — {o.label}
+                              </option>
+                            ))}
+                          </Select>
+                        )}
+                      </FormField>
+                    ))}
+                  </div>
+                  <div className="flex flex-wrap items-end justify-between gap-4">
+                    <div className="max-w-xs">
+                      <NumberInput id={`ben-${i}-ded-${k}-amount`} label="Deduction Amount" required prefix="₹" min={0} value={d.amount || null} error={issue(`ben-${i}-ded-${k}-amount`)} onValueChange={(v) => setDed(i, k, { amount: v ?? 0 })} />
+                    </div>
+                    <Button size="sm" appearance="text" variant="danger" iconLeft={<Icon name="delete" size={16} aria-hidden />} onClick={() => set(i, { deductions: b.deductions.filter((_, j) => j !== k) })}>
+                      Remove Deduction
+                    </Button>
+                  </div>
+                </div>
+              ))}
+              <Button
+                size="sm"
+                appearance="outlined"
+                iconLeft={<Icon name="add" size={16} aria-hidden />}
+                onClick={() => set(i, { deductions: [...b.deductions, { id: `${b.id}-d${b.deductions.length + 1}`, functionHead: "", objectHead: "", category: "", grantNumber: "", amount: 0 }] })}
+              >
+                Add a Deduction
+              </Button>
+            </section>
             <FormField
               label="Payee Remarks"
               id={`ben-${i}-remarks`}

@@ -521,6 +521,22 @@ export type ActResult =
  * Validation failures come back as `{ok:false}` for the UI to toast rather than throwing,
  * because a disabled-button race is a user event, not a bug.
  */
+/**
+ * PFMS BRD FR-NGO-002: "shall not permit a sanction to be issued against an application where [the
+ * NGO's bank account number and IFSC are] incomplete". A sanction that cannot be paid is a sanction
+ * the Bureau has to back-fill by hand; the Director is told why before issuing it.
+ */
+export function sanctionBankGap(app: Pick<GrantApplication, "formValues">): string | null {
+  const v = app.formValues ?? {};
+  // A file not filed through the form (a legacy record carried over, or a bare test fixture) has no
+  // bank section to be incomplete; the payment leg holds it for back-fill instead (BR-BAK-001).
+  if (!("fld_bank_account_number" in v) && !("fld_bank_ifsc" in v)) return null;
+  const account = (v.fld_bank_account_number ?? "").trim();
+  const ifsc = (v.fld_bank_ifsc ?? "").trim();
+  if (account && ifsc) return null;
+  return "The NGO's bank account number and IFSC are not complete on this application. A sanction cannot be issued until the NGO supplies them.";
+}
+
 export function applyAction(
   app: GrantApplication,
   roleId: RoleId,
@@ -550,6 +566,10 @@ export function applyAction(
   }
   if (rule.requiresCertification && !payload.certified) {
     return { ok: false, error: "You must certify the application before forwarding it." };
+  }
+  if (action === "sanction") {
+    const gap = sanctionBankGap(app);
+    if (gap) return { ok: false, error: gap };
   }
 
   const from = app.holder;

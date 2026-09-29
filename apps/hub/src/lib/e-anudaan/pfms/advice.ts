@@ -51,6 +51,7 @@ export const STEP_LABEL: Record<AdviceStep, string> = {
 
 /** Fixed values PFMS requires and nobody chooses (FR-PDM-006, BR-SNC-003). */
 export const FIXED_VALUES = [
+  { term: "Bill Status", value: "F — Fresh bill" },
   { term: "Payment Mode", value: "528 — e-Payment" },
   { term: "Sanction Type", value: "14 — Expenditure" },
   { term: "Bill Type", value: "7 — RPR-34 Grants-in-Aid Bill" },
@@ -223,6 +224,13 @@ export function validateAdvice(advice: PaymentAdvice, ctx: AdviceContext): Valid
     if (!IFSC.test(b.ifsc)) out.push({ step: "beneficiary", field: `ben-${i}-ifsc`, message: "The IFSC is not in the 11-character format." });
     if (!(b.gross > 0)) out.push({ step: "beneficiary", field: `ben-${i}-gross`, message: "Enter the gross amount." });
     if (netOf(b) <= 0) out.push({ step: "beneficiary", field: `ben-${i}-gross`, message: "Deductions cannot exceed the gross amount." });
+    // A deduction is a coded head of its own (Annexure A.3, AccountType D): all four parts and an amount.
+    b.deductions.forEach((d, k) => {
+      if (!d.functionHead || !d.objectHead || !d.category || !d.grantNumber) {
+        out.push({ step: "beneficiary", field: `ben-${i}-ded-${k}-function`, message: `Choose the full head of account for deduction ${k + 1}.` });
+      }
+      if (!(d.amount > 0)) out.push({ step: "beneficiary", field: `ben-${i}-ded-${k}-amount`, message: `Enter the amount of deduction ${k + 1}.` });
+    });
     if (!b.remarks.trim()) out.push({ step: "beneficiary", field: `ben-${i}-remarks`, message: "Enter the payee remarks. PFMS prints them on the payment." });
     else if (b.remarks.length > REMARKS_MAX) out.push({ step: "beneficiary", field: `ben-${i}-remarks`, message: `Payee remarks can be ${REMARKS_MAX} characters at most.` });
   });

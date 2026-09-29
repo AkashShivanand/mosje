@@ -140,10 +140,10 @@ export default function AuthoriseAdvicePage() {
 
       {waiting && role?.caps.includes("authoriseAdvice") && (
         <div className="sticky bottom-0 z-[var(--sa-z-raised)] -mx-4 flex flex-wrap justify-end gap-3 border-t border-line bg-[var(--sa-bg-neutral-base)] px-4 py-3 md:static md:mx-0 md:border-0 md:bg-transparent md:px-0" data-sa-rail-clear="">
-          <Button appearance="outlined" variant="danger" iconLeft={<Icon name="undo" size={18} aria-hidden />} onClick={() => setReturning(true)}>
+          <Button appearance="outlined" variant="danger" iconLeft={<Icon name="undo" size={20} aria-hidden />} onClick={() => setReturning(true)}>
             Return to Maker
           </Button>
-          <Button iconLeft={<Icon name="verified_user" size={18} aria-hidden />} onClick={() => setSigning(true)} disabled={off.length > 0}>
+          <Button iconLeft={<Icon name="verified_user" size={20} aria-hidden />} onClick={() => setSigning(true)} disabled={off.length > 0}>
             Approve and Sign
           </Button>
         </div>

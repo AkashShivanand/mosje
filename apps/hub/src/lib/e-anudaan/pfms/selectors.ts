@@ -10,7 +10,7 @@ import type { EAnudaanState, GrantApplication } from "../types.ts";
 import { accountsFor } from "../applicant.ts";
 import { configFor } from "./masters.ts";
 import { stageOf, type AnyStage } from "./stages.ts";
-import type { BeneficiaryLine, PaymentAdvice } from "./types.ts";
+import type { BeneficiaryLine, PaymentAdvice, PayeeRecord } from "./types.ts";
 import type { PfmsState } from "./seed.ts";
 
 /** Why a sanctioned file cannot yet have a payment advice. */
@@ -48,12 +48,22 @@ export interface PaymentCase {
 
 export type Payee = Omit<BeneficiaryLine, "id" | "gross" | "deductions" | "remarks" | "claimReference">;
 
+/**
+ * The payee code on record for a project's current account — confirmed by the NGO on Project Bank
+ * Accounts or back-filled by the Bureau (FR-NGO-001/003). One lookup, so the bank page and the Maker
+ * never disagree about it.
+ */
+export function payeeRecordFor(main: EAnudaanState, pfms: Pick<PfmsState, "payees">, projectId: string): PayeeRecord | undefined {
+  const acct = accountsFor(main, projectId).current;
+  return acct ? pfms.payees.find((p) => p.accountId === acct.id) : undefined;
+}
+
 /** The NGO's payee details as the Maker would pre-fill them, or null with the reason. */
 export function payeeFor(main: EAnudaanState, pfms: PfmsState, app: GrantApplication): Payee | Exclude<Blocker, "scheme-code-pending"> {
   const name = main.ngos.find((n) => n.id === app.ngoId)?.name ?? app.ngoId;
   const acct = accountsFor(main, app.institutionId).current;
   if (acct) {
-    const payee = pfms.payees.find((p) => p.accountId === acct.id);
+    const payee = payeeRecordFor(main, pfms, app.institutionId);
     if (!payee) return "needs-payee-code";
     return { payeeCode: payee.payeeCode, name, accountLast4: acct.last4, ifsc: acct.ifsc, bank: acct.bank, source: payee.source };
   }

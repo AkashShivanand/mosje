@@ -27,6 +27,7 @@ import { PFMS_ERRORS, pfmsError } from "./errors.ts";
 import { paymentCase, paymentCases, makerTab } from "./selectors.ts";
 import { ageing, pipelineCounts, poolUtilisation, reconcile, turnaround, usedClaimReferences } from "./reports.ts";
 import type { PaymentAdvice } from "./types.ts";
+import { sanctionBankGap } from "../workflow.ts";
 
 const NOW = "2026-09-29T09:00:00.000Z";
 const main: EAnudaanState = { version: 13, session: null, schemes: SEED_SCHEMES, ...buildSeed() };
@@ -292,4 +293,22 @@ test("the pipeline counts every advice once, and the reports agree with it", () 
 test("the seeded payment leg fits beside the main store", () => {
   const size = JSON.stringify(pfms).length;
   assert.ok(size < 150_000, `seeded payment leg is ${size.toLocaleString("en-IN")} characters`);
+});
+
+test("no sanction is issued while the application's bank account or IFSC is incomplete (FR-NGO-002)", () => {
+  assert.match(sanctionBankGap({ formValues: { fld_bank_account_number: "", fld_bank_ifsc: "SBIN0001234" } }) ?? "", /cannot be issued/);
+  assert.match(sanctionBankGap({ formValues: { fld_bank_account_number: "30112233445566", fld_bank_ifsc: "" } }) ?? "", /cannot be issued/);
+  assert.equal(sanctionBankGap({ formValues: { fld_bank_account_number: "30112233445566", fld_bank_ifsc: "SBIN0001234" } }), null);
+  // A legacy file with no bank section is held for back-fill at the payment stage instead (BR-BAK-001).
+  assert.equal(sanctionBankGap({ formValues: {} }), null);
+});
+
+test("deductions reduce the net payable and cannot exceed the gross (FR-PDM-004, Annexure F.3)", () => {
+  const a = finished();
+  const ded = { ...a, beneficiaries: [{ ...a.beneficiaries[0]!, deductions: [{ id: "d1", functionHead: "2235021070101", objectHead: "31", category: "GEN", grantNumber: "093", amount: 50_000 }] }] };
+  assert.deepEqual(validateAdvice(ded, ctx), []);
+  const over = { ...a, beneficiaries: [{ ...a.beneficiaries[0]!, deductions: [{ id: "d1", amount: a.sanctionAmount + 1 }] }] };
+  assert.ok(validateAdvice(over, ctx).some((i) => /Deductions cannot exceed/.test(i.message)));
+  const blank = { ...a, beneficiaries: [{ ...a.beneficiaries[0]!, deductions: [{ id: "d1", amount: 10 }] }] };
+  assert.ok(validateAdvice(blank, ctx).some((i) => i.field === "ben-0-ded-0-function"));
 });

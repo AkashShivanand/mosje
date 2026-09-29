@@ -69,7 +69,7 @@ export default function MasterDataPage() {
         title="Master Data"
         meta={`Last synchronised with PFMS ${formatDateTime(m.syncedAt)}. Refreshed automatically once a day, and on demand.`}
         actions={
-          <Button iconLeft={<Icon name="sync" size={18} aria-hidden />} onClick={refresh}>
+          <Button iconLeft={<Icon name="sync" size={20} aria-hidden />} onClick={refresh}>
             Refresh Now
           </Button>
         }

@@ -114,7 +114,7 @@ export default function PfmsSetUpPage() {
         <Button
           appearance="outlined"
           size="sm"
-          iconLeft={<Icon name="sync" size={18} aria-hidden />}
+          iconLeft={<Icon name="sync" size={20} aria-hidden />}
           onClick={() => {
             refreshMasters();
             toast("Master data refreshed from PFMS.", "success");

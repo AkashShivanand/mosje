@@ -65,7 +65,7 @@ import { requestStatusLabel, requestStatusTone } from "@/lib/e-anudaan/change-re
 import type { BankChangeRequest, Institution, ProjectAccount } from "@/lib/e-anudaan/types";
 import { useDemoFormFill } from "@/components/e-anudaan/use-demo-form-fill";
 import { usePfms } from "@/lib/e-anudaan/pfms/store";
-import { paymentCases } from "@/lib/e-anudaan/pfms/selectors";
+import { payeeRecordFor, paymentCases } from "@/lib/e-anudaan/pfms/selectors";
 import { PAYEE_CODE } from "@/lib/e-anudaan/pfms/masters";
 import type { PayeeRecord } from "@/lib/e-anudaan/pfms/types";
 
@@ -183,7 +183,7 @@ export default function ProjectBankAccountsPage() {
                 key={p.id}
                 project={p}
                 accounts={accountsFor(state, p.id)}
-                payee={pfms.payees.find((x) => x.accountId === accountsFor(state, p.id).current?.id)}
+                payee={payeeRecordFor(state, pfms, p.id)}
                 pfmsReady={pfmsHydrated}
                 pending={bankRequests.find((r) => r.projectId === p.id && r.status === "Pending")}
                 decided={bankRequests

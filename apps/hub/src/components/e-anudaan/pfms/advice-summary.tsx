@@ -92,6 +92,7 @@ export function AdviceSummary({
               { term: "Bill Date", value: advice.header.billDate ? formatDate(advice.header.billDate) : "" },
               { term: "Not Payable Before", value: advice.header.npbDate ? formatDate(advice.header.npbDate) : "Not set" },
               { term: "Where It Lands", value: ddo ? LANDING_LABEL[ddo.landing] : "" },
+              { term: "Request Identifier", value: advice.requests.length ? <span className="font-mono">{advice.requests[advice.requests.length - 1]!.uniqueIdentifier}</span> : "Generated when the Checker sends the advice to PFMS" },
               ...FIXED_VALUES.map((f) => ({ term: f.term, value: <span className="inline-flex flex-wrap items-center gap-2">{f.value} <SourceTag>Set by System</SourceTag></span> })),
             ]}
           />
@@ -133,7 +134,21 @@ export function AdviceSummary({
                 { term: "Account Number", value: `XXXX XXXX ${b.accountLast4}` },
                 { term: "IFSC", value: <span className="font-mono">{b.ifsc}</span> },
                 { term: "Gross Amount", value: <span className="tabular-nums">{exact(b.gross)}</span> },
-                { term: "Deductions", value: b.deductions.length ? <span className="tabular-nums">{exact(sumHeads(b.deductions))}</span> : "None" },
+                {
+                  term: "Deductions",
+                  value: b.deductions.length ? (
+                    <span className="block space-y-1">
+                      {b.deductions.map((d) => (
+                        <span key={d.id} className="block">
+                          <span className="font-mono">{headCode(d)}</span> · <span className="tabular-nums">{exact(d.amount)}</span>
+                        </span>
+                      ))}
+                    </span>
+                  ) : (
+                    "None"
+                  ),
+                  wide: b.deductions.length > 0,
+                },
                 { term: "Net Amount", value: <span className="tabular-nums font-semibold">{exact(netOf(b))}</span> },
                 { term: "Payee Remarks", value: b.remarks || "Not entered" },
                 { term: "Claim Reference Number", value: b.claimReference ? <span className="font-mono">{b.claimReference}</span> : "Drawn from the PFMS pool on submission" },

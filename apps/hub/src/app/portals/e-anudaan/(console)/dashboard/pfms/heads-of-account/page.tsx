@@ -187,7 +187,7 @@ function SchemeCard({ cfg, masters, onAdd, onRemove }: { cfg: SchemePfmsConfig; 
           description={cfg.pfmsSchemeCode ? `PFMS scheme code ${cfg.pfmsSchemeCode}` : "PFMS scheme code awaited"}
           count={cfg.heads.length}
         >
-          <Button size="sm" appearance="outlined" iconLeft={<Icon name="add" size={18} aria-hidden />} onClick={onAdd}>
+          <Button size="sm" appearance="outlined" iconLeft={<Icon name="add" size={20} aria-hidden />} onClick={onAdd}>
             Add Head of Account
           </Button>
         </SectionTitle>

@@ -76,7 +76,7 @@ export function SignDialog({
         <Button appearance="outlined" onClick={close}>
           Cancel
         </Button>
-        <Button iconLeft={<Icon name="verified_user" size={18} aria-hidden />} onClick={sign}>
+        <Button iconLeft={<Icon name="verified_user" size={20} aria-hidden />} onClick={sign}>
           Sign and Send to PFMS
         </Button>
       </>

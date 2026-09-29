@@ -40,7 +40,7 @@ const QUEUE = "/portals/e-anudaan/dashboard/payments/prepare";
  * `NumberInput` and `DatePicker` put their control at `<id>-input`. The summary's link must land on
  * the control itself, which is also what receives focus, so those fields are mapped here.
  */
-const controlId = (field: string) => (/^(head-\d+-amount|ben-\d+-gross|hdr-npb)$/.test(field) ? `${field}-input` : field);
+const controlId = (field: string) => (/^(head-\d+-amount|ben-\d+-gross|ben-\d+-ded-\d+-amount|hdr-npb)$/.test(field) ? `${field}-input` : field);
 
 /** Local issues that are not the Maker's to fix on a step — shown once, at the top, never gating a step. */
 const PAGE_LEVEL = new Set(["hdr-scheme", "hdr-masters"]);
@@ -331,7 +331,7 @@ function AdviceWizard({
           />
         )}
         {step === "beneficiary" && (
-          <BeneficiaryStep beneficiaries={draft.beneficiaries} onChange={(b) => setDraft((d) => ({ ...d, beneficiaries: b }))} sanctionAmount={advice.sanctionAmount} issue={issue} />
+          <BeneficiaryStep beneficiaries={draft.beneficiaries} onChange={(b) => setDraft((d) => ({ ...d, beneficiaries: b }))} sanctionAmount={advice.sanctionAmount} masters={pfms.masters} issue={issue} />
         )}
         {step === "documents" && <DocumentsStep documents={draft.documents} onChange={(docs) => setDraft((d) => ({ ...d, documents: docs }))} landing={ddo?.landing ?? "Approved"} issue={issue} />}
         {step === "review" && (
