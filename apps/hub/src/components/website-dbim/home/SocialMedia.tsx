@@ -30,7 +30,7 @@ export function DbimSocialMedia() {
     // the shared title (lib/website-shared/home.ts). Decided 28 Sep 2026.
     <section className="db-hb-social" aria-labelledby="db-social-title">
       <div className="db-hb-social__head">
-        <DbimSectionHeading id="db-social-title" icon="social-media-marketing" title="In Social Media" tone="inverse" />
+        <DbimSectionHeading id="db-social-title" icon="social-media" title="In Social Media" tone="inverse" />
       </div>
       <DbimSocialCarousel labels={DBIM_SOCIAL_FEEDS.map((f) => f.title)} slides={slides} />
     </section>
