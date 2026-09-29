@@ -38,15 +38,21 @@ calc((100% + 30px) / 3 - 30px) 1fr; gap: 30px`. One column below 992.
 | Document row `.box` | flex, padding 16, mb 16, border 1px neutral-100, radius 8; cols 6/2/2/2: `draft` glyph 24 primary-800 + title 14px · date `small.ptype` 10px/600 ls .6 `#3D4043` · pdf mark 18 + size 10px/600 primary-800 · "VIEW" `a.download-btn` 40 tall, padding 8 12, gap 8, 12px/600 ls .12 uppercase, bg primary-100, fg primary-800, radius 4, glyph `visibility` | `DocRow` — same grid, glyphs from `Icon`; the file size is left out where the register does not publish one |
 | Link row | the same box with the arrow button on the right | `details` whose `summary` is drawn as that row; opening it shows the table under it |
 
-**Content.** Summary = the Department's one-sentence description of itself (as the redesign's
-About page leads with). Body = the Department's About Us text, dosje.gov.in/about-us/ as the
-redesign transcribed and corrected it (`app/website/about-us/page.tsx`, read 21–22 Sep 2026),
-held in `lib/website-dbim/ministry.ts` (`DBIM_ABOUT`). Sections in the reference's order:
-Brief Overview · Brief History · Subjects Allocated · Organisational Set-Up (with the Bureau
-Head-Wise Allocation of Work table from `app/website/about-us/reference-tables.ts`) ·
-Organisation Chart (PDF row) · Citizen Charter (`getDocument("citizen-charter")`) · Former
-Secretaries (expanding row → table) · Sector-Wise Detailed Information (expanding row → the
-statistical tables, grouped). The Secretary is named from `getDepartmentSecretary()`.
+**Content — revised 29 Sep 2026 to MeitY's About Us (meity.gov.in/ministry, the DBIM benchmark)
+and the DBIM Figma file's About Us frame.** Side box = the Department's **Vision** (then the caption
+"Vision Statement"). Body, in MeitY's order: an introduction (the Department's own "entrusted with…"
+sentence and its ten target groups) · **Mission** · **Objectives** as numbered `brand/5` cards, three
+across (MeitY's `.objectivebox`) · **Functions** = the Subjects Allocated under the Allocation of
+Business Rules, 1961, as a numbered list with (i)–(v) and the note · Organisational Set-Up · the
+Citizen Charter and Organisation Chart document rows · Brief History, Bureau Head-Wise Allocation of
+Work, Former Secretaries and Sector-Wise Detailed Information as rows that open in place.
+
+**Pending from the Department:** the Vision, the Mission and the Objectives. DBIM 3.0 §A.5.1.1 asks
+for all three and checklist item 11 wants objectives as a list, but dosje.gov.in publishes none (its
+"Vision & Mission" link opens About Us). Each renders as a marked placeholder
+(`.db-min-pending`, `data-pending="vision|mission|objectives"`), never as invented text.
+
+Document dates print DD.MM.YYYY (checklist item 27); the reference printed YYYY.MM.DD.
 
 Responsive: <992 the box sits above the text, not sticky (390 shot).
 
@@ -77,10 +83,12 @@ breaks out of the container to 30px from the viewport edge (10px ≤767).
 | Address | 14px | same |
 | <992 | each cell becomes label (`small`, uppercase, 33% wide) + value | same |
 
-**Chart hierarchy (DBIM 3.0 §A.5.1.2, checklist 13).** Three levels, not one chain: the
-Union Minister; the two Ministers of State side by side under a bar; the Secretary
-(`getDepartmentSecretary()`, portrait placeholder — no photograph is published). The
-reference's single vertical chain put one Minister of State above the other.
+**Chart hierarchy (DBIM 3.0 §A.5.1.2, checklist 13; the Department's reference tree, 29 Sep 2026).**
+The Union Minister above; the two Ministers of State side by side beneath, 24px apart. The trunk
+drops 106px from the top card to a bar 34px above the lower headshots, and a drop runs from the bar
+into each headshot. No Secretary level — the reference tree does not draw one; the Secretary heads the
+first office table. Headshots are round on white (DBIM 3.0 §6.1.4 i). The reference's single vertical
+chain put one Minister of State above the other.
 
 **Content.** Ministers: `ABOUT_US.ministers` (lib/website-shared/home.ts). Office order is the
 reference's except that AS & FA follows the Additional Secretary (seniority, checklist 30). Offices:

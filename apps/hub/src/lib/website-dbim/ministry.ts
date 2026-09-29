@@ -134,16 +134,16 @@ export const DBIM_ABOUT = {
 export interface DbimDocRow {
   title: string;
   href: string;
-  /** YYYY.MM.DD, the reference's notation. */
+  /** DD.MM.YYYY — day before month (DBIM 3.0 §A.5.6, checklist item 27). The reference wrote YYYY.MM.DD. */
   date?: string;
   size?: string;
   type?: string;
 }
 
-/** "2024-01-26" → "2024.01.26". */
+/** "2024-01-26" → "26.01.2024": day before month (DBIM 3.0 §A.5.6, checklist item 27). */
 function refDate(iso: string | undefined): string | undefined {
   const m = iso?.match(/^(\d{4})-(\d{2})-(\d{2})/);
-  return m ? `${m[1]}.${m[2]}.${m[3]}` : undefined;
+  return m ? `${m[3]}.${m[2]}.${m[1]}` : undefined;
 }
 
 /**
@@ -160,7 +160,7 @@ export function aboutDocuments(): { organisationChart: DbimDocRow; citizenCharte
         "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/09/Org-chart-as-on-16-09-2026.pdf",
         "Organisation Chart",
       ),
-      date: "2026.09.16",
+      date: "16.09.2026",
       type: "PDF",
     },
     citizenCharter: charter?.fileUrl
