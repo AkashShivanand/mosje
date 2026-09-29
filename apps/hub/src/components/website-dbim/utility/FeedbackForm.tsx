@@ -125,9 +125,16 @@ export function DbimFeedbackForm() {
 
   return (
     <>
-      <p className="db-u-fb__note">
-        Note: Field marked with (<span className="db-u-req">*</span>) are required.
-      </p>
+      {/* DBIM 3.0 Annexure B i: instructions come at the start of the form. */}
+      <div className="db-u-fb__note">
+        <p>
+          Use this form to send the Department your suggestions about this website. A grievance about a scheme or a
+          service is registered on the <Link href={dbimHref("/connect/grievance-redressal")}>Grievance Redressal</Link> page instead.
+        </p>
+        <p>
+          Fields marked with (<span className="db-u-req">*</span>) are required.
+        </p>
+      </div>
     <form noValidate onSubmit={onSubmit} aria-label="Feedback" className="db-u-fb__form">
       {field("name", "Name", true, <input {...common("name", true)} type="text" autoComplete="name" placeholder="Enter your name" />)}
       {field("email", "Email", true, <input {...common("email", true)} type="email" autoComplete="email" inputMode="email" spellCheck={false} placeholder="Enter email" />)}
