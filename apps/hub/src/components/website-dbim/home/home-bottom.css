@@ -46,9 +46,11 @@
     list-style: none;
   }
 
+  /* min-width 0: a grid track of 1fr must not grow to the one-line account name. */
   [data-design="dbim"] .db-hb-social__card {
     display: flex;
     flex-direction: column;
+    min-width: 0;
   }
 
   [data-design="dbim"] .db-hb-social__title {
@@ -97,16 +99,127 @@
     outline-offset: var(--sa-stroke-2);
   }
 
-  /* Feed content */
-  [data-design="dbim"] .db-hb-feed__account {
+  /* Feed content — before the reader asks, the shape of the embed (Figure 61) */
+  [data-design="dbim"] .db-hb-feed__preview {
+    position: relative;
+    min-width: 0;
     display: flex;
     flex-direction: column;
+    gap: var(--sa-stack-12);
+    height: 100%;
+    overflow: hidden;
+  }
+
+  [data-design="dbim"] .db-hb-feed__post {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-12);
+    border: var(--sa-stroke-1) solid var(--sa-color-neutralScale-100);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-color-neutralScale-0);
+  }
+
+  [data-design="dbim"] .db-hb-feed__who {
+    display: flex;
+    gap: var(--sa-inline-8);
+    align-items: center;
+    min-width: 0;
+  }
+
+  [data-design="dbim"] .db-hb-feed__who > span:last-child {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  [data-design="dbim"] .db-hb-feed__who--below {
+    flex-direction: column;
     align-items: flex-start;
-    gap: var(--sa-stack-4);
-    padding: var(--sa-padding-4);
+  }
+
+  [data-design="dbim"] .db-hb-feed__avatar {
+    flex: none;
+    width: var(--sa-padding-40);
+    height: var(--sa-padding-40);
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-color-neutralScale-100);
+  }
+
+  [data-design="dbim"] .db-hb-feed__bars {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    width: 100%;
+  }
+
+  [data-design="dbim"] .db-hb-feed__bar {
+    display: block;
+    height: var(--sa-padding-8);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-neutralScale-100);
+  }
+
+  [data-design="dbim"] .db-hb-feed__media {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-neutralScale-100);
+  }
+
+  [data-design="dbim"] .db-hb-feed__media--square {
+    aspect-ratio: 1 / 1;
+  }
+
+  [data-design="dbim"] .db-hb-feed__media--video {
+    display: grid;
+    place-items: center;
+    background: var(--sa-color-neutralScale-200);
+  }
+
+  /* A play disc, drawn: a white circle holding a key-colour triangle. */
+  [data-design="dbim"] .db-hb-feed__play {
+    position: relative;
+    width: var(--sa-padding-48);
+    height: var(--sa-padding-48);
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-color-neutralScale-0);
+  }
+
+  [data-design="dbim"] .db-hb-feed__play::after {
+    position: absolute;
+    top: 50%;
+    left: 54%;
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
+    border-left: 14px solid var(--sa-color-primaryScale-800);
+    transform: translate(-50%, -50%);
+    content: "";
+  }
+
+  /* The ask sits over the fading feed, so the card still reads as a feed. */
+  [data-design="dbim"] .db-hb-feed__cta {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    align-items: center;
+    padding: var(--sa-padding-48) var(--sa-padding-12) var(--sa-padding-4);
+    background: linear-gradient(to bottom, transparent, var(--sa-color-neutralScale-0) 45%);
+  }
+
+  [data-design="dbim"] .db-hb-feed__cta .db-hb-feed__load {
+    margin-top: 0;
   }
 
   [data-design="dbim"] .db-hb-feed__name {
+    display: block;
     margin: 0;
     font-size: var(--db-fs-p);
     font-weight: var(--sa-font-weight-bold); /* Paragraph 1: Regular or Bold only (Table 3) */
@@ -114,7 +227,8 @@
   }
 
   [data-design="dbim"] .db-hb-feed__handle {
-    margin: 0 0 var(--sa-stack-8);
+    display: block;
+    margin: 0;
     font-size: var(--db-fs-p);
     color: var(--sa-color-neutralScale-600); /* Grey 03 #606060, DBIM 3.0 Table 1 */
   }

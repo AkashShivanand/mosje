@@ -135,22 +135,87 @@ export function DbimSocialFeed({ feed }: { feed: Feed }) {
           <p className="db-hb-feed__end">{more}</p>
         </>
       ) : (
-        <div className="db-hb-feed__account">
-          <p className="db-hb-feed__name">{DBIM_SOCIAL_ACCOUNT}</p>
-          <p className="db-hb-feed__handle">{feed.handle}</p>
-          {more}
-          <Button
-            variant="primary"
-            appearance="outlined"
-            size="sm"
-            className="db-hb-feed__load"
-            disabled={offline}
-            onClick={() => setLive(true)}
-          >
-            {offline ? "Posts Load When You Are Back Online" : "Show Latest Posts"}
-          </Button>
+        <div className="db-hb-feed__preview">
+          {/* The shape of the network's own embed, so the card reads as the feed it will
+              become — DBIM 3.0 Figure 61 shows the four networks' embeds. The account is
+              real text; the post shells are drawing only. */}
+          <div className={`db-hb-feed__post db-hb-feed__post--${feed.network}`}>
+            {feed.network !== "youtube" && (
+              <div className="db-hb-feed__who">
+                <span className="db-hb-feed__avatar" aria-hidden="true" />
+                <span>
+                  <span className="db-hb-feed__name">{DBIM_SOCIAL_ACCOUNT}</span>
+                  <span className="db-hb-feed__handle">{feed.handle}</span>
+                </span>
+              </div>
+            )}
+            <PostShell network={feed.network} />
+            {feed.network === "youtube" && (
+              <span className="db-hb-feed__who db-hb-feed__who--below">
+                <span className="db-hb-feed__name">{DBIM_SOCIAL_ACCOUNT}</span>
+                <span className="db-hb-feed__handle">{feed.handle}</span>
+              </span>
+            )}
+          </div>
+          <div className={`db-hb-feed__post db-hb-feed__post--${feed.network}`} aria-hidden="true">
+            {feed.network !== "youtube" && (
+              <div className="db-hb-feed__who">
+                <span className="db-hb-feed__avatar" />
+                <span className="db-hb-feed__bars">
+                  <span className="db-hb-feed__bar" style={{ width: "60%" }} />
+                  <span className="db-hb-feed__bar" style={{ width: "40%" }} />
+                </span>
+              </div>
+            )}
+            <PostShell network={feed.network} />
+          </div>
+          <div className="db-hb-feed__cta">
+            {more}
+            <Button
+              variant="primary"
+              appearance="outlined"
+              size="sm"
+              className="db-hb-feed__load"
+              disabled={offline}
+              onClick={() => setLive(true)}
+            >
+              {offline ? "Posts Load When You Are Back Online" : "Show Latest Posts"}
+            </Button>
+          </div>
         </div>
       )}
     </div>
   );
+}
+
+/** A post's body in the network's own shape: lines of text, a picture, or a video frame. */
+function PostShell({ network }: { network: Feed["network"] }) {
+  const lines = (widths: string[]) => (
+    <span className="db-hb-feed__bars" aria-hidden="true">
+      {widths.map((w, i) => (
+        <span key={i} className="db-hb-feed__bar" style={{ width: w }} />
+      ))}
+    </span>
+  );
+  if (network === "youtube")
+    return (
+      <span className="db-hb-feed__media db-hb-feed__media--video" aria-hidden="true">
+        <span className="db-hb-feed__play" />
+      </span>
+    );
+  if (network === "instagram")
+    return (
+      <>
+        <span className="db-hb-feed__media db-hb-feed__media--square" aria-hidden="true" />
+        {lines(["85%", "55%"])}
+      </>
+    );
+  if (network === "facebook")
+    return (
+      <>
+        {lines(["95%", "70%"])}
+        <span className="db-hb-feed__media" aria-hidden="true" />
+      </>
+    );
+  return lines(["100%", "92%", "64%"]);
 }
