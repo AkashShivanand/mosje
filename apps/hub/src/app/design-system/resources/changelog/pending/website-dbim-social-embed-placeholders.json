@@ -1,4 +1,0 @@
-{
-  "kind": "Changed",
-  "text": "THE DBIM HOME PAGE'S IN SOCIAL MEDIA CARDS LOOK LIKE THE FEEDS THEY LOAD. DBIM 3.0 Figure 61 shows the four networks' own embeds; before a reader asked for them, each card showed a plain account block that read as interface. Each card now draws its network's embed — X posts, Facebook posts with a picture, an Instagram picture post, YouTube video frames — with the Department's name and handle in the first post, and \"View on …\" and \"Show Latest Posts\" over the fading feed. The embeds still load only when the reader asks, so no network's script or tracker runs before then. The Figma handoff's Social Feed Card gains a Network property with the same four shapes."
-}
