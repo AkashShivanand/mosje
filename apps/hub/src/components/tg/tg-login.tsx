@@ -13,6 +13,7 @@ import {
   type PortalBrandAssets,
   type PortalLoginConfig,
   type PortalLoginFieldErrors,
+  SAMAVESH_MARK,
 } from "@mosje/design-system";
 import { roleByEmail } from "@/lib/tg/roles";
 import { useTg } from "@/lib/tg/store/store";
@@ -31,7 +32,7 @@ export const TG_LOGIN_CHROME = {
     emblemSrc: `${BASE}/brand/national-emblem.svg`,
     digitalIndiaSrc: `${BASE}/brand/digital-india.svg`,
     // org-logo-exempt(portal-local): TG serves its own copy under its brand folder.
-    samaveshLogoSrc: `${BASE}/brand/samavesh-logo.svg`,
+    samaveshLogoSrc: SAMAVESH_MARK,
     heroImageSrc: "/portals/login-hero/smile-transgender.jpg",
     digilockerLogoSrc: "/design-system/digilocker-mark.png",
   } satisfies PortalBrandAssets,

@@ -7,8 +7,8 @@
   "apps/hub/src/app/design-system/components/navigation/samavesh-banner/page.tsx": 4,
   "apps/hub/src/app/design-system/components/section-templates/site-header/header-preview.tsx": 1,
   "apps/hub/src/app/website/admin/admin-login.tsx": 1,
-  "apps/hub/src/components/design-system/docs-layout/docs-layout.tsx": 1,
-  "apps/hub/src/components/design-system/hero/hero.tsx": 1,
+  "apps/hub/src/app/website-classic/admin/admin-login.tsx": 1,
+  "apps/hub/src/app/website-classic/organisation/[...slug]/page.tsx": 1,
   "apps/hub/src/components/eutthan/eutthan-shell.tsx": 1,
   "apps/hub/src/components/hub-site-header.tsx": 1,
   "apps/hub/src/components/pm-ajay/shell/navbar.tsx": 1,
@@ -20,7 +20,6 @@
   "apps/hub/src/content/website/organisation-details.ts": 15,
   "apps/hub/src/data/website/organisations.ts": 17,
   "apps/hub/src/lib/site-gate.ts": 1,
-  "packages/design-system/components/auth/login-shell-chrome.ts": 1,
   "packages/design-system/components/auth/types.ts": 1,
   "packages/design-system/components/navigation/header/brand-lockup.figma.ts": 1,
   "packages/design-system/components/navigation/header/brand-lockup.tsx": 1,
@@ -28,7 +27,5 @@
   "packages/design-system/components/navigation/header/nav-sheet.figma.ts": 1,
   "packages/design-system/components/navigation/header/site-header.figma.ts": 1,
   "apps/storybook/stories/NavSheet.stories.tsx": 1,
-  "apps/storybook/stories/SamaveshBanner.stories.tsx": 1,
-  "apps/hub/src/app/website-classic/admin/admin-login.tsx": 1,
-  "apps/hub/src/app/website-classic/organisation/[...slug]/page.tsx": 1
+  "apps/storybook/stories/SamaveshBanner.stories.tsx": 1
 }
