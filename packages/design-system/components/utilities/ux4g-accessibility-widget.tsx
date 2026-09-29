@@ -366,6 +366,49 @@ function keepClosedPanelOutOfTabOrder(): () => void {
 }
 
 /**
+ * Give the first Tab back to the page when the vendor's own door is hidden
+ * (WCAG 2.4.3; GIGW: the skip link is the first stop).
+ *
+ * The widget answers the first Tab on every page itself: it cancels the key,
+ * shows its "Open the accessibility option" button, focuses it and speaks
+ * "Press Enter to open accessibility option". The second Tab cancels again and
+ * hides it. Where the AccessibilityBar is the one door, that button is
+ * `display: none` (ux4g-accessibility-widget.css), so the focus call lands
+ * nowhere: measured 29 Sep 2026 on /website-dbim and /website, the first two
+ * presses left focus on <body> and "Skip to main content" arrived on the third,
+ * after a spoken prompt for a button no one could see.
+ *
+ * The vendor stops intercepting once its Escape handler has run
+ * (`menuClosedByEscape`). So on the first Tab — in the CAPTURE phase, before
+ * its document listener sees the key — an Escape is sent to the document, and
+ * the Tab then moves focus as the browser would. Sent only while nothing is
+ * open (no dialog, nothing expanded, the panel closed), because every
+ * document-level Escape handler hears it; with nothing open each is a no-op.
+ * Only where the one-door rule hides the vendor button: elsewhere the vendor's
+ * button is visible and its first-Tab prompt is its designed behaviour.
+ */
+function releaseFirstTab(): () => void {
+  const onKeyDown = (e: KeyboardEvent) => {
+    if (e.key !== "Tab") return;
+    const root = document.documentElement;
+    if (root.getAttribute("data-sa-abar-a11y") !== "1") return;
+    const vendorDoor = document.getElementById("open-the-accessibility-menu");
+    const panel = document.getElementById("uw-main");
+    if (!vendorDoor || !panel) return; // the widget has not initialised yet
+    const open =
+      root.hasAttribute("data-sa-dialog-open") ||
+      !panel.inert ||
+      // the closed panel's own section toggles report expanded; they are inert
+      [...document.querySelectorAll('[aria-expanded="true"]')].some((el) => !el.closest("[inert]"));
+    if (open) return; // try again on the next Tab
+    document.removeEventListener("keydown", onKeyDown, true);
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", code: "Escape", bubbles: true }));
+  };
+  document.addEventListener("keydown", onKeyDown, true);
+  return () => document.removeEventListener("keydown", onKeyDown, true);
+}
+
+/**
  * Stop the panel's section heads announcing as page banners.
  *
  * Each of the panel's five sections opens with a bare `<header>`. A header that
@@ -458,6 +501,11 @@ export function UX4GAccessibilityWidget({
   React.useEffect(() => {
     if (typeof document === "undefined") return;
     return keepClosedPanelOutOfTabOrder();
+  }, []);
+
+  React.useEffect(() => {
+    if (typeof document === "undefined") return;
+    return releaseFirstTab();
   }, []);
 
   React.useEffect(() => {
