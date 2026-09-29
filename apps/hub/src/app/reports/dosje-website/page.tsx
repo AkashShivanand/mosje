@@ -203,14 +203,21 @@ export default async function WebsiteIssuesPage({ searchParams }: { searchParams
               title="Duplicates"
               description="Pages, files and titles published more than once. Rows in the same group are copies of each other."
               head={["Type", "Group", "Address", "Title", "Issue"]}
-              rows={META.duplicates.map((d) => [d[0], d[1], d[2], d[3], d[4]])}
+              rows={META.duplicates.map((d) => [d[0], d[1], d[2], d[3], d[4], String(d[5] ?? 0)])}
               page={f.page}
               q={f.q}
               view="duplicates"
               render={(r) => [
                 r[0],
                 <span key="g" className="font-mono">{r[1]}</span>,
-                <a key="a" href={(r[2] ?? "").startsWith("/") ? `https://www.dosje.gov.in${r[2]}` : r[2]} className="break-all text-link-brand-default hover:underline">{r[2]}</a>,
+                r[2] ? (
+                  <span key="a" className="break-all">
+                    <a href={r[2].startsWith("/") ? `https://www.dosje.gov.in${r[2]}` : r[2]} className="text-link-brand-default hover:underline">{r[2]}</a>
+                    {Number(r[5]) > 0 ? <span className="text-body-3 text-text-neutral-subtle"> and {r[5]} more {Number(r[5]) === 1 ? "page" : "pages"}</span> : null}
+                  </span>
+                ) : (
+                  <span key="a" className="text-body-3 text-text-neutral-subtle">Not published under its own address</span>
+                ),
                 r[3],
                 <Link key="i" href={`${BASE}/${r[4]}`} className="font-mono text-label-1 text-link-brand-default hover:underline">{r[4]}</Link>,
               ]}

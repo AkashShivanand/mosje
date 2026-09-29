@@ -79,8 +79,17 @@ export interface RegisterMeta {
   reportPdf: string;
   /** [issue id, page, link text, broken address, problem] */
   broken: [string, string, string, string, string][];
-  /** [type, group, address, title, issue id] */
-  duplicates: [string, string, string, string, string][];
+  /**
+   * [type, group, address, title, issue id, other pages carrying this title].
+   *
+   * The title-similarity groups (C…) compared titles across the whole corpus,
+   * so until 2026-09-29 they carried no address at all — 392 rows naming two
+   * spellings with no way to find either. The address is resolved back from
+   * the affected-pages index, preferring the un-numbered twin, and the count
+   * says how many further pages carry the same title so a single link is not
+   * mistaken for the whole of the work.
+   */
+  duplicates: [string, string, string, string, string, number][];
   /** [reported as, checkpoint, now, checked] */
   resolved: [string, string, string, string][];
   /** [earlier claim, what was found, checked] */
