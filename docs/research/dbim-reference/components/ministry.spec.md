@@ -167,9 +167,14 @@ Portals column). `/ministry/our-organisation/schemes` and
 | Title | 16px / 500 / 19.2, mt 5 | same |
 | Date `small.ptype` | 10px/600 ls .6 uppercase `#3D4043` | `--sa-color-text-muted` |
 
-**Content.** The Department's dashboards: the Social Audit MIS portal (`DBIM_SOCIAL_AUDIT`,
-date 24.10.2025 as the reference publishes it), the live site's Beneficiary Dashboard
-(dosje.gov.in/dashboard/) and the PM-AJAY dashboard of this website (`/dashboard`). No date is drawn where none is published.
+**Content.** The Department's own dashboards, not a scheme's (the Department's instruction,
+29 Sep 2026): the live site's Beneficiary Dashboard (dosje.gov.in/dashboard/), then the Social
+Audit MIS portal (`DBIM_SOCIAL_AUDIT`, date 24.10.2025 as the reference publishes it). No date
+is drawn where none is published.
+
+The PM-AJAY dashboard is the scheme's: it is drawn on the PM-AJAY page under Our Scheme Portals
+(§4a), below the page's text, full width (`components/website-dbim/dashboard/PmajayDashboard.tsx`).
+`/dashboard` — on dosje.gov.in, the Beneficiary Dashboard — redirects (308) to Our Performance.
 
 ## 6. `/ministry/directory`
 
