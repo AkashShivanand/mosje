@@ -4,6 +4,7 @@ import type {
   OfficialRecord, CpioRecord, BookingRecord, UpdateRecord, SewerDeathCaseRecord,
 } from "@/types/website/content";
 import organisationData from "@/content/website/organisation.json";
+import renamedOrganisations from "./renamed-organisations.json";
 import schemesData from "@/content/website/schemes.json";
 import tendersData from "@/content/website/tenders.json";
 import vacanciesData from "@/content/website/vacancies.json";
@@ -64,10 +65,9 @@ export function getContentSyncedDate(): string {
  * mastheads, the partner strip, Who's Who and the officials map (and PR #640's
  * organisation pages), so the new records are served at the old address and no
  * link breaks. Adopting the new address is one change in all of those at once.
+ * The map is a JSON file so `tools/website-links` reads the same one.
  */
-const RENAMED_ORGANISATIONS: Record<string, string> = {
-  "babu-jagjivan-ram-national-foundation-bjrnf": "babu-jagjivan-ram-national-foundation-jrf",
-};
+const RENAMED_ORGANISATIONS: Record<string, string> = renamedOrganisations;
 
 function estateSlug(slug: string): string {
   for (const [live, ours] of Object.entries(RENAMED_ORGANISATIONS)) {
