@@ -20,7 +20,9 @@
  */
 import { getAllDocuments, getDocument, getTenders, getVacancies, getUpdates } from "@/lib/website/content";
 import { localiseDocumentUrl } from "@/lib/website/sample-documents";
-import { whatsNew, type NewsItem } from "@/lib/website-next/whats-new";
+import { recentNotices, type NewsItem } from "@/lib/website-next/whats-new";
+import { masterForLegacy } from "@/lib/website-next/legacy-schemes";
+import { SCHEMES } from "@/lib/website-next/schemes";
 import { dateValue, isArchived, tidyTitle, dedupeNotices, displayNoticeTitle } from "@/components/website-next/ui/records";
 import type { DocumentRecord } from "@/types/website/content";
 import { dbimHref, type DbimLink } from "@/lib/website-dbim/nav";
@@ -225,12 +227,12 @@ export interface WhatsNewGroup {
 /**
  * What's New, grouped as the reference groups it: Documents → one group per tab →
  * folders. Orders and Notices take the estate's own What's New composition
- * (`whatsNew()` — circulars, notices, results and announcements of the last twelve
- * months, de-duplicated); Reports and Publications take their series with a
+ * (`recentNotices()` — circulars, notices, results and announcements of the last twelve
+ * months, de-duplicated; the home lists read the live list instead); Reports and Publications take their series with a
  * document published in the same twelve months. A folder's count is its NEW files.
  */
 export function whatsNewDocuments(): WhatsNewGroup[] {
-  const news = whatsNew();
+  const news = recentNotices();
   const fresh = new Map<string, DocumentRecord[]>();
   const add = (type: string, d: DocumentRecord) => fresh.set(type, [...(fresh.get(type) ?? []), d]);
 
@@ -273,6 +275,8 @@ export function whatsNewDocuments(): WhatsNewGroup[] {
  *              this one file, the file itself, as the folder row does; a document the
  *              Department flagged Archived is in no series, so it opens its file
  *   update   → its first attachment, else its dosje.gov.in page
+ *   scheme   → its Schemes and Services page, else the Schemes and Services list
+ *   vacancy  → the Vacancies page, which lists it
  *
  * `undefined` when the item has nowhere to go; callers leave it out.
  */
@@ -295,6 +299,11 @@ export function whatsNewTarget(n: Pick<NewsItem, "key" | "title">): { href: stri
     const file = u?.attachments?.[0]?.url;
     return link(file ? localiseDocumentUrl(file, u?.attachments?.[0]?.label, n.title) : u?.sourceUrl);
   }
+  if (n.key.startsWith("s-")) {
+    const id = masterForLegacy(n.key.slice(2)) ?? n.key.slice(2);
+    return link(dbimHref(SCHEMES.some((s) => s.id === id) ? `/offerings/schemes-and-services/${id}` : "/offerings"));
+  }
+  if (n.key.startsWith("v-")) return link(dbimHref("/offerings/vacancies"));
   return undefined;
 }
 
@@ -303,7 +312,7 @@ const updatesBySlug = () => (updatesIndex ??= new Map(getUpdates().map((u) => [u
 
 /** The updates in What's New, each opening where `whatsNewTarget` sends it. */
 export function whatsNewUpdates(): DbimDocRow[] {
-  return whatsNew()
+  return recentNotices()
     .filter((n) => n.key.startsWith("u-"))
     .flatMap((n) => {
       const t = whatsNewTarget(n);
