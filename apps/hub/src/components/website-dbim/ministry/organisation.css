@@ -190,6 +190,19 @@
 
   /* ── Main column ─────────────────────────────────────────────────────────── */
 
+  [data-design="dbim"] .db-org__banner {
+    position: relative;
+    aspect-ratio: 21 / 8;
+    margin-bottom: var(--sa-stack-32);
+    overflow: hidden;
+    border-radius: 10px; /* the reference's `.visionbox` radius */
+    background: var(--sa-color-neutralScale-100);
+  }
+
+  [data-design="dbim"] .db-org__banner img {
+    object-fit: cover;
+  }
+
   [data-design="dbim"] .db-org .db-org__section {
     scroll-margin-top: 140px;
   }
