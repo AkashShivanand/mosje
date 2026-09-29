@@ -232,11 +232,9 @@ function OrgBlock({ b, label }: { b: DbimOrgBlock; label: string }) {
         <ul className="db-org-tiles">
           {b.items.map((t) => (
             <li key={t.title} className="db-org-tile">
-              {t.image ? (
-                <span className="db-org-tile__img">
-                  <Image src={t.image} alt="" fill sizes="(min-width: 992px) 270px, 50vw" />
-                </span>
-              ) : null}
+              <span className="db-org-tile__icon" aria-hidden="true">
+                <Icon name={t.icon} size={32} weight={300} />
+              </span>
               <span className="db-org-tile__title">{t.title}</span>
               {t.link ? (
                 <OrgAnchor link={t.link} className="db-min-arrow db-org-tile__arrow">

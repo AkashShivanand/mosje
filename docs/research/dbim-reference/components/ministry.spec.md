@@ -168,7 +168,8 @@ dosje.gov.in/organisation/<id>/); shaping: `lib/website-dbim/organisation.ts`; v
 | On This Page index + the live index's off-page links, sticky ≥992, a wrap of buttons below | new, `.db-org__index` |
 | Banner photograph (decorative), then each live section, h2 + its "Know More" | §1 rich text |
 | Leadership | §2's profile card, three across; tenure and View Profile added |
-| Scheme cards, activity tiles | §3's card, with the scheme's group above its name |
+| Scheme cards | §3's card, with the scheme's group above its name |
+| Activity tiles (NCSC, DAIC) | §3's card; the live clip-art replaced by a Material Symbol in a primary-100 circle (the Department's review, 29 Sep 2026) |
 | Reports, resources, notices | §1's document row, DD.MM.YYYY |
 | Latest Updates | the home page's Key Offerings tab set (Figure 56); two by two below 768 |
 | State offices (>4 links) / projects (≤4) | outlined buttons / §1's link rows |

@@ -390,7 +390,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--sa-stack-12);
-    padding: var(--sa-padding-12);
+    padding: var(--sa-padding-16) var(--sa-padding-24);
     border: var(--sa-stroke-1) solid var(--sa-color-neutralScale-100);
     border-radius: var(--sa-shape-12);
   }
@@ -406,6 +406,18 @@
 
   [data-design="dbim"] .db-org :is(.db-org-tile__img, .db-org-gallery__frame) img {
     object-fit: cover;
+  }
+
+  /* The tile's icon, in the contact list's light-blue circle, at the section-icon size. */
+  [data-design="dbim"] .db-org .db-org-tile__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-color-primaryScale-100);
+    color: var(--sa-color-primaryScale-800);
   }
 
   [data-design="dbim"] .db-org .db-org-tile__title {

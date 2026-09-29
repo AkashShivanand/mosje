@@ -133,6 +133,20 @@ const CONTACT_ICON: [RegExp, string][] = [
   [/metro/i, "subway"],
 ];
 
+/**
+ * The live tiles carry low-resolution clip-art (a map pin, cartoon meetings); a
+ * government page draws the estate's icon set instead (the Department's review,
+ * 29 Sep 2026). Chosen from the tile's own title; every live tile is listed.
+ */
+const TILE_ICON: [RegExp, string][] = [
+  [/spot visit/i, "pin_drop"], // NCSC
+  [/state review/i, "map"], // NCSC
+  [/psu|psb|bank/i, "account_balance"], // NCSC
+  [/academic/i, "school"], // DAIC
+  [/booking/i, "event_available"], // DAIC
+  [/panchteerth|memorial|teerth/i, "temple_buddhist"], // DAIC — the five sites associated with Dr. Ambedkar
+];
+
 const SOCIAL_ICON: [RegExp, DbimIconName, string][] = [
   [/facebook/i, "facebook", "Facebook"],
   [/twitter|^x\b/i, "x", "X"],
@@ -147,7 +161,7 @@ export type DbimOrgBlock =
   | { kind: "documents"; items: DbimDocRow[] }
   | { kind: "events"; items: { title: string; date?: string; link?: DbimOrgLink }[] }
   | { kind: "links"; items: DbimOrgLink[] }
-  | { kind: "tiles"; items: { title: string; image?: string; link?: DbimOrgLink }[] }
+  | { kind: "tiles"; items: { title: string; icon: string; link?: DbimOrgLink }[] }
   | { kind: "gallery"; items: { src: string; full?: string; caption: string }[] }
   | { kind: "social"; items: { name: string; icon: DbimIconName; handle?: string; href: string }[] }
   | { kind: "contact"; items: { label: string; icon: string; values: DbimContactLine[] }[] }
@@ -189,7 +203,10 @@ function shapeBlock(b: OrgProfileBlock, label: string, here: string, pageTitle: 
       return items.length ? { kind: "links", items } : undefined;
     }
     case "tiles":
-      return { kind: "tiles", items: b.items.map((t) => ({ title: t.title, image: t.image, link: orgLink(t.title, t.href, here) })) };
+      return {
+        kind: "tiles",
+        items: b.items.map((t) => ({ title: t.title, icon: TILE_ICON.find(([re]) => re.test(t.title))?.[1] ?? "article", link: orgLink(t.title, t.href, here) })),
+      };
     case "gallery": {
       const items = b.items.filter((g): g is typeof g & { src: string } => Boolean(g.src)).map((g) => ({ src: g.src, full: g.full, caption: g.caption }));
       return items.length ? { kind: "gallery", items } : undefined;
