@@ -86,9 +86,9 @@ export default async function IssuePage({ params, searchParams }: Props) {
                 { term: "Who fixes it", value: i.owner },
                 { term: "Scope", value: i.scope },
                 { term: "Affects", value: i.reach },
-                { term: "Page", value: <a href={i.url} className="break-all text-link-brand-default hover:underline">{path}</a> },
+                { term: "Page", value: <a href={i.url} className="break-all text-link-brand-default underline">{path}</a> },
                 { term: "Where on the page", value: i.where },
-                { term: "In the report", value: i.reportPage ? <a href={META.reportPdf} className="text-link-brand-default hover:underline">Page {i.reportPage}</a> : "In the tracker only" },
+                { term: "In the report", value: i.reportPage ? <a href={META.reportPdf} className="text-link-brand-default underline">Page {i.reportPage}</a> : "In the tracker only" },
               ]}
             />
 
@@ -156,7 +156,7 @@ export default async function IssuePage({ params, searchParams }: Props) {
               <ul className="flex flex-col gap-1.5 text-body-1">
                 {i.standards.map((s) => (
                   <li key={s.id}>
-                    <a href={s.url} className="text-link-brand-default hover:underline" target="_blank" rel="noopener noreferrer">
+                    <a href={s.url} className="text-link-brand-default underline" target="_blank" rel="noopener noreferrer">
                       {s.label}
                       <span className="sr-only"> (opens in a new tab)</span>
                     </a>
@@ -180,7 +180,7 @@ export default async function IssuePage({ params, searchParams }: Props) {
                       {affected.slice((apPage - 1) * AFF_PER_PAGE, apPage * AFF_PER_PAGE).map(([p, title, found], n) => (
                         <tr key={`${p}-${n}`} className="border-t border-border align-top">
                           <td className="px-4 py-3">
-                            <a href={`https://www.dosje.gov.in${p}`} className="text-link-brand-default hover:underline">{title || p}</a>
+                            <a href={`https://www.dosje.gov.in${p}`} className="text-link-brand-default underline">{title || p}</a>
                             <div className="break-all text-body-3 text-ink-muted">{p}</div>
                           </td>
                           <td className="px-4 py-3 text-ink">{found}</td>
@@ -199,16 +199,16 @@ export default async function IssuePage({ params, searchParams }: Props) {
                 {i.related.map((r, n) => (
                   <span key={r}>
                     {n ? ", " : ""}
-                    <Link href={`${BASE}/${r}`} className="font-mono text-link-brand-default hover:underline">{r}</Link>
+                    <Link href={`${BASE}/${r}`} className="font-mono text-link-brand-default underline">{r}</Link>
                   </span>
                 ))}
               </p>
             ) : null}
 
             <nav aria-label="Other issues" className="flex flex-wrap justify-between gap-4 border-t border-border pt-6 text-label-1">
-              {prev ? <Link href={`${BASE}/${prev.id}`} className="text-link-brand-default hover:underline">← {prev.id}</Link> : <span />}
-              <Link href={BASE} className="text-link-brand-default hover:underline">All Issues</Link>
-              {next ? <Link href={`${BASE}/${next.id}`} className="text-link-brand-default hover:underline">{next.id} →</Link> : <span />}
+              {prev ? <Link href={`${BASE}/${prev.id}`} className="text-link-brand-default underline">← {prev.id}</Link> : <span />}
+              <Link href={BASE} className="text-link-brand-default underline">All Issues</Link>
+              {next ? <Link href={`${BASE}/${next.id}`} className="text-link-brand-default underline">{next.id} →</Link> : <span />}
             </nav>
           </div>
 

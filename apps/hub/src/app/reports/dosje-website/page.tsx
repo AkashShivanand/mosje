@@ -202,9 +202,9 @@ export default async function WebsiteIssuesPage({ searchParams }: { searchParams
               q={f.q}
               view="links"
               render={(r) => [
-                <Link key="i" href={`${BASE}/${r[0]}`} className="font-mono text-label-1 text-link-brand-default hover:underline">{r[0]}</Link>,
+                <Link key="i" href={`${BASE}/${r[0]}`} className="font-mono text-label-1 text-link-brand-default underline">{r[0]}</Link>,
                 r[1] ? (
-                  <a key="p" href={`https://www.dosje.gov.in${r[1]}`} className="break-all text-link-brand-default hover:underline">{r[1]}</a>
+                  <a key="p" href={`https://www.dosje.gov.in${r[1]}`} className="break-all text-link-brand-default underline">{r[1]}</a>
                 ) : (
                   <span key="p" className="text-body-3 text-text-neutral-subtle">Page not recorded</span>
                 ),
@@ -225,13 +225,13 @@ export default async function WebsiteIssuesPage({ searchParams }: { searchParams
               view="duplicates"
               render={(r) => [
                 r[0],
-                <Link key="g" href={`${BASE}?view=duplicates&q=${encodeURIComponent(r[1] ?? "")}`} className="font-mono text-link-brand-default hover:underline">{r[1]}</Link>,
+                <Link key="g" href={`${BASE}?view=duplicates&q=${encodeURIComponent(r[1] ?? "")}`} className="font-mono text-link-brand-default underline">{r[1]}</Link>,
                 r[2] ? (
                   <span key="a" className="break-all">
                     {r[2].split(", ").map((path, n) => (
                       <span key={path}>
                         {n > 0 ? ", " : null}
-                        <a href={path.startsWith("/") ? `https://www.dosje.gov.in${path}` : path} className="text-link-brand-default hover:underline">{path}</a>
+                        <a href={path.startsWith("/") ? `https://www.dosje.gov.in${path}` : path} className="text-link-brand-default underline">{path}</a>
                       </span>
                     ))}
                   </span>
@@ -239,7 +239,7 @@ export default async function WebsiteIssuesPage({ searchParams }: { searchParams
                   <span key="a" className="text-body-3 text-text-neutral-subtle">Not published under its own address</span>
                 ),
                 r[3],
-                <Link key="i" href={`${BASE}/${r[4]}`} className="font-mono text-label-1 text-link-brand-default hover:underline">{r[4]}</Link>,
+                <Link key="i" href={`${BASE}/${r[4]}`} className="font-mono text-label-1 text-link-brand-default underline">{r[4]}</Link>,
               ]}
             />
           ) : (
@@ -310,7 +310,7 @@ function IssuesView({
         <div className="flex items-end gap-3 lg:col-span-2">
           <Button type="submit" size="md">Apply Filters</Button>
           {filtered ? (
-            <Link href={BASE} className="text-label-1 text-link-brand-default hover:underline">Clear Filters</Link>
+            <Link href={BASE} className="text-label-1 text-link-brand-default underline">Clear Filters</Link>
           ) : null}
         </div>
       </form>
@@ -376,7 +376,7 @@ function IssuesView({
                       ) : null}
                       <td className="whitespace-nowrap px-4 py-3 font-mono text-label-1 text-ink">{i.id}</td>
                       <td className="px-4 py-3">
-                        <Link href={`${BASE}/${i.id}`} className="font-semibold text-link-brand-default hover:underline">{i.title}</Link>
+                        <Link href={`${BASE}/${i.id}`} className="font-semibold text-link-brand-default underline">{i.title}</Link>
                         <div className="mt-1 text-body-3 text-ink-muted">{i.category} · {i.scope} · {i.reach}</div>
                       </td>
                       <td className="px-4 py-3"><SeverityBadge severity={i.severity} /></td>
@@ -435,7 +435,7 @@ function SimpleList({
           <Input name="q" type="search" defaultValue={q} placeholder="Page, address, text or issue ID" />
         </label>
         <Button type="submit" size="md">Search</Button>
-        {q ? <Link href={`${BASE}?view=${view}`} className="text-label-1 text-link-brand-default hover:underline">Clear</Link> : null}
+        {q ? <Link href={`${BASE}?view=${view}`} className="text-label-1 text-link-brand-default underline">Clear</Link> : null}
       </form>
       {chips?.length ? (
         <nav aria-label={`${title} by kind`} className="flex flex-wrap items-center gap-2">
