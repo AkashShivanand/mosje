@@ -387,7 +387,7 @@
     padding: 10px 0; /* reference card-body, less the inset that took it off the edge */
   }
 
-  /* The opening mark only (DBIM 3.0 Figure 54): Material's format_quote, FILLED and
+  /* The opening mark (DBIM 3.0 Figure 54): Material's format_quote, FILLED and
      turned half a circle so it opens. The reference sets a 44px “ character, which
      no Material Symbols build carries, so it falls back to whatever the system has.
      32px (§3.4), at the foot of the reference's 40px slot, just above the quotation. */
@@ -399,7 +399,20 @@
   }
 
   [data-design="dbim"] .db-pmq .db-pmq__quote {
+    position: relative;
     margin: 0 0 15px; /* reference, mb-4 at a 10px root */
+    padding-right: var(--sa-padding-48); /* the closing mark's column, so no line runs under it */
+  }
+
+  /* The closing mark (Figure 54): the same glyph turned back, at the end of the
+     quotation's last line and flush with the end of the rule below it. */
+  [data-design="dbim"] .db-pmq .db-pmq__close {
+    position: absolute;
+    right: 0;
+    bottom: 10px; /* the paragraph's own bottom margin: level with the last line */
+    display: flex;
+    color: var(--sa-color-primaryScale-800);
+    transform: rotate(180deg);
   }
 
   [data-design="dbim"] .db-pmq .db-pmq__quote p {

@@ -28,12 +28,15 @@ export function DbimPmQuote() {
         </div>
         <figure className="db-pmq__body">
           {/* Decorative (DbimIcon is aria-hidden): the quotation is marked up as a
-              blockquote. The opening mark only — see home-top.css. */}
+              blockquote. Opening and closing marks, as DBIM 3.0 Figure 54 draws them. */}
           <div className="db-pmq__mark">
             <DbimIcon name="format-quote" size={32} />
           </div>
           <blockquote className="db-pmq__quote" cite={Q.source.href}>
             <p>{Q.quote}</p>
+            <span className="db-pmq__close">
+              <DbimIcon name="format-quote" size={32} />
+            </span>
           </blockquote>
           <div className="db-pmq__rule" />
           <figcaption className="db-pmq__foot">

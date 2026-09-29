@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "THE DBIM PM QUOTE CLOSES ITS QUOTATION. DBIM 3.0 Figure 54 draws the quotation between an opening mark above its first line and a closing mark at the end of its last line, flush with the rule below. The band showed the opening mark only (a choice of 28 Sep 2026); the closing mark is now added, in the build and in the Figma handoff's PM Quote component, and a 48px column is kept clear for it so no line runs under it."
+}
