@@ -219,7 +219,7 @@ export default async function WebsiteIssuesPage({ searchParams }: { searchParams
               description="Pages, files and titles published more than once. Rows in the same group are copies of each other — open a group to see them together."
               chips={DUP_KINDS}
               head={["Type", "Group", "Address", "Title", "Issue"]}
-              rows={META.duplicates.map((d) => [d[0], d[1], d[2], d[3], d[4], String(d[5] ?? 0)])}
+              rows={META.duplicates.map((d) => [d[0], d[1], d[2], d[3], d[4]])}
               page={f.page}
               q={f.q}
               view="duplicates"
@@ -228,8 +228,12 @@ export default async function WebsiteIssuesPage({ searchParams }: { searchParams
                 <Link key="g" href={`${BASE}?view=duplicates&q=${encodeURIComponent(r[1] ?? "")}`} className="font-mono text-link-brand-default hover:underline">{r[1]}</Link>,
                 r[2] ? (
                   <span key="a" className="break-all">
-                    <a href={r[2].startsWith("/") ? `https://www.dosje.gov.in${r[2]}` : r[2]} className="text-link-brand-default hover:underline">{r[2]}</a>
-                    {Number(r[5]) > 0 ? <span className="text-body-3 text-text-neutral-subtle"> and {r[5]} more {Number(r[5]) === 1 ? "page" : "pages"}</span> : null}
+                    {r[2].split(", ").map((path, n) => (
+                      <span key={path}>
+                        {n > 0 ? ", " : null}
+                        <a href={path.startsWith("/") ? `https://www.dosje.gov.in${path}` : path} className="text-link-brand-default hover:underline">{path}</a>
+                      </span>
+                    ))}
                   </span>
                 ) : (
                   <span key="a" className="text-body-3 text-text-neutral-subtle">Not published under its own address</span>
