@@ -1,5 +1,8 @@
+import Link from "next/link";
 import { DbimEmptyState } from "@/components/website-dbim/ui/EmptyState";
-import { MIN_QUERY_LENGTH, rank, searchIndex } from "@/lib/website/search";
+import { MIN_QUERY_LENGTH, rank, search, searchIndex } from "@/lib/website/search";
+import type { WebsiteSearchEntry } from "@/lib/website/search";
+import { dbimHref } from "@/lib/website-dbim/nav";
 import { dbimSearchTarget } from "@/lib/website-dbim/utility";
 import { DbimLinkRow } from "./LinkRow";
 import { DbimSearchPager } from "./SearchPager";
@@ -19,10 +22,10 @@ interface Hit {
  * out; hits that land on the same DBIM page collapse into the best-ranked one.
  * Rendered on the server: the index never reaches the browser.
  */
-function hitsFor(query: string): Hit[] {
+function toHits(entries: WebsiteSearchEntry[]): Hit[] {
   const seen = new Set<string>();
   const hits: Hit[] = [];
-  for (const { entry } of rank(searchIndex(), query)) {
+  for (const entry of entries) {
     const target = dbimSearchTarget(entry.href);
     if (!target) continue;
     const key = "path" in target ? target.path : target.href;
@@ -31,6 +34,43 @@ function hitsFor(query: string): Hit[] {
     hits.push({ title: entry.title, description: entry.description, ...target });
   }
   return hits;
+}
+
+const hitsFor = (query: string): Hit[] => toHits(rank(searchIndex(), query).map((s) => s.entry));
+
+/**
+ * Nothing matched (DBIM 3.0 §9 vii: suggest, never a dead end). Names the search,
+ * offers the library's respelling when one returns results, and the closest entries.
+ */
+function NoMatch({ query }: { query: string }) {
+  const outcome = search(searchIndex(), query, { perPage: 1 });
+  const nearest = toHits(outcome.nearest);
+  return (
+    <>
+      <DbimEmptyState>No results match “{query}”.</DbimEmptyState>
+      {outcome.didYouMean ? (
+        <p className="db-u-search__count">
+          Did you mean{" "}
+          <Link href={`${dbimHref("/search")}?${new URLSearchParams({ q: outcome.didYouMean }).toString()}`}>
+            {outcome.didYouMean}
+          </Link>
+          ?
+        </p>
+      ) : null}
+      {nearest.length ? (
+        <>
+          <h3 id="db-search-near" className="db-u-search__near">
+            Closest Matches
+          </h3>
+          <ul className="db-u-rows" aria-labelledby="db-search-near">
+            {nearest.map((h) => (
+              <DbimLinkRow key={h.path ?? h.href} label={h.title} detail={h.description} path={h.path} href={h.href} />
+            ))}
+          </ul>
+        </>
+      ) : null}
+    </>
+  );
 }
 
 export function DbimSearchResults({ query, page }: { query: string; page: number }) {
@@ -56,7 +96,7 @@ export function DbimSearchResults({ query, page }: { query: string; page: number
         Results for “{query}”
       </h2>
       {hits.length === 0 ? (
-        <DbimEmptyState />
+        <NoMatch query={query} />
       ) : (
         <>
           <p className="db-u-search__count" role="status">
