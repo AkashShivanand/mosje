@@ -29,7 +29,7 @@ calc((100% + 30px) / 3 - 30px) 1fr; gap: 30px`. One column below 992.
 |---|---|---|
 | Summary box `.visionbox` | bg `#EBEAEA` (neutral-100), radius 10, padding 32; `position: sticky; top: 140px` ≥992 | same; radius 10 is off-scale → literal with comment; `--sa-padding-32` |
 | Summary text | p 14/21 (`--db-fs-p`), ink | same |
-| Rich text `.aboutcontent` | `text-align: justify` | same |
+| Rich text `.aboutcontent` | `text-align: justify` | `left` — DBIM 3.0 §4.1.1 i requires body text left-aligned (checklist 12) |
 | h2 | 20px (`--db-fs-h2`), weight 400, line-height normal, ls -0.12px, primary-800, mb 10 | same |
 | p | 14/21, mb 10 | `--db-fs-p`, line-height 1.5 |
 | strong | 700 | 700 |

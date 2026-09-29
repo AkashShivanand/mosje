@@ -160,7 +160,7 @@
 
   [data-design="dbim"] .db-min-rich {
     min-width: 0;
-    text-align: justify;
+    text-align: left; /* DBIM 3.0 §4.1.1 i: body text is left-aligned. The reference justified it. */
   }
 
   [data-design="dbim"] .db-min-rich h2 {
