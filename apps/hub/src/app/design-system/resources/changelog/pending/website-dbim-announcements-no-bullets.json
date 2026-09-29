@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "DBIM ANNOUNCEMENTS ARE PARTED BY SPACE, NOT BULLETS. The ticker drew a \"•\" between items; it now leaves the same 96px gap with no marker (instruction, 29 Sep 2026). The handoff file's Announcements Ticker and What's New Panel components were brought up to the live What's New list at the same time — they still carried the FAQs, SOP and bank EOI entries the build dropped on 29 Sep — with What's New titles held to two lines as the build shows them."
+}
