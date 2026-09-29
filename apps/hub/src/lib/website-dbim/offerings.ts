@@ -15,6 +15,7 @@ import {
   isArchived,
 } from "@/components/website-next/ui/records";
 import { DBIM_SCHEME_ART, DBIM_SCHEME_ART_FALLBACK } from "./assets";
+import { dbimFeedTitle } from "./home-mid";
 
 /**
  * The DBIM design's Offerings pages, read from the estate's own content.
@@ -215,7 +216,8 @@ function schemeDocuments(id: string): DbimSchemeDocument[] {
       const raw = d.fileUrl ?? d.externalUrl;
       if (!raw) return [];
       return [{
-        title: displayNoticeTitle(d.title),
+        /* DBIM 3.0 §4.1.1 ii: a title the register holds in capitals reads in Title Case, as on Home. */
+        title: dbimFeedTitle(displayNoticeTitle(d.title)),
         href: localiseDocumentUrl(raw, d.title),
         type: fileTypeOf(d.fileUrl, d.fileType),
         size: formatFileSize(d.fileSize),

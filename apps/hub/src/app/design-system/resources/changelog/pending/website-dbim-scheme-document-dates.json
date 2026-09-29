@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "THE DBIM SCHEME PAGE PRINTS EACH DOCUMENT'S DATE OF RELEASE, AND NO DOCUMENT TITLE IN CAPITALS. DBIM 3.0 A.5.3 ii says the Department must version periodic documents with their date of release; the row now carries it, day before month (A.5.6 viii), in About Us's document-row columns. A title the register holds in capitals reads in Title Case, as Home already does (§4.1.1 ii). The DBIM Figma file's Scheme Detail and About Us templates, its Document Row (Ministry) set (a new Content=Document variant) and the three checklists were brought into line."
+}

@@ -125,6 +125,8 @@ function Documents({ d }: { d: Detail }) {
         {d.documents.map((doc) => (
           <li key={doc.href + doc.title} className="db-sd__doc">
             <p>{doc.title}</p>
+            {/* DBIM 3.0 A.5.3 ii: the date of release, day before month (A.5.6 viii). */}
+            <span className="db-sd__doc-date">{doc.date ? <small>{doc.date}</small> : null}</span>
             <span className="db-tender__type">
               <DbimPdfIcon />
               <small>{doc.size ?? doc.type ?? "File"}</small>
