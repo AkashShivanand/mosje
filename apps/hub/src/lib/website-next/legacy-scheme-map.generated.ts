@@ -6,7 +6,7 @@
  * scheme as a record in the scheme master, found by normalised name match and
  * then hand-reviewed against docs/audit/website-schemes-placement-2026-09-09.csv.
  * A mapped listing permanently redirects to the master page and is not indexed
- * by search on its own. 38 of 140 listings are mapped.
+ * by search on its own. 38 of 139 listings are mapped.
  */
 export const LEGACY_TO_MASTER: Readonly<Record<string, string>> = {
   "10663": "pre-matric-sc",

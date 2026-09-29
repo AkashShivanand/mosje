@@ -14,10 +14,15 @@ export function sanitize(html) {
     },
     allowedSchemes: ["https", "http", "mailto"],
     transformTags: {
-      a: (tagName, attribs) => ({
-        tagName: "a",
-        attribs: { ...attribs, ...(attribs.href?.startsWith("http") ? { rel: "noreferrer", target: "_blank" } : {}) },
-      }),
+      /* A link the Department's editor never filled in — `href="PLACEHOLDER_URL_1"` on
+         NCBC's Judgments page (29 Sep 2026) — goes nowhere. Its label stays, as text. */
+      a: (tagName, attribs) =>
+        /^\s*PLACEHOLDER/i.test(attribs.href ?? "")
+          ? { tagName: "span", attribs: {} }
+          : {
+              tagName: "a",
+              attribs: { ...attribs, ...(attribs.href?.startsWith("http") ? { rel: "noreferrer", target: "_blank" } : {}) },
+            },
     },
   });
 }

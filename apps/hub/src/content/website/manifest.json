@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-18T00:56:28.381Z",
+  "generatedAt": "2026-09-29T15:03:41.439Z",
   "collections": [
     {
       "name": "booking",
@@ -25,20 +25,20 @@
     },
     {
       "name": "documents",
-      "sitemapCount": 5994,
-      "kept": 5964,
-      "skipped": 47,
+      "sitemapCount": 5995,
+      "kept": 5963,
+      "skipped": 49,
       "files": [
         {
           "name": "documents",
-          "count": 3297
+          "count": 3296
         },
         {
           "name": "documents-central-list-of-obcs",
           "count": 2667
         }
       ],
-      "restCount": 6011,
+      "restCount": 6012,
       "notInSitemap": 17,
       "sitemapOnly": 0,
       "withoutPageFields": 0,
@@ -144,6 +144,14 @@
           "reason": "duplicate of dhobi"
         },
         {
+          "slug": "donation-of-one-day-salary-to-pm-cares-funds-reg-2",
+          "reason": "duplicate of donation-of-one-day-salary-to-pm-cares-funds-reg"
+        },
+        {
+          "slug": "engagement-of-one-consultant-law-on-contract-basis-in-national-commission-for-backward-classes-ncbc-reg-2",
+          "reason": "duplicate of engagement-of-one-consultant-law-on-contract-basis-in-national-commission-for-backward-classes-ncbc-reg"
+        },
+        {
           "slug": "hansi-tanti-sukuli-vina-tulabhina-rangani-dera-dewanga-dewangulu-kosta-kusta-kustha-kostha-salia-patsalia-buna-bunkar-bunkara-bangali-tanti-bangiya-tanti-mativansa-tanti-asina-ta-2",
           "reason": "duplicate of hansi-tanti-sukuli-vina-tulabhina-rangani-dera-dewanga-dewangulu-kosta-kusta-kustha-kostha-salia-patsalia-buna-bunkar-bunkara-bangali-tanti-bangiya-tanti-mativansa-tanti-asina-ta"
         },
@@ -236,21 +244,21 @@
     {
       "name": "events",
       "sitemapCount": 635,
-      "kept": 635,
+      "kept": 636,
       "skipped": 0,
-      "restCount": 635,
-      "notInSitemap": 0,
+      "restCount": 636,
+      "notInSitemap": 1,
       "sitemapOnly": 0,
       "withoutPageFields": 0,
       "skippedDetail": []
     },
     {
       "name": "gallery",
-      "sitemapCount": 590,
-      "kept": 590,
+      "sitemapCount": 591,
+      "kept": 592,
       "skipped": 0,
-      "restCount": 590,
-      "notInSitemap": 0,
+      "restCount": 592,
+      "notInSitemap": 1,
       "sitemapOnly": 0,
       "withoutPageFields": 0,
       "skippedDetail": []
@@ -258,10 +266,10 @@
     {
       "name": "official",
       "sitemapCount": 448,
-      "kept": 452,
+      "kept": 450,
       "skipped": 1,
-      "restCount": 453,
-      "notInSitemap": 2,
+      "restCount": 451,
+      "notInSitemap": 0,
       "sitemapOnly": 0,
       "withoutPageFields": 0,
       "skippedDetail": [
@@ -273,8 +281,8 @@
     },
     {
       "name": "organisation",
-      "sitemapCount": 426,
-      "kept": 226,
+      "sitemapCount": 449,
+      "kept": 249,
       "skipped": 0,
       "skippedDetail": []
     },
@@ -292,7 +300,7 @@
     {
       "name": "schemes",
       "sitemapCount": 0,
-      "kept": 140,
+      "kept": 139,
       "skipped": 0,
       "skippedDetail": []
     },
@@ -338,8 +346,8 @@
     },
     {
       "name": "vacancies",
-      "sitemapCount": 815,
-      "kept": 163,
+      "sitemapCount": 825,
+      "kept": 165,
       "skipped": 0,
       "skippedDetail": []
     }
