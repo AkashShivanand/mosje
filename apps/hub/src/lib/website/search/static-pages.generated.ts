@@ -50,14 +50,14 @@ export const STATIC_PAGES: StaticPageEntry[] = [
   },
   {
     "title": "Social Defence Division",
-    "description": "The Social Defence Division of the Department mainly caters to the requirements of senior citizens, victims of alcoholism and substance abuse, transgender persons, and persons engaged in beggary or destitution.",
+    "description": "The Social Defence Division of the Department mainly caters to the requirements of: Senior Citizens, Victims of alcoholism and substance abuse, Transgender Persons, Beggars / Destitute.",
     "href": "/website/about-the-division-social-defence",
     "section": "The Department",
     "iconName": "article"
   },
   {
     "title": "Statistics Division",
-    "description": "The Statistics Division of the Department of Social Justice & Empowerment is primarily responsible for sponsoring evaluation and research studies on the schemes for its target groups.",
+    "description": "Statistics Division of the Department of Social Justice & Empowerment is primarily responsible for sponsoring evaluation/research studies on schemes of its target groups namely Scheduled Castes, Other Backward Classes (OBCs), Senior Citizens and Victims of Substance Abuse.",
     "href": "/website/about-the-division-statistics-division",
     "section": "The Department",
     "iconName": "article"

@@ -6,7 +6,7 @@ import { DocumentTable } from "@/components/website-next/templates/content/Docum
 
 const TITLE = "Social Defence Division";
 const DESCRIPTION =
-  "The Social Defence Division of the Department mainly caters to the requirements of senior citizens, victims of alcoholism and substance abuse, transgender persons, and persons engaged in beggary or destitution.";
+  "The Social Defence Division of the Department mainly caters to the requirements of: Senior Citizens, Victims of alcoholism and substance abuse, Transgender Persons, Beggars / Destitute.";
 
 export const metadata: Metadata = {
   title: `${TITLE} | Department of Social Justice & Empowerment`,
