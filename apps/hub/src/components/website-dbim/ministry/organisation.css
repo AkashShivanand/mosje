@@ -1,0 +1,655 @@
+/* ds-exempt-start(third-party): type sizes follow the DBIM reference's `--db-fs-*` scale, as ministry.css does; colour, space and radius are token-bound */
+/* ─────────────────────────────────────────────────────────────────────────────
+   DBIM design — one organisation's page (OrganisationProfile.tsx). The detail
+   layout, rich text, document rows, link rows and profile cards come from
+   ministry.css; this file styles only the parts no DBIM page had before: the
+   identity box's figures, the page index, scheme cards, state-office buttons,
+   activity tiles, the gallery, account cards, the contact list and the tabs'
+   phone layout. Spec: docs/research/dbim-reference/components/ministry.spec.md §4b.
+
+   Off-scale literals are the reference's own, as in ministry.css: 10px (the
+   `.visionbox` radius), 140px (its sticky offset under the header).
+   ───────────────────────────────────────────────────────────────────────────── */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ── Side column: identity box, then the page index ──────────────────────── */
+
+  [data-design="dbim"] .db-org__aside {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-24);
+    min-width: 0;
+  }
+
+  [data-design="dbim"] .db-org__id {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-16);
+  }
+
+  /* MeitY's organisation card draws the mark 84 high; so does the list here. */
+  [data-design="dbim"] .db-org__logo {
+    width: auto;
+    max-width: 191px;
+    height: 84px;
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  [data-design="dbim"] .db-org .db-org__standing {
+    margin: 0;
+    font-size: var(--db-fs-p);
+    line-height: 1.5;
+    color: var(--sa-color-text-muted);
+  }
+
+  /* The body's own statement, in the key colour as About Us sets the Department's
+     vision — at the body size, because the live leads run to ninety words. */
+  [data-design="dbim"] .db-org .db-org__lead {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: var(--sa-font-weight-regular);
+    line-height: 1.5;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-org__facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sa-stack-16) var(--sa-inline-16);
+    margin: 0;
+    padding-top: var(--sa-padding-16);
+    border-top: var(--sa-stroke-1) solid var(--sa-color-neutralScale-200);
+  }
+
+  [data-design="dbim"] .db-org__fact {
+    display: flex;
+    flex-direction: column-reverse; /* the figure reads first; the label names it */
+    gap: var(--sa-stack-4);
+  }
+
+  [data-design="dbim"] .db-org__fact dt {
+    font-size: var(--db-fs-small);
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: 1.5;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--sa-color-text-muted);
+  }
+
+  [data-design="dbim"] .db-org__fact dd {
+    margin: 0;
+    font-size: var(--db-fs-h3);
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: 1.3;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-org__action {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: var(--sa-inline-8);
+    min-height: 40px;
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-primaryScale-800);
+    color: var(--sa-color-neutralScale-0);
+    font-size: var(--db-fs-p);
+    font-weight: var(--sa-font-weight-semibold);
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-org__action:hover {
+    background: var(--sa-color-primaryScale-600);
+  }
+
+  [data-design="dbim"] .db-org__index-title {
+    margin: 0 0 var(--sa-stack-8);
+    font-size: var(--db-fs-small);
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: 1.5;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-org__index ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-org__index a {
+    display: inline;
+    color: var(--sa-color-text-default);
+    font-size: var(--db-fs-p);
+    line-height: 1.4;
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-org__index a .material-symbols-rounded {
+    margin-left: var(--sa-inline-4);
+    vertical-align: -3px;
+  }
+
+  [data-design="dbim"] .db-org__index a:hover {
+    color: var(--sa-color-primaryScale-600);
+    text-decoration: underline;
+  }
+
+  [data-design="dbim"] .db-org__related {
+    margin-top: var(--sa-stack-24);
+  }
+
+  /* Below 992 the index sits above the sections: a wrap of buttons, not a column of rows. */
+  @media (max-width: 991.5px) {
+    [data-design="dbim"] .db-org__index ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sa-stack-8);
+    }
+
+    [data-design="dbim"] .db-org__index a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: var(--sa-padding-4) var(--sa-padding-12);
+      border: var(--sa-stroke-1) solid var(--sa-color-primaryScale-200);
+      border-radius: var(--sa-shape-4);
+      font-size: var(--db-fs-small);
+      font-weight: var(--sa-font-weight-medium);
+    }
+  }
+
+  @media (min-width: 992px) {
+    /* The aside spans the whole row so the index can stay in view beside the sections. */
+    [data-design="dbim"] .db-org__aside {
+      align-self: stretch;
+    }
+
+    [data-design="dbim"] .db-org__index {
+      position: sticky;
+      top: 140px; /* the reference's sticky offset under the header */
+      padding-left: var(--sa-padding-16);
+      border-left: var(--sa-stroke-2) solid var(--sa-color-primaryScale-100);
+    }
+
+    [data-design="dbim"] .db-org__index li + li {
+      margin-top: var(--sa-stack-8);
+    }
+  }
+
+  /* ── Main column ─────────────────────────────────────────────────────────── */
+
+  [data-design="dbim"] .db-org__banner {
+    position: relative;
+    aspect-ratio: 21 / 8;
+    margin-bottom: var(--sa-stack-32);
+    overflow: hidden;
+    border-radius: 10px; /* the reference's `.visionbox` radius */
+    background: var(--sa-color-neutralScale-100);
+  }
+
+  [data-design="dbim"] .db-org__banner img {
+    object-fit: cover;
+  }
+
+  [data-design="dbim"] .db-org .db-org__section {
+    scroll-margin-top: 140px;
+  }
+
+  [data-design="dbim"] .db-org .db-org__section + .db-org__section {
+    margin-top: var(--sa-stack-40);
+    padding-top: var(--sa-padding-32);
+    border-top: var(--sa-stroke-1) solid var(--sa-color-neutralScale-100);
+  }
+
+  [data-design="dbim"] .db-org__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--sa-stack-8) var(--sa-inline-16);
+    margin-bottom: var(--sa-stack-12);
+  }
+
+  [data-design="dbim"] .db-org .db-org__head h2 {
+    margin: 0;
+  }
+
+  [data-design="dbim"] .db-org .db-org__more {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    color: var(--sa-color-primaryScale-600);
+    font-size: var(--db-fs-p);
+    font-weight: var(--sa-font-weight-semibold);
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-org .db-org__more:hover {
+    text-decoration: underline;
+  }
+
+  [data-design="dbim"] .db-org :is(.db-org__action, .db-org__index a, .db-org__more, .db-org-people__link, .db-org-chip, .db-org-social__card, .db-org-contact a):focus-visible {
+    outline: var(--sa-stroke-2) solid var(--sa-color-primaryScale-800);
+    outline-offset: var(--sa-padding-2);
+  }
+
+  /* Shared list reset for every grid below. */
+  [data-design="dbim"] .db-org :is(.db-org-people, .db-org-cards, .db-org-chips, .db-org-tiles, .db-org-gallery, .db-org-social, .db-org-events) {
+    display: grid;
+    gap: var(--sa-stack-16);
+    margin: 0 0 var(--sa-stack-16);
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-org :is(.db-org-people, .db-org-cards, .db-org-chips, .db-org-tiles, .db-org-gallery, .db-org-social) li {
+    font-size: inherit;
+  }
+
+  /* ── Leadership: Our Team's profile card, three across ──────────────────── */
+
+  [data-design="dbim"] .db-org .db-org-people {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* three across the 860 column */
+    row-gap: var(--sa-stack-24);
+    margin-top: var(--sa-stack-16);
+  }
+
+  [data-design="dbim"] .db-org .db-org-people > li {
+    display: flex;
+    padding-top: 60px; /* the headshot's upper half, above the card (Our Team) */
+  }
+
+  [data-design="dbim"] .db-org .db-org-people .db-min-profile {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    padding: 72px var(--sa-padding-16) var(--sa-padding-16);
+  }
+
+  /* The rich-text column sets every image to height: auto; a headshot is a fixed circle. */
+  [data-design="dbim"] .db-org .db-org-people .db-min-profile__img {
+    height: 120px;
+  }
+
+  [data-design="dbim"] .db-org .db-org-people .db-min-profile__name {
+    margin-bottom: var(--sa-stack-4);
+  }
+
+  [data-design="dbim"] .db-org .db-org-people__tenure {
+    margin: 0;
+    font-size: var(--db-fs-small);
+    line-height: 1.5;
+    color: var(--sa-color-text-muted);
+  }
+
+  [data-design="dbim"] .db-org .db-org-people__link {
+    margin-top: auto;
+    padding-top: var(--sa-padding-12);
+    color: var(--sa-color-primaryScale-600);
+    font-size: 0.75rem; /* 12px — the View button's size */
+    font-weight: var(--sa-font-weight-semibold);
+    letter-spacing: 0.12px;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-org .db-org-people__link:hover {
+    text-decoration: underline;
+  }
+
+  /* ── Scheme cards: Our Division's card, with the scheme's group above its name ── */
+
+  @media (min-width: 768px) {
+    [data-design="dbim"] .db-org .db-org-cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  [data-design="dbim"] .db-org .db-org-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+    padding: var(--sa-padding-16) var(--sa-padding-24);
+    border: var(--sa-stroke-1) solid var(--sa-color-neutralScale-100);
+    border-radius: var(--sa-shape-12);
+  }
+
+  [data-design="dbim"] .db-org .db-org-card__cat {
+    font-size: var(--db-fs-small);
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: 1.5;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--sa-color-primaryScale-600);
+  }
+
+  [data-design="dbim"] .db-org .db-org-card__title {
+    margin: 0;
+    font-size: var(--db-fs-h3);
+    font-weight: var(--sa-font-weight-medium);
+    line-height: 1.5;
+    color: var(--sa-color-text-default);
+  }
+
+  [data-design="dbim"] .db-org .db-org-card__desc {
+    margin: 0;
+  }
+
+  [data-design="dbim"] .db-org :is(.db-org-card__arrow, .db-org-tile__arrow) {
+    align-self: flex-end;
+    margin-top: auto;
+  }
+
+  /* ── Many short links (state offices): a grid of outlined buttons ────────── */
+
+  [data-design="dbim"] .db-org .db-org-chips {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* fits "Thiruvananthapuram" */
+    gap: var(--sa-stack-12);
+  }
+
+  [data-design="dbim"] .db-org .db-org-chip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    border: var(--sa-stroke-1) solid var(--sa-color-primaryScale-800);
+    border-radius: var(--sa-shape-4);
+    color: var(--sa-color-primaryScale-800);
+    font-size: var(--db-fs-p);
+    font-weight: var(--sa-font-weight-medium);
+    text-align: center;
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-org .db-org-chip:hover {
+    background: var(--sa-color-primaryScale-100);
+  }
+
+  /* ── Activity tiles and the gallery: pictures, three across ─────────────── */
+
+  @media (min-width: 768px) {
+    [data-design="dbim"] .db-org :is(.db-org-tiles, .db-org-gallery, .db-org-social) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 480px) and (max-width: 767.5px) {
+    [data-design="dbim"] .db-org :is(.db-org-tiles, .db-org-gallery) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  [data-design="dbim"] .db-org .db-org-tile {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-12);
+    padding: var(--sa-padding-12);
+    border: var(--sa-stroke-1) solid var(--sa-color-neutralScale-100);
+    border-radius: var(--sa-shape-12);
+  }
+
+  [data-design="dbim"] .db-org :is(.db-org-tile__img, .db-org-gallery__frame) {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-color-neutralScale-100);
+  }
+
+  [data-design="dbim"] .db-org :is(.db-org-tile__img, .db-org-gallery__frame) img {
+    object-fit: cover;
+  }
+
+  [data-design="dbim"] .db-org .db-org-tile__title {
+    font-size: var(--db-fs-p);
+    font-weight: var(--sa-font-weight-medium);
+    line-height: 1.5;
+  }
+
+  [data-design="dbim"] .db-org .db-org-gallery figure {
+    margin: 0;
+  }
+
+  [data-design="dbim"] .db-org .db-org-gallery figcaption {
+    margin-top: var(--sa-stack-8);
+    font-size: var(--db-fs-p);
+    line-height: 1.5;
+    color: var(--sa-color-text-default);
+  }
+
+  /* ── Social accounts: one card per platform ─────────────────────────────── */
+
+  [data-design="dbim"] .db-org .db-org-social__card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sa-stack-4);
+    height: 100%;
+    padding: var(--sa-padding-16);
+    border: var(--sa-stroke-1) solid var(--sa-color-neutralScale-100);
+    border-radius: var(--sa-shape-12);
+    color: var(--sa-color-text-default);
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-org .db-org-social__card:hover {
+    border-color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-org .db-org-social__icon {
+    margin-bottom: var(--sa-stack-8);
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-org .db-org-social__name {
+    font-size: 1rem;
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: 1.5;
+  }
+
+  [data-design="dbim"] .db-org .db-org-social__handle {
+    font-size: var(--db-fs-p);
+    line-height: 1.5;
+    color: var(--sa-color-text-muted);
+  }
+
+  [data-design="dbim"] .db-org .db-org-social__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    margin-top: auto;
+    padding-top: var(--sa-padding-8);
+    color: var(--sa-color-primaryScale-600);
+    font-size: 0.75rem; /* 12px — the View button's size */
+    font-weight: var(--sa-font-weight-semibold);
+    letter-spacing: 0.12px;
+    text-transform: uppercase;
+  }
+
+  /* ── Contact: icon, label, lines ────────────────────────────────────────── */
+
+  [data-design="dbim"] .db-org .db-org-contact {
+    display: grid;
+    gap: var(--sa-stack-24) var(--sa-inline-32);
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    [data-design="dbim"] .db-org .db-org-contact {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-auto-flow: row dense; /* the short entries pair up; a long list takes the row */
+    }
+
+    [data-design="dbim"] .db-org .db-org-contact__item--wide {
+      grid-column: 1 / -1;
+    }
+  }
+
+  [data-design="dbim"] .db-org .db-org-contact__item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sa-inline-12);
+    min-width: 0;
+  }
+
+  [data-design="dbim"] .db-org .db-org-contact__icon {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-color-primaryScale-100);
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-org .db-org-contact dt {
+    margin-bottom: var(--sa-stack-4);
+    font-size: var(--db-fs-small);
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: 1.5;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-org .db-org-contact dd {
+    margin: 0 0 var(--sa-stack-4);
+    font-size: var(--db-fs-p);
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  /* A purpose and its number ("Queries related to … – 011-2332 0589"): the purpose
+     reads first, the number sits in its own column so a list of eight can be scanned. */
+  [data-design="dbim"] .db-org .db-org-contact__line {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--sa-inline-16);
+    padding: var(--sa-padding-8) 0;
+    border-bottom: var(--sa-stroke-1) solid var(--sa-color-neutralScale-100);
+  }
+
+  [data-design="dbim"] .db-org .db-org-contact__line:last-child {
+    border-bottom: 0;
+  }
+
+  [data-design="dbim"] .db-org .db-org-contact a {
+    color: var(--sa-color-text-default);
+    font-weight: var(--sa-font-weight-semibold);
+    white-space: nowrap;
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-org .db-org-contact a:hover {
+    color: var(--sa-color-primaryScale-600);
+    text-decoration: underline;
+  }
+
+  [data-design="dbim"] .db-org .db-org-contact__numbers {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  @media (max-width: 479.5px) {
+    [data-design="dbim"] .db-org .db-org-contact__line {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--sa-stack-4);
+    }
+
+    [data-design="dbim"] .db-org .db-org-contact__numbers {
+      align-items: flex-start;
+    }
+  }
+
+  /* ── Latest Updates: the Key Offerings tab set ──────────────────────────── */
+
+  [data-design="dbim"] .db-org .db-org-tabs__panel {
+    display: flex;
+    flex-direction: column;
+    margin-top: var(--sa-stack-16);
+  }
+
+  [data-design="dbim"] .db-org .db-org-tabs__all {
+    align-self: flex-end;
+  }
+
+  /* Four tabs do not fit a phone in one row: two by two, each still a whole tab. */
+  @media (max-width: 767.5px) {
+    [data-design="dbim"] .db-org .db-org-tabs .db-hm-tabs__list {
+      flex-wrap: wrap;
+    }
+
+    [data-design="dbim"] .db-org .db-org-tabs .db-hm-tab {
+      flex: 1 1 40%;
+      border-radius: 0;
+    }
+  }
+
+  /* ── Dated entries ──────────────────────────────────────────────────────── */
+
+  [data-design="dbim"] .db-org .db-org-event {
+    grid-template-columns: 96px minmax(0, 1fr) auto;
+    margin: 0;
+  }
+
+  [data-design="dbim"] .db-org .db-org-event .db-min-docrow__title {
+    display: block;
+  }
+
+  @media (max-width: 767.5px) {
+    [data-design="dbim"] .db-org .db-org-event {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    [data-design="dbim"] .db-org .db-org-event__date {
+      grid-column: 1 / -1;
+    }
+  }
+}
+/* ds-exempt-end */
+
+/* ds-exempt-start(third-party): as above — the pages behind an organisation's page (OrganisationPages.tsx) */
+@layer components {
+  [data-design="dbim"] .db-orgp__count {
+    margin: 0 0 var(--sa-stack-16);
+    font-size: var(--db-fs-p);
+    color: var(--sa-color-text-muted);
+  }
+
+  [data-design="dbim"] .db-orgp__back {
+    margin: var(--sa-stack-24) 0 0;
+  }
+
+  /* An officer's card, headshot on its top edge as on Our Team. */
+  [data-design="dbim"] .db-orgp__person {
+    padding-top: 60px;
+  }
+
+  [data-design="dbim"] .db-orgp .db-orgp__person .db-min-profile__img {
+    height: 120px;
+  }
+
+  [data-design="dbim"] .db-orgp .db-orgp__facts {
+    margin-bottom: var(--sa-stack-24);
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  @media (min-width: 768px) {
+    [data-design="dbim"] .db-orgp .db-orgp__facts {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+}
+/* ds-exempt-end */

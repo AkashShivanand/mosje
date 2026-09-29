@@ -154,6 +154,31 @@ lead from `content/website/organisation-details.ts` (the one the New design's or
 pages use), else the "About…" section's first paragraph, which then leaves the body so it is
 said once. Cards take its first sentence.
 
+## 4b. An organisation's page, from its live page (29 Sep 2026)
+
+**Superseding the prose-only detail in §4 for every body the live site has a page for.**
+The reference has no organisation detail design, so the page is composed from this
+spec's own parts. Data: `lib/website-shared/organisation-profiles.ts` (snapshot of
+dosje.gov.in/organisation/<id>/); shaping: `lib/website-dbim/organisation.ts`; view:
+`components/website-dbim/ministry/OrganisationProfile.tsx` + `organisation.css`.
+
+| Part | Built from |
+|---|---|
+| Side column: mark (84 high, as the list card), standing, statement, figures, the live banner's buttons | §1's `.visionbox` |
+| On This Page index + the live index's off-page links, sticky ≥992, a wrap of buttons below | new, `.db-org__index` |
+| Banner photograph (decorative), then each live section, h2 + its "Know More" | §1 rich text |
+| Leadership | §2's profile card, three across; tenure and View Profile added |
+| Scheme cards, activity tiles | §3's card, with the scheme's group above its name |
+| Reports, resources, notices | §1's document row, DD.MM.YYYY |
+| Latest Updates | the home page's Key Offerings tab set (Figure 56); two by two below 768 |
+| State offices (>4 links) / projects (≤4) | outlined buttons / §1's link rows |
+| Gallery, social accounts, contact | new; contact lines ending in numbers split purpose \| `tel:` numbers |
+
+Every href goes through `lib/website-dbim/live-links.ts`; a live page link opens the
+estate's copy under `/ministry/our-organisation/<id>/…` (own pages, `documents/<register>`,
+`events`, `gallery`, `directory`, `directory/<official>`) or `/connect/events/<slug>`.
+What was left out and why: `docs/audit/dbim-organisation-pages.md`.
+
 ## 4a. `/ministry/our-scheme-portals` and `/ministry/our-scheme-portals/[slug]`
 
 The Department's addition to DBIM's second level (28 Sep 2026). The scheme portals left the
