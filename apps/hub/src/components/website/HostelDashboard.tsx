@@ -98,6 +98,21 @@ export function HostelDashboard({ data }: HostelDashboardProps) {
   const spare = Math.max(0, covered - occupied);
   const occupancyProv = provenanceOf(merged, ["beneficiaries_covered", "beneficiaries_occupied"]);
   const completedProv = provenanceOf(merged, ["completed_hostels"]);
+  /**
+   * WHETHER A SHARE CAN BE DRAWN AT ALL. Occupation is a subset of coverage, so
+   * the share is only meaningful while occupied ≤ covered. The live summary has
+   * published 4,97,427 in occupation against 1,69,658 covered (read 29 Sep
+   * 2026), which divides to "293%" and "−193%". Both counts are the department's
+   * and are shown as published; the percentage is OURS, so where the two cannot
+   * be compared none is drawn — no ratio, no ring, no gap — until the feed does.
+   */
+  const comparable = covered > 0 && occupied <= covered;
+  /**
+   * Hostels completed is shown only where a source publishes it. The feed
+   * carries 0 (unpopulated), so outside the all-illustrative mode the 1,577
+   * stand-in (places ÷ 100) would be a figure nobody published.
+   */
+  const showCompleted = completedProv !== "mock" || merged.allMock;
 
   return (
     <section
@@ -127,19 +142,42 @@ export function HostelDashboard({ data }: HostelDashboardProps) {
             <ProvenanceChip kind={occupancyProv} />
           </p>
           <strong className="sd-dash__hero-value">{formatIndian(covered)}</strong>
-          <p className="sd-dash__hero-of">
-            {formatIndian(occupied)} of them are in occupation — {share}% of the
-            places the component has provided for.
-          </p>
-          <div
-            className="sd-dash__hero-track"
-            role="img"
-            aria-label={`${share} percent of covered beneficiaries are in occupation`}
-          >
-            <span className="sd-dash__hero-fill" style={{ width: `${share}%` }} />
-          </div>
+          {comparable && (
+            <>
+              <p className="sd-dash__hero-of">
+                {formatIndian(occupied)} of them are in occupation — {share}% of the
+                places the component has provided for.
+              </p>
+              <div
+                className="sd-dash__hero-track"
+                role="img"
+                aria-label={`${share} percent of covered beneficiaries are in occupation`}
+              >
+                <span className="sd-dash__hero-fill" style={{ width: `${share}%` }} />
+              </div>
+            </>
+          )}
         </div>
 
+        {/* The same label-and-figure pair, once for each count the feed
+            publishes: two facts side by side, nothing derived between them. */}
+        {!comparable && (
+          <div>
+            <p className="sd-dash__hero-label">
+              Beneficiaries in occupation
+              <ProvenanceChip kind={occupancyProv} />
+            </p>
+            <strong className="sd-dash__hero-value">{formatIndian(occupied)}</strong>
+            {showCompleted && (
+              <p className="sd-dash__hero-of">
+                Hostels completed: {formatIndian(completed)}
+                <ProvenanceChip kind={completedProv} />
+              </p>
+            )}
+          </div>
+        )}
+
+        {comparable && (
         <div className="sd-dash__ratios" aria-label="Hostel occupancy">
           <div className="sd-dash__ratio">
             <div className="sd-dash__ratio-head">
@@ -178,13 +216,16 @@ export function HostelDashboard({ data }: HostelDashboardProps) {
             </p>
           </div>
         </div>
+        )}
       </div>
 
       {/* ONE CARD, NOT TWO. The feed publishes three fields; splitting four
           derived figures across two cards made the ring 500px tall beside a
           column of short numbers, and no amount of spreading fixed a row whose
           two halves have that little in common. Side by side in one card, the
-          ring IS the reading of the figures next to it. */}
+          ring IS the reading of the figures next to it. Drawn only while the
+          two counts can be compared: without a share it would restate the hero. */}
+      {comparable && (
       <DashboardGrid>
         <ChartCard
 
@@ -197,11 +238,12 @@ export function HostelDashboard({ data }: HostelDashboardProps) {
           subtitle="Beneficiaries in occupation as a share of those covered, and every field the public summary carries"
           footer={
             <p className="sd-dash__caption">
-              Just over half the places the component has provided for are being
-              used; the gap is <strong>{formatIndian(spare)}</strong>.{" "}
-              {completedProv === "mock"
-                ? "The hostels-completed count is not published by the live feed; the figure shown is illustrative, derived from the places covered at an indicative 100 seats a hostel."
-                : "Hostels completed comes from the live feed."}
+              {share}% of the places the component has provided for are being
+              used; the gap is <strong>{formatIndian(spare)}</strong>.
+              {showCompleted &&
+                (completedProv === "mock"
+                  ? " The hostels-completed count is not published by the live feed; the figure shown is illustrative, derived from the places covered at an indicative 100 seats a hostel."
+                  : " Hostels completed comes from the live feed.")}
             </p>
           }
         >
@@ -228,16 +270,19 @@ export function HostelDashboard({ data }: HostelDashboardProps) {
                 <dt className="sd-dash__ref-label">Places not yet taken up</dt>
                 <dd className="sd-dash__ref-value">{formatIndian(spare)}</dd>
               </div>
-              <div className="sd-dash__ref-item">
-                <dt className="sd-dash__ref-label">
-                  Hostels completed <ProvenanceChip kind={completedProv} />
-                </dt>
-                <dd className="sd-dash__ref-value">{formatIndian(completed)}</dd>
-              </div>
+              {showCompleted && (
+                <div className="sd-dash__ref-item">
+                  <dt className="sd-dash__ref-label">
+                    Hostels completed <ProvenanceChip kind={completedProv} />
+                  </dt>
+                  <dd className="sd-dash__ref-value">{formatIndian(completed)}</dd>
+                </div>
+              )}
             </dl>
           </div>
         </ChartCard>
       </DashboardGrid>
+      )}
     </section>
   );
 }
