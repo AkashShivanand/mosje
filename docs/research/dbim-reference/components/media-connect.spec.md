@@ -141,7 +141,7 @@ search — *No results for "x".* — and a text `Button` "Clear Search" that cal
 
 - Left `.db-lead-box` (shared with Events): n-100 ground, radius 10, padding 32; h2
   20px/36px 500 primary-800. Sticky `top 140px` ≥992.
-- Right: text 14px/21px justified, p margin 10, bold run-in headings; button-link
+- Right: text 14px/21px (the reference justifies it; ours is left-aligned, DBIM 3.0 §4.1.1 i), p margin 10, bold run-in headings; button-link
   `.db-soft-btn`: padding 8/12, radius 4, primary-100 ground (hover primary-200),
   primary-800, 12px/18px 600 uppercase, `letter-spacing 0.12px`; external → new tab
   and says so.
@@ -163,7 +163,7 @@ search — *No results for "x".* — and a text `Button` "Clear Search" that cal
 - Left `.db-lead-box`: "No Upcoming Events" or, when there are some, the upcoming list
   (title link + date) inside the same box.
 - Right: h2 "Past Events" 20px primary-800 400; cards: `border 5px solid n-50`, padding
-  15, margin-bottom 25, justified; h3 16px/19.2px 500 ink; meta p 14px/21px:
+  15, margin-bottom 25, left-aligned (the reference justifies; DBIM 3.0 §4.1.1 i); h3 16px/19.2px 500 ink; meta p 14px/21px:
   "<State> | Event Start: 28 August 2025 09:00 AM , Event End: …"; pin line 📍 + venue
   link (primary-600, underlined — the reference's Bootstrap `#0D6EFD` is not a DBIM
   colour) to Google Maps, new tab; description HTML 14px/21px.

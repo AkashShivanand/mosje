@@ -234,10 +234,6 @@
     line-height: 21px;
   }
 
-  [data-design="dbim"] .db-prose--justify p {
-    text-align: justify;
-  }
-
   [data-design="dbim"] .db-prose--rti {
     margin: 15px 0 30px; /* reference: h2 → text 15, text → accordions 30 */
   }
@@ -553,7 +549,7 @@
     margin-bottom: 25px; /* reference */
     padding: 15px; /* reference */
     border: 5px solid var(--sa-color-neutralScale-50);
-    text-align: justify;
+    text-align: left; /* DBIM 3.0 §4.1.1 i: body text is left-aligned. The reference justified it. */
   }
 
   [data-design="dbim"] .db-event h3 {
