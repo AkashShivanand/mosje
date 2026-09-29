@@ -4,6 +4,7 @@ import type {
   OfficialRecord, CpioRecord, BookingRecord, UpdateRecord, SewerDeathCaseRecord,
 } from "@/types/website/content";
 import organisationData from "@/content/website/organisation.json";
+import renamedOrganisations from "./renamed-organisations.json";
 import schemesData from "@/content/website/schemes.json";
 import tendersData from "@/content/website/tenders.json";
 import vacanciesData from "@/content/website/vacancies.json";
@@ -55,7 +56,30 @@ export function getContentSyncedDate(): string {
   return new Date(iso).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
 }
 
-const organisations = organisationData as SectionRecord[];
+/*
+ * ADDRESSES THE DEPARTMENT HAS RENAMED, mapped back to the estate's own.
+ *
+ * Between the 18 and 29 Sep 2026 reads, dosje.gov.in moved Babu Jagjivan Ram
+ * National Foundation from `…-jrf` to `…-bjrnf`, with all nine of its pages. The
+ * estate keys the body by the old address in the organisation registry, both
+ * mastheads, the partner strip, Who's Who and the officials map (and PR #640's
+ * organisation pages), so the new records are served at the old address and no
+ * link breaks. Adopting the new address is one change in all of those at once.
+ * The map is a JSON file so `tools/website-links` reads the same one.
+ */
+const RENAMED_ORGANISATIONS: Record<string, string> = renamedOrganisations;
+
+function estateSlug(slug: string): string {
+  for (const [live, ours] of Object.entries(RENAMED_ORGANISATIONS)) {
+    if (slug === live || slug.startsWith(`${live}/`)) return ours + slug.slice(live.length);
+  }
+  return slug;
+}
+
+const organisations = (organisationData as SectionRecord[]).map((o) => {
+  const slug = estateSlug(o.slug);
+  return slug === o.slug ? o : { ...o, slug };
+});
 const orgMap = new Map<string, SectionRecord>(organisations.map((o) => [o.slug, o]));
 
 export function getOrganisations(): SectionRecord[] {
