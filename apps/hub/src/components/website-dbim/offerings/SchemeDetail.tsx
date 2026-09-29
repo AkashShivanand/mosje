@@ -53,6 +53,7 @@ function Rail({ d }: { d: Detail }) {
  *  How to apply is not repeated here — the rail already lists it. */
 function MasterFacts({ d }: { d: Detail }) {
   const s = d.scheme;
+  if (!s) return null;
   return (
     <>
       <h2 className="db-sd__h">Introduction</h2>

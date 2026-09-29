@@ -6,12 +6,12 @@ import type { DbimSchemeCard as Card } from "@/lib/website-dbim/offerings";
 import { DbimSchemeCard } from "./SchemeCard";
 import { DbimListEmpty, DbimListFooter } from "./ListParts";
 
-const searchText = (c: Card) => `${c.name} ${c.line} ${c.category}`;
-const categoryOf = (c: Card) => c.category;
+const searchText = (c: Card) => `${c.name} ${c.line} ${c.categories.join(" ")}`;
+const categoriesOf = (c: Card) => c.categories;
 
-/** Schemes and Services: search · Category · per page over a two-column grid, paged. */
-export function DbimSchemeGrid({ cards }: { cards: Card[] }) {
-  const listing = useListing(cards, { searchText, category: categoryOf, perPage: 10 });
+/** Schemes and Services: search · Category (the live groups, in the live order) · per page over a two-column grid, paged. */
+export function DbimSchemeGrid({ cards, groups }: { cards: Card[]; groups: readonly string[] }) {
+  const listing = useListing(cards, { searchText, category: categoriesOf, categoryOrder: groups, perPage: 10 });
   return (
     <div className="db-off">
       <DbimFilterBar

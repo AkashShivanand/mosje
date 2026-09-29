@@ -2947,5 +2947,24 @@
     "targetGroup": [
       "Sanitation Workers"
     ]
+  },
+  {
+    "slug": "information-monitoring-evaluation-social-audit-i-mesa",
+    "title": "Information-Monitoring, Evaluation & Social Audit (I-MESA)",
+    "sourceUrl": "https://www.dosje.gov.in/schemes-and-services/information-monitoring-evaluation-social-audit-i-mesa/",
+    "sections": [
+      {
+        "heading": "Information-Monitoring, Evaluation & Social Audit (I-MESA)",
+        "html": ""
+      },
+      {
+        "heading": "About the Scheme",
+        "html": "<div>\n\t\t\t\t\t\t\t\t\t<p>The I-MESA is a Central Sector Scheme, formulated with the objectives of ensuring that the implementation of the scheme at the ground level shall be examined intensely. Apart from this, we need to disseminate information about the work being done by the Ministry. Scheme has following Components:</p><ol><li>Information Dissemination</li><li>Project Monitoring Unit</li><li>Central Smart Surveillance Unit</li><li>SocialAudit</li><li>Evaluation and Studies</li></ol>\t\t\t\t\t\t\t\t</div>"
+      },
+      {
+        "heading": "Documents",
+        "html": "<ul>\n        <li>\n          Active\n        </li>\n        <li>\n          Archived\n        </li>\n      </ul><table>\n          \n            \n            \n            \n            \n            \n          \n          <thead>\n            <tr>\n              <th>Title</th>\n              <th>Size</th>\n              <th>Start Publish Date</th>\n              <th>End Publish Date</th>\n              <th>Action</th>\n            </tr>\n          </thead>\n          <tbody>\n            <tr><td><div>Guidelines ((w.e.f. 4th October, 2023)</div></td><td><span>3.16 MB</span></td><td>20231004</td><td>20271203</td><td><div><a href=\"https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/18721740858722.pdf\" target=\"_blank\" rel=\"noreferrer\">Download</a></div></td></tr>          </tbody>\n        </table><table>\n          \n            \n            \n            \n            \n            \n          \n          <thead>\n            <tr>\n              <th>Title</th>\n              <th>Size</th>\n              <th>Start Publish Date</th>\n              <th>End Publish Date</th>\n              <th>Action</th>\n            </tr>\n          </thead>\n          <tbody>\n            <tr><td colspan=\"5\">No documents found.</td></tr>          </tbody>\n        </table>"
+      }
+    ]
   }
 ]

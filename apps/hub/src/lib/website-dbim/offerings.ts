@@ -14,7 +14,7 @@ import {
   formatFileSize,
   isArchived,
 } from "@/components/website-next/ui/records";
-import { DBIM_SCHEME_ART, DBIM_SCHEME_ART_FALLBACK } from "./assets";
+import { SCHEME_GROUPS, SCHEME_IMAGE, listedScheme, listedSchemes, type ListedScheme } from "@/lib/website-shared/scheme-listing";
 import { dbimFeedTitle } from "./home-mid";
 
 /**
@@ -25,8 +25,10 @@ import { dbimFeedTitle } from "./home-mid";
  *
  * Every selector the redesign already settled is reused rather than re-decided,
  * so a scheme, a tender or a vacancy is the same thing in every design:
- *   - the scheme master is the list of the Department's schemes (the reference's
- *     own list is not — issue X-IA-04);
+ *   - the live website's listing is the list of the Department's schemes
+ *     (lib/website-shared/scheme-listing.ts; instruction, 29 Sep 2026) — not the
+ *     reference's (issue X-IA-04), and no longer the scheme master, which still
+ *     supplies the page of every listed scheme it holds;
  *   - tenders and vacancies published more than twelve months ago are in the
  *     Archives (`isArchived`, issue MAN-06) — the register publishes no closing
  *     date, so the publish date is the only date the rule can read;
@@ -42,45 +44,43 @@ const PDF_DATE = (iso: string | undefined): string | undefined => {
 
 /* ─── Schemes and Services ──────────────────────────────────────────────── */
 
-const DBIM = "/website/dbim/schemes";
-const PORTAL_LOGOS: Record<string, { src: string; alt: string }> = {
-  eanudaan: { src: `${DBIM}/logo-e-anudaan.jpg`, alt: "Apply through the e-Anudaan portal" },
-  nisd: { src: `${DBIM}/logo-nisd.jpg`, alt: "Delivered through the National Institute of Social Defence" },
-};
-
 export interface DbimSchemeCard {
+  /** The page's address: the scheme master's id where it holds the scheme, else the live address. */
   id: string;
   name: string;
-  /** What the scheme provides — the card's one line. */
+  /** "Who It Is For", as the live listing's tags; empty where the live card has none. */
   line: string;
-  /** The Category select's value: the scheme master's `type`. */
-  category: string;
-  art: string;
-  logo?: { src: string; alt: string };
+  /** The Category select's values: every live group the scheme is filed under. */
+  categories: string[];
+  art: { src: string; position: string };
 }
 
+/** The live listing's groups in the live order, for the Category select. */
+export const DBIM_SCHEME_GROUPS = SCHEME_GROUPS;
+
+/** A listed scheme's page: the master's where the live address maps to it, else its own. */
+const pageId = (s: ListedScheme): string => masterForLegacy(s.slug) ?? s.slug;
+
+/** Master id → the listed scheme it is, so a page says the name its card said. */
+const LISTED_BY_MASTER = new Map(listedSchemes().flatMap((s) => {
+  const id = masterForLegacy(s.slug);
+  return id ? [[id, s] as const] : [];
+}));
+
 /**
- * Every scheme in the master, in the master's order. The photograph is the
- * reference's own where a word in the name or umbrella matches one, else the two
- * generic photographs in turn, so neighbouring cards do not repeat.
+ * The live website's Schemes & Services listing: its 28 schemes once each, in its
+ * order, under its names, each card the live listing's one image
+ * (lib/website-shared/scheme-listing.ts). The reference's photographs and portal
+ * logos are gone: the live cards carry neither.
  */
 export function dbimSchemeCards(): DbimSchemeCard[] {
-  let fallback = 0;
-  return SCHEMES.map((s) => {
-    const hay = `${s.name} ${s.umbrella ?? ""}`;
-    const art =
-      DBIM_SCHEME_ART.find((a) => a.match.test(hay))?.src ??
-      DBIM_SCHEME_ART_FALLBACK[fallback++ % DBIM_SCHEME_ART_FALLBACK.length]!;
-    const logoKey = s.apply.find((r) => PORTAL_LOGOS[r]);
-    return {
-      id: s.id,
-      name: displayName(s),
-      line: s.provides,
-      category: s.type,
-      art,
-      logo: logoKey ? PORTAL_LOGOS[logoKey] : undefined,
-    };
-  });
+  return listedSchemes().map((s) => ({
+    id: pageId(s),
+    name: s.title,
+    line: s.who.length ? `Who It Is For: ${s.who.join(", ")}` : "",
+    categories: s.groups,
+    art: { src: SCHEME_IMAGE.src, position: SCHEME_IMAGE.position },
+  }));
 }
 
 /* ─── Scheme details ────────────────────────────────────────────────────── */
@@ -112,8 +112,13 @@ export interface DbimSchemeSection {
 }
 
 export interface DbimSchemeDetail {
-  scheme: Scheme;
+  /** The page's address (see DbimSchemeCard.id). */
+  id: string;
+  /** The scheme master's record; absent for a listed scheme the master does not hold. */
+  scheme?: Scheme;
   name: string;
+  /** One sentence for the page's description. */
+  summary: string;
   /** The VISIT bar: the first apply route with a confirmed web address. */
   visit?: { href: string; label: string };
   apply: DbimApplyRoute[];
@@ -179,8 +184,7 @@ function toParts(html: string): DbimSchemePart[] {
 }
 
 /** The listing with the most prose among those that are this scheme, as sections. */
-function ingestedSections(s: Scheme): DbimSchemeSection[] | null {
-  const slugs = [s.id, ...(LISTINGS_BY_MASTER.get(s.id) ?? [])];
+function ingestedSections(slugs: string[], name: string): DbimSchemeSection[] | null {
   let best: { title: string; sections: LegacySection[] } | null = null;
   let bestLen = 0;
   for (const slug of slugs) {
@@ -196,7 +200,7 @@ function ingestedSections(s: Scheme): DbimSchemeSection[] | null {
   /* Under 100 characters a listing says nothing a reader can use
      (legacy-schemes.ts, MIN_BODY_CHARS); the master's facts are better. */
   if (!best || bestLen < 100) return null;
-  const names = [norm(best.title), norm(s.name)];
+  const names = [norm(best.title), norm(name)];
   return best.sections.map((x, i) => ({
     /* A first heading that only repeats the scheme's name gives way to the
        reference's "Introduction" — the h1 and the rail already say the name. */
@@ -209,7 +213,8 @@ function schemeDocuments(id: string): DbimSchemeDocument[] {
   return getSchemeDocuments()
     .filter((d) => {
       const m = /\/schemes-and-services\/([^/]+)\/?$/.exec(d.schemeUrl ?? "");
-      return m?.[1] ? masterForLegacy(m[1]) === id : false;
+      /* A master id collects every live address that maps to it; a live-only page, its own. */
+      return m?.[1] ? (masterForLegacy(m[1]) ?? routeSlug(m[1])) === id : false;
     })
     .sort((a, b) => dateValue(b.publishStart ?? b.date) - dateValue(a.publishStart ?? a.date))
     .flatMap((d) => {
@@ -226,9 +231,18 @@ function schemeDocuments(id: string): DbimSchemeDocument[] {
     });
 }
 
+/* The Department's page carries its own "Documents" section — the same files as
+   raw HTML tables. Where the scheme-documents register lists them, the page's
+   Documents list is the one answer and the scraped copy goes; where it lists
+   nothing, the scraped section stays, so no scheme loses its files. */
+const withoutScrapedDocuments = (sections: DbimSchemeSection[] | null, documents: DbimSchemeDocument[]) => {
+  const kept = sections?.filter((x) => !(documents.length && x.heading && /^documents?$/i.test(x.heading.trim()))) ?? null;
+  return kept?.length ? kept : null;
+};
+
 export function dbimSchemeDetail(id: string): DbimSchemeDetail | undefined {
   const s = getMasterScheme(routeSlug(id));
-  if (!s) return undefined;
+  if (!s) return liveSchemeDetail(id);
   const apply = s.apply.flatMap((r): DbimApplyRoute[] => {
     const route = ROUTES[r];
     if (!route) return [];
@@ -237,24 +251,47 @@ export function dbimSchemeDetail(id: string): DbimSchemeDetail | undefined {
   });
   const firstWeb = apply.find((a) => a.href);
   const documents = schemeDocuments(s.id);
-  /* The Department's page carries its own "Documents" section — the same files as
-     raw HTML tables. Where the scheme-documents register lists them, the page's
-     Documents list is the one answer and the scraped copy goes; where it lists
-     nothing, the scraped section stays, so no scheme loses its files. */
-  const sections = ingestedSections(s)?.filter((x) => !(documents.length && x.heading && /^documents?$/i.test(x.heading.trim()))) ?? null;
+  /* A scheme on the live listing takes the listing's name, so its card and its page agree. */
+  const name = LISTED_BY_MASTER.get(s.id)?.title ?? displayName(s);
   return {
+    id: s.id,
     scheme: s,
-    name: displayName(s),
+    name,
+    summary: s.provides,
     visit: firstWeb ? { href: firstWeb.href!, label: firstWeb.label } : undefined,
     apply,
-    sections: sections?.length ? sections : null,
+    sections: withoutScrapedDocuments(ingestedSections([s.id, ...(LISTINGS_BY_MASTER.get(s.id) ?? [])], s.name), documents),
     administeredBy: administeredBy(s),
     sources: s.sources.map(expandSource),
     documents,
   };
 }
 
-export const dbimSchemeIds = (): string[] => SCHEMES.map((s) => s.id);
+/**
+ * A scheme the live listing carries and the scheme master does not — the umbrella
+ * pages (AVYAY, SMILE, PM-YASASVI) and six more. Its page is the Department's own,
+ * from the register mirror, with its documents; there are no apply routes to list.
+ */
+function liveSchemeDetail(slug: string): DbimSchemeDetail | undefined {
+  const listed = listedScheme(slug);
+  if (!listed) return undefined;
+  const documents = schemeDocuments(slug);
+  return {
+    id: slug,
+    name: listed.title,
+    summary: listed.who.length ? `${listed.title}, for ${listed.who.join(", ")}.` : listed.title,
+    apply: [],
+    sections: withoutScrapedDocuments(ingestedSections([slug], listed.title), documents),
+    sources: [{ text: "Department of Social Justice and Empowerment", href: `https://www.dosje.gov.in/schemes-and-services/${slug}/` }],
+    documents,
+  };
+}
+
+/** Every page: each scheme in the master, and each listed scheme the master does not hold. */
+export const dbimSchemeIds = (): string[] => [
+  ...SCHEMES.map((s) => s.id),
+  ...listedSchemes().filter((s) => !masterForLegacy(s.slug)).map((s) => s.slug),
+];
 
 /* ─── Vacancies and Tenders ─────────────────────────────────────────────── */
 
