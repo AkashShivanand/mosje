@@ -252,11 +252,10 @@
     list-style: none;
   }
 
-  /* A bullet between items and between the two copies, 48px either side. */
-  [data-design="dbim"] .db-announce .db-announce__item::after {
-    margin: 0 var(--sa-stack-48);
-    content: "•";
-    color: var(--sa-color-primaryScale-800);
+  /* Items are parted by space alone — no bullet (instruction, 29 Sep 2026). The gap
+     keeps the old 48 + bullet + 48 rhythm, between items and between the two copies. */
+  [data-design="dbim"] .db-announce .db-announce__item {
+    padding-inline-end: calc(2 * var(--sa-stack-48));
   }
 
   [data-design="dbim"] .db-announce .db-announce__link {
