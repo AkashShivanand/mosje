@@ -6,7 +6,7 @@
  * (docs/research/dbim-reference/). The TOP level is fixed by DBIM and was ruled
  * non-negotiable on that call: Home, Ministry, Offerings, Documents, Media,
  * Connect. The second level is the reference's, and DBIM allows a department to
- * add to it; nothing has been added yet.
+ * add to it. One addition so far: Ministry › Our Scheme Portals (28 Sep 2026).
  *
  * Every href is a `/website` address. The proxy serves it from `app/website-dbim`
  * while the demo rail's Website tab says "DBIM" (lib/website-design/constants.ts),
@@ -46,6 +46,9 @@ export const DBIM_MENU: DbimMenu[] = [
       { label: "Our Team", path: "/ministry/our-team" },
       { label: "Our Division", path: "/ministry/our-division" },
       { label: "Our Organisation", path: "/ministry/our-organisation" },
+      // The Department's addition to DBIM's second level (28 Sep 2026): the scheme
+      // portals, out of Our Organisation as every other design has them.
+      { label: "Our Scheme Portals", path: "/ministry/our-scheme-portals" },
       { label: "Our Performance", path: "/ministry/our-performance" },
       { label: "Directory", path: "/ministry/directory" },
     ],

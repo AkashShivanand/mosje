@@ -41,6 +41,9 @@ export function DbimDocRowView({ doc }: { doc: DbimDocRow }) {
 }
 
 /** A link row: the same box, with the arrow button (`a.link-btn`) on the right. */
+/** An address elsewhere on the estate (a website page, a scheme portal), not inside the DBIM tree. */
+const ESTATE_PATH = /^\/(website|portals|reports)(\/|$)/;
+
 export function DbimLinkRow({ label, href, external }: { label: string; href: string; external?: boolean }) {
   const inner = (
     <>
@@ -59,7 +62,7 @@ export function DbimLinkRow({ label, href, external }: { label: string; href: st
       {inner}
     </a>
   ) : (
-    <Link className="db-min-docrow db-min-docrow--link" href={href.startsWith("/website") ? href : dbimHref(href)}>
+    <Link className="db-min-docrow db-min-docrow--link" href={ESTATE_PATH.test(href) ? href : dbimHref(href)}>
       {inner}
     </Link>
   );

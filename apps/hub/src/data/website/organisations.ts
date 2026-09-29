@@ -52,6 +52,14 @@ export interface Organisation {
   wordmarkSrc?: string;
   /** The organisation's own live portal, where it runs one. */
   externalUrl?: string;
+  /**
+   * Where a citizen applies — the scheme's portal on this estate, or its own site
+   * where the estate runs none. Scheme portals only; absent where the scheme has
+   * no portal (SMILE's begging component). Read by the masthead's Scheme Portals
+   * column and the DBIM design's Ministry › Our Scheme Portals, so the two cannot
+   * send a citizen to different places.
+   */
+  portalHref?: string;
 }
 
 /** SMILE's one mark, carried by both of its portals. */
@@ -176,6 +184,7 @@ export const ORGANISATIONS: Organisation[] = [
     name: "Senior Citizens Welfare",
     category: "schemes",
     profileHref: "/website/organisation/senior-citizens-welfarescw",
+    portalHref: "/portals/scw",
     logoSrc: "/website/images/org-logos/scw.png",
   },
   {
@@ -186,6 +195,7 @@ export const ORGANISATIONS: Organisation[] = [
     category: "schemes",
     profileHref: "/website/organisation/pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay",
     directoryHref: "/website/pm-ajay-directory",
+    portalHref: "/portals/pm-ajay",
     logoSrc: "/website/images/org-logos/pm-ajay.png",
     wordmarkSrc: "/website/images/PM-AJAY-logo.png",
   },
@@ -196,6 +206,7 @@ export const ORGANISATIONS: Organisation[] = [
     name: "National Portal for Transgender Persons",
     category: "schemes",
     profileHref: "/website/organisation/national-portal-for-transgender-persons",
+    portalHref: "/portals/tg",
     logoSrc: SMILE_MARK,
     wordmarkSrc: "/website/images/Logo-Transgender-Portal-1.png",
   },
@@ -220,6 +231,7 @@ export const ORGANISATIONS: Organisation[] = [
     logoSrc: "/website/images/org-logos/nos.png",
     wordmarkSrc: "/website/images/NOS-Logo.png",
     externalUrl: "https://nosmsje.gov.in",
+    portalHref: "https://nosmsje.gov.in",
   },
   {
     id: "nasha-mukt-bharat-abhiyaan",
@@ -227,6 +239,7 @@ export const ORGANISATIONS: Organisation[] = [
     name: "Nasha Mukt Bharat Abhiyaan",
     category: "schemes",
     profileHref: "/website/organisation/nasha-mukt-bharat-abhiyaan",
+    portalHref: "/portals/nmba",
     logoSrc: "/website/images/org-logos/nmba.png",
     wordmarkSrc: "/website/images/NMBA-1.png",
   },
@@ -240,6 +253,7 @@ export const ORGANISATIONS: Organisation[] = [
        404s — the profile page it pointed at was never ingested. The helpline's
        own portal is the real destination. */
     profileHref: "/portals/nhapoa",
+    portalHref: "/portals/nhapoa",
     logoSrc: "/website/images/National-Emblem-logo.svg",
   },
 ];

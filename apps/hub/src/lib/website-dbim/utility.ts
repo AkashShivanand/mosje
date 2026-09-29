@@ -8,7 +8,7 @@
  * DBIM address: a `/website/…` path from the redesign is served from the DBIM tree
  * while the DBIM design is chosen, and most redesign paths do not exist there.
  */
-import { DIVISIONS } from "@/data/website";
+import { DIVISIONS, ORGANISATIONS } from "@/data/website";
 import { DBIM_PERSONA_ICONS, DBIM_SOCIAL_AUDIT } from "./assets";
 import { DBIM_POLICY_TABS, type DbimLink } from "./nav";
 
@@ -474,7 +474,11 @@ export function dbimSearchTarget(href: string): { path: string } | { href: strin
   if (rest.includes(".")) return { href };
   const [head = "", sub] = rest.split("/");
   if (head === "schemes-services" && sub) return { path: `/offerings/schemes-and-services/${sub}` };
-  if (head === "organisation" && sub) return { path: `/ministry/our-organisation/${sub}` };
+  if (head === "organisation" && sub) {
+    // A scheme portal's page is under Our Scheme Portals, every other body's under Our Organisation.
+    const scheme = ORGANISATIONS.some((o) => o.id === sub && o.category === "schemes");
+    return { path: `/ministry/${scheme ? "our-scheme-portals" : "our-organisation"}/${sub}` };
+  }
   if (head === "official" && sub) return { path: "/ministry/our-team" };
   if (head.startsWith("about-the-division")) return { path: "/ministry/our-division" };
   if (head.endsWith("-directory")) return { path: "/connect/directory" };

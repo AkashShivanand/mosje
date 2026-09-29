@@ -1,6 +1,6 @@
 /**
  * The DBIM design's Ministry pages: About Us, Our Team, Our Division, Our
- * Organisation and Our Performance.
+ * Organisation, Our Scheme Portals and Our Performance.
  *
  * Every word here is the Department's, read from the estate's own modules; this
  * file only arranges it into the DBIM reference build's page shapes
@@ -10,7 +10,9 @@
  * Server-only in practice: it reads the officials register and the ingested
  * organisation pages. Pages pass the trimmed rows below to client lists.
  */
-import { DIVISIONS, ORGANISATIONS, ORGANISATION_CATEGORY_LABELS, getDepartmentSecretary, type OrganisationCategory } from "@/data/website";
+import { DIVISIONS, ORGANISATIONS, ORGANISATION_CATEGORY_LABELS, getDepartmentSecretary, type Organisation, type OrganisationCategory } from "@/data/website";
+import { getOrganisationDetail } from "@/content/website/organisation-details";
+import { schemePortals } from "@/lib/website-shared/organisations";
 import { getDocument, getOfficialsByOrganisation, getOrganisation } from "@/lib/website/content";
 import { localiseDocumentUrl } from "@/lib/website/sample-documents";
 import { phoneGroups } from "@/components/website-next/templates/people-format";
@@ -198,6 +200,11 @@ export interface DbimTeamOffice {
  * The reference's office order, keyed by the register's `group`, with each office's
  * name in Title Case. The register's names differ from the reference's in three places
  * (Additional Secretary, AS & FA, Pr. CCA) — the register's post is the one named.
+ *
+ * ONE DEPARTURE FROM THE REFERENCE, FOR SENIORITY (DBIM 3.0 §A.5.6, checklist 30:
+ * "officer listings are arranged by seniority"). The reference listed the Additional
+ * Secretary & Financial Advisor after the Joint Secretary; the post is of Additional
+ * Secretary rank, so it follows the Additional Secretary.
  */
 const OFFICE_ORDER: [group: string, label: string][] = [
   ["UNION CABINET MINISTER OF SOCIAL JUSTICE & EMPOWERMENT", "Union Cabinet Minister of Social Justice & Empowerment"],
@@ -205,9 +212,9 @@ const OFFICE_ORDER: [group: string, label: string][] = [
   ["MINISTER OF STATE OF SOCIAL JUSTICE & EMPOWERMENT (BLV)", "Minister of State of Social Justice & Empowerment (BLV)"],
   ["SECRETARY (DEPARTMENT OF SOCIAL JUSTICE & EMPOWERMENT)", "Secretary (Department of Social Justice & Empowerment)"],
   ["ADDITIONAL SECRETARY (DEPARTMENT OF SOCIAL JUSTICE & EMPOWERMENT)", "Additional Secretary (Department of Social Justice & Empowerment)"],
+  ["ADDITIONAL SECRETARY & FINANCIAL ADVISOR", "Additional Secretary & Financial Advisor"],
   ["SENIOR ECONOMIC ADVISER", "Senior Economic Adviser"],
   ["JOINT SECRETARY", "Joint Secretary"],
-  ["ADDITIONAL SECRETARY & FINANCIAL ADVISOR", "Additional Secretary & Financial Advisor"],
   ["ECONOMIC ADVISER / DEPUTY DIRECTOR GENERAL STATISTICS", "Economic Adviser / Deputy Director General Statistics"],
   ["DIRECTOR", "Director"],
   ["DEPUTY SECRETARIES", "Deputy Secretaries"],
@@ -326,6 +333,10 @@ export interface DbimCardItem {
   /** A path inside the DBIM tree, or an absolute URL. */
   href: string;
   external?: boolean;
+  /** For a list with a Category filter: the label the filter shows. */
+  category?: string;
+  /** The body's own mark, drawn beside its name (MeitY's organisation card). */
+  logo?: string;
 }
 
 export function divisionCards(): DbimCardItem[] {
@@ -415,77 +426,143 @@ export function divisionDetail(slug: string) {
   };
 }
 
-/* ── Our Organisation ──────────────────────────────────────────────────────── */
+/* ── Our Organisation and Our Scheme Portals ──────────────────────────────── */
 
-/** The registry's category names, which the redesign's Organisations page uses too. */
-/* The type labels and their order are the live home page's, shared with every
-   design through the registry (data/website/organisations.ts): Commission,
-   Corporations, Foundation & Autonomous Bodies, Scheme Portals. */
+/*
+ * Two tabs, one registry. Our Organisation lists the commissions, corporations and
+ * foundations, filterable by type; Our Scheme Portals lists the registry's `schemes`, in the
+ * order every design shares (lib/website-shared/organisations.ts). The portals left
+ * the organisations list on the New design's home page (24 Sep 2026) and in its
+ * masthead (22 Sep 2026); until 28 Sep 2026 this design still carried them as a
+ * fourth "type of organisation".
+ *
+ * The type labels are the live home page's, shared with every design through the
+ * registry (data/website/organisations.ts); they name the Category filter's options.
+ * The per-type pages (`/ministry/our-organisation/<type>`) retired with MeitY's flat
+ * list and redirect to it, which is all `isOrganisationType` is still for.
+ */
 const TYPE_LABEL = ORGANISATION_CATEGORY_LABELS;
-const TYPE_ORDER = Object.keys(ORGANISATION_CATEGORY_LABELS) as OrganisationCategory[];
+const ORGANISATION_TYPES = (Object.keys(ORGANISATION_CATEGORY_LABELS) as OrganisationCategory[]).filter(
+  (t) => t !== "schemes",
+);
+type OrganisationType = Exclude<OrganisationCategory, "schemes">;
 
-export function isOrganisationType(slug: string): slug is OrganisationCategory {
-  return (TYPE_ORDER as string[]).includes(slug);
+export const SCHEME_PORTALS_PATH = "/ministry/our-scheme-portals";
+
+export function isOrganisationType(slug: string): slug is OrganisationType {
+  return (ORGANISATION_TYPES as string[]).includes(slug);
 }
 
-export function organisationTypeLabel(type: OrganisationCategory): string {
-  return TYPE_LABEL[type];
+/** The DBIM page of one of the Department's bodies: its tab follows its category. */
+export function dbimOrganisationPath(id: string): string {
+  const entry = ORGANISATIONS.find((o) => o.id === id);
+  return entry?.category === "schemes" ? `${SCHEME_PORTALS_PATH}/${id}` : `/ministry/our-organisation/${id}`;
 }
 
-/** "A, B and C." */
-function nameList(names: string[]): string {
-  if (names.length <= 1) return names.join("");
-  return `${names.slice(0, -1).join(", ")} and ${names.at(-1)}.`;
+/*
+ * WHAT A BODY IS, IN ONE PARAGRAPH.
+ *
+ * The ingested pages open with whatever the live page shows above its "About…"
+ * section, and that is not a description: NOS opens on a results ticker ("Result of
+ * National Overseas Scholarship (NOS) for the Selection Year 2026-27 View Result"),
+ * NMBA on a helpline banner, most bodies on a counter strip ("1993 Established 21
+ * Annual Reports…") that stripped of its markup glues onto the sentence before it,
+ * and the live NHAA page carries NCSC's lead — "A Constitutional Body under Article
+ * 338" — word for word. All four were on this design's cards.
+ *
+ * So the description is, in order: the lead the New design's organisation pages
+ * use (content/website/organisation-details.ts, quoted from each body's live page),
+ * else the first paragraph of the body's own "About…" section. Every ingested body
+ * has one. The body text below starts at that section for the same reason.
+ */
+const ABOUT = /^about\b/i;
+
+type IngestedSection = NonNullable<ReturnType<typeof getOrganisation>>["sections"][number];
+
+function aboutOnward(sections: IngestedSection[]): IngestedSection[] {
+  const i = sections.findIndex((s) => ABOUT.test((s.heading ?? "").trim()));
+  return (i >= 0 ? sections.slice(i) : sections).filter((s) => kindOf(s) === "prose");
 }
 
-/** One card per type; the description names the bodies it holds, read from the registry. */
-export function organisationTypeCards(): DbimCardItem[] {
-  return TYPE_ORDER.filter((t) => ORGANISATIONS.some((o) => o.category === t)).map((t) => ({
-    slug: t,
-    title: TYPE_LABEL[t],
-    description: nameList(ORGANISATIONS.filter((o) => o.category === t).map((o) => o.name)),
-    href: `/ministry/our-organisation/${t}`,
-  }));
+function firstParagraph(html: string | undefined): { match: string; text: string } | undefined {
+  const m = html?.match(/<p\b[^>]*>([\s\S]*?)<\/p>/i);
+  const text = stripTags(m?.[1] ?? "");
+  return m && text ? { match: m[0], text } : undefined;
 }
 
-/** One card per organisation of a type. A body with no ingested page opens its own portal. */
-export function organisationCards(type: OrganisationCategory): DbimCardItem[] {
-  return ORGANISATIONS.filter((o) => o.category === type).map((o) => {
-    const record = getOrganisation(o.id);
-    const first = record?.sections.find((s) => kindOf(s) === "prose");
-    return {
-      slug: o.id,
-      title: o.name,
-      description: firstSentence(first?.html),
-      href: record ? `/ministry/our-organisation/${o.id}` : o.externalUrl ?? o.profileHref,
-      external: !record,
-    };
-  });
+/** The body's one-paragraph description, and whether it was lifted from its own text. */
+function organisationSummary(id: string): { text?: string; fromBody: boolean } {
+  const lead = getOrganisationDetail(id)?.lead;
+  if (lead) return { text: stripTags(lead), fromBody: false };
+  const body = aboutOnward(getOrganisation(id)?.sections ?? []);
+  return { text: firstParagraph(body[0]?.html)?.text ?? firstSentence(body[0]?.html), fromBody: true };
 }
 
-/** Ids of the organisations that have a detail page here. */
+/* The National Emblem stands in for a missing mark in the registry (NHAA). It is the
+   Government's, not the body's, so a card without a mark of its own draws none. */
+const EMBLEM = /National-Emblem/i;
+
+function bodyCard(o: Organisation, path: string): DbimCardItem {
+  const record = getOrganisation(o.id);
+  const outside = o.portalHref ?? o.externalUrl ?? o.profileHref;
+  return {
+    slug: o.id,
+    title: o.name,
+    description: firstSentence(organisationSummary(o.id).text),
+    href: record ? `${path}/${o.id}` : outside,
+    external: !record,
+    category: TYPE_LABEL[o.category],
+    logo: EMBLEM.test(o.logoSrc) ? undefined : o.logoSrc,
+  };
+}
+
+/**
+ * Every organisation, in registry order, each with its type for the Category filter.
+ * One list rather than a card per type, as MeitY's Our Organisations draws it
+ * (meity.gov.in/ministry/our-organisation, read 28 Sep 2026) — the DBIM reference
+ * build's type cards made a reader open a second page to see any body at all.
+ * A body with no ingested page opens its own site.
+ */
+export function organisationCards(): DbimCardItem[] {
+  return ORGANISATIONS.filter((o) => o.category !== "schemes").map((o) => bodyCard(o, "/ministry/our-organisation"));
+}
+
+/** One card per scheme portal, in the order every design shares. */
+export function schemePortalCards(): DbimCardItem[] {
+  return schemePortals().map((o) => bodyCard(o, SCHEME_PORTALS_PATH));
+}
+
+/** Ids of the organisations (not scheme portals) that have a detail page here. */
 export function organisationIds(): string[] {
-  return ORGANISATIONS.filter((o) => getOrganisation(o.id)).map((o) => o.id);
+  return ORGANISATIONS.filter((o) => o.category !== "schemes" && getOrganisation(o.id)).map((o) => o.id);
+}
+
+/** Ids of the scheme portals that have a detail page here. */
+export function schemePortalIds(): string[] {
+  return schemePortals().filter((o) => getOrganisation(o.id)).map((o) => o.id);
+}
+
+/** Is this id one of the scheme portals? (Their old addresses under Our Organisation redirect.) */
+export function isSchemePortal(id: string): boolean {
+  return ORGANISATIONS.some((o) => o.id === id && o.category === "schemes");
 }
 
 export function organisationDetail(id: string) {
   const entry = ORGANISATIONS.find((o) => o.id === id);
   const record = getOrganisation(id);
   if (!entry || !record) return undefined;
-  const prose = record.sections.filter((s) => kindOf(s) === "prose").map((s) => ({ ...s }));
+  const prose = aboutOnward(record.sections).map((s) => ({ ...s }));
   const same = (a?: string | null) => (a ?? "").toLowerCase().replace(/[^a-z]/g, "") === record.title.toLowerCase().replace(/[^a-z]/g, "");
-  // The body's lead paragraph becomes the summary box, and leaves the body, so it is said once.
-  let summary = firstSentence(prose[0]?.html);
-  const lead = prose[0]?.html.match(/<p\b[^>]*>([\s\S]*?)<\/p>/i);
-  if (prose[0] && lead && stripTags(lead[1] ?? "")) {
-    summary = stripTags(lead[1] ?? "");
-    prose[0].html = prose[0].html.replace(lead[0], "");
-  }
+  const summary = organisationSummary(id);
+  // A summary lifted from the body leaves the body, so it is said once.
+  const lead = summary.fromBody ? firstParagraph(prose[0]?.html) : undefined;
+  if (prose[0] && lead && lead.text === summary.text) prose[0].html = prose[0].html.replace(lead.match, "");
   return {
     title: entry.name,
     type: entry.category,
-    summary,
-    externalUrl: entry.externalUrl,
+    summary: summary.text,
+    /** Where a citizen applies (scheme portals), else the body's own site. */
+    portal: entry.portalHref ?? entry.externalUrl,
     sections: prose
       .map((s) => ({
         heading: s.heading && !same(s.heading) ? stripTags(s.heading) : undefined,
@@ -507,9 +584,11 @@ export interface DbimDashboardTile {
 }
 
 /**
- * The Department's performance dashboards. The Social Audit tile and its date are the
- * reference's (it is the Department's own portal); the PM-AJAY dashboard is this
- * website's, reading the scheme's MIS feeds.
+ * The Department's performance dashboards (DBIM 3.0 §A.5.1.4). The Social Audit tile
+ * and its date are the reference's (it is the Department's own portal); the
+ * Beneficiary Dashboard is the live site's (dosje.gov.in/dashboard/, linked from its
+ * home page's "View Dashboard" and its footer's "Statistics"), missing here until
+ * 28 Sep 2026; the PM-AJAY dashboard is this website's, reading the scheme's MIS feeds.
  */
 export const DBIM_DASHBOARDS: DbimDashboardTile[] = [
   {
@@ -519,6 +598,13 @@ export const DBIM_DASHBOARDS: DbimDashboardTile[] = [
     external: true,
     // SOURCE: the reference's tile, master-socialjustice.digifootprint.gov.in/ministry/our-performance, 25 Sep 2026.
     date: "24.10.2025",
+  },
+  {
+    title: "Beneficiary Dashboard",
+    // The live page's first screen — Scholarships and Fellowship — captured 28 Sep 2026.
+    image: { src: "/website/dbim/ministry/beneficiary-dashboard.jpg", alt: "Beneficiary Dashboard of the Department of Social Justice and Empowerment" },
+    href: "https://www.dosje.gov.in/dashboard/",
+    external: true,
   },
   {
     title: "PM-AJAY Dashboard",

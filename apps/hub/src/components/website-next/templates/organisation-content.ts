@@ -72,13 +72,23 @@ export function titleCaseLabel(raw: string): string {
     .join(" ");
 }
 
-/** The first sentence of a paragraph, without breaking on "Dr." or "No.". */
+/**
+ * Words a full stop follows without ending the sentence. NCSK's lead reads "…by an
+ * Act of Parliament viz. ‘National Commission for Safai Karamcharis Act, 1993’…",
+ * and cut at "viz." it described the Commission as constituted by "viz.".
+ */
+const NOT_AN_END = /\b(?:viz|etc|i\.e|e\.g|govt|ltd|approx|nos?)$/i;
+
+/** The first sentence of a paragraph, without breaking on "Dr.", "No." or "viz.". */
 export function firstSentence(text?: string): string | undefined {
   if (!text) return undefined;
   const clean = stripTags(text);
   if (!clean) return undefined;
-  const m = clean.match(/^.*?[a-z0-9)]{2}\.(?=\s+[A-Z‘“"(]|$)/);
-  return (m ? m[0] : clean).trim();
+  for (const m of clean.matchAll(/[a-z0-9)]{2}\.(?=\s+[A-Z‘“"(]|$)/g)) {
+    const end = m.index + m[0].length;
+    if (!NOT_AN_END.test(clean.slice(0, end - 1))) return clean.slice(0, end).trim();
+  }
+  return clean.trim();
 }
 
 /** The organisation's abbreviation, from the bracket at the end of its title. */
