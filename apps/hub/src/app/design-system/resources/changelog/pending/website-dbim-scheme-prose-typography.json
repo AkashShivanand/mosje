@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "DBIM SCHEME PAGES READ AS HEADED, LISTED AND SPACED TEXT, NOT ONE DENSE BLOCK. The Department's scheme pages set their structure by hand — sub-headings as plain paragraphs, numbered steps as runs of \"1)\", \"2)\" paragraphs, indents as hard spaces. A new prose tidy step (lib/website-dbim/prose.ts, with tests) restores that structure without changing a word: indents and empty paragraphs go, consecutive numbered or lettered paragraphs become lists, and a short standalone line between longer text becomes a sub-heading; label lines, lead-ins, runs of short lines and tables are left alone. The type follows: 16px between paragraphs, 8px between list items, sub-headings one step below the section heading, a ≈75-character measure, and the same 32px between every section."
+}
