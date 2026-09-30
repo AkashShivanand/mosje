@@ -34,7 +34,7 @@
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-leaflet": "^5.0.0",
-    "react-live": "^4.1.7",
+    "react-live": "^5.0.0",
     "react-markdown": "^10.1.0",
     "rehype-slug": "^6.0.0",
     "remark-gfm": "^4.0.1",
