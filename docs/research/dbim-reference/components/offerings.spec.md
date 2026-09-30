@@ -60,30 +60,35 @@ No "View Archive" on this page: the Department has no archived schemes to show t
 
 ## 2. `/offerings/schemes-and-services/[id]` — scheme details
 
-Banner: breadcrumb Home / Offerings (no link — the reference prints it unlinked) / Schemes and
-Services (link → `/offerings`); h1 = scheme name. **No sub-tab bar** (the reference has none here).
-`section.maincontent` padding 32 0; `row.g-5` (gutter 30): left `col-lg-4` sticky `top:140px`,
-right `col-lg-8`. Below 992 the columns stack (390 shot).
+**Revised 30 Sep 2026.** The LAYOUT stays the reference's: banner (breadcrumb Home / Offerings
+unlinked / Schemes and Services; h1 = scheme name; no sub-tab bar), then rail left (`col-lg-4`,
+sticky from 992) and text right (`col-lg-8`), stacking below 992, in the values below. The
+CONTENT of the right column now covers the sections of the Scheme Details template in the MoSJE
+[Handoff] file (`Ds5qx61QsI0ZkYSrLKxo0A`, node `3363:13864`) — used for its data structure only,
+not its UI.
 
 | Part | Reference | Ours |
 |---|---|---|
 | Name card `.visionbox` | padding 32, `#EBEAEA` (neutral-100), radius 10; `h2` 20px/500/36px primary-800 | `--sa-padding-32`, radius 10 literal; `--db-fs-h2`, line-height 36px |
-| VISIT bar `.leftCardDark` | 415×46, primary-400 fill, radius 4, margin 10 0; body padding 10 16, space-between; "VISIT" 14px/600/20 primary-800; `open_in_new` 24 primary-800 | external `<a>` (new tab, name says so) to the scheme's first confirmed web route; **omitted** when the master confirms none (a phone number is not a portal) |
-| Links box `.leftLastCardLight` | neutral-100, radius 8, padding 12 16; heading "Scheme Versions" 14px/700/20 primary-600; buttons `a.detailsBtn` padding 8 12, 12px/700/18, ls 0.12, uppercase, primary-600 text + 1px border on white, radius 4, gap 8, glyph `open_in_new` | heading **"How to Apply"** (our box lists the master's apply routes, not versions — the reference label would misname them); a route with a confirmed web address is a link-button, one without is the same box as plain text |
+| VISIT bar `.leftCardDark` | 415×46, primary-400 fill, radius 4, margin 10 0; body padding 10 16, space-between; "VISIT" 14px/600/20 primary-800; `open_in_new` 24 primary-800 | same box; its text names the destination (e.g. "Apply on the e-Anudaan portal") instead of a bare "VISIT"; opens the first apply route with a confirmed web address; omitted when there is none |
+| Links box `.leftLastCardLight` | neutral-100, radius 8, padding 12 16; heading "Scheme Versions"; `a.detailsBtn` buttons | heading **"How to Apply"**; lists only the apply routes the VISIT bar does not open, so no two controls go to one place; a route without a web address is plain text |
 | Section heading `h2.introHeading` | 20px / 32px, primary-800, weight 400, mb 5 | `--db-fs-h2`, line-height 32px |
-| Body text | 14px, line-height 24px, `text-align: justify`, p mb 10; `h2` inside 20px/500 ink; `ol` padding-left 20; `strong` 700 | `--db-fs-p`; same, except `text-align: left` (DBIM 3.0 §4.1.1 i) |
+| Body text | 14px, line-height 24px, `text-align: justify`, p mb 10; `ol` padding-left 20; `strong` 700 | `--db-fs-p`; same, except `text-align: left` (DBIM 3.0 §4.1.1 i) |
 | Documents heading `h2.docsHeading` | as introHeading, `margin-top:32px` | same |
-| Document row `.docsCard` | border 1px (`#E0D9CF` → neutral-100, nearest), radius 8, margin 12 0, padding 8 16; grid 6 / 4 / 2 of 12; title 14px; PDF glyph 18 + size 10px/600 ls 0.6 uppercase primary-800; `a.download-btn` "VIEW" 87×40 primary-100 fill, primary-800 12px/600, glyph `visibility` | same; size shown only when the record states one |
+| Document row `.docsCard` | border 1px, radius 8, margin 12 0, padding 8 16; grid 6 / 4 / 2 of 12 | same; size shown only when the record states one |
 
-**Content.** From the master: name, VISIT, apply routes. The right column is the ingested scheme
-page where the estate has one — the master id's listings (`LEGACY_TO_MASTER` inverted, plus a
-listing whose own slug is the id), the one with the most prose, its `legacySections()` (already
-through `withAssetBasePath()`, h1 → h2, title-repeat headings dropped). The first block takes the
-heading "Introduction" (the reference's). Without an ingested page: **Introduction** = `provides`;
-**Who It Is For** = `named`; **How to Apply** = the apply routes; **Administered By** =
-`administeredBy()`; **Sources** = `expandSource()` of each source code, linked where it has an
-address. Documents: `getSchemeDocuments()` whose `schemeUrl` slug resolves (`masterForLegacy`) to
-this id, newest first, each link localised (`localiseDocumentUrl`). No documents → no section.
+**Right column, in order** — each an `h2.introHeading` over body text:
+
+| Section | Content |
+|---|---|
+| About the Scheme | the ingested page's untitled opening + "About the Scheme"; its other headed sections follow under their own headings. No page: the master's kind/umbrella sentence and note; failing both, `provides` |
+| Eligibility | the page's section (`<h6>` label + text → "**Label:** text" list); else `named` as "Who Can Apply" |
+| Benefits & Financial Assistance | the page's section (`<h6>` names → list); else `provides` (unless About already used it) |
+| Application Process | every apply route as a numbered list, as text (the rail holds the links); then the page's own text |
+| Documents | register rows; where the register has none, the page's own document table |
+| FAQs | the page's section where one exists (none today) |
+| Contact & Support | the page's section (placeholder helpline and a non-address "Email" dropped, X-CON-02); else Nodal Department · Division(s) · the Department's address (`connect.ts`); a Contact Us link |
+| Sources | the master's sources (master schemes only) |
 
 `generateStaticParams` over every master id; anything else `notFound()`.
 
