@@ -369,7 +369,7 @@ export function GeoPhotoInput({
 
             {!atCapacity && !disabled && (
               <li className="ds-geophoto__item ds-geophoto__item--add">
-                /* raw-button-ok(primitive): the add TILE — a cell of the photo grid that is also a drop target, sized by the grid rather than by a size ladder */
+                {/* raw-button-ok(primitive): the add TILE — a cell of the photo grid that is also a drop target, sized by the grid rather than by a size ladder */}
                 <button
                   type="button"
                   id={id}

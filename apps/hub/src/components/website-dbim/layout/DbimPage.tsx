@@ -2,7 +2,7 @@ import type * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { DBIM_HEROES, dbimHref, dbimMenuFor, type DbimLink } from "@/lib/website-dbim/nav";
+import { dbimHeroFor, dbimHref, type DbimLink } from "@/lib/website-dbim/nav";
 import { DbimTabBar } from "./DbimTabBar";
 import "./page.css";
 
@@ -23,12 +23,17 @@ export interface DbimPageProps {
   title: string;
   /** Breadcrumb trail AFTER "Home" and BEFORE the page itself, e.g. [{ label: "Ministry", path: "/ministry" }]. */
   crumbs: DbimCrumb[];
-  /** Banner photograph. Defaults to the menu section's (DBIM_MENU[].hero), else DBIM_HEROES.default. */
+  /**
+   * A photograph for this page at 1920×280, overriding the page-by-page table in
+   * `dbimHeroFor` (lib/website-dbim/nav.ts). Where neither gives one, the banner is the
+   * plain primary band, the DBIM Toolkit's banner colour. A photograph that says nothing
+   * about its page is not a hero — the office laptop over a drug-demand-reduction scheme
+   * was the case named on 30 Sep 2026 (DBIM 3.0 §6.2.6, subject and story).
+   */
   hero?: string;
   /**
-   * A FIXED banner height in px, the photograph covering it. The reference draws most
-   * banners at the photograph's own aspect, but Archives is a 250px box
-   * (`style="height: 250px"`) — pass 250 there. Omit everywhere else.
+   * A FIXED banner height in px. The reference draws most banners at 1920:280, but
+   * Archives is a 250px box (`style="height: 250px"`) — pass 250 there. Omit everywhere else.
    */
   heroHeight?: number;
   /**
@@ -50,30 +55,22 @@ export interface DbimPageProps {
   tabs?: DbimLink[];
   /** Path of the active tab; defaults to the current page's path. */
   activeTab?: string;
-  /** The current page's path inside the DBIM tree, e.g. "/ministry/our-team" — drives the menu's active state and the default hero. */
+  /** The current page's path inside the DBIM tree, e.g. "/ministry/our-team" — drives the active tab. */
   path: string;
   children: React.ReactNode;
 }
 
-/**
- * Intrinsic sizes of the banner photographs. The reference draws the banner at the
- * photograph's own aspect (`img.w-100`), so the band is 210px tall at 1440 for the
- * 1920×280 section photographs and 245px for the 1440×245 default.
- */
-function heroSize(src: string): { width: number; height: number } {
-  return src.endsWith("/default.png") ? { width: 1440, height: 245 } : { width: 1920, height: 280 };
-}
 
 /**
- * Every DBIM inner page: the banner (photograph under a primary gradient, breadcrumb,
- * h1), the dark rounded sub-tab bar overlapping its foot, and the page container.
+ * Every DBIM inner page: the banner (the primary band, or the subject's own photograph
+ * under a primary gradient; breadcrumb; h1), the dark rounded sub-tab bar overlapping
+ * its foot, and the page container.
  *
  * The breadcrumb is "Home / …crumbs"; the page itself is not repeated in it — the h1
  * says it — and the LAST crumb is underlined, as the reference marks it.
  */
-export function DbimPage({ title, crumbs, hero, heroHeight, heroCrop, spacing = "default", tabs, activeTab, path, children }: DbimPageProps) {
-  const src = hero ?? dbimMenuFor(path)?.hero ?? DBIM_HEROES.default;
-  const size = heroSize(src);
+export function DbimPage({ title, crumbs, hero: heroProp, heroHeight, heroCrop, spacing = "default", tabs, activeTab, path, children }: DbimPageProps) {
+  const hero = heroProp ?? dbimHeroFor(path);
   const trail: DbimCrumb[] = [{ label: "Home", path: "/" }, ...crumbs];
   // (the reference marks Home active too, so Home alone is underlined on a page with no crumbs)
   const hasTabs = Boolean(tabs && tabs.length > 0);
@@ -81,19 +78,22 @@ export function DbimPage({ title, crumbs, hero, heroHeight, heroCrop, spacing = 
   return (
     <>
       <section className={`db-hero${hasTabs ? " db-hero--tabs" : ""}`} aria-labelledby="db-page-title">
-        <div className={`db-hero__banner${heroCrop && !heroHeight ? " db-hero__banner--crop" : ""}`} style={heroHeight ? { height: heroHeight } : undefined}>
-          {heroCrop && !heroHeight ? (
+        <div
+          className={`db-hero__banner${hero ? "" : " db-hero__banner--band"}${hero || heroHeight ? "" : " db-hero__banner--ratio"}${hero && heroCrop && !heroHeight ? " db-hero__banner--crop" : ""}`}
+          style={heroHeight ? { height: heroHeight } : undefined}
+        >
+          {!hero ? null : heroCrop && !heroHeight ? (
             // A photograph of any shape sits in a frame of its own — the band's right
             // half from 768 — which it fills; the frame, not the image, is placed.
             <div className="db-hero__photo">
-              <Image src={src} alt="" fill sizes="(min-width: 768px) 50vw, 100vw" priority className="db-hero__img db-hero__img--fill" />
+              <Image src={hero} alt="" fill sizes="(min-width: 768px) 50vw, 100vw" priority className="db-hero__img db-hero__img--fill" />
             </div>
           ) : heroHeight ? (
             // A fixed-height banner is a frame the photograph fills; sizing it as an
             // intrinsic image with only its height overridden tripped Next's aspect check.
-            <Image src={src} alt="" fill sizes="100vw" priority className="db-hero__img db-hero__img--fill" />
+            <Image src={hero} alt="" fill sizes="100vw" priority className="db-hero__img db-hero__img--fill" />
           ) : (
-            <Image src={src} alt="" width={size.width} height={size.height} sizes="100vw" priority className="db-hero__img" />
+            <Image src={hero} alt="" width={1920} height={280} sizes="100vw" priority className="db-hero__img" />
           )}
           <div className="db-container db-hero__container">
             <div className="db-hero__text">

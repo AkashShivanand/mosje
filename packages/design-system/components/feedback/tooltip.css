@@ -28,15 +28,19 @@
 
   .ds-tooltip {
     position: fixed;
-    /* Above every overlay in the DS so a tooltip inside a Modal (50) or a
-       Lightbox (80) is not painted behind it. There is no --sa-z-* scale yet;
-       the DS convention is a literal, so keep this in step with those files. */
+    /* Above every overlay in the DS so a tooltip inside a Modal or a Lightbox is
+       not painted behind it — the top product rung of the --sa-z-* ladder. */
     z-index: var(--sa-z-tooltip);
     max-width: 16rem;
     padding: var(--sa-padding-8) var(--sa-padding-12);
     border-radius: var(--sa-cmp-tooltip-radius);
     background-color: var(--sa-color-action-primary-hover);
-    color: var(--sa-on-bg-brand-primary-bolder);
+    /* The ink that is PAIRED with the action fill. `on-bg-brand-primary-bolder`
+       is paired with `bg-brand-primary-bolder`, a different surface: in
+       dbim-green that token turns to dark ink and measured 2.42:1 on this fill.
+       `text-neutral-inverse` is the on-primary ink in every brand — white in
+       blue and navy, so nothing changed there. */
+    color: var(--sa-text-neutral-inverse);
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);

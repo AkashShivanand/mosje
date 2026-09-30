@@ -56,7 +56,7 @@
     padding: var(--sa-padding-24) var(--sa-padding-16);
     text-align: center;
     background-color: var(--sa-bg-neutral-base);
-    border: var(--sa-stroke-2) dashed var(--sa-border-neutral-base);
+    border: var(--sa-stroke-2) dashed var(--sa-border-neutral-bolder-default);
     border-radius: var(--sa-shape-12);
     cursor: pointer;
     transition:
@@ -206,7 +206,7 @@
     aspect-ratio: var(--sa-aspect-photo);
     padding: var(--sa-padding-8);
     background-color: var(--sa-bg-neutral-base);
-    border: var(--sa-stroke-2) dashed var(--sa-border-neutral-base);
+    border: var(--sa-stroke-2) dashed var(--sa-border-neutral-bolder-default);
     border-radius: var(--sa-shape-8);
     color: var(--sa-text-neutral-subtle);
     cursor: pointer;

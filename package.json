@@ -148,7 +148,8 @@
     "check:raw-button": "node tools/raw-button/check.mjs",
     "check:raw-button:baseline": "node tools/raw-button/check.mjs --baseline",
     "check:link-as": "node --test tools/link-as/scan.test.mjs && node tools/link-as/check.mjs",
-    "check:template-adoption:baseline": "node tools/template-adoption/check.mjs --baseline"
+    "check:template-adoption:baseline": "node tools/template-adoption/check.mjs --baseline",
+    "check:ux4g-pin": "node tools/ux4g-pin/check.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",

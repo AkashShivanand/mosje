@@ -3,6 +3,7 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { useCornerRailOffset, useRailClearance } from "../../foundations/corner-rail";
+import { DIALOG_OPEN_ATTR } from "../../foundations/dialog-layer";
 import { Icon } from "../utilities/icon";
 import { Chip } from "../forms/chip";
 import { IconButton } from "../actions/icon-button";
@@ -408,17 +409,42 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
     log.scrollTo({ top: log.scrollHeight, behavior: "instant" });
   }, [messages, typing, repliesShown, open]);
 
-  /* -- Escape closes, focus goes home -------------------------------------- */
+  /* -- Escape closes, focus goes home --------------------------------------
+     The key is CLAIMED with `preventDefault`, which is what Modal and Popover
+     honour; `stopPropagation` on a document listener stops nothing registered
+     on the same node, so one Escape used to close the chat and whatever other
+     layer happened to be listening.
+
+     - Pressed INSIDE the chat: answered in the capture phase, ahead of any
+       other layer's document listener, and claimed.
+     - Pressed ELSEWHERE: answered in the bubbling phase, so a popover or menu
+       the reader is actually in answers first; skipped when that layer claimed
+       it, and skipped while a page-blocking dialog is open — that Escape is the
+       dialog's, and sending focus to a launcher under its scrim would strand the
+       reader outside the dialog. */
   React.useEffect(() => {
     if (!open) return;
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key !== "Escape") return;
-      e.stopPropagation();
+    const close = (e: KeyboardEvent) => {
+      e.preventDefault();
       setOpen(false);
       launcherRef.current?.focus();
     };
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
+    const inChat = (e: KeyboardEvent) => !!rootRef.current?.contains(e.target as Node);
+    const onCapture = (e: KeyboardEvent) => {
+      if (e.key !== "Escape" || e.defaultPrevented || !inChat(e)) return;
+      close(e);
+    };
+    const onBubble = (e: KeyboardEvent) => {
+      if (e.key !== "Escape" || e.defaultPrevented || inChat(e)) return;
+      if (document.documentElement.hasAttribute(DIALOG_OPEN_ATTR)) return;
+      close(e);
+    };
+    document.addEventListener("keydown", onCapture, true);
+    document.addEventListener("keydown", onBubble);
+    return () => {
+      document.removeEventListener("keydown", onCapture, true);
+      document.removeEventListener("keydown", onBubble);
+    };
   }, [open, setOpen]);
 
   /* -- opening moves focus into the panel, not past it --------------------- */

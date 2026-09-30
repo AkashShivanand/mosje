@@ -566,6 +566,18 @@
     line-height: 21px;
   }
 
+  /* The venue's pin is the location icon beside the link, not an emoji: DBIM 3.0 §3.3
+     draws every icon from one set, and the emoji sat ON the address in the handoff. */
+  [data-design="dbim"] .db-event__venue {
+    display: flex;
+    gap: var(--sa-inline-4);
+    align-items: flex-start;
+  }
+
+  [data-design="dbim"] .db-event__venue > .material-symbols-rounded {
+    flex: none;
+  }
+
   [data-design="dbim"] .db-event__body :is(ul, ol) {
     margin: 0 0 10px;
     padding-left: var(--sa-padding-24);

@@ -69,8 +69,12 @@ right; the website's typography authoring is the defect. Full numbers in
 
 **Embed (authoritative):**
 ```html
-<script src="https://cdn.ux4g.gov.in/accessibility-v3.28/accessibility-widget.js" defer></script>
+<script src="https://cdn.ux4g.gov.in/accessibility-v3.0/accessibility-widget.js" defer></script>
 ```
+> **The pinned path moves.** UX4G deletes old builds: v3.28 (25 Sep 2026) and v3.36
+> (30 Sep 2026) both began answering 404. The live pin is `UX4G_A11Y_WIDGET_SRC` in
+> `packages/design-system/components/utilities/ux4g-accessibility-widget.tsx`; the notes below
+> were written against v3.28.
 > **v3.28 sends telemetry.** On load it beacons the full URL, referrer, user
 > agent, screen resolution and a session id to `https://audit360.ux4g.gov.in/api/track`,
 > then tracks panel opens and feature toggles. The shared wrapper disables this

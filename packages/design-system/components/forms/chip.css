@@ -60,7 +60,7 @@
     font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-bolder);
     background-color: var(--sa-bg-neutral-base);
-    border: var(--sa-stroke-1) solid var(--sa-border-neutral-base);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-bolder-default);
     border-radius: var(--sa-cmp-chip-radius);
     user-select: none;
     transition:
@@ -133,7 +133,7 @@
 
   .ds-chip--interactive:hover {
     background-color: var(--sa-bg-neutral-subtler);
-    border-color: var(--sa-border-neutral-base);
+    border-color: var(--sa-border-neutral-bolder-hover);
   }
 
   .ds-chip--interactive:active {

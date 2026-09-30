@@ -69,6 +69,30 @@ const LITERAL_OVERRIDES = {
 
 const REF = /^\{([^}]+)\}$/;
 
+/*
+ * ONLY PUBLISHED SHADES REACH A SURFACE (30 Sep 2026).
+ *
+ * DBIM publishes five shades per primary group, at rungs 100/200/400/600/800, and three greys
+ * plus Linen, at 100/200/400/600. The rungs between them are this estate's interpolation. A
+ * token that read an interpolated rung therefore painted a colour DBIM never issued — button
+ * fills and focus rings on 500, "bolder" brand text and link hover on 700, placeholders and
+ * chart axes on the #777777 grey at 500 (4.48:1, below AA). DBIM 3.0 §2.1 (only the group's
+ * shades), §4.4 (text in shade 1 or 2) and §3.7.iii (icons in the key colour) all fail there.
+ *
+ * So in a DBIM mode an interpolated rung RESOLVES to a published one: the nearest, and on a
+ * tie the darker, because the darker neighbour is the one that keeps contrast. The primitive
+ * ramps are untouched — the colour page still shows the full ladder — only what the alias
+ * layer hands to a component moves.
+ *
+ * This reverses the earlier rule that these modes "report DBIM's palette rather than correct
+ * it". That was right while they were a conformance PREVIEW; since 30 Sep 2026 the DBIM design
+ * is the public website's default and renders in `data-brand="dbim"`, so what it paints is
+ * production, and quality (WCAG) outranks the demonstration. Snapping to a published shade is
+ * also the stricter reading of DBIM, not a looser one.
+ */
+const PRIMARY_SNAP = { 50: 100, 300: 400, 500: 600, 700: 800, 900: 800 };
+const NEUTRAL_SNAP = { 300: 400, 500: 600 };
+
 /**
  * The DBIM value for one token in one group, or null if the token does not vary by brand.
  *
@@ -89,12 +113,15 @@ function dbimValueFor(path, defaultValue, groupPath) {
   // brand pack would break every re-skin that has never heard of DBIM.
   const primary = /^color\.primaryRamp\.(blue|navy)\.(\d+)$/.exec(ref);
   if (primary) {
-    return `{color.dbimPrimary.${DBIM_GROUPS[groupPath].group}.${primary[2]}}`;
+    const rung = PRIMARY_SNAP[primary[2]] ?? primary[2];
+    return `{color.dbimPrimary.${DBIM_GROUPS[groupPath].group}.${rung}}`;
   }
 
   const family = /^color\.([A-Za-z]+)\.(\d+)$/.exec(ref);
   if (family && FAMILY_MAP[family[1]]) {
-    return `{color.${FAMILY_MAP[family[1]]}.${family[2]}}`;
+    const target = FAMILY_MAP[family[1]];
+    const rung = target === "neutralDbim" ? (NEUTRAL_SNAP[family[2]] ?? family[2]) : family[2];
+    return `{color.${target}.${rung}}`;
   }
 
   return null;
@@ -153,13 +180,21 @@ function resolveDbimRef(ref) {
  */
 const PRIMARY_RUNGS = [500, 600, 700, 800];
 
+/*
+ * The fill is chosen from the PUBLISHED shades only (shade 2 at 600, shade 1 at 800), and
+ * hover is the next published shade darker. Green is the one group where shade 2 does not
+ * carry white (4.32:1): its button is shade 1, and its hover has no darker published shade to
+ * go to, so it takes rung 900 — the single place a DBIM mode paints an interpolated colour,
+ * because a hover that looks identical to rest is not a state (DBIM 3.0 §4.5.iv).
+ */
+const PUBLISHED_FILL_RUNGS = [600, 800];
+
 function accessibleActionRungs(groupPath) {
   const group = DBIM_GROUPS[groupPath].group;
   const ramp = DBIM.primary[groupPath];
-  const fallback = PRIMARY_RUNGS[PRIMARY_RUNGS.length - 1];
   const def =
-    PRIMARY_RUNGS.find((r) => contrast("#ffffff", ramp[r]) >= AA) ?? fallback;
-  const hover = Math.min(Math.max(def + 100, 700), 800);
+    PUBLISHED_FILL_RUNGS.find((r) => contrast("#ffffff", ramp[r]) >= AA) ?? 800;
+  const hover = PUBLISHED_FILL_RUNGS.find((r) => r > def) ?? 900;
   if (contrast("#ffffff", ramp[hover]) < AA) {
     throw new Error(`DBIM ${group}: no rung carries white on hover — the ramp is broken`);
   }

@@ -3,7 +3,6 @@
  * each is a static route so the tab bar is plain links with aria-current.
  */
 import { DbimPage } from "@/components/website-dbim/layout/DbimPage";
-import { DBIM_HEROES } from "@/lib/website-dbim/nav";
 import { archiveRows, DBIM_ARCHIVE_TABS, type DbimArchiveKind } from "@/lib/website-dbim/documents";
 import { DbimFileList } from "./DbimFileList";
 
@@ -16,7 +15,6 @@ export function ArchiveTab({ kind }: { kind: DbimArchiveKind }) {
       title={tab.label}
       crumbs={[{ label: "Archives", path: "/archives" }]}
       path={tab.path}
-      hero={DBIM_HEROES.default}
       heroHeight={250}
       tabs={DBIM_ARCHIVE_TABS}
       activeTab={tab.path}

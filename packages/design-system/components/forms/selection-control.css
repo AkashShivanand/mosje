@@ -184,7 +184,7 @@
     column-gap: var(--sa-inline-12);
     padding: var(--sa-padding-16);
     background: var(--sa-bg-neutral-base);
-    border: var(--sa-stroke-1) solid var(--sa-border-neutral-base);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-bolder-default);
     border-radius: var(--sa-cmp-card-radius);
     cursor: pointer;
     transition:

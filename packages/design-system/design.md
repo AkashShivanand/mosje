@@ -1544,7 +1544,7 @@ for composing something those two do not cover.
 
 | Do | Don't |
 | :--- | :--- |
-| Auto-dismiss success toasts after 4 seconds. Leave error and warning toasts persistent until manually dismissed. | Do not auto-dismiss error toasts — users may not have read the message. |
+| Auto-dismiss success and info toasts after 3 seconds, pausing while hovered or focused. Leave error and warning toasts persistent until manually dismissed. | Do not auto-dismiss error toasts — users may not have read the message. |
 | Position toasts in bottom-right (desktop) or bottom-centre (mobile). | Do not stack more than 3 toasts simultaneously — queue overflow toasts. |
 | Use `useToast()` from the design system for all notifications. | Do not use browser `alert()`, `confirm()`, or `prompt()`. |
 | Use toasts for: save confirmation, copy success, brief status updates. | Do not use toasts for critical errors, blocking confirmations, or multi-line content — use Modal or inline Alert instead. |
@@ -2762,7 +2762,7 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 #### Toast / useToast
 **Purpose**: Transient notification system.  
 **Usage**: `const toast = useToast(); toast.success("Saved!");`  
-**Rules**: Success toasts auto-dismiss (4s). Error/warning toasts are persistent. Queue overflow toasts — never display more than 3 simultaneously.
+**Rules**: Success and info toasts auto-dismiss (3s, `durationMs`), pausing on hover and focus-within (WCAG 2.2.1). Error/warning toasts are persistent. Queue overflow toasts — never display more than 3 simultaneously.
 
 #### Loader
 **Purpose**: Progress indicator for async operations.  
@@ -3932,10 +3932,12 @@ import { UX4GAccessibilityWidget } from "@mosje/design-system";
 <UX4GAccessibilityWidget />   // injects https://cdn.ux4g.gov.in/.../accessibility-widget.js, idempotently
 ```
 
-**Pinned to `accessibility-v3.36`** — the build ux4g.gov.in itself serves. **UX4G deletes
-old builds from its CDN**: v3.28, pinned here until 25 Sep 2026, began answering 404 that
-day and the panel stopped loading everywhere. If the panel disappears, `curl -I` the pinned
-URL first, then re-pin to whatever ux4g.gov.in's own page loads and re-check the skin.
+**Pinned to `accessibility-v3.0`** — the build ux4g.gov.in itself serves (republished
+30 Sep 2026; its header says 3.0 but it is the current build). **UX4G deletes old builds
+from its CDN**: v3.28 went on 25 Sep 2026 and v3.36 on 30 Sep, and each time the panel
+stopped loading everywhere. `.github/workflows/ux4g-widget-pin.yml` now requests the pinned
+URL every day and fails when it stops answering. If it fails, re-pin to whatever
+ux4g.gov.in's own page loads and re-check the skin.
 Upgraded to v3.x from `accessibility-beta-v1.15`, which had two defects the estate worked around in
 code and v3.x fixes upstream: `detectRouteChange()` dereferenced its settings with no
 null check, and `loadSettings()` restored state by calling the widget's own CLICK

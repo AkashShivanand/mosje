@@ -322,7 +322,9 @@
     letter-spacing: var(--sa-type-caps-tracking);
     text-transform: uppercase;
     font-weight: var(--sa-font-weight-semibold);
-    /* `subtler` is 4.65:1 only on white; the menu ground is bg/neutral/base, which is white. */
+    /* `subtler` on the menu's bg/neutral/base (white): 4.65:1 blue, 4.64:1 navy, 6.29:1
+       every dbim-* brand — measured 30 Sep 2026. It clears AA by a hair in blue/navy,
+       so any darker ground or lighter subtler token must be re-measured here. */
     color: var(--sa-text-neutral-subtler);
   }
 

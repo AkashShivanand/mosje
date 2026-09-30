@@ -7,7 +7,7 @@ import { Button, Icon } from "@mosje/design-system";
 
 import { DBIM_MENU, dbimHref, dbimMenuFor, type DbimMenu } from "@/lib/website-dbim/nav";
 
-/** The path inside the DBIM tree, whichever address served it (`/website/…` or `/website-dbim/…`). */
+/** The path inside the DBIM tree, from the `/website/…` address that served it. */
 export function useDbimPath(): string {
   const pathname = usePathname() ?? "/";
   const inner = pathname.replace(/^\/website(-dbim)?(?=\/|$)/, "");

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import type { FieldSize } from "./field-types";
+import { resolveFieldStatus, type FieldSize, type FieldStatus } from "./field-types";
 import { formatPan, isValidPan } from "../../utils/india-id";
 import "./forms.css";
 import "./india-id.css";
@@ -16,7 +16,13 @@ export interface PanInputProps
   value: string;
   /** Called with the normalised value — already uppercased and stripped. */
   onValueChange: (pan: string) => void;
-  /** Render the error state (sets aria-invalid). @default false */
+  /**
+   * The condition the field is in, as on `Input`. `FormField` hands this over, so it is
+   * taken here rather than leaking onto the `<input>` as an unknown attribute. Takes
+   * precedence over `invalid`.
+   */
+  status?: FieldStatus;
+  /** Legacy alias for `status="error"` (sets aria-invalid). @default false */
   invalid?: boolean;
   /**
    * Control height, matching the Input scale. Declared here because the native
@@ -45,8 +51,15 @@ export interface PanInputProps
  * </FormField>
  */
 export const PanInput = React.forwardRef<HTMLInputElement, PanInputProps>(
-  function PanInput({ value, onValueChange, invalid = false, size = "md", className, ...rest }, ref) {
+  function PanInput(
+    { value, onValueChange, status, invalid = false, size = "md", className, ...rest },
+    ref,
+  ) {
     const complete = value.length === 10;
+    // A complete PAN in the wrong shape is an error in its own right, so the border draws it
+    // even before the caller's validation has run.
+    const checkFailed = complete && !isValidPan(value);
+    const resolved = resolveFieldStatus(status, invalid) ?? (checkFailed ? "error" : undefined);
 
     return (
       <input
@@ -54,6 +67,7 @@ export const PanInput = React.forwardRef<HTMLInputElement, PanInputProps>(
         type="text"
         className={cn("ds-input", `ds-input--${size}`, "ds-input--pan", className)}
         data-size={size}
+        data-status={resolved}
         value={value}
         onChange={(e) => onValueChange(formatPan(e.target.value))}
         inputMode="text"
@@ -64,7 +78,7 @@ export const PanInput = React.forwardRef<HTMLInputElement, PanInputProps>(
         spellCheck={false}
         maxLength={10}
         placeholder="ABCPE1234F"
-        aria-invalid={invalid || (complete && !isValidPan(value)) || undefined}
+        aria-invalid={resolved === "error" || checkFailed || undefined}
         {...rest}
       />
     );

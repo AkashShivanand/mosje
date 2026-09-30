@@ -24,10 +24,10 @@ export const metadata: Metadata = {
     images: [OG_CARD_IMAGE],
   },
   twitter: { card: "summary_large_image" },
-  /* A comparison design, reached at the /website addresses through the demo rail's
-     Website tab (lib/website-design/constants.ts). Its own /website-dbim addresses
-     are copies and are never indexed. */
-  robots: { index: false, follow: false },
+  /* The DEFAULT design since 30 Sep 2026, served at the /website addresses
+     (lib/website-design/constants.ts), so no robots rule here — it would follow the
+     page to /website. The /website-dbim folder is never an address: proxy.ts
+     redirects it to /website. */
 };
 
 /**

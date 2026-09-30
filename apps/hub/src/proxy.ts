@@ -4,7 +4,7 @@ import { GATE_COOKIE, GATE_EMBLEM_SRC, resolveGateToken, safeEqual } from "@/lib
 import { ADMIN_PREVIEW_COOKIE, expectedPreviewToken } from "@/lib/admin/tokens";
 import type { RegistryConfig } from "@mosje/design-system/registry";
 import { blockedEntry, hiddenFrom, readRegistryConfig } from "@/lib/registry/config";
-import { WEBSITE_DESIGN_COOKIE, designRewriteTarget, parseWebsiteDesign } from "@/lib/website-design/constants";
+import { WEBSITE_DESIGN_COOKIE, designRewriteTarget, designTreeOf, parseWebsiteDesign } from "@/lib/website-design/constants";
 
 /**
  * Multi-zone resilience (dev-time safeguard).
@@ -377,6 +377,28 @@ export async function proxy(req: NextRequest): Promise<NextResponse> {
       const url = req.nextUrl.clone();
       url.pathname = target;
       return finish(NextResponse.rewrite(url));
+    }
+  }
+
+  /*
+   * The design trees' own folders are internal. `/website-dbim/…` and `/website-classic/…`
+   * exist only because Next serves one page tree per folder; the rewrite above is how a
+   * visitor reaches them. Typed or shared directly, they would be a second address for
+   * every page, so they redirect to the one real address — and set the design, so an old
+   * link still opens the design it was copied from.
+   */
+  {
+    const tree = designTreeOf(pathname);
+    if (tree) {
+      const url = req.nextUrl.clone();
+      url.pathname = tree.publicPath;
+      const response = NextResponse.redirect(url, 308);
+      response.cookies.set(WEBSITE_DESIGN_COOKIE, tree.design, {
+        path: "/",
+        maxAge: 31536000,
+        sameSite: "lax",
+      });
+      return finish(response);
     }
   }
 

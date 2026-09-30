@@ -127,9 +127,12 @@
     transition: border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), box-shadow var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
+  /* The estate's focus ring, drawn on the box because the input inside it has
+     `outline: none`. It was a `bg-brand-primary-subtler` tint that measured
+     1.14–1.55:1 against the page — no visible focus indicator (WCAG 2.4.7). */
   .ds-error-view__search-box:focus-within {
     border-color: var(--sa-border-brand-primary-base);
-    outline: var(--sa-focus-width) solid var(--sa-bg-brand-primary-subtler);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
     outline-offset: var(--sa-focus-offset);
   }
 

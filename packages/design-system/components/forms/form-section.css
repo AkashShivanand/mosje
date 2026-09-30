@@ -83,12 +83,18 @@
   .ds-form-panel__foot > .ds-btn,
   .ds-form-panel__foot .sa-form__actions-buttons > .ds-btn {
     flex-shrink: 0;
+    /* …except where one button alone is wider than the band (a long label at 320px): then its
+       label wraps inside the button rather than pushing the button past the panel's edge. */
+    max-inline-size: 100%;
   }
 
   .ds-form-panel__foot {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    /* The buttons do not shrink, so without wrapping a two-action foot overflowed its panel at
+       320px (WCAG 1.4.10). They wrap to a second row instead. */
+    flex-wrap: wrap;
     gap: var(--sa-inline-12);
     padding: var(--sa-padding-24);
     background-color: var(--sa-bg-neutral-subtler);

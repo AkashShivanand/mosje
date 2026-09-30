@@ -272,6 +272,15 @@ export function AccessibilityControls({
 
   if (!fontSize && !accessibility && !language) return null;
 
+  /* THE LIMIT IS aria-disabled, NEVER THE NATIVE ATTRIBUTE (WCAG 2.4.3). A reader
+     pressing A+ until it stops is holding focus ON A+; `disabled` removed the button
+     from focus at that exact moment and dropped the reader on <body>, back at the top
+     of the page. `aria-disabled` keeps focus where it is and still announces
+     "dimmed"; the click is dropped here, and `setScaleIndex` clamps as a second
+     guard. The same pattern as Button's `preserveFocus`. */
+  const atMin = index === 0;
+  const atMax = index === FONT_SCALES.length - 1;
+
   const resetLabel =
     index === DEFAULT_SCALE_INDEX
       ? `Text size: ${percent}% (default)`
@@ -291,8 +300,8 @@ export function AccessibilityControls({
               <button
                 type="button"
                 className={cn("sa-a11yc__step", index < DEFAULT_SCALE_INDEX && "is-active")}
-                onClick={decrease}
-                disabled={index === 0}
+                onClick={atMin ? undefined : decrease}
+                aria-disabled={atMin || undefined}
                 aria-label="Decrease text size"
               >
                 <Icon name="text_decrease" size={ICON_SIZE} aria-hidden />
@@ -305,8 +314,8 @@ export function AccessibilityControls({
               <button
                 type="button"
                 className={cn("sa-a11yc__step", index > DEFAULT_SCALE_INDEX && "is-active")}
-                onClick={increase}
-                disabled={index === FONT_SCALES.length - 1}
+                onClick={atMax ? undefined : increase}
+                aria-disabled={atMax || undefined}
                 aria-label="Increase text size"
               >
                 <Icon name="text_increase" size={ICON_SIZE} aria-hidden />
@@ -345,8 +354,8 @@ export function AccessibilityControls({
             <button
               type="button"
               className={cn("sa-abar__fsbtn", index < DEFAULT_SCALE_INDEX && "is-active")}
-              onClick={decrease}
-              disabled={index === 0}
+              onClick={atMin ? undefined : decrease}
+              aria-disabled={atMin || undefined}
               aria-label="Decrease text size"
             >
               <Icon name="text_decrease" size={ICON_SIZE} aria-hidden />
@@ -378,8 +387,8 @@ export function AccessibilityControls({
             <button
               type="button"
               className={cn("sa-abar__fsbtn", index > DEFAULT_SCALE_INDEX && "is-active")}
-              onClick={increase}
-              disabled={index === FONT_SCALES.length - 1}
+              onClick={atMax ? undefined : increase}
+              aria-disabled={atMax || undefined}
               aria-label="Increase text size"
             >
               <Icon name="text_increase" size={ICON_SIZE} aria-hidden />
@@ -409,13 +418,20 @@ export function AccessibilityControls({
 
       {language && (
         /* raw-button-ok(primitive): the bar's language control — a composite of a glyph, a label and a caret, sized by --sa-cmp-accessibilityBar-iconButtonSize */
-        <button type="button" className="sa-abar__icbtn has-text" aria-label="Select language" title="Select language" onClick={language.onClick}>
+        <button type="button" className="sa-abar__icbtn has-text" title="Select language" onClick={language.onClick}>
           {/* Glyph + label are the master's `Label` frame — 4px apart, not the 8px
               the row uses between that unit and the caret. */}
           <span className="sa-abar__langlabel">
             <Icon name="translate_indic" size={ICON_SIZE} aria-hidden />
             {language.label && <span lang={language.lang}>{language.label}</span>}
           </span>
+          {/* LABEL IN NAME (WCAG 2.5.3, Level A). An `aria-label="Select language"`
+              replaced the visible "English", so a voice-control user saying "click
+              English" matched nothing. The name is now built from the content — the
+              visible label first, in its own `lang`, then this hidden suffix — so it
+              reads "English, select language". With no label shown, the suffix is
+              the whole name. */}
+          <span className="sa-abar__sr">{language.label ? ", select language" : "Select language"}</span>
           <Icon name="arrow_drop_down" size={ICON_SIZE} aria-hidden />
         </button>
       )}

@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "DBIM WEBSITE: NO MORE BROKEN WORDS IN THE MAIN MENU OR THE DOCUMENT LISTS. From 992 to 1536px the active menu item set in 24px Bold as \"Documen / ts\" and, at 992, \"Minis / try\", because each slot was exactly 160px; a slot is now at least 160 and the label never wraps. On a 320px phone a document title was given 72px beside its label, icon and count, and set \"Commissi / ons\" — the label now takes its own line, the title shares the next with its icon and count, and only a word longer than the line may break. A scan of all 38 pages at 320, 390, 768, 1024, 1440 and 1920 finds no overlapping text and no mid-word break left."
+}

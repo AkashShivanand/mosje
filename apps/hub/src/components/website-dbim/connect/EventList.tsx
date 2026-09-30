@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { Icon } from "@mosje/design-system";
 import type { DbimEvent } from "@/lib/website-dbim/connect";
 import { DbimEmptyState } from "@/components/website-dbim/ui/EmptyState";
 import { DbimPager } from "./ListStates";
@@ -31,8 +32,8 @@ export function DbimEventList({ events, total, page, pageCount }: { events: Dbim
                 {e.end && ` , Event End: ${e.end}`}
               </p>
               {e.venue && (
-                <p>
-                  <span aria-hidden="true">📍</span>
+                <p className="db-event__venue">
+                  <Icon name="location_on" size={20} aria-hidden />
                   <a href={e.venueHref} target="_blank" rel="noopener noreferrer">
                     {e.venue}
                     <span className="sr-only"> (map, opens in a new tab)</span>

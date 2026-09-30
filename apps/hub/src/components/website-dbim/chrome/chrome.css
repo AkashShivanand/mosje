@@ -492,6 +492,7 @@
 
   [data-design="dbim"] .db-nav__label {
     font-size: 1.25rem; /* 20px */
+    white-space: nowrap;
     font-weight: var(--sa-font-weight-semibold);
     line-height: normal;
     color: var(--sa-color-text-default);
@@ -612,9 +613,13 @@
 
   /* The labels keep the desktop scale down to the phone menu (DBIM 3.0 §4.3.1): the
      reference's 16px SemiBold at 1280–1536 is a weight Table 3 does not allow at 16. */
+  /* AT LEAST 160, not exactly: the active label steps up to 24px Bold, and "Documents"
+     with its chevron is ~170px — in a fixed 160 it broke into "Documen / ts". The one
+     slot that needs more takes it; the row has 30px or more to spare at every width. */
   @media (max-width: 1536px) {
     [data-design="dbim"] .db-nav__item {
-      width: 160px;
+      width: auto;
+      min-width: 160px;
     }
   }
 

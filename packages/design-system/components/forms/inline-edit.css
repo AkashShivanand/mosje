@@ -56,7 +56,7 @@
     min-inline-size: 0;
     min-block-size: var(--sa-control-height-sm);
     padding-inline: var(--sa-padding-8);
-    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-bolder-default);
     border-radius: var(--sa-control-radius);
     background: var(--sa-bg-neutral-base);
     color: var(--sa-text-neutral-bolder);

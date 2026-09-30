@@ -14,7 +14,7 @@
     justify-content: center;
     inline-size: var(--_box);
     block-size: var(--_box);
-    border: var(--sa-control-selection-border-width) solid var(--sa-border-neutral-base);
+    border: var(--sa-control-selection-border-width) solid var(--sa-border-neutral-bolder-default);
     border-radius: var(--sa-control-selection-radius);
     background-color: var(--sa-bg-neutral-base);
     color: var(--sa-on-bg-brand-primary-bolder);

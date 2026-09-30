@@ -42,7 +42,7 @@
     display: flex;
     align-items: stretch;
     margin-block-start: var(--sa-stack-4);
-    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-bolder-default);
     border-radius: var(--sa-control-radius);
     background-color: var(--sa-bg-neutral-base);
     /* The ring goes on the WRAPPER, not the input: the affixes and the steppers

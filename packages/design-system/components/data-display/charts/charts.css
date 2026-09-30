@@ -854,25 +854,38 @@
     .ds-progress__fill,
     /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- `exact` is a keyword, not a colour */
     .ds-funnel__bar { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
-    .ds-chart > table.ds-sr-only {
-      position: static;
+    /* The hidden table is WRAPPED — `<div class="ds-sr-only"><table>` — since the
+       13 Sep 2026 fix that stopped a 1px table widening the page. This rule still
+       targeted `> table.ds-sr-only`, matched nothing, and every chart printed with
+       no data. Unhide the wrapper; style the table inside it.
+
+       `!important`, like the tooltip rule above, because `.ds-sr-only` is declared
+       in many stylesheets and some consumers declare it UNLAYERED (the docs kit
+       does), which outranks anything in this layer. Printing the data is the whole
+       point of this block; it must win wherever the hiding rule came from. */
+    .ds-chart > .ds-sr-only {
+      position: static !important;
+      width: 100% !important;
+      height: auto !important;
+      margin: var(--sa-padding-12) 0 0 !important;
+      overflow: visible !important;
+      clip: auto !important;
+      clip-path: none !important;
+      white-space: normal !important;
+    }
+    .ds-chart > .ds-sr-only > table {
       width: 100%;
-      height: auto;
-      margin: var(--sa-padding-12) 0 0;
-      overflow: visible;
-      clip: auto;
-      white-space: normal;
       border-collapse: collapse;
       font-size: var(--sa-type-body-3-size);
     }
-    .ds-chart > table.ds-sr-only caption {
+    .ds-chart > .ds-sr-only caption {
       text-align: start;
       font-weight: var(--sa-font-weight-semibold);
       padding-block-end: var(--sa-padding-4);
     }
-    .ds-chart > table.ds-sr-only thead { display: table-header-group; }
-    .ds-chart > table.ds-sr-only th,
-    .ds-chart > table.ds-sr-only td {
+    .ds-chart > .ds-sr-only thead { display: table-header-group; }
+    .ds-chart > .ds-sr-only th,
+    .ds-chart > .ds-sr-only td {
       padding: var(--sa-padding-4) var(--sa-padding-8);
       border-block-end: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
       text-align: start;

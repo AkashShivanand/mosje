@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DbimPage } from "@/components/website-dbim/layout/DbimPage";
 import { DbimPersonaGrid } from "@/components/website-dbim/utility/PersonaGrid";
-import { DBIM_HEROES } from "@/lib/website-dbim/nav";
 import { DBIM_PERSONAS, dbimPersona } from "@/lib/website-dbim/utility";
 import "@/components/website-dbim/utility/utility.css";
 
@@ -25,7 +24,7 @@ export default async function Page({ params }: Props) {
   const persona = dbimPersona((await params).slug);
   if (!persona) notFound();
   return (
-    <DbimPage spacing="flush" title={persona.title} crumbs={[{ label: persona.title }]} path={`/persona/${persona.slug}`} hero={DBIM_HEROES.default}>
+    <DbimPage spacing="flush" title={persona.title} crumbs={[{ label: persona.title }]} path={`/persona/${persona.slug}`}>
       <div className="db-u-flush">
         <DbimPersonaGrid persona={persona} />
       </div>

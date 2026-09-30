@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "THE ACCESSIBILITY PANEL LOADS AGAIN, AND STAYS OFF THE TELEMETRY. UX4G deleted the pinned v3.36 build on 30 Sep 2026, as it deleted v3.28 on 25 Sep: the script answered 404, the browser blocked it, and every accessibility button fell back to the Accessibility Statement. `UX4GAccessibilityWidget` now pins `accessibility-v3.0`, the build ux4g.gov.in itself loads — republished that morning, checked to carry every hook the skin and the component rely on. That build also starts one tick later and reports to a new address (`www.ux4g.gov.in/docsapi/track`), so the old switch-off ran before its analytics existed and a page view was sent; the switch now traps the moment the widget exposes its analytics, and no request leaves. `npm run check:ux4g-pin` and a daily workflow now request the pinned build, so the next deletion fails a check instead of going unnoticed."
+}
