@@ -590,26 +590,47 @@
   }
 
   [data-design="dbim"] .db-sd__h {
-    margin: 0 0 5px;
+    margin: 0 0 var(--sa-stack-12);
     font-size: var(--db-fs-h2);
     font-weight: var(--sa-font-weight-regular);
     line-height: 2rem; /* 32px */
     color: var(--sa-color-primaryScale-800);
   }
 
+  /* Sections are separated by the reference's 32px docsHeading offset, all of them —
+     not only Documents — so each section reads as its own block. */
+  [data-design="dbim"] :is(.db-sd__section, .db-sd__docs) + :is(.db-sd__section, .db-sd__docs) {
+    margin-top: var(--sa-stack-32);
+  }
+
   [data-design="dbim"] .db-sd__prose {
-    margin-bottom: 10px;
     font-size: var(--db-fs-p);
-    line-height: 1.5rem; /* 24px */
+    line-height: var(--db-lh-p);
     text-align: left; /* DBIM 3.0 §4.1.1 i: body text is left-aligned. The reference justified it. */
   }
 
-  [data-design="dbim"] .db-sd__prose :is(p, ul, ol, table) {
-    margin: 0 0 10px;
+  [data-design="dbim"] .db-sd__prose + .db-sd__prose {
+    margin-top: var(--sa-stack-16);
+  }
+
+  /* A readable measure: the 860px column held some 110 characters a line. One
+     length for text and sub-headings alike — in ch, a larger heading would run
+     past the paragraph under it. */
+  [data-design="dbim"] .db-sd__prose :is(p, ul, ol, h2, h3, h4) {
+    max-width: 43rem; /* ≈75 characters of 16px Noto Sans */
+  }
+
+  [data-design="dbim"] .db-sd__prose :is(p, ul, ol, table, .wn-table-wrap) {
+    margin: 0 0 var(--sa-stack-16);
+  }
+
+  [data-design="dbim"] .db-sd__prose > :last-child,
+  [data-design="dbim"] .db-sd__prose > div > :last-child {
+    margin-bottom: 0;
   }
 
   [data-design="dbim"] .db-sd__prose :is(ul, ol) {
-    padding-left: var(--sa-padding-20);
+    padding-left: var(--sa-padding-24);
   }
 
   [data-design="dbim"] .db-sd__prose ul {
@@ -620,16 +641,42 @@
     list-style: decimal;
   }
 
+  [data-design="dbim"] .db-sd__prose ol[type="a"] {
+    list-style: lower-alpha;
+  }
+
+  [data-design="dbim"] .db-sd__prose li + li {
+    margin-top: var(--sa-stack-8);
+  }
+
+  /* A nested list sits under its item, not a paragraph's width away. */
+  [data-design="dbim"] .db-sd__prose li > :is(ul, ol) {
+    margin: var(--sa-stack-8) 0 0;
+  }
+
+  [data-design="dbim"] .db-sd__prose li::marker {
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  /* Sub-headings inside a section: one step below the section heading, with more
+     space above than below, so each belongs to the text it introduces. */
   [data-design="dbim"] .db-sd__prose :is(h2, h3, h4) {
-    margin: 0 0 5px;
-    font-size: var(--db-fs-h2);
-    font-weight: var(--sa-font-weight-medium);
-    line-height: 1.2;
+    margin: var(--sa-stack-24) 0 var(--sa-stack-8);
+    font-size: var(--db-fs-h3);
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: var(--db-lh-h3);
+    color: var(--sa-color-primaryScale-800);
     text-align: left;
   }
 
-  [data-design="dbim"] .db-sd__prose :is(h3, h4) {
-    font-size: var(--db-fs-h3);
+  [data-design="dbim"] .db-sd__prose h4 {
+    font-size: var(--db-fs-p);
+    line-height: var(--db-lh-p);
+  }
+
+  [data-design="dbim"] .db-sd__prose > :is(h2, h3, h4):first-child,
+  [data-design="dbim"] .db-sd__prose > div:first-child > :is(h2, h3, h4):first-child {
+    margin-top: 0;
   }
 
   [data-design="dbim"] .db-sd__prose strong {
@@ -693,10 +740,6 @@
   [data-design="dbim"] .db-sd__register .wn-table-wrap:focus-visible {
     outline: 2px solid var(--sa-color-primaryScale-800);
     outline-offset: 2px;
-  }
-
-  [data-design="dbim"] .db-sd__docs {
-    margin-top: var(--sa-padding-32);
   }
 
   [data-design="dbim"] .db-sd__docs ul {

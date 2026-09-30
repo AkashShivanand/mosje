@@ -17,6 +17,7 @@ import {
 import { SCHEME_GROUPS, SCHEME_IMAGE, listedScheme, listedSchemes, type ListedScheme } from "@/lib/website-shared/scheme-listing";
 import { SD_SCHEMES } from "@/lib/explorations/service-discovery-master";
 import { dbimFeedTitle } from "./home-mid";
+import { tidyProse } from "./prose";
 import { DBIM_APPLICANT_TYPES } from "./applicants";
 import { getDbimContact } from "./connect";
 
@@ -216,7 +217,9 @@ const REGISTER_ROWS = 20;
 const text = (html: string) =>
   html.replace(/<[^>]+>/g, " ").replace(/&nbsp;/gi, " ").replace(/&amp;/gi, "&").replace(/&#0?39;|&rsquo;/gi, "’").replace(/\s+/g, " ").trim();
 
-function toParts(html: string): DbimSchemePart[] {
+function toParts(raw: string): DbimSchemePart[] {
+  /* The page's own structure — sub-headings, lists, paragraphs — restored first (prose.ts). */
+  const html = tidyProse(raw);
   const parts: DbimSchemePart[] = [];
   const re = /<div class="wn-table-wrap"[^>]*>\s*<table[^>]*>([\s\S]*?)<\/table>\s*<\/div>/gi;
   let last = 0;
