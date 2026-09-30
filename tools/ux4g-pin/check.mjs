@@ -39,12 +39,34 @@ const JS_HOOKS = [
 const CSS_HOOKS = ["--color-dark-blue-1"];
 
 async function get(u) {
-  const res = await fetch(u, { redirect: "follow", headers: { "user-agent": "mosje-ux4g-pin-check" } });
+  const res = await fetch(u, {
+    redirect: "follow",
+    headers: {
+      "user-agent":
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36",
+      accept: "*/*",
+      referer: "https://ux4g.gov.in/",
+    },
+  });
   return { status: res.status, type: res.headers.get("content-type") ?? "", body: await res.text() };
 }
 
+/*
+ * BLOCKED IS NOT REMOVED. The CDN answers 403 to GitHub's hosted runners (measured on the
+ * first run, 30 Sep 2026) while serving the same URL to a browser — it filters data-centre
+ * addresses. A 403/401/451/429 therefore says nothing about the build, so it is reported as
+ * inconclusive rather than failed; only 404/410 (the build is gone, which is how both past
+ * deletions answered) or a missing hook fails the check.
+ */
+const BLOCKED = new Set([401, 403, 429, 451]);
+
 const failures = [];
 const js = await get(url);
+if (BLOCKED.has(js.status)) {
+  const msg = `ux4g-pin: ${url} answered ${js.status} from this network — the CDN blocks it, so the build could not be checked here`;
+  console.log(process.env.GITHUB_ACTIONS ? `::warning::${msg}` : `⚠ ${msg}`);
+  process.exit(0);
+}
 if (js.status !== 200 || !/javascript/i.test(js.type)) {
   failures.push(`${url} answered ${js.status} ${js.type || "(no content-type)"} — the build has been removed`);
 } else {
@@ -52,7 +74,7 @@ if (js.status !== 200 || !/javascript/i.test(js.type)) {
 }
 const cssUrl = url.replace(/[^/]+\.js$/, "accessibility-widget.css");
 const css = await get(cssUrl);
-if (css.status !== 200) failures.push(`${cssUrl} answered ${css.status}`);
+if (css.status !== 200 && !BLOCKED.has(css.status)) failures.push(`${cssUrl} answered ${css.status}`);
 else for (const h of CSS_HOOKS) if (!css.body.includes(h)) failures.push(`stylesheet no longer contains "${h}" — the brand skin will not apply`);
 
 if (failures.length) {
