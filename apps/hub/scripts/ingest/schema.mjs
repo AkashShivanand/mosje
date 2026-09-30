@@ -14,6 +14,7 @@ export const sectionRecordSchema = z.object({
   website: z.string().optional(),
   category: z.string().optional(),
   targetGroup: z.array(z.string()).optional(),
+  status: z.enum(["Active", "Archived"]).optional(),
 });
 
 export const collectionFileSchema = z.array(sectionRecordSchema);
@@ -25,6 +26,7 @@ export const fileRecordSchema = z.object({
   date: z.string().optional(),
   category: z.string().optional(),
   fileUrl: z.string().url().optional(),
+  status: z.enum(["Active", "Archived"]).optional(),
 });
 
 export const fileCollectionFileSchema = z.array(fileRecordSchema);

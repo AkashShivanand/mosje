@@ -3,7 +3,8 @@ import Link from "next/link";
 import { Icon, SectionTitle, buttonClasses } from "@mosje/design-system";
 import { PageLayout } from "@/components/website-next/layout/PageLayout";
 import { RecordTable, type RecordColumn } from "@/components/website-next/ui/RecordTable";
-import { archivedOn, dedupeNotices, displayNoticeTitle, isArchived, tidyTitle } from "@/components/website-next/ui/records";
+import { archivedOn, dedupeNotices, displayNoticeTitle, tidyTitle } from "@/components/website-next/ui/records";
+import { isArchivedRecord } from "@/lib/website-shared/records";
 import { getContentSyncedDate, getTenders, getVacancies } from "@/lib/website/content";
 import { socialCard } from "@/lib/seo/social";
 import "@/components/website-next/templates/records.css";
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
  * its publish date. The register publishes no closing date for tenders or
  * vacancies, so the publish date is the only date the rule can read; the
  * "Archived" column is that date plus twelve months, derived, not recorded.
- * The same rule (`isArchived`) removes the item from /tenders and /vacancies,
+ * The same rule (`isArchivedRecord`) removes the item from /tenders and /vacancies,
  * so an item is on exactly one of the two pages.
  */
 const columns: RecordColumn[] = [
@@ -35,12 +36,12 @@ const columns: RecordColumn[] = [
   { key: "document", label: "Document", type: "link", hrefKey: "fileUrl" },
 ];
 
-type FileRow = { slug: string; title: string; date?: string; fileUrl?: string };
+type FileRow = { slug: string; title: string; date?: string; fileUrl?: string; status?: "Active" | "Archived" };
 
 /* Tender titles: listed once, and a title cut by the ingest ends in an ellipsis (see /tenders). */
 const toRows = (items: FileRow[], base: string, notices = false) =>
   (notices ? dedupeNotices(items) : items)
-    .filter((i) => isArchived(i.date))
+    .filter(isArchivedRecord)
     .map((i) => ({
       title: notices ? displayNoticeTitle(i.title) : tidyTitle(i.title),
       href: `${base}/${i.slug}`,

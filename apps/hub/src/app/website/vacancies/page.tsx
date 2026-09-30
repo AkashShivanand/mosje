@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { DocumentCatalog } from "@/components/website-next/templates/DocumentCatalog";
-import { isArchived } from "@/components/website-next/ui/records";
+import { isCurrentRecord } from "@/lib/website-shared/records";
 import { getVacancies, getContentSyncedDate } from "@/lib/website/content";
 import { socialCard } from "@/lib/seo/social";
 
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
  */
 export default function VacanciesPage() {
   const vacancies = getVacancies()
-    .filter((v) => !isArchived(v.date))
+    .filter(isCurrentRecord)
     .map((v) => ({ slug: v.slug, title: v.title, date: v.date, sourceUrl: v.fileUrl }));
 
   return (

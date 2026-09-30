@@ -13,7 +13,8 @@
     "targetGroup": [
       "Safai Karamcharis",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "2998",
@@ -28,7 +29,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Scheduled Castes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "aajeevika-microfinance-yojana",
@@ -43,7 +45,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Scheduled Castes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "ashram-shalas",
@@ -67,7 +70,8 @@
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "assistance-for-skill-development-of-obcs-dnts-ebcs",
@@ -92,7 +96,8 @@
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Other Backward Classes",
       "Voluntary Organisations"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "assistance-to-students-of-dnts-studying-in-self-financed-institutes",
@@ -112,7 +117,8 @@
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "atal-vayo-abhyuday-yojana-avyay",
@@ -144,7 +150,8 @@
     "targetGroup": [
       "Senior Citizens",
       "Voluntary Organisations"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "award-of-stipend-to-vjnt-and-sbc-students-studying-in-iti",
@@ -176,7 +183,8 @@
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "awareness-camp-nbcfdc",
@@ -186,7 +194,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Other Backward Classes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "awareness-camps",
@@ -201,7 +210,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Safai Karamcharis"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "awareness-program-and-grant",
@@ -221,7 +231,8 @@
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Voluntary Organisations"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "babu-jagjivan-ram-all-india-essay-competition-scheme",
@@ -231,7 +242,8 @@
     "category": "Awards and Recognition",
     "targetGroup": [
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "babu-jagjivan-ram-chair-scheme",
@@ -241,7 +253,8 @@
     "category": "Awards and Recognition",
     "targetGroup": [
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "babu-jagjivan-ram-scheme-for-celebration-of-birth-death-anniversary-of-great-saints",
@@ -251,7 +264,8 @@
     "category": "Grants to Voluntary Organisations",
     "targetGroup": [
       "Voluntary Organisations"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "basti-development-scheme",
@@ -278,7 +292,8 @@
     "category": "Housing and Settlement",
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "central-sector-scheme-of-national-overseas-scholarship",
@@ -303,7 +318,8 @@
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Scheduled Castes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "central-sector-scholarship-of-top-class-education-for-sc-students",
@@ -327,7 +343,8 @@
     "targetGroup": [
       "Scheduled Castes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "centrally-sponsored-scheme-for-implementation-of-the-protection-of-civil-rights-act-1955-and-the-scheduled-castes-and-the-scheduled-tribes-prevention-of-atrocities-act-1989",
@@ -363,7 +380,8 @@
     "targetGroup": [
       "Scheduled Castes",
       "Victims of Atrocities"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "changes-in-the-centrally-sponsored-scheme-of-pre-matric-scholarship-to-children-of-those-engaged-in-unclean-occupations",
@@ -374,7 +392,8 @@
     "targetGroup": [
       "Safai Karamcharis",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "civil-service-incentive-scheme",
@@ -398,7 +417,8 @@
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "cm-housing-rent-scheme",
@@ -426,7 +446,8 @@
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "commencement-managment-of-ashram-schools",
@@ -446,7 +467,8 @@
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "construction-of-hostels-for-obc-boys-and-girls",
@@ -470,7 +492,8 @@
     "targetGroup": [
       "Other Backward Classes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "credit-enhancement-guarantee-scheme-for-the-scheduled-castes-scs",
@@ -493,7 +516,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Scheduled Castes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "data-of-central-assistance-released-to-states-uts-for-last-5-years-i-e-2020-21-to-2024-25-along-with-no-of-atrocity-victims-and-no-of-couples-provided-incentives",
@@ -504,7 +528,8 @@
     "targetGroup": [
       "Scheduled Castes",
       "Victims of Atrocities"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "district-level-prizes-for-public-examination-10th-and-12th",
@@ -533,7 +558,8 @@
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Other Backward Classes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "dnt-employment-scheme",
@@ -552,7 +578,8 @@
     "category": "Skill Training and Livelihood",
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "dr-ambedkar-centre-of-excellence-free-coaching-scheme-2",
@@ -577,7 +604,8 @@
       "Other Backward Classes",
       "Scheduled Castes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "dr-ambedkar-chairs-revised-in-2022-2",
@@ -600,7 +628,8 @@
     "category": "Awards and Recognition",
     "targetGroup": [
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "dr-ambedkar-foundation-national-essay-competition-scheme-2",
@@ -623,7 +652,8 @@
     "category": "Awards and Recognition",
     "targetGroup": [
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "dr-ambedkar-medical-aid-scheme",
@@ -646,7 +676,8 @@
     "category": "Care, Health and Shelter",
     "targetGroup": [
       "Scheduled Castes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "dr-ambedkar-national-merit-award-for-meritorious-students-of-secondary-examination-belonging-to-scheduled-castes-and-scheduled-tribes-2",
@@ -670,7 +701,8 @@
     "targetGroup": [
       "Scheduled Castes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "dr-ambedkar-national-merit-award-scheme-for-meritorious-students-of-senior-secondary-school-examination-belonging-to-scheduled-caste-2",
@@ -694,7 +726,8 @@
     "targetGroup": [
       "Scheduled Castes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "dr-ambedkar-scheme-for-celebration-of-birth-death-anniversary-of-great-saints-revised-in-2022-2",
@@ -717,7 +750,8 @@
     "category": "Grants to Voluntary Organisations",
     "targetGroup": [
       "Voluntary Organisations"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "dr-ambedkar-scheme-for-social-integration-through-inter-caste-marriages-dr-ambedkar-national-relief-to-the-scheduled-castes-scheduled-tribes-victims-of-atrocities-2",
@@ -741,7 +775,8 @@
     "targetGroup": [
       "Scheduled Castes",
       "Victims of Atrocities"
-    ]
+    ],
+    "status": "Archived"
   },
   {
     "slug": "dr-ambedkar-scheme-of-interest-subsidy-on-educational-loan-for-overseas-studies-for-obcs-ebcs",
@@ -761,7 +796,8 @@
     "targetGroup": [
       "Other Backward Classes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "education-loan-el",
@@ -777,7 +813,8 @@
     "targetGroup": [
       "Safai Karamcharis",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "educational-loan-schemeels",
@@ -793,7 +830,8 @@
     "targetGroup": [
       "Other Backward Classes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "elderline",
@@ -816,7 +854,8 @@
     "category": "Care, Health and Shelter",
     "targetGroup": [
       "Senior Citizens"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "excellent-award-scheme-for-social-workers",
@@ -843,7 +882,8 @@
     "category": "Awards and Recognition",
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "financial-assistance-to-the-students-who-studied-10th-standard-in-government-schools-and-pursuing-hsc-in-the-best-private-schools",
@@ -872,7 +912,8 @@
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Other Backward Classes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "financial-physical-achievements-of-last-five-years-upto-31-03-2018-under-loan-schemes-of-nskfdc",
@@ -882,7 +923,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Safai Karamcharis"
-    ]
+    ],
+    "status": "Archived"
   },
   {
     "slug": "free-coaching-for-scs-obcs-and-beneficiaries-of-pm-cares-children-scheme",
@@ -907,7 +949,8 @@
       "Other Backward Classes",
       "Scheduled Castes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "free-education-for-3-year-polytechnic-courses",
@@ -928,7 +971,8 @@
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Other Backward Classes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "free-education-in-professional-courses",
@@ -957,7 +1001,8 @@
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Other Backward Classes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "free-education-in-undergraduate-colleges",
@@ -986,7 +1031,8 @@
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Other Backward Classes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "gadia-lohar-scheme",
@@ -1006,6 +1052,7 @@
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes"
     ],
+    "status": "Active",
     "website": "https://sje.rajasthan.gov.in/Default.aspx?PageID=175"
   },
   {
@@ -1021,7 +1068,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Safai Karamcharis"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "geriatric-caregivers-training",
@@ -1044,7 +1092,8 @@
     "category": "Skill Training and Livelihood",
     "targetGroup": [
       "Senior Citizens"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "girls-literacy-promotion-scheme-class-11th",
@@ -1072,7 +1121,8 @@
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "green-business-scheme",
@@ -1087,7 +1137,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Safai Karamcharis"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "group-loan-scheme",
@@ -1102,7 +1153,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Other Backward Classes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "guidelines-of-national-action-for-mechanized-sanitation-ecosystem-namaste-scheme-2",
@@ -1112,7 +1164,8 @@
     "category": "Care, Health and Shelter",
     "targetGroup": [
       "Safai Karamcharis"
-    ]
+    ],
+    "status": "Archived"
   },
   {
     "slug": "housing-plan",
@@ -1131,7 +1184,8 @@
     "category": "Housing and Settlement",
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "housing-scheme-for-scheduled-castes-and-dnts",
@@ -1151,7 +1205,8 @@
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Scheduled Castes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "individual-loan-scheme",
@@ -1166,7 +1221,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Other Backward Classes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "information-monitoring-evaluation-social-audit-i-mesa",
@@ -1186,7 +1242,8 @@
         "html": "<ul>\n        <li>\n          Active\n        </li>\n        <li>\n          Archived\n        </li>\n      </ul><table>\n          \n            \n            \n            \n            \n            \n          \n          <thead>\n            <tr>\n              <th>Title</th>\n              <th>Size</th>\n              <th>Start Publish Date</th>\n              <th>End Publish Date</th>\n              <th>Action</th>\n            </tr>\n          </thead>\n          <tbody>\n            <tr><td><div>Guidelines ((w.e.f. 4th October, 2023)</div></td><td><span>3.16 MB</span></td><td>20231004</td><td>20271203</td><td><div><a href=\"https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/18721740858722.pdf\" target=\"_blank\" rel=\"noreferrer\">Download</a></div></td></tr>          </tbody>\n        </table><table>\n          \n            \n            \n            \n            \n            \n          \n          <thead>\n            <tr>\n              <th>Title</th>\n              <th>Size</th>\n              <th>Start Publish Date</th>\n              <th>End Publish Date</th>\n              <th>Action</th>\n            </tr>\n          </thead>\n          <tbody>\n            <tr><td colspan=\"5\">No documents found.</td></tr>          </tbody>\n        </table>"
       }
     ],
-    "category": "Economic Development"
+    "category": "Economic Development",
+    "status": "Active"
   },
   {
     "slug": "infrastructure-for-nomadic-semi-nomadic-tribes-concrete-roads-and-drainage",
@@ -1205,7 +1262,8 @@
     "category": "Housing and Settlement",
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "integrated-programme-for-senior-citizens-ipsrc",
@@ -1233,7 +1291,8 @@
     "targetGroup": [
       "Senior Citizens",
       "Voluntary Organisations"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "itis-improvement-of-education-arts",
@@ -1260,7 +1319,8 @@
     "category": "Skill Training and Livelihood",
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "legal-aid-to-the-scheduled-castes-and-vimukta-jatis",
@@ -1280,7 +1340,8 @@
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Scheduled Castes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "list-of-46-offences-under-the-sc-and-st-poa-act-1989",
@@ -1291,7 +1352,8 @@
     "targetGroup": [
       "Scheduled Castes",
       "Victims of Atrocities"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "loan-schemes-flyer",
@@ -1318,7 +1380,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Other Backward Classes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "mahila-adhikarita-yojana-may",
@@ -1333,7 +1396,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Safai Karamcharis"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "mahila-samridhi-yojna-msy",
@@ -1348,7 +1412,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Safai Karamcharis"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "maintenance-allowance-to-backward-class-students-under-training-in-sainik-schools",
@@ -1377,7 +1442,8 @@
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Other Backward Classes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "meritorious-scholarships-to-vjnt-and-sbc-students-studying-in-secondary-schools",
@@ -1409,7 +1475,8 @@
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "micro-credit-finance-mcf",
@@ -1424,7 +1491,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Safai Karamcharis"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "micro-credit-finance-mcf-2",
@@ -1434,7 +1502,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Safai Karamcharis"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "micro-finance-scheme",
@@ -1449,7 +1518,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Scheduled Castes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "mukhyamantri-vimukt-ghumantu-and-ardhghumantu-swarozgar-yojana-cm-self-employment-scheme",
@@ -1476,7 +1546,8 @@
     "category": "Skill Training and Livelihood",
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "national-action-for-mechanised-sanitation-ecosystem-namaste",
@@ -1499,7 +1570,8 @@
     "category": "Care, Health and Shelter",
     "targetGroup": [
       "Safai Karamcharis"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "national-action-plan-for-drug-demand-reduction",
@@ -1523,7 +1595,8 @@
     "targetGroup": [
       "Persons Affected by Substance Use",
       "Voluntary Organisations"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "national-fellowship-for-obc-students-nf-obc",
@@ -1547,7 +1620,8 @@
     "targetGroup": [
       "Other Backward Classes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "national-fellowship-for-scheduled-caste-students",
@@ -1571,7 +1645,8 @@
     "targetGroup": [
       "Scheduled Castes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "national-overseas-scholarship-nos-for-sc-etc-candidates",
@@ -1596,7 +1671,8 @@
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Scheduled Castes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "national-safai-karamcharis-finance-and-development-corporation-nskfdc",
@@ -1619,7 +1695,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Safai Karamcharis"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "national-scheduled-castes-finance-and-development-corporation-nsfdc",
@@ -1642,7 +1719,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Scheduled Castes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "other-initiatives",
@@ -1681,7 +1759,8 @@
     "category": "Care, Health and Shelter",
     "targetGroup": [
       "Senior Citizens"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "pandit-din-dayal-upadhyay-awas-yojana-housing-scheme",
@@ -1700,7 +1779,8 @@
     "category": "Housing and Settlement",
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "pay-use-toilets",
@@ -1715,7 +1795,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Safai Karamcharis"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "payment-of-maintenance-allowance-to-vjnt-and-sbc-students-studying-in-professional-courses-and-living-in-hostel-attached-to-professional-colleges",
@@ -1743,7 +1824,8 @@
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "performance-linked-grants-in-aid-schemeplgia",
@@ -1753,7 +1835,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Other Backward Classes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "pm-daksh",
@@ -1783,7 +1866,8 @@
       "Other Backward Classes",
       "Safai Karamcharis",
       "Scheduled Castes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "pm-special-training-of-geriatric-care-givers",
@@ -1814,7 +1898,8 @@
     "category": "Skill Training and Livelihood",
     "targetGroup": [
       "Senior Citizens"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "pm-yasasvi",
@@ -1839,7 +1924,8 @@
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Other Backward Classes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "pm-young-achievers-scholarship-award-scheme-for-vibrant-india-for-obcs-and-others-pm-yasasvi",
@@ -1880,7 +1966,8 @@
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Other Backward Classes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "post-matric-scholarship",
@@ -1916,7 +2003,8 @@
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "post-matric-scholarship-for-sc-students",
@@ -1940,7 +2028,8 @@
     "targetGroup": [
       "Scheduled Castes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "post-ssc-scholarship-for-boys",
@@ -1959,7 +2048,8 @@
     "category": "Scholarships and Fellowships",
     "targetGroup": [
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "post-ssc-scholarship-to-girls",
@@ -1978,7 +2068,8 @@
     "category": "Scholarships and Fellowships",
     "targetGroup": [
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "pradhan-mantri-anusuchit-jaati-abhyuday-yojna-pm-ajay",
@@ -2009,7 +2100,8 @@
     "category": "Housing and Settlement",
     "targetGroup": [
       "Scheduled Castes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "pre-matric-scholarships-scheme-for-scheduled-castes-others",
@@ -2034,7 +2126,8 @@
       "Safai Karamcharis",
       "Scheduled Castes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "pre-ssc-scholarship",
@@ -2053,7 +2146,8 @@
     "category": "Scholarships and Fellowships",
     "targetGroup": [
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "primary-education",
@@ -2081,7 +2175,8 @@
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "publication-of-the-collected-works-of-baba-saheb-dr-b-r-ambedkar-cwba-in-hindi-english-and-other-regional-languages",
@@ -2092,7 +2187,8 @@
         "heading": "Publication of the Collected Works of Baba Saheb Dr. B. R. Ambedkar (CWBA) in Hindi, English and other regional languages.",
         "html": ""
       }
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "purchase-of-land-to-provide-accomodation-for-the-homeless",
@@ -2111,7 +2207,8 @@
     "category": "Housing and Settlement",
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "rajarshi-chhatrapati-shahu-maharaj-merit-scholarship",
@@ -2144,7 +2241,8 @@
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Other Backward Classes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "rashtriya-vayoshri-yojana-rvy",
@@ -2257,13 +2355,14 @@
       },
       {
         "heading": "Avail the device",
-        "html": "<div>\n\t\t\t\t\t\t\t<div>\n\t\t\t<div>\n\t\t\t\t\t\n\t\t\t\t\t\t<span>\n\t\t\t\tCamp Mode\t\t\t</span>\n\t\t\n\t\t\t\t\n\t\t\t\t\t\t<span>\n\t\t\t\tWalk-in mode\t\t\t</span>\n\t\t\n\t\t\t\t\t</div>\n\t\t\t<div>\n\t\t\t\t<div>\n\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t<p>These devices are distributed in the camp mode. The beneficiaries are identified through Assessment Camps organised in collaboration with the respective State Government/District Administration.</p><h6>Required Document</h6><ul><li>Aadharcard<span>*</span>,</li><li>Ration Card,</li><li>Pan card,</li><li>Driving Licence,</li><li>Income Certificate<span>*</span></li></ul><p>All documents marked with an asterisk (*) are mandatory.</p>\t\t\t\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t<div>\n\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t<div>\n<h6>Required Document</h6>\n<ul>\n \t<li>Aadharcard<span>*</span>,</li>\n \t<li>Ration Card,</li>\n \t<li>Pan card,</li>\n \t<li>Driving Licence,</li>\n \t<li>Income Certificate<span>*</span></li>\n</ul>\n<p>\nAll documents marked with an asterisk (*) are mandatory.\n</p>\n</div>\n<h5>Where<span> to Go</span></h5>\t\t\t\t\t\t\t\t</div>\n\t\t\t\t<div>\n\t\t\t\t\t<div>\n\n\n<table>\n    <thead>\n      <tr>\n        <th>State</th>\n        <th>District</th>\n        <th>Organization Name</th>\n        <th>Address</th>\n        <th>Contact No.</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr>\n        <td>Andaman And Nicobar Islands</td>\n        <td></td>\n        <td>PMDK PORT BLAIR</td>\n        <td>CRC ANDAMAN &amp; NICOBAR, BROOKSHABAD, PORT BLAIR, ANDAMAN</td>\n        <td>9903373510</td>\n      </tr>\n      <tr>\n        <td>Andaman And Nicobar Islands</td>\n        <td></td>\n        <td>PMD-VK PORT BLAIR</td>\n        <td>CRC ANDAMAN &amp; NICOBAR, BROOKSHABAD, PORT BLAIR, ANDAMAN</td>\n        <td>8420420972</td>\n      </tr>\n      <tr>\n        <td>Andhra Pradesh</td>\n        <td></td>\n        <td>PMDK NELLORE</td>\n        <td>CRC NELLORE, KANPURURU BIT-2 VENKATACHALAM, ANDHRA PRA</td>\n        <td>7077257307</td>\n      </tr>\n      <tr>\n        <td>Andhra Pradesh</td>\n        <td></td>\n        <td>PMD-VK NELLORE</td>\n        <td>CRC NELLORE, KANPURURU BIT-2 VENKATACHALAM, ANDHRA PRA</td>\n        <td>8917579827</td>\n      </tr>\n      <tr>\n        <td>Arunachal Pradesh</td>\n        <td>Papum Pare</td>\n        <td>PMDK NAHARLAGUN</td>\n        <td>Regional Centre, Naharlagun, National Institute for Loc</td>\n        <td>8787617120</td>\n      </tr>\n      <tr>\n        <td>Arunachal Pradesh</td>\n        <td>Papum Pare</td>\n        <td>PMD-VK NAHARLAGUN</td>\n        <td>Regional Centre, Naharlagun, National Institute for Loc</td>\n        <td>8787617120</td>\n      </tr>\n      <tr>\n        <td>Assam</td>\n        <td>Kamrup Metro</td>\n        <td>PMDK GUWAHATI</td>\n        <td>CRC GUWAHATI, GMCH CAMPUS, HOSTEL ROAD, BHANGAGARH, GUW</td>\n        <td>9650438711</td>\n      </tr>\n      <tr>\n        <td>Assam</td>\n        <td></td>\n        <td>RMC Guwahati</td>\n        <td>Upper Ground Floor, Mayur Garden, G.S Road, Opp. Rajiv </td>\n        <td>9540986108</td>\n      </tr>\n      <tr>\n        <td>Assam</td>\n        <td></td>\n        <td>PMDK RMC GUWAHATI</td>\n        <td>CRC for Skill Development, Rehabilitation &amp; Empowerment</td>\n        <td>9650438711</td>\n      </tr>\n      <tr>\n        <td>Assam</td>\n        <td>Dhubri</td>\n        <td>PMDK Dhubri</td>\n        <td>HOSPITAL ROAD, W NO. 2, NEW GAURIPUR CHC, DHUBRI</td>\n        <td>9650438711</td>\n      </tr>\n      <tr>\n        <td>Assam</td>\n        <td>Sivasagar</td>\n        <td>PMDK Sivsagar</td>\n        <td>Primary Health Centre (PHC), Sivasagar, Dolmukh, Charia</td>\n        <td>8009757425</td>\n      </tr>\n      <tr>\n        <td>Assam</td>\n        <td>Sivasagar</td>\n        <td>PMDK Sivasagar</td>\n        <td>DOL MUKH CHARIALI ROAD, OLD MODEL HOSPITAL, OFFICE OF T</td>\n        <td>9650438711</td>\n      </tr>\n      <tr>\n        <td>Assam</td>\n        <td>Barpeta</td>\n        <td>AASRA Barpeta</td>\n        <td>Vill kharballi post Kalgachia</td>\n        <td>9435675588</td>\n      </tr>\n      <tr>\n        <td>Assam</td>\n        <td></td>\n        <td>PMD-VK RMC GUWAHATI</td>\n        <td>Upper Ground Floor, Mayur Garden, G.S Road, Opp. Rajiv </td>\n        <td>9650438711</td>\n      </tr>\n      <tr>\n        <td>Assam</td>\n        <td></td>\n        <td>PMD-VK GUWAHATI</td>\n        <td>CRC for Skill Development, Rehabilitation &amp; Empowerment</td>\n        <td>7992192501</td>\n      </tr>\n      <tr>\n        <td>Assam</td>\n        <td>Sivasagar</td>\n        <td>PMD-VK Sivasagar</td>\n        <td>DOL MUKH CHARIALI ROAD, OLD MODEL HOSPITAL, OFFICE OF T</td>\n        <td>8009757425</td>\n      </tr>\n      <tr>\n        <td>Assam</td>\n        <td>Dhubri</td>\n        <td>PMD-VK Dhubri</td>\n        <td>HOSPITAL ROAD, W NO. 2, NEW GAURIPUR CHC, DHUBRI</td>\n        <td>7550965190</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Darbhanga</td>\n        <td>AASRA Darbhanga</td>\n        <td>Brahmotra, Po-Ratanpura, Ps- Ashokpaper Mill, Darbhanga</td>\n        <td>7541800809</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Siwan</td>\n        <td>AASRA Siwan</td>\n        <td>Dhanauti,Siwan Sadar,Siwan-841226</td>\n        <td>9431894554</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Muzaffarpur</td>\n        <td>AASRA Muzaffarpur</td>\n        <td>Kolhua Paigamberpur, Kanti Paigamberpur</td>\n        <td>9304928342</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Katihar</td>\n        <td>AASRA Katihar</td>\n        <td>A G BAZAR, KURSELA KATIHAR</td>\n        <td>8051609606</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Patna</td>\n        <td>AASRA Patna</td>\n        <td>E-111 P C Colony Kankarbagh</td>\n        <td>9439672192</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td></td>\n        <td>AASRA Samastipur dalsinghsarai</td>\n        <td>Village+Post -Bajidpur Meyari wad-13 Morangtola,Tinmuha</td>\n        <td>9801731464</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Khagaria</td>\n        <td>AASRA Khagaria</td>\n        <td>NH-31 Chandra Vihar ,PO-Babu Bagicha P.S- Maheshkhunt</td>\n        <td>9430620851</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Araria</td>\n        <td>AASRA Araria</td>\n        <td>Jay Prakash Nagar, Ward No-7 Araria</td>\n        <td>7980545790</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Madhubani</td>\n        <td>AASRA Madhubani</td>\n        <td>At-chandrasenpur,Po-Hussainpur, Ps-rahika, Dist-Madhuba</td>\n        <td>9546393176</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Vaishali</td>\n        <td>AASRA Vaishali</td>\n        <td>At - Paigamberpur gorigama, P.O - Sondho, P.S - Goraul,</td>\n        <td>8294965166</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Patna</td>\n        <td>PMDK PATNA</td>\n        <td>CRC, SHEIKHPURA (OLD DHARAMSHALA), I.G.I.M.S.,, NEAR NA</td>\n        <td>6306320386</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Saharsa</td>\n        <td>AASRA SAHARSA KOSHI KCHHETRIYA BIKLANG</td>\n        <td>B. D Road  W.No-21 Behined To P.N.B Saharsa</td>\n        <td>6354178881</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Bhagalpur</td>\n        <td>AASRA Bhagalpur ECO FABRICLY</td>\n        <td>Eco Fabricly Sardarpur,Daudbat, Bhagalpur,Near Mausam H</td>\n        <td>9953179894</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Patna</td>\n        <td>AASRA Patna ECO FABRICLY</td>\n        <td>C/O-Shyam Kishor Mahadev Sthan,Paijawa Patna</td>\n        <td>8981167073</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Rohtas</td>\n        <td>AASRA Sasaram</td>\n        <td>Mehta Market, Prabhakar Road Sasaram</td>\n        <td>9570477611</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Samastipur</td>\n        <td>AASRA Samastipur</td>\n        <td>Adarshnagar, Gali-3B Near Jhumka bijli pole</td>\n        <td>9661030999</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Bhojpur</td>\n        <td>AASRA Bhojpur</td>\n        <td>R- Square Complex, Ward No-09, Near Patna Buxar Highway</td>\n        <td>7068267606</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Saran</td>\n        <td>AASRA Saran</td>\n        <td>At-Nandlal Tola Nehru Chowk Chapra</td>\n        <td>8294965166</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Nalanda</td>\n        <td>AASRA Nalanda</td>\n        <td>Arjun Serthua,Khudaganj ,Islampur,Nalanda-801303</td>\n        <td>7250148106</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Patna</td>\n        <td>PMD-VK PATNA</td>\n        <td>CRC, SHEIKHPURA (OLD DHARAMSHALA), I.G.I.M.S.,, NEAR NA</td>\n        <td>8504040389</td>\n      </tr>\n      <tr>\n        <td>Chandigarh</td>\n        <td>Chandigarh</td>\n        <td>PMDK CHANDIGARH</td>\n        <td>AASHA KIRAN, VTC 46 CHANDIGARH-160047, </td>\n        <td>8287359271</td>\n      </tr>\n      <tr>\n        <td>Chandigarh</td>\n        <td>Chandigarh</td>\n        <td>PMD-VK CHANDIGARH</td>\n        <td>AASHA KIRAN, VTC 46 CHANDIGARH-160047, </td>\n        <td>8287359271</td>\n      </tr>\n      <tr>\n        <td>Chhattisgarh</td>\n        <td>Rajnandgaon</td>\n        <td>PMDK RAJNANDGAON</td>\n        <td>OLD DISTRICT HOSPITAL CAMPUS, CHHATTISGARH</td>\n        <td>9968048517</td>\n      </tr>\n      <tr>\n        <td>Chhattisgarh</td>\n        <td>Uttar Bastar Kanker</td>\n        <td>AASRA Kanker CHHATTISGARH INNOVATIONS</td>\n        <td>Govindpur Block Govindpur Kanker</td>\n        <td>7999917885</td>\n      </tr>\n      <tr>\n        <td>Chhattisgarh</td>\n        <td>Korba</td>\n        <td>AASRA Korba MAA REHAB INDIA</td>\n        <td>AGARKHAR PLANT Khasra no 262 NTPC Urja Dwar</td>\n        <td>8319862325</td>\n      </tr>\n      <tr>\n        <td>Chhattisgarh</td>\n        <td>Raipur</td>\n        <td>AASRA Raipur V TECH MARKETING ASSOCIAT</td>\n        <td>Mathpurena Chowk Ring Road No 1 Raipur</td>\n        <td>9406052842</td>\n      </tr>\n      <tr>\n        <td>Chhattisgarh</td>\n        <td>Bilaspur</td>\n        <td>PMDK Bilaspur</td>\n        <td>Pradhan Mantri Divyasha Kendra, Zila Divyang Punarvas K</td>\n        <td>9968048517</td>\n      </tr>\n      <tr>\n        <td>Chhattisgarh</td>\n        <td>Rajnandgaon</td>\n        <td>PMD-VK RAJNANDGAON</td>\n        <td>OLD DISTRICT HOSPITAL CAMPUS, CHHATTISGARH</td>\n        <td>7869157075</td>\n      </tr>\n      <tr>\n        <td>Chhattisgarh</td>\n        <td>Bilaspur</td>\n        <td>PMD-VK Bilaspur</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, Zila Divyang P</td>\n        <td>7325993395</td>\n      </tr>\n      <tr>\n        <td>Delhi</td>\n        <td>New Delhi</td>\n        <td>RMC New Delhi</td>\n        <td>C/o Social Justice Centre, Mahila Imdad Committee, Paha</td>\n        <td>8851232064</td>\n      </tr>\n      <tr>\n        <td>Delhi</td>\n        <td>New Delhi</td>\n        <td>AASRA Delhi Maa Shakti</td>\n        <td>3/111 Lalita park Laxmi Nagar</td>\n        <td>8178144588</td>\n      </tr>\n      <tr>\n        <td>Delhi</td>\n        <td>New Delhi</td>\n        <td>PMDK RMC NEW DELHI</td>\n        <td>ALIMCO Regional Marketing &amp; Disability Rehabilitation C</td>\n        <td>8287122505</td>\n      </tr>\n      <tr>\n        <td>Delhi</td>\n        <td>New Delhi</td>\n        <td>PMDK IPH DELHI</td>\n        <td>PDUNIPPD (DIVYANGJAN) 4 VISHNU DIGAMBER MARG, NEW DELHI</td>\n        <td>9560045775</td>\n      </tr>\n      <tr>\n        <td>Delhi</td>\n        <td>New Delhi</td>\n        <td>PMD-VK IPH DELHI</td>\n        <td>PDUNIPPD (DIVYANGJAN) 4 VISHNU DIGAMBER MARG, NEW DELHI</td>\n        <td>9560045775</td>\n      </tr>\n      <tr>\n        <td>Delhi</td>\n        <td>New Delhi</td>\n        <td>PMD-VK RMC NEW DELHI</td>\n        <td>ALIMCO Regional Marketing &amp; Disability Rehabilitation C</td>\n        <td>8489422073</td>\n      </tr>\n      <tr>\n        <td>Goa</td>\n        <td>North Goa</td>\n        <td>PMDK PANAJI</td>\n        <td>GOA MEDICAL COLLEGE, BAMBOLIM, TISWADI</td>\n        <td>8329032894</td>\n      </tr>\n      <tr>\n        <td>Goa</td>\n        <td>North Goa</td>\n        <td>PMD-VK PANAJI</td>\n        <td>GOA MEDICAL COLLEGE, BAMBOLIM, TISWADI</td>\n        <td>9561505791</td>\n      </tr>\n      <tr>\n        <td>Gujarat</td>\n        <td>Ahmedabad</td>\n        <td>PMDK AHMEDABAD</td>\n        <td>435/8/1, BHIKSHUKHGRUH RD, G I D C INDUSTRIAL AREA, ODH</td>\n        <td>9527141098</td>\n      </tr>\n      <tr>\n        <td>Gujarat</td>\n        <td>Kheda</td>\n        <td>AASRA Kheda</td>\n        <td>C/o Maa Gayatri Ortho Care 5, Shivalik Complex Near P</td>\n        <td>8758754020</td>\n      </tr>\n      <tr>\n        <td>Gujarat</td>\n        <td></td>\n        <td>AASRA Kutch</td>\n        <td>National Highway 8A, gandhidham Road, Nearby Police sta</td>\n        <td>9558965101</td>\n      </tr>\n      <tr>\n        <td>Gujarat</td>\n        <td>Ahmedabad</td>\n        <td>PMD-VK AHMEDABAD</td>\n        <td>435/8/1, BHIKSHUKHGRUH RD, G I D C INDUSTRIAL AREA, ODH</td>\n        <td>9967564543</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Mahendragarh</td>\n        <td>PMDK MAHENDRAGARH</td>\n        <td>INDIAN RED CROSS BHAWAN, NARNAUL, DIST-MAHENDRAGARH, HA</td>\n        <td>7668806539</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Rohtak</td>\n        <td>AASRA Rohtak</td>\n        <td>c/o- Ravi Sagar vill-mimayupur tehil-Rohtak</td>\n        <td>9991293674</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Karnal</td>\n        <td>AASRA Karnal</td>\n        <td>c/o-Vedpal, Near Ravids, Mandir,Word No-10, Poultry Are</td>\n        <td>9991293674</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Jind</td>\n        <td>AASRA Jind</td>\n        <td>c/o-Rajesh Kumar, s/o- Ved prakasah. Patulu Kheda, Tehs</td>\n        <td>9991293674</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Sonipat</td>\n        <td>AASRA Sonipat</td>\n        <td>Pipli kheda</td>\n        <td>9991293674</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Faridabad</td>\n        <td>AAPC Faridabad</td>\n        <td>Sector-110A, Nawada, Tigaon, Near IMT Faridabad, Ballab</td>\n        <td>9971699078</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td></td>\n        <td>AASRA Palwal</td>\n        <td>Sat kabir dhaba, near Dharam dhaba Huda chowk palwal</td>\n        <td>7015408546</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Panipat</td>\n        <td>AASRA Panipat</td>\n        <td>Makhan no. 1152, near panchyat Ghar SiwahP panipat</td>\n        <td>9991293674</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Faridabad</td>\n        <td>PMDK AAPC FARIDABAD</td>\n        <td>VILL- NAWADA TIGAON, BLOCK- BALLABHGARH,, IMT INDUSTRIA</td>\n        <td>9719606751</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Nuh</td>\n        <td>PMDK Nuh</td>\n        <td>INDIAN RED CROSS SOCIETY, OLD SDM COMPLEX, NEAR WOMEN P</td>\n        <td>7676754182</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Karnal</td>\n        <td>PMDK Karnal</td>\n        <td>Satellite Centre, Community Centre, Sector-7</td>\n        <td>7676754182</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Gurugram</td>\n        <td>PMDK Gurugram</td>\n        <td>Pradhan Mantri Divyasha Kendra, Zila Red Cross Bhawan, </td>\n        <td>7676754182</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Faridabad</td>\n        <td>PMDK ESIC Faridabad</td>\n        <td>Pradhan Mantri Divyasha Kendra, Room No. 1125 A First F</td>\n        <td>9971699078</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Mahendragarh</td>\n        <td>PMD-VK MAHENDRAGARH</td>\n        <td>INDIAN RED CROSS BHAWAN, NARNAUL, DIST-MAHENDRAGARH, HA</td>\n        <td>9953615020</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Nuh</td>\n        <td>PMD-VK Nuh</td>\n        <td>INDIAN RED CROSS SOCIETY, OLD SDM COMPLEX, NEAR WOMEN P</td>\n        <td>6296650525</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Karnal</td>\n        <td>PMD-VK Karnal</td>\n        <td>Satellite Centre, Community Centre, Sector-7</td>\n        <td>PMDK Karnal</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Faridabad</td>\n        <td>PMD-VK AAPC FARIDABAD</td>\n        <td>VILL- NAWADA TIGAON, BLOCK- BALLABHGARH,, IMT INDUSTRIA</td>\n        <td>9205514840</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Faridabad</td>\n        <td>PMD-VK ESIC Faridabad</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, Room No. 1125 </td>\n        <td>9711032301</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Gurugram</td>\n        <td>PMD-VK Gurugram</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, Zila Red Cross</td>\n        <td>7676754182</td>\n      </tr>\n      <tr>\n        <td>Himachal Pradesh</td>\n        <td>Mandi</td>\n        <td>PMDK SUNDERNAGAR</td>\n        <td>CRC SUNDERNAGAR, NEAR MAHAMAYA TEMPLE, SUNDERNAGAR, DIS</td>\n        <td>8219789851</td>\n      </tr>\n      <tr>\n        <td>Himachal Pradesh</td>\n        <td>Mandi</td>\n        <td>PMD-VK SUNDERNAGAR</td>\n        <td>CRC SUNDERNAGAR, NEAR MAHAMAYA TEMPLE, SUNDERNAGAR, DIS</td>\n        <td>7807317992</td>\n      </tr>\n      <tr>\n        <td>Jammu And Kashmir</td>\n        <td>Jammu</td>\n        <td>PMDK JAMMU</td>\n        <td>CRC, 11-ADD, 2nd Extension, bahu Plaza Road,, Near balm</td>\n        <td>9930929732</td>\n      </tr>\n      <tr>\n        <td>Jammu And Kashmir</td>\n        <td>Srinagar</td>\n        <td>PMDK SRINAGAR</td>\n        <td>BEMINA BYPASS, SRINAGAR, JAMMU AND KASHMIR</td>\n        <td>7006250582</td>\n      </tr>\n      <tr>\n        <td>Jammu And Kashmir</td>\n        <td>Jammu</td>\n        <td>PMD-VK JAMMU</td>\n        <td>CRC, 11-ADD, 2nd Extension, bahu Plaza Road,, Near balm</td>\n        <td>9930929732</td>\n      </tr>\n      <tr>\n        <td>Jammu And Kashmir</td>\n        <td>Srinagar</td>\n        <td>PMD-VK SRINAGAR</td>\n        <td>BEMINA BYPASS, SRINAGAR, JAMMU AND KASHMIR</td>\n        <td>7006250582</td>\n      </tr>\n      <tr>\n        <td>Jharkhand</td>\n        <td>Ranchi</td>\n        <td>PMDK RANCHI</td>\n        <td>CRC RANCHI, JHARKHAND BESIDE BLOCK OFFICE, KHIJARI, NAM</td>\n        <td>8828252181</td>\n      </tr>\n      <tr>\n        <td>Jharkhand</td>\n        <td>Ranchi</td>\n        <td>AASRA Ranchi</td>\n        <td>Leela Kutir, Near-maharaja Hotel Radium Road, Ranchi</td>\n        <td>9431362003</td>\n      </tr>\n      <tr>\n        <td>Jharkhand</td>\n        <td></td>\n        <td>AASRA Sahibganj</td>\n        <td>At -  Sutiyarpara, P.O - Jonka, P.S - Rajmahal, Dist - </td>\n        <td>9534695242</td>\n      </tr>\n      <tr>\n        <td>Jharkhand</td>\n        <td></td>\n        <td>AASRA Ranchi Maa Padda</td>\n        <td>Sundari Bhawan Ground Floor,Near Hotel Anjali Kanta tol</td>\n        <td>9835187674</td>\n      </tr>\n      <tr>\n        <td>Jharkhand</td>\n        <td></td>\n        <td>AASRA Dipti Ranchi </td>\n        <td>H-144, Patel Nagar Road No-18 Hatia Near NIFFT</td>\n        <td>9693262227</td>\n      </tr>\n      <tr>\n        <td>Jharkhand</td>\n        <td>Ranchi</td>\n        <td>RMC Ranchi</td>\n        <td>C/o CRC Ranchi, Namkum, Khijri</td>\n        <td>8828252181</td>\n      </tr>\n      <tr>\n        <td>Jharkhand</td>\n        <td></td>\n        <td>PMDK Jamsedpur</td>\n        <td>TATA Steel Foundation (Sabal), Near Jain Bhawan, Family</td>\n        <td>9650438711</td>\n      </tr>\n      <tr>\n        <td>Jharkhand</td>\n        <td>Ranchi</td>\n        <td>PMD-VK RANCHI</td>\n        <td>CRC RANCHI, JHARKHAND BESIDE BLOCK OFFICE, KHIJARI, NAM</td>\n        <td>8820038518</td>\n      </tr>\n      <tr>\n        <td>Jharkhand</td>\n        <td></td>\n        <td>PMD-VK Jamsedpur</td>\n        <td>TATA Steel Foundation (Sabal), Near Jain Bhawan, Family</td>\n        <td>7903865366</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td></td>\n        <td>PMDK AAPC BANGALORE</td>\n        <td>ALIMCO Auxiliary Production Center, Bangalore, Plot No.</td>\n        <td>7042710159</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td>Bidar</td>\n        <td>PMDK BIDAR</td>\n        <td>Udgir Road, Nawadgeri, Bidar, Karnataka</td>\n        <td>9515351208</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td>Davangere</td>\n        <td>PMDK DAVANGERE</td>\n        <td>CRC DAVANGERE,DEVRAJ URS LAYOUT,, B-BLOCK, DAVANGERE, K</td>\n        <td>9793694269</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td></td>\n        <td>AAPC Bangalore</td>\n        <td>Plot No. 8, Peenya Plant Station, Near Jalasaudha, PO-J</td>\n        <td>7899448595</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td></td>\n        <td>PMDK Hubli</td>\n        <td>PB Road, Vidya Nagar</td>\n        <td>7766865086</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td>Kalaburagi</td>\n        <td>PMDK KALABURAGI</td>\n        <td>Gulbarga Institute of Medical Sciences (GIMS), Sedam Ro</td>\n        <td>6372987441</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td>Belagavi</td>\n        <td>PMDK Belagavi</td>\n        <td>Pradhan Mantri Divyasha Kendra, Sadashiv Nagar, Belagav</td>\n        <td>7077257307</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td></td>\n        <td>AASRA Bangalore</td>\n        <td>Hennur Main Raod, Lingarajapuram</td>\n        <td>7019609429</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td>Bidar</td>\n        <td>PMD-VK BIDAR</td>\n        <td>Udgir Road, Nawadgeri, Bidar, Karnataka</td>\n        <td>9606274009</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td></td>\n        <td>PMD-VK AAPC BANGALORE</td>\n        <td>ALIMCO Auxiliary Production Center, Bangalore, Plot No.</td>\n        <td>7042710159</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td>Kalaburagi</td>\n        <td>PMD-VK KALABURAGI</td>\n        <td>Gulbarga Institute of Medical Sciences (GIMS), Sedam Ro</td>\n        <td>6372987441</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td></td>\n        <td>PMD-VK Hubli</td>\n        <td>PB Road, Vidya Nagar</td>\n        <td>7766865086</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td>Davangere</td>\n        <td>PMD-VK DAVANGERE</td>\n        <td>CRC DAVANGERE,DEVRAJ URS LAYOUT,, B-BLOCK, DAVANGERE, K</td>\n        <td>9793694269</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td>Belagavi</td>\n        <td>PMD-VK Belagavi</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, Sadashiv Nagar</td>\n        <td>7077257307</td>\n      </tr>\n      <tr>\n        <td>Kerala</td>\n        <td>Kozhikode</td>\n        <td>PMDK KOZHIKODE</td>\n        <td>CRC CAMPUS GOLF LINK ROAD, CHEVAYUR P.O. KOZHIKODE, KER</td>\n        <td>9946558315</td>\n      </tr>\n      <tr>\n        <td>Kerala</td>\n        <td>Kozhikode</td>\n        <td>PMD-VK KOZHIKODE</td>\n        <td>CRC CAMPUS GOLF LINK ROAD, CHEVAYUR P.O. KOZHIKODE, KER</td>\n        <td>9946558315</td>\n      </tr>\n      <tr>\n        <td>Ladakh</td>\n        <td>Kargil</td>\n        <td>PMDK KARGIL</td>\n        <td>ONE STOP CENTRE, GROUND FLOOR NEAR POLICE STATION, MAIN</td>\n        <td>7589193448</td>\n      </tr>\n      <tr>\n        <td>Ladakh</td>\n        <td>Leh Ladakh</td>\n        <td>PMDK LEH</td>\n        <td>LEH, NEAR POLO GROUND,, LEH LADAKH, LADAKH</td>\n        <td>7589193448</td>\n      </tr>\n      <tr>\n        <td>Ladakh</td>\n        <td>Kargil</td>\n        <td>PMD-VK KARGIL</td>\n        <td>ONE STOP CENTRE, GROUND FLOOR NEAR POLICE STATION, MAIN</td>\n        <td>7051807190</td>\n      </tr>\n      <tr>\n        <td>Ladakh</td>\n        <td>Leh Ladakh</td>\n        <td>PMD-VK LEH</td>\n        <td>LEH, NEAR POLO GROUND,, LEH LADAKH, LADAKH</td>\n        <td>8492812119</td>\n      </tr>\n      <tr>\n        <td>Lakshadweep</td>\n        <td>Lakshadweep District</td>\n        <td>PMDK KAVARATTI</td>\n        <td>QTR NO B 145 &amp;146, CIRCLE OFFICE , KAVARATTI, LAKSHADWE</td>\n        <td>9497375249</td>\n      </tr>\n      <tr>\n        <td>Lakshadweep</td>\n        <td>Lakshadweep District</td>\n        <td>PMD-VK KAVARATTI</td>\n        <td>QTR NO B 145 &amp;146, CIRCLE OFFICE , KAVARATTI, LAKSHADWE</td>\n        <td>9497375249</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Jhabua</td>\n        <td>PMDK JHABUA</td>\n        <td>DDRC, POST BOX NO. 36, KALYANPURA ROAD,, RANGPURA, JHAB</td>\n        <td>7309197228</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Bhopal</td>\n        <td>PMDK BHOPAL</td>\n        <td>KHAJURI KALAN RD, NAGARJUN NAGAR, PIPLANI,, GOPAL NAGAR</td>\n        <td>9968048517</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Chhatarpur</td>\n        <td>PMDK CHHATTARPUR</td>\n        <td>DDRC CHHATARPUR, MADHYA PRADESH</td>\n        <td>7890266054</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Ujjain</td>\n        <td>AAPC Ujjain</td>\n        <td>Plot No. 16/2, Post – Manpura, Dewas Road, Ujjain</td>\n        <td>7309197228</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Jabalpur</td>\n        <td>AAPC Jabalpur</td>\n        <td>Plot No 40, 106 &amp; 107 Ricchai Industrial Area, Maharajp</td>\n        <td>9968048517</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Tikamgarh</td>\n        <td>AASRA Tikamgarh</td>\n        <td>Bahadurpur</td>\n        <td>6268131939</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Chhindwara</td>\n        <td>AASRA Chhindwara</td>\n        <td>Ward no. 1,Old Civil Lines, Amarwara </td>\n        <td>9575100688</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Sehore</td>\n        <td>PMDK SEHORE</td>\n        <td>National Institute of Mental Health Rehabilitation, NH-</td>\n        <td>9958617688</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Gwalior</td>\n        <td>PMDK GWALIOR</td>\n        <td>CDS campus, Swejfarm (Village), Morena Link Road, Circl</td>\n        <td>9654931277</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td></td>\n        <td>Aasra Nagda</td>\n        <td>Suraj SNEH Bhawan, Shri Ram Colony, Nagda Dist.Ujjain M</td>\n        <td>9098447647</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Jabalpur</td>\n        <td>PMDK AAPC JABALPUR</td>\n        <td>ALIMCO Auxiliary Production Center, Jabalpur, lot No 40</td>\n        <td>9463665775</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Ujjain</td>\n        <td>PMDK AAPC UJJAIN</td>\n        <td>ALIMCO Auxiliary Production Center, Ujjain, Plot No. 16</td>\n        <td>9463665775</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Tikamgarh</td>\n        <td>PMDK Tikamgarh</td>\n        <td>Pradhan Mantri Divyasha Kendra, Zila Divyang Punarvas K</td>\n        <td>9968048517</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Ujjain</td>\n        <td>PMDK Ujjain</td>\n        <td>Pradhan Mantri Divyasha Kendra, R.D.Gardi. Medical Coll</td>\n        <td>7309197228</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Satna</td>\n        <td>PMDK DDRC Satna</td>\n        <td>Pradhan Mantri Divyasha Kendra, District Disability reh</td>\n        <td>9968048517</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Sheopur</td>\n        <td>PMDK DDRC Sheopur</td>\n        <td>Pradhan Mantri Divyasha Kendra,District Disability reha</td>\n        <td>9968048517</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Balaghat</td>\n        <td>PMDK Balaghat</td>\n        <td>Pradhan Mantri Divyasha Kendra, Model DDRC Balaghat Dis</td>\n        <td>9968048517</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Shivpuri</td>\n        <td>AASRA Mangalam Shivpuri</td>\n        <td>In Front of Polo Ground, Court Road, Shivpuri</td>\n        <td>7389476880</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Morena</td>\n        <td>AASRA Morena</td>\n        <td>MANDE PURA ROAD</td>\n        <td>9630444777</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Bhind</td>\n        <td>AASRA Bhind</td>\n        <td>By Pass Road</td>\n        <td>9770186339</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Bhopal</td>\n        <td>PMD-VK BHOPAL</td>\n        <td>KHAJURI KALAN RD, NAGARJUN NAGAR, PIPLANI,, GOPAL NAGAR</td>\n        <td>8260331946</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Chhatarpur</td>\n        <td>PMD-VK CHHATTARPUR</td>\n        <td>DDRC CHHATARPUR, MADHYA PRADESH</td>\n        <td>7020560758</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Ujjain</td>\n        <td>PMD-VK AAPC UJJAIN</td>\n        <td>ALIMCO Auxiliary Production Center, Ujjain, Plot No. 16</td>\n        <td>9006405063</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Sehore</td>\n        <td>PMD-VK SEHORE</td>\n        <td>National Institute of Mental Health Rehabilitation, NH-</td>\n        <td>8318024830</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Jabalpur</td>\n        <td>PMD-VK AAPC JABALPUR</td>\n        <td>ALIMCO Auxiliary Production Center, Jabalpur, lot No 40</td>\n        <td>9968048517</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Gwalior</td>\n        <td>PMD-VK GWALIOR</td>\n        <td>CDS campus, Swejfarm (Village), Morena Link Road, Circl</td>\n        <td>9654931277</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Tikamgarh</td>\n        <td>PMD-VK Tikamgarh</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, Zila Divyang P</td>\n        <td>9399022783</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Ujjain</td>\n        <td>PMD-VK Ujjain</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, R.D.Gardi. Med</td>\n        <td>7908832432</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Satna</td>\n        <td>PMD-VK DDRC Satna</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, District Disab</td>\n        <td>7000829065</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Sheopur</td>\n        <td>PMD-VK DDRC Sheopur</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, District Disab</td>\n        <td>8871209715</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Balaghat</td>\n        <td>PMD-VK Balaghat</td>\n        <td>Pradhan Mantri Divyasha Kendra, Model DDRC Balaghat Dis</td>\n        <td>9968048517</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td>Nagpur</td>\n        <td>PMDK NAGPUR</td>\n        <td>CRC NAGPUR, 2, DHANTOLI, NAGPUR, MAHARASHTRA</td>\n        <td>8169203585</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td>Nashik</td>\n        <td>AASRA Nasik</td>\n        <td>Row Bunglow No: 7 Opp Global International School Omkar</td>\n        <td>9764458586</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td>Mumbai</td>\n        <td>RMC Mumbai</td>\n        <td>Office No. 403, A-Wing, Vishnu Commercial Complex, Plot</td>\n        <td>9902122548</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td>Mumbai</td>\n        <td>PMDK MUMBAI (BANDRA)</td>\n        <td>AYJNISHD, K.C. MARG, BANDRA (W) RECLAMATION, MUMBAI</td>\n        <td>6388027699</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td>Buldhana</td>\n        <td>PMDK Buldhana</td>\n        <td>District Disability Rehablitation Centre (DDRC), Apng K</td>\n        <td>9764771919</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td>Latur</td>\n        <td>PMDK Latur</td>\n        <td>C/o DIRECTOR, DISTRICT DISABILITY REHABILITATION CENTRE</td>\n        <td>9902122548</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td></td>\n        <td>PMDK RMC MUMBAI</td>\n        <td>Office No. 403, A-Wing, Vishnu Commercial Complex, Plot</td>\n        <td>6388027699</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td></td>\n        <td>PMDK Ahilyanagar</td>\n        <td>C/o: DIRECTOR, DISTRICT DISABILITY REHABILITATION CENTR</td>\n        <td>9696415281</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td></td>\n        <td>PMDK Kolhapur</td>\n        <td>Pradhan Mantri Divyasha Kendra, Zila Madhyavarti Prasha</td>\n        <td>9902122548</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td></td>\n        <td>PMD-VK Ahilyanagar</td>\n        <td>C/o: DIRECTOR, DISTRICT DISABILITY REHABILITATION CENTR</td>\n        <td>9702114371</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td>Nagpur</td>\n        <td>PMD-VK NAGPUR</td>\n        <td>CRC NAGPUR, 2, DHANTOLI, NAGPUR, MAHARASHTRA</td>\n        <td>8115467123</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td>Latur</td>\n        <td>PMD-VK Latur</td>\n        <td>C/o DIRECTOR, DISTRICT DISABILITY REHABILITATION CENTRE</td>\n        <td>9766992459</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td>Buldhana</td>\n        <td>PMD-VK Buldhana</td>\n        <td>District Disability Rehablitation Centre (DDRC), Apng K</td>\n        <td>8697956453</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td></td>\n        <td>PMD-VK RMC MUMBAI</td>\n        <td>Office No. 403, A-Wing, Vishnu Commercial Complex, Plot</td>\n        <td>8291478286</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td></td>\n        <td>PMD-VK Kolhapur</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, Zila Madhyavar</td>\n        <td>9330333703</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td>Mumbai</td>\n        <td>PMD-VK MUMBAI (BANDRA)</td>\n        <td>AYJNISHD, K.C. MARG, BANDRA (W) RECLAMATION, MUMBAI</td>\n        <td>9969744494</td>\n      </tr>\n      <tr>\n        <td>Manipur</td>\n        <td></td>\n        <td>PMDK SENAPATI</td>\n        <td>DISTRICT HOSPITAL, SENAPATI, MANIPUR</td>\n        <td>9401435946</td>\n      </tr>\n      <tr>\n        <td>Manipur</td>\n        <td>Imphal East</td>\n        <td>PMDK IMPHAL</td>\n        <td>CRC Imphal, Takyel, Juvenile Justice Board Complex, Imp</td>\n        <td>9401435946</td>\n      </tr>\n      <tr>\n        <td>Manipur</td>\n        <td>Imphal East</td>\n        <td>AASRA Imphal</td>\n        <td>Ukhrul road, sawombung, Lamlai Imphal east</td>\n        <td>7085835609</td>\n      </tr>\n      <tr>\n        <td>Manipur</td>\n        <td>Imphal East</td>\n        <td>PMD-VK IMPHAL</td>\n        <td>CRC Imphal, Takyel, Juvenile Justice Board Complex, Imp</td>\n        <td>6009314115</td>\n      </tr>\n      <tr>\n        <td>Meghalaya</td>\n        <td>East Khasi Hills</td>\n        <td>PMDK SHILLONG</td>\n        <td>CRC SHILLONG,GROUND FLOOR, MONTFORT BUILDING,, DHANKHET</td>\n        <td>7005299452</td>\n      </tr>\n      <tr>\n        <td>Meghalaya</td>\n        <td>East Khasi Hills</td>\n        <td>PMD-VK SHILLONG</td>\n        <td>CRC SHILLONG,GROUND FLOOR, MONTFORT BUILDING,, DHANKHET</td>\n        <td>7005299452</td>\n      </tr>\n      <tr>\n        <td>Mizoram</td>\n        <td></td>\n        <td>PMDK AIZAWAL</td>\n        <td>Zoram Medical College and Hospital, State Referral Hosp</td>\n        <td>7008946491</td>\n      </tr>\n      <tr>\n        <td>Mizoram</td>\n        <td>Aizawl</td>\n        <td>AASRA Aizawl</td>\n        <td>C-234/1 SALEMVENG</td>\n        <td>9774176381</td>\n      </tr>\n      <tr>\n        <td>Mizoram</td>\n        <td></td>\n        <td>PMD-VK AIZWAL</td>\n        <td>Zoram Medical College and Hospital, State Referral Hosp</td>\n        <td>7008946491</td>\n      </tr>\n      <tr>\n        <td>Nagaland</td>\n        <td>Dimapur</td>\n        <td>PMDK DIMAPUR</td>\n        <td>District Hospital, DDRC Building, DIMAPUR</td>\n        <td>9401435946</td>\n      </tr>\n      <tr>\n        <td>Nagaland</td>\n        <td>Dimapur</td>\n        <td>AASRA Dimapur</td>\n        <td>NEPALI BASTI HOUSE NO -30 NEAR LION CLUB</td>\n        <td>8259066331</td>\n      </tr>\n      <tr>\n        <td>Nagaland</td>\n        <td>Dimapur</td>\n        <td>PMD-VK DIMAPUR</td>\n        <td>District Hospital, DDRC Building, DIMAPUR</td>\n        <td>8731804934</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td></td>\n        <td>AAPC Bhubaneswar</td>\n        <td>S-3/66, Mancheswar Industrial Area, Bhubaneswar</td>\n        <td>9739499900</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td>Balangir</td>\n        <td>PMDK BALANGIR</td>\n        <td>CRC SRE, NEAR KENDRIYA VIDYALAYA, BALANGIR, ODISHA, </td>\n        <td>7894107869</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td>Cuttack</td>\n        <td>PMDK CUTTACK</td>\n        <td>SVNIRTAR OLATPUR, P.O BAIROI, CUTTACK, ODISHA, </td>\n        <td>8638334418</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td></td>\n        <td>PMDK AAPC BHUBANESWAR</td>\n        <td> ALIMCO Auxiliary Production Center, Bhubaneswar, S-3/6</td>\n        <td>9910477376</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td></td>\n        <td>AASRA Bhadrak</td>\n        <td>Vill-Prasanti Bhawan, Dahanigadia Post- Charampa</td>\n        <td>9692165555</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td>Koraput</td>\n        <td>PMDK KORAPUT</td>\n        <td>District Head Quarter Hospital, COVID Prefab Building, </td>\n        <td>9777722912</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td></td>\n        <td>PMDK Balasore</td>\n        <td>Pradhan Mantri Divyasha Kendra, Fakeer Mohan Medical Co</td>\n        <td>9739499900</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td>Nuapada</td>\n        <td>PMDK Nuapada</td>\n        <td>Pradhan Mantri Divyasha Kendra, SVINIRTAR Sub Centre, N</td>\n        <td>9739499900</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td>Balangir</td>\n        <td>PMD-VK BALANGIR</td>\n        <td>CRC SRE, NEAR KENDRIYA VIDYALAYA, BALANGIR, ODISHA, </td>\n        <td>8249272581</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td>Cuttack</td>\n        <td>PMD-VK CUTTACK</td>\n        <td>SVNIRTAR OLATPUR, P.O BAIROI, CUTTACK, ODISHA, </td>\n        <td>8638334418</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td></td>\n        <td>PMD-VK AAPC BHUBANESWAR</td>\n        <td> ALIMCO Auxiliary Production Center, Bhubaneswar, S-3/6</td>\n        <td>7411270730</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td></td>\n        <td>PMD-VK Balasore</td>\n        <td>Pradhan Mantri Divyasha Kendra, Fakeer Mohan Medical Co</td>\n        <td>7377863233</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td>Nuapada</td>\n        <td>PMD-VK Nuapada</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, SVINIRTAR Sub </td>\n        <td>9739499900</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td>Koraput</td>\n        <td>PMD-VK KORAPUT</td>\n        <td>District Head Quarter Hospital, COVID Prefab Building, </td>\n        <td>9777722912</td>\n      </tr>\n      <tr>\n        <td>Puducherry</td>\n        <td>Karaikal</td>\n        <td>PMDK KARAIKAL</td>\n        <td>Govt. Special school for Visually and Hearing impaired,</td>\n        <td>9952044891</td>\n      </tr>\n      <tr>\n        <td>Puducherry</td>\n        <td>Pondicherry</td>\n        <td>PMDK PUDUCHERRY</td>\n        <td>HOME FOR MENTALLY RETARDE CHILDRE(HMRC),, VENKETESHWARA</td>\n        <td>9337031618</td>\n      </tr>\n      <tr>\n        <td>Puducherry</td>\n        <td>Karaikal</td>\n        <td>PMD-VK KARAIKAL</td>\n        <td>Govt. Special school for Visually and Hearing impaired,</td>\n        <td>9952044891</td>\n      </tr>\n      <tr>\n        <td>Puducherry</td>\n        <td>Pondicherry</td>\n        <td>PMD-VK PUDUCHERRY</td>\n        <td>HOME FOR MENTALLY RETARDE CHILDRE(HMRC),, VENKETESHWARA</td>\n        <td>9337031618</td>\n      </tr>\n      <tr>\n        <td>Punjab</td>\n        <td></td>\n        <td>AAPC Mohali</td>\n        <td>Plot No A-1, A-2, A-3 Industrial Focal Point, Chanalon,</td>\n        <td>7589193448</td>\n      </tr>\n      <tr>\n        <td>Punjab</td>\n        <td>Bathinda</td>\n        <td>PMDK BATHINDA</td>\n        <td>ONE STOP CENTRE FOR DISABLED,, CIVIL HOSPITAL, MANSA RO</td>\n        <td>8953624669</td>\n      </tr>\n      <tr>\n        <td>Punjab</td>\n        <td></td>\n        <td>PMDK AAPC MOHALI</td>\n        <td>ALIMCO Auxiliary Production Center, Mohali, Plot No A-1</td>\n        <td>9041562292</td>\n      </tr>\n      <tr>\n        <td>Punjab</td>\n        <td>Faridkot</td>\n        <td>PMDK FARIDKOT</td>\n        <td>Indian Red Cross Society, Dist Branch, Faridkot, Punjab</td>\n        <td>7589193448</td>\n      </tr>\n      <tr>\n        <td>Punjab</td>\n        <td>Bathinda</td>\n        <td>Aasra Bathinda</td>\n        <td>12162-C, Shaheed bhagat singh nagar,  Naruana road, str</td>\n        <td>7889137536</td>\n      </tr>\n      <tr>\n        <td>Punjab</td>\n        <td>Bathinda</td>\n        <td>PMD-VK BATHINDA</td>\n        <td>ONE STOP CENTRE FOR DISABLED,, CIVIL HOSPITAL, MANSA RO</td>\n        <td>8953624669</td>\n      </tr>\n      <tr>\n        <td>Punjab</td>\n        <td>Faridkot</td>\n        <td>PMD-VK FARIDKOT</td>\n        <td>Indian Red Cross Society, Dist Branch, Faridkot, Punjab</td>\n        <td>6397473776</td>\n      </tr>\n      <tr>\n        <td>Punjab</td>\n        <td></td>\n        <td>PMD-VK AAPC MOHALI</td>\n        <td>ALIMCO Auxiliary Production Center, Mohali, Plot No A-1</td>\n        <td>9794500935</td>\n      </tr>\n      <tr>\n        <td>Rajasthan</td>\n        <td>Dausa</td>\n        <td>AASRA Dausa</td>\n        <td>Ramchandra form house Alwar Secundera meghalay sara Dha</td>\n        <td>8426968801</td>\n      </tr>\n      <tr>\n        <td>Rajasthan</td>\n        <td>Jaipur</td>\n        <td>RMC Jaipur</td>\n        <td>Chhatravas Bhawan of Rajasthan Punarwas Shodh Sansthan,</td>\n        <td>8545905821</td>\n      </tr>\n      <tr>\n        <td>Rajasthan</td>\n        <td>Tonk</td>\n        <td>PMDK TONK</td>\n        <td>PDUNIPPD, SAADAT HOSPITAL NEAR NURSHING HOSTEL, TONK RA</td>\n        <td>9034505960</td>\n      </tr>\n      <tr>\n        <td>Rajasthan</td>\n        <td>Jaipur</td>\n        <td>PMDK JAIPUR</td>\n        <td>RAJASTHAN PURNARVAS &amp; SHODH SANSTHAN,, JAMDOLI, JAIPUR</td>\n        <td>8545905821</td>\n      </tr>\n      <tr>\n        <td>Rajasthan</td>\n        <td>Udaipur</td>\n        <td>PMDK Udaipur</td>\n        <td>Department of Rehabilitation Science, Janardan Rai Naga</td>\n        <td>9039452503</td>\n      </tr>\n      <tr>\n        <td>Rajasthan</td>\n        <td>Kota</td>\n        <td>PMDK Kota</td>\n        <td>Room No.107 &amp; 109, Maharao Bhim Singh Hospital, OLD OPD</td>\n        <td>7309784026</td>\n      </tr>\n      <tr>\n        <td>Rajasthan</td>\n        <td>Udaipur</td>\n        <td>PMD-VK Udaipur</td>\n        <td>Department of Rehabilitation Science, Janardan Rai Naga</td>\n        <td>9039452503</td>\n      </tr>\n      <tr>\n        <td>Rajasthan</td>\n        <td>Kota</td>\n        <td>PMD-VK Kota</td>\n        <td>Room No.107 &amp; 109, Maharao Bhim Singh Hospital, OLD OPD</td>\n        <td>7309784026</td>\n      </tr>\n      <tr>\n        <td>Rajasthan</td>\n        <td>Tonk</td>\n        <td>PMD-VK TONK</td>\n        <td>PDUNIPPD, SAADAT HOSPITAL NEAR NURSHING HOSTEL, TONK RA</td>\n        <td>9034505960</td>\n      </tr>\n      <tr>\n        <td>Rajasthan</td>\n        <td>Jaipur</td>\n        <td>PMD-VK JAIPUR</td>\n        <td>RAJASTHAN PURNARVAS &amp; SHODH SANSTHAN,, JAMDOLI, JAIPUR</td>\n        <td>7999739286</td>\n      </tr>\n      <tr>\n        <td>Sikkim</td>\n        <td>Gangtok</td>\n        <td>PMDK GANGTOK</td>\n        <td>CRC SIKKIM, ASSAM LINGZEY, P.S. RANIPOOL, PAKYONG DISTR</td>\n        <td>9401435946</td>\n      </tr>\n      <tr>\n        <td>Sikkim</td>\n        <td>Gangtok</td>\n        <td>PMD-VK GANGTOK</td>\n        <td>CRC SIKKIM, ASSAM LINGZEY, P.S. RANIPOOL, PAKYONG DISTR</td>\n        <td>9883811417</td>\n      </tr>\n      <tr>\n        <td>Tamil Nadu</td>\n        <td>Chennai</td>\n        <td>PMDK CHENNAI (NIEPMD)</td>\n        <td>East Coast Road, Muttukadu, Kovalam(Post), Chennai,Tam</td>\n        <td>7749854146</td>\n      </tr>\n      <tr>\n        <td>Tamil Nadu</td>\n        <td>Chennai</td>\n        <td>PMDK CHENNAI (NIEPVD)</td>\n        <td>522,TRUNK ROAD, GANDHI NAGAR, POONAMALLEE, CHENNAI, TAM</td>\n        <td>7903459168</td>\n      </tr>\n      <tr>\n        <td>Tamil Nadu</td>\n        <td>Madurai</td>\n        <td>PMDK MADURAI</td>\n        <td>Tamil Nadu Housing Board, Villapuram, Subramaniapuram P</td>\n        <td>7845141405</td>\n      </tr>\n      <tr>\n        <td>Tamil Nadu</td>\n        <td>Chengalpattu</td>\n        <td>RMC Chennai</td>\n        <td>Block- B, Ground Floor, Room No.-101, ESIC Medical Coll</td>\n        <td>9131698378</td>\n      </tr>\n      <tr>\n        <td>Tamil Nadu</td>\n        <td>Chennai</td>\n        <td>PMDK ESIC Chennai</td>\n        <td>Block- B, Ground Floor, Room No.-101, ESIC Medical Coll</td>\n        <td>8925444754</td>\n      </tr>\n      <tr>\n        <td>Tamil Nadu</td>\n        <td></td>\n        <td>PMDK Thoothukudi</td>\n        <td>Pradhan Mantri Divyasha Kendra, Zila Viklang Vyakti Kal</td>\n        <td>8925444754</td>\n      </tr>\n      <tr>\n        <td>Tamil Nadu</td>\n        <td>Chennai</td>\n        <td>PMD-VK CHENNAI (NIEPVD)</td>\n        <td>522,TRUNK ROAD, GANDHI NAGAR, POONAMALLEE, CHENNAI, TAM</td>\n        <td>8925444754</td>\n      </tr>\n      <tr>\n        <td>Tamil Nadu</td>\n        <td>Chennai</td>\n        <td>PMD-VK CHENNAI (NIEPMD)</td>\n        <td>East Coast Road, Muttukadu, Kovalam(Post), Chennai,Tam</td>\n        <td>7749854146</td>\n      </tr>\n      <tr>\n        <td>Tamil Nadu</td>\n        <td>Chennai</td>\n        <td>PMD-VK ESIC Chennai</td>\n        <td>Block- B, Ground Floor, Room No.-101, ESIC Medical Coll</td>\n        <td>6383832454</td>\n      </tr>\n      <tr>\n        <td>Tamil Nadu</td>\n        <td>Madurai</td>\n        <td>PMD-VK MADURAI</td>\n        <td>Tamil Nadu Housing Board, Villapuram, Subramaniapuram P</td>\n        <td>7845141405</td>\n      </tr>\n      <tr>\n        <td>Tamil Nadu</td>\n        <td></td>\n        <td>PMD-VK Thoothukudi</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, Zila Viklang V</td>\n        <td>8009582226</td>\n      </tr>\n      <tr>\n        <td>Telangana</td>\n        <td>Hyderabad</td>\n        <td>PMDK RMC SECUNDRABAD (HYDERABAD)</td>\n        <td>MANOVIKAS NAGAR, SECUNDERABAD, TELANGANA</td>\n        <td>8130713179</td>\n      </tr>\n      <tr>\n        <td>Telangana</td>\n        <td></td>\n        <td>RMC Hyderabad</td>\n        <td>C/o Pt. Deendayal Upadhyaya, National Institute for Per</td>\n        <td>8707877546</td>\n      </tr>\n      <tr>\n        <td>Telangana</td>\n        <td>Hyderabad</td>\n        <td>PMD-VK RMC SECUNDRABAD (HYDERABAD)</td>\n        <td>MANOVIKAS NAGAR, SECUNDERABAD, TELANGANA</td>\n        <td>8130717179</td>\n      </tr>\n      <tr>\n        <td>The Dadra And Nagar Haveli And Daman And Diu</td>\n        <td>North And Middle Andaman</td>\n        <td>PMDK DAMAN</td>\n        <td>RED CROSS SCHOOL FOR HANDICAPPED CHILDREN AMLI 66, K.P </td>\n        <td>9831953942</td>\n      </tr>\n      <tr>\n        <td>The Dadra And Nagar Haveli And Daman And Diu</td>\n        <td>North And Middle Andaman</td>\n        <td>PMD-VK DAMAN</td>\n        <td>RED CROSS SCHOOL FOR HANDICAPPED CHILDREN AMLI 66, K.P </td>\n        <td>9040211645</td>\n      </tr>\n      <tr>\n        <td>Tripura</td>\n        <td>West Tripura</td>\n        <td>PMDK AGARTALA</td>\n        <td>CRC Agartala , Juvenial Home Campus, Narsinghgarh, Bima</td>\n        <td>8578027724</td>\n      </tr>\n      <tr>\n        <td>Tripura</td>\n        <td>West Tripura</td>\n        <td>PMD-VK AGARTALA</td>\n        <td>CRC Agartala , Juvenial Home Campus, Narsinghgarh, Bima</td>\n        <td>8578027724</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Lucknow</td>\n        <td>PMDK LUCKNOW</td>\n        <td>MOHAAN ROAD, LUCKNOW</td>\n        <td>7905283518</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Gautam Buddha Nagar</td>\n        <td>PMDK NOIDA</td>\n        <td>C-44/A, C BLOCK, SECTOR 40, NOIDA, UTTAR PRADESH, </td>\n        <td>9719914854</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Hardoi</td>\n        <td>AASRA Hardoi ANURAG MISHRA</td>\n        <td>221,Peni Purwa Near viswakarma Mandir Sitapur Road</td>\n        <td>6387226307</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Basti</td>\n        <td>AASRA Basti HARSH ENTERPRISES</td>\n        <td>Satya Dev Shukla Harsh Enterprises 1961B Pikaura Shiv G</td>\n        <td>9450945655</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Lucknow</td>\n        <td>AASRA Lucknow SPELLWORKS TECHNOLOGIES</td>\n        <td>B1, Amantran Villa Tiwari Ganj </td>\n        <td>9450945655</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Chitrakoot</td>\n        <td>PMDK CHITRAKOOT</td>\n        <td>Mother and Child Hospital (MCH), Khoh, Chitrakoot</td>\n        <td>9905121712</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Gorakhpur</td>\n        <td>PMDK GORAKHPUR</td>\n        <td>CRC GORAKHPUR CAMPUS, BRD MEDICAL COLLEGE , GORAKHPUR, </td>\n        <td>6306382128</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Ghaziabad</td>\n        <td>AASRA Ghaziabad</td>\n        <td>Z-Block Mahindra Enclave Sec-2 Chiranjeev Vihar Shastri</td>\n        <td>8447600423</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Ballia</td>\n        <td>AASRA Ballia Belthra Road</td>\n        <td>Vill- Malera, Post- Govindpur , Ballia Belthra Road</td>\n        <td>8853838438</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Kanpur Nagar</td>\n        <td>PMDK APOC HQ KANPUR</td>\n        <td>ALIMCO, Naramau, G.T.Road, Kanpur</td>\n        <td>8009864200</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Gorakhpur</td>\n        <td>AASRA Gorakhpur</td>\n        <td>Shop No. 2, Kanshiram Kaloni, Near Gorakhpur Zoo, Ramga</td>\n        <td>9450561058</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td></td>\n        <td>AASRA Prayagraj</td>\n        <td>3G/5I/2 SHIVKUTI SUNDERBAG,PRAYAGRAJ 211004</td>\n        <td>9451588812</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Mirzapur</td>\n        <td>AASRA Mirzapur</td>\n        <td>Arangi sarapati post birohi chanbe</td>\n        <td>9621231070</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Kanpur Nagar</td>\n        <td>ALIMCO HQ</td>\n        <td>G T Road, Naramau</td>\n        <td>6260883623</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td></td>\n        <td>AASRA Balia</td>\n        <td>Vill- Barsari, PO- Bhudhuan, Balia, </td>\n        <td>8808139098</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Kanpur Dehat</td>\n        <td>AASRA Kanpur</td>\n        <td>118/189, Kaushal Puri</td>\n        <td>8542833691</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Deoria</td>\n        <td>AASRA Deoria</td>\n        <td>Dopedwa,Ramgulam tola puravi</td>\n        <td>9839208111</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Fatehpur</td>\n        <td>Aasra Fatehpur</td>\n        <td>Shahjahanpur Post Mauhar District Fatehpur-212665</td>\n        <td>9140402987</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Sultanpur</td>\n        <td>AASRA Sultanpur</td>\n        <td>Koro Bazar, Near Durga Mata Mandir, Post Office-Atarsum</td>\n        <td>9519772990</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Budaun</td>\n        <td>PMDK Budaun</td>\n        <td>Governement Medical College, Ujhani Bypass, Ujhani, Bud</td>\n        <td>9650438711</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Varanasi</td>\n        <td>PMDK VARANASI</td>\n        <td>CRC Varanasi, Panchkoshi Marg, Amarawati, Khusipur, Var</td>\n        <td>8917768284</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Deoria</td>\n        <td>PMDK Deoria</td>\n        <td>Pradhan Mantri Divyasha Kendra' Zila Divyasha Punarvas </td>\n        <td>6306382128</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Pilibhit</td>\n        <td>PMDK Pilibhit</td>\n        <td>Pradhan Mantri Divyasha Kendra D.D.R.C. Aadarsh Zila Di</td>\n        <td>9305781030</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Bareilly</td>\n        <td>PMDK Bareilly</td>\n        <td>Pradhan Mantri Divyasha Kendra D.D.R.C. Aadarsh Zila Di</td>\n        <td>9305781030</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Agra</td>\n        <td>PMDK Agra</td>\n        <td>Pradhan Mantri Divyasha Kendra, Handicapped Development</td>\n        <td>9971699078</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Fatehpur</td>\n        <td>PMDK Fatehpur</td>\n        <td>Pradhan Mantri Divyasha Kendra, Amar Sahid Jodha Singh </td>\n        <td>6260883623</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Meerut</td>\n        <td>PMDK Meerut</td>\n        <td>Pradhan Mantri Divyasha Kendra, Lala Lajpat Roy Memoria</td>\n        <td>7676754182</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Varanasi</td>\n        <td>AASRA Varanasi</td>\n        <td>Jan Vikas Samiti Murdaha Vill</td>\n        <td>9534040402</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Muzaffarnagar</td>\n        <td>AASRA Muzaffarnagar</td>\n        <td>Shahubduinpur road</td>\n        <td>9568127132</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Mainpuri</td>\n        <td>AASRA Mainpur</td>\n        <td>DHUJI MANDIR KURAWALI</td>\n        <td>9193008820</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Etawah</td>\n        <td>AASRA Etawah</td>\n        <td>SHIVA COLONY</td>\n        <td>7987142768</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Bara Banki</td>\n        <td>AASRA Barabanki</td>\n        <td>MOHALLA SHIVPURI WARD NO- 5, MANJHPURWA, BANKI</td>\n        <td>7275113001</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Amethi</td>\n        <td>AASRA Amethi</td>\n        <td>SAWANGI, AMETHI</td>\n        <td>8738032101</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Kasganj</td>\n        <td>AASRA Kasganj</td>\n        <td>Moh -Dhanpal, Near Gauri Shankar Mandir Ganidundwara</td>\n        <td>9536226386</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td></td>\n        <td>AASRA Sant Kabir Nagar</td>\n        <td>Shop no 48, Nagar palika market North Station road, Kha</td>\n        <td>7905117637</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Kanpur Dehat</td>\n        <td>AASRA Kanpur Dehat</td>\n        <td>Dwivedi Market, Ambedkar Nagar, Akbarpur Chauraha</td>\n        <td>8887419151</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Unnao</td>\n        <td>AASRA Unnao</td>\n        <td>Ram baksh kheda Hardoi road near agriculture office</td>\n        <td>8433317192</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Sirmaur</td>\n        <td>AASRA Mau</td>\n        <td>NAGRAA GHOSI MARG PRATHAMIC PATHASHALA ROOPWAR BHAGWANP</td>\n        <td>9450531092</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Azamgarh</td>\n        <td>AASRA Azamgarh</td>\n        <td>VILL-DEVADA DAMODARPUR, POST-GAURINARAYAPUR, KANDHAROUR</td>\n        <td>9450019493</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Jaunpur</td>\n        <td>AASRA Jaunpur</td>\n        <td>Vill. Chilvili PO Gangauli Tehsil Shahganj</td>\n        <td>9555904171</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Firozabad</td>\n        <td>AASRA Firozabad</td>\n        <td>Thana modha Chauraha</td>\n        <td>8273666143</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Lucknow</td>\n        <td>PMD-VK LUCKNOW</td>\n        <td>MOHAAN ROAD, LUCKNOW</td>\n        <td>7905283518</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Gautam Buddha Nagar</td>\n        <td>PMD-VK NOIDA</td>\n        <td>C-44/A, C BLOCK, SECTOR 40, NOIDA, UTTAR PRADESH, </td>\n        <td>9719914854</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Chitrakoot</td>\n        <td>PMD-VK CHITRAKOOT</td>\n        <td>Mother and Child Hospital (MCH), Khoh, Chitrakoot</td>\n        <td>9905121712</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Gorakhpur</td>\n        <td>PMD-VK GORAKHPUR</td>\n        <td>CRC GORAKHPUR CAMPUS, BRD MEDICAL COLLEGE , GORAKHPUR, </td>\n        <td>6306382128</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Kanpur Nagar</td>\n        <td>PMD-VK APOC HQ KANPUR</td>\n        <td>ALIMCO, Naramau, G.T.Road, Kanpur</td>\n        <td>7205811268</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Budaun</td>\n        <td>PMD-VK Budaun</td>\n        <td>Governement Medical College, Ujhani Bypass, Ujhani, Bud</td>\n        <td>9305781030</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Varanasi</td>\n        <td>PMD-VK VARANASI</td>\n        <td>CRC Varanasi, Panchkoshi Marg, Amarawati, Khusipur, Var</td>\n        <td>8917768284</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Deoria</td>\n        <td>PMD-VK Deoria</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, Zila Divyasha </td>\n        <td>9839060202</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Pilibhit</td>\n        <td>PMD-VK Pilibhit</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, D.D.R.C. Aadar</td>\n        <td>7505830721</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Bareilly</td>\n        <td>PMD-VK Bareilly</td>\n        <td>Pradhan Mantri Divyasha Kendra D.D.R.C. Aadarsh Zila Di</td>\n        <td>7651856907</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Meerut</td>\n        <td>PMD-VK Meerut</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, Lala Lajpat Ro</td>\n        <td>8755380038</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Agra</td>\n        <td>PMD-VK Agra</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, Handicapped De</td>\n        <td>7701905707</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Fatehpur</td>\n        <td>PMD-VK Fatehpur</td>\n        <td>Pradhan Mantri Divyasha Kendra, Amar Sahid Jodha Singh </td>\n        <td>8604131967</td>\n      </tr>\n      <tr>\n        <td>Uttarakhand</td>\n        <td></td>\n        <td>PMDK AIIMS RISHIKESH</td>\n        <td>SHIVAJI NAGAR, RISHIKESH, UTTARAKHAND</td>\n        <td>8448203394</td>\n      </tr>\n      <tr>\n        <td>Uttarakhand</td>\n        <td>Dehradun</td>\n        <td>PMDK DEHRADUN</td>\n        <td>NIEPVD,116, RAJPUR RD, JAKHAN, DEHRADUN,, UTTARAKHAND</td>\n        <td>9836489071</td>\n      </tr>\n      <tr>\n        <td>Uttarakhand</td>\n        <td>Haridwar</td>\n        <td>PMDK, DDRC, Haridwar </td>\n        <td>Pradhan Mantri Divyasha Kendra' Zila Divyasha Punarvas </td>\n        <td>9971699078</td>\n      </tr>\n      <tr>\n        <td>Uttarakhand</td>\n        <td>Haridwar</td>\n        <td>PMD-VK, DDRC, Haridwar </td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, Zila Divyasha </td>\n        <td>9971699078</td>\n      </tr>\n      <tr>\n        <td>Uttarakhand</td>\n        <td></td>\n        <td>PMD-VK AIIMS RISHIKESH</td>\n        <td>SHIVAJI NAGAR, RISHIKESH, UTTARAKHAND</td>\n        <td>8448203394</td>\n      </tr>\n      <tr>\n        <td>Uttarakhand</td>\n        <td>Dehradun</td>\n        <td>PMD-VK DEHRADUN</td>\n        <td>NIEPVD,116, RAJPUR RD, JAKHAN, DEHRADUN,, UTTARAKHAND</td>\n        <td>9836489071</td>\n      </tr>\n      <tr>\n        <td>West Bengal</td>\n        <td>Kolkata</td>\n        <td>RMC Kolkata</td>\n        <td>C/o National Institute for the Orthopaedically Handicap</td>\n        <td>9903373510</td>\n      </tr>\n      <tr>\n        <td>West Bengal</td>\n        <td>Kolkata</td>\n        <td>PMDK RMC KOLKATA</td>\n        <td>NILD, Barrackpore Trunk Rd, Mallick Colony, Bonhooghly </td>\n        <td>7827246664</td>\n      </tr>\n      <tr>\n        <td>West Bengal</td>\n        <td>Nadia</td>\n        <td>PMDK AIIMS KALYANI</td>\n        <td>NH-34, CONNECTOR, BASANTPUR KALYANI, WEST BENGAL</td>\n        <td>8249069767</td>\n      </tr>\n      <tr>\n        <td>West Bengal</td>\n        <td>Bankura</td>\n        <td>AASRA Bankura</td>\n        <td>Ardhagram, Ardhagram,Bankura-722143</td>\n        <td>7365936455</td>\n      </tr>\n      <tr>\n        <td>West Bengal</td>\n        <td>Kolkata</td>\n        <td>AASRA Kolkata</td>\n        <td>Bijoy Lakshmi colony, Beside Usha showroom, Colony More</td>\n        <td>7980534831</td>\n      </tr>\n      <tr>\n        <td>West Bengal</td>\n        <td>Nadia</td>\n        <td>AASRA Nadia</td>\n        <td>VILL-CHUADANGA PO-GOURIPUR, CHAKDAHA</td>\n        <td>9091697374</td>\n      </tr>\n      <tr>\n        <td>West Bengal</td>\n        <td>Kolkata</td>\n        <td>PMD-VK RMC KOLKATA</td>\n        <td>NILD, Barrackpore Trunk Rd, Mallick Colony, Bonhooghly </td>\n        <td>8388970326</td>\n      </tr>\n      <tr>\n        <td>West Bengal</td>\n        <td>Nadia</td>\n        <td>PMD-VK AIIMS KALYANI</td>\n        <td>NH-34, CONNECTOR, BASANTPUR KALYANI, WEST BENGAL</td>\n        <td>9938558219</td>\n      </tr>\n    </tbody>\n  </table>\n  </div>\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t</div>\n\t\t\t\t\t\t</div><div>\n\t\t\t\t\t\t\t\t\t<h2><span>3,276</span></h2>\t\t\t\t\t\t\t\t</div><div>\n\t\t\t\t\t\t\t\t\t<p>Total No. of Camps</p>\t\t\t\t\t\t\t\t</div><div>\n\t\t\t\t\t\t\t\t\t<h2><span>54,71,192</span></h2>\t\t\t\t\t\t\t\t</div><div>\n\t\t\t\t\t\t\t\t\t<p>Total No. of Devices Distributed</p>\t\t\t\t\t\t\t\t</div><div>\n\t\t\t\t\t\t\t\t\t<h2><span>10,19,800</span></h2>\t\t\t\t\t\t\t\t</div><div>\n\t\t\t\t\t\t\t\t\t<p>Total No. of Beneficiaries</p>\t\t\t\t\t\t\t\t</div>"
+        "html": "<div>\n\t\t\t\t\t\t\t<div>\n\t\t\t<div>\n\t\t\t\t\t\n\t\t\t\t\t\t<span>\n\t\t\t\tCamp Mode\t\t\t</span>\n\t\t\n\t\t\t\t\n\t\t\t\t\t\t<span>\n\t\t\t\tWalk-in mode\t\t\t</span>\n\t\t\n\t\t\t\t\t</div>\n\t\t\t<div>\n\t\t\t\t<div>\n\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t<p>These devices are distributed in the camp mode. The beneficiaries are identified through Assessment Camps organised in collaboration with the respective State Government/District Administration.</p><h6>Required Document</h6><ul><li>Aadharcard<span>*</span>,</li><li>Ration Card,</li><li>Pan card,</li><li>Driving Licence,</li><li>Income Certificate<span>*</span></li></ul><p>All documents marked with an asterisk (*) are mandatory.</p>\t\t\t\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t<div>\n\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t<div>\n<h6>Required Document</h6>\n<ul>\n \t<li>Aadharcard<span>*</span>,</li>\n \t<li>Ration Card,</li>\n \t<li>Pan card,</li>\n \t<li>Driving Licence,</li>\n \t<li>Income Certificate<span>*</span></li>\n</ul>\n<p>\nAll documents marked with an asterisk (*) are mandatory.\n</p>\n</div>\n<h5>Where<span> to Go</span></h5>\t\t\t\t\t\t\t\t</div>\n\t\t\t\t<div>\n\t\t\t\t\t<div>\n\n\n<table>\n    <thead>\n      <tr>\n        <th>State</th>\n        <th>District</th>\n        <th>Organization Name</th>\n        <th>Address</th>\n        <th>Contact No.</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr>\n        <td>Andaman And Nicobar Islands</td>\n        <td></td>\n        <td>PMDK PORT BLAIR</td>\n        <td>CRC ANDAMAN &amp; NICOBAR, BROOKSHABAD, PORT BLAIR, ANDAMAN</td>\n        <td>9903373510</td>\n      </tr>\n      <tr>\n        <td>Andaman And Nicobar Islands</td>\n        <td></td>\n        <td>PMD-VK PORT BLAIR</td>\n        <td>CRC ANDAMAN &amp; NICOBAR, BROOKSHABAD, PORT BLAIR, ANDAMAN</td>\n        <td>8420420972</td>\n      </tr>\n      <tr>\n        <td>Andhra Pradesh</td>\n        <td></td>\n        <td>PMDK NELLORE</td>\n        <td>CRC NELLORE, KANPURURU BIT-2 VENKATACHALAM, ANDHRA PRA</td>\n        <td>7077257307</td>\n      </tr>\n      <tr>\n        <td>Andhra Pradesh</td>\n        <td></td>\n        <td>PMD-VK NELLORE</td>\n        <td>CRC NELLORE, KANPURURU BIT-2 VENKATACHALAM, ANDHRA PRA</td>\n        <td>8917579827</td>\n      </tr>\n      <tr>\n        <td>Arunachal Pradesh</td>\n        <td>Papum Pare</td>\n        <td>PMDK NAHARLAGUN</td>\n        <td>Regional Centre, Naharlagun, National Institute for Loc</td>\n        <td>8787617120</td>\n      </tr>\n      <tr>\n        <td>Arunachal Pradesh</td>\n        <td>Papum Pare</td>\n        <td>PMD-VK NAHARLAGUN</td>\n        <td>Regional Centre, Naharlagun, National Institute for Loc</td>\n        <td>8787617120</td>\n      </tr>\n      <tr>\n        <td>Assam</td>\n        <td>Kamrup Metro</td>\n        <td>PMDK GUWAHATI</td>\n        <td>CRC GUWAHATI, GMCH CAMPUS, HOSTEL ROAD, BHANGAGARH, GUW</td>\n        <td>9650438711</td>\n      </tr>\n      <tr>\n        <td>Assam</td>\n        <td></td>\n        <td>RMC Guwahati</td>\n        <td>Upper Ground Floor, Mayur Garden, G.S Road, Opp. Rajiv </td>\n        <td>9540986108</td>\n      </tr>\n      <tr>\n        <td>Assam</td>\n        <td></td>\n        <td>PMDK RMC GUWAHATI</td>\n        <td>CRC for Skill Development, Rehabilitation &amp; Empowerment</td>\n        <td>9650438711</td>\n      </tr>\n      <tr>\n        <td>Assam</td>\n        <td>Dhubri</td>\n        <td>PMDK Dhubri</td>\n        <td>HOSPITAL ROAD, W NO. 2, NEW GAURIPUR CHC, DHUBRI</td>\n        <td>9650438711</td>\n      </tr>\n      <tr>\n        <td>Assam</td>\n        <td>Sivasagar</td>\n        <td>PMDK Sivsagar</td>\n        <td>Primary Health Centre (PHC), Sivasagar, Dolmukh, Charia</td>\n        <td>8009757425</td>\n      </tr>\n      <tr>\n        <td>Assam</td>\n        <td>Sivasagar</td>\n        <td>PMDK Sivasagar</td>\n        <td>DOL MUKH CHARIALI ROAD, OLD MODEL HOSPITAL, OFFICE OF T</td>\n        <td>9650438711</td>\n      </tr>\n      <tr>\n        <td>Assam</td>\n        <td>Barpeta</td>\n        <td>AASRA Barpeta</td>\n        <td>Vill kharballi post Kalgachia</td>\n        <td>9435675588</td>\n      </tr>\n      <tr>\n        <td>Assam</td>\n        <td></td>\n        <td>PMD-VK RMC GUWAHATI</td>\n        <td>Upper Ground Floor, Mayur Garden, G.S Road, Opp. Rajiv </td>\n        <td>9650438711</td>\n      </tr>\n      <tr>\n        <td>Assam</td>\n        <td></td>\n        <td>PMD-VK GUWAHATI</td>\n        <td>CRC for Skill Development, Rehabilitation &amp; Empowerment</td>\n        <td>7992192501</td>\n      </tr>\n      <tr>\n        <td>Assam</td>\n        <td>Sivasagar</td>\n        <td>PMD-VK Sivasagar</td>\n        <td>DOL MUKH CHARIALI ROAD, OLD MODEL HOSPITAL, OFFICE OF T</td>\n        <td>8009757425</td>\n      </tr>\n      <tr>\n        <td>Assam</td>\n        <td>Dhubri</td>\n        <td>PMD-VK Dhubri</td>\n        <td>HOSPITAL ROAD, W NO. 2, NEW GAURIPUR CHC, DHUBRI</td>\n        <td>7550965190</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Darbhanga</td>\n        <td>AASRA Darbhanga</td>\n        <td>Brahmotra, Po-Ratanpura, Ps- Ashokpaper Mill, Darbhanga</td>\n        <td>7541800809</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Siwan</td>\n        <td>AASRA Siwan</td>\n        <td>Dhanauti,Siwan Sadar,Siwan-841226</td>\n        <td>9431894554</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Muzaffarpur</td>\n        <td>AASRA Muzaffarpur</td>\n        <td>Kolhua Paigamberpur, Kanti Paigamberpur</td>\n        <td>9304928342</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Katihar</td>\n        <td>AASRA Katihar</td>\n        <td>A G BAZAR, KURSELA KATIHAR</td>\n        <td>8051609606</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Patna</td>\n        <td>AASRA Patna</td>\n        <td>E-111 P C Colony Kankarbagh</td>\n        <td>9439672192</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td></td>\n        <td>AASRA Samastipur dalsinghsarai</td>\n        <td>Village+Post -Bajidpur Meyari wad-13 Morangtola,Tinmuha</td>\n        <td>9801731464</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Khagaria</td>\n        <td>AASRA Khagaria</td>\n        <td>NH-31 Chandra Vihar ,PO-Babu Bagicha P.S- Maheshkhunt</td>\n        <td>9430620851</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Araria</td>\n        <td>AASRA Araria</td>\n        <td>Jay Prakash Nagar, Ward No-7 Araria</td>\n        <td>7980545790</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Madhubani</td>\n        <td>AASRA Madhubani</td>\n        <td>At-chandrasenpur,Po-Hussainpur, Ps-rahika, Dist-Madhuba</td>\n        <td>9546393176</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Vaishali</td>\n        <td>AASRA Vaishali</td>\n        <td>At - Paigamberpur gorigama, P.O - Sondho, P.S - Goraul,</td>\n        <td>8294965166</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Patna</td>\n        <td>PMDK PATNA</td>\n        <td>CRC, SHEIKHPURA (OLD DHARAMSHALA), I.G.I.M.S.,, NEAR NA</td>\n        <td>6306320386</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Saharsa</td>\n        <td>AASRA SAHARSA KOSHI KCHHETRIYA BIKLANG</td>\n        <td>B. D Road  W.No-21 Behined To P.N.B Saharsa</td>\n        <td>6354178881</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Bhagalpur</td>\n        <td>AASRA Bhagalpur ECO FABRICLY</td>\n        <td>Eco Fabricly Sardarpur,Daudbat, Bhagalpur,Near Mausam H</td>\n        <td>9953179894</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Patna</td>\n        <td>AASRA Patna ECO FABRICLY</td>\n        <td>C/O-Shyam Kishor Mahadev Sthan,Paijawa Patna</td>\n        <td>8981167073</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Rohtas</td>\n        <td>AASRA Sasaram</td>\n        <td>Mehta Market, Prabhakar Road Sasaram</td>\n        <td>9570477611</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Samastipur</td>\n        <td>AASRA Samastipur</td>\n        <td>Adarshnagar, Gali-3B Near Jhumka bijli pole</td>\n        <td>9661030999</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Bhojpur</td>\n        <td>AASRA Bhojpur</td>\n        <td>R- Square Complex, Ward No-09, Near Patna Buxar Highway</td>\n        <td>7068267606</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Saran</td>\n        <td>AASRA Saran</td>\n        <td>At-Nandlal Tola Nehru Chowk Chapra</td>\n        <td>8294965166</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Nalanda</td>\n        <td>AASRA Nalanda</td>\n        <td>Arjun Serthua,Khudaganj ,Islampur,Nalanda-801303</td>\n        <td>7250148106</td>\n      </tr>\n      <tr>\n        <td>Bihar</td>\n        <td>Patna</td>\n        <td>PMD-VK PATNA</td>\n        <td>CRC, SHEIKHPURA (OLD DHARAMSHALA), I.G.I.M.S.,, NEAR NA</td>\n        <td>8504040389</td>\n      </tr>\n      <tr>\n        <td>Chandigarh</td>\n        <td>Chandigarh</td>\n        <td>PMDK CHANDIGARH</td>\n        <td>AASHA KIRAN, VTC 46 CHANDIGARH-160047, </td>\n        <td>8287359271</td>\n      </tr>\n      <tr>\n        <td>Chandigarh</td>\n        <td>Chandigarh</td>\n        <td>PMD-VK CHANDIGARH</td>\n        <td>AASHA KIRAN, VTC 46 CHANDIGARH-160047, </td>\n        <td>8287359271</td>\n      </tr>\n      <tr>\n        <td>Chhattisgarh</td>\n        <td>Rajnandgaon</td>\n        <td>PMDK RAJNANDGAON</td>\n        <td>OLD DISTRICT HOSPITAL CAMPUS, CHHATTISGARH</td>\n        <td>9968048517</td>\n      </tr>\n      <tr>\n        <td>Chhattisgarh</td>\n        <td>Uttar Bastar Kanker</td>\n        <td>AASRA Kanker CHHATTISGARH INNOVATIONS</td>\n        <td>Govindpur Block Govindpur Kanker</td>\n        <td>7999917885</td>\n      </tr>\n      <tr>\n        <td>Chhattisgarh</td>\n        <td>Korba</td>\n        <td>AASRA Korba MAA REHAB INDIA</td>\n        <td>AGARKHAR PLANT Khasra no 262 NTPC Urja Dwar</td>\n        <td>8319862325</td>\n      </tr>\n      <tr>\n        <td>Chhattisgarh</td>\n        <td>Raipur</td>\n        <td>AASRA Raipur V TECH MARKETING ASSOCIAT</td>\n        <td>Mathpurena Chowk Ring Road No 1 Raipur</td>\n        <td>9406052842</td>\n      </tr>\n      <tr>\n        <td>Chhattisgarh</td>\n        <td>Bilaspur</td>\n        <td>PMDK Bilaspur</td>\n        <td>Pradhan Mantri Divyasha Kendra, Zila Divyang Punarvas K</td>\n        <td>9968048517</td>\n      </tr>\n      <tr>\n        <td>Chhattisgarh</td>\n        <td>Rajnandgaon</td>\n        <td>PMD-VK RAJNANDGAON</td>\n        <td>OLD DISTRICT HOSPITAL CAMPUS, CHHATTISGARH</td>\n        <td>7869157075</td>\n      </tr>\n      <tr>\n        <td>Chhattisgarh</td>\n        <td>Bilaspur</td>\n        <td>PMD-VK Bilaspur</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, Zila Divyang P</td>\n        <td>7325993395</td>\n      </tr>\n      <tr>\n        <td>Delhi</td>\n        <td>New Delhi</td>\n        <td>RMC New Delhi</td>\n        <td>C/o Social Justice Centre, Mahila Imdad Committee, Paha</td>\n        <td>8851232064</td>\n      </tr>\n      <tr>\n        <td>Delhi</td>\n        <td>New Delhi</td>\n        <td>AASRA Delhi Maa Shakti</td>\n        <td>3/111 Lalita park Laxmi Nagar</td>\n        <td>8178144588</td>\n      </tr>\n      <tr>\n        <td>Delhi</td>\n        <td>New Delhi</td>\n        <td>PMDK RMC NEW DELHI</td>\n        <td>ALIMCO Regional Marketing &amp; Disability Rehabilitation C</td>\n        <td>8287122505</td>\n      </tr>\n      <tr>\n        <td>Delhi</td>\n        <td>New Delhi</td>\n        <td>PMDK IPH DELHI</td>\n        <td>PDUNIPPD (DIVYANGJAN) 4 VISHNU DIGAMBER MARG, NEW DELHI</td>\n        <td>9560045775</td>\n      </tr>\n      <tr>\n        <td>Delhi</td>\n        <td>New Delhi</td>\n        <td>PMD-VK IPH DELHI</td>\n        <td>PDUNIPPD (DIVYANGJAN) 4 VISHNU DIGAMBER MARG, NEW DELHI</td>\n        <td>9560045775</td>\n      </tr>\n      <tr>\n        <td>Delhi</td>\n        <td>New Delhi</td>\n        <td>PMD-VK RMC NEW DELHI</td>\n        <td>ALIMCO Regional Marketing &amp; Disability Rehabilitation C</td>\n        <td>8489422073</td>\n      </tr>\n      <tr>\n        <td>Goa</td>\n        <td>North Goa</td>\n        <td>PMDK PANAJI</td>\n        <td>GOA MEDICAL COLLEGE, BAMBOLIM, TISWADI</td>\n        <td>8329032894</td>\n      </tr>\n      <tr>\n        <td>Goa</td>\n        <td>North Goa</td>\n        <td>PMD-VK PANAJI</td>\n        <td>GOA MEDICAL COLLEGE, BAMBOLIM, TISWADI</td>\n        <td>9561505791</td>\n      </tr>\n      <tr>\n        <td>Gujarat</td>\n        <td>Ahmedabad</td>\n        <td>PMDK AHMEDABAD</td>\n        <td>435/8/1, BHIKSHUKHGRUH RD, G I D C INDUSTRIAL AREA, ODH</td>\n        <td>9527141098</td>\n      </tr>\n      <tr>\n        <td>Gujarat</td>\n        <td>Kheda</td>\n        <td>AASRA Kheda</td>\n        <td>C/o Maa Gayatri Ortho Care 5, Shivalik Complex Near P</td>\n        <td>8758754020</td>\n      </tr>\n      <tr>\n        <td>Gujarat</td>\n        <td></td>\n        <td>AASRA Kutch</td>\n        <td>National Highway 8A, gandhidham Road, Nearby Police sta</td>\n        <td>9558965101</td>\n      </tr>\n      <tr>\n        <td>Gujarat</td>\n        <td>Ahmedabad</td>\n        <td>PMD-VK AHMEDABAD</td>\n        <td>435/8/1, BHIKSHUKHGRUH RD, G I D C INDUSTRIAL AREA, ODH</td>\n        <td>9967564543</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Mahendragarh</td>\n        <td>PMDK MAHENDRAGARH</td>\n        <td>INDIAN RED CROSS BHAWAN, NARNAUL, DIST-MAHENDRAGARH, HA</td>\n        <td>7668806539</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Rohtak</td>\n        <td>AASRA Rohtak</td>\n        <td>c/o- Ravi Sagar vill-mimayupur tehil-Rohtak</td>\n        <td>9991293674</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Karnal</td>\n        <td>AASRA Karnal</td>\n        <td>c/o-Vedpal, Near Ravids, Mandir,Word No-10, Poultry Are</td>\n        <td>9991293674</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Jind</td>\n        <td>AASRA Jind</td>\n        <td>c/o-Rajesh Kumar, s/o- Ved prakasah. Patulu Kheda, Tehs</td>\n        <td>9991293674</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Sonipat</td>\n        <td>AASRA Sonipat</td>\n        <td>Pipli kheda</td>\n        <td>9991293674</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Faridabad</td>\n        <td>AAPC Faridabad</td>\n        <td>Sector-110A, Nawada, Tigaon, Near IMT Faridabad, Ballab</td>\n        <td>9971699078</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td></td>\n        <td>AASRA Palwal</td>\n        <td>Sat kabir dhaba, near Dharam dhaba Huda chowk palwal</td>\n        <td>7015408546</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Panipat</td>\n        <td>AASRA Panipat</td>\n        <td>Makhan no. 1152, near panchyat Ghar SiwahP panipat</td>\n        <td>9991293674</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Faridabad</td>\n        <td>PMDK AAPC FARIDABAD</td>\n        <td>VILL- NAWADA TIGAON, BLOCK- BALLABHGARH,, IMT INDUSTRIA</td>\n        <td>9719606751</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Nuh</td>\n        <td>PMDK Nuh</td>\n        <td>INDIAN RED CROSS SOCIETY, OLD SDM COMPLEX, NEAR WOMEN P</td>\n        <td>7676754182</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Karnal</td>\n        <td>PMDK Karnal</td>\n        <td>Satellite Centre, Community Centre, Sector-7</td>\n        <td>7676754182</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Gurugram</td>\n        <td>PMDK Gurugram</td>\n        <td>Pradhan Mantri Divyasha Kendra, Zila Red Cross Bhawan, </td>\n        <td>7676754182</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Faridabad</td>\n        <td>PMDK ESIC Faridabad</td>\n        <td>Pradhan Mantri Divyasha Kendra, Room No. 1125 A First F</td>\n        <td>9971699078</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Mahendragarh</td>\n        <td>PMD-VK MAHENDRAGARH</td>\n        <td>INDIAN RED CROSS BHAWAN, NARNAUL, DIST-MAHENDRAGARH, HA</td>\n        <td>9953615020</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Nuh</td>\n        <td>PMD-VK Nuh</td>\n        <td>INDIAN RED CROSS SOCIETY, OLD SDM COMPLEX, NEAR WOMEN P</td>\n        <td>6296650525</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Karnal</td>\n        <td>PMD-VK Karnal</td>\n        <td>Satellite Centre, Community Centre, Sector-7</td>\n        <td>PMDK Karnal</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Faridabad</td>\n        <td>PMD-VK AAPC FARIDABAD</td>\n        <td>VILL- NAWADA TIGAON, BLOCK- BALLABHGARH,, IMT INDUSTRIA</td>\n        <td>9205514840</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Faridabad</td>\n        <td>PMD-VK ESIC Faridabad</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, Room No. 1125 </td>\n        <td>9711032301</td>\n      </tr>\n      <tr>\n        <td>Haryana</td>\n        <td>Gurugram</td>\n        <td>PMD-VK Gurugram</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, Zila Red Cross</td>\n        <td>7676754182</td>\n      </tr>\n      <tr>\n        <td>Himachal Pradesh</td>\n        <td>Mandi</td>\n        <td>PMDK SUNDERNAGAR</td>\n        <td>CRC SUNDERNAGAR, NEAR MAHAMAYA TEMPLE, SUNDERNAGAR, DIS</td>\n        <td>8219789851</td>\n      </tr>\n      <tr>\n        <td>Himachal Pradesh</td>\n        <td>Mandi</td>\n        <td>PMD-VK SUNDERNAGAR</td>\n        <td>CRC SUNDERNAGAR, NEAR MAHAMAYA TEMPLE, SUNDERNAGAR, DIS</td>\n        <td>7807317992</td>\n      </tr>\n      <tr>\n        <td>Jammu And Kashmir</td>\n        <td>Jammu</td>\n        <td>PMDK JAMMU</td>\n        <td>CRC, 11-ADD, 2nd Extension, bahu Plaza Road,, Near balm</td>\n        <td>9930929732</td>\n      </tr>\n      <tr>\n        <td>Jammu And Kashmir</td>\n        <td>Srinagar</td>\n        <td>PMDK SRINAGAR</td>\n        <td>BEMINA BYPASS, SRINAGAR, JAMMU AND KASHMIR</td>\n        <td>7006250582</td>\n      </tr>\n      <tr>\n        <td>Jammu And Kashmir</td>\n        <td>Jammu</td>\n        <td>PMD-VK JAMMU</td>\n        <td>CRC, 11-ADD, 2nd Extension, bahu Plaza Road,, Near balm</td>\n        <td>9930929732</td>\n      </tr>\n      <tr>\n        <td>Jammu And Kashmir</td>\n        <td>Srinagar</td>\n        <td>PMD-VK SRINAGAR</td>\n        <td>BEMINA BYPASS, SRINAGAR, JAMMU AND KASHMIR</td>\n        <td>7006250582</td>\n      </tr>\n      <tr>\n        <td>Jharkhand</td>\n        <td>Ranchi</td>\n        <td>PMDK RANCHI</td>\n        <td>CRC RANCHI, JHARKHAND BESIDE BLOCK OFFICE, KHIJARI, NAM</td>\n        <td>8828252181</td>\n      </tr>\n      <tr>\n        <td>Jharkhand</td>\n        <td>Ranchi</td>\n        <td>AASRA Ranchi</td>\n        <td>Leela Kutir, Near-maharaja Hotel Radium Road, Ranchi</td>\n        <td>9431362003</td>\n      </tr>\n      <tr>\n        <td>Jharkhand</td>\n        <td></td>\n        <td>AASRA Sahibganj</td>\n        <td>At -  Sutiyarpara, P.O - Jonka, P.S - Rajmahal, Dist - </td>\n        <td>9534695242</td>\n      </tr>\n      <tr>\n        <td>Jharkhand</td>\n        <td></td>\n        <td>AASRA Ranchi Maa Padda</td>\n        <td>Sundari Bhawan Ground Floor,Near Hotel Anjali Kanta tol</td>\n        <td>9835187674</td>\n      </tr>\n      <tr>\n        <td>Jharkhand</td>\n        <td></td>\n        <td>AASRA Dipti Ranchi </td>\n        <td>H-144, Patel Nagar Road No-18 Hatia Near NIFFT</td>\n        <td>9693262227</td>\n      </tr>\n      <tr>\n        <td>Jharkhand</td>\n        <td>Ranchi</td>\n        <td>RMC Ranchi</td>\n        <td>C/o CRC Ranchi, Namkum, Khijri</td>\n        <td>8828252181</td>\n      </tr>\n      <tr>\n        <td>Jharkhand</td>\n        <td></td>\n        <td>PMDK Jamsedpur</td>\n        <td>TATA Steel Foundation (Sabal), Near Jain Bhawan, Family</td>\n        <td>9650438711</td>\n      </tr>\n      <tr>\n        <td>Jharkhand</td>\n        <td>Ranchi</td>\n        <td>PMD-VK RANCHI</td>\n        <td>CRC RANCHI, JHARKHAND BESIDE BLOCK OFFICE, KHIJARI, NAM</td>\n        <td>8820038518</td>\n      </tr>\n      <tr>\n        <td>Jharkhand</td>\n        <td></td>\n        <td>PMD-VK Jamsedpur</td>\n        <td>TATA Steel Foundation (Sabal), Near Jain Bhawan, Family</td>\n        <td>7903865366</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td></td>\n        <td>PMDK AAPC BANGALORE</td>\n        <td>ALIMCO Auxiliary Production Center, Bangalore, Plot No.</td>\n        <td>7042710159</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td>Bidar</td>\n        <td>PMDK BIDAR</td>\n        <td>Udgir Road, Nawadgeri, Bidar, Karnataka</td>\n        <td>9515351208</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td>Davangere</td>\n        <td>PMDK DAVANGERE</td>\n        <td>CRC DAVANGERE,DEVRAJ URS LAYOUT,, B-BLOCK, DAVANGERE, K</td>\n        <td>9793694269</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td></td>\n        <td>AAPC Bangalore</td>\n        <td>Plot No. 8, Peenya Plant Station, Near Jalasaudha, PO-J</td>\n        <td>7899448595</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td></td>\n        <td>PMDK Hubli</td>\n        <td>PB Road, Vidya Nagar</td>\n        <td>7766865086</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td>Kalaburagi</td>\n        <td>PMDK KALABURAGI</td>\n        <td>Gulbarga Institute of Medical Sciences (GIMS), Sedam Ro</td>\n        <td>6372987441</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td>Belagavi</td>\n        <td>PMDK Belagavi</td>\n        <td>Pradhan Mantri Divyasha Kendra, Sadashiv Nagar, Belagav</td>\n        <td>7077257307</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td></td>\n        <td>AASRA Bangalore</td>\n        <td>Hennur Main Raod, Lingarajapuram</td>\n        <td>7019609429</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td>Bidar</td>\n        <td>PMD-VK BIDAR</td>\n        <td>Udgir Road, Nawadgeri, Bidar, Karnataka</td>\n        <td>9606274009</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td></td>\n        <td>PMD-VK AAPC BANGALORE</td>\n        <td>ALIMCO Auxiliary Production Center, Bangalore, Plot No.</td>\n        <td>7042710159</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td>Kalaburagi</td>\n        <td>PMD-VK KALABURAGI</td>\n        <td>Gulbarga Institute of Medical Sciences (GIMS), Sedam Ro</td>\n        <td>6372987441</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td></td>\n        <td>PMD-VK Hubli</td>\n        <td>PB Road, Vidya Nagar</td>\n        <td>7766865086</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td>Davangere</td>\n        <td>PMD-VK DAVANGERE</td>\n        <td>CRC DAVANGERE,DEVRAJ URS LAYOUT,, B-BLOCK, DAVANGERE, K</td>\n        <td>9793694269</td>\n      </tr>\n      <tr>\n        <td>Karnataka</td>\n        <td>Belagavi</td>\n        <td>PMD-VK Belagavi</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, Sadashiv Nagar</td>\n        <td>7077257307</td>\n      </tr>\n      <tr>\n        <td>Kerala</td>\n        <td>Kozhikode</td>\n        <td>PMDK KOZHIKODE</td>\n        <td>CRC CAMPUS GOLF LINK ROAD, CHEVAYUR P.O. KOZHIKODE, KER</td>\n        <td>9946558315</td>\n      </tr>\n      <tr>\n        <td>Kerala</td>\n        <td>Kozhikode</td>\n        <td>PMD-VK KOZHIKODE</td>\n        <td>CRC CAMPUS GOLF LINK ROAD, CHEVAYUR P.O. KOZHIKODE, KER</td>\n        <td>9946558315</td>\n      </tr>\n      <tr>\n        <td>Ladakh</td>\n        <td>Kargil</td>\n        <td>PMDK KARGIL</td>\n        <td>ONE STOP CENTRE, GROUND FLOOR NEAR POLICE STATION, MAIN</td>\n        <td>7589193448</td>\n      </tr>\n      <tr>\n        <td>Ladakh</td>\n        <td>Leh Ladakh</td>\n        <td>PMDK LEH</td>\n        <td>LEH, NEAR POLO GROUND,, LEH LADAKH, LADAKH</td>\n        <td>7589193448</td>\n      </tr>\n      <tr>\n        <td>Ladakh</td>\n        <td>Kargil</td>\n        <td>PMD-VK KARGIL</td>\n        <td>ONE STOP CENTRE, GROUND FLOOR NEAR POLICE STATION, MAIN</td>\n        <td>7051807190</td>\n      </tr>\n      <tr>\n        <td>Ladakh</td>\n        <td>Leh Ladakh</td>\n        <td>PMD-VK LEH</td>\n        <td>LEH, NEAR POLO GROUND,, LEH LADAKH, LADAKH</td>\n        <td>8492812119</td>\n      </tr>\n      <tr>\n        <td>Lakshadweep</td>\n        <td>Lakshadweep District</td>\n        <td>PMDK KAVARATTI</td>\n        <td>QTR NO B 145 &amp;146, CIRCLE OFFICE , KAVARATTI, LAKSHADWE</td>\n        <td>9497375249</td>\n      </tr>\n      <tr>\n        <td>Lakshadweep</td>\n        <td>Lakshadweep District</td>\n        <td>PMD-VK KAVARATTI</td>\n        <td>QTR NO B 145 &amp;146, CIRCLE OFFICE , KAVARATTI, LAKSHADWE</td>\n        <td>9497375249</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Jhabua</td>\n        <td>PMDK JHABUA</td>\n        <td>DDRC, POST BOX NO. 36, KALYANPURA ROAD,, RANGPURA, JHAB</td>\n        <td>7309197228</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Bhopal</td>\n        <td>PMDK BHOPAL</td>\n        <td>KHAJURI KALAN RD, NAGARJUN NAGAR, PIPLANI,, GOPAL NAGAR</td>\n        <td>9968048517</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Chhatarpur</td>\n        <td>PMDK CHHATTARPUR</td>\n        <td>DDRC CHHATARPUR, MADHYA PRADESH</td>\n        <td>7890266054</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Ujjain</td>\n        <td>AAPC Ujjain</td>\n        <td>Plot No. 16/2, Post – Manpura, Dewas Road, Ujjain</td>\n        <td>7309197228</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Jabalpur</td>\n        <td>AAPC Jabalpur</td>\n        <td>Plot No 40, 106 &amp; 107 Ricchai Industrial Area, Maharajp</td>\n        <td>9968048517</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Tikamgarh</td>\n        <td>AASRA Tikamgarh</td>\n        <td>Bahadurpur</td>\n        <td>6268131939</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Chhindwara</td>\n        <td>AASRA Chhindwara</td>\n        <td>Ward no. 1,Old Civil Lines, Amarwara </td>\n        <td>9575100688</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Sehore</td>\n        <td>PMDK SEHORE</td>\n        <td>National Institute of Mental Health Rehabilitation, NH-</td>\n        <td>9958617688</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Gwalior</td>\n        <td>PMDK GWALIOR</td>\n        <td>CDS campus, Swejfarm (Village), Morena Link Road, Circl</td>\n        <td>9654931277</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td></td>\n        <td>Aasra Nagda</td>\n        <td>Suraj SNEH Bhawan, Shri Ram Colony, Nagda Dist.Ujjain M</td>\n        <td>9098447647</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Jabalpur</td>\n        <td>PMDK AAPC JABALPUR</td>\n        <td>ALIMCO Auxiliary Production Center, Jabalpur, lot No 40</td>\n        <td>9463665775</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Ujjain</td>\n        <td>PMDK AAPC UJJAIN</td>\n        <td>ALIMCO Auxiliary Production Center, Ujjain, Plot No. 16</td>\n        <td>9463665775</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Tikamgarh</td>\n        <td>PMDK Tikamgarh</td>\n        <td>Pradhan Mantri Divyasha Kendra, Zila Divyang Punarvas K</td>\n        <td>9968048517</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Ujjain</td>\n        <td>PMDK Ujjain</td>\n        <td>Pradhan Mantri Divyasha Kendra, R.D.Gardi. Medical Coll</td>\n        <td>7309197228</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Satna</td>\n        <td>PMDK DDRC Satna</td>\n        <td>Pradhan Mantri Divyasha Kendra, District Disability reh</td>\n        <td>9968048517</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Sheopur</td>\n        <td>PMDK DDRC Sheopur</td>\n        <td>Pradhan Mantri Divyasha Kendra,District Disability reha</td>\n        <td>9968048517</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Balaghat</td>\n        <td>PMDK Balaghat</td>\n        <td>Pradhan Mantri Divyasha Kendra, Model DDRC Balaghat Dis</td>\n        <td>9968048517</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Shivpuri</td>\n        <td>AASRA Mangalam Shivpuri</td>\n        <td>In Front of Polo Ground, Court Road, Shivpuri</td>\n        <td>7389476880</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Morena</td>\n        <td>AASRA Morena</td>\n        <td>MANDE PURA ROAD</td>\n        <td>9630444777</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Bhind</td>\n        <td>AASRA Bhind</td>\n        <td>By Pass Road</td>\n        <td>9770186339</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Bhopal</td>\n        <td>PMD-VK BHOPAL</td>\n        <td>KHAJURI KALAN RD, NAGARJUN NAGAR, PIPLANI,, GOPAL NAGAR</td>\n        <td>8260331946</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Chhatarpur</td>\n        <td>PMD-VK CHHATTARPUR</td>\n        <td>DDRC CHHATARPUR, MADHYA PRADESH</td>\n        <td>7020560758</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Ujjain</td>\n        <td>PMD-VK AAPC UJJAIN</td>\n        <td>ALIMCO Auxiliary Production Center, Ujjain, Plot No. 16</td>\n        <td>9006405063</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Sehore</td>\n        <td>PMD-VK SEHORE</td>\n        <td>National Institute of Mental Health Rehabilitation, NH-</td>\n        <td>8318024830</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Jabalpur</td>\n        <td>PMD-VK AAPC JABALPUR</td>\n        <td>ALIMCO Auxiliary Production Center, Jabalpur, lot No 40</td>\n        <td>9968048517</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Gwalior</td>\n        <td>PMD-VK GWALIOR</td>\n        <td>CDS campus, Swejfarm (Village), Morena Link Road, Circl</td>\n        <td>9654931277</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Tikamgarh</td>\n        <td>PMD-VK Tikamgarh</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, Zila Divyang P</td>\n        <td>9399022783</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Ujjain</td>\n        <td>PMD-VK Ujjain</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, R.D.Gardi. Med</td>\n        <td>7908832432</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Satna</td>\n        <td>PMD-VK DDRC Satna</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, District Disab</td>\n        <td>7000829065</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Sheopur</td>\n        <td>PMD-VK DDRC Sheopur</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, District Disab</td>\n        <td>8871209715</td>\n      </tr>\n      <tr>\n        <td>Madhya Pradesh</td>\n        <td>Balaghat</td>\n        <td>PMD-VK Balaghat</td>\n        <td>Pradhan Mantri Divyasha Kendra, Model DDRC Balaghat Dis</td>\n        <td>9968048517</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td>Nagpur</td>\n        <td>PMDK NAGPUR</td>\n        <td>CRC NAGPUR, 2, DHANTOLI, NAGPUR, MAHARASHTRA</td>\n        <td>8169203585</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td>Nashik</td>\n        <td>AASRA Nasik</td>\n        <td>Row Bunglow No: 7 Opp Global International School Omkar</td>\n        <td>9764458586</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td>Mumbai</td>\n        <td>RMC Mumbai</td>\n        <td>Office No. 403, A-Wing, Vishnu Commercial Complex, Plot</td>\n        <td>9902122548</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td>Mumbai</td>\n        <td>PMDK MUMBAI (BANDRA)</td>\n        <td>AYJNISHD, K.C. MARG, BANDRA (W) RECLAMATION, MUMBAI</td>\n        <td>6388027699</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td>Buldhana</td>\n        <td>PMDK Buldhana</td>\n        <td>District Disability Rehablitation Centre (DDRC), Apng K</td>\n        <td>9764771919</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td>Latur</td>\n        <td>PMDK Latur</td>\n        <td>C/o DIRECTOR, DISTRICT DISABILITY REHABILITATION CENTRE</td>\n        <td>9902122548</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td></td>\n        <td>PMDK RMC MUMBAI</td>\n        <td>Office No. 403, A-Wing, Vishnu Commercial Complex, Plot</td>\n        <td>6388027699</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td></td>\n        <td>PMDK Ahilyanagar</td>\n        <td>C/o: DIRECTOR, DISTRICT DISABILITY REHABILITATION CENTR</td>\n        <td>9696415281</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td></td>\n        <td>PMDK Kolhapur</td>\n        <td>Pradhan Mantri Divyasha Kendra, Zila Madhyavarti Prasha</td>\n        <td>9902122548</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td></td>\n        <td>PMD-VK Ahilyanagar</td>\n        <td>C/o: DIRECTOR, DISTRICT DISABILITY REHABILITATION CENTR</td>\n        <td>9702114371</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td>Nagpur</td>\n        <td>PMD-VK NAGPUR</td>\n        <td>CRC NAGPUR, 2, DHANTOLI, NAGPUR, MAHARASHTRA</td>\n        <td>8115467123</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td>Latur</td>\n        <td>PMD-VK Latur</td>\n        <td>C/o DIRECTOR, DISTRICT DISABILITY REHABILITATION CENTRE</td>\n        <td>9766992459</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td>Buldhana</td>\n        <td>PMD-VK Buldhana</td>\n        <td>District Disability Rehablitation Centre (DDRC), Apng K</td>\n        <td>8697956453</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td></td>\n        <td>PMD-VK RMC MUMBAI</td>\n        <td>Office No. 403, A-Wing, Vishnu Commercial Complex, Plot</td>\n        <td>8291478286</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td></td>\n        <td>PMD-VK Kolhapur</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, Zila Madhyavar</td>\n        <td>9330333703</td>\n      </tr>\n      <tr>\n        <td>Maharashtra</td>\n        <td>Mumbai</td>\n        <td>PMD-VK MUMBAI (BANDRA)</td>\n        <td>AYJNISHD, K.C. MARG, BANDRA (W) RECLAMATION, MUMBAI</td>\n        <td>9969744494</td>\n      </tr>\n      <tr>\n        <td>Manipur</td>\n        <td></td>\n        <td>PMDK SENAPATI</td>\n        <td>DISTRICT HOSPITAL, SENAPATI, MANIPUR</td>\n        <td>9401435946</td>\n      </tr>\n      <tr>\n        <td>Manipur</td>\n        <td>Imphal East</td>\n        <td>PMDK IMPHAL</td>\n        <td>CRC Imphal, Takyel, Juvenile Justice Board Complex, Imp</td>\n        <td>9401435946</td>\n      </tr>\n      <tr>\n        <td>Manipur</td>\n        <td>Imphal East</td>\n        <td>AASRA Imphal</td>\n        <td>Ukhrul road, sawombung, Lamlai Imphal east</td>\n        <td>7085835609</td>\n      </tr>\n      <tr>\n        <td>Manipur</td>\n        <td>Imphal East</td>\n        <td>PMD-VK IMPHAL</td>\n        <td>CRC Imphal, Takyel, Juvenile Justice Board Complex, Imp</td>\n        <td>6009314115</td>\n      </tr>\n      <tr>\n        <td>Meghalaya</td>\n        <td>East Khasi Hills</td>\n        <td>PMDK SHILLONG</td>\n        <td>CRC SHILLONG,GROUND FLOOR, MONTFORT BUILDING,, DHANKHET</td>\n        <td>7005299452</td>\n      </tr>\n      <tr>\n        <td>Meghalaya</td>\n        <td>East Khasi Hills</td>\n        <td>PMD-VK SHILLONG</td>\n        <td>CRC SHILLONG,GROUND FLOOR, MONTFORT BUILDING,, DHANKHET</td>\n        <td>7005299452</td>\n      </tr>\n      <tr>\n        <td>Mizoram</td>\n        <td></td>\n        <td>PMDK AIZAWAL</td>\n        <td>Zoram Medical College and Hospital, State Referral Hosp</td>\n        <td>7008946491</td>\n      </tr>\n      <tr>\n        <td>Mizoram</td>\n        <td>Aizawl</td>\n        <td>AASRA Aizawl</td>\n        <td>C-234/1 SALEMVENG</td>\n        <td>9774176381</td>\n      </tr>\n      <tr>\n        <td>Mizoram</td>\n        <td></td>\n        <td>PMD-VK AIZWAL</td>\n        <td>Zoram Medical College and Hospital, State Referral Hosp</td>\n        <td>7008946491</td>\n      </tr>\n      <tr>\n        <td>Nagaland</td>\n        <td>Dimapur</td>\n        <td>PMDK DIMAPUR</td>\n        <td>District Hospital, DDRC Building, DIMAPUR</td>\n        <td>9401435946</td>\n      </tr>\n      <tr>\n        <td>Nagaland</td>\n        <td>Dimapur</td>\n        <td>AASRA Dimapur</td>\n        <td>NEPALI BASTI HOUSE NO -30 NEAR LION CLUB</td>\n        <td>8259066331</td>\n      </tr>\n      <tr>\n        <td>Nagaland</td>\n        <td>Dimapur</td>\n        <td>PMD-VK DIMAPUR</td>\n        <td>District Hospital, DDRC Building, DIMAPUR</td>\n        <td>8731804934</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td></td>\n        <td>AAPC Bhubaneswar</td>\n        <td>S-3/66, Mancheswar Industrial Area, Bhubaneswar</td>\n        <td>9739499900</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td>Balangir</td>\n        <td>PMDK BALANGIR</td>\n        <td>CRC SRE, NEAR KENDRIYA VIDYALAYA, BALANGIR, ODISHA, </td>\n        <td>7894107869</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td>Cuttack</td>\n        <td>PMDK CUTTACK</td>\n        <td>SVNIRTAR OLATPUR, P.O BAIROI, CUTTACK, ODISHA, </td>\n        <td>8638334418</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td></td>\n        <td>PMDK AAPC BHUBANESWAR</td>\n        <td> ALIMCO Auxiliary Production Center, Bhubaneswar, S-3/6</td>\n        <td>9910477376</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td></td>\n        <td>AASRA Bhadrak</td>\n        <td>Vill-Prasanti Bhawan, Dahanigadia Post- Charampa</td>\n        <td>9692165555</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td>Koraput</td>\n        <td>PMDK KORAPUT</td>\n        <td>District Head Quarter Hospital, COVID Prefab Building, </td>\n        <td>9777722912</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td></td>\n        <td>PMDK Balasore</td>\n        <td>Pradhan Mantri Divyasha Kendra, Fakeer Mohan Medical Co</td>\n        <td>9739499900</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td>Nuapada</td>\n        <td>PMDK Nuapada</td>\n        <td>Pradhan Mantri Divyasha Kendra, SVINIRTAR Sub Centre, N</td>\n        <td>9739499900</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td>Balangir</td>\n        <td>PMD-VK BALANGIR</td>\n        <td>CRC SRE, NEAR KENDRIYA VIDYALAYA, BALANGIR, ODISHA, </td>\n        <td>8249272581</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td>Cuttack</td>\n        <td>PMD-VK CUTTACK</td>\n        <td>SVNIRTAR OLATPUR, P.O BAIROI, CUTTACK, ODISHA, </td>\n        <td>8638334418</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td></td>\n        <td>PMD-VK AAPC BHUBANESWAR</td>\n        <td> ALIMCO Auxiliary Production Center, Bhubaneswar, S-3/6</td>\n        <td>7411270730</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td></td>\n        <td>PMD-VK Balasore</td>\n        <td>Pradhan Mantri Divyasha Kendra, Fakeer Mohan Medical Co</td>\n        <td>7377863233</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td>Nuapada</td>\n        <td>PMD-VK Nuapada</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, SVINIRTAR Sub </td>\n        <td>9739499900</td>\n      </tr>\n      <tr>\n        <td>Odisha</td>\n        <td>Koraput</td>\n        <td>PMD-VK KORAPUT</td>\n        <td>District Head Quarter Hospital, COVID Prefab Building, </td>\n        <td>9777722912</td>\n      </tr>\n      <tr>\n        <td>Puducherry</td>\n        <td>Karaikal</td>\n        <td>PMDK KARAIKAL</td>\n        <td>Govt. Special school for Visually and Hearing impaired,</td>\n        <td>9952044891</td>\n      </tr>\n      <tr>\n        <td>Puducherry</td>\n        <td>Pondicherry</td>\n        <td>PMDK PUDUCHERRY</td>\n        <td>HOME FOR MENTALLY RETARDE CHILDRE(HMRC),, VENKETESHWARA</td>\n        <td>9337031618</td>\n      </tr>\n      <tr>\n        <td>Puducherry</td>\n        <td>Karaikal</td>\n        <td>PMD-VK KARAIKAL</td>\n        <td>Govt. Special school for Visually and Hearing impaired,</td>\n        <td>9952044891</td>\n      </tr>\n      <tr>\n        <td>Puducherry</td>\n        <td>Pondicherry</td>\n        <td>PMD-VK PUDUCHERRY</td>\n        <td>HOME FOR MENTALLY RETARDE CHILDRE(HMRC),, VENKETESHWARA</td>\n        <td>9337031618</td>\n      </tr>\n      <tr>\n        <td>Punjab</td>\n        <td></td>\n        <td>AAPC Mohali</td>\n        <td>Plot No A-1, A-2, A-3 Industrial Focal Point, Chanalon,</td>\n        <td>7589193448</td>\n      </tr>\n      <tr>\n        <td>Punjab</td>\n        <td>Bathinda</td>\n        <td>PMDK BATHINDA</td>\n        <td>ONE STOP CENTRE FOR DISABLED,, CIVIL HOSPITAL, MANSA RO</td>\n        <td>8953624669</td>\n      </tr>\n      <tr>\n        <td>Punjab</td>\n        <td></td>\n        <td>PMDK AAPC MOHALI</td>\n        <td>ALIMCO Auxiliary Production Center, Mohali, Plot No A-1</td>\n        <td>9041562292</td>\n      </tr>\n      <tr>\n        <td>Punjab</td>\n        <td>Faridkot</td>\n        <td>PMDK FARIDKOT</td>\n        <td>Indian Red Cross Society, Dist Branch, Faridkot, Punjab</td>\n        <td>7589193448</td>\n      </tr>\n      <tr>\n        <td>Punjab</td>\n        <td>Bathinda</td>\n        <td>Aasra Bathinda</td>\n        <td>12162-C, Shaheed bhagat singh nagar,  Naruana road, str</td>\n        <td>7889137536</td>\n      </tr>\n      <tr>\n        <td>Punjab</td>\n        <td>Bathinda</td>\n        <td>PMD-VK BATHINDA</td>\n        <td>ONE STOP CENTRE FOR DISABLED,, CIVIL HOSPITAL, MANSA RO</td>\n        <td>8953624669</td>\n      </tr>\n      <tr>\n        <td>Punjab</td>\n        <td>Faridkot</td>\n        <td>PMD-VK FARIDKOT</td>\n        <td>Indian Red Cross Society, Dist Branch, Faridkot, Punjab</td>\n        <td>6397473776</td>\n      </tr>\n      <tr>\n        <td>Punjab</td>\n        <td></td>\n        <td>PMD-VK AAPC MOHALI</td>\n        <td>ALIMCO Auxiliary Production Center, Mohali, Plot No A-1</td>\n        <td>9794500935</td>\n      </tr>\n      <tr>\n        <td>Rajasthan</td>\n        <td>Dausa</td>\n        <td>AASRA Dausa</td>\n        <td>Ramchandra form house Alwar Secundera meghalay sara Dha</td>\n        <td>8426968801</td>\n      </tr>\n      <tr>\n        <td>Rajasthan</td>\n        <td>Jaipur</td>\n        <td>RMC Jaipur</td>\n        <td>Chhatravas Bhawan of Rajasthan Punarwas Shodh Sansthan,</td>\n        <td>8545905821</td>\n      </tr>\n      <tr>\n        <td>Rajasthan</td>\n        <td>Tonk</td>\n        <td>PMDK TONK</td>\n        <td>PDUNIPPD, SAADAT HOSPITAL NEAR NURSHING HOSTEL, TONK RA</td>\n        <td>9034505960</td>\n      </tr>\n      <tr>\n        <td>Rajasthan</td>\n        <td>Jaipur</td>\n        <td>PMDK JAIPUR</td>\n        <td>RAJASTHAN PURNARVAS &amp; SHODH SANSTHAN,, JAMDOLI, JAIPUR</td>\n        <td>8545905821</td>\n      </tr>\n      <tr>\n        <td>Rajasthan</td>\n        <td>Udaipur</td>\n        <td>PMDK Udaipur</td>\n        <td>Department of Rehabilitation Science, Janardan Rai Naga</td>\n        <td>9039452503</td>\n      </tr>\n      <tr>\n        <td>Rajasthan</td>\n        <td>Kota</td>\n        <td>PMDK Kota</td>\n        <td>Room No.107 &amp; 109, Maharao Bhim Singh Hospital, OLD OPD</td>\n        <td>7309784026</td>\n      </tr>\n      <tr>\n        <td>Rajasthan</td>\n        <td>Udaipur</td>\n        <td>PMD-VK Udaipur</td>\n        <td>Department of Rehabilitation Science, Janardan Rai Naga</td>\n        <td>9039452503</td>\n      </tr>\n      <tr>\n        <td>Rajasthan</td>\n        <td>Kota</td>\n        <td>PMD-VK Kota</td>\n        <td>Room No.107 &amp; 109, Maharao Bhim Singh Hospital, OLD OPD</td>\n        <td>7309784026</td>\n      </tr>\n      <tr>\n        <td>Rajasthan</td>\n        <td>Tonk</td>\n        <td>PMD-VK TONK</td>\n        <td>PDUNIPPD, SAADAT HOSPITAL NEAR NURSHING HOSTEL, TONK RA</td>\n        <td>9034505960</td>\n      </tr>\n      <tr>\n        <td>Rajasthan</td>\n        <td>Jaipur</td>\n        <td>PMD-VK JAIPUR</td>\n        <td>RAJASTHAN PURNARVAS &amp; SHODH SANSTHAN,, JAMDOLI, JAIPUR</td>\n        <td>7999739286</td>\n      </tr>\n      <tr>\n        <td>Sikkim</td>\n        <td>Gangtok</td>\n        <td>PMDK GANGTOK</td>\n        <td>CRC SIKKIM, ASSAM LINGZEY, P.S. RANIPOOL, PAKYONG DISTR</td>\n        <td>9401435946</td>\n      </tr>\n      <tr>\n        <td>Sikkim</td>\n        <td>Gangtok</td>\n        <td>PMD-VK GANGTOK</td>\n        <td>CRC SIKKIM, ASSAM LINGZEY, P.S. RANIPOOL, PAKYONG DISTR</td>\n        <td>9883811417</td>\n      </tr>\n      <tr>\n        <td>Tamil Nadu</td>\n        <td>Chennai</td>\n        <td>PMDK CHENNAI (NIEPMD)</td>\n        <td>East Coast Road, Muttukadu, Kovalam(Post), Chennai,Tam</td>\n        <td>7749854146</td>\n      </tr>\n      <tr>\n        <td>Tamil Nadu</td>\n        <td>Chennai</td>\n        <td>PMDK CHENNAI (NIEPVD)</td>\n        <td>522,TRUNK ROAD, GANDHI NAGAR, POONAMALLEE, CHENNAI, TAM</td>\n        <td>7903459168</td>\n      </tr>\n      <tr>\n        <td>Tamil Nadu</td>\n        <td>Madurai</td>\n        <td>PMDK MADURAI</td>\n        <td>Tamil Nadu Housing Board, Villapuram, Subramaniapuram P</td>\n        <td>7845141405</td>\n      </tr>\n      <tr>\n        <td>Tamil Nadu</td>\n        <td>Chengalpattu</td>\n        <td>RMC Chennai</td>\n        <td>Block- B, Ground Floor, Room No.-101, ESIC Medical Coll</td>\n        <td>9131698378</td>\n      </tr>\n      <tr>\n        <td>Tamil Nadu</td>\n        <td>Chennai</td>\n        <td>PMDK ESIC Chennai</td>\n        <td>Block- B, Ground Floor, Room No.-101, ESIC Medical Coll</td>\n        <td>8925444754</td>\n      </tr>\n      <tr>\n        <td>Tamil Nadu</td>\n        <td></td>\n        <td>PMDK Thoothukudi</td>\n        <td>Pradhan Mantri Divyasha Kendra, Zila Viklang Vyakti Kal</td>\n        <td>8925444754</td>\n      </tr>\n      <tr>\n        <td>Tamil Nadu</td>\n        <td>Chennai</td>\n        <td>PMD-VK CHENNAI (NIEPVD)</td>\n        <td>522,TRUNK ROAD, GANDHI NAGAR, POONAMALLEE, CHENNAI, TAM</td>\n        <td>8925444754</td>\n      </tr>\n      <tr>\n        <td>Tamil Nadu</td>\n        <td>Chennai</td>\n        <td>PMD-VK CHENNAI (NIEPMD)</td>\n        <td>East Coast Road, Muttukadu, Kovalam(Post), Chennai,Tam</td>\n        <td>7749854146</td>\n      </tr>\n      <tr>\n        <td>Tamil Nadu</td>\n        <td>Chennai</td>\n        <td>PMD-VK ESIC Chennai</td>\n        <td>Block- B, Ground Floor, Room No.-101, ESIC Medical Coll</td>\n        <td>6383832454</td>\n      </tr>\n      <tr>\n        <td>Tamil Nadu</td>\n        <td>Madurai</td>\n        <td>PMD-VK MADURAI</td>\n        <td>Tamil Nadu Housing Board, Villapuram, Subramaniapuram P</td>\n        <td>7845141405</td>\n      </tr>\n      <tr>\n        <td>Tamil Nadu</td>\n        <td></td>\n        <td>PMD-VK Thoothukudi</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, Zila Viklang V</td>\n        <td>8009582226</td>\n      </tr>\n      <tr>\n        <td>Telangana</td>\n        <td>Hyderabad</td>\n        <td>PMDK RMC SECUNDRABAD (HYDERABAD)</td>\n        <td>MANOVIKAS NAGAR, SECUNDERABAD, TELANGANA</td>\n        <td>8130713179</td>\n      </tr>\n      <tr>\n        <td>Telangana</td>\n        <td></td>\n        <td>RMC Hyderabad</td>\n        <td>C/o Pt. Deendayal Upadhyaya, National Institute for Per</td>\n        <td>8707877546</td>\n      </tr>\n      <tr>\n        <td>Telangana</td>\n        <td>Hyderabad</td>\n        <td>PMD-VK RMC SECUNDRABAD (HYDERABAD)</td>\n        <td>MANOVIKAS NAGAR, SECUNDERABAD, TELANGANA</td>\n        <td>8130717179</td>\n      </tr>\n      <tr>\n        <td>The Dadra And Nagar Haveli And Daman And Diu</td>\n        <td>North And Middle Andaman</td>\n        <td>PMDK DAMAN</td>\n        <td>RED CROSS SCHOOL FOR HANDICAPPED CHILDREN AMLI 66, K.P </td>\n        <td>9831953942</td>\n      </tr>\n      <tr>\n        <td>The Dadra And Nagar Haveli And Daman And Diu</td>\n        <td>North And Middle Andaman</td>\n        <td>PMD-VK DAMAN</td>\n        <td>RED CROSS SCHOOL FOR HANDICAPPED CHILDREN AMLI 66, K.P </td>\n        <td>9040211645</td>\n      </tr>\n      <tr>\n        <td>Tripura</td>\n        <td>West Tripura</td>\n        <td>PMDK AGARTALA</td>\n        <td>CRC Agartala , Juvenial Home Campus, Narsinghgarh, Bima</td>\n        <td>8578027724</td>\n      </tr>\n      <tr>\n        <td>Tripura</td>\n        <td>West Tripura</td>\n        <td>PMD-VK AGARTALA</td>\n        <td>CRC Agartala , Juvenial Home Campus, Narsinghgarh, Bima</td>\n        <td>8578027724</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Lucknow</td>\n        <td>PMDK LUCKNOW</td>\n        <td>MOHAAN ROAD, LUCKNOW</td>\n        <td>7905283518</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Gautam Buddha Nagar</td>\n        <td>PMDK NOIDA</td>\n        <td>C-44/A, C BLOCK, SECTOR 40, NOIDA, UTTAR PRADESH, </td>\n        <td>9719914854</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Hardoi</td>\n        <td>AASRA Hardoi ANURAG MISHRA</td>\n        <td>221,Peni Purwa Near viswakarma Mandir Sitapur Road</td>\n        <td>6387226307</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Basti</td>\n        <td>AASRA Basti HARSH ENTERPRISES</td>\n        <td>Satya Dev Shukla Harsh Enterprises 1961B Pikaura Shiv G</td>\n        <td>9450945655</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Lucknow</td>\n        <td>AASRA Lucknow SPELLWORKS TECHNOLOGIES</td>\n        <td>B1, Amantran Villa Tiwari Ganj </td>\n        <td>9450945655</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Chitrakoot</td>\n        <td>PMDK CHITRAKOOT</td>\n        <td>Mother and Child Hospital (MCH), Khoh, Chitrakoot</td>\n        <td>9905121712</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Gorakhpur</td>\n        <td>PMDK GORAKHPUR</td>\n        <td>CRC GORAKHPUR CAMPUS, BRD MEDICAL COLLEGE , GORAKHPUR, </td>\n        <td>6306382128</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Ghaziabad</td>\n        <td>AASRA Ghaziabad</td>\n        <td>Z-Block Mahindra Enclave Sec-2 Chiranjeev Vihar Shastri</td>\n        <td>8447600423</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Ballia</td>\n        <td>AASRA Ballia Belthra Road</td>\n        <td>Vill- Malera, Post- Govindpur , Ballia Belthra Road</td>\n        <td>8853838438</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Kanpur Nagar</td>\n        <td>PMDK APOC HQ KANPUR</td>\n        <td>ALIMCO, Naramau, G.T.Road, Kanpur</td>\n        <td>8009864200</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Gorakhpur</td>\n        <td>AASRA Gorakhpur</td>\n        <td>Shop No. 2, Kanshiram Kaloni, Near Gorakhpur Zoo, Ramga</td>\n        <td>9450561058</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td></td>\n        <td>AASRA Prayagraj</td>\n        <td>3G/5I/2 SHIVKUTI SUNDERBAG,PRAYAGRAJ 211004</td>\n        <td>9451588812</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Mirzapur</td>\n        <td>AASRA Mirzapur</td>\n        <td>Arangi sarapati post birohi chanbe</td>\n        <td>9621231070</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Kanpur Nagar</td>\n        <td>ALIMCO HQ</td>\n        <td>G T Road, Naramau</td>\n        <td>6260883623</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td></td>\n        <td>AASRA Balia</td>\n        <td>Vill- Barsari, PO- Bhudhuan, Balia, </td>\n        <td>8808139098</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Kanpur Dehat</td>\n        <td>AASRA Kanpur</td>\n        <td>118/189, Kaushal Puri</td>\n        <td>8542833691</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Deoria</td>\n        <td>AASRA Deoria</td>\n        <td>Dopedwa,Ramgulam tola puravi</td>\n        <td>9839208111</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Fatehpur</td>\n        <td>Aasra Fatehpur</td>\n        <td>Shahjahanpur Post Mauhar District Fatehpur-212665</td>\n        <td>9140402987</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Sultanpur</td>\n        <td>AASRA Sultanpur</td>\n        <td>Koro Bazar, Near Durga Mata Mandir, Post Office-Atarsum</td>\n        <td>9519772990</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Budaun</td>\n        <td>PMDK Budaun</td>\n        <td>Governement Medical College, Ujhani Bypass, Ujhani, Bud</td>\n        <td>9650438711</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Varanasi</td>\n        <td>PMDK VARANASI</td>\n        <td>CRC Varanasi, Panchkoshi Marg, Amarawati, Khusipur, Var</td>\n        <td>8917768284</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Deoria</td>\n        <td>PMDK Deoria</td>\n        <td>Pradhan Mantri Divyasha Kendra' Zila Divyasha Punarvas </td>\n        <td>6306382128</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Pilibhit</td>\n        <td>PMDK Pilibhit</td>\n        <td>Pradhan Mantri Divyasha Kendra D.D.R.C. Aadarsh Zila Di</td>\n        <td>9305781030</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Bareilly</td>\n        <td>PMDK Bareilly</td>\n        <td>Pradhan Mantri Divyasha Kendra D.D.R.C. Aadarsh Zila Di</td>\n        <td>9305781030</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Agra</td>\n        <td>PMDK Agra</td>\n        <td>Pradhan Mantri Divyasha Kendra, Handicapped Development</td>\n        <td>9971699078</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Fatehpur</td>\n        <td>PMDK Fatehpur</td>\n        <td>Pradhan Mantri Divyasha Kendra, Amar Sahid Jodha Singh </td>\n        <td>6260883623</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Meerut</td>\n        <td>PMDK Meerut</td>\n        <td>Pradhan Mantri Divyasha Kendra, Lala Lajpat Roy Memoria</td>\n        <td>7676754182</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Varanasi</td>\n        <td>AASRA Varanasi</td>\n        <td>Jan Vikas Samiti Murdaha Vill</td>\n        <td>9534040402</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Muzaffarnagar</td>\n        <td>AASRA Muzaffarnagar</td>\n        <td>Shahubduinpur road</td>\n        <td>9568127132</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Mainpuri</td>\n        <td>AASRA Mainpur</td>\n        <td>DHUJI MANDIR KURAWALI</td>\n        <td>9193008820</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Etawah</td>\n        <td>AASRA Etawah</td>\n        <td>SHIVA COLONY</td>\n        <td>7987142768</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Bara Banki</td>\n        <td>AASRA Barabanki</td>\n        <td>MOHALLA SHIVPURI WARD NO- 5, MANJHPURWA, BANKI</td>\n        <td>7275113001</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Amethi</td>\n        <td>AASRA Amethi</td>\n        <td>SAWANGI, AMETHI</td>\n        <td>8738032101</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Kasganj</td>\n        <td>AASRA Kasganj</td>\n        <td>Moh -Dhanpal, Near Gauri Shankar Mandir Ganidundwara</td>\n        <td>9536226386</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td></td>\n        <td>AASRA Sant Kabir Nagar</td>\n        <td>Shop no 48, Nagar palika market North Station road, Kha</td>\n        <td>7905117637</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Kanpur Dehat</td>\n        <td>AASRA Kanpur Dehat</td>\n        <td>Dwivedi Market, Ambedkar Nagar, Akbarpur Chauraha</td>\n        <td>8887419151</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Unnao</td>\n        <td>AASRA Unnao</td>\n        <td>Ram baksh kheda Hardoi road near agriculture office</td>\n        <td>8433317192</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Sirmaur</td>\n        <td>AASRA Mau</td>\n        <td>NAGRAA GHOSI MARG PRATHAMIC PATHASHALA ROOPWAR BHAGWANP</td>\n        <td>9450531092</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Azamgarh</td>\n        <td>AASRA Azamgarh</td>\n        <td>VILL-DEVADA DAMODARPUR, POST-GAURINARAYAPUR, KANDHAROUR</td>\n        <td>9450019493</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Jaunpur</td>\n        <td>AASRA Jaunpur</td>\n        <td>Vill. Chilvili PO Gangauli Tehsil Shahganj</td>\n        <td>9555904171</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Firozabad</td>\n        <td>AASRA Firozabad</td>\n        <td>Thana modha Chauraha</td>\n        <td>8273666143</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Lucknow</td>\n        <td>PMD-VK LUCKNOW</td>\n        <td>MOHAAN ROAD, LUCKNOW</td>\n        <td>7905283518</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Gautam Buddha Nagar</td>\n        <td>PMD-VK NOIDA</td>\n        <td>C-44/A, C BLOCK, SECTOR 40, NOIDA, UTTAR PRADESH, </td>\n        <td>9719914854</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Chitrakoot</td>\n        <td>PMD-VK CHITRAKOOT</td>\n        <td>Mother and Child Hospital (MCH), Khoh, Chitrakoot</td>\n        <td>9905121712</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Gorakhpur</td>\n        <td>PMD-VK GORAKHPUR</td>\n        <td>CRC GORAKHPUR CAMPUS, BRD MEDICAL COLLEGE , GORAKHPUR, </td>\n        <td>6306382128</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Kanpur Nagar</td>\n        <td>PMD-VK APOC HQ KANPUR</td>\n        <td>ALIMCO, Naramau, G.T.Road, Kanpur</td>\n        <td>7205811268</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Budaun</td>\n        <td>PMD-VK Budaun</td>\n        <td>Governement Medical College, Ujhani Bypass, Ujhani, Bud</td>\n        <td>9305781030</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Varanasi</td>\n        <td>PMD-VK VARANASI</td>\n        <td>CRC Varanasi, Panchkoshi Marg, Amarawati, Khusipur, Var</td>\n        <td>8917768284</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Deoria</td>\n        <td>PMD-VK Deoria</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, Zila Divyasha </td>\n        <td>9839060202</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Pilibhit</td>\n        <td>PMD-VK Pilibhit</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, D.D.R.C. Aadar</td>\n        <td>7505830721</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Bareilly</td>\n        <td>PMD-VK Bareilly</td>\n        <td>Pradhan Mantri Divyasha Kendra D.D.R.C. Aadarsh Zila Di</td>\n        <td>7651856907</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Meerut</td>\n        <td>PMD-VK Meerut</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, Lala Lajpat Ro</td>\n        <td>8755380038</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Agra</td>\n        <td>PMD-VK Agra</td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, Handicapped De</td>\n        <td>7701905707</td>\n      </tr>\n      <tr>\n        <td>Uttar Pradesh</td>\n        <td>Fatehpur</td>\n        <td>PMD-VK Fatehpur</td>\n        <td>Pradhan Mantri Divyasha Kendra, Amar Sahid Jodha Singh </td>\n        <td>8604131967</td>\n      </tr>\n      <tr>\n        <td>Uttarakhand</td>\n        <td></td>\n        <td>PMDK AIIMS RISHIKESH</td>\n        <td>SHIVAJI NAGAR, RISHIKESH, UTTARAKHAND</td>\n        <td>8448203394</td>\n      </tr>\n      <tr>\n        <td>Uttarakhand</td>\n        <td>Dehradun</td>\n        <td>PMDK DEHRADUN</td>\n        <td>NIEPVD,116, RAJPUR RD, JAKHAN, DEHRADUN,, UTTARAKHAND</td>\n        <td>9836489071</td>\n      </tr>\n      <tr>\n        <td>Uttarakhand</td>\n        <td>Haridwar</td>\n        <td>PMDK, DDRC, Haridwar </td>\n        <td>Pradhan Mantri Divyasha Kendra' Zila Divyasha Punarvas </td>\n        <td>9971699078</td>\n      </tr>\n      <tr>\n        <td>Uttarakhand</td>\n        <td>Haridwar</td>\n        <td>PMD-VK, DDRC, Haridwar </td>\n        <td>Pradhan Mantri Divyasha–Vayoshri Kendra, Zila Divyasha </td>\n        <td>9971699078</td>\n      </tr>\n      <tr>\n        <td>Uttarakhand</td>\n        <td></td>\n        <td>PMD-VK AIIMS RISHIKESH</td>\n        <td>SHIVAJI NAGAR, RISHIKESH, UTTARAKHAND</td>\n        <td>8448203394</td>\n      </tr>\n      <tr>\n        <td>Uttarakhand</td>\n        <td>Dehradun</td>\n        <td>PMD-VK DEHRADUN</td>\n        <td>NIEPVD,116, RAJPUR RD, JAKHAN, DEHRADUN,, UTTARAKHAND</td>\n        <td>9836489071</td>\n      </tr>\n      <tr>\n        <td>West Bengal</td>\n        <td>Kolkata</td>\n        <td>RMC Kolkata</td>\n        <td>C/o National Institute for the Orthopaedically Handicap</td>\n        <td>9903373510</td>\n      </tr>\n      <tr>\n        <td>West Bengal</td>\n        <td>Kolkata</td>\n        <td>PMDK RMC KOLKATA</td>\n        <td>NILD, Barrackpore Trunk Rd, Mallick Colony, Bonhooghly </td>\n        <td>7827246664</td>\n      </tr>\n      <tr>\n        <td>West Bengal</td>\n        <td>Nadia</td>\n        <td>PMDK AIIMS KALYANI</td>\n        <td>NH-34, CONNECTOR, BASANTPUR KALYANI, WEST BENGAL</td>\n        <td>8249069767</td>\n      </tr>\n      <tr>\n        <td>West Bengal</td>\n        <td>Bankura</td>\n        <td>AASRA Bankura</td>\n        <td>Ardhagram, Ardhagram,Bankura-722143</td>\n        <td>7365936455</td>\n      </tr>\n      <tr>\n        <td>West Bengal</td>\n        <td>Kolkata</td>\n        <td>AASRA Kolkata</td>\n        <td>Bijoy Lakshmi colony, Beside Usha showroom, Colony More</td>\n        <td>7980534831</td>\n      </tr>\n      <tr>\n        <td>West Bengal</td>\n        <td>Nadia</td>\n        <td>AASRA Nadia</td>\n        <td>VILL-CHUADANGA PO-GOURIPUR, CHAKDAHA</td>\n        <td>9091697374</td>\n      </tr>\n      <tr>\n        <td>West Bengal</td>\n        <td>Kolkata</td>\n        <td>PMD-VK RMC KOLKATA</td>\n        <td>NILD, Barrackpore Trunk Rd, Mallick Colony, Bonhooghly </td>\n        <td>8388970326</td>\n      </tr>\n      <tr>\n        <td>West Bengal</td>\n        <td>Nadia</td>\n        <td>PMD-VK AIIMS KALYANI</td>\n        <td>NH-34, CONNECTOR, BASANTPUR KALYANI, WEST BENGAL</td>\n        <td>9938558219</td>\n      </tr>\n    </tbody>\n  </table>\n  </div>\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t</div>\n\t\t\t\t\t\t</div><div>\n\t\t\t\t\t\t\t\t\t<h2><span>3,277</span></h2>\t\t\t\t\t\t\t\t</div><div>\n\t\t\t\t\t\t\t\t\t<p>Total No. of Camps</p>\t\t\t\t\t\t\t\t</div><div>\n\t\t\t\t\t\t\t\t\t<h2><span>54,81,507</span></h2>\t\t\t\t\t\t\t\t</div><div>\n\t\t\t\t\t\t\t\t\t<p>Total No. of Devices Distributed</p>\t\t\t\t\t\t\t\t</div><div>\n\t\t\t\t\t\t\t\t\t<h2><span>10,22,429</span></h2>\t\t\t\t\t\t\t\t</div><div>\n\t\t\t\t\t\t\t\t\t<p>Total No. of Beneficiaries</p>\t\t\t\t\t\t\t\t</div>"
       }
     ],
     "category": "Care, Health and Shelter",
     "targetGroup": [
       "Senior Citizens"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "revised-guidelines-of-national-action-for-mechanized-sanitation-ecosystem-namaste-scheme",
@@ -2273,7 +2372,8 @@
     "category": "Care, Health and Shelter",
     "targetGroup": [
       "Safai Karamcharis"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "revised-scheme-guidelines-for-inclusion-of-waste-pickers-component-under-namaste",
@@ -2283,7 +2383,8 @@
     "category": "Care, Health and Shelter",
     "targetGroup": [
       "Safai Karamcharis"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "sanitary-marts-scheme",
@@ -2298,7 +2399,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Safai Karamcharis"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "savitribai-phule-scholarship-for-vjnt-and-sbc-girl-students",
@@ -2330,7 +2432,8 @@
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "scheme-for-residential-education-for-students-in-high-schools-in-targeted-areas-shreshta",
@@ -2355,7 +2458,8 @@
       "Scheduled Castes",
       "Students",
       "Voluntary Organisations"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "scheme-of-assistance-to-scheduled-castes-development-corporations-scdcs",
@@ -2390,7 +2494,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Scheduled Castes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "scheme-of-national-awards-for-outstanding-services-in-the-field-of-prevention-of-alcoholism-and-substance-drug-abuse",
@@ -2410,7 +2515,8 @@
     "targetGroup": [
       "Persons Affected by Substance Use",
       "Voluntary Organisations"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "schemes-implemented-by-national-safai-karamcharis-finance-development-corporation",
@@ -2420,7 +2526,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Safai Karamcharis"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "scholarship-for-pm-cares-children",
@@ -2439,7 +2546,8 @@
     "category": "Scholarships and Fellowships",
     "targetGroup": [
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "scholarship-for-technical-and-professional-courses",
@@ -2458,7 +2566,8 @@
     "category": "Scholarships and Fellowships",
     "targetGroup": [
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "scholarships-for-higher-education-for-young-achievers-scheme-shreyas-obc-others-2021-22-to-2025-26",
@@ -2478,7 +2587,8 @@
     "targetGroup": [
       "Other Backward Classes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "scholarships-for-post-matric-students",
@@ -2497,7 +2607,8 @@
     "category": "Scholarships and Fellowships",
     "targetGroup": [
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "seed-free-coaching",
@@ -2549,7 +2660,8 @@
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "seed-health-insurance",
@@ -2580,7 +2692,8 @@
     "category": "Care, Health and Shelter",
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "seed-housing",
@@ -2607,7 +2720,8 @@
     "category": "Housing and Settlement",
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "seed-livelihood",
@@ -2630,7 +2744,8 @@
     "category": "Skill Training and Livelihood",
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "self-employment-scheme-for-rehabilitation-of-manual-scavengers-srms-applicable-from-november-2013",
@@ -2640,7 +2755,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Safai Karamcharis"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "self-employment-scheme-for-rehabilitation-of-manual-scavengers-srms-applicable-from-november-2013-3",
@@ -2650,7 +2766,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Safai Karamcharis"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "seniorcare-ageing-growth-engine-sage",
@@ -2686,6 +2803,7 @@
     "targetGroup": [
       "Senior Citizens"
     ],
+    "status": "Active",
     "website": "https://scw.dosje.gov.in/login"
   },
   {
@@ -2696,7 +2814,8 @@
     "category": "Skill Training and Livelihood",
     "targetGroup": [
       "Safai Karamcharis"
-    ]
+    ],
+    "status": "Archived"
   },
   {
     "slug": "special-incentives-for-pre-matric-students",
@@ -2715,7 +2834,8 @@
     "category": "Scholarships and Fellowships",
     "targetGroup": [
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "state-action-plan-for-senior-citizens-sapsrc",
@@ -2734,7 +2854,8 @@
     "category": "Care, Health and Shelter",
     "targetGroup": [
       "Senior Citizens"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "state-scholarship-class-6th-to-10th",
@@ -2762,7 +2883,8 @@
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "status-of-loan-application-for-rehabilitation-of-manual-scavengers",
@@ -2772,7 +2894,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Safai Karamcharis"
-    ]
+    ],
+    "status": "Archived"
   },
   {
     "slug": "status-of-self-employment-scheme-for-rehabilitation-of-manual-scavengers-as-on-30-april2018",
@@ -2782,7 +2905,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Safai Karamcharis"
-    ]
+    ],
+    "status": "Archived"
   },
   {
     "slug": "support-for-marginalized-individuals-for-livelihood-and-enterprise-smile",
@@ -2807,7 +2931,8 @@
       "Persons Engaged in Begging",
       "Transgender Persons",
       "Voluntary Organisations"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "swachhta-udyami-yojana-suy",
@@ -2822,7 +2947,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Safai Karamcharis"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "talent-pool-scheme-for-dnts",
@@ -2842,7 +2968,8 @@
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "technology-upgradation-of-clusters",
@@ -2852,7 +2979,8 @@
     "category": "Skill Training and Livelihood",
     "targetGroup": [
       "Other Backward Classes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "top-class-education-in-colllege-for-obc-ebc-and-dnt-students",
@@ -2873,7 +3001,8 @@
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Other Backward Classes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "training-of-motor-driving-to-vjnt-sbc-obcs",
@@ -2901,7 +3030,8 @@
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Other Backward Classes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "tuition-fees-and-examination-fees-for-vjnt-sbc-students-studying-in-high-schools",
@@ -2933,7 +3063,8 @@
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "tution-fee-reimbusrment-scheme-of-sainik-school-public-schools",
@@ -2952,7 +3083,8 @@
     "category": "Scholarships and Fellowships",
     "targetGroup": [
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "udyam-nidhi-yojana",
@@ -2967,7 +3099,8 @@
     "category": "Loans and Credit",
     "targetGroup": [
       "Scheduled Castes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "uniform-assistance-scheme",
@@ -2986,7 +3119,8 @@
     "category": "Scholarships and Fellowships",
     "targetGroup": [
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "upgadation-of-merit-of-sc-students",
@@ -3018,7 +3152,8 @@
     "targetGroup": [
       "Scheduled Castes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "vimukt-jaati-basti-development-scheme",
@@ -3041,7 +3176,8 @@
     "category": "Housing and Settlement",
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "vimukt-jati-hostel-scheme",
@@ -3069,7 +3205,8 @@
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "vocational-training-for-vjnt-and-sbc-candidates-studying-in-government-industrial-training-institute",
@@ -3101,7 +3238,8 @@
     "targetGroup": [
       "De-notified, Nomadic and Semi-Nomadic Tribes",
       "Students"
-    ]
+    ],
+    "status": "Active"
   },
   {
     "slug": "workshops-job-fairs",
@@ -3116,6 +3254,7 @@
     "category": "Skill Training and Livelihood",
     "targetGroup": [
       "Safai Karamcharis"
-    ]
+    ],
+    "status": "Active"
   }
 ]

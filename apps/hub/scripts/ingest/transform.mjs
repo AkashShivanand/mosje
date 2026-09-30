@@ -32,6 +32,7 @@ export function transformFileRecord(raw, ctx = {}) {
       (prefer && tax.category.find((c) => prefer.includes(c))) || tax.category[0];
   }
   if (fileUrl) rec.fileUrl = fileUrl;
+  if (tax.status?.length) rec.status = tax.status[0];
   return rec;
 }
 
@@ -49,6 +50,7 @@ export function transformRecord(raw, ctx = {}) {
   const tax = ctx.taxonomyNames ?? {};
   if (tax.category?.length) rec.category = tax.category[0];
   if (tax.targetGroup?.length) rec.targetGroup = tax.targetGroup;
+  if (tax.status?.length) rec.status = tax.status[0];
   const website = firstGovLink(sections);
   if (website) rec.website = website;
   return rec;
