@@ -7,7 +7,7 @@ import "@/components/website-dbim/utility/utility.css";
 
 export const metadata: Metadata = {
   title: "Important Links | Department of Social Justice and Empowerment",
-  description: "The divisions of the Department of Social Justice & Empowerment and where to find their work.",
+  description: "The Nasha Mukt Bharat pledge, de-addiction centres, SAMAVESH and the divisions of the Department of Social Justice & Empowerment.",
 };
 
 export default function Page() {
