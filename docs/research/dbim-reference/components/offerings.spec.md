@@ -69,26 +69,30 @@ not its UI.
 
 | Part | Reference | Ours |
 |---|---|---|
-| Name card `.visionbox` | padding 32, `#EBEAEA` (neutral-100), radius 10; `h2` 20px/500/36px primary-800 | `--sa-padding-32`, radius 10 literal; `--db-fs-h2`, line-height 36px |
-| VISIT bar `.leftCardDark` | 415×46, primary-400 fill, radius 4, margin 10 0; body padding 10 16, space-between; "VISIT" 14px/600/20 primary-800; `open_in_new` 24 primary-800 | same box; its text names the destination (e.g. "Apply on the e-Anudaan portal") instead of a bare "VISIT"; opens the first apply route with a confirmed web address; omitted when there is none |
-| Links box `.leftLastCardLight` | neutral-100, radius 8, padding 12 16; heading "Scheme Versions"; `a.detailsBtn` buttons | heading **"How to Apply"**; lists only the apply routes the VISIT bar does not open, so no two controls go to one place; a route without a web address is plain text |
+| Name card `.visionbox` | padding 32, neutral-100, radius 10; `h2` = the scheme name | **the side box** (30 Sep 2026) — DBIM's detail layout as Figure 71 and the Organisation page draw it (`db-min-detail`, `db-min-vision`): the scheme's name in the key colour, its standing (kind, and umbrella) muted, then **Apply Now** |
+| VISIT bar `.leftCardDark` | primary-400 bar, "VISIT" + `open_in_new` | **Apply Now** in the box — the handoff's Button, Filled (40 tall, Label/button 14px semibold capitals), label just "Apply Now" (destination in an `sr-only` span); the first apply route with a confirmed web address; omitted when there is none |
+| Links box `.leftLastCardLight` | neutral-100 panel, "Scheme Versions" buttons | **On This Page** under the box, the Organisation page's index: caps title, the page's sections as links behind a 2px primary-100 rule, sticky at 140 from 992; below 992 a wrap of outlined buttons. Built from the same list as the sections |
+| Columns | `col-lg-4` / `col-lg-8` | unchanged — 415 + 30 + 860 at 1440 (`db-min-detail`) |
 | Section heading `h2.introHeading` | 20px / 32px, primary-800, weight 400, mb 5 | `--db-fs-h2`, line-height 32px |
 | Body text | 14px, line-height 24px, `text-align: justify`, p mb 10; `ol` padding-left 20; `strong` 700 | `--db-fs-p`; same, except `text-align: left` (DBIM 3.0 §4.1.1 i) |
 | Documents heading `h2.docsHeading` | as introHeading, `margin-top:32px` | same |
 | Document row `.docsCard` | border 1px, radius 8, margin 12 0, padding 8 16; grid 6 / 4 / 2 of 12 | same; size shown only when the record states one |
 
-**Right column, in order** — each an `h2.introHeading` over body text:
+**Right column, in order** — DBIM's rich text (`db-min-rich`); each section an `h2` over body text, separated as the Organisation page separates its sections (a neutral-100 hairline, 40 + 32 above). Before they are placed,
+the ingested About and Benefits pass through `sortTopics` (`lib/website-dbim/prose.ts`): a part
+labelled Eligibility / Beneficiaries / Conditions of Eligibility moves to Eligibility, Benefits to
+Benefits, Required Documents / Important Timelines / How to Apply to Application Process, and a
+numbered list opening Register / Apply / Visit becomes "Steps to Apply". Words and labels are kept.
 
 | Section | Content |
 |---|---|
 | About the Scheme | the ingested page's untitled opening + "About the Scheme"; its other headed sections follow under their own headings. No page: the master's kind/umbrella sentence and note; failing both, `provides` |
 | Eligibility | the page's section (`<h6>` label + text → "**Label:** text" list); else `named` as "Who Can Apply" |
 | Benefits & Financial Assistance | the page's section (`<h6>` names → list); else `provides` (unless About already used it) |
-| Application Process | every apply route as a numbered list, as text (the rail holds the links); then the page's own text |
+| Application Process | **Where to Apply** — every route, bulleted (alternatives, not steps; the rail holds the link) → the page's own text → parts moved here by `sortTopics`: Steps to Apply, Required Documents, Important Timelines |
 | Documents | register rows; where the register has none, the page's own document table |
 | FAQs | the page's section where one exists (none today) |
 | Contact & Support | the page's section (placeholder helpline and a non-address "Email" dropped, X-CON-02); else Nodal Department · Division(s) · the Department's address (`connect.ts`); a Contact Us link |
-| Sources | the master's sources (master schemes only) |
 
 `generateStaticParams` over every master id; anything else `notFound()`.
 

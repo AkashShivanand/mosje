@@ -5,50 +5,59 @@ import type { DbimSchemeBlock, DbimSchemeDetail as Detail, DbimSchemeFact, DbimS
 import { dbimHref } from "@/lib/website-dbim/nav";
 import { DbimPdfIcon } from "./PdfIcon";
 import { DbimRegisterTable } from "./RegisterTable";
+import "@/components/website-dbim/ministry/ministry.css"; // the DBIM detail layout: db-min-detail, db-min-vision, db-min-rich
 
 const NEW_TAB = " (opens in a new tab)";
 
+interface PageSection {
+  id: string;
+  title: string;
+  body: React.ReactNode;
+  className?: string;
+}
+
 /**
- * The left rail: the name card, the VISIT bar and the How to Apply box (sticky from 992).
- * The bar names where it goes — the reference's bare "VISIT" did not say — and the box
- * lists only the routes the bar does not already open.
+ * The side column, as DBIM 3.0 Figure 71 and the Organisation page draw it: the
+ * grey box carries the scheme's name in the key colour, its standing, and the one
+ * Apply Now; the page's index sits under it and stays in view. The reference's
+ * VISIT bar and "Scheme Versions" box are gone — the box's button is the one way
+ * to apply, and its label is just that.
+ *
+ * The box, the button and the index use the Organisation page's values
+ * (organisation.css, .db-org__*, PR #640) under this page's own names until that
+ * page lands and the two can share them.
  */
-function Rail({ d }: { d: Detail }) {
+function Aside({ d, sections }: { d: Detail; sections: PageSection[] }) {
   return (
-    <aside className="db-sd__rail" aria-label="About this scheme">
-      <div className="db-sd__name">
-        <h2>{d.name}</h2>
+    <aside className="db-sd__aside" aria-label={`About ${d.name}`}>
+      <div className="db-min-vision db-sd__id">
+        <p className="db-sd__name">{d.name}</p>
+        {d.standing ? <p className="db-sd__standing">{d.standing}</p> : null}
+        {d.applyAt ? (
+          <a className="db-sd__action" href={d.applyAt.href} target="_blank" rel="noopener noreferrer">
+            Apply Now
+            <span className="sr-only">
+              {" — "}
+              {d.applyAt.label}
+              {NEW_TAB}
+            </span>
+            <Icon name="open_in_new" size={20} weight={400} aria-hidden="true" />
+          </a>
+        ) : null}
       </div>
-      {d.visit ? (
-        <a className="db-sd__visit" href={d.visit.href} target="_blank" rel="noopener noreferrer">
-          <span>
-            {d.visit.label}
-            <span className="sr-only">{NEW_TAB}</span>
-          </span>
-          <Icon name="open_in_new" size={24} weight={400} />
-        </a>
-      ) : null}
-      {d.apply.length ? (
-        <div className="db-sd__links">
-          <p className="db-sd__links-title">How to Apply</p>
-          <div className="db-sd__links-list">
-            {d.apply.map((a) =>
-              a.href ? (
-                <a key={a.label} className="db-sd__link" href={a.href} target="_blank" rel="noopener noreferrer">
-                  <Icon name="open_in_new" size={24} weight={400} />
-                  <span>
-                    {a.label}
-                    <span className="sr-only">{NEW_TAB}</span>
-                  </span>
-                </a>
-              ) : (
-                <p key={a.label} className="db-sd__link db-sd__link--plain">
-                  {a.label}
-                </p>
-              ),
-            )}
-          </div>
-        </div>
+      {sections.length > 1 ? (
+        <nav className="db-sd__index" aria-labelledby="db-sd-index">
+          <p className="db-sd__index-title" id="db-sd-index">
+            On This Page
+          </p>
+          <ul>
+            {sections.map((s) => (
+              <li key={s.id}>
+                <a href={`#${s.id}`}>{s.title}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
       ) : null}
     </aside>
   );
@@ -66,15 +75,6 @@ function Parts({ parts, label }: { parts: DbimSchemePart[]; label: string }) {
         ),
       )}
     </>
-  );
-}
-
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <section className="db-sd__section">
-      <h2 className="db-sd__h">{title}</h2>
-      {children}
-    </section>
   );
 }
 
@@ -100,138 +100,129 @@ function Facts({ facts }: { facts: DbimSchemeFact[] }) {
   );
 }
 
-function Block({ title, block, label }: { title: string; block: DbimSchemeBlock | null; label: string }) {
-  if (!block || (!block.facts.length && !block.parts.length)) return null;
+const filled = (block: DbimSchemeBlock | null): block is DbimSchemeBlock => Boolean(block && (block.facts.length || block.parts.length));
+
+function BlockBody({ block, label }: { block: DbimSchemeBlock; label: string }) {
   return (
-    <Section title={title}>
+    <>
       <Parts parts={block.parts} label={label} />
       <Facts facts={block.facts} />
-    </Section>
+    </>
   );
 }
 
-function Faqs({ d }: { d: Detail }) {
-  if (!d.faqs.length) return null;
+/** Where to apply, then how: the routes are alternatives, so they are not numbered. */
+function ProcessBody({ d }: { d: Detail }) {
+  const more = d.process.length > 0;
   return (
-    <Section title="FAQs">
-      <div className="db-sd__prose">
-        {d.faqs.map((f) => (
-          <div key={f.label}>
-            <h3>{f.label}</h3>
-            {f.text ? <p>{f.text}</p> : null}
-          </div>
-        ))}
-      </div>
-    </Section>
+    <>
+      {d.routes.length ? (
+        <div className="db-sd__prose">
+          {more ? <h3>Where to Apply</h3> : null}
+          <ul>
+            {d.routes.map((t) => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+      <Parts parts={d.process} label="Application Process" />
+    </>
   );
 }
 
-function Contact({ d }: { d: Detail }) {
-  if (!d.contact.length) return null;
+function DocumentsBody({ d }: { d: Detail }) {
   return (
-    <Section title="Contact & Support">
-      <Facts facts={d.contact} />
-      <div className="db-sd__prose">
-        <p>
-          <Link href={dbimHref("/connect")}>Contact Us</Link>
-        </p>
-      </div>
-    </Section>
-  );
-}
-
-function Sources({ d }: { d: Detail }) {
-  if (!d.scheme || !d.sources.length) return null;
-  return (
-    <Section title="Sources">
-      <div className="db-sd__prose">
-        <ol>
-          {d.sources.map((src) => (
-            <li key={src.text}>
-              {src.href ? (
-                <a href={src.href} target="_blank" rel="noopener noreferrer">
-                  {src.text}
-                  <span className="sr-only">{NEW_TAB}</span>
-                </a>
-              ) : (
-                src.text
-              )}
+    <>
+      <Parts parts={d.documentParts} label="Documents" />
+      {d.documents.length ? (
+        <ul>
+          {d.documents.map((doc) => (
+            <li key={doc.href + doc.title} className="db-sd__doc">
+              <p>{doc.title}</p>
+              {/* DBIM 3.0 A.5.3 ii: the date of release, day before month (A.5.6 viii). */}
+              <span className="db-sd__doc-date">{doc.date ? <small>{doc.date}</small> : null}</span>
+              <span className="db-tender__type">
+                <DbimPdfIcon />
+                <small>{doc.size ?? doc.type ?? "File"}</small>
+              </span>
+              <a className="db-off-view" href={doc.href} target="_blank" rel="noopener noreferrer">
+                <Icon name="visibility" size={24} weight={400} />
+                View
+                <span className="sr-only">
+                  {" "}
+                  {doc.title}
+                  {NEW_TAB}
+                </span>
+              </a>
             </li>
           ))}
-        </ol>
-      </div>
-    </Section>
+        </ul>
+      ) : null}
+    </>
   );
 }
 
-function Documents({ d }: { d: Detail }) {
-  if (!d.documents.length && !d.documentParts.length) return null;
-  return (
-    <section className="db-sd__docs" aria-labelledby="db-sd-docs">
-      <h2 className="db-sd__h" id="db-sd-docs">
-        Documents
-      </h2>
-      <Parts parts={d.documentParts} label="Documents" />
-      <ul>
-        {d.documents.map((doc) => (
-          <li key={doc.href + doc.title} className="db-sd__doc">
-            <p>{doc.title}</p>
-            {/* DBIM 3.0 A.5.3 ii: the date of release, day before month (A.5.6 viii). */}
-            <span className="db-sd__doc-date">{doc.date ? <small>{doc.date}</small> : null}</span>
-            <span className="db-tender__type">
-              <DbimPdfIcon />
-              <small>{doc.size ?? doc.type ?? "File"}</small>
-            </span>
-            <a className="db-off-view" href={doc.href} target="_blank" rel="noopener noreferrer">
-              <Icon name="visibility" size={24} weight={400} />
-              View
-              <span className="sr-only">
-                {" "}
-                {doc.title}
-                {NEW_TAB}
-              </span>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
+/** The sections this scheme fills, in the Scheme Details template's order (MoSJE
+ *  [Handoff] 3363:13864). The rail's list and the page are built from this one list,
+ *  so the one cannot name a section the other does not show. */
+function sectionsOf(d: Detail): PageSection[] {
+  const out: PageSection[] = d.about.map((s, i) => ({
+    id: i === 0 ? "about" : `about-${i}`,
+    title: s.heading ?? "About the Scheme",
+    body: <Parts parts={s.parts} label={s.heading ?? d.name} />,
+  }));
+  if (filled(d.eligibility)) out.push({ id: "eligibility", title: "Eligibility", body: <BlockBody block={d.eligibility} label="Eligibility" /> });
+  if (filled(d.benefits))
+    out.push({ id: "benefits", title: "Benefits & Financial Assistance", body: <BlockBody block={d.benefits} label="Benefits" /> });
+  if (d.routes.length || d.process.length) out.push({ id: "application-process", title: "Application Process", body: <ProcessBody d={d} /> });
+  if (d.documents.length || d.documentParts.length) out.push({ id: "documents", title: "Documents", body: <DocumentsBody d={d} />, className: "db-sd__docs" });
+  if (d.faqs.length)
+    out.push({
+      id: "faqs",
+      title: "FAQs",
+      body: (
+        <div className="db-sd__prose">
+          {d.faqs.map((f) => (
+            <div key={f.label}>
+              <h3>{f.label}</h3>
+              {f.text ? <p>{f.text}</p> : null}
+            </div>
+          ))}
+        </div>
+      ),
+    });
+  if (d.contact.length)
+    out.push({
+      id: "contact",
+      title: "Contact & Support",
+      body: (
+        <>
+          <Facts facts={d.contact} />
+          <div className="db-sd__prose">
+            <p>
+              <Link href={dbimHref("/connect")}>Contact Us</Link>
+            </p>
+          </div>
+        </>
+      ),
+    });
+  return out;
 }
 
-/**
- * A scheme's page: rail on the left; on the right, the Scheme Details template's
- * sections (MoSJE [Handoff] 3363:13864) in the reference's typography.
- */
+/** A scheme's page: DBIM's detail layout — the side column, then the template's sections in the reference's rich text. */
 export function DbimSchemeDetail({ detail }: { detail: Detail }) {
+  const sections = sectionsOf(detail);
   return (
-    <div className="db-sd">
-      <Rail d={detail} />
-      <div className="db-sd__main">
-        {detail.about.map((s, i) => (
-          <Section key={i} title={s.heading ?? "About the Scheme"}>
-            <Parts parts={s.parts} label={s.heading ?? detail.name} />
-          </Section>
+    <div className="db-min-detail db-sd">
+      <Aside d={detail} sections={sections} />
+      <div className="db-min-rich db-sd__main">
+        {sections.map((s) => (
+          <section key={s.id} id={s.id} className={`db-sd__section${s.className ? ` ${s.className}` : ""}`} aria-labelledby={`${s.id}-h`}>
+            <h2 id={`${s.id}-h`}>{s.title}</h2>
+            {s.body}
+          </section>
         ))}
-        <Block title="Eligibility" block={detail.eligibility} label="Eligibility" />
-        <Block title="Benefits & Financial Assistance" block={detail.benefits} label="Benefits" />
-        {detail.steps.length || detail.process.length ? (
-          <Section title="Application Process">
-            {detail.steps.length ? (
-              <div className="db-sd__prose">
-                <ol>
-                  {detail.steps.map((t) => (
-                    <li key={t}>{t}</li>
-                  ))}
-                </ol>
-              </div>
-            ) : null}
-            <Parts parts={detail.process} label="Application Process" />
-          </Section>
-        ) : null}
-        <Documents d={detail} />
-        <Faqs d={detail} />
-        <Contact d={detail} />
-        <Sources d={detail} />
       </div>
     </div>
   );
