@@ -93,7 +93,6 @@ numbered list opening Register / Apply / Visit becomes "Steps to Apply". Words a
 | Documents | register rows; where the register has none, the page's own document table |
 | FAQs | the page's section where one exists (none today) |
 | Contact & Support | the page's section (placeholder helpline and a non-address "Email" dropped, X-CON-02); else Nodal Department · Division(s) · the Department's address (`connect.ts`); a Contact Us link |
-| Sources | the master's sources (master schemes only) |
 
 `generateStaticParams` over every master id; anything else `notFound()`.
 

@@ -1,7 +1,7 @@
 import "server-only";
 
 import { ROUTES, SCHEMES, applyLabel, type Scheme } from "@/lib/website-next/schemes";
-import { divisionsOf, displayName, expandSource, getMasterScheme } from "@/lib/website-next/scheme-view";
+import { divisionsOf, displayName, getMasterScheme } from "@/lib/website-next/scheme-view";
 import { LEGACY_TO_MASTER } from "@/lib/website-next/legacy-scheme-map.generated";
 import { legacySections, masterForLegacy, type LegacySection } from "@/lib/website-next/legacy-schemes";
 import { getScheme, getSchemeDocuments, getTenders, getVacancies, routeSlug } from "@/lib/website/content";
@@ -183,7 +183,6 @@ export interface DbimSchemeDetail {
   contact: DbimSchemeFact[];
   /** The page's own document tables, where the scheme-documents register lists none. */
   documentParts: DbimSchemePart[];
-  sources: { text: string; href?: string }[];
   documents: DbimSchemeDocument[];
 }
 
@@ -436,7 +435,6 @@ export function dbimSchemeDetail(id: string): DbimSchemeDetail | undefined {
           departmentAddress(),
         ],
     documentParts: page.documentParts,
-    sources: s.sources.map(expandSource),
     documents,
   };
 }
@@ -463,7 +461,6 @@ function liveSchemeDetail(slug: string): DbimSchemeDetail | undefined {
     faqs: page.faqs,
     contact: page.contact.length ? page.contact : [NODAL, departmentAddress()],
     documentParts: page.documentParts,
-    sources: [{ text: "Department of Social Justice and Empowerment", href: `https://www.dosje.gov.in/schemes-and-services/${slug}/` }],
     documents,
   };
 }

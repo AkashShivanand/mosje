@@ -163,27 +163,6 @@ function DocumentsBody({ d }: { d: Detail }) {
   );
 }
 
-function SourcesBody({ d }: { d: Detail }) {
-  return (
-    <div className="db-sd__prose">
-      <ol>
-        {d.sources.map((src) => (
-          <li key={src.text}>
-            {src.href ? (
-              <a href={src.href} target="_blank" rel="noopener noreferrer">
-                {src.text}
-                <span className="sr-only">{NEW_TAB}</span>
-              </a>
-            ) : (
-              src.text
-            )}
-          </li>
-        ))}
-      </ol>
-    </div>
-  );
-}
-
 /** The sections this scheme fills, in the Scheme Details template's order (MoSJE
  *  [Handoff] 3363:13864). The rail's list and the page are built from this one list,
  *  so the one cannot name a section the other does not show. */
@@ -228,7 +207,6 @@ function sectionsOf(d: Detail): PageSection[] {
         </>
       ),
     });
-  if (d.scheme && d.sources.length) out.push({ id: "sources", title: "Sources", body: <SourcesBody d={d} /> });
   return out;
 }
 
@@ -237,7 +215,7 @@ export function DbimSchemeDetail({ detail }: { detail: Detail }) {
   const sections = sectionsOf(detail);
   return (
     <div className="db-min-detail db-sd">
-      <Aside d={detail} sections={sections.filter((s) => s.id !== "sources")} />
+      <Aside d={detail} sections={sections} />
       <div className="db-min-rich db-sd__main">
         {sections.map((s) => (
           <section key={s.id} id={s.id} className={`db-sd__section${s.className ? ` ${s.className}` : ""}`} aria-labelledby={`${s.id}-h`}>
