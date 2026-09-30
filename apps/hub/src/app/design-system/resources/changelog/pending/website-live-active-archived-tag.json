@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "THE SITE SHOWED 305 OF 312 TENDERS AS OPEN; THE DEPARTMENT MARKS 15 OF THEM ACTIVE. dosje.gov.in tags every scheme, tender and vacancy Active or Archived by hand (component_status) and lists the two under tabs of their own. The ingest was not keeping that tag, so the estate guessed from the date — anything published within twelve months counted as current. It now keeps the tag on all three registers, and one rule reads it for every design: isArchivedRecord in lib/website-shared/records.ts, which the New design's Tenders, Vacancies and Archives pages and the DBIM design's offerings and documents all call. Tenders current: 305 → 15. Vacancies: 152 → 35. Documents follow the same tag, which they already carried and nothing read. The twelve-month rule survives only as the fallback for a record ingested before the tag was kept, and an unfamiliar term falls back rather than guessing which side it means."
+}

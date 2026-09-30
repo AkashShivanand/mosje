@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DocumentCatalog } from "@/components/website-next/templates/DocumentCatalog";
-import { dedupeNotices, displayNoticeTitle, isArchived } from "@/components/website-next/ui/records";
+import { dedupeNotices, displayNoticeTitle } from "@/components/website-next/ui/records";
+import { isCurrentRecord } from "@/lib/website-shared/records";
 import { getTenders, getContentSyncedDate } from "@/lib/website/content";
 import { socialCard } from "@/lib/seo/social";
 
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
  * register holds no longer title to fall back to.
  */
 export default function TendersPage() {
-  const tenders = dedupeNotices(getTenders().filter((t) => !isArchived(t.date))).map((t) => ({
+  const tenders = dedupeNotices(getTenders().filter(isCurrentRecord)).map((t) => ({
     slug: t.slug,
     title: displayNoticeTitle(t.title),
     date: t.date,
@@ -47,7 +48,7 @@ export default function TendersPage() {
       detailBase="/website/tenders"
       noun="tenders"
       nounSingular="tender"
-      archive={{ href: "/website/archives", text: "Tenders published more than 12 months ago are kept in the Archives." }}
+      archive={{ href: "/website/archives", text: "Tenders the Department has archived are kept in the Archives." }}
       emptyMessage="No tender has been published in the last 12 months. Earlier tenders are in the Archives."
     />
   );

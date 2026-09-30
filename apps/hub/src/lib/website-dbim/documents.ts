@@ -23,7 +23,8 @@ import { localiseDocumentUrl } from "@/lib/website/sample-documents";
 import { recentNotices, type NewsItem } from "@/lib/website-next/whats-new";
 import { masterForLegacy } from "@/lib/website-next/legacy-schemes";
 import { SCHEMES } from "@/lib/website-next/schemes";
-import { dateValue, isArchived, tidyTitle, dedupeNotices, displayNoticeTitle } from "@/components/website-next/ui/records";
+import { dateValue, tidyTitle, dedupeNotices, displayNoticeTitle } from "@/components/website-next/ui/records";
+import { isArchivedRecord, isCurrentRecord } from "@/lib/website-shared/records";
 import type { DocumentRecord } from "@/types/website/content";
 import { dbimHref, type DbimLink } from "@/lib/website-dbim/nav";
 
@@ -186,13 +187,13 @@ export const DBIM_ARCHIVE_TABS: (DbimLink & { key: DbimArchiveKind })[] = [
 ];
 
 /**
- * Tenders and vacancies leave their live page twelve months after publication —
- * the rule the classic Archives page and the redesign's /tenders apply
- * (`isArchived`), so an item is on exactly one of the two.
+ * Tenders and vacancies leave their live page when the Department archives them —
+ * its own Active/Archived tag, read through the one rule every design shares
+ * (`isArchivedRecord`), so an item is on exactly one of the two.
  */
 function archivedFiles(rows: { slug: string; title: string; date?: string; fileUrl?: string; sourceUrl: string }[], notices: boolean): DbimDocRow[] {
   return (notices ? dedupeNotices(rows) : rows)
-    .filter((r) => isArchived(r.date))
+    .filter(isArchivedRecord)
     .map((r) => ({
       key: r.slug,
       title: notices ? displayNoticeTitle(r.title) : tidyTitle(r.title),
@@ -245,7 +246,7 @@ export function whatsNewDocuments(): WhatsNewGroup[] {
   }
   for (const [type, docs] of liveIndex()) {
     if (tabOfType(type) === "orders-and-notices") continue;
-    for (const d of docs) if (!isArchived(d.date)) add(type, d);
+    for (const d of docs) if (isCurrentRecord(d)) add(type, d);
   }
 
   return DBIM_DOC_TABS.map((t) => ({

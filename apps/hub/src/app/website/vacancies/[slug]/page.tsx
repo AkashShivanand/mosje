@@ -5,7 +5,7 @@ import { getContentSyncedDate, getVacancies, getVacancy } from "@/lib/website/co
 import { facts } from "@/lib/website/record-facts";
 import { formatDate } from "@/components/website-next/ui/format";
 import { socialCard } from "@/lib/seo/social";
-import { isArchived } from "@/components/website-next/ui/records";
+import { isArchivedRecord } from "@/lib/website-shared/records";
 
 /** 163 vacancies — every one is prerendered. */
 export function generateStaticParams() {
@@ -32,7 +32,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   const vacancy = getVacancy(slug);
   if (!vacancy) notFound();
   /* Published more than 12 months ago: listed in the Archives, not on the Vacancies page (MAN-06). */
-  const archived = isArchived(vacancy.date);
+  const archived = isArchivedRecord(vacancy);
 
   return (
     <RecordDetail

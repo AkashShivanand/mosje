@@ -12,8 +12,8 @@ import {
   displayNoticeTitle,
   fileTypeOf,
   formatFileSize,
-  isArchived,
 } from "@/components/website-next/ui/records";
+import { isCurrentRecord } from "@/lib/website-shared/records";
 import { SCHEME_GROUPS, SCHEME_IMAGE, listedScheme, listedSchemes, type ListedScheme } from "@/lib/website-shared/scheme-listing";
 import { SD_SCHEMES } from "@/lib/explorations/service-discovery-master";
 import { dbimFeedTitle } from "./home-mid";
@@ -34,7 +34,7 @@ import { getDbimContact } from "./connect";
  *     reference's (issue X-IA-04), and no longer the scheme master, which still
  *     supplies the page of every listed scheme it holds;
  *   - tenders and vacancies published more than twelve months ago are in the
- *     Archives (`isArchived`, issue MAN-06) — the register publishes no closing
+ *     Archives (live's own Archived tag, issue MAN-06) — the register publishes no closing
  *     date, so the publish date is the only date the rule can read;
  *   - notices published twice are listed once, and a title the ingest cut short
  *     ends in an ellipsis (`dedupeNotices`, `displayNoticeTitle`).
@@ -505,10 +505,10 @@ const newestFirst = (a: DbimNotice, b: DbimNotice) => b.time - a.time;
 
 /** Vacancies not yet in the Archives, newest first. */
 export function dbimVacancies(): DbimNotice[] {
-  return getVacancies().filter((v) => !isArchived(v.date)).map(toNotice).sort(newestFirst);
+  return getVacancies().filter(isCurrentRecord).map(toNotice).sort(newestFirst);
 }
 
 /** Tenders not yet in the Archives, listed once each, newest first. */
 export function dbimTenders(): DbimNotice[] {
-  return dedupeNotices(getTenders().filter((t) => !isArchived(t.date))).map(toNotice).sort(newestFirst);
+  return dedupeNotices(getTenders().filter(isCurrentRecord)).map(toNotice).sort(newestFirst);
 }
