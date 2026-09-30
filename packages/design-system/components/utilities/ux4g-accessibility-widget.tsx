@@ -46,8 +46,17 @@ import * as React from "react";
 import "./ux4g-accessibility-widget.css";
 
 /**
- * Official UX4G accessibility widget CDN (current: v3.36 — the build
- * ux4g.gov.in itself serves).
+ * Official UX4G accessibility widget CDN (current: v3.0 — the build
+ * ux4g.gov.in itself serves, read from its script tags on 30 Sep 2026).
+ *
+ * IT HAPPENED AGAIN ON 30 SEP 2026. v3.36 began answering 404 and UX4G
+ * republished `accessibility-v3.0` the same morning (Last-Modified 07:03 GMT);
+ * both www.ux4g.gov.in and ux4g.gov.in now load that path. Its header reads
+ * `Version: '3.0` but it is the current build, not an old one: it carries every
+ * hook listed below, `ux4gOnReady`, the analytics config by reference, and its
+ * own stylesheet beside it — checked against the file, not assumed from the
+ * name. `.github/workflows/ux4g-widget-pin.yml` now requests this URL daily, so
+ * the next deletion fails a check instead of the panel vanishing unnoticed.
  *
  * UX4G DELETES OLD BUILDS FROM ITS CDN. On 25 Sep 2026 v3.36 was published
  * (Last-Modified 10:21 GMT) and `accessibility-v3.28/accessibility-widget.js`
@@ -82,7 +91,7 @@ import "./ux4g-accessibility-widget.css";
  *      v3.28's own source; the seeding workaround is gone with it.
  */
 export const UX4G_A11Y_WIDGET_SRC =
-  "https://cdn.ux4g.gov.in/accessibility-v3.36/accessibility-widget.js";
+  "https://cdn.ux4g.gov.in/accessibility-v3.0/accessibility-widget.js";
 
 /**
  * Dead key left behind by the v1.15 workaround.
@@ -109,7 +118,8 @@ function clearLegacyUx4gSettings(): void {
  *
  * v3.28 added analytics that v1.15 had none of: on load it beacons the full
  * URL, pathname, hostname, referrer, user agent, language, screen resolution,
- * viewport and a session id to `https://audit360.ux4g.gov.in/api/track`, and
+ * viewport and a session id to `https://audit360.ux4g.gov.in/api/track` (v3.0 posts to
+ * `https://www.ux4g.gov.in/docsapi/track` instead — see `trapUx4gAnalytics`), and
  * tracks panel opens, feature toggles and profile selections after that.
  *
  * That is a poor fit for this estate. The portals are authenticated workflow
@@ -134,6 +144,35 @@ function setUx4gAnalyticsEnabled(enabled: boolean): void {
   const w = window as unknown as { UX4G_Analytics?: { config?: { enabled?: boolean } } };
   const config = w.UX4G_Analytics?.config;
   if (config) config.enabled = enabled;
+}
+
+/**
+ * Switch the analytics off AT THE MOMENT the widget publishes them, whenever that is.
+ *
+ * The `load` handler below is too late from v3.0 (30 Sep 2026): the whole widget now runs
+ * inside `ux4gOnReady`, which is a `setTimeout(fn, 0)` once the page has parsed, so when our
+ * handler fires `window.UX4G_Analytics` does not exist yet — the call found nothing and the
+ * widget's own init, 100ms later, sent the page view to `www.ux4g.gov.in/docsapi/track`.
+ * Measured, not assumed: `config.enabled` read `true` on a live page. Trapping the
+ * assignment makes the switch-off independent of the widget's timing: the object is
+ * disabled in the same statement that exposes it, before any `init()` can read it.
+ */
+function trapUx4gAnalytics(): void {
+  const w = window as unknown as Record<string, unknown>;
+  const key = "UX4G_Analytics";
+  const desc = Object.getOwnPropertyDescriptor(w, key);
+  if (desc && !desc.configurable) return;
+  let value = w[key] as { config?: { enabled?: boolean } } | undefined;
+  if (value?.config) value.config.enabled = false;
+  Object.defineProperty(w, key, {
+    configurable: true,
+    enumerable: true,
+    get: () => value,
+    set: (next: { config?: { enabled?: boolean } } | undefined) => {
+      if (next?.config) next.config.enabled = false;
+      value = next;
+    },
+  });
 }
 
 /**
@@ -460,6 +499,7 @@ export function UX4GAccessibilityWidget({
     if (typeof document === "undefined") return;
     if (document.querySelector(`script[data-ux4g-a11y="true"]`)) return;
     clearLegacyUx4gSettings();
+    if (!analytics) trapUx4gAnalytics();
     const script = document.createElement("script");
     script.src = src;
     script.defer = true;
