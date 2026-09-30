@@ -338,8 +338,19 @@
     object-fit: cover;
   }
 
+  /* A group the DBIM Toolkit does not draw: its icon, centred in the same circle. */
+  [data-design="dbim"] .db-hm-persona .db-hm-persona__img--icon {
+    display: grid;
+    place-items: center;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  /* Two lines are reserved and taken back from the margin below (30 − 26), so the
+     longest group name — De-notified, Nomadic and Semi-Nomadic Tribes — wraps
+     without moving the controls, and the section is as tall as before. */
   [data-design="dbim"] .db-hm-persona .db-hm-persona__name {
-    margin: 30px 0; /* reference: mt 30, mb-5 */
+    min-height: 52px; /* two lines at the reference's 26 */
+    margin: 30px 0 4px; /* reference: mt 30, mb-5, less the reserved second line */
     color: var(--sa-color-primaryScale-800);
     font-size: var(--db-fs-h3);
     font-weight: var(--sa-font-weight-semibold);

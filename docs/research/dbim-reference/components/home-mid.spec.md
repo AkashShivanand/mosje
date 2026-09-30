@@ -69,24 +69,38 @@ reference slides (0.6s); ours swaps, which also honours reduced motion.
 | › Vacancies | `dbimVacancies()` (not archived, newest first), first four (`KEY_OFFERING_ROWS`); each → `/offerings/vacancies` |
 | What's New (empty) | `whatsNew()` newest first, first four. A document item opens its file (`docRow`, as the Documents shelves do); an update opens its attachment or its dosje.gov.in page (`whatsNewUpdates`). External targets open in a new tab and say so. |
 | Recent Documents (4 CMS cards, each a series) | Newest live document per tab from `lib/website-dbim/documents.ts`, in the reference's mix — 1 Reports, 1 Orders and Notices, 2 Publications. Category = tab label, text = document title; href = that document's **series page** `/documents/<tab>/<series>` (the documents builder's route). |
-| Explore User Personas (IT Professional, Business Owner, Researcher) | The live site's two — Government Official, Beneficiary — with its drawings; see below |
+| Explore User Personas (IT Professional, Business Owner, Researcher) | The eleven applicant groups finalised with the AS, each opening the filtered scheme list; see below |
 | Important Links (Scheduled Caste Welfare, Social Defence, Grants-In-Aid To NGOS, Inauguration) | The first four rows of `DBIM_IMPORTANT_LINKS` (`lib/website-dbim/utility.ts`, one row per Division) — the same list the Important Links page shows. That list now leads with the reference's three (Scheduled Caste Welfare, Social Defence, Grants-In-Aid To NGOs; reordered there, in one place), then `DIVISIONS` order, so the fourth is Welfare of the Other Backward Classes in place of "Inauguration" (a webcast link we have no source for). Rows open `/ministry/our-division/<id>`, or the other website for a division that has only one. |
 
 ### Persona mapping (art → persona)
 
-Superseded 30 Sep 2026: the home page shows the personas the live dosje.gov.in shows, in
-its order, with its drawings (`DBIM_PERSONA_ART`, copied byte-identical from the live
-uploads). Content is the live site's (`.claude/rules/website-shared-content.md`).
+Superseded 30 Sep 2026 (second time that day): the home page shows the **eleven
+applicant groups finalised with the AS** — the "Type of Applicant" chips of the MoSJE
+Handoff file (Offerings › Scheme Discovery, node 52500:8212), read through
+`lib/website-dbim/applicants.ts` from the scheme-discovery master. One slide per group,
+in the chips' order; each opens Offerings › Schemes and Services with that group chosen
+(`?applicant=<id>`), where a new Type of Applicant select filters the live listing.
 
-| Drawing | What it shows | Persona (`DBIM_PERSONAS`) | Route |
-|---|---|---|---|
-| `government-official.png` (live `2025/11/Government-Official.png`) | woman in a sari holding files | **For Government Officials** | `/persona/government-official` |
-| `beneficiary.png` (live `2026/04/Beneficiary.png`) | young man in a shirt and tie | **For Beneficiaries** | `/persona/beneficiary` |
+| Group | Picture in the circle | Schemes it finds |
+|---|---|---|
+| Students | DBIM Toolkit persona drawing (`toolkit-student.png`) | 15 |
+| Scheduled Castes | icon `diversity_3` | 13 |
+| Other Backward Classes | icon `groups` | 7 |
+| De-notified, Nomadic and Semi-Nomadic Tribes | icon `diversity_1` | 2 (from the scheme master; the live listing tags none) |
+| Safai Karamcharis | icon `health_and_safety` | 3 |
+| Senior Citizens | DBIM Toolkit persona drawing (`toolkit-senior-citizen.png`) | 2 |
+| Transgender Persons | icon `transgender` | 1 |
+| Persons Affected by Substance Use | icon `healing` | 2 |
+| Persons Engaged in Begging | icon `volunteer_activism` | 1 |
+| Victims of Atrocities | icon `balance` | 1 |
+| Voluntary Organisations | icon `handshake` | 5 |
 
-For Students and For Researchers keep their persona pages; the live home page lists
-neither. The reference build's three drawings (`persona-1…3.png`) are no longer used.
-Both live drawings are 268 px square and are drawn at 260 px (200 at 1280–1536): a
-sharper original has to come from the Department.
+The Toolkit's Persona Illustrations (24 drawings, read 30 Sep 2026) draw only two of the
+groups. The nine others carry a functional icon for what the Department does for them,
+not a drawn person: a figure labelled with a caste or a circumstance is the depiction the
+page must not invent. DBIM 3.0 A.2: a persona not yet illustrated "may be requested"
+through the Toolkit — the icons give way to drawings as they arrive. The name box
+reserves two lines (the DNT name wraps) so the controls never move between slides.
 
 ## States
 

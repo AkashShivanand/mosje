@@ -8,8 +8,9 @@ import "server-only";
  * (`@/lib/website-shared/offerings`); the document and
  * update registers (`@/lib/website/content`, through the DBIM Offerings and Documents
  * modules so a row means the same thing on the home page as on its own page), the
- * Department's divisions (`@/data/website`) and the live site's persona drawings
- * (`DBIM_PERSONA_ART`). Mapping and reasoning:
+ * Department's divisions (`@/data/website`), and the applicant groups finalised with
+ * the AS (`./applicants`) with the DBIM Toolkit's drawings (`DBIM_PERSONA_ART`).
+ * Mapping and reasoning:
  * docs/research/dbim-reference/components/home-mid.spec.md.
  */
 import {
@@ -20,7 +21,8 @@ import { localiseDocumentUrl } from "@/lib/website/sample-documents";
 import { whatsNew } from "@/lib/website-next/whats-new";
 import { dbimHref } from "./nav";
 import { DBIM_PERSONA_ART } from "./assets";
-import { DBIM_IMPORTANT_LINKS, DBIM_PERSONAS } from "./utility";
+import { DBIM_APPLICANT_TYPES } from "./applicants";
+import { DBIM_IMPORTANT_LINKS } from "./utility";
 import {
   documentSeries, whatsNewTarget,
 } from "./documents";
@@ -171,29 +173,48 @@ export function dbimRecentDocuments(): DbimRecentDoc[] {
 
 export interface DbimPersonaSlide {
   slug: string;
-  /** The persona page's own title (`DBIM_PERSONAS`). */
+  /** The applicant group's name, as the finalised chips word it. */
   label: string;
-  art: string;
-  alt: string;
+  /** The Toolkit's drawing, where it has one for the group. */
+  art?: string;
+  alt?: string;
+  /** Otherwise a DBIM functional icon (Material Symbols Outlined) in the same circle. */
+  icon?: string;
   href: string;
 }
 
 /*
- * The personas the Department's home page shows — dosje.gov.in's "Explore User
- * Personas", read 30 Sep 2026: Government Official, then Beneficiary, each with its
- * own drawing (`DBIM_PERSONA_ART`). Content is the live site's
- * (.claude/rules/website-shared-content.md). Students and Researchers keep their
- * persona pages (`DBIM_PERSONAS`); the live home page does not list them.
+ * THE ELEVEN APPLICANT GROUPS, one slide each (instruction, 30 Sep 2026: the chips
+ * finalised with the AS — lib/website-dbim/applicants.ts). Each opens Schemes and
+ * Services with that Type of Applicant chosen.
+ *
+ * The slide keeps the section's design — a picture in the circle, the name beneath.
+ * The picture is the DBIM Toolkit's persona drawing where the Toolkit has one
+ * (Students, Senior Citizens). For the nine it does not draw, the circle holds a
+ * functional icon for what the Department does for the group, not a drawn person:
+ * a figure labelled with a caste or a circumstance would be exactly the depiction
+ * the page must not invent. The drawings replace the icons as the Toolkit adds them.
  */
-const HOME_PERSONAS: { slug: keyof typeof DBIM_PERSONA_ART; alt: string }[] = [
-  { slug: "government-official", alt: "Drawing of a government official in a sari, holding files" },
-  { slug: "beneficiary", alt: "Drawing of a young man in a shirt and tie" },
-];
+const PERSONA_PICTURE: Record<string, { art: keyof typeof DBIM_PERSONA_ART; alt: string } | { icon: string }> = {
+  student: { art: "student", alt: "Drawing of a student with a backpack" },
+  sc: { icon: "diversity_3" },
+  obc: { icon: "groups" },
+  dnt: { icon: "diversity_1" },
+  safai: { icon: "health_and_safety" },
+  senior: { art: "senior", alt: "Drawing of a senior citizen greeting with folded hands" },
+  tg: { icon: "transgender" },
+  drug: { icon: "healing" },
+  begging: { icon: "volunteer_activism" },
+  atrocity: { icon: "balance" },
+  ngo: { icon: "handshake" },
+};
 
-/** The home page's personas, in the live order, each opening its persona page. */
-export const DBIM_HOME_PERSONAS: DbimPersonaSlide[] = HOME_PERSONAS.flatMap(({ slug, alt }) => {
-  const p = DBIM_PERSONAS.find((x) => x.slug === slug);
-  return p ? [{ slug, label: p.title, art: DBIM_PERSONA_ART[slug], alt, href: dbimHref(`/persona/${slug}`) }] : [];
+/** The home page's personas: every applicant group, in the finalised order. */
+export const DBIM_HOME_PERSONAS: DbimPersonaSlide[] = DBIM_APPLICANT_TYPES.map((a) => {
+  const pic = PERSONA_PICTURE[a.id];
+  const base = { slug: a.id, label: a.label, href: `${dbimHref("/offerings")}?applicant=${a.id}` };
+  if (pic && "art" in pic) return { ...base, art: DBIM_PERSONA_ART[pic.art], alt: pic.alt };
+  return { ...base, icon: pic && "icon" in pic ? pic.icon : "groups" };
 });
 
 /* ── Important Links ───────────────────────────────────────────────────── */
