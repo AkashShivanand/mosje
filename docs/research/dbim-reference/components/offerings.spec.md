@@ -69,7 +69,7 @@ not its UI.
 
 | Part | Reference | Ours |
 |---|---|---|
-| Name card `.visionbox` | padding 32, neutral-100, radius 10; `h2` = the scheme name | **the side box** (30 Sep 2026) — DBIM's detail layout as Figure 71 and the Organisation page draw it (`db-min-detail`, `db-min-vision`): the scheme's name in the key colour, its standing (kind, and umbrella) muted, then **Apply Now** |
+| Name card `.visionbox` | padding 32, neutral-100, radius 10; `h2` = the scheme name | **the side box** (30 Sep 2026) — DBIM's detail layout as Figure 71 and the Organisation page draw it (`db-min-detail`, `db-min-vision`): the scheme's name in the key colour, its standing (kind, and umbrella) muted, then **Apply Now**. The column is `DbimSideColumn` (`layout/SideColumn.tsx`), the one the Organisation page uses |
 | VISIT bar `.leftCardDark` | primary-400 bar, "VISIT" + `open_in_new` | **Apply Now** in the box — the handoff's Button, Filled (40 tall, Label/button 14px semibold capitals), label just "Apply Now" (destination in an `sr-only` span); the first apply route with a confirmed web address; omitted when there is none |
 | Links box `.leftLastCardLight` | neutral-100 panel, "Scheme Versions" buttons | **On This Page** under the box, the Organisation page's index: caps title, the page's sections as links behind a 2px primary-100 rule, sticky at 140 from 992; below 992 a wrap of outlined buttons. Built from the same list as the sections |
 | Columns | `col-lg-4` / `col-lg-8` | unchanged — 415 + 30 + 860 at 1440 (`db-min-detail`) |

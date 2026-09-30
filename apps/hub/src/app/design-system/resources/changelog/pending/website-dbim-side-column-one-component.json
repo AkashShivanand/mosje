@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "THE DBIM SCHEME AND ORGANISATION PAGES SHARE ONE SIDE COLUMN. The grey box and the On This Page index were built twice, once per page, with the same values under two sets of names. They are now one component, `DbimSideColumn` (website-dbim/layout/SideColumn.tsx, side-column.css), as the Figma library's Side Column is one component: each page passes what it has — a scheme its name, standing and Apply Now; an organisation its mark, standing, statement, figures, links and related pages — and every part renders only when supplied. Both pages render as before, measured element by element at 1440 and 390; an organisation's standing line is now regular weight, as on the scheme page and in Figma, and its buttons keep their hidden destination text inside them. An event's figures reuse the column's `DbimSideFacts`."
+}
