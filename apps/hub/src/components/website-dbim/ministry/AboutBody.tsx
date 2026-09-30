@@ -7,9 +7,10 @@ const table = (id: string) => ABOUT_TABLES.find((t) => t.id === id);
 const SECTOR_GROUPS = [...new Set(ABOUT_TABLES.map((t) => t.group).filter((g): g is string => !!g))];
 
 /*
- * PENDING — what the Department has not published and DBIM 3.0 §A.5.1.1 asks About Us
- * to state (checklist item 11: "Objectives and functions … displayed as List"): the
- * vision, the mission and the objectives. dosje.gov.in carries none of them — its
+ * PENDING — what the Department has not published: the vision, the mission and the
+ * objectives. DBIM 3.0 §A.5.1.1 mixes its wording: the overview (vision, mission,
+ * objectives, functions, citizen charter) is "should"; objectives and functions set
+ * out as a list is "must" (checklist F.2 item 11). dosje.gov.in carries none of them — its
  * footer's "Vision & Mission" link opens About Us. Each gap renders as a marked
  * placeholder (`data-pending`), never as invented text, until the Department supplies
  * it. The same three gaps are flagged in the DBIM Figma file (About Us, 29 Sep 2026).

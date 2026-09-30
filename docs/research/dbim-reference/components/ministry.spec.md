@@ -47,8 +47,9 @@ Business Rules, 1961, as a numbered list with (i)–(v) and the note · Organisa
 Citizen Charter and Organisation Chart document rows · Brief History, Bureau Head-Wise Allocation of
 Work, Former Secretaries and Sector-Wise Detailed Information as rows that open in place.
 
-**Pending from the Department:** the Vision, the Mission and the Objectives. DBIM 3.0 §A.5.1.1 asks
-for all three and checklist item 11 wants objectives as a list, but dosje.gov.in publishes none (its
+**Pending from the Department:** the Vision, the Mission and the Objectives. DBIM 3.0 §A.5.1.1 says
+About Us "should" give the vision, mission and objectives, and "must" set out objectives and
+functions as a list (checklist F.2 item 11), but dosje.gov.in publishes none (its
 "Vision & Mission" link opens About Us). Each renders as a marked placeholder
 (`.db-min-pending`, `data-pending="vision|mission|objectives"`), never as invented text.
 

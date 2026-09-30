@@ -260,9 +260,9 @@ export const DBIM_RELATED_LINKS: DbimLinkRow[] = [
  * `DIVISIONS` from data/website/divisions.ts). A division opens its DBIM page under
  * Ministry → Our Division; a division whose only destination is another website opens
  * that website. The home page's Important Links section reads this same list — its
- * first four rows — so the three the DBIM reference leads with (Scheduled Caste
- * Welfare, Social Defence, Grants-in-Aid to NGOs) come first; the rest keep the
- * order of `DIVISIONS`.
+ * first four rows, which are now the home sections below (`HOME_SECTION_LINKS`); of
+ * the divisions, the three the DBIM reference leads with (Scheduled Caste Welfare,
+ * Social Defence, Grants-in-Aid to NGOs) come first, the rest in `DIVISIONS` order.
  */
 const LEAD_DIVISIONS = ["scheduled-caste-welfare", "social-defence", "grants-in-aid-to-ngos"];
 const leadRank = (id: string) => {
@@ -279,14 +279,35 @@ const DIVISION_LINKS: DbimLinkRow[] = [...DIVISIONS].sort((a, b) => leadRank(a.i
 });
 
 /*
- * THE SOCIAL AUDIT MIS PORTAL IS FOURTH, after the three lead divisions — moved here
- * on 28 Sep 2026 from the home page's posts row, whose third slot became the
- * Infographics (DBIM 3.0 §7.3 xiii). Fourth so it stays on the home page, which shows
- * four rows; the reference's own fourth ("Inauguration") was not a division either.
+ * THE SOCIAL AUDIT MIS PORTAL FOLLOWS THE THREE LEAD DIVISIONS — moved here on 28 Sep
+ * 2026 from the home page's posts row, whose third slot became the Infographics (DBIM
+ * 3.0 §7.3 xiii). It was fourth so it stayed on the home page; since 30 Sep 2026 the
+ * home sections lead the list (`HOME_SECTION_LINKS`) and it is on the Important Links
+ * page only.
  */
 const SOCIAL_AUDIT: DbimLinkRow = { label: DBIM_SOCIAL_AUDIT.label, href: DBIM_SOCIAL_AUDIT.href };
 
+/*
+ * THE HOME SECTIONS DBIM HAS NO PLACE FOR, AS LINKS (instruction, 30 Sep 2026). The New
+ * and Classic home pages carry sections the DBIM 3.0 home composition (Figure 49) does
+ * not: Nasha Mukt Bharat Abhiyaan (take the e-pledge, become a Nasha Mukti Mitr),
+ * Find a De-addiction Centre Near You, and the SAMAVESH band ("Justice. Equality.
+ * Dignity."). Their actions lead Important Links, so the home page's four rows carry
+ * them; the divisions follow, and all of them stay on the Important Links page. The
+ * other two sections DBIM lacks already have a DBIM home one click from the menu —
+ * Activity Corner is Connect › Events, Need Support? is Connect › Contact Us — so they
+ * are not repeated here. Each opens its portal page in a new tab, as a portal is a
+ * website of its own.
+ */
+const HOME_SECTION_LINKS: DbimLinkRow[] = [
+  { label: "Nasha Mukt Bharat e-Pledge", href: "/portals/nmba/epledge" },
+  { label: "Become a Nasha Mukti Mitr", href: "/portals/nmba/register-mitr" },
+  { label: "Find a De-addiction Centre", href: "/portals/nmba/facilities" },
+  { label: "SAMAVESH Services Gateway", href: "/portals" },
+];
+
 export const DBIM_IMPORTANT_LINKS: DbimLinkRow[] = [
+  ...HOME_SECTION_LINKS,
   ...DIVISION_LINKS.slice(0, LEAD_DIVISIONS.length),
   SOCIAL_AUDIT,
   ...DIVISION_LINKS.slice(LEAD_DIVISIONS.length),

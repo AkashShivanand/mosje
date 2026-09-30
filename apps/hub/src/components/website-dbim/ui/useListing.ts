@@ -23,6 +23,11 @@ export interface ListingOptions<T> {
   sorts?: Record<string, { label: string; compare: (a: T, b: T) => number }>;
   /** Rows per page; the reference offers 10, 15 and 20. */
   perPage?: number;
+  /**
+   * A second select beside Category — who an item is for. `options` fixes its order
+   * and wording; `initial` is the value a link arrived with (`?applicant=`).
+   */
+  audience?: { of: (item: T) => readonly string[]; options: { value: string; label: string }[]; initial?: string };
 }
 
 export interface Listing<T> {
@@ -30,6 +35,10 @@ export interface Listing<T> {
   setQuery: (q: string) => void;
   category: string;
   setCategory: (c: string) => void;
+  audience: string;
+  setAudience: (a: string) => void;
+  /** The audience select's options, in `ListingOptions.audience` order. */
+  audiences: { value: string; label: string }[];
   /** Distinct categories present in the data, sorted, as select options. */
   categories: { value: string; label: string }[];
   sort: string;
@@ -54,11 +63,13 @@ export interface Listing<T> {
 export function useListing<T>(items: readonly T[], opts: ListingOptions<T>): Listing<T> {
   const [query, setQueryRaw] = React.useState("");
   const [category, setCategoryRaw] = React.useState("");
+  const [audience, setAudienceRaw] = React.useState(opts.audience?.initial ?? "");
   const [sort, setSortRaw] = React.useState("");
   const [perPage, setPerPageRaw] = React.useState(opts.perPage ?? 10);
   const [page, setPage] = React.useState(1);
 
   const { searchText, category: categoryOf, categoryOrder, sorts } = opts;
+  const audienceOf = opts.audience?.of;
   const categoriesOf = React.useCallback(
     (it: T): readonly string[] => {
       const c = categoryOf?.(it);
@@ -81,12 +92,15 @@ export function useListing<T>(items: readonly T[], opts: ListingOptions<T>): Lis
   const matched = React.useMemo(() => {
     const q = query.trim().toLowerCase();
     let rows = items.filter(
-      (it) => (!q || searchText(it).toLowerCase().includes(q)) && (!category || categoriesOf(it).includes(category)),
+      (it) =>
+        (!q || searchText(it).toLowerCase().includes(q)) &&
+        (!category || categoriesOf(it).includes(category)) &&
+        (!audience || !audienceOf || audienceOf(it).includes(audience)),
     );
     const order = sort && sorts?.[sort];
     if (order) rows = [...rows].sort(order.compare);
     return rows;
-  }, [items, query, category, sort, sorts, searchText, categoriesOf]);
+  }, [items, query, category, audience, audienceOf, sort, sorts, searchText, categoriesOf]);
 
   const pageCount = Math.max(1, Math.ceil(matched.length / perPage));
   const safePage = Math.min(page, pageCount);
@@ -104,6 +118,9 @@ export function useListing<T>(items: readonly T[], opts: ListingOptions<T>): Lis
     category,
     setCategory: reset(setCategoryRaw),
     categories,
+    audience,
+    setAudience: reset(setAudienceRaw),
+    audiences: opts.audience?.options ?? [],
     sort,
     setSort: reset(setSortRaw),
     sortOptions: Object.entries(sorts ?? {}).map(([value, s]) => ({ value, label: s.label })),
@@ -115,10 +132,11 @@ export function useListing<T>(items: readonly T[], opts: ListingOptions<T>): Lis
     visible,
     total: matched.length,
     unfilteredTotal: items.length,
-    filtered: query.trim() !== "" || category !== "",
+    filtered: query.trim() !== "" || category !== "" || audience !== "",
     clear: () => {
       setQueryRaw("");
       setCategoryRaw("");
+      setAudienceRaw("");
       setPage(1);
     },
   };

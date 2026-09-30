@@ -69,24 +69,38 @@ reference slides (0.6s); ours swaps, which also honours reduced motion.
 | › Vacancies | `dbimVacancies()` (not archived, newest first), first four (`KEY_OFFERING_ROWS`); each → `/offerings/vacancies` |
 | What's New (empty) | `whatsNew()` newest first, first four. A document item opens its file (`docRow`, as the Documents shelves do); an update opens its attachment or its dosje.gov.in page (`whatsNewUpdates`). External targets open in a new tab and say so. |
 | Recent Documents (4 CMS cards, each a series) | Newest live document per tab from `lib/website-dbim/documents.ts`, in the reference's mix — 1 Reports, 1 Orders and Notices, 2 Publications. Category = tab label, text = document title; href = that document's **series page** `/documents/<tab>/<series>` (the documents builder's route). |
-| Explore User Personas (IT Professional, Business Owner, Researcher) | The live site's two — Government Official, Beneficiary — with its drawings; see below |
+| Explore User Personas (IT Professional, Business Owner, Researcher) | The eleven applicant groups finalised with the AS, each opening the filtered scheme list; see below |
 | Important Links (Scheduled Caste Welfare, Social Defence, Grants-In-Aid To NGOS, Inauguration) | The first four rows of `DBIM_IMPORTANT_LINKS` (`lib/website-dbim/utility.ts`, one row per Division) — the same list the Important Links page shows. That list now leads with the reference's three (Scheduled Caste Welfare, Social Defence, Grants-In-Aid To NGOs; reordered there, in one place), then `DIVISIONS` order, so the fourth is Welfare of the Other Backward Classes in place of "Inauguration" (a webcast link we have no source for). Rows open `/ministry/our-division/<id>`, or the other website for a division that has only one. |
 
 ### Persona mapping (art → persona)
 
-Superseded 30 Sep 2026: the home page shows the personas the live dosje.gov.in shows, in
-its order, with its drawings (`DBIM_PERSONA_ART`, copied byte-identical from the live
-uploads). Content is the live site's (`.claude/rules/website-shared-content.md`).
+Superseded 30 Sep 2026 (second time that day): the home page shows the **eleven
+applicant groups finalised with the AS** — the "Type of Applicant" chips of the MoSJE
+Handoff file (Offerings › Scheme Discovery, node 52500:8212), read through
+`lib/website-dbim/applicants.ts` from the scheme-discovery master. One slide per group,
+in the chips' order; each opens Offerings › Schemes and Services with that group chosen
+(`?applicant=<id>`), where a new Type of Applicant select filters the live listing.
 
-| Drawing | What it shows | Persona (`DBIM_PERSONAS`) | Route |
-|---|---|---|---|
-| `government-official.png` (live `2025/11/Government-Official.png`) | woman in a sari holding files | **For Government Officials** | `/persona/government-official` |
-| `beneficiary.png` (live `2026/04/Beneficiary.png`) | young man in a shirt and tie | **For Beneficiaries** | `/persona/beneficiary` |
+| Group | Drawing | Schemes it finds |
+|---|---|---|
+| Students | `applicant-student.png` | 15 |
+| Scheduled Castes | `applicant-sc.png` | 13 |
+| Other Backward Classes | `applicant-obc.png` | 7 |
+| De-notified, Nomadic and Semi-Nomadic Tribes | `applicant-dnt.png` | 2 (from the scheme master; the live listing tags none) |
+| Safai Karamcharis | `applicant-safai.png` | 3 |
+| Senior Citizens | `applicant-senior.png` | 2 |
+| Transgender Persons | `applicant-tg.png` | 1 |
+| Persons Affected by Substance Use | `applicant-drug.png` | 2 |
+| Persons Engaged in Begging | `applicant-begging.png` | 1 |
+| Victims of Atrocities | `applicant-atrocity.png` | 1 |
+| Voluntary Organisations | `applicant-ngo.png` | 5 |
 
-For Students and For Researchers keep their persona pages; the live home page lists
-neither. The reference build's three drawings (`persona-1…3.png`) are no longer used.
-Both live drawings are 268 px square and are drawn at 260 px (200 at 1280–1536): a
-sharper original has to come from the Department.
+The drawings are the MoSJE Handoff file's "Assets — Persona Illustrations (Type of
+Applicant)" (node 52423:7108; instruction 30 Sep 2026 — use these, revise later if
+required), rendered from each frame at 2× (320 px) and palette-compressed to 21–37 KB.
+They replace the interim state of the same day (Toolkit drawings for two groups, icons
+for nine). The name box reserves two lines (the DNT name wraps) so the controls never
+move between slides.
 
 ## States
 
