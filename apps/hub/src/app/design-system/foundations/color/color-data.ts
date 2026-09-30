@@ -3669,17 +3669,17 @@ export const MODES: readonly Mode[] = [
       },
       {
         "token": "border/neutral/bolder/default",
-        "value": "#777777",
+        "value": "#606060",
         "against": "bg/neutral/subtler",
-        "ratio": 4.11,
+        "ratio": 5.77,
         "floor": 3,
         "pass": true
       },
       {
         "token": "focus/ring",
-        "value": "#3a61c2",
+        "value": "#214aab",
         "against": "bg/neutral/base",
-        "ratio": 5.72,
+        "ratio": 7.98,
         "floor": 3,
         "pass": true
       },
@@ -3763,17 +3763,17 @@ export const MODES: readonly Mode[] = [
       },
       {
         "token": "border/neutral/bolder/default",
-        "value": "#777777",
+        "value": "#606060",
         "against": "bg/neutral/subtler",
-        "ratio": 4.11,
+        "ratio": 5.77,
         "floor": 3,
         "pass": true
       },
       {
         "token": "focus/ring",
-        "value": "#bf4e86",
+        "value": "#a32966",
         "against": "bg/neutral/base",
-        "ratio": 4.52,
+        "ratio": 6.85,
         "floor": 3,
         "pass": true
       },
@@ -3857,17 +3857,17 @@ export const MODES: readonly Mode[] = [
       },
       {
         "token": "border/neutral/bolder/default",
-        "value": "#777777",
+        "value": "#606060",
         "against": "bg/neutral/subtler",
-        "ratio": 4.11,
+        "ratio": 5.77,
         "floor": 3,
         "pass": true
       },
       {
         "token": "focus/ring",
-        "value": "#674ebf",
+        "value": "#4729a3",
         "against": "bg/neutral/base",
-        "ratio": 6.14,
+        "ratio": 9.93,
         "floor": 3,
         "pass": true
       },
@@ -3951,17 +3951,17 @@ export const MODES: readonly Mode[] = [
       },
       {
         "token": "border/neutral/bolder/default",
-        "value": "#777777",
+        "value": "#606060",
         "against": "bg/neutral/subtler",
-        "ratio": 4.11,
+        "ratio": 5.77,
         "floor": 3,
         "pass": true
       },
       {
         "token": "focus/ring",
-        "value": "#1f6e6e",
+        "value": "#0f5757",
         "against": "bg/neutral/base",
-        "ratio": 5.98,
+        "ratio": 8.33,
         "floor": 3,
         "pass": true
       },
@@ -4045,9 +4045,9 @@ export const MODES: readonly Mode[] = [
       },
       {
         "token": "border/neutral/bolder/default",
-        "value": "#777777",
+        "value": "#606060",
         "against": "bg/neutral/subtler",
-        "ratio": 4.11,
+        "ratio": 5.77,
         "floor": 3,
         "pass": true
       },
@@ -4139,17 +4139,17 @@ export const MODES: readonly Mode[] = [
       },
       {
         "token": "border/neutral/bolder/default",
-        "value": "#777777",
+        "value": "#606060",
         "against": "bg/neutral/subtler",
-        "ratio": 4.11,
+        "ratio": 5.77,
         "floor": 3,
         "pass": true
       },
       {
         "token": "focus/ring",
-        "value": "#bf3c3b",
+        "value": "#a72626",
         "against": "bg/neutral/base",
-        "ratio": 5.35,
+        "ratio": 7.12,
         "floor": 3,
         "pass": true
       },
