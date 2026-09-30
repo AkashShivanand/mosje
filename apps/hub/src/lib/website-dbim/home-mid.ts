@@ -8,8 +8,8 @@ import "server-only";
  * (`@/lib/website-shared/offerings`); the document and
  * update registers (`@/lib/website/content`, through the DBIM Offerings and Documents
  * modules so a row means the same thing on the home page as on its own page), the
- * Department's divisions (`@/data/website`) and the DBIM reference build's persona
- * drawings (`DBIM_PERSONA_ART`). Mapping and reasoning:
+ * Department's divisions (`@/data/website`) and the live site's persona drawings
+ * (`DBIM_PERSONA_ART`). Mapping and reasoning:
  * docs/research/dbim-reference/components/home-mid.spec.md.
  */
 import {
@@ -179,24 +179,21 @@ export interface DbimPersonaSlide {
 }
 
 /*
- * The Department's audiences are the classic site's four pages — For Student, For
- * Beneficiary, For Government Official, For Researcher. Only three drawings exist,
- * and each goes to the audience it genuinely depicts or to none:
- *   persona-1 (suit and tie, on a call, holding a tablet) → Government Official
- *   persona-3 (young man reading an open book; the reference's own "Researcher") → Researcher
- *   persona-2 (a business owner) → none; no Department audience is one.
- * Student and Beneficiary have no drawing that shows them and are left out rather
- * than given one that does not.
+ * The personas the Department's home page shows — dosje.gov.in's "Explore User
+ * Personas", read 30 Sep 2026: Government Official, then Beneficiary, each with its
+ * own drawing (`DBIM_PERSONA_ART`). Content is the live site's
+ * (.claude/rules/website-shared-content.md). Students and Researchers keep their
+ * persona pages (`DBIM_PERSONAS`); the live home page does not list them.
  */
-const PERSONA_ART: Record<string, { art: string; alt: string }> = {
-  "government-official": { art: DBIM_PERSONA_ART[0], alt: "Drawing of an official in a suit holding a tablet" },
-  researcher: { art: DBIM_PERSONA_ART[2], alt: "Drawing of a researcher reading an open book" },
-};
+const HOME_PERSONAS: { slug: keyof typeof DBIM_PERSONA_ART; alt: string }[] = [
+  { slug: "government-official", alt: "Drawing of a government official in a sari, holding files" },
+  { slug: "beneficiary", alt: "Drawing of a young man in a shirt and tie" },
+];
 
-/** The Department's personas (`DBIM_PERSONAS`, the canonical list) that have a drawing. */
-export const DBIM_HOME_PERSONAS: DbimPersonaSlide[] = DBIM_PERSONAS.flatMap((p) => {
-  const a = PERSONA_ART[p.slug];
-  return a ? [{ slug: p.slug, label: p.title, art: a.art, alt: a.alt, href: dbimHref(`/persona/${p.slug}`) }] : [];
+/** The home page's personas, in the live order, each opening its persona page. */
+export const DBIM_HOME_PERSONAS: DbimPersonaSlide[] = HOME_PERSONAS.flatMap(({ slug, alt }) => {
+  const p = DBIM_PERSONAS.find((x) => x.slug === slug);
+  return p ? [{ slug, label: p.title, art: DBIM_PERSONA_ART[slug], alt, href: dbimHref(`/persona/${slug}`) }] : [];
 });
 
 /* ── Important Links ───────────────────────────────────────────────────── */

@@ -11,8 +11,8 @@ import { DbimMobileMenu } from "./MobileMenu";
 import "./chrome.css";
 
 /**
- * DBIM Header 1 — emblem and names, site search, Digital India, and the three
- * statutory controls — followed by the menu row.
+ * DBIM Header 1 — emblem and names, site search, Digital India, the three
+ * statutory controls and Log In — followed by the menu row.
  *
  * The header and the menu row are SIBLINGS inside `.db-top`, not one element, because
  * the reference pins them differently: from 1537px the whole block is sticky, below it
@@ -33,6 +33,7 @@ export function DbimHeader() {
             skipIcon={<DbimIcon name="skip-to-content" className="db-tools__glyph" />}
             languageIcon={<DbimIcon name="language" className="db-tools__glyph" />}
             accessibilityIcon={<DbimIcon name="accessibility" className="db-tools__glyph" />}
+            loginIcon={<DbimIcon name="account-circle" className="db-tools__glyph" />}
           />
 
           <div className="db-header__main">
