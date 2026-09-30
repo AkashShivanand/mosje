@@ -3,7 +3,7 @@
 **BRD:** NeGD, *Integration of PFMS with the e-Anudaan Portal*, v1.0, 8 Sep 2026
 (`docs/source-brd/eAnudaan_PFMS_Integration_BRD.pdf`).
 **Checked:** 30 Sep 2026, against the running prototype (branch `feat/e-anudaan-pfms`) and the
-Figma handoff page (file `evmNmlK8g4VYwJVu2FwSGV`, page `51313:165608`).
+Figma handoff file `E-Anudaan [Handoff]` (`K0B3vuOTXpxw6kt0px2Cqo`; PFMS screens on the pages `PFMS · …`, `NGO · After Applying and Getting Paid` and `NGO · SHRESHTA Mode 2 Application Form`).
 **Detail, row by row:** `2026-09-29-e-anudaan-pfms-brd-checklist.md` (147 rows, with test evidence).
 
 | Mark | Meaning |

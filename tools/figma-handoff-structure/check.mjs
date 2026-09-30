@@ -220,7 +220,9 @@ const baseline = existsSync(BASELINE) ? JSON.parse(readFileSync(BASELINE, "utf8"
 const only = flag("portal");
 const next = { ...baseline };
 let failing = 0;
-for (const entry of registry.filter((p) => !only || p.portal.toLowerCase() === only.toLowerCase())) {
+// A portal with a file of its own registers each page as "<Portal> · <Page>"; --portal <Portal> checks them all.
+const matches = (p) => !only || p.portal.toLowerCase() === only.toLowerCase() || p.portal.toLowerCase().startsWith(only.toLowerCase() + " · ");
+for (const entry of registry.filter(matches)) {
   let tree;
   try {
     tree = await readTree(entry.file, entry.page);

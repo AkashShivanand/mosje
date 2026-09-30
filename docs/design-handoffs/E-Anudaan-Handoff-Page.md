@@ -1,13 +1,56 @@
-# E-Anudaan Handoff Page — How It Is Organised
+# E-Anudaan Handoff File — How It Is Organised
 
-**File** `evmNmlK8g4VYwJVu2FwSGV` · **Page** `E-Anudaan` (`51313:165608`) · **Organised** 17 Sep 2026 · **Desktop and phone complete** 18 Sep 2026
-**Standard** `.claude/rules/figma-handoff-page-structure.md` · **Snapshot** `tools/figma-handoff-structure/manifests/e-anudaan.json`
-**Gate** `npm run check:figma-handoff -- --portal E-Anudaan --strict` — **conformant** (0 identity, 0 visual)
+**File** `E-Anudaan [Handoff]` (`K0B3vuOTXpxw6kt0px2Cqo`, UX4G – Digital India Corporation) · **Moved** 30 Sep 2026 from
+`MoSJE Portal [Handoff]` (`evmNmlK8g4VYwJVu2FwSGV`, page `51313:165608`, which now holds only a note pointing here)
+**Standard** `.claude/rules/figma-handoff-page-structure.md` §10a · **Snapshot** `tools/figma-handoff-structure/manifests/e-anudaan.json`
+**Gate** `npm run check:figma-handoff -- --portal E-Anudaan --strict` — checks all 15 pages
 
-The first portal page on the estate-wide handoff structure, and the example the others copy.
-No screen was redrawn: sections and screens were re-parented (node ids kept, so existing links
-still work), renamed, reordered and recoloured; four guide frames and thirteen discussion notes
-were added.
+## 0. The file (30 Sep 2026)
+
+568 screens had outgrown one page of a twelve-portal file: the NGO column alone ran 217,000px tall. The
+portal now has a file of its own, organised in the order an application moves.
+
+| Page | Holds | Screens | Journeys |
+|---|---|---|---|
+| Cover | the file's cover frame | — | — |
+| Start Here | Cover, Portal Map (every journey linked, with its page), How to Read This File, Status and Change Log | — | — |
+| Everyone · Signing In | NGO and officer sign-in, forgotten password | 42 | 5 |
+| NGO · Starting an Application | dashboard, choosing a scheme, uploading documents | 43 | 3 |
+| NGO · NAPDDR Application Form | new application and three instalment claims | 58 | 1 |
+| NGO · AVYAY Application Form | new application and instalment claims | 52 | 1 |
+| NGO · SMILE (Garima Greh) Application Form | new application and instalment claims | 36 | 1 |
+| NGO · SHRESHTA Mode 2 Application Form | new application and instalment claims | 44 | 1 |
+| NGO · After Applying and Getting Paid | NGO — After Applying; NGO — Getting Paid | 72 | 10 |
+| Officers · Reviewing Applications | the review chain, queues and lists | 73 | 6 |
+| Officers · Sanctioning and Inspections | Programme Director; PMU Field Officer | 19 | 6 |
+| Officers · Records and Reports | records, audit trail, NGO directory, payment status | 26 | 6 |
+| PFMS · Preparing and Authorising Payments | Programme Division — Paying a Sanctioned Grant | 50 | 3 |
+| PFMS · Set-Up and Payment Reports | Bureau — Setting Up PFMS; Officers — Payment Reports | 26 | 3 |
+| Shared Parts | page frame, error pages, reusable form content | 22 items | — |
+| Old Screens — Do Not Use | replaced screens and leftovers | 22 items | — |
+
+541 screens, 11 user groups, 46 journeys, 8 needing discussion. Divider pages separate Everyone, NGO,
+Officers and PFMS in the page list.
+
+**How each page reads.** A `START HERE` guide first (who uses the page, its journeys, counted screens, a
+link back to the Portal Map), then the screens: user groups and their journeys stacked top to bottom in
+the order a case meets them; inside a journey, Desktop, Mobile (each phone screen under its desktop
+screen) and Pop-ups and Dialogs, left to right in the order a person sees them.
+
+**How it moved.** The Plugin API cannot move layers between files, so a person copied the page and pasted
+it into the new file (597 frames, checked name by name). Everything after that was moved *within* the
+file, which keeps node ids. The paste did change every id, and the Portal Map's links pointed back at the
+old file; all 46 were relinked to their journey sections. Sections below describe the page as it was
+organised on 17 Sep 2026; node ids quoted there are the old file's.
+
+**Cover.** A 1920 × 960 frame (Figma's 2:1 thumbnail size), set as the file thumbnail: the SAMAVESH
+`Navbar/BrandLockup` (emblem, Ministry and Department), the portal's name and what it does, the file's
+counts, version and date, and two real screens from the file on a `bg/brand/primary/boldest` panel. Every
+fill is a SAMAVESH variable and every gap a space token; all text uses published styles except the 168px
+title, which is set in Noto Sans Display Medium because the library's ramp stops at 80px (the rule for
+slide-scale text in `CLAUDE.md` › Figma libraries).
+
+**Still for a person:** name the first version in version history (the API cannot).
 
 ## 1. Before and after
 

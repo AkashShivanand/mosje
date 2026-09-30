@@ -8,7 +8,7 @@ paths:
 # One shape for every portal handoff page (MANDATORY)
 
 **Every portal page in a handoff file — `MoSJE Portal [Handoff]` (`gH2vQ62cfg4677YKWuOpLc`),
-the E-Anudaan file (`evmNmlK8g4VYwJVu2FwSGV`), and any file that follows — is organised the
+`E-Anudaan [Handoff]` (`K0B3vuOTXpxw6kt0px2Cqo`, a portal's own file — §10a), and any file that follows — is organised the
 same way, so a person who has learned one portal page has learned them all.**
 
 It exists because the E-Anudaan page reached 263 frames in fifteen sections and could not be
@@ -196,6 +196,30 @@ must be re-baselined (`--update-baseline`) in the same change. `--strict` demand
 after changing the checker. Without `FIGMA_ACCESS_TOKEN` it prints SKIPPED; that is not a pass.
 
 **Register a page in `pages.json` the day it is created**, conformant or not.
+
+## 10a. When a portal outgrows one page: a file of its own (decided 30 Sep 2026)
+
+**A portal whose page passes about 300 screens moves to a file of its own**, split into pages in the
+order an application moves. E-Anudaan was the first: 568 screens on one page of a twelve-portal file,
+one column 217,000px tall, slow to open for everyone working on the other eleven portals.
+
+- **Pages, in the page list:** `Cover` · `Start Here` · one page per stage, named `<Audience> · <Stage>`
+  (`NGO · After Applying and Getting Paid`, `PFMS · Set-Up and Payment Reports`) · `Shared Parts` ·
+  `Old Screens — Do Not Use`. Divider pages (`---`) separate the audiences. A journey too big to share a
+  page gets one of its own — each scheme's application form does.
+- **Every page keeps this rule's shape**, so the check reads each one like a single-portal page: a
+  `START HERE` area holding `Guide to This Page` (audience, the journeys on the page, counted screens and
+  journeys, and a link back to the Portal Map), then its screen area. On a stage page the user groups and
+  their journeys stack **top to bottom** in the order a case meets them, not side by side.
+- **`Start Here` owns the file-wide guide:** Cover, Portal Map, How to Read This File, Status and Change
+  Log. Every Portal Map journey links to its journey section, and each group card names its page(s).
+- **Move within the file, never re-paste.** Moving a section between pages keeps its node id, so links,
+  comments and Dev Mode references survive. Moving between files does not: the Plugin API cannot do it,
+  a person copies and pastes, every id changes, and node links point back at the old file. Rebuild the
+  Portal Map links after a file move; they will not survive it.
+- **Leave a note behind.** The old page keeps one frame saying where the portal went, with a link, and
+  nothing else.
+- **Register each page** in `pages.json` as `<Portal> · <Page>`; `--portal <Portal>` checks them all.
 
 ## 11. Done means
 

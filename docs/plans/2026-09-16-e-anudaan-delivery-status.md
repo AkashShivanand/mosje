@@ -57,7 +57,7 @@ Two other trackers stay in force and are not repeated here:
 
 ## 2. The Figma handoff file
 
-File `evmNmlK8g4VYwJVu2FwSGV`, E-Anudaan page `51313:165608`. Plan: `scratchpad/figma-2/plan/PLAN.md`.
+File `E-Anudaan [Handoff]` (`K0B3vuOTXpxw6kt0px2Cqo`) since 30 Sep 2026 — one page per stage; it was the E-Anudaan page `51313:165608` of `evmNmlK8g4VYwJVu2FwSGV`. Plan: `scratchpad/figma-2/plan/PLAN.md`.
 
 | Part | Sections | Frames | Status |
 |---|---|---|---|
