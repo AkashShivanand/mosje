@@ -526,7 +526,9 @@
     margin: 10px 0; /* 10px: the reference's my-3 */
     padding: 10px var(--sa-padding-16);
     border-radius: var(--sa-shape-4);
-    background: var(--sa-color-primaryScale-400);
+    /* primary-200, not the reference's primary-400: primary-800 text on 400 measured
+       below 4.5:1 (axe, 30 Sep 2026); 200 is the next rung of the same DBIM ramp. */
+    background: var(--sa-color-primaryScale-200);
     color: var(--sa-color-primaryScale-800);
     font-size: 0.875rem; /* 14px */
     font-weight: var(--sa-font-weight-semibold);
@@ -536,7 +538,7 @@
   }
 
   [data-design="dbim"] .db-sd__visit:hover {
-    background: var(--sa-color-primaryScale-200);
+    background: var(--sa-color-primaryScale-100);
   }
 
   [data-design="dbim"] .db-sd__links {
