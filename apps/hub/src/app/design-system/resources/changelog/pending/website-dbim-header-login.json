@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "DBIM HEADER: LOG IN. A fourth header control, Log In or Register — the profile icon (Material Symbols account_circle, the glyph the DBIM Toolkit's own header uses; the Visual Library bank has none, so it is added to the handoff file as Icon/Account Circle and exported like the other glyphs). DBIM 3.0 §5.4 lists Login/Register for entities with a post-login workflow; the Department's are its scheme portals, so the icon opens Ministry › Our Scheme Portals. It sits LAST in the controls, after accessibility, so Skip to main content stays the first Tab stop. Between 992 and 1279px Digital India's lead and the controls' padding close up so the header keeps its height."
+}
