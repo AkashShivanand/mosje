@@ -69,16 +69,16 @@ not its UI.
 
 | Part | Reference | Ours |
 |---|---|---|
-| Name card `.visionbox` | padding 32, neutral-100, radius 10; `h2` = the scheme name | **removed** (30 Sep 2026): it repeated the banner's h1 |
-| VISIT bar `.leftCardDark` | primary-400 bar, "VISIT" + `open_in_new` | **Apply Now** — filled primary-800, full rail width, 48 tall, label just "Apply Now" (destination in an `sr-only` span); the first apply route with a confirmed web address; omitted when there is none |
-| Links box `.leftLastCardLight` | neutral-100 panel, "Scheme Versions" buttons | **On This Page** — the same neutral-100 panel listing the page's sections as links (≥24px targets); built from the same list as the sections, so it cannot name one the page does not show |
-| Rail width | `col-lg-4` (415 at 1440) | 280px (`17.5rem`) — it carries one button and a list; sections take `scroll-margin-top: 140px`, level with the sticky rail |
+| Name card `.visionbox` | padding 32, neutral-100, radius 10; `h2` = the scheme name | **the side box** (30 Sep 2026) — DBIM's detail layout as Figure 71 and the Organisation page draw it (`db-min-detail`, `db-min-vision`): the scheme's name in the key colour, its standing (kind, and umbrella) muted, then **Apply Now** |
+| VISIT bar `.leftCardDark` | primary-400 bar, "VISIT" + `open_in_new` | **Apply Now** in the box — the handoff's Button, Filled (40 tall, Label/button 14px semibold capitals), label just "Apply Now" (destination in an `sr-only` span); the first apply route with a confirmed web address; omitted when there is none |
+| Links box `.leftLastCardLight` | neutral-100 panel, "Scheme Versions" buttons | **On This Page** under the box, the Organisation page's index: caps title, the page's sections as links behind a 2px primary-100 rule, sticky at 140 from 992; below 992 a wrap of outlined buttons. Built from the same list as the sections |
+| Columns | `col-lg-4` / `col-lg-8` | unchanged — 415 + 30 + 860 at 1440 (`db-min-detail`) |
 | Section heading `h2.introHeading` | 20px / 32px, primary-800, weight 400, mb 5 | `--db-fs-h2`, line-height 32px |
 | Body text | 14px, line-height 24px, `text-align: justify`, p mb 10; `ol` padding-left 20; `strong` 700 | `--db-fs-p`; same, except `text-align: left` (DBIM 3.0 §4.1.1 i) |
 | Documents heading `h2.docsHeading` | as introHeading, `margin-top:32px` | same |
 | Document row `.docsCard` | border 1px, radius 8, margin 12 0, padding 8 16; grid 6 / 4 / 2 of 12 | same; size shown only when the record states one |
 
-**Right column, in order** — each an `h2.introHeading` over body text. Before they are placed,
+**Right column, in order** — DBIM's rich text (`db-min-rich`); each section an `h2` over body text, separated as the Organisation page separates its sections (a neutral-100 hairline, 40 + 32 above). Before they are placed,
 the ingested About and Benefits pass through `sortTopics` (`lib/website-dbim/prose.ts`): a part
 labelled Eligibility / Beneficiaries / Conditions of Eligibility moves to Eligibility, Benefits to
 Benefits, Required Documents / Important Timelines / How to Apply to Application Process, and a

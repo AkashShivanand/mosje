@@ -168,6 +168,8 @@ export interface DbimSchemeDetail {
   name: string;
   /** One sentence for the page's description. */
   summary: string;
+  /** The side box's standing line under the name: the scheme's kind ("Central Sector Scheme"). */
+  standing?: string;
   /** The rail's Apply Now: the first apply route with a confirmed web address. */
   applyAt?: { href: string; label: string };
   about: DbimSchemeSection[];
@@ -403,26 +405,26 @@ export function dbimSchemeDetail(id: string): DbimSchemeDetail | undefined {
   const name = LISTED_BY_MASTER.get(s.id)?.title ?? displayName(s);
   const page = templateSections(ingestedSections([s.id, ...(LISTINGS_BY_MASTER.get(s.id) ?? [])], s.name), documents);
   const divisions = divisionsOf(s).map((d) => d.label);
-  /* Without a page of its own, About the Scheme is what the master records of the
-     scheme's standing — its kind and its umbrella — with the master's note. */
-  const standing = /^(central sector|centrally sponsored)$/i.test(s.type)
-    ? `A ${s.type} Scheme of the Department of Social Justice and Empowerment${s.umbrella ? `, under the ${s.umbrella}` : ""}.`
-    : s.umbrella
-      ? `Under the ${s.umbrella}.`
-      : "";
+  /* The side box's standing: the scheme's kind, and the umbrella it sits under. */
+  const kind = /^(central sector|centrally sponsored)$/i.test(s.type) ? `${s.type} Scheme` : s.type;
+  const standing = s.umbrella ? `${kind}, under the ${s.umbrella}` : kind;
+  /* Without an About of its own, About the Scheme is what the master records the
+     scheme provides — and Benefits then has nothing further to say, so it is left
+     to the page. The master's `note` is an editorial note to the estate's
+     maintainers ("…must be reviewed before the surface launches") and is not shown. */
   const provides = `<p>${escapeHtml(s.provides)}</p>`;
-  const masterAbout = [standing, s.note].filter(Boolean).map((t) => `<p>${escapeHtml(t!)}</p>`).join("");
   return {
     id: s.id,
     scheme: s,
     name,
     summary: s.provides,
+    standing,
     applyAt: firstWeb ? { href: firstWeb.href!, label: firstWeb.label } : undefined,
-    about: page.about.length ? page.about : [{ parts: [{ kind: "html", html: masterAbout || provides }] }],
+    about: page.about.length ? page.about : [{ parts: [{ kind: "html", html: provides }] }],
     /* Where the page publishes no section of its own, the master's record fills it —
-       what the scheme provides is its Benefits, unless it is all About can say. */
+       what the scheme provides is its Benefits, unless About has already said it. */
     eligibility: page.eligibility ?? { facts: [{ label: "Who Can Apply", text: s.named }], parts: [] },
-    benefits: page.benefits ?? (page.about.length || masterAbout ? { facts: [], parts: [{ kind: "html", html: provides }] } : null),
+    benefits: page.benefits ?? (page.about.length ? { facts: [], parts: [{ kind: "html", html: provides }] } : null),
     routes: apply.map((a) => a.label),
     process: page.process,
     faqs: page.faqs,

@@ -1,10 +1,11 @@
 import type * as React from "react";
 import Link from "next/link";
-import { ContentNav, Icon } from "@mosje/design-system";
+import { Icon } from "@mosje/design-system";
 import type { DbimSchemeBlock, DbimSchemeDetail as Detail, DbimSchemeFact, DbimSchemePart } from "@/lib/website-dbim/offerings";
 import { dbimHref } from "@/lib/website-dbim/nav";
 import { DbimPdfIcon } from "./PdfIcon";
 import { DbimRegisterTable } from "./RegisterTable";
+import "@/components/website-dbim/ministry/ministry.css"; // the DBIM detail layout: db-min-detail, db-min-vision, db-min-rich
 
 const NEW_TAB = " (opens in a new tab)";
 
@@ -16,34 +17,47 @@ interface PageSection {
 }
 
 /**
- * The left rail, sticky from 992: the one Apply Now, and the page's sections to jump
- * to (the design system's ContentNav). The reference's name card repeated the banner's h1 and its VISIT bar sat in a
- * box of its own; neither told the reader anything the page did not already say.
+ * The side column, as DBIM 3.0 Figure 71 and the Organisation page draw it: the
+ * grey box carries the scheme's name in the key colour, its standing, and the one
+ * Apply Now; the page's index sits under it and stays in view. The reference's
+ * VISIT bar and "Scheme Versions" box are gone — the box's button is the one way
+ * to apply, and its label is just that.
+ *
+ * The box, the button and the index use the Organisation page's values
+ * (organisation.css, .db-org__*, PR #640) under this page's own names until that
+ * page lands and the two can share them.
  */
-function Rail({ d, sections }: { d: Detail; sections: PageSection[] }) {
+function Aside({ d, sections }: { d: Detail; sections: PageSection[] }) {
   return (
-    <aside className="db-sd__rail" aria-label="About this scheme">
-      {d.applyAt ? (
-        <a className="db-sd__apply" href={d.applyAt.href} target="_blank" rel="noopener noreferrer">
-          Apply Now
-          <span className="sr-only">
-            {" — "}
-            {d.applyAt.label}
-            {NEW_TAB}
-          </span>
-          <Icon name="open_in_new" size={24} weight={400} />
-        </a>
-      ) : null}
+    <aside className="db-sd__aside" aria-label={`About ${d.name}`}>
+      <div className="db-min-vision db-sd__id">
+        <p className="db-sd__name">{d.name}</p>
+        {d.standing ? <p className="db-sd__standing">{d.standing}</p> : null}
+        {d.applyAt ? (
+          <a className="db-sd__action" href={d.applyAt.href} target="_blank" rel="noopener noreferrer">
+            Apply Now
+            <span className="sr-only">
+              {" — "}
+              {d.applyAt.label}
+              {NEW_TAB}
+            </span>
+            <Icon name="open_in_new" size={20} weight={400} aria-hidden="true" />
+          </a>
+        ) : null}
+      </div>
       {sections.length > 1 ? (
-        /* The design system's section index for a long content page (not SidebarNav,
-           which is a portal's application rail). The rail itself is sticky. */
-        <ContentNav
-          className="db-sd__toc"
-          ariaLabel="On this page"
-          sticky={false}
-          linkAs={Link}
-          groups={[{ label: "On This Page", items: sections.map((s) => ({ label: s.title, href: `#${s.id}` })) }]}
-        />
+        <nav className="db-sd__index" aria-labelledby="db-sd-index">
+          <p className="db-sd__index-title" id="db-sd-index">
+            On This Page
+          </p>
+          <ul>
+            {sections.map((s) => (
+              <li key={s.id}>
+                <a href={`#${s.id}`}>{s.title}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
       ) : null}
     </aside>
   );
@@ -218,18 +232,16 @@ function sectionsOf(d: Detail): PageSection[] {
   return out;
 }
 
-/** A scheme's page: the rail on the left; on the right, the template's sections in the reference's typography. */
+/** A scheme's page: DBIM's detail layout — the side column, then the template's sections in the reference's rich text. */
 export function DbimSchemeDetail({ detail }: { detail: Detail }) {
   const sections = sectionsOf(detail);
   return (
-    <div className="db-sd">
-      <Rail d={detail} sections={sections.filter((s) => s.id !== "sources")} />
-      <div className="db-sd__main">
+    <div className="db-min-detail db-sd">
+      <Aside d={detail} sections={sections.filter((s) => s.id !== "sources")} />
+      <div className="db-min-rich db-sd__main">
         {sections.map((s) => (
-          <section key={s.id} id={s.id} className={s.className ?? "db-sd__section"} aria-labelledby={`${s.id}-h`}>
-            <h2 className="db-sd__h" id={`${s.id}-h`}>
-              {s.title}
-            </h2>
+          <section key={s.id} id={s.id} className={`db-sd__section${s.className ? ` ${s.className}` : ""}`} aria-labelledby={`${s.id}-h`}>
+            <h2 id={`${s.id}-h`}>{s.title}</h2>
             {s.body}
           </section>
         ))}
