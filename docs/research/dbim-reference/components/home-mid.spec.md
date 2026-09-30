@@ -69,21 +69,24 @@ reference slides (0.6s); ours swaps, which also honours reduced motion.
 | › Vacancies | `dbimVacancies()` (not archived, newest first), first four (`KEY_OFFERING_ROWS`); each → `/offerings/vacancies` |
 | What's New (empty) | `whatsNew()` newest first, first four. A document item opens its file (`docRow`, as the Documents shelves do); an update opens its attachment or its dosje.gov.in page (`whatsNewUpdates`). External targets open in a new tab and say so. |
 | Recent Documents (4 CMS cards, each a series) | Newest live document per tab from `lib/website-dbim/documents.ts`, in the reference's mix — 1 Reports, 1 Orders and Notices, 2 Publications. Category = tab label, text = document title; href = that document's **series page** `/documents/<tab>/<series>` (the documents builder's route). |
-| Explore User Personas (IT Professional, Business Owner, Researcher) | The Department's audience pages that the three drawings genuinely depict — see below |
+| Explore User Personas (IT Professional, Business Owner, Researcher) | The live site's two — Government Official, Beneficiary — with its drawings; see below |
 | Important Links (Scheduled Caste Welfare, Social Defence, Grants-In-Aid To NGOS, Inauguration) | The first four rows of `DBIM_IMPORTANT_LINKS` (`lib/website-dbim/utility.ts`, one row per Division) — the same list the Important Links page shows. That list now leads with the reference's three (Scheduled Caste Welfare, Social Defence, Grants-In-Aid To NGOs; reordered there, in one place), then `DIVISIONS` order, so the fourth is Welfare of the Other Backward Classes in place of "Inauguration" (a webcast link we have no source for). Rows open `/ministry/our-division/<id>`, or the other website for a division that has only one. |
 
 ### Persona mapping (art → persona)
 
-| Drawing (`DBIM_PERSONA_ART`) | What it shows | Persona (`DBIM_PERSONAS`, utility.ts — slug and title) | Route |
-|---|---|---|---|
-| `persona-1.png` | man in a suit and tie on a call, holding a tablet (the reference's "IT Professional") | **For Government Officials** — an officer at work | `/persona/government-official` |
-| `persona-3.png` | young man in shirt and tie reading an open book (the reference's own "Researcher") | **For Researchers** | `/persona/researcher` |
-| `persona-2.png` | man in a suit, portrait (the reference's "Business Owner") | — **not used**: no Department persona is a business owner | — |
+Superseded 30 Sep 2026: the home page shows the personas the live dosje.gov.in shows, in
+its order, with its drawings (`DBIM_PERSONA_ART`, copied byte-identical from the live
+uploads). Content is the live site's (`.claude/rules/website-shared-content.md`).
 
-**Dropped:** For Student and For Beneficiary — none of the three drawings depicts a student
-or a beneficiary without mislabelling it (the one young figure is the reference's researcher,
-and giving it two labels would be the same mislabelling). They return when art exists. The
-carousel therefore has two slides and two dots, not three.
+| Drawing | What it shows | Persona (`DBIM_PERSONAS`) | Route |
+|---|---|---|---|
+| `government-official.png` (live `2025/11/Government-Official.png`) | woman in a sari holding files | **For Government Officials** | `/persona/government-official` |
+| `beneficiary.png` (live `2026/04/Beneficiary.png`) | young man in a shirt and tie | **For Beneficiaries** | `/persona/beneficiary` |
+
+For Students and For Researchers keep their persona pages; the live home page lists
+neither. The reference build's three drawings (`persona-1…3.png`) are no longer used.
+Both live drawings are 268 px square and are drawn at 260 px (200 at 1280–1536): a
+sharper original has to come from the Department.
 
 ## States
 
