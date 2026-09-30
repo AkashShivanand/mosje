@@ -102,8 +102,17 @@ export const DBIM_CAMPAIGNS = {
   },
 } as const;
 
-/** The three persona illustrations of "Explore User Personas", in carousel order. */
-export const DBIM_PERSONA_ART = [`${D}/personas/persona-1.png`, `${D}/personas/persona-2.png`, `${D}/personas/persona-3.png`] as const;
+/**
+ * The persona drawings of "Explore User Personas": the live dosje.gov.in's own two
+ * (268 × 268 PNG, read 30 Sep 2026 — `wp-content/uploads/2025/11/Government-Official.png`
+ * and `2026/04/Beneficiary.png`), byte-identical. The reference build's three
+ * (`persona-1…3.png`) showed an IT professional, a business owner and a researcher,
+ * none of them an audience the Department's home page names.
+ */
+export const DBIM_PERSONA_ART = {
+  "government-official": `${D}/personas/government-official.png`,
+  beneficiary: `${D}/personas/beneficiary.png`,
+} as const;
 
 /**
  * The four tile icons of a persona page — DBIM Visual Library icons (`DbimIcon` names),
