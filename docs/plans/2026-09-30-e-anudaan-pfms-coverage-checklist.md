@@ -106,12 +106,9 @@ Turnaround. All ✅ in the prototype, and drawn at RP › Payment Reports (six t
   Bureau overview, Legacy Files, Reports (Sanction Pipeline) and the NGO screens. The other Bureau pages
   and report tabs are desktop only. The build's responsive behaviour for them was checked in the browser
   (section 8).
-- **Failure Trend** shows its single reading as a Ranked Bar Row. The library Chart cannot draw one real bar.
-- **Four SAMAVESH library gaps** are recorded on the Figma Status page:
-  - Modal has no content slot.
-  - Stepper / Collapsed cannot mark the current step.
-  - EmptyState holds one line of text.
-  - Chart cannot draw a single real bar.
+- The four SAMAVESH library gaps recorded here earlier were closed on 30 Sep 2026 and the screens updated
+  (handoff record §5b): dialogs use the Modal's Content slot, phone steppers mark their stage, empty states
+  carry their description, and Failure Trend draws a real bar.
 
 ## 8. How it was verified
 

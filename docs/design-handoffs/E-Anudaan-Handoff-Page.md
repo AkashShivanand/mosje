@@ -245,15 +245,16 @@ no existing screen moved.
 - No text lacks a text style, and no fill or stroke lacks a variable.
 - The one local component is the PFMS variant of the NGO form step described above.
 
-**Four library gaps, recorded on the Status page.** (An earlier draft of this section said SAMAVESH had no
-current `Loader`. That was wrong: it has one, and the Signing dialog uses it.)
-- `Modal` has no content slot. Dialogs that hold a form, facts or an alert therefore use the estate's
-  composed dialog, which is built from library parts with every value bound.
-- `Stepper / Collapsed` cannot mark which step is current. Where its fixed dot would point at the wrong step,
-  the dots are hidden, and the counter and step name still read correctly.
-- `EmptyState` holds one line, so an empty state's description sits beneath it.
-- `Chart` cannot move a bar inside an instance, so it cannot show the single real reading
-  (July 2026 — 1 error). Failure Trend shows it as a `Ranked Bar Row`; the build draws a bar chart.
+**Four library gaps — closed 30 Sep 2026** (SAMAVESH [PR #660](https://github.com/AkashShivanand/mosje/pull/660), published).
+- `Modal` gained a Content slot. The page's **23 composed dialogs now use the library Modal**, sized to the
+  code's widths (384 / 448 / 560 / 640). *Return Order* stays a `SideSheet`, which it always correctly was.
+- `Stepper / Collapsed` is built from `Stepper / Dot`; the five Maker phone steps now mark their own stage.
+- `EmptyState` gained Description; the two PFMS empty states carry it in the component.
+- `Chart` Type=Bar is built from `Chart / Bar`; Failure Trend draws July 2026's single reading as a real bar.
+  The screen now runs to 1076px so the table below it is not cut off.
+
+Only the instances changed here were moved to the new library version. Other SAMAVESH updates in this file
+wait for someone to accept them in Figma's Libraries panel.
 
 **Build notes found while drawing.** A `use_figma` call that clones a frame and then edits instances inside a
 cloned slot (side-menu items, sizing) often does not keep those edits. A second pass is needed, and one was run
