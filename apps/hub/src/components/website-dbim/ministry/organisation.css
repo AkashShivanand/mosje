@@ -2,192 +2,17 @@
 /* ─────────────────────────────────────────────────────────────────────────────
    DBIM design — one organisation's page (OrganisationProfile.tsx). The detail
    layout, rich text, document rows, link rows and profile cards come from
-   ministry.css; this file styles only the parts no DBIM page had before: the
-   identity box's figures, the page index, scheme cards, state-office buttons,
+   ministry.css, and the side column from layout/side-column.css; this file styles
+   only the parts no DBIM page had before: scheme cards, state-office buttons,
    activity tiles, the gallery, account cards, the contact list and the tabs'
    phone layout. Spec: docs/research/dbim-reference/components/ministry.spec.md §4b.
 
-   Off-scale literals are the reference's own, as in ministry.css: 10px (the
-   `.visionbox` radius), 140px (its sticky offset under the header).
+   Off-scale literals are the reference's own, as in ministry.css: 140px (its
+   sticky offset under the header).
    ───────────────────────────────────────────────────────────────────────────── */
 @layer theme, base, components, utilities;
 
 @layer components {
-  /* ── Side column: identity box, then the page index ──────────────────────── */
-
-  [data-design="dbim"] .db-org__aside {
-    display: flex;
-    flex-direction: column;
-    gap: var(--sa-stack-24);
-    min-width: 0;
-  }
-
-  [data-design="dbim"] .db-org__id {
-    display: flex;
-    flex-direction: column;
-    gap: var(--sa-stack-16);
-  }
-
-  /* MeitY's organisation card draws the mark 84 high; so does the list here. */
-  [data-design="dbim"] .db-org__logo {
-    width: auto;
-    max-width: 191px;
-    height: 84px;
-    object-fit: contain;
-    object-position: left center;
-  }
-
-  [data-design="dbim"] .db-org .db-org__standing {
-    margin: 0;
-    font-size: var(--db-fs-p);
-    line-height: 1.5;
-    color: var(--sa-color-text-muted);
-  }
-
-  /* The body's own statement, in the key colour as About Us sets the Department's
-     vision — at the body size, because the live leads run to ninety words. */
-  [data-design="dbim"] .db-org .db-org__lead {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: var(--sa-font-weight-regular);
-    line-height: 1.5;
-    color: var(--sa-color-primaryScale-800);
-  }
-
-  [data-design="dbim"] .db-org__facts {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--sa-stack-16) var(--sa-inline-16);
-    margin: 0;
-    padding-top: var(--sa-padding-16);
-    border-top: var(--sa-stroke-1) solid var(--sa-color-neutralScale-200);
-  }
-
-  [data-design="dbim"] .db-org__fact {
-    display: flex;
-    flex-direction: column-reverse; /* the figure reads first; the label names it */
-    gap: var(--sa-stack-4);
-  }
-
-  [data-design="dbim"] .db-org__fact dt {
-    font-size: var(--db-fs-small);
-    font-weight: var(--sa-font-weight-semibold);
-    line-height: 1.5;
-    letter-spacing: 0.6px;
-    text-transform: uppercase;
-    color: var(--sa-color-text-muted);
-  }
-
-  [data-design="dbim"] .db-org__fact dd {
-    margin: 0;
-    font-size: var(--db-fs-h3);
-    font-weight: var(--sa-font-weight-semibold);
-    line-height: 1.4; /* Heading 3 Semibold: 20/28 */
-    color: var(--sa-color-primaryScale-800);
-  }
-
-  [data-design="dbim"] .db-org__action {
-    display: inline-flex;
-    align-items: center;
-    align-self: flex-start;
-    gap: var(--sa-inline-8);
-    min-height: 40px;
-    padding: var(--sa-padding-8) var(--sa-padding-16);
-    border-radius: var(--sa-shape-4);
-    background: var(--sa-color-primaryScale-800);
-    color: var(--sa-color-neutralScale-0);
-    font-size: 0.875rem; /* 14px — the handoff's Label/button: semibold capitals */
-    font-weight: var(--sa-font-weight-semibold);
-    line-height: 20px;
-    text-transform: uppercase;
-    text-decoration: none;
-  }
-
-  [data-design="dbim"] .db-org__action:hover {
-    background: var(--sa-color-primaryScale-600);
-  }
-
-  [data-design="dbim"] .db-org__index-title {
-    margin: 0 0 var(--sa-stack-8);
-    font-size: var(--db-fs-small);
-    font-weight: var(--sa-font-weight-semibold);
-    line-height: 1.5;
-    letter-spacing: 0.6px;
-    text-transform: uppercase;
-    color: var(--sa-color-primaryScale-800);
-  }
-
-  [data-design="dbim"] .db-org__index ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  [data-design="dbim"] .db-org__index a {
-    display: inline;
-    color: var(--sa-color-text-default);
-    font-size: var(--db-fs-p);
-    line-height: 1.4;
-    text-decoration: none;
-  }
-
-  [data-design="dbim"] .db-org__index a .material-symbols-rounded {
-    margin-left: var(--sa-inline-4);
-    vertical-align: -3px;
-  }
-
-  [data-design="dbim"] .db-org__index a:hover {
-    color: var(--sa-color-primaryScale-600);
-    text-decoration: underline;
-  }
-
-  [data-design="dbim"] .db-org__related {
-    margin-top: var(--sa-stack-24);
-  }
-
-  /* Pages elsewhere, as the handoff's Text Links: in the link colour. */
-  [data-design="dbim"] .db-org__related a {
-    color: var(--sa-color-primaryScale-600);
-  }
-
-  /* Below 992 the index sits above the sections: a wrap of buttons, not a column of rows. */
-  @media (max-width: 991.5px) {
-    [data-design="dbim"] .db-org__index ul {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--sa-stack-8);
-    }
-
-    [data-design="dbim"] .db-org__index a {
-      display: inline-flex;
-      align-items: center;
-      min-height: 32px;
-      padding: var(--sa-padding-4) var(--sa-padding-12);
-      border: var(--sa-stroke-1) solid var(--sa-color-primaryScale-200);
-      border-radius: var(--sa-shape-4);
-      font-size: var(--db-fs-small);
-      font-weight: var(--sa-font-weight-medium);
-    }
-  }
-
-  @media (min-width: 992px) {
-    /* The aside spans the whole row so the index can stay in view beside the sections. */
-    [data-design="dbim"] .db-org__aside {
-      align-self: stretch;
-    }
-
-    [data-design="dbim"] .db-org__index {
-      position: sticky;
-      top: 140px; /* the reference's sticky offset under the header */
-      padding-left: var(--sa-padding-16);
-      border-left: var(--sa-stroke-2) solid var(--sa-color-primaryScale-100);
-    }
-
-    [data-design="dbim"] .db-org__index li + li {
-      margin-top: var(--sa-stack-8);
-    }
-  }
-
   /* ── Main column ─────────────────────────────────────────────────────────── */
 
   [data-design="dbim"] .db-org .db-org__section {
@@ -227,7 +52,7 @@
     text-decoration: underline;
   }
 
-  [data-design="dbim"] .db-org :is(.db-org__action, .db-org__index a, .db-org__more, .db-org-people__link, .db-org-chip, .db-org-contact a):focus-visible {
+  [data-design="dbim"] .db-org :is(.db-org__more, .db-org-people__link, .db-org-chip, .db-org-contact a):focus-visible {
     outline: var(--sa-stroke-2) solid var(--sa-color-primaryScale-800);
     outline-offset: var(--sa-padding-2);
   }

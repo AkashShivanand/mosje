@@ -16,7 +16,7 @@
 
   /* A visually hidden label sits at its link's text end; the link must contain it,
      or a long one-line title pushes it past the viewport and the page scrolls sideways. */
-  [data-design="dbim"] :is(.db-off-view, .db-vac-card__file, .db-vac-card__all, .db-sd__action, .db-sd__prose a) {
+  [data-design="dbim"] :is(.db-off-view, .db-vac-card__file, .db-vac-card__all, .db-sd__prose a) {
     position: relative;
   }
 
@@ -101,7 +101,7 @@
     background: var(--sa-color-primaryScale-200);
   }
 
-  [data-design="dbim"] :is(.db-off-archive, .db-off-view, .db-vac-card__all, .db-scheme-card__go, .db-vac-card__file, .db-sd__action, .db-sd__prose a):focus-visible {
+  [data-design="dbim"] :is(.db-off-archive, .db-off-view, .db-vac-card__all, .db-scheme-card__go, .db-vac-card__file, .db-sd__prose a):focus-visible {
     outline: 2px solid var(--sa-color-primaryScale-800);
     outline-offset: 2px;
   }
@@ -484,133 +484,10 @@
 
   /* ── Scheme details ─────────────────────────────────────────────────────────
      DBIM's detail layout (ministry.css: db-min-detail, db-min-vision, db-min-rich),
-     as DBIM 3.0 Figure 71 and the Organisation page draw it. The side column's box,
-     button and index take the Organisation page's values (organisation.css,
-     .db-org__*, PR #640) under this page's names until the two can share them. */
+     as DBIM 3.0 Figure 71 and the Organisation page draw it. The side column is
+     the shared one (layout/side-column.css). */
   [data-design="dbim"] .db-sd {
     margin-top: 0; /* the page container already sits 30px under the banner */
-  }
-
-  [data-design="dbim"] .db-sd__aside {
-    display: flex;
-    flex-direction: column;
-    gap: var(--sa-stack-24);
-    min-width: 0;
-  }
-
-  [data-design="dbim"] .db-sd__id {
-    display: flex;
-    flex-direction: column;
-    gap: var(--sa-stack-16);
-  }
-
-  /* Figure 71's name card: the scheme's name in the key colour, as the Department's vision reads. */
-  [data-design="dbim"] .db-sd__id .db-sd__name {
-    margin: 0;
-  }
-
-  [data-design="dbim"] .db-sd__id .db-sd__standing {
-    margin: 0;
-    font-size: var(--db-fs-p);
-    font-weight: var(--sa-font-weight-regular);
-    line-height: 1.5;
-    color: var(--sa-color-text-muted);
-  }
-
-  /* The one Apply Now: the handoff's Button, Filled — 40 tall, Label/button (14px semibold capitals). */
-  [data-design="dbim"] .db-sd__action {
-    display: inline-flex;
-    align-items: center;
-    align-self: flex-start;
-    gap: var(--sa-inline-8);
-    min-height: var(--sa-padding-40);
-    padding: var(--sa-padding-8) var(--sa-padding-16);
-    border-radius: var(--sa-shape-4);
-    background: var(--sa-color-primaryScale-800);
-    color: var(--sa-color-neutralScale-0);
-    font-size: 0.875rem; /* 14px — Label/button */
-    font-weight: var(--sa-font-weight-semibold);
-    line-height: 20px;
-    text-transform: uppercase;
-    text-decoration: none;
-  }
-
-  [data-design="dbim"] .db-sd__action:hover {
-    background: var(--sa-color-primaryScale-600);
-  }
-
-  [data-design="dbim"] .db-sd__index-title {
-    margin: 0 0 var(--sa-stack-8);
-    font-size: var(--db-fs-small);
-    font-weight: var(--sa-font-weight-semibold);
-    line-height: 1.5;
-    letter-spacing: 0.6px;
-    text-transform: uppercase;
-    color: var(--sa-color-primaryScale-800);
-  }
-
-  [data-design="dbim"] .db-sd__index ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  [data-design="dbim"] .db-sd__index a {
-    display: inline;
-    color: var(--sa-color-text-default);
-    font-size: var(--db-fs-p);
-    line-height: 1.4;
-    text-decoration: none;
-  }
-
-  [data-design="dbim"] .db-sd__index a:hover {
-    color: var(--sa-color-primaryScale-600);
-    text-decoration: underline;
-  }
-
-  /* Below 992 the index sits above the sections: a wrap of buttons, not a column of rows. */
-  @media (max-width: 991.5px) {
-    [data-design="dbim"] .db-sd__index ul {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--sa-stack-8);
-    }
-
-    [data-design="dbim"] .db-sd__index a {
-      display: inline-flex;
-      align-items: center;
-      min-height: 32px;
-      padding: var(--sa-padding-4) var(--sa-padding-12);
-      border: var(--sa-stroke-1) solid var(--sa-color-primaryScale-200);
-      border-radius: var(--sa-shape-4);
-      font-size: var(--db-fs-small);
-      font-weight: var(--sa-font-weight-medium);
-    }
-  }
-
-  @media (min-width: 992px) {
-    /* The aside spans the whole row so the index can stay in view beside the sections;
-       the box scrolls away, the index does not. */
-    [data-design="dbim"] .db-sd .db-sd__aside {
-      position: static;
-      align-self: stretch;
-    }
-
-    [data-design="dbim"] .db-sd__index {
-      position: sticky;
-      top: 140px; /* the reference's sticky offset under the header */
-      padding-left: var(--sa-padding-16);
-      border-left: var(--sa-stroke-2) solid var(--sa-color-primaryScale-100);
-    }
-
-    [data-design="dbim"] .db-sd__index li + li {
-      margin-top: var(--sa-stack-8);
-    }
-  }
-
-  [data-design="dbim"] :is(.db-sd__action, .db-sd__index a):focus-visible {
-    outline: var(--sa-stroke-2) solid var(--sa-color-primaryScale-800);
-    outline-offset: var(--sa-padding-2);
   }
 
   /* Sections: the Organisation page's rhythm — a hairline and 32px above each. */

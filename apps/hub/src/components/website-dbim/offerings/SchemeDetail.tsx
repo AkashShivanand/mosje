@@ -5,7 +5,8 @@ import type { DbimSchemeBlock, DbimSchemeDetail as Detail, DbimSchemeFact, DbimS
 import { dbimHref } from "@/lib/website-dbim/nav";
 import { DbimPdfIcon } from "./PdfIcon";
 import { DbimRegisterTable } from "./RegisterTable";
-import "@/components/website-dbim/ministry/ministry.css"; // the DBIM detail layout: db-min-detail, db-min-vision, db-min-rich
+import { DbimSideColumn } from "@/components/website-dbim/layout/SideColumn";
+import "@/components/website-dbim/ministry/ministry.css"; // the DBIM detail layout: db-min-detail, db-min-rich
 
 const NEW_TAB = " (opens in a new tab)";
 
@@ -14,53 +15,6 @@ interface PageSection {
   title: string;
   body: React.ReactNode;
   className?: string;
-}
-
-/**
- * The side column, as DBIM 3.0 Figure 71 and the Organisation page draw it: the
- * grey box carries the scheme's name in the key colour, its standing, and the one
- * Apply Now; the page's index sits under it and stays in view. The reference's
- * VISIT bar and "Scheme Versions" box are gone — the box's button is the one way
- * to apply, and its label is just that.
- *
- * The box, the button and the index use the Organisation page's values
- * (organisation.css, .db-org__*, PR #640) under this page's own names until that
- * page lands and the two can share them.
- */
-function Aside({ d, sections }: { d: Detail; sections: PageSection[] }) {
-  return (
-    <aside className="db-sd__aside" aria-label={`About ${d.name}`}>
-      <div className="db-min-vision db-sd__id">
-        <p className="db-sd__name">{d.name}</p>
-        {d.standing ? <p className="db-sd__standing">{d.standing}</p> : null}
-        {d.applyAt ? (
-          <a className="db-sd__action" href={d.applyAt.href} target="_blank" rel="noopener noreferrer">
-            Apply Now
-            <span className="sr-only">
-              {" — "}
-              {d.applyAt.label}
-              {NEW_TAB}
-            </span>
-            <Icon name="open_in_new" size={20} weight={400} aria-hidden="true" />
-          </a>
-        ) : null}
-      </div>
-      {sections.length > 1 ? (
-        <nav className="db-sd__index" aria-labelledby="db-sd-index">
-          <p className="db-sd__index-title" id="db-sd-index">
-            On This Page
-          </p>
-          <ul>
-            {sections.map((s) => (
-              <li key={s.id}>
-                <a href={`#${s.id}`}>{s.title}</a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      ) : null}
-    </aside>
-  );
 }
 
 /** Ingested HTML, already through withAssetBasePath() in legacySections(). */
@@ -210,12 +164,24 @@ function sectionsOf(d: Detail): PageSection[] {
   return out;
 }
 
-/** A scheme's page: DBIM's detail layout — the side column, then the template's sections in the reference's rich text. */
+/**
+ * A scheme's page: DBIM's detail layout — the side column (DBIM 3.0 Figure 71: the
+ * scheme's name in the key colour, its standing, the one Apply Now, then the page's
+ * index), then the template's sections in the reference's rich text. The reference's
+ * VISIT bar and "Scheme Versions" box are gone — the box's button is the one way to
+ * apply, and its label is just that.
+ */
 export function DbimSchemeDetail({ detail }: { detail: Detail }) {
   const sections = sectionsOf(detail);
   return (
     <div className="db-min-detail db-sd">
-      <Aside d={detail} sections={sections} />
+      <DbimSideColumn
+        name={detail.name}
+        showName
+        standing={detail.standing}
+        actions={detail.applyAt ? [{ href: detail.applyAt.href, label: "Apply Now", external: true, detail: detail.applyAt.label }] : []}
+        index={sections.map((s) => ({ id: s.id, label: s.title }))}
+      />
       <div className="db-min-rich db-sd__main">
         {sections.map((s) => (
           <section key={s.id} id={s.id} className={`db-sd__section${s.className ? ` ${s.className}` : ""}`} aria-labelledby={`${s.id}-h`}>
