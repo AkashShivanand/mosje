@@ -1,0 +1,3294 @@
+{
+  "asOn": "2026-09-29",
+  "profiles": {
+    "national-commission-for-scheduled-castes": {
+      "source": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/",
+      "title": "National Commission for Scheduled Castes (NCSC)",
+      "logo": "https://www.dosje.gov.in/wp-content/uploads/2025/10/ncsc-logo.png",
+      "banner": {
+        "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/NCSC-2.png",
+        "alt": ""
+      },
+      "actions": [
+        {
+          "label": "e-Grievance Management Portal",
+          "href": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/e-gmp/"
+        }
+      ],
+      "facts": [
+        {
+          "value": "2004",
+          "label": "Established"
+        },
+        {
+          "value": "New Delhi",
+          "label": "Headquarters"
+        },
+        {
+          "value": "12 across India",
+          "label": "Regional Offices"
+        },
+        {
+          "value": "21 since 2004",
+          "label": "Reports Submitted"
+        }
+      ],
+      "index": [
+        {
+          "label": "OUR WORK & IMPACT",
+          "links": [
+            {
+              "label": "External Links",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/external-links/"
+            },
+            {
+              "label": "Wings of NCSC",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/wings-of-ncsc/"
+            },
+            {
+              "label": "e-GMP",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/e-gmp/"
+            },
+            {
+              "label": "List of CPIOs/AAs in NCSC",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/list-of-cpios-aas-in-ncsc/"
+            },
+            {
+              "label": "Newsletter",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/newsletter/"
+            },
+            {
+              "label": "National Initiatives & Schemes",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/national-initiatives-schemes/"
+            }
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "aboutCommissionSec",
+          "heading": "About the Commission",
+          "intro": "<p>The National Commission for Scheduled Castes (NCSC) is a constitutional body established under Article 338 of the Constitution of India with the objective of safeguarding the rights and interests of the Scheduled Castes and the Anglo-Indian community. Its creation reflects the commitment of the framers of the Constitution to ensure social justice, equality, and protection against any form of exploitation or discrimination faced by these historically marginalized communities.</p>",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/about-the-commission/"
+          },
+          "blocks": []
+        },
+        {
+          "heading": "Leadership & Organisation",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/chairpersons-office/"
+          },
+          "blocks": [
+            {
+              "kind": "prose",
+              "html": "<p>The Commission comprises a Chairperson, Vice-Chairperson and other Members supported by a Secretariat and specialised wings (Service Safeguards, Development &amp; Welfare, Investigation &amp; Grievance).</p>"
+            },
+            {
+              "kind": "people",
+              "items": [
+                {
+                  "name": "Shri Kishor Makwana",
+                  "designation": "Chairperson",
+                  "photo": "https://www.dosje.gov.in/wp-content/uploads/2025/11/Shri-Kishor-Makwana.png",
+                  "profile": "https://www.dosje.gov.in/official/shri-kishor-makwana/",
+                  "tenure": "11/03/2024 to Present"
+                },
+                {
+                  "name": "Shri Love Kush Kumar",
+                  "designation": "Member's office (LKK)",
+                  "photo": "https://www.dosje.gov.in/wp-content/uploads/2025/11/Shri-Love-Kush-Kumar.png",
+                  "profile": "https://www.dosje.gov.in/official/shri-love-kush-kumar/",
+                  "tenure": "11/03/2024 to Present"
+                },
+                {
+                  "name": "Shri Vaddepalli Ramchander",
+                  "designation": "Member's office (VDR)",
+                  "photo": "https://www.dosje.gov.in/wp-content/uploads/2025/11/Shri-Vaddepalli-Ramchander.png",
+                  "profile": "https://www.dosje.gov.in/official/shri-vaddepalli-ramchander/",
+                  "tenure": "12/03/2024 to Present"
+                },
+                {
+                  "name": "Dr. Partha Biswas",
+                  "designation": "Member",
+                  "photo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/04/Dr-Partha-Biswas.jpg",
+                  "profile": "https://www.dosje.gov.in/official/dr-partha-biswas/"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Major Activities",
+          "blocks": [
+            {
+              "kind": "tiles",
+              "items": [
+                {
+                  "title": "Spot Visits by the Commission",
+                  "image": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Spot.png",
+                  "href": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/spot-visits-by-the-commission/"
+                },
+                {
+                  "title": "State Reviews",
+                  "image": "https://www.dosje.gov.in/wp-content/uploads/2025/11/activity-img-2.png",
+                  "href": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/state-reviews/"
+                },
+                {
+                  "title": "PSU/PSB Reviews",
+                  "image": "https://www.dosje.gov.in/wp-content/uploads/2025/11/activity-img-3.png",
+                  "href": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/psu-psb-reviews/"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Reports",
+          "more": {
+            "label": "View All",
+            "href": "https://www.dosje.gov.in/annual-reports/?org=ncsc"
+          },
+          "blocks": [
+            {
+              "kind": "documents",
+              "items": [
+                {
+                  "title": "Thirteenth Annual Report of National Commission for Scheduled Castes for the year 2021-22 submitted to the President of India on 26.09.2023.",
+                  "date": "25 Nov 2025",
+                  "type": "Annual Reports",
+                  "format": "PDF",
+                  "size": "82.4 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/annual-report-0005.pdf"
+                },
+                {
+                  "title": "Thirteenth Annual Report of National Commission for Scheduled Castes for the year 2020-21 submitted to the President of India on 26.09.2023.",
+                  "date": "25 Nov 2025",
+                  "type": "Annual Reports",
+                  "format": "PDF",
+                  "size": "82.4 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/annual-report-0005.pdf"
+                },
+                {
+                  "title": "Twelfth Annual Report of National Commission for Scheduled Castes for the year 2019-20 submitted to the President of India on 21.09.2021.",
+                  "date": "25 Nov 2025",
+                  "type": "Annual Reports",
+                  "format": "PDF",
+                  "size": "2.7 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/ZWT0dyOC0CccPSV6HgaeRltcMEp3cy9mbynfdMa0.pdf"
+                },
+                {
+                  "title": "Twelfth Annual Report of National Commission for Scheduled Castes for the year 2018-19 submitted to the President of India on 21.09.2021.",
+                  "date": "25 Nov 2025",
+                  "type": "Annual Reports",
+                  "format": "PDF",
+                  "size": "2.7 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Ov4HEgO90RzxY78ne8YpKlVbxpGBRIVO8zZDwhdo.pdf"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Resources",
+          "more": {
+            "label": "View All",
+            "href": "https://www.dosje.gov.in/resources/?org=ncsc"
+          },
+          "blocks": [
+            {
+              "kind": "documents",
+              "items": [
+                {
+                  "title": "Minutes of 5th Meeting held on 12-03-2019",
+                  "date": "25 Nov 2025",
+                  "type": "Resources",
+                  "format": "PDF",
+                  "size": "103.7 KB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/rjnlNELwz0eT0kSQLyZAYPL81s5sPAbCKMVsJaWL.pdf"
+                },
+                {
+                  "title": "Minutes of 6th Meeting held on 03-09-2019",
+                  "date": "25 Nov 2025",
+                  "type": "Resources",
+                  "format": "PDF",
+                  "size": "341.5 KB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Rss5ZM6XENn9dvITwLwmkUtcJQOGPY1aDDryQ0OO.pdf"
+                },
+                {
+                  "title": "Minutes of 1st to 4th Meeting held on 17.03.2021,01.04.2021,23.08.21 and 20.09.2021",
+                  "date": "25 Nov 2025",
+                  "type": "Resources",
+                  "format": "PDF",
+                  "size": "1.2 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/S982U706r7jv0NdnWKJCqROqSLEF4aAaXadniOgd.pdf"
+                },
+                {
+                  "title": "Minutes of 5th Meeting held on 11.10.2021",
+                  "date": "25 Nov 2025",
+                  "type": "Resources",
+                  "format": "PDF",
+                  "size": "708.8 KB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/ceFVoyNfqtdDd0IjrVTzrm4cwnITXkOR1hamhCbQ.pdf"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "State Offices",
+          "blocks": [
+            {
+              "kind": "links",
+              "items": [
+                {
+                  "label": "Lucknow",
+                  "href": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/lucknow/"
+                },
+                {
+                  "label": "Thiruvananthapuram",
+                  "href": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/thiruvananthapuram/"
+                },
+                {
+                  "label": "Pune",
+                  "href": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/pune/"
+                },
+                {
+                  "label": "Patna",
+                  "href": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/patna/"
+                },
+                {
+                  "label": "Kolkata",
+                  "href": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/kolkata/"
+                },
+                {
+                  "label": "Hyderabad",
+                  "href": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/hyderabad/"
+                },
+                {
+                  "label": "Guwahati",
+                  "href": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/guwahati/"
+                },
+                {
+                  "label": "Chennai",
+                  "href": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/chennai/"
+                },
+                {
+                  "label": "Ahmedabad",
+                  "href": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/state-office-ahmedabad/"
+                },
+                {
+                  "label": "Chandigarh",
+                  "href": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/chandigarh/"
+                },
+                {
+                  "label": "Bengaluru",
+                  "href": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/bengaluru/"
+                },
+                {
+                  "label": "Agartala",
+                  "href": "https://www.dosje.gov.in/organisation/national-commission-for-scheduled-castes/agartala/"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Latest Updates",
+          "intro": "<p>Explore our schemes, career opportunities, and business partnerships</p>",
+          "blocks": [
+            {
+              "kind": "tabs",
+              "items": [
+                {
+                  "label": "Events",
+                  "viewAll": "https://www.dosje.gov.in/events/?org=ncsc",
+                  "documents": [],
+                  "events": [
+                    {
+                      "title": "Minutes of the Meeting of Directors/Deputy Director/In-Charge of the State Offices of the NCSC",
+                      "date": "29 Sep 2026",
+                      "href": "https://www.dosje.gov.in/events/minutes-of-the-meeting-of-directors-deputy-director-in-charge-of-the-state-offices-of-the-ncsc/"
+                    },
+                    {
+                      "title": "Minutes of the Review Meeting held on 24.9.2013 in the Commission regarding monitoring and implementation of reservation policy for SCs in CPWD",
+                      "date": "24 Sep 2013",
+                      "href": "https://www.dosje.gov.in/events/minutes-of-the-review-meeting-held-on-24-9-2013-in-the-commission-regarding-monitoring-and-implementation-of-reservation-policy-for-scs-in-cpwd/"
+                    },
+                    {
+                      "title": "Minutes of the Review Meeting under taken by the National Commission for Scheduled Castes on 16.12.2014 to assess and monitor of implementation of reservation policy for SC in Punjab & Sind Bank, New Delhi",
+                      "date": "16 Dec 2014",
+                      "href": "https://www.dosje.gov.in/events/minutes-of-the-review-meeting-under-taken-by-the-national-commission-for-scheduled-castes-on-16-12-2014-to-assess-and-monitor-of-implementation-of-reservation-policy-for-sc-in-punjab-sind-bank-new/"
+                    },
+                    {
+                      "title": "Minutes Of The Review Meeting Of The National Scheduled Castes on 14.10.2015 to assess and minitor of implementation of reservation policy for scheduled castes in Syndicate Bank at Bangalore",
+                      "date": "14 Oct 2015",
+                      "href": "https://www.dosje.gov.in/events/minutes-of-the-review-meeting-of-the-national-scheduled-castes-on-14-10-2015-to-assess-and-minitor-of-implementation-of-reservation-policy-for-scheduled-castes-in-syndicate-bank-at-bangalore/"
+                    }
+                  ],
+                  "news": []
+                },
+                {
+                  "label": "Press Releases",
+                  "documents": [],
+                  "events": [],
+                  "news": [
+                    {
+                      "title": "NCSC News Items",
+                      "href": "https://www.dosje.gov.in/gallery/ncsc-news-items/"
+                    }
+                  ]
+                },
+                {
+                  "label": "Circulars",
+                  "viewAll": "https://www.dosje.gov.in/circulars-notifications/?org=ncsc",
+                  "documents": [],
+                  "events": [],
+                  "news": [],
+                  "empty": "No documents found."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Social Media",
+          "blocks": [
+            {
+              "kind": "social",
+              "items": [
+                {
+                  "platform": "Facebook",
+                  "handle": "@NCSC.GoI",
+                  "href": "https://www.facebook.com/NCSC.GoI/"
+                },
+                {
+                  "platform": "X (Twitter)",
+                  "handle": "@NCSC_GoI",
+                  "href": "https://twitter.com/NCSC_GoI"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Contact",
+          "blocks": [
+            {
+              "kind": "contact",
+              "items": [
+                {
+                  "label": "Postal Address",
+                  "values": [
+                    "National Commission For Scheduled Castes, 5th and 7th Floor, Lok Nayak Bhawan, Khan Market, New Delhi-110003"
+                  ]
+                },
+                {
+                  "label": "Phone",
+                  "values": [
+                    "011-24697018",
+                    "1800-118888"
+                  ]
+                },
+                {
+                  "label": "Email",
+                  "values": [
+                    "complaint[at]ncsc[dot]gov[dot]in"
+                  ]
+                },
+                {
+                  "label": "Nearest Airport",
+                  "values": [
+                    "Indira Gandhi International Airport."
+                  ]
+                },
+                {
+                  "label": "Nearest Railway Station",
+                  "values": [
+                    "New Delhi Railway Station."
+                  ]
+                },
+                {
+                  "label": "Nearest Metro Station",
+                  "values": [
+                    "Khan Market (Violet Line)."
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "national-commission-for-safai-karamcharis": {
+      "source": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+      "title": "National Commission for Safai Karamcharis (NCSK)",
+      "logo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/National-Emblem-1.png",
+      "banner": {
+        "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Banner-NCSK.png",
+        "alt": ""
+      },
+      "actions": [
+        {
+          "label": "Lodge Complaint",
+          "href": "https://ncsk.nic.in/complaints/lodge-complaint"
+        },
+        {
+          "label": "Track Complaint",
+          "href": "https://ncsk.nic.in/complaints/track-complaints"
+        }
+      ],
+      "facts": [
+        {
+          "value": "New Delhi",
+          "label": "Headquarters"
+        },
+        {
+          "value": "20",
+          "label": "Reports Since 1994"
+        }
+      ],
+      "index": [
+        {
+          "label": "ABOUT US",
+          "links": [
+            {
+              "label": "Current Commissions",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/current-commission/"
+            },
+            {
+              "label": "Details of Previous Commissions",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/details-of-previous-commissions/"
+            },
+            {
+              "label": "NCSK Secretariat",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/ncsk-secretariat/"
+            },
+            {
+              "label": "State Allocation",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/state-allocation/"
+            },
+            {
+              "label": "State Commissions/Designated Agencies",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/state-commissions-designated-agencies/"
+            },
+            {
+              "label": "Monitoring Committees",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/monitoring-committees/"
+            },
+            {
+              "label": "Vigilance Committees",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/vigilance-committees/"
+            },
+            {
+              "label": "Sanitary Insanitary Latrines",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/sanitary-insanitary-latrines/"
+            },
+            {
+              "label": "Total No. Of Deaths / Compensation",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/total-no-of-deaths-compensation/"
+            },
+            {
+              "label": "Case Which Legal Heir Not Traceable",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/case-which-legal-heir-not-traceable/"
+            },
+            {
+              "label": "Sewer/Septic Tank Death in Last 10 Yrs",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/sewer-septic-tank-death-in-last-10-yrs/"
+            },
+            {
+              "label": "Citizen Charter",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/citizen-charter/"
+            },
+            {
+              "label": "Supreme Court Judgement",
+              "href": "https://www.dosje.gov.in/supreme-court-judgement/?org=ncsk"
+            },
+            {
+              "label": "Lok Sabha Questions & Answers",
+              "href": "https://www.dosje.gov.in/lok-sabha-question-answer/"
+            },
+            {
+              "label": "Rajya Sabha Questions & Answers",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/rajya-sabha-questions/"
+            }
+          ]
+        },
+        {
+          "label": "OUR WORK & IMPACT",
+          "links": [
+            {
+              "label": "Meetings Held for Review of Payment of Compensation in Sewer Death Cases",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/meetings/"
+            },
+            {
+              "label": "Tours by The Commission",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/tour-by-the-commission/"
+            }
+          ]
+        },
+        {
+          "label": "CONNECT & ENGAGE",
+          "links": [
+            {
+              "label": "FAQ",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/faq/"
+            },
+            {
+              "label": "RTI",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/right-to-information/"
+            },
+            {
+              "label": "Lodge Complaint",
+              "href": "https://ncsk.nic.in/complaints/lodge-complaint"
+            },
+            {
+              "label": "Track Complaint",
+              "href": "https://ncsk.nic.in/complaints/track-complaints"
+            }
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "aboutCommissionSec",
+          "heading": "About NCSK",
+          "intro": "<p><strong>The National Commission for Safai Karamcharis (NCSK)</strong> was constituted on 12th August, 1994 as a statutory body by an Act of Parliament viz. ‘National Commission for Safai Karamcharis Act, 1993’, for a period of three years i.e. up to 31st March, 1997.As per sub-section (4) of Section 1 of the Act, it was to cease to exist after 31.3.1997. However, validity of the Act was extended up to March, 2002, and then up to February, 2004 vide Amendment Acts passed in 1997 and 2001 respectively.</p>",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/about-us/"
+          },
+          "blocks": [
+            {
+              "kind": "prose",
+              "html": "<h4>Manual Scavengers Act</h4><p>An Act to provide for the prohibition of employment as manual scavengers, rehabilitation of manual scavengers and their families, etc.</p><h4>Suo-motu Cognizance by the Commission</h4><p>Suo Motu cognizance taken by the Commission in the cases of reported sewer deaths to make compensation payment as per Hon&#8217;ble Supreme Court Judgement 2014.</p><h4>Key Initaiative/Achivement</h4><p>Initiatives taken by the Commission as per the mandate &amp; achievements made.</p><h4>Successful Intervention Of NCSK</h4><p>Impact of Commission&#8217;s Intervention</p>"
+            }
+          ]
+        },
+        {
+          "heading": "Leadership & Organisation",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/ncsk-directory/"
+          },
+          "blocks": [
+            {
+              "kind": "prose",
+              "html": "<p>The Commission comprises a Chairperson, Vice-Chairperson and five Members, supported by a Secretariat which includes the Administration and Research &amp; Development section.</p>"
+            },
+            {
+              "kind": "people",
+              "items": [
+                {
+                  "name": "Shri Bhagwat Prasad Makwana",
+                  "designation": "Chairperson (Rank of Union Minister of State)",
+                  "photo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/chairperson.jpeg",
+                  "profile": "https://www.dosje.gov.in/official/vacant-cp/",
+                  "tenure": "09/09/2026 to 31/03/2028"
+                },
+                {
+                  "name": "Shri Kaishab Bihari",
+                  "designation": "Vice-Chairperson(Rank of Secretary to the Government of India)",
+                  "photo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/Kaisav-Bihari-HVC.jpg",
+                  "profile": "https://www.dosje.gov.in/official/shri-hardeep-singh-gill-2/",
+                  "tenure": "08/09/2026 to 31/03/2028"
+                },
+                {
+                  "name": "Shri Rahul Kashyap",
+                  "designation": "Secretary",
+                  "photo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/WhatsApp-Image-2026-06-02-at-1.13.17-PM.jpeg",
+                  "profile": "https://www.dosje.gov.in/official/shri-rahul-kashyap/",
+                  "tenure": "01/05/2024 to Present"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "National Initiatives & Schemes",
+          "more": {
+            "label": "View All",
+            "href": "https://www.dosje.gov.in/schemes-services/?org=ncsk"
+          },
+          "blocks": [
+            {
+              "kind": "cards",
+              "items": [
+                {
+                  "category": "Care, Health and Shelter",
+                  "title": "Revised Scheme Guidelines For inclusion of Waste Pickers Component under…",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/Annexure-II-Revised-Wastepickers-Scheme-Guidelines-in-English-and-Hindi_compressed.pdf"
+                },
+                {
+                  "category": "Care, Health and Shelter",
+                  "title": "Revised Guidelines of National Action for Mechanized Sanitation Ecosystem (NAMASTE)…",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/Annexure-I-Revised-Scheme-Guidelines-for-SSWs-in-English-and-Hindi.pdf"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Annual Reports",
+          "more": {
+            "label": "View All",
+            "href": "https://www.dosje.gov.in/annual-reports/?org=ncsk"
+          },
+          "blocks": [
+            {
+              "kind": "documents",
+              "items": [
+                {
+                  "title": "Annual Report 2021-2022",
+                  "date": "01 Jan 2021",
+                  "type": "Annual Reports",
+                  "format": "PDF",
+                  "size": "16.7 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2021/01/Annual-Report-2021-22-English2021-2022.pdf"
+                },
+                {
+                  "title": "Annual Report 2018 -2019",
+                  "date": "01 Jan 2018",
+                  "type": "Annual Reports",
+                  "format": "PDF",
+                  "size": "15.7 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/annual_report18-19.pdf"
+                },
+                {
+                  "title": "Annual Report 2017 – 2018",
+                  "date": "01 Jan 2017",
+                  "type": "Annual Reports",
+                  "format": "PDF",
+                  "size": "104.5 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/NCSK_AR_2017-18_Eng.pdf"
+                },
+                {
+                  "title": "Annual Report 2015-2016",
+                  "date": "01 Jan 2015",
+                  "type": "Annual Reports",
+                  "format": "PDF",
+                  "size": "61.1 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/AnnualReport_2015_2016_English-1.pdf"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "SOP and Advisory",
+          "more": {
+            "label": "View All",
+            "href": "https://www.dosje.gov.in/advices/?org=ncsk"
+          },
+          "blocks": [
+            {
+              "kind": "documents",
+              "items": [
+                {
+                  "title": "Advisory on emergency response sanitation unit",
+                  "date": "13 May 2026",
+                  "type": "Advices",
+                  "format": "PDF",
+                  "size": "1.5 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/Advisory_on_Emergency_Response_Sanitation_Unit.pdf"
+                },
+                {
+                  "title": "SOP for cleaning of sewers and septic tanks",
+                  "date": "13 May 2026",
+                  "type": "Advices",
+                  "format": "PDF",
+                  "size": "619.9 KB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/SOP_for_Cleaning_of_Sewers_and_Septic_Tanks.pdf"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Acts & Rules",
+          "more": {
+            "label": "View All",
+            "href": "https://www.dosje.gov.in/acts-rules/?org=ncsk"
+          },
+          "blocks": [
+            {
+              "kind": "documents",
+              "items": [
+                {
+                  "title": "The Prohibition of Employment as Manual Scavengers and their Rehabilitation Rules, 2013, Hindi & English",
+                  "date": "12 Dec 2013",
+                  "type": "Acts & Rules",
+                  "format": "PDF",
+                  "size": "313.5 KB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2013/01/MS_RULE_22062026-1.pdf"
+                },
+                {
+                  "title": "Notification for Enforcement of the Act – The Prohibition of Employment as Manual Scavengers and their Rehabilitation Act, 2013",
+                  "date": "01 Oct 2013",
+                  "type": "Acts & Rules",
+                  "format": "PDF",
+                  "size": "246.5 KB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/manualsca-act11013635738514341624297_0.pdf"
+                },
+                {
+                  "title": "The Prohibition of Employment as Manual Scavengers and their Rehabilitation Act, 2013, Hindi & English",
+                  "date": "01 Jan 2013",
+                  "type": "Acts & Rules",
+                  "format": "PDF",
+                  "size": "831.5 KB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2013/01/MS-Act-2013_HiandEn_22062026-1.pdf"
+                },
+                {
+                  "title": "The National Commission for Safai Karamcharis (Amendment) Act,2001",
+                  "date": "01 Jan 2001",
+                  "type": "Acts & Rules",
+                  "format": "PDF",
+                  "size": "705.3 KB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Act202001-01302023100758-1_0.pdf"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Circulars & Notifications",
+          "more": {
+            "label": "View All",
+            "href": "https://www.dosje.gov.in/circulars-notifications/?org=ncsk"
+          },
+          "blocks": [
+            {
+              "kind": "documents",
+              "items": [
+                {
+                  "title": "Appointment of Chairperson, Vice-chairperson & Member of National Commission for Safai Karamcharis dates on 01-03-2023",
+                  "date": "01 Mar 2023",
+                  "type": "Circulars & Notifications",
+                  "format": "PDF",
+                  "size": "47.9 KB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/320March202023-04242023132634.pdf"
+                },
+                {
+                  "title": "Ministry of Social Justice and Empowerment Notification No. N-16/5/2021-Plan-In dated 03.02.2022 extending the tenure of the Commission for three years i.e. from 01.04.2025 to 31.03.2028",
+                  "date": "03 Feb 2022",
+                  "type": "Circulars & Notifications",
+                  "format": "PDF",
+                  "size": "1.6 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/261012.pdf"
+                },
+                {
+                  "title": "Ministry of Social Justice and Empowerment Notification No. N-16/5/2021-Plan-In dated 03.02.2022 extending the tenure of the Commission for three years i.e. from 01.04.2022 to 31.03.2025",
+                  "date": "03 Feb 2022",
+                  "type": "Circulars & Notifications",
+                  "format": "PDF",
+                  "size": "953.1 KB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/Ministry-of-Social-Justice-and-Empowerment-Notification-No.-N-1652021-Plan-In-dated-03.02.2022-extending-the-tenure-of-the-Commission-for-three-years-i.e.-from-01.04.2022-to-31.03.2025.pdf"
+                },
+                {
+                  "title": "Ministry of Social Justice and Empowerment Notification No. 17015/1/2017-RI Cell – dated 13.07.2018 regarding Constitution of National Commission for Safai Karamcharis.",
+                  "date": "13 Jul 2018",
+                  "type": "Circulars & Notifications",
+                  "format": "PDF",
+                  "size": "151.3 KB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Constitution20of20commission.pdf"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Rules Of Procedure",
+          "more": {
+            "label": "View All",
+            "href": "https://www.dosje.gov.in/publications?org=ncsk"
+          },
+          "blocks": [
+            {
+              "kind": "documents",
+              "items": [
+                {
+                  "title": "Hand Book 2019 NCSK",
+                  "date": "21 Nov 2025",
+                  "type": "Publications",
+                  "format": "PDF",
+                  "size": "20.8 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/hand_book_2019_0.pdf"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "External Links",
+          "blocks": [
+            {
+              "kind": "links",
+              "items": [
+                {
+                  "label": "Old Age Pension",
+                  "href": "https://nsap.nic.in/"
+                },
+                {
+                  "label": "Get Your Ayushman Card",
+                  "href": "https://beneficiary.nha.gov.in/"
+                },
+                {
+                  "label": "Jeevan Pramaan Patra",
+                  "href": "https://jeevanpramaan.gov.in/v1.0/"
+                },
+                {
+                  "label": "eSanjeevani Medical Advice",
+                  "href": "https://esanjeevani.mohfw.gov.in/#/"
+                },
+                {
+                  "label": "Ayushman Bharat Digital Mission",
+                  "href": "https://abdm.gov.in/"
+                },
+                {
+                  "label": "Pensioner's Portal",
+                  "href": "https://pensionersportal.gov.in/"
+                },
+                {
+                  "label": "State Schemes",
+                  "href": "https://oah.upsdc.gov.in/"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "gallerySec",
+          "heading": "Gallery",
+          "blocks": [
+            {
+              "kind": "gallery",
+              "items": [
+                {
+                  "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/06/WhatsApp-Image-2026-06-28-at-12.47.56-PM-2-768x1024.jpeg",
+                  "full": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/06/WhatsApp-Image-2026-06-28-at-12.47.56-PM-2.jpeg",
+                  "caption": "28 जून 2026 | चंडीगढ़-- NCSK के उपाध्यक्ष श्री हरदीप सिंह गिल ने चंडीगढ़ सेक्टर-26 स्थित बापूधाम कॉलोनी के भगवान वाल्मीकि आश्रम में वाल्मीकि समाज एवं सफाई कर्मचारियों के साथ प्रधानमंत्री श्री नरेंद्र मोदी जी के 'मन की बात' कार्यक्रम का सामूहिक श्रवण किया। इस अवसर पर समाज में जनभागीदारी, सामाजिक जागरूकता एवं राष्ट्र निर्माण के संकल्प को और मजबूत करने का संदेश दिया गया।"
+                },
+                {
+                  "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/06/WhatsApp-Image-2026-06-28-at-7.08.02-AM-1024x682.jpeg",
+                  "full": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/06/WhatsApp-Image-2026-06-28-at-7.08.02-AM.jpeg",
+                  "caption": "27 जून 2026 | चंडीगढ़-- NCSK के उपाध्यक्ष श्री हरदीप सिंह गिल ने पंजाब के राज्यपाल एवं यूटी प्रशासक श्री गुलाब चंद कटारिया से मुलाकात कर सफाई कर्मचारियों की लंबित मांगों को लेकर ज्ञापन सौंपा। ज्ञापन में नियमितीकरण, पेंशन, सेवानिवृत्ति आयु में वृद्धि, वेतन संबंधी मुद्दों एवं वाल्मीकि भवन हेतु भूमि आवंटन सहित विभिन्न मांगों को प्रमुखता से उठाया गया। राज्यपाल ने संबंधित अधिकारियों के साथ शीघ्र बैठक कर आवश्यक कार्रवाई का आश्वासन दिया।"
+                },
+                {
+                  "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/06/WhatsApp-Image-2026-06-27-at-6.32.41-PM-1-1024x768.jpeg",
+                  "full": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/06/WhatsApp-Image-2026-06-27-at-6.32.41-PM-1.jpeg",
+                  "caption": "27 जून 2026 | नई दिल्ली-- राष्ट्रीय सफाई कर्मचारी आयोग के माननीय सदस्य श्री कर्म सिंह कर्मा जी ने मुंडका स्थित मारवाह प्रिंटर फैक्ट्री में सेप्टिक टैंक की सफाई के दौरान 26.06.2026 को जहरीली गैस की चपेट में आकर दिवंगत हुए सफाई कर्मचारी अरुण सिंह, चाँद एवं संदीप के परिजनों से मुलाकात कर शोक संवेदना व्यक्त की। इस अवसर पर एसडीएम मुंडका, एसीपी, एसएचओ एवं तहसीलदार मुंडका भी उपस्थित रहे। आयोग ने पीड़ित परिवारों को तत्काल ₹30 लाख मुआवजा, दोषियों के विरुद्ध सख्त कानूनी कार्रवाई तथा न्याय सुनिश्चित करने के निर्देश दिए।"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Contact",
+          "blocks": [
+            {
+              "kind": "contact",
+              "items": [
+                {
+                  "label": "Postal Address",
+                  "values": [
+                    "“B” Wing, 4th Floor, Lok Nayak Bhawan, Khan Market, New Delhi 110003",
+                    "Tele : 011-24648921, Telefax: 011-24648922"
+                  ]
+                },
+                {
+                  "label": "Email",
+                  "values": [
+                    "secy-ncsk@gov.in"
+                  ]
+                },
+                {
+                  "label": "Nearest Airport",
+                  "values": [
+                    "Indira Gandhi International Airport"
+                  ]
+                },
+                {
+                  "label": "Nearest Railway Station:",
+                  "values": [
+                    "New Delhi Railway Station"
+                  ]
+                },
+                {
+                  "label": "Nearest Metro Station:",
+                  "values": [
+                    "Khan Market (Violet Line)"
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "links",
+              "items": [
+                {
+                  "label": "View Directory",
+                  "href": "https://www.dosje.gov.in/ncsk-directory/"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "national-commission-for-backward-classes-ncbc": {
+      "source": "https://www.dosje.gov.in/organisation/national-commission-for-backward-classes-ncbc/",
+      "title": "National Commission for Backward Classes (NCBC)",
+      "lead": "The National Commission for Backward Classes is a constitutional body under the Ministry of Social Justice and Empowerment, Government of India.",
+      "logo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/NCBC-2-1-150x150.png",
+      "banner": {
+        "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/NCBC-1.png",
+        "alt": ""
+      },
+      "actions": [
+        {
+          "label": "Online Complaint Registration",
+          "href": "https://ncbccms.in/Login.aspx"
+        },
+        {
+          "label": "Caste Searching",
+          "href": "https://www.ncbc.nic.in/User_Panel/CasteSearchingView.aspx"
+        },
+        {
+          "label": "Employee Corner",
+          "href": "https://www.ncbc.nic.in/error.aspx?aspxerrorpath=/UserPanel/AdminPanel/EmployeePanel/Logins.aspx"
+        }
+      ],
+      "facts": [
+        {
+          "value": "1993",
+          "label": "Established"
+        },
+        {
+          "value": "21",
+          "label": "Annual Reports Since 1993"
+        },
+        {
+          "value": "New Delhi",
+          "label": "Headquarters"
+        }
+      ],
+      "index": [
+        {
+          "label": "ABOUT US",
+          "links": [
+            {
+              "label": "Organizational Setup",
+              "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/06/ORG3.pdf"
+            },
+            {
+              "label": "Previous Commissions",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-backward-classes-ncbc/previous-commission/"
+            },
+            {
+              "label": "NCBC Act",
+              "href": "https://www.dosje.gov.in/acts-rules/?org=ncbc"
+            },
+            {
+              "label": "Constitutional Provisions",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-backward-classes-ncbc/about-us/#ConstitutionalProvisions"
+            },
+            {
+              "label": "Creamy Layer",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-backward-classes-ncbc/creamy-layer/"
+            },
+            {
+              "label": "Work Allocation of Chairman, Vice-Chairman and Members",
+              "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/06/work2.pdf"
+            },
+            {
+              "label": "Hearing/Proceeding",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-backward-classes-ncbc/hearing-proceeding/"
+            },
+            {
+              "label": "Central List of OBCs",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-backward-classes-ncbc/central-list-of-obcs/"
+            },
+            {
+              "label": "Advices",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-backward-classes-ncbc/advices-2/"
+            },
+            {
+              "label": "Tour Reports",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-backward-classes-ncbc/tour-reports/"
+            },
+            {
+              "label": "Channel of Submission of Files",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-backward-classes-ncbc/channel-of-submission-of-files/"
+            },
+            {
+              "label": "Minutes Of The Full Commission Meeting",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-backward-classes-ncbc/minutes-of-the-full-commission-meeting/"
+            },
+            {
+              "label": "Gazette Notifications",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-backward-classes-ncbc/gazette-notifications-2/"
+            },
+            {
+              "label": "Mandal Commission Report",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-backward-classes-ncbc/mandal-commission-report/"
+            },
+            {
+              "label": "Commission's Reports",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-backward-classes-ncbc/rules-of-procedure-in-ncbc-copy/"
+            },
+            {
+              "label": "Status Report of Complaints and Compliance by NCBC",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-backward-classes-ncbc/rules-of-procedure-in-ncbc-copy-2/"
+            },
+            {
+              "label": "Judgements",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-backward-classes-ncbc/judgments/"
+            },
+            {
+              "label": "Rules Of Procedure in NCBC",
+              "href": "https://www.dosje.gov.in/organisation/national-commission-for-backward-classes-ncbc/rules-of-procedure-in-ncbc/"
+            }
+          ]
+        },
+        {
+          "label": "CONNECT & ENGAGE",
+          "links": [
+            {
+              "label": "Caste Searching",
+              "href": "https://www.ncbc.nic.in/User_Panel/CasteSearchingView.aspx"
+            },
+            {
+              "label": "Online Complaint Registration",
+              "href": "https://ncbccms.in/Login.aspx"
+            },
+            {
+              "label": "Employee Corner",
+              "href": "https://www.ncbc.nic.in/error.aspx?aspxerrorpath=/UserPanel/AdminPanel/EmployeePanel/Logins.aspx"
+            }
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "aboutCommissionSec",
+          "heading": "About NCBC",
+          "intro": "<p>National Commission for Backward Classes (NCBC) was initially constituted by the Central Govt by the National Commission for Backward Classes Act, 1993 (27 of 1993) dated 2.4.1993 and so far the Commission had been reconstituted 7 times up to 2016. The National Commission for Backward Classes Act, 1993 (27 of 1993) has been repealed through the National Commission for Backward Classes (Repeal) Act, 2018 dated 14.08.2018.</p>",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/organisation/national-commission-for-backward-classes-ncbc/about-us/"
+          },
+          "blocks": []
+        },
+        {
+          "heading": "Leadership & Organisation",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/ncbc-directory/"
+          },
+          "blocks": [
+            {
+              "kind": "prose",
+              "html": "The Commission comprises a Chairperson, Vice-Chairperson and other Members supported by a Secretariat and specialised wings (Service Safeguards, Development &#038; Welfare, Investigation &#038; Grievance)."
+            },
+            {
+              "kind": "people",
+              "items": [
+                {
+                  "name": "Sadhvi Niranjan Jyoti",
+                  "designation": "Hon'ble Chairperson",
+                  "photo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/04/Sadhvi-Niranjan-Jyoti-e1784101931886-1024x986.png",
+                  "profile": "https://www.dosje.gov.in/official/sadhvi-niranjan-jyoti/"
+                },
+                {
+                  "name": "Smt. Kiran Umesh Mahalle",
+                  "designation": "Member",
+                  "photo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/04/Shri-Kiran-Umesh-Mahalle.jpeg",
+                  "profile": "https://www.dosje.gov.in/official/smt-kiran-umesh-mahalle/"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Annual Reports",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/annual-reports/?org=ncbc"
+          },
+          "blocks": [
+            {
+              "kind": "documents",
+              "items": [
+                {
+                  "title": "Tenure Report 2019 – 22",
+                  "date": "25 Nov 2025",
+                  "type": "Annual Reports",
+                  "format": "PDF",
+                  "size": "119.3 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/TR-2019-22-eng.pdf"
+                },
+                {
+                  "title": "2018 – 2019",
+                  "date": "25 Nov 2025",
+                  "type": "Annual Reports",
+                  "format": "PDF",
+                  "size": "7.1 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/ARE-2018-19638283019756147916.pdf"
+                },
+                {
+                  "title": "2017 – 2018",
+                  "date": "25 Nov 2025",
+                  "type": "Annual Reports",
+                  "format": "PDF",
+                  "size": "3.5 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/12/AR-2017-18-ENG637927140559024185.pdf"
+                },
+                {
+                  "title": "2016 – 2017",
+                  "date": "25 Nov 2025",
+                  "type": "Annual Reports",
+                  "format": "PDF",
+                  "size": "4.2 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/AR-2016-17-ENG637927139961521590.pdf"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Gallery",
+          "blocks": [
+            {
+              "kind": "gallery",
+              "items": [
+                {
+                  "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/1111.jpg",
+                  "full": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/1111.jpg",
+                  "caption": "7/11/2025"
+                },
+                {
+                  "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/2222.jpg",
+                  "full": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/2222.jpg",
+                  "caption": "7/11/2025"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Contact",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/contact-us/?org=ncbc"
+          },
+          "blocks": [
+            {
+              "kind": "contact",
+              "items": [
+                {
+                  "label": "Postal Address",
+                  "values": [
+                    "Trikoot-1, Bhikaji Cama Place, New Delhi – 110066"
+                  ]
+                },
+                {
+                  "label": "Phone",
+                  "values": [
+                    "91-11-26182388"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "dr-ambedkar-foundation": {
+      "source": "https://www.dosje.gov.in/organisation/dr-ambedkar-foundation/",
+      "title": "Dr. Ambedkar Foundation",
+      "subtitle": "(An Autonomous Body under the Ministry of Social Justice & Empowerment) · Government of India",
+      "lead": "The Centenary Celebration Committee of Bharat Ratna Babasaheb Dr. B.R. Ambedkar headed by the then Prime Minister of India decided to set up Dr. Ambedkar Foundation to carry out the programmes and activities for furthering of Dr Ambedkar’s ideology and spread his message of social justice to the masses not only in the country but also abroad.",
+      "logo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/daf-logo.png",
+      "banner": {
+        "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/DAIC-banner.png",
+        "alt": "DAIC banner"
+      },
+      "actions": [],
+      "facts": [
+        {
+          "value": "1992",
+          "label": "Established"
+        },
+        {
+          "value": "15 Janpath, New Delhi",
+          "label": "Headquarters"
+        }
+      ],
+      "index": [
+        {
+          "label": "OUR WORK & IMPACT",
+          "links": [
+            {
+              "label": "Dr. Ambedkar Centre of Excellence - Free Coaching Scheme (DACE-FCS)",
+              "href": "https://www.dosje.gov.in/organisation/dr-ambedkar-foundation/dr-ambedkar-centre-of-excellence-dace/"
+            },
+            {
+              "label": "Awards",
+              "href": "https://www.dosje.gov.in/organisation/dr-ambedkar-foundation/awards/"
+            },
+            {
+              "label": "Dr. Ambedkar Chairs",
+              "href": "https://www.dosje.gov.in/organisation/dr-ambedkar-foundation/dr-ambedkar-chairs/"
+            }
+          ]
+        },
+        {
+          "label": "CONNECT & ENGAGE",
+          "links": [
+            {
+              "label": "RTI",
+              "href": "https://www.dosje.gov.in/organisation/dr-ambedkar-foundation/rti/"
+            },
+            {
+              "label": "FAQs",
+              "href": "https://www.dosje.gov.in/organisation/dr-ambedkar-foundation/faqs/"
+            }
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "aboutCommissionSec",
+          "heading": "About us",
+          "intro": "<p>Dr. Ambedkar Foundation (DAF) was Set up on 24th March 1992 on the recommendations of the Centenary Celebrations Committee headed by the then Hon’ble Prime Minister of India, to implement the programmes and activities for furthering the ideology and message of Bharat Ratna Dr. B. R. Ambedkar among the masses in India as well as abroad along with the mandate to manage, administer and carry on the important and long-term schemes and programmes identified during the Centenary Celebrations of Dr. B.R. Ambedkar.</p><p>A Society set up under the aegis of the Ministry of Social Justice and Empowerment, registered under the Registration of Societies Act, 1860.<br>Also registered as a charitable institution U/S 12(A) and 80(G) of Income Tax Act. Fully funded by the Government of India.</p>",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/organisation/dr-ambedkar-foundation/about-us/"
+          },
+          "blocks": [
+            {
+              "kind": "prose",
+              "html": "<h4>Vision</h4><p>To promote the ideology and message of BharatRatna Babasaheb Dr. Bhimrao Ambedkar among the masses in India as well as abroad.</p><h4>Mission</h4><p>To promote BharatRatna Babasaheb Dr. Bhimrao Ambedkar&#8217;s ideology and philosophy among the masses in India and abroad by administrating Schemes and Programmes which emanated from the Centenary Celebration Committee&#8217;s recommendations</p>"
+            }
+          ]
+        },
+        {
+          "heading": "Leadership & Organisation",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/daf-directory/"
+          },
+          "blocks": [
+            {
+              "kind": "prose",
+              "html": "<p>The Foundation comprises a Chairperson, Vice-Chairperson and other Members supported by a Secretariat and specialised wings (schemes &amp; programmes for the welfare of SCs/STs and marginalised section of the society).</p>"
+            },
+            {
+              "kind": "people",
+              "items": [
+                {
+                  "name": "Dr. Virendra Kumar",
+                  "designation": "Hon'ble Minister of Social Justice & Empowerment and Chairman, Dr. Ambedkar Foundation",
+                  "photo": "https://www.dosje.gov.in/wp-content/uploads/2025/11/Dr.-Virendra-Kumar.png",
+                  "profile": "https://www.dosje.gov.in/official/dr-virendra-kumar-2/"
+                },
+                {
+                  "name": "Shri Parveen Kumar Thind",
+                  "designation": "Member Secretary",
+                  "photo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/MS-Sir-Pic-899x1024.png",
+                  "profile": "https://www.dosje.gov.in/official/shri-v-appa-rao-3/"
+                },
+                {
+                  "name": "Shri Vinesh Pachnanda",
+                  "designation": "Director",
+                  "photo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/08/Shri-Vinesh-Pachnanda.jpeg",
+                  "profile": "https://www.dosje.gov.in/official/shri-sudhanshu-kumar-pandey-2/"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Schemes of DAF",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/schemes-services/?org=daf"
+          },
+          "blocks": [
+            {
+              "kind": "cards",
+              "items": [
+                {
+                  "category": "Care, Health and Shelter",
+                  "title": "Dr. Ambedkar Medical Aid Scheme (Revised in 2026)",
+                  "description": "The applicant shall belong to Scheduled Caste and Scheduled Tribe Community.",
+                  "href": "https://www.dosje.gov.in/schemes-and-services/dr-ambedkar-medical-aid-scheme/"
+                },
+                {
+                  "category": "Awards and Recognition",
+                  "title": "Dr. Ambedkar Chairs (Revised in 2022)",
+                  "description": "Scheme established in 1992 to create Dr. Ambedkar Chairs in universities.",
+                  "href": "https://www.dosje.gov.in/schemes-and-services/dr-ambedkar-chairs-revised-in-2022-2/"
+                },
+                {
+                  "category": "Grants to Voluntary Organisations",
+                  "title": "Dr. Ambedkar Scheme for Celebration of Birth /Death Anniversary of…",
+                  "description": "Dr. Ambedkar Scheme for celebrating of Birth/Death Anniversary of Great Saints",
+                  "href": "https://www.dosje.gov.in/schemes-and-services/dr-ambedkar-scheme-for-celebration-of-birth-death-anniversary-of-great-saints-revised-in-2022-2/"
+                },
+                {
+                  "category": "Awards and Recognition",
+                  "title": "Dr. Ambedkar National Merit Award Scheme for meritorious students of…",
+                  "description": "Rewards high-achieving SC students in Class 12 through national merit awards.",
+                  "href": "https://www.dosje.gov.in/schemes-and-services/dr-ambedkar-national-merit-award-scheme-for-meritorious-students-of-senior-secondary-school-examination-belonging-to-scheduled-caste-2/"
+                },
+                {
+                  "category": "Awards and Recognition",
+                  "title": "Dr. Ambedkar National Merit Award for meritorious students of Secondary…",
+                  "description": "Recognizes and rewards outstanding SC/ST Class 10 students through national merit awards.",
+                  "href": "https://www.dosje.gov.in/schemes-and-services/dr-ambedkar-national-merit-award-for-meritorious-students-of-secondary-examination-belonging-to-scheduled-castes-and-scheduled-tribes-2/"
+                },
+                {
+                  "category": "Residential Schools, Hostels and Coaching",
+                  "title": "Dr. Ambedkar Centre of Excellence – Free Coaching Scheme",
+                  "description": "Provides free competitive exam coaching and financial support for eligible SC/OBC students.",
+                  "href": "https://www.dosje.gov.in/schemes-and-services/dr-ambedkar-centre-of-excellence-free-coaching-scheme-2/"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Projects of DAF",
+          "blocks": [
+            {
+              "kind": "links",
+              "items": [
+                {
+                  "label": "Dr. Ambedkar International Center",
+                  "href": "https://www.dosje.gov.in/organisation/dr-ambedkar-foundation/dr-ambedkar-international-center/"
+                },
+                {
+                  "label": "Dr. Ambedkar National Memorial",
+                  "href": "https://www.dosje.gov.in/organisation/dr-ambedkar-foundation/ambedkar-national-memorial/"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Annual Reports of DAF",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/annual-reports/?org=daf"
+          },
+          "blocks": [
+            {
+              "kind": "documents",
+              "items": [
+                {
+                  "title": "Annual Report 2024-25",
+                  "date": "19 Jan 2026",
+                  "type": "Annual Reports",
+                  "format": "PDF",
+                  "size": "8.6 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/Annual-Report2024-25.pdf"
+                },
+                {
+                  "title": "Annual Report 2023-24",
+                  "date": "01 Jan 2025",
+                  "type": "Annual Reports",
+                  "format": "PDF",
+                  "size": "34.7 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Final-2023-24.pdf"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Publications",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/publications/?org=daf"
+          },
+          "blocks": [
+            {
+              "kind": "prose",
+              "html": "<h5>Collected Works of Babasaheb Dr. Ambedkar (CWBA) Project in Hindi and other Regional Languages.</h5><p>Dr. Ambedkar Foundation (DAF) since its inception in 1992 and in pursuance of its main objectives of, inter alia, implementation of programmes and activities for furthering the ideology and message of Babasaheb Dr. B. R. Ambedkar among the masses in India as well as abroad has embarked on the scheme of translation and publication of CWBA in Hindi, English and other regional languages.</p><p>The above Volumes in English (many Volumes have several parts) have been further divided and published into 40 Volumes in Hindi and other regional languages in order to make them reader friendly.</p><p>Dr. Ambedkar Foundation’s Magazine ‘Samajik Nyay Sandesh’ was started in the year 2002 to spread the message and philosophy of Dr. B.R. Ambedkar aimed at making India an egalitarian society. Samajik Nyay Sandesh has been the publication of Dr. Ambedkar Foundation, Ministry of Social Justic and Empowerment devoted to upholding the values cherished by Babasaheb Dr. Ambedkar. This Magazine was being published by Dr. Ambedkar Foundation (DAF) so far. Now that the Dr. Ambedkar International Centre(DAIC) has been established as the intellectual wing of Dr. Ambedkar Foundation, it&#8217;s publications will therefore be managed by DAIC.</p>"
+            }
+          ]
+        },
+        {
+          "heading": "Latest Updates",
+          "blocks": [
+            {
+              "kind": "tabs",
+              "items": [
+                {
+                  "label": "Notices",
+                  "viewAll": "https://www.dosje.gov.in/notices/?org=daf",
+                  "documents": [
+                    {
+                      "title": "Extension of tenure of the 15 General Body Members of Dr. Ambedkar Foundation",
+                      "date": "04 Aug 2026",
+                      "type": "Notice",
+                      "format": "PDF",
+                      "size": "159.8 KB",
+                      "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/08/Office-Memorandum.pdf"
+                    },
+                    {
+                      "title": "Detailed List of Beneficiaries under the Dr. Ambedkar Medical Aid Scheme for the Financial Year 2025–26",
+                      "date": "26 Mar 2026",
+                      "type": "Notice",
+                      "format": "PDF",
+                      "size": "251.4 KB",
+                      "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/2025-2026-Beneficary.pdf"
+                    },
+                    {
+                      "title": "Celebration of 200th Birth Anniversary of Mahatma Jyotiba Phule ji",
+                      "date": "24 Feb 2026",
+                      "type": "Notice",
+                      "format": "PDF",
+                      "size": "759.9 KB",
+                      "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/11April.pdf"
+                    },
+                    {
+                      "title": "Details of Students to Whom Award Prize Money Has Been Disbursed under the Dr. Ambedkar National Merit Award Scheme for Class 10th and 12th of 2019-20 (Only Jharkhand Board), 2021–22 and 2022-23 of various Boards and Councils.",
+                      "date": "26 Nov 2025",
+                      "type": "Notice",
+                      "format": "PDF",
+                      "size": "1.2 MB",
+                      "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/Detailed-list-of-Awardees2223-2.pdf"
+                    }
+                  ],
+                  "events": [],
+                  "news": []
+                },
+                {
+                  "label": "Audit Reports",
+                  "viewAll": "https://www.dosje.gov.in/resources/?org=daf",
+                  "documents": [
+                    {
+                      "title": "Audit Report of Dr. Ambedkar Foundation for the Financial year 2024-25",
+                      "date": "15 May 2026",
+                      "type": "Resources",
+                      "format": "PDF",
+                      "size": "3.1 MB",
+                      "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/Audit-Report-DAF_2024-25.pdf"
+                    },
+                    {
+                      "title": "Audit Report of Dr. Ambedkar Foundation for the Financial year 2023-24",
+                      "date": "25 Nov 2025",
+                      "type": "Resources",
+                      "format": "PDF",
+                      "size": "10.6 MB",
+                      "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Audit-Report-DAF.pdf"
+                    }
+                  ],
+                  "events": [],
+                  "news": []
+                },
+                {
+                  "label": "Vacancies",
+                  "viewAll": "https://www.dosje.gov.in/vacancies/?org=daf",
+                  "documents": [],
+                  "events": [],
+                  "news": [],
+                  "empty": "No vacancies found."
+                },
+                {
+                  "label": "Tenders",
+                  "viewAll": "https://www.dosje.gov.in/tenders/?org=daf",
+                  "documents": [],
+                  "events": [],
+                  "news": [],
+                  "empty": "No tenders found."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Gallery",
+          "more": {
+            "label": "Visit Gallery",
+            "href": "https://www.dosje.gov.in/gallery/?org=daf"
+          },
+          "blocks": [
+            {
+              "kind": "gallery",
+              "items": [
+                {
+                  "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/3-4-804x1024.jpg",
+                  "full": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/3-4.jpg",
+                  "caption": "Dr. Ambedkar Foundation commemorates the 136th Birth Anniversary of Babasaheb Dr. Bhimrao Ambedkar at Prerna Sthal on 14.04.2026"
+                },
+                {
+                  "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/1-2-849x1024.jpg",
+                  "full": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/1-2.jpg",
+                  "caption": "Dr. Ambedkar Foundation commemorates the 200th Birth Anniversary of Mahatma Jyotirao Phule Ji at Prerna Sthal on 11.04.2026"
+                },
+                {
+                  "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/1-3.jpg",
+                  "full": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/1-3.jpg",
+                  "caption": "Dr. Ambedkar Foundation commemorates the 200th Birth Anniversary of Mahatma Jyotirao Phule Ji at BHIM Hall, DAIC on 11.04.2026"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Social Media",
+          "blocks": [
+            {
+              "kind": "social",
+              "items": [
+                {
+                  "platform": "Facebook",
+                  "href": "https://www.facebook.com/profile.php?id=100069236018707"
+                },
+                {
+                  "platform": "X (Twitter)",
+                  "handle": "@Daf_mosje",
+                  "href": "https://twitter.com/Daf_mosje"
+                },
+                {
+                  "platform": "Instagram",
+                  "handle": "@daf__mosje",
+                  "href": "https://www.instagram.com/daf__mosje/"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Contact",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/contact-us/?org=daf"
+          },
+          "blocks": [
+            {
+              "kind": "contact",
+              "items": [
+                {
+                  "label": "Postal Address",
+                  "values": [
+                    "2nd Floor, Dr. Ambedkar International Centre, 15, Janpath, New Delhi – 110 001"
+                  ]
+                },
+                {
+                  "label": "Phone",
+                  "values": [
+                    "Queries related to Dr. Ambedkar Medical Aid Scheme – 011-2335 7625, 011-2335 0576",
+                    "Queries related to Dr. Ambedkar Scheme for Celebration of Birth /Death Anniversary of Great Saint – 011-2332 0582",
+                    "Queries related to Dr. Ambedkar Chairs- 011-2332 0589",
+                    "Queries related to Dr. Ambedkar Centre of Excellence (DACE) – Free Coaching Scheme (FCS) – 011-2332 0582",
+                    "Queries related to Dr. Ambedkar Foundation National Essay Competition – 011-2332 0589",
+                    "Queries related to Dr. Ambedkar National Merit Award – 011-2335 7625, 011-2335 0576",
+                    "For purchasing CWBA books- 011-2332 0589",
+                    "Queries related to Dr. Ambedkar Scheme for Social Integration through Inter-Caste Marriages (now merged with the Centrally Sponsored Scheme for implementation of the Protection of Civil Rights Act, 1955) – 011-2332 0588"
+                  ]
+                },
+                {
+                  "label": "Email",
+                  "values": [
+                    "Office of Director: dir[dot]daf-msje[at]gov[dot]in"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "dr-ambedkar-international-centre": {
+      "source": "https://www.dosje.gov.in/organisation/dr-ambedkar-international-centre/",
+      "title": "Dr. Ambedkar International Centre (DAIC)",
+      "lead": "Dr. Ambedkar International Centre (DAIC), located at 15 Janpath, New Delhi, is a premier autonomous organization under the Ministry of Social Justice and Empowerment, Government of India.",
+      "logo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/DAIC-LOGO-.png",
+      "banner": {
+        "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/DAIC-1.png",
+        "alt": ""
+      },
+      "actions": [],
+      "facts": [
+        {
+          "value": "2017",
+          "label": "Established"
+        },
+        {
+          "value": "7",
+          "label": "Publications Since 2022"
+        },
+        {
+          "value": "New Delhi",
+          "label": "Headquarters"
+        }
+      ],
+      "index": [
+        {
+          "label": "OUR WORK & IMPACT",
+          "links": [
+            {
+              "label": "News",
+              "href": "https://www.dosje.gov.in/gallery/?type=news&org=daic"
+            },
+            {
+              "label": "Publications",
+              "href": "https://www.dosje.gov.in/publications/?org=daic"
+            },
+            {
+              "label": "Call for Papers",
+              "href": "https://www.dosje.gov.in/organisation/dr-ambedkar-international-centre/call-for-papers/"
+            },
+            {
+              "label": "Library",
+              "href": "https://www.dosje.gov.in/organisation/dr-ambedkar-international-centre/about-us/#library"
+            },
+            {
+              "label": "Success Stories",
+              "href": "https://www.dosje.gov.in/organisation/dr-ambedkar-international-centre/about-us/#SuccessStories"
+            },
+            {
+              "label": "Academics",
+              "href": "https://www.dosje.gov.in/organisation/dr-ambedkar-international-centre/academics/"
+            },
+            {
+              "label": "Events - Know Your Constitution",
+              "href": "https://www.dosje.gov.in/organisation/dr-ambedkar-international-centre/know-your-constitution/"
+            },
+            {
+              "label": "All Events",
+              "href": "https://www.dosje.gov.in/events/?org=daic"
+            }
+          ]
+        },
+        {
+          "label": "Administration",
+          "links": [
+            {
+              "label": "RTI",
+              "href": "https://www.dosje.gov.in/organisation/dr-ambedkar-international-centre/rti/"
+            },
+            {
+              "label": "Circular",
+              "href": "https://www.dosje.gov.in/circulars-notifications/?org=daic"
+            },
+            {
+              "label": "Vacancy",
+              "href": "https://www.dosje.gov.in/vacancies/?org=daic"
+            },
+            {
+              "label": "Tender",
+              "href": "https://www.dosje.gov.in/tenders/?org=daic"
+            }
+          ]
+        },
+        {
+          "label": "Other Links",
+          "links": [
+            {
+              "label": "Panchteerth",
+              "href": "https://www.dosje.gov.in/organisation/dr-ambedkar-international-centre/panchteerth/"
+            },
+            {
+              "label": "Booking",
+              "href": "https://www.dosje.gov.in/organisation/dr-ambedkar-international-centre/bookings/"
+            }
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "aboutCommissionSec",
+          "heading": "About DAIC",
+          "intro": "<p>The state-of-the-art Centre, spread over approximately 3.25 acres in the heart of Delhi, is housed in a three-storey building comprising the administrative block and other facilities. The Centre was inaugurated by the Hon&#8217;ble Prime Minister of India, Shri Narendra Modi, on 7 December 2017. The exterior is adorned with a wide variety of green plants that enhance the aesthetics of the place. It features an 18-foot bronze statue of Dr. B.R. Ambedkar, a small Amphitheatre, two Chaitya Arches, two Red Stone Toran Gates, a Buddha Statue, and the imposing Ashoka Stambh on the right façade. The Centre also has a vast circular atrium beneath the central dome, where a grand seated statue of Dr. B.R. Ambedkar occupies the central space. Information regarding the conduct of programmes and the booking of facilities is available at the reception at DAIC.</p>",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/organisation/dr-ambedkar-international-centre/about-us/"
+          },
+          "blocks": [
+            {
+              "kind": "prose",
+              "html": "<h4>VISION</h4><p>To promote multi- disciplinary academic, as well as practice-oriented studies and encourage cutting edge research.</p><h4>MISSION</h4><p>To undertake high-quality research on social and economic issues.</p><p>To develop a national database and disseminate knowledge</p>"
+            }
+          ]
+        },
+        {
+          "heading": "Leadership & Organisation",
+          "blocks": [
+            {
+              "kind": "prose",
+              "html": "<p>The autonomous organization comprises a Chairperson, Member Secretary and Director.</p>"
+            },
+            {
+              "kind": "people",
+              "items": [
+                {
+                  "name": "Dr. Virendra Kumar",
+                  "designation": "Chairman Union Minister of Social Justice and Empowerment O/o Minister SJE",
+                  "photo": "https://www.dosje.gov.in/wp-content/uploads/2025/11/Dr.-Virendra-Kumar.png",
+                  "profile": "https://www.dosje.gov.in/official/dr-virendra-kumar-9/"
+                },
+                {
+                  "name": "Shri Parveen Kumar Thind",
+                  "designation": "Member Secretary",
+                  "photo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/04/WhatsApp-Image-2026-09-08-at-2.54.12-PM.jpeg",
+                  "profile": "https://www.dosje.gov.in/official/shri-parveen-kumar-thind-3/"
+                },
+                {
+                  "name": "Akash Patil",
+                  "designation": "Director",
+                  "photo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/akash-patil.png",
+                  "profile": "https://www.dosje.gov.in/official/akash-patil/"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Useful Links",
+          "blocks": [
+            {
+              "kind": "tiles",
+              "items": [
+                {
+                  "title": "Academics",
+                  "image": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Academy.png",
+                  "href": "https://www.dosje.gov.in/organisation/dr-ambedkar-international-centre/academics/"
+                },
+                {
+                  "title": "Bookings",
+                  "image": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Bookings.png",
+                  "href": "https://www.dosje.gov.in/organisation/dr-ambedkar-international-centre/bookings/"
+                },
+                {
+                  "title": "Panchteerth",
+                  "image": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Panchteerth.png",
+                  "href": "https://www.dosje.gov.in/organisation/dr-ambedkar-international-centre/panchteerth/"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Notices",
+          "more": {
+            "label": "View All",
+            "href": "https://www.dosje.gov.in/notices/?org=daic"
+          },
+          "blocks": [
+            {
+              "kind": "documents",
+              "items": [
+                {
+                  "title": "Samajik Nyay Sandesh – April to June 2026",
+                  "date": "18 Sep 2026",
+                  "type": "Publications",
+                  "format": "PDF",
+                  "size": "25.0 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/09/SNS-Magazine-April-May-June-2026-Final.pdf"
+                },
+                {
+                  "title": "Samajik Nyay Sandesh – January to March 2026",
+                  "date": "21 Aug 2026",
+                  "type": "Publications",
+                  "format": "PDF",
+                  "size": "20.8 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/08/SNS-Magazine-January-Febuary-March-2026.pdf"
+                },
+                {
+                  "title": "Notice Inviting Expression of Interest",
+                  "date": "24 Jul 2026",
+                  "type": "Advertisement",
+                  "format": "PDF",
+                  "size": "2.1 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/07/EOI.pdf"
+                },
+                {
+                  "title": "Schedule of Walk-in-interview for Young Professional",
+                  "date": "16 Feb 2026",
+                  "type": "Notice",
+                  "format": "PDF",
+                  "size": "3.2 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/08/walkin-interview-schedule-2026.pdf"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Gallery",
+          "blocks": [
+            {
+              "kind": "gallery",
+              "items": [
+                {
+                  "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/WhatsApp-Image-2025-08-25-at-12.10.47_0dd9ac55-1024x466.jpg",
+                  "full": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/WhatsApp-Image-2025-08-25-at-12.10.47_0dd9ac55.jpg",
+                  "caption": "The Indian Futures- NAMO Bharat dialogues"
+                },
+                {
+                  "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/WhatsApp-Image-2025-08-11-at-12.31.18-PM-1-1-1024x682.jpeg",
+                  "full": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/WhatsApp-Image-2025-08-11-at-12.31.18-PM-1-1.jpeg",
+                  "caption": "Expert Talk by Shri Shantanu Mukharji"
+                },
+                {
+                  "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/WhatsApp-Image-2025-08-12-at-11.13.46-AM-1-1024x682.jpeg",
+                  "full": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/WhatsApp-Image-2025-08-12-at-11.13.46-AM-1.jpeg",
+                  "caption": "\"CHANDALIKA\" - Musical Dance Drama"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Latest Updates",
+          "intro": "<p>Explore our schemes, career opportunities, and business partnerships</p>",
+          "blocks": [
+            {
+              "kind": "tabs",
+              "items": [
+                {
+                  "label": "Events",
+                  "viewAll": "https://www.dosje.gov.in/events/?org=daic",
+                  "documents": [],
+                  "events": [
+                    {
+                      "title": "Miranda House–Delhi University",
+                      "date": "09 Sep 2026",
+                      "href": "https://www.dosje.gov.in/events/miranda-house-delhi-university/"
+                    },
+                    {
+                      "title": "“The Fifth Space – Where Education Meets Responsibility”",
+                      "date": "24 Aug 2026",
+                      "href": "https://www.dosje.gov.in/events/the-fifth-space-where-education-meets-responsibility/"
+                    },
+                    {
+                      "title": "Book Launch “The Voyage of Indian Constitution: Ideas, Issues, Institutions and Impact”",
+                      "date": "09 Sep 2025",
+                      "href": "https://www.dosje.gov.in/events/book-launch-the-voyage-of-indian-constitution-ideas-issues-institutions-and-impact-2/"
+                    },
+                    {
+                      "title": "NaMo Viksit Bharat Samvad “Har Ghar Tiranga: Inspiring Gen-Z to Uphold the Spirit of 80 Years of Independence.” “Constitutional Values and Fundamental Duties”",
+                      "date": "12 Aug 2026",
+                      "href": "https://www.dosje.gov.in/events/namo-viksit-bharat-samvad-har-ghar-tiranga-inspiring-gen-z-to-uphold-the-spirit-of-80-years-of-independence-constitutional-values-and-fundamental-duties/"
+                    }
+                  ],
+                  "news": []
+                },
+                {
+                  "label": "Vacancies",
+                  "viewAll": "https://www.dosje.gov.in/vacancies/?org=daic",
+                  "documents": [
+                    {
+                      "title": "Dr. Ambedkar International Centre (DAIC)",
+                      "date": "Apply by 30 Sep 2026",
+                      "href": "https://www.dosje.gov.in/organisation/dr-ambedkar-international-centre/"
+                    },
+                    {
+                      "title": "Dr. Ambedkar International Centre (DAIC)",
+                      "date": "Apply by 31 Aug 2026",
+                      "href": "https://www.dosje.gov.in/organisation/dr-ambedkar-international-centre/"
+                    },
+                    {
+                      "title": "Dr. Ambedkar International Centre (DAIC)",
+                      "href": "https://www.dosje.gov.in/organisation/dr-ambedkar-international-centre/"
+                    },
+                    {
+                      "title": "Dr. Ambedkar International Centre (DAIC)",
+                      "date": "Apply by 29 Sep 2026",
+                      "href": "https://www.dosje.gov.in/organisation/dr-ambedkar-international-centre/"
+                    }
+                  ],
+                  "events": [],
+                  "news": []
+                },
+                {
+                  "label": "Tenders",
+                  "viewAll": "https://www.dosje.gov.in/tenders/?org=daic",
+                  "documents": [
+                    {
+                      "title": "",
+                      "date": "Department",
+                      "href": "#"
+                    },
+                    {
+                      "title": "",
+                      "date": "Department",
+                      "href": "#"
+                    },
+                    {
+                      "title": "",
+                      "date": "Department",
+                      "href": "#"
+                    },
+                    {
+                      "title": "",
+                      "date": "Department",
+                      "href": "#"
+                    }
+                  ],
+                  "events": [],
+                  "news": []
+                },
+                {
+                  "label": "Circulars",
+                  "viewAll": "https://www.dosje.gov.in/circulars-notifications/?org=daic",
+                  "documents": [
+                    {
+                      "title": "Call for Contributions: Commemorating 75 Years of the Indian Constitution",
+                      "date": "28 May 2025",
+                      "type": "Circulars & Notifications",
+                      "format": "PDF",
+                      "size": "362.1 KB",
+                      "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Proposal-for-CLA-x-DAIC.pdf"
+                    },
+                    {
+                      "title": "Vacancy Circular for engagement as Young Professional for post of Assistant Accounts (Walk-in Interview)",
+                      "date": "10 Feb 2025",
+                      "type": "Circulars & Notifications",
+                      "format": "PDF",
+                      "size": "1.1 MB",
+                      "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/08/CircularYP.pdf"
+                    },
+                    {
+                      "title": "Vacancy Circular for various posts at DAIC on deputation basis",
+                      "date": "25 Jan 2025",
+                      "type": "Circulars & Notifications",
+                      "format": "PDF",
+                      "size": "2.5 MB",
+                      "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Circular.pdf"
+                    },
+                    {
+                      "title": "Vacancy Circular for the post of Consultant (Digital Media) on Contract Basis at DAIC (Walk in Interview on 20.11.2024)",
+                      "date": "25 Nov 2024",
+                      "type": "Advertisement",
+                      "format": "PDF",
+                      "size": "1.3 MB",
+                      "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Vacancy20Circular20for20the20post20of20Consultant20Digital20Media20on20Contract20Basis20at20DAIC20Walk20in20InterviewC2A0onC2A020.11.2024-1.pdf"
+                    }
+                  ],
+                  "events": [],
+                  "news": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Contact",
+          "blocks": [
+            {
+              "kind": "contact",
+              "items": [
+                {
+                  "label": "Postal Address",
+                  "values": [
+                    "DAIC at 15, Janpath, New Delhi-01"
+                  ]
+                },
+                {
+                  "label": "Phone",
+                  "values": [
+                    "011-23477662/417"
+                  ]
+                },
+                {
+                  "label": "Email",
+                  "values": [
+                    "bookingdaic[at]gmail[dot]com"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "national-scheduled-castes-finance-and-development-corporation": {
+      "source": "https://www.dosje.gov.in/organisation/national-scheduled-castes-finance-and-development-corporation/",
+      "title": "National Scheduled Castes Finance and Development Corporation (NSFDC)",
+      "logo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/nsfdc-1.png",
+      "banner": {
+        "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/nsfdc-Banner-image.png",
+        "alt": ""
+      },
+      "actions": [],
+      "facts": [
+        {
+          "value": "1989",
+          "label": "Established"
+        },
+        {
+          "value": "Delhi",
+          "label": "Headquarters"
+        },
+        {
+          "value": "4 across India",
+          "label": "Regional Offices"
+        }
+      ],
+      "index": [
+        {
+          "label": "About Us",
+          "links": [
+            {
+              "label": "Board of Directors",
+              "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/08/Board-of-Directors-E.pdf"
+            },
+            {
+              "label": "NSFDC Executive",
+              "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/NSFDC-Executive.pdf"
+            }
+          ]
+        },
+        {
+          "label": "Our Work & Impact",
+          "links": [
+            {
+              "label": "Skill-Training",
+              "href": "https://www.dosje.gov.in/organisation/national-scheduled-castes-finance-and-development-corporation/skill-training/"
+            },
+            {
+              "label": "Channel-Partners",
+              "href": "https://www.dosje.gov.in/organisation/national-scheduled-castes-finance-and-development-corporation/channel-partners/"
+            },
+            {
+              "label": "Performance & Achievements",
+              "href": "https://www.dosje.gov.in/organisation/national-scheduled-castes-finance-and-development-corporation/performance-and-achievements/"
+            },
+            {
+              "label": "CSR",
+              "href": "https://www.dosje.gov.in/organisation/national-scheduled-castes-finance-and-development-corporation/csr/"
+            },
+            {
+              "label": "RTI",
+              "href": "https://www.dosje.gov.in/organisation/national-scheduled-castes-finance-and-development-corporation/rti/"
+            },
+            {
+              "label": "FAQ",
+              "href": "https://www.dosje.gov.in/organisation/national-scheduled-castes-finance-and-development-corporation/faq/"
+            }
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "aboutCommissionSec",
+          "heading": "About the Corporation",
+          "intro": "<p><strong>NSFDC</strong> is a Public Sector Undertaking under the Department of Social Justice and Empowerment, Ministry of Social Justice and Empowerment, Government of India, engaged in promoting economic empowerment of persons belonging to Scheduled Castes by providing concessional financial assistance, skill development and entrepreneurship support.</p><p>The Scheduled Castes beneficiaries assisted by NSFDC under concessional financial assistance for self-employment and for pursuing professional/technical educational courses must fall within, presently annual family income of ₹ 5 lakh, as amended from time to time.</p>",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/organisation/national-scheduled-castes-finance-and-development-corporation/about-us/"
+          },
+          "blocks": [
+            {
+              "kind": "prose",
+              "html": "<h4>Vision</h4><p>To be the leading catalyst in the systematic reduction of poverty through the socio-economic development of eligible Scheduled Castes, functioning in an efficient, responsive, and collaborative manner with channelizing agencies and other development partners.</p><h4>Mission</h4><p>To promote prosperity among Scheduled Castes by improving the flow of financial assistance through skill development and other innovative initiatives.</p>"
+            }
+          ]
+        },
+        {
+          "heading": "Leadership & Organisation",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/nsfdc-directory/"
+          },
+          "blocks": [
+            {
+              "kind": "prose",
+              "html": "<p>The Corporation is headed by Chairman-cum-Managing Director. The corporation is headquartered at Delhi with 4 Liaison Centers at Lucknow, Kolkata, Mumbai and Bengaluru. The total staff strength is 68.</p>"
+            },
+            {
+              "kind": "people",
+              "items": [
+                {
+                  "name": "Shri Prabhat Tyagi",
+                  "designation": "Chairman-cum-Managing Director",
+                  "photo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/CMD-Photo-Sh.-Prabhat-Tyagi-683x1024.png",
+                  "profile": "https://www.dosje.gov.in/official/shri-prabhat-tyagi/"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "NSFDC Schemes",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/schemes-services/?org=nsfdc"
+          },
+          "blocks": [
+            {
+              "kind": "cards",
+              "items": [
+                {
+                  "category": "Loans and Credit",
+                  "title": "Micro Finance Scheme",
+                  "description": "NSFDC provides Micro Credit Finance for units costing up to Rs.1,40,000/-.",
+                  "href": "https://www.dosje.gov.in/schemes-and-services/micro-finance-scheme/"
+                },
+                {
+                  "category": "Loans and Credit",
+                  "title": "Term Loan",
+                  "description": "NSFDC provides Term Loan for units costing >Rs.1.40 lakh & upto Rs.50.00 lakh.",
+                  "href": "https://www.dosje.gov.in/schemes-and-services/2998/"
+                },
+                {
+                  "category": "Loans and Credit",
+                  "title": "Educational Loan Scheme(Els)",
+                  "description": "Education Loan Scheme (Domestic & Abroad) Upto Rs. 40.00 Lakh or 90% of course fee, whichever is less",
+                  "href": "https://www.dosje.gov.in/schemes-and-services/educational-loan-schemeels/"
+                },
+                {
+                  "category": "Loans and Credit",
+                  "title": "Aajeevika Microfinance Yojana",
+                  "description": "NSFDC provides loan up to 90% i.e. up to Rs. 1.25 lakhs for projects costing up to Rs. 1.40 lakhs.",
+                  "href": "https://www.dosje.gov.in/schemes-and-services/aajeevika-microfinance-yojana/"
+                }
+              ]
+            },
+            {
+              "kind": "prose",
+              "html": "<p><a href=\"https://www.youtube.com/watch?v=TRSD8NHHUwo\" target=\"_blank\" rel=\"noopener\"><b><u>Short movie about NSFDC&#8217;s Scheme</u></b></a> .</p>"
+            }
+          ]
+        },
+        {
+          "heading": "Reports",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/annual-reports/?org=nsfdc"
+          },
+          "blocks": [
+            {
+              "kind": "documents",
+              "items": [
+                {
+                  "title": "36th Annual Report 2024-25",
+                  "date": "29 Apr 2026",
+                  "type": "Annual Reports",
+                  "format": "PDF",
+                  "size": "43.6 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/04/annual-report-202425.pdf"
+                },
+                {
+                  "title": "35th Annual Report 2023-24",
+                  "date": "20 Nov 2025",
+                  "type": "Annual Reports",
+                  "format": "PDF",
+                  "size": "17.2 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/annual-report-23-24.pdf"
+                },
+                {
+                  "title": "34th Annual Report 2022-23",
+                  "date": "20 Nov 2025",
+                  "type": "Annual Reports",
+                  "format": "PDF",
+                  "size": "21.1 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/annual-report-22-23.pdf"
+                },
+                {
+                  "title": "33rd Annual Report 2021-22",
+                  "date": "20 Nov 2025",
+                  "type": "Annual Reports",
+                  "format": "PDF",
+                  "size": "7.9 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/annual-report-2021-22.pdf"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Publications",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/publications/?org=nsfdc"
+          },
+          "blocks": [
+            {
+              "kind": "documents",
+              "items": [
+                {
+                  "title": "e-Magazine Unnati (10th edition)",
+                  "date": "19 Aug 2026",
+                  "type": "Publications",
+                  "format": "PDF",
+                  "size": "1.4 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/08/E-magazine-10th-edition.pdf"
+                },
+                {
+                  "title": "e-Magazine Unnati (9th edition)",
+                  "date": "02 Jun 2026",
+                  "type": "Publications",
+                  "format": "PDF",
+                  "size": "2.9 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/06/e-magazine-9th-edition.pdf"
+                },
+                {
+                  "title": "e-Magazine Unnati (8th edition)",
+                  "date": "19 Apr 2026",
+                  "type": "Publications",
+                  "format": "PDF",
+                  "size": "10.4 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/04/patrika-oct-to-dec25.pdf"
+                },
+                {
+                  "title": "e-Magazine Unnati (7th edition)",
+                  "date": "19 Apr 2026",
+                  "type": "Publications",
+                  "format": "PDF",
+                  "size": "11.3 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/04/unnatti-patrika-final-23-12-2025_7.pdf"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Contact",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/contact-us/?org=nsfdc"
+          },
+          "blocks": [
+            {
+              "kind": "contact",
+              "items": [
+                {
+                  "label": "Postal Address",
+                  "values": [
+                    "14th Floor Scope Minar, Core ‘1’ & ‘2’ , North Tower, Laxmi Nagar District Centre, Laxmi Nagar, Delhi-110092"
+                  ]
+                },
+                {
+                  "label": "Email",
+                  "values": [
+                    "support-nsfdc@nic.in",
+                    "91-11-22054391-92/ 94-96"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "national-safai-karamcharis-finance-development-corporation": {
+      "source": "https://www.dosje.gov.in/organisation/national-safai-karamcharis-finance-development-corporation/",
+      "title": "National Safai Karamcharis Finance & Development Corporation (NSKFDC)",
+      "logo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Logo-NSKFDC.png",
+      "banner": {
+        "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Banner-NSKFDC.png",
+        "alt": ""
+      },
+      "actions": [],
+      "facts": [
+        {
+          "value": "1997",
+          "label": "Established"
+        },
+        {
+          "value": "New Delhi",
+          "label": "Headquarters"
+        },
+        {
+          "value": "11",
+          "label": "Reports Submitted"
+        }
+      ],
+      "index": [
+        {
+          "label": "ABOUT US",
+          "links": [
+            {
+              "label": "Social Media",
+              "href": "https://www.facebook.com/nskfdc/"
+            },
+            {
+              "label": "CSR",
+              "href": "https://www.dosje.gov.in/organisation/national-safai-karamcharis-finance-development-corporation/csr/"
+            },
+            {
+              "label": "Success Story",
+              "href": "https://www.dosje.gov.in/organisation/national-safai-karamcharis-finance-development-corporation/success-story/"
+            },
+            {
+              "label": "How-to-apply",
+              "href": "https://www.dosje.gov.in/organisation/national-safai-karamcharis-finance-development-corporation/how-to-apply/"
+            },
+            {
+              "label": "List of Channelizing Agencies",
+              "href": "https://www.dosje.gov.in/organisation/list-of-channelizing-agencies/"
+            },
+            {
+              "label": "Operational Performance",
+              "href": "https://www.dosje.gov.in/organisation/national-safai-karamcharis-finance-development-corporation/operational-performance/"
+            },
+            {
+              "label": "SHWW Act",
+              "href": "https://www.dosje.gov.in/organisation/national-safai-karamcharis-finance-development-corporation/shww-act/"
+            },
+            {
+              "label": "VISVAS",
+              "href": "https://www.dosje.gov.in/organisation/national-safai-karamcharis-finance-development-corporation/visvas/"
+            },
+            {
+              "label": "Eligibility Criteria",
+              "href": "https://www.dosje.gov.in/organisation/national-safai-karamcharis-finance-development-corporation/eligibility-criteria/"
+            },
+            {
+              "label": "Skill Development Training",
+              "href": "https://www.dosje.gov.in/organisation/national-safai-karamcharis-finance-development-corporation/list-of-empanelled-training-institutions/"
+            }
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "aboutCommissionSec",
+          "heading": "About the Corporation",
+          "intro": "<p><b>National Safai Karamcharis Finance &amp; Development Corporation(NSKFDC)</b>, A wholly owned Govt. of India Undertaking under the Ministry of Social Justice &amp; Empowerment (M/o SJ&amp;E) was set up on 24th January 1997 as a Company “Not for Profit” under Section 25 of the Companies Act, 1956. NSKFDC is in operation since October, 1997, as an Apex Corporation for the all round socio-economic upliftment of the Safai Karamcharis, Scavengers and their dependants throughout India,through various loan and non-loan based schemes.</p><p>NSKFDC is the implementing agency for National Action for Mechanised Sanitation Ecosystem (NAMASTE), a Central Sector Scheme jointly implemented by the Ministry of Social Justice &amp; Empowerment, Ministry of Housing and Urban Affairs, Ministry of Panchayati Raj, and the Department of Drinking Water and Sanitation. The Scheme has been under implementation since FY 2023–24.</p><p>The schemes of NSKFDC are implemented through State Channelizing Agencies (SCAs) nominated by the State Govts./Union Territory Administrations, Regional Rural Banks (RRBs) and Nationalised Banks. Funds are provided to the SCAs/RRBs/Nationalised Banks for onward disbursement to the target group of NSKFDC at concessional rates of interest for any viable income generating schemes including sanitation related activities.</p><p>The details of the various loan and non-loan based schemes implemented by NSKFDC for the socio-economic upliftment of the Safai Karamcharis, Scavengers and their dependants across the country in brief can be found under Schemes and Programmes menu.</p>",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/organisation/national-safai-karamcharis-finance-development-corporation/about-us/"
+          },
+          "blocks": [
+            {
+              "kind": "prose",
+              "html": "<h4>SRMS</h4><p>SRMS is presently being implemented as a component under the NAMASTE Scheme.</p><h4>NAMASTE</h4><p>National Action for Mechanized Sanitation Ecosystem (NAMASTE) scheme</p><h4>Lending Policy and Brochures</h4><p>Lending Policy Guidelines and Brochure on Schemes of NSKFDC</p><h4>Expression of Interest</h4><p>Pre-Qualification and Shortlisting of Agencies Section.</p>"
+            }
+          ]
+        },
+        {
+          "heading": "Schemes & programmes",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/organisation/national-safai-karamcharis-finance-development-corporation/brochures-of-nskfdc/"
+          },
+          "blocks": [
+            {
+              "kind": "prose",
+              "html": "<table><thead><tr><th rowspan=\"2\">Sl. No.</th><th rowspan=\"2\">Name of the Scheme</th><th rowspan=\"2\">Maximum Limit</th><th colspan=\"2\">Rate of Interest</th><th rowspan=\"2\">Repayment Period</th></tr><tr><th>SCAs</th><th>Beneficiaries</th></tr></thead><tbody><tr><td>1</td><td>Mahila Samridhi Yojana (MSY)</td><td>Up to Rs.1.00 lakh</td><td>2% p.a.</td><td>6% p.a.</td><td>3 years*</td></tr><tr><td>2</td><td>Mahila Adhikarita Yojana (MAY)</td><td>Up to Rs.2.00 lakh</td><td>3% p.a.</td><td>7% p.a.</td><td>5 years*</td></tr><tr><td>3</td><td>Micro Credit Finance (MCF)</td><td>Up to Rs.1.00 lakh</td><td>3% p.a.</td><td>7% p.a.</td><td>3 years*</td></tr><tr><td rowspan=\"2\">4</td><td rowspan=\"2\">General Term Loan (GTL)</td><td>Up to Rs.10.00 lakh</td><td>4% p.a.</td><td>8% p.a.</td><td rowspan=\"2\">10 years*</td></tr><tr><td>Above Rs.10.00 lakh &amp; up to Rs.15.00 lakh</td><td>4.5% p.a.</td><td>9% p.a.</td></tr><tr><td rowspan=\"2\">5</td><td rowspan=\"2\"> Education Loan (EL) - Interest reimbursable for eligible beneficiaries </td><td>Up to Rs.10 lakh</td><td>2% p.a.</td><td>6% p.a. (0.5% rebate for women)</td><td rowspan=\"2\"> 5 years after course + 1 year moratorium </td></tr><tr><td>Up to Rs.20 lakh (Abroad)</td><td>3% p.a.</td><td>7% p.a. (0.5% rebate for women)</td></tr><tr><td>6</td><td>Pay &amp; Use Community Toilets</td><td>Up to Rs.25.00 lakh</td><td>4% p.a.</td><td>8% p.a.</td><td>10 years**</td></tr><tr><td>7</td><td>Sanitary Marts Scheme</td><td>Up to Rs.15.00 lakh</td><td>3% p.a.</td><td>7% p.a.</td><td>10 years*</td></tr><tr><td rowspan=\"3\">8</td><td rowspan=\"3\">Green Business Scheme</td><td>Up to Rs.7.50 lakh</td><td>3% p.a.</td><td>6% p.a.</td><td rowspan=\"3\">10 years***</td></tr><tr><td>Above Rs.7.50 lakh &amp; up to Rs.15.00 lakh</td><td>4% p.a.</td><td>7% p.a.</td></tr><tr><td>Above Rs.15.00 lakh &amp; up to Rs.30.00 lakh</td><td>4% p.a.</td><td>8% p.a.</td></tr><tr><td>9</td><td colspan=\"5\"><b>Swachhta Udyami Yojana (SUY)</b> (Sanitation equipment/vehicles) </td></tr><tr><td rowspan=\"2\">a</td><td rowspan=\"2\">Individual / SHG / Cooperative</td><td>Rs.15 lakh (Individual)</td><td rowspan=\"2\">3% p.a.</td><td rowspan=\"2\">6% p.a.</td><td rowspan=\"2\">7 years*</td></tr><tr><td>Rs.50 lakh (SHG/Cooperative)</td></tr><tr><td>b</td><td>Private agencies / contractors</td><td>-</td><td>4% p.a.</td><td>8% p.a. (1% rebate)</td><td>7 years*</td></tr><tr><td>c</td><td>ULBs / Govt Bodies</td><td>Sanitation projects / Gap funding</td><td colspan=\"2\">NA</td><td>7% p.a. (1% rebate)</td></tr></tbody></table>"
+            }
+          ]
+        },
+        {
+          "heading": "Reports",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/annual-reports/?org=nskfdc"
+          },
+          "blocks": [
+            {
+              "kind": "prose",
+              "html": "<table><thead><tr><th>Title</th><th>Year</th><th>Document</th></tr></thead><tbody><tr><td>Annual Report 2023-2024</td><td>2024</td><td><a href=\"https://drive.google.com/file/d/11U8Isn49a_y5KMqKzYnDkA5y3NIPRe_o/view?usp=sharing\" target=\"_blank\" rel=\"noopener\">View</a></td></tr><tr><td>Annual Report 2022-2023</td><td>2023</td><td><a href=\"https://drive.google.com/file/d/161I7hb4kvkfgAC6Vgox5vdxf33utsqrP/view?usp=drive_link\" target=\"_blank\" rel=\"noopener\">View</a></td></tr><tr><td>Annual Report 2021-2022</td><td>2022</td><td><a href=\"https://drive.google.com/file/d/1W7s0MLv2zu06uCiLUFTtimqxKbv1ze9N/view?usp=share_link\" target=\"_blank\" rel=\"noopener\">View</a></td></tr><tr><td>Annual Report 2020-2021</td><td>2021</td><td><a href=\"https://drive.google.com/file/d/1-2dfI4jgr8V7cIWg7EAWJil06tjFqIA-/view?usp=sharing\" target=\"_blank\" rel=\"noopener\">View</a></td></tr><tr><td>Annual Report 2019-2020</td><td>2020</td><td><a href=\"https://drive.google.com/file/d/1grwaWLi32rjMmo9eQwyopOjB6-25vDHS/view?usp=sharing\" target=\"_blank\" rel=\"noopener\">View</a></td></tr><tr><td>Annual Report 2018-2019</td><td>2019</td><td><a href=\"https://drive.google.com/file/d/1BcKiGkUlCzurAQi4Lud_k5d8AAm0QAIh/view?usp=sharing\" target=\"_blank\" rel=\"noopener\">View</a></td></tr><tr><td>Annual Report 2017-2018</td><td>2018</td><td><a href=\"https://drive.google.com/file/d/1tzgH-Xuwu_wPtCki8lROSqhH_oAN99Ur/view?usp=sharing\" target=\"_blank\" rel=\"noopener\">View</a></td></tr><tr><td>Annual Report 2016-2017</td><td>2017</td><td><a href=\"https://drive.google.com/file/d/1OI9cODYu5Wy0ZGWkZ7bD9r9P-g1Aq6D5/view?usp=sharing\" target=\"_blank\" rel=\"noopener\">View</a></td></tr><tr><td>Annual Report 2015-2016</td><td>2016</td><td><a href=\"https://drive.google.com/file/d/1sYxFzXCOsEoHUxPRa0uxq3HU42s2qUc1/view?usp=sharing\" target=\"_blank\" rel=\"noopener\">View</a></td></tr><tr><td>Annual Report 2014-2015</td><td>2015</td><td><a href=\"https://drive.google.com/file/d/1IrjQ6gL4P_i5QnFdaL_T8Wl5pxSO8AXd/view?usp=sharing\" target=\"_blank\" rel=\"noopener\">View</a></td></tr><tr><td>Annual Report 2013-2014</td><td>2014</td><td><a href=\"https://drive.google.com/file/d/1zIGgnG4YihJ5RfV2R6bXnXYYi-LCmaq-/view?usp=sharing\" target=\"_blank\" rel=\"noopener\">View</a></td></tr></tbody></table>"
+            }
+          ]
+        },
+        {
+          "heading": "Contact",
+          "blocks": [
+            {
+              "kind": "contact",
+              "items": [
+                {
+                  "label": "Postal Address",
+                  "values": [
+                    "NSKFDC, NTSC,3rd Floor, E-Block, NSIC, Okhla Industrial Estate- III, New Delhi-110020",
+                    "Telephone No +011-26382476, 26382477,26382478",
+                    "Fax- 011-26382479"
+                  ]
+                },
+                {
+                  "label": "Email",
+                  "values": [
+                    "nskfdc-msje[at]nic[dot]in"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "national-backward-classes-financeand-development-corporationnbcfdc": {
+      "source": "https://www.dosje.gov.in/organisation/national-backward-classes-financeand-development-corporationnbcfdc/",
+      "title": "National Backward Classes Finance and Development Corporation (NBCFDC)",
+      "lead": "National Backward Classes Finance & Development Corporation (NBCFDC) is a Govt. of India Undertaking under the aegis of Ministry of Social Justice and Empowerment. The Corporation was incorporated under Section 25 of the Companies Act 1956 on 13th January 1992.",
+      "logo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/NBCFDC-1.png",
+      "banner": {
+        "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/NBCFDC-2.png",
+        "alt": ""
+      },
+      "actions": [
+        {
+          "label": "Artisan Exhibition Nomination",
+          "href": "https://nbcfdc.gov.in/nbcfdc/web/en/Nomination-of-the-Artisans-for-Exhibitions"
+        }
+      ],
+      "facts": [
+        {
+          "value": "1992",
+          "label": "Established"
+        },
+        {
+          "value": "New Delhi",
+          "label": "Headquarters"
+        }
+      ],
+      "index": [
+        {
+          "label": "CONNECT & ENGAGE",
+          "links": [
+            {
+              "label": "Artisan Exhibition Nomination",
+              "href": "https://nbcfdc.gov.in/nbcfdc/web/en/Nomination-of-the-Artisans-for-Exhibitions"
+            }
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "aboutCommissionSec",
+          "heading": "About the Corporation",
+          "intro": "<p><strong>National Backward Classes Finance &amp; Development Corporation (NBCFDC) </strong> is a Govt. of India Undertaking under the aegis of Ministry of Social Justice and Empowerment<strong>. </strong>NBCFDC was incorporated under Section 25 of the Companies Act 1956 on 13th January 1992 as a Company not for profit with an objective to promote economic and developmental activities for the benefit of Backward Classes and to assist the poorer section of these classes in skill development and self-employment ventures. NBCFDC provides financial assistance through State Channelizing Agencies (SCAs) nominated by the State Governments/UTs. NBCFDC also provides Micro Financing through SCAs/ Self Help Groups (SHGs). The Corporation can assist a wide range of income generating activities to assist the poorer section of these classes in skill development and self-employment ventures under following broad sectors:</p><ul><li><strong>a. Agriculture and Allied Activities</strong></li><li><strong>b. Small Business/Artisan and Traditional Occupation</strong></li><li><strong>c. Technical and Professional Trades/Courses</strong></li><li><strong>d. Transport and Service Sector etc.</strong></li></ul><p>The Corporation additionally facilitates skill development of poor persons belonging to OBCs, persons of Economically Backward Classes (EBCs), De-notified Nomadic and Semi-Nomadic Tribe, Sr. Citizen, Beggars and Transgender.</p>",
+          "more": {
+            "label": "Know More",
+            "href": "https://nbcfdc.gov.in/"
+          },
+          "blocks": [
+            {
+              "kind": "prose",
+              "html": "<h4>Vision</h4><p>The Corporation has been established to play a leading role in upliftment of the economic condition of the target group of backward classes.</p><h4>Mission</h4><p>To provide concessional financial assistance to the eligible members of the Backward Classes for Self employment ventures and Skill Development Training.</p>"
+            }
+          ]
+        },
+        {
+          "heading": "Leadership & Organisation",
+          "more": {
+            "label": "Know More",
+            "href": "#"
+          },
+          "blocks": [
+            {
+              "kind": "prose",
+              "html": "<p>The Commission comprises a Chairperson, Vice-Chairperson and other Members supported by a Secretariat and specialised wings (Service Safeguards, Development &amp; Welfare, Investigation &amp; Grievance).</p>"
+            },
+            {
+              "kind": "people",
+              "items": [
+                {
+                  "name": "Shri Rajan Sehgal",
+                  "designation": "Managing Director",
+                  "photo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Rajan-Sehgal_1_0.png",
+                  "profile": "https://www.dosje.gov.in/official/shri-rajan-sehgal/"
+                },
+                {
+                  "name": "Ms. Debolina Thakur",
+                  "designation": "Director, Joint Secretary & FA",
+                  "photo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Ms.-Debolina-Thakur-Director.jpg",
+                  "profile": "https://www.dosje.gov.in/official/ms-debolina-thakur-3/"
+                },
+                {
+                  "name": "Shri Parveen Kumar Thind",
+                  "designation": "Director & Joint Secretary(BC) Govt. of India",
+                  "photo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Board-of-Directors-Image.png",
+                  "profile": "https://www.dosje.gov.in/official/shri-parveen-kumar-thind/"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "National Initiatives & Schemes",
+          "more": {
+            "label": "Know More",
+            "href": "#"
+          },
+          "blocks": [
+            {
+              "kind": "cards",
+              "items": [
+                {
+                  "category": "Loans and Credit",
+                  "title": "Individual Loan Scheme",
+                  "description": "National Backward Classes Finance & Development Corporation (A Govt.of India Undertaking, Ministry of Social Justice & Empowerment) Individual Loan Scheme Objectives The loans under Corporation’s schemes can be…",
+                  "href": "https://www.dosje.gov.in/schemes-and-services/individual-loan-scheme/"
+                },
+                {
+                  "category": "Loans and Credit",
+                  "title": "Group Loan Scheme",
+                  "description": "National Backward Classes Finance & Development Corporation (A Govt.of India Undertaking, Ministry of Social Justice & Empowerment) GROUP…",
+                  "href": "https://www.dosje.gov.in/schemes-and-services/group-loan-scheme/"
+                },
+                {
+                  "category": "Loans and Credit",
+                  "title": "Loan Schemes Flyer",
+                  "description": "A. Background National Backward Classes Finance and Development Corporation (NBCFDC), a Government of India Undertaking has been established under the aegis of Ministry of Social…",
+                  "href": "https://www.dosje.gov.in/schemes-and-services/loan-schemes-flyer/"
+                },
+                {
+                  "category": "Loans and Credit",
+                  "title": "Performance Linked Grants-in-aid Scheme(PLGIA)",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/01/PLGIA-Scheme-Feb2021_4-1.pdf"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Reports",
+          "more": {
+            "label": "Know More",
+            "href": "#"
+          },
+          "blocks": [
+            {
+              "kind": "documents",
+              "items": [
+                {
+                  "title": "Awareness Camp Policy-Format",
+                  "date": "09 Jan 2026",
+                  "type": "Forms & Templates",
+                  "format": "PDF",
+                  "size": "506.5 KB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/01/Awareness_merged.pdf"
+                },
+                {
+                  "title": "MoA Format-NBFC-MFIs",
+                  "date": "09 Jan 2026",
+                  "type": "Forms & Templates",
+                  "format": "PDF",
+                  "size": "152.7 KB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/01/MoA-Format-NBFC-MFIs.pdf"
+                },
+                {
+                  "title": "General Loan Agreement",
+                  "date": "09 Jan 2026",
+                  "type": "Forms & Templates",
+                  "format": "PDF",
+                  "size": "480.8 KB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/01/GENERAL-LOAN-AGREEMENT_0-1.pdf"
+                },
+                {
+                  "title": "GFR 12 A UC-12-A",
+                  "date": "09 Jan 2026",
+                  "type": "Forms & Templates",
+                  "format": "PDF",
+                  "size": "195.7 KB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/01/GFR-12-A-UC-12-A.pdf"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Social Media",
+          "blocks": [
+            {
+              "kind": "social",
+              "items": [
+                {
+                  "platform": "Facebook",
+                  "handle": "@nbcfdcgov",
+                  "href": "https://www.facebook.com/nbcfdcgov"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Contact",
+          "blocks": [
+            {
+              "kind": "contact",
+              "items": [
+                {
+                  "label": "Postal Address",
+                  "values": [
+                    "5th Floor, NCUI Building, 3, Siri Institutional Area, August Kranti Marg, New Delhi-110016"
+                  ]
+                },
+                {
+                  "label": "Phone",
+                  "values": [
+                    "Tel. : +91-11-45854400 Toll Free : 18001023399 (10:00 AM to 5:00 PM On Weekdays)"
+                  ]
+                },
+                {
+                  "label": "Email",
+                  "values": [
+                    "nbcfdc[at]nbcfdc[dot]gov[dot]in"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "development-and-welfare-board-for-de-notified-nomadic-and-semi-nomadic": {
+      "source": "https://www.dosje.gov.in/organisation/development-and-welfare-board-for-de-notified-nomadic-and-semi-nomadic/",
+      "title": "Development and Welfare Board for De-Notified Nomadic and Semi Nomadic Communities (DWBDNC)",
+      "logo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/National-Emblem-1.png",
+      "banner": {
+        "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/DWBDNC.png",
+        "alt": ""
+      },
+      "actions": [
+        {
+          "label": "Beneficiary Registration",
+          "href": "https://dwbdnc.dosje.gov.in/register_new/livelihood"
+        },
+        {
+          "label": "User Login",
+          "href": "https://dwbdnc.dosje.gov.in/login"
+        }
+      ],
+      "facts": [
+        {
+          "value": "2019",
+          "label": "Established"
+        },
+        {
+          "value": "New Delhi",
+          "label": "Headquarters"
+        },
+        {
+          "value": "35 across India",
+          "label": "Regional Offices"
+        },
+        {
+          "value": "Number of State",
+          "label": "8"
+        },
+        {
+          "value": "Number of Districts",
+          "label": "112"
+        },
+        {
+          "value": "Number of Beneficiary",
+          "label": "133633"
+        }
+      ],
+      "index": [
+        {
+          "label": "OUR WORK & IMPACT",
+          "links": [
+            {
+              "label": "RTI",
+              "href": "https://www.dosje.gov.in/organisation/development-and-welfare-board-for-de-notified-nomadic-and-semi-nomadic/rti/"
+            },
+            {
+              "label": "FAQs",
+              "href": "https://www.dosje.gov.in/organisation/development-and-welfare-board-for-de-notified-nomadic-and-semi-nomadic/faqs/"
+            }
+          ]
+        },
+        {
+          "label": "CONNECT & ENGAGE",
+          "links": [
+            {
+              "label": "Beneficiary Registration",
+              "href": "https://dwbdnc.dosje.gov.in/register_new/livelihood"
+            }
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "aboutBoardSec",
+          "heading": "About the Board",
+          "intro": "<p>The Development and Welfare Board for De-notified, Nomadic, and Semi-Nomadic Communities (DWBDNC) was constituted on February 21, 2019, to address the unique needs of marginalized communities in India. Historically, these communities faced exclusion and marginalization, including being labeled under the Criminal Tribes Act of 1871. Following the repeal of this Act, DWBDNC continues the government&#8217;s efforts towards their rehabilitation and empowerment. We focus on addressing the challenges faced by these communities. Our mission is to provide support and services, promoting social and economic empowerment, and ensuring these communities receive the support they deserve. </p>",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/organisation/development-and-welfare-board-for-de-notified-nomadic-and-semi-nomadic/about-us/"
+          },
+          "blocks": []
+        },
+        {
+          "heading": "Leadership & Organisation",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/dwbdnc-directory/"
+          },
+          "blocks": [
+            {
+              "kind": "prose",
+              "html": "<p>The Commission comprises a Chairperson, Vice-Chairperson and other Members supported by a Secretariat and specialised wings (Service Safeguards, Development &amp; Welfare, Investigation &amp; Grievance).</p>"
+            },
+            {
+              "kind": "people",
+              "items": [
+                {
+                  "name": "Shri Dr. Virendra Kumar",
+                  "designation": "Union Minister of Social Justice and Empowerment",
+                  "photo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/minister_1.png",
+                  "profile": "https://www.dosje.gov.in/official/shri-dr-virendra-kumar/"
+                },
+                {
+                  "name": "Shri Ramdas Athawale",
+                  "designation": "Minister of State of Social Justice & Empowerment",
+                  "photo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/minister_2.png",
+                  "profile": "https://www.dosje.gov.in/official/shri-ramdas-athawale-2/"
+                },
+                {
+                  "name": "Shri B L Verma",
+                  "designation": "Minister of State of Social Justice and Empowerment",
+                  "photo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/minister_3.png",
+                  "profile": "https://www.dosje.gov.in/official/shri-b-l-verma-2/"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "National Initiatives & Schemes",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/schemes-services/?org=dwbdnc"
+          },
+          "blocks": [
+            {
+              "kind": "cards",
+              "items": [
+                {
+                  "category": "Housing and Settlement",
+                  "title": "Seed – Housing",
+                  "description": "Apply Now About the Scheme Beneficiaries: All DNT persons looking for support to build housing. Benefits & Financial Assistance Housing Support is given through PM-AWAS…",
+                  "href": "https://www.dosje.gov.in/schemes-and-services/seed-housing/"
+                },
+                {
+                  "category": "Care, Health and Shelter",
+                  "title": "SEED – Health Insurance",
+                  "description": "Apply Now About the Scheme Beneficiaries: All eligible citizens under the Ayushman Bharat scheme Eligibility Applicant Must be of DNT community Criteria Must qualify all…",
+                  "href": "https://www.dosje.gov.in/schemes-and-services/seed-health-insurance/"
+                },
+                {
+                  "category": "Residential Schools, Hostels and Coaching",
+                  "title": "Seed – Free Coaching",
+                  "description": "Apply Now About the Scheme Beneficiaries: DNT Students requiring coaching Eligibility: 1) Must be of DNT community 2) Must have income of less than 8…",
+                  "href": "https://www.dosje.gov.in/schemes-and-services/seed-free-coaching/"
+                },
+                {
+                  "category": "Skill Training and Livelihood",
+                  "title": "Seed – Livelihood",
+                  "description": "Ensuring access to quality residential education for meritorious Scheduled Caste students in top schools across India. Apply Now About the Scheme Eligibility: All DNTs staying…",
+                  "href": "https://www.dosje.gov.in/schemes-and-services/seed-livelihood/"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Reports",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/annual-reports/?org=dwbdnc"
+          },
+          "blocks": [
+            {
+              "kind": "documents",
+              "items": [
+                {
+                  "title": "Idate Commission Report 2017",
+                  "date": "22 Nov 2025",
+                  "type": "Annual Reports",
+                  "format": "PDF",
+                  "size": "25.2 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/17061698655675.pdf"
+                },
+                {
+                  "title": "Renke Commission Report",
+                  "date": "22 Nov 2025",
+                  "type": "Annual Reports",
+                  "format": "PDF",
+                  "size": "1.0 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/82701715669482.pdf"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Resources",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/resources?org=dwbdnc"
+          },
+          "blocks": [
+            {
+              "kind": "documents",
+              "items": [
+                {
+                  "title": "State Governments and their Important Links related to DNCs",
+                  "date": "22 Nov 2025",
+                  "type": "Resources",
+                  "format": "PDF",
+                  "size": "82.6 KB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/22141699357230.pdf"
+                },
+                {
+                  "title": "State Wise DNT Office",
+                  "date": "22 Nov 2025",
+                  "type": "Resources",
+                  "format": "PDF",
+                  "size": "128.4 KB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/27821722486093.pdf"
+                },
+                {
+                  "title": "SEED Scheme Guidelines in English",
+                  "date": "22 Nov 2025",
+                  "type": "Resources",
+                  "format": "PDF",
+                  "size": "2.3 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/67381742882523.pdf"
+                },
+                {
+                  "title": "DNT NT and SNT Communities List Statewise",
+                  "date": "22 Nov 2025",
+                  "type": "Resources",
+                  "format": "PDF",
+                  "size": "6.1 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/community_list_statewise.pdf"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Gallery",
+          "blocks": [
+            {
+              "kind": "gallery",
+              "items": [
+                {
+                  "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/gallery_004-1-1024x682.jpg",
+                  "full": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/gallery_004-1.jpg",
+                  "caption": "7/11/2025"
+                },
+                {
+                  "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/79281698662505-1024x604.jpg",
+                  "full": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/79281698662505.jpg",
+                  "caption": "7/11/2025"
+                },
+                {
+                  "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/gallery_016-1-1024x576.jpg",
+                  "full": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/gallery_016-1.jpg",
+                  "caption": "7/11/2025"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Social Media",
+          "blocks": [
+            {
+              "kind": "social",
+              "items": [
+                {
+                  "platform": "Facebook",
+                  "handle": "@DWBDNC",
+                  "href": "https://www.facebook.com/DWBDNC"
+                },
+                {
+                  "platform": "X (Twitter)",
+                  "handle": "@DwbdncG33045",
+                  "href": "https://twitter.com/DwbdncG33045"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Contact",
+          "blocks": [
+            {
+              "kind": "contact",
+              "items": [
+                {
+                  "label": "Postal Address",
+                  "values": [
+                    "2nd Floor, Wing 2, West Block-8, Sector-1, R. K. Puram, New Delhi – 110066",
+                    "Phone: +91-11-20867719"
+                  ]
+                },
+                {
+                  "label": "Email",
+                  "values": [
+                    "dwbdnc-msje[at]gov[dot]in"
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "links",
+              "items": [
+                {
+                  "label": "View Directory",
+                  "href": "https://www.dosje.gov.in/dwbdnc-directory/"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "national-institute-of-social-defence": {
+      "source": "https://www.dosje.gov.in/organisation/national-institute-of-social-defence/",
+      "title": "National Institute of Social Defence (NISD)",
+      "lead": "The National Institute of Social Defence was set up originally as the Central Bureau of Correctional Services in 1961, under the Ministry of Home Affairs, in pursuance of the recommendations emerging at various National Forums. In 1964, the Bureau was transferred to the then Department of Social Security.",
+      "logo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Logo-NISD-150x150.png",
+      "banner": {
+        "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Banner-NISD.png",
+        "alt": ""
+      },
+      "actions": [],
+      "facts": [
+        {
+          "value": "1961",
+          "label": "Established"
+        },
+        {
+          "value": "New Delhi",
+          "label": "Headquarters"
+        },
+        {
+          "value": "12 since 2011",
+          "label": "Reports Submitted"
+        }
+      ],
+      "index": [
+        {
+          "label": "OUR WORK & IMPACT",
+          "links": [
+            {
+              "label": "Editorial Committee",
+              "href": "https://www.dosje.gov.in/organisation/national-institute-of-social-defence/editorial-committee/"
+            },
+            {
+              "label": "Publication",
+              "href": "https://www.dosje.gov.in/publications/?org=nisd"
+            },
+            {
+              "label": "IEC Material",
+              "href": "https://www.dosje.gov.in/documents/iec-material/"
+            },
+            {
+              "label": "Online Courses",
+              "href": "https://tapas.dosje.gov.in/"
+            },
+            {
+              "label": "Training Courses",
+              "href": "https://www.dosje.gov.in/organisation/national-institute-of-social-defence/training-courses/"
+            }
+          ]
+        },
+        {
+          "label": "CONNECT & ENGAGE",
+          "links": [
+            {
+              "label": "Experience Showcase",
+              "href": "https://www.dosje.gov.in/organisation/national-institute-of-social-defence/experience-showcase/"
+            },
+            {
+              "label": "Elderline 14567",
+              "href": "https://www.dosje.gov.in/organisation/national-institute-of-social-defence/elderline-14567/"
+            },
+            {
+              "label": "Rental Services",
+              "href": "https://www.dosje.gov.in/organisation/national-institute-of-social-defence/rental-services/"
+            },
+            {
+              "label": "Annual Action Plan",
+              "href": "https://www.dosje.gov.in/organisation/national-institute-of-social-defence/annual-action-plan/"
+            },
+            {
+              "label": "NGOs / Agencies",
+              "href": "https://www.dosje.gov.in/organisation/national-institute-of-social-defence/ngos-agencies/"
+            },
+            {
+              "label": "Tapas_Prospectus",
+              "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/tapas_prospectus.pdf"
+            },
+            {
+              "label": "FAQs",
+              "href": "https://www.dosje.gov.in/organisation/national-institute-of-social-defence/faq/"
+            },
+            {
+              "label": "Training Calenders",
+              "href": "https://www.dosje.gov.in/organisation/national-institute-of-social-defence/training-calenders/"
+            }
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "aboutCommissionSec",
+          "heading": "About NISD",
+          "intro": "<p>The National Institute of Social Defence was set up originally as the Central Bureau of Correctional Services in 1961, under the Ministry of Home Affairs, in pursuance of the recommendations emerging at various National Forums. In 1964, the Bureau was transferred to the then Department of Social Security.</p><p>Since 1975, the Institute was a subordinate office under the Ministry of Social Justice and Empowerment. The National Institute of Social Defence has become an Autonomous Body vide Government of India Notification No. 10-3/2000-SD. Vol. II, dated July 15, 2002, and is registered under the Societies Act XXI of 1860 with the Government of NCT, Delhi.</p>",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/organisation/national-institute-of-social-defence/about-us/"
+          },
+          "blocks": [
+            {
+              "kind": "prose",
+              "html": "<h4>Division Of NISD</h4><p>The National Institute of Social Defence</p><h4>Helpline</h4><p>National Toll Free Drug De-addiction Helpline Number <strong>14446</strong></p><h4>Activity Calendar</h4><p>November, 2021.</p>"
+            }
+          ]
+        },
+        {
+          "heading": "Leadership & Organisation",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/nisd-directory/"
+          },
+          "blocks": [
+            {
+              "kind": "people",
+              "items": [
+                {
+                  "name": "Dr. Virendra Kumar",
+                  "designation": "Union Minister of Social Justice and Empowerment",
+                  "photo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/minister_1.png",
+                  "profile": "https://www.dosje.gov.in/official/dr-virendra-kumar-8/"
+                },
+                {
+                  "name": "Shri Ramdas Athawale",
+                  "designation": "Minister of State of Social Justice & Empowerment",
+                  "photo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/minister_2.png",
+                  "profile": "https://www.dosje.gov.in/official/shri-ramdas-athawale-5-2/"
+                },
+                {
+                  "name": "Shri B. L. Verma",
+                  "designation": "Minister of State of Social Justice & Empowerment",
+                  "photo": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/minister_3.png",
+                  "profile": "https://www.dosje.gov.in/official/shri-b-l-verma-5-2/"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Reports",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/annual-reports/?org=nisd"
+          },
+          "blocks": [
+            {
+              "kind": "documents",
+              "items": [
+                {
+                  "title": "Annual Report 2024-25",
+                  "date": "17 Aug 2026",
+                  "type": "Annual Reports",
+                  "format": "PDF",
+                  "size": "116.8 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/08/annual_report_24_25.pdf"
+                },
+                {
+                  "title": "Annual Report 2023-24",
+                  "date": "17 Aug 2026",
+                  "type": "Annual Reports",
+                  "format": "PDF",
+                  "size": "49.2 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/08/annual_report_23_24.pdf"
+                },
+                {
+                  "title": "Annual Report 2011-12",
+                  "date": "24 Nov 2025",
+                  "type": "Annual Reports",
+                  "format": "PDF",
+                  "size": "6.8 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/annual_report11-12.pdf"
+                },
+                {
+                  "title": "Annual Report 2012-13",
+                  "date": "24 Nov 2025",
+                  "type": "Annual Reports",
+                  "format": "PDF",
+                  "size": "13.2 MB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/annual_report12-13.pdf"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Resources",
+          "more": {
+            "label": "Know More",
+            "href": "https://www.dosje.gov.in/miscellaneous/?org=nisd"
+          },
+          "blocks": [
+            {
+              "kind": "documents",
+              "items": [
+                {
+                  "title": "Medical Reimbursement",
+                  "date": "24 Nov 2025",
+                  "type": "Resources",
+                  "format": "PDF",
+                  "size": "195.0 KB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/medical.pdf"
+                },
+                {
+                  "title": "Festival Advance",
+                  "date": "24 Nov 2025",
+                  "type": "Resources",
+                  "format": "PDF",
+                  "size": "30.0 KB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/festival_adv.pdf"
+                },
+                {
+                  "title": "Home Town Decelaration",
+                  "date": "24 Nov 2025",
+                  "type": "Resources",
+                  "format": "PDF",
+                  "size": "23.1 KB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/home_town.pdf"
+                },
+                {
+                  "title": "LTC-Bill",
+                  "date": "24 Nov 2025",
+                  "type": "Resources",
+                  "format": "PDF",
+                  "size": "137.5 KB",
+                  "href": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/LTC-Bill.pdf"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Related & Quick Links",
+          "blocks": [
+            {
+              "kind": "links",
+              "items": [
+                {
+                  "label": "NMBA Website",
+                  "href": "https://www.dosje.gov.in/organisation/nasha-mukt-bharat-abhiyaan/"
+                },
+                {
+                  "label": "Add activity by States",
+                  "href": "https://nashamukt-admin.dosje.gov.in/login"
+                },
+                {
+                  "label": "E-pledge",
+                  "href": "https://nashamukt.dosje.gov.in/epledge"
+                },
+                {
+                  "label": "Nasha Mukti Mitr Registration",
+                  "href": "https://nashamukt.dosje.gov.in/nasha-mukti-mitr"
+                },
+                {
+                  "label": "Patient Monitoring System",
+                  "href": "https://nashamukt-admin.dosje.gov.in/login"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Gallery",
+          "blocks": [
+            {
+              "kind": "prose",
+              "html": "<p>The Senior Citizen Division of NISD, in collaboration with the Vivekananda Institute of Values (VIVA), Ramakrishna Mission, Gurugram, hosted a One-Day Meditation and Spiritual Workshop</p>"
+            },
+            {
+              "kind": "gallery",
+              "items": [
+                {
+                  "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Image000015-1024x576.jpeg",
+                  "full": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Image000015.jpeg",
+                  "caption": ""
+                },
+                {
+                  "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Image000002-1024x576.jpeg",
+                  "full": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Image000002.jpeg",
+                  "caption": ""
+                },
+                {
+                  "src": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Image000003-1024x576.jpeg",
+                  "full": "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Image000003.jpeg",
+                  "caption": ""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Social Media",
+          "blocks": [
+            {
+              "kind": "social",
+              "items": [
+                {
+                  "platform": "Facebook",
+                  "handle": "@NISD.Ind",
+                  "href": "https://www.facebook.com/NISD.Ind/"
+                },
+                {
+                  "platform": "X (Twitter)",
+                  "handle": "@nisd_india",
+                  "href": "https://twitter.com/nisd_india"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Contact",
+          "blocks": [
+            {
+              "kind": "contact",
+              "items": [
+                {
+                  "label": "Postal Address",
+                  "values": [
+                    "National Institute of Social Defence (NISD) Ministry of Social Justice and Empowerment Plot No. G-2, Sector-10, Dwarka, New Delhi-110075"
+                  ]
+                },
+                {
+                  "label": "Gmail",
+                  "values": [
+                    "directoroffice[dot]nisd[at]gmail.com"
+                  ]
+                },
+                {
+                  "label": "Mobile",
+                  "values": [
+                    "011 20893995"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "pages": {
+    "dr-ambedkar-foundation/ambedkar-national-memorial": {
+      "source": "https://www.dosje.gov.in/organisation/dr-ambedkar-foundation/ambedkar-national-memorial/",
+      "title": "Dr. Ambedkar National Memorial",
+      "html": "<h3>About DANM</h3><ul><li>The national memorial&#8217;s Visiting Time is from 10:00 A.M to 07:00 P.M. The memorial is closed on Monday for maintenance.</li><li>Babasaheb Dr. B. R. Ambedkar, after his resignation from the Union Council of Minister as Minister of Law, vacated his official residence at 1, Harding Avenue, New Delhi and shifted to a Bungalow at 26, Alipur Road, Delhi, on 1st November, 1951 and lived there till he breathed his last on 6th December, 1956</li><li>The land at 26, Alipur Road, Delhi is considered as a sacred place as a Parinirvan Sthal. There has been a long standing demand from various corners for converting the place into a befitting National Memorial.</li><li>Setting up of Dr. Ambedkar National Memorial at 26, Alipur Road, Delhi, where Babasaheb Dr. B.R.Ambedkar had breathed his last, was one of the important decisions taken by the Centenary Celebrations Committee of Babasaheb headed by the then Hon’ble Prime Minister of India.</li><li>The Government of India had initiated the process to reconstruct a well-designed and fully developed Dr. Ambedkar National Memorial at 26, Alipur Road, Delhi. On the advice of Ministry of Urban Development the work had been entrusted to Central Public Works Department (CPWD).</li><li>The total area of the plot is 7,374 sq metres and the built up area is 4561.62 sq metres excluding basement parking. The memorial consists of one basement for car parking, Lower Ground Floor, Upper Ground Floor and First Floor in accordance with the building by Laws and height restrictions. The total areas are as:<br><br>Sno. Area Area In Square m.<br>1. Plot Area 7374.00 sqm<br>2. First floor 1362.68 sqm 3. Ground floor 1444.18 sqm 4. Lower ground floor 1485.21 sqm 5. Basement 1248.00 sqm 6. Allied Building 269.75 sqm 7. Total Plinth Area 4561.62 sqm<br><br></li><li>The maximum permissible height is 11 metres. The Memorial will have themed Garden, Entrance Plaza, Surface Parking, Service Area, Meditation Hall, Memorial Plaque, Pavilion and Basement Parking. The other components of the Memorial include a small area at the entrance to the building, with a capacity of 80-100 with chairs for a 5 minute orientation session about the Memorial and an area dedicated for those who want to do meditation.</li><li>The activities undertaken at the Memorial are (i) organizing Birth and Mahaparinirvan anniversaries (ii) Lectures (iii) discussions (iv) exhibitions (v) cultural activities related to, in particular, young people etc.</li><li>The Hon&#8217;ble Prime Minister laid the foundation stone of Dr. Ambedkar National Memorial, 26, Alipur Road, Delhi and delivered 6th Dr. Ambedkar Memorial Lecture on 21st march, 2016 in the presence of the Hon&#8217;ble Minister (SJ&amp;E) and Hon&#8217;ble Minister (S&amp;T and Earth Sciences) in a function held at Vigyan Bhawan, New Delhi</li></ul>"
+    },
+    "dr-ambedkar-foundation/dr-ambedkar-international-center": {
+      "source": "https://www.dosje.gov.in/organisation/dr-ambedkar-foundation/dr-ambedkar-international-center/",
+      "title": "Dr. Ambedkar International Center",
+      "html": "<h3>About the Project</h3><h4>About DAIC:</h4><p>The area of state-of-the-art Centre is approximately 3.25 acre in the heart of Delhi and is housed in a 3-storey building that includes the administrative block and other facilities. The exterior holds a wide variety of green plants that add to the aesthetics of the place. It has a 18-feet bronze statue of Dr. B.R. Ambedkar, a small Amphitheatre, two Chitya Arches, two Red Stone Toran Gates, a Buddha Statue and the imposing Ashoka Stambh on the right facade. The centre has a huge circular area on the ground floor under the dome. Here is a large statue of Dr. B.R. Ambedkar sitting cross-legged on the chair. The information to conduct programmes and to book other facilities is available at the reception at DAIC.</p><h4>Vision:</h4><p>To promote multi- disciplinary academic, as well as practice-oriented studies and encourage cutting edge research.</p><h4>Mission:</h4><p>To undertake high-quality research on social and economic issues.<br>To develop a national database and disseminate knowledge</p><h4>Goals:</h4><p>To undertake High-quality research on social and economic issues.<br>To develop a national database and disseminate knowledge.<br>To conduct policy review, research and advocacy.<br>Think tank for the government, corporate sector and NGOs in the field of social sector.<br>To encourage public involvement in research.Training and orientation centre for scholars and Govt.<br>To conduct research on Dr. Ambedkar’s vision, theories, principles and policies of socio-economic transformation and inclusive growth<br>To conduct research in the field of sustainable development and livelihood.<br>Collaboration and Networking with the other Knowledge Hubs at International level.</p>"
+    }
+  }
+}
