@@ -2,16 +2,16 @@
 
 import * as React from "react";
 import { RadioGroup } from "@mosje/design-system";
-import { WEBSITE_DESIGNS, type WebsiteDesign } from "@/lib/website-design/constants";
+import { DEFAULT_WEBSITE_DESIGN, WEBSITE_DESIGNS, type WebsiteDesign } from "@/lib/website-design/constants";
 import { readWebsiteDesign, switchWebsiteDesign } from "@/lib/website-design/switch";
 import "@/components/website/data-mode.css";
 
 const noop = () => () => {};
-const serverDesign = (): WebsiteDesign => "new";
+const serverDesign = (): WebsiteDesign => DEFAULT_WEBSITE_DESIGN;
 
 /**
- * The demo rail's Website tab: switch the public website between the 2026
- * redesign and the archived classic design, at the same address.
+ * The demo rail's Website tab: switch the public website between the DBIM design
+ * (the default), the 2026 redesign and the archived classic design, at the same address.
  *
  * The switch reloads the page. The proxy chooses the tree per request
  * (proxy.ts, lib/website-design/constants.ts), so a client-side refresh would

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { DbimPage } from "@/components/website-dbim/layout/DbimPage";
 import { DbimFeedbackForm } from "@/components/website-dbim/utility/FeedbackForm";
-import { DBIM_MENU } from "@/lib/website-dbim/nav";
 import "@/components/website-dbim/utility/utility.css";
 
 export const metadata: Metadata = {
@@ -11,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <DbimPage title="Feedback" crumbs={[{ label: "Feedback" }]} path="/feedback" hero={DBIM_MENU[0]!.hero}>
+    <DbimPage title="Feedback" crumbs={[{ label: "Feedback" }]} path="/feedback">
       <div className="db-u-fb">
         <div className="db-u-fb__card">
           <DbimFeedbackForm />

@@ -30,17 +30,12 @@ export interface DbimLink {
 export interface DbimMenu extends DbimLink {
   /** Second-level entries, in the order the dropdown and the page sub-tabs show them. */
   children: DbimLink[];
-  /** The inner-page banner photograph for every page under this entry. */
-  hero: string;
 }
-
-const HERO = "/website/dbim/heroes";
 
 export const DBIM_MENU: DbimMenu[] = [
   {
     label: "Ministry",
     path: "/ministry",
-    hero: `${HERO}/ministry.jpg`,
     children: [
       { label: "About Us", path: "/ministry" },
       { label: "Our Team", path: "/ministry/our-team" },
@@ -56,7 +51,6 @@ export const DBIM_MENU: DbimMenu[] = [
   {
     label: "Offerings",
     path: "/offerings",
-    hero: `${HERO}/offerings.jpg`,
     children: [
       { label: "Schemes and Services", path: "/offerings" },
       { label: "Vacancies", path: "/offerings/vacancies" },
@@ -66,7 +60,6 @@ export const DBIM_MENU: DbimMenu[] = [
   {
     label: "Documents",
     path: "/documents",
-    hero: `${HERO}/documents.jpg`,
     children: [
       { label: "Reports", path: "/documents" },
       { label: "Orders and Notices", path: "/documents/orders-and-notices" },
@@ -76,7 +69,6 @@ export const DBIM_MENU: DbimMenu[] = [
   {
     label: "Media",
     path: "/media",
-    hero: `${HERO}/default.png`,
     children: [
       { label: "Photos", path: "/media" },
       { label: "Videos", path: "/media/videos" },
@@ -85,7 +77,6 @@ export const DBIM_MENU: DbimMenu[] = [
   {
     label: "Connect",
     path: "/connect",
-    hero: `${HERO}/connect.jpg`,
     children: [
       { label: "Contact Us", path: "/connect" },
       { label: "Directory", path: "/connect/directory" },
@@ -118,14 +109,6 @@ export const DBIM_POLICY_TABS: DbimLink[] = [
   { label: "Copyright Policy", path: "/policies/copyright-policy" },
   { label: "Accessibility Statement", path: "/policies/accessibility-statement" },
 ];
-
-/** Banner photographs for pages that sit outside the six menus. */
-export const DBIM_HEROES = {
-  default: `${HERO}/default.png`,
-  help: `${HERO}/help.jpg`,
-  policies: `${HERO}/policies.jpg`,
-  relatedLinks: `${HERO}/related-links.jpg`,
-} as const;
 
 /** The menu entry a path belongs to, for the active state and the page banner. */
 export function dbimMenuFor(path: string): DbimMenu | undefined {

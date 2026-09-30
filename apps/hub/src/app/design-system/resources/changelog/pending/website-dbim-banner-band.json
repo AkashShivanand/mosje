@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "DBIM INNER PAGES DRAW THE PRIMARY BAND, NOT A STOCK PHOTOGRAPH. The reference template's banner photographs — laptops on a wooden desk for Website Policies, a robot hand for Help, a server room for Related Links, an office desk for Offerings — said nothing about the pages they stood over and carried no usage rights (DBIM 3.0 §6.2.6 subject and story, §6.1.3). Every inner page now shows the DBIM Toolkit's banner colour at the photograph's 1920:280, so the title and the overlapping tab bar sit exactly where they did; `DbimPage` still takes a `hero` for a photograph OF the page's subject. The eight files are removed. On the tab bar the active tab's grip now sits inside the tab rather than hanging 8px outside it, in the same place on screen; and the Events venue carries the location icon instead of a 📍 emoji."
+}

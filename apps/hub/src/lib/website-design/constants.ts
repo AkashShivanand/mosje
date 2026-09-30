@@ -1,7 +1,9 @@
 /**
  * Which design of the public website a visitor sees.
  *
- * The 2026 redesign is served at `/website/*` from `app/website/`. The design it
+ * The DBIM design is the DEFAULT (the Department's instruction, 30 Sep 2026): a visitor
+ * with no cookie is served `app/website-dbim/` at the `/website/*` addresses. The 2026
+ * redesign lives in `app/website/` and is reached with the cookie set to `new`. The design it
  * replaced is archived, unchanged, at `app/website-classic/`, and is reached at the
  * SAME addresses: `proxy.ts` rewrites `/website/*` to `/website-classic/*` while
  * this cookie says `classic`. Both trees stay statically rendered, nothing is sent
@@ -24,7 +26,7 @@ export const WEBSITE_DESIGNS: ReadonlyArray<{ value: WebsiteDesign; label: strin
   },
 ];
 
-/** Where the classic tree lives. Addresses under it are archive copies and are not indexed. */
+/** Where the classic tree lives. An internal folder, never an address: `designTreeOf` redirects it. */
 export const CLASSIC_PREFIX = "/website-classic";
 
 /**
@@ -36,9 +38,12 @@ export const CLASSIC_PREFIX = "/website-classic";
  */
 export const DBIM_PREFIX = "/website-dbim";
 
-/** Narrow a raw cookie value to a design, defaulting to the redesign. */
+/** The design a visitor gets when they have not chosen one — decided 30 Sep 2026. */
+export const DEFAULT_WEBSITE_DESIGN: WebsiteDesign = "dbim";
+
+/** Narrow a raw cookie value to a design, defaulting to DBIM. */
 export function parseWebsiteDesign(value: string | undefined): WebsiteDesign {
-  return value === "classic" || value === "dbim" ? value : "new";
+  return value === "new" || value === "classic" || value === "dbim" ? value : DEFAULT_WEBSITE_DESIGN;
 }
 
 /**
@@ -51,4 +56,19 @@ export function designRewriteTarget(pathname: string, design: WebsiteDesign): st
   if (pathname !== "/website" && !pathname.startsWith("/website/")) return null;
   if (pathname.includes(".")) return null;
   return (design === "dbim" ? DBIM_PREFIX : CLASSIC_PREFIX) + pathname.slice("/website".length);
+}
+
+/**
+ * A direct request for one of the design trees' internal folders, mapped back to the
+ * public `/website` address that serves it — or null. Public files carry a dot and
+ * are left alone.
+ */
+export function designTreeOf(pathname: string): { design: WebsiteDesign; publicPath: string } | null {
+  if (pathname.includes(".")) return null;
+  for (const [prefix, design] of [[DBIM_PREFIX, "dbim"], [CLASSIC_PREFIX, "classic"]] as const) {
+    if (pathname === prefix || pathname.startsWith(prefix + "/")) {
+      return { design, publicPath: "/website" + pathname.slice(prefix.length) };
+    }
+  }
+  return null;
 }

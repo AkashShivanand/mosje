@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "THE WEBSITE OPENS IN THE DBIM DESIGN, AT ONE ADDRESS PER PAGE. A visitor with no design chosen is now served the DBIM design at /website (the Department's instruction, 30 Sep 2026); the 2026 redesign and the classic design stay one click away on the demo rail. The design trees' internal folders are no longer addresses: /website-dbim/… and /website-classic/… redirect to the same page under /website and set that design, so an old link still opens what it was copied from. The DBIM layout's `noindex` went with them — it would otherwise have followed the default design onto /website."
+}

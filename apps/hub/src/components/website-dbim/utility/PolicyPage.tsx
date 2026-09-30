@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DbimPage } from "@/components/website-dbim/layout/DbimPage";
-import { DBIM_HEROES, DBIM_POLICY_TABS } from "@/lib/website-dbim/nav";
+import { DBIM_POLICY_TABS } from "@/lib/website-dbim/nav";
 import { dbimPolicy } from "@/lib/website-dbim/utility";
 import { DbimPolicyText } from "./RichText";
 import "./utility.css";
@@ -23,7 +23,6 @@ export function DbimPolicyPage({ path }: { path: string }) {
     <DbimPage
       title={policy.title}
       path={path}
-      hero={DBIM_HEROES.policies}
       tabs={DBIM_POLICY_TABS}
       activeTab={path}
       crumbs={[{ label: "Website Policies", path: "/policies" }]}
