@@ -16,7 +16,7 @@
 
   /* A visually hidden label sits at its link's text end; the link must contain it,
      or a long one-line title pushes it past the viewport and the page scrolls sideways. */
-  [data-design="dbim"] :is(.db-off-view, .db-vac-card__file, .db-vac-card__all, .db-sd__apply, .db-sd__toc a, .db-sd__prose a) {
+  [data-design="dbim"] :is(.db-off-view, .db-vac-card__file, .db-vac-card__all, .db-sd__apply, .db-sd__prose a) {
     position: relative;
   }
 
@@ -101,7 +101,7 @@
     background: var(--sa-color-primaryScale-200);
   }
 
-  [data-design="dbim"] :is(.db-off-archive, .db-off-view, .db-vac-card__all, .db-scheme-card__go, .db-vac-card__file, .db-sd__apply, .db-sd__toc a, .db-sd__prose a):focus-visible {
+  [data-design="dbim"] :is(.db-off-archive, .db-off-view, .db-vac-card__all, .db-scheme-card__go, .db-vac-card__file, .db-sd__apply, .db-sd__prose a):focus-visible {
     outline: 2px solid var(--sa-color-primaryScale-800);
     outline-offset: 2px;
   }
@@ -516,64 +516,27 @@
     gap: var(--sa-stack-16);
   }
 
-  /* The one Apply Now: filled, full width, in the key colour. */
+  /* The one Apply Now: the DBIM file's Button, Type=Filled — 40 tall, 8/16 padding,
+     radius 4, Label/button (14px semibold, capitals) on bg/brand — at the rail's width. */
   [data-design="dbim"] .db-sd__apply {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: var(--sa-inline-8);
-    min-height: var(--sa-padding-48);
-    padding: var(--sa-padding-12) var(--sa-padding-24);
+    min-height: var(--sa-padding-40);
+    padding: var(--sa-padding-8) var(--sa-padding-16);
     border-radius: var(--sa-shape-4);
     background: var(--sa-color-primaryScale-800);
     color: var(--sa-color-neutralScale-0);
-    font-size: var(--db-fs-p);
+    font-size: var(--db-fs-button);
     font-weight: var(--sa-font-weight-semibold);
-    line-height: var(--db-lh-p);
+    line-height: var(--db-lh-p2);
+    text-transform: uppercase;
     text-decoration: none;
   }
 
   [data-design="dbim"] .db-sd__apply:hover {
     background: var(--sa-color-primaryScale-600);
-  }
-
-  /* On This Page: the reference's grey rail panel, holding the section links. */
-  [data-design="dbim"] .db-sd__toc {
-    padding: var(--sa-padding-16) var(--sa-padding-20);
-    border-radius: var(--sa-shape-8);
-    background: var(--sa-color-neutralScale-100);
-  }
-
-  [data-design="dbim"] .db-sd__toc-title {
-    margin: 0 0 var(--sa-stack-8);
-    font-size: var(--db-fs-h4);
-    font-weight: var(--sa-font-weight-bold);
-    line-height: var(--db-lh-p2);
-    color: var(--sa-color-primaryScale-800);
-  }
-
-  [data-design="dbim"] .db-sd__toc ul {
-    display: flex;
-    flex-direction: column;
-    gap: var(--sa-stack-4);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  [data-design="dbim"] .db-sd__toc a {
-    display: block;
-    min-height: var(--sa-padding-24); /* WCAG 2.5.8: 24px targets */
-    padding: var(--sa-padding-4) 0;
-    color: var(--sa-color-text-default);
-    font-size: var(--db-fs-h4);
-    line-height: var(--db-lh-p2);
-    text-decoration: none;
-  }
-
-  [data-design="dbim"] .db-sd__toc a:hover {
-    color: var(--sa-color-primaryScale-800);
-    text-decoration: underline;
   }
 
   [data-design="dbim"] .db-sd__main {

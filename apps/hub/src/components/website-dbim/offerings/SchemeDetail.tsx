@@ -1,6 +1,6 @@
 import type * as React from "react";
 import Link from "next/link";
-import { Icon } from "@mosje/design-system";
+import { ContentNav, Icon } from "@mosje/design-system";
 import type { DbimSchemeBlock, DbimSchemeDetail as Detail, DbimSchemeFact, DbimSchemePart } from "@/lib/website-dbim/offerings";
 import { dbimHref } from "@/lib/website-dbim/nav";
 import { DbimPdfIcon } from "./PdfIcon";
@@ -17,7 +17,7 @@ interface PageSection {
 
 /**
  * The left rail, sticky from 992: the one Apply Now, and the page's sections to jump
- * to. The reference's name card repeated the banner's h1 and its VISIT bar sat in a
+ * to (the design system's ContentNav). The reference's name card repeated the banner's h1 and its VISIT bar sat in a
  * box of its own; neither told the reader anything the page did not already say.
  */
 function Rail({ d, sections }: { d: Detail; sections: PageSection[] }) {
@@ -35,18 +35,15 @@ function Rail({ d, sections }: { d: Detail; sections: PageSection[] }) {
         </a>
       ) : null}
       {sections.length > 1 ? (
-        <nav className="db-sd__toc" aria-labelledby="db-sd-toc">
-          <p className="db-sd__toc-title" id="db-sd-toc">
-            On This Page
-          </p>
-          <ul>
-            {sections.map((s) => (
-              <li key={s.id}>
-                <a href={`#${s.id}`}>{s.title}</a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        /* The design system's section index for a long content page (not SidebarNav,
+           which is a portal's application rail). The rail itself is sticky. */
+        <ContentNav
+          className="db-sd__toc"
+          ariaLabel="On this page"
+          sticky={false}
+          linkAs={Link}
+          groups={[{ label: "On This Page", items: sections.map((s) => ({ label: s.title, href: `#${s.id}` })) }]}
+        />
       ) : null}
     </aside>
   );
