@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
-import { tidyProse } from "./prose.ts";
+import { sortTopics, tidyProse } from "./prose.ts";
 
 test("hard-space indents and empty paragraphs go; the words stay", () => {
   assert.equal(tidyProse("<p>    The Scheme has two parts.</p><p>&nbsp;</p>"), "<p>The Scheme has two parts.</p>");
@@ -39,4 +39,33 @@ test("consecutive numbered or lettered paragraphs become a list, numbering remov
 test("tables are left exactly as they are", () => {
   const table = "<table><tbody><tr><td><p>&nbsp; Short cell</p></td></tr></tbody></table>";
   assert.equal(tidyProse(table), table);
+});
+
+test("labelled parts move to their own section, label kept; the rest stays", () => {
+  const s = sortTopics(
+    "<p>The scheme supports students.</p><p><strong>Beneficiaries:</strong> Graduate students</p><p><strong>Eligibility:</strong></p><ol><li>60% marks</li></ol><h3>Required Documents</h3><ol><li>Aadhaar Card</li></ol><h3>Important Timelines</h3><ol><li>Portal opens in February.</li></ol>",
+  );
+  assert.equal(s.stay, "<p>The scheme supports students.</p>");
+  assert.equal(s.eligibility, "<p><strong>Beneficiaries:</strong> Graduate students</p><ol><li>60% marks</li></ol>");
+  assert.equal(s.process, "<h3>Required Documents</h3><ol><li>Aadhaar Card</li></ol><h3>Important Timelines</h3><ol><li>Portal opens in February.</li></ol>");
+});
+
+test("steps filed under About are how to apply", () => {
+  const s = sortTopics("<ol><li>Register on the portal</li><li>Verify the profile</li></ol><p>Other text.</p>");
+  assert.equal(s.process, "<h3>Steps to Apply</h3><ol><li>Register on the portal</li><li>Verify the profile</li></ol>");
+  assert.equal(s.stay, "<p>Other text.</p>");
+});
+
+test("a label in capitals reads in Title Case; an unfiled label line stays with its part", () => {
+  const s = sortTopics("<p><b>CONDITIONS OF ELIGIBILITY:</b></p><p>i. Studying in class IX.</p><p><b>Income Ceiling:</b></p><p>Up to Rs. 2.5 lakh.</p><p><b>How to apply:</b></p><p>Through the State portal.</p>");
+  assert.match(s.eligibility, /^<h3>Conditions of Eligibility<\/h3>/);
+  assert.match(s.eligibility, /Income Ceiling/);
+  assert.equal(s.process, "<p>Through the State portal.</p>");
+  assert.equal(s.stay, "");
+});
+
+test("tables and unfiled headings stay where they are", () => {
+  const s = sortTopics('<h3>Scheme Components</h3><div class="wn-table-wrap" role="region"><table><tr><td>x</td></tr></table></div>');
+  assert.match(s.stay, /<h3>Scheme Components<\/h3>/);
+  assert.match(s.stay, /<table>/);
 });

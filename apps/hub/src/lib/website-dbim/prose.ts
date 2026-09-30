@@ -144,3 +144,152 @@ export function tidyProse(html: string): string {
     .map((chunk, i) => (i % 2 ? chunk : tidyChunk(chunk)))
     .join("");
 }
+
+/* ─── Sorting a section's text into the template's sections ─────────────── */
+
+/**
+ * The live pages file whatever they have under whatever heading was to hand:
+ * PM-DAKSH's "About the Scheme" is its application steps and required documents,
+ * NOS's "Benefits" ends with its required documents and dates, Pre-Matric's
+ * "About" holds its conditions of eligibility. `sortTopics` moves each labelled
+ * part to the section it belongs to — its words and its label kept — and leaves
+ * everything else where it was.
+ */
+export type Topic = "eligibility" | "benefits" | "process";
+
+const TOPICS: [RegExp, Topic][] = [
+  [/^(conditions of )?eligibility( criteria| conditions)?$|^who can apply$|^beneficiar(y|ies)$|^target group$/i, "eligibility"],
+  [/^(benefits?|financial assistance|assistance provided|scholarship amount)$/i, "benefits"],
+  [/^(required documents|documents required|documents to be submitted|important timelines?|timelines?|how to apply|application process|procedure for application|steps to apply)$/i, "process"],
+];
+
+const topicOf = (label: string): Topic | undefined => TOPICS.find(([re]) => re.test(label.trim()))?.[1];
+
+interface Block {
+  tag: string;
+  html: string;
+  text: string;
+}
+
+/** Top-level blocks, with the ingest's bare <div> wrappers dissolved and tables kept whole. */
+function blocksOf(html: string): Block[] {
+  const tables: string[] = [];
+  const h = html
+    .replace(/<div class="wn-table-wrap"[\s\S]*?<\/table>\s*<\/div>/gi, (m) => `\u0000T${tables.push(m) - 1}\u0000`)
+    .replace(/<table\b[\s\S]*?<\/table>/gi, (m) => `\u0000T${tables.push(m) - 1}\u0000`)
+    .replace(/<\/?div\b[^>]*>/gi, "");
+  const out: Block[] = [];
+  const open = /<(p|h[1-6]|ol|ul)\b[^>]*>|\u0000T(\d+)\u0000/gi;
+  let i = 0;
+  for (;;) {
+    open.lastIndex = i;
+    const m = open.exec(h);
+    const stray = h.slice(i, m ? m.index : h.length);
+    if (plain(stray)) out.push({ tag: "p", html: `<p>${stray.trim()}</p>`, text: plain(stray) });
+    if (!m) break;
+    if (m[2] !== undefined) {
+      out.push({ tag: "table", html: tables[Number(m[2])]!, text: "" });
+      i = open.lastIndex;
+      continue;
+    }
+    const tag = m[1]!.toLowerCase();
+    const re = new RegExp(`<(/?)${tag}\\b[^>]*>`, "gi");
+    re.lastIndex = m.index;
+    let depth = 0;
+    let end = h.length;
+    for (let t = re.exec(h); t; t = re.exec(h)) {
+      depth += t[1] ? -1 : 1;
+      if (depth === 0) {
+        end = t.index + t[0].length;
+        break;
+      }
+    }
+    const html = h.slice(m.index, end);
+    out.push({ tag, html, text: plain(html) });
+    i = end;
+  }
+  return out;
+}
+
+/** A block that labels what follows: a heading, or a short line ending in a colon. */
+function headingOf(b: Block): string | undefined {
+  if (/^h[2-6]$/.test(b.tag)) return b.text.replace(/:\s*$/, "");
+  if (b.tag === "p" && /:\s*[-–—]?$/.test(b.text) && b.text.length <= 60) return b.text.replace(/\s*:\s*[-–—]?$/, "");
+  return undefined;
+}
+
+/** A paragraph that opens with its own label: "Beneficiaries: Indian graduate students…". */
+function inlineLabelOf(b: Block): string | undefined {
+  if (b.tag !== "p") return undefined;
+  const m = /^(?:\s*<(?:strong|b)\b[^>]*>)\s*([^<:]{3,40}?)\s*:/i.exec(b.html.replace(/^<p\b[^>]*>/i, ""));
+  return m?.[1];
+}
+
+/** A numbered list whose first step is an action is how to apply, whatever it was filed under. */
+const isSteps = (b: Block) =>
+  b.tag === "ol" && /^(register|registration|apply|visit|log\s?in|login|fill|submit|create|sign\s?up|go to)\b/i.test(b.text);
+
+/** DEPARTMENT LABELS SET IN CAPITALS read in Title Case, as every other title here does. */
+const titleOf = (label: string) =>
+  label === label.toUpperCase()
+    ? label.toLowerCase().replace(/\b([a-z])/g, (c) => c.toUpperCase()).replace(/\b(Of|And|The|For|To|In|On)\b/g, (w) => w.toLowerCase()).replace(/^./, (c) => c.toUpperCase())
+    : label;
+
+const SECTION_NAMES: Record<Topic, RegExp> = {
+  eligibility: /^eligibility$/i,
+  benefits: /^benefits( & financial assistance)?$/i,
+  process: /^(application process|how to apply)$/i,
+};
+
+export interface SortedTopics {
+  /** What stays where it was. */
+  stay: string;
+  eligibility: string;
+  benefits: string;
+  process: string;
+}
+
+export function sortTopics(html: string): SortedTopics {
+  const out: SortedTopics = { stay: "", eligibility: "", benefits: "", process: "" };
+  const bs = blocksOf(html);
+  let cur: Topic | null = null;
+  const head = (t: Topic, label: string) => (SECTION_NAMES[t].test(label) ? "" : `<h3>${titleOf(label)}</h3>`);
+  for (let i = 0; i < bs.length; i++) {
+    const b = bs[i]!;
+    const label = headingOf(b);
+    if (label !== undefined) {
+      const t = topicOf(label);
+      if (t) {
+        cur = t;
+        out[t] += head(t, label);
+        continue;
+      }
+      /* An unfiled heading ends a moved part; an unfiled label line ("During
+         Application:", "Income Ceiling:") is part of it. */
+      if (b.tag !== "p") cur = null;
+    }
+    if (cur) {
+      out[cur] += b.html;
+      continue;
+    }
+    const inline = inlineLabelOf(b);
+    const it = inline ? topicOf(inline) : undefined;
+    if (it) {
+      out[it] += b.html;
+      continue;
+    }
+    if (isSteps(b)) {
+      /* Its lead-in line, if the page wrote one, goes with it. */
+      const lead = bs[i - 1];
+      let leadHtml = "";
+      if (lead && lead.tag === "p" && /:\s*$/.test(lead.text) && out.stay.endsWith(lead.html)) {
+        out.stay = out.stay.slice(0, -lead.html.length);
+        leadHtml = lead.html;
+      }
+      out.process += `<h3>Steps to Apply</h3>${leadHtml}${b.html}`;
+      continue;
+    }
+    out.stay += b.html;
+  }
+  return out;
+}

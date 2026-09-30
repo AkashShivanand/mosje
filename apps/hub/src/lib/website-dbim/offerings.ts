@@ -17,7 +17,7 @@ import {
 import { SCHEME_GROUPS, SCHEME_IMAGE, listedScheme, listedSchemes, type ListedScheme } from "@/lib/website-shared/scheme-listing";
 import { SD_SCHEMES } from "@/lib/explorations/service-discovery-master";
 import { dbimFeedTitle } from "./home-mid";
-import { tidyProse } from "./prose";
+import { sortTopics, tidyProse, type Topic } from "./prose";
 import { DBIM_APPLICANT_TYPES } from "./applicants";
 import { getDbimContact } from "./connect";
 
@@ -168,16 +168,14 @@ export interface DbimSchemeDetail {
   name: string;
   /** One sentence for the page's description. */
   summary: string;
-  /** The VISIT bar: the first apply route with a confirmed web address. */
-  visit?: { href: string; label: string };
+  /** The rail's Apply Now: the first apply route with a confirmed web address. */
+  applyAt?: { href: string; label: string };
   about: DbimSchemeSection[];
   eligibility: DbimSchemeBlock | null;
   benefits: DbimSchemeBlock | null;
-  /** The rail's How to Apply box: every apply route the VISIT bar does not already open. */
-  apply: DbimApplyRoute[];
-  /** Application Process: every apply route as a step (text — the rail holds the
-   *  links), then the page's own text on it. */
-  steps: string[];
+  /** Application Process › Where to Apply: every route, as text — they are
+   *  alternatives, not steps, and the rail's Apply Now is the link. */
+  routes: string[];
   process: DbimSchemePart[];
   faqs: DbimSchemeFact[];
   contact: DbimSchemeFact[];
@@ -314,15 +312,26 @@ function templateSections(sections: LegacySection[] | null, documents: DbimSchem
   let contact: DbimSchemeFact[] = [];
   let faqs: DbimSchemeFact[] = [];
   const documentParts: DbimSchemePart[] = [];
+  /* Labelled parts filed under the wrong heading on the live page — steps and
+     required documents under About, dates under Benefits — go to their own
+     section (prose.ts, sortTopics). What is left stays where it was. */
+  const moved: Record<Topic, string> = { eligibility: "", benefits: "", process: "" };
+  const sorted = (html: string) => {
+    const s = sortTopics(tidyProse(html));
+    for (const t of Object.keys(moved) as Topic[]) moved[t] += s[t];
+    return s.stay;
+  };
   for (const x of sections ?? []) {
     const h = x.heading?.trim();
     if (!h || ABOUT.test(h)) {
+      const parts = toParts(sorted(x.html));
+      if (!parts.length) continue;
       /* The page's untitled opening and its About the Scheme are one section. */
       const lead = about[0] && !about[0].heading ? about[0] : null;
-      if (lead) lead.parts.push(...toParts(x.html));
-      else about.unshift({ parts: toParts(x.html) });
+      if (lead) lead.parts.push(...parts);
+      else about.unshift({ parts });
     } else if (ELIGIBILITY.test(h)) eligibility = toBlock(x.html);
-    else if (BENEFITS.test(h)) benefits = toBlock(x.html);
+    else if (BENEFITS.test(h)) benefits = /<h6\b/i.test(x.html) ? toBlock(x.html) : { facts: [], parts: toParts(sorted(x.html)) };
     else if (PROCESS.test(h)) process = toParts(x.html);
     else if (FAQS.test(h)) faqs = toBlock(x.html).facts;
     else if (CONTACT.test(h)) contact = toBlock(x.html).facts.filter(usableContact);
@@ -335,6 +344,11 @@ function templateSections(sections: LegacySection[] | null, documents: DbimSchem
     }
     else about.push({ heading: h, parts: toParts(x.html) });
   }
+  const withMoved = (block: DbimSchemeBlock | null, html: string): DbimSchemeBlock | null =>
+    html ? { facts: block?.facts ?? [], parts: [...(block?.parts ?? []), ...toParts(html)] } : block;
+  eligibility = withMoved(eligibility, moved.eligibility);
+  benefits = withMoved(benefits, moved.benefits);
+  if (moved.process) process = [...process, ...toParts(moved.process)];
   return { about, eligibility, benefits, process, faqs, contact, documentParts };
 }
 
@@ -382,8 +396,7 @@ export function dbimSchemeDetail(id: string): DbimSchemeDetail | undefined {
     const web = route.href && /^https?:/.test(route.href) ? route.href : undefined;
     return [{ label: applyLabel(r), href: web }];
   });
-  /* The VISIT bar opens the first web route; the How to Apply box lists the rest, so
-     no two controls on the page go to the same place. */
+  /* The rail's Apply Now opens the first web route. */
   const firstWeb = apply.find((a) => a.href);
   const documents = schemeDocuments(s.id);
   /* A scheme on the live listing takes the listing's name, so its card and its page agree. */
@@ -404,14 +417,13 @@ export function dbimSchemeDetail(id: string): DbimSchemeDetail | undefined {
     scheme: s,
     name,
     summary: s.provides,
-    visit: firstWeb ? { href: firstWeb.href!, label: firstWeb.label } : undefined,
+    applyAt: firstWeb ? { href: firstWeb.href!, label: firstWeb.label } : undefined,
     about: page.about.length ? page.about : [{ parts: [{ kind: "html", html: masterAbout || provides }] }],
     /* Where the page publishes no section of its own, the master's record fills it —
        what the scheme provides is its Benefits, unless it is all About can say. */
     eligibility: page.eligibility ?? { facts: [{ label: "Who Can Apply", text: s.named }], parts: [] },
     benefits: page.benefits ?? (page.about.length || masterAbout ? { facts: [], parts: [{ kind: "html", html: provides }] } : null),
-    apply: apply.filter((a) => a !== firstWeb),
-    steps: apply.map((a) => a.label),
+    routes: apply.map((a) => a.label),
     process: page.process,
     faqs: page.faqs,
     contact: page.contact.length
@@ -444,8 +456,7 @@ function liveSchemeDetail(slug: string): DbimSchemeDetail | undefined {
     about: page.about,
     eligibility: page.eligibility,
     benefits: page.benefits,
-    apply: [],
-    steps: [],
+    routes: [],
     process: page.process,
     faqs: page.faqs,
     contact: page.contact.length ? page.contact : [NODAL, departmentAddress()],
