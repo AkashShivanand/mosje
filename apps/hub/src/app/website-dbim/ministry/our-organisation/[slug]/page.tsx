@@ -51,7 +51,17 @@ export default async function DbimOrganisationPage({ params }: Props) {
   if (!o) notFound();
   const profile = organisationProfile(slug);
   return (
-    <DbimPage title={o.title} crumbs={CRUMBS} path="/ministry/our-organisation" activeTab="/ministry/our-organisation" tabs={DBIM_MENU[0]!.children}>
+    /* The body's own banner photograph goes where DBIM draws every inner page's
+       photograph — behind the title in the page banner — not above the first section. */
+    <DbimPage
+      title={o.title}
+      crumbs={CRUMBS}
+      path="/ministry/our-organisation"
+      activeTab="/ministry/our-organisation"
+      tabs={DBIM_MENU[0]!.children}
+      hero={profile?.banner}
+      heroCrop={Boolean(profile?.banner)}
+    >
       {/* Where the live banner carries no lead (NCSC), the list card's summary stands in. */}
       {profile ? <DbimOrganisationProfile o={{ ...profile, lead: profile.lead ?? o.summary }} /> : <DbimOrganisationBody o={o} />}
     </DbimPage>

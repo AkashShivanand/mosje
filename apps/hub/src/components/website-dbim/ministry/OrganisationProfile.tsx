@@ -83,11 +83,6 @@ export function DbimOrganisationProfile({ o }: { o: DbimOrgProfile }) {
       </aside>
 
       <div className="db-min-rich db-org__main">
-        {o.banner ? (
-          <div className="db-org__banner">
-            <Image src={o.banner} alt="" fill sizes="(min-width: 992px) 860px, 100vw" priority />
-          </div>
-        ) : null}
         {o.sections.map((s) => (
           <OrgSection key={s.anchor} s={s} org={o.title} />
         ))}

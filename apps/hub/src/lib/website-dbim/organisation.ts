@@ -267,7 +267,9 @@ export interface DbimOrgProfile {
   subtitle?: string;
   lead?: string;
   logo?: string;
-  /** The live banner. Decorative: its published alt text is a file name ("DAIC banner"). */
+  /** The live banner, drawn as the DBIM page banner's photograph behind the title
+   *  (the page passes it to DbimPage's `hero`). Decorative: its published alt text
+   *  is a file name ("DAIC banner"). */
   banner?: string;
   actions: DbimOrgLink[];
   facts: { value: string; label: string }[];

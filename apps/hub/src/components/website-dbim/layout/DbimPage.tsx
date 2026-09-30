@@ -32,6 +32,12 @@ export interface DbimPageProps {
    */
   heroHeight?: number;
   /**
+   * A photograph of any shape — an organisation's own banner, usually 4:3 — cropped
+   * to the section banners' 1920:280 band rather than drawn at its own aspect, which
+   * would make the band as tall as the photograph. Phones already fill the band.
+   */
+  heroCrop?: boolean;
+  /**
    * The container's vertical margin, as the reference's templates differ:
    * "default" — `.container.mt-5`, 30px above (13 of 21 captured pages: the ministry,
    * offerings, documents, media, archives and policy templates);
@@ -65,7 +71,7 @@ function heroSize(src: string): { width: number; height: number } {
  * The breadcrumb is "Home / …crumbs"; the page itself is not repeated in it — the h1
  * says it — and the LAST crumb is underlined, as the reference marks it.
  */
-export function DbimPage({ title, crumbs, hero, heroHeight, spacing = "default", tabs, activeTab, path, children }: DbimPageProps) {
+export function DbimPage({ title, crumbs, hero, heroHeight, heroCrop, spacing = "default", tabs, activeTab, path, children }: DbimPageProps) {
   const src = hero ?? dbimMenuFor(path)?.hero ?? DBIM_HEROES.default;
   const size = heroSize(src);
   const trail: DbimCrumb[] = [{ label: "Home", path: "/" }, ...crumbs];
@@ -75,8 +81,14 @@ export function DbimPage({ title, crumbs, hero, heroHeight, spacing = "default",
   return (
     <>
       <section className={`db-hero${hasTabs ? " db-hero--tabs" : ""}`} aria-labelledby="db-page-title">
-        <div className="db-hero__banner" style={heroHeight ? { height: heroHeight } : undefined}>
-          {heroHeight ? (
+        <div className={`db-hero__banner${heroCrop && !heroHeight ? " db-hero__banner--crop" : ""}`} style={heroHeight ? { height: heroHeight } : undefined}>
+          {heroCrop && !heroHeight ? (
+            // A photograph of any shape sits in a frame of its own — the band's right
+            // half from 768 — which it fills; the frame, not the image, is placed.
+            <div className="db-hero__photo">
+              <Image src={src} alt="" fill sizes="(min-width: 768px) 50vw, 100vw" priority className="db-hero__img db-hero__img--fill" />
+            </div>
+          ) : heroHeight ? (
             // A fixed-height banner is a frame the photograph fills; sizing it as an
             // intrinsic image with only its height overridden tripped Next's aspect check.
             <Image src={src} alt="" fill sizes="100vw" priority className="db-hero__img db-hero__img--fill" />

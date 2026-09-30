@@ -54,6 +54,43 @@
     height: 100%;
   }
 
+  [data-design="dbim"] .db-hero__photo {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* Below 768 the band is only as tall as its title, which would stand over the
+     photograph's light areas; the photograph is decorative, so the band stays the
+     key colour there and the title keeps its contrast. */
+  @media (max-width: 767px) {
+    [data-design="dbim"] .db-hero__banner--crop .db-hero__photo {
+      display: none;
+    }
+  }
+
+  /* A photograph of any shape (DbimPage heroCrop) — an organisation's own banner,
+     usually 4:3 and about 1000px wide. Spread across the whole 1920:280 band it keeps
+     a 7:1 strip (faces cut at the eyes) and is enlarged twofold; on the band's right
+     half it keeps a 3:1 frame at its own size, and fades into the key colour where
+     the title stands. From 768 only (below it the band shows no photograph). */
+  @media (min-width: 768px) {
+    [data-design="dbim"] .db-hero__banner--crop {
+      aspect-ratio: 1920 / 280;
+      overflow: hidden;
+    }
+
+    [data-design="dbim"] .db-hero__banner--crop .db-hero__photo {
+      left: auto;
+      width: 50%;
+      /* The fade is a mask: only its alpha counts, so the key colour stands in for opaque. */
+      mask-image: linear-gradient(90deg, transparent, var(--sa-color-primaryScale-800) 40%);
+    }
+
+    [data-design="dbim"] .db-hero__banner--crop::before {
+      display: none;
+    }
+  }
+
   [data-design="dbim"] .db-hero__banner::before {
     position: absolute;
     inset: 0;

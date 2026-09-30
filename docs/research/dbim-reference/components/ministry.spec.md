@@ -167,7 +167,7 @@ dosje.gov.in/organisation/<id>/); shaping: `lib/website-dbim/organisation.ts`; v
 |---|---|
 | Side column: mark (84 high, as the list card), standing, statement, figures, the live banner's buttons | §1's `.visionbox` |
 | On This Page index + the live index's off-page links, sticky ≥992, a wrap of buttons below | new, `.db-org__index` |
-| Banner photograph (decorative), then each live section, h2 + its "Know More" | §1 rich text |
+| Each live section, h2 + its "Know More". The live banner photograph is not here: it is the page banner's photograph (DbimPage `heroCrop`) — on the band's right half from 768, fading into the key colour behind the title; none below 768 (30 Sep 2026) | §1 rich text |
 | Leadership | §2's profile card, three across; tenure and View Profile added |
 | Scheme cards | §3's card, with the scheme's group above its name |
 | Activity tiles (NCSC, DAIC) | §3's card; the live clip-art replaced by a Material Symbol in a primary-100 circle (the Department's review, 29 Sep 2026) |
