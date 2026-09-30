@@ -81,26 +81,26 @@ Handoff file (Offerings › Scheme Discovery, node 52500:8212), read through
 in the chips' order; each opens Offerings › Schemes and Services with that group chosen
 (`?applicant=<id>`), where a new Type of Applicant select filters the live listing.
 
-| Group | Picture in the circle | Schemes it finds |
+| Group | Drawing | Schemes it finds |
 |---|---|---|
-| Students | DBIM Toolkit persona drawing (`toolkit-student.png`) | 15 |
-| Scheduled Castes | icon `diversity_3` | 13 |
-| Other Backward Classes | icon `groups` | 7 |
-| De-notified, Nomadic and Semi-Nomadic Tribes | icon `diversity_1` | 2 (from the scheme master; the live listing tags none) |
-| Safai Karamcharis | icon `health_and_safety` | 3 |
-| Senior Citizens | DBIM Toolkit persona drawing (`toolkit-senior-citizen.png`) | 2 |
-| Transgender Persons | icon `transgender` | 1 |
-| Persons Affected by Substance Use | icon `healing` | 2 |
-| Persons Engaged in Begging | icon `volunteer_activism` | 1 |
-| Victims of Atrocities | icon `balance` | 1 |
-| Voluntary Organisations | icon `handshake` | 5 |
+| Students | `applicant-student.png` | 15 |
+| Scheduled Castes | `applicant-sc.png` | 13 |
+| Other Backward Classes | `applicant-obc.png` | 7 |
+| De-notified, Nomadic and Semi-Nomadic Tribes | `applicant-dnt.png` | 2 (from the scheme master; the live listing tags none) |
+| Safai Karamcharis | `applicant-safai.png` | 3 |
+| Senior Citizens | `applicant-senior.png` | 2 |
+| Transgender Persons | `applicant-tg.png` | 1 |
+| Persons Affected by Substance Use | `applicant-drug.png` | 2 |
+| Persons Engaged in Begging | `applicant-begging.png` | 1 |
+| Victims of Atrocities | `applicant-atrocity.png` | 1 |
+| Voluntary Organisations | `applicant-ngo.png` | 5 |
 
-The Toolkit's Persona Illustrations (24 drawings, read 30 Sep 2026) draw only two of the
-groups. The nine others carry a functional icon for what the Department does for them,
-not a drawn person: a figure labelled with a caste or a circumstance is the depiction the
-page must not invent. DBIM 3.0 A.2: a persona not yet illustrated "may be requested"
-through the Toolkit — the icons give way to drawings as they arrive. The name box
-reserves two lines (the DNT name wraps) so the controls never move between slides.
+The drawings are the MoSJE Handoff file's "Assets — Persona Illustrations (Type of
+Applicant)" (node 52423:7108; instruction 30 Sep 2026 — use these, revise later if
+required), rendered from each frame at 2× (320 px) and palette-compressed to 21–37 KB.
+They replace the interim state of the same day (Toolkit drawings for two groups, icons
+for nine). The name box reserves two lines (the DNT name wraps) so the controls never
+move between slides.
 
 ## States
 

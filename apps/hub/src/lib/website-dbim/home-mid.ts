@@ -9,7 +9,7 @@ import "server-only";
  * update registers (`@/lib/website/content`, through the DBIM Offerings and Documents
  * modules so a row means the same thing on the home page as on its own page), the
  * Department's divisions (`@/data/website`), and the applicant groups finalised with
- * the AS (`./applicants`) with the DBIM Toolkit's drawings (`DBIM_PERSONA_ART`).
+ * the AS (`./applicants`) with the handoff file's drawings (`DBIM_PERSONA_ART`).
  * Mapping and reasoning:
  * docs/research/dbim-reference/components/home-mid.spec.md.
  */
@@ -175,46 +175,38 @@ export interface DbimPersonaSlide {
   slug: string;
   /** The applicant group's name, as the finalised chips word it. */
   label: string;
-  /** The Toolkit's drawing, where it has one for the group. */
-  art?: string;
-  alt?: string;
-  /** Otherwise a DBIM functional icon (Material Symbols Outlined) in the same circle. */
-  icon?: string;
+  art: string;
+  alt: string;
   href: string;
 }
 
 /*
  * THE ELEVEN APPLICANT GROUPS, one slide each (instruction, 30 Sep 2026: the chips
- * finalised with the AS — lib/website-dbim/applicants.ts). Each opens Schemes and
- * Services with that Type of Applicant chosen.
- *
- * The slide keeps the section's design — a picture in the circle, the name beneath.
- * The picture is the DBIM Toolkit's persona drawing where the Toolkit has one
- * (Students, Senior Citizens). For the nine it does not draw, the circle holds a
- * functional icon for what the Department does for the group, not a drawn person:
- * a figure labelled with a caste or a circumstance would be exactly the depiction
- * the page must not invent. The drawings replace the icons as the Toolkit adds them.
+ * finalised with the AS — lib/website-dbim/applicants.ts), each with the handoff file's
+ * drawing for it (`DBIM_PERSONA_ART`). Each opens Schemes and Services with that Type of
+ * Applicant chosen. The alt text says what the drawing shows, not who the group is:
+ * the slide's name already says that.
  */
-const PERSONA_PICTURE: Record<string, { art: keyof typeof DBIM_PERSONA_ART; alt: string } | { icon: string }> = {
-  student: { art: "student", alt: "Drawing of a student with a backpack" },
-  sc: { icon: "diversity_3" },
-  obc: { icon: "groups" },
-  dnt: { icon: "diversity_1" },
-  safai: { icon: "health_and_safety" },
-  senior: { art: "senior", alt: "Drawing of a senior citizen greeting with folded hands" },
-  tg: { icon: "transgender" },
-  drug: { icon: "healing" },
-  begging: { icon: "volunteer_activism" },
-  atrocity: { icon: "balance" },
-  ngo: { icon: "handshake" },
+const PERSONA_ALT: Record<string, string> = {
+  student: "Drawing of a student with a backpack",
+  sc: "Drawing of a man in a shirt with a cloth over his shoulder",
+  obc: "Drawing of a bearded man with a scarf",
+  dnt: "Drawing of a young man in a turban",
+  safai: "Drawing of a worker in a cap holding a broom",
+  senior: "Drawing of an older woman in a sari holding a booklet",
+  tg: "Drawing of a woman in a sari",
+  drug: "Drawing of a young man in a shirt",
+  begging: "Drawing of an older man with a cloth over his shoulder",
+  atrocity: "Drawing of a woman in a sari holding a book",
+  ngo: "Drawing of a woman with a shoulder bag",
 };
 
-/** The home page's personas: every applicant group, in the finalised order. */
-export const DBIM_HOME_PERSONAS: DbimPersonaSlide[] = DBIM_APPLICANT_TYPES.map((a) => {
-  const pic = PERSONA_PICTURE[a.id];
-  const base = { slug: a.id, label: a.label, href: `${dbimHref("/offerings")}?applicant=${a.id}` };
-  if (pic && "art" in pic) return { ...base, art: DBIM_PERSONA_ART[pic.art], alt: pic.alt };
-  return { ...base, icon: pic && "icon" in pic ? pic.icon : "groups" };
+/** The home page's personas: every applicant group that has a drawing, in the finalised order. */
+export const DBIM_HOME_PERSONAS: DbimPersonaSlide[] = DBIM_APPLICANT_TYPES.flatMap((a) => {
+  const art = DBIM_PERSONA_ART[a.id];
+  return art
+    ? [{ slug: a.id, label: a.label, art, alt: PERSONA_ALT[a.id] ?? "", href: `${dbimHref("/offerings")}?applicant=${a.id}` }]
+    : [];
 });
 
 /* ── Important Links ───────────────────────────────────────────────────── */

@@ -103,17 +103,19 @@ export const DBIM_CAMPAIGNS = {
 } as const;
 
 /**
- * The persona drawings of "Explore User Personas" — from the DBIM Toolkit's Persona
- * Illustrations (Visual Components Library, read 30 Sep 2026), as DBIM 3.0 A.2 directs,
- * byte-identical: `static/uploads/2024/09/4e541b145ace234ba381d375aae4c092.png` (a
- * student) and `…/9bb0e69c87897c8155c90aa7a1696f3d.png` (a senior citizen), 320 × 320.
- * Of the eleven applicant groups these are the only two the Toolkit draws; A.2 says a
- * persona not yet illustrated "may be requested" through the Toolkit.
+ * The persona drawings of "Explore User Personas", one per applicant group — the MoSJE
+ * Handoff file's "Assets — Persona Illustrations (Type of Applicant)" (node 52423:7108,
+ * instruction 30 Sep 2026: use these, to be revised later if required). Rendered from
+ * each 160px frame at 2× (320 × 320, transparent), exactly as the frame crops it, then
+ * palette-compressed: 21–37 KB each, inside DBIM 3.0's 100 KB thumbnail limit (6.1.1).
+ * Keyed by the applicant group's id (`lib/website-dbim/applicants.ts`).
  */
-export const DBIM_PERSONA_ART = {
-  student: `${D}/personas/toolkit-student.png`,
-  senior: `${D}/personas/toolkit-senior-citizen.png`,
-} as const;
+export const DBIM_PERSONA_ART: Record<string, string> = Object.fromEntries(
+  ["student", "sc", "obc", "dnt", "safai", "senior", "tg", "drug", "begging", "atrocity", "ngo"].map((id) => [
+    id,
+    `${D}/personas/applicant-${id}.png`,
+  ]),
+);
 
 /**
  * The four tile icons of a persona page — DBIM Visual Library icons (`DbimIcon` names),
