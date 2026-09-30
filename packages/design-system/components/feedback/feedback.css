@@ -262,9 +262,11 @@
     color: var(--sa-text-neutral-bolder);
   }
 
+  /* 21rem is about 42 characters of body-2. A token rather than 42ch so the Figma master's
+     Description can bind the same width — Figma has no ch unit. */
   .ds-empty__description {
     margin: 0;
-    max-width: 42ch;
+    max-width: var(--sa-cmp-emptystate-measure);
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
     color: var(--sa-text-neutral-subtle);

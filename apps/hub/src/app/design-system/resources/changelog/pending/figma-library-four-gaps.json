@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "FOUR SAMAVESH FIGMA GAPS CLOSED, EACH A CASE THE CODE ALREADY HANDLED. Modal gains a Content slot (the code's children) with Show Content, Show Description, Show Close and Show Footer; its padding, bound to font-size variables until now, binds padding/12 and padding/16. Stepper / Collapsed draws its rail from a new Stepper / Dot part (Complete · Current · Upcoming · Error), so any stage can be current — every variant drew stage 2 before. EmptyState gains Title, Description and Show Description, wrapping at a new token cmp/emptystate/measure (21rem), which .ds-empty__description now reads in place of a 42ch literal. Chart Type=Bar stands its bars in bottom-aligned columns built from a new Chart / Bar part (Height 100% to 0% in 5% steps), so a chart with one real reading can be drawn without detaching it."
+}
