@@ -38,7 +38,7 @@
     padding: 0 var(--sa-padding-16);
     font-family: var(--sa-font-latin);
     background-color: var(--sa-bg-neutral-base);
-    border: var(--sa-stroke-1) solid var(--sa-border-neutral-base);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-bolder-default);
     border-radius: var(--sa-shape-8);
     transition:
       border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),

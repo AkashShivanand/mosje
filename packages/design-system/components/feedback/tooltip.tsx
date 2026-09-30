@@ -51,6 +51,10 @@ export interface TooltipProps {
    trigger's width, which is the tooltip's business none of. */
 type Coords = AnchorPosition;
 
+/** How long the bubble outlives the pointer leaving the trigger — enough to
+    cross the `sideOffset` gap onto the bubble, short enough not to linger. */
+const HOVER_GRACE_MS = 120;
+
 /**
  * Flip to the opposite side when the preferred one would overflow the viewport.
  *
@@ -83,8 +87,9 @@ export function computeCoords(
  *
  * Meets WCAG 1.4.13 (Content on Hover or Focus):
  * - **Dismissible** — Escape closes it without moving focus.
- * - **Hoverable** — the bubble stays open while the pointer is over it, so a
- *   user zoomed in can move onto it to read it.
+ * - **Hoverable** — leaving the trigger starts a short grace timer the bubble
+ *   cancels, so the pointer can cross the gap onto it; the bubble then stays
+ *   open while the pointer is over it, so a user zoomed in can read it.
  * - **Persistent** — it stays until blur, pointer-leave, or Escape; it never
  *   times out on its own.
  *
@@ -133,6 +138,22 @@ export function Tooltip({
     setOpen(false);
   }, []);
 
+  /**
+   * WCAG 1.4.13 "hoverable": the pointer has to be able to CROSS the gap from
+   * the trigger onto the bubble. Unmounting on the trigger's mouseleave killed
+   * the bubble before the pointer arrived, so a reader zoomed to 400% could
+   * never move onto it to read it. Leaving either element now schedules the
+   * close; entering the bubble cancels it, and leaving the bubble restarts it.
+   */
+  const hideSoon = React.useCallback(() => {
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => setOpen(false), HOVER_GRACE_MS);
+  }, []);
+
+  const cancelHide = React.useCallback(() => {
+    clearTimeout(timer.current);
+  }, []);
+
   React.useEffect(() => () => clearTimeout(timer.current), []);
 
   // One placement engine for every anchored panel in the estate; see
@@ -147,13 +168,22 @@ export function Tooltip({
   });
 
   // WCAG 1.4.13 "dismissible" — Escape closes without moving focus.
+  //
+  // CAPTURE phase, and `preventDefault`: a tooltip is the top-most layer on the
+  // page, so its Escape is answered first and claimed. Modal (and every other
+  // layer) skips an Escape whose default was prevented; a bubbling document
+  // listener registered after the Modal's ran too late to claim it, so one
+  // Escape dismissed the hint AND the dialog the reader was filling in.
+  // `stopPropagation` never helped — it cannot stop listeners on the same node.
   React.useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") hide();
+      if (e.key !== "Escape" || e.defaultPrevented) return;
+      e.preventDefault();
+      hide();
     };
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+    document.addEventListener("keydown", onKey, true);
+    return () => document.removeEventListener("keydown", onKey, true);
   }, [open, hide]);
 
   const child = children as React.ReactElement<
@@ -186,7 +216,7 @@ export function Tooltip({
     },
     onMouseLeave: (e: React.MouseEvent<HTMLElement>) => {
       child.props.onMouseLeave?.(e);
-      hide();
+      hideSoon();
     },
     onFocus: (e: React.FocusEvent<HTMLElement>) => {
       child.props.onFocus?.(e);
@@ -225,8 +255,8 @@ export function Tooltip({
               visibility: coords ? "visible" : "hidden",
             }}
             // "Hoverable" — moving the pointer onto the bubble keeps it open.
-            onMouseEnter={() => show(true)}
-            onMouseLeave={hide}
+            onMouseEnter={cancelHide}
+            onMouseLeave={hideSoon}
           >
             {content}
           </div>,

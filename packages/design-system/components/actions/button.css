@@ -351,7 +351,11 @@
     --_fill: var(--sa-bg-status-success-bolder);
     --_on: var(--sa-on-bg-status-success-bolder);
     --_color: var(--sa-text-status-success-base);
-    --_ring: color-mix(in oklab, var(--sa-color-status-success) 40%, transparent);
+    /* A SOLID stroke token, not a 40% tint of one. The tint measured 1.94:1 on white
+       (2.07 in dbim-*), under the 3:1 a focus indicator owes (WCAG 1.4.11 / 2.4.13).
+       border/status/success/base is 6.72:1 in blue and navy, 6.25:1 in every dbim-*
+       brand (measured 30 Sep 2026). */
+    --_ring: var(--sa-border-status-success-base);
     /* The inverse ladder — a button on a solid brand surface. Bound PER VARIANT so the
        intent survives the trip. A flat white-alpha border used to be identical for all
        four, which is how `danger` lost its signal, and at 2.25:1 on the ticker bar it
@@ -374,7 +378,9 @@
     --_fill: var(--sa-bg-status-error-bolder);
     --_on: var(--sa-on-bg-status-error-bolder);
     --_color: var(--sa-text-status-error-base);
-    --_ring: color-mix(in oklab, var(--sa-color-status-danger) 40%, transparent);
+    /* Solid for the same reason as success: the 40% tint was 2.0:1 on white.
+       border/status/error/base is 6.72:1 in blue and navy, 6.24:1 in dbim-*. */
+    --_ring: var(--sa-border-status-error-base);
     /* The inverse ladder — a button on a solid brand surface. Bound PER VARIANT so the
        intent survives the trip. A flat white-alpha border used to be identical for all
        four, which is how `danger` lost its signal, and at 2.25:1 on the ticker bar it

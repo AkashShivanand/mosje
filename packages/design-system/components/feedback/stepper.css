@@ -132,7 +132,11 @@
   .ds-stepper__item.is-complete .ds-stepper__marker {
     background-color: var(--sa-color-status-success);
     border-color: var(--sa-border-status-success-base);
-    color: var(--sa-on-bg-brand-primary-bolder);
+    /* The tick sits on the SUCCESS fill, not on the brand fill, so it takes the
+       inverse ink rather than the brand's on-colour: in dbim-green
+       `on-bg-brand-primary-bolder` is dark ink and the tick measured 2.35:1.
+       White in blue and navy, as before. */
+    color: var(--sa-text-neutral-inverse);
   }
 
   .ds-stepper__item.is-current .ds-stepper__marker {

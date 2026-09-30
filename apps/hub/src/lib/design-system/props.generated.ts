@@ -56,7 +56,7 @@ export const GENERATED_PROPS = {
         "type": "boolean",
         "required": false,
         "default": "false",
-        "description": "Render the error state (sets aria-invalid)."
+        "description": "Legacy alias for `status=\"error\"` (sets aria-invalid)."
       },
       {
         "name": "mask",
@@ -71,6 +71,12 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"md\"",
         "description": "Control height, matching the Input scale. Declared here because the native `size` attribute on an `<input>` means character width, which is not a thing this control has — it is a fixed-length identity number."
+      },
+      {
+        "name": "status",
+        "type": "FieldStatus = \"error\" | \"warning\" | \"success\"",
+        "required": false,
+        "description": "The condition the field is in, as on `Input`. `FormField` hands this over, so it is taken here rather than leaking onto the `<input>` as an unknown attribute. Takes precedence over `invalid`."
       }
     ]
   },
@@ -11105,7 +11111,7 @@ export const GENERATED_PROPS = {
         "type": "boolean",
         "required": false,
         "default": "false",
-        "description": "Render the error state (sets aria-invalid)."
+        "description": "Legacy alias for `status=\"error\"` (sets aria-invalid)."
       },
       {
         "name": "size",
@@ -11113,6 +11119,12 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"md\"",
         "description": "Control height, matching the Input scale. Declared here because the native `size` attribute on an `<input>` means character width, which is not a thing this control has — it is a fixed-length identity number."
+      },
+      {
+        "name": "status",
+        "type": "FieldStatus = \"error\" | \"warning\" | \"success\"",
+        "required": false,
+        "description": "The condition the field is in, as on `Input`. `FormField` hands this over, so it is taken here rather than leaking onto the `<input>` as an unknown attribute. Takes precedence over `invalid`."
       }
     ]
   },

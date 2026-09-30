@@ -57,7 +57,10 @@
     height: var(--_track-h);
     padding: var(--_pad);
     border-radius: var(--sa-shape-full);
-    background-color: var(--sa-border-neutral-base);
+    /* The OFF track IS the control's boundary (WCAG 1.4.11): `border/neutral/base` drew it at
+       1.66:1 on white, and the white knob at the same 1.66:1 against it. The bolder neutral
+       clears 3:1 against the page AND against the knob, so both the switch and its position read. */
+    background-color: var(--sa-border-neutral-bolder-default);
     transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
   }
 

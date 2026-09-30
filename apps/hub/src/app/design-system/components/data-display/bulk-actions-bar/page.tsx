@@ -15,7 +15,7 @@ const A11Y: A11yItem[] = [
     level: "AA",
     status: "verified",
     evidence:
-      'The bar is a <div role="status" aria-live="polite"> holding the count, so appearing and re-counting are announced without focus moving. Read from the rendered DOM, and observed changing from "2 applications selected" to "3 applications selected" when a row was ticked on this page.',
+      'The COUNT is the live region (role="status", aria-live="polite"), not the whole bar, so a re-count announces "3 applications selected" rather than re-reading every action button. Read from the rendered DOM on 30 Sep 2026: role="status" sits on .ds-bulk__count.',
     description:
       "Selecting rows is announced — otherwise a screen reader hears only 'checked' and never learns actions have appeared.",
   },
@@ -73,7 +73,8 @@ export default function BulkActionsBarPage(): React.JSX.Element {
               or what can be done with them — so a whole toolbar can appear unremarked.
             </p>
             <p>
-              The bar is a polite live region. <strong>Polite, not assertive</strong>: the reader is
+              The count is a polite live region — the count alone, so a change is announced as the
+              new number rather than as the whole toolbar. <strong>Polite, not assertive</strong>: the reader is
               selecting deliberately, and an assertive announcement would interrupt them on every
               single click.
             </p>

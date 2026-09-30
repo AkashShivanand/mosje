@@ -26,10 +26,14 @@
      drawers, and any task where the user benefits from seeing the context behind.
      ============================================================================ */
 
+  /* The scrim shares the PANEL's rung (popover, 600) and sits under it by DOM
+     order — the backdrop renders first. It was on the dropdown rung (100),
+     below the masthead (500), so the header stayed bright and clickable above
+     the scrim while the page behind it dimmed. */
   .ds-sheet__backdrop {
     position: fixed;
     inset: 0;
-    z-index: var(--sa-z-dropdown);
+    z-index: var(--sa-z-popover);
     background-color: var(--sa-overlay-neutral-boldest);
   }
 
@@ -83,9 +87,12 @@
     to   { transform: translateY(0); }
   }
 
-  .ds-sheet--sm { width: min(400px, 100vw); }
-  .ds-sheet--md { width: min(480px, 100vw); }
-  .ds-sheet--lg { width: min(560px, 100vw); }
+  /* The panel floats `--sa-padding-16` in from BOTH edges it could touch, so
+     the cap is the viewport less two insets. `min(480px, 100vw)` plus the
+     right inset put the panel's left 16px off-screen on every phone. */
+  .ds-sheet--sm { width: min(400px, 100vw - 2 * var(--sa-padding-16)); }
+  .ds-sheet--md { width: min(480px, 100vw - 2 * var(--sa-padding-16)); }
+  .ds-sheet--lg { width: min(560px, 100vw - 2 * var(--sa-padding-16)); }
 
   /* The width presets are edge-anchored geometry; a bottom sheet is full-bleed
      and must win over whichever one the caller passed. */
@@ -140,6 +147,9 @@
   .ds-sheet__footer {
     flex-shrink: 0;
     display: flex;
+    /* Long labels (or two actions at 320px) wrap onto a second row rather than
+       squeezing each button below its label or overflowing the panel. */
+    flex-wrap: wrap;
     justify-content: flex-end;
     gap: var(--sa-stack-8);
     padding: var(--sa-padding-16) var(--sa-padding-24);

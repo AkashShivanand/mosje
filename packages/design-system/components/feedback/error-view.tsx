@@ -120,6 +120,16 @@ function goBackOrHome(): void {
   else window.location.href = "/website";
 }
 
+/**
+ * The default for a primary action that names neither a destination nor a
+ * handler — the 500 preset's "Try Again", which rendered a button that did
+ * nothing when pressed. Module scope for the same reason as `goBackOrHome`.
+ */
+function reloadPage(): void {
+  if (typeof window === "undefined") return;
+  window.location.reload();
+}
+
 export function ErrorView({
   kind = "404",
   badge,
@@ -149,11 +159,15 @@ export function ErrorView({
     }
   };
 
-  const resolvedPrimary = primaryAction ?? {
+  const basePrimary = primaryAction ?? {
     label: kind === "500" ? "Try Again" : "Return to Homepage",
     href: kind === "500" ? undefined : "/website",
     icon: kind === "500" ? "refresh" : "home",
   };
+  // A button with no href and no onClick is a dead control; retrying the page
+  // is the only action "Try Again" can honestly mean.
+  const resolvedPrimary =
+    basePrimary.href || basePrimary.onClick ? basePrimary : { ...basePrimary, onClick: reloadPage };
 
   const resolvedSecondary = secondaryAction ?? {
     label: "Go Back",

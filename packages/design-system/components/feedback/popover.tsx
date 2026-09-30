@@ -164,16 +164,31 @@ export function Popover({
     React.useCallback(() => setOpen(false), [setOpen]),
   );
 
-  // Escape closes from anywhere, including from inside a control in the panel.
+  /*
+   * Escape closes from anywhere — and CLAIMS the key, so a Modal the popover
+   * sits in stays open. Modal ignores an Escape whose default was prevented
+   * (modal.tsx); `stopPropagation` never reached it, because both listeners are
+   * on `document` and the Modal's, registered first, ran first.
+   *
+   * Two halves, because "first" depends on where focus is:
+   * - INSIDE the panel (the usual case — opening moves focus in), the panel's
+   *   own `onKeyDown` below answers. It runs after any control in the panel
+   *   that used Escape for itself and prevented it, and before every document
+   *   listener.
+   * - ANYWHERE ELSE (focus back on the trigger), this document listener answers
+   *   in the CAPTURE phase, which is the only way to run ahead of a Modal's
+   *   bubbling listener that was registered before this one.
+   */
   React.useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key !== "Escape") return;
-      e.stopPropagation();
+      if (e.key !== "Escape" || e.defaultPrevented) return;
+      if (panelRef.current?.contains(e.target as Node)) return;
+      e.preventDefault();
       closeAndRestore();
     };
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+    document.addEventListener("keydown", onKey, true);
+    return () => document.removeEventListener("keydown", onKey, true);
   }, [open, closeAndRestore]);
 
   /**
@@ -224,6 +239,10 @@ export function Popover({
       {mounted &&
         open &&
         createPortal(
+          /* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions --
+             a dialog OWNS Escape (APG dialog pattern); the handler is keyboard-only,
+             adds no pointer affordance, and has to sit on the panel so it answers
+             ahead of a surrounding Modal's document listener. See the effect above. */
           <div
             ref={panelRef}
             id={panelId}
@@ -247,6 +266,11 @@ export function Popover({
               width: matchTriggerWidth ? coords?.triggerWidth : undefined,
               // Measured before painted — see foundations/anchor.ts.
               visibility: coords ? "visible" : "hidden",
+            }}
+            onKeyDown={(e) => {
+              if (e.key !== "Escape" || e.defaultPrevented) return;
+              e.preventDefault();
+              closeAndRestore();
             }}
             onBlur={(e) => {
               // Tab out of the last control: non-modal means the panel closes

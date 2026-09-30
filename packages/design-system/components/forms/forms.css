@@ -182,7 +182,8 @@
   .ds-input::placeholder,
   .ds-textarea::placeholder {
     color: var(--sa-text-neutral-subtle);
-    opacity: 0.7;
+    /* 0.7 blended the ink to 4.48:1 on white — under 1.4.3's 4.5. 0.8 clears it. */
+    opacity: var(--sa-alpha-80);
   }
 
   /* ── Hover ─────────────────────────────────────────────────────────────── */

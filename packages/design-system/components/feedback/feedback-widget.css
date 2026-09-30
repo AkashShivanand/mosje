@@ -76,7 +76,10 @@
     width: 100%;
     box-sizing: border-box;
     padding: var(--sa-padding-8) var(--sa-padding-12);
-    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
+    /* The form-input boundary Input, Select and DatePicker use. `border-neutral-base`
+       measured 1.66:1 against the surface — below the 3:1 a control's boundary
+       needs to be identified (WCAG 1.4.11). */
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-bolder-default);
     border-radius: var(--sa-control-radius);
     background-color: var(--sa-bg-neutral-base);
     color: var(--sa-text-neutral-bolder);

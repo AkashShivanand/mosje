@@ -164,11 +164,20 @@ export function InlineEdit({
         className="ds-inline__input"
         value={draft}
         maxLength={maxLength}
-        disabled={busy}
+        // readOnly, not disabled: disabling the FOCUSED input while the save is in flight
+        // threw focus to <body> (WCAG 2.4.3). readOnly keeps focus here and still stops edits.
+        readOnly={busy}
+        aria-busy={busy || undefined}
         aria-invalid={error ? true : undefined}
         aria-describedby={error || hint ? `${id}-msg` : undefined}
         onChange={(event) => setDraft(event.target.value)}
         onKeyDown={(event) => {
+          // A read-only input still takes keys, which a disabled one did not: without this,
+          // Enter mid-save would send a second write and Escape would drop the pending one.
+          if (busy) {
+            if (event.key === "Enter" || event.key === "Escape") event.preventDefault();
+            return;
+          }
           if (event.key === "Escape") {
             event.preventDefault();
             cancel();

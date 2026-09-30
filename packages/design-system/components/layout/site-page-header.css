@@ -6,13 +6,21 @@
    * trailing one, both stops from the brand ramp so `data-brand` rethemes it.
    * Figma paints the trailing stop as a raw #3f83c6 with no variable behind it;
    * see the component's doc comment for why that hex is not reproduced here.
+   *
+   * The trailing stop is bg/brand/primary/bolder (primary-600 in every brand), and
+   * the band's text takes that ground's PAIRED ink, on/bg/brand/primary/bolder —
+   * not a blanket white. In blue and navy the pair resolves to white (4.64:1 at the
+   * 500 leading edge in blue). In every dbim-* brand rung 500 is snapped to 600, so
+   * the band is solid bolder; white on dbim-green's 600 is 4.32:1, under AA for the
+   * 12px eyebrow and the 16px standfirst, and the pair swaps to the DBIM ink there
+   * (4.67:1). The six other dbim brands keep white (5.37–9.93:1). Measured 30 Sep 2026.
    */
   .sa-siteheader__band {
     display: flex;
     justify-content: center;
     background-image: linear-gradient(
       to left,
-      var(--sa-color-primaryScale-600),
+      var(--sa-bg-brand-primary-bolder),
       var(--sa-color-primaryScale-500)
     );
     isolation: isolate;
@@ -103,7 +111,7 @@
   }
 
   .sa-siteheader__eyebrow {
-    color: var(--sa-text-neutral-inverse);
+    color: var(--sa-on-bg-brand-primary-bolder);
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
     font-weight: var(--sa-font-weight-medium);
@@ -115,7 +123,7 @@
   }
 
   .sa-siteheader__title {
-    color: var(--sa-text-neutral-inverse);
+    color: var(--sa-on-bg-brand-primary-bolder);
     font-size: var(--sa-type-headline-1-size);
     font-weight: var(--sa-font-weight-semibold);
     /*
@@ -138,8 +146,9 @@
    * inverse` is named in the token source but is NOT emitted into the running
    * cascade — it resolves to nothing, which made the whole `border` declaration
    * invalid and dropped it to `none`. The rule simply did not draw. Flagged for
-   * the token owner; until it ships, this uses the inverse token that does
-   * resolve, which is the same white.
+   * the token owner; until it ships, this uses the band's paired INK token, so
+   * the rule always matches the standfirst it marks (white, or the DBIM ink on
+   * dbim-green).
    */
   /*
    * ── ROMAN, NOT ITALIC ───────────────────────────────────────────────────────
@@ -156,9 +165,9 @@
    * why the rule stays and the italic goes.
    */
   .sa-siteheader__lead {
-    border-inline-start: var(--sa-stroke-4) solid var(--sa-text-neutral-inverse);
+    border-inline-start: var(--sa-stroke-4) solid var(--sa-on-bg-brand-primary-bolder);
     padding-inline-start: var(--sa-padding-24);
-    color: var(--sa-text-neutral-inverse);
+    color: var(--sa-on-bg-brand-primary-bolder);
     font-size: var(--sa-type-body-1-size);
     /*
      * Also the paired leading. `1.5` is exact on the WEBSITE, where body-1 is a

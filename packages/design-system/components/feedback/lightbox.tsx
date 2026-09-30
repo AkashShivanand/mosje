@@ -235,7 +235,11 @@ export function Lightbox({
       className={cn("ds-lightbox", className)}
       role="dialog"
       aria-modal="true"
-      aria-labelledby={titleId}
+      // Named by the caption, which only renders when the item HAS one. Pointing
+      // `aria-labelledby` at an absent id leaves the dialog with no accessible
+      // name at all (WCAG 4.1.2), so a caption-less item falls back to a label.
+      aria-labelledby={active.caption ? titleId : undefined}
+      aria-label={active.caption ? undefined : "Media viewer"}
     >
       <div className="ds-lightbox__backdrop" onClick={onClose} aria-hidden="true" />
 

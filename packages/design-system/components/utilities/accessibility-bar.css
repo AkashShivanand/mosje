@@ -297,7 +297,9 @@
     height: var(--sa-cmp-accessibilityBar-pillSize);
     font-weight: var(--sa-font-weight-semibold);
   }
-  .sa-abar__fsbtn:disabled { opacity: var(--sa-alpha-disabled); cursor: default; }
+  /* `[aria-disabled]`, not `:disabled`: the steppers keep focus at their limit (2.4.3),
+     so the dimmed look has to follow the ARIA state, not the native one. */
+  .sa-abar__fsbtn:is(:disabled, [aria-disabled="true"]) { opacity: var(--sa-alpha-disabled); cursor: default; }
 
   /* Icon buttons (accessibility, language) */
   .sa-abar__icbtn {
@@ -355,11 +357,11 @@
      specificity, so a pressed control reads 16% and not 8%. A pointer is almost
      always hovering the thing it presses, so the reverse order would make the
      pressed state unreachable. */
-  .sa-abar__fsbtn:hover:not(:disabled),
+  .sa-abar__fsbtn:hover:not(:disabled, [aria-disabled="true"]),
   .sa-abar__icbtn:hover {
     background-color: var(--sa-cmp-accessibilityBar-hoverBg);
   }
-  .sa-abar__fsbtn:active:not(:disabled),
+  .sa-abar__fsbtn:active:not(:disabled, [aria-disabled="true"]),
   .sa-abar__icbtn:active,
   /* `.is-active` marks the DIRECTION moved in — never the centre. */
   .sa-abar__fsbtn.is-active {
@@ -529,7 +531,7 @@
     cursor: pointer;
   }
 
-  .sa-a11yc__step:disabled {
+  .sa-a11yc__step:is(:disabled, [aria-disabled="true"]) {
     opacity: 0.4;
     cursor: default;
   }

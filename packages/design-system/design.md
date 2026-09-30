@@ -1544,7 +1544,7 @@ for composing something those two do not cover.
 
 | Do | Don't |
 | :--- | :--- |
-| Auto-dismiss success toasts after 4 seconds. Leave error and warning toasts persistent until manually dismissed. | Do not auto-dismiss error toasts — users may not have read the message. |
+| Auto-dismiss success and info toasts after 3 seconds, pausing while hovered or focused. Leave error and warning toasts persistent until manually dismissed. | Do not auto-dismiss error toasts — users may not have read the message. |
 | Position toasts in bottom-right (desktop) or bottom-centre (mobile). | Do not stack more than 3 toasts simultaneously — queue overflow toasts. |
 | Use `useToast()` from the design system for all notifications. | Do not use browser `alert()`, `confirm()`, or `prompt()`. |
 | Use toasts for: save confirmation, copy success, brief status updates. | Do not use toasts for critical errors, blocking confirmations, or multi-line content — use Modal or inline Alert instead. |
@@ -2762,7 +2762,7 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 #### Toast / useToast
 **Purpose**: Transient notification system.  
 **Usage**: `const toast = useToast(); toast.success("Saved!");`  
-**Rules**: Success toasts auto-dismiss (4s). Error/warning toasts are persistent. Queue overflow toasts — never display more than 3 simultaneously.
+**Rules**: Success and info toasts auto-dismiss (3s, `durationMs`), pausing on hover and focus-within (WCAG 2.2.1). Error/warning toasts are persistent. Queue overflow toasts — never display more than 3 simultaneously.
 
 #### Loader
 **Purpose**: Progress indicator for async operations.  

@@ -48,8 +48,9 @@ export interface BulkActionsBarProps {
  * **The count is announced, not just drawn.** Selecting rows changes nothing a
  * screen reader would notice on its own: the checkbox says "checked" and the
  * page says nothing about how many are now selected or what can be done with
- * them. The bar is a polite live region, so the count and the fact that actions
- * have appeared are read out as the selection grows.
+ * them. The COUNT is a polite live region — the count alone, not the bar — so
+ * "3 applications selected" is read out as the selection grows, without every
+ * action button being re-read on each change.
  *
  * **Clearing is always offered.** A reader who has selected forty rows by
  * accident — and on a long table with a shift-click that is easy — needs one
@@ -77,14 +78,14 @@ export function BulkActionsBar({
   const canExtend = total !== undefined && onSelectAll !== undefined && total > count;
 
   return (
-    <div
-      className={cn("ds-bulk", className)}
-      // Polite, not assertive: the reader is selecting rows deliberately, and an
-      // assertive announcement would interrupt them on every click.
-      role="status"
-      aria-live="polite"
-    >
-      <span className="ds-bulk__count">
+    <div className={cn("ds-bulk", className)}>
+      {/* THE LIVE REGION IS THE COUNT, NOT THE BAR. With `role="status"` on the whole
+          bar, every change re-read every button in it — "3 applications selected,
+          Select all 40 applications, Approve, Reject, Clear selection" on each
+          click. Only the count changes meaningfully, so only the count speaks.
+          Polite, not assertive: the reader is selecting rows deliberately, and an
+          assertive announcement would interrupt them on every click. */}
+      <span className="ds-bulk__count" role="status" aria-live="polite" aria-atomic="true">
         {count} {word} selected
       </span>
 

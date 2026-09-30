@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import type { FieldSize } from "./field-types";
+import { resolveFieldStatus, type FieldSize, type FieldStatus } from "./field-types";
 import { digitsOnly, formatAadhaar, isValidAadhaar, maskAadhaar } from "../../utils/india-id";
 import "./forms.css";
 import "./india-id.css";
@@ -16,7 +16,13 @@ export interface AadhaarInputProps
   value: string;
   /** Called with raw digits (never the formatted string). */
   onValueChange: (digits: string) => void;
-  /** Render the error state (sets aria-invalid). @default false */
+  /**
+   * The condition the field is in, as on `Input`. `FormField` hands this over, so it is
+   * taken here rather than leaking onto the `<input>` as an unknown attribute. Takes
+   * precedence over `invalid`.
+   */
+  status?: FieldStatus;
+  /** Legacy alias for `status="error"` (sets aria-invalid). @default false */
   invalid?: boolean;
   /**
    * Control height, matching the Input scale. Declared here because the native
@@ -74,7 +80,7 @@ function caretAfterDigits(str: string, n: number): number {
  */
 export const AadhaarInput = React.forwardRef<HTMLInputElement, AadhaarInputProps>(
   function AadhaarInput(
-    { value, onValueChange, invalid = false, size = "md", mask = true, className, onFocus, onBlur, ...rest },
+    { value, onValueChange, status, invalid = false, size = "md", mask = true, className, onFocus, onBlur, ...rest },
     forwardedRef,
   ) {
     const innerRef = React.useRef<HTMLInputElement | null>(null);
@@ -91,6 +97,10 @@ export const AadhaarInput = React.forwardRef<HTMLInputElement, AadhaarInputProps
     );
 
     const complete = value.length === 12;
+    // A complete number that fails the Verhoeff check is an error in its own right, so the
+    // border draws it even before the caller's validation has run.
+    const checkFailed = complete && !isValidAadhaar(value);
+    const resolved = resolveFieldStatus(status, invalid) ?? (checkFailed ? "error" : undefined);
     const masked = mask && complete && !focused;
     const display = masked ? maskAadhaar(value) : formatAadhaar(value);
 
@@ -117,6 +127,7 @@ export const AadhaarInput = React.forwardRef<HTMLInputElement, AadhaarInputProps
         type="text"
         className={cn("ds-input", `ds-input--${size}`, "ds-input--aadhaar", className)}
         data-size={size}
+        data-status={resolved}
         value={display}
         onChange={handleChange}
         onFocus={(e) => {
@@ -133,7 +144,7 @@ export const AadhaarInput = React.forwardRef<HTMLInputElement, AadhaarInputProps
         autoComplete="off"
         spellCheck={false}
         maxLength={14 /* 12 digits + 2 grouping spaces */}
-        aria-invalid={invalid || (complete && !isValidAadhaar(value)) || undefined}
+        aria-invalid={resolved === "error" || checkFailed || undefined}
         {...rest}
       />
     );
