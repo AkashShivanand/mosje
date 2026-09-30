@@ -15,7 +15,9 @@ import {
   isArchived,
 } from "@/components/website-next/ui/records";
 import { SCHEME_GROUPS, SCHEME_IMAGE, listedScheme, listedSchemes, type ListedScheme } from "@/lib/website-shared/scheme-listing";
+import { SD_SCHEMES } from "@/lib/explorations/service-discovery-master";
 import { dbimFeedTitle } from "./home-mid";
+import { DBIM_APPLICANT_TYPES } from "./applicants";
 
 /**
  * The DBIM design's Offerings pages, read from the estate's own content.
@@ -52,6 +54,8 @@ export interface DbimSchemeCard {
   line: string;
   /** The Category select's values: every live group the scheme is filed under. */
   categories: string[];
+  /** The Type of Applicant select's values: the applicant groups (`DBIM_APPLICANT_TYPES` ids) it serves. */
+  audiences: string[];
   art: { src: string; position: string };
 }
 
@@ -79,8 +83,29 @@ export function dbimSchemeCards(): DbimSchemeCard[] {
     name: s.title,
     line: s.who.length ? `Who It Is For: ${s.who.join(", ")}` : "",
     categories: s.groups,
+    audiences: audiencesOf(s),
     art: { src: SCHEME_IMAGE.src, position: SCHEME_IMAGE.position },
   }));
+}
+
+const APPLICANT_BY_LABEL = new Map(DBIM_APPLICANT_TYPES.map((a) => [a.label, a.id] as const));
+const MASTER_WHO = new Map(SD_SCHEMES.map((s) => [s.id, s.who] as const));
+
+/**
+ * The applicant groups a listed scheme serves: its live "Who It Is For" tags (ten of
+ * the eleven groups use the live wording exactly), joined with the scheme master's own
+ * list where the master holds the scheme. The join is what finds De-notified, Nomadic
+ * and Semi-Nomadic Tribes, which the live listing tags on no scheme.
+ */
+function audiencesOf(s: ListedScheme): string[] {
+  const ids = new Set<string>();
+  for (const w of s.who) {
+    const id = APPLICANT_BY_LABEL.get(w);
+    if (id) ids.add(id);
+  }
+  const master = masterForLegacy(s.slug);
+  for (const id of (master && MASTER_WHO.get(master)) || []) ids.add(id);
+  return DBIM_APPLICANT_TYPES.map((a) => a.id).filter((id) => ids.has(id));
 }
 
 /* ─── Scheme details ────────────────────────────────────────────────────── */

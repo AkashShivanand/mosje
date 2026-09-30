@@ -22,7 +22,13 @@ export function PersonaCarousel({ slides }: { slides: DbimPersonaSlide[] }) {
     <div className="db-hm-persona" role="group" aria-roledescription="carousel" aria-label="User Personas">
       <div className="db-hm-persona__slide" aria-live="polite" aria-atomic="true">
         <Link key={slide.slug} href={slide.href} className="db-hm-persona__link" aria-label={`${slide.label}, ${index + 1} of ${slides.length}`}>
-          <Image src={slide.art} alt={slide.alt} width={260} height={260} className="db-hm-persona__img" />
+          {slide.art ? (
+            <Image src={slide.art} alt={slide.alt ?? ""} width={260} height={260} className="db-hm-persona__img" />
+          ) : (
+            <span className="db-hm-persona__img db-hm-persona__img--icon" aria-hidden="true">
+              <Icon name={slide.icon ?? "groups"} size={64} weight={400} />
+            </span>
+          )}
           <span className="db-hm-persona__name">{slide.label}</span>
         </Link>
       </div>

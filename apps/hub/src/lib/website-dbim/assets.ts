@@ -103,15 +103,16 @@ export const DBIM_CAMPAIGNS = {
 } as const;
 
 /**
- * The persona drawings of "Explore User Personas": the live dosje.gov.in's own two
- * (268 × 268 PNG, read 30 Sep 2026 — `wp-content/uploads/2025/11/Government-Official.png`
- * and `2026/04/Beneficiary.png`), byte-identical. The reference build's three
- * (`persona-1…3.png`) showed an IT professional, a business owner and a researcher,
- * none of them an audience the Department's home page names.
+ * The persona drawings of "Explore User Personas" — from the DBIM Toolkit's Persona
+ * Illustrations (Visual Components Library, read 30 Sep 2026), as DBIM 3.0 A.2 directs,
+ * byte-identical: `static/uploads/2024/09/4e541b145ace234ba381d375aae4c092.png` (a
+ * student) and `…/9bb0e69c87897c8155c90aa7a1696f3d.png` (a senior citizen), 320 × 320.
+ * Of the eleven applicant groups these are the only two the Toolkit draws; A.2 says a
+ * persona not yet illustrated "may be requested" through the Toolkit.
  */
 export const DBIM_PERSONA_ART = {
-  "government-official": `${D}/personas/government-official.png`,
-  beneficiary: `${D}/personas/beneficiary.png`,
+  student: `${D}/personas/toolkit-student.png`,
+  senior: `${D}/personas/toolkit-senior-citizen.png`,
 } as const;
 
 /**
