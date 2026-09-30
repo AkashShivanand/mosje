@@ -13,9 +13,9 @@ export interface OfferingsTab {
 
 /**
  * Key Offerings' two full-width tabs (Schemes and Services | Vacancies), as a real
- * tablist: roving tabindex, ←/→/Home/End move and select, each tab names its panel.
+ * tablist — also an organisation page's Latest Updates (Notices | Audit Reports | …): roving tabindex, ←/→/Home/End move and select, each tab names its panel.
  */
-export function OfferingsTabs({ tabs }: { tabs: OfferingsTab[] }) {
+export function OfferingsTabs({ tabs, label = "Key Offerings" }: { tabs: OfferingsTab[]; /** The tablist's accessible name. */ label?: string }) {
   const [active, setActive] = useState(0);
   const base = useId();
   const refs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -37,7 +37,7 @@ export function OfferingsTabs({ tabs }: { tabs: OfferingsTab[] }) {
 
   return (
     <div className="db-hm-tabs">
-      <div role="tablist" aria-label="Key Offerings" className="db-hm-tabs__list" onKeyDown={onKeyDown}>
+      <div role="tablist" aria-label={label} className="db-hm-tabs__list" onKeyDown={onKeyDown}>
         {tabs.map((t, i) => (
           <Button
             key={t.id}

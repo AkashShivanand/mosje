@@ -44,7 +44,21 @@ interface EmbedWindow {
  * requests a minute — on every visit to the home page, for a band most readers scroll
  * past. Gated on intent, as data-state-completeness.md §5.1 asks of anything heavy.
  */
-export function DbimSocialFeed({ feed }: { feed: Feed }) {
+export function DbimSocialFeed({
+  feed,
+  account = DBIM_SOCIAL_ACCOUNT,
+  offerPosts = true,
+}: {
+  feed: Feed;
+  /** Whose account the card names. An organisation's page passes the body's name. */
+  account?: string;
+  /**
+   * Whether "Show Latest Posts" is offered. The posts it loads are the Department's
+   * (DBIM_X_POSTS and the rest); a body's own account has no such list here, so its
+   * card keeps the embed's shape and the link to the account, and nothing more.
+   */
+  offerPosts?: boolean;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const embeds = useRef<HTMLDivElement>(null);
   const [live, setLive] = useState(false);
@@ -95,7 +109,7 @@ export function DbimSocialFeed({ feed }: { feed: Feed }) {
       ref={ref}
       className="db-hb-social__body"
       role="region"
-      aria-label={`Latest from the Department on ${feed.networkName}`}
+      aria-label={`Latest from ${account === DBIM_SOCIAL_ACCOUNT ? "the Department" : account} on ${feed.networkName}`}
       tabIndex={0}
     >
       {live ? (
@@ -146,7 +160,7 @@ export function DbimSocialFeed({ feed }: { feed: Feed }) {
             <div className="db-hb-feed__who">
               <span className="db-hb-feed__avatar" aria-hidden="true" />
               <span>
-                <span className="db-hb-feed__name">{DBIM_SOCIAL_ACCOUNT}</span>
+                <span className="db-hb-feed__name">{account}</span>
                 <span className="db-hb-feed__handle">{feed.handle}</span>
               </span>
             </div>
@@ -164,6 +178,7 @@ export function DbimSocialFeed({ feed }: { feed: Feed }) {
           </div>
           <div className="db-hb-feed__cta">
             {more}
+            {offerPosts ? (
             <Button
               variant="primary"
               appearance="outlined"
@@ -174,6 +189,7 @@ export function DbimSocialFeed({ feed }: { feed: Feed }) {
             >
               {offline ? "Posts Load When You Are Back Online" : "Show Latest Posts"}
             </Button>
+            ) : null}
           </div>
         </div>
       )}

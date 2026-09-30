@@ -235,7 +235,7 @@ const OFFICE_ORDER: [group: string, label: string][] = [
 ];
 
 /** Free-mail domains are a person's own account, not an office's (CON-09). */
-const FREE_MAIL = /(gmail|googlemail|yahoo|ymail|hotmail|outlook|live|rediffmail|rediff|aol|icloud|proton(mail)?)(\[dot\]|\.)/i;
+export const FREE_MAIL = /(gmail|googlemail|yahoo|ymail|hotmail|outlook|live|rediffmail|rediff|aol|icloud|proton(mail)?)(\[dot\]|\.)/i;
 
 /** Head of the office first, then the office's staff by seniority. */
 function rank(designation: string): number {
@@ -269,11 +269,17 @@ function splitList(raw: string | undefined): string[] {
  * ingested from dosje.gov.in on 18 Sep 2026). Records without an office — the three
  * Ministers' leadership records — are drawn in the chart above the tables.
  */
-export function teamOffices(): DbimTeamOffice[] {
+export function teamOffices(
+  /** The register's organisation code; an organisation's directory passes its own. */
+  organisation = "MoSJE",
+  /** Where a record names no office: the Department's are the Ministers (drawn in the chart);
+   *  an organisation's are its whole staff, under this office. */
+  ungrouped?: string,
+): DbimTeamOffice[] {
   const byGroup = new Map<string, DbimTeamMember[]>();
   const seen = new Set<string>();
-  for (const o of getOfficialsByOrganisation("MoSJE")) {
-    const group = o.group?.trim().toUpperCase();
+  for (const o of getOfficialsByOrganisation(organisation)) {
+    const group = o.group?.trim().toUpperCase() || ungrouped?.toUpperCase();
     if (!group) continue;
     const key = `${group}|${personKey(o.title)}`;
     if (seen.has(key)) continue;
@@ -298,7 +304,7 @@ export function teamOffices(): DbimTeamOffice[] {
   ];
   return order.map((group) => ({
     id: group.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""),
-    label: known.get(group) ?? group,
+    label: known.get(group) ?? (ungrouped && group === ungrouped.toUpperCase() ? ungrouped : group),
     members: [...byGroup.get(group)!].sort(
       (a, b) => rank(a.designation) - rank(b.designation) || a.name.localeCompare(b.name),
     ),
