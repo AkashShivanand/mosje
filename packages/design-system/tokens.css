@@ -1074,6 +1074,7 @@
   --sa-cmp-stepper-node-sm: var(--sa-ref-size-24);
   --sa-cmp-stepper-track: var(--sa-ref-border-width-sm);
   --sa-cmp-stepper-dot: var(--sa-ref-size-8);
+  --sa-cmp-emptystate-measure: 21rem;
   --sa-cmp-sitefooter-ink-subtle: var(--sa-color-primaryScale-100);
   --sa-cmp-sitefooter-ink-subtler: var(--sa-color-primaryScale-200);
   --sa-cmp-sitefooter-rule-base: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-64) * 100%), transparent);

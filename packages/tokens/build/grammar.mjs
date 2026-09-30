@@ -285,7 +285,11 @@ export const COMPONENT = new Set(["action", "control", "spinner", "button", "car
   // 2026-09-19: `navbar` owns the two sizes the portal phone layers introduced — the working bar's
   // height and the BETA sash's length. Tier 3 because neither is a shared step: the rest of the
   // masthead binds control/height/md and icon/size/*.
-  "navbar"]);
+  "navbar",
+  // 2026-09-30: `emptystate` owns the description's measure — 21rem, the width the EmptyState
+  // master binds so its Description property wraps where .ds-empty__description does. Tier 3
+  // because it is narrower than container/measure on purpose: an empty state sits in a panel.
+  "emptystate"]);
 export const INTENT = new Set(["brand", "success", "destructive", "neutral", "light"]);
 export const ACTION_VARIANT = new Set(["primary", "secondary", "tertiary", "tonal"]);
 /**
