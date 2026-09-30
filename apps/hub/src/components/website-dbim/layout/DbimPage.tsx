@@ -2,7 +2,7 @@ import type * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { dbimHref, type DbimLink } from "@/lib/website-dbim/nav";
+import { dbimHeroFor, dbimHref, type DbimLink } from "@/lib/website-dbim/nav";
 import { DbimTabBar } from "./DbimTabBar";
 import "./page.css";
 
@@ -24,11 +24,11 @@ export interface DbimPageProps {
   /** Breadcrumb trail AFTER "Home" and BEFORE the page itself, e.g. [{ label: "Ministry", path: "/ministry" }]. */
   crumbs: DbimCrumb[];
   /**
-   * A photograph OF this page's subject — the organisation's building, the scheme's own
-   * picture — at 1920×280. Omit it and the banner is the plain primary band (the DBIM
-   * Toolkit's banner colour). A stock photograph that says nothing about the page is not
-   * a hero: the reference template's laptops and server rooms were removed on 30 Sep 2026
-   * for exactly that reason (DBIM 3.0 §6.2.6 subject and story, §6.1.3 usage rights).
+   * A photograph for this page at 1920×280, overriding the page-by-page table in
+   * `dbimHeroFor` (lib/website-dbim/nav.ts). Where neither gives one, the banner is the
+   * plain primary band, the DBIM Toolkit's banner colour. A photograph that says nothing
+   * about its page is not a hero — the office laptop over a drug-demand-reduction scheme
+   * was the case named on 30 Sep 2026 (DBIM 3.0 §6.2.6, subject and story).
    */
   hero?: string;
   /**
@@ -63,7 +63,8 @@ export interface DbimPageProps {
  * The breadcrumb is "Home / …crumbs"; the page itself is not repeated in it — the h1
  * says it — and the LAST crumb is underlined, as the reference marks it.
  */
-export function DbimPage({ title, crumbs, hero, heroHeight, spacing = "default", tabs, activeTab, path, children }: DbimPageProps) {
+export function DbimPage({ title, crumbs, hero: heroProp, heroHeight, spacing = "default", tabs, activeTab, path, children }: DbimPageProps) {
+  const hero = heroProp ?? dbimHeroFor(path);
   const trail: DbimCrumb[] = [{ label: "Home", path: "/" }, ...crumbs];
   // (the reference marks Home active too, so Home alone is underlined on a page with no crumbs)
   const hasTabs = Boolean(tabs && tabs.length > 0);

@@ -110,7 +110,55 @@ export const DBIM_POLICY_TABS: DbimLink[] = [
   { label: "Accessibility Statement", path: "/policies/accessibility-statement" },
 ];
 
-/** The menu entry a path belongs to, for the active state and the page banner. */
+/*
+ * THE BANNER PHOTOGRAPH, PAGE BY PAGE (30 Sep 2026).
+ *
+ * A photograph stays only where it says something true about the page; everywhere else
+ * the banner is the plain primary band. The instruction: "use the relevant image or
+ * remove it" — the reference template's office laptop over the National Action Plan for
+ * Drug Demand Reduction is the case it named. Decided page by page, not by section:
+ *
+ *   Ministry, all tabs, and Feedback — the abstract pattern; neutral, pictures nothing false.
+ *   Vacancies, Tenders — the office desk: recruitment and e-procurement are office work.
+ *   Schemes and Services and every scheme — NO photograph. A laptop says nothing about a
+ *     scheme, and the live listing has no per-scheme picture (one emblem for all 28).
+ *   Documents, all tabs — the notebook and pen.
+ *   Contact Us, Directory, RTI, Grievance Redressal — the phone in hand: contacting the
+ *     Department. Parliament Questions and Events are not contact, so no photograph.
+ *   Website Policies, all tabs, and Cookie Policy — the laptop showing a website's code.
+ *   Related Links — devices on a network: the page links out to other sites.
+ *   Help (a robot hand), and Media, What's New, Important Links, Sitemap, Search,
+ *     Personas and Archives (a plain grey fill, never a photograph) — the band.
+ *
+ * Longest matching rule wins, so a section rule can be narrowed by a page rule; `null`
+ * is an explicit "no photograph here".
+ */
+const HERO = "/website/dbim/heroes";
+const HERO_RULES: ReadonlyArray<[path: string, src: string | null]> = [
+  ["/ministry", `${HERO}/ministry.jpg`],
+  ["/feedback", `${HERO}/ministry.jpg`],
+  ["/offerings/vacancies", `${HERO}/offerings.jpg`],
+  ["/offerings/tenders", `${HERO}/offerings.jpg`],
+  ["/documents", `${HERO}/documents.jpg`],
+  ["/connect", `${HERO}/connect.jpg`],
+  ["/connect/parliament-questions", null],
+  ["/connect/events", null],
+  ["/policies", `${HERO}/policies.jpg`],
+  ["/cookies", `${HERO}/policies.jpg`],
+  ["/related-links", `${HERO}/related-links.jpg`],
+];
+
+/** The banner photograph for a DBIM path, or undefined for the plain primary band. */
+export function dbimHeroFor(path: string): string | undefined {
+  let best: [string, string | null] | undefined;
+  for (const rule of HERO_RULES) {
+    const [p] = rule;
+    if ((path === p || path.startsWith(p + "/")) && (!best || p.length > best[0].length)) best = rule;
+  }
+  return best?.[1] ?? undefined;
+}
+
+/** The menu entry a path belongs to, for the active state. */
 export function dbimMenuFor(path: string): DbimMenu | undefined {
   return DBIM_MENU.find((m) => path === m.path || path.startsWith(m.path + "/"));
 }
