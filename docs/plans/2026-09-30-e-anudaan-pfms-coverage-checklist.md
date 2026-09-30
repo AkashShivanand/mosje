@@ -120,6 +120,11 @@ Turnaround. All ✅ in the prototype, and drawn at RP › Payment Reports (six t
     177 component sets.
   - The one local part is the PFMS variant of the NGO form step, and it is built from library parts.
   - No text lacks a style, and no fill or stroke lacks a variable.
+  - Nothing runs past its container: a geometry scan of every row, card and label.
+    - 21 tables had columns wider than their row, cutting off the action buttons. They were refitted.
+    - Back-Filled now shows the payee code and its entry date in one column, as the build does.
+    - Six phone screens had a top bar wider than the screen. It now fills the frame.
+    - Two long text-area labels now wrap.
   - `npm run check:figma-handoff -- --portal E-Anudaan --strict` is conformant.
 - **Build:** 16 pages and their tabs were measured at 1440 and 375, looking for page-level sideways
   scroll and clipped cells.

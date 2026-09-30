@@ -2,7 +2,7 @@
  "portal": "E-Anudaan",
  "file": "evmNmlK8g4VYwJVu2FwSGV",
  "page": "51313:165608",
- "recordedAt": "2026-09-30 (PFMS payment leg complete: 85 screens, every state drawn)",
+ "recordedAt": "2026-09-30 (PFMS payment leg complete: 85 screens, every state drawn; tables refitted)",
  "$comment": "Snapshot of the organised page, read back over REST, in layers-panel (reading) order. Names are plain English with no codes (decided 17 Sep 2026); node ids are stable, so reference screens by id in tools. Regenerate after any structural change.",
  "zones": [
   {
