@@ -263,7 +263,8 @@
     border-radius: var(--sa-shape-4);
   }
 
-  [data-design="dbim"] .db-tools > li:last-child .db-tools__btn.ds-btn {
+  [data-design="dbim"] .db-tools > .db-tools__item--accessibility .db-tools__btn.ds-btn,
+  [data-design="dbim"] .db-tools > .db-tools__item--login .db-tools__btn {
     width: 40px;
   }
 
@@ -279,6 +280,20 @@
   [data-design="dbim"] .db-tools__glyph {
     width: 32px;
     height: 32px;
+  }
+
+  /* 992–1279: the fourth control (Log In) takes 52px from the names, which wrapped
+     to three lines at 1100. Closing Digital India's 15px lead and the controls' side
+     padding gives it back — the header measures what it did with three controls at
+     992, 1100, 1200 and 1279 (30 Sep 2026). */
+  @media (min-width: 992px) and (max-width: 1279px) {
+    [data-design="dbim"] .db-header__di--desktop .db-di {
+      margin-left: 0;
+    }
+
+    [data-design="dbim"] .db-tools > li {
+      padding: 0 var(--sa-padding-2);
+    }
   }
 
   @media (min-width: 1280px) and (max-width: 1536px) {
@@ -395,15 +410,16 @@
       height: 32px;
     }
 
-    [data-design="dbim"] .db-tools > li:nth-child(2) .db-tools__btn.ds-btn {
+    [data-design="dbim"] .db-tools > .db-tools__item--language .db-tools__btn.ds-btn {
       width: 44px;
     }
 
-    [data-design="dbim"] .db-tools > li:last-child .db-tools__btn.ds-btn {
+    [data-design="dbim"] .db-tools > .db-tools__item--accessibility .db-tools__btn.ds-btn,
+    [data-design="dbim"] .db-tools > .db-tools__item--login .db-tools__btn {
       width: 40px;
     }
 
-    [data-design="dbim"] .db-tools > li:not(:nth-child(2)) .db-tools__glyph {
+    [data-design="dbim"] .db-tools > li:not(.db-tools__item--language) .db-tools__glyph {
       width: 24px;
       height: 24px;
     }
