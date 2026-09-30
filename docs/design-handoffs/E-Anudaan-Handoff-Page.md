@@ -213,13 +213,15 @@ text styles; the content is the prototype's seeded case (Sankalp Seva Sansthan, 
 
 | User group (column) | Journey | Desktop | Mobile | Dialogs |
 |---|---|---|---|---|
-| Programme Division — Paying a Sanctioned Grant | Preparing a Payment Advice | 13 | 7 | — |
-| | Authorising a Payment Advice — *Needs Discussion* | 4 | 2 | 8 |
-| | Following a Payment — *Needs Discussion* | 5 | 1 | 1 |
-| Bureau — Setting Up PFMS | Completing Legacy Files — *Needs Discussion* | 1 | 1 | 1 |
+| Programme Division — Paying a Sanctioned Grant | Preparing a Payment Advice | 18 | 7 | — |
+| | Authorising a Payment Advice — *Needs Discussion* | 5 | 2 | 8 |
+| | Following a Payment — *Needs Discussion* | 8 | 1 | 1 |
+| Bureau — Setting Up PFMS | Completing Legacy Files — *Needs Discussion* | 5 | 1 | 2 |
 | | Keeping PFMS Set-Up Current | 8 | 1 | 2 |
-| NGO — Getting Paid | PFMS Payee Code and Payment — *Needs Discussion* | 5 | 1 | — |
+| NGO — Getting Paid | PFMS Payee Code and Payment — *Needs Discussion* | 6 | 3 | — |
 | Officers — Payment Reports | Payment Reports | 6 | 1 | — |
+
+85 screens in all. BRD coverage, screen by screen: `docs/plans/2026-09-30-e-anudaan-pfms-coverage-checklist.md`.
 
 **Why the NGO journey is its own column.** Adding it to `NGO — After Applying` would have made ten journeys in
 one column; the rule allows nine. The credit is the last thing that happens to a grant, so the column sits after
@@ -238,9 +240,19 @@ and the Status page asks a person to decide whether the old ones are replaced.
 registration question, the payee code and its confirmation tick (FR-NGO-001/002). The original is unchanged, so
 no existing screen moved.
 
-**Two library gaps, recorded on the Status page.**
-- SAMAVESH has no current `Loader`, only a deprecated one. The Signing dialog shows a `ProgressBar` instead.
-- The library `Chart` cannot move a bar inside an instance, so it cannot show the single real reading
+**Checked, not assumed.** 85 frames were walked, including the content slots inside library instances.
+- Every instance's component key is one of the SAMAVESH library's 177 component sets.
+- No text lacks a text style, and no fill or stroke lacks a variable.
+- The one local component is the PFMS variant of the NGO form step described above.
+
+**Four library gaps, recorded on the Status page.** (An earlier draft of this section said SAMAVESH had no
+current `Loader`. That was wrong: it has one, and the Signing dialog uses it.)
+- `Modal` has no content slot. Dialogs that hold a form, facts or an alert therefore use the estate's
+  composed dialog, which is built from library parts with every value bound.
+- `Stepper / Collapsed` cannot mark which step is current. Where its fixed dot would point at the wrong step,
+  the dots are hidden, and the counter and step name still read correctly.
+- `EmptyState` holds one line, so an empty state's description sits beneath it.
+- `Chart` cannot move a bar inside an instance, so it cannot show the single real reading
   (July 2026 — 1 error). Failure Trend shows it as a `Ranked Bar Row`; the build draws a bar chart.
 
 **Build notes found while drawing.** A `use_figma` call that clones a frame and then edits instances inside a

@@ -51,7 +51,7 @@ const sameHead = (a: Partial<HeadOfAccount>, b: HeadOfAccount) =>
 
 function Coded({ code, label }: { code: string; label: string }) {
   return (
-    <span className="block min-w-[8rem]">
+    <span className="block">
       <span className="block font-mono text-body-2 text-ink">{code}</span>
       {label && <span className="block text-body-3 text-ink-muted">{label}</span>}
     </span>

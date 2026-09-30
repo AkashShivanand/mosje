@@ -64,7 +64,7 @@ function certificateState(expires: string, today: string): { label: string; stat
 function Person({ id }: { id: RoleId }) {
   const r = ROLES[id];
   return (
-    <span className="block min-w-[10rem]">
+    <span className="block">
       <span className="block text-ink">{r.personName}</span>
       <span className="block text-body-3 text-ink-muted">{r.label}</span>
     </span>
@@ -88,7 +88,7 @@ export default function DesignationsPage() {
       sortValue: (r) => r.ddoCode,
       exportValue: (r) => `${r.ddoCode} ${r.ddoName}`,
       render: (r) => (
-        <span className="block min-w-[12rem]">
+        <span className="block">
           <span className="block font-semibold text-ink">{r.ddoName}</span>
           <span className="block font-mono text-body-3 text-ink-muted">{r.ddoCode}</span>
         </span>

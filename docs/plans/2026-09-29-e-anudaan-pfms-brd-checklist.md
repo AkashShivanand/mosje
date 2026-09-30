@@ -237,6 +237,7 @@ The two partial rows are both outside what a screen can settle:
 
 ## Open
 
+**Done since:** the Figma handoff screens (P-18): 85 screens, every state included. Coverage, screen by screen: `2026-09-30-e-anudaan-pfms-coverage-checklist.md`.
+
 **Still to do:**
-1. **The Figma handoff screens** (P-18 in the delivery tracker).
-2. **The 12 open questions for NeGD** (record §4). Questions 1, 2, 3 and 7 change screens.
+1. **The 12 open questions for NeGD** (record §4). Questions 1, 2, 3 and 7 change screens.

@@ -56,7 +56,7 @@ export default function DdoMappingPage() {
       sortValue: (r) => r.code,
       exportValue: (r) => `${r.code} ${r.name}`,
       render: (r) => (
-        <span className="block min-w-[12rem]">
+        <span className="block">
           <span className="block font-semibold text-ink">{r.name}</span>
           <span className="block font-mono text-body-3 text-ink-muted">{r.code}</span>
         </span>
@@ -67,7 +67,7 @@ export default function DdoMappingPage() {
       header: "PAO",
       exportValue: (r) => `${r.paoCode} ${r.paoName}`,
       render: (r) => (
-        <span className="block min-w-[10rem]">
+        <span className="block">
           <span className="block">{r.paoName}</span>
           <span className="block font-mono text-body-3 text-ink-muted">{r.paoCode}</span>
         </span>

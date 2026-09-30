@@ -142,7 +142,7 @@ export default function LegacyFilesPage() {
               const b = pfms.backfilled.find((x) => x.projectId === c.app.institutionId);
               if (!b) return null;
               return (
-                <span className="block min-w-[12rem]">
+                <span className="block">
                   <span className="block text-ink">
                     {b.bank}, {b.branch}
                   </span>
@@ -154,21 +154,23 @@ export default function LegacyFilesPage() {
             },
           },
           {
+            // The code and the date it was entered share one column, so the register fits at 1440
+            // beside the side menu; as two columns it pushed Status and Actions out of view.
             key: "payee",
             header: "PFMS Payee Code",
             priority: 2,
-            exportValue: (c) => pfms.backfilled.find((x) => x.projectId === c.app.institutionId)?.payeeCode ?? "",
-            render: (c) => <span className="font-mono text-body-2">{pfms.backfilled.find((x) => x.projectId === c.app.institutionId)?.payeeCode}</span>,
-          },
-          {
-            key: "entered",
-            header: "Entered On",
-            priority: 3,
             sortable: true,
             sortValue: (c) => pfms.backfilled.find((x) => x.projectId === c.app.institutionId)?.enteredAt ?? "",
+            exportValue: (c) => pfms.backfilled.find((x) => x.projectId === c.app.institutionId)?.payeeCode ?? "",
             render: (c) => {
               const b = pfms.backfilled.find((x) => x.projectId === c.app.institutionId);
-              return b ? <span className="whitespace-nowrap">{formatDate(b.enteredAt)}</span> : null;
+              if (!b) return null;
+              return (
+                <span className="block">
+                  <span className="block font-mono text-body-2">{b.payeeCode}</span>
+                  <span className="block whitespace-nowrap text-body-3 text-ink-muted">Entered {formatDate(b.enteredAt)}</span>
+                </span>
+              );
             },
           },
         ]

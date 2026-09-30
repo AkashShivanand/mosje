@@ -192,7 +192,7 @@ function PaymentReports() {
 /** The file cell every table here starts with: the NGO, then the application number. */
 function FileCell({ ngo, appId }: { ngo: string; appId: string }) {
   return (
-    <span className="block min-w-[12rem]">
+    <span className="block">
       <span className="block font-semibold text-ink">{ngo}</span>
       <RefText value={appId} className="block text-body-3 text-ink-muted" />
     </span>
@@ -380,7 +380,7 @@ function AgeingReport({ ctx }: { ctx: ReportContext }) {
       sortValue: (r) => r.ddoName,
       exportValue: (r) => `${r.ddoName} ${r.ddoCode}`,
       render: (r) => (
-        <span className="block min-w-[10rem]">
+        <span className="block">
           <span className="block font-semibold text-ink">{r.ddoName}</span>
           <span className="block text-body-3 tabular-nums text-ink-muted">{r.ddoCode}</span>
         </span>
@@ -604,7 +604,7 @@ function FailureReport({ ctx }: { ctx: ReportContext }) {
     { key: "code", header: "PFMS Code", priority: 1, sortable: true, sortValue: (r) => r.code, exportValue: (r) => r.code, render: (r) => <span className="font-mono">{r.code}</span> },
     { key: "category", header: "Category", priority: 2, sortable: true, sortValue: (r) => r.category, exportValue: (r) => r.category, render: (r) => r.category },
     { key: "count", header: "Times Returned", priority: 2, align: "end", sortable: true, sortValue: (r) => r.count, exportValue: (r) => String(r.count), render: (r) => count(r.count) },
-    { key: "message", header: "What It Means", priority: 2, exportValue: (r) => message(r.code), render: (r) => <span className="block min-w-[16rem]">{message(r.code)}</span> },
+    { key: "message", header: "What It Means", priority: 2, exportValue: (r) => message(r.code), render: (r) => <span className="block">{message(r.code)}</span> },
   ];
 
   const summary = (
@@ -663,7 +663,7 @@ function PoolReport({ ctx }: { ctx: ReportContext }) {
       sortValue: (r) => r.pdCode,
       exportValue: (r) => r.pdCode,
       render: (r) => (
-        <span className="block min-w-[10rem]">
+        <span className="block">
           <span className="block font-semibold tabular-nums text-ink">{r.pdCode}</span>
           <span className="block text-body-3 text-ink-muted">{labelOf(pfms.masters.pdCodes, r.pdCode)}</span>
         </span>
@@ -679,7 +679,7 @@ function PoolReport({ ctx }: { ctx: ReportContext }) {
       priority: 3,
       noExport: true,
       render: (r) => (
-        <span className="block min-w-[8rem]">
+        <span className="block">
           <InlineBar value={r.consumed} max={Math.max(1, r.drawn)} tone={r.remaining < POOL_LOW ? "warning" : undefined} />
         </span>
       ),
@@ -746,7 +746,7 @@ function TurnaroundReport({ ctx }: { ctx: ReportContext }) {
       sortValue: (r) => r.longestDays,
       exportValue: (r) => `${r.longestDays} ${r.longestAppId}`,
       render: (r) => (
-        <span className="block min-w-[12rem]">
+        <span className="block">
           <span className="block tabular-nums text-ink">{plural(r.longestDays, "day")}</span>
           <span className="block text-body-3 text-ink-muted">{ngoName(appOf(r.longestAppId)?.ngoId ?? "")}</span>
           <RowLink href={statusHref(r.longestAppId)} label={r.longestAppId} />

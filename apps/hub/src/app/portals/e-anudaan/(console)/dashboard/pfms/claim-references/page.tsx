@@ -85,7 +85,7 @@ export default function ClaimReferencesPage() {
       sortValue: (r) => r.pdCode,
       exportValue: (r) => `${r.pdCode} ${r.pdLabel}`,
       render: (r) => (
-        <span className="block min-w-[12rem]">
+        <span className="block">
           <span className="block font-mono font-semibold text-ink">{r.pdCode}</span>
           <span className="block text-body-3 text-ink-muted">{r.pdLabel}</span>
         </span>

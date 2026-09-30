@@ -82,7 +82,7 @@ export default function ErrorMessagesPage() {
       priority: 2,
       exportValue: (e) => overrides[e.code] ?? e.message,
       render: (e) => (
-        <span className="block min-w-[16rem] max-w-prose">
+        <span className="block max-w-prose">
           <span className="block text-ink">{overrides[e.code] ?? e.message}</span>
           {overrides[e.code] && (
             <Badge status="info" size="sm" className="mt-1">

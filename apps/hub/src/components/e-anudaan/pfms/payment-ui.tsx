@@ -144,9 +144,13 @@ export function caseColumns({ ngoName, action }: CaseColumnOptions): WorklistCol
 }
 
 export function RowLink({ href, label, icon = "arrow_forward", primary }: { href: string; label: string; icon?: string; primary?: boolean }) {
+  // A reference (GIA/2026-27/SMILE/NORTH_WEST_DELHI/03627) is a label too long to hold on one
+  // line: kept unbroken it pushed the Turnaround report 143px past a 375px screen. It breaks at
+  // its slashes; a short action label ("View", "Review") still never wraps.
+  const isRef = label.includes("/");
   return (
-    <Link href={href} className={buttonClasses("primary", primary ? "outlined" : "text", "sm", "whitespace-nowrap")}>
-      {label} <Icon name={icon} size={16} aria-hidden />
+    <Link href={href} className={buttonClasses("primary", primary ? "outlined" : "text", "sm", isRef ? "h-auto text-left" : "whitespace-nowrap")}>
+      {isRef ? <RefText value={label} /> : label} <Icon name={icon} size={16} aria-hidden />
     </Link>
   );
 }
