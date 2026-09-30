@@ -2,6 +2,7 @@ import type * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@mosje/design-system";
+import { DbimSideColumn } from "@/components/website-dbim/layout/SideColumn";
 import { DbimDocRowView } from "@/components/website-dbim/ministry/DocRow";
 import { OfferingsTabs } from "@/components/website-dbim/home/OfferingsTabs";
 import { DbimEmptyState } from "@/components/website-dbim/ui/EmptyState";
@@ -22,65 +23,24 @@ import "./organisation.css";
  * Every part renders only where the live page publishes it, so one template serves
  * a commission with state offices and a foundation with a gallery. Spec §4b.
  *
- * DS Audit: Icon ✅ · DbimDocRowView / DbimLinkRow ✅ (Ministry) · OfferingsTabs ✅ (home,
+ * DS Audit: Icon ✅ · DbimSideColumn ✅ (shared with the scheme page) · DbimDocRowView / DbimLinkRow ✅ (Ministry) · OfferingsTabs ✅ (home,
  * label made a prop) · DbimEmptyState ✅ · DbimSocialFeed ✅ (home, account + offerPosts made props) · profile card `.db-min-profile` ✅
- * (Our Team) · organisation.css ➕ for the parts no DBIM page had: figures, scheme cards,
- * activity tiles, gallery, account cards, contact list, page index.
+ * (Our Team) · organisation.css ➕ for the parts no DBIM page had: scheme cards,
+ * activity tiles, gallery, account cards, contact list.
  */
 export function DbimOrganisationProfile({ o }: { o: DbimOrgProfile }) {
   return (
     <div className="db-min-detail db-org">
-      <aside className="db-org__aside" aria-label={`About ${o.title}`}>
-        <div className="db-min-vision db-org__id">
-          {o.logo ? (
-            <Image className="db-org__logo" src={o.logo} alt="" width={168} height={84} sizes="168px" />
-          ) : null}
-          {o.subtitle ? <p className="db-org__standing">{o.subtitle}</p> : null}
-          {o.lead ? <p className="db-org__lead">{o.lead}</p> : null}
-          {o.facts.length ? (
-            <dl className="db-org__facts">
-              {o.facts.map((f) => (
-                <div key={f.label} className="db-org__fact">
-                  <dt>{f.label}</dt>
-                  <dd>{f.value}</dd>
-                </div>
-              ))}
-            </dl>
-          ) : null}
-          {o.actions.map((a) => (
-            <OrgAnchor key={a.href} link={a} className="db-org__action">
-              {a.label}
-              <Icon name={a.external ? "open_in_new" : "arrow_right_alt"} size={20} weight={400} aria-hidden="true" />
-            </OrgAnchor>
-          ))}
-        </div>
-
-        <nav className="db-org__index" aria-label="On This Page">
-          <p className="db-org__index-title">On This Page</p>
-          <ul>
-            {o.sections.map((s) => (
-              <li key={s.anchor}>
-                <a href={`#${s.anchor}`}>{s.heading}</a>
-              </li>
-            ))}
-          </ul>
-          {o.related.map((g) => (
-            <div key={g.label} className="db-org__related">
-              <p className="db-org__index-title">{g.label}</p>
-              <ul>
-                {g.links.map((l) => (
-                  <li key={l.href}>
-                    <OrgAnchor link={l}>
-                      {l.label}
-                      {l.external ? <Icon name="open_in_new" size={16} weight={400} aria-hidden="true" /> : null}
-                    </OrgAnchor>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </nav>
-      </aside>
+      <DbimSideColumn
+        name={o.title}
+        mark={o.logo}
+        standing={o.subtitle}
+        statement={o.lead}
+        facts={o.facts}
+        actions={o.actions}
+        index={o.sections.map((s) => ({ id: s.anchor, label: s.heading }))}
+        related={o.related}
+      />
 
       <div className="db-min-rich db-org__main">
         {o.sections.map((s) => (

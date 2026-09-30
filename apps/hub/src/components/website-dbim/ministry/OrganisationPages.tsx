@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@mosje/design-system";
 import { DbimDetailLayout } from "@/components/website-dbim/ministry/DetailLayout";
+import { DbimSideFacts } from "@/components/website-dbim/layout/SideColumn";
 import { DbimDocRowView } from "@/components/website-dbim/ministry/DocRow";
 import { DbimTeamOffice } from "@/components/website-dbim/ministry/TeamOffice";
 import { DbimOrgUrlPager } from "@/components/website-dbim/ministry/OrgUrlPager";
@@ -170,14 +171,7 @@ export function DbimEventDetailView({ e, organisation }: { e: DbimEventDetail; o
     <div className="db-min-detail db-min-detail--single db-org db-orgp">
       <div className="db-min-rich">
         {facts.length ? (
-          <dl className="db-org__facts db-orgp__facts">
-            {facts.map((f) => (
-              <div key={f.label} className="db-org__fact">
-                <dt>{f.label}</dt>
-                <dd>{f.value}</dd>
-              </div>
-            ))}
-          </dl>
+          <DbimSideFacts facts={facts} className="db-orgp__facts" />
         ) : null}
         {/* Ingested description from dosje.gov.in, cleaned by cleanHtml(). */}
         {e.descriptionHtml ? <div dangerouslySetInnerHTML={{ __html: e.descriptionHtml }} /> : null}

@@ -163,7 +163,6 @@
   [data-design="dbim"] .db-u-sitemap__home .db-icon,
   [data-design="dbim"] .ds-chart-export__trigger .material-symbols-rounded,
   [data-design="dbim"] .db-mnav__toggle .material-symbols-rounded,
-  [data-design="dbim"] .db-sd__link .material-symbols-rounded,
   [data-design="dbim"] .ds-select__chevron {
     color: var(--sa-color-primaryScale-800);
   }
