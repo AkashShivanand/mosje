@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import * as React from "react";
 import {
   Alert,
   Badge,
   Breadcrumb,
+  Button,
   Card,
   CardBody,
   DescriptionList,
@@ -14,16 +16,26 @@ import {
   ListRow,
   PageHeader,
   SectionTitle,
+  SideSheet,
   buttonClasses,
 } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { formatDate, formatGrant, schemeLabel, statusTone } from "@/lib/e-anudaan/selectors";
 import { statusLabel } from "@/lib/e-anudaan/workflow";
 import { ROLES, reviewKeyOf } from "@/lib/e-anudaan/roles";
+import { STAGE_INFO } from "@/lib/e-anudaan/pfms/stages";
+import type { PaymentCase } from "@/lib/e-anudaan/pfms/selectors";
+import type { RoleId } from "@/lib/e-anudaan/types";
 import { projectTitleFor } from "@/lib/e-anudaan/applicant";
 import { RefText } from "@/components/e-anudaan/worklist-table";
 import { instalmentSchedule, releasePatternFact } from "@/lib/e-anudaan/funding";
 import { ServiceErrorNotice, useFailureOnLoad } from "@/components/e-anudaan/service-error";
+import { usePfms } from "@/lib/e-anudaan/pfms/store";
+import { paymentCase, BLOCKER_TEXT } from "@/lib/e-anudaan/pfms/selectors";
+import { latestRequest } from "@/lib/e-anudaan/pfms/stages";
+import { pfmsError } from "@/lib/e-anudaan/pfms/errors";
+import { formatDateTime } from "@/lib/e-anudaan/format";
+import { PaymentStages, StageBadge, exact, prepareHref, authoriseHref } from "@/components/e-anudaan/pfms/payment-ui";
 
 /**
  * Payment status for a sanctioned application — the live bundle's /finance/payment-status/:id.
@@ -44,10 +56,22 @@ import { ServiceErrorNotice, useFailureOnLoad } from "@/components/e-anudaan/ser
  * them here in a second form is what put two shapes of one figure on the page.
  *
  * Width: fluid like every portal surface (X-07), the two short cards side by side from xl.
+ *
+ * PFMS payment leg, 29 Sep 2026 (docs/plans/2026-09-29-e-anudaan-pfms.md): the four fixed steps —
+ * Sanctioned, Bill Raised, Released to PFMS, Credited to NGO — said "Bill Raised: Done" on every
+ * sanctioned file, because nothing recorded a bill. They are replaced by the payment's real stage,
+ * read from `paymentCase()` (the one expression the queues, the review screen and the NGO also
+ * read), with what PFMS returned at each step: the bill and token, the voucher, each beneficiary's
+ * UTR, the requests sent, and — when PFMS returns a bill — the reason (FR-STS-001 to 006).
+ *
+ * DS Audit: Breadcrumb ✅ · PageHeader ✅ · Card ✅ · SectionTitle ✅ · DescriptionList ✅ · ListGroup ✅ ·
+ * Badge ✅ · Alert ✅ · SideSheet ✅ · VerticalTimeline ✅ · Stepper (via PaymentStages) ✅ — composed.
  */
 export default function PaymentStatusPage() {
   const params = useParams<{ appId: string }>();
   const { state, findApp } = useEAnudaan();
+  const { pfms } = usePfms();
+  const [showReturn, setShowReturn] = React.useState(false);
   const app = findApp(decodeURIComponent(params.appId));
   const role = state.session ? ROLES[state.session] : null;
   // The status is read from PFMS when the page opens; that read can fail (error-catalogue.ts).
@@ -67,16 +91,11 @@ export default function PaymentStatusPage() {
   // Payment Status is opened from Sanctioned Applications; an officer without that register goes back home.
   const register = role?.nav.find((n) => n.href.endsWith("/sanctioned"));
 
-  // Released is read from the release the Under Secretary recorded on the review screen, not
-  // from the status alone, so this page and the review's Instalments panel give one answer.
-  const released = !!app.release;
-  const steps = [
-    { label: "Sanctioned", done: !!app.sanction },
-    { label: "Bill Raised", done: !!app.sanction },
-    { label: "Released to PFMS", done: released },
-    { label: "Credited to NGO", done: released },
-  ];
   const schedule = instalmentSchedule(state, app);
+  const pc = app.sanction ? paymentCase(state, pfms, app) : null;
+  const advice = pc?.advice;
+  const req = advice ? latestRequest(advice) : undefined;
+  const me = state.session;
 
   return (
     <div className="space-y-5">
@@ -102,9 +121,13 @@ export default function PaymentStatusPage() {
         }
         actions={
           <div className="flex min-w-0 max-w-full flex-wrap items-center gap-3">
-            <Badge status={statusTone(app.status)} className="h-auto max-w-full whitespace-normal">
-              {statusLabel(app)}
-            </Badge>
+            {pc && !pc.paidBeforeIntegration ? (
+              <StageBadge stage={pc.stage} />
+            ) : (
+              <Badge status={statusTone(app.status)} className="h-auto max-w-full whitespace-normal">
+                {statusLabel(app)}
+              </Badge>
+            )}
             {key && (
               <Link
                 href={`/portals/e-anudaan/dashboard/sm2/${key}/review/${encodeURIComponent(app.id)}`}
@@ -119,22 +142,9 @@ export default function PaymentStatusPage() {
 
       <ServiceErrorNotice failure={failure} homeHref={role?.home} onRetry={clearFailure} onDismiss={clearFailure} />
 
-      <div className="grid gap-5 xl:grid-cols-2 xl:items-start">
-        <Card variant="outlined">
-          <CardBody className="space-y-4">
-            <SectionTitle title="Disbursement" />
-            <ListGroup aria-label="Disbursement steps">
-              {steps.map((s) => (
-                <ListRow
-                  key={s.label}
-                  title={s.label}
-                  trailing={<Badge status={s.done ? "success" : "neutral"}>{s.done ? "Done" : "Pending"}</Badge>}
-                />
-              ))}
-            </ListGroup>
-          </CardBody>
-        </Card>
+      {pc && <PaymentProgress pc={pc} me={me} onShowReturn={() => setShowReturn(true)} />}
 
+      <div className="grid gap-5 xl:grid-cols-2 xl:items-start">
         <Card variant="outlined">
           <CardBody className="space-y-4">
             <SectionTitle title="Sanction" />
@@ -148,7 +158,7 @@ export default function PaymentStatusPage() {
                   { term: "Recurring", value: formatGrant(app.sanction.recurring) },
                   { term: "Non-Recurring", value: formatGrant(app.sanction.nonRecurring) },
                   { term: "Total Sanctioned", value: formatGrant(app.sanction.total) },
-                  { term: "Released", value: app.release ? `${formatGrant(app.release.amount)} · ${formatDate(app.release.releasedAt)}` : formatGrant(0) },
+                  { term: "Credited", value: app.release ? `${formatGrant(app.release.amount)} · ${formatDate(app.release.releasedAt)}` : formatGrant(0) },
                 ]}
               />
             ) : (
@@ -156,7 +166,110 @@ export default function PaymentStatusPage() {
             )}
           </CardBody>
         </Card>
+
+        {req && (req.bill || req.voucher) && (
+          <Card variant="outlined">
+            <CardBody className="space-y-4">
+              <SectionTitle title="Bill and Voucher" description="As PFMS reports them." />
+              <DescriptionList
+                columns={2}
+                divided
+                items={[
+                  { term: "Bill Number", value: req.bill?.billNumber ?? "" },
+                  { term: "Bill Date", value: req.bill ? formatDate(req.bill.billDate) : "" },
+                  { term: "Token Number", value: req.bill?.tokenNumber ?? "" },
+                  { term: "Token Date", value: req.bill ? formatDate(req.bill.tokenDate) : "" },
+                  { term: "Voucher Number", value: req.voucher?.number ?? "Not yet generated" },
+                  { term: "Voucher Date", value: req.voucher ? formatDate(req.voucher.date) : "" },
+                ]}
+              />
+            </CardBody>
+          </Card>
+        )}
+
+        {req && req.payments.length > 0 && (
+          <Card variant="outlined">
+            <CardBody className="space-y-4">
+              <SectionTitle title="Payment to the NGO" description="The bank's confirmation of each credit. The NGO is told only once a UTR is recorded." />
+              <ListGroup aria-label="Payments to beneficiaries">
+                {req.payments.map((p) => (
+                  <ListRow
+                    key={p.beneficiaryId}
+                    title={<span className="tabular-nums">{exact(p.amount)}</span>}
+                    description={
+                      <span className="block">
+                        Payee code <span className="font-mono">{p.payeeCode}</span>
+                        {p.utr ? (
+                          <>
+                            {" "}· UTR <span className="font-mono">{p.utr}</span> · {p.scrollDate ? formatDate(p.scrollDate) : ""}
+                          </>
+                        ) : null}
+                      </span>
+                    }
+                    trailing={<Badge status={p.scrollStatus === "Success" ? "success" : p.scrollStatus === "Failed" ? "danger" : "info"}>{p.scrollStatus === "Success" ? "Credited" : p.scrollStatus === "Failed" ? "Failed at Bank" : "With the Bank"}</Badge>}
+                  />
+                ))}
+              </ListGroup>
+            </CardBody>
+          </Card>
+        )}
       </div>
+
+      {advice && (
+        <div className="grid gap-5 xl:grid-cols-2 xl:items-start">
+          <Card variant="outlined">
+            <CardBody className="space-y-4">
+              <SectionTitle title="Requests Sent to PFMS" description="Each transmission has its own identifier; a resend points back to the one before it." count={advice.requests.length} />
+              {advice.requests.length === 0 ? (
+                <p className="text-body-2 text-ink-muted">Nothing has been sent to PFMS yet.</p>
+              ) : (
+                <ListGroup aria-label="Requests sent to PFMS">
+                  {[...advice.requests].reverse().map((r) => (
+                    <ListRow
+                      key={r.uniqueIdentifier}
+                      title={<span className="font-mono text-body-2">{r.uniqueIdentifier}</span>}
+                      description={
+                        <span className="block">
+                          Sent {formatDateTime(r.sentAt)}
+                          {r.previousUniqueIdentifier ? <> · replaces <span className="font-mono">{r.previousUniqueIdentifier}</span></> : null}
+                          {r.retries > 0 ? ` · resent automatically ${r.retries} time${r.retries === 1 ? "" : "s"}` : ""}
+                        </span>
+                      }
+                      trailing={<Badge status={r.outcome === "accepted" ? "success" : r.outcome === "queued" ? "warning" : "danger"}>{r.outcome === "accepted" ? "Received" : r.outcome === "queued" ? "Waiting to Resend" : "Not Accepted"}</Badge>}
+                    />
+                  ))}
+                </ListGroup>
+              )}
+            </CardBody>
+          </Card>
+          <Card variant="outlined">
+            <CardBody className="space-y-4">
+              <SectionTitle title="Payment History" description="Newest first." count={advice.history.length} />
+              {/* A list, not VerticalTimeline: that component is a website history band, and in half a
+                  1440 column its titles wrapped to headline size and its dates ran out of the card. */}
+              <ListGroup aria-label="Payment history">
+                {[...advice.history].reverse().map((e, i) => (
+                  <ListRow key={`${e.at}-${i}`} title={<span className="font-normal">{e.text}</span>} description={formatDateTime(e.at)} />
+                ))}
+              </ListGroup>
+            </CardBody>
+          </Card>
+        </div>
+      )}
+
+      {req?.returnReason && (
+        <SideSheet open={showReturn} onClose={() => setShowReturn(false)} title="Return Order" size="md">
+          <DescriptionList
+            columns={1}
+            items={[
+              { term: "Returned By", value: "Pay & Accounts Office" },
+              { term: "Returned On", value: req.statusAt ? formatDate(req.statusAt) : "" },
+              { term: "Reason", value: req.returnReason },
+              { term: "Request", value: <span className="font-mono">{req.uniqueIdentifier}</span> },
+            ]}
+          />
+        </SideSheet>
+      )}
 
       {schedule && (
         <Card variant="outlined">
@@ -170,7 +283,7 @@ export default function PaymentStatusPage() {
                   description={`Planned ${formatGrant(r.planned)}${r.claim?.sanction ? ` · sanctioned ${formatGrant(r.claim.sanction.total)}` : ""} · released ${formatGrant(r.released)}`}
                   trailing={
                     <Badge status={r.state === "released" ? "success" : r.state === "to-release" ? "warning" : "neutral"}>
-                      {r.state === "released" ? "Released" : r.state === "to-release" ? "Awaiting Release" : r.state === "claimed" ? "Under Examination" : r.state === "open" ? "Open for Claim" : "Not Opened"}
+                      {r.state === "released" ? "Released" : r.state === "to-release" ? "In Payment" : r.state === "claimed" ? "Under Examination" : r.state === "open" ? "Open for Claim" : "Not Opened"}
                     </Badge>
                   }
                 />
@@ -180,5 +293,108 @@ export default function PaymentStatusPage() {
         </Card>
       )}
     </div>
+  );
+}
+
+/**
+ * Where the payment has reached, who holds it, and — for the officer whose turn it is — the way in.
+ * Every sentence is chosen from the stage, so the page never says two things about one payment.
+ */
+function PaymentProgress({ pc, me, onShowReturn }: { pc: PaymentCase; me: RoleId | null; onShowReturn: () => void }) {
+  const { pfms } = usePfms();
+  const caps = me ? ROLES[me].caps : [];
+  const advice = pc.advice;
+  const req = advice ? latestRequest(advice) : undefined;
+  const info = STAGE_INFO[pc.stage];
+  const credited = req?.payments.find((p) => p.utr);
+
+  let notice: React.ReactNode = null;
+  if (pc.paidBeforeIntegration) {
+    notice = (
+      <Alert status="info" title="Paid Before the PFMS Integration">
+        This grant was released on {pc.app.release ? formatDate(pc.app.release.releasedAt) : ""}, before payments were sent to PFMS from e-Anudaan. There is no payment advice for it.
+      </Alert>
+    );
+  } else if (pc.blocker) {
+    notice = (
+      <Alert status="warning" title={BLOCKER_TEXT[pc.blocker].label}>
+        {BLOCKER_TEXT[pc.blocker].body}
+      </Alert>
+    );
+  } else {
+    switch (pc.stage) {
+      case "awaiting-advice":
+      case "in-preparation":
+      case "returned-by-checker":
+        notice = (
+          <Alert
+            status={pc.stage === "returned-by-checker" ? "warning" : "info"}
+            title={pc.stage === "returned-by-checker" ? "Returned to the Maker" : "With the Maker"}
+            action={caps.includes("prepareAdvice") ? <Link href={prepareHref(pc.app.id)} className={buttonClasses("primary", "outlined", "sm", "whitespace-nowrap")}>{pc.advice ? "Open the Advice" : "Prepare Advice"}</Link> : undefined}
+          >
+            {pc.stage === "returned-by-checker" ? `The Checker returned the advice: ${advice?.checkerRemark ?? ""}` : "The Maker prepares the payment advice against this sanction."}
+          </Alert>
+        );
+        break;
+      case "awaiting-authorisation":
+        notice = (
+          <Alert status="info" title="With the Checker" action={caps.includes("authoriseAdvice") ? <Link href={authoriseHref(pc.app.id)} className={buttonClasses("primary", "outlined", "sm", "whitespace-nowrap")}>Review and Sign</Link> : undefined}>
+            The payment advice is waiting for the Checker&apos;s review and digital signature.
+          </Alert>
+        );
+        break;
+      case "not-accepted":
+        notice = (
+          <Alert status="error" title="Not Accepted by PFMS" action={caps.includes("prepareAdvice") ? <Link href={prepareHref(pc.app.id)} className={buttonClasses("primary", "outlined", "sm", "whitespace-nowrap")}>Correct the Advice</Link> : undefined}>
+            <span className="block">Nothing was created at PFMS. The advice is back with the Maker.</span>
+            {advice?.issues.map((i) => (
+              <span key={i.pfmsCode ?? i.field} className="block">
+                {pfmsError(i.pfmsCode ?? "", pfms.errorOverrides).message}
+              </span>
+            ))}
+          </Alert>
+        );
+        break;
+      case "waiting-to-resend":
+        notice = (
+          <Alert status="warning" title="Waiting to Resend">
+            PFMS could not be reached when the signed advice was sent{req ? ` on ${formatDateTime(req.sentAt)}` : ""}. It is sent again automatically; nobody needs to sign it again.
+          </Alert>
+        );
+        break;
+      case "returned-by-pfms":
+      case "cancelled":
+        notice = (
+          <Alert status="error" title={pc.stage === "cancelled" ? "Returned and Cancelled at PFMS" : "Returned by PFMS"} action={req?.returnReason ? <Button size="sm" appearance="outlined" onClick={onShowReturn}>View Return Order</Button> : undefined}>
+            <span className="block">{req?.returnReason}</span>
+            <span className="block">A cancelled sanction cannot be revived. A fresh sanction must be issued from e-Anudaan.</span>
+          </Alert>
+        );
+        break;
+      case "paid":
+      case "closed":
+        notice = credited ? (
+          <Alert status="success" title="Credited to the NGO">
+            {exact(req!.payments.reduce((s, p) => s + p.amount, 0))} credited on {credited.scrollDate ? formatDate(credited.scrollDate) : ""}. UTR <span className="font-mono">{credited.utr}</span>. The NGO has been notified.
+          </Alert>
+        ) : null;
+        break;
+      default:
+        notice = (
+          <Alert status="info" title={info.label}>
+            With the {info.holder} at PFMS{req?.statusAt ? ` since ${formatDate(req.statusAt)}` : ""}. The NGO is told only once the bank confirms the credit.
+          </Alert>
+        );
+    }
+  }
+
+  return (
+    <Card variant="outlined">
+      <CardBody className="space-y-4">
+        <SectionTitle title="Payment" description={advice ? `Payment advice ${advice.id}` : undefined} />
+        {!pc.paidBeforeIntegration && <PaymentStages stage={pc.stage} />}
+        {notice}
+      </CardBody>
+    </Card>
   );
 }

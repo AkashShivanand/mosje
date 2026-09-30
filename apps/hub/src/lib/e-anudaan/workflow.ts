@@ -521,6 +521,22 @@ export type ActResult =
  * Validation failures come back as `{ok:false}` for the UI to toast rather than throwing,
  * because a disabled-button race is a user event, not a bug.
  */
+/**
+ * PFMS BRD FR-NGO-002: "shall not permit a sanction to be issued against an application where [the
+ * NGO's bank account number and IFSC are] incomplete". A sanction that cannot be paid is a sanction
+ * the Bureau has to back-fill by hand; the Director is told why before issuing it.
+ */
+export function sanctionBankGap(app: Pick<GrantApplication, "formValues">): string | null {
+  const v = app.formValues ?? {};
+  // A file not filed through the form (a legacy record carried over, or a bare test fixture) has no
+  // bank section to be incomplete; the payment leg holds it for back-fill instead (BR-BAK-001).
+  if (!("fld_bank_account_number" in v) && !("fld_bank_ifsc" in v)) return null;
+  const account = (v.fld_bank_account_number ?? "").trim();
+  const ifsc = (v.fld_bank_ifsc ?? "").trim();
+  if (account && ifsc) return null;
+  return "The NGO's bank account number and IFSC are not complete on this application. A sanction cannot be issued until the NGO supplies them.";
+}
+
 export function applyAction(
   app: GrantApplication,
   roleId: RoleId,
@@ -550,6 +566,10 @@ export function applyAction(
   }
   if (rule.requiresCertification && !payload.certified) {
     return { ok: false, error: "You must certify the application before forwarding it." };
+  }
+  if (action === "sanction") {
+    const gap = sanctionBankGap(app);
+    if (gap) return { ok: false, error: gap };
   }
 
   const from = app.holder;
@@ -674,6 +694,46 @@ export function releaseFunds(app: GrantApplication, roleId: RoleId, clock: Clock
       updatedAt: clock.now,
       release: { amount, releasedAt: clock.now, releasedBy: roleId },
       audit: [...app.audit, stayEntry(app, roleId, "releaseFunds", `${rupees(amount)} released against sanction order ${app.sanction.orderNo}`, clock)],
+    },
+  };
+}
+
+/** A bank credit PFMS has confirmed, as the payment leg reports it (PFMS BRD FR-STS-003). */
+export interface PfmsCredit {
+  amount: number;
+  /** The scroll date the bank confirmed the credit on. ISO. */
+  at: string;
+  /** Bank Transaction ID(s), one per beneficiary. */
+  utr: string;
+  /** The officer who authorised the payment advice with a DSC. */
+  authorisedBy: RoleId;
+}
+
+/**
+ * Record a credit confirmed through PFMS — the payment leg's replacement for the one-click release.
+ *
+ * It writes the same `release` record and the same "Grant Released" audit entry the Under
+ * Secretary's release did, so every screen that already reads a release (the Instalments panel,
+ * the next instalment's opening, the NGO's "Grant Released") gives the same answer — and it is the
+ * ONLY place the NGO is told the money has moved, and only once a UTR exists (BR-NTF-001). The
+ * notice carries the sanction number, the amount and the UTR (FR-NTF-002).
+ */
+export function recordPfmsCredit(app: GrantApplication, credit: PfmsCredit, clock: Clock): ActResult {
+  if (!app.sanction) return { ok: false, error: "A credit can be recorded only against a sanction order." };
+  if (app.release) return { ok: false, error: `This grant was already credited on ${formatDate(app.release.releasedAt)}.` };
+  if (!credit.utr) return { ok: false, error: "A credit is recorded only once the bank has returned a UTR." };
+  const at = { ...clock, now: credit.at };
+  return {
+    ok: true,
+    app: {
+      ...app,
+      status: "Released",
+      updatedAt: credit.at,
+      release: { amount: credit.amount, releasedAt: credit.at, releasedBy: credit.authorisedBy },
+      audit: [
+        ...app.audit,
+        stayEntry(app, credit.authorisedBy, "releaseFunds", `${rupees(credit.amount)} credited against sanction order ${app.sanction.orderNo}; UTR ${credit.utr}`, at),
+      ],
     },
   };
 }

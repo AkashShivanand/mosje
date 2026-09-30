@@ -28,7 +28,7 @@ export type ChainRoleId = `${Division}-${Grade}`;
  * screens are UNOBSERVED — that route crashes the browser renderer on the live dev site, so
  * everything PD-facing is built from the BRD and marked inferred.
  */
-export type RoleId = ChainRoleId | "programme-director" | "pmu-field" | "ngo";
+export type RoleId = ChainRoleId | "programme-director" | "pmu-field" | "pd-maker" | "pd-checker" | "pfms-bureau" | "ngo";
 
 /**
  * What a role is allowed to do. Capabilities — not role checks — drive the review screen's
@@ -60,7 +60,19 @@ export type Capability =
    */
   | "releaseFunds"
   /** PD:SO and PD:JS — issues a Show Cause Notice to the NGO (live SM2-PD-SO / JS "Issue SCN"). */
-  | "issueShowCause";
+  | "issueShowCause"
+  /**
+   * The PFMS payment leg (docs/plans/2026-09-29-e-anudaan-pfms.md). The PD Maker prepares the
+   * payment advice (BRD FR-PDM), the PD Checker authorises it with a DSC (FR-PDC), and the Bureau
+   * keeps the PFMS configuration current (FR-HOA, FR-MDM, FR-NGO-003).
+   */
+  | "prepareAdvice"
+  | "authoriseAdvice"
+  | "configurePfms"
+  /** Designates the Maker and Checker for each DDO — the Under Secretary (BRD §4) and the Bureau. */
+  | "designateOfficers"
+  /** The six payment dashboards of BRD §11. */
+  | "paymentReports";
 
 /**
  * Application status. `Draft`, `Submitted`, `Sanctioned` and `Rejected` are observed verbatim

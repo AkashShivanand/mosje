@@ -70,10 +70,12 @@ const CAPS: Record<Division, Record<Grade, readonly Capability[]>> = {
   pd: {
     aso: ["review", "certify", "raiseDeficiency", "sanctionRegister", "forwardedRegister"],
     so: ["review", "communicateDeficiency", "raiseQuery", "scheduleInspection", "issueShowCause", "sanctionRegister", "forwardedRegister"],
-    us: ["review", "raiseQuery", "scheduleInspection", "releaseFunds", "sanctionRegister", "forwardedRegister"],
+    // "releaseFunds" now only opens the next instalment: a sanctioned amount is paid through the
+    // PFMS payment leg (PD Maker → PD Checker → PFMS), never by one click (PFMS BRD §1.4).
+    us: ["review", "raiseQuery", "scheduleInspection", "releaseFunds", "sanctionRegister", "forwardedRegister", "designateOfficers", "paymentReports"],
     ds: ["review", "raiseQuery", "scheduleInspection", "sanctionRegister", "forwardedRegister"],
     // The bank-account change desk sits with the Joint Secretary, as on the live SM2 console.
-    js: ["review", "concur", "raiseQuery", "scheduleInspection", "issueShowCause", "sanctionRegister", "forwardedRegister", "auditTrail", "approveBankChange"],
+    js: ["review", "concur", "raiseQuery", "scheduleInspection", "issueShowCause", "sanctionRegister", "forwardedRegister", "auditTrail", "approveBankChange", "paymentReports"],
   },
   finance: {
     aso: ["review", "scheduleInspection"],
@@ -115,6 +117,13 @@ function pdNav(grade: Grade): NavItem[] {
     { label: "Queries", href: `${BASE}/dashboard/pd/${grade}/queries`, icon: "help" },
     { label: "Reports & Analytics", href: `${BASE}/dashboard/sm2/reports`, icon: "bar_chart" },
   ];
+  if (grade === "us") {
+    // The Under Secretary designates the PD Maker and PD Checker for each DDO (PFMS BRD §4).
+    nav.push({ label: "Maker & Checker", href: `${BASE}/dashboard/pfms/designations`, icon: "badge" });
+  }
+  if (grade === "us" || grade === "js") {
+    nav.push({ label: "Payment Reports", href: `${BASE}/dashboard/payment-reports`, icon: "query_stats" });
+  }
   if (grade === "js") {
     nav.push({ label: "Bank Account Changes", href: `${BASE}/dashboard/sm2/bank-changes`, icon: "account_balance" });
     nav.push({ label: "Audit Trail", href: `${BASE}/dashboard/sm2/audit`, icon: "history" });
@@ -214,7 +223,7 @@ export const ROLES: Record<RoleId, RoleDef> = {
     home: `${BASE}/dashboard/sm2/pd`,
     division: null,
     grade: null,
-    caps: ["review", "sanction", "scheduleInspection", "sanctionRegister", "auditTrail"],
+    caps: ["review", "sanction", "scheduleInspection", "sanctionRegister", "auditTrail", "paymentReports"],
     nav: [
       { label: "Sanction Desk", href: `${BASE}/dashboard/sm2/pd`, icon: "gavel" },
       { label: "Sent", href: `${BASE}/dashboard/sent`, icon: "outbox" },
@@ -222,7 +231,80 @@ export const ROLES: Record<RoleId, RoleDef> = {
       { label: "NGO Directory", href: `${BASE}/dashboard/ngo-directory`, icon: "corporate_fare" },
       { label: "Sanctioned Applications", href: `${BASE}/dashboard/pd/us/sanctioned`, icon: "verified" },
       { label: "Reports & Analytics", href: `${BASE}/dashboard/sm2/reports`, icon: "bar_chart" },
+      { label: "Payment Reports", href: `${BASE}/dashboard/payment-reports`, icon: "query_stats" },
       { label: "Audit Trail", href: `${BASE}/dashboard/sm2/audit`, icon: "history" },
+    ],
+  },
+
+  /**
+   * The PFMS payment leg (docs/plans/2026-09-29-e-anudaan-pfms.md). The BRD places the Maker and
+   * the Checker "within the Programme Division", designated by the Under Secretary, and assumes
+   * they are different officers (§10). Whether they are seats of their own or duties added to
+   * existing grades is open question 2; the prototype gives them their own sign-in so each
+   * workspace can be walked on its own.
+   *
+   * Named "Maker" and "Checker", never "PD Maker": the estate does not abbreviate the Programme
+   * Division, because "PD" also names the Programme Director (glossary, audit O-08). `division` is
+   * null because neither is a seat in the approval chain — no file climbs through them.
+   */
+  "pd-maker": {
+    id: "pd-maker",
+    label: "Maker - Programme Division",
+    shortLabel: "Maker",
+    loginId: "9200000813",
+    personName: "Farhan Siddiqui",
+    home: `${BASE}/dashboard/payments/prepare`,
+    division: null,
+    grade: null,
+    caps: ["prepareAdvice", "sanctionRegister", "paymentReports"],
+    nav: [
+      { label: "Payment Advices", href: `${BASE}/dashboard/payments/prepare`, icon: "request_quote" },
+      { label: "NGO Directory", href: `${BASE}/dashboard/ngo-directory`, icon: "corporate_fare" },
+      { label: "Sanctioned Applications", href: `${BASE}/dashboard/pd/us/sanctioned`, icon: "verified" },
+      { label: "Payment Reports", href: `${BASE}/dashboard/payment-reports`, icon: "query_stats" },
+    ],
+  },
+
+  "pd-checker": {
+    id: "pd-checker",
+    label: "Checker - Programme Division",
+    shortLabel: "Checker",
+    loginId: "9200000814",
+    personName: "Radhika Menon",
+    home: `${BASE}/dashboard/payments/authorise`,
+    division: null,
+    grade: null,
+    caps: ["authoriseAdvice", "sanctionRegister", "paymentReports"],
+    nav: [
+      { label: "Authorisation Queue", href: `${BASE}/dashboard/payments/authorise`, icon: "verified_user" },
+      { label: "NGO Directory", href: `${BASE}/dashboard/ngo-directory`, icon: "corporate_fare" },
+      { label: "Sanctioned Applications", href: `${BASE}/dashboard/pd/us/sanctioned`, icon: "verified" },
+      { label: "Payment Reports", href: `${BASE}/dashboard/payment-reports`, icon: "query_stats" },
+    ],
+  },
+
+  /** The Bureau / Scheme Division, which furnishes the coded head of account, DDO and PD mapping (BRD §4). */
+  "pfms-bureau": {
+    id: "pfms-bureau",
+    label: "Bureau - PFMS Set-Up",
+    shortLabel: "Bureau",
+    loginId: "9200000815",
+    personName: "Gaurav Khanna",
+    home: `${BASE}/dashboard/pfms`,
+    division: null,
+    grade: null,
+    caps: ["configurePfms", "designateOfficers", "paymentReports"],
+    nav: [
+      { label: "PFMS Set-Up", href: `${BASE}/dashboard/pfms`, icon: "tune" },
+      { label: "Legacy Files", href: `${BASE}/dashboard/pfms/back-fill`, icon: "history_edu" },
+      { label: "Heads of Account", href: `${BASE}/dashboard/pfms/heads-of-account`, icon: "account_tree" },
+      { label: "DDO & Division Codes", href: `${BASE}/dashboard/pfms/ddo-mapping`, icon: "lan" },
+      { label: "Master Data", href: `${BASE}/dashboard/pfms/masters`, icon: "sync" },
+      { label: "Claim References", href: `${BASE}/dashboard/pfms/claim-references`, icon: "confirmation_number" },
+      { label: "Error Messages", href: `${BASE}/dashboard/pfms/error-messages`, icon: "translate" },
+      { label: "Maker & Checker", href: `${BASE}/dashboard/pfms/designations`, icon: "badge" },
+      { label: "NGO Directory", href: `${BASE}/dashboard/ngo-directory`, icon: "corporate_fare" },
+      { label: "Payment Reports", href: `${BASE}/dashboard/payment-reports`, icon: "query_stats" },
     ],
   },
 
@@ -332,6 +414,9 @@ function isGrade(v: string | undefined): v is Grade {
  * `forbidden` is a screen that exists and belongs to another role; `not-found` is an address
  * that names no screen (an unknown grade or key). Both render a status screen in `ConsoleShell`.
  */
+/** The Bureau's PFMS set-up pages, under /dashboard/pfms/. */
+const PFMS_PAGES = new Set(["back-fill", "heads-of-account", "ddo-mapping", "masters", "claim-references", "error-messages"]);
+
 export function consoleRouteAccess(pathname: string, role: RoleDef): RouteAccess {
   if (role.id === "ngo") return "forbidden";
   const rel = pathname.startsWith(BASE) ? pathname.slice(BASE.length) : pathname;
@@ -340,8 +425,11 @@ export function consoleRouteAccess(pathname: string, role: RoleDef): RouteAccess
   const [area, section, a, b, ...rest] = seg;
 
   if (area === "finance") {
-    // /finance/payment-status/:appId — a file-level screen for officers who examine files.
-    return section === "payment-status" && a && !b ? can("review") : "not-found";
+    // /finance/payment-status/:appId — a file-level screen for officers who examine files, and for
+    // everyone in the PFMS payment leg, since it is where a payment's progress is read.
+    if (section !== "payment-status" || !a || b) return "not-found";
+    const paymentSeat = (["review", "prepareAdvice", "authoriseAdvice", "configurePfms", "paymentReports"] as const).some((c) => role.caps.includes(c));
+    return paymentSeat ? "allowed" : "forbidden";
   }
   if (area !== "dashboard") return "not-found";
 
@@ -352,6 +440,21 @@ export function consoleRouteAccess(pathname: string, role: RoleDef): RouteAccess
   if (section === "sent") return a ? "not-found" : can("sanction");
   // NGO 360, and beside it one project's records (CCTV compliance, staff roster, weekly attendance).
   if (section === "ngo") return a && ((b === "360" && rest.length === 0) || (b === "project" && rest.length === 1)) ? "allowed" : "not-found";
+
+  // The PFMS payment leg: the Maker's queue and advice, the Checker's queue and review.
+  if (section === "payments") {
+    if (rest.length > 0) return "not-found";
+    if (a === "prepare") return can("prepareAdvice");
+    if (a === "authorise") return can("authoriseAdvice");
+    return "not-found";
+  }
+  if (section === "pfms") {
+    if (b) return "not-found";
+    if (a === "designations") return role.caps.includes("designateOfficers") ? "allowed" : "forbidden";
+    if (a === undefined || PFMS_PAGES.has(a)) return can("configurePfms");
+    return "not-found";
+  }
+  if (section === "payment-reports") return a ? "not-found" : can("paymentReports");
 
   if (section === "pmu") {
     if (b) return "not-found";

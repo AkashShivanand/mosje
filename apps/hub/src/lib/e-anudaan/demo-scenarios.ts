@@ -142,7 +142,9 @@ function answerFor(f: FieldDef, values?: Record<string, string>): string {
     case "pan": return DEMO_APPLICANT.pan;
     case "pin": return DEMO_APPLICANT.pin;
     case "nameAndPhone": return "Anil Kulkarni, 9800000103";
-    case "accountNumber": return DEMO_APPLICANT.account;
+    case "accountNumber":
+    case "confirmAccount": return DEMO_APPLICANT.account;
+    case "payeeCode": return DEMO_APPLICANT.payeeCode;
     case "notFuture": return "2016-04-01";
     // A date that must follow another one: every demo date was 1 Apr 2026, so "Complete & valid"
     // stopped on Organisation Details with "Must be later than the date of registration."

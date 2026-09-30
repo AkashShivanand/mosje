@@ -1,13 +1,56 @@
-# E-Anudaan Handoff Page — How It Is Organised
+# E-Anudaan Handoff File — How It Is Organised
 
-**File** `evmNmlK8g4VYwJVu2FwSGV` · **Page** `E-Anudaan` (`51313:165608`) · **Organised** 17 Sep 2026 · **Desktop and phone complete** 18 Sep 2026
-**Standard** `.claude/rules/figma-handoff-page-structure.md` · **Snapshot** `tools/figma-handoff-structure/manifests/e-anudaan.json`
-**Gate** `npm run check:figma-handoff -- --portal E-Anudaan --strict` — **conformant** (0 identity, 0 visual)
+**File** `E-Anudaan [Handoff]` (`K0B3vuOTXpxw6kt0px2Cqo`, UX4G – Digital India Corporation) · **Moved** 30 Sep 2026 from
+`MoSJE Portal [Handoff]` (`evmNmlK8g4VYwJVu2FwSGV`, page `51313:165608`, which now holds only a note pointing here)
+**Standard** `.claude/rules/figma-handoff-page-structure.md` §10a · **Snapshot** `tools/figma-handoff-structure/manifests/e-anudaan.json`
+**Gate** `npm run check:figma-handoff -- --portal E-Anudaan --strict` — checks all 15 pages
 
-The first portal page on the estate-wide handoff structure, and the example the others copy.
-No screen was redrawn: sections and screens were re-parented (node ids kept, so existing links
-still work), renamed, reordered and recoloured; four guide frames and thirteen discussion notes
-were added.
+## 0. The file (30 Sep 2026)
+
+568 screens had outgrown one page of a twelve-portal file: the NGO column alone ran 217,000px tall. The
+portal now has a file of its own, organised in the order an application moves.
+
+| Page | Holds | Screens | Journeys |
+|---|---|---|---|
+| Cover | the file's cover frame | — | — |
+| Start Here | Cover, Portal Map (every journey linked, with its page), How to Read This File, Status and Change Log | — | — |
+| Everyone · Signing In | NGO and officer sign-in, forgotten password | 42 | 5 |
+| NGO · Starting an Application | dashboard, choosing a scheme, uploading documents | 43 | 3 |
+| NGO · NAPDDR Application Form | new application and three instalment claims | 58 | 1 |
+| NGO · AVYAY Application Form | new application and instalment claims | 52 | 1 |
+| NGO · SMILE (Garima Greh) Application Form | new application and instalment claims | 36 | 1 |
+| NGO · SHRESHTA Mode 2 Application Form | new application and instalment claims | 44 | 1 |
+| NGO · After Applying and Getting Paid | NGO — After Applying; NGO — Getting Paid | 72 | 10 |
+| Officers · Reviewing Applications | the review chain, queues and lists | 73 | 6 |
+| Officers · Sanctioning and Inspections | Programme Director; PMU Field Officer | 19 | 6 |
+| Officers · Records and Reports | records, audit trail, NGO directory, payment status | 26 | 6 |
+| PFMS · Preparing and Authorising Payments | Programme Division — Paying a Sanctioned Grant | 50 | 3 |
+| PFMS · Set-Up and Payment Reports | Bureau — Setting Up PFMS; Officers — Payment Reports | 26 | 3 |
+| Shared Parts | page frame, error pages, reusable form content | 22 items | — |
+| Old Screens — Do Not Use | replaced screens and leftovers | 22 items | — |
+
+541 screens, 11 user groups, 46 journeys, 8 needing discussion. Divider pages separate Everyone, NGO,
+Officers and PFMS in the page list.
+
+**How each page reads.** A `START HERE` guide first (who uses the page, its journeys, counted screens, a
+link back to the Portal Map), then the screens: user groups and their journeys stacked top to bottom in
+the order a case meets them; inside a journey, Desktop, Mobile (each phone screen under its desktop
+screen) and Pop-ups and Dialogs, left to right in the order a person sees them.
+
+**How it moved.** The Plugin API cannot move layers between files, so a person copied the page and pasted
+it into the new file (597 frames, checked name by name). Everything after that was moved *within* the
+file, which keeps node ids. The paste did change every id, and the Portal Map's links pointed back at the
+old file; all 46 were relinked to their journey sections. Sections below describe the page as it was
+organised on 17 Sep 2026; node ids quoted there are the old file's.
+
+**Cover.** A 1920 × 960 frame (Figma's 2:1 thumbnail size), set as the file thumbnail: the SAMAVESH
+`Navbar/BrandLockup` (emblem, Ministry and Department), the portal's name and what it does, the file's
+counts, version and date, and two real screens from the file on a `bg/brand/primary/boldest` panel. Every
+fill is a SAMAVESH variable and every gap a space token; all text uses published styles except the 168px
+title, which is set in Noto Sans Display Medium because the library's ramp stops at 80px (the rule for
+slide-scale text in `CLAUDE.md` › Figma libraries).
+
+**Still for a person:** name the first version in version history (the API cannot).
 
 ## 1. Before and after
 
@@ -203,6 +246,62 @@ versions, not the checklist.
 Password label and the card carries an arrow, as in the build. The **wrong username or password** state was added
 (desktop and phone). Nine NGO-DARPAN screens showed the placeholder "Signing into Organisation Name" and now read
 "E-Anudaan".
+
+## 5b. PFMS payment leg — 30 Sep 2026
+
+The payment leg of the NeGD BRD (*Integration of PFMS with the e-Anudaan Portal*, v1.0) was drawn from the
+SAMAVESH library to the page's standard. Every part is a library instance, bound to SAMAVESH variables and
+text styles; the content is the prototype's seeded case (Sankalp Seva Sansthan, `SAN/2026-27/04609`,
+₹25,50,000) unless a screen shows a different case on purpose.
+
+| User group (column) | Journey | Desktop | Mobile | Dialogs |
+|---|---|---|---|---|
+| Programme Division — Paying a Sanctioned Grant | Preparing a Payment Advice | 18 | 7 | — |
+| | Authorising a Payment Advice — *Needs Discussion* | 5 | 2 | 8 |
+| | Following a Payment — *Needs Discussion* | 8 | 1 | 1 |
+| Bureau — Setting Up PFMS | Completing Legacy Files — *Needs Discussion* | 5 | 1 | 2 |
+| | Keeping PFMS Set-Up Current | 8 | 1 | 2 |
+| NGO — Getting Paid | PFMS Payee Code and Payment — *Needs Discussion* | 6 | 3 | — |
+| Officers — Payment Reports | Payment Reports | 6 | 1 | — |
+
+85 screens in all. BRD coverage, screen by screen: `docs/plans/2026-09-30-e-anudaan-pfms-coverage-checklist.md`.
+
+**Why the NGO journey is its own column.** Adding it to `NGO — After Applying` would have made ten journeys in
+one column; the rule allows nine. The credit is the last thing that happens to a grant, so the column sits after
+the Bureau's.
+
+**Red, and why.** Four journeys carry a note, each tracing to `docs/plans/2026-09-29-e-anudaan-pfms.md` §4:
+questions 1, 2, 5 and 10 (authorising), 3 and 6 (following a payment), 8 (legacy files) and 7 (the NGO's
+view). Questions 4, 9, 11 and 12 do not change a screen and are listed on the Status page instead.
+
+**Old screens were not moved.** The earlier `Payment Status` (Officers — Records and Reports), `Project Bank
+Accounts` and `Application Details` screens stay where they were. The PFMS journeys draw their new versions,
+and the Status page asks a person to decide whether the old ones are replaced.
+
+**New shared part.** `Form Step Content / SHRESHTA Mode 2 New Application / Step 4 — Bank, Beneficiaries & Grant
+— PFMS Payee Code` sits beside the original in `SHARED PARTS`. It adds the typed-twice account number, the PFMS
+registration question, the payee code and its confirmation tick (FR-NGO-001/002). The original is unchanged, so
+no existing screen moved.
+
+**Checked, not assumed.** 85 frames were walked, including the content slots inside library instances.
+- Every instance's component key is one of the SAMAVESH library's 177 component sets.
+- No text lacks a text style, and no fill or stroke lacks a variable.
+- The one local component is the PFMS variant of the NGO form step described above.
+
+**Four library gaps — closed 30 Sep 2026** (SAMAVESH [PR #660](https://github.com/AkashShivanand/mosje/pull/660), published).
+- `Modal` gained a Content slot. The page's **23 composed dialogs now use the library Modal**, sized to the
+  code's widths (384 / 448 / 560 / 640). *Return Order* stays a `SideSheet`, which it always correctly was.
+- `Stepper / Collapsed` is built from `Stepper / Dot`; the five Maker phone steps now mark their own stage.
+- `EmptyState` gained Description; the two PFMS empty states carry it in the component.
+- `Chart` Type=Bar is built from `Chart / Bar`; Failure Trend draws July 2026's single reading as a real bar.
+  The screen now runs to 1076px so the table below it is not cut off.
+
+Only the instances changed here were moved to the new library version. Other SAMAVESH updates in this file
+wait for someone to accept them in Figma's Libraries panel.
+
+**Build notes found while drawing.** A `use_figma` call that clones a frame and then edits instances inside a
+cloned slot (side-menu items, sizing) often does not keep those edits. A second pass is needed, and one was run
+over every new frame. Alert body text keeps a stale line break until its characters are reset after resizing.
 
 ## 6. Adding to the page
 

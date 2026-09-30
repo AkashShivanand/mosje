@@ -168,7 +168,7 @@ test("every AVYAY path reaches Submit from the portal's own answers plus what th
   for (const id of ["SR/MH/PUN/03601", "SR/DL/NWD/03602", "SR/MH/THN/03603"]) {
     // The one question a renewal can still be asked about its account: PFMS, where it is not on record.
     const chosen = renew(id);
-    const v = declare(AVYAY_WIZARD, { ...chosen, fld_auth_place: "Pune", fld_auth_person_name: "Meena Deshpande", ...(chosen.fld_pfms_on_record === "No" ? { fld_pfms_registered: "Yes" } : {}) });
+    const v = declare(AVYAY_WIZARD, { ...chosen, fld_auth_place: "Pune", fld_auth_person_name: "Meena Deshpande", ...(chosen.fld_pfms_on_record === "No" ? { fld_pfms_registered: "Yes", fld_pfms_payee_code: "MH4100380271", fld_pfms_payee_confirm: "true" } : {}) });
     const docs = Object.fromEntries(visibleDocuments(AVYAY_WIZARD, v).map((d) => [d.n, { fileName: "x.pdf", sizeKb: 10, uploadedOn: "", verdict: { state: "verified" as const } }]));
     const check = checkApplication(AVYAY_WIZARD, v, docs, undefined, "2026-09-16");
     assert.deepEqual(check, { ok: true }, `${id}: ${check.ok ? "" : check.reason}`);
@@ -307,7 +307,9 @@ test("My Applications and the dashboard say when the next instalment opens, on t
   assert.match(notice?.href ?? "", /scheme\/AVYAY\/step-1\?project=SR%2FDL%2FNWD%2F03602$/);
   assert.equal(nextInstalmentNotice(STATE, older, NOW), undefined);
   const upcoming = upcomingInstalments(STATE, NGO.id, NOW).filter((n) => n.plan.scheme === "AVYAY");
-  assert.deepEqual(upcoming.map((n) => n.plan.projectId).sort(), ["SR/DL/NWD/03602", "SR/MH/PUN/03601", "SR/MH/THN/03603"]);
+  // 03655 and 03656 are sanctioned this year and still in the PFMS payment leg: their next
+  // instalment is upcoming, and opens once the payment is credited.
+  assert.deepEqual(upcoming.map((n) => n.plan.projectId).sort(), ["SR/DL/NWD/03602", "SR/DL/NWD/03655", "SR/MH/PUN/03601", "SR/MH/THN/03603", "SR/MH/THN/03656"]);
 });
 
 /* ── upload history reaches the submitted record ───────────────────────────── */

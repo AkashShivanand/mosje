@@ -4,7 +4,7 @@
 same change that moves a line, never afterwards from memory. If a row says ✅ and the thing is
 not true on `main`, that is a defect in this file and it is fixed first.
 
-**Last moved:** 16 September 2026, after the phone-width pass on List Row and Card (§9).
+**Last moved:** 30 September 2026, when the PFMS screens were drawn on the Figma handoff page (P-18).
 
 Status: ⬜ not started · 🟡 in progress · ✅ done · ⏸ waiting on a person · ❌ won't do (reason stated)
 
@@ -37,6 +37,10 @@ Two other trackers stay in force and are not repeated here:
 | P-12 | Design-director audit | ✅ | 836 shots, 16 P1s, fixed in 8 batches — plus a **measured pass over all 190 screens, 16 Sep**: see below |
 | P-13 | DigiLocker removed from every portal login and the TG application form | ✅ | Now a per-portal, per-role switch in `lib/tg/identity.ts` |
 | P-14 | Live on `main:3007` | ✅ | PR #507 merged 16 Sep. **Verified on the running server, not inferred from the merge:** 18 routes across 8 roles at 1440 and 375 — 36 page loads, no HTTP error, no page error, no sideways scroll; the divided-list assertion passes over 8 fact cards; the Payment Status order number re-checked by eye |
+| P-15 | PFMS payment leg — Maker, Checker, Payment Status, NGO payee code and credit notice (BRD release 1) | 🟡 | Branch `feat/e-anudaan-pfms`. Record: `2026-09-29-e-anudaan-pfms.md`. The one-click Release Funds is gone; a credit is recorded only from a PFMS UTR |
+| P-16 | PFMS Bureau set-up — legacy back-fill, heads of account, DDO & division codes, master data, claim references, error messages, Maker & Checker (release 2) | 🟡 | Same branch |
+| P-17 | Payment Reports — pipeline, ageing, reconciliation, failures, claim pool, turnaround (release 3) | 🟡 | Same branch |
+| P-18 | PFMS screens on the Figma handoff page | ✅ | Four new columns, 85 screens drawn from SAMAVESH, every state included (coverage: `2026-09-30-e-anudaan-pfms-coverage-checklist.md`); red notes on four journeys for the eight questions that change screens, the other four on the Status page — `E-Anudaan-Handoff-Page.md` §5b. A person still names a version in Figma |
 
 ### Known, not fixed — carried deliberately
 
@@ -53,7 +57,7 @@ Two other trackers stay in force and are not repeated here:
 
 ## 2. The Figma handoff file
 
-File `evmNmlK8g4VYwJVu2FwSGV`, E-Anudaan page `51313:165608`. Plan: `scratchpad/figma-2/plan/PLAN.md`.
+File `E-Anudaan [Handoff]` (`K0B3vuOTXpxw6kt0px2Cqo`) since 30 Sep 2026 — one page per stage; it was the E-Anudaan page `51313:165608` of `evmNmlK8g4VYwJVu2FwSGV`. Plan: `scratchpad/figma-2/plan/PLAN.md`.
 
 | Part | Sections | Frames | Status |
 |---|---|---|---|

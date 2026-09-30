@@ -15,6 +15,7 @@
  */
 
 import { applyAction, deficiencyItemsFrom, releaseFunds, type Clock, type WorkflowAction } from "../workflow.ts";
+import { derivedPayeeCode } from "../pfms/masters.ts";
 import { seedCctvDetail } from "../cctv.ts";
 import {
   GRADES,
@@ -1662,7 +1663,11 @@ export function buildSeed(): {
       people: number;
       claims: readonly Claim[];
       answers: Record<string, string>;
-      /** Leave the latest sanction unreleased, so the "opens once released" state has a project. */
+      /**
+       * Leave the latest sanction unreleased, so the "opens once released" state has a project — and,
+       * since the PFMS payment leg (docs/plans/2026-09-29-e-anudaan-pfms.md), so the Maker, the
+       * Checker and PFMS each have files in flight. Its payment state lives in `pfms/seed.ts`.
+       */
       unreleased?: boolean;
     };
     const PATTERNS: Record<History["scheme"], readonly number[]> = { AVYAY: [40, 40, 20], NAPDDR: [40, 40, 20], SHRESHTA_M2: [40, 40, 20], SMILE: [50, 50] };
@@ -1679,6 +1684,9 @@ export function buildSeed(): {
       { fy: "2026-27", instalment: 2, submitted: 70, sanctioned: 32 },
     ];
     const newOnly: readonly Claim[] = [{ fy: "2025-26", submitted: 380, sanctioned: 330 }];
+    // A first grant sanctioned this year and not yet paid — the files the PFMS payment leg carries
+    // (docs/plans/2026-09-29-e-anudaan-pfms.md). Each one's payment state is in `pfms/seed.ts`.
+    const inPayment: readonly Claim[] = [{ fy: "2026-27", submitted: 64, sanctioned: 21 }];
     const common = (h: { inst: Institution; people: number }) => ({
       fld_statute_act: "Societies Registration Act, 1860",
       fld_registration_date: "1978-03-12",
@@ -1743,6 +1751,12 @@ export function buildSeed(): {
     const tg1 = pun("TG/MH/PUN/03641", "Garima Greh", TG);
     const tg2 = nwd("TG/DL/NWD/03642", "Garima Greh", TG);
     const tg3 = place("TG/TN/MDR/03643", "Garima Greh", "Madurai", "Tamil Nadu", TG, "Owned", "625001");
+    const dr4 = pun("DR/MH/PUN/03651", "Integrated Rehabilitation Centre (Hadapsar)", DR);
+    const dr5 = nwd("DR/DL/NWD/03652", "Integrated Rehabilitation Centre (Shalimar Bagh)", DR);
+    const dr6 = place("DR/RJ/JAI/03653", "De-Addiction Centre", "Jaipur", "Rajasthan", DR, "Rented", "302017");
+    const dr7 = place("DR/GJ/AHM/03654", "Integrated Rehabilitation Centre (Maninagar)", "Ahmedabad", "Gujarat", DR, "Owned", "380008");
+    const sr4 = nwd("SR/DL/NWD/03655", "Senior Citizens' Home (Pitampura)", SR);
+    const sr5 = place("SR/MH/THN/03656", "Senior Citizens' Home (Vashi)", "Thane", "Maharashtra", SR, "Owned", "400703");
     const histories: History[] = [
       { scheme: "AVYAY", inst: sr1, annual: 2034140, nonRecurring: 278195, pfms: true, bank: ["State Bank of India", "SBIN0004512", "Kothrud"], people: 25, claims: newThenFirst, answers: avyayAnswers(sr1, "Senior Citizens' Home — 25 beneficiaries", 25) },
       { scheme: "AVYAY", inst: sr2, annual: 3968263, nonRecurring: 370926, pfms: true, bank: ["Punjab National Bank", "PUNB0221300", "Rohini Sector 7"], people: 20, claims: newThenTwo, answers: avyayAnswers(sr2, "Continuous Care Home (CCH) / Dementia / Alzheimer's", 20) },
@@ -1764,6 +1778,13 @@ export function buildSeed(): {
         ],
         answers: smile(tg3),
       },
+      // Six projects in the PFMS payment leg. Appended, so every project above keeps its serial.
+      { scheme: "NAPDDR", inst: dr4, annual: 2100000, nonRecurring: 450000, pfms: true, bank: ["Bank of Maharashtra", "MAHB0001207", "Hadapsar"], people: 45, claims: inPayment, answers: napddrAnswers(dr4), unreleased: true },
+      { scheme: "NAPDDR", inst: dr5, annual: 2600000, nonRecurring: 500000, pfms: true, bank: ["Canara Bank", "CNRB0003417", "Shalimar Bagh"], people: 50, claims: inPayment, answers: napddrAnswers(dr5), unreleased: true },
+      { scheme: "NAPDDR", inst: dr6, annual: 1850000, nonRecurring: 400000, pfms: false, bank: ["Punjab National Bank", "PUNB0487600", "Malviya Nagar"], people: 40, claims: inPayment, answers: napddrAnswers(dr6), unreleased: true },
+      { scheme: "NAPDDR", inst: dr7, annual: 2250000, nonRecurring: 420000, pfms: true, bank: ["State Bank of India", "SBIN0003981", "Maninagar"], people: 45, claims: inPayment, answers: napddrAnswers(dr7), unreleased: true },
+      { scheme: "AVYAY", inst: sr4, annual: 2034140, nonRecurring: 278195, pfms: true, bank: ["Union Bank of India", "UBIN0547290", "Pitampura"], people: 25, claims: inPayment, answers: avyayAnswers(sr4, "Senior Citizens' Home — 25 beneficiaries", 25), unreleased: true },
+      { scheme: "AVYAY", inst: sr5, annual: 2034140, nonRecurring: 278195, pfms: true, bank: ["Bank of Baroda", "BARB0VASHIX", "Vashi"], people: 25, claims: inPayment, answers: avyayAnswers(sr5, "Senior Citizens' Home — 25 beneficiaries", 25), unreleased: true },
     ];
     const WIZARD_BY_SCHEME = { AVYAY: AVYAY_WIZARD, NAPDDR: NAPDDR_WIZARD, SHRESHTA_M2: SHRESHTA_WIZARD, SMILE: SMILE_WIZARD } as const;
     const CASE_TYPE: Record<History["scheme"], [string, string] | undefined> = {
@@ -1854,7 +1875,7 @@ export function buildSeed(): {
         ]);
         a.submittedAt = a.audit[0]?.at ?? a.submittedAt;
         // Released by the Under Secretary about ten days after sanction — which is what opens the
-        // next instalment for claim (instalments.ts). One project keeps its latest sanction unreleased.
+        // next instalment for claim (instalments.ts). Projects marked `unreleased` keep their latest sanction in the payment leg.
         if (!(h.unreleased && latest)) {
           const released = releaseFunds(a, "pd-us", clockAt(Math.max(c.sanctioned - 10, 2)));
           if (!released.ok) throw new Error(`[e-anudaan seed] ${a.id}: cannot release — ${released.error}`);
@@ -2034,6 +2055,11 @@ export function buildSeed(): {
         camera_live_feed: "No",
         prior_grant_received: "No",
         fld_bank_joint_operators: `${ngo.secretary}, Secretary, and ${ngo.treasurer}, Treasurer — Registered office, ${ngo.district}, ${ngo.state}`,
+        // PFMS BRD FR-NGO-001/002: the account typed twice, and the payee code the payment leg holds
+        // for this project (`pfms/seed.ts` derives the same one), confirmed.
+        fld_bank_account_confirm: v.fld_bank_account_number,
+        fld_pfms_payee_code: derivedPayeeCode(inst.id),
+        fld_pfms_payee_confirm: "true",
       };
       for (let pass = 0; pass < 4; pass++) {
         let changed = false;

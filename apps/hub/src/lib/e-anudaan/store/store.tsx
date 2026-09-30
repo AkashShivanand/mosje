@@ -35,12 +35,14 @@ import {
   applyAction,
   issueShowCauseNotice as issueNotice,
   openForClaim as openClaim,
+  recordPfmsCredit as recordCredit,
   releaseFunds as release,
   scheduleOnlineInspection as scheduleOnline,
   type ActionPayload,
   type ActResult,
   type Clock,
   type OnlineInspectionInput,
+  type PfmsCredit,
   type ShowCauseInput,
   type WorkflowAction,
 } from "../workflow.ts";
@@ -52,7 +54,6 @@ import {
   markReadFor,
   migrateFrom8,
   migrateFrom11,
-  type PersistedState,
   readPersisted,
   writePersisted,
   type StorageLike,
@@ -74,8 +75,11 @@ import {
  * An older copy is reseeded, because it holds exactly the contradictions those rules remove.
  * 12 — a CCTV setup gains its camera register, installation certificate, retention, storage and
  * monthly uptime declarations. All optional, so an 11 copy is carried forward (`migrateFrom11`).
+ * 13 — the PFMS payment leg: six seeded projects keep their latest sanction unreleased so the PD
+ * Maker, the PD Checker and PFMS have files in flight. An older copy is reseeded, because it holds
+ * those files as released — a payment the new pipeline would then show twice.
  */
-const SCHEMA_VERSION = 12;
+const SCHEMA_VERSION = 13;
 
 function seedState(): EAnudaanState {
   const seed = buildSeed();
@@ -97,8 +101,10 @@ function seedState(): EAnudaanState {
 
 /** An earlier build's copy, brought forward so the applicant's own work on this device survives. */
 // Schema 8 → 9 stays available for a copy that is exactly 8; it is not applied to 10 (see above).
-const migrate = (old: PersistedState) => migrateFrom11(old, buildSeed());
+// Nothing below 13 is carried forward (see 13 above); the migrations stay for the record.
+const migrate = (): EAnudaanState | null => null;
 void migrateFrom8;
+void migrateFrom11;
 
 /**
  * Runtime clock. The seeder uses its own fixed clock; this one is only reached from user
@@ -183,6 +189,11 @@ interface EAnudaanContextValue {
 
   /** PD:US — release a sanctioned claim's funds. */
   releaseFunds: (appId: string) => ActResult;
+  /**
+   * Record a credit PFMS has confirmed (the payment leg's `pfms/store.tsx` calls it). Not tied to
+   * the signed-in role: the credit is PFMS's news, and the demo rail can deliver it to any session.
+   */
+  recordPfmsCredit: (appId: string, credit: PfmsCredit) => ActResult;
   /** PD:US — open the instalment after a released one for the NGO to claim. `nextLabel`: "2nd Instalment". */
   openForClaim: (appId: string, nextLabel: string) => ActResult;
   /** PD:SO / PD:JS — issue a Show Cause Notice. */
@@ -406,6 +417,23 @@ export function EAnudaanProvider({ children }: { children: React.ReactNode }) {
       },
 
       releaseFunds: (appId) => outsideChain(appId, (app, role, clock) => release(app, role, clock)),
+      recordPfmsCredit: (appId, credit) => {
+        const out: { result: ActResult } = { result: { ok: false, error: `Application ${appId} not found.` } };
+        const saved = commit((s) => {
+          const app = s.applications.find((a) => a.id === appId);
+          if (!app) return s;
+          const res = recordCredit(app, credit, liveClock());
+          out.result = res;
+          if (!res.ok) return s;
+          return {
+            ...s,
+            applications: s.applications.map((a) => (a.id === appId ? res.app : a)),
+            notifications: [stayNotice(s, res.app, credit.authorisedBy, ["pd-maker", "pd-us"]), ...s.notifications],
+          };
+        });
+        if (!saved.ok) return { ok: false, error: saved.error };
+        return out.result;
+      },
       openForClaim: (appId, nextLabel) => outsideChain(appId, (app, role, clock) => openClaim(app, role, nextLabel, clock)),
       issueShowCauseNotice: (appId, input) => outsideChain(appId, (app, role, clock) => issueNotice(app, role, input, clock)),
       scheduleOnlineInspection: (appId, input) =>

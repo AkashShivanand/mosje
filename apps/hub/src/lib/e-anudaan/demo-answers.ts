@@ -33,6 +33,8 @@ export const DEMO_APPLICANT = {
   ifsc: "SBIN0000001",
   micr: "411002045",
   account: "123456789012",
+  /** PFMS unique (payee) code — illustrative shape, two letters and ten digits. */
+  payeeCode: "MH4100380271",
   pan: "AAATS0000A",
 } as const;
 
