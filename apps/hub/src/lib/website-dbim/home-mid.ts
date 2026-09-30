@@ -8,8 +8,9 @@ import "server-only";
  * (`@/lib/website-shared/offerings`); the document and
  * update registers (`@/lib/website/content`, through the DBIM Offerings and Documents
  * modules so a row means the same thing on the home page as on its own page), the
- * Department's divisions (`@/data/website`) and the DBIM reference build's persona
- * drawings (`DBIM_PERSONA_ART`). Mapping and reasoning:
+ * Department's divisions (`@/data/website`), and the applicant groups finalised with
+ * the AS (`./applicants`) with the handoff file's drawings (`DBIM_PERSONA_ART`).
+ * Mapping and reasoning:
  * docs/research/dbim-reference/components/home-mid.spec.md.
  */
 import {
@@ -20,7 +21,8 @@ import { localiseDocumentUrl } from "@/lib/website/sample-documents";
 import { whatsNew } from "@/lib/website-next/whats-new";
 import { dbimHref } from "./nav";
 import { DBIM_PERSONA_ART } from "./assets";
-import { DBIM_IMPORTANT_LINKS, DBIM_PERSONAS } from "./utility";
+import { DBIM_APPLICANT_TYPES } from "./applicants";
+import { DBIM_IMPORTANT_LINKS } from "./utility";
 import {
   documentSeries, whatsNewTarget,
 } from "./documents";
@@ -171,7 +173,7 @@ export function dbimRecentDocuments(): DbimRecentDoc[] {
 
 export interface DbimPersonaSlide {
   slug: string;
-  /** The persona page's own title (`DBIM_PERSONAS`). */
+  /** The applicant group's name, as the finalised chips word it. */
   label: string;
   art: string;
   alt: string;
@@ -179,24 +181,32 @@ export interface DbimPersonaSlide {
 }
 
 /*
- * The Department's audiences are the classic site's four pages — For Student, For
- * Beneficiary, For Government Official, For Researcher. Only three drawings exist,
- * and each goes to the audience it genuinely depicts or to none:
- *   persona-1 (suit and tie, on a call, holding a tablet) → Government Official
- *   persona-3 (young man reading an open book; the reference's own "Researcher") → Researcher
- *   persona-2 (a business owner) → none; no Department audience is one.
- * Student and Beneficiary have no drawing that shows them and are left out rather
- * than given one that does not.
+ * THE ELEVEN APPLICANT GROUPS, one slide each (instruction, 30 Sep 2026: the chips
+ * finalised with the AS — lib/website-dbim/applicants.ts), each with the handoff file's
+ * drawing for it (`DBIM_PERSONA_ART`). Each opens Schemes and Services with that Type of
+ * Applicant chosen. The alt text says what the drawing shows, not who the group is:
+ * the slide's name already says that.
  */
-const PERSONA_ART: Record<string, { art: string; alt: string }> = {
-  "government-official": { art: DBIM_PERSONA_ART[0], alt: "Drawing of an official in a suit holding a tablet" },
-  researcher: { art: DBIM_PERSONA_ART[2], alt: "Drawing of a researcher reading an open book" },
+const PERSONA_ALT: Record<string, string> = {
+  student: "Drawing of a student with a backpack",
+  sc: "Drawing of a man in a shirt with a cloth over his shoulder",
+  obc: "Drawing of a bearded man with a scarf",
+  dnt: "Drawing of a young man in a turban",
+  safai: "Drawing of a worker in a cap holding a broom",
+  senior: "Drawing of an older woman in a sari holding a booklet",
+  tg: "Drawing of a woman in a sari",
+  drug: "Drawing of a young man in a shirt",
+  begging: "Drawing of an older man with a cloth over his shoulder",
+  atrocity: "Drawing of a woman in a sari holding a book",
+  ngo: "Drawing of a woman with a shoulder bag",
 };
 
-/** The Department's personas (`DBIM_PERSONAS`, the canonical list) that have a drawing. */
-export const DBIM_HOME_PERSONAS: DbimPersonaSlide[] = DBIM_PERSONAS.flatMap((p) => {
-  const a = PERSONA_ART[p.slug];
-  return a ? [{ slug: p.slug, label: p.title, art: a.art, alt: a.alt, href: dbimHref(`/persona/${p.slug}`) }] : [];
+/** The home page's personas: every applicant group that has a drawing, in the finalised order. */
+export const DBIM_HOME_PERSONAS: DbimPersonaSlide[] = DBIM_APPLICANT_TYPES.flatMap((a) => {
+  const art = DBIM_PERSONA_ART[a.id];
+  return art
+    ? [{ slug: a.id, label: a.label, art, alt: PERSONA_ALT[a.id] ?? "", href: `${dbimHref("/offerings")}?applicant=${a.id}` }]
+    : [];
 });
 
 /* ── Important Links ───────────────────────────────────────────────────── */

@@ -102,8 +102,20 @@ export const DBIM_CAMPAIGNS = {
   },
 } as const;
 
-/** The three persona illustrations of "Explore User Personas", in carousel order. */
-export const DBIM_PERSONA_ART = [`${D}/personas/persona-1.png`, `${D}/personas/persona-2.png`, `${D}/personas/persona-3.png`] as const;
+/**
+ * The persona drawings of "Explore User Personas", one per applicant group — the MoSJE
+ * Handoff file's "Assets — Persona Illustrations (Type of Applicant)" (node 52423:7108,
+ * instruction 30 Sep 2026: use these, to be revised later if required). Rendered from
+ * each 160px frame at 2× (320 × 320, transparent), exactly as the frame crops it, then
+ * palette-compressed: 21–37 KB each, inside DBIM 3.0's 100 KB thumbnail limit (6.1.1).
+ * Keyed by the applicant group's id (`lib/website-dbim/applicants.ts`).
+ */
+export const DBIM_PERSONA_ART: Record<string, string> = Object.fromEntries(
+  ["student", "sc", "obc", "dnt", "safai", "senior", "tg", "drug", "begging", "atrocity", "ngo"].map((id) => [
+    id,
+    `${D}/personas/applicant-${id}.png`,
+  ]),
+);
 
 /**
  * The four tile icons of a persona page — DBIM Visual Library icons (`DbimIcon` names),
@@ -111,19 +123,6 @@ export const DBIM_PERSONA_ART = [`${D}/personas/persona-1.png`, `${D}/personas/p
  */
 export const DBIM_PERSONA_ICONS = ["schemes", "tenders", "publications", "job-opportunity"] as const;
 
-/** Scheme card photographs from the reference, keyed by a word that appears in the scheme's name. */
-export const DBIM_SCHEME_ART: { match: RegExp; src: string }[] = [
-  { match: /AVYAY|Vayo/i, src: `${D}/schemes/avyay.jpg` },
-  { match: /Drug Demand|NAPDDR/i, src: `${D}/schemes/napddr.jpg` },
-  { match: /SHRESHTA/i, src: `${D}/schemes/shreshta.jpg` },
-  { match: /Top Class/i, src: `${D}/schemes/top-class-sc.png` },
-  { match: /Hostel/i, src: `${D}/schemes/obc-hostels.png` },
-  { match: /Interest Subsidy/i, src: `${D}/schemes/interest-subsidy.jpg` },
-  { match: /Loan|NBCFDC/i, src: `${D}/schemes/nbcfdc-education-loan.png` },
-];
-
-/** Fallback card photographs, used in turn for schemes with no photograph of their own. */
-export const DBIM_SCHEME_ART_FALLBACK = [`${D}/schemes/generic-a.png`, `${D}/schemes/generic-b.png`] as const;
 
 export const DBIM_PARLIAMENT = {
   lokSabha: { src: `${D}/parliament/lok-sabha.png`, alt: "Lok Sabha chamber", href: "https://sansad.in/ls/questions/questions-and-answers" },

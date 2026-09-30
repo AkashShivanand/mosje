@@ -171,6 +171,14 @@
   /* A disabled control keeps the key colour; the button's own --sa-alpha-disabled
      fade says "unavailable", not a grey DBIM does not publish. Disabled controls are
      exempt from contrast (WCAG 1.4.3). */
+  /* §3.4: icons are 24, 32, 48 or 64. ChartExport draws its download glyph at 20 from
+     an inline style, so only an important rule reaches it; the optical-size axis
+     follows so the glyph is drawn for 24, not scaled from 20. */
+  [data-design="dbim"] .ds-chart-export__trigger .material-symbols-rounded {
+    font-size: 24px !important;
+    font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24 !important;
+  }
+
   [data-design="dbim"] :is(.ds-btn:disabled, .ds-btn[aria-disabled="true"]) .material-symbols-rounded {
     color: var(--sa-color-primaryScale-800);
   }

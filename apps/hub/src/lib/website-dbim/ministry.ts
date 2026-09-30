@@ -314,10 +314,13 @@ export function teamOffices(
 /* ── Our Division ──────────────────────────────────────────────────────────── */
 
 /**
- * The Department's own one-line description of a division, where it publishes one.
- * SOURCE: dosje.gov.in's "About the Division" pages as the redesign transcribed them
- * (`app/website/about-the-division*`, `official-language-background`, read 21 Sep 2026).
- * A division the Department describes nowhere gets no description.
+ * The Department's own opening line on a division, where it publishes one — the first
+ * sentence of the division's page on dosje.gov.in, word for word (checked against the live
+ * pages on 29 Sep 2026: `about-the-division`, `…-welfare-of-the-other-backward-classes`,
+ * `…-social-defence`, `…-statistics-division`, `official-language-background`).
+ * Social Defence's page opens with a lead and a four-item list; the list is joined into the
+ * line with commas. A division the Department describes nowhere gets no description — the
+ * Plan Division's page carries only a list of activities, so its card has none.
  */
 const DIVISION_SUMMARY: Record<string, string> = {
   "scheduled-caste-welfare":
@@ -325,9 +328,9 @@ const DIVISION_SUMMARY: Record<string, string> = {
   "welfare-of-other-backward-classes":
     "Under the Backward Classes Bureau, the Ministry is mandated to look after the welfare of Backward Classes, by implementing the schemes for Backward Classes.",
   "social-defence":
-    "The Social Defence Division of the Department mainly caters to the requirements of senior citizens, victims of alcoholism and substance abuse, transgender persons, and persons engaged in beggary or destitution.",
+    "The Social Defence Division of the Department mainly caters to the requirements of: Senior Citizens, Victims of alcoholism and substance abuse, Transgender Persons, Beggars / Destitute.",
   "statistics-division":
-    "The Statistics Division of the Department of Social Justice & Empowerment is primarily responsible for sponsoring evaluation and research studies on the schemes for its target groups.",
+    "Statistics Division of the Department of Social Justice & Empowerment is primarily responsible for sponsoring evaluation/research studies on schemes of its target groups namely Scheduled Castes, Other Backward Classes (OBCs), Senior Citizens and Victims of Substance Abuse.",
   "official-language":
     "Hindi unit is responsible for implementation of Official Language policy and the progressive use of Official Language Hindi in the Department of Social Justice and Empowerment and the Offices under its control.",
 };

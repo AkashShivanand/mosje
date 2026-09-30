@@ -16,3 +16,10 @@ test("keeps img src/alt and table markup", () => {
   assert.ok(!/onerror/.test(out));
   assert.match(out, /<td>c<\/td>/);
 });
+
+test("a link left as an editor's placeholder becomes plain text, keeping its label", () => {
+  const out = sanitize(`<td><a href="PLACEHOLDER_URL_1" target="_blank">View</a></td>`);
+  assert.ok(!/<a\b/.test(out));
+  assert.ok(!/PLACEHOLDER/.test(out));
+  assert.match(out, /<span>View<\/span>/);
+});

@@ -154,33 +154,26 @@ export function DbimSocialFeed({
               become — DBIM 3.0 Figure 61 shows the four networks' embeds. The account is
               real text; the post shells are drawing only. */}
           <div className={`db-hb-feed__post db-hb-feed__post--${feed.network}`}>
-            {feed.network !== "youtube" && (
-              <div className="db-hb-feed__who">
-                <span className="db-hb-feed__avatar" aria-hidden="true" />
-                <span>
-                  <span className="db-hb-feed__name">{account}</span>
-                  <span className="db-hb-feed__handle">{feed.handle}</span>
-                </span>
-              </div>
-            )}
-            <PostShell network={feed.network} />
-            {feed.network === "youtube" && (
-              <span className="db-hb-feed__who db-hb-feed__who--below">
+            {/* The account leads on every network, YouTube included: its embed carries
+                the channel over the top of the player, and below the frame the name
+                wrapped into the fade and under "View on YouTube". */}
+            <div className="db-hb-feed__who">
+              <span className="db-hb-feed__avatar" aria-hidden="true" />
+              <span>
                 <span className="db-hb-feed__name">{account}</span>
                 <span className="db-hb-feed__handle">{feed.handle}</span>
               </span>
-            )}
+            </div>
+            <PostShell network={feed.network} />
           </div>
           <div className={`db-hb-feed__post db-hb-feed__post--${feed.network}`} aria-hidden="true">
-            {feed.network !== "youtube" && (
-              <div className="db-hb-feed__who">
-                <span className="db-hb-feed__avatar" />
-                <span className="db-hb-feed__bars">
-                  <span className="db-hb-feed__bar" style={{ width: "60%" }} />
-                  <span className="db-hb-feed__bar" style={{ width: "40%" }} />
-                </span>
-              </div>
-            )}
+            <div className="db-hb-feed__who">
+              <span className="db-hb-feed__avatar" />
+              <span className="db-hb-feed__bars">
+                <span className="db-hb-feed__bar" style={{ width: "60%" }} />
+                <span className="db-hb-feed__bar" style={{ width: "40%" }} />
+              </span>
+            </div>
             <PostShell network={feed.network} />
           </div>
           <div className="db-hb-feed__cta">

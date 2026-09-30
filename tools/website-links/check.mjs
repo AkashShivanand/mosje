@@ -64,6 +64,20 @@ const fail = (msg) => {
 };
 
 // ── Slugs behind each dynamic route ─────────────────────────────────────────
+/*
+ * Addresses the Department renamed that the content layer serves at the estate's
+ * own (`lib/website/content/renamed-organisations.json`): a record at `<live>/x`
+ * is reachable at `<ours>/x`, so the checker must accept exactly what the page does.
+ */
+const RENAMED = JSON.parse(readFileSync(join(ROOT, "apps/hub/src/lib/website/content/renamed-organisations.json"), "utf8"));
+const renamedOrganisationSlugs = (slugs) => {
+  const out = new Set();
+  for (const s of slugs) {
+    const hit = Object.entries(RENAMED).find(([live]) => s === live || s.startsWith(`${live}/`));
+    out.add(hit ? hit[1] + s.slice(hit[0].length) : s);
+  }
+  return out;
+};
 const jsonSlugs = (...files) => {
   const out = new Set();
   for (const file of files) {
@@ -127,7 +141,7 @@ const masterSchemeIds = () => {
  * Central List of OBCs are merged into one set before the page sees them.
  */
 const DYNAMIC = [
-  { prefix: "/website/organisation/", catchAll: true, source: "organisation.json", slugs: () => jsonSlugs("organisation.json") },
+  { prefix: "/website/organisation/", catchAll: true, source: "organisation.json", slugs: () => renamedOrganisationSlugs(jsonSlugs("organisation.json")) },
   {
     prefix: "/website/schemes-services/",
     catchAll: false,

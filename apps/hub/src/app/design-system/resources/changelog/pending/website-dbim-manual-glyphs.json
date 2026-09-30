@@ -1,4 +1,0 @@
-{
-  "kind": "Fixed",
-  "text": "THE DBIM HOME PAGE'S SOCIAL MEDIA HEADING AND OUR TEAM TILE USE THE MANUAL'S OWN ICONS. DBIM 3.0 draws the In Social Media heading with a globe and video player (Figure 61) and the Ministry section's team tile with two figures, \"Who's who\" (Figure 55). The icon bank's Social Media Marketing and Groups glyphs had replaced them; both are restored, in the Figma handoff's icon sets (all four sizes) and in the build (`social-media.svg`, `our-team.svg`)."
-}

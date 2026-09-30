@@ -6,16 +6,45 @@ import type { DbimSchemeCard as Card } from "@/lib/website-dbim/offerings";
 import { DbimSchemeCard } from "./SchemeCard";
 import { DbimListEmpty, DbimListFooter } from "./ListParts";
 
-const searchText = (c: Card) => `${c.name} ${c.line} ${c.category}`;
-const categoryOf = (c: Card) => c.category;
+const searchText = (c: Card) => `${c.name} ${c.line} ${c.categories.join(" ")}`;
+const categoriesOf = (c: Card) => c.categories;
+const audiencesOf = (c: Card) => c.audiences;
 
-/** Schemes and Services: search · Category · per page over a two-column grid, paged. */
-export function DbimSchemeGrid({ cards }: { cards: Card[] }) {
-  const listing = useListing(cards, { searchText, category: categoryOf, perPage: 10 });
+/**
+ * Schemes and Services: search · Type of Applicant (the eleven finalised groups, in
+ * their order) · Category (the live groups, in the live order) · per page over a
+ * two-column grid, paged. A persona on the home page arrives with its group chosen.
+ */
+export function DbimSchemeGrid({
+  cards,
+  groups,
+  applicants,
+  applicant,
+}: {
+  cards: Card[];
+  groups: readonly string[];
+  applicants: { value: string; label: string }[];
+  /** The group a link arrived with (`?applicant=`), already checked against `applicants`. */
+  applicant?: string;
+}) {
+  const listing = useListing(cards, {
+    searchText,
+    category: categoriesOf,
+    categoryOrder: groups,
+    audience: { of: audiencesOf, options: applicants, initial: applicant },
+    perPage: 10,
+  });
   return (
     <div className="db-off">
       <DbimFilterBar
         search={{ value: listing.query, onChange: listing.setQuery, placeholder: "Search...", label: "Search schemes and services" }}
+        audience={{
+          value: listing.audience,
+          onChange: listing.setAudience,
+          options: listing.audiences,
+          placeholder: "Type of Applicant",
+          label: "Type of Applicant",
+        }}
         category={{
           value: listing.category,
           onChange: listing.setCategory,

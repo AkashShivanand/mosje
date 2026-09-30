@@ -1,0 +1,294 @@
+{
+  "asOn": "2026-09-29",
+  "source": "https://www.dosje.gov.in/schemes-services/?org=mosje",
+  "groups": [
+    {
+      "name": "Scholarships and Fellowships",
+      "slugs": [
+        "central-sector-scholarship-of-top-class-education-for-sc-students",
+        "dr-ambedkar-scheme-of-interest-subsidy-on-educational-loan-for-overseas-studies-for-obcs-ebcs",
+        "national-fellowship-for-obc-students-nf-obc",
+        "national-fellowship-for-scheduled-caste-students",
+        "national-overseas-scholarship-nos-for-sc-etc-candidates",
+        "pm-young-achievers-scholarship-award-scheme-for-vibrant-india-for-obcs-and-others-pm-yasasvi",
+        "post-matric-scholarship-for-sc-students",
+        "pre-matric-scholarships-scheme-for-scheduled-castes-others",
+        "scholarship-for-pm-cares-children",
+        "scholarships-for-higher-education-for-young-achievers-scheme-shreyas-obc-others-2021-22-to-2025-26",
+        "top-class-education-in-colllege-for-obc-ebc-and-dnt-students"
+      ]
+    },
+    {
+      "name": "Residential Schools, Hostels and Coaching",
+      "slugs": [
+        "construction-of-hostels-for-obc-boys-and-girls",
+        "free-coaching-for-scs-obcs-and-beneficiaries-of-pm-cares-children-scheme",
+        "pm-young-achievers-scholarship-award-scheme-for-vibrant-india-for-obcs-and-others-pm-yasasvi",
+        "pradhan-mantri-anusuchit-jaati-abhyuday-yojna-pm-ajay",
+        "scheme-for-residential-education-for-students-in-high-schools-in-targeted-areas-shreshta",
+        "upgadation-of-merit-of-sc-students"
+      ]
+    },
+    {
+      "name": "Loans and Credit",
+      "slugs": [
+        "credit-enhancement-guarantee-scheme-for-the-scheduled-castes-scs",
+        "national-action-for-mechanised-sanitation-ecosystem-namaste",
+        "national-safai-karamcharis-finance-and-development-corporation-nskfdc",
+        "national-scheduled-castes-finance-and-development-corporation-nsfdc",
+        "scheme-of-assistance-to-scheduled-castes-development-corporations-scdcs"
+      ]
+    },
+    {
+      "name": "Skill Training and Livelihood",
+      "slugs": [
+        "atal-vayo-abhyuday-yojana-avyay",
+        "national-action-for-mechanised-sanitation-ecosystem-namaste",
+        "pm-special-training-of-geriatric-care-givers",
+        "pradhan-mantri-anusuchit-jaati-abhyuday-yojna-pm-ajay",
+        "support-for-marginalized-individuals-for-livelihood-and-enterprise-smile"
+      ]
+    },
+    {
+      "name": "Grants to Voluntary Organisations",
+      "slugs": [
+        "atal-vayo-abhyuday-yojana-avyay",
+        "national-action-plan-for-drug-demand-reduction",
+        "scheme-for-residential-education-for-students-in-high-schools-in-targeted-areas-shreshta",
+        "support-for-marginalized-individuals-for-livelihood-and-enterprise-smile"
+      ]
+    },
+    {
+      "name": "Care, Health and Shelter",
+      "slugs": [
+        "atal-vayo-abhyuday-yojana-avyay",
+        "national-action-for-mechanised-sanitation-ecosystem-namaste",
+        "support-for-marginalized-individuals-for-livelihood-and-enterprise-smile"
+      ]
+    },
+    {
+      "name": "Protection, Relief and Grievance",
+      "slugs": [
+        "atal-vayo-abhyuday-yojana-avyay",
+        "centrally-sponsored-scheme-for-implementation-of-the-protection-of-civil-rights-act-1955-and-the-scheduled-castes-and-the-scheduled-tribes-prevention-of-atrocities-act-1989",
+        "support-for-marginalized-individuals-for-livelihood-and-enterprise-smile"
+      ]
+    },
+    {
+      "name": "De-addiction and Counselling",
+      "slugs": [
+        "national-action-plan-for-drug-demand-reduction",
+        "scheme-of-national-awards-for-outstanding-services-in-the-field-of-prevention-of-alcoholism-and-substance-drug-abuse"
+      ]
+    },
+    {
+      "name": "Awards and Recognition",
+      "slugs": [
+        "scheme-of-national-awards-for-outstanding-services-in-the-field-of-prevention-of-alcoholism-and-substance-drug-abuse"
+      ]
+    },
+    {
+      "name": "Economic Development",
+      "slugs": [
+        "information-monitoring-evaluation-social-audit-i-mesa"
+      ]
+    },
+    {
+      "name": "Housing and Settlement",
+      "slugs": [
+        "pradhan-mantri-anusuchit-jaati-abhyuday-yojna-pm-ajay"
+      ]
+    }
+  ],
+  "schemes": {
+    "central-sector-scholarship-of-top-class-education-for-sc-students": {
+      "title": "Central Sector Scholarship of Top Class Education for SC Students",
+      "who": [
+        "Scheduled Castes",
+        "Students"
+      ]
+    },
+    "dr-ambedkar-scheme-of-interest-subsidy-on-educational-loan-for-overseas-studies-for-obcs-ebcs": {
+      "title": "Dr. Ambedkar Scheme of Interest Subsidy on Educational Loan for Overseas Studies for OBCs & EBCs",
+      "who": [
+        "Other Backward Classes",
+        "Students"
+      ]
+    },
+    "national-fellowship-for-obc-students-nf-obc": {
+      "title": "National Fellowship for OBC Students (NF-OBC)",
+      "who": [
+        "Other Backward Classes",
+        "Students"
+      ]
+    },
+    "national-fellowship-for-scheduled-caste-students": {
+      "title": "National Fellowship for Scheduled Caste Students",
+      "who": [
+        "Scheduled Castes",
+        "Students"
+      ]
+    },
+    "national-overseas-scholarship-nos-for-sc-etc-candidates": {
+      "title": "National Overseas Scholarship (NOS) for SC etc. Candidates",
+      "who": [
+        "Scheduled Castes",
+        "Students"
+      ]
+    },
+    "pm-young-achievers-scholarship-award-scheme-for-vibrant-india-for-obcs-and-others-pm-yasasvi": {
+      "title": "PM Young Achievers Scholarship Award Scheme for Vibrant India for OBCs and Others (PM -YASASVI)",
+      "who": [
+        "Other Backward Classes",
+        "Students"
+      ]
+    },
+    "post-matric-scholarship-for-sc-students": {
+      "title": "Post-Matric Scholarship for SC students",
+      "who": [
+        "Scheduled Castes",
+        "Students"
+      ]
+    },
+    "pre-matric-scholarships-scheme-for-scheduled-castes-others": {
+      "title": "Pre-Matric Scholarships Scheme for Scheduled Castes & Others",
+      "who": [
+        "Safai Karamcharis",
+        "Scheduled Castes",
+        "Students"
+      ]
+    },
+    "scholarship-for-pm-cares-children": {
+      "title": "Scholarship for PM CARES Children",
+      "who": [
+        "Students"
+      ]
+    },
+    "scholarships-for-higher-education-for-young-achievers-scheme-shreyas-obc-others-2021-22-to-2025-26": {
+      "title": "Scholarships for Higher Education for Young Achievers Scheme (SHREYAS) (OBC &Others) – 2021-22 to 2025-26.",
+      "who": [
+        "Other Backward Classes",
+        "Students"
+      ]
+    },
+    "top-class-education-in-colllege-for-obc-ebc-and-dnt-students": {
+      "title": "Top Class Education in College for OBC EBC and DNT Students",
+      "who": [
+        "Other Backward Classes",
+        "Students"
+      ]
+    },
+    "construction-of-hostels-for-obc-boys-and-girls": {
+      "title": "Construction of Hostels for OBC Boys and Girls",
+      "who": [
+        "Other Backward Classes",
+        "Students"
+      ]
+    },
+    "free-coaching-for-scs-obcs-and-beneficiaries-of-pm-cares-children-scheme": {
+      "title": "Free Coaching for SCs, OBCs and beneficiaries of PM CARES Children Scheme",
+      "who": [
+        "Other Backward Classes",
+        "Scheduled Castes",
+        "Students"
+      ]
+    },
+    "pradhan-mantri-anusuchit-jaati-abhyuday-yojna-pm-ajay": {
+      "title": "Pradhan Mantri Anusuchit Jaati Abhyuday Yojna (PM-AJAY)",
+      "who": [
+        "Scheduled Castes"
+      ]
+    },
+    "scheme-for-residential-education-for-students-in-high-schools-in-targeted-areas-shreshta": {
+      "title": "Scheme For Residential Education For Students in High Schools in Targeted Areas (SHRESHTA)",
+      "who": [
+        "Scheduled Castes",
+        "Students",
+        "Voluntary Organisations"
+      ]
+    },
+    "upgadation-of-merit-of-sc-students": {
+      "title": "Upgadation Of Merit Of SC Students",
+      "who": [
+        "Scheduled Castes",
+        "Students"
+      ]
+    },
+    "credit-enhancement-guarantee-scheme-for-the-scheduled-castes-scs": {
+      "title": "Credit Enhancement Guarantee Scheme for the Scheduled Castes (SCs)",
+      "who": [
+        "Scheduled Castes"
+      ]
+    },
+    "national-action-for-mechanised-sanitation-ecosystem-namaste": {
+      "title": "National Action for Mechanised Sanitation Ecosystem (NAMASTE)",
+      "who": [
+        "Safai Karamcharis"
+      ]
+    },
+    "national-safai-karamcharis-finance-and-development-corporation-nskfdc": {
+      "title": "National Safai Karamcharis Finance and Development Corporation (NSKFDC)",
+      "who": [
+        "Safai Karamcharis"
+      ]
+    },
+    "national-scheduled-castes-finance-and-development-corporation-nsfdc": {
+      "title": "National Scheduled Castes Finance and Development Corporation (NSFDC)",
+      "who": [
+        "Scheduled Castes"
+      ]
+    },
+    "scheme-of-assistance-to-scheduled-castes-development-corporations-scdcs": {
+      "title": "Scheme of Assistance to Scheduled Castes Development Corporations (SCDCs)",
+      "who": [
+        "Scheduled Castes"
+      ]
+    },
+    "atal-vayo-abhyuday-yojana-avyay": {
+      "title": "Atal Vayo Abhyuday Yojana (AVYAY)",
+      "who": [
+        "Senior Citizens",
+        "Voluntary Organisations"
+      ]
+    },
+    "pm-special-training-of-geriatric-care-givers": {
+      "title": "PM Special (Training of Geriatric Care Givers)",
+      "who": [
+        "Senior Citizens"
+      ]
+    },
+    "support-for-marginalized-individuals-for-livelihood-and-enterprise-smile": {
+      "title": "Support for Marginalized Individuals for Livelihood and Enterprise (SMILE)",
+      "who": [
+        "Persons Engaged in Begging",
+        "Transgender Persons",
+        "Voluntary Organisations"
+      ]
+    },
+    "national-action-plan-for-drug-demand-reduction": {
+      "title": "National Action Plan for Drug Demand Reduction",
+      "who": [
+        "Persons Affected by Substance Use",
+        "Voluntary Organisations"
+      ]
+    },
+    "centrally-sponsored-scheme-for-implementation-of-the-protection-of-civil-rights-act-1955-and-the-scheduled-castes-and-the-scheduled-tribes-prevention-of-atrocities-act-1989": {
+      "title": "Centrally Sponsored Scheme for implementation of the Protection of Civil Rights Act, 1955 and the Scheduled Castes and the Scheduled Tribes (Prevention of Atrocities) Act, 1989",
+      "who": [
+        "Scheduled Castes",
+        "Victims of Atrocities"
+      ]
+    },
+    "scheme-of-national-awards-for-outstanding-services-in-the-field-of-prevention-of-alcoholism-and-substance-drug-abuse": {
+      "title": "Scheme of National Awards for Outstanding Services in the field of Prevention of Alcoholism and Substance (Drug) Abuse",
+      "who": [
+        "Persons Affected by Substance Use",
+        "Voluntary Organisations"
+      ]
+    },
+    "information-monitoring-evaluation-social-audit-i-mesa": {
+      "title": "Information-Monitoring, Evaluation & Social Audit (I-MESA)",
+      "who": []
+    }
+  }
+}
