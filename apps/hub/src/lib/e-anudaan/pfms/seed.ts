@@ -51,7 +51,8 @@ export interface PfmsState {
   seq: number;
 }
 
-export const PFMS_SCHEMA_VERSION = 1;
+/** 2: SHRESTHA Mode 1 configured; advices may carry `earlier`; a credit is dated before the close. */
+export const PFMS_SCHEMA_VERSION = 2;
 
 const DAY = 86_400_000;
 const INTEGRATION_FROM = "2026-04-01";
@@ -167,8 +168,14 @@ export function buildPfmsSeed(main: EAnudaanState, now: string): PfmsState {
   /** Walk an accepted request along the happy path up to `until`, stamping each status a day apart. */
   const transmitted = (adv: PaymentAdvice, sentAt: number, until: PfmsStatus, paidOn?: number): PaymentAdvice => {
     const path = PFMS_HAPPY_PATH.slice(0, PFMS_HAPPY_PATH.indexOf(until) + 1);
-    const step = paidOn ? Math.max(1, Math.floor((paidOn - sentAt) / Math.max(1, path.length - 1))) : DAY;
-    const history = path.map((status, i) => ({ status, at: iso(Math.min(sentAt + i * step, paidOn ?? Infinity)) }));
+    // Statuses up to the voucher are spread between sending and the credit; PFMS closes the sanction
+    // two days after the credit, never before it (the closed case read "closed" above "credited").
+    const toCredit = path.filter((st) => st !== "Closed");
+    const step = paidOn ? Math.max(1, Math.floor((paidOn - sentAt) / Math.max(1, toCredit.length - 1))) : DAY;
+    const history = path.map((status, i) => ({
+      status,
+      at: status === "Closed" && paidOn ? iso(paidOn + 2 * DAY) : iso(Math.min(sentAt + i * step, paidOn ?? Infinity)),
+    }));
     const req: PfmsRequest = {
       uniqueIdentifier: uid(sentAt),
       sentAt: iso(sentAt),

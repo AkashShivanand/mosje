@@ -9,7 +9,7 @@
 import type { EAnudaanState, GrantApplication } from "../types.ts";
 import { accountsFor } from "../applicant.ts";
 import { configFor } from "./masters.ts";
-import { stageOf, type AnyStage } from "./stages.ts";
+import { RESTARTABLE, stageOf, type AnyStage } from "./stages.ts";
 import type { BeneficiaryLine, PaymentAdvice, PayeeRecord } from "./types.ts";
 import type { PfmsState } from "./seed.ts";
 
@@ -107,11 +107,13 @@ export function paymentCases(main: EAnudaanState, pfms: PfmsState): PaymentCase[
 }
 
 /** The Maker's queue, by tab (FR-PDM-001). */
-export type MakerTab = "new" | "returned" | "not-accepted" | "drafts" | "held";
+export type MakerTab = "new" | "returned" | "not-accepted" | "returned-pfms" | "drafts" | "held";
 
 export function makerTab(c: PaymentCase): MakerTab | null {
   if (c.blocker) return "held";
   if (!c.advice) return "new";
+  // Returned by PFMS to be corrected, or ended at PFMS and waiting to be started afresh (FR-PDM-001).
+  if (c.advice.state === "returned-pfms" || RESTARTABLE.includes(c.stage)) return "returned-pfms";
   switch (c.advice.state) {
     case "draft":
       return "drafts";
@@ -128,6 +130,7 @@ export const MAKER_TABS: readonly { id: MakerTab; label: string; empty: string }
   { id: "new", label: "New", empty: "No sanctioned file is waiting for a payment advice." },
   { id: "returned", label: "Returned by Checker", empty: "No payment advice has been returned by the Checker." },
   { id: "not-accepted", label: "Not Accepted by PFMS", empty: "PFMS has accepted every payment advice sent to it." },
+  { id: "returned-pfms", label: "Returned by PFMS", empty: "No bill has been returned by PFMS or failed at the bank." },
   { id: "drafts", label: "Drafts", empty: "No payment advice is saved as a draft." },
   { id: "held", label: "On Hold", empty: "No sanctioned file is on hold." },
 ];

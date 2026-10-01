@@ -9,9 +9,11 @@ import assert from "node:assert/strict";
 import { buildSeed, SEED_SCHEMES } from "../store/seed.ts";
 import type { EAnudaanState } from "../types.ts";
 import { buildPfmsSeed } from "./seed.ts";
-import { PFMS_STATUS_STAGE, STAGE_INFO, STAGES, EXCEPTIONS, stageOf, latestRequest } from "./stages.ts";
+import { PFMS_STATUS_STAGE, RESTARTABLE, STAGE_INFO, STAGES, EXCEPTIONS, stageOf, latestRequest } from "./stages.ts";
 import {
   authoriseAndTransmit,
+  billStatusOf,
+  restartAdvice,
   certificateCheck,
   createAdvice,
   nextBillNumber,
@@ -22,7 +24,8 @@ import {
   validateAdvice,
   type AdviceContext,
 } from "./advice.ts";
-import { advanceRequest, resendQueued, returnAndCancel, simulateTransmit } from "./simulator.ts";
+import { advanceRequest, expireFinancialYear, failCredit, resendQueued, returnAndCancel, returnByPfms, simulateTransmit } from "./simulator.ts";
+import { schemeCodeFor, schemeTitle } from "./masters.ts";
 import { PFMS_ERRORS, pfmsError } from "./errors.ts";
 import { paymentCase, paymentCases, makerTab } from "./selectors.ts";
 import { ageing, pipelineCounts, poolUtilisation, reconcile, turnaround, usedClaimReferences } from "./reports.ts";
@@ -330,4 +333,106 @@ test("the application form asks for the payee code and a typed-twice account whe
   const errors = validateStep(step, { ...fresh, fld_bank_account_confirm: "30112233445567", fld_pfms_payee_code: "MH12" });
   assert.match(errors.fld_bank_account_confirm ?? "", /do not match/);
   assert.match(errors.fld_pfms_payee_code ?? "", /two letters and ten digits/);
+});
+
+/* ── After PFMS sends a bill back, lets it lapse, or the bank fails it (1 Oct 2026) ─────────── */
+
+const sig = { by: "pd-checker" as const, personName: "R", at: NOW, certificateSerial: "X" };
+const sentToPfms = (id: string) => {
+  const r = authoriseAndTransmit(submitted(), sig, id, simulateTransmit("accept"), NOW);
+  assert.ok(r.ok);
+  return r.advice;
+};
+const step = (a: PaymentAdvice, times: number) => {
+  for (let i = 0; i < times; i++) {
+    const s = advanceRequest(a, NOW, { utr: () => "UTR1", token: () => "T1", voucher: () => "V1" });
+    assert.ok(!("error" in s), "advance");
+    a = s.advice;
+  }
+  return a;
+};
+
+test("a bill returned by PFMS without cancellation goes back to the Maker and is resubmitted as R under a new identifier (FR-PDM-001, FR-PDM-006, FR-SNC-004)", () => {
+  assert.equal(PFMS_STATUS_STAGE.ReturnedByPDChecker, "returned-by-pfms");
+  const a = step(sentToPfms("UR1"), 1); // Bill generated at the DDO
+  const r = returnByPfms(a, "DDO", "The object head does not match the scheme.", NOW);
+  assert.ok(!("error" in r));
+  assert.equal(stageOf(r.advice), "returned-by-pfms");
+  assert.equal(billStatusOf(r.advice), "R");
+  const again = submitAdvice(r.advice, "pd-maker", ctx, pfms.pool, usedClaimReferences(pfms.advices));
+  assert.ok(again.ok, "a returned bill can be corrected and submitted again");
+  const resent = authoriseAndTransmit(again.advice, sig, "UR2", simulateTransmit("accept"), NOW);
+  assert.ok(resent.ok);
+  const req = latestRequest(resent.advice)!;
+  assert.equal(req.billStatus, "R");
+  assert.equal(req.previousUniqueIdentifier, "UR1");
+  assert.equal(billStatusOf(resent.advice), "F", "once PFMS has received the resubmission, nothing is pending as R");
+});
+
+test("a returned-by-PFMS case sits in the Maker's Returned by PFMS tab", () => {
+  const a = returnByPfms(step(sentToPfms("UT1"), 1), "PAO", "Wrong head.", NOW);
+  assert.ok(!("error" in a));
+  const app = main.applications.find((x) => x.id === a.advice.appId)!;
+  assert.equal(makerTab({ app, advice: a.advice, stage: stageOf(a.advice), paidBeforeIntegration: false }), "returned-pfms");
+});
+
+test("a lapsed financial year is final, cannot advance, and is started afresh (Annexure C, BR-CAN-001)", () => {
+  const e = expireFinancialYear(step(sentToPfms("UE1"), 2), NOW);
+  assert.ok(!("error" in e));
+  assert.equal(stageOf(e.advice), "fy-expired");
+  assert.ok("error" in advanceRequest(e.advice, NOW, { utr: () => "U", token: () => "T", voucher: () => "V" }));
+  const app = main.applications.find((x) => x.id === e.advice.appId)!;
+  assert.equal(makerTab({ app, advice: e.advice, stage: "fy-expired", paidBeforeIntegration: false }), "returned-pfms");
+});
+
+test("a failed bank credit is its own stage, never Paid, and a fresh advice replaces it (decision: plan §4, question 13)", () => {
+  let a = step(sentToPfms("UF1"), 5); // payment file sent to the bank
+  assert.equal(stageOf(a), "payment-in-process");
+  const f = failCredit(a, NOW);
+  assert.ok(!("error" in f));
+  a = f.advice;
+  assert.equal(stageOf(a), "credit-failed");
+  assert.ok("error" in advanceRequest(a, NOW, { utr: () => "U", token: () => "T", voucher: () => "V" }), "a failed credit is not walked on to Paid");
+
+  const payee = { ...a.beneficiaries[0]!, accountLast4: "9911" };
+  const fresh = restartAdvice(a, { id: "PA/2026-27/99999", beneficiary: payee, billNumber: "209311/2027/0099", maker: "pd-maker", now: NOW });
+  assert.ok(fresh.ok);
+  const n = fresh.advice;
+  assert.equal(n.state, "draft");
+  assert.equal(n.earlier?.length, 1);
+  assert.equal(n.earlier?.[0]?.id, a.id);
+  assert.equal(n.beneficiaries[0]!.accountLast4, "9911", "the payee is read again from the corrected account");
+  assert.equal(n.beneficiaries[0]!.claimReference, undefined, "a new Claim Reference Number is drawn on submit");
+  const used = usedClaimReferences([n]);
+  assert.ok(used.has(a.beneficiaries[0]!.claimReference!), "the old number stays consumed");
+
+  const sub = submitAdvice(n, "pd-maker", ctx, pfms.pool, usedClaimReferences([...pfms.advices, n]));
+  assert.ok(sub.ok);
+  const sent = authoriseAndTransmit(sub.advice, sig, "UF2", simulateTransmit("accept"), NOW);
+  assert.ok(sent.ok);
+  assert.equal(latestRequest(sent.advice)!.previousUniqueIdentifier, "UF1", "the fresh advice points back to the one it replaces");
+  assert.equal(latestRequest(sent.advice)!.billStatus, "F");
+});
+
+test("only a cancelled, lapsed or failed advice can be started afresh", () => {
+  const a = sentToPfms("UX1");
+  assert.equal(restartAdvice(a, { id: "x", beneficiary: a.beneficiaries[0]!, billNumber: "b", maker: "pd-maker", now: NOW }).ok, false);
+  for (const s of RESTARTABLE) assert.ok(STAGE_INFO[s].terminal, s);
+});
+
+test("the seed closes a sanction after its credit, never before it", () => {
+  for (const a of pfms.advices) {
+    const req = latestRequest(a);
+    const closed = req?.statusHistory.find((h) => h.status === "Closed");
+    const voucher = req?.statusHistory.find((h) => h.status === "DigitalSignatoryLast");
+    if (closed && voucher) assert.ok(closed.at > voucher.at, a.id);
+  }
+});
+
+test("SHRESTHA Mode 1 is configured and waits for its PFMS scheme code (BRD §1.2, §9)", () => {
+  const m1 = pfms.configs.find((c) => c.schemeCode === "SHRESHTA_M1");
+  assert.ok(m1);
+  assert.equal(m1.pfmsSchemeCode, null);
+  assert.equal(schemeTitle(m1), "SHRESHTA Mode 1");
+  assert.equal(schemeCodeFor("  Scheme for PM-DAKSH  "), "SCHEME_FOR_PM_DAKSH");
 });

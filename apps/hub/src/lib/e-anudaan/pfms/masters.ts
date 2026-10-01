@@ -12,6 +12,7 @@
  */
 
 import type { HeadOfAccount, Masters, SchemePfmsConfig } from "./types.ts";
+import { schemeName } from "../glossary.ts";
 
 export function seedMasters(syncedAt: string): Masters {
   return {
@@ -81,6 +82,18 @@ export const SEED_SCHEME_CONFIG: SchemePfmsConfig[] = [
     pendingDecision: "The Ministry has not yet decided whether SHRESTHA pays through a Treasury Single Account or a hybrid mode (BRD §3.2).",
   },
   {
+    // Named in the BRD (§1.2, §3.1 C) but not yet carried by the portal: no application form, so no
+    // sanctioned file can reach the payment leg. Configured here so the Bureau sees it awaiting its
+    // PFMS code (§9). The full Mode 1 form and journey wait on the BA for fields and flow (plan §4,
+    // question 14). The heads shown are illustrative, as every head here is.
+    schemeCode: "SHRESHTA_M1",
+    name: "SHRESHTA Mode 1",
+    pfmsSchemeCode: null,
+    heads: [head("2225017930201", "31", "SCSP")],
+    ddoCodes: ["209312"],
+    pendingDecision: "The Ministry has not yet decided whether SHRESTHA pays through a Treasury Single Account or a hybrid mode (BRD §3.2).",
+  },
+  {
     // No PFMS scheme code allotted yet (BRD §9). The Maker can prepare nothing until one is.
     schemeCode: "SMILE",
     pfmsSchemeCode: null,
@@ -107,6 +120,16 @@ export function labelOf(list: readonly { code: string; label: string }[], code: 
 /** "2235021070101 · 31 · GEN · 093" — how a coded head is read aloud and printed. */
 export function headCode(h: Partial<HeadOfAccount>): string {
   return [h.functionHead, h.objectHead, h.category, h.grantNumber].map((p) => p || "—").join(" · ");
+}
+
+/** A configured scheme's name: its own where the Bureau gave one, else the portal's. */
+export function schemeTitle(cfg: Pick<SchemePfmsConfig, "schemeCode" | "name">): string {
+  return cfg.name ?? schemeName(cfg.schemeCode).short;
+}
+
+/** An e-Anudaan-style code for a scheme the Bureau adds by name: "Scheme for X" → "SCHEME_FOR_X". */
+export function schemeCodeFor(name: string): string {
+  return name.trim().toUpperCase().replace(/[^A-Z0-9]+/g, "_").replace(/^_|_$/g, "").slice(0, 32);
 }
 
 export function configFor(configs: readonly SchemePfmsConfig[], schemeCode: string): SchemePfmsConfig | undefined {

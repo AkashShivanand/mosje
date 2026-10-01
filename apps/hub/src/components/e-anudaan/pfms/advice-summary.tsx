@@ -15,7 +15,7 @@ import * as React from "react";
 import { Badge, Button, Card, CardBody, DescriptionList, Icon, SectionTitle } from "@mosje/design-system";
 import { formatDate, formatDateTime } from "@/lib/e-anudaan/format";
 import { schemeLabel } from "@/lib/e-anudaan/selectors";
-import { DOCUMENT_TYPES, FIXED_VALUES, LANDING_LABEL, STEP_LABEL, netOf, requiredDocTypes, sumHeads } from "@/lib/e-anudaan/pfms/advice";
+import { DOCUMENT_TYPES, fixedValuesFor, LANDING_LABEL, STEP_LABEL, netOf, requiredDocTypes, sumHeads } from "@/lib/e-anudaan/pfms/advice";
 import { headCode, labelOf } from "@/lib/e-anudaan/pfms/masters";
 import type { AdviceStep, Masters, PaymentAdvice } from "@/lib/e-anudaan/pfms/types";
 import type { SanctionFacts } from "@/lib/e-anudaan/pfms/selectors";
@@ -93,7 +93,7 @@ export function AdviceSummary({
               { term: "Not Payable Before", value: advice.header.npbDate ? formatDate(advice.header.npbDate) : "Not set" },
               { term: "Where It Lands", value: ddo ? LANDING_LABEL[ddo.landing] : "" },
               { term: "Request Identifier", value: advice.requests.length ? <span className="font-mono">{advice.requests[advice.requests.length - 1]!.uniqueIdentifier}</span> : "Generated when the Checker sends the advice to PFMS" },
-              ...FIXED_VALUES.map((f) => ({ term: f.term, value: <span className="inline-flex flex-wrap items-center gap-2">{f.value} <SourceTag>Set by System</SourceTag></span> })),
+              ...fixedValuesFor(advice).map((f) => ({ term: f.term, value: <span className="inline-flex flex-wrap items-center gap-2">{f.value} <SourceTag>Set by System</SourceTag></span> })),
             ]}
           />
         </Section>

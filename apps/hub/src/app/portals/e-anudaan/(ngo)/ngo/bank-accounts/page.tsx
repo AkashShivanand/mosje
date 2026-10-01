@@ -83,6 +83,13 @@ export default function ProjectBankAccountsPage() {
         .map((id) => projects.find((p) => p.id === id))
         .filter((p): p is Institution => !!p)
     : [];
+  // Projects whose grant the bank could not credit: the NGO checks the account (decision recorded in
+  // the PFMS plan §4, question 13 — the BRD is silent on a failed scroll).
+  const failedCredit = pfmsHydrated && ngo
+    ? [...new Set(paymentCases(state, pfms).filter((c) => c.stage === "credit-failed" && c.app.ngoId === ngo.id).map((c) => c.app.institutionId))]
+        .map((id) => projects.find((p) => p.id === id))
+        .filter((p): p is Institution => !!p)
+    : [];
   const [changing, setChanging] = React.useState<Institution | null>(null);
   /** A demo dock fill for the dialog, applied as it opens; `n` remounts it for a second fill. */
   const [demo, setDemo] = React.useState<{ n: number; values: Readonly<Record<string, string>>; tried: boolean } | null>(null);
@@ -115,6 +122,12 @@ export default function ProjectBankAccountsPage() {
         title="Project Bank Accounts"
         meta="Each project is paid into its own bank account. To change one, raise a request — the current account stays in use until the Ministry approves the change."
       />
+
+      {failedCredit.length > 0 && (
+        <Alert status="error" title="The Bank Could Not Credit a Grant">
+          The payment to the account for {failedCredit.map((p) => projectName(p)).join("; ")} was returned by the bank. Check the account number and IFSC below. If they are wrong, raise a change request; the Ministry sends the payment again once the account is correct.
+        </Alert>
+      )}
 
       {awaitingCode.length > 0 && (
         <Alert status="warning" title="A Sanctioned Grant Is Waiting for Your PFMS Payee Code">

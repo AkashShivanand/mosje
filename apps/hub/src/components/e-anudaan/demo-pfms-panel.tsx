@@ -15,7 +15,7 @@
 import * as React from "react";
 import { Alert, Badge, Button, SectionTitle, SegmentedControl } from "@mosje/design-system";
 import { PFMS_CHANGED_EVENT, PFMS_DEMO_EVENT, PFMS_DEMO_KEY, PFMS_STORAGE_KEY, type PfmsDemo, type PfmsDemoCommand } from "@/lib/e-anudaan/pfms/store";
-import { STAGE_INFO, stageOf } from "@/lib/e-anudaan/pfms/stages";
+import { RESTARTABLE, STAGE_INFO, stageOf } from "@/lib/e-anudaan/pfms/stages";
 import type { PaymentAdvice } from "@/lib/e-anudaan/pfms/types";
 
 /** The file a payment-leg address names, if it names one. */
@@ -62,7 +62,8 @@ export function DemoPfmsPanel({ pathname }: { pathname: string }) {
   }, [appId]);
 
   const stage = advice ? stageOf(advice) : null;
-  const moving = advice?.state === "transmitted" && stage !== "closed";
+  const moving = advice?.state === "transmitted" && stage !== "closed" && stage !== "fy-expired" && stage !== "credit-failed";
+  const unpaid = moving && stage !== "paid";
 
   return (
     <div className="space-y-5">
@@ -119,13 +120,31 @@ export function DemoPfmsPanel({ pathname }: { pathname: string }) {
                 size="sm"
                 appearance="outlined"
                 variant="danger"
-                disabled={!moving || stage === "paid"}
+                disabled={!unpaid}
                 onClick={() => send({ kind: "cancel", appId: appId, reason: "The object head does not match the scheme's budget provision for the year." })}
               >
                 Return and Cancel
               </Button>
+              <Button
+                size="sm"
+                appearance="outlined"
+                disabled={!unpaid}
+                onClick={() => send({ kind: "return-pfms", appId: appId, level: stage === "received" || stage === "bill-with-ddo" ? "DDO" : "PAO", reason: "The payee remarks do not quote the sanction order number." })}
+              >
+                Return Without Cancelling
+              </Button>
+              <Button size="sm" appearance="outlined" variant="danger" disabled={!unpaid} onClick={() => send({ kind: "expire", appId: appId })}>
+                Financial Year Expires
+              </Button>
+              <Button size="sm" appearance="outlined" variant="danger" disabled={stage !== "payment-in-process"} onClick={() => send({ kind: "fail-credit", appId: appId })}>
+                Bank Fails the Credit
+              </Button>
             </div>
-            {!moving && advice.state !== "queued" && <p className="text-body-3 text-ink-muted">PFMS acts on an advice only after the Checker has signed and sent it.</p>}
+            {RESTARTABLE.includes(stage!) ? (
+              <p className="text-body-3 text-ink-muted">PFMS has finished with this advice. The Maker starts a fresh one from Payment Status.</p>
+            ) : !moving && stage !== "closed" && advice.state !== "queued" ? (
+              <p className="text-body-3 text-ink-muted">PFMS acts on an advice only after the Checker has signed and sent it.</p>
+            ) : null}
           </div>
         )}
       </section>

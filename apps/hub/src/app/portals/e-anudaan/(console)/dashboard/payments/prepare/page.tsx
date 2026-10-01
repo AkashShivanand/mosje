@@ -21,6 +21,7 @@ import { usePfms } from "@/lib/e-anudaan/pfms/store";
 import { schemeLabel } from "@/lib/e-anudaan/selectors";
 import { MAKER_TABS, BLOCKER_TEXT, makerTab, paymentCases, sanctionDate, type MakerTab, type PaymentCase } from "@/lib/e-anudaan/pfms/selectors";
 import { caseColumns, prepareHref, statusHref, RowLink } from "@/components/e-anudaan/pfms/payment-ui";
+import { RESTARTABLE } from "@/lib/e-anudaan/pfms/stages";
 
 export default function MakerQueuePage() {
   const { state, hydrated } = useEAnudaan();
@@ -46,6 +47,8 @@ export default function MakerQueuePage() {
     if (c.blocker) return <RowLink href={statusHref(c.app.id)} label="View" icon="open_in_new" />;
     if (!c.advice) return <RowLink href={prepareHref(c.app.id)} label="Prepare Advice" primary />;
     if (c.advice.state === "draft") return <RowLink href={prepareHref(c.app.id)} label="Continue" primary />;
+    // Ended at PFMS or the bank: the fresh advice is started from the case page, where the reason is.
+    if (RESTARTABLE.includes(c.stage)) return <RowLink href={statusHref(c.app.id)} label="Start Afresh" primary />;
     return <RowLink href={prepareHref(c.app.id)} label="Correct" primary />;
   };
   const columns = caseColumns({ ngoName, action });
@@ -63,7 +66,7 @@ export default function MakerQueuePage() {
           overflow
           tabs={MAKER_TABS.map((t) => {
             const n = cases.filter((c) => makerTab(c) === t.id).length;
-            return { id: t.id, label: `${t.label} (${n})`, badge: (t.id === "returned" || t.id === "not-accepted") && n > 0 };
+            return { id: t.id, label: `${t.label} (${n})`, badge: (t.id === "returned" || t.id === "not-accepted" || t.id === "returned-pfms") && n > 0 };
           })}
           active={MAKER_TABS.findIndex((t) => t.id === tab)}
           onChange={(i) => setTab(MAKER_TABS[i]!.id)}

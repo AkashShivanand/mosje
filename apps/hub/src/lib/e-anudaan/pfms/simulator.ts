@@ -59,6 +59,7 @@ export function advanceRequest(advice: PaymentAdvice, now: string, ids: Ids): Ad
   if (advice.state !== "transmitted") return { error: "Only an advice PFMS has received can move on." };
   const req = latestRequest(advice);
   if (!req?.status) return { error: "PFMS has not reported a status for this advice yet." };
+  if (req.payments.some((p) => p.scrollStatus === "Failed")) return { error: "The bank could not credit this payment; a fresh advice is needed." };
   const i = PFMS_HAPPY_PATH.indexOf(req.status);
   if (i < 0) return { error: "This advice is off the normal path at PFMS." };
   if (i === PFMS_HAPPY_PATH.length - 1) return { error: "PFMS has closed this sanction." };
@@ -107,6 +108,78 @@ export function returnAndCancel(advice: PaymentAdvice, reason: string, now: stri
       requests: replaceLatest(advice, next),
       updatedAt: now,
       history: [...advice.history, { at: now, kind: "cancelled", text: `Returned by the PAO and cancelled at PFMS: ${reason}` }],
+    },
+    credited: false,
+  };
+}
+
+/** Where along the path PFMS can send a bill back, and the status that says so (Annexure C). */
+export const RETURN_LEVELS = {
+  DDO: { status: "ReturnedByDDO", who: "DDO" },
+  PAO: { status: "ReturnedByPAO", who: "Pay & Accounts Office" },
+  "PD Checker": { status: "ReturnedByPDChecker", who: "Programme Division's checker step in PFMS" },
+} as const satisfies Record<string, { status: PfmsStatus; who: string }>;
+
+/**
+ * A bill PFMS sends back WITHOUT cancelling it (Annexure C, "ReturnedBy…"). The advice goes back to
+ * the Maker's "Returned by PFMS" tab (FR-PDM-001); once corrected and signed again it is resubmitted
+ * with Bill Status "R" (FR-PDM-006) under a new identifier (FR-SNC-004).
+ */
+export function returnByPfms(advice: PaymentAdvice, level: keyof typeof RETURN_LEVELS, reason: string, now: string): AdvanceResult {
+  if (advice.state !== "transmitted") return { error: "Only an advice PFMS has received can be returned." };
+  const req = latestRequest(advice);
+  if (!req?.status) return { error: "PFMS has not reported a status for this advice yet." };
+  if (allCredited(req)) return { error: "The grant has already been credited." };
+  if (req.status === "Closed" || req.status === "Cancelled" || req.status === "FinYrExpired") return { error: "PFMS has finished with this advice." };
+  const { status, who } = RETURN_LEVELS[level];
+  const next = { ...withStatus(req, status, now), returnReason: reason };
+  return {
+    advice: {
+      ...advice,
+      state: "returned-pfms",
+      requests: replaceLatest(advice, next),
+      updatedAt: now,
+      history: [...advice.history, { at: now, kind: "returned-pfms", text: `Returned by the ${who}: ${reason} It is back with the Maker to correct and resubmit.` }],
+    },
+    credited: false,
+  };
+}
+
+/** The financial year closed before PFMS paid the bill (Annexure C, FinYrExpired) — final. */
+export function expireFinancialYear(advice: PaymentAdvice, now: string): AdvanceResult {
+  if (advice.state !== "transmitted") return { error: "Only an advice PFMS has received can lapse." };
+  const req = latestRequest(advice);
+  if (!req?.status) return { error: "PFMS has not reported a status for this advice yet." };
+  if (allCredited(req) || req.status === "Closed") return { error: "The grant has already been credited." };
+  return {
+    advice: {
+      ...advice,
+      requests: replaceLatest(advice, withStatus(req, "FinYrExpired", now)),
+      updatedAt: now,
+      history: [...advice.history, { at: now, kind: "expired", text: "The financial year closed before PFMS paid this bill. A fresh payment advice is needed." }],
+    },
+    credited: false,
+  };
+}
+
+/**
+ * The bank could not credit the NGO's account: every payment on the scroll is marked Failed. The
+ * BRD does not say what follows; the prototype's position (plan §4, question 13) is that the NGO is
+ * asked to check its account and the Maker then opens a fresh advice.
+ */
+export function failCredit(advice: PaymentAdvice, now: string): AdvanceResult {
+  if (advice.state !== "transmitted") return { error: "Only an advice PFMS has received can fail at the bank." };
+  const req = latestRequest(advice);
+  if (!req || req.payments.length === 0) return { error: "Nothing has been sent to the bank for this advice yet." };
+  if (req.payments.some((p) => p.utr)) return { error: "The bank has already credited this payment." };
+  const day = now.slice(0, 10);
+  const next = { ...req, payments: req.payments.map((p) => ({ ...p, scrollStatus: "Failed" as const, scrollDate: day })) };
+  return {
+    advice: {
+      ...advice,
+      requests: replaceLatest(advice, next),
+      updatedAt: now,
+      history: [...advice.history, { at: now, kind: "credit-failed", text: "The bank could not credit the NGO's account. The NGO has been asked to check its bank details." }],
     },
     credited: false,
   };
