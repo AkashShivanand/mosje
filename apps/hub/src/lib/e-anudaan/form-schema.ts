@@ -1698,7 +1698,7 @@ const NAPDDR_STEPS: readonly StepDef[] = [
           ...bankRecordFields(ND_RENEWAL, ND_NEW, ND_NEW),
           // Moved from live's renewal-only "CCTV / EAT / PFMS Compliance" step to the account it
           // describes (T617–639); fixed where the account is already registered.
-          { name: "fld_pfms_code", label: "NGO PFMS code (under head 3817)", kind: "text", required: true, showWhen: ND_RENEWAL, readOnlyWhen: { field: "fld_pfms_on_record", equals: ["Yes"] } },
+          { name: "fld_pfms_code", label: "PFMS Unique (Payee) Code", kind: "text", required: true, showWhen: ND_RENEWAL, readOnlyWhen: { field: "fld_pfms_on_record", equals: ["Yes"] } },
           { name: "eat_module_registered", label: "Registered on the PFMS EAT module", kind: "radio", required: true, options: YES_NO, wide: true },
         ],
       },
