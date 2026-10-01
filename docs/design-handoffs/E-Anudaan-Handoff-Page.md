@@ -13,7 +13,7 @@ portal now has a file of its own, organised in the order an application moves.
 | Page | Holds | Screens | Journeys |
 |---|---|---|---|
 | Cover | the file's cover frame | — | — |
-| Start Here | Cover, Portal Map (every journey linked, with its page), How to Read This File, Status and Change Log | — | — |
+| Start Here | Cover, Portal Map (every journey linked, with its page), How a Grant Moves (the walkthrough of 1 Oct 2026, every stage linked), How to Read This File, Status and Change Log | — | — |
 | Everyone · Signing In | NGO and officer sign-in, forgotten password | 42 | 5 |
 | NGO · Starting an Application | dashboard, choosing a scheme, uploading documents | 43 | 3 |
 | NGO · NAPDDR Application Form | new application and three instalment claims | 58 | 1 |
@@ -29,7 +29,7 @@ portal now has a file of its own, organised in the order an application moves.
 | Shared Parts | page frame, error pages, reusable form content | 22 items | — |
 | Old Screens — Do Not Use | replaced screens, each with a note naming its replacement | 8 screens | — |
 
-568 screens, 11 user groups, 45 journeys, 9 needing discussion. Divider pages separate Everyone, NGO and
+568 screens, 11 user groups, 45 journeys, 10 needing discussion (9 until the walkthrough of 1 Oct 2026, §5d). Divider pages separate Everyone, NGO and
 Officers in the page list — the audiences are user roles, so the PFMS pages sit with the Officers (1 Oct 2026).
 
 **How each page reads.** A `START HERE` guide first (who uses the page, its journeys, counted screens, a
@@ -377,6 +377,33 @@ visual 0), nothing loose at any page root, and `--selftest` catches all nine pla
 **Open for a person:** name version 1.1 in Figma's version history; accept the waiting SAMAVESH updates in the Libraries panel; decide whether officers' PFMS screens need
 phone versions (16 drawn for 68 desktop screens — signing needs a DSC token on a desktop); decide whether the
 payment parts of the NGO's Project Bank Accounts and Application Details screens give way to the PFMS versions.
+
+## 5d. The walkthrough of 1 Oct 2026 — recorded, and where it differs
+
+A recording of the Department-side team walking the design team through e-Anudaan and PFMS (Hindi; transcribed and
+translated locally) was written up in [`docs/plans/2026-10-01-e-anudaan-walkthrough-notes.md`](../plans/2026-10-01-e-anudaan-walkthrough-notes.md)
+and drawn into the file. No screen was changed — Figma is the source of truth and each difference is the Department's
+to decide (`figma-code-sync.md` § Screens).
+
+| What | Before | After | Why |
+|---|---|---|---|
+| Start Here | four guides | a fifth, **Guide — How a Grant Moves** (`132:1052`), after the Portal Map: six lanes, sixteen numbered stages each linked to its journey, the amount step by step, the five schemes, the differences in red and what the walkthrough confirmed | the walkthrough is the clearest account yet of how one grant moves end to end, and a reviewer can follow it to the screens |
+| Reviewing an Application | grey | **Needs Discussion**, with a note: four amounts are recorded before the sanction (recommended, proposed, finance's recommended, concurred); none is drawn | a decision would add an amount to these officers' screens |
+| Examining and Sanctioning — note | who sanctions SHRESHTA | also: who approves the final amount and issues the sanction order — the walkthrough says the Programme Division's Joint Secretary and Under Secretary | "PD" in the Department's speech is the Programme Division; the column may be a misreading |
+| Keeping PFMS Set-Up Current — note | SHRESHTA Mode 1 only | also: is SMILE paid through PFMS (the walkthrough says not); Mode 1's NTA-list basis | SMILE would come off PFMS Set-Up |
+| Authorising a Payment Advice — note | Maker and Checker seats open | the walkthrough's answer added: named from the Programme Division's own officers | PFMS question 2 |
+| Following a Payment — note | four points | a fifth: a bill the DDO finds not in order goes back to the Checker (drawn: to the Maker) | the return path would change |
+| Portal Map | "Officers review … → Programme Director sanctions" | both divisions named in sequence; the sanction marked as needing discussion; links to How a Grant Moves; the Reviewing card red | the one-line flow left out finance entirely |
+| Status | 9 Needs Discussion links, **8 of them opening the old shared handoff file** | 10, all opening their journey in this file; a change-log entry | the links were missed when the portal moved on 30 Sep |
+| How to Read | Who Is Who without the walkthrough | Programme Director and Maker and Checker lines note the walkthrough; a line saying what "PD" means in the Department's speech | four names pointed at overlapping officers |
+| Counts | cover guide 9 need discussion; Reviewing page guide 0 | 10; 1 | recounted |
+
+Each note grew, so the rows beneath it and every journey and user group below it were moved down by the same amount
+and their sections grown; nothing else moved. `check:figma-handoff -- --portal E-Anudaan --fresh --strict`: all 15
+pages conformant, identity 0 and visual 0.
+
+**Not changed:** no screen, no journey's name other than Reviewing an Application's suffix, no role column.
+**Open for a person:** put §7 of the walkthrough notes to the Department; name a version in Figma.
 
 ## 6. Adding to the page
 
