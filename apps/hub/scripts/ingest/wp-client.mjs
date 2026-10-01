@@ -64,18 +64,40 @@ export async function fetchAllRecords(restBase, { fields, query, ...opts } = {})
 }
 
 // Canonical URL set for a collection, from its sitemap (handles multi-file via index probing).
+/**
+ * Every record URL the sitemap publishes for `type`, DISTINCT and in order.
+ *
+ * THE ORIGIN SERVES PAGE 1 FOR PAGE NUMBERS IT DOES NOT HAVE, with HTTP 200 —
+ * it does not 404 the way the loop below expects. Measured 1 Oct 2026:
+ * `wp-sitemap-posts-vacancies-{1..5}.xml` are five byte-identical files of the
+ * same 165 URLs, and `…-tender-2.xml` repeats `…-tender-1.xml`. Returning the
+ * pages concatenated therefore claimed 825 vacancies against the 165 the REST
+ * API publishes, and 512 tenders against 312 — a "gap" of 860 records that do
+ * not exist, which made the ingest exit non-zero on a clean run.
+ *
+ * So the pages are de-duplicated. They are NOT stopped at the first repeat:
+ * `…-tender-2.xml` repeats page 1 while `…-tender-3.xml` holds 112 real records,
+ * so an early exit there loses them. Every page up to `maxFiles` is read, as
+ * before, and only the duplicates are discarded.
+ */
 export async function fetchSitemapUrls(type, { maxFiles = 5, ...opts } = {}) {
-  const urls = [];
+  const seen = new Set();
   for (let i = 1; i <= maxFiles; i++) {
+    let xml;
     try {
-      const xml = await fetchText(`${BASE}/wp-sitemap-posts-${type}-${i}.xml`, opts);
-      urls.push(...parseSitemapLocs(xml));
+      xml = await fetchText(`${BASE}/wp-sitemap-posts-${type}-${i}.xml`, opts);
     } catch (err) {
       if (err && (err.status === 404 || err.status === 410)) break; // end of files
       throw err; // transient failure must not silently truncate the URL set
     }
+    for (const u of parseSitemapLocs(xml)) seen.add(u);
+    /*
+     * NO EARLY EXIT ON A REPEATED PAGE. Stopping at the first page that added
+     * nothing lost 112 tenders: page 2 repeats page 1, and page 3 is real. The
+     * duplicate costs one request; truncating the set costs records.
+     */
   }
-  return urls;
+  return [...seen];
 }
 
 // How long to wait before retrying. The origin rate-limits (HTTP 429) at roughly

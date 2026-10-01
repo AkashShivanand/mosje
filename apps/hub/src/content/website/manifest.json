@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-30T17:02:18.339Z",
+  "generatedAt": "2026-10-01T04:52:24.333Z",
   "collections": [
     {
       "name": "booking",
@@ -328,7 +328,7 @@
     },
     {
       "name": "tenders",
-      "sitemapCount": 512,
+      "sitemapCount": 312,
       "kept": 312,
       "skipped": 0,
       "skippedDetail": []
@@ -346,7 +346,7 @@
     },
     {
       "name": "vacancies",
-      "sitemapCount": 825,
+      "sitemapCount": 165,
       "kept": 165,
       "skipped": 0,
       "skippedDetail": []
