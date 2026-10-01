@@ -20,16 +20,16 @@ portal now has a file of its own, organised in the order an application moves.
 | NGO · AVYAY Application Form | new application and instalment claims | 52 | 1 |
 | NGO · SMILE (Garima Greh) Application Form | new application and instalment claims | 36 | 1 |
 | NGO · SHRESHTA Mode 2 Application Form | new application and instalment claims | 44 | 1 |
-| NGO · After Applying and Getting Paid | NGO — After Applying; NGO — Getting Paid | 74 | 10 |
+| NGO · After Applying and Getting Paid | NGO — After Applying; NGO — Getting Paid | 71 | 10 |
 | Officers · Reviewing Applications | the review chain, queues and lists | 73 | 6 |
 | Officers · Sanctioning and Inspections | Programme Director; PMU Field Officer | 34 | 6 |
 | Officers · Paying a Sanctioned Grant (PFMS) | Programme Division Maker and Checker — Paying a Sanctioned Grant | 61 | 3 |
 | Officers · PFMS Set-Up and Payment Reports | Bureau — Setting Up PFMS; Officers — Payment Reports | 27 | 3 |
 | Officers · Records and Reports | records, audit trail, NGO directory | 24 | 5 |
 | Shared Parts | page frame, error pages, reusable form content | 22 items | — |
-| Old Screens — Do Not Use | replaced screens, each with a note naming its replacement | 8 screens | — |
+| Old Screens — Do Not Use | replaced screens, each with a note naming its replacement | 12 screens | — |
 
-568 screens, 11 user groups, 45 journeys, 10 needing discussion (9 until the walkthrough of 1 Oct 2026, §5d). Divider pages separate Everyone, NGO and
+565 screens, 11 user groups, 45 journeys, 10 needing discussion (9 until the walkthrough of 1 Oct 2026, §5d). Divider pages separate Everyone, NGO and
 Officers in the page list — the audiences are user roles, so the PFMS pages sit with the Officers (1 Oct 2026).
 
 **How each page reads.** A `START HERE` guide first (who uses the page, its journeys, counted screens, a
@@ -374,8 +374,7 @@ the same dark blue as its sibling queues. Counts: Cover 568, the PFMS page's Sta
 visual 0), nothing loose at any page root, and `--selftest` catches all nine planted faults.
 `manifests/e-anudaan.json` was re-captured with `--snapshot` from that run.
 
-**Open for a person:** accept the waiting SAMAVESH updates in the Libraries panel; decide whether the
-payment parts of the NGO's Project Bank Accounts and Application Details screens give way to the PFMS versions.
+**Open for a person:** accept the waiting SAMAVESH updates in the Libraries panel.
 
 ## 5d. The walkthrough of 1 Oct 2026 — recorded, and where it differs
 
@@ -413,6 +412,26 @@ NGO's 3 for 8), recounted from the canvas.
 computer, so the 17 phone screens already drawn stay and no more are added; the open item is closed and the decision is
 in the Change Log. The **NGO sign-in keeps its captcha** on the username-and-password and DARPAN ID screens; the sign-in
 will be refined by reading the live portal's flow and data, drawing it here, then building it — the open item now says so.
+
+**The NGO's PFMS drawings are current** (decided 1 Oct 2026). The NGO's bank details are still required: PFMS pays
+into the account given on Project Bank Accounts and needs the PFMS payee code entered there. The PFMS drawings are the
+same screens with the payee code and the Payment card added, so they replace the older ones without losing a field:
+
+| What | Before | After | Why |
+|---|---|---|---|
+| `NGO / Project Bank Accounts` and its phone version | current, without the payee code | Old Screens at 40%, each with a note naming `NGO / Project Bank Accounts / PFMS Payee Code Needed` | the PFMS drawing shows the same accounts plus each project's payee code |
+| `NGO / Project Bank Accounts / PFMS Payee Code Needed — Mobile` | no phone version | drawn (`142:23323`) from the older phone, with the alert, a payee code line under each account and the code form under Madurai | the NGO portal keeps a phone version of every screen |
+| `NGO / Application Details / Grant Released` and its phone version | current, without a Payment card | Old Screens at 40%, notes naming `NGO / Application Details / Grant Credited` | the PFMS drawing adds the credit date, amount and UTR |
+| Prototype links on the NGO page | 36 pointing at the older screens | pointing at the PFMS screens | so a click lands on the current drawing |
+| Counts | Cover 568, NGO page 74, Old Screens 8 | 565, 71, 12 | recounted from the canvas |
+| Start Here | open item on the NGO's payment details | closed; a Change Log line records the decision | decided |
+
+**Not changed:** `Project Bank Accounts / Change Account (Dialog)` and `Project Location Change` stay where they are; the
+other Application Details states (Submitted, Action Required, Sanctioned) have no PFMS replacement and stay. One sidebar
+link on `NGO / Application Details / Bank Account Needs Checking` still points at the older screen, because the same layer
+also carries a link to a screen on another page, which Figma refuses to save; the NGO form pages' sidebar links already
+pointed across pages before this change and are left as they were. `check:figma-handoff -- --portal E-Anudaan --fresh
+--strict`: all 15 pages conformant.
 
 ## 6. Adding to the page
 
