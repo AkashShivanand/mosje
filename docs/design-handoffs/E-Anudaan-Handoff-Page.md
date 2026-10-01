@@ -24,12 +24,12 @@ portal now has a file of its own, organised in the order an application moves.
 | Officers · Reviewing Applications | the review chain, queues and lists | 73 | 6 |
 | Officers · Sanctioning and Inspections | Programme Director; PMU Field Officer | 34 | 6 |
 | Officers · Paying a Sanctioned Grant (PFMS) | Programme Division Maker and Checker — Paying a Sanctioned Grant | 61 | 3 |
-| Officers · PFMS Set-Up and Payment Reports | Bureau — Setting Up PFMS; Officers — Payment Reports | 27 | 3 |
-| Officers · Records and Reports | records, audit trail, NGO directory | 24 | 5 |
+| Officers · PFMS Set-Up | Bureau — Setting Up PFMS | 20 | 2 |
+| Officers · Records and Reports | records, reports, payment reports, audit trail, NGO directory | 31 | 6 |
 | Shared Parts | page frame, error pages, reusable form content | 22 items | — |
 | Old Screens — Do Not Use | replaced screens, each with a note naming its replacement | 12 screens | — |
 
-565 screens, 11 user groups, 45 journeys, 10 needing discussion (9 until the walkthrough of 1 Oct 2026, §5d). Divider pages separate Everyone, NGO and
+565 screens, 10 user groups, 45 journeys, 10 needing discussion (9 until the walkthrough of 1 Oct 2026, §5d). Divider pages separate Everyone, NGO and
 Officers in the page list — the audiences are user roles, so the PFMS pages sit with the Officers (1 Oct 2026).
 
 **How each page reads.** A `START HERE` guide first (who uses the page, its journeys, counted screens, a
@@ -432,6 +432,32 @@ link on `NGO / Application Details / Bank Account Needs Checking` still points a
 also carries a link to a screen on another page, which Figma refuses to save; the NGO form pages' sidebar links already
 pointed across pages before this change and are left as they were. `check:figma-handoff -- --portal E-Anudaan --fresh
 --strict`: all 15 pages conformant.
+
+## 5e. Second tidy-up — 1 Oct 2026, evening
+
+A read-only audit of all 15 pages (no loose, hidden or empty groups; every name on the pattern; every screen
+in its right row) found one structural fault and three smaller ones, all introduced by the day's later edits.
+Fixed on the owner's instruction, with the PFMS session holding its writes meanwhile.
+
+| What | Before | After | Why |
+|---|---|---|---|
+| Change Account pop-up | left in `Project Location and Bank Accounts` after Project Bank Accounts was retired, with no screen to open it from | in a new Pop-ups and Dialogs row of `PFMS Payee Code and Payment`, beside the current bank-account screens | a pop-up belongs with the screen that opens it |
+| Project location journey | `Project Location and Bank Accounts` | `Project Location Change` (Portal Map too) | it no longer holds a bank-accounts screen |
+| Payment Reports | a one-journey group, `Officers — Payment Reports`, on the Set-Up page | a journey in `Officers — Records and Reports`, after Reports and Analytics; the empty group deleted | the group repeated its only journey's name; officers' reports now sit together |
+| Set-Up page | `Officers · PFMS Set-Up and Payment Reports`, two groups | `Officers · PFMS Set-Up`, the Bureau's alone | follows the move |
+| Screen names | `Everyone / Access Denied (403)`, `Everyone / Page Not Found (404)`, `… / Single Project Page (Replaced)` | codes and the redundant word dropped | names are plain words (§4) |
+| Application Details | three states here, three payment states in `PFMS Payee Code and Payment`, no pointer | the page guide links from one to the other | the split is deliberate; the pointer stops a developer missing half the states |
+| Counts | Cover guide 566 screens, 11 groups | 565 screens, 10 groups | recounted from the canvas |
+
+**Not changed:** no screen's design; journeys stay 45 and red journeys 10; every move kept its node id, so links
+(including the PFMS coverage checklist's) survive.
+
+**Kept on purpose:** a page used by one group keeps that group's column, each scheme-form page keeps
+`NGO — Applying for a Grant` around its one form journey, `NGO — Getting Paid` keeps its one journey (the nine-
+journey cap), and every page keeps `Guide to This Page`. The standard and its check expect all four.
+
+**Checked:** `check:figma-handoff -- --portal E-Anudaan --fresh --strict` passes on all 15 pages;
+`manifests/e-anudaan.json` re-captured with `--snapshot`.
 
 ## 6. Adding to the page
 
