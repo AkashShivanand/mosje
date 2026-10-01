@@ -2,8 +2,8 @@
  "portal": "E-Anudaan",
  "file": "K0B3vuOTXpxw6kt0px2Cqo",
  "fileName": "E-Anudaan [Handoff]",
- "recordedAt": "2026-09-30 (moved to its own file; one page per stage of an application; all 15 pages conformant)",
- "$comment": "Snapshot of the portal's own file, assembled from the handoff check's REST reads, page by page in page-list order and each page in layers-panel (reading) order. The Cover page holds no zones and is not listed. Names are plain English with no codes; node ids are stable within this file. Regenerate after any structural change.",
+ "recordedAt": "2026-10-01",
+ "$comment": "Captured by `check:figma-handoff --portal <Portal> --snapshot` from the check's own REST reads: pages in page-list order, each page in layers-panel (reading) order. A page's `loose` lists nodes outside any zone. Never edit by hand; re-capture after any structural change.",
  "pages": [
   {
    "page": "Start Here",
@@ -146,6 +146,12 @@
         {
          "name": "NGO Sign-In through NGO-DARPAN — Needs Discussion",
          "id": "3:63028",
+         "frames": [
+          {
+           "id": "3:63397",
+           "name": "Note — Needs Discussion"
+          }
+         ],
          "children": [
           {
            "name": "Desktop",
@@ -254,12 +260,6 @@
              "name": "NGO / Sign In through NGO-DARPAN / Request Expired — Mobile"
             }
            ]
-          }
-         ],
-         "frames": [
-          {
-           "id": "3:63397",
-           "name": "Note — Needs Discussion"
           }
          ]
         },
@@ -374,7 +374,7 @@
            "id": "3:62537",
            "frames": [
             {
-             "id": "3:62731",
+             "id": "56:22482",
              "name": "NGO / Dashboard / With Applications"
             },
             {
@@ -392,7 +392,7 @@
            "id": "3:62118",
            "frames": [
             {
-             "id": "3:62290",
+             "id": "56:22483",
              "name": "NGO / Dashboard / With Applications — Mobile"
             },
             {
@@ -452,6 +452,12 @@
         {
          "name": "Uploading Documents — Needs Discussion",
          "id": "3:43680",
+         "frames": [
+          {
+           "id": "3:46175",
+           "name": "Note — Needs Discussion"
+          }
+         ],
          "children": [
           {
            "name": "Each Document's Status",
@@ -618,12 +624,6 @@
              ]
             }
            ]
-          }
-         ],
-         "frames": [
-          {
-           "id": "3:46175",
-           "name": "Note — Needs Discussion"
           }
          ]
         }
@@ -1980,6 +1980,12 @@
         {
          "name": "Changing Answers After Submitting — Needs Discussion",
          "id": "3:41175",
+         "frames": [
+          {
+           "id": "3:41647",
+           "name": "Note — Needs Discussion"
+          }
+         ],
          "children": [
           {
            "name": "Desktop",
@@ -2024,12 +2030,6 @@
              "name": "NGO / Correct Your Application / Review Changed Answers Before Submitting — Mobile"
             }
            ]
-          }
-         ],
-         "frames": [
-          {
-           "id": "3:41647",
-           "name": "Note — Needs Discussion"
           }
          ]
         },
@@ -2086,16 +2086,6 @@
            ]
           },
           {
-           "name": "Pop-ups and Dialogs",
-           "id": "3:40866",
-           "frames": [
-            {
-             "id": "3:40867",
-             "name": "NGO / Project Bank Accounts / Change Account (Dialog)"
-            }
-           ]
-          },
-          {
            "name": "Mobile",
            "id": "3:40773",
            "frames": [
@@ -2106,6 +2096,16 @@
             {
              "id": "3:40774",
              "name": "NGO / Project Bank Accounts — Mobile"
+            }
+           ]
+          },
+          {
+           "name": "Pop-ups and Dialogs",
+           "id": "3:40866",
+           "frames": [
+            {
+             "id": "3:40867",
+             "name": "NGO / Project Bank Accounts / Change Account (Dialog)"
             }
            ]
           }
@@ -2292,6 +2292,12 @@
         {
          "name": "PFMS Payee Code and Payment — Needs Discussion",
          "id": "3:8720",
+         "frames": [
+          {
+           "id": "3:9648",
+           "name": "Note — Needs Discussion"
+          }
+         ],
          "children": [
           {
            "name": "Desktop",
@@ -2340,12 +2346,6 @@
              "name": "NGO / Notifications / Grant Credited — Mobile"
             }
            ]
-          }
-         ],
-         "frames": [
-          {
-           "id": "3:9648",
-           "name": "Note — Needs Discussion"
           }
          ]
         }
@@ -2681,7 +2681,7 @@
             },
             {
              "id": "3:23900",
-             "name": "Officer / All Applications / Filters — Mobile"
+             "name": "Officer / All Applications / Filters (Phone Only) — Mobile"
             }
            ]
           }
@@ -2876,6 +2876,12 @@
         {
          "name": "Examining and Sanctioning an Application — Needs Discussion",
          "id": "3:17235",
+         "frames": [
+          {
+           "id": "3:18675",
+           "name": "Note — Needs Discussion"
+          }
+         ],
          "children": [
           {
            "name": "Desktop",
@@ -2884,6 +2890,48 @@
             {
              "id": "3:18396",
              "name": "Programme Director / Examine an Application"
+            },
+            {
+             "id": "84:6578",
+             "name": "Programme Director / Examine an Application / Sanctioning Less Than Sought"
+            },
+            {
+             "id": "84:7310",
+             "name": "Programme Director / Examine an Application / Sanction Amounts Not Valid"
+            },
+            {
+             "id": "84:8084",
+             "name": "Programme Director / Examine an Application / Reason for Return Missing"
+            },
+            {
+             "id": "84:8837",
+             "name": "Programme Director / Examine an Application / Read-Only — Not With You"
+            }
+           ]
+          },
+          {
+           "name": "Mobile",
+           "id": "3:17236",
+           "frames": [
+            {
+             "id": "3:17237",
+             "name": "Programme Director / Examine an Application — Mobile"
+            },
+            {
+             "id": "84:6943",
+             "name": "Programme Director / Examine an Application / Sanctioning Less Than Sought — Mobile"
+            },
+            {
+             "id": "84:7696",
+             "name": "Programme Director / Examine an Application / Sanction Amounts Not Valid — Mobile"
+            },
+            {
+             "id": "84:8460",
+             "name": "Programme Director / Examine an Application / Reason for Return Missing — Mobile"
+            },
+            {
+             "id": "84:9182",
+             "name": "Programme Director / Examine an Application / Read-Only — Not With You — Mobile"
             }
            ]
           },
@@ -2904,22 +2952,6 @@
              "name": "Programme Director / Examine an Application / Confirm Rejection (Dialog)"
             }
            ]
-          },
-          {
-           "name": "Mobile",
-           "id": "3:17236",
-           "frames": [
-            {
-             "id": "3:17237",
-             "name": "Programme Director / Examine an Application — Mobile"
-            }
-           ]
-          }
-         ],
-         "frames": [
-          {
-           "id": "3:18675",
-           "name": "Note — Needs Discussion"
           }
          ]
         },
@@ -3012,6 +3044,36 @@
              "name": "PMU Field Officer / Inspections — Mobile"
             }
            ]
+          },
+          {
+           "name": "Pop-ups and Dialogs",
+           "id": "87:10536",
+           "frames": [
+            {
+             "id": "87:10537",
+             "name": "PMU Field Officer / Inspections / Schedule Inspection (Dialog)"
+            },
+            {
+             "id": "87:10861",
+             "name": "PMU Field Officer / Inspections / Schedule Inspection — Visit Date Missing (Dialog)"
+            },
+            {
+             "id": "87:11181",
+             "name": "PMU Field Officer / Inspections / Record Inspection (Dialog)"
+            },
+            {
+             "id": "87:11565",
+             "name": "PMU Field Officer / Inspections / Record Inspection — Findings and Recommendation Missing (Dialog)"
+            },
+            {
+             "id": "87:11923",
+             "name": "PMU Field Officer / Inspections / Submit Inspection Report — Confirm (Dialog)"
+            },
+            {
+             "id": "87:12250",
+             "name": "PMU Field Officer / Inspections / Inspection Report (Dialog)"
+            }
+           ]
           }
          ]
         },
@@ -3056,253 +3118,7 @@
    ]
   },
   {
-   "page": "Officers · Records and Reports",
-   "id": "30:208306",
-   "zones": [
-    {
-     "name": "START HERE",
-     "id": "35:204203",
-     "children": [
-      {
-       "name": "Guide to This Page",
-       "id": "37:11",
-       "frames": [
-        {
-         "id": "35:204204",
-         "name": "Guide — This Page"
-        }
-       ]
-      }
-     ]
-    },
-    {
-     "name": "SCREENS BY WHO USES THEM",
-     "id": "30:208313",
-     "children": [
-      {
-       "name": "Officers — Records and Reports",
-       "id": "3:18930",
-       "children": [
-        {
-         "name": "NGO Directory and NGO Profile",
-         "id": "3:21387",
-         "children": [
-          {
-           "name": "Desktop",
-           "id": "3:22086",
-           "frames": [
-            {
-             "id": "3:22405",
-             "name": "Officer / NGO Directory"
-            },
-            {
-             "id": "3:22153",
-             "name": "Officer / NGO Profile (NGO 360)"
-            },
-            {
-             "id": "3:22087",
-             "name": "Officer / NGO Profile (NGO 360) / CCTV Compliance"
-            }
-           ]
-          },
-          {
-           "name": "Mobile",
-           "id": "3:21388",
-           "frames": [
-            {
-             "id": "3:21774",
-             "name": "Officer / NGO Directory — Mobile"
-            },
-            {
-             "id": "3:21454",
-             "name": "Officer / NGO Profile (NGO 360) — Mobile"
-            },
-            {
-             "id": "3:21389",
-             "name": "Officer / NGO Profile (NGO 360) / CCTV Compliance — Mobile"
-            }
-           ]
-          }
-         ]
-        },
-        {
-         "name": "Bank Account Change Requests",
-         "id": "3:21311",
-         "children": [
-          {
-           "name": "Desktop",
-           "id": "3:21347",
-           "frames": [
-            {
-             "id": "3:21348",
-             "name": "Officer / Bank Account Change Requests"
-            }
-           ]
-          },
-          {
-           "name": "Mobile",
-           "id": "3:21312",
-           "frames": [
-            {
-             "id": "3:21313",
-             "name": "Officer / Bank Account Change Requests — Mobile"
-            }
-           ]
-          }
-         ]
-        },
-        {
-         "name": "Payment Status",
-         "id": "3:21191",
-         "children": [
-          {
-           "name": "Desktop",
-           "id": "3:21249",
-           "frames": [
-            {
-             "id": "3:21250",
-             "name": "Officer / Payment Status / Grant Released"
-            }
-           ]
-          },
-          {
-           "name": "Mobile",
-           "id": "3:21192",
-           "frames": [
-            {
-             "id": "3:21193",
-             "name": "Officer / Payment Status / Grant Released — Mobile"
-            }
-           ]
-          }
-         ]
-        },
-        {
-         "name": "Reports and Analytics",
-         "id": "3:20377",
-         "children": [
-          {
-           "name": "Desktop",
-           "id": "3:20826",
-           "frames": [
-            {
-             "id": "3:20995",
-             "name": "Officer / Reports and Analytics / First Report"
-            },
-            {
-             "id": "3:20827",
-             "name": "Officer / Reports and Analytics / Second Report"
-            }
-           ]
-          },
-          {
-           "name": "Mobile",
-           "id": "3:20378",
-           "frames": [
-            {
-             "id": "3:20702",
-             "name": "Officer / Reports and Analytics / First Report — Mobile"
-            },
-            {
-             "id": "3:20379",
-             "name": "Officer / Reports and Analytics / Second Report — Mobile"
-            }
-           ]
-          }
-         ]
-        },
-        {
-         "name": "Audit Trail",
-         "id": "3:19824",
-         "children": [
-          {
-           "name": "Desktop",
-           "id": "3:20162",
-           "frames": [
-            {
-             "id": "3:20270",
-             "name": "Officer / Audit Trail / All Entries"
-            },
-            {
-             "id": "3:20163",
-             "name": "Officer / Audit Trail / Filtered"
-            }
-           ]
-          },
-          {
-           "name": "Mobile",
-           "id": "3:19825",
-           "frames": [
-            {
-             "id": "3:20065",
-             "name": "Officer / Audit Trail / All Entries — Mobile"
-            },
-            {
-             "id": "3:19826",
-             "name": "Officer / Audit Trail / Filtered — Mobile"
-            }
-           ]
-          }
-         ]
-        },
-        {
-         "name": "Project Records and CCTV Compliance",
-         "id": "3:18931",
-         "children": [
-          {
-           "name": "Desktop",
-           "id": "3:19356",
-           "frames": [
-            {
-             "id": "3:19731",
-             "name": "Officer / Project Records / CCTV Compliance Tab"
-            },
-            {
-             "id": "3:19586",
-             "name": "Officer / Project Records / Staff Roster Tab"
-            },
-            {
-             "id": "3:19387",
-             "name": "Officer / Project Records / Weekly Attendance Tab"
-            },
-            {
-             "id": "3:19357",
-             "name": "Officer / Project Records / Project Not Found"
-            }
-           ]
-          },
-          {
-           "name": "Mobile",
-           "id": "3:18932",
-           "frames": [
-            {
-             "id": "3:19274",
-             "name": "Officer / Project Records / CCTV Compliance Tab — Mobile"
-            },
-            {
-             "id": "3:19140",
-             "name": "Officer / Project Records / Staff Roster Tab — Mobile"
-            },
-            {
-             "id": "3:18952",
-             "name": "Officer / Project Records / Weekly Attendance Tab — Mobile"
-            },
-            {
-             "id": "3:18933",
-             "name": "Officer / Project Records / Project Not Found — Mobile"
-            }
-           ]
-          }
-         ]
-        }
-       ]
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "page": "PFMS · Preparing and Authorising Payments",
+   "page": "Officers · Paying a Sanctioned Grant (PFMS)",
    "id": "30:208307",
    "zones": [
     {
@@ -3326,7 +3142,7 @@
      "id": "30:208315",
      "children": [
       {
-       "name": "Programme Division — Paying a Sanctioned Grant",
+       "name": "Programme Division Maker and Checker — Paying a Sanctioned Grant",
        "id": "3:11385",
        "children": [
         {
@@ -3450,6 +3266,12 @@
         {
          "name": "Authorising a Payment Advice — Needs Discussion",
          "id": "3:12081",
+         "frames": [
+          {
+           "id": "3:13428",
+           "name": "Note — Needs Discussion"
+          }
+         ],
          "children": [
           {
            "name": "Desktop",
@@ -3529,17 +3351,17 @@
             }
            ]
           }
-         ],
-         "frames": [
-          {
-           "id": "3:13428",
-           "name": "Note — Needs Discussion"
-          }
          ]
         },
         {
          "name": "Following a Payment — Needs Discussion",
          "id": "3:11386",
+         "frames": [
+          {
+           "id": "3:12072",
+           "name": "Note — Needs Discussion"
+          }
+         ],
          "children": [
           {
            "name": "Desktop",
@@ -3599,22 +3421,54 @@
             }
            ]
           }
-         ],
-         "frames": [
-          {
-           "id": "3:12072",
-           "name": "Note — Needs Discussion"
-          }
          ]
         }
        ]
       }
      ]
     }
+   ],
+   "loose": [
+    {
+     "id": "91:15801",
+     "name": "Officer / Payment Status / Returned by PFMS"
+    },
+    {
+     "id": "91:16268",
+     "name": "Officer / Payment Status / Financial Year Expired"
+    },
+    {
+     "id": "92:219954",
+     "name": "Officer / Payment Status / Credit Failed at Bank"
+    },
+    {
+     "id": "92:220407",
+     "name": "Officer / Authorise Payment Advice / Not the Designated Checker"
+    },
+    {
+     "id": "92:220803",
+     "name": "Officer / Prepare Payment Advice / Step 1 of 5 — DDO Not Active for e-Bills"
+    },
+    {
+     "id": "93:19213",
+     "name": "Officer / Payment Advices / Returned by PFMS"
+    },
+    {
+     "id": "93:19594",
+     "name": "Officer / Prepare Payment Advice / Returned by PFMS"
+    },
+    {
+     "id": "93:20040",
+     "name": "Officer / Prepare Payment Advice / A Fresh Payment Advice"
+    },
+    {
+     "id": "93:20499",
+     "name": "Officer / Prepare Payment Advice / Step 2 of 5 — CNA Exception Reason"
+    }
    ]
   },
   {
-   "page": "PFMS · Set-Up and Payment Reports",
+   "page": "Officers · PFMS Set-Up and Payment Reports",
    "id": "31:8",
    "zones": [
     {
@@ -3644,6 +3498,12 @@
         {
          "name": "Completing Legacy Files — Needs Discussion",
          "id": "3:10877",
+         "frames": [
+          {
+           "id": "3:11379",
+           "name": "Note — Needs Discussion"
+          }
+         ],
          "children": [
           {
            "name": "Desktop",
@@ -3694,12 +3554,6 @@
              "name": "Officer / Legacy Files / Set Head of Account (Dialog)"
             }
            ]
-          }
-         ],
-         "frames": [
-          {
-           "id": "3:11379",
-           "name": "Note — Needs Discussion"
           }
          ]
         },
@@ -3830,6 +3684,226 @@
    ]
   },
   {
+   "page": "Officers · Records and Reports",
+   "id": "30:208306",
+   "zones": [
+    {
+     "name": "START HERE",
+     "id": "35:204203",
+     "children": [
+      {
+       "name": "Guide to This Page",
+       "id": "37:11",
+       "frames": [
+        {
+         "id": "35:204204",
+         "name": "Guide — This Page"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "SCREENS BY WHO USES THEM",
+     "id": "30:208313",
+     "children": [
+      {
+       "name": "Officers — Records and Reports",
+       "id": "3:18930",
+       "children": [
+        {
+         "name": "NGO Directory and NGO Profile",
+         "id": "3:21387",
+         "children": [
+          {
+           "name": "Desktop",
+           "id": "3:22086",
+           "frames": [
+            {
+             "id": "3:22405",
+             "name": "Officer / NGO Directory"
+            },
+            {
+             "id": "3:22153",
+             "name": "Officer / NGO Profile (NGO 360)"
+            },
+            {
+             "id": "3:22087",
+             "name": "Officer / NGO Profile (NGO 360) / CCTV Compliance"
+            }
+           ]
+          },
+          {
+           "name": "Mobile",
+           "id": "3:21388",
+           "frames": [
+            {
+             "id": "3:21774",
+             "name": "Officer / NGO Directory — Mobile"
+            },
+            {
+             "id": "3:21454",
+             "name": "Officer / NGO Profile (NGO 360) — Mobile"
+            },
+            {
+             "id": "3:21389",
+             "name": "Officer / NGO Profile (NGO 360) / CCTV Compliance — Mobile"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "Bank Account Change Requests",
+         "id": "3:21311",
+         "children": [
+          {
+           "name": "Desktop",
+           "id": "3:21347",
+           "frames": [
+            {
+             "id": "3:21348",
+             "name": "Officer / Bank Account Change Requests"
+            }
+           ]
+          },
+          {
+           "name": "Mobile",
+           "id": "3:21312",
+           "frames": [
+            {
+             "id": "3:21313",
+             "name": "Officer / Bank Account Change Requests — Mobile"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "Reports and Analytics",
+         "id": "3:20377",
+         "children": [
+          {
+           "name": "Desktop",
+           "id": "3:20826",
+           "frames": [
+            {
+             "id": "3:20995",
+             "name": "Officer / Reports and Analytics / First Report"
+            },
+            {
+             "id": "3:20827",
+             "name": "Officer / Reports and Analytics / Second Report"
+            }
+           ]
+          },
+          {
+           "name": "Mobile",
+           "id": "3:20378",
+           "frames": [
+            {
+             "id": "3:20702",
+             "name": "Officer / Reports and Analytics / First Report — Mobile"
+            },
+            {
+             "id": "3:20379",
+             "name": "Officer / Reports and Analytics / Second Report — Mobile"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "Audit Trail",
+         "id": "3:19824",
+         "children": [
+          {
+           "name": "Desktop",
+           "id": "3:20162",
+           "frames": [
+            {
+             "id": "3:20270",
+             "name": "Officer / Audit Trail / All Entries"
+            },
+            {
+             "id": "3:20163",
+             "name": "Officer / Audit Trail / Filtered"
+            }
+           ]
+          },
+          {
+           "name": "Mobile",
+           "id": "3:19825",
+           "frames": [
+            {
+             "id": "3:20065",
+             "name": "Officer / Audit Trail / All Entries — Mobile"
+            },
+            {
+             "id": "3:19826",
+             "name": "Officer / Audit Trail / Filtered — Mobile"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "Project Records and CCTV Compliance",
+         "id": "3:18931",
+         "children": [
+          {
+           "name": "Desktop",
+           "id": "3:19356",
+           "frames": [
+            {
+             "id": "3:19731",
+             "name": "Officer / Project Records / CCTV Compliance Tab"
+            },
+            {
+             "id": "3:19586",
+             "name": "Officer / Project Records / Staff Roster Tab"
+            },
+            {
+             "id": "3:19387",
+             "name": "Officer / Project Records / Weekly Attendance Tab"
+            },
+            {
+             "id": "3:19357",
+             "name": "Officer / Project Records / Project Not Found"
+            }
+           ]
+          },
+          {
+           "name": "Mobile",
+           "id": "3:18932",
+           "frames": [
+            {
+             "id": "3:19274",
+             "name": "Officer / Project Records / CCTV Compliance Tab — Mobile"
+            },
+            {
+             "id": "3:19140",
+             "name": "Officer / Project Records / Staff Roster Tab — Mobile"
+            },
+            {
+             "id": "3:18952",
+             "name": "Officer / Project Records / Weekly Attendance Tab — Mobile"
+            },
+            {
+             "id": "3:18933",
+             "name": "Officer / Project Records / Project Not Found — Mobile"
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
    "page": "Shared Parts",
    "id": "30:208308",
    "zones": [
@@ -3854,12 +3928,68 @@
      "id": "3:7319",
      "children": [
       {
-       "name": "Reference Images",
-       "id": "3:7937",
+       "name": "Page Frame — Header and Side Menu",
+       "id": "3:7320",
        "frames": [
         {
-         "id": "3:7938",
-         "name": "Reference — Portal Hero Photograph"
+         "id": "3:7325",
+         "name": "Everyone / Page Frame / NGO Portal"
+        },
+        {
+         "id": "3:7321",
+         "name": "Everyone / Page Frame / NGO Portal — Mobile"
+        }
+       ]
+      },
+      {
+       "name": "Access Denied and Page Not Found",
+       "id": "3:7340",
+       "frames": [
+        {
+         "id": "3:7368",
+         "name": "Everyone / Access Denied (403)"
+        },
+        {
+         "id": "3:7341",
+         "name": "Everyone / Page Not Found (404)"
+        }
+       ]
+      },
+      {
+       "name": "Error Messages",
+       "id": "3:7395",
+       "frames": [
+        {
+         "id": "3:7660",
+         "name": "Everyone / Error Message / Session Ended — Full Page"
+        },
+        {
+         "id": "3:7636",
+         "name": "Everyone / Error Message / Something Went Wrong — Full Page with Reference"
+        },
+        {
+         "id": "3:7598",
+         "name": "Everyone / Error Message / Changed Somewhere Else — Save Conflict"
+        },
+        {
+         "id": "3:7562",
+         "name": "Everyone / Error Message / Applications Closed — When Submitting"
+        },
+        {
+         "id": "3:7517",
+         "name": "Everyone / Error Message / Upload Refused by the Security Check"
+        },
+        {
+         "id": "3:7497",
+         "name": "Everyone / Error Message / Sign-In — Too Many Attempts"
+        },
+        {
+         "id": "3:7430",
+         "name": "Everyone / Error Message / Payment Status — PFMS Cannot Be Reached"
+        },
+        {
+         "id": "3:7396",
+         "name": "Everyone / Error Message / Request Took Too Long — Pop-Up Message"
         }
        ]
       },
@@ -3906,68 +4036,12 @@
        ]
       },
       {
-       "name": "Error Messages",
-       "id": "3:7395",
+       "name": "Reference Images",
+       "id": "3:7937",
        "frames": [
         {
-         "id": "3:7660",
-         "name": "Everyone / Error Message / Session Ended — Full Page"
-        },
-        {
-         "id": "3:7636",
-         "name": "Everyone / Error Message / Something Went Wrong — Full Page with Reference"
-        },
-        {
-         "id": "3:7598",
-         "name": "Everyone / Error Message / Changed Somewhere Else — Save Conflict"
-        },
-        {
-         "id": "3:7562",
-         "name": "Everyone / Error Message / Applications Closed — When Submitting"
-        },
-        {
-         "id": "3:7517",
-         "name": "Everyone / Error Message / Upload Refused by the Security Check"
-        },
-        {
-         "id": "3:7497",
-         "name": "Everyone / Error Message / Sign-In — Too Many Attempts"
-        },
-        {
-         "id": "3:7430",
-         "name": "Everyone / Error Message / Payment Status — PFMS Cannot Be Reached"
-        },
-        {
-         "id": "3:7396",
-         "name": "Everyone / Error Message / Request Took Too Long — Pop-Up Message"
-        }
-       ]
-      },
-      {
-       "name": "Access Denied and Page Not Found",
-       "id": "3:7340",
-       "frames": [
-        {
-         "id": "3:7368",
-         "name": "Everyone / Access Denied (403)"
-        },
-        {
-         "id": "3:7341",
-         "name": "Everyone / Page Not Found (404)"
-        }
-       ]
-      },
-      {
-       "name": "Page Frame — Header and Side Menu",
-       "id": "3:7320",
-       "frames": [
-        {
-         "id": "3:7325",
-         "name": "Everyone / Page Frame / NGO Portal"
-        },
-        {
-         "id": "3:7321",
-         "name": "Everyone / Page Frame / NGO Portal — Mobile"
+         "id": "3:7938",
+         "name": "Reference — Portal Hero Photograph"
         }
        ]
       }
@@ -4000,52 +4074,24 @@
      "id": "3:6800",
      "children": [
       {
-       "name": "Leftover Pieces — To Be Deleted",
-       "id": "3:7296",
+       "name": "Replaced Screens — 1 Oct 2026",
+       "id": "78:6577",
        "frames": [
         {
-         "id": "3:7318",
-         "name": "Leftover — Table Cell"
+         "id": "78:6579",
+         "name": "Note — Why This Was Replaced"
         },
         {
-         "id": "3:7315",
-         "name": "Leftover — Project ID Cell"
+         "id": "3:21250",
+         "name": "Officer / Payment Status / Grant Released"
         },
         {
-         "id": "3:7314",
-         "name": "Leftover — Table Cell"
+         "id": "78:6580",
+         "name": "Note — Why This Was Replaced"
         },
         {
-         "id": "3:7311",
-         "name": "Leftover — Project ID Cell"
-        },
-        {
-         "id": "3:7310",
-         "name": "Leftover — Table Cell"
-        },
-        {
-         "id": "3:7307",
-         "name": "Leftover — Project ID Cell"
-        },
-        {
-         "id": "3:7306",
-         "name": "Leftover — Table Cell"
-        },
-        {
-         "id": "3:7303",
-         "name": "Leftover — Project ID Cell"
-        },
-        {
-         "id": "3:7299",
-         "name": "Leftover — Empty State"
-        },
-        {
-         "id": "3:7298",
-         "name": "Leftover — Table Cell"
-        },
-        {
-         "id": "3:7297",
-         "name": "Leftover — Document Row"
+         "id": "3:21193",
+         "name": "Officer / Payment Status / Grant Released — Mobile"
         }
        ]
       },
@@ -4054,11 +4100,15 @@
        "id": "3:6801",
        "frames": [
         {
+         "id": "3:7217",
+         "name": "Note — Why This Was Replaced"
+        },
+        {
          "id": "3:7218",
          "name": "Officer / Notifications / Finance Division"
         },
         {
-         "id": "3:7217",
+         "id": "3:7078",
          "name": "Note — Why This Was Replaced"
         },
         {
@@ -4066,7 +4116,7 @@
          "name": "Officer / Worklist / Finance Division — SHRESHTA Mode 2"
         },
         {
-         "id": "3:7078",
+         "id": "3:7065",
          "name": "Note — Why This Was Replaced"
         },
         {
@@ -4074,16 +4124,12 @@
          "name": "Everyone / Portal Landing Page"
         },
         {
-         "id": "3:7065",
+         "id": "3:7052",
          "name": "Note — Why This Was Replaced"
         },
         {
          "id": "3:7053",
          "name": "Everyone / Portal Landing Page — Mobile"
-        },
-        {
-         "id": "3:7052",
-         "name": "Note — Why This Was Replaced"
         },
         {
          "id": "3:7051",
@@ -4092,6 +4138,10 @@
         {
          "id": "3:6893",
          "name": "NGO / Attendance Master"
+        },
+        {
+         "id": "78:6578",
+         "name": "Note — Why This Was Replaced"
         },
         {
          "id": "3:6802",

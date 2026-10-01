@@ -27,6 +27,11 @@
  *   npm run check:figma-handoff -- --portal E-Anudaan --verbose --fresh
  *   npm run check:figma-handoff -- --strict           # any violation fails
  *   npm run check:figma-handoff -- --update-baseline  # record current counts
+ *   npm run check:figma-handoff -- --portal E-Anudaan --snapshot   # re-capture manifests/<portal>.json
+ *
+ * --snapshot writes the portal's manifest from the SAME REST reads the check makes, in page-list
+ * order and layers-panel (reading) order. It needs --portal, and refuses to write when a page could
+ * not be read: a snapshot assembled from part of the file is the hand-edited record it replaces.
  */
 import { mkdirSync, readFileSync, writeFileSync, existsSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -220,6 +225,23 @@ const baseline = existsSync(BASELINE) ? JSON.parse(readFileSync(BASELINE, "utf8"
 const only = flag("portal");
 const next = { ...baseline };
 let failing = 0;
+if (has("snapshot") && !only) {
+  console.log("--snapshot needs --portal <Portal>.");
+  process.exit(2);
+}
+const snapshot = [];
+/** Layers-panel order: Figma lists the LAST child first, so reading order is the array reversed. */
+const record = (n) => {
+  const kids = [...(n.children ?? [])].reverse();
+  const sections = kids.filter((c) => c.type === "SECTION");
+  const frames = kids.filter((c) => c.type !== "SECTION");
+  return {
+    name: n.name,
+    id: n.id,
+    ...(frames.length ? { frames: frames.map((f) => ({ id: f.id, name: f.name })) } : {}),
+    ...(sections.length ? { children: sections.map(record) } : {}),
+  };
+};
 // A portal with a file of its own registers each page as "<Portal> · <Page>"; --portal <Portal> checks them all.
 const matches = (p) => !only || p.portal.toLowerCase() === only.toLowerCase() || p.portal.toLowerCase().startsWith(only.toLowerCase() + " · ");
 for (const entry of registry.filter(matches)) {
@@ -229,9 +251,16 @@ for (const entry of registry.filter(matches)) {
   } catch (err) {
     console.log(`✖ ${entry.portal}: could not read — ${err.message}`);
     failing++;
+    snapshot.push(null);
     continue;
   }
   const v = audit(tree, entry.rootDepth ?? 1);
+  if (has("snapshot")) {
+    const zones = tree.children.filter((c) => c.type === "SECTION");
+    zones.sort((a, b) => (ZONES[a.name] ?? "Z").localeCompare(ZONES[b.name] ?? "Z"));
+    const loose = tree.children.filter((c) => c.type !== "SECTION").map((c) => ({ id: c.id, name: c.name }));
+    snapshot.push({ page: tree.name, id: tree.id, zones: zones.map(record), ...(loose.length ? { loose } : {}) });
+  }
   if (has("selftest")) {
     // Plant one known fault per check in a copy of the live tree and prove each is caught —
     // a gate that stays green because it cannot see anything is worse than no gate.
@@ -272,6 +301,26 @@ for (const entry of registry.filter(matches)) {
   console.log(`${verdict.padEnd(2)}  ${entry.portal} — identity ${identity} · visual ${visual}${v.length ? "  [" + Object.entries(counts).map(([k, n]) => `${k} ${n}`).join(" · ") + "]" : ""}`);
   for (const x of has("verbose") ? v : v.slice(0, 3)) console.log(`      ${x.check.padEnd(22)} ${x.name} — ${x.detail}`);
   if (!has("verbose") && v.length > 3) console.log(`      … ${v.length - 3} more (--verbose)`);
+}
+if (has("snapshot")) {
+  if (snapshot.some((p) => p === null)) {
+    console.log("\nSnapshot NOT written: a page could not be read.");
+    process.exit(1);
+  }
+  const entry = registry.find(matches);
+  const portal = only.replace(/ · .*$/, "");
+  const path = join(HERE, "manifests", `${portal.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.json`);
+  const prev = existsSync(path) ? JSON.parse(readFileSync(path, "utf8")) : {};
+  const out = {
+    portal,
+    file: entry.file,
+    ...(prev.fileName ? { fileName: prev.fileName } : {}),
+    recordedAt: new Date().toISOString().slice(0, 10),
+    $comment: "Captured by `check:figma-handoff --portal <Portal> --snapshot` from the check's own REST reads: pages in page-list order, each page in layers-panel (reading) order. A page's `loose` lists nodes outside any zone. Never edit by hand; re-capture after any structural change.",
+    pages: snapshot,
+  };
+  writeFileSync(path, JSON.stringify(out, null, 1) + "\n");
+  console.log(`\n${path.replace(ROOT + "/", "")} written — ${snapshot.length} pages.`);
 }
 if (has("update-baseline")) {
   writeFileSync(BASELINE, JSON.stringify(next, null, 1) + "\n");

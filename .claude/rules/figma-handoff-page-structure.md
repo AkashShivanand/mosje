@@ -204,7 +204,7 @@ order an application moves. E-Anudaan was the first: 568 screens on one page of 
 one column 217,000px tall, slow to open for everyone working on the other eleven portals.
 
 - **Pages, in the page list:** `Cover` · `Start Here` · one page per stage, named `<Audience> · <Stage>`
-  (`NGO · After Applying and Getting Paid`, `PFMS · Set-Up and Payment Reports`) · `Shared Parts` ·
+  (`NGO · After Applying and Getting Paid`, `Officers · PFMS Set-Up and Payment Reports`) · `Shared Parts` ·
   `Old Screens — Do Not Use`. Divider pages (`---`) separate the audiences. A journey too big to share a
   page gets one of its own — each scheme's application form does.
 - **Every page keeps this rule's shape**, so the check reads each one like a single-portal page: a
