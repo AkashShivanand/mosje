@@ -43,12 +43,25 @@ file, which keeps node ids. The paste did change every id, and the Portal Map's 
 old file; all 46 were relinked to their journey sections. Sections below describe the page as it was
 organised on 17 Sep 2026; node ids quoted there are the old file's.
 
-**Cover.** A 1920 × 960 frame (Figma's 2:1 thumbnail size), set as the file thumbnail: the SAMAVESH
-`Navbar/BrandLockup` (emblem, Ministry and Department), the portal's name and what it does, the file's
-counts, version and date, and two real screens from the file on a `bg/brand/primary/boldest` panel. Every
-fill is a SAMAVESH variable and every gap a space token; all text uses published styles except the 168px
-title, which is set in Noto Sans Display Medium because the library's ramp stops at 80px (the rule for
-slide-scale text in `CLAUDE.md` › Figma libraries).
+**Cover.** A 1920 × 1080 frame (Figma's recommended 16:9 thumbnail), set as the file thumbnail. Everything
+that must survive Figma's crops — 4:3 in the team view, 1:1 in the list — sits inside x 264–1656: the
+SAMAVESH `Navbar/BrandLockup` (emblem, Ministry, Department) at the left of a top bar and, at the right, the
+circular SAMAVESH seal alone, with no wording beside it — SAMAVESH is the unified portal E-Anudaan belongs to,
+and the seal names it; a hairline beneath, then the eyebrow (handoff file, version,
+date), the portal's name, what it does, and the file's counts. Below, a browser window and a phone rise out
+of a `bg/brand/primary/boldest` stage, the phone deliberately in front of the browser's right edge. The seal is
+60px, matched to the emblem, and was RESCALED (a uniform transform), not resized — resizing this remote
+component distorts its inner groups (`ds-documentation-standard.md` §5); rescaling was checked at 3× and does not. Every fill is a SAMAVESH variable; all text uses published styles except
+the 152px title and the 24/22px standfirst and counts, set in Noto Sans because the library's ramp stops at
+80px (the rule for slide-scale text in `CLAUDE.md` › Figma libraries).
+
+**The screens on the cover are COPIES, and they are refreshed by hand.** They are copies of
+`NGO / Dashboard / With Applications` and its mobile version on NGO · Starting an Application, named
+"Copy of … — refresh from NGO · Starting an Application". The two screens were briefly turned into components
+so the cover would follow them; that was reverted on 1 Oct 2026 — a handoff screen is a frame a developer
+reads, not a component anyone should instance. When the dashboard changes, delete the two copies, clone the
+screens into the cover's `Screen` frames and rescale (0.75 browser, 0.72 phone); after the rescale, set the
+phone copy's navbar to fill, because rescaling resets an instance to its master's 412px width.
 
 **Still for a person:** name the first version in version history (the API cannot).
 
