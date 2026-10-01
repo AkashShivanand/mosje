@@ -23,13 +23,13 @@ portal now has a file of its own, organised in the order an application moves.
 | NGO · After Applying and Getting Paid | NGO — After Applying; NGO — Getting Paid | 74 | 10 |
 | Officers · Reviewing Applications | the review chain, queues and lists | 73 | 6 |
 | Officers · Sanctioning and Inspections | Programme Director; PMU Field Officer | 34 | 6 |
-| Officers · Paying a Sanctioned Grant (PFMS) | Programme Division Maker and Checker — Paying a Sanctioned Grant | 59 | 3 |
+| Officers · Paying a Sanctioned Grant (PFMS) | Programme Division Maker and Checker — Paying a Sanctioned Grant | 61 | 3 |
 | Officers · PFMS Set-Up and Payment Reports | Bureau — Setting Up PFMS; Officers — Payment Reports | 27 | 3 |
 | Officers · Records and Reports | records, audit trail, NGO directory | 24 | 5 |
 | Shared Parts | page frame, error pages, reusable form content | 22 items | — |
 | Old Screens — Do Not Use | replaced screens, each with a note naming its replacement | 8 screens | — |
 
-566 screens, 11 user groups, 45 journeys, 9 needing discussion. Divider pages separate Everyone, NGO and
+568 screens, 11 user groups, 45 journeys, 9 needing discussion. Divider pages separate Everyone, NGO and
 Officers in the page list — the audiences are user roles, so the PFMS pages sit with the Officers (1 Oct 2026).
 
 **How each page reads.** A `START HERE` guide first (who uses the page, its journeys, counted screens, a
@@ -364,6 +364,11 @@ payment advice from a returned-and-cancelled order, the Return Memo row, SHRESHT
 Application / Bank Details Incomplete`, and `Keeping PFMS Set-Up Current` marked Needs Discussion (Mode 1's full
 form waits on the business analyst). This session then set the counts: Cover 566, Sanctioning guide 34, Set-Up
 guide 27 screens and 2 needing discussion, and Start Here's cover guide 9 needing discussion.
+
+**The last two PFMS screens** (1 Oct 2026): `Officer / Payment Advices / Drafts`, with one saved advice, and
+`Officer / Payment Advices / Returned by PFMS — Mobile`, both copied from their neighbours in `Preparing a Payment
+Advice` and placed by the layout engine. The selected tab on `Officer / Payment Advices / Returned by PFMS` now carries
+the same dark blue as its sibling queues. Counts: Cover 568, the PFMS page's Start Here 61.
 
 **Checked:** `check:figma-handoff -- --portal E-Anudaan --fresh --strict` passes on **all 15 pages** (identity 0,
 visual 0), nothing loose at any page root, and `--selftest` catches all nine planted faults.
