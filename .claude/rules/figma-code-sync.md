@@ -99,3 +99,22 @@ one lone record frame is inconsistency rather than progress.
 - [ ] Web DS page and `docs/design-system/components/<name>.md` updated in lockstep
 - [ ] Token names in prose checked against the **current** ladder — the spacing and
       radius scales are value-named, and `inline/s` / `shape/xs` are dead
+
+## Screens: Figma leads, the build follows (standing instruction, 1 Oct 2026)
+
+**For portal and website SCREENS, the Figma handoff is the source of truth.** The table above is about
+design-system components, where the code is what people change. A screen is different: the order of work
+is a fix in the Figma frame first, then the build to match it.
+
+1. **Never fix a screen in code ahead of its drawing.** If the build needs a change, draw it in the
+   handoff frame (desktop AND phone), then build it.
+2. **Never redraw Figma to match the build.** A difference between the two is a decision for the owner,
+   not a sync task for whoever notices it.
+3. **Where they already differ, list it.** Name each difference — what Figma draws, what the build does,
+   and any recorded reason for the build's version — and let the owner settle it in Figma. Then build.
+4. **A screen PR says which Figma frames it follows**, by name, so a reviewer can open them side by side.
+
+Why: on 1 Oct 2026 a phone-polish pass changed the E-Anudaan NGO dashboard's code first and Figma
+second, and a parity check then found the two had already drifted on five older decisions (a filled
+warning card, bordered lists, the "View All" control, card padding, the instalment rows) — each made in
+one place and never carried to the other.
