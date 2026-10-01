@@ -2316,8 +2316,16 @@
              "name": "NGO / Project Bank Accounts / PFMS Payee Code Needed"
             },
             {
+             "id": "100:40553",
+             "name": "NGO / Project Bank Accounts / The Bank Could Not Credit a Grant"
+            },
+            {
              "id": "3:9322",
              "name": "NGO / Application Details / Payment in Process"
+            },
+            {
+             "id": "100:40177",
+             "name": "NGO / Application Details / Bank Account Needs Checking"
             },
             {
              "id": "3:9134",
@@ -2352,16 +2360,6 @@
        ]
       }
      ]
-    }
-   ],
-   "loose": [
-    {
-     "id": "100:40177",
-     "name": "NGO / Application Details / Bank Account Needs Checking"
-    },
-    {
-     "id": "100:40553",
-     "name": "NGO / Project Bank Accounts / The Bank Could Not Credit a Grant"
     }
    ]
   },
@@ -2900,6 +2898,10 @@
             {
              "id": "3:18396",
              "name": "Programme Director / Examine an Application"
+            },
+            {
+             "id": "103:12171",
+             "name": "Programme Director / Examine an Application / Bank Details Incomplete"
             },
             {
              "id": "84:6578",

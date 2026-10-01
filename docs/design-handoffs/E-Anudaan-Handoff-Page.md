@@ -20,16 +20,16 @@ portal now has a file of its own, organised in the order an application moves.
 | NGO · AVYAY Application Form | new application and instalment claims | 52 | 1 |
 | NGO · SMILE (Garima Greh) Application Form | new application and instalment claims | 36 | 1 |
 | NGO · SHRESHTA Mode 2 Application Form | new application and instalment claims | 44 | 1 |
-| NGO · After Applying and Getting Paid | NGO — After Applying; NGO — Getting Paid | 72 | 10 |
+| NGO · After Applying and Getting Paid | NGO — After Applying; NGO — Getting Paid | 74 | 10 |
 | Officers · Reviewing Applications | the review chain, queues and lists | 73 | 6 |
-| Officers · Sanctioning and Inspections | Programme Director; PMU Field Officer | 33 | 6 |
+| Officers · Sanctioning and Inspections | Programme Director; PMU Field Officer | 34 | 6 |
 | Officers · Paying a Sanctioned Grant (PFMS) | Programme Division Maker and Checker — Paying a Sanctioned Grant | 59 | 3 |
-| Officers · PFMS Set-Up and Payment Reports | Bureau — Setting Up PFMS; Officers — Payment Reports | 26 | 3 |
+| Officers · PFMS Set-Up and Payment Reports | Bureau — Setting Up PFMS; Officers — Payment Reports | 27 | 3 |
 | Officers · Records and Reports | records, audit trail, NGO directory | 24 | 5 |
 | Shared Parts | page frame, error pages, reusable form content | 22 items | — |
 | Old Screens — Do Not Use | replaced screens, each with a note naming its replacement | 8 screens | — |
 
-562 screens, 11 user groups, 45 journeys, 8 needing discussion. Divider pages separate Everyone, NGO and
+566 screens, 11 user groups, 45 journeys, 9 needing discussion. Divider pages separate Everyone, NGO and
 Officers in the page list — the audiences are user roles, so the PFMS pages sit with the Officers (1 Oct 2026).
 
 **How each page reads.** A `START HERE` guide first (who uses the page, its journeys, counted screens, a
@@ -353,15 +353,24 @@ Cancelled), Not the Designated Checker (after You Prepared This Advice), the Pay
 steps' error states), and Returned by PFMS and A Fresh Payment Advice (after Returned by the Checker). No screen's
 content was touched.
 
-**Checked:** `check:figma-handoff -- --portal E-Anudaan --fresh --strict` reads 14 of 15 pages conformant, the
-Paying page among them, and `--selftest` catches all nine planted faults. The fifteenth, `NGO · After Applying and
-Getting Paid`, now shows 2 NGO screens loose at its root (`Bank Account Needs Checking`, `The Bank Could Not Credit
-a Grant`), added by the same parallel session after the filing above; they were left for it, and the baseline was
-not raised. `manifests/e-anudaan.json` was re-captured with `--snapshot` and lists them under that page's `loose`.
+**And the 2 NGO screens.** The same session then added `NGO / Project Bank Accounts / The Bank Could Not Credit
+a Grant` and `NGO / Application Details / Bank Account Needs Checking` at the root of `NGO · After Applying and
+Getting Paid`. Their positions and heights match the screens they were copied from, so each went into `PFMS Payee
+Code and Payment` beside its source: after `PFMS Payee Code Needed` and after `Payment in Process`.
 
-**Open for a person:** file the 2 loose NGO screens on `NGO · After Applying and Getting Paid`;
-name version 1.1 in Figma's version history; accept the waiting SAMAVESH updates in the Libraries panel; decide whether officers' PFMS screens need
-phone versions (16 drawn for 56 desktop screens — signing needs a DSC token on a desktop); decide whether the
+**Then the PFMS session's own pass** (same day, coordinated so the two sessions never wrote at once): a fresh
+payment advice from a returned-and-cancelled order, the Return Memo row, SHRESHTA Mode 1 in the PFMS set-up with an
+`Add Scheme (Dialog)`, the SHRESHTA heads corrected to their own code, `Programme Director / Examine an
+Application / Bank Details Incomplete`, and `Keeping PFMS Set-Up Current` marked Needs Discussion (Mode 1's full
+form waits on the business analyst). This session then set the counts: Cover 566, Sanctioning guide 34, Set-Up
+guide 27 screens and 2 needing discussion, and Start Here's cover guide 9 needing discussion.
+
+**Checked:** `check:figma-handoff -- --portal E-Anudaan --fresh --strict` passes on **all 15 pages** (identity 0,
+visual 0), nothing loose at any page root, and `--selftest` catches all nine planted faults.
+`manifests/e-anudaan.json` was re-captured with `--snapshot` from that run.
+
+**Open for a person:** name version 1.1 in Figma's version history; accept the waiting SAMAVESH updates in the Libraries panel; decide whether officers' PFMS screens need
+phone versions (16 drawn for 68 desktop screens — signing needs a DSC token on a desktop); decide whether the
 payment parts of the NGO's Project Bank Accounts and Application Details screens give way to the PFMS versions.
 
 ## 6. Adding to the page
