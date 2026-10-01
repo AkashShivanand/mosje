@@ -39,22 +39,26 @@
     }
   }
 
-  /* The count — the library's own Badge (Type=Large, State=Primary, Emphasis=Solid):
-     16px, `cmp/button/primary/bg`, Label/label-3. Brand primary, not red: red is a
-     rejected application here. The ring in the masthead's ground separates it from
-     the glyph behind it. */
+  /* The count — `cmp/button/primary/bg`, Label/label-3. Brand primary, not red: red
+     is a rejected application here. The ring in the masthead's ground separates it
+     from the glyph behind it, and it sits OUTSIDE the fill (a spread shadow, not a
+     border), so the blue keeps its full size.
+     20px, not the library Badge's 16: at 16 the 12px label filled the pill edge to
+     edge and "9+" read as clamped. 20 gives the label 2px above and below and 6px
+     either side. */
   .ds-hdr-bell__badge {
     position: absolute;
     /* Measured from the padding box, so the button's own 1px border has to be
-       added back — at a flat -4 the badge sat 3px proud where Figma draws 4. */
-    inset-block-start: calc((var(--sa-padding-4) + var(--sa-stroke-1)) * -1);
-    inset-inline-end: calc((var(--sa-padding-4) + var(--sa-stroke-1)) * -1);
+       added back. 8, not 4: the pill grew by 4, and anchored at 4 or 6 its ring
+       touched the bell's knob. At 8 it clears the glyph. */
+    inset-block-start: calc((var(--sa-padding-8) + var(--sa-stroke-1)) * -1);
+    inset-inline-end: calc((var(--sa-padding-8) + var(--sa-stroke-1)) * -1);
     display: inline-grid;
     place-items: center;
     box-sizing: border-box;
-    min-inline-size: var(--sa-icon-size-16);
-    block-size: var(--sa-icon-size-16);
-    padding-inline: var(--sa-padding-4);
+    min-inline-size: var(--sa-icon-size-20);
+    block-size: var(--sa-icon-size-20);
+    padding-inline: var(--sa-padding-6);
     border-radius: var(--sa-shape-full);
     background: var(--sa-cmp-button-primary-bg);
     color: var(--sa-text-neutral-inverse);

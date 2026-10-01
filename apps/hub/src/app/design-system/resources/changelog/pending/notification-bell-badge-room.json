@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "NOTIFICATION BELL — THE COUNT HAS ROOM INSIDE ITS BADGE. At 16px the 12px label filled the pill edge to edge, so \"9+\" read as clamped against its own outline. The pill is now 20px with 6px either side; the white ring still sits outside the fill, so the blue keeps its full size, and the badge sits 2px further from the button's corner so its ring clears the bell's knob. Colour, type and the accessible name are unchanged."
+}
