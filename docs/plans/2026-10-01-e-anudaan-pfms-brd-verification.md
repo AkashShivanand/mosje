@@ -52,7 +52,7 @@ screen is invented by that file. A ✅ means the screen is built and drawn, not 
 
 | ID | BRD page | Requirement (plain words) | Prototype evidence | Figma evidence | Mark | Note |
 |---|---|---|---|---|---|---|
-| U-1.2-1 | p. 5 | One portal serves five schemes: NAPDDR, AVYAY, SHRESTHA Mode 1, SHRESTHA Mode 2, SMILE | `pfms/masters.ts:63-90` configures four; `ea/form-schema.ts:28` has no Mode 1 scheme | SR › Set › Heads of Account (3:10593) lists four schemes; no frame names Mode 1 | 🟡 | SHRESTHA Mode 1 does not exist in the prototype or the file |
+| U-1.2-1 | p. 5 | One portal serves five schemes: NAPDDR, AVYAY, SHRESTHA Mode 1, SHRESTHA Mode 2, SMILE | `pfms/masters.ts:63-100` now configures all five; Mode 1 has no application form | SR › Set › Heads of Account (3:10593) Mode 1 card; Overview (3:10805) row | ⏸ | Mode 1 is set up for PFMS. Its full form and journey wait on the BA for fields and flow (question 14) |
 | U-1.3-1 | p. 5 | Problem: sanction and bill data are re-typed at the DDO | Answered by the single request (FR-SNC-003) | — | 🔧 | Ending re-typing depends on NeGD's real call to PFMS |
 | U-1.3-2 | p. 5 | Problem: the Ministry cannot follow a grant from sanction to credit | `rt/finance/payment-status/[appId]/page.tsx:150-255` 👁 | PA › Fol › Payment Status / Paid (3:11915) | ✅ | Figures on the page are imitated |
 | U-1.3-3 | p. 5 | Problem: bank account and payee code not captured in a form PFMS can use | `ea/form-schema.ts:332-372` | NG › Bank Account Details — PFMS Payee Code (3:9624) | ✅ | |
@@ -70,7 +70,7 @@ screen is invented by that file. A ✅ means the screen is built and drawn, not 
 | U-2.1-2 | p. 7 | Ministry sees a grant end to end inside e-Anudaan | Payment Status, `rt/finance/payment-status/[appId]/page.tsx` 👁; pipeline `pfms/reports.ts:17-22` | PA › Fol › Paid (3:11915); SR › Rep › Sanction Pipeline (3:8549) | ✅ | |
 | U-2.1-3 | p. 7 | Shorter turnaround; less reconciliation effort | `pfms/reports.ts:185-206` (turnaround), `:93-104` (reconciliation) | SR › Rep › Turnaround (3:7995) | ✅ | The screens measure it; only go-live can show it falling |
 | U-2.1-4 | p. 7 | Auditable: one traceable e-sanction per bill | Requests Sent to PFMS and Payment History, `rt/finance/payment-status/[appId]/page.tsx:222-255` | PA › Fol › Bill with DDO (3:12000) | ✅ | |
-| U-2.1-5 | p. 7 | Built once; other schemes join by configuration | `pfms/masters.ts:63-90` is a fixed list; `ea/form-schema.ts:28` fixed | SR › Set › Heads of Account (3:10593) | 🟡 | No screen adds a scheme; Mode 1 absent. See NFR-6.4-1 |
+| U-2.1-5 | p. 7 | Built once; other schemes join by configuration | Add Scheme, `rt/dashboard/pfms/heads-of-account/page.tsx` (`AddSchemeDialog`); `pfms/store.tsx` `addScheme` | SR › Set › Add Scheme (Dialog) (98:10919) | ✅ | A scheme joins PFMS set-up without a code change |
 | U-2.2-1 | p. 7 | Payee code and bank details confirmed at application | `ea/form-schema.ts:340`, `:355-371` | NG › Bank Account Details — PFMS Payee Code (3:9624) | ✅ | |
 | U-2.2-2 | p. 7 | Maker–Checker on the payment advice, after the sanction | `pfms/advice.ts:294-333`, `:363-375` | PA › Auth › Awaiting Authorisation (3:13375) | ✅ | |
 | U-2.2-3 | p. 7 | Each bill sent in one ReceiveSanctionData call with header, heads, payee and hashes | — | — | 🔧 | Screen half is FR-SNC-003 (b) |
@@ -99,7 +99,7 @@ screen is invented by that file. A ✅ means the screen is built and drawn, not 
 | ID | BRD page | Requirement (plain words) | Prototype evidence | Figma evidence | Mark | Note |
 |---|---|---|---|---|---|---|
 | U-3.1A-1 | p. 9 | NGO gives its PFMS payee code and ticks to confirm it | `ea/form-schema.ts:355-371` | NG › Bank Account Details — PFMS Payee Code (3:9624) | ✅ | |
-| U-3.1A-2 | p. 9 | NGO confirms account and IFSC; no sanction without both | `ea/form-schema.ts:340`; `ea/workflow.ts:529-538`, `:570-572` | NG › Account Numbers Do Not Match (3:9600) | 🟡 | The officer's refusal to sanction is built but not drawn (see FR-NGO-002) |
+| U-3.1A-2 | p. 9 | NGO confirms account and IFSC; no sanction without both | `ea/form-schema.ts:340`; `ea/workflow.ts:529-538`, `:570-572` | NG › Account Numbers Do Not Match (3:9600); *Officers · Sanctioning* › Programme Director / Examine an Application / Bank Details Incomplete (103:12171) | ✅ | Shown before the decision; Sanction disabled (`cmp/review-shell.tsx`) |
 | U-3.1B-1 (a) | p. 9 | Bureau records the coded head of account per scheme | `rt/dashboard/pfms/heads-of-account/page.tsx:84-310` | SR › Set › Heads of Account (3:10593) | ✅ | |
 | U-3.1B-1 (b) | p. 9 | The real codes themselves | `pfms/masters.ts:1-12` says every code is illustrative | — | ⏸ | Bureau decision, on the critical path (§9) |
 | U-3.1B-2 | p. 9 | DDO, PAO and PD codes from PFMS; DDO mapped per scheme | `rt/dashboard/pfms/ddo-mapping/page.tsx:10-199`; `pfms/store.tsx:347-351` | SR › Set › DDO and Division Codes (3:10468) | ✅ | Codes imitated |
@@ -143,7 +143,7 @@ screen is invented by that file. A ✅ means the screen is built and drawn, not 
 | ID | BRD page | Requirement (plain words) | Prototype evidence | Figma evidence | Mark | Note |
 |---|---|---|---|---|---|---|
 | FR-NGO-001 | p. 12 | Application form asks for the PFMS payee code, with a confirmation tick | `ea/form-schema.ts:355-371`; `pfms/selectors.ts:57-68`; T:318 | NG › Bank Account Details — PFMS Payee Code (3:9624) | ✅ | Asked only where the NGO says the account is PFMS-registered; otherwise collected later on Project Bank Accounts |
-| FR-NGO-002 | p. 12 | NGO enters and confirms account and IFSC; no sanction while incomplete | Form: `ea/form-schema.ts:340`. Refusal: `ea/workflow.ts:529-538`, applied at `:570-572`; T:298 | Confirmation drawn: NG › Account Numbers Do Not Match (3:9600). Refusal: no frame (Sanction Desk 3:18818 and Confirm Sanction 3:18104 read; neither shows it) | 🟡 | The officer-side refusal "A sanction cannot be issued until the NGO supplies them" is built, not drawn |
+| FR-NGO-002 | p. 12 | NGO enters and confirms account and IFSC; no sanction while incomplete | Form: `ea/form-schema.ts:340`. Refusal: `ea/workflow.ts:529-538`, `:570-572`; shown before the decision with Sanction disabled, `cmp/review-shell.tsx` (`bankGap`); T:298 | NG › Account Numbers Do Not Match (3:9600); Programme Director / Examine an Application / Bank Details Incomplete (103:12171) | ✅ | Closed 1 Oct 2026 |
 | FR-NGO-003 | p. 12 | Bureau back-fills payee code and bank details on older files | `rt/dashboard/pfms/back-fill/page.tsx:61-64`, `:318-368`; `pfms/store.tsx:353-359` | SR › Leg › Bank Details Needed (3:11320), Enter Bank Details (Dialog) (3:10950), Back-Filled (3:11174) | ✅ | Only the last four digits are kept (see F.3 account row) |
 | FR-MDM-001 (a) | p. 12 | Synchronise Controller, PAO, DDO from PFMS | Imitated, `pfms/masters.ts:16-30` | — | 🔧 | |
 | FR-MDM-001 (b) | p. 12 | Keep them for selection on the advice | `rt/dashboard/pfms/masters/page.tsx:41-43`; `cmp/pfms/advice-steps.tsx:66` 👁 | SR › Set › Master Data (3:10418) | ✅ | |
@@ -152,18 +152,18 @@ screen is invented by that file. A ✅ means the screen is built and drawn, not 
 | FR-MDM-003 (a) | p. 12 | Synchronise the PD code for each DDO | Imitated, `pfms/masters.ts:31-36` | — | 🔧 | |
 | FR-MDM-003 (b) | p. 12 | Keep the PD code mapped to its DDO and scheme | `cmp/pfms/advice-steps.tsx:79`; `pfms/advice.ts:190-192` | SR › Set › DDO and Division Codes (3:10468); PA › Prep › Step 1 (3:14676) | ✅ | |
 | FR-MDM-004 (a) | p. 12 | Ask PFMS whether the DDO is e-Bill active | Imitated flag `pfms/masters.ts:29` | — | 🔧 | |
-| FR-MDM-004 (b) | p. 12 | Warn the Maker about an inactive DDO before submission | `pfms/advice.ts:187`; `cmp/pfms/advice-steps.tsx:94-99`; T:131 👁 (dropdown reads "e-Bill not active") | Bureau list shows it: SR › Set › DDO and Division Codes (3:10468). Maker's warning: no frame (text "e-Bill" found only in 3:10468) | 🟢 | Maker-facing alert "This DDO Cannot Receive an e-Sanction" is built, not drawn |
+| FR-MDM-004 (b) | p. 12 | Warn the Maker about an inactive DDO before submission | `pfms/advice.ts:187`; `cmp/pfms/advice-steps.tsx:94-99`; T:131 👁 (dropdown reads "e-Bill not active") | SR › Set › DDO and Division Codes (3:10468); PA › Prep › Step 1 of 5 — DDO Not Active for e-Bills (92:220803) | ✅ | Closed 1 Oct 2026 |
 | FR-MDM-005 (a) | p. 12 | Refresh master data on a schedule | Only the age is measured, `pfms/masters.ts:93-101` | — | 🔧 | |
 | FR-MDM-005 (b) | p. 12 | Let an administrator refresh on demand | `rt/dashboard/pfms/masters/page.tsx:63`; `pfms/store.tsx:334` 👁 ("Refresh Master Data") | SR › Set › Master Data (3:10418), Master Data — Out of Date (3:9962) | ✅ | |
 | FR-HOA-001 | p. 12 | Head of account as four coded parts (13, 2, category, 3) | `cmp/pfms/advice-steps.tsx:190-235`; `rt/dashboard/pfms/heads-of-account/page.tsx:295-304` | PA › Prep › Step 2 (3:14558); SR › Set › Heads of Account (3:10593) | ✅ | |
-| FR-HOA-002 | p. 13 | Bureau configures heads for all five schemes, even without a PFMS code | `rt/dashboard/pfms/heads-of-account/page.tsx:84-310`; `pfms/masters.ts:63-90` | SR › Set › Heads of Account (3:10593) | 🟡 | Four schemes; SMILE without a code works; SHRESTHA Mode 1 is missing from both |
+| FR-HOA-002 | p. 13 | Bureau configures heads for all five schemes, even without a PFMS code | `rt/dashboard/pfms/heads-of-account/page.tsx`; `pfms/masters.ts:63-100` (five schemes; Mode 1 and SMILE without a code); Add Scheme | SR › Set › Heads of Account (3:10593) | ✅ | Mode 1 has heads but no application form yet (question 14) |
 | FR-HOA-003 | p. 13 | Retrofit heads on issued sanctions not yet sent | `rt/dashboard/pfms/back-fill/page.tsx:378-450`; `pfms/store.tsx:361-366` | SR › Leg › Heads to Retrofit (3:11109), Set Head of Account (Dialog) (3:10879) | ✅ | Only while the advice is with the Maker (`advice.ts:261-263`) |
 | FR-PDM-001 | p. 14 | Maker queue by sanction date; fresh versus PFMS-returned | `pfms/selectors.ts:110-138`; `rt/dashboard/payments/prepare/page.tsx:33`, `:64-69` 👁 | PA › Prep › Payment Advices / New (3:14977), Returned by Checker (3:14924), Not Accepted by PFMS (3:14871), Drafts — Empty (3:14816), On Hold (3:14736) | ✅ | Populated Drafts tab is not drawn |
 | FR-PDM-002 | p. 14 | Header pre-filled: number, date, amount, year, IFD number and date, bank | `pfms/selectors.ts:153-170`; `cmp/pfms/advice-steps.tsx:58-63`; T:111 👁 | PA › Prep › Step 1 (3:14676) | ✅ | IFD number is derived, not read from the cost sheet (`selectors.ts:157-159`) |
 | FR-PDM-003 | p. 14 | Maker picks DDO and PD code from the master | `cmp/pfms/advice-steps.tsx:66-90`; `pfms/advice.ts:184-192` 👁 | PA › Prep › Step 1 (3:14676), Step 1 — Errors (3:14615) | ✅ | |
 | FR-PDM-004 | p. 14 | Coded heads for the amount and each deduction; heads add up to the sanction | `pfms/advice.ts:199-215`, `:228-233`; `cmp/pfms/advice-steps.tsx:279`; T:306 | PA › Prep › Step 2 (3:14558), Heads Do Not Add Up (3:14501), Step 3 — With a Deduction (3:14386) | ✅ | |
 | FR-PDM-005 | p. 14 | Bill number unique per DDO per year; bill date is the preparation date | `pfms/advice.ts:92-99`; `pfms/store.tsx:243`, `:254-256`; T:150 | PA › Prep › Step 1 (3:14676) | ✅ | |
-| FR-PDM-006 | p. 14 | Fixed values: 528, 14, F (or R on a returned bill), 7 | `pfms/advice.ts:53-59`; `cmp/pfms/advice-summary.tsx:96` 👁 | PA › Prep › Step 1 (3:14676) | 🟡 | Bill Status is always "F" (`advice.ts:403`); "R" is never set. Open question 4 |
+| FR-PDM-006 | p. 14 | Fixed values: 528, 14, F (or R on a returned bill), 7 | `pfms/advice.ts` `billStatusOf`, `fixedValuesFor`; T "a bill returned by PFMS without cancellation…" | PA › Prep › Returned by PFMS (93:19594) shows "R — Returned bill, resubmitted" | ✅ | R when a bill PFMS returned without cancelling is resent; PFMS to confirm (question 4) |
 | FR-PDM-007 | p. 14 | Payee code, name, account, IFSC, gross, net, remarks; edit only where PFMS permits | `cmp/pfms/advice-steps.tsx:311-404`; `pfms/advice.ts:221-240` | PA › Prep › Step 3 of 5 — Beneficiary Payment (3:14449) | ✅ | Which fields PFMS permits is the prototype's choice; the BRD does not list them |
 | FR-PDM-008 | p. 14 | One Claim Reference Number per payee, from the pool | `pfms/advice.ts:274-291`, `:298`; T:174 | PA › Prep › Step 3 (3:14449); PA › Auth › Approve and Sign (3:13204) | ✅ | Drawn at Submit, not at step 2 as Figure 3 (p. 26) shows |
 | FR-PDM-009 | p. 14 | Attach Claim, Sanction, Bill, PAO Pass Order; hash; view link; tiers | `cmp/pfms/advice-steps.tsx:425-505`; `pfms/advice.ts:72-76`, `:244-247`; T:157 | PA › Prep › Step 4 (3:14297) | ✅ | |
@@ -182,16 +182,16 @@ screen is invented by that file. A ✅ means the screen is built and drawn, not 
 | FR-SNC-002 | p. 16 | All calls from and to whitelisted IP addresses | — | — | 🔧 | |
 | FR-SNC-003 (a) | p. 16 | One call per bill carrying everything | Imitated | — | 🔧 | |
 | FR-SNC-003 (b) | p. 16 | The advice holds the whole payload in one record | `pfms/types.ts` `PaymentAdvice`; `cmp/pfms/advice-summary.tsx` | PA › Prep › Step 5 (3:14222) | ✅ | |
-| FR-SNC-004 | p. 16 | Resend only under a new identifier, after a failure or a cancellation | After a failure: `pfms/advice.ts:396-399`; T:231. After a cancellation: `pfms/advice.ts:432-434` blocks it | PA › Prep › Not Accepted by PFMS (3:14011); PA › Fol › Returned and Cancelled (3:11723) | 🟡 | No route after a cancellation; the screen only says a fresh sanction is needed. Open question 3 |
+| FR-SNC-004 | p. 16 | Resend only under a new identifier, after a failure or a cancellation | After a failure: `pfms/advice.ts` (previous identifier); after a cancellation, lapse or failed credit: `restartAdvice`, Start a Fresh Payment Advice; T "a failed bank credit…" | PA › Fol › Returned and Cancelled (3:11723); PA › Prep › A Fresh Payment Advice (93:20040) | ✅ | Position for discussion (plan §4, question 3); built and drawn so it can be judged |
 | FR-STS-001 (a) | p. 17 | Poll GetRequestStatus until Closed or Cancelled | Imitated by the demo rail | — | 🔧 | |
 | FR-STS-001 (b) | p. 17 | Show the current status, using Annexure C | `pfms/stages.ts:77-108`, `:171-180`; T:39 👁 | PA › Fol › Bill with DDO (3:12000), Paid (3:11915) | ✅ | |
 | FR-STS-002 (a) | p. 17 | Fetch bill and voucher details | Imitated, `pfms/simulator.ts:70-83` | — | 🔧 | |
 | FR-STS-002 (b) | p. 17 | Show bill number and date, token number and date | `rt/finance/payment-status/[appId]/page.tsx:173-184` 👁 | PA › Fol › Paid (3:11915) | ✅ | |
 | FR-STS-003 (a) | p. 17 | Fetch each payee's payment status | Imitated | — | 🔧 | |
-| FR-STS-003 (b) | p. 17 | Record UTR, scroll status and scroll date per payee | `rt/finance/payment-status/[appId]/page.tsx:193-210` 👁 | PA › Fol › Paid (3:11915) | 🟡 | A failed scroll renders "Failed at Bank" (`:209`), but nothing can reach it and no frame draws it. The BRD does not say what happens next |
+| FR-STS-003 (b) | p. 17 | Record UTR, scroll status and scroll date per payee | `rt/finance/payment-status/[appId]/page.tsx:193-210`; Credit Failed at Bank stage, `pfms/stages.ts`; demo rail "Bank Fails the Credit" | PA › Fol › Paid (3:11915), Credit Failed at Bank (92:219954); NG › Bank Account Needs Checking (100:40177) | ✅ | Position for discussion (plan §4, question 13); built and drawn so it can be judged |
 | FR-STS-004 (a) | p. 17 | Fetch the RD/TD feed periodically | A button stands in, `pfms/store.tsx:391-399` | — | 🔧 | |
 | FR-STS-004 (b) | p. 17 | Reconcile and flag mismatches | `pfms/reports.ts:72-104`; T:277 | SR › Rep › Disbursement Reconciliation (3:8279) | ✅ | |
-| FR-STS-005 | p. 17 | Show PFMS's own return-order document through its link | `rt/finance/payment-status/[appId]/page.tsx:261-271` | PA › Fol › Return Order (Dialog) (3:11388) | 🟡 | Shows the reason, date and request; there is no link to the PFMS-hosted document |
+| FR-STS-005 | p. 17 | Show PFMS's own return-order document through its link | Return Order names who returned it and opens a marked sample memo, `rt/finance/payment-status/[appId]/page.tsx` (`RETURN_MEMO_SAMPLE`) | PA › Fol › Return Order (Dialog) (3:11388), Return Memo (PFMS) row | ⏸ | The screen is built and drawn; PFMS's own link is owed by NeGD (question 15) |
 | FR-STS-006 | p. 17 | PFMS error codes shown as plain words, from a maintained list | `pfms/errors.ts:30-126`; `rt/dashboard/pfms/error-messages/page.tsx:100-192`; T:265 | PA › Prep › Not Accepted by PFMS (3:14011); SR › Set › Error Messages (3:10127), Edit Message (Dialog) (3:9778) | ✅ | Eight of ten codes are invented placeholders |
 | FR-NTF-001 | p. 17 | Tell the NGO only when a UTR is captured | `pfms/simulator.ts:90`; `pfms/store.tsx:202-211`, `:314`; `ea/workflow.ts:724`; T:236 | NG › Notifications / Grant Credited (3:9047) | ✅ | The NGO's page shows "Payment in Process" earlier; that is not a notification (open question 7) |
 | FR-NTF-002 | p. 17 | The notice gives sanction number, amount and UTR | `ea/workflow.ts:735`; `ea/store/store.tsx:237-248`, `:431` | NG › Notifications / Grant Credited (3:9047) | ✅ | |
@@ -215,7 +215,7 @@ screen is invented by that file. A ✅ means the screen is built and drawn, not 
 | NFR-6.3-2 | p. 19 | IP whitelisting both ways, changes communicated | — | — | 🔧 | |
 | NFR-6.3-3 | p. 19 | DSC stays with the Checker; no private keys stored centrally | `cmp/pfms/sign-dialog.tsx:111`; only the certificate serial is kept, `pfms/store.tsx:295` | PA › Auth › Approve and Sign (Dialog) (3:12799) | ✅ | |
 | NFR-6.3-4 | p. 19 | Documents kept per the Ministry's retention policy, reachable by the link | Prototype link expires in 7 days, `pfms/advice.ts:438` | — | ⏸ | Retention period is a Ministry decision. The BRD also contradicts itself: a single-use link cannot stay reachable for a retention period |
-| NFR-6.4-1 | p. 19 | New schemes join by configuration, with no code change | Scheme list is fixed in code, `pfms/masters.ts:63-90`, `ea/form-schema.ts:28` | SR › Set › Heads of Account (3:10593) | 🟡 | No screen adds a scheme; adding one needs code. Mode 1 absent |
+| NFR-6.4-1 | p. 19 | New schemes join by configuration, with no code change | Add Scheme creates a scheme's PFMS set-up without a code change | SR › Set › Add Scheme (Dialog) (98:10919) | ✅ | Closed 1 Oct 2026 |
 | NFR-6.4-2 | p. 19 | Room for other bill types later without restructuring | Bill type is one constant, `pfms/advice.ts:57` | — | 🔧 | An architecture property of NeGD's client |
 | NFR-6.5-1 | p. 19 | Linear wizard: header, heads, payee, documents, submit | `pfms/advice.ts:42-50` 👁 | PA › Prep › Steps 1–5 | ✅ | |
 | NFR-6.5-2 | p. 19 | Inline validation before submission | `pfms/advice.ts:170-250`; T:119 👁 ("2 things need attention on this step") | PA › Prep › Step 1 — Errors (3:14615), Heads Do Not Add Up (3:14501), Not Ready to Submit (3:14145) | ✅ | |
@@ -234,9 +234,9 @@ screen is invented by that file. A ✅ means the screen is built and drawn, not 
 | BR-SNC-004 | p. 21 | Bill number unique per DDO per year | `pfms/advice.ts:92-99`; `pfms/store.tsx:300-304`; T:150 | PA › Prep › Not Accepted by PFMS — Bill Number Already Used (3:13950) | ✅ | |
 | BR-SNC-005 | p. 21 | Claim Reference required for an eSanction; only pool numbers accepted | `pfms/advice.ts:274-291`; T:174 | PA › Prep › Step 3 (3:14449) | ✅ | |
 | BR-DOC-001 | p. 21 | Required document hashes rise with the landing status | `pfms/advice.ts:72-76`; T:157 | PA › Prep › Step 4 (3:14297) | ✅ | Landing per DDO is assumed (open question 9) |
-| BR-DSC-001 | p. 21 | Only the DDO's designated Checker may sign | `pfms/advice.ts:371-372`; T:204 | SR › Set › Maker and Checker (3:10013) | 🟡 | The refusal "Not the Designated Checker" (`advice.ts:353-356`) is built, not drawn |
+| BR-DSC-001 | p. 21 | Only the DDO's designated Checker may sign | `pfms/advice.ts:371-372`; T:204 | SR › Set › Maker and Checker (3:10013); PA › Auth › Not the Designated Checker (92:220407) | ✅ | Closed 1 Oct 2026 |
 | BR-NTF-001 | p. 21 | NGO notified only on a UTR | As FR-NTF-001 | NG › Notifications / Grant Credited (3:9047) | ✅ | |
-| BR-CAN-001 | p. 21 | A cancelled sanction is never revived; a new one starts afresh | No revival: `pfms/advice.ts:432-434`; T:255 | PA › Fol › Returned and Cancelled (3:11723) | 🟡 | "Starts afresh" has no route, built or drawn (open question 3) |
+| BR-CAN-001 | p. 21 | A cancelled sanction is never revived; a new one starts afresh | No revival: `pfms/advice.ts` `canResubmit`; a fresh advice: `restartAdvice`; T:255 | PA › Fol › Returned and Cancelled (3:11723); PA › Prep › A Fresh Payment Advice (93:20040) | ✅ | Position for discussion (plan §4, question 3); built and drawn so it can be judged |
 | BR-MDM-001 | p. 21 | Latest master data; an unknown combination blocks submission | `pfms/advice.ts:179-192`, `:206-209`; T:140 | SR › Set › Master Data — Out of Date (3:9962); PA › Prep › Not Ready to Submit (3:14145) | ✅ | |
 | BR-BAK-001 | p. 21 | Older files without bank details go to back-fill first | `pfms/selectors.ts:71-82`, `:113` | PA › Prep › On Hold (3:14736); SR › Leg › Bank Details Needed (3:11320) | ✅ | |
 | BR-AUTH-001 | p. 22 | An expired token is never reused | — | — | 🔧 | |
@@ -294,7 +294,7 @@ screen is invented by that file. A ✅ means the screen is built and drawn, not 
 | ID | BRD page | Requirement (plain words) | Prototype evidence | Figma evidence | Mark | Note |
 |---|---|---|---|---|---|---|
 | EX-1 | p. 28 | Validation failure: not sent, errors shown by field, corrected and resent | `pfms/advice.ts:420-428`; `rt/dashboard/payments/prepare/[appId]/page.tsx:208`, `:294`; T:213 | PA › Auth › PFMS Did Not Accept the Advice (Dialog) (3:12179); PA › Prep › Not Accepted by PFMS (3:14011); PA › Fol › Not Accepted by PFMS (3:11797) | ✅ | |
-| EX-2 | p. 28 | Returned and cancelled higher up: reason shown; a fresh sanction must start | Reason: `rt/finance/payment-status/[appId]/page.tsx:366-372` | PA › Fol › Returned and Cancelled (3:11723), Return Order (Dialog) (3:11388) | 🟡 | The fresh-sanction route is neither built nor drawn |
+| EX-2 | p. 28 | Returned and cancelled higher up: reason shown; a fresh sanction must start | `rt/finance/payment-status/[appId]/page.tsx` (cancelled notice with Start a Fresh Payment Advice) | PA › Fol › Returned and Cancelled (3:11723), Return Order (Dialog) (3:11388) | ✅ | Position for discussion (plan §4, question 3); built and drawn so it can be judged |
 | EX-3 | p. 28 | Token expired mid-call: refresh, log in again, retry | — | — | 🔧 | |
 | EX-4 (a) | p. 28 | PFMS unreachable: retry at set intervals | Demo rail stands in, `pfms/simulator.ts:116-140` | — | 🔧 | |
 | EX-4 (b) | p. 28 | Case shown as waiting; the rest of the portal unaffected | `pfms/stages.ts:63`; `cmp/pfms/sign-dialog.tsx:146` | PA › Fol › Waiting to Resend (3:11856); PA › Auth › Signed — Waiting to Resend (Dialog) (3:12083) | ✅ | |
@@ -346,7 +346,7 @@ screen is invented by that file. A ✅ means the screen is built and drawn, not 
 | A-RequestSource | p. 34 | PFMS's code for e-Anudaan as the sender | — | — | 🔧 | A server constant |
 | A-CreatedBy | p. 34 | Username of the authorised PD user | `preparedBy` kept, `pfms/advice.ts:154` | — | 🔧 | Set by the server |
 | A-BatchId | p. 34 | Optional batch grouping | Not modelled | — | ⏸ | The BRD does not say when e-Anudaan would batch |
-| A-CNAExceptionReason | p. 34 | Reason code, required for Object Head 33 | `pfms/advice.ts:216-218`; `cmp/pfms/advice-steps.tsx:262-270` | None (text "CNA" in no frame) | 🟢 | The BRD points to an annexure of reason codes that does not exist |
+| A-CNAExceptionReason | p. 34 | Reason code, required for Object Head 33 | `pfms/advice.ts:216-218`; `cmp/pfms/advice-steps.tsx:262-270` | PA › Prep › Step 2 of 5 — CNA Exception Reason (93:20499) | ⏸ | Built and drawn; the reason-code list the BRD points to does not exist and is owed by PFMS / NeGD |
 | A-ChequeCategory | p. 35 | Not used (e-payment only) | Correctly absent | Correctly absent | ✅ | |
 
 **Annexure B — bill type** (p. 36)
@@ -375,8 +375,8 @@ screen is invented by that file. A ✅ means the screen is built and drawn, not 
 | C-Sign1/Sign2 | p. 37 | Batch file pending at signatory 1 or 2 | `stages.ts:97-98` | As above | ✅ | |
 | C-DigitalSignatoryLast | p. 37 | Voucher generated | `stages.ts:99` | PA › Fol › Paid (3:11915) | ✅ | Becomes "Paid" once every payee has a UTR (`stages.ts:178`) |
 | C-Closed | p. 37 | Closed (success, final) | `stages.ts:100` 👁 | PA › Fol › Paid (3:11915) | ✅ | |
-| C-ReturnedBy | p. 37 | Returned at Dealing Hand, AAO, PAO, DDO or PD Checker | `stages.ts:101-105`; `rt/finance/payment-status/[appId]/page.tsx:366-372` | No frame ("Returned by PFMS" appears only as a Failure Trend label, 3:8228) | 🟡 | No mapping for a PD Checker return; no way to reach this state; not drawn; its alert wrongly says a cancelled sanction cannot be revived (`:370`) |
-| C-FinYrExpired | p. 37 | Financial year expired | `stages.ts:66`, `:106` | None | 🟢 | Mapped, but nothing can reach it and no frame draws it |
+| C-ReturnedBy | p. 37 | Returned at Dealing Hand, AAO, PAO, DDO or PD Checker | `stages.ts` maps all five incl. ReturnedByPDChecker; `pfms/simulator.ts` `returnByPfms`; demo rail "Return Without Cancelling" | PA › Fol › Returned by PFMS (91:15801); PA › Prep › Returned by PFMS (93:19594), Payment Advices / Returned by PFMS (93:19213) | ✅ | Closed 1 Oct 2026 |
+| C-FinYrExpired | p. 37 | Financial year expired | `stages.ts`; `pfms/simulator.ts` `expireFinancialYear`; demo rail "Financial Year Expires" | PA › Fol › Financial Year Expired (91:16268) | ✅ | Closed 1 Oct 2026 |
 | C-Cancelled | p. 37 | Returned and cancelled (final) | `stages.ts:107`; `pfms/simulator.ts:95-113`; T:255 | PA › Fol › Returned and Cancelled (3:11723) | ✅ | |
 
 **Annexure D — the PFMS web methods** (p. 38). All are NeGD server work. The screen that shows each outcome is named.
@@ -430,7 +430,7 @@ screen is invented by that file. A ✅ means the screen is built and drawn, not 
 | F.1-PaymentMode | p. 40 | Fixed: 528 e-payment | `pfms/advice.ts:55` 👁 | 3:14676 | ✅ | |
 | F.1-SanctionType | p. 40 | Fixed: 14 Expenditure | `advice.ts:56` 👁 | 3:14676 | ✅ | |
 | F.1-RPRType | p. 40 | Fixed: 7 RPR-34 | `advice.ts:57` 👁 | 3:14676 | ✅ | |
-| F.1-BillStatus | p. 40 | F, or R on a resubmission | `advice.ts:54`, `:403` 👁 | 3:14676 | 🟡 | Always F |
+| F.1-BillStatus | p. 40 | F, or R on a resubmission | `pfms/advice.ts` `billStatusOf` | PA › Prep › Returned by PFMS (93:19594) | ✅ | Closed 1 Oct 2026 |
 | F.1-BillNumber | p. 40 | Generated per DDO per year | `advice.ts:92-99` | 3:14676 | ✅ | |
 | F.1-BillDate | p. 40 | Date of preparation | `advice.ts:142` 👁 | 3:14676 | ✅ | |
 | F.1-NPBDate | p. 40 | Not Payable Before date (optional) | `advice-steps.tsx:124`; `advice.ts:194-196` 👁 | 3:14676 | ✅ | |
@@ -473,27 +473,32 @@ screen is invented by that file. A ✅ means the screen is built and drawn, not 
 
 ## Not Covered or Partly Covered
 
-No row is ❌. Eighteen rows are 🟡 or 🟢. Grouped by cause, and with three undecided points that need someone else's answer (rows 11 to 13), they come to thirteen distinct gaps, each listed once with what should exist and who owns it.
+**Updated later on 1 Oct 2026, after the gaps were closed** (commits `b006109c` and `2166746f` on this
+branch, and the Figma frames listed below). The first pass found eighteen 🟡 / 🟢 rows; none remain.
+Four were closed by taking a position the BRD leaves open. Those positions are built and drawn so they
+can be judged, and they are marked "Position for discussion" in the table. Three rows end ⏸ because
+what is left is owed by someone else.
 
-| # | Gap | Rows | What should exist | Owner |
+| # | Gap found | Rows | Now | Owner of what is left |
 |---|---|---|---|---|
-| 1 | **SHRESTHA Mode 1 is missing.** The BRD names five schemes; the prototype and Figma carry four. There is no screen to add a scheme, so "join by configuration" needs a code change. | U-1.2-1, U-2.1-5, FR-HOA-002, NFR-6.4-1 | Mode 1 as a fifth scheme, shown "Scheme Code Awaited" like SMILE; and an "Add Scheme" action on Heads of Account (scheme name, PFMS code, heads, DDOs) | Design and NeGD; the code itself is owed by PFMS (RD-2) |
-| 2 | **No route after "Returned and Cancelled".** The screen says a fresh sanction must be issued, but nothing lets anyone start one. | FR-SNC-004, BR-CAN-001, EX-2 | A "Start a Fresh Sanction" action, owned by whoever the Ministry names, that opens a new advice with a new identifier and keeps the old one read-only | Ministry decides who (open question 3); then design and build |
-| 3 | **Bill Status "R" is never used.** | FR-PDM-006, F.1-BillStatus | Set "R" when an advice resends a bill PFMS returned without cancelling; keep "F" otherwise | NeGD and PFMS must say when "R" applies (open question 4) |
-| 4 | **The return-order document is not shown.** The viewer shows PFMS's reason as text, not PFMS's own document. | FR-STS-005 | A "View Return Order (PFMS)" link that opens the PFMS-hosted memo, beside the reason | Design and NeGD (the configured link) |
-| 5 | **"Returned by PFMS" (not cancelled) and "Financial Year Expired" are unreachable and undrawn.** A PD Checker return has no mapping. The returned alert carries the "cancelled" sentence. | C-ReturnedBy, C-FinYrExpired | Two Payment Status frames and two demo-rail paths; add `ReturnedByPDChecker`; drop the cancellation sentence for a non-cancelled return (`payment-status/[appId]/page.tsx:370`) | Design and build; PFMS to confirm the exact status names |
-| 6 | **A failed bank credit has no design.** The type allows "Failed"; the page would say "Failed at Bank"; nothing reaches it and nothing explains what happens next. | FR-STS-003 (b) | A Payment Status state for a failed scroll, naming who acts (likely the Maker, after the NGO corrects the account) | BRD does not decide this; NeGD and the Ministry |
-| 7 | **The officer's refusal to sanction when bank details are incomplete is not drawn.** | FR-NGO-002, U-3.1A-2 | The sanction screen with the message "A sanction cannot be issued until the NGO supplies them" | Design (Figma only) |
-| 8 | **The Maker's inactive-DDO warning is not drawn.** | FR-MDM-004 (b) | Step 1 with an inactive DDO chosen and the "This DDO Cannot Receive an e-Sanction" alert | Design (Figma only) |
-| 9 | **"Not the Designated Checker" is not drawn.** | BR-DSC-001 | A frame for an officer who is not the DDO's Checker opening an advice | Design (Figma only) |
-| 10 | **CNA exception reason is not drawn, and its code list does not exist.** The BRD says "see Annexure below" for the reason codes; there is no such annexure. The build invents option "01". | A-CNAExceptionReason | Step 2 with Object Head 33 and the reason field; the real code list | PFMS / NeGD for the list; design for the frame |
-| 11 | **Document retention is undecided, and the BRD contradicts itself.** A single-use link cannot stay reachable for a retention period. | NFR-6.3-4 | A Ministry retention period, and a decision on whether a used link can be re-issued | Ministry |
-| 12 | **PFMS error list is mostly placeholder.** Only ERRM05 and ERRSNC44 come from the BRD. | U-2.4-4, FR-STS-006 | The full ERRSNC/ERRM/ERRCC list from the PFMS Claim WebAPI specification | PFMS / NeGD |
-| 13 | **BatchId is undecided.** | A-BatchId | A rule for when sanctions are batched, or a decision that they never are | Ministry / PFMS |
+| 1 | SHRESTHA Mode 1 missing; no way to add a scheme | U-1.2-1, U-2.1-5, FR-HOA-002, NFR-6.4-1 | Mode 1 configured, awaiting its PFMS code; **Add Scheme** on Heads of Account. Figma: Heads of Account (3:10593), Overview (3:10805), Add Scheme (Dialog) (98:10919); the journey is now *Keeping PFMS Set-Up Current — Needs Discussion* | **The BA**: Mode 1's application fields and flow, before the full journey can be built (question 14). PFMS: its scheme code |
+| 2 | No route after "Returned and Cancelled" | FR-SNC-004, BR-CAN-001, EX-2 | **Start a Fresh Payment Advice** (Maker), also after Financial Year Expired and a failed credit; earlier advice kept read-only; new request points back. Figma: 3:11723, A Fresh Payment Advice (93:20040) | NeGD and the Ministry confirm the position (question 3) |
+| 3 | Bill Status "R" never used | FR-PDM-006, F.1-BillStatus | "R" when a bill PFMS returned **without** cancelling is resent. Figma: Returned by PFMS (93:19594) | PFMS confirms such returns happen for an e-Sanction (question 4) |
+| 4 | Return-order document not shown | FR-STS-005 | Return Order names who returned it and opens a **sample** memo, marked Sample. Figma: Return Order (Dialog) (3:11388) | **NeGD**: PFMS's link pattern (question 15) |
+| 5 | Returned by PFMS and Financial Year Expired unreachable and undrawn; no PD Checker mapping; wrong sentence | C-ReturnedBy, C-FinYrExpired | Both reachable from the demo rail; returned bills go to a new **Returned by PFMS** tab; `ReturnedByPDChecker` mapped; sentence fixed. Figma: 91:15801, 91:16268, 93:19213 | — |
+| 6 | A failed bank credit had no design | FR-STS-003 (b) | **Credit Failed at Bank** stage; the NGO is asked on its application and on Project Bank Accounts to check the account; the Maker starts afresh. Figma: 92:219954, 100:40177, 100:40553 | NeGD and the Ministry confirm the position (question 13) |
+| 7 | Sanction refusal for incomplete bank details not drawn | FR-NGO-002, U-3.1A-2 | Now said **before** the decision, with Sanction disabled. Figma: Bank Details Incomplete (103:12171) | — |
+| 8 | Inactive-DDO warning not drawn | FR-MDM-004 (b) | Figma: Step 1 of 5 — DDO Not Active for e-Bills (92:220803) | — |
+| 9 | "Not the Designated Checker" not drawn | BR-DSC-001 | Figma: Not the Designated Checker (92:220407) | — |
+| 10 | CNA exception reason not drawn; its code list does not exist | A-CNAExceptionReason | Figma: Step 2 of 5 — CNA Exception Reason (93:20499) | **PFMS / NeGD**: the reason codes |
+| 11 | Document retention undecided; single-use link contradicts retention | NFR-6.3-4 | Unchanged | **Ministry** |
+| 12 | PFMS error list mostly placeholder | U-2.4-4, FR-STS-006 | Unchanged | **PFMS / NeGD**: the Claim WebAPI error list |
+| 13 | BatchId undecided | A-BatchId | Unchanged | **Ministry / PFMS** |
 
 **Smaller findings, not BRD rows:**
-- *Payment History order.* The closed case GIA/2026-27/NAPDDR/PUNE/03616 lists "Sanction closed at PFMS" (03 Jun, 3:04 PM) above "Credit confirmed" (3:05 PM) under "Newest first". In the seed, PFMS closed the sanction one minute before the credit, which cannot happen.
-- *Populated Drafts tab* is not drawn; only "Drafts — Empty" (3:14816).
+- *Payment History order* (fixed). The seed closed a sanction one minute before its credit; PFMS now closes it two days after (`pfms/seed.ts`; test "the seed closes a sanction after its credit").
+- *Populated Drafts tab* is still not drawn; only "Drafts — Empty" (3:14816). The phone Payment Advices frame (3:13859) does not yet show the Returned by PFMS tab.
+- *SHRESHTA heads in Figma* showed AVYAY's function head (2235600200401) beside SHRESHTA's name; corrected to 2225017930201.
 - *Claim Reference timing.* Figure 3 draws the number at step 2; the build draws it at Submit. Drawing late avoids wasting numbers on abandoned drafts, but it is a departure to record with NeGD.
 
 ---
@@ -526,19 +531,19 @@ The earlier checklist's test citations ("a resend is a new identifier pointing a
 
 **BRD items checked: 288.** Rows in the table: **312** (24 items have both a server half and a screen half, so they take two rows). Every row cites a BRD page.
 
-| Mark | Rows |
-|---|---|
-| ✅ Covered | 202 |
-| 🟢 Built, not drawn | 3 |
-| 🎨 Drawn, not built | 0 |
-| 🔧 Server-side | 65 |
-| ⏸ Owed elsewhere | 27 |
-| 🟡 Partial | 15 |
-| ❌ Not covered | 0 |
-| **Total** | **312** |
+| Mark | First pass (1 Oct, morning) | After the gaps were closed (1 Oct) |
+|---|---|---|
+| ✅ Covered | 202 | **217** (4 of them rest on positions for discussion) |
+| 🟢 Built, not drawn | 3 | **0** |
+| 🎨 Drawn, not built | 0 | **0** |
+| 🔧 Server-side | 65 | **65** |
+| ⏸ Owed elsewhere | 27 | **30** |
+| 🟡 Partial | 15 | **0** |
+| ❌ Not covered | 0 | **0** |
+| **Total** | 312 | **312** |
 
-- **Covered, of all rows:** 202 of 312 = **64.7%**.
-- **Covered, of the rows a screen can answer** (leaving out 🔧 and ⏸): 202 of 220 = **91.8%**. The other 18 are the 🟡 and 🟢 rows above.
-- The earlier checklist reported 130 of 147 rows ✅ (88%). It counted server work as covered, and missed the 18 gaps.
+- **Covered, of all rows:** 217 of 312 = **69.6%**. The rest is server work (65) or owed by PFMS, the Ministry, the Bureau or the BA (30).
+- **Covered, of the rows a screen can answer** (leaving out 🔧 and ⏸): 217 of 217 = **100%**.
+- The earlier checklist reported 130 of 147 rows ✅ (88%). It counted server work as covered and missed 18 gaps.
 
-Counted with a script over this file's Mark column on 1 Oct 2026.
+Counted with a script over this file's Mark column.

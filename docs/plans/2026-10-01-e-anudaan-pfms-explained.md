@@ -75,7 +75,7 @@ Twelve further questions are listed in [`2026-09-29-e-anudaan-pfms.md`](./2026-0
 
 **What can go wrong.** The NGO may not have the payee code yet. Then the officers cannot prepare a payment, and the file waits. The NGO sees a notice on *Project Bank Accounts*: "A Sanctioned Grant Is Waiting for Your PFMS Payee Code". It can add the code there. The code must be two letters and ten digits in the prototype. If it is not, the page says: "Enter the PFMS payee code as it appears on your PFMS registration: two letters and ten digits." Figma: *NGO / Project Bank Accounts / PFMS Payee Code Needed*.
 
-A second problem is an incomplete bank section. Then the officer cannot issue the sanction at all. The prototype refuses with: "A sanction cannot be issued until the NGO supplies them." This refusal is built but not yet drawn in Figma.
+A second problem is an incomplete bank section. Then the officer cannot issue the sanction at all. The sanction screen says so before the officer decides, and the Sanction button stays disabled: "A sanction cannot be issued until the NGO supplies them." Figma: *Programme Director / Examine an Application / Bank Details Incomplete*.
 
 **Step 3: Wait, and watch the application page.** Once the grant is sanctioned, the NGO's *Application Details* page shows a short payment status. It reads "Sanctioned" while the Ministry prepares the payment. It reads "Payment in Process" while PFMS and the bank work. Figma: *NGO / Application Details / Payment in Process*. Whether the NGO should see this before the credit is still open (question 7 in the record).
 
@@ -129,7 +129,7 @@ A second problem is an incomplete bank section. Then the officer cannot issue th
 - Signing program not running: "Start it, then try again." (*Signing Utility Not Running*)
 - Certificate out of date: "Renew it with the certifying authority before signing." (*Certificate Has Expired*)
 - The Checker prepared this advice themselves: "A payment advice must be authorised by an officer other than the one who prepared it." (*You Prepared This Advice*)
-- The officer is not this DDO's designated Checker. The prototype refuses, but this message is not yet drawn.
+- The officer is not this DDO's designated Checker: "Only the officer designated as Checker for this DDO can sign its payment advices." (*Not the Designated Checker*)
 
 **What happens next.** PFMS takes over. The Checker can follow the case on *Payment Status*.
 
@@ -153,7 +153,7 @@ A second problem is an incomplete bank section. Then the officer cannot issue th
 
 **What can go wrong.** Two officers cannot be both Maker and Checker for one DDO: "The Maker and the Checker must be different officers." A scheme code must be numeric: "Enter the numeric PFMS scheme code PFMS allotted, for example 3817."
 
-**What the BRD has not decided.** The real codes. Until the Bureau finalises them, every code in the prototype is a stand-in [p. 30]. SHRESTHA Mode 1 is not in the prototype at all, and no screen yet adds a new scheme.
+**What the BRD has not decided.** The real codes. Until the Bureau finalises them, every code in the prototype is a stand-in [p. 30]. SHRESTHA Mode 1 is set up for PFMS, waiting for its scheme code, and *Add Scheme* lets the Bureau add a scheme without any programming. Mode 1 has no application form yet; its fields and flow are awaited from the BA. Figma: *Add Scheme (Dialog)*.
 
 ---
 
@@ -181,17 +181,18 @@ A payment can also step off this path. These are the exception states:
 - **Returned by Checker** — back with the Maker.
 - **Not Accepted by PFMS** — PFMS refused it; back with the Maker.
 - **Waiting to Resend** — PFMS could not be reached; e-Anudaan will retry.
-- **Returned by PFMS** — sent back inside PFMS.
-- **Returned and Cancelled** — final; a fresh sanction is needed.
-- **Financial Year Expired** — final; the year closed before payment.
+- **Returned by PFMS** — PFMS sent the bill back without cancelling it; the Maker corrects it, and it is resent as a returned bill (Bill Status "R").
+- **Returned and Cancelled** — final for this advice; the Maker starts a fresh one.
+- **Financial Year Expired** — final for this advice; the Maker starts a fresh one.
+- **Credit Failed at Bank** — the bank could not credit the account; the NGO checks it, then the Maker starts a fresh advice.
 
-Figma shows them on *Officer / Payment Status / …* (for example *Bill with DDO*, *Paid*, *Returned and Cancelled*). Two of the six exceptions are not drawn: Returned by PFMS and Financial Year Expired.
+Figma shows each on *Officer / Payment Status / …*, for example *Returned by PFMS*, *Returned and Cancelled*, *Financial Year Expired* and *Credit Failed at Bank*.
 
 **What can go wrong.**
 - **PFMS rejects the data.** The Maker sees the reason and fixes it.
 - **PFMS is down.** The case waits and is resent; the rest of the portal keeps working.
-- **The bill comes back cancelled.** The case shows the reason and *View Return Order*. A cancelled sanction cannot be revived; a fresh one must start [p. 21]. Who starts it is not yet decided (question 3).
-- **The bank fails the credit.** The BRD does not say what happens next.
+- **The bill comes back cancelled.** The case shows the reason and *View Return Order*. A cancelled advice cannot be revived [p. 21]. The Maker presses *Start a Fresh Payment Advice*; the old advice is kept as it was. The BRD does not say who starts afresh, so this is drawn for discussion (question 3).
+- **The bank fails the credit.** The BRD does not say what happens next. The prototype's position, for discussion: the NGO is asked to check its account, then the Maker starts a fresh advice (question 13).
 
 **What happens next.** When every payee has a UTR, the stage becomes Paid and the NGO is told. PFMS closes the sanction some days later.
 
