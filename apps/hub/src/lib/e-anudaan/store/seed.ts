@@ -293,7 +293,7 @@ function buildNgos(): NgoProfile[] {
       secretary: "Meenakshi Iyer",
       treasurer: "Harpreet Singh Bedi",
       authorisedUser: name,
-      email: `${name.toLowerCase().replace(/[^a-z0-9]/g, "")}@gmail.com`,
+      email: `${name.toLowerCase().replace(/[^a-z0-9]/g, "")}@example.org`,
       mobile: `9441747${(200 + i).toString()}`,
       applicationCount: 0,
       sanctionedCount: 0,

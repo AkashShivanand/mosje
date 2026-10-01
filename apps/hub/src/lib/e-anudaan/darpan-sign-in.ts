@@ -104,7 +104,7 @@ export function maskMobile(mobile: string): string {
   return `+91 ${d.slice(0, 5)} •••${d.slice(8)}`;
 }
 
-/** `sankalp@gmail.com` → `s•••••p@gmail.com`. */
+/** `sankalp@example.org` → `s•••••p@example.org`. */
 export function maskEmail(email: string): string {
   const [local, domain] = email.split("@");
   if (!local || !domain) return email;
@@ -162,7 +162,7 @@ export function darpanDirectory(demoNgo: SeededNgo | undefined): Record<DarpanAc
       panOnRecord: true,
       authorisedPerson: `${demoNgo?.secretary ?? "Meenakshi Iyer"}, Secretary`,
       mobile: demoNgo?.mobile ?? "9441747200",
-      email: demoNgo?.email ?? "sankalpsevasansthan@gmail.com",
+      email: demoNgo?.email ?? "sankalpsevasansthan@example.org",
       status: "Active",
     },
     unregistered: {
@@ -173,7 +173,7 @@ export function darpanDirectory(demoNgo: SeededNgo | undefined): Record<DarpanAc
       panOnRecord: true,
       authorisedPerson: "Ritu Sharma, President",
       mobile: "9828014410",
-      email: "navchetnawelfare@gmail.com",
+      email: "navchetnawelfare@example.org",
       status: "Active",
     },
     inactive: {
@@ -184,7 +184,7 @@ export function darpanDirectory(demoNgo: SeededNgo | undefined): Record<DarpanAc
       panOnRecord: false,
       authorisedPerson: "Anil Kumar Yadav, Secretary",
       mobile: "9431022871",
-      email: "graminutthan.patna@gmail.com",
+      email: "graminutthan.patna@example.org",
       status: "Inactive",
     },
     suspended: {
@@ -195,7 +195,7 @@ export function darpanDirectory(demoNgo: SeededNgo | undefined): Record<DarpanAc
       panOnRecord: true,
       authorisedPerson: "S. Lakshmi Narayan, Managing Trustee",
       mobile: "9845033126",
-      email: "jeevanjyoti.mysuru@gmail.com",
+      email: "jeevanjyoti.mysuru@example.org",
       status: "Suspended",
     },
   };

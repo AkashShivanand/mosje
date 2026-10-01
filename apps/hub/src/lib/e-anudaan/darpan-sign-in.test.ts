@@ -187,7 +187,7 @@ test("the registered organisation follows the seeded NGO", () => {
 
 test("attribute display masks contact details and never shows a PAN number", () => {
   assert.equal(maskMobile("9441747200"), "+91 94417 •••00");
-  assert.equal(maskEmail("sankalpsevasansthan@gmail.com"), "s•••••n@gmail.com");
+  assert.equal(maskEmail("sankalpsevasansthan@example.org"), "s•••••n@example.org");
   assert.equal(attributeValue(DIR.registered, "panOnRecord"), "Yes");
   assert.equal(attributeValue(DIR.inactive, "panOnRecord"), "No");
   assert.ok(!attributeValue(DIR.registered, "contact").includes("9441747200"));
