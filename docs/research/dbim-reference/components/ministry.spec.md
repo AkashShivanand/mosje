@@ -171,7 +171,7 @@ dosje.gov.in/organisation/<id>/); shaping: `lib/website-dbim/organisation.ts`; v
 | Leadership | §2's profile card, three across; tenure and View Profile added |
 | Scheme cards | §3's card, with the scheme's group above its name |
 | Activity tiles (NCSC, DAIC) | §3's card; the live clip-art replaced by a Material Symbol in a primary-100 circle (the Department's review, 29 Sep 2026) |
-| Reports, resources, notices | §1's document row, DD.MM.YYYY |
+| Reports, resources, notices | §1's document row, DD.MM.YYYY. Two or more sections that hold only a document list become ONE "Documents & Downloads" section with a tab each (the Key Offerings tab set), where the first stood; each "View All" moves into its tab; a lone list keeps its heading (`groupDocuments`, the handoff file's Organisations page, 30 Sep 2026) |
 | Latest Updates | the home page's Key Offerings tab set (Figure 56); two by two below 768 |
 | State offices (>4 links) / projects (≤4) | outlined buttons / §1's link rows |
 | Gallery, social accounts, contact | new; contact lines ending in numbers split purpose \| `tel:` numbers |
