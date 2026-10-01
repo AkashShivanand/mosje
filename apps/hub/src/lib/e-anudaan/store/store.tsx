@@ -239,7 +239,7 @@ function stayNotice(s: EAnudaanState, app: GrantApplication, role: RoleId, also:
   return {
     id: `ntf-live-${entry.id}`,
     at: entry.at,
-    title: notificationTitle(entry.action),
+    title: notificationTitle(entry.action, entry.remarks),
     body: notificationBody(app.id, entry.remarks),
     audience: [...new Set<RoleId>([role, ...also, ...(app.ngoId === s.ngos[0]?.id && notifiesApplicant(entry.action) ? (["ngo"] as RoleId[]) : [])])],
     applicationId: app.id,
@@ -390,7 +390,7 @@ export function EAnudaanProvider({ children }: { children: React.ReactNode }) {
               {
                 id: `ntf-live-${entry.id}`,
                 at: entry.at,
-                title: notificationTitle(entry.action),
+                title: notificationTitle(entry.action, entry.remarks),
                 body: notificationBody(updated.id, entry.remarks),
                 // The applicant only for their own file and only for what concerns them, and the
                 // seat the file has moved to.

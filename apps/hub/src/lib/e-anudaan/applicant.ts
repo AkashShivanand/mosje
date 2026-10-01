@@ -169,7 +169,7 @@ export function applicantStages(app: GrantApplication): ApplicantStage[] {
         out.push({ id: e.id, title: "Inspection Completed", at: e.at, tone: "done" });
         break;
       case "releaseFunds":
-        out.push({ id: e.id, title: GRANT.released, at: e.at, detail: e.remarks, tone: "done" });
+        out.push({ id: e.id, title: notificationTitle(e.action, e.remarks), at: e.at, detail: e.remarks, tone: "done" });
         break;
       case "openClaim":
         out.push({ id: e.id, title: "Next Instalment Open to Claim", at: e.at, detail: e.remarks, tone: "attention" });
@@ -225,7 +225,12 @@ const NOTIFICATION_TITLES: Record<AuditEntry["action"], string> = {
   showCauseIssued: "Show Cause Notice Issued",
 };
 
-export function notificationTitle(action: AuditEntry["action"]): string {
+/**
+ * A release recorded from a PFMS credit carries the bank's UTR in its remark (`recordPfmsCredit`);
+ * the NGO is told the grant was credited, the same words its Payment card uses (FR-NTF-001/002).
+ */
+export function notificationTitle(action: AuditEntry["action"], remarks?: string): string {
+  if (action === "releaseFunds" && remarks && /\bUTR\b/.test(remarks)) return GRANT.credited;
   return NOTIFICATION_TITLES[action];
 }
 

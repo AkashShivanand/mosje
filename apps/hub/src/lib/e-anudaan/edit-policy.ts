@@ -220,6 +220,7 @@ export const EDIT_GROUPS = {
       "fld_bank_ifsc",
       "fld_bank_branch",
       "fld_pfms_registered",
+      "fld_pfms_name",
       "fld_pfms_payee_code",
       "fld_pfms_payee_confirm",
       "fld_bank_rtgs_micr",

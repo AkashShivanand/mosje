@@ -114,7 +114,7 @@ test("notifications are titled by what happened, with one full stop", () => {
   for (const n of seed.notifications) {
     const app = seed.applications.find((a) => a.id === n.applicationId)!;
     const last = app.audit.at(-1)!;
-    assert.equal(n.title, notificationTitle(last.action), `${n.id}: ${last.action}`);
+    assert.equal(n.title, notificationTitle(last.action, last.remarks), `${n.id}: ${last.action}`);
     assert.notEqual(n.title, "Application moved forward");
     assert.ok(!/\.\.$/.test(n.body), n.body);
   }
