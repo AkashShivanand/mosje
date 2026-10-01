@@ -525,8 +525,10 @@ Left as they are, for a decision:
   are probably meant to scroll sideways. Each needs a design decision, not a blanket fix.
 - **8 texts on Officers · Paying a Sanctioned Grant (PFMS)** sit below a fixed-height `main` area that reads as a
   scrolling viewport; officers' PFMS screens are desktop-only.
-- **AVYAY 2nd Instalment Claim meta row (`3:51416`)** is still clipped. That page was being edited by the cleanup
-  session at the time.
+
+The AVYAY 2nd Instalment Claim meta line (`3:51424`) was a text box fixed at 100px. It was fixed once the cleanup
+session released the AVYAY, SMILE and SHRESHTA pages, and those three pages were then re-flowed around that
+session's bank-step fixes.
 
 The 13 pages were re-flowed for the new heights. The journey order did not change, and user groups stay stacked
 top to bottom, as §10a requires. `check:figma-handoff -- --portal E-Anudaan --strict --fresh`: 15/15 conformant.
