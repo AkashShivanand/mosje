@@ -185,6 +185,10 @@ export const DEMO_ACCOUNTS: readonly DemoAccountSet[] = [
       { role: "US — Programme Division", id: "9200000803", password: "Demo@123" },
       { role: "DS — Programme Division", id: "9200000804", password: "Demo@123" },
       { role: "JS — Programme Division", id: "9200000810", password: "Demo@123" },
+      // The PFMS payment leg — Programme Division seats of their own in the prototype
+      // (apps/hub/src/lib/e-anudaan/roles.ts, "pd-maker" / "pd-checker").
+      { role: "Maker — Programme Division", id: "9200000813", password: "Demo@123" },
+      { role: "Checker — Programme Division", id: "9200000814", password: "Demo@123" },
       { role: "ASO — Integrated Finance", id: "9200000805", password: "Demo@123" },
       { role: "SO — Integrated Finance", id: "9200000806", password: "Demo@123" },
       { role: "US — Integrated Finance", id: "9200000807", password: "Demo@123" },
