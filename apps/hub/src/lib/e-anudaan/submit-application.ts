@@ -101,6 +101,7 @@ const CLAIM_FIELDS = [
   "fld_pfms_status",
   "fld_pfms_registered",
   "fld_bank_account_confirm",
+  "fld_pfms_name",
   "fld_pfms_payee_code",
   "fld_pfms_payee_confirm",
 ] as const;

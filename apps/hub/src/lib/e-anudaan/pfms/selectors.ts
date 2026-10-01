@@ -67,9 +67,20 @@ export function payeeRecordFor(main: EAnudaanState, pfms: Pick<PfmsState, "payee
   return { accountId: acct.id, projectId, payeeCode: code.trim().toUpperCase(), source: "ngo", confirmedAt: filed.submittedAt ?? filed.updatedAt };
 }
 
+/**
+ * The NGO's name as registered on PFMS (Annexure F.3 "NGO Name (as per PFMS)"): as the NGO gave it
+ * on its latest filed application for the project, else its registered name.
+ */
+export function pfmsNameFor(main: EAnudaanState, app: GrantApplication): string {
+  const filed = main.applications
+    .filter((a) => a.institutionId === app.institutionId && a.status !== "Draft" && a.formValues?.fld_pfms_name?.trim())
+    .sort((x, y) => (y.submittedAt ?? "").localeCompare(x.submittedAt ?? ""))[0];
+  return filed?.formValues?.fld_pfms_name?.trim() || (main.ngos.find((n) => n.id === app.ngoId)?.name ?? app.ngoId);
+}
+
 /** The NGO's payee details as the Maker would pre-fill them, or null with the reason. */
 export function payeeFor(main: EAnudaanState, pfms: PfmsState, app: GrantApplication): Payee | Exclude<Blocker, "scheme-code-pending"> {
-  const name = main.ngos.find((n) => n.id === app.ngoId)?.name ?? app.ngoId;
+  const name = pfmsNameFor(main, app);
   const acct = accountsFor(main, app.institutionId).current;
   if (acct) {
     const payee = payeeRecordFor(main, pfms, app.institutionId);

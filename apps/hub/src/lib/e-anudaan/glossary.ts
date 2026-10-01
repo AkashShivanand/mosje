@@ -138,6 +138,8 @@ export const AUTO_CHECK = {
 export const GRANT = {
   sanctioned: "Sanctioned",
   released: "Grant Released",
+  /** A grant paid through PFMS, once the bank's UTR is recorded (PFMS BRD FR-NTF-001/002). */
+  credited: "Grant Credited",
   sanctionOrder: "Sanction Order",
 } as const;
 

@@ -85,6 +85,7 @@ const BY_NAME: Readonly<Record<string, string>> = {
   fld_auth_place: DEMO_APPLICANT.city,
   fld_bank_name: DEMO_APPLICANT.bank,
   fld_bank_branch: DEMO_APPLICANT.branch,
+  fld_pfms_name: DEMO_APPLICANT.name,
   fld_bank_rtgs_micr: DEMO_APPLICANT.micr,
   fld_bank_joint_operators: "Sunita Deshpande (Secretary) and Anil Deshpande (Treasurer), Plot 7, Sai Vihar Society, Hadapsar, Pune 411028",
   fld_bank_resource_mobilisation: "Individual donations ₹3,45,000 a year; CSR support from two Pune firms ₹6,00,000 a year.",
