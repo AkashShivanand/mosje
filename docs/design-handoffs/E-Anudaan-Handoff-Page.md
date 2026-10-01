@@ -489,6 +489,18 @@ The empty-state bank steps show only the re-entered account: the payee fields ap
 Yes, as in the build. The build followed in PRs #689 and #691. `check:figma-handoff -- --portal E-Anudaan --fresh
 --strict`: all 15 pages conformant; the manifest did not change (no screen was added or removed).
 
+**Later the same day.** Two further changes:
+
+| What | Before | After | Why |
+|---|---|---|---|
+| NAPDDR new application, Step 7 — Beneficiaries, Bank & Grant | an empty step only, so NAPDDR's payee fields appeared only on its review, as "—" | a filled-in step beside it, desktop (`202:84300`) and phone (`202:85180`): registration answered Yes, with the name as per PFMS, payee code, confirming tick and EAT answer | NAPDDR now shows what AVYAY, SMILE and SHRESHTA already did |
+| Yes/No questions on phone screens (98 questions, 35 screens across the four form pages) | drawn 540px wide inside a 277px column, so longer questions and hints were cut off at the right edge | each one fills its column, so the text wraps | "This account is registered on the PFMS DBT module" read "…on the PFMS DE" |
+
+Two NAPDDR differences remain for the owner to decide in Figma; the build has both, and neither drawing does: the
+**"Account is in the name of the NGO/VO"** question that opens Bank Account Details, and the **Grant Sought**
+section (recurring, non-recurring and total grant) that the step's title promises. The manifest was re-captured for
+the two new screens; all 15 pages are still conformant.
+
 ## 6. Adding to the page
 
 - **A screen:** into the right row of its flow; name `Role / Screen / State`; phone version ends ` · Mobile`.
