@@ -23,10 +23,9 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Badge, Button, Card, CardBody, EmptyState, Icon, Link, ListGroup, ListRow, SectionTitle } from "@mosje/design-system";
+import { Badge, Button, Card, CardBody, EmptyState, Icon, ListGroup, ListRow, SectionTitle } from "@mosje/design-system";
 import { daysOpen, requestedAt, type OpenDeficiency } from "@/lib/e-anudaan/applicant";
 import { formatDate } from "@/lib/e-anudaan/format";
-import { routeOnClick } from "@/components/e-anudaan/ngo-shell";
 
 const BASE = "/portals/e-anudaan/ngo/my-applications";
 
@@ -61,11 +60,7 @@ export function PendingActions({
 
   return (
     <Card variant="outlined" aria-labelledby={headingId}>
-      {/* The dashboard's card shape — `gap-4 p-6`, a standalone link for "View All", a divided
-          flush list — so this card reads as one of its neighbours. It was 16px in where they are
-          24, its "View All" was a text button whose own padding set it in from the heading, and its
-          rows sat inset with no rule between them (Refactoring UI pass, 1 Oct 2026). */}
-      <CardBody className="gap-4 p-6">
+      <CardBody className="space-y-3">
         <SectionTitle
           headingId={headingId}
           title={title}
@@ -76,15 +71,9 @@ export function PendingActions({
           }
         >
           {limit && items.length > limit ? (
-            <Link
-              variant="standalone"
-              size="sm"
-              href={`${BASE}/deficiencies`}
-              onClick={routeOnClick(router, `${BASE}/deficiencies`)}
-              iconRight={<Icon name="arrow_forward" size={16} aria-hidden />}
-            >
-              View All {items.length} Applications
-            </Link>
+            <Button appearance="text" size="sm" onClick={() => router.push(`${BASE}/deficiencies`)}>
+              View All {items.length} Applications <Icon name="arrow_forward" size={16} aria-hidden />
+            </Button>
           ) : null}
         </SectionTitle>
 
@@ -94,7 +83,7 @@ export function PendingActions({
             description="The Ministry has not asked for any correction on your applications."
           />
         ) : (
-          <ListGroup divided flush aria-label="Applications awaiting your correction">
+          <ListGroup aria-label="Applications awaiting your correction">
             {shown.map(({ app, deficiency, items: defItems, corrected }) => {
               const days = daysOpen(app, deficiency, now);
               const left = defItems.length - corrected;
