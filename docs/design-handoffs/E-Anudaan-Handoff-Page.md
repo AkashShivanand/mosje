@@ -46,8 +46,8 @@ organised on 17 Sep 2026; node ids quoted there are the old file's.
 **Cover.** A 1920 × 1080 frame (Figma's recommended 16:9 thumbnail), set as the file thumbnail. Everything
 that must survive Figma's crops — 4:3 in the team view, 1:1 in the list — sits inside x 264–1656: the
 SAMAVESH `Navbar/BrandLockup` (emblem, Ministry, Department) at the left of a top bar and, at the right, the
-SAMAVESH mark — the unified portal E-Anudaan belongs to — with its name and its expansion, as the portal's own
-sign-in page sets it; a hairline beneath, then the eyebrow (handoff file, version,
+circular SAMAVESH seal alone, with no wording beside it — SAMAVESH is the unified portal E-Anudaan belongs to,
+and the seal names it; a hairline beneath, then the eyebrow (handoff file, version,
 date), the portal's name, what it does, and the file's counts. Below, a browser window and a phone rise out
 of a `bg/brand/primary/boldest` stage, the phone deliberately in front of the browser's right edge. The seal is
 60px, matched to the emblem, and was RESCALED (a uniform transform), not resized — resizing this remote
