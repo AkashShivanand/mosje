@@ -32,7 +32,13 @@ where two routes' entries overwrote each other.
 | patched | 8 | 0 |
 | patched | 24 | 0 |
 
-**When to remove it.** Still present in Next 16.3.8. On a Next upgrade, check
+**Upstream.** Reported as [vercel/next.js#96259](https://github.com/vercel/next.js/issues/96259)
+(open, with a reproduction and confirmations from 15.5 to 16.x). The fix PRs take the
+same approach as this patch: [#96384](https://github.com/vercel/next.js/pull/96384) and
+[#99198](https://github.com/vercel/next.js/pull/99198), both open on 1 Oct 2026.
+
+**When to remove it.** Still present in Next 16.3.8. Once one of the PRs above ships in
+a release, upgrade and delete this patch. On any Next upgrade before then, check
 `dist/server/dev/next-dev-server.js` for the plain `writeFile` of `PRERENDER_MANIFEST`:
 if it is gone, delete this patch (and `patch-package` with it, if it is the last one).
 If it remains, regenerate the patch for the new version with `npx patch-package next`.
