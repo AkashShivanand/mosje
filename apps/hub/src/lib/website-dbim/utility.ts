@@ -259,10 +259,8 @@ export const DBIM_RELATED_LINKS: DbimLinkRow[] = [
  * Important Links rail groups them (components/website/ImportantLinks.tsx, reading
  * `DIVISIONS` from data/website/divisions.ts). A division opens its DBIM page under
  * Ministry → Our Division; a division whose only destination is another website opens
- * that website. The home page's Important Links section reads this same list — its
- * first four rows, which are now the home sections below (`HOME_SECTION_LINKS`); of
- * the divisions, the three the DBIM reference leads with (Scheduled Caste Welfare,
- * Social Defence, Grants-in-Aid to NGOs) come first, the rest in `DIVISIONS` order.
+ * that website. The three the DBIM reference leads with — Scheduled Caste Welfare,
+ * Social Defence, Grants-in-Aid to NGOs — come first, the rest in `DIVISIONS` order.
  */
 const LEAD_DIVISIONS = ["scheduled-caste-welfare", "social-defence", "grants-in-aid-to-ngos"];
 const leadRank = (id: string) => {
@@ -279,13 +277,30 @@ const DIVISION_LINKS: DbimLinkRow[] = [...DIVISIONS].sort((a, b) => leadRank(a.i
 });
 
 /*
- * THE SOCIAL AUDIT MIS PORTAL FOLLOWS THE THREE LEAD DIVISIONS — moved here on 28 Sep
- * 2026 from the home page's posts row, whose third slot became the Infographics (DBIM
- * 3.0 §7.3 xiii). It was fourth so it stayed on the home page; since 30 Sep 2026 the
- * home sections lead the list (`HOME_SECTION_LINKS`) and it is on the Important Links
- * page only.
+ * THE DEPARTMENT'S PRIORITY DESTINATIONS (instruction, 1 Oct 2026, following the one of
+ * 29 Sep: fill this section the way the benchmark does). DBIM 3.0 §7.3 x calls Important
+ * Links "the most accessed or priority contents/portals … for quick navigation", and
+ * meity.gov.in fills it with five: its dashboard, Tenders, Public Grievances, one
+ * priority portal and What's New. These are the Department's own five, each labelled as
+ * its destination labels itself — dosje.gov.in/dashboard is titled "Dashboard", and this
+ * design serves it as Ministry › Our Performance; "Public Grievance Redressal Mechanism"
+ * is the live rail's own wording for CPGRAMS.
+ *
+ * The Social Audit MIS Portal is one of them. It came onto this list on 28 Sep 2026 from
+ * the home page's posts row, whose third slot became the Infographics (DBIM 3.0 §7.3
+ * xiii), and it sits here rather than among the divisions because it is a portal, not a
+ * division.
+ *
+ * TO BE CONFIRMED BY THE DEPARTMENT: which destinations are in fact its most accessed.
+ * No usage figures were available, so the choice follows the benchmark's categories.
  */
-const SOCIAL_AUDIT: DbimLinkRow = { label: DBIM_SOCIAL_AUDIT.label, href: DBIM_SOCIAL_AUDIT.href };
+const PRIORITY_LINKS: DbimLinkRow[] = [
+  { label: "Dashboard", path: "/ministry/our-performance" },
+  { label: "Tenders", path: "/offerings/tenders" },
+  { label: "Public Grievance Redressal Mechanism", href: "https://pgportal.gov.in/" },
+  { label: DBIM_SOCIAL_AUDIT.label, href: DBIM_SOCIAL_AUDIT.href },
+  { label: "What's New", path: "/whats-new" },
+];
 
 /*
  * THE HOME SECTIONS DBIM HAS NO PLACE FOR, AS LINKS (instruction, 30 Sep 2026). The New
@@ -306,11 +321,19 @@ const HOME_SECTION_LINKS: DbimLinkRow[] = [
   { label: "SAMAVESH Services Gateway", href: "/portals" },
 ];
 
+/**
+ * NINETEEN ROWS, IN THREE GROUPS, AND THE HOME PAGE SHOWS THE FIRST FOUR.
+ *
+ * The home section is a window on this list, not a list of its own — one record, so the
+ * two cannot disagree — and it keeps its "View more", which opens this page in full.
+ * That is why the order is the order: the four actions a citizen may have come for, then
+ * the Department's priority destinations, then its divisions, which are the deepest and
+ * also live a click away under Ministry › Our Division.
+ */
 export const DBIM_IMPORTANT_LINKS: DbimLinkRow[] = [
   ...HOME_SECTION_LINKS,
-  ...DIVISION_LINKS.slice(0, LEAD_DIVISIONS.length),
-  SOCIAL_AUDIT,
-  ...DIVISION_LINKS.slice(LEAD_DIVISIONS.length),
+  ...PRIORITY_LINKS,
+  ...DIVISION_LINKS,
 ];
 
 /* ── Help ───────────────────────────────────────────────────────────────── */

@@ -212,12 +212,17 @@ export const DBIM_HOME_PERSONAS: DbimPersonaSlide[] = DBIM_APPLICANT_TYPES.flatM
 /* ── Important Links ───────────────────────────────────────────────────── */
 
 /*
- * The first four rows of the Department's Important Links (`DBIM_IMPORTANT_LINKS`,
- * one per Division plus the Social Audit MIS Portal), the same list the Important Links
- * page shows — so one list feeds both. That list leads with the three the reference
- * leads with (Scheduled Caste Welfare, Social Defence, Grants-in-Aid to NGOs); the
- * reference's fourth, "Inauguration", is a webcast link with no source in the estate,
- * so the fourth is the Social Audit MIS Portal, moved from the posts row.
+ * THE FIRST FOUR ROWS OF `DBIM_IMPORTANT_LINKS`, AND "VIEW MORE" OPENS THE REST.
+ *
+ * The home section is a WINDOW on that list, never a list of its own, so the home page
+ * and the Important Links page cannot disagree about what the Department's links are.
+ * The four are the actions a citizen may have arrived for — the Nasha Mukt Bharat
+ * e-pledge, the Mitr sign-up, the de-addiction centre finder and the SAMAVESH gateway.
+ * Behind "View more" stand the Department's priority destinations and its ten divisions,
+ * nineteen rows in all, searchable and paged on the page itself.
+ *
+ * The reference's own fourth row, "Inauguration", is a webcast link with no source in
+ * this estate, so it is not drawn.
  */
 export function dbimHomeImportantLinks(): DbimHomeLink[] {
   return DBIM_IMPORTANT_LINKS.slice(0, 4).flatMap((l): DbimHomeLink[] => {
