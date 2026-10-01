@@ -374,8 +374,7 @@ the same dark blue as its sibling queues. Counts: Cover 568, the PFMS page's Sta
 visual 0), nothing loose at any page root, and `--selftest` catches all nine planted faults.
 `manifests/e-anudaan.json` was re-captured with `--snapshot` from that run.
 
-**Open for a person:** accept the waiting SAMAVESH updates in the Libraries panel; decide whether officers' PFMS screens need
-phone versions (17 drawn for 68 desktop screens — signing needs a DSC token on a desktop); decide whether the
+**Open for a person:** accept the waiting SAMAVESH updates in the Libraries panel; decide whether the
 payment parts of the NGO's Project Bank Accounts and Application Details screens give way to the PFMS versions.
 
 ## 5d. The walkthrough of 1 Oct 2026 — recorded, and where it differs
@@ -409,6 +408,11 @@ pages conformant, identity 0 and visual 0.
 named version is added to the version history. Start Here's Change Log gains a line for the last two PFMS screens, and
 its Open Items now count 17 phone screens for 68 desktop screens across the PFMS journeys (officers' 14 for 60, the
 NGO's 3 for 8), recounted from the canvas.
+
+**Decided, 1 Oct 2026.** Officers' PFMS screens are **desktop only**: signing a payment needs a DSC token on a desktop
+computer, so the 17 phone screens already drawn stay and no more are added; the open item is closed and the decision is
+in the Change Log. The **NGO sign-in keeps its captcha** on the username-and-password and DARPAN ID screens; the sign-in
+will be refined by reading the live portal's flow and data, drawing it here, then building it — the open item now says so.
 
 ## 6. Adding to the page
 
