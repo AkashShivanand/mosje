@@ -221,7 +221,9 @@ export default function NgoDashboardPage() {
           <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-body-3 text-ink-muted">
             <span className="text-body-2 font-semibold text-ink">{ngoName}</span>
             <Badge status="success">DARPAN Verified</Badge>
-            <span className="text-line" aria-hidden>•</span>
+            {/* The separator only reads as one on a single line. On a phone the DARPAN ID wraps
+                to its own line and the dot was left hanging at the end of the first. */}
+            <span className="hidden text-line md:inline" aria-hidden>•</span>
             <span className="flex items-center gap-1 font-semibold tabular-nums text-ink">
               <Icon name="verified_user" size={16} className="text-primary shrink-0" aria-hidden />
               DARPAN ID: {ngo?.darpanId ?? "MH/2016/100000"}
@@ -230,10 +232,12 @@ export default function NgoDashboardPage() {
         }
         actions={
           <>
-            <Button appearance="outlined" size="md" onClick={() => router.push("/portals/e-anudaan/ngo/my-applications")}>
+            {/* Full width on a phone: the pair does not fit one 375px row, and wrapped at their
+                own widths they stacked as two ragged buttons 4px apart in length. */}
+            <Button appearance="outlined" size="md" className="w-full sm:w-auto" onClick={() => router.push("/portals/e-anudaan/ngo/my-applications")}>
               <Icon name="folder_open" size={16} aria-hidden /> My Applications
             </Button>
-            <Button appearance="filled" size="md" onClick={() => router.push("/portals/e-anudaan/apply-grant")}>
+            <Button appearance="filled" size="md" className="w-full sm:w-auto" onClick={() => router.push("/portals/e-anudaan/apply-grant")}>
               <Icon name="add" size={16} aria-hidden /> Apply for Grant
             </Button>
           </>
@@ -394,11 +398,17 @@ export default function NgoDashboardPage() {
                         {scheme} · <span className="tabular-nums">{appRow.institutionId || appRow.id}</span>
                       </>
                     }
+                    /* On a phone the trailing slot drops under the title (ListRow wraps it). It was
+                       right-aligned there, with the date a size larger than the reference above it
+                       and the chevron alone on a line; now it reads left to right under the title,
+                       with the chevron at the end of the block. */
                     trailing={
-                      <span className="flex flex-wrap items-center justify-end gap-x-4 gap-y-1 text-body-2">
-                        <Badge status={statusTone(appRow.status as AppStatus)}>{ngoStatusLabel(appRow)}</Badge>
-                        <span className="tabular-nums text-ink">{formatGrant(appRow.total)}</span>
-                        <span className="text-ink-muted">Updated {formatDate(appRow.updatedAt)}</span>
+                      <span className="flex w-full items-center gap-3 sm:w-auto">
+                        <span className="flex min-w-0 flex-1 flex-wrap items-center gap-x-4 gap-y-1 text-body-2 sm:justify-end">
+                          <Badge status={statusTone(appRow.status as AppStatus)}>{ngoStatusLabel(appRow)}</Badge>
+                          <span className="tabular-nums text-ink">{formatGrant(appRow.total)}</span>
+                          <span className="text-body-3 text-ink-muted sm:text-body-2">Updated {formatDate(appRow.updatedAt)}</span>
+                        </span>
                         <Icon name="chevron_right" size={20} aria-hidden />
                       </span>
                     }
@@ -427,19 +437,36 @@ export default function NgoDashboardPage() {
                 <ListRow
                   key={s.code}
                   title={s.title}
+                  /* The count sits beside the title from `sm` up. On a phone the trailing slot
+                     wrapped to the foot of the row, right-aligned and alone under the progress
+                     bar, so there it moves under the title instead. */
                   trailing={
-                    <Badge status="neutral">
-                      {s.count} {s.count === 1 ? "application" : "applications"}
-                    </Badge>
+                    <span className="hidden sm:inline-flex">
+                      <Badge status="neutral">
+                        {s.count} {s.count === 1 ? "application" : "applications"}
+                      </Badge>
+                    </span>
                   }
                   /* No scheme badge: it printed the stored code ("SHRESHTA_M2") under the scheme's
                      own name, saying the same thing twice and the second time in code. */
                   description={
                     <span className="block space-y-2">
+                      <span className="block sm:hidden">
+                        <Badge status="neutral">
+                          {s.count} {s.count === 1 ? "application" : "applications"}
+                        </Badge>
+                      </span>
                       <span className="block">{s.subtitle}</span>
                       <span className="block">
-                        Requested: <strong className="text-ink">{formatMoney(s.requested)}</strong> · Sanctioned:{" "}
-                        <strong className="text-[var(--sa-text-status-success-base)]">{formatMoney(s.sanctioned)}</strong>
+                        {/* Each label stays with its figure, so a narrow row breaks between the
+                            pairs rather than leaving an amount alone on the next line. */}
+                        <span className="whitespace-nowrap">
+                          Requested: <strong className="text-ink">{formatMoney(s.requested)}</strong>
+                        </span>{" "}
+                        ·{" "}
+                        <span className="whitespace-nowrap">
+                          Sanctioned: <strong className="text-[var(--sa-text-status-success-base)]">{formatMoney(s.sanctioned)}</strong>
+                        </span>
                       </span>
                       <Progress label={`${s.title}: sanctioned against requested`} value={s.percent} tone="success" compact />
                     </span>
