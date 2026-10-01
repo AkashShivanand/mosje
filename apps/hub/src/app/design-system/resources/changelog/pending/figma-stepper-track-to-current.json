@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "FIGMA: THE GREEN TRACK NOW REACHES THE CURRENT STAGE ON ITS OWN. Each Stepper / Stage draws its own half of the segment either side of its node, and the half behind it turned green only when \"Track Behind Complete\" was switched on by hand — so a Current stage placed without it showed the walked segment stopping at its midpoint. 19 Current stages on the SHRESHTA form page alone were in that state. A Current or Complete stage always follows a finished one, so in those eight variants (Middle and Last, Large and Compact) the track behind is now green by default; the property is only needed for an Error, Upcoming or Disabled stage that follows a finished one. The code Stepper was not affected and is unchanged."
+}
