@@ -60,6 +60,21 @@ function Section({ step, title, onEdit, children, flagged }: { step: AdviceStep;
   );
 }
 
+/**
+ * FR-PDM-012 and FR-SNC-004: every send has its own identifier, and a resend points back to the one
+ * before it. While an advice is being corrected for a resend, the old identifier is shown as the
+ * previous one and the new one is still to come; once sent, the latest is shown with its link back.
+ */
+function requestRows(advice: PaymentAdvice): { term: string; value: React.ReactNode }[] {
+  const last = advice.requests.at(-1);
+  const earlier = advice.earlier?.at(-1)?.requests.at(-1);
+  const pending = "Generated when the Checker sends the advice to PFMS";
+  const mono = (s: string) => <span className="font-mono">{s}</span>;
+  if (!last) return [{ term: "Request Identifier", value: pending }, ...(earlier ? [{ term: "Previous Request Identifier", value: mono(earlier.uniqueIdentifier) }] : [])];
+  if (["draft", "returned", "not-accepted", "returned-pfms"].includes(advice.state)) return [{ term: "Request Identifier", value: pending }, { term: "Previous Request Identifier", value: mono(last.uniqueIdentifier) }];
+  return [{ term: "Request Identifier", value: mono(last.uniqueIdentifier) }, ...(last.previousUniqueIdentifier ? [{ term: "Previous Request Identifier", value: mono(last.previousUniqueIdentifier) }] : [])];
+}
+
 export function AdviceSummary({
   advice,
   masters,
@@ -92,7 +107,7 @@ export function AdviceSummary({
               { term: "Bill Date", value: advice.header.billDate ? formatDate(advice.header.billDate) : "" },
               { term: "Not Payable Before", value: advice.header.npbDate ? formatDate(advice.header.npbDate) : "Not set" },
               { term: "Where It Lands", value: ddo ? LANDING_LABEL[ddo.landing] : "" },
-              { term: "Request Identifier", value: advice.requests.length ? <span className="font-mono">{advice.requests[advice.requests.length - 1]!.uniqueIdentifier}</span> : "Generated when the Checker sends the advice to PFMS" },
+              ...requestRows(advice),
               ...fixedValuesFor(advice).map((f) => ({ term: f.term, value: <span className="inline-flex flex-wrap items-center gap-2">{f.value} <SourceTag>Set by System</SourceTag></span> })),
             ]}
           />
@@ -175,6 +190,7 @@ export function AdviceSummary({
                       <span key={d.id} className="mt-1 block text-body-3 text-ink-muted">
                         {d.name} · {d.sizeKb.toLocaleString("en-IN")} KB · uploaded {formatDateTime(d.uploadedAt)}
                         <span className="block break-all font-mono">SHA-256 {d.hash}</span>
+                        <span className="block">PFMS view link: single use, {d.viewLink.used ? "used" : `valid until ${formatDate(d.viewLink.expiresAt)}`}</span>
                       </span>
                     ))}
                   </li>

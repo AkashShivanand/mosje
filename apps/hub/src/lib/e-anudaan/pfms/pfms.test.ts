@@ -335,6 +335,38 @@ test("the application form asks for the payee code and a typed-twice account whe
   assert.match(errors.fld_pfms_payee_code ?? "", /two letters and ten digits/);
 });
 
+test("the application form asks for the name as registered on PFMS beside the payee code (Annexure F.3)", async () => {
+  const { wizardFor, stepFields, fieldVisible, validateStep } = await import("../form-schema.ts");
+  for (const scheme of ["NAPDDR", "AVYAY", "SMILE", "SHRESHTA_M2"]) {
+    const w = wizardFor(scheme)!;
+    const step = w.steps.find((s) => s.kind !== "documents" && s.kind !== "review" && stepFields(s).some((f) => f.name === "fld_pfms_name"));
+    assert.ok(step, `${scheme} asks for the name as per PFMS`);
+    const names = stepFields(step!).map((f) => f.name);
+    assert.ok(names.indexOf("fld_pfms_name") < names.indexOf("fld_pfms_payee_code"), `${scheme}: the name comes before the code`);
+  }
+  const step = wizardFor("SHRESHTA_M2")!.steps.find((s) => s.kind !== "documents" && s.kind !== "review" && stepFields(s).some((f) => f.name === "fld_pfms_name"))!;
+  const name = stepFields(step).find((f) => f.name === "fld_pfms_name")!;
+  const fresh = { claim_stage: "", fld_pfms_on_record: "", fld_pfms_registered: "Yes" };
+  assert.ok(fieldVisible(name, fresh));
+  assert.ok(!fieldVisible(name, { ...fresh, fld_pfms_registered: "No" }));
+  assert.match(validateStep(step, fresh).fld_pfms_name ?? "", /Name as per PFMS/);
+});
+
+test("the payment advice names the NGO as it is registered on PFMS, falling back to its registered name", async () => {
+  const { pfmsNameFor } = await import("./selectors.ts");
+  const app = main.applications.find((a) => a.status !== "Draft" && a.formValues?.fld_pfms_name)!;
+  assert.equal(pfmsNameFor(main, app), app.formValues!.fld_pfms_name);
+  const bare = { ...main, applications: main.applications.map((a) => (a.institutionId === app.institutionId ? { ...a, formValues: { ...a.formValues, fld_pfms_name: "" } } : a)) };
+  assert.equal(pfmsNameFor(bare, app), main.ngos.find((n) => n.id === app.ngoId)!.name);
+});
+
+test("a grant credited through PFMS is announced as credited, not released (FR-NTF-001/002)", async () => {
+  const { notificationTitle } = await import("../applicant.ts");
+  assert.equal(notificationTitle("releaseFunds", "₹25,50,000 credited against sanction order SAN/2026-27/04609; UTR SBIN261006100091"), "Grant Credited");
+  assert.equal(notificationTitle("releaseFunds", "Released by the Under Secretary."), "Grant Released");
+  assert.equal(notificationTitle("releaseFunds"), "Grant Released");
+});
+
 /* ── After PFMS sends a bill back, lets it lapse, or the bank fails it (1 Oct 2026) ─────────── */
 
 const sig = { by: "pd-checker" as const, personName: "R", at: NOW, certificateSerial: "X" };

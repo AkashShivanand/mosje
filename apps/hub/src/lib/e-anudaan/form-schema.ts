@@ -325,7 +325,8 @@ function person(prefix: string, who: string, required: boolean, posts?: readonly
  *
  * PFMS BRD FR-NGO-001/002 (29 Sep 2026): a new account's number is entered twice, and where the NGO
  * says the account is PFMS-registered it gives its PFMS unique (payee) code with a confirmation
- * tick — the two things PFMS needs before a payment advice can be prepared. `newAccount` is the
+ * tick — the two things PFMS needs before a payment advice can be prepared — and the organisation's
+ * name as registered on PFMS, which the Maker's advice carries (Annexure F.3 "NGO Name (as per PFMS)"). `newAccount` is the
  * branch on which the account is typed; `payeeOnly` narrows the payee question where a scheme
  * already asks for its PFMS code on another branch (NAPDDR renewals carry `fld_pfms_code`).
  */
@@ -350,6 +351,15 @@ function bankRecordFields(onRecord: Condition, newAccount: Condition, payeeOnly?
       wide: true,
       showWhen: { field: "fld_pfms_on_record", equals: ["", "No"] },
       help: "If it is not, the Ministry registers it before the grant is released.",
+    },
+    {
+      name: "fld_pfms_name",
+      label: "Name as per PFMS",
+      kind: "text",
+      required: true,
+      showWhen: registered,
+      alsoWhen: notOnRecord,
+      help: "The organisation's name exactly as registered on PFMS. The payment advice carries this name.",
     },
     {
       name: "fld_pfms_payee_code",

@@ -1545,7 +1545,7 @@ export function buildSeed(): {
       return {
         id: nextId("ntf"),
         at: e.at,
-        title: notificationTitle(e.action),
+        title: notificationTitle(e.action, e.remarks),
         body: notificationBody(app.id, e.remarks),
         audience,
         applicationId: app.id,
@@ -2058,6 +2058,7 @@ export function buildSeed(): {
         // PFMS BRD FR-NGO-001/002: the account typed twice, and the payee code the payment leg holds
         // for this project (`pfms/seed.ts` derives the same one), confirmed.
         fld_bank_account_confirm: v.fld_bank_account_number,
+        fld_pfms_name: ngo.name,
         fld_pfms_payee_code: derivedPayeeCode(inst.id),
         fld_pfms_payee_confirm: "true",
       };
