@@ -257,7 +257,9 @@ export default function NgoDashboardPage() {
           Captions ride in `detail`, not `changeLabel`. A change label draws a trend mark — a dash
           announced as "No change" — and dropped the "7 items" figure it was given; an arrow on a
           running total read as growth. None of these four is a change over time. */}
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      {/* Two up from the smallest phone: stacked one per row, the four figures cost ~500px of
+          scrolling at 375 before the reader reached a single list. */}
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
         <MetricCard
           label="Total Applications"
           value={String(totalAppsCount)}
@@ -382,7 +384,7 @@ export default function NgoDashboardPage() {
 
           {/* The whole row is the link (ListRow `href`), so five outlined "Details" buttons no longer
               stack down the right edge; `linkAs` makes each row a client-side route. */}
-          <ListGroup divided aria-label="Recent applications">
+          <ListGroup divided flush aria-label="Recent applications">
               {recent.map((appRow) => {
                 const scheme = ngoScheme(appRow.schemeCode).short;
                 return (
@@ -432,7 +434,7 @@ export default function NgoDashboardPage() {
             </SectionTitle>
 
             {/* A divided list inside the card, not a bordered box inside it (T93). */}
-            <ListGroup divided aria-label="Schemes applied under">
+            <ListGroup divided flush aria-label="Schemes applied under">
               {activeSchemes.map((s) => (
                 <ListRow
                   key={s.code}
@@ -478,7 +480,7 @@ export default function NgoDashboardPage() {
             {idleSchemes.length > 0 && (
               <>
                 <SectionTitle as={3} eyebrow="Not Yet Applied Under" />
-                <ListGroup divided size="sm" aria-label="Schemes not yet applied under">
+                <ListGroup divided flush size="sm" aria-label="Schemes not yet applied under">
                   {idleSchemes.map((s) => (
                     <ListRow key={s.code} title={s.title} description={s.subtitle} />
                   ))}
@@ -651,7 +653,7 @@ function FirstApplication() {
           title="Start Your First Application"
           description="Choose the scheme your project is funded under. Each has its own application form and document checklist."
         />
-        <ListGroup divided aria-label="Schemes open for application">
+        <ListGroup divided flush aria-label="Schemes open for application">
             {Object.entries(NGO_SCHEMES).map(([code, s]) => (
               <ListRow
                 linkAs={NextLink}
