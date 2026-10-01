@@ -153,7 +153,6 @@ export default function AuthoriseAdvicePage() {
       <>
       <RecordScreen
         breadcrumb={[{ label: "Authorisation Queue", href: QUEUE }, { label: "Authorise Payment Advice" }]}
-        eyebrow="Authorise Payment Advice"
         title={ngoName}
         meta={meta}
         status={<StageBadge stage={waiting ? "awaiting-authorisation" : "received"} />}
@@ -182,7 +181,6 @@ export default function AuthoriseAdvicePage() {
     <>
       <DecisionScreen
         breadcrumb={[{ label: "Authorisation Queue", href: QUEUE }, { label: "Authorise Payment Advice" }]}
-        eyebrow="Authorise Payment Advice"
         title={ngoName}
         meta={meta}
         status={<StageBadge stage="awaiting-authorisation" />}

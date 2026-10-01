@@ -4170,7 +4170,12 @@ every matching row, not one page**, and `registerTotal` is for the count line on
 **one** stepper treatment where the handoff draws two. It wraps `Wizard` and adds the page:
 title, the composed step meta line, the draft banner (both flavours, one shape, switched by
 `resumed`) and notices. `onCancel` goes through to `Wizard`, so Cancel is the first step's
-outlined leading control — there is no separate Cancel button.
+outlined leading control — there is no separate Cancel button. `status` and `actions` sit on
+the header's trailing edge, status first, exactly where `RecordScreen` and `DecisionScreen`
+put them — a record's badge and its whole-record actions ("Save as Draft") never ride in
+`notices`. Its title is `PageHeader size="compact"`, the wizard rung. Put no page-type label in
+`eyebrow` ("Payment Advice"): the breadcrumb already names the page; `eyebrow` is for
+reference numbers.
 
 **`OverviewScreen`** cannot enforce its own two most important rules, so they are stated on
 its page: a ratio takes both halves **from one source** (mixing them published a `138%`),

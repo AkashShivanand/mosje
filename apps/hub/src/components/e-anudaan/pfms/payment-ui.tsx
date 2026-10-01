@@ -178,8 +178,9 @@ export function CaseHeader({
   return (
     <>
       <Breadcrumb linkAs={Link} items={[back, { label: eyebrow }]} />
+      {/* `eyebrow` names the page in the breadcrumb only. Portal headers carry no page-type label
+          above the title; the breadcrumb already says where the reader is. */}
       <PageHeader
-        eyebrow={eyebrow}
         title={ngoName}
         meta={
           <span className="block space-y-1">

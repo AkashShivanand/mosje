@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "WIZARDSCREEN TAKES `status` AND `actions`, AND ITS TITLE IS THE WIZARD RUNG. A record's badge and its whole-record actions now sit on the header's trailing edge, status first — where RecordScreen and DecisionScreen already put them — instead of riding in `notices` below the title. The title uses PageHeader size=\"compact\", which the one-scale-per-kind rule already assigns to wizards; the two PM-AJAY Adarsh Gram forms on this template get the smaller title too. E-Anudaan's payment screens drop the page-type label above the title (\"Payment Advice\", \"Authorise Payment Advice\", \"Payment Status\"): the breadcrumb already names the page, and no other portal header carries one."
+}
