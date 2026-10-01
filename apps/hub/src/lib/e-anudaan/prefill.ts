@@ -19,7 +19,7 @@ export function darpanSeed(ngo: NgoProfile | undefined, now: Date = new Date()):
     fld_registration_number: ngo?.registrationNo ?? "51-54",
     ...registrationOf(ngo),
     fld_contact_mobile: ngo?.mobile ?? "9441747200",
-    fld_contact_email: ngo?.email ?? "sankalpsevasansthan@gmail.com",
+    fld_contact_email: ngo?.email ?? "sankalpsevasansthan@example.org",
     fld_reg_office_state: ngo?.state ?? "Maharashtra",
     fld_reg_office_district: ngo?.district ?? "Pune",
     // The year now running, not a constant: a new application is always for it (T328–329).
