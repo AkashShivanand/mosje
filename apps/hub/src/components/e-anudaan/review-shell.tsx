@@ -44,6 +44,7 @@ import {
   type ActionPayload,
   type DecisionContext,
   type Rule,
+  sanctionBankGap,
 } from "@/lib/e-anudaan/workflow";
 import { formatGrant, schemeLabel, statusTone } from "@/lib/e-anudaan/selectors";
 import { formatDate, formatTime, rupees } from "@/lib/e-anudaan/format";
@@ -273,6 +274,8 @@ export function ReviewShell({ appId }: { appId: string }) {
   const markedDocs = app.documents.filter((d) => d.reviewStatus === "Deficient").length;
   const sendsMessage = decisions.some((d) => d.action === "communicateDeficiency");
   const sanctioning = decisions.some((d) => d.action === "sanction");
+  // No sanction while the application's account number or IFSC is incomplete (PFMS BRD FR-NGO-002).
+  const bankGap = sanctioning ? sanctionBankGap(app) : null;
   const recurringText = recurring ?? String(app.recurring);
   const nonRecurringText = nonRecurring ?? String(app.nonRecurring);
   const sanctionR = Number(recurringText);
@@ -503,6 +506,12 @@ export function ReviewShell({ appId }: { appId: string }) {
           />
           {sanctioning && (
             <Panel title="Sanction Order">
+              {/* FR-NGO-002: said before the officer decides, not only as a refusal afterwards. */}
+              {bankGap && (
+                <Alert status="error" title="Bank Details Incomplete" className="mb-3" id="sanction-bank-gap">
+                  {bankGap}
+                </Alert>
+              )}
               <p className="mb-3 text-body-3 text-ink-muted">
                 Both amounts are filled with what the NGO sought. Change either to sanction less; the sanction may not exceed {rupees(app.total)}.
               </p>
@@ -658,8 +667,8 @@ export function ReviewShell({ appId }: { appId: string }) {
                       key={a.action}
                       fullWidth
                       appearance={deficiencyLeads ? "outlined" : undefined}
-                      disabled={a.action === "forward" && forwardBlocked}
-                      aria-describedby={a.action === "forward" && forwardBlocked ? "forward-blocked" : undefined}
+                      disabled={(a.action === "forward" && forwardBlocked) || (a.action === "sanction" && !!bankGap)}
+                      aria-describedby={a.action === "forward" && forwardBlocked ? "forward-blocked" : a.action === "sanction" && bankGap ? "sanction-bank-gap" : undefined}
                       onClick={() => decide(a)}
                     >
                       {a.label(role, app)}
