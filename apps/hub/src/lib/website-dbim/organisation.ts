@@ -288,23 +288,57 @@ const slug = (s: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
 
+/**
+ * Two or more sections that hold nothing but a document list (NCSC's Reports and
+ * Resources, NCSK's five registers) become ONE "Documents & Downloads" section with a
+ * tab each, where the first of them stood; each section's "View All" moves into its
+ * tab. Every organisation page groups its documents this way — the unified design in
+ * the DBIM handoff file, Organisations page (instruction, 30 Sep 2026). A lone
+ * document list keeps its own heading: one tab is not a tab set.
+ */
+function groupDocuments(sections: Omit<DbimOrgSection, "anchor">[]): Omit<DbimOrgSection, "anchor">[] {
+  const isDocs = (s: Omit<DbimOrgSection, "anchor">) => !s.intro && s.blocks.length === 1 && s.blocks[0]!.kind === "documents";
+  const docs = sections.filter(isDocs);
+  if (docs.length < 2) return sections;
+  const grouped: Omit<DbimOrgSection, "anchor"> = {
+    heading: "Documents & Downloads",
+    blocks: [
+      {
+        kind: "tabs",
+        items: docs.map((s) => ({
+          label: s.heading,
+          viewAll: s.more,
+          documents: s.blocks[0]!.kind === "documents" ? s.blocks[0]!.items : [],
+          events: [],
+          news: [],
+        })),
+      },
+    ],
+  };
+  const first = sections.indexOf(docs[0]!);
+  return sections.flatMap((s, i) => (i === first ? [grouped] : isDocs(s) ? [] : [s]));
+}
+
 export function organisationProfile(id: string): DbimOrgProfile | undefined {
   const p = getOrganisationProfile(id);
   if (!p) return undefined;
   const here = id;
   const used = new Set<string>();
-  const sections = p.sections
-    .map((s): DbimOrgSection | undefined => {
+  const shaped = p.sections
+    .map((s): Omit<DbimOrgSection, "anchor"> | undefined => {
       const heading = titleCaseHeading(s.heading);
       const blocks = s.blocks.map((b) => shapeBlock(b, heading, id, p.title)).filter(defined);
       const intro = s.intro ? cleanHtml(localiseLiveLinks(s.intro, id), { headingLevel: 3, label: heading }) : undefined;
       if (!blocks.length && !intro) return undefined;
-      let anchor = `org-${slug(heading)}`;
-      while (used.has(anchor)) anchor += "-2";
-      used.add(anchor);
-      return { anchor, heading, intro: intro || undefined, more: s.more ? orgLink(titleCaseHeading(s.more.label), s.more.href, here) : undefined, blocks };
+      return { heading, intro: intro || undefined, more: s.more ? orgLink(titleCaseHeading(s.more.label), s.more.href, here) : undefined, blocks };
     })
     .filter(defined);
+  const sections = groupDocuments(shaped).map((s): DbimOrgSection => {
+    let anchor = `org-${slug(s.heading)}`;
+    while (used.has(anchor)) anchor += "-2";
+    used.add(anchor);
+    return { anchor, ...s };
+  });
   const [y, m, d] = ORGANISATION_PROFILES_AS_ON.split("-");
   return {
     title: p.title,
