@@ -3182,6 +3182,10 @@
              "name": "Officer / Payment Advices / Returned by PFMS"
             },
             {
+             "id": "117:22639",
+             "name": "Officer / Payment Advices / Drafts"
+            },
+            {
              "id": "3:14816",
              "name": "Officer / Payment Advices / Drafts — Empty"
             },
@@ -3266,6 +3270,10 @@
             {
              "id": "3:13859",
              "name": "Officer / Payment Advices / New — Mobile"
+            },
+            {
+             "id": "117:22528",
+             "name": "Officer / Payment Advices / Returned by PFMS — Mobile"
             },
             {
              "id": "3:13796",
