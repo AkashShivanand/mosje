@@ -384,7 +384,7 @@ export default function NgoDashboardPage() {
 
           {/* The whole row is the link (ListRow `href`), so five outlined "Details" buttons no longer
               stack down the right edge; `linkAs` makes each row a client-side route. */}
-          <ListGroup divided flush aria-label="Recent applications">
+          <ListGroup divided aria-label="Recent applications">
               {recent.map((appRow) => {
                 const scheme = ngoScheme(appRow.schemeCode).short;
                 return (
@@ -434,7 +434,7 @@ export default function NgoDashboardPage() {
             </SectionTitle>
 
             {/* A divided list inside the card, not a bordered box inside it (T93). */}
-            <ListGroup divided flush aria-label="Schemes applied under">
+            <ListGroup divided aria-label="Schemes applied under">
               {activeSchemes.map((s) => (
                 <ListRow
                   key={s.code}
@@ -480,7 +480,7 @@ export default function NgoDashboardPage() {
             {idleSchemes.length > 0 && (
               <>
                 <SectionTitle as={3} eyebrow="Not Yet Applied Under" />
-                <ListGroup divided flush size="sm" aria-label="Schemes not yet applied under">
+                <ListGroup divided size="sm" aria-label="Schemes not yet applied under">
                   {idleSchemes.map((s) => (
                     <ListRow key={s.code} title={s.title} description={s.subtitle} />
                   ))}
@@ -653,7 +653,7 @@ function FirstApplication() {
           title="Start Your First Application"
           description="Choose the scheme your project is funded under. Each has its own application form and document checklist."
         />
-        <ListGroup divided flush aria-label="Schemes open for application">
+        <ListGroup divided aria-label="Schemes open for application">
             {Object.entries(NGO_SCHEMES).map(([code, s]) => (
               <ListRow
                 linkAs={NextLink}
