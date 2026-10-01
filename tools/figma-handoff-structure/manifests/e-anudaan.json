@@ -2353,6 +2353,16 @@
       }
      ]
     }
+   ],
+   "loose": [
+    {
+     "id": "100:40177",
+     "name": "NGO / Application Details / Bank Account Needs Checking"
+    },
+    {
+     "id": "100:40553",
+     "name": "NGO / Project Bank Accounts / The Bank Could Not Credit a Grant"
+    }
    ]
   },
   {
@@ -3166,6 +3176,10 @@
              "name": "Officer / Payment Advices / Not Accepted by PFMS"
             },
             {
+             "id": "93:19213",
+             "name": "Officer / Payment Advices / Returned by PFMS"
+            },
+            {
              "id": "3:14816",
              "name": "Officer / Payment Advices / Drafts — Empty"
             },
@@ -3182,12 +3196,20 @@
              "name": "Officer / Prepare Payment Advice / Step 1 of 5 — Sanction Header — Errors"
             },
             {
+             "id": "92:220803",
+             "name": "Officer / Prepare Payment Advice / Step 1 of 5 — DDO Not Active for e-Bills"
+            },
+            {
              "id": "3:14558",
              "name": "Officer / Prepare Payment Advice / Step 2 of 5 — Heads of Account"
             },
             {
              "id": "3:14501",
              "name": "Officer / Prepare Payment Advice / Step 2 of 5 — Heads Do Not Add Up"
+            },
+            {
+             "id": "93:20499",
+             "name": "Officer / Prepare Payment Advice / Step 2 of 5 — CNA Exception Reason"
             },
             {
              "id": "3:14449",
@@ -3212,6 +3234,14 @@
             {
              "id": "3:14069",
              "name": "Officer / Prepare Payment Advice / Returned by the Checker"
+            },
+            {
+             "id": "93:19594",
+             "name": "Officer / Prepare Payment Advice / Returned by PFMS"
+            },
+            {
+             "id": "93:20040",
+             "name": "Officer / Prepare Payment Advice / A Fresh Payment Advice"
             },
             {
              "id": "3:14011",
@@ -3296,6 +3326,10 @@
             {
              "id": "3:13018",
              "name": "Officer / Authorise Payment Advice / You Prepared This Advice"
+            },
+            {
+             "id": "92:220407",
+             "name": "Officer / Authorise Payment Advice / Not the Designated Checker"
             }
            ]
           },
@@ -3376,6 +3410,10 @@
              "name": "Officer / Payment Status / Paid"
             },
             {
+             "id": "92:219954",
+             "name": "Officer / Payment Status / Credit Failed at Bank"
+            },
+            {
              "id": "3:11856",
              "name": "Officer / Payment Status / Waiting to Resend"
             },
@@ -3386,6 +3424,14 @@
             {
              "id": "3:11723",
              "name": "Officer / Payment Status / Returned and Cancelled"
+            },
+            {
+             "id": "91:15801",
+             "name": "Officer / Payment Status / Returned by PFMS"
+            },
+            {
+             "id": "91:16268",
+             "name": "Officer / Payment Status / Financial Year Expired"
             },
             {
              "id": "3:11685",
@@ -3426,44 +3472,6 @@
        ]
       }
      ]
-    }
-   ],
-   "loose": [
-    {
-     "id": "91:15801",
-     "name": "Officer / Payment Status / Returned by PFMS"
-    },
-    {
-     "id": "91:16268",
-     "name": "Officer / Payment Status / Financial Year Expired"
-    },
-    {
-     "id": "92:219954",
-     "name": "Officer / Payment Status / Credit Failed at Bank"
-    },
-    {
-     "id": "92:220407",
-     "name": "Officer / Authorise Payment Advice / Not the Designated Checker"
-    },
-    {
-     "id": "92:220803",
-     "name": "Officer / Prepare Payment Advice / Step 1 of 5 — DDO Not Active for e-Bills"
-    },
-    {
-     "id": "93:19213",
-     "name": "Officer / Payment Advices / Returned by PFMS"
-    },
-    {
-     "id": "93:19594",
-     "name": "Officer / Prepare Payment Advice / Returned by PFMS"
-    },
-    {
-     "id": "93:20040",
-     "name": "Officer / Prepare Payment Advice / A Fresh Payment Advice"
-    },
-    {
-     "id": "93:20499",
-     "name": "Officer / Prepare Payment Advice / Step 2 of 5 — CNA Exception Reason"
     }
    ]
   },
@@ -3558,8 +3566,14 @@
          ]
         },
         {
-         "name": "Keeping PFMS Set-Up Current",
+         "name": "Keeping PFMS Set-Up Current — Needs Discussion",
          "id": "3:9655",
+         "frames": [
+          {
+           "id": "98:11768",
+           "name": "Note — Needs Discussion"
+          }
+         ],
          "children": [
           {
            "name": "Desktop",
@@ -3620,6 +3634,10 @@
             {
              "id": "3:9657",
              "name": "Officer / PFMS Set-Up / Edit Maker and Checker (Dialog)"
+            },
+            {
+             "id": "98:10919",
+             "name": "Officer / PFMS Set-Up / Add Scheme (Dialog)"
             }
            ]
           }

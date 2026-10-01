@@ -23,13 +23,13 @@ portal now has a file of its own, organised in the order an application moves.
 | NGO · After Applying and Getting Paid | NGO — After Applying; NGO — Getting Paid | 72 | 10 |
 | Officers · Reviewing Applications | the review chain, queues and lists | 73 | 6 |
 | Officers · Sanctioning and Inspections | Programme Director; PMU Field Officer | 33 | 6 |
-| Officers · Paying a Sanctioned Grant (PFMS) | Programme Division Maker and Checker — Paying a Sanctioned Grant | 50 | 3 |
+| Officers · Paying a Sanctioned Grant (PFMS) | Programme Division Maker and Checker — Paying a Sanctioned Grant | 59 | 3 |
 | Officers · PFMS Set-Up and Payment Reports | Bureau — Setting Up PFMS; Officers — Payment Reports | 26 | 3 |
 | Officers · Records and Reports | records, audit trail, NGO directory | 24 | 5 |
 | Shared Parts | page frame, error pages, reusable form content | 22 items | — |
 | Old Screens — Do Not Use | replaced screens, each with a note naming its replacement | 8 screens | — |
 
-553 screens, 11 user groups, 45 journeys, 8 needing discussion. Divider pages separate Everyone, NGO and
+562 screens, 11 user groups, 45 journeys, 8 needing discussion. Divider pages separate Everyone, NGO and
 Officers in the page list — the audiences are user roles, so the PFMS pages sit with the Officers (1 Oct 2026).
 
 **How each page reads.** A `START HERE` guide first (who uses the page, its journeys, counted screens, a
@@ -344,13 +344,22 @@ as a design director, UX lead, UI lead, project manager, developer, business ana
 **Not changed:** no existing screen's design (the four states and six dialogs are additions), no red marking, and no
 node id (every move kept its id, so links and comments survive).
 
-**Checked:** `check:figma-handoff -- --portal E-Anudaan --fresh` reads 14 of 15 pages conformant (identity 0,
-visual 0), and `--selftest` catches all nine planted faults. The fifteenth, `Officers · Paying a Sanctioned Grant
-(PFMS)`, showed 9 PFMS screens loose at the page root **added by a parallel session while this one ran** (node ids
-from 91:…, after this session's last write); they were left alone and the baseline was not raised to hide them.
-`manifests/e-anudaan.json` was re-captured with the new `--snapshot` and lists them under that page's `loose`.
+**The 9 loose PFMS screens, filed (on the owner's instruction).** A parallel session drew them at the
+page root while this one ran (node ids from 91:…). Each went into its journey's Desktop row beside the screen it
+varies, following the state-order rule; the rows were reflowed and every phone screen realigned under its desktop
+partner: Credit Failed at Bank (after Paid), Returned by PFMS and Financial Year Expired (after Returned and
+Cancelled), Not the Designated Checker (after You Prepared This Advice), the Payment Advices list Returned by PFMS
+(after Not Accepted by PFMS), Step 1 — DDO Not Active for e-Bills and Step 2 — CNA Exception Reason (after their
+steps' error states), and Returned by PFMS and A Fresh Payment Advice (after Returned by the Checker). No screen's
+content was touched.
 
-**Open for a person:** file the 9 loose PFMS screens into their journeys (the session that drew them);
+**Checked:** `check:figma-handoff -- --portal E-Anudaan --fresh --strict` reads 14 of 15 pages conformant, the
+Paying page among them, and `--selftest` catches all nine planted faults. The fifteenth, `NGO · After Applying and
+Getting Paid`, now shows 2 NGO screens loose at its root (`Bank Account Needs Checking`, `The Bank Could Not Credit
+a Grant`), added by the same parallel session after the filing above; they were left for it, and the baseline was
+not raised. `manifests/e-anudaan.json` was re-captured with `--snapshot` and lists them under that page's `loose`.
+
+**Open for a person:** file the 2 loose NGO screens on `NGO · After Applying and Getting Paid`;
 name version 1.1 in Figma's version history; accept the waiting SAMAVESH updates in the Libraries panel; decide whether officers' PFMS screens need
 phone versions (16 drawn for 56 desktop screens — signing needs a DSC token on a desktop); decide whether the
 payment parts of the NGO's Project Bank Accounts and Application Details screens give way to the PFMS versions.
