@@ -1,0 +1,44 @@
+diff --git a/node_modules/next/dist/server/dev/next-dev-server.js b/node_modules/next/dist/server/dev/next-dev-server.js
+index 64966ab..c8c1a27 100644
+--- a/node_modules/next/dist/server/dev/next-dev-server.js
++++ b/node_modules/next/dist/server/dev/next-dev-server.js
+@@ -111,6 +111,8 @@ const ReactDevOverlay = (props)=>{
+     }
+     return _react.createElement(PagesDevOverlayBridgeImpl, props);
+ };
++// MoSJE patch: the one in-flight prerender-manifest update (see below).
++let prerenderManifestUpdate = Promise.resolve();
+ class DevServer extends _nextserver.default {
+     getStaticPathsWorker() {
+         const worker = new _jestworker.Worker(require.resolve('./static-paths-worker'), {
+@@ -657,6 +659,15 @@ class DevServer extends _nextserver.default {
+             (!isAppPath || prerenderedRoutes && prerenderedRoutes.length > 0)) {
+                 // we write the static paths to partial manifest for
+                 // fallback handling inside of entry handler's
++                // MoSJE patch (patches/README.md): two routes compiling at once both
++                // read-modify-wrote this manifest, and a reader could see it half
++                // written -> "Unexpected end of JSON input" -> a 500. Serialise the
++                // update, and replace the file by rename so no reader sees a partial one.
++                const previousManifestUpdate = prerenderManifestUpdate;
++                let releaseManifestUpdate;
++                prerenderManifestUpdate = new Promise((resolve)=>releaseManifestUpdate = resolve);
++                await previousManifestUpdate;
++                try {
+                 const rawExistingManifest = await _fs.default.promises.readFile((0, _path.join)(this.distDir, _constants1.PRERENDER_MANIFEST), 'utf8');
+                 const existingManifest = JSON.parse(rawExistingManifest);
+                 for (const staticPath of value.staticPaths || []){
+@@ -687,7 +698,13 @@ class DevServer extends _nextserver.default {
+                 };
+                 const updatedManifest = JSON.stringify(existingManifest);
+                 if (updatedManifest !== rawExistingManifest) {
+-                    await _fs.default.promises.writeFile((0, _path.join)(this.distDir, _constants1.PRERENDER_MANIFEST), updatedManifest);
++                    const manifestPath = (0, _path.join)(this.distDir, _constants1.PRERENDER_MANIFEST);
++                    const tempPath = `${manifestPath}.tmp.${process.pid}.${Math.random().toString(36).slice(2)}`;
++                    await _fs.default.promises.writeFile(tempPath, updatedManifest);
++                    await _fs.default.promises.rename(tempPath, manifestPath);
++                }
++                } finally {
++                    releaseManifestUpdate();
+                 }
+             }
+             this.staticPathsCache.set(pathname, value);
