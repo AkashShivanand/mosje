@@ -401,6 +401,14 @@ Each note grew, so the rows beneath it and every journey and user group below it
 and their sections grown; nothing else moved. `check:figma-handoff -- --portal E-Anudaan --fresh --strict`: all 15
 pages conformant, identity 0 and visual 0.
 
+**Then checked against the PFMS BRD, read in full** (same day). The BRD agrees with the walkthrough that the Under
+Secretary, Programme Division issues the sanction and that "PD" is the Programme Division, and places the Maker and
+Checker inside that login; it disagrees on who attaches the documents (the Maker) and on SMILE (applicable). The guide
+now says which source says what: the Checker stage was corrected to the BRD, the last stage says the NGO is told only
+on a confirmed UTR, a sixth difference — Who Attaches the Documents — was added, and the notes on Examining and
+Sanctioning, Authorising (plus a new item), Following a Payment and Keeping PFMS Set-Up Current quote the BRD.
+Detail: the walkthrough notes §5a.
+
 **Not changed:** no screen, no journey's name other than Reviewing an Application's suffix, no role column.
 **Open for a person:** put §7 of the walkthrough notes to the Department.
 
