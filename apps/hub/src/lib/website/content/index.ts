@@ -140,10 +140,19 @@ export function getScheme(slug: string): SectionRecord | undefined {
  * on nearly every website route, and re-deriving 2,000 hrefs per render to
  * produce the same eight strings would be work for nothing.
  */
-const withLocalFile = (rows: FileRecord[]): FileRecord[] =>
-  rows.map((d) => ({ ...d, fileUrl: sampleDocumentFor(d.category, d.title) }));
+const withLocalFile = (rows: FileRecord[], register?: string): FileRecord[] =>
+  rows.map((d) => ({ ...d, fileUrl: sampleDocumentFor(register, d.category, d.title) }));
 
-const tenders = withLocalFile(tendersData as FileRecord[]);
+/*
+ * THE REGISTER'S OWN NOUN LEADS THE HINTS, because a row's title often does not
+ * carry one and its category is no help either. A vacancy titled "Car Driver"
+ * in the category "Job" matched no rule and fell through to the `report` sample
+ * — a reader opening a driver's recruitment notice got something shaped like an
+ * annual report. With "vacancy" in front it resolves to `circular`, which is
+ * what the Department itself calls these ("Vacancy Circular for the post of…").
+ * Documents pass none: they carry a real category, and it is the better signal.
+ */
+const tenders = withLocalFile(tendersData as FileRecord[], "tender");
 
 export function getTenders(): FileRecord[] {
   return tenders;
@@ -153,7 +162,7 @@ export function getTender(slug: string): FileRecord | undefined {
   return findBySlug(tenders, slug);
 }
 
-const vacancies = withLocalFile(vacanciesData as FileRecord[]);
+const vacancies = withLocalFile(vacanciesData as FileRecord[], "vacancy");
 
 export function getVacancies(): FileRecord[] {
   return vacancies;
