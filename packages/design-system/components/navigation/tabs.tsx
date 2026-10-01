@@ -231,6 +231,11 @@ export function Tabs({
       mark.style.width = `${btnRect.width}px`;
       mark.style.height = "";
     }
+    // Until this has run the mark has no size, and tabs.css paints the selected tab
+    // itself instead. Without that, server-rendered HTML showed the pill's white ink
+    // on the grey track — the selected tab unreadable until hydration, which on a
+    // first load of the E-Anudaan sign-in page was long enough to screenshot.
+    list.dataset.indicatorReady = "";
   }, [active, vertical]);
 
   /**
