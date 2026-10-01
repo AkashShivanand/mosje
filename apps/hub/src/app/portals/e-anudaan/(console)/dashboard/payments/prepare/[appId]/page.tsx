@@ -103,7 +103,6 @@ export default function PrepareAdvicePage() {
     return (
       <RecordScreen
         breadcrumb={BREADCRUMB}
-        eyebrow="Payment Advice"
         title={header.title}
         meta={header.meta}
         status={<StageBadge stage="awaiting-advice" />}
@@ -153,7 +152,6 @@ function LockedAdvice({ advice, header }: { advice: PaymentAdvice; header: Head 
   return (
     <RecordScreen
       breadcrumb={BREADCRUMB}
-      eyebrow="Payment Advice"
       title={header.title}
       meta={header.meta}
       status={<StageBadge stage={stage} />}
@@ -277,25 +275,26 @@ function AdviceWizard({
 
   return (
     <WizardScreen
-      eyebrow="Payment Advice"
       title={header.title}
       description={header.meta}
+      // The badge and the draft action sit on the header's trailing edge, where RecordScreen
+      // places them on this advice's other screens (Figma: Officer / Prepare Payment Advice / *).
+      status={<StageBadge stage={advice.state === "returned" ? "returned-by-checker" : advice.state === "not-accepted" ? "not-accepted" : advice.state === "returned-pfms" ? "returned-by-pfms" : "in-preparation"} />}
+      actions={
+        <Button
+          appearance="outlined"
+          size="sm"
+          iconLeft={<Icon name="save" size={16} aria-hidden />}
+          onClick={() => {
+            if (persist()) toast(`Saved as a draft at ${formatDateTime(now())}.`, "success");
+          }}
+        >
+          Save as Draft
+        </Button>
+      }
       notices={
         <div className="space-y-4">
-          <div className="flex flex-wrap items-center gap-3">
-            <StageBadge stage={advice.state === "returned" ? "returned-by-checker" : advice.state === "not-accepted" ? "not-accepted" : advice.state === "returned-pfms" ? "returned-by-pfms" : "in-preparation"} />
-            <Button
-              appearance="outlined"
-              size="sm"
-              iconLeft={<Icon name="save" size={16} aria-hidden />}
-              onClick={() => {
-                if (persist()) toast(`Saved as a draft at ${formatDateTime(now())}.`, "success");
-              }}
-            >
-              Save as Draft
-            </Button>
-          </div>
-      {pageLevel.map((i) => (
+          {pageLevel.map((i) => (
             <Alert key={i.field} status="warning" title={i.field === "hdr-scheme" ? "Scheme Code Awaited" : "Master Data Out of Date"}>
               {i.message}
             </Alert>

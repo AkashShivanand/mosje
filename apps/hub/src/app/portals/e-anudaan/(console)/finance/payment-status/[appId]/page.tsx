@@ -115,7 +115,6 @@ export default function PaymentStatusPage() {
         ]}
       />
       <PageHeader
-        eyebrow="Payment Status"
         title={ngo?.name ?? app.ngoId}
         meta={
           <span className="block space-y-1">

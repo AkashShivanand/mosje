@@ -16431,6 +16431,12 @@ export const GENERATED_PROPS = {
         "description": "The scheme or application's name. Title Case."
       },
       {
+        "name": "actions",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Header actions that belong to the whole record, not to a step — \"Save as Draft\". Never Back, Next or Submit: those are the action band's."
+      },
+      {
         "name": "asked",
         "type": "boolean",
         "required": false,
@@ -16529,6 +16535,12 @@ export const GENERATED_PROPS = {
         "type": "() => void",
         "required": false,
         "description": "Retry, offered from the error state."
+      },
+      {
+        "name": "status",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Where the record stands — a status `Badge`. Rendered on the header's trailing edge, ahead of `actions`, exactly as `RecordScreen` and `DecisionScreen` place it, so one record shows its status in the same place on every screen it opens."
       },
       {
         "name": "submitLabel",
