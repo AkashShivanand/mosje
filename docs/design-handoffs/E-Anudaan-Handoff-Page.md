@@ -5,7 +5,7 @@
 **Standard** `.claude/rules/figma-handoff-page-structure.md` §10a · **Snapshot** `tools/figma-handoff-structure/manifests/e-anudaan.json`
 **Gate** `npm run check:figma-handoff -- --portal E-Anudaan --strict` — checks all 15 pages
 
-## 0. The file (30 Sep 2026)
+## 0. The file (30 Sep 2026, tidied 1 Oct 2026)
 
 568 screens had outgrown one page of a twelve-portal file: the NGO column alone ran 217,000px tall. The
 portal now has a file of its own, organised in the order an application moves.
@@ -20,17 +20,17 @@ portal now has a file of its own, organised in the order an application moves.
 | NGO · AVYAY Application Form | new application and instalment claims | 52 | 1 |
 | NGO · SMILE (Garima Greh) Application Form | new application and instalment claims | 36 | 1 |
 | NGO · SHRESHTA Mode 2 Application Form | new application and instalment claims | 44 | 1 |
-| NGO · After Applying and Getting Paid | NGO — After Applying; NGO — Getting Paid | 72 | 10 |
+| NGO · After Applying and Getting Paid | NGO — After Applying; NGO — Getting Paid | 74 | 10 |
 | Officers · Reviewing Applications | the review chain, queues and lists | 73 | 6 |
-| Officers · Sanctioning and Inspections | Programme Director; PMU Field Officer | 19 | 6 |
-| Officers · Records and Reports | records, audit trail, NGO directory, payment status | 26 | 6 |
-| PFMS · Preparing and Authorising Payments | Programme Division — Paying a Sanctioned Grant | 50 | 3 |
-| PFMS · Set-Up and Payment Reports | Bureau — Setting Up PFMS; Officers — Payment Reports | 26 | 3 |
+| Officers · Sanctioning and Inspections | Programme Director; PMU Field Officer | 34 | 6 |
+| Officers · Paying a Sanctioned Grant (PFMS) | Programme Division Maker and Checker — Paying a Sanctioned Grant | 59 | 3 |
+| Officers · PFMS Set-Up and Payment Reports | Bureau — Setting Up PFMS; Officers — Payment Reports | 27 | 3 |
+| Officers · Records and Reports | records, audit trail, NGO directory | 24 | 5 |
 | Shared Parts | page frame, error pages, reusable form content | 22 items | — |
-| Old Screens — Do Not Use | replaced screens and leftovers | 22 items | — |
+| Old Screens — Do Not Use | replaced screens, each with a note naming its replacement | 8 screens | — |
 
-541 screens, 11 user groups, 46 journeys, 8 needing discussion. Divider pages separate Everyone, NGO,
-Officers and PFMS in the page list.
+566 screens, 11 user groups, 45 journeys, 9 needing discussion. Divider pages separate Everyone, NGO and
+Officers in the page list — the audiences are user roles, so the PFMS pages sit with the Officers (1 Oct 2026).
 
 **How each page reads.** A `START HERE` guide first (who uses the page, its journeys, counted screens, a
 link back to the Portal Map), then the screens: user groups and their journeys stacked top to bottom in
@@ -139,7 +139,6 @@ SCREENS BY WHO USES THEM
   Officers — Records and Reports
     NGO Directory and NGO Profile   (3 screens)
     Bank Account Change Requests   (1 screens)
-    Payment Status   (1 screens)
     Reports and Analytics   (3 screens)
     Audit Trail   (3 screens)
     Project Records and CCTV Compliance   (4 screens)
@@ -158,8 +157,8 @@ SHARED PARTS
   Form Step Content — SHRESHTA and SMILE
   Reference Images
 OLD SCREENS — DO NOT USE
+  Replaced Screens — 1 Oct 2026
   Replaced Screens — 17 Sep 2026
-  Leftover Pieces — To Be Deleted
 ```
 
 ## 3. Needs discussion — red only where screens may change
@@ -184,7 +183,7 @@ the phone header's DBIM difference; renewal lists; the Programme Director screen
 | What | Why a person | Where |
 |---|---|---|
 | Name a version, e.g. “Handoff structure — 17 Sep 2026” | version naming is not in the Plugin API | File → Version history |
-| Confirm and delete the 11 stray nodes | deleting is a person's call | D · Stray Nodes |
+| ~~Confirm and delete the 11 stray nodes~~ | **Done 1 Oct 2026** — deleted on the owner's instruction | — |
 | Timed find test: a developer and a reviewer find a screen by its ID | the structure is only proven when people use it | rule §11 |
 | ~~Phone screens for the rest of the flows~~ | **Done 18 Sep 2026** — every desktop screen has a phone version | the Mobile row of each journey |
 
@@ -315,6 +314,64 @@ wait for someone to accept them in Figma's Libraries panel.
 **Build notes found while drawing.** A `use_figma` call that clones a frame and then edits instances inside a
 cloned slot (side-menu items, sizing) often does not keep those edits. A second pass is needed, and one was run
 over every new frame. Alert body text keeps a stale line break until its characters are reset after resizing.
+
+## 5c. Tidy-up and multi-role audit — 1 Oct 2026
+
+Asked for: remove what the file does not need, keep it organised strictly by role and then by flow, and audit it
+as a design director, UX lead, UI lead, project manager, developer, business analyst and CEO.
+
+| What | Before | After | Why |
+|---|---|---|---|
+| The two PFMS pages | `PFMS · Preparing and Authorising Payments`, `PFMS · Set-Up and Payment Reports`, behind their own divider | `Officers · Paying a Sanctioned Grant (PFMS)`, `Officers · PFMS Set-Up and Payment Reports`, after Sanctioning and before Records and Reports; the extra divider removed | PFMS is a payment system, not a user role; everyone on those pages is a Ministry officer (decided by the owner, 1 Oct 2026) |
+| Old Payment Status screen (desktop and phone) | a journey of its own in Officers — Records and Reports | in Old Screens, faded, in `Replaced Screens — 1 Oct 2026`, with a note naming `Following a Payment` | two different Payment Status designs invited a developer to build the stale one (decided by the owner, 1 Oct 2026) |
+| Leftover pieces | 11 fragments (table cells, project ID cells, an empty state, a document row) in `Leftover Pieces — To Be Deleted` since 17 Sep | deleted, with their section | marked for deletion two weeks earlier; the owner asked for unnecessary groups to be removed |
+| Replaced-screen notes | route paths and transcript references (`/ngo/attendance-master`, `T264–271`), placed inconsistently, one screen without a note | one plain-words note above every replaced screen, naming the page and journey that replaced it | a reviewer could not tell what to use instead |
+| Two journeys' rows | Pop-ups and Dialogs sat between Desktop and Mobile in `Project Location and Bank Accounts` and `Examining and Sanctioning an Application` | Desktop, Mobile, Pop-ups and Dialogs, as everywhere else | each phone screen sits under its desktop screen (§3) |
+| Shared Parts order | Reference Images first, Page Frame last | Page Frame, Access Denied and Page Not Found, Error Messages, Form Step Content, Reference Images | the order the rule and this doc list them |
+| Start Here | Portal Map named the PFMS pages and listed Payment Status; Status listed two finished items as open and said every screen has a phone version | Portal Map relabelled, Records and Reports card last (page order), Payment Status gone; Status corrected, 1 Oct entry in the change log | the guide must describe the file as it is |
+| Cover counts | 541 screens, 46 journeys, Version 1, 30 Sep | 539 screens, 45 journeys, Version 1.1, 1 Oct | recounted from the canvas |
+
+| Programme Director's examine screen | one state plus three confirmations | four more states, desktop and phone: sanctioning less than sought, sanction amounts not valid, reason for return missing, read-only (the file is not with you) | sanctioning is the Department's key decision and was the least drawn; every state and message is the built review screen's (`review-shell.tsx`, `officer-forms.ts`) |
+| PMU field officer's inspections | one screen each for the dashboard and the list | six dialogs in a new Pop-ups and Dialogs row: Schedule Inspection, its missing-date error, Record Inspection, its two errors, the confirm-before-submit, and the filed Inspection Report | filing the report is the field officer's job and was not drawn; content and messages are the build's (`worklist-table.tsx`, `demo-forms/inspection-report.ts`) |
+| Payment column | `Programme Division — Paying a Sanctioned Grant` | `Programme Division Maker and Checker — Paying a Sanctioned Grant`; the Portal Map card reads Maker and Checker | the BRD's actors are the Maker and the Checker, and they sign in separately (`roles.ts`) |
+| How to Read This File | no list of who is who | a Who Is Who section: every column mapped to the people and the sign-in roles in the build | four names pointed at overlapping officers |
+| Status and Change Log | open questions with no one named | who answers each (the Ministry; PFMS ones NeGD and the Ministry), a link to the BRD coverage checklist, a change-log entry | a question without an owner is not answered |
+| Phone-only filter sheet | `Officer / All Applications / Filters — Mobile` | `… / Filters (Phone Only) — Mobile` | it read as a missing desktop screen |
+| Each scheme form's page guide | no pointer past the last step | a line linking to Application Submitted on NGO · Starting an Application | the submitted screen is shared by all four forms and sat where nobody looked for it |
+| A phone label on the examine screen | the Non-Recurring Grant asterisk floated at the field's right edge | beside its label | the label had been set to fill the row |
+| `check:figma-handoff` | no way to write the manifest | `--portal <Portal> --snapshot` writes `manifests/<portal>.json` from the check's own REST reads, and refuses when a page could not be read | the manifest had been assembled by hand |
+
+**Not changed:** no existing screen's design (the four states and six dialogs are additions), no red marking, and no
+node id (every move kept its id, so links and comments survive).
+
+**The 9 loose PFMS screens, filed (on the owner's instruction).** A parallel session drew them at the
+page root while this one ran (node ids from 91:…). Each went into its journey's Desktop row beside the screen it
+varies, following the state-order rule; the rows were reflowed and every phone screen realigned under its desktop
+partner: Credit Failed at Bank (after Paid), Returned by PFMS and Financial Year Expired (after Returned and
+Cancelled), Not the Designated Checker (after You Prepared This Advice), the Payment Advices list Returned by PFMS
+(after Not Accepted by PFMS), Step 1 — DDO Not Active for e-Bills and Step 2 — CNA Exception Reason (after their
+steps' error states), and Returned by PFMS and A Fresh Payment Advice (after Returned by the Checker). No screen's
+content was touched.
+
+**And the 2 NGO screens.** The same session then added `NGO / Project Bank Accounts / The Bank Could Not Credit
+a Grant` and `NGO / Application Details / Bank Account Needs Checking` at the root of `NGO · After Applying and
+Getting Paid`. Their positions and heights match the screens they were copied from, so each went into `PFMS Payee
+Code and Payment` beside its source: after `PFMS Payee Code Needed` and after `Payment in Process`.
+
+**Then the PFMS session's own pass** (same day, coordinated so the two sessions never wrote at once): a fresh
+payment advice from a returned-and-cancelled order, the Return Memo row, SHRESHTA Mode 1 in the PFMS set-up with an
+`Add Scheme (Dialog)`, the SHRESHTA heads corrected to their own code, `Programme Director / Examine an
+Application / Bank Details Incomplete`, and `Keeping PFMS Set-Up Current` marked Needs Discussion (Mode 1's full
+form waits on the business analyst). This session then set the counts: Cover 566, Sanctioning guide 34, Set-Up
+guide 27 screens and 2 needing discussion, and Start Here's cover guide 9 needing discussion.
+
+**Checked:** `check:figma-handoff -- --portal E-Anudaan --fresh --strict` passes on **all 15 pages** (identity 0,
+visual 0), nothing loose at any page root, and `--selftest` catches all nine planted faults.
+`manifests/e-anudaan.json` was re-captured with `--snapshot` from that run.
+
+**Open for a person:** name version 1.1 in Figma's version history; accept the waiting SAMAVESH updates in the Libraries panel; decide whether officers' PFMS screens need
+phone versions (16 drawn for 68 desktop screens — signing needs a DSC token on a desktop); decide whether the
+payment parts of the NGO's Project Bank Accounts and Application Details screens give way to the PFMS versions.
 
 ## 6. Adding to the page
 
