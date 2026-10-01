@@ -26,7 +26,8 @@ import { usePfms } from "@/lib/e-anudaan/pfms/store";
 import { ROLES } from "@/lib/e-anudaan/roles";
 import { projectTitleFor } from "@/lib/e-anudaan/applicant";
 import { formatDateTime } from "@/lib/e-anudaan/format";
-import { STEP_LABEL, STEP_ORDER, isEditable, nextBillNumber, validateAdvice } from "@/lib/e-anudaan/pfms/advice";
+import { STEP_LABEL, STEP_ORDER, everyAdvice, fixedValuesFor, isEditable, nextBillNumber, validateAdvice } from "@/lib/e-anudaan/pfms/advice";
+import { RESTARTABLE, STAGE_INFO, latestRequest, returnedBy, stageOf } from "@/lib/e-anudaan/pfms/stages";
 import { configFor } from "@/lib/e-anudaan/pfms/masters";
 import { paymentCase, sanctionFacts, BLOCKER_TEXT } from "@/lib/e-anudaan/pfms/selectors";
 import { pfmsError } from "@/lib/e-anudaan/pfms/errors";
@@ -131,25 +132,42 @@ export default function PrepareAdvicePage() {
 /* ── The locked record, once the advice has left the Maker ───────────────── */
 
 function LockedAdvice({ advice, header }: { advice: PaymentAdvice; header: Head }) {
-  const { pfms } = usePfms();
-  const lead: Record<string, { title: string; body: string }> = {
-    submitted: { title: "With the Checker", body: "This advice is waiting for the Checker's authorisation. It cannot be changed unless the Checker returns it." },
-    transmitted: { title: "Sent to PFMS", body: "The Checker has signed this advice and PFMS has received it. Its progress is on the Payment Status page." },
-    queued: { title: "Waiting to Resend", body: "PFMS could not be reached when this advice was sent. It will be sent again automatically." },
-    cancelled: { title: "Returned and Cancelled at PFMS", body: "A cancelled sanction cannot be revived. A fresh sanction must be issued from e-Anudaan." },
+  const { pfms, startFresh } = usePfms();
+  const { state } = useEAnudaan();
+  const { toast } = useToast();
+  const stage = stageOf(advice);
+  const canRestart = RESTARTABLE.includes(stage) && !!state.session && ROLES[state.session].caps.includes("prepareAdvice");
+  const lead: Partial<Record<typeof stage, { title: string; body: string }>> = {
+    "awaiting-authorisation": { title: "With the Checker", body: "This advice is waiting for the Checker's authorisation. It cannot be changed unless the Checker returns it." },
+    "waiting-to-resend": { title: "Waiting to Resend", body: "PFMS could not be reached when this advice was sent. It will be sent again automatically." },
+    cancelled: { title: "Returned and Cancelled at PFMS", body: "A cancelled payment advice cannot be revived. Start a fresh payment advice against the same sanction; this one is kept as it is." },
+    "fy-expired": { title: "Financial Year Expired", body: "The financial year closed before PFMS paid this bill. Start a fresh payment advice against the same sanction; this one is kept as it is." },
+    "credit-failed": { title: "Credit Failed at Bank", body: "The bank could not credit the NGO's account, and the NGO has been asked to check it. Once the account is correct, start a fresh payment advice." },
   };
-  const l = lead[advice.state] ?? lead.submitted!;
+  const l = lead[stage] ?? { title: "Sent to PFMS", body: "The Checker has signed this advice and PFMS has received it. Its progress is on the Payment Status page." };
+  const restart = () => {
+    const res = startFresh(advice.appId);
+    if (!res.ok) toast(res.error, "error");
+    else toast(`Fresh payment advice ${res.advice?.id ?? ""} opened.`, "success");
+  };
   return (
     <RecordScreen
       breadcrumb={BREADCRUMB}
       eyebrow="Payment Advice"
       title={header.title}
       meta={header.meta}
-      status={<StageBadge stage={advice.state === "submitted" ? "awaiting-authorisation" : advice.state === "queued" ? "waiting-to-resend" : advice.state === "cancelled" ? "cancelled" : "received"} />}
+      status={<StageBadge stage={stage} />}
       actions={
-        <Link href={statusHref(advice.appId)} className={buttonClasses("primary", "outlined", "sm", "whitespace-nowrap")}>
-          <Icon name="timeline" size={16} aria-hidden /> Payment Status
-        </Link>
+        <div className="flex flex-wrap items-center gap-2">
+          {canRestart && (
+            <Button size="sm" iconLeft={<Icon name="restart_alt" size={16} aria-hidden />} onClick={restart}>
+              Start a Fresh Payment Advice
+            </Button>
+          )}
+          <Link href={statusHref(advice.appId)} className={buttonClasses("primary", "outlined", "sm", "whitespace-nowrap")}>
+            <Icon name="timeline" size={16} aria-hidden /> Payment Status
+          </Link>
+        </div>
       }
       tabs={[
         {
@@ -157,7 +175,7 @@ function LockedAdvice({ advice, header }: { advice: PaymentAdvice; header: Head 
           label: "Payment Advice",
           render: () => (
             <div className="space-y-5">
-              <Alert status={advice.state === "cancelled" ? "error" : "info"} title={l.title}>
+              <Alert status={STAGE_INFO[stage].tone === "danger" ? "error" : "info"} title={l.title}>
                 {l.body}
               </Alert>
               <AdviceSummary advice={advice} masters={pfms.masters} />
@@ -199,6 +217,8 @@ function AdviceWizard({
   const pageLevel = all.filter((i) => PAGE_LEVEL.has(i.field));
   // PFMS's own errors ride on the advice until the Maker resubmits (FR-STS-006).
   const pfmsIssues = advice.state === "not-accepted" ? advice.issues : [];
+  const lastRequest = latestRequest(advice);
+  const replaced = advice.requests.length === 0 ? advice.earlier?.at(-1) : undefined;
 
   // A returned or refused advice opens on the first step with something to fix.
   const firstFlagged = (issues: readonly ValidationIssue[]) => {
@@ -263,7 +283,7 @@ function AdviceWizard({
       notices={
         <div className="space-y-4">
           <div className="flex flex-wrap items-center gap-3">
-            <StageBadge stage={advice.state === "returned" ? "returned-by-checker" : advice.state === "not-accepted" ? "not-accepted" : "in-preparation"} />
+            <StageBadge stage={advice.state === "returned" ? "returned-by-checker" : advice.state === "not-accepted" ? "not-accepted" : advice.state === "returned-pfms" ? "returned-by-pfms" : "in-preparation"} />
             <Button
               appearance="outlined"
               size="sm"
@@ -281,6 +301,19 @@ function AdviceWizard({
             </Alert>
           ))}
 
+          {advice.state === "returned-pfms" && (
+            <Alert status="warning" title="Returned by PFMS">
+              <span className="block">
+                The {returnedBy(lastRequest)} returned the bill{lastRequest?.statusAt ? ` on ${formatDateTime(lastRequest.statusAt)}` : ""}: {lastRequest?.returnReason}
+              </span>
+              <span className="block">Correct the advice and submit it again. The Checker signs it again, and it is resent to PFMS as a returned bill (Bill Status R).</span>
+            </Alert>
+          )}
+          {replaced && (
+            <Alert status="info" title="A Fresh Payment Advice">
+              This advice replaces {replaced.id}, which ended as {STAGE_INFO[stageOf(replaced)].label}. The heads of account, amounts, remarks and documents are carried over; check each step before submitting.
+            </Alert>
+          )}
           {advice.state === "returned" && advice.checkerRemark && (
             <Alert status="warning" title="Returned by the Checker">
               {advice.checkerRemark}
@@ -324,6 +357,7 @@ function AdviceWizard({
         {shown.length > 0 && <ErrorSummary errors={shown.map((i) => ({ fieldId: controlId(i.field), message: i.message }))} headingLevel={3} />}
         {step === "header" && (
           <HeaderStep
+            fixed={fixedValuesFor(advice)}
             facts={facts}
             header={draft.header}
             onChange={(h) =>
@@ -333,7 +367,7 @@ function AdviceWizard({
                 // its series at once, so the Maker sees it the moment they choose (FR-PDM-005).
                 header:
                   h.ddoCode && h.ddoCode !== d.header.ddoCode
-                    ? { ...h, billNumber: nextBillNumber(pfms.advices.filter((a) => a.appId !== advice.appId), h.ddoCode, advice.financialYear) }
+                    ? { ...h, billNumber: nextBillNumber(everyAdvice(pfms.advices).filter((a) => a !== advice), h.ddoCode, advice.financialYear) }
                     : h.ddoCode
                       ? h
                       : { ...h, billNumber: "" },

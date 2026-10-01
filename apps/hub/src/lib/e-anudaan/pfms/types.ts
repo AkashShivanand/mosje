@@ -93,6 +93,12 @@ export interface SchemePfmsConfig {
   ddoCodes: string[];
   /** SHRESHTA's payment mode (TSA or hybrid) is undecided (§3.2, §9). */
   pendingDecision?: string;
+  /**
+   * The scheme's display name, where e-Anudaan has no application form for it yet — a scheme the
+   * Bureau added on Heads of Account, or SHRESHTA Mode 1, which the BRD names but the portal does
+   * not yet carry (NFR §6.4: onboarded by configuration, without a code change).
+   */
+  name?: string;
 }
 
 /* ── The payment advice (FR-PDM, Annexure F) ───────────────────────────────── */
@@ -152,8 +158,13 @@ export type AdviceState =
   | "not-accepted"
   /** PFMS could not be reached. Queued for automatic retry; the case reads "Waiting to Resend". */
   | "queued"
-  /** Cancelled at PFMS — terminal. A fresh sanction must originate from e-Anudaan (BR-CAN-001). */
-  | "cancelled";
+  /** Cancelled at PFMS — terminal. A fresh advice must originate from e-Anudaan (BR-CAN-001). */
+  | "cancelled"
+  /**
+   * PFMS returned the bill without cancelling it (Annexure C, ReturnedBy…). Back with the Maker,
+   * who corrects it; it is resubmitted with Bill Status "R" (FR-PDM-001, FR-PDM-006).
+   */
+  | "returned-pfms";
 
 export interface AdviceHeader {
   ddoCode: string;
@@ -208,6 +219,7 @@ export type PfmsStatus =
   | "ReturnedByAAO"
   | "ReturnedByPAO"
   | "ReturnedByDDO"
+  | "ReturnedByPDChecker"
   | "PendingDSCReturnOrder"
   | "FinYrExpired"
   | "Cancelled";
@@ -245,7 +257,7 @@ export interface PfmsRequest {
   bill?: { billNumber: string; billDate: string; tokenNumber: string; tokenDate: string };
   voucher?: { number: string; date: string };
   payments: BeneficiaryPayment[];
-  /** BillReturnReason, when PFMS returned and cancelled the bill (FR-STS-005). */
+  /** BillReturnReason, when PFMS returned the bill, cancelled or not (FR-STS-005). */
   returnReason?: string;
   /** How many automatic resends a queued request has had. */
   retries: number;
@@ -271,7 +283,11 @@ export type AdviceEventKind =
   | "status"
   | "credited"
   | "cancelled"
-  | "reconciled";
+  | "reconciled"
+  | "returned-pfms"
+  | "expired"
+  | "credit-failed"
+  | "restarted";
 
 export interface AdviceEvent {
   at: string;
@@ -308,6 +324,12 @@ export interface PaymentAdvice {
   history: AdviceEvent[];
   /** Set once the RD/TD feed has been matched against this advice (FR-STS-004). */
   reconciliation?: { at: string; matched: boolean; note?: string };
+  /**
+   * Earlier advices for the same sanction that ended without a credit — returned and cancelled,
+   * financial year expired, or failed at the bank — oldest first, kept read-only. A fresh advice
+   * carries them so the case keeps its whole history (BR-CAN-001; decision recorded in the plan §4).
+   */
+  earlier?: PaymentAdvice[];
 }
 
 /* ── Claim Reference Numbers (FR-DOC-003) ──────────────────────────────────── */

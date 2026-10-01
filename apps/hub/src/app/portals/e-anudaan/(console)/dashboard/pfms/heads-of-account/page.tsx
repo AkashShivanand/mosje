@@ -14,6 +14,11 @@
  * as a state with the field to record it, not as a blank. Removing a head leaves advices already
  * sent untouched; advices still with the Maker that used it surface on Legacy Files to be retrofitted
  * (FR-HOA-003).
+ *
+ * Add Scheme (1 Oct 2026): NFR §6.4 asks that a scheme join "by configuration … without a code
+ * change". A scheme is added here by name, with its PFMS code if allotted and the DDO that pays it;
+ * its heads are then added like any other's. SHRESHTA Mode 1 is configured this way — the BRD names
+ * it, the portal carries no form for it yet (plan §4, question 14).
  */
 
 import * as React from "react";
@@ -37,9 +42,8 @@ import {
   type DataTableColumn,
 } from "@mosje/design-system";
 import { usePfms } from "@/lib/e-anudaan/pfms/store";
-import { schemeLabel } from "@/lib/e-anudaan/selectors";
 import { BLOCKER_TEXT } from "@/lib/e-anudaan/pfms/selectors";
-import { headCode, labelOf } from "@/lib/e-anudaan/pfms/masters";
+import { headCode, labelOf, schemeTitle } from "@/lib/e-anudaan/pfms/masters";
 import { isEditable } from "@/lib/e-anudaan/pfms/advice";
 import type { HeadOfAccount, Masters, SchemePfmsConfig } from "@/lib/e-anudaan/pfms/types";
 import { EA } from "@/components/e-anudaan/pfms/payment-ui";
@@ -62,6 +66,7 @@ export default function HeadsOfAccountPage() {
   const { pfms, hydrated, setSchemeHeads } = usePfms();
   const { toast } = useToast();
   const [adding, setAdding] = React.useState<string | null>(null);
+  const [addingScheme, setAddingScheme] = React.useState(false);
   const [removing, setRemoving] = React.useState<{ schemeCode: string; index: number } | null>(null);
 
 
@@ -72,7 +77,7 @@ export default function HeadsOfAccountPage() {
   const confirmRemove = () => {
     if (!removingCfg || !removing) return;
     const res = setSchemeHeads(removingCfg.schemeCode, removingCfg.heads.filter((_, i) => i !== removing.index));
-    if (res.ok) toast(`Head of account removed from ${schemeLabel(removingCfg.schemeCode)}.`, "success");
+    if (res.ok) toast(`Head of account removed from ${schemeTitle(removingCfg)}.`, "success");
     else toast(res.error, "error");
     setRemoving(null);
   };
@@ -83,6 +88,11 @@ export default function HeadsOfAccountPage() {
       <SettingsScreen
         title="Heads of Account"
         meta="The PFMS scheme code and the coded heads of account a payment advice may use, by scheme."
+        actions={
+          <Button size="md" iconLeft={<Icon name="add" size={20} aria-hidden />} onClick={() => setAddingScheme(true)}>
+            Add Scheme
+          </Button>
+        }
         loading={!hydrated}
         sections={[
           {
@@ -102,6 +112,8 @@ export default function HeadsOfAccountPage() {
           },
         ]}
       />
+
+      {addingScheme && <AddSchemeDialog masters={pfms.masters} onClose={() => setAddingScheme(false)} />}
 
       {addingCfg && <AddHeadDialog key={addingCfg.schemeCode} cfg={addingCfg} masters={pfms.masters} onClose={() => setAdding(null)} />}
 
@@ -124,7 +136,7 @@ export default function HeadsOfAccountPage() {
         {removingHead && removingCfg && (
           <div className="space-y-3">
             <p className="text-body-1 text-ink">
-              Remove <span className="font-mono">{headCode(removingHead)}</span> from {schemeLabel(removingCfg.schemeCode)}? The Maker will no longer be able to choose it. Payment advices already sent to PFMS are not affected.
+              Remove <span className="font-mono">{headCode(removingHead)}</span> from {schemeTitle(removingCfg)}? The Maker will no longer be able to choose it. Payment advices already sent to PFMS are not affected.
             </p>
             {inUse > 0 && (
               <Alert status="warning" title={`${inUse} Payment Advice${inUse === 1 ? "" : "s"} Use This Head`}>
@@ -149,7 +161,7 @@ function SchemeCard({ cfg, masters, onAdd, onRemove }: { cfg: SchemePfmsConfig; 
   const { toast } = useToast();
   const [code, setCode] = React.useState("");
   const [codeError, setCodeError] = React.useState<string | undefined>();
-  const name = schemeLabel(cfg.schemeCode);
+  const name = schemeTitle(cfg);
   const fieldId = `scheme-code-${cfg.schemeCode}`;
 
   const saveCode = () => {
@@ -241,6 +253,88 @@ function SchemeCard({ cfg, masters, onAdd, onRemove }: { cfg: SchemePfmsConfig; 
   );
 }
 
+/* ── Add a scheme (NFR §6.4) ────────────────────────────────────────────── */
+
+function AddSchemeDialog({ masters, onClose }: { masters: Masters; onClose: () => void }) {
+  const { addScheme } = usePfms();
+  const { toast } = useToast();
+  const [name, setName] = React.useState("");
+  const [code, setCode] = React.useState("");
+  const [ddo, setDdo] = React.useState("");
+  const [tried, setTried] = React.useState(false);
+  const [serverError, setServerError] = React.useState<string | undefined>();
+
+  const errors: Record<string, string> = {};
+  if (!name.trim()) errors["as-name"] = "Enter the scheme's name.";
+  if (code.trim() && !/^\d{3,5}$/.test(code.trim())) errors["as-code"] = "Enter the numeric PFMS scheme code, for example 3817, or leave it blank.";
+  if (!ddo) errors["as-ddo"] = "Choose the DDO that pays this scheme.";
+  if (serverError && !errors["as-name"]) errors["as-name"] = serverError;
+  const shown = tried ? errors : {};
+  const summary = Object.entries(shown).map(([fieldId, message]) => ({ fieldId, message }));
+
+  const save = () => {
+    setTried(true);
+    if (Object.keys(errors).length > 0) return;
+    const res = addScheme({ name, pfmsSchemeCode: code, ddoCodes: [ddo] });
+    if (!res.ok) {
+      setServerError(res.error);
+      return;
+    }
+    toast(`${name.trim()} added. Add its heads of account next.`, "success");
+    onClose();
+  };
+
+  return (
+    <Modal
+      open
+      onClose={onClose}
+      title="Add Scheme"
+      size="md"
+      dirty={!!(name || code || ddo)}
+      footer={
+        <>
+          <Button appearance="outlined" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button onClick={save}>Add Scheme</Button>
+        </>
+      }
+    >
+      <div className="space-y-4">
+        {summary.length > 0 && <ErrorSummary errors={summary} headingLevel={3} />}
+        <p className="text-body-2 text-ink-muted">The scheme can be paid through PFMS once it has a PFMS scheme code and at least one head of account.</p>
+        <FormField label="Scheme Name" id="as-name" required error={shown["as-name"]}>
+          {(f) => (
+            <Input
+              {...f}
+              value={name}
+              autoComplete="off"
+              onChange={(e) => {
+                setName(e.target.value);
+                setServerError(undefined);
+              }}
+            />
+          )}
+        </FormField>
+        <FormField label="PFMS Scheme Code (Optional)" id="as-code" error={shown["as-code"]} hint="Leave blank until PFMS allots it.">
+          {(f) => <Input {...f} inputMode="numeric" autoComplete="off" maxLength={5} value={code} onChange={(e) => setCode(e.target.value)} />}
+        </FormField>
+        <FormField label="DDO" id="as-ddo" required error={shown["as-ddo"]} hint="More DDOs can be added on DDO & Division Codes.">
+          {(f) => (
+            <Select
+              {...f}
+              value={ddo}
+              onChange={(e) => setDdo(e.target.value)}
+              placeholder="Choose a DDO"
+              options={masters.ddos.map((d) => ({ value: d.code, label: `${d.code} — ${d.name}${d.eBillActive ? "" : " (e-Bill not active)"}`, disabled: !d.eBillActive }))}
+            />
+          )}
+        </FormField>
+      </div>
+    </Modal>
+  );
+}
+
 /* ── Add a head ─────────────────────────────────────────────────────────── */
 
 function AddHeadDialog({ cfg, masters, onClose }: { cfg: SchemePfmsConfig; masters: Masters; onClose: () => void }) {
@@ -248,7 +342,7 @@ function AddHeadDialog({ cfg, masters, onClose }: { cfg: SchemePfmsConfig; maste
   const { toast } = useToast();
   const [head, setHead] = React.useState<HeadOfAccount>({ functionHead: "", objectHead: "", category: "", grantNumber: "" });
   const [tried, setTried] = React.useState(false);
-  const name = schemeLabel(cfg.schemeCode);
+  const name = schemeTitle(cfg);
 
   const errors: Record<string, string> = {};
   if (!head.functionHead) errors["ah-function"] = "Choose the Function Head.";

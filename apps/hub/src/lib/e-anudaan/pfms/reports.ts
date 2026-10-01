@@ -8,9 +8,12 @@
 import type { ClaimReferenceBatch, Masters, PaymentAdvice } from "./types.ts";
 import { STAGES, EXCEPTIONS, type AnyStage, latestRequest, stageOf, allCredited } from "./stages.ts";
 import { pfmsError } from "./errors.ts";
-import { pfmsFinancialYear } from "./advice.ts";
+import { everyAdvice, pfmsFinancialYear } from "./advice.ts";
 
 const DAY = 86_400_000;
+
+/** An advice and the ones it replaced: a consumed number or a refusal stays counted after a fresh start. */
+const withEarlier = (advices: readonly PaymentAdvice[]): PaymentAdvice[] => everyAdvice(advices) as PaymentAdvice[];
 
 /* ── Sanction Pipeline ───────────────────────────────────────────────────── */
 
@@ -113,7 +116,7 @@ export interface FailureRow {
 
 export function failureTrend(advices: readonly PaymentAdvice[]): FailureRow[] {
   const map = new Map<string, number>();
-  for (const a of advices) {
+  for (const a of withEarlier(advices)) {
     for (const r of a.requests) {
       for (const e of r.errors) {
         const key = `${r.sentAt.slice(0, 7)}|${pfmsError(e.code).category}`;
@@ -131,7 +134,7 @@ export function failureTrend(advices: readonly PaymentAdvice[]): FailureRow[] {
 
 export function failureCodes(advices: readonly PaymentAdvice[]): { code: string; count: number; message: string; category: string }[] {
   const map = new Map<string, number>();
-  for (const a of advices) for (const r of a.requests) for (const e of r.errors) map.set(e.code, (map.get(e.code) ?? 0) + 1);
+  for (const a of withEarlier(advices)) for (const r of a.requests) for (const e of r.errors) map.set(e.code, (map.get(e.code) ?? 0) + 1);
   return [...map.entries()].map(([code, count]) => ({ code, count, message: pfmsError(code).message, category: pfmsError(code).category })).sort((x, y) => y.count - x.count);
 }
 
@@ -146,7 +149,7 @@ export interface PoolRow {
 }
 
 export function usedClaimReferences(advices: readonly PaymentAdvice[]): Set<string> {
-  return new Set(advices.flatMap((a) => a.beneficiaries.map((b) => b.claimReference).filter((n): n is string => !!n)));
+  return new Set(withEarlier(advices).flatMap((a) => a.beneficiaries.map((b) => b.claimReference).filter((n): n is string => !!n)));
 }
 
 export function poolUtilisation(pool: readonly ClaimReferenceBatch[], advices: readonly PaymentAdvice[]): PoolRow[] {

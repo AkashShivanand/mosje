@@ -17,7 +17,7 @@
 import * as React from "react";
 import { Badge, Button, Card, CardBody, CheckboxGroup, DataTable, SettingsScreen, useToast, type DataTableColumn } from "@mosje/design-system";
 import { usePfms } from "@/lib/e-anudaan/pfms/store";
-import { schemeLabel } from "@/lib/e-anudaan/selectors";
+import { schemeTitle } from "@/lib/e-anudaan/pfms/masters";
 import { formatDateTime } from "@/lib/e-anudaan/format";
 import { LANDING_LABEL } from "@/lib/e-anudaan/pfms/advice";
 import type { Masters, SchemePfmsConfig } from "@/lib/e-anudaan/pfms/types";
@@ -46,7 +46,7 @@ export default function DdoMappingPage() {
     eBillActive: d.eBillActive,
     landing: LANDING_LABEL[d.landing],
     pdCodes: m.pdCodes.filter((p) => p.ddoCode === d.code).map((p) => ({ code: p.code, label: p.label })),
-    schemes: pfms.configs.filter((c) => c.ddoCodes.includes(d.code)).map((c) => schemeLabel(c.schemeCode)),
+    schemes: pfms.configs.filter((c) => c.ddoCodes.includes(d.code)).map((c) => schemeTitle(c)),
   }));
   const columns: DataTableColumn<DdoRow>[] = [
     {
@@ -141,7 +141,7 @@ function SchemeDdos({ cfg, masters }: { cfg: SchemePfmsConfig; masters: Masters 
   const { toast } = useToast();
   const [value, setValue] = React.useState<string[]>(cfg.ddoCodes);
   const [error, setError] = React.useState<string | undefined>();
-  const name = schemeLabel(cfg.schemeCode);
+  const name = schemeTitle(cfg);
   const changed = value.length !== cfg.ddoCodes.length || value.some((v) => !cfg.ddoCodes.includes(v));
 
   const save = () => {

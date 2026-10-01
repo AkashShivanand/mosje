@@ -40,7 +40,10 @@ export function HeaderStep({
   masters,
   config,
   issue,
+  fixed = FIXED_VALUES,
 }: {
+  /** The system-set values for this advice; Bill Status reads "R" on a returned bill (`fixedValuesFor`). */
+  fixed?: readonly { term: string; value: string }[];
   facts: SanctionFacts;
   header: AdviceHeader;
   onChange: (h: AdviceHeader) => void;
@@ -113,7 +116,7 @@ export function HeaderStep({
             ),
           },
           { term: "Bill Date", value: header.billDate ? formatDate(header.billDate) : "" },
-          ...FIXED_VALUES.map((f) => ({ term: f.term, value: f.value })),
+          ...fixed.map((f) => ({ term: f.term, value: f.value })),
           { term: "Request Identifier", value: <span className="text-ink-muted">Generated when the Checker sends the advice to PFMS</span> },
         ]}
       />

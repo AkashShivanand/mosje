@@ -29,7 +29,7 @@ import type {
 } from "./types.ts";
 import type { RoleId } from "../types.ts";
 import { IFSC, PAYEE_CODE, configFor, mastersStale } from "./masters.ts";
-import { latestRequest } from "./stages.ts";
+import { RESTARTABLE, RETURN_STATUSES, latestRequest, stageOf } from "./stages.ts";
 
 export interface AdviceContext {
   masters: Masters;
@@ -57,6 +57,21 @@ export const FIXED_VALUES = [
   { term: "Bill Type", value: "7 — RPR-34 Grants-in-Aid Bill" },
   { term: "e-Sanction", value: "Yes" },
 ] as const;
+
+/**
+ * Bill Status (FR-PDM-006, Annexure A.1): "R" when the advice resubmits a bill PFMS returned without
+ * cancelling it, "F" otherwise. A refusal (isSuccess = 0) creates no bill, so a resend after one is
+ * still "F"; a cancelled bill is never resubmitted (BR-CAN-001), so a fresh advice is "F" too.
+ */
+export function billStatusOf(advice: Pick<PaymentAdvice, "requests">): "F" | "R" {
+  const status = latestRequest(advice)?.status;
+  return status && RETURN_STATUSES.has(status) ? "R" : "F";
+}
+
+/** FIXED_VALUES as they apply to one advice — the Bill Status depends on its history. */
+export function fixedValuesFor(advice: Pick<PaymentAdvice, "requests">): { term: string; value: string }[] {
+  return FIXED_VALUES.map((f) => (f.term === "Bill Status" && billStatusOf(advice) === "R" ? { term: f.term, value: "R — Returned bill, resubmitted" } : { ...f }));
+}
 
 /** Annexure E. */
 export const DOCUMENT_TYPES: Record<DocumentTypeCode, string> = {
@@ -96,6 +111,11 @@ export function nextBillNumber(advices: readonly Pick<PaymentAdvice, "header">[]
   let candidate = `${prefix}${String(n).padStart(4, "0")}`;
   while (taken.has(candidate)) candidate = `${prefix}${String(++n).padStart(4, "0")}`;
   return candidate;
+}
+
+/** Every advice, with the ones fresh advices replaced: bill numbers and pool numbers stay used. */
+export function everyAdvice<T extends Pick<PaymentAdvice, "earlier">>(advices: readonly T[]): (T | PaymentAdvice)[] {
+  return advices.flatMap((a) => [...(a.earlier ?? []), a]);
 }
 
 export function sumHeads(heads: readonly HeadLine[]): number {
@@ -259,7 +279,7 @@ const event = (at: string, kind: AdviceEvent["kind"], text: string, by?: RoleId)
 
 /** Only a draft, a returned advice or one PFMS did not accept can be edited (FR-PDM-011). */
 export function isEditable(advice: Pick<PaymentAdvice, "state">): boolean {
-  return advice.state === "draft" || advice.state === "returned" || advice.state === "not-accepted";
+  return advice.state === "draft" || advice.state === "returned" || advice.state === "not-accepted" || advice.state === "returned-pfms";
 }
 
 /** Save as draft (FR-PDM-010): no validation, the advice stays with the Maker. */
@@ -393,14 +413,13 @@ export function authoriseAndTransmit(
 ): AdviceResult {
   if (advice.state !== "submitted") return { ok: false, error: "This payment advice is not awaiting authorisation." };
   if (advice.requests.some((r) => r.uniqueIdentifier === uniqueIdentifier)) return { ok: false, error: "This request identifier has already been sent to PFMS." };
-  const previous = latestRequest(advice);
+  // A fresh advice's first request points back to the last one its cancelled predecessor sent.
+  const previous = latestRequest(advice) ?? latestRequest(advice.earlier?.at(-1) ?? { requests: [] });
   const request: PfmsRequest = {
     uniqueIdentifier,
     previousUniqueIdentifier: previous?.uniqueIdentifier,
     sentAt: now,
-    // A validation failure creates nothing at PFMS, so a resubmission after one is still a fresh
-    // bill. When "R" applies is open question 4 in the plan.
-    billStatus: "F",
+    billStatus: billStatusOf(advice),
     outcome: outcome.kind,
     errors: outcome.kind === "not-accepted" ? outcome.errors : [],
     status: outcome.kind === "accepted" ? "Created" : undefined,
@@ -424,6 +443,78 @@ export function authoriseAndTransmit(
       state: "not-accepted",
       issues: outcome.errors.map((e) => ({ step: "review" as const, field: "advice-review", message: e.message, pfmsCode: e.code })),
       history: [...advice.history, signed, event(now, "not-accepted", "PFMS did not accept the advice. Nothing was created at PFMS; it is back with the Maker.")],
+    },
+  };
+}
+
+/* ── Starting afresh (BR-CAN-001) ────────────────────────────────────────── */
+
+export interface RestartInput {
+  id: string;
+  /** The payee as the NGO's CURRENT account gives it — after a failed credit, the corrected one. */
+  beneficiary: Omit<BeneficiaryLine, "id" | "gross" | "deductions" | "remarks" | "claimReference">;
+  billNumber: string;
+  maker: RoleId;
+  now: string;
+}
+
+const RESTART_REASON: Record<string, string> = {
+  cancelled: "was returned and cancelled at PFMS",
+  "fy-expired": "lapsed when the financial year closed",
+  "credit-failed": "could not be credited by the bank",
+};
+
+/**
+ * A fresh payment advice against the same sanction, after one that can never be revived: returned
+ * and cancelled, financial year expired, or failed at the bank. The Maker opens it; it goes through
+ * the Checker again and is sent under a new identifier that points back to the old one (FR-SNC-004).
+ * The heads, amounts, remarks and documents are carried over; the payee is read again from the
+ * NGO's current account, and a new Claim Reference Number is drawn on submit. The old advice is kept,
+ * read-only, in `earlier`.
+ *
+ * Who starts the fresh case is the prototype's position, not the BRD's (plan §4, question 3).
+ */
+export function restartAdvice(old: PaymentAdvice, input: RestartInput): AdviceResult {
+  const stage = stageOf(old);
+  if (!RESTARTABLE.includes(stage)) return { ok: false, error: "Only an advice that was cancelled, lapsed or failed at the bank can be started afresh." };
+  const prior = old.beneficiaries[0];
+  const archived: PaymentAdvice = { ...old, earlier: undefined };
+  // Whatever the caller hands over, the fresh line takes no Claim Reference Number: a new one is drawn on submit.
+  const { payeeCode, name, accountLast4, ifsc, bank, source } = input.beneficiary;
+  return {
+    ok: true,
+    advice: {
+      id: input.id,
+      appId: old.appId,
+      schemeCode: old.schemeCode,
+      financialYear: old.financialYear,
+      sanctionAmount: old.sanctionAmount,
+      state: "draft",
+      header: { ...old.header, billNumber: input.billNumber, billDate: input.now.slice(0, 10), npbDate: "" },
+      heads: old.heads.map((h, i) => ({ ...h, id: `${input.id}-h${i + 1}` })),
+      beneficiaries: [
+        {
+          id: `${input.id}-b1`,
+          payeeCode,
+          name,
+          accountLast4,
+          ifsc,
+          bank,
+          source,
+          gross: prior?.gross ?? old.sanctionAmount,
+          deductions: (prior?.deductions ?? []).map((d, k) => ({ ...d, id: `${input.id}-b1-d${k + 1}` })),
+          remarks: prior?.remarks ?? "",
+        },
+      ],
+      documents: old.documents,
+      preparedBy: input.maker,
+      createdAt: input.now,
+      updatedAt: input.now,
+      returnCount: 0,
+      requests: [],
+      issues: [],
+      earlier: [...(old.earlier ?? []), archived],
+      history: [{ at: input.now, kind: "restarted", by: input.maker, text: `Payment advice opened afresh. The earlier advice ${old.id} ${RESTART_REASON[stage]} and is kept read-only.` }],
     },
   };
 }

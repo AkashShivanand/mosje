@@ -19,10 +19,9 @@ import Link from "next/link";
 import { Badge, Button, Card, CardBody, DataTable, Icon, OverviewScreen, SectionTitle, screenCopy, useToast, type DataTableColumn } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { usePfms } from "@/lib/e-anudaan/pfms/store";
-import { schemeLabel } from "@/lib/e-anudaan/selectors";
 import { formatDateTime } from "@/lib/e-anudaan/format";
 import { paymentCases } from "@/lib/e-anudaan/pfms/selectors";
-import { mastersAgeHours, mastersStale } from "@/lib/e-anudaan/pfms/masters";
+import { mastersAgeHours, mastersStale, schemeTitle } from "@/lib/e-anudaan/pfms/masters";
 import { pfmsFinancialYear } from "@/lib/e-anudaan/pfms/advice";
 import { poolUtilisation } from "@/lib/e-anudaan/pfms/reports";
 import { EA } from "@/components/e-anudaan/pfms/payment-ui";
@@ -49,6 +48,7 @@ function ageText(hours: number): string {
 
 type SchemeRow = {
   schemeCode: string;
+  name: string;
   pfmsSchemeCode: string | null;
   heads: number;
   ddos: number;
@@ -79,13 +79,14 @@ export default function PfmsSetUpPage() {
 
   const schemeRows: SchemeRow[] = pfms.configs.map((c) => ({
     schemeCode: c.schemeCode,
+    name: schemeTitle(c),
     pfmsSchemeCode: c.pfmsSchemeCode,
     heads: c.heads.length,
     ddos: c.ddoCodes.length,
     pendingDecision: c.pendingDecision,
   }));
   const schemeColumns: DataTableColumn<SchemeRow>[] = [
-    { key: "schemeCode", header: "Scheme", render: (r) => <span className="font-semibold text-ink">{schemeLabel(r.schemeCode)}</span> },
+    { key: "schemeCode", header: "Scheme", render: (r) => <span className="font-semibold text-ink">{r.name}</span> },
     { key: "pfmsSchemeCode", header: "PFMS Scheme Code", render: (r) => r.pfmsSchemeCode ?? "Awaited" },
     { key: "heads", header: "Heads of Account", align: "end", render: (r) => r.heads },
     { key: "ddos", header: "DDOs", align: "end", render: (r) => r.ddos },
@@ -142,7 +143,7 @@ export default function PfmsSetUpPage() {
                 key: "scheme-code",
                 label: "Schemes Without a PFMS Scheme Code",
                 value: String(noSchemeCode.length),
-                detail: noSchemeCode.length === 0 ? "Every scheme has a code" : noSchemeCode.map((c) => schemeLabel(c.schemeCode)).join(", "),
+                detail: noSchemeCode.length === 0 ? "Every scheme has a code" : noSchemeCode.map((c) => schemeTitle(c)).join(", "),
                 tone: noSchemeCode.length > 0 ? "warning" : "neutral",
                 href: `${PFMS}/heads-of-account`,
                 linkAs: Link,

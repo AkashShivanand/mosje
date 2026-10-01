@@ -996,6 +996,14 @@ function PaymentCard({ app }: { app: GrantApplication }) {
               : []),
           ]}
         />
+        {c.stage === "credit-failed" && (
+          <p className="text-body-2 text-ink">
+            The bank could not credit the grant to the account on record. Check the account details; the Ministry sends the payment again once they are correct.{" "}
+            <Link href={accounts} onClick={routeOnClick(router, accounts)}>
+              Check them on Project Bank Accounts
+            </Link>
+          </p>
+        )}
         {c.blocker === "needs-payee-code" && (
           <p className="text-body-2 text-ink">
             The payment cannot be sent until your PFMS payee code is on record.{" "}

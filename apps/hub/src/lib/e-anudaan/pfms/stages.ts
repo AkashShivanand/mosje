@@ -27,7 +27,7 @@ export const STAGES = [
 ] as const;
 
 /** Off the happy path. Each asks something different of somebody. */
-export const EXCEPTIONS = ["returned-by-checker", "not-accepted", "waiting-to-resend", "returned-by-pfms", "cancelled", "fy-expired"] as const;
+export const EXCEPTIONS = ["returned-by-checker", "not-accepted", "waiting-to-resend", "returned-by-pfms", "cancelled", "fy-expired", "credit-failed"] as const;
 
 export type Stage = (typeof STAGES)[number];
 export type ExceptionStage = (typeof EXCEPTIONS)[number];
@@ -61,9 +61,12 @@ export const STAGE_INFO: Record<AnyStage, StageInfo> = {
   "returned-by-checker": { label: "Returned by Checker", ngoLabel: "Sanctioned", holder: "Maker, Programme Division", tone: "warning", terminal: false },
   "not-accepted": { label: "Not Accepted by PFMS", ngoLabel: "Sanctioned", holder: "Maker, Programme Division", tone: "danger", terminal: false },
   "waiting-to-resend": { label: "Waiting to Resend", ngoLabel: "Sanctioned", holder: "e-Anudaan (automatic)", tone: "warning", terminal: false },
-  "returned-by-pfms": { label: "Returned by PFMS", ngoLabel: "Payment in Process", holder: "PFMS", tone: "warning", terminal: false },
-  cancelled: { label: "Returned and Cancelled", ngoLabel: "Payment Returned", holder: "Programme Division", tone: "danger", terminal: true },
-  "fy-expired": { label: "Financial Year Expired", ngoLabel: "Payment Returned", holder: "Programme Division", tone: "danger", terminal: true },
+  "returned-by-pfms": { label: "Returned by PFMS", ngoLabel: "Payment in Process", holder: "Maker, Programme Division", tone: "warning", terminal: false },
+  cancelled: { label: "Returned and Cancelled", ngoLabel: "Payment Returned", holder: "Maker, Programme Division", tone: "danger", terminal: true },
+  "fy-expired": { label: "Financial Year Expired", ngoLabel: "Payment Returned", holder: "Maker, Programme Division", tone: "danger", terminal: true },
+  // The BRD does not say what follows a failed scroll; the prototype's position is recorded as a
+  // decision for NeGD (plan §4, question 13).
+  "credit-failed": { label: "Credit Failed at Bank", ngoLabel: "Bank Account Needs Checking", holder: "Maker, Programme Division", tone: "danger", terminal: true },
 };
 
 /**
@@ -102,6 +105,7 @@ export const PFMS_STATUS_STAGE: Record<PfmsStatus, AnyStage> = {
   ReturnedByAAO: "returned-by-pfms",
   ReturnedByPAO: "returned-by-pfms",
   ReturnedByDDO: "returned-by-pfms",
+  ReturnedByPDChecker: "returned-by-pfms",
   PendingDSCReturnOrder: "returned-by-pfms",
   FinYrExpired: "fy-expired",
   Cancelled: "cancelled",
@@ -124,6 +128,11 @@ export const PFMS_STATUS_TEXT: Partial<Record<PfmsStatus, string>> = {
   DigitalSignatoryLast: "Voucher generated; credit confirmed by the bank.",
   Closed: "Sanction closed at PFMS.",
   Cancelled: "Returned and cancelled at PFMS.",
+  ReturnedByDDO: "Returned by the DDO.",
+  ReturnedByPAO: "Returned by the Pay & Accounts Office.",
+  ReturnedByAAO: "Returned by the Assistant Accounts Officer.",
+  ReturnedByDealingHand: "Returned by the dealing hand at the Pay & Accounts Office.",
+  ReturnedByPDChecker: "Returned at the Programme Division's checker step in PFMS.",
   FinYrExpired: "The financial year expired before payment.",
 };
 
@@ -147,6 +156,39 @@ export function latestRequest(advice: Pick<PaymentAdvice, "requests">): PfmsRequ
   return advice.requests[advice.requests.length - 1];
 }
 
+/** The statuses that mean PFMS sent the bill back (Annexure C, "ReturnedBy… / PendingDSCReturnOrder…"). */
+export const RETURN_STATUSES: ReadonlySet<PfmsStatus> = new Set<PfmsStatus>([
+  "ReturnedByDealingHand",
+  "ReturnedByAAO",
+  "ReturnedByPAO",
+  "ReturnedByDDO",
+  "ReturnedByPDChecker",
+  "PendingDSCReturnOrder",
+]);
+
+/** Who sent a bill back, in words, for the Return Order. */
+export const RETURNED_BY: Partial<Record<PfmsStatus, string>> = {
+  ReturnedByDealingHand: "Dealing Hand, Pay & Accounts Office",
+  ReturnedByAAO: "Assistant Accounts Officer",
+  ReturnedByPAO: "Pay & Accounts Office",
+  ReturnedByDDO: "Drawing & Disbursing Officer",
+  ReturnedByPDChecker: "Programme Division Checker, at PFMS",
+  PendingDSCReturnOrder: "Pay & Accounts Office",
+};
+
+/** The office that returned the latest request's bill, read from its status history. */
+export function returnedBy(req: PfmsRequest | undefined): string {
+  const hit = [...(req?.statusHistory ?? [])].reverse().find((h) => RETURN_STATUSES.has(h.status));
+  return (hit && RETURNED_BY[hit.status]) ?? "Pay & Accounts Office";
+}
+
+/**
+ * The stages a Maker answers by opening a fresh advice against the same sanction: the old one can
+ * never be revived (BR-CAN-001). Who starts it is the prototype's position, for NeGD to confirm
+ * (plan §4, question 3).
+ */
+export const RESTARTABLE: readonly AnyStage[] = ["cancelled", "fy-expired", "credit-failed"];
+
 /** Every beneficiary on the request carries a UTR — the only thing that makes a payment "Paid". */
 export function allCredited(req: PfmsRequest | undefined): boolean {
   return !!req && req.payments.length > 0 && req.payments.every((p) => !!p.utr && p.scrollStatus === "Success");
@@ -159,6 +201,7 @@ const LOCAL_STAGE: Record<Exclude<AdviceState, "transmitted">, AnyStage> = {
   "not-accepted": "not-accepted",
   queued: "waiting-to-resend",
   cancelled: "cancelled",
+  "returned-pfms": "returned-by-pfms",
 };
 
 /**
@@ -175,6 +218,7 @@ export function stageOf(advice: Pick<PaymentAdvice, "state" | "requests"> | unde
   if (!req?.status) return "received";
   const stage = PFMS_STATUS_STAGE[req.status];
   if (stage === "closed") return "closed";
+  if (req.payments.some((p) => p.scrollStatus === "Failed")) return "credit-failed";
   if (allCredited(req) && (STAGES as readonly string[]).includes(stage)) return "paid";
   return stage;
 }
@@ -194,7 +238,10 @@ export function stageIndex(stage: AnyStage): number {
   switch (stage) {
     case "returned-by-checker":
     case "not-accepted":
+    case "returned-by-pfms":
       return STAGES.indexOf("in-preparation");
+    case "credit-failed":
+      return STAGES.indexOf("payment-in-process");
     case "waiting-to-resend":
       return STAGES.indexOf("awaiting-authorisation");
     default:

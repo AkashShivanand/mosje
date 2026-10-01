@@ -23,14 +23,17 @@ import {
   authoriseAndTransmit,
   certificateCheck,
   createAdvice,
+  everyAdvice,
   isEditable,
   nextBillNumber,
+  restartAdvice,
   returnAdvice,
   saveDraft,
   submitAdvice,
   type CertificateCheck,
 } from "./advice";
-import { advanceRequest, resendQueued, returnAndCancel, simulateTransmit, type ForcedOutcome } from "./simulator";
+import { RETURN_LEVELS, advanceRequest, expireFinancialYear, failCredit, resendQueued, returnAndCancel, returnByPfms, simulateTransmit, type ForcedOutcome } from "./simulator";
+import { schemeCodeFor } from "./masters";
 import { drawBatch, usedClaimReferences } from "./reports";
 import { payeeFor } from "./selectors";
 import { latestRequest, stageOf } from "./stages";
@@ -47,6 +50,8 @@ export type PfmsDemoCommand =
   | { kind: "set"; demo: Partial<PfmsDemo> }
   | { kind: "advance" | "resend"; appId: string }
   | { kind: "cancel"; appId: string; reason: string }
+  | { kind: "return-pfms"; appId: string; level: keyof typeof RETURN_LEVELS; reason: string }
+  | { kind: "expire" | "fail-credit"; appId: string }
   | { kind: "reset" };
 
 export type PfmsResult = { ok: true; advice?: PaymentAdvice } | { ok: false; error: string; issues?: ValidationIssue[] };
@@ -68,6 +73,8 @@ interface PfmsContextValue {
   openAdvice: (appId: string) => PfmsResult;
   saveAdvice: (appId: string, patch: { header?: AdviceHeader; heads?: HeadLine[]; beneficiaries?: BeneficiaryLine[]; documents?: AdviceDocument[] }) => PfmsResult;
   submit: (appId: string) => PfmsResult;
+  /** Open a fresh advice after one that was cancelled, lapsed or failed at the bank (BR-CAN-001). */
+  startFresh: (appId: string) => PfmsResult;
   /* Checker */
   returnToMaker: (appId: string, remark: string) => PfmsResult;
   checkCertificate: (appId: string) => CertificateCheck;
@@ -76,9 +83,14 @@ interface PfmsContextValue {
   advance: (appId: string) => PfmsResult;
   returnAndCancelAtPfms: (appId: string, reason: string) => PfmsResult;
   resend: (appId: string) => PfmsResult;
+  returnByPfmsAt: (appId: string, level: keyof typeof RETURN_LEVELS, reason: string) => PfmsResult;
+  expireAtPfms: (appId: string) => PfmsResult;
+  failCreditAtBank: (appId: string) => PfmsResult;
   /* Bureau */
   refreshMasters: () => void;
   setSchemeCode: (schemeCode: string, pfmsSchemeCode: string) => PfmsResult;
+  /** Onboard a scheme by configuration (NFR §6.4): a name, its PFMS code if allotted, and its DDOs. */
+  addScheme: (input: { name: string; pfmsSchemeCode: string; ddoCodes: string[] }) => PfmsResult;
   setSchemeHeads: (schemeCode: string, heads: HeadOfAccount[]) => PfmsResult;
   setSchemeDdos: (schemeCode: string, ddoCodes: string[]) => PfmsResult;
   backfill: (input: Omit<BackfilledAccount, "enteredBy" | "enteredAt">) => PfmsResult;
@@ -240,7 +252,7 @@ export function PfmsProvider({ children }: { children: React.ReactNode }) {
           configs: cur.configs,
         });
         // A DDO already chosen (a scheme with one DDO) gets its bill number at once (FR-PDM-005).
-        const withBill = advice.header.ddoCode ? { ...advice, header: { ...advice.header, billNumber: nextBillNumber(cur.advices, advice.header.ddoCode, advice.financialYear) } } : advice;
+        const withBill = advice.header.ddoCode ? { ...advice, header: { ...advice.header, billNumber: nextBillNumber(everyAdvice(cur.advices), advice.header.ddoCode, advice.financialYear) } } : advice;
         return put(withBill, { seq: cur.seq + 1 });
       },
 
@@ -252,7 +264,7 @@ export function PfmsProvider({ children }: { children: React.ReactNode }) {
         // A changed DDO takes a fresh bill number from its own series; the old number is released.
         let header = patch.header;
         if (header && header.ddoCode && header.ddoCode !== a.header.ddoCode) {
-          header = { ...header, billNumber: nextBillNumber(ref.current.advices.filter((x) => x.appId !== appId), header.ddoCode, a.financialYear), pdCode: header.pdCode };
+          header = { ...header, billNumber: nextBillNumber(everyAdvice(ref.current.advices).filter((x) => x !== a), header.ddoCode, a.financialYear), pdCode: header.pdCode };
         }
         const res = saveDraft(a, { ...patch, ...(header ? { header } : {}) }, who, now());
         if (!res.ok) return res;
@@ -266,6 +278,23 @@ export function PfmsProvider({ children }: { children: React.ReactNode }) {
         const res = submitAdvice(a, who, ctx(), ref.current.pool, usedClaimReferences(ref.current.advices.filter((x) => x.appId !== appId)));
         if (!res.ok) return res;
         return put(res.advice);
+      },
+
+      startFresh: (appId) => {
+        const a = find(appId);
+        const who = role();
+        if (!a || !who) return { ok: false, error: "Payment advice not found." };
+        if (!ROLES[who].caps.includes("prepareAdvice")) return { ok: false, error: "Only the Maker starts a fresh payment advice." };
+        const app = mainRef.current.applications.find((x) => x.id === appId);
+        if (!app) return { ok: false, error: "Application not found." };
+        const payee = payeeFor(mainRef.current, ref.current, app);
+        if (typeof payee === "string") return { ok: false, error: "This file is on hold until the NGO's bank details and payee code are on record." };
+        const cur = ref.current;
+        const id = `PA/${app.financialYear}/${String(cur.advices.length + 1 + cur.seq).padStart(5, "0")}`;
+        const billNumber = a.header.ddoCode ? nextBillNumber(everyAdvice(cur.advices), a.header.ddoCode, a.financialYear) : "";
+        const res = restartAdvice(a, { id, beneficiary: payee, billNumber, maker: who, now: now() });
+        if (!res.ok) return res;
+        return put(res.advice, { seq: cur.seq + 1 });
       },
 
       returnToMaker: (appId, remark) => {
@@ -300,7 +329,7 @@ export function PfmsProvider({ children }: { children: React.ReactNode }) {
         // ERRSNC44: the bill number is regenerated for the resubmission (§8.5, BR-SNC-004).
         const dup = res.advice.issues.some((i) => i.pfmsCode === "ERRSNC44");
         const fixed = dup
-          ? { ...res.advice, header: { ...res.advice.header, billNumber: nextBillNumber(ref.current.advices, a.header.ddoCode, a.financialYear, [a.header.billNumber]) } }
+          ? { ...res.advice, header: { ...res.advice.header, billNumber: nextBillNumber(everyAdvice(ref.current.advices), a.header.ddoCode, a.financialYear, [a.header.billNumber]) } }
           : res.advice;
         return put(fixed);
       },
@@ -331,11 +360,48 @@ export function PfmsProvider({ children }: { children: React.ReactNode }) {
         return put(res.advice);
       },
 
+      returnByPfmsAt: (appId, level, reason) => {
+        const a = find(appId);
+        if (!a) return { ok: false, error: "Payment advice not found." };
+        const res = returnByPfms(a, level, reason, now());
+        if ("error" in res) return { ok: false, error: res.error };
+        return put(res.advice);
+      },
+
+      expireAtPfms: (appId) => {
+        const a = find(appId);
+        if (!a) return { ok: false, error: "Payment advice not found." };
+        const res = expireFinancialYear(a, now());
+        if ("error" in res) return { ok: false, error: res.error };
+        return put(res.advice);
+      },
+
+      failCreditAtBank: (appId) => {
+        const a = find(appId);
+        if (!a) return { ok: false, error: "Payment advice not found." };
+        const res = failCredit(a, now());
+        if ("error" in res) return { ok: false, error: res.error };
+        return put(res.advice);
+      },
+
       refreshMasters: () => write({ ...ref.current, masters: { ...ref.current.masters, syncedAt: now() } }),
 
       setSchemeCode: (schemeCode, code) => {
         if (!/^\d{3,5}$/.test(code)) return { ok: false, error: "Enter the numeric PFMS scheme code PFMS allotted, for example 3817." };
         write({ ...ref.current, configs: ref.current.configs.map((c) => (c.schemeCode === schemeCode ? { ...c, pfmsSchemeCode: code } : c)) });
+        return { ok: true };
+      },
+
+      addScheme: ({ name, pfmsSchemeCode, ddoCodes }) => {
+        const title = name.trim();
+        if (!title) return { ok: false, error: "Enter the scheme's name." };
+        const code = pfmsSchemeCode.trim();
+        if (code && !/^\d{3,5}$/.test(code)) return { ok: false, error: "Enter the numeric PFMS scheme code PFMS allotted, for example 3817, or leave it blank until it is allotted." };
+        if (ddoCodes.length === 0) return { ok: false, error: "Choose at least one DDO that pays this scheme." };
+        const schemeCode = schemeCodeFor(title);
+        const taken = ref.current.configs.some((c) => c.schemeCode === schemeCode || (c.name ?? "").toLowerCase() === title.toLowerCase());
+        if (taken) return { ok: false, error: "A scheme with this name is already set up." };
+        write({ ...ref.current, configs: [...ref.current.configs, { schemeCode, name: title, pfmsSchemeCode: code || null, heads: [], ddoCodes }] });
         return { ok: true };
       },
 
@@ -423,6 +489,9 @@ export function PfmsProvider({ children }: { children: React.ReactNode }) {
       else if (cmd.kind === "advance") res = v.advance(cmd.appId);
       else if (cmd.kind === "resend") res = v.resend(cmd.appId);
       else if (cmd.kind === "cancel") res = v.returnAndCancelAtPfms(cmd.appId, cmd.reason);
+      else if (cmd.kind === "return-pfms") res = v.returnByPfmsAt(cmd.appId, cmd.level, cmd.reason);
+      else if (cmd.kind === "expire") res = v.expireAtPfms(cmd.appId);
+      else if (cmd.kind === "fail-credit") res = v.failCreditAtBank(cmd.appId);
       else if (cmd.kind === "reset") write(buildPfmsSeed(mainRef.current, new Date().toISOString()));
       if (!res.ok) toast(res.error, "error");
     };
