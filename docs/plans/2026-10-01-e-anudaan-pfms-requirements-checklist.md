@@ -1,616 +1,266 @@
-# PFMS Requirements Checklist — e-Anudaan
-
-Checked against the BRD *Integration of PFMS with the e-Anudaan Portal* (v1.0, 8 Sep 2026) and the Figma handoff file [E-Anudaan [Handoff]](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff), 1 Oct 2026. Every element's status was checked against the text on the screens it names, read from Figma; a claim the screens did not bear out was corrected before publishing.
-
-**195 elements on 45 screens (111 Figma frames):** ✅ Drawn 170 · 🟡 Partly Drawn 3 · ❌ Not Drawn 5 · ⏸ Drawn — Decision Pending 12 · 🔧 System Work — No Screen 5
-
-**Open as a page, with filters and ticks:** [PFMS Requirements Checklist](https://claude.ai/artifact/5z5CjQsga2tmKYA8o3NGzL) (private until shared).
-
-**The flow in Figma:** [How a Payment Moves](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=158-19200), on the PFMS page's Start Here, with each step linked to its screens.
-
-## What Needs Action
-
-| | Finding | BRD | Where |
-|---|---|---|---|
-| ❌ | The four schemes' application forms do not ask for the PFMS payee code, its confirmation tick, or a re-entered account number. | FR-NGO-001, FR-NGO-002 | 18 bank-step screens (NAPDDR, AVYAY, SMILE, SHRESHTA Mode 2 — new application and 1st instalment, desktop and phone). The fields exist only on the pattern screen in the PFMS journey. |
-| ❌ | The Checker's read-only mirror leaves out the fixed values (payment mode, sanction type, RPR type, bill status, e-Sanction) and each document's hash and view link. | FR-PDC-002, Annexure G | Authorise Payment Advice, desktop and phone, and its dialogs. The Maker's review has the same omission. |
-| 🟡 | No screen shows a resent request with its previous identifier. | FR-PDM-012, FR-SNC-004 | Payment Status explains the link in words; an example with two requests would show it. |
-| 🟡 | The NGO's credit notice is headed "Approved". | FR-NTF-001 | Notifications — Grant Credited, desktop and phone. The text is right: sanction order, amount and UTR. |
-| 🟡 | The BRD contradicts itself on where the Maker and Checker statuses live. | §1.4, §8.1 vs Annexure C | Annexure C lists Submitted, PassByPDMaker and PendingDSCPDChecker as PFMS statuses, but §8.1 puts the Maker and Checker inside e-Anudaan before the single call. The drawings follow §8.1. Confirm with NeGD. |
-| ⏸ | Seven positions are drawn for discussion: who sanctions, fresh advice after cancellation or year-end, failed credit, return memo link, error list, CNA reason codes, SHRESTHA Mode 1's form. | — | Each is marked Needs Discussion in Figma and listed in the PFMS plan §4. |
-
-## The Flow, Checked Against the BRD's Ten Steps (§8.6)
-
-| # | BRD step | | Drawn as |
-|---|---|---|---|
-| 1 | NGO submits the application with bank account, IFSC and PFMS payee code | 🟡 | Drawn once as a pattern (SHRESHTA Mode 2, in the PFMS journey); the four schemes' own forms lack the payee code, tick and re-entry. |
-| 2 | Review chain (unchanged) | ✅ | Out of this BRD's scope; drawn on Reviewing Applications. |
-| 3 | US-PD issues the sanction | ⏸ | Drawn as the Programme Director's decision, blocked when bank details are incomplete. Who sanctions is open on Start Here. |
-| 4 | PD Maker prepares the payment advice | ✅ | Queue, five steps, draft, submit, lock, every Annexure F field. |
-| 5 | PD Checker authorises and applies the DSC | 🟡 | All drawn, except the Checker's mirror leaves out the fixed values and the document hashes and links (Annexure G). |
-| 6 | e-Anudaan calls ReceiveSanctionData | ✅ | One request; received, not accepted and waiting-to-resend states drawn. The call itself is system work. |
-| 7 | Sanction lands at the DDO (PFMS) | ✅ | Received by PFMS, Bill with DDO. |
-| 8 | DDO draws the bill (RPR-34); PAO passes it | ✅ | Bill, token and voucher details. |
-| 9 | Bank executes DBT; UTR generated | ✅ | UTR, scroll date and status per beneficiary. |
-| 10 | e-Anudaan polls, reconciles, notifies the NGO | ✅ | Reconciliation report; NGO told only on credit. |
-
-## Checklist — Flow by Flow, Screen by Screen, Element by Element
-
-### The NGO Gives Its Bank Details and PFMS Payee Code
-
-*Who:* NGO, Programme Director (sanction) · *BRD:* FR-NGO-001, FR-NGO-002 · BR-NGO-001 · Workflow step 1 and 3
-
-Before any payment, the NGO's bank account, IFSC and PFMS payee code must be on record and confirmed. No sanction is issued without the account and IFSC; no payment advice is sent without the payee code.
-
-#### Application Form — Bank Account Details (the PFMS pattern)
-
-[Desktop 3:9624](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-9624) · [Phone 3:8975](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-8975)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Bank name | FR-NGO-002 | ✅ Drawn |  |
-| [ ] | Account number | FR-NGO-002 | ✅ Drawn |  |
-| [ ] | Re-enter account number (confirmation) | FR-NGO-002 | ✅ Drawn |  |
-| [ ] | IFSC code | FR-NGO-002 | ✅ Drawn |  |
-| [ ] | Branch | FR-NGO-002 | ✅ Drawn |  |
-| [ ] | PFMS unique (payee) code field | FR-NGO-001 | ✅ Drawn |  |
-| [ ] | Confirmation tick for the payee code | FR-NGO-001 | ✅ Drawn |  |
-| [ ] | Account registered on the PFMS DBT module (Yes / No) | §1.3 | ✅ Drawn |  |
-
-#### Application Form — Account Numbers Do Not Match (error)
-
-[Desktop 3:9600](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-9600)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Inline error when the two account numbers differ | FR-NGO-002 · NFR 6.5 | ✅ Drawn |  |
-
-#### Each Scheme's Application Form — Bank Step
-
-[Desktop 3:50206](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-50206) · [Desktop 3:48927](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-48927) · [Desktop 3:53061](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-53061) · [Desktop 3:56995](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-56995) · [Desktop 3:61277](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-61277) · [Phone 3:49576](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-49576) · [Phone 3:48177](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-48177) · [Phone 3:53727](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-53727) · [Phone 3:57720](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-57720) · [Phone 3:61874](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-61874)
-
-*NAPDDR new application and 1st instalment claim, AVYAY, SMILE and SHRESHTA Mode 2. The PFMS pattern above has not been carried into these forms.*
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Account number and IFSC | FR-NGO-002 | ✅ Drawn |  |
-| [ ] | Re-enter account number (confirmation) | FR-NGO-002 | ❌ Not Drawn | Missing on all 18 form screens. |
-| [ ] | PFMS payee code field | FR-NGO-001 | 🟡 Partly Drawn | Only the NAPDDR instalment claim has a code field ("NGO PFMS code (under head 3817)"); AVYAY, SMILE, SHRESHTA Mode 2 and the NAPDDR new application have none. |
-| [ ] | Confirmation tick for the payee code | FR-NGO-001 | ❌ Not Drawn | Missing on all 18 form screens. |
-
-#### Sanction Blocked — Bank Details Incomplete
-
-[Desktop 103:12171](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=103-12171)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Message before the decision: account and IFSC incomplete | FR-NGO-002 | ✅ Drawn |  |
-| [ ] | Sanction button disabled | FR-NGO-002 · BR-NGO-001 | ✅ Drawn | Drawn in the Disabled state. |
-| [ ] | Who sanctions (Under Secretary, per the BRD; drawn as the Programme Director) | §4 · Workflow step 3 | ⏸ Drawn — Decision Pending | Open on Start Here: the walkthrough says the Programme Division's Joint Secretary and Under Secretary. |
-
-#### Project Bank Accounts — PFMS Payee Code Needed
-
-[Desktop 3:9507](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-9507) · [Phone 142:23323](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=142-23323)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Alert: a sanctioned grant is waiting for the payee code | BR-NGO-001 | ✅ Drawn |  |
-| [ ] | Payee code and confirmation date under each account | FR-NGO-001 | ✅ Drawn |  |
-| [ ] | Payee code entry with format hint, tick and save | FR-NGO-001 | ✅ Drawn |  |
-| [ ] | Bank, masked account number, IFSC and branch per project | FR-NGO-002 | ✅ Drawn |  |
-
-### The Bureau Keeps PFMS Set-Up Current
-
-*Who:* Bureau (PFMS set-up) · *BRD:* FR-MDM-001…005 · FR-HOA-001…003 · FR-NGO-003 · FR-DOC-003 · FR-STS-006 · BR-MDM-001 · BR-BAK-001 · BR-DSC-001
-
-The Bureau makes sure every code a payment advice needs comes from PFMS and is current: master lists, heads of account, DDO and division codes, the designated Maker and Checker, the claim reference pool and the error messages. It also completes older sanctioned files that carry no bank details.
-
-#### PFMS Set-Up — Overview
-
-[Desktop 3:10805](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10805) · [Phone 3:9911](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-9911)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Scheme readiness: scheme code, heads, DDOs, status | FR-HOA-002 · §6.4 | ✅ Drawn |  |
-| [ ] | Master data age | BR-MDM-001 | ✅ Drawn |  |
-| [ ] | Claim reference numbers remaining | FR-DOC-003 | ✅ Drawn |  |
-| [ ] | Checker certificates needing renewal | BR-DSC-001 | ✅ Drawn |  |
-| [ ] | Legacy files waiting for bank details | BR-BAK-001 | ✅ Drawn |  |
-| [ ] | Schemes without a PFMS scheme code (SMILE, SHRESHTA Mode 1) | §3.1 C · FR-HOA-002 | ⏸ Drawn — Decision Pending | Codes awaited from PFMS. |
-
-#### Master Data
-
-[Desktop 3:10418](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10418)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Last synchronised date and time | FR-MDM-005 | ✅ Drawn |  |
-| [ ] | Automatic daily refresh and Refresh Now | FR-MDM-005 | ✅ Drawn |  |
-| [ ] | Controllers, PAOs, DDOs | FR-MDM-001 | ✅ Drawn |  |
-| [ ] | Division (PD) codes | FR-MDM-003 | ✅ Drawn |  |
-| [ ] | Function heads, object heads, categories, grant numbers | FR-MDM-002 | ✅ Drawn |  |
-| [ ] | The sync calls themselves (GetController, GetPAO, GetDDO …) | FR-MDM-001…003 | 🔧 System Work — No Screen |  |
-
-#### Master Data — Out of Date
-
-[Desktop 3:9962](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-9962)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Blocking message: no advice can be submitted until refreshed | BR-MDM-001 | ✅ Drawn |  |
-
-#### DDO and Division Codes
-
-[Desktop 3:10468](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10468)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | DDO with its PAO | FR-MDM-001 | ✅ Drawn |  |
-| [ ] | e-Bill activation status per DDO | FR-MDM-004 | ✅ Drawn |  |
-| [ ] | Where the sanction lands (landing status) | BR-DOC-001 | ✅ Drawn |  |
-| [ ] | Division codes per DDO | FR-MDM-003 | ✅ Drawn |  |
-| [ ] | DDOs each scheme may use (scheme-wise mapping) | §3.1 B · FR-MDM-003 | ✅ Drawn |  |
-
-#### Heads of Account
-
-[Desktop 3:10593](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10593) · [Pop-up 98:10919](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=98-10919)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | PFMS scheme code per scheme | A.1 SchemeCode | ✅ Drawn |  |
-| [ ] | Function head, object head, category, grant number per row | FR-HOA-001 | ✅ Drawn |  |
-| [ ] | Add and remove a head per scheme | FR-HOA-002 | ✅ Drawn |  |
-| [ ] | Add a scheme, including one without a PFMS code yet | FR-HOA-002 · §6.4 | ⏸ Drawn — Decision Pending | SHRESTHA Mode 1's full journey waits on the BA's fields and flow. |
-
-#### Maker and Checker
-
-[Desktop 3:10013](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10013) · [Pop-up 3:9657](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-9657)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Designated Maker and Checker per DDO | BR-DSC-001 · §4 | ✅ Drawn |  |
-| [ ] | Checker certificate serial and expiry | BR-DSC-001 · NFR 6.3 | ✅ Drawn |  |
-| [ ] | Who designated them, and when | §4 (US-PD designates) | ✅ Drawn |  |
-| [ ] | Warning for expired or expiring certificates | FR-PDC-004 | ✅ Drawn |  |
-
-#### Claim References
-
-[Desktop 3:10253](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10253)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Pool by division code and financial year | FR-DOC-003 | ✅ Drawn |  |
-| [ ] | Drawn, used, remaining; low pool flagged | FR-DOC-003 | ✅ Drawn |  |
-| [ ] | Draw a batch from PFMS | FR-DOC-003 | ✅ Drawn |  |
-
-#### Error Messages
-
-[Desktop 3:10127](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10127) · [Pop-up 3:9778](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-9778)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | PFMS code, category, the step it points to, plain-language message | FR-STS-006 · §2.4 | ✅ Drawn |  |
-| [ ] | Edit a message | FR-STS-006 | ✅ Drawn |  |
-| [ ] | The full PFMS error list | FR-STS-006 | ⏸ Drawn — Decision Pending | Most codes are illustrative until PFMS / NeGD supply the Claim WebAPI error list. |
-
-#### Legacy Files — Bank Details and Payee Code
-
-[Desktop 3:11320](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11320) · [Desktop 3:11260](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11260) · [Desktop 3:11174](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11174) · [Phone 3:11023](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11023) · [Pop-up 3:10950](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10950)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Tabs: bank details needed, payee code needed, back-filled, heads to retrofit | FR-NGO-003 · BR-BAK-001 | ✅ Drawn |  |
-| [ ] | Enter bank details: bank, branch, account, confirm account, IFSC, payee code, checked tick | FR-NGO-003 | ✅ Drawn |  |
-| [ ] | Payee code is the NGO's to give (NGO asked on Project Bank Accounts) | FR-NGO-001 | ✅ Drawn |  |
-| [ ] | Back-filled files with who entered what, and when | FR-NGO-003 | ✅ Drawn |  |
-
-#### Legacy Files — Heads to Retrofit
-
-[Desktop 3:11109](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11109) · [Desktop 3:11048](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11048) · [Pop-up 3:10879](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10879)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Files whose advice uses an unconfigured head | FR-HOA-003 | ✅ Drawn |  |
-| [ ] | Set a coded head against an issued sanction | FR-HOA-003 | ✅ Drawn |  |
-| [ ] | Empty state | — | ✅ Drawn |  |
-
-### The Maker Prepares the Payment Advice
-
-*Who:* Programme Division — PD Maker · *BRD:* FR-PDM-001…012 · Annexure F · BR-SNC-002…005 · BR-MDM-001 · BR-BAK-001
-
-A five-step form in the order PFMS needs the data: sanction header, heads of account, beneficiary payment, supporting documents, review and submit. Everything already known is filled in; the Maker chooses only the DDO, the division code and the heads, and writes the payee remarks.
-
-#### Payment Advices — the Maker's Queue
-
-[Desktop 3:14977](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14977) · [Desktop 3:14924](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14924) · [Desktop 3:14871](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14871) · [Desktop 93:19213](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=93-19213) · [Desktop 117:22639](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=117-22639) · [Desktop 3:14816](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14816) · [Desktop 3:14736](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14736) · [Phone 3:13859](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13859) · [Phone 117:22528](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=117-22528)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Oldest sanction first | FR-PDM-001 | ✅ Drawn |  |
-| [ ] | Fresh versus returned cases (tabs: New, Returned by Checker, Not Accepted by PFMS, Returned by PFMS) | FR-PDM-001 | ✅ Drawn |  |
-| [ ] | Drafts tab | FR-PDM-010 | ✅ Drawn |  |
-| [ ] | On Hold tab with the reason (bank details, payee code, scheme code) | BR-BAK-001 · BR-NGO-001 | ✅ Drawn |  |
-| [ ] | Columns: application, scheme, sanction order and date, amount, status, action | FR-PDM-001 | ✅ Drawn |  |
-| [ ] | Search and scheme filter | — | ✅ Drawn |  |
-
-#### Step 1 of 5 — Sanction Header (Annexure F.1)
-
-[Desktop 3:14676](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676) · [Phone 3:13796](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Sanction number (from the sanction order, locked) | F.1 · FR-PDM-002 | ✅ Drawn |  |
-| [ ] | Sanction date | F.1 · FR-PDM-002 | ✅ Drawn |  |
-| [ ] | Sanction amount | F.1 · FR-PDM-002 | ✅ Drawn |  |
-| [ ] | Financial year | F.1 · FR-PDM-002 | ✅ Drawn |  |
-| [ ] | IFD concurrence number | F.1 · FR-PDM-002 | ✅ Drawn |  |
-| [ ] | IFD concurrence date | F.1 · FR-PDM-002 | ✅ Drawn |  |
-| [ ] | Scheme code | F.1 | ✅ Drawn |  |
-| [ ] | DDO code — chosen from the PFMS master | F.1 · FR-PDM-003 | ✅ Drawn |  |
-| [ ] | PD (division) code — chosen from the PFMS master | F.1 · FR-PDM-003 | ✅ Drawn |  |
-| [ ] | Payment mode 528 — e-payment (fixed) | F.1 · FR-PDM-006 | ✅ Drawn |  |
-| [ ] | Sanction type 14 — Expenditure (fixed) | F.1 · FR-PDM-006 | ✅ Drawn |  |
-| [ ] | RPR type 7 — RPR-34 Grants-in-Aid Bill (fixed) | F.1 · BR-SNC-003 | ✅ Drawn |  |
-| [ ] | Bill status F — Fresh (R on a returned bill) | F.1 · FR-PDM-006 | ✅ Drawn |  |
-| [ ] | Bill number, generated per DDO per year | F.1 · FR-PDM-005 · BR-SNC-004 | ✅ Drawn |  |
-| [ ] | Bill date (date of preparation) | F.1 · FR-PDM-005 | ✅ Drawn |  |
-| [ ] | NPB date (Not Payable Before), optional | F.1 | ✅ Drawn |  |
-| [ ] | Is e-Sanction = Yes (fixed) | F.1 | ✅ Drawn |  |
-| [ ] | Unique identifier (system) | F.1 · FR-PDM-012 | ✅ Drawn |  |
-| [ ] | Previous unique identifier (on a resubmission) | F.1 · FR-PDM-012 · FR-SNC-004 | 🟡 Partly Drawn | The identifier is shown; Payment Status explains the link, but no screen shows a resent request with its previous identifier. |
-| [ ] | Where the sanction lands, and the documents it needs there | BR-DOC-001 | ✅ Drawn |  |
-| [ ] | Sanction fields cannot be changed here | FR-PDC-006 · BR-SNC-002 | ✅ Drawn |  |
-| [ ] | Save as Draft | FR-PDM-010 | ✅ Drawn |  |
-
-#### Step 1 — Errors
-
-[Desktop 3:14615](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14615) · [Desktop 92:220803](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=92-220803)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | DDO and division code required, shown inline | NFR 6.5 | ✅ Drawn |  |
-| [ ] | DDO not active for e-Bills, flagged before submission | FR-MDM-004 | ✅ Drawn |  |
-
-#### Step 2 of 5 — Heads of Account (Annexure F.2)
-
-[Desktop 3:14558](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14558) · [Desktop 3:14501](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14501) · [Desktop 93:20499](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=93-20499) · [Phone 3:13736](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13736)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Function head (13 digits) | F.2 · FR-PDM-004 | ✅ Drawn |  |
-| [ ] | Object head (2 digits) | F.2 · FR-PDM-004 | ✅ Drawn |  |
-| [ ] | Category | F.2 · FR-PDM-004 | ✅ Drawn |  |
-| [ ] | Grant number (3 digits) | F.2 · FR-PDM-004 | ✅ Drawn |  |
-| [ ] | Amount against each head; add another head | F.2 | ✅ Drawn |  |
-| [ ] | Heads must add up to the sanction (inline check) | FR-PDM-004 · NFR 6.5 | ✅ Drawn |  |
-| [ ] | CNA exception reason when object head 33 is used | A.1 CNAExceptionReason | ⏸ Drawn — Decision Pending | Reason codes awaited from PFMS / NeGD. |
-
-#### Step 3 of 5 — Beneficiary Payment (Annexure F.3)
-
-[Desktop 3:14449](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14449) · [Desktop 3:14386](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14386) · [Phone 3:13681](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13681)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | NGO name (as per PFMS) | F.3 · FR-PDM-007 | ✅ Drawn | Shown as the card's heading; labelled "Name as per PFMS" on the review. |
-| [ ] | PFMS payee code (from the application) | F.3 · FR-PDM-007 | ✅ Drawn |  |
-| [ ] | Bank account number (masked) | F.3 · FR-PDM-007 | ✅ Drawn |  |
-| [ ] | IFSC | F.3 · FR-PDM-007 | ✅ Drawn |  |
-| [ ] | Bank details read-only, as the NGO confirmed them | FR-PDM-007 | ✅ Drawn |  |
-| [ ] | Gross amount | F.3 | ✅ Drawn |  |
-| [ ] | Net amount payable (gross minus deductions) | F.3 | ✅ Drawn |  |
-| [ ] | Payee remarks, 25 characters at most | F.3 | ✅ Drawn |  |
-| [ ] | Claim reference number drawn from the PFMS pool | F.3 · FR-PDM-008 · BR-SNC-005 | ✅ Drawn |  |
-| [ ] | Deduction: function / object head, category, grant, amount | F.3 · A.3 | ✅ Drawn |  |
-
-#### Step 4 of 5 — Supporting Documents (Annexure F.4)
-
-[Desktop 3:14297](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14297) · [Phone 3:13589](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13589)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Document types: Claim, Sanction, Copy of Approved Notes, Bill, PAO Passing, Other | F.4 · Annexure E | ✅ Drawn |  |
-| [ ] | Document name (file) | F.4 | ✅ Drawn |  |
-| [ ] | SHA-256 hash, computed on upload | F.4 · FR-DOC-001 | ✅ Drawn |  |
-| [ ] | Single-use view link with its validity | F.4 · FR-DOC-002 | ✅ Drawn |  |
-| [ ] | Which documents are required where the sanction lands | BR-DOC-001 | ✅ Drawn |  |
-| [ ] | The hashing and the link generation themselves | FR-DOC-001 · FR-DOC-002 | 🔧 System Work — No Screen |  |
-
-#### Step 5 of 5 — Review and Submit
-
-[Desktop 3:14222](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14222) · [Desktop 3:14145](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14145) · [Phone 3:13511](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13511)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | The advice as the Checker will see it, each section with Change | FR-PDM-011 | ✅ Drawn |  |
-| [ ] | Ready / Not Ready to Submit | NFR 6.5 | ✅ Drawn |  |
-| [ ] | Master data out of date blocks submission | BR-MDM-001 | ✅ Drawn |  |
-| [ ] | Submit for Authorisation | FR-PDM-011 | ✅ Drawn |  |
-| [ ] | Fixed values (payment mode, sanction type, RPR type, bill status, e-Sanction) repeated on the review | FR-PDC-002 · Annexure G | ❌ Not Drawn | Shown on Step 1 only; the review and the Checker's mirror leave them out. |
-
-#### With the Checker (locked)
-
-[Desktop 3:13884](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13884) · [Phone 3:13445](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13445)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Locked until the Checker returns it | FR-PDM-011 | ✅ Drawn |  |
-
-#### Returned by the Checker
-
-[Desktop 3:14069](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14069)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | The Checker's remark, name and date | FR-PDC-003 | ✅ Drawn |  |
-
-#### Not Accepted by PFMS (back with the Maker)
-
-[Desktop 3:14011](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14011) · [Desktop 3:13950](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13950)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Plain-language reason and the step to fix | FR-STS-006 · §8.5 | ✅ Drawn |  |
-| [ ] | Bill number already used: new number generated | §8.5 ERRSNC44 · BR-SNC-004 | ✅ Drawn |  |
-| [ ] | Resent under a new identifier after the Checker signs again | FR-SNC-004 | ✅ Drawn |  |
-
-#### Returned by PFMS (not cancelled) — Correct and Resend
-
-[Desktop 93:19594](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=93-19594)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Who returned it, when, and why | FR-STS-005 | ✅ Drawn |  |
-| [ ] | Resent as a returned bill (Bill Status R) | FR-PDM-006 | ✅ Drawn |  |
-
-#### A Fresh Payment Advice (after a cancellation)
-
-[Desktop 93:20040](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=93-20040)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Replaces the cancelled advice; heads, amounts, remarks, documents carried over | BR-CAN-001 | ⏸ Drawn — Decision Pending | Who starts the fresh advice is a position for discussion (Maker, against the same sanction). |
-
-### The Checker Authorises and Signs
-
-*Who:* Programme Division — PD Checker · *BRD:* FR-PDC-001…006 · Annexure G · BR-DSC-001 · BR-SNC-001/002 · FR-SNC-003
-
-The Checker sees exactly what will be sent, beside the original sanction order, and either returns it with a reason or approves it with a digital signature. Approval sends it to PFMS in one request.
-
-#### Authorisation Queue
-
-[Desktop 3:13375](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13375) · [Desktop 3:13296](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13296) · [Phone 3:12993](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12993)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Advices awaiting authorisation | FR-PDC-001 | ✅ Drawn |  |
-| [ ] | Advices authorised by this Checker | FR-PDC-001 | ✅ Drawn |  |
-
-#### Authorise Payment Advice — Review (Annexure G)
-
-[Desktop 3:13204](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13204) · [Phone 3:12901](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12901)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Original sanction order beside the advice, and who sanctioned it | FR-PDC-002 · G | ✅ Drawn |  |
-| [ ] | Read-only mirror: sanction header (DDO, PD code, bill number and date, NPB, request identifier) | FR-PDC-002 · G | ✅ Drawn |  |
-| [ ] | Read-only mirror: fixed values (payment mode, sanction type, RPR type, bill status, e-Sanction) | G (mirrors every F field) | ❌ Not Drawn | Not shown to the Checker. |
-| [ ] | Read-only mirror: heads of account | G | ✅ Drawn |  |
-| [ ] | Read-only mirror: beneficiary payment | G | ✅ Drawn |  |
-| [ ] | Read-only mirror: supporting documents (names) | G | ✅ Drawn |  |
-| [ ] | Read-only mirror: document hash and view link | G · F.4 | ❌ Not Drawn | The Checker sees file names only. |
-| [ ] | Check that the advice agrees with the sanction order | FR-PDC-002 | ✅ Drawn |  |
-| [ ] | Approve and Sign | G · FR-PDC-004 | ✅ Drawn |  |
-| [ ] | Return to Maker | G · FR-PDC-003 | ✅ Drawn |  |
-| [ ] | The sanction is not reopened | FR-PDC-003 · BR-SNC-002 | ✅ Drawn |  |
-
-#### Return to Maker — Reason Required
-
-[Desktop 3:13111](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13111)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Checker remarks, mandatory on return | FR-PDC-003 · G | ✅ Drawn |  |
-
-#### Who May Sign
-
-[Desktop 3:13018](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13018) · [Desktop 92:220407](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=92-220407)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | The Maker cannot authorise their own advice | §10 (Maker ≠ Checker) | ✅ Drawn |  |
-| [ ] | Only the Checker designated for this DDO may sign | BR-DSC-001 | ✅ Drawn |  |
-
-#### Approve and Sign — Signing
-
-[Pop-up 3:12799](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12799) · [Pop-up 3:12694](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12694) · [Pop-up 3:12591](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12591)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Confirm: advice number and amount; signing officer and certificate | FR-PDC-004 | ✅ Drawn |  |
-| [ ] | Signing with the DSC | FR-PDC-004 · NFR 6.6 | ✅ Drawn |  |
-| [ ] | Sent in a single request; cannot be recalled | FR-PDC-005 · FR-SNC-003 · BR-SNC-001 | ✅ Drawn |  |
-| [ ] | Received by PFMS | FR-STS-001 | ✅ Drawn |  |
-| [ ] | Duplicate-send prevention for the same identifier | FR-PDC-005 | 🔧 System Work — No Screen |  |
-
-#### Signing Problems
-
-[Pop-up 3:12488](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12488) · [Pop-up 3:12385](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12385) · [Pop-up 3:12282](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12282) · [Pop-up 3:12179](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12179) · [Pop-up 3:12083](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12083)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | No DSC token found | FR-PDC-004 | ✅ Drawn |  |
-| [ ] | Signing utility not running | FR-PDC-004 | ✅ Drawn |  |
-| [ ] | Certificate has expired | FR-PDC-004 · BR-DSC-001 | ✅ Drawn |  |
-| [ ] | PFMS did not accept the advice | §8.5 · FR-STS-006 | ✅ Drawn |  |
-| [ ] | PFMS unreachable: signed, waiting to resend automatically | NFR 6.1 · 6.2 · §8.5 | ✅ Drawn |  |
-
-### PFMS Pays, and e-Anudaan Follows the Payment
-
-*Who:* PFMS (DDO, PAO), the bank; followed by the Maker and Checker · *BRD:* FR-STS-001…006 · Annexure C · BR-CAN-001 · §8.5
-
-After the send, PFMS lands the sanction at the DDO, the DDO draws the bill, the PAO passes it and the bank credits the NGO. e-Anudaan reads each step back and shows it in plain words.
-
-#### Payment Status — Following a Payment
-
-[Desktop 3:12000](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12000) · [Desktop 3:11915](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11915) · [Phone 3:11473](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11473)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Stage tracker in plain words, with who holds the file | FR-STS-001 · Annexure C · §2.4 | ✅ Drawn |  |
-| [ ] | Bill number and bill date | FR-STS-002 | ✅ Drawn |  |
-| [ ] | Token number and token date | FR-STS-002 | ✅ Drawn |  |
-| [ ] | Voucher number and date | FR-STS-002 | ✅ Drawn |  |
-| [ ] | Per beneficiary: amount, payee code, UTR, scroll date, scroll status | FR-STS-003 | ✅ Drawn |  |
-| [ ] | Requests sent to PFMS, each with its identifier | FR-PDM-012 · NFR 6.2 | ✅ Drawn |  |
-| [ ] | Payment history with officers and times | NFR 6.2 (audit) | ✅ Drawn |  |
-| [ ] | The signing officer and time recorded | FR-PDC-004 | ✅ Drawn |  |
-| [ ] | The NGO is told only once a UTR is recorded | FR-NTF-001 | ✅ Drawn |  |
-| [ ] | Polling GetRequestStatus, bill, voucher and payee APIs | FR-STS-001…003 · NFR 6.1 | 🔧 System Work — No Screen |  |
-
-#### Payment Status — Exceptions
-
-[Desktop 3:11797](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11797) · [Desktop 3:11856](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11856) · [Desktop 91:15801](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=91-15801) · [Desktop 3:11723](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11723) · [Desktop 91:16268](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=91-16268) · [Desktop 92:219954](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=92-219954) · [Pop-up 3:11388](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11388)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Not Accepted by PFMS: nothing created, back with the Maker | §8.5 · FR-STS-006 | ✅ Drawn |  |
-| [ ] | Waiting to Resend (the BRD's "Pending") | NFR 6.2 · §8.5 | ✅ Drawn |  |
-| [ ] | Returned by PFMS: who returned it and why; Correct the Advice | FR-STS-005 | ✅ Drawn |  |
-| [ ] | Return order with PFMS's return memo | FR-STS-005 | ⏸ Drawn — Decision Pending | A sample until NeGD supplies PFMS's link. |
-| [ ] | Returned and Cancelled: cannot be revived | BR-CAN-001 | ✅ Drawn |  |
-| [ ] | Start a fresh payment advice | BR-CAN-001 | ⏸ Drawn — Decision Pending | Position for discussion. |
-| [ ] | Financial year expired | Annexure C FinYrExpired | ⏸ Drawn — Decision Pending | Position for discussion. |
-| [ ] | Credit failed at the bank | — (BRD silent) | ⏸ Drawn — Decision Pending | Position for discussion. |
-| [ ] | Token expiry and automatic re-login | FR-SNC-001 · BR-AUTH-001 | 🔧 System Work — No Screen |  |
-
-#### Payment Status — Before an Advice
-
-[Desktop 3:11685](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11685) · [Desktop 3:11647](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11647) · [Desktop 3:11559](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11559)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | On hold: bank details needed (Bureau back-fills) | BR-BAK-001 | ✅ Drawn |  |
-| [ ] | Paid before the PFMS integration | FR-NGO-003 (legacy) | ✅ Drawn |  |
-| [ ] | The Under Secretary's view of instalments awaiting a payment advice | Workflow step 3–4 | ✅ Drawn |  |
-
-### The NGO Is Told the Grant Has Been Credited
-
-*Who:* NGO · *BRD:* FR-NTF-001 · FR-NTF-002 · BR-NTF-001
-
-The NGO hears about the payment once, when the bank's UTR is recorded, and can look up where the payment has reached on its own application.
-
-#### Notifications — Grant Credited
-
-[Desktop 3:9047](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-9047) · [Phone 3:8722](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-8722)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Sanction order number, amount credited and UTR | FR-NTF-002 | ✅ Drawn |  |
-| [ ] | Sent only on credit; no notice for intermediate stages | FR-NTF-001 · BR-NTF-001 | ✅ Drawn |  |
-| [ ] | Heading of the credit notice | FR-NTF-001 | 🟡 Partly Drawn | Reads "Approved"; it should say the grant was credited. |
-
-#### Application Details — Payment Card
-
-[Desktop 3:9322](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-9322) · [Desktop 3:9134](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-9134) · [Desktop 100:40177](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=100-40177) · [Phone 3:8798](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-8798)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Payment in Process | FR-STS-001 (NGO view) | ✅ Drawn |  |
-| [ ] | Grant Credited: credited on, amount, UTR | FR-STS-003 | ✅ Drawn |  |
-| [ ] | Bank account needs checking, with a link to Project Bank Accounts | — (BRD silent) | ⏸ Drawn — Decision Pending | Position for discussion. |
-
-#### Project Bank Accounts — The Bank Could Not Credit a Grant
-
-[Desktop 100:40553](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=100-40553)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Which project's payment failed, and what to check | — (BRD silent) | ⏸ Drawn — Decision Pending | Position for discussion. |
-
-### Reports
-
-*Who:* Programme Division, Bureau · *BRD:* §2.5 · §11 · FR-STS-004
-
-Six reports: where every file stands, how long it has waited, whether credits match PFMS's release feed, which errors recur, how many claim reference numbers remain, and how long sanction to credit takes.
-
-#### Sanction Pipeline
-
-[Desktop 3:8549](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-8549) · [Phone 3:7943](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-7943)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Count of files at each stage | §11 · Annexure C | ✅ Drawn | Annexure C's PFMS statuses are grouped into plain stages. |
-| [ ] | Off the usual path and on hold, counted separately | §11 | ✅ Drawn |  |
-| [ ] | Filter by scheme and stage | §11 | ✅ Drawn |  |
-
-#### Ageing
-
-[Desktop 3:8412](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-8412)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | DDO-wise | §11 | ✅ Drawn |  |
-| [ ] | Days since the file last moved, and its stage | §11 | ✅ Drawn |  |
-| [ ] | Configurable threshold | §11 | ✅ Drawn |  |
-
-#### Disbursement Reconciliation
-
-[Desktop 3:8279](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-8279)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Sanctioned vs credited vs UTR | §11 · FR-STS-004 | ✅ Drawn |  |
-| [ ] | Scheme-wise and DDO-wise | §11 | ✅ Drawn |  |
-| [ ] | Matched against the release and transfer-entry feed | FR-STS-004 | ✅ Drawn |  |
-| [ ] | Mismatches flagged | FR-STS-004 | ✅ Drawn |  |
-| [ ] | Pull the release feed on demand | FR-STS-004 | ✅ Drawn |  |
-
-#### Failure Trend
-
-[Desktop 3:8228](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-8228)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Errors by month and by category, with what each means | §11 | ✅ Drawn |  |
-
-#### Claim Reference Pool
-
-[Desktop 3:8072](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-8072)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Drawn, used and remaining per division code and year | §11 · FR-DOC-003 | ✅ Drawn |  |
-
-#### Turnaround
-
-[Desktop 3:7995](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-7995)
-
-| | Element | BRD | Status | Note |
-|---|---|---|---|---|
-| [ ] | Average days from sanction to credit, by scheme | §11 | ✅ Drawn |  |
-| [ ] | The longest case (outlier) per scheme | §11 | ✅ Drawn |  |
-
-## System Work — Requirements With No Screen of Their Own
-
-| BRD | What the system must do | What the screens show of it |
-|---|---|---|
-| FR-SNC-001 | Get an auth code, log in, and renew the 15-minute token without interrupting the officer | BR-AUTH-001: an expired token is never reused |
-| FR-SNC-002 | Call PFMS only from the whitelisted IP address, and accept only PFMS's | NFR 6.3 |
-| FR-SNC-003 | One ReceiveSanctionData call per bill, carrying everything at once | BR-SNC-001 |
-| FR-SNC-004 | Resubmit only under a new identifier that points to the old one | Shown on Payment Status; no resent example drawn |
-| FR-PDM-012 | Generate a unique, never-reused identifier for each request | Shown as "Request Identifier" |
-| FR-DOC-001 | SHA-256 hash of each PDF, Base64-encoded | Shown as "SHA-256 Fingerprint" |
-| FR-DOC-002 | Single-use, time-boxed view link per document | Shown as "PFMS View Link" |
-| FR-DOC-003 | Draw claim reference numbers in batches; mark each used | Shown on Claim References |
-| FR-MDM-001…004 | Sync the PFMS master lists and check DDO e-Bill status | Shown on Master Data and DDO & Division Codes |
-| FR-MDM-005 | Scheduled daily refresh, plus on demand | Refresh Now drawn |
-| FR-STS-001…003 | Poll status, bill, voucher and payee payment APIs until Closed or Cancelled | Results shown on Payment Status |
-| FR-STS-004 | Pull the Ministry release and transfer-entry feed | Disbursement Reconciliation |
-| NFR 6.1 | Time out and queue a slow send; polling never blocks the screens | Waiting to Resend drawn |
-| NFR 6.2 | A PFMS outage affects only PFMS functions; every call logged with its identifier | Requests Sent to PFMS drawn |
-| NFR 6.3 | HTTPS only; tokens never stored in plain text; DSC keys never stored centrally; document retention | Retention period awaits the Ministry |
-| NFR 6.4 | New schemes and RPR types by configuration, no code change | Add Scheme drawn |
-| NFR 6.6 | Follow the PFMS API specifications exactly; work with the Ministry's DSC tokens | — |
+# PFMS BRD Checklist — e-Anudaan
+
+Every item of the NeGD BRD *Integration of PFMS with the e-Anudaan Portal* (v1.0, 8 Sep 2026), in the BRD's own order and numbering, against the Figma handoff file [E-Anudaan [Handoff]](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff). Each row's status was checked against the text of the screens it links, read from Figma on 1 Oct 2026. Open points are written only in the **Discussion** column of the row they concern.
+
+**151 BRD items:** ✅ Drawn 141 · 🔧 System Work — No Screen 10 · **17 discussion points**
+
+Open as a page with filters and ticks: [PFMS BRD Checklist](https://claude.ai/artifact/5z5CjQsga2tmKYA8o3NGzL). The flow in Figma: [How a Payment Moves](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=158-19200).
+
+## §5.1 NGO Application Form Enhancements (FR-NGO)
+
+| | BRD | Requirement | Status | Where in Figma | Discussion |
+|---|---|---|---|---|---|
+| [ ] | FR-NGO-001 | A field on the application form for the NGO's PFMS unique (payee) code, with a mandatory tick confirming it is correct. | ✅ Drawn | [Desktop: Apply for a Grant / Bank Account Details — PFMS Payee Code](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-9624)<br>[Phone: Apply for a Grant / Bank Account Details — PFMS Payee Code](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-8975)<br>[Desktop: AVYAY New Application / Step 5 of 8 — Infrastructure, Beneficiaries & Bank (Filled In)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-53727)<br>[Phone: AVYAY New Application / Step 5 of 8 — Infrastructure, Beneficiaries & Bank (Filled In)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-53061)<br>[Desktop: SMILE New Application / Step 4 of 7 — Bank, Beneficiaries & Grant](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-57720)<br>[Phone: SMILE New Application / Step 4 of 7 — Bank, Beneficiaries & Grant](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-56995)<br>[Desktop: SHRESHTA Mode 2 New Application / Step 4 of 7 — Bank, Beneficiaries & Grant](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-61874)<br>[Phone: SHRESHTA Mode 2 New Application / Step 4 of 7 — Bank, Beneficiaries & Grant](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-61277)<br>[Desktop: NAPDDR 1st Instalment Claim / Step 7 of 11 — Beneficiaries, Bank & Grant](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-48927)<br>[Phone: NAPDDR 1st Instalment Claim / Step 7 of 11 — Beneficiaries, Bank & Grant](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-48177) | The BRD gives no format for the payee code. The drawings assume two letters and ten digits; confirm with NeGD. |
+| [ ] | FR-NGO-002 | The NGO enters and confirms its bank account number and IFSC; no sanction is issued while either is incomplete. | ✅ Drawn | [Desktop: Apply for a Grant / Bank Account Details — PFMS Payee Code](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-9624)<br>[Phone: Apply for a Grant / Bank Account Details — PFMS Payee Code](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-8975)<br>[Desktop: Apply for a Grant / Bank Account Details — Account Numbers Do Not Match](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-9600)<br>[Desktop: NAPDDR New Application / Step 7 of 10 — Beneficiaries, Bank & Grant](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-50206)<br>[Phone: NAPDDR New Application / Step 7 of 10 — Beneficiaries, Bank & Grant](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-49576)<br>[Desktop: AVYAY New Application / Step 5 of 8 — Infrastructure, Beneficiaries & Bank (Filled In)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-53727)<br>[Phone: AVYAY New Application / Step 5 of 8 — Infrastructure, Beneficiaries & Bank (Filled In)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-53061)<br>[Desktop: AVYAY New Application / Step 5 of 8 — Infrastructure, Beneficiaries & Bank](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-53802)<br>[Phone: AVYAY New Application / Step 5 of 8 — Infrastructure, Beneficiaries & Bank](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-53136)<br>[Desktop: SMILE New Application / Step 4 of 7 — Bank, Beneficiaries & Grant](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-57720)<br>[Phone: SMILE New Application / Step 4 of 7 — Bank, Beneficiaries & Grant](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-56995)<br>[Desktop: SHRESHTA Mode 2 New Application / Step 4 of 7 — Bank, Beneficiaries & Grant](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-61874)<br>[Phone: SHRESHTA Mode 2 New Application / Step 4 of 7 — Bank, Beneficiaries & Grant](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-61277) | Who issues the sanction: the BRD says the Under Secretary, Programme Division; the screens draw the Programme Director (walkthrough question 1). |
+| [ ] | FR-NGO-003 | The Bureau can add the payee code and confirmed bank details to older sanctioned files that have none. | ✅ Drawn | [Desktop: Legacy Files / Bank Details Needed](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11320)<br>[Pop-up: Legacy Files / Enter Bank Details (Dialog)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10950)<br>[Desktop: Legacy Files / Payee Code Needed](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11260)<br>[Desktop: Legacy Files / Back-Filled](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11174)<br>[Phone: Legacy Files / Bank Details Needed](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11023) |  |
+
+## §5.2 PFMS Master Data Management (FR-MDM)
+
+| | BRD | Requirement | Status | Where in Figma | Discussion |
+|---|---|---|---|---|---|
+| [ ] | FR-MDM-001 | Synchronise the Controller, PAO and DDO lists from PFMS and offer them at the payment-advice stage. | ✅ Drawn | [Desktop: PFMS Set-Up / Master Data](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10418)<br>[Desktop: PFMS Set-Up / DDO and Division Codes](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10468)<br>[Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796) |  |
+| [ ] | FR-MDM-002 | Synchronise grant number, function head, object head and category, offered as coded, validated choices. | ✅ Drawn | [Desktop: PFMS Set-Up / Master Data](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10418)<br>[Desktop: PFMS Set-Up / Heads of Account](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10593)<br>[Desktop: Prepare Payment Advice / Step 2 of 5 — Heads of Account](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14558)<br>[Phone: Prepare Payment Advice / Step 2 of 5 — Heads of Account](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13736) |  |
+| [ ] | FR-MDM-003 | Synchronise the PD code for each DDO and keep its mapping to the scheme. | ✅ Drawn | [Desktop: PFMS Set-Up / DDO and Division Codes](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10468)<br>[Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796) |  |
+| [ ] | FR-MDM-004 | Check the DDO's e-Bill activation before an e-Sanction is prepared; flag an inactive DDO to the Maker before submission. | ✅ Drawn | [Desktop: PFMS Set-Up / DDO and Division Codes](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10468)<br>[Desktop: Prepare Payment Advice / Step 1 of 5 — DDO Not Active for e-Bills](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=92-220803) |  |
+| [ ] | FR-MDM-005 | Refresh the master data on a schedule, and on demand by an administrator. | ✅ Drawn | [Desktop: PFMS Set-Up / Master Data](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10418)<br>[Desktop: PFMS Set-Up / Overview](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10805) |  |
+
+## §5.3 Head-of-Account Restructuring (FR-HOA)
+
+| | BRD | Requirement | Status | Where in Figma | Discussion |
+|---|---|---|---|---|---|
+| [ ] | FR-HOA-001 | Capture the head of account as four codes: function head (13 digits), object head (2), category, grant number (3). | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 2 of 5 — Heads of Account](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14558)<br>[Phone: Prepare Payment Advice / Step 2 of 5 — Heads of Account](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13736)<br>[Desktop: PFMS Set-Up / Heads of Account](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10593) |  |
+| [ ] | FR-HOA-002 | The Bureau configures each scheme's coded heads, including schemes whose PFMS scheme code is not yet allotted. | ✅ Drawn | [Desktop: PFMS Set-Up / Heads of Account](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10593)<br>[Pop-up: PFMS Set-Up / Add Scheme (Dialog)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=98-10919)<br>[Desktop: PFMS Set-Up / Overview](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10805) | SHRESTHA Mode 1: its full form and journey wait on the business analyst's fields and flow, and on who applies (walkthrough question 6). Scheme codes for Mode 1 and SMILE are awaited from PFMS. Whether SMILE is paid through PFMS at all is open (walkthrough question 3). |
+| [ ] | FR-HOA-003 | The codes can be set against sanctions already issued but not yet sent to PFMS. | ✅ Drawn | [Desktop: Legacy Files / Heads to Retrofit](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11109)<br>[Pop-up: Legacy Files / Set Head of Account (Dialog)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10879)<br>[Desktop: Legacy Files / Heads to Retrofit — Empty](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11048) |  |
+
+## §5.4 US-PD Login — PD Maker Workspace (FR-PDM)
+
+| | BRD | Requirement | Status | Where in Figma | Discussion |
+|---|---|---|---|---|---|
+| [ ] | FR-PDM-001 | A queue of sanctioned files by sanction date, showing fresh cases and PFMS-returned cases. | ✅ Drawn | [Desktop: Payment Advices / New](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14977)<br>[Desktop: Payment Advices / Returned by Checker](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14924)<br>[Desktop: Payment Advices / Not Accepted by PFMS](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14871)<br>[Desktop: Payment Advices / Returned by PFMS](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=93-19213)<br>[Desktop: Payment Advices / Drafts](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=117-22639)<br>[Desktop: Payment Advices / On Hold](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14736)<br>[Phone: Payment Advices / New](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13859)<br>[Phone: Payment Advices / Returned by PFMS](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=117-22528) |  |
+| [ ] | FR-PDM-002 | Sanction number, date, amount, financial year, IFD number and date, and the NGO's bank details are filled in automatically. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796)<br>[Desktop: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14449)<br>[Phone: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13681) |  |
+| [ ] | FR-PDM-003 | The Maker selects the DDO code and PD code from the synchronised master. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796)<br>[Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header — Errors](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14615) |  |
+| [ ] | FR-PDM-004 | The Maker selects the four codes for the sanction (and each deduction); heads must add up to the sanction amount. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 2 of 5 — Heads of Account](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14558)<br>[Phone: Prepare Payment Advice / Step 2 of 5 — Heads of Account](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13736)<br>[Desktop: Prepare Payment Advice / Step 2 of 5 — Heads Do Not Add Up](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14501)<br>[Desktop: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment — With a Deduction](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14386)<br>[Desktop: Prepare Payment Advice / Step 2 of 5 — CNA Exception Reason](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=93-20499) | The CNA exception reason codes (Annexure A.1, object head 33) are awaited from PFMS / NeGD; one illustrative code is drawn. |
+| [ ] | FR-PDM-005 | Bill number generated, unique per DDO per financial year; bill date is the date of preparation. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796) |  |
+| [ ] | FR-PDM-006 | Payment mode 528, sanction type 14, bill status F (R on a returned bill) and RPR type 7 are set by the system. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796)<br>[Desktop: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13204)<br>[Phone: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12901)<br>[Desktop: Prepare Payment Advice / Returned by PFMS](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=93-19594) |  |
+| [ ] | FR-PDM-007 | Per beneficiary: payee code, name, account number, IFSC, gross, net and payee remarks, filled from the application. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14449)<br>[Phone: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13681)<br>[Desktop: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13204)<br>[Phone: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12901) |  |
+| [ ] | FR-PDM-008 | One claim reference number from the PFMS pool per beneficiary payment. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14449)<br>[Phone: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13681)<br>[Desktop: PFMS Set-Up / Claim References](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10253) |  |
+| [ ] | FR-PDM-009 | Attach Claim, Sanction, Bill and PAO Pass Order; SHA-256 hash of each and a single-use, time-boxed view link, per the landing tier. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14297)<br>[Phone: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13589)<br>[Desktop: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13204)<br>[Phone: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12901) | Who attaches the documents: the BRD says the Maker; the walkthrough says the Checker. Is the utilisation certificate one of them? (walkthrough question 7) |
+| [ ] | FR-PDM-010 | Save a partly completed advice as a draft and resume it later. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796)<br>[Desktop: Payment Advices / Drafts](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=117-22639) |  |
+| [ ] | FR-PDM-011 | Submit to the Checker; the advice is locked until the Checker returns it. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 5 of 5 — Review and Submit](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14222)<br>[Phone: Prepare Payment Advice / Step 5 of 5 — Review and Submit](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13511)<br>[Desktop: Payment Advice / With the Checker](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13884)<br>[Phone: Payment Advice / With the Checker](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13445) |  |
+| [ ] | FR-PDM-012 | A unique, never-reused identifier for every request; a resubmission gets a new one pointing to the original. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 5 of 5 — Review and Submit](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14222)<br>[Phone: Prepare Payment Advice / Step 5 of 5 — Review and Submit](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13511)<br>[Desktop: Prepare Payment Advice / Returned by PFMS](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=93-19594)<br>[Desktop: Prepare Payment Advice / A Fresh Payment Advice](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=93-20040)<br>[Desktop: Payment Status / Bill with DDO](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12000)<br>[Desktop: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11915)<br>[Phone: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11473) |  |
+
+## §5.5 US-PD Login — PD Checker Workspace (FR-PDC)
+
+| | BRD | Requirement | Status | Where in Figma | Discussion |
+|---|---|---|---|---|---|
+| [ ] | FR-PDC-001 | A queue of advices submitted by the Maker, pending authorisation. | ✅ Drawn | [Desktop: Authorisation Queue / Awaiting Authorisation](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13375)<br>[Desktop: Authorisation Queue / Authorised by You](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13296)<br>[Phone: Authorisation Queue / Awaiting Authorisation](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12993) |  |
+| [ ] | FR-PDC-002 | A read-only view of exactly what will be sent to PFMS, beside the original sanction order. | ✅ Drawn | [Desktop: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13204)<br>[Phone: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12901) |  |
+| [ ] | FR-PDC-003 | Return to the Maker with a mandatory remark; only the payment advice reopens, never the sanction. | ✅ Drawn | [Desktop: Authorise Payment Advice / Return to Maker — Reason Missing](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13111)<br>[Desktop: Prepare Payment Advice / Returned by the Checker](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14069)<br>[Desktop: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13204)<br>[Phone: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12901) |  |
+| [ ] | FR-PDC-004 | A valid DSC is required before sending; the signer's identity and time are recorded. | ✅ Drawn | [Pop-up: Authorise Payment Advice / Approve and Sign (Dialog)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12799)<br>[Pop-up: Authorise Payment Advice / Signing (Dialog)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12694)<br>[Pop-up: Authorise Payment Advice / No DSC Token Found (Dialog)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12488)<br>[Pop-up: Authorise Payment Advice / Signing Utility Not Running (Dialog)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12385)<br>[Pop-up: Authorise Payment Advice / Certificate Has Expired (Dialog)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12282)<br>[Desktop: Payment Status / Bill with DDO](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12000)<br>[Desktop: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11915)<br>[Phone: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11473) |  |
+| [ ] | FR-PDC-005 | After signing, call ReceiveSanctionData exactly once; block a second send of the same identifier. | ✅ Drawn | [Pop-up: Authorise Payment Advice / Approve and Sign (Dialog)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12799)<br>[Pop-up: Authorise Payment Advice / Received by PFMS (Dialog)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12591) |  |
+| [ ] | FR-PDC-006 | Neither Maker nor Checker can change the sanction number, amount or sanctioning authority. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796)<br>[Desktop: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13204)<br>[Phone: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12901) |  |
+
+## §5.6 PFMS Authentication & Transmission (FR-SNC)
+
+| | BRD | Requirement | Status | Where in Figma | Discussion |
+|---|---|---|---|---|---|
+| [ ] | FR-SNC-001 | Get an auth code, log in (15-minute token, 30-minute refresh) and renew without interrupting the officer. | 🔧 System Work — No Screen | — |  |
+| [ ] | FR-SNC-002 | Call PFMS only from the whitelisted IP, and accept responses only from PFMS's whitelisted IP. | 🔧 System Work — No Screen | — | Pending at PFMS: agency registration, credentials and IP whitelisting (§9). |
+| [ ] | FR-SNC-003 | One ReceiveSanctionData call per bill: header, heads, beneficiaries and document hashes together. | ✅ Drawn | [Pop-up: Authorise Payment Advice / Approve and Sign (Dialog)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12799)<br>[Pop-up: Authorise Payment Advice / Received by PFMS (Dialog)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12591) | BatchId (Annexure A.1, optional) is undecided. |
+| [ ] | FR-SNC-004 | After a failure or cancellation, resubmit only under a new identifier pointing to the original. | ✅ Drawn | [Desktop: Prepare Payment Advice / Returned by PFMS](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=93-19594)<br>[Desktop: Prepare Payment Advice / A Fresh Payment Advice](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=93-20040)<br>[Desktop: Prepare Payment Advice / Not Accepted by PFMS](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14011)<br>[Desktop: Payment Status / Not Accepted by PFMS](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11797) |  |
+
+## §5.7 Status Tracking & Reconciliation (FR-STS)
+
+| | BRD | Requirement | Status | Where in Figma | Discussion |
+|---|---|---|---|---|---|
+| [ ] | FR-STS-001 | Poll GetRequestStatus until Closed or Cancelled, and show the current status (Annexure C). | ✅ Drawn | [Desktop: Payment Status / Bill with DDO](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12000)<br>[Desktop: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11915)<br>[Phone: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11473)<br>[Desktop: Payment Status / Waiting to Resend](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11856) | The BRD contradicts itself: §8.1 places the Maker and Checker in e-Anudaan before one call, while Annexure C lists their steps (Submitted, PassByPDMaker, PendingDSCPDChecker) as PFMS statuses. The drawings follow §8.1; confirm with NeGD. |
+| [ ] | FR-STS-002 | Show bill number, bill date, token number and token date once available. | ✅ Drawn | [Desktop: Payment Status / Bill with DDO](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12000)<br>[Desktop: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11915)<br>[Phone: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11473) |  |
+| [ ] | FR-STS-003 | Record the UTR, scroll status and scroll date for each beneficiary. | ✅ Drawn | [Desktop: Payment Status / Bill with DDO](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12000)<br>[Desktop: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11915)<br>[Phone: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11473)<br>[Desktop: Payment Status / Credit Failed at Bank](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=92-219954) | The BRD is silent on a failed credit. Drawn as a position: the NGO checks its account; the Maker starts a fresh advice. |
+| [ ] | FR-STS-004 | Pull the Ministry release and transfer-entry feed and flag mismatches with e-Anudaan's records. | ✅ Drawn | [Desktop: Payment Reports / Disbursement Reconciliation](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-8279) |  |
+| [ ] | FR-STS-005 | When a bill is returned and Cancelled, show PFMS's return order / return memo. | ✅ Drawn | [Pop-up: Payment Status / Return Order (Dialog)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11388)<br>[Desktop: Payment Status / Returned and Cancelled](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11723)<br>[Desktop: Payment Status / Returned by PFMS](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=91-15801) | PFMS's link to the return memo is awaited from NeGD; a sample is drawn. |
+| [ ] | FR-STS-006 | Show PFMS error codes in plain language from a maintained lookup, never as raw codes. | ✅ Drawn | [Desktop: PFMS Set-Up / Error Messages](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10127)<br>[Pop-up: PFMS Set-Up / Edit Message (Dialog)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-9778)<br>[Desktop: Prepare Payment Advice / Not Accepted by PFMS](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14011)<br>[Desktop: Payment Status / Not Accepted by PFMS](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11797) | PFMS's full error list is awaited from NeGD; most codes drawn are illustrative. |
+
+## §5.8 NGO Notification (FR-NTF)
+
+| | BRD | Requirement | Status | Where in Figma | Discussion |
+|---|---|---|---|---|---|
+| [ ] | FR-NTF-001 | Notify the NGO only when a UTR is captured, never on an intermediate status. | ✅ Drawn | [Desktop: Notifications / Grant Credited](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-9047)<br>[Phone: Notifications / Grant Credited](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-8722)<br>[Desktop: Payment Status / Bill with DDO](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12000)<br>[Desktop: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11915)<br>[Phone: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11473) |  |
+| [ ] | FR-NTF-002 | The notice gives the sanction number, the amount credited and the UTR. | ✅ Drawn | [Desktop: Notifications / Grant Credited](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-9047)<br>[Phone: Notifications / Grant Credited](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-8722) |  |
+
+## §5.9 Supporting Document & Claim Reference Handling (FR-DOC)
+
+| | BRD | Requirement | Status | Where in Figma | Discussion |
+|---|---|---|---|---|---|
+| [ ] | FR-DOC-001 | SHA-256 hash of each PDF, Base64-encoded, sent to PFMS. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14297)<br>[Phone: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13589)<br>[Desktop: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13204)<br>[Phone: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12901) |  |
+| [ ] | FR-DOC-002 | A single-use, time-boxed view link for PFMS, per document. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14297)<br>[Phone: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13589)<br>[Desktop: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13204)<br>[Phone: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12901) |  |
+| [ ] | FR-DOC-003 | Draw claim reference numbers in batches, keep them by PD code and year, mark each used. | ✅ Drawn | [Desktop: PFMS Set-Up / Claim References](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10253)<br>[Desktop: Payment Reports / Claim Reference Pool](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-8072) |  |
+
+## §6 Non-Functional Requirements
+
+| | BRD | Requirement | Status | Where in Figma | Discussion |
+|---|---|---|---|---|---|
+| [ ] | 6.1 (a) | A send that exceeds its time budget times out and is queued for retry. | ✅ Drawn | [Pop-up: Authorise Payment Advice / Signed — Waiting to Resend (Dialog)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12083)<br>[Desktop: Payment Status / Waiting to Resend](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11856) |  |
+| [ ] | 6.1 (b) | Status polling runs in the background and never blocks the Maker or Checker. | 🔧 System Work — No Screen | — |  |
+| [ ] | 6.2 (a) | A PFMS outage affects only PFMS functions; the case shows as Pending. | ✅ Drawn | [Desktop: Payment Status / Waiting to Resend](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11856) |  |
+| [ ] | 6.2 (b) | Every PFMS call and response logged with its identifier, time and outcome. | ✅ Drawn | [Desktop: Payment Status / Bill with DDO](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12000)<br>[Desktop: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11915)<br>[Phone: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11473) |  |
+| [ ] | 6.3 (a) | HTTPS only; tokens never stored in plain text or exposed in client logs. | 🔧 System Work — No Screen | — |  |
+| [ ] | 6.3 (b) | IP whitelisting maintained both ways; changes communicated promptly. | 🔧 System Work — No Screen | — |  |
+| [ ] | 6.3 (c) | DSC credentials stay with the designated Checker; no central store of keys. | ✅ Drawn | [Desktop: PFMS Set-Up / Maker and Checker](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10013)<br>[Desktop: Authorise Payment Advice / Not the Designated Checker](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=92-220407) |  |
+| [ ] | 6.3 (d) | Documents retained per the Ministry's retention policy, reachable by the single-use link for that period. | 🔧 System Work — No Screen | — | The retention period is for the Ministry to set. |
+| [ ] | 6.4 (a) | Head of account and master data are scheme-agnostic; new schemes by configuration. | ✅ Drawn | [Desktop: PFMS Set-Up / Heads of Account](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10593)<br>[Pop-up: PFMS Set-Up / Add Scheme (Dialog)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=98-10919) |  |
+| [ ] | 6.4 (b) | Future RPR types without restructuring the PFMS client. | 🔧 System Work — No Screen | — |  |
+| [ ] | 6.5 (a) | A linear, step-by-step workspace: header, heads, beneficiary, documents, submit. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796) |  |
+| [ ] | 6.5 (b) | Inline validation before submitting: mandatory fields, IFSC format, amount totals. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header — Errors](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14615)<br>[Desktop: Prepare Payment Advice / Step 2 of 5 — Heads Do Not Add Up](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14501)<br>[Desktop: Apply for a Grant / Bank Account Details — Account Numbers Do Not Match](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-9600) |  |
+| [ ] | 6.6 (a) | Follow the PFMS Claim, MasterData and Release WebAPI specifications exactly. | 🔧 System Work — No Screen | — |  |
+| [ ] | 6.6 (b) | Work with the DSC tokens the Ministry already uses. | ✅ Drawn | [Pop-up: Authorise Payment Advice / No DSC Token Found (Dialog)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12488)<br>[Pop-up: Authorise Payment Advice / Signing Utility Not Running (Dialog)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12385) |  |
+
+## §7 Business Rules
+
+| | BRD | Requirement | Status | Where in Figma | Discussion |
+|---|---|---|---|---|---|
+| [ ] | BR-NGO-001 | No send to PFMS unless the NGO's bank account, IFSC and payee code are confirmed. | ✅ Drawn | [Desktop: Payment Advices / On Hold](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14736)<br>[Desktop: Payment Status / On Hold — Bank Details Needed](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11685)<br>[Desktop: Project Bank Accounts / PFMS Payee Code Needed](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-9507) |  |
+| [ ] | BR-SNC-001 | One ReceiveSanctionData call is one bill; no split transmission. | ✅ Drawn | [Pop-up: Authorise Payment Advice / Approve and Sign (Dialog)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12799) |  |
+| [ ] | BR-SNC-002 | The Maker–Checker stage never reopens or alters the sanction. | ✅ Drawn | [Desktop: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13204)<br>[Phone: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12901)<br>[Desktop: Authorise Payment Advice / Return to Maker — Reason Missing](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13111) |  |
+| [ ] | BR-SNC-003 | RPR type is always 7 (RPR-34 Grants-in-Aid Bill). | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796)<br>[Desktop: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13204)<br>[Phone: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12901) |  |
+| [ ] | BR-SNC-004 | Bill number unique per DDO per financial year. | ✅ Drawn | [Desktop: Prepare Payment Advice / Not Accepted by PFMS — Bill Number Already Used](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13950) |  |
+| [ ] | BR-SNC-005 | Claim reference number mandatory only for an e-Sanction, and only one drawn from the PFMS pool. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14449)<br>[Phone: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13681) |  |
+| [ ] | BR-DOC-001 | Required document hashes grow with the landing level: Claim and Sanction at Approved; Bill at the DDO's e-Bill stage; PAO Pass Order at PassedByPAO. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14297)<br>[Phone: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13589)<br>[Desktop: PFMS Set-Up / DDO and Division Codes](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10468) |  |
+| [ ] | BR-DSC-001 | Only the Checker designated for a DDO may sign that DDO's sanctions. | ✅ Drawn | [Desktop: Authorise Payment Advice / Not the Designated Checker](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=92-220407)<br>[Desktop: PFMS Set-Up / Maker and Checker](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-10013)<br>[Pop-up: PFMS Set-Up / Edit Maker and Checker (Dialog)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-9657) | May the Under Secretary who issued the sanction also be the Checker? (walkthrough question 4) |
+| [ ] | BR-NTF-001 | The NGO is told only on a UTR; a status change alone never triggers a notice. | ✅ Drawn | [Desktop: Notifications / Grant Credited](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-9047)<br>[Desktop: Payment Status / Bill with DDO](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12000)<br>[Desktop: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11915)<br>[Phone: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11473) |  |
+| [ ] | BR-CAN-001 | A cancelled sanction is never revived; a new one with a new identifier starts from e-Anudaan. | ✅ Drawn | [Desktop: Payment Status / Returned and Cancelled](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11723)<br>[Desktop: Prepare Payment Advice / A Fresh Payment Advice](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=93-20040) | Drawn as a position: the Maker starts a fresh payment advice against the same sanction. |
+| [ ] | BR-MDM-001 | Use the latest master data; an unknown DDO, PD code or head blocks submission until refreshed. | ✅ Drawn | [Desktop: PFMS Set-Up / Master Data — Out of Date](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-9962)<br>[Desktop: Prepare Payment Advice / Step 5 of 5 — Not Ready to Submit](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14145) |  |
+| [ ] | BR-BAK-001 | An older file without bank details or payee code goes to back-fill before the Maker's queue. | ✅ Drawn | [Desktop: Payment Advices / On Hold](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14736)<br>[Desktop: Payment Status / On Hold — Bank Details Needed](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11685)<br>[Desktop: Legacy Files / Bank Details Needed](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11320) |  |
+| [ ] | BR-AUTH-001 | An expired token is never reused; refresh or log in again first. | 🔧 System Work — No Screen | — |  |
+
+## §8.5 Exception & Alternate Flows
+
+| | BRD | Requirement | Status | Where in Figma | Discussion |
+|---|---|---|---|---|---|
+| [ ] | Validation failure | isSuccess 0 with an error code: nothing sent; errors shown to the Maker; corrected and resubmitted. | ✅ Drawn | [Desktop: Prepare Payment Advice / Not Accepted by PFMS](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14011)<br>[Desktop: Payment Status / Not Accepted by PFMS](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11797)<br>[Pop-up: Authorise Payment Advice / PFMS Did Not Accept the Advice (Dialog)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12179) |  |
+| [ ] | Returned and Cancelled | Return reason shown; a fresh sanction with a new identifier must start from e-Anudaan. | ✅ Drawn | [Desktop: Payment Status / Returned and Cancelled](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11723)<br>[Pop-up: Payment Status / Return Order (Dialog)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11388)<br>[Desktop: Prepare Payment Advice / A Fresh Payment Advice](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=93-20040) | A bill the DDO finds not in order: does it go back to the Checker (walkthrough) or the Maker (drawn)? (walkthrough question 5) |
+| [ ] | Token expired | Refresh automatically, or log in again, and retry the same request. | 🔧 System Work — No Screen | — |  |
+| [ ] | PFMS unavailable | Queue and retry; the case shows Pending; the rest of the portal works. | ✅ Drawn | [Pop-up: Authorise Payment Advice / Signed — Waiting to Resend (Dialog)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12083)<br>[Desktop: Payment Status / Waiting to Resend](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11856) |  |
+| [ ] | Bill number exists (ERRSNC44) | Warn the Maker and generate a new bill number. | ✅ Drawn | [Desktop: Prepare Payment Advice / Not Accepted by PFMS — Bill Number Already Used](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13950) |  |
+
+## §8.6 Workflow ↔ Requirement Mapping
+
+| | BRD | Requirement | Status | Where in Figma | Discussion |
+|---|---|---|---|---|---|
+| [ ] | Step 1 | The NGO submits the application with bank account, IFSC and PFMS payee code. | ✅ Drawn | [Desktop: Apply for a Grant / Bank Account Details — PFMS Payee Code](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-9624)<br>[Phone: Apply for a Grant / Bank Account Details — PFMS Payee Code](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-8975)<br>[Desktop: AVYAY New Application / Step 5 of 8 — Infrastructure, Beneficiaries & Bank (Filled In)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-53727)<br>[Phone: AVYAY New Application / Step 5 of 8 — Infrastructure, Beneficiaries & Bank (Filled In)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-53061)<br>[Desktop: SMILE New Application / Step 4 of 7 — Bank, Beneficiaries & Grant](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-57720)<br>[Phone: SMILE New Application / Step 4 of 7 — Bank, Beneficiaries & Grant](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-56995)<br>[Desktop: SHRESHTA Mode 2 New Application / Step 4 of 7 — Bank, Beneficiaries & Grant](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-61874)<br>[Phone: SHRESHTA Mode 2 New Application / Step 4 of 7 — Bank, Beneficiaries & Grant](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-61277) |  |
+| [ ] | Step 2 | Review chain (unchanged). | ✅ Drawn | [Desktop: Review an Application / Instalments — Awaiting Payment Advice](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11559) |  |
+| [ ] | Step 3 | The Under Secretary issues the sanction. | ✅ Drawn | [Desktop: Examine an Application / Bank Details Incomplete](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=103-12171)<br>[Desktop: Review an Application / Instalments — Awaiting Payment Advice](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11559) | Who sanctions: see FR-NGO-002. |
+| [ ] | Step 4 | The PD Maker prepares the payment advice. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796)<br>[Desktop: Prepare Payment Advice / Step 5 of 5 — Review and Submit](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14222)<br>[Phone: Prepare Payment Advice / Step 5 of 5 — Review and Submit](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13511) |  |
+| [ ] | Step 5 | The PD Checker authorises and applies the DSC. | ✅ Drawn | [Desktop: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13204)<br>[Phone: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12901) |  |
+| [ ] | Step 6 | e-Anudaan calls ReceiveSanctionData. | ✅ Drawn | [Pop-up: Authorise Payment Advice / Received by PFMS (Dialog)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12591) |  |
+| [ ] | Step 7 | The sanction lands at the DDO (PFMS). | ✅ Drawn | [Desktop: Payment Status / Bill with DDO](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12000) |  |
+| [ ] | Step 8 | The DDO draws the bill (RPR-34); the PAO passes it. | ✅ Drawn | [Desktop: Payment Status / Bill with DDO](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12000)<br>[Desktop: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11915)<br>[Phone: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11473) |  |
+| [ ] | Step 9 | The bank executes DBT; the UTR is generated. | ✅ Drawn | [Desktop: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11915)<br>[Phone: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11473) |  |
+| [ ] | Step 10 | e-Anudaan polls, reconciles and notifies the NGO. | ✅ Drawn | [Desktop: Payment Reports / Disbursement Reconciliation](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-8279)<br>[Desktop: Notifications / Grant Credited](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-9047) |  |
+
+## §11 Dashboards & KPIs
+
+| | BRD | Requirement | Status | Where in Figma | Discussion |
+|---|---|---|---|---|---|
+| [ ] | Sanction Pipeline | Count of sanctions by current PFMS status. | ✅ Drawn | [Desktop: Payment Reports / Sanction Pipeline](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-8549)<br>[Phone: Payment Reports / Sanction Pipeline](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-7943) |  |
+| [ ] | Ageing Report | Days pending at each stage, DDO-wise, flagged past a threshold. | ✅ Drawn | [Desktop: Payment Reports / Ageing](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-8412) |  |
+| [ ] | Disbursement Reconciliation | Sanctioned vs credited vs UTR, scheme-wise and DDO-wise, against the release feed. | ✅ Drawn | [Desktop: Payment Reports / Disbursement Reconciliation](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-8279) |  |
+| [ ] | Failure / Exception Report | Validation failures by category, trending over time. | ✅ Drawn | [Desktop: Payment Reports / Failure Trend](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-8228) |  |
+| [ ] | Claim Reference Pool Utilisation | Drawn vs consumed vs remaining, per PD code and year. | ✅ Drawn | [Desktop: Payment Reports / Claim Reference Pool](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-8072) |  |
+| [ ] | Turnaround Time KPI | Days from sanction to UTR, average and outliers, by scheme. | ✅ Drawn | [Desktop: Payment Reports / Turnaround](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-7995) |  |
+
+## Annexure C PFMS Sanction Status Reference (shown in plain words)
+
+| | BRD | Requirement | Status | Where in Figma | Discussion |
+|---|---|---|---|---|---|
+| [ ] | Created · Submitted · PassByPDMaker · PendingDSCPDChecker · Approved | Received by PFMS. | ✅ Drawn | [Desktop: Payment Status / Bill with DDO](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12000)<br>[Desktop: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11915)<br>[Phone: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11473) |  |
+| [ ] | BillGenerated · PendingDDODSC · DigitallySignedByDDO | Bill with the DDO. | ✅ Drawn | [Desktop: Payment Status / Bill with DDO](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12000)<br>[Desktop: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11915)<br>[Phone: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11473) |  |
+| [ ] | PassedByDH… · ForwardedToAAO… · ForwardedToPAO… · PassedByPAO | Being passed at the PAO. | ✅ Drawn | [Desktop: Payment Status / Bill with DDO](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12000)<br>[Desktop: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11915)<br>[Phone: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11473) |  |
+| [ ] | XML Generated · DSCBatchGenerated · PendingDSCBatchFileGeneration… | Payment in process at the bank. | ✅ Drawn | [Desktop: Payment Status / Bill with DDO](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12000)<br>[Desktop: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11915)<br>[Phone: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11473) |  |
+| [ ] | DigitalSignatoryLast (voucher) · Closed | Paid; closed once the voucher is generated. | ✅ Drawn | [Desktop: Payment Status / Bill with DDO](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12000)<br>[Desktop: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11915)<br>[Phone: Payment Status / Paid](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11473) |  |
+| [ ] | ReturnedBy… (DH, AAO, PAO, DDO, PD Checker) | Returned by PFMS, back with the Maker. | ✅ Drawn | [Desktop: Payment Status / Returned by PFMS](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=91-15801)<br>[Desktop: Prepare Payment Advice / Returned by PFMS](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=93-19594) |  |
+| [ ] | FinYrExpired | Financial year expired. | ✅ Drawn | [Desktop: Payment Status / Financial Year Expired](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=91-16268) | Drawn as a position: the Maker starts a fresh payment advice against the same sanction. |
+| [ ] | Cancelled | Returned and Cancelled; never revived. | ✅ Drawn | [Desktop: Payment Status / Returned and Cancelled](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-11723) |  |
+
+## Annexure E Supporting Document Type Codes
+
+| | BRD | Requirement | Status | Where in Figma | Discussion |
+|---|---|---|---|---|---|
+| [ ] | 1 Claim | Claim. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14297)<br>[Phone: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13589) |  |
+| [ ] | 2 Sanction | Sanction. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14297)<br>[Phone: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13589) |  |
+| [ ] | 3 Copy of Approved Notes | Copy of Approved Notes. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14297)<br>[Phone: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13589) |  |
+| [ ] | 4 Bill | Bill. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14297)<br>[Phone: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13589) |  |
+| [ ] | 5 PAO Passing | PAO Passing. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14297)<br>[Phone: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13589) |  |
+| [ ] | 6 Other | Other. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14297)<br>[Phone: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13589) |  |
+
+## Annexure F.1 PD Maker Screen — Sanction Header
+
+| | BRD | Requirement | Status | Where in Figma | Discussion |
+|---|---|---|---|---|---|
+| [ ] | Sanction Number | Auto — sanction order. Mandatory. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796) |  |
+| [ ] | Sanction Date | Auto — sanction order. Mandatory. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796) |  |
+| [ ] | Sanction Amount | Auto — sanction order. Mandatory. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796) |  |
+| [ ] | Financial Year | Auto. Mandatory. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796) |  |
+| [ ] | IFD Concurrence Number | Auto — cost sheet. Mandatory. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796) |  |
+| [ ] | IFD Concurrence Date | Auto — cost sheet. Mandatory. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796) |  |
+| [ ] | Scheme Code | Auto — scheme master. Mandatory. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796) |  |
+| [ ] | DDO Code | Maker selects — PFMS master. Mandatory. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796) |  |
+| [ ] | PD Code | Maker selects — PFMS master. Mandatory. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796) |  |
+| [ ] | Payment Mode | System-set 528 — e-payment. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796) |  |
+| [ ] | Sanction Type | System-set 14 — Expenditure. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796) |  |
+| [ ] | RPR Type | System-set 7 — RPR-34 GIA Bill. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796) |  |
+| [ ] | Bill Status | System-set F — Fresh (R on resubmission). | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796)<br>[Desktop: Prepare Payment Advice / Returned by PFMS](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=93-19594) |  |
+| [ ] | Bill Number | Auto-generated per DDO and year. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796) |  |
+| [ ] | Bill Date | Auto — date of preparation. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796) |  |
+| [ ] | NPB Date (Not Payable Before) | Maker entry. Optional. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796) |  |
+| [ ] | Is eSanction | System-set 1. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796) |  |
+| [ ] | UniqueIdentifier | System-generated. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14676)<br>[Phone: Prepare Payment Advice / Step 1 of 5 — Sanction Header](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13796) |  |
+| [ ] | Previous Unique Identifier | System — set only on resubmission. | ✅ Drawn | [Desktop: Prepare Payment Advice / Returned by PFMS](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=93-19594)<br>[Desktop: Prepare Payment Advice / A Fresh Payment Advice](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=93-20040) |  |
+
+## Annexure F.2 PD Maker Screen — Head of Account
+
+| | BRD | Requirement | Status | Where in Figma | Discussion |
+|---|---|---|---|---|---|
+| [ ] | Function Head (13-digit) | Maker selects — master. Mandatory. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 2 of 5 — Heads of Account](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14558)<br>[Phone: Prepare Payment Advice / Step 2 of 5 — Heads of Account](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13736) |  |
+| [ ] | Object Head (2-digit) | Maker selects — master. Mandatory. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 2 of 5 — Heads of Account](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14558)<br>[Phone: Prepare Payment Advice / Step 2 of 5 — Heads of Account](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13736) |  |
+| [ ] | Category | Maker selects — master. Mandatory. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 2 of 5 — Heads of Account](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14558)<br>[Phone: Prepare Payment Advice / Step 2 of 5 — Heads of Account](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13736) |  |
+| [ ] | Grant Number (3-digit) | Maker selects — master. Mandatory. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 2 of 5 — Heads of Account](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14558)<br>[Phone: Prepare Payment Advice / Step 2 of 5 — Heads of Account](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13736) |  |
+| [ ] | Amount against this head | Auto-split, or Maker entry for several heads. Mandatory. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 2 of 5 — Heads of Account](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14558)<br>[Phone: Prepare Payment Advice / Step 2 of 5 — Heads of Account](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13736) |  |
+
+## Annexure F.3 PD Maker Screen — Beneficiary / NGO Payment Details
+
+| | BRD | Requirement | Status | Where in Figma | Discussion |
+|---|---|---|---|---|---|
+| [ ] | NGO Name (as per PFMS) | Auto — NGO application. Mandatory. | ✅ Drawn | [Desktop: Apply for a Grant / Bank Account Details — PFMS Payee Code](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-9624)<br>[Phone: Apply for a Grant / Bank Account Details — PFMS Payee Code](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-8975)<br>[Desktop: AVYAY New Application / Step 5 of 8 — Infrastructure, Beneficiaries & Bank (Filled In)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-53727)<br>[Phone: AVYAY New Application / Step 5 of 8 — Infrastructure, Beneficiaries & Bank (Filled In)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-53061)<br>[Desktop: SMILE New Application / Step 4 of 7 — Bank, Beneficiaries & Grant](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-57720)<br>[Phone: SMILE New Application / Step 4 of 7 — Bank, Beneficiaries & Grant](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-56995)<br>[Desktop: SHRESHTA Mode 2 New Application / Step 4 of 7 — Bank, Beneficiaries & Grant](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-61874)<br>[Phone: SHRESHTA Mode 2 New Application / Step 4 of 7 — Bank, Beneficiaries & Grant](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-61277)<br>[Desktop: NAPDDR New Application / Step 10 of 10 — Review & Submit](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-49937)<br>[Phone: NAPDDR New Application / Step 10 of 10 — Review & Submit](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-49301)<br>[Desktop: AVYAY New Application / Step 8 of 8 — Review & Submit](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-53459)<br>[Phone: AVYAY New Application / Step 8 of 8 — Review & Submit](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-52793)<br>[Desktop: SMILE New Application / Step 7 of 7 — Review & Submit](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-57283)<br>[Phone: SMILE New Application / Step 7 of 7 — Review & Submit](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-56558)<br>[Desktop: SHRESHTA Mode 2 New Application / Step 7 of 7 — Review & Submit](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-61438)<br>[Phone: SHRESHTA Mode 2 New Application / Step 7 of 7 — Review & Submit](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-60841)<br>[Desktop: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14449)<br>[Phone: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13681)<br>[Desktop: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13204)<br>[Phone: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12901) |  |
+| [ ] | PFMS Unique / Payee Code | Auto — NGO application. Mandatory. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14449)<br>[Phone: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13681) |  |
+| [ ] | Bank Account Number | Auto — NGO application, confirmed. Mandatory. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14449)<br>[Phone: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13681) |  |
+| [ ] | IFSC Code | Auto — NGO application, confirmed. Mandatory. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14449)<br>[Phone: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13681) |  |
+| [ ] | Gross Amount | Auto / Maker adjustment. Mandatory. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14449)<br>[Phone: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13681) |  |
+| [ ] | Net Amount | Auto — gross minus deduction. Mandatory. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14449)<br>[Phone: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13681) |  |
+| [ ] | Payee Remarks | Maker entry, 25 characters at most. Mandatory. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14449)<br>[Phone: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13681) |  |
+| [ ] | Claim Reference Number | System — from the PFMS pool. Mandatory for an e-Sanction. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14449)<br>[Phone: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13681) |  |
+| [ ] | Deduction Head details | Maker entry — only if a deduction applies. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment — With a Deduction](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14386) |  |
+
+## Annexure F.4 PD Maker Screen — Supporting Documents
+
+| | BRD | Requirement | Status | Where in Figma | Discussion |
+|---|---|---|---|---|---|
+| [ ] | Document Type | Maker selects — per landing tier. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14297)<br>[Phone: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13589) |  |
+| [ ] | Document Name | Maker uploads / system. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14297)<br>[Phone: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13589) |  |
+| [ ] | Document Hash (SHA-256) | System — computed on upload. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14297)<br>[Phone: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13589) |  |
+| [ ] | View Link | System — single-use. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14297)<br>[Phone: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13589) |  |
+| [ ] | Save as Draft | Returns the case to the Maker's queue unsubmitted. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14297)<br>[Phone: Prepare Payment Advice / Step 4 of 5 — Supporting Documents](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13589) |  |
+| [ ] | Submit for Authorisation | Moves the case to the Checker and locks it. | ✅ Drawn | [Desktop: Prepare Payment Advice / Step 5 of 5 — Review and Submit](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-14222)<br>[Phone: Prepare Payment Advice / Step 5 of 5 — Review and Submit](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13511) |  |
+
+## Annexure G PD Checker Screen
+
+| | BRD | Requirement | Status | Where in Figma | Discussion |
+|---|---|---|---|---|---|
+| [ ] | Read-only mirror | Sanction header, head of account, beneficiary detail, supporting documents — displayed, not editable. | ✅ Drawn | [Desktop: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13204)<br>[Phone: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12901) |  |
+| [ ] | Original Sanction Order | Auto — e-Anudaan sanction record, displayed for comparison. | ✅ Drawn | [Desktop: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13204)<br>[Phone: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12901) |  |
+| [ ] | Checker Remarks | Mandatory only when returning to the Maker. | ✅ Drawn | [Desktop: Authorise Payment Advice / Return to Maker — Reason Missing](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13111) |  |
+| [ ] | Digital Signature Certificate | The Checker's own DSC; mandatory to approve. | ✅ Drawn | [Pop-up: Authorise Payment Advice / Approve and Sign (Dialog)](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12799) |  |
+| [ ] | Action: Approve & Sign | Triggers DSC signing, then ReceiveSanctionData. | ✅ Drawn | [Desktop: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13204)<br>[Phone: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12901) |  |
+| [ ] | Action: Return to Maker | Requires Checker remarks. | ✅ Drawn | [Desktop: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-13204)<br>[Phone: Authorise Payment Advice / Approve and Sign](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/E-Anudaan-Handoff?node-id=3-12901) |  |
 
 ## The BRD in Plain Words
 

@@ -467,6 +467,28 @@ journey cap), and every page keeps `Guide to This Page`. The standard and its ch
 **Checked:** `check:figma-handoff -- --portal E-Anudaan --fresh --strict` passes on all 15 pages;
 `manifests/e-anudaan.json` re-captured with `--snapshot`.
 
+## 5f. The PFMS BRD, item by item — 1 Oct 2026
+
+Every item of the PFMS BRD was checked against the screens, field by field, and the gaps closed in the drawings. The
+checklist, in the BRD's own order with each open point in its own row, is
+[`docs/plans/2026-10-01-e-anudaan-pfms-requirements-checklist.md`](../plans/2026-10-01-e-anudaan-pfms-requirements-checklist.md):
+151 BRD items, 141 drawn, 10 system work with no screen, 17 discussion points.
+
+| What | Before | After | Why |
+|---|---|---|---|
+| Start Here on the PFMS page | one guide | **Guide — How a Payment Moves** (`158:19200`): 21 steps in six lanes, each linked to its screens | the flow, step by step, for a reader new to the BRD |
+| The Checker's screen and the Maker's review (21 screens) | no fixed values; documents by name only | Bill Status, Payment Mode, Sanction Type, Bill Type and e-Sanction rows; each document's Base64 fingerprint and single-use view link; a Previous Request Identifier on a resubmission | Annexure G mirrors every Annexure F field; FR-DOC-001/002; FR-PDM-012 |
+| Supporting-document fingerprints (Step 4 and every mirror) | 64 hex characters | Base64 | FR-DOC-001 |
+| The NGO's credit notice | headed "Approved" | "Grant Credited" | a grant is never "Approved" (glossary); FR-NTF-001 |
+| New-application bank steps, all four schemes (10 screens) | no re-entered account; SMILE and SHRESHTA without the PFMS registration question | Re-enter Account Number everywhere; on the filled-in screens the registration question, **Name as per PFMS**, the payee code and the confirming tick | FR-NGO-001/002, Annexure F.3 |
+| Review steps, all four schemes (8 screens) | no PFMS rows | Name as per PFMS, payee code and registration | the review repeats what was entered |
+| `Form Step Content / SHRESHTA Mode 2 … — PFMS Payee Code` (`3:7710`) | no name field | Name as per PFMS beside the payee code; SHRESHTA's desktop step body now uses this component | one source for the pattern and the form |
+| NAPDDR instalment claims (12 screens) | "NGO PFMS code (under head 3817)" | "PFMS Unique (Payee) Code" | one code, one name (owner, via the cleanup session) |
+
+The empty-state bank steps show only the re-entered account: the payee fields appear once the registration answer is
+Yes, as in the build. The build followed in PRs #689 and #691. `check:figma-handoff -- --portal E-Anudaan --fresh
+--strict`: all 15 pages conformant; the manifest did not change (no screen was added or removed).
+
 ## 6. Adding to the page
 
 - **A screen:** into the right row of its flow; name `Role / Screen / State`; phone version ends ` · Mobile`.
