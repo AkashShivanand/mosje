@@ -6,9 +6,11 @@ with English terms.
 **Method:** transcribed locally with Whisper large-v3 twice — once in Hindi, once translated to English after
 normalising the volume — and read side by side. Parts of the audio are faint; where neither pass was clear, this
 note says so rather than guessing. The last three minutes are unrelated office conversation and are not recorded here.
-**Read with:** the NeGD BRD (*Integration of PFMS with the e-Anudaan Portal*, v1.0, 8 Sep 2026), explained in
-[`2026-10-01-e-anudaan-pfms-explained.md`](./2026-10-01-e-anudaan-pfms-explained.md); the speaker said the amount
-rules below are in the main e-Anudaan BRD, not the PFMS one.
+**Checked against:** the NeGD BRD (*Integration of PFMS with the e-Anudaan Portal*, v1.0, 8 Sep 2026,
+`docs/source-brd/eAnudaan_PFMS_Integration_BRD.pdf`), read in full — §5a. Plain-words guide:
+[`2026-10-01-e-anudaan-pfms-explained.md`](./2026-10-01-e-anudaan-pfms-explained.md). The speaker said the amount
+rules below are in the main e-Anudaan BRD, not the PFMS one, and the PFMS BRD agrees by leaving the review chain
+out of scope (p. 10).
 **In Figma:** `E-Anudaan [Handoff]` › Start Here › **Guide — How a Grant Moves** (`132:1052`), and the notes on the
 five journeys listed in §5.
 
@@ -62,6 +64,24 @@ Each division has the same five grades: Assistant Section Officer, Section Offic
 7. The sanction and payment details then appear on the NGO's portal and the officer's.
 8. **Once the Under Secretary has issued the sanction, the file never goes back up the chain.** Corrections circle between the Maker, the Checker and the DDO.
 
+## 5a. Checked against the PFMS BRD
+
+The first version of this note and of the Figma guide leaned on the repo's BRD explainer and verification documents.
+The BRD itself was then read in full. Where it settles a point, the guide and the notes now say so.
+
+| Point | Walkthrough | PFMS BRD | Result |
+|---|---|---|---|
+| Who issues the sanction | Under Secretary, Programme Division | **Same** — "the point an Under Secretary, Programme Division (US-PD) issues a sanction" (p. 5); stakeholders (p. 11); glossary (p. 33) | The two sources agree; the drawn Programme Director is the outlier |
+| What "PD" means | the Programme Division | **Same** — glossary: "PD — Programme Division" (p. 33) | "Programme Director" is very likely a misreading of "PD" |
+| Maker and Checker | duties of Programme Division officers, junior and senior | **Same in substance** — "US-PD Login — PD Maker / PD Checker Workspace" (§5.4–5.5); the US-PD designates them "within the Division" (p. 11); different officers assumed (p. 31); the Checker holds the DSC for a given DDO (BR-DSC-001) | Separate sign-ins in the drawings are the outlier |
+| Who attaches the supporting documents | the Checker (e.g. the utilisation certificate) | **The Maker** — claim, sanction, approved notes, bill, PAO pass order, other (FR-PDM-009; Annex E, F.4); the Checker sees them read-only (Annex G) | Screens follow the BRD; the walkthrough is the outlier. The guide's Checker stage was corrected to the BRD |
+| A bill the DDO returns | back to the Checker | Annex C lists returns at the Dealing Hand, AAO, PAO, DDO and PD Checker levels, each with a return-order step; the flows (§8.5) handle only a return marked **Cancelled** → a fresh sanction (BR-CAN-001) | Open — the BRD names the state but not the path |
+| SMILE | not paid through PFMS | applicable; its PFMS scheme code to be allotted before go-live (pp. 1, 9, 30, 31) | Open — the two sources disagree |
+| Review chain and amounts | four amounts before the sanction | out of scope, "unchanged" (pp. 10, 29, 31); carries only the IFD concurrence number and date (Annex F.1) | Not contradicted; belongs to the main e-Anudaan BRD |
+| Corrections after the sanction | never go back up the chain | **Same** — "The Maker and Checker do not reopen or alter the sanction" (p. 6; BR-SNC-002) | Confirmed |
+| Codes and heads | from the PFMS API; a super admin keeps the yearly heads | **Same** — master data synced from PFMS (FR-MDM-001…005); the Bureau configures the four-part head of account per scheme (FR-HOA-002) | Confirmed |
+| Telling the NGO | the details reach the NGO's pages | the NGO is notified **only** on a confirmed UTR (FR-NTF-001, BR-NTF-001) | The guide's last stage now says so |
+
 ## 5. Where it differs from the screens — and where each is recorded
 
 The screens were **not** changed (Figma is the source of truth and each point is the Department's to decide).
@@ -69,11 +89,12 @@ Each difference is written into the `Note — Needs Discussion` at the top of th
 
 | What | Walkthrough | Drawn today | Journey (note added or extended) |
 |---|---|---|---|
-| Who sanctions | JS (Programme Division) approves the final amount; US (Programme Division) issues the sanction order | a Programme Director sanctions, returns or rejects after finance concurs (`workflow.ts`, `roles.ts`) | Examining and Sanctioning an Application — affects Sanction Desk and Sent Applications too |
+| Who sanctions | JS (Programme Division) approves the final amount; US (Programme Division) issues the sanction order — **the PFMS BRD agrees** (§5a) | a Programme Director sanctions, returns or rejects after finance concurs (`workflow.ts`, `roles.ts`) | Examining and Sanctioning an Application — affects Sanction Desk and Sent Applications too |
 | Amounts along the review | four figures before the sanction (§3) | no amount until the Programme Director's Amount to Sanction | **Reviewing an Application — now Needs Discussion** |
 | SMILE and PFMS | SMILE is not paid through PFMS | SMILE configured on Heads of Account, "Scheme Code Awaited" — the BRD lists all five (U-1.2-1, RD-2) | Keeping PFMS Set-Up Current |
-| Who the Maker and Checker are | named by the Programme Division from its own officers — junior Maker, senior Checker | separate sign-ins (`pd-maker`, `pd-checker`) | Authorising a Payment Advice (PFMS question 2) |
+| Who the Maker and Checker are | named by the Programme Division from its own officers — junior Maker, senior Checker — **the PFMS BRD agrees**: workspaces in the US-PD login | separate sign-ins (`pd-maker`, `pd-checker`) | Authorising a Payment Advice (PFMS question 2) |
 | A bill the DDO finds not in order | goes back to the Checker | a bill PFMS returns goes back to the Maker | Following a Payment |
+| Who attaches the documents | the Checker, e.g. the utilisation certificate | the Maker, in Step 4 — **as the PFMS BRD** (FR-PDM-009, Annex F.4) | Authorising a Payment Advice |
 
 **Confirmed, no change:** only the Section Officer sends a deficiency to the NGO (`workflow.ts` — the ASO notes it,
 the SO communicates it); corrections after the sanction never reopen the review chain (PFMS question 3); DDO and PAO
@@ -92,9 +113,10 @@ payment advice); payment details reach the NGO's pages after the credit.
 
 ## 7. Questions to put to the Department
 
-1. Who approves the final amount and who issues the sanction order — the Programme Director, or the Programme Division's Joint Secretary and Under Secretary?
+1. Who approves the final amount and who issues the sanction order — the Programme Director, or the Programme Division's Joint Secretary and Under Secretary (as the walkthrough and the PFMS BRD both say)?
 2. Is each of the four amounts recorded on the officer's screen, and does each later officer see the earlier ones?
 3. Is SMILE paid outside PFMS? If so, how is it paid, and should SMILE come off PFMS Set-Up?
-4. Are the Maker and Checker duties given to existing Programme Division officers, and is the Under Secretary (who issues the sanction) allowed to be the Checker?
+4. Are the Maker and Checker duties given to existing Programme Division officers (as the walkthrough and the BRD both suggest), and may the Under Secretary who issued the sanction also be the Checker?
 5. When the DDO returns a bill, does it go to the Checker (walkthrough) or the Maker (drawn)?
 6. SHRESHTA Mode 1: who applies — the school, from the NTA list, or another body?
+7. Who attaches the supporting documents to the payment advice — the Maker (BRD) or the Checker (walkthrough)? Is the utilisation certificate one of them?
