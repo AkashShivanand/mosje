@@ -238,6 +238,12 @@ stories**; the static build takes precedence at `/storybook` until you rebuild
   offline half on every PR, the live half (`:live`) guarded on `FIGMA_ACCESS_TOKEN`.
   Re-capture the snapshot with `npm run check:figma-index:sync` after every pass.
   → `.claude/rules/figma-library-index.md`
+- **Figma is the source of truth for screens (standing instruction, 1 Oct 2026).** A design fix to a
+  portal or website screen is made in the Figma handoff FIRST, and the build then follows the drawing —
+  never the reverse. Do not change a screen's code ahead of its Figma frame, and do not redraw Figma to
+  match what was built. Where the build already differs from Figma, list the differences and let the
+  owner decide each one in Figma; then build to it. Component internals keep their own contract
+  (`figma-code-sync.md`). → `.claude/rules/figma-code-sync.md` § Screens
 - **Every portal handoff page in Figma has one shape** — `START HERE`, `SCREENS BY WHO USES THEM`
   (one column per user group → journeys → Desktop / Mobile / Pop-ups and Dialogs rows), `SHARED PARTS`,
   `OLD SCREENS — DO NOT USE`; every name in plain English, no codes; grey by depth; **red + a note only where
