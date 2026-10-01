@@ -501,6 +501,37 @@ Two NAPDDR differences remain for the owner to decide in Figma; the build has bo
 section (recurring, non-recurring and total grant) that the step's title promises. The manifest was re-captured for
 the two new screens; all 15 pages are still conformant.
 
+## 5g. Phone screens that cut off their content — 2 Oct 2026
+
+The phone header was cut off on every phone screen. A survey of all 13 live pages then found more content hidden
+on phone screens, in four ways. All were fixed in Figma; the build was not touched, and Old Screens was left alone.
+
+| What | Before | After | Why |
+|---|---|---|---|
+| `Navbar/Portal` on phone screens (231 screens) | a fixed 412px in a 375px screen | fills the screen | the initials badge was cut off and only a corner of the BETA sash showed |
+| `step bar` on NAPDDR phone steps (22) | fixed heights up to 842px around about 78px of content | hugs its content | large empty gaps above the step dots |
+| Parts wider than their column (8) | scheme cards 720px; Yes/No questions 540px | fill the column | cut off at the right edge |
+| Fixed-height rows and cards (about 140, mostly SMILE and SHRESHTA review rows, My Queue, CCTV) | content squeezed and clipped | hug their content | values, options and labels were hidden |
+| `Form Step Content / SHRESHTA … Step 2 — Organisation Details` (`3:7883`) | three fixed 332px fields per row | fields fill the row (min 240, max 332) and rows wrap | the phone instance ran off the screen; desktop still lays out 3 × 332 |
+| SHRESHTA Step 2 phone (`3:61389`) | a labelled 7-step `Stepper / Row` in 343px | the `step bar` (STEP 2 OF 7 plus dots) its sibling steps use | the labels overlapped |
+| AVYAY phone `sticky action bar` (2 of 75) | absolutely positioned mid-screen | in the flow at the end of the screen, like the other 73 | it covered form fields |
+| My Queue `Select / Filter` (9) | stretched to the label's 80px | hugs its value | "All years" wrapped over three lines |
+| Inputs on phone (3) | a long value wrapped and was clipped | one line, ending in "…" | that is how an input behaves |
+| Four fixed-height phone screens | content ran past the bottom | grow to their content | PFMS payee pattern, PFMS Set-Up Overview, Legacy Files, Sanction Pipeline |
+
+Left as they are, for a decision:
+- **Over 600 elements extend past a phone screen's right edge.** They are tab strips, document-row actions, card
+  action buttons, the weekly-attendance day grid, CCTV area chips and breadcrumbs. Some, such as the tab strips,
+  are probably meant to scroll sideways. Each needs a design decision, not a blanket fix.
+- **8 texts on Officers · Paying a Sanctioned Grant (PFMS)** sit below a fixed-height `main` area that reads as a
+  scrolling viewport; officers' PFMS screens are desktop-only.
+- **AVYAY 2nd Instalment Claim meta row (`3:51416`)** is still clipped. That page was being edited by the cleanup
+  session at the time.
+
+The 13 pages were re-flowed for the new heights. The journey order did not change, and user groups stay stacked
+top to bottom, as §10a requires. `check:figma-handoff -- --portal E-Anudaan --strict --fresh`: 15/15 conformant.
+The manifest did not change.
+
 ## 6. Adding to the page
 
 - **A screen:** into the right row of its flow; name `Role / Screen / State`; phone version ends ` · Mobile`.
