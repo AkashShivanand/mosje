@@ -374,8 +374,8 @@ the same dark blue as its sibling queues. Counts: Cover 568, the PFMS page's Sta
 visual 0), nothing loose at any page root, and `--selftest` catches all nine planted faults.
 `manifests/e-anudaan.json` was re-captured with `--snapshot` from that run.
 
-**Open for a person:** name version 1.1 in Figma's version history; accept the waiting SAMAVESH updates in the Libraries panel; decide whether officers' PFMS screens need
-phone versions (16 drawn for 68 desktop screens — signing needs a DSC token on a desktop); decide whether the
+**Open for a person:** accept the waiting SAMAVESH updates in the Libraries panel; decide whether officers' PFMS screens need
+phone versions (17 drawn for 68 desktop screens — signing needs a DSC token on a desktop); decide whether the
 payment parts of the NGO's Project Bank Accounts and Application Details screens give way to the PFMS versions.
 
 ## 5d. The walkthrough of 1 Oct 2026 — recorded, and where it differs
@@ -403,7 +403,12 @@ and their sections grown; nothing else moved. `check:figma-handoff -- --portal E
 pages conformant, identity 0 and visual 0.
 
 **Not changed:** no screen, no journey's name other than Reviewing an Application's suffix, no role column.
-**Open for a person:** put §7 of the walkthrough notes to the Department; name a version in Figma.
+**Open for a person:** put §7 of the walkthrough notes to the Department.
+
+**The file stays at Version 1** (instruction, 1 Oct 2026). The Cover's "Version 1.1" is set back to "Version 1", and no
+named version is added to the version history. Start Here's Change Log gains a line for the last two PFMS screens, and
+its Open Items now count 17 phone screens for 68 desktop screens across the PFMS journeys (officers' 14 for 60, the
+NGO's 3 for 8), recounted from the canvas.
 
 ## 6. Adding to the page
 
