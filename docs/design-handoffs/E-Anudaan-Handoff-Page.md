@@ -544,7 +544,7 @@ separately as *PFMS Design Direction*.
 
 | What | Before | After | Why |
 |---|---|---|---|
-| Pages | Two pages: Paying a Sanctioned Grant (PFMS) with 61 drawings, and PFMS Set-Up with 20 | One page, **Officers · Paying Grants through PFMS**, with 21 screens. The set-up page is renamed **Officers · PFMS Set-Up (Moved)** and holds only a note | One place for the whole payment leg; the Bureau's set-up is part of it |
+| Pages | Two pages: Paying a Sanctioned Grant (PFMS) with 61 drawings, and PFMS Set-Up with 20 | One page, **Officers · Paying Grants through PFMS**, with 21 screens. The set-up page was deleted once nothing linked to it | One place for the whole payment leg; the Bureau's set-up is part of it |
 | User groups | Programme Division Maker and Checker; Bureau | PD Maker; PD Checker; Bureau, each with its own side menu | The division's design: one login, and the role decides what an officer sees |
 | Payment advice | A five-step wizard plus seven error versions | **One page** in six sections (Sanction · Where the Bill Lands · Head of Account · Beneficiary · Supporting Documents · Summary) and four states: Fresh Case, With Errors, Returned by PFMS, With the Checker | Three choices and four documents do not need five steps. This departs from BRD §6.5 (wizard), so it needs NeGD's acceptance |
 | Fields on the advice | About 40 items, each BRD field on its own row | Read-only facts in compact lines. Fixed codes are one line. Deductions and Not Payable Before are under More Options. Payee remarks are filled in. Documents show what is needed now and what is needed later | Show what the officer decides; fold away what the system knows |
@@ -560,8 +560,25 @@ separately as *PFMS Design Direction*.
 The library's `Select` has no read-only state. The locked advice therefore shows the chosen values in the normal
 style, with a banner, and the missing read-only state is recorded as a gap for SAMAVESH. The BRD checklist
 (`docs/plans/2026-10-01-e-anudaan-pfms-requirements-checklist.md`) still links the archived screens, and is
-re-pointed in a follow-up. `check:figma-handoff -- --portal E-Anudaan --strict --fresh`: 15/15 conformant. The
-manifest was re-captured; it changed only on the three pages above.
+re-pointed in a follow-up.
+
+**Checked against the division's prototype, field by field (3 Oct 2026).** Every field and step of the prototype is on
+the new screens, except what was removed on purpose (the API map, the PFMS credentials page, the Simulate button, the
+`ERRSNC44` return label and the FY "2027"). The check found four defects in our own drawings, now fixed:
+
+| What | Before | After | Why |
+|---|---|---|---|
+| Checker's Original Sanction Order | No payee and no head of account, while the summary claimed both matched | Payee and Head of Account rows added, on all four Checker states | A Checker cannot confirm a match against values the screen does not show |
+| PFMS Masters e-bill counts | 18 active and 4 not active, beside a DDO count of 4 | 3 active, 1 not active | The figures contradicted each other |
+| PFMS Masters DDO list | Behind a closed list | A table of the four DDOs: DDO, Pay & Accounts Office, type, PD Code and e-bill status, on both states | The prototype showed it at once; it is what the Bureau looks for |
+| Head of account codes | `2235-02-107-01` on the advice, `2235021070101` on Schemes and Checkers | `2235-02-107-01-01` everywhere (the full function head, written one way) | One code, one spelling |
+| Dashboard | Counts only; 3 files waiting for an advice against 2 in the Maker's queue | An **Amount in the Pipeline** card (₹2.43 Cr, illustrative); waiting set to 2 | The prototype led with the rupee value; the counts must agree |
+
+The example codes (head 2235-02-107-01-01 against the prototype's 2235-60-011-06, category GEN against 5, grant 093
+against 086, payee code `MH…` against `VC…`, sanction number `SAN/…` against `F.No-1/…`) are illustrative on both
+sides and wait for the division to confirm the real formats. The empty **Officers · PFMS Set-Up (Moved)** page was
+deleted, and its entries removed from `pages.json`, `baseline.json` and the manifest.
+`check:figma-handoff -- --portal E-Anudaan --strict --fresh`: 14/14 conformant. The manifest was re-captured.
 
 ## 6. Adding to the page
 
