@@ -580,6 +580,38 @@ sides and wait for the division to confirm the real formats. The empty **Officer
 deleted, and its entries removed from `pages.json`, `baseline.json` and the manifest.
 `check:figma-handoff -- --portal E-Anudaan --strict --fresh`: 14/14 conformant. The manifest was re-captured.
 
+**Audited for handoff (3 Oct 2026).** Every sentence on the 21 screens was read against one test: does the officer
+act on it here? Text that explained the screen, narrated the next step or restated a value shown elsewhere was
+removed; it belongs in the page guide, not the UI. Nothing a person decides or checks was removed.
+
+| What | Before | After | Why |
+|---|---|---|---|
+| Payment advice: form and section intros | Six sentences explaining what to do and where values come from | None; read-only sections carry a badge (From Sanction Order, From the Application) | Instructions for reading a form are documentation |
+| Payment advice: dropdown helper text | Two sentences under DDO Code and PD Code | None | Officers who draw bills know what a DDO is |
+| Payment advice: green "all is well" alerts | DDO Is Active; Heads Add Up | None; only the error versions remain | A success alert for the normal case is noise |
+| Payment advice: value suffixes | "— the sanction amount", "· filled in; printed on the payment", "· drawn from the PFMS pool" | The value alone | Narration of provenance |
+| Payment advice: Summary section | Sanction amount, total of heads, amount payable and identifier, repeated from sections 1, 3 and 4, plus a closing alert | Removed; the previous identifier on a resubmission sits beside the bill number | Each value said once |
+| Payment advice: documents | Four labelled columns repeated on every row, including the SHA-256 fingerprint and link expiry | Document and File, labelled once; when each is needed is shortened | The fingerprint and link are for PFMS and the DDO; the Checker still sees "fingerprints match" |
+| Payment advice: state alerts | Returned: reason and instructions; With the Checker: two alerts | One line each: the reason; who has it and since when | The fact, not the procedure |
+| Payment advice: error messages | Explanations of PFMS behaviour | What is wrong and how to fix it, in one line | WCAG 3.3.3 needs the suggestion; nothing more |
+| Payment status | An alert repeating the stepper and badge; descriptions under future steps; three card subtitles | Alert only when the payment is stopped (with PFMS's reason); future steps unlabelled; no subtitles | Status was said three times |
+| Checker | Radio descriptions, panel intro, helper text under the return reason | Removed; the irreversibility warning stays | The consequence matters at the point of decision; the explanation does not |
+| Queues and empty states | Second sentences on order and on when items appear; "oldest sanction first" on a list sorted newest first | One sentence each | One was untrue; the rest explained the obvious |
+| Dashboard | Instruction to select a stage; the data source printed three times; "Off the Usual Path" and "On Hold" | One standfirst; one source line; **Exceptions** and **With the Bureau** | Plain register; the second group is the Bureau's work, so the Maker sees where a file is held |
+| PFMS Masters | Synchronisation counts duplicating the Master Lists; DDO counts and the DDO list duplicating the DDO table | Removed; the DDO table and the claim-reference figures remain | Each figure shown once |
+| Schemes and Checkers | "Decision Awaited — TSA or hybrid" on both SHRESHTA schemes; Scheme Code Awaited alerts under "PFMS scheme code awaited" | Removed | The TSA question is an open BRD decision (§ dependencies), not something the Bureau can act on; the code line already says it |
+| Page guide | "Oldest sanction first"; "with the step to fix" | Corrected to match the screens | The guide must describe what is drawn |
+
+**Where the Bureau comes in.** Not in the chain of a payment, but before it and beside it: it keeps the PFMS masters
+current, sets each scheme's PFMS code and heads of account, designates the Checker for each DDO (FR-MDM, FR-HOA-002,
+BR-DSC-001), and completes older files so they reach the Maker (FR-NGO-003, BR-BAK-001). The Maker's dashboard now
+names the files waiting on it, **With the Bureau**. Its screens are on this page's third lane; the guide's steps 3
+and 4 describe it.
+
+Kept on purpose: SHRESHTA Mode 1 (FR-HOA-002 lists it), Waiting to Resend (the BRD's retry queue), Scroll Date (FR-STS),
+the six report tabs (§11), and the irreversibility warning before signing. Not drawn: a Bureau and a Checker
+dashboard — their menus carry Dashboard, which opens the shared e-Anudaan dashboard.
+
 ## 6. Adding to the page
 
 - **A screen:** into the right row of its flow; name `Role / Screen / State`; phone version ends ` · Mobile`.
