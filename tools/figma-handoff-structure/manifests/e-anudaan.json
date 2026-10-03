@@ -2,7 +2,7 @@
  "portal": "E-Anudaan",
  "file": "K0B3vuOTXpxw6kt0px2Cqo",
  "fileName": "E-Anudaan [Handoff]",
- "recordedAt": "2026-10-01",
+ "recordedAt": "2026-10-03",
  "$comment": "Captured by `check:figma-handoff --portal <Portal> --snapshot` from the check's own REST reads: pages in page-list order, each page in layers-panel (reading) order. A page's `loose` lists nodes outside any zone. Never edit by hand; re-capture after any structural change.",
  "pages": [
   {
@@ -3136,7 +3136,7 @@
    ]
   },
   {
-   "page": "Officers · Paying a Sanctioned Grant (PFMS)",
+   "page": "Officers · Paying Grants through PFMS",
    "id": "30:208307",
    "zones": [
     {
@@ -3164,500 +3164,184 @@
      "id": "30:208315",
      "children": [
       {
-       "name": "Programme Division Maker and Checker — Paying a Sanctioned Grant",
-       "id": "3:11385",
+       "name": "PD Maker — Preparing and Following a Payment",
+       "id": "284:19660",
        "children": [
+        {
+         "name": "Dashboard",
+         "id": "284:19661",
+         "children": [
+          {
+           "name": "Desktop",
+           "id": "284:19662",
+           "frames": [
+            {
+             "id": "284:19663",
+             "name": "PD Maker / Dashboard / Payments at a Glance"
+            }
+           ]
+          }
+         ]
+        },
         {
          "name": "Preparing a Payment Advice",
-         "id": "3:13443",
+         "id": "284:19833",
          "children": [
           {
            "name": "Desktop",
-           "id": "3:13883",
+           "id": "284:19834",
            "frames": [
             {
-             "id": "3:14977",
-             "name": "Officer / Payment Advices / New"
+             "id": "284:19835",
+             "name": "PD Maker / Payment Advices / All Cases"
             },
             {
-             "id": "3:14924",
-             "name": "Officer / Payment Advices / Returned by Checker"
+             "id": "284:19889",
+             "name": "PD Maker / Payment Advices / Nothing Waiting"
             },
             {
-             "id": "3:14871",
-             "name": "Officer / Payment Advices / Not Accepted by PFMS"
+             "id": "284:19945",
+             "name": "PD Maker / Payment Advice / Fresh Case"
             },
             {
-             "id": "93:19213",
-             "name": "Officer / Payment Advices / Returned by PFMS"
+             "id": "291:23785",
+             "name": "PD Maker / Payment Advice / With Errors"
             },
             {
-             "id": "117:22639",
-             "name": "Officer / Payment Advices / Drafts"
+             "id": "291:24538",
+             "name": "PD Maker / Payment Advice / Returned by PFMS"
             },
             {
-             "id": "3:14816",
-             "name": "Officer / Payment Advices / Drafts — Empty"
-            },
-            {
-             "id": "3:14736",
-             "name": "Officer / Payment Advices / On Hold"
-            },
-            {
-             "id": "3:14676",
-             "name": "Officer / Prepare Payment Advice / Step 1 of 5 — Sanction Header"
-            },
-            {
-             "id": "3:14615",
-             "name": "Officer / Prepare Payment Advice / Step 1 of 5 — Sanction Header — Errors"
-            },
-            {
-             "id": "92:220803",
-             "name": "Officer / Prepare Payment Advice / Step 1 of 5 — DDO Not Active for e-Bills"
-            },
-            {
-             "id": "3:14558",
-             "name": "Officer / Prepare Payment Advice / Step 2 of 5 — Heads of Account"
-            },
-            {
-             "id": "3:14501",
-             "name": "Officer / Prepare Payment Advice / Step 2 of 5 — Heads Do Not Add Up"
-            },
-            {
-             "id": "93:20499",
-             "name": "Officer / Prepare Payment Advice / Step 2 of 5 — CNA Exception Reason"
-            },
-            {
-             "id": "3:14449",
-             "name": "Officer / Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment"
-            },
-            {
-             "id": "3:14386",
-             "name": "Officer / Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment — With a Deduction"
-            },
-            {
-             "id": "3:14297",
-             "name": "Officer / Prepare Payment Advice / Step 4 of 5 — Supporting Documents"
-            },
-            {
-             "id": "3:14222",
-             "name": "Officer / Prepare Payment Advice / Step 5 of 5 — Review and Submit"
-            },
-            {
-             "id": "3:14145",
-             "name": "Officer / Prepare Payment Advice / Step 5 of 5 — Not Ready to Submit"
-            },
-            {
-             "id": "3:14069",
-             "name": "Officer / Prepare Payment Advice / Returned by the Checker"
-            },
-            {
-             "id": "93:19594",
-             "name": "Officer / Prepare Payment Advice / Returned by PFMS"
-            },
-            {
-             "id": "93:20040",
-             "name": "Officer / Prepare Payment Advice / A Fresh Payment Advice"
-            },
-            {
-             "id": "3:14011",
-             "name": "Officer / Prepare Payment Advice / Not Accepted by PFMS"
-            },
-            {
-             "id": "3:13950",
-             "name": "Officer / Prepare Payment Advice / Not Accepted by PFMS — Bill Number Already Used"
-            },
-            {
-             "id": "3:13884",
-             "name": "Officer / Payment Advice / With the Checker"
-            }
-           ]
-          },
-          {
-           "name": "Mobile",
-           "id": "3:13444",
-           "frames": [
-            {
-             "id": "3:13859",
-             "name": "Officer / Payment Advices / New — Mobile"
-            },
-            {
-             "id": "117:22528",
-             "name": "Officer / Payment Advices / Returned by PFMS — Mobile"
-            },
-            {
-             "id": "3:13796",
-             "name": "Officer / Prepare Payment Advice / Step 1 of 5 — Sanction Header — Mobile"
-            },
-            {
-             "id": "3:13736",
-             "name": "Officer / Prepare Payment Advice / Step 2 of 5 — Heads of Account — Mobile"
-            },
-            {
-             "id": "3:13681",
-             "name": "Officer / Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment — Mobile"
-            },
-            {
-             "id": "3:13589",
-             "name": "Officer / Prepare Payment Advice / Step 4 of 5 — Supporting Documents — Mobile"
-            },
-            {
-             "id": "3:13511",
-             "name": "Officer / Prepare Payment Advice / Step 5 of 5 — Review and Submit — Mobile"
-            },
-            {
-             "id": "3:13445",
-             "name": "Officer / Payment Advice / With the Checker — Mobile"
+             "id": "291:25247",
+             "name": "PD Maker / Payment Advice / With the Checker"
             }
            ]
           }
          ]
         },
         {
-         "name": "Authorising a Payment Advice — Needs Discussion",
-         "id": "3:12081",
-         "frames": [
-          {
-           "id": "3:13428",
-           "name": "Note — Needs Discussion"
-          }
-         ],
+         "name": "Following a Payment",
+         "id": "284:20004",
          "children": [
           {
            "name": "Desktop",
-           "id": "3:13017",
+           "id": "284:20005",
            "frames": [
             {
-             "id": "3:13375",
-             "name": "Officer / Authorisation Queue / Awaiting Authorisation"
+             "id": "284:20006",
+             "name": "PD Maker / Payment Status / In Progress"
             },
             {
-             "id": "3:13296",
-             "name": "Officer / Authorisation Queue / Authorised by You"
+             "id": "296:26297",
+             "name": "PD Maker / Payment Status / Credited"
             },
             {
-             "id": "3:13204",
-             "name": "Officer / Authorise Payment Advice / Approve and Sign"
-            },
-            {
-             "id": "3:13111",
-             "name": "Officer / Authorise Payment Advice / Return to Maker — Reason Missing"
-            },
-            {
-             "id": "3:13018",
-             "name": "Officer / Authorise Payment Advice / You Prepared This Advice"
-            },
-            {
-             "id": "92:220407",
-             "name": "Officer / Authorise Payment Advice / Not the Designated Checker"
-            }
-           ]
-          },
-          {
-           "name": "Mobile",
-           "id": "3:12900",
-           "frames": [
-            {
-             "id": "3:12993",
-             "name": "Officer / Authorisation Queue / Awaiting Authorisation — Mobile"
-            },
-            {
-             "id": "3:12901",
-             "name": "Officer / Authorise Payment Advice / Approve and Sign — Mobile"
-            }
-           ]
-          },
-          {
-           "name": "Pop-ups and Dialogs",
-           "id": "3:12082",
-           "frames": [
-            {
-             "id": "3:12799",
-             "name": "Officer / Authorise Payment Advice / Approve and Sign (Dialog)"
-            },
-            {
-             "id": "3:12694",
-             "name": "Officer / Authorise Payment Advice / Signing (Dialog)"
-            },
-            {
-             "id": "3:12591",
-             "name": "Officer / Authorise Payment Advice / Received by PFMS (Dialog)"
-            },
-            {
-             "id": "3:12488",
-             "name": "Officer / Authorise Payment Advice / No DSC Token Found (Dialog)"
-            },
-            {
-             "id": "3:12385",
-             "name": "Officer / Authorise Payment Advice / Signing Utility Not Running (Dialog)"
-            },
-            {
-             "id": "3:12282",
-             "name": "Officer / Authorise Payment Advice / Certificate Has Expired (Dialog)"
-            },
-            {
-             "id": "3:12179",
-             "name": "Officer / Authorise Payment Advice / PFMS Did Not Accept the Advice (Dialog)"
-            },
-            {
-             "id": "3:12083",
-             "name": "Officer / Authorise Payment Advice / Signed — Waiting to Resend (Dialog)"
-            }
-           ]
-          }
-         ]
-        },
-        {
-         "name": "Following a Payment — Needs Discussion",
-         "id": "3:11386",
-         "frames": [
-          {
-           "id": "3:12072",
-           "name": "Note — Needs Discussion"
-          }
-         ],
-         "children": [
-          {
-           "name": "Desktop",
-           "id": "3:11558",
-           "frames": [
-            {
-             "id": "3:12000",
-             "name": "Officer / Payment Status / Bill with DDO"
-            },
-            {
-             "id": "3:11915",
-             "name": "Officer / Payment Status / Paid"
-            },
-            {
-             "id": "92:219954",
-             "name": "Officer / Payment Status / Credit Failed at Bank"
-            },
-            {
-             "id": "3:11856",
-             "name": "Officer / Payment Status / Waiting to Resend"
-            },
-            {
-             "id": "3:11797",
-             "name": "Officer / Payment Status / Not Accepted by PFMS"
-            },
-            {
-             "id": "3:11723",
-             "name": "Officer / Payment Status / Returned and Cancelled"
-            },
-            {
-             "id": "91:15801",
-             "name": "Officer / Payment Status / Returned by PFMS"
-            },
-            {
-             "id": "91:16268",
-             "name": "Officer / Payment Status / Financial Year Expired"
-            },
-            {
-             "id": "3:11685",
-             "name": "Officer / Payment Status / On Hold — Bank Details Needed"
-            },
-            {
-             "id": "3:11647",
-             "name": "Officer / Payment Status / Paid Before the PFMS Integration"
-            },
-            {
-             "id": "3:11559",
-             "name": "Officer / Review an Application / Instalments — Awaiting Payment Advice"
-            }
-           ]
-          },
-          {
-           "name": "Mobile",
-           "id": "3:11472",
-           "frames": [
-            {
-             "id": "3:11473",
-             "name": "Officer / Payment Status / Paid — Mobile"
-            }
-           ]
-          },
-          {
-           "name": "Pop-ups and Dialogs",
-           "id": "3:11387",
-           "frames": [
-            {
-             "id": "3:11388",
-             "name": "Officer / Payment Status / Return Order (Dialog)"
+             "id": "296:26375",
+             "name": "PD Maker / Payment Status / Stopped — Returned by the PAO"
             }
            ]
           }
          ]
         }
        ]
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "page": "Officers · PFMS Set-Up",
-   "id": "31:8",
-   "zones": [
-    {
-     "name": "START HERE",
-     "id": "35:204243",
-     "children": [
+      },
       {
-       "name": "Guide to This Page",
-       "id": "37:13",
-       "frames": [
-        {
-         "id": "35:204244",
-         "name": "Guide — This Page"
-        }
-       ]
-      }
-     ]
-    },
-    {
-     "name": "SCREENS BY WHO USES THEM",
-     "id": "31:18",
-     "children": [
-      {
-       "name": "Bureau — Setting Up PFMS",
-       "id": "3:9654",
+       "name": "PD Checker — Authorising a Payment",
+       "id": "284:20077",
        "children": [
         {
-         "name": "Completing Legacy Files — Needs Discussion",
-         "id": "3:10877",
-         "frames": [
-          {
-           "id": "3:11379",
-           "name": "Note — Needs Discussion"
-          }
-         ],
+         "name": "Authorising a Payment Advice",
+         "id": "284:20078",
          "children": [
           {
            "name": "Desktop",
-           "id": "3:11047",
+           "id": "284:20079",
            "frames": [
             {
-             "id": "3:11320",
-             "name": "Officer / Legacy Files / Bank Details Needed"
+             "id": "284:20080",
+             "name": "PD Checker / Authorisation Queue / Awaiting Authorisation"
             },
             {
-             "id": "3:11260",
-             "name": "Officer / Legacy Files / Payee Code Needed"
+             "id": "293:28068",
+             "name": "PD Checker / Authorisation Queue / Nothing Waiting"
             },
             {
-             "id": "3:11174",
-             "name": "Officer / Legacy Files / Back-Filled"
+             "id": "284:20133",
+             "name": "PD Checker / Authorise Payment Advice / Ready to Sign"
             },
             {
-             "id": "3:11109",
-             "name": "Officer / Legacy Files / Heads to Retrofit"
+             "id": "294:26242",
+             "name": "PD Checker / Authorise Payment Advice / Cannot Sign — You Prepared It"
             },
             {
-             "id": "3:11048",
-             "name": "Officer / Legacy Files / Heads to Retrofit — Empty"
+             "id": "294:26624",
+             "name": "PD Checker / Authorise Payment Advice / Returning to the Maker"
+            },
+            {
+             "id": "294:26989",
+             "name": "PD Checker / Authorise Payment Advice / DSC Not Found"
             }
            ]
-          },
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "Bureau — Setting Up PFMS",
+       "id": "284:20229",
+       "children": [
+        {
+         "name": "Keeping PFMS Masters Current",
+         "id": "284:20230",
+         "children": [
           {
-           "name": "Mobile",
-           "id": "3:11022",
+           "name": "Desktop",
+           "id": "284:20231",
            "frames": [
             {
-             "id": "3:11023",
-             "name": "Officer / Legacy Files / Bank Details Needed — Mobile"
-            }
-           ]
-          },
-          {
-           "name": "Pop-ups and Dialogs",
-           "id": "3:10878",
-           "frames": [
-            {
-             "id": "3:10950",
-             "name": "Officer / Legacy Files / Enter Bank Details (Dialog)"
+             "id": "284:20232",
+             "name": "Bureau / PFMS Masters / Current"
             },
             {
-             "id": "3:10879",
-             "name": "Officer / Legacy Files / Set Head of Account (Dialog)"
+             "id": "299:27206",
+             "name": "Bureau / PFMS Masters / Out of Date"
             }
            ]
           }
          ]
         },
         {
-         "name": "Keeping PFMS Set-Up Current — Needs Discussion",
-         "id": "3:9655",
-         "frames": [
-          {
-           "id": "98:11768",
-           "name": "Note — Needs Discussion"
-          }
-         ],
+         "name": "Setting Up Schemes and Checkers",
+         "id": "284:20282",
          "children": [
           {
            "name": "Desktop",
-           "id": "3:9961",
+           "id": "284:20283",
            "frames": [
             {
-             "id": "3:10805",
-             "name": "Officer / PFMS Set-Up / Overview"
-            },
-            {
-             "id": "3:10593",
-             "name": "Officer / PFMS Set-Up / Heads of Account"
-            },
-            {
-             "id": "3:10468",
-             "name": "Officer / PFMS Set-Up / DDO and Division Codes"
-            },
-            {
-             "id": "3:10418",
-             "name": "Officer / PFMS Set-Up / Master Data"
-            },
-            {
-             "id": "3:10253",
-             "name": "Officer / PFMS Set-Up / Claim References"
-            },
-            {
-             "id": "3:10127",
-             "name": "Officer / PFMS Set-Up / Error Messages"
-            },
-            {
-             "id": "3:10013",
-             "name": "Officer / PFMS Set-Up / Maker and Checker"
-            },
-            {
-             "id": "3:9962",
-             "name": "Officer / PFMS Set-Up / Master Data — Out of Date"
+             "id": "284:20284",
+             "name": "Bureau / Schemes and Checkers / All Schemes"
             }
            ]
-          },
+          }
+         ]
+        },
+        {
+         "name": "Completing Older Files",
+         "id": "284:20530",
+         "children": [
           {
-           "name": "Mobile",
-           "id": "3:9910",
+           "name": "Desktop",
+           "id": "284:20531",
            "frames": [
             {
-             "id": "3:9911",
-             "name": "Officer / PFMS Set-Up / Overview — Mobile"
-            }
-           ]
-          },
-          {
-           "name": "Pop-ups and Dialogs",
-           "id": "3:9656",
-           "frames": [
-            {
-             "id": "3:9778",
-             "name": "Officer / PFMS Set-Up / Edit Message (Dialog)"
+             "id": "284:20532",
+             "name": "Bureau / Older Files / Waiting for Details"
             },
             {
-             "id": "3:9657",
-             "name": "Officer / PFMS Set-Up / Edit Maker and Checker (Dialog)"
-            },
-            {
-             "id": "98:10919",
-             "name": "Officer / PFMS Set-Up / Add Scheme (Dialog)"
+             "id": "284:20591",
+             "name": "Bureau / Older Files / None Waiting"
             }
            ]
           }
@@ -4106,73 +3790,15 @@
      "id": "3:6800",
      "children": [
       {
-       "name": "Replaced Screens — 1 Oct 2026",
-       "id": "78:6577",
-       "frames": [
-        {
-         "id": "78:6579",
-         "name": "Note — Why This Was Replaced"
-        },
-        {
-         "id": "3:21250",
-         "name": "Officer / Payment Status / Grant Released"
-        },
-        {
-         "id": "78:6580",
-         "name": "Note — Why This Was Replaced"
-        },
-        {
-         "id": "3:21193",
-         "name": "Officer / Payment Status / Grant Released — Mobile"
-        },
-        {
-         "id": "145:5401",
-         "name": "Note — Why This Was Replaced"
-        },
-        {
-         "id": "3:40951",
-         "name": "NGO / Project Bank Accounts"
-        },
-        {
-         "id": "145:5402",
-         "name": "Note — Why This Was Replaced"
-        },
-        {
-         "id": "3:40774",
-         "name": "NGO / Project Bank Accounts — Mobile"
-        },
-        {
-         "id": "145:5403",
-         "name": "Note — Why This Was Replaced"
-        },
-        {
-         "id": "3:42555",
-         "name": "NGO / Application Details / Grant Released"
-        },
-        {
-         "id": "145:5404",
-         "name": "Note — Why This Was Replaced"
-        },
-        {
-         "id": "3:41913",
-         "name": "NGO / Application Details / Grant Released — Mobile"
-        }
-       ]
-      },
-      {
        "name": "Replaced Screens — 17 Sep 2026",
        "id": "3:6801",
        "frames": [
-        {
-         "id": "3:7217",
-         "name": "Note — Why This Was Replaced"
-        },
         {
          "id": "3:7218",
          "name": "Officer / Notifications / Finance Division"
         },
         {
-         "id": "3:7078",
+         "id": "3:7217",
          "name": "Note — Why This Was Replaced"
         },
         {
@@ -4180,7 +3806,7 @@
          "name": "Officer / Worklist / Finance Division — SHRESHTA Mode 2"
         },
         {
-         "id": "3:7065",
+         "id": "3:7078",
          "name": "Note — Why This Was Replaced"
         },
         {
@@ -4188,7 +3814,7 @@
          "name": "Everyone / Portal Landing Page"
         },
         {
-         "id": "3:7052",
+         "id": "3:7065",
          "name": "Note — Why This Was Replaced"
         },
         {
@@ -4196,7 +3822,7 @@
          "name": "Everyone / Portal Landing Page — Mobile"
         },
         {
-         "id": "3:7051",
+         "id": "3:7052",
          "name": "Note — Why This Was Replaced"
         },
         {
@@ -4204,12 +3830,550 @@
          "name": "NGO / Attendance Master"
         },
         {
-         "id": "78:6578",
+         "id": "3:7051",
          "name": "Note — Why This Was Replaced"
         },
         {
          "id": "3:6802",
          "name": "NGO / CCTV Setup / Single Project Page"
+        },
+        {
+         "id": "78:6578",
+         "name": "Note — Why This Was Replaced"
+        }
+       ]
+      },
+      {
+       "name": "Replaced Screens — 1 Oct 2026",
+       "id": "78:6577",
+       "frames": [
+        {
+         "id": "3:21250",
+         "name": "Officer / Payment Status / Grant Released"
+        },
+        {
+         "id": "78:6579",
+         "name": "Note — Why This Was Replaced"
+        },
+        {
+         "id": "3:21193",
+         "name": "Officer / Payment Status / Grant Released — Mobile"
+        },
+        {
+         "id": "78:6580",
+         "name": "Note — Why This Was Replaced"
+        },
+        {
+         "id": "3:40951",
+         "name": "NGO / Project Bank Accounts"
+        },
+        {
+         "id": "145:5401",
+         "name": "Note — Why This Was Replaced"
+        },
+        {
+         "id": "3:40774",
+         "name": "NGO / Project Bank Accounts — Mobile"
+        },
+        {
+         "id": "145:5402",
+         "name": "Note — Why This Was Replaced"
+        },
+        {
+         "id": "3:42555",
+         "name": "NGO / Application Details / Grant Released"
+        },
+        {
+         "id": "145:5403",
+         "name": "Note — Why This Was Replaced"
+        },
+        {
+         "id": "3:41913",
+         "name": "NGO / Application Details / Grant Released — Mobile"
+        },
+        {
+         "id": "145:5404",
+         "name": "Note — Why This Was Replaced"
+        }
+       ]
+      },
+      {
+       "name": "Replaced Screens — 3 Oct 2026 · PFMS First Draft",
+       "id": "300:39076",
+       "children": [
+        {
+         "name": "Programme Division Maker and Checker — Paying a Sanctioned Grant",
+         "id": "3:11385",
+         "children": [
+          {
+           "name": "Preparing a Payment Advice",
+           "id": "3:13443",
+           "children": [
+            {
+             "name": "Desktop",
+             "id": "3:13883",
+             "frames": [
+              {
+               "id": "3:14977",
+               "name": "Officer / Payment Advices / New"
+              },
+              {
+               "id": "3:14924",
+               "name": "Officer / Payment Advices / Returned by Checker"
+              },
+              {
+               "id": "3:14871",
+               "name": "Officer / Payment Advices / Not Accepted by PFMS"
+              },
+              {
+               "id": "93:19213",
+               "name": "Officer / Payment Advices / Returned by PFMS"
+              },
+              {
+               "id": "117:22639",
+               "name": "Officer / Payment Advices / Drafts"
+              },
+              {
+               "id": "3:14816",
+               "name": "Officer / Payment Advices / Drafts — Empty"
+              },
+              {
+               "id": "3:14736",
+               "name": "Officer / Payment Advices / On Hold"
+              },
+              {
+               "id": "3:14676",
+               "name": "Officer / Prepare Payment Advice / Step 1 of 5 — Sanction Header"
+              },
+              {
+               "id": "3:14615",
+               "name": "Officer / Prepare Payment Advice / Step 1 of 5 — Sanction Header — Errors"
+              },
+              {
+               "id": "92:220803",
+               "name": "Officer / Prepare Payment Advice / Step 1 of 5 — DDO Not Active for e-Bills"
+              },
+              {
+               "id": "3:14558",
+               "name": "Officer / Prepare Payment Advice / Step 2 of 5 — Heads of Account"
+              },
+              {
+               "id": "3:14501",
+               "name": "Officer / Prepare Payment Advice / Step 2 of 5 — Heads Do Not Add Up"
+              },
+              {
+               "id": "93:20499",
+               "name": "Officer / Prepare Payment Advice / Step 2 of 5 — CNA Exception Reason"
+              },
+              {
+               "id": "3:14449",
+               "name": "Officer / Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment"
+              },
+              {
+               "id": "3:14386",
+               "name": "Officer / Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment — With a Deduction"
+              },
+              {
+               "id": "3:14297",
+               "name": "Officer / Prepare Payment Advice / Step 4 of 5 — Supporting Documents"
+              },
+              {
+               "id": "3:14222",
+               "name": "Officer / Prepare Payment Advice / Step 5 of 5 — Review and Submit"
+              },
+              {
+               "id": "3:14145",
+               "name": "Officer / Prepare Payment Advice / Step 5 of 5 — Not Ready to Submit"
+              },
+              {
+               "id": "3:14069",
+               "name": "Officer / Prepare Payment Advice / Returned by the Checker"
+              },
+              {
+               "id": "93:19594",
+               "name": "Officer / Prepare Payment Advice / Returned by PFMS"
+              },
+              {
+               "id": "93:20040",
+               "name": "Officer / Prepare Payment Advice / A Fresh Payment Advice"
+              },
+              {
+               "id": "3:14011",
+               "name": "Officer / Prepare Payment Advice / Not Accepted by PFMS"
+              },
+              {
+               "id": "3:13950",
+               "name": "Officer / Prepare Payment Advice / Not Accepted by PFMS — Bill Number Already Used"
+              },
+              {
+               "id": "3:13884",
+               "name": "Officer / Payment Advice / With the Checker"
+              }
+             ]
+            },
+            {
+             "name": "Mobile",
+             "id": "3:13444",
+             "frames": [
+              {
+               "id": "3:13859",
+               "name": "Officer / Payment Advices / New — Mobile"
+              },
+              {
+               "id": "117:22528",
+               "name": "Officer / Payment Advices / Returned by PFMS — Mobile"
+              },
+              {
+               "id": "3:13796",
+               "name": "Officer / Prepare Payment Advice / Step 1 of 5 — Sanction Header — Mobile"
+              },
+              {
+               "id": "3:13736",
+               "name": "Officer / Prepare Payment Advice / Step 2 of 5 — Heads of Account — Mobile"
+              },
+              {
+               "id": "3:13681",
+               "name": "Officer / Prepare Payment Advice / Step 3 of 5 — Beneficiary Payment — Mobile"
+              },
+              {
+               "id": "3:13589",
+               "name": "Officer / Prepare Payment Advice / Step 4 of 5 — Supporting Documents — Mobile"
+              },
+              {
+               "id": "3:13511",
+               "name": "Officer / Prepare Payment Advice / Step 5 of 5 — Review and Submit — Mobile"
+              },
+              {
+               "id": "3:13445",
+               "name": "Officer / Payment Advice / With the Checker — Mobile"
+              }
+             ]
+            }
+           ]
+          },
+          {
+           "name": "Authorising a Payment Advice — Needs Discussion",
+           "id": "3:12081",
+           "frames": [
+            {
+             "id": "3:13428",
+             "name": "Note — Needs Discussion"
+            }
+           ],
+           "children": [
+            {
+             "name": "Desktop",
+             "id": "3:13017",
+             "frames": [
+              {
+               "id": "3:13375",
+               "name": "Officer / Authorisation Queue / Awaiting Authorisation"
+              },
+              {
+               "id": "3:13296",
+               "name": "Officer / Authorisation Queue / Authorised by You"
+              },
+              {
+               "id": "3:13204",
+               "name": "Officer / Authorise Payment Advice / Approve and Sign"
+              },
+              {
+               "id": "3:13111",
+               "name": "Officer / Authorise Payment Advice / Return to Maker — Reason Missing"
+              },
+              {
+               "id": "3:13018",
+               "name": "Officer / Authorise Payment Advice / You Prepared This Advice"
+              },
+              {
+               "id": "92:220407",
+               "name": "Officer / Authorise Payment Advice / Not the Designated Checker"
+              }
+             ]
+            },
+            {
+             "name": "Mobile",
+             "id": "3:12900",
+             "frames": [
+              {
+               "id": "3:12993",
+               "name": "Officer / Authorisation Queue / Awaiting Authorisation — Mobile"
+              },
+              {
+               "id": "3:12901",
+               "name": "Officer / Authorise Payment Advice / Approve and Sign — Mobile"
+              }
+             ]
+            },
+            {
+             "name": "Pop-ups and Dialogs",
+             "id": "3:12082",
+             "frames": [
+              {
+               "id": "3:12799",
+               "name": "Officer / Authorise Payment Advice / Approve and Sign (Dialog)"
+              },
+              {
+               "id": "3:12694",
+               "name": "Officer / Authorise Payment Advice / Signing (Dialog)"
+              },
+              {
+               "id": "3:12591",
+               "name": "Officer / Authorise Payment Advice / Received by PFMS (Dialog)"
+              },
+              {
+               "id": "3:12488",
+               "name": "Officer / Authorise Payment Advice / No DSC Token Found (Dialog)"
+              },
+              {
+               "id": "3:12385",
+               "name": "Officer / Authorise Payment Advice / Signing Utility Not Running (Dialog)"
+              },
+              {
+               "id": "3:12282",
+               "name": "Officer / Authorise Payment Advice / Certificate Has Expired (Dialog)"
+              },
+              {
+               "id": "3:12179",
+               "name": "Officer / Authorise Payment Advice / PFMS Did Not Accept the Advice (Dialog)"
+              },
+              {
+               "id": "3:12083",
+               "name": "Officer / Authorise Payment Advice / Signed — Waiting to Resend (Dialog)"
+              }
+             ]
+            }
+           ]
+          },
+          {
+           "name": "Following a Payment — Needs Discussion",
+           "id": "3:11386",
+           "frames": [
+            {
+             "id": "3:12072",
+             "name": "Note — Needs Discussion"
+            }
+           ],
+           "children": [
+            {
+             "name": "Desktop",
+             "id": "3:11558",
+             "frames": [
+              {
+               "id": "3:12000",
+               "name": "Officer / Payment Status / Bill with DDO"
+              },
+              {
+               "id": "3:11915",
+               "name": "Officer / Payment Status / Paid"
+              },
+              {
+               "id": "92:219954",
+               "name": "Officer / Payment Status / Credit Failed at Bank"
+              },
+              {
+               "id": "3:11856",
+               "name": "Officer / Payment Status / Waiting to Resend"
+              },
+              {
+               "id": "3:11797",
+               "name": "Officer / Payment Status / Not Accepted by PFMS"
+              },
+              {
+               "id": "3:11723",
+               "name": "Officer / Payment Status / Returned and Cancelled"
+              },
+              {
+               "id": "91:15801",
+               "name": "Officer / Payment Status / Returned by PFMS"
+              },
+              {
+               "id": "91:16268",
+               "name": "Officer / Payment Status / Financial Year Expired"
+              },
+              {
+               "id": "3:11685",
+               "name": "Officer / Payment Status / On Hold — Bank Details Needed"
+              },
+              {
+               "id": "3:11647",
+               "name": "Officer / Payment Status / Paid Before the PFMS Integration"
+              },
+              {
+               "id": "3:11559",
+               "name": "Officer / Review an Application / Instalments — Awaiting Payment Advice"
+              }
+             ]
+            },
+            {
+             "name": "Mobile",
+             "id": "3:11472",
+             "frames": [
+              {
+               "id": "3:11473",
+               "name": "Officer / Payment Status / Paid — Mobile"
+              }
+             ]
+            },
+            {
+             "name": "Pop-ups and Dialogs",
+             "id": "3:11387",
+             "frames": [
+              {
+               "id": "3:11388",
+               "name": "Officer / Payment Status / Return Order (Dialog)"
+              }
+             ]
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "Bureau — Setting Up PFMS",
+         "id": "3:9654",
+         "children": [
+          {
+           "name": "Completing Legacy Files — Needs Discussion",
+           "id": "3:10877",
+           "frames": [
+            {
+             "id": "3:11379",
+             "name": "Note — Needs Discussion"
+            }
+           ],
+           "children": [
+            {
+             "name": "Desktop",
+             "id": "3:11047",
+             "frames": [
+              {
+               "id": "3:11320",
+               "name": "Officer / Legacy Files / Bank Details Needed"
+              },
+              {
+               "id": "3:11260",
+               "name": "Officer / Legacy Files / Payee Code Needed"
+              },
+              {
+               "id": "3:11174",
+               "name": "Officer / Legacy Files / Back-Filled"
+              },
+              {
+               "id": "3:11109",
+               "name": "Officer / Legacy Files / Heads to Retrofit"
+              },
+              {
+               "id": "3:11048",
+               "name": "Officer / Legacy Files / Heads to Retrofit — Empty"
+              }
+             ]
+            },
+            {
+             "name": "Mobile",
+             "id": "3:11022",
+             "frames": [
+              {
+               "id": "3:11023",
+               "name": "Officer / Legacy Files / Bank Details Needed — Mobile"
+              }
+             ]
+            },
+            {
+             "name": "Pop-ups and Dialogs",
+             "id": "3:10878",
+             "frames": [
+              {
+               "id": "3:10950",
+               "name": "Officer / Legacy Files / Enter Bank Details (Dialog)"
+              },
+              {
+               "id": "3:10879",
+               "name": "Officer / Legacy Files / Set Head of Account (Dialog)"
+              }
+             ]
+            }
+           ]
+          },
+          {
+           "name": "Keeping PFMS Set-Up Current — Needs Discussion",
+           "id": "3:9655",
+           "frames": [
+            {
+             "id": "98:11768",
+             "name": "Note — Needs Discussion"
+            }
+           ],
+           "children": [
+            {
+             "name": "Desktop",
+             "id": "3:9961",
+             "frames": [
+              {
+               "id": "3:10805",
+               "name": "Officer / PFMS Set-Up / Overview"
+              },
+              {
+               "id": "3:10593",
+               "name": "Officer / PFMS Set-Up / Heads of Account"
+              },
+              {
+               "id": "3:10468",
+               "name": "Officer / PFMS Set-Up / DDO and Division Codes"
+              },
+              {
+               "id": "3:10418",
+               "name": "Officer / PFMS Set-Up / Master Data"
+              },
+              {
+               "id": "3:10253",
+               "name": "Officer / PFMS Set-Up / Claim References"
+              },
+              {
+               "id": "3:10127",
+               "name": "Officer / PFMS Set-Up / Error Messages"
+              },
+              {
+               "id": "3:10013",
+               "name": "Officer / PFMS Set-Up / Maker and Checker"
+              },
+              {
+               "id": "3:9962",
+               "name": "Officer / PFMS Set-Up / Master Data — Out of Date"
+              }
+             ]
+            },
+            {
+             "name": "Mobile",
+             "id": "3:9910",
+             "frames": [
+              {
+               "id": "3:9911",
+               "name": "Officer / PFMS Set-Up / Overview — Mobile"
+              }
+             ]
+            },
+            {
+             "name": "Pop-ups and Dialogs",
+             "id": "3:9656",
+             "frames": [
+              {
+               "id": "3:9778",
+               "name": "Officer / PFMS Set-Up / Edit Message (Dialog)"
+              },
+              {
+               "id": "3:9657",
+               "name": "Officer / PFMS Set-Up / Edit Maker and Checker (Dialog)"
+              },
+              {
+               "id": "98:10919",
+               "name": "Officer / PFMS Set-Up / Add Scheme (Dialog)"
+              }
+             ]
+            }
+           ]
+          }
+         ]
         }
        ]
       }
