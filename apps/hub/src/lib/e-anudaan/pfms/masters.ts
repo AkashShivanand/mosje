@@ -23,11 +23,11 @@ export function seedMasters(syncedAt: string): Masters {
       { code: "093002", name: "PAO (Schemes), MoSJE, New Delhi", controllerCode: "093" },
     ],
     ddos: [
-      { code: "209311", name: "DDO, Social Defence Bureau", paoCode: "093002", eBillActive: true, landing: "Approved" },
-      { code: "209312", name: "DDO, Scheduled Castes Development Bureau", paoCode: "093002", eBillActive: true, landing: "Approved" },
-      { code: "209313", name: "DDO, Senior Citizens Division", paoCode: "093002", eBillActive: true, landing: "Approved" },
+      { code: "209311", name: "DDO, Social Defence Bureau", paoCode: "093002", eBillActive: true, landing: "Approved", kind: "NCDDO" },
+      { code: "209312", name: "DDO, Scheduled Castes Development Bureau", paoCode: "093002", eBillActive: true, landing: "Approved", kind: "NCDDO" },
+      { code: "209313", name: "DDO, Senior Citizens Division", paoCode: "093002", eBillActive: true, landing: "Approved", kind: "NCDDO" },
       // Deliberately inactive: the Maker has to see what an inactive DDO does to the form (FR-MDM-004).
-      { code: "209317", name: "DDO, Cash Section (Sectt.)", paoCode: "093001", eBillActive: false, landing: "Approved" },
+      { code: "209317", name: "DDO, Cash Section (Sectt.)", paoCode: "093001", eBillActive: false, landing: "Approved", kind: "CDDO" },
     ],
     pdCodes: [
       { code: "93110017", ddoCode: "209311", label: "Social Defence Bureau — Grants" },
@@ -120,6 +120,21 @@ export function labelOf(list: readonly { code: string; label: string }[], code: 
 /** "2235021070101 · 31 · GEN · 093" — how a coded head is read aloud and printed. */
 export function headCode(h: Partial<HeadOfAccount>): string {
   return [h.functionHead, h.objectHead, h.category, h.grantNumber].map((p) => p || "—").join(" · ");
+}
+
+/** What a DDO type stands for, as the e-Bill table spells it out. */
+export const DDO_KIND_LABEL: Record<NonNullable<Masters["ddos"][number]["kind"]>, string> = {
+  NCDDO: "Non-Cheque Drawing DDO",
+  CDDO: "Cheque Drawing DDO",
+};
+
+/**
+ * "2235021070101" → "2235-02-107-01-01": a Function Head printed as the budget reads it — Major,
+ * Sub-Major, Minor, Sub and Detailed Head. Stored and sent to PFMS as the 13 digits; only shown split.
+ */
+export function formatFunctionHead(code: string | undefined): string {
+  if (!code || !/^\d{13}$/.test(code)) return code ?? "";
+  return [code.slice(0, 4), code.slice(4, 6), code.slice(6, 9), code.slice(9, 11), code.slice(11, 13)].join("-");
 }
 
 /** A configured scheme's name: its own where the Bureau gave one, else the portal's. */

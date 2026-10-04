@@ -118,8 +118,9 @@ function pdNav(grade: Grade): NavItem[] {
     { label: "Reports & Analytics", href: `${BASE}/dashboard/sm2/reports`, icon: "bar_chart" },
   ];
   if (grade === "us") {
-    // The Under Secretary designates the PD Maker and PD Checker for each DDO (PFMS BRD §4).
-    nav.push({ label: "Maker & Checker", href: `${BASE}/dashboard/pfms/designations`, icon: "badge" });
+    // The Under Secretary designates the PD Maker and PD Checker for each DDO (PFMS BRD §4), on the
+    // page the Bureau keeps the schemes on; the schemes are read-only to this seat.
+    nav.push({ label: "Schemes and Checkers", href: `${BASE}/dashboard/pfms/schemes`, icon: "badge" });
   }
   if (grade === "us" || grade === "js") {
     nav.push({ label: "Payment Reports", href: `${BASE}/dashboard/payment-reports`, icon: "query_stats" });
@@ -294,21 +295,17 @@ export const ROLES: Record<RoleId, RoleDef> = {
     shortLabel: "Bureau",
     loginId: "9200000815",
     personName: "Gaurav Khanna",
-    home: `${BASE}/dashboard/pfms`,
+    home: `${BASE}/dashboard/payment-reports`,
     division: null,
     grade: null,
     caps: ["configurePfms", "designateOfficers", "paymentReports"],
     nav: [
-      { label: "PFMS Set-Up", href: `${BASE}/dashboard/pfms`, icon: "tune" },
-      { label: "Legacy Files", href: `${BASE}/dashboard/pfms/back-fill`, icon: "history_edu" },
-      { label: "Heads of Account", href: `${BASE}/dashboard/pfms/heads-of-account`, icon: "account_tree" },
-      { label: "DDO & Division Codes", href: `${BASE}/dashboard/pfms/ddo-mapping`, icon: "lan" },
-      { label: "Master Data", href: `${BASE}/dashboard/pfms/masters`, icon: "sync" },
-      { label: "Claim References", href: `${BASE}/dashboard/pfms/claim-references`, icon: "confirmation_number" },
-      { label: "Error Messages", href: `${BASE}/dashboard/pfms/error-messages`, icon: "translate" },
-      { label: "Maker & Checker", href: `${BASE}/dashboard/pfms/designations`, icon: "badge" },
-      { label: "NGO Directory", href: `${BASE}/dashboard/ngo-directory`, icon: "corporate_fare" },
-      { label: "Payment Reports", href: `${BASE}/dashboard/payment-reports`, icon: "query_stats" },
+      // As the handoff file draws the Bureau's sidebar (Bureau / PFMS Masters, 3 Oct 2026). Seven
+      // set-up pages became three; their old addresses redirect (proxy.ts, E_ANUDAAN_ALIASES).
+      { label: "Dashboard", href: `${BASE}/dashboard/payment-reports`, icon: "dashboard" },
+      { label: "PFMS Masters", href: `${BASE}/dashboard/pfms/masters`, icon: "sync" },
+      { label: "Schemes and Checkers", href: `${BASE}/dashboard/pfms/schemes`, icon: "account_tree" },
+      { label: "Older Files", href: `${BASE}/dashboard/pfms/older-files`, icon: "history_edu" },
     ],
   },
 
@@ -419,7 +416,7 @@ function isGrade(v: string | undefined): v is Grade {
  * that names no screen (an unknown grade or key). Both render a status screen in `ConsoleShell`.
  */
 /** The Bureau's PFMS set-up pages, under /dashboard/pfms/. */
-const PFMS_PAGES = new Set(["back-fill", "heads-of-account", "ddo-mapping", "masters", "claim-references", "error-messages"]);
+const PFMS_PAGES = new Set(["masters", "older-files"]);
 
 export function consoleRouteAccess(pathname: string, role: RoleDef): RouteAccess {
   if (role.id === "ngo") return "forbidden";
@@ -457,8 +454,9 @@ export function consoleRouteAccess(pathname: string, role: RoleDef): RouteAccess
   }
   if (section === "pfms") {
     if (b) return "not-found";
-    if (a === "designations") return role.caps.includes("designateOfficers") ? "allowed" : "forbidden";
-    if (a === undefined || PFMS_PAGES.has(a)) return can("configurePfms");
+    // Schemes and Checkers: the Bureau keeps it, the Under Secretary designates on it.
+    if (a === "schemes") return role.caps.includes("configurePfms") || role.caps.includes("designateOfficers") ? "allowed" : "forbidden";
+    if (a !== undefined && PFMS_PAGES.has(a)) return can("configurePfms");
     return "not-found";
   }
   if (section === "payment-reports") return a ? "not-found" : can("paymentReports");

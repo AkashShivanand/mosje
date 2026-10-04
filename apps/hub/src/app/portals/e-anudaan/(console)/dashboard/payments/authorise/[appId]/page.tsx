@@ -49,7 +49,7 @@ import { projectTitleFor } from "@/lib/e-anudaan/applicant";
 import { formatDate, formatTime } from "@/lib/e-anudaan/format";
 import { schemeLabel } from "@/lib/e-anudaan/selectors";
 import { CERTIFICATE_MESSAGE, DOCUMENT_TYPES, divergences, netOf } from "@/lib/e-anudaan/pfms/advice";
-import { configFor } from "@/lib/e-anudaan/pfms/masters";
+import { configFor, formatFunctionHead } from "@/lib/e-anudaan/pfms/masters";
 import { payeeFor, sanctionFacts } from "@/lib/e-anudaan/pfms/selectors";
 import type { HeadLine, HeadOfAccount, PaymentAdvice } from "@/lib/e-anudaan/pfms/types";
 import type { RoleId } from "@/lib/e-anudaan/types";
@@ -66,10 +66,10 @@ const uniq = (xs: (string | undefined)[]) => [...new Set(xs.filter((x): x is str
 /** "31, 35 and 36". */
 const andList = (xs: string[]) => (xs.length < 2 ? xs.join("") : `${xs.slice(0, -1).join(", ")} and ${xs.at(-1)}`);
 
-/** Heads as one line — "2235021070101 · 31 and 35 · GEN · 093" — so the two sides read alike. */
+/** Heads as one line — "2235-02-107-01-01 · 31 and 35 · GEN · 093" — so the two sides read alike. */
 function headsLine(heads: readonly Partial<HeadOfAccount>[]): string {
   if (heads.length === 0) return "Not yet configured";
-  return [uniq(heads.map((h) => h.functionHead)).join(", "), andList(uniq(heads.map((h) => h.objectHead)).sort()), uniq(heads.map((h) => h.category)).join(", "), uniq(heads.map((h) => h.grantNumber)).join(", ")].join(" · ");
+  return [uniq(heads.map((h) => formatFunctionHead(h.functionHead))).join(", "), andList(uniq(heads.map((h) => h.objectHead)).sort()), uniq(heads.map((h) => h.category)).join(", "), uniq(heads.map((h) => h.grantNumber)).join(", ")].join(" · ");
 }
 
 const sameHead = (a: Partial<HeadOfAccount>, b: Partial<HeadOfAccount>) => a.functionHead === b.functionHead && a.objectHead === b.objectHead && a.category === b.category && a.grantNumber === b.grantNumber;

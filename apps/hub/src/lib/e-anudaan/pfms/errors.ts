@@ -3,8 +3,9 @@
  *
  * FR-STS-006: "display PFMS-returned ErrorCode and ErrorMessage values against the case in plain
  * language, mapped through a maintained lookup, rather than showing raw codes to the user." This is
- * that lookup. The Bureau can reword a message (/dashboard/pfms/error-messages); the code, step and
- * field are fixed, because they are what lets the Maker's error summary jump to the right input.
+ * that lookup. The Bureau could reword a message on a page retired on 3 Oct 2026; rewordings
+ * already saved still apply. The code, step and field are fixed, because they are what lets the
+ * Maker's error summary jump to the right input.
  *
  * Codes the BRD names are real: ERRM05, the ERRSNC and ERRCC families, and ERRSNC44 ("Bill Number
  * already exists", §8.5). The remaining numbers are ILLUSTRATIVE — the full list is in the PFMS
