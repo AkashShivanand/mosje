@@ -98,8 +98,14 @@ export interface SiteFooterProps extends React.HTMLAttributes<HTMLElement> {
    * the policy row), so this is not drawn again — the clause asks for the element
    * to be present, not present twice. On `portal` it renders in the strip.
    * Passing it is how a caller proves the destination exists for both.
+   *
+   * OPTIONAL ON `portal` ONLY, AND A RECORDED DEPARTURE. A signed-in workflow
+   * whose side menu is its whole map may leave the Sitemap out: the E-Anudaan
+   * PFMS officer screens carry Terms, Privacy and Help alone (the owner's
+   * decision, 3 Oct 2026, against DBIM 5.6). A caller that omits it must say why
+   * beside the call. The website variant never draws it either way.
    */
-  sitemap: SiteFooterLink;
+  sitemap?: SiteFooterLink;
   /**
    * [DBIM 5.6] Help — REQUIRED, and rendered under the same rule as `sitemap`.
    * The clause wants help RESOURCES behind it (FAQs, screen reader access,
@@ -269,9 +275,9 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
             also list them in `policyLinks`. */}
         <div className="ds-sitefooter__strip" style={inStyle}>
           <p className="ds-sitefooter__strip-owner">{lineage}</p>
-          <nav aria-label="Policies, sitemap and help">
+          <nav aria-label={sitemap ? "Policies, sitemap and help" : "Policies and help"}>
             <ul className="ds-sitefooter__inline">
-              {[...policyLinks, sitemap, help].map((link) => (
+              {[...policyLinks, ...(sitemap ? [sitemap] : []), help].map((link) => (
                 <li key={link.label}>{renderLink(link)}</li>
               ))}
             </ul>

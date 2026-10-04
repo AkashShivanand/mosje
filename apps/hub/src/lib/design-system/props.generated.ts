@@ -4653,6 +4653,12 @@ export const GENERATED_PROPS = {
         "description": "Empty-state message."
       },
       {
+        "name": "footer",
+        "type": "Partial<Record<string, React.ReactNode>>",
+        "required": false,
+        "description": "A summary row under the body — a total, a reconciliation — keyed by column, so each figure sits under the column it sums and takes that column's alignment. Rendered in `<tfoot>`, which a screen reader announces as the table's footer, not as one more record."
+      },
+      {
         "name": "hidePagerWhenFits",
         "type": "boolean",
         "required": false,
@@ -11002,6 +11008,12 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"default\"\n\nONE SCALE PER KIND OF PAGE, so the H1 does not change size inside a single journey.\n\n- `default` — headline-1 (32px on a portal). Every page whose subject IS the title:\ndashboards, lists and registers, record and detail pages (an application, a payment\nstatus, NGO 360), review and decision screens, and error pages (403, 404).\n- `compact` — headline-3 (24px on a portal). A screen whose own furniture leads and the\ntitle only names it: a multi-step form or wizard, where the stepper and the step panel\ncarry the weight, and a single-task form page (a correction, a certificate, a request).\n\nNot a third size, and not a per-page judgement: if a page is neither, it is `default`.\nSign-in titles belong to the auth templates, which carry their own scale.",
         "description": "The title's rung on the headline ramp."
+      },
+      {
+        "name": "status",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Where the record stands — a status `Badge` — drawn on the title's own line, right after it. It describes the subject the title names, so it sits beside the name rather than at the far edge among the actions, where on a 1440 screen it ended up 600px from the record it described (PFMS visual pass, 3 Oct 2026). Wraps under the title on a narrow screen."
       }
     ]
   },
@@ -14460,12 +14472,6 @@ export const GENERATED_PROPS = {
         "description": "[DBIM 5.6] The website policies — terms of use, privacy, copyright, hyperlinking, accessibility, feedback. Required on both variants. On `portal`, DO NOT list Sitemap or Help here: the component draws them from their own props, so a duplicate renders twice in the same band. On `website` those props are not drawn, and Help may sit here as it does on dosje.gov.in."
       },
       {
-        "name": "sitemap",
-        "type": "SiteFooterLink",
-        "required": true,
-        "description": "[DBIM 5.6] Sitemap — REQUIRED, like `lineage` and `copyright`, and for the same reason: a footer without it is not a government footer. WHERE IT RENDERS DEPENDS ON THE VARIANT, and that is the whole point of the prop. On `website` the content already places the Sitemap (a link column, or the policy row), so this is not drawn again — the clause asks for the element to be present, not present twice. On `portal` it renders in the strip. Passing it is how a caller proves the destination exists for both."
-      },
-      {
         "name": "address",
         "type": "string",
         "required": false,
@@ -14519,6 +14525,12 @@ export const GENERATED_PROPS = {
         "type": "SiteFooterLink[]",
         "required": false,
         "description": "[DBIM 5.6] Required element. Other government platforms. Website variant only."
+      },
+      {
+        "name": "sitemap",
+        "type": "SiteFooterLink",
+        "required": false,
+        "description": "[DBIM 5.6] Sitemap — REQUIRED, like `lineage` and `copyright`, and for the same reason: a footer without it is not a government footer. WHERE IT RENDERS DEPENDS ON THE VARIANT, and that is the whole point of the prop. On `website` the content already places the Sitemap (a link column, or the policy row), so this is not drawn again — the clause asks for the element to be present, not present twice. On `portal` it renders in the strip. Passing it is how a caller proves the destination exists for both. OPTIONAL ON `portal` ONLY, AND A RECORDED DEPARTURE. A signed-in workflow whose side menu is its whole map may leave the Sitemap out: the E-Anudaan PFMS officer screens carry Terms, Privacy and Help alone (the owner's decision, 3 Oct 2026, against DBIM 5.6). A caller that omits it must say why beside the call. The website variant never draws it either way."
       },
       {
         "name": "social",

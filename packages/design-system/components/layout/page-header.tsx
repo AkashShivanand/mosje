@@ -11,6 +11,14 @@ export interface PageHeaderProps extends React.HTMLAttributes<HTMLElement> {
   eyebrow?: React.ReactNode;
   /** The page title. Rendered as the page's `<h1>` unless `as` says otherwise. */
   title: string;
+  /**
+   * Where the record stands — a status `Badge` — drawn on the title's own line,
+   * right after it. It describes the subject the title names, so it sits beside
+   * the name rather than at the far edge among the actions, where on a 1440
+   * screen it ended up 600px from the record it described (PFMS visual pass,
+   * 3 Oct 2026). Wraps under the title on a narrow screen.
+   */
+  status?: React.ReactNode;
   /** Supporting line under the title — "Last updated: 27 Jan 2026, 03:05 pm". */
   meta?: React.ReactNode;
   /** Primary and secondary actions, aligned to the trailing edge. */
@@ -54,6 +62,7 @@ export interface PageHeaderProps extends React.HTMLAttributes<HTMLElement> {
 export function PageHeader({
   eyebrow,
   title,
+  status,
   meta,
   actions,
   as = 1,
@@ -70,9 +79,18 @@ export function PageHeader({
     <div className={cn("sa-page-header", size === "compact" && "sa-page-header--compact", className)} {...rest}>
       <div className="sa-page-header__text">
         {eyebrow ? <p className="sa-page-header__eyebrow">{eyebrow}</p> : null}
-        <Heading id={headingId} className="sa-page-header__title">
-          {title}
-        </Heading>
+        {status ? (
+          <div className="sa-page-header__title-row">
+            <Heading id={headingId} className="sa-page-header__title">
+              {title}
+            </Heading>
+            <span className="sa-page-header__status">{status}</span>
+          </div>
+        ) : (
+          <Heading id={headingId} className="sa-page-header__title">
+            {title}
+          </Heading>
+        )}
         {meta ? <p className="sa-page-header__meta">{meta}</p> : null}
       </div>
       {actions ? <div className="sa-page-header__actions">{actions}</div> : null}

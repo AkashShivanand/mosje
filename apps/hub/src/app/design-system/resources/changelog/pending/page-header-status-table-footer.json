@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "PAGE HEADER CARRIES A STATUS, DATA TABLE CARRIES A TOTAL ROW, AND THE PORTAL FOOTER'S SITEMAP IS OPTIONAL. `PageHeader` takes `status` — a badge set on the title's line, wrapping under it when the line runs out — so a record page says where the file stands beside its name rather than in a card below. `DataTable` takes `footer`, one cell per column key, rendered as a `<tfoot>` on the subtle neutral ground with a top rule, for a total that belongs to the table it sums. `SiteFooter` `variant=\"portal\"` no longer requires `sitemap`: a signed-in workflow portal has no public page tree to map, and DBIM 5.6's Sitemap link is left off there by the owner's decision (3 Oct 2026). All three were added for the E-Anudaan PFMS Maker screens."
+}

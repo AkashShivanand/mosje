@@ -112,6 +112,10 @@ const SR_TEXT: Record<StepStatus, string> = {
  * one stage can then never disagree on screen.
  */
 function resolveStatus(step: StepperStep, index: number, current: number): StepStatus {
+  // A stage that stopped the process is where it stands AND failed: the error mark wins, and
+  // `aria-current` still names it (below). Without this a returned payment drew its failed stage
+  // as an ordinary current one.
+  if (index === current && step.status === "error") return "error";
   if (index === current) return "current";
   if (step.status) return step.status;
   return index < current ? "complete" : "upcoming";
@@ -212,7 +216,7 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(function S
             <li
               key={step.label}
               className={cn("ds-stepper__item", `is-${status}`)}
-              aria-current={status === "current" ? "step" : undefined}
+              aria-current={i === current ? "step" : undefined}
             >
               {selectable ? (
                 /* The <li> around it carries `aria-current="step"`; the marker, label,

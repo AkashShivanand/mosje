@@ -127,6 +127,13 @@
     font-variant-numeric: tabular-nums;
   }
 
+  /* The summary row: set apart by its ground and its weight, never by a heavier rule. */
+  .ds-table__foot .ds-table__ftd {
+    background-color: var(--sa-bg-neutral-subtler);
+    border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
   /* A column of figures reads from its last digit, not its first. Paired with the
      tabular figures above, this is what makes a register of amounts scannable. */
   .ds-table__cell--end { text-align: right; }

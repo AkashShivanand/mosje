@@ -36,7 +36,9 @@ import {
   InlineBar,
   MetricCard,
   NumberInput,
+  ProvenanceLine,
   RankedBarList,
+  SectionTitle,
   Tabs,
   WorklistScreen,
   screenCopy,
@@ -45,13 +47,14 @@ import {
   type WorklistColumn,
 } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
+import { ROLES } from "@/lib/e-anudaan/roles";
 import { usePfms } from "@/lib/e-anudaan/pfms/store";
 import { schemeLabel } from "@/lib/e-anudaan/selectors";
 import { formatDate, formatDateTime, formatMoney, formatMonthYear } from "@/lib/e-anudaan/format";
 import { RefText, splitRowActions } from "@/components/e-anudaan/worklist-table";
 import { CaseStatus, RowLink, StageBadge, exact, statusHref } from "@/components/e-anudaan/pfms/payment-ui";
 import { BLOCKER_TEXT, paymentCases, type Blocker, type PaymentCase } from "@/lib/e-anudaan/pfms/selectors";
-import { EXCEPTIONS, STAGES, STAGE_INFO, type AnyStage } from "@/lib/e-anudaan/pfms/stages";
+import { EXCEPTIONS, STAGE_INFO, latestRequest, type AnyStage } from "@/lib/e-anudaan/pfms/stages";
 import { configFor, labelOf } from "@/lib/e-anudaan/pfms/masters";
 import { pfmsError } from "@/lib/e-anudaan/pfms/errors";
 import {
@@ -59,7 +62,6 @@ import {
   ageing,
   failureCodes,
   failureTrend,
-  pipelineCounts,
   poolUtilisation,
   reconcile,
   sinceLastMove,
@@ -74,7 +76,7 @@ import type { EAnudaanState, GrantApplication } from "@/lib/e-anudaan/types";
 import type { PfmsState } from "@/lib/e-anudaan/pfms/seed";
 
 const REPORTS = [
-  { id: "pipeline", label: "Sanction Pipeline", meta: "Sanctioned files at each stage of payment, from the payment advice to the credit." },
+  { id: "pipeline", label: "Sanction Pipeline", meta: "Sanctioned files on their way to PFMS, from payment advice to credit." },
   { id: "ageing", label: "Ageing", meta: "Payment advices in progress, by Drawing and Disbursing Officer, with the days since each last moved." },
   { id: "reconciliation", label: "Disbursement Reconciliation", meta: "Credited payments matched against the PFMS Ministry release and transfer entries." },
   { id: "failures", label: "Failure Trend", meta: "Payment advices PFMS did not accept, by month and by the kind of error." },
@@ -133,6 +135,7 @@ function PaymentReports() {
   const pathname = usePathname();
   const params = useSearchParams();
   const [scheme, setScheme] = React.useState("");
+  const title = (state.session && ROLES[state.session]?.nav.find((n) => n.href.endsWith("/payment-reports"))?.label) || "Payment Reports";
 
   const requested = params.get("tab");
   const report = REPORTS.find((r) => r.id === requested) ?? REPORTS[0];
@@ -150,6 +153,7 @@ function PaymentReports() {
     <Tabs
       idBase="payment-reports"
       ariaLabel="Payment reports"
+      track="enclosed"
       overflow
       tabs={REPORTS.map((r) => ({ id: r.id, label: r.label, href: `${pathname}?tab=${r.id}` }))}
       active={REPORTS.findIndex((r) => r.id === report.id)}
@@ -167,7 +171,8 @@ function PaymentReports() {
     // The report switcher sits directly under the page heading, before any figure: WorklistScreen
     // draws `summary` above `views`, which put six tabs halfway down the page, under the cards of
     // whichever report was open. So the tabs lead the summary slot instead of taking `views`.
-    frame: { title: "Payment Reports", meta: report.meta, loading: !ready },
+    // The page takes its menu item's name: the Maker's "Dashboard", everyone else's "Payment Reports".
+    frame: { title: title, meta: report.meta, loading: !ready },
     tabs: views,
     schemeFilter: (
       <FilterSelect label="Scheme" value={scheme} onChange={setScheme} options={[{ value: "", label: "All Schemes" }, ...schemes.map((s) => ({ value: s, label: schemeLabel(s) }))]} />
@@ -211,11 +216,45 @@ const filteredCopy = (loading: string, emptyTitle: string, emptyDescription: str
 
 /* ── a. Sanction Pipeline ─────────────────────────────────────────────────── */
 
-type StageFilter = "" | AnyStage | `held:${Blocker}`;
+/**
+ * The tiles, as the Maker's Dashboard is drawn (handoff file, Officers · Paying Grants through PFMS,
+ * 3 Oct 2026): five plain stages in the order a payment moves, then four readings of the pipeline as
+ * a whole. A tile groups the code's finer stages the way an officer names where a file is — an advice
+ * being prepared is still "Waiting for an Advice", a bill PFMS has received is "With the DDO".
+ */
+const PIPELINE_GROUPS = [
+  { id: "waiting", label: "Waiting for an Advice", stages: ["awaiting-advice", "in-preparation"] },
+  { id: "checker", label: "With the Checker", stages: ["awaiting-authorisation"] },
+  { id: "ddo", label: "With the DDO", stages: ["received", "bill-with-ddo"] },
+  { id: "pao", label: "At the PAO", stages: ["at-pao"] },
+  { id: "bank", label: "At the Bank", stages: ["payment-in-process"] },
+] as const satisfies readonly { id: string; label: string; stages: readonly AnyStage[] }[];
 
-function inStage(c: PaymentCase, f: StageFilter): boolean {
+type GroupId = (typeof PIPELINE_GROUPS)[number]["id"];
+type StageFilter = "" | AnyStage | `held:${Blocker}` | `group:${GroupId}` | "credited-month";
+
+const DAY_MS = 86_400_000;
+
+/** When the bank confirmed the credit: the latest scroll date on the request, if every payment is credited. */
+function creditedAt(c: PaymentCase): string | undefined {
+  const req = c.advice ? latestRequest(c.advice) : undefined;
+  if (!req || req.payments.length === 0 || !req.payments.every((p) => p.utr && p.scrollStatus === "Success")) return undefined;
+  return req.payments.map((p) => p.scrollDate).filter(Boolean).sort().at(-1);
+}
+
+const sameMonth = (a: string, b: string) => a.slice(0, 7) === b.slice(0, 7);
+
+function inStage(c: PaymentCase, f: StageFilter, stamp: string): boolean {
   if (!f) return true;
   if (f.startsWith("held:")) return c.blocker === f.slice(5);
+  if (f.startsWith("group:")) {
+    const g = PIPELINE_GROUPS.find((x) => x.id === f.slice(6))!;
+    return !c.blocker && (g.stages as readonly AnyStage[]).includes(c.stage);
+  }
+  if (f === "credited-month") {
+    const at = creditedAt(c);
+    return !!at && !!stamp && sameMonth(at, stamp);
+  }
   return c.stage === f;
 }
 
@@ -224,20 +263,24 @@ function PipelineReport({ ctx }: { ctx: ReportContext }) {
   const [stage, setStage] = React.useState<StageFilter>("");
 
   const cases = React.useMemo(() => paymentCases(state, pfms).filter((c) => !scheme || c.app.schemeCode === scheme), [state, pfms, scheme]);
-  // One reading: the tiles count the same cases the table lists, by the same stageOf().
-  const counts = React.useMemo(
-    () =>
-      pipelineCounts(
-        cases.flatMap((c) => (c.advice ? [c.advice] : [])),
-        // A held file is counted once, under On Hold — not also as awaiting an advice it cannot have yet.
-        cases.filter((c) => !c.advice && !c.blocker).length,
-      ),
-    [cases],
-  );
-  const held = (Object.keys(BLOCKER_TEXT) as Blocker[]).map((b) => ({ b, n: cases.filter((c) => c.blocker === b).length })).filter((x) => x.n > 0);
-  const exceptions = EXCEPTIONS.filter((s) => counts[s] > 0);
-  const rows = cases.filter((c) => inStage(c, stage));
+  // One reading: every tile counts the cases the table lists under the same filter (data-state-completeness §2).
+  const countOf = (f: StageFilter) => cases.filter((c) => inStage(c, f, stamp)).length;
+  const held = (Object.keys(BLOCKER_TEXT) as Blocker[]).map((b) => ({ b, n: countOf(`held:${b}`) })).filter((x) => x.n > 0);
+  const exceptions = EXCEPTIONS.map((s) => ({ s, n: countOf(s) })).filter((x) => x.n > 0);
+  const rows = cases.filter((c) => inStage(c, stage, stamp));
   const pick = (f: StageFilter) => setStage((cur) => (cur === f ? "" : f));
+
+  // The four readings of the pipeline as a whole.
+  const credited = cases.filter((c) => creditedAt(c));
+  const turnaroundDays = credited.flatMap((c) => {
+    const from = c.app.sanction?.sanctionedAt;
+    const to = creditedAt(c);
+    return from && to ? [Math.max(0, Math.round((Date.parse(to) - Date.parse(from)) / DAY_MS))] : [];
+  });
+  const averageDays = turnaroundDays.length ? turnaroundDays.reduce((a, b) => a + b, 0) / turnaroundDays.length : null;
+  const waiting = cases.filter((c) => inStage(c, "group:waiting", stamp) || c.blocker);
+  const oldestDays = stamp && waiting.length ? Math.max(...waiting.map((c) => Math.floor((Date.parse(stamp) - Date.parse(c.app.sanction?.sanctionedAt ?? c.app.updatedAt)) / DAY_MS))) : null;
+  const inPipeline = cases.filter((c) => !creditedAt(c) && c.stage !== "closed" && !STAGE_INFO[c.stage].terminal).reduce((sum, c) => sum + (c.app.sanction?.total ?? 0), 0);
 
   const columns: WorklistColumn<PaymentCase>[] = [
     {
@@ -266,62 +309,71 @@ function PipelineReport({ ctx }: { ctx: ReportContext }) {
       exportValue: (c) => formatDate(lastMoved(c)),
       render: (c) => <span className="whitespace-nowrap">{formatDate(lastMoved(c))}</span>,
     },
-    { key: "action", header: "Action", priority: 3, noExport: true, render: (c) => <RowLink href={statusHref(c.app.id)} label="View" /> },
+    { key: "action", header: "Actions", priority: 3, noExport: true, className: "text-right", render: (c) => <RowLink href={statusHref(c.app.id)} label="View" /> },
   ];
 
-  const tile = (f: StageFilter, label: string, n: number, detail?: string, tone?: "warning" | "danger") => (
+  // A tile that filters the table is a button; a reading of the whole pipeline is not.
+  const tile = (f: StageFilter, label: string, n: number) => (
     <li key={f}>
-      <MetricCard size="sm" label={label} value={count(n)} detail={detail} tone={n > 0 ? tone : undefined} onSelect={() => pick(f)} selected={stage === f} />
+      <MetricCard size="sm" label={label} value={count(n)} onSelect={() => pick(f)} selected={stage === f} />
+    </li>
+  );
+  const reading = (key: string, label: string, value: string) => (
+    <li key={key}>
+      <MetricCard size="sm" label={label} value={value} />
     </li>
   );
 
   const summary = (
-    <div className="grid gap-4">
-      <ChartCard title="Files by Stage" headingLevel={2} provenance={provenance(stamp)}>
-        <ol className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5" aria-label="Files at each stage, in order">
-          {STAGES.map((s) => tile(s, STAGE_INFO[s].label, counts[s], STAGE_INFO[s].holder === "—" ? undefined : STAGE_INFO[s].holder))}
+    <div className="space-y-8">
+      <section aria-labelledby="pipeline-where" className="space-y-4">
+        <SectionTitle as={2} headingId="pipeline-where" title="Where the Files Are" />
+        <ol className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 [&>li]:grid" aria-label="Files at each stage, in order">
+          {PIPELINE_GROUPS.map((g) => tile(`group:${g.id}`, g.label, countOf(`group:${g.id}`)))}
+          {tile("credited-month", "Credited This Month", countOf("credited-month"))}
+          {reading("average", "Average Days, Sanction to Credit", averageDays == null ? "—" : averageDays.toFixed(1))}
+          {reading("oldest", "Oldest File Waiting", oldestDays == null ? "—" : `${count(oldestDays)} ${oldestDays === 1 ? "day" : "days"}`)}
+          {reading("amount", "Amount in the Pipeline", summaryMoney(inPipeline))}
         </ol>
-      </ChartCard>
-      <div className="grid gap-4 lg:grid-cols-2">
-        <ChartCard
-          title="Off the Usual Path"
-          headingLevel={2}
-          provenance={provenance(stamp)}
-          empty={exceptions.length === 0}
-          emptyTitle="None"
-          emptyLabel="No payment advice has been returned, refused or cancelled."
-        >
-          <ul className="grid grid-cols-2 gap-3" aria-label="Files off the usual path">
-            {exceptions.map((s) => tile(s, STAGE_INFO[s].label, counts[s], STAGE_INFO[s].holder, STAGE_INFO[s].tone === "danger" ? "danger" : "warning"))}
-          </ul>
-        </ChartCard>
-        <ChartCard
-          title="On Hold"
-          headingLevel={2}
-          provenance={provenance(stamp)}
-          empty={held.length === 0}
-          emptyTitle="None"
-          emptyLabel="No sanctioned file is on hold."
-        >
-          <ul className="grid grid-cols-2 gap-3" aria-label="Files on hold, by reason">
-            {held.map(({ b, n }) => tile(`held:${b}`, BLOCKER_TEXT[b].label, n, undefined, "warning"))}
-          </ul>
-        </ChartCard>
+        {stamp && <ProvenanceLine provenance={provenance(stamp)} />}
+      </section>
+      <div className="grid gap-8 lg:grid-cols-2">
+        <section aria-labelledby="pipeline-exceptions" className="space-y-4">
+          <SectionTitle as={2} headingId="pipeline-exceptions" title="Exceptions" />
+          {exceptions.length === 0 ? (
+            <p className="text-body-2 text-ink-muted">No payment advice has been returned, refused or cancelled.</p>
+          ) : (
+            <ul className="grid grid-cols-2 gap-4 [&>li]:grid" aria-label="Files off the usual path">
+              {exceptions.map(({ s, n }) => tile(s, STAGE_INFO[s].label, n))}
+            </ul>
+          )}
+        </section>
+        <section aria-labelledby="pipeline-bureau" className="space-y-4">
+          <SectionTitle as={2} headingId="pipeline-bureau" title="With the Bureau" />
+          {held.length === 0 ? (
+            <p className="text-body-2 text-ink-muted">No sanctioned file is waiting on the Bureau.</p>
+          ) : (
+            <ul className="grid grid-cols-2 gap-4 [&>li]:grid" aria-label="Files waiting on the Bureau, by reason">
+              {held.map(({ b, n }) => tile(`held:${b}`, BLOCKER_TEXT[b].label, n))}
+            </ul>
+          )}
+        </section>
       </div>
     </div>
   );
 
   const stageOptions = [
     { value: "", label: "All Stages" },
-    ...STAGES.map((s) => ({ value: s, label: `${STAGE_INFO[s].label} (${count(counts[s])})` })),
-    ...exceptions.map((s) => ({ value: s, label: `${STAGE_INFO[s].label} (${count(counts[s])})` })),
-    ...held.map(({ b, n }) => ({ value: `held:${b}`, label: `On Hold: ${BLOCKER_TEXT[b].label} (${count(n)})` })),
+    ...PIPELINE_GROUPS.map((g) => ({ value: `group:${g.id}`, label: `${g.label} (${count(countOf(`group:${g.id}`))})` })),
+    { value: "credited-month", label: `Credited This Month (${count(countOf("credited-month"))})` },
+    ...exceptions.map(({ s, n }) => ({ value: s, label: `${STAGE_INFO[s].label} (${count(n)})` })),
+    ...held.map(({ b, n }) => ({ value: `held:${b}`, label: `${BLOCKER_TEXT[b].label} (${count(n)})` })),
   ];
 
   return (
     <WorklistScreen<PaymentCase>
       {...frame}
-      summary={<div className="space-y-5">{ctx.tabs}{!frame.loading && cases.length > 0 ? summary : null}</div>}
+      summary={<div className="space-y-6">{ctx.tabs}{!frame.loading && cases.length > 0 ? summary : null}</div>}
       {...splitRowActions(columns)}
       rows={rows}
       registerTotal={cases.length}
