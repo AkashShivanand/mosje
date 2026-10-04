@@ -253,15 +253,18 @@ export const ROLES: Record<RoleId, RoleDef> = {
     shortLabel: "Maker",
     loginId: "9200000813",
     personName: "Farhan Siddiqui",
-    home: `${BASE}/dashboard/payments/prepare`,
+    // The Maker's day starts on the Dashboard — the BRD §11 reports as its tabs — as the PFMS
+    // screens are drawn after the division's review (handoff file, 3 Oct 2026). Its address stays
+    // /payment-reports, which every other role still reaches under that name.
+    home: `${BASE}/dashboard/payment-reports`,
     division: null,
     grade: null,
     caps: ["prepareAdvice", "sanctionRegister", "paymentReports"],
     nav: [
+      { label: "Dashboard", href: `${BASE}/dashboard/payment-reports`, icon: "dashboard" },
       { label: "Payment Advices", href: `${BASE}/dashboard/payments/prepare`, icon: "request_quote" },
-      { label: "NGO Directory", href: `${BASE}/dashboard/ngo-directory`, icon: "corporate_fare" },
       { label: "Sanctioned Applications", href: `${BASE}/dashboard/pd/us/sanctioned`, icon: "verified" },
-      { label: "Payment Reports", href: `${BASE}/dashboard/payment-reports`, icon: "query_stats" },
+      { label: "NGO Directory", href: `${BASE}/dashboard/ngo-directory`, icon: "corporate_fare" },
     ],
   },
 

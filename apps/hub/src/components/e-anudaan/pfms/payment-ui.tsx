@@ -15,7 +15,8 @@ import { Badge, Breadcrumb, Icon, PageHeader, Stepper, buttonClasses, type Stepp
 import { formatMoney, formatDate } from "@/lib/e-anudaan/format";
 import { schemeLabel } from "@/lib/e-anudaan/selectors";
 import { RefText } from "@/components/e-anudaan/worklist-table";
-import { STAGE_INFO, TIMELINE_STAGES, isException, stageIndex, type AnyStage, type StageTone } from "@/lib/e-anudaan/pfms/stages";
+import { STAGE_INFO, isException, latestRequest, returnedBy, type AnyStage, type StageTone } from "@/lib/e-anudaan/pfms/stages";
+import type { PaymentAdvice, PfmsRequest } from "@/lib/e-anudaan/pfms/types";
 import { BLOCKER_TEXT, type Blocker, type PaymentCase } from "@/lib/e-anudaan/pfms/selectors";
 
 export const EA = "/portals/e-anudaan";
@@ -61,28 +62,60 @@ export function SourceTag({ children }: { children: React.ReactNode }) {
 }
 
 /**
- * The payment's progress as a stepper. An exception is drawn at the step it interrupted, marked as
- * failed, so a reader sees both how far the payment got and that it stopped.
+ * The payment's road in six plain stages, as the Payment Status screen is drawn (handoff file,
+ * PD Maker / Payment Status / In Progress · Credited · Stopped, 3 Oct 2026). The code's finer stages
+ * fold into them; a stop is drawn at the stage where it happened, marked failed. Future stages carry
+ * no description — what they mean is the label.
  */
-export function PaymentStages({ stage, orientation = "horizontal" }: { stage: AnyStage; orientation?: "horizontal" | "vertical" }) {
-  const at = stage === "closed" ? TIMELINE_STAGES.length - 1 : stageIndex(stage);
-  const failed = isException(stage);
-  const steps: StepperStep[] = TIMELINE_STAGES.map((s, i) => ({
-    label: STAGE_INFO[s].label,
-    description: STAGE_INFO[s].holder === "—" ? undefined : STAGE_INFO[s].holder,
-    ...(i < at || (s === "paid" && (stage === "paid" || stage === "closed")) ? { status: "complete" as const } : {}),
+const PLAIN_STAGES = ["Sent to PFMS", "With the DDO", "At the PAO", "At the Bank", "Credited", "Closed"] as const;
+
+function plainIndex(stage: AnyStage, req: PfmsRequest | undefined): number {
+  switch (stage) {
+    case "received":
+    case "bill-with-ddo":
+      return 1;
+    case "at-pao":
+    case "fy-expired":
+      return 2;
+    case "payment-in-process":
+    case "credit-failed":
+      return 3;
+    case "paid":
+      return 4;
+    case "closed":
+      return 5;
+    case "returned-by-pfms":
+    case "cancelled":
+      // Returned at the DDO, or at the Pay & Accounts Office (Dealing Hand, AAO, PAO).
+      return returnedBy(req) === "Drawing & Disbursing Officer" ? 1 : 2;
+    default:
+      return 0;
+  }
+}
+
+export function PlainPaymentStages({ stage, advice }: { stage: AnyStage; advice?: PaymentAdvice }) {
+  const req = advice ? latestRequest(advice) : undefined;
+  const at = plainIndex(stage, req);
+  const failed = isException(stage) && req !== undefined && stage !== "not-accepted" && stage !== "waiting-to-resend" && stage !== "returned-by-checker";
+  const sent = advice?.requests.find((r) => r.outcome === "accepted");
+  const credited = req?.payments.map((p) => p.scrollDate).filter(Boolean).sort().at(-1);
+  const describe = (i: number): string | undefined => {
+    if (failed && i === at) return req?.statusAt ? `Returned ${formatDate(req.statusAt)}` : undefined;
+    if (i > at) return undefined;
+    if (i === 0) return sent ? `Signed ${formatDate(sent.sentAt)}` : undefined;
+    if (i === 1) return req?.bill ? `Bill ${req.bill.billNumber}` : undefined;
+    if (i === 4) return credited ? formatDate(credited) : undefined;
+    return undefined;
+  };
+  const done = stage === "closed" ? PLAIN_STAGES.length : at;
+  const steps: StepperStep[] = PLAIN_STAGES.map((label, i) => ({
+    label,
+    description: describe(i),
+    ...(i < done || (stage === "paid" && i === 4) ? { status: "complete" as const } : {}),
     ...(failed && i === at ? { status: "error" as const } : {}),
   }));
-  return (
-    <Stepper
-      steps={steps}
-      current={Math.min(at, TIMELINE_STAGES.length - 1)}
-      orientation={orientation}
-      size="sm"
-      collapse="auto"
-      ariaLabel="Payment progress"
-    />
-  );
+  // A closed payment has no current stage: every stage is done, so `current` sits past the last.
+  return <Stepper steps={steps} current={stage === "closed" ? PLAIN_STAGES.length : at} size="sm" collapse="auto" ariaLabel="Payment progress" />;
 }
 
 /** The case's status cell: a hold wins over a stage, because a held file has no stage yet. */

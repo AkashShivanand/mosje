@@ -101,6 +101,12 @@ export interface DataTableProps<T> {
   onSortChange?: (sort: DataTableSort | null) => void;
   /** Initial sort for the uncontrolled form. */
   defaultSort?: DataTableSort | null;
+  /**
+   * A summary row under the body — a total, a reconciliation — keyed by column, so each figure
+   * sits under the column it sums and takes that column's alignment. Rendered in `<tfoot>`, which
+   * a screen reader announces as the table's footer, not as one more record.
+   */
+  footer?: Partial<Record<string, React.ReactNode>>;
   className?: string;
 }
 
@@ -128,6 +134,7 @@ export function DataTable<T extends Record<string, unknown>>({
   scrollLabel,
   caption,
   emptyLabel = "No records found.",
+  footer,
   sort: controlledSort,
   onSortChange,
   defaultSort = null,
@@ -354,6 +361,17 @@ export function DataTable<T extends Record<string, unknown>>({
               })
             )}
           </tbody>
+          {footer && (
+            <tfoot className="ds-table__foot">
+              <tr>
+                {columns.map((col) => (
+                  <td key={col.key} className={cn("ds-table__td", "ds-table__ftd", alignClass(col.align), col.className)}>
+                    {footer[col.key] ?? null}
+                  </td>
+                ))}
+              </tr>
+            </tfoot>
+          )}
         </table>
       </div>
 

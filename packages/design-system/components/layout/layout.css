@@ -112,6 +112,14 @@
     text-transform: uppercase;
     color: var(--sa-text-brand-primary-base);
   }
+  /* The status badge rides the title's line and wraps under it when the line runs out. */
+  .sa-page-header__title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-stack-4) var(--sa-inline-12);
+  }
+  .sa-page-header__status { display: inline-flex; flex: none; }
   .sa-page-header__title {
     margin: 0;
     font-size: var(--sa-type-headline-1-size);

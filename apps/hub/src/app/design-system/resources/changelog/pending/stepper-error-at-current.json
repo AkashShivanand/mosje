@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "A STEPPER STAGE MARKED AS AN ERROR SHOWS AS ONE EVEN WHEN IT IS THE CURRENT STAGE. `current` used to win over a step's own `status`, so a process that stopped at a stage — a payment returned at the Pay & Accounts Office — drew that stage as an ordinary current one, in brand blue, beside a red alert saying it had failed. An explicit `status: \"error\"` now wins; the stage keeps `aria-current=\"step\"`, so a screen reader still hears where the process stands."
+}
