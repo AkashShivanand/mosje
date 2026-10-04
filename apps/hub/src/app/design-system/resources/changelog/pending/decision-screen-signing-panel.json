@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "DECISION SCREEN: ONE WAY BACK, THE STATUS ON THE TITLE'S LINE, AND A PANEL THAT ENDS IN ONE ACTION. `DecisionScreen` takes `back` — a single back link in place of the breadcrumb, for a screen opened from one queue — and sets `status` beside the title rather than at the right of the header. `notice` puts what the officer must know before choosing above the verdicts. The submit now spans the panel, takes `submitIcon`, and takes `submitDisabled` for a condition the officer can see and that may change (a certificate not yet found); a verdict a role may never record is still omitted from `options`. `irreversibleNote` is set as text directly above the submit instead of a warning alert under the verdicts. On wide screens the panel stays in view while the record scrolls. Drawn for the E-Anudaan PFMS Checker (handoff file, 3 Oct 2026), the template's one portal user."
+}

@@ -1,6 +1,7 @@
 import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import {
+  Alert,
   Badge,
   Button,
   Card,
@@ -125,6 +126,11 @@ import {
  * Verdicts this role may not record are **omitted from `options`**, never passed
  * disabled. `legend`, `panelTitle`, `remarks`, `extras`, `errors`,
  * `submitLabel`, `cancelLabel`, `onCancel`, `submitting` and `status` complete it.
+ * `back` replaces the breadcrumb with one way back where the screen is opened
+ * from a single queue; `notice` sets what the officer must know before choosing
+ * above the verdicts; `submitIcon` marks a signing action; `submitDisabled` holds
+ * the button while a condition the officer can see — a certificate not found —
+ * is unmet, which is different from a verdict they may never record.
  *
  * **`CatalogueScreen`** — documents the reader opens rather than acts on. It
  * **always pages**; `Pagination` appears in exactly one of the estate's 265
@@ -499,6 +505,58 @@ export const Decision: Story = {
         }
         onSubmit={() => undefined}
         onCancel={() => undefined}
+      />
+    );
+  },
+};
+
+/**
+ * Signing, opened from one queue: a back link instead of a breadcrumb, the reason the officer
+ * cannot sign yet above the verdicts, and the signing action held until it is resolved.
+ */
+export const DecisionSigning: Story = {
+  render: function Render() {
+    const [verdict, setVerdict] = React.useState<string | undefined>("approve");
+    return (
+      <DecisionScreen
+        back={
+          <Button href="#" appearance="text" size="sm" iconLeft={<Icon name="arrow_back" size={16} aria-hidden />}>
+            Authorisation Queue
+          </Button>
+        }
+        title="Sankalp Seva Sansthan"
+        meta="Payment Advice PA/2026-27/00002"
+        status={<Badge status="info" size="sm">Awaiting Authorisation</Badge>}
+        panelTitle="Your Decision"
+        legend="Is this payment advice ready to be sent to PFMS?"
+        notice={
+          <Alert status="error" title="You Prepared This Advice">
+            A different Checker must sign it.
+          </Alert>
+        }
+        options={[
+          { id: "approve", label: "Approve and Sign", irreversibleNote: "Once PFMS accepts it, the advice cannot be recalled from e-Anudaan." },
+          { id: "return", label: "Return to Maker" },
+        ]}
+        value={verdict}
+        onChange={setVerdict}
+        record={
+          <Card>
+            <CardBody>
+              <DescriptionList
+                columns={2}
+                items={[
+                  { term: "Sanction Number", value: "SAN/2026-27/04609" },
+                  { term: "Amount", value: "₹25,50,000" },
+                ]}
+              />
+            </CardBody>
+          </Card>
+        }
+        submitLabel={verdict === "return" ? "Return to Maker" : "Approve and Sign"}
+        submitIcon={verdict === "return" ? undefined : <Icon name="draw" size={20} aria-hidden />}
+        submitDisabled={verdict === "approve"}
+        onSubmit={() => undefined}
       />
     );
   },

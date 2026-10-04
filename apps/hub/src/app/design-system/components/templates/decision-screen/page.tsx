@@ -23,7 +23,7 @@ const A11Y: A11yItem[] = [
     description:
       "A decision that cannot be unmade says so on the option, above the submit — not in a confirmation dialogue after the officer has decided.",
     status: "verified",
-    evidence: "irreversibleNote renders as an Alert between the chosen option and the action row; the component offers no path to defer it to a dialogue.",
+    evidence: "irreversibleNote renders as text directly above the submit, only while its verdict is chosen; the component offers no path to defer it to a dialogue.",
   },
   {
     criterion: "3.3.1 Error Identification",

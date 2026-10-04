@@ -17,6 +17,7 @@ import { schemeLabel } from "@/lib/e-anudaan/selectors";
 import { RefText } from "@/components/e-anudaan/worklist-table";
 import { STAGE_INFO, isException, latestRequest, returnedBy, type AnyStage, type StageTone } from "@/lib/e-anudaan/pfms/stages";
 import type { PaymentAdvice, PfmsRequest } from "@/lib/e-anudaan/pfms/types";
+import { fixedValuesFor } from "@/lib/e-anudaan/pfms/advice";
 import { BLOCKER_TEXT, type Blocker, type PaymentCase } from "@/lib/e-anudaan/pfms/selectors";
 
 export const EA = "/portals/e-anudaan";
@@ -116,6 +117,18 @@ export function PlainPaymentStages({ stage, advice }: { stage: AnyStage; advice?
   }));
   // A closed payment has no current stage: every stage is done, so `current` sits past the last.
   return <Stepper steps={steps} current={stage === "closed" ? PLAIN_STAGES.length : at} size="sm" collapse="auto" ariaLabel="Payment progress" />;
+}
+
+/** "F — Fresh bill" → "Fresh bill (F)": the fixed codes on one line, the name before its code. */
+export function fixedCodesLine(advice: PaymentAdvice): string {
+  return fixedValuesFor(advice)
+    .map((f) => {
+      const m = /^(\S+) — (.+)$/.exec(f.value);
+      if (f.term === "e-Sanction") return f.value === "Yes" ? "e-Sanction" : "";
+      return m ? `${m[2]!.replace(/, resubmitted$/, "")} (${m[1]})` : f.value;
+    })
+    .filter(Boolean)
+    .join(" · ");
 }
 
 /** The case's status cell: a hold wins over a stage, because a held file has no stage yet. */
