@@ -364,7 +364,8 @@ export const CERTIFICATE_MESSAGE: Record<Exclude<CertificateCheck, "ok">, { titl
   },
   "no-token": {
     title: "No DSC Token Found",
-    body: "Insert your DSC token, then try again.",
+    // The words of the handoff file (PD Checker / Authorise Payment Advice / DSC Not Found, 3 Oct 2026).
+    body: "Insert your DSC token and check that the signing utility is running.",
   },
   expired: {
     title: "Certificate Has Expired",
@@ -376,7 +377,7 @@ export const CERTIFICATE_MESSAGE: Record<Exclude<CertificateCheck, "ok">, { titl
   },
   "own-advice": {
     title: "You Prepared This Advice",
-    body: "A payment advice must be authorised by an officer other than the one who prepared it.",
+    body: "A different Checker must sign it.",
   },
 };
 

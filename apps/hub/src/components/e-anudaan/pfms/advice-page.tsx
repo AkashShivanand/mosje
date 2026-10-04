@@ -52,7 +52,7 @@ import { usePfms } from "@/lib/e-anudaan/pfms/store";
 import { projectTitleFor } from "@/lib/e-anudaan/applicant";
 import { formatDate, formatDateTime } from "@/lib/e-anudaan/format";
 import { schemeLabel } from "@/lib/e-anudaan/selectors";
-import { DOCUMENT_TYPES, REMARKS_MAX, everyAdvice, fixedValuesFor, isEditable, netOf, nextBillNumber, requiredDocTypes, sumHeads, validateAdvice } from "@/lib/e-anudaan/pfms/advice";
+import { DOCUMENT_TYPES, REMARKS_MAX, everyAdvice, isEditable, netOf, nextBillNumber, requiredDocTypes, sumHeads, validateAdvice } from "@/lib/e-anudaan/pfms/advice";
 import { configFor, labelOf } from "@/lib/e-anudaan/pfms/masters";
 import { sanctionFacts } from "@/lib/e-anudaan/pfms/selectors";
 import { STAGE_INFO, latestRequest, returnedBy, stageOf, type AnyStage } from "@/lib/e-anudaan/pfms/stages";
@@ -60,7 +60,7 @@ import { pfmsError } from "@/lib/e-anudaan/pfms/errors";
 import type { AdviceDocument, AdviceHeader, BeneficiaryLine, DocumentTypeCode, HeadLine, LandingStatus, PaymentAdvice } from "@/lib/e-anudaan/pfms/types";
 import { RefText } from "@/components/e-anudaan/worklist-table";
 import { SanctionFactsList } from "./advice-summary";
-import { SourceTag, StageBadge, exact } from "./payment-ui";
+import { SourceTag, StageBadge, exact, fixedCodesLine } from "./payment-ui";
 
 const QUEUE = "/portals/e-anudaan/dashboard/payments/prepare";
 
@@ -73,18 +73,6 @@ function whenNeeded(type: DocumentTypeCode, landing: LandingStatus): string {
   if (type === 4) return "At the DDO stage";
   if (type === 5) return "At the PAO stage";
   return "Optional";
-}
-
-/** "F — Fresh bill" → "Fresh bill (F)": the fixed codes on one line, the name before its code. */
-function fixedCodesLine(advice: PaymentAdvice): string {
-  return fixedValuesFor(advice)
-    .map((f) => {
-      const m = /^(\S+) — (.+)$/.exec(f.value);
-      if (f.term === "e-Sanction") return f.value === "Yes" ? "e-Sanction" : "";
-      return m ? `${m[2]!.replace(/, resubmitted$/, "")} (${m[1]})` : f.value;
-    })
-    .filter(Boolean)
-    .join(" · ");
 }
 
 /** The stage a payment advice's own badge names while it is still the Maker's. */

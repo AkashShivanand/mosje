@@ -4915,6 +4915,12 @@ export const GENERATED_PROPS = {
         "description": "Whether a request has been made at all. Leave `true` for a screen that loads on mount; pass `false` for one gated on the reader's intent, so it resolves to `idle` rather than `empty`."
       },
       {
+        "name": "back",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A single way back, in place of a breadcrumb — a text `Button` with a back arrow, routed by the app. A decision screen opened from one queue has one place to return to, and a two-level trail only repeats the page title."
+      },
+      {
         "name": "breadcrumb",
         "type": "{ label: string; href?: string }[]",
         "required": false,
@@ -4997,6 +5003,12 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "notice",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Something the officer must know BEFORE choosing — that they may not sign this record, say. Set above the verdicts, where it is read first."
+      },
+      {
         "name": "onCancel",
         "type": "() => void",
         "required": false,
@@ -5025,7 +5037,20 @@ export const GENERATED_PROPS = {
         "name": "status",
         "type": "React.ReactNode",
         "required": false,
-        "description": "A status Badge, an SLA indicator."
+        "description": "A status Badge, an SLA indicator — set on the title's line."
+      },
+      {
+        "name": "submitDisabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "The chosen verdict cannot be recorded YET, and `notice` or `extras` says why. A verdict this role may never record is omitted from `options` instead (see below); this is for a condition the officer can see and that may change — a certificate not yet found, a rule the record breaks."
+      },
+      {
+        "name": "submitIcon",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "An icon before the submit label — a signature mark on a signing action."
       },
       {
         "name": "submitLabel",

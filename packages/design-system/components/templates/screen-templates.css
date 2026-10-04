@@ -769,9 +769,13 @@
        cards wrap their descriptions. Both are measurements of the controls, not
        spacing rungs, and the ladder jumps 120 to 360. */
     .sa-decision { grid-template-columns: minmax(420px, 1fr) minmax(0, 400px); }
+    /* The decision stays in reach while the record scrolls past it. */
+    .sa-decision__panel { position: sticky; top: var(--sa-padding-24); }
   }
 
   .sa-decision__record { min-width: 0; }
+
+  .sa-decision__back { margin-block-end: var(--sa-stack-8); }
 
   .sa-decision__panel {
     display: flex;
@@ -790,12 +794,23 @@
     color: var(--sa-text-neutral-bolder);
   }
 
+  /* The consequence of the chosen verdict, read last before the act. */
+  .sa-decision__note {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* One action at the full width of the panel: the panel holds one decision,
+     and the button that records it is the panel's conclusion, not a corner of it. */
   .sa-decision__actions {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: var(--sa-padding-12);
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--sa-padding-8);
   }
+  .sa-decision__submit { justify-content: center; }
 
 
   /* ---- CatalogueScreen ------------------------------------------------------

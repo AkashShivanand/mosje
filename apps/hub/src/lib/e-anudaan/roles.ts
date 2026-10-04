@@ -278,11 +278,12 @@ export const ROLES: Record<RoleId, RoleDef> = {
     division: null,
     grade: null,
     caps: ["authoriseAdvice", "sanctionRegister", "paymentReports"],
+    // As the handoff file draws the Checker's sidebar (PD Checker / Authorisation Queue, 3 Oct 2026):
+    // the Dashboard follows every signed advice to its credit, which the queue no longer lists.
     nav: [
+      { label: "Dashboard", href: `${BASE}/dashboard/payment-reports`, icon: "dashboard" },
       { label: "Authorisation Queue", href: `${BASE}/dashboard/payments/authorise`, icon: "verified_user" },
-      { label: "NGO Directory", href: `${BASE}/dashboard/ngo-directory`, icon: "corporate_fare" },
       { label: "Sanctioned Applications", href: `${BASE}/dashboard/pd/us/sanctioned`, icon: "verified" },
-      { label: "Payment Reports", href: `${BASE}/dashboard/payment-reports`, icon: "query_stats" },
     ],
   },
 
@@ -437,7 +438,10 @@ export function consoleRouteAccess(pathname: string, role: RoleDef): RouteAccess
   if (area !== "dashboard") return "not-found";
 
   if (section === undefined) return "allowed"; // the bare dashboard sends each role home
-  if (section === "notifications" || section === "ngo-directory") return a ? "not-found" : "allowed";
+  if (section === "notifications") return a ? "not-found" : "allowed";
+  // The directory is a desk tool, open to the seats whose sidebar carries it. The Checker's does not
+  // since the handoff file's redraw (3 Oct 2026): a Checker reads one advice against one sanction.
+  if (section === "ngo-directory") return a ? "not-found" : role.nav.some((n) => n.href === `${BASE}/dashboard/ngo-directory`) ? "allowed" : "forbidden";
   // The inspection-report repository: the PMU files the reports, the Programme Director reads them.
   if (section === "ir-repository") return a ? "not-found" : role.caps.includes("inspect") || role.caps.includes("sanction") ? "allowed" : "forbidden";
   if (section === "sent") return a ? "not-found" : can("sanction");
