@@ -37,6 +37,11 @@ export interface Ddo {
   /** GetDDOeBillActivationStatus — an inactive DDO cannot receive an eSanction (FR-MDM-004). */
   eBillActive: boolean;
   landing: LandingStatus;
+  /**
+   * GetDDO's DDO type: a Non-Cheque Drawing DDO pays by e-Payment, a Cheque Drawing DDO by cheque.
+   * Optional because a copy synchronised before the type was read does not carry it.
+   */
+  kind?: "NCDDO" | "CDDO";
 }
 
 export interface Pao {

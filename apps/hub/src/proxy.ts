@@ -116,6 +116,16 @@ const E_ANUDAAN_ALIASES: Readonly<Record<string, string>> = {
   "/portals/e-anudaan": "/portals/e-anudaan/login",
   "/portals/e-anudaan/sign-in": "/portals/e-anudaan/login?role=ngo",
   "/portals/e-anudaan/ngo/attendance-master": "/portals/e-anudaan/ngo/attendance",
+  // The Bureau's seven PFMS pages became three with the handoff file's redraw (3 Oct 2026):
+  // PFMS Masters, Schemes and Checkers, Older Files. Each old address lands on the page that now
+  // holds what it held. Error Messages had no successor drawn; it lands on PFMS Masters.
+  "/portals/e-anudaan/dashboard/pfms": "/portals/e-anudaan/dashboard/pfms/masters",
+  "/portals/e-anudaan/dashboard/pfms/ddo-mapping": "/portals/e-anudaan/dashboard/pfms/masters",
+  "/portals/e-anudaan/dashboard/pfms/claim-references": "/portals/e-anudaan/dashboard/pfms/masters",
+  "/portals/e-anudaan/dashboard/pfms/error-messages": "/portals/e-anudaan/dashboard/pfms/masters",
+  "/portals/e-anudaan/dashboard/pfms/heads-of-account": "/portals/e-anudaan/dashboard/pfms/schemes",
+  "/portals/e-anudaan/dashboard/pfms/designations": "/portals/e-anudaan/dashboard/pfms/schemes",
+  "/portals/e-anudaan/dashboard/pfms/back-fill": "/portals/e-anudaan/dashboard/pfms/older-files",
 };
 
 /*

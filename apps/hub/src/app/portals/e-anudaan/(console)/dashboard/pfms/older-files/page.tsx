@@ -1,7 +1,13 @@
 "use client";
 
 /**
- * Legacy Files — the Bureau's back-fill queue (PFMS BRD FR-NGO-003, BR-BAK-001, FR-HOA-003).
+ * Older Files — the Bureau's back-fill queue (PFMS BRD FR-NGO-003, BR-BAK-001, FR-HOA-003).
+ *
+ * Drawn after the Programme Division's review (handoff file, Officers · Paying Grants through PFMS ·
+ * Bureau / Older Files / Waiting for Details · None Waiting, 3 Oct 2026). It was "Legacy Files" at
+ * /dashboard/pfms/back-fill, which now redirects here. The tabs are unchanged; the two notes that
+ * sat above the Payee Code and Heads to Retrofit tabs are gone with the redraw — each tab's name
+ * says what is missing, and each row's action says what to do.
  *
  * DS Audit: WorklistScreen ✅ existing · Tabs ✅ · Search ✅ · FilterSelect ✅ · Alert ✅ · Modal ✅ ·
  * FormField ✅ · Input ✅ · Select ✅ · Checkbox ✅ · ErrorSummary ✅ · DescriptionList ✅ · Button ✅ ·
@@ -49,7 +55,7 @@ import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { usePfms } from "@/lib/e-anudaan/pfms/store";
 import { schemeLabel } from "@/lib/e-anudaan/selectors";
 import { formatDate } from "@/lib/e-anudaan/format";
-import { BLOCKER_TEXT, paymentCases, payeeFor, sanctionDate, type PaymentCase } from "@/lib/e-anudaan/pfms/selectors";
+import { paymentCases, payeeFor, sanctionDate, type PaymentCase } from "@/lib/e-anudaan/pfms/selectors";
 import { IFSC, PAYEE_CODE, configFor, headCode, labelOf } from "@/lib/e-anudaan/pfms/masters";
 import { isEditable } from "@/lib/e-anudaan/pfms/advice";
 import type { HeadOfAccount, HeadLine, SchemePfmsConfig } from "@/lib/e-anudaan/pfms/types";
@@ -74,7 +80,7 @@ function needsRetrofit(c: PaymentCase, configs: readonly SchemePfmsConfig[]): bo
   return c.advice.heads.some((h) => !cfg?.heads.some((x) => sameHead(h, x)));
 }
 
-export default function LegacyFilesPage() {
+export default function OlderFilesPage() {
   const { state, hydrated } = useEAnudaan();
   const { pfms, hydrated: pfmsHydrated } = usePfms();
   const [tab, setTab] = React.useState<LegacyTab>("bank");
@@ -208,32 +214,22 @@ export default function LegacyFilesPage() {
   return (
     <>
       <WorklistScreen<PaymentCase>
-        title="Legacy Files"
-        meta="Sanctioned files the Bureau completes before a payment advice can be prepared, oldest sanction first."
+        title="Older Files"
+        meta="Files sanctioned before PFMS that need details before a payment advice."
         loading={!hydrated || !pfmsHydrated}
         views={
           <Tabs
-            idBase="legacy-files"
-            ariaLabel="Legacy files"
+            idBase="older-files"
+            ariaLabel="Older files"
             overflow
-            tabs={TABS.map((t) => ({ id: t.id, label: `${t.label} (${byTab[t.id].length})`, badge: (t.id === "bank" || t.id === "heads") && byTab[t.id].length > 0 }))}
+            track="enclosed"
+            tabs={TABS.map((t) => ({ id: t.id, label: `${t.label} (${byTab[t.id].length})` }))}
             active={TABS.findIndex((t) => t.id === tab)}
             onChange={(i) => {
               setTab(TABS[i]!.id);
               setScheme("");
             }}
           />
-        }
-        summary={
-          tab === "payee" && inTab.length > 0 ? (
-            <Alert status="info" title="The NGO Supplies This Code">
-              {BLOCKER_TEXT["needs-payee-code"].body} The file moves to the Maker&apos;s queue as soon as the code is on record.
-            </Alert>
-          ) : tab === "heads" && inTab.length > 0 ? (
-            <Alert status="info" title="Heads of Account Not Configured for the Scheme">
-              These payment advices are still with the Maker. Set a head of account configured for the scheme; the Maker then submits the advice as usual.
-            </Alert>
-          ) : undefined
         }
         {...splitRowActions(columns)}
         rows={rows}
@@ -246,13 +242,15 @@ export default function LegacyFilesPage() {
           setScheme("");
         }}
         filters={
+          inTab.length > 0 ? (
           <>
             <Search value={q} onChange={(e) => setQ(e.target.value)} onClear={() => setQ("")} placeholder="Application, NGO or project ID" aria-label="Search by application, NGO or project ID" />
             <FilterSelect label="Scheme" value={scheme} onChange={setScheme} options={[{ value: "", label: "All Schemes" }, ...schemes.map((s) => ({ value: s, label: schemeLabel(s) }))]} />
           </>
+          ) : undefined
         }
         copy={screenCopy({
-          loadingLabel: "Loading legacy files",
+          loadingLabel: "Loading older files",
           emptyTitle: current.emptyTitle,
           emptyDescription: current.empty,
           filteredTitle: "No File Matches",
