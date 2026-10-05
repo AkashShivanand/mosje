@@ -6,6 +6,8 @@ import { CardState, actionForState, type CardStateKind } from "./card-state";
 import { CardSkeleton, type CardSkeletonShape } from "./card-skeleton";
 import { ProvenanceLine } from "./provenance";
 import type { DataProvenance } from "../data-display/charts/types";
+import type { CardTone } from "../data-display/card";
+import "../data-display/card.css";
 import "./dashboard.css";
 
 export interface ChartCardProps
@@ -23,6 +25,11 @@ export interface ChartCardProps
   headingLevel?: 2 | 3 | 4;
   /** Header actions slot (filters, menu, export button). */
   actions?: React.ReactNode;
+  /**
+   * Fill the header with a colour family, as `Card accent="band"` does; the title and
+   * subtitle turn inverse. Leave it unset for the plain dashboard card.
+   */
+  tone?: CardTone;
   /**
    * Add a download control (PNG · SVG · CSV) to the header. It exports the
    * chart rendered inside this card; no wiring needed.
@@ -113,6 +120,7 @@ export function ChartCard({
   className,
   children,
   style: styleProp,
+  tone,
   ...rest
 }: ChartCardProps) {
   const Heading = `h${headingLevel}` as "h2" | "h3" | "h4";
@@ -140,7 +148,11 @@ export function ChartCard({
        `data-sa-reveal` for scroll entry, an `id` for a deep link — without the
        card growing a prop for every such need. `title` and `children` are the
        card's own and are excluded from the section attributes above. */
-    <section {...rest} className={cn("ds-chart-card", className)} style={style}>
+    <section
+      {...rest}
+      className={cn("ds-chart-card", tone && `ds-tone-${tone} ds-chart-card--band`, className)}
+      style={style}
+    >
             {/* A div, not a <header>: outside <main> a header is a `banner` landmark,
           and a dashboard of cards read as a page with a dozen banners. */}
       <div className="ds-chart-card__head">

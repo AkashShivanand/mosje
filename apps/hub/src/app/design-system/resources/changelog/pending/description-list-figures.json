@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "DESCRIPTIONLIST FOR DASHBOARD FIGURES. `size=\"figure\"` sets each value as a headline figure in tabular numerals, taking the enclosing toned card's ink; `caps` sets the terms in capitals with the caps tracking; an item's `termBadge` draws its term as a `Badge` chip while the term stays text for every consumer that reads it."
+}

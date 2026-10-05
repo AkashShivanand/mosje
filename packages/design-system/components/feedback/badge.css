@@ -42,6 +42,12 @@
     color: var(--_fg);
   }
 
+  /* `wrap`: a long label breaks inside its container rather than overflowing it. */
+  .ds-badge--wrap {
+    max-width: 100%;
+    white-space: normal;
+  }
+
   /* --------------------------------------------------------------------------
      Status → tonal bg + readable text
 

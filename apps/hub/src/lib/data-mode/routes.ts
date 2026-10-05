@@ -7,6 +7,8 @@
  * a slug here in the same change that adds a dashboard, or the switch will be
  * missing on the one page that needs it.
  */
+import { PORTAL_SLUGS } from "@/lib/kpi/slugs";
+
 const PMAJAY = "/website/organisation/pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay";
 
 export const DATA_MODE_ROUTES: string[] = [
@@ -16,8 +18,11 @@ export const DATA_MODE_ROUTES: string[] = [
   `${PMAJAY}/development-of-sc-dominated-villages-into-adarsh-gram`,
   `${PMAJAY}/grants-in-aid-to-state-districts`,
   `${PMAJAY}/construction-repair-of-hostels`,
-  // The redesign's Dashboard page renders the same three PM-AJAY dashboards.
+  // The Dashboard's scheme-portal dashboards, in all three website designs (one address
+  // each): NMBA's live feed, the KPI register's illustrative model for the rest, and the
+  // Live mode that shows what each portal's feed actually carries today.
   "/website/dashboard",
+  ...PORTAL_SLUGS.map((slug) => `/website/dashboard/${slug}`),
 ];
 
 export function hasDataModes(pathname: string | null): boolean {

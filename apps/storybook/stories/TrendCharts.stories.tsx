@@ -198,3 +198,31 @@ export const SparklineVariants: Story = {
 export const NoData: Story = {
   args: { labels: [], series: [], title: "Applications received by month" },
 };
+
+/**
+ * `curve="smooth"` and `tickCount`. The curve is monotone: it passes through every point
+ * and never draws a peak between two that the figures do not have. Setting `tickCount`
+ * ends the axis near the highest figure. Both pass through `AreaChart` unchanged.
+ */
+export const SmoothCurve: Story = {
+  render: () => (
+    <div style={{ display: "grid", gap: 32 }}>
+      <LineChart
+        labels={MONTHS}
+        series={APPLICATIONS}
+        title="Smooth curve, finer ticks"
+        yLabel="Applications"
+        curve="smooth"
+        tickCount={8}
+      />
+      <AreaChart
+        labels={MONTHS}
+        series={[APPLICATIONS[0]]}
+        title="An area chart, smoothed"
+        yLabel="Applications"
+        curve="smooth"
+        tickCount={6}
+      />
+    </div>
+  ),
+};

@@ -3,6 +3,7 @@
 import * as React from "react";
 import { ChartFrame, type ChartState, type ChartStateProps } from "./internal/chart-frame";
 import { Legend } from "./internal/legend";
+import { cn } from "../../../utils/cn";
 import { ChartTooltip, useChartTooltip } from "./internal/tooltip";
 import { categoricalColor, CHART_INK } from "./internal/palette";
 import { ringPath, polarToCartesian, sliceBoundaries } from "./internal/geometry";
@@ -19,9 +20,22 @@ interface DonutBase extends ChartStateProps {
 /** Segmented donut (like a pie with a hole + interactive tooltip). */
 interface DonutSegments extends DonutBase {
   data: ChartDatum[];
-  /** Centre text (defaults to the total). */
+  /** Centre text (defaults to the total). `false` leaves the hole empty, with the legend carrying the figures. */
   center?: React.ReactNode;
   centerSub?: string;
+  /**
+   * What the legend prints beside each label. `share` (the default) is the slice's
+   * percentage; `value` is its figure through `valueFormat` — "₹46,676 Cr" — for a ring
+   * whose reader wants the amounts, as the Department's Beneficiary Dashboard prints them.
+   * The table view always carries both.
+   */
+  legendValue?: "share" | "value";
+  /**
+   * `stacked` (the default) puts the legend under the ring. `side` puts it beside the
+   * ring, values right-aligned, and stacks again where the figure is narrow — the shape
+   * of a ring with nine long labels, which stacked runs to twice the height.
+   */
+  layout?: "stacked" | "side";
 }
 
 /** Single-value progress ring with an optional target tick. */
@@ -94,6 +108,7 @@ export function DonutChart(props: DonutChartProps) {
       return { ...d, start, end, color, pct: (d.value / total) * 100 };
     });
 
+    const { legendValue = "share", layout = "stacked" } = props;
     return (
       <ChartFrame
         marksAreFocusable
@@ -104,7 +119,7 @@ export function DonutChart(props: DonutChartProps) {
           ...(withheld.length ? ["shares are of the published total"] : []),
         ].join(", ")}
         viewBox={`0 0 ${SIZE} ${SIZE}`}
-        className={className}
+        className={cn(className, layout === "side" && "ds-chart--donut-side")}
         canvasRef={canvasRef}
         overlay={<ChartTooltip tip={tip} />}
         onDismiss={hide}
@@ -112,7 +127,11 @@ export function DonutChart(props: DonutChartProps) {
           <Legend
             orientation="vertical"
             items={[
-              ...segs.map((s) => ({ label: s.label, color: s.color, value: formatPercent(s.pct) })),
+              ...segs.map((s) => ({
+                label: s.label,
+                color: s.color,
+                value: legendValue === "value" ? valueFormat(s.value) : formatPercent(s.pct),
+              })),
               ...withheld.map((d) => ({ label: d.label, color: CHART_INK.axis, value: "—" })),
             ]}
           />

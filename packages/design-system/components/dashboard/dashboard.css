@@ -64,6 +64,16 @@
   .ds-chart-card__titles {
     min-width: 0;
   }
+  /* A toned card's header is a band in the tone (`ds-tone-*`, card.css), its text inverse. */
+  .ds-chart-card--band .ds-chart-card__head {
+    align-items: center;
+    border-bottom-color: transparent;
+    background: linear-gradient(133deg, var(--cmp-tone-from), var(--cmp-tone-to));
+  }
+  .ds-chart-card--band .ds-chart-card__title,
+  .ds-chart-card--band .ds-chart-card__subtitle {
+    color: var(--sa-text-neutral-inverse);
+  }
   /* 16px / 22px, weight 600 — the panel-title size the built PM-AJAY MIS uses
      in the Figma handoff. title-1 (a clamped 18-22px) reads as a page heading
      inside a dashboard card, not a card title; title-2 is the dashboard scale. */

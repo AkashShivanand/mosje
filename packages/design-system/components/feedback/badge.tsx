@@ -24,6 +24,11 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   dot?: boolean;
   /** Animate the leading dot. Implies `dot`. */
   pulse?: boolean;
+  /**
+   * Let a long label wrap inside its container instead of running past it — a programme's
+   * full name set as a kicker above a heading. A status chip stays on one line; leave it unset.
+   */
+  wrap?: boolean;
 }
 
 /**
@@ -41,6 +46,7 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
       emphasis = "subtle",
       dot = false,
       pulse = false,
+      wrap = false,
       className,
       children,
       ...rest
@@ -56,6 +62,7 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
           `ds-badge--${status}`,
           `ds-badge--${size}`,
           `ds-badge--${emphasis}`,
+          wrap && "ds-badge--wrap",
           className,
         )}
         {...rest}

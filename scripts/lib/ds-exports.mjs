@@ -170,7 +170,7 @@ export const DOCUMENTED_BY = {
   RangeSlider: "Slider",
   ListRow: "ListGroup",
   CardHeader: "Card", CardBody: "Card", CardFooter: "Card",
-  CardTitle: "Card", CardSubtitle: "Card",
+  CardTitle: "Card", CardSubtitle: "Card", CardIcon: "Card",
   TabPanel: "Tabs",
   // A group is a heading and a list inside a DocumentChecklist; it is never used outside one.
   DocumentChecklistGroup: "DocumentChecklist",

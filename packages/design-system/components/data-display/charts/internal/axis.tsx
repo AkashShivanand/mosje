@@ -53,9 +53,25 @@ export function Gridlines({
   );
 }
 
+/** Roughly the width a category label needs at the axis type size (Body 3, 12px Noto Sans). */
+const labelWidth = (label: string): number => label.length * 6.8;
+/** Breathing room between two flat labels, and the spacing two rotated ones need to clear. */
+const FLAT_GAP = 8;
+const ROTATED_STEP = 26;
+
+/** Whether every label fits flat in the room between two neighbouring category centres. */
+export function labelsFitFlat(labels: readonly string[], step: number): boolean {
+  return labels.every((l) => labelWidth(l) + FLAT_GAP <= step);
+}
+
 /**
  * Category labels along the x-axis, with optional rotation for dense/long
  * labels. `band` is the band width used to centre each label.
+ *
+ * Given `step` — the distance between two category centres — the axis THINS itself where
+ * neighbouring labels would collide: every second (or third…) label is drawn, counting back
+ * from the last, so the latest period is always named. The marks, the tooltip and the table
+ * still carry every category; only the axis text is spaced out.
  */
 export function XAxisLabels({
   labels,
@@ -63,6 +79,7 @@ export function XAxisLabels({
   y,
   rotate = 0,
   maxChars = 14,
+  step,
 }: {
   labels: string[];
   /** Returns the centre x of the band for a label. */
@@ -70,10 +87,16 @@ export function XAxisLabels({
   y: number;
   rotate?: number;
   maxChars?: number;
+  /** Pixels between two neighbouring category centres; enables thinning. */
+  step?: number;
 }) {
+  const need = rotate ? ROTATED_STEP : Math.max(0, ...labels.map(labelWidth)) + FLAT_GAP;
+  const every = step && step > 0 ? Math.max(1, Math.ceil(need / step)) : 1;
+  const last = labels.length - 1;
   return (
     <g aria-hidden="true">
-      {labels.map((label) => {
+      {labels.map((label, i) => {
+        if ((last - i) % every !== 0) return null;
         const cx = x(label);
         const text = label.length > maxChars ? `${label.slice(0, maxChars - 1)}…` : label;
         return (

@@ -1,14 +1,55 @@
-import { permanentRedirect } from "next/navigation";
-import { dbimHref } from "@/lib/website-dbim/nav";
+import type { Metadata } from "next";
+import { DbimPage } from "@/components/website-dbim/layout/DbimPage";
+import { DbimPortalTiles } from "@/components/website-dbim/dashboard/PortalTiles";
+import { MinistryCollection } from "@/components/kpi-dashboard/DashboardViewer";
+import { DepartmentOverview } from "@/components/kpi-dashboard/DepartmentOverview";
+import { DBIM_MENU } from "@/lib/website-dbim/nav";
+import { DBIM_PORTAL_DASHBOARDS } from "@/lib/website-dbim/ministry";
+import { DASHBOARD_PAGE } from "@/lib/website-shared/dashboard";
+import "@/components/website-dbim/ministry/ministry.css";
+import "@/components/website-dbim/dashboard/dashboard.css";
+import "@/components/kpi-dashboard/kpi-dashboard.css";
+
+export const metadata: Metadata = {
+  title: "Beneficiary Dashboard | Department of Social Justice and Empowerment",
+  description: DASHBOARD_PAGE.description,
+};
 
 /**
- * `/dashboard` is the Department's Beneficiary Dashboard on dosje.gov.in, so in this
- * design the address opens Ministry › Our Performance, where that dashboard's tile is.
+ * `/dashboard` in the DBIM design — the page Ministry › Our Performance's Beneficiary
+ * Dashboard tile opens.
  *
- * Until 29 Sep 2026 this route drew the PM-AJAY dashboard. That dashboard is the
- * scheme's, not the Department's, and now sits on the PM-AJAY page under Our Scheme
- * Portals (`components/website-dbim/dashboard/PmajayDashboard.tsx`).
+ * Until 5 Oct 2026 this address redirected to Our Performance, whose tile left for
+ * dosje.gov.in. It now carries the Beneficiary Dashboard itself and the scheme portals'
+ * dashboards, the same content as the New and Classic designs
+ * (`lib/website-shared/dashboard.ts`), in the DBIM page shape: the Ministry banner and
+ * tabs with Our Performance current, and the portal dashboards as Our Performance tiles
+ * (DBIM 3.0 §A.5.1.4, Figure 69).
+ *
+ * ONE DEPARTURE FROM THE OTHER TWO DESIGNS: no PM-AJAY entry. The Department asked on
+ * 29 Sep 2026 that the PM-AJAY dashboard sit on the scheme's own page under Our Scheme
+ * Portals, not among the Department's dashboards (`DBIM_DASHBOARDS`).
+ *
+ * DS Audit: DepartmentOverview / MinistryCollection (app, shared) ✅ · DbimDashboardTiles (DBIM) ✅.
  */
-export default function DbimDashboardRedirect() {
-  permanentRedirect(dbimHref("/ministry/our-performance"));
+export default function DbimDashboardPage() {
+  return (
+    <DbimPage
+      title={DASHBOARD_PAGE.title}
+      crumbs={[{ label: "Ministry", path: "/ministry" }, { label: "Our Performance", path: "/ministry/our-performance" }]}
+      path="/ministry/our-performance"
+      tabs={DBIM_MENU[0]!.children}
+      activeTab="/ministry/our-performance"
+    >
+      <div className="db-dash">
+        <section className="db-dash__section" aria-label={DASHBOARD_PAGE.title}>
+          <DepartmentOverview sectionLevel={2} />
+        </section>
+        <div className="db-dash__section kd-block">
+          <DbimPortalTiles tiles={DBIM_PORTAL_DASHBOARDS} title={DASHBOARD_PAGE.portalsTitle} headingId="portal-dashboards-title" />
+          <MinistryCollection />
+        </div>
+      </div>
+    </DbimPage>
+  );
 }

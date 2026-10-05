@@ -22,6 +22,15 @@
     min-width: 0;
   }
 
+  /* A portal dashboard's one-sentence summary, at the reference's body size. */
+  [data-design="dbim"] .db-dash__lead {
+    margin: 0;
+    max-width: 880px; /* the reading measure */
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    color: var(--sa-text-neutral-base);
+  }
+
   /* ── At a Glance ─────────────────────────────────────────────────────────── */
   [data-design="dbim"] .wn-glance {
     display: grid;

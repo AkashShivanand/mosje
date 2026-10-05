@@ -492,3 +492,19 @@ export const WithProvenance: Story = {
     </div>
   ),
 };
+
+/**
+ * `tone` fills the header with a colour family, as `Card accent="band"` does; the title,
+ * subtitle and any action sit on it. Every band clears 4.5:1 for its white text.
+ */
+export const ToneBand: Story = {
+  render: (args) => (
+    <div style={{ display: "grid", gap: 16, maxWidth: 560 }}>
+      {(["primary", "info", "secondary"] as const).map((tone) => (
+        <ChartCard {...args} key={tone} tone={tone} title="Beneficiary Students" subtitle={`tone="${tone}"`}>
+          <p style={{ margin: 0 }}>Chart body</p>
+        </ChartCard>
+      ))}
+    </div>
+  ),
+};

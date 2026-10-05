@@ -709,6 +709,13 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "curve",
+        "type": "\"linear\" | \"smooth\"",
+        "required": false,
+        "default": "\"linear\"",
+        "description": "How a line joins its points. `smooth` is a monotone curve: it passes through every point and never overshoots between two, so it cannot draw a peak the figures do not have."
+      },
+      {
         "name": "filterLabel",
         "type": "string",
         "required": false,
@@ -749,6 +756,12 @@ export const GENERATED_PROPS = {
         "type": "boolean",
         "required": false,
         "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
+      },
+      {
+        "name": "tickCount",
+        "type": "number",
+        "required": false,
+        "description": "Roughly how many gridlines the value axis aims for. Setting it also ends the axis at the first step past the highest figure (0–70 for a top value of 61) instead of a rounded-up range (0–100). Leave it unset for the estate default of about four."
       },
       {
         "name": "valueFormat",
@@ -1065,6 +1078,13 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"neutral\"",
         "description": "Semantic colour role. Drives the background + text."
+      },
+      {
+        "name": "wrap",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Let a long label wrap inside its container instead of running past it — a programme's full name set as a kicker above a heading. A status chip stays on one line; leave it unset."
       }
     ]
   },
@@ -1914,16 +1934,66 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "CardHeaderProps": {
+    "source": "packages/design-system/components/data-display/card.tsx",
+    "inheritsNative": true,
+    "props": [
+      {
+        "name": "divided",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Rule a hairline under the header, between a long title and the figures below it."
+      }
+    ]
+  },
+  "CardIconProps": {
+    "source": "packages/design-system/components/data-display/card.tsx",
+    "inheritsNative": true,
+    "props": [
+      {
+        "name": "name",
+        "type": "string",
+        "required": true,
+        "description": "Material Symbols name, as `Icon` takes it."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "What the icon means, where it carries meaning the title does not. Leave it unset for the usual case — an icon beside a title that already says what the card is — and it is hidden from assistive technology."
+      }
+    ]
+  },
   "CardProps": {
     "source": "packages/design-system/components/data-display/card.tsx",
     "inheritsNative": true,
     "props": [
+      {
+        "name": "accent",
+        "type": "CardAccent = \"band\" | \"edge\"",
+        "required": false,
+        "description": "How the tone shows on the card's frame. Needs `tone`; defaults it to `primary`."
+      },
       {
         "name": "orientation",
         "type": "CardOrientation = \"vertical\" | \"horizontal\"",
         "required": false,
         "default": "\"vertical\"",
         "description": "Layout direction. Horizontal places media beside content."
+      },
+      {
+        "name": "tinted",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Tint the whole surface in the tone's lightest rung — a dashboard tile's body."
+      },
+      {
+        "name": "tone",
+        "type": "CardTone = \"primary\" | \"secondary\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
+        "required": false,
+        "description": "The card's colour family. It tints a `CardIcon`, colours `figure`-size `DescriptionList` values, and is what `accent` and `tinted` draw in. A tone is identity, not status: a `danger` card keeps its figures in ink, because a red figure on a government page reads as a breach."
       },
       {
         "name": "variant",
@@ -1993,6 +2063,19 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": "Overrides the standard headline. Say what is true, not that something is missing."
+      }
+    ]
+  },
+  "CardTitleProps": {
+    "source": "packages/design-system/components/data-display/card.tsx",
+    "inheritsNative": true,
+    "props": [
+      {
+        "name": "size",
+        "type": "\"md\" | \"sm\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": "`sm` is Title 2 (16px/600), the dashboard scale `ChartCard` titles use — for a row of tiles whose long scheme names would wrap to four lines at Title 1."
       }
     ]
   },
@@ -2412,6 +2495,12 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": ""
+      },
+      {
+        "name": "tone",
+        "type": "CardTone = \"primary\" | \"secondary\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
+        "required": false,
+        "description": "Fill the header with a colour family, as `Card accent=\"band\"` does; the title and subtitle turn inverse. Leave it unset for the plain dashboard card."
       }
     ]
   },
@@ -3522,6 +3611,13 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "curve",
+        "type": "\"linear\" | \"smooth\"",
+        "required": false,
+        "default": "\"linear\"",
+        "description": "How the line series join their points; `smooth` never overshoots a point."
+      },
+      {
         "name": "filterLabel",
         "type": "string",
         "required": false,
@@ -3569,6 +3665,12 @@ export const GENERATED_PROPS = {
         "type": "boolean",
         "required": false,
         "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
+      },
+      {
+        "name": "tickCount",
+        "type": "number",
+        "required": false,
+        "description": "Roughly how many gridlines each value axis aims for; setting it also ends each axis near its highest figure."
       },
       {
         "name": "valueFormat",
@@ -5268,6 +5370,13 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "caps",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Set the terms in capitals with the caps tracking, as a dashboard tile's labels."
+      },
+      {
         "name": "columns",
         "type": "1 | 2 | 3",
         "required": false,
@@ -5297,10 +5406,10 @@ export const GENERATED_PROPS = {
       },
       {
         "name": "size",
-        "type": "\"md\" | \"sm\"",
+        "type": "\"md\" | \"sm\" | \"figure\"",
         "required": false,
         "default": "\"md\"",
-        "description": ""
+        "description": "`figure` sets each value as a headline figure — a dashboard tile's readings — in the enclosing card's tone ink where the card has a `tone`."
       }
     ]
   },
@@ -6132,7 +6241,7 @@ export const GENERATED_PROPS = {
         "name": "center",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Centre text (defaults to the total)."
+        "description": "Centre text (defaults to the total). `false` leaves the hole empty, with the legend carrying the figures."
       },
       {
         "name": "centerSub",
@@ -6165,6 +6274,22 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": "Named on `\"no-results\"` so the reader can undo the filter they applied."
+      },
+      {
+        "name": "layout",
+        "type": "\"stacked\" | \"side\"",
+        "required": false,
+        "default": "\"stacked\"",
+        "description": "`stacked` (the default) puts the legend under the ring. `side` puts it beside the ring, values right-aligned, and stacks again where the figure is narrow — the shape of a ring with nine long labels, which stacked runs to twice the height.",
+        "onlyIn": "DonutSegments"
+      },
+      {
+        "name": "legendValue",
+        "type": "\"share\" | \"value\"",
+        "required": false,
+        "default": "\"share\"",
+        "description": "What the legend prints beside each label. `share` (the default) is the slice's percentage; `value` is its figure through `valueFormat` — \"₹46,676 Cr\" — for a ring whose reader wants the amounts, as the Department's Beneficiary Dashboard prints them. The table view always carries both.",
+        "onlyIn": "DonutSegments"
       },
       {
         "name": "max",
@@ -9173,6 +9298,13 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "curve",
+        "type": "\"linear\" | \"smooth\"",
+        "required": false,
+        "default": "\"linear\"",
+        "description": "How a line joins its points. `smooth` is a monotone curve: it passes through every point and never overshoots between two, so it cannot draw a peak the figures do not have."
+      },
+      {
         "name": "filterLabel",
         "type": "string",
         "required": false,
@@ -9214,6 +9346,12 @@ export const GENERATED_PROPS = {
         "type": "boolean",
         "required": false,
         "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
+      },
+      {
+        "name": "tickCount",
+        "type": "number",
+        "required": false,
+        "description": "Roughly how many gridlines the value axis aims for. Setting it also ends the axis at the first step past the highest figure (0–70 for a top value of 61) instead of a rounded-up range (0–100). Leave it unset for the estate default of about four."
       },
       {
         "name": "valueFormat",

@@ -180,6 +180,38 @@
     gap: var(--sa-stack-8);
   }
 
+  /* ── Donut, legend beside the ring (DonutChart layout="side") ─────────────
+     Ring left, legend right with its values right-aligned; the table toggle and any
+     caption span both columns. Stacks below 768px, where nine long labels beside a
+     ring leave neither room to read. */
+  @media (min-width: 768px) {
+    .ds-chart--donut-side {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      column-gap: var(--sa-stack-20);
+      align-items: center;
+    }
+
+    .ds-chart--donut-side > :not(.ds-chart__canvas, .ds-chart__legend) {
+      grid-column: 1 / -1;
+    }
+
+    .ds-chart--donut-side > .ds-chart__legend {
+      margin: 0;
+    }
+  }
+
+  .ds-chart--donut-side .ds-chart__legend-item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .ds-chart--donut-side .ds-chart__legend-pct {
+    font-weight: var(--sa-font-weight-bold);
+    text-align: end;
+    white-space: nowrap;
+  }
+
   /* ── An interactive legend: each entry switches its own series ──────────
 
      IT HAS TO LOOK LIKE A CONTROL. An earlier version was deliberately quiet

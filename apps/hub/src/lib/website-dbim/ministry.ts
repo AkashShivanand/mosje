@@ -10,6 +10,8 @@
  * Server-only in practice: it reads the officials register and the ingested
  * organisation pages. Pages pass the trimmed rows below to client lists.
  */
+import { WEBSITE_PORTAL_DASHBOARDS } from "@/lib/website-shared/dashboard";
+import { PORTAL_DASHBOARD_CRUMBS } from "@/lib/website-shared/dashboard-links";
 import { DIVISIONS, ORGANISATIONS, ORGANISATION_CATEGORY_LABELS, getDepartmentSecretary, type Organisation, type OrganisationCategory } from "@/data/website";
 import { getOrganisationDetail } from "@/content/website/organisation-details";
 import { schemePortals } from "@/lib/website-shared/organisations";
@@ -596,6 +598,22 @@ export interface DbimDashboardTile {
 }
 
 /**
+ * The scheme portals' dashboards, one tile each (asked for on 5 Oct 2026: the Dashboard,
+ * by portal). DBIM 3.0 §A.5.1.4 asks for "hyperlinks to the performance dashboards for
+ * the Ministry/Department's main schemes". Shared list: `lib/website-shared/dashboard.ts`.
+ * Each image is the first screen of that dashboard in this design, captured 5 Oct 2026,
+ * as the Beneficiary Dashboard's is of the live page.
+ *
+ * PM-AJAY is deliberately absent, for the reason given on `DBIM_DASHBOARDS` below.
+ */
+export const DBIM_PORTAL_DASHBOARDS: DbimDashboardTile[] = WEBSITE_PORTAL_DASHBOARDS.map((p) => ({
+  title: `${PORTAL_DASHBOARD_CRUMBS[p.slug]} Dashboard`,
+  image: { src: `/website/dbim/ministry/dashboard-${p.slug}.jpg`, alt: `${PORTAL_DASHBOARD_CRUMBS[p.slug]} Dashboard` },
+  href: p.href,
+  external: false,
+}));
+
+/**
  * The Department's performance dashboards (DBIM 3.0 §A.5.1.4) — the Department's
  * own, not a scheme's. The Beneficiary Dashboard is the live site's
  * (dosje.gov.in/dashboard/, its home page's "View Dashboard" and its footer's
@@ -609,10 +627,13 @@ export const DBIM_DASHBOARDS: DbimDashboardTile[] = [
   {
     title: "Beneficiary Dashboard",
     // The live page's first screen — Scholarships and Fellowship — captured 28 Sep 2026.
+    // Since 5 Oct 2026 the tile opens this design's own Dashboard, which carries the same
+    // figures (`lib/website-shared/dashboard.ts`), rather than leaving for dosje.gov.in.
     image: { src: "/website/dbim/ministry/beneficiary-dashboard.jpg", alt: "Beneficiary Dashboard of the Department of Social Justice and Empowerment" },
-    href: "https://www.dosje.gov.in/dashboard/",
-    external: true,
+    href: "/dashboard",
+    external: false,
   },
+  ...DBIM_PORTAL_DASHBOARDS,
   {
     title: "Social Audit",
     image: { src: DBIM_SOCIAL_AUDIT.src, alt: DBIM_SOCIAL_AUDIT.alt },

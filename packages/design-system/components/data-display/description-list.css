@@ -141,4 +141,19 @@
       border-block-end: none;
     }
   }
+
+  /* `figure` — a dashboard tile's readings. The value takes the enclosing toned card's
+     ink (`--cmp-tone-ink`, card.css), or the neutral ink outside one. */
+  .ds-dl--figure .ds-dl__value {
+    color: var(--cmp-tone-ink, var(--sa-text-neutral-bolder));
+    font-size: var(--sa-type-headline-2-size);
+    line-height: var(--sa-type-headline-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ds-dl--caps .ds-dl__term {
+    letter-spacing: var(--sa-type-caps-tracking);
+    text-transform: uppercase;
+  }
 }

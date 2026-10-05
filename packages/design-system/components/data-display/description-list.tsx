@@ -1,11 +1,18 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { Badge, type BadgeStatus } from "../feedback/badge";
 import { rowOfEachItem } from "./description-list-rows";
 import "./description-list.css";
 
 export interface DescriptionItem {
   /** The field's name, as the department words it on the form. */
   term: string;
+  /**
+   * Draw the term as a `Badge` in this status — a dashboard tile that heads each of two
+   * columns with a coloured chip ("Schools", "Colleges"). The term stays text for every
+   * consumer that reads it.
+   */
+  termBadge?: BadgeStatus;
   /**
    * The recorded value. `null`, `undefined` and an empty string are all treated
    * as "nothing was recorded" and render the placeholder rather than a blank —
@@ -38,8 +45,14 @@ export interface DescriptionListProps
    * @default "stacked"
    */
   layout?: "stacked" | "inline";
-  /** @default "md" */
-  size?: "md" | "sm";
+  /**
+   * `figure` sets each value as a headline figure — a dashboard tile's readings — in the
+   * enclosing card's tone ink where the card has a `tone`.
+   * @default "md"
+   */
+  size?: "md" | "sm" | "figure";
+  /** Set the terms in capitals with the caps tracking, as a dashboard tile's labels. */
+  caps?: boolean;
   /**
    * Draw a hairline BETWEEN rows. The grid's final row does not get one: a rule
    * under the last fact hangs under nothing and reads as an unfinished table,
@@ -88,6 +101,7 @@ export function DescriptionList({
   layout = "stacked",
   size = "md",
   divided = false,
+  caps = false,
   emptyText = "Not recorded",
   className,
   ...rest
@@ -102,6 +116,7 @@ export function DescriptionList({
         `ds-dl--${size}`,
         `ds-dl--cols-${columns}`,
         divided && "ds-dl--divided",
+        caps && "ds-dl--caps",
         className,
       )}
       {...rest}
@@ -114,7 +129,15 @@ export function DescriptionList({
             className={cn("ds-dl__row", item.wide && "ds-dl__row--wide")}
             data-last-row={rows[index] === lastRow ? "" : undefined}
           >
-            <dt className="ds-dl__term">{item.term}</dt>
+            <dt className="ds-dl__term">
+              {item.termBadge ? (
+                <Badge status={item.termBadge} size="sm">
+                  {item.term}
+                </Badge>
+              ) : (
+                item.term
+              )}
+            </dt>
             <dd className={cn("ds-dl__value", empty && "ds-dl__value--empty")}>
               {empty ? emptyText : item.value}
               {item.hint ? <span className="ds-dl__hint">{item.hint}</span> : null}

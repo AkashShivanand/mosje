@@ -115,6 +115,30 @@ export const DonutWithCustomCentre: Story = {
 };
 
 /**
+ * Amounts in the legend, and the legend beside the ring — the Department's
+ * Beneficiary Dashboard "Share of Fund Release". `legendValue="value"` prints each
+ * slice through `valueFormat` instead of its share; `layout="side"` sets the legend
+ * beside the ring with the amounts right-aligned, and stacks below 768px.
+ */
+export const DonutWithAmountsBeside: Story = {
+  render: () => (
+    <DonutChart
+      title="Share of fund release · 2014-15 to 2025-26"
+      data={[
+        { label: "Post-Matric SC", value: 46675.91 },
+        { label: "Post-Matric OBC", value: 12117.73 },
+        { label: "Pre-Matric SC", value: 4896.46 },
+        { label: "Pre-Matric OBC", value: 2163.11 },
+        { label: "Top Class Colleges", value: 810.15 },
+      ]}
+      valueFormat={(v) => `₹${Math.round(v).toLocaleString("en-IN")} Cr`}
+      legendValue="value"
+      layout="side"
+    />
+  ),
+};
+
+/**
  * The second mode. `value`/`max` instead of `data` makes it a progress ring —
  * and `target` draws the threshold, so "82%" can be read against "we promised
  * 90%" rather than in isolation.
