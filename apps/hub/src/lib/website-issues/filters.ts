@@ -5,6 +5,7 @@
  */
 
 import seedRaw from "@/data/website-issues/status-seed.json";
+import { REPORTS } from "./sources";
 import { SCOPES, SEVERITIES, STATUSES, type Issue, type IssueStatus, type StatusRecord } from "./types";
 
 /**
@@ -38,6 +39,8 @@ export interface IssueFilters {
   scope: string;
   status: string;
   standard: string;
+  /** Report key from ./sources — "which audit raised this". */
+  source: string;
   page: number;
 }
 
@@ -54,6 +57,7 @@ export function parseFilters(sp: Params): IssueFilters {
     scope: pick(one(sp.scope), SCOPES),
     status: pick(one(sp.status), STATUSES),
     standard: pick(one(sp.standard), STANDARD_FAMILIES),
+    source: pick(one(sp.source), REPORTS.map((r) => r.key)),
     page: Math.max(1, Number.parseInt(one(sp.page), 10) || 1),
   };
 }
@@ -76,6 +80,7 @@ export function applyFilters(issues: Issue[], statuses: Record<string, StatusRec
     if (f.scope && i.scope !== f.scope) return false;
     if (f.status && statusOf(i.id, statuses) !== f.status) return false;
     if (f.standard && !i.standards.some((s) => family(s.id) === f.standard)) return false;
+    if (f.source && !i.sources.some((s) => s.report === f.source)) return false;
     if (words.length) {
       const hay = `${i.id} ${i.title} ${i.url} ${i.where} ${i.issue} ${i.fix} ${i.standards.map((s) => s.id).join(" ")} ${i.tokens.map((t) => t.token).join(" ")}`.toLowerCase();
       if (!words.every((w) => hay.includes(w))) return false;
@@ -96,5 +101,5 @@ export function filterHref(f: Partial<IssueFilters>, base = "/reports/dosje-webs
 }
 
 export function hasFilters(f: IssueFilters): boolean {
-  return Boolean(f.q || f.severity || f.category || f.owner || f.scope || f.status || f.standard);
+  return Boolean(f.q || f.severity || f.category || f.owner || f.scope || f.status || f.standard || f.source);
 }
