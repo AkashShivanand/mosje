@@ -26,6 +26,7 @@ import { HubSiteHeader } from "@/components/hub-site-header";
 import { HubFooter } from "@/components/site-footer";
 import { isIssuesEditor } from "@/lib/admin/auth";
 import { ISSUES, META, getAffected, getIssue } from "@/lib/website-issues/data";
+import { reportInfo, sourceLabel } from "@/lib/website-issues/sources";
 import { readAllStatuses, readHistory, statusStoreConfigured } from "@/lib/website-issues/status-store";
 import { STATUSES } from "@/lib/website-issues/types";
 import { editorName, updateIssue } from "../actions";
@@ -86,6 +87,28 @@ export default async function IssuePage({ params, searchParams }: Props) {
                 { term: "Who fixes it", value: i.owner },
                 { term: "Scope", value: i.scope },
                 { term: "Affects", value: i.reach },
+                {
+                  /*
+                   * Which audits raised this. A row can carry several — the footer
+                   * colour was raised by our own sweep, by NIC in May, by the
+                   * September observations and by Levithan in October. Showing only
+                   * one of them is how the same defect gets re-reported as new.
+                   */
+                  term: i.sources.length === 1 ? "Raised by" : "Raised by",
+                  value: (
+                    <ul className="flex flex-col gap-1">
+                      {i.sources.map((src) => {
+                        const info = reportInfo(src.report);
+                        return (
+                          <li key={`${src.report}:${src.ref ?? ""}`}>
+                            {sourceLabel(src)}
+                            {info ? <span className="text-ink-muted"> · {info.external ? info.by : "our own audit"}, {info.dated}</span> : null}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  ),
+                },
                 { term: "Page", value: <a href={i.url} className="break-all text-link-brand-default underline">{path}</a> },
                 { term: "Where on the page", value: i.where },
                 { term: "In the report", value: i.reportPage ? <a href={META.reportPdf} className="text-link-brand-default underline">Page {i.reportPage}</a> : "In the tracker only" },

@@ -28,6 +28,7 @@ import { HubSiteHeader } from "@/components/hub-site-header";
 import { HubFooter } from "@/components/site-footer";
 import { isIssuesEditor } from "@/lib/admin/auth";
 import { ISSUES, META } from "@/lib/website-issues/data";
+import { REPORTS } from "@/lib/website-issues/sources";
 import { applyFilters, filterHref, hasFilters, parseFilters, statusOf, STANDARD_FAMILIES } from "@/lib/website-issues/filters";
 import { readAllStatuses, statusStoreConfigured } from "@/lib/website-issues/status-store";
 import { SCOPES, SEVERITIES, STATUSES, type IssueStatus, type StatusRecord } from "@/lib/website-issues/types";
@@ -307,6 +308,20 @@ function IssuesView({
             <Select name={key} defaultValue={f[key]} options={opts(xs, all)} />
           </label>
         ))}
+        {/*
+          Its own control rather than a row in the loop above: the others filter on a
+          value that is also its label, while a source filters on the report KEY and
+          shows the report's name. "levithan-gigw-2026-10" is not a thing to put in
+          front of a reader.
+        */}
+        <label className="flex flex-col gap-1.5 text-label-2 text-ink-muted">
+          Raised by
+          <Select
+            name="source"
+            defaultValue={f.source}
+            options={[{ label: "Any audit", value: "" }, ...REPORTS.map((r) => ({ label: r.label, value: r.key }))]}
+          />
+        </label>
         <div className="flex items-end gap-3 lg:col-span-2">
           <Button type="submit" size="md">Apply Filters</Button>
           {filtered ? (

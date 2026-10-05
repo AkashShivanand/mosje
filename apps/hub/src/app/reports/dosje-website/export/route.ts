@@ -6,13 +6,14 @@
  */
 
 import { ISSUES } from "@/lib/website-issues/data";
+import { sourceLabel } from "@/lib/website-issues/sources";
 import { applyFilters, parseFilters, statusOf } from "@/lib/website-issues/filters";
 import { readAllStatuses } from "@/lib/website-issues/status-store";
 
 export const dynamic = "force-dynamic";
 
 const HEAD = ["ID", "Title", "Severity", "Category", "Who fixes it", "Scope", "Affects", "Page", "Where on the page", "What is wrong", "Steps to see it",
-  "Fix", "Design tokens", "Standards failed", "Report page", "Status", "Assigned to", "Target date", "Note", "Last updated", "Updated by", "Link"];
+  "Fix", "Design tokens", "Standards failed", "Report page", "Raised by", "Status", "Assigned to", "Target date", "Note", "Last updated", "Updated by", "Link"];
 
 const cell = (v: unknown) => {
   const s = v === null || v === undefined ? "" : String(v);
@@ -30,7 +31,7 @@ export async function GET(req: Request) {
       i.id, i.title, i.severity, i.category, i.owner, i.scope, i.reach, i.url, i.where, i.issue,
       i.steps.map((s, n) => `${n + 1}. ${s}`).join("\n"), i.fix,
       i.tokens.map((t) => `${t.token} (${t.value})`).join("; "), i.standards.map((s) => s.label).join("; "),
-      i.reportPage ?? "", statusOf(i.id, statuses), st?.assignee ?? "", st?.targetDate ?? "", st?.note ?? "",
+      i.reportPage ?? "", i.sources.map(sourceLabel).join("; "), statusOf(i.id, statuses), st?.assignee ?? "", st?.targetDate ?? "", st?.note ?? "",
       st?.updatedAt ?? "", st?.updatedBy ?? "", `${url.origin}/reports/dosje-website/${i.id}`,
     ].map(cell).join(","));
   }
