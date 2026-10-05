@@ -77,6 +77,22 @@ export const REPORTS: ReportInfo[] = [
     folder: "docs/audit-reports/2026-09-25-ux4g-audit-360/",
   },
   {
+    key: "levithan-dbim-2026-10",
+    label: "DBIM Level-1 audit (Levithan)",
+    by: "Levithan Technologies, for NeGD",
+    external: true,
+    dated: "2026-10-01",
+    folder: "docs/audit-reports/2026-10-01-levithan-dbim-level-1/",
+  },
+  {
+    key: "levithan-gigw-2026-10",
+    label: "GIGW Level-1 audit (Levithan)",
+    by: "Levithan Technologies, for NeGD",
+    external: true,
+    dated: "2026-10-01",
+    folder: "docs/audit-reports/2026-10-01-levithan-gigw-level-1/",
+  },
+  {
     key: "design-audit-v1",
     label: "Website Design Audit v1",
     by: "MoSJE design team",
