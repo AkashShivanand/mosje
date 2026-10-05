@@ -423,7 +423,7 @@
 
   [data-design="dbim"] .db-rti-more a,
   [data-design="dbim"] .db-table a {
-    color: var(--sa-color-primaryScale-600);
+    color: var(--sa-text-link-brand-default); /* the key colour: DBIM §2.2 hyperlink */
   }
 
   [data-design="dbim"] .db-table-wrap {
@@ -566,6 +566,11 @@
     line-height: 21px;
   }
 
+  /* The place and date line under the title, in Grey 03 — the body below stays in the ink. */
+  [data-design="dbim"] .db-event .db-event__when {
+    color: var(--sa-color-text-muted);
+  }
+
   /* The venue's pin is the location icon beside the link, not an emoji: DBIM 3.0 §3.3
      draws every icon from one set, and the emoji sat ON the address in the handoff. */
   [data-design="dbim"] .db-event__venue {
@@ -590,7 +595,7 @@
 
   /* The reference's Bootstrap link blue (#0D6EFD) is not a DBIM colour; 600 is the group's link. */
   [data-design="dbim"] .db-event a {
-    color: var(--sa-color-primaryScale-600);
+    color: var(--sa-text-link-brand-default); /* the key colour: DBIM §2.2 hyperlink */
     text-decoration: underline;
   }
 

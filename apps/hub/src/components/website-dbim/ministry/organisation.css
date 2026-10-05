@@ -42,7 +42,7 @@
     display: inline-flex;
     align-items: center;
     gap: var(--sa-inline-4);
-    color: var(--sa-color-primaryScale-600);
+    color: var(--sa-text-link-brand-default); /* the key colour: DBIM §2.2 hyperlink */
     font-size: var(--db-fs-p);
     font-weight: var(--sa-font-weight-semibold);
     text-decoration: none;
@@ -110,7 +110,7 @@
   [data-design="dbim"] .db-org .db-org-people__link {
     margin-top: auto;
     padding-top: var(--sa-padding-12);
-    color: var(--sa-color-primaryScale-600);
+    color: var(--sa-text-link-brand-default); /* the key colour: DBIM §2.2 hyperlink */
     font-size: 0.75rem; /* 12px — the View button's size */
     font-weight: var(--sa-font-weight-semibold);
     letter-spacing: 0.12px;

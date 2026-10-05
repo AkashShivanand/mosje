@@ -313,11 +313,12 @@
     display: flex;
     align-items: center;
     gap: 5px; /* 5px: the reference's ms-2 */
-    font-size: 0.625rem; /* 10px */
-    font-weight: var(--sa-font-weight-medium);
+    font-size: var(--db-fs-small); /* Small Text 1: 12px desktop, 10px mobile (Tables 3–4) */
+    font-weight: var(--sa-font-weight-semibold);
     line-height: 1.125rem; /* 18px */
     letter-spacing: 0.12px;
     text-transform: uppercase;
+    color: var(--sa-color-text-muted);
   }
 
   [data-design="dbim"] .db-vac-card__date dt .material-symbols-rounded {
@@ -326,7 +327,8 @@
 
   [data-design="dbim"] .db-vac-card__date dd {
     margin: 0;
-    font-size: 0.625rem; /* 10px */
+    font-size: var(--db-fs-small);
+    color: var(--sa-color-text-muted);
     line-height: 0.9375rem; /* 15px */
     text-align: right;
   }
@@ -347,7 +349,7 @@
     line-height: 1.5rem; /* 24px row */
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: var(--sa-color-primaryScale-600); /* #0D6EFD in the reference → nearest token blue */
+    color: var(--sa-text-link-brand-default); /* the key colour: DBIM §2.2 hyperlink */
     text-decoration: underline;
   }
 
@@ -415,8 +417,7 @@
     font-size: 0.625rem; /* 10px */
     font-weight: var(--sa-font-weight-semibold);
     letter-spacing: 0.6px;
-    text-transform: uppercase;
-    color: var(--sa-color-text-muted); /* #3D4043 in the reference → nearest token */
+    color: var(--sa-color-text-muted); /* a date, DD MMM YYYY — never in capitals */
   }
 
   [data-design="dbim"] .db-tender__cell--file {

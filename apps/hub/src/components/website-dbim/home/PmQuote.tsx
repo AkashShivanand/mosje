@@ -4,19 +4,19 @@ import { Icon } from "@mosje/design-system";
 import { PM_QUOTE as Q } from "@/lib/website-shared/home";
 import { DbimIcon } from "@/components/website-dbim/ui/icons";
 import "./home-top.css";
+import { dbimDate } from "@/lib/website-dbim/date";
 
 /**
  * The Prime Minister's quote band (DBIM 3.0 §7.3(iv)) — the reference's layout, the
  * Department's quotation: round portrait left, the quote in the darkest shade of the
  * colour group, a rule, then the event and date and a link to where it was delivered.
  * The quotation and photograph are shared with every design (lib/website-shared/home.ts);
- * only the date's dd.mm.yyyy form is this layout's own, as the reference prints it.
+ * only the date's DD MMM YYYY form is this layout's own (lib/website-dbim/date.ts).
  */
 export function DbimPmQuote() {
   // The original photograph, on white in its round frame. The transparent cut-out
   // (DBIM 3.0 A.4.1.2 iv) is a different photograph; the Department chose this one (28 Sep 2026).
   const pm = Q.image.portrait;
-  const [y, m, d] = Q.dateTime.split("-");
   return (
     <section className="db-pmq" aria-labelledby="db-pmq-title">
       <h2 id="db-pmq-title" className="db-hometop-sr">
@@ -43,7 +43,7 @@ export function DbimPmQuote() {
                 {Q.event}
               </p>
               <p className="db-pmq__meta">
-                <time dateTime={Q.dateTime}>{`${d}.${m}.${y}`}</time>
+                <time dateTime={Q.dateTime}>{dbimDate(Q.dateTime)}</time>
               </p>
             </div>
             <a href={Q.source.href} target="_blank" rel="noopener noreferrer" className="db-pmq__action">

@@ -201,9 +201,11 @@
     outline: none;
   }
 
+  /* Placeholder grey (Grey 03, 6.29:1) so an empty field never reads as filled — the
+     Figma library's `text/placeholder`. */
   [data-design="dbim"] .db-search input.db-search__input.ds-input::placeholder {
-    color: var(--sa-color-text-default);
-    opacity: 0.8;
+    color: var(--sa-color-text-muted);
+    opacity: 1;
   }
 
   [data-design="dbim"] .db-search .db-search__btn.ds-btn {
@@ -576,9 +578,10 @@
     overflow: hidden;
     text-align: center;
     list-style: none;
-    /* reference: rgba(0,0,0,.7) + blur(5px) — ink at 70% */
-    background: color-mix(in srgb, var(--sa-color-neutralScale-1000) 70%, transparent);
-    backdrop-filter: blur(5px);
+    /* Solid Grey 03 (DBIM §2.2), as the Figma library's Nav Dropdown draws it since 5 Oct
+       2026: the reference's 70% black with a 5px blur had no basis in the manual, which
+       reserves black for the State Emblem. White labels on it: 6.29:1. */
+    background: var(--sa-color-neutralScale-600);
     border-radius: 0 0 var(--sa-shape-6) var(--sa-shape-6);
   }
 

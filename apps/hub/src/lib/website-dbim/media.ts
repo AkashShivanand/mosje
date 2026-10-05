@@ -92,9 +92,3 @@ export function getDbimVideos(): DbimVideo[] {
   }
   return out;
 }
-
-/** 2023-08-22 → "22.08.2023", the reference's card date. */
-export function dottedDate(iso?: string): string | undefined {
-  const m = iso && /^(\d{4})-(\d{2})-(\d{2})/.exec(iso);
-  return m ? `${m[3]}.${m[2]}.${m[1]}` : undefined;
-}

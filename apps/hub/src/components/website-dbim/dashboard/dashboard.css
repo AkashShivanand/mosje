@@ -80,7 +80,7 @@
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
     font-weight: var(--sa-font-weight-semibold);
-    color: var(--sa-color-primaryScale-600);
+    color: var(--sa-text-link-brand-default); /* the key colour: DBIM §2.2 hyperlink */
     text-decoration: underline;
     text-underline-offset: 0.2em;
   }

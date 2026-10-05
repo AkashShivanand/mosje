@@ -8,7 +8,7 @@
  * standing rules on the way:
  *
  * - titles in Title Case (ui-restraint-and-copy.md §2) — "About us" → "About Us";
- * - dates day-first, DD.MM.YYYY (DBIM 3.0 §A.5.6, checklist 27) — "19 Jan 2026" → "19.01.2026";
+ * - dates day-first, DD MMM YYYY (DBIM 3.0 §A.5.6, checklist 27) — formatted by `dbimDate`;
  * - free-mail addresses are not published (CON-09, as every people page of the estate) —
  *   NISD's and DAIC's Gmail addresses are left out, and the live page is one link away;
  * - document files resolve to the estate's local samples (`localiseDocumentUrl`), as
@@ -16,6 +16,7 @@
  * - a link to the live site opens the page the estate holds for it (./live-links.ts);
  *   a "Know More" that leads back to this very section is left out.
  */
+import { dbimDate } from "./date";
 import { cleanHtml } from "@/components/website-next/templates/organisation-content";
 import type { DbimIconName } from "@/components/website-dbim/ui/icons";
 import { localiseDocumentUrl } from "@/lib/website/sample-documents";
@@ -45,16 +46,6 @@ export function titleCaseHeading(heading: string): string {
       return lower.replace(/(^|[-(/‘'])([a-z])/g, (_m, p: string, c: string) => p + c.toUpperCase());
     })
     .join(" ");
-}
-
-const MONTHS = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-
-/** "19 Jan 2026" → "19.01.2026". Anything else is returned as published. */
-export function dottedDate(s?: string): string | undefined {
-  const m = s?.match(/^(\d{1,2})\s+([A-Za-z]{3})[a-z]*\s+(\d{4})$/);
-  if (!m) return s;
-  const month = MONTHS.indexOf(m[2]!.toLowerCase()) + 1;
-  return month ? `${m[1]!.padStart(2, "0")}.${String(month).padStart(2, "0")}.${m[3]}` : s;
 }
 
 const FREE_MAIL = /(gmail|yahoo|rediffmail|hotmail|outlook)(\[dot\]|\.)/i;
@@ -94,7 +85,7 @@ function docRow(d: OrgProfileDocument, here: string, pageTitle: string): DbimDoc
     if (!r) return undefined;
     href = r.href;
   }
-  return { title: d.title, href, date: dottedDate(d.date), size: d.size, type: d.format ?? d.type };
+  return { title: d.title, href, date: dbimDate(d.date) || d.date, size: d.size, type: d.format ?? d.type };
 }
 
 /* ── Contact lines ─────────────────────────────────────────────────────────── */
@@ -199,7 +190,7 @@ function shapeBlock(b: OrgProfileBlock, label: string, here: string, pageTitle: 
       return items.length ? { kind: "documents", items } : undefined;
     }
     case "events":
-      return { kind: "events", items: b.items.map((e) => ({ title: e.title, date: dottedDate(e.date), link: orgLink(e.title, e.href, here) })) };
+      return { kind: "events", items: b.items.map((e) => ({ title: e.title, date: dbimDate(e.date) || e.date, link: orgLink(e.title, e.href, here) })) };
     case "links": {
       const items = b.items.map((l) => orgLink(l.label, l.href, here)).filter(defined);
       return items.length ? { kind: "links", items } : undefined;
@@ -241,7 +232,7 @@ function shapeBlock(b: OrgProfileBlock, label: string, here: string, pageTitle: 
           label: titleCaseHeading(t.label),
           viewAll: orgLink(`View All ${t.label}`, t.viewAll, here),
           documents: t.documents.map((d) => docRow(d, here, pageTitle)).filter(defined),
-          events: t.events.filter((e) => e.title).map((e) => ({ title: e.title, date: dottedDate(e.date), link: orgLink(e.title, e.href, here) })),
+          events: t.events.filter((e) => e.title).map((e) => ({ title: e.title, date: dbimDate(e.date) || e.date, link: orgLink(e.title, e.href, here) })),
           news: t.news.filter((n) => n.title).map((n) => orgLink(n.title, n.href, here)).filter(defined),
           empty: t.empty,
         }))
@@ -277,7 +268,7 @@ export interface DbimOrgProfile {
   related: { label: string; links: DbimOrgLink[] }[];
   sections: DbimOrgSection[];
   source: string;
-  /** DD.MM.YYYY. */
+  /** DD MMM YYYY. */
   asOn: string;
 }
 

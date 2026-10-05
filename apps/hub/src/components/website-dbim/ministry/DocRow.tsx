@@ -4,6 +4,7 @@ import { Icon } from "@mosje/design-system";
 import { dbimHref } from "@/lib/website-dbim/nav";
 import { DbimIcon } from "../ui/icons";
 import type { DbimDocRow } from "@/lib/website-dbim/ministry";
+import { dbimDates } from "@/lib/website-dbim/date";
 
 /**
  * The reference's document row (`.box.row` in About Us): file glyph and title,
@@ -16,7 +17,7 @@ export function DbimDocRowView({ doc }: { doc: DbimDocRow }) {
         <Icon name="draft" size={24} weight={400} aria-hidden="true" />
         <span>{doc.title}</span>
       </p>
-      <span className="db-min-docrow__date">{doc.date ? <small className="db-min-ptype">{doc.date}</small> : null}</span>
+      <span className="db-min-docrow__date">{doc.date ? <small className="db-min-ptype">{dbimDates(doc.date)}</small> : null}</span>
       <span className="db-min-docrow__size">
         {doc.type || doc.size ? (
           <>

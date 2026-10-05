@@ -12,19 +12,19 @@ import { dbimHref } from "@/lib/website-dbim/nav";
 import type { DbimDocRow, DbimSeries } from "@/lib/website-dbim/documents";
 import "./documents.css";
 import { DbimIcon } from "../ui/icons";
+import { dbimDate } from "@/lib/website-dbim/date";
 
-/** YYYY-MM-DD → dd/mm/yyyy (dd.mm.yyyy for the tender and vacancy archive, as the reference prints it). */
-export function formatDocDate(date: string | undefined, sep = "/"): string {
-  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(date ?? "");
-  return m ? [m[3], m[2], m[1]].join(sep) : "";
+/** YYYY-MM-DD → DD MMM YYYY, the DBIM design's one date format (see lib/website-dbim/date.ts). */
+export function formatDocDate(date: string | undefined): string {
+  return dbimDate(date);
 }
 
 /**
  * The date as its column names it: a "Published Year" column prints the year alone, as
  * DBIM 3.0 Figure 75 does; every other date column prints the full date.
  */
-function docDateFor(label: string, date: string | undefined, sep = "/"): string {
-  return label === "Published Year" ? (/^(\d{4})/.exec(date ?? "")?.[1] ?? "") : formatDocDate(date, sep);
+function docDateFor(label: string, date: string | undefined): string {
+  return label === "Published Year" ? (/^(\d{4})/.exec(date ?? "")?.[1] ?? "") : formatDocDate(date);
 }
 
 /** The DBIM Visual Library's "PDF" icon, in the text colour (the key colour here). */
@@ -63,7 +63,7 @@ const ViewLabel = ({ all }: { all?: boolean }) => (
 );
 
 /** A single file: title · date · PDF glyph + size · View. */
-export function FileRow({ row, dateSep = "/", dateLabel }: { row: DbimDocRow; dateSep?: string; dateLabel: string }) {
+export function FileRow({ row, dateLabel }: { row: DbimDocRow; dateLabel: string }) {
   return (
     <div className="db-doc__row" role="row">
       <div className="db-doc__cell" role="cell">
@@ -72,7 +72,7 @@ export function FileRow({ row, dateSep = "/", dateLabel }: { row: DbimDocRow; da
       </div>
       <div className="db-doc__cell" role="cell">
         <span className="db-doc__label">{dateLabel}:</span>
-        <span className="db-doc__date">{docDateFor(dateLabel, row.date, dateSep)}</span>
+        <span className="db-doc__date">{docDateFor(dateLabel, row.date)}</span>
       </div>
       <div className="db-doc__cell" role="cell">
         <span className="db-doc__label">Type/Size:</span>

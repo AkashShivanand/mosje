@@ -13,6 +13,7 @@ import type { DbimDocRow, DbimTeamOffice as Office } from "@/lib/website-dbim/mi
 import type { DbimEventDetail, DbimOfficialProfile, DbimOrgEventRow, DbimOrgSubPage } from "@/lib/website-dbim/organisation-pages";
 import "./ministry.css";
 import "./organisation.css";
+import { dbimDates } from "@/lib/website-dbim/date";
 
 /**
  * The pages behind an organisation's page (lib/website-dbim/organisation-pages.ts),
@@ -82,7 +83,7 @@ export function DbimOrgEventsView({ rows, page, pageCount, total }: { rows: Dbim
           <ul className="db-org-events">
             {rows.map((e) => (
               <li key={e.href} className="db-min-docrow db-org-event">
-                {e.date ? <small className="db-min-ptype db-org-event__date">{e.date}</small> : <span />}
+                {e.date ? <small className="db-min-ptype db-org-event__date">{dbimDates(e.date)}</small> : <span />}
                 <p className="db-min-docrow__title">{e.title}</p>
                 <Link href={dbimHref(e.href)} className="db-min-arrow">
                   <Icon name="arrow_right_alt" size={24} weight={400} aria-hidden="true" />
@@ -129,7 +130,7 @@ export function DbimOfficialProfileView({ p }: { p: DbimOfficialProfile }) {
           {p.photo ? <Image className="db-min-profile__img" src={p.photo} alt="" width={120} height={120} sizes="120px" /> : null}
           {p.designation ? <small className="db-min-profile__role">{p.designation}</small> : null}
           <p className="db-min-profile__name">{p.name}</p>
-          {p.tenure ? <p className="db-org-people__tenure">{p.tenure}</p> : null}
+          {p.tenure ? <p className="db-org-people__tenure">{dbimDates(p.tenure)}</p> : null}
         </div>
       </aside>
       <div className="db-min-rich">
@@ -162,7 +163,7 @@ export function DbimOfficialProfileView({ p }: { p: DbimOfficialProfile }) {
 /** One event: when, how, where, what, and its document. */
 export function DbimEventDetailView({ e, organisation }: { e: DbimEventDetail; organisation?: string }) {
   const facts = [
-    e.when && { label: "Date", value: e.when },
+    e.when && { label: "Date", value: dbimDates(e.when) },
     e.mode && { label: "Mode", value: e.mode },
     e.location && { label: "Venue", value: e.location },
     e.organiser && { label: "Organised By", value: e.organiser },
