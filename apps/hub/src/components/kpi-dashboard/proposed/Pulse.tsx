@@ -33,7 +33,7 @@ import {
 } from "@mosje/design-system";
 import { FigureSource, noteForReading, type SourceNote } from "@/components/website/FigureSource";
 import { OriginChip, ProvenanceChip } from "@/components/website/ProvenanceChip";
-import { ABOUT_HERO } from "./hero";
+import { cardsInHero, heroFigures } from "./hero";
 import { ALL_FUND_GROUPS, PROGRAMME_AUDIENCE, shows, type Audience } from "./audience";
 import type { AreaScope, PortalDashboard, PortalId } from "@/lib/kpi/types";
 import { MinistryCollection } from "../DashboardViewer";
@@ -148,7 +148,7 @@ function Hero({ viewing, readings, scope, sectionLevel, audiences }: PulseProps)
 
   /*
    * THE ANSWER IS THE DEPARTMENT'S. All India, the figures beside the lead are the ones
-   * the Department has supplied (`ABOUT_HERO`, Received) — never an illustrative figure,
+   * the Department has supplied (`heroFigures`, Received) — never an illustrative figure,
    * because the hero is the part of the page most likely to be screenshotted into a deck.
    * Those figures are not published by State/UT, so a State/UT's hero carries the
    * programme figures that ARE read for it, each with its own mark.
@@ -163,7 +163,7 @@ function Hero({ viewing, readings, scope, sectionLevel, audiences }: PulseProps)
       })
     // A figure stands only when EVERY group it counts is in view: the nine-scheme total is
     // not an answer for Scheduled Castes alone.
-    : ABOUT_HERO.filter((x) => (x.everyOf ? x.everyOf.every((part) => shows(audiences, part)) : shows(audiences, x.audiences))).map((x) => ({ key: x.label, ...x }));
+    : heroFigures(scope, audiences).map((x) => ({ key: x.card ?? x.label, ...x }));
   // Filtered away from NMBA, the hero leads with the first figure that remains; filtered to
   // groups the hero has no departmental figure for, there is no hero — the cards answer.
   const promoted = !lead ? side[0] : undefined;
@@ -835,7 +835,7 @@ export function Pulse(props: PulseProps) {
   return (
     <div className="pd-story">
       <Hero {...props} />
-      <EducationResults sectionLevel={props.sectionLevel} state={props.scope.state} audiences={props.audiences} />
+      <EducationResults sectionLevel={props.sectionLevel} state={props.scope.state} audiences={props.audiences} inHero={cardsInHero(props.scope, props.audiences)} />
       <Programmes {...props} />
       <EducationTrends sectionLevel={props.sectionLevel} state={props.scope.state} audiences={props.audiences} />
       <Money {...props} />

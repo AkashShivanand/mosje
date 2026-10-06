@@ -1,22 +1,27 @@
 import type { SourceNote } from "@/components/website/FigureSource";
-import { ALL_FUND_GROUPS, FUND_SLICE_AUDIENCE, type Audience } from "./audience";
+import type { AreaScope } from "@/lib/kpi/types";
+import { ALL_FUND_GROUPS, CARD_AUDIENCE, FUND_SLICE_AUDIENCE, shows, type Audience } from "./audience";
 import {
   DEPARTMENT_DASHBOARD_AS_ON,
   DEPARTMENT_DASHBOARD_ORIGIN,
   DEPARTMENT_DASHBOARD_SOURCE,
   DEPARTMENT_DASHBOARD_URL,
   FUND_SHARE,
+  SCHOLARSHIPS,
+  type DeptMetric,
 } from "@/lib/website-shared/dashboard";
 
 /**
- * The figure beside the hero's lead, All India — the Beneficiary Dashboard's own, with the
- * live page's label, read from the shared record (`lib/website-shared/dashboard.ts`) and
- * never re-typed.
+ * The figures beside the hero's lead, All India — the Beneficiary Dashboard's own, each with
+ * the live page's label and, under it, the card it comes from, read from the shared record
+ * (`lib/website-shared/dashboard.ts`) and never re-typed.
  *
- * ONLY WHAT THE PAGE DOES NOT SAY BELOW. The hero used to repeat the lead figure of each of
- * the three scholarship tiles that sit directly under it — 9 Cr, 11 Cr, 14,757 printed twice
- * within one screen (design audit, 6 Oct 2026). The nine-scheme total is the one Department
- * figure no section prints, so it is the one the hero carries.
+ * THE HERO HOLDS THE CUMULATIVE ANSWER; THE CARDS BELOW HOLD THE LATEST YEAR. The three
+ * scholarship figures (9 Cr, 11 Cr, 14,757 — 2014-15 to 2025-26) are the hero's
+ * (instruction, 6 Oct 2026), so the cards they come from lead with what the hero does not
+ * say: the 2025-26 figure. Nothing is printed twice. `heroFigures` is the ONE decision both
+ * read: where the hero does not show a card's figure (a State/UT view, a Type of Applicant
+ * choice that excludes it), that card leads with it again, so it is never lost.
  *
  * ONE IS DERIVED, AND SAYS HOW. The live page prints nine fund slices and "Total spend
  * across 9 schemes" but never the total itself; the ₹67,977 crore here is their sum, and
@@ -41,6 +46,17 @@ export interface HeroFigure {
   audiences: Audience[];
   /** …unless it is a TOTAL, which stands only when the choice covers every part it adds up. */
   everyOf?: Audience[][];
+  /** The Beneficiary Dashboard card the figure leads, so that card can lead with another. */
+  card?: string;
+}
+
+function metric(cards: readonly { id: string; title: string; metrics?: readonly DeptMetric[] }[], id: string, i: number, audiences: Audience[]): HeroFigure {
+  const c = cards.find((x) => x.id === id);
+  const m = c?.metrics?.[i];
+  if (!c || !m) throw new Error(`Beneficiary Dashboard record has no metric ${id}[${i}]`);
+  const value = m.unit ? `${m.value} ${m.unit}` : m.value;
+  // The live label as the label, the card's title as the context — one per line.
+  return { value, label: m.label, context: c.title, origin: DEPARTMENT_DASHBOARD_ORIGIN, note: { ...RECEIVED, title: `${m.label}, ${c.title}`, value }, audiences, card: id };
 }
 
 const crore = (n: number) => n.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -69,4 +85,22 @@ export const ABOUT_HERO: HeroFigure[] = [
       },
     },
   },
+  metric(SCHOLARSHIPS.cards, "sc", 2, CARD_AUDIENCE.sc!),
+  metric(SCHOLARSHIPS.cards, "obc", 2, CARD_AUDIENCE.obc!),
+  metric(SCHOLARSHIPS.cards, "shreyas", 1, CARD_AUDIENCE.shreyas!),
 ];
+
+/**
+ * The Department figures the hero shows for this view — none on a State/UT view (the
+ * Department publishes them for All India only), and, under a Type of Applicant choice, only
+ * those about a chosen group; a TOTAL only when the choice covers every part it adds up.
+ */
+export function heroFigures(scope: AreaScope, audiences: Set<Audience>): HeroFigure[] {
+  if (scope.state) return [];
+  return ABOUT_HERO.filter((x) => (x.everyOf ? x.everyOf.every((part) => shows(audiences, part)) : shows(audiences, x.audiences)));
+}
+
+/** The Beneficiary Dashboard cards whose lead figure the hero is showing. */
+export function cardsInHero(scope: AreaScope, audiences: Set<Audience>): Set<string> {
+  return new Set(heroFigures(scope, audiences).flatMap((f) => (f.card ? [f.card] : [])));
+}
