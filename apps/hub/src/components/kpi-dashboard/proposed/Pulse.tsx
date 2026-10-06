@@ -629,14 +629,21 @@ function Where({ viewing, national, scope, go, sectionLevel, audiences }: PulseP
             <>
               <CardHeader>
                 <div>
-                  <CardTitle size="sm">Highest and Lowest</CardTitle>
+                  <CardTitle>Highest and Lowest</CardTitle>
                   <CardSubtitle>{title}</CardSubtitle>
                 </div>
               </CardHeader>
-              <CardBody>
-                <RankedBarList title={`${title}, highest five`} items={ranked.slice(0, 5).map((r) => ({ label: r.state, value: r.value }))} max={ranked[0]?.value} valueFormat={fmt} showRank sort="none" />
-                <RankedBarList title={`${title}, lowest five`} items={ranked.slice(-5).map((r, i) => ({ label: r.state, value: r.value, detail: `${ranked.length - 4 + i} of ${ranked.length}` }))} max={ranked[0]?.value} valueFormat={fmt} showRank={false} sort="none" />
-                <p className="pd-note">Select a State/UT on the map to view its figures.</p>
+              {/* As drawn in Figma (Option B, "Highest and Lowest"): two labelled groups of
+                  Ranked Bar Rows, every bar against the highest State/UT. */}
+              <CardBody className="pd-extremes">
+                <div className="pd-extremes__group">
+                  <h4 className="pd-extremes__label">Highest Five</h4>
+                  <RankedBarList title={`${title}, highest five`} items={ranked.slice(0, 5).map((r) => ({ label: r.state, value: r.value }))} max={ranked[0]?.value} valueFormat={fmt} showRank size="md" sort="none" />
+                </div>
+                <div className="pd-extremes__group">
+                  <h4 className="pd-extremes__label">Lowest Five</h4>
+                  <RankedBarList title={`${title}, lowest five`} items={ranked.slice(-5).map((r, i) => ({ label: r.state, value: r.value, detail: `${ranked.length - 4 + i} of ${ranked.length}` }))} max={ranked[0]?.value} valueFormat={fmt} showRank={false} size="md" sort="none" />
+                </div>
               </CardBody>
             </>
           )}

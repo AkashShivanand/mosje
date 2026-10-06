@@ -211,9 +211,30 @@
   /* ── Where: the map, and the chosen State/UT beside it ───────────────────── */
   .pd-where {
     display: grid;
-    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-    gap: var(--sa-stack-20);
+    /* Figma Option B: the map 772 wide, the panel the rest, 24 between. */
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: var(--sa-stack-24);
     align-items: stretch;
+  }
+
+  .pd-extremes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-20);
+  }
+
+  .pd-extremes__group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-12);
+  }
+
+  .pd-extremes__label {
+    margin: 0;
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   .pd-chips,

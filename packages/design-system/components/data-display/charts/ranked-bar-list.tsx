@@ -35,6 +35,12 @@ export interface RankedBarListProps extends ChartStateProps {
   valueFormat?: ValueFormat;
   /** Number the rows. On by default for a ranking; off for a breakdown. */
   showRank?: boolean;
+  /**
+   * `sm` is the compact list for a card beside a chart. `md` is the list as the
+   * card's own content — Body 2 text, a semibold name, a regular figure and a
+   * 24px rank (the Ranked Bar Row drawn for the dashboard screens). @default "sm"
+   */
+  size?: "sm" | "md";
   /** How the rows are ordered. Withheld rows always sort last. @default "desc" */
   sort?: "desc" | "asc" | "none";
   /**
@@ -66,6 +72,7 @@ export function RankedBarList({
   max,
   valueFormat = formatIndian,
   showRank = true,
+  size = "sm",
   sort = "desc",
   pageSize,
   toneFor,
@@ -110,7 +117,7 @@ export function RankedBarList({
   const visible = pageSize ? sorted.slice(offset, offset + pageSize) : sorted;
 
   return (
-    <figure className={cn("ds-ranked", className)}>
+    <figure className={cn("ds-ranked", size === "md" && "ds-ranked--md", className)}>
       <ol className="ds-ranked__list" aria-label={title}>
         {visible.map((item, i) => {
           const index = offset + i;

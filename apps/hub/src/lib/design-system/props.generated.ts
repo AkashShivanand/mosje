@@ -12998,6 +12998,13 @@ export const GENERATED_PROPS = {
         "description": "Number the rows. On by default for a ranking; off for a breakdown."
       },
       {
+        "name": "size",
+        "type": "\"sm\" | \"md\"",
+        "required": false,
+        "default": "\"sm\"",
+        "description": "`sm` is the compact list for a card beside a chart. `md` is the list as the card's own content — Body 2 text, a semibold name, a regular figure and a 24px rank (the Ranked Bar Row drawn for the dashboard screens)."
+      },
+      {
         "name": "sort",
         "type": "\"desc\" | \"asc\" | \"none\"",
         "required": false,

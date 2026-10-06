@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "`RankedBarList size=\"md\"`: the list as a card's own content — Body 2 text, a semibold name against a regular figure, a 24px rank — matching the Ranked Bar Row drawn for the dashboard screens. The compact `sm` stays the default."
+}
