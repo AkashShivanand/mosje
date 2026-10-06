@@ -121,7 +121,8 @@ const RAMP = [6, 6.4, 6.9, 7.3, 7.8, 8.2, 8.7, 9.1, 9.5, 9.9, 10.3, 10.6];
  * Question 3735, as reported; 7,622 adults and 2,824 children), against 9,958 identified
  * and 970 rehabilitated in the PIB factsheet of 5 May 2025 (to Dec 2024). The old 2,084
  * was a single year's order of magnitude on a cumulative KPI. 10,450 keeps it illustrative
- * and plausible; 12,940 mobilised keeps the funnel monotone. Identified stays at the SMILE
+ * and plausible (the page shows 10,411: the sum of the areas once each is capped by its own
+ * mobilised figure, `smileStages`); 12,940 mobilised keeps the funnel monotone. Identified stays at the SMILE
  * Admin prototype's 19,810, inside the published range (≈10k Dec 2024 to the 31k reported
  * for Mar 2026). The SMILE Admin prototype still draws 2,084 and should follow.
  */
@@ -137,16 +138,66 @@ const SMILE = {
   shelters: 312,
 };
 
+/** The figures that are capped by an earlier stage — a later stage never exceeds the one before. */
+interface SmileStages {
+  identified: number;
+  mobilised: number;
+  rehabilitated: number;
+  children: number;
+  released: number;
+  utilised: number;
+}
+
+/**
+ * The capped stages for one area, BUILT FROM THE MOST SPECIFIC AREAS UP. The caps are applied
+ * where the figures are recorded — a district, or a State/UT with no districts on file — and
+ * every larger area is the sum of the areas inside it. Capping each level on its own made the
+ * All-India figure disagree with the sum of the States/UTs drawn beside it on the programme's
+ * map (10,450 Persons Rehabilitated above a map adding to 10,434: `data-state-completeness.md`
+ * §2, one request, one answer).
+ */
+function smileStages(scope: AreaScope): SmileStages {
+  const leaf = (s: AreaScope): SmileStages => {
+    const at = (total: number, measure: string) => split(total, measure, SMILE_AREAS).at(s);
+    const identified = at(SMILE.identified, "identified");
+    const mobilised = Math.min(identified, at(SMILE.mobilised, "mobilised"));
+    const released = at(SMILE.released, "released");
+    return {
+      identified,
+      mobilised,
+      rehabilitated: Math.min(mobilised, at(SMILE.rehabilitated, "rehabilitated")),
+      // Children: 11% of persons identified, as an indicative share.
+      children: Math.min(identified, at(Math.round(SMILE.identified * 0.11), "children")),
+      released,
+      utilised: Math.min(released, at(SMILE.utilised, "utilised")),
+    };
+  };
+  const sum = (parts: SmileStages[]): SmileStages =>
+    parts.reduce(
+      (t, x) => ({
+        identified: t.identified + x.identified,
+        mobilised: t.mobilised + x.mobilised,
+        rehabilitated: t.rehabilitated + x.rehabilitated,
+        children: t.children + x.children,
+        released: t.released + x.released,
+        utilised: t.utilised + x.utilised,
+      }),
+      { identified: 0, mobilised: 0, rehabilitated: 0, children: 0, released: 0, utilised: 0 },
+    );
+  const ofState = (state: string): SmileStages => {
+    const node = SMILE_AREAS.find((n) => n.name === state);
+    const districts = node?.children ?? [];
+    return districts.length ? sum(districts.map((d) => leaf({ state, district: d.name }))) : leaf({ state });
+  };
+  if (scope.district) return leaf(scope);
+  if (scope.state) return ofState(scope.state);
+  return sum(SMILE_AREAS.map((n) => ofState(n.name)));
+}
+
 function smileBeggary(scope: AreaScope): PortalReading {
   const at = (total: number, measure: string) => split(total, measure, SMILE_AREAS).at(scope);
 
-  const identified = at(SMILE.identified, "identified");
-  const mobilised = Math.min(identified, at(SMILE.mobilised, "mobilised"));
-  const rehabilitated = Math.min(mobilised, at(SMILE.rehabilitated, "rehabilitated"));
-  // Children: 11% of persons identified, as an indicative share.
-  const children = Math.min(identified, at(Math.round(SMILE.identified * 0.11), "children"));
-  const released = at(SMILE.released, "released");
-  const utilised = Math.min(released, at(SMILE.utilised, "utilised"));
+  const { identified, mobilised, rehabilitated, children, released, utilised } = smileStages(scope);
   const agencies = at(SMILE.agencies, "agencies");
   const shelters = at(SMILE.shelters, "shelters");
   // Capacity: an indicative 25 beds a Swashraya.

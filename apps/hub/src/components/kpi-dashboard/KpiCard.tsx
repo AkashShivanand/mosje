@@ -118,7 +118,7 @@ export function KpiChart({
             valueFormat={kpiFormatter(unit)}
             center={formatKpi(Math.round(total * 100) / 100, unit)}
             centerSub="in total"
-            className={donutLayout === "auto" && finalSpan >= 8 ? undefined : "kd-donut"}
+            className={donutLayout === "auto" && finalSpan >= 8 ? "kd-donut-side" : "kd-donut"}
             {...(donutLayout === "auto" && finalSpan >= 8 ? { layout: "side" as const, legendValue: "value" as const } : {})}
           />
         );

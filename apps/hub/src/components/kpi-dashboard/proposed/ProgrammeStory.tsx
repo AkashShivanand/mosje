@@ -22,7 +22,8 @@ import { kpisFor } from "@/lib/kpi/register";
 import type { AreaScope, PortalDashboard } from "@/lib/kpi/types";
 import { isTile } from "../KpiCard";
 import { KpiBlocks } from "./KpiBlocks";
-import { SHORT_NAME, fundsRows, headlineOf, kpiLabel, shownKpis, type Readings, type Viewing } from "./model";
+import { COMPONENT_SHORT, SHORT_NAME, fundsRows, headlineOf, kpiLabel, shownKpis, type Readings, type StateMeasure, type Viewing } from "./model";
+import { StateBreakdown } from "./StateBreakdown";
 import { PROGRAMME_TONE, compact } from "./story";
 
 /**
@@ -42,13 +43,18 @@ export interface ProgrammeStoryProps {
   sectionLevel: 2 | 3;
   backHref: string;
   go: (to: Partial<Record<"programme" | "state", string | null>>) => void;
+  /** The programme's mapped KPIs, State/UT by State/UT (`stateMeasures`); All India only. */
+  states?: StateMeasure[];
 }
 
 const LEAD = 4;
 
-export function ProgrammeStory({ programme: p, viewing, readings, scope, sectionLevel, backHref, go }: ProgrammeStoryProps) {
+export function ProgrammeStory({ programme: p, viewing, readings, scope, sectionLevel, backHref, go, states = [] }: ProgrammeStoryProps) {
   const demo = useDataMode();
   const [category, setCategory] = React.useState("all");
+  // A programme made of components (Senior Citizens Welfare) is filtered by component, as the
+  // landing page is by Department and portal (instruction, 6 Oct 2026).
+  const [component, setComponent] = React.useState("all");
   const reading = readings[p.id] ?? {};
   const kpis = shownKpis(p, viewing, readings, scope);
   const all = kpisFor(p, viewing.audience);
@@ -59,7 +65,12 @@ export function ProgrammeStory({ programme: p, viewing, readings, scope, section
   const lead = kpis.filter((k) => isTile(reading[k.id]!) && k.audience === "public" && !k.id.endsWith(".progress")).slice(0, LEAD);
   const pace = components ? fundsRows({ ...viewing, programmes: [p] }, readings) : [];
   const cats = KPI_CATEGORIES.filter((c) => kpis.some((k) => k.category === c.id));
-  const inView = kpis.filter((k) => category === "all" || k.category === category);
+  const inView = kpis.filter((k) => (category === "all" || k.category === category) && (component === "all" || k.component === component));
+  const componentList = [...new Set(kpis.flatMap((k) => (k.component ? [k.component] : [])))];
+  const componentShort = (c: string) => {
+    const id = p.kpis.find((k) => k.component === c)?.id.split(".")[1] ?? "";
+    return COMPONENT_SHORT[id] ?? c;
+  };
 
   let body: React.ReactNode;
   if (!covers(p.id, scope)) {
@@ -91,6 +102,11 @@ export function ProgrammeStory({ programme: p, viewing, readings, scope, section
         <section key={c.id} className="pd-section" aria-labelledby={`pd-${c.id}`}>
           <SectionTitle as={sub} headingId={`pd-${c.id}`} title={c.title} />
           <KpiBlocks kpis={inView.filter((k) => k.category === c.id)} reading={reading} areasAreStates={!scope.state} headingLevel={4} />
+          {/* Where the scheme works, State/UT by State/UT: All India only — a State/UT's page
+              is already that State's figures. */}
+          {c.id === "geography" && states.length && !scope.state ? (
+            <StateBreakdown measures={states} headingLevel={4} onSelectState={(state) => go({ state })} />
+          ) : null}
         </section>
       ));
   }
@@ -156,6 +172,18 @@ export function ProgrammeStory({ programme: p, viewing, readings, scope, section
         </section>
       ) : null}
 
+      {components && componentList.length > 1 ? (
+        <div className="pd-chips" role="group" aria-label="Component">
+          <Chip selected={component === "all"} onSelectedChange={() => setComponent("all")} count={kpis.length}>
+            All Components
+          </Chip>
+          {componentList.map((c) => (
+            <Chip key={c} selected={component === c} onSelectedChange={() => setComponent(c)} count={kpis.filter((k) => k.component === c).length}>
+              {componentShort(c)}
+            </Chip>
+          ))}
+        </div>
+      ) : null}
       {cats.length > 1 && !components ? (
         <div className="pd-chips" role="group" aria-label="Theme">
           <Chip selected={category === "all"} onSelectedChange={() => setCategory("all")} count={kpis.length}>

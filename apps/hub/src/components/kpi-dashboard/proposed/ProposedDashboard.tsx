@@ -15,7 +15,7 @@ import { ViewerNotice } from "../DashboardViewer";
 import { OfficerLogin } from "./OfficerLogin";
 import { ProgrammeStory } from "./ProgrammeStory";
 import { DataBehind, Pulse } from "./Pulse";
-import { SHORT_NAME, readAll, viewingFor } from "./model";
+import { SHORT_NAME, readAll, stateMeasures, viewingFor } from "./model";
 import { AUDIENCES, AUDIENCE_LABEL, PROGRAMME_AUDIENCE, parseAudiences, serialiseAudiences, shows } from "./audience";
 import "../kpi-dashboard.css";
 import "./proposed.css";
@@ -74,6 +74,11 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
   const national = React.useMemo(
     () => (scope.state ? readAll(viewing.programmes, {}, demo.mode, feeds, viewing.audience) : readings),
     [viewing, scope.state, demo.mode, feeds, readings],
+  );
+  // The open programme's mapped KPIs, State/UT by State/UT, on its All-India page only.
+  const states = React.useMemo(
+    () => (programme && !scope.state ? stateMeasures(programme, demo.mode, feeds, viewing.audience) : []),
+    [programme, scope.state, demo.mode, feeds, viewing.audience],
   );
 
   const hrefTo = React.useCallback(
@@ -230,6 +235,7 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
               sectionLevel={sectionLevel}
               backHref={hrefTo({ programme: null })}
               go={go}
+              states={states}
             />
           ) : (
             <Pulse

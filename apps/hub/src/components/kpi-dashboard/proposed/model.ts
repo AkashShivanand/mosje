@@ -2,6 +2,7 @@ import { formatKpi } from "@/lib/kpi/format";
 import { canSeePortal, type OfficerRole } from "@/lib/kpi/access";
 import { resolveReading, type DataModeName, type PortalFeed } from "@/lib/kpi/live";
 import { PROGRAMMES, kpisFor, levelsOf } from "@/lib/kpi/register";
+import { areaOptions } from "@/lib/kpi/model";
 import type {
   AreaScope,
   KpiCategory,
@@ -76,6 +77,54 @@ export function readAll(
       return [p.id, Object.fromEntries(Object.entries(reading).filter(([id]) => visible.has(id)))];
     }),
   );
+}
+
+/* ── A programme's figures, State/UT by State/UT ───────────────────────────── */
+
+/**
+ * The State/UT-level KPIs a programme's page maps, and the word each takes on its switch.
+ * SMILE – Beggary's three stages, in the sheet's own short words (KPI 15, "Monthly Trend –
+ * Identified / Mobilised / Rehabilitated"), as the SMILE – Beggary handoff draws its
+ * State-wise Beneficiary Distribution (Figma `evmNmlK8g4VYwJVu2FwSGV` 8664:49263). NMBA maps
+ * its own State/UT KPI (`nmba.outreach-by-state`) on its page already.
+ */
+export const STATE_MEASURES: Partial<Record<PortalId, { kpi: string; label: string }[]>> = {
+  "smile-beggary": [
+    { kpi: "smile-beggary.identified", label: "Identified" },
+    { kpi: "smile-beggary.mobilised", label: "Mobilised" },
+    { kpi: "smile-beggary.rehabilitated", label: "Rehabilitated" },
+  ],
+};
+
+export interface StateMeasure {
+  kpi: KpiDefinition;
+  label: string;
+  rows: { state: string; value: number }[];
+}
+
+/**
+ * Each mapped KPI's figure in every State/UT the programme works in — each one read through
+ * `readAll`, so the State/UT figures pass the same pre-login gate, and come from the same
+ * source and mode, as the All-India figure above them.
+ */
+export function stateMeasures(
+  p: PortalDashboard,
+  mode: DataModeName,
+  feeds: Partial<Record<PortalId, PortalFeed>>,
+  audience: "public" | "officer",
+): StateMeasure[] {
+  const defs = STATE_MEASURES[p.id];
+  if (!defs || !p.levels.includes("state")) return [];
+  const per = areaOptions(p.id).map((state) => ({ state, r: readAll([p], { state }, mode, feeds, audience)[p.id] ?? {} }));
+  return defs.flatMap((d) => {
+    const kpi = kpisFor(p, audience).find((k) => k.id === d.kpi);
+    if (!kpi) return [];
+    const rows = per.flatMap(({ state, r }) => {
+      const v = r[d.kpi]?.value;
+      return v?.kind === "figure" ? [{ state, value: v.value }] : [];
+    });
+    return rows.length ? [{ kpi, label: d.label, rows }] : [];
+  });
 }
 
 /** A programme's KPIs this viewer may see that have a reading for the scope. */

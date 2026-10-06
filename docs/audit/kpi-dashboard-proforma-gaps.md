@@ -221,3 +221,36 @@ whole Expenditure-against-B.E. chart.
 - **Officer Login** at the top of the dashboard opens `?view=login`, a sign-in built from the design
   system's form parts. It is a prototype of the screen: no credential is checked, and signing in sets
   the dashboard's viewer, as the demo rail's View As does.
+
+## 12. Sheet re-read, all Pre-Login KPIs covered, and figures that add up (6 Oct 2026, night)
+
+**Sheet re-read** (`SAMAVESH_KPI_Data_Collection_Proforma`, all seven tabs). Its content was
+the same as at 16:48 that day. The register matches it on every KPI's name and on its
+Public (Pre-Login) or Office (Post-Login) type:
+
+| Portal | Pre-Login | Post-Login | On its page |
+|---|---|---|---|
+| SMILE – Beggary | 18 | 25 | 18 of 18 |
+| NMBA | 6 (+ Total Outreach by State/UT, from KPI 1's State-wise API) | 0 | 7 of 7 |
+| DAPSC (e-Utthaan) | 5 | 0 | 5 of 5 |
+| SHRESHTA (e-Anudaan) | 2 | 3 | 2 of 2 |
+| Senior Citizens Welfare | 10 | 18 | 10 of 10 |
+
+A browser check of each portal's public page found every Pre-Login KPI name on it and no
+Post-Login KPI name. A unit test now pins the gate (`model.test.ts`).
+
+**Points for the Divisions, noted and not changed:**
+- **SMILE – Beggary.** The sheet has no S.No 35, lists S.No 44 ("Survey Locations without an
+  Implementing Agency") twice, and states "Total KPIs entered: 44" against 43 distinct rows.
+- **NMBA.** The KPI Type column is blank on all six rows, so all six are read as Public
+  (Pre-Login), as the NMBA public dashboard publishes them.
+- **No values.** The sheet defines the KPIs and holds no figures. The Senior Citizens APIs it
+  names answer `401 Unauthenticated` to a public request. So, by instruction (6 Oct 2026), SMILE –
+  Beggary, DAPSC, SHRESHTA and Senior Citizens Welfare show illustrative figures until the
+  Department supplies real ones. NMBA (live API) and the Department's own sections are real.
+
+**One request, one answer.** The model capped each SMILE – Beggary stage at the stage before
+it separately at every level, so the All-India Persons Rehabilitated (10,450) disagreed with
+the sum of the States/UTs on the new State/UT map (10,434). The stages are now capped where
+they are recorded (a district, or a State/UT with none on file) and summed upward. Every level
+agrees, and All India reads 10,411.

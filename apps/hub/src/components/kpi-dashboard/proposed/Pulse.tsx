@@ -33,7 +33,7 @@ import {
 } from "@mosje/design-system";
 import { FigureSource, noteForReading, type SourceNote } from "@/components/website/FigureSource";
 import { OriginChip, ProvenanceChip } from "@/components/website/ProvenanceChip";
-import { cardsInHero, heroFigures } from "./hero";
+import { heroFigures } from "./hero";
 import { PROGRAMME_AUDIENCE, shows, type Audience } from "./audience";
 import type { AreaScope, PortalDashboard, PortalId } from "@/lib/kpi/types";
 import { MinistryCollection } from "../DashboardViewer";
@@ -862,7 +862,7 @@ export function Pulse(props: PulseProps) {
     <div className="pd-story">
       <Hero {...props} />
       {/* The Department's figures, as the live page publishes them … */}
-      <EducationResults sectionLevel={props.sectionLevel} state={props.scope.state} audiences={props.audiences} inHero={cardsInHero(props.scope, props.audiences)} />
+      <EducationResults sectionLevel={props.sectionLevel} state={props.scope.state} audiences={props.audiences} />
       <EducationTrends sectionLevel={props.sectionLevel} state={props.scope.state} audiences={props.audiences} />
       <Money {...props} />
       {/* … then the scheme portals' figures, and where they are. */}

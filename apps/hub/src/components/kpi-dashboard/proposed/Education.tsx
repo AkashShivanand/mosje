@@ -316,10 +316,6 @@ interface MovementProps {
   audiences: Set<Audience>;
 }
 
-interface ResultsProps extends MovementProps {
-  /** The cards whose cumulative figure the hero is showing (`cardsInHero`) — they lead with the latest year instead. */
-  inHero?: Set<string>;
-}
 
 
 /**
@@ -339,11 +335,15 @@ export const allIndiaBadge = (state?: string) =>
  *
  * TWO STYLES, EACH THE ONE THAT READ BEST (instruction, 6 Oct 2026). Scholarships and
  * Fellowship: each live card as a tile — its lead figure in display type, its two fund figures
- * under it, and the trend line the live page publishes the years for. Hostels and Top Class
+ * under it, and the trend line the live page publishes the years for.
+ *
+ * EVERY FIGURE A LIVE CARD HOLDS STAYS IN THAT CARD (instruction, 6 Oct 2026): the order inside
+ * a card is ours, its contents are not. The hero may repeat a card's figure; it never takes
+ * one away from the card. Hostels and Top Class
  * Education: the live page's own cards (`HostelCard`), intact, each with the yearly line the
  * Year on Year Report publishes for it. The hero's figures jump to these cards (`pd-card-<id>`).
  */
-export function EducationResults({ sectionLevel, state, audiences, inHero = new Set() }: ResultsProps) {
+export function EducationResults({ sectionLevel, state, audiences }: MovementProps) {
   const show = (cardId: string) => shows(audiences, CARD_AUDIENCE[cardId] ?? "obc");
   const sc = card(SCHOLARSHIPS.cards, "sc");
   const obc = card(SCHOLARSHIPS.cards, "obc");
@@ -374,46 +374,6 @@ export function EducationResults({ sectionLevel, state, audiences, inHero = new 
       />
     );
   };
-  /*
-   * THE LATEST YEAR AS A CARD'S LEAD, where the hero is showing the card's cumulative figure
-   * (`cardsInHero`): the live label ("Students Beneficiary"), the latest year under it, and the
-   * Pre- plus Post-Matric sum it is worked out from behind the info control. The same figure the
-   * trend line's sentence used to state, so nothing new is derived.
-   */
-  const latestLead = (v: (typeof BENEFICIARY_TRENDS.views)[number], m: DeptMetric, title: string) => {
-    const series: readonly { name: string; data: readonly number[] }[] = v.series;
-    const pre = nth(series, 0);
-    const post = nth(series, 1);
-    const total = sumSeries(pre.data, post.data);
-    const last = v.labels[v.labels.length - 1]!;
-    const year = last.replace("*", "");
-    const value = lakh(total[total.length - 1]!);
-    return (
-      <HeadlineFigure
-        size="md"
-        value={value}
-        label={m.label}
-        context={`${year}${last.endsWith("*") ? " (provisional)" : ""}`}
-        mark={
-          <FigureSource
-            note={{
-              ...receivedNote(`${title}, ${year}`),
-              value,
-              breakdown: {
-                method: "Pre-Matric and Post-Matric students added together, from the Year by Year Trends series.",
-                rows: [
-                  { label: pre.name, value: lakh(pre.data[pre.data.length - 1]!) },
-                  { label: post.name, value: lakh(post.data[post.data.length - 1]!), op: "+" as const },
-                ],
-                result: { label: `Students, ${year}`, value },
-              },
-            }}
-          />
-        }
-      />
-    );
-  };
-
   // As the live page sets it: a badge, at the right of the heading, not a sentence under it.
   // On a State/UT view the page also says these are All-India figures, because the live page
   // publishes no other.
@@ -464,28 +424,17 @@ export function EducationResults({ sectionLevel, state, audiences, inHero = new 
           {[sc, obc].filter((x) => show(x.id)).map((x) => (
             <li key={x.id} id={`pd-card-${x.id}`}>
               <Tile tone={x.tone} icon={x.icon} title={x.title} subtitle={x.subtitle}>
-                {inHero.has(x.id) ? latestLead(x.id === "sc" ? scTrend : obcTrend, nth(x.metrics, 2), x.title) : <Lead m={nth(x.metrics, 2)} />}
+                <Lead m={nth(x.metrics, 2)} />
                 <Rest ms={[nth(x.metrics, 0), nth(x.metrics, 1)]} />
-                {studentsLine(x.id === "sc" ? scTrend : obcTrend, x.title, !inHero.has(x.id))}
+                {studentsLine(x.id === "sc" ? scTrend : obcTrend, x.title)}
               </Tile>
             </li>
           ))}
           {show("shreyas") ? (
           <li id="pd-card-shreyas">
             <Tile tone={shreyas.tone} icon={shreyas.icon} title={shreyas.title} subtitle={shreyas.subtitle}>
-              {/* Scholars Funded (cumulative) leads unless the hero is showing it; then the
-                  live card's own Latest Year (2025-26) leads instead. */}
-              {inHero.has("shreyas") ? (
-                <>
-                  <Lead m={nth(shreyas.metrics, 2)} />
-                  <Rest ms={[nth(shreyas.metrics, 0)]} />
-                </>
-              ) : (
-                <>
-                  <Lead m={nth(shreyas.metrics, 1)} />
-                  <Rest ms={[nth(shreyas.metrics, 0), nth(shreyas.metrics, 2)]} />
-                </>
-              )}
+              <Lead m={nth(shreyas.metrics, 1)} />
+              <Rest ms={[nth(shreyas.metrics, 0), nth(shreyas.metrics, 2)]} />
               {/* The fact line would restate "Latest Year (2025-26)" above it, so the line alone. */}
               <div className="pd-trend">
                 <Sparkline data={[...nth(shreyasTrend.series, 0).data]} width={420} height={44} label={`${shreyas.title}: ${shreyasTrend.unit}, each year, ${shreyasTrend.labels[0]} to ${shreyasTrend.labels[shreyasTrend.labels.length - 1]}`} startLabel={shreyasTrend.labels[0]!.replace("*", "")} endLabel={shreyasTrend.labels[shreyasTrend.labels.length - 1]!.replace("*", "")} markLast />

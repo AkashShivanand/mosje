@@ -6,7 +6,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { apportion, readPortal, covers } from "./model.ts";
 import { SMILE_AREAS } from "./geography.ts";
-import { PORTAL_DASHBOARDS, PROGRAMMES } from "./register.ts";
+import { PORTAL_DASHBOARDS, PROGRAMMES, kpisFor } from "./register.ts";
 import { clampArea, roleById } from "./access.ts";
 import { PORTAL_SLUGS } from "./slugs.ts";
 import type { KpiReading } from "./types.ts";
@@ -24,18 +24,32 @@ test("apportion sums exactly and keeps proportion", () => {
 });
 
 test("SMILE – Beggary: states sum to All India, districts to their state", () => {
-  const india = num(readPortal("smile-beggary")["smile-beggary.identified"]);
-  let states = 0;
-  for (const s of SMILE_AREAS) {
-    const state = num(readPortal("smile-beggary", { state: s.name })["smile-beggary.identified"]);
-    states += state;
-    const districts = (s.children ?? []).reduce(
-      (t, d) => t + num(readPortal("smile-beggary", { state: s.name, district: d.name })["smile-beggary.identified"]),
-      0,
-    );
-    assert.equal(districts, state, `${s.name}: districts sum to the state`);
+  // Every stage the programme's page maps or a later stage is capped by — the All-India figure
+  // above the State/UT map must be the map's own sum (one request, one answer).
+  for (const kpi of ["identified", "mobilised", "rehabilitated", "children"].map((m) => `smile-beggary.${m}`)) {
+    const india = num(readPortal("smile-beggary")[kpi]);
+    let states = 0;
+    for (const s of SMILE_AREAS) {
+      const state = num(readPortal("smile-beggary", { state: s.name })[kpi]);
+      states += state;
+      const districts = (s.children ?? []).reduce(
+        (t, d) => t + num(readPortal("smile-beggary", { state: s.name, district: d.name })[kpi]),
+        0,
+      );
+      if (s.children?.length) assert.equal(districts, state, `${kpi}, ${s.name}: districts sum to the state`);
+    }
+    assert.equal(states, india, `${kpi}: states sum to All India`);
   }
-  assert.equal(states, india);
+});
+
+test("a citizen's view of every programme holds only its Public (Pre-Login) KPIs", () => {
+  // Mirrors the gate in the proposed dashboard's `readAll`: what `kpisFor(p, "public")` allows
+  // is all a citizen's page may read, and it must never include an Office (Post-Login) KPI.
+  for (const p of PROGRAMMES) {
+    const allowed = new Set(kpisFor(p, "public").map((k) => k.id));
+    for (const k of p.kpis) if (k.audience === "officer") assert.ok(!allowed.has(k.id), `${k.id} is Post-Login`);
+    for (const k of p.kpis) if (k.audience === "public") assert.ok(allowed.has(k.id), `${k.id} is Pre-Login and must be shown`);
+  }
 });
 
 test("SMILE – Beggary: the funnel never widens, in any area", () => {

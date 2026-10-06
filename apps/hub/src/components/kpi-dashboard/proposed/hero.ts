@@ -16,12 +16,9 @@ import {
  * the live page's label and, under it, the card it comes from, read from the shared record
  * (`lib/website-shared/dashboard.ts`) and never re-typed.
  *
- * THE HERO HOLDS THE CUMULATIVE ANSWER; THE CARDS BELOW HOLD THE LATEST YEAR. The three
- * scholarship figures (9 Cr, 11 Cr, 14,757 — 2014-15 to 2025-26) are the hero's
- * (instruction, 6 Oct 2026), so the cards they come from lead with what the hero does not
- * say: the 2025-26 figure. Nothing is printed twice. `heroFigures` is the ONE decision both
- * read: where the hero does not show a card's figure (a State/UT view, a Type of Applicant
- * choice that excludes it), that card leads with it again, so it is never lost.
+ * THE HERO IS THE DASHBOARD'S TOP FIVE (instruction, 6 Oct 2026): NMBA's Total Outreach as
+ * the lead, then these four. A hero figure may repeat a figure from a card below, and links to
+ * that card; the card keeps every figure the live page gives it.
  *
  * ONE IS DERIVED, AND SAYS HOW. The live page prints nine fund slices and "Total spend
  * across 9 schemes" but never the total itself; the ₹67,977 crore here is their sum, and
@@ -98,9 +95,4 @@ export const ABOUT_HERO: HeroFigure[] = [
 export function heroFigures(scope: AreaScope, audiences: Set<Audience>): HeroFigure[] {
   if (scope.state) return [];
   return ABOUT_HERO.filter((x) => (x.everyOf ? x.everyOf.every((part) => shows(audiences, part)) : shows(audiences, x.audiences)));
-}
-
-/** The Beneficiary Dashboard cards whose lead figure the hero is showing. */
-export function cardsInHero(scope: AreaScope, audiences: Set<Audience>): Set<string> {
-  return new Set(heroFigures(scope, audiences).flatMap((f) => (f.card ? [f.card] : [])));
 }

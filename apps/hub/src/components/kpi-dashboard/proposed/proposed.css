@@ -232,6 +232,14 @@
     padding-block-start: var(--sa-stack-8);
   }
 
+  /* A programme's State/UT figures: the map, and the same figures ranked beside it. */
+  .pd-states {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    gap: var(--sa-stack-24);
+    align-items: start;
+  }
+
   .pd-spark {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -356,6 +364,7 @@
     .pd-bento.pd-bento--portals:is(.pd-bento--n2, .pd-bento--n3, .pd-bento--n4, .pd-bento--n5) > li:nth-child(n) { grid-column: span 12; }
     .pd-pair { grid-template-columns: minmax(0, 1fr); }
     .pd-tile__split { grid-template-columns: minmax(0, 1fr); }
+    .pd-states { grid-template-columns: minmax(0, 1fr); }
     .pd-hero__side { grid-template-columns: minmax(0, 1fr); }
   }
 }
