@@ -17,6 +17,13 @@ export interface ChartExportProps {
   name: string;
   /** Which formats to offer. @default ["png", "svg", "csv"] */
   formats?: ChartExportFormat[];
+  /**
+   * `icon` — the download glyph alone. `text` — a quieter "Export" link, the glyph at 16px
+   * beside the word in subtle text, as the SMILE – Beggary dashboard's handoff draws it
+   * (Figma `evmNmlK8g4VYwJVu2FwSGV` 8664:49263). Use `text` where several charts sit side
+   * by side and a row of icons would outweigh their titles. @default "icon"
+   */
+  appearance?: "icon" | "text";
   className?: string;
 }
 
@@ -39,6 +46,7 @@ const LABELS: Record<ChartExportFormat, { label: string; icon: string; hint: str
 export function ChartExport({
   name,
   formats = ["png", "svg", "csv"],
+  appearance = "icon",
   className,
 }: ChartExportProps) {
   const [open, setOpen] = React.useState(false);
@@ -108,15 +116,17 @@ export function ChartExport({
       {/* raw-button-ok(primitive): the download menu's aria-haspopup="menu" trigger — it owns the menu's expanded state and its busy glyph */}
       <button
         type="button"
-        className="ds-chart-export__trigger"
+        className={`ds-chart-export__trigger${appearance === "text" ? " ds-chart-export__trigger--text" : ""}`}
         aria-haspopup="menu"
         aria-expanded={open}
         aria-controls={open ? menuId : undefined}
-        aria-label={`Download ${name}`}
+        // The visible word leads the accessible name (WCAG 2.5.3, Label in Name).
+        aria-label={`${appearance === "text" ? "Export" : "Download"} ${name}`}
         disabled={busy}
         onClick={toggle}
       >
-        <Icon name={busy ? "hourglass_empty" : "download"} size={20} aria-hidden />
+        <Icon name={busy ? "hourglass_empty" : "download"} size={appearance === "text" ? 16 : 20} aria-hidden />
+        {appearance === "text" ? <span aria-hidden="true">Export</span> : null}
       </button>
       {open && (
         <div id={menuId} role="menu" className="ds-chart-export__menu">

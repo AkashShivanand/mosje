@@ -340,6 +340,23 @@
     cursor: pointer;
   }
 
+  /* The quieter form: the word "Export" beside a small glyph, in subtle text. */
+  .ds-chart-export__trigger--text {
+    width: auto;
+    gap: var(--sa-stack-4);
+    padding-inline: var(--sa-padding-8);
+    color: var(--sa-text-neutral-subtle);
+    font-family: inherit;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-medium);
+  }
+
+  /* The glyph takes the word's colour, so the link reads as one quiet mark. */
+  .ds-chart-export__trigger--text .material-symbols-rounded {
+    color: inherit;
+  }
+
   .ds-chart-export__trigger:hover:not(:disabled) {
     background: var(--sa-bg-neutral-subtle);
     color: var(--sa-text-neutral-base);

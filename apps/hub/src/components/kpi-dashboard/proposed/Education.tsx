@@ -199,6 +199,7 @@ function BeneficiaryStudents({ headingLevel, audiences }: { headingLevel: 3 | 4;
       variant="outlined"
       headingLevel={headingLevel}
       exportable
+      exportAppearance="text"
       title={BENEFICIARY_TRENDS.cardTitle}
       // With one view left there is no switch to name it, so the card names it.
       subtitle={views.length === 1 ? view.label : undefined}
@@ -218,6 +219,7 @@ function BeneficiaryStudents({ headingLevel, audiences }: { headingLevel: 3 | 4;
             valueFormat={view.unit === "Scholars Funded" ? count : (n: number) => n.toLocaleString("en-IN", { maximumFractionDigits: 2 })}
             yLabel={view.unit}
             showDots
+            tableView="sr-only"
             tickCount={6}
             width={width}
             height={320}
@@ -238,6 +240,7 @@ export function ShareOfFundRelease({ headingLevel, audiences }: { headingLevel: 
       variant="outlined"
       headingLevel={headingLevel}
       exportable
+      exportAppearance="text"
       title={FUND_SHARE.title}
       subtitle={FUND_SHARE.subtitle}
       actions={
@@ -254,7 +257,7 @@ export function ShareOfFundRelease({ headingLevel, audiences }: { headingLevel: 
       }
     >
       {/* The live page's ring, with each scheme's amount beside it (live structure kept). */}
-      <FundShareDonut slices={slices} />
+      <FundShareDonut slices={slices} tableView="sr-only" />
     </ChartCard>
   );
 }
@@ -282,7 +285,7 @@ function YearOnYearCard({ c, headingLevel }: { c: (typeof YEAR_ON_YEAR.cards)[nu
   return (
     // No coloured header band: the live page's three bands would make these the only banded
     // cards on the page. The title is the live card's, unaltered.
-    <ChartCard variant="outlined" headingLevel={headingLevel} exportable title={c.title} subtitle={takeaway}>
+    <ChartCard variant="outlined" headingLevel={headingLevel} exportable exportAppearance="text" title={c.title} subtitle={takeaway}>
       <FitChart fallback={400}>
         {(width) => (
           <ComboChart
@@ -293,6 +296,7 @@ function YearOnYearCard({ c, headingLevel }: { c: (typeof YEAR_ON_YEAR.cards)[nu
             leftLabel={c.count.axis}
             rightLabel="Fund (₹ Cr)"
             valueFormat={count}
+            tableView="sr-only"
             tickCount={6}
             width={width}
             height={300}

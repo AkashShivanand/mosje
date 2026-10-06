@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "`ChartCard exportAppearance=\"text\"` (and `ChartExport appearance=\"text\"`) draws the download control as a quiet \"Export\" link, a 16px glyph beside the word in subtle text, as the SMILE – Beggary dashboard handoff draws it. For pages where several charts sit side by side and a row of download icons outweighs their titles. Its accessible name begins with the visible word. The default, the icon alone, is unchanged."
+}

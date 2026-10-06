@@ -112,6 +112,7 @@ export function KpiBlocks({ kpis: given, reading, areasAreStates, headingLevel, 
               headingLevel={headingLevel}
               span={spans[i]}
               donutLayout="auto"
+              quiet
               stateMap="tiles"
               badge={<FigureSource note={noteOf(k, reading[k.id]!)} />}
             />

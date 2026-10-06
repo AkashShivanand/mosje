@@ -45,6 +45,8 @@ export interface ChartCardProps
   exportName?: string;
   /** Restrict which formats the download control offers. */
   exportFormats?: ChartExportFormat[];
+  /** The download control's form: the glyph alone, or the quieter "Export" link. @default "icon" */
+  exportAppearance?: "icon" | "text";
   /** Column span (1–12) inside a `DashboardGrid` at ≥768px. Full width on mobile. */
   span?: number;
   /** Show a loading shimmer instead of the body. */
@@ -109,6 +111,7 @@ export function ChartCard({
   exportable = false,
   exportName,
   exportFormats,
+  exportAppearance,
   span,
   loading = false,
   state,
@@ -171,7 +174,7 @@ export function ChartCard({
           <div className="ds-chart-card__actions">
             {actions}
             {exportable && settled && (
-              <ChartExport name={exportName ?? title} formats={exportFormats} />
+              <ChartExport name={exportName ?? title} formats={exportFormats} appearance={exportAppearance} />
             )}
           </div>
         )}

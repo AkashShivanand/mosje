@@ -91,6 +91,14 @@ export const Paged: Story = {
   args: { pageSize: 5 },
 };
 
+/**
+ * `size="md"` — the list as a card's own content rather than a compact list beside a chart:
+ * Body 2 text, a semibold name, a regular figure and a 24px rank.
+ */
+export const SizeMd: Story = {
+  args: { size: "md", pageSize: 5 },
+};
+
 /** A breakdown whose parts have a fixed order — `sort="none"` and a share in `detail`. */
 export const Breakdown: Story = {
   args: {

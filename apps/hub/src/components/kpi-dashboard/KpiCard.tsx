@@ -65,6 +65,7 @@ export function KpiChart({
   span,
   donutLayout = "stacked",
   stateMap = "choropleth",
+  quiet = false,
 }: {
   kpi: KpiDefinition;
   reading: KpiReading;
@@ -84,9 +85,16 @@ export function KpiChart({
   donutLayout?: "stacked" | "auto";
   /** How a States/UTs reading is mapped: the choropleth, or equal tiles. @default "choropleth" */
   stateMap?: "choropleth" | "tiles";
+  /**
+   * The proposed dashboard's quieter chart chrome (instruction, 6 Oct 2026): no Chart / Table
+   * switch — each chart keeps its table for screen readers — and the download control as the
+   * small "Export" link. Off, the card is as the current dashboard draws it.
+   */
+  quiet?: boolean;
 }) {
   const v = reading.value;
   const fmt = kpiFormatter(kpi.unit);
+  const tableView = quiet ? ("sr-only" as const) : undefined;
   // The charts draw into a fixed viewBox and scale to the card, so a 12-column card at the
   // default 480 units draws its labels at twice the size of a 6-column one. Widening the
   // viewBox with the span keeps the type the same size in every card.
@@ -106,6 +114,7 @@ export function KpiChart({
           <DonutChart
             title={kpi.name}
             data={data}
+            tableView={tableView}
             valueFormat={kpiFormatter(unit)}
             center={formatKpi(Math.round(total * 100) / 100, unit)}
             centerSub="in total"
@@ -136,7 +145,7 @@ export function KpiChart({
       }));
       body =
         v.chart === "line" ? (
-          <LineChart title={kpi.name} labels={v.labels} series={series} valueFormat={fmt} {...box} />
+          <LineChart title={kpi.name} labels={v.labels} series={series} valueFormat={fmt} tableView={tableView} {...box} />
         ) : (
           // A crore axis tick ("₹1,76,900 Cr") is wider than the vertical chart's 44-unit gutter
           // and was clipped to "00,000 Cr". Horizontal, the years take the gutter and each
@@ -146,6 +155,7 @@ export function KpiChart({
             labels={v.labels}
             series={series}
             valueFormat={fmt}
+            tableView={tableView}
             orientation={kpi.unit === "crore" ? "horizontal" : "vertical"}
             showValues={kpi.unit === "crore"}
             {...box}
@@ -163,9 +173,9 @@ export function KpiChart({
         body = (
           <div className="kd-map-split">
             {stateMap === "tiles" ? (
-              <IndiaTileMap title={kpi.name} data={v.rows.map((r) => ({ state: r.area, value: r.value }))} valueFormat={fmt} scale="quantile" />
+              <IndiaTileMap title={kpi.name} data={v.rows.map((r) => ({ state: r.area, value: r.value }))} valueFormat={fmt} scale="quantile" tableView={tableView} />
             ) : (
-              <IndiaMap title={kpi.name} data={v.rows.map((r) => ({ state: r.area, value: r.value }))} valueFormat={fmt} />
+              <IndiaMap title={kpi.name} data={v.rows.map((r) => ({ state: r.area, value: r.value }))} valueFormat={fmt} tableView={tableView} />
             )}
             <RankedBarList title={`${kpi.name}, ranked`} items={v.rows.map((r) => ({ label: r.area, value: r.value }))} valueFormat={fmt} showRank pageSize={10} />
           </div>
@@ -211,6 +221,7 @@ export function KpiChart({
       skeleton={skeleton}
       exportable={v.kind !== "table"}
       exportName={kpi.id}
+      exportAppearance={quiet ? "text" : undefined}
       provenance={provenanceOf(reading)}
       actions={
         badge || reading.origin !== "snapshot" ? (

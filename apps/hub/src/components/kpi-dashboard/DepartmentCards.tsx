@@ -84,7 +84,11 @@ export function HostelCard({ c, tone, trend, splitTrends }: {
 }
 
 /** Share of Fund Release as the live page draws it: a ring, with each scheme's amount beside it. */
-export function FundShareDonut({ slices = FUND_SHARE.slices }: { slices?: readonly (typeof FUND_SHARE.slices)[number][] }) {
+export function FundShareDonut({ slices = FUND_SHARE.slices, tableView }: {
+  slices?: readonly (typeof FUND_SHARE.slices)[number][];
+  /** The chart's Chart / Table switch, or its table for screen readers only. @default the chart's own */
+  tableView?: "toggle" | "sr-only";
+}) {
   return (
     <DonutChart
       title={`${FUND_SHARE.title}, ${FUND_SHARE.subtitle}`}
@@ -93,6 +97,7 @@ export function FundShareDonut({ slices = FUND_SHARE.slices }: { slices?: readon
       center={false}
       legendValue="value"
       layout="side"
+      tableView={tableView}
     />
   );
 }

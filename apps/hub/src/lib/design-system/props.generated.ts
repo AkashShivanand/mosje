@@ -2421,6 +2421,13 @@ export const GENERATED_PROPS = {
         "description": "Add a download control (PNG · SVG · CSV) to the header. It exports the chart rendered inside this card; no wiring needed."
       },
       {
+        "name": "exportAppearance",
+        "type": "\"icon\" | \"text\"",
+        "required": false,
+        "default": "\"icon\"",
+        "description": "The download control's form: the glyph alone, or the quieter \"Export\" link."
+      },
+      {
         "name": "exportFormats",
         "type": "ChartExportFormat[]",
         "required": false,
@@ -2520,6 +2527,13 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": true,
         "description": "Filename stem and menu heading, e.g. the chart title."
+      },
+      {
+        "name": "appearance",
+        "type": "\"icon\" | \"text\"",
+        "required": false,
+        "default": "\"icon\"",
+        "description": "`icon` — the download glyph alone. `text` — a quieter \"Export\" link, the glyph at 16px beside the word in subtle text, as the SMILE – Beggary dashboard's handoff draws it (Figma `evmNmlK8g4VYwJVu2FwSGV` 8664:49263). Use `text` where several charts sit side by side and a row of icons would outweigh their titles."
       },
       {
         "name": "className",

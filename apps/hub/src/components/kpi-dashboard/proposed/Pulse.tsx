@@ -627,7 +627,7 @@ function Where({ viewing, national, scope, go, sectionLevel, audiences }: PulseP
       <div className="pd-where">
         <Card variant="outlined" className="pd-where__map">
           <CardBody>
-            <IndiaMap title={title} data={data} valueFormat={fmt} legendFormat={tileFmt} scale="quantile" selected={picked} onSelect={setPicked} />
+            <IndiaMap title={title} data={data} valueFormat={fmt} legendFormat={tileFmt} scale="quantile" selected={picked} onSelect={setPicked} tableView="sr-only" />
           </CardBody>
         </Card>
         <Card variant="outlined" className="pd-where__panel">
@@ -715,6 +715,7 @@ function Money({ viewing, readings, scope, sectionLevel, audiences }: PulseProps
             variant="outlined"
             headingLevel={sub(sectionLevel)}
             exportable
+            exportAppearance="text"
             title="Expenditure as a Share of Budget Estimate, by Scheme"
             subtitle="Financial Year 2026-27, up to 30 Sep 2026"
             actions={
