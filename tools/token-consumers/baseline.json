@@ -1,7 +1,7 @@
 {
   "$comment": "Tier-2 tokens with zero static consumers, per family; each family may only fall. Re-record with --baseline after a real reduction.",
-  "recordedAt": "2026-09-24",
-  "total": 384,
+  "recordedAt": "2026-10-06",
+  "total": 383,
   "perFamily": {
     "bg": 10,
     "blur": 3,
@@ -21,7 +21,7 @@
     "motion": 2,
     "on": 33,
     "section": 4,
-    "stack": 2,
+    "stack": 1,
     "stroke": 1,
     "text": 1,
     "z": 1

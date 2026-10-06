@@ -240,7 +240,7 @@ export function FigureSource({ note }: { note: SourceNote | undefined }) {
         appearance="text"
         size="sm"
         shape="circle"
-        icon={<Icon name="info" size={18} />}
+        icon={<Icon name="info" size={16} />}
         aria-label={`Source and calculation: ${note.title}`}
         aria-haspopup={open ? "dialog" : undefined}
         onClick={open ? () => open(note) : undefined}

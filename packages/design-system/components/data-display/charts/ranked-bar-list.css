@@ -143,6 +143,7 @@
     height: 24px;
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-medium);
   }
 
   .ds-ranked__caption {

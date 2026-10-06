@@ -298,7 +298,7 @@
     color: var(--sa-text-neutral-bolder);
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
-    font-weight: var(--sa-font-weight-semibold);
+    font-weight: var(--sa-font-weight-medium);
   }
 
   .dm-breakup__value {
