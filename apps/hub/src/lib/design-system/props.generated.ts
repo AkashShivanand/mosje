@@ -7710,6 +7710,13 @@ export const GENERATED_PROPS = {
         "description": "Offered on `\"error\"`. A feed being down is an expected state with a retry, not an exception."
       },
       {
+        "name": "showShare",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Print each stage's share of the first stage beside its value (\"12,940 · 65%\"), and give the table a Conversion column. Turn it off where the conversion rate is not the reader's to see — a public dashboard whose register lists conversion as an officer KPI — and the stages show their counts alone; the bar lengths still compare them."
+      },
+      {
         "name": "state",
         "type": "ChartState = \"loading\" | \"empty\" | \"no-results\" | \"not-published\" | \"error\" | \"restricted\" | \"offline\"",
         "required": false,

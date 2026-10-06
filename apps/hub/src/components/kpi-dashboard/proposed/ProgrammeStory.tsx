@@ -22,7 +22,7 @@ import { kpisFor } from "@/lib/kpi/register";
 import type { AreaScope, PortalDashboard } from "@/lib/kpi/types";
 import { isTile } from "../KpiCard";
 import { KpiBlocks } from "./KpiBlocks";
-import { SHORT_NAME, fundsRows, headlineOf, shownKpis, type Readings, type Viewing } from "./model";
+import { SHORT_NAME, fundsRows, headlineOf, kpiLabel, shownKpis, type Readings, type Viewing } from "./model";
 import { PROGRAMME_TONE, compact } from "./story";
 
 /**
@@ -130,7 +130,7 @@ export function ProgrammeStory({ programme: p, viewing, readings, scope, section
                       size="md"
                       tone="inverse"
                       value={compact(h.value, h.unit)}
-                      label={k.component ? `${k.name} · ${k.component.replace(/^.*\((.*)\)$/, "$1")}` : k.name}
+                      label={kpiLabel(k)}
                       mark={r.origin === "snapshot" ? undefined : <OriginChip origin={r.origin} />}
                     />
                   </li>

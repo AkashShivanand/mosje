@@ -16,6 +16,13 @@ export interface FunnelChartProps extends ChartStateProps {
   stages: FunnelStage[];
   title: string;
   valueFormat?: ValueFormat;
+  /**
+   * Print each stage's share of the first stage beside its value ("12,940 · 65%"), and give
+   * the table a Conversion column. Turn it off where the conversion rate is not the reader's
+   * to see — a public dashboard whose register lists conversion as an officer KPI — and the
+   * stages show their counts alone; the bar lengths still compare them. @default true
+   */
+  showShare?: boolean;
   className?: string;
 }
 
@@ -28,6 +35,7 @@ export function FunnelChart({
   stages,
   title,
   valueFormat = formatIndian,
+  showShare = true,
   className,
   state,
   onRetry,
@@ -67,7 +75,7 @@ export function FunnelChart({
                 <span className="ds-funnel__bar" style={{ width: `${pct}%`, backgroundColor: color }} />
               </span>
               <span className="ds-funnel__value">
-                {valueFormat(s.value)} · {formatPercent(pct, 0)}
+                {showShare ? `${valueFormat(s.value)} · ${formatPercent(pct, 0)}` : valueFormat(s.value)}
               </span>
             </div>
           );
@@ -81,7 +89,7 @@ export function FunnelChart({
           <tr>
             <th scope="col">Stage</th>
             <th scope="col">Value</th>
-            <th scope="col">Conversion</th>
+            {showShare ? <th scope="col">Conversion</th> : null}
           </tr>
         </thead>
         <tbody>
@@ -89,7 +97,7 @@ export function FunnelChart({
             <tr key={s.label}>
               <td>{s.label}</td>
               <td>{valueFormat(s.value)}</td>
-              <td>{formatPercent((s.value / top) * 100, 0)}</td>
+              {showShare ? <td>{formatPercent((s.value / top) * 100, 0)}</td> : null}
             </tr>
           ))}
         </tbody>

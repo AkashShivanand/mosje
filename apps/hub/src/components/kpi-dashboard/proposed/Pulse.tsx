@@ -46,6 +46,7 @@ import {
   READINESS_TONE,
   SHORT_NAME,
   fundsRows,
+  kpiLabel,
   type Readiness,
   type Readings,
   type Viewing,
@@ -135,6 +136,7 @@ const pct = (n: number) => `${n}%`;
 const OWN_MARK = new Set(["/portals/nmba", "/portals/smile-admin"]);
 
 const areaName = (scope: AreaScope) => scope.district ?? scope.state ?? "All India";
+
 const sub = (level: 2 | 3) => (level === 2 ? 3 : 4) as 3 | 4;
 
 /* ══ 1 · The answer ═════════════════════════════════════════════════════════ */
@@ -153,11 +155,11 @@ function Hero({ viewing, readings, scope, sectionLevel, audiences }: PulseProps)
    */
   const side: { key: string; value: string; label: string; context?: string; origin: string; note?: SourceNote }[] = scope.state
     ? [
-        { id: "smile-beggary" as const, kpi: "smile-beggary.identified", label: "persons engaged in begging identified, under SMILE" },
-        { id: "senior-citizens" as const, kpi: "senior-citizens.ipsrc.beneficiaries", label: "beneficiaries covered under the Integrated Programme for Senior Citizens" },
+        { id: "smile-beggary" as const, kpi: "smile-beggary.identified" },
+        { id: "senior-citizens" as const, kpi: "senior-citizens.ipsrc.beneficiaries" },
       ].flatMap((x) => {
         const f = has(x.id)?.levels.includes("state") ? figureOf(x.id, x.kpi, readings, kpis(x.id)) : null;
-        return f ? [{ key: x.kpi, value: compact(f.value, f.kpi.unit), label: x.label, origin: f.origin, note: noteOf(viewing, readings, x.id, x.kpi, compact(f.value, f.kpi.unit)) }] : [];
+        return f ? [{ key: x.kpi, value: compact(f.value, f.kpi.unit), label: kpiLabel(f.kpi), context: SHORT_NAME[x.id], origin: f.origin, note: noteOf(viewing, readings, x.id, x.kpi, compact(f.value, f.kpi.unit)) }] : [];
       })
     // A figure stands only when EVERY group it counts is in view: the nine-scheme total is
     // not an answer for Scheduled Castes alone.
@@ -178,8 +180,8 @@ function Hero({ viewing, readings, scope, sectionLevel, audiences }: PulseProps)
             size="xl"
             tone="inverse"
             value={compact(lead.value, "number")}
-            label={`people reached by Nasha Mukt Bharat Abhiyaan${scope.state ? ` in ${scope.state}` : ""}`}
-            context="Cumulative, as reported by the Nasha Mukt Bharat Abhiyaan portal."
+            label={`${kpiLabel(lead.kpi)}${scope.state ? `, ${scope.state}` : ""}`}
+            context="Nasha Mukt Bharat Abhiyaan · cumulative, as reported by its portal"
             mark={marked(lead.origin, noteOf(viewing, readings, "nmba", "nmba.outreach", compact(lead.value, "number")))}
           />
         ) : promoted ? (
@@ -209,7 +211,7 @@ function Tile({ p, children, figure, hrefTo, note }: { p: PortalDashboard; child
         {OWN_MARK.has(p.logoPath) && PORTAL_ORG_LOGOS[p.logoPath] ? <OrgLogo path={p.logoPath} size="md" name={p.name} /> : <CardIcon name={PROGRAMME_ICON[p.id]} />}
         <div className="pd-tile__titles">
           <CardTitle size="sm">{SHORT_NAME[p.id]}</CardTitle>
-          <CardSubtitle>{p.name}</CardSubtitle>
+          {p.name === SHORT_NAME[p.id] ? null : <CardSubtitle>{p.name}</CardSubtitle>}
         </div>
       </CardHeader>
       <CardBody className="pd-tile__body">
@@ -245,21 +247,17 @@ function Programmes(props: PulseProps) {
   const nmba = shows(props.audiences, PROGRAMME_AUDIENCE.nmba) ? get("nmba") : undefined;
   if (nmba) {
     const map = areaRows(national.nmba?.["nmba.outreach-by-state"]);
-    const facts = [
-      ["nmba.women", "Women Reached"],
-      ["nmba.youth", "Youth Reached"],
-      ["nmba.pledges", "e-Pledges Taken"],
-      ["nmba.mitras", "Nasha Mukti Mitras"],
-    ].flatMap(([id, term]) => {
-      const f = fig("nmba", id!);
-      return f ? [{ id: id!, term: term!, value: compact(f.value, "number"), origin: f.origin }] : [];
+    const mapKpi = get("nmba")?.kpis.find((k) => k.id === "nmba.outreach-by-state");
+    const facts = ["nmba.women", "nmba.youth", "nmba.pledges", "nmba.mitras"].flatMap((id) => {
+      const f = fig("nmba", id);
+      return f ? [{ id, term: kpiLabel(f.kpi), value: compact(f.value, "number"), origin: f.origin }] : [];
     });
     if (map.length || facts.length) tiles.push(
       <Tile key="nmba" p={nmba} hrefTo={hrefTo}>
         <div className="pd-tile__split">
           {map.length > 0 ? (
             <IndiaMap
-              title="People reached, by State/UT"
+              title={mapKpi ? kpiLabel(mapKpi) : "Total Outreach by State/UT"}
               data={map}
               scale="quantile"
               legend="ramp"
@@ -283,95 +281,74 @@ function Programmes(props: PulseProps) {
     );
   }
 
+  /*
+   * SMILE – BEGGARY, IN THE SHEET'S WORDS AND WITHIN THE VIEWER'S KPIs. The stages are three
+   * public KPIs and are labelled by their own names. The share each stage keeps of the first
+   * IS the conversion rate — KPIs 23 and 24, Office (Post-Login) — so a citizen sees the
+   * counts and the bars, and only an officer sees the percentages (instruction, 6 Oct 2026).
+   * The funds are the two public KPIs as figures, not a utilisation rate worked out from them.
+   */
   const smile = shows(props.audiences, PROGRAMME_AUDIENCE["smile-beggary"]) ? get("smile-beggary") : undefined;
   if (smile) {
-    const stages = [
-      ["smile-beggary.identified", "Identified"],
-      ["smile-beggary.mobilised", "Mobilised to Shelter"],
-      ["smile-beggary.rehabilitated", "Rehabilitated"],
-    ].flatMap(([id, label]) => {
-      const f = fig("smile-beggary", id!);
-      return f ? [{ label: label!, value: f.value }] : [];
+    const officer = viewing.audience === "officer";
+    const stageFigs = ["smile-beggary.identified", "smile-beggary.mobilised", "smile-beggary.rehabilitated"].flatMap((id) => {
+      const f = fig("smile-beggary", id);
+      return f ? [f] : [];
     });
-    const released = fig("smile-beggary", "smile-beggary.fund-released");
-    const utilised = fig("smile-beggary", "smile-beggary.fund-utilised");
-    const share = released && utilised ? Math.round((utilised.value / released.value) * 100) : null;
+    const stages = stageFigs.map((f) => ({ label: kpiLabel(f.kpi), value: f.value }));
+    const identified = stageFigs.find((f) => f.kpi.id === "smile-beggary.identified");
+    const rehabilitated = stageFigs.find((f) => f.kpi.id === "smile-beggary.rehabilitated");
+    const funds = ["smile-beggary.fund-released", "smile-beggary.fund-utilised"].flatMap((id) => {
+      const f = fig("smile-beggary", id);
+      return f ? [{ term: kpiLabel(f.kpi), value: compact(f.value, "crore") }] : [];
+    });
     const series = readings["smile-beggary"]?.["smile-beggary.monthly-trend"]?.value;
     const identifiedSeries = series?.kind === "series" ? series.series.find((x) => x.name === "Identified") : undefined;
     const trend =
       series?.kind === "series" && identifiedSeries && identifiedSeries.data.length > 1
         ? {
-            data: identifiedSeries.data,
             first: identifiedSeries.data[0]!,
             last: identifiedSeries.data[identifiedSeries.data.length - 1]!,
             firstLabel: series.labels[0]!,
             lastLabel: series.labels[series.labels.length - 1]!,
           }
         : null;
-    if (stages.length || trend || share !== null) tiles.push(
+    if (stages.length || trend || funds.length) tiles.push(
       <Tile
         key="smile"
         p={smile}
         hrefTo={hrefTo}
         figure={
-          stages[0] ? (
+          rehabilitated ? (
             <HeadlineFigure
               size="md"
-              value={compact(stages[stages.length - 1]!.value, "number")}
-              label={`persons rehabilitated of ${compact(stages[0].value, "number")} identified`}
-              mark={marked(
-                fig("smile-beggary", "smile-beggary.identified")?.origin,
-                noteOf(
-                  viewing,
-                  readings,
-                  "smile-beggary",
-                  "smile-beggary.rehabilitated",
-                  compact(stages[stages.length - 1]!.value, "number"),
-                  {
-                    method: "Each stage as a share of persons identified: stage ÷ Identified × 100.",
-                    rows: stages.map((x, i) => ({ label: x.label, value: i === 0 ? compact(x.value, "number") : `${compact(x.value, "number")} · ${Math.round((x.value / stages[0]!.value) * 100)}%`, op: i === 0 ? undefined : ("÷" as const) })),
-                    result: { label: "Rehabilitated ÷ Identified", value: pct(Math.round((stages[stages.length - 1]!.value / stages[0]!.value) * 100)) },
-                  },
-                  "Persons Rehabilitated, of Persons Identified",
-                ),
-              )}
+              value={compact(rehabilitated.value, "number")}
+              label={kpiLabel(rehabilitated.kpi)}
+              context={identified ? `of ${compact(identified.value, "number")} ${kpiLabel(identified.kpi)}` : undefined}
+              mark={marked(rehabilitated.origin, noteOf(viewing, readings, "smile-beggary", "smile-beggary.rehabilitated", compact(rehabilitated.value, "number")))}
             />
           ) : undefined
         }
       >
-        {stages.length >= 2 ? <FunnelChart title="Identification to Rehabilitation" stages={stages.map((x) => ({ ...x, color: "var(--sa-chart-cat-1)" }))} /> : null}
-        {trend ? (
-          <div className="pd-trend">
-            <p className="pd-fact">
-              <b>{compact(trend.last, "number")}</b> identified in {trend.lastLabel}, up from {compact(trend.first, "number")} in {trend.firstLabel}.
-              <FigureSource
-                note={noteOf(viewing, readings, "smile-beggary", "smile-beggary.monthly-trend", compact(trend.last, "number"), {
-                  method: "The first and last months of the monthly series.",
-                  rows: [
-                    { label: `Identified, ${trend.lastLabel}`, value: compact(trend.last, "number") },
-                    { label: `Identified, ${trend.firstLabel}`, value: compact(trend.first, "number"), op: "−" },
-                  ],
-                  result: { label: "Increase over the period", value: `+${compact(trend.last - trend.first, "number")}` },
-                })}
-              />
-            </p>
-          </div>
+        {stages.length >= 2 ? (
+          <FunnelChart title="Identification to Rehabilitation" showShare={officer} stages={stages.map((x) => ({ ...x, color: "var(--sa-chart-cat-1)" }))} />
         ) : null}
-        {share !== null && released && utilised ? (
+        {trend && identified ? (
           <p className="pd-fact">
-            <b>{share}%</b> of funds released has been utilised.
+            {kpiLabel(identified.kpi)}: <b>{compact(trend.last, "number")}</b> in {trend.lastLabel}, up from {compact(trend.first, "number")} in {trend.firstLabel}.
             <FigureSource
-              note={noteOf(viewing, readings, "smile-beggary", "smile-beggary.fund-utilised", pct(share), {
+              note={noteOf(viewing, readings, "smile-beggary", "smile-beggary.monthly-trend", compact(trend.last, "number"), {
+                method: "The first and last months of the monthly series.",
                 rows: [
-                  { label: "Total Fund Utilised", value: compact(utilised.value, "crore") },
-                  { label: "Total Fund Released", value: compact(released.value, "crore"), op: "÷" },
-                  { label: "As a percentage", value: "100", op: "×" },
+                  { label: `${trend.lastLabel}`, value: compact(trend.last, "number") },
+                  { label: `${trend.firstLabel}`, value: compact(trend.first, "number"), op: "−" },
                 ],
-                result: { label: "Share of funds utilised", value: pct(share) },
-              }, "Share of Funds Released That Has Been Utilised")}
+                result: { label: "Increase over the period", value: `+${compact(trend.last - trend.first, "number")}` },
+              })}
             />
           </p>
         ) : null}
+        {funds.length ? <DescriptionList size="sm" columns={2} items={funds} /> : null}
       </Tile>,
     );
   }
@@ -502,42 +479,47 @@ function Programmes(props: PulseProps) {
     );
   }
 
+  /*
+   * SENIOR CITIZENS WELFARE: ITS PUBLIC KPIs FOR A CITIZEN, ITS BUDGET FOR AN OFFICER. The
+   * sheet marks every Budget Estimate, Budget Expenditure and Financial Progress row Official
+   * (Post-Login), so the readings gate (`readAll`) removes them from a citizen's page and
+   * `fundsRows` is empty there. The tile leads with IP-SrC's beneficiaries and lists four of the
+   * Pre-Login KPIs, one per component, each labelled by `kpiLabel`.
+   */
   const scw = shows(props.audiences, PROGRAMME_AUDIENCE["senior-citizens"]) ? get("senior-citizens") : undefined;
   if (scw) {
+    const lead = fig("senior-citizens", "senior-citizens.ipsrc.beneficiaries");
+    const facts = ["senior-citizens.rvy.devices", "senior-citizens.pm-special.caregivers", "senior-citizens.elderline.calls", "senior-citizens.sage.startups"].flatMap((id) => {
+      const f = fig("senior-citizens", id);
+      return f ? [{ term: kpiLabel(f.kpi), value: compact(f.value, f.kpi.unit) }] : [];
+    });
     const rows = fundsRows({ ...viewing, programmes: [scw] }, readings);
-    if (rows.length) tiles.push(
+    const spent = rows.reduce((t, r) => t + r.spent, 0);
+    const provided = rows.reduce((t, r) => t + r.provided, 0);
+    if (lead || facts.length || rows.length) tiles.push(
       <Tile
         key="scw"
         p={scw}
         hrefTo={hrefTo}
         note={nationalOnly("senior-citizens") ? NATIONAL_ONLY : undefined}
         figure={
-          rows.length ? (
+          lead ? (
             <HeadlineFigure
               size="md"
-              value={compact(rows.reduce((t, r) => t + r.spent, 0), "crore")}
-              label={`spent of ${compact(rows.reduce((t, r) => t + r.provided, 0), "crore")} budgeted, across ${rows.length} components`}
-              mark={marked(rows[0]?.origin === "modelled" ? "modelled" : "live", {
-                title: "Senior Citizens Welfare: Expenditure Against Budget",
-                value: compact(rows.reduce((t, r) => t + r.spent, 0), "crore"),
-                kind: rows[0]?.origin === "modelled" ? "model" : "api",
-                source: "Senior Citizens Welfare portal",
-                links: viewing.programmes.find((p) => p.id === "senior-citizens")?.kpis.filter((k) => k.id.endsWith(".budget")).flatMap((k) => k.api?.endpoints ?? []).filter((h, i, all) => all.indexOf(h) === i).map((href) => ({ label: href.replace(/^https?:\/\//, ""), href })),
-                breakdown: {
-                  method: "Each component's expenditure, of its Budget Estimate, added together.",
-                  rows: rows.map((r, k) => ({ label: r.label.replace("Senior Citizens · ", ""), value: `${compact(r.spent, "crore")} of ${compact(r.provided, "crore")}`, op: k === 0 ? undefined : ("+" as const) })),
-                  result: { label: `All ${rows.length} components`, value: `${compact(rows.reduce((t, r) => t + r.spent, 0), "crore")} of ${compact(rows.reduce((t, r) => t + r.provided, 0), "crore")}` },
-                },
-              })}
+              value={compact(lead.value, lead.kpi.unit)}
+              label={lead.kpi.name}
+              context={lead.kpi.component}
+              mark={marked(lead.origin, noteOf(viewing, readings, "senior-citizens", "senior-citizens.ipsrc.beneficiaries", compact(lead.value, lead.kpi.unit)))}
             />
           ) : undefined
         }
       >
-        {/* One sentence, not a second copy of the Funds section's chart, which draws these
-            components one by one against the year elapsed (design audit, 6 Oct 2026). */}
-        {rows.length ? (
+        {facts.length ? <DescriptionList size="sm" columns={1} divided items={facts} /> : null}
+        {/* Officers only — the readings gate leaves no budget figure on a citizen's page. One
+            sentence, not a second copy of the Funds chart (design audit, 6 Oct 2026). */}
+        {rows.length && provided ? (
           <p className="pd-fact">
-            <b>{pct(Math.round((rows.reduce((t, r) => t + r.spent, 0) / rows.reduce((t, r) => t + r.provided, 0)) * 100))}</b> of the Budget Estimate spent by 30 Sep 2026, with half of the financial year elapsed.
+            <b>{compact(spent, "crore")}</b> of {compact(provided, "crore")} Budget Estimate spent by 30 Sep 2026 ({pct(Math.round((spent / provided) * 100))}), with half of the financial year elapsed.
           </p>
         ) : null}
       </Tile>,
@@ -575,7 +557,7 @@ interface MapMetric {
 const MAP_METRICS: MapMetric[] = [
   // Only State/UT breakdowns the Department supplies — today NMBA's feed. Nothing is
   // spread across States/UTs by any other figure (instruction, 6 Oct 2026).
-  { id: "nmba.outreach-by-state", programme: "nmba", label: "People Reached · NMBA", unit: "number" },
+  { id: "nmba.outreach-by-state", programme: "nmba", label: "Total Outreach · NMBA", unit: "number" },
 ];
 
 function Where({ viewing, national, scope, go, sectionLevel, audiences }: PulseProps) {
@@ -603,7 +585,7 @@ function Where({ viewing, national, scope, go, sectionLevel, audiences }: PulseP
           const k = p.kpis.find((x) => x.id === id);
           const row = v.rows.find((x) => x.area === picked);
           if (!k || !row || (k.audience === "officer" && viewing.audience === "public")) return [];
-          const name = k.component ? `${COMPONENT_SHORT[k.id.split(".")[1] ?? ""] ?? ""} ${k.name}` : k.name.replace(" by State/UT", "");
+          const name = kpiLabel(k).replace(" by State/UT", "");
           return [{ term: `${name} · ${SHORT_NAME[p.id]}`, value: compact(row.value, k.unit === "crore" ? "crore" : "number") }];
         }),
       )

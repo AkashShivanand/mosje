@@ -254,6 +254,22 @@
     font-weight: var(--sa-font-weight-semibold);
   }
 
+  /* Officer Login, at the top right of the dashboard. */
+  .pd-access {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  /* The sign-in page: a form at a readable width, not the page's. */
+  .pd-login__card {
+    max-inline-size: 28rem; /* layout geometry: a sign-in form's measure */
+  }
+
+  .pd-login__form {
+    display: grid;
+    gap: var(--sa-stack-16);
+  }
+
   /* The officer roles' link to the Data Source of Each Indicator page. */
   .pd-officer .pd-officer__body {
     display: flex;

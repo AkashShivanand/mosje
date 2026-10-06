@@ -33,23 +33,48 @@ export interface Viewing {
   programmes: PortalDashboard[];
 }
 
+/**
+ * The programmes the proposed dashboard draws, for now: Nasha Mukt Bharat Abhiyaan, SMILE –
+ * Beggary and Senior Citizens Welfare (instruction, 6 Oct 2026). DAPSC and SHRESHTA stay in
+ * the register and return when the instruction changes; the Department's own sections
+ * (scholarships, hostels, trends, funds) are not programmes and are unaffected.
+ */
+export const PROGRAMMES_SHOWN: readonly PortalId[] = ["nmba", "smile-beggary", "senior-citizens"];
+
 export function viewingFor(role: OfficerRole | undefined): Viewing {
   return {
     role,
     audience: role ? "officer" : "public",
-    programmes: PROGRAMMES.filter((p) => !role || canSeePortal(role, p.id)),
+    programmes: PROGRAMMES.filter((p) => PROGRAMMES_SHOWN.includes(p.id) && (!role || canSeePortal(role, p.id))),
   };
 }
 
 export type Readings = Partial<Record<PortalId, PortalReading>>;
 
+/**
+ * THE ONE GATE BETWEEN PRE-LOGIN AND POST-LOGIN. Every reading a viewer's audience may not see
+ * is dropped HERE, before any tile, chart, map or sentence can reach it — so a citizen's page
+ * cannot show an officer KPI however a component reads `readings`. The audience defaults to
+ * the public, so a caller that forgets it shows less, never more.
+ *
+ * Until 6 Oct 2026 the readings carried every KPI and only some lenses filtered by audience:
+ * the citizen's page showed Senior Citizens Welfare's budget and expenditure, and SMILE's
+ * conversion rates, all of which the sheet marks Post-Login.
+ */
 export function readAll(
   programmes: PortalDashboard[],
   scope: AreaScope,
   mode: DataModeName,
   feeds: Partial<Record<PortalId, PortalFeed>>,
+  audience: "public" | "officer" = "public",
 ): Readings {
-  return Object.fromEntries(programmes.map((p) => [p.id, resolveReading(p.id, scope, mode, feeds[p.id])]));
+  return Object.fromEntries(
+    programmes.map((p) => {
+      const visible = new Set(kpisFor(p, audience).map((k) => k.id));
+      const reading = resolveReading(p.id, scope, mode, feeds[p.id]);
+      return [p.id, Object.fromEntries(Object.entries(reading).filter(([id]) => visible.has(id)))];
+    }),
+  );
 }
 
 /** A programme's KPIs this viewer may see that have a reading for the scope. */
@@ -117,13 +142,18 @@ export const HEADLINE_KPI: Record<PortalId, string> = {
   "senior-citizens": "senior-citizens.ipsrc.beneficiaries",
 };
 
-/** "SMILE", "NMBA", "DAPSC", "SHRESHTA", "Senior Citizens" — the name on a chip. */
+/**
+ * The name a programme goes by on its tile, its button and every label that names it — ONE
+ * name per programme across the page (instruction, 6 Oct 2026: one label, one wording). SMILE
+ * – Beggary as the sheet's tab and the portal list name it; Senior Citizens Welfare as the
+ * register names the programme.
+ */
 export const SHORT_NAME: Record<PortalId, string> = {
-  "smile-beggary": "SMILE",
+  "smile-beggary": "SMILE – Beggary",
   nmba: "NMBA",
   "e-utthaan": "DAPSC",
   shreshta: "SHRESHTA",
-  "senior-citizens": "Senior Citizens",
+  "senior-citizens": "Senior Citizens Welfare",
 };
 
 /**
@@ -214,14 +244,26 @@ export function fundsRows(viewing: Viewing, readings: Readings): FundsRow[] {
 
 /** The Senior Citizens components by the names their own documents use. */
 export const COMPONENT_SHORT: Record<string, string> = {
-  ipsrc: "IPSrC",
+  ipsrc: "IP-SrC",
   sapsrc: "SAPSrC",
   rvy: "RVY",
   "pm-special": "PM-SPECIAL",
-  elderline: "Elderline 14567",
+  elderline: "Elderline (14567)",
   sage: "SAGE",
   other: "Other Initiatives",
 };
+
+/**
+ * A KPI'S LABEL, ONE EXPRESSION FOR THE WHOLE PAGE: its name in the sheet's words, and for a
+ * Senior Citizens Welfare KPI the component it belongs to — "Total Number of Beneficiaries
+ * Covered · IP-SrC". The hero, a tile, the map, the State/UT panel and the officer page all
+ * call this, so one KPI cannot read three ways (instruction, 6 Oct 2026; it read "people
+ * reached", "People Reached" and "people reached, cumulative since launch" for one figure).
+ */
+export function kpiLabel(k: KpiDefinition): string {
+  const component = k.component ? COMPONENT_SHORT[k.id.split(".")[1] ?? ""] : undefined;
+  return component ? `${k.name} · ${component}` : k.name;
+}
 
 /* ── Readiness: what each KPI's figure can come from ──────────────────────── */
 

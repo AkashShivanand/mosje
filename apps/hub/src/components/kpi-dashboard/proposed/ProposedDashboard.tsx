@@ -12,6 +12,7 @@ import type { AreaScope, PortalId } from "@/lib/kpi/types";
 import { useDashboardViewer } from "@/lib/kpi/viewer";
 import { FigureSourceProvider } from "@/components/website/FigureSource";
 import { ViewerNotice } from "../DashboardViewer";
+import { OfficerLogin } from "./OfficerLogin";
 import { ProgrammeStory } from "./ProgrammeStory";
 import { DataBehind, Pulse } from "./Pulse";
 import { SHORT_NAME, readAll, viewingFor } from "./model";
@@ -57,6 +58,9 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
   const wantedState = params.get("state") ?? undefined;
   // The officer-only page (`?view=data-sources`); anyone else asking for it gets the dashboard.
   const dataSources = params.get("view") === "data-sources" && readinessAllowed;
+  // The officer sign-in (`?view=login`); a viewer already signed in gets the dashboard.
+  const login = params.get("view") === "login" && !role;
+  const page = dataSources || login;
   const audiences = React.useMemo(() => parseAudiences(params.get("for")), [params]);
   const scope: AreaScope = {
     state: role?.area.state ?? (wantedState && STATE_NAMES.includes(wantedState) ? wantedState : undefined),
@@ -64,11 +68,11 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
   };
 
   const readings = React.useMemo(
-    () => readAll(viewing.programmes, scope, demo.mode, feeds),
+    () => readAll(viewing.programmes, scope, demo.mode, feeds, viewing.audience),
     [viewing, scope.state, scope.district, demo.mode, feeds], // eslint-disable-line react-hooks/exhaustive-deps
   );
   const national = React.useMemo(
-    () => (scope.state ? readAll(viewing.programmes, {}, demo.mode, feeds) : readings),
+    () => (scope.state ? readAll(viewing.programmes, {}, demo.mode, feeds, viewing.audience) : readings),
     [viewing, scope.state, demo.mode, feeds, readings],
   );
 
@@ -150,7 +154,18 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
     <div className="pd">
       {role ? <ViewerNotice role={role} /> : null}
 
-      {dataSources ? null : (
+      {/* OFFICER LOGIN, AT THE TOP (decided 6 Oct 2026: the dashboard has its own login). A
+          citizen reads the page without signing in; an officer signs in for the Post-Login
+          KPIs. Signed in, the Officer View notice above takes its place. */}
+      {role || login ? null : (
+        <div className="pd-access">
+          <Button appearance="outlined" size="sm" href={hrefTo({ view: "login" })} linkAs={Link} iconLeft={<Icon name="login" size={16} />}>
+            Officer Login
+          </Button>
+        </div>
+      )}
+
+      {page ? null : (
         <div className="pd-bar">
           <p className="pd-bar__where" role="status">
             <span className="pd-bar__label">Figures for</span>
@@ -168,7 +183,7 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
           )}
         </div>
       )}
-      {scope.state && !programme && !dataSources ? (
+      {scope.state && !programme && !page ? (
         <p className="pd-note">
           {stateWise.length
             ? `Figures for ${scope.state} are published for ${listed(stateWise)}. Other sections show All-India figures.`
@@ -176,7 +191,7 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
         </p>
       ) : null}
 
-      {programme || dataSources ? null : (
+      {programme || page ? null : (
         <>
           {/* TYPE OF APPLICANT — the Additional Secretary's approved label and groups
               (`audience.ts`). Multi-select, nothing chosen = everyone. On a wide screen,
@@ -212,7 +227,9 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
 
       <FigureSourceProvider>
         <div ref={panelRef} className="pd-panel">
-          {dataSources ? (
+          {login ? (
+            <OfficerLogin backHref={hrefTo({ view: null })} sectionLevel={sectionLevel} onSignedIn={() => go({ view: null })} />
+          ) : dataSources ? (
             <div className="pd-story">
               <Button appearance="text" size="sm" href={hrefTo({ view: null })} linkAs={Link} iconLeft={<Icon name="arrow_back" size={16} />} className="pd-back">
                 Beneficiary Dashboard

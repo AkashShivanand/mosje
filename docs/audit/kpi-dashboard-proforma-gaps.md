@@ -182,3 +182,42 @@ What it carried that a reader can use now sits in the one Source and Calculation
 - the portal's API endpoints.
 
 Tiles are plain figures again, not buttons. The officer-only columns it showed — the proforma S. No., what each portal has yet to supply, and remarks — are this document's §1–§3 and the tracker tab, where the people chasing the portals will look.
+
+## 11. Pre-Login and Post-Login, the sheet's words, and three programmes (6 Oct 2026, evening)
+
+**Instruction.** For now the proposed dashboard's portal cards use SMILE – Beggary, NMBA and Senior
+Citizens Welfare only; data exactly as in the sheet, one wording per label; a citizen never sees a
+KPI meant for an officer; and the dashboard has its own officer login, placed at the top.
+
+**What the sheet says, re-read 6 Oct 2026.** The SCW tab now carries a KPI Type column. Of its 28
+KPIs, 18 are *Official (Post-Login)*: every Budget Estimate, Budget Expenditure and Financial
+Progress row, RVY's devices-per-cost, and SAGE's funds released. The register had read every SCW KPI
+as public (the tab had no KPI Type column when it was transcribed), so the citizen's dashboard was
+showing all eighteen — the Senior Citizens tile's "₹291.9 Cr spent of ₹714 Cr budgeted" and the
+whole Expenditure-against-B.E. chart.
+
+**What changed.**
+- `register.ts`: the eighteen are `audience: "officer"`. Names and component names are the sheet's,
+  changed only in capitalisation: IP-SrC (not IPSrC), Seniorcare Ageing Growth Engine, PM-SPECIAL –
+  Elder Care & Assisted Living (en dash), "Number of Activities (Walk-in Mode and Camp Mode)
+  Conducted", "Number of Devices Distributed / Cost Incurred", "Number of Devices Distributed under
+  Generic Items", "Number of Calls Received"; SMILE's "Children (Below 18 Yrs) Identified – CNCP".
+- **One gate.** `readAll` drops every reading the viewer's audience may not see, before any part of
+  the page can read it. Previously only some lenses filtered; the tiles, the funds chart and the hero
+  read every KPI.
+- **SMILE's conversion rates** (KPIs 23 and 24, Office) were printed beside the funnel's stages as
+  "12,940 · 65%". A citizen now sees the three counts; an officer sees the percentages
+  (`FunnelChart showShare`). The funds are the two public KPIs, Total Fund Released and Total Fund
+  Utilised, as figures — not a utilisation rate.
+- **Senior Citizens Welfare** shows a citizen its Pre-Login KPIs: IP-SrC's Total Number of
+  Beneficiaries Covered, then one each from RVY, PM-SPECIAL, Elderline (14567) and SAGE. Its budget
+  sentence and the Expenditure-against-B.E. chart appear only after an officer signs in.
+- **Labels** come from one function (`kpiLabel`): the KPI's sheet name, and for an SCW KPI its
+  component. NMBA's figures read Total Outreach, Women Outreach, Youth Outreach, NMBA e-Pledge (Both
+  Recovered and Non-Users) and Registered Nasha Mukti Mitras, as the sheet names them — not "people
+  reached", "Women Reached", "e-Pledges Taken". Programmes are SMILE – Beggary and Senior Citizens
+  Welfare everywhere.
+- **DAPSC and SHRESHTA** are not drawn (`PROGRAMMES_SHOWN`); they stay in the register.
+- **Officer Login** at the top of the dashboard opens `?view=login`, a sign-in built from the design
+  system's form parts. It is a prototype of the screen: no credential is checked, and signing in sets
+  the dashboard's viewer, as the demo rail's View As does.
