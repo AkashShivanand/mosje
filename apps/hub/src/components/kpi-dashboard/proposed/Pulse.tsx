@@ -23,7 +23,7 @@ import {
   FunnelChart,
   HeadlineFigure,
   Icon,
-  IndiaTileMap,
+  IndiaMap,
   OrgLogo,
   PORTAL_ORG_LOGOS,
   RankedBarList,
@@ -81,7 +81,7 @@ import { PROGRAMME_TONE, READINESS_ORDER, READINESS_SLOT, areaRows, compact, fig
  * coloured by where each figure can come from.
  *
  * DS Audit: Card (`accent="fill"` ADDED) / CardHeader / CardIcon / CardBody / CardFooter ✅ ·
- * HeadlineFigure ➕ ADDED · IndiaTileMap ➕ ADDED · DotPlot ➕ ADDED · WaffleChart ➕ ADDED ·
+ * HeadlineFigure ➕ ADDED · IndiaMap ✅ (the Government's own boundaries, Bharat Maps) · DotPlot ➕ ADDED · WaffleChart ➕ ADDED ·
  * FunnelChart ✅ · Sparkline ✅ · RankedBarList ✅ · SectionTitle ✅ ·
  * DescriptionList ✅ · Accordion ✅ · DataTable ✅ · FilterSelect ✅ · CardState ✅ · Badge ✅ ·
  * Button ✅ · Icon ✅ · OriginChip / ProvenanceChip ✅ (app). The stylesheet places them; it styles none.
@@ -258,10 +258,9 @@ function Programmes(props: PulseProps) {
       <Tile key="nmba" p={nmba} hrefTo={hrefTo}>
         <div className="pd-tile__split">
           {map.length > 0 ? (
-            <IndiaTileMap
+            <IndiaMap
               title="People reached, by State/UT"
               data={map}
-              size="sm"
               scale="quantile"
               legend="ramp"
               selected={scope.state}
@@ -621,7 +620,7 @@ function Where({ viewing, national, scope, go, sectionLevel, audiences }: PulseP
       <div className="pd-where">
         <Card variant="outlined" className="pd-where__map">
           <CardBody>
-            <IndiaTileMap title={title} data={data} valueFormat={fmt} tileFormat={tileFmt} legendFormat={tileFmt} scale="quantile" selected={picked} onSelect={setPicked} />
+            <IndiaMap title={title} data={data} valueFormat={fmt} legendFormat={tileFmt} scale="quantile" selected={picked} onSelect={setPicked} />
           </CardBody>
         </Card>
         <Card variant="outlined" className="pd-where__panel">
