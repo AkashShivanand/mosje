@@ -140,6 +140,26 @@ export const Card: Story = {
 };
 
 /**
+ * `variant="outlined"` — the border without the shadow, for a page that sets chart cards
+ * beside plain outlined `Card`s, so the two do not sit at two depths. `elevated` (the
+ * shadow) stays the default.
+ */
+export const CardOutlined: Story = {
+  render: (args) => (
+    <div style={{ maxWidth: 640 }}>
+      <ChartCard {...args} variant="outlined" title="Applications received by month" subtitle="September 2026: 41,100">
+        <LineChart
+          labels={MONTHS}
+          series={[{ name: "Applications", data: [12_400, 18_900, 24_600, 31_200, 38_400, 41_100] }]}
+          title="Applications received by month"
+          yLabel="Applications"
+        />
+      </ChartCard>
+    </div>
+  ),
+};
+
+/**
  * The original pair, kept because call sites still use them. `loading` holds the
  * tile's height so the grid does not jump; `empty` says so rather than leaving a
  * blank frame.
