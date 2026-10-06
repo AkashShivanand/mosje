@@ -31,6 +31,12 @@ export interface ChartCardProps
    */
   tone?: CardTone;
   /**
+   * `elevated` (default) lifts the card with the dashboard shadow. `outlined` is the border
+   * alone — for a page that sets chart cards beside plain `Card`s, so the two do not sit at
+   * two different depths for no reason.
+   */
+  variant?: "elevated" | "outlined";
+  /**
    * Add a download control (PNG · SVG · CSV) to the header. It exports the
    * chart rendered inside this card; no wiring needed.
    */
@@ -121,6 +127,7 @@ export function ChartCard({
   children,
   style: styleProp,
   tone,
+  variant = "elevated",
   ...rest
 }: ChartCardProps) {
   const Heading = `h${headingLevel}` as "h2" | "h3" | "h4";
@@ -150,7 +157,7 @@ export function ChartCard({
        card's own and are excluded from the section attributes above. */
     <section
       {...rest}
-      className={cn("ds-chart-card", tone && `ds-tone-${tone} ds-chart-card--band`, className)}
+      className={cn("ds-chart-card", variant === "outlined" && "ds-chart-card--outlined", tone && `ds-tone-${tone} ds-chart-card--band`, className)}
       style={style}
     >
             {/* A div, not a <header>: outside <main> a header is a `banner` landmark,

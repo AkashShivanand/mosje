@@ -3,7 +3,7 @@
 import * as React from "react";
 import { ChartFrame, type ChartStateProps } from "./internal/chart-frame";
 import { Legend } from "./internal/legend";
-import { Gridlines, XAxisLabels, labelsFitFlat } from "./internal/axis";
+import { Gridlines, XAxisLabels, shouldRotate } from "./internal/axis";
 import { ChartTooltip, useChartTooltip } from "./internal/tooltip";
 import { linearScale, monotonePath, niceTicks } from "./internal/scales";
 import { seriesColor, categoricalColor, CHART_INK } from "./internal/palette";
@@ -106,8 +106,8 @@ export function LineChart({
   const padL = yLabel ? 60 : 44;
   const padR = 16;
   const step = (width - padL - padR) / Math.max(1, labels.length - 1);
-  // Many or long labels rotate; so do short ones that would not fit side by side at this width.
-  const rotate = labels.length > 6 || labels.some((l) => l.length > 8) || !labelsFitFlat(labels, step);
+  // Short labels thin rather than rotate; long ones rotate only where they would collide.
+  const rotate = shouldRotate(labels, step);
   const padT = 16;
   const padB = rotate ? 54 : 30;
   const plotW = width - padL - padR;

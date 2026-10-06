@@ -64,6 +64,22 @@ export function labelsFitFlat(labels: readonly string[], step: number): boolean 
   return labels.every((l) => labelWidth(l) + FLAT_GAP <= step);
 }
 
+/** The longest label that thins rather than rotates — "2025-26*", "Sep 2026". */
+const SHORT_LABEL = 8;
+
+/**
+ * Whether an x-axis turns its labels. SHORT LABELS NEVER DO: a year or a month that will not
+ * fit side by side is thinned instead (`XAxisLabels` keeps the latest), because tilted text
+ * is slower to read and a reader of a year axis needs only every second or third year to
+ * place a point. Only long labels — a State/UT, a scheme — rotate, and only when they would
+ * collide flat. It used to rotate any axis of more than six labels, which tilted twelve
+ * financial years across a 1,250px chart with room to spare.
+ */
+export function shouldRotate(labels: readonly string[], step: number): boolean {
+  if (labels.every((l) => l.length <= SHORT_LABEL)) return false;
+  return !labelsFitFlat(labels, step);
+}
+
 /**
  * Category labels along the x-axis, with optional rotation for dense/long
  * labels. `band` is the band width used to centre each label.

@@ -18,6 +18,19 @@ export interface SparklineProps extends ChartStateProps {
   max?: number;
   /** Accessible label. When omitted the sparkline is decorative (aria-hidden). */
   label?: string;
+  /**
+   * The first period, printed under the line's left end ("2014-15"); `endLabel` the last.
+   * A trend line in a tile has no axis, so without them a reader cannot tell a ten-year
+   * line from a ten-month one. Visual only: say the range in `label` as well.
+   */
+  startLabel?: string;
+  /** The last period, printed under the line's right end ("2025-26"). See `startLabel`. */
+  endLabel?: string;
+  /**
+   * Mark the latest point with a dot. Use it when the text beside the line quotes that
+   * latest figure, so the reader can see which point the sentence is about.
+   */
+  markLast?: boolean;
   className?: string;
 }
 
@@ -60,6 +73,9 @@ export function Sparkline({
   min,
   max,
   label,
+  startLabel,
+  endLabel,
+  markLast = false,
   className,
   state,
   // `onRetry` is accepted for symmetry with every other chart and deliberately
@@ -104,19 +120,21 @@ export function Sparkline({
 
   const lo = min ?? Math.min(...data);
   const hi = max ?? Math.max(...data);
-  const pad = 2;
+  // Room for the latest-point dot, or the line would draw it half off the edge.
+  const pad = markLast ? 4 : 2;
   const x = linearScale([0, data.length - 1], [pad, width - pad]);
   const y = linearScale([lo, hi === lo ? lo + 1 : hi], [height - pad, pad]);
 
   const line = data.map((v, i) => `${i === 0 ? "M" : "L"} ${x(i).toFixed(2)} ${y(v).toFixed(2)}`).join(" ");
   const area = `${line} L ${x(data.length - 1).toFixed(2)} ${height - pad} L ${x(0).toFixed(2)} ${height - pad} Z`;
 
-  return (
+  const ends = Boolean(startLabel || endLabel);
+  const svg = (
     <svg
       width={width}
       height={height}
       viewBox={`0 0 ${width} ${height}`}
-      className={cn("ds-sparkline", className)}
+      className={cn("ds-sparkline", !ends && className)}
       role={label ? "img" : undefined}
       aria-label={label}
       aria-hidden={label ? undefined : true}
@@ -134,6 +152,20 @@ export function Sparkline({
         </>
       )}
       <path d={line} fill="none" stroke={color} strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" />
+      {markLast ? (
+        <circle cx={x(data.length - 1)} cy={y(data[data.length - 1]!)} r={3} fill={color} className="ds-sparkline__last" />
+      ) : null}
     </svg>
+  );
+  if (!ends) return svg;
+  return (
+    // The wrapper takes the line's width, so the two labels sit under its two ends.
+    <span className={cn("ds-sparkline-ends", className)} style={{ inlineSize: width }}>
+      {svg}
+      <span className="ds-sparkline__ends" aria-hidden="true">
+        <span>{startLabel}</span>
+        <span>{endLabel}</span>
+      </span>
+    </span>
   );
 }

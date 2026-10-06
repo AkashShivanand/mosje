@@ -53,6 +53,9 @@
     overflow: hidden;
     font-family: var(--sa-font-latin);
   }
+  .ds-chart-card--outlined {
+    box-shadow: none;
+  }
   .ds-chart-card__head {
     display: flex;
     align-items: flex-start;

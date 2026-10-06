@@ -3,7 +3,7 @@
 import * as React from "react";
 import { ChartFrame, type ChartStateProps } from "./internal/chart-frame";
 import { Legend } from "./internal/legend";
-import { Gridlines, XAxisLabels, labelsFitFlat } from "./internal/axis";
+import { Gridlines, XAxisLabels, shouldRotate } from "./internal/axis";
 import { ChartTooltip, useChartTooltip } from "./internal/tooltip";
 import { bandScale, linearScale, monotonePath, niceTicks } from "./internal/scales";
 import { seriesColor, categoricalColor } from "./internal/palette";
@@ -83,7 +83,7 @@ export function ComboChart({
   const padL = leftLabel ? 64 : 48;
   const padR = rightLabel ? 62 : 48;
   const step = (width - padL - padR) / Math.max(1, labels.length);
-  const rotate = labels.length > 6 || labels.some((l) => l.length > 8) || !labelsFitFlat(labels, step);
+  const rotate = shouldRotate(labels, step);
   const padT = 16;
   const padB = rotate ? 54 : 30;
 

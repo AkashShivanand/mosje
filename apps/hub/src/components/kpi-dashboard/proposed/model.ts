@@ -144,6 +144,8 @@ export const PROGRAMME_ICON: Record<PortalId, string> = {
 export interface FundsRow {
   programme: PortalId;
   label: string;
+  /** The component's full name, as the register gives it — for a reader who does not know "RVY". */
+  fullName?: string;
   spent: number;
   provided: number;
   /** "Expenditure of B.E." — what the two figures are, in the register's words. */
@@ -197,6 +199,7 @@ export function fundsRows(viewing: Viewing, readings: Readings): FundsRow[] {
           rows.push({
             programme: p.id,
             label: `Senior Citizens · ${COMPONENT_SHORT[base.split(".")[1] ?? ""] ?? k.component}`,
+            fullName: k.component,
             spent,
             provided: budget,
             measure: r[`${base}.expenditure`] ? "Expenditure of B.E." : "Released of B.E.",

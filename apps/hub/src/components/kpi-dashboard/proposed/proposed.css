@@ -88,6 +88,9 @@
     list-style: none;
   }
 
+  /* One figure beside the lead takes the column, not half of it. */
+  .pd-hero__side--one { grid-template-columns: minmax(0, 1fr); }
+
   .pd-hero__intro {
     display: grid;
     gap: var(--sa-stack-16);
@@ -150,6 +153,8 @@
 
   .pd-tile__body {
     display: grid;
+    /* minmax(0, …): a trend line's intrinsic width must not push the column past the card. */
+    grid-template-columns: minmax(0, 1fr);
     align-content: start;
     gap: var(--sa-stack-20);
   }
@@ -160,6 +165,16 @@
     grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
     gap: var(--sa-stack-24);
     align-items: start;
+  }
+
+  /* NMBA's four figures beside its map. */
+  .pd-figures {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--sa-stack-16);
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
   /* Two lead figures in one tile (Top Class Education: schools and colleges). */
@@ -175,12 +190,20 @@
 
   .pd-trend {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--sa-stack-8);
     margin-block-start: auto;
   }
 
+  /* The Year on Year measure switch, above its chart. */
+  .pd-measure {
+    justify-self: start;
+    margin-block-end: var(--sa-stack-12);
+  }
+
   .pd-spark {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--sa-stack-16);
   }
 
@@ -237,6 +260,21 @@
     font-weight: var(--sa-font-weight-semibold);
   }
 
+  /* The officer roles' link to the Data Source of Each Indicator page. */
+  .pd-officer .pd-officer__body {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-stack-16);
+  }
+
+  .pd-officer__text {
+    display: grid;
+    gap: var(--sa-stack-4);
+    min-width: 0;
+  }
+
   .pd-chips,
   .pd-actions {
     display: flex;
@@ -273,6 +311,7 @@
     .pd-bento:is(.pd-bento--n1, .pd-bento--n2, .pd-bento--n3, .pd-bento--n4, .pd-bento--n5) > li:nth-child(n) { grid-column: span 12; }
     .pd-pair { grid-template-columns: minmax(0, 1fr); }
     .pd-tile__split { grid-template-columns: minmax(0, 1fr); }
+    .pd-figures { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .pd-hero__side { grid-template-columns: minmax(0, 1fr); }
   }
 }

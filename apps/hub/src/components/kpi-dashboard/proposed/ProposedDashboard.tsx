@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Chip, Combobox, FilterSelect } from "@mosje/design-system";
+import Link from "next/link";
+import { Button, Chip, Combobox, FilterSelect, Icon } from "@mosje/design-system";
 import { useDataMode } from "@/lib/data-mode/context";
 import { STATE_NAMES } from "@/lib/kpi/geography";
 import type { PortalFeed } from "@/lib/kpi/live";
@@ -12,9 +13,9 @@ import { useDashboardViewer } from "@/lib/kpi/viewer";
 import { FigureSourceProvider } from "@/components/website/FigureSource";
 import { ViewerNotice } from "../DashboardViewer";
 import { ProgrammeStory } from "./ProgrammeStory";
-import { Pulse } from "./Pulse";
+import { DataBehind, Pulse } from "./Pulse";
 import { SHORT_NAME, readAll, viewingFor } from "./model";
-import { AUDIENCES, AUDIENCE_LABEL, parseAudiences, serialiseAudiences, type Audience } from "./audience";
+import { AUDIENCES, AUDIENCE_LABEL, PROGRAMME_AUDIENCE, parseAudiences, serialiseAudiences, shows, type Audience } from "./audience";
 import "../kpi-dashboard.css";
 import "./proposed.css";
 
@@ -54,6 +55,8 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
   const programme =
     programmeParam && isPortalId(programmeParam) ? viewing.programmes.find((p) => p.id === programmeParam) : undefined;
   const wantedState = params.get("state") ?? undefined;
+  // The officer-only page (`?view=data-sources`); anyone else asking for it gets the dashboard.
+  const dataSources = params.get("view") === "data-sources" && readinessAllowed;
   const audiences = React.useMemo(() => parseAudiences(params.get("for")), [params]);
   const scope: AreaScope = {
     state: role?.area.state ?? (wantedState && STATE_NAMES.includes(wantedState) ? wantedState : undefined),
@@ -70,7 +73,7 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
   );
 
   const hrefTo = React.useCallback(
-    (to: Partial<Record<"programme" | "state" | "for", string | null>>) => {
+    (to: Partial<Record<"programme" | "state" | "for" | "view", string | null>>) => {
       const next = new URLSearchParams(params.toString());
       for (const [k, v] of Object.entries(to)) {
         if (v === null || v === undefined || v === "") next.delete(k);
@@ -93,7 +96,7 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
   const keepFocus = React.useRef(false);
   const firstView = React.useRef(true);
   const go = React.useCallback(
-    (to: Partial<Record<"programme" | "state" | "for", string | null>>, opts?: { keepFocus?: boolean }) => {
+    (to: Partial<Record<"programme" | "state" | "for" | "view", string | null>>, opts?: { keepFocus?: boolean }) => {
       keepFocus.current = Boolean(opts?.keepFocus);
       router.push(hrefTo(to), { scroll: false });
     },
@@ -124,6 +127,20 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
   }, [viewKey]);
 
   /*
+   * WHAT A STATE/UT CHOICE ACTUALLY CHANGES, said once, beside the picker. Most of the page is
+   * published for All India only; choosing Kerala and finding five of seven sections unchanged,
+   * with the reason printed under one of them, read as a picker that did not work (design
+   * audit, 6 Oct 2026). Derived from the readings, so it names only programmes that have a
+   * figure for the State/UT chosen. Each All-India section also carries a badge.
+   */
+  const stateWise = scope.state
+    ? viewing.programmes
+        .filter((p) => p.levels.includes("state") && shows(audiences, PROGRAMME_AUDIENCE[p.id]) && Object.keys(readings[p.id] ?? {}).length > 0)
+        .map((p) => SHORT_NAME[p.id])
+    : [];
+  const listed = (names: string[]) => (names.length < 2 ? names.join("") : `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`);
+
+  /*
    * NO PAGE-WIDE BANNER. Every figure carries its own mark — Live, Received or
    * Illustrative — from the one gate in `ProvenanceChip`, so a sentence across the top
    * saying the same thing again was the page narrating itself (instruction, 6 Oct 2026).
@@ -133,24 +150,33 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
     <div className="pd">
       {role ? <ViewerNotice role={role} /> : null}
 
-      <div className="pd-bar">
-        <p className="pd-bar__where" role="status">
-          <span className="pd-bar__label">Figures for</span>
-          {programme ? `${SHORT_NAME[programme.id]} · ` : ""}
-          {scope.district ? `${scope.district}, ` : ""}
-          {scope.state ?? "All India"}
+      {dataSources ? null : (
+        <div className="pd-bar">
+          <p className="pd-bar__where" role="status">
+            <span className="pd-bar__label">Figures for</span>
+            {programme ? `${SHORT_NAME[programme.id]} · ` : ""}
+            {scope.district ? `${scope.district}, ` : ""}
+            {scope.state ?? "All India"}
+          </p>
+          {role?.area.state ? null : (
+            <FilterSelect
+              label="State / UT"
+              value={scope.state ?? ALL_INDIA}
+              onChange={(v) => go({ state: v || null }, { keepFocus: true })}
+              options={[{ value: ALL_INDIA, label: "All India" }, ...STATE_NAMES.map((s) => ({ value: s, label: s }))]}
+            />
+          )}
+        </div>
+      )}
+      {scope.state && !programme && !dataSources ? (
+        <p className="pd-note">
+          {stateWise.length
+            ? `Figures for ${scope.state} are published for ${listed(stateWise)}. Other sections show All-India figures.`
+            : `No figures are published for ${scope.state}. The sections below show All-India figures.`}
         </p>
-        {role?.area.state ? null : (
-          <FilterSelect
-            label="State / UT"
-            value={scope.state ?? ALL_INDIA}
-            onChange={(v) => go({ state: v || null }, { keepFocus: true })}
-            options={[{ value: ALL_INDIA, label: "All India" }, ...STATE_NAMES.map((s) => ({ value: s, label: s }))]}
-          />
-        )}
-      </div>
+      ) : null}
 
-      {programme ? null : (
+      {programme || dataSources ? null : (
         <>
           {/* TYPE OF APPLICANT — the Additional Secretary's approved label and groups
               (`audience.ts`). Multi-select, nothing chosen = everyone. On a wide screen,
@@ -186,7 +212,14 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
 
       <FigureSourceProvider>
         <div ref={panelRef} className="pd-panel">
-          {programme ? (
+          {dataSources ? (
+            <div className="pd-story">
+              <Button appearance="text" size="sm" href={hrefTo({ view: null })} linkAs={Link} iconLeft={<Icon name="arrow_back" size={16} />} className="pd-back">
+                Beneficiary Dashboard
+              </Button>
+              <DataBehind viewing={viewing} readings={readings} sectionLevel={sectionLevel} />
+            </div>
+          ) : programme ? (
             <ProgrammeStory
               programme={programme}
               viewing={viewing}

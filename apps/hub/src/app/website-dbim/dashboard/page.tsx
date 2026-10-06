@@ -41,7 +41,7 @@ export default async function DbimDashboardPage({ searchParams }: PageProps) {
   const proposed = dashboardVersion(await searchParams) === "proposed";
   return (
     <DbimPage
-      title={proposed ? DASHBOARD_PAGE.crumb : DASHBOARD_PAGE.title}
+      title={DASHBOARD_PAGE.title}
       crumbs={[{ label: "Ministry", path: "/ministry" }, { label: "Our Performance", path: "/ministry/our-performance" }]}
       path="/ministry/our-performance"
       tabs={DBIM_MENU[0]!.children}

@@ -2501,6 +2501,13 @@ export const GENERATED_PROPS = {
         "type": "CardTone = \"primary\" | \"secondary\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
         "required": false,
         "description": "Fill the header with a colour family, as `Card accent=\"band\"` does; the title and subtitle turn inverse. Leave it unset for the plain dashboard card."
+      },
+      {
+        "name": "variant",
+        "type": "\"elevated\" | \"outlined\"",
+        "required": false,
+        "default": "\"elevated\"",
+        "description": "`elevated` (default) lifts the card with the dashboard shadow. `outlined` is the border alone — for a page that sets chart cards beside plain `Card`s, so the two do not sit at two different depths for no reason."
       }
     ]
   },
@@ -15598,6 +15605,12 @@ export const GENERATED_PROPS = {
         "description": "Stroke colour (any CSS colour / var). Defaults to the primary series colour."
       },
       {
+        "name": "endLabel",
+        "type": "string",
+        "required": false,
+        "description": "The last period, printed under the line's right end (\"2025-26\"). See `startLabel`."
+      },
+      {
         "name": "fill",
         "type": "boolean",
         "required": false,
@@ -15624,6 +15637,13 @@ export const GENERATED_PROPS = {
         "description": "Accessible label. When omitted the sparkline is decorative (aria-hidden)."
       },
       {
+        "name": "markLast",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Mark the latest point with a dot. Use it when the text beside the line quotes that latest figure, so the reader can see which point the sentence is about."
+      },
+      {
         "name": "max",
         "type": "number",
         "required": false,
@@ -15640,6 +15660,12 @@ export const GENERATED_PROPS = {
         "type": "() => void",
         "required": false,
         "description": "Offered on `\"error\"`. A feed being down is an expected state with a retry, not an exception."
+      },
+      {
+        "name": "startLabel",
+        "type": "string",
+        "required": false,
+        "description": "The first period, printed under the line's left end (\"2014-15\"); `endLabel` the last. A trend line in a tile has no axis, so without them a reader cannot tell a ten-year line from a ten-month one. Visual only: say the range in `label` as well."
       },
       {
         "name": "state",

@@ -39,8 +39,8 @@ type PageProps = { searchParams: Promise<Record<string, string | string[] | unde
 export default async function DashboardPage({ searchParams }: PageProps) {
   if (dashboardVersion(await searchParams) === "proposed") {
     return (
-      <PageLayout title={DASHBOARD_PAGE.crumb} breadcrumb={[{ label: DASHBOARD_PAGE.crumb }]}>
-        <section className="wn-section" aria-label={DASHBOARD_PAGE.crumb}>
+      <PageLayout title={TITLE} breadcrumb={[{ label: DASHBOARD_PAGE.crumb }]}>
+        <section className="wn-section" aria-label={TITLE}>
           <div className="sa-container">
             <ProposedDashboardSection sectionLevel={2} />
           </div>

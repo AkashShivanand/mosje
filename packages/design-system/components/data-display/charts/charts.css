@@ -1006,4 +1006,21 @@
     max-inline-size: 100%;
     block-size: auto;
   }
+
+  /* `startLabel` / `endLabel`: the first and last periods under the line's two ends. */
+  .ds-sparkline-ends {
+    display: grid;
+    gap: var(--sa-stack-4);
+    max-inline-size: 100%;
+  }
+
+  .ds-sparkline__ends {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--sa-stack-8);
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: var(--sa-font-weight-regular);
+  }
 }

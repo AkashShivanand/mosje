@@ -3,7 +3,7 @@
 import * as React from "react";
 import { ChartFrame, type ChartStateProps } from "./internal/chart-frame";
 import { Legend } from "./internal/legend";
-import { Gridlines, XAxisLabels } from "./internal/axis";
+import { Gridlines, XAxisLabels, shouldRotate } from "./internal/axis";
 import { ChartTooltip, useChartTooltip } from "./internal/tooltip";
 import { bandScale, linearScale, niceTicks } from "./internal/scales";
 import { seriesColor, categoricalColor, CHART_INK } from "./internal/palette";
@@ -230,9 +230,11 @@ export function BarChart(props: BarChartProps) {
 
   // ── Vertical ───────────────────────────────────────────────────────────
   if (orientation === "vertical") {
-    const rotate = labels.length > 6 || labels.some((l) => l.length > 8);
-    const padL = 44;
+    // As in LineChart: an axis title sits at x=12, rotated, so it takes its own gutter — or a
+    // five-character tick ("2,000") runs under it.
+    const padL = yLabel ? 60 : 44;
     const padR = 12;
+    const rotate = shouldRotate(labels, (width - padL - padR) / Math.max(1, labels.length));
     const padT = showVals || targetValue !== null ? 22 : 14;
     const padB = rotate ? 58 : 30;
     const x = bandScale(labels, [padL, width - padR], 0.3);
@@ -343,7 +345,7 @@ export function BarChart(props: BarChartProps) {
             </text>
           </g>
         )}
-        <XAxisLabels labels={labels} x={(l) => x(l) + band / 2} y={height - padB + 16} rotate={rotate ? -35 : 0} />
+        <XAxisLabels labels={labels} x={(l) => x(l) + band / 2} y={height - padB + 16} rotate={rotate ? -35 : 0} step={(width - padL - padR) / Math.max(1, labels.length)} />
       </ChartFrame>
     );
   }
