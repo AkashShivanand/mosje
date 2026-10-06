@@ -231,8 +231,8 @@ export const STATIC_PAGES: StaticPageEntry[] = [
     "iconName": "contacts"
   },
   {
-    "title": "Dashboard",
-    "description": "Progress of the Pradhan Mantri Anusuchit Jaati Abhyuday Yojana (PM-AJAY), as reported by the scheme's Management Information System.",
+    "title": "Beneficiary Dashboard",
+    "description": "Progress of the Department's schemes: the Beneficiary Dashboard, and the indicators reported by each scheme portal.",
     "href": "/website/dashboard",
     "section": "Offerings",
     "iconName": "monitoring"

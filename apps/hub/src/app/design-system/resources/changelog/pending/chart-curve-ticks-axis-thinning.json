@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "SMOOTHER, TIGHTER, READABLE CHARTS. `LineChart`, `AreaChart` and `ComboChart` take `curve=\"smooth\"` — a monotone curve that passes through every point and never overshoots between two — and `tickCount`, which asks for more gridlines and ends the axis at the first step past the highest figure (0–70 for a top value of 61, where the default reaches 100). The x-axis now rotates labels that would not fit side by side at the chart's width, and thins them where even rotated ones would collide, always naming the latest period; every category stays in the tooltip and the table. `useChartSize` is exported so a page can draw a chart at the width it is shown at. `DonutChart center={false}` leaves the hole empty. Charts that set none of these are unchanged except where their axis labels used to overlap."
+}

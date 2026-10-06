@@ -5,7 +5,7 @@ import { Badge, type BadgeStatus } from "@mosje/design-system";
 import { useDataMode } from "@/lib/data-mode/context";
 import "./data-mode.css";
 
-export type CardProvenance = "live" | "mixed" | "mock";
+export type CardProvenance = "live" | "received" | "mixed" | "mock";
 
 const COPY: Record<
   CardProvenance,
@@ -20,6 +20,15 @@ const COPY: Record<
     // neutral, which is also what the hand-rolled chip did.
     status: "success",
     title: "Every figure on this card came from the department's live report feed.",
+  },
+  received: {
+    label: "Received",
+    // Departmental, like Live, but not from a feed — so `info`, not `success`: a
+    // reader should be able to tell at a glance that it will not change until the
+    // Department sends a new document. Never the illustrative neutral.
+    status: "info",
+    title:
+      "Received from the Department as a document — a report, spreadsheet or letter — and shown exactly as received, as on the date given. It is updated when the Department sends a new one.",
   },
   mixed: {
     label: "Part illustrative",
@@ -73,4 +82,17 @@ export function ProvenanceChip({ kind }: { kind: CardProvenance }) {
       <span className="sr-only">. {title}</span>
     </Badge>
   );
+}
+
+/**
+ * The chip for one value's origin (`ValueOrigin`), or none. ONE mapping, so a page
+ * cannot mark a received figure as live in one place and leave it bare in another.
+ * A `snapshot` — a Department page mirrored on a date — carries no chip yet: it is
+ * neither a feed nor a document received, and it only appears where the feed is down.
+ */
+export function OriginChip({ origin }: { origin: string | undefined }) {
+  if (origin === "live") return <ProvenanceChip kind="live" />;
+  if (origin === "received") return <ProvenanceChip kind="received" />;
+  if (origin === "modelled") return <ProvenanceChip kind="mock" />;
+  return null;
 }

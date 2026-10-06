@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "`SegmentedControl variant=\"quiet\"`: text only, no track, for a switch that is a way out rather than a choice — every chart's Chart / Table now uses it, at the end of the row. `Tooltip variant=\"card\"`: a light panel for structured content, such as a figure's source and calculation set out like a price breakup."
+}

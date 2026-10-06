@@ -54,7 +54,8 @@
     padding: 0 var(--sa-padding-4);
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-bg-brand-primary-subtler);
-    color: var(--sa-text-brand-primary-base);
+    /* bolder, not base: base on this tint measured 4.48:1 (axe, 5 Oct 2026), under AA. */
+    color: var(--sa-text-brand-primary-bolder);
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
     font-weight: var(--sa-font-weight-semibold);
@@ -117,6 +118,32 @@
       transparent 2px 6px
     );
     background-color: transparent;
+  }
+
+  /* md — the list as a card's own content (the Ranked Bar Row on the dashboard
+     screens): Body 2, a semibold name against a regular figure, a 24px rank. */
+  .ds-ranked--md .ds-ranked__row {
+    gap: var(--sa-stack-6);
+  }
+  .ds-ranked--md .ds-ranked__head {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+  .ds-ranked--md .ds-ranked__label {
+    font-weight: var(--sa-font-weight-semibold);
+  }
+  .ds-ranked--md .ds-ranked__value {
+    font-weight: var(--sa-font-weight-regular);
+  }
+  .ds-ranked--md .ds-ranked__detail {
+    margin-left: var(--sa-padding-8);
+  }
+  .ds-ranked--md .ds-ranked__rank {
+    min-width: 24px;
+    height: 24px;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-medium);
   }
 
   .ds-ranked__caption {

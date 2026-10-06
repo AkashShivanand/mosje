@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "FOUR NEW PARTS FOR A DASHBOARD THAT TELLS A STORY, and a hero panel. `IndiaTileMap` draws every State/UT as one equal tile where it sits on the map — a tile cartogram for per-person readings, with `scale=\"quantile\"`, a `ramp` legend for thumbnails, and tiles that are buttons with `onSelect`. `DotPlot` is the pace chart: one dot per row against a `reference` line such as the year elapsed. `WaffleChart` is a unit chart: one square per indicator, or 100 squares for a share. `HeadlineFigure` sets the figure a page leads with in display type, with the phrase it completes and its context. `Card accent=\"fill\"` paints a whole card in its tone with inverse ink, for a hero panel in a page column. Built for the proposed website Dashboard."
+}

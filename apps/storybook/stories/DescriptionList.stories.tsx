@@ -103,3 +103,20 @@ export const NothingRecorded: Story = {
     ],
   },
 };
+
+/**
+ * `size="figure"` sets each value as a headline figure, for a dashboard tile; `caps` sets
+ * the terms in capitals with the caps tracking; `termBadge` draws a term as a chip. Inside
+ * a toned `Card` the figures take the card's ink.
+ */
+export const Figures: Story = {
+  args: {
+    size: "figure",
+    caps: true,
+    columns: 2,
+    items: [
+      { term: "Schools", termBadge: "success", value: "45,228", hint: "Since 2022-23 (4 years)" },
+      { term: "Colleges", termBadge: "info", value: "37,937", hint: "Since 2023-24 (3 years)" },
+    ],
+  },
+};

@@ -48,6 +48,13 @@ export interface DemoDataSettings {
    * says so in as many words.
    */
   marks: boolean;
+  /**
+   * Whether each figure shows where it came from and, where it is worked out from other
+   * figures, how. DEFAULT FALSE for the same reason as `marks`: it is the presenter's
+   * answer to "where is that number from?", not part of the finished service
+   * (instruction, 6 Oct 2026). Drawn by `FigureSource`, which holds the one gate.
+   */
+  sources: boolean;
   preview: PreviewState;
   previewScope: PreviewScope;
 }
@@ -55,6 +62,7 @@ export interface DemoDataSettings {
 interface DataModeContextValue extends DemoDataSettings {
   setMode: (mode: DataMode) => void;
   setMarks: (on: boolean) => void;
+  setSources: (on: boolean) => void;
   setPreview: (p: PreviewState) => void;
   setPreviewScope: (s: PreviewScope) => void;
   modes: readonly DataMode[];
@@ -63,6 +71,7 @@ interface DataModeContextValue extends DemoDataSettings {
 const DEFAULTS: DemoDataSettings = {
   mode: DEFAULT_DATA_MODE,
   marks: false,
+  sources: false,
   preview: "normal",
   previewScope: "all",
 };
@@ -82,15 +91,18 @@ const MAX_AGE = 60 * 60 * 24 * 365;
  * never worth an exception on a government page.
  */
 function serialise(s: DemoDataSettings): string {
-  return [s.mode, s.marks ? "1" : "0", s.preview, s.previewScope].join("|");
+  // `sources` is LAST so a cookie written before it existed still parses: its four
+  // fields keep their places and the fifth defaults off.
+  return [s.mode, s.marks ? "1" : "0", s.preview, s.previewScope, s.sources ? "1" : "0"].join("|");
 }
 
 function parse(raw: string | null | undefined): DemoDataSettings {
   if (!raw) return DEFAULTS;
-  const [mode, marks, preview, scope] = raw.split("|");
+  const [mode, marks, preview, scope, sources] = raw.split("|");
   return {
     mode: DATA_MODES.includes(mode as DataMode) ? (mode as DataMode) : DEFAULTS.mode,
     marks: marks === "1",
+    sources: sources === "1",
     preview: PREVIEW_STATES.includes(preview as PreviewState)
       ? (preview as PreviewState)
       : DEFAULTS.preview,
@@ -139,6 +151,7 @@ export function DataModeProvider({ children }: { children: React.ReactNode }) {
       ...settings,
       setMode: (mode) => write({ ...settings, mode }),
       setMarks: (marks) => write({ ...settings, marks }),
+      setSources: (sources) => write({ ...settings, sources }),
       setPreview: (preview) => write({ ...settings, preview }),
       setPreviewScope: (previewScope) => write({ ...settings, previewScope }),
       modes: DATA_MODES,
@@ -160,6 +173,7 @@ export function useDataMode(): DataModeContextValue {
       ...DEFAULTS,
       setMode: () => {},
       setMarks: () => {},
+      setSources: () => {},
       setPreview: () => {},
       setPreviewScope: () => {},
       modes: DATA_MODES,

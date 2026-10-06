@@ -2,6 +2,8 @@
 import { usePathname } from "next/navigation";
 import { DemoDock, type AppEntry, type DemoDockTab } from "@mosje/design-system";
 import { DataModePanel } from "@/components/website/DataModePanel";
+import { Suspense } from "react";
+import { ViewerPanel } from "@/components/kpi-dashboard/ViewerPanel";
 import { hasDataModes } from "@/lib/data-mode/routes";
 import { WebsiteDesignPanel } from "@/components/website-design-panel";
 import { DemoFillPanel, schemeFromPath } from "@/components/e-anudaan/demo-fill-panel";
@@ -16,6 +18,9 @@ import { DemoCapturePanel, useDemoShortcuts } from "@/components/demo-capture";
 /** The redesign, the archived classic design and the DBIM clone share every /website address. */
 const isWebsitePath = (p: string) =>
   p === "/website" || p.startsWith("/website/") || p.startsWith("/website-classic") || p.startsWith("/website-dbim");
+
+/** The website's Dashboard and its portal dashboards, in every design. */
+const isDashboardPath = (p: string) => /^\/website(-classic|-dbim)?\/dashboard(\/|$)/.test(p);
 
 /**
  * Mounts the demo dock, if an admin has it switched on.
@@ -76,6 +81,12 @@ export function ConditionalDemoDock({
   }
   if (hasDataModes(pathname)) {
     tabs.push({ id: "data", label: "Data", content: <DataModePanel /> });
+  }
+  // View As: who the website's Dashboard is drawn for — the public or an officer role. The
+  // Dashboard has no portal login (5 Oct 2026), so the role is a demo choice, made here.
+  if (isDashboardPath(pathname)) {
+    // Suspense: the panel reads the Version from the address (`useSearchParams`).
+    tabs.push({ id: "viewer", label: "View As", content: <Suspense fallback={null}><ViewerPanel /></Suspense> });
   }
   // Capture is offered on every route, so it sits AFTER Apps and Colour: a lead tab names the
   // flask, and "Capture" on every page would bury the tab a route actually brought.

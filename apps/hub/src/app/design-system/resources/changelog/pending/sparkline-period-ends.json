@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "`Sparkline startLabel` and `endLabel` print the first and last periods under the line's two ends (\"2014-15\" … \"2025-26\"), and `markLast` puts a dot on the latest point. A trend line in a dashboard tile has no axis, so without them a ten-year line could not be told from a ten-month one, and the sentence beside it could not be tied to a point. Sparklines that set none of these are unchanged."
+}

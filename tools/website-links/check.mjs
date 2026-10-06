@@ -140,6 +140,14 @@ const masterSchemeIds = () => {
  * `/website/documents/` reads two files, because the library's rows and the
  * Central List of OBCs are merged into one set before the page sees them.
  */
+/** The KPI register's portal slugs, read from the one small list the register is tested against. */
+function kpiPortalSlugs() {
+  const src = readFileSync(join(ROOT, "apps/hub/src/lib/kpi/slugs.ts"), "utf8");
+  const list = src.match(/PORTAL_SLUGS[^=]*=\s*\[([^\]]*)\]/);
+  if (!list) fail("could not read PORTAL_SLUGS from apps/hub/src/lib/kpi/slugs.ts");
+  return new Set([...list[1].matchAll(/"([^"]+)"/g)].map((m) => m[1]));
+}
+
 const DYNAMIC = [
   { prefix: "/website/organisation/", catchAll: true, source: "organisation.json", slugs: () => renamedOrganisationSlugs(jsonSlugs("organisation.json")) },
   {
@@ -170,6 +178,13 @@ const DYNAMIC = [
   { prefix: "/website/tenders/", catchAll: false, source: "tenders.json", slugs: () => jsonSlugs("tenders.json") },
   { prefix: "/website/updates/", catchAll: false, source: "updates.json", slugs: () => jsonSlugs("updates.json") },
   { prefix: "/website/vacancies/", catchAll: false, source: "vacancies.json", slugs: () => jsonSlugs("vacancies.json") },
+  {
+    // One public dashboard per scheme portal in the KPI register (5 Oct 2026).
+    prefix: "/website/dashboard/",
+    catchAll: false,
+    source: "lib/kpi/slugs.ts",
+    slugs: () => kpiPortalSlugs(),
+  },
 ];
 for (const d of DYNAMIC) d.set = d.slugs();
 

@@ -5,12 +5,23 @@ import { dbimHref } from "@/lib/website-dbim/nav";
 import type { DbimDashboardTile } from "@/lib/website-dbim/ministry";
 import { DbimEmptyState } from "@/components/website-dbim/ui/EmptyState";
 
-/** The reference's Our Performance grid (`.photos-card`): image, badge, title, date. Spec §5. */
-export function DbimDashboardTiles({ tiles }: { tiles: DbimDashboardTile[] }) {
+/**
+ * The reference's Our Performance grid (`.photos-card`): image, badge, title, date. Spec §5.
+ * `title` lets the Dashboard page reuse the grid for its portal dashboards.
+ */
+export function DbimDashboardTiles({
+  tiles,
+  title = "View Performance Dashboards",
+  headingId = "perf-title",
+}: {
+  tiles: DbimDashboardTile[];
+  title?: string;
+  headingId?: string;
+}) {
   return (
-    <section className="db-min-perf" aria-labelledby="perf-title">
-      <h2 id="perf-title" className="db-min-perf__title">
-        View Performance Dashboards
+    <section className="db-min-perf" aria-labelledby={headingId}>
+      <h2 id={headingId} className="db-min-perf__title">
+        {title}
       </h2>
       {tiles.length === 0 ? (
         <DbimEmptyState />

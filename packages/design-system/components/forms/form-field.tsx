@@ -265,7 +265,13 @@ export function FormField({
       data-disabled={disabled || undefined}
       data-size={size}
     >
-      <div className={cn("ds-field__label-row", classNames?.labelRow)} data-part="label-row">
+      {/* A HIDDEN LABEL TAKES NO ROOM. The row is still a flex item of the field, so with only
+          a visually-hidden label in it, it used to cost the field one row gap (8px) above the
+          control — a hidden-label field sat lower than a FilterSelect beside it in a toolbar. */}
+      <div
+        className={cn("ds-field__label-row", labelHidden && labelAction == null && "ds-field__label-row--hidden", classNames?.labelRow)}
+        data-part="label-row"
+      >
         <FieldLabel
           htmlFor={ids.control}
           /* NO MARK ON A FIELD THE READER CANNOT CHANGE. A worked-out amount or a carried-forward

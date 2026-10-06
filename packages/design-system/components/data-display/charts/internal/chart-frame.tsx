@@ -2,9 +2,17 @@ import * as React from "react";
 import { cn } from "../../../../utils/cn";
 import { Button } from "../../../actions/button";
 import { CardState, actionForState, type CardStateKind } from "../../../dashboard/card-state";
+import { SegmentedControl } from "../../../dashboard/filter-bar";
 import { ChartTextureDefs } from "./texture";
 import type { ChartTable } from "../types";
 import "../charts.css";
+
+/** The table view never shows fewer rows than this, however short the chart it replaces. */
+const TABLE_MIN_ROWS = 5;
+/** One table row, in rem: the cell's padding and its body-3 line. Used only to size a page. */
+const TABLE_ROW_REM = 2.125;
+/** The header row and the pager, in rem — the part of the held height that holds no rows. */
+const TABLE_CHROME_REM = 5.5;
 
 /**
  * The states a chart can be in, beyond drawing.
@@ -262,10 +270,31 @@ export function ChartFrame({
   const titleId = React.useId();
   const descId = React.useId();
   const tableId = React.useId();
-  // Closed by default: the chart is the primary reading and the table is the
-  // way out of it. Both hooks sit above the `state` early-return, because a
-  // chart that is loading today is a chart with a table tomorrow.
-  const [tableOpen, setTableOpen] = React.useState(false);
+  // The chart by default: it is the primary reading and the table is the way out
+  // of it. Every hook sits above the `state` early-return, because a chart that
+  // is loading today is a chart with a table tomorrow.
+  const [view, setView] = React.useState<"chart" | "table">("chart");
+  const [page, setPage] = React.useState(0);
+  const [pageSize, setPageSize] = React.useState(TABLE_MIN_ROWS);
+  const [lockedHeight, setLockedHeight] = React.useState<number | undefined>(undefined);
+  const viewRef = React.useRef<HTMLDivElement>(null);
+  const panelRef = React.useRef<HTMLDivElement>(null);
+  const tableOpen = view === "table";
+  /*
+   * FIT THE PAGE TO THE ROWS AS DRAWN. The first page is sized from an estimate, then
+   * corrected once the table is on screen from its own header, row and pager heights —
+   * a rem estimate alone left a third of a map card empty below seven rows.
+   */
+  React.useLayoutEffect(() => {
+    if (!tableOpen || !lockedHeight || !panelRef.current) return;
+    const panel = panelRef.current;
+    const head = panel.querySelector("thead")?.getBoundingClientRect().height ?? 0;
+    const row = panel.querySelector("tbody tr")?.getBoundingClientRect().height ?? 0;
+    const pager = panel.querySelector(".ds-chart__pager")?.getBoundingClientRect().height ?? 0;
+    if (row <= 0) return;
+    const fits = Math.max(TABLE_MIN_ROWS, Math.floor((lockedHeight - head - pager) / row));
+    if (fits !== pageSize) setPageSize(fits);
+  }, [tableOpen, lockedHeight, pageSize]);
   const labelledBy = summary ? `${titleId} ${descId}` : titleId;
   const aspect = aspectFromViewBox(viewBox);
 
@@ -341,8 +370,36 @@ export function ChartFrame({
     );
   }
 
+  /*
+   * THE TABLE TAKES THE CHART'S PLACE, AT THE CHART'S SIZE. It used to open
+   * BELOW the chart, so a card holding a 36-row map grew by 36 rows and pushed
+   * its neighbours out of line — a dashboard whose layout depends on which
+   * tables a reader has opened is not a layout. Now the switch swaps the view
+   * in place: the chart's height is measured as the reader leaves it, the table
+   * is held to at least that height, and its rows are paged to fit inside it.
+   * Paged, never scrolled inside the card (`data-state-completeness.md` §4).
+   */
+  const showView = (next: "chart" | "table") => {
+    if (next === "table" && viewRef.current) {
+      // The wrapper is `display: contents` and has no box of its own, so its
+      // height is the span of the boxes inside it: the canvas and the legend.
+      const boxes = [...viewRef.current.children].map((el) => el.getBoundingClientRect()).filter((r) => r.height > 0);
+      const h = boxes.length ? Math.max(...boxes.map((r) => r.bottom)) - Math.min(...boxes.map((r) => r.top)) : 0;
+      const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+      setLockedHeight(h);
+      setPageSize(Math.max(TABLE_MIN_ROWS, Math.floor((h - TABLE_CHROME_REM * rem) / (TABLE_ROW_REM * rem))));
+      setPage(0);
+    }
+    setView(next);
+  };
+  const rowCount = table?.rows.length ?? 0;
+  const pages = Math.max(1, Math.ceil(rowCount / pageSize));
+  const first = page * pageSize;
+  const pageRows = table ? table.rows.slice(first, first + pageSize) : [];
+
   return (
     <figure className={cn("ds-chart", className)}>
+      <div className="ds-chart__view" ref={viewRef} hidden={tableOpen}>
       <div className="ds-chart__canvas" ref={canvasRef}>
         <svg
           ref={setSvgRef}
@@ -363,68 +420,83 @@ export function ChartFrame({
         {overlay}
       </div>
       {legend}
-      {caption && <figcaption className="ds-chart__caption">{caption}</figcaption>}
-      {table && tableView === "toggle" && (
-        <>
-          {/* The library's Button in its quietest appearance. It is a labelled
-              disclosure, not part of a compound widget — `aria-expanded` and
-              `aria-controls` ride on the component unchanged. The underline that
-              tells a reader this one reveals text rather than acting stays in
-              charts.css. */}
-          <Button
-            variant="primary"
-            appearance="text"
-            size="sm"
-            className="ds-chart__tabletoggle"
-            aria-expanded={tableOpen}
-            aria-controls={tableId}
-            onClick={() => setTableOpen((v) => !v)}
-          >
-            {tableOpen ? "Hide Table" : "View as Table"}
-          </Button>
-          {/*
-            EXACTLY ONE TABLE REACHES THE ACCESSIBILITY TREE. When the visible
-            one is open it IS the accessible one; when it is closed the
-            screen-reader copy stands in. Rendering both would read the whole
-            dataset out twice, which is the defect a naive "add a visible table"
-            ships with.
-          */}
-          {tableOpen ? (
-            <div className="ds-chart__tablewrap" id={tableId}>
-              <table className="ds-chart__table">
-                {/*
-                  THE CAPTION IS THE TABLE'S ACCESSIBLE NAME, AND IT IS NOT
-                  PAINTED. On a single-series chart the title, the series name
-                  and the value column's header are all the same string, so a
-                  visible caption prints it immediately above itself — "nothing
-                  said twice". Sighted readers have the chart directly above and
-                  the toggle they just pressed; a screen reader still gets the
-                  name. Deleting it instead would leave the table unnamed.
-                */}
-                <caption className="ds-sr-only">{title}</caption>
-                <thead>
-                  <tr>
-                    {table.columns.map((c) => (
-                      <th key={c} scope="col">
-                        {c}
-                      </th>
+      </div>
+      {table && tableView === "toggle" && tableOpen ? (
+        <div
+          ref={panelRef}
+          className="ds-chart__tablepanel"
+          id={tableId}
+          style={lockedHeight ? ({ "--ds-chart-view-h": `${lockedHeight}px` } as React.CSSProperties) : undefined}
+        >
+          <div className="ds-chart__tablewrap">
+            <table className="ds-chart__table">
+              {/*
+                THE CAPTION IS THE TABLE'S ACCESSIBLE NAME, AND IT IS NOT
+                PAINTED. On a single-series chart the title, the series name
+                and the value column's header are all the same string, so a
+                visible caption prints it immediately above itself — "nothing
+                said twice". A screen reader still gets the name.
+              */}
+              <caption className="ds-sr-only">{title}</caption>
+              <thead>
+                <tr>
+                  {table.columns.map((c) => (
+                    <th key={c} scope="col">
+                      {c}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {pageRows.map((row, ri) => (
+                  <tr key={first + ri}>
+                    {row.map((cell, ci) => (
+                      <td key={ci}>{cell}</td>
                     ))}
                   </tr>
-                </thead>
-                <tbody>
-                  {table.rows.map((row, ri) => (
-                    <tr key={ri}>
-                      {row.map((cell, ci) => (
-                        <td key={ci}>{cell}</td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {pages > 1 ? (
+            <div className="ds-chart__pager">
+              <p className="ds-chart__pagerstatus" aria-live="polite">
+                Rows {first + 1}–{Math.min(first + pageSize, rowCount)} of {rowCount}
+              </p>
+              <Button variant="primary" appearance="text" size="sm" disabled={page === 0} onClick={() => setPage((p) => p - 1)}>
+                Previous
+              </Button>
+              <Button variant="primary" appearance="text" size="sm" disabled={page >= pages - 1} onClick={() => setPage((p) => p + 1)}>
+                Next
+              </Button>
             </div>
           ) : null}
-        </>
+        </div>
+      ) : null}
+      {caption && <figcaption className="ds-chart__caption">{caption}</figcaption>}
+      {table && tableView === "toggle" && (
+        /* A VIEW SWITCH, NOT A DISCLOSURE. Chart and Table are two views of one
+           figure, so the library's SegmentedControl — one tab stop, arrow keys
+           between the views — in its QUIET variant, at the end of the row: it is
+           there for the reader who wants the raw figures, not a choice the card
+           is built around (feedback, 6 Oct 2026). */
+        <SegmentedControl
+          variant="quiet"
+          className="ds-chart__viewswitch"
+          ariaLabel={`Show ${title} as`}
+          value={view}
+          onChange={showView}
+          options={[
+            { value: "chart", label: "Chart" },
+            { value: "table", label: "Table" },
+          ]}
+        />
       )}
+      {/*
+        EXACTLY ONE TABLE REACHES THE ACCESSIBILITY TREE. When the visible one
+        is shown it IS the accessible one; otherwise the screen-reader copy, with
+        every row, stands in. Rendering both would read the dataset out twice.
+      */}
       {table && (tableView === "sr-only" || !tableOpen) && (
         /* The visually-hidden box is a DIV around the table, never the table itself: a table
            cannot be narrower than its content, so `width: 1px` on it is ignored and the hidden

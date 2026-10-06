@@ -212,14 +212,11 @@ export function IndiaBubbleMap({
       {/* The land, drawn once and flat. It is the frame of reference, not the
           data — giving it any tone of its own competes with the circles. */}
       {INDIA_STATES_PATHS.map((region) => (
-        <path
-          key={region.id}
-          d={region.d}
-          fill={CHART_INK.regionEmpty}
-          stroke="var(--sa-bg-neutral-base)"
-          strokeWidth={0.6}
-          aria-hidden="true"
-        />
+        <React.Fragment key={region.id}>
+          <path d={region.d} fill={CHART_INK.regionEmpty} stroke="var(--sa-bg-neutral-base)" strokeWidth={0.6} aria-hidden="true" />
+          {/* Islands too small to see: solid, no border, or they read as hollow rings. */}
+          {region.islands ? <path d={region.islands} fill={CHART_INK.regionEmpty} aria-hidden="true" /> : null}
+        </React.Fragment>
       ))}
 
       {bubbles.map((b) => {

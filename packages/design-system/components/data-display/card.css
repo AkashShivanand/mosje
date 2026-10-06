@@ -121,11 +121,160 @@
     color: var(--sa-text-neutral-bolder);
   }
 
+  .ds-card__title--sm {
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
   .ds-card__subtitle {
     margin: 0;
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
     font-weight: var(--sa-font-weight-regular);
     color: var(--sa-text-neutral-subtle);
+  }
+
+  /* --------------------------------------------------------------------------
+     Tone — the colour family a toned card (and a toned ChartCard) draws in.
+     Published as custom properties so the parts inside it — CardIcon, a figure-size
+     DescriptionList — follow the card without being told.
+
+     The band's two stops are the rungs where white text clears 4.5:1 (measured
+     5 Oct 2026): primary 600→500 (6.4, 4.6), success 600→500 (6.7, 4.8), danger
+     600→500 (6.7, 4.9), secondary 800→600 (8.7, 5.0), and one rung darker for the
+     two whose 500 does not — warning 700→600 (5.7 at 600) and info 700→600 (6.0).
+     -------------------------------------------------------------------------- */
+  .ds-tone-primary {
+    --cmp-tone-from: var(--sa-color-primaryScale-600);
+    --cmp-tone-to: var(--sa-color-primaryScale-500);
+    --cmp-tone-edge: var(--sa-color-primaryScale-500);
+    --cmp-tone-tint: var(--sa-color-primaryScale-50);
+    --cmp-tone-rule: var(--sa-color-primaryScale-100);
+    --cmp-tone-icon: var(--sa-color-primaryScale-600);
+    --cmp-tone-ink: var(--sa-color-primaryScale-700);
+  }
+
+  .ds-tone-secondary {
+    --cmp-tone-from: var(--sa-color-secondaryScale-800);
+    --cmp-tone-to: var(--sa-color-secondaryScale-600);
+    --cmp-tone-edge: var(--sa-color-secondaryScale-500);
+    --cmp-tone-tint: var(--sa-color-secondaryScale-50);
+    --cmp-tone-rule: var(--sa-color-secondaryScale-100);
+    --cmp-tone-icon: var(--sa-color-secondaryScale-600);
+    --cmp-tone-ink: var(--sa-color-secondaryScale-700);
+  }
+
+  .ds-tone-info {
+    --cmp-tone-from: var(--sa-color-infoScale-700);
+    --cmp-tone-to: var(--sa-color-infoScale-600);
+    --cmp-tone-edge: var(--sa-color-infoScale-500);
+    --cmp-tone-tint: var(--sa-color-infoScale-50);
+    --cmp-tone-rule: var(--sa-color-infoScale-100);
+    --cmp-tone-icon: var(--sa-color-infoScale-600);
+    --cmp-tone-ink: var(--sa-color-infoScale-700);
+  }
+
+  .ds-tone-success {
+    --cmp-tone-from: var(--sa-color-successScale-600);
+    --cmp-tone-to: var(--sa-color-successScale-500);
+    --cmp-tone-edge: var(--sa-color-successScale-500);
+    --cmp-tone-tint: var(--sa-color-successScale-50);
+    --cmp-tone-rule: var(--sa-color-successScale-100);
+    --cmp-tone-icon: var(--sa-color-successScale-600);
+    --cmp-tone-ink: var(--sa-color-successScale-600);
+  }
+
+  .ds-tone-warning {
+    --cmp-tone-from: var(--sa-color-warningScale-700);
+    --cmp-tone-to: var(--sa-color-warningScale-600);
+    --cmp-tone-edge: var(--sa-color-warningScale-400);
+    --cmp-tone-tint: var(--sa-color-warningScale-50);
+    --cmp-tone-rule: var(--sa-color-warningScale-100);
+    --cmp-tone-icon: var(--sa-color-warningScale-600);
+    --cmp-tone-ink: var(--sa-color-warningScale-600);
+  }
+
+  /* A danger card keeps its figures in ink: a red figure reads as a breach. */
+  .ds-tone-danger {
+    --cmp-tone-from: var(--sa-color-dangerScale-600);
+    --cmp-tone-to: var(--sa-color-dangerScale-500);
+    --cmp-tone-edge: var(--sa-color-dangerScale-400);
+    --cmp-tone-tint: var(--sa-color-dangerScale-50);
+    --cmp-tone-rule: var(--sa-color-dangerScale-100);
+    --cmp-tone-icon: var(--sa-color-dangerScale-500);
+    --cmp-tone-ink: var(--sa-text-neutral-bolder);
+  }
+
+  /* Band: the header filled with the tone, its text inverse. */
+  .ds-card--band > .ds-card__header {
+    padding-inline: var(--sa-padding-20);
+    background: linear-gradient(133deg, var(--cmp-tone-from), var(--cmp-tone-to));
+    color: var(--sa-text-neutral-inverse);
+  }
+
+  .ds-card--band > .ds-card__header .ds-card__title,
+  .ds-card--band > .ds-card__header .ds-card__subtitle {
+    color: var(--sa-text-neutral-inverse);
+  }
+
+  .ds-card--band > .ds-card__header + .ds-card__body {
+    padding-top: var(--sa-padding-16);
+  }
+
+  /* Fill: the whole card in the tone, its text inverse — a hero panel in a page column. */
+  .ds-card--fill {
+    border-color: transparent;
+    background: linear-gradient(133deg, var(--cmp-tone-from), var(--cmp-tone-to));
+    color: var(--sa-text-neutral-inverse);
+  }
+
+  .ds-card--fill .ds-card__title,
+  .ds-card--fill .ds-card__subtitle {
+    color: var(--sa-text-neutral-inverse);
+  }
+
+    /* Edge: the frame in the tone, heavier along the top. */
+  .ds-card--edge {
+    border-color: var(--cmp-tone-edge);
+    border-top-width: var(--sa-stroke-4);
+  }
+
+  .ds-card--tinted {
+    border-color: var(--cmp-tone-rule);
+    background-color: var(--cmp-tone-tint);
+  }
+
+  .ds-card__header--divided {
+    margin-inline: var(--sa-padding-16);
+    padding-inline: 0;
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+
+  .ds-card__header--divided + .ds-card__body {
+    padding-top: var(--sa-padding-16);
+  }
+
+  /* CardIcon — an icon in a rounded square, tinted by the card's tone. */
+  .ds-card__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--sa-inline-40);
+    block-size: var(--sa-inline-40);
+    border-radius: var(--sa-shape-8);
+    background: var(--cmp-tone-tint, var(--sa-bg-neutral-subtle));
+    color: var(--cmp-tone-icon, var(--sa-icon-neutral-base));
+  }
+
+  .ds-card--band > .ds-card__header .ds-card__icon {
+    background: var(--sa-bg-neutral-base);
+  }
+
+  /* After the title, the icon sits at the trailing edge, level with the title's first line. */
+  .ds-card__header > * + .ds-card__icon:last-child {
+    align-self: flex-start;
+    margin-inline-start: auto;
   }
 }

@@ -5,8 +5,10 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
+  CardIcon,
   CardSubtitle,
   CardTitle,
+  DescriptionList,
 } from "@mosje/design-system";
 
 /**
@@ -123,6 +125,67 @@ export const Horizontal: Story = {
           </Button>
         </CardFooter>
       </Card>
+    </div>
+  ),
+};
+
+/**
+ * A TONED dashboard tile — `tone` is the card's colour family; `accent="band"` fills the
+ * header with it and `tinted` washes the body. `CardIcon` and a `figure`-size
+ * `DescriptionList` follow the tone without being told. The Beneficiary Dashboard's
+ * Scholarships row is built this way.
+ */
+export const TonedBand: Story = {
+  render: () => (
+    <div style={{ maxWidth: 380 }}>
+      <Card tone="primary" accent="band" tinted>
+        <CardHeader>
+          <CardIcon name="school" />
+          <div>
+            <CardTitle size="sm">Scholarships for SC Students</CardTitle>
+            <CardSubtitle>Pre and Post Matric</CardSubtitle>
+          </div>
+        </CardHeader>
+        <CardBody>
+          <DescriptionList
+            size="figure"
+            columns={1}
+            divided
+            items={[
+              { term: "Pre-Matric (SCs & Others)", value: "₹4,896 Cr" },
+              { term: "Post-Matric (SC)", value: "₹46,676 Cr" },
+            ]}
+          />
+        </CardBody>
+      </Card>
+    </div>
+  ),
+};
+
+/**
+ * `accent="edge"` rules the frame in the tone, heavier along the top; `CardHeader divided`
+ * draws a hairline under a long title, and an icon placed after the title sits at the
+ * trailing edge. A `danger` tone keeps its figures in ink — a red figure reads as a breach.
+ */
+export const TonedEdge: Story = {
+  render: () => (
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 16 }}>
+      {(["primary", "secondary", "danger"] as const).map((tone) => (
+        <Card key={tone} tone={tone} accent="edge">
+          <CardHeader divided>
+            <CardTitle size="sm">Construction of Hostels for OBC Boys & Girls</CardTitle>
+            <CardIcon name="home" />
+          </CardHeader>
+          <CardBody>
+            <DescriptionList
+              size="figure"
+              caps
+              columns={1}
+              items={[{ term: "Seats Sanctioned", value: "28,865", hint: "Across Boys' and Girls' hostels" }]}
+            />
+          </CardBody>
+        </Card>
+      ))}
     </div>
   ),
 };

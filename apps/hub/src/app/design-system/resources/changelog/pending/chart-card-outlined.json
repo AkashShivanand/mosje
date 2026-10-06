@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "`ChartCard variant=\"outlined\"` draws the card with its border and no shadow, so a page that sets chart cards beside plain `Card`s does not hold them at two different depths. `elevated` stays the default; existing chart cards are unchanged."
+}

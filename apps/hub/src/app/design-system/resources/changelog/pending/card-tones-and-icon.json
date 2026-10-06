@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "TONED CARDS. `Card` takes `tone` (primary · secondary · info · success · warning · danger), `accent` (`band` fills the header with the tone, `edge` rules the frame in it, heavier along the top) and `tinted` (the tone's lightest rung on the body). New `CardIcon` sets an icon in a rounded square tinted by the card's tone — white on a band, at the trailing edge when placed after the title. `CardHeader divided` rules a hairline under a long title; `CardTitle size=\"sm\"` is Title 2, the dashboard scale. `ChartCard` takes the same `tone` for a coloured header band. Every band's two stops clear 4.5:1 for white text (warning and info step one rung darker to do so), and a danger card keeps its figures in ink. Built for the website's Beneficiary Dashboard, whose cards were styled by hand."
+}

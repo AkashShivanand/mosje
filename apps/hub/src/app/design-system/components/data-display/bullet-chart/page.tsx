@@ -17,7 +17,7 @@ const A11Y: A11yItem[] = [
     level: "A",
     status: "verified",
     evidence:
-      "Every row is a focusable group with an aria-label naming the measure, its value, its target and whether the target was met. The chart also carries a data table, reachable by sighted readers through “View as Table”.",
+      "Every row is a focusable group with an aria-label naming the measure, its value, its target and whether the target was met. The chart also carries a data table, reachable by sighted readers through its Chart / Table switch.",
     description: "The chart is not the only way to the figures.",
   },
   {

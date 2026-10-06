@@ -326,7 +326,8 @@ export { ToastProvider, useToast } from "./components/feedback/toast";
 export type { ToastVariant } from "./components/feedback/toast";
 
 // ---- Components: Data display ------------------------------------------------
-export { Card, CardHeader, CardBody, CardFooter, CardTitle, CardSubtitle } from "./components/data-display/card";
+export { Card, CardHeader, CardBody, CardFooter, CardTitle, CardSubtitle, CardIcon } from "./components/data-display/card";
+export type { CardProps, CardTone, CardAccent, CardHeaderProps, CardIconProps } from "./components/data-display/card";
 export { DescriptionList } from "./components/data-display/description-list";
 export type {
   DescriptionItem,
@@ -434,6 +435,10 @@ export {
   Heatmap,
   ComboChart,
   IndiaMap,
+  IndiaTileMap,
+  INDIA_TILES,
+  DotPlot,
+  WaffleChart,
   IndiaBubbleMap,
   IndiaPointMap,
   INDIA_STATE_BOXES,
@@ -517,6 +522,18 @@ export type {
 } from "./components/data-display/charts";
 
 // ---- Components: Dashboard composition ---------------------------------------
+export { useChartSize } from "./components/data-display/charts/internal/use-chart-size";
+export type {
+  IndiaTileMapProps,
+  IndiaTileMapDatum,
+  DotPlotProps,
+  DotPlotRow,
+  WaffleChartProps,
+  WaffleCategory,
+  WaffleRow,
+} from "./components/data-display/charts";
+export { HeadlineFigure } from "./components/data-display/headline-figure";
+export type { HeadlineFigureProps } from "./components/data-display/headline-figure";
 export { ChartCard } from "./components/dashboard/chart-card";
 export type { ChartCardProps } from "./components/dashboard/chart-card";
 // Source · as of · status — the one line of self-description a card may carry.

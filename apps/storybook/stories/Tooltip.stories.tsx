@@ -100,6 +100,29 @@ export const OnAnIconButton: Story = {
   ),
 };
 
+/**
+ * `variant="card"` — a light, wider surface for structured content, such as a figure's
+ * breakup, that the default hint's dark bubble cannot hold legibly. It opens and closes as
+ * the hint does.
+ */
+export const CardVariant: Story = {
+  render: (args) => (
+    <Tooltip
+      {...args}
+      variant="card"
+      content={
+        <div>
+          <strong>₹82.55 Cr released</strong>
+          <div>Mode-I: ₹64.20 Cr</div>
+          <div>Mode-II: ₹18.35 Cr</div>
+        </div>
+      }
+    >
+      <Button appearance="outlined">Funds released</Button>
+    </Tooltip>
+  ),
+};
+
 /** No delay — for a dense toolbar where the user is already scanning. */
 export const NoDelay: Story = {
   args: { delay: 0, content: "Opens immediately on hover" },

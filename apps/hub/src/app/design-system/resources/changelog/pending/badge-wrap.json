@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "`Badge wrap` lets a long label break inside its container instead of running past it — a programme's full name set as a kicker above a heading, which made the Beneficiary Dashboard scroll sideways at 375px. Status chips stay on one line."
+}

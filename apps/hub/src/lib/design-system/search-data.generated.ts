@@ -788,6 +788,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "bar_chart"
   },
   {
+    "title": "Dot Plot — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/dot-plot",
+    "keywords": "dot plot — design system data display   tokens wcag accessibility",
+    "description": "One dot per row on a shared scale, read against a reference line.",
+    "type": "component",
+    "iconName": "bar_chart"
+  },
+  {
     "title": "Elevation",
     "section": "Foundations",
     "href": "/design-system/foundations/elevation",
@@ -1042,6 +1051,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "view_quilt"
   },
   {
+    "title": "Headline Figure — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/headline-figure",
+    "keywords": "headline figure — design system data display   tokens wcag accessibility",
+    "description": "A figure in display type with the phrase it completes.",
+    "type": "component",
+    "iconName": "bar_chart"
+  },
+  {
     "title": "Heatmap — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/heatmap",
@@ -1130,6 +1148,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "href": "/design-system/components/data-display/india-point-map",
     "keywords": "india point map — design system data display   tokens wcag accessibility",
     "description": "Real coordinates on the national outline.",
+    "type": "component",
+    "iconName": "bar_chart"
+  },
+  {
+    "title": "India Tile Map — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/india-tile-map",
+    "keywords": "india tile map — design system data display   tokens wcag accessibility",
+    "description": "Every State/UT as an equal tile, placed where it sits on the map.",
     "type": "component",
     "iconName": "bar_chart"
   },
@@ -2097,6 +2124,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "href": "/design-system/components/data-display/visitor-counter",
     "keywords": "visitor counter — design system data display mock data, by design why the first paint is blank example deliberately not a live region  tokens wcag accessibility",
     "description": "The “Total Visits” figure in the site footer, derived from a seeded baseline. Mock data by design, until a real analytics feed replaces it.",
+    "type": "component",
+    "iconName": "bar_chart"
+  },
+  {
+    "title": "Waffle Chart — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/waffle-chart",
+    "keywords": "waffle chart — design system data display   tokens wcag accessibility",
+    "description": "A unit chart of coloured squares, for a small count or a share of 100.",
     "type": "component",
     "iconName": "bar_chart"
   },

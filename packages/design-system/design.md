@@ -3292,6 +3292,9 @@ optional `valueFormat` (defaults to `en-IN` grouping).
 | `IndiaMap` | State choropleth (pre-baked geo paths) | `data: { state, value }[]`, `title`, `highlightState` |
 | `IndiaBubbleMap` | State bubble map, **area** ∝ value (same geo paths) | `data: { state, value }[]`, `title`, `maxRadius`, `highlightState`, `onSelectState` |
 | `IndiaPointMap` | Real coordinates: hex **density** + proportional **bubbles** + categorical **pins**, with state zoom | `bins`, `pins`, `pinKinds`, `bubbles`, `bubbleVariant`, `focusRegion`, `highlightRegion`, `onSelectRegion`, `table` |
+| `IndiaTileMap` | Tile cartogram: every State/UT one equal tile, placed where it sits | `data: { state, value }[]`, `title`, `scale` (`linear` / `quantile`), `size`, `legend` (`steps` / `ramp`), `selected`, `onSelect` |
+| `DotPlot` | One dot per row on a shared scale, against a reference line (pace) | `rows: { label, value, detail? }[]`, `reference: { value, label }`, `max`, `size` |
+| `WaffleChart` | Unit chart: one square per unit, or 100 for a share | `categories`, `rows: { label, counts }[]`, `scale` (`count` / `percent`), `unit` |
 
 **Composition primitives** (dashboard layout): `ChartCard` (titled widget
 container with actions slot + loading/empty states + grid `span`), `DashboardGrid`
@@ -3356,6 +3359,20 @@ and renders it only when `exportable`.
   tooltip carry values. `IndiaMap` announces each region's value on focus.
 - Pie/donut: prefer ≤ 6 slices; group the remainder into "Other".
 - `IndiaMap` geometry is generated — see `components/data-display/charts/geo/README.md`.
+- **`IndiaTileMap` for a PER-PERSON reading.** Every State/UT gets one equal tile, so the
+  north-east and the island UTs — a few pixels on a choropleth, and often the answer on a
+  per-person measure — are as legible as Uttar Pradesh. Use `scale="quantile"` when two
+  outliers would otherwise wash every other tile out to the palest step. Not for a reading
+  whose shape on the land matters; that is `IndiaMap`.
+- **`DotPlot` for PACE, not amounts.** Each dot is a share read against one shared line —
+  spending against the year elapsed, coverage against a target. The gap between dot and
+  line is the finding. To compare amounts by size, use `BarChart`.
+- **`WaffleChart` for a count a reader can see as units** — 87 indicators, 61 in every 100
+  students. Past a few hundred squares, or five colours, it stops being countable.
+- **`HeadlineFigure` is the one number a page leads with**, in display type with the phrase
+  it completes and, where a published denominator exists, its human scale ("About 29 in
+  every 100 people, at the Census 2011 count"). On `Card accent="fill"` or a brand `Band`,
+  `tone="inverse"`. A row of figures read together is a `KpiRow` of `MetricCard`s instead.
 - **`IndiaMap` for a RATE, `IndiaBubbleMap` for a COUNT.** A choropleth gives each
   state as much ink as it has land, so a map of counts reports "big state" as "big
   number" — Rajasthan's 1,493 villages and Delhi's 1 differ 1,493× in the data and
