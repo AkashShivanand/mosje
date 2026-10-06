@@ -33,7 +33,7 @@ import {
 } from "@mosje/design-system";
 import { FigureSource, noteForReading, type SourceNote } from "@/components/website/FigureSource";
 import { OriginChip, ProvenanceChip } from "@/components/website/ProvenanceChip";
-import { heroFigures } from "./hero";
+import { cardsInHero, heroFigures } from "./hero";
 import { PROGRAMME_AUDIENCE, shows, type Audience } from "./audience";
 import type { AreaScope, PortalDashboard, PortalId } from "@/lib/kpi/types";
 import { MinistryCollection } from "../DashboardViewer";
@@ -125,12 +125,12 @@ const marked = (origin: string | undefined, note: SourceNote | undefined) => (
 const pct = (n: number) => `${n}%`;
 
 /**
- * Portals whose registered mark is their OWN (`PORTAL_ORG_LOGOS`). The Senior Citizens Welfare
- * portal's registered mark is the State Emblem, which names the Department rather than the
- * programme and would make its card the one card without a distinguishing mark — so it keeps
- * its icon. DAPSC (e-Utthaan) and SHRESHTA (e-Anudaan) have no mark in the registry at all.
+ * A portal card's header is the portal's name with its logo, as the Dashboards by Portal list
+ * draws it (instruction, 6 Oct 2026): the registered mark wherever the registry has one
+ * (`PORTAL_ORG_LOGOS`), the programme's icon where it has none — today e-Utthaan (DAPSC) and
+ * e-Anudaan (SHRESHTA), whose marks the Department has not supplied.
  */
-const OWN_MARK = new Set(["/portals/nmba", "/portals/smile-admin"]);
+const hasMark = (p: PortalDashboard) => Boolean(PORTAL_ORG_LOGOS[p.logoPath]);
 
 const areaName = (scope: AreaScope) => scope.district ?? scope.state ?? "All India";
 
@@ -225,10 +225,11 @@ function Tile({ p, children, figure, hrefTo, note }: { p: PortalDashboard; child
     <Card tone={PROGRAMME_TONE[p.id]} accent="edge" className={`pd-tile pd-tile--${p.id}`}>
       <CardHeader>
         {/* The portal's own mark where it has one that is its own; its icon otherwise. */}
-        {OWN_MARK.has(p.logoPath) && PORTAL_ORG_LOGOS[p.logoPath] ? <OrgLogo path={p.logoPath} size="md" name={p.name} /> : <CardIcon name={PROGRAMME_ICON[p.id]} />}
+        {/* The name sits beside the mark, so the mark takes no accessible name of its own. */}
+        {hasMark(p) ? <OrgLogo path={p.logoPath} size="md" /> : <CardIcon name={PROGRAMME_ICON[p.id]} />}
         <div className="pd-tile__titles">
-          <CardTitle size="sm">{SHORT_NAME[p.id]}</CardTitle>
-          {p.name === SHORT_NAME[p.id] ? null : <CardSubtitle>{p.name}</CardSubtitle>}
+          <CardTitle size="sm">{p.name}</CardTitle>
+          <CardSubtitle>{p.portal}</CardSubtitle>
         </div>
       </CardHeader>
       <CardBody className="pd-tile__body">
@@ -392,7 +393,7 @@ function Programmes(props: PulseProps) {
           <div className="pd-spark">
             <Sparkline
               data={be}
-              width={280}
+              width={420}
               height={56}
               label={`DAPSC allocation, B.E., ${alloc?.kind === "series" ? alloc.labels[0] : ""} to 2026-27: rising from ${compact(be[0]!, "crore")} to ${compact(be[be.length - 1]!, "crore")}`}
               startLabel={alloc?.kind === "series" ? alloc.labels[0] : undefined}
@@ -400,7 +401,9 @@ function Programmes(props: PulseProps) {
               markLast
             />
             <DescriptionList
-              size="sm"
+              // The live cards' figure style, as every other card on the page (design audit, 6 Oct 2026).
+              size="figure"
+              caps
               columns={2}
               items={[
                 ...(growth !== null
@@ -858,7 +861,7 @@ export function Pulse(props: PulseProps) {
     <div className="pd-story">
       <Hero {...props} />
       {/* The Department's figures, as the live page publishes them … */}
-      <EducationResults sectionLevel={props.sectionLevel} state={props.scope.state} audiences={props.audiences} />
+      <EducationResults sectionLevel={props.sectionLevel} state={props.scope.state} audiences={props.audiences} inHero={cardsInHero(props.scope, props.audiences)} />
       <EducationTrends sectionLevel={props.sectionLevel} state={props.scope.state} audiences={props.audiences} />
       <Money {...props} />
       {/* … then the scheme portals' figures, and where they are. */}

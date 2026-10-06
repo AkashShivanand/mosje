@@ -34,12 +34,13 @@ export interface Viewing {
 }
 
 /**
- * The programmes the proposed dashboard draws, for now: Nasha Mukt Bharat Abhiyaan, SMILE –
- * Beggary and Senior Citizens Welfare (instruction, 6 Oct 2026). DAPSC and SHRESHTA stay in
- * the register and return when the instruction changes; the Department's own sections
- * (scholarships, hostels, trends, funds) are not programmes and are unaffected.
+ * The programmes the proposed dashboard draws: every portal whose KPIs are defined in the KPI
+ * sheet — SMILE – Beggary, NMBA, DAPSC (e-Utthaan), SHRESHTA (e-Anudaan) and Senior Citizens
+ * Welfare, one tab each (instruction, 6 Oct 2026, widening the three-portal scope set earlier
+ * that day). A portal joins this list when its KPIs reach the sheet. The Department's own
+ * sections (scholarships, hostels, trends, funds) are not programmes and are unaffected.
  */
-export const PROGRAMMES_SHOWN: readonly PortalId[] = ["nmba", "smile-beggary", "senior-citizens"];
+export const PROGRAMMES_SHOWN: readonly PortalId[] = ["nmba", "smile-beggary", "e-utthaan", "shreshta", "senior-citizens"];
 
 export function viewingFor(role: OfficerRole | undefined): Viewing {
   return {

@@ -171,9 +171,12 @@
   .pd-bento--n4 > li:nth-child(n + 3) { grid-column: span 6; }
   .pd-bento > li > * { flex: 1; min-width: 0; }
 
-  /* The portals: NMBA (the tile with a map) takes the row, the rest share the next. */
-  .pd-bento--portals.pd-bento--n3 > li:nth-child(1) { grid-column: span 12; }
-  .pd-bento--portals.pd-bento--n3 > li:nth-child(n + 2) { grid-column: span 6; }
+  /* The portals: NMBA (the tile with a map) takes the row; the rest pair up below it, three
+     to a row where three remain, and a lone one takes the width — so no count leaves a hole. */
+  .pd-bento.pd-bento--portals > li:nth-child(1) { grid-column: span 12; }
+  .pd-bento.pd-bento--portals > li:nth-child(n + 2) { grid-column: span 6; }
+  .pd-bento.pd-bento--portals.pd-bento--n4 > li:nth-child(n + 2) { grid-column: span 4; }
+  .pd-bento.pd-bento--portals.pd-bento--n2 > li:nth-child(2) { grid-column: span 12; }
   /* NMBA's four figures, centred beside its map rather than hanging from the top. */
   .pd-tile__figures {
     align-self: center;
@@ -221,6 +224,12 @@
     grid-template-columns: minmax(0, 1fr);
     gap: var(--sa-stack-8);
     margin-block-start: auto;
+  }
+
+  /* Inside a live card (Hostels and Top Class Education), the line keeps clear of the figure
+     above it; in a tile the body's own gap does this. */
+  .pd-trend:not(.pd-tile__body > .pd-trend) {
+    padding-block-start: var(--sa-stack-8);
   }
 
   .pd-spark {
@@ -329,6 +338,9 @@
     .pd-bento:not(.pd-bento--n3) > li:nth-child(n) { grid-column: span 6; }
     .pd-bento:is(.pd-bento--n1, .pd-bento--n3, .pd-bento--n5) > li:nth-child(1) { grid-column: span 12; }
     .pd-bento--n3 > li:nth-child(n + 2) { grid-column: span 6; }
+    .pd-bento.pd-bento--portals > li:nth-child(1) { grid-column: span 12; }
+    .pd-bento.pd-bento--portals.pd-bento--n4 > li:nth-child(n + 2) { grid-column: span 6; }
+    .pd-bento.pd-bento--portals.pd-bento--n4 > li:nth-child(4) { grid-column: span 12; }
   }
 
   @media (max-width: 1023px) {
@@ -341,6 +353,7 @@
   @media (max-width: 767px) {
     /* As specific as the count rules above, and later, so one column wins on a phone. */
     .pd-bento:is(.pd-bento--n1, .pd-bento--n2, .pd-bento--n3, .pd-bento--n4, .pd-bento--n5) > li:nth-child(n) { grid-column: span 12; }
+    .pd-bento.pd-bento--portals:is(.pd-bento--n2, .pd-bento--n3, .pd-bento--n4, .pd-bento--n5) > li:nth-child(n) { grid-column: span 12; }
     .pd-pair { grid-template-columns: minmax(0, 1fr); }
     .pd-tile__split { grid-template-columns: minmax(0, 1fr); }
     .pd-hero__side { grid-template-columns: minmax(0, 1fr); }

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Card, CardBody, CardHeader, CardIcon, CardSubtitle, CardTitle, DescriptionList, DonutChart } from "@mosje/design-system";
-import { FUND_SHARE, HOSTELS, SCHOLARSHIPS, type DeptAmount } from "@/lib/website-shared/dashboard";
+import { FUND_SHARE, HOSTELS, SCHOLARSHIPS, type DeptAmount, type DeptTone } from "@/lib/website-shared/dashboard";
 
 /**
  * THE BENEFICIARY DASHBOARD'S OWN CARDS, IN ONE PLACE. The live page's card structure —
@@ -44,8 +44,18 @@ export function ScholarshipCard({ c }: { c: ScholarshipCardData }) {
  * A Hostels and Top Class Education card: a coloured top edge, the title with its icon at the
  * right, and its figures under capitalised labels. Top Class Education splits into Schools and
  * Colleges, side by side at every width, each with its fund release under it.
+ *
+ * `trend` and `splitTrends` are slots for a year-by-year line under the card's figures (the
+ * proposed dashboard draws one where the live page publishes the years behind the figure);
+ * left empty, the card is exactly the live one.
  */
-export function HostelCard({ c, tone }: { c: HostelCardData; tone?: HostelCardData["tone"] }) {
+export function HostelCard({ c, tone, trend, splitTrends }: {
+  c: HostelCardData;
+  tone?: DeptTone;
+  trend?: React.ReactNode;
+  /** One per split, in the splits' order. */
+  splitTrends?: readonly React.ReactNode[];
+}) {
   return (
     <Card tone={tone ?? c.tone} accent="edge">
       <CardHeader divided>
@@ -56,12 +66,14 @@ export function HostelCard({ c, tone }: { c: HostelCardData; tone?: HostelCardDa
         {c.metrics ? (
           <DescriptionList size="figure" caps columns={1} items={c.metrics.map((m) => ({ term: m.label, value: deptAmount(m), hint: m.sub }))} />
         ) : null}
+        {trend}
         {c.splits ? (
           <div className="kd-bd__split">
-            {c.splits.map((s) => (
+            {c.splits.map((s, i) => (
               <div key={s.chip}>
                 <DescriptionList size="figure" caps columns={1} items={[{ term: s.chip, termBadge: s.chipTone, value: s.value, hint: s.sub }]} />
                 <DescriptionList size="sm" columns={1} items={[{ term: "Fund Released", value: s.fund }]} />
+                {splitTrends?.[i]}
               </div>
             ))}
           </div>
