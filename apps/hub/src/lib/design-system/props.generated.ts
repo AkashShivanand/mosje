@@ -8590,10 +8590,42 @@ export const GENERATED_PROPS = {
         "description": "Outline a state by name (e.g. the user's own state)."
       },
       {
+        "name": "legend",
+        "type": "SequentialLegendKind = \"steps\" | \"ramp\"",
+        "required": false,
+        "default": "\"steps\"",
+        "description": "`steps` names every range; `ramp` is one line, low to high, for a map inside a card."
+      },
+      {
+        "name": "legendFormat",
+        "type": "ValueFormat",
+        "required": false,
+        "description": "The figures in the legend, where the unit is already in the title. Defaults to `valueFormat`."
+      },
+      {
         "name": "onRetry",
         "type": "() => void",
         "required": false,
         "description": "Offered on `\"error\"`. A feed being down is an expected state with a retry, not an exception."
+      },
+      {
+        "name": "onSelect",
+        "type": "(state: string) => void",
+        "required": false,
+        "description": "Makes every State/UT a button that chooses it."
+      },
+      {
+        "name": "scale",
+        "type": "SequentialScaleKind = \"linear\" | \"quantile\"",
+        "required": false,
+        "default": "\"linear\"",
+        "description": "How a figure maps to a shade. `linear` shades by value; `quantile` puts an equal number of States/UTs in each of five shades — use it for a skewed reading, where two outliers would otherwise wash the other thirty-four out to the palest step."
+      },
+      {
+        "name": "selected",
+        "type": "string",
+        "required": false,
+        "description": "The State/UT drawn as chosen — an outline, and `aria-pressed` when regions are buttons."
       },
       {
         "name": "state",

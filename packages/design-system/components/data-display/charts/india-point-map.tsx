@@ -459,8 +459,8 @@ export function IndiaPointMap({
          */
         const active = Boolean(onSelectRegion) && !muted;
         return (
+          <React.Fragment key={region.id}>
           <path
-            key={region.id}
             d={region.d}
             fill={CHART_INK.regionEmpty}
             fillOpacity={muted ? 0.4 : 1}
@@ -486,6 +486,9 @@ export function IndiaPointMap({
                 : undefined
             }
           />
+          {/* Islands too small to see: solid, no border, or they read as hollow rings. */}
+          {region.islands ? <path d={region.islands} fill={CHART_INK.regionEmpty} fillOpacity={muted ? 0.4 : 1} aria-hidden="true" style={{ pointerEvents: "none" }} /> : null}
+          </React.Fragment>
         );
       })}
 
