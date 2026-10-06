@@ -171,12 +171,16 @@
   .pd-bento--n4 > li:nth-child(n + 3) { grid-column: span 6; }
   .pd-bento > li > * { flex: 1; min-width: 0; }
 
-  /* The portals: NMBA (the tile with a map) takes the row; the rest pair up below it, three
-     to a row where three remain, and a lone one takes the width — so no count leaves a hole. */
-  .pd-bento.pd-bento--portals > li:nth-child(1) { grid-column: span 12; }
-  .pd-bento.pd-bento--portals > li:nth-child(n + 2) { grid-column: span 6; }
-  .pd-bento.pd-bento--portals.pd-bento--n4 > li:nth-child(n + 2) { grid-column: span 4; }
-  .pd-bento.pd-bento--portals.pd-bento--n2 > li:nth-child(2) { grid-column: span 12; }
+  /* The portals: two cards in the first row — NMBA (the tile with a map) wider, then SMILE –
+     Beggary — and three in the next (design review, 6 Oct 2026: NMBA alone in a row left half
+     the row empty). Other counts follow the same idea: no hole, the map card never squeezed. */
+  .pd-bento.pd-bento--portals > li:nth-child(1) { grid-column: span 7; }
+  .pd-bento.pd-bento--portals > li:nth-child(2) { grid-column: span 5; }
+  .pd-bento.pd-bento--portals > li:nth-child(n + 3) { grid-column: span 4; }
+  .pd-bento.pd-bento--portals.pd-bento--n4 > li:nth-child(n + 3) { grid-column: span 6; }
+  .pd-bento.pd-bento--portals.pd-bento--n3 > li:nth-child(1) { grid-column: span 12; }
+  .pd-bento.pd-bento--portals.pd-bento--n3 > li:nth-child(n + 2) { grid-column: span 6; }
+  .pd-bento.pd-bento--portals.pd-bento--n2 > li:nth-child(n) { grid-column: span 6; }
   /* NMBA's four figures, centred beside its map rather than hanging from the top. */
   .pd-tile__figures {
     align-self: center;
@@ -185,7 +189,7 @@
   /* Wide screens only: on a phone the map and the figures stack (the 767px rule below). */
   @media (min-width: 768px) {
     .pd-bento--portals > li:nth-child(1) .pd-tile__split {
-      grid-template-columns: minmax(0, 26rem) minmax(0, 1fr); /* layout geometry: the map at a card's size, not the page's */
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
       align-items: center;
     }
   }
@@ -346,9 +350,8 @@
     .pd-bento:not(.pd-bento--n3) > li:nth-child(n) { grid-column: span 6; }
     .pd-bento:is(.pd-bento--n1, .pd-bento--n3, .pd-bento--n5) > li:nth-child(1) { grid-column: span 12; }
     .pd-bento--n3 > li:nth-child(n + 2) { grid-column: span 6; }
+    .pd-bento.pd-bento--portals > li:nth-child(n) { grid-column: span 6; }
     .pd-bento.pd-bento--portals > li:nth-child(1) { grid-column: span 12; }
-    .pd-bento.pd-bento--portals.pd-bento--n4 > li:nth-child(n + 2) { grid-column: span 6; }
-    .pd-bento.pd-bento--portals.pd-bento--n4 > li:nth-child(4) { grid-column: span 12; }
   }
 
   @media (max-width: 1023px) {

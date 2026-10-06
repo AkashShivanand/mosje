@@ -292,7 +292,7 @@ function Programmes(props: PulseProps) {
             <DescriptionList
               size="figure"
               caps
-              columns={2}
+              columns={1}
               items={facts.map((x) => ({ term: x.term, value: <>{x.value}{marked(x.origin, noteOf(viewing, readings, "nmba", x.id, x.value))}</> }))}
             />
             </div>
@@ -387,7 +387,7 @@ function Programmes(props: PulseProps) {
         p={dapsc}
         hrefTo={hrefTo}
         note={nationalOnly("e-utthaan") ? NATIONAL_ONLY : undefined}
-        figure={be.length ? <HeadlineFigure size="md" value={compact(be[be.length - 1]!, "crore")} label="allocated, B.E. 2026-27" mark={marked(readings["e-utthaan"]?.["e-utthaan.allocation"]?.origin, noteOf(viewing, readings, "e-utthaan", "e-utthaan.allocation", compact(be[be.length - 1]!, "crore")))} /> : undefined}
+        figure={be.length ? <HeadlineFigure size="md" value={compact(be[be.length - 1]!, "crore")} label="Allocated, B.E. 2026-27" mark={marked(readings["e-utthaan"]?.["e-utthaan.allocation"]?.origin, noteOf(viewing, readings, "e-utthaan", "e-utthaan.allocation", compact(be[be.length - 1]!, "crore")))} /> : undefined}
       >
         {be.length > 1 ? (
           <div className="pd-spark">
