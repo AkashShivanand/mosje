@@ -120,3 +120,31 @@ design-system rule taking precedence over a pixel match (`standards-precedence.m
 - **The view is held in the address,** so it can be shared.
 - **The current version is unchanged** and remains the default.
 - **Figma:** the screens have not yet been drawn in the Figma handoff. Under the 1 Oct 2026 standing instruction, they must be drawn before this becomes the build of record.
+
+## 10. Proposed dashboard: provenance, per-person rates and corrected anchors (6 Oct 2026)
+
+**Questions for the Department**
+
+- **NMBA "People Reached" — unique people or participations?** The portal publishes a cumulative count with no definition. Chandigarh's count is about 3.5 times its projected 2026 population, so it cannot be unique people. The dashboard now shows it per State/UT as **outreach per 100 residents** (like vaccine doses per 100 people), which can exceed 100, and no longer says "about 29 in every 100 people in India" in the hero. If NMBA can publish unique persons reached, the rate can return to "people per 100".
+- **The Beneficiary Dashboard's figures are now marked Received**, not mirrored: they were supplied by hand. Every figure and series matched the live page's HTML on 6 Oct 2026. The ₹67,977 crore total is the sum of the nine fund slices; the live page computes it and never prints it.
+
+**Changed on the screen, recorded here instead**
+
+- The page-wide "Part illustrative" banner is removed; each figure carries its own Live / Received / Illustrative mark.
+- Per-person rates divide by the **2026 projection** (Technical Group on Population Projections, Table 21), not Census 2011. Dadra and Nagar Haveli and Daman and Diu moved most: 368 → 140 per 100 residents.
+
+**Illustrative anchors corrected against published sources**
+
+| Figure | Was | Now | Source |
+|---|---|---|---|
+| DAPSC B.E. 2024-25 | ₹1,65,598 Cr | ₹1,65,493 Cr | Statement 10A, Expenditure Profile 2024-25 |
+| DAPSC B.E. 2026-27 | ₹1,76,900 Cr | ₹1,96,400 Cr | Statement 10A, Expenditure Profile 2026-27 |
+| DAPSC R.E. 2025-26, actual 2024-25 | modelled | ₹1,61,205 Cr, ₹1,23,372 Cr | Statement 10A |
+| DAPSC ministries / schemes | 41 / 329 | 38 / 239 | e-Utthaan portal |
+| SMILE rehabilitated (cumulative) | 2,084 | 10,450 (mobilised 12,940) | Lok Sabha USQ 3735, 10,446 to 31 Jul 2026 (as reported) |
+| AVYAY IPSrC + SAPSrC B.E. | ₹590 Cr | ₹355 Cr | Notes on Demands 2026-27, Demand 93 |
+| RVY B.E.; beneficiaries; devices (half-year) | ₹115 Cr; 1.18 lakh; 4.86 lakh | ₹280 Cr; 52,400; 2.83 lakh | Notes on Demands; AIR 21 Sep 2026 (8.53 lakh people, 46 lakh devices since 2017-18) |
+| Elderline calls (half-year) | 4.27 lakh | 2.99 lakh | PIB 24 Sep 2026: over 29 lakh calls since Oct 2021 |
+| IPSrC projects | 1,212 | 738 | 705 senior care homes, 13 continuous care homes, 3 physiotherapy clinics, 17 MMUs (secondary source) |
+
+All of these remain marked Illustrative. The SMILE Admin prototype (`lib/smile-admin/mock-data.ts`) still draws 2,084 rehabilitated and should follow.

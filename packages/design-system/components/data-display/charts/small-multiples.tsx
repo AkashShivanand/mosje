@@ -21,8 +21,8 @@ export interface SmallMultiplesProps<T> {
    * its own scale is the defect this component exists to prevent.
    *
    * **Give each panel `tableView="sr-only"`.** Every chart offers a visible
-   * "View as Table" control by default, which is right for one chart and wrong
-   * for a grid — twenty-eight panels would carry twenty-eight links. The screen
+   * Chart / Table switch by default, which is right for one chart and wrong
+   * for a grid — twenty-eight panels would carry twenty-eight switches. The screen
    * reader table stays on every panel either way; it is only the visible
    * control that is suppressed.
    */

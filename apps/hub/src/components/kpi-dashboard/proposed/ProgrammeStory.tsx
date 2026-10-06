@@ -14,7 +14,7 @@ import {
   OrgLogo,
   SectionTitle,
 } from "@mosje/design-system";
-import { ProvenanceChip } from "@/components/website/ProvenanceChip";
+import { OriginChip } from "@/components/website/ProvenanceChip";
 import { useDataMode } from "@/lib/data-mode/context";
 import { KPI_CATEGORIES } from "@/lib/kpi/categories";
 import { covers } from "@/lib/kpi/model";
@@ -131,7 +131,7 @@ export function ProgrammeStory({ programme: p, viewing, readings, scope, section
                       tone="inverse"
                       value={compact(h.value, h.unit)}
                       label={k.component ? `${k.name} · ${k.component.replace(/^.*\((.*)\)$/, "$1")}` : k.name}
-                      mark={r.origin === "modelled" ? <ProvenanceChip kind="mock" /> : r.origin === "live" ? <ProvenanceChip kind="live" /> : undefined}
+                      mark={r.origin === "snapshot" ? undefined : <OriginChip origin={r.origin} />}
                     />
                   </li>
                 ) : null;

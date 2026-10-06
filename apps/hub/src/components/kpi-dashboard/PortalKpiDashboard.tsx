@@ -11,7 +11,7 @@ import {
   SectionTitle,
   type MetricCardProps,
 } from "@mosje/design-system";
-import { ProvenanceChip } from "@/components/website/ProvenanceChip";
+import { OriginChip } from "@/components/website/ProvenanceChip";
 import { cardStateFor, useDataMode } from "@/lib/data-mode/context";
 import { KPI_CATEGORIES } from "@/lib/kpi/categories";
 import { formatKpi, isoDate } from "@/lib/kpi/format";
@@ -139,7 +139,7 @@ export function PortalKpiDashboard({ portalId, audience, ceiling = {}, allowDist
       loading: card.loading,
       state: card.state,
       provenance: r.origin !== "modelled" && r.source && r.asOn ? { source: r.source, asOf: isoDate(r.asOn) } : undefined,
-      aside: r.origin === "modelled" ? <ProvenanceChip kind="mock" /> : r.origin === "live" ? <ProvenanceChip kind="live" /> : undefined,
+      aside: r.origin === "snapshot" ? undefined : <OriginChip origin={r.origin} />,
     };
   };
 

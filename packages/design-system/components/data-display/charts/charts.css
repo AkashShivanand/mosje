@@ -196,7 +196,7 @@
       grid-column: 1 / -1;
     }
 
-    .ds-chart--donut-side > .ds-chart__legend {
+    .ds-chart--donut-side > .ds-chart__view > .ds-chart__legend {
       margin: 0;
     }
   }
@@ -741,53 +741,50 @@
      A chart's numbers must be reachable without reading the chart: by a
      colour-blind reader whose two series measure ΔE 1.5 apart, on paper, and on
      a connection that never painted the SVG. */
-  /* The toggle is the library's `Button` (primary · text · sm), so the reset,
-     the press give, the focus ring and the disabled treatment come from
-     button.css. `.ds-btn` is named in every selector below so what is genuinely
-     local outranks it inside the shared `components` layer.
+  /* THE CHART AND ITS TABLE ARE TWO VIEWS OF ONE FIGURE, swapped in place by a
+     SegmentedControl under the chart (ChartFrame). The view wrapper is
+     `display: contents`, so the canvas and the legend stay the figure's own grid
+     items — the side-legend donut lays them out as two columns — and `hidden`
+     still wins when the table is shown, because the rule below never matches a
+     hidden wrapper. */
+  .ds-chart__view:not([hidden]) {
+    display: contents;
+  }
 
-     WHAT IS LOCAL IS THAT THIS READS AS A WAY OUT OF THE PICTURE, NOT AS AN
-     ACTION. It sits under a chart, underlined, at the caption's size, and it must
-     not acquire the 64px rhythm minimum or the 32px control height that would
-     make it look like a second Retry. The `ds-btn` layout stays; only the box and
-     the type are pulled back. */
-  .ds-chart__tabletoggle.ds-btn {
-    align-self: flex-start;
-    margin-block-start: var(--sa-stack-8);
-    /* The 24px block minimum this rule used to carry is GONE, and nothing was
-       lost: `.ds-btn--sm` floors the control at `--sa-control-height-sm` (32),
-       which is the height this toggle already drew and comfortably past WCAG
-       2.2 §2.5.8. Restating a smaller minimum here only fought it.
+  .ds-chart__viewswitch {
+    margin-block-start: var(--sa-stack-12);
+  }
 
-       `min-width` is reset because the ladder's 64px rhythm floor is for
-       actions standing in a row; this one is a way out of the picture and takes
-       the width of its words. */
-    min-width: 0;
-    padding: var(--sa-padding-4) var(--sa-padding-8);
-    border-radius: var(--sa-shape-4);
-    color: var(--sa-text-brand-primary-bolder);
+  /* Held to the height of the chart it replaced, so the card does not grow or
+     shrink when a reader switches; the rows are paged to fit inside it. */
+  .ds-chart__tablepanel {
+    display: flex;
+    flex-direction: column;
+    min-block-size: var(--ds-chart-view-h, auto);
+  }
+
+  /* A WIDE table scrolls sideways in its own box rather than widening the page —
+     the estate's rule is that the page body never scrolls horizontally. Rows are
+     never scrolled: they are paged. */
+  .ds-chart__tablewrap {
+    overflow-x: auto;
+  }
+
+  .ds-chart__pager {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-stack-4) var(--sa-stack-8);
+    margin-block-start: auto;
+    padding-block-start: var(--sa-padding-8);
+  }
+
+  .ds-chart__pagerstatus {
+    margin: 0 auto 0 0;
+    color: var(--sa-text-neutral-subtle);
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
-    font-weight: var(--sa-font-weight-semibold);
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
-  }
-
-  .ds-chart__tabletoggle.ds-btn:hover,
-  .ds-chart__tabletoggle.ds-btn:active {
-    background: var(--sa-bg-neutral-subtler);
-  }
-
-  .ds-chart__tabletoggle.ds-btn:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
-    outline-offset: var(--sa-focus-offset);
-  }
-
-  /* A WIDE table scrolls in its own box rather than widening the page — the
-     estate's rule is that the page body never scrolls horizontally. */
-  .ds-chart__tablewrap {
-    margin-block-start: var(--sa-stack-8);
-    overflow-x: auto;
+    font-variant-numeric: tabular-nums;
   }
 
   .ds-chart__table {
@@ -873,13 +870,13 @@
   .ds-progress__fill--danger  { background-color: var(--sa-text-status-error-base); }
 
   /* ── Print — government charts get printed and PDF'd ─────────────────────
-     Tooltips and the table toggle go; the screen-reader table becomes the
+     Tooltips and the view switch go; the screen-reader table becomes the
      printed table, with its header repeating across pages; the plot keeps its
      ink. `.claude/rules/data-state-completeness.md` and the visualisation spec
      §07 both ask for exactly this. */
   @media print {
     .ds-chart__tooltip,
-    .ds-chart__tabletoggle,
+    .ds-chart__viewswitch,
     .ds-chart__retry { display: none !important; }
     .ds-chart { break-inside: avoid; }
     .ds-chart__svg,

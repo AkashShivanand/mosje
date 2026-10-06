@@ -102,7 +102,10 @@
     justify-self: start;
   }
 
-  /* ── 2 · The bento: NMBA and SMILE lead; the other three share a row ─────── */
+  /* ── The bento: laid out for the number of tiles it HOLDS ───────────────────
+     A tile with nothing to show is not drawn, so the grid cannot assume five. Each
+     count has its own arrangement and none leaves a hole: two lead (7 + 5) and the
+     rest share a row, three share a row, one takes the width. */
   .pd-bento {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -113,8 +116,10 @@
   }
 
   .pd-bento > li { display: flex; min-width: 0; grid-column: span 4; }
-  .pd-bento > li:nth-child(1) { grid-column: span 7; }
-  .pd-bento > li:nth-child(2) { grid-column: span 5; }
+  .pd-bento--n1 > li { grid-column: span 12; }
+  .pd-bento:is(.pd-bento--n2, .pd-bento--n4, .pd-bento--n5) > li:nth-child(1) { grid-column: span 7; }
+  .pd-bento:is(.pd-bento--n2, .pd-bento--n4, .pd-bento--n5) > li:nth-child(2) { grid-column: span 5; }
+  .pd-bento--n4 > li:nth-child(n + 3) { grid-column: span 6; }
   .pd-bento > li > * { flex: 1; min-width: 0; }
 
   .pd-tile__titles { min-width: 0; }
@@ -132,6 +137,17 @@
     gap: var(--sa-stack-24);
     align-items: start;
   }
+
+  /* Two lead figures in one tile (Top Class Education: schools and colleges). */
+  .pd-pair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sa-stack-16);
+  }
+
+  /* A lone tile spans the page; its map keeps a tile's size, not a page's, so it does not
+     restate the full map in the Where section below it. */
+  .pd-bento--n1 .pd-tile__split { grid-template-columns: minmax(0, 32rem) minmax(0, 1fr); } /* layout geometry */
 
   .pd-trend {
     display: grid;
@@ -158,7 +174,17 @@
     font-weight: var(--sa-font-weight-semibold);
   }
 
-  /* ── 3 · Where: the map, and the chosen State/UT beside it ───────────────── */
+  /* ── Funds: what was released, and whether spending keeps pace ──────────── */
+  .pd-funds {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--sa-stack-20);
+    align-items: stretch;
+  }
+
+  .pd-funds--one { grid-template-columns: minmax(0, 1fr); }
+
+  /* ── Where: the map, and the chosen State/UT beside it ───────────────────── */
   .pd-where {
     display: grid;
     grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
@@ -222,18 +248,22 @@
 
   /* ── Narrower ────────────────────────────────────────────────────────────── */
   @media (max-width: 1279px) {
-    .pd-bento > li:nth-child(n) { grid-column: span 6; }
-    .pd-bento > li:nth-child(1) { grid-column: span 12; }
+    .pd-bento:not(.pd-bento--n3) > li:nth-child(n) { grid-column: span 6; }
+    .pd-bento:is(.pd-bento--n1, .pd-bento--n3, .pd-bento--n5) > li:nth-child(1) { grid-column: span 12; }
+    .pd-bento--n3 > li:nth-child(n + 2) { grid-column: span 6; }
   }
 
   @media (max-width: 1023px) {
     .pd-hero__body { grid-template-columns: minmax(0, 1fr); padding: var(--sa-padding-24); }
     .pd-hero__side { padding: var(--sa-padding-24) 0 0; border-inline-start: 0; border-block-start: var(--sa-stroke-1) solid color-mix(in srgb, var(--sa-text-neutral-inverse) 35%, transparent); }
-    .pd-where { grid-template-columns: minmax(0, 1fr); }
+    .pd-where,
+    .pd-funds { grid-template-columns: minmax(0, 1fr); }
   }
 
   @media (max-width: 767px) {
-    .pd-bento > li:nth-child(n) { grid-column: span 12; }
+    /* As specific as the count rules above, and later, so one column wins on a phone. */
+    .pd-bento:is(.pd-bento--n1, .pd-bento--n2, .pd-bento--n3, .pd-bento--n4, .pd-bento--n5) > li:nth-child(n) { grid-column: span 12; }
+    .pd-pair { grid-template-columns: minmax(0, 1fr); }
     .pd-tile__split { grid-template-columns: minmax(0, 1fr); }
     .pd-hero__side { grid-template-columns: minmax(0, 1fr); }
   }

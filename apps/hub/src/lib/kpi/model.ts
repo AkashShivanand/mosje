@@ -115,11 +115,20 @@ const RAMP = [6, 6.4, 6.9, 7.3, 7.8, 8.2, 8.7, 9.1, 9.5, 9.9, 10.3, 10.6];
  * NATIONAL ANCHORS — the SMILE Admin prototype's own All India Programme Overview
  * (`lib/smile-admin/mock-data.ts`: `PROGRAMME_KPI_ALL_INDIA`, `SYSTEM_USERS_ALL`), so
  * the two prototypes agree on the headline figures. Illustrative there too.
+ *
+ * EXCEPT REHABILITATION, re-anchored 6 Oct 2026 on what the Department has said in public.
+ * The Lok Sabha was told 10,446 persons had been rehabilitated to 31 Jul 2026 (Unstarred
+ * Question 3735, as reported; 7,622 adults and 2,824 children), against 9,958 identified
+ * and 970 rehabilitated in the PIB factsheet of 5 May 2025 (to Dec 2024). The old 2,084
+ * was a single year's order of magnitude on a cumulative KPI. 10,450 keeps it illustrative
+ * and plausible; 12,940 mobilised keeps the funnel monotone. Identified stays at the SMILE
+ * Admin prototype's 19,810, inside the published range (≈10k Dec 2024 to the 31k reported
+ * for Mar 2026). The SMILE Admin prototype still draws 2,084 and should follow.
  */
 const SMILE = {
   identified: 19_810,
-  mobilised: 4_316,
-  rehabilitated: 2_084,
+  mobilised: 12_940,
+  rehabilitated: 10_450,
   /** ₹ thousand: ₹7.25 crore disbursed, ₹5.92 crore utilised. */
   released: 72_460,
   utilised: 59_230,
@@ -389,11 +398,21 @@ function nmba(scope: AreaScope, anchors: ModelAnchors = {}): PortalReading {
 
 const FYS = ["2022-23", "2023-24", "2024-25", "2025-26", "2026-27"];
 /**
- * Allocation for the welfare of Scheduled Castes, ₹ crore, B.E. — ILLUSTRATIVE, of the
- * order the Union Budget's Statement 10A has carried. R.E. at 96% of B.E.; expenditure at
- * 93% of R.E.; the current year to 30.09.2026 at 41% of B.E.
+ * Allocation for the welfare of Scheduled Castes, ₹ crore, B.E. — the Grand Total of the
+ * Union Budget's Statement 10A in each year's own Expenditure Profile, rounded to the crore
+ * (indiabudget.gov.in, read 6 Oct 2026): 1,42,342.36 · 1,59,126.22 · 1,65,492.72 ·
+ * 1,68,478.38 · 1,96,400.37. Two were wrong until then (1,65,598 and 1,76,900).
+ *
+ * Still drawn as ILLUSTRATIVE: they are published figures, but not yet read from the
+ * e-Utthaan portal or received from the Department, and R.E. and expenditure around them
+ * are modelled. Where the Budget states one, it is used: R.E. 2025-26 1,61,205.10, and
+ * the 2024-25 actual 1,23,372.16. Elsewhere R.E. is 95.7% of B.E. (the 2025-26 ratio) and
+ * expenditure 74.5% of B.E. (the 2024-25 ratio); the current year to 30.09.2026 at 35%.
  */
-const DAPSC_BE = [1_42_342, 1_59_126, 1_65_598, 1_68_478, 1_76_900];
+const DAPSC_BE = [1_42_342, 1_59_126, 1_65_493, 1_68_478, 1_96_400];
+/** Published figures by year index, where the Budget states one. */
+const DAPSC_RE_KNOWN: Record<number, number> = { 3: 1_61_205 };
+const DAPSC_ACTUAL_KNOWN: Record<number, number> = { 2: 1_23_372 };
 
 /** Obligated Ministries with an illustrative mandated and allocated share of their scheme outlay. */
 const DAPSC_MINISTRIES: [string, number, number][] = [
@@ -410,8 +429,8 @@ const DAPSC_MINISTRIES: [string, number, number][] = [
 ];
 
 function eUtthaan(): PortalReading {
-  const re = DAPSC_BE.map((be) => Math.round(be * 0.96));
-  const expenditure = re.map((r, i) => (i === FYS.length - 1 ? Math.round(DAPSC_BE[i]! * 0.41) : Math.round(r * 0.93)));
+  const re = DAPSC_BE.map((be, i) => DAPSC_RE_KNOWN[i] ?? Math.round(be * 0.957));
+  const expenditure = DAPSC_BE.map((be, i) => (i === FYS.length - 1 ? Math.round(be * 0.35) : (DAPSC_ACTUAL_KNOWN[i] ?? Math.round(be * 0.745))));
   return {
     "e-utthaan.allocation": MODELLED({
       kind: "series", chart: "bar", labels: FYS,
@@ -431,8 +450,10 @@ function eUtthaan(): PortalReading {
       columns: ["Ministry / Department", "Mandated (%)", "Allocated (%)", "Difference (Percentage Points)"],
       rows: DAPSC_MINISTRIES.map(([name, mandated, allocated]) => [name, mandated, allocated, Math.round((allocated - mandated) * 10) / 10]),
     }),
-    "e-utthaan.ministries": MODELLED(figure(41)),
-    "e-utthaan.schemes": MODELLED(figure(329)),
+    // The e-Utthaan portal's own count (devmosje.negd.in, read 6 Oct 2026): 38 Ministries /
+    // Departments and 239 schemes. Was 41 and 329, which nothing supported.
+    "e-utthaan.ministries": MODELLED(figure(38)),
+    "e-utthaan.schemes": MODELLED(figure(239)),
   };
 }
 
@@ -459,10 +480,15 @@ function shreshta(): PortalReading {
  * population (anchor and scale), the shape of the per-state releases its API holds.
  */
 const SCW_FUNDS: Record<string, [budget: number, spent: number]> = {
-  ipsrc: [380, 162.4],
-  sapsrc: [210, 88.2],
-  rvy: [115, 47.2],
-  "pm-special": [60, 14.5],
+  // Re-anchored 6 Oct 2026 on the Notes on Demands for Grants 2026-27 (Demand 93), B.E.
+  // 2026-27: AVYAY (IPSrC + SAPSrC) ₹355 Cr, and AVYAY-CS (RVY, Elderline, caregivers, SAGE
+  // and other) ₹385 Cr. The old split put ₹590 Cr on the first two. Elderline's ₹32 Cr
+  // matches the ₹162 Cr released over five years (AIR, 21 Sep 2026); caregivers' ₹27 Cr the
+  // ₹81 Cr over three. Each component's spend keeps its earlier pace against its budget.
+  ipsrc: [250, 106.8],
+  sapsrc: [105, 44.1],
+  rvy: [280, 114.8],
+  "pm-special": [27, 6.5],
   elderline: [32, 13.4],
 };
 
@@ -476,18 +502,23 @@ function seniorCitizens(): PortalReading {
     r[`senior-citizens.${c}.expenditure`] = MODELLED(figure(spent));
     r[`senior-citizens.${c}.progress`] = MODELLED(figure(Math.round((spent / budget) * 1000) / 10));
   }
-  const devices = 4_86_200;
+  // RVY, half a year: 8.53 lakh beneficiaries and 46 lakh devices over FY 2017-18 to
+  // 2025-26 (AIR, 21 Sep 2026) is about 0.95 lakh people and 5.4 devices each a year. The
+  // cost is the RVY spend above, so the two can never disagree.
+  const devices = 2_83_000;
   const generic = Math.round(devices * 0.83);
-  r["senior-citizens.ipsrc.projects"] = MODELLED(figure(1_212));
+  // 705 senior care homes, 13 continuous care homes, 3 physiotherapy clinics and 17 mobile
+  // medicare units are reported under IPSrC (secondary source); 1,212 had no anchor.
+  r["senior-citizens.ipsrc.projects"] = MODELLED(figure(738));
   r["senior-citizens.ipsrc.beneficiaries"] = MODELLED(figure(1_04_350));
   r["senior-citizens.rvy.devices-cost"] = MODELLED({
     kind: "pair",
     items: [
       { label: "Devices Distributed", value: devices, unit: "number" },
-      { label: "Cost Incurred", value: 41.6, unit: "crore" },
+      { label: "Cost Incurred", value: SCW_FUNDS.rvy![1], unit: "crore" },
     ],
   });
-  r["senior-citizens.rvy.beneficiaries"] = MODELLED(figure(1_18_400));
+  r["senior-citizens.rvy.beneficiaries"] = MODELLED(figure(52_400));
   r["senior-citizens.rvy.devices"] = MODELLED(figure(devices));
   r["senior-citizens.rvy.activities"] = MODELLED({ kind: "breakdown", chart: "donut", items: [{ label: "Camp Mode", value: 846 }, { label: "Walk-in Mode", value: 438 }] });
   r["senior-citizens.rvy.devices-by-type"] = MODELLED({ kind: "breakdown", chart: "donut", items: [{ label: "Generic Items", value: generic }, { label: "Special Items", value: devices - generic }] });
@@ -496,11 +527,13 @@ function seniorCitizens(): PortalReading {
     kind: "breakdown",
     chart: "bar",
     items: [
-      { label: "Information", value: 1_84_200 },
-      { label: "Guidance", value: 1_02_600 },
-      { label: "Emotional Support", value: 71_900 },
-      { label: "Field Intervention", value: 38_400 },
-      { label: "Other", value: 29_700 },
+      // Half a year of Elderline: over 29 lakh calls since October 2021 (PIB, 24 Sep 2026) is
+      // about 6 lakh a year. The old 4.27 lakh was a year's worth in six months.
+      { label: "Information", value: 1_29_000 },
+      { label: "Guidance", value: 71_800 },
+      { label: "Emotional Support", value: 50_300 },
+      { label: "Field Intervention", value: 26_900 },
+      { label: "Other", value: 20_800 },
     ],
   });
   r["senior-citizens.sage.budget"] = MODELLED(figure(20));

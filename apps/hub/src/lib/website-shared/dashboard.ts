@@ -24,6 +24,15 @@ import { PORTAL_DASHBOARDS } from "@/lib/kpi/register";
  */
 
 export const DEPARTMENT_DASHBOARD_AS_ON = "05.10.2026";
+/**
+ * How these figures reached the estate: RECEIVED — supplied by hand, not read from a feed
+ * (instruction, 6 Oct 2026). The proposed dashboard marks every one of them "Received"
+ * (`ValueOrigin`), and draws them in every data mode, because they are the Department's.
+ * Every figure and series below was checked against the live page's HTML on 6 Oct 2026 and
+ * matches it exactly; the one number the page computes rather than prints is the ₹67,977
+ * crore total of the nine fund slices (`FUND_SHARE`), which its own script sums.
+ */
+export const DEPARTMENT_DASHBOARD_ORIGIN = "received" as const;
 export const DEPARTMENT_DASHBOARD_SOURCE = "Beneficiary Dashboard, Department of Social Justice and Empowerment";
 export const DEPARTMENT_DASHBOARD_URL = "https://www.dosje.gov.in/dashboard/";
 

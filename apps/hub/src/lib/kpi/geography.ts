@@ -24,6 +24,32 @@ export const POPULATION_2011_LAKH: Record<string, number> = {
   "Andaman and Nicobar Islands": 3.81, Ladakh: 2.74, Lakshadweep: 0.64,
 };
 
+/**
+ * Projected population as on 1 March 2026, in lakh — the per-person denominator.
+ *
+ * SOURCE: Report of the Technical Group on Population Projections, 2011-2036 (National
+ * Commission on Population, MoHFW), Table 21, "Projected Total Population by Sex as on 1st
+ * March" ('000), Persons, 2026 — https://nhm.gov.in/New_Updates_2018/Report_Population_Projection_2019.pdf,
+ * read 6 Oct 2026. India: 14,23,435 thousand; the 36 rows below sum to 14,23,437 — the
+ * report rounds each row on its own.
+ *
+ * Why not Census 2011: a 2026 figure divided by a 2011 population overstates every rate,
+ * and unevenly — Delhi has grown by a third since, Kerala by an eighth. The report prints
+ * Dadra and Nagar Haveli (836) and Daman and Diu (705) separately, from before their 2020
+ * merger; they are added here, as the map draws them as one.
+ */
+export const POPULATION_2026_LAKH: Record<string, number> = {
+  "Uttar Pradesh": 2428.59, Bihar: 1322.65, Maharashtra: 1293.08, "West Bengal": 1005.22,
+  "Madhya Pradesh": 896.73, Rajasthan: 836.42, "Tamil Nadu": 775.46, Gujarat: 740.86,
+  Karnataka: 689.62, "Andhra Pradesh": 537.09, Odisha: 446.77, Jharkhand: 409.58,
+  Telangana: 386.36, Assam: 367.17, Kerala: 362.07, Punjab: 313.18, Haryana: 312.99,
+  Chhattisgarh: 312.11, Delhi: 225.4, "Jammu and Kashmir": 138.96, Uttarakhand: 119.93,
+  "Himachal Pradesh": 75.79, Tripura: 42.6, Meghalaya: 34.4, Manipur: 33.11, Nagaland: 22.94,
+  Puducherry: 17.57, "Arunachal Pradesh": 16.04, Goa: 15.99,
+  "Dadra and Nagar Haveli and Daman and Diu": 15.41, Mizoram: 12.72, Chandigarh: 12.67,
+  Sikkim: 7.08, "Andaman and Nicobar Islands": 4.06, Ladakh: 3.05, Lakshadweep: 0.7,
+};
+
 export interface AreaNode {
   name: string;
   weight: number;

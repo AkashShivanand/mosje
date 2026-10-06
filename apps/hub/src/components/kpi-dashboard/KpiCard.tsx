@@ -14,7 +14,7 @@ import {
   type CardStateKind,
   type DataProvenance,
 } from "@mosje/design-system";
-import { ProvenanceChip } from "@/components/website/ProvenanceChip";
+import { OriginChip } from "@/components/website/ProvenanceChip";
 import { formatKpi, isoDate, kpiFormatter } from "@/lib/kpi/format";
 import type { KpiDefinition, KpiReading, KpiUnit } from "@/lib/kpi/types";
 
@@ -52,9 +52,7 @@ function provenanceOf(reading: KpiReading): DataProvenance | undefined {
 }
 
 function chip(reading: KpiReading) {
-  if (reading.origin === "modelled") return <ProvenanceChip kind="mock" />;
-  if (reading.origin === "live") return <ProvenanceChip kind="live" />;
-  return undefined;
+  return reading.origin === "snapshot" ? undefined : <OriginChip origin={reading.origin} />;
 }
 
 export function KpiChart({

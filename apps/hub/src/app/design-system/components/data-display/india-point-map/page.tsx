@@ -15,7 +15,7 @@ const A11Y: A11yItem[] = [
     criterion: "1.1.1 Non-text Content",
     level: "A",
     status: "verified",
-    evidence: "It renders through the shared chart frame, so a screen-reader table and a visible “View as Table” control accompany the map.",
+    evidence: "It renders through the shared chart frame, so a screen-reader table and a visible Chart / Table switch accompany the map.",
     description: "Coordinates are unreadable without a table; the table is the accessible equivalent.",
   },
 ];

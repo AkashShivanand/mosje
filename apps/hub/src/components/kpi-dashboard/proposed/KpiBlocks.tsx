@@ -12,7 +12,7 @@ import {
   SideSheet,
   type MetricCardProps,
 } from "@mosje/design-system";
-import { ProvenanceChip } from "@/components/website/ProvenanceChip";
+import { OriginChip } from "@/components/website/ProvenanceChip";
 import { cardStateFor, useDataMode } from "@/lib/data-mode/context";
 import { categoryTitle } from "@/lib/kpi/categories";
 import { formatKpi, isoDate } from "@/lib/kpi/format";
@@ -59,7 +59,7 @@ export function AboutProvider({ officer, children }: { officer: boolean; childre
 export const useOpenAbout = () => React.useContext(OpenAbout);
 
 function chipFor(r: KpiReading) {
-  return r.origin === "modelled" ? <ProvenanceChip kind="mock" /> : r.origin === "live" ? <ProvenanceChip kind="live" /> : undefined;
+  return r.origin === "snapshot" ? undefined : <OriginChip origin={r.origin} />;
 }
 
 /** A tile's figure and the line under it, for any tile-shaped reading. */

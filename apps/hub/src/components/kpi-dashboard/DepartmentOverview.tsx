@@ -80,7 +80,7 @@ type TrendId = (typeof BENEFICIARY_TRENDS.views)[number]["id"];
  * chart on a 311px phone column sets its axis labels at half size; measured, they stay at
  * reading size. `fallback` is the width before the first measurement.
  */
-function FitChart({
+export function FitChart({
   fallback,
   children,
 }: {

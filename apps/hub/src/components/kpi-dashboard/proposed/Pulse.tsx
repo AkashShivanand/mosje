@@ -15,6 +15,7 @@ import {
   CardState,
   CardSubtitle,
   CardTitle,
+  ChartCard,
   DataTable,
   DescriptionList,
   DotPlot,
@@ -29,10 +30,12 @@ import {
   Sparkline,
   WaffleChart,
 } from "@mosje/design-system";
-import { ProvenanceChip } from "@/components/website/ProvenanceChip";
-import { POPULATION_2011_LAKH } from "@/lib/kpi/geography";
+import { OriginChip, ProvenanceChip } from "@/components/website/ProvenanceChip";
+import { POPULATION_2026_LAKH } from "@/lib/kpi/geography";
+import { ABOUT_HERO } from "./hero";
 import type { AreaScope, PortalDashboard, PortalId } from "@/lib/kpi/types";
 import { MinistryCollection } from "../DashboardViewer";
+import { Education, FundsReleased } from "./Education";
 import {
   COMPONENT_SHORT,
   PROGRAMME_ICON,
@@ -44,32 +47,36 @@ import {
   type Readings,
   type Viewing,
 } from "./model";
-import { PROGRAMME_TONE, READINESS_ORDER, READINESS_SLOT, compact, figureOf, perHundred, perHundredRows, populationOf, readinessRows } from "./story";
+import { PROGRAMME_TONE, READINESS_ORDER, READINESS_SLOT, compact, figureOf, perHundred, perHundredRows, readinessRows } from "./story";
 
 /**
- * THE PULSE — the proposed dashboard's one page, told as a story in four movements:
+ * THE PULSE — the proposed dashboard's one page, told as a story in five movements:
  *
- *   1. THE ANSWER     a hero panel with the lead figure in display type, put on a human
- *                     scale against the population it serves, and one figure for each of
- *                     the other programmes beside it.
- *   2. THE PROGRAMMES a bento of five tiles, each with the ONE picture its data is best
- *                     told by: a tile map of NMBA's reach, SMILE's rehabilitation funnel,
- *                     five years of DAPSC allocation, SHRESHTA's 100 students by mode,
- *                     and Senior Citizens' spending pace by component.
- *   3. WHERE          every State/UT as an equal tile — Lakshadweep as legible as Uttar
- *                     Pradesh — per lakh people by default, because a total only ranks
- *                     populations; choosing a tile opens that State/UT beside the map.
- *   4. MONEY          one question, asked of every budget: is spending keeping pace with
- *                     the year? A dot per scheme against the line of the year elapsed.
+ *   1. THE ANSWER     a hero panel: NMBA's reach in display type, and beside it the
+ *                     Department's own figures (Received) — never an illustrative one.
+ *   2. STUDENTS       the Beneficiary Dashboard's figures, received from the Department,
+ *                     re-organised as scholarships, places, and one year-by-year chooser
+ *                     (`Education.tsx`).
+ *   3. THE PROGRAMMES a bento of the portals' tiles, each with the ONE picture its data
+ *                     is best told by. A tile with nothing to show is not drawn, and the
+ *                     grid closes up around the ones that are.
+ *   4. WHERE          every State/UT as an equal tile — Lakshadweep as legible as Uttar
+ *                     Pradesh — outreach per 100 residents by default, because a total only
+ *                     ranks populations; choosing a tile opens that State/UT beside the map.
+ *   5. FUNDS          what was released, scheme by scheme (Received), and whether this
+ *                     year's spending is keeping pace with the year (illustrative).
  *
- * And, for the Ministry and Divisions, 5. THE DATA BEHIND IT: 87 indicators as 87 squares,
+ * Every figure carries its own mark — Live, Received or Illustrative — so the page needs no
+ * banner saying so.
+ *
+ * And, for the Ministry and Divisions, 6. THE DATA BEHIND IT: 87 indicators as 87 squares,
  * coloured by where each figure can come from.
  *
  * DS Audit: Card (`accent="fill"` ADDED) / CardHeader / CardIcon / CardBody / CardFooter ✅ ·
  * HeadlineFigure ➕ ADDED · IndiaTileMap ➕ ADDED · DotPlot ➕ ADDED · WaffleChart ➕ ADDED ·
  * FunnelChart ✅ · Sparkline ✅ · RankedBarList ✅ · SectionTitle ✅ · SegmentedControl ✅ ·
  * DescriptionList ✅ · Accordion ✅ · DataTable ✅ · FilterSelect ✅ · CardState ✅ · Badge ✅ ·
- * Button ✅ · Icon ✅ · ProvenanceChip ✅ (app). The stylesheet places them; it styles none.
+ * Button ✅ · Icon ✅ · OriginChip / ProvenanceChip ✅ (app). The stylesheet places them; it styles none.
  */
 
 export interface PulseProps {
@@ -83,8 +90,7 @@ export interface PulseProps {
   go: (to: Partial<Record<"programme" | "state", string | null>>) => void;
 }
 
-const mark = (origin: string | undefined) =>
-  origin === "modelled" ? <ProvenanceChip kind="mock" /> : origin === "live" ? <ProvenanceChip kind="live" /> : undefined;
+const mark = (origin: string | undefined) => (origin && origin !== "snapshot" ? <OriginChip origin={origin} /> : undefined);
 
 const areaName = (scope: AreaScope) => scope.district ?? scope.state ?? "All India";
 const sub = (level: 2 | 3) => (level === 2 ? 3 : 4) as 3 | 4;
@@ -95,22 +101,23 @@ function Hero({ viewing, readings, scope, sectionLevel }: PulseProps) {
   const has = (id: PortalId) => viewing.programmes.find((p) => p.id === id);
   const kpis = (id: PortalId) => has(id)?.kpis ?? [];
   const lead = has("nmba") ? figureOf("nmba", "nmba.outreach", readings, kpis("nmba")) : null;
-  const population = populationOf(scope);
-  const inHundred = lead && population ? Math.round((lead.value / population) * 100) : null;
 
-  const side = [
-    { id: "smile-beggary" as const, kpi: "smile-beggary.identified", label: "persons engaged in begging identified, under SMILE" },
-    { id: "e-utthaan" as const, kpi: "e-utthaan.allocation", label: "DAPSC allocation for the welfare of Scheduled Castes, B.E. 2026-27" },
-    { id: "shreshta" as const, kpi: "shreshta.beneficiaries", label: "SC students benefited under SHRESHTA, Mode-I and Mode-II" },
-    { id: "senior-citizens" as const, kpi: "senior-citizens.ipsrc.beneficiaries", label: "beneficiaries covered under the Integrated Programme for Senior Citizens" },
-  ].flatMap((s) => {
-    const f = has(s.id) ? figureOf(s.id, s.kpi, readings, kpis(s.id)) : null;
-    return f ? [{ ...s, f }] : [];
-  });
-
-  if (!lead && side.length === 0) {
-    return <CardState kind="not-published" title={`Figures Not Yet Published for ${areaName(scope)}`} description="None of the programmes on this dashboard publishes a figure for this area yet." />;
-  }
+  /*
+   * THE ANSWER IS THE DEPARTMENT'S. All India, the figures beside the lead are the ones
+   * the Department has supplied (`ABOUT_HERO`, Received) — never an illustrative figure,
+   * because the hero is the part of the page most likely to be screenshotted into a deck.
+   * Those figures are not published by State/UT, so a State/UT's hero carries the
+   * programme figures that ARE read for it, each with its own mark.
+   */
+  const side: { key: string; value: string; label: string; origin: string }[] = scope.state
+    ? [
+        { id: "smile-beggary" as const, kpi: "smile-beggary.identified", label: "persons engaged in begging identified, under SMILE" },
+        { id: "senior-citizens" as const, kpi: "senior-citizens.ipsrc.beneficiaries", label: "beneficiaries covered under the Integrated Programme for Senior Citizens" },
+      ].flatMap((x) => {
+        const f = has(x.id)?.levels.includes("state") ? figureOf(x.id, x.kpi, readings, kpis(x.id)) : null;
+        return f ? [{ key: x.kpi, value: compact(f.value, f.kpi.unit), label: x.label, origin: f.origin }] : [];
+      })
+    : ABOUT_HERO.map((x) => ({ key: x.label, ...x }));
 
   return (
     <Card tone="primary" accent="fill" className="pd-hero">
@@ -123,15 +130,15 @@ function Hero({ viewing, readings, scope, sectionLevel }: PulseProps) {
             tone="inverse"
             value={compact(lead.value, "number")}
             label={`people reached by Nasha Mukt Bharat Abhiyaan${scope.state ? ` in ${scope.state}` : ""}`}
-            context={inHundred !== null ? `About ${inHundred} in every 100 people${scope.state ? ` in ${scope.state}` : " in India"}, at the Census 2011 count.` : undefined}
+            context="Cumulative since the Abhiyaan began in August 2020."
             mark={mark(lead.origin)}
           />
         ) : null}
         {side.length > 0 ? (
           <ul className="pd-hero__side" aria-label="The other programmes">
             {side.map((s) => (
-              <li key={s.id}>
-                <HeadlineFigure size="md" tone="inverse" value={compact(s.f.value, s.f.kpi.unit)} label={s.label} mark={mark(s.f.origin)} />
+              <li key={s.key}>
+                <HeadlineFigure size="md" tone="inverse" value={s.value} label={s.label} mark={mark(s.origin)} />
               </li>
             ))}
           </ul>
@@ -181,7 +188,16 @@ function Programmes(props: PulseProps) {
   if (nmba) {
     const reach = fig("nmba", "nmba.outreach");
     const map = perHundredRows(national.nmba?.["nmba.outreach-by-state"], true);
-    tiles.push(
+    const facts = [
+      ["nmba.women", "Women Reached"],
+      ["nmba.youth", "Youth Reached"],
+      ["nmba.pledges", "e-Pledges Taken"],
+      ["nmba.mitras", "Nasha Mukti Mitras"],
+    ].flatMap(([id, term]) => {
+      const f = fig("nmba", id!);
+      return f ? [{ term: term!, value: compact(f.value, "number") }] : [];
+    });
+    if (reach || map.length || facts.length) tiles.push(
       <Tile
         key="nmba"
         p={nmba}
@@ -190,22 +206,9 @@ function Programmes(props: PulseProps) {
       >
         <div className="pd-tile__split">
           {map.length > 0 ? (
-            <IndiaTileMap title="People reached per 100 people, by State/UT" data={map} size="sm" scale="quantile" legend="ramp" selected={scope.state} tableView="sr-only" valueFormat={perHundred} />
+            <IndiaTileMap title="Outreach per 100 residents, by State/UT" data={map} size="sm" scale="quantile" legend="ramp" selected={scope.state} tableView="sr-only" valueFormat={perHundred} />
           ) : null}
-          <DescriptionList
-            size="sm"
-            columns={1}
-            divided
-            items={[
-              ["nmba.women", "Women Reached"],
-              ["nmba.youth", "Youth Reached"],
-              ["nmba.pledges", "e-Pledges Taken"],
-              ["nmba.mitras", "Nasha Mukti Mitras"],
-            ].flatMap(([id, term]) => {
-              const f = fig("nmba", id!);
-              return f ? [{ term: term!, value: compact(f.value, "number") }] : [];
-            })}
-          />
+          {facts.length ? <DescriptionList size="sm" columns={1} divided items={facts} /> : null}
         </div>
       </Tile>,
     );
@@ -236,12 +239,11 @@ function Programmes(props: PulseProps) {
             lastLabel: series.labels[series.labels.length - 1]!,
           }
         : null;
-    tiles.push(
+    if (stages.length || trend || share !== null) tiles.push(
       <Tile
         key="smile"
         p={smile}
         hrefTo={hrefTo}
-        note={stages.length === 0 && scope.state ? `Not implemented in ${scope.state}.` : undefined}
         figure={
           stages[0] ? (
             <HeadlineFigure
@@ -274,7 +276,7 @@ function Programmes(props: PulseProps) {
     const be = alloc?.kind === "series" ? (alloc.series[0]?.data ?? []) : [];
     const growth = be.length > 1 ? Math.round(((be[be.length - 1]! - be[0]!) / be[0]!) * 1000) / 10 : null;
     const spent = exp?.kind === "series" && be.length ? Math.round(((exp.series[0]?.data.at(-1) ?? 0) / be[be.length - 1]!) * 100) : null;
-    tiles.push(
+    if (be.length) tiles.push(
       <Tile
         key="dapsc"
         p={dapsc}
@@ -305,7 +307,7 @@ function Programmes(props: PulseProps) {
     const funds = fig("shreshta", "shreshta.funds");
     const parts = b?.kind === "breakdown" ? b.items : [];
     const total = parts.reduce((t, x) => t + x.value, 0);
-    tiles.push(
+    if (total || funds) tiles.push(
       <Tile
         key="shreshta"
         p={shreshta}
@@ -330,7 +332,7 @@ function Programmes(props: PulseProps) {
   const scw = get("senior-citizens");
   if (scw) {
     const rows = fundsRows({ ...viewing, programmes: [scw] }, readings);
-    tiles.push(
+    if (rows.length) tiles.push(
       <Tile
         key="scw"
         p={scw}
@@ -359,10 +361,17 @@ function Programmes(props: PulseProps) {
     );
   }
 
+  /*
+   * A PROGRAMME WITH NOTHING TO SHOW IS NOT DRAWN. In Live mode four of the five have no
+   * feed yet, and an outlined tile holding only "Explore DAPSC" told the reader nothing
+   * but that something was missing (feedback, 6 Oct 2026). The grid is laid out for the
+   * number of tiles that remain (`pd-bento--n<count>`), so it closes up with no gap.
+   */
+  if (tiles.length === 0) return null;
   return (
     <section className="pd-section" aria-labelledby="pd-programmes">
       <SectionTitle as={sectionLevel} headingId="pd-programmes" size="display" title="The Programmes" />
-      <ul className="pd-bento">
+      <ul className={`pd-bento pd-bento--n${Math.min(tiles.length, 5)}`}>
         {tiles.map((t, i) => (
           <li key={i}>{t}</li>
         ))}
@@ -377,19 +386,21 @@ interface MapMetric {
   id: string;
   programme: PortalId;
   label: string;
+  /** The measure's name when shown per 100 residents. */
+  perLabel?: string;
   perLakh: boolean;
   unit: "number" | "crore";
 }
 
 const MAP_METRICS: MapMetric[] = [
-  { id: "nmba.outreach-by-state", programme: "nmba", label: "People Reached · NMBA", perLakh: true, unit: "number" },
+  { id: "nmba.outreach-by-state", programme: "nmba", label: "People Reached · NMBA", perLabel: "Outreach per 100 Residents · NMBA", perLakh: true, unit: "number" },
   { id: "senior-citizens.sapsrc.budget", programme: "senior-citizens", label: "State Action Plan Budget · Senior Citizens", perLakh: false, unit: "crore" },
 ];
 
 function Where({ viewing, national, scope, go, sectionLevel }: PulseProps) {
   const metrics = MAP_METRICS.filter((m) => viewing.programmes.some((p) => p.id === m.programme) && national[m.programme]?.[m.id]?.value.kind === "areas");
   const [metricId, setMetricId] = React.useState(metrics[0]?.id ?? "");
-  const [perLakh, setPerLakh] = React.useState(true); // per 100 people
+  const [perLakh, setPerLakh] = React.useState(true); // per 100 residents
   // Keyed on the page's State/UT by the caller, so a new page filter starts a new pick.
   const [picked, setPicked] = React.useState<string | undefined>(scope.state);
   const metric = metrics.find((m) => m.id === metricId) ?? metrics[0];
@@ -403,7 +414,7 @@ function Where({ viewing, national, scope, go, sectionLevel }: PulseProps) {
     usePerLakh ? v.toLocaleString("en-IN") : metric.unit === "crore" ? `₹${Math.round(v)}` : compact(v, "number").replace(" lakh", "L").replace(" Cr", "Cr");
   const ranked = [...data].sort((a, b) => b.value - a.value);
   const rank = picked ? ranked.findIndex((r) => r.state === picked) + 1 : 0;
-  const title = `${metric.label}${usePerLakh ? ", per 100 People" : ""}`;
+  const title = usePerLakh ? (metric.perLabel ?? `${metric.label}, per 100 Residents`) : metric.label;
 
   // The chosen State/UT across programmes, from the national readings' state rows.
   const stateFacts = picked
@@ -431,7 +442,7 @@ function Where({ viewing, national, scope, go, sectionLevel }: PulseProps) {
               value={perLakh ? "per-lakh" : "total"}
               onChange={(v) => setPerLakh(v === "per-lakh")}
               options={[
-                { value: "per-lakh", label: "Per 100 People" },
+                { value: "per-lakh", label: "Per 100 Residents" },
                 { value: "total", label: "Total" },
               ]}
             />
@@ -459,7 +470,7 @@ function Where({ viewing, national, scope, go, sectionLevel }: PulseProps) {
                 ) : (
                   <p className="pd-note">No programme on this dashboard publishes figures for {picked} yet.</p>
                 )}
-                {population(picked) ? <p className="pd-note">Population {compact(population(picked)!, "number")}, Census 2011.</p> : null}
+                {population(picked) ? <p className="pd-note">Projected population, 2026: {compact(population(picked)!, "number")}.</p> : null}
               </CardBody>
               <CardFooter>
                 {scope.state === picked ? (
@@ -494,37 +505,37 @@ function Where({ viewing, national, scope, go, sectionLevel }: PulseProps) {
   );
 }
 
-const population = (state: string) => (POPULATION_2011_LAKH[state] ? POPULATION_2011_LAKH[state]! * 1_00_000 : undefined);
+const population = (state: string) => (POPULATION_2026_LAKH[state] ? POPULATION_2026_LAKH[state]! * 1_00_000 : undefined);
 
 /* ══ 4 · Money ══════════════════════════════════════════════════════════════ */
 
 function Money({ viewing, readings, scope, sectionLevel }: PulseProps) {
+  // Both cards are All-India figures; a State/UT view has neither.
+  if (scope.state) return null;
   const rows = fundsRows(viewing, readings).filter((r) => r.measure.endsWith("B.E."));
-  if (scope.state || rows.length === 0) return null;
   const modelled = rows.some((r) => r.origin === "modelled");
   return (
     <section className="pd-section" aria-labelledby="pd-money">
-      <SectionTitle
-        as={sectionLevel}
-        headingId="pd-money"
-        size="display"
-        eyebrow="Funds"
-        title="Is Spending Keeping Pace with the Year?"
-        description="Spent as a share of the Budget Estimate, Financial Year 2026-27 up to 30.09.2026 — half the year."
-      >
-        {modelled ? <ProvenanceChip kind="mock" /> : null}
-      </SectionTitle>
-      <Card variant="outlined">
-        <CardBody>
-          <DotPlot
-            title="Spent as a share of the Budget Estimate, by scheme"
-            rows={rows
-              .map((r) => ({ label: r.label.replace("Senior Citizens · ", ""), value: Math.round((r.spent / r.provided) * 1000) / 10, detail: `${compact(r.spent, "crore")} of ${compact(r.provided, "crore")}` }))
-              .sort((a, b) => b.value - a.value)}
-            reference={{ value: 50, label: "Year elapsed" }}
-          />
-        </CardBody>
-      </Card>
+      <SectionTitle as={sectionLevel} headingId="pd-money" size="display" eyebrow="Funds" title="Funds Released and Spent" />
+      <div className={rows.length ? "pd-funds" : "pd-funds pd-funds--one"}>
+        <FundsReleased headingLevel={sub(sectionLevel)} />
+        {rows.length ? (
+          <ChartCard
+            headingLevel={sub(sectionLevel)}
+            title="Is Spending Keeping Pace with the Year?"
+            subtitle="Spent as a share of the Budget Estimate, 2026-27, up to 30.09.2026 — half the year."
+            actions={modelled ? <ProvenanceChip kind="mock" /> : undefined}
+          >
+            <DotPlot
+              title="Spent as a share of the Budget Estimate, by scheme"
+              rows={rows
+                .map((r) => ({ label: r.label.replace("Senior Citizens · ", ""), value: Math.round((r.spent / r.provided) * 1000) / 10, detail: `${compact(r.spent, "crore")} of ${compact(r.provided, "crore")}` }))
+                .sort((a, b) => b.value - a.value)}
+              reference={{ value: 50, label: "Year elapsed" }}
+            />
+          </ChartCard>
+        ) : null}
+      </div>
     </section>
   );
 }
@@ -617,6 +628,7 @@ export function Pulse(props: PulseProps) {
   return (
     <div className="pd-story">
       <Hero {...props} />
+      <Education sectionLevel={props.sectionLevel} state={props.scope.state} />
       <Programmes {...props} />
       <Where key={props.scope.state ?? "all"} {...props} />
       <Money {...props} />

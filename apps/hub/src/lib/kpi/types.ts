@@ -132,11 +132,14 @@ export interface PortalDashboard {
  * Where ONE value came from.
  *
  * `live` is the portal's own feed, read on the day shown (NMBA, since 5 Oct 2026).
+ * `received` is a figure the Department supplied by hand — a report, a spreadsheet, a
+ * PDF or a letter — entered exactly as received, with who sent it and the date it was
+ * received. Departmental, but not a feed: it changes only when a new document arrives.
  * `snapshot` is a figure a Department system has published, mirrored on a stated date.
  * `modelled` is illustrative: derived by a stated rule, consistent with every other
  * figure on the dashboard, and never a departmental figure.
  */
-export type ValueOrigin = "live" | "snapshot" | "modelled";
+export type ValueOrigin = "live" | "received" | "snapshot" | "modelled";
 
 export interface Labelled {
   label: string;

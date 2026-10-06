@@ -113,7 +113,11 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
     target.scrollIntoView({ block: "start" });
   }, [viewKey]);
 
-  const origins = new Set(viewing.programmes.flatMap((p) => Object.values(readings[p.id] ?? {}).map((r) => r?.origin)));
+  /*
+   * NO PAGE-WIDE BANNER. Every figure carries its own mark — Live, Received or
+   * Illustrative — from the one gate in `ProvenanceChip`, so a sentence across the top
+   * saying the same thing again was the page narrating itself (instruction, 6 Oct 2026).
+   */
 
   return (
     <div className="pd">
@@ -135,22 +139,6 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
           />
         )}
       </div>
-
-      {origins.has("modelled") ? (
-        // Said once, before the reader starts, and not behind the marks toggle: most of the
-        // programmes are not yet connected, and a screenshot must carry its own disclosure.
-        <p className="dm-banner kd-banner">
-          {origins.has("live") || origins.has("snapshot") ? (
-            <>
-              <b>Part illustrative.</b>&nbsp;Figures marked Live come from the programme&apos;s own feed. The rest are illustrative and are not departmental figures.
-            </>
-          ) : (
-            <>
-              <b>Illustrative figures.</b>&nbsp;No programme on this view is connected yet. The figures show how the dashboard will read and are not departmental figures.
-            </>
-          )}
-        </p>
-      ) : null}
 
       <AboutProvider officer={viewing.audience === "officer"}>
         <div ref={panelRef} className="pd-panel">
