@@ -195,12 +195,6 @@
     margin-block-start: auto;
   }
 
-  /* The Year on Year measure switch, above its chart. */
-  .pd-measure {
-    justify-self: start;
-    margin-block-end: var(--sa-stack-12);
-  }
-
   .pd-spark {
     display: grid;
     grid-template-columns: minmax(0, 1fr);

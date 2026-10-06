@@ -3,7 +3,6 @@
 import * as React from "react";
 import {
   Badge,
-  BarChart,
   Card,
   CardBody,
   CardHeader,
@@ -11,6 +10,7 @@ import {
   CardSubtitle,
   CardTitle,
   ChartCard,
+  ComboChart,
   DescriptionList,
   HeadlineFigure,
   LineChart,
@@ -54,9 +54,9 @@ import { CARD_AUDIENCE, FUND_SLICE_AUDIENCE, TREND_AUDIENCE, YOY_AUDIENCE, shows
  *     drawn with straight segments: the series are one figure a year, and a curve between two
  *     years draws values nobody reported (design audit, 6 Oct 2026).
  *   - Year on Year Report: the three cards side by side, so they can be compared. Each draws
- *     ONE measure at a time on ONE axis, with a switch between the two the live page
- *     publishes — not the live page's bars-and-line on two axes, whose crossing points mean
- *     nothing and read as a relationship (design audit, 6 Oct 2026).
+ *     the count as bars and the fund release as a line, on two axes, as the live page does
+ *     (instruction, 6 Oct 2026) — with straight segments, the fund line in its own colour,
+ *     and both latest-year figures stated in the subtitle.
  *   - The results (scholarships, places) and the trends are two movements of the page, so the
  *     portals' results can sit beside the Department's before either is followed over time
  *     (`EducationResults`, `EducationTrends`).
@@ -74,7 +74,7 @@ import { CARD_AUDIENCE, FUND_SLICE_AUDIENCE, TREND_AUDIENCE, YOY_AUDIENCE, shows
  *
  * DS Audit: Card / CardHeader / CardIcon / CardBody ✅ · HeadlineFigure ✅ · DescriptionList ✅ ·
  * Badge ✅ · Sparkline (`startLabel`/`endLabel`/`markLast` ➕ ADDED) ✅ · ChartCard (`variant` ➕ ADDED) ✅ ·
- * LineChart ✅ · BarChart ✅ · RankedBarList ✅ ·
+ * LineChart ✅ · ComboChart ✅ · RankedBarList ✅ ·
  * SegmentedControl ✅ · SectionTitle ✅ · OriginChip / FigureSource (app) ✅.
  */
 
@@ -216,47 +216,38 @@ export function ShareOfFundRelease({ headingLevel, audiences }: { headingLevel: 
 /* ── Year on Year Report ───────────────────────────────────────────────────── */
 
 /**
- * One Year on Year card: the scheme's count OR its fund release, one at a time, each on its
- * own axis from zero. The live page draws both at once on two axes; there, where the line
- * crosses a bar is an accident of two scales and reads as a finding. The two measures and
- * their names are the live page's; only the drawing changes.
- *
- * Each measure keeps ONE colour wherever it appears on the page — counts in the first slot,
- * fund release in the third — so green is never "fund" in one chart and "Post-Matric" in the
- * next. The subtitle states the latest year's figure: the answer the chart supports.
+ * One Year on Year card, as the live page draws it: the scheme's count as bars and its fund
+ * release as a line, on two axes (instruction, 6 Oct 2026: both in one chart). Three things
+ * are ours, to keep two scales readable:
+ *  - straight segments — one figure a year, so a curve would draw values nobody reported;
+ *  - each measure keeps ONE colour wherever it appears on the page: counts in the first slot,
+ *    fund release in the third, so the line is never the green of "Post-Matric" next door;
+ *  - the subtitle states both latest-year figures — the answer the chart supports — so the
+ *    reader need not read either off its axis.
  */
 const COUNT_COLOUR = "var(--sa-chart-cat-1)";
 const FUND_COLOUR = "var(--sa-chart-cat-3)";
 
 function YearOnYearCard({ c, headingLevel }: { c: (typeof YEAR_ON_YEAR.cards)[number]; headingLevel: 3 | 4 }) {
-  const [measure, setMeasure] = React.useState<"count" | "fund">("count");
-  const m = measure === "count" ? c.count : c.fund;
   const year = c.labels[c.labels.length - 1]!;
-  const latest = m.data[m.data.length - 1]!;
-  const takeaway = measure === "count" ? `${year}: ${count(latest)} ${c.count.axis}` : `${year}: ₹${latest.toLocaleString("en-IN", { maximumFractionDigits: 2 })} Cr`;
+  const lastCount = c.count.data[c.count.data.length - 1]!;
+  const lastFund = c.fund.data[c.fund.data.length - 1]!;
+  const takeaway = `${year}: ${count(lastCount)} ${c.count.axis} · ₹${lastFund.toLocaleString("en-IN", { maximumFractionDigits: 2 })} Cr`;
   return (
     // No coloured header band: the live page's three bands would make these the only banded
-    // cards on the page. The title is the live card's, unaltered. The switch sits above the
-    // chart, not in the header: three cards to a row leave no room for a title AND a switch.
+    // cards on the page. The title is the live card's, unaltered.
     <ChartCard variant="outlined" headingLevel={headingLevel} exportable title={c.title} subtitle={takeaway}>
-      <SegmentedControl
-        className="pd-measure"
-        ariaLabel={`Measure shown for ${c.title}`}
-        value={measure}
-        onChange={setMeasure}
-        options={[
-          { value: "count", label: c.count.name },
-          { value: "fund", label: c.fund.name },
-        ]}
-      />
       <FitChart fallback={400}>
         {(width) => (
-          <BarChart
-            title={`${c.title}: ${m.name}, by year`}
+          <ComboChart
+            title={`${c.title}: ${c.count.name} and ${c.fund.name}, by year`}
             labels={[...c.labels]}
-            series={[{ name: m.name, data: [...m.data], color: measure === "count" ? COUNT_COLOUR : FUND_COLOUR }]}
-            yLabel={measure === "count" ? c.count.axis : c.fund.name}
-            valueFormat={measure === "count" ? count : (n: number) => n.toLocaleString("en-IN", { maximumFractionDigits: 2 })}
+            bars={[{ name: c.count.name, data: [...c.count.data], color: COUNT_COLOUR }]}
+            lines={[{ name: c.fund.name, data: [...c.fund.data], color: FUND_COLOUR }]}
+            leftLabel={c.count.axis}
+            rightLabel="Fund (₹ Cr)"
+            valueFormat={count}
+            tickCount={6}
             width={width}
             height={300}
           />
