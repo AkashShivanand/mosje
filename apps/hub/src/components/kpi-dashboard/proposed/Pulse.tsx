@@ -198,12 +198,10 @@ function Hero({ viewing, readings, scope, sectionLevel, audiences }: PulseProps)
                       tone="inverse"
                       value={s.value}
                       label={s.label}
-                      context={
-                        <>
-                          {s.context}
-                          <Icon name="arrow_downward" size={16} />
-                        </>
-                      }
+                      // No arrow after the card's name: beside a figure, a down arrow reads as a
+                      // fall (design review, 7 Oct 2026). The link's underline on hover and focus
+                      // is the cue.
+                      context={s.context}
                     />
                   </a>
                 ) : (
