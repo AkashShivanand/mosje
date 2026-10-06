@@ -198,8 +198,6 @@ function BeneficiaryStudents({ headingLevel, audiences }: { headingLevel: 3 | 4;
     <ChartCard
       variant="outlined"
       headingLevel={headingLevel}
-      exportable
-      exportAppearance="text"
       title={BENEFICIARY_TRENDS.cardTitle}
       // With one view left there is no switch to name it, so the card names it.
       subtitle={views.length === 1 ? view.label : undefined}
@@ -239,8 +237,6 @@ export function ShareOfFundRelease({ headingLevel, audiences }: { headingLevel: 
     <ChartCard
       variant="outlined"
       headingLevel={headingLevel}
-      exportable
-      exportAppearance="text"
       title={FUND_SHARE.title}
       subtitle={FUND_SHARE.subtitle}
       actions={
@@ -285,7 +281,7 @@ function YearOnYearCard({ c, headingLevel }: { c: (typeof YEAR_ON_YEAR.cards)[nu
   return (
     // No coloured header band: the live page's three bands would make these the only banded
     // cards on the page. The title is the live card's, unaltered.
-    <ChartCard variant="outlined" headingLevel={headingLevel} exportable exportAppearance="text" title={c.title} subtitle={takeaway}>
+    <ChartCard variant="outlined" headingLevel={headingLevel} title={c.title} subtitle={takeaway}>
       <FitChart fallback={400}>
         {(width) => (
           <ComboChart

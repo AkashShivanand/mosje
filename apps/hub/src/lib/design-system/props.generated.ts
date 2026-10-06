@@ -10470,6 +10470,13 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": "The primary metric value — a pre-formatted string (e.g. \"22,75,906\"). **Optional**, and it was not. A required string made \"still arriving\" and \"did not arrive\" inexpressible, so every call site with no figure passed `\"—\"` — and the card then announced *\"Total beneficiaries: —\"*, which is not a reading of anything. Pass `loading` or `state` instead and leave this out; the card writes both the visible answer and the spoken one."
+      },
+      {
+        "name": "variant",
+        "type": "\"elevated\" | \"outlined\"",
+        "required": false,
+        "default": "\"elevated\"",
+        "description": "`elevated` (the default) lifts the tile off the page with `elevation/raised`. `outlined` is a tile at rest on the page — a border and `elevation/flat`, no shadow — for a surface where every other card is outlined (a dashboard of outlined chart cards), so one row of floating tiles does not read as a different kind of thing. Same as `ChartCard variant`."
       }
     ]
   },

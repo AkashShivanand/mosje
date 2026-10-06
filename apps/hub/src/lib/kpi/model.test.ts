@@ -82,8 +82,8 @@ test("an area the portal does not work in reads as nothing, not as zeroes", () =
   assert.deepEqual(readPortal("smile-beggary", { state: "Goa" }), {});
 });
 
-/** KPIs only a feed can supply: their State/UT breakdown is never modelled (6 Oct 2026). */
-const FEED_ONLY = new Set(["nmba.outreach-by-state"]);
+/** KPIs only a feed can supply (none today: the NMBA State/UT map has a mirrored snapshot). */
+const FEED_ONLY = new Set<string>();
 
 test("every register KPI has a reading at All India, and no reading lacks a KPI", () => {
   for (const p of PORTAL_DASHBOARDS) {
@@ -135,10 +135,12 @@ test("Live + illustrative: a modelled gap is scaled to the LIVE total beside it"
   assert.equal(num(r["nmba.calls"]), Math.round(348_074_513 * 0.002));
 });
 
-test("the state map is never half live and never invented: one missing State/UT and there is no map", () => {
+test("the state map is never half live and never invented: one missing State/UT and the map is the dated snapshot", () => {
   const partial: PortalFeed = { portal: "nmba", feed: { ...fullFeed.feed, byState: { ...fullFeed.feed.byState, Goa: { ...m(0), people: null } } } };
-  assert.equal(resolveReading("nmba", {}, "hybrid", partial)["nmba.outreach-by-state"], undefined);
-  assert.equal(resolveReading("nmba", {}, "mock", fullFeed)["nmba.outreach-by-state"], undefined);
+  const fallback = resolveReading("nmba", {}, "hybrid", partial)["nmba.outreach-by-state"];
+  assert.equal(fallback?.origin, "snapshot", "an incomplete live map falls back whole, never mixed");
+  assert.equal(resolveReading("nmba", {}, "hybrid", fullFeed)["nmba.outreach-by-state"]?.origin, "live", "a complete live map wins");
+  assert.equal(resolveReading("nmba", {}, "mock", fullFeed)["nmba.outreach-by-state"]?.origin, "snapshot");
 });
 
 test("a State/UT's NMBA figures come from the feed or not at all", () => {

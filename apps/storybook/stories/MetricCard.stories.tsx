@@ -140,6 +140,20 @@ export const Sizes: Story = {
   ),
 };
 
+/**
+ * `variant="outlined"` — the tile at rest on the page: its border and `elevation/flat`, no
+ * shadow. For a dashboard whose chart cards are outlined, so the figures do not float above
+ * them. Beside it, the default raised tile.
+ */
+export const Outlined: Story = {
+  render: (args) => (
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, width: 640 }}>
+      <MetricCard {...args} variant="outlined" label="Outlined — at rest on the page" />
+      <MetricCard {...args} label="Elevated — the default" />
+    </div>
+  ),
+};
+
 /** Without a change, when there is no comparable previous period. */
 export const ValueOnly: Story = {
   args: {

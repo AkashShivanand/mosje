@@ -74,7 +74,18 @@ export function KpiBlocks({ kpis: given, reading, areasAreStates, headingLevel, 
 
   const tiles = kpis.filter((k) => isTile(reading[k.id]!));
   const charts = kpis.filter((k) => !isTile(reading[k.id]!));
-  const spans = closeRows(charts.map((c) => c.span ?? 6));
+  /*
+   * A FEW FIGURES AND THEIR CHART SHARE A ROW (design review, 7 Oct 2026). A lone tile on a row
+   * of its own left two-thirds of the page empty above the charts; three tiles over a single
+   * chart left the chart a row to itself. Now the figures stack in a third of the charts' grid
+   * — one tile beside any number of charts, or up to three tiles beside one chart — and the
+   * first chart takes the rest, so the row is one height and nothing in it stands alone.
+   */
+  const side = charts.length > 0 && (tiles.length === 1 || (tiles.length > 1 && tiles.length <= 3 && charts.length === 1));
+  // The tiles' third is counted when rows are closed, then dropped: the charts' spans only.
+  const spans = side
+    ? closeRows([4, ...charts.map((c, i) => (i === 0 ? 8 : (c.span ?? 6)))]).slice(1)
+    : closeRows(charts.map((c) => c.span ?? 6));
 
   const tileProps = (k: KpiDefinition): MetricCardProps & { key: string } => {
     const r = reading[k.id]!;
@@ -82,6 +93,8 @@ export function KpiBlocks({ kpis: given, reading, areasAreStates, headingLevel, 
     const card = cardOf();
     return {
       key: k.id,
+      // At rest on the page, as every card on the dashboard is (`elevation/flat`).
+      variant: "outlined",
       label: k.name,
       value,
       detail,
@@ -99,9 +112,10 @@ export function KpiBlocks({ kpis: given, reading, areasAreStates, headingLevel, 
 
   return (
     <>
-      {tiles.length > 0 && <KpiRow items={tiles.map(tileProps)} />}
+      {tiles.length > 0 && !side && <KpiRow items={tiles.map(tileProps)} />}
       {charts.length > 0 && (
         <DashboardGrid>
+          {side ? <KpiRow span={4} className="pd-tile-stack" items={tiles.map(tileProps)} /> : null}
           {charts.map((k, i) => (
             <KpiChart
               key={k.id}
@@ -113,7 +127,7 @@ export function KpiBlocks({ kpis: given, reading, areasAreStates, headingLevel, 
               span={spans[i]}
               donutLayout="auto"
               quiet
-              stateMap="tiles"
+              stateMap="choropleth"
               badge={<FigureSource note={noteOf(k, reading[k.id]!)} />}
             />
           ))}

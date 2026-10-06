@@ -1,4 +1,5 @@
 import { SMILE_AREAS, STATE_NAMES, type AreaNode } from "./geography.ts";
+import { NMBA_STATES_SNAPSHOT } from "./feeds/nmba-states-snapshot.ts";
 import type { AreaRow, AreaScope, KpiReading, KpiValue, PortalId, PortalReading } from "./types.ts";
 
 /**
@@ -434,6 +435,14 @@ function nmba(scope: AreaScope, anchors: ModelAnchors = {}): PortalReading {
   // Mitras and helpline calls are not on the NMBA dashboard: modelled at 1.2 Mitras per
   // 100 pledges and two calls per 1,000 people reached.
   return {
+    // The State/UT map's fallback: the API's own State/UT figures, mirrored and dated — never
+    // spread from the national total. A complete live reading replaces it (`resolveReading`).
+    "nmba.outreach-by-state": {
+      value: { kind: "areas", total: NMBA_STATES_SNAPSHOT.national, rows: NMBA_STATES_SNAPSHOT.rows.map((r) => ({ area: r.area, value: r.value })) },
+      origin: "snapshot",
+      source: NMBA_STATES_SNAPSHOT.source,
+      asOn: NMBA_STATES_SNAPSHOT.asOn,
+    },
     "nmba.outreach": snap(base.outreach),
     "nmba.women": snap(base.women),
     "nmba.youth": snap(base.youth),
