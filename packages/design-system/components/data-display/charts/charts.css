@@ -481,7 +481,8 @@
   /* ── Choropleth map regions ──────────────────────────────────────────────── */
   .ds-chart__region {
     stroke: var(--sa-chart-regionStroke);
-    stroke-width: 0.5;
+    /* Fine enough that an island drawn at its minimum mark reads as land, not as a ring. */
+    stroke-width: 0.35;
     transition: opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
     cursor: default;
   }
@@ -492,6 +493,78 @@
     outline: none;
     stroke: var(--sa-icon-neutral-base);
     stroke-width: 1.5;
+  }
+  /* A region that chooses a State/UT says so on approach; pressed, it takes the outline. */
+  .ds-chart__region.is-interactive {
+    cursor: pointer;
+  }
+  .ds-chart__region.is-interactive:active,
+  .ds-chart__region.is-selected {
+    stroke: var(--sa-text-neutral-bolder);
+    stroke-width: 1.5;
+  }
+  .ds-chart__region.is-selected:focus-visible {
+    stroke: var(--sa-focus-ring);
+    stroke-width: 2;
+  }
+  /* The coastline under the map: a quiet edge so the land, and every small island, reads
+     against the page. Drawn beneath the regions, so internal borders stay white. */
+  .ds-chart__coast path {
+    fill: none;
+    stroke: var(--sa-chart-axis);
+    stroke-width: 1;
+    stroke-linejoin: round;
+  }
+  /* Islands drawn at the minimum mark: solid, no white border, so each reads as land. */
+  .ds-chart__islands {
+    stroke: none;
+    pointer-events: none;
+  }
+  /* A State/UT too small to see: a hollow ring in its own shade, on a white halo so it reads
+     on any neighbour. Hollow, so the true boundary stays visible inside it. */
+  .ds-chart__locator-halo {
+    fill: none;
+    stroke: var(--sa-chart-regionStroke);
+    stroke-width: 4.5;
+    pointer-events: none;
+  }
+  .ds-chart__locator {
+    fill: transparent;
+    stroke-width: 2.5;
+    outline: none;
+  }
+  .ds-chart__locator.is-interactive,
+  .ds-chart__archipelago.is-interactive {
+    cursor: pointer;
+  }
+  .ds-chart__locator.is-selected,
+  .ds-chart__locator:active {
+    stroke: var(--sa-text-neutral-bolder);
+  }
+  .ds-chart__locator:focus-visible {
+    stroke: var(--sa-focus-ring);
+  }
+  /* An archipelago's islands are the shape; its box shows only when focused or chosen. */
+  .ds-chart__archipelago {
+    fill: transparent;
+    stroke: none;
+    outline: none;
+  }
+  .ds-chart__archipelago:hover {
+    stroke: var(--sa-chart-axis);
+    stroke-width: 1;
+    stroke-dasharray: 2 2;
+  }
+  .ds-chart__archipelago.is-selected,
+  .ds-chart__archipelago:active {
+    stroke: var(--sa-text-neutral-bolder);
+    stroke-width: 1.5;
+    stroke-dasharray: none;
+  }
+  .ds-chart__archipelago:focus-visible {
+    stroke: var(--sa-focus-ring);
+    stroke-width: 2;
+    stroke-dasharray: none;
   }
 
   /* A bubble that can be selected says so on approach. Every circle is
