@@ -39,6 +39,13 @@ export interface MetricCardProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Makes the whole tile a button. Ignored when `href` is set. */
   onSelect?: () => void;
   /**
+   * What the button does, where it is not a filter. `"dialog"`: the tile OPENS a panel about
+   * its figure — an About sheet — so it is announced as opening a dialog, and carries no
+   * `aria-pressed`, which would call it a toggle that never toggles. Leave it unset for a
+   * tile that filters the page, the case `selected` describes.
+   */
+  opens?: "dialog";
+  /**
    * The tile's figure is the one the page is currently filtered by. Sets `aria-pressed` on a
    * button and `aria-current` on a link, so the state is not carried by the tint alone.
    */
@@ -175,6 +182,7 @@ export const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
       href,
       linkAs,
       onSelect,
+      opens,
       selected = false,
       className,
       ...rest
@@ -205,7 +213,9 @@ export const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
       href != null
         ? { href, ...(selected ? { "aria-current": "true" as const } : {}) }
         : onSelect != null
-          ? { type: "button" as const, onClick: onSelect, "aria-pressed": selected }
+          ? opens === "dialog"
+            ? { type: "button" as const, onClick: onSelect, "aria-haspopup": "dialog" as const }
+            : { type: "button" as const, onClick: onSelect, "aria-pressed": selected }
           : {};
     return (
       <Tag

@@ -6,6 +6,7 @@ export const PORTAL_DASHBOARD_CODES: Record<PortalId, string> = {
   nmba: "NMBA",
   "e-utthaan": "DAPSC",
   shreshta: "SHRESHTA",
+  "senior-citizens": "SCW",
 };
 
 /** The short name a breadcrumb carries. */
@@ -14,6 +15,7 @@ export const PORTAL_DASHBOARD_CRUMBS: Record<PortalId, string> = {
   nmba: "Nasha Mukt Bharat Abhiyaan",
   "e-utthaan": "DAPSC",
   shreshta: "SHRESHTA",
+  "senior-citizens": "Senior Citizens Welfare",
 };
 
 /** PM-AJAY's organisation page in the New and Classic designs, which carries its dashboards. */

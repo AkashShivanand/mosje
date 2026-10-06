@@ -10,8 +10,11 @@ export type CardOrientation = "vertical" | "horizontal";
  * Tier-2 scale rung chosen so white header text clears 4.5:1 on the band.
  */
 export type CardTone = "primary" | "secondary" | "info" | "success" | "warning" | "danger";
-/** `band` fills the header with the tone; `edge` rules the top of the card in it. */
-export type CardAccent = "band" | "edge";
+/**
+ * `band` fills the header with the tone; `edge` rules the top of the card in it; `fill`
+ * paints the whole card in it, with inverse ink — a hero panel inside a page column.
+ */
+export type CardAccent = "band" | "edge" | "fill";
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Surface style. Outlined = 1px border; Elevated = shadow, no border. @default "outlined" */

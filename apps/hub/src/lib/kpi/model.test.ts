@@ -6,7 +6,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { apportion, readPortal, covers } from "./model.ts";
 import { SMILE_AREAS } from "./geography.ts";
-import { PORTAL_DASHBOARDS } from "./register.ts";
+import { PORTAL_DASHBOARDS, PROGRAMMES } from "./register.ts";
 import { clampArea, roleById } from "./access.ts";
 import { PORTAL_SLUGS } from "./slugs.ts";
 import type { KpiReading } from "./types.ts";
@@ -127,4 +127,36 @@ test("the state map is never half live: one missing State/UT and the whole map i
 
 test("Illustrative mode ignores the feed and shows the mirrored snapshot", () => {
   assert.equal(resolveReading("nmba", {}, "mock", fullFeed)["nmba.outreach"]?.origin, "snapshot");
+});
+
+test("Senior Citizens: every KPI on the SCW-internal tab has a reading, and every reading a KPI", () => {
+  const scw = PROGRAMMES.find((p) => p.id === "senior-citizens")!;
+  const reading = readPortal("senior-citizens");
+  assert.equal(scw.kpis.length, 28);
+  for (const k of scw.kpis) assert.ok(reading[k.id], `${k.id} has no reading`);
+  for (const id of Object.keys(reading)) assert.ok(scw.kpis.some((k) => k.id === id), `${id} is not in the register`);
+});
+
+test("Senior Citizens: Financial Progress is expenditure over budget, from the two figures beside it", () => {
+  const r = readPortal("senior-citizens");
+  const fig = (id: string) => {
+    const v = r[id]!.value;
+    return v.kind === "figure" ? v.value : v.kind === "areas" ? v.total : NaN;
+  };
+  for (const c of ["ipsrc", "sapsrc", "rvy", "pm-special", "elderline"]) {
+    const expected = Math.round((fig(`senior-citizens.${c}.expenditure`) / fig(`senior-citizens.${c}.budget`)) * 1000) / 10;
+    assert.equal(fig(`senior-citizens.${c}.progress`), expected, c);
+  }
+});
+
+test("Senior Citizens: the State Action Plan budget's States/UTs sum to its All-India figure", () => {
+  const v = readPortal("senior-citizens")["senior-citizens.sapsrc.budget"]!.value;
+  assert.equal(v.kind, "areas");
+  if (v.kind !== "areas") return;
+  const sum = Math.round(v.rows.reduce((t, r) => t + r.value, 0) * 100) / 100;
+  assert.equal(sum, v.total);
+});
+
+test("every API coverage the register carries is one of the three the portals use", () => {
+  for (const p of PROGRAMMES) for (const k of p.kpis) if (k.api) assert.ok(["available", "partial", "none"].includes(k.api.coverage), k.id);
 });

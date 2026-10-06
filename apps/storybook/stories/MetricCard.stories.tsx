@@ -280,3 +280,17 @@ export const LinkToARegister: Story = {
     href: "/portals/e-anudaan/dashboard/pd/us/sanctioned",
   },
 };
+
+/**
+ * `opens="dialog"` — a tile that OPENS a panel about its figure (an About sheet) rather than
+ * filtering the page. It is announced as opening a dialog and carries no `aria-pressed`.
+ */
+export const OpensAPanel: Story = {
+  args: {
+    label: "Persons Engaged in Begging Identified",
+    value: "19,810",
+    detail: "SMILE",
+    onSelect: () => {},
+    opens: "dialog",
+  },
+};

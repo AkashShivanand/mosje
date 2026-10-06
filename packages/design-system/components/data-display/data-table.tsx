@@ -424,7 +424,8 @@ export function DataTable<T extends Record<string, unknown>>({
           onPageChange={setPage}
           siblings={1}
           size="sm"
-          label="Table pagination"
+          // Named for its table: two tables on a page made two landmarks called the same.
+          label={caption ? `${caption}, pages` : "Table pagination"}
         />
       </div>
       ) : null}

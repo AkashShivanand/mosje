@@ -6,6 +6,8 @@ import { PortalDashboardList } from "@/components/kpi-dashboard/PortalDashboardL
 import { MinistryCollection } from "@/components/kpi-dashboard/DashboardViewer";
 import { DASHBOARD_PAGE, DEPARTMENT_DASHBOARD_AS_ON } from "@/lib/website-shared/dashboard";
 import { isoDate } from "@/lib/kpi/format";
+import { ProposedDashboardSection } from "@/components/kpi-dashboard/proposed/ProposedDashboardSection";
+import { dashboardVersion } from "@/lib/website-shared/dashboard-version";
 import "@/components/kpi-dashboard/kpi-dashboard.css";
 
 export const metadata: Metadata = {
@@ -25,8 +27,22 @@ export const metadata: Metadata = {
  * (The one that was, ₹67,977 Cr, is the live Beneficiary Dashboard's fund-release total,
  * and is now drawn from that dashboard's own figures.) The page now carries the same
  * content as the other two designs.
+ *
+ * `?version=proposed` draws the proposed dashboard in its place (`dashboard-version.ts`).
  */
-export default function DashboardPage() {
+type PageProps = { searchParams: Promise<Record<string, string | string[] | undefined>> };
+export default async function DashboardPage({ searchParams }: PageProps) {
+  if (dashboardVersion(await searchParams) === "proposed") {
+    return (
+      <PageLayout title={DASHBOARD_PAGE.crumb} breadcrumb={[{ label: DASHBOARD_PAGE.crumb }]}>
+        <section aria-label={DASHBOARD_PAGE.crumb}>
+          <div className="sa-container py-10 md:py-12">
+            <ProposedDashboardSection sectionLevel={2} />
+          </div>
+        </section>
+      </PageLayout>
+    );
+  }
   return (
     <PageLayout title={DASHBOARD_PAGE.title} breadcrumb={[{ label: DASHBOARD_PAGE.crumb }]} lastUpdated={formatAsOf(isoDate(DEPARTMENT_DASHBOARD_AS_ON))}>
       <section aria-label={DASHBOARD_PAGE.title}>

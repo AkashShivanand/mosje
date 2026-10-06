@@ -1,0 +1,94 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* MoSJE / SAMAVESH — WaffleChart. Squares in rows; one row per group. */
+  .ds-waffle {
+    display: grid;
+    gap: var(--sa-stack-16);
+    margin: 0;
+    font-family: var(--sa-font-latin);
+  }
+
+  .ds-waffle__rows {
+    display: grid;
+    gap: var(--sa-stack-12);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ds-waffle__row {
+    display: grid;
+    grid-template-columns: minmax(0, 10rem) minmax(0, 1fr); /* layout geometry */
+    align-items: start;
+    gap: var(--sa-stack-16);
+  }
+
+  .ds-waffle__label {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--sa-stack-8);
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .ds-waffle__count {
+    color: var(--sa-text-neutral-subtle);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ds-waffle__cells {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-stack-4);
+  }
+
+  /* A share: ten by ten, so "61 in every 100" can be counted. */
+  .ds-waffle__cells--hundred {
+    display: grid;
+    grid-template-columns: repeat(20, var(--sa-stack-12)); /* layout geometry: 20 × 5 */
+  }
+
+  .ds-waffle__cell {
+    inline-size: var(--sa-stack-12);
+    block-size: var(--sa-stack-12);
+    border-radius: var(--sa-shape-2);
+  }
+
+  .ds-waffle__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-stack-8) var(--sa-stack-20);
+    color: var(--sa-text-neutral-base);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: var(--sa-font-weight-regular);
+  }
+
+  .ds-waffle__key {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-stack-6);
+  }
+
+  .ds-waffle__key b {
+    font-weight: var(--sa-font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ds-waffle__swatch {
+    inline-size: var(--sa-stack-12);
+    block-size: var(--sa-stack-12);
+    border-radius: var(--sa-shape-2);
+  }
+
+  @media (max-width: 767px) {
+    .ds-waffle__row { grid-template-columns: minmax(0, 1fr); gap: var(--sa-stack-6); }
+  }
+
+  @media (forced-colors: active) {
+    .ds-waffle__cell, .ds-waffle__swatch { forced-color-adjust: none; outline: var(--sa-stroke-1) solid CanvasText; }
+  }
+}

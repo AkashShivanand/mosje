@@ -54,6 +54,12 @@ export type { ComboChartProps } from "./combo-chart";
 
 // Geographic
 export { IndiaMap } from "./india-map";
+export { IndiaTileMap, INDIA_TILES } from "./india-tile-map";
+export type { IndiaTileMapProps, IndiaTileMapDatum } from "./india-tile-map";
+export { DotPlot } from "./dot-plot";
+export type { DotPlotProps, DotPlotRow } from "./dot-plot";
+export { WaffleChart } from "./waffle-chart";
+export type { WaffleChartProps, WaffleCategory, WaffleRow } from "./waffle-chart";
 export type { IndiaMapProps, IndiaMapDatum } from "./india-map";
 export { IndiaBubbleMap } from "./india-bubble-map";
 export type { IndiaBubbleMapProps, IndiaBubbleDatum } from "./india-bubble-map";

@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "`FunnelChart` and `Sparkline` fit a narrow card. The funnel's bar column could not shrink below its content and pushed the values past a phone-width card; a sparkline kept its pixel width. The funnel's tracks now shrink, and a sparkline scales down within its container, keeping its proportions."
+}

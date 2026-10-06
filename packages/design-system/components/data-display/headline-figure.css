@@ -1,0 +1,75 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* MoSJE / SAMAVESH — HeadlineFigure. Display-type figure, its phrase, its context. */
+  .ds-headline {
+    display: grid;
+    gap: var(--sa-stack-4);
+    min-width: 0;
+    color: var(--sa-text-neutral-bolder);
+    font-family: var(--sa-font-latin);
+  }
+
+  .ds-headline p {
+    margin: 0;
+  }
+
+  .ds-headline__figure {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-stack-12);
+  }
+
+  .ds-headline__value {
+    font-family: var(--sa-font-display);
+    font-size: var(--sa-type-display-3-size);
+    line-height: var(--sa-type-display-3-lh);
+    font-weight: var(--sa-font-weight-medium);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: var(--sa-type-heading-tracking);
+  }
+
+  .ds-headline--xl .ds-headline__value {
+    font-size: var(--sa-type-display-1-size);
+    line-height: var(--sa-type-display-1-lh);
+    font-weight: var(--sa-font-weight-medium);
+  }
+
+  .ds-headline--md .ds-headline__value {
+    font-size: var(--sa-type-headline-2-size);
+    line-height: var(--sa-type-headline-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .ds-headline__label {
+    max-width: 40ch; /* layout geometry: a phrase, not a paragraph */
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    font-weight: var(--sa-font-weight-regular);
+  }
+
+  .ds-headline--xl .ds-headline__label {
+    font-size: var(--sa-type-title-1-size);
+    line-height: var(--sa-type-title-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .ds-headline--md .ds-headline__label {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-regular);
+  }
+
+  .ds-headline__context {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-regular);
+  }
+
+  .ds-headline--inverse,
+  .ds-headline--inverse .ds-headline__context {
+    color: var(--sa-text-neutral-inverse);
+  }
+}

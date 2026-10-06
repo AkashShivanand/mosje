@@ -8,6 +8,7 @@ import {
   DonutChart,
   FunnelChart,
   IndiaMap,
+  IndiaTileMap,
   LineChart,
   RankedBarList,
   type CardStateKind,
@@ -64,6 +65,8 @@ export function KpiChart({
   headingLevel = 3,
   badge,
   span,
+  donutLayout = "stacked",
+  stateMap = "choropleth",
 }: {
   kpi: KpiDefinition;
   reading: KpiReading;
@@ -75,6 +78,14 @@ export function KpiChart({
   badge?: React.ReactNode;
   /** The span the dashboard gives this card after closing its row; defaults to the KPI's own. */
   span?: number;
+  /**
+   * `auto` sets a donut's legend beside the ring, with amounts, once the card is wider than
+   * half the grid — a lone donut on a full row otherwise floats in white space. The current
+   * dashboards keep the stacked legend. @default "stacked"
+   */
+  donutLayout?: "stacked" | "auto";
+  /** How a States/UTs reading is mapped: the choropleth, or equal tiles. @default "choropleth" */
+  stateMap?: "choropleth" | "tiles";
 }) {
   const v = reading.value;
   const fmt = kpiFormatter(kpi.unit);
@@ -100,7 +111,8 @@ export function KpiChart({
             valueFormat={kpiFormatter(unit)}
             center={formatKpi(Math.round(total * 100) / 100, unit)}
             centerSub="in total"
-            className="kd-donut"
+            className={donutLayout === "auto" && finalSpan >= 8 ? undefined : "kd-donut"}
+            {...(donutLayout === "auto" && finalSpan >= 8 ? { layout: "side" as const, legendValue: "value" as const } : {})}
           />
         );
       } else {
@@ -152,7 +164,11 @@ export function KpiChart({
         skeleton = "region";
         body = (
           <div className="kd-map-split">
-            <IndiaMap title={kpi.name} data={v.rows.map((r) => ({ state: r.area, value: r.value }))} valueFormat={fmt} />
+            {stateMap === "tiles" ? (
+              <IndiaTileMap title={kpi.name} data={v.rows.map((r) => ({ state: r.area, value: r.value }))} valueFormat={fmt} scale="quantile" />
+            ) : (
+              <IndiaMap title={kpi.name} data={v.rows.map((r) => ({ state: r.area, value: r.value }))} valueFormat={fmt} />
+            )}
             <RankedBarList title={`${kpi.name}, ranked`} items={v.rows.map((r) => ({ label: r.area, value: r.value }))} valueFormat={fmt} showRank pageSize={10} />
           </div>
         );

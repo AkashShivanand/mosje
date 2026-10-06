@@ -92,3 +92,31 @@ design-system rule taking precedence over a pixel match (`standards-precedence.m
 | Figures 700 weight, dashed rules | Headline 600, hairline rules | The type-linkage gate (headline = 600) and `DescriptionList divided`. |
 | "Fund Released: ₹117 Cr" on one line | Term above value | `DescriptionList` stacked layout. |
 | No "View as Table" | Every chart offers it | The charts' accessible table. |
+
+## 8. What the sheet gained on 5 Oct 2026 (afternoon read)
+
+- **New tab: SCW-internal.** It holds 28 Senior Citizens Welfare KPIs across seven components: IPSrC, SAPSrC, RVY, PM-SPECIAL, Elderline 14567, SAGE and Other Initiatives. For each, the portal's own API audit gives its coverage (Available / Partial / Not available), the production URLs and what is missing. The proposed dashboard transcribes it row for row (`lib/kpi/register.ts` `SENIOR_CITIZENS`).
+- **The tab is missing several things:**
+  - **KPI Type:** there is no column, so every KPI is read as public. *Ask the Division which are office-only.*
+  - **Definitions, sources, frequencies and formulas:** none are given. The About panel hides those rows from citizens and shows officers "Not supplied by the portal".
+  - **Tracker status:** the KPI Status tab still records SCW as "No" in both phases.
+- **The APIs need a login.** Every `seniorcitizen-api-user.mosje.in/api/app/*` endpoint returned 401 "Unauthenticated access!" without a session, and `project-gia-details` returned 404 (checked 5 Oct 2026). The admin endpoints were not tried. Every Senior Citizens figure is therefore illustrative (`lib/kpi/model.ts` `seniorCitizens`).
+- **Data gaps in the tab:**
+  - **Duplicate figures:** KPI 12 (Devices Distributed and Cost Incurred) and KPI 14 (Total Assistive Devices Distributed) count the same devices. *Ask which one is meant.*
+  - **State Action Plan budget:** SAPSrC's "Budget Estimate" is really funds released, the only figure the API holds.
+- **NMBA's endpoints moved to production.** They changed from `localhost:7004` to `nashamukt-api-user.mosje.in`, which this dashboard already reads live.
+
+## 9. The proposed dashboard
+
+`?version=proposed` on `/website/dashboard` in all three designs, switched from the demo rail's View As tab.
+- **Five views on one set of readings:**
+  - Overview
+  - Programmes
+  - Themes
+  - States/UTs
+  - Data Readiness, for Ministry and Division roles only
+- **One area filter** applies to the whole page.
+- **Every figure can open "About This Figure",** which carries the proforma's columns.
+- **The view is held in the address,** so it can be shared.
+- **The current version is unchanged** and remains the default.
+- **Figma:** the screens have not yet been drawn in the Figma handoff. Under the 1 Oct 2026 standing instruction, they must be drawn before this becomes the build of record.

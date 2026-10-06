@@ -435,6 +435,10 @@ export {
   Heatmap,
   ComboChart,
   IndiaMap,
+  IndiaTileMap,
+  INDIA_TILES,
+  DotPlot,
+  WaffleChart,
   IndiaBubbleMap,
   IndiaPointMap,
   INDIA_STATE_BOXES,
@@ -519,6 +523,17 @@ export type {
 
 // ---- Components: Dashboard composition ---------------------------------------
 export { useChartSize } from "./components/data-display/charts/internal/use-chart-size";
+export type {
+  IndiaTileMapProps,
+  IndiaTileMapDatum,
+  DotPlotProps,
+  DotPlotRow,
+  WaffleChartProps,
+  WaffleCategory,
+  WaffleRow,
+} from "./components/data-display/charts";
+export { HeadlineFigure } from "./components/data-display/headline-figure";
+export type { HeadlineFigureProps } from "./components/data-display/headline-figure";
 export { ChartCard } from "./components/dashboard/chart-card";
 export type { ChartCardProps } from "./components/dashboard/chart-card";
 // Source · as of · status — the one line of self-description a card may carry.

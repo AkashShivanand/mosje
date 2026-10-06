@@ -4,7 +4,9 @@ import { PageLayout } from "@/components/website-next/layout/PageLayout";
 import { DepartmentOverview } from "@/components/kpi-dashboard/DepartmentOverview";
 import { PortalDashboardList } from "@/components/kpi-dashboard/PortalDashboardList";
 import { MinistryCollection } from "@/components/kpi-dashboard/DashboardViewer";
+import { ProposedDashboardSection } from "@/components/kpi-dashboard/proposed/ProposedDashboardSection";
 import { DASHBOARD_PAGE } from "@/lib/website-shared/dashboard";
+import { dashboardVersion } from "@/lib/website-shared/dashboard-version";
 import { socialCard } from "@/lib/seo/social";
 import "@/components/website-next/templates/media.css";
 
@@ -30,8 +32,22 @@ export const metadata: Metadata = {
  * It is now the live site's Beneficiary Dashboard, then one dashboard per scheme portal
  * that has submitted KPIs. PM-AJAY's dashboards are where the DBIM design already put
  * them on 29 Sep 2026 — on the scheme's own page — and its card here links there.
+ *
+ * `?version=proposed` draws the proposed dashboard in its place (`dashboard-version.ts`).
  */
-export default function DashboardPage() {
+type PageProps = { searchParams: Promise<Record<string, string | string[] | undefined>> };
+export default async function DashboardPage({ searchParams }: PageProps) {
+  if (dashboardVersion(await searchParams) === "proposed") {
+    return (
+      <PageLayout title={DASHBOARD_PAGE.crumb} breadcrumb={[{ label: DASHBOARD_PAGE.crumb }]}>
+        <section className="wn-section" aria-label={DASHBOARD_PAGE.crumb}>
+          <div className="sa-container">
+            <ProposedDashboardSection sectionLevel={2} />
+          </div>
+        </section>
+      </PageLayout>
+    );
+  }
   return (
     <PageLayout title={TITLE} breadcrumb={[{ label: DASHBOARD_PAGE.crumb }]}>
       <section className="wn-section" aria-label={TITLE}>

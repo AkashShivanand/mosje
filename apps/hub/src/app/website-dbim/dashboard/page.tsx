@@ -5,7 +5,9 @@ import { MinistryCollection } from "@/components/kpi-dashboard/DashboardViewer";
 import { DepartmentOverview } from "@/components/kpi-dashboard/DepartmentOverview";
 import { DBIM_MENU } from "@/lib/website-dbim/nav";
 import { DBIM_PORTAL_DASHBOARDS } from "@/lib/website-dbim/ministry";
+import { ProposedDashboardSection } from "@/components/kpi-dashboard/proposed/ProposedDashboardSection";
 import { DASHBOARD_PAGE } from "@/lib/website-shared/dashboard";
+import { dashboardVersion } from "@/lib/website-shared/dashboard-version";
 import "@/components/website-dbim/ministry/ministry.css";
 import "@/components/website-dbim/dashboard/dashboard.css";
 import "@/components/kpi-dashboard/kpi-dashboard.css";
@@ -31,16 +33,25 @@ export const metadata: Metadata = {
  * Portals, not among the Department's dashboards (`DBIM_DASHBOARDS`).
  *
  * DS Audit: DepartmentOverview / MinistryCollection (app, shared) ✅ · DbimDashboardTiles (DBIM) ✅.
+ *
+ * `?version=proposed` draws the proposed dashboard in its place (`dashboard-version.ts`).
  */
-export default function DbimDashboardPage() {
+type PageProps = { searchParams: Promise<Record<string, string | string[] | undefined>> };
+export default async function DbimDashboardPage({ searchParams }: PageProps) {
+  const proposed = dashboardVersion(await searchParams) === "proposed";
   return (
     <DbimPage
-      title={DASHBOARD_PAGE.title}
+      title={proposed ? DASHBOARD_PAGE.crumb : DASHBOARD_PAGE.title}
       crumbs={[{ label: "Ministry", path: "/ministry" }, { label: "Our Performance", path: "/ministry/our-performance" }]}
       path="/ministry/our-performance"
       tabs={DBIM_MENU[0]!.children}
       activeTab="/ministry/our-performance"
     >
+      {proposed ? (
+        <div className="db-dash">
+          <ProposedDashboardSection sectionLevel={2} />
+        </div>
+      ) : (
       <div className="db-dash">
         <section className="db-dash__section" aria-label={DASHBOARD_PAGE.title}>
           <DepartmentOverview sectionLevel={2} />
@@ -50,6 +61,7 @@ export default function DbimDashboardPage() {
           <MinistryCollection />
         </div>
       </div>
+      )}
     </DbimPage>
   );
 }

@@ -449,6 +449,67 @@ function shreshta(): PortalReading {
   };
 }
 
+/* ── Senior Citizens Welfare ──────────────────────────────────────────────── */
+
+/**
+ * ILLUSTRATIVE, FY 2026-27 to 30.09.2026, ₹ crore. No figure here is the Department's: the
+ * portal's APIs answer only to a signed-in user. Each component's Financial Progress is its
+ * expenditure over its Budget Estimate, computed here from the two figures shown beside it,
+ * so the three can never disagree. SAPSrC's budget is apportioned across States/UTs by
+ * population (anchor and scale), the shape of the per-state releases its API holds.
+ */
+const SCW_FUNDS: Record<string, [budget: number, spent: number]> = {
+  ipsrc: [380, 162.4],
+  sapsrc: [210, 88.2],
+  rvy: [115, 47.2],
+  "pm-special": [60, 14.5],
+  elderline: [32, 13.4],
+};
+
+function seniorCitizens(): PortalReading {
+  const r: PortalReading = {};
+  for (const [c, [budget, spent]] of Object.entries(SCW_FUNDS)) {
+    r[`senior-citizens.${c}.budget`] =
+      c === "sapsrc"
+        ? MODELLED({ kind: "areas", total: budget, rows: split(budget * 100, "sapsrc", ALL_STATES).children({}).map((row) => ({ ...row, value: row.value / 100 })) })
+        : MODELLED(figure(budget));
+    r[`senior-citizens.${c}.expenditure`] = MODELLED(figure(spent));
+    r[`senior-citizens.${c}.progress`] = MODELLED(figure(Math.round((spent / budget) * 1000) / 10));
+  }
+  const devices = 4_86_200;
+  const generic = Math.round(devices * 0.83);
+  r["senior-citizens.ipsrc.projects"] = MODELLED(figure(1_212));
+  r["senior-citizens.ipsrc.beneficiaries"] = MODELLED(figure(1_04_350));
+  r["senior-citizens.rvy.devices-cost"] = MODELLED({
+    kind: "pair",
+    items: [
+      { label: "Devices Distributed", value: devices, unit: "number" },
+      { label: "Cost Incurred", value: 41.6, unit: "crore" },
+    ],
+  });
+  r["senior-citizens.rvy.beneficiaries"] = MODELLED(figure(1_18_400));
+  r["senior-citizens.rvy.devices"] = MODELLED(figure(devices));
+  r["senior-citizens.rvy.activities"] = MODELLED({ kind: "breakdown", chart: "donut", items: [{ label: "Camp Mode", value: 846 }, { label: "Walk-in Mode", value: 438 }] });
+  r["senior-citizens.rvy.devices-by-type"] = MODELLED({ kind: "breakdown", chart: "donut", items: [{ label: "Generic Items", value: generic }, { label: "Special Items", value: devices - generic }] });
+  r["senior-citizens.pm-special.caregivers"] = MODELLED(figure(8_640));
+  r["senior-citizens.elderline.calls"] = MODELLED({
+    kind: "breakdown",
+    chart: "bar",
+    items: [
+      { label: "Information", value: 1_84_200 },
+      { label: "Guidance", value: 1_02_600 },
+      { label: "Emotional Support", value: 71_900 },
+      { label: "Field Intervention", value: 38_400 },
+      { label: "Other", value: 29_700 },
+    ],
+  });
+  r["senior-citizens.sage.budget"] = MODELLED(figure(20));
+  r["senior-citizens.sage.released"] = MODELLED(figure(6.3));
+  r["senior-citizens.sage.startups"] = MODELLED(figure(54));
+  r["senior-citizens.other.mous"] = MODELLED(figure(7));
+  return r;
+}
+
 /* ── Entry point ──────────────────────────────────────────────────────────── */
 
 /** Whether a portal has any presence in an area. SMILE – Beggary works in 17 states. */
@@ -485,5 +546,7 @@ export function readPortal(portal: PortalId, scope: AreaScope = {}, anchors?: Mo
       return eUtthaan();
     case "shreshta":
       return shreshta();
+    case "senior-citizens":
+      return seniorCitizens();
   }
 }

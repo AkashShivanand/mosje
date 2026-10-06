@@ -1,10 +1,12 @@
 "use client";
 
 import * as React from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { RadioGroup } from "@mosje/design-system";
 import { OFFICER_ROLES, type OfficerRole } from "@/lib/kpi/access";
 import { setViewer, useDashboardViewer } from "@/lib/kpi/viewer";
 import { PORTAL_DASHBOARD_CRUMBS } from "@/lib/website-shared/dashboard-links";
+import { DASHBOARD_VERSION_PARAM, type DashboardVersion } from "@/lib/website-shared/dashboard-version";
 import "@/components/website/data-mode.css";
 
 /**
@@ -27,11 +29,57 @@ function explain(role: OfficerRole | undefined): string {
   return `Every indicator, public and office, for ${portals}. ${area}.`;
 }
 
+const VERSION_EXPLAIN: Record<DashboardVersion, string> = {
+  current: "The live site's Beneficiary Dashboard, then a dashboard per scheme portal.",
+  proposed: "One dashboard across programmes: Overview, Programmes, Themes and States/UTs.",
+};
+
+/** The dashboard root, `/website/dashboard`, whichever page of it is open. */
+const dashboardRoot = (path: string) => path.replace(/(\/dashboard)(\/.*)?$/, "$1");
+
 export function ViewerPanel() {
   const role = useDashboardViewer();
   const name = React.useId();
+  const versionName = React.useId();
+  const router = useRouter();
+  const pathname = usePathname();
+  const params = useSearchParams();
+  const version: DashboardVersion = params.get(DASHBOARD_VERSION_PARAM) === "proposed" ? "proposed" : "current";
+
+  const setVersion = (v: string) => {
+    // A portal's own page opens the proposed dashboard on that programme.
+    const portal = pathname.match(/\/dashboard\/([^/]+)$/)?.[1];
+    const next = new URLSearchParams();
+    if (v === "proposed") {
+      next.set(DASHBOARD_VERSION_PARAM, "proposed");
+      if (portal) {
+        next.set("lens", "programmes");
+        next.set("programme", portal);
+      }
+    }
+    const query = next.toString();
+    router.push(`${dashboardRoot(pathname)}${query ? `?${query}` : ""}`);
+  };
+
   return (
     <div className="dm-panel">
+      <section className="dm-panel__group">
+        <RadioGroup
+          className="dm-panel__opts"
+          legend="Dashboard Version"
+          name={versionName}
+          size="sm"
+          options={[
+            { value: "current", label: "Current" },
+            { value: "proposed", label: "Proposed" },
+          ]}
+          value={version}
+          onChange={setVersion}
+        />
+        <p key={version} className="dm-panel__explain">
+          {VERSION_EXPLAIN[version]}
+        </p>
+      </section>
       <section className="dm-panel__group">
         <RadioGroup
           className="dm-panel__opts"

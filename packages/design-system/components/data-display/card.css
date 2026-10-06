@@ -222,7 +222,19 @@
     padding-top: var(--sa-padding-16);
   }
 
-  /* Edge: the frame in the tone, heavier along the top. */
+  /* Fill: the whole card in the tone, its text inverse — a hero panel in a page column. */
+  .ds-card--fill {
+    border-color: transparent;
+    background: linear-gradient(133deg, var(--cmp-tone-from), var(--cmp-tone-to));
+    color: var(--sa-text-neutral-inverse);
+  }
+
+  .ds-card--fill .ds-card__title,
+  .ds-card--fill .ds-card__subtitle {
+    color: var(--sa-text-neutral-inverse);
+  }
+
+    /* Edge: the frame in the tone, heavier along the top. */
   .ds-card--edge {
     border-color: var(--cmp-tone-edge);
     border-top-width: var(--sa-stroke-4);

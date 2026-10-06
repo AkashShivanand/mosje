@@ -1,0 +1,240 @@
+/*
+ * The proposed dashboard (`ProposedDashboard`, `Pulse`, `ProgrammeStory`). LAYOUT ONLY:
+ * every panel, figure, chart and control is a design-system part with its own styling,
+ * and nothing here reaches inside one. Spacing and type are tokens, so the three website
+ * designs re-bind it through `--sa-*`.
+ */
+@layer theme, base, components, utilities;
+
+@layer components {
+  .pd,
+  .pd-story,
+  .pd-section,
+  .pd-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    min-width: 0;
+  }
+
+  .pd { gap: var(--sa-stack-20); }
+  .pd-story { gap: var(--sa-stack-56); }
+  .pd-section { gap: var(--sa-stack-20); }
+
+  /* ── The area bar ────────────────────────────────────────────────────────── */
+  .pd-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--sa-stack-12);
+  }
+
+  .pd-bar__where {
+    display: grid;
+    margin: 0;
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-title-1-size);
+    line-height: var(--sa-type-title-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .pd-bar__label {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-medium);
+  }
+
+  /* ── 1 · The hero panel ──────────────────────────────────────────────────── */
+  .pd-hero__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: var(--sa-stack-40);
+    align-items: center;
+    padding: var(--sa-padding-40);
+  }
+
+  .pd-hero__side {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sa-stack-24) var(--sa-stack-32);
+    margin: 0;
+    padding: 0 0 0 var(--sa-padding-32);
+    border-inline-start: var(--sa-stroke-1) solid color-mix(in srgb, var(--sa-text-neutral-inverse) 35%, transparent);
+    list-style: none;
+  }
+
+  .pd-hero__intro {
+    display: grid;
+    gap: var(--sa-stack-16);
+    justify-items: start;
+  }
+
+  .pd-hero__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-16);
+  }
+
+  .pd-hero__mark {
+    display: inline-flex;
+    padding: var(--sa-padding-8);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-base);
+  }
+
+  .pd-hero__summary,
+  .pd-hero__meta {
+    margin: 0;
+    max-width: 60ch; /* layout geometry: the prose measure */
+    color: var(--sa-text-neutral-inverse);
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    font-weight: var(--sa-font-weight-regular);
+  }
+
+  .pd-hero__meta {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+
+  .pd-back {
+    justify-self: start;
+  }
+
+  /* ── 2 · The bento: NMBA and SMILE lead; the other three share a row ─────── */
+  .pd-bento {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--sa-stack-20);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pd-bento > li { display: flex; min-width: 0; grid-column: span 4; }
+  .pd-bento > li:nth-child(1) { grid-column: span 7; }
+  .pd-bento > li:nth-child(2) { grid-column: span 5; }
+  .pd-bento > li > * { flex: 1; min-width: 0; }
+
+  .pd-tile__titles { min-width: 0; }
+
+  .pd-tile__body {
+    display: grid;
+    align-content: start;
+    gap: var(--sa-stack-20);
+  }
+
+  /* NMBA: the tile map beside its four figures. */
+  .pd-tile__split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: var(--sa-stack-24);
+    align-items: start;
+  }
+
+  .pd-trend {
+    display: grid;
+    gap: var(--sa-stack-8);
+    margin-block-start: auto;
+  }
+
+  .pd-spark {
+    display: grid;
+    gap: var(--sa-stack-16);
+  }
+
+  .pd-fact,
+  .pd-note {
+    margin: 0;
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-regular);
+  }
+
+  .pd-fact b {
+    color: var(--sa-text-neutral-bolder);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  /* ── 3 · Where: the map, and the chosen State/UT beside it ───────────────── */
+  .pd-where {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: var(--sa-stack-20);
+    align-items: stretch;
+  }
+
+  .pd-chips,
+  .pd-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-stack-8);
+  }
+
+  .pd-actions--filters {
+    margin-block-end: var(--sa-stack-16);
+  }
+
+  /* ── About This Figure ───────────────────────────────────────────────────── */
+  .pd-about {
+    display: grid;
+    gap: var(--sa-stack-20);
+  }
+
+  .pd-about__figure {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--sa-stack-8);
+    margin: 0;
+  }
+
+  .pd-about__value {
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-headline-2-size);
+    line-height: var(--sa-type-headline-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pd-about__kicker {
+    display: block;
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-medium);
+  }
+
+  .pd-about__qualifier {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-regular);
+  }
+
+  /* A heading that receives focus after a move is a landmark for the reader, not a control. */
+  .pd-panel :is(h2, h3)[tabindex="-1"]:focus {
+    outline: none;
+  }
+
+  /* ── Narrower ────────────────────────────────────────────────────────────── */
+  @media (max-width: 1279px) {
+    .pd-bento > li:nth-child(n) { grid-column: span 6; }
+    .pd-bento > li:nth-child(1) { grid-column: span 12; }
+  }
+
+  @media (max-width: 1023px) {
+    .pd-hero__body { grid-template-columns: minmax(0, 1fr); padding: var(--sa-padding-24); }
+    .pd-hero__side { padding: var(--sa-padding-24) 0 0; border-inline-start: 0; border-block-start: var(--sa-stroke-1) solid color-mix(in srgb, var(--sa-text-neutral-inverse) 35%, transparent); }
+    .pd-where { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  @media (max-width: 767px) {
+    .pd-bento > li:nth-child(n) { grid-column: span 12; }
+    .pd-tile__split { grid-template-columns: minmax(0, 1fr); }
+    .pd-hero__side { grid-template-columns: minmax(0, 1fr); }
+  }
+}

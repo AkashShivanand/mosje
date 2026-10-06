@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "ChartCard's header wraps on a phone. Below 768px the actions (a filter, a switch, the download control) move under the title when they do not fit beside it, instead of squeezing the title into a column one word wide. Found on the proposed website Dashboard, where a figure select overlapped its card's title at 375px."
+}

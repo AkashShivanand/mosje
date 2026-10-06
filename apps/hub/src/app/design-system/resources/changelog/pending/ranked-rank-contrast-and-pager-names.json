@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "Two accessibility fixes found by an axe run on the proposed Dashboard. The rank number in `RankedBarList` uses the bolder brand text: the base shade on its tint measured 4.48:1, under AA. And `DataTable`'s pager is now named after its table (\"Every indicator and its data feed, pages\"), so two tables on one page no longer make two navigation landmarks with the same name."
+}

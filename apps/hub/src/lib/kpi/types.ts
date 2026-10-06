@@ -78,9 +78,28 @@ export interface KpiDefinition {
   levels?: AreaLevel[];
   /** Grid width on a 12-column dashboard. Charts take more than a figure. */
   span?: 3 | 4 | 6 | 8 | 12;
+  /** The scheme inside a programme the KPI belongs to — "Rashtriya Vayoshri Yojana (RVY)". */
+  component?: string;
+  /** What the portal's API can supply for this KPI, as the portal's own API audit records it. */
+  api?: KpiApi;
 }
 
-export type PortalId = "smile-beggary" | "nmba" | "e-utthaan" | "shreshta";
+/**
+ * The SCW-internal tab's "API Coverage" (5 Oct 2026), one vocabulary: an API that returns the
+ * KPI, one that returns part of it or a proxy, or none. NMBA's two endpoints are listed on its
+ * own tab and read live by this dashboard.
+ */
+export type ApiCoverage = "available" | "partial" | "none";
+
+export interface KpiApi {
+  coverage: ApiCoverage;
+  /** Production URLs the portal named. */
+  endpoints?: string[];
+  /** The portal's "Gap / What is missing", verbatim. Officer view only. */
+  gap?: string;
+}
+
+export type PortalId = "smile-beggary" | "nmba" | "e-utthaan" | "shreshta" | "senior-citizens";
 
 export interface PortalDashboard {
   id: PortalId;

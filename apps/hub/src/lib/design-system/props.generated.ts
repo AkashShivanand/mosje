@@ -1971,7 +1971,7 @@ export const GENERATED_PROPS = {
     "props": [
       {
         "name": "accent",
-        "type": "CardAccent = \"band\" | \"edge\"",
+        "type": "CardAccent = \"band\" | \"edge\" | \"fill\"",
         "required": false,
         "description": "How the tone shows on the card's frame. Needs `tone`; defaults it to `primary`."
       },
@@ -6345,6 +6345,87 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "DotPlotProps": {
+    "source": "packages/design-system/components/data-display/charts/dot-plot.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "rows",
+        "type": "DotPlotRow[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": "Accessible name of the whole plot."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "filterLabel",
+        "type": "string",
+        "required": false,
+        "description": "Named on `\"no-results\"` so the reader can undo the filter they applied."
+      },
+      {
+        "name": "max",
+        "type": "number",
+        "required": false,
+        "default": "100",
+        "description": "The scale's end."
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": "Offered on `\"error\"`. A feed being down is an expected state with a retry, not an exception."
+      },
+      {
+        "name": "reference",
+        "type": "{ value: number; label: string }",
+        "required": false,
+        "description": "One line drawn across every row — the share of the year elapsed, a target, a national figure — so each dot is read against it, not against the end of the scale."
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": "`sm` drops the scale row and tightens the rows, for a thumbnail in a card."
+      },
+      {
+        "name": "state",
+        "type": "ChartState = \"loading\" | \"empty\" | \"no-results\" | \"not-published\" | \"error\" | \"restricted\" | \"offline\"",
+        "required": false,
+        "description": "What to render INSTEAD of the marks. Omit for the populated state. `\"loading\"` draws a skeleton at the chart's own aspect ratio, so the layout does not jump when the figures land. `\"no-results\"` is deliberately separate from `\"empty\"`: \"the feed published nothing\" and \"your filter excluded everything\" are different sentences with different remedies, and a chart that renders one for both is lying about one of them."
+      },
+      {
+        "name": "tableView",
+        "type": "\"toggle\" | \"sr-only\"",
+        "required": false,
+        "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
+      },
+      {
+        "name": "textured",
+        "type": "boolean",
+        "required": false,
+        "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
+      },
+      {
+        "name": "valueFormat",
+        "type": "ValueFormat",
+        "required": false,
+        "default": "pct",
+        "description": ""
+      }
+    ]
+  },
   "DropdownItemProps": {
     "source": "packages/design-system/components/navigation/header/nav-parts.tsx",
     "inheritsNative": false,
@@ -8085,6 +8166,50 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "HeadlineFigureProps": {
+    "source": "packages/design-system/components/data-display/headline-figure.tsx",
+    "inheritsNative": true,
+    "props": [
+      {
+        "name": "label",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "What it counts, as a phrase that completes the figure: \"people reached by …\"."
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "required": true,
+        "description": "The figure, formatted: \"34.81 Cr\"."
+      },
+      {
+        "name": "context",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The figure on a human scale, from a published denominator: \"29 in every 100 people, by Census 2011\". Leave it out where no published denominator exists."
+      },
+      {
+        "name": "mark",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A mark beside the figure — a Live or Illustrative chip."
+      },
+      {
+        "name": "size",
+        "type": "\"xl\" | \"lg\" | \"md\"",
+        "required": false,
+        "default": "\"lg\"",
+        "description": "`xl` leads a page; `lg` and `md` stand beside it."
+      },
+      {
+        "name": "tone",
+        "type": "\"default\" | \"inverse\"",
+        "required": false,
+        "default": "\"default\"",
+        "description": "`inverse` on a brand or inverse Band."
+      }
+    ]
+  },
   "HeatmapProps": {
     "source": "packages/design-system/components/data-display/charts/heatmap.tsx",
     "inheritsNative": false,
@@ -8894,6 +9019,113 @@ export const GENERATED_PROPS = {
         "type": "boolean",
         "required": false,
         "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
+      },
+      {
+        "name": "valueFormat",
+        "type": "ValueFormat",
+        "required": false,
+        "default": "formatIndian",
+        "description": ""
+      }
+    ]
+  },
+  "IndiaTileMapProps": {
+    "source": "packages/design-system/components/data-display/charts/india-tile-map.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "data",
+        "type": "IndiaTileMapDatum[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "filterLabel",
+        "type": "string",
+        "required": false,
+        "description": "Named on `\"no-results\"` so the reader can undo the filter they applied."
+      },
+      {
+        "name": "legend",
+        "type": "\"steps\" | \"ramp\"",
+        "required": false,
+        "default": "\"steps\"",
+        "description": "`steps` names every range; `ramp` is one line, low to high, for a thumbnail."
+      },
+      {
+        "name": "legendFormat",
+        "type": "ValueFormat",
+        "required": false,
+        "description": "The figures in the legend, where the unit is already in the title (\"9.9–17\"). Defaults to `valueFormat`."
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": "Offered on `\"error\"`. A feed being down is an expected state with a retry, not an exception."
+      },
+      {
+        "name": "onSelect",
+        "type": "(state: string) => void",
+        "required": false,
+        "description": "Makes every tile a button that chooses its State/UT."
+      },
+      {
+        "name": "scale",
+        "type": "\"linear\" | \"quantile\"",
+        "required": false,
+        "default": "\"linear\"",
+        "description": "How a figure maps to a shade. `linear` shades by value; `quantile` puts an equal number of States/UTs in each of five shades, so two outliers cannot wash the other thirty-four out to the palest step. Use `quantile` for a skewed reading."
+      },
+      {
+        "name": "selected",
+        "type": "string",
+        "required": false,
+        "description": "The State/UT drawn as chosen — an outline, and `aria-pressed` when tiles are buttons."
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": "`md` prints each tile's code and its figure; `sm` the code alone, for a thumbnail in a card. Both carry the figure in the tooltip, the accessible name and the table."
+      },
+      {
+        "name": "state",
+        "type": "ChartState = \"loading\" | \"empty\" | \"no-results\" | \"not-published\" | \"error\" | \"restricted\" | \"offline\"",
+        "required": false,
+        "description": "What to render INSTEAD of the marks. Omit for the populated state. `\"loading\"` draws a skeleton at the chart's own aspect ratio, so the layout does not jump when the figures land. `\"no-results\"` is deliberately separate from `\"empty\"`: \"the feed published nothing\" and \"your filter excluded everything\" are different sentences with different remedies, and a chart that renders one for both is lying about one of them."
+      },
+      {
+        "name": "tableView",
+        "type": "\"toggle\" | \"sr-only\"",
+        "required": false,
+        "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
+      },
+      {
+        "name": "textured",
+        "type": "boolean",
+        "required": false,
+        "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
+      },
+      {
+        "name": "tileFormat",
+        "type": "ValueFormat",
+        "required": false,
+        "default": "formatCompact",
+        "description": "The figure printed on a `md` tile. Defaults to compact Indian notation (\"34.8 Cr\")."
       },
       {
         "name": "valueFormat",
@@ -10122,6 +10354,12 @@ export const GENERATED_PROPS = {
         "type": "() => void",
         "required": false,
         "description": "Makes the whole tile a button. Ignored when `href` is set."
+      },
+      {
+        "name": "opens",
+        "type": "\"dialog\"",
+        "required": false,
+        "description": "What the button does, where it is not a filter. `\"dialog\"`: the tile OPENS a panel about its figure — an About sheet — so it is announced as opening a dialog, and carries no `aria-pressed`, which would call it a toggle that never toggles. Leave it unset for a tile that filters the page, the case `selected` describes."
       },
       {
         "name": "progress",
@@ -16431,6 +16669,87 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "12",
         "description": "Seconds between visible ticks once mounted. Set 0 to freeze after the first paint."
+      }
+    ]
+  },
+  "WaffleChartProps": {
+    "source": "packages/design-system/components/data-display/charts/waffle-chart.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "categories",
+        "type": "WaffleCategory[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "rows",
+        "type": "WaffleRow[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "filterLabel",
+        "type": "string",
+        "required": false,
+        "description": "Named on `\"no-results\"` so the reader can undo the filter they applied."
+      },
+      {
+        "name": "hideLegend",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Hide the legend, where the surface around the chart already names the colours."
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": "Offered on `\"error\"`. A feed being down is an expected state with a retry, not an exception."
+      },
+      {
+        "name": "scale",
+        "type": "\"count\" | \"percent\"",
+        "required": false,
+        "default": "\"count\"",
+        "description": "`count` draws one square per unit — 42 indicators are 42 squares. `percent` draws each row as 100 squares in proportion, for a share."
+      },
+      {
+        "name": "state",
+        "type": "ChartState = \"loading\" | \"empty\" | \"no-results\" | \"not-published\" | \"error\" | \"restricted\" | \"offline\"",
+        "required": false,
+        "description": "What to render INSTEAD of the marks. Omit for the populated state. `\"loading\"` draws a skeleton at the chart's own aspect ratio, so the layout does not jump when the figures land. `\"no-results\"` is deliberately separate from `\"empty\"`: \"the feed published nothing\" and \"your filter excluded everything\" are different sentences with different remedies, and a chart that renders one for both is lying about one of them."
+      },
+      {
+        "name": "tableView",
+        "type": "\"toggle\" | \"sr-only\"",
+        "required": false,
+        "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
+      },
+      {
+        "name": "textured",
+        "type": "boolean",
+        "required": false,
+        "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
+      },
+      {
+        "name": "unit",
+        "type": "string",
+        "required": false,
+        "default": "\"unit\"",
+        "description": "What one square is, for the accessible name: \"indicator\", \"student\"."
       }
     ]
   },

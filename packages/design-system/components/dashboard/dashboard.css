@@ -95,6 +95,20 @@
     gap: var(--sa-stack-8);
     flex-shrink: 0;
   }
+
+  /* On a phone the actions wrap under the title rather than squeezing it into a column a
+     word wide: a filter and a switch beside a title left "People R…" overlapping its own
+     select at 375px. */
+  @media (max-width: 767px) {
+    .ds-chart-card__head {
+      flex-wrap: wrap;
+    }
+    .ds-chart-card__actions {
+      flex-wrap: wrap;
+      flex-shrink: 1;
+      min-width: 0;
+    }
+  }
   .ds-chart-card__body {
     padding: var(--sa-padding-20);
     flex: 1;
