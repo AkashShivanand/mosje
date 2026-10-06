@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Button, Chip, Combobox, FilterSelect, Icon } from "@mosje/design-system";
+import { Button, Combobox, FilterSelect, Icon } from "@mosje/design-system";
 import { useDataMode } from "@/lib/data-mode/context";
 import { STATE_NAMES } from "@/lib/kpi/geography";
 import type { PortalFeed } from "@/lib/kpi/live";
@@ -16,7 +16,7 @@ import { OfficerLogin } from "./OfficerLogin";
 import { ProgrammeStory } from "./ProgrammeStory";
 import { DataBehind, Pulse } from "./Pulse";
 import { SHORT_NAME, readAll, viewingFor } from "./model";
-import { AUDIENCES, AUDIENCE_LABEL, PROGRAMME_AUDIENCE, parseAudiences, serialiseAudiences, shows, type Audience } from "./audience";
+import { AUDIENCES, AUDIENCE_LABEL, PROGRAMME_AUDIENCE, parseAudiences, serialiseAudiences, shows } from "./audience";
 import "../kpi-dashboard.css";
 import "./proposed.css";
 
@@ -106,13 +106,6 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
     },
     [router, hrefTo],
   );
-  const toggleAudience = (id: Audience | "all") => {
-    const next = new Set(audiences);
-    if (id === "all") next.clear();
-    else if (next.has(id)) next.delete(id);
-    else next.add(id);
-    go({ for: serialiseAudiences(next) || null }, { keepFocus: true });
-  };
   const viewKey = params.toString();
   React.useEffect(() => {
     if (firstView.current) {
@@ -154,17 +147,15 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
     <div className="pd">
       {role ? <ViewerNotice role={role} /> : null}
 
-      {/* OFFICER LOGIN, AT THE TOP (decided 6 Oct 2026: the dashboard has its own login). A
-          citizen reads the page without signing in; an officer signs in for the Post-Login
-          KPIs. Signed in, the Officer View notice above takes its place. */}
-      {role || login ? null : (
-        <div className="pd-access">
-          <Button appearance="outlined" size="sm" href={hrefTo({ view: "login" })} linkAs={Link} iconLeft={<Icon name="login" size={16} />}>
-            Officer Login
-          </Button>
-        </div>
-      )}
-
+      {/*
+        ONE TOOLBAR (design audit, 6 Oct 2026). What the page is showing on the left; the three
+        controls that change it on the right, on one baseline: Type of Applicant, State / UT
+        and, for an officer, the sign-in. Type of Applicant used to be nine chips over two rows
+        above the first figure — the page's busiest line, for a choice most readers never make
+        — so it is the design system's multi-select at every width now. Its label and groups
+        are the ones the Additional Secretary approved (`audience.ts`); nothing chosen means
+        everyone, and the field says "All".
+      */}
       {page ? null : (
         <div className="pd-bar">
           <p className="pd-bar__where" role="status">
@@ -173,14 +164,42 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
             {scope.district ? `${scope.district}, ` : ""}
             {scope.state ?? "All India"}
           </p>
-          {role?.area.state ? null : (
-            <FilterSelect
-              label="State / UT"
-              value={scope.state ?? ALL_INDIA}
-              onChange={(v) => go({ state: v || null }, { keepFocus: true })}
-              options={[{ value: ALL_INDIA, label: "All India" }, ...STATE_NAMES.map((s) => ({ value: s, label: s }))]}
-            />
-          )}
+          <div className="pd-bar__controls">
+            {programme ? null : (
+              <div className="pd-bar__applicant">
+                {/* The visible label matches State / UT's beside it; the field keeps its own
+                    label for assistive technology, so the name is announced once. */}
+                <span className="pd-bar__control-label" aria-hidden="true">
+                  {AUDIENCE_LABEL}
+                </span>
+                <Combobox
+                  multiple
+                  size="sm"
+                  labelHidden
+                  label={AUDIENCE_LABEL}
+                  placeholder="All"
+                  options={AUDIENCES.map((a) => ({ value: a.id, label: a.label }))}
+                  value={AUDIENCES.filter((a) => audiences.has(a.id)).map((a) => a.id)}
+                  onChange={(v) => go({ for: serialiseAudiences(parseAudiences(v.join(","))) || null }, { keepFocus: true })}
+                />
+              </div>
+            )}
+            {role?.area.state ? null : (
+              <FilterSelect
+                label="State / UT"
+                value={scope.state ?? ALL_INDIA}
+                onChange={(v) => go({ state: v || null }, { keepFocus: true })}
+                options={[{ value: ALL_INDIA, label: "All India" }, ...STATE_NAMES.map((s) => ({ value: s, label: s }))]}
+              />
+            )}
+            {/* Officer Login (the dashboard has its own login, decided 6 Oct 2026). Signed in,
+                the Officer View notice above the toolbar takes its place. */}
+            {role ? null : (
+              <Button appearance="outlined" size="md" href={hrefTo({ view: "login" })} linkAs={Link} iconLeft={<Icon name="login" size={20} />}>
+                Officer Login
+              </Button>
+            )}
+          </div>
         </div>
       )}
       {scope.state && !programme && !page ? (
@@ -190,40 +209,6 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
             : `No figures are published for ${scope.state}. The sections below show All-India figures.`}
         </p>
       ) : null}
-
-      {programme || page ? null : (
-        <>
-          {/* TYPE OF APPLICANT — the Additional Secretary's approved label and groups
-              (`audience.ts`). Multi-select, nothing chosen = everyone. On a wide screen,
-              chips: every group visible and one tap away, with "All" saying plainly that the
-              page is unfiltered. On a phone the nine chips would stack ~330px above the first
-              figure, so the same choice is the DS multi-select Combobox. One state, two
-              controls; CSS shows one. */}
-          <div className="pd-filter pd-filter--wide" role="group" aria-labelledby="pd-filter-label">
-            <span id="pd-filter-label" className="pd-filter__label">
-              {AUDIENCE_LABEL}
-            </span>
-            <Chip selected={audiences.size === 0} onSelectedChange={() => toggleAudience("all")}>
-              All
-            </Chip>
-            {AUDIENCES.map((a) => (
-              <Chip key={a.id} selected={audiences.has(a.id)} onSelectedChange={() => toggleAudience(a.id)}>
-                {a.label}
-              </Chip>
-            ))}
-          </div>
-          <div className="pd-filter--narrow">
-            <Combobox
-              multiple
-              label={AUDIENCE_LABEL}
-              placeholder="All"
-              options={AUDIENCES.map((a) => ({ value: a.id, label: a.label }))}
-              value={AUDIENCES.filter((a) => audiences.has(a.id)).map((a) => a.id)}
-              onChange={(v) => go({ for: serialiseAudiences(parseAudiences(v.join(","))) || null }, { keepFocus: true })}
-            />
-          </div>
-        </>
-      )}
 
       <FigureSourceProvider>
         <div ref={panelRef} className="pd-panel">

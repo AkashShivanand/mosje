@@ -507,6 +507,16 @@
     gap: var(--sa-inline-4);
   }
 
+  /* `labelHidden` with nothing else in the row: out of the flow, so the field's row gap is
+     not spent on a row nobody sees. The label inside stays for assistive technology. */
+  .ds-field__label-row--hidden {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
   /* Label 1 (14/20), medium — what SAMAVESH's own Input Field master binds, and what every form
      in the handoff draws (docs/design-system/form-wizard-visual-language.md §5).
 

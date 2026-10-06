@@ -3,16 +3,8 @@
 import * as React from "react";
 import {
   Badge,
-  Card,
-  CardBody,
-  CardHeader,
-  CardIcon,
-  CardSubtitle,
-  CardTitle,
   ChartCard,
   ComboChart,
-  DescriptionList,
-  DonutChart,
   LineChart,
   ProvenanceLine,
   SectionTitle,
@@ -28,8 +20,8 @@ import {
   HOSTELS,
   SCHOLARSHIPS,
   YEAR_ON_YEAR,
-  type DeptAmount,
 } from "@/lib/website-shared/dashboard";
+import { FundShareDonut, HostelCard, ScholarshipCard } from "./DepartmentCards";
 import "./kpi-dashboard.css";
 
 /**
@@ -65,9 +57,6 @@ const PROVENANCE = {
 const lakh = (n: number) =>
   n.toLocaleString("en-IN", { maximumFractionDigits: 2 });
 const count = (n: number) => n.toLocaleString("en-IN");
-/** "₹4,896 Cr", as the live page prints it. */
-const amount = ({ value, unit }: DeptAmount) =>
-  unit ? `${value} ${unit}` : value;
 
 /** Series colours: categorical slots, never a status scale (`semantic.json` `chart/cat`). */
 const BARS = "var(--sa-chart-cat-1)";
@@ -129,26 +118,7 @@ export function DepartmentOverview({
         <ul className="kd-bd__grid kd-bd__grid--cats">
           {SCHOLARSHIPS.cards.map((c) => (
             <li key={c.id}>
-              <Card tone={c.tone} accent="band" tinted>
-                <CardHeader>
-                  <CardIcon name={c.icon} />
-                  <div>
-                    <CardTitle size="sm">{c.title}</CardTitle>
-                    <CardSubtitle>{c.subtitle}</CardSubtitle>
-                  </div>
-                </CardHeader>
-                <CardBody>
-                  <DescriptionList
-                    size="figure"
-                    columns={1}
-                    divided
-                    items={c.metrics.map((m) => ({
-                      term: m.label,
-                      value: amount(m),
-                    }))}
-                  />
-                </CardBody>
-              </Card>
+              <ScholarshipCard c={c} />
             </li>
           ))}
         </ul>
@@ -165,53 +135,7 @@ export function DepartmentOverview({
         <ul className="kd-bd__grid kd-bd__grid--feats">
           {HOSTELS.cards.map((c) => (
             <li key={c.id}>
-              <Card tone={c.tone} accent="edge">
-                <CardHeader divided>
-                  <CardTitle size="sm">{c.title}</CardTitle>
-                  <CardIcon name={c.icon} />
-                </CardHeader>
-                <CardBody>
-                  {c.metrics ? (
-                    <DescriptionList
-                      size="figure"
-                      caps
-                      columns={1}
-                      items={c.metrics.map((m) => ({
-                        term: m.label,
-                        value: amount(m),
-                        hint: m.sub,
-                      }))}
-                    />
-                  ) : null}
-                  {/* Schools beside Colleges at every width, as live: two lists, one grid. */}
-                  {c.splits ? (
-                    <div className="kd-bd__split">
-                      {c.splits.map((s) => (
-                        <div key={s.chip}>
-                          <DescriptionList
-                            size="figure"
-                            caps
-                            columns={1}
-                            items={[
-                              {
-                                term: s.chip,
-                                termBadge: s.chipTone,
-                                value: s.value,
-                                hint: s.sub,
-                              },
-                            ]}
-                          />
-                          <DescriptionList
-                            size="sm"
-                            columns={1}
-                            items={[{ term: "Fund Released", value: s.fund }]}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  ) : null}
-                </CardBody>
-              </Card>
+              <HostelCard c={c} />
             </li>
           ))}
         </ul>
@@ -276,19 +200,7 @@ export function DepartmentOverview({
             title={FUND_SHARE.title}
             subtitle={FUND_SHARE.subtitle}
           >
-            <DonutChart
-              title={`${FUND_SHARE.title}, ${FUND_SHARE.subtitle}`}
-              data={FUND_SHARE.slices.map((s) => ({
-                label: s.label,
-                value: s.value,
-              }))}
-              valueFormat={(v) =>
-                `₹${Math.round(v).toLocaleString("en-IN")} Cr`
-              }
-              center={false}
-              legendValue="value"
-              layout="side"
-            />
+            <FundShareDonut />
           </ChartCard>
         </div>
       </section>

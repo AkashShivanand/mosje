@@ -33,12 +33,12 @@ import {
 } from "@mosje/design-system";
 import { FigureSource, noteForReading, type SourceNote } from "@/components/website/FigureSource";
 import { OriginChip, ProvenanceChip } from "@/components/website/ProvenanceChip";
-import { cardsInHero, heroFigures } from "./hero";
-import { ALL_FUND_GROUPS, PROGRAMME_AUDIENCE, shows, type Audience } from "./audience";
+import { heroFigures } from "./hero";
+import { PROGRAMME_AUDIENCE, shows, type Audience } from "./audience";
 import type { AreaScope, PortalDashboard, PortalId } from "@/lib/kpi/types";
 import { MinistryCollection } from "../DashboardViewer";
 import { DASHBOARD_PAGE } from "@/lib/website-shared/dashboard";
-import { EducationResults, EducationTrends, ShareOfFundRelease } from "./Education";
+import { EducationResults, EducationTrends } from "./Education";
 import {
   COMPONENT_SHORT,
   PROGRAMME_ICON,
@@ -54,23 +54,20 @@ import {
 import { PROGRAMME_TONE, READINESS_ORDER, READINESS_SLOT, areaRows, compact, figureOf, readinessRows } from "./story";
 
 /**
- * THE PULSE — the proposed dashboard's one page, ordered by the reader's questions
- * (design audit, 6 Oct 2026): what was achieved, how it has changed, whether the money is on
- * track, and where.
+ * THE PULSE — the proposed dashboard's one page, GROUPED BY WHO PUBLISHES THE FIGURES
+ * (instruction, 6 Oct 2026: reorder logically, keep everything, group it under the right
+ * section):
  *
- *   1. THE ANSWER     a hero panel: NMBA's reach in display type, and beside it the one
- *                     Department figure no section below prints — never an illustrative one.
- *   2. RESULTS        the Department's scholarships and places (`EducationResults`), then
- *                     the portals' tiles, each with ONE picture its data is best told by. A
- *                     tile with nothing to show is not drawn, and the grid closes up.
- *   3. OVER THE YEARS the Department's Year by Year Trends and Year on Year Report
- *                     (`EducationTrends`), together, after the results they follow.
- *   4. FUNDS          what was released, scheme by scheme (Received), and this year's
- *                     expenditure against its Budget Estimate.
- *   5. WHERE          every State/UT as an equal tile, each State/UT's total as the feed
- *                     reports it; choosing a tile opens that State/UT beside the map. No
- *                     per-person rate: it would need a population the Department does not
- *                     supply, and Census 2011 is fifteen years older than the figures.
+ *   1. THE ANSWER       a hero panel: NMBA's Total Outreach in display type, and beside it
+ *                       the Department's cumulative figures, each a link to its card.
+ *   2. THE DEPARTMENT   its Beneficiary Dashboard, in the live page's own card structure:
+ *                       Scholarships and Fellowship, Hostels and Top Class Education
+ *                       (`EducationResults`), Year by Year Trends and Year on Year Report
+ *                       (`EducationTrends`), then Fund Release and Expenditure.
+ *   3. THE PORTALS      the scheme portals' tiles, then State/UT-wise Figures — NMBA's
+ *                       State/UT breakdown, so it sits with the portals, not the Department.
+ *                       No per-person rate: it would need a population the Department does
+ *                       not supply, and Census 2011 is fifteen years older than the figures.
  *
  * COLOUR STAYS (instruction, 6 Oct 2026): the hero is the brand's filled panel and each
  * programme's tile keeps its colour on its edge and icon, as the live site's cards do.
@@ -153,7 +150,7 @@ function Hero({ viewing, readings, scope, sectionLevel, audiences }: PulseProps)
    * Those figures are not published by State/UT, so a State/UT's hero carries the
    * programme figures that ARE read for it, each with its own mark.
    */
-  const side: { key: string; value: string; label: string; context?: string; origin: string; note?: SourceNote }[] = scope.state
+  const side: { key: string; value: string; label: string; context?: string; origin: string; note?: SourceNote; card?: string }[] = scope.state
     ? [
         { id: "smile-beggary" as const, kpi: "smile-beggary.identified" },
         { id: "senior-citizens" as const, kpi: "senior-citizens.ipsrc.beneficiaries" },
@@ -191,7 +188,27 @@ function Hero({ viewing, readings, scope, sectionLevel, audiences }: PulseProps)
           <ul className={rest.length === 1 ? "pd-hero__side pd-hero__side--one" : "pd-hero__side"} aria-label="Other figures">
             {rest.map((s) => (
               <li key={s.key}>
-                <HeadlineFigure size="md" tone="inverse" value={s.value} label={s.label} context={s.context} mark={marked(s.origin, s.note)} />
+                {/* A figure that leads a card below is a link to it: the hero is the summary,
+                    the card the detail, so the figure appearing twice has a job (instruction,
+                    6 Oct 2026: the three figures stay, the live cards stay intact). */}
+                {"card" in s && s.card ? (
+                  <a className="pd-hero__jump" href={`#pd-card-${s.card}`}>
+                    <HeadlineFigure
+                      size="md"
+                      tone="inverse"
+                      value={s.value}
+                      label={s.label}
+                      context={
+                        <>
+                          {s.context}
+                          <Icon name="arrow_downward" size={16} />
+                        </>
+                      }
+                    />
+                  </a>
+                ) : (
+                  <HeadlineFigure size="md" tone="inverse" value={s.value} label={s.label} context={s.context} mark={marked(s.origin, s.note)} />
+                )}
               </li>
             ))}
           </ul>
@@ -267,14 +284,17 @@ function Programmes(props: PulseProps) {
               valueFormat={(v: number) => compact(v, "number")}
             />
           ) : null}
+          {/* The live cards' figure style — a capitalised label over the figure — so every
+              card on the page reads the same way (design audit, 6 Oct 2026). */}
           {facts.length ? (
-            <ul className="pd-figures" aria-label={`${SHORT_NAME.nmba} figures`}>
-              {facts.map((x) => (
-                <li key={x.id}>
-                  <HeadlineFigure size="md" value={x.value} label={x.term} mark={marked(x.origin, noteOf(viewing, readings, "nmba", x.id, x.value))} />
-                </li>
-              ))}
-            </ul>
+            <div className="pd-tile__figures">
+            <DescriptionList
+              size="figure"
+              caps
+              columns={2}
+              items={facts.map((x) => ({ term: x.term, value: <>{x.value}{marked(x.origin, noteOf(viewing, readings, "nmba", x.id, x.value))}</> }))}
+            />
+            </div>
           ) : null}
         </div>
       </Tile>,
@@ -348,7 +368,7 @@ function Programmes(props: PulseProps) {
             />
           </p>
         ) : null}
-        {funds.length ? <DescriptionList size="sm" columns={2} items={funds} /> : null}
+        {funds.length ? <DescriptionList size="figure" caps columns={2} items={funds} /> : null}
       </Tile>,
     );
   }
@@ -514,7 +534,7 @@ function Programmes(props: PulseProps) {
           ) : undefined
         }
       >
-        {facts.length ? <DescriptionList size="sm" columns={1} divided items={facts} /> : null}
+        {facts.length ? <DescriptionList size="figure" caps columns={2} items={facts} /> : null}
         {/* Officers only — the readings gate leaves no budget figure on a citizen's page. One
             sentence, not a second copy of the Funds chart (design audit, 6 Oct 2026). */}
         {rows.length && provided ? (
@@ -536,7 +556,9 @@ function Programmes(props: PulseProps) {
   return (
     <section className="pd-section" aria-labelledby="pd-programmes">
       <SectionTitle as={sectionLevel} headingId="pd-programmes" size="display" title={DASHBOARD_PAGE.portalsTitle} description={DASHBOARD_PAGE.portalsDescription} />
-      <ul className={`pd-bento pd-bento--n${Math.min(tiles.length, 5)}`}>
+      {/* NMBA, the one tile with a map, takes the row; the others share the next one, so
+          no map is squeezed into a third of the page (design audit, 6 Oct 2026). */}
+      <ul className={`pd-bento pd-bento--n${Math.min(tiles.length, 5)} pd-bento--portals`}>
         {tiles.map((t, i) => (
           <li key={i}>{t}</li>
         ))}
@@ -671,9 +693,10 @@ function Money({ viewing, readings, scope, sectionLevel, audiences }: PulseProps
   // what share of it is spent (design audit, 6 Oct 2026).
   const rows = fundsRows(viewing, readings).filter((r) => r.measure.endsWith("B.E.") && r.programme !== "e-utthaan" && shows(audiences, PROGRAMME_AUDIENCE[r.programme]));
   const nameOf = (r: (typeof rows)[number]) => r.fullName ?? r.label.replace("Senior Citizens · ", "");
-  const showShare = shows(audiences, ALL_FUND_GROUPS);
-  if (!showShare && rows.length === 0) return null;
-  if (scope.state) return null;
+  // Share of Fund Release sits with Year by Year Trends, as the live page groups it. What is
+  // left here is expenditure against the Budget Estimate — officer KPIs, so a citizen's
+  // readings (`readAll`) leave this section empty and it is not drawn.
+  if (rows.length === 0 || scope.state) return null;
   const modelled = rows.some((r) => r.origin === "modelled");
   return (
     <section className="pd-section" aria-labelledby="pd-money">
@@ -681,10 +704,9 @@ function Money({ viewing, readings, scope, sectionLevel, audiences }: PulseProps
         as={sectionLevel}
         headingId="pd-money"
         size="display"
-        title="Fund Release and Expenditure"
+        title="Expenditure Against Budget Estimate"
       />
-      <div className={showShare && rows.length ? "pd-funds" : "pd-funds pd-funds--one"}>
-        {showShare ? <ShareOfFundRelease headingLevel={sub(sectionLevel)} audiences={audiences} /> : null}
+      <div className="pd-funds pd-funds--one">
         {rows.length ? (
           <ChartCard
             variant="outlined"
@@ -835,10 +857,12 @@ export function Pulse(props: PulseProps) {
   return (
     <div className="pd-story">
       <Hero {...props} />
-      <EducationResults sectionLevel={props.sectionLevel} state={props.scope.state} audiences={props.audiences} inHero={cardsInHero(props.scope, props.audiences)} />
-      <Programmes {...props} />
+      {/* The Department's figures, as the live page publishes them … */}
+      <EducationResults sectionLevel={props.sectionLevel} state={props.scope.state} audiences={props.audiences} />
       <EducationTrends sectionLevel={props.sectionLevel} state={props.scope.state} audiences={props.audiences} />
       <Money {...props} />
+      {/* … then the scheme portals' figures, and where they are. */}
+      <Programmes {...props} />
       <Where key={props.scope.state ?? "all"} {...props} />
       {props.readinessAllowed ? <DataSourcesLink {...props} /> : null}
     </div>

@@ -45,24 +45,24 @@
     font-weight: var(--sa-font-weight-medium);
   }
 
-  /* ── Who It Is For: multi-select chips under the area bar ─────────────────── */
-  .pd-filter {
+  /* The toolbar's controls, on one baseline at the right: Type of Applicant, State / UT,
+     Officer Login. They wrap under "Figures for" on a narrow screen. */
+  .pd-bar__controls {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    gap: var(--sa-stack-8);
+    align-items: flex-end;
+    gap: var(--sa-stack-12);
   }
 
-  /* One choice, two controls: chips on a wide screen, the multi-select on a phone. */
-  .pd-filter--narrow { display: none; }
-
-  @media (max-width: 767px) {
-    .pd-filter--wide { display: none; }
-    .pd-filter--narrow { display: block; }
+  .pd-bar__applicant {
+    display: grid;
+    gap: var(--sa-stack-4);
+    inline-size: 20rem; /* layout geometry: the multi-select's field, wide enough for two chosen groups */
+    max-inline-size: 100%;
   }
 
-  .pd-filter__label {
-    margin-inline-end: var(--sa-stack-4);
+  /* The same label State / UT's FilterSelect draws, so the two read as one row. */
+  .pd-bar__control-label {
     color: var(--sa-text-neutral-subtle);
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
@@ -86,6 +86,28 @@
     padding: 0 0 0 var(--sa-padding-32);
     border-inline-start: var(--sa-stroke-1) solid color-mix(in srgb, var(--sa-text-neutral-inverse) 35%, transparent);
     list-style: none;
+  }
+
+  /* A hero figure that leads a card below is a link to it. */
+  .pd-hero__jump {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    border-radius: var(--sa-shape-8);
+  }
+
+  .pd-hero__jump:hover {
+    text-decoration: underline;
+  }
+
+  .pd-hero__jump:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  /* A card a hero figure jumps to lands below the sticky header, not under it. */
+  [id^="pd-card-"] {
+    scroll-margin-block-start: calc(var(--sa-header-bottom, var(--sa-stack-0)) + var(--sa-stack-24));
   }
 
   /* One figure beside the lead takes the column, not half of it. */
@@ -149,6 +171,22 @@
   .pd-bento--n4 > li:nth-child(n + 3) { grid-column: span 6; }
   .pd-bento > li > * { flex: 1; min-width: 0; }
 
+  /* The portals: NMBA (the tile with a map) takes the row, the rest share the next. */
+  .pd-bento--portals.pd-bento--n3 > li:nth-child(1) { grid-column: span 12; }
+  .pd-bento--portals.pd-bento--n3 > li:nth-child(n + 2) { grid-column: span 6; }
+  /* NMBA's four figures, centred beside its map rather than hanging from the top. */
+  .pd-tile__figures {
+    align-self: center;
+  }
+
+  /* Wide screens only: on a phone the map and the figures stack (the 767px rule below). */
+  @media (min-width: 768px) {
+    .pd-bento--portals > li:nth-child(1) .pd-tile__split {
+      grid-template-columns: minmax(0, 26rem) minmax(0, 1fr); /* layout geometry: the map at a card's size, not the page's */
+      align-items: center;
+    }
+  }
+
   .pd-tile__titles { min-width: 0; }
 
   .pd-tile__body {
@@ -165,16 +203,6 @@
     grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
     gap: var(--sa-stack-24);
     align-items: start;
-  }
-
-  /* NMBA's four figures beside its map. */
-  .pd-figures {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--sa-stack-16);
-    margin: 0;
-    padding: 0;
-    list-style: none;
   }
 
   /* Two lead figures in one tile (Top Class Education: schools and colleges). */
@@ -254,12 +282,6 @@
     font-weight: var(--sa-font-weight-semibold);
   }
 
-  /* Officer Login, at the top right of the dashboard. */
-  .pd-access {
-    display: flex;
-    justify-content: flex-end;
-  }
-
   /* The sign-in page: a form at a readable width, not the page's. */
   .pd-login__card {
     max-inline-size: 28rem; /* layout geometry: a sign-in form's measure */
@@ -321,7 +343,6 @@
     .pd-bento:is(.pd-bento--n1, .pd-bento--n2, .pd-bento--n3, .pd-bento--n4, .pd-bento--n5) > li:nth-child(n) { grid-column: span 12; }
     .pd-pair { grid-template-columns: minmax(0, 1fr); }
     .pd-tile__split { grid-template-columns: minmax(0, 1fr); }
-    .pd-figures { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .pd-hero__side { grid-template-columns: minmax(0, 1fr); }
   }
 }
