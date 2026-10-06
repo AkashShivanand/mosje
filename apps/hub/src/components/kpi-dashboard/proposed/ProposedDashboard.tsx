@@ -2,18 +2,19 @@
 
 import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FilterSelect } from "@mosje/design-system";
+import { Chip, Combobox, FilterSelect } from "@mosje/design-system";
 import { useDataMode } from "@/lib/data-mode/context";
 import { STATE_NAMES } from "@/lib/kpi/geography";
 import type { PortalFeed } from "@/lib/kpi/live";
 import { isPortalId } from "@/lib/kpi/register";
 import type { AreaScope, PortalId } from "@/lib/kpi/types";
 import { useDashboardViewer } from "@/lib/kpi/viewer";
+import { FigureSourceProvider } from "@/components/website/FigureSource";
 import { ViewerNotice } from "../DashboardViewer";
-import { AboutProvider } from "./KpiBlocks";
 import { ProgrammeStory } from "./ProgrammeStory";
 import { Pulse } from "./Pulse";
 import { SHORT_NAME, readAll, viewingFor } from "./model";
+import { AUDIENCES, AUDIENCE_LABEL, parseAudiences, serialiseAudiences, type Audience } from "./audience";
 import "../kpi-dashboard.css";
 import "./proposed.css";
 
@@ -27,7 +28,8 @@ import "./proposed.css";
  *  - a PROGRAMME (`?programme=`, `ProgrammeStory.tsx`): one programme on its own.
  *
  * One area filter rules both (`?state=`). Every figure resolves from ONE set of readings
- * (`readAll`), and every figure can open About This Figure.
+ * (`readAll`), and every figure can show its source and calculation (`FigureSource`) while
+ * the demo rail asks for them.
  *
  * DS Audit: FilterSelect ✅ · ViewerNotice (app) ✅ · Pulse / ProgrammeStory (this folder) ✅.
  */
@@ -52,6 +54,7 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
   const programme =
     programmeParam && isPortalId(programmeParam) ? viewing.programmes.find((p) => p.id === programmeParam) : undefined;
   const wantedState = params.get("state") ?? undefined;
+  const audiences = React.useMemo(() => parseAudiences(params.get("for")), [params]);
   const scope: AreaScope = {
     state: role?.area.state ?? (wantedState && STATE_NAMES.includes(wantedState) ? wantedState : undefined),
     district: role?.area.district,
@@ -67,7 +70,7 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
   );
 
   const hrefTo = React.useCallback(
-    (to: Partial<Record<"programme" | "state", string | null>>) => {
+    (to: Partial<Record<"programme" | "state" | "for", string | null>>) => {
       const next = new URLSearchParams(params.toString());
       for (const [k, v] of Object.entries(to)) {
         if (v === null || v === undefined || v === "") next.delete(k);
@@ -90,12 +93,19 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
   const keepFocus = React.useRef(false);
   const firstView = React.useRef(true);
   const go = React.useCallback(
-    (to: Partial<Record<"programme" | "state", string | null>>, opts?: { keepFocus?: boolean }) => {
+    (to: Partial<Record<"programme" | "state" | "for", string | null>>, opts?: { keepFocus?: boolean }) => {
       keepFocus.current = Boolean(opts?.keepFocus);
       router.push(hrefTo(to), { scroll: false });
     },
     [router, hrefTo],
   );
+  const toggleAudience = (id: Audience | "all") => {
+    const next = new Set(audiences);
+    if (id === "all") next.clear();
+    else if (next.has(id)) next.delete(id);
+    else next.add(id);
+    go({ for: serialiseAudiences(next) || null }, { keepFocus: true });
+  };
   const viewKey = params.toString();
   React.useEffect(() => {
     if (firstView.current) {
@@ -140,7 +150,41 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
         )}
       </div>
 
-      <AboutProvider officer={viewing.audience === "officer"}>
+      {programme ? null : (
+        <>
+          {/* TYPE OF APPLICANT — the Additional Secretary's approved label and groups
+              (`audience.ts`). Multi-select, nothing chosen = everyone. On a wide screen,
+              chips: every group visible and one tap away, with "All" saying plainly that the
+              page is unfiltered. On a phone the nine chips would stack ~330px above the first
+              figure, so the same choice is the DS multi-select Combobox. One state, two
+              controls; CSS shows one. */}
+          <div className="pd-filter pd-filter--wide" role="group" aria-labelledby="pd-filter-label">
+            <span id="pd-filter-label" className="pd-filter__label">
+              {AUDIENCE_LABEL}
+            </span>
+            <Chip selected={audiences.size === 0} onSelectedChange={() => toggleAudience("all")}>
+              All
+            </Chip>
+            {AUDIENCES.map((a) => (
+              <Chip key={a.id} selected={audiences.has(a.id)} onSelectedChange={() => toggleAudience(a.id)}>
+                {a.label}
+              </Chip>
+            ))}
+          </div>
+          <div className="pd-filter--narrow">
+            <Combobox
+              multiple
+              label={AUDIENCE_LABEL}
+              placeholder="All"
+              options={AUDIENCES.map((a) => ({ value: a.id, label: a.label }))}
+              value={AUDIENCES.filter((a) => audiences.has(a.id)).map((a) => a.id)}
+              onChange={(v) => go({ for: serialiseAudiences(parseAudiences(v.join(","))) || null }, { keepFocus: true })}
+            />
+          </div>
+        </>
+      )}
+
+      <FigureSourceProvider>
         <div ref={panelRef} className="pd-panel">
           {programme ? (
             <ProgrammeStory
@@ -154,6 +198,7 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
             />
           ) : (
             <Pulse
+              audiences={audiences}
               viewing={viewing}
               readings={readings}
               national={national}
@@ -165,7 +210,7 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
             />
           )}
         </div>
-      </AboutProvider>
+      </FigureSourceProvider>
     </div>
   );
 }

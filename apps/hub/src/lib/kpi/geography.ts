@@ -7,48 +7,54 @@
  */
 
 /**
- * Census 2011 population, in lakh, by State/UT — used ONLY as a weight, so a modelled
- * national total spreads in proportion to people rather than at random. Jammu and
- * Kashmir and Ladakh are split as the 2019 reorganisation drew them; Andhra Pradesh and
- * Telangana as the 2014 one did.
- */
-export const POPULATION_2011_LAKH: Record<string, number> = {
-  "Uttar Pradesh": 1998.12, Maharashtra: 1123.74, Bihar: 1040.99, "West Bengal": 912.76,
-  "Madhya Pradesh": 726.27, "Tamil Nadu": 721.47, Rajasthan: 685.48, Karnataka: 610.95,
-  Gujarat: 604.4, "Andhra Pradesh": 493.87, Odisha: 419.74, Telangana: 350.04,
-  Kerala: 334.06, Jharkhand: 329.88, Assam: 312.06, Punjab: 277.43, Chhattisgarh: 255.45,
-  Haryana: 253.51, Delhi: 167.88, "Jammu and Kashmir": 122.67, Uttarakhand: 100.86,
-  "Himachal Pradesh": 68.65, Tripura: 36.74, Meghalaya: 29.67, Manipur: 28.56,
-  Nagaland: 19.79, Goa: 14.59, "Arunachal Pradesh": 13.84, Puducherry: 12.48,
-  Mizoram: 10.97, Chandigarh: 10.55, Sikkim: 6.11, "Dadra and Nagar Haveli and Daman and Diu": 5.86,
-  "Andaman and Nicobar Islands": 3.81, Ladakh: 2.74, Lakshadweep: 0.64,
-};
-
-/**
- * Projected population as on 1 March 2026, in lakh — the per-person denominator.
+ * Every State/UT, alphabetical, spelled as `IndiaMap` spells it — for the area filter and
+ * for checking an area a feed names.
  *
- * SOURCE: Report of the Technical Group on Population Projections, 2011-2036 (National
- * Commission on Population, MoHFW), Table 21, "Projected Total Population by Sex as on 1st
- * March" ('000), Persons, 2026 — https://nhm.gov.in/New_Updates_2018/Report_Population_Projection_2019.pdf,
- * read 6 Oct 2026. India: 14,23,435 thousand; the 36 rows below sum to 14,23,437 — the
- * report rounds each row on its own.
- *
- * Why not Census 2011: a 2026 figure divided by a 2011 population overstates every rate,
- * and unevenly — Delhi has grown by a third since, Kerala by an eighth. The report prints
- * Dadra and Nagar Haveli (836) and Daman and Diu (705) separately, from before their 2020
- * merger; they are added here, as the map draws them as one.
+ * NAMES ONLY, NO FIGURES. This file used to carry Census 2011 and projected 2026
+ * populations, as weights for illustrative state splits and as the divisor of an
+ * "outreach per 100 residents" rate. Neither was supplied by the Department, and a 2026
+ * count divided by a 2011 population is not a comparison anyone can defend. Removed on
+ * instruction, 6 Oct 2026: the dashboard shows only what the Department supplies, and a
+ * figure the Department does not publish for a State/UT is not shown for it.
  */
-export const POPULATION_2026_LAKH: Record<string, number> = {
-  "Uttar Pradesh": 2428.59, Bihar: 1322.65, Maharashtra: 1293.08, "West Bengal": 1005.22,
-  "Madhya Pradesh": 896.73, Rajasthan: 836.42, "Tamil Nadu": 775.46, Gujarat: 740.86,
-  Karnataka: 689.62, "Andhra Pradesh": 537.09, Odisha: 446.77, Jharkhand: 409.58,
-  Telangana: 386.36, Assam: 367.17, Kerala: 362.07, Punjab: 313.18, Haryana: 312.99,
-  Chhattisgarh: 312.11, Delhi: 225.4, "Jammu and Kashmir": 138.96, Uttarakhand: 119.93,
-  "Himachal Pradesh": 75.79, Tripura: 42.6, Meghalaya: 34.4, Manipur: 33.11, Nagaland: 22.94,
-  Puducherry: 17.57, "Arunachal Pradesh": 16.04, Goa: 15.99,
-  "Dadra and Nagar Haveli and Daman and Diu": 15.41, Mizoram: 12.72, Chandigarh: 12.67,
-  Sikkim: 7.08, "Andaman and Nicobar Islands": 4.06, Ladakh: 3.05, Lakshadweep: 0.7,
-};
+export const STATE_NAMES: string[] = [
+  "Andaman and Nicobar Islands",
+  "Andhra Pradesh",
+  "Arunachal Pradesh",
+  "Assam",
+  "Bihar",
+  "Chandigarh",
+  "Chhattisgarh",
+  "Dadra and Nagar Haveli and Daman and Diu",
+  "Delhi",
+  "Goa",
+  "Gujarat",
+  "Haryana",
+  "Himachal Pradesh",
+  "Jammu and Kashmir",
+  "Jharkhand",
+  "Karnataka",
+  "Kerala",
+  "Ladakh",
+  "Lakshadweep",
+  "Madhya Pradesh",
+  "Maharashtra",
+  "Manipur",
+  "Meghalaya",
+  "Mizoram",
+  "Nagaland",
+  "Odisha",
+  "Puducherry",
+  "Punjab",
+  "Rajasthan",
+  "Sikkim",
+  "Tamil Nadu",
+  "Telangana",
+  "Tripura",
+  "Uttar Pradesh",
+  "Uttarakhand",
+  "West Bengal",
+];
 
 export interface AreaNode {
   name: string;
@@ -89,11 +95,3 @@ export const SMILE_AREAS: AreaNode[] = [
   { name: "Haryana", weight: 290, children: cities(["Gurugram"]) },
   { name: "Punjab", weight: 240, children: cities(["Amritsar"]) },
 ];
-
-/** Every State/UT, weighted by population. NMBA works in all of them. */
-export const ALL_STATES: AreaNode[] = Object.entries(POPULATION_2011_LAKH)
-  .map(([name, weight]) => ({ name, weight }))
-  .sort((a, b) => b.weight - a.weight);
-
-/** Every State/UT name, alphabetical, for a filter. */
-export const STATE_NAMES = Object.keys(POPULATION_2011_LAKH).sort((a, b) => a.localeCompare(b));

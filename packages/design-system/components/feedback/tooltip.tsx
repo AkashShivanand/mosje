@@ -37,6 +37,14 @@ export interface TooltipProps {
    * was added to solve. Leave it off for a tooltip that adds new information.
    */
   duplicatesTriggerName?: boolean;
+  /**
+   * `"hint"` (default) is the short dark bubble. `"card"` is a light panel for
+   * STRUCTURED content — a figure's source and the working behind it, set out
+   * like a price breakup — which the hint's 16rem dark bubble cannot hold
+   * legibly. Same open, close and WCAG 1.4.13 behaviour either way.
+   * @default "hint"
+   */
+  variant?: "hint" | "card";
   className?: string;
   /**
    * The trigger. Must be a single element that can hold a ref and receive
@@ -106,6 +114,7 @@ export function Tooltip({
   delay = 200,
   disabled = false,
   duplicatesTriggerName = false,
+  variant = "hint",
   className,
   children,
 }: TooltipProps): React.JSX.Element {
@@ -244,6 +253,7 @@ export function Tooltip({
             className={cn(
               "ds-tooltip",
               `ds-tooltip--${coords?.side ?? side}`,
+              variant === "card" && "ds-tooltip--card",
               className,
             )}
             style={{

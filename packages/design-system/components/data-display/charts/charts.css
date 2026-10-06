@@ -752,7 +752,10 @@
   }
 
   .ds-chart__viewswitch {
-    margin-block-start: var(--sa-stack-12);
+    display: flex;
+    inline-size: fit-content;
+    margin-block-start: var(--sa-stack-8);
+    margin-inline-start: auto;
   }
 
   /* Held to the height of the chart it replaced, so the card does not grow or

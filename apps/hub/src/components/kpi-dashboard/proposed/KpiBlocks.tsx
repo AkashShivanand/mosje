@@ -1,62 +1,36 @@
 "use client";
 
-import * as React from "react";
-import {
-  Badge,
-  Button,
-  DashboardGrid,
-  DescriptionList,
-  Icon,
-  IconButton,
-  KpiRow,
-  SideSheet,
-  type MetricCardProps,
-} from "@mosje/design-system";
+import { DashboardGrid, KpiRow, type MetricCardProps } from "@mosje/design-system";
+import { FigureSource, noteForReading } from "@/components/website/FigureSource";
 import { OriginChip } from "@/components/website/ProvenanceChip";
 import { cardStateFor, useDataMode } from "@/lib/data-mode/context";
-import { categoryTitle } from "@/lib/kpi/categories";
 import { formatKpi, isoDate } from "@/lib/kpi/format";
-import { portalById } from "@/lib/kpi/register";
 import type { KpiDefinition, KpiReading, PortalReading } from "@/lib/kpi/types";
 import { KpiChart, isTile } from "../KpiCard";
 import { closeRows } from "../PortalKpiDashboard";
-import { COMPONENT_SHORT, READINESS_LABEL, READINESS_TONE, formatHeadline, headlineOf, readinessOf } from "./model";
+import { COMPONENT_SHORT, formatHeadline, headlineOf } from "./model";
 
 /**
- * The proposed dashboard's two shapes of KPI — a figure tile and a chart card — and the
- * one panel every figure opens: About This Figure.
+ * The proposed dashboard's two shapes of KPI — a figure tile and a chart card.
  *
  * DS Audit: KpiRow / MetricCard ✅ · ChartCard (via KpiChart) ✅ · DashboardGrid ✅ ·
- * SideSheet ✅ · DescriptionList ✅ · Badge ✅ · IconButton ✅ · Button ✅ · Icon ✅ ·
- * ProvenanceChip ✅ (app).
+ * ProvenanceChip ✅ (app) · FigureSource ✅ (app).
  *
- * EVERY NUMBER CAN EXPLAIN ITSELF. The proforma asks each portal for a definition, a unit,
- * a source system, an update frequency and a formula. The current dashboards print the
- * definition and drop the rest; here every tile and card opens a panel that carries all of
- * them, in the sheet's own words, beside the figure — so a reader who wants to know what a
- * number means, where it comes from and how often it changes is one tap from the answer,
- * and a reader who does not is never made to read it.
+ * WHAT A FIGURE MEANS IS ON THE TILE; WHERE IT CAME FROM IS ONE CONTROL AWAY. The tile's
+ * line is the proforma's definition. Its source system, update frequency, formula and the
+ * portal's API endpoints open in the one Source and Calculation panel the whole dashboard
+ * uses (`FigureSource`), drawn only while the demo rail's "Show sources and calculations"
+ * is on. This replaced a separate About This Figure panel (6 Oct 2026): it repeated the
+ * tile's definition, was empty for 35 of 60 public figures, and showed citizens how the
+ * dashboard was built. The officer-only columns it carried — the proforma S. No. and what
+ * each portal has yet to supply — are in `docs/audit/kpi-dashboard-proforma-gaps.md`.
  */
 
-export interface AboutTarget {
-  kpi: KpiDefinition;
-  reading: KpiReading;
+/** A KPI's note for the Source and Calculation panel, with the figure as the page shows it. */
+function noteOf(k: KpiDefinition, r: KpiReading) {
+  const h = headlineOf(k, r);
+  return noteForReading(k, r, k.name, h ? formatHeadline(h) : undefined);
 }
-
-const OpenAbout = React.createContext<(t: AboutTarget) => void>(() => {});
-
-/** Wraps a lens so any figure inside it can open the About panel. */
-export function AboutProvider({ officer, children }: { officer: boolean; children: React.ReactNode }) {
-  const [target, setTarget] = React.useState<AboutTarget | null>(null);
-  return (
-    <OpenAbout.Provider value={setTarget}>
-      {children}
-      <KpiAboutSheet target={target} officer={officer} onClose={() => setTarget(null)} />
-    </OpenAbout.Provider>
-  );
-}
-
-export const useOpenAbout = () => React.useContext(OpenAbout);
 
 function chipFor(r: KpiReading) {
   return r.origin === "snapshot" ? undefined : <OriginChip origin={r.origin} />;
@@ -75,7 +49,7 @@ function tileText(k: KpiDefinition, r: KpiReading): { value: string; detail?: st
 
 /**
  * A section's KPIs: the figures as one row of tiles, then the charts on the grid. Every tile
- * is a button that opens its About panel; every chart card carries an About control.
+ * and chart card carries its source and calculation while the demo rail shows them.
  */
 export function KpiBlocks({ kpis: given, reading, areasAreStates, headingLevel, startIndex = 0, showComponent = true }: {
   kpis: KpiDefinition[];
@@ -92,7 +66,6 @@ export function KpiBlocks({ kpis: given, reading, areasAreStates, headingLevel, 
   showComponent?: boolean;
 }) {
   const demo = useDataMode();
-  const open = useOpenAbout();
   const kpis = given.map((k) =>
     showComponent && k.component ? { ...k, name: `${COMPONENT_SHORT[k.id.split(".")[1] ?? ""] ?? k.component} · ${k.name}` } : k,
   );
@@ -114,10 +87,13 @@ export function KpiBlocks({ kpis: given, reading, areasAreStates, headingLevel, 
       detail,
       loading: card.loading,
       state: card.state,
-      onSelect: () => open({ kpi: k, reading: r }),
-      opens: "dialog",
       provenance: r.origin === "snapshot" && r.source && r.asOn ? { source: r.source, asOf: isoDate(r.asOn) } : undefined,
-      aside: chipFor(r),
+      aside: (
+        <>
+          {chipFor(r)}
+          <FigureSource note={noteOf(k, r)} />
+        </>
+      ),
     };
   };
 
@@ -137,99 +113,11 @@ export function KpiBlocks({ kpis: given, reading, areasAreStates, headingLevel, 
               span={spans[i]}
               donutLayout="auto"
               stateMap="tiles"
-              badge={
-                <IconButton
-                  icon={<Icon name="info" />}
-                  appearance="text"
-                  size="sm"
-                  aria-label={`About this figure: ${k.name}`}
-                  tooltip="About This Figure"
-                  onClick={() => open({ kpi: k, reading: reading[k.id]! })}
-                />
-              }
+              badge={<FigureSource note={noteOf(k, reading[k.id]!)} />}
             />
           ))}
         </DashboardGrid>
       )}
     </>
-  );
-}
-
-/**
- * About This Figure — the proforma's columns for one KPI, beside its value. Officer-only
- * columns (the S. No., the portal's API endpoints and its gap note) appear for officers.
- */
-function KpiAboutSheet({ target, officer, onClose }: { target: AboutTarget | null; officer: boolean; onClose: () => void }) {
-  const kpi = target?.kpi;
-  const reading = target?.reading;
-  const programme = kpi ? portalById(kpi.id.split(".")[0] ?? "") : undefined;
-  const headline = kpi && reading ? headlineOf(kpi, reading) : null;
-  const readiness = kpi ? readinessOf(kpi, reading) : "not-stated";
-
-  const items = kpi
-    ? [
-        { term: "Programme", value: programme?.name ?? "" },
-        ...(kpi.component ? [{ term: "Component", value: kpi.component }] : []),
-        { term: "Shown To", value: kpi.audience === "public" ? "Everyone" : "Officers" },
-        { term: "Theme", value: categoryTitle(kpi.category) },
-        { term: "What It Measures", value: kpi.definition ?? "" },
-        { term: "How It Is Calculated", value: kpi.formula ?? "" },
-        { term: "Source System", value: kpi.source ?? "" },
-        { term: "Updated", value: kpi.frequency ?? "" },
-        { term: "Figures For", value: programme?.period ?? "" },
-        {
-          term: "Data Feed",
-          value: (
-            <Badge status={READINESS_TONE[readiness]} size="sm">
-              {READINESS_LABEL[readiness]}
-            </Badge>
-          ),
-        },
-        ...(officer
-          ? [
-              { term: "Proforma S. No.", value: String(kpi.sNo) },
-              { term: "API Endpoints", value: kpi.api?.endpoints?.join(" · ") ?? "" },
-              { term: "What Is Missing", value: kpi.api?.gap ?? "" },
-              { term: "Remarks", value: kpi.remarks ?? "" },
-            ]
-          : []),
-      ]
-    : [];
-
-  return (
-    <SideSheet
-      open={Boolean(target)}
-      onClose={onClose}
-      // The dialog says what it is, then which figure: "About This Figure · Total Outreach".
-      title={
-        <>
-          <span className="pd-about__kicker">About This Figure</span>
-          {kpi?.name ?? ""}
-        </>
-      }
-      size="md"
-      footer={
-        <Button appearance="outlined" onClick={onClose}>
-          Close
-        </Button>
-      }
-    >
-      {kpi && reading ? (
-        <div className="pd-about">
-          <p className="pd-about__figure">
-            <span className="pd-about__value">{headline ? formatHeadline(headline) : "See the chart"}</span>
-            {headline?.qualifier ? <span className="pd-about__qualifier">{headline.qualifier}</span> : null}
-            {chipFor(reading)}
-          </p>
-          <DescriptionList
-            columns={1}
-            divided
-            emptyText="Not supplied by the portal"
-            // A citizen is not shown what the portal left blank; an officer is, to chase it.
-            items={officer ? items : items.filter((i) => i.value !== "")}
-          />
-        </div>
-      ) : null}
-    </SideSheet>
   );
 }

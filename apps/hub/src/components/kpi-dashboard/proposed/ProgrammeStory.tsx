@@ -27,11 +27,11 @@ import { PROGRAMME_TONE, compact } from "./story";
 
 /**
  * One programme, told on its own: a hero panel in the programme's colour with its leading
- * figures, then its indicators by theme (or by component, for Senior Citizens), every one
- * able to open About This Figure. Reached from the programme's tile; `?programme=` holds it.
+ * figures, then its indicators by theme (or by component, for Senior Citizens), each with
+ * its source and calculation while the demo rail shows them. Reached from the programme's tile; `?programme=` holds it.
  *
  * DS Audit: Card (`accent="fill"`) ✅ · HeadlineFigure ✅ · OrgLogo ✅ · SectionTitle ✅ ·
- * Chip ✅ · DotPlot ✅ · Button ✅ · CardState ✅ · KpiBlocks / About panel (app) ✅.
+ * Chip ✅ · DotPlot ✅ · Button ✅ · CardState ✅ · KpiBlocks (app) ✅.
  */
 
 export interface ProgrammeStoryProps {
@@ -143,7 +143,7 @@ export function ProgrammeStory({ programme: p, viewing, readings, scope, section
 
       {pace.length ? (
         <section className="pd-section" aria-labelledby="pd-pace">
-          <SectionTitle as={sub} headingId="pd-pace" title="Is Spending Keeping Pace with the Year?" description="Spent as a share of the Budget Estimate, by component, up to 30.09.2026." />
+          <SectionTitle as={sub} headingId="pd-pace" title="Expenditure Against Budget Estimate" description="Expenditure as a share of the Budget Estimate, by component, up to 30.09.2026." />
           <Card variant="outlined">
             <CardBody>
               <DotPlot

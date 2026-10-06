@@ -125,13 +125,13 @@ design-system rule taking precedence over a pixel match (`standards-precedence.m
 
 **Questions for the Department**
 
-- **NMBA "People Reached" — unique people or participations?** The portal publishes a cumulative count with no definition. Chandigarh's count is about 3.5 times its projected 2026 population, so it cannot be unique people. The dashboard now shows it per State/UT as **outreach per 100 residents** (like vaccine doses per 100 people), which can exceed 100, and no longer says "about 29 in every 100 people in India" in the hero. If NMBA can publish unique persons reached, the rate can return to "people per 100".
+- **NMBA "People Reached" — unique people or participations?** The portal publishes a cumulative count with no definition, and Chandigarh's count is several times its population, so it cannot be unique people. The dashboard shows each State/UT's total as the feed reports it, with no per-person rate (below).
 - **The Beneficiary Dashboard's figures are now marked Received**, not mirrored: they were supplied by hand. Every figure and series matched the live page's HTML on 6 Oct 2026. The ₹67,977 crore total is the sum of the nine fund slices; the live page computes it and never prints it.
 
 **Changed on the screen, recorded here instead**
 
 - The page-wide "Part illustrative" banner is removed; each figure carries its own Live / Received / Illustrative mark.
-- Per-person rates divide by the **2026 projection** (Technical Group on Population Projections, Table 21), not Census 2011. Dadra and Nagar Haveli and Daman and Diu moved most: 368 → 140 per 100 residents.
+- **No population data, and no per-person rate (instruction, 6 Oct 2026).** The dashboard shows only what the Department supplies. The "per 100 people" view divided 2026 counts by Census 2011 populations — a fifteen-year gap — and no population is supplied by any feed or sheet. Removed with it: the population line in the State/UT panel, and every illustrative State/UT figure that had been spread from a national total by population (NMBA's State/UT figures and map outside the live feed; SAPSrC's budget by State/UT). A State/UT breakdown now appears only where a feed supplies one — today, NMBA. If the Department wants per-person rates, it should supply the population it wants them divided by.
 
 **Illustrative anchors corrected against published sources**
 
@@ -148,3 +148,37 @@ design-system rule taking precedence over a pixel match (`standards-precedence.m
 | IPSrC projects | 1,212 | 738 | 705 senior care homes, 13 continuous care homes, 3 physiotherapy clinics, 17 MMUs (secondary source) |
 
 All of these remain marked Illustrative. The SMILE Admin prototype (`lib/smile-admin/mock-data.ts`) still draws 2,084 rehabilitated and should follow.
+
+**Live labels, and derived figures with their working (6 Oct 2026, later).** The Beneficiary Dashboard's four sections appear in the proposed dashboard under the live page's own titles, in its order, with its labels, series names and axis titles (re-read from the live HTML on 6 Oct 2026). Only the arrangement is ours. A figure worked out from the Department's figures is shown only with its working, which the demo rail's **Show sources and calculations** switch reveals under each figure (`FigureSource`). Today there are three kinds: the ₹67,977 crore total of the nine fund slices, each scheme's share of it (as the live chart's tooltip computes it), and the programme tiles' ratios. Headings elsewhere on the page were reworded to the government register: Dashboards by Portal, State/UT-wise Figures, Expenditure Against Budget Estimate.
+
+**Source and calculation, and the Department's sections re-arranged (6 Oct 2026, later still).** With the demo rail's **Show sources and calculations** on, every figure carries an info control. Hovering over it, or focusing it, shows a summary: the figure, the kind of source (Live API, Document received, Published web page, Illustrative), the date, and the result of any working. Selecting it opens a side sheet with:
+
+- the source as a table, linking the API endpoint, page or file;
+- the portal's own formula;
+- the calculation set out line by line like a price breakup — inputs, operators, a rule, then the result.
+
+The Department's sections keep every card title and label. Only their arrangement changed:
+
+- **Data period:** shown as a badge, as on the live page.
+- **Trend lines:** the scholarship and hostel tiles carry a trend line from the series the live page publishes.
+- **Year by Year Trends:** Beneficiary Students now has the section to itself.
+- **Year on Year Report:** its three cards sit side by side.
+- **Share of Fund Release:** moved to the Funds section, now titled "Fund Release and Expenditure", beside expenditure. It is a split of money, not a trend.
+
+**Type of Applicant filter (6 Oct 2026, later).** The proposed dashboard is filtered by "Type of Applicant", the label and groups approved at the Additional Secretary's review of 14 Sep 2026 (`SD_PERSONAS`). It is multi-select, and choosing nothing shows everything. Each figure's groups are the scheme master's own "who" list. Nine of the eleven groups are offered. **Transgender Persons** and **Victims of Atrocities** have no figure on this dashboard yet, so they are left out rather than offered as a choice that empties the page; they join once a figure for them is received. Portal marks appear on NMBA and SMILE only: Senior Citizens Welfare's registered mark is the State Emblem, and DAPSC and SHRESHTA have none.
+
+**About This Figure merged into Source and Calculation (6 Oct 2026, later).** The programme pages had a second panel, About This Figure, opened by clicking any tile or a chart's info control, and shown to every reader whatever the demo rail said. It was removed because:
+
+- it repeated the tile's own line (the proforma's definition);
+- 35 of the 60 public programme figures have no definition, formula, source or frequency, so for them it showed only the programme, "Shown To", the theme and a Data Feed badge;
+- it described how the dashboard was built rather than the scheme.
+
+What it carried that a reader can use now sits in the one Source and Calculation panel, behind the demo rail's **Show sources and calculations** switch:
+
+- the source system;
+- **Updated** (the proforma's frequency);
+- **Figures For** (the programme's period);
+- the formula;
+- the portal's API endpoints.
+
+Tiles are plain figures again, not buttons. The officer-only columns it showed — the proforma S. No., what each portal has yet to supply, and remarks — are this document's §1–§3 and the tracker tab, where the people chasing the portals will look.

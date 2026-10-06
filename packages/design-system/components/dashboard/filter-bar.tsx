@@ -37,6 +37,14 @@ export interface SegmentedControlProps<T extends string> {
   onChange: (value: T) => void;
   /** Accessible group label (e.g. "Period"). */
   ariaLabel: string;
+  /**
+   * `"default"` is the filled track a reader uses to change what a view SHOWS — a period, a
+   * series. `"quiet"` is text only, for a switch that is a way out rather than a choice the
+   * page is built around: a chart's Chart / Table view, there for the reader who wants the
+   * raw figures and kept out of everyone else's way. Same radio-group semantics and keys.
+   * @default "default"
+   */
+  variant?: "default" | "quiet";
   className?: string;
 }
 
@@ -61,6 +69,7 @@ export function SegmentedControl<T extends string>({
   value,
   onChange,
   ariaLabel,
+  variant = "default",
   className,
 }: SegmentedControlProps<T>) {
   const group = React.useRef<HTMLDivElement>(null);
@@ -109,7 +118,7 @@ export function SegmentedControl<T extends string>({
   const tabIndexOf = (index: number) => (index === (selectedIndex === -1 ? 0 : selectedIndex) ? 0 : -1);
 
   return (
-    <div ref={group} className={cn("ds-segmented", className)} role="radiogroup" aria-label={ariaLabel}>
+    <div ref={group} className={cn("ds-segmented", variant === "quiet" && "ds-segmented--quiet", className)} role="radiogroup" aria-label={ariaLabel}>
       {options.map((opt, index) => {
         const selected = opt.value === value;
         return (

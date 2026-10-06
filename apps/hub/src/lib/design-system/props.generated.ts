@@ -14299,6 +14299,13 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": ""
+      },
+      {
+        "name": "variant",
+        "type": "\"default\" | \"quiet\"",
+        "required": false,
+        "default": "\"default\"",
+        "description": "`\"default\"` is the filled track a reader uses to change what a view SHOWS — a period, a series. `\"quiet\"` is text only, for a switch that is a way out rather than a choice the page is built around: a chart's Chart / Table view, there for the reader who wants the raw figures and kept out of everyone else's way. Same radio-group semantics and keys."
       }
     ]
   },
@@ -16391,6 +16398,13 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "6",
         "description": "Gap between the trigger and the bubble, in px."
+      },
+      {
+        "name": "variant",
+        "type": "\"hint\" | \"card\"",
+        "required": false,
+        "default": "\"hint\"",
+        "description": "`\"hint\"` (default) is the short dark bubble. `\"card\"` is a light panel for STRUCTURED content — a figure's source and the working behind it, set out like a price breakup — which the hint's 16rem dark bubble cannot hold legibly. Same open, close and WCAG 1.4.13 behaviour either way."
       }
     ]
   },

@@ -68,11 +68,14 @@ test("an area the portal does not work in reads as nothing, not as zeroes", () =
   assert.deepEqual(readPortal("smile-beggary", { state: "Goa" }), {});
 });
 
+/** KPIs only a feed can supply: their State/UT breakdown is never modelled (6 Oct 2026). */
+const FEED_ONLY = new Set(["nmba.outreach-by-state"]);
+
 test("every register KPI has a reading at All India, and no reading lacks a KPI", () => {
   for (const p of PORTAL_DASHBOARDS) {
     const reading = readPortal(p.id);
     const ids = new Set(p.kpis.map((k) => k.id));
-    for (const k of p.kpis) assert.ok(reading[k.id], `${k.id} has an All India reading`);
+    for (const k of p.kpis) if (!FEED_ONLY.has(k.id)) assert.ok(reading[k.id], `${k.id} has an All India reading`);
     for (const id of Object.keys(reading)) assert.ok(ids.has(id), `${id} is in the register`);
   }
 });
@@ -92,12 +95,12 @@ test("the slug list the demo rail reads matches the register", () => {
 
 /* ── Live feed + model (NMBA) ─────────────────────────────────────────────── */
 import { resolveReading, type PortalFeed } from "./live.ts";
-import { ALL_STATES } from "./geography.ts";
+import { STATE_NAMES } from "./geography.ts";
 
 const m = (people: number) => ({ people, women: Math.round(people * 0.3), youth: Math.round(people * 0.4), pledges: Math.round(people / 100), mitras: Math.round(people / 2000) });
 const fullFeed: PortalFeed = {
   portal: "nmba",
-  feed: { national: m(348_074_513), byState: Object.fromEntries(ALL_STATES.map((s) => [s.name, m(1_000_000)])), readAt: "2026-10-05" },
+  feed: { national: m(348_074_513), byState: Object.fromEntries(STATE_NAMES.map((s) => [s, m(1_000_000)])), readAt: "2026-10-05" },
 };
 
 test("Live mode draws the feed only: no modelled figure, no helpline calls", () => {
@@ -118,11 +121,15 @@ test("Live + illustrative: a modelled gap is scaled to the LIVE total beside it"
   assert.equal(num(r["nmba.calls"]), Math.round(348_074_513 * 0.002));
 });
 
-test("the state map is never half live: one missing State/UT and the whole map is modelled, to the live total", () => {
+test("the state map is never half live and never invented: one missing State/UT and there is no map", () => {
   const partial: PortalFeed = { portal: "nmba", feed: { ...fullFeed.feed, byState: { ...fullFeed.feed.byState, Goa: { ...m(0), people: null } } } };
-  const map = resolveReading("nmba", {}, "hybrid", partial)["nmba.outreach-by-state"]!;
-  assert.equal(map.origin, "modelled");
-  assert.equal(map.value.kind === "areas" ? map.value.rows.reduce((t, r) => t + r.value, 0) : 0, 348_074_513);
+  assert.equal(resolveReading("nmba", {}, "hybrid", partial)["nmba.outreach-by-state"], undefined);
+  assert.equal(resolveReading("nmba", {}, "mock", fullFeed)["nmba.outreach-by-state"], undefined);
+});
+
+test("a State/UT's NMBA figures come from the feed or not at all", () => {
+  assert.deepEqual(resolveReading("nmba", { state: "Goa" }, "mock", fullFeed), {});
+  assert.equal(resolveReading("nmba", { state: "Goa" }, "hybrid", fullFeed)["nmba.outreach"]?.origin, "live");
 });
 
 test("Illustrative mode ignores the feed and shows the mirrored snapshot", () => {
@@ -149,12 +156,8 @@ test("Senior Citizens: Financial Progress is expenditure over budget, from the t
   }
 });
 
-test("Senior Citizens: the State Action Plan budget's States/UTs sum to its All-India figure", () => {
-  const v = readPortal("senior-citizens")["senior-citizens.sapsrc.budget"]!.value;
-  assert.equal(v.kind, "areas");
-  if (v.kind !== "areas") return;
-  const sum = Math.round(v.rows.reduce((t, r) => t + r.value, 0) * 100) / 100;
-  assert.equal(sum, v.total);
+test("Senior Citizens: no figure is split across States/UTs the Department has not supplied", () => {
+  for (const r of Object.values(readPortal("senior-citizens"))) assert.notEqual(r?.value.kind, "areas");
 });
 
 test("every API coverage the register carries is one of the three the portals use", () => {

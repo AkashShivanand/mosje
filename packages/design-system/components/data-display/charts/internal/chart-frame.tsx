@@ -476,10 +476,12 @@ export function ChartFrame({
       {caption && <figcaption className="ds-chart__caption">{caption}</figcaption>}
       {table && tableView === "toggle" && (
         /* A VIEW SWITCH, NOT A DISCLOSURE. Chart and Table are two views of one
-           figure, chosen like a period on a dashboard — so the library's
-           SegmentedControl, the same control a reader already uses for "Per 100
-           People / Total", and one tab stop with arrow keys between the views. */
+           figure, so the library's SegmentedControl — one tab stop, arrow keys
+           between the views — in its QUIET variant, at the end of the row: it is
+           there for the reader who wants the raw figures, not a choice the card
+           is built around (feedback, 6 Oct 2026). */
         <SegmentedControl
+          variant="quiet"
           className="ds-chart__viewswitch"
           ariaLabel={`Show ${title} as`}
           value={view}

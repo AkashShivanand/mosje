@@ -286,6 +286,34 @@
     .ds-segmented__option { transition: none; }
   }
 
+  /* QUIET: text only. No track, no raised pill — the chosen option is the brand ink,
+     underlined, and the other sits in the subtle ink. Each option keeps a 24px target
+     (WCAG 2.2 §2.5.8) without the 32px control height that makes it read as a toolbar. */
+  .ds-segmented--quiet {
+    gap: var(--sa-stack-4);
+    padding: 0;
+    background: none;
+    border: 0;
+    border-radius: 0;
+  }
+  .ds-segmented--quiet .ds-segmented__option {
+    min-height: 24px;
+    padding: var(--sa-padding-2) var(--sa-padding-6);
+    border-radius: var(--sa-shape-4);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+  }
+  .ds-segmented--quiet .ds-segmented__option--active {
+    background: none;
+    box-shadow: none;
+    font-weight: var(--sa-font-weight-semibold);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+  .ds-segmented--quiet .ds-segmented__option:hover {
+    background: var(--sa-bg-neutral-subtler);
+  }
+
   /* ── Chart export control ────────────────────────────────────────────────
 
      A download menu that sits in a ChartCard header (`exportable`). The trigger

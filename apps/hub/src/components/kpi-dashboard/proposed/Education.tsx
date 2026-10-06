@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import {
+  Badge,
   Card,
   CardBody,
   CardHeader,
@@ -11,54 +12,76 @@ import {
   ChartCard,
   ComboChart,
   DescriptionList,
-  FilterSelect,
   HeadlineFigure,
   LineChart,
   RankedBarList,
   SectionTitle,
+  SegmentedControl,
   Sparkline,
   type CardTone,
 } from "@mosje/design-system";
+import { FigureSource, type SourceNote } from "@/components/website/FigureSource";
 import { OriginChip } from "@/components/website/ProvenanceChip";
 import {
   BENEFICIARY_TRENDS,
+  DEPARTMENT_DASHBOARD_AS_ON,
   DEPARTMENT_DASHBOARD_ORIGIN,
+  DEPARTMENT_DASHBOARD_SOURCE,
+  DEPARTMENT_DASHBOARD_URL,
   FUND_SHARE,
   HOSTELS,
   SCHOLARSHIPS,
   YEAR_ON_YEAR,
   type DeptAmount,
+  type DeptMetric,
 } from "@/lib/website-shared/dashboard";
 import { FitChart } from "../DepartmentOverview";
+import { CARD_AUDIENCE, FUND_SLICE_AUDIENCE, TREND_AUDIENCE, YOY_AUDIENCE, shows, type Audience } from "./audience";
 
 /**
- * THE DEPARTMENT'S OWN FIGURES, in the proposed dashboard's shape.
+ * THE DEPARTMENT'S BENEFICIARY DASHBOARD, in the proposed dashboard's style.
  *
- * The Beneficiary Dashboard's figures (`lib/website-shared/dashboard.ts` — received from
- * the Department, and checked against dosje.gov.in/dashboard on 6 Oct 2026) are not
- * re-typed here and not re-shown as the live page's cards. They are re-ORGANISED by the
- * question a reader brings (instruction, 6 Oct 2026):
+ * ONLY THE PRESENTATION CHANGES (instruction, 6 Oct 2026). Every figure, label, title,
+ * series name and axis title is the live page's — https://www.dosje.gov.in/dashboard/,
+ * re-read 6 Oct 2026 — taken from the shared record (`lib/website-shared/dashboard.ts`),
+ * never re-typed here. Card titles and labels are never altered.
  *
- *   Scholarships  — three schemes, each a tile: what was released, how many students,
- *                   and the twelve years behind it as one line.
- *   Places        — hostels, Top Class Education and overseas study: places and
- *                   students, with the money beside them.
- *   Year by Year  — every series the live page carries, one chooser, one chart, in
- *                   place of five charts across two sections.
- *   Funds         — the nine-scheme fund split joins the page's Funds movement
- *                   (`FundsReleased`), where a reader looking for money looks.
+ * WHAT IS OURS IS THE ARRANGEMENT (instruction, 6 Oct 2026):
+ *   - Scholarships and Fellowship · Hostels and Top Class Education: each live card is a
+ *     tile with its lead figure in display type, and — where the live page publishes the
+ *     years behind it — a trend line from that series.
+ *   - Year by Year Trends: Beneficiary Students, full width, with its SC / OBC / SHREYAS views.
+ *   - Year on Year Report: the three cards side by side, so they can be compared.
+ *   - Share of Fund Release moves to the page's Funds section, beside expenditure, because it
+ *     is a split of money, not a trend (`ShareOfFundRelease`). It is drawn as ranked bars:
+ *     nine slices, one of them two-thirds of the whole, compare far better by length than by
+ *     angle, each with its amount and share as the live ring's tooltip gives them.
  *
- * Every value is the record's own: the display strings exactly as the Department prints
- * them, and the series as published. The only arithmetic is a year's Pre- and
- * Post-Matric students added together for a tile's line, and each scheme's share of the
- * fund total — both from the figures shown beside them.
+ * DERIVED FIGURES, EACH WITH ITS WORKING behind the demo rail's sources switch: the Pre- plus
+ * Post-Matric students on the two scholarship lines, and each scheme's share of the fund
+ * total. Nothing else is calculated.
  *
  * DS Audit: Card / CardHeader / CardIcon / CardBody ✅ · HeadlineFigure ✅ · DescriptionList ✅ ·
- * Sparkline ✅ · ChartCard ✅ · LineChart ✅ · ComboChart ✅ · RankedBarList ✅ · FilterSelect ✅ ·
- * SectionTitle ✅ · OriginChip (app) ✅.
+ * Badge ✅ · Sparkline ✅ · ChartCard ✅ · LineChart ✅ · ComboChart ✅ · RankedBarList ✅ ·
+ * SegmentedControl ✅ · SectionTitle ✅ · OriginChip / FigureSource (app) ✅.
  */
 
 const RECEIVED = <OriginChip origin={DEPARTMENT_DASHBOARD_ORIGIN} />;
+/** Every figure in a section: the Department's, as received, shown as published. */
+const receivedNote = (title: string): SourceNote => ({
+  title,
+  kind: "document",
+  source: DEPARTMENT_DASHBOARD_SOURCE,
+  asOn: DEPARTMENT_DASHBOARD_AS_ON,
+  links: [{ label: "Beneficiary Dashboard, as published", href: DEPARTMENT_DASHBOARD_URL }],
+});
+/** A section's marks: the Received chip, and the info control beside it. */
+const sectionMarks = (title: string) => (
+  <span className="pd-actions">
+    {RECEIVED}
+    <FigureSource note={receivedNote(title)} />
+  </span>
+);
 
 /** A card of the shared record by its id. The record is a constant; a missing id is a bug, not a state. */
 function card<T extends { id: string }>(cards: readonly T[], id: string): T {
@@ -72,20 +95,19 @@ function nth<T>(list: readonly T[] | undefined, i: number): T {
   if (v === undefined) throw new Error(`Beneficiary Dashboard record has no entry ${i}`);
   return v;
 }
-const amount = ({ value, unit }: DeptAmount) => (unit ? `${value} ${unit}` : value);
-const lakh = (n: number) => `${n.toLocaleString("en-IN", { maximumFractionDigits: 2 })} lakh`;
-const count = (n: number) => n.toLocaleString("en-IN");
-/** Years in the record end with the provisional one, marked as the live page marks it. */
-const plainYear = (label: string) => label.replace("*", "");
 
-function Tile({ tone, icon, title, subtitle, children }: { tone: CardTone; icon: string; title: string; subtitle: string; children: React.ReactNode }) {
+/** "₹4,896 Cr", "9 Cr", "14,757" — as the live page prints it. */
+const amount = ({ value, unit }: DeptAmount) => (unit ? `${value} ${unit}` : value);
+const count = (n: number) => n.toLocaleString("en-IN");
+
+function Tile({ tone, icon, title, subtitle, children }: { tone: CardTone; icon: string; title: string; subtitle?: string; children: React.ReactNode }) {
   return (
     <Card tone={tone} accent="edge" className="pd-tile">
       <CardHeader>
         <CardIcon name={icon} />
         <div className="pd-tile__titles">
           <CardTitle size="sm">{title}</CardTitle>
-          <CardSubtitle>{subtitle}</CardSubtitle>
+          {subtitle ? <CardSubtitle>{subtitle}</CardSubtitle> : null}
         </div>
       </CardHeader>
       <CardBody className="pd-tile__body">{children}</CardBody>
@@ -93,213 +115,313 @@ function Tile({ tone, icon, title, subtitle, children }: { tone: CardTone; icon:
   );
 }
 
-/** A tile's closing line and the twelve years behind it. */
-function YearsLine({ labels, data, unit, format }: { labels: readonly string[]; data: number[]; unit: string; format: (n: number) => string }) {
-  const lastLabel = labels[labels.length - 1]!;
-  const provisional = lastLabel.endsWith("*");
-  return (
-    <div className="pd-trend">
-      <p className="pd-fact">
-        <b>{format(data[data.length - 1]!)}</b> {unit} in {plainYear(lastLabel)}
-        {provisional ? " (provisional)" : ""}.
-      </p>
-      <Sparkline data={data} width={420} height={44} label={`${unit}, each year, ${plainYear(labels[0]!)} to ${plainYear(lastLabel)}`} />
-    </div>
-  );
-}
+/** One live metric as a lead figure: its value, its label, and the line the live page sets under it. */
+const Lead = ({ m }: { m: DeptMetric }) => <HeadlineFigure size="md" value={amount(m)} label={m.label} context={m.sub} />;
+const Rest = ({ ms }: { ms: DeptMetric[] }) => <DescriptionList size="sm" columns={2} items={ms.map((m) => ({ term: m.label, value: amount(m) }))} />;
 
-const sum = (a: readonly number[], b: readonly number[]) => a.map((v, i) => Math.round((v + (b[i] ?? 0)) * 100) / 100);
+/* ── Year by Year Trends ───────────────────────────────────────────────────── */
 
-/* ── The trends chooser: every series the Department publishes, one chart ──── */
+type TrendId = (typeof BENEFICIARY_TRENDS.views)[number]["id"];
 
-type SeriesId = "sc" | "obc" | "shreyas" | (typeof YEAR_ON_YEAR.cards)[number]["id"];
-
-const SERIES_OPTIONS: { value: SeriesId; label: string }[] = [
-  { value: "sc", label: "SC Scholarships · Students" },
-  { value: "obc", label: "PM-YASASVI Scholarships · Students" },
-  { value: "shreyas", label: "SHREYAS Fellowship · Scholars" },
-  { value: "hostels", label: "OBC Hostels · Seats and Funds" },
-  { value: "tce-schools", label: "Top Class Schools · Students and Funds" },
-  { value: "tce-colleges", label: "Top Class Colleges · Students and Funds" },
-];
-
-function YearByYear({ headingLevel }: { headingLevel: 3 | 4 }) {
-  const [id, setId] = React.useState<SeriesId>("sc");
-  const option = SERIES_OPTIONS.find((o) => o.value === id)!;
-  const trend = BENEFICIARY_TRENDS.views.find((v) => v.id === id);
-  const yoy = YEAR_ON_YEAR.cards.find((c) => c.id === id);
+function BeneficiaryStudents({ headingLevel, audiences }: { headingLevel: 3 | 4; audiences: Set<Audience> }) {
+  const views = BENEFICIARY_TRENDS.views.filter((v) => shows(audiences, TREND_AUDIENCE[v.id] ?? "obc"));
+  const [picked, setId] = React.useState<TrendId>("sc");
+  // A view the filter has just removed falls back to the first one it allows.
+  const view = views.find((v) => v.id === picked) ?? views[0]!;
+  const id = view.id;
   return (
     <ChartCard
       headingLevel={headingLevel}
-      title="Year by Year"
-      subtitle={option.label}
+      exportable
+      title={BENEFICIARY_TRENDS.cardTitle}
+      // With one view left there is no switch to name it, so the card names it.
+      subtitle={views.length === 1 ? view.label : undefined}
       actions={
-        <FilterSelect
-          label="Series"
-          value={id}
-          onChange={(v) => setId(v as SeriesId)}
-          options={SERIES_OPTIONS.map((o) => ({ value: o.value, label: o.label }))}
-        />
+        views.length > 1 ? (
+          <SegmentedControl ariaLabel="Students shown" value={id} onChange={setId} options={views.map((v) => ({ value: v.id, label: v.label }))} />
+        ) : undefined
       }
-      footer={trend?.provisional ? BENEFICIARY_TRENDS.footnote : undefined}
+      footer={view.provisional ? BENEFICIARY_TRENDS.footnote : undefined}
     >
-      <FitChart fallback={960}>
-        {(width) =>
-          trend ? (
-            <LineChart
-              title={`${option.label}: ${trend.unit}, by year`}
-              labels={[...trend.labels]}
-              series={trend.series.map((s) => ({ name: s.name, data: [...s.data], color: s.color }))}
-              valueFormat={trend.unit === "Scholars Funded" ? count : (n: number) => n.toLocaleString("en-IN", { maximumFractionDigits: 2 })}
-              yLabel={trend.unit}
-              showDots
-              curve="smooth"
-              tickCount={6}
-              width={width}
-              height={320}
-            />
-          ) : yoy ? (
-            <ComboChart
-              title={`${yoy.title}: ${yoy.count.name} and fund released, by year`}
-              labels={[...yoy.labels]}
-              bars={[{ name: yoy.count.name, data: [...yoy.count.data], color: "var(--sa-chart-cat-1)" }]}
-              lines={[{ name: yoy.fund.name, data: [...yoy.fund.data], color: "var(--sa-chart-cat-4)" }]}
-              leftLabel={yoy.count.axis}
-              rightLabel="Fund (₹ Cr)"
-              valueFormat={count}
-              curve="smooth"
-              tickCount={6}
-              width={width}
-              height={320}
-            />
-          ) : null
-        }
+      <FitChart fallback={640}>
+        {(width) => (
+          <LineChart
+            title={`${BENEFICIARY_TRENDS.cardTitle}, ${view.label}: ${view.unit}`}
+            labels={[...view.labels]}
+            series={view.series.map((s) => ({ name: s.name, data: [...s.data], color: s.color }))}
+            valueFormat={view.unit === "Scholars Funded" ? count : (n: number) => n.toLocaleString("en-IN", { maximumFractionDigits: 2 })}
+            yLabel={view.unit}
+            showDots
+            curve="smooth"
+            tickCount={6}
+            width={width}
+            height={320}
+          />
+        )}
       </FitChart>
     </ChartCard>
   );
 }
 
+export function ShareOfFundRelease({ headingLevel, audiences }: { headingLevel: 3 | 4; audiences: Set<Audience> }) {
+  const slices = FUND_SHARE.slices.filter((s) => shows(audiences, FUND_SLICE_AUDIENCE[s.label] ?? "obc"));
+  // The share is computed as the live ring's tooltip computes it: slice ÷ the nine slices,
+  // to one decimal. The sum itself is never printed — the live page does not print it.
+  const whole = FUND_SHARE.slices.reduce((t, s) => t + s.value, 0);
+  return (
+    <ChartCard
+      headingLevel={headingLevel}
+      exportable
+      title={FUND_SHARE.title}
+      subtitle={FUND_SHARE.subtitle}
+      actions={
+        <FigureSource
+          note={{
+            ...receivedNote(FUND_SHARE.title),
+            breakdown: {
+              method: "Each scheme's share: its fund release ÷ the nine schemes together × 100, to one decimal — as the live chart's own tooltip computes it.",
+              rows: FUND_SHARE.slices.map((s) => ({ label: s.label, value: `${s.display} · ${((s.value / whole) * 100).toFixed(1)}%` })),
+              result: { label: "Nine schemes together", value: `₹${whole.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Cr · 100%` },
+            },
+          }}
+        />
+      }
+    >
+      <RankedBarList
+        title={`${FUND_SHARE.title}, ${FUND_SHARE.subtitle}`}
+        items={slices.map((s) => ({ label: s.label, value: s.value, detail: `${((s.value / whole) * 100).toFixed(1)}%` }))}
+        valueFormat={(v: number) => FUND_SHARE.slices.find((s) => s.value === v)?.display ?? count(v)}
+        showRank={false}
+        sort="none"
+      />
+    </ChartCard>
+  );
+}
+
+/* ── Year on Year Report ───────────────────────────────────────────────────── */
+
+/**
+ * One Year on Year card, as the live page draws it: the scheme's count as bars and its
+ * fund release as a line, on two axes. All three are shown together, not behind a chooser,
+ * so the three schemes can be compared at a glance — the live page's own arrangement.
+ */
+function YearOnYearCard({ c, headingLevel }: { c: (typeof YEAR_ON_YEAR.cards)[number]; headingLevel: 3 | 4 }) {
+  return (
+    // No coloured header band: the live page's three bands would make these the only banded
+    // cards on the page. The title is the live card's, unaltered.
+    <ChartCard headingLevel={headingLevel} exportable title={c.title}>
+      <FitChart fallback={400}>
+        {(width) => (
+          <ComboChart
+            title={`${c.title}: ${c.count.name} and ${c.fund.name}, by year`}
+            labels={[...c.labels]}
+            bars={[{ name: c.count.name, data: [...c.count.data], color: "var(--sa-chart-cat-1)" }]}
+            lines={[{ name: c.fund.name, data: [...c.fund.data], color: "var(--sa-chart-cat-4)" }]}
+            leftLabel={c.count.axis}
+            rightLabel="Fund (₹ Cr)"
+            valueFormat={count}
+            curve="smooth"
+            tickCount={6}
+            width={width}
+            height={300}
+          />
+        )}
+      </FitChart>
+    </ChartCard>
+  );
+}
+
+/**
+ * A tile's trend line, from a series the live page publishes. Where two published series
+ * are added together (Pre-Matric and Post-Matric students), the line says so and its info
+ * control sets the sum out for the latest year (instruction, 6 Oct 2026: derived is fine
+ * when the working is shown).
+ */
+function TrendLine({ title, labels, data, unit, format, parts }: {
+  title: string;
+  labels: readonly string[];
+  data: number[];
+  unit: string;
+  format: (n: number) => string;
+  parts?: { name: string; value: number }[];
+}) {
+  const last = labels[labels.length - 1]!;
+  const year = last.replace("*", "");
+  const provisional = last.endsWith("*");
+  return (
+    <div className="pd-trend">
+      <p className="pd-fact">
+        <b>{format(data[data.length - 1]!)}</b> {unit} in {year}
+        {provisional ? " (provisional)" : ""}.
+        {parts ? (
+          <FigureSource
+            note={{
+              ...receivedNote(`${title}, ${year}`),
+              value: format(data[data.length - 1]!),
+              breakdown: {
+                method: `Pre-Matric and Post-Matric students added together, from the Year by Year Trends series. The line draws the same sum for each year from ${labels[0]!.replace("*", "")}.`,
+                rows: parts.map((x, i) => ({ label: x.name, value: format(x.value), op: i === 0 ? undefined : ("+" as const) })),
+                result: { label: `Students, ${year}`, value: format(data[data.length - 1]!) },
+              },
+            }}
+          />
+        ) : null}
+      </p>
+      <Sparkline data={data} width={420} height={44} label={`${title}: ${unit}, each year, ${labels[0]!.replace("*", "")} to ${year}`} />
+    </div>
+  );
+}
+
+const lakh = (n: number) => `${n.toLocaleString("en-IN", { maximumFractionDigits: 2 })} lakh`;
+const sumSeries = (a: readonly number[], b: readonly number[]) => a.map((v, i) => Math.round((v + (b[i] ?? 0)) * 100) / 100);
+
 /* ── The movement ──────────────────────────────────────────────────────────── */
 
-export function Education({ sectionLevel, state }: { sectionLevel: 2 | 3; state?: string }) {
+export function Education({ sectionLevel, state, audiences }: { sectionLevel: 2 | 3; state?: string; audiences: Set<Audience> }) {
+  const show = (cardId: string) => shows(audiences, CARD_AUDIENCE[cardId] ?? "obc");
   const sc = card(SCHOLARSHIPS.cards, "sc");
   const obc = card(SCHOLARSHIPS.cards, "obc");
   const shreyas = card(SCHOLARSHIPS.cards, "shreyas");
   const hostels = card(HOSTELS.cards, "hostels");
   const topClass = card(HOSTELS.cards, "top-class");
   const ambedkar = card(HOSTELS.cards, "ambedkar");
+  const [schools, colleges] = [nth(topClass.splits, 0), nth(topClass.splits, 1)];
+  const cardLevel = (sectionLevel + 1) as 3 | 4;
   const scTrend = BENEFICIARY_TRENDS.views.find((v) => v.id === "sc")!;
   const obcTrend = BENEFICIARY_TRENDS.views.find((v) => v.id === "obc")!;
   const shreyasTrend = BENEFICIARY_TRENDS.views.find((v) => v.id === "shreyas")!;
   const hostelYears = YEAR_ON_YEAR.cards.find((c) => c.id === "hostels")!;
-  const [schools, colleges] = topClass.splits ?? [];
-  const cardLevel = (sectionLevel + 1) as 3 | 4;
-
-  return (
-    <section className="pd-section" aria-labelledby="pd-education">
-      <SectionTitle
-        as={sectionLevel}
-        headingId="pd-education"
-        size="display"
-        eyebrow="Scholarships and Education"
-        title="Support to Students"
-        description={
-          state
-            ? "All-India figures, Financial Years 2014-15 to 2025-26. They are not published by State/UT."
-            : "All-India figures, Financial Years 2014-15 to 2025-26."
-        }
-      >
-        {RECEIVED}
-      </SectionTitle>
-
-      <ul className="pd-bento pd-bento--n3" aria-label="Scholarships">
-        <li>
-          <Tile tone={sc.tone} icon={sc.icon} title="SC Scholarships" subtitle={`${sc.subtitle} Scholarships for Scheduled Caste Students`}>
-            <HeadlineFigure size="md" value={amount(nth(sc.metrics, 2))} label="students benefited" />
-            <DescriptionList size="sm" columns={2} items={(sc.metrics ?? []).slice(0, 2).map((m) => ({ term: m.label, value: amount(m) }))} />
-            <YearsLine labels={scTrend.labels} data={sum(nth(scTrend.series, 0).data, nth(scTrend.series, 1).data)} unit="students" format={lakh} />
-          </Tile>
-        </li>
-        <li>
-          <Tile tone={obc.tone} icon={obc.icon} title={obc.title} subtitle="Scholarships for OBC, EBC and DNT Students">
-            <HeadlineFigure size="md" value={amount(nth(obc.metrics, 2))} label="students benefited" />
-            <DescriptionList size="sm" columns={2} items={(obc.metrics ?? []).slice(0, 2).map((m) => ({ term: m.label, value: amount(m) }))} />
-            <YearsLine labels={obcTrend.labels} data={sum(nth(obcTrend.series, 0).data, nth(obcTrend.series, 1).data)} unit="students" format={lakh} />
-          </Tile>
-        </li>
-        <li>
-          <Tile tone={shreyas.tone} icon={shreyas.icon} title="SHREYAS" subtitle={shreyas.subtitle}>
-            <HeadlineFigure size="md" value={amount(nth(shreyas.metrics, 1))} label="scholars funded" />
-            <DescriptionList size="sm" columns={2} items={[{ term: nth(shreyas.metrics, 0).label, value: amount(nth(shreyas.metrics, 0)) }]} />
-            <YearsLine labels={shreyasTrend.labels} data={[...nth(shreyasTrend.series, 0).data]} unit="scholars funded" format={count} />
-          </Tile>
-        </li>
-      </ul>
-
-      <ul className="pd-bento pd-bento--n3" aria-label="Hostels and Top Class Education">
-        <li>
-          <Tile tone={hostels.tone} icon={hostels.icon} title="OBC Hostels" subtitle={hostels.title}>
-            <HeadlineFigure size="md" value={amount(nth(hostels.metrics, 0))} label="seats sanctioned, across Boys' and Girls' hostels" />
-            <DescriptionList size="sm" columns={2} items={[{ term: nth(hostels.metrics, 1).label, value: amount(nth(hostels.metrics, 1)) }]} />
-            <YearsLine labels={hostelYears.labels} data={[...hostelYears.count.data]} unit="seats sanctioned" format={count} />
-          </Tile>
-        </li>
-        <li>
-          <Tile tone={topClass.tone} icon={topClass.icon} title="Top Class Education" subtitle="In Schools and Colleges, for OBC, EBC and DNT Students">
-            {schools && colleges ? (
-              <>
-                {/* Two figures side by side, each a HeadlineFigure like every other tile's lead —
-                    never one invented total: the two count different students over different years. */}
-                <div className="pd-pair">
-                  <HeadlineFigure size="md" value={schools.value} label={`students in schools, ${schools.sub.toLowerCase()}`} />
-                  <HeadlineFigure size="md" value={colleges.value} label={`students in colleges, ${colleges.sub.toLowerCase()}`} />
-                </div>
-                <DescriptionList
-                  size="sm"
-                  columns={2}
-                  items={[
-                    { term: "Released, Schools", value: schools.fund },
-                    { term: "Released, Colleges", value: colleges.fund },
-                  ]}
-                />
-              </>
-            ) : null}
-          </Tile>
-        </li>
-        <li>
-          <Tile tone="info" icon={ambedkar.icon} title="Overseas Study" subtitle={ambedkar.title}>
-            <HeadlineFigure size="md" value={amount(nth(ambedkar.metrics, 0))} label="OBC and EBC students benefited" />
-            <DescriptionList size="sm" columns={2} items={[{ term: nth(ambedkar.metrics, 1).label, value: amount(nth(ambedkar.metrics, 1)) }]} />
-          </Tile>
-        </li>
-      </ul>
-
-      <YearByYear headingLevel={cardLevel} />
-    </section>
-  );
-}
-
-/**
- * The nine schemes' fund release, for the page's Funds movement. Ranked bars, not the live
- * page's ring: nine slices, one of them two-thirds of the whole, are compared by length far
- * more accurately than by angle, and every bar can carry its amount and share as text.
- */
-export function FundsReleased({ headingLevel }: { headingLevel: 3 | 4 }) {
-  const total = FUND_SHARE.slices.reduce((t, s) => t + s.value, 0);
-  return (
-    <ChartCard
-      headingLevel={headingLevel}
-      title="Funds Released, by Scheme"
-      subtitle={`₹${Math.round(total).toLocaleString("en-IN")} Cr across nine schemes, 2014-15 to 2025-26`}
-      actions={RECEIVED}
-    >
-      <RankedBarList
-        title="Funds released, by scheme, 2014-15 to 2025-26"
-        items={FUND_SHARE.slices.map((s) => ({ label: s.label, value: s.value, detail: `${Math.round((s.value / total) * 1000) / 10}%` }))}
-        valueFormat={(v: number) => FUND_SHARE.slices.find((s) => s.value === v)?.display ?? `₹${Math.round(v).toLocaleString("en-IN")} Cr`}
-        showRank={false}
-        sort="none"
+  const studentsLine = (v: (typeof BENEFICIARY_TRENDS.views)[number], title: string) => {
+    const series: readonly { name: string; data: readonly number[] }[] = v.series;
+    const pre = nth(series, 0);
+    const post = nth(series, 1);
+    return (
+      <TrendLine
+        title={title}
+        labels={v.labels}
+        data={sumSeries(pre.data, post.data)}
+        unit="students"
+        format={lakh}
+        parts={[
+          { name: pre.name, value: pre.data[pre.data.length - 1]! },
+          { name: post.name, value: post.data[post.data.length - 1]! },
+        ]}
       />
-    </ChartCard>
+    );
+  };
+  // As the live page sets it: a badge, at the right of the heading, not a sentence under it.
+  // On a State/UT view the page also says these are All-India figures, because the live page
+  // publishes no other.
+  const period = (
+    <Badge status="neutral" size="sm">
+      {SCHOLARSHIPS.period}
+    </Badge>
+  );
+
+  // Which cards the Type of Applicant filter leaves; a section with none left is not drawn, and
+  // the grid is laid out for the cards that remain (`pd-bento--n<count>`).
+  const scholarshipCards = [sc, obc, shreyas].filter((c) => show(c.id));
+  const placeCards = [hostels, topClass, ambedkar].filter((c) => show(c.id));
+  const showTrends = BENEFICIARY_TRENDS.views.some((v) => shows(audiences, TREND_AUDIENCE[v.id] ?? "obc"));
+  const yoyCards = YEAR_ON_YEAR.cards.filter((c) => shows(audiences, YOY_AUDIENCE[c.id] ?? ["obc"]));
+  const showYoy = yoyCards.length > 0;
+
+  return (
+    <>
+      {scholarshipCards.length ? (
+      <section className="pd-section" aria-labelledby="pd-scholarships">
+        <SectionTitle as={sectionLevel} headingId="pd-scholarships" size="display" eyebrow={SCHOLARSHIPS.pill} title={SCHOLARSHIPS.title} description={state ? "All-India figures; not published by State/UT." : undefined}>
+          <span className="pd-actions">
+            {period}
+            {sectionMarks(SCHOLARSHIPS.title)}
+          </span>
+        </SectionTitle>
+        <ul className={`pd-bento pd-bento--n${scholarshipCards.length}`} aria-label={SCHOLARSHIPS.title}>
+          {[sc, obc].filter((x) => show(x.id)).map((x) => (
+            <li key={x.id}>
+              <Tile tone={x.tone} icon={x.icon} title={x.title} subtitle={x.subtitle}>
+                <Lead m={nth(x.metrics, 2)} />
+                <Rest ms={[nth(x.metrics, 0), nth(x.metrics, 1)]} />
+                {studentsLine(x.id === "sc" ? scTrend : obcTrend, x.title)}
+              </Tile>
+            </li>
+          ))}
+          {show("shreyas") ? (
+          <li>
+            <Tile tone={shreyas.tone} icon={shreyas.icon} title={shreyas.title} subtitle={shreyas.subtitle}>
+              <Lead m={nth(shreyas.metrics, 1)} />
+              <Rest ms={[nth(shreyas.metrics, 0), nth(shreyas.metrics, 2)]} />
+              {/* The fact line would restate "Latest Year (2025-26)" above it, so the line alone. */}
+              <div className="pd-trend">
+                <Sparkline data={[...nth(shreyasTrend.series, 0).data]} width={420} height={44} label={`${shreyas.title}: ${shreyasTrend.unit}, each year, ${shreyasTrend.labels[0]} to ${shreyasTrend.labels[shreyasTrend.labels.length - 1]}`} />
+              </div>
+            </Tile>
+          </li>
+          ) : null}
+        </ul>
+      </section>
+      ) : null}
+
+      {placeCards.length ? (
+      <section className="pd-section" aria-labelledby="pd-hostels">
+        <SectionTitle as={sectionLevel} headingId="pd-hostels" size="display" title={HOSTELS.title}>
+          {sectionMarks(HOSTELS.title)}
+        </SectionTitle>
+        <ul className={`pd-bento pd-bento--n${placeCards.length}`} aria-label={HOSTELS.title}>
+          <li>
+            <Tile tone={hostels.tone} icon={hostels.icon} title={hostels.title}>
+              <div className="pd-pair">
+                <Lead m={nth(hostels.metrics, 0)} />
+                <Lead m={nth(hostels.metrics, 1)} />
+              </div>
+              <TrendLine title={hostels.title} labels={hostelYears.labels} data={[...hostelYears.count.data]} unit="seats sanctioned" format={count} />
+            </Tile>
+          </li>
+          <li>
+            <Tile tone={topClass.tone} icon={topClass.icon} title={topClass.title}>
+              <div className="pd-pair">
+                {[schools, colleges].map((s) => (
+                  <HeadlineFigure key={s.chip} size="md" value={s.value} label={s.chip} context={`${s.sub} · Fund Released: ${s.fund}`} />
+                ))}
+              </div>
+            </Tile>
+          </li>
+          <li>
+            {/* `info`, not the live page's red: on this estate red means a rejected application. */}
+            <Tile tone="info" icon={ambedkar.icon} title={ambedkar.title}>
+              <div className="pd-pair">
+                <Lead m={nth(ambedkar.metrics, 0)} />
+                <Lead m={nth(ambedkar.metrics, 1)} />
+              </div>
+            </Tile>
+          </li>
+        </ul>
+      </section>
+      ) : null}
+
+      {showTrends ? (
+      <section className="pd-section" aria-labelledby="pd-trends">
+        <SectionTitle as={sectionLevel} headingId="pd-trends" size="display" title={BENEFICIARY_TRENDS.title}>
+          {sectionMarks(BENEFICIARY_TRENDS.title)}
+        </SectionTitle>
+        <BeneficiaryStudents headingLevel={cardLevel} audiences={audiences} />
+      </section>
+      ) : null}
+
+      {showYoy ? (
+      <section className="pd-section" aria-labelledby="pd-yoy">
+        <SectionTitle as={sectionLevel} headingId="pd-yoy" size="display" title={YEAR_ON_YEAR.title}>
+          {sectionMarks(YEAR_ON_YEAR.title)}
+        </SectionTitle>
+        <ul className={`pd-bento pd-bento--n${yoyCards.length}`} aria-label={YEAR_ON_YEAR.title}>
+          {yoyCards.map((c) => (
+            <li key={c.id}>
+              <YearOnYearCard c={c} headingLevel={cardLevel} />
+            </li>
+          ))}
+        </ul>
+      </section>
+      ) : null}
+    </>
   );
 }

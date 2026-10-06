@@ -45,6 +45,30 @@
     font-weight: var(--sa-font-weight-medium);
   }
 
+  /* ── Who It Is For: multi-select chips under the area bar ─────────────────── */
+  .pd-filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-stack-8);
+  }
+
+  /* One choice, two controls: chips on a wide screen, the multi-select on a phone. */
+  .pd-filter--narrow { display: none; }
+
+  @media (max-width: 767px) {
+    .pd-filter--wide { display: none; }
+    .pd-filter--narrow { display: block; }
+  }
+
+  .pd-filter__label {
+    margin-inline-end: var(--sa-stack-4);
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
   /* ── 1 · The hero panel ──────────────────────────────────────────────────── */
   .pd-hero__body {
     display: grid;
@@ -202,43 +226,6 @@
 
   .pd-actions--filters {
     margin-block-end: var(--sa-stack-16);
-  }
-
-  /* ── About This Figure ───────────────────────────────────────────────────── */
-  .pd-about {
-    display: grid;
-    gap: var(--sa-stack-20);
-  }
-
-  .pd-about__figure {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: var(--sa-stack-8);
-    margin: 0;
-  }
-
-  .pd-about__value {
-    color: var(--sa-text-neutral-bolder);
-    font-size: var(--sa-type-headline-2-size);
-    line-height: var(--sa-type-headline-2-lh);
-    font-weight: var(--sa-font-weight-semibold);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .pd-about__kicker {
-    display: block;
-    color: var(--sa-text-neutral-subtle);
-    font-size: var(--sa-type-label-2-size);
-    line-height: var(--sa-type-label-2-lh);
-    font-weight: var(--sa-font-weight-medium);
-  }
-
-  .pd-about__qualifier {
-    color: var(--sa-text-neutral-subtle);
-    font-size: var(--sa-type-body-2-size);
-    line-height: var(--sa-type-body-2-lh);
-    font-weight: var(--sa-font-weight-regular);
   }
 
   /* A heading that receives focus after a move is a landmark for the reader, not a control. */

@@ -61,6 +61,11 @@
     font-weight: var(--sa-font-weight-regular);
   }
 
+  /* A context that renders nothing (a note switched off) takes no line and no gap. */
+  .ds-headline__context:empty {
+    display: none;
+  }
+
   .ds-headline__context {
     color: var(--sa-text-neutral-subtle);
     font-size: var(--sa-type-body-2-size);

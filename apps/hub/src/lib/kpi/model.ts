@@ -1,4 +1,4 @@
-import { ALL_STATES, SMILE_AREAS, type AreaNode } from "./geography.ts";
+import { SMILE_AREAS, STATE_NAMES, type AreaNode } from "./geography.ts";
 import type { AreaRow, AreaScope, KpiReading, KpiValue, PortalId, PortalReading } from "./types.ts";
 
 /**
@@ -362,12 +362,17 @@ export interface ModelAnchors {
 }
 
 function nmba(scope: AreaScope, anchors: ModelAnchors = {}): PortalReading {
-  const national = !scope.state;
+  /*
+   * NO INVENTED STATE/UT FIGURES. A State/UT's NMBA figures, and the state map, come from
+   * the feed or not at all. They were spread from the national total by population, which
+   * the Department never supplied (instruction, 6 Oct 2026).
+   */
+  if (scope.state) return {};
   const anchored = Object.keys(anchors).length > 0;
   // With live anchors the national figures are the feed's and arrive separately; without
   // them they are the snapshot. Either way everything below a national figure is modelled.
   const snap = (value: number): KpiReading =>
-    national && !anchored ? { value: figure(value), origin: "snapshot", source: NMBA_SOURCE, asOn: NMBA_AS_ON } : MODELLED(figure(value));
+    !anchored ? { value: figure(value), origin: "snapshot", source: NMBA_SOURCE, asOn: NMBA_AS_ON } : MODELLED(figure(value));
   const base = {
     outreach: anchors.outreach ?? NMBA.outreach,
     women: anchors.women ?? NMBA.women,
@@ -375,23 +380,16 @@ function nmba(scope: AreaScope, anchors: ModelAnchors = {}): PortalReading {
     pledges: anchors.pledges ?? NMBA.pledges,
     mitras: anchors.mitras ?? Math.round(NMBA.pledges * 0.012),
   };
-  // By State/UT: the national figure spread by Census 2011 population (anchor and scale).
-  const at = (total: number, measure: string) => split(total, measure, ALL_STATES).at(scope);
-  const outreach = at(base.outreach, "outreach");
   // Mitras and helpline calls are not on the NMBA dashboard: modelled at 1.2 Mitras per
   // 100 pledges and two calls per 1,000 people reached.
-  const reading: PortalReading = {
-    "nmba.outreach": snap(outreach),
-    "nmba.women": snap(Math.min(outreach, at(base.women, "women"))),
-    "nmba.youth": snap(Math.min(outreach, at(base.youth, "youth"))),
-    "nmba.pledges": snap(at(base.pledges, "pledges")),
-    "nmba.mitras": MODELLED(figure(at(base.mitras, "mitras"))),
+  return {
+    "nmba.outreach": snap(base.outreach),
+    "nmba.women": snap(base.women),
+    "nmba.youth": snap(base.youth),
+    "nmba.pledges": snap(base.pledges),
+    "nmba.mitras": MODELLED(figure(base.mitras)),
+    "nmba.calls": MODELLED(figure(Math.round(base.outreach * 0.002))),
   };
-  if (national) {
-    reading["nmba.calls"] = MODELLED(figure(Math.round(base.outreach * 0.002)));
-    reading["nmba.outreach-by-state"] = MODELLED({ kind: "areas", total: base.outreach, rows: split(base.outreach, "outreach", ALL_STATES).children({}) });
-  }
-  return reading;
 }
 
 /* ── e-Utthaan (DAPSC) ────────────────────────────────────────────────────── */
@@ -476,8 +474,7 @@ function shreshta(): PortalReading {
  * ILLUSTRATIVE, FY 2026-27 to 30.09.2026, ₹ crore. No figure here is the Department's: the
  * portal's APIs answer only to a signed-in user. Each component's Financial Progress is its
  * expenditure over its Budget Estimate, computed here from the two figures shown beside it,
- * so the three can never disagree. SAPSrC's budget is apportioned across States/UTs by
- * population (anchor and scale), the shape of the per-state releases its API holds.
+ * so the three can never disagree. Every figure is All-India.
  */
 const SCW_FUNDS: Record<string, [budget: number, spent: number]> = {
   // Re-anchored 6 Oct 2026 on the Notes on Demands for Grants 2026-27 (Demand 93), B.E.
@@ -495,10 +492,9 @@ const SCW_FUNDS: Record<string, [budget: number, spent: number]> = {
 function seniorCitizens(): PortalReading {
   const r: PortalReading = {};
   for (const [c, [budget, spent]] of Object.entries(SCW_FUNDS)) {
-    r[`senior-citizens.${c}.budget`] =
-      c === "sapsrc"
-        ? MODELLED({ kind: "areas", total: budget, rows: split(budget * 100, "sapsrc", ALL_STATES).children({}).map((row) => ({ ...row, value: row.value / 100 })) })
-        : MODELLED(figure(budget));
+    // All-India only. SAPSrC's budget used to be spread across States/UTs by population, a
+    // breakdown the Department has not supplied (instruction, 6 Oct 2026).
+    r[`senior-citizens.${c}.budget`] = MODELLED(figure(budget));
     r[`senior-citizens.${c}.expenditure`] = MODELLED(figure(spent));
     r[`senior-citizens.${c}.progress`] = MODELLED(figure(Math.round((spent / budget) * 1000) / 10));
   }
@@ -563,7 +559,7 @@ export function areaOptions(portal: PortalId, state?: string): string[] {
     if (!state) return SMILE_AREAS.map((n) => n.name).sort((a, b) => a.localeCompare(b));
     return SMILE_AREAS.find((n) => n.name === state)?.children?.map((c) => c.name) ?? [];
   }
-  if (portal === "nmba" && !state) return ALL_STATES.map((n) => n.name).sort((a, b) => a.localeCompare(b));
+  if (portal === "nmba" && !state) return [...STATE_NAMES];
   return [];
 }
 
