@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "The DBIM header's Log In profile icon is drawn at the same line weight as Skip to Content, Language and Accessibility beside it (3.0 units at 64 — 1.125px at 24, 1.5px at 32). It was Material's weight 400, nearly twice as heavy at 24px."
+}
