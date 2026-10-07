@@ -507,6 +507,8 @@ function eUtthaan(): PortalReading {
       kind: "table",
       columns: ["Ministry / Department", "Mandated (%)", "Allocated (%)", "Difference (Percentage Points)"],
       rows: DAPSC_MINISTRIES.map(([name, mandated, allocated]) => [name, mandated, allocated, Math.round((allocated - mandated) * 10) / 10]),
+      // The mandate is a minimum earmark: allocating above it complies.
+      againstMinimum: { column: 3, header: "Against the Mandate", unit: "pp" },
     }),
     // The e-Utthaan portal's own count (devmosje.negd.in, read 6 Oct 2026): 38 Ministries /
     // Departments and 239 schemes. Was 41 and 329, which nothing supported.

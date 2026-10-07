@@ -3,6 +3,7 @@
 import * as React from "react";
 import {
   Badge,
+  BarChart,
   Card,
   CardBody,
   CardHeader,
@@ -10,12 +11,11 @@ import {
   CardSubtitle,
   CardTitle,
   ChartCard,
-  ComboChart,
   DescriptionList,
   HeadlineFigure,
   LineChart,
+  RankedBarList,
   SectionTitle,
-  SegmentedControl,
   Sparkline,
   type CardTone,
 } from "@mosje/design-system";
@@ -34,7 +34,8 @@ import {
   type DeptMetric,
 } from "@/lib/website-shared/dashboard";
 import { FitChart } from "../DepartmentOverview";
-import { FundShareDonut, HostelCard, deptAmount } from "../DepartmentCards";
+import { HostelCard, deptAmount } from "../DepartmentCards";
+import { SegmentedButtons } from "./SegmentedButtons";
 import { CARD_AUDIENCE, FUND_SLICE_AUDIENCE, TREND_AUDIENCE, YOY_AUDIENCE, shows, type Audience } from "./audience";
 
 /**
@@ -73,8 +74,8 @@ import { CARD_AUDIENCE, FUND_SLICE_AUDIENCE, TREND_AUDIENCE, YOY_AUDIENCE, shows
  *
  * DS Audit: Card / CardHeader / CardIcon / CardBody ✅ · HeadlineFigure ✅ · DescriptionList ✅ ·
  * Badge ✅ · Sparkline (`startLabel`/`endLabel`/`markLast` ➕ ADDED) ✅ · ChartCard (`variant` ➕ ADDED) ✅ ·
- * LineChart ✅ · ComboChart ✅ · RankedBarList ✅ ·
- * SegmentedControl ✅ · SectionTitle ✅ · OriginChip / FigureSource (app) ✅.
+ * LineChart ✅ · BarChart ✅ · RankedBarList ✅ · ButtonGroup (SegmentedButtons) ✅ ·
+ * SectionTitle ✅ · OriginChip / FigureSource (app) ✅.
  */
 
 const RECEIVED = <OriginChip origin={DEPARTMENT_DASHBOARD_ORIGIN} />;
@@ -203,7 +204,7 @@ function BeneficiaryStudents({ headingLevel, audiences }: { headingLevel: 3 | 4;
       subtitle={views.length === 1 ? view.label : undefined}
       actions={
         views.length > 1 ? (
-          <SegmentedControl ariaLabel="Students shown" value={id} onChange={setId} options={views.map((v) => ({ value: v.id, label: v.label }))} />
+          <SegmentedButtons label="Students shown" value={id} onChange={setId} options={views.map((v) => ({ value: v.id, label: v.label }))} />
         ) : undefined
       }
       footer={view.provisional ? BENEFICIARY_TRENDS.footnote : undefined}
@@ -252,8 +253,17 @@ export function ShareOfFundRelease({ headingLevel, audiences }: { headingLevel: 
         />
       }
     >
-      {/* The live page's ring, with each scheme's amount beside it (live structure kept). */}
-      <FundShareDonut slices={slices} tableView="sr-only" />
+      {/* RANKED BARS, NOT THE LIVE PAGE'S RING (design review, 7 Oct 2026): one slice is
+          two-thirds of the whole and six are under 2%, past the five a ring can show. The same
+          amounts in the same order, each with its share as the live ring's tooltip gives it. */}
+      <RankedBarList
+        title={`${FUND_SHARE.title}: ${FUND_SHARE.subtitle}`}
+        items={slices.map((sl) => ({ label: sl.label, value: sl.value, detail: `${((sl.value / whole) * 100).toFixed(1)}%` }))}
+        valueFormat={(n: number) => `₹${Math.round(n).toLocaleString("en-IN")} Cr`}
+        sort="desc"
+        showRank={false}
+        size="md"
+      />
     </ChartCard>
   );
 }
@@ -261,14 +271,15 @@ export function ShareOfFundRelease({ headingLevel, audiences }: { headingLevel: 
 /* ── Year on Year Report ───────────────────────────────────────────────────── */
 
 /**
- * One Year on Year card, as the live page draws it: the scheme's count as bars and its fund
- * release as a line, on two axes (instruction, 6 Oct 2026: both in one chart). Three things
- * are ours, to keep two scales readable:
- *  - straight segments — one figure a year, so a curve would draw values nobody reported;
+ * One Year on Year card: the scheme's count and its fund release, year by year, in ONE card
+ * (instruction, 6 Oct 2026) — as two aligned panels over the same years, not one plot on two
+ * axes (design review, 7 Oct 2026). Two scales on one plot made the point where the line
+ * crossed a bar a product of how the axes were set, and readers took it for a relationship;
+ * ONS, the Analysis Function and Few all advise against it. Both panels are bars on the same
+ * bands, so each year's count and fund stand one over the other. Kept from before:
  *  - each measure keeps ONE colour wherever it appears on the page: counts in the first slot,
- *    fund release in the third, so the line is never the green of "Post-Matric" next door;
- *  - the subtitle states both latest-year figures — the answer the chart supports — so the
- *    reader need not read either off its axis.
+ *    fund release in the third;
+ *  - the subtitle states both latest-year figures, so neither is read off an axis.
  */
 const COUNT_COLOUR = "var(--sa-chart-cat-1)";
 const FUND_COLOUR = "var(--sa-chart-cat-3)";
@@ -284,19 +295,30 @@ function YearOnYearCard({ c, headingLevel }: { c: (typeof YEAR_ON_YEAR.cards)[nu
     <ChartCard variant="outlined" headingLevel={headingLevel} title={c.title} subtitle={takeaway}>
       <FitChart fallback={400}>
         {(width) => (
-          <ComboChart
-            title={`${c.title}: ${c.count.name} and ${c.fund.name}, by year`}
-            labels={[...c.labels]}
-            bars={[{ name: c.count.name, data: [...c.count.data], color: COUNT_COLOUR }]}
-            lines={[{ name: c.fund.name, data: [...c.fund.data], color: FUND_COLOUR }]}
-            leftLabel={c.count.axis}
-            rightLabel="Fund (₹ Cr)"
-            valueFormat={count}
-            tableView="sr-only"
-            tickCount={6}
-            width={width}
-            height={300}
-          />
+          <div className="pd-panels">
+            <BarChart
+              title={`${c.title}: ${c.count.name}, by year`}
+              labels={[...c.labels]}
+              series={[{ name: c.count.name, data: [...c.count.data], color: COUNT_COLOUR }]}
+              yLabel={c.count.axis}
+              valueFormat={count}
+              tableView="sr-only"
+              width={width}
+              height={180}
+            />
+            {/* Bars on the same bands as the counts above, so each year's two figures stand
+                one over the other — a line's points fall between bar centres. */}
+            <BarChart
+              title={`${c.title}: ${c.fund.name}, by year`}
+              labels={[...c.labels]}
+              series={[{ name: c.fund.name, data: [...c.fund.data], color: FUND_COLOUR }]}
+              yLabel="Fund (₹ Cr)"
+              valueFormat={(n: number) => n.toLocaleString("en-IN", { maximumFractionDigits: 2 })}
+              tableView="sr-only"
+              width={width}
+              height={160}
+            />
+          </div>
         )}
       </FitChart>
     </ChartCard>
@@ -464,7 +486,7 @@ export function EducationResults({ sectionLevel, state, audiences }: MovementPro
   );
 }
 
-/** The Department's series followed over the years: Year by Year Trends, then Year on Year Report. */
+/** The Department's series followed over the years: one Year by Year Trends section. */
 export function EducationTrends({ sectionLevel, state, audiences }: MovementProps) {
   const cardLevel = (sectionLevel + 1) as 3 | 4;
   const showTrends = BENEFICIARY_TRENDS.views.some((v) => shows(audiences, TREND_AUDIENCE[v.id] ?? "obc"));
@@ -473,7 +495,6 @@ export function EducationTrends({ sectionLevel, state, audiences }: MovementProp
   if (!showTrends && !showShare && yoyCards.length === 0) return null;
   return (
     <>
-      {showTrends || showShare ? (
       <section className="pd-section" aria-labelledby="pd-trends">
         <SectionTitle as={sectionLevel} headingId="pd-trends" size="display" title={BENEFICIARY_TRENDS.title}>
           <span className="pd-actions">
@@ -481,8 +502,8 @@ export function EducationTrends({ sectionLevel, state, audiences }: MovementProp
             {sectionMarks(BENEFICIARY_TRENDS.title)}
           </span>
         </SectionTitle>
-        {/* As the live page groups them: the students chart and the Share of Fund Release ring
-            side by side under Year by Year Trends (live structure kept, 6 Oct 2026). */}
+        {/* As the live page groups them: the students chart and Share of Fund Release side by
+            side under Year by Year Trends (live structure kept, 6 Oct 2026). */}
         <ul className="kd-bd__grid kd-bd__grid--charts">
           {showTrends ? (
             <li>
@@ -495,26 +516,74 @@ export function EducationTrends({ sectionLevel, state, audiences }: MovementProp
             </li>
           ) : null}
         </ul>
+        {/* THE YEAR ON YEAR REPORT IS THIS SECTION'S SECOND ROW (design review, 7 Oct 2026):
+            "Year by Year Trends" then "Year on Year Report" were two headings for one idea. */}
+        {yoyCards.length > 0 ? (
+          <ul className={`pd-bento pd-bento--n${yoyCards.length}`} aria-label={YEAR_ON_YEAR.title}>
+            {yoyCards.map((c) => (
+              <li key={c.id}>
+                <YearOnYearCard c={c} headingLevel={cardLevel} />
+              </li>
+            ))}
+          </ul>
+        ) : null}
       </section>
-      ) : null}
 
-      {yoyCards.length > 0 ? (
-      <section className="pd-section" aria-labelledby="pd-yoy">
-        <SectionTitle as={sectionLevel} headingId="pd-yoy" size="display" title={YEAR_ON_YEAR.title}>
-          <span className="pd-actions">
-            {allIndiaBadge(state)}
-            {sectionMarks(YEAR_ON_YEAR.title)}
-          </span>
-        </SectionTitle>
-        <ul className={`pd-bento pd-bento--n${yoyCards.length}`} aria-label={YEAR_ON_YEAR.title}>
-          {yoyCards.map((c) => (
-            <li key={c.id}>
-              <YearOnYearCard c={c} headingLevel={cardLevel} />
-            </li>
-          ))}
-        </ul>
-      </section>
-      ) : null}
     </>
   );
+}
+
+
+/* ── The Department's card on the dashboard's landing page ─────────────────── */
+
+/**
+ * THE DEPARTMENT'S CARD (design review, 7 Oct 2026). The landing page holds one card per
+ * Department and portal; the Beneficiary Dashboard's sections open behind this one, on the
+ * Department's own page (`?programme=department`). Its figures are the ones the hero does NOT
+ * already lead with — the hero carries the fund total and the three scholarship totals — so
+ * the card adds the year's scholarship students, as a line, and the hostels and top class
+ * places. Every figure is the live page's, from the shared record.
+ */
+export function DepartmentTileContent({ audiences }: { audiences: Set<Audience> }): { figure: React.ReactNode; body: React.ReactNode } | null {
+  const show = (cardId: string) => shows(audiences, CARD_AUDIENCE[cardId] ?? "obc");
+  const trendCard = ["sc", "obc"].find(show);
+  const view = trendCard ? BENEFICIARY_TRENDS.views.find((v) => v.id === trendCard) : undefined;
+  const hostels = card(HOSTELS.cards, "hostels");
+  const topClass = card(HOSTELS.cards, "top-class");
+  const ambedkar = card(HOSTELS.cards, "ambedkar");
+  const [schools, colleges] = [nth(topClass.splits, 0), nth(topClass.splits, 1)];
+  const facts = [
+    ...(show("hostels") ? [{ term: `${nth(hostels.metrics, 0).label} · OBC Hostels`, value: deptAmount(nth(hostels.metrics, 0)) }] : []),
+    ...(show("top-class")
+      ? [
+          { term: `Top Class Education · ${schools.chip}`, value: schools.value },
+          { term: `Top Class Education · ${colleges.chip}`, value: colleges.value },
+        ]
+      : []),
+    ...(show("ambedkar") ? [{ term: `${nth(ambedkar.metrics, 0).label} · Overseas Education Loan`, value: deptAmount(nth(ambedkar.metrics, 0)) }] : []),
+  ];
+  if (!view && facts.length === 0) return null;
+  const sc = view ? card(SCHOLARSHIPS.cards, view.id) : undefined;
+  const series: readonly { name: string; data: readonly number[] }[] | undefined = view?.series;
+  return {
+    figure: null,
+    body: (
+      <>
+        {view && sc && series ? (
+          <TrendLine
+            title={sc.title}
+            labels={view.labels}
+            data={sumSeries(nth(series, 0).data, nth(series, 1).data)}
+            unit={view.id === "sc" ? "SC students" : "OBC, EBC and DNT students"}
+            format={lakh}
+            parts={[
+              { name: nth(series, 0).name, value: nth(series, 0).data[nth(series, 0).data.length - 1]! },
+              { name: nth(series, 1).name, value: nth(series, 1).data[nth(series, 1).data.length - 1]! },
+            ]}
+          />
+        ) : null}
+        {facts.length ? <DescriptionList size="figure" caps columns={2} items={facts} /> : null}
+      </>
+    ),
+  };
 }

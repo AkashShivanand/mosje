@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Button, Card, CardBody, FormField, Icon, Input, PasswordInput, SectionTitle, Select } from "@mosje/design-system";
-import { OFFICER_ROLES } from "@/lib/kpi/access";
+import { Button, Card, CardBody, FormField, Icon, Input, PasswordInput, SectionTitle } from "@mosje/design-system";
+import { accountByUserId } from "@/lib/kpi/access";
 import { setViewer } from "@/lib/kpi/viewer";
 
 /**
@@ -12,23 +12,26 @@ import { setViewer } from "@/lib/kpi/viewer";
  * 6 Oct 2026: a citizen sees only the Pre-Login KPIs and never signs in; an officer signs in
  * to see the Post-Login KPIs for their office as well.
  *
- * A PROTOTYPE OF THE SCREEN, NOT AUTHENTICATION. Nothing is sent anywhere and no credential
- * is checked: signing in sets the dashboard's viewer (`setViewer`), the same state the demo
- * rail's View As tab sets. The Office field stands in for what a real login would read from
- * the officer's account, so the prototype can show every office's view.
+ * TWO AUDIENCES, AND THE ACCOUNT DECIDES THE SCOPE (instruction, 7 Oct 2026). The sheet has
+ * Public and Officer only. Signing in makes the reader an officer; which portals and which
+ * State or District they see is the account's (`accountByUserId`), never a choice on this
+ * form. The Office picker that stood here let a reader choose their own scope, which no
+ * real login does.
  *
- * DS Audit: SectionTitle ✅ · Card / CardBody ✅ · FormField ✅ · Select ✅ · Input ✅ ·
+ * A PROTOTYPE OF THE SCREEN, NOT AUTHENTICATION. Nothing is sent anywhere and the password
+ * is not checked: a known User ID sets the dashboard's viewer (`setViewer`). The demo rail
+ * lists the prototype's User IDs.
+ *
+ * DS Audit: SectionTitle ✅ · Card / CardBody ✅ · FormField ✅ · Input ✅ ·
  * PasswordInput ✅ · Button ✅ · Icon ✅.
  */
 
 interface FieldErrors {
-  office?: string;
   userId?: string;
   password?: string;
 }
 
 export function OfficerLogin({ backHref, sectionLevel, onSignedIn }: { backHref: string; sectionLevel: 2 | 3; onSignedIn: () => void }) {
-  const [office, setOffice] = React.useState("");
   const [userId, setUserId] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [errors, setErrors] = React.useState<FieldErrors>({});
@@ -36,13 +39,14 @@ export function OfficerLogin({ backHref, sectionLevel, onSignedIn }: { backHref:
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     const next: FieldErrors = {
-      office: office ? undefined : "Select your office.",
       userId: userId.trim() ? undefined : "Enter your User ID.",
       password: password ? undefined : "Enter your password.",
     };
+    const account = next.userId || next.password ? undefined : accountByUserId(userId);
+    if (!next.userId && !next.password && !account) next.userId = "The User ID or password is incorrect.";
     setErrors(next);
-    if (next.office || next.userId || next.password) return;
-    setViewer(office);
+    if (!account) return;
+    setViewer(account.id);
     onSignedIn();
   };
 
@@ -57,23 +61,11 @@ export function OfficerLogin({ backHref, sectionLevel, onSignedIn }: { backHref:
           headingId="pd-login"
           size="display"
           title="Officer Login"
-          description="For officers of the Department, its Divisions and the scheme portals. The dashboard's public figures need no sign-in."
+          description="For officers of the Department, its Divisions and the scheme portals. Your account decides which programmes and which State or District you see."
         />
         <Card className="pd-login__card">
           <CardBody>
             <form className="pd-login__form" noValidate onSubmit={submit}>
-              <FormField label="Office" id="pd-login-office" required error={errors.office}>
-                {(control) => (
-                  <Select
-                    {...control}
-                    name="office"
-                    value={office}
-                    onChange={(e) => setOffice(e.target.value)}
-                    placeholder="Select your office"
-                    options={OFFICER_ROLES.map((r) => ({ value: r.id, label: r.label }))}
-                  />
-                )}
-              </FormField>
               <FormField label="User ID" id="pd-login-user" required error={errors.userId}>
                 {(control) => (
                   <Input {...control} name="username" autoComplete="username" value={userId} onChange={(e) => setUserId(e.target.value)} leftIcon={<Icon name="person" size={16} />} />

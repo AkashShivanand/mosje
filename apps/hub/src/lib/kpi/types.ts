@@ -164,11 +164,23 @@ export type KpiValue =
       /** `pending` lists label indices a series has no figure for yet — drawn as "not reported", never as 0. */
       series: { name: string; data: number[]; pending?: number[] }[];
       chart: "line" | "bar";
+      /** One line under the chart, for what a label cannot say ("2026-27: spent to 30 Sep"). */
+      note?: string;
     }
   | { kind: "stages"; stages: Labelled[] }
   /** One figure for the scope, and the same figure for each area inside it. */
   | { kind: "areas"; total: number; rows: AreaRow[] }
-  | { kind: "table"; columns: string[]; rows: (string | number)[][] };
+  | {
+      kind: "table";
+      columns: string[];
+      rows: (string | number)[][];
+      /**
+       * A column holding a signed difference against a MINIMUM (DAPSC's mandated share): drawn
+       * as "Meets, +0.8 pp" or "Short by 0.7 pp", in words with an icon, so the colour follows
+       * compliance and not the sign alone (design review, 7 Oct 2026).
+       */
+      againstMinimum?: { column: number; header: string; unit: string };
+    };
 
 export interface KpiReading {
   value: KpiValue;

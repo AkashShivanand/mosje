@@ -14,6 +14,7 @@ import { FigureSourceProvider } from "@/components/website/FigureSource";
 import { ViewerNotice } from "../DashboardViewer";
 import { OfficerLogin } from "./OfficerLogin";
 import { ProgrammeStory } from "./ProgrammeStory";
+import { DEPARTMENT_PAGE, DepartmentStory } from "./DepartmentStory";
 import { DataBehind, Pulse } from "./Pulse";
 import { SHORT_NAME, readAll, stateMeasures, viewingFor } from "./model";
 import { AUDIENCES, AUDIENCE_LABEL, PROGRAMME_AUDIENCE, parseAudiences, serialiseAudiences, shows } from "./audience";
@@ -55,6 +56,8 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
   const programmeParam = params.get("programme");
   const programme =
     programmeParam && isPortalId(programmeParam) ? viewing.programmes.find((p) => p.id === programmeParam) : undefined;
+  // The Department's own dashboard (`?programme=department`): its Beneficiary Dashboard.
+  const department = programmeParam === DEPARTMENT_PAGE;
   const wantedState = params.get("state") ?? undefined;
   // The officer-only page (`?view=data-sources`); anyone else asking for it gets the dashboard.
   const dataSources = params.get("view") === "data-sources" && readinessAllowed;
@@ -161,11 +164,18 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
         are the ones the Additional Secretary approved (`audience.ts`); nothing chosen means
         everyone, and the field says "All".
       */}
+      {/* THE WAY BACK FIRST (design review, 7 Oct 2026): above the area bar, where it reads as
+          the way out of this dashboard, not as a link beneath its heading. */}
+      {(programme || department) && !page ? (
+        <Button appearance="text" size="sm" href={hrefTo({ programme: null })} linkAs={Link} iconLeft={<Icon name="arrow_back" size={16} />} className="pd-back">
+          All Dashboards
+        </Button>
+      ) : null}
       {page ? null : (
         <div className="pd-bar">
           <p className="pd-bar__where" role="status">
             <span className="pd-bar__label">Figures for</span>
-            {programme ? `${SHORT_NAME[programme.id]} · ` : ""}
+            {/* The area only: the dashboard's own head names whose figures they are. */}
             {scope.district ? `${scope.district}, ` : ""}
             {scope.state ?? "All India"}
           </p>
@@ -226,6 +236,8 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
               </Button>
               <DataBehind viewing={viewing} readings={readings} sectionLevel={sectionLevel} />
             </div>
+          ) : department ? (
+            <DepartmentStory sectionLevel={sectionLevel} state={scope.state} audiences={audiences} />
           ) : programme ? (
             <ProgrammeStory
               programme={programme}
@@ -233,7 +245,6 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
               readings={readings}
               scope={scope}
               sectionLevel={sectionLevel}
-              backHref={hrefTo({ programme: null })}
               go={go}
               states={states}
             />

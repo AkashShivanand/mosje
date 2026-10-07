@@ -9,6 +9,7 @@ import type {
   KpiDefinition,
   KpiReading,
   KpiUnit,
+  KpiValue,
   PortalDashboard,
   PortalId,
   PortalReading,
@@ -354,4 +355,42 @@ export const THEMES: { id: string; title: string; question: string; categories: 
 
 export function themeOf(category: KpiCategory): string {
   return THEMES.find((t) => t.categories.includes(category))?.id ?? "results";
+}
+
+/**
+ * DAPSC'S ALLOCATION AND EXPENDITURE, ONE CHART (design review, 7 Oct 2026). The sheet keeps
+ * them as two KPIs, and two cards made the reader compare budgeted and spent across a gap.
+ * Allocation is budgeted twice a year (B.E., then R.E.); expenditure is the one amount spent.
+ * Drawn together, each year shows all three side by side. The sheet's names are kept; the
+ * combined title joins them. A year with no R.E. yet draws no bar for it (`not-due`).
+ */
+const FUNDS_PAIR = { allocation: "e-utthaan.allocation", expenditure: "e-utthaan.expenditure", into: "e-utthaan.funds" } as const;
+
+export function mergeFundCharts(kpis: KpiDefinition[], reading: PortalReading): { kpis: KpiDefinition[]; reading: PortalReading } {
+  const a = kpis.find((k) => k.id === FUNDS_PAIR.allocation);
+  const e = kpis.find((k) => k.id === FUNDS_PAIR.expenditure);
+  const ra = reading[FUNDS_PAIR.allocation];
+  const re = reading[FUNDS_PAIR.expenditure];
+  if (!a || !e || ra?.value.kind !== "series" || re?.value.kind !== "series") return { kpis, reading };
+  const spent = re.value.series[0];
+  if (!spent || spent.data.length !== ra.value.labels.length) return { kpis, reading };
+  const last = ra.value.labels.length - 1;
+  const merged: KpiDefinition = {
+    ...a,
+    id: FUNDS_PAIR.into,
+    name: "Total DAPSC Allocation and Expenditure (B.E. and R.E.)",
+    definition: "Allocation for the welfare of Scheduled Castes, as budgeted (B.E.) and revised (R.E.), and the amount spent, by financial year.",
+    span: 12,
+  };
+  const value: KpiValue = {
+    kind: "series",
+    chart: "bar",
+    labels: ra.value.labels,
+    series: [...ra.value.series, { name: "Expenditure", data: spent.data }],
+    note: `${ra.value.labels[last]}: R.E. not yet framed; expenditure up to 30.09.2026.`,
+  };
+  return {
+    kpis: kpis.flatMap((k) => (k.id === FUNDS_PAIR.allocation ? [merged] : k.id === FUNDS_PAIR.expenditure ? [] : [k])),
+    reading: { ...reading, [FUNDS_PAIR.into]: { ...ra, value, origin: ra.origin === "modelled" || re.origin === "modelled" ? "modelled" : ra.origin } },
+  };
 }

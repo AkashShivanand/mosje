@@ -151,6 +151,39 @@
     justify-self: start;
   }
 
+  /* ── A Department or portal page's head (`StoryHeader`) ──────────────────────
+     Whose dashboard, what the scheme does, the period: no figures, which the cards below
+     carry with their definitions (instruction, 7 Oct 2026). */
+  .pd-head__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--sa-stack-16) var(--sa-stack-32);
+    align-items: start;
+    padding: var(--sa-padding-32);
+  }
+
+  .pd-head__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-16);
+    min-width: 0;
+  }
+
+  .pd-head__action {
+    align-self: center;
+  }
+
+  .pd-head__text {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: var(--sa-stack-8);
+  }
+
+  /* The period and the body that runs the portal: one line where the row allows. */
+  .pd-head .pd-hero__meta {
+    max-width: none;
+  }
+
   /* ── The bento: laid out for the number of tiles it HOLDS ───────────────────
      A tile with nothing to show is not drawn, so the grid cannot assume five. Each
      count has its own arrangement and none leaves a hole: two lead (7 + 5) and the
@@ -181,6 +214,9 @@
   .pd-bento.pd-bento--portals.pd-bento--n3 > li:nth-child(1) { grid-column: span 12; }
   .pd-bento.pd-bento--portals.pd-bento--n3 > li:nth-child(n + 2) { grid-column: span 6; }
   .pd-bento.pd-bento--portals.pd-bento--n2 > li:nth-child(n) { grid-column: span 6; }
+  /* Six — the Department and its five portals (design review, 7 Oct 2026): NMBA's map card and
+     SMILE's, then two rows of two, so every card shares its row with one of about its height. */
+  .pd-bento.pd-bento--portals.pd-bento--n6 > li:nth-child(n + 3) { grid-column: span 6; }
   /* NMBA's four figures, centred beside its map rather than hanging from the top. */
   .pd-tile__figures {
     align-self: center;
@@ -188,7 +224,7 @@
 
   /* Wide screens only: on a phone the map and the figures stack (the 767px rule below). */
   @media (min-width: 768px) {
-    .pd-bento--portals > li:nth-child(1) .pd-tile__split {
+    .pd-bento--portals .pd-tile--nmba .pd-tile__split {
       grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
       align-items: center;
     }
@@ -266,16 +302,45 @@
   }
 
   .pd-section-pair--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+  /* SIDE BY SIDE, THE CARDS START LEVEL (design review, 7 Oct 2026). A one-line heading beside
+     a two-line one started its card 30px higher. Each section shares the pair's two rows —
+     heading, then card — so the taller heading sets both. */
+  .pd-section-pair {
+    grid-template-rows: auto 1fr;
+  }
+
+  .pd-section-pair > .pd-section {
+    display: grid;
+    grid-row: span 2;
+    grid-template-rows: subgrid;
+    gap: var(--sa-stack-20);
+  }
+
+  .pd-section-pair > .pd-section > .ds-section-title {
+    align-self: end;
+  }
   .pd-section-pair--1 { grid-template-columns: minmax(0, 1fr); }
 
   .pd-section-pair > .pd-section {
-    display: flex;
-    flex-direction: column;
     margin: 0;
   }
 
-  .pd-section-pair > .pd-section > :last-child {
-    flex: 1;
+  /* FIGURES IN A ROW SIT ON ONE LINE (design review, 7 Oct 2026). A label running to two
+     lines pushed its figure below its neighbours'; in a row where any label wraps
+     (`KpiBlocks`), every label holds as many lines as the longest, so every figure starts at the same height. */
+  .pd-story .ds-kpi-row.pd-labels-2 .ds-metric-card__label {
+    min-block-size: 2lh;
+  }
+
+  .pd-story .ds-kpi-row.pd-labels-3 .ds-metric-card__label {
+    min-block-size: 3lh;
+  }
+
+  /* A Year on Year card's two panels — count over fund — on the same years. */
+  .pd-panels {
+    display: grid;
+    gap: var(--sa-stack-8);
   }
 
   /* A programme's State/UT figures: the map, and the same figures ranked beside it. */
@@ -401,6 +466,7 @@
   @media (max-width: 1023px) {
     .pd-hero__body { grid-template-columns: minmax(0, 1fr); padding: var(--sa-padding-24); }
     .pd-hero__side { padding: var(--sa-padding-24) 0 0; border-inline-start: 0; border-block-start: var(--sa-stroke-1) solid color-mix(in srgb, var(--sa-text-neutral-inverse) 35%, transparent); }
+    .pd-head__body { grid-template-columns: minmax(0, 1fr); padding: var(--sa-padding-24); }
     .pd-where,
     .pd-funds { grid-template-columns: minmax(0, 1fr); }
   }
@@ -408,7 +474,7 @@
   @media (max-width: 767px) {
     /* As specific as the count rules above, and later, so one column wins on a phone. */
     .pd-bento:is(.pd-bento--n1, .pd-bento--n2, .pd-bento--n3, .pd-bento--n4, .pd-bento--n5) > li:nth-child(n) { grid-column: span 12; }
-    .pd-bento.pd-bento--portals:is(.pd-bento--n2, .pd-bento--n3, .pd-bento--n4, .pd-bento--n5) > li:nth-child(n) { grid-column: span 12; }
+    .pd-bento.pd-bento--portals:is(.pd-bento--n2, .pd-bento--n3, .pd-bento--n4, .pd-bento--n5, .pd-bento--n6) > li:nth-child(n) { grid-column: span 12; }
     .pd-pair { grid-template-columns: minmax(0, 1fr); }
     .pd-tile__split { grid-template-columns: minmax(0, 1fr); }
     .pd-states { grid-template-columns: minmax(0, 1fr); }

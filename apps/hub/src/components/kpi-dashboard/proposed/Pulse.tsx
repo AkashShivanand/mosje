@@ -25,6 +25,7 @@ import {
   Icon,
   IndiaMap,
   OrgLogo,
+  type CardTone,
   PORTAL_ORG_LOGOS,
   RankedBarList,
   SectionTitle,
@@ -38,7 +39,8 @@ import { PROGRAMME_AUDIENCE, shows, type Audience } from "./audience";
 import type { AreaScope, PortalDashboard, PortalId } from "@/lib/kpi/types";
 import { MinistryCollection } from "../DashboardViewer";
 import { DASHBOARD_PAGE } from "@/lib/website-shared/dashboard";
-import { EducationResults, EducationTrends } from "./Education";
+import { DepartmentTileContent } from "./Education";
+import { DEPARTMENT_NAME, DEPARTMENT_PAGE } from "./DepartmentStory";
 import {
   COMPONENT_SHORT,
   PROGRAMME_ICON,
@@ -60,11 +62,11 @@ import { PROGRAMME_TONE, READINESS_ORDER, READINESS_SLOT, areaRows, compact, fig
  *
  *   1. THE ANSWER       a hero panel: NMBA's Total Outreach in display type, and beside it
  *                       the Department's cumulative figures, each a link to its card.
- *   2. THE DEPARTMENT   its Beneficiary Dashboard, in the live page's own card structure:
- *                       Scholarships and Fellowship, Hostels and Top Class Education
- *                       (`EducationResults`), Year by Year Trends and Year on Year Report
- *                       (`EducationTrends`), then Fund Release and Expenditure.
- *   3. THE PORTALS      the scheme portals' tiles, then State/UT-wise Figures — NMBA's
+ *   2. THE DASHBOARDS   one card for the Department and one per scheme portal (instruction,
+ *                       7 Oct 2026: the landing page holds Department and Portal cards; the
+ *                       detail is one click in). The Department's card opens its Beneficiary
+ *                       Dashboard (`DepartmentStory`), which held 60% of this page until then.
+ *   3. WHERE            State/UT-wise Figures — NMBA's
  *                       State/UT breakdown, so it sits with the portals, not the Department.
  *                       No per-person rate: it would need a population the Department does
  *                       not supply, and Census 2011 is fifteen years older than the figures.
@@ -138,10 +140,12 @@ const sub = (level: 2 | 3) => (level === 2 ? 3 : 4) as 3 | 4;
 
 /* ══ 1 · The answer ═════════════════════════════════════════════════════════ */
 
-function Hero({ viewing, readings, scope, sectionLevel, audiences }: PulseProps) {
+function Hero(props: PulseProps) {
+  const { viewing, readings, scope, sectionLevel, audiences } = props;
   const has = (id: PortalId) => (shows(audiences, PROGRAMME_AUDIENCE[id]) ? viewing.programmes.find((p) => p.id === id) : undefined);
   const kpis = (id: PortalId) => has(id)?.kpis ?? [];
   const lead = has("nmba") ? figureOf("nmba", "nmba.outreach", readings, kpis("nmba")) : null;
+  const leadAsOn = readings.nmba?.["nmba.outreach"]?.asOn;
 
   /*
    * THE ANSWER IS THE DEPARTMENT'S. All India, the figures beside the lead are the ones
@@ -178,7 +182,10 @@ function Hero({ viewing, readings, scope, sectionLevel, audiences }: PulseProps)
             tone="inverse"
             value={compact(lead.value, "number")}
             label={`${kpiLabel(lead.kpi)}${scope.state ? `, ${scope.state}` : ""}`}
-            context="Nasha Mukt Bharat Abhiyaan · cumulative, as reported by its portal"
+            // What the figure counts, and when (design review, 7 Oct 2026): 34 crore is people
+            // reached by awareness activities, not beneficiaries, and the reader must not have
+            // to guess which.
+            context={`Persons reached by awareness activities under Nasha Mukt Bharat Abhiyaan, since launch${leadAsOn ? `. As on ${leadAsOn}` : ""}`}
             mark={marked(lead.origin, noteOf(viewing, readings, "nmba", "nmba.outreach", compact(lead.value, "number")))}
           />
         ) : promoted ? (
@@ -192,7 +199,7 @@ function Hero({ viewing, readings, scope, sectionLevel, audiences }: PulseProps)
                     the card the detail, so the figure appearing twice has a job (instruction,
                     6 Oct 2026: the three figures stay, the live cards stay intact). */}
                 {"card" in s && s.card ? (
-                  <a className="pd-hero__jump" href={`#pd-card-${s.card}`}>
+                  <Link className="pd-hero__jump" href={`${props.hrefTo({ programme: DEPARTMENT_PAGE })}#pd-card-${s.card}`}>
                     <HeadlineFigure
                       size="md"
                       tone="inverse"
@@ -203,7 +210,7 @@ function Hero({ viewing, readings, scope, sectionLevel, audiences }: PulseProps)
                       // is the cue.
                       context={s.context}
                     />
-                  </a>
+                  </Link>
                 ) : (
                   <HeadlineFigure size="md" tone="inverse" value={s.value} label={s.label} context={s.context} mark={marked(s.origin, s.note)} />
                 )}
@@ -218,16 +225,32 @@ function Hero({ viewing, readings, scope, sectionLevel, audiences }: PulseProps)
 
 /* ══ 2 · The programmes ═════════════════════════════════════════════════════ */
 
-function Tile({ p, children, figure, hrefTo, note }: { p: PortalDashboard; children?: React.ReactNode; figure?: React.ReactNode; hrefTo: PulseProps["hrefTo"]; note?: string }) {
+/**
+ * One dashboard's card on the landing page. A PORTAL'S CARD IS TITLED BY THE PORTAL'S NAME
+ * (instruction, 6–7 Oct 2026) — e-Utthaan, e-Anudaan — with its mark, and the scheme it
+ * reports under it; the Department's card by the Department's name.
+ */
+function DashboardTile({ id, tone, mark, title, subtitle, href, label, children, figure, note }: {
+  id: string;
+  tone: CardTone;
+  mark: React.ReactNode;
+  title: string;
+  subtitle: string;
+  href: string;
+  /** Names the link for a screen reader: each card's visible link says "View Dashboard". */
+  label: string;
+  children?: React.ReactNode;
+  figure?: React.ReactNode;
+  note?: string;
+}) {
   return (
-    <Card tone={PROGRAMME_TONE[p.id]} accent="edge" className={`pd-tile pd-tile--${p.id}`}>
+    <Card tone={tone} accent="edge" className={`pd-tile pd-tile--${id}`}>
       <CardHeader>
-        {/* The portal's own mark where it has one that is its own; its icon otherwise. */}
         {/* The name sits beside the mark, so the mark takes no accessible name of its own. */}
-        {hasMark(p) ? <OrgLogo path={p.logoPath} size="md" /> : <CardIcon name={PROGRAMME_ICON[p.id]} />}
+        {mark}
         <div className="pd-tile__titles">
-          <CardTitle size="sm">{p.name}</CardTitle>
-          <CardSubtitle>{p.portal}</CardSubtitle>
+          <CardTitle size="sm">{title}</CardTitle>
+          <CardSubtitle>{subtitle}</CardSubtitle>
         </div>
       </CardHeader>
       <CardBody className="pd-tile__body">
@@ -236,11 +259,30 @@ function Tile({ p, children, figure, hrefTo, note }: { p: PortalDashboard; child
         {children}
       </CardBody>
       <CardFooter>
-        <Button appearance="text" size="sm" href={hrefTo({ programme: p.id })} linkAs={Link} iconRight={<Icon name="arrow_forward" size={16} />}>
-          View {SHORT_NAME[p.id]} Dashboard
+        <Button appearance="text" size="sm" href={href} linkAs={Link} aria-label={label} iconRight={<Icon name="arrow_forward" size={16} />}>
+          View Dashboard
         </Button>
       </CardFooter>
     </Card>
+  );
+}
+
+function Tile({ p, children, figure, hrefTo, note }: { p: PortalDashboard; children?: React.ReactNode; figure?: React.ReactNode; hrefTo: PulseProps["hrefTo"]; note?: string }) {
+  return (
+    <DashboardTile
+      id={p.id}
+      tone={PROGRAMME_TONE[p.id]}
+      // The portal's own mark where it has one that is its own; its icon otherwise.
+      mark={hasMark(p) ? <OrgLogo path={p.logoPath} size="md" /> : <CardIcon name={PROGRAMME_ICON[p.id]} />}
+      title={p.portal}
+      subtitle={p.name}
+      href={hrefTo({ programme: p.id })}
+      label={`View the ${p.portal} Dashboard`}
+      figure={figure}
+      note={note}
+    >
+      {children}
+    </DashboardTile>
   );
 }
 
@@ -253,6 +295,7 @@ function Programmes(props: PulseProps) {
   const NATIONAL_ONLY = "Publishes All-India figures only.";
 
   const tiles: React.ReactNode[] = [];
+
 
   /*
    * NMBA: ITS MAP, AND ITS FOUR OTHER FIGURES. Not its reach again — the hero leads with it
@@ -371,6 +414,30 @@ function Programmes(props: PulseProps) {
       </Tile>,
     );
   }
+
+  /*
+   * THE DEPARTMENT, AFTER NMBA AND SMILE (design review, 7 Oct 2026): its Beneficiary Dashboard
+   * opens behind this card. Beside NMBA's map it stood half empty; in the second row it shares
+   * the row with e-Utthaan's card, at about its height. It figures in the Type of Applicant
+   * filter as its cards do, and publishes for All India only.
+   */
+  const dept = DepartmentTileContent({ audiences: props.audiences });
+  if (dept) tiles.push(
+    <DashboardTile
+      key="department"
+      id="department"
+      tone="primary"
+      mark={<OrgLogo path={null} size="md" name="" />}
+      title={DEPARTMENT_NAME}
+      subtitle="Beneficiary Dashboard"
+      href={hrefTo({ programme: DEPARTMENT_PAGE })}
+      label="View the Department's Beneficiary Dashboard"
+      note={scope.state ? NATIONAL_ONLY : undefined}
+      figure={dept.figure}
+    >
+      {dept.body}
+    </DashboardTile>,
+  );
 
   const dapsc = shows(props.audiences, PROGRAMME_AUDIENCE["e-utthaan"]) ? get("e-utthaan") : undefined;
   if (dapsc) {
@@ -556,10 +623,10 @@ function Programmes(props: PulseProps) {
   if (tiles.length === 0) return null;
   return (
     <section className="pd-section" aria-labelledby="pd-programmes">
-      <SectionTitle as={sectionLevel} headingId="pd-programmes" size="display" title={DASHBOARD_PAGE.portalsTitle} description={DASHBOARD_PAGE.portalsDescription} />
+      <SectionTitle as={sectionLevel} headingId="pd-programmes" size="display" title={DASHBOARD_PAGE.dashboardsTitle} description={DASHBOARD_PAGE.dashboardsDescription} />
       {/* NMBA, the one tile with a map, takes the row; the others share the next one, so
           no map is squeezed into a third of the page (design audit, 6 Oct 2026). */}
-      <ul className={`pd-bento pd-bento--n${Math.min(tiles.length, 5)} pd-bento--portals`}>
+      <ul className={`pd-bento pd-bento--n${Math.min(tiles.length, 6)} pd-bento--portals`}>
         {tiles.map((t, i) => (
           <li key={i}>{t}</li>
         ))}
@@ -673,7 +740,7 @@ function Where({ viewing, national, scope, go, sectionLevel, audiences }: PulseP
                 </div>
                 <div className="pd-extremes__group">
                   <h4 className="pd-extremes__label">Lowest Five</h4>
-                  <RankedBarList title={`${title}, lowest five`} items={ranked.slice(-5).map((r, i) => ({ label: r.state, value: r.value, detail: `${ranked.length - 4 + i} of ${ranked.length}` }))} max={ranked[0]?.value} valueFormat={fmt} showRank={false} size="md" sort="none" />
+                  <RankedBarList title={`${title}, lowest five`} items={ranked.slice(-5).map((r, i) => ({ label: r.state, value: r.value, detail: `${ranked.length - 4 + i} of ${ranked.length}` }))} max={ranked[0]?.value} valueFormat={fmt} showRank={false} showBar={false} size="md" sort="none" />
                 </div>
               </CardBody>
             </>
@@ -857,11 +924,8 @@ export function Pulse(props: PulseProps) {
   return (
     <div className="pd-story">
       <Hero {...props} />
-      {/* The Department's figures, as the live page publishes them … */}
-      <EducationResults sectionLevel={props.sectionLevel} state={props.scope.state} audiences={props.audiences} />
-      <EducationTrends sectionLevel={props.sectionLevel} state={props.scope.state} audiences={props.audiences} />
       <Money {...props} />
-      {/* … then the scheme portals' figures, and where they are. */}
+      {/* The Department's and the portals' dashboards, one card each, then where they work. */}
       <Programmes {...props} />
       <Where key={props.scope.state ?? "all"} {...props} />
       {props.readinessAllowed ? <DataSourcesLink {...props} /> : null}

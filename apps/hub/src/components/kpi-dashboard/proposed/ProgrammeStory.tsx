@@ -9,29 +9,27 @@ import {
   CardState,
   Chip,
   DotPlot,
-  HeadlineFigure,
   Icon,
   OrgLogo,
   SectionTitle,
 } from "@mosje/design-system";
-import { OriginChip } from "@/components/website/ProvenanceChip";
 import { useDataMode } from "@/lib/data-mode/context";
 import { KPI_CATEGORIES } from "@/lib/kpi/categories";
 import { covers } from "@/lib/kpi/model";
-import { kpisFor } from "@/lib/kpi/register";
 import type { AreaScope, PortalDashboard } from "@/lib/kpi/types";
 import { isTile } from "../KpiCard";
 import { KpiBlocks } from "./KpiBlocks";
-import { COMPONENT_SHORT, SHORT_NAME, fundsRows, headlineOf, kpiLabel, shownKpis, type Readings, type StateMeasure, type Viewing } from "./model";
+import { COMPONENT_SHORT, fundsRows, shownKpis, type Readings, type StateMeasure, type Viewing } from "./model";
 import { StateBreakdown } from "./StateBreakdown";
+import { StoryHeader } from "./StoryHeader";
 import { PROGRAMME_TONE, compact } from "./story";
 
 /**
- * One programme, told on its own: a hero panel in the programme's colour with its leading
- * figures, then its indicators by theme (or by component, for Senior Citizens), each with
+ * One portal's dashboard, told on its own: its head in the programme's colour (`StoryHeader`),
+ * then its indicators by theme (or by component, for Senior Citizens), each with
  * its source and calculation while the demo rail shows them. Reached from the programme's tile; `?programme=` holds it.
  *
- * DS Audit: Card (`accent="fill"`) ✅ · HeadlineFigure ✅ · OrgLogo ✅ · SectionTitle ✅ ·
+ * DS Audit: StoryHeader (Card `accent="fill"`) ✅ · OrgLogo ✅ · SectionTitle ✅ ·
  * Chip ✅ · DotPlot ✅ · Button ✅ · CardState ✅ · KpiBlocks (app) ✅.
  */
 
@@ -41,13 +39,12 @@ export interface ProgrammeStoryProps {
   readings: Readings;
   scope: AreaScope;
   sectionLevel: 2 | 3;
-  backHref: string;
   go: (to: Partial<Record<"programme" | "state", string | null>>) => void;
   /** The programme's mapped KPIs, State/UT by State/UT (`stateMeasures`); All India only. */
   states?: StateMeasure[];
 }
 
-const LEAD = 4;
+const DEPARTMENT = "Department of Social Justice and Empowerment";
 
 /**
  * SECTIONS OF ONE CARD SHARE A ROW (design review, 7 Oct 2026). A section holding one card drew
@@ -90,7 +87,7 @@ function pairSections(sections: Placed[]): React.ReactNode[] {
   return out;
 }
 
-export function ProgrammeStory({ programme: p, viewing, readings, scope, sectionLevel, backHref, go, states = [] }: ProgrammeStoryProps) {
+export function ProgrammeStory({ programme: p, viewing, readings, scope, sectionLevel, go, states = [] }: ProgrammeStoryProps) {
   const demo = useDataMode();
   const [category, setCategory] = React.useState("all");
   // A programme made of components (Senior Citizens Welfare) is filtered by component, as the
@@ -98,12 +95,9 @@ export function ProgrammeStory({ programme: p, viewing, readings, scope, section
   const [component, setComponent] = React.useState("all");
   const reading = readings[p.id] ?? {};
   const kpis = shownKpis(p, viewing, readings, scope);
-  const all = kpisFor(p, viewing.audience);
   const components = p.kpis.some((k) => k.component);
   const sub = (sectionLevel === 2 ? 3 : 4) as 3 | 4;
 
-  // The hero's figures: the programme's first tile-shaped public figures, in register order.
-  const lead = kpis.filter((k) => isTile(reading[k.id]!) && k.audience === "public" && !k.id.endsWith(".progress")).slice(0, LEAD);
   const pace = components ? fundsRows({ ...viewing, programmes: [p] }, readings) : [];
   const cats = KPI_CATEGORIES.filter((c) => kpis.some((k) => k.category === c.id));
   const inView = kpis.filter((k) => (category === "all" || k.category === category) && (component === "all" || k.component === component));
@@ -169,51 +163,24 @@ export function ProgrammeStory({ programme: p, viewing, readings, scope, section
     );
   }
 
-  const officeCount = all.filter((k) => k.audience === "officer").length;
-
   return (
     <div className="pd-story">
-      <Button appearance="text" size="sm" href={backHref} linkAs={Link} iconLeft={<Icon name="arrow_back" size={16} />} className="pd-back">
-        All Programmes
-      </Button>
-      <Card tone={PROGRAMME_TONE[p.id]} accent="fill" className="pd-hero">
-        <CardBody className="pd-hero__body pd-hero__body--programme">
-          <div className="pd-hero__intro">
-            <div className="pd-hero__brand">
-              <span className="pd-hero__mark">
-                <OrgLogo path={p.logoPath} size="md" name="" />
-              </span>
-              <SectionTitle as={sectionLevel} headingId="pd-programme" tone="inverse" eyebrow={SHORT_NAME[p.id]} title={p.name} description={p.owner} />
-            </div>
-            <p className="pd-hero__summary">{p.summary}</p>
-            <p className="pd-hero__meta">
-              {p.period} · {all.length - officeCount} public{viewing.audience === "officer" && officeCount ? ` · ${officeCount} office` : ""} indicators · {p.portal}
-            </p>
-            <Button appearance="outlined" tone="inverse" size="sm" href={p.portalHref} linkAs={Link} iconRight={<Icon name="arrow_outward" size={16} />}>
-              Open {p.portal}
-            </Button>
-          </div>
-          {lead.length ? (
-            <ul className="pd-hero__side" aria-label={`${SHORT_NAME[p.id]} at a glance`}>
-              {lead.map((k) => {
-                const r = reading[k.id]!;
-                const h = headlineOf(k, r);
-                return h ? (
-                  <li key={k.id}>
-                    <HeadlineFigure
-                      size="md"
-                      tone="inverse"
-                      value={compact(h.value, h.unit)}
-                      label={kpiLabel(k)}
-                      mark={r.origin === "snapshot" ? undefined : <OriginChip origin={r.origin} />}
-                    />
-                  </li>
-                ) : null;
-              })}
-            </ul>
-          ) : null}
-        </CardBody>
-      </Card>
+      <StoryHeader
+        tone={PROGRAMME_TONE[p.id]}
+        mark={<OrgLogo path={p.logoPath} size="md" name="" />}
+        // The portal's name leads, the scheme's under it, as on its card (instruction, 7 Oct 2026).
+        title={p.portal}
+        subtitle={p.name}
+        summary={p.summary}
+        // The body that runs the portal, where it is not the Department itself.
+        meta={p.owner === DEPARTMENT ? p.period : `${p.period} · ${p.owner}`}
+        action={
+          <Button appearance="outlined" tone="inverse" size="sm" href={p.portalHref} linkAs={Link} iconRight={<Icon name="arrow_outward" size={16} />}>
+            Open Portal
+          </Button>
+        }
+        sectionLevel={sectionLevel}
+      />
 
       {pace.length ? (
         <section className="pd-section" aria-labelledby="pd-pace">

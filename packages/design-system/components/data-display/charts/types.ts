@@ -13,8 +13,13 @@
  * never as zero; it appears in the screen-reader table with its reason as
  * text; and it is excluded from any total.
  */
-export type ChartWithheldKind = "suppressed" | "not-reported";
+export type ChartWithheldKind = "suppressed" | "not-reported" | "not-due";
 export interface ChartWithheld {
+  /**
+   * `not-due` is a figure whose time has not come — a Revised Estimate before the year is
+   * revised. Nothing has gone wrong, so it draws NO mark (a stub reads as a missing return);
+   * it is still named in the tooltip and the table, and still excluded from any total.
+   */
   kind: ChartWithheldKind;
   /** e.g. "cell count below 5" — shown in the tooltip and the table, never invented. */
   reason?: string;
@@ -22,6 +27,7 @@ export interface ChartWithheld {
 
 /** The spoken and printed form of a withheld figure. One place, so every chart says it the same way. */
 export const withheldLabel = (w: ChartWithheld): string => {
+  if (w.kind === "not-due") return w.reason ?? "Not yet due";
   const head = w.kind === "suppressed" ? "Suppressed" : "Not reported";
   return w.reason ? `${head} (${w.reason})` : head;
 };

@@ -38,7 +38,7 @@ export function ViewerNotice({ role }: { role: OfficerRole }) {
         {role.area.state ? "" : ` · ${areaOf(role)}`}
       </span>
       <Button appearance="outlined" size="sm" onClick={() => setViewer(null)}>
-        Show Public View
+        Sign Out
       </Button>
     </div>
   );
@@ -58,7 +58,7 @@ export function PortalDashboardView({ portalId, feed }: { portalId: PortalId; fe
           description={`The ${PORTAL_DASHBOARD_CRUMBS[portalId]} dashboard is not assigned to this role. The public view shows its public indicators.`}
           action={
             <Button appearance="outlined" size="sm" onClick={() => setViewer(null)}>
-              Show Public View
+              Sign Out
             </Button>
           }
         />

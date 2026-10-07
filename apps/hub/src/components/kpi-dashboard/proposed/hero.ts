@@ -62,10 +62,10 @@ const fundTotal = FUND_SHARE.slices.reduce((t, s) => t + s.value, 0);
 export const ABOUT_HERO: HeroFigure[] = [
   {
     value: `₹${Math.round(fundTotal).toLocaleString("en-IN")} Cr`,
-    // The live page's subtitle as the label, its chart's title as the context: "Total spend
-    // across 9 schemes, Share of Fund Release" was two labels run together.
+    // The live page's subtitle as the label; under it, what the nine schemes are and the years
+    // (design review, 7 Oct 2026) — the chart's name, "Share of Fund Release", described nothing.
     label: FUND_SHARE.subtitle,
-    context: FUND_SHARE.title,
+    context: `Scholarships, fellowships and hostels, ${SCHOLARSHIPS.period.replace("Data: ", "")}`,
     origin: DEPARTMENT_DASHBOARD_ORIGIN,
     // The nine schemes' total: an answer for Students (all nine are theirs), or for Scheduled
     // Castes and Other Backward Classes together — never for one of them alone.

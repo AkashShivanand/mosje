@@ -283,6 +283,9 @@ export const DASHBOARD_PAGE = {
     "Progress of the Department's schemes: the Beneficiary Dashboard, and the indicators reported by each scheme portal.",
   portalsTitle: "Dashboards by Portal",
   portalsDescription: "Key performance indicators reported by each scheme portal.",
+  /** The proposed dashboard's section of one card per Department and portal (7 Oct 2026). */
+  dashboardsTitle: "Department and Portal Dashboards",
+  dashboardsDescription: "Key performance indicators published by the Department and reported by each scheme portal.",
 } as const;
 
 /** The portal dashboards the website lists, in the register's order. */

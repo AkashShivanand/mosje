@@ -8,7 +8,7 @@ import { formatKpi, isoDate } from "@/lib/kpi/format";
 import type { KpiDefinition, KpiReading, PortalReading } from "@/lib/kpi/types";
 import { KpiChart, isTile } from "../KpiCard";
 import { closeRows } from "../PortalKpiDashboard";
-import { COMPONENT_SHORT, formatHeadline, headlineOf } from "./model";
+import { COMPONENT_SHORT, formatHeadline, headlineOf, mergeFundCharts } from "./model";
 
 /**
  * The proposed dashboard's two shapes of KPI — a figure tile and a chart card.
@@ -36,6 +36,20 @@ function chipFor(r: KpiReading) {
   return r.origin === "snapshot" ? undefined : <OriginChip origin={r.origin} />;
 }
 
+/**
+ * How many lines the longest label in a row of tiles runs to, so the row reserves that many
+ * for every label and its figures stand level (design review, 7 Oct 2026). Estimated from the
+ * label's length against the room a tile has in a row of that many — a row whose labels all
+ * fit on one line reserves nothing, and opens no gap under them.
+ */
+function labelLines(tiles: KpiDefinition[]): 1 | 2 | 3 {
+  const perRow = Math.min(tiles.length, 6);
+  // Characters a label line holds at Label 2 in a tile of that row, measured at 1440px.
+  const room = perRow >= 5 ? 18 : perRow === 4 ? 27 : perRow === 3 ? 40 : perRow === 2 ? 66 : 140;
+  const most = Math.max(...tiles.map((k) => Math.ceil(k.name.length / room)));
+  return most >= 3 ? 3 : most === 2 ? 2 : 1;
+}
+
 /** A tile's figure and the line under it, for any tile-shaped reading. */
 function tileText(k: KpiDefinition, r: KpiReading): { value: string; detail?: string } {
   const v = r.value;
@@ -51,7 +65,7 @@ function tileText(k: KpiDefinition, r: KpiReading): { value: string; detail?: st
  * A section's KPIs: the figures as one row of tiles, then the charts on the grid. Every tile
  * and chart card carries its source and calculation while the demo rail shows them.
  */
-export function KpiBlocks({ kpis: given, reading, areasAreStates, headingLevel, startIndex = 0, showComponent = true }: {
+export function KpiBlocks({ kpis: listed, reading: read, areasAreStates, headingLevel, startIndex = 0, showComponent = true }: {
   kpis: KpiDefinition[];
   reading: PortalReading;
   areasAreStates: boolean;
@@ -66,6 +80,7 @@ export function KpiBlocks({ kpis: given, reading, areasAreStates, headingLevel, 
   showComponent?: boolean;
 }) {
   const demo = useDataMode();
+  const { kpis: given, reading } = mergeFundCharts(listed, read);
   const kpis = given.map((k) =>
     showComponent && k.component ? { ...k, name: `${COMPONENT_SHORT[k.id.split(".")[1] ?? ""] ?? k.component} · ${k.name}` } : k,
   );
@@ -75,17 +90,28 @@ export function KpiBlocks({ kpis: given, reading, areasAreStates, headingLevel, 
   const tiles = kpis.filter((k) => isTile(reading[k.id]!));
   const charts = kpis.filter((k) => !isTile(reading[k.id]!));
   /*
-   * A FEW FIGURES AND THEIR CHART SHARE A ROW (design review, 7 Oct 2026). A lone tile on a row
-   * of its own left two-thirds of the page empty above the charts; three tiles over a single
-   * chart left the chart a row to itself. Now the figures stack in a third of the charts' grid
-   * — one tile beside any number of charts, or up to three tiles beside one chart — and the
-   * first chart takes the rest, so the row is one height and nothing in it stands alone.
+   * A FEW FIGURES AND THEIR CHART SHARE A ROW (design review, 7 Oct 2026). Up to three tiles
+   * beside a single chart stack in a third of the row, and the chart takes the rest.
+   *
+   * ONE FIGURE BESIDE ITS CHARTS HEADS THE FIRST OF THEM (design review, 7 Oct 2026). A lone
+   * tile stretched to the chart's height stood as a tall, mostly empty card; set at the head
+   * of the chart it summarises, the figure leads and the chart takes the full row.
    */
-  const side = charts.length > 0 && (tiles.length === 1 || (tiles.length > 1 && tiles.length <= 3 && charts.length === 1));
+  const lone = tiles.length === 1 && charts.length > 0 ? tiles[0]! : undefined;
+  const side = !lone && charts.length === 1 && tiles.length > 1 && tiles.length <= 3;
   // The tiles' third is counted when rows are closed, then dropped: the charts' spans only.
   const spans = side
-    ? closeRows([4, ...charts.map((c, i) => (i === 0 ? 8 : (c.span ?? 6)))]).slice(1)
-    : closeRows(charts.map((c) => c.span ?? 6));
+    ? closeRows([4, 8]).slice(1)
+    : lone
+      ? closeRows(charts.map((c, i) => (i === 0 ? 12 : (c.span ?? 6))))
+      : closeRows(charts.map((c) => c.span ?? 6));
+  const headline = lone
+    ? (() => {
+        const r = reading[lone.id]!;
+        const { value, detail } = tileText(lone, r);
+        return { value, label: lone.name, detail, mark: <>{chipFor(r)}<FigureSource note={noteOf(lone, r)} /></> };
+      })()
+    : undefined;
 
   const tileProps = (k: KpiDefinition): MetricCardProps & { key: string } => {
     const r = reading[k.id]!;
@@ -112,7 +138,7 @@ export function KpiBlocks({ kpis: given, reading, areasAreStates, headingLevel, 
 
   return (
     <>
-      {tiles.length > 0 && !side && <KpiRow items={tiles.map(tileProps)} />}
+      {tiles.length > 0 && !side && !lone && <KpiRow className={labelLines(tiles) > 1 ? `pd-labels-${labelLines(tiles)}` : undefined} items={tiles.map(tileProps)} />}
       {charts.length > 0 && (
         <DashboardGrid>
           {side ? <KpiRow span={4} className="pd-tile-stack" items={tiles.map(tileProps)} /> : null}
@@ -125,6 +151,7 @@ export function KpiBlocks({ kpis: given, reading, areasAreStates, headingLevel, 
               areasAreStates={areasAreStates}
               headingLevel={headingLevel}
               span={spans[i]}
+              headline={i === 0 ? headline : undefined}
               donutLayout="auto"
               quiet
               stateMap="choropleth"

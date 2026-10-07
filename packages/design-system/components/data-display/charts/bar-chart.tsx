@@ -295,6 +295,8 @@ export function BarChart(props: BarChartProps) {
               bx = single ? groupX + (band - bw) / 2 : groupX + band * 0.09 + si * bw;
               by = y(val);
             }
+            // A figure not yet due draws nothing: no stub, no dash (it is named in the table).
+            if (w?.kind === "not-due") return null;
             return (
               <g key={`${label}-${si}`}>
                 {w ? (
@@ -411,6 +413,7 @@ export function BarChart(props: BarChartProps) {
             by = single ? groupY + (band - bh) / 2 : groupY + band * 0.09 + si * bh;
             bx = padL;
           }
+          if (w?.kind === "not-due") return null;
           return (
             <g key={`${label}-${si}`}>
               {w ? (

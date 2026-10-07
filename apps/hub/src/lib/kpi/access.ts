@@ -1,10 +1,11 @@
 import type { AreaScope, PortalId } from "./types.ts";
 
 /**
- * WHO SEES WHAT — the roles the website's Dashboard can be viewed as.
+ * WHO SEES WHAT — the two audiences of the website's Dashboard, as the KPI sheet defines
+ * them: PUBLIC (the Pre-Login KPIs, no sign-in) and OFFICER (the Post-Login KPIs as well).
  *
- * Access is TWO independent questions, and keeping them apart is what lets six roles
- * be described without a matrix of special cases:
+ * Being signed in decides the audience; the officer's ACCOUNT decides the scope
+ * (instruction, 7 Oct 2026). Scope is two independent questions:
  *
  *  1. WHICH PORTALS — the Ministry sees every portal, a Division the portals of the
  *     schemes it administers, a portal's own officers that portal alone.
@@ -16,17 +17,19 @@ import type { AreaScope, PortalId } from "./types.ts";
  * office KPIs. The citizen sees public KPIs only, at All India or one State/UT, and
  * never below: district figures are an office view.
  *
- * ON THE WEBSITE, WITHOUT A SIGN-IN (decided 5 Oct 2026). The Dashboard is not connected
- * to any portal's login: a reviewer picks the role in the demo rail's View As tab
- * (`ViewerPanel`), and the page redraws for it. If that changes, the role comes from the
- * identity provider's claims instead, and the area filtering moves to the SERVER so a state
- * officer's browser never receives another state's figures.
+ * A PROTOTYPE'S ACCOUNTS. The Dashboard's Officer Login (`OfficerLogin`) looks the User ID
+ * up here; the password is not checked, and nothing leaves the browser. The demo rail lists
+ * these IDs for a reviewer. When the Dashboard is connected to an identity provider, the
+ * account's scope comes from its claims instead, and the area filtering moves to the SERVER
+ * so a state officer's browser never receives another state's figures.
  */
 
 export type OfficerLevel = "ministry" | "division" | "portal" | "state" | "district";
 
 export interface OfficerRole {
   id: string;
+  /** The demo account's User ID, typed at the Officer Login. */
+  userId: string;
   level: OfficerLevel;
   /** The account's name in the header and the demo account list. */
   label: string;
@@ -39,33 +42,39 @@ export interface OfficerRole {
 
 export const OFFICER_ROLES: OfficerRole[] = [
   {
-    id: "ministry", level: "ministry", label: "Ministry", office: "Office of the Secretary, DoSJE",
+    id: "ministry", userId: "secretary.dosje", level: "ministry", label: "Ministry", office: "Office of the Secretary, DoSJE",
     portals: "all", area: {},
   },
   {
-    id: "division-social-defence", level: "division", label: "Social Defence Division", office: "Social Defence Bureau, DoSJE",
+    id: "division-social-defence", userId: "sd.bureau", level: "division", label: "Social Defence Division", office: "Social Defence Bureau, DoSJE",
     portals: ["smile-beggary", "nmba"], area: {},
   },
   {
-    id: "division-scheduled-castes", level: "division", label: "Scheduled Castes Division", office: "Scheduled Castes Development Bureau, DoSJE",
+    id: "division-scheduled-castes", userId: "scd.bureau", level: "division", label: "Scheduled Castes Division", office: "Scheduled Castes Development Bureau, DoSJE",
     portals: ["shreshta", "e-utthaan"], area: {},
   },
   {
-    id: "portal-smile", level: "portal", label: "SMILE – Beggary Portal Administrator", office: "National Institute of Social Defence",
+    id: "portal-smile", userId: "nisd.smile", level: "portal", label: "SMILE – Beggary Portal Administrator", office: "National Institute of Social Defence",
     portals: ["smile-beggary"], area: {},
   },
   {
-    id: "state-maharashtra", level: "state", label: "State Nodal Officer · Maharashtra", office: "SMILE – Beggary, Government of Maharashtra",
+    id: "state-maharashtra", userId: "smile.maharashtra", level: "state", label: "State Nodal Officer · Maharashtra", office: "SMILE – Beggary, Government of Maharashtra",
     portals: ["smile-beggary"], area: { state: "Maharashtra" },
   },
   {
-    id: "district-mumbai", level: "district", label: "District Nodal Officer · Mumbai", office: "SMILE – Beggary, Mumbai",
+    id: "district-mumbai", userId: "smile.mumbai", level: "district", label: "District Nodal Officer · Mumbai", office: "SMILE – Beggary, Mumbai",
     portals: ["smile-beggary"], area: { state: "Maharashtra", district: "Mumbai" },
   },
 ];
 
 export function roleById(id: string | null | undefined): OfficerRole | undefined {
   return OFFICER_ROLES.find((r) => r.id === id);
+}
+
+/** The account a User ID signs in to, ignoring case and surrounding spaces. */
+export function accountByUserId(userId: string): OfficerRole | undefined {
+  const wanted = userId.trim().toLowerCase();
+  return OFFICER_ROLES.find((r) => r.userId === wanted);
 }
 
 export function canSeePortal(role: OfficerRole, portal: PortalId): boolean {
