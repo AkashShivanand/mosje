@@ -2,7 +2,7 @@
  "portal": "E-Anudaan",
  "file": "K0B3vuOTXpxw6kt0px2Cqo",
  "fileName": "E-Anudaan [Handoff]",
- "recordedAt": "2026-10-03",
+ "recordedAt": "2026-10-07",
  "$comment": "Captured by `check:figma-handoff --portal <Portal> --snapshot` from the check's own REST reads: pages in page-list order, each page in layers-panel (reading) order. A page's `loose` lists nodes outside any zone. Never edit by hand; re-capture after any structural change.",
  "pages": [
   {
@@ -2566,6 +2566,22 @@
             {
              "id": "3:30131",
              "name": "Officer / Review an Application / Integrated Finance Division — Joint Secretary"
+            },
+            {
+             "id": "408:27862",
+             "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Application Tab"
+            },
+            {
+             "id": "410:37090",
+             "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Documents Tab"
+            },
+            {
+             "id": "410:37644",
+             "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Grant Tab"
+            },
+            {
+             "id": "410:38195",
+             "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, History Tab"
             }
            ]
           },
