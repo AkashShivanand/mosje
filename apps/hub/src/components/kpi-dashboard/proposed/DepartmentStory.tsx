@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, Icon, OrgLogo } from "@mosje/design-system";
+import { shownDate } from "@/lib/kpi/format";
 import { DEPARTMENT_DASHBOARD_AS_ON, DEPARTMENT_DASHBOARD_URL } from "@/lib/website-shared/dashboard";
 import type { Audience } from "./audience";
 import { EducationResults, EducationTrends } from "./Education";
@@ -36,7 +37,7 @@ export function DepartmentStory({ sectionLevel, state, audiences }: { sectionLev
         subtitle="Beneficiary Dashboard"
         summary="Scholarships, fellowships, hostels and top class education for students from Scheduled Castes, Other Backward Classes, Economically Backward Classes and Denotified Tribes."
         // The years are the sections' own badge; the head says when the figures were read.
-        meta={`As on ${DEPARTMENT_DASHBOARD_AS_ON}`}
+        meta={`As on ${shownDate(DEPARTMENT_DASHBOARD_AS_ON)}`}
         action={
           /* linkAs-exempt(external-only): the Department's published page on dosje.gov.in */
           <Button appearance="outlined" tone="inverse" size="sm" href={DEPARTMENT_DASHBOARD_URL} iconRight={<Icon name="arrow_outward" size={16} />}>

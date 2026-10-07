@@ -282,7 +282,8 @@
   /* Two lines held for every label, so the figures stand on shared baselines — in columns
      only; stacked on a phone, a one-line label needs no second line held for it. */
   @media (min-width: 768px) {
-    .pd-dept .ds-dl__term { min-block-size: 2lh; }
+    .pd-dept .ds-dl__term,
+    .pd-tile .ds-dl--cols-2 .ds-dl__term { min-block-size: 2lh; }
   }
 
   /* A students figure's twelve-year line, under the figure. */
@@ -437,6 +438,67 @@
   /* Two single-card sections side by side, at one height: each section a column whose card
      grows to fill it (`pairSections`). */
   /* Figures stacked in a column beside their chart (`KpiBlocks`), sharing its height. */
+  /* Six figures, two rows of three (`KpiBlocks`). */
+  @media (min-width: 768px) {
+    .ds-kpi-row.pd-kpi-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+
+  /* The Year on Year Report (`YearOnYearReport`): the totals, then the years as a table whose
+     count and fund cells each carry a bar with its value beside it. */
+  .pd-yy {
+    display: grid;
+    gap: var(--sa-stack-20);
+  }
+
+  .pd-yy__cell {
+    display: grid;
+    grid-template-columns: minmax(var(--sa-stack-48), 1fr) auto;
+    align-items: center;
+    gap: var(--sa-stack-12);
+    min-inline-size: 10rem; /* layout geometry: a bar and its value, never crushed */
+  }
+
+  .pd-yy__v {
+    font-variant-numeric: tabular-nums;
+    text-align: end;
+    white-space: nowrap;
+  }
+
+  .pd-yy__v--latest { font-weight: var(--sa-font-weight-semibold); }
+
+  /* A phone: the value over its bar, so the three columns fit the card and nothing in it
+     scrolls sideways (`data-state-completeness.md` §4). */
+  @media (max-width: 767px) {
+    .pd-yy__cell {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--sa-stack-4);
+      min-inline-size: 0;
+    }
+
+    .pd-yy__cell > [aria-hidden] { order: 1; }
+    .pd-yy__v { text-align: start; }
+    .pd-yy__table :is(th, td):first-child { inline-size: auto; }
+  }
+
+  /* The bars are the table's picture: the columns share the width, the year keeps its own. */
+  .pd-yy__table :is(th, td):first-child { inline-size: 6rem; } /* layout geometry */
+
+  /* A SWAPPED VIEW ARRIVES, IT DOES NOT JUMP (P11, design review, 7 Oct 2026). Choosing a theme,
+     a component or a segment replaces what is under it; a short fade keeps the eye on what
+     changed. Opacity only, so nothing moves; none at all where the reader asks for less motion. */
+  @keyframes pd-arrive {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .pd-arrive {
+    animation: pd-arrive 150ms ease-out;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pd-arrive { animation: none; }
+  }
+
   .ds-kpi-row.pd-tile-stack {
     grid-template-columns: minmax(0, 1fr);
     grid-auto-rows: 1fr;

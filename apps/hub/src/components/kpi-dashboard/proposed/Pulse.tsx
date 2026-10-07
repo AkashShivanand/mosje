@@ -34,6 +34,7 @@ import { FigureSource, noteForReading, type SourceNote } from "@/components/webs
 import { OriginChip, ProvenanceChip } from "@/components/website/ProvenanceChip";
 import { heroFigures } from "./hero";
 import { PROGRAMME_AUDIENCE, shows, type Audience } from "./audience";
+import { shownDate } from "@/lib/kpi/format";
 import type { AreaScope, PortalDashboard, PortalId } from "@/lib/kpi/types";
 import { MinistryCollection } from "../DashboardViewer";
 import { DASHBOARD_PAGE } from "@/lib/website-shared/dashboard";
@@ -50,7 +51,7 @@ import {
   type Readings,
   type Viewing,
 } from "./model";
-import { hasMark, PROGRAMME_TONE, READINESS_ORDER, READINESS_SLOT, areaRows, compact, figureOf, readinessRows } from "./story";
+import { capsFit, hasMark, PROGRAMME_TONE, READINESS_ORDER, READINESS_SLOT, areaRows, compact, figureOf, readinessRows } from "./story";
 
 /**
  * THE PULSE — the proposed dashboard's one page, GROUPED BY WHO PUBLISHES THE FIGURES
@@ -175,7 +176,7 @@ function Hero(props: PulseProps) {
             // What the figure counts, and when (design review, 7 Oct 2026): 34 crore is people
             // reached by awareness activities, not beneficiaries, and the reader must not have
             // to guess which.
-            context={`Persons reached by awareness activities under Nasha Mukt Bharat Abhiyaan, since launch${leadAsOn ? `. As on ${leadAsOn}` : ""}`}
+            context={`Persons reached by awareness activities under Nasha Mukt Bharat Abhiyaan, since launch${leadAsOn ? `. As on ${shownDate(leadAsOn)}` : ""}`}
             mark={marked(lead.origin, noteOf(viewing, readings, "nmba", "nmba.outreach", compact(lead.value, "number")))}
           />
         ) : promoted ? (
@@ -344,7 +345,7 @@ function Programmes(props: PulseProps) {
             <div className="pd-tile__figures">
             <DescriptionList
               size="figure"
-              caps
+              caps={capsFit(facts)}
               columns={1}
               items={facts.map((x) => ({ term: x.term, value: <>{x.value}{marked(x.origin, noteOf(viewing, readings, "nmba", x.id, x.value))}</> }))}
             />
@@ -372,10 +373,14 @@ function Programmes(props: PulseProps) {
     const stages = stageFigs.map((f) => ({ label: kpiLabel(f.kpi), value: f.value }));
     const identified = stageFigs.find((f) => f.kpi.id === "smile-beggary.identified");
     const rehabilitated = stageFigs.find((f) => f.kpi.id === "smile-beggary.rehabilitated");
-    const funds = ["smile-beggary.fund-released", "smile-beggary.fund-utilised"].flatMap((id) => {
-      const f = fig("smile-beggary", id);
-      return f ? [{ term: kpiLabel(f.kpi), value: compact(f.value, "crore") }] : [];
-    });
+    const released = fig("smile-beggary", "smile-beggary.fund-released");
+    const utilised = fig("smile-beggary", "smile-beggary.fund-utilised");
+    // The share utilised is the sheet's own Office KPI (`utilisation-pct`): drawn only where the
+    // reader may see that KPI, never worked out for a citizen from the two public figures.
+    const share = released && utilised && readings["smile-beggary"]?.["smile-beggary.utilisation-pct"] ? Math.round((utilised.value / released.value) * 100) : null;
+    const funds = [released, utilised].flatMap((f) =>
+      f ? [{ term: kpiLabel(f.kpi), value: compact(f.value, "crore"), ...(f === utilised && share !== null ? { hint: `${share}% of ${kpiLabel(released!.kpi)}` } : {}) }] : [],
+    );
     const series = readings["smile-beggary"]?.["smile-beggary.monthly-trend"]?.value;
     const identifiedSeries = series?.kind === "series" ? series.series.find((x) => x.name === "Identified") : undefined;
     const trend =
@@ -422,7 +427,7 @@ function Programmes(props: PulseProps) {
             />
           </p>
         ) : null}
-        {funds.length ? <DescriptionList size="figure" caps columns={2} items={funds} /> : null}
+        {funds.length ? <DescriptionList size="figure" caps={capsFit(funds)} columns={2} items={funds} /> : null}
       </Tile>,
     );
   }
@@ -526,30 +531,44 @@ function Programmes(props: PulseProps) {
           result: { label: "Students, both modes", value: compact(total, "number") },
         }))} /> : undefined}
       >
+        {/* THE TWO MODES AS A SPLIT, as on SHRESHTA's own page (design review, 7 Oct 2026): each
+            mode's count and share as a bar against the whole, where the waffle gave shares only. */}
         {parts.length ? (
-          <WaffleChart
-            title="Every 100 SHRESHTA students, by mode"
-            scale="percent"
-            unit="student"
-            categories={parts.map((x, i) => ({ id: x.label, label: x.label, color: i === 0 ? "var(--sa-chart-cat-1)" : "var(--sa-chart-cat-6)" }))}
-            rows={[{ label: "", counts: Object.fromEntries(parts.map((x) => [x.label, x.value])) }]}
+          <RankedBarList
+            title="SHRESHTA students, by mode"
+            items={parts.map((x) => ({ label: x.label, value: x.value, detail: `${((x.value / total) * 100).toFixed(1)}%` }))}
+            valueFormat={(n: number) => compact(n, "number")}
+            max={total}
+            sort="none"
+            showRank={false}
+            size="sm"
           />
         ) : null}
         {funds ? (
-          <p className="pd-fact">
-            <b>{compact(funds.value, "crore")}</b> released this year.
-            <FigureSource
-              note={(() => {
-                const f = readings.shreshta?.["shreshta.funds"]?.value;
-                const items = f?.kind === "breakdown" ? f.items : [];
-                return noteOf(viewing, readings, "shreshta", "shreshta.funds", compact(funds.value, "crore"), {
-                  method: "The two modes added together.",
-                  rows: items.map((x, i) => ({ label: x.label, value: compact(x.value, "crore"), op: i === 0 ? undefined : ("+" as const) })),
-                  result: { label: "Released, both modes", value: compact(funds.value, "crore") },
-                });
-              })()}
-            />
-          </p>
+          <DescriptionList
+            size="figure"
+            caps
+            columns={2}
+            items={[{
+              term: funds.kpi.name.replace(/\s*\(₹ Crore\)/, ""),
+              value: (
+                <>
+                  {compact(funds.value, "crore")}
+                  <FigureSource
+                    note={(() => {
+                      const f = readings.shreshta?.["shreshta.funds"]?.value;
+                      const items = f?.kind === "breakdown" ? f.items : [];
+                      return noteOf(viewing, readings, "shreshta", "shreshta.funds", compact(funds.value, "crore"), {
+                        method: "The two modes added together.",
+                        rows: items.map((x, i) => ({ label: x.label, value: compact(x.value, "crore"), op: i === 0 ? undefined : ("+" as const) })),
+                        result: { label: "Released, both modes", value: compact(funds.value, "crore") },
+                      });
+                    })()}
+                  />
+                </>
+              ),
+            }]}
+          />
         ) : null}
       </Tile>,
     );
@@ -590,7 +609,7 @@ function Programmes(props: PulseProps) {
           ) : undefined
         }
       >
-        {facts.length ? <DescriptionList size="figure" caps columns={2} items={facts} /> : null}
+        {facts.length ? <DescriptionList size="figure" caps={capsFit(facts)} columns={2} items={facts} /> : null}
         {/* Officers only — the readings gate leaves no budget figure on a citizen's page. One
             sentence, not a second copy of the Funds chart (design audit, 6 Oct 2026). */}
         {rows.length && provided ? (

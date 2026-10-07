@@ -3,7 +3,6 @@
 import * as React from "react";
 import {
   Badge,
-  BarChart,
   Card,
   CardBody,
   CardHeader,
@@ -11,9 +10,11 @@ import {
   CardSubtitle,
   CardTitle,
   ChartCard,
+  DataTable,
   DescriptionList,
   HeadlineFigure,
   LineChart,
+  Progress,
   RankedBarList,
   SectionTitle,
   Sparkline,
@@ -74,7 +75,7 @@ import { CARD_AUDIENCE, FUND_SLICE_AUDIENCE, TREND_AUDIENCE, YOY_AUDIENCE, shows
  *
  * DS Audit: Card / CardHeader / CardIcon / CardBody ✅ · HeadlineFigure ✅ · DescriptionList ✅ ·
  * Badge ✅ · Sparkline (`startLabel`/`endLabel`/`markLast` ➕ ADDED) ✅ · ChartCard (`variant` ➕ ADDED) ✅ ·
- * LineChart ✅ · BarChart ✅ · RankedBarList ✅ · ButtonGroup (SegmentedButtons) ✅ ·
+ * LineChart ✅ · DataTable ✅ · Progress ✅ · RankedBarList ✅ · ButtonGroup (SegmentedButtons) ✅ ·
  * SectionTitle ✅ · OriginChip / FigureSource (app) ✅.
  */
 
@@ -154,7 +155,7 @@ function studentsNote(title: string, labels: readonly string[], data: number[], 
  * control sets the sum out for the latest year (instruction, 6 Oct 2026: derived is fine
  * when the working is shown).
  */
-function TrendLine({ title, labels, data, unit, format, parts, fact = true, width = 420 }: {
+function TrendLine({ title, labels, data, unit, format, parts, fact = true, line = true, width = 420 }: {
   title: string;
   labels: readonly string[];
   data: number[];
@@ -165,6 +166,12 @@ function TrendLine({ title, labels, data, unit, format, parts, fact = true, widt
   fact?: boolean;
   /** The line's drawn width; it scales down to its column. Narrower inside a card's half. */
   width?: number;
+  /**
+   * The line itself. Off on the Department page's summary cards, whose years the Year by
+   * Year Trends section draws in full just below (design review, 7 Oct 2026): the card keeps
+   * the latest year's figure, and the trend is told once.
+   */
+  line?: boolean;
 }) {
   const last = labels[labels.length - 1]!;
   const year = last.replace("*", "");
@@ -180,7 +187,7 @@ function TrendLine({ title, labels, data, unit, format, parts, fact = true, widt
         ) : null}
       </p>
       ) : null}
-      <Sparkline data={data} width={width} height={44} label={`${title}: ${unit}, each year, ${labels[0]!.replace("*", "")} to ${year}`} startLabel={labels[0]!.replace("*", "")} endLabel={year} markLast />
+      {line ? <Sparkline data={data} width={width} height={44} label={`${title}: ${unit}, each year, ${labels[0]!.replace("*", "")} to ${year}`} startLabel={labels[0]!.replace("*", "")} endLabel={year} markLast /> : null}
     </div>
   );
 }
@@ -213,6 +220,7 @@ function BeneficiaryStudents({ headingLevel, audiences }: { headingLevel: 3 | 4;
       }
       footer={view.provisional ? BENEFICIARY_TRENDS.footnote : undefined}
     >
+      <div className="pd-arrive" key={id}>
       <FitChart fallback={640}>
         {(width) => (
           <LineChart
@@ -229,6 +237,7 @@ function BeneficiaryStudents({ headingLevel, audiences }: { headingLevel: 3 | 4;
           />
         )}
       </FitChart>
+      </div>
     </ChartCard>
   );
 }
@@ -288,43 +297,82 @@ export function ShareOfFundRelease({ headingLevel, audiences }: { headingLevel: 
 const COUNT_COLOUR = "var(--sa-chart-cat-1)";
 const FUND_COLOUR = "var(--sa-chart-cat-3)";
 
-function YearOnYearCard({ c, headingLevel }: { c: (typeof YEAR_ON_YEAR.cards)[number]; headingLevel: 3 | 4 }) {
-  const year = c.labels[c.labels.length - 1]!;
-  const lastCount = c.count.data[c.count.data.length - 1]!;
-  const lastFund = c.fund.data[c.fund.data.length - 1]!;
-  const takeaway = `${year}: ${count(lastCount)} ${c.count.axis} · ₹${lastFund.toLocaleString("en-IN", { maximumFractionDigits: 2 })} Cr`;
+
+
+/**
+ * THE YEAR ON YEAR REPORT AS ONE CARD (instruction, 7 Oct 2026). The live page's three cards —
+ * hostels, top class schools, top class colleges — each drew two stacked charts whose year
+ * labels were cut off on a phone. One card now holds the three, chosen with the segmented
+ * control under the live page's own scheme names (its Share of Fund Release labels):
+ *  - the TOTALS lead, in the live cards' own words and figures — each scheme's yearly rows add
+ *    up to them exactly (28,865 seats and ₹347 Cr; 45,228 and ₹117 Cr; 37,937 and ₹810 Cr);
+ *  - then the years as a TABLE whose cells carry bars: a year reads across, its count and its
+ *    fund side by side, each with its value at the bar — two scales, two columns, never two
+ *    axes on one plot — and a screen reader meets a real table, row by row;
+ *  - the latest year is set in bold, the year the subtitle names.
+ */
+const YOY_SEGMENT: Record<string, string> = { hostels: "Hostel Construction", "tce-schools": "Top Class Schools", "tce-colleges": "Top Class Colleges" };
+
+function yoyTotals(id: string): { term: string; value: string; hint?: string }[] {
+  if (id === "hostels") {
+    const h = card(HOSTELS.cards, "hostels");
+    return (h.metrics ?? []).map((m) => ({ term: m.label, value: deptAmount(m), hint: m.sub }));
+  }
+  const t = card(HOSTELS.cards, "top-class");
+  const sp = nth(t.splits, id === "tce-schools" ? 0 : 1);
+  return [
+    { term: `Students · ${sp.chip}`, value: sp.value, hint: sp.sub },
+    { term: "Fund Released", value: sp.fund },
+  ];
+}
+
+function YearOnYearReport({ cards, headingLevel }: { cards: (typeof YEAR_ON_YEAR.cards)[number][]; headingLevel: 3 | 4 }) {
+  const [id, setId] = React.useState<string>(cards[0]!.id);
+  const c = cards.find((x) => x.id === id) ?? cards[0]!;
+  const last = c.labels.length - 1;
+  const takeaway = `${c.labels[last]}: ${count(c.count.data[last]!)} ${c.count.axis} · ₹${c.fund.data[last]!.toLocaleString("en-IN", { maximumFractionDigits: 2 })} Cr`;
+  const maxCount = Math.max(...c.count.data);
+  const maxFund = Math.max(...c.fund.data);
+  const rupees = (n: number) => `₹${n.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Cr`;
+  const rows = c.labels.map((year, i) => ({ _key: year, year, count: c.count.data[i]!, fund: c.fund.data[i]! }));
+  type Row = (typeof rows)[number];
+  const cell = (text: string, value: number, max: number, colour: string, latest: boolean) => (
+    <span className="pd-yy__cell">
+      {/* The bar is the value drawn; the text beside it is what is read. */}
+      <span aria-hidden="true">
+        <Progress compact value={value} max={max} label="" color={colour} showValue={false} />
+      </span>
+      <span className={latest ? "pd-yy__v pd-yy__v--latest" : "pd-yy__v"}>{text}</span>
+    </span>
+  );
   return (
-    // No coloured header band: the live page's three bands would make these the only banded
-    // cards on the page. The title is the live card's, unaltered.
-    <ChartCard variant="outlined" headingLevel={headingLevel} title={c.title} subtitle={takeaway}>
-      <FitChart fallback={400}>
-        {(width) => (
-          <div className="pd-panels">
-            <BarChart
-              title={`${c.title}: ${c.count.name}, by year`}
-              labels={[...c.labels]}
-              series={[{ name: c.count.name, data: [...c.count.data], color: COUNT_COLOUR }]}
-              yLabel={c.count.axis}
-              valueFormat={count}
-              tableView="sr-only"
-              width={width}
-              height={180}
-            />
-            {/* Bars on the same bands as the counts above, so each year's two figures stand
-                one over the other — a line's points fall between bar centres. */}
-            <BarChart
-              title={`${c.title}: ${c.fund.name}, by year`}
-              labels={[...c.labels]}
-              series={[{ name: c.fund.name, data: [...c.fund.data], color: FUND_COLOUR }]}
-              yLabel="Fund (₹ Cr)"
-              valueFormat={(n: number) => n.toLocaleString("en-IN", { maximumFractionDigits: 2 })}
-              tableView="sr-only"
-              width={width}
-              height={160}
-            />
-          </div>
-        )}
-      </FitChart>
+    <ChartCard
+      variant="outlined"
+      headingLevel={headingLevel}
+      title={c.title}
+      subtitle={takeaway}
+      actions={
+        cards.length > 1 ? (
+          <SegmentedButtons label="Scheme" value={c.id} onChange={setId} options={cards.map((x) => ({ value: x.id, label: YOY_SEGMENT[x.id] ?? x.title }))} />
+        ) : undefined
+      }
+    >
+      <div className="pd-yy pd-arrive" key={c.id}>
+        <DescriptionList size="figure" caps columns={2} items={yoyTotals(c.id)} />
+        <DataTable<Row>
+          caption={`${c.title}: ${c.count.name} and ${c.fund.name}, by year`}
+          columns={[
+            { key: "year", header: "Year", render: (r: Row) => (r.year === c.labels[last] ? <b>{r.year}</b> : r.year) },
+            { key: "count", header: c.count.name, render: (r: Row) => cell(count(r.count), r.count, maxCount, COUNT_COLOUR, r.year === c.labels[last]) },
+            { key: "fund", header: c.fund.name, render: (r: Row) => cell(rupees(r.fund), r.fund, maxFund, FUND_COLOUR, r.year === c.labels[last]) },
+          ]}
+          data={rows}
+          total={rows.length}
+          pageSizes={[rows.length]}
+          hidePagerWhenFits
+          className="pd-yy__table"
+        />
+      </div>
     </ChartCard>
   );
 }
@@ -376,8 +424,7 @@ export function EducationResults({ sectionLevel, state, audiences }: MovementPro
   const [schools, colleges] = [nth(topClass.splits, 0), nth(topClass.splits, 1)];
   const scTrend = BENEFICIARY_TRENDS.views.find((v) => v.id === "sc")!;
   const obcTrend = BENEFICIARY_TRENDS.views.find((v) => v.id === "obc")!;
-  const shreyasTrend = BENEFICIARY_TRENDS.views.find((v) => v.id === "shreyas")!;
-  const studentsLine = (v: (typeof BENEFICIARY_TRENDS.views)[number], title: string, fact = true) => {
+  const studentsLine = (v: (typeof BENEFICIARY_TRENDS.views)[number], title: string, fact = true, line = false) => {
     const series: readonly { name: string; data: readonly number[] }[] = v.series;
     const pre = nth(series, 0);
     const post = nth(series, 1);
@@ -389,6 +436,7 @@ export function EducationResults({ sectionLevel, state, audiences }: MovementPro
         unit="students"
         format={lakh}
         fact={fact}
+        line={line}
         parts={[
           { name: pre.name, value: pre.data[pre.data.length - 1]! },
           { name: post.name, value: post.data[post.data.length - 1]! },
@@ -414,7 +462,7 @@ export function EducationResults({ sectionLevel, state, audiences }: MovementPro
   const yoy = (id: string) => YEAR_ON_YEAR.cards.find((c) => c.id === id);
   const yearsLine = (id: string, title: string, unit: string, width?: number) => {
     const c = yoy(id);
-    return c ? <TrendLine title={title} labels={c.labels} data={[...c.count.data]} unit={unit} format={count} width={width} /> : null;
+    return c ? <TrendLine title={title} labels={c.labels} data={[...c.count.data]} unit={unit} format={count} width={width} line={false} /> : null;
   };
   const hostelTrends: Record<string, { trend?: React.ReactNode; splitTrends?: React.ReactNode[] }> = {
     hostels: { trend: yearsLine("hostels", hostels.title, "seats sanctioned") },
@@ -457,10 +505,7 @@ export function EducationResults({ sectionLevel, state, audiences }: MovementPro
             <Tile tone={shreyas.tone} icon={shreyas.icon} title={shreyas.title} subtitle={shreyas.subtitle}>
               <Lead m={nth(shreyas.metrics, 1)} />
               <Rest ms={[nth(shreyas.metrics, 0), nth(shreyas.metrics, 2)]} />
-              {/* The fact line would restate "Latest Year (2025-26)" above it, so the line alone. */}
-              <div className="pd-trend">
-                <Sparkline data={[...nth(shreyasTrend.series, 0).data]} width={420} height={44} label={`${shreyas.title}: ${shreyasTrend.unit}, each year, ${shreyasTrend.labels[0]} to ${shreyasTrend.labels[shreyasTrend.labels.length - 1]}`} startLabel={shreyasTrend.labels[0]!.replace("*", "")} endLabel={shreyasTrend.labels[shreyasTrend.labels.length - 1]!.replace("*", "")} markLast />
-              </div>
+              {/* No line: its years are Year by Year Trends' SHREYAS view, just below. */}
             </Tile>
           </li>
           ) : null}
@@ -522,15 +567,7 @@ export function EducationTrends({ sectionLevel, state, audiences }: MovementProp
         </ul>
         {/* THE YEAR ON YEAR REPORT IS THIS SECTION'S SECOND ROW (design review, 7 Oct 2026):
             "Year by Year Trends" then "Year on Year Report" were two headings for one idea. */}
-        {yoyCards.length > 0 ? (
-          <ul className={`pd-bento pd-bento--n${yoyCards.length}`} aria-label={YEAR_ON_YEAR.title}>
-            {yoyCards.map((c) => (
-              <li key={c.id}>
-                <YearOnYearCard c={c} headingLevel={cardLevel} />
-              </li>
-            ))}
-          </ul>
-        ) : null}
+        {yoyCards.length > 0 ? <YearOnYearReport cards={yoyCards} headingLevel={cardLevel} /> : null}
       </section>
 
     </>

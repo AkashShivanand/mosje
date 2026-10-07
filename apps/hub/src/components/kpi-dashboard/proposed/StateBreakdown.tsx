@@ -45,7 +45,7 @@ export function StateBreakdown({
         ) : undefined
       }
     >
-      <div className="pd-states">
+      <div className="pd-states pd-arrive" key={m.kpi.id}>
         <IndiaMap
           title={`${m.kpi.name}, by State/UT`}
           data={m.rows}

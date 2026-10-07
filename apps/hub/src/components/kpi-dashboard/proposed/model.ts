@@ -387,7 +387,7 @@ export function mergeFundCharts(kpis: KpiDefinition[], reading: PortalReading): 
     chart: "bar",
     labels: ra.value.labels,
     series: [...ra.value.series, { name: "Expenditure", data: spent.data }],
-    note: `${ra.value.labels[last]}: R.E. not yet framed; expenditure up to 30.09.2026.`,
+    note: `${ra.value.labels[last]}: R.E. not yet framed; expenditure up to 30 Sep 2026.`,
   };
   return {
     kpis: kpis.flatMap((k) => (k.id === FUNDS_PAIR.allocation ? [merged] : k.id === FUNDS_PAIR.expenditure ? [] : [k])),

@@ -187,7 +187,7 @@ export function ProgrammeStory({ programme: p, viewing, readings, scope, section
 
       {pace.length ? (
         <section className="pd-section" aria-labelledby="pd-pace">
-          <SectionTitle as={sub} headingId="pd-pace" title="Expenditure Against Budget Estimate" description="Expenditure as a share of the Budget Estimate, by component, up to 30.09.2026." />
+          <SectionTitle as={sub} headingId="pd-pace" title="Expenditure Against Budget Estimate" description="Expenditure as a share of the Budget Estimate, by component, up to 30 Sep 2026." />
           <Card variant="outlined">
             <CardBody>
               <DotPlot
@@ -212,7 +212,9 @@ export function ProgrammeStory({ programme: p, viewing, readings, scope, section
           ))}
         </div>
       ) : null}
-      {cats.length > 1 && !components ? (
+      {/* Chips only where there is something to choose between: with two themes, both are on
+          the screen already (design review, 7 Oct 2026). */}
+      {cats.length > 2 && !components ? (
         <div className="pd-chips" role="group" aria-label="Theme">
           <Chip selected={category === "all"} onSelectedChange={() => setCategory("all")} count={kpis.length}>
             All Themes
@@ -224,7 +226,10 @@ export function ProgrammeStory({ programme: p, viewing, readings, scope, section
           ))}
         </div>
       ) : null}
-      {body}
+      {/* Re-keyed on the chosen theme or component, so the new view fades in (P11). */}
+      <div className="pd-story pd-arrive" key={`${category}|${component}`}>
+        {body}
+      </div>
     </div>
   );
 }

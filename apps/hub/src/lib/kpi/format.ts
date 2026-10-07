@@ -21,6 +21,29 @@ export function formatKpi(value: number, unit: KpiUnit): string {
 export const kpiFormatter = (unit: KpiUnit) => (value: number) => formatKpi(value, unit);
 
 /** "19.06.2026" → "2026-06-19", for `DataProvenance.asOf`, which takes an ISO date. */
+/**
+ * A count in lakh and crore, for a map's legend and a ranked list on the proposed dashboard:
+ * "11.87 Cr", "4.88 lakh", "80,629" — the landing page's units (design review, 7 Oct 2026).
+ */
+export function compactCount(n: number): string {
+  if (Math.abs(n) >= 1_00_00_000) return `${(n / 1_00_00_000).toLocaleString("en-IN", { maximumFractionDigits: 2 })} Cr`;
+  if (Math.abs(n) >= 1_00_000) return `${(n / 1_00_000).toLocaleString("en-IN", { maximumFractionDigits: 2 })} lakh`;
+  return Math.round(n).toLocaleString("en-IN");
+}
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+/**
+ * "05.10.2026" as the page prints a date: "05 Oct 2026" — DD MMM YYYY, the one form the
+ * dashboard uses, as its source notes already did (design review, 7 Oct 2026). The records
+ * keep the dotted form; only what is shown changes.
+ */
+export function shownDate(ddmmyyyy: string): string {
+  const [d, m, y] = ddmmyyyy.split(".");
+  const month = MONTHS[Number(m) - 1];
+  return d && month && y ? `${d} ${month} ${y}` : ddmmyyyy;
+}
+
 export function isoDate(ddmmyyyy: string): string {
   const [d, m, y] = ddmmyyyy.split(".");
   return y && m && d ? `${y}-${m}-${d}` : ddmmyyyy;

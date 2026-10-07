@@ -80,6 +80,15 @@ export interface KpiDefinition {
   span?: 3 | 4 | 6 | 8 | 12;
   /** The scheme inside a programme the KPI belongs to — "Rashtriya Vayoshri Yojana (RVY)". */
   component?: string;
+  /**
+   * The KPI this one is a part of — Women Outreach of Total Outreach — so the proposed dashboard
+   * draws its share of the whole under the figure. `gate` names a KPI the reader must be able
+   * to see for the share to show: where the sheet makes the ratio itself an officer KPI (SMILE's
+   * fund utilisation), a citizen sees the two figures and not the ratio worked from them.
+   */
+  partOf?: { kpi: string; gate?: string };
+  /** Its breakdown's parts add up to a meaningful whole (kinds of call), so a total leads it. */
+  totalled?: boolean;
   /** What the portal's API can supply for this KPI, as the portal's own API audit records it. */
   api?: KpiApi;
 }

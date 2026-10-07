@@ -17,7 +17,7 @@ import {
   type DataProvenance,
 } from "@mosje/design-system";
 import { OriginChip } from "@/components/website/ProvenanceChip";
-import { formatKpi, isoDate, kpiFormatter } from "@/lib/kpi/format";
+import { compactCount, formatKpi, isoDate, kpiFormatter } from "@/lib/kpi/format";
 import type { KpiDefinition, KpiReading, KpiUnit } from "@/lib/kpi/types";
 
 /**
@@ -90,7 +90,7 @@ export function KpiChart({
   donutLayout = "stacked",
   stateMap = "choropleth",
   quiet = false,
-  headline,
+  headline: given,
 }: {
   kpi: KpiDefinition;
   reading: KpiReading;
@@ -125,6 +125,7 @@ export function KpiChart({
   headline?: { value: string; label: string; detail?: string; mark?: React.ReactNode };
 }) {
   const v = reading.value;
+  let headline = given;
   const fmt = kpiFormatter(kpi.unit);
   const tableView = quiet ? ("sr-only" as const) : undefined;
   // The charts draw into a fixed viewBox and scale to the card, so a 12-column card at the
@@ -142,10 +143,33 @@ export function KpiChart({
     case "breakdown": {
       const unit: KpiUnit = v.unit ?? kpi.unit;
       const statuses = quiet && v.items.length > 1 && v.items.every((i) => statusColour(i.label));
-      const data = v.items.map((i) => ({ label: i.label, value: i.value, ...(statuses ? { color: statusColour(i.label) } : {}) }));
-      if (v.chart === "donut") {
+      // RED IS NEVER A CATEGORY (design review, 7 Oct 2026): on this estate it means an error,
+      // so a ring's slices take the quiet order, as grouped bars do.
+      const data = v.items.map((i, ii) => ({
+        label: i.label,
+        value: i.value,
+        ...(statuses ? { color: statusColour(i.label) } : quiet ? { color: QUIET_SERIES[ii % QUIET_SERIES.length] } : {}),
+      }));
+      const total = Math.round(data.reduce((t, d) => t + d.value, 0) * 100) / 100;
+      // A TWO-PART RING IS A SPLIT, AND A SPLIT READS AS BARS (design review, 7 Oct 2026): a
+      // reader judges two angles less surely than two lengths. The whole leads; each part is a
+      // bar against it, with its count and its share.
+      const split = quiet && v.chart === "donut" && data.length === 2 && unit !== "percent";
+      if ((split || (quiet && kpi.totalled)) && !headline) headline = { value: unit === "number" ? compactCount(total) : formatKpi(total, unit), label: "In Total" };
+      if (split) {
+        body = (
+          <RankedBarList
+            title={kpi.name}
+            items={data.map((d) => ({ label: d.label, value: d.value, detail: `${((d.value / total) * 100).toFixed(1)}%` }))}
+            valueFormat={kpiFormatter(unit)}
+            max={total}
+            sort="none"
+            showRank={false}
+            size="md"
+          />
+        );
+      } else if (v.chart === "donut") {
         skeleton = "donut";
-        const total = data.reduce((t, d) => t + d.value, 0);
         body = (
           <DonutChart
             title={kpi.name}
@@ -206,7 +230,9 @@ export function KpiChart({
     case "stages":
       body = <FunnelChart title={kpi.name} stages={v.stages} valueFormat={fmt} />;
       break;
-    case "areas":
+    case "areas": {
+      // Lakh and crore on the proposed dashboard, as its tiles and landing page print them.
+      const areaFmt = quiet && kpi.unit === "number" ? compactCount : fmt;
       if (areasAreStates && kpi.unit !== "percent") {
         skeleton = "region";
         body = (
@@ -214,22 +240,29 @@ export function KpiChart({
             {stateMap === "tiles" ? (
               <IndiaTileMap title={kpi.name} data={v.rows.map((r) => ({ state: r.area, value: r.value }))} valueFormat={fmt} scale="quantile" tableView={tableView} />
             ) : (
-              <IndiaMap title={kpi.name} data={v.rows.map((r) => ({ state: r.area, value: r.value }))} valueFormat={fmt} tableView={tableView} {...(quiet ? { scale: "quantile" as const } : {})} />
+              <IndiaMap title={kpi.name} data={v.rows.map((r) => ({ state: r.area, value: r.value }))} valueFormat={areaFmt} tableView={tableView} {...(quiet ? { scale: "quantile" as const } : {})} />
             )}
-            <RankedBarList title={`${kpi.name}, ranked`} items={v.rows.map((r) => ({ label: r.area, value: r.value }))} valueFormat={fmt} showRank pageSize={10} />
+            <RankedBarList title={`${kpi.name}, ranked`} items={v.rows.map((r) => ({ label: r.area, value: r.value }))} valueFormat={areaFmt} showRank pageSize={10} />
           </div>
         );
       } else {
         body = (
-          <RankedBarList title={kpi.name} items={v.rows.map((r) => ({ label: r.area, value: r.value }))} valueFormat={fmt} showRank pageSize={10} />
+          <RankedBarList title={kpi.name} items={v.rows.map((r) => ({ label: r.area, value: r.value }))} valueFormat={areaFmt} showRank pageSize={10} />
         );
       }
       break;
+    }
     case "table": {
       skeleton = "rows";
       const rows = v.rows.map((r, i) => Object.fromEntries([["_key", String(i)], ...v.columns.map((c, j) => [c, r[j]])]));
       // The current dashboard keeps its plain difference column.
       const against = quiet ? v.againstMinimum : undefined;
+      // THE TABLE'S ANSWER, BEFORE ITS ROWS (design review, 7 Oct 2026): how many meet their
+      // mandate, counted from the same column the rows mark.
+      if (against && !headline) {
+        const marks = v.rows.map((r) => r[against.column]).filter((c): c is number => typeof c === "number");
+        headline = { value: `${marks.filter((c) => c >= 0).length} of ${marks.length}`, label: "Meet Their Mandated Allocation" };
+      }
       body = (
         <DataTable
           caption={kpi.name}
