@@ -54,7 +54,7 @@
     font-family: var(--sa-font-latin);
   }
   .ds-chart-card--outlined {
-    box-shadow: none;
+    box-shadow: var(--sa-elevation-flat);
   }
   .ds-chart-card__head {
     display: flex;

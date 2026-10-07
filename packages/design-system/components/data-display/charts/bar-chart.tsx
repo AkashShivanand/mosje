@@ -352,7 +352,10 @@ export function BarChart(props: BarChartProps) {
 
   // ── Horizontal ─────────────────────────────────────────────────────────
   const padL = 116;
-  const padR = 44;
+  // Room for the longest value printed at a bar's end (label-2, about 7px a character), so
+  // "₹1,96,400 Cr" is never cut off at the card's edge. 44 stays the floor.
+  const longest = showVals ? Math.max(0, ...series.flatMap((s) => s.data.map((v) => valueFormat(v).length))) : 0;
+  const padR = Math.max(44, Math.ceil(longest * 7) + 10);
   const padT = targetValue !== null ? 18 : 8;
   const padB = 26;
   const y = bandScale(labels, [padT, height - padB], 0.3);

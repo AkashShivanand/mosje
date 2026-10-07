@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "`MetricCard variant=\"outlined\"` draws the tile at rest on the page: its border and `elevation/flat`, no shadow. For a surface where every card beside it is outlined, such as a dashboard of outlined chart cards, so one row of floating tiles does not read as a different kind of thing. `ChartCard variant=\"outlined\"` now binds `elevation/flat` too, rather than `box-shadow: none`. The default, the raised tile, is unchanged."
+}

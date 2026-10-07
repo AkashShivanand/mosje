@@ -86,9 +86,11 @@ export function KpiChart({
   /** How a States/UTs reading is mapped: the choropleth, or equal tiles. @default "choropleth" */
   stateMap?: "choropleth" | "tiles";
   /**
-   * The proposed dashboard's quieter chart chrome (instruction, 6 Oct 2026): no Chart / Table
-   * switch — each chart keeps its table for screen readers — and the download control as the
-   * small "Export" link. Off, the card is as the current dashboard draws it.
+   * The proposed dashboard's chart chrome (instructions, 6–7 Oct 2026): an outlined card at
+   * rest on the page (`elevation/flat`, no shadow), no Chart / Table switch — each chart keeps
+   * its table for screen readers — no download control until its placement is decided, and a
+   * ring always with its legend beside it so it is no taller than the card next to it. Off,
+   * the card is as the current dashboard draws it.
    */
   quiet?: boolean;
 }) {
@@ -99,6 +101,9 @@ export function KpiChart({
   // default 480 units draws its labels at twice the size of a 6-column one. Widening the
   // viewBox with the span keeps the type the same size in every card.
   const finalSpan = span ?? kpi.span ?? 6;
+  // A ring with its legend beside it: on a wide card, and on any half-width card of the
+  // proposed dashboard, where a stacked ring stood a third taller than the list beside it.
+  const side = donutLayout === "auto" && (finalSpan >= 8 || (quiet && finalSpan >= 6));
   const box = { width: Math.round(480 * Math.max(1, finalSpan / 6)), height: 280 };
   let body: React.ReactNode = null;
   let skeleton: "bars" | "donut" | "line" | "rows" | "region" = "bars";
@@ -118,8 +123,8 @@ export function KpiChart({
             valueFormat={kpiFormatter(unit)}
             center={formatKpi(Math.round(total * 100) / 100, unit)}
             centerSub="in total"
-            className={donutLayout === "auto" && finalSpan >= 8 ? "kd-donut-side" : "kd-donut"}
-            {...(donutLayout === "auto" && finalSpan >= 8 ? { layout: "side" as const, legendValue: "value" as const } : {})}
+            className={side ? "kd-donut-side" : "kd-donut"}
+            {...(side ? { layout: "side" as const, legendValue: "value" as const } : {})}
           />
         );
       } else {
@@ -175,7 +180,7 @@ export function KpiChart({
             {stateMap === "tiles" ? (
               <IndiaTileMap title={kpi.name} data={v.rows.map((r) => ({ state: r.area, value: r.value }))} valueFormat={fmt} scale="quantile" tableView={tableView} />
             ) : (
-              <IndiaMap title={kpi.name} data={v.rows.map((r) => ({ state: r.area, value: r.value }))} valueFormat={fmt} tableView={tableView} />
+              <IndiaMap title={kpi.name} data={v.rows.map((r) => ({ state: r.area, value: r.value }))} valueFormat={fmt} tableView={tableView} {...(quiet ? { scale: "quantile" as const } : {})} />
             )}
             <RankedBarList title={`${kpi.name}, ranked`} items={v.rows.map((r) => ({ label: r.area, value: r.value }))} valueFormat={fmt} showRank pageSize={10} />
           </div>
@@ -219,9 +224,9 @@ export function KpiChart({
       headingLevel={headingLevel}
       span={finalSpan}
       skeleton={skeleton}
-      exportable={v.kind !== "table"}
+      exportable={!quiet && v.kind !== "table"}
       exportName={kpi.id}
-      exportAppearance={quiet ? "text" : undefined}
+      variant={quiet ? "outlined" : undefined}
       provenance={provenanceOf(reading)}
       actions={
         badge || reading.origin !== "snapshot" ? (

@@ -63,6 +63,13 @@
     container: ds-metric-card / inline-size;
   }
 
+  /* At rest on the page: the border alone, no shadow (`variant="outlined"`), for a surface
+     where every card beside it is outlined. `elevation/flat` is bound rather than the shadow
+     omitted, so a raised tile's shadow cannot cascade back in. */
+  .ds-metric-card--outlined {
+    box-shadow: var(--sa-elevation-flat);
+  }
+
   .ds-metric-card__inner {
     display: flex;
     align-items: flex-start;

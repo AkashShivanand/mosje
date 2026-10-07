@@ -712,8 +712,6 @@ function Money({ viewing, readings, scope, sectionLevel, audiences }: PulseProps
           <ChartCard
             variant="outlined"
             headingLevel={sub(sectionLevel)}
-            exportable
-            exportAppearance="text"
             title="Expenditure as a Share of Budget Estimate, by Scheme"
             subtitle="Financial Year 2026-27, up to 30 Sep 2026"
             actions={

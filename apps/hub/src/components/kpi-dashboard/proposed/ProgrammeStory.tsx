@@ -49,6 +49,47 @@ export interface ProgrammeStoryProps {
 
 const LEAD = 4;
 
+/**
+ * SECTIONS OF ONE CARD SHARE A ROW (design review, 7 Oct 2026). A section holding one card drew
+ * it across the whole page — SHRESHTA's two rings each a full row, half of it empty. Two
+ * single-CHART sections sit side by side; single-FIGURE sections gather, up to three a row, at
+ * the place of the first of them. A figure is never paired with a chart: the figure's card
+ * would stretch to the chart's height and stand mostly empty. Any other section keeps its row.
+ */
+type Placed = { key: string; single: "figure" | "chart" | null; node: React.ReactNode };
+function pairSections(sections: Placed[]): React.ReactNode[] {
+  const out: React.ReactNode[] = [];
+  const used = new Set<string>();
+  const figures = sections.filter((x) => x.single === "figure");
+  const row = (group: Placed[], cls: string) => (
+    <div key={group.map((g) => g.key).join("+")} className={cls}>
+      {group.map((g) => g.node)}
+    </div>
+  );
+  for (let i = 0; i < sections.length; i++) {
+    const a = sections[i]!;
+    if (used.has(a.key)) continue;
+    if (a.single === "figure" && figures.length > 1) {
+      // Every single-figure section, in order, from here: rows of three (two where four).
+      const rest = figures.filter((x) => !used.has(x.key));
+      const per = rest.length === 4 ? 2 : 3;
+      for (let j = 0; j < rest.length; j += per) out.push(row(rest.slice(j, j + per), `pd-section-pair pd-section-pair--${Math.min(per, rest.length - j)}`));
+      rest.forEach((x) => used.add(x.key));
+      continue;
+    }
+    const b = sections[i + 1];
+    if (a.single === "chart" && b?.single === "chart") {
+      out.push(row([a, b], "pd-section-pair pd-section-pair--2"));
+      used.add(a.key).add(b.key);
+      i++;
+      continue;
+    }
+    out.push(a.node);
+    used.add(a.key);
+  }
+  return out;
+}
+
 export function ProgrammeStory({ programme: p, viewing, readings, scope, sectionLevel, backHref, go, states = [] }: ProgrammeStoryProps) {
   const demo = useDataMode();
   const [category, setCategory] = React.useState("all");
@@ -89,26 +130,43 @@ export function ProgrammeStory({ programme: p, viewing, readings, scope, section
   } else if (kpis.length === 0 && demo.mode === "live") {
     body = <CardState kind="not-published" title="Live Figures Not Yet Available" description={`${p.portal} has not yet connected its indicators to this dashboard.`} />;
   } else if (components) {
-    body = [...new Set(inView.map((k) => k.component!))].map((c, i) => (
-      <section key={c} className="pd-section" aria-labelledby={`pd-c${i}`}>
-        <SectionTitle as={sub} headingId={`pd-c${i}`} title={c} />
-        <KpiBlocks kpis={inView.filter((k) => k.component === c)} reading={reading} areasAreStates={!scope.state} headingLevel={4} showComponent={false} />
-      </section>
-    ));
+    body = pairSections(
+      [...new Set(inView.map((k) => k.component!))].map((c, i) => {
+        const these = inView.filter((k) => k.component === c);
+        return {
+          key: c,
+          single: these.length === 1 ? (isTile(reading[these[0]!.id]!) ? "figure" : "chart") : null,
+          node: (
+            <section key={c} className="pd-section" aria-labelledby={`pd-c${i}`}>
+              <SectionTitle as={sub} headingId={`pd-c${i}`} title={c} />
+              <KpiBlocks kpis={these} reading={reading} areasAreStates={!scope.state} headingLevel={4} showComponent={false} />
+            </section>
+          ),
+        };
+      }),
+    );
   } else {
-    body = cats
-      .filter((c) => category === "all" || c.id === category)
-      .map((c) => (
-        <section key={c.id} className="pd-section" aria-labelledby={`pd-${c.id}`}>
-          <SectionTitle as={sub} headingId={`pd-${c.id}`} title={c.title} />
-          <KpiBlocks kpis={inView.filter((k) => k.category === c.id)} reading={reading} areasAreStates={!scope.state} headingLevel={4} />
-          {/* Where the scheme works, State/UT by State/UT: All India only — a State/UT's page
-              is already that State's figures. */}
-          {c.id === "geography" && states.length && !scope.state ? (
-            <StateBreakdown measures={states} headingLevel={4} onSelectState={(state) => go({ state })} />
-          ) : null}
-        </section>
-      ));
+    body = pairSections(
+      cats
+        .filter((c) => category === "all" || c.id === category)
+        .map((c) => {
+          const these = inView.filter((k) => k.category === c.id);
+          const map = c.id === "geography" && states.length > 0 && !scope.state;
+          return {
+            key: c.id,
+            single: these.length === 1 && !map ? (isTile(reading[these[0]!.id]!) ? "figure" : "chart") : null,
+            node: (
+              <section key={c.id} className="pd-section" aria-labelledby={`pd-${c.id}`}>
+                <SectionTitle as={sub} headingId={`pd-${c.id}`} title={c.title} />
+                <KpiBlocks kpis={these} reading={reading} areasAreStates={!scope.state} headingLevel={4} />
+                {/* Where the scheme works, State/UT by State/UT: All India only — a State/UT's page
+                    is already that State's figures. */}
+                {map ? <StateBreakdown measures={states} headingLevel={4} onSelectState={(state) => go({ state })} /> : null}
+              </section>
+            ),
+          };
+        }),
+    );
   }
 
   const officeCount = all.filter((k) => k.audience === "officer").length;

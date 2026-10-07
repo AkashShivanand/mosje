@@ -236,6 +236,48 @@
     padding-block-start: var(--sa-stack-8);
   }
 
+  /* Two single-card sections side by side, at one height: each section a column whose card
+     grows to fill it (`pairSections`). */
+  /* Figures stacked in a column beside their chart (`KpiBlocks`), sharing its height. */
+  .ds-kpi-row.pd-tile-stack {
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: 1fr;
+  }
+
+  /* A programme page's State/UT map card: the map held to a map's size beside its ranked list,
+     so the two halves stand about one height (as the landing page's State/UT section). */
+  .pd-story .kd-map-split {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .pd-story .kd-map-split > .ds-chart,
+  .pd-where__map .ds-chart {
+    max-inline-size: 32rem; /* layout geometry: a map's size, not the column's */
+    margin-inline: auto;
+  }
+
+
+  .pd-section-pair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sa-stack-24);
+    align-items: stretch;
+  }
+
+  .pd-section-pair--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .pd-section-pair--1 { grid-template-columns: minmax(0, 1fr); }
+
+  .pd-section-pair > .pd-section {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .pd-section-pair > .pd-section > :last-child {
+    flex: 1;
+  }
+
   /* A programme's State/UT figures: the map, and the same figures ranked beside it. */
   .pd-states {
     display: grid;
@@ -277,8 +319,10 @@
   /* ── Where: the map, and the chosen State/UT beside it ───────────────────── */
   .pd-where {
     display: grid;
-    /* Figma Option B: the map 772 wide, the panel the rest, 24 between. */
-    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    /* The map and its panel in equal halves, the map held to a map's size and centred, so the
+       two cards stand about one height (design review, 7 Oct 2026: a 760px map beside a 430px
+       panel left a third of the row empty). Figma Option B had the map at 772 wide. */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: var(--sa-stack-24);
     align-items: stretch;
   }
@@ -368,6 +412,8 @@
     .pd-pair { grid-template-columns: minmax(0, 1fr); }
     .pd-tile__split { grid-template-columns: minmax(0, 1fr); }
     .pd-states { grid-template-columns: minmax(0, 1fr); }
+    .pd-section-pair { grid-template-columns: minmax(0, 1fr); }
+    .pd-story .kd-map-split { grid-template-columns: minmax(0, 1fr); }
     .pd-hero__side { grid-template-columns: minmax(0, 1fr); }
   }
 }

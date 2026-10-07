@@ -97,6 +97,14 @@ export interface MetricCardProps extends React.HTMLAttributes<HTMLDivElement> {
    */
   tone?: StatusTone;
   /**
+   * `elevated` (the default) lifts the tile off the page with `elevation/raised`. `outlined`
+   * is a tile at rest on the page — a border and `elevation/flat`, no shadow — for a surface
+   * where every other card is outlined (a dashboard of outlined chart cards), so one row of
+   * floating tiles does not read as a different kind of thing. Same as `ChartCard variant`.
+   * @default "elevated"
+   */
+  variant?: "elevated" | "outlined";
+  /**
    * A second reading under the figure — the numerator and denominator behind a
    * rate ("90 / 883"), or the window a count covers ("Feb – May 2026").
    */
@@ -174,6 +182,7 @@ export const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
       changeDirection = "flat",
       size = "md",
       tone,
+      variant = "elevated",
       detail,
       status,
       progress,
@@ -224,6 +233,7 @@ export const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
           "ds-metric-card",
           size !== "md" && `ds-metric-card--${size}`,
           tone && tone !== "neutral" && `ds-metric-card--tone-${tone}`,
+          variant === "outlined" && "ds-metric-card--outlined",
           interactive && "ds-metric-card--interactive",
           interactive && selected && "ds-metric-card--selected",
           className,
