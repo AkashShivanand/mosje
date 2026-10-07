@@ -544,7 +544,11 @@ export function EducationTrends({ sectionLevel, state, audiences }: MovementProp
  * the card adds the year's scholarship students, as a line, and the hostels and top class
  * places. Every figure is the live page's, from the shared record.
  */
-export function DepartmentTileContent({ audiences }: { audiences: Set<Audience> }): { figure: React.ReactNode; body: React.ReactNode } | null {
+export function DepartmentTileContent({ audiences, wide = false }: {
+  audiences: Set<Audience>;
+  /** Drawn across the row (the landing page's lead card): the line takes the room it is given. */
+  wide?: boolean;
+}): { figure: React.ReactNode; body: React.ReactNode } | null {
   const show = (cardId: string) => shows(audiences, CARD_AUDIENCE[cardId] ?? "obc");
   const trendCard = ["sc", "obc"].find(show);
   const view = trendCard ? BENEFICIARY_TRENDS.views.find((v) => v.id === trendCard) : undefined;
@@ -574,6 +578,7 @@ export function DepartmentTileContent({ audiences }: { audiences: Set<Audience> 
             title={sc.title}
             labels={view.labels}
             data={sumSeries(nth(series, 0).data, nth(series, 1).data)}
+            width={wide ? 640 : undefined}
             unit={view.id === "sc" ? "SC students" : "OBC, EBC and DNT students"}
             format={lakh}
             parts={[

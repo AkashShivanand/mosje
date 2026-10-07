@@ -294,6 +294,28 @@ function Programmes(props: PulseProps) {
   const nationalOnly = (id: PortalId) => Boolean(scope.state) && !get(id)?.levels.includes("state");
   const NATIONAL_ONLY = "Publishes All-India figures only.";
 
+  /*
+   * THE DEPARTMENT LEADS (instruction, 7 Oct 2026): its Beneficiary Dashboard opens behind this
+   * card, drawn first and across the row above the portals' grid. It figures in the Type of
+   * Applicant filter as its cards do, and publishes for All India only.
+   */
+  const dept = DepartmentTileContent({ audiences: props.audiences, wide: true });
+  const deptCard = dept ? (
+    <DashboardTile
+      id="department"
+      tone="primary"
+      mark={<OrgLogo path={null} size="md" name="" />}
+      title={DEPARTMENT_NAME}
+      subtitle="Beneficiary Dashboard"
+      href={hrefTo({ programme: DEPARTMENT_PAGE })}
+      label="View the Department's Beneficiary Dashboard"
+      note={scope.state ? NATIONAL_ONLY : undefined}
+      figure={dept.figure}
+    >
+      {dept.body}
+    </DashboardTile>
+  ) : null;
+
   const tiles: React.ReactNode[] = [];
 
 
@@ -414,30 +436,6 @@ function Programmes(props: PulseProps) {
       </Tile>,
     );
   }
-
-  /*
-   * THE DEPARTMENT, AFTER NMBA AND SMILE (design review, 7 Oct 2026): its Beneficiary Dashboard
-   * opens behind this card. Beside NMBA's map it stood half empty; in the second row it shares
-   * the row with e-Utthaan's card, at about its height. It figures in the Type of Applicant
-   * filter as its cards do, and publishes for All India only.
-   */
-  const dept = DepartmentTileContent({ audiences: props.audiences });
-  if (dept) tiles.push(
-    <DashboardTile
-      key="department"
-      id="department"
-      tone="primary"
-      mark={<OrgLogo path={null} size="md" name="" />}
-      title={DEPARTMENT_NAME}
-      subtitle="Beneficiary Dashboard"
-      href={hrefTo({ programme: DEPARTMENT_PAGE })}
-      label="View the Department's Beneficiary Dashboard"
-      note={scope.state ? NATIONAL_ONLY : undefined}
-      figure={dept.figure}
-    >
-      {dept.body}
-    </DashboardTile>,
-  );
 
   const dapsc = shows(props.audiences, PROGRAMME_AUDIENCE["e-utthaan"]) ? get("e-utthaan") : undefined;
   if (dapsc) {
@@ -620,17 +618,22 @@ function Programmes(props: PulseProps) {
    * but that something was missing (feedback, 6 Oct 2026). The grid is laid out for the
    * number of tiles that remain (`pd-bento--n<count>`), so it closes up with no gap.
    */
-  if (tiles.length === 0) return null;
+  if (tiles.length === 0 && !deptCard) return null;
   return (
     <section className="pd-section" aria-labelledby="pd-programmes">
       <SectionTitle as={sectionLevel} headingId="pd-programmes" size="display" title={DASHBOARD_PAGE.dashboardsTitle} description={DASHBOARD_PAGE.dashboardsDescription} />
-      {/* NMBA, the one tile with a map, takes the row; the others share the next one, so
-          no map is squeezed into a third of the page (design audit, 6 Oct 2026). */}
-      <ul className={`pd-bento pd-bento--n${Math.min(tiles.length, 6)} pd-bento--portals`}>
-        {tiles.map((t, i) => (
-          <li key={i}>{t}</li>
-        ))}
-      </ul>
+      <div className="pd-dashboards">
+        {deptCard ? <div className="pd-lead">{deptCard}</div> : null}
+        {/* NMBA, the one tile with a map, and SMILE share the first row; the rest share the
+            next, so no map is squeezed into a third of the page (design audit, 6 Oct 2026). */}
+        {tiles.length ? (
+          <ul className={`pd-bento pd-bento--n${Math.min(tiles.length, 5)} pd-bento--portals`}>
+            {tiles.map((t, i) => (
+              <li key={i}>{t}</li>
+            ))}
+          </ul>
+        ) : null}
+      </div>
     </section>
   );
 }

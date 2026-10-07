@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Button, Card, CardBody, FormField, Icon, Input, PasswordInput, SectionTitle } from "@mosje/design-system";
+import { AuthFormCard, Button, Card, CardBody, Icon, OrgLogo, PasswordFields } from "@mosje/design-system";
 import { accountByUserId } from "@/lib/kpi/access";
 import { setViewer } from "@/lib/kpi/viewer";
 
@@ -22,8 +22,12 @@ import { setViewer } from "@/lib/kpi/viewer";
  * is not checked: a known User ID sets the dashboard's viewer (`setViewer`). The demo rail
  * lists the prototype's User IDs.
  *
- * DS Audit: SectionTitle ✅ · Card / CardBody ✅ · FormField ✅ · Input ✅ ·
- * PasswordInput ✅ · Button ✅ · Icon ✅.
+ * FORGOT PASSWORD IS LEFT OFF until the accounts are real: a link with no recovery page behind
+ * it is a dead end. The DS's PortalRecoveryTemplate is the page to add when it is wanted.
+ * No consent line: officers only, as E-Anudaan's login decided (7 Sep 2026).
+ *
+ * DS Audit: Card / CardBody ✅ · OrgLogo (the emblem) ✅ · AuthFormCard ✅ · PasswordFields ✅ ·
+ * Button ✅ · Icon ✅.
  */
 
 interface FieldErrors {
@@ -35,6 +39,9 @@ export function OfficerLogin({ backHref, sectionLevel, onSignedIn }: { backHref:
   const [userId, setUserId] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [errors, setErrors] = React.useState<FieldErrors>({});
+  // A refused sign-in is the FORM's error, not the User ID's: the reader cannot tell which of
+  // the two was wrong, and naming one would tell a stranger which User IDs exist.
+  const [refused, setRefused] = React.useState(false);
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,9 +49,10 @@ export function OfficerLogin({ backHref, sectionLevel, onSignedIn }: { backHref:
       userId: userId.trim() ? undefined : "Enter your User ID.",
       password: password ? undefined : "Enter your password.",
     };
-    const account = next.userId || next.password ? undefined : accountByUserId(userId);
-    if (!next.userId && !next.password && !account) next.userId = "The User ID or password is incorrect.";
     setErrors(next);
+    if (next.userId || next.password) return setRefused(false);
+    const account = accountByUserId(userId);
+    setRefused(!account);
     if (!account) return;
     setViewer(account.id);
     onSignedIn();
@@ -55,31 +63,36 @@ export function OfficerLogin({ backHref, sectionLevel, onSignedIn }: { backHref:
       <Button appearance="text" size="sm" href={backHref} linkAs={Link} iconLeft={<Icon name="arrow_back" size={16} />} className="pd-back">
         Beneficiary Dashboard
       </Button>
-      <section className="pd-section pd-login" aria-labelledby="pd-login">
-        <SectionTitle
-          as={sectionLevel}
-          headingId="pd-login"
-          size="display"
-          title="Officer Login"
-          description="For officers of the Department, its Divisions and the scheme portals. Your account decides which programmes and which State or District you see."
-        />
+      {/* One centred card on a quiet ground (Option A, approved 7 Oct 2026): the emblem, the
+          title and what it signs into — no paragraph about scope; the account decides that. */}
+      <section className="pd-login" aria-label="Officer Login">
         <Card className="pd-login__card">
-          <CardBody>
-            <form className="pd-login__form" noValidate onSubmit={submit}>
-              <FormField label="User ID" id="pd-login-user" required error={errors.userId}>
-                {(control) => (
-                  <Input {...control} name="username" autoComplete="username" value={userId} onChange={(e) => setUserId(e.target.value)} leftIcon={<Icon name="person" size={16} />} />
-                )}
-              </FormField>
-              <FormField label="Password" id="pd-login-password" required error={errors.password}>
-                {(control) => (
-                  <PasswordInput {...control} name="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} leftIcon={<Icon name="lock" size={16} />} />
-                )}
-              </FormField>
-              <Button type="submit" appearance="filled" size="md">
-                Sign In
-              </Button>
-            </form>
+          <CardBody className="pd-login__body">
+            <OrgLogo path={null} size="lg" name="" className="pd-login__mark" />
+            <AuthFormCard
+              heading="Officer Login"
+              headingLevel={sectionLevel}
+              description="Beneficiary Dashboard"
+              error={refused ? "The User ID or password is incorrect. Check both and try again." : undefined}
+              onSubmit={submit}
+              credentialFields={
+                <PasswordFields
+                  identifier={userId}
+                  onIdentifierChange={setUserId}
+                  password={password}
+                  onPasswordChange={setPassword}
+                  identifierLabel="User ID"
+                  identifierPlaceholder="Enter your User ID"
+                  identifierError={errors.userId}
+                  passwordError={errors.password}
+                />
+              }
+              primaryAction={
+                <Button type="submit" appearance="filled" fullWidth>
+                  Sign In
+                </Button>
+              }
+            />
           </CardBody>
         </Card>
       </section>

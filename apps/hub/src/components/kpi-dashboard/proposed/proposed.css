@@ -214,9 +214,23 @@
   .pd-bento.pd-bento--portals.pd-bento--n3 > li:nth-child(1) { grid-column: span 12; }
   .pd-bento.pd-bento--portals.pd-bento--n3 > li:nth-child(n + 2) { grid-column: span 6; }
   .pd-bento.pd-bento--portals.pd-bento--n2 > li:nth-child(n) { grid-column: span 6; }
-  /* Six — the Department and its five portals (design review, 7 Oct 2026): NMBA's map card and
-     SMILE's, then two rows of two, so every card shares its row with one of about its height. */
-  .pd-bento.pd-bento--portals.pd-bento--n6 > li:nth-child(n + 3) { grid-column: span 6; }
+  /* THE DEPARTMENT LEADS (instruction, 7 Oct 2026): its card first and across the row, its
+     trend line beside its four figures, so it reads as the Department over its portals; the
+     portals' own grid follows it. */
+  .pd-dashboards {
+    display: grid;
+    gap: var(--sa-stack-20);
+  }
+
+  @media (min-width: 1024px) {
+    .pd-lead .pd-tile__body {
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+      align-items: center;
+      column-gap: var(--sa-stack-40);
+    }
+
+    .pd-lead .pd-tile__body > .pd-note { grid-column: 1 / -1; }
+  }
   /* NMBA's four figures, centred beside its map rather than hanging from the top. */
   .pd-tile__figures {
     align-self: center;
@@ -412,14 +426,37 @@
     font-weight: var(--sa-font-weight-semibold);
   }
 
-  /* The sign-in page: a form at a readable width, not the page's. */
+  /* The sign-in page: one card, centred on a quiet ground, at a sign-in form's width. The
+     ground is what keeps a narrow card from reading as lost on a 1440 page. */
+  .pd-login {
+    display: grid;
+    justify-items: center;
+    padding: var(--sa-padding-64) var(--sa-padding-16);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-subtlest);
+  }
+
   .pd-login__card {
+    inline-size: 100%;
     max-inline-size: 28rem; /* layout geometry: a sign-in form's measure */
   }
 
-  .pd-login__form {
+  .pd-login__body {
     display: grid;
+    justify-items: center;
     gap: var(--sa-stack-16);
+    padding: var(--sa-padding-40) var(--sa-padding-32) var(--sa-padding-32);
+  }
+
+  /* The emblem, the title and what it signs into, on one centre line; the fields keep their
+     left edge, as every form does. */
+  .pd-login .ds-authcard { inline-size: 100%; }
+  .pd-login .ds-authcard__header { align-items: center; text-align: center; }
+
+  /* A phone has no room for a frame around a frame: the card alone. */
+  @media (max-width: 767px) {
+    .pd-login { padding: 0; background: none; }
+    .pd-login__body { padding: var(--sa-padding-32) var(--sa-padding-20) var(--sa-padding-24); }
   }
 
   /* The officer roles' link to the Data Source of Each Indicator page. */
