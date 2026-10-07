@@ -44,8 +44,10 @@ export const DBIM_ICON_LIBRARY = {
   "language": "Language",
   "accessibility": "Accessibility",
   // Log In or Register (§5.4). The Visual Library bank has no profile glyph: this is
-  // Material Symbols Outlined account_circle, weight 400 — what the DBIM Toolkit's own
-  // header draws for its login — exported from the handoff file's Icon/Account Circle.
+  // Material Symbols Outlined account_circle — what the DBIM Toolkit's own header draws
+  // for its login — redrawn at the library's one line weight (3.0 units at 64) so it does
+  // not sit heavier than the three controls beside it; exported from the handoff file's
+  // Icon/Account Circle.
   "account-circle": "Account Circle",
   // About Us tiles
   "our-team": "Our Team", // DBIM 3.0 Figure 55, "Who's who"
