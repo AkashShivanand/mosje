@@ -25,8 +25,8 @@ export function StoryHeader({
   sectionLevel,
 }: {
   tone: CardTone;
-  /** The organisation's mark; the title names it, so it takes no accessible name of its own. */
-  mark: React.ReactNode;
+  /** The organisation's mark, where it has one; the title names it, so it takes no accessible name of its own. */
+  mark?: React.ReactNode;
   title: string;
   subtitle?: string;
   summary?: string;
@@ -39,7 +39,7 @@ export function StoryHeader({
     <Card tone={tone} accent="fill" className="pd-hero pd-head">
       <CardBody className="pd-head__body">
         <div className="pd-head__brand">
-          <span className="pd-hero__mark">{mark}</span>
+          {mark ? <span className="pd-hero__mark">{mark}</span> : null}
           <SectionTitle as={sectionLevel} headingId="pd-programme" tone="inverse" title={title} description={subtitle} />
         </div>
         {action ? <div className="pd-head__action">{action}</div> : null}

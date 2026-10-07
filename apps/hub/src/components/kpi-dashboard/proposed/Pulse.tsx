@@ -11,7 +11,6 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
-  CardIcon,
   CardState,
   CardSubtitle,
   CardTitle,
@@ -26,7 +25,6 @@ import {
   IndiaMap,
   OrgLogo,
   type CardTone,
-  PORTAL_ORG_LOGOS,
   RankedBarList,
   SectionTitle,
   Sparkline,
@@ -43,7 +41,6 @@ import { DepartmentTileContent } from "./Education";
 import { DEPARTMENT_NAME, DEPARTMENT_PAGE } from "./DepartmentStory";
 import {
   COMPONENT_SHORT,
-  PROGRAMME_ICON,
   READINESS_LABEL,
   READINESS_TONE,
   SHORT_NAME,
@@ -53,7 +50,7 @@ import {
   type Readings,
   type Viewing,
 } from "./model";
-import { PROGRAMME_TONE, READINESS_ORDER, READINESS_SLOT, areaRows, compact, figureOf, readinessRows } from "./story";
+import { hasMark, PROGRAMME_TONE, READINESS_ORDER, READINESS_SLOT, areaRows, compact, figureOf, readinessRows } from "./story";
 
 /**
  * THE PULSE — the proposed dashboard's one page, GROUPED BY WHO PUBLISHES THE FIGURES
@@ -80,7 +77,7 @@ import { PROGRAMME_TONE, READINESS_ORDER, READINESS_SLOT, areaRows, compact, fig
  * And, for the Ministry and Divisions, 6. THE DATA BEHIND IT: 87 indicators as 87 squares,
  * coloured by where each figure can come from.
  *
- * DS Audit: Card (`accent="fill"` ADDED) / CardHeader / CardIcon / CardBody / CardFooter ✅ ·
+ * DS Audit: Card (`accent="fill"` ADDED) / CardHeader / CardBody / CardFooter ✅ ·
  * HeadlineFigure ➕ ADDED · IndiaMap ✅ (the Government's own boundaries, Bharat Maps) · DotPlot ➕ ADDED · WaffleChart ➕ ADDED ·
  * FunnelChart ✅ · Sparkline ✅ · RankedBarList ✅ · SectionTitle ✅ ·
  * DescriptionList ✅ · Accordion ✅ · DataTable ✅ · FilterSelect ✅ · CardState ✅ · Badge ✅ ·
@@ -126,13 +123,6 @@ const marked = (origin: string | undefined, note: SourceNote | undefined) => (
 );
 const pct = (n: number) => `${n}%`;
 
-/**
- * A portal card's header is the portal's name with its logo, as the Dashboards by Portal list
- * draws it (instruction, 6 Oct 2026): the registered mark wherever the registry has one
- * (`PORTAL_ORG_LOGOS`), the programme's icon where it has none — today e-Utthaan (DAPSC) and
- * e-Anudaan (SHRESHTA), whose marks the Department has not supplied.
- */
-const hasMark = (p: PortalDashboard) => Boolean(PORTAL_ORG_LOGOS[p.logoPath]);
 
 const areaName = (scope: AreaScope) => scope.district ?? scope.state ?? "All India";
 
@@ -233,7 +223,7 @@ function Hero(props: PulseProps) {
 function DashboardTile({ id, tone, mark, title, subtitle, href, label, children, figure, note }: {
   id: string;
   tone: CardTone;
-  mark: React.ReactNode;
+  mark?: React.ReactNode;
   title: string;
   subtitle: string;
   href: string;
@@ -272,10 +262,10 @@ function Tile({ p, children, figure, hrefTo, note }: { p: PortalDashboard; child
     <DashboardTile
       id={p.id}
       tone={PROGRAMME_TONE[p.id]}
-      // The portal's own mark where it has one that is its own; its icon otherwise.
-      mark={hasMark(p) ? <OrgLogo path={p.logoPath} size="md" /> : <CardIcon name={PROGRAMME_ICON[p.id]} />}
+      // The portal's own mark, or none: a generic icon in its place stood for nothing (instruction, 7 Oct 2026).
+      mark={hasMark(p) ? <OrgLogo path={p.logoPath} size="md" /> : undefined}
       title={p.portal}
-      subtitle={p.name}
+      subtitle={p.subtitle ?? p.name}
       href={hrefTo({ programme: p.id })}
       label={`View the ${p.portal} Dashboard`}
       figure={figure}

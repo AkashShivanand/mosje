@@ -107,8 +107,14 @@ export interface PortalDashboard {
   slug: PortalId;
   /** The scheme or programme, as the Department names it. */
   name: string;
-  /** The portal the figures come from. */
+  /**
+   * The portal the figures come from, as a citizen names it — the dashboard card's title. No
+   * "Portal" and no "Admin" (instruction, 7 Oct 2026): the section already says these are portal
+   * dashboards, and a citizen sees only what the portal publishes, never its admin side.
+   */
   portal: string;
+  /** The card's subtitle where `name` would repeat the title; `name` otherwise. */
+  subtitle?: string;
   /** The body that runs the portal. */
   owner: string;
   /** One sentence, in the Department's register, saying what the scheme does. */

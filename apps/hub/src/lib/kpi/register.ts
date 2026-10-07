@@ -579,7 +579,8 @@ export const PORTAL_DASHBOARDS: PortalDashboard[] = [
   {
     id: "smile-beggary", slug: "smile-beggary",
     name: "SMILE – Comprehensive Rehabilitation of Persons Engaged in the Act of Begging",
-    portal: "SMILE-Beggary Admin Portal", owner: "National Institute of Social Defence",
+    portal: "SMILE-Beggary", subtitle: "Comprehensive Rehabilitation of Persons Engaged in the Act of Begging",
+    owner: "National Institute of Social Defence",
     summary: "Identification, mobilisation and comprehensive rehabilitation of persons engaged in the act of begging, through Implementing Agencies in the cities covered.",
     logoPath: "/portals/smile-admin", portalHref: "/portals/smile-admin",
     levels: ["national", "state", "district"], kpisReceived: "24.09.2026", period: FY_TO_DATE, kpis: SMILE_BEGGARY,
@@ -587,7 +588,7 @@ export const PORTAL_DASHBOARDS: PortalDashboard[] = [
   {
     id: "nmba", slug: "nmba",
     name: "Nasha Mukt Bharat Abhiyaan",
-    portal: "NMBA Portal", owner: "Department of Social Justice and Empowerment",
+    portal: "NMBA", owner: "Department of Social Justice and Empowerment",
     summary: "Awareness generation against substance use among youth, students and communities, with the national toll-free helpline 14446 for de-addiction.",
     logoPath: "/portals/nmba", portalHref: "/portals/nmba",
     levels: ["national", "state"], kpisReceived: "24.09.2026", period: "Cumulative since launch", kpis: NMBA,
@@ -618,7 +619,10 @@ export const PORTAL_DASHBOARDS: PortalDashboard[] = [
 export const SENIOR_CITIZENS_DASHBOARD: PortalDashboard = {
   id: "senior-citizens", slug: "senior-citizens",
   name: "Senior Citizens Welfare",
-  portal: "Senior Citizens Portal", owner: "Department of Social Justice and Empowerment",
+  // The portal's own name (`SCW_LOGIN_CHROME.portalName`); its subtitle names the components the
+  // SCW tab reports, as `summary` does, since `name` would only repeat the title.
+  portal: "Senior Citizens Welfare", subtitle: "IPSrC, SAPSrC, RVY, PM-SPECIAL, Elderline and SAGE",
+  owner: "Department of Social Justice and Empowerment",
   // The components, as the SCW tab names them; nothing about them is authored here.
   summary: "Integrated Programme for Senior Citizens, State Action Plan for Senior Citizens, Rashtriya Vayoshri Yojana, PM-SPECIAL – Elder Care & Assisted Living, Elderline (14567) and the Seniorcare Ageing Growth Engine.",
   logoPath: "/portals/scw", portalHref: "/portals/scw",
@@ -628,7 +632,7 @@ export const SENIOR_CITIZENS_DASHBOARD: PortalDashboard = {
 /** Every programme with KPIs on file — the four dashboards and Senior Citizens Welfare. */
 export const PROGRAMMES: PortalDashboard[] = [...PORTAL_DASHBOARDS, SENIOR_CITIZENS_DASHBOARD];
 
-/** "the SMILE-Beggary Admin Portal", but "e-Utthaan": a system's name takes no article. */
+/** "the X Portal" where a name ends in Portal, but "e-Utthaan": a system's name takes no article. */
 export function portalPhrase(portal: PortalDashboard): string {
   return /portal$/i.test(portal.portal) ? `the ${portal.portal}` : portal.portal;
 }

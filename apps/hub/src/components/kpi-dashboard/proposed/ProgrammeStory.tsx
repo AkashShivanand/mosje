@@ -22,7 +22,7 @@ import { KpiBlocks } from "./KpiBlocks";
 import { COMPONENT_SHORT, fundsRows, shownKpis, type Readings, type StateMeasure, type Viewing } from "./model";
 import { StateBreakdown } from "./StateBreakdown";
 import { StoryHeader } from "./StoryHeader";
-import { PROGRAMME_TONE, compact } from "./story";
+import { PROGRAMME_TONE, compact, hasMark } from "./story";
 
 /**
  * One portal's dashboard, told on its own: its head in the programme's colour (`StoryHeader`),
@@ -167,10 +167,11 @@ export function ProgrammeStory({ programme: p, viewing, readings, scope, section
     <div className="pd-story">
       <StoryHeader
         tone={PROGRAMME_TONE[p.id]}
-        mark={<OrgLogo path={p.logoPath} size="md" name="" />}
+        // The portal's own mark, or none — never the State Emblem standing in for it.
+        mark={hasMark(p) ? <OrgLogo path={p.logoPath} size="md" name="" /> : undefined}
         // The portal's name leads, the scheme's under it, as on its card (instruction, 7 Oct 2026).
         title={p.portal}
-        subtitle={p.name}
+        subtitle={p.subtitle ?? p.name}
         summary={p.summary}
         // The body that runs the portal, where it is not the Department itself.
         meta={p.owner === DEPARTMENT ? p.period : `${p.period} · ${p.owner}`}
