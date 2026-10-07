@@ -195,8 +195,11 @@ test("the seeded store fits in the browser with room for the applicant's work", 
   // state is kept under its own key (`pfms/store.tsx`), not in this copy.
   // +16,000 the same day for three answers every submitted file now owes (PFMS BRD FR-NGO-001/002):
   // the account typed twice, the PFMS payee code and its confirmation — 2.0M → 2.02M.
+  // +26,000 on 07 Oct 2026 for NAPDDR at the Programme Division ASO: a DDAC file, a costed IRCA
+  // further up the chain (its 22-line cost sheet and Statement of Account), less the eight school
+  // documents the IRCA file at the ASO no longer carries — 2.02M → 2.04M.
   const size = JSON.stringify(seed()).length;
-  assert.ok(size < 2_020_000, `seeded store is ${size.toLocaleString("en-IN")} characters`);
+  assert.ok(size < 2_040_000, `seeded store is ${size.toLocaleString("en-IN")} characters`);
 });
 
 test("a schema-11 copy is carried to 12: the NGO's own CCTV setups kept, seeded ones given their register", () => {

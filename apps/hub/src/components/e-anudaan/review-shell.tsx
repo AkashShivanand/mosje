@@ -26,6 +26,8 @@ import {
   SectionTitle,
   SegmentedControl,
   StatusScreen,
+  TabPanel,
+  Tabs,
   Textarea,
   useToast,
 } from "@mosje/design-system";
@@ -81,6 +83,7 @@ import {
   schemeNorms,
 } from "./review-panels";
 import { ReviewReport } from "./review-report";
+import { AmountPipeline, CostSheetCard, StatementOfAccountCard, grantBlockers, hasGrantTab } from "./grant-recommendation";
 import { ProjectRecordsSummary } from "./project-records";
 import { Findings, rowStateOf } from "./document-centre-parts";
 import {
@@ -130,6 +133,17 @@ import { useDemoFormFill } from "./use-demo-form-fill";
  *   R-05  the sanction amounts are prefilled with the amounts sought, grouped as they are typed.
  *   R-06  one count of the examination: `verdictProgress`.
  *   R-08  a sticky summary bar carries the decision to the officer on a phone.
+ *
+ * Organised into four tabs after the dev portal's NAPDDR walkthrough of 07 Oct 2026, where the
+ * ASO-PD review had grown to twelve sections in one column — "you just need to organise this long
+ * sheet". The tabs follow the order the officer works in, and each says what it still needs:
+ *   Application — the summary and every answer the NGO gave
+ *   Documents   — the verdicts (with the count still owed)
+ *   Grant       — the amount pipeline, the cost sheet and the Statement of Account (NAPDDR), or the
+ *                 cost norms (AVYAY); absent for a scheme with neither
+ *   History     — earlier sanctions, instalments, project records, notices, inspections, movement
+ * The decision stays beside every tab, and anything open on the file stays above them. Every panel
+ * stays mounted (`TabPanel hidden`), so an unsaved cost sheet survives a look at the documents.
  *
  * DS Audit: Accordion ✅ · Alert ✅ · Badge ✅ · Button ✅ · Checkbox ✅ · DescriptionList ✅ ·
  * DocumentChecklist (`bulkAction`, `filters`) ✅ · DocumentRow (`density="compact"`, `clampReason`)
@@ -182,6 +196,8 @@ export function ReviewShell({ appId }: { appId: string }) {
    * a second jump to the SAME row a new value, so the effect runs again without writing state.
    */
   const [focusDoc, setFocusDoc] = React.useState<{ id: string; n: number } | null>(null);
+  const [tab, setTab] = React.useState<ReviewTab>("application");
+  const tabsId = React.useId();
 
   React.useEffect(() => {
     if (!focusDoc) return;
@@ -290,7 +306,8 @@ export function ReviewShell({ appId }: { appId: string }) {
   // The seat that certifies — the Assistant Section Officer. Its forward waits on the verdicts and
   // on the certification, and the panel says which BEFORE the button is pressed (audit R-01).
   const certifyingSeat = holdsFile && role.caps.includes("certify");
-  const blockers = certifyingSeat ? asoForwardBlockers(app) : [];
+  // The NAPDDR file's cost sheet and Statement of Account are the ASO's to save before forwarding.
+  const blockers: ForwardBlocker[] = certifyingSeat ? [...asoForwardBlockers(app), ...(docsEditable ? grantBlockers(app) : [])] : [];
   const forwardBlocked = certifyingSeat && blockers.length > 0;
   const bulk = docsEditable ? bulkVerifiable(app, checkOf) : [];
   const norms = schemeNorms(app);
@@ -358,6 +375,7 @@ export function ReviewShell({ appId }: { appId: string }) {
 
   /** Show one question's documents and put the officer on the first of them (audit R-01). */
   const showDocuments = (filter: ReviewDocFilter, focusId?: string) => {
+    setTab("documents");
     const ids = documentsInOrder(app)
       .filter((d) => matchesReviewFilter(app, d, filter, checkOf))
       .map((d) => d.id);
@@ -392,6 +410,19 @@ export function ReviewShell({ appId }: { appId: string }) {
   };
 
   const previewedDoc = previewing ? (app.documents.find((d) => d.id === previewing.id) ?? previewing) : null;
+
+  /*
+   * The four sections, each labelled with what it still needs from THIS officer — a tab that hides
+   * owed work would be worse than the long page it replaces. Labels stay short enough for a phone.
+   */
+  const grantTab = hasGrantTab(app) || app.schemeCode === "AVYAY";
+  const grantOwed = blockers.filter((b) => b === "costSheet" || b === "statement").length;
+  const tabs = [
+    { id: "application", label: "Application" },
+    { id: "documents", label: docsEditable && awaiting.length > 0 ? `Documents (${awaiting.length} to Verify)` : "Documents", badge: docsEditable && awaiting.length > 0 },
+    ...(grantTab ? [{ id: "grant", label: grantOwed > 0 ? `Grant (${grantOwed} to Save)` : "Grant", badge: grantOwed > 0 }] : []),
+    { id: "history", label: "History" },
+  ];
 
   const primary = decisions.filter((d) => d.intent === "primary");
   const secondary = decisions.filter((d) => d.intent === "secondary");
@@ -434,65 +465,90 @@ export function ReviewShell({ appId }: { appId: string }) {
 
       <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_24rem] xl:items-start">
         <div className="min-w-0 space-y-5">
+          {/* What is open on the file stays above the tabs: it is why the file is here. */}
           <OpenItem app={app} onShowDocument={(docId) => showDocuments("changed", docId)} />
 
-          <Panel title="Summary">
-            <Facts
-              items={[
-                ["NGO-Darpan ID", ngo?.darpanId ?? "—"],
-                ["Case Type", app.caseType === "New" ? "New project" : `${app.instalment ? ordinal(app.instalment) : "Next"} instalment of an ongoing project`],
-                ["Total Beneficiaries", `${app.totalBeneficiaries} (SC ${app.scBeneficiaries} · other ${app.otherBeneficiaries})`],
-                ["Grant Sought", `${formatGrant(app.total)} (recurring ${formatGrant(app.recurring)} · non-recurring ${formatGrant(app.nonRecurring)})`],
-                ["Submitted On", app.submittedAt ? formatDate(app.submittedAt) : "—"],
-                ["ASO Certified", app.certifiedAt ? `Yes · ${formatDate(app.certifiedAt)}` : "Not yet"],
-              ]}
-            />
-          </Panel>
-
-          <CostNormsReview app={app} />
-
-          <ApplicationAnswers app={app} />
-
-          <DocumentsPanel
-            app={app}
-            editable={docsEditable}
-            viewer={state.session}
-            checkOf={checkOf}
-            corrected={corrected}
-            progressLabel={progress.label}
-            filter={docFilter}
-            onFilter={(id) => (id ? showDocuments(id) : setDocFilter(null))}
-            bulk={bulk}
-            onVerifyRemaining={verifyRemaining}
-            onOpen={openDocument}
-            onReview={(doc, status, remark) => reviewDocument(app.id, doc.id, status, remark)}
+          <Tabs
+            idBase={tabsId}
+            ariaLabel="Sections of the file"
+            indicator="underline"
+            track="none"
+            tabs={tabs}
+            active={Math.max(tabs.findIndex((t) => t.id === tab), 0)}
+            onChange={(i) => setTab(tabs[i]!.id as ReviewTab)}
           />
 
-          <FundingHistory app={app} />
+          <TabPanel idBase={tabsId} tabId="application" hidden={tab !== "application"}>
+            <div className="space-y-5">
+              <Panel title="Summary">
+                <Facts
+                  items={[
+                    ["NGO-Darpan ID", ngo?.darpanId ?? "—"],
+                    ["Case Type", app.caseType === "New" ? "New project" : `${app.instalment ? ordinal(app.instalment) : "Next"} instalment of an ongoing project`],
+                    ["Total Beneficiaries", `${app.totalBeneficiaries} (SC ${app.scBeneficiaries} · other ${app.otherBeneficiaries})`],
+                    ["Grant Sought", `${formatGrant(app.total)} (recurring ${formatGrant(app.recurring)} · non-recurring ${formatGrant(app.nonRecurring)})`],
+                    ["Submitted On", app.submittedAt ? formatDate(app.submittedAt) : "—"],
+                    ["ASO Certified", app.certifiedAt ? `Yes · ${formatDate(app.certifiedAt)}` : "Not yet"],
+                  ]}
+                />
+              </Panel>
+              <ApplicationAnswers app={app} />
+            </div>
+          </TabPanel>
 
-          <ProjectRecordsSummary app={app} />
-
-          <InstalmentsPanel app={app} />
-
-          <ShowCausePanel app={app} dialogOpen={dialog === "showCause"} onDialogOpen={() => setDialog("showCause")} onDialogClose={() => setDialog(null)} />
-
-          <InspectionsPanel app={app} dialogOpen={dialog === "inspection"} onDialogOpen={() => setDialog("inspection")} onDialogClose={() => setDialog(null)} />
-
-          <Panel title="File Movement and Remarks">
-            <EventList
-              linkAs={Link}
-              label="File movement and remarks"
-              events={[...app.audit].reverse().map((e) => ({
-                id: e.id,
-                at: e.at,
-                actor: e.byRole === "ngo" ? (ngo?.name ?? "Applicant") : e.byName,
-                actorRole: e.byRole === "ngo" ? "Applicant" : ROLES[e.byRole]?.label,
-                action: ACTION_LABEL[e.action],
-                note: e.remarks,
-                tone: toneOf(e.action),
-              }))}
+          <TabPanel idBase={tabsId} tabId="documents" hidden={tab !== "documents"}>
+            <DocumentsPanel
+              app={app}
+              editable={docsEditable}
+              viewer={state.session}
+              checkOf={checkOf}
+              corrected={corrected}
+              progressLabel={progress.label}
+              filter={docFilter}
+              onFilter={(id) => (id ? showDocuments(id) : setDocFilter(null))}
+              bulk={bulk}
+              onVerifyRemaining={verifyRemaining}
+              onOpen={openDocument}
+              onReview={(doc, status, remark) => reviewDocument(app.id, doc.id, status, remark)}
             />
-          </Panel>
+          </TabPanel>
+
+          {grantTab && (
+            <TabPanel idBase={tabsId} tabId="grant" hidden={tab !== "grant"}>
+              <div className="space-y-5">
+                <AmountPipeline app={app} />
+                <CostNormsReview app={app} />
+                {/* Keyed on what is saved, so a save from anywhere reopens each card on the file's copy. */}
+                <CostSheetCard key={`sheet-${app.costSheet?.savedAt ?? "unsaved"}`} app={app} editable={docsEditable} />
+                <StatementOfAccountCard key={`statement-${app.budgetStatement?.savedAt ?? "unsaved"}`} app={app} editable={docsEditable} />
+              </div>
+            </TabPanel>
+          )}
+
+          <TabPanel idBase={tabsId} tabId="history" hidden={tab !== "history"}>
+            <div className="space-y-5">
+              <FundingHistory app={app} />
+              <InstalmentsPanel app={app} />
+              <ProjectRecordsSummary app={app} />
+              <ShowCausePanel app={app} dialogOpen={dialog === "showCause"} onDialogOpen={() => setDialog("showCause")} onDialogClose={() => setDialog(null)} />
+              <InspectionsPanel app={app} dialogOpen={dialog === "inspection"} onDialogOpen={() => setDialog("inspection")} onDialogClose={() => setDialog(null)} />
+              <Panel title="File Movement and Remarks">
+                <EventList
+                  linkAs={Link}
+                  label="File movement and remarks"
+                  events={[...app.audit].reverse().map((e) => ({
+                    id: e.id,
+                    at: e.at,
+                    actor: e.byRole === "ngo" ? (ngo?.name ?? "Applicant") : e.byName,
+                    actorRole: e.byRole === "ngo" ? "Applicant" : ROLES[e.byRole]?.label,
+                    action: ACTION_LABEL[e.action],
+                    note: e.remarks,
+                    tone: toneOf(e.action),
+                  }))}
+                />
+              </Panel>
+            </div>
+          </TabPanel>
         </div>
 
         {/* ── The decision, held beside the file on a wide screen ─────────────────── */}
@@ -602,6 +658,18 @@ export function ReviewShell({ appId }: { appId: string }) {
                     awaiting={awaiting.length}
                     certifiedAt={app.certifiedAt}
                     onShowAwaiting={() => showDocuments("awaiting")}
+                    grant={
+                      docsEditable && hasGrantTab(app)
+                        ? {
+                            costSheetSavedAt: app.costSheet?.savedAt,
+                            statementSaved: !blockers.includes("statement"),
+                            onShow: (anchor) => {
+                              setTab("grant");
+                              requestAnimationFrame(() => document.getElementById(anchor)?.scrollIntoView({ block: "start" }));
+                            },
+                          }
+                        : undefined
+                    }
                   />
                 )}
                 {canCertify && (
@@ -1087,15 +1155,20 @@ const digits = (v: string) => v.replace(/[^\d]/g, "");
 /** The same digits with Indian grouping, as the officer types: "6300000" reads "63,00,000". */
 const grouped = (v: string) => (v === "" ? "" : Number(v).toLocaleString("en-IN"));
 
+type ReviewTab = "application" | "documents" | "grant" | "history";
+/** What stops the ASO's forward: the verdicts and certification, and on a NAPDDR file the costing. */
+type ForwardBlocker = "verdicts" | "certification" | "costSheet" | "statement";
+
 /** Why the forward is not available, in one sentence, at reading contrast (audit R-01). */
-function forwardBlockedReason(blockers: readonly ("verdicts" | "certification")[], awaiting: number): string {
-  if (blockers.includes("verdicts") && blockers.includes("certification")) {
-    return `${awaiting} document${awaiting === 1 ? "" : "s"} still need${awaiting === 1 ? "s" : ""} your verdict, and the certification is not yet recorded.`;
-  }
-  if (blockers.includes("verdicts")) {
-    return `${awaiting} document${awaiting === 1 ? "" : "s"} still need${awaiting === 1 ? "s" : ""} your verdict.`;
-  }
-  return "Record the certification to forward the file.";
+function forwardBlockedReason(blockers: readonly ForwardBlocker[], awaiting: number): string {
+  const parts: string[] = [];
+  if (blockers.includes("verdicts")) parts.push(`${awaiting} document${awaiting === 1 ? "" : "s"} still need${awaiting === 1 ? "s" : ""} your verdict`);
+  if (blockers.includes("certification")) parts.push("the certification is not yet recorded");
+  if (blockers.includes("costSheet")) parts.push("the cost sheet is not saved");
+  if (blockers.includes("statement")) parts.push("the Statement of Account is not saved");
+  if (parts.length === 1 && parts[0] === "the certification is not yet recorded") return "Record the certification to forward the file.";
+  const sentence = parts.length > 1 ? `${parts.slice(0, -1).join(", ")} and ${parts[parts.length - 1]}` : parts[0] ?? "";
+  return `${sentence.charAt(0).toUpperCase()}${sentence.slice(1)}.`;
 }
 
 /** The phone bar's second line: SHORT — what is missing, or what the decision is. */
@@ -1106,7 +1179,7 @@ function decisionStandFirst({
   role,
   app,
 }: {
-  blockers: readonly ("verdicts" | "certification")[];
+  blockers: readonly ForwardBlocker[];
   awaiting: number;
   primary: Rule[];
   role: Parameters<Rule["label"]>[0];
@@ -1114,6 +1187,8 @@ function decisionStandFirst({
 }): string {
   if (blockers.includes("verdicts")) return `${awaiting} document${awaiting === 1 ? "" : "s"} need${awaiting === 1 ? "s" : ""} your verdict.`;
   if (blockers.includes("certification")) return "The certification is not yet recorded.";
+  if (blockers.includes("costSheet")) return "The cost sheet is not saved.";
+  if (blockers.includes("statement")) return "The Statement of Account is not saved.";
   const first = primary[0];
   return first ? first.label(role, app) : "Record your decision on this file.";
 }
@@ -1131,11 +1206,14 @@ function BeforeForwarding({
   awaiting,
   certifiedAt,
   onShowAwaiting,
+  grant,
 }: {
   progress: { reviewed: number; required: number };
   awaiting: number;
   certifiedAt?: string;
   onShowAwaiting: () => void;
+  /** A NAPDDR file's costing: present only where the Grant tab carries a cost sheet. */
+  grant?: { costSheetSavedAt?: string; statementSaved: boolean; onShow: (anchor: string) => void };
 }) {
   const verdictsDone = awaiting === 0;
   return (
@@ -1165,6 +1243,36 @@ function BeforeForwarding({
           title="Record the Certification"
           description={certifiedAt ? `Recorded on ${formatDate(certifiedAt)}.` : undefined}
         />
+        {grant && (
+          <>
+            <ListRow
+              leading={<StepMark done={!!grant.costSheetSavedAt} />}
+              title="Save the Cost Sheet"
+              description={
+                grant.costSheetSavedAt ? (
+                  `Saved on ${formatDate(grant.costSheetSavedAt)}.`
+                ) : (
+                  <Button appearance="text" size="sm" className="!justify-start !px-0" onClick={() => grant.onShow("cost-sheet")}>
+                    Open the Cost Sheet
+                  </Button>
+                )
+              }
+            />
+            <ListRow
+              leading={<StepMark done={grant.statementSaved} />}
+              title="Save the Statement of Account"
+              description={
+                grant.statementSaved ? (
+                  "Saved for this release."
+                ) : (
+                  <Button appearance="text" size="sm" className="!justify-start !px-0" onClick={() => grant.onShow("statement-of-account")}>
+                    Open the Statement of Account
+                  </Button>
+                )
+              }
+            />
+          </>
+        )}
       </ListGroup>
     </div>
   );

@@ -439,6 +439,47 @@ export interface GrantApplication {
   release?: FundRelease;
   /** When the instalment after this released one was opened for the NGO to claim. */
   claimOpenedAt?: string;
+  /** The Programme Division ASO's cost sheet, once saved (NAPDDR; cost-sheet.ts). */
+  costSheet?: CostSheet;
+  /** The Programme Division ASO's Statement of Account for this release, once saved. */
+  budgetStatement?: BudgetStatement;
+}
+
+/** One item of expense on a cost sheet: the norm, and what the reviewing officer proposes. */
+export interface CostSheetLine {
+  id: string;
+  head: "nonRecurring" | "recurring";
+  label: string;
+  /** The scheme's cost norm for the item. 0 for an item the officer added. */
+  norm: number;
+  proposed: number;
+  remark?: string;
+  /** An either/or post — e.g. a Doctor, rural OR urban. Only the chosen option counts. */
+  choice?: { group: string; option: string };
+  /** Taken off the sheet by the officer. Kept, so it can be put back. */
+  removed?: boolean;
+  /** An item the officer added; it has no norm. */
+  added?: boolean;
+}
+
+export interface CostSheet {
+  /** The cost norm the sheet was seeded from (cost-sheet.ts `CostScheduleId`). */
+  schedule: "DDAC" | "IRCA-15" | "IRCA-30" | "IRCA-50";
+  lines: CostSheetLine[];
+  /** Either/or group → the id of the line chosen. */
+  choices: Record<string, string>;
+  savedAt: string;
+  savedBy: RoleId;
+}
+
+/** The scheme's budget position for this release, as the ASO records it before forwarding. */
+export interface BudgetStatement {
+  allocation: number;
+  expenditure: number;
+  /** The release the balance was computed against when it was saved. */
+  release: number;
+  savedAt: string;
+  savedBy: RoleId;
 }
 
 /** A GFR 12-A utilisation certificate, as the NGO files it. */

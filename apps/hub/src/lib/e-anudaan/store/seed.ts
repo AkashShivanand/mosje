@@ -39,6 +39,7 @@ import { PROJECT_ID_PREFIX, instalmentAfter, notificationBody, notificationTitle
 import { schemeName } from "../glossary.ts";
 import { demoVerdictFor } from "../doc-verification.ts";
 import { automaticCheckOf, isFlagged } from "../review-readiness.ts";
+import { seedSheet, sheetTotals } from "../cost-sheet.ts";
 import type { EAnudaanState, Institution } from "../types.ts";
 
 /** The demo's "today". Matches the recon capture date so seeded ageing reads sensibly. */
@@ -1901,6 +1902,106 @@ export function buildSeed(): {
     applicant.applicationCount = mine.length;
     applicant.sanctionedCount = mine.filter((a) => a.status === "Sanctioned").length;
     applicant.totalGrant = mine.reduce((sum, a) => sum + (a.sanction?.total ?? 0), 0);
+  }
+
+  /*
+   * 14. NAPDDR at the Programme Division ASO, as the dev portal's walkthrough of 07 Oct 2026 shows
+   *     it: a cost sheet seeded from the project type's norm, a Statement of Account, and the amount
+   *     moving up the chain (cost-sheet.ts). Placed before block 12, which then answers
+   *     their questions as it answers every submitted file's.
+   *
+   *     a. The IRCA file already at the ASO read like a school: SHRESHTA's twenty documents (a
+   *        School Recognition Certificate among them) and 209 beneficiaries against a centre the
+   *        norms size at 15, 30 or 50 beds. It now carries NAPDDR's own twelve documents and a
+   *        30-bed centre's figures — its non-recurring claim above the norm, so the ceiling shows.
+   *     b. A District De-Addiction Centre for the applicant, whose NAPDDR record already holds
+   *        seven projects — so "Previous Sanctions" has a real history to read.
+   *     c. A costed 15-bed IRCA past the Joint Secretary, so the pipeline has a stage to show done.
+   */
+  {
+    const napddrDocs = (): MockDoc[] => {
+      const permanent = new Set([1, 2, 7, 9]); // MoA, PAN, bank letter, registration: kept on file
+      return NAPDDR_WIZARD.documents
+        .filter((d) => d.n <= 12)
+        .map((d, i) => ({
+          id: nextId("doc"),
+          slot: i + 1,
+          title: d.title,
+          group: permanent.has(d.n) ? ("permanent" as const) : ("annual" as const),
+          optional: d.optional,
+          reviewStatus: "Pending" as const,
+          fileName: `annexure-${i + 1}.pdf`,
+          sizeKb: 180 + ((i * 137) % 1100),
+          uploadedAt: iso(40 + i * 2), // before the file is submitted (`tellOneStory` keeps it so)
+        }));
+    };
+    /** One set of figures, stated everywhere the file states them — the record and its answers. */
+    const reshape = (a: GrantApplication, f: { sc: number; other: number; recurring: number; nonRecurring: number; projectType?: string }) => {
+      const total = f.sc + f.other;
+      Object.assign(a, { scBeneficiaries: f.sc, otherBeneficiaries: f.other, totalBeneficiaries: total, recurring: f.recurring, nonRecurring: f.nonRecurring, total: f.recurring + f.nonRecurring, documents: napddrDocs() });
+      a.formValues = {
+        ...a.formValues,
+        ...(f.projectType ? { fld_project_type: f.projectType } : {}),
+        fld_beneficiaries_sc: String(f.sc),
+        fld_beneficiaries_other: String(f.other),
+        fld_total_beneficiaries: String(total),
+        fld_grant_recurring: String(f.recurring),
+        fld_grant_non_recurring: String(f.nonRecurring),
+        fld_grant_total: String(f.recurring + f.nonRecurring),
+      };
+      return a;
+    };
+    /** A New NAPDDR file at a project of its own, filed `ageDays` ago. */
+    const fileAt = (ngo: NgoProfile, inst: Institution, ageDays: number, projectType: string): GrantApplication => {
+      const base = draft(ngoPool.indexOf(ngoPool.find((p) => p.id === ngo.id)!), "NAPDDR", "2026-27", ageDays);
+      const id = `GIA/2026-27/NAPDDR/${inst.district.toUpperCase().replace(/\s+/g, "_")}/${(++counter).toString().padStart(5, "0")}`;
+      return {
+        ...base,
+        id,
+        institutionId: inst.id,
+        projectLabel: `${inst.name} — ${inst.district} · FY 2026-27`,
+        formValues: {
+          ...base.formValues,
+          ...napddrAnswers(inst),
+          // The project's own record, not the one `draft()` happened to rotate to.
+          fld_project_type: projectType, fld_project_id: inst.id, fld_institution_id: inst.id, fld_project_state: inst.state, fld_project_district: inst.district,
+          fld_nature_of_institution: inst.nature, fld_institution_gender_type: inst.type, fld_building_ownership: inst.building,
+          ...(projectType.startsWith("DDAC") ? person("fld_ddac_chief", "Dr. Meenakshi Bhatia", "Post-graduate", "Chief Functionary", "9811042210") : {}),
+        },
+      };
+    };
+
+    // a.
+    const irca = apps.find((a) => a.schemeCode === "NAPDDR" && a.holder.kind === "chain" && a.holder.division === "pd" && a.holder.grade === "aso");
+    if (irca) apps[apps.indexOf(irca)] = tellOneStory(reshape(irca, { sc: 9, other: 21, recurring: 5000000, nonRecurring: 400000 }));
+
+    // b.
+    const ddacSite: Institution = {
+      id: "DR/DL/SDL/03657", name: "District De-Addiction Centre", district: "South Delhi", state: "Delhi",
+      nature: "Integrated Rehabilitation Centre for Addicts", type: "Co-Ed", level: "Secondary", building: "Owned", pin: "110017",
+    };
+    applicant.institutions.push(ddacSite);
+    const ddac = tellOneStory(reshape(driveToChain(fileAt(applicant, ddacSite, 9, "DDAC — District De-Addiction Centre"), "pd", "aso", 5), { sc: 6, other: 9, recurring: 7200000, nonRecurring: 400000 }));
+    apps.push(ddac);
+    applicant.applicationCount = (applicant.applicationCount ?? 0) + 1;
+
+    // c. Costed by the ASO when it certified; the Joint Secretary has since sent it to Finance.
+    const host = ngos[3]!;
+    const site = projectFor(host, "NAPDDR");
+    let costed = reshape(fileAt(host, site, 30, "IRCA — Integrated Rehabilitation Centre"), { sc: 5, other: 10, recurring: 3600000, nonRecurring: 245000 });
+    costed = driveToChain(costed, "finance", "so", 26);
+    costed = tellOneStory(costed);
+    const certified = costed.certifiedAt ?? iso(25);
+    for (const d of costed.documents) Object.assign(d, { reviewStatus: "Verified", reviewedBy: "pd-aso", reviewedAt: certified });
+    const sheet = seedSheet("IRCA-15");
+    const urban = sheet.lines.find((l) => l.choice?.option === "Part Time, Urban")!;
+    sheet.choices = { doctor: urban.id };
+    const rent = sheet.lines.find((l) => l.label.startsWith("Rent"))!;
+    Object.assign(rent, { proposed: 180000, remark: "The rent agreement on file is for Rs. 15,000 a month." });
+    costed.costSheet = { ...sheet, savedAt: certified, savedBy: "pd-aso" };
+    costed.budgetStatement = { allocation: 25000000, expenditure: 16240000, release: sheetTotals(sheet, costed).proposed, savedAt: certified, savedBy: "pd-aso" };
+    apps.push(costed);
+    host.applicationCount = (host.applicationCount ?? 0) + 1;
   }
 
   /*
