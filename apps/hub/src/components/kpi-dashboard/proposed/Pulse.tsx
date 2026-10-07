@@ -250,7 +250,7 @@ function DashboardTile({ id, tone, mark, title, subtitle, href, label, children,
       </CardBody>
       <CardFooter>
         <Button appearance="text" size="sm" href={href} linkAs={Link} aria-label={label} iconRight={<Icon name="arrow_forward" size={16} />}>
-          View Dashboard
+          <span className="pd-tile__cta">View Dashboard</span>
         </Button>
       </CardFooter>
     </Card>

@@ -134,6 +134,20 @@ const Lead = ({ m }: { m: DeptMetric }) => <HeadlineFigure size="md" value={dept
 const Rest = ({ ms }: { ms: DeptMetric[] }) => <DescriptionList size="md" columns={2} items={ms.map((m) => ({ term: m.label, value: deptAmount(m) }))} />;
 
 
+/** The working behind a students figure that adds two published series (Pre- and Post-Matric). */
+function studentsNote(title: string, labels: readonly string[], data: number[], parts: { name: string; value: number }[], format: (n: number) => string): SourceNote {
+  const year = labels[labels.length - 1]!.replace("*", "");
+  return {
+    ...receivedNote(`${title}, ${year}`),
+    value: format(data[data.length - 1]!),
+    breakdown: {
+      method: `Pre-Matric and Post-Matric students added together, from the Year by Year Trends series. The line draws the same sum for each year from ${labels[0]!.replace("*", "")}.`,
+      rows: parts.map((x, i) => ({ label: x.name, value: format(x.value), op: i === 0 ? undefined : ("+" as const) })),
+      result: { label: `Students, ${year}`, value: format(data[data.length - 1]!) },
+    },
+  };
+}
+
 /**
  * A tile's trend line, from a series the live page publishes. Where two published series
  * are added together (Pre-Matric and Post-Matric students), the line says so and its info
@@ -162,17 +176,7 @@ function TrendLine({ title, labels, data, unit, format, parts, fact = true, widt
         <b>{format(data[data.length - 1]!)}</b> {unit} in {year}
         {provisional ? " (provisional)" : ""}.
         {parts ? (
-          <FigureSource
-            note={{
-              ...receivedNote(`${title}, ${year}`),
-              value: format(data[data.length - 1]!),
-              breakdown: {
-                method: `Pre-Matric and Post-Matric students added together, from the Year by Year Trends series. The line draws the same sum for each year from ${labels[0]!.replace("*", "")}.`,
-                rows: parts.map((x, i) => ({ label: x.name, value: format(x.value), op: i === 0 ? undefined : ("+" as const) })),
-                result: { label: `Students, ${year}`, value: format(data[data.length - 1]!) },
-              },
-            }}
-          />
+          <FigureSource note={studentsNote(title, labels, data, parts, format)} />
         ) : null}
       </p>
       ) : null}
@@ -546,12 +550,14 @@ export function EducationTrends({ sectionLevel, state, audiences }: MovementProp
  */
 export function DepartmentTileContent({ audiences, wide = false }: {
   audiences: Set<Audience>;
-  /** Drawn across the row (the landing page's lead card): the line takes the room it is given. */
+  /** Drawn across the row (the landing page's lead card): three columns, not one. */
   wide?: boolean;
 }): { figure: React.ReactNode; body: React.ReactNode } | null {
   const show = (cardId: string) => shows(audiences, CARD_AUDIENCE[cardId] ?? "obc");
-  const trendCard = ["sc", "obc"].find(show);
-  const view = trendCard ? BENEFICIARY_TRENDS.views.find((v) => v.id === trendCard) : undefined;
+  const views = (["sc", "obc"] as const).filter(show).flatMap((id) => {
+    const v = BENEFICIARY_TRENDS.views.find((x) => x.id === id);
+    return v ? [v] : [];
+  });
   const hostels = card(HOSTELS.cards, "hostels");
   const topClass = card(HOSTELS.cards, "top-class");
   const ambedkar = card(HOSTELS.cards, "ambedkar");
@@ -566,29 +572,110 @@ export function DepartmentTileContent({ audiences, wide = false }: {
       : []),
     ...(show("ambedkar") ? [{ term: `${nth(ambedkar.metrics, 0).label} · Overseas Education Loan`, value: deptAmount(nth(ambedkar.metrics, 0)) }] : []),
   ];
-  if (!view && facts.length === 0) return null;
-  const sc = view ? card(SCHOLARSHIPS.cards, view.id) : undefined;
-  const series: readonly { name: string; data: readonly number[] }[] | undefined = view?.series;
+  if (views.length === 0 && facts.length === 0) return null;
+
+  const trend = (v: (typeof views)[number], width?: number) => {
+    const sc = card(SCHOLARSHIPS.cards, v.id);
+    const series: readonly { name: string; data: readonly number[] }[] = v.series;
+    return (
+      <TrendLine
+        key={v.id}
+        title={sc.title}
+        labels={v.labels}
+        data={sumSeries(nth(series, 0).data, nth(series, 1).data)}
+        unit={v.id === "sc" ? "SC students" : "OBC, EBC and DNT students"}
+        format={lakh}
+        width={width}
+        parts={[
+          { name: nth(series, 0).name, value: nth(series, 0).data[nth(series, 0).data.length - 1]! },
+          { name: nth(series, 1).name, value: nth(series, 1).data[nth(series, 1).data.length - 1]! },
+        ]}
+      />
+    );
+  };
+  const factList = facts.length ? <DescriptionList size="figure" caps columns={2} items={facts} /> : null;
+
+  if (!wide) {
+    const first = views[0];
+    return { figure: null, body: <>{first ? trend(first) : null}{factList}</> };
+  }
+
+  /*
+   * THE LEAD CARD, RICH BUT QUIET (instruction, 7 Oct 2026). Three columns under the live
+   * page's own section titles, each answering one question, and none repeating the hero
+   * above it: how many students the scholarships reach this year (SC, and OBC, EBC and DNT,
+   * each with its twelve-year line), where the fund has gone (the three largest of the nine
+   * schemes and the rest together, as shares), and the hostel and top class education
+   * figures. No dividers, no sentences beyond the figures' own: the columns' space does the
+   * separating.
+   */
+  const slices = FUND_SHARE.slices.filter((sl) => shows(audiences, FUND_SLICE_AUDIENCE[sl.label] ?? "obc"));
+  // Shares of the nine together, as the live chart's tooltip and the Department page give them.
+  const whole = FUND_SHARE.slices.reduce((t, sl) => t + sl.value, 0);
+  const top = [...slices].sort((a, b) => b.value - a.value);
+  const lead3 = top.slice(0, 3);
+  const rest = top.slice(3);
+  const share = (n: number) => Math.round((n / whole) * 1000) / 10;
+  const shareItems = [
+    ...lead3.map((sl) => ({ label: sl.label, value: share(sl.value) })),
+    ...(rest.length ? [{ label: `Other ${rest.length === 1 ? "Scheme" : `${rest.length} Schemes`}`, value: share(rest.reduce((t, sl) => t + sl.value, 0)) }] : []),
+  ];
+  const head = (text: string) => <h4 className="pd-dept__head">{text}</h4>;
+  const year = (v: (typeof views)[number]) => v.labels[v.labels.length - 1]!.replace("*", "");
   return {
     figure: null,
     body: (
-      <>
-        {view && sc && series ? (
-          <TrendLine
-            title={sc.title}
-            labels={view.labels}
-            data={sumSeries(nth(series, 0).data, nth(series, 1).data)}
-            width={wide ? 640 : undefined}
-            unit={view.id === "sc" ? "SC students" : "OBC, EBC and DNT students"}
-            format={lakh}
-            parts={[
-              { name: nth(series, 0).name, value: nth(series, 0).data[nth(series, 0).data.length - 1]! },
-              { name: nth(series, 1).name, value: nth(series, 1).data[nth(series, 1).data.length - 1]! },
-            ]}
-          />
+      <div className="pd-dept">
+        {views.length ? (
+          <div className="pd-dept__col">
+            <div>
+              {head(BENEFICIARY_TRENDS.cardTitle)}
+              <p className="pd-dept__sub">Students Beneficiary, {year(views[0]!)} (provisional)</p>
+            </div>
+            <DescriptionList
+              size="figure"
+              caps
+              columns={2}
+              items={views.map((v) => {
+                const series: readonly { name: string; data: readonly number[] }[] = v.series;
+                const data = sumSeries(nth(series, 0).data, nth(series, 1).data);
+                const parts = series.slice(0, 2).map((x) => ({ name: x.name, value: x.data[x.data.length - 1]! }));
+                const title = card(SCHOLARSHIPS.cards, v.id).title;
+                return {
+                  term: v.label === "SC" ? "SC" : "OBC, EBC and DNT",
+                  value: (
+                    <>
+                      {lakh(data[data.length - 1]!)}
+                      <FigureSource note={studentsNote(title, v.labels, data, parts, lakh)} />
+                      <Sparkline data={data} width={200} height={36} label={`${title}: students, each year, ${v.labels[0]!.replace("*", "")} to ${year(v)}`} startLabel={v.labels[0]!.replace("*", "")} endLabel={year(v)} markLast />
+                    </>
+                  ),
+                };
+              })}
+            />
+          </div>
         ) : null}
-        {facts.length ? <DescriptionList size="figure" caps columns={2} items={facts} /> : null}
-      </>
+        {slices.length > 1 ? (
+          <div className="pd-dept__col">
+            {head(FUND_SHARE.title)}
+            <RankedBarList
+              title={`${FUND_SHARE.title}: ${FUND_SHARE.subtitle}`}
+              items={shareItems}
+              valueFormat={(n: number) => `${n.toFixed(1)}%`}
+              sort="none"
+              showRank={false}
+              size="sm"
+              max={100}
+            />
+          </div>
+        ) : null}
+        {factList ? (
+          <div className="pd-dept__col">
+            {head(HOSTELS.title)}
+            {factList}
+          </div>
+        ) : null}
+      </div>
     ),
   };
 }

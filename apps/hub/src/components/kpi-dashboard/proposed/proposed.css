@@ -222,14 +222,72 @@
     gap: var(--sa-stack-20);
   }
 
-  @media (min-width: 1024px) {
-    .pd-lead .pd-tile__body {
-      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-      align-items: center;
+  /* The lead card's three columns (`DepartmentTileContent`, wide): space, not rules, between
+     them; each column's head is the live page's section title. One column on a phone. */
+  .pd-dept {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--sa-stack-32);
+  }
+
+  /* Two columns on a tablet, the hostel figures across the foot (a row of four from 1024); three from
+     1440 (the 1272px container), where each column holds its figures on one line. */
+  @media (min-width: 768px) {
+    .pd-dept {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       column-gap: var(--sa-stack-40);
     }
 
-    .pd-lead .pd-tile__body > .pd-note { grid-column: 1 / -1; }
+    .pd-dept__col:nth-child(3) { grid-column: 1 / -1; }
+  }
+
+  @media (min-width: 1024px) and (max-width: 1439px) {
+    .pd-dept__col:nth-child(3) .ds-dl { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+
+  @media (min-width: 1440px) {
+    .pd-dept {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: var(--sa-stack-48);
+    }
+
+    .pd-dept__col:nth-child(3) { grid-column: auto; }
+  }
+
+  /* A figure is one word to the eye: "74.23 lakh" never breaks across lines. */
+  .pd-dept .ds-dl__value { white-space: nowrap; }
+
+  .pd-dept__col {
+    display: grid;
+    align-content: start;
+    gap: var(--sa-stack-16);
+    min-width: 0;
+  }
+
+  .pd-dept__head {
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .pd-dept__sub {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* Two lines held for every label, so the figures stand on shared baselines — in columns
+     only; stacked on a phone, a one-line label needs no second line held for it. */
+  @media (min-width: 768px) {
+    .pd-dept .ds-dl__term { min-block-size: 2lh; }
+  }
+
+  /* A students figure's twelve-year line, under the figure. */
+  .pd-dept .ds-dl__value .ds-sparkline-ends {
+    margin-block-start: var(--sa-stack-8);
   }
   /* NMBA's four figures, centred beside its map rather than hanging from the top. */
   .pd-tile__figures {
@@ -248,14 +306,70 @@
 
   /* "View Dashboard" STARTS ON THE CARD'S CONTENT EDGE (feedback, 7 Oct 2026). A text button
      carries its own inline padding, which set the label 16px in from the figures above it and
-     read as misaligned. The label sits on the edge; hover underlines it rather than filling a
-     pill that would now meet the card's border; the arrow leans toward where it goes. */
+     read as misaligned. */
   .pd-tile > .ds-card__footer > .ds-btn--text {
+    position: static;
     padding-inline-start: 0;
+  }
+
+  /* THE WHOLE CARD OPENS ITS DASHBOARD (instruction, 7 Oct 2026). Each card has one
+     destination, so its one link is stretched over the card: a reader can press anywhere,
+     a screen reader still meets one named link, and the keyboard one tab stop. What is
+     interactive inside the card — a map's states, a chart's marks, a source note — sits above
+     the stretch and keeps its own behaviour. */
+  .pd-tile { position: relative; }
+
+  /* Every geometry property is set, not only `inset`: under a coarse pointer the design
+     system draws a 44px target on this same pseudo-element — centred by a translate, sized
+     by width and height — and any of those left standing moves the card's target off the
+     card. The card is bigger than 44px, so the thumb loses nothing. */
+  .pd-tile > .ds-card__footer > .ds-btn--text::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: auto;
+    height: auto;
+    min-width: 0;
+    min-height: 0;
+    transform: none;
+    border-radius: inherit;
+  }
+
+  .pd-tile > .ds-card__body :is(a, button, [tabindex]:not([tabindex="-1"]), .ds-chart__mark, .ds-chart:has([tabindex])) {
+    position: relative;
+    z-index: var(--sa-z-raised);
+  }
+
+  /* Pressed anywhere, the card answers as one: its edge firms, the label underlines — the
+     label only, never the arrow (feedback, 7 Oct 2026) — and the arrow leans toward where
+     it goes. The pill a text button fills on hover would now meet the card's border. */
+  /* The sides and foot only: the top edge is the dashboard's colour and stays it. */
+  .pd-tile:has(> .ds-card__footer > .ds-btn--text:hover) {
+    border-inline-color: var(--sa-border-neutral-bolder-hover);
+    border-block-end-color: var(--sa-border-neutral-bolder-hover);
   }
 
   .pd-tile > .ds-card__footer > .ds-btn--text:is(:hover, :active) {
     background-color: transparent;
+  }
+
+  /* THE PRESS BELONGS TO THE CARD, NOT THE BUTTON. The design system's press scales a button
+     to 0.97, and a transformed button becomes the stretched area's containing block: on
+     pointer-down the card-wide target shrank to the button, the pointer came up outside it,
+     and no click fired. The card takes a gentler press instead. */
+  .pd-tile > .ds-card__footer > .ds-btn--text:active {
+    transform: none;
+  }
+
+  .pd-tile {
+    transition: transform 100ms ease-out;
+  }
+
+  .pd-tile:has(> .ds-card__footer > .ds-btn--text:active) {
+    transform: scale(0.995);
+  }
+
+  .pd-tile > .ds-card__footer > .ds-btn--text:hover .pd-tile__cta {
     text-decoration: underline;
     text-underline-offset: 0.2em;
   }
@@ -268,8 +382,16 @@
     transform: translateX(var(--sa-padding-2));
   }
 
+  /* The keyboard sees the same thing the pointer does: the whole card ringed. */
+  .pd-tile:has(> .ds-card__footer > .ds-btn--text:focus-visible) {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-width);
+  }
+
   @media (prefers-reduced-motion: reduce) {
+    .pd-tile,
     .pd-tile > .ds-card__footer > .ds-btn--text .ds-btn__icon--end { transition: none; }
+    .pd-tile:has(> .ds-card__footer > .ds-btn--text:active) { transform: none; }
   }
 
   .pd-tile__body {
