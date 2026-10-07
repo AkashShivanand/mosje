@@ -66,6 +66,7 @@ Rules stated in the call:
 2. **IRCA — Female and IRCA — Male Children** have no cost sheet: their norms are not held.
 3. **Forward gate.** The prototype will not let the ASO forward a NAPDDR file until both records
    are saved. The dev portal's rule was not stated in the call.
-4. **Figma.** The handoff frame for this screen has not been redrawn. Under the standing
-   instruction of 1 Oct 2026 the drawing should lead; this change was built first at the
-   owner's instruction of 07 Oct 2026 and the frame now needs to follow.
+4. **Figma.** Done for the desktop NAPDDR screens on 8 Oct 2026 — four tab screens in E-Anudaan [Handoff] ›
+   Officers · Reviewing Applications › Reviewing an Application › Desktop (`408:27862`, `410:37090`, `410:37644`,
+   `410:38195`). Phone screens and the other grades' screens are the next pass
+   (`docs/design-handoffs/E-Anudaan-Handoff-Page.md` §5i).

@@ -612,6 +612,33 @@ Kept on purpose: SHRESHTA Mode 1 (FR-HOA-002 lists it), Waiting to Resend (the B
 the six report tabs (§11), and the irreversibility warning before signing. Not drawn: a Bureau and a Checker
 dashboard — their menus carry Dashboard, which opens the shared e-Anudaan dashboard.
 
+## 5i. The ASO's NAPDDR review in four tabs — 8 Oct 2026
+
+The developers' walkthrough of 7 Oct 2026 showed the Programme Division ASO's review of a NAPDDR file grown to twelve
+sections in one column, with a cost sheet, a Statement of Account and an amount pipeline the handoff did not draw. The
+build was reorganised the same day (PR #720) at the owner's instruction; this pass brings the handoff to the build.
+Before/after: `before-after-figma-aso-review-tabs-2026-10-08.html`.
+
+| What | Before | After | Why |
+|---|---|---|---|
+| Reviewing an Application › Desktop | Ten screens, the ASO's a 4,977px single column on a SHRESHTA file | Four more at the end of the row, the NAPDDR file in its four tabs: Application (`408:27862`), Documents (`410:37090`), Grant (`410:37644`), History (`410:38195`) | The build's layout; the earlier screens are left as they were |
+| Tabs | none | The library Tabs: Application · Documents (12 to Verify) · Grant (2 to Save) · History | Each tab says what is still owed |
+| Grant tab | not drawn | Amount Pipeline (Stepper, vertical); Cost Sheet — the DDAC norms, the doctor choice (Radio Group), totals, Reset to Norm, Save; Statement of Account — two fields, This Release, a computed balance, Save | The amounts the Needs Discussion note asked about, as the build now records them for NAPDDR |
+| Documents tab | SHRESHTA's 19 documents and a duplicated "Permanent Documents" heading | NAPDDR's 12, with their descriptions; one heading | The scheme's own checklist; the build shows one heading |
+| History tab | "Earlier Sanctions for This Project" only | Funding History: the NGO's sanctions (year, number, project, sanctioned, disbursed), the total, this project's line; File Movement | The build's History |
+| Your Decision | verdicts and certification | + Save the Cost Sheet, + Save the Statement of Account; 200-word count | The forward says what it waits for |
+| Header | no way back | "← My Queue" | As the dev portal and the build |
+| Note — Needs Discussion | "no amount is recorded along the review chain" | What is now drawn for NAPDDR, and what is still to confirm | Partly answered; the final approver is still open |
+
+Not done here, and why:
+- **Phone screens.** The Mobile row is unchanged; the build's phone layout (amounts under each item) is not yet drawn.
+- **The other nine desktop screens** keep the single column. The build shows the tabs on every grade; redrawing them is
+  the next pass.
+- **The sanctions list** is drawn with List Rows. The build uses a table, but the library's `Table / Row` has equal-width,
+  fixed-height cells that cannot hold a sanction number at this column width without detaching.
+- **Library gap:** `List Row` has no trailing slot, which the code's `ListRow` has. Each cost-sheet item is a List Row with
+  an Input Field and an IconButton beside it in a row; a trailing slot on the master would remove that wrapper.
+
 ## 6. Adding to the page
 
 - **A screen:** into the right row of its flow; name `Role / Screen / State`; phone version ends ` · Mobile`.
