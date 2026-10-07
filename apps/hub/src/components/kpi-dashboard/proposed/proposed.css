@@ -246,6 +246,32 @@
 
   .pd-tile__titles { min-width: 0; }
 
+  /* "View Dashboard" STARTS ON THE CARD'S CONTENT EDGE (feedback, 7 Oct 2026). A text button
+     carries its own inline padding, which set the label 16px in from the figures above it and
+     read as misaligned. The label sits on the edge; hover underlines it rather than filling a
+     pill that would now meet the card's border; the arrow leans toward where it goes. */
+  .pd-tile > .ds-card__footer > .ds-btn--text {
+    padding-inline-start: 0;
+  }
+
+  .pd-tile > .ds-card__footer > .ds-btn--text:is(:hover, :active) {
+    background-color: transparent;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .pd-tile > .ds-card__footer > .ds-btn--text .ds-btn__icon--end {
+    transition: transform 150ms ease-out;
+  }
+
+  .pd-tile > .ds-card__footer > .ds-btn--text:hover .ds-btn__icon--end {
+    transform: translateX(var(--sa-padding-2));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pd-tile > .ds-card__footer > .ds-btn--text .ds-btn__icon--end { transition: none; }
+  }
+
   .pd-tile__body {
     display: grid;
     /* minmax(0, …): a trend line's intrinsic width must not push the column past the card. */
