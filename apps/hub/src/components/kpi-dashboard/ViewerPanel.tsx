@@ -6,7 +6,7 @@ import { RadioGroup } from "@mosje/design-system";
 import { OFFICER_ROLES, type OfficerRole } from "@/lib/kpi/access";
 import { setViewer, useDashboardViewer } from "@/lib/kpi/viewer";
 import { PORTAL_DASHBOARD_CRUMBS } from "@/lib/website-shared/dashboard-links";
-import { DASHBOARD_VERSION_PARAM, type DashboardVersion } from "@/lib/website-shared/dashboard-version";
+import { DASHBOARD_VERSION_PARAM, dashboardVersion, type DashboardVersion } from "@/lib/website-shared/dashboard-version";
 import "@/components/website/data-mode.css";
 
 /**
@@ -44,18 +44,18 @@ export function ViewerPanel() {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
-  const version: DashboardVersion = params.get(DASHBOARD_VERSION_PARAM) === "proposed" ? "proposed" : "current";
+  // A portal's own page belongs to the current version, whatever its address carries.
+  const portal = pathname.match(/\/dashboard\/([^/]+)$/)?.[1];
+  const version: DashboardVersion = portal ? "current" : dashboardVersion({ [DASHBOARD_VERSION_PARAM]: params.get(DASHBOARD_VERSION_PARAM) ?? undefined });
 
   const setVersion = (v: string) => {
-    // A portal's own page opens the proposed dashboard on that programme.
-    const portal = pathname.match(/\/dashboard\/([^/]+)$/)?.[1];
+    // The proposed version is the default and needs no parameter; a portal's own page opens
+    // it on that programme.
     const next = new URLSearchParams();
-    if (v === "proposed") {
-      next.set(DASHBOARD_VERSION_PARAM, "proposed");
-      if (portal) {
-        next.set("lens", "programmes");
-        next.set("programme", portal);
-      }
+    if (v === "current") next.set(DASHBOARD_VERSION_PARAM, "current");
+    else if (portal) {
+      next.set("lens", "programmes");
+      next.set("programme", portal);
     }
     const query = next.toString();
     router.push(`${dashboardRoot(pathname)}${query ? `?${query}` : ""}`);
@@ -70,8 +70,8 @@ export function ViewerPanel() {
           name={versionName}
           size="sm"
           options={[
-            { value: "current", label: "Current" },
             { value: "proposed", label: "Proposed" },
+            { value: "current", label: "Current" },
           ]}
           value={version}
           onChange={setVersion}

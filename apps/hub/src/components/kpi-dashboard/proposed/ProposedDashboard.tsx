@@ -22,7 +22,7 @@ import "./proposed.css";
 
 /**
  * THE PROPOSED DASHBOARD — the website's Dashboard designed from the KPI proforma up, shown
- * beside the current one by the demo rail's Version switch (`?version=proposed`).
+ * beside the current one by the demo rail's Version switch; it is the default, and `?version=current` opens the other.
  *
  * Two places, both in the address so either can be shared:
  *  - the PULSE (`Pulse.tsx`): one page, told as a story — the answer, the programmes, where,

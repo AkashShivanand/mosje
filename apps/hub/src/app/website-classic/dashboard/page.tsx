@@ -28,7 +28,7 @@ export const metadata: Metadata = {
  * and is now drawn from that dashboard's own figures.) The page now carries the same
  * content as the other two designs.
  *
- * `?version=proposed` draws the proposed dashboard in its place (`dashboard-version.ts`).
+ * The proposed dashboard is the default; `?version=current` draws this page (`dashboard-version.ts`).
  */
 type PageProps = { searchParams: Promise<Record<string, string | string[] | undefined>> };
 export default async function DashboardPage({ searchParams }: PageProps) {

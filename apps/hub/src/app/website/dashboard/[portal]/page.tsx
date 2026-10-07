@@ -6,6 +6,7 @@ import { PORTAL_DASHBOARDS, portalById } from "@/lib/kpi/register";
 import { getPortalFeed } from "@/lib/kpi/feeds";
 import { DASHBOARD_PAGE } from "@/lib/website-shared/dashboard";
 import { PORTAL_DASHBOARD_CRUMBS } from "@/lib/website-shared/dashboard-links";
+import { CURRENT_DASHBOARD_PATH } from "@/lib/website-shared/dashboard-version";
 import { socialCard } from "@/lib/seo/social";
 import "@/components/website-next/templates/media.css";
 
@@ -42,7 +43,7 @@ export default async function PortalDashboardPage({ params }: { params: Promise<
   return (
     <PageLayout
       title={`${PORTAL_DASHBOARD_CRUMBS[p.id]} Dashboard`}
-      breadcrumb={[{ label: DASHBOARD_PAGE.crumb, href: "/website/dashboard" }, { label: PORTAL_DASHBOARD_CRUMBS[p.id] }]}
+      breadcrumb={[{ label: DASHBOARD_PAGE.crumb, href: CURRENT_DASHBOARD_PATH }, { label: PORTAL_DASHBOARD_CRUMBS[p.id] }]}
       description={p.summary}
     >
       <section className="wn-section" aria-label={`${PORTAL_DASHBOARD_CRUMBS[p.id]} indicators`}>

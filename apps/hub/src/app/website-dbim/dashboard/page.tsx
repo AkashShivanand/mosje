@@ -34,7 +34,7 @@ export const metadata: Metadata = {
  *
  * DS Audit: DepartmentOverview / MinistryCollection (app, shared) ✅ · DbimDashboardTiles (DBIM) ✅.
  *
- * `?version=proposed` draws the proposed dashboard in its place (`dashboard-version.ts`).
+ * The proposed dashboard is the default; `?version=current` draws this page (`dashboard-version.ts`).
  */
 type PageProps = { searchParams: Promise<Record<string, string | string[] | undefined>> };
 export default async function DbimDashboardPage({ searchParams }: PageProps) {
