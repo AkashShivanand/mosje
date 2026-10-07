@@ -171,7 +171,9 @@ export function ProgrammeStory({ programme: p, viewing, readings, scope, section
         mark={hasMark(p) ? <OrgLogo path={p.logoPath} size="md" name="" /> : undefined}
         // The portal's name leads, the scheme's under it, as on its card (instruction, 7 Oct 2026).
         title={p.portal}
-        subtitle={p.subtitle ?? p.name}
+        // The scheme's name where it is not the portal's; the summary below names the rest, so
+        // the card's shorter subtitle would only say it twice.
+        subtitle={p.name !== p.portal ? p.name : undefined}
         summary={p.summary}
         // The body that runs the portal, where it is not the Department itself.
         meta={p.owner === DEPARTMENT ? p.period : `${p.period} · ${p.owner}`}
