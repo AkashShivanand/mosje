@@ -279,6 +279,8 @@ export interface MockDoc {
   optional?: boolean;
   /** Rendered as the live portal's "Required when …" note. */
   conditional?: string;
+  /** What the document must contain — NAPDDR's one-line description, the dev portal's ⓘ. */
+  description?: string;
   /** Officer-side review state, per document — the Review column on the review screen. */
   reviewStatus: DocReviewStatus;
   /** The "Add remarks…" field beside each document. */

@@ -29,6 +29,7 @@ import {
   TabPanel,
   Tabs,
   Textarea,
+  buttonClasses,
   useToast,
 } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
@@ -333,9 +334,12 @@ export function ReviewShell({ appId }: { appId: string }) {
   /** What stops this decision, as the messages beside the fields concerned. Empty when it can go. */
   const problemsOf = (rule: Rule) => ({
     ...decisionProblems(rule, { remarks, recurring: recurringText, nonRecurring: nonRecurringText, sought: app.total, items: deficiencyItems }),
+    ...(wordCount(remarks) > REMARK_WORDS ? { remarks: `Keep the remarks to ${REMARK_WORDS} words. They are ${wordCount(remarks)}.` } : {}),
     certification: rule.action === "forward" && forwardBlocked ? forwardBlockedReason(blockers, awaiting.length) : undefined,
   });
   const problems: Partial<ReturnType<typeof problemsOf>> = attempted ? problemsOf(attempted) : {};
+  // The dev portal holds overall remarks to 200 words ("0 / 200 words"; walkthrough of 07 Oct 2026).
+  const remarkWords = wordCount(remarks);
 
   const commit = (rule: Rule) => {
     const ctx = contextFor(rule);
@@ -442,6 +446,10 @@ export function ReviewShell({ appId }: { appId: string }) {
       {/* ── Header: who and what, not the reference in 40px ─────────────────────── */}
       <header className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
         <div className="min-w-0 basis-full space-y-1 md:basis-auto md:flex-1">
+          {/* The dev portal's ← (walkthrough of 07 Oct 2026), named for where it goes. */}
+          <Link href={role.home} className={buttonClasses("primary", "text", "sm", "!px-0")}>
+            <Icon name="arrow_back" size={16} aria-hidden /> My Queue
+          </Link>
           {/* Spelled out: "PD" named both the Programme Division and the Programme Director. */}
           <p className="text-body-3 text-ink-muted">
             Review · {gradeTitle}
@@ -484,6 +492,7 @@ export function ReviewShell({ appId }: { appId: string }) {
                 <Facts
                   items={[
                     ["NGO-Darpan ID", ngo?.darpanId ?? "—"],
+                    ["Registration No.", ngo?.registrationNo ?? "—"],
                     ["Case Type", app.caseType === "New" ? "New project" : `${app.instalment ? ordinal(app.instalment) : "Next"} instalment of an ongoing project`],
                     ["Total Beneficiaries", `${app.totalBeneficiaries} (SC ${app.scBeneficiaries} · other ${app.otherBeneficiaries})`],
                     ["Grant Sought", `${formatGrant(app.total)} (recurring ${formatGrant(app.recurring)} · non-recurring ${formatGrant(app.nonRecurring)})`],
@@ -715,7 +724,7 @@ export function ReviewShell({ appId }: { appId: string }) {
                   id="officer-remarks"
                   required
                   error={problems.remarks}
-                  hint={sendsMessage ? "The NGO reads this above the items it must correct." : "Recorded on the file's movement history."}
+                  hint={`${sendsMessage ? "The NGO reads this above the items it must correct." : "Recorded on the file's movement history."} ${remarkWords} of ${REMARK_WORDS} words.`}
                 >
                   {(control) => (
                     <Textarea {...control} value={remarks} onChange={(e) => setRemarks(e.target.value)} rows={4} />
@@ -1152,6 +1161,10 @@ function documentsInOrder(app: Pick<GrantApplication, "documents">): MockDoc[] {
 /** Digits only — what a rupee field stores. */
 const digits = (v: string) => v.replace(/[^\d]/g, "");
 
+/** The overall remarks' limit, in words, as the dev portal counts them. */
+const REMARK_WORDS = 200;
+const wordCount = (v: string) => (v.trim() ? v.trim().split(/\s+/).length : 0);
+
 /** The same digits with Indian grouping, as the officer types: "6300000" reads "63,00,000". */
 const grouped = (v: string) => (v === "" ? "" : Number(v).toLocaleString("en-IN"));
 
@@ -1514,6 +1527,8 @@ function DocumentsPanel({
                     summary={verdictSummary(d)}
                     hint={
                       [
+                        // What the document must contain (NAPDDR's description; the dev portal's ⓘ).
+                        d.description ?? null,
                         // A corrected file names what it replaced; the version count would say the
                         // same thing again, and "Opened" is the old gate, which is now the verdict.
                         corrected.has(d.id) && d.uploadedAt
@@ -1603,7 +1618,9 @@ function OfficerSupportingDocuments({ app, editable }: { app: GrantApplication; 
   const [refused, setRefused] = React.useState<string | null>(null);
   const input = React.useRef<HTMLInputElement>(null);
   const files = app.officerDocuments ?? [];
-  const rule = acceptFromNote("PDF / JPG / PNG · Max 5 MB per file");
+  // 10 MB, as the dev portal's officer upload states ("PDF, JPG or PNG, up to 10 MB"; walkthrough of
+  // 07 Oct 2026). The NGO's own uploads keep their scheme's 5 MB.
+  const rule = acceptFromNote("PDF / JPG / PNG · Max 10 MB per file");
   return (
     <div className="space-y-3">
       <SectionTitle as={3} title={`Officer Supporting Documents (${files.length})`} description={editable ? "Attached to your forward, deficiency or query, and kept with the file." : undefined} />
@@ -1652,7 +1669,7 @@ function OfficerSupportingDocuments({ app, editable }: { app: GrantApplication; 
               const file = { name: f.name, sizeKb: Math.max(1, Math.round(f.size / 1024)) };
               const why = rejectionOf(file, rule);
               if (why) {
-                setRefused(why === "rejected-size" ? `${f.name} is ${fileSizeLabel(file.sizeKb)}. The limit is 5 MB.` : `${f.name} is not a PDF, JPG or PNG file.`);
+                setRefused(why === "rejected-size" ? `${f.name} is ${fileSizeLabel(file.sizeKb)}. The limit is 10 MB.` : `${f.name} is not a PDF, JPG or PNG file.`);
                 return;
               }
               // The same checks an applicant's upload meets, on the file's own bytes (doc-checks.ts).

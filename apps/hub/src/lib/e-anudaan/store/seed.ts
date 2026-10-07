@@ -1929,6 +1929,7 @@ export function buildSeed(): {
           title: d.title,
           group: permanent.has(d.n) ? ("permanent" as const) : ("annual" as const),
           optional: d.optional,
+          ...(d.description ? { description: d.description } : {}),
           reviewStatus: "Pending" as const,
           fileName: `annexure-${i + 1}.pdf`,
           sizeKb: 180 + ((i * 137) % 1100),
