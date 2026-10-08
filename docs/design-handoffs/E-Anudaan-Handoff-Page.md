@@ -708,6 +708,21 @@ checklist: `docs/audit/e-anudaan-handoff-audit-and-checklist-2026-10-08.html`.
 Rule updated: `.claude/rules/figma-handoff-page-structure.md` §8 (Start Here frames in reading order, no counts) and §10a
 (numbered pages). Left to draw: 18 recording items, listed in the audit.
 
+## 5m. Second pass — the 18 gaps drawn and the file made consistent — 8 Oct 2026
+
+Eight helper agents in parallel (seven Opus, one Sonnet for the menu swaps), then two fix agents and a lead pass;
+reports and before/after renders under the session scratchpad `agents/`. Summary in
+`docs/audit/e-anudaan-handoff-file-audit-2026-10-08.md` § Second Pass; item-by-item placement in
+`e-anudaan-aso-pd-placement-checklist-2026-10-08.md`; pictures in `before-after-figma-second-pass-2026-10-08.html`.
+
+New screens on page 3: NAPDDR Grant Tab (Editing) `457:241595`, (Save Refused) `457:241810`, Rehabilitation Centre Grant
+Tab `457:36775`, Application Tab (Section Open) `457:261495`, SO History Tab (Earlier Sanction of This Project)
+`457:253685`, IFD SO NAPDDR Grant Tab `457:248916` (new version `457:248913`), Confirm Rejecting the Application
+`473:47887`, Confirm Recording Financial Concurrence `483:46164` — each with its phone version where the prototype has one.
+Renamed: "Raise a Deficiency (Dialog)" → "Forward with a Document Marked Needs Correction (Dialog)" (`3:27066`), as the
+prototype has no Raise a Deficiency dialog. Page 3 re-laid in reading order (versions by division and grade; rows by
+tab, then state).
+
 ## 6. Adding to the page
 
 - **A screen:** into the right row of its flow; name `Role / Screen / State`; phone version ends ` · Mobile`.

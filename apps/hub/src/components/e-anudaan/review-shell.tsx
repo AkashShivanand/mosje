@@ -19,6 +19,7 @@ import {
   FormField,
   Icon,
   Input,
+  Link as TextLink,
   ListGroup,
   ListRow,
   Menu,
@@ -410,7 +411,13 @@ export function ReviewShell({ appId }: { appId: string }) {
   ];
   const onMoreAction = (id: string) => {
     if (id === "report") setReportOpen(true);
-    else setDialog(id as "showCause" | "inspection");
+    else {
+      // Both dialogs belong to their History cards (Show Cause Notices, Inspections), which live in
+      // the History tab; opened from another tab, they rendered inside a hidden panel and nothing
+      // appeared (dialog audit, 8 Oct 2026). Open the tab they belong to, then the dialog.
+      setTab("history");
+      setDialog(id as "showCause" | "inspection");
+    }
   };
 
   const previewedDoc = previewing ? (app.documents.find((d) => d.id === previewing.id) ?? previewing) : null;
@@ -1124,12 +1131,23 @@ function ApplicationAnswers({ app }: { app: GrantApplication }) {
   );
 }
 
-function answer(field: FieldDef, raw: string | undefined): string {
+/** An answer that is a web address — the organisation's website — the officer opens it to check it. */
+const WEB_ADDRESS = /^(https?:\/\/|www\.)[^\s]+\.[^\s]+$/i;
+
+function answer(field: FieldDef, raw: string | undefined): React.ReactNode {
   const v = (raw ?? "").trim();
   if (!v) return "Not provided";
   if (field.kind === "date") return formatDate(v) || v;
   if (field.kind === "time") return formatTime(v) || v;
   if (field.kind === "checkbox") return v === "true" ? "Yes" : "No";
+  // The dev portal links the website (walkthrough of 07 Oct 2026); it opens in a new tab.
+  if (WEB_ADDRESS.test(v)) {
+    return (
+      <TextLink href={/^https?:/i.test(v) ? v : `https://${v}`} external size="sm" className="break-all">
+        {v}
+      </TextLink>
+    );
+  }
   return v;
 }
 

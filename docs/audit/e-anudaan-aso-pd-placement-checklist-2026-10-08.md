@@ -13,14 +13,16 @@ Where every item of the 07 Oct 2026 recording tally (`docs/audit/e-anudaan-aso-p
 
 | Placed | Recording items (118) | Added items ➕ (12) | Total |
 |---|---|---|---|
-| Both | 88 | 9 | 97 |
-| Prototype only | 16 | 3 | 19 |
+| Both | 104 | 11 | 115 |
+| Prototype only | 0 | 1 | 1 (X12, code-only behaviour — nothing to draw) |
 | Figma only | 0 | 0 | 0 |
 | Neither — left out | 8 | 0 | 8 |
 | Neither — not shown in recording | 6 | 0 | 6 |
 | **Total** | **118** | **12** | **130** |
 
-### Prototype Only — the Figma Gaps
+### The Former Figma Gaps — All Drawn on 08 Oct 2026
+
+Every item below was built but not drawn when this checklist was first compiled. All are now drawn; the rows in the tables carry the frame. Kept here as the record of what was closed.
 
 | # | Item | What is missing in Figma |
 |---|---|---|
@@ -73,7 +75,7 @@ Eighteen of the nineteen are real drawing gaps; X12 needs no frame.
 | A13 | Alert "13,028 applications pending beyond 7 days" | ✅ | ASO queue › Over-7-days band (danger tone) and card count — `action-queue.tsx:161, 229` | Queue, desktop ([3:36854][q]) "Over 7 days (6) · 60%" | Both |
 | A14 | "Applications Awaiting Action", "Showing 1–10 of 13,033" | ✅ | ASO queue › Applications table, count line `worklist-table.tsx:701`, table `:724-729`, pager `:485` | Queue, desktop ([3:36854][q]) "10 applications" and table. Pager not drawn (ten rows) | Both |
 | A15 | Type chips: All, New, Ongoing, 1st/2nd/3rd Instalment, Not stated | 🔁 | ASO queue › Case Type filter — `worklist-table.tsx:513-515, 692` | Queue, desktop ([3:36854][q]) "Case Type · All Case Types"; phone ([3:35725][qm]) | Both |
-| A16 | Sort: Default order | 🔁 | ASO queue › sortable columns — `worklist-table.tsx:168, 207, 278` | Not drawn in Figma (no sort mark on any header of [3:36854][q]) | Prototype only |
+| A16 | Sort: Default order | 🔁 | ASO queue › sortable columns — `worklist-table.tsx:168, 207, 278` | Sort marks on Project ID, State, Scheme and Pending For — every desktop queue, e.g. ASO queue ([3:36854](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=3-36854)) — drawn 8 Oct | Both |
 | A17 | Search by GIA ID / NGO | ✅ | ASO queue › Search "Project ID or NGO" — `worklist-table.tsx:689` | Queue, desktop ([3:36854][q]) "Search · Project ID or NGO" | Both |
 | A18 | All states | 🆕 | ASO queue › State filter — `worklist-table.tsx:691` | Queue, desktop ([3:36854][q]) and phone ([3:35725][qm]) — drawn 8 Oct | Both |
 | A19 | All districts (pick a state) | ⛔ | — (left out); district shown under the state in each row — `worklist-table.tsx:218` | — (left out) | Neither — left out (eleven files; a district filter would empty the queue) |
@@ -97,7 +99,7 @@ Eighteen of the nineteen are real drawing gaps; X12 needs no frame.
 | B4 | SM1 Fee Claims ▸ | ❓ | — | — | Neither — not shown in recording |
 | B5 | AVYAY (Atal Vayo Abhyuday Yojana) ▸ | ❓ | — | — | Neither — not shown in recording |
 | B6 | NAPDDR ▸ Approval & Sanction · Review Queue · MIS Overview · Scoring & Selection | ❓ | — | — | Neither — not shown in recording |
-| B7 | NAPDDR ▸ Sent · IR Repository | 🔁 | Pages `app/portals/e-anudaan/(console)/dashboard/sent/page.tsx` and `…/ir-repository/page.tsx`, in another role's sidebar (`roles.ts:230-231`); not in the ASO's | Not drawn in Figma (not in any frame read) | Prototype only |
+| B7 | NAPDDR ▸ Sent · IR Repository | 🔁 | Pages `app/portals/e-anudaan/(console)/dashboard/sent/page.tsx` and `…/ir-repository/page.tsx`, in another role's sidebar (`roles.ts:230-231`); not in the ASO's | Programme Director's Sent Applications and Inspection Reports (page 4; not the ASO's menu) ([3:17037](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=3-17037)) — drawn 8 Oct | Both |
 | B8 | SMILE ▸ | ❓ | — | — | Neither — not shown in recording |
 | B9 | SHRESHTA M2 — Dealing Assistant | 🔁 | Sidebar › "All Applications" — `roles.ts:109` | Queue, desktop ([3:36854][q]) sidebar | Both |
 | B10 | Sanctioned Applications | ✅ | Sidebar — `roles.ts:110` | Queue, desktop ([3:36854][q]) sidebar | Both |
@@ -129,7 +131,7 @@ Eighteen of the nineteen are real drawing gaps; X12 needs no frame.
 | # | In the recording | Status (tally key) | Prototype — where | Figma — where | Placed |
 |---|---|---|---|---|---|
 | D1 | Every answer, grouped (Organisation & Registration, Other Details…) | ✅ | ASO review › Application tab › "Application" accordion, each section with its question count — `review-shell.tsx:1089-1121` | NAPDDR Application ([408:27862][ra]) thirteen sections "1. Application Type 3 questions" … "13. Verification & Authorised Person 8 questions" | Both |
-| D2 | Org website as a link | ✅ | ASO review › Application tab › section answers, as recorded (plain text) — `review-shell.tsx:1117, 1127` | Not drawn in Figma: sections drawn collapsed, no answers ([408:27862][ra]) | Prototype only |
+| D2 | Org website as a link | ✅ | ASO review › Application tab › section answers, as recorded (plain text) — `review-shell.tsx:1117, 1127` | Application tab, section open — the website as a link (prototype now links it too) ([457:261495](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=457-261495)) — drawn 8 Oct | Both |
 
 ## E. Amount Pipeline
 
@@ -137,7 +139,7 @@ Eighteen of the nineteen are real drawing gaps; X12 needs no frame.
 |---|---|---|---|---|---|
 | E1 | Four stages: Proposed (ASO) → Recommended (JS-PD) → Concurred (JS-IFD) → Final Approved (JS-PD) | 🆕 | ASO review › Grant tab › Amount Pipeline — `grant-recommendation.tsx:78-104`; stages `cost-sheet.ts:314-323` | NAPDDR Grant ([410:37644][rg]) Proposed · Recommended · Concurred · Sanctioned (Programme Director); phone ([424:35998][rgm]); open question recorded in the Needs Discussion note ([135:27862][note]) | Both |
 | E2 | Each stage "Pending" | 🆕 | Amount Pipeline step description: amount, who, date, or "Awaiting the …" — `grant-recommendation.tsx:94` | NAPDDR Grant ([410:37644][rg]) "Awaiting the Assistant Section Officer, Programme Division" and each stage's officer. A stage with a recorded amount is not drawn | Both |
-| E3 | "Updates when the file is forwarded" (00:02:21) | 🆕 | Read from the file's movement — `cost-sheet.ts:320-323` | Not drawn in Figma: only the opening state | Prototype only |
+| E3 | "Updates when the file is forwarded" (00:02:21) | 🆕 | Read from the file's movement — `cost-sheet.ts:320-323` | Integrated Finance Division — Section Officer, NAPDDR File: pipeline with amounts, officers and dates ([457:248916](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=457-248916)) — drawn 8 Oct | Both |
 
 ## F. Previous Sanctions — This NGO
 
@@ -145,7 +147,7 @@ Eighteen of the nineteen are real drawing gaps; X12 needs no frame.
 |---|---|---|---|---|---|
 | F1 | Table: Financial Year, Instalment, Sanction No., Date, Project Type, Sanctioned, Disbursed | 🆕 | ASO review › History tab › Funding History › Previously Allocated Funds — This NGO: Year, Sanction (date), Project (scheme · instalment), Sanctioned, Disbursed — `review-panels.tsx:153-202` | NAPDDR History ([410:38195][rh]) rows "SAN/2026-27/04789 · Sanctioned ₹23.12 L · Disbursed ₹0 / SR/MH/THN/03656 · AVYAY · New project · 22 Jul 2026"; phone ([424:37087][rhm]) | Both |
 | F2 | "Same financial year or earlier" (00:02:48) | ✅ | All years, newest first — `review-panels.tsx:157-202` (pages of 5/25) | NAPDDR History ([410:38195][rh]) | Both |
-| F3 | Same-project predecessor highlighted | 🆕 | "This Project" badge on the row — `review-panels.tsx:193` (shown only when such a row exists) | Not drawn in Figma | Prototype only |
+| F3 | Same-project predecessor highlighted | 🆕 | "This Project" badge on the row — `review-panels.tsx:193` (shown only when such a row exists) | Section Officer — History Tab (Earlier Sanction of This Project) ([457:253685](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=457-253685)) — drawn 8 Oct | Both |
 | F4 | Earlier instalment of this year's grant flagged in green | 🆕 | "This Year" badge — `review-panels.tsx:170` | NAPDDR History ([410:38195][rh]) "2026-27 · This Year" | Both |
 | F5 | Total previously sanctioned | ✅ | "Total previously allocated: … across N sanction orders" — `review-panels.tsx:204-206` | NAPDDR History ([410:38195][rh]) "Total previously allocated: ₹23.58 Cr across 61 sanction orders." | Both |
 | F6 | NAPDDR sanctions only | 🔁 | Every scheme, named per row — `review-panels.tsx:189-191` | NAPDDR History ([410:38195][rh]) rows name AVYAY and NAPDDR | Both |
@@ -155,23 +157,23 @@ Eighteen of the nineteen are real drawing gaps; X12 needs no frame.
 | # | In the recording | Status (tally key) | Prototype — where | Figma — where | Placed |
 |---|---|---|---|---|---|
 | G1 | "Cost Sheet — DDAC" | 🆕 | ASO review › Grant tab › Cost Sheet title and description — `grant-recommendation.tsx:165-170` | NAPDDR Grant ([410:37644][rg]) "Cost Sheet"; "District De-Addiction Centre · Opens at the scheme's cost norm…" | Both |
-| G2 | Differs by project type (DDAC; IRCA by bed capacity) | 🆕 | Schedules DDAC and IRCA 15/30/50 — `cost-sheet.ts:121, 142` | Not drawn in Figma for IRCA (DDAC only, [410:37644][rg]) | Prototype only |
-| G3 | Bed-capacity dropdown | 🆕 | Cost Sheet › "Bed Capacity" select (general IRCA) — `grant-recommendation.tsx:175-190` | Not drawn in Figma | Prototype only |
+| G2 | Differs by project type (DDAC; IRCA by bed capacity) | 🆕 | Schedules DDAC and IRCA 15/30/50 — `cost-sheet.ts:121, 142` | NAPDDR Rehabilitation Centre, Grant Tab — IRCA 30-bed schedule ([457:36775](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=457-36775)) — drawn 8 Oct | Both |
+| G3 | Bed-capacity dropdown | 🆕 | Cost Sheet › "Bed Capacity" select (general IRCA) — `grant-recommendation.tsx:175-190` | NAPDDR Rehabilitation Centre, Grant Tab — Bed Capacity select ([457:36775](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=457-36775)) — drawn 8 Oct | Both |
 | G4 | Recommended amount defaults to the norm | 🆕 | Opens at the norm — `grant-recommendation.tsx:106-110` | NAPDDR Grant ([410:37644][rg]) every amount equals its norm (e.g. "Norm ₹3,25,000" / "3,25,000") | Both |
 | G5 | "Seeded from the cost norms — not saved yet" | 🆕 | "Not Saved" / "Unsaved Changes" / "Saved" badges `grant-recommendation.tsx:153-158`; "Saved by … on …" `:69, 168` | NAPDDR Grant ([410:37644][rg]) "Not Saved". "Unsaved Changes" and "Saved by …" not drawn | Both |
 | G6 | NGO requested (total) | 🆕 | NGO's claim per head `grant-recommendation.tsx:386`; NGO's Claim in total `:216` | NAPDDR Grant ([410:37644][rg]) "NGO's claim ₹4,00,000" / "₹72,00,000" per head; "NGO's Claim ₹76,00,000" | Both |
 | G7 | Non-recurring and recurring sections | 🆕 | Two heads — `grant-recommendation.tsx:112, 192` | NAPDDR Grant ([410:37644][rg]) "Non-Recurring (One-Time)", "Recurring (Annual)" | Both |
 | G8 | Columns #, Item, Norm, Proposed (ASO-PD), Remarks, delete | 🆕 | Item with its norm beneath, amount, remove — `grant-recommendation.tsx:313-321, 430-466` | NAPDDR Grant ([410:37644][rg]) item, "Norm ₹…" beneath, amount field, delete buttons | Both |
-| G9 | Remarks box on every row | 🔁 | Reason field only when the amount leaves the norm — `grant-recommendation.tsx:467-475` | Not drawn in Figma | Prototype only |
-| G10 | Delete with "Remove cost-sheet item?" dialog | 🔁 | Remove, undone in place ("Removed: … ↶") — `grant-recommendation.tsx:402-410` | Not drawn in Figma (remove buttons only) | Prototype only |
+| G9 | Remarks box on every row | 🔁 | Reason field only when the amount leaves the norm — `grant-recommendation.tsx:467-475` | NAPDDR, Grant Tab (Editing) — reason field ([457:241595](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=457-241595)) — drawn 8 Oct | Both |
+| G10 | Delete with "Remove cost-sheet item?" dialog | 🔁 | Remove, undone in place ("Removed: … ↶") — `grant-recommendation.tsx:402-410` | NAPDDR, Grant Tab (Editing) — removed item with restore ([457:241595](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=457-241595)) — drawn 8 Oct | Both |
 | G11 | EITHER/OR rows (Doctor rural / urban), delete one | 🆕 | "Doctor — Choose One" radio group — `grant-recommendation.tsx:338-357` | NAPDDR Grant ([410:37644][rg]) "Doctor — Choose One · Rural · Urban"; phone ([424:35998][rgm]) | Both |
 | G12 | + Add item | 🆕 | "Add Item" per head — `grant-recommendation.tsx:396-401` | NAPDDR Grant ([410:37644][rg]) "Add Item" | Both |
 | G13 | Norm total · NGO claimed · Admissible (min) per head | 🆕 | Per head: Norm · NGO's claim · Admissible — `grant-recommendation.tsx:383-388` | NAPDDR Grant ([410:37644][rg]) "Norm ₹63,44,000 NGO's claim ₹72,00,000 Admissible ₹63,44,000" | Both |
-| G14 | "Exceeds admissible by ₹…" | 🆕 | The excess and why the claim is the ceiling — `grant-recommendation.tsx:389-395` | Not drawn in Figma | Prototype only |
+| G14 | "Exceeds admissible by ₹…" | 🆕 | The excess and why the claim is the ceiling — `grant-recommendation.tsx:389-395` | NAPDDR, Grant Tab (Editing) — over the admissible amount ([457:241595](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=457-241595)) — drawn 8 Oct | Both |
 | G15 | "Cap to admissible" button | ⛔ | — (left out) | — (left out) | Neither — left out (choosing what to cut is the officer's judgement) |
 | G16 | Total admissible | 🆕 | "Admissible Ceiling" — `grant-recommendation.tsx:215` | NAPDDR Grant ([410:37644][rg]) "Admissible Ceiling ₹66,89,000" | Both |
 | G17 | Total recommended grant | 🆕 | "Recommended Grant", both heads — `grant-recommendation.tsx:220-222` | NAPDDR Grant ([410:37644][rg]) "Recommended Grant ₹66,89,000" | Both |
-| G18 | "Exceeds the admissible ceiling — reduce before saving" | 🆕 | Save refused, each problem beside its row — `grant-recommendation.tsx:139-145` | Not drawn in Figma | Prototype only |
+| G18 | "Exceeds the admissible ceiling — reduce before saving" | 🆕 | Save refused, each problem beside its row — `grant-recommendation.tsx:139-145` | NAPDDR, Grant Tab (Save Refused) ([457:241810](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=457-241810)) — drawn 8 Oct | Both |
 | G19 | Reset | 🆕 | "Reset to Norm" — `grant-recommendation.tsx:233-241` | NAPDDR Grant ([410:37644][rg]) "Reset to Norm" | Both |
 | G20 | Save cost sheet | 🆕 | "Save Cost Sheet" — `grant-recommendation.tsx:242-245` | NAPDDR Grant ([410:37644][rg]) "Save Cost Sheet"; phone ([424:35998][rgm]) | Both |
 
@@ -189,11 +191,11 @@ Eighteen of the nineteen are real drawing gaps; X12 needs no frame.
 
 | # | In the recording | Status (tally key) | Prototype — where | Figma — where | Placed |
 |---|---|---|---|---|---|
-| I1 | "Officer Supporting Documents (0)" | ✅ | ASO review › Documents tab › Officer Supporting Documents (n) — `review-shell.tsx:1589, 1626` | Not drawn in Figma | Prototype only |
-| I2 | "PDF, JPG or PNG, up to 10 MB" | 🆕 | Upload rule, 10 MB — `review-shell.tsx:1621-1623, 1672` | Not drawn in Figma | Prototype only |
-| I3 | "No supporting documents uploaded yet" | ✅ | Empty line — `review-shell.tsx:1646` | Not drawn in Figma | Prototype only |
-| I4 | Document title (optional) | ✅ | "Document Title", optional — `review-shell.tsx:1651` | Not drawn in Figma | Prototype only |
-| I5 | Upload PDF/JPG/PNG | ✅ | "Upload PDF, JPG or PNG" — `review-shell.tsx:1656` | Not drawn in Figma | Prototype only |
+| I1 | "Officer Supporting Documents (0)" | ✅ | ASO review › Documents tab › Officer Supporting Documents (n) — `review-shell.tsx:1589, 1626` | Officer Supporting Documents — end of every Documents tab, e.g. NAPDDR Documents Tab ([410:37090](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=410-37090)) — drawn 8 Oct | Both |
+| I2 | "PDF, JPG or PNG, up to 10 MB" | 🆕 | Upload rule, 10 MB — `review-shell.tsx:1621-1623, 1672` | As I1 ([410:37090](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=410-37090)) — drawn 8 Oct | Both |
+| I3 | "No supporting documents uploaded yet" | ✅ | Empty line — `review-shell.tsx:1646` | As I1 ([410:37090](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=410-37090)) — drawn 8 Oct | Both |
+| I4 | Document title (optional) | ✅ | "Document Title", optional — `review-shell.tsx:1651` | As I1 ([410:37090](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=410-37090)) — drawn 8 Oct | Both |
+| I5 | Upload PDF/JPG/PNG | ✅ | "Upload PDF, JPG or PNG" — `review-shell.tsx:1656` | As I1 ([410:37090](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=410-37090)) — drawn 8 Oct | Both |
 
 ## J. Show Cause Notices
 
@@ -255,8 +257,8 @@ Eighteen of the nineteen are real drawing gaps; X12 needs no frame.
 | X2 | Tab labels carry what is owed: "Documents (12 to Verify)", "Grant (2 to Save)" | ➕ | `review-shell.tsx:425-428` | NAPDDR Application ([408:27862][ra]) tab labels | Both |
 | X3 | "Save the Cost Sheet" and "Save the Statement of Account" in Before You Forward | ➕ | `review-shell.tsx:1260-1286` | NAPDDR Application ([408:27862][ra]) both steps with "Open the Cost Sheet" / "Open the Statement of Account" | Both |
 | X4 | The forward waits for both saves | ➕ | Forward disabled with the reason — `review-shell.tsx:754-771` | NAPDDR Application ([408:27862][ra]) "…the cost sheet is not saved and the Statement of Account is not saved." | Both |
-| X5 | Statement marked "Out of Date" when the sheet is saved again | ➕ | "Out of Date" badge `grant-recommendation.tsx:520`; "The Release Has Changed" alert `:557-560` | Not drawn in Figma | Prototype only |
-| X6 | Discard Changes | ➕ | `grant-recommendation.tsx:228-232` | Not drawn in Figma | Prototype only |
+| X5 | Statement marked "Out of Date" when the sheet is saved again | ➕ | "Out of Date" badge `grant-recommendation.tsx:520`; "The Release Has Changed" alert `:557-560` | NAPDDR, Grant Tab (Editing) — Statement "Out of Date" and "The Release Has Changed" ([457:241595](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=457-241595)) — drawn 8 Oct | Both |
+| X6 | Discard Changes | ➕ | `grant-recommendation.tsx:228-232` | NAPDDR, Grant Tab (Editing) — Discard Changes ([457:241595](https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=457-241595)) — drawn 8 Oct | Both |
 | X7 | Certification step before forwarding | ➕ | `review-shell.tsx:684-705` | NAPDDR Application ([408:27862][ra]) certification checkbox and "Record Certification" | Both |
 | X8 | Raise Deficiency, Reject, More Actions (inspection, report) | ➕ | Buttons `review-shell.tsx:737-795`; More Actions menu `:406-410, 649-653` | NAPDDR Application ([408:27862][ra]) "Raise Deficiency", "Reject", "More Actions"; Schedule an Inspection ([3:25580][pins]); Printable Review Report ([3:25268][prep]) | Both |
 | X9 | Automatic-check result on each document | ➕ | Check as advice — `review-shell.tsx:1462, 1485-1487, 1552, 1567` | NAPDDR Documents ([410:37090][rd]) "Automatic check · Looks right · 100%"; Document Actions Menu ([3:26154][pmenu]) "Automatic Check Report" | Both |

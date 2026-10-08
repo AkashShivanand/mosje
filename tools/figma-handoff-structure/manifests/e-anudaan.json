@@ -1844,7 +1844,7 @@
    ]
   },
   {
-   "page": "NGO · After Applying and Getting Paid",
+   "page": "6 · NGO · After Applying and Getting Paid",
    "id": "30:208304",
    "zones": [
     {
@@ -2396,7 +2396,7 @@
      "id": "30:208314",
      "children": [
       {
-       "name": "Officers — Reviewing Applications",
+       "name": "Programme and Finance Officers — Reviewing Applications",
        "id": "3:22527",
        "children": [
         {
@@ -2602,6 +2602,10 @@
                "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Application Tab"
               },
               {
+               "id": "457:261495",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Application Tab (Section Open)"
+              },
+              {
                "id": "410:37090",
                "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Documents Tab"
               },
@@ -2610,8 +2614,20 @@
                "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Grant Tab"
               },
               {
+               "id": "457:241595",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Grant Tab (Editing)"
+              },
+              {
+               "id": "457:241810",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Grant Tab (Save Refused)"
+              },
+              {
                "id": "410:38195",
                "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, History Tab"
+              },
+              {
+               "id": "457:36775",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR Rehabilitation Centre, Grant Tab"
               }
              ]
             },
@@ -2624,6 +2640,10 @@
                "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Application Tab — Mobile"
               },
               {
+               "id": "457:262072",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Application Tab (Section Open) — Mobile"
+              },
+              {
                "id": "424:35247",
                "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Documents Tab — Mobile"
               },
@@ -2632,8 +2652,20 @@
                "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Grant Tab — Mobile"
               },
               {
+               "id": "457:242025",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Grant Tab (Editing) — Mobile"
+              },
+              {
+               "id": "457:242256",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Grant Tab (Save Refused) — Mobile"
+              },
+              {
                "id": "424:37087",
                "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, History Tab — Mobile"
+              },
+              {
+               "id": "457:246193",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR Rehabilitation Centre, Grant Tab — Mobile"
               }
              ]
             }
@@ -2660,6 +2692,10 @@
                "name": "Officer / Review an Application / Programme Division — Section Officer — History Tab"
               },
               {
+               "id": "457:253685",
+               "name": "Officer / Review an Application / Programme Division — Section Officer — History Tab (Earlier Sanction of This Project)"
+              },
+              {
                "id": "3:31589",
                "name": "Officer / Review an Application / Programme Division — Section Officer (Resubmitted with Changed Answers) — Application Tab"
               }
@@ -2680,6 +2716,10 @@
               {
                "id": "422:42911",
                "name": "Officer / Review an Application / Programme Division — Section Officer — History Tab — Mobile"
+              },
+              {
+               "id": "457:254079",
+               "name": "Officer / Review an Application / Programme Division — Section Officer — History Tab (Earlier Sanction of This Project) — Mobile"
               },
               {
                "id": "3:28743",
@@ -2858,6 +2898,32 @@
            ]
           },
           {
+           "name": "Integrated Finance Division — Section Officer, NAPDDR File",
+           "id": "457:248913",
+           "children": [
+            {
+             "name": "Desktop",
+             "id": "457:248914",
+             "frames": [
+              {
+               "id": "457:248916",
+               "name": "Officer / Review an Application / Integrated Finance Division — Section Officer — NAPDDR, Grant Tab"
+              }
+             ]
+            },
+            {
+             "name": "Mobile",
+             "id": "457:248915",
+             "frames": [
+              {
+               "id": "457:254936",
+               "name": "Officer / Review an Application / Integrated Finance Division — Section Officer — NAPDDR, Grant Tab — Mobile"
+              }
+             ]
+            }
+           ]
+          },
+          {
            "name": "Integrated Finance Division — Joint Secretary",
            "id": "428:36490",
            "children": [
@@ -2909,7 +2975,7 @@
              "frames": [
               {
                "id": "3:27066",
-               "name": "Officer / Review an Application / Raise a Deficiency (Dialog)"
+               "name": "Officer / Review an Application / Forward with a Document Marked Needs Correction (Dialog)"
               },
               {
                "id": "3:26776",
@@ -2938,6 +3004,14 @@
               {
                "id": "3:24988",
                "name": "Officer / Review an Application / Confirm Forwarding to Finance (Dialog)"
+              },
+              {
+               "id": "473:47887",
+               "name": "Officer / Review an Application / Confirm Rejecting the Application (Dialog)"
+              },
+              {
+               "id": "483:46164",
+               "name": "Officer / Review an Application / Confirm Recording Financial Concurrence (Dialog)"
               }
              ]
             }
@@ -3190,7 +3264,7 @@
    ]
   },
   {
-   "page": "Officers · Sanctioning and Inspections",
+   "page": "4 · Officers · Sanctioning and Inspections",
    "id": "31:7",
    "zones": [
     {
@@ -3492,7 +3566,7 @@
    ]
   },
   {
-   "page": "Officers · Paying Grants through PFMS",
+   "page": "5 · Officers · Paying Grants through PFMS",
    "id": "30:208307",
    "zones": [
     {
@@ -3520,7 +3594,7 @@
      "id": "30:208315",
      "children": [
       {
-       "name": "PD Maker — Preparing and Following a Payment",
+       "name": "Maker — Preparing and Following a Payment",
        "id": "284:19660",
        "children": [
         {
@@ -3602,7 +3676,7 @@
        ]
       },
       {
-       "name": "PD Checker — Authorising a Payment",
+       "name": "Checker — Authorising a Payment",
        "id": "284:20077",
        "children": [
         {

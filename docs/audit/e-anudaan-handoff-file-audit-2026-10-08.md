@@ -86,19 +86,40 @@ moves, and every page is numbered in the order an application travels. The revie
 drawn, built and linked from the front page. One decision — who gives the final sanction — still holds four journeys
 open, and 18 smaller screen states are built but not yet drawn.
 
-## Left to Draw — the 18 Gaps
+## Second Pass, 08 Oct 2026 — Gaps Drawn, Issues Fixed
 
-| Items | What | Where it would go |
-|---|---|---|
-| I1–I5 | Officer Supporting Documents card (title and count, 10 MB rule, empty line, Document Title, Upload) | The decision panel of every ASO review screen |
-| G2, G3 | IRCA cost sheets (15 / 30 / 50 beds) and the Bed Capacity select | A new screen beside the NAPDDR Grant tab: "NAPDDR, Grant Tab — IRCA File" |
-| G9, G10, G14, X6 | Reason field, removed item with restore, excess over admissible, Discard Changes | A new state: "NAPDDR, Grant Tab — Editing" |
-| G18 | Save refused, each problem beside its row | A new state: "NAPDDR, Grant Tab — Save Refused" |
-| X5 | Statement "Out of Date" badge and "The Release Has Changed" alert | Same Editing state |
-| E3 | Amount Pipeline with amounts, officers and dates | The costed IRCA file further up the chain (Integrated Finance Division section) |
-| D2 | Application answers expanded (the website as a link) | Application tab, one section open |
-| F3 | "This Project" mark on an earlier sanction | History tab of a file with an earlier sanction of its own project |
-| A16 | Sort marks on the queue's column headers | My Queue table header |
-| B7 | Sent and IR Repository | Programme Director's pages; not the ASO's — confirm before drawing |
+All 18 drawing gaps are drawn, and every issue the audit and the helper agents found was fixed or is listed below
+for a decision. Recording coverage is now **115 of 130 placed in both** the prototype and Figma; one item is code-only
+behaviour (nothing to draw); 8 are left out with reasons; 6 were not shown in the recording.
+
+| Item | Drawn as |
+|---|---|
+| Officer Supporting Documents (I1–I5) | At the end of all 20 Documents tabs — editable for the ASO and the uncertified SO, read-only for the rest |
+| IRCA cost sheet, Bed Capacity (G2, G3) | NAPDDR Rehabilitation Centre, Grant Tab (desktop, phone) |
+| Reason, removed item, over the admissible amount, Discard Changes, statement Out of Date (G9, G10, G14, X5, X6) | NAPDDR, Grant Tab (Editing) |
+| Save refused (G18) | NAPDDR, Grant Tab (Save Refused) |
+| Pipeline with amounts (E3) | New version: Integrated Finance Division — Section Officer, NAPDDR File |
+| Application answers, website (D2) | NAPDDR, Application Tab (Section Open); the prototype now links the website too |
+| "This Project" mark (F3) | Section Officer — History Tab (Earlier Sanction of This Project) |
+| Sort marks (A16) | Every desktop queue |
+| Sent, IR Repository (B7) | Already drawn on page 4 (Programme Director) |
+
+Fixed across the file: every officer's My Queue (desktop and phone) matches the prototype; every desktop screen on
+page 3 carries its officer's side menu; officer initials and bells match each officer; each Summary carries its own
+NGO's registration number; Application cards, Summary order and the remarks word count follow the prototype; Project
+Records and Inspections cards on History tabs; full File Movement lists; all eight dialogs follow the prototype, plus
+Confirm Rejecting the Application and Confirm Recording Financial Concurrence; every page guide has a linked Find a
+Screen list and Previous / Next; Start Here says each thing once.
+
+Fixed in the prototype: the website answer is a link; More Actions → Show Cause / Inspection now opens the History tab
+and the dialog (it rendered inside a hidden panel); "1 days" reads "1 day".
+
+### Decisions for the Owner
+| Decision | What is drawn for now |
+|---|---|
+| Who gives the final sanction | The Programme Director (four journeys stay red) |
+| The prototype has no "Raise a Deficiency" dialog — the button records at once | The frame now shows the real dialog in that flow: "Forward with 1 Document Marked Needs Correction?" |
+| Four PFMS journeys were red on the Portal Map but never named or noted as Needs Discussion on their page | Shown grey, their open points kept as one Status question; rename and note them on page 5 to make them red again |
+| "IR Repository" (menu) vs "Inspection Reports" (screen name) | Screen keeps the plain-English name |
 
 Full checklist, item by item, with prototype and Figma placement: `e-anudaan-aso-pd-placement-checklist-2026-10-08.md`.

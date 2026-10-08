@@ -252,65 +252,88 @@ and inspections → 5 Payment through PFMS → 6 NGO after applying and getting 
 moves, and every page is numbered in the order an application travels. The review screen discussed on 7 October is
 drawn, built and linked from the front page. One decision — who gives the final sanction — still holds four journeys
 open, and 18 smaller screen states are built but not yet drawn.</p>
-<h2>Left to Draw — the 18 Gaps</h2>
+<h2>Second Pass, 08 Oct 2026 — Gaps Drawn, Issues Fixed</h2>
+<p>All 18 drawing gaps are drawn, and every issue the audit and the helper agents found was fixed or is listed below
+for a decision. Recording coverage is now <strong>115 of 130 placed in both</strong> the prototype and Figma; one item is code-only
+behaviour (nothing to draw); 8 are left out with reasons; 6 were not shown in the recording.</p>
 <table>
 <thead>
 <tr>
-<th>Items</th>
-<th>What</th>
-<th>Where it would go</th>
+<th>Item</th>
+<th>Drawn as</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>I1–I5</td>
-<td>Officer Supporting Documents card (title and count, 10 MB rule, empty line, Document Title, Upload)</td>
-<td>The decision panel of every ASO review screen</td>
+<td>Officer Supporting Documents (I1–I5)</td>
+<td>At the end of all 20 Documents tabs — editable for the ASO and the uncertified SO, read-only for the rest</td>
 </tr>
 <tr>
-<td>G2, G3</td>
-<td>IRCA cost sheets (15 / 30 / 50 beds) and the Bed Capacity select</td>
-<td>A new screen beside the NAPDDR Grant tab: "NAPDDR, Grant Tab — IRCA File"</td>
+<td>IRCA cost sheet, Bed Capacity (G2, G3)</td>
+<td>NAPDDR Rehabilitation Centre, Grant Tab (desktop, phone)</td>
 </tr>
 <tr>
-<td>G9, G10, G14, X6</td>
-<td>Reason field, removed item with restore, excess over admissible, Discard Changes</td>
-<td>A new state: "NAPDDR, Grant Tab — Editing"</td>
+<td>Reason, removed item, over the admissible amount, Discard Changes, statement Out of Date (G9, G10, G14, X5, X6)</td>
+<td>NAPDDR, Grant Tab (Editing)</td>
 </tr>
 <tr>
-<td>G18</td>
-<td>Save refused, each problem beside its row</td>
-<td>A new state: "NAPDDR, Grant Tab — Save Refused"</td>
+<td>Save refused (G18)</td>
+<td>NAPDDR, Grant Tab (Save Refused)</td>
 </tr>
 <tr>
-<td>X5</td>
-<td>Statement "Out of Date" badge and "The Release Has Changed" alert</td>
-<td>Same Editing state</td>
+<td>Pipeline with amounts (E3)</td>
+<td>New version: Integrated Finance Division — Section Officer, NAPDDR File</td>
 </tr>
 <tr>
-<td>E3</td>
-<td>Amount Pipeline with amounts, officers and dates</td>
-<td>The costed IRCA file further up the chain (Integrated Finance Division section)</td>
+<td>Application answers, website (D2)</td>
+<td>NAPDDR, Application Tab (Section Open); the prototype now links the website too</td>
 </tr>
 <tr>
-<td>D2</td>
-<td>Application answers expanded (the website as a link)</td>
-<td>Application tab, one section open</td>
+<td>"This Project" mark (F3)</td>
+<td>Section Officer — History Tab (Earlier Sanction of This Project)</td>
 </tr>
 <tr>
-<td>F3</td>
-<td>"This Project" mark on an earlier sanction</td>
-<td>History tab of a file with an earlier sanction of its own project</td>
+<td>Sort marks (A16)</td>
+<td>Every desktop queue</td>
 </tr>
 <tr>
-<td>A16</td>
-<td>Sort marks on the queue's column headers</td>
-<td>My Queue table header</td>
+<td>Sent, IR Repository (B7)</td>
+<td>Already drawn on page 4 (Programme Director)</td>
+</tr>
+</tbody>
+</table>
+<p>Fixed across the file: every officer's My Queue (desktop and phone) matches the prototype; every desktop screen on
+page 3 carries its officer's side menu; officer initials and bells match each officer; each Summary carries its own
+NGO's registration number; Application cards, Summary order and the remarks word count follow the prototype; Project
+Records and Inspections cards on History tabs; full File Movement lists; all eight dialogs follow the prototype, plus
+Confirm Rejecting the Application and Confirm Recording Financial Concurrence; every page guide has a linked Find a
+Screen list and Previous / Next; Start Here says each thing once.</p>
+<p>Fixed in the prototype: the website answer is a link; More Actions → Show Cause / Inspection now opens the History tab
+and the dialog (it rendered inside a hidden panel); "1 days" reads "1 day".</p>
+<h3>Decisions for the Owner</h3>
+<table>
+<thead>
+<tr>
+<th>Decision</th>
+<th>What is drawn for now</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Who gives the final sanction</td>
+<td>The Programme Director (four journeys stay red)</td>
 </tr>
 <tr>
-<td>B7</td>
-<td>Sent and IR Repository</td>
-<td>Programme Director's pages; not the ASO's — confirm before drawing</td>
+<td>The prototype has no "Raise a Deficiency" dialog — the button records at once</td>
+<td>The frame now shows the real dialog in that flow: "Forward with 1 Document Marked Needs Correction?"</td>
+</tr>
+<tr>
+<td>Four PFMS journeys were red on the Portal Map but never named or noted as Needs Discussion on their page</td>
+<td>Shown grey, their open points kept as one Status question; rename and note them on page 5 to make them red again</td>
+</tr>
+<tr>
+<td>"IR Repository" (menu) vs "Inspection Reports" (screen name)</td>
+<td>Screen keeps the plain-English name</td>
 </tr>
 </tbody>
 </table>
@@ -337,15 +360,15 @@ open, and 18 smaller screen states are built but not yet drawn.</p>
 <tbody>
 <tr>
 <td>Both</td>
-<td>88</td>
-<td>9</td>
-<td>97</td>
+<td>104</td>
+<td>11</td>
+<td>115</td>
 </tr>
 <tr>
 <td>Prototype only</td>
-<td>16</td>
-<td>3</td>
-<td>19</td>
+<td>0</td>
+<td>1</td>
+<td>1 (X12, code-only behaviour — nothing to draw)</td>
 </tr>
 <tr>
 <td>Figma only</td>
@@ -373,7 +396,8 @@ open, and 18 smaller screen states are built but not yet drawn.</p>
 </tr>
 </tbody>
 </table>
-<h3>Prototype Only — the Figma Gaps</h3>
+<h3>The Former Figma Gaps — All Drawn on 08 Oct 2026</h3>
+<p>Every item below was built but not drawn when this checklist was first compiled. All are now drawn; the rows in the tables carry the frame. Kept here as the record of what was closed.</p>
 <table>
 <thead>
 <tr>
@@ -626,8 +650,8 @@ open, and 18 smaller screen states are built but not yet drawn.</p>
 <td>Sort: Default order</td>
 <td>🔁</td>
 <td>ASO queue › sortable columns — <code>worklist-table.tsx:168, 207, 278</code></td>
-<td>Not drawn in Figma (no sort mark on any header of <a href="https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=3-36854">3:36854</a>)</td>
-<td>Prototype only</td>
+<td>Sort marks on Project ID, State, Scheme and Pending For — every desktop queue, e.g. ASO queue (<a href="https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=3-36854">3:36854</a>) — drawn 8 Oct</td>
+<td>Both</td>
 </tr>
 <tr>
 <td>A17</td>
@@ -793,8 +817,8 @@ open, and 18 smaller screen states are built but not yet drawn.</p>
 <td>NAPDDR ▸ Sent · IR Repository</td>
 <td>🔁</td>
 <td>Pages <code>app/portals/e-anudaan/(console)/dashboard/sent/page.tsx</code> and <code>…/ir-repository/page.tsx</code>, in another role's sidebar (<code>roles.ts:230-231</code>); not in the ASO's</td>
-<td>Not drawn in Figma (not in any frame read)</td>
-<td>Prototype only</td>
+<td>Programme Director's Sent Applications and Inspection Reports (page 4; not the ASO's menu) (<a href="https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=3-17037">3:17037</a>) — drawn 8 Oct</td>
+<td>Both</td>
 </tr>
 <tr>
 <td>B8</td>
@@ -999,8 +1023,8 @@ open, and 18 smaller screen states are built but not yet drawn.</p>
 <td>Org website as a link</td>
 <td>✅</td>
 <td>ASO review › Application tab › section answers, as recorded (plain text) — <code>review-shell.tsx:1117, 1127</code></td>
-<td>Not drawn in Figma: sections drawn collapsed, no answers (<a href="https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=408-27862">408:27862</a>)</td>
-<td>Prototype only</td>
+<td>Application tab, section open — the website as a link (prototype now links it too) (<a href="https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=457-261495">457:261495</a>) — drawn 8 Oct</td>
+<td>Both</td>
 </tr>
 </tbody>
 </table>
@@ -1038,8 +1062,8 @@ open, and 18 smaller screen states are built but not yet drawn.</p>
 <td>"Updates when the file is forwarded" (00:02:21)</td>
 <td>🆕</td>
 <td>Read from the file's movement — <code>cost-sheet.ts:320-323</code></td>
-<td>Not drawn in Figma: only the opening state</td>
-<td>Prototype only</td>
+<td>Integrated Finance Division — Section Officer, NAPDDR File: pipeline with amounts, officers and dates (<a href="https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=457-248916">457:248916</a>) — drawn 8 Oct</td>
+<td>Both</td>
 </tr>
 </tbody>
 </table>
@@ -1077,8 +1101,8 @@ open, and 18 smaller screen states are built but not yet drawn.</p>
 <td>Same-project predecessor highlighted</td>
 <td>🆕</td>
 <td>"This Project" badge on the row — <code>review-panels.tsx:193</code> (shown only when such a row exists)</td>
-<td>Not drawn in Figma</td>
-<td>Prototype only</td>
+<td>Section Officer — History Tab (Earlier Sanction of This Project) (<a href="https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=457-253685">457:253685</a>) — drawn 8 Oct</td>
+<td>Both</td>
 </tr>
 <tr>
 <td>F4</td>
@@ -1132,16 +1156,16 @@ open, and 18 smaller screen states are built but not yet drawn.</p>
 <td>Differs by project type (DDAC; IRCA by bed capacity)</td>
 <td>🆕</td>
 <td>Schedules DDAC and IRCA 15/30/50 — <code>cost-sheet.ts:121, 142</code></td>
-<td>Not drawn in Figma for IRCA (DDAC only, <a href="https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=410-37644">410:37644</a>)</td>
-<td>Prototype only</td>
+<td>NAPDDR Rehabilitation Centre, Grant Tab — IRCA 30-bed schedule (<a href="https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=457-36775">457:36775</a>) — drawn 8 Oct</td>
+<td>Both</td>
 </tr>
 <tr>
 <td>G3</td>
 <td>Bed-capacity dropdown</td>
 <td>🆕</td>
 <td>Cost Sheet › "Bed Capacity" select (general IRCA) — <code>grant-recommendation.tsx:175-190</code></td>
-<td>Not drawn in Figma</td>
-<td>Prototype only</td>
+<td>NAPDDR Rehabilitation Centre, Grant Tab — Bed Capacity select (<a href="https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=457-36775">457:36775</a>) — drawn 8 Oct</td>
+<td>Both</td>
 </tr>
 <tr>
 <td>G4</td>
@@ -1188,16 +1212,16 @@ open, and 18 smaller screen states are built but not yet drawn.</p>
 <td>Remarks box on every row</td>
 <td>🔁</td>
 <td>Reason field only when the amount leaves the norm — <code>grant-recommendation.tsx:467-475</code></td>
-<td>Not drawn in Figma</td>
-<td>Prototype only</td>
+<td>NAPDDR, Grant Tab (Editing) — reason field (<a href="https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=457-241595">457:241595</a>) — drawn 8 Oct</td>
+<td>Both</td>
 </tr>
 <tr>
 <td>G10</td>
 <td>Delete with "Remove cost-sheet item?" dialog</td>
 <td>🔁</td>
 <td>Remove, undone in place ("Removed: … ↶") — <code>grant-recommendation.tsx:402-410</code></td>
-<td>Not drawn in Figma (remove buttons only)</td>
-<td>Prototype only</td>
+<td>NAPDDR, Grant Tab (Editing) — removed item with restore (<a href="https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=457-241595">457:241595</a>) — drawn 8 Oct</td>
+<td>Both</td>
 </tr>
 <tr>
 <td>G11</td>
@@ -1228,8 +1252,8 @@ open, and 18 smaller screen states are built but not yet drawn.</p>
 <td>"Exceeds admissible by ₹…"</td>
 <td>🆕</td>
 <td>The excess and why the claim is the ceiling — <code>grant-recommendation.tsx:389-395</code></td>
-<td>Not drawn in Figma</td>
-<td>Prototype only</td>
+<td>NAPDDR, Grant Tab (Editing) — over the admissible amount (<a href="https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=457-241595">457:241595</a>) — drawn 8 Oct</td>
+<td>Both</td>
 </tr>
 <tr>
 <td>G15</td>
@@ -1260,8 +1284,8 @@ open, and 18 smaller screen states are built but not yet drawn.</p>
 <td>"Exceeds the admissible ceiling — reduce before saving"</td>
 <td>🆕</td>
 <td>Save refused, each problem beside its row — <code>grant-recommendation.tsx:139-145</code></td>
-<td>Not drawn in Figma</td>
-<td>Prototype only</td>
+<td>NAPDDR, Grant Tab (Save Refused) (<a href="https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=457-241810">457:241810</a>) — drawn 8 Oct</td>
+<td>Both</td>
 </tr>
 <tr>
 <td>G19</td>
@@ -1354,40 +1378,40 @@ open, and 18 smaller screen states are built but not yet drawn.</p>
 <td>"Officer Supporting Documents (0)"</td>
 <td>✅</td>
 <td>ASO review › Documents tab › Officer Supporting Documents (n) — <code>review-shell.tsx:1589, 1626</code></td>
-<td>Not drawn in Figma</td>
-<td>Prototype only</td>
+<td>Officer Supporting Documents — end of every Documents tab, e.g. NAPDDR Documents Tab (<a href="https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=410-37090">410:37090</a>) — drawn 8 Oct</td>
+<td>Both</td>
 </tr>
 <tr>
 <td>I2</td>
 <td>"PDF, JPG or PNG, up to 10 MB"</td>
 <td>🆕</td>
 <td>Upload rule, 10 MB — <code>review-shell.tsx:1621-1623, 1672</code></td>
-<td>Not drawn in Figma</td>
-<td>Prototype only</td>
+<td>As I1 (<a href="https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=410-37090">410:37090</a>) — drawn 8 Oct</td>
+<td>Both</td>
 </tr>
 <tr>
 <td>I3</td>
 <td>"No supporting documents uploaded yet"</td>
 <td>✅</td>
 <td>Empty line — <code>review-shell.tsx:1646</code></td>
-<td>Not drawn in Figma</td>
-<td>Prototype only</td>
+<td>As I1 (<a href="https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=410-37090">410:37090</a>) — drawn 8 Oct</td>
+<td>Both</td>
 </tr>
 <tr>
 <td>I4</td>
 <td>Document title (optional)</td>
 <td>✅</td>
 <td>"Document Title", optional — <code>review-shell.tsx:1651</code></td>
-<td>Not drawn in Figma</td>
-<td>Prototype only</td>
+<td>As I1 (<a href="https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=410-37090">410:37090</a>) — drawn 8 Oct</td>
+<td>Both</td>
 </tr>
 <tr>
 <td>I5</td>
 <td>Upload PDF/JPG/PNG</td>
 <td>✅</td>
 <td>"Upload PDF, JPG or PNG" — <code>review-shell.tsx:1656</code></td>
-<td>Not drawn in Figma</td>
-<td>Prototype only</td>
+<td>As I1 (<a href="https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=410-37090">410:37090</a>) — drawn 8 Oct</td>
+<td>Both</td>
 </tr>
 </tbody>
 </table>
@@ -1707,16 +1731,16 @@ open, and 18 smaller screen states are built but not yet drawn.</p>
 <td>Statement marked "Out of Date" when the sheet is saved again</td>
 <td>➕</td>
 <td>"Out of Date" badge <code>grant-recommendation.tsx:520</code>; "The Release Has Changed" alert <code>:557-560</code></td>
-<td>Not drawn in Figma</td>
-<td>Prototype only</td>
+<td>NAPDDR, Grant Tab (Editing) — Statement "Out of Date" and "The Release Has Changed" (<a href="https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=457-241595">457:241595</a>) — drawn 8 Oct</td>
+<td>Both</td>
 </tr>
 <tr>
 <td>X6</td>
 <td>Discard Changes</td>
 <td>➕</td>
 <td><code>grant-recommendation.tsx:228-232</code></td>
-<td>Not drawn in Figma</td>
-<td>Prototype only</td>
+<td>NAPDDR, Grant Tab (Editing) — Discard Changes (<a href="https://www.figma.com/design/K0B3vuOTXpxw6kt0px2Cqo/?node-id=457-241595">457:241595</a>) — drawn 8 Oct</td>
+<td>Both</td>
 </tr>
 <tr>
 <td>X7</td>
