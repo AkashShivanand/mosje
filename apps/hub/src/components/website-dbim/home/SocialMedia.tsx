@@ -7,13 +7,13 @@ import "./home-bottom.css";
 
 /**
  * The social-media band — the reference's dark band of four feed cards, under the
- * live site's heading and with the live site's accounts (lib/website-shared/social.ts):
- * Facebook, X, Instagram, and YouTube as the fourth DBIM asks for. Four columns at ≥1280, two at 768–1279, one card at a time with
- * chevrons and dots on a phone, as the reference does.
+ * live site's heading and with its accounts in its order (lib/website-shared/social.ts):
+ * Facebook, X, YouTube, Instagram. Four columns at ≥1280, two at 768–1279, one card at
+ * a time with chevrons and dots on a phone, as the reference does.
  *
- * The feeds are the networks' own embeds and load only when the band nears the
- * viewport; until then, and whenever they cannot load, each card names the account
- * and links to it. See docs/research/dbim-reference/components/home-bottom.spec.md.
+ * Each card is drawn from the live site's own records — a profile, the latest post, the
+ * latest videos — and loads the network's embed only after the reader accepts optional
+ * cookies or asks for that card's posts (SocialFeed.tsx).
  */
 export function DbimSocialMedia() {
   const slides = DBIM_SOCIAL_FEEDS.map((feed) => (

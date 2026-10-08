@@ -92,13 +92,28 @@ export const DBIM_SOCIAL_AUDIT = {
   href: "https://socialaudit.dosje.gov.in/",
 } as const;
 
-/** The two CCPS central posts of the home page's posts row; the infographic beside them comes from lib/website/infographics.ts. */
+/**
+ * The two CCPS central posts of the home page's posts row, as dosje.gov.in carries them
+ * on 8 Oct 2026 (DBIM 3.0 §7.3 xii): MyGov's Make in India post and its BRICS India 2026
+ * video. Both are the CCPS feed's files (ccps.digifootprint.gov.in, uploads/2024/06/
+ * 3cc03ffde41eabfe7fe6734969ac1b49.jpeg and the poster 8af0906c91dc0a1941cb96d6a0eb63f7.jpg),
+ * byte-identical, served from our own public folder; the video streams from the
+ * Government's media host, as the live site streams it. The live post is not a link, so
+ * neither is this one. Until 8 Oct 2026 the row carried the reference build's two — the
+ * DPDP Rules consultation and the scholarship video. The infographic beside them comes
+ * from lib/website/infographics.ts.
+ */
 export const DBIM_CAMPAIGNS = {
-  myGovDpdp: { src: `${D}/home/mygov-dpdp-rules-2025.png`, alt: "MyGov — inviting feedback on the Digital Personal Data Protection Rules 2025", href: "https://www.mygov.in/" },
-  scholarshipVideo: {
-    // Streamed from the Government's own media host, as the reference does; never bundled.
-    src: "https://playhls.media.nic.in/igot_vod/MyGov/NOV24/video/studentmustknow.mp4",
-    title: "The Scholarship Every Indian Student Must Know",
+  centralPost: {
+    src: `${D}/home/ccps-make-in-india.jpg`,
+    alt: "Make in India: Driving India's Growth. Department for Promotion of Industry and Internal Trade, Ministry of Commerce and Industry, and MyGov. For more information, visit MyGov.in.",
+    width: 640,
+    height: 245,
+  },
+  video: {
+    src: "https://playhls.media.nic.in/igot_vod/MyGov/Sept30/video/fromruletakerto.mp4",
+    poster: `${D}/home/ccps-video-poster.jpg`,
+    title: "BRICS India 2026 — a video from MyGov",
   },
 } as const;
 
