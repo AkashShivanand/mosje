@@ -662,10 +662,30 @@ eleven pages were scanned for rows that mix divisions, grades or schemes; none d
 14 of 14 conformant.
 
 Still different from the build, for the owner to decide in Figma:
-- **History on SHRESHTA files** keeps the drawn "Earlier Sanctions for This Project" card. The build's Funding History
-  also lists the NGO's earlier sanctions; drawing it needs that NGO's sanction data, which the frame does not carry.
+- ~~History on SHRESHTA files keeps the drawn "Earlier Sanctions for This Project" card.~~ Drawn the same day — see 5k.
 - **Pop-ups** stay in one version. Show Cause and Inspection open from More Actions at any grade holding those
   capabilities, so they are not one grade's.
+
+## 5k. Funding History on the SHRESHTA screens — 8 Oct 2026
+
+The fourteen SHRESHTA History tabs (seven grades, desktop and phone) carried a card titled "Earlier Sanctions for This
+Project" with one sentence, identical on every screen, naming project SC/MH/PUN/03042 — a project on none of them.
+Each now carries the build's Funding History, filled from what the prototype holds for that file (`ngoSanctions`,
+`projectDisbursement` over the seed). Before/after: `before-after-figma-funding-history-2026-10-08.html`.
+
+| File (grade) | NGO's earlier sanction orders | This project |
+|---|---|---|
+| AHMEDABAD/00067 (PD ASO) | SAN/2025-26/01109 · ₹48.00 L · disbursed ₹0 | none |
+| BARABANKI/00023 (PD SO), 00207 (US), 00307 (DS) | none — "No earlier sanction order has been issued to this NGO." | none |
+| JAIPUR/00385 (PD JS) | SAN/2025-26/01143 · ₹52.00 L · disbursed ₹0 | none |
+| KORAPUT/00466 (IFD ASO) | SAN/2024-25/01245 · ₹51.00 L · disbursed ₹51.00 L | none |
+| PUNE/00848 (IFD JS) | SAN/2024-25/01279 · ₹49.00 L · disbursed ₹0 | none |
+
+Also on these screens: every Funding History card, NAPDDR's included, gains the build's **Open NGO 360**; and the File
+Movement entry, which named Sankalp Seva Sansthan as the applicant on all fourteen, names each file's own NGO.
+
+**Seed data to check:** two 2024-25 sanction orders (KORAPUT, PUNE) are dated 10 Mar 2026, which falls in 2025-26. They
+are drawn as the prototype holds them; the date belongs to the seed, not the drawing.
 
 ## 6. Adding to the page
 
