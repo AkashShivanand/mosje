@@ -58,6 +58,8 @@ import {
   sheetProblems,
   sheetTotals,
   statementProblems,
+  netPayable,
+  settlementProblems,
   type CostHead,
   type CostScheduleId,
   type SheetProblem,
@@ -103,9 +105,12 @@ export function AmountPipeline({ app }: { app: GrantApplication }) {
 
 type Draft = Omit<CostSheet, "savedAt" | "savedBy">;
 
+/** An ongoing project is costed on its recurring heads only; its one-time set-up came with its first sanction. */
+const seedOpts = (app: GrantApplication) => ({ recurringOnly: app.caseType === "Ongoing" });
+
 /** The sheet as the file holds it, or a fresh one at the norm. */
 function draftOf(app: GrantApplication): Draft {
-  if (!app.costSheet) return seedSheet(defaultSchedule(app)!);
+  if (!app.costSheet) return seedSheet(defaultSchedule(app)!, seedOpts(app));
   return structuredClone({ schedule: app.costSheet.schedule, lines: app.costSheet.lines, choices: app.costSheet.choices });
 }
 
@@ -181,7 +186,7 @@ export function CostSheetCard({ app, editable }: { app: GrantApplication; editab
                 options={schedules.map((s) => ({ value: s, label: SCHEDULE_LABEL[s] }))}
                 value={draft.schedule}
                 onChange={(e) => {
-                  setDraft(seedSheet(e.target.value as CostScheduleId));
+                  setDraft(seedSheet(e.target.value as CostScheduleId, seedOpts(app)));
                   setTried(false);
                 }}
               />
@@ -189,7 +194,8 @@ export function CostSheetCard({ app, editable }: { app: GrantApplication; editab
           </FormField>
         )}
 
-        {(["nonRecurring", "recurring"] as const).map((head) => (
+        {/* An ongoing project's sheet has no one-time head to show (seedOpts). */}
+        {(app.caseType === "Ongoing" ? (["recurring"] as const) : (["nonRecurring", "recurring"] as const)).map((head) => (
           <HeadTable
             key={head}
             head={head}
@@ -234,7 +240,7 @@ export function CostSheetCard({ app, editable }: { app: GrantApplication; editab
             <Button
               appearance="outlined"
               onClick={() => {
-                setDraft(seedSheet(draft.schedule));
+                setDraft(seedSheet(draft.schedule, seedOpts(app)));
                 setTried(false);
               }}
             >
@@ -491,23 +497,38 @@ export function StatementOfAccountCard({ app, editable }: { app: GrantApplicatio
   const saved = app.budgetStatement;
   const [allocation, setAllocation] = React.useState(saved ? String(saved.allocation) : "");
   const [expenditure, setExpenditure] = React.useState(saved ? String(saved.expenditure) : "");
+  // An ongoing project's instalment is settled against the utilisation certificate for the last one.
+  const ongoing = app.caseType === "Ongoing";
+  const [payable, setPayable] = React.useState(saved?.settlement ? String(saved.settlement.payable) : "");
+  const [unspentUc, setUnspentUc] = React.useState(saved?.settlement ? String(saved.settlement.unspentUc) : "");
   const [tried, setTried] = React.useState(false);
 
   if (!hasGrantTab(app)) return null;
   if (!editable && !saved) return null;
 
   const release = releaseOf(app);
-  const problems = statementProblems({ allocation, expenditure }, release, rupees);
+  const problems = { ...statementProblems({ allocation, expenditure }, release, rupees), ...(ongoing ? settlementProblems({ payable, unspentUc }) : {}) };
   const ready = !problems.allocation && !problems.expenditure;
   const balance = ready ? balanceAfter({ allocation: Number(allocation), expenditure: Number(expenditure) }, release) : null;
   // The release moved after the statement was saved — the cost sheet was saved again since.
   const stale = !!saved && saved.release !== release;
-  const changed = !saved || stale || String(saved.allocation) !== allocation || String(saved.expenditure) !== expenditure;
+  const settlementReady = ongoing && !problems.payable && !problems.unspentUc;
+  const changed =
+    !saved ||
+    stale ||
+    String(saved.allocation) !== allocation ||
+    String(saved.expenditure) !== expenditure ||
+    (ongoing && (String(saved.settlement?.payable ?? "") !== payable || String(saved.settlement?.unspentUc ?? "") !== unspentUc));
 
   const save = () => {
     setTried(true);
     if (Object.keys(problems).length) return;
-    const res = saveBudgetStatement(app.id, { allocation: Number(allocation), expenditure: Number(expenditure), release });
+    const res = saveBudgetStatement(app.id, {
+      allocation: Number(allocation),
+      expenditure: Number(expenditure),
+      release,
+      ...(ongoing ? { settlement: { payable: Number(payable), unspentUc: Number(unspentUc) } } : {}),
+    });
     if (res.ok) {
       setTried(false);
       toast("Statement of Account saved.", "success");
@@ -549,7 +570,9 @@ export function StatementOfAccountCard({ app, editable }: { app: GrantApplicatio
           description={
             saved && !changed
               ? `The scheme's budget position for this release · ${savedLine(saved.savedAt, saved.savedBy)}.`
-              : "The scheme's budget position for this release. Saved separately from the cost sheet."
+              : ongoing
+                ? "The scheme's budget position for this release, and the utilisation of the last instalment. Saved separately from the cost sheet."
+                : "The scheme's budget position for this release. Saved separately from the cost sheet."
           }
         >
           {state}
@@ -584,6 +607,28 @@ export function StatementOfAccountCard({ app, editable }: { app: GrantApplicatio
             },
           ]}
         />
+        {ongoing && (
+          <div className="space-y-4">
+            <h3 className="text-body-2 font-semibold text-ink">Settlement — Utilisation Certificate Check</h3>
+            <div className="grid gap-4 md:grid-cols-2">
+              {money(payable, setPayable, "soa-payable", "Amount Payable This Instalment", problems.payable, "After deducting the project's own share.")}
+              {money(unspentUc, setUnspentUc, "soa-unspent", "Less: Unspent as per Utilisation Certificate", problems.unspentUc)}
+            </div>
+            <DescriptionList
+              size="sm"
+              items={[
+                {
+                  term: "Net Amount Payable",
+                  value: settlementReady ? (
+                    <span className="tabular-nums">{rupees(netPayable({ payable: Number(payable), unspentUc: Number(unspentUc) }))}</span>
+                  ) : (
+                    <span className="text-ink-muted">Enter both figures</span>
+                  ),
+                },
+              ]}
+            />
+          </div>
+        )}
         {problems.balance && (
           <p className="text-body-3 text-[var(--sa-text-status-error-bolder)]" role="alert">
             {problems.balance}
@@ -606,7 +651,8 @@ export function grantBlockers(app: GrantApplication): ("costSheet" | "statement"
   if (!hasGrantTab(app)) return [];
   const out: ("costSheet" | "statement")[] = [];
   if (!app.costSheet) out.push("costSheet");
-  if (!app.budgetStatement || app.budgetStatement.release !== releaseOf(app)) out.push("statement");
+  const stmt = app.budgetStatement;
+  if (!stmt || stmt.release !== releaseOf(app) || (app.caseType === "Ongoing" && !stmt.settlement)) out.push("statement");
   return out;
 }
 

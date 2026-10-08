@@ -198,8 +198,12 @@ test("the seeded store fits in the browser with room for the applicant's work", 
   // +26,000 on 07 Oct 2026 for NAPDDR at the Programme Division ASO: a DDAC file, a costed IRCA
   // further up the chain (its 22-line cost sheet and Statement of Account), less the eight school
   // documents the IRCA file at the ASO no longer carries — 2.02M → 2.04M.
+  // +89,500 on 08 Oct 2026 for seven NAPDDR files, one per state the dev portal showed the ASO's
+  // review in (part-way and marked documents, a 2nd instalment, a file from the old portal with its
+  // notings, forwarded, returned, with the NGO), and the 2nd instalment's own history (a new grant
+  // and a 1st instalment, sanctioned and released, no document registers) — 2.04M → 2.14M.
   const size = JSON.stringify(seed()).length;
-  assert.ok(size < 2_040_000, `seeded store is ${size.toLocaleString("en-IN")} characters`);
+  assert.ok(size < 2_140_000, `seeded store is ${size.toLocaleString("en-IN")} characters`);
 });
 
 test("a schema-11 copy is carried to 12: the NGO's own CCTV setups kept, seeded ones given their register", () => {

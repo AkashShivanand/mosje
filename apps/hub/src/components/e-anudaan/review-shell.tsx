@@ -43,6 +43,7 @@ import {
   docReviewerLine,
   permittedActions,
   proposedDeficiency,
+  seatName,
   statusLabel,
   verdictAttribution,
   type ActionPayload,
@@ -86,6 +87,7 @@ import {
 } from "./review-panels";
 import { ReviewReport } from "./review-report";
 import { AmountPipeline, CostSheetCard, StatementOfAccountCard, grantBlockers, hasGrantTab } from "./grant-recommendation";
+import { amountPipeline } from "@/lib/e-anudaan/cost-sheet";
 import { ProjectRecordsSummary } from "./project-records";
 import { Findings, rowStateOf } from "./document-centre-parts";
 import {
@@ -430,7 +432,17 @@ export function ReviewShell({ appId }: { appId: string }) {
   const grantOwed = blockers.filter((b) => b === "costSheet" || b === "statement").length;
   const tabs = [
     { id: "application", label: "Application" },
-    { id: "documents", label: docsEditable && awaiting.length > 0 ? `Documents (${awaiting.length} to Verify)` : "Documents", badge: docsEditable && awaiting.length > 0 },
+    {
+      id: "documents",
+      // What the tab still owes: verdicts first; once every verdict is given, a document marked for correction.
+      label:
+        docsEditable && awaiting.length > 0
+          ? `Documents (${awaiting.length} to Verify)`
+          : docsEditable && markedDocs > 0
+            ? `Documents (${markedDocs} for Correction)`
+            : "Documents",
+      badge: docsEditable && (awaiting.length > 0 || markedDocs > 0),
+    },
     ...(grantTab ? [{ id: "grant", label: grantOwed > 0 ? `Grant (${grantOwed} to Save)` : "Grant", badge: grantOwed > 0 }] : []),
     { id: "history", label: "History" },
   ];
@@ -481,7 +493,7 @@ export function ReviewShell({ appId }: { appId: string }) {
       <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_24rem] xl:items-start">
         <div className="min-w-0 space-y-5">
           {/* What is open on the file stays above the tabs: it is why the file is here. */}
-          <OpenItem app={app} onShowDocument={(docId) => showDocuments("changed", docId)} />
+          <OpenItem app={app} viewer={role.id} holdsFile={holdsFile} onShowDocument={(docId) => showDocuments("changed", docId)} />
 
           <Tabs
             idBase={tabsId}
@@ -543,6 +555,7 @@ export function ReviewShell({ appId }: { appId: string }) {
 
           <TabPanel idBase={tabsId} tabId="history" hidden={tab !== "history"}>
             <div className="space-y-5">
+              <OldPortalNoting app={app} />
               <FundingHistory app={app} />
               <InstalmentsPanel app={app} />
               <ProjectRecordsSummary app={app} />
@@ -651,7 +664,7 @@ export function ReviewShell({ appId }: { appId: string }) {
           )}
 
           <Panel
-            title="Your Decision"
+            title={holdsFile ? "Your Decision" : "File Status"}
             actions={
               <Menu items={moreActions} onSelect={onMoreAction} label="More actions on this file">
                 <Button appearance="outlined" size="sm" nowrap>
@@ -662,9 +675,7 @@ export function ReviewShell({ appId }: { appId: string }) {
           >
             <span id="officer-decision" tabIndex={-1} className="sr-only">Your decision</span>
             {!holdsFile ? (
-              <p className="text-body-2 text-ink-muted">
-                This application is not with you. Its status is <strong className="text-ink">{statusLabel(app)}</strong>, and you are viewing it read-only.
-              </p>
+              <FileStatus app={app} viewer={role.id} />
             ) : (
               <div className="space-y-4">
                 {/* What the file still needs, BEFORE the button is pressed (audit R-01). */}
@@ -940,7 +951,17 @@ export function ReviewShell({ appId }: { appId: string }) {
  * "Resolve Query and Send Back" with the query's text shown nowhere, and an ASO saw "Returned
  * for Rework · By the Programme Director" without the Director's reason (screen audit, 14 Sep).
  */
-function OpenItem({ app, onShowDocument }: { app: GrantApplication; onShowDocument: (docId: string) => void }) {
+function OpenItem({
+  app,
+  viewer,
+  holdsFile,
+  onShowDocument,
+}: {
+  app: GrantApplication;
+  viewer: RoleId;
+  holdsFile: boolean;
+  onShowDocument: (docId: string) => void;
+}) {
   const proposed = proposedDeficiency(app);
   if (proposed) {
     return (
@@ -1006,7 +1027,101 @@ function OpenItem({ app, onShowDocument }: { app: GrantApplication; onShowDocume
     }
   }
 
+  // The officer's own forward, read back while the file is with someone else (dev portal read,
+  // 8 Oct 2026: the forwarded file showed an empty "record your remarks and forward" panel).
+  const sent = !holdsFile && app.holder.kind === "chain" ? lastForwardBy(app, viewer) : undefined;
+  if (sent) {
+    return (
+      <Alert status="info" title={`Forwarded to ${seatName(app.holder)}`}>
+        <p className="text-body-2">
+          You forwarded this file on {formatDate(sent.at)} at {formatTime(sent.at)}. It is read-only while it is with {seatName(app.holder)}.
+        </p>
+        {sent.remarks && <p className="mt-2 text-body-2">Your remarks: {sent.remarks}</p>}
+      </Alert>
+    );
+  }
+
+  // An ongoing instalment carries over the permanent documents verified on an earlier one.
+  const carried = holdsFile && app.caseType === "Ongoing" && app.instalment && app.submittedAt
+    ? app.documents.filter((d) => d.group === "permanent" && d.reviewStatus === "Verified" && d.reviewedAt && d.reviewedAt < app.submittedAt!)
+    : [];
+  if (carried.length) {
+    const since = carried.map((d) => d.reviewedAt!).sort()[0]!;
+    return (
+      <Alert status="info" title={`${ordinal(app.instalment!)} Instalment of an Ongoing Project`}>
+        <p className="text-body-2">
+          The permanent documents were verified on {formatDate(since)}, for an earlier instalment, and are carried over. This instalment needs the documents filed with it and the utilisation of the last instalment.
+        </p>
+      </Alert>
+    );
+  }
+
+  if (app.legacy?.decision) {
+    const l = app.legacy;
+    return (
+      <Alert status="info" title="Decided in the Old Portal">
+        <p className="text-body-2">
+          {l.decision}
+          {l.decidedAt ? <> on {formatDate(l.decidedAt)}</> : null}
+          {l.amount != null ? <> for {rupees(l.amount)}</> : null}. Its notings are on the History tab, read-only.
+        </p>
+      </Alert>
+    );
+  }
+
   return null;
+}
+
+const capitalise = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+
+/** The officer's last forward of this file, if the file has moved on since. */
+function lastForwardBy(app: GrantApplication, viewer: RoleId) {
+  const last = [...app.audit].reverse().find((e) => e.action === "forward" || e.action === "raiseDeficiency" || e.action === "communicateDeficiency");
+  return last && last.byRole === viewer && last.action === "forward" ? last : undefined;
+}
+
+/**
+ * The decision panel of a file that is not with this officer: where it is, since when, and the
+ * amount it carries. It replaced one sentence naming a status code.
+ */
+function FileStatus({ app, viewer }: { app: GrantApplication; viewer: RoleId }) {
+  const moved = [...app.audit].reverse().find((e) => e.to || e.action === "forward" || e.action === "sanction");
+  const proposed = amountPipeline(app)?.find((s) => s.id === "proposed");
+  const where =
+    app.holder.kind === "done" ? statusLabel(app) : app.holder.kind === "ngo" ? "The NGO, for correction" : capitalise(seatName(app.holder).replace(/^the /, ""));
+  const items: { term: string; value: string }[] = [{ term: app.holder.kind === "done" ? "Status" : "With", value: where }];
+  if (moved) items.push({ term: "Since", value: `${formatDate(moved.at)}, ${formatTime(moved.at)}` });
+  if (proposed?.amount != null) {
+    const mine = app.costSheet?.savedBy === viewer;
+    items.push({ term: "Proposed Amount", value: `${rupees(proposed.amount)}${proposed.at ? ` — saved by ${mine ? "you" : "the Assistant Section Officer"}, ${formatDate(proposed.at)}` : ""}` });
+  }
+  return (
+    <div className="space-y-3">
+      <p className="text-body-2 text-ink-muted">This file is not with you. You can read it, but not change it.</p>
+      <DescriptionList size="sm" items={items} />
+    </div>
+  );
+}
+
+/** The old portal's noting on a migrated file, oldest last — read-only, as the old portal kept it. */
+function OldPortalNoting({ app }: { app: GrantApplication }) {
+  if (!app.legacy?.notings.length) return null;
+  return (
+    <Panel title="File Noting — Old Portal">
+      <EventList
+        linkAs={Link}
+        label="File noting in the old portal"
+        events={[...app.legacy.notings].reverse().map((n, i) => ({
+          id: `legacy-${i}`,
+          at: n.at,
+          actor: n.fromDesk,
+          action: n.deficiency ? "Deficiency to the NGO" : n.markedTo ? `Marked to ${n.markedTo}` : "Noting",
+          note: [n.noting, n.recommendedAmount != null ? `Recommended amount: ${rupees(n.recommendedAmount)}` : ""].filter(Boolean).join(" "),
+          tone: n.deficiency ? "warning" : "neutral",
+        }))}
+      />
+    </Panel>
+  );
 }
 
 /**
