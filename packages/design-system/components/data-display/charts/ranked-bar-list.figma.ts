@@ -3,17 +3,19 @@
 // component=RankedBarList
 import figma from "figma";
 
-/**
- * The `Ranked Bar List` master is a composition of five `Ranked Bar Row`
- * instances and carries no properties of its own: a designer overrides label,
- * value and fill per row, and switches Rank off on the row for a breakdown.
- * The code takes the rows as data, so the snippet shows the data shape.
- */
+const instance = figma.selectedInstance;
+// The rows are nested instances; Figma sets Show bar / Show detail per row, the code once for
+// the list (`showBar`) and per item (`detail`). The first row stands for the list.
+const row = instance.findInstance("row 1");
+const showBar = row.getBoolean("Show bar");
+const showDetail = row.getBoolean("Show detail");
+
 export default {
   example: figma.code`
     <RankedBarList
       title="Top states by pledges"
-      items={states.map((s) => ({ label: s.name, value: s.pledges, href: \`/states/\${s.code}\` }))}
+      items={states.map((s) => ({ label: s.name, value: s.pledges${showDetail ? figma.code`, detail: s.detail` : ""}, href: \`/states/\${s.code}\` }))}
+      ${showBar ? "" : figma.code`showBar={false}`}
       pageSize={8}
     />
   `,

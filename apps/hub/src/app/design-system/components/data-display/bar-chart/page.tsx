@@ -126,6 +126,20 @@ export default function BarChartPage(): React.JSX.Element {
               array does — which is every case where a feed was asked.
             </p>
           </section>
+          <section className="cdp__section" aria-labelledby="cdp-withheld">
+            <h2 id="cdp-withheld" className="cdp__h2">
+              One Bar Withheld: Not Reported, or Not Yet Due
+            </h2>
+            <p>
+              A single value can be held back through its series&apos; <code>withheld</code> map, and
+              the two kinds say different things. <code>not-reported</code> is a figure that should
+              exist and does not: the chart draws a short stub and prints a dash, so the gap is
+              seen. <code>not-due</code> is a figure whose time has not come — a Revised Estimate
+              before the year is revised — and the chart draws nothing at all, because nothing has
+              gone wrong. Both are still named in the tooltip and in the table a screen reader
+              reads, and neither is counted in any total.
+            </p>
+          </section>
           <section className="cdp__section" aria-labelledby="cdp-orient">
             <h2 id="cdp-orient" className="cdp__h2">
               Orientation, Grouping and Stacking

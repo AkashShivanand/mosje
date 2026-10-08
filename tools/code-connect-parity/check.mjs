@@ -163,12 +163,16 @@ for (const file of templates) {
   if (!fx) {
     notes.push(`${rel}: no Figma fixture for \`${componentName}\` — Figma property names NOT verified. Capture with get_context_for_code_connect and add to tools/code-connect-parity/figma-properties.json`);
   } else {
-    const known = new Set(Object.keys(fx.properties));
+    // A composition's options live on its nested instances (Ranked Bar List's rows), read
+    // through `findInstance`. `nestedProperties` records them; a read is known if either
+    // level has it, and only the master's OWN properties must be mapped or omitted.
+    const nested = Object.values(fx.nestedProperties ?? {}).flatMap((p) => Object.keys(p));
+    const known = new Set([...Object.keys(fx.properties), ...nested]);
     for (const r of read) {
       if (!known.has(r)) fail(rel, `reads Figma property "${r}", which the master does not have (fixture ${fx.nodeId})`);
     }
     const omitted = new Set(fx.deliberatelyOmitted ?? []);
-    for (const k of known) {
+    for (const k of Object.keys(fx.properties)) {
       if (!read.has(k) && !omitted.has(k)) {
         fail(rel, `Figma property "${k}" is neither mapped nor listed in \`deliberatelyOmitted\` — a property that is silently dropped is drift`);
       }

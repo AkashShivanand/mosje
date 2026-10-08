@@ -140,6 +140,24 @@ export default function RankedBarListPage(): React.JSX.Element {
               are different sentences, and a blank track would say the second.
             </p>
           </section>
+          <section className="cdp__section" aria-labelledby="cdp-parts">
+            <h2 id="cdp-parts" className="cdp__h2">
+              Parts of a Whole, and Rows Without Bars
+            </h2>
+            <p>
+              Set <code>max</code> to the whole and give each row a <code>detail</code> — its share,
+              &ldquo;61.0%&rdquo; — and two or three rows read as a split of one total: a length for
+              each part, its count and its share. A reader judges two lengths more surely than the
+              two angles of a ring, which is why the Beneficiary Dashboard draws a two-part
+              breakdown this way.
+            </p>
+            <p>
+              <code>showBar={"{false}"}</code> drops the track and keeps the name, the figure and the
+              detail: for a list read for its order and its standing (&ldquo;32 of 36&rdquo;) where
+              bars, scaled to the largest row elsewhere, would show the smallest rows as slivers
+              that say nothing.
+            </p>
+          </section>
         </>
       }
       code={

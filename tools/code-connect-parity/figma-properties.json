@@ -723,8 +723,8 @@
   },
   "MetricCard": {
     "nodeId": "57414:15871",
-    "captured": "2026-09-16",
-    "note": "50 variants = Reading 5 x Tone 5 x Size 2, plus Show icon and an Icon swap of the library Icon (24 at Medium, 20 at Small) — the code's `size` and `icon` — plus Selected and Opens something. Reading is not a prop: each reading is a different set of props on the one MetricCard. Re-captured 16 Sep 2026: Tone had gained Success and Info, and the two booleans were added the same week; the fixture still described 30 variants and five properties, so the gate was comparing a stale template against an equally stale picture.",
+    "captured": "2026-10-08",
+    "note": "50 variants = Reading 5 x Tone 5 x Size 2, plus Show icon and an Icon swap of the library Icon (24 at Medium, 20 at Small) — the code's `size` and `icon` — plus Selected and Opens something. Reading is not a prop: each reading is a different set of props on the one MetricCard. Re-captured 16 Sep 2026: Tone had gained Success and Info, and the two booleans were added the same week; the fixture still described 30 variants and five properties, so the gate was comparing a stale template against an equally stale picture. Re-captured 8 Oct 2026: Show detail and Detail (the code's `detail` line) and Show target (off = `progress` with no target) were added to match the code.",
     "properties": {
       "Reading": {
         "type": "VARIANT",
@@ -763,6 +763,15 @@
         "type": "BOOLEAN"
       },
       "Opens something": {
+        "type": "BOOLEAN"
+      },
+      "Show detail": {
+        "type": "BOOLEAN"
+      },
+      "Detail": {
+        "type": "TEXT"
+      },
+      "Show target": {
         "type": "BOOLEAN"
       }
     },
@@ -977,10 +986,39 @@
   },
   "RankedBarList": {
     "nodeId": "57420:15961",
-    "captured": "2026-09-05",
-    "note": "A composition of five Ranked Bar Row instances (Tone 4 x Rank 2 on the row set, 57420:15960). The list itself carries no properties; rows are overridden per instance and the code takes them as data.",
+    "captured": "2026-10-08",
+    "note": "A composition of five exposed Ranked Bar Row instances (row set 57420:15960: Tone x Rank, plus Show bar, Show detail and Detail since 8 Oct 2026). The list itself carries no properties; the template reads Show bar and Show detail from 'row 1' (the code's list-level `showBar` and item `detail`).",
     "properties": {},
-    "deliberatelyOmitted": []
+    "deliberatelyOmitted": [],
+    "nestedProperties": {
+      "row 1": {
+        "Show bar": {
+          "type": "BOOLEAN"
+        },
+        "Show detail": {
+          "type": "BOOLEAN"
+        },
+        "Detail": {
+          "type": "TEXT"
+        },
+        "Tone": {
+          "type": "VARIANT",
+          "variantOptions": [
+            "Neutral",
+            "Success",
+            "Warning",
+            "Danger"
+          ]
+        },
+        "Rank": {
+          "type": "VARIANT",
+          "variantOptions": [
+            "On",
+            "Off"
+          ]
+        }
+      }
+    }
   },
   "SelectionCard": {
     "nodeId": "55530:2932",
