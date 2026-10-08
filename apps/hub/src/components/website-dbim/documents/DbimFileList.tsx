@@ -19,14 +19,12 @@ export interface FileListProps {
   label: string;
   /** Archives: show the header row, Category and per page. */
   archive?: boolean;
-  /** "." for the tender and vacancy archive, which the reference prints dd.mm.yyyy. */
-  dateSep?: string;
 }
 
 const searchText = (r: DbimDocRow) => r.title;
 const categoryOf = (r: DbimDocRow) => r.category;
 
-export function DbimFileList({ rows, label, archive = false, dateSep }: FileListProps) {
+export function DbimFileList({ rows, label, archive = false }: FileListProps) {
   const hasCategories = archive && rows.some((r) => r.category);
   const listing = useListing(rows, {
     searchText,
@@ -61,7 +59,7 @@ export function DbimFileList({ rows, label, archive = false, dateSep }: FileList
         ) : (
           <div role="rowgroup">
             {listing.visible.map((r) => (
-              <FileRow key={r.key} row={r} dateSep={dateSep} dateLabel={dateLabel} />
+              <FileRow key={r.key} row={r} dateLabel={dateLabel} />
             ))}
           </div>
         )}

@@ -74,7 +74,6 @@
       "#006d85",
       "#012f30",
       "#020016",
-      "#030303",
       "#030406",
       "#0373df",
       "#046a38",
@@ -91,7 +90,6 @@
       "#12141c",
       "#140007",
       "#150202",
-      "#151515",
       "#162f6a",
       "#170000",
       "#198754",
@@ -107,7 +105,6 @@
       "#242a35",
       "#271700",
       "#29136c",
-      "#2c2c2c",
       "#2d8686",
       "#2e0004",
       "#300003",
@@ -120,7 +117,6 @@
       "#3e2700",
       "#426998",
       "#439db7",
-      "#454545",
       "#469d6e",
       "#4729a3",
       "#481dc2",
@@ -239,12 +235,10 @@
       "#f1b75e",
       "#f3f4f6",
       "#f4d390",
-      "#f5f5f5",
       "#f6f7f8",
       "#f6f7f9",
       "#faaaaa",
       "#faebf2",
-      "#fafafa",
       "#fcdada",
       "#fe716d",
       "#ff671f",
@@ -480,7 +474,7 @@
         "[data-density=\"compact\"]"
       ],
       "counts": {
-        "colors": 231,
+        "colors": 225,
         "fontFamilies": 12,
         "fontSizeRanges": 19,
         "fontSizes": 3,
@@ -513,7 +507,7 @@
       "source": "house/figma_histogram.js run once per page against Figma file evmNmlK8g4VYwJVu2FwSGV (MoSJE Portal \u2014 Handoff), via the Figma MCP, 2026-09-12. All 12 pages of the file, no sampling of pages. Within a page, TEXT nodes are capped at 4,000 and container nodes at 6,000 \u2014 every page except Login/Signup hits the container cap, so per-page counts are a census of the first N nodes in document order, not of the whole page. Frequencies are therefore comparable across axes within a page and indicative, not exact, across pages.",
       "variableBindingRate": 0.4732
     },
-    "gitSha": "14db0790"
+    "gitSha": "4f913623"
   },
   "standard": {
     "canvasWidths": {
@@ -1206,9 +1200,9 @@
           "pages": 11,
           "tokens": [
             "sa-bg-neutral-base",
+            "sa-bg-neutral-subtlest",
             "sa-border-neutral-inverse-default",
-            "sa-brand-samavesh-white",
-            "sa-chart-regionStroke"
+            "sa-brand-samavesh-white"
           ]
         }
       }
@@ -1886,9 +1880,6 @@
       "#020016": [
         "sa-color-primaryScale-950"
       ],
-      "#030303": [
-        "sa-color-neutralScale-950"
-      ],
       "#030406": [
         "sa-color-neutralScale-950"
       ],
@@ -1953,22 +1944,16 @@
         "sa-color-primaryScale-950"
       ],
       "#150202": [
-        "sa-color-text-default",
-        "sa-icon-neutral-base",
-        "sa-on-bg-brand-accent-base",
-        "sa-on-bg-brand-accent-bold"
-      ],
-      "#151515": [
         "sa-bg-neutral-inverse",
-        "sa-cmp-action-neutral-primary-inverse-active-text",
-        "sa-cmp-action-neutral-tonal-active-text",
-        "sa-color-neutralScale-900"
+        "sa-chart-tooltipBg",
+        "sa-cmp-action-neutral-primary-active-bg",
+        "sa-cmp-action-neutral-primary-active-border"
       ],
       "#162f6a": [
         "sa-bg-brand-primary-boldest",
+        "sa-border-brand-primary-base",
         "sa-cmp-action-brand-primary-active-bg",
-        "sa-cmp-action-brand-primary-active-border",
-        "sa-cmp-action-brand-primary-hover-bg"
+        "sa-cmp-action-brand-primary-active-border"
       ],
       "#170000": [
         "sa-color-primaryScale-950"
@@ -2006,9 +1991,9 @@
       ],
       "#214aab": [
         "sa-bg-brand-primary-bolder",
-        "sa-border-brand-primary-base",
         "sa-border-brand-primary-bolder",
-        "sa-border-neutral-selected"
+        "sa-border-neutral-selected",
+        "sa-cmp-action-brand-primary-default-bg"
       ],
       "#214c7d": [
         "sa-border-brand-primary-base",
@@ -2024,15 +2009,9 @@
       ],
       "#29136c": [
         "sa-bg-brand-primary-boldest",
+        "sa-border-brand-primary-base",
         "sa-cmp-action-brand-primary-active-bg",
-        "sa-cmp-action-brand-primary-active-border",
-        "sa-cmp-action-brand-primary-hover-bg"
-      ],
-      "#2c2c2c": [
-        "sa-chart-tooltipBg",
-        "sa-cmp-action-neutral-primary-active-bg",
-        "sa-cmp-action-neutral-primary-active-border",
-        "sa-cmp-action-neutral-primary-inverse-hover-text"
+        "sa-cmp-action-brand-primary-active-border"
       ],
       "#2d8686": [
         "sa-bg-brand-primary-bolder",
@@ -2083,20 +2062,14 @@
       "#439db7": [
         "sa-color-infoScale-400"
       ],
-      "#454545": [
-        "sa-cmp-action-neutral-primary-hover-bg",
-        "sa-cmp-action-neutral-primary-hover-border",
-        "sa-cmp-action-neutral-primary-inverse-default-text",
-        "sa-cmp-action-neutral-secondary-active-border"
-      ],
       "#469d6e": [
         "sa-color-successScale-400"
       ],
       "#4729a3": [
         "sa-bg-brand-primary-bolder",
-        "sa-border-brand-primary-base",
         "sa-border-brand-primary-bolder",
-        "sa-border-neutral-selected"
+        "sa-border-neutral-selected",
+        "sa-cmp-action-brand-primary-default-bg"
       ],
       "#481dc2": [
         "sa-chart-cat-8"
@@ -2151,9 +2124,9 @@
       ],
       "#5d3e00": [
         "sa-bg-brand-primary-boldest",
+        "sa-border-brand-primary-base",
         "sa-cmp-action-brand-primary-active-bg",
-        "sa-cmp-action-brand-primary-active-border",
-        "sa-cmp-action-brand-primary-hover-bg"
+        "sa-cmp-action-brand-primary-active-border"
       ],
       "#606060": [
         "sa-border-neutral-bolder-default",
@@ -2194,9 +2167,9 @@
       ],
       "#6c1340": [
         "sa-bg-brand-primary-boldest",
+        "sa-border-brand-primary-base",
         "sa-cmp-action-brand-primary-active-bg",
-        "sa-cmp-action-brand-primary-active-border",
-        "sa-cmp-action-brand-primary-hover-bg"
+        "sa-cmp-action-brand-primary-active-border"
       ],
       "#6c4f00": [
         "sa-border-status-warning-bolder",
@@ -2248,9 +2221,9 @@
       ],
       "#771d1d": [
         "sa-bg-brand-primary-boldest",
+        "sa-border-brand-primary-base",
         "sa-cmp-action-brand-primary-active-bg",
-        "sa-cmp-action-brand-primary-active-border",
-        "sa-cmp-action-brand-primary-hover-bg"
+        "sa-cmp-action-brand-primary-active-border"
       ],
       "#7a3901": [
         "sa-chart-cat-6"
@@ -2327,9 +2300,9 @@
       ],
       "#916100": [
         "sa-bg-brand-primary-bolder",
-        "sa-border-brand-primary-base",
         "sa-border-brand-primary-bolder",
-        "sa-border-neutral-selected"
+        "sa-border-neutral-selected",
+        "sa-cmp-action-brand-primary-default-bg"
       ],
       "#91c1ff": [
         "sa-chart-seq-200"
@@ -2361,9 +2334,9 @@
       ],
       "#a32966": [
         "sa-bg-brand-primary-bolder",
-        "sa-border-brand-primary-base",
         "sa-border-brand-primary-bolder",
-        "sa-border-neutral-selected"
+        "sa-border-neutral-selected",
+        "sa-cmp-action-brand-primary-default-bg"
       ],
       "#a35b7a": [
         "sa-chart-cat-7"
@@ -2389,9 +2362,9 @@
       ],
       "#a72626": [
         "sa-bg-brand-primary-bolder",
-        "sa-border-brand-primary-base",
         "sa-border-brand-primary-bolder",
-        "sa-border-neutral-selected"
+        "sa-border-neutral-selected",
+        "sa-cmp-action-brand-primary-default-bg"
       ],
       "#a77200": [
         "sa-color-warningScale-500"
@@ -2594,8 +2567,8 @@
       "#ebeaea": [
         "sa-bg-neutral-active",
         "sa-bg-neutral-disabled",
-        "sa-bg-neutral-subtle",
-        "sa-border-neutral-subtle"
+        "sa-bg-neutral-hover",
+        "sa-bg-neutral-loading"
       ],
       "#ec4e4f": [
         "sa-chart-div-neg",
@@ -2656,12 +2629,6 @@
         "sa-cmp-action-brand-tonal-active-border",
         "sa-cmp-sitefooter-ink-subtler"
       ],
-      "#f5f5f5": [
-        "sa-bg-neutral-hover",
-        "sa-bg-neutral-loading",
-        "sa-bg-neutral-readonly",
-        "sa-bg-neutral-subtler"
-      ],
       "#f6f7f8": [
         "sa-bg-neutral-subtlest",
         "sa-color-neutralScale-25"
@@ -2681,10 +2648,6 @@
         "sa-bg-brand-primary-subtler",
         "sa-cmp-action-brand-secondary-active-bg",
         "sa-cmp-action-brand-secondary-hover-bg"
-      ],
-      "#fafafa": [
-        "sa-bg-neutral-subtlest",
-        "sa-color-neutralScale-25"
       ],
       "#fcdada": [
         "sa-bg-brand-primary-base",
@@ -2799,9 +2762,9 @@
       ],
       "#ffffff": [
         "sa-bg-neutral-base",
+        "sa-bg-neutral-subtlest",
         "sa-border-neutral-inverse-default",
-        "sa-brand-samavesh-white",
-        "sa-chart-regionStroke"
+        "sa-brand-samavesh-white"
       ]
     },
     "fontSizes": {

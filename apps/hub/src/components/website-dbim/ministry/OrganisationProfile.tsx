@@ -12,6 +12,7 @@ import "@/components/website-dbim/home/home-mid.css"; // the DBIM tab set (Figur
 import "@/components/website-dbim/home/home-bottom.css"; // the home page's social feed card
 import "./ministry.css";
 import "./organisation.css";
+import { dbimDates } from "@/lib/website-dbim/date";
 
 /**
  * One organisation's page, from the body's own page on the live website
@@ -119,7 +120,7 @@ function OrgBlock({ b, label, org }: { b: DbimOrgBlock; label: string; org: stri
                 {p.photo ? <Image className="db-min-profile__img" src={p.photo} alt="" width={120} height={120} sizes="120px" /> : null}
                 <small className="db-min-profile__role">{p.designation}</small>
                 <p className="db-min-profile__name">{p.name}</p>
-                {p.tenure ? <p className="db-org-people__tenure">{p.tenure}</p> : null}
+                {p.tenure ? <p className="db-org-people__tenure">{dbimDates(p.tenure)}</p> : null}
                 {p.profile ? (
                   <OrgAnchor link={p.profile} className="db-org-people__link">
                     View Profile<span className="sr-only"> of {p.name}</span>
@@ -320,7 +321,7 @@ function OrgEvents({ items }: { items: { title: string; date?: string; link?: Db
     <ul className="db-org-events">
       {items.map((e) => (
         <li key={e.title} className="db-min-docrow db-org-event">
-          {e.date ? <small className="db-min-ptype db-org-event__date">{e.date}</small> : null}
+          {e.date ? <small className="db-min-ptype db-org-event__date">{dbimDates(e.date)}</small> : null}
           <p className="db-min-docrow__title">{e.title}</p>
           {e.link ? (
             <OrgAnchor link={e.link} className="db-min-arrow">

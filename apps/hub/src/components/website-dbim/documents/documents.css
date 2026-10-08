@@ -120,8 +120,7 @@
     font-size: var(--db-fs-small);
     font-weight: var(--sa-font-weight-semibold);
     letter-spacing: 0.6px;
-    text-transform: uppercase;
-    color: var(--sa-color-neutralScale-700);
+    color: var(--sa-color-text-muted); /* a date, DD MMM YYYY — never in capitals */
   }
 
   /* .type-size */

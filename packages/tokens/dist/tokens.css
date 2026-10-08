@@ -2805,8 +2805,8 @@
 [data-brand="dbim-blue"],
 [data-color-mode="dbim"],
 [data-brand="dbim"] {
-  --sa-color-action-primary-default: var(--sa-ref-color-dbimPrimary-blue-600);
-  --sa-color-action-primary-hover: var(--sa-ref-color-dbimPrimary-blue-800);
+  --sa-color-action-primary-default: var(--sa-ref-color-dbimPrimary-blue-800);
+  --sa-color-action-primary-hover: var(--sa-ref-color-dbimPrimary-blue-600);
   --sa-color-action-primary-tonal: var(--sa-ref-color-dbimPrimary-blue-100);
   --sa-color-primaryScale-50: var(--sa-ref-color-dbimPrimary-blue-100);
   --sa-color-primaryScale-100: var(--sa-ref-color-dbimPrimary-blue-100);
@@ -2842,18 +2842,18 @@
   --sa-color-accentScale-900: #002a12;
   --sa-color-accentScale-950: #001708;
   --sa-color-neutralScale-0: var(--sa-ref-color-neutralDbim-0);
-  --sa-color-neutralScale-25: var(--sa-ref-color-neutralDbim-25);
-  --sa-color-neutralScale-50: var(--sa-ref-color-neutralDbim-50);
+  --sa-color-neutralScale-25: var(--sa-ref-color-neutralDbim-0);
+  --sa-color-neutralScale-50: var(--sa-ref-color-neutralDbim-100);
   --sa-color-neutralScale-100: var(--sa-ref-color-neutralDbim-100);
   --sa-color-neutralScale-200: var(--sa-ref-color-neutralDbim-200);
   --sa-color-neutralScale-300: var(--sa-ref-color-neutralDbim-400);
   --sa-color-neutralScale-400: var(--sa-ref-color-neutralDbim-400);
   --sa-color-neutralScale-500: var(--sa-ref-color-neutralDbim-600);
   --sa-color-neutralScale-600: var(--sa-ref-color-neutralDbim-600);
-  --sa-color-neutralScale-700: var(--sa-ref-color-neutralDbim-700);
-  --sa-color-neutralScale-800: var(--sa-ref-color-neutralDbim-800);
-  --sa-color-neutralScale-900: var(--sa-ref-color-neutralDbim-900);
-  --sa-color-neutralScale-950: var(--sa-ref-color-neutralDbim-950);
+  --sa-color-neutralScale-700: var(--sa-ref-color-neutralDbim-600);
+  --sa-color-neutralScale-800: var(--sa-ref-color-dbimInk);
+  --sa-color-neutralScale-900: var(--sa-ref-color-dbimInk);
+  --sa-color-neutralScale-950: var(--sa-ref-color-dbimInk);
   --sa-color-neutralScale-1000: var(--sa-ref-color-neutralDbim-1000);
   --sa-color-successScale-50: var(--sa-ref-color-greenDbim-50);
   --sa-color-successScale-100: var(--sa-ref-color-greenDbim-100);
@@ -2900,7 +2900,7 @@
   --sa-color-infoScale-900: var(--sa-ref-color-infoDbim-900);
   --sa-color-infoScale-950: var(--sa-ref-color-infoDbim-950);
   --sa-color-text-default: var(--sa-ref-color-dbimInk);
-  --sa-color-text-muted: var(--sa-ref-color-neutralDbim-700);
+  --sa-color-text-muted: var(--sa-ref-color-neutralDbim-600);
   --sa-color-text-disabled: var(--sa-ref-color-neutralDbim-400);
   --sa-color-text-onPrimary: var(--sa-ref-color-neutralDbim-0);
   --sa-color-text-info: var(--sa-ref-color-infoDbim-600);
@@ -2920,11 +2920,11 @@
   --sa-border-neutral-base: var(--sa-ref-color-neutralDbim-200);
   --sa-border-neutral-bolder-default: var(--sa-ref-color-neutralDbim-600);
   --sa-bg-neutral-base: var(--sa-ref-color-neutralDbim-0);
-  --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDbim-50);
+  --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDbim-100);
   --sa-bg-brand-primary-boldest: var(--sa-color-primaryScale-800);
-  --sa-text-neutral-bolder: var(--sa-ref-color-neutralDbim-900);
-  --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-blue-600);
-  --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
+  --sa-text-neutral-bolder: var(--sa-ref-color-dbimInk);
+  --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-blue-800);
+  --sa-text-link-visited-default: var(--sa-ref-color-dbimPrimary-blue-600);
   --sa-overlay-neutral-boldest: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-48) * 100%), transparent);
   --sa-chart-div-negStrong: var(--sa-ref-color-redDbim-800);
   --sa-chart-div-neg: var(--sa-ref-color-redDbim-400);
@@ -2935,7 +2935,7 @@
   --sa-chart-trend-flat: var(--sa-ref-color-neutralDbim-600);
   --sa-chart-grid: var(--sa-ref-color-neutralDbim-100);
   --sa-chart-axis: var(--sa-ref-color-neutralDbim-600);
-  --sa-chart-tooltipBg: var(--sa-ref-color-neutralDbim-800);
+  --sa-chart-tooltipBg: var(--sa-ref-color-dbimInk);
   --sa-chart-tooltipInk: var(--sa-ref-color-neutralDbim-0);
   --sa-chart-regionEmpty: var(--sa-ref-color-neutralDbim-100);
   --sa-chart-regionStroke: var(--sa-ref-color-neutralDbim-0);
@@ -3468,8 +3468,8 @@
 }
 
 [data-brand="dbim-burgundy"] {
-  --sa-color-action-primary-default: var(--sa-ref-color-dbimPrimary-burgundy-600);
-  --sa-color-action-primary-hover: var(--sa-ref-color-dbimPrimary-burgundy-800);
+  --sa-color-action-primary-default: var(--sa-ref-color-dbimPrimary-burgundy-800);
+  --sa-color-action-primary-hover: var(--sa-ref-color-dbimPrimary-burgundy-600);
   --sa-color-action-primary-tonal: var(--sa-ref-color-dbimPrimary-burgundy-100);
   --sa-color-primaryScale-50: var(--sa-ref-color-dbimPrimary-burgundy-100);
   --sa-color-primaryScale-100: var(--sa-ref-color-dbimPrimary-burgundy-100);
@@ -3505,18 +3505,18 @@
   --sa-color-accentScale-900: #002a12;
   --sa-color-accentScale-950: #001708;
   --sa-color-neutralScale-0: var(--sa-ref-color-neutralDbim-0);
-  --sa-color-neutralScale-25: var(--sa-ref-color-neutralDbim-25);
-  --sa-color-neutralScale-50: var(--sa-ref-color-neutralDbim-50);
+  --sa-color-neutralScale-25: var(--sa-ref-color-neutralDbim-0);
+  --sa-color-neutralScale-50: var(--sa-ref-color-neutralDbim-100);
   --sa-color-neutralScale-100: var(--sa-ref-color-neutralDbim-100);
   --sa-color-neutralScale-200: var(--sa-ref-color-neutralDbim-200);
   --sa-color-neutralScale-300: var(--sa-ref-color-neutralDbim-400);
   --sa-color-neutralScale-400: var(--sa-ref-color-neutralDbim-400);
   --sa-color-neutralScale-500: var(--sa-ref-color-neutralDbim-600);
   --sa-color-neutralScale-600: var(--sa-ref-color-neutralDbim-600);
-  --sa-color-neutralScale-700: var(--sa-ref-color-neutralDbim-700);
-  --sa-color-neutralScale-800: var(--sa-ref-color-neutralDbim-800);
-  --sa-color-neutralScale-900: var(--sa-ref-color-neutralDbim-900);
-  --sa-color-neutralScale-950: var(--sa-ref-color-neutralDbim-950);
+  --sa-color-neutralScale-700: var(--sa-ref-color-neutralDbim-600);
+  --sa-color-neutralScale-800: var(--sa-ref-color-dbimInk);
+  --sa-color-neutralScale-900: var(--sa-ref-color-dbimInk);
+  --sa-color-neutralScale-950: var(--sa-ref-color-dbimInk);
   --sa-color-neutralScale-1000: var(--sa-ref-color-neutralDbim-1000);
   --sa-color-successScale-50: var(--sa-ref-color-greenDbim-50);
   --sa-color-successScale-100: var(--sa-ref-color-greenDbim-100);
@@ -3563,7 +3563,7 @@
   --sa-color-infoScale-900: var(--sa-ref-color-infoDbim-900);
   --sa-color-infoScale-950: var(--sa-ref-color-infoDbim-950);
   --sa-color-text-default: var(--sa-ref-color-dbimInk);
-  --sa-color-text-muted: var(--sa-ref-color-neutralDbim-700);
+  --sa-color-text-muted: var(--sa-ref-color-neutralDbim-600);
   --sa-color-text-disabled: var(--sa-ref-color-neutralDbim-400);
   --sa-color-text-onPrimary: var(--sa-ref-color-neutralDbim-0);
   --sa-color-text-info: var(--sa-ref-color-infoDbim-600);
@@ -3583,11 +3583,11 @@
   --sa-border-neutral-base: var(--sa-ref-color-neutralDbim-200);
   --sa-border-neutral-bolder-default: var(--sa-ref-color-neutralDbim-600);
   --sa-bg-neutral-base: var(--sa-ref-color-neutralDbim-0);
-  --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDbim-50);
+  --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDbim-100);
   --sa-bg-brand-primary-boldest: var(--sa-color-primaryScale-800);
-  --sa-text-neutral-bolder: var(--sa-ref-color-neutralDbim-900);
-  --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-burgundy-600);
-  --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
+  --sa-text-neutral-bolder: var(--sa-ref-color-dbimInk);
+  --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-burgundy-800);
+  --sa-text-link-visited-default: var(--sa-ref-color-dbimPrimary-burgundy-600);
   --sa-overlay-neutral-boldest: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-48) * 100%), transparent);
   --sa-chart-div-negStrong: var(--sa-ref-color-redDbim-800);
   --sa-chart-div-neg: var(--sa-ref-color-redDbim-400);
@@ -3598,7 +3598,7 @@
   --sa-chart-trend-flat: var(--sa-ref-color-neutralDbim-600);
   --sa-chart-grid: var(--sa-ref-color-neutralDbim-100);
   --sa-chart-axis: var(--sa-ref-color-neutralDbim-600);
-  --sa-chart-tooltipBg: var(--sa-ref-color-neutralDbim-800);
+  --sa-chart-tooltipBg: var(--sa-ref-color-dbimInk);
   --sa-chart-tooltipInk: var(--sa-ref-color-neutralDbim-0);
   --sa-chart-regionEmpty: var(--sa-ref-color-neutralDbim-100);
   --sa-chart-regionStroke: var(--sa-ref-color-neutralDbim-0);
@@ -4131,8 +4131,8 @@
 }
 
 [data-brand="dbim-purple"] {
-  --sa-color-action-primary-default: var(--sa-ref-color-dbimPrimary-purple-600);
-  --sa-color-action-primary-hover: var(--sa-ref-color-dbimPrimary-purple-800);
+  --sa-color-action-primary-default: var(--sa-ref-color-dbimPrimary-purple-800);
+  --sa-color-action-primary-hover: var(--sa-ref-color-dbimPrimary-purple-600);
   --sa-color-action-primary-tonal: var(--sa-ref-color-dbimPrimary-purple-100);
   --sa-color-primaryScale-50: var(--sa-ref-color-dbimPrimary-purple-100);
   --sa-color-primaryScale-100: var(--sa-ref-color-dbimPrimary-purple-100);
@@ -4168,18 +4168,18 @@
   --sa-color-accentScale-900: #002a12;
   --sa-color-accentScale-950: #001708;
   --sa-color-neutralScale-0: var(--sa-ref-color-neutralDbim-0);
-  --sa-color-neutralScale-25: var(--sa-ref-color-neutralDbim-25);
-  --sa-color-neutralScale-50: var(--sa-ref-color-neutralDbim-50);
+  --sa-color-neutralScale-25: var(--sa-ref-color-neutralDbim-0);
+  --sa-color-neutralScale-50: var(--sa-ref-color-neutralDbim-100);
   --sa-color-neutralScale-100: var(--sa-ref-color-neutralDbim-100);
   --sa-color-neutralScale-200: var(--sa-ref-color-neutralDbim-200);
   --sa-color-neutralScale-300: var(--sa-ref-color-neutralDbim-400);
   --sa-color-neutralScale-400: var(--sa-ref-color-neutralDbim-400);
   --sa-color-neutralScale-500: var(--sa-ref-color-neutralDbim-600);
   --sa-color-neutralScale-600: var(--sa-ref-color-neutralDbim-600);
-  --sa-color-neutralScale-700: var(--sa-ref-color-neutralDbim-700);
-  --sa-color-neutralScale-800: var(--sa-ref-color-neutralDbim-800);
-  --sa-color-neutralScale-900: var(--sa-ref-color-neutralDbim-900);
-  --sa-color-neutralScale-950: var(--sa-ref-color-neutralDbim-950);
+  --sa-color-neutralScale-700: var(--sa-ref-color-neutralDbim-600);
+  --sa-color-neutralScale-800: var(--sa-ref-color-dbimInk);
+  --sa-color-neutralScale-900: var(--sa-ref-color-dbimInk);
+  --sa-color-neutralScale-950: var(--sa-ref-color-dbimInk);
   --sa-color-neutralScale-1000: var(--sa-ref-color-neutralDbim-1000);
   --sa-color-successScale-50: var(--sa-ref-color-greenDbim-50);
   --sa-color-successScale-100: var(--sa-ref-color-greenDbim-100);
@@ -4226,7 +4226,7 @@
   --sa-color-infoScale-900: var(--sa-ref-color-infoDbim-900);
   --sa-color-infoScale-950: var(--sa-ref-color-infoDbim-950);
   --sa-color-text-default: var(--sa-ref-color-dbimInk);
-  --sa-color-text-muted: var(--sa-ref-color-neutralDbim-700);
+  --sa-color-text-muted: var(--sa-ref-color-neutralDbim-600);
   --sa-color-text-disabled: var(--sa-ref-color-neutralDbim-400);
   --sa-color-text-onPrimary: var(--sa-ref-color-neutralDbim-0);
   --sa-color-text-info: var(--sa-ref-color-infoDbim-600);
@@ -4246,11 +4246,11 @@
   --sa-border-neutral-base: var(--sa-ref-color-neutralDbim-200);
   --sa-border-neutral-bolder-default: var(--sa-ref-color-neutralDbim-600);
   --sa-bg-neutral-base: var(--sa-ref-color-neutralDbim-0);
-  --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDbim-50);
+  --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDbim-100);
   --sa-bg-brand-primary-boldest: var(--sa-color-primaryScale-800);
-  --sa-text-neutral-bolder: var(--sa-ref-color-neutralDbim-900);
-  --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-purple-600);
-  --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
+  --sa-text-neutral-bolder: var(--sa-ref-color-dbimInk);
+  --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-purple-800);
+  --sa-text-link-visited-default: var(--sa-ref-color-dbimPrimary-purple-600);
   --sa-overlay-neutral-boldest: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-48) * 100%), transparent);
   --sa-chart-div-negStrong: var(--sa-ref-color-redDbim-800);
   --sa-chart-div-neg: var(--sa-ref-color-redDbim-400);
@@ -4261,7 +4261,7 @@
   --sa-chart-trend-flat: var(--sa-ref-color-neutralDbim-600);
   --sa-chart-grid: var(--sa-ref-color-neutralDbim-100);
   --sa-chart-axis: var(--sa-ref-color-neutralDbim-600);
-  --sa-chart-tooltipBg: var(--sa-ref-color-neutralDbim-800);
+  --sa-chart-tooltipBg: var(--sa-ref-color-dbimInk);
   --sa-chart-tooltipInk: var(--sa-ref-color-neutralDbim-0);
   --sa-chart-regionEmpty: var(--sa-ref-color-neutralDbim-100);
   --sa-chart-regionStroke: var(--sa-ref-color-neutralDbim-0);
@@ -4831,18 +4831,18 @@
   --sa-color-accentScale-900: #002a12;
   --sa-color-accentScale-950: #001708;
   --sa-color-neutralScale-0: var(--sa-ref-color-neutralDbim-0);
-  --sa-color-neutralScale-25: var(--sa-ref-color-neutralDbim-25);
-  --sa-color-neutralScale-50: var(--sa-ref-color-neutralDbim-50);
+  --sa-color-neutralScale-25: var(--sa-ref-color-neutralDbim-0);
+  --sa-color-neutralScale-50: var(--sa-ref-color-neutralDbim-100);
   --sa-color-neutralScale-100: var(--sa-ref-color-neutralDbim-100);
   --sa-color-neutralScale-200: var(--sa-ref-color-neutralDbim-200);
   --sa-color-neutralScale-300: var(--sa-ref-color-neutralDbim-400);
   --sa-color-neutralScale-400: var(--sa-ref-color-neutralDbim-400);
   --sa-color-neutralScale-500: var(--sa-ref-color-neutralDbim-600);
   --sa-color-neutralScale-600: var(--sa-ref-color-neutralDbim-600);
-  --sa-color-neutralScale-700: var(--sa-ref-color-neutralDbim-700);
-  --sa-color-neutralScale-800: var(--sa-ref-color-neutralDbim-800);
-  --sa-color-neutralScale-900: var(--sa-ref-color-neutralDbim-900);
-  --sa-color-neutralScale-950: var(--sa-ref-color-neutralDbim-950);
+  --sa-color-neutralScale-700: var(--sa-ref-color-neutralDbim-600);
+  --sa-color-neutralScale-800: var(--sa-ref-color-dbimInk);
+  --sa-color-neutralScale-900: var(--sa-ref-color-dbimInk);
+  --sa-color-neutralScale-950: var(--sa-ref-color-dbimInk);
   --sa-color-neutralScale-1000: var(--sa-ref-color-neutralDbim-1000);
   --sa-color-successScale-50: var(--sa-ref-color-greenDbim-50);
   --sa-color-successScale-100: var(--sa-ref-color-greenDbim-100);
@@ -4889,7 +4889,7 @@
   --sa-color-infoScale-900: var(--sa-ref-color-infoDbim-900);
   --sa-color-infoScale-950: var(--sa-ref-color-infoDbim-950);
   --sa-color-text-default: var(--sa-ref-color-dbimInk);
-  --sa-color-text-muted: var(--sa-ref-color-neutralDbim-700);
+  --sa-color-text-muted: var(--sa-ref-color-neutralDbim-600);
   --sa-color-text-disabled: var(--sa-ref-color-neutralDbim-400);
   --sa-color-text-onPrimary: var(--sa-ref-color-neutralDbim-0);
   --sa-color-text-info: var(--sa-ref-color-infoDbim-600);
@@ -4909,11 +4909,11 @@
   --sa-border-neutral-base: var(--sa-ref-color-neutralDbim-200);
   --sa-border-neutral-bolder-default: var(--sa-ref-color-neutralDbim-600);
   --sa-bg-neutral-base: var(--sa-ref-color-neutralDbim-0);
-  --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDbim-50);
+  --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDbim-100);
   --sa-bg-brand-primary-boldest: var(--sa-color-primaryScale-800);
-  --sa-text-neutral-bolder: var(--sa-ref-color-neutralDbim-900);
-  --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-green-600);
-  --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
+  --sa-text-neutral-bolder: var(--sa-ref-color-dbimInk);
+  --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-green-800);
+  --sa-text-link-visited-default: var(--sa-ref-color-dbimPrimary-green-600);
   --sa-overlay-neutral-boldest: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-48) * 100%), transparent);
   --sa-chart-div-negStrong: var(--sa-ref-color-redDbim-800);
   --sa-chart-div-neg: var(--sa-ref-color-redDbim-400);
@@ -4924,7 +4924,7 @@
   --sa-chart-trend-flat: var(--sa-ref-color-neutralDbim-600);
   --sa-chart-grid: var(--sa-ref-color-neutralDbim-100);
   --sa-chart-axis: var(--sa-ref-color-neutralDbim-600);
-  --sa-chart-tooltipBg: var(--sa-ref-color-neutralDbim-800);
+  --sa-chart-tooltipBg: var(--sa-ref-color-dbimInk);
   --sa-chart-tooltipInk: var(--sa-ref-color-neutralDbim-0);
   --sa-chart-regionEmpty: var(--sa-ref-color-neutralDbim-100);
   --sa-chart-regionStroke: var(--sa-ref-color-neutralDbim-0);
@@ -5457,8 +5457,8 @@
 }
 
 [data-brand="dbim-chrome-yellow"] {
-  --sa-color-action-primary-default: var(--sa-ref-color-dbimPrimary-chromeYellow-600);
-  --sa-color-action-primary-hover: var(--sa-ref-color-dbimPrimary-chromeYellow-800);
+  --sa-color-action-primary-default: var(--sa-ref-color-dbimPrimary-chromeYellow-800);
+  --sa-color-action-primary-hover: var(--sa-ref-color-dbimPrimary-chromeYellow-600);
   --sa-color-action-primary-tonal: var(--sa-ref-color-dbimPrimary-chromeYellow-100);
   --sa-color-primaryScale-50: var(--sa-ref-color-dbimPrimary-chromeYellow-100);
   --sa-color-primaryScale-100: var(--sa-ref-color-dbimPrimary-chromeYellow-100);
@@ -5494,18 +5494,18 @@
   --sa-color-accentScale-900: #002a12;
   --sa-color-accentScale-950: #001708;
   --sa-color-neutralScale-0: var(--sa-ref-color-neutralDbim-0);
-  --sa-color-neutralScale-25: var(--sa-ref-color-neutralDbim-25);
-  --sa-color-neutralScale-50: var(--sa-ref-color-neutralDbim-50);
+  --sa-color-neutralScale-25: var(--sa-ref-color-neutralDbim-0);
+  --sa-color-neutralScale-50: var(--sa-ref-color-neutralDbim-100);
   --sa-color-neutralScale-100: var(--sa-ref-color-neutralDbim-100);
   --sa-color-neutralScale-200: var(--sa-ref-color-neutralDbim-200);
   --sa-color-neutralScale-300: var(--sa-ref-color-neutralDbim-400);
   --sa-color-neutralScale-400: var(--sa-ref-color-neutralDbim-400);
   --sa-color-neutralScale-500: var(--sa-ref-color-neutralDbim-600);
   --sa-color-neutralScale-600: var(--sa-ref-color-neutralDbim-600);
-  --sa-color-neutralScale-700: var(--sa-ref-color-neutralDbim-700);
-  --sa-color-neutralScale-800: var(--sa-ref-color-neutralDbim-800);
-  --sa-color-neutralScale-900: var(--sa-ref-color-neutralDbim-900);
-  --sa-color-neutralScale-950: var(--sa-ref-color-neutralDbim-950);
+  --sa-color-neutralScale-700: var(--sa-ref-color-neutralDbim-600);
+  --sa-color-neutralScale-800: var(--sa-ref-color-dbimInk);
+  --sa-color-neutralScale-900: var(--sa-ref-color-dbimInk);
+  --sa-color-neutralScale-950: var(--sa-ref-color-dbimInk);
   --sa-color-neutralScale-1000: var(--sa-ref-color-neutralDbim-1000);
   --sa-color-successScale-50: var(--sa-ref-color-greenDbim-50);
   --sa-color-successScale-100: var(--sa-ref-color-greenDbim-100);
@@ -5552,7 +5552,7 @@
   --sa-color-infoScale-900: var(--sa-ref-color-infoDbim-900);
   --sa-color-infoScale-950: var(--sa-ref-color-infoDbim-950);
   --sa-color-text-default: var(--sa-ref-color-dbimInk);
-  --sa-color-text-muted: var(--sa-ref-color-neutralDbim-700);
+  --sa-color-text-muted: var(--sa-ref-color-neutralDbim-600);
   --sa-color-text-disabled: var(--sa-ref-color-neutralDbim-400);
   --sa-color-text-onPrimary: var(--sa-ref-color-neutralDbim-0);
   --sa-color-text-info: var(--sa-ref-color-infoDbim-600);
@@ -5572,11 +5572,11 @@
   --sa-border-neutral-base: var(--sa-ref-color-neutralDbim-200);
   --sa-border-neutral-bolder-default: var(--sa-ref-color-neutralDbim-600);
   --sa-bg-neutral-base: var(--sa-ref-color-neutralDbim-0);
-  --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDbim-50);
+  --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDbim-100);
   --sa-bg-brand-primary-boldest: var(--sa-color-primaryScale-800);
-  --sa-text-neutral-bolder: var(--sa-ref-color-neutralDbim-900);
-  --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-chromeYellow-600);
-  --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
+  --sa-text-neutral-bolder: var(--sa-ref-color-dbimInk);
+  --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-chromeYellow-800);
+  --sa-text-link-visited-default: var(--sa-ref-color-dbimPrimary-chromeYellow-600);
   --sa-overlay-neutral-boldest: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-48) * 100%), transparent);
   --sa-chart-div-negStrong: var(--sa-ref-color-redDbim-800);
   --sa-chart-div-neg: var(--sa-ref-color-redDbim-400);
@@ -5587,7 +5587,7 @@
   --sa-chart-trend-flat: var(--sa-ref-color-neutralDbim-600);
   --sa-chart-grid: var(--sa-ref-color-neutralDbim-100);
   --sa-chart-axis: var(--sa-ref-color-neutralDbim-600);
-  --sa-chart-tooltipBg: var(--sa-ref-color-neutralDbim-800);
+  --sa-chart-tooltipBg: var(--sa-ref-color-dbimInk);
   --sa-chart-tooltipInk: var(--sa-ref-color-neutralDbim-0);
   --sa-chart-regionEmpty: var(--sa-ref-color-neutralDbim-100);
   --sa-chart-regionStroke: var(--sa-ref-color-neutralDbim-0);
@@ -6120,8 +6120,8 @@
 }
 
 [data-brand="dbim-cinnamon-red"] {
-  --sa-color-action-primary-default: var(--sa-ref-color-dbimPrimary-cinnamonRed-600);
-  --sa-color-action-primary-hover: var(--sa-ref-color-dbimPrimary-cinnamonRed-800);
+  --sa-color-action-primary-default: var(--sa-ref-color-dbimPrimary-cinnamonRed-800);
+  --sa-color-action-primary-hover: var(--sa-ref-color-dbimPrimary-cinnamonRed-600);
   --sa-color-action-primary-tonal: var(--sa-ref-color-dbimPrimary-cinnamonRed-100);
   --sa-color-primaryScale-50: var(--sa-ref-color-dbimPrimary-cinnamonRed-100);
   --sa-color-primaryScale-100: var(--sa-ref-color-dbimPrimary-cinnamonRed-100);
@@ -6157,18 +6157,18 @@
   --sa-color-accentScale-900: #002a12;
   --sa-color-accentScale-950: #001708;
   --sa-color-neutralScale-0: var(--sa-ref-color-neutralDbim-0);
-  --sa-color-neutralScale-25: var(--sa-ref-color-neutralDbim-25);
-  --sa-color-neutralScale-50: var(--sa-ref-color-neutralDbim-50);
+  --sa-color-neutralScale-25: var(--sa-ref-color-neutralDbim-0);
+  --sa-color-neutralScale-50: var(--sa-ref-color-neutralDbim-100);
   --sa-color-neutralScale-100: var(--sa-ref-color-neutralDbim-100);
   --sa-color-neutralScale-200: var(--sa-ref-color-neutralDbim-200);
   --sa-color-neutralScale-300: var(--sa-ref-color-neutralDbim-400);
   --sa-color-neutralScale-400: var(--sa-ref-color-neutralDbim-400);
   --sa-color-neutralScale-500: var(--sa-ref-color-neutralDbim-600);
   --sa-color-neutralScale-600: var(--sa-ref-color-neutralDbim-600);
-  --sa-color-neutralScale-700: var(--sa-ref-color-neutralDbim-700);
-  --sa-color-neutralScale-800: var(--sa-ref-color-neutralDbim-800);
-  --sa-color-neutralScale-900: var(--sa-ref-color-neutralDbim-900);
-  --sa-color-neutralScale-950: var(--sa-ref-color-neutralDbim-950);
+  --sa-color-neutralScale-700: var(--sa-ref-color-neutralDbim-600);
+  --sa-color-neutralScale-800: var(--sa-ref-color-dbimInk);
+  --sa-color-neutralScale-900: var(--sa-ref-color-dbimInk);
+  --sa-color-neutralScale-950: var(--sa-ref-color-dbimInk);
   --sa-color-neutralScale-1000: var(--sa-ref-color-neutralDbim-1000);
   --sa-color-successScale-50: var(--sa-ref-color-greenDbim-50);
   --sa-color-successScale-100: var(--sa-ref-color-greenDbim-100);
@@ -6215,7 +6215,7 @@
   --sa-color-infoScale-900: var(--sa-ref-color-infoDbim-900);
   --sa-color-infoScale-950: var(--sa-ref-color-infoDbim-950);
   --sa-color-text-default: var(--sa-ref-color-dbimInk);
-  --sa-color-text-muted: var(--sa-ref-color-neutralDbim-700);
+  --sa-color-text-muted: var(--sa-ref-color-neutralDbim-600);
   --sa-color-text-disabled: var(--sa-ref-color-neutralDbim-400);
   --sa-color-text-onPrimary: var(--sa-ref-color-neutralDbim-0);
   --sa-color-text-info: var(--sa-ref-color-infoDbim-600);
@@ -6235,11 +6235,11 @@
   --sa-border-neutral-base: var(--sa-ref-color-neutralDbim-200);
   --sa-border-neutral-bolder-default: var(--sa-ref-color-neutralDbim-600);
   --sa-bg-neutral-base: var(--sa-ref-color-neutralDbim-0);
-  --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDbim-50);
+  --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDbim-100);
   --sa-bg-brand-primary-boldest: var(--sa-color-primaryScale-800);
-  --sa-text-neutral-bolder: var(--sa-ref-color-neutralDbim-900);
-  --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-cinnamonRed-600);
-  --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
+  --sa-text-neutral-bolder: var(--sa-ref-color-dbimInk);
+  --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-cinnamonRed-800);
+  --sa-text-link-visited-default: var(--sa-ref-color-dbimPrimary-cinnamonRed-600);
   --sa-overlay-neutral-boldest: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-48) * 100%), transparent);
   --sa-chart-div-negStrong: var(--sa-ref-color-redDbim-800);
   --sa-chart-div-neg: var(--sa-ref-color-redDbim-400);
@@ -6250,7 +6250,7 @@
   --sa-chart-trend-flat: var(--sa-ref-color-neutralDbim-600);
   --sa-chart-grid: var(--sa-ref-color-neutralDbim-100);
   --sa-chart-axis: var(--sa-ref-color-neutralDbim-600);
-  --sa-chart-tooltipBg: var(--sa-ref-color-neutralDbim-800);
+  --sa-chart-tooltipBg: var(--sa-ref-color-dbimInk);
   --sa-chart-tooltipInk: var(--sa-ref-color-neutralDbim-0);
   --sa-chart-regionEmpty: var(--sa-ref-color-neutralDbim-100);
   --sa-chart-regionStroke: var(--sa-ref-color-neutralDbim-0);

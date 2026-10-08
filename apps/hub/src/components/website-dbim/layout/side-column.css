@@ -151,7 +151,7 @@
 
   /* Pages elsewhere, as the handoff's Text Links: in the link colour. */
   [data-design="dbim"] .db-side__related a {
-    color: var(--sa-color-primaryScale-600);
+    color: var(--sa-text-link-brand-default); /* the key colour: DBIM §2.2 hyperlink */
   }
 
   /* Below 992 the index sits above the sections: a wrap of buttons, not a column of rows. */

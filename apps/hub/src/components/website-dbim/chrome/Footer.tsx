@@ -5,16 +5,10 @@ import { Icon } from "@mosje/design-system";
 import { getContentSyncedDate } from "@/lib/website/content";
 import { DBIM_BRAND } from "@/lib/website-dbim/assets";
 import { DBIM_FOOTER_LINKS, dbimHref } from "@/lib/website-dbim/nav";
+import { dbimDate } from "@/lib/website-dbim/date";
 import { DbimIcon } from "../ui/icons";
 import "./footer.css";
 
-/** "13 Jun 2026" → "13.06.2026", the reference's form. Empty when there is no ingest date. */
-function dottedDate(human: string): string {
-  const d = new Date(human);
-  if (!human || Number.isNaN(d.getTime())) return "";
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()}`;
-}
 
 /**
  * The DBIM footer: Useful Links, Subscribe for Updates (the Department's four social
@@ -25,7 +19,7 @@ function dottedDate(human: string): string {
  * grammar: the DBIM template prints it, and this design reproduces the template.
  */
 export function DbimFooter() {
-  const updated = dottedDate(getContentSyncedDate());
+  const updated = dbimDate(getContentSyncedDate());
   return (
     <footer className="db-footer">
       <div className="db-footer__row">

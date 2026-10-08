@@ -256,7 +256,7 @@
     align-items: center;
     padding: 5px 10px;
     font-size: 1.25rem; /* 20px */
-    font-weight: var(--sa-font-weight-regular);
+    font-weight: var(--sa-font-weight-medium); /* Heading 3: Bold / Semi Bold / Medium (Table 3) */
     line-height: normal;
     letter-spacing: -0.1px;
     color: var(--sa-color-neutralScale-0);

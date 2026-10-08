@@ -9,6 +9,7 @@ import { DbimSideColumn } from "@/components/website-dbim/layout/SideColumn";
 import "@/components/website-dbim/ministry/ministry.css"; // the DBIM detail layout: db-min-detail, db-min-rich
 
 const NEW_TAB = " (opens in a new tab)";
+import { dbimDates } from "@/lib/website-dbim/date";
 
 interface PageSection {
   id: string;
@@ -95,7 +96,7 @@ function DocumentsBody({ d }: { d: Detail }) {
             <li key={doc.href + doc.title} className="db-sd__doc">
               <p>{doc.title}</p>
               {/* DBIM 3.0 A.5.3 ii: the date of release, day before month (A.5.6 viii). */}
-              <span className="db-sd__doc-date">{doc.date ? <small>{doc.date}</small> : null}</span>
+              <span className="db-sd__doc-date">{doc.date ? <small>{dbimDates(doc.date)}</small> : null}</span>
               <span className="db-tender__type">
                 <DbimPdfIcon />
                 <small>{doc.size ?? doc.type ?? "File"}</small>

@@ -11,7 +11,7 @@ import {
   DbimOrgSubPageView,
 } from "@/components/website-dbim/ministry/OrganisationPages";
 import { DBIM_MENU } from "@/lib/website-dbim/nav";
-import { dottedDate } from "@/lib/website-dbim/media";
+import { dbimDate } from "@/lib/website-dbim/date";
 import {
   officialProfile,
   organisationAlbums,
@@ -52,7 +52,7 @@ function resolve(id: string, sub: string[], page: number): Resolved {
     return { title: "Events", body: <DbimOrgEventsView {...pageOf(organisationEvents(id), page)} /> };
   }
   if (head === "gallery" && !second) {
-    const albums = organisationAlbums(id).map(({ photos, ...a }) => ({ ...a, count: photos.length, when: dottedDate(a.date) }));
+    const albums = organisationAlbums(id).map(({ photos, ...a }) => ({ ...a, count: photos.length, when: (dbimDate(a.date) || undefined) }));
     return { title: "Gallery", body: albums.length ? <DbimAlbumGrid albums={albums} /> : <DbimEmptyState>No photographs have been published.</DbimEmptyState> };
   }
   if (head === "directory") {
