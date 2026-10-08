@@ -684,8 +684,10 @@ Each now carries the build's Funding History, filled from what the prototype hol
 Also on these screens: every Funding History card, NAPDDR's included, gains the build's **Open NGO 360**; and the File
 Movement entry, which named Sankalp Seva Sansthan as the applicant on all fourteen, names each file's own NGO.
 
-**Seed data to check:** two 2024-25 sanction orders (KORAPUT, PUNE) are dated 10 Mar 2026, which falls in 2025-26. They
-are drawn as the prototype holds them; the date belongs to the seed, not the drawing.
+**Seed dates fixed the same day.** The seed let a sanction fall "within its financial year or the year after", which put
+29 of 67 orders — SAN/2024-25/01245 among them — into a later year than the one they are numbered in. Sanctions now fall
+within their own year (`store/seed.ts`, schema 15), and the drawn dates follow: JAIPUR 10 Mar 2026, KORAPUT and PUNE
+10 Mar 2025.
 
 ## 6. Adding to the page
 

@@ -1382,10 +1382,13 @@ export function buildSeed(): {
 
     for (let i = 0; i < apps.length; i++) {
       let a = apps[i]!;
-      // A sanction falls within its financial year or the year after it (a year-long approval).
+      // A sanction falls within its own financial year: a grant-in-aid lapses on 31 March, and the
+      // order is numbered in that year's series (SAN/<year>/…). The year after it put 29 orders
+      // numbered SAN/2024-25 into 2025-26 and later (8 Oct 2026). A late approval stays an OPEN
+      // file across the year end (block 9b); it is not a sanction dated in the next year.
       if (a.sanction) {
         const start = fyStart(a.financialYear);
-        const latest = Math.min(start + 2 * 365 * DAY - 2 * DAY, now - DAY);
+        const latest = Math.min(start + 365 * DAY - 2 * DAY, now - DAY);
         const at = Date.parse(a.sanction.sanctionedAt);
         const target = at < start ? start + 45 * DAY : at > latest ? latest - 20 * DAY : at;
         if (target !== at) a = shift(a, target - at) as GrantApplication;

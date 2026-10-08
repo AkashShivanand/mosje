@@ -234,11 +234,12 @@ test("the declaration is dated on or before submission", () => {
   }
 });
 
-test("a sanction is dated within its financial year or the year after", () => {
+test("a sanction is dated within its own financial year, the year its order is numbered in", () => {
   for (const a of seed.applications.filter((x) => x.sanction)) {
     const at = a.sanction!.sanctionedAt.slice(0, 10);
-    const lastDay = `${Number(a.financialYear.slice(0, 4)) + 2}-03-31`;
+    const lastDay = `${Number(a.financialYear.slice(0, 4)) + 1}-03-31`;
     assert.ok(at >= fyStartIso(a.financialYear) && at <= lastDay, `${a.id}: FY ${a.financialYear} sanctioned ${at}`);
+    assert.ok(a.sanction!.orderNo.startsWith(`SAN/${a.financialYear}/`), `${a.id}: order ${a.sanction!.orderNo} in FY ${a.financialYear}`);
   }
 });
 

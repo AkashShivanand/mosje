@@ -87,7 +87,11 @@ import {
  * reads like a 30-bed centre with NAPDDR's own documents. An older copy is reseeded: it holds the
  * NAPDDR file with a school's documents and 209 beneficiaries.
  */
-const SCHEMA_VERSION = 14;
+/*
+ * 15 — every sanction is dated within its own financial year, the year its order is numbered in. An
+ * older copy is reseeded: it holds 29 orders such as SAN/2024-25/01245 dated 10 Mar 2026.
+ */
+const SCHEMA_VERSION = 15;
 
 function seedState(): EAnudaanState {
   const seed = buildSeed();
