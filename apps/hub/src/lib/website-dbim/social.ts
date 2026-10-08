@@ -1,12 +1,11 @@
 /**
- * The Department's social-media feeds as the home page's "In Social Media" band shows them,
- * and the poster of the scholarship campaign video.
+ * The Department's accounts as the DBIM home page's "In Social Media" band lists them.
  *
- * SOURCE: master-socialjustice.digifootprint.gov.in home page, rendered DOM captured
- * 25 Sep 2026 (`.socialMediaContainer`, `.centralimg-layout-2-3 video[poster]`). The posts
- * are the Department's own, on its own accounts (the account links are `DBIM_BRAND.social`
- * in `./assets.ts`). No other design of the website embeds live feeds, so these live here
- * where every design can reach them.
+ * SOURCE: lib/website-shared/social.ts — the accounts, and SOCIAL_FEEDS, what each card
+ * shows, both read from dosje.gov.in on 8 Oct 2026. Until then this file kept the
+ * reference build's own posts (five on X, five on Facebook, five videos and an Instagram
+ * post, captured 25 Sep 2026); the live band shows one post, three videos and two
+ * profile cards, and every design now reads those.
  */
 
 import { SOCIAL_ACCOUNTS, type SocialNetwork } from "@/lib/website-shared/social";
@@ -22,6 +21,9 @@ export interface DbimSocialFeed {
   /** The account, as it is written on the network. */
   handle: string;
   href: string;
+  /** The profile card's line and button, where the live card prints them. */
+  blurb?: string;
+  cta?: string;
 }
 
 const ACCOUNT = "Department of Social Justice and Empowerment";
@@ -29,9 +31,9 @@ export const DBIM_SOCIAL_ACCOUNT = ACCOUNT;
 
 /**
  * The four accounts, from the content every design shares (lib/website-shared/social.ts):
- * the live site's three, in its order, and YouTube, which DBIM 3.0's "at least four
- * platforms" asks this design to add. Names, handles and links are the live site's —
- * until 28 Sep 2026 this list kept its own, in the reference build's order.
+ * the four the live band shows, in its order (Facebook, X, YouTube, Instagram). Names,
+ * handles, lines and links are the live site's — until 28 Sep 2026 this list kept its
+ * own, in the reference build's order. What each card shows is SOCIAL_FEEDS there.
  */
 export const DBIM_SOCIAL_FEEDS: DbimSocialFeed[] = SOCIAL_ACCOUNTS.map((a) => ({
   network: a.network,
@@ -39,35 +41,6 @@ export const DBIM_SOCIAL_FEEDS: DbimSocialFeed[] = SOCIAL_ACCOUNTS.map((a) => ({
   networkName: a.network === "x" ? "X" : a.name,
   handle: a.handle,
   href: a.href,
+  blurb: a.blurb,
+  cta: a.cta,
 }));
-
-/** Five posts on X, newest first, as the reference embeds them. */
-export const DBIM_X_POSTS = [
-  "1991371654619087292",
-  "1991366814409060699",
-  "1991330402670465472",
-  "1991330214203552139",
-  "1991330106317607150",
-] as const;
-
-/** The Department channel's uploads playlist; the reference embeds its first five. */
-export const DBIM_YOUTUBE_UPLOADS = { playlist: "UUDvIvFEeSJlo8dOihp2SUig", count: 5 } as const;
-
-/** Five Facebook items; `video` ones use the video plugin. */
-export const DBIM_FACEBOOK_POSTS: { href: string; kind: "post" | "video" }[] = [
-  { kind: "post", href: "https://www.facebook.com/goimsje/posts/pfbid0hE4yVnkhAv76LfxC8z5zRNs87i6kJ7xojA2wtM9mai7tpS25MnqCkWFGmd5JiGXAl" },
-  { kind: "post", href: "https://www.facebook.com/goimsje/posts/pfbid02GDKZR6KHSJ2crAP9Xyppyb8EKWoEEqwBuQZtRrXUEGuahbPajSrqRtDeZGhv53Ncl" },
-  { kind: "video", href: "https://www.facebook.com/reel/1640454500733313/" },
-  { kind: "post", href: "https://www.facebook.com/goimsje/posts/pfbid0jF2tUr5KTCyPjCLq8Wqu8eecPGuda3osqBWR37qZdYJWpHZ7UkU7rdWMGHXwHMkUl" },
-  { kind: "post", href: "https://www.facebook.com/goimsje/posts/pfbid031QvpY8qertrheVKrawGC1w6KbBuCgzTdesCfjEAbdhRYhEuUY7VYjBkBGQQY2qsal" },
-];
-
-/** One Instagram post. */
-export const DBIM_INSTAGRAM_POSTS = ["https://www.instagram.com/p/DRRA_9rD6oz/"] as const;
-
-/**
- * Poster frame of the scholarship video (`DBIM_CAMPAIGNS.scholarshipVideo`). Fetched on
- * 25 Sep 2026 from the reference's media host (ccps.digifootprint.gov.in, 2025/04/
- * 1788fb793d870f1ee49f02201be384e1.jpg) and served from our own public folder.
- */
-export const DBIM_SCHOLARSHIP_POSTER = "/website/dbim/home/scholarship-video-poster.jpg";

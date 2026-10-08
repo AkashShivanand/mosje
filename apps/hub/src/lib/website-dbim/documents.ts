@@ -281,8 +281,13 @@ export function whatsNewDocuments(): WhatsNewGroup[] {
  *
  * `undefined` when the item has nowhere to go; callers leave it out.
  */
-export function whatsNewTarget(n: Pick<NewsItem, "key" | "title">): { href: string; external: boolean } | undefined {
-  const link = (href: string | undefined) => (href ? { href, external: /^https?:\/\//i.test(href) } : undefined);
+export function whatsNewTarget(n: Pick<NewsItem, "key" | "title"> & { href?: string }): { href: string; external: boolean } | undefined {
+  // The Department's own site is not "another site": a dosje.gov.in page opens in place,
+  // with the chevron, as on the live list (instruction, 8 Oct 2026).
+  const link = (href: string | undefined) =>
+    href ? { href, external: /^https?:\/\//i.test(href) && !/^https?:\/\/(www\.)?dosje\.gov\.in(\/|$)/i.test(href) } : undefined;
+  // A live item that is a link, not a record (lib/website-shared/whats-new.ts `href`).
+  if (n.key.startsWith("x-")) return link(n.href);
   if (n.key.startsWith("d-")) {
     const d = getDocument(n.key.slice(2));
     if (!d) return undefined;

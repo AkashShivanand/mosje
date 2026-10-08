@@ -69,7 +69,11 @@
        by this scroll box. Unpositioned, it escaped to its static place ~1,900px below
        and stretched the home page far past the footer. */
     position: relative;
-    height: 310px; /* .socialmediaheight */
+    /* The reference's .socialmediaheight was 310; the live band's drawn cards (a profile,
+       the latest post, three videos, each with its ask and consent line) need 374 at
+       their tallest, and a card must not scroll inside itself (data-state-completeness.md
+       §4), so the box takes 380. */
+    height: 380px;
     overflow: hidden auto; /* Instagram's embed insists on 326px; the card is narrower */
     padding: var(--sa-padding-12);
     border-radius: 0 0 var(--sa-shape-4) var(--sa-shape-4);
@@ -99,26 +103,68 @@
     outline-offset: var(--sa-stroke-2);
   }
 
-  /* Feed content — before the reader asks, the shape of the embed (Figure 61) */
-  [data-design="dbim"] .db-hb-feed__preview {
-    position: relative;
-    min-width: 0;
+  /* Feed content (dosje.gov.in's card, read 8 Oct 2026): the drawn card, then the ask. */
+  [data-design="dbim"] .db-hb-feed {
     display: flex;
     flex-direction: column;
     gap: var(--sa-stack-12);
-    height: 100%;
-    overflow: hidden;
+    min-height: 100%;
   }
 
-  [data-design="dbim"] .db-hb-feed__post {
+  [data-design="dbim"] .db-hb-feed__content {
+    min-width: 0;
+  }
+
+  /* Profile card — Facebook, Instagram, an organisation's account. */
+  [data-design="dbim"] .db-hb-follow {
     display: flex;
-    flex: none;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    align-items: center;
+    padding: var(--sa-padding-24) var(--sa-padding-16);
+    border: var(--sa-stroke-1) solid var(--sa-color-neutralScale-100);
+    border-radius: var(--sa-shape-8);
+    text-align: center;
+  }
+
+  [data-design="dbim"] .db-hb-follow__icon {
+    display: grid;
+    place-items: center;
+    width: var(--sa-padding-40);
+    height: var(--sa-padding-40);
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-color-primaryScale-800);
+    color: var(--sa-color-neutralScale-0);
+  }
+
+  [data-design="dbim"] :is(.db-hb-follow__handle, .db-hb-follow__name) {
+    margin: 0;
+    font-size: var(--db-fs-p);
+    font-weight: var(--sa-font-weight-bold); /* Paragraph 1: Regular or Bold only (Table 3) */
+    line-height: var(--db-lh-p);
+    color: var(--sa-color-text-default);
+  }
+
+  [data-design="dbim"] .db-hb-follow__text {
+    margin: 0;
+    font-size: var(--db-fs-small);
+    line-height: var(--db-lh-small);
+    color: var(--sa-color-neutralScale-600); /* Grey 03 #606060, DBIM 3.0 Table 1 */
+  }
+
+  [data-design="dbim"] .db-hb-follow__button {
+    margin-top: var(--sa-stack-4);
+    text-transform: uppercase;
+  }
+
+  /* X — the latest post. */
+  [data-design="dbim"] .db-hb-post {
+    display: flex;
     flex-direction: column;
     gap: var(--sa-stack-8);
     padding: var(--sa-padding-12);
     border: var(--sa-stroke-1) solid var(--sa-color-neutralScale-100);
     border-radius: var(--sa-shape-8);
-    background: var(--sa-color-neutralScale-0);
   }
 
   [data-design="dbim"] .db-hb-feed__who {
@@ -136,81 +182,105 @@
   }
 
   [data-design="dbim"] .db-hb-feed__avatar {
+    display: grid;
     flex: none;
+    place-items: center;
     width: var(--sa-padding-40);
     height: var(--sa-padding-40);
     border-radius: var(--sa-shape-full);
     background: var(--sa-color-neutralScale-100);
+    color: var(--sa-color-text-default);
   }
 
-  [data-design="dbim"] .db-hb-feed__bars {
+  [data-design="dbim"] .db-hb-post__text {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--sa-inline-4);
+    margin: 0;
+    font-size: var(--db-fs-small);
+    line-height: var(--db-lh-small);
+  }
+
+  [data-design="dbim"] :is(.db-hb-post__text, .db-hb-post__meta, .db-hb-videos__body) a {
+    color: var(--sa-color-primaryScale-800); /* the key colour: DBIM §2.2 hyperlink */
+  }
+
+  [data-design="dbim"] .db-hb-post__meta {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--sa-inline-8);
+    margin: 0;
+    font-size: var(--db-fs-small);
+    line-height: var(--db-lh-small);
+    color: var(--sa-color-neutralScale-600);
+  }
+
+  /* YouTube — the latest videos. */
+  [data-design="dbim"] .db-hb-videos {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-hb-videos__item {
+    display: flex;
+    gap: var(--sa-inline-8);
+    align-items: flex-start;
+    padding: var(--sa-padding-8) 0;
+    border-bottom: var(--sa-stroke-1) solid var(--sa-color-neutralScale-100);
+  }
+
+  [data-design="dbim"] .db-hb-videos__item:first-child {
+    padding-top: 0;
+  }
+
+  [data-design="dbim"] .db-hb-videos__play {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: var(--sa-padding-32);
+    height: var(--sa-padding-32);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-primaryScale-800);
+    color: var(--sa-color-neutralScale-0);
+  }
+
+  [data-design="dbim"] .db-hb-videos__body {
     display: flex;
     flex-direction: column;
-    gap: var(--sa-stack-8);
-    width: 100%;
+    min-width: 0;
   }
 
-  [data-design="dbim"] .db-hb-feed__bar {
-    display: block;
-    height: var(--sa-padding-8);
-    border-radius: var(--sa-shape-4);
-    background: var(--sa-color-neutralScale-100);
+  [data-design="dbim"] .db-hb-videos__link {
+    font-size: var(--db-fs-small);
+    line-height: var(--db-lh-small);
   }
 
-  [data-design="dbim"] .db-hb-feed__media {
-    display: block;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    border-radius: var(--sa-shape-4);
-    background: var(--sa-color-neutralScale-100);
+  [data-design="dbim"] .db-hb-videos__date {
+    font-size: var(--db-fs-small);
+    line-height: var(--db-lh-small);
+    color: var(--sa-color-neutralScale-600);
   }
 
-  [data-design="dbim"] .db-hb-feed__media--square {
-    aspect-ratio: 1 / 1;
-  }
-
-  [data-design="dbim"] .db-hb-feed__media--video {
-    display: grid;
-    place-items: center;
-    background: var(--sa-color-neutralScale-200);
-  }
-
-  /* A play disc, drawn: a white circle holding a key-colour triangle. */
-  [data-design="dbim"] .db-hb-feed__play {
-    position: relative;
-    width: var(--sa-padding-48);
-    height: var(--sa-padding-48);
-    border-radius: var(--sa-shape-full);
-    background: var(--sa-color-neutralScale-0);
-  }
-
-  [data-design="dbim"] .db-hb-feed__play::after {
-    position: absolute;
-    top: 50%;
-    left: 54%;
-    border-top: 9px solid transparent;
-    border-bottom: 9px solid transparent;
-    border-left: 14px solid var(--sa-color-primaryScale-800);
-    transform: translate(-50%, -50%);
-    content: "";
-  }
-
-  /* The ask sits over the fading feed, so the card still reads as a feed. */
+  /* The ask, under the drawn card. */
   [data-design="dbim"] .db-hb-feed__cta {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
     display: flex;
     flex-direction: column;
     gap: var(--sa-stack-8);
     align-items: center;
-    padding: var(--sa-padding-48) var(--sa-padding-12) var(--sa-padding-4);
-    background: linear-gradient(to bottom, transparent, var(--sa-color-neutralScale-0) 45%);
+    margin-top: auto;
+    text-align: center;
   }
 
   [data-design="dbim"] .db-hb-feed__cta .db-hb-feed__load {
     margin-top: 0;
+  }
+
+  [data-design="dbim"] .db-hb-feed__consent {
+    margin: 0;
+    font-size: var(--db-fs-small);
+    line-height: var(--db-lh-small);
+    color: var(--sa-color-neutralScale-600);
   }
 
   [data-design="dbim"] .db-hb-feed__name {
@@ -263,9 +333,6 @@
     color: var(--sa-color-primaryScale-600); /* Blue 2, the handoff's Text Link hover */
   }
 
-  [data-design="dbim"] .db-hb-feed__end {
-    margin: var(--sa-stack-12) 0 var(--sa-stack-4);
-  }
 
   [data-design="dbim"] .db-hb-feed__quote {
     margin: 0 0 var(--sa-stack-12);
@@ -274,36 +341,26 @@
     font-size: var(--db-fs-p);
   }
 
-  /* Instagram's pre-render blockquote, until (or unless) embed.js replaces it */
-  [data-design="dbim"] .db-hb-feed__ig blockquote {
-    margin: 0 0 var(--sa-stack-12);
-    padding: var(--sa-padding-12);
-    border-left: var(--sa-stroke-3) solid var(--sa-color-primaryScale-200);
-    font-size: var(--db-fs-p);
-  }
-
-  [data-design="dbim"] :is(.db-hb-feed__quote, .db-hb-feed__ig blockquote) a {
+  [data-design="dbim"] .db-hb-feed__quote a {
     color: var(--sa-text-link-brand-default); /* the key colour: DBIM §2.2 hyperlink */
   }
 
   [data-design="dbim"] .db-hb-feed__yt {
     display: block;
     width: 100%;
-    height: 150px; /* the reference's iframe height, in a 200px slot */
-    margin-bottom: 50px;
+    aspect-ratio: 16 / 9; /* one player, the channel's uploads, as the live card */
     border: 0;
   }
 
+  /* The page plugin is sized in pixels from the card (SocialFeed.tsx). */
   [data-design="dbim"] .db-hb-feed__fb {
     display: block;
-    width: 100%;
-    height: 500px; /* the reference's post-plugin height */
-    margin-bottom: var(--sa-stack-6);
+    max-width: 100%;
     border: 0;
     overflow: hidden;
   }
 
-  [data-design="dbim"] :is(.db-hb-feed__more, .db-hb-feed__quote a, .db-hb-feed__ig a):focus-visible {
+  [data-design="dbim"] :is(.db-hb-feed__more, .db-hb-feed__quote a, .db-hb-post a, .db-hb-videos a):focus-visible {
     outline: var(--sa-stroke-2) solid var(--sa-color-primaryScale-400);
     outline-offset: var(--sa-stroke-2);
   }
@@ -430,21 +487,41 @@
     height: auto;
   }
 
-  [data-design="dbim"] .db-hb-campaigns__dpdp {
+  [data-design="dbim"] .db-hb-campaigns__post {
+    display: block;
+    width: 100%;
+    height: auto;
     border-radius: var(--sa-shape-4);
   }
 
-  /* The infographic: square wherever it has a column to itself, shown whole
-     (contain, never cropped — a crop removes figures), and opened full size by the
-     DS MediaThumbnail. */
+  /* The infographic: drawn at 1280 × 990 (tools/infographics/beneficiary-dashboard.html)
+     — the ratio of the slot it fills beside the CCPS posts at every width: the video's
+     frame on a phone and tablet (358 × 277), a quarter of the row by the row's height
+     from 992 (316 × 248 at 1440). So it fills its slot edge to edge, shown whole
+     (contain, never cropped — a crop removes figures), and is a link to the
+     Beneficiary Dashboard it is drawn from. */
+  [data-design="dbim"] .db-hb-campaigns {
+    --db-infographic-ratio: 1280 / 990;
+  }
+
   [data-design="dbim"] .db-hb-campaigns__infographic {
-    aspect-ratio: 1;
+    position: relative;
+    display: block;
+    aspect-ratio: var(--db-infographic-ratio);
     overflow: hidden;
+    /* The picture's right half is white, on a white band: the handoff's border/grey
+       (#C6C6C6) outlines it, the rule every other grey line on the page uses. */
+    border: var(--sa-stroke-1) solid var(--sa-color-neutralScale-200);
     border-radius: 10px; /* rounded-4 = 1rem at the reference's 10px root; no 10 token */
   }
 
-  [data-design="dbim"] .db-hb-campaigns__infographic .ds-media-thumb__img {
+  [data-design="dbim"] .db-hb-campaigns__infographic img {
     object-fit: contain;
+  }
+
+  [data-design="dbim"] .db-hb-campaigns__infographic:focus-visible {
+    outline: var(--sa-stroke-2) solid var(--sa-color-primaryScale-600);
+    outline-offset: var(--sa-stroke-2);
   }
 
   /* DBIM 3.0 §4.5 iv: a clickable item changes under the pointer. A key-colour ring,
@@ -475,52 +552,45 @@
     object-fit: contain;
   }
 
-  @media (min-width: 992px) {
+  /* From 768 the three posts are one grid: the pair wrapper steps aside so the post,
+     the video and the infographic are its items. 768–991: the post across the row,
+     then the video and the infographic side by side at one ratio, one height. */
+  @media (min-width: 768px) {
     [data-design="dbim"] .db-hb-campaigns {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     [data-design="dbim"] .db-hb-campaigns__pair {
+      display: contents;
+    }
+
+    [data-design="dbim"] .db-hb-campaigns__post {
       grid-column: 1 / -1;
-      grid-template-columns: subgrid;
     }
 
-    [data-design="dbim"] .db-hb-campaigns__pair > :first-child {
-      grid-column: span 2;
-    }
-
-    /* The video takes the image's height, as `h-100` does in the reference. */
     [data-design="dbim"] .db-hb-campaigns__video {
-      aspect-ratio: auto;
-    }
-
-    [data-design="dbim"] .db-hb-campaigns__infographic {
-      grid-column: 2;
+      aspect-ratio: var(--db-infographic-ratio);
     }
   }
 
-  @media (min-width: 1280px) {
+  /* From 992, one row (DBIM 3.0 Figure 62): the post across two of four columns, then
+     the video and the infographic, each taking the height the post sets — the video
+     as `h-100` does in the reference, the infographic out of flow (next/image `fill`)
+     so it cannot set the row's height itself. Its ratio matches that slot, so it
+     fills it. */
+  @media (min-width: 992px) {
     [data-design="dbim"] .db-hb-campaigns {
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      align-items: stretch;
     }
 
-    [data-design="dbim"] .db-hb-campaigns__pair {
-      grid-column: span 3;
+    [data-design="dbim"] .db-hb-campaigns__post {
+      grid-column: span 2;
     }
 
-    /* One row, one height (DBIM 3.0 Figure 62): the infographic takes the row the
-       banner sets instead of its own square, and sits whole inside it. */
+    [data-design="dbim"] .db-hb-campaigns__video,
     [data-design="dbim"] .db-hb-campaigns__infographic {
-      position: relative;
-      grid-column: auto;
-      align-self: stretch;
       aspect-ratio: auto;
-    }
-
-    /* Out of flow, so the square picture cannot set the row's height itself. */
-    [data-design="dbim"] .db-hb-campaigns__infographic .ds-media-thumb {
-      position: absolute;
-      inset: 0;
     }
   }
 

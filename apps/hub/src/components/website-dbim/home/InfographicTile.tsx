@@ -1,44 +1,32 @@
-"use client";
-
-import * as React from "react";
-import { Lightbox, MediaThumbnail } from "@mosje/design-system";
+import Image from "next/image";
+import Link from "next/link";
 
 import { infographicText, type Infographic } from "@/lib/website/infographics";
+import { dbimHref } from "@/lib/website-dbim/nav";
 
 /**
  * The Infographics slot of the home page's posts row (DBIM 3.0 §7.3 xiii), beside
  * the two central posts.
  *
- * DS Audit: MediaThumbnail ✅ · Lightbox ✅
+ * DS Audit: next/image ✅ · next/link ✅ — no DS component: a plain picture link.
  *
- * The slot is a quarter of the row and 245px-ish tall, where a 1080 square
- * infographic cannot be read — so the tile shows the whole picture, uncropped,
- * and opens it full size. The figures it carries are the viewer image's alt
- * text, generated from the same list the image was drawn from, so a screen
- * reader hears every number the picture shows.
+ * The slot is a quarter of the row and about 300px square, so the tile shows the
+ * whole picture, uncropped, and opens the Beneficiary Dashboard the picture is drawn
+ * from — as dosje.gov.in's own tile does (read 8 Oct 2026). Until then it opened the
+ * image full size in a Lightbox; the dashboard is the full-size version, with every
+ * figure as text. The picture's alt text is generated from the same list it was drawn
+ * from, so a screen reader hears every number the picture shows.
  */
 export function DbimInfographicTile({ infographic }: { infographic: Infographic }) {
-  const [open, setOpen] = React.useState(false);
   return (
-    <div className="db-hb-campaigns__infographic">
-      <MediaThumbnail
-        size="fill"
+    <Link href={dbimHref("/dashboard")} className="db-hb-campaigns__infographic">
+      <Image
         src={infographic.src}
-        label={`View infographic: ${infographic.title}`}
-        onClick={() => setOpen(true)}
+        alt={infographicText(infographic)}
+        fill
+        sizes="(min-width: 1280px) 25vw, (min-width: 992px) 33vw, 100vw"
       />
-      <Lightbox
-        open={open}
-        items={[
-          {
-            type: "image",
-            src: infographic.src,
-            alt: infographicText(infographic),
-            caption: `${infographic.title} · Source: ${infographic.source.label}, dosje.gov.in`,
-          },
-        ]}
-        onClose={() => setOpen(false)}
-      />
-    </div>
+      <span className="sr-only"> Open the {infographic.source.label}</span>
+    </Link>
   );
 }

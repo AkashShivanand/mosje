@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Beneficiary Dashboard Infographic</title>
+<!-- THE DEPARTMENT'S FIGURES ONLY. Every number is the Beneficiary Dashboard's, as mirrored
+     in apps/hub/src/lib/website-shared/dashboard.ts (DEPARTMENT_DASHBOARD_AS_ON 05.10.2026,
+     origin "received"), which was checked against https://www.dosje.gov.in/dashboard/.
+     Nothing illustrative and nothing live: a picture cannot refresh, so the NMBA outreach
+     figure the proposed dashboard leads with (a live feed) is deliberately not in it.
+
+     Figures the image computes from that same source, for the same period:
+       ₹67,977 Cr                — the nine FUND_SHARE slices summed (the live page's own sum)
+       74.23 lakh SC students    — 2025-26 Pre-Matric 26.70 + Post-Matric 47.53 (provisional)
+       56.47 lakh OBC students   — 2025-26 Pre-Matric 25.21 + Post-Matric 31.26 (provisional)
+       shares                    — each slice ÷ 67,977, one decimal; "Other 6 schemes" is the rest
+       45,228 / 37,937 students  — the Year on Year chart's students placed, summed
+     The two trend lines are Pre + Post per year, 2014-15 to 2025-26.
+
+     The figures here must match apps/hub/src/lib/website/infographics.ts — that list is
+     the image's text version. Change one, change both, and re-render.
+
+     DESIGN, 8 Oct 2026: drawn after the proposed Beneficiary Dashboard (feat/dbim-and-
+     proposed-default) — its blue headline panel with one lead figure and three beside it,
+     then the Department's card: students per year as trend lines, the share of fund
+     release as bars, and the hostel and education figures. Seen at two sizes, so the
+     panel (title, lead figure) is drawn to survive the ~300px home-page tile and the
+     detail is for the full size. DBIM palette (data-brand="dbim"), where it is placed.
+
+     SHAPE, 8 Oct 2026: 1280 × 990, landscape (1.29 : 1), not square. The posts row puts
+     it beside the CCPS post and video: at ≥1280 its slot is a quarter of the row by the
+     row's height (316 × 248 at 1440 — 1.28 : 1), and on a phone it stacks under the
+     video, whose frame is 358 × 277 (1.29 : 1). One ratio fills both, so the tile shows
+     the whole picture edge to edge at every width instead of a letterboxed square.
+     home-bottom.css gives the tile the same ratio (`--db-infographic-ratio`). -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Display:wght@500;600;700&display=block">
+<link rel="stylesheet" href="../../packages/tokens/dist/tokens.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1280px; height: 990px; }
+  body { background: var(--sa-bg-neutral-subtlest); -webkit-font-smoothing: antialiased; }
+
+  .canvas {
+    width: 1280px; height: 990px;
+    display: grid; grid-template-columns: 548px 1fr;
+    font-family: var(--sa-ref-font-family-latin);
+    color: var(--sa-text-neutral-bolder);
+    background: var(--sa-bg-neutral-subtlest);
+  }
+  .num { font-family: var(--sa-ref-font-family-display); font-variant-numeric: lining-nums tabular-nums; letter-spacing: -0.01em; }
+
+  /* ── 1 · The headline panel: the proposed dashboard's hero ── */
+  .hero {
+    display: flex; flex-direction: column; justify-content: space-between;
+    background: var(--sa-bg-brand-primary-bolder);
+    color: var(--sa-text-neutral-inverse);
+    padding: 52px 52px 48px;
+  }
+  .mast { display: flex; align-items: center; gap: 16px; }
+  .mast img { height: 64px; width: auto; }
+  .mast b { display: block; font-size: 21px; font-weight: var(--sa-font-weight-semibold); line-height: 1.25; }
+  .mast span { display: block; margin-top: 3px; font-size: 16px; line-height: 1.35; color: var(--sa-bg-brand-primary-subtle); }
+
+  .lead-block { margin-top: 0; }
+  .kicker { font-size: 18px; font-weight: var(--sa-font-weight-semibold); letter-spacing: 0.06em; text-transform: uppercase; color: var(--sa-bg-brand-primary-subtle); }
+  .lead { margin-top: 10px; display: flex; align-items: baseline; gap: 10px; white-space: nowrap; }
+  .lead .num { font-size: 108px; line-height: 0.95; font-weight: var(--sa-font-weight-displayMedium, 500); }
+  .lead .unit { font-family: var(--sa-ref-font-family-display); font-size: 50px; font-weight: var(--sa-font-weight-displayMedium, 500); }
+  .lead-label { margin-top: 16px; font-size: 28px; font-weight: var(--sa-font-weight-semibold); line-height: 1.2; }
+  .lead-sub { margin-top: 6px; font-size: 18px; line-height: 1.4; color: var(--sa-bg-brand-primary-subtle); }
+
+  .side { display: grid; grid-template-columns: repeat(3, auto); justify-content: space-between; padding-top: 30px; border-top: 1px solid color-mix(in srgb, var(--sa-text-neutral-inverse) 35%, transparent); list-style: none; }
+  .side li .num { display: block; font-size: 50px; line-height: 1; font-weight: var(--sa-font-weight-displayMedium, 500); }
+  .side li .num small { font-size: 28px; margin-left: 4px; }
+  .side li b { display: block; margin-top: 8px; font-size: 16px; font-weight: var(--sa-font-weight-semibold); line-height: 1.3; }
+  .side li > span:not(.num) { display: block; font-size: 15px; line-height: 1.35; color: var(--sa-bg-brand-primary-subtle); }
+
+  /* ── 2 · The Department's card ── */
+  .card { display: flex; flex-direction: column; justify-content: space-between; padding: 48px 52px 0; }
+  .card > section + section { padding-top: 30px; border-top: 1px solid var(--sa-border-neutral-subtle); }
+  h2 { font-size: 22px; font-weight: var(--sa-font-weight-semibold); line-height: 1.25; color: var(--sa-text-neutral-bolder); }
+  .h2-sub { margin-top: 2px; font-size: 15px; color: var(--sa-text-neutral-subtle); }
+
+  .trends { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 16px; }
+  .trend .lbl { font-size: 14px; font-weight: var(--sa-font-weight-semibold); letter-spacing: 0.04em; text-transform: uppercase; color: var(--sa-text-neutral-subtle); }
+  .trend .num { display: block; margin-top: 6px; font-size: 52px; line-height: 1; font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-brand-primary-bolder); }
+  .trend .num small { font-size: 24px; margin-left: 4px; }
+  .trend svg { display: block; width: 100%; height: 72px; margin-top: 12px; overflow: visible; }
+  .trend .axis { display: flex; justify-content: space-between; margin-top: 6px; font-size: 13px; color: var(--sa-text-neutral-subtle); }
+
+  .shares { margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 22px 40px; list-style: none; }
+  .shares li { display: grid; grid-template-columns: 1fr auto; row-gap: 10px; font-size: 17px; }
+  .shares li b { font-weight: var(--sa-font-weight-semibold); font-variant-numeric: tabular-nums; }
+  .shares .track { grid-column: 1 / -1; height: 10px; border-radius: 5px; background: var(--sa-bg-neutral-subtle); overflow: hidden; }
+  .shares .track i { display: block; height: 100%; border-radius: 5px; background: var(--sa-bg-brand-primary-bolder); }
+
+  .facts ul { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 16px; list-style: none; }
+  .facts li { padding-right: 14px; }
+  .facts li + li { padding-left: 14px; border-left: 1px solid var(--sa-border-neutral-subtle); }
+  .facts .num { display: block; font-size: 40px; line-height: 1; font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-brand-primary-bolder); }
+  .facts span { display: block; margin-top: 8px; font-size: 15px; line-height: 1.3; color: var(--sa-text-neutral-bolder); }
+
+  .foot {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 0 26px;
+    border-top: 2px solid var(--sa-bg-brand-primary-bolder);
+    font-size: 14px; color: var(--sa-text-neutral-subtle);
+  }
+  .foot b { color: var(--sa-text-neutral-bolder); font-weight: var(--sa-font-weight-semibold); }
+</style>
+</head>
+<body>
+<div class="canvas" data-brand="dbim">
+  <section class="hero">
+    <div class="mast">
+      <img src="../../apps/hub/public/website/images/National_Emblem_logo_white.svg" alt="State Emblem of India">
+      <div>
+        <b>Department of Social Justice and Empowerment</b>
+        <span>Beneficiary Dashboard · As on 05.10.2026</span>
+      </div>
+    </div>
+    <div class="lead-block" data-fit>
+      <p class="kicker">At a Glance, All India</p>
+      <p class="lead"><span class="num">₹67,977</span><span class="unit">Cr</span></p>
+      <p class="lead-label">Total spend across 9 schemes</p>
+      <p class="lead-sub">Scholarships, fellowships and hostels,<br>2014–15 to 2025–26</p>
+    </div>
+    <ul class="side" data-fit>
+      <li><span class="num">9<small>Cr</small></span><b>Students Beneficiary</b><span>SC Scholarships</span></li>
+      <li><span class="num">11<small>Cr</small></span><b>Students Beneficiary</b><span>PM-YASASVI</span></li>
+      <li><span class="num">14,757</span><b>Scholars Funded</b><span>SHREYAS Fellowship</span></li>
+    </ul>
+  </section>
+
+  <div class="card">
+    <section data-fit>
+      <h2>Beneficiary Students</h2>
+      <p class="h2-sub">Students beneficiary, 2025–26 (provisional)</p>
+      <div class="trends">
+        <div class="trend">
+          <p class="lbl">SC</p>
+          <p class="num">74.23<small>lakh</small></p>
+          <svg data-series="sc" viewBox="0 0 200 72" preserveAspectRatio="none" aria-hidden="true"></svg>
+          <p class="axis"><span>2014–15</span><span>2025–26</span></p>
+        </div>
+        <div class="trend">
+          <p class="lbl">OBC, EBC and DNT</p>
+          <p class="num">56.47<small>lakh</small></p>
+          <svg data-series="obc" viewBox="0 0 200 72" preserveAspectRatio="none" aria-hidden="true"></svg>
+          <p class="axis"><span>2014–15</span><span>2025–26</span></p>
+        </div>
+      </div>
+    </section>
+    <section data-fit>
+      <h2>Share of Fund Release</h2>
+      <p class="h2-sub">₹67,977 Cr, 2014–15 to 2025–26</p>
+      <ul class="shares">
+        <li><span>Post-Matric SC</span><b>68.7%</b><span class="track"><i style="width:68.7%"></i></span></li>
+        <li><span>Post-Matric OBC</span><b>17.8%</b><span class="track"><i style="width:17.8%"></i></span></li>
+        <li><span>Pre-Matric SC</span><b>7.2%</b><span class="track"><i style="width:7.2%"></i></span></li>
+        <li><span>Other 6 Schemes</span><b>6.3%</b><span class="track"><i style="width:6.3%"></i></span></li>
+      </ul>
+    </section>
+    <section class="facts" data-fit>
+      <h2>Hostels and Top Class Education</h2>
+      <ul>
+        <li><span class="num">28,865</span><span>Seats sanctioned, OBC hostels</span></li>
+        <li><span class="num">45,228</span><span>Students, Top Class Education in schools</span></li>
+        <li><span class="num">37,937</span><span>Students, Top Class Education in colleges</span></li>
+        <li><span class="num">29,015</span><span>Beneficiaries, overseas education loan</span></li>
+      </ul>
+    </section>
+    <footer class="foot">
+      <span>Source: <b>Beneficiary Dashboard</b>, Department of Social Justice and Empowerment</span>
+      <span>Cr = Crore</span>
+    </footer>
+  </div>
+</div>
+<script>
+  // Pre-Matric + Post-Matric per year, 2014-15 to 2025-26 — BENEFICIARY_TRENDS in
+  // apps/hub/src/lib/website-shared/dashboard.ts. Lakh.
+  const SERIES = {
+    sc: {
+      pre: [25.13, 24.44, 20.2, 22.82, 30.97, 31.37, 31.22, 32.38, 11.34, 21.29, 21.65, 26.7],
+      post: [53.87, 56.8, 58.62, 59.25, 60.29, 54.27, 50.16, 30.25, 46.47, 47.38, 48.04, 47.53],
+    },
+    obc: {
+      pre: [70.22, 46.83, 152.05, 41.31, 33.86, 94.49, 54.95, 58.62, 25.99, 18.43, 20.61, 25.21],
+      post: [43.89, 44.43, 39.79, 36.83, 38.3, 38.21, 45.45, 37.73, 18.05, 27.16, 24.53, 31.26],
+    },
+  };
+  const NS = "http://www.w3.org/2000/svg";
+  const ink = getComputedStyle(document.querySelector(".canvas")).getPropertyValue("--sa-bg-brand-primary-bolder").trim();
+  for (const svg of document.querySelectorAll("svg[data-series]")) {
+    const { pre, post } = SERIES[svg.dataset.series];
+    const v = pre.map((p, i) => p + post[i]);
+    const lo = 0, hi = Math.max(...v);
+    const pts = v.map((y, i) => [(i / (v.length - 1)) * 200, 68 - ((y - lo) / (hi - lo)) * 64]);
+    const d = pts.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
+    const area = document.createElementNS(NS, "path");
+    area.setAttribute("d", `${d} L200,72 L0,72 Z`);
+    area.setAttribute("fill", ink); area.setAttribute("fill-opacity", "0.12");
+    const line = document.createElementNS(NS, "path");
+    line.setAttribute("d", d); line.setAttribute("fill", "none"); line.setAttribute("stroke", ink);
+    line.setAttribute("stroke-width", "2.5"); line.setAttribute("vector-effect", "non-scaling-stroke");
+    line.setAttribute("stroke-linejoin", "round");
+    svg.append(area, line);
+    // The latest (provisional) year, marked as the proposed dashboard marks it.
+    const [lx, ly] = pts[pts.length - 1];
+    const dot = document.createElementNS(NS, "ellipse");
+    dot.setAttribute("cx", lx); dot.setAttribute("cy", ly); dot.setAttribute("rx", "3.2"); dot.setAttribute("ry", "5");
+    dot.setAttribute("fill", ink);
+    svg.append(dot);
+  }
+</script>
+</body>
+</html>

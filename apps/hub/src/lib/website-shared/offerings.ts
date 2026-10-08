@@ -16,7 +16,7 @@
  */
 
 /** The date the live section was last read for this file. */
-export const OFFERINGS_AS_ON = "2026-09-28";
+export const OFFERINGS_AS_ON = "2026-10-08";
 
 export const OFFERINGS_SECTION = {
   title: "Our Offerings",
@@ -184,6 +184,27 @@ export function offeringSchemesInOrder(): OfferingScheme[] {
   });
 }
 
+/**
+ * The five schemes of the live home page's Key Offerings tab, in its order — read
+ * 8 Oct 2026, when dosje.gov.in took the DBIM layout and began listing its own five
+ * rather than the first five of the groups above. Each is a scheme the groups already
+ * carry, so the record (title, master id) is not repeated here.
+ */
+export const KEY_OFFERING_SCHEME_SLUGS: readonly string[] = [
+  "pradhan-mantri-anusuchit-jaati-abhyuday-yojna-pm-ajay",
+  "pm-young-achievers-scholarship-award-scheme-for-vibrant-india-for-obcs-and-others-pm-yasasvi",
+  "centrally-sponsored-scheme-for-implementation-of-the-protection-of-civil-rights-act-1955-and-the-scheduled-castes-and-the-scheduled-tribes-prevention-of-atrocities-act-1989",
+  "top-class-education-in-colllege-for-obc-ebc-and-dnt-students",
+  "pre-matric-scholarships-scheme-for-scheduled-castes-others",
+];
+
+/** The live Key Offerings schemes, then the rest of the section's in its order. */
+export function keyOfferingSchemes(): OfferingScheme[] {
+  const all = offeringSchemesInOrder();
+  const picked = KEY_OFFERING_SCHEME_SLUGS.flatMap((slug) => all.filter((s) => s.slug === slug));
+  return [...picked, ...all.filter((s) => !picked.includes(s))];
+}
+
 /* ------------------------------------------------------- vacancies, tenders */
 
 export interface OfferingNotice {
@@ -201,14 +222,11 @@ export interface OfferingNotice {
   size: string;
 }
 
+/**
+ * Four, as the live Key Offerings shows on OFFERINGS_AS_ON: the DAIC October 2026
+ * internship (applications closed 30 Sep 2026) is no longer listed.
+ */
 export const OFFERING_VACANCIES: readonly OfferingNotice[] = [
-  {
-    issuer: "Dr. Ambedkar International Centre (DAIC)",
-    title: "Short Term Internship Programme at DAIC (October 2026)",
-    details: ["Apply by 30 Sep 2026"],
-    file: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/09/Internship-Advertisment-October-2026.pdf",
-    size: "PDF · 443.0 KB",
-  },
   {
     issuer: "Dr. Ambedkar International Centre (DAIC)",
     title: "Vacancy Circular for the post of Financial Advisor",
@@ -241,9 +259,10 @@ export const OFFERING_VACANCIES: readonly OfferingNotice[] = [
 ];
 
 /**
- * Four, as the live site shows. The third is an observance the live site files
- * as a tender; it is mirrored as published — the correction belongs on the
- * live site, and the rule is that this file does not improve on it.
+ * Five, as the live Key Offerings shows on OFFERINGS_AS_ON, each a record in the tender
+ * register. The live list names no issuer; each is named here from its title — the
+ * Dr. Ambedkar National Memorial (DANM) and NSFDC — and the DAIC notice keeps the
+ * issuer its earlier live card printed. Files and sizes are each live tender page's.
  */
 export const OFFERING_TENDERS: readonly OfferingNotice[] = [
   {
@@ -253,24 +272,28 @@ export const OFFERING_TENDERS: readonly OfferingNotice[] = [
     size: "PDF · 2.1 MB",
   },
   {
-    issuer: "DAF",
-    title:
-      "Invitation for Bids for providing the Manpower Outsourcing Services to office of Dr. Ambedkar Foundation through GeM",
-    reference: "GEM/2026/B/7698980",
-    file: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/06/GeM-Bidding-9507171.pdf",
-    size: "PDF · 132.7 KB",
+    issuer: "DANM",
+    title: "Extension of date for submission of RFP/Bids for running canteen/ cafeteria at DANM",
+    file: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/08/Extension-of-date-for-submission-of-RFPBids-for-running-canteen-cafeteria-at-DANM.pdf",
+    size: "PDF · 249.7 KB",
   },
   {
-    issuer: "NCSK",
-    title: "Hindi Pakhwada 14 September to 28 September 2024",
-    file: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/Hindi-Pakhwada-14-September-to-28-September-2024.pdf",
-    size: "PDF · 119.5 KB",
+    issuer: "DANM",
+    title: "Request for Proposal for “Empanelment of Caterer for Running Canteen/Cafeteria at Dr. Ambedkar National Memorial (DANM)”",
+    file: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/08/RFP.pdf",
+    size: "PDF · 7.4 MB",
   },
   {
-    issuer: "NCSK",
-    title: "Tender for Security Guards for parking arrangement in Lok Nayak Bhawan, Khan Market, New Delhi",
-    reference: "19015/01/2021-Admn.",
-    file: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/Tender-for-Security-Guards-for-parking-arrangement-in-Lok-Nayak-Bhawan-Khan-Market-New-Delhi.pdf",
-    size: "PDF · 1.8 MB",
+    issuer: "NSFDC",
+    title: "Announcements with respect to tendering for new NSFDC Website (GeM Bid Ref. No. GEM/2025/B/6519656)",
+    reference: "GEM/2025/B/6519656",
+    file: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/announcement20for20new20nsfdc20website2006082025.pdf",
+    size: "PDF · 20.2 KB",
+  },
+  {
+    issuer: "NSFDC",
+    title: "Corrigendum and clarification for tender of new NSFDC Website 14.08.2025",
+    file: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/corrigendumandclarificationfortenderofnewnsfdcwebsite140825.pdf",
+    size: "PDF · 953.5 KB",
   },
 ];
