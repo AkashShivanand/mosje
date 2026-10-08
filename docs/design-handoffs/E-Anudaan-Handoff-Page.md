@@ -689,6 +689,25 @@ Movement entry, which named Sankalp Seva Sansthan as the applicant on all fourte
 within their own year (`store/seed.ts`, schema 15), and the drawn dates follow: JAIPUR 10 Mar 2026, KORAPUT and PUNE
 10 Mar 2025.
 
+## 5l. The file made readable from a standing start — 8 Oct 2026
+
+The owner could not find the logic of the file. Audited as design director, UX lead, UI lead, developer, programme
+manager and CEO: `docs/audit/e-anudaan-handoff-file-audit-2026-10-08.md`; report with before/after and the recording
+checklist: `docs/audit/e-anudaan-handoff-audit-and-checklist-2026-10-08.html`.
+
+| What | Before | After | Why |
+|---|---|---|---|
+| Start Here | Cover, Portal Map, How a Grant Moves, How to Read, Status — no product overview, no roles page | Cover (reading order + Latest) → What E-Anudaan Is (`449:1072`) → Who Does What (`449:1170`) → How a Grant Moves → Portal Map → How to Read → Status | A newcomer reads left to right and knows the product, the roles and the flow before the screens |
+| Counts | On the Cover page, the Start Here cover and all 14 page guides | None | Stale within days; answered no reader's question |
+| Page list | By audience; NGO after-applying before officers' review | Numbered 1–7 in the order an application moves (2a–2d the scheme forms) | The order of the pages is the order of the work |
+| Group names | PD Maker, PD Checker, Officers | Maker, Checker, Programme and Finance Officers | "PD" also means the Programme Director; "Officers" also covers him |
+| How a Grant Moves | "No amount is recorded along the review chain"; a schemes block | Amount line corrected for NAPDDR; schemes moved to What E-Anudaan Is | Out of date; said twice |
+| My Queue, PD ASO (desktop, phone) | 10 applications, no Scheme/State filter or State column, "Pending with you", no Waiting Longest or pager | As the prototype | Recording items A7, A8, A18, A25 |
+| ASO review screens (9 desktop) | Old side menu (Dashboard, PD Queries) | Current menu (My Queue, Returned Applications, Queries) | Matches the queue and the prototype |
+
+Rule updated: `.claude/rules/figma-handoff-page-structure.md` §8 (Start Here frames in reading order, no counts) and §10a
+(numbered pages). Left to draw: 18 recording items, listed in the audit.
+
 ## 6. Adding to the page
 
 - **A screen:** into the right row of its flow; name `Role / Screen / State`; phone version ends ` · Mobile`.
