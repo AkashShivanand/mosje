@@ -170,6 +170,42 @@
     overflow-wrap: break-word;
   }
 
+  /* A page's one action on the title's line, at the trailing edge (`DbimPage` action). */
+  [data-design="dbim"] .db-hero__titlerow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-stack-16);
+  }
+
+  [data-design="dbim"] .db-hero__action { flex: none; }
+
+  /* With an action, the text box is exactly the container's content width, so the action meets
+     the content's trailing edge. The box is placed against the full-width banner, so its width is
+     the container's step (the .db-container ladder above) less the container's 7.5px gutters. */
+  [data-design="dbim"] .db-hero__text:has(.db-hero__titlerow) { width: calc(100% - 15px); }
+
+  @media (min-width: 576px) {
+    [data-design="dbim"] .db-hero__text:has(.db-hero__titlerow) { width: calc(540px - 15px); }
+  }
+
+  @media (min-width: 768px) {
+    [data-design="dbim"] .db-hero__text:has(.db-hero__titlerow) { width: calc(720px - 15px); }
+  }
+
+  @media (min-width: 992px) {
+    [data-design="dbim"] .db-hero__text:has(.db-hero__titlerow) { width: calc(960px - 15px); }
+  }
+
+  @media (min-width: 1200px) {
+    [data-design="dbim"] .db-hero__text:has(.db-hero__titlerow) { width: calc(1140px - 15px); }
+  }
+
+  @media (min-width: 1400px) {
+    [data-design="dbim"] .db-hero__text:has(.db-hero__titlerow) { width: calc(1320px - 15px); }
+  }
+
   /* ── Sub-tab bar: overlaps the banner's foot by 39px, hangs 30px below it ── */
   [data-design="dbim"] .db-tabs {
     position: absolute;

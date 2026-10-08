@@ -58,6 +58,11 @@ export interface DbimPageProps {
   /** The current page's path inside the DBIM tree, e.g. "/ministry/our-team" — drives the active tab. */
   path: string;
   children: React.ReactNode;
+  /**
+   * The page's own action, on the title's line at the banner's trailing edge — the Beneficiary
+   * Dashboard's Officer Login (8 Oct 2026). At most one: a banner is not a toolbar.
+   */
+  action?: React.ReactNode;
 }
 
 
@@ -69,7 +74,7 @@ export interface DbimPageProps {
  * The breadcrumb is "Home / …crumbs"; the page itself is not repeated in it — the h1
  * says it — and the LAST crumb is underlined, as the reference marks it.
  */
-export function DbimPage({ title, crumbs, hero: heroProp, heroHeight, heroCrop, spacing = "default", tabs, activeTab, path, children }: DbimPageProps) {
+export function DbimPage({ title, crumbs, hero: heroProp, heroHeight, heroCrop, spacing = "default", tabs, activeTab, path, children, action }: DbimPageProps) {
   const hero = heroProp ?? dbimHeroFor(path);
   const trail: DbimCrumb[] = [{ label: "Home", path: "/" }, ...crumbs];
   // (the reference marks Home active too, so Home alone is underlined on a page with no crumbs)
@@ -116,9 +121,18 @@ export function DbimPage({ title, crumbs, hero: heroProp, heroHeight, heroCrop, 
                   })}
                 </ol>
               </nav>
-              <h1 id="db-page-title" className="db-hero__title">
-                {title}
-              </h1>
+              {action ? (
+                <div className="db-hero__titlerow">
+                  <h1 id="db-page-title" className="db-hero__title">
+                    {title}
+                  </h1>
+                  <div className="db-hero__action">{action}</div>
+                </div>
+              ) : (
+                <h1 id="db-page-title" className="db-hero__title">
+                  {title}
+                </h1>
+              )}
             </div>
           </div>
         </div>

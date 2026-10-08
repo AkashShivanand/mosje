@@ -1,8 +1,8 @@
 "use client";
 
-import { Button, Icon, OrgLogo } from "@mosje/design-system";
+import { OrgLogo } from "@mosje/design-system";
 import { shownDate } from "@/lib/kpi/format";
-import { DEPARTMENT_DASHBOARD_AS_ON, DEPARTMENT_DASHBOARD_URL } from "@/lib/website-shared/dashboard";
+import { DEPARTMENT_DASHBOARD_AS_ON } from "@/lib/website-shared/dashboard";
 import type { Audience } from "./audience";
 import { EducationResults, EducationTrends } from "./Education";
 import { StoryHeader } from "./StoryHeader";
@@ -21,7 +21,7 @@ export const DEPARTMENT_NAME = "Department of Social Justice and Empowerment";
  *
  * Every figure, label and title is the live page's (`lib/website-shared/dashboard.ts`).
  *
- * DS Audit: StoryHeader (app) ✅ · OrgLogo ✅ · Button ✅ · EducationResults / EducationTrends (app) ✅.
+ * DS Audit: StoryHeader (app) ✅ · OrgLogo ✅ · EducationResults / EducationTrends (app) ✅.
  */
 export function DepartmentStory({ sectionLevel, state, audiences }: { sectionLevel: 2 | 3; state?: string; audiences: Set<Audience> }) {
   // Its sections sit under the page head; the education movements take h2 or h3 only.
@@ -38,12 +38,7 @@ export function DepartmentStory({ sectionLevel, state, audiences }: { sectionLev
         summary="Scholarships, fellowships, hostels and top class education for students from Scheduled Castes, Other Backward Classes, Economically Backward Classes and Denotified Tribes."
         // The years are the sections' own badge; the head says when the figures were read.
         meta={`As on ${shownDate(DEPARTMENT_DASHBOARD_AS_ON)}`}
-        action={
-          /* linkAs-exempt(external-only): the Department's published page on dosje.gov.in */
-          <Button appearance="outlined" tone="inverse" size="sm" href={DEPARTMENT_DASHBOARD_URL} iconRight={<Icon name="arrow_outward" size={16} />}>
-            Open on dosje.gov.in
-          </Button>
-        }
+        // No link out to dosje.gov.in: this page will be on dosje.gov.in (owner, 8 Oct 2026).
         sectionLevel={sectionLevel}
       />
       <EducationResults sectionLevel={sub} state={state} audiences={audiences} />

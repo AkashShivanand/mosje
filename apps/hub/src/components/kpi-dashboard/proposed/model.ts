@@ -80,6 +80,58 @@ export function readAll(
   );
 }
 
+/* ── Financial Year ─────────────────────────────────────────────────────────── */
+
+/**
+ * THE FINANCIAL YEAR FILTER, WHERE A PROGRAMME'S FIGURES ARE COUNTED BY YEAR (approved
+ * 8 Oct 2026): SMILE-Beggary, e-Anudaan (SHRESHTA) and Senior Citizens Welfare report the year
+ * to date; e-Utthaan publishes allocations year by year. Not NMBA (cumulative since launch), not
+ * the Department (its own published periods), not the landing page (its cards cover different
+ * periods). The current year is the readings as they stand.
+ */
+export const YEAR_FILTER: Partial<Record<PortalId, { current: string; years: string[]; toDate: boolean }>> = {
+  "smile-beggary": { current: "2026-27", years: ["2026-27", "2025-26", "2024-25", "2023-24"], toDate: true },
+  shreshta: { current: "2026-27", years: ["2026-27", "2025-26", "2024-25", "2023-24"], toDate: true },
+  "senior-citizens": { current: "2026-27", years: ["2026-27", "2025-26", "2024-25", "2023-24"], toDate: true },
+  "e-utthaan": { current: "2026-27", years: ["2026-27", "2025-26", "2024-25", "2023-24", "2022-23"], toDate: false },
+};
+
+export const yearOption = (spec: { current: string; toDate: boolean }, year: string) =>
+  year === spec.current && spec.toDate ? `${year} (to date)` : year;
+
+/**
+ * An earlier year's figures, ILLUSTRATIVE: no portal feed carries past years yet, so the
+ * prototype scales the current figures down by a fixed share per year back and marks every one
+ * of them illustrative (`modelled`), as any figure without a source is. Percentages, series
+ * (already year by year) and tables are left as they are. The live portals will supply the real
+ * years; this only lets the filter be seen working.
+ */
+export function readingForYear(reading: Partial<Record<string, KpiReading>>, units: Readonly<Record<string, KpiUnit>>, spec: { current: string; years: string[] }, year: string): Partial<Record<string, KpiReading>> {
+  const back = Math.max(0, spec.years.indexOf(year));
+  if (back === 0) return reading;
+  const f = [1, 0.86, 0.73, 0.62, 0.53][back] ?? 0.5;
+  const n = (v: number) => (Number.isInteger(v) ? Math.round(v * f) : Math.round(v * f * 100) / 100);
+  const scale = (v: KpiValue): KpiValue => {
+    switch (v.kind) {
+      case "figure": return { ...v, value: n(v.value) };
+      case "pair": return { ...v, items: v.items.map((i) => (i.unit === "percent" ? i : { ...i, value: n(i.value) })) as typeof v.items };
+      case "breakdown": return v.unit === "percent" ? v : { ...v, items: v.items.map((i) => ({ ...i, value: n(i.value) })) };
+      case "stages": return { ...v, stages: v.stages.map((i) => ({ ...i, value: n(i.value) })) };
+      case "areas": return { ...v, total: n(v.total), rows: v.rows.map((r) => ({ ...r, value: n(r.value) })) };
+      default: return v;
+    }
+  };
+  return Object.fromEntries(
+    Object.entries(reading).flatMap(([id, r]) => {
+      if (!r) return [];
+      // A rate or a duration is not a count of the year: it keeps its value.
+      const unit = units[id];
+      const keep = unit === "percent" || unit === "days";
+      return [[id, keep ? r : { ...r, value: scale(r.value), origin: "modelled" as const, source: undefined, asOn: undefined }]];
+    }),
+  );
+}
+
 /* ── A programme's figures, State/UT by State/UT ───────────────────────────── */
 
 /**
