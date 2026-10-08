@@ -28,6 +28,7 @@
  *   npm run check:figma-handoff -- --strict           # any violation fails
  *   npm run check:figma-handoff -- --update-baseline  # record current counts
  *   npm run check:figma-handoff -- --portal E-Anudaan --snapshot   # re-capture manifests/<portal>.json
+ *   npm run check:figma-handoff -- --selftest         # plant one fault per check, prove each is caught
  *
  * --snapshot writes the portal's manifest from the SAME REST reads the check makes, in page-list
  * order and layers-panel (reading) order. It needs --portal, and refuses to write when a page could
@@ -230,6 +231,8 @@ if (has("snapshot") && !only) {
   process.exit(2);
 }
 const snapshot = [];
+/** Pages read this run, kept for --selftest: each fault is planted on a page that can hold it. */
+const hosts = [];
 /** Layers-panel order: Figma lists the LAST child first, so reading order is the array reversed. */
 const record = (n) => {
   const kids = [...(n.children ?? [])].reverse();
@@ -261,29 +264,7 @@ for (const entry of registry.filter(matches)) {
     const loose = tree.children.filter((c) => c.type !== "SECTION").map((c) => ({ id: c.id, name: c.name }));
     snapshot.push({ page: tree.name, id: tree.id, zones: zones.map(record), ...(loose.length ? { loose } : {}) });
   }
-  if (has("selftest")) {
-    // Plant one known fault per check in a copy of the live tree and prove each is caught —
-    // a gate that stays green because it cannot see anything is worse than no gate.
-    const sections = (n, out = []) => ((n.children ?? []).forEach((c) => c.type === "SECTION" && (out.push(c), sections(c, out))), out);
-    const plant = (label, want, mutate) => {
-      const t = structuredClone(tree);
-      mutate(t, sections(t));
-      const got = audit(t, entry.rootDepth ?? 1).filter((x) => x.check === want).length;
-      const base = v.filter((x) => x.check === want).length;
-      console.log(`  ${got > base ? "✔" : "✖"} selftest ${label} → ${want}`);
-      if (got <= base) failing++;
-    };
-    const flowsIn = (t) => t.children.filter((z) => z.name === "SCREENS BY WHO USES THEM").flatMap((z) => z.children.flatMap((l) => (l.children ?? []).filter((c) => c.type === "SECTION")));
-    plant("journey given a code name", "flow-name", (t) => { flowsIn(t)[0].name = "NGO 30 · Application"; });
-    plant("two journeys share a name", "duplicate-flow-name", (t) => { const f = flowsIn(t); f[1].name = f[0].name; });
-    plant("phone frame moved", "mobile-alignment", (t, s) => { const m = s.find((x) => x.name === "Mobile" && x.children.some((f) => f.absoluteBoundingBox)); for (const f of m.children) f.absoluteBoundingBox = { ...f.absoluteBoundingBox, x: f.absoluteBoundingBox.x + 500 }; });
-    plant("section painted white", "fill-off-ramp", (t, s) => { s[3].fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }]; });
-    plant("note deleted from a pending flow", "pending-without-note", (t, s) => { const p = s.find((x) => x.name.endsWith(PENDING)); p.children = p.children.filter((c) => c.name !== NOTE); });
-    plant("screen left loose in a flow", "row-name", (t) => { const f = flowsIn(t).find((x) => x.children.some((c) => c.type === "SECTION")); const row = f.children.find((c) => c.type === "SECTION"); f.children.push(row.children.find((c) => c.type !== "SECTION")); });
-    plant("frame dropped on the page", "loose-at-root", (t) => { t.children.push({ id: "0:0", type: "FRAME", name: "Frame 1", children: [] }); });
-    plant("layers panel reversed", "layer-order", (t) => { t.children.reverse(); });
-    plant("screen pushed out of its row", "screen-outside-row", (t, s) => { const r = s.find((x) => x.name === "Desktop"); const f = r.children.find((c) => c.type !== "SECTION"); f.absoluteBoundingBox = { ...f.absoluteBoundingBox, x: f.absoluteBoundingBox.x + 1e6 }; });
-  }
+  if (has("selftest")) hosts.push({ portal: entry.portal, tree, rootDepth: entry.rootDepth ?? 1, v });
   const identity = v.filter((x) => IDENTITY.has(x.check)).length;
   const visual = v.length - identity;
   next[entry.portal] = { identity, visual };
@@ -301,6 +282,68 @@ for (const entry of registry.filter(matches)) {
   console.log(`${verdict.padEnd(2)}  ${entry.portal} — identity ${identity} · visual ${visual}${v.length ? "  [" + Object.entries(counts).map(([k, n]) => `${k} ${n}`).join(" · ") + "]" : ""}`);
   for (const x of has("verbose") ? v : v.slice(0, 3)) console.log(`      ${x.check.padEnd(22)} ${x.name} — ${x.detail}`);
   if (!has("verbose") && v.length > 3) console.log(`      … ${v.length - 3} more (--verbose)`);
+}
+if (has("selftest")) {
+  // Plant one known fault per check in a copy of a live tree and prove each is caught —
+  // a gate that stays green because it cannot see anything is worse than no gate.
+  //
+  // Each fault is planted on the FIRST checked page that has what the fault needs: a journey,
+  // a phone row under a desktop row, a flow marked for discussion. Planting on whatever page
+  // came first crashed on main once the registry led with a Start Here page that has no
+  // journeys at all (7 Oct 2026). A fault no checked page can hold is reported as skipped,
+  // never as caught; the run fails if nothing could be planted.
+  const sections = (n, out = []) => ((n.children ?? []).forEach((c) => c.type === "SECTION" && (out.push(c), sections(c, out))), out);
+  const flowsIn = (t) => t.children.filter((z) => z.name === "SCREENS BY WHO USES THEM").flatMap((z) => z.children.flatMap((l) => (l.children ?? []).filter((c) => c.type === "SECTION")));
+  const screensOf = (sec) => (sec?.children ?? []).filter((c) => c.type !== "SECTION");
+  const rowsNamed = (s, name) => s.filter((x) => x.name === name && screensOf(x).length);
+  /** A phone row is only checked for alignment against a desktop frame of the same name beside it. */
+  const pairedMobile = (t, s) =>
+    s.find((m) => {
+      if (m.name !== "Mobile" || !m.__parent) return false;
+      const desk = (m.__parent.children ?? []).find((c) => c.type === "SECTION" && c.name === "Desktop");
+      const names = new Set(screensOf(desk).map((f) => f.name));
+      return screensOf(m).some((f) => f.absoluteBoundingBox && names.has(f.name.replace(/ — Mobile$/, "")));
+    });
+  const linkParents = (t) => { for (const sec of sections(t)) for (const c of sec.children ?? []) if (c.type === "SECTION") c.__parent = sec; };
+  const plants = [
+    { label: "journey given a code name", want: "flow-name", needs: "a journey",
+      can: (t) => flowsIn(t).length >= 1, mutate: (t) => { flowsIn(t)[0].name = "NGO 30 · Application"; } },
+    { label: "two journeys share a name", want: "duplicate-flow-name", needs: "two journeys",
+      can: (t) => flowsIn(t).length >= 2, mutate: (t) => { const f = flowsIn(t); f[1].name = f[0].name; } },
+    { label: "phone frame moved", want: "mobile-alignment", needs: "a phone row under its desktop row",
+      can: (t, s) => Boolean(pairedMobile(t, s)),
+      mutate: (t, s) => { for (const f of screensOf(pairedMobile(t, s))) f.absoluteBoundingBox = { ...f.absoluteBoundingBox, x: f.absoluteBoundingBox.x + 500 }; } },
+    { label: "section painted white", want: "fill-off-ramp", needs: "a section",
+      can: (t, s) => s.length >= 1, mutate: (t, s) => { s[Math.min(3, s.length - 1)].fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }]; } },
+    { label: "note deleted from a pending flow", want: "pending-without-note", needs: "a flow marked Needs Discussion, with its note",
+      can: (t, s) => s.some((x) => x.name.endsWith(PENDING) && (x.children ?? []).some((c) => c.name === NOTE)),
+      mutate: (t, s) => { const p = s.find((x) => x.name.endsWith(PENDING) && x.children.some((c) => c.name === NOTE)); p.children = p.children.filter((c) => c.name !== NOTE); } },
+    { label: "screen left loose in a flow", want: "row-name", needs: "a journey with a row of screens",
+      can: (t) => flowsIn(t).some((f) => f.children.some((r) => r.type === "SECTION" && screensOf(r).length)),
+      mutate: (t) => { const f = flowsIn(t).find((x) => x.children.some((r) => r.type === "SECTION" && screensOf(r).length)); const row = f.children.find((r) => r.type === "SECTION" && screensOf(r).length); f.children.push(screensOf(row)[0]); } },
+    { label: "frame dropped on the page", want: "loose-at-root", needs: "a page",
+      can: () => true, mutate: (t) => { t.children.push({ id: "0:0", type: "FRAME", name: "Frame 1", children: [] }); } },
+    { label: "layers panel reversed", want: "layer-order", needs: "two areas",
+      can: (t) => t.children.filter((c) => c.type === "SECTION").length >= 2, mutate: (t) => { t.children.reverse(); } },
+    { label: "screen pushed out of its row", want: "screen-outside-row", needs: "a Desktop row with a screen",
+      can: (t, s) => rowsNamed(s, "Desktop").length >= 1,
+      mutate: (t, s) => { const f = screensOf(rowsNamed(s, "Desktop")[0])[0]; f.absoluteBoundingBox = { ...f.absoluteBoundingBox, x: f.absoluteBoundingBox.x + 1e6 }; } },
+  ];
+  console.log(`\nselftest — ${hosts.length} page(s) read`);
+  let planted = 0;
+  for (const p of plants) {
+    const host = hosts.find((h) => { const t = structuredClone(h.tree); linkParents(t); return p.can(t, sections(t)); });
+    if (!host) { console.log(`  – selftest ${p.label} → ${p.want}: skipped, no checked page has ${p.needs}`); continue; }
+    const t = structuredClone(host.tree);
+    linkParents(t);
+    p.mutate(t, sections(t));
+    const got = audit(t, host.rootDepth).filter((x) => x.check === p.want).length;
+    const base = host.v.filter((x) => x.check === p.want).length;
+    planted++;
+    console.log(`  ${got > base ? "✔" : "✖"} selftest ${p.label} → ${p.want}  (on ${host.portal})`);
+    if (got <= base) failing++;
+  }
+  if (!planted) { console.log("  ✖ selftest planted nothing — no checked page could hold a single fault"); failing++; }
 }
 if (has("snapshot")) {
   if (snapshot.some((p) => p === null)) {
