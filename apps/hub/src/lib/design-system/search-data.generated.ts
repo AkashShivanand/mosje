@@ -219,7 +219,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Bar Chart — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/bar-chart",
-    "keywords": "bar chart — design system data display the states it draws orientation, grouping and stacking example what a screen reader gets Target Released tokens wcag accessibility",
+    "keywords": "bar chart — design system data display the states it draws one bar withheld: not reported, or not yet due orientation, grouping and stacking example what a screen reader gets Target Released tokens wcag accessibility",
     "description": "Vertical columns or horizontal bars comparing a figure across states, districts and scheme categories, in one series or several.",
     "type": "component",
     "iconName": "bar_chart"
@@ -1603,7 +1603,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Ranked Bar List — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/ranked-bar-list",
-    "keywords": "ranked bar list — design system data display the figure is the reading; the bar is the aid a tone is a claim about the figure it pages; it never scrolls inside its card a withheld figure keeps its row example what a screen reader gets InlineBar tokens wcag accessibility",
+    "keywords": "ranked bar list — design system data display the figure is the reading; the bar is the aid a tone is a claim about the figure it pages; it never scrolls inside its card a withheld figure keeps its row parts of a whole, and rows without bars example what a screen reader gets InlineBar tokens wcag accessibility",
     "description": "A label, a figure and a thin bar per row — the ranking and breakdown list every portal dashboard draws, paged rather than scrolled, with the figure as the reading and the bar as the aid.",
     "type": "component",
     "iconName": "bar_chart"
