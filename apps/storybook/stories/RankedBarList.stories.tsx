@@ -159,3 +159,21 @@ export const States: Story = {
     </div>
   ),
 };
+
+/** `showBar={false}`: the lowest of many, where a bar against the highest would be a 1px sliver. */
+export const WithoutBars: Story = {
+  args: {
+    title: "Total Outreach, lowest five",
+    showRank: false,
+    showBar: false,
+    size: "md",
+    sort: "none",
+    items: [
+      { label: "Goa", value: 205800, detail: "32 of 36" },
+      { label: "Arunachal Pradesh", value: 195300, detail: "33 of 36" },
+      { label: "Andaman and Nicobar Islands", value: 80549, detail: "34 of 36" },
+      { label: "Ladakh", value: 74892, detail: "35 of 36" },
+      { label: "Lakshadweep", value: 10609, detail: "36 of 36" },
+    ],
+  },
+};

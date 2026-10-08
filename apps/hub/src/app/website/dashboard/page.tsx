@@ -1,3 +1,4 @@
+import * as React from "react";
 import type { Metadata } from "next";
 import { SectionTitle } from "@mosje/design-system";
 import { PageLayout } from "@/components/website-next/layout/PageLayout";
@@ -5,6 +6,7 @@ import { DepartmentOverview } from "@/components/kpi-dashboard/DepartmentOvervie
 import { PortalDashboardList } from "@/components/kpi-dashboard/PortalDashboardList";
 import { MinistryCollection } from "@/components/kpi-dashboard/DashboardViewer";
 import { ProposedDashboardSection } from "@/components/kpi-dashboard/proposed/ProposedDashboardSection";
+import { OfficerAccess } from "@/components/kpi-dashboard/proposed/OfficerAccess";
 import { DASHBOARD_PAGE } from "@/lib/website-shared/dashboard";
 import { dashboardVersion } from "@/lib/website-shared/dashboard-version";
 import { socialCard } from "@/lib/seo/social";
@@ -33,13 +35,13 @@ export const metadata: Metadata = {
  * that has submitted KPIs. PM-AJAY's dashboards are where the DBIM design already put
  * them on 29 Sep 2026 — on the scheme's own page — and its card here links there.
  *
- * `?version=proposed` draws the proposed dashboard in its place (`dashboard-version.ts`).
+ * The proposed dashboard is the default; `?version=current` draws this page (`dashboard-version.ts`).
  */
 type PageProps = { searchParams: Promise<Record<string, string | string[] | undefined>> };
 export default async function DashboardPage({ searchParams }: PageProps) {
   if (dashboardVersion(await searchParams) === "proposed") {
     return (
-      <PageLayout title={TITLE} breadcrumb={[{ label: DASHBOARD_PAGE.crumb }]}>
+      <PageLayout title={TITLE} breadcrumb={[{ label: DASHBOARD_PAGE.crumb }]} actions={<React.Suspense fallback={null}><OfficerAccess tone="default" /></React.Suspense>}>
         <section className="wn-section" aria-label={TITLE}>
           <div className="sa-container">
             <ProposedDashboardSection sectionLevel={2} />

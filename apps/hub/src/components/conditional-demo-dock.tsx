@@ -86,7 +86,7 @@ export function ConditionalDemoDock({
   // Dashboard has no portal login (5 Oct 2026), so the role is a demo choice, made here.
   if (isDashboardPath(pathname)) {
     // Suspense: the panel reads the Version from the address (`useSearchParams`).
-    tabs.push({ id: "viewer", label: "View As", content: <Suspense fallback={null}><ViewerPanel /></Suspense> });
+    tabs.push({ id: "viewer", label: "Dashboard", content: <Suspense fallback={null}><ViewerPanel /></Suspense> });
   }
   // Capture is offered on every route, so it sits AFTER Apps and Colour: a lead tab names the
   // flask, and "Capture" on every page would bury the tab a route actually brought.

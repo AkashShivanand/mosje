@@ -116,6 +116,28 @@
   }
 
   /* A state reading: the map, and the same figures ranked beside it. */
+  /* A section's one figure at the head of the chart it summarises (proposed dashboard). */
+  .kd-chart-headline {
+    margin-block-end: var(--sa-stack-16);
+  }
+
+  /* DAPSC's mandated share is a minimum: the difference reads as compliance, in words with an
+     icon, so the colour is never the only cue (WCAG 1.4.1). Amber, not red, for a shortfall. */
+  .kd-against {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    font-weight: var(--sa-font-weight-medium);
+  }
+
+  .kd-against--meets {
+    color: var(--sa-text-status-success-bolder);
+  }
+
+  .kd-against--short {
+    color: var(--sa-text-status-warning-bolder);
+  }
+
   .kd-map-split {
     display: grid;
     gap: var(--sa-stack-24);

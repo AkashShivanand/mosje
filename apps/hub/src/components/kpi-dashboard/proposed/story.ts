@@ -1,11 +1,25 @@
-import type { CardTone } from "@mosje/design-system";
-import type { KpiDefinition, PortalId, PortalReading } from "@/lib/kpi/types";
+import { PORTAL_ORG_LOGOS, type CardTone } from "@mosje/design-system";
+import type { KpiDefinition, PortalDashboard, PortalId, PortalReading } from "@/lib/kpi/types";
 import { headlineOf, readinessOf, type Readiness, type Readings, type Viewing } from "./model";
 
 /**
  * The figures the proposed dashboard's story is told with, each derived from the one set
  * of resolved readings (`readAll`) — never re-read, never mixed across sources.
  */
+
+/**
+ * A portal shows ITS OWN registered mark (`PORTAL_ORG_LOGOS`) or none (instruction, 7 Oct 2026).
+ * e-Utthaan and e-Anudaan have no mark the Department has supplied; a generic icon, or the State
+ * Emblem, standing in for one said nothing about the portal.
+ */
+export const hasMark = (p: PortalDashboard) => Boolean(PORTAL_ORG_LOGOS[p.logoPath]);
+
+/**
+ * SMALL CAPITALS FOR SHORT LABELS ONLY (design review, 7 Oct 2026). A capitalised label reads
+ * as a tag at a glance; at three lines ("TOTAL NUMBER OF ASSISTIVE DEVICES DISTRIBUTED · RVY")
+ * it reads as shouting and slows the eye. A list keeps capitals while every label fits a tag.
+ */
+export const capsFit = (terms: readonly { term: string }[]) => terms.every((t) => t.term.length <= 40);
 
 /** Each programme's colour family on the page: its tile edge, its hero, its story band. */
 export const PROGRAMME_TONE: Record<PortalId, CardTone> = {

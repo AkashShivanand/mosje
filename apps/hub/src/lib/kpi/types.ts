@@ -80,6 +80,15 @@ export interface KpiDefinition {
   span?: 3 | 4 | 6 | 8 | 12;
   /** The scheme inside a programme the KPI belongs to — "Rashtriya Vayoshri Yojana (RVY)". */
   component?: string;
+  /**
+   * The KPI this one is a part of — Women Outreach of Total Outreach — so the proposed dashboard
+   * draws its share of the whole under the figure. `gate` names a KPI the reader must be able
+   * to see for the share to show: where the sheet makes the ratio itself an officer KPI (SMILE's
+   * fund utilisation), a citizen sees the two figures and not the ratio worked from them.
+   */
+  partOf?: { kpi: string; gate?: string };
+  /** Its breakdown's parts add up to a meaningful whole (kinds of call), so a total leads it. */
+  totalled?: boolean;
   /** What the portal's API can supply for this KPI, as the portal's own API audit records it. */
   api?: KpiApi;
 }
@@ -107,8 +116,14 @@ export interface PortalDashboard {
   slug: PortalId;
   /** The scheme or programme, as the Department names it. */
   name: string;
-  /** The portal the figures come from. */
+  /**
+   * The portal the figures come from, as a citizen names it — the dashboard card's title. No
+   * "Portal" and no "Admin" (instruction, 7 Oct 2026): the section already says these are portal
+   * dashboards, and a citizen sees only what the portal publishes, never its admin side.
+   */
   portal: string;
+  /** The card's subtitle where `name` would repeat the title; `name` otherwise. */
+  subtitle?: string;
   /** The body that runs the portal. */
   owner: string;
   /** One sentence, in the Department's register, saying what the scheme does. */
@@ -164,11 +179,23 @@ export type KpiValue =
       /** `pending` lists label indices a series has no figure for yet — drawn as "not reported", never as 0. */
       series: { name: string; data: number[]; pending?: number[] }[];
       chart: "line" | "bar";
+      /** One line under the chart, for what a label cannot say ("2026-27: spent to 30 Sep"). */
+      note?: string;
     }
   | { kind: "stages"; stages: Labelled[] }
   /** One figure for the scope, and the same figure for each area inside it. */
   | { kind: "areas"; total: number; rows: AreaRow[] }
-  | { kind: "table"; columns: string[]; rows: (string | number)[][] };
+  | {
+      kind: "table";
+      columns: string[];
+      rows: (string | number)[][];
+      /**
+       * A column holding a signed difference against a MINIMUM (DAPSC's mandated share): drawn
+       * as "Meets, +0.8 pp" or "Short by 0.7 pp", in words with an icon, so the colour follows
+       * compliance and not the sign alone (design review, 7 Oct 2026).
+       */
+      againstMinimum?: { column: number; header: string; unit: string };
+    };
 
 export interface KpiReading {
   value: KpiValue;

@@ -102,6 +102,7 @@ const SMILE_BEGGARY: KpiDefinition[] = [
   },
   {
     id: "smile-beggary.fund-utilised", sNo: 10, audience: "public", category: "funds",
+    partOf: { kpi: "smile-beggary.fund-released", gate: "smile-beggary.utilisation-pct" },
     name: "Total Fund Utilised",
     definition: "Total funds reported as utilised against funds disbursed",
     unit: "crore", source: `${SMILE_SOURCE} → Programme Overview ('Fund Utilised')`, frequency: "Monthly",
@@ -346,8 +347,8 @@ const NMBA_METRICS = "https://nashamukt-api-user.mosje.in/api/v1/user/dashboard/
  */
 const NMBA: KpiDefinition[] = [
   { id: "nmba.outreach", sNo: 1, audience: "public", category: "coverage", name: "Total Outreach", unit: "number", span: 3, api: { coverage: "available", endpoints: ["https://nashamukt-api-user.mosje.in/api/v1/user/dashboard/state-wise"] } },
-  { id: "nmba.women", sNo: 2, audience: "public", category: "coverage", name: "Women Outreach", unit: "number", span: 3, api: { coverage: "available", endpoints: [NMBA_METRICS] } },
-  { id: "nmba.youth", sNo: 3, audience: "public", category: "coverage", name: "Youth Outreach", unit: "number", span: 3, api: { coverage: "available", endpoints: [NMBA_METRICS] } },
+  { id: "nmba.women", sNo: 2, audience: "public", category: "coverage", name: "Women Outreach", unit: "number", span: 3, partOf: { kpi: "nmba.outreach" }, api: { coverage: "available", endpoints: [NMBA_METRICS] } },
+  { id: "nmba.youth", sNo: 3, audience: "public", category: "coverage", name: "Youth Outreach", unit: "number", span: 3, partOf: { kpi: "nmba.outreach" }, api: { coverage: "available", endpoints: [NMBA_METRICS] } },
   { id: "nmba.calls", sNo: 4, audience: "public", category: "coverage", name: "Total Calls on 14446", unit: "number", levels: ["national"], span: 3, api: { coverage: "none" } },
   { id: "nmba.pledges", sNo: 5, audience: "public", category: "coverage", name: "NMBA e-Pledge (Both Recovered and Non-Users)", unit: "number", span: 3, api: { coverage: "available", endpoints: [NMBA_METRICS] } },
   { id: "nmba.mitras", sNo: 6, audience: "public", category: "coverage", name: "Registered Nasha Mukti Mitras", unit: "number", span: 3, api: { coverage: "available", endpoints: [NMBA_METRICS] } },
@@ -369,7 +370,9 @@ const EUTTHAAN: KpiDefinition[] = [
   },
   {
     id: "e-utthaan.mandate", sNo: 3, audience: "public", category: "funds",
-    name: "Mandated Allocation", definition: "M/D wise DAPSC allocation vis a vis Mandated Allocation",
+    // The proforma reads "M/D wise DAPSC allocation vis a vis Mandated Allocation"; set in plain
+    // words for the page (design review, 7 Oct 2026). The name stays the proforma's.
+    name: "Mandated Allocation", definition: "Allocation by each Ministry and Department against its mandated share.",
     unit: "percent", source: "e-Utthaan", frequency: "Bi-annual", formula: "Difference between % DAPSC allocation and NITI aayog mandate", span: 12,
   },
   {
@@ -546,7 +549,7 @@ const SENIOR_CITIZENS: KpiDefinition[] = [
     api: { coverage: "none", gap: "No financial data." },
   },
   {
-    id: "senior-citizens.elderline.calls", sNo: 24, audience: "public", category: "coverage",
+    id: "senior-citizens.elderline.calls", sNo: 24, audience: "public", category: "coverage", totalled: true,
     component: "Elderline (14567)", name: "Number of Calls Received", unit: "number", levels: ["national"], span: 12,
     api: { coverage: "none", endpoints: ["https://seniorcitizen-api-admin.mosje.in/api/v1/admin/grievances/list"], gap: "No Elderline call-log data. A11 is citizen grievances, a different thing." },
   },
@@ -572,14 +575,15 @@ const SENIOR_CITIZENS: KpiDefinition[] = [
   },
 ];
 
-/** "Financial Year 2026-27, up to 30.09.2026": the half-year the illustrative figures describe. */
-const FY_TO_DATE = "Financial Year 2026-27, up to 30.09.2026";
+/** "Financial Year 2026-27, up to 30 Sep 2026": the half-year the illustrative figures describe. */
+const FY_TO_DATE = "Financial Year 2026-27, up to 30 Sep 2026";
 
 export const PORTAL_DASHBOARDS: PortalDashboard[] = [
   {
     id: "smile-beggary", slug: "smile-beggary",
     name: "SMILE – Comprehensive Rehabilitation of Persons Engaged in the Act of Begging",
-    portal: "SMILE-Beggary Admin Portal", owner: "National Institute of Social Defence",
+    portal: "SMILE-Beggary", subtitle: "Comprehensive Rehabilitation of Persons Engaged in the Act of Begging",
+    owner: "National Institute of Social Defence",
     summary: "Identification, mobilisation and comprehensive rehabilitation of persons engaged in the act of begging, through Implementing Agencies in the cities covered.",
     logoPath: "/portals/smile-admin", portalHref: "/portals/smile-admin",
     levels: ["national", "state", "district"], kpisReceived: "24.09.2026", period: FY_TO_DATE, kpis: SMILE_BEGGARY,
@@ -587,7 +591,7 @@ export const PORTAL_DASHBOARDS: PortalDashboard[] = [
   {
     id: "nmba", slug: "nmba",
     name: "Nasha Mukt Bharat Abhiyaan",
-    portal: "NMBA Portal", owner: "Department of Social Justice and Empowerment",
+    portal: "NMBA", owner: "Department of Social Justice and Empowerment",
     summary: "Awareness generation against substance use among youth, students and communities, with the national toll-free helpline 14446 for de-addiction.",
     logoPath: "/portals/nmba", portalHref: "/portals/nmba",
     levels: ["national", "state"], kpisReceived: "24.09.2026", period: "Cumulative since launch", kpis: NMBA,
@@ -618,7 +622,10 @@ export const PORTAL_DASHBOARDS: PortalDashboard[] = [
 export const SENIOR_CITIZENS_DASHBOARD: PortalDashboard = {
   id: "senior-citizens", slug: "senior-citizens",
   name: "Senior Citizens Welfare",
-  portal: "Senior Citizens Portal", owner: "Department of Social Justice and Empowerment",
+  // The portal's own name (`SCW_LOGIN_CHROME.portalName`); its subtitle names the components the
+  // SCW tab reports, as `summary` does, since `name` would only repeat the title.
+  portal: "Senior Citizens Welfare", subtitle: "IPSrC, SAPSrC, RVY, PM-SPECIAL, Elderline and SAGE",
+  owner: "Department of Social Justice and Empowerment",
   // The components, as the SCW tab names them; nothing about them is authored here.
   summary: "Integrated Programme for Senior Citizens, State Action Plan for Senior Citizens, Rashtriya Vayoshri Yojana, PM-SPECIAL – Elder Care & Assisted Living, Elderline (14567) and the Seniorcare Ageing Growth Engine.",
   logoPath: "/portals/scw", portalHref: "/portals/scw",
@@ -628,7 +635,7 @@ export const SENIOR_CITIZENS_DASHBOARD: PortalDashboard = {
 /** Every programme with KPIs on file — the four dashboards and Senior Citizens Welfare. */
 export const PROGRAMMES: PortalDashboard[] = [...PORTAL_DASHBOARDS, SENIOR_CITIZENS_DASHBOARD];
 
-/** "the SMILE-Beggary Admin Portal", but "e-Utthaan": a system's name takes no article. */
+/** "the X Portal" where a name ends in Portal, but "e-Utthaan": a system's name takes no article. */
 export function portalPhrase(portal: PortalDashboard): string {
   return /portal$/i.test(portal.portal) ? `the ${portal.portal}` : portal.portal;
 }

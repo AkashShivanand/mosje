@@ -36,6 +36,12 @@ export interface RankedBarListProps extends ChartStateProps {
   /** Number the rows. On by default for a ranking; off for a breakdown. */
   showRank?: boolean;
   /**
+   * Draw each row's bar. Off for rows drawn against a ceiling they barely register on — the
+   * five lowest of 36 States/UTs against the highest draw 1px bars that read as broken — where
+   * the figure and its rank say it all. @default true
+   */
+  showBar?: boolean;
+  /**
    * `sm` is the compact list for a card beside a chart. `md` is the list as the
    * card's own content — Body 2 text, a semibold name, a regular figure and a
    * 24px rank (the Ranked Bar Row drawn for the dashboard screens). @default "sm"
@@ -72,6 +78,7 @@ export function RankedBarList({
   max,
   valueFormat = formatIndian,
   showRank = true,
+  showBar = true,
   size = "sm",
   sort = "desc",
   pageSize,
@@ -155,12 +162,14 @@ export function RankedBarList({
                   {item.detail && <span className="ds-ranked__detail">{item.detail}</span>}
                 </span>
               </div>
-              <div
-                className={cn("ds-ranked__track", item.withheld && "ds-ranked__track--withheld")}
-                aria-hidden="true"
-              >
-                {!item.withheld && <div className="ds-ranked__fill" style={{ width: `${pct}%` }} />}
-              </div>
+              {showBar && (
+                <div
+                  className={cn("ds-ranked__track", item.withheld && "ds-ranked__track--withheld")}
+                  aria-hidden="true"
+                >
+                  {!item.withheld && <div className="ds-ranked__fill" style={{ width: `${pct}%` }} />}
+                </div>
+              )}
             </li>
           );
         })}

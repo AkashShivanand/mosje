@@ -1,3 +1,4 @@
+import * as React from "react";
 import type { Metadata } from "next";
 import { DbimPage } from "@/components/website-dbim/layout/DbimPage";
 import { DbimPortalTiles } from "@/components/website-dbim/dashboard/PortalTiles";
@@ -6,6 +7,7 @@ import { DepartmentOverview } from "@/components/kpi-dashboard/DepartmentOvervie
 import { DBIM_MENU } from "@/lib/website-dbim/nav";
 import { DBIM_PORTAL_DASHBOARDS } from "@/lib/website-dbim/ministry";
 import { ProposedDashboardSection } from "@/components/kpi-dashboard/proposed/ProposedDashboardSection";
+import { OfficerAccess } from "@/components/kpi-dashboard/proposed/OfficerAccess";
 import { DASHBOARD_PAGE } from "@/lib/website-shared/dashboard";
 import { dashboardVersion } from "@/lib/website-shared/dashboard-version";
 import "@/components/website-dbim/ministry/ministry.css";
@@ -34,7 +36,7 @@ export const metadata: Metadata = {
  *
  * DS Audit: DepartmentOverview / MinistryCollection (app, shared) ✅ · DbimDashboardTiles (DBIM) ✅.
  *
- * `?version=proposed` draws the proposed dashboard in its place (`dashboard-version.ts`).
+ * The proposed dashboard is the default; `?version=current` draws this page (`dashboard-version.ts`).
  */
 type PageProps = { searchParams: Promise<Record<string, string | string[] | undefined>> };
 export default async function DbimDashboardPage({ searchParams }: PageProps) {
@@ -46,6 +48,7 @@ export default async function DbimDashboardPage({ searchParams }: PageProps) {
       path="/ministry/our-performance"
       tabs={DBIM_MENU[0]!.children}
       activeTab="/ministry/our-performance"
+      action={proposed ? <React.Suspense fallback={null}><OfficerAccess tone="inverse" /></React.Suspense> : undefined}
     >
       {proposed ? (
         <div className="db-dash">

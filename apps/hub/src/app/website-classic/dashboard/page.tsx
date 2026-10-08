@@ -1,3 +1,4 @@
+import * as React from "react";
 import type { Metadata } from "next";
 import { SectionTitle, formatAsOf } from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
@@ -7,6 +8,7 @@ import { MinistryCollection } from "@/components/kpi-dashboard/DashboardViewer";
 import { DASHBOARD_PAGE, DEPARTMENT_DASHBOARD_AS_ON } from "@/lib/website-shared/dashboard";
 import { isoDate } from "@/lib/kpi/format";
 import { ProposedDashboardSection } from "@/components/kpi-dashboard/proposed/ProposedDashboardSection";
+import { OfficerAccess } from "@/components/kpi-dashboard/proposed/OfficerAccess";
 import { dashboardVersion } from "@/lib/website-shared/dashboard-version";
 import "@/components/kpi-dashboard/kpi-dashboard.css";
 
@@ -28,13 +30,13 @@ export const metadata: Metadata = {
  * and is now drawn from that dashboard's own figures.) The page now carries the same
  * content as the other two designs.
  *
- * `?version=proposed` draws the proposed dashboard in its place (`dashboard-version.ts`).
+ * The proposed dashboard is the default; `?version=current` draws this page (`dashboard-version.ts`).
  */
 type PageProps = { searchParams: Promise<Record<string, string | string[] | undefined>> };
 export default async function DashboardPage({ searchParams }: PageProps) {
   if (dashboardVersion(await searchParams) === "proposed") {
     return (
-      <PageLayout title={DASHBOARD_PAGE.title} breadcrumb={[{ label: DASHBOARD_PAGE.crumb }]}>
+      <PageLayout title={DASHBOARD_PAGE.title} breadcrumb={[{ label: DASHBOARD_PAGE.crumb }]} actions={<React.Suspense fallback={null}><OfficerAccess tone="inverse" /></React.Suspense>}>
         <section aria-label={DASHBOARD_PAGE.title}>
           <div className="sa-container py-10 md:py-12">
             <ProposedDashboardSection sectionLevel={2} />

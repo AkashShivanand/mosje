@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "Figma gains Progress Bar — the code's `Progress` drawn bare, with a Value variant for every whole percentage from 0 to 100, because a Figma instance cannot otherwise be given its own bar length. Metric Card's Target reading nests it, exposed, so a tile shows its real figure (choose the Tone first, then the Value: switching Tone resets it). Code Connect maps both."
+}

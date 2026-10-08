@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Button, Card, CardBody, FormField, Icon, Input, PasswordInput, SectionTitle, Select } from "@mosje/design-system";
-import { OFFICER_ROLES } from "@/lib/kpi/access";
+import { AuthFormCard, Button, Card, CardBody, Icon, OrgLogo, PasswordFields } from "@mosje/design-system";
+import { accountByUserId } from "@/lib/kpi/access";
 import { setViewer } from "@/lib/kpi/viewer";
 
 /**
@@ -12,37 +12,49 @@ import { setViewer } from "@/lib/kpi/viewer";
  * 6 Oct 2026: a citizen sees only the Pre-Login KPIs and never signs in; an officer signs in
  * to see the Post-Login KPIs for their office as well.
  *
- * A PROTOTYPE OF THE SCREEN, NOT AUTHENTICATION. Nothing is sent anywhere and no credential
- * is checked: signing in sets the dashboard's viewer (`setViewer`), the same state the demo
- * rail's View As tab sets. The Office field stands in for what a real login would read from
- * the officer's account, so the prototype can show every office's view.
+ * TWO AUDIENCES, AND THE ACCOUNT DECIDES THE SCOPE (instruction, 7 Oct 2026). The sheet has
+ * Public and Officer only. Signing in makes the reader an officer; which portals and which
+ * State or District they see is the account's (`accountByUserId`), never a choice on this
+ * form. The Office picker that stood here let a reader choose their own scope, which no
+ * real login does.
  *
- * DS Audit: SectionTitle ✅ · Card / CardBody ✅ · FormField ✅ · Select ✅ · Input ✅ ·
- * PasswordInput ✅ · Button ✅ · Icon ✅.
+ * A PROTOTYPE OF THE SCREEN, NOT AUTHENTICATION. Nothing is sent anywhere and the password
+ * is not checked: a known User ID sets the dashboard's viewer (`setViewer`). The demo rail
+ * lists the prototype's User IDs.
+ *
+ * FORGOT PASSWORD IS LEFT OFF until the accounts are real: a link with no recovery page behind
+ * it is a dead end. The DS's PortalRecoveryTemplate is the page to add when it is wanted.
+ * No consent line: officers only, as E-Anudaan's login decided (7 Sep 2026).
+ *
+ * DS Audit: Card / CardBody ✅ · OrgLogo (the emblem) ✅ · AuthFormCard ✅ · PasswordFields ✅ ·
+ * Button ✅ · Icon ✅.
  */
 
 interface FieldErrors {
-  office?: string;
   userId?: string;
   password?: string;
 }
 
 export function OfficerLogin({ backHref, sectionLevel, onSignedIn }: { backHref: string; sectionLevel: 2 | 3; onSignedIn: () => void }) {
-  const [office, setOffice] = React.useState("");
   const [userId, setUserId] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [errors, setErrors] = React.useState<FieldErrors>({});
+  // A refused sign-in is the FORM's error, not the User ID's: the reader cannot tell which of
+  // the two was wrong, and naming one would tell a stranger which User IDs exist.
+  const [refused, setRefused] = React.useState(false);
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     const next: FieldErrors = {
-      office: office ? undefined : "Select your office.",
       userId: userId.trim() ? undefined : "Enter your User ID.",
       password: password ? undefined : "Enter your password.",
     };
     setErrors(next);
-    if (next.office || next.userId || next.password) return;
-    setViewer(office);
+    if (next.userId || next.password) return setRefused(false);
+    const account = accountByUserId(userId);
+    setRefused(!account);
+    if (!account) return;
+    setViewer(account.id);
     onSignedIn();
   };
 
@@ -51,43 +63,36 @@ export function OfficerLogin({ backHref, sectionLevel, onSignedIn }: { backHref:
       <Button appearance="text" size="sm" href={backHref} linkAs={Link} iconLeft={<Icon name="arrow_back" size={16} />} className="pd-back">
         Beneficiary Dashboard
       </Button>
-      <section className="pd-section pd-login" aria-labelledby="pd-login">
-        <SectionTitle
-          as={sectionLevel}
-          headingId="pd-login"
-          size="display"
-          title="Officer Login"
-          description="For officers of the Department, its Divisions and the scheme portals. The dashboard's public figures need no sign-in."
-        />
+      {/* One centred card on a quiet ground (Option A, approved 7 Oct 2026): the emblem, the
+          title and what it signs into — no paragraph about scope; the account decides that. */}
+      <section className="pd-login" aria-label="Officer Login">
         <Card className="pd-login__card">
-          <CardBody>
-            <form className="pd-login__form" noValidate onSubmit={submit}>
-              <FormField label="Office" id="pd-login-office" required error={errors.office}>
-                {(control) => (
-                  <Select
-                    {...control}
-                    name="office"
-                    value={office}
-                    onChange={(e) => setOffice(e.target.value)}
-                    placeholder="Select your office"
-                    options={OFFICER_ROLES.map((r) => ({ value: r.id, label: r.label }))}
-                  />
-                )}
-              </FormField>
-              <FormField label="User ID" id="pd-login-user" required error={errors.userId}>
-                {(control) => (
-                  <Input {...control} name="username" autoComplete="username" value={userId} onChange={(e) => setUserId(e.target.value)} leftIcon={<Icon name="person" size={16} />} />
-                )}
-              </FormField>
-              <FormField label="Password" id="pd-login-password" required error={errors.password}>
-                {(control) => (
-                  <PasswordInput {...control} name="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} leftIcon={<Icon name="lock" size={16} />} />
-                )}
-              </FormField>
-              <Button type="submit" appearance="filled" size="md">
-                Sign In
-              </Button>
-            </form>
+          <CardBody className="pd-login__body">
+            <OrgLogo path={null} size="lg" name="" className="pd-login__mark" />
+            <AuthFormCard
+              heading="Officer Login"
+              headingLevel={sectionLevel}
+              description="Beneficiary Dashboard"
+              error={refused ? "The User ID or password is incorrect. Check both and try again." : undefined}
+              onSubmit={submit}
+              credentialFields={
+                <PasswordFields
+                  identifier={userId}
+                  onIdentifierChange={setUserId}
+                  password={password}
+                  onPasswordChange={setPassword}
+                  identifierLabel="User ID"
+                  identifierPlaceholder="Enter your User ID"
+                  identifierError={errors.userId}
+                  passwordError={errors.password}
+                />
+              }
+              primaryAction={
+                <Button type="submit" appearance="filled" fullWidth>
+                  Sign In
+                </Button>
+              }
+            />
           </CardBody>
         </Card>
       </section>

@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "Key numbers are semibold everywhere. Metric Card's figure, a ring chart's centre value and the SLA Progress Indicator's figure drop from bold to semibold, the weight Description List figures and Headline Figure already used — one dashboard had shown the same kind of number at two weights. Figma's Metric Card keeps Headline 3 and Headline 4, and needs no bold styles."
+}

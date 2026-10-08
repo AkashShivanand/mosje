@@ -3,26 +3,27 @@
 import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Button, Combobox, FilterSelect, Icon } from "@mosje/design-system";
+import { Button, FilterSelect, Icon } from "@mosje/design-system";
 import { useDataMode } from "@/lib/data-mode/context";
-import { STATE_NAMES } from "@/lib/kpi/geography";
+import { SMILE_AREAS, STATE_NAMES } from "@/lib/kpi/geography";
 import type { PortalFeed } from "@/lib/kpi/live";
 import { isPortalId } from "@/lib/kpi/register";
-import type { AreaScope, PortalId } from "@/lib/kpi/types";
+import type { AreaScope, KpiUnit, PortalId } from "@/lib/kpi/types";
 import { useDashboardViewer } from "@/lib/kpi/viewer";
 import { FigureSourceProvider } from "@/components/website/FigureSource";
 import { ViewerNotice } from "../DashboardViewer";
 import { OfficerLogin } from "./OfficerLogin";
 import { ProgrammeStory } from "./ProgrammeStory";
+import { DEPARTMENT_PAGE, DepartmentStory } from "./DepartmentStory";
 import { DataBehind, Pulse } from "./Pulse";
-import { SHORT_NAME, readAll, stateMeasures, viewingFor } from "./model";
-import { AUDIENCES, AUDIENCE_LABEL, PROGRAMME_AUDIENCE, parseAudiences, serialiseAudiences, shows } from "./audience";
+import { SHORT_NAME, YEAR_FILTER, readAll, readingForYear, stateMeasures, viewingFor, yearOption } from "./model";
+import { PROGRAMME_AUDIENCE, shows, type Audience } from "./audience";
 import "../kpi-dashboard.css";
 import "./proposed.css";
 
 /**
  * THE PROPOSED DASHBOARD — the website's Dashboard designed from the KPI proforma up, shown
- * beside the current one by the demo rail's Version switch (`?version=proposed`).
+ * beside the current one by the demo rail's Version switch; it is the default, and `?version=current` opens the other.
  *
  * Two places, both in the address so either can be shared:
  *  - the PULSE (`Pulse.tsx`): one page, told as a story — the answer, the programmes, where,
@@ -32,6 +33,11 @@ import "./proposed.css";
  * One area filter rules both (`?state=`). Every figure resolves from ONE set of readings
  * (`readAll`), and every figure can show its source and calculation (`FigureSource`) while
  * the demo rail asks for them.
+ *
+ * FILTERS, ONLY WHERE THE FIGURES CAN ANSWER THEM (approved 8 Oct 2026): State / UT on every
+ * page; District on a programme that publishes by district (SMILE-Beggary), once a State is
+ * chosen; Financial Year where a programme counts by year (`YEAR_FILTER`). Type of Applicant is
+ * gone, and Officer Login has moved to the page banner (`OfficerAccess`).
  *
  * DS Audit: FilterSelect ✅ · ViewerNotice (app) ✅ · Pulse / ProgrammeStory (this folder) ✅.
  */
@@ -43,6 +49,9 @@ export interface ProposedDashboardProps {
 }
 
 const ALL_INDIA = "";
+const ALL = "";
+/** Type of Applicant is gone (8 Oct 2026): every reader sees every group's figures. */
+const EVERYONE: Set<Audience> = new Set();
 
 export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboardProps) {
   const router = useRouter();
@@ -55,21 +64,54 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
   const programmeParam = params.get("programme");
   const programme =
     programmeParam && isPortalId(programmeParam) ? viewing.programmes.find((p) => p.id === programmeParam) : undefined;
+  // The Department's own dashboard (`?programme=department`): its Beneficiary Dashboard.
+  const department = programmeParam === DEPARTMENT_PAGE;
   const wantedState = params.get("state") ?? undefined;
   // The officer-only page (`?view=data-sources`); anyone else asking for it gets the dashboard.
   const dataSources = params.get("view") === "data-sources" && readinessAllowed;
   // The officer sign-in (`?view=login`); a viewer already signed in gets the dashboard.
   const login = params.get("view") === "login" && !role;
   const page = dataSources || login;
-  const audiences = React.useMemo(() => parseAudiences(params.get("for")), [params]);
+  const audiences = EVERYONE;
+  const state = role?.area.state ?? (wantedState && STATE_NAMES.includes(wantedState) ? wantedState : undefined);
+  // What the open programme can be filtered by — computed in one place, from the programme.
+  const filterable = React.useMemo(() => {
+    const districtLevel = Boolean(programme?.levels.includes("district"));
+    return {
+      // District: only on a programme that publishes by district, and only inside a chosen State.
+      districtLevel,
+      districts: districtLevel && state ? (SMILE_AREAS.find((n) => n.name === state)?.children ?? []).map((d) => d.name) : [],
+      // Financial Year: only on a programme counted by year.
+      yearSpec: programme ? YEAR_FILTER[programme.id] : undefined,
+      units: Object.fromEntries((programme?.kpis ?? []).map((k) => [k.id, k.unit])) as Record<string, KpiUnit>,
+    };
+  }, [programme, state]);
+  const { districts, yearSpec, units } = filterable;
+  const wantedDistrict = params.get("district") ?? undefined;
   const scope: AreaScope = {
-    state: role?.area.state ?? (wantedState && STATE_NAMES.includes(wantedState) ? wantedState : undefined),
-    district: role?.area.district,
+    state,
+    district: role?.area.district ?? (wantedDistrict && districts.includes(wantedDistrict) ? wantedDistrict : undefined),
   };
+  const wantedYear = params.get("year");
+  const year = yearSpec ? (wantedYear && yearSpec.years.includes(wantedYear) ? wantedYear : yearSpec.current) : undefined;
 
-  const readings = React.useMemo(
+  const baseReadings = React.useMemo(
     () => readAll(viewing.programmes, scope, demo.mode, feeds, viewing.audience),
     [viewing, scope.state, scope.district, demo.mode, feeds], // eslint-disable-line react-hooks/exhaustive-deps
+  );
+  // An earlier financial year, on the open programme only (`readingForYear`).
+  const programmeId = programme?.id;
+  const readings = React.useMemo(
+    () =>
+      programmeId && yearSpec && year && year !== yearSpec.current
+        ? { ...baseReadings, [programmeId]: readingForYear(baseReadings[programmeId] ?? {}, units, yearSpec, year) }
+        : baseReadings,
+    [baseReadings, programmeId, units, yearSpec, year],
+  );
+  // The programme as its head describes it: an earlier year is that whole financial year.
+  const shown = React.useMemo(
+    () => (programme && yearSpec && year && year !== yearSpec.current ? { ...programme, period: `Financial Year ${year}` } : programme),
+    [programme, yearSpec, year],
   );
   const national = React.useMemo(
     () => (scope.state ? readAll(viewing.programmes, {}, demo.mode, feeds, viewing.audience) : readings),
@@ -82,7 +124,7 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
   );
 
   const hrefTo = React.useCallback(
-    (to: Partial<Record<"programme" | "state" | "for" | "view", string | null>>) => {
+    (to: Partial<Record<"programme" | "state" | "district" | "year" | "view", string | null>>) => {
       const next = new URLSearchParams(params.toString());
       for (const [k, v] of Object.entries(to)) {
         if (v === null || v === undefined || v === "") next.delete(k);
@@ -105,7 +147,7 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
   const keepFocus = React.useRef(false);
   const firstView = React.useRef(true);
   const go = React.useCallback(
-    (to: Partial<Record<"programme" | "state" | "for" | "view", string | null>>, opts?: { keepFocus?: boolean }) => {
+    (to: Partial<Record<"programme" | "state" | "district" | "year" | "view", string | null>>, opts?: { keepFocus?: boolean }) => {
       keepFocus.current = Boolean(opts?.keepFocus);
       router.push(hrefTo(to), { scroll: false });
     },
@@ -153,57 +195,51 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
       {role ? <ViewerNotice role={role} /> : null}
 
       {/*
-        ONE TOOLBAR (design audit, 6 Oct 2026). What the page is showing on the left; the three
-        controls that change it on the right, on one baseline: Type of Applicant, State / UT
-        and, for an officer, the sign-in. Type of Applicant used to be nine chips over two rows
-        above the first figure — the page's busiest line, for a choice most readers never make
-        — so it is the design system's multi-select at every width now. Its label and groups
-        are the ones the Additional Secretary approved (`audience.ts`); nothing chosen means
-        everyone, and the field says "All".
+        ONE TOOLBAR (design audit, 6 Oct 2026; filters revised 8 Oct 2026). What the page is
+        showing on the left; the filters that change it on the right, on one baseline — only the
+        ones its figures can answer. Signing in is not a filter: Officer Login is in the banner.
       */}
+      {/* THE WAY BACK FIRST (design review, 7 Oct 2026): above the area bar, where it reads as
+          the way out of this dashboard, not as a link beneath its heading. */}
+      {(programme || department) && !page ? (
+        <Button appearance="text" size="sm" href={hrefTo({ programme: null, district: null, year: null })} linkAs={Link} iconLeft={<Icon name="arrow_back" size={16} />} className="pd-back">
+          All Dashboards
+        </Button>
+      ) : null}
       {page ? null : (
         <div className="pd-bar">
           <p className="pd-bar__where" role="status">
             <span className="pd-bar__label">Figures for</span>
-            {programme ? `${SHORT_NAME[programme.id]} · ` : ""}
+            {/* The area only: the dashboard's own head names whose figures they are. */}
             {scope.district ? `${scope.district}, ` : ""}
             {scope.state ?? "All India"}
           </p>
           <div className="pd-bar__controls">
-            {programme ? null : (
-              <div className="pd-bar__applicant">
-                {/* The visible label matches State / UT's beside it; the field keeps its own
-                    label for assistive technology, so the name is announced once. */}
-                <span className="pd-bar__control-label" aria-hidden="true">
-                  {AUDIENCE_LABEL}
-                </span>
-                <Combobox
-                  multiple
-                  size="sm"
-                  labelHidden
-                  label={AUDIENCE_LABEL}
-                  placeholder="All"
-                  options={AUDIENCES.map((a) => ({ value: a.id, label: a.label }))}
-                  value={AUDIENCES.filter((a) => audiences.has(a.id)).map((a) => a.id)}
-                  onChange={(v) => go({ for: serialiseAudiences(parseAudiences(v.join(","))) || null }, { keepFocus: true })}
-                />
-              </div>
-            )}
             {role?.area.state ? null : (
               <FilterSelect
                 label="State / UT"
                 value={scope.state ?? ALL_INDIA}
-                onChange={(v) => go({ state: v || null }, { keepFocus: true })}
+                onChange={(v) => go({ state: v || null, district: null }, { keepFocus: true })}
                 options={[{ value: ALL_INDIA, label: "All India" }, ...STATE_NAMES.map((s) => ({ value: s, label: s }))]}
               />
             )}
-            {/* Officer Login (the dashboard has its own login, decided 6 Oct 2026). Signed in,
-                the Officer View notice above the toolbar takes its place. */}
-            {role ? null : (
-              <Button appearance="outlined" size="md" href={hrefTo({ view: "login" })} linkAs={Link} iconLeft={<Icon name="login" size={20} />}>
-                Officer Login
-              </Button>
-            )}
+            {filterable.districtLevel && !role?.area.district ? (
+              <FilterSelect
+                label="District"
+                value={scope.district ?? ALL}
+                disabled={districts.length === 0}
+                onChange={(v) => go({ district: v || null }, { keepFocus: true })}
+                options={[{ value: ALL, label: "All Districts" }, ...districts.map((d) => ({ value: d, label: d }))]}
+              />
+            ) : null}
+            {yearSpec && year ? (
+              <FilterSelect
+                label="Financial Year"
+                value={year}
+                onChange={(v) => go({ year: v === yearSpec.current ? null : v }, { keepFocus: true })}
+                options={yearSpec.years.map((y) => ({ value: y, label: yearOption(yearSpec, y) }))}
+              />
+            ) : null}
           </div>
         </div>
       )}
@@ -226,14 +262,15 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
               </Button>
               <DataBehind viewing={viewing} readings={readings} sectionLevel={sectionLevel} />
             </div>
+          ) : department ? (
+            <DepartmentStory sectionLevel={sectionLevel} state={scope.state} audiences={audiences} />
           ) : programme ? (
             <ProgrammeStory
-              programme={programme}
+              programme={shown ?? programme}
               viewing={viewing}
               readings={readings}
               scope={scope}
               sectionLevel={sectionLevel}
-              backHref={hrefTo({ programme: null })}
               go={go}
               states={states}
             />

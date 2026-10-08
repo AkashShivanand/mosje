@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "Figma catches up with the code on two dashboard parts. Metric Card gains Show detail and Detail (the code's `detail` line) and Show target (off draws the code's plain `progress` bar). Ranked Bar Row gains Show bar (the code's `showBar`) and Show detail with Detail (an item's share or standing, such as 61.0% or 32 of 36). The Bar Chart and Ranked Bar List pages now document a value withheld as not yet due, and a two-part breakdown drawn as a split."
+}

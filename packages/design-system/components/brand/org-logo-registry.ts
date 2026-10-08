@@ -70,7 +70,10 @@ export type OrgSlug = keyof typeof ORG_LOGOS;
  *   daf     the State Emblem in near-black line art. The ratio is fine (4.3:1)
  *   dwbdnc  and the LEGIBILITY is not: at 2% coverage the fine strokes and the
  *   ncsk    "सत्यमेव जयते" beneath them read as a smudge on a mid-blue ground.
- *   scw     A number cannot see that; the contact sheet can.
+ *           A number cannot see that; the contact sheet can.
+ *   scw     its own mark since 7 Oct 2026 (SAMAVESH `Org=SCW`, 4273:716) — an
+ *           orange frame round a green figure, open artwork whose green sinks
+ *           into a blue band. Until then it was the State Emblem, as above.
  *
  * SO THE PLATE IS THE EXCEPTION, NOT THE RULE. It used to be applied to all
  * seventeen, which put a white ring around eleven marks that already had their

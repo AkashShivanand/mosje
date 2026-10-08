@@ -7,6 +7,7 @@ import { PORTAL_DASHBOARDS, portalById } from "@/lib/kpi/register";
 import { getPortalFeed } from "@/lib/kpi/feeds";
 import { DASHBOARD_PAGE } from "@/lib/website-shared/dashboard";
 import { PORTAL_DASHBOARD_CRUMBS } from "@/lib/website-shared/dashboard-links";
+import { CURRENT_DASHBOARD_QUERY } from "@/lib/website-shared/dashboard-version";
 import "@/components/website-dbim/dashboard/dashboard.css";
 
 export function generateStaticParams() {
@@ -42,7 +43,7 @@ export default async function DbimPortalDashboardPage({ params }: { params: Prom
       crumbs={[
         { label: "Ministry", path: "/ministry" },
         { label: "Our Performance", path: "/ministry/our-performance" },
-        { label: DASHBOARD_PAGE.crumb, path: "/dashboard" },
+        { label: DASHBOARD_PAGE.crumb, path: `/dashboard${CURRENT_DASHBOARD_QUERY}` },
       ]}
       path="/ministry/our-performance"
       tabs={DBIM_MENU[0]!.children}

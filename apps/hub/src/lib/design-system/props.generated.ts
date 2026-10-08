@@ -13058,6 +13058,13 @@ export const GENERATED_PROPS = {
         "description": "Rows per page. A list longer than this PAGES — it never scrolls inside its card, because on a phone a reader flicking the page down lands in the list and moves the list instead (`data-state-completeness.md` §4)."
       },
       {
+        "name": "showBar",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Draw each row's bar. Off for rows drawn against a ceiling they barely register on — the five lowest of 36 States/UTs against the highest draw 1px bars that read as broken — where the figure and its rank say it all."
+      },
+      {
         "name": "showRank",
         "type": "boolean",
         "required": false,

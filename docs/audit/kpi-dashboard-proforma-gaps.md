@@ -254,3 +254,27 @@ it separately at every level, so the All-India Persons Rehabilitated (10,450) di
 the sum of the States/UTs on the new State/UT map (10,434). The stages are now capped where
 they are recorded (a district, or a State/UT with none on file) and summed upward. Every level
 agrees, and All India reads 10,411.
+
+## 13. DAPSC allocation and expenditure, and the round-two review (7 Oct 2026)
+
+**The sheet's name for e-Utthaan KPI 2 is misleading.** "Total DAPSC Expenditure (B.E. and
+R.E.)" carries the allocation's two stages, but expenditure is one figure a year — the amount
+spent. B.E. and R.E. are the two estimates of the ALLOCATION (budgeted, then revised in the
+year). The most likely reading is "expenditure against B.E. and R.E.". **Question for the
+Department:** confirm, and correct the KPI name on the sheet. The dashboard keeps the sheet's
+words and draws allocation and expenditure in one chart, so the comparison is made in one place.
+
+**What is published and what is modelled in that chart.** Every B.E. is the Union Budget's
+Statement 10A (indiabudget.gov.in); R.E. 2025-26 (₹1,61,205.10 Cr) and the 2024-25 actual
+(₹1,23,372.16 Cr) are the Budget's own. Every other R.E. and expenditure figure is modelled
+(R.E. at 95.7% of B.E.; expenditure at 74.5%; 2026-27 to 30.09.2026 at 35%). The chart carries
+the Illustrative mark when the demo rail's marks are on; marks are off by default by the
+owner's decision of 7 Oct 2026 (a prototype: the live website will carry real figures).
+
+**The mandated share is a minimum.** The Mandated Allocation table now reads its difference as
+compliance ("Meets, +0.8 pp" / "Short by 0.7 pp"), not as a plus or minus. The ten Ministries'
+shares are illustrative.
+
+**Two roles.** The sheet's KPI Type has Pre-Login and Post-Login only, so the dashboard has
+Public and Officer only; an officer's scope (portals, State, District) is the account's. The
+six demo accounts and their User IDs are in `apps/hub/src/lib/kpi/access.ts`.

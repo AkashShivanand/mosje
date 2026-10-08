@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { ChartCard, IndiaMap, RankedBarList, SegmentedControl } from "@mosje/design-system";
+import { ChartCard, IndiaMap, RankedBarList } from "@mosje/design-system";
+import { SegmentedButtons } from "./SegmentedButtons";
 import type { StateMeasure } from "./model";
 import { compact } from "./story";
 
@@ -16,7 +17,7 @@ import { compact } from "./story";
  * picture of them. Each chart keeps its table for screen readers only (instruction, 6 Oct
  * 2026: no Chart / Table switch for now).
  *
- * DS Audit: ChartCard ✅ · SegmentedControl ✅ · IndiaMap ✅ · RankedBarList ✅.
+ * DS Audit: ChartCard ✅ · ButtonGroup (SegmentedButtons) ✅ · IndiaMap ✅ · RankedBarList ✅.
  */
 export function StateBreakdown({
   measures,
@@ -40,11 +41,11 @@ export function StateBreakdown({
       subtitle={m.kpi.name}
       actions={
         measures.length > 1 ? (
-          <SegmentedControl ariaLabel="Figure shown" value={m.kpi.id} onChange={setPicked} options={measures.map((x) => ({ value: x.kpi.id, label: x.label }))} />
+          <SegmentedButtons label="Figure shown" value={m.kpi.id} onChange={setPicked} options={measures.map((x) => ({ value: x.kpi.id, label: x.label }))} />
         ) : undefined
       }
     >
-      <div className="pd-states">
+      <div className="pd-states pd-arrive" key={m.kpi.id}>
         <IndiaMap
           title={`${m.kpi.name}, by State/UT`}
           data={m.rows}
