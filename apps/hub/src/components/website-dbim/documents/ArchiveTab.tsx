@@ -9,7 +9,6 @@ import { DbimFileList } from "./DbimFileList";
 export function ArchiveTab({ kind }: { kind: DbimArchiveKind }) {
   const tab = DBIM_ARCHIVE_TABS.find((t) => t.key === kind);
   if (!tab) return null;
-  const notice = kind === "tenders" || kind === "vacancies";
   return (
     <DbimPage
       title={tab.label}
@@ -19,7 +18,7 @@ export function ArchiveTab({ kind }: { kind: DbimArchiveKind }) {
       tabs={DBIM_ARCHIVE_TABS}
       activeTab={tab.path}
     >
-      <DbimFileList rows={archiveRows(kind)} label={`Archived ${tab.label}`} archive dateSep={notice ? "." : "/"} />
+      <DbimFileList rows={archiveRows(kind)} label={`Archived ${tab.label}`} archive />
     </DbimPage>
   );
 }

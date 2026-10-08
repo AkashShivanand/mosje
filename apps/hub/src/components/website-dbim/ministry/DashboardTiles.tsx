@@ -4,6 +4,7 @@ import { Icon } from "@mosje/design-system";
 import { dbimHref } from "@/lib/website-dbim/nav";
 import type { DbimDashboardTile } from "@/lib/website-dbim/ministry";
 import { DbimEmptyState } from "@/components/website-dbim/ui/EmptyState";
+import { dbimDates } from "@/lib/website-dbim/date";
 
 /**
  * The reference's Our Performance grid (`.photos-card`): image, badge, title, date. Spec §5.
@@ -51,7 +52,7 @@ export function DbimDashboardTiles({
                 )}
               </div>
               <h3 className="db-min-tile__title">{t.title}</h3>
-              {t.date ? <small className="db-min-ptype">{t.date}</small> : null}
+              {t.date ? <small className="db-min-ptype">{dbimDates(t.date)}</small> : null}
             </li>
           ))}
         </ul>
