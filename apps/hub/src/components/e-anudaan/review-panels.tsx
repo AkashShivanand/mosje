@@ -44,6 +44,7 @@ import { GRADE_FULL, ROLES } from "@/lib/e-anudaan/roles";
 import { formatDate, formatDateTime, formatMoney } from "@/lib/e-anudaan/format";
 import { AUTO_CHECK } from "@/lib/e-anudaan/glossary";
 import { schemeLabel } from "@/lib/e-anudaan/selectors";
+import { ordinal } from "@/lib/e-anudaan/applicant";
 import { avyayEntitlement } from "@/lib/e-anudaan/form-schema";
 import {
   instalmentSchedule,
@@ -156,12 +157,45 @@ export function FundingHistory({ app }: { app: GrantApplication }) {
           <>
             <DataTable<NgoSanctionRow & Record<string, unknown>>
               caption="Sanction orders issued to this NGO"
+              // The dev portal's columns (walkthrough of 07 Oct 2026): instalment, project and what
+              // was disbursed, with this project's earlier grants and this year's marked. Its legend
+              // promised a highlight and a green flag it never drew; here they are words, not tints.
               columns={[
-                { key: "financialYear", header: "Financial Year", render: (r) => <span className="whitespace-nowrap">{r.financialYear}</span> },
-                { key: "orderNo", header: "Sanction No.", render: (r) => <span className="whitespace-nowrap font-mono">{r.orderNo}</span> },
-                { key: "sanctionedAt", header: "Date", render: (r) => <span className="whitespace-nowrap">{formatDate(r.sanctionedAt)}</span> },
-                { key: "scheme", header: "Scheme", render: (r) => schemeLabel(r.scheme) },
-                { key: "amount", header: "Sanctioned Amount", className: "text-right", render: (r) => <span className="whitespace-nowrap tabular-nums">{formatMoney(r.amount)}</span> },
+                {
+                  key: "financialYear",
+                  header: "Year",
+                  render: (r) => (
+                    <span className="block whitespace-nowrap">
+                      {r.financialYear}
+                      {r.financialYear === app.financialYear && <Badge status="info" size="sm" className="mt-1 block w-fit">This Year</Badge>}
+                    </span>
+                  ),
+                },
+                {
+                  key: "orderNo",
+                  header: "Sanction",
+                  render: (r) => (
+                    <span className="block whitespace-nowrap">
+                      <span className="block tabular-nums">{r.orderNo}</span>
+                      <span className="block text-body-3 text-ink-muted">{formatDate(r.sanctionedAt)}</span>
+                    </span>
+                  ),
+                },
+                {
+                  key: "project",
+                  header: "Project",
+                  render: (r) => (
+                    <span className="block">
+                      <span className="block whitespace-nowrap">{r.app.institutionId}</span>
+                      <span className="block text-body-3 text-ink-muted">
+                        {schemeLabel(r.scheme)} · {r.app.caseType === "New" ? "New project" : `${r.app.instalment ? ordinal(r.app.instalment) : "Next"} instalment`}
+                      </span>
+                      {r.app.institutionId === app.institutionId && <Badge status="success" size="sm">This Project</Badge>}
+                    </span>
+                  ),
+                },
+                { key: "amount", header: "Sanctioned", className: "text-right", render: (r) => <span className="whitespace-nowrap tabular-nums">{formatMoney(r.amount)}</span> },
+                { key: "released", header: "Disbursed", className: "text-right", render: (r) => <span className="whitespace-nowrap tabular-nums">{formatMoney(r.app.release?.amount ?? 0)}</span> },
               ]}
               data={ngo.rows as (NgoSanctionRow & Record<string, unknown>)[]}
               total={ngo.rows.length}

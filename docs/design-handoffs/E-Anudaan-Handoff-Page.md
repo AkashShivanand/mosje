@@ -612,6 +612,117 @@ Kept on purpose: SHRESHTA Mode 1 (FR-HOA-002 lists it), Waiting to Resend (the B
 the six report tabs (§11), and the irreversibility warning before signing. Not drawn: a Bureau and a Checker
 dashboard — their menus carry Dashboard, which opens the shared e-Anudaan dashboard.
 
+## 5i. The ASO's NAPDDR review in four tabs — 8 Oct 2026
+
+The developers' walkthrough of 7 Oct 2026 showed the Programme Division ASO's review of a NAPDDR file grown to twelve
+sections in one column, with a cost sheet, a Statement of Account and an amount pipeline the handoff did not draw. The
+build was reorganised the same day (PR #720) at the owner's instruction; this pass brings the handoff to the build.
+Before/after: `before-after-figma-aso-review-tabs-2026-10-08.html`.
+
+| What | Before | After | Why |
+|---|---|---|---|
+| Reviewing an Application › Desktop | Ten screens, the ASO's a 4,977px single column on a SHRESHTA file | Four more at the end of the row, the NAPDDR file in its four tabs: Application (`408:27862`), Documents (`410:37090`), Grant (`410:37644`), History (`410:38195`) | The build's layout; the earlier screens are left as they were |
+| Tabs | none | The library Tabs: Application · Documents (12 to Verify) · Grant (2 to Save) · History | Each tab says what is still owed |
+| Grant tab | not drawn | Amount Pipeline (Stepper, vertical); Cost Sheet — the DDAC norms, the doctor choice (Radio Group), totals, Reset to Norm, Save; Statement of Account — two fields, This Release, a computed balance, Save | The amounts the Needs Discussion note asked about, as the build now records them for NAPDDR |
+| Documents tab | SHRESHTA's 19 documents and a duplicated "Permanent Documents" heading | NAPDDR's 12, with their descriptions; one heading | The scheme's own checklist; the build shows one heading |
+| History tab | "Earlier Sanctions for This Project" only | Funding History: the NGO's sanctions (year, number, project, sanctioned, disbursed), the total, this project's line; File Movement | The build's History |
+| Your Decision | verdicts and certification | + Save the Cost Sheet, + Save the Statement of Account; 200-word count | The forward says what it waits for |
+| Header | no way back | "← My Queue" | As the dev portal and the build |
+| Note — Needs Discussion | "no amount is recorded along the review chain" | What is now drawn for NAPDDR, and what is still to confirm | Partly answered; the final approver is still open |
+
+Not done here, and why:
+- **Phone screens.** The Mobile row is unchanged; the build's phone layout (amounts under each item) is not yet drawn.
+- **The other nine desktop screens** keep the single column. The build shows the tabs on every grade; redrawing them is
+  the next pass.
+- **The sanctions list** is drawn with List Rows. The build uses a table, but the library's `Table / Row` has equal-width,
+  fixed-height cells that cannot hold a sanction number at this column width without detaching.
+- **Library gap:** `List Row` has no trailing slot, which the code's `ListRow` has. Each cost-sheet item is a List Row with
+  an Input Field and an IconButton beside it in a row; a trailing slot on the master would remove that wrapper.
+
+## 5j. Every grade in tabs, and the review found by division and grade — 8 Oct 2026
+
+The two items 5i left undone, done at the owner's instruction ("update these screens in Figma as well and ensure Figma
+is organised to make it easy to locate screens based on flow, user and sub-user"). Before/after:
+`before-after-figma-review-by-grade-2026-10-08.html`.
+
+| What | Before | After | Why |
+|---|---|---|---|
+| Reviewing an Application | One Desktop row of 14 screens, one Mobile row of 10, one Pop-ups row — grades, divisions and schemes mixed | Nine versions: Programme Division — ASO · ASO, NAPDDR File · SO · US · DS · JS; Integrated Finance Division — ASO · JS; Used at Every Grade (the 8 pop-ups) | A screen is found by journey → division → grade → Desktop/Mobile → tab |
+| The ten grade screens, desktop and phone | One long column each (up to 7,787px on a phone) | Each split into its tabs — Application, Documents, History — in the same frame (node ids kept for the Application tab) plus a copy per further tab; the ASO's Mid-Review and Document Needs Correction states are their Documents tab; SO Resubmitted shows the corrected answers above the tab bar | The build shows the tabs at every grade; nothing drawn was lost — every card is on one of the tabs |
+| Documents tab label | — | "(N to Verify)" with the dot only where the grade still gives verdicts: ASO 19, ASO Mid-Review 7, SO 19, SO Resubmitted 2; plain "Documents" for US, DS, JS and the finance grades | `canEditDocVerdicts`: once certified, higher grades read the verdicts |
+| Header and Summary on those screens | no way back; no registration number | "← My Queue"; Registration No. E-2151 | As the build |
+| NAPDDR on phone | not drawn | Four phone tabs (`424:34759`, `424:35247`, `424:35998`, `424:37087`): each document's verdict buttons under it, each cost-sheet amount and its delete under the item, the statement's fields stacked | The build's phone layout |
+| Phone decision bar | at 7,427px, below the end of the shortened frames | at the foot of the first screenful | It rides the viewport in the build |
+| Queries; Sanctioned, Returned, Rejected and Forwarded Lists | both divisions in one row | Versions by division (the lists add Both Divisions for Sanctioned Applications); lifecycle order inside | Same drill-down as My Queue |
+| Page guide | "73 screens" (stale since 5i) | 109; a linked Find a Screen index — journey, then division and grade | Reviewers jump straight to a grade |
+| Start Here | — | Change Log entry; How to Read explains division and grade versions | Rule §8 |
+
+Desktop 14 → 28 screens, phone 10 → 28, pop-ups 8 unchanged: 32 screens added, none removed or archived. The other
+eleven pages were scanned for rows that mix divisions, grades or schemes; none do. `check:figma-handoff --strict`:
+14 of 14 conformant.
+
+Still different from the build, for the owner to decide in Figma:
+- ~~History on SHRESHTA files keeps the drawn "Earlier Sanctions for This Project" card.~~ Drawn the same day — see 5k.
+- **Pop-ups** stay in one version. Show Cause and Inspection open from More Actions at any grade holding those
+  capabilities, so they are not one grade's.
+
+## 5k. Funding History on the SHRESHTA screens — 8 Oct 2026
+
+The fourteen SHRESHTA History tabs (seven grades, desktop and phone) carried a card titled "Earlier Sanctions for This
+Project" with one sentence, identical on every screen, naming project SC/MH/PUN/03042 — a project on none of them.
+Each now carries the build's Funding History, filled from what the prototype holds for that file (`ngoSanctions`,
+`projectDisbursement` over the seed). Before/after: `before-after-figma-funding-history-2026-10-08.html`.
+
+| File (grade) | NGO's earlier sanction orders | This project |
+|---|---|---|
+| AHMEDABAD/00067 (PD ASO) | SAN/2025-26/01109 · ₹48.00 L · disbursed ₹0 | none |
+| BARABANKI/00023 (PD SO), 00207 (US), 00307 (DS) | none — "No earlier sanction order has been issued to this NGO." | none |
+| JAIPUR/00385 (PD JS) | SAN/2025-26/01143 · ₹52.00 L · disbursed ₹0 | none |
+| KORAPUT/00466 (IFD ASO) | SAN/2024-25/01245 · ₹51.00 L · disbursed ₹51.00 L | none |
+| PUNE/00848 (IFD JS) | SAN/2024-25/01279 · ₹49.00 L · disbursed ₹0 | none |
+
+Also on these screens: every Funding History card, NAPDDR's included, gains the build's **Open NGO 360**; and the File
+Movement entry, which named Sankalp Seva Sansthan as the applicant on all fourteen, names each file's own NGO.
+
+**Seed dates fixed the same day.** The seed let a sanction fall "within its financial year or the year after", which put
+29 of 67 orders — SAN/2024-25/01245 among them — into a later year than the one they are numbered in. Sanctions now fall
+within their own year (`store/seed.ts`, schema 15), and the drawn dates follow: JAIPUR 10 Mar 2026, KORAPUT and PUNE
+10 Mar 2025.
+
+## 5l. The file made readable from a standing start — 8 Oct 2026
+
+The owner could not find the logic of the file. Audited as design director, UX lead, UI lead, developer, programme
+manager and CEO: `docs/audit/e-anudaan-handoff-file-audit-2026-10-08.md`; report with before/after and the recording
+checklist: `docs/audit/e-anudaan-handoff-audit-and-checklist-2026-10-08.html`.
+
+| What | Before | After | Why |
+|---|---|---|---|
+| Start Here | Cover, Portal Map, How a Grant Moves, How to Read, Status — no product overview, no roles page | Cover (reading order + Latest) → What E-Anudaan Is (`449:1072`) → Who Does What (`449:1170`) → How a Grant Moves → Portal Map → How to Read → Status | A newcomer reads left to right and knows the product, the roles and the flow before the screens |
+| Counts | On the Cover page, the Start Here cover and all 14 page guides | None | Stale within days; answered no reader's question |
+| Page list | By audience; NGO after-applying before officers' review | Numbered 1–7 in the order an application moves (2a–2d the scheme forms) | The order of the pages is the order of the work |
+| Group names | PD Maker, PD Checker, Officers | Maker, Checker, Programme and Finance Officers | "PD" also means the Programme Director; "Officers" also covers him |
+| How a Grant Moves | "No amount is recorded along the review chain"; a schemes block | Amount line corrected for NAPDDR; schemes moved to What E-Anudaan Is | Out of date; said twice |
+| My Queue, PD ASO (desktop, phone) | 10 applications, no Scheme/State filter or State column, "Pending with you", no Waiting Longest or pager | As the prototype | Recording items A7, A8, A18, A25 |
+| ASO review screens (9 desktop) | Old side menu (Dashboard, PD Queries) | Current menu (My Queue, Returned Applications, Queries) | Matches the queue and the prototype |
+
+Rule updated: `.claude/rules/figma-handoff-page-structure.md` §8 (Start Here frames in reading order, no counts) and §10a
+(numbered pages). Left to draw: 18 recording items, listed in the audit.
+
+## 5m. Second pass — the 18 gaps drawn and the file made consistent — 8 Oct 2026
+
+Eight helper agents in parallel (seven Opus, one Sonnet for the menu swaps), then two fix agents and a lead pass;
+reports and before/after renders under the session scratchpad `agents/`. Summary in
+`docs/audit/e-anudaan-handoff-file-audit-2026-10-08.md` § Second Pass; item-by-item placement in
+`e-anudaan-aso-pd-placement-checklist-2026-10-08.md`; pictures in `before-after-figma-second-pass-2026-10-08.html`.
+
+New screens on page 3: NAPDDR Grant Tab (Editing) `457:241595`, (Save Refused) `457:241810`, Rehabilitation Centre Grant
+Tab `457:36775`, Application Tab (Section Open) `457:261495`, SO History Tab (Earlier Sanction of This Project)
+`457:253685`, IFD SO NAPDDR Grant Tab `457:248916` (new version `457:248913`), Confirm Rejecting the Application
+`473:47887`, Confirm Recording Financial Concurrence `483:46164` — each with its phone version where the prototype has one.
+Renamed: "Raise a Deficiency (Dialog)" → "Forward with a Document Marked Needs Correction (Dialog)" (`3:27066`), as the
+prototype has no Raise a Deficiency dialog. Page 3 re-laid in reading order (versions by division and grade; rows by
+tab, then state).
+
 ## 6. Adding to the page
 
 - **A screen:** into the right row of its flow; name `Role / Screen / State`; phone version ends ` · Mobile`.

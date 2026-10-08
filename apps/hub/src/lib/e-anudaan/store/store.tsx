@@ -14,8 +14,10 @@
 import * as React from "react";
 import { useToast } from "@mosje/design-system";
 import type {
+  BudgetStatement,
   CctvSetup,
   ChangeRequest,
+  CostSheet,
   DocReviewStatus,
   EAnudaanState,
   GrantApplication,
@@ -79,7 +81,17 @@ import {
  * Maker, the PD Checker and PFMS have files in flight. An older copy is reseeded, because it holds
  * those files as released — a payment the new pipeline would then show twice.
  */
-const SCHEMA_VERSION = 13;
+/*
+ * 14 — NAPDDR files carry the ASO's cost sheet and Statement of Account; the seed gains a DDAC file
+ * at the Programme Division ASO and a costed IRCA further up the chain, and its IRCA file at the ASO
+ * reads like a 30-bed centre with NAPDDR's own documents. An older copy is reseeded: it holds the
+ * NAPDDR file with a school's documents and 209 beneficiaries.
+ */
+/*
+ * 15 — every sanction is dated within its own financial year, the year its order is numbered in. An
+ * older copy is reseeded: it holds 29 orders such as SAN/2024-25/01245 dated 10 Mar 2026.
+ */
+const SCHEMA_VERSION = 15;
 
 function seedState(): EAnudaanState {
   const seed = buildSeed();
@@ -148,6 +160,13 @@ interface EAnudaanContextValue {
   /** Attach a file to the officer's review (Officer Supporting Documents). */
   addOfficerDocument: (appId: string, file: { name: string; sizeKb: number; title?: string }) => void;
   removeOfficerDocument: (appId: string, id: string) => void;
+  /**
+   * The Programme Division ASO's cost sheet and Statement of Account (NAPDDR; cost-sheet.ts). Two
+   * records, saved separately, as on the dev portal — the screen draws them as two cards for the
+   * same reason. Each is stamped with who saved it and when; the amount pipeline reads the sheet.
+   */
+  saveCostSheet: (appId: string, sheet: Omit<CostSheet, "savedAt" | "savedBy">) => { ok: true } | { ok: false; error: string };
+  saveBudgetStatement: (appId: string, stmt: Omit<BudgetStatement, "savedAt" | "savedBy">) => { ok: true } | { ok: false; error: string };
   /**
    * The officer's verdict on one document, and its reason. Saved as it is chosen: it lived only
    * in the review screen, so a refresh erased it and a deficiency could not be built from it
@@ -530,6 +549,26 @@ export function EAnudaanProvider({ children }: { children: React.ReactNode }) {
                   ],
                 },
           ),
+        }));
+      },
+
+      saveCostSheet: (appId, sheet) => {
+        const role = stateRef.current.session;
+        if (!role) return { ok: false, error: "You are not signed in." };
+        const clock = liveClock();
+        return commit((s) => ({
+          ...s,
+          applications: s.applications.map((a) => (a.id !== appId ? a : { ...a, costSheet: { ...sheet, savedAt: clock.now, savedBy: role } })),
+        }));
+      },
+
+      saveBudgetStatement: (appId, stmt) => {
+        const role = stateRef.current.session;
+        if (!role) return { ok: false, error: "You are not signed in." };
+        const clock = liveClock();
+        return commit((s) => ({
+          ...s,
+          applications: s.applications.map((a) => (a.id !== appId ? a : { ...a, budgetStatement: { ...stmt, savedAt: clock.now, savedBy: role } })),
         }));
       },
 
