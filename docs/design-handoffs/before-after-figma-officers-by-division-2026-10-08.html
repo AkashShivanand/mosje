@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Officers Page by Division</title>
+<style>
+  :root { --ink:#1f2328; --muted:#5b6370; --line:#d9dde3; --bg:#f6f7f9; --card:#fff; }
+  body { margin:0; font:15px/1.5 "Noto Sans", system-ui, sans-serif; color:var(--ink); background:var(--bg); }
+  main { max-width:1280px; margin:0 auto; padding:32px 16px 64px; }
+  h1 { font-size:26px; margin:0 0 4px; } h2 { font-size:19px; margin:40px 0 12px; }
+  p.lead { color:var(--muted); margin:0 0 24px; }
+  .pair { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .pair.wide { grid-template-columns:1fr; }
+  figure { margin:0; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px; }
+  figcaption { font-weight:600; margin-bottom:8px; }
+  img { display:block; max-width:100%; height:auto; border:1px solid var(--line); }
+  .tall img { max-height:900px; margin:0 auto; }
+  table { border-collapse:collapse; width:100%; background:var(--card); }
+  th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+  th { background:#eef0f3; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(360px,1fr)); gap:16px; }
+  @media (max-width:760px){ .pair { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<main>
+<h1>E-Anudaan Handoff — Page 3 by Division</h1>
+<p class="lead">8 Oct 2026. Page 3 · Officers · Reviewing Applications, re-organised by division and grade, with the Assistant Section Officer's missing NAPDDR states drawn (desktop). No screen was deleted.</p>
+
+<h2>The whole page</h2>
+<div class="pair tall">
+  <figure><figcaption>Before — one column for both divisions</figcaption><img src="before-after-figma-officers-by-division-2026-10-08/before-page3-screens.png" alt="Page 3 before: a single tall column holding both divisions"></figure>
+  <figure><figcaption>After — Programme Division · Integrated Finance Division · All Officers</figcaption><img src="before-after-figma-officers-by-division-2026-10-08/after-page3-screens.png" alt="Page 3 after: three columns, one per division plus shared screens"></figure>
+</div>
+
+<h2>The Assistant Section Officer's NAPDDR row</h2>
+<div class="pair wide">
+  <figure><figcaption>Before — 8 screens; the Rehabilitation Centre Grant tab after History</figcaption><img src="before-after-figma-officers-by-division-2026-10-08/before-aso-napddr-desktop-row.png" alt="NAPDDR desktop row before, eight screens"></figure>
+  <figure><figcaption>After — 17 screens, each state right after its tab, then the states after the decision</figcaption><img src="before-after-figma-officers-by-division-2026-10-08/after-aso-napddr-desktop-row.png" alt="NAPDDR desktop row after, seventeen screens"></figure>
+</div>
+
+<h2>My Queue, Programme Division</h2>
+<figure><figcaption>After — the Assistant Section Officer's queue, then Filtered, Filtered to Nothing, Empty, Loading and Error, then the other grades (no before: these states were not drawn)</figcaption><img src="before-after-figma-officers-by-division-2026-10-08/after-my-queue-desktop-row.png" alt="My Queue row with five new states"></figure>
+
+<h2>New screens, close up</h2>
+<div class="grid">
+  <figure><figcaption>Forwarded, Read-Only</figcaption><img src="before-after-figma-officers-by-division-2026-10-08/new-forwarded-read-only.png" alt="Forwarded file, read-only, with File Status"></figure>
+  <figure><figcaption>Document Needs Correction</figcaption><img src="before-after-figma-officers-by-division-2026-10-08/new-document-needs-correction.png" alt="Documents tab with one document marked for correction"></figure>
+  <figure><figcaption>Forward to the Section Officer (Dialog)</figcaption><img src="before-after-figma-officers-by-division-2026-10-08/new-forward-dialog.png" alt="Forward confirmation dialog"></figure>
+  <figure><figcaption>My Queue — Loading</figcaption><img src="before-after-figma-officers-by-division-2026-10-08/new-queue-loading.png" alt="Queue loading skeleton"></figure>
+  <figure><figcaption>Application Not Found</figcaption><img src="before-after-figma-officers-by-division-2026-10-08/new-application-not-found.png" alt="Application not found page"></figure>
+</div>
+
+<h2>What changed</h2>
+<table>
+<tr><th>What</th><th>Before</th><th>After</th><th>Why</th></tr>
+<tr><td>Officer columns</td><td>One column for both divisions</td><td>Programme Division · Integrated Finance Division · All Officers</td><td>An officer reads one column, top to bottom, for their own division</td></tr>
+<tr><td>Journey names</td><td>"My Queue", "Queries" … split inside by division</td><td>"My Queue — Programme Division" and so on</td><td>A ticket can name one journey without ambiguity</td></tr>
+<tr><td>Grade groups</td><td>No scheme in the name</td><td>"…, SHRESHTA File" / "…, NAPDDR File"</td><td>Every drawn grade file is SHRESHTA Mode 2; the name now says so</td></tr>
+<tr><td>Screen names</td><td>Two patterns for a state</td><td>One: Division — Grade — Scheme, Tab (State)</td><td>Names sort and read the same everywhere</td></tr>
+<tr><td>Pop-ups</td><td>All ten in one shared group</td><td>Four moved to the grade that uses them</td><td>A pop-up sits next to the screens that open it</td></tr>
+<tr><td>Red note</td><td>Said "JS-PD"</td><td>Plain words, two new open points</td><td>No codes on the canvas; the new states raised two decisions</td></tr>
+<tr><td>ASO NAPDDR states</td><td>8 desktop screens</td><td>17, plus the forward pop-up and Application Not Found</td><td>The dev portal showed states nobody had drawn</td></tr>
+<tr><td>My Queue states</td><td>Populated only</td><td>+ Filtered, Filtered to Nothing, Empty, Loading, Error</td><td>Every state a list can be in is designed</td></tr>
+</table>
+</main>
+</body>
+</html>

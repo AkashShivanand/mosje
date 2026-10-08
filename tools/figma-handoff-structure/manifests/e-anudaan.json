@@ -2396,133 +2396,89 @@
      "id": "30:208314",
      "children": [
       {
-       "name": "Programme and Finance Officers — Reviewing Applications",
+       "name": "Programme Division Officers — Reviewing Applications",
        "id": "3:22527",
        "children": [
         {
-         "name": "My Queue",
-         "id": "3:32935",
+         "name": "My Queue — Programme Division",
+         "id": "3:34613",
          "children": [
           {
-           "name": "Programme Division",
-           "id": "3:34613",
-           "children": [
+           "name": "Desktop",
+           "id": "3:36081",
+           "frames": [
             {
-             "name": "Desktop",
-             "id": "3:36081",
-             "frames": [
-              {
-               "id": "3:36854",
-               "name": "Officer / My Queue / Programme Division — Assistant Section Officer"
-              },
-              {
-               "id": "3:36632",
-               "name": "Officer / My Queue / Programme Division — Section Officer"
-              },
-              {
-               "id": "3:36442",
-               "name": "Officer / My Queue / Programme Division — Under Secretary"
-              },
-              {
-               "id": "3:36263",
-               "name": "Officer / My Queue / Programme Division — Deputy Secretary"
-              },
-              {
-               "id": "3:36082",
-               "name": "Officer / My Queue / Programme Division — Joint Secretary"
-              }
-             ]
+             "id": "3:36854",
+             "name": "Officer / My Queue / Programme Division — Assistant Section Officer"
             },
             {
-             "name": "Mobile",
-             "id": "3:34614",
-             "frames": [
-              {
-               "id": "3:35725",
-               "name": "Officer / My Queue / Programme Division — Assistant Section Officer — Mobile"
-              },
-              {
-               "id": "3:35361",
-               "name": "Officer / My Queue / Programme Division — Section Officer — Mobile"
-              },
-              {
-               "id": "3:35095",
-               "name": "Officer / My Queue / Programme Division — Under Secretary — Mobile"
-              },
-              {
-               "id": "3:34855",
-               "name": "Officer / My Queue / Programme Division — Deputy Secretary — Mobile"
-              },
-              {
-               "id": "3:34615",
-               "name": "Officer / My Queue / Programme Division — Joint Secretary — Mobile"
-              }
-             ]
+             "id": "496:51449",
+             "name": "Officer / My Queue / Programme Division — Assistant Section Officer — Filtered"
+            },
+            {
+             "id": "496:52018",
+             "name": "Officer / My Queue / Programme Division — Assistant Section Officer — Filtered to Nothing"
+            },
+            {
+             "id": "496:52574",
+             "name": "Officer / My Queue / Programme Division — Assistant Section Officer — Empty"
+            },
+            {
+             "id": "496:53321",
+             "name": "Officer / My Queue / Programme Division — Assistant Section Officer — Loading"
+            },
+            {
+             "id": "496:54089",
+             "name": "Officer / My Queue / Programme Division — Assistant Section Officer — Error"
+            },
+            {
+             "id": "3:36632",
+             "name": "Officer / My Queue / Programme Division — Section Officer"
+            },
+            {
+             "id": "3:36442",
+             "name": "Officer / My Queue / Programme Division — Under Secretary"
+            },
+            {
+             "id": "3:36263",
+             "name": "Officer / My Queue / Programme Division — Deputy Secretary"
+            },
+            {
+             "id": "3:36082",
+             "name": "Officer / My Queue / Programme Division — Joint Secretary"
             }
            ]
           },
           {
-           "name": "Integrated Finance Division",
-           "id": "3:32936",
-           "children": [
+           "name": "Mobile",
+           "id": "3:34614",
+           "frames": [
             {
-             "name": "Desktop",
-             "id": "3:33920",
-             "frames": [
-              {
-               "id": "3:34459",
-               "name": "Officer / My Queue / Integrated Finance Division — Assistant Section Officer"
-              },
-              {
-               "id": "3:34318",
-               "name": "Officer / My Queue / Integrated Finance Division — Section Officer"
-              },
-              {
-               "id": "3:34177",
-               "name": "Officer / My Queue / Integrated Finance Division — Under Secretary"
-              },
-              {
-               "id": "3:34045",
-               "name": "Officer / My Queue / Integrated Finance Division — Deputy Secretary"
-              },
-              {
-               "id": "3:33921",
-               "name": "Officer / My Queue / Integrated Finance Division — Joint Secretary"
-              }
-             ]
+             "id": "3:35725",
+             "name": "Officer / My Queue / Programme Division — Assistant Section Officer — Mobile"
             },
             {
-             "name": "Mobile",
-             "id": "3:32937",
-             "frames": [
-              {
-               "id": "3:33687",
-               "name": "Officer / My Queue / Integrated Finance Division — Assistant Section Officer — Mobile"
-              },
-              {
-               "id": "3:33481",
-               "name": "Officer / My Queue / Integrated Finance Division — Section Officer — Mobile"
-              },
-              {
-               "id": "3:33275",
-               "name": "Officer / My Queue / Integrated Finance Division — Under Secretary — Mobile"
-              },
-              {
-               "id": "3:33094",
-               "name": "Officer / My Queue / Integrated Finance Division — Deputy Secretary — Mobile"
-              },
-              {
-               "id": "3:32938",
-               "name": "Officer / My Queue / Integrated Finance Division — Joint Secretary — Mobile"
-              }
-             ]
+             "id": "3:35361",
+             "name": "Officer / My Queue / Programme Division — Section Officer — Mobile"
+            },
+            {
+             "id": "3:35095",
+             "name": "Officer / My Queue / Programme Division — Under Secretary — Mobile"
+            },
+            {
+             "id": "3:34855",
+             "name": "Officer / My Queue / Programme Division — Deputy Secretary — Mobile"
+            },
+            {
+             "id": "3:34615",
+             "name": "Officer / My Queue / Programme Division — Joint Secretary — Mobile"
             }
            ]
           }
          ]
         },
         {
-         "name": "Reviewing an Application — Needs Discussion",
+         "name": "Reviewing an Application — Programme Division — Needs Discussion",
          "id": "3:24986",
          "frames": [
           {
@@ -2532,65 +2488,7 @@
          ],
          "children": [
           {
-           "name": "Programme Division — Assistant Section Officer",
-           "id": "428:36502",
-           "children": [
-            {
-             "name": "Desktop",
-             "id": "428:36503",
-             "frames": [
-              {
-               "id": "3:32600",
-               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — Application Tab"
-              },
-              {
-               "id": "421:29963",
-               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — Documents Tab"
-              },
-              {
-               "id": "421:30300",
-               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — History Tab"
-              },
-              {
-               "id": "3:32289",
-               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer (Mid-Review) — Documents Tab"
-              },
-              {
-               "id": "3:31993",
-               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer (Document Needs Correction) — Documents Tab"
-              }
-             ]
-            },
-            {
-             "name": "Mobile",
-             "id": "428:36510",
-             "frames": [
-              {
-               "id": "3:29801",
-               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — Application Tab — Mobile"
-              },
-              {
-               "id": "422:41609",
-               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — Documents Tab — Mobile"
-              },
-              {
-               "id": "422:41940",
-               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — History Tab — Mobile"
-              },
-              {
-               "id": "3:29469",
-               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer (Mid-Review) — Documents Tab — Mobile"
-              },
-              {
-               "id": "3:29145",
-               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer (Document Needs Correction) — Documents Tab — Mobile"
-              }
-             ]
-            }
-           ]
-          },
-          {
-           "name": "Programme Division — Assistant Section Officer, NAPDDR File",
+           "name": "Assistant Section Officer, NAPDDR File",
            "id": "428:36488",
            "children": [
             {
@@ -2606,8 +2504,20 @@
                "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Application Tab (Section Open)"
               },
               {
+               "id": "491:48173",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Application Tab (Ongoing Project, 2nd Instalment)"
+              },
+              {
                "id": "410:37090",
                "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Documents Tab"
+              },
+              {
+               "id": "491:46576",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Documents Tab (Mid-Review)"
+              },
+              {
+               "id": "491:47371",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Documents Tab (Document Needs Correction)"
               },
               {
                "id": "410:37644",
@@ -2622,12 +2532,36 @@
                "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Grant Tab (Save Refused)"
               },
               {
+               "id": "457:36775",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR Rehabilitation Centre, Grant Tab"
+              },
+              {
+               "id": "491:48497",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Grant Tab (Ongoing Project, 2nd Instalment)"
+              },
+              {
                "id": "410:38195",
                "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, History Tab"
               },
               {
-               "id": "457:36775",
-               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR Rehabilitation Centre, Grant Tab"
+               "id": "491:49542",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, History Tab (File Moved from the Old Portal)"
+              },
+              {
+               "id": "491:49853",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Application Tab (Returned to You from the Previous Level)"
+              },
+              {
+               "id": "491:50179",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Application Tab (Decision Not Saved)"
+              },
+              {
+               "id": "491:50646",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Application Tab (Forwarded, Read-Only)"
+              },
+              {
+               "id": "491:51161",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Application Tab (With the NGO for Correction)"
               }
              ]
             },
@@ -2660,19 +2594,97 @@
                "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Grant Tab (Save Refused) — Mobile"
               },
               {
-               "id": "424:37087",
-               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, History Tab — Mobile"
-              },
-              {
                "id": "457:246193",
                "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR Rehabilitation Centre, Grant Tab — Mobile"
+              },
+              {
+               "id": "424:37087",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, History Tab — Mobile"
+              }
+             ]
+            },
+            {
+             "name": "Pop-ups and Dialogs",
+             "id": "496:50910",
+             "frames": [
+              {
+               "id": "496:50638",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — NAPDDR, Forward to the Section Officer (Dialog)"
               }
              ]
             }
            ]
           },
           {
-           "name": "Programme Division — Section Officer",
+           "name": "Assistant Section Officer, SHRESHTA File",
+           "id": "428:36502",
+           "children": [
+            {
+             "name": "Desktop",
+             "id": "428:36503",
+             "frames": [
+              {
+               "id": "3:32600",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — SHRESHTA, Application Tab"
+              },
+              {
+               "id": "421:29963",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — SHRESHTA, Documents Tab"
+              },
+              {
+               "id": "3:32289",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — SHRESHTA, Documents Tab (Mid-Review)"
+              },
+              {
+               "id": "3:31993",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — SHRESHTA, Documents Tab (Document Needs Correction)"
+              },
+              {
+               "id": "421:30300",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — SHRESHTA, History Tab"
+              }
+             ]
+            },
+            {
+             "name": "Mobile",
+             "id": "428:36510",
+             "frames": [
+              {
+               "id": "3:29801",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — SHRESHTA, Application Tab — Mobile"
+              },
+              {
+               "id": "422:41609",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — SHRESHTA, Documents Tab — Mobile"
+              },
+              {
+               "id": "3:29469",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — SHRESHTA, Documents Tab (Mid-Review) — Mobile"
+              },
+              {
+               "id": "3:29145",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — SHRESHTA, Documents Tab (Document Needs Correction) — Mobile"
+              },
+              {
+               "id": "422:41940",
+               "name": "Officer / Review an Application / Programme Division — Assistant Section Officer — SHRESHTA, History Tab — Mobile"
+              }
+             ]
+            },
+            {
+             "name": "Pop-ups and Dialogs",
+             "id": "489:46537",
+             "frames": [
+              {
+               "id": "3:27066",
+               "name": "Officer / Review an Application / Forward with a Document Marked Needs Correction (Dialog)"
+              }
+             ]
+            }
+           ]
+          },
+          {
+           "name": "Section Officer, SHRESHTA File",
            "id": "428:36500",
            "children": [
             {
@@ -2681,23 +2693,23 @@
              "frames": [
               {
                "id": "3:31654",
-               "name": "Officer / Review an Application / Programme Division — Section Officer — Application Tab"
-              },
-              {
-               "id": "422:30449",
-               "name": "Officer / Review an Application / Programme Division — Section Officer — Documents Tab"
-              },
-              {
-               "id": "422:30790",
-               "name": "Officer / Review an Application / Programme Division — Section Officer — History Tab"
-              },
-              {
-               "id": "457:253685",
-               "name": "Officer / Review an Application / Programme Division — Section Officer — History Tab (Earlier Sanction of This Project)"
+               "name": "Officer / Review an Application / Programme Division — Section Officer — SHRESHTA, Application Tab"
               },
               {
                "id": "3:31589",
-               "name": "Officer / Review an Application / Programme Division — Section Officer (Resubmitted with Changed Answers) — Application Tab"
+               "name": "Officer / Review an Application / Programme Division — Section Officer — SHRESHTA, Application Tab (Resubmitted with Changed Answers)"
+              },
+              {
+               "id": "422:30449",
+               "name": "Officer / Review an Application / Programme Division — Section Officer — SHRESHTA, Documents Tab"
+              },
+              {
+               "id": "422:30790",
+               "name": "Officer / Review an Application / Programme Division — Section Officer — SHRESHTA, History Tab"
+              },
+              {
+               "id": "457:253685",
+               "name": "Officer / Review an Application / Programme Division — Section Officer — SHRESHTA, History Tab (Earlier Sanction of This Project)"
               }
              ]
             },
@@ -2707,30 +2719,40 @@
              "frames": [
               {
                "id": "3:28797",
-               "name": "Officer / Review an Application / Programme Division — Section Officer — Application Tab — Mobile"
-              },
-              {
-               "id": "422:42561",
-               "name": "Officer / Review an Application / Programme Division — Section Officer — Documents Tab — Mobile"
-              },
-              {
-               "id": "422:42911",
-               "name": "Officer / Review an Application / Programme Division — Section Officer — History Tab — Mobile"
-              },
-              {
-               "id": "457:254079",
-               "name": "Officer / Review an Application / Programme Division — Section Officer — History Tab (Earlier Sanction of This Project) — Mobile"
+               "name": "Officer / Review an Application / Programme Division — Section Officer — SHRESHTA, Application Tab — Mobile"
               },
               {
                "id": "3:28743",
-               "name": "Officer / Review an Application / Programme Division — Section Officer (Resubmitted with Changed Answers) — Application Tab — Mobile"
+               "name": "Officer / Review an Application / Programme Division — Section Officer — SHRESHTA, Application Tab (Resubmitted with Changed Answers) — Mobile"
+              },
+              {
+               "id": "422:42561",
+               "name": "Officer / Review an Application / Programme Division — Section Officer — SHRESHTA, Documents Tab — Mobile"
+              },
+              {
+               "id": "422:42911",
+               "name": "Officer / Review an Application / Programme Division — Section Officer — SHRESHTA, History Tab — Mobile"
+              },
+              {
+               "id": "457:254079",
+               "name": "Officer / Review an Application / Programme Division — Section Officer — SHRESHTA, History Tab (Earlier Sanction of This Project) — Mobile"
+              }
+             ]
+            },
+            {
+             "name": "Pop-ups and Dialogs",
+             "id": "489:46538",
+             "frames": [
+              {
+               "id": "3:26776",
+               "name": "Officer / Review an Application / Confirm Sending the Deficiency (Dialog)"
               }
              ]
             }
            ]
           },
           {
-           "name": "Programme Division — Under Secretary",
+           "name": "Under Secretary, SHRESHTA File",
            "id": "428:36498",
            "children": [
             {
@@ -2739,15 +2761,15 @@
              "frames": [
               {
                "id": "3:31296",
-               "name": "Officer / Review an Application / Programme Division — Under Secretary — Application Tab"
+               "name": "Officer / Review an Application / Programme Division — Under Secretary — SHRESHTA, Application Tab"
               },
               {
                "id": "422:31593",
-               "name": "Officer / Review an Application / Programme Division — Under Secretary — Documents Tab"
+               "name": "Officer / Review an Application / Programme Division — Under Secretary — SHRESHTA, Documents Tab"
               },
               {
                "id": "422:31888",
-               "name": "Officer / Review an Application / Programme Division — Under Secretary — History Tab"
+               "name": "Officer / Review an Application / Programme Division — Under Secretary — SHRESHTA, History Tab"
               }
              ]
             },
@@ -2757,22 +2779,22 @@
              "frames": [
               {
                "id": "3:28421",
-               "name": "Officer / Review an Application / Programme Division — Under Secretary — Application Tab — Mobile"
+               "name": "Officer / Review an Application / Programme Division — Under Secretary — SHRESHTA, Application Tab — Mobile"
               },
               {
                "id": "422:43545",
-               "name": "Officer / Review an Application / Programme Division — Under Secretary — Documents Tab — Mobile"
+               "name": "Officer / Review an Application / Programme Division — Under Secretary — SHRESHTA, Documents Tab — Mobile"
               },
               {
                "id": "422:43869",
-               "name": "Officer / Review an Application / Programme Division — Under Secretary — History Tab — Mobile"
+               "name": "Officer / Review an Application / Programme Division — Under Secretary — SHRESHTA, History Tab — Mobile"
               }
              ]
             }
            ]
           },
           {
-           "name": "Programme Division — Deputy Secretary",
+           "name": "Deputy Secretary, SHRESHTA File",
            "id": "428:36496",
            "children": [
             {
@@ -2781,15 +2803,15 @@
              "frames": [
               {
                "id": "3:31003",
-               "name": "Officer / Review an Application / Programme Division — Deputy Secretary — Application Tab"
+               "name": "Officer / Review an Application / Programme Division — Deputy Secretary — SHRESHTA, Application Tab"
               },
               {
                "id": "422:32643",
-               "name": "Officer / Review an Application / Programme Division — Deputy Secretary — Documents Tab"
+               "name": "Officer / Review an Application / Programme Division — Deputy Secretary — SHRESHTA, Documents Tab"
               },
               {
                "id": "422:32938",
-               "name": "Officer / Review an Application / Programme Division — Deputy Secretary — History Tab"
+               "name": "Officer / Review an Application / Programme Division — Deputy Secretary — SHRESHTA, History Tab"
               }
              ]
             },
@@ -2799,22 +2821,22 @@
              "frames": [
               {
                "id": "3:28099",
-               "name": "Officer / Review an Application / Programme Division — Deputy Secretary — Application Tab — Mobile"
+               "name": "Officer / Review an Application / Programme Division — Deputy Secretary — SHRESHTA, Application Tab — Mobile"
               },
               {
                "id": "422:44477",
-               "name": "Officer / Review an Application / Programme Division — Deputy Secretary — Documents Tab — Mobile"
+               "name": "Officer / Review an Application / Programme Division — Deputy Secretary — SHRESHTA, Documents Tab — Mobile"
               },
               {
                "id": "422:44801",
-               "name": "Officer / Review an Application / Programme Division — Deputy Secretary — History Tab — Mobile"
+               "name": "Officer / Review an Application / Programme Division — Deputy Secretary — SHRESHTA, History Tab — Mobile"
               }
              ]
             }
            ]
           },
           {
-           "name": "Programme Division — Joint Secretary",
+           "name": "Joint Secretary, SHRESHTA File",
            "id": "428:36494",
            "children": [
             {
@@ -2823,15 +2845,15 @@
              "frames": [
               {
                "id": "3:30710",
-               "name": "Officer / Review an Application / Programme Division — Joint Secretary — Application Tab"
+               "name": "Officer / Review an Application / Programme Division — Joint Secretary — SHRESHTA, Application Tab"
               },
               {
                "id": "422:37383",
-               "name": "Officer / Review an Application / Programme Division — Joint Secretary — Documents Tab"
+               "name": "Officer / Review an Application / Programme Division — Joint Secretary — SHRESHTA, Documents Tab"
               },
               {
                "id": "422:37678",
-               "name": "Officer / Review an Application / Programme Division — Joint Secretary — History Tab"
+               "name": "Officer / Review an Application / Programme Division — Joint Secretary — SHRESHTA, History Tab"
               }
              ]
             },
@@ -2841,22 +2863,176 @@
              "frames": [
               {
                "id": "3:27777",
-               "name": "Officer / Review an Application / Programme Division — Joint Secretary — Application Tab — Mobile"
+               "name": "Officer / Review an Application / Programme Division — Joint Secretary — SHRESHTA, Application Tab — Mobile"
               },
               {
                "id": "423:34079",
-               "name": "Officer / Review an Application / Programme Division — Joint Secretary — Documents Tab — Mobile"
+               "name": "Officer / Review an Application / Programme Division — Joint Secretary — SHRESHTA, Documents Tab — Mobile"
               },
               {
                "id": "423:34403",
-               "name": "Officer / Review an Application / Programme Division — Joint Secretary — History Tab — Mobile"
+               "name": "Officer / Review an Application / Programme Division — Joint Secretary — SHRESHTA, History Tab — Mobile"
+              }
+             ]
+            },
+            {
+             "name": "Pop-ups and Dialogs",
+             "id": "489:46539",
+             "frames": [
+              {
+               "id": "3:24988",
+               "name": "Officer / Review an Application / Confirm Forwarding to Finance (Dialog)"
               }
              ]
             }
            ]
+          }
+         ]
+        },
+        {
+         "name": "Queries — Programme Division",
+         "id": "429:36490",
+         "children": [
+          {
+           "name": "Desktop",
+           "id": "429:36493",
+           "frames": [
+            {
+             "id": "3:22765",
+             "name": "Officer / Queries / Programme Division"
+            }
+           ]
           },
           {
-           "name": "Integrated Finance Division — Assistant Section Officer",
+           "name": "Mobile",
+           "id": "429:36491",
+           "frames": [
+            {
+             "id": "3:22688",
+             "name": "Officer / Queries / Programme Division — Mobile"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "Sanctioned, Returned, Rejected and Forwarded Lists — Programme Division",
+         "id": "429:36496",
+         "children": [
+          {
+           "name": "Desktop",
+           "id": "429:36501",
+           "frames": [
+            {
+             "id": "3:23690",
+             "name": "Officer / Returned Applications / Programme Division"
+            },
+            {
+             "id": "3:23633",
+             "name": "Officer / Rejected Applications / Programme Division"
+            },
+            {
+             "id": "3:23466",
+             "name": "Officer / Forwarded Applications / Programme Division"
+            }
+           ]
+          },
+          {
+           "name": "Mobile",
+           "id": "429:36497",
+           "frames": [
+            {
+             "id": "3:23077",
+             "name": "Officer / Returned Applications / Programme Division — Mobile"
+            },
+            {
+             "id": "3:23007",
+             "name": "Officer / Rejected Applications / Programme Division — Mobile"
+            },
+            {
+             "id": "3:22851",
+             "name": "Officer / Forwarded Applications / Programme Division — Mobile"
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "Integrated Finance Division Officers — Checking the Money",
+       "id": "489:46534",
+       "children": [
+        {
+         "name": "My Queue — Integrated Finance Division",
+         "id": "3:32936",
+         "children": [
+          {
+           "name": "Desktop",
+           "id": "3:33920",
+           "frames": [
+            {
+             "id": "3:34459",
+             "name": "Officer / My Queue / Integrated Finance Division — Assistant Section Officer"
+            },
+            {
+             "id": "3:34318",
+             "name": "Officer / My Queue / Integrated Finance Division — Section Officer"
+            },
+            {
+             "id": "3:34177",
+             "name": "Officer / My Queue / Integrated Finance Division — Under Secretary"
+            },
+            {
+             "id": "3:34045",
+             "name": "Officer / My Queue / Integrated Finance Division — Deputy Secretary"
+            },
+            {
+             "id": "3:33921",
+             "name": "Officer / My Queue / Integrated Finance Division — Joint Secretary"
+            }
+           ]
+          },
+          {
+           "name": "Mobile",
+           "id": "3:32937",
+           "frames": [
+            {
+             "id": "3:33687",
+             "name": "Officer / My Queue / Integrated Finance Division — Assistant Section Officer — Mobile"
+            },
+            {
+             "id": "3:33481",
+             "name": "Officer / My Queue / Integrated Finance Division — Section Officer — Mobile"
+            },
+            {
+             "id": "3:33275",
+             "name": "Officer / My Queue / Integrated Finance Division — Under Secretary — Mobile"
+            },
+            {
+             "id": "3:33094",
+             "name": "Officer / My Queue / Integrated Finance Division — Deputy Secretary — Mobile"
+            },
+            {
+             "id": "3:32938",
+             "name": "Officer / My Queue / Integrated Finance Division — Joint Secretary — Mobile"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "Checking the Money — Integrated Finance Division — Needs Discussion",
+         "id": "489:46536",
+         "frames": [
+          {
+           "id": "489:46541",
+           "name": "Note — Needs Discussion"
+          }
+         ],
+         "children": [
+          {
+           "name": "Assistant Section Officer, SHRESHTA File",
            "id": "428:36492",
            "children": [
             {
@@ -2865,15 +3041,15 @@
              "frames": [
               {
                "id": "3:30421",
-               "name": "Officer / Review an Application / Integrated Finance Division — Assistant Section Officer — Application Tab"
+               "name": "Officer / Review an Application / Integrated Finance Division — Assistant Section Officer — SHRESHTA, Application Tab"
               },
               {
                "id": "422:38433",
-               "name": "Officer / Review an Application / Integrated Finance Division — Assistant Section Officer — Documents Tab"
+               "name": "Officer / Review an Application / Integrated Finance Division — Assistant Section Officer — SHRESHTA, Documents Tab"
               },
               {
                "id": "422:38724",
-               "name": "Officer / Review an Application / Integrated Finance Division — Assistant Section Officer — History Tab"
+               "name": "Officer / Review an Application / Integrated Finance Division — Assistant Section Officer — SHRESHTA, History Tab"
               }
              ]
             },
@@ -2883,22 +3059,22 @@
              "frames": [
               {
                "id": "3:27456",
-               "name": "Officer / Review an Application / Integrated Finance Division — Assistant Section Officer — Application Tab — Mobile"
+               "name": "Officer / Review an Application / Integrated Finance Division — Assistant Section Officer — SHRESHTA, Application Tab — Mobile"
               },
               {
                "id": "423:35013",
-               "name": "Officer / Review an Application / Integrated Finance Division — Assistant Section Officer — Documents Tab — Mobile"
+               "name": "Officer / Review an Application / Integrated Finance Division — Assistant Section Officer — SHRESHTA, Documents Tab — Mobile"
               },
               {
                "id": "423:35336",
-               "name": "Officer / Review an Application / Integrated Finance Division — Assistant Section Officer — History Tab — Mobile"
+               "name": "Officer / Review an Application / Integrated Finance Division — Assistant Section Officer — SHRESHTA, History Tab — Mobile"
               }
              ]
             }
            ]
           },
           {
-           "name": "Integrated Finance Division — Section Officer, NAPDDR File",
+           "name": "Section Officer, NAPDDR File",
            "id": "457:248913",
            "children": [
             {
@@ -2924,7 +3100,7 @@
            ]
           },
           {
-           "name": "Integrated Finance Division — Joint Secretary",
+           "name": "Joint Secretary, SHRESHTA File",
            "id": "428:36490",
            "children": [
             {
@@ -2933,15 +3109,15 @@
              "frames": [
               {
                "id": "3:30131",
-               "name": "Officer / Review an Application / Integrated Finance Division — Joint Secretary — Application Tab"
+               "name": "Officer / Review an Application / Integrated Finance Division — Joint Secretary — SHRESHTA, Application Tab"
               },
               {
                "id": "422:39433",
-               "name": "Officer / Review an Application / Integrated Finance Division — Joint Secretary — Documents Tab"
+               "name": "Officer / Review an Application / Integrated Finance Division — Joint Secretary — SHRESHTA, Documents Tab"
               },
               {
                "id": "422:39725",
-               "name": "Officer / Review an Application / Integrated Finance Division — Joint Secretary — History Tab"
+               "name": "Officer / Review an Application / Integrated Finance Division — Joint Secretary — SHRESHTA, History Tab"
               }
              ]
             },
@@ -2951,69 +3127,139 @@
              "frames": [
               {
                "id": "3:27134",
-               "name": "Officer / Review an Application / Integrated Finance Division — Joint Secretary — Application Tab — Mobile"
+               "name": "Officer / Review an Application / Integrated Finance Division — Joint Secretary — SHRESHTA, Application Tab — Mobile"
               },
               {
                "id": "423:35943",
-               "name": "Officer / Review an Application / Integrated Finance Division — Joint Secretary — Documents Tab — Mobile"
+               "name": "Officer / Review an Application / Integrated Finance Division — Joint Secretary — SHRESHTA, Documents Tab — Mobile"
               },
               {
                "id": "423:36267",
-               "name": "Officer / Review an Application / Integrated Finance Division — Joint Secretary — History Tab — Mobile"
+               "name": "Officer / Review an Application / Integrated Finance Division — Joint Secretary — SHRESHTA, History Tab — Mobile"
               }
              ]
-            }
-           ]
-          },
-          {
-           "name": "Used at Every Grade",
-           "id": "428:36512",
-           "children": [
+            },
             {
              "name": "Pop-ups and Dialogs",
-             "id": "3:24987",
+             "id": "489:46540",
              "frames": [
-              {
-               "id": "3:27066",
-               "name": "Officer / Review an Application / Forward with a Document Marked Needs Correction (Dialog)"
-              },
-              {
-               "id": "3:26776",
-               "name": "Officer / Review an Application / Confirm Sending the Deficiency (Dialog)"
-              },
-              {
-               "id": "3:26498",
-               "name": "Officer / Review an Application / Confirm Marking All as Verified (Dialog)"
-              },
-              {
-               "id": "3:26154",
-               "name": "Officer / Review an Application / Document Actions Menu"
-              },
-              {
-               "id": "3:25870",
-               "name": "Officer / Review an Application / Issue Show Cause Notice (Dialog)"
-              },
-              {
-               "id": "3:25580",
-               "name": "Officer / Review an Application / Schedule an Inspection (Dialog)"
-              },
-              {
-               "id": "3:25268",
-               "name": "Officer / Review an Application / Printable Review Report"
-              },
-              {
-               "id": "3:24988",
-               "name": "Officer / Review an Application / Confirm Forwarding to Finance (Dialog)"
-              },
-              {
-               "id": "473:47887",
-               "name": "Officer / Review an Application / Confirm Rejecting the Application (Dialog)"
-              },
               {
                "id": "483:46164",
                "name": "Officer / Review an Application / Confirm Recording Financial Concurrence (Dialog)"
               }
              ]
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "Queries — Integrated Finance Division",
+         "id": "429:36488",
+         "children": [
+          {
+           "name": "Desktop",
+           "id": "429:36492",
+           "frames": [
+            {
+             "id": "3:22741",
+             "name": "Officer / Queries / Integrated Finance Division"
+            }
+           ]
+          },
+          {
+           "name": "Mobile",
+           "id": "429:36489",
+           "frames": [
+            {
+             "id": "3:22672",
+             "name": "Officer / Queries / Integrated Finance Division — Mobile"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "Sanctioned, Returned, Rejected and Forwarded Lists — Integrated Finance Division",
+         "id": "429:36494",
+         "children": [
+          {
+           "name": "Desktop",
+           "id": "429:36500",
+           "frames": [
+            {
+             "id": "3:23437",
+             "name": "Officer / Returned Applications / Integrated Finance Division"
+            },
+            {
+             "id": "3:23415",
+             "name": "Officer / Rejected Applications / Integrated Finance Division"
+            }
+           ]
+          },
+          {
+           "name": "Mobile",
+           "id": "429:36495",
+           "frames": [
+            {
+             "id": "3:22830",
+             "name": "Officer / Returned Applications / Integrated Finance Division — Mobile"
+            },
+            {
+             "id": "3:22816",
+             "name": "Officer / Rejected Applications / Integrated Finance Division — Mobile"
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "All Officers — Shared Screens",
+       "id": "489:46535",
+       "children": [
+        {
+         "name": "Screens and Pop-ups Used at Every Grade",
+         "id": "428:36512",
+         "children": [
+          {
+           "name": "Desktop",
+           "id": "491:51678",
+           "frames": [
+            {
+             "id": "491:51679",
+             "name": "Officer / Review an Application / Application Not Found"
+            }
+           ]
+          },
+          {
+           "name": "Pop-ups and Dialogs",
+           "id": "3:24987",
+           "frames": [
+            {
+             "id": "3:26498",
+             "name": "Officer / Review an Application / Confirm Marking All as Verified (Dialog)"
+            },
+            {
+             "id": "3:26154",
+             "name": "Officer / Review an Application / Document Actions Menu"
+            },
+            {
+             "id": "3:25870",
+             "name": "Officer / Review an Application / Issue Show Cause Notice (Dialog)"
+            },
+            {
+             "id": "3:25580",
+             "name": "Officer / Review an Application / Schedule an Inspection (Dialog)"
+            },
+            {
+             "id": "3:25268",
+             "name": "Officer / Review an Application / Printable Review Report"
+            },
+            {
+             "id": "473:47887",
+             "name": "Officer / Review an Application / Confirm Rejecting the Application (Dialog)"
             }
            ]
           }
@@ -3066,166 +3312,26 @@
          ]
         },
         {
-         "name": "Sanctioned, Returned, Rejected and Forwarded Lists",
-         "id": "3:22814",
+         "name": "Lists Seen by Both Divisions",
+         "id": "429:36498",
          "children": [
           {
-           "name": "Both Divisions",
-           "id": "429:36498",
-           "children": [
+           "name": "Desktop",
+           "id": "429:36502",
+           "frames": [
             {
-             "name": "Desktop",
-             "id": "429:36502",
-             "frames": [
-              {
-               "id": "3:23722",
-               "name": "Officer / Sanctioned Applications"
-              }
-             ]
-            },
-            {
-             "name": "Mobile",
-             "id": "429:36499",
-             "frames": [
-              {
-               "id": "3:23098",
-               "name": "Officer / Sanctioned Applications — Mobile"
-              }
-             ]
+             "id": "3:23722",
+             "name": "Officer / Sanctioned Applications"
             }
            ]
           },
           {
-           "name": "Programme Division",
-           "id": "429:36496",
-           "children": [
+           "name": "Mobile",
+           "id": "429:36499",
+           "frames": [
             {
-             "name": "Desktop",
-             "id": "429:36501",
-             "frames": [
-              {
-               "id": "3:23690",
-               "name": "Officer / Returned Applications / Programme Division"
-              },
-              {
-               "id": "3:23633",
-               "name": "Officer / Rejected Applications / Programme Division"
-              },
-              {
-               "id": "3:23466",
-               "name": "Officer / Forwarded Applications / Programme Division"
-              }
-             ]
-            },
-            {
-             "name": "Mobile",
-             "id": "429:36497",
-             "frames": [
-              {
-               "id": "3:23077",
-               "name": "Officer / Returned Applications / Programme Division — Mobile"
-              },
-              {
-               "id": "3:23007",
-               "name": "Officer / Rejected Applications / Programme Division — Mobile"
-              },
-              {
-               "id": "3:22851",
-               "name": "Officer / Forwarded Applications / Programme Division — Mobile"
-              }
-             ]
-            }
-           ]
-          },
-          {
-           "name": "Integrated Finance Division",
-           "id": "429:36494",
-           "children": [
-            {
-             "name": "Desktop",
-             "id": "429:36500",
-             "frames": [
-              {
-               "id": "3:23437",
-               "name": "Officer / Returned Applications / Integrated Finance Division"
-              },
-              {
-               "id": "3:23415",
-               "name": "Officer / Rejected Applications / Integrated Finance Division"
-              }
-             ]
-            },
-            {
-             "name": "Mobile",
-             "id": "429:36495",
-             "frames": [
-              {
-               "id": "3:22830",
-               "name": "Officer / Returned Applications / Integrated Finance Division — Mobile"
-              },
-              {
-               "id": "3:22816",
-               "name": "Officer / Rejected Applications / Integrated Finance Division — Mobile"
-              }
-             ]
-            }
-           ]
-          }
-         ]
-        },
-        {
-         "name": "Queries",
-         "id": "3:22670",
-         "children": [
-          {
-           "name": "Programme Division",
-           "id": "429:36490",
-           "children": [
-            {
-             "name": "Desktop",
-             "id": "429:36493",
-             "frames": [
-              {
-               "id": "3:22765",
-               "name": "Officer / Queries / Programme Division"
-              }
-             ]
-            },
-            {
-             "name": "Mobile",
-             "id": "429:36491",
-             "frames": [
-              {
-               "id": "3:22688",
-               "name": "Officer / Queries / Programme Division — Mobile"
-              }
-             ]
-            }
-           ]
-          },
-          {
-           "name": "Integrated Finance Division",
-           "id": "429:36488",
-           "children": [
-            {
-             "name": "Desktop",
-             "id": "429:36492",
-             "frames": [
-              {
-               "id": "3:22741",
-               "name": "Officer / Queries / Integrated Finance Division"
-              }
-             ]
-            },
-            {
-             "name": "Mobile",
-             "id": "429:36489",
-             "frames": [
-              {
-               "id": "3:22672",
-               "name": "Officer / Queries / Integrated Finance Division — Mobile"
-              }
-             ]
+             "id": "3:23098",
+             "name": "Officer / Sanctioned Applications — Mobile"
             }
            ]
           }
