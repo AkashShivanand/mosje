@@ -195,10 +195,23 @@
   [data-design="dbim"] .db-hb-post__text {
     display: flex;
     flex-wrap: wrap;
-    gap: 0 var(--sa-inline-4);
+    gap: 0 var(--sa-target-spacing);
     margin: 0;
     font-size: var(--db-fs-small);
     line-height: var(--db-lh-small);
+  }
+
+  /* 2.5.8 Target Size (Minimum). The hashtags are the post's only links and they
+     are FLEX ITEMS, not words running in a sentence, so the criterion's inline
+     exception does not reach them and each needs its own 24px target. Measured
+     2026-10-08 at 1280x720 before this rule: eight links 18px tall, a 4px column
+     gap and NO row gap, so wrapped rows touched — axe reported it serious on
+     /website and it is a real defect, not the phantom overlap the ticker
+     controls are declared for. Same shape as the breadcrumb's crumb. */
+  [data-design="dbim"] .db-hb-post__text > a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--sa-target-min);
   }
 
   [data-design="dbim"] :is(.db-hb-post__text, .db-hb-post__meta, .db-hb-videos__body) a {
