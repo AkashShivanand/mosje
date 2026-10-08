@@ -241,7 +241,7 @@ export function CostSheetCard({ app, editable }: { app: GrantApplication; editab
               Reset to Norm
             </Button>
             <Button onClick={save} disabled={!changed}>
-              <Icon name="save" size={18} aria-hidden /> Save Cost Sheet
+              <Icon name="save" size={16} aria-hidden /> Save Cost Sheet
             </Button>
           </div>
         )}
@@ -314,7 +314,7 @@ function HeadTable({
     <IconButton
       appearance="text"
       size="sm"
-      icon={<Icon name="delete" size={18} />}
+      icon={<Icon name="delete" size={20} />}
       aria-label={`Remove ${name}`}
       tooltip
       onClick={() => ids.forEach((id) => onLine(id, { removed: true }))}
@@ -397,7 +397,7 @@ function HeadTable({
       {editable && (
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           <Button appearance="text" size="sm" onClick={onAdd}>
-            <Icon name="add" size={18} aria-hidden /> Add Item
+            <Icon name="add" size={16} aria-hidden /> Add Item
           </Button>
           {removed.length > 0 && (
             <span className="flex flex-wrap items-center gap-x-2 text-body-3 text-ink-muted">
@@ -592,7 +592,7 @@ export function StatementOfAccountCard({ app, editable }: { app: GrantApplicatio
         {editable && (
           <div className="flex justify-end">
             <Button onClick={save} disabled={!changed}>
-              <Icon name="save" size={18} aria-hidden /> Save Statement
+              <Icon name="save" size={16} aria-hidden /> Save Statement
             </Button>
           </div>
         )}
