@@ -301,6 +301,9 @@ export function worklistColumns(
     queue: [
       reference,
       ngo,
+      // The dev portal's queue carries a State column and an "All states" filter (walkthrough of
+      // 07 Oct 2026); an officer covering several states works them state by state.
+      ...(placeOf ? [stateCol] : []),
       scheme,
       status,
       {
@@ -623,10 +626,22 @@ export function WorklistTable({
   const type = controlledType ?? ownType;
   const setType = onCaseTypeChange ?? setOwnType;
   const [ownStatus, setOwnStatus] = React.useState("");
+  /*
+   * Scheme and State — the dev portal's "Queue by Scheme" bars and "All states" filter, as filters
+   * that open the rows they count (walkthrough of 07 Oct 2026). Only the values these rows hold are
+   * offered, for the reason the Status filter gives below.
+   */
+  const [schemeF, setSchemeF] = React.useState("");
+  const [stateF, setStateF] = React.useState("");
+  const schemeOptions = React.useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const r of rows) counts.set(r.schemeCode, (counts.get(r.schemeCode) ?? 0) + 1);
+    return [{ value: "", label: "All Schemes" }, ...[...counts].sort((a, b) => b[1] - a[1]).map(([code, n]) => ({ value: code, label: `${schemeLabel(code)} (${n})` }))];
+  }, [rows]);
   const status = controlledStatus ?? ownStatus;
   const setStatus = onStatusChange ?? setOwnStatus;
   // NGO names link to NGO 360 in every officer list, the queue included (audit O-06).
-  const opts = useWorklistOptions(reviewBase, undefined, { withNgoLink: true });
+  const opts = useWorklistOptions(reviewBase, undefined, { withNgoLink: true, withPlace: true });
   const columns = React.useMemo(() => worklistColumns(variant, opts), [variant, opts]);
 
   const statusOptions = React.useMemo(() => {
@@ -645,31 +660,40 @@ export function WorklistTable({
     [status, opts],
   );
 
+  const stateOptions = React.useMemo(() => {
+    const states = [...new Set(rows.map((r) => opts.placeOf?.(r)?.state).filter((v): v is string => !!v))].sort();
+    return [{ value: "", label: "All States" }, ...states.map((v) => ({ value: v, label: v }))];
+  }, [rows, opts]);
+
   const filtered = React.useMemo(() => {
     const needle = q.trim().toLowerCase();
     return rows.filter(
       (r) =>
         matchesType(r, type) &&
         matchesStatus(r) &&
+        (!schemeF || r.schemeCode === schemeF) &&
+        (!stateF || opts.placeOf?.(r)?.state === stateF) &&
         (!needle ||
           r.id.toLowerCase().includes(needle) ||
           r.institutionId.toLowerCase().includes(needle) ||
           (opts.ngoName?.(r.ngoId) ?? "").toLowerCase().includes(needle)),
     );
-  }, [rows, q, type, matchesStatus, opts]);
+  }, [rows, q, type, matchesStatus, opts, schemeF, stateF]);
 
-  const active = (q.trim() ? 1 : 0) + (type ? 1 : 0) + (status ? 1 : 0);
+  const active = (q.trim() ? 1 : 0) + (type ? 1 : 0) + (status ? 1 : 0) + (schemeF ? 1 : 0) + (stateF ? 1 : 0);
 
   return (
     <Card variant="outlined" id={id} tabIndex={id ? -1 : undefined} className={id ? "scroll-mt-4 outline-none" : undefined}>
       <CardBody>
-      <div className="mb-4 grid gap-3 md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,1fr)_auto] md:items-end">
+      <div className="mb-4 grid gap-3 md:grid-cols-3 md:items-end xl:grid-cols-[minmax(0,1.3fr)_repeat(4,minmax(0,1fr))]">
         <LabelledSearch label="Search" value={q} onChange={setQ} placeholder="Project ID or NGO" />
+        {schemeOptions.length > 2 && <FilterSelect label="Scheme" options={schemeOptions} value={schemeF} onChange={setSchemeF} />}
+        {stateOptions.length > 2 && <FilterSelect label="State" options={stateOptions} value={stateF} onChange={setStateF} />}
         <FilterSelect label="Case Type" options={[...TYPE_FILTERS]} value={type} onChange={setType} />
         {/* Only the statuses present in these rows. A fixed list offered five statuses the
             Finance queue never holds, so every choice emptied the table (screen audit, 14 Sep). */}
         <FilterSelect label="Status" options={statusOptions} value={status} onChange={setStatus} />
-        <p className="text-body-2 text-ink-muted md:pb-2.5 md:text-right" role="status">
+        <p className="text-body-2 text-ink-muted md:col-span-full md:text-right" role="status">
           {/* The table's own footer says which page of rows is shown; this line only says how
               many the filters let through, so the two never state different "Showing" counts. */}
           {active > 0
@@ -683,6 +707,8 @@ export function WorklistTable({
               onClick={() => {
                 setQ("");
                 setType("");
+                setSchemeF("");
+                setStateF("");
                 setStatus("");
               }}
             >

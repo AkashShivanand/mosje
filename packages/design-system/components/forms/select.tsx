@@ -33,6 +33,13 @@ export interface SelectProps
   options?: SelectOption[];
   /** Optional placeholder rendered as a disabled first option. */
   placeholder?: string;
+  /**
+   * Classes for the wrapper that holds the select and its chevron — the place to set a WIDTH
+   * (`max-w-xs`, `w-40`, `sm:w-48`). `className` styles the `<select>` itself; a width given there
+   * narrows the field but not the wrapper, so the chevron is left at the wrapper's far edge,
+   * outside the field (the E-Anudaan Bed Capacity select, 8 Oct 2026).
+   */
+  containerClassName?: string;
 }
 
 /**
@@ -56,6 +63,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
       options,
       placeholder,
       className,
+      containerClassName,
       children,
       defaultValue,
       value,
@@ -66,7 +74,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     const resolved = resolveFieldStatus(status, invalid);
     return (
       <span
-        className={cn("ds-select", appearance === "filter" && "ds-select--filter")}
+        className={cn("ds-select", appearance === "filter" && "ds-select--filter", containerClassName)}
         data-status={resolved}
       >
         <select

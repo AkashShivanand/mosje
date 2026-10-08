@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "`Select containerClassName` sizes the wrapper that holds the field and its chevron. `className` still styles the `<select>` itself, but a width given there narrowed only the field and left the chevron at the wrapper's far edge, outside the box — on the E-Anudaan Bed Capacity select, the TG admin dashboard and the NMBA locator. Set a width with `containerClassName`."
+}
