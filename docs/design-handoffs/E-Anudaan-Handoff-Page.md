@@ -639,6 +639,34 @@ Not done here, and why:
 - **Library gap:** `List Row` has no trailing slot, which the code's `ListRow` has. Each cost-sheet item is a List Row with
   an Input Field and an IconButton beside it in a row; a trailing slot on the master would remove that wrapper.
 
+## 5j. Every grade in tabs, and the review found by division and grade — 8 Oct 2026
+
+The two items 5i left undone, done at the owner's instruction ("update these screens in Figma as well and ensure Figma
+is organised to make it easy to locate screens based on flow, user and sub-user"). Before/after:
+`before-after-figma-review-by-grade-2026-10-08.html`.
+
+| What | Before | After | Why |
+|---|---|---|---|
+| Reviewing an Application | One Desktop row of 14 screens, one Mobile row of 10, one Pop-ups row — grades, divisions and schemes mixed | Nine versions: Programme Division — ASO · ASO, NAPDDR File · SO · US · DS · JS; Integrated Finance Division — ASO · JS; Used at Every Grade (the 8 pop-ups) | A screen is found by journey → division → grade → Desktop/Mobile → tab |
+| The ten grade screens, desktop and phone | One long column each (up to 7,787px on a phone) | Each split into its tabs — Application, Documents, History — in the same frame (node ids kept for the Application tab) plus a copy per further tab; the ASO's Mid-Review and Document Needs Correction states are their Documents tab; SO Resubmitted shows the corrected answers above the tab bar | The build shows the tabs at every grade; nothing drawn was lost — every card is on one of the tabs |
+| Documents tab label | — | "(N to Verify)" with the dot only where the grade still gives verdicts: ASO 19, ASO Mid-Review 7, SO 19, SO Resubmitted 2; plain "Documents" for US, DS, JS and the finance grades | `canEditDocVerdicts`: once certified, higher grades read the verdicts |
+| Header and Summary on those screens | no way back; no registration number | "← My Queue"; Registration No. E-2151 | As the build |
+| NAPDDR on phone | not drawn | Four phone tabs (`424:34759`, `424:35247`, `424:35998`, `424:37087`): each document's verdict buttons under it, each cost-sheet amount and its delete under the item, the statement's fields stacked | The build's phone layout |
+| Phone decision bar | at 7,427px, below the end of the shortened frames | at the foot of the first screenful | It rides the viewport in the build |
+| Queries; Sanctioned, Returned, Rejected and Forwarded Lists | both divisions in one row | Versions by division (the lists add Both Divisions for Sanctioned Applications); lifecycle order inside | Same drill-down as My Queue |
+| Page guide | "73 screens" (stale since 5i) | 109; a linked Find a Screen index — journey, then division and grade | Reviewers jump straight to a grade |
+| Start Here | — | Change Log entry; How to Read explains division and grade versions | Rule §8 |
+
+Desktop 14 → 28 screens, phone 10 → 28, pop-ups 8 unchanged: 32 screens added, none removed or archived. The other
+eleven pages were scanned for rows that mix divisions, grades or schemes; none do. `check:figma-handoff --strict`:
+14 of 14 conformant.
+
+Still different from the build, for the owner to decide in Figma:
+- **History on SHRESHTA files** keeps the drawn "Earlier Sanctions for This Project" card. The build's Funding History
+  also lists the NGO's earlier sanctions; drawing it needs that NGO's sanction data, which the frame does not carry.
+- **Pop-ups** stay in one version. Show Cause and Inspection open from More Actions at any grade holding those
+  capabilities, so they are not one grade's.
+
 ## 6. Adding to the page
 
 - **A screen:** into the right row of its flow; name `Role / Screen / State`; phone version ends ` · Mobile`.
