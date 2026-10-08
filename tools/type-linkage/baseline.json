@@ -56,7 +56,7 @@
     "weight": 0,
     "hindi-unmarked": 0,
     "style-mixed": 3,
-    "style-weight": 213,
+    "style-weight": 210,
     "style-weight-unset": 166
   },
   "files": {
@@ -702,7 +702,7 @@
       "weight": 0,
       "hindi-unmarked": 0,
       "style-mixed": 0,
-      "style-weight": 4,
+      "style-weight": 3,
       "style-weight-unset": 2
     },
     "packages/design-system/components/data-display/charts/ranked-bar-list.css": {
@@ -852,7 +852,7 @@
       "weight": 0,
       "hindi-unmarked": 0,
       "style-mixed": 0,
-      "style-weight": 3,
+      "style-weight": 2,
       "style-weight-unset": 1
     },
     "packages/design-system/components/data-display/notification-centre.css": {
@@ -1077,7 +1077,7 @@
       "weight": 0,
       "hindi-unmarked": 0,
       "style-mixed": 0,
-      "style-weight": 2,
+      "style-weight": 1,
       "style-weight-unset": 1
     },
     "packages/design-system/components/feedback/stepper.css": {

@@ -169,8 +169,10 @@
     place-items: center;
     font-size: var(--sa-type-title-1-size);
     line-height: var(--sa-type-title-1-lh);
-    /* 700, not 600: a KPI numeral, not a heading. */
-    font-weight: var(--sa-font-weight-bold);
+    /* Semibold, as every figure in the system is (owner, 8 Oct 2026): the card figure lists
+       and headline figures were already 600, and bold here alone gave one dashboard two
+       weights for the same kind of number. */
+    font-weight: var(--sa-font-weight-semibold);
     font-variant-numeric: tabular-nums;
     color: var(--sla-ink);
   }
