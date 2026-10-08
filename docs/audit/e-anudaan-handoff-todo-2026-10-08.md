@@ -1,7 +1,7 @@
 # E-Anudaan Handoff — To-Do List, 08 Oct 2026
 
 The owner's instruction: draw the 18 gaps, fix every issue, and make the file usable by anyone — detailed but not
-cluttered, nothing redundant, nothing important missing. Status as of the end of 08 Oct 2026.
+cluttered, nothing redundant, nothing important missing. Status as of the end of 08 Oct 2026 — every Drawn and Fixed item verified on the canvas and in the code.
 
 ## Drawn
 - [x] Officer Supporting Documents on every Documents tab (I1–I5) — 20 frames
@@ -31,6 +31,7 @@ cluttered, nothing redundant, nothing important missing. Status as of the end of
 
 ## For the Owner to Decide
 - [ ] Who gives the final sanction — Programme Director (drawn) or the Programme Division's Joint Secretary and Under Secretary (walkthrough, PFMS BRD)
+- [ ] Whether schemes other than NAPDDR get a cost sheet (today only NAPDDR records an amount before the sanction)
 - [ ] Four PFMS journeys: red again? (rename with " — Needs Discussion" and add a note on page 5)
 - [ ] "Raise a Deficiency" has no dialog in the prototype — keep the redrawn "Forward with a Document Marked Needs Correction" frame
 - [ ] IRCA bed sizes, the Department's DDAC norms, whether the forward waits for both money saves
