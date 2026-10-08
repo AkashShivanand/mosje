@@ -7,6 +7,7 @@ import { useListing } from "@/components/website-dbim/ui/useListing";
 import type { DbimNotice } from "@/lib/website-dbim/offerings";
 import { DbimListEmpty, DbimListFooter } from "./ListParts";
 import { DbimPdfIcon } from "./PdfIcon";
+import { dbimDates } from "@/lib/website-dbim/date";
 
 const searchText = (t: DbimNotice) => t.title;
 const categoryOf = (t: DbimNotice) => t.category;
@@ -30,7 +31,7 @@ interface Column {
 }
 const COLUMNS: Column[] = [
   { key: "title", label: "Title", span: 3, kind: "title", value: (t) => t.title },
-  { key: "published", label: "Published Date", span: 2, kind: "meta", value: (t) => t.published },
+  { key: "published", label: "Published Date", span: 2, kind: "meta", value: (t) => dbimDates(t.published) },
   { key: "file", label: "Type/Size", span: 3, kind: "file", value: (t) => t.fileUrl },
 ];
 

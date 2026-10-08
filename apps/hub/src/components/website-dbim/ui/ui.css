@@ -189,8 +189,8 @@
   }
 
   [data-design="dbim"] .db-field .db-field__control::placeholder {
-    color: var(--sa-color-text-default);
-    opacity: 0.8;
+    color: var(--sa-color-text-muted);
+    opacity: 1;
   }
 
   [data-design="dbim"] .db-field .ds-select__chevron {

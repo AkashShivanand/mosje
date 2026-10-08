@@ -432,7 +432,7 @@
     font-size: var(--db-fs-p);
     font-weight: var(--sa-font-weight-regular);
     line-height: var(--db-lh-p);
-    text-transform: uppercase;
+    /* Sentence case: the citation is a sentence (DBIM 3.0 §4.1.1 ii). */
     color: var(--sa-color-primaryScale-800);
   }
 
@@ -661,6 +661,7 @@
     font-size: var(--db-fs-p);
     line-height: 1.5;
     text-align: center;
+    color: var(--sa-color-text-muted); /* the role under the name, in Grey 03 */
   }
 
   @media (min-width: 1537px) {

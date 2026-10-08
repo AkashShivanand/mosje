@@ -217,7 +217,7 @@
 
   [data-design="dbim"] .db-cookie__text a {
     /* reference: Bootstrap's link blue, which DBIM's palette has no rung for */
-    color: var(--sa-color-primaryScale-600);
+    color: var(--sa-text-link-brand-default); /* the key colour: DBIM §2.2 hyperlink */
     text-decoration: underline;
   }
 

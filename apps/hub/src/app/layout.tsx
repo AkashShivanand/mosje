@@ -1,5 +1,16 @@
 import type { Metadata } from "next";
-import { Noto_Sans, Noto_Sans_Display } from "next/font/google";
+import {
+  Noto_Sans,
+  Noto_Sans_Bengali,
+  Noto_Sans_Display,
+  Noto_Sans_Gujarati,
+  Noto_Sans_Gurmukhi,
+  Noto_Sans_Kannada,
+  Noto_Sans_Malayalam,
+  Noto_Sans_Oriya,
+  Noto_Sans_Tamil,
+  Noto_Sans_Telugu,
+} from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { UX4GAccessibilityWidget } from "@mosje/design-system";
 import { RouteColorModeProvider } from "@/components/route-color-mode-provider";
@@ -60,6 +71,76 @@ const notoSansDevanagari = Noto_Sans({
   display: "swap",
   preload: false,
 });
+
+/**
+ * The other eight scripts DBIM 3.0 §4.2 Table 2 names — "Noto Sans for all scripts" — loaded
+ * exactly as the Devanagari face is: `preload: false`, one subset each, so each file arrives
+ * only through its `unicode-range`, on a page that actually contains that script. An English
+ * page downloads none of them. They are what the language picker's Bengali, Gujarati,
+ * Punjabi, Kannada, Malayalam, Odia, Tamil and Telugu pages render in; until 5 Oct 2026
+ * those fell to whatever the device had. The DBIM design's stack names them (dbim.css).
+ */
+// next/font needs each call's options written as literals, so the eight are spelled out.
+const notoSansBengali = Noto_Sans_Bengali({
+  variable: "--font-noto-bengali",
+  subsets: ["bengali"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  preload: false,
+});
+const notoSansGujarati = Noto_Sans_Gujarati({
+  variable: "--font-noto-gujarati",
+  subsets: ["gujarati"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  preload: false,
+});
+const notoSansGurmukhi = Noto_Sans_Gurmukhi({
+  variable: "--font-noto-gurmukhi",
+  subsets: ["gurmukhi"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  preload: false,
+});
+const notoSansKannada = Noto_Sans_Kannada({
+  variable: "--font-noto-kannada",
+  subsets: ["kannada"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  preload: false,
+});
+const notoSansMalayalam = Noto_Sans_Malayalam({
+  variable: "--font-noto-malayalam",
+  subsets: ["malayalam"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  preload: false,
+});
+const notoSansOriya = Noto_Sans_Oriya({
+  variable: "--font-noto-oriya",
+  subsets: ["oriya"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  preload: false,
+});
+const notoSansTamil = Noto_Sans_Tamil({
+  variable: "--font-noto-tamil",
+  subsets: ["tamil"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  preload: false,
+});
+const notoSansTelugu = Noto_Sans_Telugu({
+  variable: "--font-noto-telugu",
+  subsets: ["telugu"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  preload: false,
+});
+const scriptFontVariables = [
+  notoSansBengali, notoSansGujarati, notoSansGurmukhi, notoSansKannada,
+  notoSansMalayalam, notoSansOriya, notoSansTamil, notoSansTelugu,
+].map((f) => f.variable).join(" ");
 
 /**
  * The OPTICAL DISPLAY CUT, for the 40–80px Display ramp.
@@ -148,7 +229,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html
       lang="en-IN"
-      className={`${notoSans.variable} ${notoSansDevanagari.variable} ${notoSansDisplay.variable} h-full antialiased`}
+      className={`${notoSans.variable} ${notoSansDevanagari.variable} ${notoSansDisplay.variable} ${scriptFontVariables} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>

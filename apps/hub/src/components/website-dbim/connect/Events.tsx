@@ -1,6 +1,7 @@
 import { getDbimEvents } from "@/lib/website-dbim/connect";
 import { DbimEventList } from "./EventList";
 import "./connect.css";
+import { dbimDates } from "@/lib/website-dbim/date";
 
 const PER_PAGE = 10;
 
@@ -27,7 +28,7 @@ export function DbimEvents({ page: asked = 1 }: { page?: number }) {
                   <li key={e.key}>
                     <p className="db-upcoming__title">{e.title}</p>
                     <p className="db-upcoming__when">
-                      {[e.place, e.start].filter(Boolean).join(" | ")}
+                      {[e.place, dbimDates(e.start)].filter(Boolean).join(" | ")}
                     </p>
                   </li>
                 ))}

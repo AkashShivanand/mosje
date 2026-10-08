@@ -42,8 +42,7 @@
     font-weight: 600;
     line-height: normal;
     letter-spacing: 0.6px;
-    text-transform: uppercase;
-    color: var(--sa-color-text-muted);
+    color: var(--sa-color-text-muted); /* a date, DD MMM YYYY — never in capitals */
   }
 
   [data-design="dbim"] .db-min-upper {
@@ -166,7 +165,7 @@
   [data-design="dbim"] .db-min-rich h2 {
     margin: 0 0 10px;
     font-size: var(--db-fs-h2);
-    font-weight: 400;
+    font-weight: var(--sa-font-weight-medium); /* Heading 2: Bold / Semi Bold / Medium (Table 3) */
     line-height: normal;
     letter-spacing: -0.12px;
     color: var(--sa-color-primaryScale-800);
@@ -217,7 +216,7 @@
   }
 
   [data-design="dbim"] .db-min-rich a:not([class]) {
-    color: var(--sa-color-primaryScale-600);
+    color: var(--sa-text-link-brand-default); /* the key colour: DBIM §2.2 hyperlink */
     text-decoration: underline;
   }
 
@@ -554,9 +553,8 @@
     background: var(--sa-color-primaryScale-600);
     color: var(--sa-color-neutralScale-0);
     font-size: var(--db-fs-p);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-bold); /* Paragraph 1 Bold, sentence case: an office's title (§4.1.1 ii) */
     line-height: normal;
-    text-transform: uppercase;
   }
 
   [data-design="dbim"] :is(.db-min-office__head, .db-min-office__row) {
@@ -702,6 +700,7 @@
   [data-design="dbim"] .db-min-card__desc p {
     margin: 0;
     font-size: var(--db-fs-p);
+    color: var(--sa-color-text-muted); /* the description under the title, in Grey 03 */
   }
 
   [data-design="dbim"] .db-min-card__foot {

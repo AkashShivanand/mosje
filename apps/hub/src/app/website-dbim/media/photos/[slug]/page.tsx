@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { DbimPage } from "@/components/website-dbim/layout/DbimPage";
 import { DbimAlbumPhotos } from "@/components/website-dbim/media/AlbumPhotos";
 import { DBIM_MENU } from "@/lib/website-dbim/nav";
-import { dottedDate, getDbimAlbum } from "@/lib/website-dbim/media";
+import { getDbimAlbum } from "@/lib/website-dbim/media";
+import { dbimDate } from "@/lib/website-dbim/date";
 import "@/components/website-dbim/media/media.css";
 
 type Params = { params: Promise<{ slug: string }> };
@@ -33,7 +34,7 @@ export default async function DbimAlbumPage({ params }: Params) {
       tabs={DBIM_MENU[3]!.children}
     >
       <p className="db-album-meta">
-        {[dottedDate(album.date), album.category, `${n} ${n === 1 ? "Item" : "Items"}`].filter(Boolean).join(" · ")}
+        {[(dbimDate(album.date) || undefined), album.category, `${n} ${n === 1 ? "Item" : "Items"}`].filter(Boolean).join(" · ")}
       </p>
       <DbimAlbumPhotos photos={album.photos} />
     </DbimPage>

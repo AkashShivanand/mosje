@@ -48,7 +48,7 @@
   }
 
   [data-design="dbim"] :is(.db-u-prose, .db-u-cookies) a {
-    color: var(--sa-color-primaryScale-600);
+    color: var(--sa-text-link-brand-default); /* the key colour: DBIM §2.2 hyperlink */
     text-decoration: underline;
     text-underline-offset: 2px;
   }
@@ -601,6 +601,7 @@
     font-size: var(--db-fs-p);
     font-weight: var(--sa-font-weight-medium);
     line-height: 1.625rem; /* 26px */
+    color: var(--sa-color-text-default); /* the sentence in the ink, as the Figma Persona Tile sets it */
   }
 
   [data-design="dbim"] .db-u-persona__text strong {

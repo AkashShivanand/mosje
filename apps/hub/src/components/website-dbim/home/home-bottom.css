@@ -283,7 +283,7 @@
   }
 
   [data-design="dbim"] :is(.db-hb-feed__quote, .db-hb-feed__ig blockquote) a {
-    color: var(--sa-color-primaryScale-600);
+    color: var(--sa-text-link-brand-default); /* the key colour: DBIM §2.2 hyperlink */
   }
 
   [data-design="dbim"] .db-hb-feed__yt {
