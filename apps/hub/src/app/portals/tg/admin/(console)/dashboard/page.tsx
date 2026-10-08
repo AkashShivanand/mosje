@@ -90,7 +90,7 @@ export default function AdminDashboardPage() {
               placeholder="State"
               value={stateFilter}
               onChange={(e) => setStateFilter(e.target.value)}
-              className="w-40"
+              containerClassName="w-40"
             />
           )}
           <SearchInput

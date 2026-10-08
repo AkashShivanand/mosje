@@ -177,7 +177,7 @@ export function CostSheetCard({ app, editable }: { app: GrantApplication; editab
             {(c) => (
               <Select
                 {...c}
-                className="max-w-xs"
+                containerClassName="max-w-xs"
                 options={schedules.map((s) => ({ value: s, label: SCHEDULE_LABEL[s] }))}
                 value={draft.schedule}
                 onChange={(e) => {

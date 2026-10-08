@@ -14395,6 +14395,12 @@ export const GENERATED_PROPS = {
         "description": "`field` (default) is the full-height form control. `filter` is the compact chip used in dashboard headers — 40px tall, hairline border, 14px label — matching the Filters component in the Figma handoff. It is the same native `<select>`, so keyboard and screen-reader behaviour are unchanged; only the skin differs."
       },
       {
+        "name": "containerClassName",
+        "type": "string",
+        "required": false,
+        "description": "Classes for the wrapper that holds the select and its chevron — the place to set a WIDTH (`max-w-xs`, `w-40`, `sm:w-48`). `className` styles the `<select>` itself; a width given there narrows the field but not the wrapper, so the chevron is left at the wrapper's far edge, outside the field (the E-Anudaan Bed Capacity select, 8 Oct 2026)."
+      },
+      {
         "name": "invalid",
         "type": "boolean",
         "required": false,

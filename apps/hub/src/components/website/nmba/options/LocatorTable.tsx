@@ -38,7 +38,7 @@ export function LocatorTable() {
               aria-label="Search centres"
             />
           </div>
-          <Select value={state} onChange={(e) => { setState(e.target.value); setPage(0); }} aria-label="State" className="sm:w-48">
+          <Select value={state} onChange={(e) => { setState(e.target.value); setPage(0); }} aria-label="State" containerClassName="sm:w-48">
             <option value="">All States</option>
             {states.map((s) => <option key={s} value={s}>{s}</option>)}
           </Select>
