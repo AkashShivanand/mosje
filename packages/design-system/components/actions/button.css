@@ -829,8 +829,12 @@
      fill/ink pairing that `action-nontext-contrast.test.mjs` already gates, so a selected
      segment cannot be a contrast failure that a resting one is not.
      ========================================================================== */
+  /* A segment of `SegmentedControl variant="buttons"` is a radio, so it says `aria-checked`
+     rather than `aria-pressed`; it is the same selection and draws the same (Oct 2026). */
   .ds-btn--outlined[aria-pressed="true"],
-  .ds-btn--text[aria-pressed="true"] {
+  .ds-btn--text[aria-pressed="true"],
+  .ds-btn--outlined[role="radio"][aria-checked="true"],
+  .ds-btn--text[role="radio"][aria-checked="true"] {
     background-color: var(--_c-fill);
     color: var(--_c-on);
     border-color: var(--_c-fill);
@@ -840,7 +844,9 @@
      tint paints OVER the fill and the current segment briefly looks unselected — the
      one moment the reader is most likely to be looking at it. */
   .ds-btn--outlined[aria-pressed="true"]:hover,
-  .ds-btn--text[aria-pressed="true"]:hover {
+  .ds-btn--text[aria-pressed="true"]:hover,
+  .ds-btn--outlined[role="radio"][aria-checked="true"]:hover,
+  .ds-btn--text[role="radio"][aria-checked="true"]:hover {
     background-color: var(--_c-fill);
     filter: brightness(0.95);
   }
@@ -848,7 +854,8 @@
   /* A filled button is already the loudest thing available, so selection cannot add
      weight — it deepens instead, matching the pressed feedback the reader already
      associates with "this one is engaged". */
-  .ds-btn--filled[aria-pressed="true"] {
+  .ds-btn--filled[aria-pressed="true"],
+  .ds-btn--filled[role="radio"][aria-checked="true"] {
     filter: brightness(0.88);
   }
 
@@ -923,7 +930,8 @@
     /* Selection cannot be carried by a fill here either — the forced palette flattens
        it. The system's own Highlight pair is what the platform uses to mean "this one
        is chosen", so a selected segment takes it. */
-    .ds-btn[aria-pressed="true"] {
+    .ds-btn[aria-pressed="true"],
+    .ds-btn[role="radio"][aria-checked="true"] {
       background-color: Highlight;
       color: HighlightText;
       border-color: Highlight;

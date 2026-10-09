@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "DASHBOARDCARD AND DASHBOARDCARDLIST — A PAGE OF DASHBOARDS, MADE OF ONE CARD. A dashboard summarised on a page that lists several: its mark, its name, the scheme under it, one lead figure (`figure`), facts (`children`) and \"View Dashboard\". With `href` the whole card is its one link — stretched over the card, one tab stop, one named link (`linkLabel`), the card ringed on focus and pressed as one, with anything interactive inside kept above the stretch; without it, a summary card. `DashboardCardList` lays the cards out for the count it holds (`balanced`, or `lead` where the first card carries a map), so a programme with nothing to show leaves no hole. Extracted unchanged from the website's Beneficiary Dashboard. Not yet in Figma — the master follows."
+}

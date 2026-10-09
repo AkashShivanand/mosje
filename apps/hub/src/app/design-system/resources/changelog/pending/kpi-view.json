@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "KPIVIEW — A KPI DRAWN BY THE SHAPE OF ITS READING. Hand it a `KpiReading` and it draws the chart that fits — a ring or ranked bars for a breakdown, a line or bars for a series, a funnel for stages, the map beside its ranked list for a State/UT reading, a table with a compliance column — in a `ChartCard` carrying its source. `isKpiTile` says which readings are tiles for a `KpiRow` instead. `quiet` is the public dashboard's chrome. The reading types (`KpiReading`, `KpiValue`, `KpiUnit`, `ValueOrigin`) and the formatters (`formatKpi`, `kpiFormatter`, `compactCount`, `shownDate`, `isoDate`) are exported with it. Moved from the website dashboard, where it drew both the current and the proposed dashboards."
+}

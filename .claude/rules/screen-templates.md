@@ -60,14 +60,14 @@ this baseline means the scope widened; every other move must be downward.**
 1. **Every signed-in portal page renders `PortalPage`.** Not `AppShell` directly,
    and never a portal-local shell. The sixteen that exist are migration debt, not
    precedent.
-2. **The screen inside it is one of the eighteen templates**, chosen from the
+2. **The screen inside it is one of the nineteen templates**, chosen from the
    decision table by the *data*, not by a picture of a screen you liked.
 3. **A descriptor never contains a spinner, an empty state, a breakpoint or a
    heading level.** If you are writing one of those, you have reached past the
    template, and that is the defect.
-4. **A nineteenth template is added to the catalogue by changing
+4. **A twentieth template is added to the catalogue by changing
    `docs/design-system/screen-templates.md`** — never invented in a portal folder.
-   A screen that seems to need one is almost always one of the eighteen with a
+   A screen that seems to need one is almost always one of the nineteen with a
    different descriptor. Check that first.
 5. **Every string a template shows is a prop.** GIGW requires the estate to be
    bilingual, and a sentence baked into a template cannot be translated. Override

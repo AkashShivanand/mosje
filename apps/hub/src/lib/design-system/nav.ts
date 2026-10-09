@@ -720,6 +720,11 @@ export const NAV: NavGroup[] = [
         "badge": "Stable"
       },
       {
+        "label": "Area Breakdown",
+        "href": "/design-system/components/dashboard/area-breakdown",
+        "badge": "Beta"
+      },
+      {
         "label": "Auth Divider",
         "href": "/design-system/components/auth/auth-divider",
         "badge": "Stable"
@@ -745,8 +750,18 @@ export const NAV: NavGroup[] = [
         "badge": "Stable"
       },
       {
+        "label": "Dashboard Card",
+        "href": "/design-system/components/dashboard/dashboard-card",
+        "badge": "Beta"
+      },
+      {
         "label": "Dashboard Grid",
         "href": "/design-system/components/dashboard/dashboard-grid",
+        "badge": "Beta"
+      },
+      {
+        "label": "Dashboard Header",
+        "href": "/design-system/components/dashboard/dashboard-header",
         "badge": "Beta"
       },
       {
@@ -755,8 +770,18 @@ export const NAV: NavGroup[] = [
         "badge": "Beta"
       },
       {
+        "label": "Headline Band",
+        "href": "/design-system/components/dashboard/headline-band",
+        "badge": "Beta"
+      },
+      {
         "label": "Kpi Row",
         "href": "/design-system/components/dashboard/kpi-row",
+        "badge": "Beta"
+      },
+      {
+        "label": "Kpi View",
+        "href": "/design-system/components/dashboard/kpi-view",
         "badge": "Beta"
       },
       {
@@ -807,6 +832,7 @@ export const NAV: NavGroup[] = [
       { "label": "Portal Page", "href": "/design-system/components/templates/portal-page", "badge": "Beta" },
       { "label": "Screen Body", "href": "/design-system/components/templates/screen-body", "badge": "Beta" },
       { "label": "Overview Screen", "href": "/design-system/components/templates/overview-screen", "badge": "Beta" },
+      { "label": "Dashboard Screen", "href": "/design-system/components/templates/dashboard-screen", "badge": "Beta" },
       { "label": "Worklist Screen", "href": "/design-system/components/templates/worklist-screen", "badge": "Beta" },
       { "label": "Record Screen", "href": "/design-system/components/templates/record-screen", "badge": "Beta" },
       { "label": "Wizard Screen", "href": "/design-system/components/templates/wizard-screen", "badge": "Beta" },

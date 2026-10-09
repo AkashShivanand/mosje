@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "AREABREAKDOWN AND AREAEXPLORER — FIGURES STATE/UT BY STATE/UT. `AreaBreakdown` is the map of India and the same figures ranked beside it, read from ONE measure so the two cannot disagree, with a switch between measures and `onSelectArea` to make the map a way into a State's figures. `AreaExplorer` is the map beside a panel that shows the highest and lowest five until a State/UT is picked, then that State's own content (`selectedContent`, `selectedActions`). Extracted unchanged from the Beneficiary Dashboard. Not yet in Figma."
+}

@@ -674,6 +674,64 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "AreaBreakdownProps": {
+    "source": "packages/design-system/components/dashboard/area-breakdown.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "measures",
+        "type": "AreaMeasure[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "headingLevel",
+        "type": "2 | 3 | 4",
+        "required": false,
+        "default": "3",
+        "description": ""
+      },
+      {
+        "name": "onSelectArea",
+        "type": "(area: string) => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "pageSize",
+        "type": "number",
+        "required": false,
+        "default": "10",
+        "description": "Rows a page of the ranked list holds."
+      },
+      {
+        "name": "switchLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Figure shown\"",
+        "description": "Names the measure switch for a screen reader."
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": false,
+        "default": "\"State/UT-wise Figures\"",
+        "description": ""
+      },
+      {
+        "name": "valueFormat",
+        "type": "ValueFormat",
+        "required": false,
+        "description": ""
+      }
+    ]
+  },
   "AreaChartProps": {
     "source": "packages/design-system/components/data-display/charts/area-chart.tsx",
     "inheritsNative": false,
@@ -778,6 +836,81 @@ export const GENERATED_PROPS = {
       {
         "name": "yLabel",
         "type": "string",
+        "required": false,
+        "description": ""
+      }
+    ]
+  },
+  "AreaExplorerProps": {
+    "source": "packages/design-system/components/dashboard/area-breakdown.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "measureName",
+        "type": "string",
+        "required": true,
+        "description": "What the map shades by — \"Total Outreach\"."
+      },
+      {
+        "name": "onSelect",
+        "type": "(area: string | undefined) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "rows",
+        "type": "AreaRow[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "copy",
+        "type": "{ extremes?: string; highest?: string; lowest?: string }",
+        "required": false,
+        "default": "{ extremes: \"Highest and Lowest\", highest: \"Highest Five\", lowest: \"Lowest Five\" }",
+        "description": ""
+      },
+      {
+        "name": "extremesCount",
+        "type": "number",
+        "required": false,
+        "default": "5",
+        "description": "How many States/UTs each end of the extremes lists."
+      },
+      {
+        "name": "labelLevel",
+        "type": "3 | 4 | 5",
+        "required": false,
+        "default": "4",
+        "description": "The level of the \"Highest Five\" / \"Lowest Five\" labels."
+      },
+      {
+        "name": "selected",
+        "type": "string",
+        "required": false,
+        "description": "The picked State/UT, if any."
+      },
+      {
+        "name": "selectedActions",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The panel's footer for the picked State/UT — a way to the State's own figures."
+      },
+      {
+        "name": "selectedContent",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The panel's body for the picked State/UT."
+      },
+      {
+        "name": "valueFormat",
+        "type": "ValueFormat",
         "required": false,
         "description": ""
       }
@@ -4709,6 +4842,99 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "DashboardCardListProps": {
+    "source": "packages/design-system/components/dashboard/dashboard-card.tsx",
+    "inheritsNative": true,
+    "props": [
+      {
+        "name": "items",
+        "type": "DashboardCardListItem[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "arrangement",
+        "type": "\"balanced\" | \"lead\"",
+        "required": false,
+        "default": "\"balanced\"",
+        "description": "How the row is shared out, decided by HOW MANY cards there are — a card with nothing to show is not drawn, so the list cannot assume a count. - `balanced`: one takes the width; three share a row; two, four and five lead with a wide and a narrower card (7 + 5) and the rest share the next row. - `lead`: for a list whose first card carries a map. Four or five lead with 7 + 5 and the rest share the next row; three lead with one across the width and two beneath; two share the row equally; one takes the width. Below 1280px cards pair up; on a phone they stack."
+      }
+    ]
+  },
+  "DashboardCardProps": {
+    "source": "packages/design-system/components/dashboard/dashboard-card.tsx",
+    "inheritsNative": true,
+    "props": [
+      {
+        "name": "href",
+        "type": "string | undefined",
+        "required": true,
+        "description": "DashboardCardBaseProps & { href: string; linkLabel: string; }: The dashboard the card opens."
+      },
+      {
+        "name": "linkLabel",
+        "type": "string | undefined",
+        "required": true,
+        "description": "DashboardCardBaseProps & { href: string; linkLabel: string; }: The link's accessible name — \"View the NMBA Dashboard\"."
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": "The dashboard's name — a portal's, or the Department's."
+      },
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Everything after the lead figure: facts, a small chart, a sentence."
+      },
+      {
+        "name": "ctaLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"View Dashboard\"",
+        "description": "The visible link text."
+      },
+      {
+        "name": "figure",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The lead figure — usually a `HeadlineFigure`."
+      },
+      {
+        "name": "linkAs",
+        "type": "React.ElementType",
+        "required": false,
+        "description": "The app's router link (`next/link`), so opening a dashboard is not a full page load. linkAs-gate(href-only): a DashboardCard with no `href` is a summary card with no link."
+      },
+      {
+        "name": "mark",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The organisation's mark (`OrgLogo`) or a `CardIcon`. The title names the card, so the mark takes no accessible name of its own."
+      },
+      {
+        "name": "note",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "One line above the figures, e.g. that the dashboard publishes All-India figures only."
+      },
+      {
+        "name": "subtitle",
+        "type": "string",
+        "required": false,
+        "description": "The scheme it reports, where the title alone would not say."
+      },
+      {
+        "name": "tone",
+        "type": "CardTone = \"primary\" | \"secondary\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
+        "required": false,
+        "default": "\"neutral\"",
+        "description": "The dashboard's colour family, drawn as the card's top edge."
+      }
+    ]
+  },
   "DashboardGridProps": {
     "source": "packages/design-system/components/dashboard/dashboard-grid.tsx",
     "inheritsNative": false,
@@ -4724,6 +4950,199 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": ""
+      }
+    ]
+  },
+  "DashboardHeaderProps": {
+    "source": "packages/design-system/components/dashboard/dashboard-header.tsx",
+    "inheritsNative": true,
+    "props": [
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "action",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The one way out of the dashboard: the portal, or the Department's own page."
+      },
+      {
+        "name": "headingId",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "headingLevel",
+        "type": "2 | 3 | 4",
+        "required": false,
+        "default": "2",
+        "description": ""
+      },
+      {
+        "name": "mark",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The organisation's mark, on a white ground. The title names it; it takes no accessible name."
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The period the figures describe, and who publishes them."
+      },
+      {
+        "name": "subtitle",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "summary",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "One sentence, in the Department's words, on what the scheme does."
+      },
+      {
+        "name": "tone",
+        "type": "CardTone = \"primary\" | \"secondary\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
+        "required": false,
+        "default": "\"primary\"",
+        "description": ""
+      }
+    ]
+  },
+  "DashboardScreenProps": {
+    "source": "packages/design-system/components/templates/dashboard-screen.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The view: sections built from HeadlineBand, DashboardCardList, DashboardHeader, KpiView…"
+      },
+      {
+        "name": "area",
+        "type": "string",
+        "required": false,
+        "description": "The area the figures are for — \"All India\", \"Kerala\", \"Pune, Maharashtra\". It is announced when it changes (`role=\"status\"`). Leave it out for a view with no area: a sign-in page."
+      },
+      {
+        "name": "areaLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Figures for\"",
+        "description": "The words before the area."
+      },
+      {
+        "name": "areaNote",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "One sentence under the area bar saying what an area choice actually changed, where most of the page publishes All-India figures only. Without it, a reader who picks a State and finds five of seven sections unchanged concludes the picker did not work."
+      },
+      {
+        "name": "asked",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Whether a request has been made at all. Leave `true` for a screen that loads on mount; pass `false` for one gated on the reader's intent, so it resolves to `idle` rather than `empty`."
+      },
+      {
+        "name": "back",
+        "type": "{ href: string; label: string }",
+        "required": false,
+        "description": "The way back to the list of dashboards, above the area bar, where it reads as the way out."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "copy",
+        "type": "ScreenStateCopy",
+        "required": false,
+        "default": "DEFAULT_SCREEN_COPY",
+        "description": ""
+      },
+      {
+        "name": "count",
+        "type": "number",
+        "required": false,
+        "description": "How many records the screen received. `0` with filters applied resolves to `filtered`; `0` without them resolves to `empty`."
+      },
+      {
+        "name": "error",
+        "type": "unknown",
+        "required": false,
+        "description": "The request failed. Any truthy value counts; the message is the caller's."
+      },
+      {
+        "name": "filtered",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Whether the reader has narrowed the set. Pass the real predicate — a default-valued select is not a filter, and treating it as one turns every empty register into \"try clearing your filters\", which is a lie the reader cannot act on."
+      },
+      {
+        "name": "filters",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The filters that change the figures — State/UT, District, Financial Year — on one baseline."
+      },
+      {
+        "name": "linkAs",
+        "type": "React.ElementType",
+        "required": false,
+        "description": "The app's router link, for `back`. linkAs-gate(href-only): a screen with no `back` renders no link."
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "description": "A request is outstanding."
+      },
+      {
+        "name": "notice",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A line above everything else — who the page is being drawn for, when that is not the public."
+      },
+      {
+        "name": "onClearFilters",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "shouldMoveFocus",
+        "type": "() => boolean",
+        "required": false,
+        "description": "Asked before focus moves on a `viewKey` change; return false to keep it where it is. A filter keeps the reader's focus on the filter, so they can choose again."
+      },
+      {
+        "name": "skeleton",
+        "type": "SkeletonShape = \"table\" | \"cards\" | \"form\" | \"detail\"",
+        "required": false,
+        "default": "\"cards\"",
+        "description": "The skeleton's shape while the figures load."
+      },
+      {
+        "name": "viewKey",
+        "type": "string",
+        "required": false,
+        "description": "The view's identity — the URL's search string. When it changes, focus moves to the view's first heading and the view scrolls to the top, as a page change would."
       }
     ]
   },
@@ -8194,6 +8613,64 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "HeadlineBandProps": {
+    "source": "packages/design-system/components/dashboard/headline-band.tsx",
+    "inheritsNative": true,
+    "props": [
+      {
+        "name": "lead",
+        "type": "Omit<HeadlineBandFigure, \"key\" | \"href\">",
+        "required": true,
+        "description": "The figure the page leads with, drawn large."
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": "Names the band in the outline — \"At a Glance, All India\". Visually hidden."
+      },
+      {
+        "name": "figures",
+        "type": "HeadlineBandFigure[]",
+        "required": false,
+        "default": "[]",
+        "description": "The figures beside it. Two columns where there are two or more; one where there is one."
+      },
+      {
+        "name": "figuresLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Other figures\"",
+        "description": "Names the list of figures for a screen reader."
+      },
+      {
+        "name": "headingId",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "headingLevel",
+        "type": "2 | 3 | 4",
+        "required": false,
+        "default": "2",
+        "description": ""
+      },
+      {
+        "name": "linkAs",
+        "type": "React.ElementType",
+        "required": false,
+        "description": "The app's router link, for a figure with `href`. linkAs-gate(href-only): a band whose figures carry no `href` renders no link."
+      },
+      {
+        "name": "tone",
+        "type": "CardTone = \"primary\" | \"secondary\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
+        "required": false,
+        "default": "\"primary\"",
+        "description": ""
+      }
+    ]
+  },
   "HeadlineFigureProps": {
     "source": "packages/design-system/components/data-display/headline-figure.tsx",
     "inheritsNative": true,
@@ -9408,6 +9885,94 @@ export const GENERATED_PROPS = {
         "type": "number",
         "required": false,
         "description": "Column span (1–12) inside a `DashboardGrid` at ≥768px."
+      }
+    ]
+  },
+  "KpiViewProps": {
+    "source": "packages/design-system/components/dashboard/kpi-view.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "areasAreStates",
+        "type": "boolean",
+        "required": true,
+        "description": "Whether an area reading's rows are States/UTs, which can be drawn on the map."
+      },
+      {
+        "name": "kpi",
+        "type": "KpiSpec",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "reading",
+        "type": "KpiReading",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "badge",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A mark the page adds beside the title, e.g. \"Officers Only\"."
+      },
+      {
+        "name": "card",
+        "type": "KpiViewState",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "donutLayout",
+        "type": "\"stacked\" | \"auto\"",
+        "required": false,
+        "default": "\"stacked\"",
+        "description": "`auto` sets a donut's legend beside the ring, with amounts, once the card is wider than half the grid — a lone donut on a full row otherwise floats in white space."
+      },
+      {
+        "name": "headingLevel",
+        "type": "3 | 4",
+        "required": false,
+        "default": "3",
+        "description": ""
+      },
+      {
+        "name": "headline",
+        "type": "{ value: string; label: string; detail?: string; mark?: React.ReactNode }",
+        "required": false,
+        "description": "A section's one figure, set at the head of the chart it summarises, in place of a lone figure card stretched to the chart's height beside it."
+      },
+      {
+        "name": "quiet",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "The public dashboard's chart chrome: an outlined card at rest on the page, no Chart / Table switch — each chart keeps its table for screen readers — no download control, a two-part ring drawn as two bars against their whole, breakdowns largest first, status breakdowns in status colours, and red never used as a category. Off, the card is the analyst's: the switch, the download and the categorical order."
+      },
+      {
+        "name": "renderOrigin",
+        "type": "(origin: ValueOrigin) => React.ReactNode",
+        "required": false,
+        "description": "The mark for a reading's origin — an \"Illustrative\" chip. Not called for a snapshot."
+      },
+      {
+        "name": "span",
+        "type": "number",
+        "required": false,
+        "description": "The span the dashboard gives this card after closing its row; defaults to the KPI's own."
+      },
+      {
+        "name": "stateMap",
+        "type": "\"choropleth\" | \"tiles\"",
+        "required": false,
+        "default": "\"choropleth\"",
+        "description": "How a States/UTs reading is mapped: the choropleth, or equal tiles."
       }
     ]
   },
@@ -14383,10 +14948,10 @@ export const GENERATED_PROPS = {
       },
       {
         "name": "variant",
-        "type": "\"default\" | \"quiet\"",
+        "type": "\"default\" | \"quiet\" | \"buttons\"",
         "required": false,
         "default": "\"default\"",
-        "description": "`\"default\"` is the filled track a reader uses to change what a view SHOWS — a period, a series. `\"quiet\"` is text only, for a switch that is a way out rather than a choice the page is built around: a chart's Chart / Table view, there for the reader who wants the raw figures and kept out of everyone else's way. Same radio-group semantics and keys."
+        "description": "`\"default\"` is the filled track a reader uses to change what a view SHOWS — a period, a series. `\"quiet\"` is text only, for a switch that is a way out rather than a choice the page is built around: a chart's Chart / Table view, there for the reader who wants the raw figures and kept out of everyone else's way. `\"buttons\"` is SAMAVESH's segmented BUTTON — attached buttons, the chosen one Filled and the rest Outlined — for a switch that changes what one chart shows (Students: SC / OBC / SHREYAS), where a filled track read as tabs (instruction, 7 Oct 2026). Same radio-group semantics and keys in all three."
       }
     ]
   },

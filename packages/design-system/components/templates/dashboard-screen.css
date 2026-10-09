@@ -1,0 +1,71 @@
+/*
+ * DashboardScreen. Moved from the website dashboard's own stylesheet (`proposed.css`,
+ * Oct 2026) when the page became a screen template; the rules are those that shipped there,
+ * renamed.
+ */
+@layer theme, base, components, utilities;
+
+@layer components {
+  .sa-dashboard,
+  .sa-dashboard__panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    min-width: 0;
+  }
+
+  .sa-dashboard { gap: var(--sa-stack-20); }
+
+  /* A view's sections, when it passes them straight in, stand apart at the dashboard's section
+     rhythm — the gap between "At a Glance" and "Department and Portal Dashboards". */
+  .sa-dashboard__panel { gap: var(--sa-stack-56); }
+
+  .sa-dashboard__back {
+    justify-self: start;
+  }
+
+  /* ── The area bar: what the page shows on the left, the filters on the right ── */
+  .sa-dashboard__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--sa-stack-12);
+  }
+
+  .sa-dashboard__where {
+    display: grid;
+    margin: 0;
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-title-1-size);
+    line-height: var(--sa-type-title-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .sa-dashboard__label {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-medium);
+  }
+
+  /* The filters, on one baseline at the right. They wrap under the area on a narrow screen. */
+  .sa-dashboard__controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--sa-stack-12);
+  }
+
+  .sa-dashboard__note {
+    margin: 0;
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-regular);
+  }
+
+  /* A heading that receives focus after a move is a landmark for the reader, not a control. */
+  .sa-dashboard__panel :is(h2, h3)[tabindex="-1"]:focus {
+    outline: none;
+  }
+}
