@@ -191,7 +191,7 @@ export const DBIM_ARCHIVE_TABS: (DbimLink & { key: DbimArchiveKind })[] = [
  * its own Active/Archived tag, read through the one rule every design shares
  * (`isArchivedRecord`), so an item is on exactly one of the two.
  */
-function archivedFiles(rows: { slug: string; title: string; date?: string; fileUrl?: string; sourceUrl: string }[], notices: boolean): DbimDocRow[] {
+function archivedFiles(rows: { slug: string; title: string; date?: string; fileUrl?: string; sourceUrl: string; status?: string }[], notices: boolean): DbimDocRow[] {
   return (notices ? dedupeNotices(rows) : rows)
     .filter(isArchivedRecord)
     .map((r) => ({

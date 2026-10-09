@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DocumentCatalog } from "@/components/website/templates/DocumentCatalog";
 import { getTenders, getContentSyncedDate } from "@/lib/website/content";
+import { isCurrentRecord } from "@/lib/website-shared/records";
 
 export const metadata: Metadata = {
   title: "Tenders & RFPs | DoSJE",
@@ -9,7 +10,8 @@ export const metadata: Metadata = {
 };
 
 export default function TendersPage() {
-  const tenders = getTenders().map((t) => ({
+  // "Active tenders", as the page says: live's Archived tag takes the rest off this list.
+  const tenders = getTenders().filter(isCurrentRecord).map((t) => ({
     slug: t.slug,
     title: t.title,
     date: t.date,

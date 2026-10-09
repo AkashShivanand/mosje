@@ -1,5 +1,8 @@
 import sanitizeHtml from "sanitize-html";
 
+/** An href that is a CMS token, not an address: upper case, digits and underscores only. */
+const DEAD_HREF = /^[A-Z][A-Z0-9_]*$/;
+
 export function sanitize(html) {
   return sanitizeHtml(html, {
     allowedTags: [
@@ -14,14 +17,14 @@ export function sanitize(html) {
     },
     allowedSchemes: ["https", "http", "mailto"],
     transformTags: {
-      /* A link the Department's editor never filled in — `href="PLACEHOLDER_URL_1"` on
-         NCBC's Judgments page (29 Sep 2026) — goes nowhere. Its label stays, as text. */
       a: (tagName, attribs) =>
-        /^\s*PLACEHOLDER/i.test(attribs.href ?? "")
+        // An anchor with no address, or one the CMS left as a token ("PLACEHOLDER_URL_1"
+        // on NCBC's Judgments page), is a control that does nothing: keep its label as text.
+        !attribs.href?.trim() || DEAD_HREF.test(attribs.href.trim())
           ? { tagName: "span", attribs: {} }
           : {
               tagName: "a",
-              attribs: { ...attribs, ...(attribs.href?.startsWith("http") ? { rel: "noreferrer", target: "_blank" } : {}) },
+              attribs: { ...attribs, ...(attribs.href.startsWith("http") ? { rel: "noreferrer", target: "_blank" } : {}) },
             },
     },
   });

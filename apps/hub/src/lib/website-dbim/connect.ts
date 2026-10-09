@@ -9,7 +9,7 @@
  */
 import { getCpios, getEvents, getOfficial, getOfficialsByOrganisation, withAssetBasePath } from "@/lib/website/content";
 import { officialEmails, tidyAddress, titleCase } from "@/components/website-next/templates/people-format";
-import type { CpioRecord, EventRecord, OfficialRecord } from "@/types/website/content";
+import type { CpioRecord, EventRecord } from "@/types/website/content";
 
 /* ── Contact Us ──────────────────────────────────────────────────────────── */
 
@@ -104,10 +104,6 @@ const rank = (text: string) => {
   return i === -1 ? SENIORITY.length : i;
 };
 
-/** A CMS test entry, not an officer (the redesign's rule). */
-const isTestRecord = (o: OfficialRecord) =>
-  /^test\b/i.test(o.title.trim()) || /\babc$/i.test((o.designation ?? "").trim());
-
 const tidy = (s?: string) => s?.replace(/\s+/g, " ").replace(/\s+,/g, ",").trim() || undefined;
 
 /** Back to the notation the Department prints, once free-mail has been dropped (CON-09). */
@@ -119,7 +115,6 @@ const printedEmail = (raw?: string) =>
 /** The Department's telephone directory — the Ministry's officers in the register. */
 export function getDbimDirectory(): DbimDirectoryRow[] {
   const rows = getOfficialsByOrganisation("MoSJE")
-    .filter((o) => !isTestRecord(o))
     .map((o) => {
       const name = tidy(o.title) ?? o.title;
       const phone = tidy(o.phoneOffice ?? o.phoneResidence);

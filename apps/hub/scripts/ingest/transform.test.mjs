@@ -42,6 +42,12 @@ test("transformFileRecord extracts title,sourceUrl,date,fileUrl + category", () 
   assert.equal(rec.category, "Procurement");
 });
 
+test("transformFileRecord and transformRecord keep live's Active/Archived tag", () => {
+  assert.equal(transformFileRecord(RAWFILE, { taxonomyNames: { status: ["Archived"] } }).status, "Archived");
+  assert.equal(transformRecord(RAW, { taxonomyNames: { status: ["Active"] } }).status, "Active");
+  assert.equal(transformFileRecord(RAWFILE, {}).status, undefined);
+});
+
 test("transformFileRecord omits fileUrl when no document link present", () => {
   const rec = transformFileRecord({ ...RAWFILE, content: { rendered: `<p><a href="https://x/page">page</a></p>` } }, {});
   assert.equal(rec.fileUrl, undefined);

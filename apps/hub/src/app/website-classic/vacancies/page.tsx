@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DocumentCatalog } from "@/components/website/templates/DocumentCatalog";
 import { getVacancies, getContentSyncedDate } from "@/lib/website/content";
+import { isCurrentRecord } from "@/lib/website-shared/records";
 
 export const metadata: Metadata = {
   title: "Vacancies & Recruitments | DoSJE",
@@ -9,7 +10,8 @@ export const metadata: Metadata = {
 };
 
 export default function VacanciesPage() {
-  const vacancies = getVacancies().map((v) => ({
+  // "Current recruitment notifications", as the page says: live's Archived tag takes the rest off this list.
+  const vacancies = getVacancies().filter(isCurrentRecord).map((v) => ({
     slug: v.slug,
     title: v.title,
     date: v.date,
