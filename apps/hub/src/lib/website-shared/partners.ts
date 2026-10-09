@@ -38,7 +38,7 @@ export const PARTNER_LOGOS: readonly PartnerLogo[] = [
   { src: "/website/images/partners/nskfdc.png", label: "National Safai Karamcharis Finance and Development Corporation", organisationId: "national-safai-karamcharis-finance-development-corporation", width: 200, height: 200 },
   { src: "/website/images/partners/nbcfdc.png", label: "National Backward Classes Finance and Development Corporation", organisationId: "national-backward-classes-financeand-development-corporationnbcfdc", width: 200, height: 123 },
   { src: "/website/images/partners/daic-mark.png", label: "Dr. Ambedkar International Centre", organisationId: "dr-ambedkar-international-centre", width: 146, height: 146 },
-  { src: "/website/images/partners/bjrnf.png", label: "Babu Jagjivan Ram National Foundation", organisationId: "babu-jagjivan-ram-national-foundation-bjrnf", width: 300, height: 300 },
+  { src: "/website/images/partners/bjrnf.png", label: "Babu Jagjivan Ram National Foundation", organisationId: "babu-jagjivan-ram-national-foundation-jrf", width: 300, height: 300 },
   { src: "/website/images/partners/nisd.png", label: "National Institute of Social Defence", organisationId: "national-institute-of-social-defence", width: 250, height: 250 },
   { src: "/website/images/partners/pm-ajay.png", label: "Pradhan Mantri Anusuchit Jaati Abhyuday Yojana (PM-AJAY)", organisationId: "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay", width: 193, height: 147 },
   { src: "/website/images/partners/smile.png", label: "National Portal for Transgender Persons (SMILE)", organisationId: "national-portal-for-transgender-persons", width: 300, height: 300 },

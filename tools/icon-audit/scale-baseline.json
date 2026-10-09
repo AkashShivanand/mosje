@@ -15,7 +15,7 @@
     "page, re-run --update-baseline in the same change."
   ],
   "totals": {
-    "offScale": 138,
+    "offScale": 137,
     "classSized": 4
   },
   "files": {
@@ -185,10 +185,6 @@
     },
     "apps/hub/src/app/reports/scw/page.tsx": {
       "offScale": 2,
-      "classSized": 0
-    },
-    "apps/hub/src/app/website-classic/events/page.tsx": {
-      "offScale": 1,
       "classSized": 0
     },
     "apps/hub/src/app/website-classic/nmba-options/page.tsx": {
