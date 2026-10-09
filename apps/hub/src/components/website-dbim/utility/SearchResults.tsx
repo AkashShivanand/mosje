@@ -275,7 +275,7 @@ export function DbimSearchResults({ query, page, category, sort }: DbimSearchRes
                   No {categoryLabel(group.key)} match “{query}”.
                 </DbimEmptyState>
                 <p className="db-search__hint">
-                  <Link href={searchHref(BASE(), query, { sort })}>Show All {results(outcome.total)}</Link>
+                  <Link href={searchHref(BASE(), query, { sort })}>Show All {n(outcome.total)} {outcome.total === 1 ? "Result" : "Results"}</Link>
                 </p>
               </div>
             ) : group ? (

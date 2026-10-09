@@ -292,6 +292,7 @@
     color: var(--sa-color-primaryScale-800);
     font-size: var(--db-fs-h4);
     font-weight: var(--sa-font-weight-semibold);
+    text-transform: uppercase; /* the Tonal button, as Figma's Popular Searches draws it */
     text-decoration: none;
   }
 }
