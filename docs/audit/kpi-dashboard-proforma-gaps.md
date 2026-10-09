@@ -310,7 +310,8 @@ row).**
   answers, otherwise the 9 Oct 2026 mirror (`feeds/scw-snapshot.ts`), in every data mode. RVY
   needs `RVY_API_KEY` on the server; until it answers, RVY is the mirror.
 - Projects is 808 — every row, Regional Resource and Training Centres included — drawn with its
-  split by type. SCW1's definition names four types and not RRTCs (797 without them).
+  split by type. SCW1's definition names four types and not RRTCs (797 without them); the owner
+  confirmed on 9 Oct 2026 that RRTCs count as projects assisted, so 808 stands.
 - The tile leads with RVY's 10.33 lakh beneficiaries; devices, camps, projects and pledges
   beside it. SAGE and MoUs are on the programme page only, illustrative.
 - **No Financial Year filter for Senior Citizens Welfare.** Its public figures are running
@@ -325,7 +326,6 @@ row).**
   serves calls from the hosting provider's addresses.
 - **RVY figures are cumulative** (8.53 lakh beneficiaries to 2025-26 per AIR, 21 Sep 2026; the
   API reads 10.33 lakh). Confirm the period the API counts.
-- **Projects definition.** Confirm RRTCs count as projects assisted under IPSrC.
 - **SAGE.** SCW1 has no API for Start-ups Supported; the SCW tab named an admin endpoint. Which
   application status counts as "supported" is still open.
 
