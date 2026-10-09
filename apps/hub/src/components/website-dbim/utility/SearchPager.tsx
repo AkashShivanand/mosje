@@ -3,20 +3,29 @@
 import { useRouter } from "next/navigation";
 import { DbimPagination } from "@/components/website-dbim/ui/Pagination";
 import { dbimHref } from "@/lib/website-dbim/nav";
+import { searchHref, type DbimSearchCategory, type DbimSearchSort } from "@/lib/website-dbim/search-params";
 
-/** The results pager. The page lives in the URL (`?q=…&page=…`), so a result page is shareable. */
-export function DbimSearchPager({ query, page, pageCount }: { query: string; page: number; pageCount: number }) {
+/** The results pager. Query, category, sort and page live in the URL, so every result page is shareable. */
+export function DbimSearchPager({
+  query,
+  category,
+  sort,
+  page,
+  pageCount,
+}: {
+  query: string;
+  category?: DbimSearchCategory;
+  sort?: DbimSearchSort;
+  page: number;
+  pageCount: number;
+}) {
   const router = useRouter();
   return (
     <DbimPagination
       page={page}
       pageCount={pageCount}
       label="Search result pages"
-      onChange={(n) => {
-        const qs = new URLSearchParams({ q: query });
-        if (n > 1) qs.set("page", String(n));
-        router.push(`${dbimHref("/search")}?${qs.toString()}`);
-      }}
+      onChange={(n) => router.push(searchHref(dbimHref("/search"), query, { category, sort, page: n }))}
     />
   );
 }

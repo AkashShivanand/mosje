@@ -1,0 +1,298 @@
+/* ds-exempt-start(third-party): type sizes follow the DBIM reference's `--db-fs-*` scale, as utility.css does; colour, space and radius are token-bound */
+/* ─────────────────────────────────────────────────────────────────────────────
+   DBIM design — Search Results by category (SearchResults.tsx).
+   Figma: MoSJE Website DBIM DS › Templates › Site Utilities › Search Results;
+   components Search Result, Search Category and Search Categories (Lists & Data).
+
+   ≥992px  Filter by Category is an open panel beside the results (415 + 32 + rest).
+   <992px  it is a disclosure above them, naming the category being shown.
+   ───────────────────────────────────────────────────────────────────────────── */
+@layer theme, base, components, utilities;
+
+@layer components {
+  [data-design="dbim"] .db-search__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--sa-stack-16);
+    align-items: start;
+  }
+
+  [data-design="dbim"] .db-search__results {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-32);
+    min-width: 0;
+  }
+
+  [data-design="dbim"] .db-search__results > .db-search__form {
+    margin: 0;
+  }
+
+  /* The sort stays in the row on a phone — it is one control, not a set to disclose. */
+  [data-design="dbim"] .db-search__form .db-filter__rest {
+    display: flex;
+  }
+
+  /* ── Filter by Category — the Side Panel's accordion dress ──────────────── */
+  [data-design="dbim"] .db-search__cats {
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-color-neutralScale-100);
+  }
+
+  [data-design="dbim"] .db-search__cats-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-inline-8);
+    margin: 0;
+    padding: var(--sa-padding-4) 0;
+    color: var(--sa-color-primaryScale-800);
+    font-size: var(--db-fs-p);
+    font-weight: var(--sa-font-weight-bold);
+    line-height: var(--db-lh-p);
+  }
+
+  [data-design="dbim"] .db-search__cats-list {
+    margin: var(--sa-stack-8) 0 0;
+    padding: var(--sa-padding-2) 0 0;
+    list-style: none;
+    border-top: var(--sa-stroke-2) solid var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-search__cat {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-12);
+    padding: var(--sa-padding-8) var(--sa-padding-16) var(--sa-padding-8) var(--sa-padding-32);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-color-primaryScale-800);
+    color: var(--sa-color-text-default);
+    font-size: var(--db-fs-p);
+    line-height: var(--db-lh-p);
+    text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-search__cat-label {
+    flex: 1;
+    min-width: 0;
+  }
+
+  [data-design="dbim"] .db-search__cat-count {
+    flex: none;
+    color: var(--sa-color-text-muted);
+    font-size: var(--db-fs-small);
+    font-weight: var(--sa-font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  [data-design="dbim"] .db-search__cat:hover .db-search__cat-label {
+    color: var(--sa-color-primaryScale-800);
+    text-decoration: underline;
+  }
+
+  [data-design="dbim"] .db-search__cat.is-current {
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-neutralScale-0);
+    color: var(--sa-color-primaryScale-800);
+    font-weight: var(--sa-font-weight-bold);
+  }
+
+  [data-design="dbim"] .db-search__cat.is-current .db-search__cat-count {
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-search__cat:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: calc(var(--sa-focus-width) * -1);
+    border-radius: var(--sa-shape-4);
+  }
+
+  /* The phone's disclosure: closed, it names the category being shown. */
+  [data-design="dbim"] .db-search__cats--disclosure > summary {
+    cursor: pointer;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-search__cats--disclosure > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  [data-design="dbim"] .db-search__cats--disclosure > summary:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+    border-radius: var(--sa-shape-4);
+  }
+
+  [data-design="dbim"] .db-search__cats-chevron {
+    flex: none;
+    transition: transform 0.2s ease;
+  }
+
+  [data-design="dbim"] .db-search__cats--disclosure[open] .db-search__cats-chevron {
+    transform: rotate(180deg);
+  }
+
+  [data-design="dbim"] .db-search__cats--panel {
+    display: none;
+  }
+
+  @media (min-width: 992px) {
+    [data-design="dbim"] .db-search__body {
+      grid-template-columns: 25.9375rem minmax(0, 1fr); /* 415px — the Side Panel's width */
+      gap: var(--sa-inline-32);
+    }
+
+    [data-design="dbim"] .db-search__cats--panel {
+      display: block;
+    }
+
+    [data-design="dbim"] .db-search__cats--disclosure {
+      display: none;
+    }
+  }
+
+  /* ── A category's results ───────────────────────────────────────────────── */
+  [data-design="dbim"] .db-search__group {
+    display: grid;
+    grid-template-areas:
+      "head"
+      "rows"
+      "more";
+    gap: var(--sa-stack-8);
+  }
+
+  [data-design="dbim"] .db-search__group-head {
+    grid-area: head;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--sa-inline-8) var(--sa-inline-12);
+  }
+
+  [data-design="dbim"] .db-search__group-title {
+    margin: 0;
+    color: var(--sa-color-primaryScale-800);
+    font-size: var(--db-fs-h3);
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: var(--db-lh-h3);
+  }
+
+  [data-design="dbim"] .db-search__group-count {
+    color: var(--sa-color-text-muted);
+    font-size: var(--db-fs-h4);
+  }
+
+  [data-design="dbim"] .db-search__rows {
+    grid-area: rows;
+  }
+
+  [data-design="dbim"] .db-search__rows .db-search__row {
+    margin-bottom: 0;
+  }
+
+  [data-design="dbim"] .db-search__rows {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-12);
+  }
+
+  [data-design="dbim"] .db-search__more {
+    grid-area: more;
+    display: inline-flex;
+    align-items: center;
+    justify-self: start;
+    gap: var(--sa-inline-4);
+    color: var(--sa-color-primaryScale-800);
+    font-size: var(--db-fs-h4);
+    font-weight: var(--sa-font-weight-semibold);
+    text-decoration: underline;
+  }
+
+  [data-design="dbim"] .db-search__more:focus-visible,
+  [data-design="dbim"] .db-search__feedback a:focus-visible,
+  [data-design="dbim"] .db-search__hint a:focus-visible,
+  [data-design="dbim"] .db-search__popular a:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  /* Desktop: "View All" sits on the heading's line, at its end, as Figma draws it. */
+  @media (min-width: 768px) {
+    [data-design="dbim"] .db-search__group {
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas:
+        "head more"
+        "rows rows";
+      column-gap: var(--sa-inline-16);
+    }
+
+    [data-design="dbim"] .db-search__more {
+      place-self: center end;
+    }
+  }
+
+  /* ── One result: the Link Row, plus a meta line and the match in bold ────── */
+  [data-design="dbim"] .db-search__meta {
+    margin: 0 0 var(--sa-stack-2);
+    color: var(--sa-color-text-muted);
+    font-size: var(--db-fs-small);
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: var(--db-lh-small);
+  }
+
+  [data-design="dbim"] .db-search__row .db-u-row__title strong {
+    font-weight: var(--sa-font-weight-bold);
+  }
+
+  /* ── States, idle and feedback ──────────────────────────────────────────── */
+  [data-design="dbim"] .db-search__none {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+  }
+
+  [data-design="dbim"] .db-search__hint,
+  [data-design="dbim"] .db-search__feedback {
+    margin: 0;
+    color: var(--sa-color-text-default);
+    font-size: var(--db-fs-h4);
+    line-height: var(--db-lh-p2);
+  }
+
+  [data-design="dbim"] .db-search__hint a,
+  [data-design="dbim"] .db-search__feedback a {
+    color: var(--sa-color-primaryScale-800);
+    text-decoration: underline;
+  }
+
+  [data-design="dbim"] .db-search__idle {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-12);
+    margin-top: var(--sa-stack-24);
+  }
+
+  [data-design="dbim"] .db-search__popular {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-search__popular a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.5rem; /* 40px — the Tonal button's height */
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    border: var(--sa-stroke-1) solid var(--sa-color-primaryScale-400);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-color-primaryScale-100);
+    color: var(--sa-color-primaryScale-800);
+    font-size: var(--db-fs-h4);
+    font-weight: var(--sa-font-weight-semibold);
+    text-decoration: none;
+  }
+}
+/* ds-exempt-end */

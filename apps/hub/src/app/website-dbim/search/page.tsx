@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DbimPage } from "@/components/website-dbim/layout/DbimPage";
 import { DbimSearchResults } from "@/components/website-dbim/utility/SearchResults";
+import { parseCategory, parseSort } from "@/lib/website-dbim/search";
 import "@/components/website-dbim/utility/utility.css";
 
 export const metadata: Metadata = {
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 interface Props {
-  searchParams: Promise<{ q?: string | string[]; page?: string | string[] }>;
+  searchParams: Promise<{ q?: string | string[]; page?: string | string[]; type?: string | string[]; sort?: string | string[] }>;
 }
 
 const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v) ?? "";
@@ -22,7 +23,7 @@ export default async function Page({ searchParams }: Props) {
   return (
     <DbimPage spacing="flush" title="Search" crumbs={[{ label: "Search" }]} path="/search">
       <div className="db-u-flush">
-        <DbimSearchResults query={query} page={page} />
+        <DbimSearchResults query={query} page={page} category={parseCategory(one(params.type))} sort={parseSort(one(params.sort))} />
       </div>
     </DbimPage>
   );
