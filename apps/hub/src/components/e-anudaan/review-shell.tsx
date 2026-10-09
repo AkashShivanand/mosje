@@ -488,6 +488,8 @@ export function ReviewShell({ appId }: { appId: string }) {
             ariaLabel="Sections of the file"
             indicator="underline"
             track="none"
+            /* The file runs to thousands of pixels; the tabs are its map and follow the officer down. */
+            sticky
             tabs={tabs}
             active={Math.max(tabs.findIndex((t) => t.id === tab), 0)}
             onChange={(i) => setTab(tabs[i]!.id as ReviewTab)}
@@ -568,7 +570,13 @@ export function ReviewShell({ appId }: { appId: string }) {
         </div>
 
         {/* ── The decision, held beside the file on a wide screen ─────────────────── */}
-        <aside id="review-decision" className="space-y-5 xl:sticky xl:top-4" aria-label="Your decision">
+        {/* Pinned BELOW the masthead (`--sa-header-stuck`), not 16px from the top of the viewport,
+            where "Your Decision", More Actions and the first checklist row slid behind the bar. */}
+        <aside
+          id="review-decision"
+          className="space-y-5 xl:sticky xl:top-[calc(var(--sa-header-stuck,0px)_+_var(--sa-padding-16))]"
+          aria-label="Your decision"
+        >
           <ServiceErrorNotice
             failure={requests.failure}
             homeHref={role.home}

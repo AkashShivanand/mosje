@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "THE PORTAL SIDE MENU STAYS ON SCREEN, AND A LONG PAGE'S TABS CAN TOO. `AppShell` wrapped `SidebarNav` in a block, so the rail's column could not stretch, the sticky rail had no room to travel, and on every `PortalPage` the menu scrolled off with the page; the wrapper is now a flex row and the rail pins under the masthead at `--sa-header-stuck`. `Tabs` gains `sticky`: the row pins under the masthead on the page canvas, takes an edge while stuck, and a tab chosen while pinned opens at its top. The E-Anudaan review file uses it, and its decision panel now pins below the masthead instead of 16px under it."
+}
