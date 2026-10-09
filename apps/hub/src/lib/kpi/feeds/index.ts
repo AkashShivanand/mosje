@@ -1,6 +1,7 @@
 import type { PortalFeed } from "../live";
 import type { PortalId } from "../types";
 import { getNmbaFeed } from "./nmba";
+import { getScwFeed } from "./scw";
 
 /**
  * A portal's live feed, read on the server, or null. Add a portal here the day its API
@@ -10,6 +11,10 @@ export async function getPortalFeed(portal: PortalId): Promise<PortalFeed | null
   if (portal === "nmba") {
     const feed = await getNmbaFeed();
     return feed ? { portal: "nmba", feed } : null;
+  }
+  if (portal === "senior-citizens") {
+    const feed = await getScwFeed();
+    return feed ? { portal: "senior-citizens", feed } : null;
   }
   return null;
 }
