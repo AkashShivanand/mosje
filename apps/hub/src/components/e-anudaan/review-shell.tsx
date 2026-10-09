@@ -467,8 +467,7 @@ export function ReviewShell({ appId }: { appId: string }) {
   return (
     <div className="space-y-5">
       {/* ── Header: who and what, not the reference in 40px ─────────────────────── */}
-      <header className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
-        <div className="min-w-0 basis-full space-y-1 md:basis-auto md:flex-1">
+      <header className="space-y-2">
           {/* The dev portal's ← (walkthrough of 07 Oct 2026), named for where it goes. */}
           <Link href={role.home} className={buttonClasses("primary", "text", "sm", "!px-0")}>
             <Icon name="arrow_back" size={16} aria-hidden /> My Queue
@@ -478,24 +477,27 @@ export function ReviewShell({ appId }: { appId: string }) {
             Review · {gradeTitle}
             {role.division ? `, ${role.division === "finance" ? "Integrated Finance Division" : "Programme Division"}` : ""}
           </p>
-          <h1 className="text-headline-3 text-ink">{ngo?.name ?? app.ngoId}</h1>
-          <p className="text-body-2 text-ink">
-            {project} · {schemeLabel(app.schemeCode)} · FY {app.financialYear}
-          </p>
-          <p className="text-body-3 text-ink-muted">
-            Application No. <RefText value={app.id} breakAtEverySlash className="text-ink" /> · Project ID {app.institutionId}
-          </p>
-        </div>
-        <div className="flex min-w-0 max-w-full flex-wrap items-center gap-3">
-          {/* Wraps on a phone: "Under Examination · With the Under Secretary, Integrated Finance" ran 45px off a 375px screen. */}
-          <Badge status={statusTone(app.status)} className="h-auto max-w-full whitespace-normal">
-            {statusLabel(app)}
-          </Badge>
-        </div>
+          {/* The status reads with the name it belongs to; at the far right of the page it was the
+              last thing found (polish pass, 9 Oct 2026). */}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+            <h1 className="text-headline-3 text-ink">{ngo?.name ?? app.ngoId}</h1>
+            {/* Wraps on a phone: "Under Examination · With the Under Secretary, Integrated Finance" ran 45px off a 375px screen. */}
+            <Badge status={statusTone(app.status)} className="h-auto max-w-full whitespace-normal">
+              {statusLabel(app)}
+            </Badge>
+          </div>
+          <div className="space-y-1">
+            <p className="text-body-2 text-ink">
+              {project} · {schemeLabel(app.schemeCode)} · FY {app.financialYear}
+            </p>
+            <p className="text-body-3 text-ink-muted">
+              Application No. <RefText value={app.id} breakAtEverySlash className="text-ink" /> · Project ID {app.institutionId}
+            </p>
+          </div>
       </header>
 
-      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_24rem] xl:items-start">
-        <div className="min-w-0 space-y-5">
+      <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_24rem] xl:items-start xl:gap-8">
+        <div className="min-w-0 space-y-6">
           {/* What is open on the file stays above the tabs: it is why the file is here. */}
           <OpenItem app={app} viewer={role.id} holdsFile={holdsFile} onShowDocument={(docId) => showDocuments("changed", docId)} />
 
@@ -681,12 +683,14 @@ export function ReviewShell({ appId }: { appId: string }) {
             {!holdsFile ? (
               <FileStatus app={app} viewer={role.id} />
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {/* What the file still needs, BEFORE the button is pressed (audit R-01). */}
                 {certifyingSeat && (
                   <BeforeForwarding
                     progress={progress}
                     awaiting={awaiting.length}
+                    overruled={overruled.length}
+                    onShowOverruled={() => showDocuments("flagged")}
                     certifiedAt={app.certifiedAt}
                     onShowAwaiting={() => showDocuments("awaiting")}
                     grant={
@@ -732,13 +736,6 @@ export function ReviewShell({ appId }: { appId: string }) {
                     <Button appearance="text" size="sm" onClick={() => showDocuments("changed")}>
                       Review the Changed Documents
                     </Button>
-                  </p>
-                )}
-                {decisions.some((d) => d.action === "raiseDeficiency") && (
-                  <p className="text-body-3 text-ink-muted">
-                    {markedDocs > 0
-                      ? `${markedDocs} document${markedDocs === 1 ? "" : "s"} marked for correction. Raising a deficiency sends ${markedDocs === 1 ? "it" : "them"}, with your reasons, to the Section Officer.`
-                      : "No document is marked for correction. Raising a deficiency sends your remarks to the Section Officer as a clarification request."}
                   </p>
                 )}
                 <FormField
@@ -788,7 +785,10 @@ export function ReviewShell({ appId }: { appId: string }) {
                       disabled style it explains — it was #8f949d on white, 3.04:1 (audit R-01). */}
                   {forwardBlocked && (
                     <p id="forward-blocked" className="text-body-3 text-ink-muted">
-                      {forwardBlockedReason(blockers, awaiting.length)}
+                      {/* The checklist above already names each step; the full sentence said it all again. */}
+                      {certifyingSeat
+                        ? "Available once every step under Before You Forward is done."
+                        : forwardBlockedReason(blockers, awaiting.length)}
                     </p>
                   )}
                   {secondary
@@ -815,6 +815,14 @@ export function ReviewShell({ appId }: { appId: string }) {
                     </Button>
                   ))}
                 </div>
+                {/* What Raise Deficiency does, under the button it explains rather than above the remarks. */}
+                {decisions.some((d) => d.action === "raiseDeficiency") && (
+                  <p className="-mt-3 text-body-3 text-ink-muted">
+                    {markedDocs > 0
+                      ? `Raise Deficiency sends the ${markedDocs} document${markedDocs === 1 ? "" : "s"} marked for correction, with your reasons, to the Section Officer.`
+                      : "Raise Deficiency sends your remarks to the Section Officer as a clarification request."}
+                  </p>
+                )}
                 {problems.deficiency && (
                   <p className="text-body-3 text-[var(--sa-text-status-error-bolder)]" role="alert">
                     {problems.deficiency}
@@ -1366,12 +1374,17 @@ function decisionStandFirst({
 function BeforeForwarding({
   progress,
   awaiting,
+  overruled = 0,
+  onShowOverruled,
   certifiedAt,
   onShowAwaiting,
   grant,
 }: {
   progress: { reviewed: number; required: number };
   awaiting: number;
+  /** Documents verified against a "Not valid" check with no reason given yet. */
+  overruled?: number;
+  onShowOverruled?: () => void;
   certifiedAt?: string;
   onShowAwaiting: () => void;
   /** A NAPDDR file's costing: present only where the Grant tab carries a cost sheet. */
@@ -1400,6 +1413,17 @@ function BeforeForwarding({
             )
           }
         />
+        {overruled > 0 && (
+          <ListRow
+            leading={<StepMark done={false} />}
+            title="Say Why a Document Is Verified Against the Check"
+            description={
+              <Button appearance="text" size="sm" className="!justify-start !px-0" onClick={onShowOverruled}>
+                {overruled} Document{overruled === 1 ? "" : "s"} Need{overruled === 1 ? "s" : ""} a Reason
+              </Button>
+            }
+          />
+        )}
         <ListRow
           leading={<StepMark done={!!certifiedAt} />}
           title="Record the Certification"

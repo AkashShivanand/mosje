@@ -721,17 +721,22 @@
       margin-block-start: calc((var(--sa-control-height-sm) - var(--sa-icon-size-20)) / 2);
     }
 
+    /* Two lines, then cut. One line cut "List of Managing Committee Members" to "List of
+       Managing Committe…" beside the verdict on a 690px review column (polish pass, 9 Oct 2026);
+       a second line costs a few rows ~20px and lets every title be read. */
     .ds-docrow--compact .ds-docrow__title {
+      display: -webkit-box;
       overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
     }
 
-    /* The file as small print: name and meta on one line. */
+    /* The file as small print: name and meta on one line, the meta wrapping under the name
+       rather than cutting it ("annexur… .pdf") when the title column is narrow. */
     .ds-docrow--compact .ds-docrow__file {
-      flex-direction: row;
+      flex-flow: row wrap;
       align-items: baseline;
-      gap: var(--sa-inline-8);
+      gap: 0 var(--sa-inline-8);
     }
 
     .ds-docrow--compact .ds-docrow__file-name {
