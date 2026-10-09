@@ -1,0 +1,181 @@
+/*
+ * DashboardCard and DashboardCardList. Moved from the website dashboard's own stylesheet
+ * (`proposed.css`, Oct 2026) when the card joined the design system; the rules are those that
+ * shipped there, renamed.
+ */
+@layer theme, base, components, utilities;
+
+@layer components {
+  .ds-dashboard-card__titles { min-width: 0; }
+
+  .ds-dashboard-card__body {
+    display: grid;
+    /* minmax(0, …): a trend line's intrinsic width must not push the column past the card. */
+    grid-template-columns: minmax(0, 1fr);
+    align-content: start;
+    gap: var(--sa-stack-20);
+  }
+
+  .ds-dashboard-card__note {
+    margin: 0;
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-regular);
+  }
+
+  /* "View Dashboard" STARTS ON THE CARD'S CONTENT EDGE. A text button carries its own inline
+     padding, which set the label 16px in from the figures above it and read as misaligned. */
+  .ds-dashboard-card > .ds-card__footer > .ds-dashboard-card__link {
+    position: static;
+    padding-inline-start: 0;
+  }
+
+  /* THE WHOLE CARD OPENS ITS DASHBOARD: its one link is stretched over the card. */
+  .ds-dashboard-card { position: relative; }
+
+  /* Every geometry property is set, not only `inset`: under a coarse pointer the design
+     system draws a 44px target on this same pseudo-element — centred by a translate, sized
+     by width and height — and any of those left standing moves the card's target off the
+     card. The card is bigger than 44px, so the thumb loses nothing. */
+  .ds-dashboard-card > .ds-card__footer > .ds-dashboard-card__link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: auto;
+    height: auto;
+    min-width: 0;
+    min-height: 0;
+    transform: none;
+    border-radius: inherit;
+  }
+
+  /* What is interactive inside the card sits above the stretched link. */
+  .ds-dashboard-card--link > .ds-card__body :is(a, button, [tabindex]:not([tabindex="-1"]), .ds-chart__mark, .ds-chart:has([tabindex])) {
+    position: relative;
+    z-index: var(--sa-z-raised);
+  }
+
+  /* Pressed anywhere, the card answers as one: its edge firms, the label underlines — the
+     label only, never the arrow — and the arrow leans toward where it goes. The sides and
+     foot only: the top edge is the dashboard's colour and stays it. */
+  .ds-dashboard-card:has(> .ds-card__footer > .ds-dashboard-card__link:hover) {
+    border-inline-color: var(--sa-border-neutral-bolder-hover);
+    border-block-end-color: var(--sa-border-neutral-bolder-hover);
+  }
+
+  .ds-dashboard-card > .ds-card__footer > .ds-dashboard-card__link:is(:hover, :active) {
+    background-color: transparent;
+  }
+
+  /* THE PRESS BELONGS TO THE CARD, NOT THE BUTTON. The button's own press scales it to 0.97,
+     and a transformed button becomes the stretched area's containing block: on pointer-down
+     the card-wide target shrank to the button, the pointer came up outside it, and no click
+     fired. The card takes a gentler press instead. */
+  .ds-dashboard-card > .ds-card__footer > .ds-dashboard-card__link:active {
+    transform: none;
+  }
+
+  .ds-dashboard-card {
+    transition: transform var(--sa-motion-press-duration) var(--sa-motion-press-easing);
+  }
+
+  .ds-dashboard-card:has(> .ds-card__footer > .ds-dashboard-card__link:active) {
+    transform: scale(0.995);
+  }
+
+  .ds-dashboard-card > .ds-card__footer > .ds-dashboard-card__link:hover .ds-dashboard-card__cta {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .ds-dashboard-card > .ds-card__footer > .ds-dashboard-card__link .ds-btn__icon--end {
+    transition: transform var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  .ds-dashboard-card > .ds-card__footer > .ds-dashboard-card__link:hover .ds-btn__icon--end {
+    transform: translateX(var(--sa-padding-2));
+  }
+
+  /* The keyboard sees the same thing the pointer does: the whole card ringed. */
+  .ds-dashboard-card:has(> .ds-card__footer > .ds-dashboard-card__link:focus-visible) {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-width);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-dashboard-card,
+    .ds-dashboard-card > .ds-card__footer > .ds-dashboard-card__link .ds-btn__icon--end { transition: none; }
+    .ds-dashboard-card:has(> .ds-card__footer > .ds-dashboard-card__link:active) { transform: none; }
+  }
+
+  /* ── DashboardCardList: laid out for the number of cards it HOLDS ─────────────
+     A card with nothing to show is not drawn, so the list cannot assume a count. Each count
+     has its own arrangement and none leaves a hole. */
+  .ds-dashboard-cards {
+    container-type: inline-size;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--sa-stack-20);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ds-dashboard-cards > li { display: flex; min-width: 0; grid-column: span 4; }
+  .ds-dashboard-cards--n1 > li { grid-column: span 12; }
+  .ds-dashboard-cards:is(.ds-dashboard-cards--n2, .ds-dashboard-cards--n4, .ds-dashboard-cards--n5) > li:nth-child(1) { grid-column: span 7; }
+  .ds-dashboard-cards:is(.ds-dashboard-cards--n2, .ds-dashboard-cards--n4, .ds-dashboard-cards--n5) > li:nth-child(2) { grid-column: span 5; }
+  .ds-dashboard-cards--n4 > li:nth-child(n + 3) { grid-column: span 6; }
+  .ds-dashboard-cards > li > * { flex: 1; min-width: 0; }
+
+  /* A card another part of the page jumps to lands below the sticky header, not under it. */
+  .ds-dashboard-cards > li[id] {
+    scroll-margin-block-start: calc(var(--sa-header-bottom, var(--sa-stack-0)) + var(--sa-stack-24));
+  }
+
+  /* `lead`: two cards in the first row — the first, which carries a map, wider — and the rest
+     in the next. Other counts follow the same idea: no hole, the map card never squeezed. */
+  .ds-dashboard-cards.ds-dashboard-cards--lead > li:nth-child(1) { grid-column: span 7; }
+  .ds-dashboard-cards.ds-dashboard-cards--lead > li:nth-child(2) { grid-column: span 5; }
+  .ds-dashboard-cards.ds-dashboard-cards--lead > li:nth-child(n + 3) { grid-column: span 4; }
+  .ds-dashboard-cards.ds-dashboard-cards--lead.ds-dashboard-cards--n4 > li:nth-child(n + 3) { grid-column: span 6; }
+  .ds-dashboard-cards.ds-dashboard-cards--lead.ds-dashboard-cards--n3 > li:nth-child(1) { grid-column: span 12; }
+  .ds-dashboard-cards.ds-dashboard-cards--lead.ds-dashboard-cards--n3 > li:nth-child(n + 2) { grid-column: span 6; }
+  .ds-dashboard-cards.ds-dashboard-cards--lead.ds-dashboard-cards--n2 > li:nth-child(n) { grid-column: span 6; }
+  /* One card takes the width in either arrangement. */
+  .ds-dashboard-cards.ds-dashboard-cards--lead.ds-dashboard-cards--n1 > li:nth-child(n) { grid-column: span 12; }
+
+  @media (max-width: 1279px) {
+    .ds-dashboard-cards:not(.ds-dashboard-cards--n3) > li:nth-child(n) { grid-column: span 6; }
+    .ds-dashboard-cards:is(.ds-dashboard-cards--n1, .ds-dashboard-cards--n3, .ds-dashboard-cards--n5) > li:nth-child(1) { grid-column: span 12; }
+    .ds-dashboard-cards--n3 > li:nth-child(n + 2) { grid-column: span 6; }
+    .ds-dashboard-cards.ds-dashboard-cards--lead > li:nth-child(n) { grid-column: span 6; }
+    .ds-dashboard-cards.ds-dashboard-cards--lead > li:nth-child(1) { grid-column: span 12; }
+  }
+
+  @media (max-width: 767px) {
+    /* As specific as the count rules above, and later, so one column wins on a phone. */
+    .ds-dashboard-cards:is(.ds-dashboard-cards--n1, .ds-dashboard-cards--n2, .ds-dashboard-cards--n3, .ds-dashboard-cards--n4, .ds-dashboard-cards--n5) > li:nth-child(n) { grid-column: span 12; }
+    .ds-dashboard-cards.ds-dashboard-cards--lead:is(.ds-dashboard-cards--n2, .ds-dashboard-cards--n3, .ds-dashboard-cards--n4, .ds-dashboard-cards--n5) > li:nth-child(n) { grid-column: span 12; }
+  }
+
+  /* PLACED NARROWER THAN THE PAGE. The viewport rules above are the dashboard's own, measured
+     at full page width; these answer to the component's OWN width, so it lays out the same in
+     a docs specimen, a side column or a modal. Thresholds sit below every width the component
+     takes on the dashboard at the matching viewport (measured 9 Oct 2026), so they never fire
+     there. */
+  @container (max-width: 999px) {
+    .ds-dashboard-cards:not(.ds-dashboard-cards--n3) > li:nth-child(n) { grid-column: span 6; }
+    .ds-dashboard-cards:is(.ds-dashboard-cards--n1, .ds-dashboard-cards--n3, .ds-dashboard-cards--n5) > li:nth-child(1) { grid-column: span 12; }
+    .ds-dashboard-cards--n3 > li:nth-child(n + 2) { grid-column: span 6; }
+    .ds-dashboard-cards.ds-dashboard-cards--lead > li:nth-child(n) { grid-column: span 6; }
+    .ds-dashboard-cards.ds-dashboard-cards--lead > li:nth-child(1) { grid-column: span 12; }
+  }
+
+  @container (max-width: 559px) {
+    /* As specific as the count rules above, and later, so one column wins on a phone. */
+    .ds-dashboard-cards:is(.ds-dashboard-cards--n1, .ds-dashboard-cards--n2, .ds-dashboard-cards--n3, .ds-dashboard-cards--n4, .ds-dashboard-cards--n5) > li:nth-child(n) { grid-column: span 12; }
+    .ds-dashboard-cards.ds-dashboard-cards--lead:is(.ds-dashboard-cards--n2, .ds-dashboard-cards--n3, .ds-dashboard-cards--n4, .ds-dashboard-cards--n5) > li:nth-child(n) { grid-column: span 12; }
+  }
+}

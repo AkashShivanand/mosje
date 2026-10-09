@@ -1,20 +1,22 @@
 "use client";
 
-import { DashboardGrid, KpiRow, type MetricCardProps } from "@mosje/design-system";
+import { DashboardGrid, KpiRow, KpiView, isKpiTile, type MetricCardProps, type ValueOrigin } from "@mosje/design-system";
 import { FigureSource, noteForReading } from "@/components/website/FigureSource";
 import { OriginChip } from "@/components/website/ProvenanceChip";
 import { cardStateFor, useDataMode } from "@/lib/data-mode/context";
 import { isoDate } from "@/lib/kpi/format";
 import type { KpiDefinition, KpiReading, PortalReading } from "@/lib/kpi/types";
-import { KpiChart, isTile } from "../KpiCard";
 import { closeRows } from "../PortalKpiDashboard";
 import { COMPONENT_SHORT, formatHeadline, headlineOf, mergeFundCharts } from "./model";
 import { compact } from "./story";
 
+/** The page's mark for a figure's origin, drawn by `KpiView` beside the title. */
+const renderOrigin = (origin: ValueOrigin) => <OriginChip origin={origin} />;
+
 /**
  * The proposed dashboard's two shapes of KPI — a figure tile and a chart card.
  *
- * DS Audit: KpiRow / MetricCard ✅ · ChartCard (via KpiChart) ✅ · DashboardGrid ✅ ·
+ * DS Audit: KpiRow / MetricCard ✅ · KpiView ✅ · DashboardGrid ✅ ·
  * ProvenanceChip ✅ (app) · FigureSource ✅ (app).
  *
  * WHAT A FIGURE MEANS IS ON THE TILE; WHERE IT CAME FROM IS ONE CONTROL AWAY. The tile's
@@ -110,8 +112,8 @@ export function KpiBlocks({ kpis: listed, reading: read, areasAreStates, heading
   let index = startIndex;
   const cardOf = () => ({ ...cardStateFor(demo, index++), onRetry: () => demo.setPreview("normal") });
 
-  const tiles = kpis.filter((k) => isTile(reading[k.id]!));
-  const charts = kpis.filter((k) => !isTile(reading[k.id]!));
+  const tiles = kpis.filter((k) => isKpiTile(reading[k.id]!));
+  const charts = kpis.filter((k) => !isKpiTile(reading[k.id]!));
   /*
    * A FEW FIGURES AND THEIR CHART SHARE A ROW (design review, 7 Oct 2026). Up to three tiles
    * beside a single chart stack in a third of the row, and the chart takes the rest.
@@ -177,7 +179,7 @@ export function KpiBlocks({ kpis: listed, reading: read, areasAreStates, heading
         <DashboardGrid>
           {side ? <KpiRow span={4} className="pd-tile-stack" items={tiles.map(tileProps)} /> : null}
           {charts.map((k, i) => (
-            <KpiChart
+            <KpiView
               key={k.id}
               kpi={k}
               reading={reading[k.id]!}
@@ -190,6 +192,7 @@ export function KpiBlocks({ kpis: listed, reading: read, areasAreStates, heading
               quiet
               stateMap="choropleth"
               badge={<FigureSource note={noteOf(k, reading[k.id]!)} />}
+              renderOrigin={renderOrigin}
             />
           ))}
         </DashboardGrid>

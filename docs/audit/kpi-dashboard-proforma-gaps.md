@@ -328,3 +328,29 @@ row).**
 - **Projects definition.** Confirm RRTCs count as projects assisted under IPSrC.
 - **SAGE.** SCW1 has no API for Start-ups Supported; the SCW tab named an admin endpoint. Which
   application status counts as "supported" is still open.
+
+## 15. The dashboard's parts join the design system (9 Oct 2026)
+
+**Instruction, 9 Oct 2026:** what was built for this dashboard goes into the design system, as
+components or a template, so it can be reused wherever it applies. Figma follows in the next pass
+(owner's choice: code now, Figma next).
+
+| Was (local to this dashboard) | Now (`@mosje/design-system`) |
+|---|---|
+| `DashboardTile`, Education's `Tile`, the `pd-bento` grid | `DashboardCard`, `DashboardCardList` |
+| The At a Glance hero | `HeadlineBand` |
+| `StoryHeader` | `DashboardHeader` |
+| `StateBreakdown`; the landing page's map and Highest / Lowest panel | `AreaBreakdown`; `AreaExplorer` |
+| `SegmentedButtons` (ButtonGroup + `aria-pressed`) | `SegmentedControl variant="buttons"` — a radio group: one tab stop, arrows select |
+| `KpiCard.tsx`'s `KpiChart`, `isTile`; the reading types and formatters | `KpiView`, `isKpiTile`; `KpiReading` and the rest, re-exported by `lib/kpi/types.ts` and `format.ts` |
+| `ProposedDashboard`'s area bar, back link and focus move | `DashboardScreen`, the nineteenth screen template |
+
+**Nothing on screen changed.** Twenty views (landing, Department, five programmes, the sign-in
+view, the DBIM and Classic designs; 1440 and 390 wide) were captured before and after and
+compared pixel by pixel. Twelve are identical; in the other eight the only differences are NMBA's
+live figures, which moved between the two captures (41.22 → 41.23 lakh pledges). Behaviour was
+checked in a browser: the segmented switch takes arrow keys, a click anywhere on a card opens its
+dashboard, focus lands on the new view's heading, the map pick fills the panel.
+
+**Open: the Figma masters.** None of the seven has a master in the SAMAVESH library yet. Each
+documentation page says so; the next pass draws them, adds Code Connect and the Index cards.

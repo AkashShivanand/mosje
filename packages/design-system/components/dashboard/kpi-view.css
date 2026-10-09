@@ -1,0 +1,62 @@
+/*
+ * KpiView. Moved from the website dashboard's own stylesheet (`kpi-dashboard.css`, Oct 2026)
+ * when the renderer joined the design system; the rules are those that shipped there, renamed.
+ */
+@layer theme, base, components, utilities;
+
+@layer components {
+  .ds-kpi-view__marks {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-inline-8);
+  }
+
+  /* A ring reads at a glance at this size; wider only makes it louder. */
+  .ds-kpi-view__donut {
+    max-width: 360px; /* layout geometry */
+    margin-inline: auto;
+  }
+
+  /* A ring with its legend beside it, on a card the width of the page: the ring keeps a
+     ring's size and sits centred with its legend, rather than growing to half the page. */
+  .ds-kpi-view__donut-side.ds-chart--donut-side {
+    grid-template-columns: minmax(0, 18rem) minmax(0, 24rem); /* layout geometry */
+    justify-content: center;
+  }
+
+  /* A section's one figure at the head of the chart it summarises. */
+  .ds-kpi-view__headline {
+    margin-block-end: var(--sa-stack-16);
+  }
+
+  /* A difference against a minimum reads as compliance, in words with an icon, so the colour
+     is never the only cue (WCAG 1.4.1). Amber, not red, for a shortfall. */
+  .ds-kpi-view__against {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    font-weight: var(--sa-font-weight-medium);
+  }
+
+  .ds-kpi-view__against--meets {
+    color: var(--sa-text-status-success-bolder);
+  }
+
+  .ds-kpi-view__against--short {
+    color: var(--sa-text-status-warning-bolder);
+  }
+
+  /* A State/UT reading: the map, and the same figures ranked beside it. */
+  .ds-kpi-view__map-split {
+    display: grid;
+    gap: var(--sa-stack-24);
+    align-items: start;
+  }
+
+  @media (min-width: 1024px) {
+    .ds-kpi-view__map-split {
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    }
+  }
+}

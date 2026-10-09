@@ -7,213 +7,20 @@
 @layer theme, base, components, utilities;
 
 @layer components {
-  .pd,
   .pd-story,
-  .pd-section,
-  .pd-panel {
+  .pd-section {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     min-width: 0;
   }
 
-  .pd { gap: var(--sa-stack-20); }
   .pd-story { gap: var(--sa-stack-56); }
   .pd-section { gap: var(--sa-stack-20); }
-
-  /* ── The area bar ────────────────────────────────────────────────────────── */
-  .pd-bar {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: var(--sa-stack-12);
-  }
-
-  .pd-bar__where {
-    display: grid;
-    margin: 0;
-    color: var(--sa-text-neutral-bolder);
-    font-size: var(--sa-type-title-1-size);
-    line-height: var(--sa-type-title-1-lh);
-    font-weight: var(--sa-font-weight-semibold);
-  }
-
-  .pd-bar__label {
-    color: var(--sa-text-neutral-subtle);
-    font-size: var(--sa-type-label-2-size);
-    line-height: var(--sa-type-label-2-lh);
-    font-weight: var(--sa-font-weight-medium);
-  }
-
-  /* The toolbar's controls, on one baseline at the right: Type of Applicant, State / UT,
-     Officer Login. They wrap under "Figures for" on a narrow screen. */
-  .pd-bar__controls {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    gap: var(--sa-stack-12);
-  }
-
-  .pd-bar__applicant {
-    display: grid;
-    gap: var(--sa-stack-4);
-    inline-size: 20rem; /* layout geometry: the multi-select's field, wide enough for two chosen groups */
-    max-inline-size: 100%;
-  }
-
-  /* The same label State / UT's FilterSelect draws, so the two read as one row. */
-  .pd-bar__control-label {
-    color: var(--sa-text-neutral-subtle);
-    font-size: var(--sa-type-label-2-size);
-    line-height: var(--sa-type-label-2-lh);
-    font-weight: var(--sa-font-weight-medium);
-  }
-
-  /* ── 1 · The hero panel ──────────────────────────────────────────────────── */
-  .pd-hero__body {
-    display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-    gap: var(--sa-stack-40);
-    align-items: center;
-    padding: var(--sa-padding-40);
-  }
-
-  .pd-hero__side {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--sa-stack-24) var(--sa-stack-32);
-    margin: 0;
-    padding: 0 0 0 var(--sa-padding-32);
-    border-inline-start: var(--sa-stroke-1) solid color-mix(in srgb, var(--sa-text-neutral-inverse) 35%, transparent);
-    list-style: none;
-  }
-
-  /* A hero figure that leads a card below is a link to it. */
-  .pd-hero__jump {
-    display: block;
-    color: inherit;
-    text-decoration: none;
-    border-radius: var(--sa-shape-8);
-  }
-
-  .pd-hero__jump:hover {
-    text-decoration: underline;
-  }
-
-  .pd-hero__jump:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
-    outline-offset: var(--sa-focus-offset);
-  }
-
-  /* A card a hero figure jumps to lands below the sticky header, not under it. */
-  [id^="pd-card-"] {
-    scroll-margin-block-start: calc(var(--sa-header-bottom, var(--sa-stack-0)) + var(--sa-stack-24));
-  }
-
-  /* One figure beside the lead takes the column, not half of it. */
-  .pd-hero__side--one { grid-template-columns: minmax(0, 1fr); }
-
-  .pd-hero__intro {
-    display: grid;
-    gap: var(--sa-stack-16);
-    justify-items: start;
-  }
-
-  .pd-hero__brand {
-    display: flex;
-    align-items: center;
-    gap: var(--sa-stack-16);
-  }
-
-  .pd-hero__mark {
-    display: inline-flex;
-    padding: var(--sa-padding-8);
-    border-radius: var(--sa-shape-12);
-    background: var(--sa-bg-neutral-base);
-  }
-
-  .pd-hero__summary,
-  .pd-hero__meta {
-    margin: 0;
-    max-width: 60ch; /* layout geometry: the prose measure */
-    color: var(--sa-text-neutral-inverse);
-    font-size: var(--sa-type-body-1-size);
-    line-height: var(--sa-type-body-1-lh);
-    font-weight: var(--sa-font-weight-regular);
-  }
-
-  .pd-hero__meta {
-    font-size: var(--sa-type-body-3-size);
-    line-height: var(--sa-type-body-3-lh);
-  }
 
   .pd-back {
     justify-self: start;
   }
 
-  /* ── A Department or portal page's head (`StoryHeader`) ──────────────────────
-     Whose dashboard, what the scheme does, the period: no figures, which the cards below
-     carry with their definitions (instruction, 7 Oct 2026). */
-  .pd-head__body {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: var(--sa-stack-16) var(--sa-stack-32);
-    align-items: start;
-    padding: var(--sa-padding-32);
-  }
-
-  .pd-head__brand {
-    display: flex;
-    align-items: center;
-    gap: var(--sa-stack-16);
-    min-width: 0;
-  }
-
-  .pd-head__action {
-    align-self: center;
-  }
-
-  .pd-head__text {
-    grid-column: 1 / -1;
-    display: grid;
-    gap: var(--sa-stack-8);
-  }
-
-  /* The period and the body that runs the portal: one line where the row allows. */
-  .pd-head .pd-hero__meta {
-    max-width: none;
-  }
-
-  /* ── The bento: laid out for the number of tiles it HOLDS ───────────────────
-     A tile with nothing to show is not drawn, so the grid cannot assume five. Each
-     count has its own arrangement and none leaves a hole: two lead (7 + 5) and the
-     rest share a row, three share a row, one takes the width. */
-  .pd-bento {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: var(--sa-stack-20);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .pd-bento > li { display: flex; min-width: 0; grid-column: span 4; }
-  .pd-bento--n1 > li { grid-column: span 12; }
-  .pd-bento:is(.pd-bento--n2, .pd-bento--n4, .pd-bento--n5) > li:nth-child(1) { grid-column: span 7; }
-  .pd-bento:is(.pd-bento--n2, .pd-bento--n4, .pd-bento--n5) > li:nth-child(2) { grid-column: span 5; }
-  .pd-bento--n4 > li:nth-child(n + 3) { grid-column: span 6; }
-  .pd-bento > li > * { flex: 1; min-width: 0; }
-
-  /* The portals: two cards in the first row — NMBA (the tile with a map) wider, then SMILE –
-     Beggary — and three in the next (design review, 6 Oct 2026: NMBA alone in a row left half
-     the row empty). Other counts follow the same idea: no hole, the map card never squeezed. */
-  .pd-bento.pd-bento--portals > li:nth-child(1) { grid-column: span 7; }
-  .pd-bento.pd-bento--portals > li:nth-child(2) { grid-column: span 5; }
-  .pd-bento.pd-bento--portals > li:nth-child(n + 3) { grid-column: span 4; }
-  .pd-bento.pd-bento--portals.pd-bento--n4 > li:nth-child(n + 3) { grid-column: span 6; }
-  .pd-bento.pd-bento--portals.pd-bento--n3 > li:nth-child(1) { grid-column: span 12; }
-  .pd-bento.pd-bento--portals.pd-bento--n3 > li:nth-child(n + 2) { grid-column: span 6; }
-  .pd-bento.pd-bento--portals.pd-bento--n2 > li:nth-child(n) { grid-column: span 6; }
   /* THE DEPARTMENT LEADS (instruction, 7 Oct 2026): its card first and across the row, its
      trend line beside its four figures, so it reads as the Department over its portals; the
      portals' own grid follows it. */
@@ -297,110 +104,10 @@
 
   /* Wide screens only: on a phone the map and the figures stack (the 767px rule below). */
   @media (min-width: 768px) {
-    .pd-bento--portals .pd-tile--nmba .pd-tile__split {
+    .ds-dashboard-cards--lead .pd-tile--nmba .pd-tile__split {
       grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
       align-items: center;
     }
-  }
-
-  .pd-tile__titles { min-width: 0; }
-
-  /* "View Dashboard" STARTS ON THE CARD'S CONTENT EDGE (feedback, 7 Oct 2026). A text button
-     carries its own inline padding, which set the label 16px in from the figures above it and
-     read as misaligned. */
-  .pd-tile > .ds-card__footer > .ds-btn--text {
-    position: static;
-    padding-inline-start: 0;
-  }
-
-  /* THE WHOLE CARD OPENS ITS DASHBOARD (instruction, 7 Oct 2026). Each card has one
-     destination, so its one link is stretched over the card: a reader can press anywhere,
-     a screen reader still meets one named link, and the keyboard one tab stop. What is
-     interactive inside the card — a map's states, a chart's marks, a source note — sits above
-     the stretch and keeps its own behaviour. */
-  .pd-tile { position: relative; }
-
-  /* Every geometry property is set, not only `inset`: under a coarse pointer the design
-     system draws a 44px target on this same pseudo-element — centred by a translate, sized
-     by width and height — and any of those left standing moves the card's target off the
-     card. The card is bigger than 44px, so the thumb loses nothing. */
-  .pd-tile > .ds-card__footer > .ds-btn--text::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    width: auto;
-    height: auto;
-    min-width: 0;
-    min-height: 0;
-    transform: none;
-    border-radius: inherit;
-  }
-
-  .pd-tile > .ds-card__body :is(a, button, [tabindex]:not([tabindex="-1"]), .ds-chart__mark, .ds-chart:has([tabindex])) {
-    position: relative;
-    z-index: var(--sa-z-raised);
-  }
-
-  /* Pressed anywhere, the card answers as one: its edge firms, the label underlines — the
-     label only, never the arrow (feedback, 7 Oct 2026) — and the arrow leans toward where
-     it goes. The pill a text button fills on hover would now meet the card's border. */
-  /* The sides and foot only: the top edge is the dashboard's colour and stays it. */
-  .pd-tile:has(> .ds-card__footer > .ds-btn--text:hover) {
-    border-inline-color: var(--sa-border-neutral-bolder-hover);
-    border-block-end-color: var(--sa-border-neutral-bolder-hover);
-  }
-
-  .pd-tile > .ds-card__footer > .ds-btn--text:is(:hover, :active) {
-    background-color: transparent;
-  }
-
-  /* THE PRESS BELONGS TO THE CARD, NOT THE BUTTON. The design system's press scales a button
-     to 0.97, and a transformed button becomes the stretched area's containing block: on
-     pointer-down the card-wide target shrank to the button, the pointer came up outside it,
-     and no click fired. The card takes a gentler press instead. */
-  .pd-tile > .ds-card__footer > .ds-btn--text:active {
-    transform: none;
-  }
-
-  .pd-tile {
-    transition: transform 100ms ease-out;
-  }
-
-  .pd-tile:has(> .ds-card__footer > .ds-btn--text:active) {
-    transform: scale(0.995);
-  }
-
-  .pd-tile > .ds-card__footer > .ds-btn--text:hover .pd-tile__cta {
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
-  }
-
-  .pd-tile > .ds-card__footer > .ds-btn--text .ds-btn__icon--end {
-    transition: transform 150ms ease-out;
-  }
-
-  .pd-tile > .ds-card__footer > .ds-btn--text:hover .ds-btn__icon--end {
-    transform: translateX(var(--sa-padding-2));
-  }
-
-  /* The keyboard sees the same thing the pointer does: the whole card ringed. */
-  .pd-tile:has(> .ds-card__footer > .ds-btn--text:focus-visible) {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-    outline-offset: var(--sa-focus-width);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .pd-tile,
-    .pd-tile > .ds-card__footer > .ds-btn--text .ds-btn__icon--end { transition: none; }
-    .pd-tile:has(> .ds-card__footer > .ds-btn--text:active) { transform: none; }
-  }
-
-  .pd-tile__body {
-    display: grid;
-    /* minmax(0, …): a trend line's intrinsic width must not push the column past the card. */
-    grid-template-columns: minmax(0, 1fr);
-    align-content: start;
-    gap: var(--sa-stack-20);
   }
 
   /* NMBA: the tile map beside its four figures. */
@@ -420,7 +127,7 @@
 
   /* A lone tile spans the page; its map keeps a tile's size, not a page's, so it does not
      restate the full map in the Where section below it. */
-  .pd-bento--n1 .pd-tile__split { grid-template-columns: minmax(0, 32rem) minmax(0, 1fr); } /* layout geometry */
+  .ds-dashboard-cards--n1 .pd-tile__split { grid-template-columns: minmax(0, 32rem) minmax(0, 1fr); } /* layout geometry */
 
   .pd-trend {
     display: grid;
@@ -431,7 +138,7 @@
 
   /* Inside a live card (Hostels and Top Class Education), the line keeps clear of the figure
      above it; in a tile the body's own gap does this. */
-  .pd-trend:not(.pd-tile__body > .pd-trend) {
+  .pd-trend:not(.ds-dashboard-card__body > .pd-trend) {
     padding-block-start: var(--sa-stack-8);
   }
 
@@ -506,13 +213,12 @@
 
   /* A programme page's State/UT map card: the map held to a map's size beside its ranked list,
      so the two halves stand about one height (as the landing page's State/UT section). */
-  .pd-story .kd-map-split {
+  .pd-story .ds-kpi-view__map-split {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     align-items: start;
   }
 
-  .pd-story .kd-map-split > .ds-chart,
-  .pd-where__map .ds-chart {
+  .pd-story .ds-kpi-view__map-split > .ds-chart {
     max-inline-size: 32rem; /* layout geometry: a map's size, not the column's */
     margin-inline: auto;
   }
@@ -567,14 +273,6 @@
     gap: var(--sa-stack-8);
   }
 
-  /* A programme's State/UT figures: the map, and the same figures ranked beside it. */
-  .pd-states {
-    display: grid;
-    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-    gap: var(--sa-stack-24);
-    align-items: start;
-  }
-
   .pd-spark {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -604,37 +302,6 @@
   }
 
   .pd-funds--one { grid-template-columns: minmax(0, 1fr); }
-
-  /* ── Where: the map, and the chosen State/UT beside it ───────────────────── */
-  .pd-where {
-    display: grid;
-    /* The map and its panel in equal halves, the map held to a map's size and centred, so the
-       two cards stand about one height (design review, 7 Oct 2026: a 760px map beside a 430px
-       panel left a third of the row empty). Figma Option B had the map at 772 wide. */
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: var(--sa-stack-24);
-    align-items: stretch;
-  }
-
-  .pd-extremes {
-    display: flex;
-    flex-direction: column;
-    gap: var(--sa-stack-20);
-  }
-
-  .pd-extremes__group {
-    display: flex;
-    flex-direction: column;
-    gap: var(--sa-stack-12);
-  }
-
-  .pd-extremes__label {
-    margin: 0;
-    color: var(--sa-text-neutral-subtle);
-    font-size: var(--sa-type-body-2-size);
-    line-height: var(--sa-type-body-2-lh);
-    font-weight: var(--sa-font-weight-semibold);
-  }
 
   /* The sign-in page: one card, centred on a quiet ground, at a sign-in form's width. The
      ground is what keeps a narrow card from reading as lost on a 1440 page. */
@@ -696,37 +363,15 @@
     margin-block-end: var(--sa-stack-16);
   }
 
-  /* A heading that receives focus after a move is a landmark for the reader, not a control. */
-  .pd-panel :is(h2, h3)[tabindex="-1"]:focus {
-    outline: none;
-  }
-
   /* ── Narrower ────────────────────────────────────────────────────────────── */
-  @media (max-width: 1279px) {
-    .pd-bento:not(.pd-bento--n3) > li:nth-child(n) { grid-column: span 6; }
-    .pd-bento:is(.pd-bento--n1, .pd-bento--n3, .pd-bento--n5) > li:nth-child(1) { grid-column: span 12; }
-    .pd-bento--n3 > li:nth-child(n + 2) { grid-column: span 6; }
-    .pd-bento.pd-bento--portals > li:nth-child(n) { grid-column: span 6; }
-    .pd-bento.pd-bento--portals > li:nth-child(1) { grid-column: span 12; }
-  }
-
   @media (max-width: 1023px) {
-    .pd-hero__body { grid-template-columns: minmax(0, 1fr); padding: var(--sa-padding-24); }
-    .pd-hero__side { padding: var(--sa-padding-24) 0 0; border-inline-start: 0; border-block-start: var(--sa-stroke-1) solid color-mix(in srgb, var(--sa-text-neutral-inverse) 35%, transparent); }
-    .pd-head__body { grid-template-columns: minmax(0, 1fr); padding: var(--sa-padding-24); }
-    .pd-where,
     .pd-funds { grid-template-columns: minmax(0, 1fr); }
   }
 
   @media (max-width: 767px) {
-    /* As specific as the count rules above, and later, so one column wins on a phone. */
-    .pd-bento:is(.pd-bento--n1, .pd-bento--n2, .pd-bento--n3, .pd-bento--n4, .pd-bento--n5) > li:nth-child(n) { grid-column: span 12; }
-    .pd-bento.pd-bento--portals:is(.pd-bento--n2, .pd-bento--n3, .pd-bento--n4, .pd-bento--n5, .pd-bento--n6) > li:nth-child(n) { grid-column: span 12; }
     .pd-pair { grid-template-columns: minmax(0, 1fr); }
     .pd-tile__split { grid-template-columns: minmax(0, 1fr); }
-    .pd-states { grid-template-columns: minmax(0, 1fr); }
     .pd-section-pair { grid-template-columns: minmax(0, 1fr); }
-    .pd-story .kd-map-split { grid-template-columns: minmax(0, 1fr); }
-    .pd-hero__side { grid-template-columns: minmax(0, 1fr); }
+    .pd-story .ds-kpi-view__map-split { grid-template-columns: minmax(0, 1fr); }
   }
 }

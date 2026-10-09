@@ -94,61 +94,8 @@
     justify-self: stretch;
   }
 
-  .kd-marks {
-    display: inline-flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--sa-inline-8);
-  }
-
-  /* A ring reads at a glance at this size; wider only makes it louder. */
-  .kd-donut {
-    max-width: 360px; /* layout geometry */
-    margin-inline: auto;
-  }
-
-  /* A ring with its legend beside it, on a card the width of the page: the ring keeps a
-     ring's size and sits centred with its legend, rather than growing to half the page
-     (the SMILE – Beggary handoff's Gender Distribution, Figma 8664:49263). */
-  .kd-donut-side.ds-chart--donut-side {
-    grid-template-columns: minmax(0, 18rem) minmax(0, 24rem); /* layout geometry */
-    justify-content: center;
-  }
-
-  /* A state reading: the map, and the same figures ranked beside it. */
-  /* A section's one figure at the head of the chart it summarises (proposed dashboard). */
-  .kd-chart-headline {
-    margin-block-end: var(--sa-stack-16);
-  }
-
-  /* DAPSC's mandated share is a minimum: the difference reads as compliance, in words with an
-     icon, so the colour is never the only cue (WCAG 1.4.1). Amber, not red, for a shortfall. */
-  .kd-against {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--sa-inline-4);
-    font-weight: var(--sa-font-weight-medium);
-  }
-
-  .kd-against--meets {
-    color: var(--sa-text-status-success-bolder);
-  }
-
-  .kd-against--short {
-    color: var(--sa-text-status-warning-bolder);
-  }
-
-  .kd-map-split {
-    display: grid;
-    gap: var(--sa-stack-24);
-    align-items: start;
-  }
-
-  @media (min-width: 1024px) {
-    .kd-map-split {
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-    }
-  }
+  /* KpiView's own rules (`.kd-marks`, `.kd-donut`, `.kd-map-split`, `.kd-against` …) moved to
+     the design system with it, Oct 2026 (`components/dashboard/kpi-view.css`). */
 
   /* ── Lists of portal dashboards (New and Classic designs) ─────────────────── */
   .kd-portals {

@@ -1,0 +1,89 @@
+/*
+ * AreaBreakdown and AreaExplorer. Moved from the website dashboard's own stylesheet
+ * (`proposed.css`, Oct 2026) when they joined the design system.
+ */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ── AreaBreakdown: the map, and the same figures ranked beside it ─────────── */
+  .ds-area-breakdown-frame,
+  .ds-area-explorer-frame { container-type: inline-size; }
+
+  .ds-area-breakdown {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    gap: var(--sa-stack-24);
+    align-items: start;
+  }
+
+  /* A new measure arrives rather than snapping in. */
+  @keyframes ds-area-arrive {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .ds-area-arrive {
+    animation: ds-area-arrive var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-area-arrive { animation: none; }
+  }
+
+  /* ── AreaExplorer: the map, and the chosen State/UT beside it ────────────────
+     The map and its panel in equal halves, the map held to a map's size and centred, so the
+     two cards stand about one height (a 760px map beside a 430px panel left a third of the
+     row empty). */
+  .ds-area-explorer {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--sa-stack-24);
+    align-items: stretch;
+  }
+
+  .ds-area-explorer__map .ds-chart {
+    max-inline-size: 32rem; /* layout geometry: a map's size, not the column's */
+    margin-inline: auto;
+  }
+
+  .ds-area-explorer__extremes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-20);
+  }
+
+  .ds-area-explorer__group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-12);
+  }
+
+  .ds-area-explorer__label {
+    margin: 0;
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  @media (max-width: 1023px) {
+    .ds-area-explorer { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  @media (max-width: 767px) {
+    .ds-area-breakdown { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  /* PLACED NARROWER THAN THE PAGE. The viewport rules above are the dashboard's own, measured
+     at full page width; these answer to the component's OWN width, so it lays out the same in
+     a docs specimen, a side column or a modal. Thresholds sit below every width the component
+     takes on the dashboard at the matching viewport (measured 9 Oct 2026), so they never fire
+     there. */
+  @container (max-width: 899px) {
+    .ds-area-explorer { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  @container (max-width: 559px) {
+    .ds-area-breakdown { grid-template-columns: minmax(0, 1fr); }
+  }
+}

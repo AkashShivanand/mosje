@@ -1,48 +1,52 @@
 "use client";
 
 import * as React from "react";
-import {
-  BarChart,
-  ChartCard,
-  DataTable,
-  DonutChart,
-  FunnelChart,
-  HeadlineFigure,
-  Icon,
-  IndiaMap,
-  IndiaTileMap,
-  LineChart,
-  RankedBarList,
-  type CardStateKind,
-  type DataProvenance,
-} from "@mosje/design-system";
-import { OriginChip } from "@/components/website/ProvenanceChip";
-import { compactCount, formatKpi, isoDate, kpiFormatter } from "@/lib/kpi/format";
-import type { KpiDefinition, KpiReading, KpiUnit } from "@/lib/kpi/types";
+import { Icon } from "../utilities/icon";
+import { HeadlineFigure } from "../data-display/headline-figure";
+import { DataTable } from "../data-display/data-table";
+import { BarChart } from "../data-display/charts/bar-chart";
+import { DonutChart } from "../data-display/charts/donut-chart";
+import { FunnelChart } from "../data-display/charts/funnel-chart";
+import { IndiaMap } from "../data-display/charts/india-map";
+import { IndiaTileMap } from "../data-display/charts/india-tile-map";
+import { LineChart } from "../data-display/charts/line-chart";
+import { RankedBarList } from "../data-display/charts/ranked-bar-list";
+import type { DataProvenance } from "../data-display/charts/types";
+import { ChartCard } from "./chart-card";
+import type { CardStateKind } from "./card-state";
+import { compactCount, formatKpi, isoDate, kpiFormatter } from "./kpi-format";
+import type { KpiReading, KpiSpec, KpiUnit, ValueOrigin } from "./kpi-types";
+import "./kpi-view.css";
 
 /**
- * One KPI, drawn by the shape of its reading — never by its name.
+ * MoSJE / SAMAVESH KpiView — one KPI, drawn by the SHAPE of its reading, never by its name.
  *
- * DS Audit: MetricCard ✅ · ChartCard ✅ · DonutChart ✅ · BarChart ✅ · LineChart ✅ ·
- * FunnelChart ✅ · IndiaMap ✅ · RankedBarList ✅ · DataTable ✅ · ProvenanceChip ✅ (app).
- * Nothing is drawn by hand: a new portal's KPIs render the day they are in the register.
+ * Built for the website's Beneficiary Dashboard (Oct 2026) and moved here so any dashboard
+ * draws a reading the same way. A breakdown is a ring or a ranked list, a series a line or
+ * bars, stages a funnel, a State/UT reading a map beside its ranked list, a table a table —
+ * each in a `ChartCard` carrying its source. A new portal's KPIs render the day they are in
+ * its register; nothing is drawn by hand.
  *
- * A figure (and a pair, and an area reading with no areas below it) is a TILE, drawn by
- * the dashboard as a `KpiRow` item; every other shape is a CHART CARD, drawn here. The dashboard puts the tiles of a section in one row
- * above its charts, so the reader meets the headline before the breakdown.
+ * A figure (and a pair, and an area reading with no areas below it) is a TILE, not a chart —
+ * `isKpiTile` says which — and a dashboard draws its tiles as a `KpiRow` above its charts, so
+ * the reader meets the headline before the breakdown. `KpiView` draws nothing for a tile.
  *
- * PROVENANCE, ON EVERY CARD. A live or snapshot figure names its source and the date it
- * is as on — the Department published it. A modelled figure carries the Illustrative chip, which the
- * demo rail's marks setting draws (`ProvenanceChip` holds that one gate).
+ * PROVENANCE, ON EVERY CARD. A live, received or snapshot figure names its source and the date
+ * it is as on. Anything else about origin — an "Illustrative" mark — is the caller's, through
+ * `renderOrigin`, because whether marks are shown is a page setting.
+ *
+ * DS Audit: ChartCard ✅ · DonutChart ✅ · BarChart ✅ · LineChart ✅ · FunnelChart ✅ ·
+ * IndiaMap ✅ · IndiaTileMap ✅ · RankedBarList ✅ · DataTable ✅ · HeadlineFigure ✅ · Icon ✅.
  */
 
-export interface KpiCardState {
+export interface KpiViewState {
   loading?: boolean;
   state?: CardStateKind;
   onRetry?: () => void;
 }
 
-export function isTile(reading: KpiReading): boolean {
+/** Whether a reading is a tile (`KpiRow`), not a chart (`KpiView`). */
+export function isKpiTile(reading: KpiReading): boolean {
   const v = reading.value;
   return v.kind === "figure" || v.kind === "pair" || (v.kind === "areas" && v.rows.length === 0);
 }
@@ -57,7 +61,7 @@ function provenanceOf(reading: KpiReading): DataProvenance | undefined {
  * STATUS BREAKDOWNS TAKE STATUS COLOURS (design review, 7 Oct 2026). A split by progress
  * ("In Progress / Completed / Discontinued") drawn in the categorical order put Completed in
  * red, which on this estate means rejected. Where every label is a known status, each takes
- * its meaning's colour; any other breakdown keeps the categorical order. Proposed dashboard only.
+ * its meaning's colour; any other breakdown keeps the categorical order. `quiet` only.
  */
 const STATUS_COLOUR: Record<string, string> = {
   completed: "var(--sa-icon-status-success-base)",
@@ -69,17 +73,50 @@ const STATUS_COLOUR: Record<string, string> = {
 const statusColour = (label: string) => STATUS_COLOUR[label.trim().toLowerCase()];
 
 /**
- * Series colours for the proposed dashboard's grouped bars: the categorical order without
+ * Series colours for `quiet` grouped bars: the categorical order without
  * its second slot, red, which reads as a fault beside a figure that is not one (R.E. beside
  * B.E., design review, 7 Oct 2026). The palette itself is SAMAVESH's to change; recorded.
  */
 const QUIET_SERIES = ["var(--sa-chart-cat-1)", "var(--sa-chart-cat-3)", "var(--sa-chart-cat-4)", "var(--sa-chart-cat-6)", "var(--sa-chart-cat-5)"];
 
-function chip(reading: KpiReading) {
-  return reading.origin === "snapshot" ? undefined : <OriginChip origin={reading.origin} />;
+export interface KpiViewProps {
+  kpi: KpiSpec;
+  reading: KpiReading;
+  card?: KpiViewState;
+  /** Whether an area reading's rows are States/UTs, which can be drawn on the map. */
+  areasAreStates: boolean;
+  /** @default 3 */
+  headingLevel?: 3 | 4;
+  /** A mark the page adds beside the title, e.g. "Officers Only". */
+  badge?: React.ReactNode;
+  /** The span the dashboard gives this card after closing its row; defaults to the KPI's own. */
+  span?: number;
+  /**
+   * `auto` sets a donut's legend beside the ring, with amounts, once the card is wider than
+   * half the grid — a lone donut on a full row otherwise floats in white space. @default "stacked"
+   */
+  donutLayout?: "stacked" | "auto";
+  /** How a States/UTs reading is mapped: the choropleth, or equal tiles. @default "choropleth" */
+  stateMap?: "choropleth" | "tiles";
+  /**
+   * The public dashboard's chart chrome: an outlined card at rest on the page, no Chart / Table
+   * switch — each chart keeps its table for screen readers — no download control, a two-part
+   * ring drawn as two bars against their whole, breakdowns largest first, status breakdowns in
+   * status colours, and red never used as a category. Off, the card is the analyst's: the
+   * switch, the download and the categorical order. @default false
+   */
+  quiet?: boolean;
+  /**
+   * A section's one figure, set at the head of the chart it summarises, in place of a lone
+   * figure card stretched to the chart's height beside it.
+   */
+  headline?: { value: string; label: string; detail?: string; mark?: React.ReactNode };
+  /** The mark for a reading's origin — an "Illustrative" chip. Not called for a snapshot. */
+  renderOrigin?: (origin: ValueOrigin) => React.ReactNode;
+  className?: string;
 }
 
-export function KpiChart({
+export function KpiView({
   kpi,
   reading,
   card,
@@ -91,39 +128,9 @@ export function KpiChart({
   stateMap = "choropleth",
   quiet = false,
   headline: given,
-}: {
-  kpi: KpiDefinition;
-  reading: KpiReading;
-  card?: KpiCardState;
-  /** Whether an area reading's rows are States/UTs, which can be drawn on the map. */
-  areasAreStates: boolean;
-  headingLevel?: 3 | 4;
-  /** A mark the officer view adds, e.g. "Officers Only". */
-  badge?: React.ReactNode;
-  /** The span the dashboard gives this card after closing its row; defaults to the KPI's own. */
-  span?: number;
-  /**
-   * `auto` sets a donut's legend beside the ring, with amounts, once the card is wider than
-   * half the grid — a lone donut on a full row otherwise floats in white space. The current
-   * dashboards keep the stacked legend. @default "stacked"
-   */
-  donutLayout?: "stacked" | "auto";
-  /** How a States/UTs reading is mapped: the choropleth, or equal tiles. @default "choropleth" */
-  stateMap?: "choropleth" | "tiles";
-  /**
-   * The proposed dashboard's chart chrome (instructions, 6–7 Oct 2026): an outlined card at
-   * rest on the page (`elevation/flat`, no shadow), no Chart / Table switch — each chart keeps
-   * its table for screen readers — no download control until its placement is decided, and a
-   * ring always with its legend beside it so it is no taller than the card next to it. Off,
-   * the card is as the current dashboard draws it.
-   */
-  quiet?: boolean;
-  /**
-   * A section's one figure, set at the head of the chart it summarises, in place of a lone
-   * figure card stretched to the chart's height beside it (design review, 7 Oct 2026).
-   */
-  headline?: { value: string; label: string; detail?: string; mark?: React.ReactNode };
-}) {
+  renderOrigin,
+  className,
+}: KpiViewProps) {
   const v = reading.value;
   let headline = given;
   const fmt = kpiFormatter(kpi.unit);
@@ -133,7 +140,7 @@ export function KpiChart({
   // viewBox with the span keeps the type the same size in every card.
   const finalSpan = span ?? kpi.span ?? 6;
   // A ring with its legend beside it: on a wide card, and on any half-width card of the
-  // proposed dashboard, where a stacked ring stood a third taller than the list beside it.
+  // `quiet` card, where a stacked ring stood a third taller than the list beside it.
   const side = donutLayout === "auto" && (finalSpan >= 8 || (quiet && finalSpan >= 6));
   const box = { width: Math.round(480 * Math.max(1, finalSpan / 6)), height: 280 };
   let body: React.ReactNode = null;
@@ -178,7 +185,7 @@ export function KpiChart({
             valueFormat={kpiFormatter(unit)}
             center={formatKpi(Math.round(total * 100) / 100, unit)}
             centerSub="in total"
-            className={side ? "kd-donut-side" : "kd-donut"}
+            className={side ? "ds-kpi-view__donut-side" : "ds-kpi-view__donut"}
             {...(side ? { layout: "side" as const, legendValue: "value" as const } : {})}
           />
         );
@@ -186,7 +193,7 @@ export function KpiChart({
         // A list of labelled bars, not a horizontal BarChart: the chart leaves 116px for a
         // label and truncates the rest ("Reunited with F…"), and at full width three bars
         // stand 280 units tall. The list carries the whole name and keeps its height.
-        // Largest first on the proposed dashboard: a breakdown's categories have no order of
+        // Largest first when `quiet`: a breakdown's categories have no order of
         // their own, and a sorted list is read top-down (design review, 7 Oct 2026).
         body = <RankedBarList title={kpi.name} items={data} valueFormat={kpiFormatter(unit)} sort={quiet ? "desc" : "none"} showRank={false} />;
       }
@@ -231,12 +238,12 @@ export function KpiChart({
       body = <FunnelChart title={kpi.name} stages={v.stages} valueFormat={fmt} />;
       break;
     case "areas": {
-      // Lakh and crore on the proposed dashboard, as its tiles and landing page print them.
+      // Lakh and crore when `quiet`, as a public dashboard's tiles print them.
       const areaFmt = quiet && kpi.unit === "number" ? compactCount : fmt;
       if (areasAreStates && kpi.unit !== "percent") {
         skeleton = "region";
         body = (
-          <div className="kd-map-split">
+          <div className="ds-kpi-view__map-split">
             {stateMap === "tiles" ? (
               <IndiaTileMap title={kpi.name} data={v.rows.map((r) => ({ state: r.area, value: r.value }))} valueFormat={fmt} scale="quantile" tableView={tableView} />
             ) : (
@@ -276,7 +283,7 @@ export function KpiChart({
                 const meets = cell >= 0;
                 const n = Math.abs(cell).toLocaleString("en-IN", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
                 return (
-                  <span className={meets ? "kd-against kd-against--meets" : "kd-against kd-against--short"}>
+                  <span className={meets ? "ds-kpi-view__against ds-kpi-view__against--meets" : "ds-kpi-view__against ds-kpi-view__against--short"}>
                     <Icon name={meets ? "check_circle" : "error"} size={16} />
                     {meets ? `Meets, +${n} ${against.unit}` : `Short by ${n} ${against.unit}`}
                   </span>
@@ -308,10 +315,10 @@ export function KpiChart({
       variant={quiet ? "outlined" : undefined}
       provenance={provenanceOf(reading)}
       actions={
-        badge || reading.origin !== "snapshot" ? (
-          <span className="kd-marks">
+        badge || (reading.origin !== "snapshot" && renderOrigin) ? (
+          <span className="ds-kpi-view__marks">
             {badge}
-            {chip(reading)}
+            {reading.origin !== "snapshot" ? renderOrigin?.(reading.origin) : null}
           </span>
         ) : undefined
       }
@@ -319,9 +326,10 @@ export function KpiChart({
       loading={card?.loading}
       state={card?.state}
       onRetry={card?.onRetry}
+      className={className}
     >
       {headline ? (
-        <HeadlineFigure className="kd-chart-headline" size="md" value={headline.value} label={headline.label} context={headline.detail} mark={headline.mark} />
+        <HeadlineFigure className="ds-kpi-view__headline" size="md" value={headline.value} label={headline.label} context={headline.detail} mark={headline.mark} />
       ) : null}
       {body}
     </ChartCard>

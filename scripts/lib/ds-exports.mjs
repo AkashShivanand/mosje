@@ -141,6 +141,11 @@ export const NOT_RENDERABLE_IN_STORYBOOK = new Set([
  * can see the claim is real.
  */
 export const DOCUMENTED_BY = {
+  // THE DASHBOARD FAMILIES (Oct 2026). Each pair is one idea documented once: the list
+  // exists only to lay out DashboardCards, and the explorer is the landing page's form of
+  // the State/UT panel — both pages show both members, running.
+  DashboardCardList: "Dashboard Card",
+  AreaExplorer: "Area Breakdown",
   // DOCUMENTED ON A FOUNDATION PAGE RATHER THAN A COMPONENT ROUTE. The gate
   // only scans `components/`, so these three read as undocumented while their
   // real documentation sits one directory across. Verified by counting actual
