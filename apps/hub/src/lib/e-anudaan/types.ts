@@ -496,6 +496,9 @@ export interface CostSheetLine {
   removed?: boolean;
   /** An item the officer added; it has no norm. */
   added?: boolean;
+  /** The Integrated Finance Division's figure for the item, where it recorded one, and why it differs. */
+  ifdProposed?: number;
+  ifdRemark?: string;
 }
 
 export interface CostSheet {
@@ -506,6 +509,8 @@ export interface CostSheet {
   choices: Record<string, string>;
   savedAt: string;
   savedBy: RoleId;
+  /** Carried across from the old portal as it was sanctioned there — read, never edited, here. */
+  historical?: boolean;
 }
 
 /** The scheme's budget position for this release, as the ASO records it before forwarding. */
@@ -545,6 +550,11 @@ export interface Inspection {
   submittedAt?: string;
   findings?: string;
   recommendation?: "Satisfactory" | "Needs improvement" | "Unsatisfactory";
+  /** What a PMU field visit recorded on the spot (dev portal read, 8 Oct 2026). */
+  located?: boolean;
+  functional?: boolean;
+  geoTag?: { lat: number; lng: number };
+  team?: string;
   /** An online (BharatVC) inspection an officer scheduled from the review screen. */
   title?: string;
   description?: string;

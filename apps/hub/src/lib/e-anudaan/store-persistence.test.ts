@@ -202,8 +202,11 @@ test("the seeded store fits in the browser with room for the applicant's work", 
   // review in (part-way and marked documents, a 2nd instalment, a file from the old portal with its
   // notings, forwarded, returned, with the NGO), and the 2nd instalment's own history (a new grant
   // and a 1st instalment, sanctioned and released, no document registers) — 2.04M → 2.14M.
+  // +22,000 on 09 Oct 2026 for an old-portal file still in progress (its notings, its cost sheet as
+  // the old portal had it with the finance division's figures, the PMU visit) and a NAPDDR file with
+  // a show-cause notice — 2.14M → 2.16M.
   const size = JSON.stringify(seed()).length;
-  assert.ok(size < 2_140_000, `seeded store is ${size.toLocaleString("en-IN")} characters`);
+  assert.ok(size < 2_160_000, `seeded store is ${size.toLocaleString("en-IN")} characters`);
 });
 
 test("a schema-11 copy is carried to 12: the NGO's own CCTV setups kept, seeded ones given their register", () => {

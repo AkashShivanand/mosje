@@ -175,6 +175,11 @@ export function worklistColumns(
           <Badge status={r.caseType === "New" ? "primary" : "neutral"} size="sm">
             {caseLabel(r)}
           </Badge>
+          {r.legacy && (
+            <Badge status="neutral" size="sm">
+              Old Portal
+            </Badge>
+          )}
         </span>
         <RefText value={r.id} className="mt-0.5 block font-mono text-body-3 text-ink-muted" />
       </span>
@@ -515,10 +520,14 @@ export const TYPE_FILTERS = [
   { value: "1", label: "1st Instalment" },
   { value: "2", label: "2nd Instalment" },
   { value: "3", label: "3rd Instalment" },
+  // The dev portal's ASO queue was 13,029 old-portal files over 7 days deep, burying new work
+  // (read of 8 Oct 2026): they are told apart, and can be set aside or looked at alone.
+  { value: "old", label: "From the Old Portal" },
 ] as const;
 
 export function matchesType(app: GrantApplication, type: string): boolean {
   if (!type) return true;
+  if (type === "old") return !!app.legacy;
   if (type === "New") return app.caseType === "New";
   return app.caseType === "Ongoing" && String(app.instalment) === type;
 }

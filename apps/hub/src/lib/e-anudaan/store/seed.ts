@@ -2010,6 +2010,11 @@ export function buildSeed(): {
     // as they do on the dev portal's sanctioned files (₹17,70,000 proposed, ₹17,00,000 sanctioned).
     const recommendation = [...costed.audit].reverse().find((e) => e.byRole === "pd-js" && e.action === "forward");
     if (recommendation) recommendation.amount = Math.round((sheetTotals(sheet, costed).proposed - 70000) / 1000) * 1000;
+    // The finance division's own figure per item, now that its Assistant Section Officer has seen it.
+    for (const l of costed.costSheet.lines) {
+      l.ifdProposed = l.proposed;
+      if (l.label.startsWith("Rent")) Object.assign(l, { ifdProposed: 150000, ifdRemark: "Limited to the rent agreement on file, ₹12,500 a month." });
+    }
 
     /*
      * 15. Every state the dev portal showed the ASO's NAPDDR review in (read of 8 Oct 2026), each on
@@ -2046,6 +2051,10 @@ export function buildSeed(): {
     // a. Part-way through the documents.
     const mid = tellOneStory(driveToChain(napddrFile(4, 11, DDAC, { sc: 4, other: 11, recurring: 6400000, nonRecurring: 300000 }), "pd", "aso", 7));
     mid.documents.slice(0, 5).forEach((d) => Object.assign(d, { reviewStatus: "Verified", reviewedBy: "pd-aso", reviewedAt: iso(1) }));
+    // One of them the officer verified although the automatic check found it not valid, and has
+    // not yet said why — the forward waits for that reason.
+    const overruled = mid.documents[1];
+    if (overruled) overruled.aiVerdict = demoVerdictFor("invalid", overruled.title, mid.financialYear);
     apps.push(mid);
 
     // b. Every document seen, one marked for correction.
@@ -2157,6 +2166,77 @@ export function buildSeed(): {
       ]),
     );
     apps.push(withNgo);
+
+    // h. Came across from the old portal still in progress: the PMU's field visit, the cost sheet as
+    //    the old portal had it with the finance division's figures, and the old notings with the
+    //    deficiencies it sent. Nothing was decided there, so it is reviewed here.
+    /** A project of the NGO's own with a numbered ID of its own — `projectFor` numbers by NGO and can meet a neighbour's. */
+    const ownSite = (ngo: NgoProfile, n: number): Institution => {
+      const place = PLACES.find((p) => p.district === ngo.district) ?? PLACES[0]!;
+      const inst: Institution = {
+        id: `DR/${place.code}/${(3670 + n).toString().padStart(5, "0")}`, name: "Integrated Rehabilitation Centre for Addicts", district: ngo.district, state: ngo.state,
+        nature: "Integrated Rehabilitation Centre for Addicts", type: "Co-Ed", level: "Secondary", building: "Owned", pin: "110001",
+      };
+      ngo.institutions.push(inst);
+      ngo.applicationCount = (ngo.applicationCount ?? 0) + 1;
+      return inst;
+    };
+    // The sheet first: the file's figures are the sheet's, as the old portal had them.
+    const old15 = seedSheet("IRCA-15", { recurringOnly: true });
+    const urban15 = old15.lines.find((l) => l.choice?.option === "Part Time, Urban");
+    if (urban15?.choice) old15.choices = { [urban15.choice.group]: urban15.id };
+    for (const l of old15.lines) l.ifdProposed = l.proposed;
+    const rent15 = old15.lines.find((l) => l.label.startsWith("Rent"));
+    if (rent15) Object.assign(rent15, { ifdProposed: Math.min(rent15.proposed, 150000), ifdRemark: "Limited to the rent agreement on file." });
+    let midway = fileAt(ngos[1]!, ownSite(ngos[1]!, 1), 60, IRCA);
+    const annual15 = sheetTotals(old15, midway).proposed;
+    const firstShare = Math.round((annual15 * 0.4) / 1000) * 1000;
+    midway = reshape(midway, { sc: 3, other: 12, recurring: annual15, nonRecurring: 0 });
+    Object.assign(midway, { id: "LGCY/00527", financialYear: "2025-26", caseType: "Ongoing" });
+    midway.formValues = {
+      ...midway.formValues,
+      case_type: "Ongoing / Renewal of an existing project",
+      fld_sanctioned_recurring: String(annual15),
+      fld_instalment_amount: String(firstShare),
+      fld_installment_no: "1st Instalment",
+      fld_ongoing_source_application: `${midway.institutionId} — ${midway.projectLabel.split(" · ")[0]}`,
+    };
+    midway.legacy = {
+      notings: [
+        { at: "2026-01-20T12:00:00.000Z", fromDesk: "Section Officer", deficiency: true, noting: "Provide the managing committee list for 2025-26, the rent agreement and the statement of expenditure for April to June 2025." },
+        { at: "2026-02-06T09:15:00.000Z", fromDesk: "Section Officer", deficiency: true, noting: "Provide a legible rent agreement and the annual action plan for 2025-26." },
+        { at: "2026-03-17T13:15:00.000Z", fromDesk: "Dealing Assistant", markedTo: "Section Officer", noting: "First instalment, 40% of the admissible grant, proposed for the Integrated Finance Division's concurrence.", recommendedAmount: firstShare },
+        { at: "2026-03-27T10:20:00.000Z", fromDesk: "Dealing Assistant, Integrated Finance Division", markedTo: "Section Officer, Integrated Finance Division", noting: "The utilisation certificate for the previous year is in order; may be concurred in.", recommendedAmount: firstShare },
+      ],
+    };
+    midway.costSheet = { ...old15, savedAt: "2026-03-17T13:15:00.000Z", savedBy: "pd-aso", historical: true };
+    const moved2 = driveToChain(midway, "pd", "aso", 45);
+    const filed2 = "2025-07-02T05:30:00.000Z";
+    moved2.submittedAt = filed2;
+    const sub2 = moved2.audit.find((e) => e.action === "submit");
+    if (sub2) sub2.at = filed2;
+    const visit = { id: nextId("insp"), applicationId: moved2.id, ngoId: moved2.ngoId, institutionId: moved2.institutionId, status: "Reviewed" as const, visitType: "Physical" as const, scheduledFor: "2025-07-07T05:30:00.000Z", submittedAt: "2025-07-07T11:00:00.000Z", recommendation: "Satisfactory" as const, located: true, functional: true, geoTag: { lat: 26.44027, lng: 73.026997 }, team: "PMU State Coordinator", findings: "Report carried across from the old portal: the centre was found and running, with residents in the wards." };
+    inspections.push(visit);
+    moved2.inspectionId = visit.id;
+    apps.push(tellOneStory(moved2));
+
+    // i. A show-cause notice on a NAPDDR file, answered by the NGO: issued by the Section Officer,
+    //    with a reply date after the issue date (the dev portal's ran the other way).
+    let scn = driveToChain(reshape(fileAt(ngos[2]!, ownSite(ngos[2]!, 2), 20, DDAC), { sc: 4, other: 10, recurring: 6200000, nonRecurring: 300000 }), "pd", "aso", 15);
+    scn.showCauseNotices = [
+      {
+        id: nextId("scn"),
+        issuedBy: "pd-so",
+        issuedAt: iso(12),
+        grounds: "The staff list filed with the application names two counsellors who are on the staff list of another grantee's centre for the same months. Explain.",
+        respondByDays: 15,
+        respondBy: iso(-3).slice(0, 10),
+        response: "Both counsellors moved to our centre on 1 July; their relieving letters are attached.",
+        respondedAt: iso(6),
+      },
+    ];
+    scn = tellOneStory(scn);
+    apps.push(scn);
   }
 
   /*

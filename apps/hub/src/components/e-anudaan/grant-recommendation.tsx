@@ -108,15 +108,28 @@ type Draft = Omit<CostSheet, "savedAt" | "savedBy">;
 /** An ongoing project is costed on its recurring heads only; its one-time set-up came with its first sanction. */
 const seedOpts = (app: GrantApplication) => ({ recurringOnly: app.caseType === "Ongoing" });
 
+/**
+ * A shape, never rendered: the draft of a file with no norms to cost against. The card mounts on
+ * every file whose review shows a Grant tab — AVYAY's too — and returns nothing for these, but its
+ * state is set up first, and seeding a sheet from no schedule threw and took the page down
+ * (every AVYAY review, 7–9 Oct 2026).
+ */
+const NO_SHEET: Draft = { schedule: "DDAC", lines: [], choices: {} };
+
 /** The sheet as the file holds it, or a fresh one at the norm. */
 function draftOf(app: GrantApplication): Draft {
-  if (!app.costSheet) return seedSheet(defaultSchedule(app)!, seedOpts(app));
+  const schedule = defaultSchedule(app);
+  if (!schedule) return NO_SHEET;
+  if (!app.costSheet) return seedSheet(schedule, seedOpts(app));
   return structuredClone({ schedule: app.costSheet.schedule, lines: app.costSheet.lines, choices: app.costSheet.choices });
 }
 
 const HEAD_LABEL: Record<CostHead, string> = { nonRecurring: "Non-Recurring (One-Time)", recurring: "Recurring (Annual)" };
 
-export function CostSheetCard({ app, editable }: { app: GrantApplication; editable: boolean }) {
+export function CostSheetCard({ app, editable: mayEdit }: { app: GrantApplication; editable: boolean }) {
+  // A sheet carried across from the old portal is the record of what was sanctioned there.
+  const historical = !!app.costSheet?.historical;
+  const editable = mayEdit && !historical;
   const { saveCostSheet } = useEAnudaan();
   const { toast } = useToast();
   const schedules = schedulesFor(app);
@@ -155,7 +168,9 @@ export function CostSheetCard({ app, editable }: { app: GrantApplication; editab
     }
   };
 
-  const state = !app.costSheet ? (
+  const state = historical ? (
+    <Badge status="neutral" size="sm">Old Portal</Badge>
+  ) : !app.costSheet ? (
     <Badge status="warning" size="sm">Not Saved</Badge>
   ) : changed && editable ? (
     <Badge status="warning" size="sm">Unsaved Changes</Badge>
@@ -169,7 +184,9 @@ export function CostSheetCard({ app, editable }: { app: GrantApplication; editab
         <SectionTitle
           title="Cost Sheet"
           description={
-            app.costSheet && !changed
+            historical
+              ? `${SCHEDULE_LABEL[draft.schedule]} · As sanctioned in the old e-Anudaan portal, shown read-only.`
+              : app.costSheet && !changed
               ? `${SCHEDULE_LABEL[draft.schedule]} · ${savedLine(app.costSheet.savedAt, app.costSheet.savedBy)}.`
               : `${SCHEDULE_LABEL[draft.schedule]} · Opens at the scheme's cost norm. Each head may be recommended up to the lower of its norm and the NGO's claim.`
           }
@@ -484,6 +501,13 @@ function ItemCell({
         )
       ) : (
         l.remark && <span className="block text-body-3 text-ink">Remark: {l.remark}</span>
+      )}
+      {/* The finance division's figure, read-only, where it recorded one (dev portal, 8 Oct 2026). */}
+      {l.ifdProposed != null && (
+        <span className={`block text-body-3 ${l.ifdProposed !== l.proposed ? "text-[var(--sa-text-status-warning-bolder)]" : "text-ink-muted"}`}>
+          Integrated Finance Division: <span className="tabular-nums">{rupees(l.ifdProposed)}</span>
+          {l.ifdRemark ? ` — ${l.ifdRemark}` : l.ifdProposed === l.proposed ? " — as proposed" : ""}
+        </span>
       )}
     </div>
   );

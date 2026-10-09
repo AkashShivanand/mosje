@@ -140,6 +140,8 @@ export function normLines(schedule: CostScheduleId): readonly NormLine[] {
  */
 export function schedulesFor(app: GrantApplication): CostScheduleId[] {
   if (app.schemeCode !== "NAPDDR") return [];
+  // Decided in the old portal: its grant was settled there, and there is nothing to cost again.
+  if (app.legacy?.decision) return [];
   const type = app.formValues?.fld_project_type ?? "";
   if (type.startsWith("DDAC")) return ["DDAC"];
   if (type === "IRCA — Integrated Rehabilitation Centre") return ["IRCA-15", "IRCA-30", "IRCA-50"];

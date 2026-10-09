@@ -570,6 +570,20 @@ export function InspectionsPanel({
                 <>
                   {inspectionLine(i)}
                   {i.description && <span className="block">{i.description}</span>}
+                  {/* What a field visit recorded on the spot, where it recorded it. */}
+                  {(i.located != null || i.functional != null || i.geoTag || i.team) && (
+                    <span className="block">
+                      {[
+                        i.team ? `Team: ${i.team}` : null,
+                        i.located != null ? `Organisation located: ${i.located ? "Yes" : "No"}` : null,
+                        i.functional != null ? `Functional: ${i.functional ? "Yes" : "No"}` : null,
+                        i.geoTag ? `Geo-tag ${i.geoTag.lat.toFixed(5)}, ${i.geoTag.lng.toFixed(5)}` : null,
+                      ]
+                        .filter(Boolean)
+                        .join(" · ")}
+                    </span>
+                  )}
+                  {i.findings && <span className="block">{i.findings}</span>}
                 </>
               }
               trailing={<Badge status={i.status === "Reviewed" || i.status === "Submitted" ? "success" : "info"} size="sm">{i.status}</Badge>}

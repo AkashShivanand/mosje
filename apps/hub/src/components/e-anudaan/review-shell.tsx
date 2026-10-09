@@ -62,6 +62,7 @@ import {
   awaitingVerdict,
   bulkVerifiable,
   correctedDocIds,
+  overruledWithoutReason,
   isFlagged,
   matchesReviewFilter,
   verdictProgress,
@@ -311,7 +312,10 @@ export function ReviewShell({ appId }: { appId: string }) {
   // on the certification, and the panel says which BEFORE the button is pressed (audit R-01).
   const certifyingSeat = holdsFile && role.caps.includes("certify");
   // The NAPDDR file's cost sheet and Statement of Account are the ASO's to save before forwarding.
-  const blockers: ForwardBlocker[] = certifyingSeat ? [...asoForwardBlockers(app), ...(docsEditable ? grantBlockers(app) : [])] : [];
+  const overruled = overruledWithoutReason(app, checkOf);
+  const blockers: ForwardBlocker[] = certifyingSeat
+    ? [...asoForwardBlockers(app), ...(overruled.length ? (["overruled"] as const) : []), ...(docsEditable ? grantBlockers(app) : [])]
+    : [];
   const forwardBlocked = certifyingSeat && blockers.length > 0;
   const bulk = docsEditable ? bulkVerifiable(app, checkOf) : [];
   const norms = schemeNorms(app);
@@ -1069,6 +1073,16 @@ function OpenItem({
     );
   }
 
+  if (app.legacy) {
+    return (
+      <Alert status="info" title="Moved from the Old Portal">
+        <p className="text-body-2">
+          This file was in progress in the old e-Anudaan portal. What was done there — its notings, the deficiencies it sent and the cost sheet as it stood — is on the History and Grant tabs, read-only.
+        </p>
+      </Alert>
+    );
+  }
+
   return null;
 }
 
@@ -1303,12 +1317,13 @@ const grouped = (v: string) => (v === "" ? "" : Number(v).toLocaleString("en-IN"
 
 type ReviewTab = "application" | "documents" | "grant" | "history";
 /** What stops the ASO's forward: the verdicts and certification, and on a NAPDDR file the costing. */
-type ForwardBlocker = "verdicts" | "certification" | "costSheet" | "statement";
+type ForwardBlocker = "verdicts" | "overruled" | "certification" | "costSheet" | "statement";
 
 /** Why the forward is not available, in one sentence, at reading contrast (audit R-01). */
 function forwardBlockedReason(blockers: readonly ForwardBlocker[], awaiting: number): string {
   const parts: string[] = [];
   if (blockers.includes("verdicts")) parts.push(`${awaiting} document${awaiting === 1 ? "" : "s"} still need${awaiting === 1 ? "s" : ""} your verdict`);
+  if (blockers.includes("overruled")) parts.push("a document verified against the automatic check has no reason given");
   if (blockers.includes("certification")) parts.push("the certification is not yet recorded");
   if (blockers.includes("costSheet")) parts.push("the cost sheet is not saved");
   if (blockers.includes("statement")) parts.push("the Statement of Account is not saved");
@@ -1332,6 +1347,7 @@ function decisionStandFirst({
   app: GrantApplication;
 }): string {
   if (blockers.includes("verdicts")) return `${awaiting} document${awaiting === 1 ? "" : "s"} need${awaiting === 1 ? "s" : ""} your verdict.`;
+  if (blockers.includes("overruled")) return "Say why a document is verified against the automatic check.";
   if (blockers.includes("certification")) return "The certification is not yet recorded.";
   if (blockers.includes("costSheet")) return "The cost sheet is not saved.";
   if (blockers.includes("statement")) return "The Statement of Account is not saved.";
@@ -1489,22 +1505,37 @@ function VerdictControl({
 /** The remark that follows a verdict, under the row it belongs to. */
 function VerdictRemark({
   doc: d,
+  overrules = false,
   onReview,
 }: {
   doc: MockDoc;
+  /** Verified although the automatic check found it not valid. */
+  overrules?: boolean;
   onReview: (doc: MockDoc, status: DocReviewStatus, remark: string) => void;
 }) {
   const [remark, setRemark] = React.useState(d.officerRemarks ?? "");
   const [touched, setTouched] = React.useState(false);
-  const needsRemark = d.reviewStatus === "Deficient";
+  const needsRemark = d.reviewStatus === "Deficient" || overrules;
   return (
     <div className="max-w-xl">
       <FormField
         id={`remark-${d.id}`}
-        label={needsRemark ? "What must the NGO correct?" : "Your remark on this document"}
+        label={
+          overrules
+            ? "Why is it verified, when the automatic check found it not valid?"
+            : needsRemark
+              ? "What must the NGO correct?"
+              : "Your remark on this document"
+        }
         required={needsRemark}
         optional={!needsRemark}
-        error={needsRemark && touched && !remark.trim() ? "Give the reason, so the NGO knows what to correct." : undefined}
+        error={
+          needsRemark && touched && !remark.trim()
+            ? overrules
+              ? "Give the reason, so the next officer knows why the check was set aside."
+              : "Give the reason, so the NGO knows what to correct."
+            : undefined
+        }
       >
         {(c) => (
           <Input
@@ -1638,8 +1669,10 @@ function DocumentsPanel({
                 const settled =
                   (d.reviewStatus === "Verified" || d.reviewStatus === "Not applicable") &&
                   (!editable || (!!d.reviewedBy && d.reviewedBy !== viewer));
+                // Verified against a "Not valid" check: the reason is asked for, not optional.
+                const overrules = d.reviewStatus === "Verified" && verdict?.state === "invalid";
                 const remarkVisible =
-                  editable && d.reviewStatus !== "Pending" && (d.reviewStatus === "Deficient" || !!d.officerRemarks || !!remarkOpen[d.id]);
+                  editable && d.reviewStatus !== "Pending" && (d.reviewStatus === "Deficient" || overrules || !!d.officerRemarks || !!remarkOpen[d.id]);
                 const showReport = !!reportOpen[d.id] && hasReport;
                 const previous = d.versions?.[d.versions.length - 1];
                 return (
@@ -1681,7 +1714,7 @@ function DocumentsPanel({
                     findings={
                       remarkVisible || showReport ? (
                         <div className="space-y-3">
-                          {remarkVisible && <VerdictRemark key={`${d.id}-${d.reviewStatus}`} doc={d} onReview={review} />}
+                          {remarkVisible && <VerdictRemark key={`${d.id}-${d.reviewStatus}`} doc={d} overrules={overrules} onReview={review} />}
                           {showReport && <Findings verdict={verdict!} title={d.title} facts={facts} applicationFy={app.financialYear} officer />}
                         </div>
                       ) : undefined

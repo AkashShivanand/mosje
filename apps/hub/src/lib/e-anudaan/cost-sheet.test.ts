@@ -136,7 +136,8 @@ test("the ASO's NAPDDR files are DDACs and IRCAs, each with NAPDDR's own documen
     assert.equal(a.formValues?.fld_total_beneficiaries, String(a.totalBeneficiaries), a.id);
     assert.equal(a.formValues?.fld_grant_total, String(a.total), a.id);
     // Uncosted, except a file returned to the ASO after it was costed and forwarded.
-    if (a.status !== "QueryRaised") assert.ok(!a.costSheet && !a.budgetStatement, `${a.id}: the ASO has not costed it yet`);
+    // Uncosted, except a file returned after it was costed, or one carrying the old portal's sheet.
+    if (a.status !== "QueryRaised" && !a.costSheet?.historical) assert.ok(!a.costSheet && !a.budgetStatement, `${a.id}: the ASO has not costed it yet`);
   }
 });
 
