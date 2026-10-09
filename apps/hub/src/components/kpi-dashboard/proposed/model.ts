@@ -84,15 +84,16 @@ export function readAll(
 
 /**
  * THE FINANCIAL YEAR FILTER, WHERE A PROGRAMME'S FIGURES ARE COUNTED BY YEAR (approved
- * 8 Oct 2026): SMILE-Beggary, e-Anudaan (SHRESHTA) and Senior Citizens Welfare report the year
- * to date; e-Utthaan publishes allocations year by year. Not NMBA (cumulative since launch), not
+ * 8 Oct 2026): SMILE-Beggary and e-Anudaan (SHRESHTA) report the year to date; e-Utthaan
+ * publishes allocations year by year. Not Senior Citizens Welfare since 9 Oct 2026: its public
+ * figures are read from feeds that publish a running total and no year, so an earlier year
+ * could only be invented. Not NMBA (cumulative since launch), not
  * the Department (its own published periods), not the landing page (its cards cover different
  * periods). The current year is the readings as they stand.
  */
 export const YEAR_FILTER: Partial<Record<PortalId, { current: string; years: string[]; toDate: boolean }>> = {
   "smile-beggary": { current: "2026-27", years: ["2026-27", "2025-26", "2024-25", "2023-24"], toDate: true },
   shreshta: { current: "2026-27", years: ["2026-27", "2025-26", "2024-25", "2023-24"], toDate: true },
-  "senior-citizens": { current: "2026-27", years: ["2026-27", "2025-26", "2024-25", "2023-24"], toDate: true },
   "e-utthaan": { current: "2026-27", years: ["2026-27", "2025-26", "2024-25", "2023-24", "2022-23"], toDate: false },
 };
 
@@ -242,7 +243,7 @@ export const HEADLINE_KPI: Record<PortalId, string> = {
   nmba: "nmba.outreach",
   "e-utthaan": "e-utthaan.allocation",
   shreshta: "shreshta.beneficiaries",
-  "senior-citizens": "senior-citizens.ipsrc.beneficiaries",
+  "senior-citizens": "senior-citizens.rvy.beneficiaries",
 };
 
 /**
@@ -347,7 +348,7 @@ export function fundsRows(viewing: Viewing, readings: Readings): FundsRow[] {
 
 /** The Senior Citizens components by the names their own documents use. */
 export const COMPONENT_SHORT: Record<string, string> = {
-  ipsrc: "IP-SrC",
+  ipsrc: "IPSrC",
   sapsrc: "SAPSrC",
   rvy: "RVY",
   "pm-special": "PM-SPECIAL",
@@ -365,7 +366,8 @@ export const COMPONENT_SHORT: Record<string, string> = {
  */
 export function kpiLabel(k: KpiDefinition): string {
   const component = k.component ? COMPONENT_SHORT[k.id.split(".")[1] ?? ""] : undefined;
-  return component ? `${k.name} · ${component}` : k.name;
+  // SCW1's names carry their component already ("… under RVY"); it is not said twice.
+  return component && !k.name.includes(component) ? `${k.name} · ${component}` : k.name;
 }
 
 /* ── Readiness: what each KPI's figure can come from ──────────────────────── */

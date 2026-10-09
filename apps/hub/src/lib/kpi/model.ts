@@ -1,5 +1,6 @@
 import { SMILE_AREAS, STATE_NAMES, type AreaNode } from "./geography.ts";
 import { NMBA_STATES_SNAPSHOT } from "./feeds/nmba-states-snapshot.ts";
+import { SCW_SNAPSHOT } from "./feeds/scw-snapshot.ts";
 import type { AreaRow, AreaScope, KpiReading, KpiValue, PortalId, PortalReading } from "./types.ts";
 
 /**
@@ -411,6 +412,8 @@ export interface ModelAnchors {
   youth?: number;
   pledges?: number;
   mitras?: number;
+  /** RVY's live devices total, so the officer's Generic / Special split sums to it. */
+  rvyDevices?: number;
 }
 
 function nmba(scope: AreaScope, anchors: ModelAnchors = {}): PortalReading {
@@ -551,8 +554,31 @@ const SCW_FUNDS: Record<string, [budget: number, spent: number]> = {
   elderline: [32, 13.4],
 };
 
-function seniorCitizens(): PortalReading {
-  const r: PortalReading = {};
+/** Who publishes each Senior Citizens figure the dashboard reads rather than models. */
+export const SCW_SOURCES = {
+  portal: "Senior Citizens Welfare portal",
+  rvy: "ADIP portal, DEPwD",
+} as const;
+
+/**
+ * The SCW1 tab's figures as last mirrored (`feeds/scw-snapshot.ts`): what every mode draws where
+ * the feed does not answer. Departmental figures, never modelled — so Illustrative mode shows
+ * them too rather than inventing a different number beside a real one.
+ */
+export function scwMirror(): PortalReading {
+  const { asOn, facilities, pledges, rvy } = SCW_SNAPSHOT;
+  const snap = (value: KpiValue, source: string): KpiReading => ({ value, origin: "snapshot", source, asOn });
+  return {
+    "senior-citizens.ipsrc.projects": snap({ kind: "breakdown", chart: "bar", items: facilities.map((f) => ({ ...f })) }, SCW_SOURCES.portal),
+    "senior-citizens.rvy.beneficiaries": snap(figure(rvy.beneficiaries), SCW_SOURCES.rvy),
+    "senior-citizens.rvy.devices": snap(figure(rvy.devices), SCW_SOURCES.rvy),
+    "senior-citizens.rvy.camps": snap(figure(rvy.camps), SCW_SOURCES.rvy),
+    "senior-citizens.pledge.count": snap(figure(pledges), SCW_SOURCES.portal),
+  };
+}
+
+function seniorCitizens(anchors: ModelAnchors = {}): PortalReading {
+  const r: PortalReading = scwMirror();
   for (const [c, [budget, spent]] of Object.entries(SCW_FUNDS)) {
     // All-India only. SAPSrC's budget used to be spread across States/UTs by population, a
     // breakdown the Department has not supplied (instruction, 6 Oct 2026).
@@ -560,25 +586,22 @@ function seniorCitizens(): PortalReading {
     r[`senior-citizens.${c}.expenditure`] = MODELLED(figure(spent));
     r[`senior-citizens.${c}.progress`] = MODELLED(figure(Math.round((spent / budget) * 1000) / 10));
   }
-  // RVY, half a year: 8.53 lakh beneficiaries and 46 lakh devices over FY 2017-18 to
-  // 2025-26 (AIR, 21 Sep 2026) is about 0.95 lakh people and 5.4 devices each a year. The
-  // cost is the RVY spend above, so the two can never disagree.
-  const devices = 2_83_000;
+  // RVY's devices to date are read (`scwMirror`); the Generic / Special split is not published,
+  // so it is modelled at 83% generic and sums to whichever total the page shows.
+  const devices = anchors.rvyDevices ?? SCW_SNAPSHOT.rvy.devices;
   const generic = Math.round(devices * 0.83);
-  // 705 senior care homes, 13 continuous care homes, 3 physiotherapy clinics and 17 mobile
-  // medicare units are reported under IPSrC (secondary source); 1,212 had no anchor.
-  r["senior-citizens.ipsrc.projects"] = MODELLED(figure(738));
+  // Devices against cost is a year's measure: half of 2026-27, beside the RVY spend above, so
+  // the two can never disagree. 8.53 lakh beneficiaries and 46 lakh devices over FY 2017-18 to
+  // 2025-26 (AIR, 21 Sep 2026) is about 5.4 lakh devices a year.
+  const devicesThisYear = 2_83_000;
   r["senior-citizens.ipsrc.beneficiaries"] = MODELLED(figure(1_04_350));
   r["senior-citizens.rvy.devices-cost"] = MODELLED({
     kind: "pair",
     items: [
-      { label: "Devices Distributed", value: devices, unit: "number" },
-      { label: "Cost Incurred", value: SCW_FUNDS.rvy![1], unit: "crore" },
+      { label: "Devices Distributed, 2026-27 to Date", value: devicesThisYear, unit: "number" },
+      { label: "Cost Incurred, 2026-27 to Date", value: SCW_FUNDS.rvy![1], unit: "crore" },
     ],
   });
-  r["senior-citizens.rvy.beneficiaries"] = MODELLED(figure(52_400));
-  r["senior-citizens.rvy.devices"] = MODELLED(figure(devices));
-  r["senior-citizens.rvy.activities"] = MODELLED({ kind: "breakdown", chart: "donut", items: [{ label: "Camp Mode", value: 846 }, { label: "Walk-in Mode", value: 438 }] });
   r["senior-citizens.rvy.devices-by-type"] = MODELLED({ kind: "breakdown", chart: "donut", items: [{ label: "Generic Items", value: generic }, { label: "Special Items", value: devices - generic }] });
   r["senior-citizens.pm-special.caregivers"] = MODELLED(figure(8_640));
   r["senior-citizens.elderline.calls"] = MODELLED({
@@ -638,6 +661,6 @@ export function readPortal(portal: PortalId, scope: AreaScope = {}, anchors?: Mo
     case "shreshta":
       return shreshta();
     case "senior-citizens":
-      return seniorCitizens();
+      return seniorCitizens(anchors);
   }
 }
