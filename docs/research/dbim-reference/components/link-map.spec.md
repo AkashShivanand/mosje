@@ -1,5 +1,10 @@
 # Link map — DBIM design
 
+> **Superseded 9 Oct 2026.** Ministry › Our Division was removed: neither socialjustice.gov.in nor
+> dosje.gov.in has the section. The divisions are Important Links groups (`lib/website-dbim/division-links.ts`,
+> `components/website-dbim/utility/LinkGroup.tsx`); the register pages moved to `/important-links/<register>`,
+> and links this design cannot render open the Department's page on dosje.gov.in instead of being dropped.
+
 **Rule:** a DBIM page never links to a page that does not exist in the DBIM design.
 For each link, in this order: (a) an existing DBIM page with the same content;
 (b) a DBIM route that renders the same **data** (imported from the module the other

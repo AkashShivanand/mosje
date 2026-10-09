@@ -5,6 +5,7 @@ import { DbimPagination } from "@/components/website-dbim/ui/Pagination";
 import { DbimEmptyState } from "@/components/website-dbim/ui/EmptyState";
 import { useListing } from "@/components/website-dbim/ui/useListing";
 import type { DbimLinkRow as Row } from "@/lib/website-dbim/utility";
+import { DbimLinkGroup } from "./LinkGroup";
 import { DbimLinkRow } from "./LinkRow";
 import { DbimFilteredEmpty } from "./FilteredEmpty";
 
@@ -20,13 +21,19 @@ export interface DbimLinkListProps {
   spaced?: boolean;
 }
 
+/** A row's own words and, for a group, its links' — so a search finds a division by its pages. */
+const searchText = (r: Row) => [r.label, ...(r.links ?? []).map((l) => l.label)].join(" ");
+
 /**
  * Related Links and Important Links: the reference's filter bar over a list of link
- * rows, paged at 10. Every state is drawn — nothing published, the reader's search
- * matched nothing (named, with a way to clear it), and more than a page.
+ * rows, paged at 10. A row with `links` is a group (a division) that opens to show
+ * them. Every state is drawn — nothing published, the reader's search matched nothing
+ * (named, with a way to clear it), and more than a page. While a search is narrowing
+ * the list, a group that matched on its links opens and shows only those.
  */
 export function DbimLinkList({ rows, searchLabel, perPage = false, label, spaced = false }: DbimLinkListProps) {
-  const list = useListing(rows, { searchText: (r) => r.label });
+  const list = useListing(rows, { searchText });
+  const q = list.query.trim().toLowerCase();
 
   if (list.unfilteredTotal === 0) return <DbimEmptyState />;
 
@@ -43,9 +50,19 @@ export function DbimLinkList({ rows, searchLabel, perPage = false, label, spaced
         <DbimFilteredEmpty query={list.query} noun="links" onClear={list.clear} />
       ) : (
         <ul className="db-u-rows" aria-label={label}>
-          {list.visible.map((r) => (
-            <DbimLinkRow key={r.label} label={r.label} path={r.path} href={r.href} />
-          ))}
+          {list.visible.map((r) =>
+            r.links ? (
+              <DbimLinkGroup
+                // Remounted when a search starts or ends, so the disclosure follows it.
+                key={`${r.label}-${q ? "q" : ""}`}
+                label={r.label}
+                links={!q || r.label.toLowerCase().includes(q) ? r.links : r.links.filter((l) => l.label.toLowerCase().includes(q))}
+                open={!!q}
+              />
+            ) : (
+              <DbimLinkRow key={r.label} label={r.label} path={r.path} href={r.href} />
+            ),
+          )}
         </ul>
       )}
       <DbimPagination page={list.page} pageCount={list.pageCount} onChange={list.setPage} label={`${label} pages`} />
