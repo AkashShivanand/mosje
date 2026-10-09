@@ -42,6 +42,7 @@ import { DepartmentTileContent } from "./Education";
 import { DEPARTMENT_NAME, DEPARTMENT_PAGE } from "./DepartmentStory";
 import {
   COMPONENT_SHORT,
+  HEADLINE_KPI,
   READINESS_LABEL,
   READINESS_TONE,
   SHORT_NAME,
@@ -148,7 +149,7 @@ function Hero(props: PulseProps) {
   const side: { key: string; value: string; label: string; context?: string; origin: string; note?: SourceNote; card?: string }[] = scope.state
     ? [
         { id: "smile-beggary" as const, kpi: "smile-beggary.identified" },
-        { id: "senior-citizens" as const, kpi: "senior-citizens.ipsrc.beneficiaries" },
+        { id: "senior-citizens" as const, kpi: HEADLINE_KPI["senior-citizens"] },
       ].flatMap((x) => {
         const f = has(x.id)?.levels.includes("state") ? figureOf(x.id, x.kpi, readings, kpis(x.id)) : null;
         return f ? [{ key: x.kpi, value: compact(f.value, f.kpi.unit), label: kpiLabel(f.kpi), context: SHORT_NAME[x.id], origin: f.origin, note: noteOf(viewing, readings, x.id, x.kpi, compact(f.value, f.kpi.unit)) }] : [];
@@ -578,13 +579,14 @@ function Programmes(props: PulseProps) {
    * SENIOR CITIZENS WELFARE: ITS PUBLIC KPIs FOR A CITIZEN, ITS BUDGET FOR AN OFFICER. The
    * sheet marks every Budget Estimate, Budget Expenditure and Financial Progress row Official
    * (Post-Login), so the readings gate (`readAll`) removes them from a citizen's page and
-   * `fundsRows` is empty there. The tile leads with IP-SrC's beneficiaries and lists four of the
-   * Pre-Login KPIs, one per component, each labelled by `kpiLabel`.
+   * `fundsRows` is empty there. The tile leads with RVY's beneficiaries and lists the SCW1 tab's
+   * other read figures (9 Oct 2026) — devices, camps, projects and pledges — each labelled by
+   * `kpiLabel`. SAGE and MoUs, which no feed carries, stay on the programme's own page.
    */
   const scw = shows(props.audiences, PROGRAMME_AUDIENCE["senior-citizens"]) ? get("senior-citizens") : undefined;
   if (scw) {
-    const lead = fig("senior-citizens", "senior-citizens.ipsrc.beneficiaries");
-    const facts = ["senior-citizens.rvy.devices", "senior-citizens.pm-special.caregivers", "senior-citizens.elderline.calls", "senior-citizens.sage.startups"].flatMap((id) => {
+    const lead = fig("senior-citizens", HEADLINE_KPI["senior-citizens"]);
+    const facts = ["senior-citizens.rvy.devices", "senior-citizens.rvy.camps", "senior-citizens.ipsrc.projects", "senior-citizens.pledge.count"].flatMap((id) => {
       const f = fig("senior-citizens", id);
       return f ? [{ term: kpiLabel(f.kpi), value: compact(f.value, f.kpi.unit) }] : [];
     });
@@ -604,7 +606,7 @@ function Programmes(props: PulseProps) {
               value={compact(lead.value, lead.kpi.unit)}
               label={lead.kpi.name}
               context={lead.kpi.component}
-              mark={marked(lead.origin, noteOf(viewing, readings, "senior-citizens", "senior-citizens.ipsrc.beneficiaries", compact(lead.value, lead.kpi.unit)))}
+              mark={marked(lead.origin, noteOf(viewing, readings, "senior-citizens", HEADLINE_KPI["senior-citizens"], compact(lead.value, lead.kpi.unit)))}
             />
           ) : undefined
         }

@@ -423,39 +423,53 @@ const SHRESHTA: KpiDefinition[] = [
 
 /**
  * Senior Citizens Welfare — the SCW tab: 28 KPIs over seven components, each with the
- * portal's own API audit. KPI TYPE IS THE TAB'S, re-read 6 Oct 2026: every Budget Estimate,
+ * portal's own API audit; and, since 9 Oct 2026, the SCW1 tab (NeGD).
+ *
+ * SCW1 DECIDES WHAT A CITIZEN SEES (instruction, 9 Oct 2026). It lists seven Pre-Login KPIs and
+ * the API for each: IPSrC projects (`facilities_list`), RVY beneficiaries, devices and camps
+ * (DEPwD's ADIP `rvysummary`), SAGE start-ups, MoUs, and a new Pledge Count. Those seven are
+ * public, under SCW1's names; their readings are live (`feeds/scw.ts`) or the dated mirror.
+ * The SCW tab's other Pre-Login rows — IPSrC beneficiaries, RVY generic items, geriatric
+ * caregivers, Elderline calls — are not on SCW1 and are officer KPIs now. Its "Number of
+ * Activities (Walk-in Mode and Camp Mode)" is replaced by SCW1's camps. The component is
+ * spelt IPSrC, as SCW1 and the portal spell it.
+ * KPI TYPE IS THE TAB'S, re-read 6 Oct 2026: every Budget Estimate,
  * Budget Expenditure, Financial Progress, cost and funds-released row is "Official
  * (Post-Login)" and is an officer KPI here, so a citizen never sees it; the rest are "Public
  * (Pre-Login)". (Until 6 Oct the tab had no KPI Type column and every KPI was read as public,
  * which put eighteen officer figures on the citizen's dashboard.) Names and component names
- * are the tab's, changed only in capitalisation (`ui-restraint-and-copy.md`). The portal's
- * APIs answer only to a signed-in user (checked 5 Oct 2026), so every figure is illustrative
- * until a feed is agreed.
+ * are the tabs', changed only in capitalisation (`ui-restraint-and-copy.md`). The SCW tab's
+ * `/api/app/*` and admin APIs still answer only to a signed-in user (checked 9 Oct 2026), so
+ * every officer figure is illustrative.
  */
+const RVY_SUMMARY = "https://adip.depwd.gov.in/auth/api/sje/rvysummary";
+
 const SENIOR_CITIZENS: KpiDefinition[] = [
   {
     id: "senior-citizens.ipsrc.budget", sNo: 1, audience: "officer", category: "funds",
-    component: "Integrated Programme for Senior Citizens (IP-SrC)", name: "Budget Estimate", unit: "crore", levels: ["national"], span: 4,
+    component: "Integrated Programme for Senior Citizens (IPSrC)", name: "Budget Estimate", unit: "crore", levels: ["national"], span: 4,
     api: { coverage: "none", gap: "No budget / allocation table or API. Needs budget data from DoSJE." },
   },
   {
     id: "senior-citizens.ipsrc.expenditure", sNo: 2, audience: "officer", category: "funds",
-    component: "Integrated Programme for Senior Citizens (IP-SrC)", name: "Budget Expenditure", unit: "crore", levels: ["national"], span: 4,
+    component: "Integrated Programme for Senior Citizens (IPSrC)", name: "Budget Expenditure", unit: "crore", levels: ["national"], span: 4,
     api: { coverage: "partial", endpoints: ["https://seniorcitizen-api-user.mosje.in/api/app/project-gia-details", "https://seniorcitizen-api-user.mosje.in/api/app/dashboard-summary"], gap: "GIA released (a proxy for expenditure) is available per project; no actual expenditure/utilisation data, and no all-project total endpoint." },
   },
   {
     id: "senior-citizens.ipsrc.progress", sNo: 3, audience: "officer", category: "funds",
-    component: "Integrated Programme for Senior Citizens (IP-SrC)", name: "Financial Progress", unit: "percent", levels: ["national"], span: 4,
+    component: "Integrated Programme for Senior Citizens (IPSrC)", name: "Financial Progress", unit: "percent", levels: ["national"], span: 4,
     api: { coverage: "none", gap: "Needs budget estimate (KPI 1) and expenditure (KPI 2)." },
   },
   {
-    id: "senior-citizens.ipsrc.projects", sNo: 4, audience: "public", category: "coverage",
-    component: "Integrated Programme for Senior Citizens (IP-SrC)", name: "Number of Projects Assisted", unit: "number", levels: ["national"], span: 4,
-    api: { coverage: "available", endpoints: ["https://seniorcitizen-api-user.mosje.in/api/app/project-list"], gap: "Count the rows returned by project-list. A ready-made count endpoint does not exist." },
+    // SCW1 S.No 1. Every facility `facilities_list` returns, by type (808 on 9 Oct 2026,
+    // Regional Resource and Training Centres included — instruction, 9 Oct 2026).
+    id: "senior-citizens.ipsrc.projects", sNo: 4, audience: "public", category: "coverage", totalled: true,
+    component: "Integrated Programme for Senior Citizens (IPSrC)", name: "Number of Projects Assisted under IPSrC", unit: "number", levels: ["national"], span: 6,
+    api: { coverage: "available", endpoints: ["https://seniorcitizen-api-user.mosje.in/api/v1/user/facilities_list"], gap: "Counted from the rows facilities_list returns, by home_type. No count endpoint." },
   },
   {
-    id: "senior-citizens.ipsrc.beneficiaries", sNo: 5, audience: "public", category: "coverage",
-    component: "Integrated Programme for Senior Citizens (IP-SrC)", name: "Total Number of Beneficiaries Covered", unit: "number", levels: ["national"], span: 4,
+    id: "senior-citizens.ipsrc.beneficiaries", sNo: 5, audience: "officer", category: "coverage",
+    component: "Integrated Programme for Senior Citizens (IPSrC)", name: "Total Number of Beneficiaries Covered", unit: "number", levels: ["national"], span: 4,
     api: { coverage: "partial", endpoints: ["https://seniorcitizen-api-user.mosje.in/api/app/senior-citizen-summary"], gap: "Counts are per project_id only; no all-India / state-wise aggregate endpoint." },
   },
   {
@@ -494,22 +508,25 @@ const SENIOR_CITIZENS: KpiDefinition[] = [
     api: { coverage: "none", gap: "No distribution or cost records." },
   },
   {
+    // SCW1 S.No 2-4: one third-party API, cumulative since the scheme began.
     id: "senior-citizens.rvy.beneficiaries", sNo: 13, audience: "public", category: "coverage",
-    component: "Rashtriya Vayoshri Yojana (RVY)", name: "Total Number of Beneficiaries Covered", unit: "number", levels: ["national"], span: 4,
-    api: { coverage: "none", gap: "No RVY beneficiary table." },
+    component: "Rashtriya Vayoshri Yojana (RVY)", name: "Total Number of Beneficiaries Covered under RVY", unit: "number", levels: ["national"], span: 4,
+    api: { coverage: "available", endpoints: [RVY_SUMMARY], gap: "nob. Third-party API (DEPwD's ADIP portal), behind an x-api-key." },
   },
   {
     id: "senior-citizens.rvy.devices", sNo: 14, audience: "public", category: "outcomes",
-    component: "Rashtriya Vayoshri Yojana (RVY)", name: "Total Number of Assistive Devices Distributed", unit: "number", levels: ["national"], span: 4,
-    api: { coverage: "none", endpoints: ["https://seniorcitizen-api-admin.mosje.in/api/v1/admin/rvyAssistedDevices/list"], gap: "A7 only lists device TYPES (catalogue); it has no distributed quantities." },
+    component: "Rashtriya Vayoshri Yojana (RVY)", name: "Total Number of Assistive Devices Distributed under RVY", unit: "number", levels: ["national"], span: 4,
+    api: { coverage: "available", endpoints: [RVY_SUMMARY], gap: "noa. Third-party API (DEPwD's ADIP portal), behind an x-api-key." },
   },
   {
-    id: "senior-citizens.rvy.activities", sNo: 15, audience: "public", category: "outcomes",
-    component: "Rashtriya Vayoshri Yojana (RVY)", name: "Number of Activities (Walk-in Mode and Camp Mode) Conducted", unit: "number", levels: ["national"], span: 6,
-    api: { coverage: "none", gap: "No RVY camp / walk-in activity records." },
+    // Replaces the SCW tab's S.No 15, "Number of Activities (Walk-in Mode and Camp Mode)
+    // Conducted": SCW1 counts camps only, and the API carries no walk-in figure.
+    id: "senior-citizens.rvy.camps", sNo: 15, audience: "public", category: "outcomes",
+    component: "Rashtriya Vayoshri Yojana (RVY)", name: "Total No. of Camps Conducted under RVY", unit: "number", levels: ["national"], span: 4,
+    api: { coverage: "available", endpoints: [RVY_SUMMARY], gap: "camp. Third-party API (DEPwD's ADIP portal), behind an x-api-key." },
   },
   {
-    id: "senior-citizens.rvy.devices-by-type", sNo: 16, audience: "public", category: "outcomes",
+    id: "senior-citizens.rvy.devices-by-type", sNo: 16, audience: "officer", category: "outcomes",
     component: "Rashtriya Vayoshri Yojana (RVY)", name: "Number of Devices Distributed under Generic Items", unit: "number", levels: ["national"], span: 6,
     api: { coverage: "none", endpoints: ["https://seniorcitizen-api-admin.mosje.in/api/v1/admin/rvyAssistedDevices/list"], gap: "Device types exist (item_type / device_type) but not counts distributed." },
   },
@@ -529,7 +546,7 @@ const SENIOR_CITIZENS: KpiDefinition[] = [
     api: { coverage: "none", gap: "No financial data." },
   },
   {
-    id: "senior-citizens.pm-special.caregivers", sNo: 20, audience: "public", category: "outcomes",
+    id: "senior-citizens.pm-special.caregivers", sNo: 20, audience: "officer", category: "outcomes",
     component: "PM-SPECIAL – Elder Care & Assisted Living", name: "Number of Geriatric Caregivers Trained", unit: "number", levels: ["national"], span: 4,
     api: { coverage: "partial", endpoints: ["https://seniorcitizen-api-admin.mosje.in/api/v1/admin/geriatricCaregivers/list"], gap: "Enrolled caregivers can be counted; whether training was completed is not confirmed as a stored field." },
   },
@@ -549,7 +566,7 @@ const SENIOR_CITIZENS: KpiDefinition[] = [
     api: { coverage: "none", gap: "No financial data." },
   },
   {
-    id: "senior-citizens.elderline.calls", sNo: 24, audience: "public", category: "coverage", totalled: true,
+    id: "senior-citizens.elderline.calls", sNo: 24, audience: "officer", category: "coverage", totalled: true,
     component: "Elderline (14567)", name: "Number of Calls Received", unit: "number", levels: ["national"], span: 12,
     api: { coverage: "none", endpoints: ["https://seniorcitizen-api-admin.mosje.in/api/v1/admin/grievances/list"], gap: "No Elderline call-log data. A11 is citizen grievances, a different thing." },
   },
@@ -565,13 +582,19 @@ const SENIOR_CITIZENS: KpiDefinition[] = [
   },
   {
     id: "senior-citizens.sage.startups", sNo: 27, audience: "public", category: "outcomes",
-    component: "Seniorcare Ageing Growth Engine (SAGE)", name: "Start-ups Supported", unit: "number", levels: ["national"], span: 4,
+    component: "Seniorcare Ageing Growth Engine (SAGE)", name: "Start-ups Supported under SAGE", unit: "number", levels: ["national"], span: 4,
     api: { coverage: "partial", endpoints: ["https://seniorcitizen-api-admin.mosje.in/api/v1/admin/sageApplications/dashboard-count", "https://seniorcitizen-api-admin.mosje.in/api/v1/admin/sageApplications/list"], gap: "Application counts by status exist; confirm which status counts as \"supported\"." },
   },
   {
     id: "senior-citizens.other.mous", sNo: 28, audience: "public", category: "outcomes",
     component: "Other Initiatives", name: "Number of Strategic MoUs Signed", unit: "number", levels: ["national"], span: 4,
     api: { coverage: "none", gap: "No MoU records in the system." },
+  },
+  {
+    // SCW1 S.No 7; not on the SCW tab. The e-Pledge the portal collects (`/portals/scw/epledge`).
+    id: "senior-citizens.pledge.count", sNo: 29, audience: "public", category: "outcomes",
+    component: "Pledge", name: "Pledge Count", unit: "number", levels: ["national"], span: 4,
+    api: { coverage: "available", endpoints: ["https://seniorcitizen-api-user.mosje.in/api/v1/user/pledges/dashboard-count"], gap: "totalCount." },
   },
 ];
 
@@ -629,7 +652,9 @@ export const SENIOR_CITIZENS_DASHBOARD: PortalDashboard = {
   // The components, as the SCW tab names them; nothing about them is authored here.
   summary: "Integrated Programme for Senior Citizens, State Action Plan for Senior Citizens, Rashtriya Vayoshri Yojana, PM-SPECIAL – Elder Care & Assisted Living, Elderline (14567) and the Seniorcare Ageing Growth Engine.",
   logoPath: "/portals/scw", portalHref: "/portals/scw",
-  levels: ["national"], kpisReceived: "05.10.2026", period: FY_TO_DATE, kpis: SENIOR_CITIZENS,
+  // Its public figures are cumulative (RVY since the scheme began, pledges since launch) or
+  // current (projects assisted); the officer's budget lines name their own year.
+  levels: ["national"], kpisReceived: "05.10.2026", period: "Cumulative to date", kpis: SENIOR_CITIZENS,
 };
 
 /** Every programme with KPIs on file — the four dashboards and Senior Citizens Welfare. */

@@ -152,10 +152,10 @@ test("Illustrative mode ignores the feed and shows the mirrored snapshot", () =>
   assert.equal(resolveReading("nmba", {}, "mock", fullFeed)["nmba.outreach"]?.origin, "snapshot");
 });
 
-test("Senior Citizens: every KPI on the SCW-internal tab has a reading, and every reading a KPI", () => {
+test("Senior Citizens: every KPI on the SCW and SCW1 tabs has a reading, and every reading a KPI", () => {
   const scw = PROGRAMMES.find((p) => p.id === "senior-citizens")!;
   const reading = readPortal("senior-citizens");
-  assert.equal(scw.kpis.length, 28);
+  assert.equal(scw.kpis.length, 29);
   for (const k of scw.kpis) assert.ok(reading[k.id], `${k.id} has no reading`);
   for (const id of Object.keys(reading)) assert.ok(scw.kpis.some((k) => k.id === id), `${id} is not in the register`);
 });
@@ -174,6 +174,34 @@ test("Senior Citizens: Financial Progress is expenditure over budget, from the t
 
 test("Senior Citizens: no figure is split across States/UTs the Department has not supplied", () => {
   for (const r of Object.values(readPortal("senior-citizens"))) assert.notEqual(r?.value.kind, "areas");
+});
+
+test("Senior Citizens: a citizen sees the SCW1 tab's seven KPIs, and nothing else", () => {
+  const scw = PROGRAMMES.find((p) => p.id === "senior-citizens")!;
+  assert.deepEqual(kpisFor(scw, "public").map((k) => k.id).sort(), [
+    "senior-citizens.ipsrc.projects", "senior-citizens.other.mous", "senior-citizens.pledge.count",
+    "senior-citizens.rvy.beneficiaries", "senior-citizens.rvy.camps", "senior-citizens.rvy.devices",
+    "senior-citizens.sage.startups",
+  ]);
+});
+
+test("Senior Citizens: a read figure is never modelled, in any mode, and a live one wins", () => {
+  const read = ["senior-citizens.ipsrc.projects", "senior-citizens.rvy.beneficiaries", "senior-citizens.rvy.devices", "senior-citizens.rvy.camps", "senior-citizens.pledge.count"];
+  for (const mode of ["live", "mock", "hybrid"] as const) {
+    const r = resolveReading("senior-citizens", {}, mode, null);
+    for (const id of read) assert.equal(r[id]?.origin, "snapshot", `${mode} ${id}`);
+  }
+  const feed: PortalFeed = { portal: "senior-citizens", feed: { facilities: [{ label: "Senior Citizens Homes", value: 800 }], pledges: 9_100_000, rvy: { camps: 3_300, beneficiaries: 1_040_000, devices: 5_600_000 }, readAt: "2026-10-10" } };
+  const live = resolveReading("senior-citizens", {}, "hybrid", feed);
+  for (const id of read) assert.equal(live[id]?.origin, "live", id);
+  // The officer's Generic / Special split sums to the live devices total beside it.
+  const split = live["senior-citizens.rvy.devices-by-type"]!.value;
+  assert.equal(split.kind === "breakdown" ? split.items.reduce((t, i) => t + i.value, 0) : NaN, 5_600_000);
+  // Half the RVY feed down: RVY falls back to its mirror, the rest stay live.
+  const partial = resolveReading("senior-citizens", {}, "live", { ...feed, feed: { ...feed.feed, rvy: null } });
+  assert.equal(partial["senior-citizens.rvy.camps"]?.origin, "snapshot");
+  assert.equal(partial["senior-citizens.pledge.count"]?.origin, "live");
+  assert.equal(partial["senior-citizens.sage.startups"], undefined, "Live mode draws no modelled figure");
 });
 
 test("every API coverage the register carries is one of the three the portals use", () => {
