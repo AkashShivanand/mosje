@@ -1,4 +1,6 @@
-import { getAllDocuments, getUpdates, routeSlug } from "@/lib/website/content";
+import { getAllDocuments, getDocument, getUpdate, getUpdates, routeSlug } from "@/lib/website/content";
+import { masterForLegacy } from "@/lib/website-next/legacy-schemes";
+import { WHATS_NEW } from "@/lib/website-shared/whats-new";
 import { organisationName } from "@/components/website-next/media/org-name";
 import { dateValue, isArchived, tidyTitle } from "@/components/website-next/ui/records";
 
@@ -7,10 +9,44 @@ export interface NewsItem { key: string; kind: string; title: string; href: stri
 export const newestFirst = <T extends { date?: string }>(rows: T[]) => [...rows].sort((a, b) => dateValue(b.date) - dateValue(a.date));
 
 /**
- * What's New, as the live home page composes it: updates, circulars, notices,
- * results and announcements in one feed, newest first (issue X-FR-02). Only the
- * last twelve months: the update register also holds 2020–2024 news clippings,
- * which are archive, not news (GIGW archival policy; `isArchived`).
+ * What's New, as the live home page lists it (lib/website-shared/whats-new.ts): the same
+ * items, in the same order, under the same labels and dates, in every design. Each item
+ * is keyed by the register it lives in (`d-` document, `u-` update, `s-` scheme, `v-`
+ * vacancy) and points at that record's page in the estate; an item the live list carries
+ * as a link (`x-`) points where the live site points it.
+ */
+export function whatsNew(): NewsItem[] {
+  return WHATS_NEW.map((e): NewsItem => {
+    const base = { kind: e.label, title: tidyTitle(e.title), date: e.date };
+    // A live item that is a link, not a record: it opens where the live site sends it.
+    if (e.href) return { ...base, key: `x-${e.slug}`, href: e.href };
+    switch (e.source) {
+      case "documents": {
+        const d = getDocument(e.slug);
+        return {
+          ...base,
+          key: `d-${d?.slug ?? e.slug}`,
+          href: `/website/documents/${routeSlug(e.slug)}`,
+          // Who issued it: "FAQs" from NHAA says nothing without its issuer.
+          org: d?.organisation && d.organisation !== "MoSJE" ? organisationName(d.organisation) : undefined,
+        };
+      }
+      case "updates":
+        return { ...base, key: `u-${getUpdate(e.slug)?.slug ?? e.slug}`, href: `/website/updates/${e.slug}` };
+      case "schemes-and-services":
+        return { ...base, key: `s-${e.slug}`, href: `/website/schemes-services/${masterForLegacy(e.slug) ?? e.slug}` };
+      case "vacancies":
+        return { ...base, key: `v-${e.slug}`, href: `/website/vacancies/${e.slug}` };
+    }
+  });
+}
+
+/**
+ * Every recent notice in the registers — updates, circulars, notices, results and
+ * announcements of the last twelve months, newest first. What the live site's View All
+ * (/updates/) holds, and what a design's full What's New page lists; the home lists read
+ * `whatsNew()` instead. The update register also holds 2020–2024 news clippings, which
+ * are archive, not news (GIGW archival policy; `isArchived`).
  */
 const NEWS_TYPES: Record<string, string> = {
   "Circulars & Notifications": "Circular",
@@ -19,7 +55,7 @@ const NEWS_TYPES: Record<string, string> = {
   Announcement: "Announcement",
 };
 
-export function whatsNew(): NewsItem[] {
+export function recentNotices(): NewsItem[] {
   const updates: NewsItem[] = getUpdates()
     .filter((u) => !isArchived(u.date))
     .map((u) => ({ key: `u-${u.slug}`, kind: "Update", title: tidyTitle(u.title), href: `/website/updates/${u.slug}`, date: u.date }));
@@ -31,7 +67,6 @@ export function whatsNew(): NewsItem[] {
       title: tidyTitle(d.title),
       href: `/website/documents/${routeSlug(d.slug)}`,
       date: d.date,
-      // Who issued it: "FAQs" from NHAA says nothing without its issuer.
       org: d.organisation && d.organisation !== "MoSJE" ? organisationName(d.organisation) : undefined,
     }));
   // One notice posted twice under two headings (an Announcement and a
@@ -49,4 +84,3 @@ export function whatsNew(): NewsItem[] {
     return true;
   });
 }
-

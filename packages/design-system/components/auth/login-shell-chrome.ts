@@ -1,5 +1,6 @@
 import type { PortalLoginShellProps } from "./portal-login-shell";
 import type { PortalLoginConfig } from "./types";
+import { SAMAVESH_MARK } from "../brand/org-logo-registry";
 
 /**
  * The estate's own copies of the three chrome marks, served from the hub root.
@@ -12,7 +13,7 @@ import type { PortalLoginConfig } from "./types";
 export const DEFAULT_LOGIN_MARKS = {
   emblemSrc: "/design-system/national-emblem.svg",
   digitalIndiaSrc: "/website/images/digital-india-logo.svg",
-  samaveshLogoSrc: "/design-system/samavesh-logo.svg",
+  samaveshLogoSrc: SAMAVESH_MARK, // 12.6 KB at 3× the 84px seal, not the 743 KB vector
 } as const;
 
 /**

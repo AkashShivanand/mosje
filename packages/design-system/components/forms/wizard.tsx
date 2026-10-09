@@ -191,6 +191,36 @@ export function Wizard({
     };
   }, []);
 
+  /*
+   * THE BAR'S REAL HEIGHT, for the scroll padding (WCAG 2.4.11). wizard.css reserves two rows
+   * of controls, but the bar grows with its labels: at 320 "Save and Continue" wraps inside
+   * its button and the bar measured 179px, so a focused field could still land under it. While
+   * the bar is sticky its measured block size is published on <html>, where the scroll padding
+   * reads it; when it is not sticky (768 and up) nothing is reserved.
+   */
+  const rootRef = React.useRef<HTMLDivElement>(null);
+  React.useEffect(() => {
+    const bar = rootRef.current?.querySelector<HTMLElement>(".ds-wizard__actions");
+    if (!bar || typeof ResizeObserver === "undefined") return;
+    const html = document.documentElement;
+    const publish = () => {
+      if (getComputedStyle(bar).position === "sticky") {
+        html.style.setProperty("--_ds-wizard-bar", `${Math.ceil(bar.getBoundingClientRect().height)}px`);
+      } else {
+        html.style.removeProperty("--_ds-wizard-bar");
+      }
+    };
+    publish();
+    const ro = new ResizeObserver(publish);
+    ro.observe(bar);
+    window.addEventListener("resize", publish);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", publish);
+      html.style.removeProperty("--_ds-wizard-bar");
+    };
+  }, []);
+
   const step = steps[current];
   const leading =
     isFirst && onCancel ? (
@@ -207,7 +237,7 @@ export function Wizard({
     );
 
   return (
-    <div className="ds-wizard">
+    <div className="ds-wizard" ref={rootRef}>
       {/* On the page ground: the progress row is not a section of the form, so it gets no card. */}
       <div className="ds-wizard__stepper">
         <Stepper steps={steps} current={current} ariaLabel="Progress" collapse={stepperCollapse} />

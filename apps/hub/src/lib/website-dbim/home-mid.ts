@@ -8,19 +8,21 @@ import "server-only";
  * (`@/lib/website-shared/offerings`); the document and
  * update registers (`@/lib/website/content`, through the DBIM Offerings and Documents
  * modules so a row means the same thing on the home page as on its own page), the
- * Department's divisions (`@/data/website`) and the DBIM reference build's persona
- * drawings (`DBIM_PERSONA_ART`). Mapping and reasoning:
+ * Department's divisions (`@/data/website`), and the applicant groups finalised with
+ * the AS (`./applicants`) with the handoff file's drawings (`DBIM_PERSONA_ART`).
+ * Mapping and reasoning:
  * docs/research/dbim-reference/components/home-mid.spec.md.
  */
 import {
-  OFFERING_TENDERS, OFFERING_VACANCIES, offeringSchemesInOrder,
+  OFFERING_TENDERS, OFFERING_VACANCIES, keyOfferingSchemes,
 } from "@/lib/website-shared/offerings";
 import { RECENT_DOCUMENTS } from "@/lib/website-shared/documents";
 import { localiseDocumentUrl } from "@/lib/website/sample-documents";
 import { whatsNew } from "@/lib/website-next/whats-new";
 import { dbimHref } from "./nav";
 import { DBIM_PERSONA_ART } from "./assets";
-import { DBIM_IMPORTANT_LINKS, DBIM_PERSONAS } from "./utility";
+import { DBIM_APPLICANT_TYPES } from "./applicants";
+import { DBIM_IMPORTANT_LINKS } from "./utility";
 import {
   documentSeries, whatsNewTarget,
 } from "./documents";
@@ -41,15 +43,15 @@ export interface DbimHomeLink {
  * entries in each category"; the reference build showed four schemes it chose itself
  * and the four newest register rows.
  *
- * Schemes: the live section's schemes in the order it first names them (the live site
- * dates none, so its order stands for "most recent"). A scheme the master holds opens
- * its DBIM page; one it does not opens the scheme list; a document opens the document.
+ * Schemes: the live Key Offerings tab's five, in its order (`keyOfferingSchemes`). A
+ * scheme the master holds opens its DBIM page; one it does not opens the scheme list; a
+ * document opens the document.
  * Vacancies and tenders: the live section's own, each opening its page here.
  */
 export const KEY_OFFERING_ROWS = 5;
 
 export function dbimKeySchemes(): DbimHomeLink[] {
-  return offeringSchemesInOrder()
+  return keyOfferingSchemes()
     .slice(0, KEY_OFFERING_ROWS)
     .map((s) => ({
       key: s.slug ?? s.file ?? s.title,
@@ -82,20 +84,68 @@ export function dbimKeyTenders(): DbimHomeLink[] {
 /* ── What's New ────────────────────────────────────────────────────────── */
 
 /**
- * The four newest items of the estate's What's New feed — four, because that is what
- * the reference's 301px panel holds at 1440 (measured: four items of one- and two-line
- * titles take 238 of its 269px; a fifth would not fit). Dates are on the What's New page
- * (`whatsNew()`: updates, circulars, notices, results and announcements of the last
- * twelve months). Each item opens where `whatsNewTarget` sends it — the same target the
- * Announcements bar and the What's New page give it.
+ * The six newest items of the estate's What's New feed. The reference's panel held four
+ * (301px at 1440; the live site still shows four); six on the instruction of 8 Oct 2026,
+ * so the four senior-citizen and yoga items added that week do not push the Lok Adalat
+ * material and the NAPDDR call off the home page. The panel and the Key Offerings box
+ * share the band's height, and the offering rows spread to fill it (home-mid.css), so
+ * both View More buttons stay on one line. Dates are on the What's New page. Each item
+ * opens where `whatsNewTarget` sends it — the same target the Announcements bar and the
+ * What's New page give it.
  */
-export function dbimHomeNews(limit = 4): DbimHomeLink[] {
+export const HOME_NEWS_COUNT = 6;
+
+export function dbimHomeNews(limit = HOME_NEWS_COUNT): DbimHomeLink[] {
   return whatsNew()
     .flatMap((n): DbimHomeLink[] => {
       const t = whatsNewTarget(n);
-      return t ? [{ key: n.key, title: n.title, ...t }] : [];
+      return t ? [{ key: n.key, title: dbimFeedTitle(n.title), ...t }] : [];
     })
     .slice(0, limit);
+}
+
+/** Acronyms the Department's feed prints in capitals, kept so when a title is sentence-cased. */
+const FEED_ACRONYMS = new Set([
+  "AJAY", "DAIC", "DANM", "DNT", "EBC", "EOI", "GIA", "NBCFDC", "NCSC", "NGO", "NGOS", "NOS",
+  "NSFDC", "NSKFDC", "OBC", "OBCS", "PM", "RTI", "SC", "SCS", "SSE", "ST", "UT", "UTS",
+]);
+
+/** Words a Title Case title keeps lowercase unless they open it (ui-restraint-and-copy.md §2). */
+const SMALL_WORDS = new Set(["a", "an", "the", "and", "or", "but", "to", "of", "in", "into", "for", "on", "with", "at", "by", "from", "as"]);
+
+/**
+ * A feed title as the DBIM home prints it (decided 28 Sep 2026; the source data is
+ * untouched, and the divergence is recorded in docs/audit/dbim-home-figma-parity-2026-09-28.md):
+ *
+ * - DBIM 3.0 §4.1.1 ii: "All capital text must not be used for long sentences". A title
+ *   whose letters are 80% or more capitals is set in Title Case, the estate's rule for
+ *   titles. Acronyms (the list above, or a short word in parentheses), anything with a
+ *   digit and tokens that already mix cases (Rs.5.00, RRs) are kept as published.
+ * - §7.1.3, no spelling errors: "lnviting" and "lnterest" — a lowercase L where the
+ *   Department typed a capital I — read "Inviting" and "Interest". No English word opens
+ *   with "ln", so the repair cannot touch a correct one. Other misspellings are left.
+ */
+export function dbimFeedTitle(title: string): string {
+  const fixed = title.replace(/\bln(?=[a-z])/g, "In");
+  const letters = fixed.replace(/[^A-Za-z]/g, "");
+  if (letters.length < 16 || letters.replace(/[^A-Z]/g, "").length / letters.length < 0.8) return fixed;
+  const word = (w: string, first: boolean): string => {
+    const bare = w.replace(/[^A-Za-z]/g, "");
+    if (!bare || /\d/.test(w) || /[a-z]/.test(w) || FEED_ACRONYMS.has(bare.toUpperCase())) return w;
+    if (/^\(.*\)$/.test(w.replace(/[^A-Za-z()]/g, "")) && bare.length <= 6) return w;
+    const lower = w.toLowerCase();
+    if (!first && SMALL_WORDS.has(bare.toLowerCase())) return lower;
+    return lower.replace(/[a-z]/, (c) => c.toUpperCase());
+  };
+  let first = true;
+  return fixed.replace(/\S+/g, (token) => {
+    const out = token
+      .split(/([-/])/)
+      .map((part, i) => (i % 2 ? part : word(part, first && i === 0)))
+      .join("");
+    if (/[A-Za-z]/.test(token)) first = false;
+    return out;
+  });
 }
 
 /* ── Recent Documents ──────────────────────────────────────────────────── */
@@ -127,7 +177,7 @@ export function dbimRecentDocuments(): DbimRecentDoc[] {
 
 export interface DbimPersonaSlide {
   slug: string;
-  /** The persona page's own title (`DBIM_PERSONAS`). */
+  /** The applicant group's name, as the finalised chips word it. */
   label: string;
   art: string;
   alt: string;
@@ -135,35 +185,48 @@ export interface DbimPersonaSlide {
 }
 
 /*
- * The Department's audiences are the classic site's four pages — For Student, For
- * Beneficiary, For Government Official, For Researcher. Only three drawings exist,
- * and each goes to the audience it genuinely depicts or to none:
- *   persona-1 (suit and tie, on a call, holding a tablet) → Government Official
- *   persona-3 (young man reading an open book; the reference's own "Researcher") → Researcher
- *   persona-2 (a business owner) → none; no Department audience is one.
- * Student and Beneficiary have no drawing that shows them and are left out rather
- * than given one that does not.
+ * THE ELEVEN APPLICANT GROUPS, one slide each (instruction, 30 Sep 2026: the chips
+ * finalised with the AS — lib/website-dbim/applicants.ts), each with the handoff file's
+ * drawing for it (`DBIM_PERSONA_ART`). Each opens Schemes and Services with that Type of
+ * Applicant chosen. The alt text says what the drawing shows, not who the group is:
+ * the slide's name already says that.
  */
-const PERSONA_ART: Record<string, { art: string; alt: string }> = {
-  "government-official": { art: DBIM_PERSONA_ART[0], alt: "Drawing of an official in a suit holding a tablet" },
-  researcher: { art: DBIM_PERSONA_ART[2], alt: "Drawing of a researcher reading an open book" },
+const PERSONA_ALT: Record<string, string> = {
+  student: "Drawing of a student with a backpack",
+  sc: "Drawing of a man in a shirt with a cloth over his shoulder",
+  obc: "Drawing of a bearded man with a scarf",
+  dnt: "Drawing of a young man in a turban",
+  safai: "Drawing of a worker in a cap holding a broom",
+  senior: "Drawing of an older woman in a sari holding a booklet",
+  tg: "Drawing of a woman in a sari",
+  drug: "Drawing of a young man in a shirt",
+  begging: "Drawing of an older man with a cloth over his shoulder",
+  atrocity: "Drawing of a woman in a sari holding a book",
+  ngo: "Drawing of a woman with a shoulder bag",
 };
 
-/** The Department's personas (`DBIM_PERSONAS`, the canonical list) that have a drawing. */
-export const DBIM_HOME_PERSONAS: DbimPersonaSlide[] = DBIM_PERSONAS.flatMap((p) => {
-  const a = PERSONA_ART[p.slug];
-  return a ? [{ slug: p.slug, label: p.title, art: a.art, alt: a.alt, href: dbimHref(`/persona/${p.slug}`) }] : [];
+/** The home page's personas: every applicant group that has a drawing, in the finalised order. */
+export const DBIM_HOME_PERSONAS: DbimPersonaSlide[] = DBIM_APPLICANT_TYPES.flatMap((a) => {
+  const art = DBIM_PERSONA_ART[a.id];
+  return art
+    ? [{ slug: a.id, label: a.label, art, alt: PERSONA_ALT[a.id] ?? "", href: `${dbimHref("/offerings")}?applicant=${a.id}` }]
+    : [];
 });
 
 /* ── Important Links ───────────────────────────────────────────────────── */
 
 /*
- * The first four rows of the Department's Important Links (`DBIM_IMPORTANT_LINKS`,
- * one per Division plus the Social Audit MIS Portal), the same list the Important Links
- * page shows — so one list feeds both. That list leads with the three the reference
- * leads with (Scheduled Caste Welfare, Social Defence, Grants-in-Aid to NGOs); the
- * reference's fourth, "Inauguration", is a webcast link with no source in the estate,
- * so the fourth is the Social Audit MIS Portal, moved from the posts row.
+ * THE FIRST FOUR ROWS OF `DBIM_IMPORTANT_LINKS`, AND "VIEW MORE" OPENS THE REST.
+ *
+ * The home section is a WINDOW on that list, never a list of its own, so the home page
+ * and the Important Links page cannot disagree about what the Department's links are.
+ * The four are the actions a citizen may have arrived for — the Nasha Mukt Bharat
+ * e-pledge, the Mitr sign-up, the de-addiction centre finder and the SAMAVESH gateway.
+ * Behind "View more" stand the Department's priority destinations and its ten divisions,
+ * nineteen rows in all, searchable and paged on the page itself.
+ *
+ * The reference's own fourth row, "Inauguration", is a webcast link with no source in
+ * this estate, so it is not drawn.
  */
 export function dbimHomeImportantLinks(): DbimHomeLink[] {
   return DBIM_IMPORTANT_LINKS.slice(0, 4).flatMap((l): DbimHomeLink[] => {

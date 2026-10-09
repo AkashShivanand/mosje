@@ -5,7 +5,7 @@ import { getContentSyncedDate, getVacancies, getVacancy } from "@/lib/website/co
 import { facts } from "@/lib/website/record-facts";
 import { formatDate } from "@/components/website-next/ui/format";
 import { socialCard } from "@/lib/seo/social";
-import { isArchivedRecord } from "@/components/website-next/ui/records";
+import { isArchivedRecord } from "@/lib/website-shared/records";
 
 /** 163 vacancies — every one is prerendered. */
 export function generateStaticParams() {

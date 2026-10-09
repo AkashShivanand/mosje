@@ -15,6 +15,7 @@
  */
 
 import { applyAction, deficiencyItemsFrom, releaseFunds, type Clock, type WorkflowAction } from "../workflow.ts";
+import { derivedPayeeCode } from "../pfms/masters.ts";
 import { seedCctvDetail } from "../cctv.ts";
 import {
   GRADES,
@@ -38,6 +39,7 @@ import { PROJECT_ID_PREFIX, instalmentAfter, notificationBody, notificationTitle
 import { schemeName } from "../glossary.ts";
 import { demoVerdictFor } from "../doc-verification.ts";
 import { automaticCheckOf, isFlagged } from "../review-readiness.ts";
+import { seedSheet, sheetTotals } from "../cost-sheet.ts";
 import type { EAnudaanState, Institution } from "../types.ts";
 
 /** The demo's "today". Matches the recon capture date so seeded ageing reads sensibly. */
@@ -292,7 +294,7 @@ function buildNgos(): NgoProfile[] {
       secretary: "Meenakshi Iyer",
       treasurer: "Harpreet Singh Bedi",
       authorisedUser: name,
-      email: `${name.toLowerCase().replace(/[^a-z0-9]/g, "")}@gmail.com`,
+      email: `${name.toLowerCase().replace(/[^a-z0-9]/g, "")}@example.org`,
       mobile: `9441747${(200 + i).toString()}`,
       applicationCount: 0,
       sanctionedCount: 0,
@@ -1380,10 +1382,13 @@ export function buildSeed(): {
 
     for (let i = 0; i < apps.length; i++) {
       let a = apps[i]!;
-      // A sanction falls within its financial year or the year after it (a year-long approval).
+      // A sanction falls within its own financial year: a grant-in-aid lapses on 31 March, and the
+      // order is numbered in that year's series (SAN/<year>/…). The year after it put 29 orders
+      // numbered SAN/2024-25 into 2025-26 and later (8 Oct 2026). A late approval stays an OPEN
+      // file across the year end (block 9b); it is not a sanction dated in the next year.
       if (a.sanction) {
         const start = fyStart(a.financialYear);
-        const latest = Math.min(start + 2 * 365 * DAY - 2 * DAY, now - DAY);
+        const latest = Math.min(start + 365 * DAY - 2 * DAY, now - DAY);
         const at = Date.parse(a.sanction.sanctionedAt);
         const target = at < start ? start + 45 * DAY : at > latest ? latest - 20 * DAY : at;
         if (target !== at) a = shift(a, target - at) as GrantApplication;
@@ -1544,7 +1549,7 @@ export function buildSeed(): {
       return {
         id: nextId("ntf"),
         at: e.at,
-        title: notificationTitle(e.action),
+        title: notificationTitle(e.action, e.remarks),
         body: notificationBody(app.id, e.remarks),
         audience,
         applicationId: app.id,
@@ -1662,7 +1667,11 @@ export function buildSeed(): {
       people: number;
       claims: readonly Claim[];
       answers: Record<string, string>;
-      /** Leave the latest sanction unreleased, so the "opens once released" state has a project. */
+      /**
+       * Leave the latest sanction unreleased, so the "opens once released" state has a project — and,
+       * since the PFMS payment leg (docs/plans/2026-09-29-e-anudaan-pfms.md), so the Maker, the
+       * Checker and PFMS each have files in flight. Its payment state lives in `pfms/seed.ts`.
+       */
       unreleased?: boolean;
     };
     const PATTERNS: Record<History["scheme"], readonly number[]> = { AVYAY: [40, 40, 20], NAPDDR: [40, 40, 20], SHRESHTA_M2: [40, 40, 20], SMILE: [50, 50] };
@@ -1679,6 +1688,9 @@ export function buildSeed(): {
       { fy: "2026-27", instalment: 2, submitted: 70, sanctioned: 32 },
     ];
     const newOnly: readonly Claim[] = [{ fy: "2025-26", submitted: 380, sanctioned: 330 }];
+    // A first grant sanctioned this year and not yet paid — the files the PFMS payment leg carries
+    // (docs/plans/2026-09-29-e-anudaan-pfms.md). Each one's payment state is in `pfms/seed.ts`.
+    const inPayment: readonly Claim[] = [{ fy: "2026-27", submitted: 64, sanctioned: 21 }];
     const common = (h: { inst: Institution; people: number }) => ({
       fld_statute_act: "Societies Registration Act, 1860",
       fld_registration_date: "1978-03-12",
@@ -1743,6 +1755,12 @@ export function buildSeed(): {
     const tg1 = pun("TG/MH/PUN/03641", "Garima Greh", TG);
     const tg2 = nwd("TG/DL/NWD/03642", "Garima Greh", TG);
     const tg3 = place("TG/TN/MDR/03643", "Garima Greh", "Madurai", "Tamil Nadu", TG, "Owned", "625001");
+    const dr4 = pun("DR/MH/PUN/03651", "Integrated Rehabilitation Centre (Hadapsar)", DR);
+    const dr5 = nwd("DR/DL/NWD/03652", "Integrated Rehabilitation Centre (Shalimar Bagh)", DR);
+    const dr6 = place("DR/RJ/JAI/03653", "De-Addiction Centre", "Jaipur", "Rajasthan", DR, "Rented", "302017");
+    const dr7 = place("DR/GJ/AHM/03654", "Integrated Rehabilitation Centre (Maninagar)", "Ahmedabad", "Gujarat", DR, "Owned", "380008");
+    const sr4 = nwd("SR/DL/NWD/03655", "Senior Citizens' Home (Pitampura)", SR);
+    const sr5 = place("SR/MH/THN/03656", "Senior Citizens' Home (Vashi)", "Thane", "Maharashtra", SR, "Owned", "400703");
     const histories: History[] = [
       { scheme: "AVYAY", inst: sr1, annual: 2034140, nonRecurring: 278195, pfms: true, bank: ["State Bank of India", "SBIN0004512", "Kothrud"], people: 25, claims: newThenFirst, answers: avyayAnswers(sr1, "Senior Citizens' Home — 25 beneficiaries", 25) },
       { scheme: "AVYAY", inst: sr2, annual: 3968263, nonRecurring: 370926, pfms: true, bank: ["Punjab National Bank", "PUNB0221300", "Rohini Sector 7"], people: 20, claims: newThenTwo, answers: avyayAnswers(sr2, "Continuous Care Home (CCH) / Dementia / Alzheimer's", 20) },
@@ -1764,6 +1782,13 @@ export function buildSeed(): {
         ],
         answers: smile(tg3),
       },
+      // Six projects in the PFMS payment leg. Appended, so every project above keeps its serial.
+      { scheme: "NAPDDR", inst: dr4, annual: 2100000, nonRecurring: 450000, pfms: true, bank: ["Bank of Maharashtra", "MAHB0001207", "Hadapsar"], people: 45, claims: inPayment, answers: napddrAnswers(dr4), unreleased: true },
+      { scheme: "NAPDDR", inst: dr5, annual: 2600000, nonRecurring: 500000, pfms: true, bank: ["Canara Bank", "CNRB0003417", "Shalimar Bagh"], people: 50, claims: inPayment, answers: napddrAnswers(dr5), unreleased: true },
+      { scheme: "NAPDDR", inst: dr6, annual: 1850000, nonRecurring: 400000, pfms: false, bank: ["Punjab National Bank", "PUNB0487600", "Malviya Nagar"], people: 40, claims: inPayment, answers: napddrAnswers(dr6), unreleased: true },
+      { scheme: "NAPDDR", inst: dr7, annual: 2250000, nonRecurring: 420000, pfms: true, bank: ["State Bank of India", "SBIN0003981", "Maninagar"], people: 45, claims: inPayment, answers: napddrAnswers(dr7), unreleased: true },
+      { scheme: "AVYAY", inst: sr4, annual: 2034140, nonRecurring: 278195, pfms: true, bank: ["Union Bank of India", "UBIN0547290", "Pitampura"], people: 25, claims: inPayment, answers: avyayAnswers(sr4, "Senior Citizens' Home — 25 beneficiaries", 25), unreleased: true },
+      { scheme: "AVYAY", inst: sr5, annual: 2034140, nonRecurring: 278195, pfms: true, bank: ["Bank of Baroda", "BARB0VASHIX", "Vashi"], people: 25, claims: inPayment, answers: avyayAnswers(sr5, "Senior Citizens' Home — 25 beneficiaries", 25), unreleased: true },
     ];
     const WIZARD_BY_SCHEME = { AVYAY: AVYAY_WIZARD, NAPDDR: NAPDDR_WIZARD, SHRESHTA_M2: SHRESHTA_WIZARD, SMILE: SMILE_WIZARD } as const;
     const CASE_TYPE: Record<History["scheme"], [string, string] | undefined> = {
@@ -1854,7 +1879,7 @@ export function buildSeed(): {
         ]);
         a.submittedAt = a.audit[0]?.at ?? a.submittedAt;
         // Released by the Under Secretary about ten days after sanction — which is what opens the
-        // next instalment for claim (instalments.ts). One project keeps its latest sanction unreleased.
+        // next instalment for claim (instalments.ts). Projects marked `unreleased` keep their latest sanction in the payment leg.
         if (!(h.unreleased && latest)) {
           const released = releaseFunds(a, "pd-us", clockAt(Math.max(c.sanctioned - 10, 2)));
           if (!released.ok) throw new Error(`[e-anudaan seed] ${a.id}: cannot release — ${released.error}`);
@@ -1880,6 +1905,107 @@ export function buildSeed(): {
     applicant.applicationCount = mine.length;
     applicant.sanctionedCount = mine.filter((a) => a.status === "Sanctioned").length;
     applicant.totalGrant = mine.reduce((sum, a) => sum + (a.sanction?.total ?? 0), 0);
+  }
+
+  /*
+   * 14. NAPDDR at the Programme Division ASO, as the dev portal's walkthrough of 07 Oct 2026 shows
+   *     it: a cost sheet seeded from the project type's norm, a Statement of Account, and the amount
+   *     moving up the chain (cost-sheet.ts). Placed before block 12, which then answers
+   *     their questions as it answers every submitted file's.
+   *
+   *     a. The IRCA file already at the ASO read like a school: SHRESHTA's twenty documents (a
+   *        School Recognition Certificate among them) and 209 beneficiaries against a centre the
+   *        norms size at 15, 30 or 50 beds. It now carries NAPDDR's own twelve documents and a
+   *        30-bed centre's figures — its non-recurring claim above the norm, so the ceiling shows.
+   *     b. A District De-Addiction Centre for the applicant, whose NAPDDR record already holds
+   *        seven projects — so "Previous Sanctions" has a real history to read.
+   *     c. A costed 15-bed IRCA past the Joint Secretary, so the pipeline has a stage to show done.
+   */
+  {
+    const napddrDocs = (): MockDoc[] => {
+      const permanent = new Set([1, 2, 7, 9]); // MoA, PAN, bank letter, registration: kept on file
+      return NAPDDR_WIZARD.documents
+        .filter((d) => d.n <= 12)
+        .map((d, i) => ({
+          id: nextId("doc"),
+          slot: i + 1,
+          title: d.title,
+          group: permanent.has(d.n) ? ("permanent" as const) : ("annual" as const),
+          optional: d.optional,
+          ...(d.description ? { description: d.description } : {}),
+          reviewStatus: "Pending" as const,
+          fileName: `annexure-${i + 1}.pdf`,
+          sizeKb: 180 + ((i * 137) % 1100),
+          uploadedAt: iso(40 + i * 2), // before the file is submitted (`tellOneStory` keeps it so)
+        }));
+    };
+    /** One set of figures, stated everywhere the file states them — the record and its answers. */
+    const reshape = (a: GrantApplication, f: { sc: number; other: number; recurring: number; nonRecurring: number; projectType?: string }) => {
+      const total = f.sc + f.other;
+      Object.assign(a, { scBeneficiaries: f.sc, otherBeneficiaries: f.other, totalBeneficiaries: total, recurring: f.recurring, nonRecurring: f.nonRecurring, total: f.recurring + f.nonRecurring, documents: napddrDocs() });
+      a.formValues = {
+        ...a.formValues,
+        ...(f.projectType ? { fld_project_type: f.projectType } : {}),
+        fld_beneficiaries_sc: String(f.sc),
+        fld_beneficiaries_other: String(f.other),
+        fld_total_beneficiaries: String(total),
+        fld_grant_recurring: String(f.recurring),
+        fld_grant_non_recurring: String(f.nonRecurring),
+        fld_grant_total: String(f.recurring + f.nonRecurring),
+      };
+      return a;
+    };
+    /** A New NAPDDR file at a project of its own, filed `ageDays` ago. */
+    const fileAt = (ngo: NgoProfile, inst: Institution, ageDays: number, projectType: string): GrantApplication => {
+      const base = draft(ngoPool.indexOf(ngoPool.find((p) => p.id === ngo.id)!), "NAPDDR", "2026-27", ageDays);
+      const id = `GIA/2026-27/NAPDDR/${inst.district.toUpperCase().replace(/\s+/g, "_")}/${(++counter).toString().padStart(5, "0")}`;
+      return {
+        ...base,
+        id,
+        institutionId: inst.id,
+        projectLabel: `${inst.name} — ${inst.district} · FY 2026-27`,
+        formValues: {
+          ...base.formValues,
+          ...napddrAnswers(inst),
+          // The project's own record, not the one `draft()` happened to rotate to.
+          fld_project_type: projectType, fld_project_id: inst.id, fld_institution_id: inst.id, fld_project_state: inst.state, fld_project_district: inst.district,
+          fld_nature_of_institution: inst.nature, fld_institution_gender_type: inst.type, fld_building_ownership: inst.building,
+          ...(projectType.startsWith("DDAC") ? person("fld_ddac_chief", "Dr. Meenakshi Bhatia", "Post-graduate", "Chief Functionary", "9811042210") : {}),
+        },
+      };
+    };
+
+    // a.
+    const irca = apps.find((a) => a.schemeCode === "NAPDDR" && a.holder.kind === "chain" && a.holder.division === "pd" && a.holder.grade === "aso");
+    if (irca) apps[apps.indexOf(irca)] = tellOneStory(reshape(irca, { sc: 9, other: 21, recurring: 5000000, nonRecurring: 400000 }));
+
+    // b.
+    const ddacSite: Institution = {
+      id: "DR/DL/SDL/03657", name: "District De-Addiction Centre", district: "South Delhi", state: "Delhi",
+      nature: "Integrated Rehabilitation Centre for Addicts", type: "Co-Ed", level: "Secondary", building: "Owned", pin: "110017",
+    };
+    applicant.institutions.push(ddacSite);
+    const ddac = tellOneStory(reshape(driveToChain(fileAt(applicant, ddacSite, 9, "DDAC — District De-Addiction Centre"), "pd", "aso", 5), { sc: 6, other: 9, recurring: 7200000, nonRecurring: 400000 }));
+    apps.push(ddac);
+    applicant.applicationCount = (applicant.applicationCount ?? 0) + 1;
+
+    // c. Costed by the ASO when it certified; the Joint Secretary has since sent it to Finance.
+    const host = ngos[3]!;
+    const site = projectFor(host, "NAPDDR");
+    let costed = reshape(fileAt(host, site, 30, "IRCA — Integrated Rehabilitation Centre"), { sc: 5, other: 10, recurring: 3600000, nonRecurring: 245000 });
+    costed = driveToChain(costed, "finance", "so", 26);
+    costed = tellOneStory(costed);
+    const certified = costed.certifiedAt ?? iso(25);
+    for (const d of costed.documents) Object.assign(d, { reviewStatus: "Verified", reviewedBy: "pd-aso", reviewedAt: certified });
+    const sheet = seedSheet("IRCA-15");
+    const urban = sheet.lines.find((l) => l.choice?.option === "Part Time, Urban")!;
+    sheet.choices = { doctor: urban.id };
+    const rent = sheet.lines.find((l) => l.label.startsWith("Rent"))!;
+    Object.assign(rent, { proposed: 180000, remark: "The rent agreement on file is for Rs. 15,000 a month." });
+    costed.costSheet = { ...sheet, savedAt: certified, savedBy: "pd-aso" };
+    costed.budgetStatement = { allocation: 25000000, expenditure: 16240000, release: sheetTotals(sheet, costed).proposed, savedAt: certified, savedBy: "pd-aso" };
+    apps.push(costed);
+    host.applicationCount = (host.applicationCount ?? 0) + 1;
   }
 
   /*
@@ -2034,6 +2160,12 @@ export function buildSeed(): {
         camera_live_feed: "No",
         prior_grant_received: "No",
         fld_bank_joint_operators: `${ngo.secretary}, Secretary, and ${ngo.treasurer}, Treasurer — Registered office, ${ngo.district}, ${ngo.state}`,
+        // PFMS BRD FR-NGO-001/002: the account typed twice, and the payee code the payment leg holds
+        // for this project (`pfms/seed.ts` derives the same one), confirmed.
+        fld_bank_account_confirm: v.fld_bank_account_number,
+        fld_pfms_name: ngo.name,
+        fld_pfms_payee_code: derivedPayeeCode(inst.id),
+        fld_pfms_payee_confirm: "true",
       };
       for (let pass = 0; pass < 4; pass++) {
         let changed = false;

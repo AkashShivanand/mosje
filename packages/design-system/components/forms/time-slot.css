@@ -95,7 +95,7 @@
        on a phone, often outdoors, and 24 is the floor rather than the goal. */
     min-height: var(--sa-control-height-lg);
     padding: var(--sa-padding-8) var(--sa-padding-12);
-    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-bolder-default);
     border-radius: var(--sa-control-radius);
     background-color: var(--sa-bg-neutral-base);
     color: var(--sa-text-neutral-bolder);
@@ -106,7 +106,7 @@
   }
 
   .ds-slot__input:hover:not(:disabled) + .ds-slot__label {
-    border-color: var(--sa-border-neutral-bolder-default);
+    border-color: var(--sa-border-neutral-bolder-hover);
     background-color: var(--sa-bg-neutral-hover);
   }
 

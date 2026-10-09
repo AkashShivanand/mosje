@@ -231,6 +231,11 @@ export function Tabs({
       mark.style.width = `${btnRect.width}px`;
       mark.style.height = "";
     }
+    // Until this has run the mark has no size, and tabs.css paints the selected tab
+    // itself instead. Without that, server-rendered HTML showed the pill's white ink
+    // on the grey track — the selected tab unreadable until hydration, which on a
+    // first load of the E-Anudaan sign-in page was long enough to screenshot.
+    list.dataset.indicatorReady = "";
   }, [active, vertical]);
 
   /**
@@ -560,14 +565,25 @@ export function Tabs({
   );
 }
 
-/** The panel paired with the active {@link Tabs} tab. Render one per active tab. */
+/**
+ * The panel paired with a {@link Tabs} tab. Render one for the active tab — or one per tab, each
+ * with `hidden` set while its tab is not selected, when a panel holds work in progress.
+ *
+ * `hidden` exists for the second case. A review screen whose Grant tab holds an unsaved cost sheet
+ * lost every edit when the officer stepped across to Documents and back, because the panel was
+ * unmounted. Keeping each panel mounted and hidden keeps its state, and every tab's `aria-controls`
+ * then points at a panel that exists.
+ */
 export function TabPanel({
   idBase,
   tabId,
+  hidden,
   children,
 }: {
   idBase: string;
   tabId: string;
+  /** Keep the panel mounted but out of view and out of the accessibility tree. */
+  hidden?: boolean;
   children: React.ReactNode;
 }) {
   return (
@@ -576,6 +592,7 @@ export function TabPanel({
       id={`${idBase}-panel-${tabId}`}
       aria-labelledby={`${idBase}-tab-${tabId}`}
       tabIndex={0}
+      hidden={hidden}
       className="ds-tabpanel"
     >
       {children}

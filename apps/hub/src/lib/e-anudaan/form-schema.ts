@@ -99,6 +99,12 @@ export interface FieldDef {
   /** Show the field only while another field holds one of these values. */
   showWhen?: { field: string; equals: readonly string[] };
   /**
+   * A second condition that must ALSO hold. The PFMS payee code is asked when the NGO says the
+   * account is PFMS-registered AND the scheme has not already asked for its PFMS code on that
+   * branch — one condition could not say both.
+   */
+  alsoWhen?: Condition;
+  /**
    * Some OPTIONS fork, not the whole field. AVYAY's Nature of Project is the case: live offers
    * Physiotherapy Clinic and Mobile Medicare Unit to renewals only (FR-NEW-04). Before this the
    * rule lived in help text and nothing enforced it, so a new applicant could pick a project type
@@ -135,7 +141,7 @@ export interface FieldDef {
   /** Value derived from other fields; the control renders read-only. */
   auto?: AutoRule;
   /** Extra validation beyond "required". */
-  rule?: "afterRegistration" | "afterPeriodFrom" | "nameAndPhone" | "lettersOnly" | "pin" | "ifsc" | "pan" | "notBackdated" | "notFuture" | "mustBeYes" | "accountNumber";
+  rule?: "afterRegistration" | "afterPeriodFrom" | "nameAndPhone" | "lettersOnly" | "pin" | "ifsc" | "pan" | "notBackdated" | "notFuture" | "mustBeYes" | "accountNumber" | "confirmAccount" | "payeeCode";
   /** A number that may not exceed another field's — "Of which women" against the total. */
   notMoreThan?: string;
   /** Span the full width of the two-column grid. */
@@ -316,11 +322,23 @@ function person(prefix: string, who: string, required: boolean, posts?: readonly
  * record with its PFMS registration beside it (T540–559, T617–639). A registered account is not
  * asked about PFMS again (T635–636); the portal cannot check PFMS, so the NGO declares it and the
  * Ministry validates it (T614–633).
+ *
+ * PFMS BRD FR-NGO-001/002 (29 Sep 2026): a new account's number is entered twice, and where the NGO
+ * says the account is PFMS-registered it gives its PFMS unique (payee) code with a confirmation
+ * tick — the two things PFMS needs before a payment advice can be prepared — and the organisation's
+ * name as registered on PFMS, which the Maker's advice carries (Annexure F.3 "NGO Name (as per PFMS)"). `newAccount` is the
+ * branch on which the account is typed; `payeeOnly` narrows the payee question where a scheme
+ * already asks for its PFMS code on another branch (NAPDDR renewals carry `fld_pfms_code`).
  */
-function bankRecordFields(onRecord: Condition): FieldDef[] {
+function bankRecordFields(onRecord: Condition, newAccount: Condition, payeeOnly?: Condition): FieldDef[] {
+  const registered = { field: "fld_pfms_registered", equals: ["Yes"] } as const;
+  // Asked only where the PFMS registration is not already on record — the same branch the
+  // registration question itself is asked on. A registered account on record carries its code.
+  const notOnRecord: Condition = payeeOnly ?? { field: "fld_pfms_on_record", equals: ["", "No"] };
   return [
     { name: "fld_bank_name", label: "Bank", kind: "text", required: true, readOnlyWhen: onRecord },
     { name: "fld_bank_account_number", label: "Account Number", kind: "text", required: true, rule: "accountNumber", readOnlyWhen: onRecord },
+    { name: "fld_bank_account_confirm", label: "Re-enter Account Number", kind: "text", required: true, rule: "confirmAccount", showWhen: newAccount },
     { name: "fld_bank_ifsc", label: "IFSC Code", kind: "text", required: true, rule: "ifsc", readOnlyWhen: onRecord },
     { name: "fld_bank_branch", label: "Branch", kind: "text", required: true, readOnlyWhen: onRecord },
     { name: "fld_pfms_status", label: "PFMS DBT Registration", kind: "text", required: true, readOnly: true, showWhen: { field: "fld_pfms_on_record", equals: ["Yes"] } },
@@ -333,6 +351,34 @@ function bankRecordFields(onRecord: Condition): FieldDef[] {
       wide: true,
       showWhen: { field: "fld_pfms_on_record", equals: ["", "No"] },
       help: "If it is not, the Ministry registers it before the grant is released.",
+    },
+    {
+      name: "fld_pfms_name",
+      label: "Name as per PFMS",
+      kind: "text",
+      required: true,
+      showWhen: registered,
+      alsoWhen: notOnRecord,
+      help: "The organisation's name exactly as registered on PFMS. The payment advice carries this name.",
+    },
+    {
+      name: "fld_pfms_payee_code",
+      label: "PFMS Unique (Payee) Code",
+      kind: "text",
+      required: true,
+      rule: "payeeCode",
+      showWhen: registered,
+      alsoWhen: notOnRecord,
+      help: "As it appears on the organisation's PFMS registration. The grant is paid against this code.",
+    },
+    {
+      name: "fld_pfms_payee_confirm",
+      label: "I confirm this is the organisation's PFMS unique (payee) code.",
+      kind: "checkbox",
+      required: true,
+      wide: true,
+      showWhen: registered,
+      alsoWhen: notOnRecord,
     },
   ];
 }
@@ -506,7 +552,7 @@ const SHRESHTA_STEPS: readonly StepDef[] = [
           { name: "bank_hq_at_institution", label: "Head office at the institution location", kind: "radio", required: true, options: YES_NO, wide: true, showWhen: UNCLAIMED },
           { name: "bank_joint_secretary_head", label: "Joint account of Secretary & Head at the location", kind: "radio", required: true, options: YES_NO, wide: true, showWhen: UNCLAIMED },
           { name: "bank_separate_institution_accounts", label: "Separate institution-wise accounts maintained", kind: "radio", required: true, options: YES_NO, wide: true, showWhen: UNCLAIMED },
-          ...bankRecordFields(CLAIMED),
+          ...bankRecordFields(CLAIMED, UNCLAIMED),
         ],
       },
       {
@@ -895,7 +941,7 @@ const AVYAY_STEPS: readonly StepDef[] = [
           { name: "bank_ngo_name_declared", label: "Account is in the name of the NGO/VO", kind: "radio", required: true, options: YES_NO, wide: true, rule: "mustBeYes", showWhen: NEW_ONLY },
           // Every account the NGO already holds belongs to another project, so there is nothing to
           // choose from and no separate "Add New Bank Detail" (T156–158).
-          ...bankRecordFields(RENEWAL_ONLY),
+          ...bankRecordFields(RENEWAL_ONLY, NEW_ONLY),
         ],
       },
     ],
@@ -1326,7 +1372,7 @@ const SMILE_STEPS: readonly StepDef[] = [
         summaryWhen: SM_EXISTING,
         lead: "The account the grant will be paid into.",
         fields: [
-          ...bankRecordFields(SM_EXISTING),
+          ...bankRecordFields(SM_EXISTING, SM_NEW),
           { name: "fld_bank_rtgs_micr", label: "RTGS / MICR Code", kind: "text", showWhen: SM_NEW },
           { name: "fld_bank_joint_operators", label: "Name & Address of joint-account operators", kind: "textarea", required: true, wide: true, showWhen: SM_NEW },
         ],
@@ -1649,10 +1695,10 @@ const NAPDDR_STEPS: readonly StepDef[] = [
         lead: "The account must be in the name of the NGO/VO and used for this project only.",
         fields: [
           { name: "bank_ngo_name_declared", label: "Account is in the name of the NGO/VO", kind: "radio", required: true, options: YES_NO, wide: true, rule: "mustBeYes", showWhen: ND_NEW },
-          ...bankRecordFields(ND_RENEWAL),
+          ...bankRecordFields(ND_RENEWAL, ND_NEW, ND_NEW),
           // Moved from live's renewal-only "CCTV / EAT / PFMS Compliance" step to the account it
           // describes (T617–639); fixed where the account is already registered.
-          { name: "fld_pfms_code", label: "NGO PFMS code (under head 3817)", kind: "text", required: true, showWhen: ND_RENEWAL, readOnlyWhen: { field: "fld_pfms_on_record", equals: ["Yes"] } },
+          { name: "fld_pfms_code", label: "PFMS Unique (Payee) Code", kind: "text", required: true, showWhen: ND_RENEWAL, readOnlyWhen: { field: "fld_pfms_on_record", equals: ["Yes"] } },
           { name: "eat_module_registered", label: "Registered on the PFMS EAT module", kind: "radio", required: true, options: YES_NO, wide: true },
         ],
       },
@@ -1816,6 +1862,7 @@ export function stepFields(step: StepDef): readonly FieldDef[] {
 
 /** Whether a conditional field is currently on screen. */
 export function fieldVisible(field: FieldDef, values: Record<string, string>): boolean {
+  if (field.alsoWhen && !field.alsoWhen.equals.includes(values[field.alsoWhen.field] ?? "")) return false;
   if (!field.showWhen) return true;
   return field.showWhen.equals.includes(values[field.showWhen.field] ?? "");
 }
@@ -2044,6 +2091,21 @@ export function validateStep(
         // Digits as typed on a new account; the masked form an account on record is shown in.
         if (!/^\d{9,18}$/.test(v.replace(/\s/g, "")) && !/^X{4} X{4} \d{4}$/.test(v)) {
           errors[f.name] = "Enter the account number using digits only, 9 to 18 of them.";
+        }
+        break;
+      case "confirmAccount": {
+        // FR-NGO-002: the account is confirmed by typing it twice, so a slipped digit is caught here
+        // rather than by a failed payment months later. Compared only once the first entry is itself
+        // valid — a bad first entry already has its own message.
+        const first = (values.fld_bank_account_number ?? "").replace(/\s/g, "");
+        if (/^\d{9,18}$/.test(first) && v.replace(/\s/g, "") !== first) {
+          errors[f.name] = "The account numbers do not match. Enter the same account number again.";
+        }
+        break;
+      }
+      case "payeeCode":
+        if (!/^[A-Z]{2}[0-9]{10}$/.test(v.trim().toUpperCase())) {
+          errors[f.name] = "Enter the PFMS payee code as it appears on your PFMS registration — two letters and ten digits.";
         }
         break;
       case "notBackdated":

@@ -57,7 +57,7 @@
     box-sizing: border-box;
     height: var(--sa-control-height-md);
     padding: 0 var(--sa-padding-12);
-    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-bolder-default);
     border-radius: var(--sa-control-radius);
     background-color: var(--sa-bg-neutral-base);
     color: var(--sa-text-neutral-bolder);

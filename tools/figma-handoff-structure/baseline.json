@@ -1,8 +1,4 @@
 {
- "E-Anudaan": {
-  "identity": 0,
-  "visual": 0
- },
  "E-Utthan": {
   "identity": 4,
   "visual": 33
@@ -38,5 +34,65 @@
  "Garima Greh": {
   "identity": 68,
   "visual": 45
+ },
+ "E-Anudaan · Start Here": {
+  "identity": 0,
+  "visual": 0
+ },
+ "E-Anudaan · Everyone · Signing In": {
+  "identity": 0,
+  "visual": 0
+ },
+ "E-Anudaan · NGO · Starting an Application": {
+  "identity": 0,
+  "visual": 0
+ },
+ "E-Anudaan · NGO · NAPDDR Application Form": {
+  "identity": 0,
+  "visual": 0
+ },
+ "E-Anudaan · NGO · AVYAY Application Form": {
+  "identity": 0,
+  "visual": 0
+ },
+ "E-Anudaan · NGO · SMILE (Garima Greh) Application Form": {
+  "identity": 0,
+  "visual": 0
+ },
+ "E-Anudaan · NGO · SHRESHTA Mode 2 Application Form": {
+  "identity": 0,
+  "visual": 0
+ },
+ "E-Anudaan · NGO · After Applying and Getting Paid": {
+  "identity": 0,
+  "visual": 0
+ },
+ "E-Anudaan · Officers · Reviewing Applications": {
+  "identity": 0,
+  "visual": 0
+ },
+ "E-Anudaan · Officers · Sanctioning and Inspections": {
+  "identity": 0,
+  "visual": 0
+ },
+ "E-Anudaan · Officers · Records and Reports": {
+  "identity": 0,
+  "visual": 0
+ },
+ "E-Anudaan · Officers · Paying Grants through PFMS": {
+  "identity": 0,
+  "visual": 0
+ },
+ "E-Anudaan · Shared Parts": {
+  "identity": 0,
+  "visual": 0
+ },
+ "E-Anudaan · Old Screens — Do Not Use": {
+  "identity": 0,
+  "visual": 0
+ },
+ "Website Dashboard · Our Performance — Beneficiary Dashboard": {
+  "identity": 3,
+  "visual": 2
  }
 }

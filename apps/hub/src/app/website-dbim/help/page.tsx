@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { DbimPage } from "@/components/website-dbim/layout/DbimPage";
 import { DbimHelpTable } from "@/components/website-dbim/utility/HelpTable";
-import { DBIM_HEROES, dbimHref } from "@/lib/website-dbim/nav";
+import { dbimHref } from "@/lib/website-dbim/nav";
 import { DBIM_HELP_MORE } from "@/lib/website-dbim/utility";
 import "@/components/website-dbim/utility/utility.css";
 
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 /** The Department's Help page (app/website/help) in the reference's Help layout. */
 export default function Page() {
   return (
-    <DbimPage spacing="flush" title="Help" crumbs={[{ label: "Help" }]} path="/help" hero={DBIM_HEROES.help}>
+    <DbimPage spacing="flush" title="Help" crumbs={[{ label: "Help" }]} path="/help">
       <div className="db-u-flush">
         <DbimHelpTable />
         <div className="db-u-prose">

@@ -1,10 +1,89 @@
 {
-  "$comment": "Every portal handoff page, measured by check.mjs against .claude/rules/figma-handoff-page-structure.md. Register a page the day it is created, conformant or not. rootDepth is 1 for a single-portal page, 0 when the page wraps several portals in #EAEAEA product sections.",
+  "$comment": "Every portal handoff page, measured by check.mjs against .claude/rules/figma-handoff-page-structure.md. Register a page the day it is created, conformant or not. rootDepth is 1 for a single-portal page, 0 when the page wraps several portals in #EAEAEA product sections. A portal may span several pages of its own file: register each page as '<Portal> · <Page>'; --portal <Portal> checks them all.",
   "pages": [
     {
-      "portal": "E-Anudaan",
-      "file": "evmNmlK8g4VYwJVu2FwSGV",
-      "page": "51313:165608",
+      "portal": "E-Anudaan · Start Here",
+      "file": "K0B3vuOTXpxw6kt0px2Cqo",
+      "page": "0:1",
+      "rootDepth": 1,
+      "_fileWhy": "E-Anudaan moved to its own file, E-Anudaan [Handoff], on 30 Sep 2026: one page per stage of an application, each opening with its own START HERE guide, so every page is checked like a single-portal page. `--portal E-Anudaan` checks all of them. The old page in evmNmlK8g4VYwJVu2FwSGV now holds only a note pointing here."
+    },
+    {
+      "portal": "E-Anudaan · Everyone · Signing In",
+      "file": "K0B3vuOTXpxw6kt0px2Cqo",
+      "page": "30:208302",
+      "rootDepth": 1
+    },
+    {
+      "portal": "E-Anudaan · NGO · Starting an Application",
+      "file": "K0B3vuOTXpxw6kt0px2Cqo",
+      "page": "30:208303",
+      "rootDepth": 1
+    },
+    {
+      "portal": "E-Anudaan · NGO · NAPDDR Application Form",
+      "file": "K0B3vuOTXpxw6kt0px2Cqo",
+      "page": "31:3",
+      "rootDepth": 1
+    },
+    {
+      "portal": "E-Anudaan · NGO · AVYAY Application Form",
+      "file": "K0B3vuOTXpxw6kt0px2Cqo",
+      "page": "31:4",
+      "rootDepth": 1
+    },
+    {
+      "portal": "E-Anudaan · NGO · SMILE (Garima Greh) Application Form",
+      "file": "K0B3vuOTXpxw6kt0px2Cqo",
+      "page": "31:5",
+      "rootDepth": 1
+    },
+    {
+      "portal": "E-Anudaan · NGO · SHRESHTA Mode 2 Application Form",
+      "file": "K0B3vuOTXpxw6kt0px2Cqo",
+      "page": "31:6",
+      "rootDepth": 1
+    },
+    {
+      "portal": "E-Anudaan · NGO · After Applying and Getting Paid",
+      "file": "K0B3vuOTXpxw6kt0px2Cqo",
+      "page": "30:208304",
+      "rootDepth": 1
+    },
+    {
+      "portal": "E-Anudaan · Officers · Reviewing Applications",
+      "file": "K0B3vuOTXpxw6kt0px2Cqo",
+      "page": "30:208305",
+      "rootDepth": 1
+    },
+    {
+      "portal": "E-Anudaan · Officers · Sanctioning and Inspections",
+      "file": "K0B3vuOTXpxw6kt0px2Cqo",
+      "page": "31:7",
+      "rootDepth": 1
+    },
+    {
+      "portal": "E-Anudaan · Officers · Paying Grants through PFMS",
+      "file": "K0B3vuOTXpxw6kt0px2Cqo",
+      "page": "30:208307",
+      "rootDepth": 1
+    },
+    {
+      "portal": "E-Anudaan · Officers · Records and Reports",
+      "file": "K0B3vuOTXpxw6kt0px2Cqo",
+      "page": "30:208306",
+      "rootDepth": 1
+    },
+    {
+      "portal": "E-Anudaan · Shared Parts",
+      "file": "K0B3vuOTXpxw6kt0px2Cqo",
+      "page": "30:208308",
+      "rootDepth": 1
+    },
+    {
+      "portal": "E-Anudaan · Old Screens — Do Not Use",
+      "file": "K0B3vuOTXpxw6kt0px2Cqo",
+      "page": "30:208309",
       "rootDepth": 1
     },
     {
@@ -30,7 +109,7 @@
       "file": "evmNmlK8g4VYwJVu2FwSGV",
       "page": "8943:41048",
       "rootDepth": 1,
-      "_fileWhy": "Two Figma files are named 'MoSJE Portal [Handoff]'. This one is the live one: twelve pages, the September dev syncs, modified the day this was checked, and the file tools/design-audit/projects/pm-ajay/audit.config.json already points at. The key this entry used to carry, gH2vQ62cfg4677YKWuOpLc, is the older duplicate \u2014 its PM-AJAY page holds two sections against this one's six. E-Utthan, SCW and NHAPOA still point at the duplicate and need the same check (24 Sep 2026)."
+      "_fileWhy": "Two Figma files are named 'MoSJE Portal [Handoff]'. This one is the live one: twelve pages, the September dev syncs, modified the day this was checked, and the file tools/design-audit/projects/pm-ajay/audit.config.json already points at. The key this entry used to carry, gH2vQ62cfg4677YKWuOpLc, is the older duplicate — its PM-AJAY page holds two sections against this one's six. E-Utthan, SCW and NHAPOA still point at the duplicate and need the same check (24 Sep 2026)."
     },
     {
       "portal": "NMBA",
@@ -61,6 +140,13 @@
       "file": "gH2vQ62cfg4677YKWuOpLc",
       "page": "7394:535",
       "rootDepth": 1
+    },
+    {
+      "portal": "Website Dashboard · Our Performance — Beneficiary Dashboard",
+      "file": "TlcIlCUGovOQpIAbYQedS5",
+      "page": "355:5",
+      "rootDepth": 1,
+      "_fileWhy": "The proposed Beneficiary Dashboard (Option B of the three drawn in MoSJE Website DBIM DS, chosen 7 Oct 2026). A website page, not a portal, but organised to the portal handoff shape so it is checked the same way."
     }
   ]
 }

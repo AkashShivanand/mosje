@@ -15,7 +15,7 @@ const A11Y: A11yItem[] = [
     criterion: "1.1.1 Non-text Content",
     level: "A",
     status: "verified",
-    evidence: "It renders through the shared chart frame, which carries a screen-reader data table and a “View as Table” control alongside the drawing.",
+    evidence: "It renders through the shared chart frame, which carries a screen-reader data table and a Chart / Table switch that shows the table in place of the drawing.",
     description: "A map is never the only route to the figures.",
   },
 ];

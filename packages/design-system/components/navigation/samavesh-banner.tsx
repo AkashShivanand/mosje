@@ -634,7 +634,11 @@ export function SamaveshBanner({
               onClick={handleToggle}
               aria-expanded={open}
               aria-controls={drawerId}
-              aria-label={open ? `Collapse ${title} portals` : `${exploreLabel} ${title} portals`}
+              /* ONE NAME IN BOTH STATES, and it starts with the visible word (WCAG
+                 2.5.3). It used to become "Collapse SAMAVESH portals" while the
+                 button still read "Explore", so "click Explore" stopped working
+                 the moment the drawer opened. `aria-expanded` carries the state. */
+              aria-label={`${exploreLabel} ${title} portals`}
               /* ONE glyph that rotates, not two that swap. Swapping is a
                  discrete jump at the midpoint of a continuous gesture; rotating
                  the same chevron keeps the feedback continuous and lets the

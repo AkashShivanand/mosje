@@ -41,7 +41,9 @@ differ in layout. **They may not differ in content.**
 | Recent Documents | `documents.ts` (a dated snapshot of the live selection) | ✅ | ✅ | ✅ |
 | Social Media — heading, accounts, handles, links | `social.ts` (live's three; YouTube as DBIM's fourth) | ✅ | ✅ | ✅ four platforms (DBIM Toolkit, "Citizen Engagement") |
 | Partner logos — the carousel above the footer | `partners.ts` (live's 42, in live order; names ours, as live's alt text is empty) | ✅ | ✅ | ✅ |
-| What's New | `whatsNew()` in `lib/website-next/whats-new.ts` — a feed, as live runs it | ✅ | ✅ | ✅ |
+| What's New | `whats-new.ts` `WHATS_NEW` — the live list, read 8 Oct 2026 (`whatsNew()` maps it; an item the live list carries as a link keeps its `href`); the DBIM Announcements bar reads it, as the live bar lists the same items | ✅ | ✅ | ✅ six on the home page (instruction, 8 Oct 2026) |
+| Schemes and Services listing — the 28 live schemes, their names, groups, "Who It Is For" and the one live card image | `scheme-listing.ts` (`scheme-listing.json`, read 29 Sep 2026 by `scripts/build-scheme-listing.mjs`) | ➖ still the scheme master's catalogue (`lib/website-next/schemes.ts`), which splits umbrella schemes — its own decision | ✅ same schemes, from the register mirror | ✅ (instruction, 29 Sep 2026) |
+| Scheme Portals — which portals, their order, the portal each opens | `organisations.ts` `schemePortals()`, `SCHEME_PORTALS_SECTION`; registry `portalHref` | ✅ home section + masthead | — | ✅ **not on the home page** — Ministry › Our Scheme Portals (the Department's L2 addition, 28 Sep 2026) |
 | Organisations — words, tab labels, order, the 18 bodies | `organisations.ts` + the registry `data/website/organisations.ts` | ✅ | ✅ | ✅ **not on the home page** — Ministry › Our Organisation (DBIM 3.0 §A.5.1.3) |
 
 **The DBIM design follows the DBIM 3.0 manual for layout.** Where the manual places a

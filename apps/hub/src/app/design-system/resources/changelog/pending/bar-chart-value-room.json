@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "`BarChart orientation=\"horizontal\" showValues` keeps room on the right for the longest value it prints, so a figure such as \"₹1,96,400 Cr\" is no longer cut off at the card's edge. The margin is sized from the formatted values, about 7px a character, with 44px as the floor."
+}

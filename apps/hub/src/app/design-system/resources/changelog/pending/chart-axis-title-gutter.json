@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "AN AXIS TITLE NO LONGER SITS ON THE TICKS. LineChart (`yLabel`) and ComboChart (`leftLabel`, `rightLabel`) drew the rotated title at a fixed 12 units from the edge inside a 44–48 unit gutter, so any tick of five characters or more — \"2,000\", \"20,000\" — ran underneath it (\"Scholars ▮unded\"). The gutter now widens only when a title is shown: LineChart's left from 44 to 60, ComboChart's left from 48 to 64 and right from 48 to 62. Charts without an axis title are unchanged. Found on the website's Beneficiary Dashboard."
+}

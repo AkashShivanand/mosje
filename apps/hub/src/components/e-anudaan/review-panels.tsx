@@ -36,11 +36,15 @@ import {
   buttonClasses,
   useToast,
 } from "@mosje/design-system";
+import { usePfms } from "@/lib/e-anudaan/pfms/store";
+import { paymentCase } from "@/lib/e-anudaan/pfms/selectors";
+import { BlockerBadge, StageBadge } from "@/components/e-anudaan/pfms/payment-ui";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { GRADE_FULL, ROLES } from "@/lib/e-anudaan/roles";
-import { formatDate, formatDateTime, formatMoney, rupees } from "@/lib/e-anudaan/format";
+import { formatDate, formatDateTime, formatMoney } from "@/lib/e-anudaan/format";
 import { AUTO_CHECK } from "@/lib/e-anudaan/glossary";
 import { schemeLabel } from "@/lib/e-anudaan/selectors";
+import { ordinal } from "@/lib/e-anudaan/applicant";
 import { avyayEntitlement } from "@/lib/e-anudaan/form-schema";
 import {
   instalmentSchedule,
@@ -153,12 +157,45 @@ export function FundingHistory({ app }: { app: GrantApplication }) {
           <>
             <DataTable<NgoSanctionRow & Record<string, unknown>>
               caption="Sanction orders issued to this NGO"
+              // The dev portal's columns (walkthrough of 07 Oct 2026): instalment, project and what
+              // was disbursed, with this project's earlier grants and this year's marked. Its legend
+              // promised a highlight and a green flag it never drew; here they are words, not tints.
               columns={[
-                { key: "financialYear", header: "Financial Year", render: (r) => <span className="whitespace-nowrap">{r.financialYear}</span> },
-                { key: "orderNo", header: "Sanction No.", render: (r) => <span className="whitespace-nowrap font-mono">{r.orderNo}</span> },
-                { key: "sanctionedAt", header: "Date", render: (r) => <span className="whitespace-nowrap">{formatDate(r.sanctionedAt)}</span> },
-                { key: "scheme", header: "Scheme", render: (r) => schemeLabel(r.scheme) },
-                { key: "amount", header: "Sanctioned Amount", className: "text-right", render: (r) => <span className="whitespace-nowrap tabular-nums">{formatMoney(r.amount)}</span> },
+                {
+                  key: "financialYear",
+                  header: "Year",
+                  render: (r) => (
+                    <span className="block whitespace-nowrap">
+                      {r.financialYear}
+                      {r.financialYear === app.financialYear && <Badge status="info" size="sm" className="mt-1 block w-fit">This Year</Badge>}
+                    </span>
+                  ),
+                },
+                {
+                  key: "orderNo",
+                  header: "Sanction",
+                  render: (r) => (
+                    <span className="block whitespace-nowrap">
+                      <span className="block tabular-nums">{r.orderNo}</span>
+                      <span className="block text-body-3 text-ink-muted">{formatDate(r.sanctionedAt)}</span>
+                    </span>
+                  ),
+                },
+                {
+                  key: "project",
+                  header: "Project",
+                  render: (r) => (
+                    <span className="block">
+                      <span className="block whitespace-nowrap">{r.app.institutionId}</span>
+                      <span className="block text-body-3 text-ink-muted">
+                        {schemeLabel(r.scheme)} · {r.app.caseType === "New" ? "New project" : `${r.app.instalment ? ordinal(r.app.instalment) : "Next"} instalment`}
+                      </span>
+                      {r.app.institutionId === app.institutionId && <Badge status="success" size="sm">This Project</Badge>}
+                    </span>
+                  ),
+                },
+                { key: "amount", header: "Sanctioned", className: "text-right", render: (r) => <span className="whitespace-nowrap tabular-nums">{formatMoney(r.amount)}</span> },
+                { key: "released", header: "Disbursed", className: "text-right", render: (r) => <span className="whitespace-nowrap tabular-nums">{formatMoney(r.app.release?.amount ?? 0)}</span> },
               ]}
               data={ngo.rows as (NgoSanctionRow & Record<string, unknown>)[]}
               total={ngo.rows.length}
@@ -208,21 +245,20 @@ export function FundingHistory({ app }: { app: GrantApplication }) {
 
 /* ── Instalments and fund release ────────────────────────────────────────── */
 
+/**
+ * PFMS payment leg, 29 Sep 2026: a sanctioned instalment is no longer released with one click. It is
+ * paid through the Maker, the Checker and PFMS (docs/plans/2026-09-29-e-anudaan-pfms.md), so the row
+ * shows where that payment has reached — read from `paymentCase()`, the expression the Payment
+ * Status page and both payment queues read — and the Under Secretary keeps only "Open for Claim".
+ */
 export function InstalmentsPanel({ app }: { app: GrantApplication }) {
-  const { state, releaseFunds, openForClaim } = useEAnudaan();
+  const { state, openForClaim } = useEAnudaan();
+  const { pfms } = usePfms();
   const { toast } = useToast();
-  const [releasing, setReleasing] = React.useState<GrantApplication | null>(null);
   const schedule = instalmentSchedule(state, app);
   const role = state.session ? ROLES[state.session] : null;
   if (!schedule) return null;
   const canRelease = !!role?.caps.includes("releaseFunds");
-
-  const release = (target: GrantApplication) => {
-    const res = releaseFunds(target.id);
-    setReleasing(null);
-    if (!res.ok) toast(res.error, "error");
-    else toast(`${rupees(target.sanction!.total)} released against sanction order ${target.sanction!.orderNo}.`, "success");
-  };
   const open = (row: ScheduleRow) => {
     if (!row.openedFrom) return;
     const res = openForClaim(row.openedFrom.id, row.label);
@@ -239,14 +275,15 @@ export function InstalmentsPanel({ app }: { app: GrantApplication }) {
             {r.claim?.release && <span className="mt-1 block whitespace-nowrap text-body-3 text-ink-muted">{formatDate(r.claim.release.releasedAt)}</span>}
           </span>
         );
-      case "to-release":
-        return canRelease && r.claim ? (
-          <Button size="sm" nowrap onClick={() => setReleasing(r.claim!)}>
-            Release Funds
-          </Button>
-        ) : (
-          <Badge status="warning" size="sm">Awaiting Release</Badge>
+      case "to-release": {
+        if (!r.claim) return <Badge status="warning" size="sm">In Payment</Badge>;
+        const pc = paymentCase(state, pfms, r.claim);
+        return (
+          <Link href={`${BASE}/finance/payment-status/${encodeURIComponent(r.claim.id)}`} className="inline-block" aria-label={`Payment status of the ${r.label}`}>
+            {pc.blocker ? <BlockerBadge blocker={pc.blocker} size="sm" /> : <StageBadge stage={pc.stage} size="sm" />}
+          </Link>
         );
+      }
       case "claimed":
         return <Badge status="info" size="sm">Claimed · Under Examination</Badge>;
       case "open":
@@ -313,36 +350,6 @@ export function InstalmentsPanel({ app }: { app: GrantApplication }) {
         ))}
       </ListGroup>
 
-      <Modal
-        open={releasing !== null}
-        onClose={() => setReleasing(null)}
-        title="Release the Funds?"
-        footer={
-          <div className="flex flex-wrap justify-end gap-3">
-            <Button appearance="outlined" onClick={() => setReleasing(null)}>
-              Cancel
-            </Button>
-            <Button onClick={() => releasing && release(releasing)}>Release {releasing?.sanction ? rupees(releasing.sanction.total) : ""}</Button>
-          </div>
-        }
-      >
-        {releasing?.sanction && (
-          <div className="space-y-4">
-            <p className="text-body-2 text-ink">The amount is released to the project&apos;s bank account on record. A release cannot be withdrawn from this portal.</p>
-            <DescriptionList
-              columns={1}
-              layout="inline"
-              size="sm"
-              divided
-              items={[
-                { term: "Application No.", value: releasing.id },
-                { term: "Sanction Order", value: releasing.sanction.orderNo },
-                { term: "Amount to Release", value: rupees(releasing.sanction.total) },
-              ]}
-            />
-          </div>
-        )}
-      </Modal>
     </Panel>
   );
 }

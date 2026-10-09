@@ -12,7 +12,7 @@ export interface SectionRecord {
   website?: string;
   category?: string;
   targetGroup?: string[];
-  /** Live's own Active/Archived tag (component_status). Absent on records ingested before it was kept. */
+  /** Live's own Active/Archived tag (`component_status`). Absent on a record ingested before it was kept. */
   status?: "Active" | "Archived";
 }
 
@@ -23,7 +23,7 @@ export interface FileRecord {
   date?: string;
   category?: string;
   fileUrl?: string;
-  /** Live's own Active/Archived tag (component_status). Absent on records ingested before it was kept. */
+  /** Live's own Active/Archived tag (`component_status`). Absent on a record ingested before it was kept. */
   status?: "Active" | "Archived";
 }
 

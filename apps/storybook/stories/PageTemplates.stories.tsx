@@ -4,6 +4,7 @@ import {
   AppShell,
   SiteLayout,
   PageHeader,
+  Badge,
   Band,
   Button,
   Card,
@@ -47,6 +48,10 @@ import {
  * reader still meets exactly one `h1` on the page. Reach for it where the title
  * alone is ambiguous ("Applications" in which scheme?), and leave it out where
  * the title already says everything.
+ *
+ * `status` sets a badge on the title's line — where the record stands, beside its
+ * name — and wraps it under the title when the line runs out. Use it on a page
+ * about ONE record; a list page's state belongs in its rows.
  *
  * `size="compact"` sets the title a step down the headline ramp. It is for a screen
  * whose own content carries the weight — a form wizard, where the stepper and the step
@@ -117,6 +122,24 @@ export const PageHeaderWithEyebrow: Story = {
         title="Applications"
         meta="1,284 applications · 96 awaiting scrutiny"
         actions={<Button>Export</Button>}
+      />
+    </div>
+  ),
+};
+
+/**
+ * With a status. A page about one record says where it stands beside its name, so the
+ * reader has the state before the detail — here, a payment advice the Maker is preparing.
+ */
+export const PageHeaderWithStatus: Story = {
+  render: (args) => (
+    <div style={{ padding: "var(--sa-padding-24)" }}>
+      <PageHeader
+        {...args}
+        title="Sankalp Seva Sansthan"
+        status={<Badge status="info" size="sm">Advice in Preparation</Badge>}
+        meta="Integrated Rehabilitation Centre (Hadapsar) — Pune · NAPDDR · FY 2026-27"
+        actions={<Button appearance="outlined">Save as Draft</Button>}
       />
     </div>
   ),

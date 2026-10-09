@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "THE FIRST TAB REACHES THE SKIP LINK AGAIN, AND THE DBIM YOUTUBE CARD SHOWS ITS CHANNEL. The UX4G widget answers the first Tab on every page itself: it cancels the key, focuses its own \"Open the accessibility option\" button and speaks a prompt for it. Where the AccessibilityBar is the one door that button is hidden, so the first two presses left focus nowhere and \"Skip to main content\" came third. `UX4GAccessibilityWidget` now sends the widget its Escape on the first Tab while nothing is open, which is what makes it stop intercepting; the Tab then moves focus as normal. On the DBIM home page's In Social Media section the YouTube card carried the channel name and handle below the video, where the name wrapped into the fade and under \"View on YouTube\" (hidden entirely at 1920px); they now lead the card, as on the other three networks."
+}

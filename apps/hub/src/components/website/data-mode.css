@@ -78,6 +78,36 @@
     color: var(--sa-text-neutral-subtle);
   }
 
+  /* ── Officer accounts (the Dashboard tab) ─────────────────────────────────
+     The prototype's demo User IDs, read-only: signing in happens on the page. */
+
+  .dm-accounts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    margin: 0;
+  }
+
+  .dm-accounts__row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-2);
+  }
+
+  .dm-accounts__row dt {
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-medium);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .dm-accounts__row dd {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
   /* ── Data source ─────────────────────────────────────────────────────────
      The three options are a RadioGroup from the design system (2026-09-04);
      the hand-rolled radiogroup, dot and tinted rows it replaced lived here. */
@@ -181,6 +211,51 @@
     line-height: var(--sa-type-body-3-lh);
   }
 
+  /* ── The Capture tab (demo-capture.tsx) ─────────────────────────────── */
+
+  .dm-panel__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-8);
+  }
+
+  /* A generated file name has no spaces to break at. */
+  .dm-panel__file {
+    overflow-wrap: anywhere;
+    color: var(--sa-text-neutral-base);
+  }
+
+  .dm-panel__keys {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--sa-stack-6) var(--sa-inline-12);
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-base);
+  }
+
+  .dm-panel__keys dd {
+    margin: 0;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .dm-panel__kbd {
+    display: inline-block;
+    padding: 0 var(--sa-padding-6);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-bottom-width: 2px;
+    border-radius: var(--sa-shape-4);
+    background-color: var(--sa-bg-neutral-subtle);
+    font-family: inherit;
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: var(--sa-font-weight-medium);
+    color: var(--sa-text-neutral-base);
+  }
+
   .dm-panel__note {
     margin: 0;
     padding-top: var(--sa-padding-12);
@@ -221,5 +296,159 @@
 
   .dm-banner b {
     font-weight: var(--sa-font-weight-bold);
+  }
+
+  /* ── A figure's source and calculation (FigureSource) ───────────────────
+     An info control beside the figure; on hover or focus it opens the DS Tooltip's
+     card, holding a breakup laid out like a price breakup: heading and figure, the
+     source lines, then the calculation line by line, a rule, and the result. */
+  .dm-source-btn {
+    vertical-align: middle;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-headline--inverse .dm-source-btn {
+    color: var(--sa-text-neutral-inverse);
+  }
+
+  .dm-breakup {
+    display: grid;
+    gap: var(--sa-stack-12);
+    min-inline-size: 18rem; /* layout geometry: a breakup narrower than this wraps every amount */
+  }
+
+  .dm-breakup__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--sa-stack-16);
+  }
+
+  .dm-breakup__title {
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-medium);
+  }
+
+  .dm-breakup__value {
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-title-3-size);
+    line-height: var(--sa-type-title-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .dm-breakup__method {
+    margin: 0;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .dm-breakup__rows {
+    display: grid;
+    margin: 0;
+    padding-block-start: var(--sa-padding-8);
+    border-block-start: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+
+  .dm-breakup__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--sa-stack-16);
+    padding-block: var(--sa-padding-2);
+  }
+
+  .dm-breakup__row dt {
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .dm-breakup__row dd {
+    margin: 0;
+    color: var(--sa-text-neutral-bolder);
+    text-align: end;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Source lines: a label column and its text, read left to right. */
+  .dm-breakup__rows--meta .dm-breakup__row {
+    grid-template-columns: 6rem minmax(0, 1fr); /* layout geometry: the label column */
+  }
+
+  .dm-breakup__rows--meta .dm-breakup__row dd {
+    text-align: start;
+  }
+
+  /* The operator sits in its own gutter so every label starts on one line. */
+  .dm-breakup__op {
+    display: inline-block;
+    inline-size: 1.25em;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .dm-breakup__row--line dd {
+    white-space: nowrap;
+  }
+
+  .dm-breakup__row--total {
+    margin-block-start: var(--sa-stack-4);
+    padding-block-start: var(--sa-padding-8);
+    border-block-start: var(--sa-stroke-1) solid var(--sa-border-neutral-base);
+  }
+
+  .dm-breakup__row--total dt,
+  .dm-breakup__row--total dd {
+    color: var(--sa-text-neutral-bolder);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  /* ── The side sheet: the full source, as a table, and the whole calculation ── */
+  .dm-sheet {
+    display: grid;
+    gap: var(--sa-stack-24);
+  }
+
+  .dm-sheet__kicker {
+    display: block;
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-medium);
+  }
+
+  .dm-sheet__value {
+    margin: 0;
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-headline-2-size);
+    line-height: var(--sa-type-headline-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .dm-sheet__part {
+    display: grid;
+    gap: var(--sa-stack-12);
+  }
+
+  .dm-sheet__heading {
+    margin: 0;
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-title-3-size);
+    line-height: var(--sa-type-title-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .dm-sheet__links {
+    display: grid;
+    gap: var(--sa-stack-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow-wrap: anywhere;
+  }
+
+  /* In the sheet the bill has the sheet's width; it needs no minimum of its own. */
+  .dm-sheet .dm-breakup {
+    min-inline-size: 0;
   }
 }

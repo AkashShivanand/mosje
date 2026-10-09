@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "`TabPanel hidden` keeps a panel mounted while its tab is not selected. Render one panel per tab and hide the inactive ones when a panel holds work in progress — the E-Anudaan review's Grant tab lost an unsaved cost sheet every time the officer looked at the Documents tab, because the panel was unmounted. Every tab's `aria-controls` then points at a panel that exists."
+}

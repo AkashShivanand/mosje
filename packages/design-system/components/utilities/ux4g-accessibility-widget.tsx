@@ -46,8 +46,17 @@ import * as React from "react";
 import "./ux4g-accessibility-widget.css";
 
 /**
- * Official UX4G accessibility widget CDN (current: v3.36 — the build
- * ux4g.gov.in itself serves).
+ * Official UX4G accessibility widget CDN (current: v3.0 — the build
+ * ux4g.gov.in itself serves, read from its script tags on 30 Sep 2026).
+ *
+ * IT HAPPENED AGAIN ON 30 SEP 2026. v3.36 began answering 404 and UX4G
+ * republished `accessibility-v3.0` the same morning (Last-Modified 07:03 GMT);
+ * both www.ux4g.gov.in and ux4g.gov.in now load that path. Its header reads
+ * `Version: '3.0` but it is the current build, not an old one: it carries every
+ * hook listed below, `ux4gOnReady`, the analytics config by reference, and its
+ * own stylesheet beside it — checked against the file, not assumed from the
+ * name. `.github/workflows/ux4g-widget-pin.yml` now requests this URL daily, so
+ * the next deletion fails a check instead of the panel vanishing unnoticed.
  *
  * UX4G DELETES OLD BUILDS FROM ITS CDN. On 25 Sep 2026 v3.36 was published
  * (Last-Modified 10:21 GMT) and `accessibility-v3.28/accessibility-widget.js`
@@ -82,7 +91,7 @@ import "./ux4g-accessibility-widget.css";
  *      v3.28's own source; the seeding workaround is gone with it.
  */
 export const UX4G_A11Y_WIDGET_SRC =
-  "https://cdn.ux4g.gov.in/accessibility-v3.36/accessibility-widget.js";
+  "https://cdn.ux4g.gov.in/accessibility-v3.0/accessibility-widget.js";
 
 /**
  * Dead key left behind by the v1.15 workaround.
@@ -109,7 +118,8 @@ function clearLegacyUx4gSettings(): void {
  *
  * v3.28 added analytics that v1.15 had none of: on load it beacons the full
  * URL, pathname, hostname, referrer, user agent, language, screen resolution,
- * viewport and a session id to `https://audit360.ux4g.gov.in/api/track`, and
+ * viewport and a session id to `https://audit360.ux4g.gov.in/api/track` (v3.0 posts to
+ * `https://www.ux4g.gov.in/docsapi/track` instead — see `trapUx4gAnalytics`), and
  * tracks panel opens, feature toggles and profile selections after that.
  *
  * That is a poor fit for this estate. The portals are authenticated workflow
@@ -134,6 +144,35 @@ function setUx4gAnalyticsEnabled(enabled: boolean): void {
   const w = window as unknown as { UX4G_Analytics?: { config?: { enabled?: boolean } } };
   const config = w.UX4G_Analytics?.config;
   if (config) config.enabled = enabled;
+}
+
+/**
+ * Switch the analytics off AT THE MOMENT the widget publishes them, whenever that is.
+ *
+ * The `load` handler below is too late from v3.0 (30 Sep 2026): the whole widget now runs
+ * inside `ux4gOnReady`, which is a `setTimeout(fn, 0)` once the page has parsed, so when our
+ * handler fires `window.UX4G_Analytics` does not exist yet — the call found nothing and the
+ * widget's own init, 100ms later, sent the page view to `www.ux4g.gov.in/docsapi/track`.
+ * Measured, not assumed: `config.enabled` read `true` on a live page. Trapping the
+ * assignment makes the switch-off independent of the widget's timing: the object is
+ * disabled in the same statement that exposes it, before any `init()` can read it.
+ */
+function trapUx4gAnalytics(): void {
+  const w = window as unknown as Record<string, unknown>;
+  const key = "UX4G_Analytics";
+  const desc = Object.getOwnPropertyDescriptor(w, key);
+  if (desc && !desc.configurable) return;
+  let value = w[key] as { config?: { enabled?: boolean } } | undefined;
+  if (value?.config) value.config.enabled = false;
+  Object.defineProperty(w, key, {
+    configurable: true,
+    enumerable: true,
+    get: () => value,
+    set: (next: { config?: { enabled?: boolean } } | undefined) => {
+      if (next?.config) next.config.enabled = false;
+      value = next;
+    },
+  });
 }
 
 /**
@@ -322,47 +361,90 @@ function nameSectionToggles(): void {
  * on its trigger (issue ACC-10) is normalised to 0 at the same time.
  */
 function keepClosedPanelOutOfTabOrder(): () => void {
-  let observer: MutationObserver | undefined;
-  let timer: number | undefined;
-  let attempts = 0;
-  const onScreen = (el: HTMLElement) => {
-    const r = el.getBoundingClientRect();
-    return r.width > 0 && r.left < window.innerWidth && r.right > 0;
-  };
-  const sync = () => {
-    const panel = document.getElementById("uw-main");
-    if (!panel) return;
-    panel.inert = !onScreen(panel);
-  };
+  let waiting: MutationObserver | undefined;
+  let visibility: IntersectionObserver | undefined;
   const onClick = (e: MouseEvent) => {
     const t = e.target as Element | null;
     if (!t?.closest?.("#uw-widget-custom-trigger, [data-uw-trigger]")) return;
     const panel = document.getElementById("uw-main");
     if (panel) panel.inert = false;
   };
-  const attach = () => {
+  const attach = (): boolean => {
     const panel = document.getElementById("uw-main");
-    if (!panel) {
-      if (attempts++ < 40) timer = window.setTimeout(attach, 150);
-      return;
-    }
+    if (!panel) return false;
+    // Inert from the moment it exists: until the browser has told us where it is,
+    // an off-canvas panel must not be the first thing a keyboard reaches.
+    panel.inert = true;
     const trigger = document.getElementById("uw-widget-custom-trigger");
     if (trigger?.getAttribute("tabindex") === "1") trigger.setAttribute("tabindex", "0");
-    sync();
-    // The slide-out is a transition, so position is read after it settles.
-    observer = new MutationObserver(() => {
-      window.clearTimeout(timer);
-      timer = window.setTimeout(sync, 450);
+    // The browser reports whether the panel is in the viewport, whatever moved it —
+    // the vendor's stylesheet arriving late, its slide transition, a resize. The
+    // previous version read the position only when the panel's own attributes
+    // changed and searched for the panel for six seconds, so on a slow load it gave
+    // up and /website kept all 17 hidden controls ahead of the skip link.
+    visibility = new IntersectionObserver((entries) => {
+      for (const entry of entries) panel.inert = !entry.isIntersecting;
     });
-    observer.observe(panel, { attributes: true, attributeFilter: ["class", "style"] });
+    visibility.observe(panel);
+    return true;
   };
   document.addEventListener("click", onClick, true);
-  attach();
+  if (!attach()) {
+    // The widget script is deferred and appends the panel to <body> whenever it
+    // arrives; wait for it rather than polling for a fixed time.
+    waiting = new MutationObserver(() => {
+      if (attach()) waiting?.disconnect();
+    });
+    waiting.observe(document.body, { childList: true, subtree: true });
+  }
   return () => {
     document.removeEventListener("click", onClick, true);
-    observer?.disconnect();
-    window.clearTimeout(timer);
+    waiting?.disconnect();
+    visibility?.disconnect();
   };
+}
+
+/**
+ * Give the first Tab back to the page when the vendor's own door is hidden
+ * (WCAG 2.4.3; GIGW: the skip link is the first stop).
+ *
+ * The widget answers the first Tab on every page itself: it cancels the key,
+ * shows its "Open the accessibility option" button, focuses it and speaks
+ * "Press Enter to open accessibility option". The second Tab cancels again and
+ * hides it. Where the AccessibilityBar is the one door, that button is
+ * `display: none` (ux4g-accessibility-widget.css), so the focus call lands
+ * nowhere: measured 29 Sep 2026 on /website-dbim and /website, the first two
+ * presses left focus on <body> and "Skip to main content" arrived on the third,
+ * after a spoken prompt for a button no one could see.
+ *
+ * The vendor stops intercepting once its Escape handler has run
+ * (`menuClosedByEscape`). So on the first Tab — in the CAPTURE phase, before
+ * its document listener sees the key — an Escape is sent to the document, and
+ * the Tab then moves focus as the browser would. Sent only while nothing is
+ * open (no dialog, nothing expanded, the panel closed), because every
+ * document-level Escape handler hears it; with nothing open each is a no-op.
+ * Only where the one-door rule hides the vendor button: elsewhere the vendor's
+ * button is visible and its first-Tab prompt is its designed behaviour.
+ */
+function releaseFirstTab(): () => void {
+  const onKeyDown = (e: KeyboardEvent) => {
+    if (e.key !== "Tab") return;
+    const root = document.documentElement;
+    if (root.getAttribute("data-sa-abar-a11y") !== "1") return;
+    const vendorDoor = document.getElementById("open-the-accessibility-menu");
+    const panel = document.getElementById("uw-main");
+    if (!vendorDoor || !panel) return; // the widget has not initialised yet
+    const open =
+      root.hasAttribute("data-sa-dialog-open") ||
+      !panel.inert ||
+      // the closed panel's own section toggles report expanded; they are inert
+      [...document.querySelectorAll('[aria-expanded="true"]')].some((el) => !el.closest("[inert]"));
+    if (open) return; // try again on the next Tab
+    document.removeEventListener("keydown", onKeyDown, true);
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", code: "Escape", bubbles: true }));
+  };
+  document.addEventListener("keydown", onKeyDown, true);
+  return () => document.removeEventListener("keydown", onKeyDown, true);
 }
 
 /**
@@ -417,6 +499,7 @@ export function UX4GAccessibilityWidget({
     if (typeof document === "undefined") return;
     if (document.querySelector(`script[data-ux4g-a11y="true"]`)) return;
     clearLegacyUx4gSettings();
+    if (!analytics) trapUx4gAnalytics();
     const script = document.createElement("script");
     script.src = src;
     script.defer = true;
@@ -458,6 +541,11 @@ export function UX4GAccessibilityWidget({
   React.useEffect(() => {
     if (typeof document === "undefined") return;
     return keepClosedPanelOutOfTabOrder();
+  }, []);
+
+  React.useEffect(() => {
+    if (typeof document === "undefined") return;
+    return releaseFirstTab();
   }, []);
 
   React.useEffect(() => {

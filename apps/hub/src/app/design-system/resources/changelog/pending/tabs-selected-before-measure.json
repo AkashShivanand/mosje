@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "A SELECTED TAB IS READABLE BEFORE THE PAGE'S SCRIPT RUNS. The pill indicator is sized by script, so until hydration it had no size while the selected label was already white — white text on the grey track on every server-rendered page, including the portal sign-in role switch. The selected tab now paints the same brand fill (or underline / rail mark) itself until the indicator is measured, then hands over to the sliding indicator. It follows the colour mode, as the indicator does."
+}

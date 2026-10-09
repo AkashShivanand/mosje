@@ -252,7 +252,7 @@ function Queue({ variant }: { variant: "pd" | "finance" }) {
                                     a.ageingDays > OVERDUE_DAYS ? "text-[var(--sa-text-status-error-base)]" : "text-ink"
                                   }`}
                                 >
-                                  {a.ageingDays} days
+                                  {a.ageingDays} {a.ageingDays === 1 ? "day" : "days"}
                                 </span>
                                 <Icon name="chevron_right" size={20} aria-hidden />
                               </span>

@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "`MetricCard opens=\"dialog\"` for a tile that opens a panel about its figure. It is announced as opening a dialog (`aria-haspopup`) and no longer carries `aria-pressed`, which called it a toggle that never toggled. Filter tiles are unchanged."
+}

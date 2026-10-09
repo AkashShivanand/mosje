@@ -5,6 +5,7 @@ import { DbimFilterBar } from "@/components/website-dbim/ui/FilterBar";
 import { useListing } from "@/components/website-dbim/ui/useListing";
 import type { DbimNotice } from "@/lib/website-dbim/offerings";
 import { DbimListEmpty, DbimListFooter } from "./ListParts";
+import { dbimDates } from "@/lib/website-dbim/date";
 
 const searchText = (v: DbimNotice) => v.title;
 const categoryOf = (v: DbimNotice) => v.category;
@@ -33,7 +34,7 @@ function VacancyCard({ v }: { v: DbimNotice }) {
                 <Icon name={r.icon} size={24} weight={400} />
                 <span>{r.label}</span>
               </dt>
-              <dd>{v[r.key]}</dd>
+              <dd>{dbimDates(v[r.key])}</dd>
             </div>
           ))}
         </dl>

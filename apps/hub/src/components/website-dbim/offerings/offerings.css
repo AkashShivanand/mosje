@@ -10,13 +10,13 @@
 @layer components {
   /* ── Shared list chrome ─────────────────────────────────────────────────── */
   /* The hub balances headings; the reference wraps them greedily. */
-  [data-design="dbim"] :is(.db-scheme-card__title, .db-vac-card__title, .db-sd__name h2, .db-sd__h) {
+  [data-design="dbim"] :is(.db-scheme-card__title, .db-vac-card__title, .db-sd__h) {
     text-wrap: wrap;
   }
 
   /* A visually hidden label sits at its link's text end; the link must contain it,
      or a long one-line title pushes it past the viewport and the page scrolls sideways. */
-  [data-design="dbim"] :is(.db-off-view, .db-vac-card__file, .db-vac-card__all, .db-sd__visit, .db-sd__link, .db-sd__prose a) {
+  [data-design="dbim"] :is(.db-off-view, .db-vac-card__file, .db-vac-card__all, .db-sd__prose a) {
     position: relative;
   }
 
@@ -101,7 +101,7 @@
     background: var(--sa-color-primaryScale-200);
   }
 
-  [data-design="dbim"] :is(.db-off-archive, .db-off-view, .db-vac-card__all, .db-scheme-card__go, .db-vac-card__file, .db-sd__visit, .db-sd__link, .db-sd__prose a):focus-visible {
+  [data-design="dbim"] :is(.db-off-archive, .db-off-view, .db-vac-card__all, .db-scheme-card__go, .db-vac-card__file, .db-sd__prose a):focus-visible {
     outline: 2px solid var(--sa-color-primaryScale-800);
     outline-offset: 2px;
   }
@@ -151,10 +151,11 @@
     background: var(--sa-color-neutralScale-0);
   }
 
-  /* The photograph fills a 216px frame — the reference's height at every width. */
+  /* The live listing's image, framed at the reference's desktop card (643 × 216) at
+     every width, so the State Emblem shows alone and the words set into the image never do. */
   [data-design="dbim"] .db-scheme-card__media {
     position: relative;
-    height: 216px;
+    aspect-ratio: 643 / 216;
     overflow: hidden;
     border-radius: var(--sa-shape-12) var(--sa-shape-12) 0 0;
   }
@@ -172,7 +173,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    min-height: 85px; /* 85px: the reference's title-logo box, logo or not */
+    min-height: 85px; /* 85px: the reference's title box; a one- to three-line name leaves "Who It Is For" level along a row */
   }
 
   @media (min-width: 768px) {
@@ -198,14 +199,16 @@
     object-fit: contain;
   }
 
+  /* "Who It Is For": a line or two, so the box takes its content — the reference's
+     five-line box held a description the live listing does not publish. The card body
+     grows, so the arrows still line up along a row. */
   [data-design="dbim"] .db-scheme-card__line {
     display: -webkit-box;
-    height: 100px; /* 100px: the reference's five-line box */
     margin: 0 0 5px;
     overflow: hidden;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 5;
-    line-clamp: 5;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
     font-size: 0.75rem; /* 12px */
     line-height: 1.25rem; /* 20px */
   }
@@ -310,11 +313,12 @@
     display: flex;
     align-items: center;
     gap: 5px; /* 5px: the reference's ms-2 */
-    font-size: 0.625rem; /* 10px */
-    font-weight: var(--sa-font-weight-medium);
+    font-size: var(--db-fs-small); /* Small Text 1: 12px desktop, 10px mobile (Tables 3–4) */
+    font-weight: var(--sa-font-weight-semibold);
     line-height: 1.125rem; /* 18px */
     letter-spacing: 0.12px;
     text-transform: uppercase;
+    color: var(--sa-color-text-muted);
   }
 
   [data-design="dbim"] .db-vac-card__date dt .material-symbols-rounded {
@@ -323,7 +327,8 @@
 
   [data-design="dbim"] .db-vac-card__date dd {
     margin: 0;
-    font-size: 0.625rem; /* 10px */
+    font-size: var(--db-fs-small);
+    color: var(--sa-color-text-muted);
     line-height: 0.9375rem; /* 15px */
     text-align: right;
   }
@@ -344,7 +349,7 @@
     line-height: 1.5rem; /* 24px row */
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: var(--sa-color-primaryScale-600); /* #0D6EFD in the reference → nearest token blue */
+    color: var(--sa-text-link-brand-default); /* the key colour: DBIM §2.2 hyperlink */
     text-decoration: underline;
   }
 
@@ -412,8 +417,7 @@
     font-size: 0.625rem; /* 10px */
     font-weight: var(--sa-font-weight-semibold);
     letter-spacing: 0.6px;
-    text-transform: uppercase;
-    color: var(--sa-color-text-muted); /* #3D4043 in the reference → nearest token */
+    color: var(--sa-color-text-muted); /* a date, DD MMM YYYY — never in capitals */
   }
 
   [data-design="dbim"] .db-tender__cell--file {
@@ -479,181 +483,37 @@
     }
   }
 
-  /* ── Scheme details ─────────────────────────────────────────────────────── */
+  /* ── Scheme details ─────────────────────────────────────────────────────────
+     DBIM's detail layout (ministry.css: db-min-detail, db-min-vision, db-min-rich),
+     as DBIM 3.0 Figure 71 and the Organisation page draw it. The side column is
+     the shared one (layout/side-column.css). */
   [data-design="dbim"] .db-sd {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 30px; /* 30px: the reference's g-5 gutter */
-    /* -30px: the reference's .row.g-5 pulls its columns up by its own gutter, so the
-       details page starts at the section's 32px padding, without the list pages' 30px. */
-    margin-top: -30px;
+    margin-top: 0; /* the page container already sits 30px under the banner */
   }
 
-  @media (min-width: 992px) {
-    [data-design="dbim"] .db-sd {
-      /* 415 : 860 — the reference's col-lg-4 / col-lg-8 content widths at 1440 */
-      grid-template-columns: minmax(0, 415fr) minmax(0, 860fr);
-    }
-    [data-design="dbim"] .db-sd__rail {
-      position: sticky;
-      top: 140px; /* 140px: clears the reference's sticky header */
-      align-self: start;
-    }
+  /* Sections: the Organisation page's rhythm — a hairline and 32px above each. */
+  [data-design="dbim"] .db-sd__section {
+    scroll-margin-top: 140px;
   }
 
-  [data-design="dbim"] .db-sd__name {
-    padding: var(--sa-padding-32);
-    border-radius: 10px; /* 10px: the reference's .visionbox radius */
-    background: var(--sa-color-neutralScale-100);
+  [data-design="dbim"] .db-sd__section + .db-sd__section {
+    margin-top: var(--sa-stack-40);
+    padding-top: var(--sa-padding-32);
+    border-top: var(--sa-stroke-1) solid var(--sa-color-neutralScale-100);
   }
 
-  [data-design="dbim"] .db-sd__name h2 {
-    margin: 0;
-    font-size: var(--db-fs-h2);
-    font-weight: var(--sa-font-weight-medium);
-    line-height: 2.25rem; /* 36px */
-    color: var(--sa-color-primaryScale-800);
+  [data-design="dbim"] .db-sd__main > .db-sd__section > h2 {
+    margin-bottom: var(--sa-stack-12);
   }
 
-  [data-design="dbim"] .db-sd__visit {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 5px;
-    margin: 10px 0; /* 10px: the reference's my-3 */
-    padding: 10px var(--sa-padding-16);
-    border-radius: var(--sa-shape-4);
-    background: var(--sa-color-primaryScale-400);
-    color: var(--sa-color-primaryScale-800);
-    font-size: 0.875rem; /* 14px */
-    font-weight: var(--sa-font-weight-semibold);
-    line-height: 1.25rem; /* 20px */
-    text-transform: uppercase;
-    text-decoration: none;
+  /* A lettered list the prose tidy restores (prose.ts), in DBIM's rich text. */
+  [data-design="dbim"] .db-min-rich .db-sd__prose ol[type="a"] {
+    list-style: lower-alpha;
   }
 
-  [data-design="dbim"] .db-sd__visit:hover {
-    background: var(--sa-color-primaryScale-200);
-  }
-
-  [data-design="dbim"] .db-sd__links {
-    margin: 10px 0;
-    padding: var(--sa-padding-12) var(--sa-padding-16);
-    border-radius: var(--sa-shape-8);
-    background: var(--sa-color-neutralScale-100);
-  }
-
-  [data-design="dbim"] .db-sd__links-title {
-    margin: 0 0 5px;
-    font-size: 0.875rem; /* 14px */
-    font-weight: var(--sa-font-weight-bold);
-    line-height: 1.25rem; /* 20px */
-    color: var(--sa-color-primaryScale-600);
-  }
-
-  [data-design="dbim"] .db-sd__links-list {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-
-  [data-design="dbim"] .db-sd__link {
-    display: flex;
-    align-items: center;
-    gap: var(--sa-inline-8);
-    margin: 0;
-    padding: var(--sa-padding-8) var(--sa-padding-12);
-    border: 1px solid var(--sa-color-primaryScale-600);
-    border-radius: var(--sa-shape-4);
-    background: var(--sa-color-neutralScale-0);
-    color: var(--sa-color-primaryScale-600);
-    font-size: 0.75rem; /* 12px */
-    font-weight: var(--sa-font-weight-bold);
-    line-height: 1.125rem; /* 18px */
-    letter-spacing: 0.12px;
-    text-transform: uppercase;
-    text-decoration: none;
-  }
-
-  [data-design="dbim"] .db-sd__link--plain {
-    border-color: var(--sa-color-neutralScale-200);
-    color: var(--sa-color-text-default);
-  }
-
-  [data-design="dbim"] .db-sd__main {
-    min-width: 0;
-  }
-
-  [data-design="dbim"] .db-sd__h {
-    margin: 0 0 5px;
-    font-size: var(--db-fs-h2);
-    font-weight: var(--sa-font-weight-regular);
-    line-height: 2rem; /* 32px */
-    color: var(--sa-color-primaryScale-800);
-  }
-
-  [data-design="dbim"] .db-sd__prose {
-    margin-bottom: 10px;
-    font-size: var(--db-fs-p);
-    line-height: 1.5rem; /* 24px */
-    text-align: justify;
-  }
-
-  [data-design="dbim"] .db-sd__prose :is(p, ul, ol, table) {
-    margin: 0 0 10px;
-  }
-
-  [data-design="dbim"] .db-sd__prose :is(ul, ol) {
-    padding-left: var(--sa-padding-20);
-  }
-
-  [data-design="dbim"] .db-sd__prose ul {
-    list-style: disc;
-  }
-
-  [data-design="dbim"] .db-sd__prose ol {
-    list-style: decimal;
-  }
-
-  [data-design="dbim"] .db-sd__prose :is(h2, h3, h4) {
-    margin: 0 0 5px;
-    font-size: var(--db-fs-h2);
-    font-weight: var(--sa-font-weight-medium);
-    line-height: 1.2;
-    text-align: left;
-  }
-
-  [data-design="dbim"] .db-sd__prose :is(h3, h4) {
-    font-size: var(--db-fs-h3);
-  }
-
-  [data-design="dbim"] .db-sd__prose strong {
-    font-weight: var(--sa-font-weight-bold);
-  }
-
-  [data-design="dbim"] .db-sd__prose a {
-    color: var(--sa-color-primaryScale-600);
-    text-decoration: underline;
-  }
-
-  [data-design="dbim"] .db-sd__prose img {
-    max-width: 100%;
-    height: auto;
-  }
-
-  [data-design="dbim"] .db-sd__prose .wn-table-wrap {
-    overflow-x: auto;
-  }
-
-  [data-design="dbim"] .db-sd__prose table {
-    border-collapse: collapse;
-    font-size: 0.875rem; /* 14px */
-    text-align: left;
-  }
-
-  [data-design="dbim"] .db-sd__prose :is(th, td) {
-    padding: var(--sa-padding-8);
-    border: 1px solid var(--sa-color-neutralScale-200);
+  [data-design="dbim"] .db-min-rich .db-sd__prose > :last-child,
+  [data-design="dbim"] .db-min-rich .db-sd__prose > div > :last-child {
+    margin-bottom: 0;
   }
 
   /* A register lifted out of an ingested page: the prose table look, paged. */
@@ -690,11 +550,7 @@
     outline-offset: 2px;
   }
 
-  [data-design="dbim"] .db-sd__docs {
-    margin-top: var(--sa-padding-32);
-  }
-
-  [data-design="dbim"] .db-sd__docs ul {
+  [data-design="dbim"] .db-min-rich .db-sd__docs > ul {
     margin: 0;
     padding: 0;
     list-style: none;
@@ -713,7 +569,7 @@
 
   @media (min-width: 768px) {
     [data-design="dbim"] .db-sd__doc {
-      grid-template-columns: 6fr 4fr 2fr;
+      grid-template-columns: 6fr 2fr 2fr 2fr; /* title · release date · file · View — About Us's document row */
       gap: 0;
     }
     [data-design="dbim"] .db-sd__doc > * {
@@ -725,7 +581,15 @@
     }
   }
 
-  [data-design="dbim"] .db-sd__doc p {
+  /* The release date, set as About Us's document row sets it (.db-min-ptype). */
+  [data-design="dbim"] .db-sd__doc-date small {
+    font-size: var(--db-fs-small);
+    font-weight: var(--sa-font-weight-semibold);
+    letter-spacing: 0.6px;
+    color: var(--sa-color-text-muted);
+  }
+
+  [data-design="dbim"] .db-min-rich .db-sd__doc p {
     margin: 0;
     font-size: var(--db-fs-p);
     line-height: 1.5rem; /* 24px */

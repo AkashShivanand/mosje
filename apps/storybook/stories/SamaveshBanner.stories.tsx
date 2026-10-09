@@ -73,7 +73,7 @@ const meta = {
     viewAllLabel: "Find your portal",
     viewAllPrompt: "",
     showViewAll: true,
-    logoSrc: "/design-system/samavesh-logo-156.png",
+    logoSrc: "/design-system/samavesh-logo-252.png",
     portals: DEFAULT_SAMAVESH_PORTALS,
     /*
      * `sticky` DEFAULTS TO TRUE on the real thing, and every story here turns it

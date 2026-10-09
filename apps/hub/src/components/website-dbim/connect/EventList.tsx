@@ -2,9 +2,11 @@
 
 import * as React from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { Icon } from "@mosje/design-system";
 import type { DbimEvent } from "@/lib/website-dbim/connect";
 import { DbimEmptyState } from "@/components/website-dbim/ui/EmptyState";
 import { DbimPager } from "./ListStates";
+import { dbimDates } from "@/lib/website-dbim/date";
 
 /**
  * One page of past events. The page is cut on the SERVER (`?page=`): the register's
@@ -26,13 +28,13 @@ export function DbimEventList({ events, total, page, pageCount }: { events: Dbim
           {events.map((e) => (
             <li key={e.key} className="db-event">
               <h3>{e.title}</h3>
-              <p>
-                {e.place && `${e.place} | `}Event Start: {e.start}
-                {e.end && ` , Event End: ${e.end}`}
+              <p className="db-event__when">
+                {e.place && `${e.place} | `}Event Start: {dbimDates(e.start)}
+                {e.end && ` , Event End: ${dbimDates(e.end)}`}
               </p>
               {e.venue && (
-                <p>
-                  <span aria-hidden="true">📍</span>
+                <p className="db-event__venue">
+                  <Icon name="location_on" size={20} aria-hidden />
                   <a href={e.venueHref} target="_blank" rel="noopener noreferrer">
                     {e.venue}
                     <span className="sr-only"> (map, opens in a new tab)</span>

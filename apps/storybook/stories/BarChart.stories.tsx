@@ -227,3 +227,21 @@ export const WithheldFigure: Story = {
     ],
   },
 };
+
+/**
+ * A figure NOT YET DUE draws no mark: the 2026-27 Revised Estimate is framed in the second half
+ * of the year, so nothing has gone wrong. The tooltip and the table still name it.
+ */
+export const NotYetDue: Story = {
+  args: {
+    title: "DAPSC allocation and expenditure, ₹ crore",
+    orientation: "horizontal",
+    showValues: true,
+    labels: ["2024-25", "2025-26", "2026-27"],
+    series: [
+      { name: "B.E.", data: [165493, 168478, 196400] },
+      { name: "R.E.", data: [158377, 161205, 0], withheld: { 2: { kind: "not-due", reason: "Not yet framed for this year" } } },
+      { name: "Expenditure", data: [123372, 125516, 68740] },
+    ],
+  },
+};

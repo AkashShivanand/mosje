@@ -128,8 +128,11 @@ export function FileList({
               {onRetry && state === "failed" ? (
                 /* raw-button-ok(primitive): the retry action of a file row — an underlined text link drawn by the same rule as the .ds-files__link anchor beside it */
                 <button type="button" className="ds-files__button" onClick={() => onRetry(file.id)}>
+                  {/* Label in Name (2.5.3): the name STARTS with the words on screen, so
+                      "click Try again" works for a voice-control user; the file follows
+                      so twelve failed rows are not twelve identical names. */}
                   <span aria-hidden>Try again</span>
-                  <span className="ds-files__sr">Try uploading {file.name} again</span>
+                  <span className="ds-files__sr">Try again: upload {file.name}</span>
                 </button>
               ) : null}
               {onRemove ? (

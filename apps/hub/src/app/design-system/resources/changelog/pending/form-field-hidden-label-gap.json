@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "A field with `labelHidden` no longer sits 8px lower than its neighbours. Its empty label row used to take the field's row gap, so a hidden-label `Combobox` beside a `FilterSelect` in a toolbar sat out of line. The label stays for assistive technology."
+}

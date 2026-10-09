@@ -14,6 +14,13 @@
  * Two concepts, one abbreviation. They are separated here, and the directory hangs off the
  * division where it belongs.
  *
+ * WORDING (checked against the live rail, dosje.gov.in home page, 29 Sep 2026): every group
+ * heading and link label is the Department's own, set in Title Case where the estate's rule
+ * requires it. Three departures, all corrections rather than rewordings: "Grands" → "Grants"
+ * and "tor" → "for" (misspellings on the live rail), and the Statistics Division's last three
+ * links, which the live rail labels "SECC 2011" all three times, carry the title of the page
+ * each one opens instead. Nothing is added to a label that the Department does not print.
+ *
  * `href` starting with "http" is rendered as an external link automatically — the rail adds
  * target, rel and an open_in_new affordance without being told. Four entries point at
  * dosje.gov.in because the content is statutory and volatile; see ImportantLinks.tsx.
@@ -62,16 +69,16 @@ export const DIVISIONS: Division[] = [
     name: "Grants-in-Aid to NGOs",
     links: [
       { label: "Prioritization Guidelines for funding Projects by Voluntary Organisations", href: "/website/prioritization-guidelines-for-funding-projects-by-voluntary-organisations" },
-      { label: "Procedure for processing Grant-in-Aid Cases for Voluntary Organisations", href: "/website/procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations" },
+      { label: "Procedure for processing Grant-in-Aid Cases in respect of Voluntary Organisations", href: "/website/procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations" },
       { label: "Inspection and Monitoring Procedure", href: "/website/inspection-and-monitoring-procedure" },
-      { label: "Penalties in case of Misutilisation of Grants", href: "/website/penalties-in-case-of-misutilisation-of-grants" },
+      { label: "Penalties in case of Misutilization of Grants", href: "/website/penalties-in-case-of-misutilisation-of-grants" },
       { label: "Cessation of Voluntary Organisation Activities", href: "/website/cessation-of-voluntary-organisation-activities" },
       { label: "Guidelines for Assisting NGOs / Voluntary Organisations", href: "/website/guidelines-for-assisting-ngos-voluntary-organisations" },
       { label: "Minutes of Screening Committees", href: "/website/minutes-of-screening-committees" },
       { label: "Grants Suspended List / Blacklisted NGOs", href: "/website/grants-suspended-list-blacklisted-ngos" },
       { label: "List of De-Blacklisted NGOs", href: "/website/list-of-de-blacklisted-ngos" },
       { label: "Grants-in-Aid to NGOs: FAQs", href: "/website/grants-in-aid-to-ngos-faqs" },
-      { label: "Online Portal for Grant in Aid Schemes (e-Anudaan)", href: "https://grants-msje.gov.in/ngo-login" },
+      { label: "Online Portal for Grant in Aid Schemes", href: "https://grants-msje.gov.in/ngo-login" },
     ],
   },
   {
@@ -90,16 +97,16 @@ export const DIVISIONS: Division[] = [
       { label: "Rashtriya Vayoshri Yojana", href: "https://alimco.in/" },
       { label: "About the Division: Social Defence", href: "/website/about-the-division-social-defence" },
       { label: "Drug Division", href: "/website/drug-division" },
-      { label: "Organisation under Division: Social Defence", href: "/website/organisation-under-division-social-division" },
+      { label: "Organisation under Division: Social Division", href: "/website/organisation-under-division-social-division" },
       { label: "Policies / Acts / Rules / Codes / Circular: Social Defence", href: "/website/policies-acts-rules-codes-circular-social-defence" },
-      { label: "Social Defence FAQs", href: "/website/social-defence-faqs" },
+      { label: "Social Defence: FAQs", href: "/website/social-defence-faqs" },
     ],
   },
   {
     id: "public-grievance",
     name: "Public Grievance",
     links: [
-      { label: "Public Grievance Redressal Mechanism (CPGRAMS)", href: "https://pgportal.gov.in/" },
+      { label: "Public Grievance Redressal Mechanism", href: "https://pgportal.gov.in/" },
     ],
   },
   {
@@ -109,7 +116,7 @@ export const DIVISIONS: Division[] = [
     links: [
       { label: "SECC 2011", href: "https://secc.dord.gov.in/" },
       { label: "About the Division: Statistics Division", href: "/website/about-the-division-statistics-division" },
-      { label: "List of Research Evaluation Studies", href: "/website/list-of-research-evaluation-studies" },
+      { label: "List of Research / Evaluation Studies", href: "/website/list-of-research-evaluation-studies" },
       { label: "Handbook on Social Welfare Statistics", href: "/website/handbook-on-social-welfare-statistics" },
     ],
   },
@@ -127,7 +134,7 @@ export const DIVISIONS: Division[] = [
     name: "Parliamentary Matters",
     links: [
       { label: "Assurances", href: "/website/assurances" },
-      { label: "Special Mention / Matters Raised Under Rule 377", href: "/website/special-mention-matters-raised-under-377" },
+      { label: "Special Mention / Matters Raised Under 377", href: "/website/special-mention-matters-raised-under-377" },
     ],
   },
   {

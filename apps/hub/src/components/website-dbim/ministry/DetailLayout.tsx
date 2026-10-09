@@ -7,14 +7,22 @@ import "./ministry.css";
  * Department's text scrolls beside it. Reused by the division and organisation
  * detail pages, which the reference draws the same way.
  */
-export function DbimDetailLayout({ summary, children }: { summary?: React.ReactNode; children: React.ReactNode }) {
+export function DbimDetailLayout({
+  summary,
+  aside,
+  children,
+}: {
+  summary?: React.ReactNode;
+  /** A whole side box, where a page needs more than one line in it (About Us's vision). */
+  aside?: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  const box = aside ?? (summary ? <div className="db-min-vision"><p>{summary}</p></div> : null);
   return (
-    <div className={`db-min-detail${summary ? "" : " db-min-detail--single"}`}>
-      {summary ? (
-        <aside className="db-min-detail__aside" aria-label="Summary">
-          <div className="db-min-vision">
-            <p>{summary}</p>
-          </div>
+    <div className={`db-min-detail${box ? "" : " db-min-detail--single"}`}>
+      {box ? (
+        <aside className="db-min-detail__aside" aria-label={aside ? "Vision" : "Summary"}>
+          {box}
         </aside>
       ) : null}
       <div className="db-min-rich">{children}</div>

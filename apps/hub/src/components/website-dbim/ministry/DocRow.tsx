@@ -2,7 +2,9 @@ import type * as React from "react";
 import Link from "next/link";
 import { Icon } from "@mosje/design-system";
 import { dbimHref } from "@/lib/website-dbim/nav";
+import { DbimIcon } from "../ui/icons";
 import type { DbimDocRow } from "@/lib/website-dbim/ministry";
+import { dbimDates } from "@/lib/website-dbim/date";
 
 /**
  * The reference's document row (`.box.row` in About Us): file glyph and title,
@@ -15,11 +17,11 @@ export function DbimDocRowView({ doc }: { doc: DbimDocRow }) {
         <Icon name="draft" size={24} weight={400} aria-hidden="true" />
         <span>{doc.title}</span>
       </p>
-      <span className="db-min-docrow__date">{doc.date ? <small className="db-min-ptype">{doc.date}</small> : null}</span>
+      <span className="db-min-docrow__date">{doc.date ? <small className="db-min-ptype">{dbimDates(doc.date)}</small> : null}</span>
       <span className="db-min-docrow__size">
         {doc.type || doc.size ? (
           <>
-            <Icon name="picture_as_pdf" size={20} weight={400} aria-hidden="true" />
+            <DbimIcon name="pdf" size={24} />
             {doc.size ? <small className="db-min-size">{doc.size}</small> : <small className="db-min-size">{doc.type}</small>}
           </>
         ) : null}
@@ -40,6 +42,9 @@ export function DbimDocRowView({ doc }: { doc: DbimDocRow }) {
 }
 
 /** A link row: the same box, with the arrow button (`a.link-btn`) on the right. */
+/** An address elsewhere on the estate (a website page, a scheme portal), not inside the DBIM tree. */
+const ESTATE_PATH = /^\/(website|portals|reports)(\/|$)/;
+
 export function DbimLinkRow({ label, href, external }: { label: string; href: string; external?: boolean }) {
   const inner = (
     <>
@@ -58,7 +63,7 @@ export function DbimLinkRow({ label, href, external }: { label: string; href: st
       {inner}
     </a>
   ) : (
-    <Link className="db-min-docrow db-min-docrow--link" href={href.startsWith("/website") ? href : dbimHref(href)}>
+    <Link className="db-min-docrow db-min-docrow--link" href={ESTATE_PATH.test(href) ? href : dbimHref(href)}>
       {inner}
     </Link>
   );

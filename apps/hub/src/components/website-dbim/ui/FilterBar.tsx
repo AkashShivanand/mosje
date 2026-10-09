@@ -16,6 +16,8 @@ export interface DbimSelectControl {
 export interface DbimFilterBarProps {
   search: { value: string; onChange: (value: string) => void; placeholder?: string; label?: string };
   sort?: DbimSelectControl;
+  /** Who it is for — Type of Applicant on Schemes and Services. Shown before Category. */
+  audience?: DbimSelectControl;
   category?: DbimSelectControl;
   perPage?: { value: number; onChange: (value: number) => void; options?: number[] };
   /**
@@ -36,10 +38,10 @@ export interface DbimFilterBarProps {
  * back to everything — so it is passed as an ordinary option, not as the DS
  * `placeholder`, which is disabled by design.
  */
-export function DbimFilterBar({ search, sort, category, perPage, searchWidth = "default", className }: DbimFilterBarProps) {
+export function DbimFilterBar({ search, sort, audience, category, perPage, searchWidth = "default", className }: DbimFilterBarProps) {
   const [open, setOpen] = React.useState(false);
   const panelId = React.useId();
-  const hasSelects = Boolean(sort || category || perPage);
+  const hasSelects = Boolean(sort || audience || category || perPage);
 
   return (
     <form className={["db-filter", searchWidth === "wide" && "db-filter--wide", className].filter(Boolean).join(" ")} role="search" onSubmit={(e) => e.preventDefault()}>
@@ -73,6 +75,7 @@ export function DbimFilterBar({ search, sort, category, perPage, searchWidth = "
       {hasSelects && (
         <div id={panelId} className={open ? "db-filter__rest is-open" : "db-filter__rest"}>
           {sort && <SelectField control={sort} icon="sort" modifier="sort" />}
+          {audience && <SelectField control={audience} icon="sort" modifier="sort" />}
           {category && <SelectField control={category} icon="sort" modifier="sort" />}
           {perPage && (
             <label className="db-field db-field--perpage">

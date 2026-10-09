@@ -109,7 +109,7 @@ function NewsItem({ item }: { item: DbimHomeLink }) {
   const body = (
     <>
       <span className="db-hm-news__title">{item.title}</span>
-      <Icon name={item.external ? "open_in_new" : "arrow_forward_ios"} size={16} weight={400} />
+      <Icon name={item.external ? "open_in_new" : "arrow_forward_ios"} size={24} weight={400} />
       {item.external && <span className="ds-sr-only"> (opens in a new tab)</span>}
     </>
   );

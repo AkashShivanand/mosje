@@ -3,7 +3,8 @@ import Link from "next/link";
 import { Icon, SectionTitle, buttonClasses } from "@mosje/design-system";
 import { PageLayout } from "@/components/website-next/layout/PageLayout";
 import { RecordTable, type RecordColumn } from "@/components/website-next/ui/RecordTable";
-import { dedupeNotices, displayNoticeTitle, isArchivedRecord, tidyTitle } from "@/components/website-next/ui/records";
+import { archivedOn, dedupeNotices, displayNoticeTitle, tidyTitle } from "@/components/website-next/ui/records";
+import { isArchivedRecord } from "@/lib/website-shared/records";
 import { getContentSyncedDate, getTenders, getVacancies } from "@/lib/website/content";
 import { socialCard } from "@/lib/seo/social";
 import "@/components/website-next/templates/records.css";
@@ -21,12 +22,12 @@ export const metadata: Metadata = {
 /*
  * GIGW 3.0 / DBIM 3.0 §5.6 archive (issue MAN-06).
  *
- * THE RULE: an item is here when live tags it Archived (`component_status`), the
- * Department's own decision and not a date — a 2022 tender can still be open.
- * The twelve-month rule only decides for a record ingested without the tag. The
- * same rule (`isArchivedRecord`) removes the item from /tenders and /vacancies,
- * so an item is on exactly one of the two pages. Live publishes no date an item
- * was archived, so the page shows none.
+ * THE RULE: an item leaves its live page and appears here twelve months after
+ * its publish date. The register publishes no closing date for tenders or
+ * vacancies, so the publish date is the only date the rule can read; the
+ * "Archived" column is that date plus twelve months, derived, not recorded.
+ * The same rule (`isArchivedRecord`) removes the item from /tenders and /vacancies,
+ * so an item is on exactly one of the two pages.
  */
 const columns: RecordColumn[] = [
   { key: "title", label: "Title", type: "record", sortable: true },
@@ -34,12 +35,12 @@ const columns: RecordColumn[] = [
   { key: "document", label: "Document", type: "link", hrefKey: "fileUrl" },
 ];
 
-type FileRow = { slug: string; title: string; date?: string; fileUrl?: string; status?: string };
+type FileRow = { slug: string; title: string; date?: string; fileUrl?: string; status?: "Active" | "Archived" };
 
 /* Tender titles: listed once, and a title cut by the ingest ends in an ellipsis (see /tenders). */
 const toRows = (items: FileRow[], base: string, notices = false) =>
   (notices ? dedupeNotices(items) : items)
-    .filter((i) => isArchivedRecord(i))
+    .filter(isArchivedRecord)
     .map((i) => ({
       title: notices ? displayNoticeTitle(i.title) : tidyTitle(i.title),
       href: `${base}/${i.slug}`,

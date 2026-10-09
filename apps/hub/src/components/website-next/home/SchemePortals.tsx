@@ -8,7 +8,7 @@ import {
   SectionTitle,
   buttonClasses,
 } from "@mosje/design-system";
-import { ORGANISATIONS } from "@/data/website/organisations";
+import { SCHEME_PORTALS_SECTION, schemePortals } from "@/lib/website-shared/organisations";
 import { GLANCE } from "./facts";
 
 /**
@@ -24,23 +24,15 @@ import { GLANCE } from "./facts";
  * The card leads with the abbreviation because that is what the portal is
  * called — a citizen is sent to "PM-AJAY", not to "Pradhan Mantri Anusuchit
  * Jaati Abhyuday Yojana" — with the full name under it (ACC-25). Read from the
- * organisation registry, never retyped; the registry's own order is kept.
+ * organisation registry, never retyped, in the order every design shares
+ * (lib/website-shared/organisations.ts).
  *
  * The figures and their sources are `facts.ts`. They are the three the
  * Department publishes, and nothing here derives a fourth.
  */
-/*
- * The design's own order, which is not the registry's: the two schemes that
- * reach the most people first, then the four addressed to one group each. The
- * registry orders by when each portal joined the estate, which is a fact about
- * us rather than about the citizen reading the row.
- */
-const ORDER = ["PM-AJAY", "NMBA", "SCW", "SMILE", "NOS", "NHAA"];
-
 export function SchemePortals() {
-  const portals = ORGANISATIONS.filter((o) => o.category === "schemes").sort(
-    (a, b) => ORDER.indexOf(a.abbr) - ORDER.indexOf(b.abbr),
-  );
+  // The order, and the words around the row, are shared with every design.
+  const portals = schemePortals();
 
   return (
     <Band
@@ -52,13 +44,8 @@ export function SchemePortals() {
       <SectionTitle
         size="display"
         headingId="scheme-portals-title"
-        title={<T>Scheme Portals</T>}
-        description={
-          <T>
-            Apply for, track and manage the Department&rsquo;s schemes on their
-            own portals.
-          </T>
-        }
+        title={<T>{SCHEME_PORTALS_SECTION.title}</T>}
+        description={<T>{SCHEME_PORTALS_SECTION.description}</T>}
       >
         <Link href="/portals" className="wn-home-more">
           <T>View All Portals</T>

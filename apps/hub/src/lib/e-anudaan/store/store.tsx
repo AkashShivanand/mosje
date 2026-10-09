@@ -14,8 +14,10 @@
 import * as React from "react";
 import { useToast } from "@mosje/design-system";
 import type {
+  BudgetStatement,
   CctvSetup,
   ChangeRequest,
+  CostSheet,
   DocReviewStatus,
   EAnudaanState,
   GrantApplication,
@@ -35,12 +37,14 @@ import {
   applyAction,
   issueShowCauseNotice as issueNotice,
   openForClaim as openClaim,
+  recordPfmsCredit as recordCredit,
   releaseFunds as release,
   scheduleOnlineInspection as scheduleOnline,
   type ActionPayload,
   type ActResult,
   type Clock,
   type OnlineInspectionInput,
+  type PfmsCredit,
   type ShowCauseInput,
   type WorkflowAction,
 } from "../workflow.ts";
@@ -52,7 +56,6 @@ import {
   markReadFor,
   migrateFrom8,
   migrateFrom11,
-  type PersistedState,
   readPersisted,
   writePersisted,
   type StorageLike,
@@ -74,8 +77,21 @@ import {
  * An older copy is reseeded, because it holds exactly the contradictions those rules remove.
  * 12 — a CCTV setup gains its camera register, installation certificate, retention, storage and
  * monthly uptime declarations. All optional, so an 11 copy is carried forward (`migrateFrom11`).
+ * 13 — the PFMS payment leg: six seeded projects keep their latest sanction unreleased so the PD
+ * Maker, the PD Checker and PFMS have files in flight. An older copy is reseeded, because it holds
+ * those files as released — a payment the new pipeline would then show twice.
  */
-const SCHEMA_VERSION = 12;
+/*
+ * 14 — NAPDDR files carry the ASO's cost sheet and Statement of Account; the seed gains a DDAC file
+ * at the Programme Division ASO and a costed IRCA further up the chain, and its IRCA file at the ASO
+ * reads like a 30-bed centre with NAPDDR's own documents. An older copy is reseeded: it holds the
+ * NAPDDR file with a school's documents and 209 beneficiaries.
+ */
+/*
+ * 15 — every sanction is dated within its own financial year, the year its order is numbered in. An
+ * older copy is reseeded: it holds 29 orders such as SAN/2024-25/01245 dated 10 Mar 2026.
+ */
+const SCHEMA_VERSION = 15;
 
 function seedState(): EAnudaanState {
   const seed = buildSeed();
@@ -97,8 +113,10 @@ function seedState(): EAnudaanState {
 
 /** An earlier build's copy, brought forward so the applicant's own work on this device survives. */
 // Schema 8 → 9 stays available for a copy that is exactly 8; it is not applied to 10 (see above).
-const migrate = (old: PersistedState) => migrateFrom11(old, buildSeed());
+// Nothing below 13 is carried forward (see 13 above); the migrations stay for the record.
+const migrate = (): EAnudaanState | null => null;
 void migrateFrom8;
+void migrateFrom11;
 
 /**
  * Runtime clock. The seeder uses its own fixed clock; this one is only reached from user
@@ -143,6 +161,13 @@ interface EAnudaanContextValue {
   addOfficerDocument: (appId: string, file: { name: string; sizeKb: number; title?: string }) => void;
   removeOfficerDocument: (appId: string, id: string) => void;
   /**
+   * The Programme Division ASO's cost sheet and Statement of Account (NAPDDR; cost-sheet.ts). Two
+   * records, saved separately, as on the dev portal — the screen draws them as two cards for the
+   * same reason. Each is stamped with who saved it and when; the amount pipeline reads the sheet.
+   */
+  saveCostSheet: (appId: string, sheet: Omit<CostSheet, "savedAt" | "savedBy">) => { ok: true } | { ok: false; error: string };
+  saveBudgetStatement: (appId: string, stmt: Omit<BudgetStatement, "savedAt" | "savedBy">) => { ok: true } | { ok: false; error: string };
+  /**
    * The officer's verdict on one document, and its reason. Saved as it is chosen: it lived only
    * in the review screen, so a refresh erased it and a deficiency could not be built from it
    * (screen audit, 14 Sep 2026).
@@ -183,6 +208,11 @@ interface EAnudaanContextValue {
 
   /** PD:US — release a sanctioned claim's funds. */
   releaseFunds: (appId: string) => ActResult;
+  /**
+   * Record a credit PFMS has confirmed (the payment leg's `pfms/store.tsx` calls it). Not tied to
+   * the signed-in role: the credit is PFMS's news, and the demo rail can deliver it to any session.
+   */
+  recordPfmsCredit: (appId: string, credit: PfmsCredit) => ActResult;
   /** PD:US — open the instalment after a released one for the NGO to claim. `nextLabel`: "2nd Instalment". */
   openForClaim: (appId: string, nextLabel: string) => ActResult;
   /** PD:SO / PD:JS — issue a Show Cause Notice. */
@@ -228,7 +258,7 @@ function stayNotice(s: EAnudaanState, app: GrantApplication, role: RoleId, also:
   return {
     id: `ntf-live-${entry.id}`,
     at: entry.at,
-    title: notificationTitle(entry.action),
+    title: notificationTitle(entry.action, entry.remarks),
     body: notificationBody(app.id, entry.remarks),
     audience: [...new Set<RoleId>([role, ...also, ...(app.ngoId === s.ngos[0]?.id && notifiesApplicant(entry.action) ? (["ngo"] as RoleId[]) : [])])],
     applicationId: app.id,
@@ -379,7 +409,7 @@ export function EAnudaanProvider({ children }: { children: React.ReactNode }) {
               {
                 id: `ntf-live-${entry.id}`,
                 at: entry.at,
-                title: notificationTitle(entry.action),
+                title: notificationTitle(entry.action, entry.remarks),
                 body: notificationBody(updated.id, entry.remarks),
                 // The applicant only for their own file and only for what concerns them, and the
                 // seat the file has moved to.
@@ -406,6 +436,23 @@ export function EAnudaanProvider({ children }: { children: React.ReactNode }) {
       },
 
       releaseFunds: (appId) => outsideChain(appId, (app, role, clock) => release(app, role, clock)),
+      recordPfmsCredit: (appId, credit) => {
+        const out: { result: ActResult } = { result: { ok: false, error: `Application ${appId} not found.` } };
+        const saved = commit((s) => {
+          const app = s.applications.find((a) => a.id === appId);
+          if (!app) return s;
+          const res = recordCredit(app, credit, liveClock());
+          out.result = res;
+          if (!res.ok) return s;
+          return {
+            ...s,
+            applications: s.applications.map((a) => (a.id === appId ? res.app : a)),
+            notifications: [stayNotice(s, res.app, credit.authorisedBy, ["pd-maker", "pd-us"]), ...s.notifications],
+          };
+        });
+        if (!saved.ok) return { ok: false, error: saved.error };
+        return out.result;
+      },
       openForClaim: (appId, nextLabel) => outsideChain(appId, (app, role, clock) => openClaim(app, role, nextLabel, clock)),
       issueShowCauseNotice: (appId, input) => outsideChain(appId, (app, role, clock) => issueNotice(app, role, input, clock)),
       scheduleOnlineInspection: (appId, input) =>
@@ -502,6 +549,26 @@ export function EAnudaanProvider({ children }: { children: React.ReactNode }) {
                   ],
                 },
           ),
+        }));
+      },
+
+      saveCostSheet: (appId, sheet) => {
+        const role = stateRef.current.session;
+        if (!role) return { ok: false, error: "You are not signed in." };
+        const clock = liveClock();
+        return commit((s) => ({
+          ...s,
+          applications: s.applications.map((a) => (a.id !== appId ? a : { ...a, costSheet: { ...sheet, savedAt: clock.now, savedBy: role } })),
+        }));
+      },
+
+      saveBudgetStatement: (appId, stmt) => {
+        const role = stateRef.current.session;
+        if (!role) return { ok: false, error: "You are not signed in." };
+        const clock = liveClock();
+        return commit((s) => ({
+          ...s,
+          applications: s.applications.map((a) => (a.id !== appId ? a : { ...a, budgetStatement: { ...stmt, savedAt: clock.now, savedBy: role } })),
         }));
       },
 

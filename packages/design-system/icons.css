@@ -39,6 +39,11 @@
  * Keep font-weight/font-display identical. The DS default stays on the CDN so
  * no multi-MB binary lives in the repo.
  */
+/* Declare the estate's layer ORDER before naming a layer below, so this file is
+   correct whichever stylesheet the bundler happens to load first
+   (see .claude/rules/design-system-architecture.md §2a). */
+@layer theme, base, components, utilities;
+
 @font-face {
   font-family: "Material Symbols Rounded";
   font-style: normal;
@@ -72,4 +77,34 @@
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   font-feature-settings: "liga";
+}
+
+/*
+ * ── THE GLYPH BOX IS ONE EM SQUARE, WHETHER OR NOT THE FONT HAS ARRIVED ──────
+ *
+ * An icon is a LIGATURE: the markup holds the word ("keyboard_arrow_down") and the
+ * font turns it into one glyph exactly 1em wide. For the seconds the 5 MB font is
+ * in flight — or for good, on a network that blocks fonts.gstatic.com — the word
+ * renders as text: ~130px of it inside a 24px icon button, pushing labels out of
+ * buttons and tabs and overlapping neighbours.
+ *
+ * So the box is fixed at the width the glyph would have had anyway, and anything
+ * wider is clipped. With the font loaded nothing moves: the glyph IS 1em.
+ *
+ * - `inline-block` so the width applies to a bare span; <Icon> sets inline-flex
+ *   inline, which wins and keeps its centring.
+ * - Height is left to the line: <Icon> already sets `line-height: 1`, and a fixed
+ *   block-size on a bare span inheriting body leading would clip the glyph's foot.
+ * - `overflow-x: clip`, not `hidden`: clip does not make the icon a scroll
+ *   container, so an inline icon keeps its text baseline — `hidden` would move it
+ *   to the bottom margin edge and shift every inline icon upward.
+ * - In `@layer base`, so any component or app rule that deliberately sizes an
+ *   icon box still wins; this is the floor, not an override.
+ */
+@layer base {
+  .material-symbols-rounded {
+    display: inline-block;
+    inline-size: 1em;
+    overflow-x: clip;
+  }
 }

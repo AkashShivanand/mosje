@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "Short x-axis labels — years, months — stay flat and thin out (always naming the latest) instead of turning 35°. `LineChart`, `ComboChart` and `BarChart` used to rotate any axis of more than six labels, which tilted twelve financial years across a 1,250px chart with room to spare. Long labels still rotate where they would collide. `BarChart` now gives its axis title its own gutter, as `LineChart` does, so it no longer overlaps a five-character tick."
+}

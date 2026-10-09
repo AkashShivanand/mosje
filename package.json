@@ -12,6 +12,7 @@
   },
   "scripts": {
     "prepare": "husky || true",
+    "postinstall": "patch-package",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "kill-ports": "bash scripts/kill-dev-ports.sh",
@@ -148,7 +149,8 @@
     "check:raw-button": "node tools/raw-button/check.mjs",
     "check:raw-button:baseline": "node tools/raw-button/check.mjs --baseline",
     "check:link-as": "node --test tools/link-as/scan.test.mjs && node tools/link-as/check.mjs",
-    "check:template-adoption:baseline": "node tools/template-adoption/check.mjs --baseline"
+    "check:template-adoption:baseline": "node tools/template-adoption/check.mjs --baseline",
+    "check:ux4g-pin": "node tools/ux4g-pin/check.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
@@ -159,7 +161,8 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.7",
-    "stylelint": "^17.15.0",
+    "patch-package": "8.0.1",
+    "stylelint": "^17.16.0",
     "stylelint-config-standard": "^40.0.0",
     "stylelint-declaration-strict-value": "^1.12.1",
     "typescript-eslint": "^8.70.0",
@@ -167,7 +170,7 @@
   },
   "dependencies": {
     "pdf-lib": "^1.17.1",
-    "puppeteer-core": "^25.11.0"
+    "puppeteer-core": "^25.12.0"
   },
   "overrides": {
     "eslint-plugin-react-hooks": {

@@ -4,6 +4,7 @@ import type {
   OfficialRecord, CpioRecord, BookingRecord, UpdateRecord, SewerDeathCaseRecord,
 } from "@/types/website/content";
 import organisationData from "@/content/website/organisation.json";
+import renamedOrganisations from "./renamed-organisations.json";
 import schemesData from "@/content/website/schemes.json";
 import tendersData from "@/content/website/tenders.json";
 import vacanciesData from "@/content/website/vacancies.json";
@@ -55,7 +56,30 @@ export function getContentSyncedDate(): string {
   return new Date(iso).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
 }
 
-const organisations = organisationData as SectionRecord[];
+/*
+ * ADDRESSES THE DEPARTMENT HAS RENAMED, mapped back to the estate's own.
+ *
+ * Between the 18 and 29 Sep 2026 reads, dosje.gov.in moved Babu Jagjivan Ram
+ * National Foundation from `…-jrf` to `…-bjrnf`, with all nine of its pages. The
+ * estate keys the body by the old address in the organisation registry, both
+ * mastheads, the partner strip, Who's Who and the officials map (and PR #640's
+ * organisation pages), so the new records are served at the old address and no
+ * link breaks. Adopting the new address is one change in all of those at once.
+ * The map is a JSON file so `tools/website-links` reads the same one.
+ */
+const RENAMED_ORGANISATIONS: Record<string, string> = renamedOrganisations;
+
+function estateSlug(slug: string): string {
+  for (const [live, ours] of Object.entries(RENAMED_ORGANISATIONS)) {
+    if (slug === live || slug.startsWith(`${live}/`)) return ours + slug.slice(live.length);
+  }
+  return slug;
+}
+
+const organisations = (organisationData as SectionRecord[]).map((o) => {
+  const slug = estateSlug(o.slug);
+  return slug === o.slug ? o : { ...o, slug };
+});
 const orgMap = new Map<string, SectionRecord>(organisations.map((o) => [o.slug, o]));
 
 export function getOrganisations(): SectionRecord[] {
@@ -116,10 +140,19 @@ export function getScheme(slug: string): SectionRecord | undefined {
  * on nearly every website route, and re-deriving 2,000 hrefs per render to
  * produce the same eight strings would be work for nothing.
  */
-const withLocalFile = (rows: FileRecord[]): FileRecord[] =>
-  rows.map((d) => ({ ...d, fileUrl: sampleDocumentFor(d.category, d.title) }));
+const withLocalFile = (rows: FileRecord[], register?: string): FileRecord[] =>
+  rows.map((d) => ({ ...d, fileUrl: sampleDocumentFor(register, d.category, d.title) }));
 
-const tenders = withLocalFile(tendersData as FileRecord[]);
+/*
+ * THE REGISTER'S OWN NOUN LEADS THE HINTS, because a row's title often does not
+ * carry one and its category is no help either. A vacancy titled "Car Driver"
+ * in the category "Job" matched no rule and fell through to the `report` sample
+ * — a reader opening a driver's recruitment notice got something shaped like an
+ * annual report. With "vacancy" in front it resolves to `circular`, which is
+ * what the Department itself calls these ("Vacancy Circular for the post of…").
+ * Documents pass none: they carry a real category, and it is the better signal.
+ */
+const tenders = withLocalFile(tendersData as FileRecord[], "tender");
 
 export function getTenders(): FileRecord[] {
   return tenders;
@@ -129,7 +162,7 @@ export function getTender(slug: string): FileRecord | undefined {
   return findBySlug(tenders, slug);
 }
 
-const vacancies = withLocalFile(vacanciesData as FileRecord[]);
+const vacancies = withLocalFile(vacanciesData as FileRecord[], "vacancy");
 
 export function getVacancies(): FileRecord[] {
   return vacancies;

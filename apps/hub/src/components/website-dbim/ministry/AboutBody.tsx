@@ -6,7 +6,39 @@ import { DbimRefTable } from "./RefTable";
 const table = (id: string) => ABOUT_TABLES.find((t) => t.id === id);
 const SECTOR_GROUPS = [...new Set(ABOUT_TABLES.map((t) => t.group).filter((g): g is string => !!g))];
 
-/** The Department's About Us text in the reference's section order (spec §1). */
+/*
+ * PENDING — what the Department has not published: the vision, the mission and the
+ * objectives. DBIM 3.0 §A.5.1.1 mixes its wording: the overview (vision, mission,
+ * objectives, functions, citizen charter) is "should"; objectives and functions set
+ * out as a list is "must" (checklist F.2 item 11). dosje.gov.in carries none of them — its
+ * footer's "Vision & Mission" link opens About Us. Each gap renders as a marked
+ * placeholder (`data-pending`), never as invented text, until the Department supplies
+ * it. The same three gaps are flagged in the DBIM Figma file (About Us, 29 Sep 2026).
+ */
+const PENDING = {
+  vision: "Vision statement to be provided by the Department.",
+  mission: "Mission statement to be provided by the Department.",
+  objective: "Objective to be provided by the Department.",
+} as const;
+
+/** The side box: the Department's vision, as MeitY's About Us sets it. */
+export function DbimAboutVision() {
+  return (
+    <div className="db-min-vision">
+      <p className="db-min-pending" data-pending="vision">
+        {PENDING.vision}
+      </p>
+      <p className="db-min-vision__label">Vision Statement</p>
+    </div>
+  );
+}
+
+/**
+ * The Department's About Us, in MeitY's order (meity.gov.in/ministry, the DBIM
+ * benchmark): introduction, Mission, Objectives, Functions, then the set-up, the
+ * documents, and the longer records opening in place. Mirrors the DBIM Figma file's
+ * About Us frame (29 Sep 2026). The words are the Department's (DBIM_ABOUT).
+ */
 export function DbimAboutBody() {
   const docs = aboutDocuments();
   const bureau = table("bureau-allocation");
@@ -14,11 +46,7 @@ export function DbimAboutBody() {
 
   return (
     <>
-      <section aria-labelledby="about-overview">
-        <h2 id="about-overview">Brief Overview</h2>
-        <p>
-          <strong>{A.overview.lead}</strong>
-        </p>
+      <section aria-label="Introduction">
         <p>{A.overview.intro}</p>
         <p>{A.overview.groupsLead}</p>
         <ul>
@@ -26,42 +54,35 @@ export function DbimAboutBody() {
             <li key={g}>{g}</li>
           ))}
         </ul>
-        <p>{A.overview.after}</p>
       </section>
 
-      <section aria-labelledby="about-history">
-        <h2 id="about-history">Brief History</h2>
-        {A.history.map((p) => (
-          <p key={p.slice(0, 32)}>{p}</p>
-        ))}
-        {A.instruments.map((i) => (
-          <p key={i.n}>
-            {i.n} <strong>{i.name}</strong>
-            {i.rest}
-          </p>
-        ))}
-        <p>
-          {A.disability.before}
-          <strong>{A.disability.quote}</strong>
-          {A.disability.after}
+      <section aria-labelledby="about-mission">
+        <h2 id="about-mission">Mission</h2>
+        <p className="db-min-pending" data-pending="mission">
+          {PENDING.mission}
         </p>
-        <p>{A.departmentsLead}</p>
-        <ol>
-          {A.departments.map((d) => (
-            <li key={d}>{d}</li>
+      </section>
+
+      <section aria-labelledby="about-objectives">
+        <h2 id="about-objectives">Objectives</h2>
+        <ol className="db-min-objectives" data-pending="objectives">
+          {[1, 2, 3].map((n) => (
+            <li key={n} className="db-min-objective">
+              <span className="db-min-objective__n" aria-hidden="true">
+                {n}
+              </span>
+              <p className="db-min-pending">{PENDING.objective}</p>
+            </li>
           ))}
         </ol>
       </section>
 
-      <section aria-labelledby="about-subjects">
-        <h2 id="about-subjects">Subjects Allocated</h2>
+      <section aria-labelledby="about-functions">
+        <h2 id="about-functions">Functions</h2>
         <p>
-          <strong>{A.subjects.rules}</strong>
+          Subjects allocated to the {A.subjects.department} under the {A.subjects.rules}:
         </p>
-        <p>
-          <strong className="db-min-upper">{A.subjects.department}</strong>
-        </p>
-        <ul>
+        <ol>
           <li>{A.subjects.first}</li>
           <li>
             {A.subjects.nodalLead}
@@ -74,8 +95,8 @@ export function DbimAboutBody() {
           {A.subjects.rest.map((s) => (
             <li key={s}>{s}</li>
           ))}
-        </ul>
-        <p>{A.subjects.note}</p>
+        </ol>
+        <p className="db-min-note">{A.subjects.note}</p>
       </section>
 
       <section aria-labelledby="about-setup">
@@ -88,41 +109,51 @@ export function DbimAboutBody() {
           <strong>{A.headedBy.bold}</strong>
         </p>
         <p>
-          {A.twoDepartments} <strong>{A.secretary}</strong> is the <strong>Secretary</strong> of Department of Social
-          Justice &amp; Empowerment.
+          {A.twoDepartments} <strong>{A.secretary}</strong> is the Secretary of Department of Social Justice &amp;
+          Empowerment.
         </p>
-        {bureau ? (
-          <>
-            <p>{A.bureauLead}</p>
-            <DbimRefTable table={bureau} />
-          </>
-        ) : null}
       </section>
 
-      <section aria-labelledby="about-chart">
-        <h2 id="about-chart">Organisation Chart</h2>
+      <section aria-label="Documents">
+        {docs.citizenCharter ? <DbimDocRowView doc={docs.citizenCharter} /> : null}
         <DbimDocRowView doc={docs.organisationChart} />
       </section>
 
-      {docs.citizenCharter ? (
-        <section aria-labelledby="about-charter">
-          <h2 id="about-charter">Citizen Charter</h2>
-          <DbimDocRowView doc={docs.citizenCharter} />
-        </section>
-      ) : null}
-
-      {former ? (
-        <section aria-labelledby="about-former">
-          <h2 id="about-former">Former Secretaries</h2>
+      <section aria-label="More About the Department">
+        <DbimExpandRow label="Brief History">
+          {A.history.map((p) => (
+            <p key={p.slice(0, 32)}>{p}</p>
+          ))}
+          {A.instruments.map((i) => (
+            <p key={i.n}>
+              {i.n} <strong>{i.name}</strong>
+              {i.rest}
+            </p>
+          ))}
+          <p>
+            {A.disability.before}
+            <strong>{A.disability.quote}</strong>
+            {A.disability.after}
+          </p>
+          <p>{A.departmentsLead}</p>
+          <ol>
+            {A.departments.map((d) => (
+              <li key={d}>{d}</li>
+            ))}
+          </ol>
+        </DbimExpandRow>
+        {bureau ? (
+          <DbimExpandRow label="Bureau Head-Wise Allocation of Work">
+            <p>{A.bureauLead}</p>
+            <DbimRefTable table={bureau} />
+          </DbimExpandRow>
+        ) : null}
+        {former ? (
           <DbimExpandRow label="Former Secretaries">
             <DbimRefTable table={former} />
           </DbimExpandRow>
-        </section>
-      ) : null}
-
-      {SECTOR_GROUPS.length > 0 ? (
-        <section aria-labelledby="about-sector">
-          <h2 id="about-sector">Sector-Wise Detailed Information</h2>
+        ) : null}
+        {SECTOR_GROUPS.length > 0 ? (
           <DbimExpandRow label="Sector-Wise Detailed Information">
             {SECTOR_GROUPS.map((group) => (
               <div key={group}>
@@ -138,8 +169,8 @@ export function DbimAboutBody() {
               </div>
             ))}
           </DbimExpandRow>
-        </section>
-      ) : null}
+        ) : null}
+      </section>
     </>
   );
 }

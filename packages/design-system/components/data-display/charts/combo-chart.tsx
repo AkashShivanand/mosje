@@ -3,9 +3,9 @@
 import * as React from "react";
 import { ChartFrame, type ChartStateProps } from "./internal/chart-frame";
 import { Legend } from "./internal/legend";
-import { Gridlines, XAxisLabels } from "./internal/axis";
+import { Gridlines, XAxisLabels, shouldRotate } from "./internal/axis";
 import { ChartTooltip, useChartTooltip } from "./internal/tooltip";
-import { bandScale, linearScale, niceTicks } from "./internal/scales";
+import { bandScale, linearScale, monotonePath, niceTicks } from "./internal/scales";
 import { seriesColor, categoricalColor } from "./internal/palette";
 import { formatIndian } from "./internal/format";
 import type { ValueFormat } from "./internal/format";
@@ -25,6 +25,10 @@ export interface ComboChartProps extends ChartStateProps {
   width?: number;
   height?: number;
   className?: string;
+  /** How the line series join their points; `smooth` never overshoots a point. @default "linear" */
+  curve?: "linear" | "smooth";
+  /** Roughly how many gridlines each value axis aims for; setting it also ends each axis near its highest figure. */
+  tickCount?: number;
 }
 
 /**
@@ -43,6 +47,8 @@ export function ComboChart({
   width = 540,
   height = 300,
   className,
+  curve = "linear",
+  tickCount,
   state,
   onRetry,
   filterLabel,
@@ -73,14 +79,16 @@ export function ComboChart({
   const barColors = bars.map((s, i) => seriesColor(s.color, i));
   const lineColors = lines.map((s, i) => seriesColor(s.color, bars.length + i));
 
-  const rotate = labels.length > 6 || labels.some((l) => l.length > 8);
-  const padL = 48;
-  const padR = 48;
+  // As in LineChart: an axis title takes its own room, beside the ticks rather than under them.
+  const padL = leftLabel ? 64 : 48;
+  const padR = rightLabel ? 62 : 48;
+  const step = (width - padL - padR) / Math.max(1, labels.length);
+  const rotate = shouldRotate(labels, step);
   const padT = 16;
   const padB = rotate ? 54 : 30;
 
-  const leftTicks = niceTicks(0, Math.max(1, ...bars.flatMap((s) => s.data)));
-  const rightTicks = niceTicks(0, Math.max(1, ...lines.flatMap((s) => s.data)));
+  const leftTicks = niceTicks(0, Math.max(1, ...bars.flatMap((s) => s.data)), tickCount ?? 4, tickCount !== undefined);
+  const rightTicks = niceTicks(0, Math.max(1, ...lines.flatMap((s) => s.data)), tickCount ?? 4, tickCount !== undefined);
   const leftMax = leftTicks[leftTicks.length - 1] ?? 1;
   const rightMax = rightTicks[rightTicks.length - 1] ?? 1;
 
@@ -92,7 +100,9 @@ export function ComboChart({
   const centerX = (i: number) => (x(labels[i] ?? "") + band / 2);
 
   const linePath = (data: number[]) =>
-    data.map((v, i) => `${i === 0 ? "M" : "L"} ${centerX(i).toFixed(2)} ${yR(v).toFixed(2)}`).join(" ");
+    curve === "smooth"
+      ? monotonePath(data.map((v, i) => [centerX(i), yR(v)] as const))
+      : data.map((v, i) => `${i === 0 ? "M" : "L"} ${centerX(i).toFixed(2)} ${yR(v).toFixed(2)}`).join(" ");
 
   const tooltipAt = (i: number) => (
     <>
@@ -216,7 +226,7 @@ export function ComboChart({
         />
       ))}
 
-      <XAxisLabels labels={labels} x={(l) => centerX(labels.indexOf(l))} y={height - padB + 16} rotate={rotate ? -35 : 0} />
+      <XAxisLabels labels={labels} x={(l) => centerX(labels.indexOf(l))} y={height - padB + 16} rotate={rotate ? -35 : 0} step={step} />
     </ChartFrame>
   );
 }

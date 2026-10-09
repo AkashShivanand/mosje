@@ -182,7 +182,8 @@
   .ds-input::placeholder,
   .ds-textarea::placeholder {
     color: var(--sa-text-neutral-subtle);
-    opacity: 0.7;
+    /* 0.7 blended the ink to 4.48:1 on white — under 1.4.3's 4.5. 0.8 clears it. */
+    opacity: var(--sa-alpha-80);
   }
 
   /* ── Hover ─────────────────────────────────────────────────────────────── */
@@ -504,6 +505,16 @@
     display: flex;
     align-items: center;
     gap: var(--sa-inline-4);
+  }
+
+  /* `labelHidden` with nothing else in the row: out of the flow, so the field's row gap is
+     not spent on a row nobody sees. The label inside stays for assistive technology. */
+  .ds-field__label-row--hidden {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
   }
 
   /* Label 1 (14/20), medium — what SAMAVESH's own Input Field master binds, and what every form

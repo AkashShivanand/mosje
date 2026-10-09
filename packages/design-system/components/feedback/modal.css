@@ -114,6 +114,9 @@
 
   .ds-modal__footer {
     display: flex;
+    /* Two actions with long labels at 320px wrap onto a second row instead of
+       overflowing the dialog (WCAG 1.4.10 Reflow). */
+    flex-wrap: wrap;
     justify-content: flex-end;
     /* Wider than the default 8px control gap — confirm/destructive actions sit
        here, and a mis-tap between Cancel/Delete is costlier than elsewhere. */

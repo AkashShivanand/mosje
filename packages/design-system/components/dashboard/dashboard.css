@@ -53,6 +53,9 @@
     overflow: hidden;
     font-family: var(--sa-font-latin);
   }
+  .ds-chart-card--outlined {
+    box-shadow: var(--sa-elevation-flat);
+  }
   .ds-chart-card__head {
     display: flex;
     align-items: flex-start;
@@ -63,6 +66,16 @@
   }
   .ds-chart-card__titles {
     min-width: 0;
+  }
+  /* A toned card's header is a band in the tone (`ds-tone-*`, card.css), its text inverse. */
+  .ds-chart-card--band .ds-chart-card__head {
+    align-items: center;
+    border-bottom-color: transparent;
+    background: linear-gradient(133deg, var(--cmp-tone-from), var(--cmp-tone-to));
+  }
+  .ds-chart-card--band .ds-chart-card__title,
+  .ds-chart-card--band .ds-chart-card__subtitle {
+    color: var(--sa-text-neutral-inverse);
   }
   /* 16px / 22px, weight 600 — the panel-title size the built PM-AJAY MIS uses
      in the Figma handoff. title-1 (a clamped 18-22px) reads as a page heading
@@ -84,6 +97,20 @@
     align-items: center;
     gap: var(--sa-stack-8);
     flex-shrink: 0;
+  }
+
+  /* On a phone the actions wrap under the title rather than squeezing it into a column a
+     word wide: a filter and a switch beside a title left "People R…" overlapping its own
+     select at 375px. */
+  @media (max-width: 767px) {
+    .ds-chart-card__head {
+      flex-wrap: wrap;
+    }
+    .ds-chart-card__actions {
+      flex-wrap: wrap;
+      flex-shrink: 1;
+      min-width: 0;
+    }
   }
   .ds-chart-card__body {
     padding: var(--sa-padding-20);
@@ -262,6 +289,35 @@
     .ds-segmented__option { transition: none; }
   }
 
+  /* QUIET: text only. No track, no raised pill — the chosen option is the brand ink,
+     underlined, and the other sits in the subtle ink. Each option keeps a 24px target
+     (WCAG 2.2 §2.5.8) without the 32px control height that makes it read as a toolbar. */
+  .ds-segmented--quiet {
+    gap: var(--sa-stack-4);
+    padding: 0;
+    background: none;
+    border: 0;
+    border-radius: 0;
+  }
+  .ds-segmented--quiet .ds-segmented__option {
+    min-height: 24px;
+    padding: var(--sa-padding-2) var(--sa-padding-6);
+    border-radius: var(--sa-shape-4);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-medium);
+  }
+  .ds-segmented--quiet .ds-segmented__option--active {
+    background: none;
+    box-shadow: none;
+    font-weight: var(--sa-font-weight-semibold);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+  .ds-segmented--quiet .ds-segmented__option:hover {
+    background: var(--sa-bg-neutral-subtler);
+  }
+
   /* ── Chart export control ────────────────────────────────────────────────
 
      A download menu that sits in a ChartCard header (`exportable`). The trigger
@@ -283,6 +339,23 @@
     background: transparent;
     color: var(--sa-icon-neutral-base, var(--sa-text-neutral-subtle));
     cursor: pointer;
+  }
+
+  /* The quieter form: the word "Export" beside a small glyph, in subtle text. */
+  .ds-chart-export__trigger--text {
+    width: auto;
+    gap: var(--sa-stack-4);
+    padding-inline: var(--sa-padding-8);
+    color: var(--sa-text-neutral-subtle);
+    font-family: inherit;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-medium);
+  }
+
+  /* The glyph takes the word's colour, so the link reads as one quiet mark. */
+  .ds-chart-export__trigger--text .material-symbols-rounded {
+    color: inherit;
   }
 
   .ds-chart-export__trigger:hover:not(:disabled) {
@@ -322,7 +395,9 @@
     letter-spacing: var(--sa-type-caps-tracking);
     text-transform: uppercase;
     font-weight: var(--sa-font-weight-semibold);
-    /* `subtler` is 4.65:1 only on white; the menu ground is bg/neutral/base, which is white. */
+    /* `subtler` on the menu's bg/neutral/base (white): 4.65:1 blue, 4.64:1 navy, 6.29:1
+       every dbim-* brand — measured 30 Sep 2026. It clears AA by a hair in blue/navy,
+       so any darker ground or lighter subtler token must be re-measured here. */
     color: var(--sa-text-neutral-subtler);
   }
 

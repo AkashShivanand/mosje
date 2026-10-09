@@ -110,3 +110,21 @@ export const WithCaption: Story = {
 export const NoData: Story = {
   args: { labels: [], bars: [], lines: [], title: "Applications received and approval rate" },
 };
+
+/**
+ * `curve="smooth"` joins the line through every point without overshooting one, and
+ * `tickCount` asks for more gridlines while ending each axis at the first step past its
+ * highest figure — 0–30,000 here rather than 0–40,000.
+ */
+export const SmoothWithFinerTicks: Story = {
+  args: {
+    labels: ["2022-23", "2023-24", "2024-25", "2025-26"],
+    bars: [{ name: "Students placed", data: [1275, 3177, 13769, 27007] }],
+    lines: [{ name: "Fund Released (₹ Cr)", data: [1.85, 6.73, 32.48, 75.63] }],
+    title: "Top Class Education in School: students placed and fund released",
+    leftLabel: "Students",
+    rightLabel: "Fund (₹ Cr)",
+    curve: "smooth",
+    tickCount: 6,
+  },
+};

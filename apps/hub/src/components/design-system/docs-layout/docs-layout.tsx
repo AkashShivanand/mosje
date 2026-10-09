@@ -1,4 +1,5 @@
 "use client";
+import { SAMAVESH_MARK } from "@mosje/design-system";
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -82,7 +83,7 @@ export function DocsLayout({ children }: DocsLayoutProps): React.JSX.Element {
                 Decorative, so alt="" and it stays out of the accessible name; the
                 wordmark beside it already names the link. */}
             <Image
-              src="/design-system/samavesh-logo.svg"
+              src={SAMAVESH_MARK}
               alt=""
               width={32}
               height={32}

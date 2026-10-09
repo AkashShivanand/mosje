@@ -1,68 +1,70 @@
+import * as React from "react";
 import type { Metadata } from "next";
 import { DbimPage } from "@/components/website-dbim/layout/DbimPage";
-import { DashboardGlance } from "@/components/website-next/media/DashboardGlance";
-import { AdarshGramDashboard } from "@/components/website/AdarshGramDashboard";
-import { GiaDashboard } from "@/components/website/GiaDashboard";
-import { HostelDashboard } from "@/components/website/HostelDashboard";
-import { getAdarshGramCounts } from "@/lib/website/adarsh-gram-api";
-import { getGiaData, getGiaGender, getHostelData } from "@/lib/website/pmajay-api";
+import { DbimPortalTiles } from "@/components/website-dbim/dashboard/PortalTiles";
+import { MinistryCollection } from "@/components/kpi-dashboard/DashboardViewer";
+import { DepartmentOverview } from "@/components/kpi-dashboard/DepartmentOverview";
 import { DBIM_MENU } from "@/lib/website-dbim/nav";
+import { DBIM_PORTAL_DASHBOARDS } from "@/lib/website-dbim/ministry";
+import { ProposedDashboardSection } from "@/components/kpi-dashboard/proposed/ProposedDashboardSection";
+import { OfficerAccess } from "@/components/kpi-dashboard/proposed/OfficerAccess";
+import { DASHBOARD_PAGE } from "@/lib/website-shared/dashboard";
+import { dashboardVersion } from "@/lib/website-shared/dashboard-version";
+import "@/components/website-dbim/ministry/ministry.css";
 import "@/components/website-dbim/dashboard/dashboard.css";
+import "@/components/kpi-dashboard/kpi-dashboard.css";
 
 export const metadata: Metadata = {
-  title: "PM-AJAY Dashboard | Department of Social Justice and Empowerment",
-  description:
-    "Progress of the Pradhan Mantri Anusuchit Jaati Abhyuday Yojana (PM-AJAY), as reported by the scheme's Management Information System.",
+  title: "Beneficiary Dashboard | Department of Social Justice and Empowerment",
+  description: DASHBOARD_PAGE.description,
 };
 
 /**
- * The PM-AJAY dashboard, opened from the PM-AJAY tile on Ministry › Our Performance.
- * The reference build has a /dashboard route with nothing on it; this is the
- * Department's own dashboard in its place.
+ * `/dashboard` in the DBIM design — the page Ministry › Our Performance's Beneficiary
+ * Dashboard tile opens.
  *
- * SAME DATA, SAME COMPONENTS as the 2026 design's `/website/dashboard`
- * (`app/website/dashboard/page.tsx`): the three PM-AJAY feeds, live where they answer
- * and from the committed, dated snapshot where they do not, drawn by the components
- * that carry the merge, the provenance chips, the per-card states and the retry. Only
- * the frame is DBIM's — the banner, the Ministry sub-tabs, and a DBIM-scoped
- * stylesheet for the At a Glance strip (whose own rules are scoped to the 2026 design).
+ * Until 5 Oct 2026 this address redirected to Our Performance, whose tile left for
+ * dosje.gov.in. It now carries the Beneficiary Dashboard itself and the scheme portals'
+ * dashboards, the same content as the New and Classic designs
+ * (`lib/website-shared/dashboard.ts`), in the DBIM page shape: the Ministry banner and
+ * tabs with Our Performance current, and the portal dashboards as Our Performance tiles
+ * (DBIM 3.0 §A.5.1.4, Figure 69).
  *
- * Fetched on the server, each with a short timeout and an hourly revalidate; a feed
- * that is down degrades to its snapshot, never to an error boundary.
+ * ONE DEPARTURE FROM THE OTHER TWO DESIGNS: no PM-AJAY entry. The Department asked on
+ * 29 Sep 2026 that the PM-AJAY dashboard sit on the scheme's own page under Our Scheme
+ * Portals, not among the Department's dashboards (`DBIM_DASHBOARDS`).
+ *
+ * DS Audit: DepartmentOverview / MinistryCollection (app, shared) ✅ · DbimDashboardTiles (DBIM) ✅.
+ *
+ * The proposed dashboard is the default; `?version=current` draws this page (`dashboard-version.ts`).
  */
-export default async function DbimDashboardPage() {
-  const [adarshGram, gia, hostel] = await Promise.all([getAdarshGramCounts(), getGiaData(), getHostelData()]);
-  // The same total the 2026 design passes, so the illustrative gender split is scaled to the figure on screen.
-  const giaGender = await getGiaGender(gia.years.reduce((t, y) => t + (y.approvals.total ?? y.mock.totalApproved), 0));
-
+type PageProps = { searchParams: Promise<Record<string, string | string[] | undefined>> };
+export default async function DbimDashboardPage({ searchParams }: PageProps) {
+  const proposed = dashboardVersion(await searchParams) === "proposed";
   return (
     <DbimPage
-      title="PM-AJAY Dashboard"
-      crumbs={[
-        { label: "Ministry", path: "/ministry" },
-        { label: "Our Performance", path: "/ministry/our-performance" },
-      ]}
+      title={DASHBOARD_PAGE.title}
+      crumbs={[{ label: "Ministry", path: "/ministry" }, { label: "Our Performance", path: "/ministry/our-performance" }]}
       path="/ministry/our-performance"
       tabs={DBIM_MENU[0]!.children}
+      activeTab="/ministry/our-performance"
+      action={proposed ? <React.Suspense fallback={null}><OfficerAccess tone="inverse" /></React.Suspense> : undefined}
     >
+      {proposed ? (
+        <div className="db-dash">
+          <ProposedDashboardSection sectionLevel={2} />
+        </div>
+      ) : (
       <div className="db-dash">
-        <section className="db-dash__section" aria-labelledby="db-dash-glance">
-          {/* The section dashboards' own heading style, so the four headings on the page read as one set. */}
-          <h2 id="db-dash-glance" className="sd-dash__title">
-            At a Glance
-          </h2>
-          <DashboardGlance adarshGram={adarshGram} gia={gia} hostel={hostel} />
+        <section className="db-dash__section" aria-label={DASHBOARD_PAGE.title}>
+          <DepartmentOverview sectionLevel={2} />
         </section>
-        <div className="db-dash__section">
-          <AdarshGramDashboard feed={adarshGram} />
-        </div>
-        <div className="db-dash__section">
-          <GiaDashboard data={gia} gender={giaGender} />
-        </div>
-        <div className="db-dash__section">
-          <HostelDashboard data={hostel} />
+        <div className="db-dash__section kd-block">
+          <DbimPortalTiles tiles={DBIM_PORTAL_DASHBOARDS} title={DASHBOARD_PAGE.portalsTitle} headingId="portal-dashboards-title" />
+          <MinistryCollection />
         </div>
       </div>
+      )}
     </DbimPage>
   );
 }

@@ -118,7 +118,7 @@ for (const { w, second, third, first, share } of SCHEMES) {
   test(`${w.code}: every renewal reaches Submit and is filed on the right ID for the instalment's amount`, () => {
     for (const id of [second, first, ...(third ? [third] : [])]) {
       const chosen = renew(w, id);
-      const v: Record<string, string> = declare(w, { ...chosen, ...(chosen.fld_pfms_on_record === "No" ? { fld_pfms_registered: "Yes" } : {}) });
+      const v: Record<string, string> = declare(w, { ...chosen, ...(chosen.fld_pfms_on_record === "No" ? { fld_pfms_registered: "Yes", fld_pfms_name: "Sankalp Seva Sansthan", fld_pfms_payee_code: "MH4100380271", fld_pfms_payee_confirm: "true" } : {}) });
       const docs = Object.fromEntries(visibleDocuments(w, v).map((d) => [d.n, { fileName: "x.pdf", sizeKb: 10, uploadedOn: "", verdict: { state: "verified" as const } }]));
       const check = checkApplication(w, v, docs, undefined, "2026-09-16");
       assert.deepEqual(check, { ok: true }, `${w.code} ${id}: ${check.ok ? "" : check.reason}`);

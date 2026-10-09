@@ -323,6 +323,25 @@
     color: var(--sa-on-bg-brand-primary-bolder);
   }
 
+  /* Before tabs.tsx has measured the indicator — server-rendered HTML, and every
+     moment before hydration — the mark has no size, so the selected tab paints the
+     same mark itself. The pill's white ink otherwise sits on the grey track, and the
+     one tab the reader most needs to read is the one they cannot. */
+  .ds-tabs--pill:not([data-indicator-ready]) .ds-tabs__tab.is-selected {
+    border-radius: var(--sa-shape-8);
+    background-color: var(--sa-bg-brand-primary-bolder);
+  }
+
+  .ds-tabs--underline:not([data-indicator-ready]).ds-tabs--horizontal .ds-tabs__tab.is-selected {
+    box-shadow: inset 0 calc(-1 * var(--sa-layout-tab-indicator)) 0 0
+      var(--sa-border-brand-primary-base);
+  }
+
+  .ds-tabs--rail:not([data-indicator-ready]) .ds-tabs__tab.is-selected {
+    box-shadow: inset var(--sa-layout-tab-indicator) 0 0 0
+      var(--sa-border-brand-primary-base);
+  }
+
   .ds-tabs__tab.is-disabled {
     color: var(--sa-text-neutral-disabled);
     cursor: not-allowed;

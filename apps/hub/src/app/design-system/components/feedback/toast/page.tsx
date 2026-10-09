@@ -245,9 +245,10 @@ export function SaveDraft() {
               The Timer, and What It Constrains
             </h2>
             <p>
-              A toast is removed <code>durationMs</code> after it is raised — three seconds by
-              default. The timer does not pause on hover and does not restart on focus, so the
-              window is fixed from the moment the message appears.
+              A success or info toast is removed <code>durationMs</code> after it is raised —
+              three seconds by default. The timer pauses while the pointer is over the toast or
+              focus is inside it, and resumes with the time that was left. An error or warning
+              toast has no timer: it stays until the reader dismisses it.
             </p>
             <p>
               WCAG 2.2.1 (Timing Adjustable) permits a time limit only where the content is

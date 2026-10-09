@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { SiteHeader, OrgLogo, PortalPage, StatusScreen, type PortalNavGroup } from "@mosje/design-system";
+import { SiteHeader, SiteFooter, OrgLogo, PortalPage, StatusScreen, type PortalNavGroup } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { ServiceErrorNotice, useFailureOnLoad } from "./service-error";
 import { ROLES, consoleRouteAccess } from "@/lib/e-anudaan/roles";
@@ -42,6 +42,36 @@ import { notificationItems, notificationsHref } from "@/lib/e-anudaan/notificati
  * the officer login, which read as a lost session and cost the clerk their place. It now gets the
  * same 403 an officer gets for another role's screen, with the way back to the NGO dashboard.
  */
+/**
+ * The three PFMS officer roles carry the statutory footer, as the PFMS screens are drawn in the
+ * E-Anudaan handoff file (Officers · Paying Grants through PFMS, 3 Oct 2026). The other officer
+ * screens are drawn without one, and the build follows the drawing (figma-code-sync.md § Screens);
+ * whether every officer screen should carry it is a question for the handoff file, not this shell.
+ */
+const PFMS_ROLES: ReadonlySet<string> = new Set(["pd-maker", "pd-checker", "pfms-bureau"]);
+
+/**
+ * Terms, Privacy and Help only. Sitemap and Feedback are left out on the owner's instruction
+ * (3 Oct 2026): a signed-in workflow's side menu is its map, and an officer's route for support is
+ * Help. A recorded departure from DBIM 5.6 — see `SiteFooter`'s `sitemap` prop.
+ */
+function PortalFooter() {
+  return (
+    <SiteFooter
+      variant="portal"
+      linkAs={Link}
+      organisation={["Department of Social Justice & Empowerment"]}
+      lineage="This portal belongs to the Department of Social Justice & Empowerment, Ministry of Social Justice & Empowerment, Government of India."
+      copyright="© 2026 Department of Social Justice & Empowerment, Government of India"
+      policyLinks={[
+        { label: "Terms & Conditions", href: "/website/terms-conditions" },
+        { label: "Privacy Policy", href: "/website/privacy-policy" },
+      ]}
+      help={{ label: "Help", href: "/website/help" }}
+    />
+  );
+}
+
 export function ConsoleShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -87,6 +117,7 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
         href: "/portals/e-anudaan",
       }}
       pending={!hydrated || !viewer}
+      footer={role && PFMS_ROLES.has(role.id) ? <PortalFooter /> : undefined}
       /* A function, so the masthead drives the rail: above the tablet anchor its
          button collapses the column, below it opens the drawer. */
       header={(navState) => (

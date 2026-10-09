@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "A chart value can be withheld as `not-due` — a figure whose time has not come, such as a Revised Estimate before the year is revised. Unlike `not-reported`, it draws no stub and no dash, because nothing has gone wrong; the tooltip and the screen-reader table still name it, and it is still left out of every total."
+}

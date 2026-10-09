@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "A chart's data table now opens IN PLACE of the chart, from a quiet Chart / Table switch at the end of the row, instead of expanding below it. The table is held to the chart's height and its rows are paged to fit, so a card never grows when a reader opens its table — a 36-row map table used to push every card beside it out of line."
+}

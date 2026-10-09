@@ -37,14 +37,12 @@ export interface DbimImage {
  * portraits are still at public/website/dbim/people/ and are no longer shown.
  */
 
-/** A footer social account: the reference's white PNG, or an inline outline glyph where it has none. */
+/** A footer social account, drawn with the DBIM Visual Library's own mark for the platform. */
 export interface DbimSocialLink {
   label: string;
   href: string;
-  /** The reference's own 24×24 white icon. */
-  src?: string;
-  /** An outline glyph drawn in `currentColor` (the footer's white), for accounts the reference does not carry. */
-  icon?: "whatsapp";
+  /** A `DbimIcon` name — the library's line mark, painted in the footer's white. */
+  icon: "facebook" | "x" | "youtube" | "instagram" | "whatsapp";
 }
 
 /** Header and footer marks. */
@@ -62,19 +60,23 @@ export const DBIM_BRAND = {
    * SAMAVESH address inside this design.
    *
    * org-logo-exempt(portal-local): the SAMAVESH roundel is the design system's OWN mark, not an
-   * organisation mark, so the OrgLogo registry holds no entry to resolve it through. This is the
-   * hub's single copy of that file — the same one `DEFAULT_LOGIN_MARKS.samaveshLogoSrc` names.
+   * organisation mark, so the OrgLogo registry holds no entry to resolve it through.
+   *
+   * A 174px PNG (8 KB), 3× the 58px it is drawn at, rendered from the estate's canonical
+   * vector (design-system/samavesh-logo.svg). The vector is 761 KB of traced curves — no
+   * precision short of redrawing it gets under DBIM 3.0 §5.5 iv's 100 KB — and this design is
+   * held to that limit. The other surfaces keep the vector.
    */
-  samavesh: { src: "/design-system/samavesh-logo.svg", alt: "SAMAVESH", width: 58, height: 58 },
+  samavesh: { src: `${D}/brand/samavesh-logo.png`, alt: "SAMAVESH", width: 58, height: 58 },
   indiaGovIn: { src: `${D}/brand/india-gov-in.svg`, alt: "National Portal of India", href: "https://www.india.gov.in/" },
   myGov: { src: `${D}/brand/mygov-meri-sarkar.png`, alt: "MyGov — Meri Sarkar", href: "https://www.mygov.in/" },
   social: [
-    { label: "Facebook", src: `${D}/icons/facebook.png`, href: "https://www.facebook.com/goimsje" },
-    { label: "X", src: `${D}/icons/x.png`, href: "https://x.com/msjegoi" },
-    { label: "YouTube", src: `${D}/icons/youtube.png`, href: "https://www.youtube.com/@ministryofsocialjustice511" },
-    { label: "Instagram", src: `${D}/icons/instagram.png`, href: "https://www.instagram.com/msjegoi/" },
+    { label: "Facebook", icon: "facebook", href: "https://www.facebook.com/goimsje" },
+    { label: "X", icon: "x", href: "https://x.com/msjegoi" },
+    { label: "YouTube", icon: "youtube", href: "https://www.youtube.com/@ministryofsocialjustice511" },
+    { label: "Instagram", icon: "instagram", href: "https://www.instagram.com/msjegoi/" },
     // Allowed by the DBIM review team on 25 Sep 2026; the channel is the Department's own
-    // (components/website-next/chrome/Footer.tsx). Outline, one colour, like the four above.
+    // (components/website-next/chrome/Footer.tsx).
     { label: "WhatsApp Channel", icon: "whatsapp", href: "https://whatsapp.com/channel/0029Vb7GfwH6mYPMHOvTd51W" },
   ] satisfies readonly DbimSocialLink[] as readonly DbimSocialLink[],
 } as const;
@@ -90,40 +92,52 @@ export const DBIM_SOCIAL_AUDIT = {
   href: "https://socialaudit.dosje.gov.in/",
 } as const;
 
-/** The two CCPS central posts of the home page's posts row; the infographic beside them comes from lib/website/infographics.ts. */
+/**
+ * The two CCPS central posts of the home page's posts row, as dosje.gov.in carries them
+ * on 8 Oct 2026 (DBIM 3.0 §7.3 xii): MyGov's Make in India post and its BRICS India 2026
+ * video. Both are the CCPS feed's files (ccps.digifootprint.gov.in, uploads/2024/06/
+ * 3cc03ffde41eabfe7fe6734969ac1b49.jpeg and the poster 8af0906c91dc0a1941cb96d6a0eb63f7.jpg),
+ * byte-identical, served from our own public folder; the video streams from the
+ * Government's media host, as the live site streams it. The live post is not a link, so
+ * neither is this one. Until 8 Oct 2026 the row carried the reference build's two — the
+ * DPDP Rules consultation and the scholarship video. The infographic beside them comes
+ * from lib/website/infographics.ts.
+ */
 export const DBIM_CAMPAIGNS = {
-  myGovDpdp: { src: `${D}/home/mygov-dpdp-rules-2025.png`, alt: "MyGov — inviting feedback on the Digital Personal Data Protection Rules 2025", href: "https://www.mygov.in/" },
-  scholarshipVideo: {
-    // Streamed from the Government's own media host, as the reference does; never bundled.
-    src: "https://playhls.media.nic.in/igot_vod/MyGov/NOV24/video/studentmustknow.mp4",
-    title: "The Scholarship Every Indian Student Must Know",
+  centralPost: {
+    src: `${D}/home/ccps-make-in-india.jpg`,
+    alt: "Make in India: Driving India's Growth. Department for Promotion of Industry and Internal Trade, Ministry of Commerce and Industry, and MyGov. For more information, visit MyGov.in.",
+    width: 640,
+    height: 245,
+  },
+  video: {
+    src: "https://playhls.media.nic.in/igot_vod/MyGov/Sept30/video/fromruletakerto.mp4",
+    poster: `${D}/home/ccps-video-poster.jpg`,
+    title: "BRICS India 2026 — a video from MyGov",
   },
 } as const;
 
-/** The three persona illustrations of "Explore User Personas", in carousel order. */
-export const DBIM_PERSONA_ART = [`${D}/personas/persona-1.png`, `${D}/personas/persona-2.png`, `${D}/personas/persona-3.png`] as const;
+/**
+ * The persona drawings of "Explore User Personas", one per applicant group — the MoSJE
+ * Handoff file's "Assets — Persona Illustrations (Type of Applicant)" (node 52423:7108,
+ * instruction 30 Sep 2026: use these, to be revised later if required). Rendered from
+ * each 160px frame at 2× (320 × 320, transparent), exactly as the frame crops it, then
+ * palette-compressed: 21–37 KB each, inside DBIM 3.0's 100 KB thumbnail limit (6.1.1).
+ * Keyed by the applicant group's id (`lib/website-dbim/applicants.ts`).
+ */
+export const DBIM_PERSONA_ART: Record<string, string> = Object.fromEntries(
+  ["student", "sc", "obc", "dnt", "safai", "senior", "tg", "drug", "begging", "atrocity", "ngo"].map((id) => [
+    id,
+    `${D}/personas/applicant-${id}.png`,
+  ]),
+);
 
-/** The four tile icons of a persona page. */
-export const DBIM_PERSONA_ICONS = {
-  schemes: `${D}/personas/icon-schemes.png`,
-  tenders: `${D}/personas/icon-tenders.png`,
-  publications: `${D}/personas/icon-publications.png`,
-  vacancies: `${D}/personas/icon-vacancies.png`,
-} as const;
+/**
+ * The four tile icons of a persona page — DBIM Visual Library icons (`DbimIcon` names),
+ * the same four drawings the reference shipped as purple PNGs, now in the key colour.
+ */
+export const DBIM_PERSONA_ICONS = ["schemes", "tenders", "publications", "job-opportunity"] as const;
 
-/** Scheme card photographs from the reference, keyed by a word that appears in the scheme's name. */
-export const DBIM_SCHEME_ART: { match: RegExp; src: string }[] = [
-  { match: /AVYAY|Vayo/i, src: `${D}/schemes/avyay.jpg` },
-  { match: /Drug Demand|NAPDDR/i, src: `${D}/schemes/napddr.jpg` },
-  { match: /SHRESHTA/i, src: `${D}/schemes/shreshta.jpg` },
-  { match: /Top Class/i, src: `${D}/schemes/top-class-sc.png` },
-  { match: /Hostel/i, src: `${D}/schemes/obc-hostels.png` },
-  { match: /Interest Subsidy/i, src: `${D}/schemes/interest-subsidy.jpg` },
-  { match: /Loan|NBCFDC/i, src: `${D}/schemes/nbcfdc-education-loan.png` },
-];
-
-/** Fallback card photographs, used in turn for schemes with no photograph of their own. */
-export const DBIM_SCHEME_ART_FALLBACK = [`${D}/schemes/generic-a.png`, `${D}/schemes/generic-b.png`] as const;
 
 export const DBIM_PARLIAMENT = {
   lokSabha: { src: `${D}/parliament/lok-sabha.png`, alt: "Lok Sabha chamber", href: "https://sansad.in/ls/questions/questions-and-answers" },

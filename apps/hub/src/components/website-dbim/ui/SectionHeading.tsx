@@ -21,8 +21,8 @@ export interface DbimSectionHeadingProps {
 
 /**
  * A DBIM home-section heading: the template's own 48px icon and the title, bold
- * primary-800 — or white at weight 500 on the dark social band (its icon 32 below
- * 768), as the reference sets "In Social Media".
+ * primary-800 — or white, still bold, on the dark social band (its icon 32 below
+ * 768). The reference set that one at 500; the handoff sets every heading alike.
  */
 export function DbimSectionHeading({ icon, title, as: H = "h2", tone = "default", path, compact, id, className }: DbimSectionHeadingProps) {
   const cls = ["db-heading", tone === "inverse" && "db-heading--inverse", compact && "db-heading--compact", className]

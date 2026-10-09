@@ -24,20 +24,37 @@
 
 @layer components {
   [data-design="dbim"] {
-    /* ≥1537px: the reference's large scale */
+    /* DBIM 3.0 §4.3.1 Table 3, the desktop view: H1 36 · H2 24 · H3 20 · P1 16 ·
+       P2 14 · S1 12, with the leading the handoff's type styles bind (1.2–1.5×,
+       §4.5 iii). The reference dropped to the mobile scale at 1536px, so a 1440
+       laptop read 20px headings over 14px body; the manual has two views, not three. */
     --db-fs-h1: 2.25rem;   /* 36px */
     --db-fs-h2: 1.5rem;    /* 24px */
     --db-fs-h3: 1.25rem;   /* 20px */
     --db-fs-h4: 0.875rem;  /* 14px */
     --db-fs-p: 1rem;       /* 16px */
     --db-fs-small: 0.75rem;/* 12px */
+    --db-lh-h2: 2rem;      /* 32px */
+    --db-lh-h3: 1.75rem;   /* 28px */
+    --db-lh-p: 1.5rem;     /* 24px */
+    --db-lh-p2: 1.25rem;   /* 20px */
+    --db-lh-small: 1.125rem;/* 18px */
+    --db-fs-button: 0.875rem; /* 14px: the handoff's Label/button style */
     /* The reference's gutters: 120px ≥1537, 64px 1280–1536, 16px on a phone */
     --db-gutter: var(--sa-padding-120);
 
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    font-family: "Noto Sans", var(--sa-font-latin);
+    /* The loaded faces for every script DBIM 3.0 §4.2 names, all before any generic family:
+       a generic `sans-serif` matches every glyph, so a script face placed after it is never
+       reached. Until 5 Oct 2026 this stack named only Latin, so Bengali, Tamil and the rest
+       rendered in whatever the device had. Measured: an English page still downloads the
+       same four font files; a Bengali one adds the Bengali face and nothing else. */
+    font-family:
+      var(--font-noto-sans), var(--font-noto-devanagari), var(--font-noto-bengali), var(--font-noto-gujarati),
+      var(--font-noto-gurmukhi), var(--font-noto-kannada), var(--font-noto-malayalam), var(--font-noto-oriya),
+      var(--font-noto-tamil), var(--font-noto-telugu), "Noto Sans", ui-sans-serif, system-ui, sans-serif;
     font-size: var(--db-fs-p);
     color: var(--sa-color-text-default);
     background: var(--sa-color-neutralScale-0);
@@ -51,13 +68,25 @@
 
   @media (max-width: 1536px) {
     [data-design="dbim"] {
+      --db-gutter: var(--sa-padding-64);
+    }
+  }
+
+  /* DBIM 3.0 §4.3.2 Table 4, the mobile view — below the reference's 992 large breakpoint. */
+  @media (max-width: 991.5px) {
+    [data-design="dbim"] {
       --db-fs-h1: 1.5rem;    /* 24px */
       --db-fs-h2: 1.25rem;   /* 20px */
       --db-fs-h3: 1rem;      /* 16px */
       --db-fs-h4: 0.75rem;   /* 12px */
       --db-fs-p: 0.875rem;   /* 14px */
       --db-fs-small: 0.625rem;/* 10px */
-      --db-gutter: var(--sa-padding-64);
+      --db-lh-h2: 1.75rem;   /* 28px */
+      --db-lh-h3: 1.375rem;  /* 22px */
+      --db-lh-p: 1.3125rem;  /* 21px */
+      --db-lh-p2: 1.125rem;  /* 18px */
+      --db-lh-small: 0.9375rem;/* 15px */
+      --db-fs-button: 0.75rem; /* 12px */
     }
   }
 
@@ -74,3 +103,130 @@
 
 }
 /* ds-exempt-end */
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   ICONS — DBIM 3.0 §3. Audit: docs/audit/dbim-icon-library-audit-2026-09-28.md
+
+   Functional icons. DBIM's Functional Icons are Google's Material Symbols exported
+   as `<name>_FILL0_wght400_GRAD0_opsz24` — Outlined, weight 400, line, 24px optical
+   size. This loads that one static instance (316 KB, every glyph) and points the
+   design system's icon family token at it, so every `Icon` in this design — ours
+   and the design system's own — draws DBIM's glyph, at one weight, in line style
+   (§3.3). The instance has no axes, so an `Icon`'s `weight`/`fill` props cannot
+   produce a second style here. The rest of the estate keeps Material Symbols
+   Rounded; nothing outside [data-design="dbim"] reads this.
+
+   Contextual icons. `DbimIcon` paints a DBIM Visual Library SVG as a mask over
+   currentColor (ui/icons.tsx).
+   ───────────────────────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: "DBIM Material Symbols Outlined";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("https://fonts.gstatic.com/s/materialsymbolsoutlined/v374/kJF1BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzaxHMPdY43zj-jCxv3fzvRNU22ZXGJpEpjC_1v-p_4MrImHCIJIZrDCvHOejbd5zrDAt.woff2")
+    format("woff2");
+}
+
+@layer components {
+  /* body too, so the widgets that float over this design from outside its subtree
+     (the chat launcher) draw the same glyphs — and the page never downloads the
+     5.3 MB Rounded font for one close button. body, not :root: tokens.css declares
+     the token on :root outside any layer, which this layered rule cannot outrank.
+     This stylesheet only loads on the DBIM design's routes. */
+  body:has([data-design="dbim"]),
+  [data-design="dbim"] {
+    --sa-font-icon: "DBIM Material Symbols Outlined", sans-serif;
+  }
+
+  /* The default size has no specificity, so a component's own sizing class
+     (.db-heading__icon 48, .db-tools__glyph 32 …) always wins. */
+  :where([data-design="dbim"] .db-icon) {
+    width: 24px;
+    height: 24px;
+  }
+
+  [data-design="dbim"] .db-icon {
+    display: inline-block;
+    flex: none;
+    vertical-align: middle;
+    background-color: currentColor;
+    mask: var(--db-icon-src) center / contain no-repeat;
+  }
+
+  /* Forced colours repaint backgrounds, which would turn a mask into a solid tile. */
+  @media (forced-colors: active) {
+    [data-design="dbim"] .db-icon {
+      forced-color-adjust: none;
+      background-color: CanvasText;
+    }
+  }
+
+  /* §3.7 iii — an icon is the key colour or inclusive white. These glyphs inherited
+     the body text colour (#150202) or a lighter rung of the ramp. */
+  [data-design="dbim"] .db-hm-links__link .material-symbols-rounded,
+  [data-design="dbim"] .db-news__group-head .material-symbols-rounded,
+  [data-design="dbim"] .db-doc__folder-icon,
+  [data-design="dbim"] .db-min-contact .material-symbols-rounded,
+  [data-design="dbim"] .db-u-sitemap__home .db-icon,
+  [data-design="dbim"] .ds-chart-export__trigger .material-symbols-rounded,
+  [data-design="dbim"] .db-mnav__toggle .material-symbols-rounded,
+  [data-design="dbim"] .ds-select__chevron {
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  /* A disabled control keeps the key colour; the button's own --sa-alpha-disabled
+     fade says "unavailable", not a grey DBIM does not publish. Disabled controls are
+     exempt from contrast (WCAG 1.4.3). */
+  /* §3.4: icons are 24, 32, 48 or 64. ChartExport draws its download glyph at 20 from
+     an inline style, so only an important rule reaches it; the optical-size axis
+     follows so the glyph is drawn for 24, not scaled from 20. */
+  [data-design="dbim"] .ds-chart-export__trigger .material-symbols-rounded {
+    font-size: 24px !important;
+    font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24 !important;
+  }
+
+  [data-design="dbim"] :is(.ds-btn:disabled, .ds-btn[aria-disabled="true"]) .material-symbols-rounded {
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  /* The design system's Select draws its own 18px SVG chevron. In this design it
+     shows DBIM's Expand More instead — the Functional Icon every other dropdown
+     here uses, exported from the DBIM Figma file — at 24px (§3.4). The Select
+     component and every other design are untouched. */
+  [data-design="dbim"] .ds-select .ds-select__chevron {
+    width: 24px;
+    height: 24px;
+    background-color: currentColor;
+    mask: url("/website/dbim/icons/library/expand-more.svg") center / contain no-repeat;
+  }
+
+  [data-design="dbim"] .ds-select .ds-select__chevron > * {
+    display: none;
+  }
+
+  /* The photo viewer is the design system's Lightbox, portalled to <body>, so it is
+     reached through the page rather than the subtree. Its drawn close / previous /
+     next / play glyphs become DBIM's Functional Icons, still in inclusive white. */
+  body:has([data-design="dbim"]) :is(.ds-lightbox__close, .ds-lightbox__nav, .ds-lightbox__thumbs) svg {
+    width: 24px;
+    height: 24px;
+    background-color: currentColor;
+    mask: var(--db-lightbox-glyph) center / contain no-repeat;
+  }
+
+  body:has([data-design="dbim"]) :is(.ds-lightbox__close, .ds-lightbox__nav, .ds-lightbox__thumbs) svg > * {
+    display: none;
+  }
+
+  body:has([data-design="dbim"]) .ds-lightbox__close { --db-lightbox-glyph: url("/website/dbim/icons/library/close.svg"); }
+  body:has([data-design="dbim"]) .ds-lightbox__nav--prev { --db-lightbox-glyph: url("/website/dbim/icons/library/chevron-left.svg"); }
+  body:has([data-design="dbim"]) .ds-lightbox__nav--next { --db-lightbox-glyph: url("/website/dbim/icons/library/chevron-right.svg"); }
+
+  body:has([data-design="dbim"]) .ds-lightbox__thumbs svg {
+    --db-lightbox-glyph: url("/website/dbim/icons/library/play-arrow.svg");
+
+    width: 16px; /* a badge on a thumbnail — the estate's inline size */
+    height: 16px;
+  }
+}

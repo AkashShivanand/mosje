@@ -8,7 +8,7 @@ paths:
 # One shape for every portal handoff page (MANDATORY)
 
 **Every portal page in a handoff file — `MoSJE Portal [Handoff]` (`gH2vQ62cfg4677YKWuOpLc`),
-the E-Anudaan file (`evmNmlK8g4VYwJVu2FwSGV`), and any file that follows — is organised the
+`E-Anudaan [Handoff]` (`K0B3vuOTXpxw6kt0px2Cqo`, a portal's own file — §10a), and any file that follows — is organised the
 same way, so a person who has learned one portal page has learned them all.**
 
 It exists because the E-Anudaan page reached 263 frames in fifteen sections and could not be
@@ -154,14 +154,25 @@ When decided: remove the suffix and the note, re-run the layout (the red goes), 
 
 ## 8. Start Here
 
-Four frames, 3840 wide, Noto Sans, colours bound to SAMAVESH, **generated from the canvas, never typed**:
+Frames 3840 wide, Noto Sans, colours bound to SAMAVESH, laid left to right **in the order a newcomer reads
+them** (decided 8 Oct 2026, after the owner could not find the logic of the E-Anudaan file):
 
-1. **Guide — Cover** — portal name, one-line purpose, screens, user groups, journeys, how many need discussion.
-2. **Guide — Portal Map** — one column per user group, one box per journey, each box a link to its screens,
+1. **Guide — Cover** — portal name, one-line purpose, a numbered and linked **Read in This Order** list of the
+   frames below, and one **Latest** line linking the screens most recently discussed.
+2. **Guide — What <Portal> Is** — the product in plain words, its stages (each linked to its screens and
+   pages), its schemes, and a glossary of every term and abbreviation the screens use.
+3. **Guide — Who Does What** — every role in the order an application meets it: responsible for, decides,
+   and links to its screens.
+4. **Guide — How a Grant Moves** (or the portal's own flow) — one case end to end, who acts at each step.
+5. **Guide — Portal Map** — one column per user group, one box per journey, each box a link to its screens,
    red boxes for journeys that need discussion, and one line on how an application moves.
-3. **Guide — How to Read This Page** — the four areas, what is inside a column, screen names, colours, finding your way.
-4. **Guide — Status and Change Log** — Needs Discussion (linked), other questions for the Ministry in plain words,
+6. **Guide — How to Read This Page** — the four areas, what is inside a column, screen names, colours, finding your way.
+7. **Guide — Status and Change Log** — Needs Discussion (linked), other questions for the Ministry in plain words,
    open items, dated log.
+
+**No counts** — no screens, journeys, groups or "need discussion" totals on any cover or page guide (decided
+8 Oct 2026). They went stale within days (the E-Anudaan cover said 565 screens long after it was wrong) and
+answered no question a reader has. The open decisions are a linked list on the Status page, not a number.
 
 Regenerate them whenever a journey is added, renamed or decided.
 
@@ -196,6 +207,32 @@ must be re-baselined (`--update-baseline`) in the same change. `--strict` demand
 after changing the checker. Without `FIGMA_ACCESS_TOKEN` it prints SKIPPED; that is not a pass.
 
 **Register a page in `pages.json` the day it is created**, conformant or not.
+
+## 10a. When a portal outgrows one page: a file of its own (decided 30 Sep 2026)
+
+**A portal whose page passes about 300 screens moves to a file of its own**, split into pages in the
+order an application moves. E-Anudaan was the first: 568 screens on one page of a twelve-portal file,
+one column 217,000px tall, slow to open for everyone working on the other eleven portals.
+
+- **Pages, in the page list:** `Cover` · `Start Here` · one page per stage, **numbered in the order an
+  application moves** and named `<N> · <Audience> · <Stage>` (`3 · Officers · Reviewing Applications`;
+  a stage split across pages takes letters, `2a · NGO · NAPDDR Application Form`) · `Shared Parts` ·
+  `Old Screens — Do Not Use`. Divider pages (`---`) separate the stages. A journey too big to share a
+  page gets one of its own — each scheme's application form does. (Numbered 8 Oct 2026: ordered by
+  audience, the NGO's after-applying page sat before the officers who review the application.)
+- **Every page keeps this rule's shape**, so the check reads each one like a single-portal page: a
+  `START HERE` area holding `Guide to This Page` (its page number, audience, the journeys on the page with
+  a linked Find a Screen index, and a link back to the Portal Map — no counts), then its screen area. On a stage page the user groups and
+  their journeys stack **top to bottom** in the order a case meets them, not side by side.
+- **`Start Here` owns the file-wide guide:** Cover, Portal Map, How to Read This File, Status and Change
+  Log. Every Portal Map journey links to its journey section, and each group card names its page(s).
+- **Move within the file, never re-paste.** Moving a section between pages keeps its node id, so links,
+  comments and Dev Mode references survive. Moving between files does not: the Plugin API cannot do it,
+  a person copies and pastes, every id changes, and node links point back at the old file. Rebuild the
+  Portal Map links after a file move; they will not survive it.
+- **Leave a note behind.** The old page keeps one frame saying where the portal went, with a link, and
+  nothing else.
+- **Register each page** in `pages.json` as `<Portal> · <Page>`; `--portal <Portal>` checks them all.
 
 ## 11. Done means
 

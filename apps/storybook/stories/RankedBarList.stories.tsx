@@ -91,6 +91,14 @@ export const Paged: Story = {
   args: { pageSize: 5 },
 };
 
+/**
+ * `size="md"` — the list as a card's own content rather than a compact list beside a chart:
+ * Body 2 text, a semibold name, a regular figure and a 24px rank.
+ */
+export const SizeMd: Story = {
+  args: { size: "md", pageSize: 5 },
+};
+
 /** A breakdown whose parts have a fixed order — `sort="none"` and a share in `detail`. */
 export const Breakdown: Story = {
   args: {
@@ -150,4 +158,22 @@ export const States: Story = {
       <RankedBarList {...args} state="no-results" filterLabel="state filter" onRetry={() => {}} />
     </div>
   ),
+};
+
+/** `showBar={false}`: the lowest of many, where a bar against the highest would be a 1px sliver. */
+export const WithoutBars: Story = {
+  args: {
+    title: "Total Outreach, lowest five",
+    showRank: false,
+    showBar: false,
+    size: "md",
+    sort: "none",
+    items: [
+      { label: "Goa", value: 205800, detail: "32 of 36" },
+      { label: "Arunachal Pradesh", value: 195300, detail: "33 of 36" },
+      { label: "Andaman and Nicobar Islands", value: 80549, detail: "34 of 36" },
+      { label: "Ladakh", value: 74892, detail: "35 of 36" },
+      { label: "Lakshadweep", value: 10609, detail: "36 of 36" },
+    ],
+  },
 };

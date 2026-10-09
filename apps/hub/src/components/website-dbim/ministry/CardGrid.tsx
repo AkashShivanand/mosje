@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { Button, Icon } from "@mosje/design-system";
 import { DbimFilterBar } from "@/components/website-dbim/ui/FilterBar";
@@ -10,36 +11,57 @@ import { dbimHref } from "@/lib/website-dbim/nav";
 import type { DbimCardItem } from "@/lib/website-dbim/ministry";
 
 const searchText = (c: DbimCardItem) => `${c.title} ${c.description ?? ""}`;
+const categoryOf = (c: DbimCardItem) => c.category;
 
 /**
  * The reference's Our Division / Our Organisation grid: filter row, two columns of
  * cards each ending in the square arrow button, pager under. `variant` switches the
  * card between the division card (ink title, 12px radius) and the organisation card
  * (blue title in a tall title box, 8px radius). Spec §3–4.
+ *
+ * `categoryFilter` adds the Category select, and a card with a `logo` draws the body's
+ * mark at the right of its title box — both as MeitY's Our Organisations draws them.
  */
 export function DbimCardGrid({
   items,
   variant,
   label,
+  categoryFilter = false,
 }: {
   items: DbimCardItem[];
   variant: "division" | "organisation";
   /** What the cards are, for the search label and the pager, e.g. "Divisions". */
   label: string;
+  /** Offer the Category select, built from the cards' `category`. */
+  categoryFilter?: boolean;
 }) {
-  const listing = useListing(items, { searchText, perPage: 10 });
+  const listing = useListing(items, { searchText, category: categoryFilter ? categoryOf : undefined, perPage: 10 });
 
   return (
     <div className="db-min-list">
       <DbimFilterBar
         search={{ value: listing.query, onChange: listing.setQuery, placeholder: "Search...", label: `Search ${label}` }}
+        category={
+          categoryFilter
+            ? {
+                value: listing.category,
+                onChange: listing.setCategory,
+                options: listing.categories,
+                placeholder: "Category",
+                label: "Filter by Category",
+              }
+            : undefined
+        }
         perPage={{ value: listing.perPage, onChange: listing.setPerPage, options: [10, 15, 20] }}
       />
 
       {listing.total === 0 ? (
         listing.unfilteredTotal > 0 && listing.filtered ? (
           <div className="db-min-noresults" role="status">
-            <p>No results for “{listing.query.trim()}”.</p>
+            <p>
+              {listing.query.trim() ? `No results for “${listing.query.trim()}”` : "No results"}
+              {listing.category ? ` in ${listing.category}` : ""}.
+            </p>
             <Button appearance="outlined" size="sm" onClick={listing.clear}>
               Clear Search
             </Button>
@@ -53,6 +75,8 @@ export function DbimCardGrid({
             <li key={c.slug} className={`db-min-card db-min-card--${variant}`}>
               <div className="db-min-card__head">
                 <h2 className="db-min-card__title">{c.title}</h2>
+                {/* Decorative: the name beside it already says whose mark it is. */}
+                {c.logo ? <Image className="db-min-card__logo" src={c.logo} alt="" width={84} height={84} sizes="84px" /> : null}
               </div>
               <div className="db-min-card__desc">{c.description ? <p>{c.description}</p> : null}</div>
               <div className="db-min-card__foot">

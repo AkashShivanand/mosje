@@ -53,6 +53,24 @@ type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {};
 
+/**
+ * `showShare={false}` — the counts alone. Use it where the stage-to-stage conversion rate is
+ * not the reader's to see: the SMILE – Beggary register lists its conversion rates as Office
+ * (Post-Login) KPIs, so the public dashboard shows the three counts and the bars, and only an
+ * officer sees the percentages.
+ */
+export const CountsOnly: Story = {
+  args: {
+    title: "SMILE – Beggary · identification to rehabilitation",
+    showShare: false,
+    stages: [
+      { label: "Persons Engaged in Begging Identified", value: 19_810 },
+      { label: "Persons Mobilised to Shelter / Care", value: 12_940 },
+      { label: "Persons Rehabilitated", value: 10_450 },
+    ],
+  },
+};
+
 /** A short funnel — three stages is enough when the drop-off is the story. */
 export const ThreeStages: Story = {
   args: {

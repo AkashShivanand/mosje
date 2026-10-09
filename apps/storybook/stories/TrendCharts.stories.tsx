@@ -195,6 +195,59 @@ export const SparklineVariants: Story = {
   ),
 };
 
+/**
+ * A tile's trend line with its period named. `startLabel` and `endLabel` print the first
+ * and last periods under the line's ends — a sparkline has no axis, so without them a
+ * ten-year line cannot be told from a ten-month one. `markLast` dots the latest point,
+ * for when the sentence beside the line quotes that figure.
+ */
+export const SparklineWithPeriod: Story = {
+  render: () => (
+    <div style={{ display: "grid", gap: 8, maxWidth: 420 }}>
+      <p style={{ margin: 0 }}>
+        <b>74.23 lakh</b> students in 2025-26 (provisional).
+      </p>
+      <Sparkline
+        data={[79.0, 81.24, 78.82, 82.07, 91.26, 85.64, 81.38, 62.63, 57.81, 68.67, 69.69, 74.23]}
+        width={420}
+        height={44}
+        label="Scholarships for SC Students: students, each year, 2014-15 to 2025-26"
+        startLabel="2014-15"
+        endLabel="2025-26"
+        markLast
+      />
+    </div>
+  ),
+};
+
 export const NoData: Story = {
   args: { labels: [], series: [], title: "Applications received by month" },
+};
+
+/**
+ * `curve="smooth"` and `tickCount`. The curve is monotone: it passes through every point
+ * and never draws a peak between two that the figures do not have. Setting `tickCount`
+ * ends the axis near the highest figure. Both pass through `AreaChart` unchanged.
+ */
+export const SmoothCurve: Story = {
+  render: () => (
+    <div style={{ display: "grid", gap: 32 }}>
+      <LineChart
+        labels={MONTHS}
+        series={APPLICATIONS}
+        title="Smooth curve, finer ticks"
+        yLabel="Applications"
+        curve="smooth"
+        tickCount={8}
+      />
+      <AreaChart
+        labels={MONTHS}
+        series={[APPLICATIONS[0]]}
+        title="An area chart, smoothed"
+        yLabel="Applications"
+        curve="smooth"
+        tickCount={6}
+      />
+    </div>
+  ),
 };

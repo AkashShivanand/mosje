@@ -5,7 +5,8 @@ import { getContentSyncedDate, getTender, getTenders } from "@/lib/website/conte
 import { facts } from "@/lib/website/record-facts";
 import { formatDate } from "@/components/website-next/ui/format";
 import { socialCard } from "@/lib/seo/social";
-import { displayNoticeTitle, isArchivedRecord } from "@/components/website-next/ui/records";
+import { displayNoticeTitle } from "@/components/website-next/ui/records";
+import { isArchivedRecord } from "@/lib/website-shared/records";
 
 /** 312 tenders — every one is prerendered. */
 export function generateStaticParams() {

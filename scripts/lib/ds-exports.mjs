@@ -93,8 +93,9 @@ export const NOT_COMPONENTS = new Set([
   // the baked outlines at module load. Numbers and a Map — nothing to render.
   // They are exercised by IndiaPointMap.stories.tsx, which bins live PM-AJAY
   // coordinates through them, and the projection is verified against the
-  // outlines it must agree with.
-  "INDIA_LAT_RANGE", "INDIA_LON_RANGE", "INDIA_HEX_RADIUS", "INDIA_STATE_BOXES",
+  // outlines it must agree with. INDIA_TILES is the tile cartogram's layout,
+  // documented on the India Tile Map page that draws it.
+  "INDIA_LAT_RANGE", "INDIA_LON_RANGE", "INDIA_HEX_RADIUS", "INDIA_STATE_BOXES", "INDIA_TILES",
   // The screen templates' default English. An object of sentences — same
   // category as DEFAULT_FIELD_COPY above, and there for the same reason: GIGW
   // requires the estate to be bilingual, so a template must not bake a sentence
@@ -170,7 +171,7 @@ export const DOCUMENTED_BY = {
   RangeSlider: "Slider",
   ListRow: "ListGroup",
   CardHeader: "Card", CardBody: "Card", CardFooter: "Card",
-  CardTitle: "Card", CardSubtitle: "Card",
+  CardTitle: "Card", CardSubtitle: "Card", CardIcon: "Card",
   TabPanel: "Tabs",
   // A group is a heading and a list inside a DocumentChecklist; it is never used outside one.
   DocumentChecklistGroup: "DocumentChecklist",

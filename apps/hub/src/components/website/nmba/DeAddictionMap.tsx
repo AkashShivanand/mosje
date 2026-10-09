@@ -166,7 +166,7 @@ export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddicti
               }}
               disabled={!ready}
               aria-label="Filter by state"
-              className="lg:w-40"
+              containerClassName="lg:w-40"
             >
               <option value="">All States</option>
               {states.map((s) => (
@@ -180,7 +180,7 @@ export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddicti
               onChange={(e) => setDistrict(e.target.value)}
               disabled={!ready || !state}
               aria-label="Filter by district"
-              className="lg:w-40"
+              containerClassName="lg:w-40"
             >
               <option value="">All Districts</option>
               {districts.map((d) => (

@@ -164,6 +164,28 @@
       padding-block-end: calc(var(--sa-control-height-md) + var(--sa-padding-16) * 2);
     }
 
+    /* A FOCUSED field is never under the bar either (WCAG 2.2 2.4.11). Tabbing to a field that
+       sits behind a sticky bar does not scroll it, because to the browser it is already in view —
+       measured at 390px, the fifth field of the specimen took focus entirely beneath the bar. The
+       scroll padding shrinks "in view" by the bar, so focus scrolls the field clear of it.
+       Sized for the bar at its TWO-row height — Back/Cancel on one row and the advance control on
+       the next, which is what a 390px screen draws once the corner gutter is taken: two controls,
+       the gap between the rows, the band's padding and its top rule = 125px measured. A one-row
+       bar (73px) only means a focused field stops a little higher than it had to. */
+    html:has(.ds-wizard) {
+      /* --_ds-wizard-bar is the bar's MEASURED height, published by wizard.tsx while it is
+         sticky; the two-row estimate stands in until the first measurement lands. */
+      scroll-padding-block-end: calc(
+        var(
+            --_ds-wizard-bar,
+            calc(
+              var(--sa-control-height-md) * 2 + var(--sa-inline-12) + var(--sa-padding-16) * 2 +
+                var(--sa-stroke-1)
+            )
+          ) + env(safe-area-inset-bottom, 0px)
+      );
+    }
+
     /* THE GUTTER. Where the corner stack is actually occupied — the statutory accessibility
        control, which never yields — the primary action stops short of it. Set from a measurement
        in wizard.tsx, so a portal whose accessibility control lives in its top bar (all of them

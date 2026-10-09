@@ -64,10 +64,61 @@ const FAMILY_MAP = {
 const LITERAL_OVERRIDES = {
   // DBIM 4.4 / Table 1: body text on a light background is Deep Earthy Brown, not a grey.
   "color.text.default": "{color.dbimInk}",
-  "color.text.muted": "{color.neutralDbim.700}",
+  // Secondary text is Grey 03, the darkest grey DBIM publishes (6.29:1 on white, 5.24:1 on
+  // Linen) — the Figma library's `text/secondary`, decided 5 Oct 2026. It was the interpolated
+  // #454545 at 700, a grey DBIM never issued.
+  "color.text.muted": "{color.neutralDbim.600}",
+};
+
+/*
+ * THE KEY COLOUR LEADS (5 Oct 2026). DBIM 3.0 §2.2 names the group's KEY colour — shade 1 —
+ * as the hyperlink colour, and §3.7.iii puts every icon in it. The MoSJE Website DBIM DS
+ * (Figma `xdv8nEd7PhnRhahASd9UPY`) draws links, focus rings, selected borders and the filled
+ * button in shade 1 at rest and shade 2 on hover; the code had them the other way round. The
+ * filled button and its dependants (link hover, brand icons, the focus ring) move through
+ * `accessibleActionRungs`; these two name their rung outright because their default does not
+ * read the action colour. A token whose default is a `primaryScale` ALIAS is not listed here:
+ * giving it colorModes makes the emitter write its :root default as a literal, which would cut
+ * it loose from every re-skinned brand pack.
+ */
+const ROLE_RUNGS = {
+  "text.link.brand.default": 800,
+  "text.link.visited.default": 600,
 };
 
 const REF = /^\{([^}]+)\}$/;
+
+/*
+ * ONLY PUBLISHED SHADES REACH A SURFACE (30 Sep 2026).
+ *
+ * DBIM publishes five shades per primary group, at rungs 100/200/400/600/800, and three greys
+ * plus Linen, at 100/200/400/600. The rungs between them are this estate's interpolation. A
+ * token that read an interpolated rung therefore painted a colour DBIM never issued — button
+ * fills and focus rings on 500, "bolder" brand text and link hover on 700, placeholders and
+ * chart axes on the #777777 grey at 500 (4.48:1, below AA). DBIM 3.0 §2.1 (only the group's
+ * shades), §4.4 (text in shade 1 or 2) and §3.7.iii (icons in the key colour) all fail there.
+ *
+ * So in a DBIM mode an interpolated rung RESOLVES to a published one: the nearest, and on a
+ * tie the darker, because the darker neighbour is the one that keeps contrast. The primitive
+ * ramps are untouched — the colour page still shows the full ladder — only what the alias
+ * layer hands to a component moves.
+ *
+ * This reverses the earlier rule that these modes "report DBIM's palette rather than correct
+ * it". That was right while they were a conformance PREVIEW; since 30 Sep 2026 the DBIM design
+ * is the public website's default and renders in `data-brand="dbim"`, so what it paints is
+ * production, and quality (WCAG) outranks the demonstration. Snapping to a published shade is
+ * also the stricter reading of DBIM, not a looser one.
+ */
+const PRIMARY_SNAP = { 50: 100, 300: 400, 500: 600, 700: 800, 900: 800 };
+/*
+ * The greys snap the same way, across the WHOLE ladder (5 Oct 2026). DBIM publishes white,
+ * Linen, Grey 01/02/03 and — for text — Deep Earthy Brown; the Figma library uses nothing
+ * else. Until now only 300 and 500 snapped, so the DBIM website still painted #fafafa,
+ * #f5f5f5, #454545, #2c2c2c and #151515. Nearest published neutral, ties to the darker:
+ * 25 → white, 50 → Linen, 700 → Grey 03, and 800–950 → the ink, not black, because DBIM
+ * reserves black for the State Emblem.
+ */
+const NEUTRAL_SNAP = { 25: 0, 50: 100, 300: 400, 500: 600, 700: 600, 800: "ink", 900: "ink", 950: "ink" };
 
 /**
  * The DBIM value for one token in one group, or null if the token does not vary by brand.
@@ -78,6 +129,7 @@ const REF = /^\{([^}]+)\}$/;
  */
 function dbimValueFor(path, defaultValue, groupPath) {
   if (LITERAL_OVERRIDES[path]) return LITERAL_OVERRIDES[path];
+  if (ROLE_RUNGS[path]) return `{color.dbimPrimary.${DBIM_GROUPS[groupPath].group}.${ROLE_RUNGS[path]}}`;
 
   const m = REF.exec(String(defaultValue).trim());
   if (!m) return null;
@@ -89,12 +141,15 @@ function dbimValueFor(path, defaultValue, groupPath) {
   // brand pack would break every re-skin that has never heard of DBIM.
   const primary = /^color\.primaryRamp\.(blue|navy)\.(\d+)$/.exec(ref);
   if (primary) {
-    return `{color.dbimPrimary.${DBIM_GROUPS[groupPath].group}.${primary[2]}}`;
+    const rung = PRIMARY_SNAP[primary[2]] ?? primary[2];
+    return `{color.dbimPrimary.${DBIM_GROUPS[groupPath].group}.${rung}}`;
   }
 
   const family = /^color\.([A-Za-z]+)\.(\d+)$/.exec(ref);
   if (family && FAMILY_MAP[family[1]]) {
-    return `{color.${FAMILY_MAP[family[1]]}.${family[2]}}`;
+    const target = FAMILY_MAP[family[1]];
+    const rung = target === "neutralDbim" ? (NEUTRAL_SNAP[family[2]] ?? family[2]) : family[2];
+    return rung === "ink" ? "{color.dbimInk}" : `{color.${target}.${rung}}`;
   }
 
   return null;
@@ -141,25 +196,23 @@ function resolveDbimRef(ref) {
 }
 
 /**
- * The primary rung a DBIM group's BUTTON FILL must use so white clears AA on it.
- *
- * The lightest rung that passes, never darker than it has to be — a conformance preview that
- * quietly darkens every group would misrepresent the palette as much as an unreadable one
- * does. Four of the six are unchanged at 500; only Green (3.01:1) and Chrome Yellow (3.34:1)
- * move, and Green moves two rungs because its 600 is still 4.32:1.
- *
- * `hover` follows one rung behind `default` so the two never collapse into the same colour,
- * and never lighter than the 700 the default brand already uses.
+ * The primary rungs a DBIM group's filled BUTTON uses at rest and on hover — measured, so
+ * white clears AA on both. `PRIMARY_RUNGS` is also the ladder `darkerPrimaryRungFor` climbs.
  */
 const PRIMARY_RUNGS = [500, 600, 700, 800];
 
 function accessibleActionRungs(groupPath) {
   const group = DBIM_GROUPS[groupPath].group;
   const ramp = DBIM.primary[groupPath];
-  const fallback = PRIMARY_RUNGS[PRIMARY_RUNGS.length - 1];
-  const def =
-    PRIMARY_RUNGS.find((r) => contrast("#ffffff", ramp[r]) >= AA) ?? fallback;
-  const hover = Math.min(Math.max(def + 100, 700), 800);
+  /*
+   * 5 Oct 2026: the KEY COLOUR (shade 1, rung 800) is the fill at rest and shade 2 (600) is the
+   * hover, as the Figma library's Filled button draws it. Shade 1 carries white in every group.
+   * Shade 2 does not in Green (4.32:1), so Green's hover goes to the darker 900 instead — the
+   * one interpolated colour a DBIM mode still paints, because a hover identical to rest is
+   * not a state (§4.5.iv).
+   */
+  const def = 800;
+  const hover = contrast("#ffffff", ramp[600]) >= AA ? 600 : 900;
   if (contrast("#ffffff", ramp[hover]) < AA) {
     throw new Error(`DBIM ${group}: no rung carries white on hover — the ramp is broken`);
   }

@@ -180,6 +180,38 @@
     gap: var(--sa-stack-8);
   }
 
+  /* ── Donut, legend beside the ring (DonutChart layout="side") ─────────────
+     Ring left, legend right with its values right-aligned; the table toggle and any
+     caption span both columns. Stacks below 768px, where nine long labels beside a
+     ring leave neither room to read. */
+  @media (min-width: 768px) {
+    .ds-chart--donut-side {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      column-gap: var(--sa-stack-20);
+      align-items: center;
+    }
+
+    .ds-chart--donut-side > :not(.ds-chart__canvas, .ds-chart__legend) {
+      grid-column: 1 / -1;
+    }
+
+    .ds-chart--donut-side > .ds-chart__view > .ds-chart__legend {
+      margin: 0;
+    }
+  }
+
+  .ds-chart--donut-side .ds-chart__legend-item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .ds-chart--donut-side .ds-chart__legend-pct {
+    font-weight: var(--sa-font-weight-bold);
+    text-align: end;
+    white-space: nowrap;
+  }
+
   /* ── An interactive legend: each entry switches its own series ──────────
 
      IT HAS TO LOOK LIKE A CONTROL. An earlier version was deliberately quiet
@@ -435,8 +467,10 @@
   .ds-chart__center-value {
     font-size: var(--sa-type-title-1-size);
     line-height: var(--sa-type-title-1-lh);
-    /* 700, not 600: this is a KPI numeral, not a heading. */
-    font-weight: var(--sa-font-weight-bold);
+    /* Semibold, as every figure in the system is (owner, 8 Oct 2026): the card figure lists
+       and headline figures were already 600, and bold here alone gave one dashboard two
+       weights for the same kind of number. */
+    font-weight: var(--sa-font-weight-semibold);
     font-variant-numeric: tabular-nums;
     fill: var(--sa-icon-neutral-base);
   }
@@ -449,7 +483,8 @@
   /* ── Choropleth map regions ──────────────────────────────────────────────── */
   .ds-chart__region {
     stroke: var(--sa-chart-regionStroke);
-    stroke-width: 0.5;
+    /* Fine enough that an island drawn at its minimum mark reads as land, not as a ring. */
+    stroke-width: 0.35;
     transition: opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
     cursor: default;
   }
@@ -460,6 +495,78 @@
     outline: none;
     stroke: var(--sa-icon-neutral-base);
     stroke-width: 1.5;
+  }
+  /* A region that chooses a State/UT says so on approach; pressed, it takes the outline. */
+  .ds-chart__region.is-interactive {
+    cursor: pointer;
+  }
+  .ds-chart__region.is-interactive:active,
+  .ds-chart__region.is-selected {
+    stroke: var(--sa-text-neutral-bolder);
+    stroke-width: 1.5;
+  }
+  .ds-chart__region.is-selected:focus-visible {
+    stroke: var(--sa-focus-ring);
+    stroke-width: 2;
+  }
+  /* The coastline under the map: a quiet edge so the land, and every small island, reads
+     against the page. Drawn beneath the regions, so internal borders stay white. */
+  .ds-chart__coast path {
+    fill: none;
+    stroke: var(--sa-chart-axis);
+    stroke-width: 1;
+    stroke-linejoin: round;
+  }
+  /* Islands drawn at the minimum mark: solid, no white border, so each reads as land. */
+  .ds-chart__islands {
+    stroke: none;
+    pointer-events: none;
+  }
+  /* A State/UT too small to see: a hollow ring in its own shade, on a white halo so it reads
+     on any neighbour. Hollow, so the true boundary stays visible inside it. */
+  .ds-chart__locator-halo {
+    fill: none;
+    stroke: var(--sa-chart-regionStroke);
+    stroke-width: 4.5;
+    pointer-events: none;
+  }
+  .ds-chart__locator {
+    fill: transparent;
+    stroke-width: 2.5;
+    outline: none;
+  }
+  .ds-chart__locator.is-interactive,
+  .ds-chart__archipelago.is-interactive {
+    cursor: pointer;
+  }
+  .ds-chart__locator.is-selected,
+  .ds-chart__locator:active {
+    stroke: var(--sa-text-neutral-bolder);
+  }
+  .ds-chart__locator:focus-visible {
+    stroke: var(--sa-focus-ring);
+  }
+  /* An archipelago's islands are the shape; its box shows only when focused or chosen. */
+  .ds-chart__archipelago {
+    fill: transparent;
+    stroke: none;
+    outline: none;
+  }
+  .ds-chart__archipelago:hover {
+    stroke: var(--sa-chart-axis);
+    stroke-width: 1;
+    stroke-dasharray: 2 2;
+  }
+  .ds-chart__archipelago.is-selected,
+  .ds-chart__archipelago:active {
+    stroke: var(--sa-text-neutral-bolder);
+    stroke-width: 1.5;
+    stroke-dasharray: none;
+  }
+  .ds-chart__archipelago:focus-visible {
+    stroke: var(--sa-focus-ring);
+    stroke-width: 2;
+    stroke-dasharray: none;
   }
 
   /* A bubble that can be selected says so on approach. Every circle is
@@ -585,7 +692,8 @@
   }
   .ds-funnel__row {
     display: grid;
-    grid-template-columns: 120px 1fr auto;
+    /* minmax(0, …): a 1fr track's minimum is its content, so the row pushed past a narrow card. */
+    grid-template-columns: minmax(0, 7.5rem) minmax(0, 1fr) auto; /* layout geometry */
     align-items: center;
     gap: var(--sa-stack-12);
   }
@@ -708,53 +816,53 @@
      A chart's numbers must be reachable without reading the chart: by a
      colour-blind reader whose two series measure ΔE 1.5 apart, on paper, and on
      a connection that never painted the SVG. */
-  /* The toggle is the library's `Button` (primary · text · sm), so the reset,
-     the press give, the focus ring and the disabled treatment come from
-     button.css. `.ds-btn` is named in every selector below so what is genuinely
-     local outranks it inside the shared `components` layer.
+  /* THE CHART AND ITS TABLE ARE TWO VIEWS OF ONE FIGURE, swapped in place by a
+     SegmentedControl under the chart (ChartFrame). The view wrapper is
+     `display: contents`, so the canvas and the legend stay the figure's own grid
+     items — the side-legend donut lays them out as two columns — and `hidden`
+     still wins when the table is shown, because the rule below never matches a
+     hidden wrapper. */
+  .ds-chart__view:not([hidden]) {
+    display: contents;
+  }
 
-     WHAT IS LOCAL IS THAT THIS READS AS A WAY OUT OF THE PICTURE, NOT AS AN
-     ACTION. It sits under a chart, underlined, at the caption's size, and it must
-     not acquire the 64px rhythm minimum or the 32px control height that would
-     make it look like a second Retry. The `ds-btn` layout stays; only the box and
-     the type are pulled back. */
-  .ds-chart__tabletoggle.ds-btn {
-    align-self: flex-start;
+  .ds-chart__viewswitch {
+    display: flex;
+    inline-size: fit-content;
     margin-block-start: var(--sa-stack-8);
-    /* The 24px block minimum this rule used to carry is GONE, and nothing was
-       lost: `.ds-btn--sm` floors the control at `--sa-control-height-sm` (32),
-       which is the height this toggle already drew and comfortably past WCAG
-       2.2 §2.5.8. Restating a smaller minimum here only fought it.
+    margin-inline-start: auto;
+  }
 
-       `min-width` is reset because the ladder's 64px rhythm floor is for
-       actions standing in a row; this one is a way out of the picture and takes
-       the width of its words. */
-    min-width: 0;
-    padding: var(--sa-padding-4) var(--sa-padding-8);
-    border-radius: var(--sa-shape-4);
-    color: var(--sa-text-brand-primary-bolder);
+  /* Held to the height of the chart it replaced, so the card does not grow or
+     shrink when a reader switches; the rows are paged to fit inside it. */
+  .ds-chart__tablepanel {
+    display: flex;
+    flex-direction: column;
+    min-block-size: var(--ds-chart-view-h, auto);
+  }
+
+  /* A WIDE table scrolls sideways in its own box rather than widening the page —
+     the estate's rule is that the page body never scrolls horizontally. Rows are
+     never scrolled: they are paged. */
+  .ds-chart__tablewrap {
+    overflow-x: auto;
+  }
+
+  .ds-chart__pager {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-stack-4) var(--sa-stack-8);
+    margin-block-start: auto;
+    padding-block-start: var(--sa-padding-8);
+  }
+
+  .ds-chart__pagerstatus {
+    margin: 0 auto 0 0;
+    color: var(--sa-text-neutral-subtle);
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
-    font-weight: var(--sa-font-weight-semibold);
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
-  }
-
-  .ds-chart__tabletoggle.ds-btn:hover,
-  .ds-chart__tabletoggle.ds-btn:active {
-    background: var(--sa-bg-neutral-subtler);
-  }
-
-  .ds-chart__tabletoggle.ds-btn:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
-    outline-offset: var(--sa-focus-offset);
-  }
-
-  /* A WIDE table scrolls in its own box rather than widening the page — the
-     estate's rule is that the page body never scrolls horizontally. */
-  .ds-chart__tablewrap {
-    margin-block-start: var(--sa-stack-8);
-    overflow-x: auto;
+    font-variant-numeric: tabular-nums;
   }
 
   .ds-chart__table {
@@ -840,13 +948,13 @@
   .ds-progress__fill--danger  { background-color: var(--sa-text-status-error-base); }
 
   /* ── Print — government charts get printed and PDF'd ─────────────────────
-     Tooltips and the table toggle go; the screen-reader table becomes the
+     Tooltips and the view switch go; the screen-reader table becomes the
      printed table, with its header repeating across pages; the plot keeps its
      ink. `.claude/rules/data-state-completeness.md` and the visualisation spec
      §07 both ask for exactly this. */
   @media print {
     .ds-chart__tooltip,
-    .ds-chart__tabletoggle,
+    .ds-chart__viewswitch,
     .ds-chart__retry { display: none !important; }
     .ds-chart { break-inside: avoid; }
     .ds-chart__svg,
@@ -854,30 +962,140 @@
     .ds-progress__fill,
     /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- `exact` is a keyword, not a colour */
     .ds-funnel__bar { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
-    .ds-chart > table.ds-sr-only {
-      position: static;
+    /* The hidden table is WRAPPED — `<div class="ds-sr-only"><table>` — since the
+       13 Sep 2026 fix that stopped a 1px table widening the page. This rule still
+       targeted `> table.ds-sr-only`, matched nothing, and every chart printed with
+       no data. Unhide the wrapper; style the table inside it.
+
+       `!important`, like the tooltip rule above, because `.ds-sr-only` is declared
+       in many stylesheets and some consumers declare it UNLAYERED (the docs kit
+       does), which outranks anything in this layer. Printing the data is the whole
+       point of this block; it must win wherever the hiding rule came from. */
+    .ds-chart > .ds-sr-only {
+      position: static !important;
+      width: 100% !important;
+      height: auto !important;
+      margin: var(--sa-padding-12) 0 0 !important;
+      overflow: visible !important;
+      clip: auto !important;
+      clip-path: none !important;
+      white-space: normal !important;
+    }
+    .ds-chart > .ds-sr-only > table {
       width: 100%;
-      height: auto;
-      margin: var(--sa-padding-12) 0 0;
-      overflow: visible;
-      clip: auto;
-      white-space: normal;
       border-collapse: collapse;
       font-size: var(--sa-type-body-3-size);
     }
-    .ds-chart > table.ds-sr-only caption {
+    .ds-chart > .ds-sr-only caption {
       text-align: start;
       font-weight: var(--sa-font-weight-semibold);
       padding-block-end: var(--sa-padding-4);
     }
-    .ds-chart > table.ds-sr-only thead { display: table-header-group; }
-    .ds-chart > table.ds-sr-only th,
-    .ds-chart > table.ds-sr-only td {
+    .ds-chart > .ds-sr-only thead { display: table-header-group; }
+    .ds-chart > .ds-sr-only th,
+    .ds-chart > .ds-sr-only td {
       padding: var(--sa-padding-4) var(--sa-padding-8);
       border-block-end: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
       text-align: start;
     }
     .ds-chart__skeleton-bars,
     .ds-progress__track--indeterminate { animation: none; }
+  }
+
+  /* ── IndiaTileMap — one equal tile per State/UT ─────────────────────────── */
+  .ds-tilemap__tile {
+    outline: none;
+  }
+
+  .ds-tilemap__tile.is-interactive {
+    cursor: pointer;
+  }
+
+  .ds-tilemap__rect {
+    stroke: var(--sa-bg-neutral-base);
+    stroke-width: 1;
+    transition: stroke 120ms ease;
+  }
+
+  .ds-tilemap__tile:hover .ds-tilemap__rect {
+    stroke: var(--sa-text-neutral-bolder);
+    stroke-width: 2;
+  }
+
+  /* Pressed: the ring at full weight under the pointer, before the selection lands. */
+  .ds-tilemap__tile:active .ds-tilemap__rect {
+    stroke: var(--sa-text-neutral-bolder);
+    stroke-width: 4;
+  }
+
+  /* Focus and the chosen State/UT: a heavy ring that reads on every ramp step. */
+  .ds-tilemap__tile:focus-visible .ds-tilemap__rect,
+  .ds-tilemap__tile.is-selected .ds-tilemap__rect {
+    stroke: var(--sa-text-neutral-bolder);
+    stroke-width: 4;
+  }
+
+  .ds-tilemap__tile:focus-visible .ds-tilemap__rect {
+    stroke: var(--sa-focus-ring);
+  }
+
+  /* Type tokens in SVG user units: the map's viewBox scales them with it. */
+  .ds-tilemap__code {
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    pointer-events: none;
+  }
+
+  .ds-tilemap__value {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: var(--sa-font-weight-regular);
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+  }
+
+  .ds-tilemap--sm .ds-tilemap__code {
+    font-size: var(--sa-type-title-1-size);
+    line-height: var(--sa-type-title-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  /* The one-line legend: low, five shades, high. */
+  .ds-tilemap__ramp {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-4);
+    margin: 0;
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: var(--sa-font-weight-regular);
+  }
+
+  .ds-tilemap__ramp > span:first-child { margin-inline-end: var(--sa-stack-4); }
+  .ds-tilemap__ramp > span:last-child { margin-inline-start: var(--sa-stack-4); }
+
+  /* A sparkline never runs past its container: it keeps its viewBox and scales down. */
+  .ds-sparkline {
+    max-inline-size: 100%;
+    block-size: auto;
+  }
+
+  /* `startLabel` / `endLabel`: the first and last periods under the line's two ends. */
+  .ds-sparkline-ends {
+    display: grid;
+    gap: var(--sa-stack-4);
+    max-inline-size: 100%;
+  }
+
+  .ds-sparkline__ends {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--sa-stack-8);
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: var(--sa-font-weight-regular);
   }
 }

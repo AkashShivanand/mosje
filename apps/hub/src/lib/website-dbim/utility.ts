@@ -8,7 +8,7 @@
  * DBIM address: a `/website/…` path from the redesign is served from the DBIM tree
  * while the DBIM design is chosen, and most redesign paths do not exist there.
  */
-import { DIVISIONS } from "@/data/website";
+import { DIVISIONS, ORGANISATIONS } from "@/data/website";
 import { DBIM_PERSONA_ICONS, DBIM_SOCIAL_AUDIT } from "./assets";
 import { DBIM_POLICY_TABS, type DbimLink } from "./nav";
 
@@ -259,10 +259,8 @@ export const DBIM_RELATED_LINKS: DbimLinkRow[] = [
  * Important Links rail groups them (components/website/ImportantLinks.tsx, reading
  * `DIVISIONS` from data/website/divisions.ts). A division opens its DBIM page under
  * Ministry → Our Division; a division whose only destination is another website opens
- * that website. The home page's Important Links section reads this same list — its
- * first four rows — so the three the DBIM reference leads with (Scheduled Caste
- * Welfare, Social Defence, Grants-in-Aid to NGOs) come first; the rest keep the
- * order of `DIVISIONS`.
+ * that website. The three the DBIM reference leads with — Scheduled Caste Welfare,
+ * Social Defence, Grants-in-Aid to NGOs — come first, the rest in `DIVISIONS` order.
  */
 const LEAD_DIVISIONS = ["scheduled-caste-welfare", "social-defence", "grants-in-aid-to-ngos"];
 const leadRank = (id: string) => {
@@ -279,17 +277,63 @@ const DIVISION_LINKS: DbimLinkRow[] = [...DIVISIONS].sort((a, b) => leadRank(a.i
 });
 
 /*
- * THE SOCIAL AUDIT MIS PORTAL IS FOURTH, after the three lead divisions — moved here
- * on 28 Sep 2026 from the home page's posts row, whose third slot became the
- * Infographics (DBIM 3.0 §7.3 xiii). Fourth so it stays on the home page, which shows
- * four rows; the reference's own fourth ("Inauguration") was not a division either.
+ * THE DEPARTMENT'S PRIORITY DESTINATIONS (instruction, 1 Oct 2026, following the one of
+ * 29 Sep: fill this section the way the benchmark does). DBIM 3.0 §7.3 x calls Important
+ * Links "the most accessed or priority contents/portals … for quick navigation", and
+ * meity.gov.in fills it with five: its dashboard, Tenders, Public Grievances, one
+ * priority portal and What's New. These are the Department's own five, each labelled as
+ * its destination labels itself — dosje.gov.in/dashboard is titled "Dashboard", and this
+ * design serves it as Ministry › Our Performance; "Public Grievance Redressal Mechanism"
+ * is the live rail's own wording for CPGRAMS.
+ *
+ * The Social Audit MIS Portal is one of them. It came onto this list on 28 Sep 2026 from
+ * the home page's posts row, whose third slot became the Infographics (DBIM 3.0 §7.3
+ * xiii), and it sits here rather than among the divisions because it is a portal, not a
+ * division.
+ *
+ * TO BE CONFIRMED BY THE DEPARTMENT: which destinations are in fact its most accessed.
+ * No usage figures were available, so the choice follows the benchmark's categories.
  */
-const SOCIAL_AUDIT: DbimLinkRow = { label: DBIM_SOCIAL_AUDIT.label, href: DBIM_SOCIAL_AUDIT.href };
+const PRIORITY_LINKS: DbimLinkRow[] = [
+  { label: "Dashboard", path: "/ministry/our-performance" },
+  { label: "Tenders", path: "/offerings/tenders" },
+  { label: "Public Grievance Redressal Mechanism", href: "https://pgportal.gov.in/" },
+  { label: DBIM_SOCIAL_AUDIT.label, href: DBIM_SOCIAL_AUDIT.href },
+  { label: "What's New", path: "/whats-new" },
+];
 
+/*
+ * THE HOME SECTIONS DBIM HAS NO PLACE FOR, AS LINKS (instruction, 30 Sep 2026). The New
+ * and Classic home pages carry sections the DBIM 3.0 home composition (Figure 49) does
+ * not: Nasha Mukt Bharat Abhiyaan (take the e-pledge, become a Nasha Mukti Mitr),
+ * Find a De-addiction Centre Near You, and the SAMAVESH band ("Justice. Equality.
+ * Dignity."). Their actions lead Important Links, so the home page's four rows carry
+ * them; the divisions follow, and all of them stay on the Important Links page. The
+ * other two sections DBIM lacks already have a DBIM home one click from the menu —
+ * Activity Corner is Connect › Events, Need Support? is Connect › Contact Us — so they
+ * are not repeated here. Each opens its portal page in a new tab, as a portal is a
+ * website of its own.
+ */
+const HOME_SECTION_LINKS: DbimLinkRow[] = [
+  { label: "Nasha Mukt Bharat e-Pledge", href: "/portals/nmba/epledge" },
+  { label: "Become a Nasha Mukti Mitr", href: "/portals/nmba/register-mitr" },
+  { label: "Find a De-addiction Centre", href: "/portals/nmba/facilities" },
+  { label: "SAMAVESH Services Gateway", href: "/portals" },
+];
+
+/**
+ * NINETEEN ROWS, IN THREE GROUPS, AND THE HOME PAGE SHOWS THE FIRST FOUR.
+ *
+ * The home section is a window on this list, not a list of its own — one record, so the
+ * two cannot disagree — and it keeps its "View more", which opens this page in full.
+ * That is why the order is the order: the four actions a citizen may have come for, then
+ * the Department's priority destinations, then its divisions, which are the deepest and
+ * also live a click away under Ministry › Our Division.
+ */
 export const DBIM_IMPORTANT_LINKS: DbimLinkRow[] = [
-  ...DIVISION_LINKS.slice(0, LEAD_DIVISIONS.length),
-  SOCIAL_AUDIT,
-  ...DIVISION_LINKS.slice(LEAD_DIVISIONS.length),
+  ...HOME_SECTION_LINKS,
+  ...PRIORITY_LINKS,
+  ...DIVISION_LINKS,
 ];
 
 /* ── Help ───────────────────────────────────────────────────────────────── */
@@ -336,7 +380,7 @@ export const DBIM_STORED: { name: string; purpose: string; where: string; kept: 
 /* ── Personas ───────────────────────────────────────────────────────────── */
 
 export interface DbimPersonaTile {
-  icon: keyof typeof DBIM_PERSONA_ICONS;
+  icon: (typeof DBIM_PERSONA_ICONS)[number];
   /** The sentence, with `{}` where the bold link word goes. */
   sentence: string;
   strong: string;
@@ -366,7 +410,7 @@ export const DBIM_PERSONAS: DbimPersona[] = [
       { icon: "schemes", sentence: "Learn more about the {} we provide", strong: "Scholarships", path: "/offerings" },
       { icon: "tenders", sentence: "Apply on the {}", strong: "National Scholarship Portal", href: "https://scholarships.gov.in/" },
       { icon: "publications", sentence: "View our {}", strong: "Orders and Notices", path: "/documents/orders-and-notices" },
-      { icon: "vacancies", sentence: "Explore new {}", strong: "Vacancies", path: "/offerings/vacancies" },
+      { icon: "job-opportunity", sentence: "Explore new {}", strong: "Vacancies", path: "/offerings/vacancies" },
     ],
   },
   {
@@ -377,7 +421,7 @@ export const DBIM_PERSONAS: DbimPersona[] = [
       { icon: "schemes", sentence: "Learn more about the {} we provide", strong: "Schemes and Services", path: "/offerings" },
       { icon: "publications", sentence: "Read our {}", strong: "Annual Reports", path: "/documents" },
       { icon: "tenders", sentence: "Reach the Department through {}", strong: "Contact Us", path: "/connect" },
-      { icon: "vacancies", sentence: "Register a {}", strong: "Grievance", path: "/connect/grievance-redressal" },
+      { icon: "job-opportunity", sentence: "Register a {}", strong: "Grievance", path: "/connect/grievance-redressal" },
     ],
   },
   {
@@ -387,7 +431,7 @@ export const DBIM_PERSONAS: DbimPersona[] = [
     tiles: [
       { icon: "publications", sentence: "View our {}", strong: "Orders and Notices", path: "/documents/orders-and-notices" },
       { icon: "tenders", sentence: "Learn more about our {}", strong: "Tenders", path: "/offerings/tenders" },
-      { icon: "vacancies", sentence: "Find officers in the {}", strong: "Directory", path: "/ministry/directory" },
+      { icon: "job-opportunity", sentence: "Find officers in the {}", strong: "Directory", path: "/ministry/directory" },
       { icon: "schemes", sentence: "Apply for grants on {}", strong: "e-Anudaan", href: "https://grants-msje.gov.in/" },
     ],
   },
@@ -399,7 +443,7 @@ export const DBIM_PERSONAS: DbimPersona[] = [
       { icon: "publications", sentence: "View our {}", strong: "Publications", path: "/documents/publications" },
       { icon: "schemes", sentence: "Read our {}", strong: "Annual Reports", path: "/documents" },
       { icon: "tenders", sentence: "Explore the {}", strong: "Open Government Data Platform", href: "https://www.data.gov.in/" },
-      { icon: "vacancies", sentence: "See our {}", strong: "Performance", path: "/ministry/our-performance" },
+      { icon: "job-opportunity", sentence: "See our {}", strong: "Performance", path: "/ministry/our-performance" },
     ],
   },
 ];
@@ -474,7 +518,11 @@ export function dbimSearchTarget(href: string): { path: string } | { href: strin
   if (rest.includes(".")) return { href };
   const [head = "", sub] = rest.split("/");
   if (head === "schemes-services" && sub) return { path: `/offerings/schemes-and-services/${sub}` };
-  if (head === "organisation" && sub) return { path: `/ministry/our-organisation/${sub}` };
+  if (head === "organisation" && sub) {
+    // A scheme portal's page is under Our Scheme Portals, every other body's under Our Organisation.
+    const scheme = ORGANISATIONS.some((o) => o.id === sub && o.category === "schemes");
+    return { path: `/ministry/${scheme ? "our-scheme-portals" : "our-organisation"}/${sub}` };
+  }
   if (head === "official" && sub) return { path: "/ministry/our-team" };
   if (head.startsWith("about-the-division")) return { path: "/ministry/our-division" };
   if (head.endsWith("-directory")) return { path: "/connect/directory" };

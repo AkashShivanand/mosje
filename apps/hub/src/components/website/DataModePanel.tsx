@@ -64,7 +64,7 @@ const PREVIEWS: { id: PreviewState; label: string }[] = [
 ];
 
 export function DataModePanel() {
-  const { mode, setMode, marks, setMarks, preview, setPreview, previewScope, setPreviewScope } =
+  const { mode, setMode, marks, setMarks, sources, setSources, preview, setPreview, previewScope, setPreviewScope } =
     useDataMode();
   const name = React.useId();
   const active = OPTIONS.find((o) => o.id === mode) ?? OPTIONS[1]!;
@@ -91,9 +91,17 @@ export function DataModePanel() {
       <section className="dm-panel__group">
         <Toggle size="small" checked={marks} onChange={(e) => setMarks(e.target.checked)} label="Show data marks" />
         <p className="dm-panel__hint">
-              A <b>Live</b> or <b>Illustrative</b> badge on every card. Off so the
+              A <b>Live</b>, <b>Received</b> or <b>Illustrative</b> badge on every card. Off so the
               page reads as the finished service.
             </p>
+      </section>
+
+      <section className="dm-panel__group">
+        <Toggle size="small" checked={sources} onChange={(e) => setSources(e.target.checked)} label="Show sources and calculations" />
+        <p className="dm-panel__hint">
+          Under each figure: where it came from, and how it was worked out where it is
+          calculated from other figures.
+        </p>
       </section>
 
       <section className="dm-panel__group">

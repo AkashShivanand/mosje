@@ -22,8 +22,10 @@
     height: 48px;
   }
 
+  /* Bold, as every other home-section heading is: the handoff sets all of them in one
+     Heading 2 Bold style (DBIM 3.0 §4.3.1 allows Bold, Semi Bold or Medium; one page
+     uses one). The reference set this one at 500. */
   [data-design="dbim"] .db-heading--inverse {
-    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-color-neutralScale-0);
   }
 
@@ -56,15 +58,19 @@
   }
 
   /* ── View More ───────────────────────────────────────────────────────────── */
+  /* The DBIM Button, Type=Outline (handoff "Button", DBIM 3.0 §4.5, Figs 18–19): 40 tall,
+     8 / 16 padding, the Label/button style — Paragraph 2 Semi Bold in capitals, 14px
+     (12 on a phone) — and a 24px trailing chevron. */
   [data-design="dbim"] .db-viewmore {
     display: inline-flex;
     gap: var(--sa-stack-8);
     align-items: center;
-    height: 36px;
-    padding: var(--sa-padding-4) var(--sa-padding-6) var(--sa-padding-6) var(--sa-padding-12);
-    font-size: 1rem; /* 16px */
-    font-weight: var(--sa-font-weight-regular);
-    line-height: normal;
+    box-sizing: border-box;
+    height: var(--sa-padding-40);
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    font-size: var(--db-fs-button);
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: var(--db-lh-p2);
     color: var(--sa-color-primaryScale-800);
     text-decoration: none;
     text-transform: uppercase;
@@ -73,17 +79,9 @@
     border-radius: var(--sa-shape-4);
   }
 
-  [data-design="dbim"] .db-viewmore--sm {
-    padding-left: var(--sa-padding-8);
-    font-size: var(--db-fs-p);
-    font-weight: var(--sa-font-weight-semibold);
-  }
-
-  @media (min-width: 1280px) and (max-width: 1536px) {
-    [data-design="dbim"] .db-viewmore--sm {
-      font-size: 0.75rem; /* 12px */
-    }
-  }
+  /* Under Recent Documents the handoff draws the same View More as everywhere else —
+     regular weight, 12px in — at every width (the reference's 12px step at 1280–1536
+     was the mobile scale reaching a laptop; DBIM 3.0 §4.3.1). */
 
   [data-design="dbim"] .db-viewmore:hover {
     background: var(--sa-color-primaryScale-100);
@@ -154,7 +152,7 @@
     align-items: center;
     justify-content: center;
     width: 41px;
-    color: var(--sa-color-primaryScale-400);
+    color: var(--sa-color-primaryScale-800); /* DBIM 3.0 §3.7 iii: icons in the key colour */
     border: 1px solid var(--sa-color-primaryScale-400);
     border-radius: var(--sa-shape-4) 0 0 var(--sa-shape-4);
   }
@@ -191,12 +189,12 @@
   }
 
   [data-design="dbim"] .db-field .db-field__control::placeholder {
-    color: var(--sa-color-text-default);
-    opacity: 0.8;
+    color: var(--sa-color-text-muted);
+    opacity: 1;
   }
 
   [data-design="dbim"] .db-field .ds-select__chevron {
-    color: var(--sa-color-text-default);
+    color: var(--sa-color-primaryScale-800); /* DBIM 3.0 §3.7 iii — was the body text colour */
   }
 
   [data-design="dbim"] .db-filter .db-filter__toggle.ds-btn {
@@ -296,7 +294,7 @@
   /* The reference's `p.no-data.fw-bold.fs-3`: 1.75rem of its 10px root, bold. */
   [data-design="dbim"] .db-no-data {
     margin: 0 0 10px;
-    font-size: 1.0938rem; /* 17.5px */
+    font-size: var(--db-fs-h3); /* was the reference's 17.5px, off DBIM 3.0 Tables 3 and 4 */
     font-weight: var(--sa-font-weight-bold);
     line-height: 1.5;
     color: var(--sa-color-text-default);

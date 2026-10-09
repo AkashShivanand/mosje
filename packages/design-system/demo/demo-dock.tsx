@@ -368,13 +368,22 @@ export interface DemoDockTab {
   id: string;
   label: string;
   content: React.ReactNode;
+  /**
+   * Where the tab sits in the strip. `lead` (the default) puts it ahead of Apps
+   * and Colour, as the reason a reviewer opened the dock on this route. `end`
+   * puts it after them, for a tool that is offered on EVERY route — a
+   * screenshot, say — and so must never become the lead door's label.
+   * @default "lead"
+   */
+  placement?: "lead" | "end";
 }
 
 export interface DemoDockProps {
   /** Override the default estate registry, passed through to the Apps tab. */
   apps?: AppEntry[];
   /**
-   * Route-specific tabs, shown ahead of Apps and Colour. Like `Sign in`, these
+   * Route-specific tabs, shown ahead of Apps and Colour (or after them, with
+   * `placement: "end"`). Like `Sign in`, lead tabs
    * are the reason a reviewer opens the dock on the route that supplies them,
    * so they lead. They get no door on the rail — the rail's three doors are
    * fixed, for the same reason `Sign in` has none: a door that appears and
@@ -385,6 +394,13 @@ export interface DemoDockProps {
   pathname: string | null;
   /** FAB label, and the panel's header title. @default "Demo tools" */
   label?: string;
+  /**
+   * A short confirmation shown beside the rail for as long as it is set — "Screenshot
+   * saved", "DBIM Design". For an action taken by keyboard shortcut with the panel
+   * closed, which otherwise happens with no visible answer. The caller clears it.
+   * Announced politely; it belongs to the dock, so it never lands in a page capture.
+   */
+  notice?: string | null;
   className?: string;
 }
 
@@ -397,6 +413,7 @@ export function DemoDock({
   extraTabs,
   pathname,
   label = "Demo tools",
+  notice,
   className,
 }: DemoDockProps): React.JSX.Element {
   const [open, setOpen] = React.useState(false);
@@ -440,16 +457,20 @@ export function DemoDock({
   // Sign in, when it applies, leads — it's the reason a reviewer opens the
   // dock on a login page. Apps and Colour keep their order behind it.
   const extras = React.useMemo(() => extraTabs ?? [], [extraTabs]);
+  const leadExtras = React.useMemo(() => extras.filter((t) => t.placement !== "end"), [extras]);
   const tabs: TabDef[] = React.useMemo(() => {
     const base: TabDef[] = [
       { id: "apps", label: "Apps" },
       { id: "colour", label: "Colour" },
     ];
-    const lead: TabDef[] = extras.map((t) => ({ id: t.id, label: t.label }));
+    const lead: TabDef[] = leadExtras.map((t) => ({ id: t.id, label: t.label }));
+    const end: TabDef[] = extras
+      .filter((t) => t.placement === "end")
+      .map((t) => ({ id: t.id, label: t.label }));
     return showSignIn
-      ? [{ id: "signin", label: "Sign in" }, ...lead, ...base]
-      : [...lead, ...base];
-  }, [showSignIn, extras]);
+      ? [{ id: "signin", label: "Sign in" }, ...lead, ...base, ...end]
+      : [...lead, ...base, ...end];
+  }, [showSignIn, extras, leadExtras]);
 
   // A mirror of `tabs` that `openPanel` can read without taking `tabs` as a
   // dependency — the list is rebuilt per route, and rebuilding `openPanel`
@@ -713,8 +734,8 @@ export function DemoDock({
   // The lead lights for the first tab that has NO DOOR on the rail — Sign in
   // where it applies, otherwise a route-supplied tab. Apps and Colour have
   // doors of their own and must not be indicated twice.
-  const leadTabId = showSignIn ? "signin" : (extras[0]?.id ?? null);
-  const leadLabel = showSignIn ? "Sign in" : (extras[0]?.label ?? label);
+  const leadTabId = showSignIn ? "signin" : (leadExtras[0]?.id ?? null);
+  const leadLabel = showSignIn ? "Sign in" : (leadExtras[0]?.label ?? label);
 
   return (
     <div ref={rootRef} className={cn("ds-demodock", className)} data-sa-demo-tools="">
@@ -722,6 +743,15 @@ export function DemoDock({
           colour-mode shortcut can announce a change even with the dock
           closed — that's the whole point of the shortcut. */}
       <LiveRegion ref={colourAnnouncerRef} />
+      {/* Always mounted, empty until there is something to say: a status region
+          that appears WITH its text is not reliably announced. */}
+      <span
+        className={cn("ds-demodock__notice", notice && !open && "is-visible")}
+        role="status"
+        aria-live="polite"
+      >
+        {notice ?? ""}
+      </span>
       {shouldRender && (
         // KNOWN, BASELINED LINT FINDING — not a defect. jsx-a11y flags the keydown
         // handler below because it classes `dialog` as a non-interactive role. This

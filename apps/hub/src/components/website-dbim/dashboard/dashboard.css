@@ -22,6 +22,15 @@
     min-width: 0;
   }
 
+  /* A portal dashboard's one-sentence summary, at the reference's body size. */
+  [data-design="dbim"] .db-dash__lead {
+    margin: 0;
+    max-width: 880px; /* the reading measure */
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    color: var(--sa-text-neutral-base);
+  }
+
   /* ── At a Glance ─────────────────────────────────────────────────────────── */
   [data-design="dbim"] .wn-glance {
     display: grid;
@@ -80,7 +89,7 @@
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
     font-weight: var(--sa-font-weight-semibold);
-    color: var(--sa-color-primaryScale-600);
+    color: var(--sa-text-link-brand-default); /* the key colour: DBIM §2.2 hyperlink */
     text-decoration: underline;
     text-underline-offset: 0.2em;
   }
@@ -92,6 +101,32 @@
   [data-design="dbim"] .wn-glance__more:focus-visible {
     outline: var(--sa-stroke-2) solid var(--sa-color-primaryScale-600);
     outline-offset: var(--sa-stack-2);
+  }
+
+  /* ── DBIM 3.0 §4.3.2 Table 4 on a phone ─────────────────────────────────────
+     The section dashboards size their figures from the estate's fluid ramp, which
+     lands between Table 4's rungs at 390px (titles 22.2, the headline figure 37.2,
+     the paired figures 20.1). Below the 992 breakpoint they take the sizes the
+     handoff's phone frame draws, all on Table 4: titles, At a Glance and headline
+     figures H1 24/32, paired figures H2 20/28, reference figures H3 16/22. */
+  @media (max-width: 991.5px) {
+    [data-design="dbim"] .sd-dash__title,
+    [data-design="dbim"] .wn-glance__value,
+    [data-design="dbim"] .sd-dash__hero-value {
+      font-size: var(--db-fs-h1);
+      line-height: 2rem; /* 32px */
+    }
+
+    [data-design="dbim"] .sd-dash__head[data-stick="pinned"] .sd-dash__title,
+    [data-design="dbim"] .sd-dash__pair-value {
+      font-size: var(--db-fs-h2);
+      line-height: var(--db-lh-h2);
+    }
+
+    [data-design="dbim"] .sd-dash__ref-value {
+      font-size: var(--db-fs-h3);
+      line-height: var(--db-lh-h3);
+    }
   }
 }
 /* ds-exempt-end */

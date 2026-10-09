@@ -70,10 +70,12 @@ const CAPS: Record<Division, Record<Grade, readonly Capability[]>> = {
   pd: {
     aso: ["review", "certify", "raiseDeficiency", "sanctionRegister", "forwardedRegister"],
     so: ["review", "communicateDeficiency", "raiseQuery", "scheduleInspection", "issueShowCause", "sanctionRegister", "forwardedRegister"],
-    us: ["review", "raiseQuery", "scheduleInspection", "releaseFunds", "sanctionRegister", "forwardedRegister"],
+    // "releaseFunds" now only opens the next instalment: a sanctioned amount is paid through the
+    // PFMS payment leg (PD Maker → PD Checker → PFMS), never by one click (PFMS BRD §1.4).
+    us: ["review", "raiseQuery", "scheduleInspection", "releaseFunds", "sanctionRegister", "forwardedRegister", "designateOfficers", "paymentReports"],
     ds: ["review", "raiseQuery", "scheduleInspection", "sanctionRegister", "forwardedRegister"],
     // The bank-account change desk sits with the Joint Secretary, as on the live SM2 console.
-    js: ["review", "concur", "raiseQuery", "scheduleInspection", "issueShowCause", "sanctionRegister", "forwardedRegister", "auditTrail", "approveBankChange"],
+    js: ["review", "concur", "raiseQuery", "scheduleInspection", "issueShowCause", "sanctionRegister", "forwardedRegister", "auditTrail", "approveBankChange", "paymentReports"],
   },
   finance: {
     aso: ["review", "scheduleInspection"],
@@ -115,6 +117,14 @@ function pdNav(grade: Grade): NavItem[] {
     { label: "Queries", href: `${BASE}/dashboard/pd/${grade}/queries`, icon: "help" },
     { label: "Reports & Analytics", href: `${BASE}/dashboard/sm2/reports`, icon: "bar_chart" },
   ];
+  if (grade === "us") {
+    // The Under Secretary designates the PD Maker and PD Checker for each DDO (PFMS BRD §4), on the
+    // page the Bureau keeps the schemes on; the schemes are read-only to this seat.
+    nav.push({ label: "Schemes and Checkers", href: `${BASE}/dashboard/pfms/schemes`, icon: "badge" });
+  }
+  if (grade === "us" || grade === "js") {
+    nav.push({ label: "Payment Reports", href: `${BASE}/dashboard/payment-reports`, icon: "query_stats" });
+  }
   if (grade === "js") {
     nav.push({ label: "Bank Account Changes", href: `${BASE}/dashboard/sm2/bank-changes`, icon: "account_balance" });
     nav.push({ label: "Audit Trail", href: `${BASE}/dashboard/sm2/audit`, icon: "history" });
@@ -214,7 +224,7 @@ export const ROLES: Record<RoleId, RoleDef> = {
     home: `${BASE}/dashboard/sm2/pd`,
     division: null,
     grade: null,
-    caps: ["review", "sanction", "scheduleInspection", "sanctionRegister", "auditTrail"],
+    caps: ["review", "sanction", "scheduleInspection", "sanctionRegister", "auditTrail", "paymentReports"],
     nav: [
       { label: "Sanction Desk", href: `${BASE}/dashboard/sm2/pd`, icon: "gavel" },
       { label: "Sent", href: `${BASE}/dashboard/sent`, icon: "outbox" },
@@ -222,7 +232,80 @@ export const ROLES: Record<RoleId, RoleDef> = {
       { label: "NGO Directory", href: `${BASE}/dashboard/ngo-directory`, icon: "corporate_fare" },
       { label: "Sanctioned Applications", href: `${BASE}/dashboard/pd/us/sanctioned`, icon: "verified" },
       { label: "Reports & Analytics", href: `${BASE}/dashboard/sm2/reports`, icon: "bar_chart" },
+      { label: "Payment Reports", href: `${BASE}/dashboard/payment-reports`, icon: "query_stats" },
       { label: "Audit Trail", href: `${BASE}/dashboard/sm2/audit`, icon: "history" },
+    ],
+  },
+
+  /**
+   * The PFMS payment leg (docs/plans/2026-09-29-e-anudaan-pfms.md). The BRD places the Maker and
+   * the Checker "within the Programme Division", designated by the Under Secretary, and assumes
+   * they are different officers (§10). Whether they are seats of their own or duties added to
+   * existing grades is open question 2; the prototype gives them their own sign-in so each
+   * workspace can be walked on its own.
+   *
+   * Named "Maker" and "Checker", never "PD Maker": the estate does not abbreviate the Programme
+   * Division, because "PD" also names the Programme Director (glossary, audit O-08). `division` is
+   * null because neither is a seat in the approval chain — no file climbs through them.
+   */
+  "pd-maker": {
+    id: "pd-maker",
+    label: "Maker - Programme Division",
+    shortLabel: "Maker",
+    loginId: "9200000813",
+    personName: "Farhan Siddiqui",
+    // The Maker's day starts on the Dashboard — the BRD §11 reports as its tabs — as the PFMS
+    // screens are drawn after the division's review (handoff file, 3 Oct 2026). Its address stays
+    // /payment-reports, which every other role still reaches under that name.
+    home: `${BASE}/dashboard/payment-reports`,
+    division: null,
+    grade: null,
+    caps: ["prepareAdvice", "sanctionRegister", "paymentReports"],
+    nav: [
+      { label: "Dashboard", href: `${BASE}/dashboard/payment-reports`, icon: "dashboard" },
+      { label: "Payment Advices", href: `${BASE}/dashboard/payments/prepare`, icon: "request_quote" },
+      { label: "Sanctioned Applications", href: `${BASE}/dashboard/pd/us/sanctioned`, icon: "verified" },
+      { label: "NGO Directory", href: `${BASE}/dashboard/ngo-directory`, icon: "corporate_fare" },
+    ],
+  },
+
+  "pd-checker": {
+    id: "pd-checker",
+    label: "Checker - Programme Division",
+    shortLabel: "Checker",
+    loginId: "9200000814",
+    personName: "Radhika Menon",
+    home: `${BASE}/dashboard/payments/authorise`,
+    division: null,
+    grade: null,
+    caps: ["authoriseAdvice", "sanctionRegister", "paymentReports"],
+    // As the handoff file draws the Checker's sidebar (PD Checker / Authorisation Queue, 3 Oct 2026):
+    // the Dashboard follows every signed advice to its credit, which the queue no longer lists.
+    nav: [
+      { label: "Dashboard", href: `${BASE}/dashboard/payment-reports`, icon: "dashboard" },
+      { label: "Authorisation Queue", href: `${BASE}/dashboard/payments/authorise`, icon: "verified_user" },
+      { label: "Sanctioned Applications", href: `${BASE}/dashboard/pd/us/sanctioned`, icon: "verified" },
+    ],
+  },
+
+  /** The Bureau / Scheme Division, which furnishes the coded head of account, DDO and PD mapping (BRD §4). */
+  "pfms-bureau": {
+    id: "pfms-bureau",
+    label: "Bureau - PFMS Set-Up",
+    shortLabel: "Bureau",
+    loginId: "9200000815",
+    personName: "Gaurav Khanna",
+    home: `${BASE}/dashboard/payment-reports`,
+    division: null,
+    grade: null,
+    caps: ["configurePfms", "designateOfficers", "paymentReports"],
+    nav: [
+      // As the handoff file draws the Bureau's sidebar (Bureau / PFMS Masters, 3 Oct 2026). Seven
+      // set-up pages became three; their old addresses redirect (proxy.ts, E_ANUDAAN_ALIASES).
+      { label: "Dashboard", href: `${BASE}/dashboard/payment-reports`, icon: "dashboard" },
+      { label: "PFMS Masters", href: `${BASE}/dashboard/pfms/masters`, icon: "sync" },
+      { label: "Schemes and Checkers", href: `${BASE}/dashboard/pfms/schemes`, icon: "account_tree" },
+      { label: "Older Files", href: `${BASE}/dashboard/pfms/older-files`, icon: "history_edu" },
     ],
   },
 
@@ -332,6 +415,9 @@ function isGrade(v: string | undefined): v is Grade {
  * `forbidden` is a screen that exists and belongs to another role; `not-found` is an address
  * that names no screen (an unknown grade or key). Both render a status screen in `ConsoleShell`.
  */
+/** The Bureau's PFMS set-up pages, under /dashboard/pfms/. */
+const PFMS_PAGES = new Set(["masters", "older-files"]);
+
 export function consoleRouteAccess(pathname: string, role: RoleDef): RouteAccess {
   if (role.id === "ngo") return "forbidden";
   const rel = pathname.startsWith(BASE) ? pathname.slice(BASE.length) : pathname;
@@ -340,18 +426,40 @@ export function consoleRouteAccess(pathname: string, role: RoleDef): RouteAccess
   const [area, section, a, b, ...rest] = seg;
 
   if (area === "finance") {
-    // /finance/payment-status/:appId — a file-level screen for officers who examine files.
-    return section === "payment-status" && a && !b ? can("review") : "not-found";
+    // /finance/payment-status/:appId — a file-level screen for officers who examine files, and for
+    // everyone in the PFMS payment leg, since it is where a payment's progress is read.
+    if (section !== "payment-status" || !a || b) return "not-found";
+    const paymentSeat = (["review", "prepareAdvice", "authoriseAdvice", "configurePfms", "paymentReports"] as const).some((c) => role.caps.includes(c));
+    return paymentSeat ? "allowed" : "forbidden";
   }
   if (area !== "dashboard") return "not-found";
 
   if (section === undefined) return "allowed"; // the bare dashboard sends each role home
-  if (section === "notifications" || section === "ngo-directory") return a ? "not-found" : "allowed";
+  if (section === "notifications") return a ? "not-found" : "allowed";
+  // The directory is a desk tool, open to the seats whose sidebar carries it. The Checker's does not
+  // since the handoff file's redraw (3 Oct 2026): a Checker reads one advice against one sanction.
+  if (section === "ngo-directory") return a ? "not-found" : role.nav.some((n) => n.href === `${BASE}/dashboard/ngo-directory`) ? "allowed" : "forbidden";
   // The inspection-report repository: the PMU files the reports, the Programme Director reads them.
   if (section === "ir-repository") return a ? "not-found" : role.caps.includes("inspect") || role.caps.includes("sanction") ? "allowed" : "forbidden";
   if (section === "sent") return a ? "not-found" : can("sanction");
   // NGO 360, and beside it one project's records (CCTV compliance, staff roster, weekly attendance).
   if (section === "ngo") return a && ((b === "360" && rest.length === 0) || (b === "project" && rest.length === 1)) ? "allowed" : "not-found";
+
+  // The PFMS payment leg: the Maker's queue and advice, the Checker's queue and review.
+  if (section === "payments") {
+    if (rest.length > 0) return "not-found";
+    if (a === "prepare") return can("prepareAdvice");
+    if (a === "authorise") return can("authoriseAdvice");
+    return "not-found";
+  }
+  if (section === "pfms") {
+    if (b) return "not-found";
+    // Schemes and Checkers: the Bureau keeps it, the Under Secretary designates on it.
+    if (a === "schemes") return role.caps.includes("configurePfms") || role.caps.includes("designateOfficers") ? "allowed" : "forbidden";
+    if (a !== undefined && PFMS_PAGES.has(a)) return can("configurePfms");
+    return "not-found";
+  }
+  if (section === "payment-reports") return a ? "not-found" : can("paymentReports");
 
   if (section === "pmu") {
     if (b) return "not-found";

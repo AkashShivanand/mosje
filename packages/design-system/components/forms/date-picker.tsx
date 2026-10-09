@@ -254,7 +254,7 @@ export function DatePicker({
         {required ? <span className="ds-sr-only"> (required)</span> : null}
       </label>
 
-      <div className={cn("ds-datepicker__field", shownError && "is-invalid", disabled && "is-disabled")}>
+      <div className={cn("ds-datepicker__field", (shownError || invalid) && "is-invalid", disabled && "is-disabled")}>
         <input
           ref={inputRef}
           id={inputId}

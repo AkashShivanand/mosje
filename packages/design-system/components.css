@@ -79,8 +79,10 @@
 @import "./components/data-display/card.css";
 @import "./components/data-display/carousel.css";
 @import "./components/data-display/charts/charts.css";
+@import "./components/data-display/charts/dot-plot.css";
 @import "./components/data-display/charts/ranked-bar-list.css";
 @import "./components/data-display/charts/small-multiples.css";
+@import "./components/data-display/charts/waffle-chart.css";
 @import "./components/data-display/comment-thread.css";
 @import "./components/data-display/data-table.css";
 @import "./components/data-display/description-list.css";
@@ -89,6 +91,7 @@
 @import "./components/data-display/fact-strip.css";
 @import "./components/data-display/figure.css";
 @import "./components/data-display/file-list.css";
+@import "./components/data-display/headline-figure.css";
 @import "./components/data-display/list-group.css";
 @import "./components/data-display/media-thumbnail.css";
 @import "./components/data-display/metric-card.css";

@@ -197,6 +197,14 @@
       "$description": "One marker in the compact bar’s dot row, the form the track takes when the viewport is too narrow to draw a labelled node per stage."
     }
   },
+  "emptystate": {
+    "$description": "EmptyState — the answer a panel gives when it has nothing to show. Tier 3 because the description's measure is this component's own: it is narrower than the page's reading measure, since an empty state sits inside a panel and is read at a glance.",
+    "measure": {
+      "$type": "dimension",
+      "$value": "21rem",
+      "$description": "The widest the description line runs — 21rem, about 42 characters of Body 2 (14px Noto Sans). It replaces a 42ch literal in feedback.css so the Figma master can bind the same width; in rem so a reader who raises their default font size keeps the same character count. Added 2026-09-30 with the master's Description property."
+    }
+  },
   "sitefooter": {
     "$description": "SiteFooter — the statutory footer's own colour roles and two sizes. The ground and the lead ink are NOT here: `bg/brand/primary/boldest` and `on/bg/brand/primary/boldest` already name them, so the CSS and the master bind those. Tier 3 because every other colour here is a role ON THE FOOTER GROUND: the semantic layer has an `on/*` ink for a brand fill but no muted ink, rule or chip for one, and those only make sense on this surface. Before 2026-09-16 the CSS read `--sa-color-primaryScale-*` directly and the Figma master bound the unpublished Palette rungs, so neither side consumed the library layer. The translucent roles are a rung at a published alpha step, composited over the ground, which is how Figma can bind them per brand mode — a two-colour color-mix() has no Figma equivalent.",
     "ink": {

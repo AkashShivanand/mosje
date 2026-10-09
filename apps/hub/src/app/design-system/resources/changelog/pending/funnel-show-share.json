@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "`FunnelChart showShare={false}` shows each stage's count alone, without its share of the first stage, and drops the Conversion column from the chart's table. For a public view where the conversion rate is an officer-only figure. The default is unchanged."
+}

@@ -63,6 +63,13 @@ const selected = instance.getBoolean("Selected");
  * named in the body, rather than guessing silently or dropping the property.
  */
 const opens = instance.getBoolean("Opens something");
+// Added 8 Oct 2026 to match the code: a line under the figure, and a progress bar with no target.
+const showDetail = instance.getBoolean("Show detail");
+const detail = instance.getString("Detail");
+const showTarget = instance.getBoolean("Show target");
+// Reading=Target nests an exposed Progress Bar (8 Oct 2026); its Value is the tile's own figure.
+const bar = instance.findInstance("progress bar");
+const barValue = bar.getEnum("Value", Object.fromEntries(Array.from({ length: 101 }, (_, i) => [String(i), String(i)])));
 const iconInstance = instance.getInstanceSwap("Icon");
 const iconCode = iconInstance && iconInstance.type === "INSTANCE" ? iconInstance.executeTemplate().example : undefined;
 
@@ -78,7 +85,8 @@ export default {
       ${selected ? figma.code`selected` : ""}
       ${reading === "change" || reading === "target" || reading === "trend" ? figma.code`changeValue="1.6 pts" changeDirection="down" changeLabel="utilised ÷ released"` : ""}
       ${reading === "trend" ? figma.code`aside={<Sparkline data={series} width={72} height={24} />}` : ""}
-      ${reading === "target" ? figma.code`progress={{ value: 79, max: 100, target: 85, targetLabel: "Target 85%" }}` : ""}
+      ${reading === "target" ? (showTarget ? figma.code`progress={{ value: ${barValue}, max: 100, target: 85, targetLabel: "Target 85%" }}` : figma.code`progress={{ value: ${barValue}, max: 100 }}`) : ""}
+      ${showDetail && reading !== "status" ? figma.code`detail="${detail}"` : ""}
       ${reading === "status" ? figma.code`detail="90 of 883 surveyed" status={{ label: "Below target", tone: "danger" }}` : ""}
     />
   `,

@@ -78,7 +78,7 @@ export function DbimPartnerCarousel({ partners }: { partners: Partner[] }) {
         className="db-hb-partners__arrow db-hb-partners__arrow--prev"
         aria-label="Previous partner websites"
         aria-controls={trackId}
-        icon={<Icon name="chevron_left" size={32} weight={400} />}
+        icon={<Icon name="chevron_left" size={24} weight={400} />}
         onClick={() => step(-1)}
       />
       <ul id={trackId} ref={track} className="db-hb-partners__track">
@@ -112,14 +112,14 @@ export function DbimPartnerCarousel({ partners }: { partners: Partner[] }) {
         className="db-hb-partners__arrow db-hb-partners__arrow--next"
         aria-label="Next partner websites"
         aria-controls={trackId}
-        icon={<Icon name="chevron_right" size={32} weight={400} />}
+        icon={<Icon name="chevron_right" size={24} weight={400} />}
         onClick={() => step(1)}
       />
       <IconButton
         appearance="text"
         className="db-hb-partners__arrow db-hb-partners__arrow--pause"
         aria-label={playing ? "Pause partner websites" : "Play partner websites"}
-        icon={<Icon name={playing ? "pause" : "play_arrow"} size={20} />}
+        icon={<Icon name={playing ? "pause" : "play_arrow"} size={24} />}
         onClick={() => setPlaying((v) => !v)}
       />
     </div>

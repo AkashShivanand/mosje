@@ -22,14 +22,18 @@
 @layer components {
   /* ============================================================================
      MoSJE / SAMAVESH — Toast
-     Transient notifications, bottom-right, auto-dismiss.
+     Transient notifications, bottom-right. Success/info auto-dismiss;
+     error/warning persist until dismissed.
      ============================================================================ */
 
   .ds-toast__viewport {
     position: fixed;
     bottom: var(--sa-stack-24);
     right: var(--sa-inline-24);
-    z-index: var(--sa-z-dropdown);
+    /* The TOAST rung (700): above Modal (popover rung, 600), so a save
+       confirmation fired from inside a dialog is readable while the dialog is
+       open. It sat on the dropdown rung (100), behind every dialog's scrim. */
+    z-index: var(--sa-z-toast);
     display: flex;
     flex-direction: column;
     gap: var(--sa-stack-8);

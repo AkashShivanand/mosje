@@ -54,6 +54,57 @@
     height: 100%;
   }
 
+  /* No subject photograph: the band alone, at the photograph's 1920:280 so the title
+     and the overlapping tab bar sit exactly where they would over a picture. Only when
+     the height is not fixed — with a fixed height (Archives, 250px) the ratio would
+     size the WIDTH instead, 1714px, and scroll the page sideways. */
+  [data-design="dbim"] .db-hero__banner--ratio {
+    width: 100%;
+    aspect-ratio: 1920 / 280;
+    min-height: 60px;
+  }
+
+  [data-design="dbim"] .db-hero__banner--band::before {
+    content: none;
+  }
+
+  [data-design="dbim"] .db-hero__photo {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* Below 768 the band is only as tall as its title, which would stand over the
+     photograph's light areas; the photograph is decorative, so the band stays the
+     key colour there and the title keeps its contrast. */
+  @media (max-width: 767px) {
+    [data-design="dbim"] .db-hero__banner--crop .db-hero__photo {
+      display: none;
+    }
+  }
+
+  /* A photograph of any shape (DbimPage heroCrop) — an organisation's own banner,
+     usually 4:3 and about 1000px wide. Spread across the whole 1920:280 band it keeps
+     a 7:1 strip (faces cut at the eyes) and is enlarged twofold; on the band's right
+     half it keeps a 3:1 frame at its own size, and fades into the key colour where
+     the title stands. From 768 only (below it the band shows no photograph). */
+  @media (min-width: 768px) {
+    [data-design="dbim"] .db-hero__banner--crop {
+      aspect-ratio: 1920 / 280;
+      overflow: hidden;
+    }
+
+    [data-design="dbim"] .db-hero__banner--crop .db-hero__photo {
+      left: auto;
+      width: 50%;
+      /* The fade is a mask: only its alpha counts, so the key colour stands in for opaque. */
+      mask-image: linear-gradient(90deg, transparent, var(--sa-color-primaryScale-800) 40%);
+    }
+
+    [data-design="dbim"] .db-hero__banner--crop::before {
+      display: none;
+    }
+  }
+
   [data-design="dbim"] .db-hero__banner::before {
     position: absolute;
     inset: 0;
@@ -119,6 +170,42 @@
     overflow-wrap: break-word;
   }
 
+  /* A page's one action on the title's line, at the trailing edge (`DbimPage` action). */
+  [data-design="dbim"] .db-hero__titlerow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-stack-16);
+  }
+
+  [data-design="dbim"] .db-hero__action { flex: none; }
+
+  /* With an action, the text box is exactly the container's content width, so the action meets
+     the content's trailing edge. The box is placed against the full-width banner, so its width is
+     the container's step (the .db-container ladder above) less the container's 7.5px gutters. */
+  [data-design="dbim"] .db-hero__text:has(.db-hero__titlerow) { width: calc(100% - 15px); }
+
+  @media (min-width: 576px) {
+    [data-design="dbim"] .db-hero__text:has(.db-hero__titlerow) { width: calc(540px - 15px); }
+  }
+
+  @media (min-width: 768px) {
+    [data-design="dbim"] .db-hero__text:has(.db-hero__titlerow) { width: calc(720px - 15px); }
+  }
+
+  @media (min-width: 992px) {
+    [data-design="dbim"] .db-hero__text:has(.db-hero__titlerow) { width: calc(960px - 15px); }
+  }
+
+  @media (min-width: 1200px) {
+    [data-design="dbim"] .db-hero__text:has(.db-hero__titlerow) { width: calc(1140px - 15px); }
+  }
+
+  @media (min-width: 1400px) {
+    [data-design="dbim"] .db-hero__text:has(.db-hero__titlerow) { width: calc(1320px - 15px); }
+  }
+
   /* ── Sub-tab bar: overlaps the banner's foot by 39px, hangs 30px below it ── */
   [data-design="dbim"] .db-tabs {
     position: absolute;
@@ -164,11 +251,12 @@
   }
 
   [data-design="dbim"] .db-tabs__link {
-    position: relative;
-    display: block;
+    display: flex;
+    gap: var(--sa-inline-4);
+    align-items: center;
     padding: 5px 10px;
     font-size: 1.25rem; /* 20px */
-    font-weight: var(--sa-font-weight-regular);
+    font-weight: var(--sa-font-weight-medium); /* Heading 3: Bold / Semi Bold / Medium (Table 3) */
     line-height: normal;
     letter-spacing: -0.1px;
     color: var(--sa-color-neutralScale-0);
@@ -176,19 +264,23 @@
     white-space: nowrap;
   }
 
+  /* The active tab's grip sits INSIDE the tab, in flow before the label. It used to
+     hang at left:-8px in a 16px margin outside the tab's own box — the construction
+     that ran "Terms of Use" into "Privacy Policy" in the Figma handoff, where the
+     margin did not travel with the tab. Same place on screen, 12 + 4 = 16px. Bold is
+     not width-reserved: a tab here is a page link, never re-selected in place. */
   [data-design="dbim"] .db-tabs__link.is-active {
-    margin-left: var(--sa-padding-16);
     font-weight: var(--sa-font-weight-bold);
   }
 
   /* The reference's six-dot drag-indicator glyph (its own SVG, used as a mask so
      the text colour paints it). */
   [data-design="dbim"] .db-tabs__link.is-active::before {
-    position: absolute;
-    top: 4px;
-    left: -8px;
+    flex: none;
     width: 12px;
     height: 28px;
+    /* 1px taller than the label's line; let it overhang the padding, not grow the bar */
+    margin-block: -1px;
     content: "";
     background-color: currentColor;
     mask: url("data:image/svg+xml,%3Csvg width='12' height='28' viewBox='0 0 12 28' xmlns='http://www.w3.org/2000/svg'%3E%3Cg%3E%3Ccircle cx='10.178' cy='3.068' r='1.822'/%3E%3Ccircle cx='10.178' cy='10.356' r='1.822'/%3E%3Ccircle cx='10.178' cy='17.644' r='1.822'/%3E%3Ccircle cx='10.178' cy='24.932' r='1.822'/%3E%3Ccircle cx='2.89' cy='3.068' r='1.822'/%3E%3Ccircle cx='2.89' cy='10.356' r='1.822'/%3E%3Ccircle cx='2.89' cy='17.644' r='1.822'/%3E%3Ccircle cx='2.89' cy='24.932' r='1.822'/%3E%3C/g%3E%3C/svg%3E") no-repeat center / contain;
@@ -271,8 +363,38 @@
       padding-inline: 10px;
     }
 
+    /* The banner grows with its title, as the handoff's phone Page Hero does: the
+       photograph fills behind, the text sits in flow at the foot with 12px above and
+       below. A 24px title (Table 4) runs to three lines on a long scheme name, which
+       an absolutely placed block pushed out of the top of a 60px band. */
+    [data-design="dbim"] .db-hero__banner {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      min-height: 60px;
+    }
+
+    [data-design="dbim"] .db-hero__img {
+      position: absolute;
+      inset: 0;
+      height: 100%;
+    }
+
+    /* The band hugs its text here, as the photograph's banner does — no ratio. */
+    [data-design="dbim"] .db-hero__banner--ratio {
+      aspect-ratio: auto;
+    }
+
+    [data-design="dbim"] .db-hero__container {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+    }
+
     [data-design="dbim"] .db-hero__text {
-      left: 20px;
+      position: static;
+      width: auto;
+      padding-block: var(--sa-padding-12);
     }
 
     [data-design="dbim"] .db-crumbs {
@@ -280,21 +402,16 @@
       line-height: 1rem;
     }
 
+    /* No size here: --db-fs-h1 is already Table 4's 24px below 992. The reference
+       set its phone title at 15px, which is off DBIM 3.0's mobile scale (§4.3.2). */
     [data-design="dbim"] .db-hero__title {
-      font-size: 0.9375rem; /* 15px */
-      line-height: 1.4;
+      line-height: 2rem; /* 32px, the handoff's phone H1 */
     }
   }
 
   @media (max-width: 575px) {
     [data-design="dbim"] .db-tabs__bar {
       border-radius: 0;
-    }
-  }
-
-  @media (max-width: 474px) {
-    [data-design="dbim"] .db-hero__text {
-      bottom: 8px;
     }
   }
 }

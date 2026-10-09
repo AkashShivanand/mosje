@@ -42,8 +42,7 @@
     font-weight: 600;
     line-height: normal;
     letter-spacing: 0.6px;
-    text-transform: uppercase;
-    color: var(--sa-color-text-muted);
+    color: var(--sa-color-text-muted); /* a date, DD MMM YYYY — never in capitals */
   }
 
   [data-design="dbim"] .db-min-upper {
@@ -92,15 +91,81 @@
     color: var(--sa-color-primaryScale-800);
   }
 
+  /* About Us's side box: the vision, then its caption, as MeitY's `.visionbox` sets them. */
+  [data-design="dbim"] .db-min-vision .db-min-vision__label {
+    margin: var(--sa-stack-24) 0 0;
+    font-size: var(--db-fs-p);
+    font-weight: var(--sa-font-weight-regular);
+    color: var(--sa-color-text-default);
+  }
+
+  /* What the Department has yet to supply (AboutBody.tsx, PENDING): muted words in a
+     dashed outline, so the gap reads as a gap and cannot be mistaken for content. */
+  [data-design="dbim"] .db-min-pending {
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    border: 2px dashed var(--sa-color-status-warning);
+    border-radius: var(--sa-shape-8);
+    color: var(--sa-color-text-muted);
+  }
+
+  [data-design="dbim"] .db-min-vision p.db-min-pending {
+    color: var(--sa-color-text-muted);
+  }
+
+  /* Objectives — MeitY's `.objectivebox`: numbered light-blue cards, three across. */
+  [data-design="dbim"] .db-min-rich ol.db-min-objectives {
+    display: grid;
+    gap: var(--sa-stack-16);
+    margin: 0 0 10px;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 768px) {
+    [data-design="dbim"] .db-min-rich ol.db-min-objectives {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  [data-design="dbim"] .db-min-objective {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-12);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-color-primaryScale-100);
+  }
+
+  [data-design="dbim"] .db-min-objective__n {
+    font-size: 1rem;
+    font-weight: var(--sa-font-weight-semibold);
+    line-height: 1.5;
+    color: var(--sa-color-primaryScale-800);
+  }
+
+  [data-design="dbim"] .db-min-objective .db-min-pending {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  [data-design="dbim"] .db-min-rich .db-min-note {
+    color: var(--sa-color-text-muted);
+  }
+
+  [data-design="dbim"] .db-min-rich > section + section {
+    margin-top: var(--sa-stack-24);
+  }
+
   [data-design="dbim"] .db-min-rich {
     min-width: 0;
-    text-align: justify;
+    text-align: left; /* DBIM 3.0 §4.1.1 i: body text is left-aligned. The reference justified it. */
   }
 
   [data-design="dbim"] .db-min-rich h2 {
     margin: 0 0 10px;
     font-size: var(--db-fs-h2);
-    font-weight: 400;
+    font-weight: var(--sa-font-weight-medium); /* Heading 2: Bold / Semi Bold / Medium (Table 3) */
     line-height: normal;
     letter-spacing: -0.12px;
     color: var(--sa-color-primaryScale-800);
@@ -151,7 +216,7 @@
   }
 
   [data-design="dbim"] .db-min-rich a:not([class]) {
-    color: var(--sa-color-primaryScale-600);
+    color: var(--sa-text-link-brand-default); /* the key colour: DBIM §2.2 hyperlink */
     text-decoration: underline;
   }
 
@@ -216,7 +281,7 @@
   }
 
   [data-design="dbim"] .db-min-docrow__title .material-symbols-rounded,
-  [data-design="dbim"] .db-min-docrow__size .material-symbols-rounded {
+  [data-design="dbim"] .db-min-docrow__size .db-icon {
     color: var(--sa-color-primaryScale-800);
   }
 
@@ -299,7 +364,14 @@
     background: var(--sa-color-primaryScale-100);
   }
 
-  [data-design="dbim"] .db-min-chart__list {
+  /* The chart's three levels. Every connector is 1px neutral-400, drawn behind the
+     cards (which sit at z-index 1), so a line runs from card to card and never over one. */
+  [data-design="dbim"] .db-min-chart__levels {
+    --db-chart-node: 320px; /* the reference's card width */
+    --db-chart-gap: 24px; /* between the two Ministers of State, as the reference tree draws them */
+    --db-chart-step: 140px; /* from the card above to the portraits below */
+    --db-chart-bar: 34px; /* the bar sits this far above the lower portraits */
+    --db-chart-half: 60px; /* the portrait's upper half, above each card */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -308,24 +380,77 @@
     list-style: none;
   }
 
-  [data-design="dbim"] .db-min-chart__node {
+  [data-design="dbim"] .db-min-chart__level {
     position: relative;
-    width: 320px;
-    padding-top: 60px; /* the portrait's upper half */
   }
 
-  [data-design="dbim"] .db-min-chart__node + .db-min-chart__node {
-    margin-top: 137px; /* card tops 350 apart: 350 − 153 card − 60 */
+  [data-design="dbim"] .db-min-chart__level + .db-min-chart__level {
+    margin-top: var(--db-chart-step);
   }
 
-  [data-design="dbim"] .db-min-chart__node + .db-min-chart__node::before {
+  /* the trunk down from the level above, into the top of this level's card */
+  [data-design="dbim"] .db-min-chart__level + .db-min-chart__level::before {
     content: "";
     position: absolute;
-    top: -137px;
+    top: calc(-1 * var(--db-chart-step));
     left: 50%;
     width: 1px;
-    height: 197px;
+    height: calc(var(--db-chart-step) + var(--db-chart-half));
     background: var(--sa-color-neutralScale-400);
+  }
+
+  [data-design="dbim"] .db-min-chart__row {
+    position: relative;
+    display: flex;
+    gap: var(--db-chart-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-min-chart__node {
+    position: relative;
+    display: flex;
+    width: var(--db-chart-node);
+    padding-top: var(--db-chart-half);
+  }
+
+  [data-design="dbim"] .db-min-chart__node > .db-min-profile {
+    flex: 1;
+  }
+
+  /* Peers: the trunk stops at the bar, which spans the cards' centres just above their
+     headshots, and a drop runs from it to each card (the reference tree). */
+  [data-design="dbim"] .db-min-chart__level + .db-min-chart__level--peers::before {
+    height: calc(var(--db-chart-step) - var(--db-chart-bar));
+  }
+
+  [data-design="dbim"] .db-min-chart__level--peers .db-min-chart__row::before,
+  [data-design="dbim"] .db-min-chart__level--peers:not(:last-child) .db-min-chart__row::after,
+  [data-design="dbim"] .db-min-chart__level--peers .db-min-chart__node::before {
+    content: "";
+    position: absolute;
+    top: calc(-1 * var(--db-chart-bar));
+    background: var(--sa-color-neutralScale-400);
+  }
+
+  [data-design="dbim"] .db-min-chart__level--peers .db-min-chart__row::before {
+    left: calc(var(--db-chart-node) / 2);
+    right: calc(var(--db-chart-node) / 2);
+    height: 1px;
+  }
+
+  /* the trunk carries on between the peers only where a level hangs below them */
+  [data-design="dbim"] .db-min-chart__level--peers:not(:last-child) .db-min-chart__row::after {
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+  }
+
+  [data-design="dbim"] .db-min-chart__level--peers .db-min-chart__node::before {
+    left: 50%;
+    width: 1px;
+    height: calc(var(--db-chart-bar) + var(--db-chart-half));
   }
 
   [data-design="dbim"] .db-min-profile {
@@ -391,22 +516,14 @@
       padding: 15px 5px;
     }
 
-    [data-design="dbim"] .db-min-chart__list {
+    [data-design="dbim"] .db-min-chart__levels {
+      /* two cards and their gap fit a 320px phone: 156 wide where there is room */
+      --db-chart-node: min(156px, calc(50vw - 28px));
+      --db-chart-gap: 16px;
+      --db-chart-step: 64px;
+      --db-chart-bar: 16px;
+      --db-chart-half: 32.5px; /* half the 65px portrait */
       padding: 60px 0 6px;
-    }
-
-    [data-design="dbim"] .db-min-chart__node {
-      width: 156px;
-      padding-top: 32.5px; /* half the 65px portrait */
-    }
-
-    [data-design="dbim"] .db-min-chart__node + .db-min-chart__node {
-      margin-top: 85.5px; /* card tops 240 apart */
-    }
-
-    [data-design="dbim"] .db-min-chart__node + .db-min-chart__node::before {
-      top: -85.5px;
-      height: 118px;
     }
 
     [data-design="dbim"] .db-min-profile {
@@ -436,9 +553,8 @@
     background: var(--sa-color-primaryScale-600);
     color: var(--sa-color-neutralScale-0);
     font-size: var(--db-fs-p);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-bold); /* Paragraph 1 Bold, sentence case: an office's title (§4.1.1 ii) */
     line-height: normal;
-    text-transform: uppercase;
   }
 
   [data-design="dbim"] :is(.db-min-office__head, .db-min-office__row) {
@@ -584,6 +700,7 @@
   [data-design="dbim"] .db-min-card__desc p {
     margin: 0;
     font-size: var(--db-fs-p);
+    color: var(--sa-color-text-muted); /* the description under the title, in Grey 03 */
   }
 
   [data-design="dbim"] .db-min-card__foot {
@@ -630,7 +747,18 @@
   [data-design="dbim"] .db-min-card--organisation .db-min-card__head {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 10px; /* MeitY's organisation-card-title; off the inline scale */
     min-height: 115px;
+  }
+
+  /* MeitY's mark: 84 tall, its own width up to 191. The registry's marks are square. */
+  [data-design="dbim"] .db-min-card__logo {
+    flex-shrink: 0;
+    width: auto;
+    max-width: 191px;
+    height: 84px;
+    object-fit: contain;
   }
 
   [data-design="dbim"] .db-min-card--organisation .db-min-card__title {

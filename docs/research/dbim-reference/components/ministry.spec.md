@@ -1,4 +1,4 @@
-# Ministry — About Us, Our Team, Our Division, Our Organisation, Our Performance, Directory
+# Ministry — About Us, Our Team, Our Division, Our Organisation, Our Scheme Portals, Our Performance, Directory
 
 Reference stems: `ministry`, `ministry_our_team`, `ministry_our_division`, `ministry_our_organisation`,
 `ministry_our_performance`, `ministry_directory`. Values are computed at 1440 (the reference's
@@ -29,7 +29,7 @@ calc((100% + 30px) / 3 - 30px) 1fr; gap: 30px`. One column below 992.
 |---|---|---|
 | Summary box `.visionbox` | bg `#EBEAEA` (neutral-100), radius 10, padding 32; `position: sticky; top: 140px` ≥992 | same; radius 10 is off-scale → literal with comment; `--sa-padding-32` |
 | Summary text | p 14/21 (`--db-fs-p`), ink | same |
-| Rich text `.aboutcontent` | `text-align: justify` | same |
+| Rich text `.aboutcontent` | `text-align: justify` | `left` — DBIM 3.0 §4.1.1 i requires body text left-aligned (checklist 12) |
 | h2 | 20px (`--db-fs-h2`), weight 400, line-height normal, ls -0.12px, primary-800, mb 10 | same |
 | p | 14/21, mb 10 | `--db-fs-p`, line-height 1.5 |
 | strong | 700 | 700 |
@@ -38,15 +38,22 @@ calc((100% + 30px) / 3 - 30px) 1fr; gap: 30px`. One column below 992.
 | Document row `.box` | flex, padding 16, mb 16, border 1px neutral-100, radius 8; cols 6/2/2/2: `draft` glyph 24 primary-800 + title 14px · date `small.ptype` 10px/600 ls .6 `#3D4043` · pdf mark 18 + size 10px/600 primary-800 · "VIEW" `a.download-btn` 40 tall, padding 8 12, gap 8, 12px/600 ls .12 uppercase, bg primary-100, fg primary-800, radius 4, glyph `visibility` | `DocRow` — same grid, glyphs from `Icon`; the file size is left out where the register does not publish one |
 | Link row | the same box with the arrow button on the right | `details` whose `summary` is drawn as that row; opening it shows the table under it |
 
-**Content.** Summary = the Department's one-sentence description of itself (as the redesign's
-About page leads with). Body = the Department's About Us text, dosje.gov.in/about-us/ as the
-redesign transcribed and corrected it (`app/website/about-us/page.tsx`, read 21–22 Sep 2026),
-held in `lib/website-dbim/ministry.ts` (`DBIM_ABOUT`). Sections in the reference's order:
-Brief Overview · Brief History · Subjects Allocated · Organisational Set-Up (with the Bureau
-Head-Wise Allocation of Work table from `app/website/about-us/reference-tables.ts`) ·
-Organisation Chart (PDF row) · Citizen Charter (`getDocument("citizen-charter")`) · Former
-Secretaries (expanding row → table) · Sector-Wise Detailed Information (expanding row → the
-statistical tables, grouped). The Secretary is named from `getDepartmentSecretary()`.
+**Content — revised 29 Sep 2026 to MeitY's About Us (meity.gov.in/ministry, the DBIM benchmark)
+and the DBIM Figma file's About Us frame.** Side box = the Department's **Vision** (then the caption
+"Vision Statement"). Body, in MeitY's order: an introduction (the Department's own "entrusted with…"
+sentence and its ten target groups) · **Mission** · **Objectives** as numbered `brand/5` cards, three
+across (MeitY's `.objectivebox`) · **Functions** = the Subjects Allocated under the Allocation of
+Business Rules, 1961, as a numbered list with (i)–(v) and the note · Organisational Set-Up · the
+Citizen Charter and Organisation Chart document rows · Brief History, Bureau Head-Wise Allocation of
+Work, Former Secretaries and Sector-Wise Detailed Information as rows that open in place.
+
+**Pending from the Department:** the Vision, the Mission and the Objectives. DBIM 3.0 §A.5.1.1 says
+About Us "should" give the vision, mission and objectives, and "must" set out objectives and
+functions as a list (checklist F.2 item 11), but dosje.gov.in publishes none (its
+"Vision & Mission" link opens About Us). Each renders as a marked placeholder
+(`.db-min-pending`, `data-pending="vision|mission|objectives"`), never as invented text.
+
+Document dates print DD.MM.YYYY (checklist item 27); the reference printed YYYY.MM.DD.
 
 Responsive: <992 the box sits above the text, not sticky (390 shot).
 
@@ -77,7 +84,15 @@ breaks out of the container to 30px from the viewport edge (10px ≤767).
 | Address | 14px | same |
 | <992 | each cell becomes label (`small`, uppercase, 33% wide) + value | same |
 
-**Content.** Ministers: `DBIM_PEOPLE.ministers` (portraits fetched from the reference). Offices:
+**Chart hierarchy (DBIM 3.0 §A.5.1.2, checklist 13; the Department's reference tree, 29 Sep 2026).**
+The Union Minister above; the two Ministers of State side by side beneath, 24px apart. The trunk
+drops 106px from the top card to a bar 34px above the lower headshots, and a drop runs from the bar
+into each headshot. No Secretary level — the reference tree does not draw one; the Secretary heads the
+first office table. Headshots are round on white (DBIM 3.0 §6.1.4 i). The reference's single vertical
+chain put one Minister of State above the other.
+
+**Content.** Ministers: `ABOUT_US.ministers` (lib/website-shared/home.ts). Office order is the
+reference's except that AS & FA follows the Additional Secretary (seniority, checklist 30). Offices:
 the Department's register (`getOfficialsByOrganisation("MoSJE")`, 162 records), grouped by the
 register's `group`, in the reference's office order; an office the reference does not list goes
 after, alphabetically. Inside an office: the head first (a post that is not a staff post), then
@@ -111,24 +126,70 @@ exist only as JSX in the redesign's page files and are not duplicated here.
 
 ## 4. `/ministry/our-organisation` and `/ministry/our-organisation/[slug]`
 
-**Decision:** our registry DOES type its organisations (`category`: commissions · corporations
-· foundations · schemes), so the page follows the reference — one card per type, opening a
+**Decision (revised 28 Sep 2026, benchmarked against meity.gov.in/ministry/our-organisation):**
+one flat list of every organisation, with a **Category** select (the registry's type labels:
+Commission · Corporations · Foundation & Autonomous Bodies) beside search and per-page, and
+each body's mark at the right of its title box — as MeitY draws it. The reference build's
+type cards made a reader open a second page to see any body at all; the per-type addresses
+(`/ministry/our-organisation/<type>`) redirect to the list. The fourth type, `schemes`, is its
+own tab (§4a).
+
+~~Superseded:~~ the page used to follow the reference — one card per type, opening a
 listing of that type's organisations; each organisation card opens its detail page. One
 dynamic segment serves both: a type key renders the listing, an organisation id the detail.
 
 | Part | Reference | Ours |
 |---|---|---|
 | Card `.organisation-card` | border 1px neutral-100, radius 8, padding 16 32, gap 8 | same |
-| Title box | min-height 115, title centred vertically | same |
+| Title box | min-height 115, title centred vertically | same; `justify-content: space-between`, gap 10 |
+| Mark (MeitY) | `img` height 84, width auto, max-width 191, right of the title; above it < 992 | `next/image` 84, decorative (`alt=""` — the name beside it says whose); none where the registry's mark is the National Emblem stand-in (NHAA) |
 | Title `p.h3` | 16px (`--db-fs-h3`) / 500 / 24, `#214AAB` (primary-600) | `h2` |
 | Description | min-height 130; p 14/21 | same, clamped to 4 lines as the reference truncates |
 | Arrow | right-aligned 40×40 | same |
 
-**Content.** Type card description = the names of the organisations in it, from the registry
-(no invented prose). Organisation detail = `getOrganisation(id)` from `@/lib/website/content`:
-prose sections only (`kindOf()`), cleaned with `cleanHtml()`, section headings as blue h2s,
-summary box = the first section's lead paragraph, which then leaves the body so it is said once. NHAA has no ingested record; its card
-opens the helpline portal.
+**Content.** Organisation detail = `getOrganisation(id)` from `@/lib/website/content`:
+prose sections only (`kindOf()`) **from the body's first "About…" section onward** — what the
+live page shows above it is a ticker, a banner or a counter strip, not prose — cleaned with
+`cleanHtml()`, section headings as blue h2s. Summary box and card description = the body's
+lead from `content/website/organisation-details.ts` (the one the New design's organisation
+pages use), else the "About…" section's first paragraph, which then leaves the body so it is
+said once. Cards take its first sentence.
+
+## 4b. An organisation's page, from its live page (29 Sep 2026)
+
+**Superseding the prose-only detail in §4 for every body the live site has a page for.**
+The reference has no organisation detail design, so the page is composed from this
+spec's own parts. Data: `lib/website-shared/organisation-profiles.ts` (snapshot of
+dosje.gov.in/organisation/<id>/); shaping: `lib/website-dbim/organisation.ts`; view:
+`components/website-dbim/ministry/OrganisationProfile.tsx` + `organisation.css`.
+
+| Part | Built from |
+|---|---|
+| Side column: mark (84 high, as the list card), standing, statement, figures, the live banner's buttons | §1's `.visionbox` — `DbimSideColumn` (`layout/SideColumn.tsx`), shared with the scheme page as Figma's Side Column is one component (30 Sep 2026) |
+| On This Page index + the live index's off-page links, sticky ≥992, a wrap of buttons below | new — `DbimSideColumn`'s index, `.db-side__index` |
+| Each live section, h2 + its "Know More". The live banner photograph is not here: it is the page banner's photograph (DbimPage `heroCrop`) — on the band's right half from 768, fading into the key colour behind the title; none below 768 (30 Sep 2026) | §1 rich text |
+| Leadership | §2's profile card, three across; tenure and View Profile added |
+| Scheme cards | §3's card, with the scheme's group above its name |
+| Activity tiles (NCSC, DAIC) | §3's card; the live clip-art replaced by a Material Symbol in a primary-100 circle (the Department's review, 29 Sep 2026) |
+| Reports, resources, notices | §1's document row, DD.MM.YYYY. Two or more sections that hold only a document list become ONE "Documents & Downloads" section with a tab each (the Key Offerings tab set), where the first stood; each "View All" moves into its tab; a lone list keeps its heading (`groupDocuments`, the handoff file's Organisations page, 30 Sep 2026) |
+| Latest Updates | the home page's Key Offerings tab set (Figure 56); two by two below 768 |
+| State offices (>4 links) / projects (≤4) | outlined buttons / §1's link rows |
+| Gallery, social accounts, contact | new; contact lines ending in numbers split purpose \| `tel:` numbers |
+
+Every href goes through `lib/website-dbim/live-links.ts`; a live page link opens the
+estate's copy under `/ministry/our-organisation/<id>/…` (own pages, `documents/<register>`,
+`events`, `gallery`, `directory`, `directory/<official>`) or `/connect/events/<slug>`.
+What was left out and why: `docs/audit/dbim-organisation-pages.md`.
+
+## 4a. `/ministry/our-scheme-portals` and `/ministry/our-scheme-portals/[slug]`
+
+The Department's addition to DBIM's second level (28 Sep 2026). The scheme portals left the
+organisations list on the New design's home page and masthead; this design follows. Same
+card grid and detail layout as §4. Portals and order: `schemePortals()` in
+`lib/website-shared/organisations.ts` (shared with the New home page). The detail page ends in
+a "Portal" link row to the registry's `portalHref` (also read by the masthead's Scheme
+Portals column). `/ministry/our-organisation/schemes` and
+`/ministry/our-organisation/<scheme id>` redirect (308) here.
 
 ## 5. `/ministry/our-performance`
 
@@ -141,9 +202,14 @@ opens the helpline portal.
 | Title | 16px / 500 / 19.2, mt 5 | same |
 | Date `small.ptype` | 10px/600 ls .6 uppercase `#3D4043` | `--sa-color-text-muted` |
 
-**Content.** The Department's dashboards: the Social Audit MIS portal (`DBIM_SOCIAL_AUDIT`,
-date 24.10.2025 as the reference publishes it) and the PM-AJAY dashboard of this website
-(`/dashboard`). No date is drawn where none is published.
+**Content.** The Department's own dashboards, not a scheme's (the Department's instruction,
+29 Sep 2026): the live site's Beneficiary Dashboard (dosje.gov.in/dashboard/), then the Social
+Audit MIS portal (`DBIM_SOCIAL_AUDIT`, date 24.10.2025 as the reference publishes it). No date
+is drawn where none is published.
+
+The PM-AJAY dashboard is the scheme's: it is drawn on the PM-AJAY page under Our Scheme Portals
+(§4a), below the page's text, full width (`components/website-dbim/dashboard/PmajayDashboard.tsx`).
+`/dashboard` — on dosje.gov.in, the Beneficiary Dashboard — redirects (308) to Our Performance.
 
 ## 6. `/ministry/directory`
 

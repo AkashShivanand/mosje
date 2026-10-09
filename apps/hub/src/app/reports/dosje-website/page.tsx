@@ -28,6 +28,7 @@ import { HubSiteHeader } from "@/components/hub-site-header";
 import { HubFooter } from "@/components/site-footer";
 import { isIssuesEditor } from "@/lib/admin/auth";
 import { ISSUES, META } from "@/lib/website-issues/data";
+import { REPORTS } from "@/lib/website-issues/sources";
 import { applyFilters, filterHref, hasFilters, parseFilters, statusOf, STANDARD_FAMILIES } from "@/lib/website-issues/filters";
 import { readAllStatuses, statusStoreConfigured } from "@/lib/website-issues/status-store";
 import { SCOPES, SEVERITIES, STATUSES, type IssueStatus, type StatusRecord } from "@/lib/website-issues/types";
@@ -50,6 +51,17 @@ const VIEWS = [
   { key: "duplicates", label: "Duplicates" },
   { key: "resolved", label: "Resolved & Withdrawn" },
 ] as const;
+
+/**
+ * The Duplicates tab runs three different checks whose remedies have nothing in
+ * common — delete a page, delete a file, agree one spelling. 824 rows of the
+ * three interleaved is a list nobody reads to the end, so each kind gets a
+ * one-click search, counted from the data rather than typed in.
+ */
+const DUP_KINDS = [...new Map(META.duplicates.map((d) => [d[0], d[0]])).keys()].map((kind) => ({
+  label: `${kind} (${META.duplicates.filter((d) => d[0] === kind).length})`,
+  q: kind,
+}));
 
 const CATEGORIES = [...new Set(ISSUES.map((i) => i.category))].sort();
 const OWNERS = [...new Set(ISSUES.map((i) => i.owner))].sort();
@@ -191,8 +203,12 @@ export default async function WebsiteIssuesPage({ searchParams }: { searchParams
               q={f.q}
               view="links"
               render={(r) => [
-                <Link key="i" href={`${BASE}/${r[0]}`} className="font-mono text-label-1 text-link-brand-default hover:underline">{r[0]}</Link>,
-                <a key="p" href={`https://www.dosje.gov.in${r[1] || "/"}`} className="text-link-brand-default hover:underline">{r[1] || "/"}</a>,
+                <Link key="i" href={`${BASE}/${r[0]}`} className="font-mono text-label-1 text-link-brand-default underline">{r[0]}</Link>,
+                r[1] ? (
+                  <a key="p" href={`https://www.dosje.gov.in${r[1]}`} className="break-all text-link-brand-default underline">{r[1]}</a>
+                ) : (
+                  <span key="p" className="text-body-3 text-text-neutral-subtle">Page not recorded</span>
+                ),
                 r[2],
                 <span key="b" className="break-all text-body-3">{r[3]}</span>,
                 r[4],
@@ -201,7 +217,8 @@ export default async function WebsiteIssuesPage({ searchParams }: { searchParams
           ) : view === "duplicates" ? (
             <SimpleList
               title="Duplicates"
-              description="Pages, files and titles published more than once. Rows in the same group are copies of each other."
+              description="Pages, files and titles published more than once. Rows in the same group are copies of each other — open a group to see them together."
+              chips={DUP_KINDS}
               head={["Type", "Group", "Address", "Title", "Issue"]}
               rows={META.duplicates.map((d) => [d[0], d[1], d[2], d[3], d[4]])}
               page={f.page}
@@ -209,10 +226,21 @@ export default async function WebsiteIssuesPage({ searchParams }: { searchParams
               view="duplicates"
               render={(r) => [
                 r[0],
-                <span key="g" className="font-mono">{r[1]}</span>,
-                <a key="a" href={(r[2] ?? "").startsWith("/") ? `https://www.dosje.gov.in${r[2]}` : r[2]} className="break-all text-link-brand-default hover:underline">{r[2]}</a>,
+                <Link key="g" href={`${BASE}?view=duplicates&q=${encodeURIComponent(r[1] ?? "")}`} className="font-mono text-link-brand-default underline">{r[1]}</Link>,
+                r[2] ? (
+                  <span key="a" className="break-all">
+                    {r[2].split(", ").map((path, n) => (
+                      <span key={path}>
+                        {n > 0 ? ", " : null}
+                        <a href={path.startsWith("/") ? `https://www.dosje.gov.in${path}` : path} className="text-link-brand-default underline">{path}</a>
+                      </span>
+                    ))}
+                  </span>
+                ) : (
+                  <span key="a" className="text-body-3 text-text-neutral-subtle">Not published under its own address</span>
+                ),
                 r[3],
-                <Link key="i" href={`${BASE}/${r[4]}`} className="font-mono text-label-1 text-link-brand-default hover:underline">{r[4]}</Link>,
+                <Link key="i" href={`${BASE}/${r[4]}`} className="font-mono text-label-1 text-link-brand-default underline">{r[4]}</Link>,
               ]}
             />
           ) : (
@@ -280,10 +308,24 @@ function IssuesView({
             <Select name={key} defaultValue={f[key]} options={opts(xs, all)} />
           </label>
         ))}
+        {/*
+          Its own control rather than a row in the loop above: the others filter on a
+          value that is also its label, while a source filters on the report KEY and
+          shows the report's name. "levithan-gigw-2026-10" is not a thing to put in
+          front of a reader.
+        */}
+        <label className="flex flex-col gap-1.5 text-label-2 text-ink-muted">
+          Raised by
+          <Select
+            name="source"
+            defaultValue={f.source}
+            options={[{ label: "Any audit", value: "" }, ...REPORTS.map((r) => ({ label: r.label, value: r.key }))]}
+          />
+        </label>
         <div className="flex items-end gap-3 lg:col-span-2">
           <Button type="submit" size="md">Apply Filters</Button>
           {filtered ? (
-            <Link href={BASE} className="text-label-1 text-link-brand-default hover:underline">Clear Filters</Link>
+            <Link href={BASE} className="text-label-1 text-link-brand-default underline">Clear Filters</Link>
           ) : null}
         </div>
       </form>
@@ -349,7 +391,7 @@ function IssuesView({
                       ) : null}
                       <td className="whitespace-nowrap px-4 py-3 font-mono text-label-1 text-ink">{i.id}</td>
                       <td className="px-4 py-3">
-                        <Link href={`${BASE}/${i.id}`} className="font-semibold text-link-brand-default hover:underline">{i.title}</Link>
+                        <Link href={`${BASE}/${i.id}`} className="font-semibold text-link-brand-default underline">{i.title}</Link>
                         <div className="mt-1 text-body-3 text-ink-muted">{i.category} · {i.scope} · {i.reach}</div>
                       </td>
                       <td className="px-4 py-3"><SeverityBadge severity={i.severity} /></td>
@@ -382,6 +424,7 @@ function SimpleList({
   q,
   view,
   render,
+  chips,
 }: {
   title: string;
   description: string;
@@ -391,6 +434,8 @@ function SimpleList({
   q: string;
   view: string;
   render: (r: string[]) => React.ReactNode[];
+  /** One-click searches for the groups this list divides into. */
+  chips?: { label: string; q: string }[];
 }) {
   const words = q.toLowerCase().split(/\s+/).filter(Boolean);
   const matched = words.length ? rows.filter((r) => words.every((w) => r.join(" ").toLowerCase().includes(w))) : rows;
@@ -405,8 +450,25 @@ function SimpleList({
           <Input name="q" type="search" defaultValue={q} placeholder="Page, address, text or issue ID" />
         </label>
         <Button type="submit" size="md">Search</Button>
-        {q ? <Link href={`${BASE}?view=${view}`} className="text-label-1 text-link-brand-default hover:underline">Clear</Link> : null}
+        {q ? <Link href={`${BASE}?view=${view}`} className="text-label-1 text-link-brand-default underline">Clear</Link> : null}
       </form>
+      {chips?.length ? (
+        <nav aria-label={`${title} by kind`} className="flex flex-wrap items-center gap-2">
+          {chips.map((c) => {
+            const on = q.toLowerCase() === c.q.toLowerCase();
+            return (
+              <Link
+                key={c.label}
+                href={on ? `${BASE}?view=${view}` : `${BASE}?view=${view}&q=${encodeURIComponent(c.q)}`}
+                aria-current={on ? "true" : undefined}
+                className={`rounded-full border px-3 py-1 text-label-2 ${on ? "border-border-brand-default bg-bg-brand-subtle text-text-brand-default" : "border-border-neutral-subtle text-text-neutral-subtle hover:border-border-neutral-default"}`}
+              >
+                {c.label}
+              </Link>
+            );
+          })}
+        </nav>
+      ) : null}
       {matched.length === 0 ? (
         <EmptyState title={`Nothing matches “${q}”.`} action={<Button linkAs={Link} href={`${BASE}?view=${view}`} variant="neutral" appearance="outlined" size="sm">Clear Search</Button>} />
       ) : (

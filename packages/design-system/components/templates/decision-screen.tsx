@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { Alert } from "../feedback/alert";
 import { PageHeader } from "../layout/page-header";
 import { Breadcrumb } from "../navigation/breadcrumb";
 import { RadioGroup } from "../forms/control-group";
@@ -35,11 +34,17 @@ export interface DecisionOption {
 
 export interface DecisionScreenProps extends ScreenStateInput {
   breadcrumb?: { label: string; href?: string }[];
+  /**
+   * A single way back, in place of a breadcrumb — a text `Button` with a back
+   * arrow, routed by the app. A decision screen opened from one queue has one
+   * place to return to, and a two-level trail only repeats the page title.
+   */
+  back?: React.ReactNode;
   eyebrow?: React.ReactNode;
   /** The record being decided, named as the register holds it. */
   title: string;
   meta?: React.ReactNode;
-  /** A status Badge, an SLA indicator. */
+  /** A status Badge, an SLA indicator — set on the title's line. */
   status?: React.ReactNode;
   /** @default 1 */
   headingLevel?: 1 | 2;
@@ -62,6 +67,11 @@ export interface DecisionScreenProps extends ScreenStateInput {
   value?: string;
   onChange: (id: string) => void;
 
+  /**
+   * Something the officer must know BEFORE choosing — that they may not sign
+   * this record, say. Set above the verdicts, where it is read first.
+   */
+  notice?: React.ReactNode;
   /** The remarks field. Required by most schemes on anything but an approval. */
   remarks?: React.ReactNode;
   /** Anything else the decision needs — a sanctioned amount, a date. */
@@ -71,7 +81,16 @@ export interface DecisionScreenProps extends ScreenStateInput {
   onSubmit: () => void;
   /** @default "Record Decision" */
   submitLabel?: string;
+  /** An icon before the submit label — a signature mark on a signing action. */
+  submitIcon?: React.ReactNode;
   submitting?: boolean;
+  /**
+   * The chosen verdict cannot be recorded YET, and `notice` or `extras` says
+   * why. A verdict this role may never record is omitted from `options`
+   * instead (see below); this is for a condition the officer can see and that
+   * may change — a certificate not yet found, a rule the record breaks.
+   */
+  submitDisabled?: boolean;
   onCancel?: () => void;
   /** @default "Cancel" */
   cancelLabel?: string;
@@ -105,6 +124,7 @@ export interface DecisionScreenProps extends ScreenStateInput {
  */
 export function DecisionScreen({
   breadcrumb,
+  back,
   eyebrow,
   title,
   meta,
@@ -116,12 +136,15 @@ export function DecisionScreen({
   options,
   value,
   onChange,
+  notice,
   remarks,
   extras,
   errors,
   onSubmit,
   submitLabel = "Record Decision",
+  submitIcon,
   submitting = false,
+  submitDisabled = false,
   onCancel,
   cancelLabel = "Cancel",
   onRetry,
@@ -157,14 +180,15 @@ export function DecisionScreen({
 
   return (
     <div className={cn("sa-screen", className)}>
-      {breadcrumb && breadcrumb.length > 0 ? <Breadcrumb items={breadcrumb} /> : null}
+      {back ? <div className="sa-decision__back">{back}</div> : null}
+      {!back && breadcrumb && breadcrumb.length > 0 ? <Breadcrumb items={breadcrumb} /> : null}
 
       <PageHeader
         as={headingLevel}
         eyebrow={eyebrow}
         title={title}
         meta={meta}
-        actions={status}
+        status={status}
       />
 
       <ScreenBody status={screenStatus} copy={copy} skeleton="detail" onRetry={onRetry}>
@@ -182,6 +206,8 @@ export function DecisionScreen({
               <ErrorSummary errors={errors} headingLevel={headingLevel === 1 ? 3 : 4} />
             ) : null}
 
+            {notice ? <div className="sa-decision__notice">{notice}</div> : null}
+
             <RadioGroup
               name={groupName}
               legend={legend}
@@ -193,24 +219,31 @@ export function DecisionScreen({
               required
             />
 
-            {/* The warning appears with the choice, above the submit, so it is
-                between the officer and the act rather than after it. */}
-            {chosen?.irreversibleNote ? (
-              <Alert status="warning">{chosen.irreversibleNote}</Alert>
-            ) : null}
-
             {remarks ? <div className="sa-decision__remarks">{remarks}</div> : null}
             {extras ? <div className="sa-decision__extras">{extras}</div> : null}
 
+            {/* The consequence sits directly above the action it belongs to, so it
+                is between the officer and the act rather than after it — and it
+                appears only with the verdict that carries it. */}
+            {chosen?.irreversibleNote ? (
+              <p className="sa-decision__note">{chosen.irreversibleNote}</p>
+            ) : null}
+
             <div className="sa-decision__actions">
+              <Button
+                type="button"
+                className="sa-decision__submit"
+                onClick={onSubmit}
+                disabled={submitting || submitDisabled}
+                iconLeft={submitIcon}
+              >
+                {submitting ? "Recording…" : submitLabel}
+              </Button>
               {onCancel ? (
                 <Button type="button" appearance="text" onClick={onCancel}>
                   {cancelLabel}
                 </Button>
               ) : null}
-              <Button type="button" onClick={onSubmit} disabled={submitting}>
-                {submitting ? "Recording…" : submitLabel}
-              </Button>
             </div>
           </section>
         </div>

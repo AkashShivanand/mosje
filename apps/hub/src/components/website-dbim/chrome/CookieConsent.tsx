@@ -49,10 +49,27 @@ export function DbimCookieConsent() {
     return () => window.removeEventListener(EVENT, sync);
   }, []);
 
+  // WCAG 2.2 2.4.11: the sticky bar must not hide the control that has focus. The page
+  // keeps the bar's height clear at the bottom when the browser scrolls focus into view.
+  const bar = React.useRef<HTMLElement>(null);
+  React.useEffect(() => {
+    const el = bar.current;
+    if (!el) return;
+    const root = document.documentElement;
+    const reserve = () => root.style.setProperty("scroll-padding-bottom", `${el.offsetHeight}px`);
+    reserve();
+    const observer = new ResizeObserver(reserve);
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      root.style.removeProperty("scroll-padding-bottom");
+    };
+  }, [choice]);
+
   if (choice !== null) return null;
 
   return (
-    <section className="db-cookie" aria-label="Cookie consent" data-sa-rail-clear="">
+    <section ref={bar} className="db-cookie" aria-label="Cookie consent" data-sa-rail-clear="">
       <div className="db-cookie__text">
         <p className="db-cookie__lead">This website uses cookies to provide a better user experience.</p>
         <p>

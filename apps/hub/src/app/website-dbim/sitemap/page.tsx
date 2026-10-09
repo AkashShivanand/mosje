@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { DbimPage } from "@/components/website-dbim/layout/DbimPage";
 import { DbimSitemapTree } from "@/components/website-dbim/utility/SitemapTree";
-import { DBIM_HEROES } from "@/lib/website-dbim/nav";
 import "@/components/website-dbim/utility/utility.css";
 
 export const metadata: Metadata = {
@@ -11,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <DbimPage spacing="flush" title="Sitemap" crumbs={[{ label: "Sitemap" }]} path="/sitemap" hero={DBIM_HEROES.default}>
+    <DbimPage spacing="flush" title="Sitemap" crumbs={[{ label: "Sitemap" }]} path="/sitemap">
       <div className="db-u-flush">
         <DbimSitemapTree />
       </div>

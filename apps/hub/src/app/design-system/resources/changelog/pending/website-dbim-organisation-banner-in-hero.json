@@ -1,0 +1,4 @@
+{
+  "kind": "Changed",
+  "text": "A DBIM ORGANISATION PAGE'S OWN PHOTOGRAPH SITS IN THE BLUE PAGE BANNER, NOT ABOVE ITS FIRST SECTION. DbimPage gains heroCrop: a photograph of any shape — the organisations' are 4:3, about 1000px wide — goes on the band's right half from 768, fading into the key colour where the title stands; across the whole 1920:280 band it kept a 7:1 strip (faces cut at the eyes) and was enlarged twofold. Below 768 the band shows no photograph, so the title keeps its contrast. The content column now starts with the page's first section. The DBIM Figma file's Page Hero gains Photo = Full width · Right half · None, and the Organisation Detail template uses Right half."
+}

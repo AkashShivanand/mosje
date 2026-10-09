@@ -3,9 +3,9 @@
 import * as React from "react";
 import { ChartFrame, type ChartStateProps } from "./internal/chart-frame";
 import { Legend } from "./internal/legend";
-import { Gridlines, XAxisLabels } from "./internal/axis";
+import { Gridlines, XAxisLabels, shouldRotate } from "./internal/axis";
 import { ChartTooltip, useChartTooltip } from "./internal/tooltip";
-import { linearScale, niceTicks } from "./internal/scales";
+import { linearScale, monotonePath, niceTicks } from "./internal/scales";
 import { seriesColor, categoricalColor, CHART_INK } from "./internal/palette";
 import { formatIndian } from "./internal/format";
 import type { ValueFormat } from "./internal/format";
@@ -23,6 +23,18 @@ export interface LineChartProps extends ChartMultiSeries, ChartStateProps {
   className?: string;
   /** Draw point markers. Defaults to true when ≤ 16 points. */
   showDots?: boolean;
+  /**
+   * How a line joins its points. `smooth` is a monotone curve: it passes through every point
+   * and never overshoots between two, so it cannot draw a peak the figures do not have.
+   * @default "linear"
+   */
+  curve?: "linear" | "smooth";
+  /**
+   * Roughly how many gridlines the value axis aims for. Setting it also ends the axis at
+   * the first step past the highest figure (0–70 for a top value of 61) instead of a rounded-up
+   * range (0–100). Leave it unset for the estate default of about four.
+   */
+  tickCount?: number;
 }
 
 /**
@@ -46,6 +58,8 @@ export function LineChart({
   height = 280,
   className,
   showDots,
+  curve = "linear",
+  tickCount,
   state,
   onRetry,
   filterLabel,
@@ -84,12 +98,16 @@ export function LineChart({
   const colors = series.map((s, i) => seriesColor(s.color, i));
   const known = series.flatMap((s) => s.data.filter((_, i) => !withheldAt(s, i)));
   const rawMax = Math.max(1, ...known);
-  const ticks = niceTicks(0, rawMax);
+  const ticks = niceTicks(0, rawMax, tickCount ?? 4, tickCount !== undefined);
   const vMax = ticks[ticks.length - 1] ?? rawMax;
 
-  const rotate = labels.length > 6 || labels.some((l) => l.length > 8);
-  const padL = 44;
+  // An axis title sits at x=12, rotated; the tick labels end at the gutter's edge. With a
+  // title the gutter widens, or a five-character tick ("2,000") runs under the title.
+  const padL = yLabel ? 60 : 44;
   const padR = 16;
+  const step = (width - padL - padR) / Math.max(1, labels.length - 1);
+  // Short labels thin rather than rotate; long ones rotate only where they would collide.
+  const rotate = shouldRotate(labels, step);
   const padT = 16;
   const padB = rotate ? 54 : 30;
   const plotW = width - padL - padR;
@@ -113,18 +131,23 @@ export function LineChart({
     if (run.length) out.push(run);
     return out;
   };
+  /** One run of known points as a path — straight segments, or the monotone curve. */
+  const runPath = (s: ChartSeries, run: number[]): string => {
+    const pts = run.map((i) => [xAt(i), y(valueAt(s, i) ?? 0)] as const);
+    return curve === "smooth"
+      ? monotonePath(pts)
+      : pts.map(([px, py], k) => `${k === 0 ? "M" : "L"} ${px.toFixed(2)} ${py.toFixed(2)}`).join(" ");
+  };
   const linePath = (s: ChartSeries) =>
     runs(s)
-      .map((run) =>
-        run.map((i, k) => `${k === 0 ? "M" : "L"} ${xAt(i).toFixed(2)} ${y(valueAt(s, i) ?? 0).toFixed(2)}`).join(" "),
-      )
+      .map((run) => runPath(s, run))
       .join(" ");
   const areaPath = (s: ChartSeries) =>
     runs(s)
       .map((run) => {
         const first = run[0] ?? 0;
         const last = run[run.length - 1] ?? 0;
-        const top = run.map((i, k) => `${k === 0 ? "M" : "L"} ${xAt(i).toFixed(2)} ${y(valueAt(s, i) ?? 0).toFixed(2)}`).join(" ");
+        const top = runPath(s, run);
         return `${top} L ${xAt(last).toFixed(2)} ${height - padB} L ${xAt(first).toFixed(2)} ${height - padB} Z`;
       })
       .join(" ");
@@ -261,7 +284,7 @@ export function LineChart({
         );
       })}
 
-      <XAxisLabels labels={labels} x={(l) => xAt(labels.indexOf(l))} y={height - padB + 16} rotate={rotate ? -35 : 0} />
+      <XAxisLabels labels={labels} x={(l) => xAt(labels.indexOf(l))} y={height - padB + 16} rotate={rotate ? -35 : 0} step={step} />
     </ChartFrame>
   );
 }

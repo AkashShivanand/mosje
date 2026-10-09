@@ -63,6 +63,13 @@
     container: ds-metric-card / inline-size;
   }
 
+  /* At rest on the page: the border alone, no shadow (`variant="outlined"`), for a surface
+     where every card beside it is outlined. `elevation/flat` is bound rather than the shadow
+     omitted, so a raised tile's shadow cannot cascade back in. */
+  .ds-metric-card--outlined {
+    box-shadow: var(--sa-elevation-flat);
+  }
+
   .ds-metric-card__inner {
     display: flex;
     align-items: flex-start;
@@ -87,8 +94,10 @@
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-headline-3-size);
     line-height: var(--metric-card-value-line);
-    /* 700, not 600: the figure is a KPI numeral, not a heading. */
-    font-weight: var(--sa-font-weight-bold);
+    /* Semibold, as every figure in the system is (owner, 8 Oct 2026): the card figure lists
+       and headline figures were already 600, and bold here alone gave one dashboard two
+       weights for the same kind of number. */
+    font-weight: var(--sa-font-weight-semibold);
     font-variant-numeric: tabular-nums;
     color: var(--sa-text-neutral-bolder);
   }

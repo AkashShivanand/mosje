@@ -25,6 +25,8 @@ Compliance Audit of May 2026" as though anyone could find it.
 | 2026-09-23 | DBIM reviewer | [DBIM Non-Compliance Observations](2026-09-23-dbim-non-compliance-observations/) | dosje.gov.in homepage | 20 observations | Verification and reply drafted | Reply pending despatch |
 | 2026-09-25 | UX4G / NeGD | [UX Audit 360](2026-09-25-ux4g-audit-360/) | Automated audit of dosje.gov.in | Overall **82%**, 6 parameters | **None yet** | Open |
 | 2026-09-25 | **Ours** — Geetika Aniwal Das | [Website Design Audit v1](2026-09-25-dosje-website-design-audit/) | dosje.gov.in page by page | **45 points** across 8 pages | Is itself a response | Open |
+| 2026-10-01 | Levithan Technologies, for NeGD | [DBIM Level-1 Audit](2026-10-01-levithan-dbim-level-1/) | www.dosje.gov.in against DBIM 3.0 | **24 findings**, all open at report | In the register under `levithan-dbim-2026-10`; fix status tracked on Drive against devmosje.negd.in | Open |
+| 2026-10-01 | Levithan Technologies, for NeGD | [GIGW Level-1 Audit](2026-10-01-levithan-gigw-level-1/) | www.dosje.gov.in against GIGW and WCAG | **30 findings**, all open at report; §6 checklist passes 81/87 | In the register under `levithan-gigw-2026-10`; same fix sheet | Open |
 
 ## Where these items are tracked
 
@@ -32,9 +34,9 @@ The consolidated tracker is the **website issue register** at
 `/reports/dosje-website`, backed by `apps/hub/src/data/website-issues/issues.json`
 with statuses in Supabase.
 
-**As of 2026-09-25 the register holds only our own sweep of 21 September 2026** —
-2,015 rows, none of them carrying the source they came from. The five reports
-above are **not** yet rows in it. Folding them in, with a `source` on every row,
+**As of 2026-10-05 every report above is in the register**, each row carrying the
+reports that raised it. The two Levithan audits were the last to be folded in: 54
+findings, 42 attaching to rows that already existed and 12 new. Folding them in, with a `source` on every row,
 is tracked separately.
 
 The May 2026 DBIM audit additionally has its own checklist at

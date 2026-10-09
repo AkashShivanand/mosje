@@ -63,14 +63,15 @@
 
   /* Square black arrows, 35px, 30px in from the edges (24px ≤991). */
   [data-design="dbim"] .db-carousel .db-carousel__arrow {
-    --sa-btn-fill: var(--sa-color-neutralScale-1000);
+    /* The key colour: §2.2 reserves Black for the State Emblem. */
+    --sa-btn-fill: var(--sa-color-primaryScale-800);
     --sa-btn-ink: var(--sa-color-neutralScale-0);
     position: absolute;
     top: 50%;
     z-index: var(--sa-z-raised);
-    width: 35px; /* reference */
+    width: var(--sa-padding-40); /* the handoff's Icon Button, Type=Filled: 40 with a 24 glyph */
     min-width: 0;
-    height: 35px;
+    height: var(--sa-padding-40);
     min-height: 0;
     padding: 0;
     overflow: visible;
@@ -79,16 +80,16 @@
   }
 
   [data-design="dbim"] .db-carousel .db-carousel__arrow--prev {
-    left: 30px; /* reference */
+    left: 28px; /* the reference's 30 on a 35px box, re-centred for 40 */
   }
 
   [data-design="dbim"] .db-carousel .db-carousel__arrow--next {
-    right: 30px; /* reference */
+    right: 28px;
   }
 
   /* The play/pause disc: 40px, the ink colour, 45px from the right at 1280–1500. */
   [data-design="dbim"] .db-carousel .db-carousel__play {
-    --sa-btn-fill: var(--sa-color-text-default);
+    --sa-btn-fill: var(--sa-color-primaryScale-800); /* was the text colour used as a fill */
     --sa-btn-ink: var(--sa-color-neutralScale-0);
     position: absolute;
     right: 105px; /* reference */
@@ -106,8 +107,10 @@
     border: 0;
   }
 
+  /* §4.5 iv: the next shade up under the pointer (the reference showed no change). */
   [data-design="dbim"] .db-carousel .db-carousel__play:hover,
   [data-design="dbim"] .db-carousel .db-carousel__arrow:hover {
+    --sa-btn-fill: var(--sa-color-primaryScale-600);
     filter: none;
   }
 
@@ -124,23 +127,39 @@
     border-radius: var(--sa-shape-8);
   }
 
+  /* A 12px disc in a 24px button (WCAG 2.2 2.5.8: the dots sit on the banner's own
+     link, so the spacing exception does not apply). The -6px margin keeps the tray and
+     the 28px pitch exactly as drawn. */
   [data-design="dbim"] .db-carousel .db-carousel__dot {
-    width: var(--sa-padding-12);
+    --sa-btn-fill: transparent;
+    --db-dot: var(--sa-color-primaryScale-400);
+    display: grid;
+    place-items: center;
+    width: var(--sa-padding-24);
     min-width: 0;
-    height: var(--sa-padding-12);
+    height: var(--sa-padding-24);
     min-height: 0;
+    margin: -6px;
     padding: 0;
-    background: var(--sa-color-primaryScale-400);
+    background: transparent;
     border: 0;
     border-radius: var(--sa-shape-full);
   }
 
+  [data-design="dbim"] .db-carousel .db-carousel__dot::before {
+    width: var(--sa-padding-12);
+    height: var(--sa-padding-12);
+    border-radius: var(--sa-shape-full);
+    background: var(--db-dot);
+    content: "";
+  }
+
   [data-design="dbim"] .db-carousel .db-carousel__dot[aria-current="true"] {
-    background: var(--sa-color-primaryScale-800);
+    --db-dot: var(--sa-color-primaryScale-800);
   }
 
   [data-design="dbim"] .db-carousel .db-carousel__dot:hover {
-    background: var(--sa-color-primaryScale-600);
+    --db-dot: var(--sa-color-primaryScale-600);
   }
 
   @media (min-width: 1280px) and (max-width: 1500px) {
@@ -151,15 +170,11 @@
 
   @media (max-width: 991.5px) {
     [data-design="dbim"] .db-carousel .db-carousel__arrow--prev {
-      left: var(--sa-padding-24);
+      left: 22px; /* the reference's 24 on a 35px box, re-centred for 40 */
     }
 
     [data-design="dbim"] .db-carousel .db-carousel__arrow--next {
-      right: var(--sa-padding-24);
-    }
-
-    [data-design="dbim"] .db-carousel .db-carousel__arrow .material-symbols-rounded {
-      font-size: 2rem !important; /* 32px — overrides the Icon's inline size */
+      right: 22px;
     }
   }
 
@@ -201,14 +216,14 @@
   [data-design="dbim"] .db-announce .db-announce__title {
     margin: 0 0 5px; /* reference */
     font-size: var(--db-fs-h3);
-    font-weight: 900; /* reference: a <strong> inside a 600 heading computes to 900 */
+    font-weight: var(--sa-font-weight-bold); /* DBIM 3.0 §4.1.1 iii: Bold is the heaviest weight; the reference computed 900 */
     line-height: normal;
     color: var(--sa-color-primaryScale-800);
   }
 
   [data-design="dbim"] .db-announce .db-announce__icon {
-    width: 25px; /* reference */
-    height: 25px;
+    width: 24px; /* DBIM 3.0 §3.4 — the reference drew 25 */
+    height: 24px;
     color: var(--sa-color-primaryScale-800);
   }
 
@@ -237,11 +252,10 @@
     list-style: none;
   }
 
-  /* A bullet between items and between the two copies, 48px either side. */
-  [data-design="dbim"] .db-announce .db-announce__item::after {
-    margin: 0 var(--sa-stack-48);
-    content: "•";
-    color: var(--sa-color-primaryScale-800);
+  /* Items are parted by space alone — no bullet (instruction, 29 Sep 2026). The gap
+     keeps the old 48 + bullet + 48 rhythm, between items and between the two copies. */
+  [data-design="dbim"] .db-announce .db-announce__item {
+    padding-inline-end: calc(2 * var(--sa-stack-48));
   }
 
   [data-design="dbim"] .db-announce .db-announce__link {
@@ -340,15 +354,15 @@
     background: var(--sa-color-neutralScale-100);
   }
 
-  /* The reference's Bootstrap .container ladder (1320 / 1140 / 960 / 720 / 540). */
+  /* On the page's one content edge (DBIM 3.0 Figure 50), not the reference's
+     Bootstrap .container ladder (1320 / 1140 / 960 / 720 / 540), which put this band
+     180px inside every other one at 1920. */
   [data-design="dbim"] .db-pmq .db-pmq__in {
     display: grid;
     grid-template-columns: 1fr 2fr;
     align-items: center;
     width: 100%;
-    max-width: 1320px;
-    margin: 0 auto;
-    padding: 0 7.5px; /* reference */
+    padding: 0 var(--db-gutter);
   }
 
   [data-design="dbim"] .db-pmq .db-pmq__figure {
@@ -369,27 +383,18 @@
 
   [data-design="dbim"] .db-pmq .db-pmq__body {
     margin: 0;
-    padding: 10px; /* reference card-body */
+    padding: 10px 0; /* reference card-body, less the inset that took it off the edge */
   }
 
-  /* THE MARK IS MATERIAL'S format_quote, TURNED HALF A CIRCLE, so it opens.
-     The DBIM Toolkit, and meity.gov.in, which is built on it, set a “ character in
-     Material Symbols (`p.quote`, 44px/66px) — but no Material Symbols build carries a
-     “ glyph (checked 28 Sep 2026: Google's Rounded and MeitY's own Outlined woff2), so
-     what a visitor sees there is whatever font the operating system falls back to.
-     format_quote is the Material icon for a quotation; rotated, it is the same small
-     opening mark, the same everywhere. 32px at the standard weight matches the
-     reference's footprint; it sits at the foot of the reference's 40px slot, just
-     above the quotation, where the reference's glyph lands. */
+  /* The opening mark only (DBIM 3.0 Figure 54): Material's format_quote, FILLED and
+     turned half a circle so it opens. The reference sets a 44px “ character, which
+     no Material Symbols build carries, so it falls back to whatever the system has.
+     32px (§3.4), at the foot of the reference's 40px slot, just above the quotation. */
   [data-design="dbim"] .db-pmq .db-pmq__mark {
     display: flex;
     align-items: flex-end;
     height: var(--sa-padding-40);
     color: var(--sa-color-primaryScale-800);
-  }
-
-  [data-design="dbim"] .db-pmq .db-pmq__mark .material-symbols-rounded {
-    transform: rotate(180deg);
   }
 
   [data-design="dbim"] .db-pmq .db-pmq__quote {
@@ -398,9 +403,9 @@
 
   [data-design="dbim"] .db-pmq .db-pmq__quote p {
     margin: 0 0 10px; /* reference */
-    font-size: 1.5rem; /* 24px */
+    font-size: var(--db-fs-h2); /* Heading 2 Medium, DBIM 3.0 Tables 3/4 */
     font-weight: var(--sa-font-weight-medium);
-    line-height: 29px; /* reference */
+    line-height: var(--db-lh-h2);
     letter-spacing: -0.12px;
     color: var(--sa-color-primaryScale-800);
   }
@@ -421,12 +426,13 @@
     width: 49%; /* reference .gpaiSubmit */
   }
 
+  /* Paragraph 1 allows Regular or Bold only (Table 3); the reference set it Medium. */
   [data-design="dbim"] .db-pmq .db-pmq__meta {
     margin: 0;
     font-size: var(--db-fs-p);
-    font-weight: var(--sa-font-weight-medium);
-    line-height: 1.5;
-    text-transform: uppercase;
+    font-weight: var(--sa-font-weight-regular);
+    line-height: var(--db-lh-p);
+    /* Sentence case: the citation is a sentence (DBIM 3.0 §4.1.1 ii). */
     color: var(--sa-color-primaryScale-800);
   }
 
@@ -435,10 +441,12 @@
     gap: var(--sa-stack-8);
     align-items: center;
     align-self: flex-start;
-    padding: var(--sa-padding-8) var(--sa-padding-12);
-    font-size: 0.75rem; /* 12px */
+    box-sizing: border-box;
+    height: var(--sa-padding-40); /* the DBIM Button, Type=Outline, leading Open In New */
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    font-size: var(--db-fs-button);
     font-weight: var(--sa-font-weight-semibold);
-    line-height: 18px; /* reference */
+    line-height: var(--db-lh-p2);
     letter-spacing: 0.12px;
     text-transform: uppercase;
     text-decoration: none;
@@ -453,9 +461,10 @@
   }
 
   [data-design="dbim"] .db-pmq .db-pmq__action:focus-visible,
+  /* Focus: a 2px key-colour border over the tile's own 1px one. */
   [data-design="dbim"] .db-about .db-about__tile:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-    outline-offset: var(--sa-focus-offset);
+    outline: var(--sa-stroke-2) solid var(--sa-color-primaryScale-800);
+    outline-offset: calc(-1 * var(--sa-stroke-1));
   }
 
   @media (min-width: 1537px) {
@@ -464,26 +473,9 @@
     }
   }
 
-  @media (max-width: 1399.5px) {
-    [data-design="dbim"] .db-pmq .db-pmq__in {
-      max-width: 1140px;
-    }
-  }
-
-  @media (max-width: 1199.5px) {
-    [data-design="dbim"] .db-pmq .db-pmq__in {
-      max-width: 960px;
-    }
-  }
-
   @media (max-width: 991.5px) {
     [data-design="dbim"] .db-pmq .db-pmq__in {
       grid-template-columns: 1fr;
-      max-width: 720px;
-    }
-
-    [data-design="dbim"] .db-pmq .db-pmq__quote p {
-      font-size: 1.25rem; /* 20px */
     }
   }
 
@@ -492,12 +484,11 @@
       padding: var(--sa-padding-24) 0;
     }
 
-    [data-design="dbim"] .db-pmq .db-pmq__in {
-      max-width: 540px;
-    }
-
+    /* Heading 3 Medium on a phone (16 / 22): the reference's 14px Medium is a
+       weight Table 4 does not allow at 14, and its 29px leading was 2.07×. */
     [data-design="dbim"] .db-pmq .db-pmq__quote p {
-      font-size: 0.875rem; /* 14px, as the reference draws it at 390 */
+      font-size: var(--db-fs-h3);
+      line-height: var(--db-lh-h3);
     }
 
     [data-design="dbim"] .db-pmq .db-pmq__foot {
@@ -511,12 +502,6 @@
 
     [data-design="dbim"] .db-pmq .db-pmq__action {
       align-self: flex-end;
-    }
-  }
-
-  @media (max-width: 575.5px) {
-    [data-design="dbim"] .db-pmq .db-pmq__in {
-      max-width: none;
     }
   }
 
@@ -561,10 +546,12 @@
     margin-top: 10px; /* reference */
   }
 
+  /* Body copy is Paragraph 1 (16 / 24, 14 / 21 on a phone). The reference set it at
+     20px Regular, a size Table 3 gives only to headings, which must be Medium or heavier. */
   [data-design="dbim"] .db-about .db-about__copy {
     margin-bottom: var(--sa-stack-40);
-    font-size: 1rem; /* 16px */
-    line-height: 30px; /* reference */
+    font-size: var(--db-fs-p);
+    line-height: var(--db-lh-p);
     letter-spacing: -0.1px;
     /* The reference justifies this block; with a full sentence in it that opens rivers
        between words (WCAG 1.4.8), so it is set ragged-right. */
@@ -597,9 +584,9 @@
     min-height: 60px; /* reference */
     height: 100%;
     padding: var(--sa-padding-12) var(--sa-padding-8);
-    font-size: 1rem; /* 16px */
+    font-size: var(--db-fs-h3); /* Heading 3 Semi Bold */
     font-weight: var(--sa-font-weight-semibold);
-    line-height: 22px; /* reference */
+    line-height: var(--db-lh-h3); /* was 22 on 20, 1.1× (§4.5 iii) */
     text-align: center;
     text-decoration: none;
     color: var(--sa-color-text-default);
@@ -617,13 +604,9 @@
     color: var(--sa-color-primaryScale-800);
   }
 
+  /* The handoff's About Tile Hover: Blue 5 ground; the label and icon keep their colours. */
   [data-design="dbim"] .db-about .db-about__tile:hover {
-    color: var(--sa-color-neutralScale-0);
-    background: var(--sa-color-primaryScale-800);
-  }
-
-  [data-design="dbim"] .db-about .db-about__tile:hover .db-about__tile-icon {
-    color: var(--sa-color-neutralScale-0);
+    background: var(--sa-color-primaryScale-100);
   }
 
   [data-design="dbim"] .db-about .db-about__ministers {
@@ -635,20 +618,32 @@
     list-style: none;
   }
 
+  /* Three equal 240px columns (the DBIM handoff's Minister card), shrinking together
+     when the column is narrower, so the last card's edge IS the content edge. Sized by
+     their words, the cards were 256 / 264 / 264 and the last portrait stopped 34px
+     short of it. */
   [data-design="dbim"] .db-about .db-about__minister {
     display: flex;
+    flex: 0 1 240px; /* handoff */
     flex-direction: column;
     align-items: center;
+    min-width: 0;
   }
 
+  /* The photo frame: square and white (DBIM 3.0 §6.1.4 i–ii), a 1px grey rule so the
+     white frame keeps its edge on the white band, the photograph fitted inside and a
+     4px key-colour bar under it. Was 206 high on the muted ground. */
   [data-design="dbim"] .db-about .db-about__portrait {
-    width: auto;
-    height: 200px; /* reference max-height */
+    box-sizing: border-box;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    padding-bottom: var(--sa-padding-4);
     object-fit: contain;
-    border-width: 2px 2px 6px; /* reference */
-    border-style: solid;
-    border-color: var(--sa-color-neutralScale-100) var(--sa-color-neutralScale-100) var(--sa-color-primaryScale-800);
-    border-radius: 2.75px 2.75px 0 0; /* reference */
+    object-position: bottom; /* standing on the bar */
+    background: var(--sa-color-neutralScale-0);
+    border: var(--sa-stroke-1) solid var(--sa-color-neutralScale-200);
+    box-shadow: inset 0 calc(-1 * var(--sa-padding-4)) 0 var(--sa-color-primaryScale-800);
   }
 
   [data-design="dbim"] .db-about .db-about__name {
@@ -666,32 +661,12 @@
     font-size: var(--db-fs-p);
     line-height: 1.5;
     text-align: center;
+    color: var(--sa-color-text-muted); /* the role under the name, in Grey 03 */
   }
 
   @media (min-width: 1537px) {
     [data-design="dbim"] .db-about {
       padding-block: var(--sa-padding-80);
-    }
-
-    [data-design="dbim"] .db-about .db-about__copy {
-      font-size: 1.25rem; /* 20px */
-    }
-
-    [data-design="dbim"] .db-about .db-about__tile {
-      font-size: 1.25rem; /* 20px */
-    }
-  }
-
-  @media (min-width: 1280px) and (max-width: 1536.5px) {
-    [data-design="dbim"] .db-about .db-about__portrait {
-      width: 172px; /* reference */
-      height: 172px;
-    }
-  }
-
-  @media (max-width: 1400px) {
-    [data-design="dbim"] .db-about .db-about__ministers {
-      gap: var(--sa-stack-12);
     }
   }
 
@@ -699,18 +674,9 @@
     [data-design="dbim"] .db-about {
       grid-template-columns: 1fr;
     }
-
-    [data-design="dbim"] .db-about .db-about__ministers {
-      gap: var(--sa-stack-8);
-    }
   }
 
   @media (max-width: 991.5px) {
-    [data-design="dbim"] .db-about .db-about__copy {
-      font-size: 0.875rem; /* 14px */
-      line-height: 21px; /* reference */
-    }
-
     [data-design="dbim"] .db-about .db-about__tiles {
       grid-template-columns: repeat(2, 1fr);
     }
@@ -718,6 +684,12 @@
     [data-design="dbim"] .db-about .db-about__ministers {
       flex-direction: column;
       align-items: center;
+    }
+
+    /* Stacked, each card is the handoff's 183 wide, and the role wraps inside it. */
+    [data-design="dbim"] .db-about .db-about__minister {
+      flex: 0 0 auto;
+      width: 183px; /* handoff, Mobile 390 */
     }
   }
 

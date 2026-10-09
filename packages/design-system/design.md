@@ -1544,7 +1544,7 @@ for composing something those two do not cover.
 
 | Do | Don't |
 | :--- | :--- |
-| Auto-dismiss success toasts after 4 seconds. Leave error and warning toasts persistent until manually dismissed. | Do not auto-dismiss error toasts — users may not have read the message. |
+| Auto-dismiss success and info toasts after 3 seconds, pausing while hovered or focused. Leave error and warning toasts persistent until manually dismissed. | Do not auto-dismiss error toasts — users may not have read the message. |
 | Position toasts in bottom-right (desktop) or bottom-centre (mobile). | Do not stack more than 3 toasts simultaneously — queue overflow toasts. |
 | Use `useToast()` from the design system for all notifications. | Do not use browser `alert()`, `confirm()`, or `prompt()`. |
 | Use toasts for: save confirmation, copy success, brief status updates. | Do not use toasts for critical errors, blocking confirmations, or multi-line content — use Modal or inline Alert instead. |
@@ -2762,7 +2762,7 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 #### Toast / useToast
 **Purpose**: Transient notification system.  
 **Usage**: `const toast = useToast(); toast.success("Saved!");`  
-**Rules**: Success toasts auto-dismiss (4s). Error/warning toasts are persistent. Queue overflow toasts — never display more than 3 simultaneously.
+**Rules**: Success and info toasts auto-dismiss (3s, `durationMs`), pausing on hover and focus-within (WCAG 2.2.1). Error/warning toasts are persistent. Queue overflow toasts — never display more than 3 simultaneously.
 
 #### Loader
 **Purpose**: Progress indicator for async operations.  
@@ -3292,6 +3292,9 @@ optional `valueFormat` (defaults to `en-IN` grouping).
 | `IndiaMap` | State choropleth (pre-baked geo paths) | `data: { state, value }[]`, `title`, `highlightState` |
 | `IndiaBubbleMap` | State bubble map, **area** ∝ value (same geo paths) | `data: { state, value }[]`, `title`, `maxRadius`, `highlightState`, `onSelectState` |
 | `IndiaPointMap` | Real coordinates: hex **density** + proportional **bubbles** + categorical **pins**, with state zoom | `bins`, `pins`, `pinKinds`, `bubbles`, `bubbleVariant`, `focusRegion`, `highlightRegion`, `onSelectRegion`, `table` |
+| `IndiaTileMap` | Tile cartogram: every State/UT one equal tile, placed where it sits | `data: { state, value }[]`, `title`, `scale` (`linear` / `quantile`), `size`, `legend` (`steps` / `ramp`), `selected`, `onSelect` |
+| `DotPlot` | One dot per row on a shared scale, against a reference line (pace) | `rows: { label, value, detail? }[]`, `reference: { value, label }`, `max`, `size` |
+| `WaffleChart` | Unit chart: one square per unit, or 100 for a share | `categories`, `rows: { label, counts }[]`, `scale` (`count` / `percent`), `unit` |
 
 **Composition primitives** (dashboard layout): `ChartCard` (titled widget
 container with actions slot + loading/empty states + grid `span`), `DashboardGrid`
@@ -3356,6 +3359,20 @@ and renders it only when `exportable`.
   tooltip carry values. `IndiaMap` announces each region's value on focus.
 - Pie/donut: prefer ≤ 6 slices; group the remainder into "Other".
 - `IndiaMap` geometry is generated — see `components/data-display/charts/geo/README.md`.
+- **`IndiaTileMap` for a PER-PERSON reading.** Every State/UT gets one equal tile, so the
+  north-east and the island UTs — a few pixels on a choropleth, and often the answer on a
+  per-person measure — are as legible as Uttar Pradesh. Use `scale="quantile"` when two
+  outliers would otherwise wash every other tile out to the palest step. Not for a reading
+  whose shape on the land matters; that is `IndiaMap`.
+- **`DotPlot` for PACE, not amounts.** Each dot is a share read against one shared line —
+  spending against the year elapsed, coverage against a target. The gap between dot and
+  line is the finding. To compare amounts by size, use `BarChart`.
+- **`WaffleChart` for a count a reader can see as units** — 87 indicators, 61 in every 100
+  students. Past a few hundred squares, or five colours, it stops being countable.
+- **`HeadlineFigure` is the one number a page leads with**, in display type with the phrase
+  it completes and, where a published denominator exists, its human scale ("About 29 in
+  every 100 people, at the Census 2011 count"). On `Card accent="fill"` or a brand `Band`,
+  `tone="inverse"`. A row of figures read together is a `KpiRow` of `MetricCard`s instead.
 - **`IndiaMap` for a RATE, `IndiaBubbleMap` for a COUNT.** A choropleth gives each
   state as much ink as it has land, so a map of counts reports "big state" as "big
   number" — Rajasthan's 1,493 villages and Delhi's 1 differ 1,493× in the data and
@@ -3932,10 +3949,12 @@ import { UX4GAccessibilityWidget } from "@mosje/design-system";
 <UX4GAccessibilityWidget />   // injects https://cdn.ux4g.gov.in/.../accessibility-widget.js, idempotently
 ```
 
-**Pinned to `accessibility-v3.36`** — the build ux4g.gov.in itself serves. **UX4G deletes
-old builds from its CDN**: v3.28, pinned here until 25 Sep 2026, began answering 404 that
-day and the panel stopped loading everywhere. If the panel disappears, `curl -I` the pinned
-URL first, then re-pin to whatever ux4g.gov.in's own page loads and re-check the skin.
+**Pinned to `accessibility-v3.0`** — the build ux4g.gov.in itself serves (republished
+30 Sep 2026; its header says 3.0 but it is the current build). **UX4G deletes old builds
+from its CDN**: v3.28 went on 25 Sep 2026 and v3.36 on 30 Sep, and each time the panel
+stopped loading everywhere. `.github/workflows/ux4g-widget-pin.yml` now requests the pinned
+URL every day and fails when it stops answering. If it fails, re-pin to whatever
+ux4g.gov.in's own page loads and re-check the skin.
 Upgraded to v3.x from `accessibility-beta-v1.15`, which had two defects the estate worked around in
 code and v3.x fixes upstream: `detectRouteChange()` dereferenced its settings with no
 null check, and `loadSettings()` restored state by calling the widget's own CLICK
@@ -4010,7 +4029,12 @@ doesn't change as modes are added.
 **Props**: `pathname` (drives "Currently in", which accounts exist for the
 path via `findDemoAccounts`, and whether Sign in renders via `isLoginRoute`),
 `apps` (registry override, default `DEFAULT_APPS`), `label` (default
-`"Demo tools"`).
+`"Demo tools"`), `extraTabs` (route tabs; each leads the strip unless it sets
+`placement: "end"`, for a tool offered on every route — the hub's Capture tab —
+which must never become the lead door's label), `notice` (a short
+confirmation shown beside the flask while set, drawn like its tooltip and
+announced politely — the answer to a shortcut pressed with the panel closed;
+the caller clears it).
 **Rule**: Mounted **exactly once**, by the hub's root layout via
 `ConditionalDemoDock` — never per portal, never per page. Requires a
 `ColorModeProvider` ancestor (the Colour tab throws without one). Gated
@@ -4163,7 +4187,12 @@ every matching row, not one page**, and `registerTotal` is for the count line on
 **one** stepper treatment where the handoff draws two. It wraps `Wizard` and adds the page:
 title, the composed step meta line, the draft banner (both flavours, one shape, switched by
 `resumed`) and notices. `onCancel` goes through to `Wizard`, so Cancel is the first step's
-outlined leading control — there is no separate Cancel button.
+outlined leading control — there is no separate Cancel button. `status` and `actions` sit on
+the header's trailing edge, status first, exactly where `RecordScreen` and `DecisionScreen`
+put them — a record's badge and its whole-record actions ("Save as Draft") never ride in
+`notices`. Its title is `PageHeader size="compact"`, the wizard rung. Put no page-type label in
+`eyebrow` ("Payment Advice"): the breadcrumb already names the page; `eyebrow` is for
+reference numbers.
 
 **`OverviewScreen`** cannot enforce its own two most important rules, so they are stated on
 its page: a ratio takes both halves **from one source** (mixing them published a `138%`),

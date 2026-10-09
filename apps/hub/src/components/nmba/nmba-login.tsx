@@ -11,6 +11,7 @@ import {
   type OtpRequest,
   type PortalLoginConfig,
   type PortalLoginFieldErrors,
+  SAMAVESH_MARK,
 } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { accountFromMobile } from "@/lib/nmba/committee/masters";
@@ -55,7 +56,7 @@ function config(defaultRoleId: string): PortalLoginConfig {
       emblemSrc: `${BASE}/brand/national-emblem.svg`,
       digitalIndiaSrc: `${BASE}/brand/digital-india.svg`,
       // org-logo-exempt(portal-local): NMBA serves its own copy under its brand folder.
-      samaveshLogoSrc: `${BASE}/brand/samavesh-logo.svg`,
+      samaveshLogoSrc: SAMAVESH_MARK,
     },
     roles: [
       {

@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "DONUTCHART CAN PRINT AMOUNTS, BESIDE THE RING. Two optional props on the segmented DonutChart: `legendValue=\"value\"` prints each slice's figure through `valueFormat` (\"₹46,676 Cr\") instead of its share, and `layout=\"side\"` sets the legend beside the ring with the values right-aligned, stacking below 768px. Both default to the previous behaviour. Added for the website's Beneficiary Dashboard, whose Share of Fund Release ring lists nine schemes by amount; story: Part-to-Whole Charts › Donut With Amounts Beside."
+}

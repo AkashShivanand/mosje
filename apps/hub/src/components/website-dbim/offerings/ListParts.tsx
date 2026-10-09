@@ -16,7 +16,15 @@ import type { Listing } from "@/components/website-dbim/ui/useListing";
 export function DbimListEmpty<T>({ listing }: { listing: Listing<T> }) {
   if (listing.total > 0) return null;
   if (listing.unfilteredTotal === 0 || !listing.filtered) return <DbimEmptyState />;
-  const asked = [listing.query.trim() && `“${listing.query.trim()}”`, listing.category].filter(Boolean).join(" in ");
+  const audience = listing.audiences.find((a) => a.value === listing.audience)?.label;
+  const q = listing.query.trim();
+  const asked = [
+    q && `“${q}”`,
+    audience && (q ? `for ${audience}` : audience),
+    listing.category && (q || audience ? `in ${listing.category}` : listing.category),
+  ]
+    .filter(Boolean)
+    .join(" ");
   return (
     <div className="db-off-noresults" role="status">
       <p>No results for {asked}.</p>

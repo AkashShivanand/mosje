@@ -77,6 +77,14 @@
   --color-ink-strong:     var(--sa-text-neutral-bolder);
   --color-ink-muted:      var(--portal-ink-muted, var(--sa-color-text-muted));
   --color-on-primary:     var(--sa-color-text-onPrimary);
+  /* `text-link-brand-default` was written at 17 call sites across the reports
+     pages and the changelog before this line existed, and generated nothing:
+     the token `--sa-text-link-brand-default` was real, the Tailwind colour was
+     not, so every one of those links inherited the body colour and rendered as
+     plain near-black text. Nothing on those tables looked clickable. Pages that
+     appeared to work were relying on their own `a:not([class])` rule instead. */
+  --color-link-brand-default: var(--sa-text-link-brand-default);
+  --color-link-brand-hover:   var(--sa-text-link-brand-hover);
 
   /* ── Brand / primary ────────────────────────────────────────────────── */
   /* `gov-` prefixes were dropped 2026-08-11. `gov-blue` and `primary` were already two

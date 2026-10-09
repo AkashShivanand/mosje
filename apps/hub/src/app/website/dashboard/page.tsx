@@ -1,18 +1,22 @@
+import * as React from "react";
 import type { Metadata } from "next";
 import { SectionTitle } from "@mosje/design-system";
 import { PageLayout } from "@/components/website-next/layout/PageLayout";
-import { DashboardGlance } from "@/components/website-next/media/DashboardGlance";
-import { AdarshGramDashboard } from "@/components/website/AdarshGramDashboard";
-import { GiaDashboard } from "@/components/website/GiaDashboard";
-import { HostelDashboard } from "@/components/website/HostelDashboard";
-import { getAdarshGramCounts } from "@/lib/website/adarsh-gram-api";
-import { getGiaData, getGiaGender, getHostelData } from "@/lib/website/pmajay-api";
+import { DepartmentOverview } from "@/components/kpi-dashboard/DepartmentOverview";
+import { PortalDashboardList } from "@/components/kpi-dashboard/PortalDashboardList";
+import { MinistryCollection } from "@/components/kpi-dashboard/DashboardViewer";
+import { ProposedDashboardSection } from "@/components/kpi-dashboard/proposed/ProposedDashboardSection";
+import { OfficerAccess } from "@/components/kpi-dashboard/proposed/OfficerAccess";
+import { DASHBOARD_PAGE } from "@/lib/website-shared/dashboard";
+import { dashboardVersion } from "@/lib/website-shared/dashboard-version";
 import { socialCard } from "@/lib/seo/social";
 import "@/components/website-next/templates/media.css";
 
-const TITLE = "Dashboard";
+// Literals, not read from DASHBOARD_PAGE: the site-search indexer reads the title and
+// description from this file's text (`scripts/build-search-index.mjs`). They match it.
+const TITLE = "Beneficiary Dashboard";
 const DESCRIPTION =
-  "Progress of the Pradhan Mantri Anusuchit Jaati Abhyuday Yojana (PM-AJAY), as reported by the scheme's Management Information System.";
+  "Progress of the Department's schemes: the Beneficiary Dashboard, and the indicators reported by each scheme portal.";
 
 export const metadata: Metadata = {
   title: `${TITLE} | Department of Social Justice & Empowerment`,
@@ -21,66 +25,46 @@ export const metadata: Metadata = {
 };
 
 /**
- * The website's dashboard (issue LAY-11).
+ * The website's Dashboard, in the 2026 design.
  *
- * WHAT THIS REPLACED: four headline figures and two bar charts typed into this
- * file — "₹67,977 Cr disbursed", "19.82 Cr beneficiaries", "33+ schemes" and a
- * scheme-wise disbursement — with no source, no period and a footnote calling
- * them illustrative. None of them is published anywhere this estate can read,
- * so none of them is here (`live-data-fallback.md`: a metric neither source
- * publishes is left off the design).
+ * DS Audit: SectionTitle ✅ · PortalDashboardList / DepartmentOverview (app,
+ * shared with the Classic and DBIM designs) ✅. Content: `lib/website-shared/dashboard.ts`.
  *
- * WHAT IS HERE: the only departmental figures the estate has a feed for — the
- * three PM-AJAY components' public report endpoints, live where they answer and
- * from the committed, dated snapshot where they do not. The strip at the top
- * gives four of them the same four parts (label, number, period, source), and
- * each "View Details" jumps to the dashboard that draws it in full.
+ * WHAT CHANGED, 5 Oct 2026. This page drew the three PM-AJAY dashboards and nothing else.
+ * It is now the live site's Beneficiary Dashboard, then one dashboard per scheme portal
+ * that has submitted KPIs. PM-AJAY's dashboards are where the DBIM design already put
+ * them on 29 Sep 2026 — on the scheme's own page — and its card here links there.
  *
- * The three section dashboards are the CLASSIC components the PM-AJAY
- * organisation pages already use (`components/website/*Dashboard.tsx`), kept
- * because they carry the merge, the provenance chips, the per-card states and
- * the retry — rebuilding them is its own piece of work. They are wrapped in the
- * redesign's section pattern, one per section, on the page ground (their sticky headers are white).
- *
- * Fetched on the server, each with a short timeout and an hourly revalidate;
- * a feed that is down degrades to its snapshot, never to an error boundary.
+ * The proposed dashboard is the default; `?version=current` draws this page (`dashboard-version.ts`).
  */
-export default async function DashboardPage() {
-  const [adarshGram, gia, hostel] = await Promise.all([getAdarshGramCounts(), getGiaData(), getHostelData()]);
-  // The same total the PM-AJAY Grants-in-Aid page passes, so the illustrative
-  // gender split is scaled to the figure on screen.
-  const giaGender = await getGiaGender(gia.years.reduce((t, y) => t + (y.approvals.total ?? y.mock.totalApproved), 0));
-
+type PageProps = { searchParams: Promise<Record<string, string | string[] | undefined>> };
+export default async function DashboardPage({ searchParams }: PageProps) {
+  if (dashboardVersion(await searchParams) === "proposed") {
+    return (
+      <PageLayout title={TITLE} breadcrumb={[{ label: DASHBOARD_PAGE.crumb }]} actions={<React.Suspense fallback={null}><OfficerAccess tone="default" /></React.Suspense>}>
+        <section className="wn-section" aria-label={TITLE}>
+          <div className="sa-container">
+            <ProposedDashboardSection sectionLevel={2} />
+          </div>
+        </section>
+      </PageLayout>
+    );
+  }
   return (
-    <PageLayout title={TITLE} breadcrumb={[{ label: "Schemes & Services" }, { label: TITLE }]} description={DESCRIPTION}>
-      <section className="wn-section" aria-labelledby="glance-title">
+    <PageLayout title={TITLE} breadcrumb={[{ label: DASHBOARD_PAGE.crumb }]}>
+      <section className="wn-section" aria-label={TITLE}>
         <div className="sa-container">
-          <SectionTitle
-            as={2}
-            headingId="glance-title"
-            title="At a Glance"
-          />
-          <DashboardGlance adarshGram={adarshGram} gia={gia} hostel={hostel} />
+          <DepartmentOverview sectionLevel={2} />
         </div>
       </section>
 
-      <div className="wn-section">
-        <div className="sa-container">
-          <AdarshGramDashboard feed={adarshGram} />
+      <section className="wn-section" aria-labelledby="portal-dashboards-title">
+        <div className="sa-container kd-block">
+          <SectionTitle as={2} headingId="portal-dashboards-title" title={DASHBOARD_PAGE.portalsTitle} description={DASHBOARD_PAGE.portalsDescription} />
+          <PortalDashboardList design="new" />
+          <MinistryCollection />
         </div>
-      </div>
-
-      <div className="wn-section">
-        <div className="sa-container">
-          <GiaDashboard data={gia} gender={giaGender} />
-        </div>
-      </div>
-
-      <div className="wn-section">
-        <div className="sa-container">
-          <HostelDashboard data={hostel} />
-        </div>
-      </div>
+      </section>
     </PageLayout>
   );
 }

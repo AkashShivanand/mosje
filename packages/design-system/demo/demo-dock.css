@@ -283,7 +283,8 @@
    wall, so there is nowhere else for it to go — and never intercepts a
    pointer, so it cannot steal a click meant for the control it describes.
    `aria-hidden` in the markup: the accessible name is on the button. ── */
-.ds-demodock__tip {
+.ds-demodock__tip,
+.ds-demodock__notice {
   position: absolute;
   right: calc(100% + 10px);
   top: 50%;
@@ -326,6 +327,27 @@
    occlude. Raising the panel above it instead would just hide the tooltip
    behind the panel, which is the same loss with extra paint. */
 .ds-demodock__rail.is-panel-open .ds-demodock__tip {
+  opacity: 0;
+}
+
+/* ── Notice: the answer to a shortcut pressed with the panel closed ──────
+   Drawn BY the tooltip's own rule above — same chip, same type, same motion,
+   opening leftward off the wall — so it reads as the dock speaking, not as a
+   new floating element. Only the anchor differs: it is a child of the fixed
+   root, which is the rail's own box, so `top` is measured from the rail's top
+   edge — 8px padding plus half the 44px lead cell. */
+.ds-demodock__notice {
+  top: 30px;
+}
+
+.ds-demodock__notice.is-visible {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* The notice replaces the tooltip while it shows; two dark labels on one flask
+   would say different things at once. */
+.ds-demodock:has(.ds-demodock__notice.is-visible) .ds-demodock__lead .ds-demodock__tip {
   opacity: 0;
 }
 

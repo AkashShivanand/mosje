@@ -137,3 +137,28 @@ export const StatusesAndSizes: Story = {
     );
   },
 };
+
+/**
+ * **A narrower field.** Set a width with `containerClassName`, which sizes the wrapper that holds
+ * the field AND its chevron. `className` styles the `<select>` itself; a width given there narrows
+ * the field but leaves the chevron at the wrapper's far edge, outside the box — the E-Anudaan Bed
+ * Capacity select shipped that way until 8 Oct 2026.
+ */
+export const NarrowWidth: Story = {
+  render: () => (
+    <FormField label="Bed Capacity" hint="Set by the reviewing officer for a general IRCA.">
+      {(c) => (
+        <Select
+          {...c}
+          containerClassName="max-w-xs"
+          defaultValue="irca-30"
+          options={[
+            { value: "irca-15", label: "IRCA, 15 Beds" },
+            { value: "irca-30", label: "IRCA, 30 Beds" },
+            { value: "irca-50", label: "IRCA, 50 Beds" },
+          ]}
+        />
+      )}
+    </FormField>
+  ),
+};

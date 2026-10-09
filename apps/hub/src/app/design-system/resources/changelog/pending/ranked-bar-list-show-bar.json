@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "`RankedBarList showBar={false}` lists rows without their bars — for rows drawn against a ceiling they barely register on, such as the five lowest of 36 States/UTs against the highest, whose 1px bars read as broken. The figure and its rank carry the reading."
+}

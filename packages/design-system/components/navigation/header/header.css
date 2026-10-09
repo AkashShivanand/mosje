@@ -2537,15 +2537,20 @@
 
   /* Figma NavSheetRow Type=Group, Open=True: the open group's row is solid
      bg/brand/primary/bolder under inverse text, so the reader sees which group the
-     rows beneath belong to. Code had no open state at all. White on primary-600 is
-     6.4:1. */
+     rows beneath belong to. Code had no open state at all.
+
+     The ink is the ground's PAIRED token, not a blanket inverse: white is 4.32:1 on
+     dbim-green's primary-600, under AA for 16px text, and on/bg/brand/primary/bolder
+     swaps to the DBIM ink there (4.67:1). Every other brand resolves it to white. */
   .ds-navsheet__link[aria-expanded="true"] {
     background-color: var(--sa-bg-brand-primary-bolder);
-    color: var(--sa-text-neutral-inverse);
+    color: var(--sa-on-bg-brand-primary-bolder);
   }
 
+  /* The caret takes the row's paired ink too, so it never disagrees with the label
+     beside it (dark on dbim-green, white everywhere else). */
   .ds-navsheet__link[aria-expanded="true"] .ds-navsheet__caret {
-    color: var(--sa-icon-neutral-inverse);
+    color: var(--sa-on-bg-brand-primary-bolder);
   }
 
   .ds-navsheet__caret {
@@ -2595,6 +2600,18 @@
     outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
     outline-offset: calc(var(--sa-focus-offset) * -1);
     border-radius: var(--sa-shape-4);
+  }
+
+  /* An OPEN group row paints bg/brand/primary/bolder, and the inset brand ring
+     above drew brand-on-brand: 1.0:1 in five brands, 1.37 in blue, 1.93 in
+     dbim-green — no visible focus at all (2.4.7, 1.4.11). On that ground the ring
+     takes the inner focus colour, 4.32:1 or better in every brand — and sits one
+     ring-width further in, so brand ground shows on BOTH sides of it. Flush with the
+     row's edge, a white ring merged into the white sheet and read as the row
+     shrinking by 2px, not as focus. */
+  .ds-navsheet__link[aria-expanded="true"]:focus-visible {
+    outline-color: var(--sa-focus-ringInner);
+    outline-offset: calc(var(--sa-focus-width) * -2);
   }
 
   /* ── The sheet's mega state ──────────────────────────────────────────────

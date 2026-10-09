@@ -4,7 +4,7 @@ import { GATE_COOKIE, GATE_EMBLEM_SRC, resolveGateToken, safeEqual } from "@/lib
 import { ADMIN_PREVIEW_COOKIE, expectedPreviewToken } from "@/lib/admin/tokens";
 import type { RegistryConfig } from "@mosje/design-system/registry";
 import { blockedEntry, hiddenFrom, readRegistryConfig } from "@/lib/registry/config";
-import { WEBSITE_DESIGN_COOKIE, designRewriteTarget, parseWebsiteDesign } from "@/lib/website-design/constants";
+import { WEBSITE_DESIGN_COOKIE, designRewriteTarget, designTreeOf, parseWebsiteDesign } from "@/lib/website-design/constants";
 
 /**
  * Multi-zone resilience (dev-time safeguard).
@@ -116,6 +116,16 @@ const E_ANUDAAN_ALIASES: Readonly<Record<string, string>> = {
   "/portals/e-anudaan": "/portals/e-anudaan/login",
   "/portals/e-anudaan/sign-in": "/portals/e-anudaan/login?role=ngo",
   "/portals/e-anudaan/ngo/attendance-master": "/portals/e-anudaan/ngo/attendance",
+  // The Bureau's seven PFMS pages became three with the handoff file's redraw (3 Oct 2026):
+  // PFMS Masters, Schemes and Checkers, Older Files. Each old address lands on the page that now
+  // holds what it held. Error Messages had no successor drawn; it lands on PFMS Masters.
+  "/portals/e-anudaan/dashboard/pfms": "/portals/e-anudaan/dashboard/pfms/masters",
+  "/portals/e-anudaan/dashboard/pfms/ddo-mapping": "/portals/e-anudaan/dashboard/pfms/masters",
+  "/portals/e-anudaan/dashboard/pfms/claim-references": "/portals/e-anudaan/dashboard/pfms/masters",
+  "/portals/e-anudaan/dashboard/pfms/error-messages": "/portals/e-anudaan/dashboard/pfms/masters",
+  "/portals/e-anudaan/dashboard/pfms/heads-of-account": "/portals/e-anudaan/dashboard/pfms/schemes",
+  "/portals/e-anudaan/dashboard/pfms/designations": "/portals/e-anudaan/dashboard/pfms/schemes",
+  "/portals/e-anudaan/dashboard/pfms/back-fill": "/portals/e-anudaan/dashboard/pfms/older-files",
 };
 
 /*
@@ -377,6 +387,28 @@ export async function proxy(req: NextRequest): Promise<NextResponse> {
       const url = req.nextUrl.clone();
       url.pathname = target;
       return finish(NextResponse.rewrite(url));
+    }
+  }
+
+  /*
+   * The design trees' own folders are internal. `/website-dbim/…` and `/website-classic/…`
+   * exist only because Next serves one page tree per folder; the rewrite above is how a
+   * visitor reaches them. Typed or shared directly, they would be a second address for
+   * every page, so they redirect to the one real address — and set the design, so an old
+   * link still opens the design it was copied from.
+   */
+  {
+    const tree = designTreeOf(pathname);
+    if (tree) {
+      const url = req.nextUrl.clone();
+      url.pathname = tree.publicPath;
+      const response = NextResponse.redirect(url, 308);
+      response.cookies.set(WEBSITE_DESIGN_COOKIE, tree.design, {
+        path: "/",
+        maxAge: 31536000,
+        sameSite: "lax",
+      });
+      return finish(response);
     }
   }
 

@@ -33,11 +33,23 @@
 # it is the reason this is not a gate — only a required status check is.
 
 pushing_to_main=0
-while read -r _local_ref _local_sha remote_ref _remote_sha; do
+pushing_commits=0
+while read -r _local_ref local_sha remote_ref _remote_sha; do
+  # A DELETION pushes the all-zero sha: `git push origin --delete <branch>`. There is
+  # no tree to typecheck and no import to audit, so a delete must not be gated — it
+  # was, and tidying up merged branches failed on a hub typecheck of a build cache a
+  # parallel dev server happened to be rewriting at that moment (1 Oct 2026).
+  case "$local_sha" in
+    *[!0]*) pushing_commits=1 ;;
+  esac
   case "$remote_ref" in
     refs/heads/main) pushing_to_main=1 ;;
   esac
 done
+
+if [ "$pushing_commits" -eq 0 ]; then
+  exit 0
+fi
 
 if [ "$pushing_to_main" -eq 1 ]; then
   echo "pre-push: main — running the full local CI (npm run ci)…"

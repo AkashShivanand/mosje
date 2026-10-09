@@ -12,7 +12,7 @@
 @layer components {
   /* Icon sets its size inline; the chevrons read this so a breakpoint can change it. */
   [data-design="dbim"] .db-hm {
-    --db-hm-chev: 24px; /* reference: arrow_forward_ios 2.4rem */
+    --db-hm-chev: 24px; /* at every width: DBIM 3.0 §3.4 sizes are 24 / 32 / 48 / 64 (the reference dropped to 16 on a phone) */
     /* One content edge for every band (DBIM 3.0 Figure 50): the page gutter, no column
        padding inside it, and a 32px gap between columns. The reference's 15px / 7.5px
        Bootstrap half-gutters put the sections on three different left edges. */
@@ -27,7 +27,7 @@
   }
 
   [data-design="dbim"] .db-hm a:focus-visible {
-    outline: var(--sa-stroke-2) solid var(--sa-color-text-default);
+    outline: var(--sa-stroke-2) solid var(--sa-color-primaryScale-800); /* the handoff's 2px key-colour ring */
     outline-offset: var(--sa-padding-2);
   }
 
@@ -110,16 +110,22 @@
     border-radius: 0 var(--sa-shape-4) var(--sa-shape-4) 0;
   }
 
+  /* §4.5 iv: an unselected tab takes the lightest shade under the pointer. */
+  [data-design="dbim"] .db-hm-tabs .db-hm-tab:not([aria-selected="true"]):hover {
+    --sa-btn-fill: var(--sa-color-primaryScale-100);
+    background: var(--sa-color-primaryScale-100);
+  }
+
   [data-design="dbim"] .db-hm-tabs .db-hm-tab[aria-selected="true"] {
     --sa-btn-fill: var(--sa-color-primaryScale-800);
     --sa-btn-ink: var(--sa-color-neutralScale-0);
     background: var(--sa-color-primaryScale-800);
     color: var(--sa-color-neutralScale-0);
-    font-weight: var(--sa-font-weight-semibold);
+    font-weight: var(--sa-font-weight-bold); /* Paragraph 1: Regular or Bold only (Table 3) */
   }
 
   [data-design="dbim"] .db-hm-tabs .db-hm-tab:focus-visible {
-    outline: var(--sa-stroke-2) solid var(--sa-color-text-default);
+    outline: var(--sa-stroke-2) solid var(--sa-color-primaryScale-800);
     outline-offset: var(--sa-padding-2);
   }
 
@@ -147,6 +153,31 @@
     background: var(--sa-color-neutralScale-0);
   }
 
+  /* Beside What's New (≥1200), the five rows share out the band's height rather than
+     leaving it empty under the last one: What's New carries six items (home-mid.ts
+     HOME_NEWS_COUNT) and sets the height both columns take. */
+  @media (min-width: 1200px) {
+    [data-design="dbim"] .db-hm-offer .db-hm-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    [data-design="dbim"] .db-hm-offer .db-hm-list .db-hm-list__rows {
+      display: flex;
+      flex: 1 1 auto;
+      flex-direction: column;
+    }
+
+    [data-design="dbim"] .db-hm-offer .db-hm-list .db-hm-list__row {
+      display: flex;
+      flex: 1 1 auto;
+    }
+
+    [data-design="dbim"] .db-hm-offer .db-hm-list .db-hm-list__link {
+      flex: 1 1 auto;
+    }
+  }
+
   [data-design="dbim"] .db-hm-list .db-hm-list__row {
     margin-right: 10px; /* reference: me-3 */
     border-bottom: var(--sa-stroke-1) solid var(--sa-color-primaryScale-200);
@@ -171,18 +202,25 @@
     grid-template-columns: minmax(0, 10fr) minmax(0, 2fr);
     align-items: center;
     padding: var(--sa-padding-16) 31.5px; /* reference: 24 + 7.5 */
-    color: var(--sa-color-text-default);
+    color: var(--sa-color-primaryScale-800); /* the handoff's Text Link: the key colour */
     text-decoration: none;
   }
 
+  /* A scheme's name is shown whole, as the handoff draws it: on a phone the longest
+     runs to six lines, and cutting it at three left "…and the…" as the link's text. */
   [data-design="dbim"] .db-hm-list .db-hm-list__title {
-    display: -webkit-box;
-    overflow: hidden;
-    font-size: 0.875rem; /* 14px */
-    line-height: normal;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    -webkit-box-orient: vertical;
+    font-size: 0.875rem; /* 14px: Paragraph 2 on desktop, Paragraph 1 on a phone */
+    line-height: var(--db-lh-p2); /* 20 */
+  }
+
+  @media (max-width: 991.5px) {
+    [data-design="dbim"] .db-hm-list .db-hm-list__title {
+      line-height: var(--db-lh-p); /* 21 */
+    }
+  }
+
+  [data-design="dbim"] .db-hm-list .db-hm-list__link:hover {
+    color: var(--sa-color-primaryScale-600); /* Blue 2 */
   }
 
   [data-design="dbim"] .db-hm-list .db-hm-list__link:hover .db-hm-list__title {
@@ -325,8 +363,12 @@
     object-fit: cover;
   }
 
+  /* Two lines are reserved and taken back from the margin below (30 − 26), so the
+     longest group name — De-notified, Nomadic and Semi-Nomadic Tribes — wraps
+     without moving the controls, and the section is as tall as before. */
   [data-design="dbim"] .db-hm-persona .db-hm-persona__name {
-    margin: 30px 0; /* reference: mt 30, mb-5 */
+    min-height: 52px; /* two lines at the reference's 26 */
+    margin: 30px 0 4px; /* reference: mt 30, mb-5, less the reserved second line */
     color: var(--sa-color-primaryScale-800);
     font-size: var(--db-fs-h3);
     font-weight: var(--sa-font-weight-semibold);
@@ -348,16 +390,19 @@
     margin: 10px 0; /* reference: my-3 */
   }
 
+  /* Each dot is an 8px disc (DBIM 3.0 Figure 59) drawn inside a 24px button, the
+     smallest target WCAG 2.2 2.5.8 allows when targets sit this close — so the discs
+     land 16px apart. The reference's 12px squares 15px apart failed it too. */
   [data-design="dbim"] .db-hm-persona .db-hm-persona__dots {
     display: flex;
-    gap: 15px; /* reference: gap-4 */
+    gap: 0;
   }
 
   [data-design="dbim"] .db-hm-persona .db-hm-persona__arrow {
     --sa-btn-ink: var(--sa-color-primaryScale-800);
-    width: var(--sa-padding-24);
+    width: var(--sa-padding-40); /* the handoff's Pagination Item: a 40px target, 24 glyph */
     min-width: 0;
-    height: 28px; /* reference */
+    height: var(--sa-padding-40);
     min-height: 0;
     padding: 0;
     border-radius: var(--sa-shape-full);
@@ -367,20 +412,30 @@
 
   /* Round dots, the current one in the key colour and the rest grey (DBIM 3.0 Figure 59). */
   [data-design="dbim"] .db-hm-persona .db-hm-persona__dot {
-    --sa-btn-fill: var(--sa-color-neutralScale-300);
-    width: var(--sa-padding-8);
+    --sa-btn-fill: transparent;
+    --db-dot: var(--sa-color-neutralScale-400); /* Grey 02 #8E8E8E, DBIM 3.0 Table 1; 3.3:1 on white (WCAG 1.4.11) */
+    display: grid;
+    place-items: center;
+    width: var(--sa-padding-24);
     min-width: 0;
-    height: var(--sa-padding-8);
+    height: var(--sa-padding-24);
     min-height: 0;
     padding: 0;
     border: 0;
     border-radius: var(--sa-shape-full);
-    background: var(--sa-color-neutralScale-300);
+    background: transparent;
+  }
+
+  [data-design="dbim"] .db-hm-persona .db-hm-persona__dot::before {
+    width: var(--sa-padding-8);
+    height: var(--sa-padding-8);
+    border-radius: var(--sa-shape-full);
+    background: var(--db-dot);
+    content: "";
   }
 
   [data-design="dbim"] .db-hm-persona .db-hm-persona__dot[aria-current="true"] {
-    --sa-btn-fill: var(--sa-color-primaryScale-800);
-    background: var(--sa-color-primaryScale-800);
+    --db-dot: var(--sa-color-primaryScale-800);
   }
 
   [data-design="dbim"] .db-hm-persona .db-hm-persona__arrow:focus-visible,
@@ -396,8 +451,9 @@
 
   [data-design="dbim"] .db-hm-links .db-hm-links__item {
     padding: 18px 0; /* reference */
-    /* reference: Bootstrap's #DEE2E6 → the nearest neutral border token */
-    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    /* The handoff's border/grey (#C6C6C6), the rule every other grey line on the page
+       uses; the reference's Bootstrap #DEE2E6 was a fourth grey. */
+    border-bottom: var(--sa-stroke-1) solid var(--sa-color-neutralScale-200);
   }
 
   [data-design="dbim"] .db-hm-links .db-hm-links__link {
@@ -405,10 +461,14 @@
     gap: var(--sa-inline-16);
     align-items: center;
     justify-content: space-between;
-    color: var(--sa-color-text-default);
-    font-size: 1rem; /* 16px; 14px at 1280–1536, below */
-    line-height: normal;
+    color: var(--sa-color-primaryScale-800); /* the handoff's Text Link: the key colour */
+    font-size: var(--db-fs-p); /* Paragraph 1, DBIM 3.0 Tables 3/4 */
+    line-height: var(--db-lh-p);
     text-decoration: none;
+  }
+
+  [data-design="dbim"] .db-hm-links .db-hm-links__link:hover {
+    color: var(--sa-color-primaryScale-600); /* Blue 2 */
   }
 
   [data-design="dbim"] .db-hm-links .db-hm-links__link:hover span:first-child {
@@ -421,20 +481,12 @@
       width: 200px; /* reference: 200 !important at 1280–1536 */
       height: 200px;
     }
-
-    [data-design="dbim"] .db-hm-links .db-hm-links__link {
-      font-size: 0.875rem; /* 14px */
-    }
   }
 
   @media (max-width: 1279.5px) {
     [data-design="dbim"] .db-hm-persona .db-hm-persona__img {
       width: 260px;
       height: 260px;
-    }
-
-    [data-design="dbim"] .db-hm-links .db-hm-links__link {
-      font-size: 1rem; /* 16px */
     }
   }
 
@@ -457,10 +509,6 @@
   }
 
   @media (max-width: 768px) {
-    [data-design="dbim"] .db-hm {
-      --db-hm-chev: 16px; /* reference: 1.6rem */
-    }
-
     [data-design="dbim"] .db-hm-offer .db-hm-news {
       padding-block: 0;
     }
@@ -478,8 +526,9 @@
       min-width: 0;
       height: auto;
       min-height: 46px; /* reference */
-      padding: var(--sa-padding-8);
+      padding: var(--sa-padding-12) var(--sa-padding-8); /* handoff, Mobile 390 */
       font-size: 0.875rem; /* 14px */
+      line-height: 21px; /* handoff: 14 / 21 */
       white-space: normal;
     }
   }
@@ -494,8 +543,14 @@
     }
 
     /* .paddingRemove: on a phone a row's text starts at the list's own 16px. */
+    /* On a phone the rows close up to 7px above and below the title, as the reference's
+       390 capture and the handoff draw them (53px for a two-line name, not 71). */
     [data-design="dbim"] .db-hm-list .db-hm-list__link {
-      padding-inline: 0 7.5px; /* reference: the chevron column keeps its padding */
+      padding: 7px 7.5px 7px 0; /* handoff; reference: the chevron column keeps its padding */
+    }
+
+    [data-design="dbim"] .db-hm-list .db-hm-list__row:last-child .db-hm-list__link {
+      padding-bottom: 7px; /* handoff */
     }
 
     [data-design="dbim"] .db-hm-offer .db-hm-tabs {

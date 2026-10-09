@@ -1657,6 +1657,9 @@ export const tokens = {
     "track": "1px",
     "dot": "0.5rem"
   },
+  "emptystate": {
+    "measure": "21rem"
+  },
   "sitefooter": {
     "ink": {
       "subtle": "#c0dbff",

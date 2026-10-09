@@ -42,6 +42,17 @@ export interface WizardScreenProps extends ScreenStateInput {
   title: string;
   /** One line saying what the whole form is for. */
   description?: React.ReactNode;
+  /**
+   * Where the record stands — a status `Badge`. Rendered on the header's trailing
+   * edge, ahead of `actions`, exactly as `RecordScreen` and `DecisionScreen` place
+   * it, so one record shows its status in the same place on every screen it opens.
+   */
+  status?: React.ReactNode;
+  /**
+   * Header actions that belong to the whole record, not to a step — "Save as Draft".
+   * Never Back, Next or Submit: those are the action band's.
+   */
+  actions?: React.ReactNode;
 
   /**
    * The steps. Three to seven is the drawn range — NAPDDR 3, SHRESHTA 6,
@@ -115,6 +126,8 @@ export function WizardScreen({
   eyebrow,
   title,
   description,
+  status: recordStatus,
+  actions,
   steps,
   current,
   draft,
@@ -155,11 +168,22 @@ export function WizardScreen({
 
   return (
     <div className={cn("sa-screen", "sa-wizard", className)}>
+      {/* `compact`: a wizard's stepper and step panel carry the weight, and the
+          title only names the record (PageHeader's one-scale-per-kind rule). */}
       <PageHeader
         as={headingLevel}
+        size="compact"
         eyebrow={eyebrow}
         title={title}
         meta={description}
+        actions={
+          recordStatus || actions ? (
+            <>
+              {recordStatus}
+              {actions}
+            </>
+          ) : undefined
+        }
       />
 
       <div className="sa-screen__notices">

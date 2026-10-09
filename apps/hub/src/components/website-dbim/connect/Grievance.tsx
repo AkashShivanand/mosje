@@ -11,7 +11,7 @@ export function DbimGrievance() {
         </div>
       </aside>
       <div className="db-split__main">
-        <div className="db-prose db-prose--justify">
+        <div className="db-prose">
           {GRIEVANCE.paragraphs.map((p, i) =>
             p.heading ? (
               <p key={i}>

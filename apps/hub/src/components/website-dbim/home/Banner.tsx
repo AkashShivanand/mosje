@@ -1,6 +1,7 @@
 import { getHomeBanners } from "@/lib/website-shared/home-banners";
 import { whatsNew } from "@/lib/website-next/whats-new";
 import { whatsNewTarget } from "@/lib/website-dbim/documents";
+import { dbimFeedTitle } from "@/lib/website-dbim/home-mid";
 import { DbimIcon } from "@/components/website-dbim/ui/icons";
 
 import { BannerCarousel } from "./BannerCarousel";
@@ -15,6 +16,10 @@ const ANNOUNCEMENT_COUNT = 10;
  * bar. The slides are shared with every design (lib/website-shared/home.ts) — the
  * CCPS banner first, then the live site's own — not the reference build's six. DBIM makes
  * Announcements mandatory, so the bar renders even with nothing in it.
+ *
+ * Its items are the live What's New list (lib/website-shared/whats-new.ts): since
+ * dosje.gov.in took the DBIM layout, its own Announcements bar lists exactly those items,
+ * newest first (read 8 Oct 2026), so the two cannot disagree.
  */
 export async function DbimBanner() {
   const slides = await getHomeBanners();
@@ -22,7 +27,7 @@ export async function DbimBanner() {
   const items: AnnouncementItem[] = whatsNew()
     .flatMap((n): AnnouncementItem[] => {
       const t = whatsNewTarget(n);
-      return t ? [{ key: n.key, title: n.title, ...t }] : [];
+      return t ? [{ key: n.key, title: dbimFeedTitle(n.title), ...t }] : [];
     })
     .slice(0, ANNOUNCEMENT_COUNT);
 
@@ -32,7 +37,7 @@ export async function DbimBanner() {
       <div className="db-announce">
         <div className="db-announce__head">
           <h2 className="db-announce__title">Announcements</h2>
-          <DbimIcon name="announcements" size={25} className="db-announce__icon" />
+          <DbimIcon name="announcement" size={24} className="db-announce__icon" />
         </div>
         <AnnouncementsMarquee items={items} />
       </div>

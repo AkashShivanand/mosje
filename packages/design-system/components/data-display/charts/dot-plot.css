@@ -1,0 +1,138 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — DotPlot. A label, a track with a dot (and a stem from zero so the
+     dot's position reads against the start), an optional reference line, the value.
+     ============================================================================ */
+  .ds-dotplot {
+    margin: 0;
+    font-family: var(--sa-font-latin);
+  }
+
+  .ds-dotplot__rows {
+    display: grid;
+    gap: var(--sa-stack-16);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ds-dotplot__row {
+    display: grid;
+    grid-template-columns: minmax(0, 14rem) minmax(0, 1fr) 3.5rem; /* layout geometry */
+    align-items: center;
+    gap: var(--sa-stack-16);
+  }
+
+  .ds-dotplot__label {
+    display: grid;
+    gap: var(--sa-stack-2);
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .ds-dotplot__detail {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: var(--sa-font-weight-regular);
+  }
+
+  .ds-dotplot__track {
+    position: relative;
+    block-size: var(--sa-stack-24);
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-bg-neutral-subtle);
+  }
+
+  .ds-dotplot__stem {
+    position: absolute;
+    inset-block: 50% auto;
+    inset-inline-start: 0;
+    block-size: var(--sa-stroke-2);
+    transform: translateY(-50%);
+    background: var(--sa-chart-cat-1);
+    opacity: 0.45;
+  }
+
+  .ds-dotplot__dot {
+    position: absolute;
+    inset-block-start: 50%;
+    inline-size: var(--sa-stack-16);
+    block-size: var(--sa-stack-16);
+    border: var(--sa-stroke-2) solid var(--sa-bg-neutral-base);
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-chart-cat-1);
+    box-shadow: var(--sa-elevation-card);
+    transform: translate(-50%, -50%);
+  }
+
+  .ds-dotplot__ref,
+  .ds-dotplot__scale-ref::before {
+    position: absolute;
+    inset-block: calc(-1 * var(--sa-stack-4));
+    inline-size: var(--sa-stroke-2);
+    background: var(--sa-text-neutral-bolder);
+    transform: translateX(-50%);
+  }
+
+  .ds-dotplot__value {
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+    text-align: end;
+  }
+
+  /* The reference line's name, under the track column, at its own position. */
+  .ds-dotplot__scale {
+    display: grid;
+    grid-template-columns: minmax(0, 14rem) minmax(0, 1fr) 3.5rem; /* layout geometry */
+    gap: var(--sa-stack-16);
+    margin-block-start: var(--sa-stack-12);
+  }
+
+  .ds-dotplot__scale-track {
+    position: relative;
+    grid-column: 2;
+    block-size: var(--sa-stack-20);
+  }
+
+  .ds-dotplot__scale-ref {
+    position: absolute;
+    inset-block-start: 0;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: var(--sa-font-weight-regular);
+  }
+
+  .ds-dotplot--sm .ds-dotplot__rows { gap: var(--sa-stack-8); }
+  .ds-dotplot--sm .ds-dotplot__row { grid-template-columns: minmax(0, 7rem) minmax(0, 1fr) 2.75rem; gap: var(--sa-stack-8); } /* layout geometry */
+  .ds-dotplot--sm .ds-dotplot__track { block-size: var(--sa-stack-12); }
+  .ds-dotplot--sm .ds-dotplot__dot { inline-size: var(--sa-stack-12); block-size: var(--sa-stack-12); }
+  .ds-dotplot--sm .ds-dotplot__label,
+  .ds-dotplot--sm .ds-dotplot__value {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: var(--sa-font-weight-regular);
+  }
+
+  /* A phone: the label above its track. */
+  @media (max-width: 767px) {
+    .ds-dotplot--md .ds-dotplot__row { grid-template-columns: minmax(0, 1fr) 3rem; } /* layout geometry */
+    .ds-dotplot--md .ds-dotplot__label { grid-column: 1 / -1; }
+    .ds-dotplot--md .ds-dotplot__scale { grid-template-columns: minmax(0, 1fr) 3rem; } /* layout geometry */
+    .ds-dotplot--md .ds-dotplot__scale-track { grid-column: 1; }
+  }
+
+  @media (forced-colors: active) {
+    .ds-dotplot__dot, .ds-dotplot__stem, .ds-dotplot__ref { background: CanvasText; forced-color-adjust: none; }
+  }
+}

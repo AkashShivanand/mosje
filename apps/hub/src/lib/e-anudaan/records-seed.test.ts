@@ -114,7 +114,7 @@ test("notifications are titled by what happened, with one full stop", () => {
   for (const n of seed.notifications) {
     const app = seed.applications.find((a) => a.id === n.applicationId)!;
     const last = app.audit.at(-1)!;
-    assert.equal(n.title, notificationTitle(last.action), `${n.id}: ${last.action}`);
+    assert.equal(n.title, notificationTitle(last.action, last.remarks), `${n.id}: ${last.action}`);
     assert.notEqual(n.title, "Application moved forward");
     assert.ok(!/\.\.$/.test(n.body), n.body);
   }
@@ -234,11 +234,12 @@ test("the declaration is dated on or before submission", () => {
   }
 });
 
-test("a sanction is dated within its financial year or the year after", () => {
+test("a sanction is dated within its own financial year, the year its order is numbered in", () => {
   for (const a of seed.applications.filter((x) => x.sanction)) {
     const at = a.sanction!.sanctionedAt.slice(0, 10);
-    const lastDay = `${Number(a.financialYear.slice(0, 4)) + 2}-03-31`;
+    const lastDay = `${Number(a.financialYear.slice(0, 4)) + 1}-03-31`;
     assert.ok(at >= fyStartIso(a.financialYear) && at <= lastDay, `${a.id}: FY ${a.financialYear} sanctioned ${at}`);
+    assert.ok(a.sanction!.orderNo.startsWith(`SAN/${a.financialYear}/`), `${a.id}: order ${a.sanction!.orderNo} in FY ${a.financialYear}`);
   }
 });
 

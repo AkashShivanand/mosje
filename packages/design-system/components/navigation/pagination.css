@@ -157,7 +157,9 @@
     inline-size: 5ch;
     height: var(--sa-control-height-md);
     padding: 0 var(--sa-padding-8);
-    border: var(--sa-stroke-1) solid var(--sa-border-neutral-base);
+    /* A text field's boundary is the only thing that says "type here", so it owes
+       3:1 (1.4.11). border/neutral/base measured 1.66:1 on white. */
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-bolder-default);
     border-radius: var(--sa-shape-6);
     background-color: var(--sa-bg-neutral-base);
     color: var(--sa-text-neutral-base);
@@ -176,7 +178,7 @@
      Two classes, so the size ladder's `.ds-btn--md` padding cannot take it back. */
   .ds-pagination__jump-go.ds-btn {
     padding: 0 var(--sa-padding-12);
-    border-color: var(--sa-border-neutral-base);
+    border-color: var(--sa-border-neutral-bolder-default);
     border-radius: var(--sa-shape-6);
     background-color: var(--sa-bg-neutral-base);
     color: var(--sa-text-neutral-bolder);
@@ -187,7 +189,7 @@
 
   .ds-pagination__jump-go.ds-btn:hover {
     background-color: var(--sa-bg-neutral-hover);
-    border-color: var(--sa-border-neutral-base);
+    border-color: var(--sa-border-neutral-bolder-default);
   }
 
   .ds-pagination__jump-go.ds-btn:active {

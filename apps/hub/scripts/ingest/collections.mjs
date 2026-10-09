@@ -9,14 +9,18 @@ export const COLLECTIONS = [
     taxonomies: {},              // { fieldKey: "taxonomy-rest-base" }
     fields: ["id", "slug", "title", "link", "content", "featured_media"],
   },
+  /*
+   * `status` IS LIVE'S OWN ACTIVE/ARCHIVED TAG (`component_status`), and the three
+   * registers below carry it. The Department decides whether a scheme, a tender or a
+   * vacancy is current by that tag, by hand — never by its date. Without it the estate
+   * had to guess from the date, and a twelve-month rule showed 305 of 312 tenders as
+   * open. Read it through `isArchivedRecord` in lib/website-shared/records.ts.
+   */
   {
     name: "schemes",
     restBase: "schemes-and-services",
     sitemapType: "schemes-and-services",
     basePath: "schemes-and-services",
-    // `status` is live's own Active/Archived tag (`component_status`). Live decides a
-    // scheme's, tender's or vacancy's bucket by that tag, never by date — see
-    // `isArchivedRecord` in components/website-next/ui/records.ts.
     taxonomies: { category: "scheme-category", targetGroup: "target-group", status: "component_status" },
     // "scheme-category"/"target-group" are WP REST field names returning term-ID arrays (resolved to names via the `taxonomies` map).
     fields: ["id", "slug", "title", "link", "content", "scheme-category", "target-group", "component_status"],
