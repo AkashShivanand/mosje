@@ -21,7 +21,7 @@ export default function Page(): React.JSX.Element {
       name="Headline Figure"
       status="Beta"
       summary="A figure set in display type with the phrase it completes and, where a published denominator exists, its human scale. No frame: it belongs on a hero panel or an open page, where a card would box in what should read as a sentence."
-      figma={{ absent: "Not yet drawn in the Figma library. Added for the proposed website Dashboard, 6 Oct 2026; the code is authoritative until a counterpart exists." }}
+      figma={{ node: "headlineFigure" }}
       specimen={<Specimen />}
       propsFrom="HeadlineFigureProps"
       a11y={A11Y}

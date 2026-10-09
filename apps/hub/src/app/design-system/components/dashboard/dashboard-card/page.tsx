@@ -106,10 +106,7 @@ export default function DashboardCardPage(): React.JSX.Element {
       name="Dashboard Card"
       status="Beta"
       summary="One dashboard summarised on a page that lists several: its mark, its name, the scheme under it, one lead figure, a few facts and a link to the dashboard. Dashboard Card List lays the cards out by how many there are, so a programme with nothing to show leaves no gap in the row."
-      figma={{
-        absent:
-          "Not yet drawn in the SAMAVESH library. Extracted from the built Beneficiary Dashboard in October 2026; the Figma master follows in the next pass, and the code is authoritative until it exists.",
-      }}
+      figma={{ node: "dashboardCard" }}
       specimen={
         <div className="cdp-stack">
           <p className="cdp-states__label">Linked — the whole card opens its dashboard</p>

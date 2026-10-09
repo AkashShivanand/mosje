@@ -77,10 +77,7 @@ export default function KpiViewPage(): React.JSX.Element {
       name="KPI View"
       status="Beta"
       summary="One KPI, drawn by the shape of its reading, never by its name. Hand it a reading and it draws the chart that fits, in a Chart Card carrying its source and the date it is as on; a new portal's KPIs render the day they are in its register."
-      figma={{
-        absent:
-          "Not yet drawn in the SAMAVESH library. Extracted from the built Beneficiary Dashboard in October 2026; the Figma master follows in the next pass, and the code is authoritative until it exists.",
-      }}
+      figma={{ node: "kpiView" }}
       specimen={<KpiPlayground />}
       propsFrom="KpiViewProps"
       a11y={A11Y}
