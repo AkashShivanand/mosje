@@ -222,8 +222,8 @@ export const DBIM_HOME_PERSONAS: DbimPersonaSlide[] = DBIM_APPLICANT_TYPES.flatM
  * and the Important Links page cannot disagree about what the Department's links are.
  * The four are the actions a citizen may have arrived for — the Nasha Mukt Bharat
  * e-pledge, the Mitr sign-up, the de-addiction centre finder and the SAMAVESH gateway.
- * Behind "View more" stand the Department's priority destinations and its ten divisions,
- * nineteen rows in all, searchable and paged on the page itself.
+ * Behind "View more" stand the Department's priority destinations, nine rows in all,
+ * searchable on the page itself.
  *
  * The reference's own fourth row, "Inauguration", is a webcast link with no source in
  * this estate, so it is not drawn.

@@ -6,7 +6,7 @@ import "@/components/website-dbim/utility/utility.css";
 
 export const metadata: Metadata = {
   title: "Important Links | Department of Social Justice and Empowerment",
-  description: "The most used pages and portals of the Department of Social Justice & Empowerment, and its divisions.",
+  description: "The most used pages and portals of the Department of Social Justice & Empowerment.",
 };
 
 export default function Page() {

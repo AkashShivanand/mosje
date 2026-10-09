@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Icon, SectionTitle, buttonClasses } from "@mosje/design-system";
 import { PageLayout } from "@/components/website-next/layout/PageLayout";
 import { RecordTable, type RecordColumn } from "@/components/website-next/ui/RecordTable";
-import { archivedOn, dedupeNotices, displayNoticeTitle, tidyTitle } from "@/components/website-next/ui/records";
+import { dedupeNotices, displayNoticeTitle, tidyTitle } from "@/components/website-next/ui/records";
 import { isArchivedRecord } from "@/lib/website-shared/records";
 import { getContentSyncedDate, getTenders, getVacancies } from "@/lib/website/content";
 import { socialCard } from "@/lib/seo/social";

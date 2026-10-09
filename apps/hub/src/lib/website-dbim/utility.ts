@@ -8,7 +8,7 @@
  * DBIM address: a `/website/…` path from the redesign is served from the DBIM tree
  * while the DBIM design is chosen, and most redesign paths do not exist there.
  */
-import { DIVISIONS, ORGANISATIONS } from "@/data/website";
+import { ORGANISATIONS } from "@/data/website";
 import { DBIM_PERSONA_ICONS, DBIM_SOCIAL_AUDIT } from "./assets";
 import { DBIM_POLICY_TABS, type DbimLink } from "./nav";
 
@@ -254,28 +254,6 @@ export const DBIM_RELATED_LINKS: DbimLinkRow[] = [
   { label: "Open Government Data", href: "https://data.gov.in/" },
 ];
 
-/**
- * The Department's Important Links: one row per Division, as the classic design's
- * Important Links rail groups them (components/website/ImportantLinks.tsx, reading
- * `DIVISIONS` from data/website/divisions.ts). A division opens its DBIM page under
- * Ministry → Our Division; a division whose only destination is another website opens
- * that website. The three the DBIM reference leads with — Scheduled Caste Welfare,
- * Social Defence, Grants-in-Aid to NGOs — come first, the rest in `DIVISIONS` order.
- */
-const LEAD_DIVISIONS = ["scheduled-caste-welfare", "social-defence", "grants-in-aid-to-ngos"];
-const leadRank = (id: string) => {
-  const i = LEAD_DIVISIONS.indexOf(id);
-  return i < 0 ? LEAD_DIVISIONS.length : i;
-};
-
-const DIVISION_LINKS: DbimLinkRow[] = [...DIVISIONS].sort((a, b) => leadRank(a.id) - leadRank(b.id)).map((d) => {
-  const internal = d.links.some((l) => !l.href.startsWith("http"));
-  const external = d.links.find((l) => l.href.startsWith("http"));
-  return internal || !external
-    ? { label: d.name, path: `/ministry/our-division/${d.id}` }
-    : { label: d.name, href: external.href };
-});
-
 /*
  * THE DEPARTMENT'S PRIORITY DESTINATIONS (instruction, 1 Oct 2026, following the one of
  * 29 Sep: fill this section the way the benchmark does). DBIM 3.0 §7.3 x calls Important
@@ -288,8 +266,7 @@ const DIVISION_LINKS: DbimLinkRow[] = [...DIVISIONS].sort((a, b) => leadRank(a.i
  *
  * The Social Audit MIS Portal is one of them. It came onto this list on 28 Sep 2026 from
  * the home page's posts row, whose third slot became the Infographics (DBIM 3.0 §7.3
- * xiii), and it sits here rather than among the divisions because it is a portal, not a
- * division.
+ * xiii).
  *
  * TO BE CONFIRMED BY THE DEPARTMENT: which destinations are in fact its most accessed.
  * No usage figures were available, so the choice follows the benchmark's categories.
@@ -308,7 +285,7 @@ const PRIORITY_LINKS: DbimLinkRow[] = [
  * not: Nasha Mukt Bharat Abhiyaan (take the e-pledge, become a Nasha Mukti Mitr),
  * Find a De-addiction Centre Near You, and the SAMAVESH band ("Justice. Equality.
  * Dignity."). Their actions lead Important Links, so the home page's four rows carry
- * them; the divisions follow, and all of them stay on the Important Links page. The
+ * them, and all of them stay on the Important Links page. The
  * other two sections DBIM lacks already have a DBIM home one click from the menu —
  * Activity Corner is Connect › Events, Need Support? is Connect › Contact Us — so they
  * are not repeated here. Each opens its portal page in a new tab, as a portal is a
@@ -322,18 +299,20 @@ const HOME_SECTION_LINKS: DbimLinkRow[] = [
 ];
 
 /**
- * NINETEEN ROWS, IN THREE GROUPS, AND THE HOME PAGE SHOWS THE FIRST FOUR.
+ * NINE ROWS, IN TWO GROUPS, AND THE HOME PAGE SHOWS THE FIRST FOUR.
  *
  * The home section is a window on this list, not a list of its own — one record, so the
  * two cannot disagree — and it keeps its "View more", which opens this page in full.
  * That is why the order is the order: the four actions a citizen may have come for, then
- * the Department's priority destinations, then its divisions, which are the deepest and
- * also live a click away under Ministry › Our Division.
+ * the Department's priority destinations.
+ *
+ * NO DIVISIONS (instruction, 9 Oct 2026). A row per Division stood here until this date;
+ * dosje.gov.in does not organise its Important Links that way, so they were taken out.
+ * The divisions keep their place under Ministry › Our Division.
  */
 export const DBIM_IMPORTANT_LINKS: DbimLinkRow[] = [
   ...HOME_SECTION_LINKS,
   ...PRIORITY_LINKS,
-  ...DIVISION_LINKS,
 ];
 
 /* ── Help ───────────────────────────────────────────────────────────────── */
