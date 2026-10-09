@@ -56,10 +56,7 @@ export default function DashboardHeaderPage(): React.JSX.Element {
       name="Dashboard Header"
       status="Beta"
       summary="The head of one dashboard's page: whose dashboard it is, one sentence on what the scheme does, the period the figures describe, and the one way out, in the dashboard's colour. It carries no figures; the cards below carry them, with their definitions."
-      figma={{
-        absent:
-          "Not yet drawn in the SAMAVESH library. Extracted from the built Beneficiary Dashboard in October 2026; the Figma master follows in the next pass, and the code is authoritative until it exists.",
-      }}
+      figma={{ node: "dashboardHeader" }}
       specimen={
         <div className="cdp-stack">
           <DashboardHeader

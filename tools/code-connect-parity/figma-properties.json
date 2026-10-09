@@ -2949,5 +2949,200 @@
       }
     },
     "deliberatelyOmitted": []
+  },
+  "HeadlineFigure": {
+    "nodeId": "58895:607",
+    "captured": "2026-10-09",
+    "note": "6 variants = Size 3 x Tone 2, built 9 Oct 2026 on the Dashboard page. Value, Label and Context are text properties; Show context drops the line under the label.",
+    "properties": {
+      "Value": {
+        "type": "TEXT"
+      },
+      "Label": {
+        "type": "TEXT"
+      },
+      "Context": {
+        "type": "TEXT"
+      },
+      "Show context": {
+        "type": "BOOLEAN"
+      },
+      "Size": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "XL",
+          "LG",
+          "MD"
+        ]
+      },
+      "Tone": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Inverse"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "DashboardCard": {
+    "nodeId": "58895:952",
+    "captured": "2026-10-09",
+    "note": "12 variants = Tone 6 x Link 2. Link=Yes is the code's href (+ linkLabel, linkAs); the mark is an exposed org-logo instance, the figure an exposed Headline Figure (MD), the facts two exposed Description List rows.",
+    "properties": {
+      "Title": {
+        "type": "TEXT"
+      },
+      "Subtitle": {
+        "type": "TEXT"
+      },
+      "Show subtitle": {
+        "type": "BOOLEAN"
+      },
+      "Show mark": {
+        "type": "BOOLEAN"
+      },
+      "Note": {
+        "type": "TEXT"
+      },
+      "Show note": {
+        "type": "BOOLEAN"
+      },
+      "Show facts": {
+        "type": "BOOLEAN"
+      },
+      "Tone": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Primary",
+          "Secondary",
+          "Info",
+          "Success",
+          "Warning",
+          "Danger"
+        ]
+      },
+      "Link": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Yes",
+          "No"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "HeadlineBand": {
+    "nodeId": "58896:801",
+    "captured": "2026-10-09",
+    "note": "3 variants = Figures None | One | Four — the length of the code's `figures`. The lead is an exposed Headline Figure (XL, inverse).",
+    "properties": {
+      "Figures": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "None",
+          "One",
+          "Four"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "DashboardHeader": {
+    "nodeId": "58896:924",
+    "captured": "2026-10-09",
+    "note": "6 variants = Tone 6, nine properties for the head's optional parts.",
+    "properties": {
+      "Title": {
+        "type": "TEXT"
+      },
+      "Subtitle": {
+        "type": "TEXT"
+      },
+      "Show subtitle": {
+        "type": "BOOLEAN"
+      },
+      "Summary": {
+        "type": "TEXT"
+      },
+      "Show summary": {
+        "type": "BOOLEAN"
+      },
+      "Meta": {
+        "type": "TEXT"
+      },
+      "Show meta": {
+        "type": "BOOLEAN"
+      },
+      "Show mark": {
+        "type": "BOOLEAN"
+      },
+      "Show action": {
+        "type": "BOOLEAN"
+      },
+      "Tone": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Primary",
+          "Secondary",
+          "Info",
+          "Success",
+          "Warning",
+          "Danger"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "AreaBreakdown": {
+    "nodeId": "58898:1167",
+    "captured": "2026-10-09",
+    "note": "2 variants = Measures One | Two — the length of `measures`; Two draws the segmented switch.",
+    "properties": {
+      "Measures": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "One",
+          "Two"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "AreaExplorer": {
+    "nodeId": "58898:1461",
+    "captured": "2026-10-09",
+    "note": "2 variants = State Extremes | Picked — whether `selected` is set.",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Extremes",
+          "Picked"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "KpiView": {
+    "nodeId": "58898:2324",
+    "captured": "2026-10-09",
+    "note": "8 variants = Kind 8, each a Chart Card instance with its chart swapped. Kind is the reading's shape, not a prop.",
+    "properties": {
+      "Kind": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Ring",
+          "Two-part split",
+          "Ranked bars",
+          "Line",
+          "Bar series",
+          "Funnel",
+          "State map",
+          "Table"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
   }
 }

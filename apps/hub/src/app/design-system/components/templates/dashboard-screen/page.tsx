@@ -44,10 +44,7 @@ export default function DashboardScreenPage(): React.JSX.Element {
       name="Dashboard Screen"
       status="Beta"
       summary="Figures about one programme or several, for a reader who wants to know how things stand, filtered by area and period. The nineteenth screen template: the way back, the area bar with its filters, one sentence where an area choice changes only part of the page, then the view."
-      figma={{
-        absent:
-          "Not yet drawn in the SAMAVESH library. Extracted from the built Beneficiary Dashboard in October 2026; the Figma master follows in the next pass, and the code is authoritative until it exists.",
-      }}
+      figma={{ node: "screenTemplates" }}
       specimen={<DashboardSpecimen />}
       propsFrom="DashboardScreenProps"
       a11y={A11Y}

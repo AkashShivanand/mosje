@@ -20,6 +20,17 @@ export const FIGMA_NODES = {
   //                          detach and edit a screen the code owns. Page id, not the
   //                          documentation frame's, for the reason recorded on `shape`.
 
+  // ── Dashboard ── the page added 2026-10-09 after Map of India: the Beneficiary Dashboard's
+  //    parts, one documentation frame, one component record, seven numbered sections.
+  dashboard: "58894:429", // the page
+  headlineFigure: "58895:607", // `Headline Figure` set — Size 3 × Tone 2
+  dashboardCard: "58895:952", // `Dashboard Card` set — Tone 6 × Link 2
+  headlineBand: "58896:801", // `Headline Band` set — Figures None | One | Four
+  dashboardHeader: "58896:924", // `Dashboard Header` set — Tone 6
+  areaBreakdown: "58898:1167", // `Area Breakdown` set — Measures One | Two
+  areaExplorer: "58898:1461", // `Area Explorer` set — State Extremes | Picked
+  kpiView: "58898:2324", // `KPI View` set — Kind 8, each a Chart Card with its chart swapped
+
   // ── Foundations ──
   color: "2140:295913", // "Color Styles"
   typography: "2140:295912", // "Text Styles"

@@ -332,8 +332,8 @@ row).**
 ## 15. The dashboard's parts join the design system (9 Oct 2026)
 
 **Instruction, 9 Oct 2026:** what was built for this dashboard goes into the design system, as
-components or a template, so it can be reused wherever it applies. Figma follows in the next pass
-(owner's choice: code now, Figma next).
+components or a template, so it can be reused wherever it applies. Code first, then Figma (owner's
+choice); both are done.
 
 | Was (local to this dashboard) | Now (`@mosje/design-system`) |
 |---|---|
@@ -352,5 +352,15 @@ live figures, which moved between the two captures (41.22 → 41.23 lakh pledges
 checked in a browser: the segmented switch takes arrow keys, a click anywhere on a card opens its
 dashboard, focus lands on the new view's heading, the map pick fills the panel.
 
-**Open: the Figma masters.** None of the seven has a master in the SAMAVESH library yet. Each
-documentation page says so; the next pass draws them, adds Code Connect and the Index cards.
+**Figma (9 Oct 2026).** A new **Dashboard** page in the SAMAVESH library, after Map of India, holds
+seven masters — Headline Figure (Size × Tone), Dashboard Card (Tone × Link), Headline Band (Figures),
+Dashboard Header (Tone), Area Breakdown (Measures), Area Explorer (State) and KPI View (Kind × 8, each a
+Chart Card with its chart swapped) — composed from ten library parts, one documentation frame in the
+house style (six counted stats, five sections, an arrangements section with eight drawn arrangements
+and six code-only) and a component record. DashboardScreen is a wireframe card and a full-size
+desktop-and-phone frame on Screen Templates; the segmented button is an arrangement on Button Group.
+The Index carries a Dashboard card (live-instance preview) and reads 99 pages · 222 components.
+Every master has a Code Connect template and a fixture. Open, on the component record: the
+Description List has no figure size; the Icon set has no named glyphs (Open Portal draws the default
+arrow); KPI View's table is the library's example table; the library must be **published** from Figma
+for consumer files to see the masters.

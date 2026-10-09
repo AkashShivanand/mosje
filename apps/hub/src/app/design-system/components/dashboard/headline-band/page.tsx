@@ -88,10 +88,7 @@ export default function HeadlineBandPage(): React.JSX.Element {
       name="Headline Band"
       status="Beta"
       summary="The figures a dashboard opens with: one drawn large, and a few beside it, on the dashboard's colour. The lead answers the page's first question; the figures beside it answer the next few."
-      figma={{
-        absent:
-          "Not yet drawn in the SAMAVESH library. Extracted from the built Beneficiary Dashboard in October 2026; the Figma master follows in the next pass, and the code is authoritative until it exists.",
-      }}
+      figma={{ node: "headlineBand" }}
       specimen={
         <HeadlineBand
           title="At a Glance, All India"

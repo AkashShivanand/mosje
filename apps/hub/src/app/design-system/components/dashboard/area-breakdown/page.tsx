@@ -75,10 +75,7 @@ export default function AreaBreakdownPage(): React.JSX.Element {
       name="Area Breakdown"
       status="Beta"
       summary="One programme's figures State/UT by State/UT: the map of India, a switch between the figures it can show, and the same figures ranked beside it. Area Explorer sets the map beside a panel that shows the highest and lowest five until the reader picks a State/UT, then that State/UT."
-      figma={{
-        absent:
-          "Not yet drawn in the SAMAVESH library. Extracted from the built Beneficiary Dashboard in October 2026; the Figma master follows in the next pass, and the code is authoritative until it exists.",
-      }}
+      figma={{ node: "areaBreakdown" }}
       specimen={<AreaPlayground />}
       propsFrom="AreaBreakdownProps"
       a11y={A11Y}

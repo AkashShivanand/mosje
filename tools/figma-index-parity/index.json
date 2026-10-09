@@ -2,8 +2,8 @@
   "file": "3FF5l0SMNIwdpZrKkeyPTm",
   "indexPage": "56757:725",
   "indexFrame": "56757:726",
-  "capturedOn": "2026-10-06",
-  "statLine": "98 pages · 209 components · counted 22 September 2026",
+  "capturedOn": "2026-10-09",
+  "statLine": "99 pages · 222 components · counted 9 October 2026",
   "statuses": [
     "Ready",
     "Published",
@@ -120,6 +120,7 @@
     "List",
     "File List",
     "Map of India",
+    "Dashboard",
     "Tree",
     "Transfer List",
     "Schedule Grid",
@@ -514,7 +515,7 @@
     },
     {
       "name": "Data Display",
-      "stated": 19,
+      "stated": 20,
       "cards": [
         {
           "name": "Card",
@@ -538,6 +539,11 @@
         },
         {
           "name": "Map of India",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Dashboard",
           "status": "Ready",
           "linked": true
         },
