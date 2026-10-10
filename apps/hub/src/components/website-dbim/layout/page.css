@@ -254,7 +254,7 @@
     display: flex;
     gap: var(--sa-inline-4);
     align-items: center;
-    padding: 5px 10px;
+    padding: 5px var(--sa-padding-12); /* sides as the Figma Sub-tab (space/12); were 10px */
     font-size: 1.25rem; /* 20px */
     font-weight: var(--sa-font-weight-medium); /* Heading 3: Bold / Semi Bold / Medium (Table 3) */
     line-height: normal;
@@ -267,23 +267,28 @@
   /* The active tab's grip sits INSIDE the tab, in flow before the label. It used to
      hang at left:-8px in a 16px margin outside the tab's own box — the construction
      that ran "Terms of Use" into "Privacy Policy" in the Figma handoff, where the
-     margin did not travel with the tab. Same place on screen, 12 + 4 = 16px. Bold is
-     not width-reserved: a tab here is a page link, never re-selected in place. */
+     margin did not travel with the tab. Bold is not width-reserved: a tab here is a
+     page link, never re-selected in place.
+     The grip is the Figma Sub-tab's: the DBIM library's Drag Indicator at 24px
+     (six dots, 10×16 inked, 7px clear each side), space/8 before it and space/6
+     after it. The dots sit 13px from their own label and 27px from the previous
+     one — the review of 8 Oct 2026 found the old 4px gap and eight-dot grip cramped. */
   [data-design="dbim"] .db-tabs__link.is-active {
+    gap: var(--sa-inline-6);
+    padding-left: var(--sa-padding-8);
     font-weight: var(--sa-font-weight-bold);
   }
 
-  /* The reference's six-dot drag-indicator glyph (its own SVG, used as a mask so
-     the text colour paints it). */
+  /* A mask, so the text colour paints the dots. The 24px box is the icon's own
+     frame; it overhangs the row's padding rather than growing the bar. */
   [data-design="dbim"] .db-tabs__link.is-active::before {
     flex: none;
-    width: 12px;
-    height: 28px;
-    /* 1px taller than the label's line; let it overhang the padding, not grow the bar */
-    margin-block: -1px;
+    width: 24px;
+    height: 24px;
+    margin-block: -2px;
     content: "";
     background-color: currentColor;
-    mask: url("data:image/svg+xml,%3Csvg width='12' height='28' viewBox='0 0 12 28' xmlns='http://www.w3.org/2000/svg'%3E%3Cg%3E%3Ccircle cx='10.178' cy='3.068' r='1.822'/%3E%3Ccircle cx='10.178' cy='10.356' r='1.822'/%3E%3Ccircle cx='10.178' cy='17.644' r='1.822'/%3E%3Ccircle cx='10.178' cy='24.932' r='1.822'/%3E%3Ccircle cx='2.89' cy='3.068' r='1.822'/%3E%3Ccircle cx='2.89' cy='10.356' r='1.822'/%3E%3Ccircle cx='2.89' cy='17.644' r='1.822'/%3E%3Ccircle cx='2.89' cy='24.932' r='1.822'/%3E%3C/g%3E%3C/svg%3E") no-repeat center / contain;
+    mask: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='9' cy='6' r='2'/%3E%3Ccircle cx='15' cy='6' r='2'/%3E%3Ccircle cx='9' cy='12' r='2'/%3E%3Ccircle cx='15' cy='12' r='2'/%3E%3Ccircle cx='9' cy='18' r='2'/%3E%3Ccircle cx='15' cy='18' r='2'/%3E%3C/svg%3E") no-repeat center / contain;
   }
 
   [data-design="dbim"] .db-tabs__link:focus-visible {

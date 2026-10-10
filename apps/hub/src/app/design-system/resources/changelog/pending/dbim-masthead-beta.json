@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "The DBIM website masthead carries a BETA badge on its own row above “Government of India” — the DBIM DS `Beta Badge`: DBIM Mustard Yellow #FFC107 (new variable `bg/badge/beta`) behind the body ink #150202, 12.4:1; Small 1 SemiBold, 12px desktop and 10px phone. The Figma Header master gains a `Beta` property, on by default. The badge is hidden from assistive technology and the lockup link says “beta website” once, at the end."
+}

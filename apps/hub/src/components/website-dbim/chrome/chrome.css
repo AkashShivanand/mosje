@@ -147,6 +147,26 @@
     line-height: 1.25;
   }
 
+  /* BETA — the DBIM DS `Beta Badge`: bg/badge/beta, DBIM Mustard Yellow #FFC107
+     (§2.2; warningScale-200 resolves to it under data-brand="dbim"), behind
+     text/default #150202, 12.4:1 in every colour group. Not the estate's
+     --sa-cmp-badge-beta-bg, which is gov-yellow #FFD323 — not a DBIM colour.
+     Small 1 SemiBold, capitals from the style; 4px above "Government of India".
+     The size steps with --db-fs-small (12 → 10 on a phone, DBIM Tables 3–4), as
+     the Figma Mobile variant does. */
+  [data-design="dbim"] .db-logo__beta {
+    align-self: flex-start;
+    margin-bottom: var(--sa-padding-4);
+    padding: var(--sa-padding-2) var(--sa-padding-6);
+    border-radius: var(--sa-shape-4);
+    background-color: var(--sa-color-warningScale-200);
+    color: var(--sa-color-text-default);
+    font-size: var(--db-fs-small);
+    line-height: var(--db-lh-small);
+    font-weight: var(--sa-font-weight-semibold);
+    text-transform: uppercase;
+  }
+
   [data-design="dbim"] .db-logo__gov {
     font-size: 1.25rem; /* 20px */
     font-weight: var(--sa-font-weight-regular);
