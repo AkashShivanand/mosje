@@ -16,7 +16,7 @@
  */
 
 /** The date the live home page was last read for this file. */
-export const HOME_CONTENT_AS_ON = "2026-09-28";
+export const HOME_CONTENT_AS_ON = "2026-10-08";
 
 /* ------------------------------------------------------------------ banners */
 
@@ -38,9 +38,11 @@ export interface HomeBanner {
  * (lib/website-next/ccps.ts). It is byte-identical to the image the CCPS feed
  * served on CCPS_AS_ON — post 2826, `image_1`, at
  * master-socialjustice.digifootprint.gov.in/ccms/wp-json/post-page/top_banner —
- * with the feed's own link. When the feed moves on, replace the file and this entry.
+ * with the feed's own link. Re-checked by hash on 8 Oct 2026: the feed still serves
+ * this one image, and dosje.gov.in still leads with it. When the feed moves on,
+ * replace the file and this entry.
  */
-export const CCPS_AS_ON = "2026-09-28";
+export const CCPS_AS_ON = "2026-10-08";
 export const CCPS_SNAPSHOT: readonly HomeBanner[] = [
   {
     src: "/website/images/banners/ccps-mann-ki-baat.jpg",
@@ -53,32 +55,38 @@ export const CCPS_SNAPSHOT: readonly HomeBanner[] = [
 
 /**
  * The Department's own banners, after the CCPS slide, in the live order. The
- * files are byte-identical to the ones dosje.gov.in serves from its CDN
- * (`wp-content/uploads/2026/06/banner-*.jpg`), checked by hash on
- * HOME_CONTENT_AS_ON.
+ * photographs are byte-identical to the ones dosje.gov.in serves from its CDN
+ * (`wp-content/uploads/2026/06/banner-*.jpg`, and the Free Yoga banner at
+ * `2026/10/free-yoga-baaner.png`), checked by hash on HOME_CONTENT_AS_ON.
+ *
+ * Read 8 Oct 2026: the live carousel dropped `banner-1a` and put the Free Yoga
+ * banner third, linked to its registration page. The alt text is the live site's
+ * own, now that it publishes one, except the Free Yoga banner's: an image of text
+ * says what the text says (WCAG 1.1.1), where the live alt is only "Free Yoga".
  */
 export const HOME_BANNERS: readonly HomeBanner[] = [
   {
-    src: "/website/images/banners/banner-1a.jpg",
-    alt: "The Prime Minister with Ministers and senior officials at a public event",
+    src: "/website/images/banners/banner-2a.jpg",
+    alt: "Group photograph of officials in front of the statue of Dr. B. R. Ambedkar",
     width: 1800,
     height: 600,
   },
   {
-    src: "/website/images/banners/banner-2a.jpg",
-    alt: "A group photograph before a statue of Dr. B. R. Ambedkar",
+    src: "/website/images/banners/free-yoga.png",
+    alt: "14 Day Online Free Yoga, 5 to 18 October, with the Art of Living, the Ministry of Social Justice and Empowerment and Nasha Mukt Bharat Abhiyaan. Sessions at 6, 7, 8 and 11 AM and 5, 6 and 7 PM. Register here.",
     width: 1800,
     height: 600,
+    href: "https://challenge.srisriyoga.in/oct26/user-msji",
   },
   {
     src: "/website/images/banners/banner-3a.jpg",
-    alt: "An award presentation at a Nasha Mukt Bharat Abhiyaan event",
+    alt: "Prize distribution at a Nasha Mukt Bharat Abhiyaan event",
     width: 1800,
     height: 600,
   },
   {
     src: "/website/images/banners/banner-5a.jpg",
-    alt: "The 29th meeting of the Coordination Committee on the Protection of Civil Rights Act, 1955 and the SC/ST (Prevention of Atrocities) Act, 1989",
+    alt: "29th meeting of the Coordination Committee on the PCR Act, 1955 and the SC and ST (Prevention of Atrocities) Act, 1989",
     width: 1800,
     height: 600,
   },

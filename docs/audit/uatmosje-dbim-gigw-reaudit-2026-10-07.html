@@ -1,0 +1,662 @@
+<title>UAT Re-Audit, 7 Oct 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column for the verdict, full-width ledgers for the 54 findings, evidence plates after. */
+:root {
+  --paper: #ffffff;
+  --panel: #f3f6fa;
+  --ink: #14202e;
+  --muted: #536173;
+  --rule: #d9e0e8;
+  --brand: #0373df;
+  --brand-ink: #0a4f99;
+  --pass: #1a7a46;   --pass-bg: #e3f3ea;
+  --part: #8a5a00;   --part-bg: #fbf0d9;
+  --fail: #b3261e;   --fail-bg: #fbe6e4;
+  --unv:  #4a4f8a;   --unv-bg:  #e8e9f6;
+  --font: "Noto Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "Noto Sans Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #0f1620; --panel: #172230; --ink: #e6ecf3; --muted: #9aa8b8; --rule: #2a3747;
+  --brand: #5aa8f5; --brand-ink: #8cc3fa;
+  --pass: #6fd29b; --pass-bg: #143323; --part: #f0c060; --part-bg: #3a2c0c;
+  --fail: #ff8f86; --fail-bg: #3d1714; --unv: #b4b8f2; --unv-bg: #23264a; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #0f1620; --panel: #172230; --ink: #e6ecf3; --muted: #9aa8b8; --rule: #2a3747;
+  --brand: #5aa8f5; --brand-ink: #8cc3fa;
+  --pass: #6fd29b; --pass-bg: #143323; --part: #f0c060; --part-bg: #3a2c0c;
+  --fail: #ff8f86; --fail-bg: #3d1714; --unv: #b4b8f2; --unv-bg: #23264a; color-scheme: dark }
+
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 15px/1.6 var(--font); padding: 0 16px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 40px 72px; display: grid; gap: 48px; }
+.col { max-width: 72ch; }
+h1, h2, h3 { text-wrap: balance; line-height: 1.25; margin: 0; }
+h1 { font-size: 30px; font-weight: 700; }
+h2 { font-size: 22px; font-weight: 600; }
+h3 { font-size: 17px; font-weight: 600; }
+p { margin: 0; }
+.stack { display: grid; gap: 14px; }
+.eyebrow { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--brand-ink); font-weight: 600; }
+.meta { color: var(--muted); font-size: 14px; }
+a { color: var(--brand-ink); }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 2px; }
+code, .mono { font-family: var(--mono); font-size: 13px; }
+
+.verdict { border-left: 4px solid var(--fail); background: var(--panel); padding: 18px 20px; display: grid; gap: 8px; }
+.verdict strong { font-size: 18px; }
+
+.tally { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.tally div { border: 1px solid var(--rule); padding: 12px 14px; display: grid; gap: 2px; }
+.tally b { font-size: 26px; font-variant-numeric: tabular-nums; }
+.tally span { font-size: 13px; color: var(--muted); }
+.tally .p b { color: var(--pass); } .tally .h b { color: var(--part); } .tally .f b { color: var(--fail); } .tally .u b { color: var(--unv); }
+
+.bar { display: flex; height: 10px; overflow: hidden; border-radius: 2px; }
+.bar i { display: block; }
+.bar .p { background: var(--pass); } .bar .h { background: var(--part); } .bar .f { background: var(--fail); } .bar .u { background: var(--unv); }
+
+.ledger { overflow-x: auto; border-top: 2px solid var(--ink); }
+table { border-collapse: collapse; width: 100%; min-width: 760px; font-size: 14px; }
+th { text-align: center; font-size: 12px; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 10px 10px; border-bottom: 1px solid var(--rule); }
+td { padding: 11px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; text-align: left; }
+td.num { font-family: var(--mono); font-size: 13px; color: var(--muted); white-space: nowrap; }
+td.st { white-space: nowrap; }
+td.own { color: var(--muted); font-size: 13px; white-space: nowrap; }
+td .t { font-weight: 600; display: block; }
+.pill { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 999px; }
+.pill.p { color: var(--pass); background: var(--pass-bg); }
+.pill.h { color: var(--part); background: var(--part-bg); }
+.pill.f { color: var(--fail); background: var(--fail-bg); }
+.pill.u { color: var(--unv); background: var(--unv-bg); }
+
+ol.fix { margin: 0; padding-left: 22px; display: grid; gap: 10px; }
+ol.fix li::marker { color: var(--muted); font-variant-numeric: tabular-nums; }
+ul.plain { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+
+.plates { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; align-items: start; }
+figure { margin: 0; display: grid; gap: 8px; min-width: 0; }
+figure img { width: 100%; max-width: 100%; height: auto; border: 1px solid var(--rule); background: #fff; }
+figcaption { font-size: 13px; color: var(--muted); }
+.wide { grid-column: 1 / -1; }
+
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+.box { border: 1px solid var(--rule); padding: 16px 18px; display: grid; gap: 10px; min-width: 0; }
+
+.index { display: grid; gap: 10px; }
+.index > div { display: grid; grid-template-columns: 52px 1fr; gap: 10px; align-items: start; }
+.ilabel { font-size: 12px; letter-spacing: .06em; font-weight: 600; color: var(--muted); padding-top: 5px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font: 500 12px/1 var(--mono); padding: 6px 7px; border-radius: 4px; text-decoration: none; font-variant-numeric: tabular-nums; }
+.chip.p { color: var(--pass); background: var(--pass-bg); } .chip.h { color: var(--part); background: var(--part-bg); }
+.chip.f { color: var(--fail); background: var(--fail-bg); } .chip.u { color: var(--unv); background: var(--unv-bg); }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; position: sticky; top: env(safe-area-inset-top, 0px); background: var(--paper); padding-block: 10px; z-index: 2; border-bottom: 1px solid var(--rule); }
+.fbtn { font: 500 13px var(--font); color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 999px; padding: 6px 14px; cursor: pointer; }
+.fbtn[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.fbtn:focus-visible, .zoom:focus-visible, .chip:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+h2.grp { margin-top: 18px; }
+.card { border-top: 1px solid var(--rule); padding-block: 22px; display: grid; gap: 14px; scroll-margin-top: 64px; }
+.card:target { background: var(--panel); box-shadow: 0 0 0 12px var(--panel); }
+.chead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; }
+.chead .ref { font: 500 13px var(--mono); color: var(--brand-ink); min-width: 72px; }
+.chead h3 { font-size: 17px; }
+.chead .own { font-size: 13px; color: var(--muted); margin-left: auto; }
+.cbody { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 24px; align-items: start; }
+.ctext { display: grid; gap: 10px; min-width: 0; }
+.open { font-size: 14px; overflow-wrap: anywhere; }
+.steps { margin: 0; padding-left: 20px; display: grid; gap: 6px; font-size: 14px; }
+.steps li::marker { color: var(--muted); font-variant-numeric: tabular-nums; }
+.copy { user-select: all; background: var(--panel); padding: 1px 5px; border-radius: 3px; }
+.cshots { display: grid; gap: 12px; min-width: 0; }
+.shot { margin: 0; min-width: 0; }
+.zoom { display: block; padding: 0; border: 1px solid var(--rule); background: #fff; cursor: zoom-in; width: 100%; }
+.zoom img { display: block; width: 100%; max-width: 100%; height: auto; max-height: 360px; object-fit: contain; object-position: left top; }
+.shot.big { position: fixed; inset: 0; z-index: 50; background: rgba(10, 16, 24, .88); display: grid; place-items: center; padding: 24px 16px; }
+.shot.big .zoom { width: auto; max-width: 100%; cursor: zoom-out; }
+.shot.big .zoom img { max-height: calc(100vh - 48px); width: auto; }
+.noshot { font-size: 13px; color: var(--muted); border: 1px dashed var(--rule); padding: 14px; }
+.std { font-size: 12px; color: var(--muted); }
+@media (max-width: 760px) { .cbody { grid-template-columns: 1fr; } .chead .own { margin-left: 0; } }
+
+.parts { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.part-link { display: grid; gap: 4px; padding: 16px 18px; border: 1px solid var(--rule); border-left: 4px solid var(--brand); text-decoration: none; color: var(--ink); }
+.part-link b { font-size: 17px; } .part-link span { color: var(--muted); font-size: 14px; }
+.part-link:hover { background: var(--panel); }
+.part-link:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.parthead { display: grid; gap: 6px; padding-top: 28px; border-top: 4px solid var(--ink); scroll-margin-top: 16px; }
+.parthead .eyebrow { font-size: 13px; }
+.parthead h2 { font-size: 26px; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13px; color: var(--muted); align-items: center; }
+.sw { display: inline-block; width: 18px; height: 12px; border: 3px solid; border-radius: 2px; vertical-align: -1px; margin-right: 6px; }
+.sw.ok { border-color: #147a3f; } .sw.bad { border-color: #e00000; }
+.af { display: block; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; color: var(--muted); }
+@media (max-width: 760px) { .card { scroll-margin-top: 120px; } }
+</style>
+
+<div class="wrap">
+
+<header class="stack col">
+  <span class="eyebrow">Compliance re-audit · DBIM 3.0 · GIGW 3.0</span>
+  <h1>uatmosje.negd.in: DBIM and GIGW Re-Audit</h1>
+  <p class="meta">Tested 7 Oct 2026 · Department of Social Justice and Empowerment · UAT build of the DoSJE website</p>
+  <p>This report has two parts. Part 1 rechecks, one by one, the 54 points raised by Levithan Technologies in its DBIM and GIGW Level-1 reports of 1 Oct 2026. Part 2 lists new issues found on UAT during the recheck; they are kept apart so they do not mix with the agency's list.</p>
+</header>
+
+<nav class="parts" aria-label="Report parts">
+  <a class="part-link" href="#part1"><b>Part 1 · Agency's Findings Rechecked</b><span>21 of 54 closed · 18 partly fixed · 13 not fixed · 2 unverified</span></a>
+  <a class="part-link" href="#part2"><b>Part 2 · New Issues Found</b><span>9 issues not in either agency report</span></a>
+</nav>
+
+<section class="stack" id="part1">
+  <div class="parthead"><span class="eyebrow">Part 1</span><h2>Recheck of the Agency's Findings</h2></div>
+  <div class="stack col">
+    <div class="verdict">
+      <strong>Not ready to pass. 21 of the 54 findings are closed on UAT.</strong>
+      <p>UAT fixes most of the visual and accessibility engineering: the DBIM Blue palette, the footer, headings, labels, focus, zoom, pause controls, Feedback and Help. What remains is mostly content and governance: placeholder text, spelling, wrong office maps, missing Tender IDs, editable and scanned documents, the unpublished website policies, the Web Information Manager, and the chat button covering text.</p>
+    </div>
+    <div class="tally">
+      <div class="p"><b>21</b><span>Pass: closed on UAT</span></div>
+      <div class="h"><b>18</b><span>Partly fixed: some remains</span></div>
+      <div class="f"><b>13</b><span>Fail: unchanged</span></div>
+      <div class="u"><b>2</b><span>Cannot be verified by testing</span></div>
+    </div>
+    <div class="bar" role="img" aria-label="21 pass, 18 partly fixed, 13 fail, 2 unverified, of 54">
+      <i class="p" style="width:38.9%"></i><i class="h" style="width:33.3%"></i><i class="f" style="width:24.1%"></i><i class="u" style="width:3.7%"></i>
+    </div>
+    <p class="meta">DBIM: 8 pass, 9 partly, 7 fail. GIGW: 13 pass, 9 partly, 6 fail, 2 unverified. A finding passes only when nothing it describes can still be found on UAT.</p>
+  </div>
+
+  <div class="stack col">
+    <h3>How UAT Was Tested</h3>
+    <ul class="plain">
+      <li><b>190 pages swept</b> in Chrome at 1440 px: all 117 standard pages, every URL either report names, and four pages of each content type. axe-core 4.13 plus checks for headings, alt text, fonts, icon sizes, image weights, download labels, table alignment, footer colour, metadata and the quoted misspellings.</li>
+      <li><b>By hand</b> on Home and About Us: keyboard, 200% and 400% zoom, phone width, print, styles off, the chat button at four widths, an external link, hover and contrast.</li>
+      <li><b>Content</b> on Contact Us (all 19 organisations), Feedback, Help, Website Policies, Tenders, Videos, NCSK and four issued PDFs.</li>
+    </ul>
+  </div>
+
+  <div class="stack col">
+    <h3>How to Check a Finding</h3>
+    <p>Each card has a link that opens the page on UAT, steps to see the point, and a close-up taken on 7 Oct 2026. Click a close-up to enlarge it.</p>
+    <p class="legend"><span><i class="sw ok"></i>Green box: the point now passes</span><span><i class="sw bad"></i>Red box: still wrong</span><span>Owner: <b>Dev</b> code · <b>Content</b> CMS · <b>Department</b> decision or material</span></p>
+  </div>
+
+  <div class="index" aria-label="Jump to a finding">
+    <div><span class="ilabel">DBIM</span><div class="chips"><a class="chip h" href="#dbim-8-1" title="Off-palette colours: Partly">8.1</a><a class="chip p" href="#dbim-8-2" title="Footer not the darkest shade: Pass">8.2</a><a class="chip p" href="#dbim-8-3" title="Icons not key colour or white: Pass">8.3</a><a class="chip h" href="#dbim-8-4" title="Icon sizes off the 24/32/48/64 scale: Partly">8.4</a><a class="chip h" href="#dbim-8-5" title="Noto Sans not used throughout: Partly">8.5</a><a class="chip h" href="#dbim-8-6" title="Type scale not per DBIM: Partly">8.6</a><a class="chip p" href="#dbim-8-7" title="Statistics band text overlaps: Pass">8.7</a><a class="chip f" href="#dbim-8-8" title="Table alignment: Fail">8.8</a><a class="chip h" href="#dbim-8-9" title="Text contrast: Partly">8.9</a><a class="chip p" href="#dbim-8-10" title="Button sizes and padding: Pass">8.10</a><a class="chip p" href="#dbim-8-11" title="No hover change: Pass">8.11</a><a class="chip p" href="#dbim-8-12" title="Footer elements and lineage: Pass">8.12</a><a class="chip h" href="#dbim-8-13" title="Logo over 100 KB: Partly">8.13</a><a class="chip h" href="#dbim-8-14" title="Banners and backgrounds over 500 KB: Partly">8.14</a><a class="chip f" href="#dbim-8-15" title="Thumbnails over 100 KB: Fail">8.15</a><a class="chip f" href="#dbim-8-16" title="Spelling errors: Fail">8.16</a><a class="chip f" href="#dbim-8-17" title="Placeholder content: Fail">8.17</a><a class="chip p" href="#dbim-8-18" title="Page metadata: Pass">8.18</a><a class="chip h" href="#dbim-8-19" title="Heading hierarchy: Partly">8.19</a><a class="chip h" href="#dbim-8-20" title="Alt text and link names: Partly">8.20</a><a class="chip p" href="#dbim-8-21" title="PM quote absent: Pass">8.21</a><a class="chip f" href="#dbim-8-22" title="CIO / WIM missing, wrong maps: Fail">8.22</a><a class="chip f" href="#dbim-8-23" title="Tender ID and portal link: Fail">8.23</a><a class="chip f" href="#dbim-8-24" title="Editable documents: Fail">8.24</a></div></div>
+    <div><span class="ilabel">GIGW</span><div class="chips"><a class="chip h" href="#gigw-8-1" title="File size and format not shown: Partly">8.1</a><a class="chip f" href="#gigw-8-2" title="Archival policy: Fail">8.2</a><a class="chip h" href="#gigw-8-3" title="Contact Us incomplete: Partly">8.3</a><a class="chip p" href="#gigw-8-4" title="No Feedback page: Pass">8.4</a><a class="chip p" href="#gigw-8-5" title="Help insufficient: Pass">8.5</a><a class="chip f" href="#gigw-8-6" title="Chatbot overlaps content: Fail">8.6</a><a class="chip p" href="#gigw-8-7" title="Overlap with CSS off: Pass">8.7</a><a class="chip p" href="#gigw-8-8" title="Page metadata: Pass">8.8</a><a class="chip h" href="#gigw-8-9" title="Hindi and English mixed: Partly">8.9</a><a class="chip f" href="#gigw-8-10" title="No external-site notice: Fail">8.10</a><a class="chip h" href="#gigw-8-11" title="Partial printing: Partly">8.11</a><a class="chip f" href="#gigw-8-12" title="WIM not identified: Fail">8.12</a><a class="chip f" href="#gigw-8-13" title="Website URL not on documents: Fail">8.13</a><a class="chip f" href="#gigw-8-14" title="WIM-approved policies: Fail">8.14</a><a class="chip h" href="#gigw-8-15" title="Alt text missing: Partly">8.15</a><a class="chip u" href="#gigw-8-16" title="Video captions: Unverified">8.16</a><a class="chip h" href="#gigw-8-17" title="H1 missing, heading order: Partly">8.17</a><a class="chip h" href="#gigw-8-18" title="Colour contrast: Partly">8.18</a><a class="chip p" href="#gigw-8-19" title="Icons overlap at 200%: Pass">8.19</a><a class="chip p" href="#gigw-8-20" title="Table header tag missing: Pass">8.20</a><a class="chip p" href="#gigw-8-21" title="Cannot scroll at 400%: Pass">8.21</a><a class="chip p" href="#gigw-8-22" title="Icons not keyboard reachable: Pass">8.22</a><a class="chip p" href="#gigw-8-23" title="Icon contrast: Pass">8.23</a><a class="chip p" href="#gigw-8-24" title="Focus lost at page end: Pass">8.24</a><a class="chip p" href="#gigw-8-25" title="No pause for moving content: Pass">8.25</a><a class="chip h" href="#gigw-8-26" title="Links not conveyed: Partly">8.26</a><a class="chip p" href="#gigw-8-27" title="Field labels missing: Pass">8.27</a><a class="chip p" href="#gigw-8-28" title="Status messages not announced: Pass">8.28</a><a class="chip u" href="#gigw-8-29" title="Content not conveyed by screen reader: Unverified">8.29</a><a class="chip h" href="#gigw-8-30" title="HTML and CSS validation errors: Partly">8.30</a></div></div>
+  </div>
+  <div class="filters" role="group" aria-label="Show findings">
+    <button type="button" class="fbtn" data-f="all" aria-pressed="true">All 54</button>
+    <button type="button" class="fbtn" data-f="p" aria-pressed="false">Pass 21</button>
+    <button type="button" class="fbtn" data-f="h" aria-pressed="false">Partly 18</button>
+    <button type="button" class="fbtn" data-f="f" aria-pressed="false">Fail 13</button>
+    <button type="button" class="fbtn" data-f="u" aria-pressed="false">Unverified 2</button>
+  </div>
+  <div id="findings" class="stack">
+    <h3 class="grp">DBIM Level-1: 24 Findings</h3>
+    <article class="card" id="dbim-8-1" data-status="h">
+  <header class="chead"><span class="ref">DBIM 8.1</span><h3><span class="af">Agency said</span>Off-palette colours</h3><span class="pill h">Partly</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>The site now uses the DBIM Blue group (key <code>#162F6A</code>), Linen, Deep Earthy Brown and Grey 03. The orange SAMAVESH strip and green buttons are gone. Still off-palette: violet <code>#613AF5</code>, lavender <code>#ECD0FF</code> and <code>#212121</code> text inside the UX4G accessibility panel when it is opened.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/" target="_blank" rel="noopener">/</a></p><ol class="steps"><li>Open the home page.</li><li>Click the accessibility icon (third icon, top right).</li><li>The panel that opens has a violet header, lavender buttons and dark-grey text. The rest of the page uses only the DBIM Blue group.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/ux4g-panel.jpg" alt="UX4G accessibility panel open, with a violet header and lavender buttons" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="dbim-8-2" data-status="p">
+  <header class="chead"><span class="ref">DBIM 8.2</span><h3><span class="af">Agency said</span>Footer not the darkest shade</h3><span class="pill p">Pass</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Footer is <code>#162F6A</code>, the darkest Blue shade, on 189 of 190 pages. The 190th is the SCW Scope server-error page, which has no footer.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/" target="_blank" rel="noopener">/</a></p><ol class="steps"><li>Scroll to the bottom of any page.</li><li>Optional: F12 › click the inspect arrow › click the footer › Computed › background-color reads rgb(22, 47, 106), i.e. #162F6A.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/footer.jpg" alt="Site footer in dark blue with the useful links, lineage and Last Updated" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="dbim-8-3" data-status="p">
+  <header class="chead"><span class="ref">DBIM 8.3</span><h3><span class="af">Agency said</span>Icons not key colour or white</h3><span class="pill p">Pass</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Site icons draw in <code>#162F6A</code> on light grounds and white on dark. Social icons in the footer are white.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/" target="_blank" rel="noopener">/</a></p><ol class="steps"><li>Look at the four icons top right and the social icons in the footer.</li><li>Header icons are the key colour #162F6A on white; footer icons are white on #162F6A. Both are what DBIM §3.7 asks for.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/header-icons.jpg" alt="Four header icons in dark blue on white" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="dbim-8-4" data-status="h">
+  <header class="chead"><span class="ref">DBIM 8.4</span><h3><span class="af">Agency said</span>Icon sizes off the 24/32/48/64 scale</h3><span class="pill h">Partly</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>About 98% of rendered icons are 24 or 32 px. Still off-scale: the X logo in the home page's social card (20×20), the new-tab icons beside links on 15 content pages (16×16), and single 13×15 and 14×16 icons on Sector-Wise Detailed Information and NMBA.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/" target="_blank" rel="noopener">/</a> · <a href="https://uatmosje.negd.in/organisation/national-safai-karamcharis-finance-development-corporation/" target="_blank" rel="noopener">/organisation/national-safai-karamcharis-finance-development-corporation/</a></p><ol class="steps"><li>Home: scroll to In Social Media; the X logo in the X (Twitter) card is 20×20.</li><li>NSKFDC: the small new-tab icons beside links are 16×16.</li><li>To measure: F12 › inspect arrow › hover the icon; the tooltip shows its size.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/icon-20.jpg" alt="The X logo in the social card outlined at 20 by 20 pixels" loading="lazy"></button></figure><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/icon-16.jpg" alt="A small new-tab icon outlined at 16 by 16 pixels" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="dbim-8-5" data-status="h">
+  <header class="chead"><span class="ref">DBIM 8.5</span><h3><span class="af">Agency said</span>Noto Sans not used throughout</h3><span class="pill h">Partly</span><span class="own">Content</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Arial on About Us and Helvetica on AVYAY are fixed. Still pasted in: Mangal and Times New Roman on BJRNF Literature, and Calibri across the event page "Senior Citizen Mental Health and Property Protection". The Helvetica Neue on the NMBA page is only the map widget's credit line.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/organisation/babu-jagjivan-ram-national-foundation-bjrnf/literature/" target="_blank" rel="noopener">/organisation/babu-jagjivan-ram-national-foundation-bjrnf/literature/</a> · <a href="https://uatmosje.negd.in/events/senior-citizen-mental-health-and-property-protection-2/" target="_blank" rel="noopener">/events/senior-citizen-mental-health-and-property-protection-2/</a></p><ol class="steps"><li>Open either page and right-click the outlined text › Inspect.</li><li>In DevTools › Computed, scroll to font-family: it reads Mangal or Times New Roman (BJRNF) and Calibri (event) instead of Noto Sans.</li><li>The NMBA page's Helvetica Neue is the map widget's credit line, not pasted text.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/font-mangal.jpg" alt="Text on BJRNF Literature outlined; it is set in Mangal" loading="lazy"></button></figure><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/font-calibri.jpg" alt="Hindi heading on the event page outlined; it is set in Calibri" loading="lazy"></button></figure><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/font-helvetica.jpg" alt="The Leaflet map credit outlined; it is set in Helvetica Neue" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="dbim-8-6" data-status="h">
+  <header class="chead"><span class="ref">DBIM 8.6</span><h3><span class="af">Agency said</span>Type scale not per DBIM</h3><span class="pill h">Partly</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>H1 is 36 px desktop and 24 px phone on every page. Body text is 16, 14 and 12 px. Second-level headings still render at 20 px (327 times) and 16 px (201 times) where DBIM sets H2 at 24 px.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/" target="_blank" rel="noopener">/</a></p><ol class="steps"><li>Home: right-click the "Announcements" heading › Inspect.</li><li>The element is an &lt;h2&gt;; Computed › font-size reads 20px. DBIM sets H2 at 24px.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/h2-20.jpg" alt="The Announcements heading outlined; an H2 at 20 pixels" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="dbim-8-7" data-status="p">
+  <header class="chead"><span class="ref">DBIM 8.7</span><h3><span class="af">Agency said</span>Statistics band text overlaps</h3><span class="pill p">Pass</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>The statistics band is no longer on the home page, so its overlapping figures cannot occur.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/" target="_blank" rel="noopener">/</a></p><ol class="steps"><li>Open Home and press Ctrl+F (⌘F).</li><li>Search "67,977" and "19.82 Crore": neither is on the page, so the band and its overlap are gone.</li></ol></div>
+    <div class="cshots"><p class="noshot">Nothing to photograph; follow the steps.</p></div>
+  </div>
+</article><article class="card" id="dbim-8-8" data-status="f">
+  <header class="chead"><span class="ref">DBIM 8.8</span><h3><span class="af">Agency said</span>Table alignment</h3><span class="pill f">Fail</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Unchanged on the reported pages. Dates of death (Surajpur) and phone numbers (Contact Person) are left-aligned. Tenders, Annual Reports, Acts and Rules, and Circulars headers are left-aligned instead of centred. Amounts and serial numbers are now right-aligned.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/sewer-death-detail/surajpur/" target="_blank" rel="noopener">/sewer-death-detail/surajpur/</a> · <a href="https://uatmosje.negd.in/contact-person/" target="_blank" rel="noopener">/contact-person/</a> · <a href="https://uatmosje.negd.in/tenders/" target="_blank" rel="noopener">/tenders/</a></p><ol class="steps"><li>Surajpur: the Date of Death column sits left; numbers and dates should sit right.</li><li>Contact Person: phone numbers sit left.</li><li>Tenders: the column headings sit left; DBIM wants headings centred.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/date-left.jpg" alt="A date of death in the Surajpur table, aligned left" loading="lazy"></button></figure><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/phone-left.jpg" alt="A telephone number in the Contact Person table, aligned left" loading="lazy"></button></figure><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/tender-head.jpg" alt="Tenders table header row: Title, Published Date, Type/Size, aligned left" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="dbim-8-9" data-status="h">
+  <header class="chead"><span class="ref">DBIM 8.9</span><h3><span class="af">Agency said</span>Text contrast</h3><span class="pill h">Partly</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>axe found one failing text node in 190 pages, down from 2,535: the "Export CSV" button on Surajpur, green <code>#3C9718</code> on Linen, 3.1:1.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/sewer-death-detail/surajpur/" target="_blank" rel="noopener">/sewer-death-detail/surajpur/</a></p><ol class="steps"><li>Find the green "Export CSV" button above the table.</li><li>Check it in any contrast checker: green #3C9718 on #EBEAEA is 3.1 : 1; normal text needs 4.5 : 1.</li><li>Or F12 › inspect the button text › the colour swatch in Styles shows the ratio.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/export-csv.jpg" alt="The green Export CSV button outlined, contrast 3.1 to 1" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="dbim-8-10" data-status="p">
+  <header class="chead"><span class="ref">DBIM 8.10</span><h3><span class="af">Agency said</span>Button sizes and padding</h3><span class="pill p">Pass</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Design-system buttons share one height (40 px) and two paddings: one for text buttons, one for icon-only buttons.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/" target="_blank" rel="noopener">/</a></p><ol class="steps"><li>Compare the VIEW MORE, VIEW EVENT and VIEW PROFILE buttons on Home: same 40px height and padding.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/view-more.jpg" alt="A View More button outlined" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="dbim-8-11" data-status="p">
+  <header class="chead"><span class="ref">DBIM 8.11</span><h3><span class="af">Agency said</span>No hover change</h3><span class="pill p">Pass</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Inactive Offerings tabs (Vacancies, Tenders), buttons, cards, footer badges and social links all change on hover.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/" target="_blank" rel="noopener">/</a></p><ol class="steps"><li>Home › Key Offerings: move the mouse over Vacancies and Tenders. Their background changes.</li><li>Footer badges and social icons also change on hover.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/offer-tabs-hover.jpg" alt="Key Offerings tabs with Vacancies in its hover state" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="dbim-8-12" data-status="p">
+  <header class="chead"><span class="ref">DBIM 8.12</span><h3><span class="af">Agency said</span>Footer elements and lineage</h3><span class="pill p">Pass</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Archives, Website Policies, Related Links, Sitemap, Help, Feedback, social links and Last Updated are all present. The lineage reads exactly as DBIM §5.6 (ii). Last Updated now differs page to page.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/" target="_blank" rel="noopener">/</a></p><ol class="steps"><li>Footer lists Archives, Website Policies, Related Links, Sitemap, Help, Feedback, social links and Last Updated On.</li><li>Lineage reads "The website belongs to Department of Social Justice and Empowerment, Ministry of Social Justice and Empowerment, Government of India".</li><li>Open two pages: their Last Updated dates differ.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/footer.jpg" alt="Site footer in dark blue with the useful links, lineage and Last Updated" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="dbim-8-13" data-status="h">
+  <header class="chead"><span class="ref">DBIM 8.13</span><h3><span class="af">Agency said</span>Logo over 100 KB</h3><span class="pill h">Partly</span><span class="own">Content</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>The NCSC logo is now 40 KB. A new oversized logo: the NHAA 14566 helpline logo in the home page partner strip is 564 KB, drawn at 124×84.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/" target="_blank" rel="noopener">/</a></p><ol class="steps"><li>Scroll Home to the partner logos above the footer; find the National Helpline 14566 logo.</li><li>Right-click the image › Open Image in New Tab. Then press F12 › Network tab › reload: the Size column shows its weight. It is 564 KB (51631768814486-300x93.jpg).</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/nhaa-logo.jpg" alt="The NHAA 14566 helpline logo outlined in the partner strip" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="dbim-8-14" data-status="h">
+  <header class="chead"><span class="ref">DBIM 8.14</span><h3><span class="af">Agency said</span>Banners and backgrounds over 500 KB</h3><span class="pill h">Partly</span><span class="own">Content</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>The organisation banners and the Babuji background are fixed. Still over 500 KB: <code>p1.jpg</code> 775 KB (BJRNF Literature), <code>Schemes-Services.png</code> 578 KB, <code>first_floor_foyer_3.jpg</code> 521 KB (Venue Booking). <code>p1.jpg</code> is also a 954×1900 picture of a Hindi table with empty alt, so its text cannot be read aloud (see New Findings).</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/organisation/babu-jagjivan-ram-national-foundation-bjrnf/literature/" target="_blank" rel="noopener">/organisation/babu-jagjivan-ram-national-foundation-bjrnf/literature/</a> · <a href="https://uatmosje.negd.in/booking/first-floor-foyer-area/" target="_blank" rel="noopener">/booking/first-floor-foyer-area/</a></p><ol class="steps"><li>BJRNF Literature: the table image is p1.jpg, 775 KB.</li><li>First Floor Foyer: the header photograph is first_floor_foyer_3.jpg, 521 KB.</li><li>Right-click the image › Open Image in New Tab. Then press F12 › Network tab › reload: the Size column shows its weight.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/p1-jpg.jpg" alt="The BJRNF literature table, which is a single image" loading="lazy"></button></figure><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/foyer.jpg" alt="The First Floor Foyer header photograph" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="dbim-8-15" data-status="f">
+  <header class="chead"><span class="ref">DBIM 8.15</span><h3><span class="af">Agency said</span>Thumbnails over 100 KB</h3><span class="pill f">Fail</span><span class="own">Content, Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Event photos are 132–168 KB (Ek Ped Maa Ke Naam). <code>Schemes-Services.png</code> (578 KB) is still the scheme card image. The five persona images are 1.5–1.9 MB each (see New Findings).</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/events/ek-ped-maa-ke-naam-7/" target="_blank" rel="noopener">/events/ek-ped-maa-ke-naam-7/</a> · <a href="https://uatmosje.negd.in/schemes-and-services/cm-housing-rent-scheme/" target="_blank" rel="noopener">/schemes-and-services/cm-housing-rent-scheme/</a></p><ol class="steps"><li>Ek Ped Maa Ke Naam: each event photo is 132–168 KB.</li><li>CM Housing Rent Scheme: the card image Schemes-Services.png is 578 KB.</li><li>Right-click the image › Open Image in New Tab. Then press F12 › Network tab › reload: the Size column shows its weight.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/event-photo.jpg" alt="An event photograph outlined, 168 KB" loading="lazy"></button></figure><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/schemes-png.jpg" alt="The scheme card illustration outlined, 578 KB" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="dbim-8-16" data-status="f">
+  <header class="chead"><span class="ref">DBIM 8.16</span><h3><span class="af">Agency said</span>Spelling errors</h3><span class="pill f">Fail</span><span class="own">Content</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Unchanged. "Misutilization of Grands" (page title, URL and sitemap). "lnviting Expression of lnterest … undor the scheme" on Home, Updates, Miscellaneous and NMBA. "E- Procuremnet" on Tenders.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/penalties-in-case-of-misutilization-of-grands/" target="_blank" rel="noopener">/penalties-in-case-of-misutilization-of-grands/</a> · <a href="https://uatmosje.negd.in/" target="_blank" rel="noopener">/</a> · <a href="https://uatmosje.negd.in/tenders/" target="_blank" rel="noopener">/tenders/</a></p><ol class="steps"><li>Penalties page: the title reads "Misutilization of Grands".</li><li>Home › What's New: "lnviting Expression of lnterest … undor". Press Ctrl+F (⌘F) and search "lnviting" (lower-case L) to find it.</li><li>Tenders: Ctrl+F "Procuremnet".</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/grands.jpg" alt="Page heading reading Penalties in case of Misutilization of Grands" loading="lazy"></button></figure><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/lnviting.jpg" alt="What's New item beginning lnviting, with a lower-case L" loading="lazy"></button></figure><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/procuremnet.jpg" alt="Tender title containing E- Procuremnet" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="dbim-8-17" data-status="f">
+  <header class="chead"><span class="ref">DBIM 8.17</span><h3><span class="af">Agency said</span>Placeholder content</h3><span class="pill f">Fail</span><span class="own">Content</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Unchanged. "Add Your Heading Text Here" and Lorem ipsum on SCW About Us. The DWBDNC map still searches for "Office Address Office Address…". 2025 tenders still lead the Tenders list.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/organisation/scw-about-us/" target="_blank" rel="noopener">/organisation/scw-about-us/</a> · <a href="https://uatmosje.negd.in/contact-us/?org=dwbdnc" target="_blank" rel="noopener">/contact-us/?org=dwbdnc</a> · <a href="https://uatmosje.negd.in/tenders/" target="_blank" rel="noopener">/tenders/</a></p><ol class="steps"><li>SCW About Us: "Add Your Heading Text Here" and a Lorem ipsum paragraph.</li><li>Contact Us › DWBDNC: click SHOW MAP HERE; the map searches "Office Address Office Address…".</li><li>Tenders: tenders dated 2025 are still in the active list.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/scw-placeholder.jpg" alt="SCW About Us showing Add Your Heading Text Here and Lorem ipsum" loading="lazy"></button></figure><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/map-dwbdnc.jpg" alt="DWBDNC map after loading, searching the placeholder address" loading="lazy"></button></figure><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/tender-2025.jpg" alt="A tender dated 01.12.2025 in the active list" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="dbim-8-18" data-status="p">
+  <header class="chead"><span class="ref">DBIM 8.18</span><h3><span class="af">Agency said</span>Page metadata</h3><span class="pill p">Pass</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>188 of 190 pages carry a page-specific description and keywords. The two without are search results and a duplicate sitemap URL.</p><p class="open"><b>Open on UAT:</b> <code class="copy">view-source:https://uatmosje.negd.in/about-us/</code></p><ol class="steps"><li>Paste the link into Chrome's address bar (or press Ctrl+U / ⌥⌘U on any page).</li><li>Ctrl+F "meta name=\"description" and "meta name=\"keywords": both are present and specific to the page.</li></ol></div>
+    <div class="cshots"><p class="noshot">Nothing to photograph; follow the steps.</p></div>
+  </div>
+</article><article class="card" id="dbim-8-19" data-status="h">
+  <header class="chead"><span class="ref">DBIM 8.19</span><h3><span class="af">Agency said</span>Heading hierarchy</h3><span class="pill h">Partly</span><span class="own">Dev, Content</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Home and 186 of 190 pages have one H1. Four CPIO profile pages (for example <code>/cpio/shri-sumit-kumar/</code>) have no H1. Ten pages skip a level: CPIO list, Contact Us 2, Drug Division, Detailed Demand for Grant, NGO guidelines and others.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/cpio/shri-sumit-kumar/" target="_blank" rel="noopener">/cpio/shri-sumit-kumar/</a> · <a href="https://uatmosje.negd.in/drug-division/" target="_blank" rel="noopener">/drug-division/</a></p><ol class="steps"><li>CPIO profile: right-click the name heading › Inspect: it is an &lt;h3&gt;, and the page has no &lt;h1&gt;.</li><li>Drug Division: "Drug Prevention – I Section" is an &lt;h5&gt; straight under an &lt;h2&gt;.</li><li>Quicker: install the free HeadingsMap extension and open the page.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/cpio-noh1.jpg" alt="CPIO profile page whose name heading is an H3" loading="lazy"></button></figure><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/drug-h5.jpg" alt="Drug Prevention – I Section heading, an H5" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="dbim-8-20" data-status="h">
+  <header class="chead"><span class="ref">DBIM 8.20</span><h3><span class="af">Agency said</span>Alt text and link names</h3><span class="pill h">Partly</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>One image in 190 pages has no alt (International Yoga Day). Gallery image links on organisation pages have no name (three per page on DAF, DAIC, NCSC, NCSK, NMBA and NSKFDC). On Suo-Moto Disclosure, the ten eye-shaped view links have no name.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/organisation/dr-ambedkar-foundation/" target="_blank" rel="noopener">/organisation/dr-ambedkar-foundation/</a> · <a href="https://uatmosje.negd.in/suo-moto-disclosure/" target="_blank" rel="noopener">/suo-moto-disclosure/</a></p><ol class="steps"><li>DAF: scroll to Photos; right-click a photo › Inspect: the &lt;img&gt; has no alt and the link has no text.</li><li>Suo-Moto Disclosure: the download buttons in each row carry no text a screen reader can read.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/gallery-noname.jpg" alt="A gallery photo link on the DAF page" loading="lazy"></button></figure><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/suo-moto-row.jpg" alt="A Suo-Moto Disclosure row with size but no format" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="dbim-8-21" data-status="p">
+  <header class="chead"><span class="ref">DBIM 8.21</span><h3><span class="af">Agency said</span>PM quote absent</h3><span class="pill p">Pass</span><span class="own">Department</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>The home page carries the Hon'ble PM's photograph and a quote, cited to the 79th Independence Day address. The Department should confirm the photograph's source.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/" target="_blank" rel="noopener">/</a></p><ol class="steps"><li>Home, below the banner: the Hon'ble PM's photograph, the quote and its citation.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/pm-quote.jpg" alt="The PM quote section" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="dbim-8-22" data-status="f">
+  <header class="chead"><span class="ref">DBIM 8.22</span><h3><span class="af">Agency said</span>CIO / WIM missing, wrong maps</h3><span class="pill f">Fail</span><span class="own">Department, Content</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Contact Us now has a "Website and Information Officers" block, but it lists only the Appellate Authority and PIO. There is no CIO or Web Information Manager. Maps for NBCFDC, NCSC, NISD and NOS still point to the Dr. Ambedkar Foundation. DWBDNC still uses the placeholder. BJRNF is fixed.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/contact-us/" target="_blank" rel="noopener">/contact-us/</a> · <a href="https://uatmosje.negd.in/contact-us/?org=nbcfdc" target="_blank" rel="noopener">/contact-us/?org=nbcfdc</a></p><ol class="steps"><li>Contact Us: under "Website and Information Officers" only the Appellate Authority and PIO appear; no WIM or CIO.</li><li>Switch organisation to NBCFDC (or NCSC, NISD, NOS) › SHOW MAP HERE: the map shows Dr. Ambedkar Foundation.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/contact-officers.jpg" alt="Website and Information Officers block on Contact Us" loading="lazy"></button></figure><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/map-nbcfdc.jpg" alt="NBCFDC map after loading, showing Dr. Ambedkar Foundation" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="dbim-8-23" data-status="f">
+  <header class="chead"><span class="ref">DBIM 8.23</span><h3><span class="af">Agency said</span>Tender ID and portal link</h3><span class="pill f">Fail</span><span class="own">Dev, Content</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>The Tenders table has Title, Published Date, Type/Size and Action columns. There is no Tender ID and no link to CPPP or GeM. A GeM reference appears only inside some titles.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/tenders/" target="_blank" rel="noopener">/tenders/</a></p><ol class="steps"><li>The table columns are Title, Published Date, Type/Size and Action. There is no Tender ID and no CPPP or GeM link.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/tender-head.jpg" alt="Tenders table header row: Title, Published Date, Type/Size, aligned left" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="dbim-8-24" data-status="f">
+  <header class="chead"><span class="ref">DBIM 8.24</span><h3><span class="af">Agency said</span>Editable documents</h3><span class="pill f">Fail</span><span class="own">Content</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Unchanged. Seven <code>.pptx</code> on NHAA IEC and Training Material, <code>NSKFDC_CSRProjects.xlsx</code>, and <code>PMAJAY-FINAL-PPT.pptx</code>.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/organisation/national-helpline-against-atrocities/iec-and-training-material/" target="_blank" rel="noopener">/organisation/national-helpline-against-atrocities/iec-and-training-material/</a></p><ol class="steps"><li>Hover any "View" link: the address at the bottom of the window ends in .pptx.</li><li>Also: NSKFDC › CSR (.xlsx) and the PM-AJAY page (.pptx).</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/pptx.jpg" alt="A row on NHAA IEC material linking to a PowerPoint file" loading="lazy"></button></figure></div>
+  </div>
+</article>
+    <h3 class="grp">GIGW Level-1: 30 Findings</h3>
+    <article class="card" id="gigw-8-1" data-status="h">
+  <header class="chead"><span class="ref">GIGW 8.1</span><h3><span class="af">Agency said</span>File size and format not shown</h3><span class="pill h">Partly</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Tenders, Acts and Rules, Vacancies and Home now show "(PDF, 2.1 MB)". 166 of 470 download links do not show both: some lists give the size in a column but never say PDF (Research and Evaluation Studies, Suo-Moto Disclosure), others give neither (NHAA IEC material, Detailed Demand for Grant, Social Defence pages).</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/list-of-research-evaluation-studies/" target="_blank" rel="noopener">/list-of-research-evaluation-studies/</a> · <a href="https://uatmosje.negd.in/tenders/" target="_blank" rel="noopener">/tenders/</a></p><ol class="steps"><li>Research and Evaluation Studies: the document links give no format or size.</li><li>Compare Tenders, where each row shows "PDF, 2.1 MB".</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/dl-nosize.jpg" alt="A Research and Evaluation Studies row with a size column but no format" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-2" data-status="f">
+  <header class="chead"><span class="ref">GIGW 8.2</span><h3><span class="af">Agency said</span>Archival policy</h3><span class="pill f">Fail</span><span class="own">Department</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Not published. An Archives page exists, but no policy says what is archived, when, or for how long.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/website-policies/" target="_blank" rel="noopener">/website-policies/</a></p><ol class="steps"><li>The tabs are Terms and Conditions, Privacy, Hyperlinking and Copyright. There is no archival policy.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/policies.jpg" alt="Website Policies page with four tabs" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-3" data-status="h">
+  <header class="chead"><span class="ref">GIGW 8.3</span><h3><span class="af">Agency said</span>Contact Us incomplete</h3><span class="pill h">Partly</span><span class="own">Department, Content</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Each of the 19 organisations has an address, phone, email and PIO/Appellate links. Missing: the Web Information Manager and CIO. Five office maps are wrong (see DBIM 8.22).</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/contact-us/" target="_blank" rel="noopener">/contact-us/</a></p><ol class="steps"><li>As DBIM 8.22: no WIM or CIO, and five office maps are wrong.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/contact-officers.jpg" alt="Website and Information Officers block on Contact Us" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-4" data-status="p">
+  <header class="chead"><span class="ref">GIGW 8.4</span><h3><span class="af">Agency said</span>No Feedback page</h3><span class="pill p">Pass</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>A Feedback form with labelled required fields, instructions, a DPDP Act notice and a status tracker.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/home-page/feedback/" target="_blank" rel="noopener">/home-page/feedback/</a></p><ol class="steps"><li>The Feedback form has labelled fields, a * on required ones, a privacy note and Track Status.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/feedback.jpg" alt="The Feedback form" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-5" data-status="p">
+  <header class="chead"><span class="ref">GIGW 8.5</span><h3><span class="af">Agency said</span>Help insufficient</h3><span class="pill p">Pass</span><span class="own">Department</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Help covers file formats and readers, accessibility, FAQs and screen-reader access (352 words). The Department should approve the text.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/home-page/help/" target="_blank" rel="noopener">/home-page/help/</a></p><ol class="steps"><li>Help covers file formats and readers, accessibility, FAQs and screen-reader access.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/help.jpg" alt="The Help page" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-6" data-status="f">
+  <header class="chead"><span class="ref">GIGW 8.6</span><h3><span class="af">Agency said</span>Chatbot overlaps content</h3><span class="pill f">Fail</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>The 98×103 launcher covers body text at phone width, the About Us sub-navigation at 200% zoom, the Department name at 400%, and the PM quote at 390 px. See Evidence.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/about-us/" target="_blank" rel="noopener">/about-us/</a> · <a href="https://uatmosje.negd.in/" target="_blank" rel="noopener">/</a></p><ol class="steps"><li>Phone width: F12 › device toolbar (Ctrl+Shift+M) › choose a 375px phone › open About Us › scroll to Functions.</li><li>Zoom: on a desktop browser press Ctrl + (⌘ +) to 200%, then 400%.</li><li>The round chat button sits over text in each case.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/chat-375.jpg" alt="About Us at 375 pixels with the chat button over the text" loading="lazy"></button></figure><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/chat-200.jpg" alt="About Us at 200 percent zoom with the chat button over the sub-menu" loading="lazy"></button></figure><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/chat-400.jpg" alt="Home at 400 percent zoom with the chat button over the Department name" loading="lazy"></button></figure><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/chat-390.jpg" alt="Home at 390 pixels with the chat button over the PM quote" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-7" data-status="p">
+  <header class="chead"><span class="ref">GIGW 8.7</span><h3><span class="af">Agency said</span>Overlap with CSS off</h3><span class="pill p">Pass</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>With all styles removed the page reads in a clean top-to-bottom order with no overlaps.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/" target="_blank" rel="noopener">/</a></p><ol class="steps"><li>Install the Web Developer extension › CSS › Disable All Styles.</li><li>The page reads top to bottom without overlaps.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/cssoff-page.jpg" alt="Home with styles switched off, reading top to bottom" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-8" data-status="p">
+  <header class="chead"><span class="ref">GIGW 8.8</span><h3><span class="af">Agency said</span>Page metadata</h3><span class="pill p">Pass</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>See DBIM 8.18.</p><p class="open"><b>Open on UAT:</b> <code class="copy">view-source:https://uatmosje.negd.in/</code></p><ol class="steps"><li>As DBIM 8.18.</li></ol></div>
+    <div class="cshots"><p class="noshot">Nothing to photograph; follow the steps.</p></div>
+  </div>
+</article><article class="card" id="gigw-8-9" data-status="h">
+  <header class="chead"><span class="ref">GIGW 8.9</span><h3><span class="af">Agency said</span>Hindi and English mixed</h3><span class="pill h">Partly</span><span class="own">Content</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>The NCSK page still carries three Hindi-only news items (29 and 30 July 2026) on the English page. Each is correctly marked <code>lang="hi"</code>, so a screen reader switches to a Hindi voice; the page itself is still in two languages.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/organisation/national-commission-for-safai-karamcharis/" target="_blank" rel="noopener">/organisation/national-commission-for-safai-karamcharis/</a></p><ol class="steps"><li>Scroll to the news items dated 29 and 30 July 2026: they are in Hindi on the English page.</li><li>Right-click one › Inspect: three of the six have no lang="hi" on them or a parent.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/hindi.jpg" alt="A Hindi news card on the NCSK English page" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-10" data-status="f">
+  <header class="chead"><span class="ref">GIGW 8.10</span><h3><span class="af">Agency said</span>No external-site notice</h3><span class="pill f">Fail</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Clicking Digital India opens it with no notice. About a quarter of external links now say "opens in a new tab", but none says the reader is leaving the Department's website.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/" target="_blank" rel="noopener">/</a></p><ol class="steps"><li>Click the Digital India logo in the header. It opens digitalindia.gov.in at once, with no notice that you are leaving the Department's site.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/digital-india-link.jpg" alt="The Digital India logo link in the header" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-11" data-status="h">
+  <header class="chead"><span class="ref">GIGW 8.11</span><h3><span class="af">Agency said</span>Partial printing</h3><span class="pill h">Partly</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>A print stylesheet now prints the whole page. Cards still split across page breaks (social media cards, the dashboard tile), and the persona carousel prints one persona of nine.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/" target="_blank" rel="noopener">/</a></p><ol class="steps"><li>Press Ctrl+P (⌘P) on Home and scroll the preview.</li><li>The In Social Media cards split across a page break, and Explore User Personas prints one persona.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/print-break.jpg" alt="Print preview where a page break cuts through the Facebook card" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-12" data-status="f">
+  <header class="chead"><span class="ref">GIGW 8.12</span><h3><span class="af">Agency said</span>WIM not identified</h3><span class="pill f">Fail</span><span class="own">Department</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>No Web Information Manager is named anywhere on UAT.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/contact-us/" target="_blank" rel="noopener">/contact-us/</a></p><ol class="steps"><li>No Web Information Manager is named on Contact Us or anywhere else; Ctrl+F "Web Information Manager" on any page finds nothing.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/contact-officers.jpg" alt="Website and Information Officers block on Contact Us" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-13" data-status="f">
+  <header class="chead"><span class="ref">GIGW 8.13</span><h3><span class="af">Agency said</span>Website URL not on documents</h3><span class="pill f">Fail</span><span class="own">Department</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>The Financial Adviser vacancy circular (31 Jul 2026) has no website address. The DAIC EoI shows <code>www.daic.gov.in</code>. Three of four sampled PDFs are scanned images (see New Findings).</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/vacancies/" target="_blank" rel="noopener">/vacancies/</a></p><ol class="steps"><li>Open "Vacancy Circular for the post of Financial Advisor" (31.07.2026).</li><li>There is no website address on it, and you cannot select its text: it is a scan.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/pdf-scan.jpg" alt="First pages of two scanned PDFs" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-14" data-status="f">
+  <header class="chead"><span class="ref">GIGW 8.14</span><h3><span class="af">Agency said</span>WIM-approved policies</h3><span class="pill f">Fail</span><span class="own">Department</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Website Policies carries Terms, Privacy, Copyright and Hyperlinking only. Not published: Content Contribution, Moderation and Approval; Content Archival; Content Review; Contingency Management; Security; Website Monitoring.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/website-policies/" target="_blank" rel="noopener">/website-policies/</a></p><ol class="steps"><li>Only four policies. Missing: Content Contribution, Moderation and Approval; Archival; Content Review; Contingency Management; Security; Website Monitoring.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/policies.jpg" alt="Website Policies page with four tabs" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-15" data-status="h">
+  <header class="chead"><span class="ref">GIGW 8.15</span><h3><span class="af">Agency said</span>Alt text missing</h3><span class="pill h">Partly</span><span class="own">Content</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>See DBIM 8.20. The four hero banners also have empty alt and no caption, so a screen reader is told nothing about the events they show.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/" target="_blank" rel="noopener">/</a></p><ol class="steps"><li>Right-click a banner photo › Inspect: alt="".</li><li>There is no caption either, so a screen reader announces nothing for it.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/hero-alt.jpg" alt="A home page banner photograph" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-16" data-status="u">
+  <header class="chead"><span class="ref">GIGW 8.16</span><h3><span class="af">Agency said</span>Video captions</h3><span class="pill u">Unverified</span><span class="own">Department</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>The Videos page now links to the YouTube channel and embeds nothing. Whether those videos have captions has to be checked on YouTube by the Department.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/gallery/?type=videos" target="_blank" rel="noopener">/gallery/?type=videos</a></p><ol class="steps"><li>Videos link out to YouTube. Captions can only be checked on YouTube (CC button), by the Department.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/videos.jpg" alt="The Videos gallery page" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-17" data-status="h">
+  <header class="chead"><span class="ref">GIGW 8.17</span><h3><span class="af">Agency said</span>H1 missing, heading order</h3><span class="pill h">Partly</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Home, Gallery and Videos now have an H1. See DBIM 8.19 for what remains.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/cpio/shri-sumit-kumar/" target="_blank" rel="noopener">/cpio/shri-sumit-kumar/</a></p><ol class="steps"><li>As DBIM 8.19.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/cpio-noh1.jpg" alt="CPIO profile page whose name heading is an H3" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-18" data-status="h">
+  <header class="chead"><span class="ref">GIGW 8.18</span><h3><span class="af">Agency said</span>Colour contrast</h3><span class="pill h">Partly</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>See DBIM 8.9: one failing node remains.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/sewer-death-detail/surajpur/" target="_blank" rel="noopener">/sewer-death-detail/surajpur/</a></p><ol class="steps"><li>As DBIM 8.9.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/export-csv.jpg" alt="The green Export CSV button outlined, contrast 3.1 to 1" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-19" data-status="p">
+  <header class="chead"><span class="ref">GIGW 8.19</span><h3><span class="af">Agency said</span>Icons overlap at 200%</h3><span class="pill p">Pass</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>At 200% zoom icons and text keep their spacing. The chatbot overlap at that size is recorded under 8.6.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/about-us/" target="_blank" rel="noopener">/about-us/</a></p><ol class="steps"><li>Press Ctrl + (⌘ +) to 200%. Icons and text keep their spacing; only the chat button overlaps (GIGW 8.6).</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/zoom200-ok.jpg" alt="About Us header at 200 percent zoom, icons evenly spaced" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-20" data-status="p">
+  <header class="chead"><span class="ref">GIGW 8.20</span><h3><span class="af">Agency said</span>Table header tag missing</h3><span class="pill p">Pass</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>No data table without <code>&lt;th&gt;</code> in 190 pages.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/sewer-death-detail/surajpur/" target="_blank" rel="noopener">/sewer-death-detail/surajpur/</a></p><ol class="steps"><li>Right-click a column heading › Inspect: it is a &lt;th&gt;.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/th-present.jpg" alt="Surajpur table header cells" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-21" data-status="p">
+  <header class="chead"><span class="ref">GIGW 8.21</span><h3><span class="af">Agency said</span>Cannot scroll at 400%</h3><span class="pill p">Pass</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>At 400% there is no sideways scroll and the page scrolls to the footer.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/" target="_blank" rel="noopener">/</a></p><ol class="steps"><li>Press Ctrl + (⌘ +) to 400%. The page does not scroll sideways and scrolls down to the footer.</li></ol></div>
+    <div class="cshots"><p class="noshot">Nothing to photograph; follow the steps.</p></div>
+  </div>
+</article><article class="card" id="gigw-8-22" data-status="p">
+  <header class="chead"><span class="ref">GIGW 8.22</span><h3><span class="af">Agency said</span>Icons not keyboard reachable</h3><span class="pill p">Pass</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Every interactive icon takes focus. Only decorative icons are left out of the tab order, which is correct.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/" target="_blank" rel="noopener">/</a></p><ol class="steps"><li>Click once on an empty area at the top of the page, then press Tab repeatedly.</li><li>Every header and footer icon takes focus and shows a ring.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/focus-a11y.jpg" alt="Accessibility options icon with its keyboard focus ring" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-23" data-status="p">
+  <header class="chead"><span class="ref">GIGW 8.23</span><h3><span class="af">Agency said</span>Icon contrast</h3><span class="pill p">Pass</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>No icon on Home measures below 3:1 against its background.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/" target="_blank" rel="noopener">/</a></p><ol class="steps"><li>Header icons are dark blue (#162F6A) on white: well above 3 : 1.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/header-icons.jpg" alt="Four header icons in dark blue on white" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-24" data-status="p">
+  <header class="chead"><span class="ref">GIGW 8.24</span><h3><span class="af">Agency said</span>Focus lost at page end</h3><span class="pill p">Pass</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>The last stop (chat launcher) shows a visible ring before focus leaves the page.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/" target="_blank" rel="noopener">/</a></p><ol class="steps"><li>Click an empty area of the footer, then press Tab until focus reaches the last stop.</li><li>The last stop is the chat button, and it keeps a visible ring.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/focus-last.jpg" alt="The chat button with its keyboard focus ring" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-25" data-status="p">
+  <header class="chead"><span class="ref">GIGW 8.25</span><h3><span class="af">Agency said</span>No pause for moving content</h3><span class="pill p">Pass</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>The hero carousel and the Announcements bar each have a pause button. The social media carousel moves only when clicked.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/" target="_blank" rel="noopener">/</a></p><ol class="steps"><li>The banner carousel and the Announcements bar each have a pause button (two bars) at the right.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/hero-pause.jpg" alt="The pause button on the banner carousel" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-26" data-status="h">
+  <header class="chead"><span class="ref">GIGW 8.26</span><h3><span class="af">Agency said</span>Links not conveyed</h3><span class="pill h">Partly</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>On the two pages the report names (DAF, DAIC), three gallery image links each still have no name.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/organisation/dr-ambedkar-foundation/" target="_blank" rel="noopener">/organisation/dr-ambedkar-foundation/</a> · <a href="https://uatmosje.negd.in/organisation/dr-ambedkar-international-centre/" target="_blank" rel="noopener">/organisation/dr-ambedkar-international-centre/</a></p><ol class="steps"><li>As DBIM 8.20: the Photos links have no name.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/gallery-noname.jpg" alt="A gallery photo link on the DAF page" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-27" data-status="p">
+  <header class="chead"><span class="ref">GIGW 8.27</span><h3><span class="af">Agency said</span>Field labels missing</h3><span class="pill p">Pass</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>No unlabelled field in 190 pages.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/home-page/feedback/" target="_blank" rel="noopener">/home-page/feedback/</a></p><ol class="steps"><li>Click any field label: the cursor moves into its field, which shows the label is linked.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/feedback.jpg" alt="The Feedback form" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-28" data-status="p">
+  <header class="chead"><span class="ref">GIGW 8.28</span><h3><span class="af">Agency said</span>Status messages not announced</h3><span class="pill p">Pass</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Search results announce through <code>role="status"</code>. The search page also carries 18 empty status regions that should be removed.</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/?s=ACSS" target="_blank" rel="noopener">/?s=ACSS</a></p><ol class="steps"><li>Right-click "No results found." › Inspect: it sits inside role="status", which a screen reader announces.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/search-status.jpg" alt="Search results showing No results found" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-29" data-status="u">
+  <header class="chead"><span class="ref">GIGW 8.29</span><h3><span class="af">Agency said</span>Content not conveyed by screen reader</h3><span class="pill u">Unverified</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Needs an NVDA pass; automated tools cannot close it. One lead: each header control repeats its tooltip text, for example "Skip to main content Skip to main content".</p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/" target="_blank" rel="noopener">/</a></p><ol class="steps"><li>Needs a screen-reader pass (NVDA on Windows, or VoiceOver with ⌘F5 on a Mac).</li><li>Lead to check: with styles off, each header control shows its label twice, e.g. "Skip to main content Skip to main content".</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/cssoff-header.jpg" alt="Header controls with styles switched off, each label shown twice" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="gigw-8-30" data-status="h">
+  <header class="chead"><span class="ref">GIGW 8.30</span><h3><span class="af">Agency said</span>HTML and CSS validation errors</h3><span class="pill h">Partly</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Home page HTML: 0 errors, 6 warnings. CSS was not validated: the UAT firewall refuses the W3C validator (HTTP 403), so the agency's re-test will hit the same wall.</p><p class="open"><b>Open on UAT:</b> <a href="https://validator.w3.org/nu/#textarea" target="_blank" rel="noopener">https://validator.w3.org/nu/#textarea</a></p><ol class="steps"><li>On UAT press Ctrl+U, select all and copy.</li><li>Paste into the validator's text box › Check: 0 errors, 6 warnings for Home.</li><li>Validating by address fails: UAT refuses the validator (403).</li></ol></div>
+    <div class="cshots"><p class="noshot">Nothing to photograph; follow the steps.</p></div>
+  </div>
+</article>
+  </div>
+
+  <div class="two">
+    <div class="box">
+      <h3>Only the Department Can Close These</h3>
+      <ul class="plain">
+        <li>Name the Web Information Manager and CIO, with contact details (GIGW 8.3, 8.12; DBIM 8.22).</li>
+        <li>Approve and publish the six missing website policies (GIGW 8.2, 8.14).</li>
+        <li>Put the website address on the letterhead (GIGW 8.13).</li>
+        <li>Confirm captions on the YouTube videos (GIGW 8.16).</li>
+        <li>Confirm the PM photograph's source and approve the Help text (DBIM 8.21, GIGW 8.5).</li>
+        <li>Supply the correct addresses for NBCFDC, NCSC, NISD, NOS and DWBDNC (DBIM 8.22).</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>Fix First</h3>
+      <ol class="fix">
+        <li>CMS clean-up: SCW placeholder, the five map addresses, the misspellings, editable files to tagged PDF, oversized images, pasted fonts (DBIM 8.5, 8.13–8.17, 8.22, 8.24).</li>
+        <li>Stop the chat button covering text at phone width and 200%/400% zoom (GIGW 8.6).</li>
+        <li>Tender ID and portal-link columns; centred headers, right-aligned dates and phone numbers (DBIM 8.23, 8.8).</li>
+        <li>External-site notice; format and size on the remaining 166 download links (GIGW 8.10, 8.1).</li>
+        <li>Name the gallery image links, add the four CPIO H1s, fix the heading skips, set H2 to 24 px (DBIM 8.6, 8.19, 8.20).</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="stack" id="part2">
+  <div class="parthead"><span class="eyebrow">Part 2</span><h2>New Issues Found on UAT</h2></div>
+  <div class="stack col">
+    <p>Neither agency report raised these. They were found while rechecking Part 1 and will likely surface in the next audit, so they are worth fixing in the same pass. Each has its own link, steps and close-up.</p>
+  </div>
+  <div class="stack">
+    <article class="card" id="new-1" data-status="f">
+  <header class="chead"><span class="ref">New 1</span><h3>Five persona images weigh 8.8 MB together</h3><span class="pill f">New</span><span class="own">Dev, Content</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>The Explore User Personas pictures are SVG files that each wrap a 1159×1358 photograph: 1.5–1.9 MB to draw a 130 px circle. <span class="std">DBIM 6.1.1</span></p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/" target="_blank" rel="noopener">/</a></p><ol class="steps"><li>Scroll Home to Explore User Personas.</li><li>Right-click the picture › Open Image in New Tab: the file name ends .svg. F12 › Network › reload shows 1.5–1.9 MB each.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/persona.jpg" alt="Explore User Personas section with one persona picture" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="new-2" data-status="f">
+  <header class="chead"><span class="ref">New 2</span><h3>Issued PDFs are scanned images</h3><span class="pill f">New</span><span class="own">Department, Content</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Three of four sampled PDFs have no text layer: the Financial Adviser circular, the DAIC Expression of Interest and the DANM canteen extension. <span class="std">GIGW 5.2 · DBIM A.5.6</span></p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/vacancies/" target="_blank" rel="noopener">/vacancies/</a> · <a href="https://uatmosje.negd.in/tenders/" target="_blank" rel="noopener">/tenders/</a></p><ol class="steps"><li>Open one of the PDFs.</li><li>Try to select a line of text: nothing highlights, because the page is a picture.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/pdf-scan.jpg" alt="First pages of two scanned PDFs" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="new-3" data-status="f">
+  <header class="chead"><span class="ref">New 3</span><h3>No Accessibility Statement</h3><span class="pill f">New</span><span class="own">Dev, Department</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>No page, footer link or policy entry; the usual address returns Page Not Found. <span class="std">GIGW mandatory page</span></p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/accessibility-statement/" target="_blank" rel="noopener">/accessibility-statement/</a></p><ol class="steps"><li>Open the link: Page Not Found.</li><li>Check the footer and Website Policies: no Accessibility Statement link.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/a11y-404.jpg" alt="Page Not Found at /accessibility-statement/" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="new-4" data-status="f">
+  <header class="chead"><span class="ref">New 4</span><h3>SCW Scope shows a critical error</h3><span class="pill f">New</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>The page answers HTTP 500 and shows "There has been a critical error on this website". <span class="std">GIGW quality</span></p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/organisation/senior-citizens-welfarescw/scope/" target="_blank" rel="noopener">/organisation/senior-citizens-welfarescw/scope/</a></p><ol class="steps"><li>Open the link.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/scw-500.jpg" alt="SCW Scope page showing a critical error" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="new-5" data-status="f">
+  <header class="chead"><span class="ref">New 5</span><h3>The firewall blocks re-audits</h3><span class="pill f">New</span><span class="own">Dev (NeGD)</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>UAT returned HTTP 429 after about 150 pages in ten minutes and refuses the W3C validator outright. Allow-list the agency before the retest. <span class="std">—</span></p><p class="open"><b>Open on UAT:</b> —</p><ol class="steps"><li>Ask NeGD to check the CloudFront/WAF rate rule for uatmosje.negd.in.</li></ol></div>
+    <div class="cshots"><p class="noshot">Nothing to photograph; follow the steps.</p></div>
+  </div>
+</article><article class="card" id="new-6" data-status="f">
+  <header class="chead"><span class="ref">New 6</span><h3>A staff member's name in the home page metadata</h3><span class="pill f">New</span><span class="own">Dev</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>The Twitter card says "Written by: Raj Kishore". <span class="std">—</span></p><p class="open"><b>Open on UAT:</b> <code class="copy">view-source:https://uatmosje.negd.in/</code></p><ol class="steps"><li>Open the link (or Ctrl+U on Home).</li><li>Ctrl+F "twitter:data1".</li></ol></div>
+    <div class="cshots"><p class="noshot">Nothing to photograph; follow the steps.</p></div>
+  </div>
+</article><article class="card" id="new-7" data-status="f">
+  <header class="chead"><span class="ref">New 7</span><h3>BJRNF Literature is a picture of a table</h3><span class="pill f">New</span><span class="own">Content</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>The literature list is a 954×1900 image of a Hindi table (p1.jpg, 775 KB) with empty alt. A screen reader reads nothing, search cannot find the titles, and the text does not enlarge cleanly. <span class="std">WCAG 1.4.5 · 1.1.1</span></p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/organisation/babu-jagjivan-ram-national-foundation-bjrnf/literature/" target="_blank" rel="noopener">/organisation/babu-jagjivan-ram-national-foundation-bjrnf/literature/</a></p><ol class="steps"><li>Open the link and try to select a book title in the table: you cannot, because it is an image.</li><li>Right-click the table › Inspect: an &lt;img&gt; with alt="".</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/p1-jpg.jpg" alt="The BJRNF literature table, which is a single image" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="new-8" data-status="f">
+  <header class="chead"><span class="ref">New 8</span><h3>Banner photographs have empty alt and no caption</h3><span class="pill f">New</span><span class="own">Content</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Four event photographs tell a screen reader nothing. <span class="std">WCAG 1.1.1</span></p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/" target="_blank" rel="noopener">/</a></p><ol class="steps"><li>As GIGW 8.15.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/hero-alt.jpg" alt="A home page banner photograph" loading="lazy"></button></figure></div>
+  </div>
+</article><article class="card" id="new-9" data-status="f">
+  <header class="chead"><span class="ref">New 9</span><h3>Event page set in Calibri</h3><span class="pill f">New</span><span class="own">Content</span></header>
+  <div class="cbody">
+    <div class="ctext"><p>Word formatting pasted into "Senior Citizen Mental Health and Property Protection". <span class="std">DBIM 4.1</span></p><p class="open"><b>Open on UAT:</b> <a href="https://uatmosje.negd.in/events/senior-citizen-mental-health-and-property-protection-2/" target="_blank" rel="noopener">/events/senior-citizen-mental-health-and-property-protection-2/</a></p><ol class="steps"><li>As DBIM 8.5.</li></ol></div>
+    <div class="cshots"><figure class="shot"><button type="button" class="zoom" aria-label="Enlarge screenshot"><img src="evidence/font-calibri.jpg" alt="Hindi heading on the event page outlined; it is set in Calibri" loading="lazy"></button></figure></div>
+  </div>
+</article>
+  </div>
+  <div class="box col">
+    <h3>Fix First</h3>
+    <ol class="fix">
+      <li>Fix the SCW Scope page error and publish an Accessibility Statement (New 4, 3).</li>
+      <li>Replace the five persona SVGs with 130 px WEBP images under 100 KB (New 1).</li>
+      <li>Retype the BJRNF literature table as text, and replace scanned PDFs with text PDFs (New 7, 2).</li>
+      <li>Allow-list the audit agency on the UAT firewall before the retest (New 5).</li>
+      <li>Write banner alt text, strip Calibri from the event page, and remove the staff name from the home page metadata (New 8, 9, 6).</li>
+    </ol>
+  </div>
+</section>
+
+<section class="stack col">
+  <h2>What Was Not Tested</h2>
+  <ul class="plain">
+    <li>No screen-reader (NVDA) pass, so GIGW 8.29 stays open.</li>
+    <li>Theme CSS was not validated, because the firewall blocks the W3C validator.</li>
+    <li>Keyboard, zoom, print and hover were tested on Home and About Us only.</li>
+    <li>Contrast is automated and cannot read text inside images.</li>
+    <li>190 of 8,826 sitemap URLs were swept; content defects on unswept pages are likely.</li>
+  </ul>
+</section>
+
+<footer class="meta col">Source reports: Levithan Technologies, "DoSJE DBIM Guidelines Level-1 Report" and "Social Justice Empowerment Levithan GIGW Report", both 1 Oct 2026, filed in <code>docs/audit-reports/</code>. UAT tested 7 Oct 2026 with Chrome, axe-core 4.13 and the W3C Nu validator.</footer>
+
+</div>
+
+<script>
+(function () {
+  var btns = document.querySelectorAll(".fbtn");
+  btns.forEach(function (b) {
+    b.addEventListener("click", function () {
+      btns.forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+      var f = b.dataset.f;
+      document.querySelectorAll("#findings .card").forEach(function (c) { c.hidden = !(f === "all" || c.dataset.status === f); });
+    });
+  });
+  document.addEventListener("click", function (e) {
+    var z = e.target.closest(".zoom"); if (!z) return;
+    var fig = z.closest(".shot"); var big = !fig.classList.contains("big");
+    document.querySelectorAll(".shot.big").forEach(function (s) { s.classList.remove("big"); });
+    if (big) fig.classList.add("big");
+    z.setAttribute("aria-label", big ? "Close enlarged screenshot" : "Enlarge screenshot");
+  });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") document.querySelectorAll(".shot.big").forEach(function (s) { s.classList.remove("big"); }); });
+})();
+</script>

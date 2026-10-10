@@ -133,6 +133,21 @@ export interface TabsProps {
    * out of view.
    */
   overflow?: boolean;
+  /**
+   * Pin the row under the masthead while the page scrolls past its panels.
+   *
+   * For a LONG page whose tabs are its quick navigation — a review file, a
+   * record with sections. A reader forty answers down should not have to
+   * scroll back up to reach the next section. Horizontal only, and OFF by
+   * default: a tab row inside a card or a short page has nothing to follow.
+   *
+   * The row pins at `--sa-header-stuck`, the offset `SiteHeader` publishes,
+   * on the page canvas (`--ds-tabs-sticky-bg`; override it where the row sits
+   * on another ground). Changing tab while pinned brings the new panel's top
+   * into view under the row, so the reader never lands halfway down a panel
+   * they have not read.
+   */
+  sticky?: boolean;
 }
 
 /** The first non-disabled index at or after `from`, walking `dir`, wrapping. */
@@ -180,6 +195,7 @@ export function Tabs({
   divider = true,
   overflow = false,
   panel = true,
+  sticky = false,
 }: TabsProps) {
   const refs = React.useRef<Array<HTMLButtonElement | null>>([]);
   const labelRefs = React.useRef<Array<HTMLSpanElement | null>>([]);
@@ -191,6 +207,7 @@ export function Tabs({
   const [edges, setEdges] = React.useState({ start: false, end: false });
 
   const vertical = orientation === "vertical";
+  const pinned = sticky && !vertical;
   const iconSize = size === "s" ? 16 : size === "l" ? 24 : 20;
   // The rule only exists on an open list; an enclosed track draws its own border.
   const showDivider = divider && track === "none";
@@ -344,6 +361,57 @@ export function Tabs({
     return () => list.removeEventListener("scroll", updateOverflow);
   }, [updateOverflow, overflow, vertical]);
 
+  // Whether the pinned row is stuck RIGHT NOW. At rest it sits in the page like any
+  // row; stuck, it needs an edge, or the content sliding under it collides with its
+  // rule. Scrolling moves it, and so does the masthead condensing: SiteHeader rewrites
+  // `--sa-header-stuck` on :root's style with no scroll event of its own, so that
+  // attribute is watched too.
+  const [stuck, setStuck] = React.useState(false);
+  React.useEffect(() => {
+    if (!pinned) return;
+    let frame = 0;
+    const read = () => {
+      frame = 0;
+      const pin = listRef.current?.closest<HTMLElement>(".ds-tabs--sticky");
+      if (!pin) return;
+      const stuckAt = parseFloat(getComputedStyle(pin).top) || 0;
+      setStuck(window.scrollY > 0 && Math.abs(pin.getBoundingClientRect().top - stuckAt) <= 1);
+    };
+    const onScroll = () => {
+      if (frame === 0) frame = window.requestAnimationFrame(read);
+    };
+    read();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    const offset = new MutationObserver(onScroll);
+    offset.observe(document.documentElement, { attributes: true, attributeFilter: ["style"] });
+    return () => {
+      offset.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (frame !== 0) window.cancelAnimationFrame(frame);
+    };
+  }, [pinned]);
+
+  // PINNED, a new tab must open at its TOP. The row stays put while the panel under it
+  // changes, so a reader who switches tabs deep in a long panel would otherwise land
+  // partway down the next one. Only when the row is actually stuck: at rest, the panel
+  // already starts below it and nothing should move.
+  const shownActive = React.useRef(active);
+  React.useEffect(() => {
+    if (shownActive.current === active) return;
+    shownActive.current = active;
+    if (!pinned || !panel) return;
+    const pin = listRef.current?.closest(".ds-tabs--sticky");
+    const panelEl = document.getElementById(`${idBase}-panel-${tabs[active]?.id}`);
+    if (!pin || !panelEl) return;
+    const row = pin.getBoundingClientRect();
+    const stuckAt = parseFloat(getComputedStyle(pin).top) || 0;
+    if (Math.abs(row.top - stuckAt) > 1) return; // not stuck
+    const gap = panelEl.getBoundingClientRect().top - row.bottom;
+    if (gap < 0) window.scrollBy({ top: gap, behavior: "instant" });
+  }, [active, pinned, panel, idBase, tabs]);
+
   const move = (index: number | null) => {
     if (index === null) return;
     onChange(index);
@@ -407,6 +475,9 @@ export function Tabs({
     edges.start ? "is-scrollable-start" : "",
     edges.end ? "is-scrollable-end" : "",
     showDivider ? "ds-tabs--divider" : "",
+    // On the bar instead when there is one: the bar is the outermost box and must be what pins.
+    pinned && !(overflow && !vertical) ? "ds-tabs--sticky" : "",
+    pinned && !(overflow && !vertical) && stuck ? "is-stuck" : "",
   ]
     .filter(Boolean)
     .join(" ");
@@ -541,7 +612,7 @@ export function Tabs({
         // tablist, not a descendant — so without this the trigger inherited no
         // padding at all and rendered as a bare 20x20 glyph, failing WCAG 2.5.8
         // (24x24 minimum, Level AA) against a master that specifies 44x44.
-        <div className={`ds-tabs-bar ds-tabs--${size}`}>
+        <div className={`ds-tabs-bar ds-tabs--${size}${pinned ? " ds-tabs--sticky" : ""}${pinned && stuck ? " is-stuck" : ""}`}>
           {tablist}
           {showMore ? (
             <TabsOverflow

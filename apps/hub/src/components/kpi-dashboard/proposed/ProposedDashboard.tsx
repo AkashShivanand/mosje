@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Button, FilterSelect, Icon } from "@mosje/design-system";
+import { Button, DashboardScreen, FilterSelect, Icon } from "@mosje/design-system";
 import { useDataMode } from "@/lib/data-mode/context";
 import { SMILE_AREAS, STATE_NAMES } from "@/lib/kpi/geography";
 import type { PortalFeed } from "@/lib/kpi/live";
@@ -143,9 +143,7 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
    * screen-reader user does not restart from the top of the page. A control that survives
    * the move (the area filter) keeps it.
    */
-  const panelRef = React.useRef<HTMLDivElement>(null);
   const keepFocus = React.useRef(false);
-  const firstView = React.useRef(true);
   const go = React.useCallback(
     (to: Partial<Record<"programme" | "state" | "district" | "year" | "view", string | null>>, opts?: { keepFocus?: boolean }) => {
       keepFocus.current = Boolean(opts?.keepFocus);
@@ -154,21 +152,12 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
     [router, hrefTo],
   );
   const viewKey = params.toString();
-  React.useEffect(() => {
-    if (firstView.current) {
-      firstView.current = false;
-      return;
-    }
-    if (keepFocus.current) {
-      keepFocus.current = false;
-      return;
-    }
-    const target = panelRef.current?.querySelector<HTMLElement>("h2, h3") ?? panelRef.current;
-    if (!target) return;
-    if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
-    target.focus({ preventScroll: true });
-    target.scrollIntoView({ block: "start" });
-  }, [viewKey]);
+  // Read by `DashboardScreen` when the view changes: a filter keeps the reader's focus.
+  const shouldMoveFocus = React.useCallback(() => {
+    const keep = keepFocus.current;
+    keepFocus.current = false;
+    return !keep;
+  }, []);
 
   /*
    * WHAT A STATE/UT CHOICE ACTUALLY CHANGES, said once, beside the picker. Most of the page is
@@ -191,104 +180,97 @@ export function ProposedDashboard({ feeds, sectionLevel = 2 }: ProposedDashboard
    */
 
   return (
-    <div className="pd">
-      {role ? <ViewerNotice role={role} /> : null}
-
-      {/*
-        ONE TOOLBAR (design audit, 6 Oct 2026; filters revised 8 Oct 2026). What the page is
-        showing on the left; the filters that change it on the right, on one baseline — only the
-        ones its figures can answer. Signing in is not a filter: Officer Login is in the banner.
-      */}
-      {/* THE WAY BACK FIRST (design review, 7 Oct 2026): above the area bar, where it reads as
-          the way out of this dashboard, not as a link beneath its heading. */}
-      {(programme || department) && !page ? (
-        <Button appearance="text" size="sm" href={hrefTo({ programme: null, district: null, year: null })} linkAs={Link} iconLeft={<Icon name="arrow_back" size={16} />} className="pd-back">
-          All Dashboards
-        </Button>
-      ) : null}
-      {page ? null : (
-        <div className="pd-bar">
-          <p className="pd-bar__where" role="status">
-            <span className="pd-bar__label">Figures for</span>
-            {/* The area only: the dashboard's own head names whose figures they are. */}
-            {scope.district ? `${scope.district}, ` : ""}
-            {scope.state ?? "All India"}
-          </p>
-          <div className="pd-bar__controls">
-            {role?.area.state ? null : (
-              <FilterSelect
-                label="State / UT"
-                value={scope.state ?? ALL_INDIA}
-                onChange={(v) => go({ state: v || null, district: null }, { keepFocus: true })}
-                options={[{ value: ALL_INDIA, label: "All India" }, ...STATE_NAMES.map((s) => ({ value: s, label: s }))]}
-              />
-            )}
-            {filterable.districtLevel && !role?.area.district ? (
-              <FilterSelect
-                label="District"
-                value={scope.district ?? ALL}
-                disabled={districts.length === 0}
-                onChange={(v) => go({ district: v || null }, { keepFocus: true })}
-                options={[{ value: ALL, label: "All Districts" }, ...districts.map((d) => ({ value: d, label: d }))]}
-              />
-            ) : null}
-            {yearSpec && year ? (
-              <FilterSelect
-                label="Financial Year"
-                value={year}
-                onChange={(v) => go({ year: v === yearSpec.current ? null : v }, { keepFocus: true })}
-                options={yearSpec.years.map((y) => ({ value: y, label: yearOption(yearSpec, y) }))}
-              />
-            ) : null}
+    <FigureSourceProvider>
+      <DashboardScreen
+        className="pd"
+        notice={role ? <ViewerNotice role={role} /> : undefined}
+        // THE WAY BACK FIRST (design review, 7 Oct 2026): above the area bar, where it reads as
+        // the way out of this dashboard, not as a link beneath its heading.
+        back={(programme || department) && !page ? { href: hrefTo({ programme: null, district: null, year: null }), label: "All Dashboards" } : undefined}
+        linkAs={Link}
+        // ONE TOOLBAR (design audit, 6 Oct 2026; filters revised 8 Oct 2026). What the page is
+        // showing on the left — the area only: the dashboard's own head names whose figures
+        // they are — and the filters that change it on the right, on one baseline.
+        area={page ? undefined : `${scope.district ? `${scope.district}, ` : ""}${scope.state ?? "All India"}`}
+        filters={
+          page ? undefined : (
+            <>
+              {role?.area.state ? null : (
+                <FilterSelect
+                  label="State / UT"
+                  value={scope.state ?? ALL_INDIA}
+                  onChange={(v) => go({ state: v || null, district: null }, { keepFocus: true })}
+                  options={[{ value: ALL_INDIA, label: "All India" }, ...STATE_NAMES.map((s) => ({ value: s, label: s }))]}
+                />
+              )}
+              {filterable.districtLevel && !role?.area.district ? (
+                <FilterSelect
+                  label="District"
+                  value={scope.district ?? ALL}
+                  disabled={districts.length === 0}
+                  onChange={(v) => go({ district: v || null }, { keepFocus: true })}
+                  options={[{ value: ALL, label: "All Districts" }, ...districts.map((d) => ({ value: d, label: d }))]}
+                />
+              ) : null}
+              {yearSpec && year ? (
+                <FilterSelect
+                  label="Financial Year"
+                  value={year}
+                  onChange={(v) => go({ year: v === yearSpec.current ? null : v }, { keepFocus: true })}
+                  options={yearSpec.years.map((y) => ({ value: y, label: yearOption(yearSpec, y) }))}
+                />
+              ) : null}
+            </>
+          )
+        }
+        areaNote={
+          scope.state && !programme && !page
+            ? stateWise.length
+              ? `Figures for ${scope.state} are published for ${listed(stateWise)}. Other sections show All-India figures.`
+              : `No figures are published for ${scope.state}. The sections below show All-India figures.`
+            : undefined
+        }
+        viewKey={viewKey}
+        shouldMoveFocus={shouldMoveFocus}
+        // Every view has something to show: the readings are resolved on the server, and a
+        // programme with nothing to show is not drawn (`PROGRAMMES_SHOWN`, `Pulse`).
+        count={1}
+      >
+        {login ? (
+          <OfficerLogin backHref={hrefTo({ view: null })} sectionLevel={sectionLevel} onSignedIn={() => go({ view: null })} />
+        ) : dataSources ? (
+          <div className="pd-story">
+            <Button appearance="text" size="sm" href={hrefTo({ view: null })} linkAs={Link} iconLeft={<Icon name="arrow_back" size={16} />} className="pd-back">
+              Beneficiary Dashboard
+            </Button>
+            <DataBehind viewing={viewing} readings={readings} sectionLevel={sectionLevel} />
           </div>
-        </div>
-      )}
-      {scope.state && !programme && !page ? (
-        <p className="pd-note">
-          {stateWise.length
-            ? `Figures for ${scope.state} are published for ${listed(stateWise)}. Other sections show All-India figures.`
-            : `No figures are published for ${scope.state}. The sections below show All-India figures.`}
-        </p>
-      ) : null}
-
-      <FigureSourceProvider>
-        <div ref={panelRef} className="pd-panel">
-          {login ? (
-            <OfficerLogin backHref={hrefTo({ view: null })} sectionLevel={sectionLevel} onSignedIn={() => go({ view: null })} />
-          ) : dataSources ? (
-            <div className="pd-story">
-              <Button appearance="text" size="sm" href={hrefTo({ view: null })} linkAs={Link} iconLeft={<Icon name="arrow_back" size={16} />} className="pd-back">
-                Beneficiary Dashboard
-              </Button>
-              <DataBehind viewing={viewing} readings={readings} sectionLevel={sectionLevel} />
-            </div>
-          ) : department ? (
-            <DepartmentStory sectionLevel={sectionLevel} state={scope.state} audiences={audiences} />
-          ) : programme ? (
-            <ProgrammeStory
-              programme={shown ?? programme}
-              viewing={viewing}
-              readings={readings}
-              scope={scope}
-              sectionLevel={sectionLevel}
-              go={go}
-              states={states}
-            />
-          ) : (
-            <Pulse
-              audiences={audiences}
-              viewing={viewing}
-              readings={readings}
-              national={national}
-              scope={scope}
-              sectionLevel={sectionLevel}
-              readinessAllowed={readinessAllowed}
-              hrefTo={hrefTo}
-              go={go}
-            />
-          )}
-        </div>
-      </FigureSourceProvider>
-    </div>
+        ) : department ? (
+          <DepartmentStory sectionLevel={sectionLevel} state={scope.state} audiences={audiences} />
+        ) : programme ? (
+          <ProgrammeStory
+            programme={shown ?? programme}
+            viewing={viewing}
+            readings={readings}
+            scope={scope}
+            sectionLevel={sectionLevel}
+            go={go}
+            states={states}
+          />
+        ) : (
+          <Pulse
+            audiences={audiences}
+            viewing={viewing}
+            readings={readings}
+            national={national}
+            scope={scope}
+            sectionLevel={sectionLevel}
+            readinessAllowed={readinessAllowed}
+            hrefTo={hrefTo}
+            go={go}
+          />
+        )}
+      </DashboardScreen>
+    </FigureSourceProvider>
   );
 }

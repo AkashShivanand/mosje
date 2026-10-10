@@ -153,6 +153,31 @@
     background: var(--sa-color-neutralScale-0);
   }
 
+  /* Beside What's New (≥1200), the five rows share out the band's height rather than
+     leaving it empty under the last one: What's New carries six items (home-mid.ts
+     HOME_NEWS_COUNT) and sets the height both columns take. */
+  @media (min-width: 1200px) {
+    [data-design="dbim"] .db-hm-offer .db-hm-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    [data-design="dbim"] .db-hm-offer .db-hm-list .db-hm-list__rows {
+      display: flex;
+      flex: 1 1 auto;
+      flex-direction: column;
+    }
+
+    [data-design="dbim"] .db-hm-offer .db-hm-list .db-hm-list__row {
+      display: flex;
+      flex: 1 1 auto;
+    }
+
+    [data-design="dbim"] .db-hm-offer .db-hm-list .db-hm-list__link {
+      flex: 1 1 auto;
+    }
+  }
+
   [data-design="dbim"] .db-hm-list .db-hm-list__row {
     margin-right: 10px; /* reference: me-3 */
     border-bottom: var(--sa-stroke-1) solid var(--sa-color-primaryScale-200);

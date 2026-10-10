@@ -1,0 +1,320 @@
+{
+ "portal": "Website Dashboard",
+ "file": "TlcIlCUGovOQpIAbYQedS5",
+ "recordedAt": "2026-10-07",
+ "$comment": "Captured by `check:figma-handoff --portal <Portal> --snapshot` from the check's own REST reads: pages in page-list order, each page in layers-panel (reading) order. A page's `loose` lists nodes outside any zone. Never edit by hand; re-capture after any structural change.",
+ "pages": [
+  {
+   "page": "Our Performance — Beneficiary Dashboard",
+   "id": "355:5",
+   "zones": [
+    {
+     "name": "START HERE",
+     "id": "355:6",
+     "children": [
+      {
+       "name": "Guide to This Page",
+       "id": "355:7",
+       "frames": [
+        {
+         "id": "355:8",
+         "name": "Guide — Cover"
+        },
+        {
+         "id": "355:13",
+         "name": "Guide — Page Map"
+        },
+        {
+         "id": "355:16",
+         "name": "Guide — How to Read This Page"
+        },
+        {
+         "id": "355:19",
+         "name": "Guide — Status and Change Log"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "SCREENS BY WHO USES THEM",
+     "id": "355:22",
+     "children": [
+      {
+       "name": "Everyone — Viewing the Dashboard",
+       "id": "355:23",
+       "children": [
+        {
+         "name": "Viewing All-India Figures",
+         "id": "357:5",
+         "children": [
+          {
+           "name": "Desktop",
+           "id": "357:6",
+           "frames": [
+            {
+             "id": "365:19609",
+             "name": "Everyone / Dashboard Landing / All India"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "Choosing a State or UT",
+         "id": "357:8",
+         "children": [
+          {
+           "name": "Desktop",
+           "id": "357:9",
+           "frames": [
+            {
+             "id": "365:20025",
+             "name": "Everyone / Dashboard Landing / Maharashtra Chosen"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "Opening the SMILE – Beggary Dashboard",
+         "id": "357:11",
+         "children": [
+          {
+           "name": "Desktop",
+           "id": "357:12",
+           "frames": [
+            {
+             "id": "365:20426",
+             "name": "Everyone / SMILE – Beggary / All India"
+            },
+            {
+             "id": "395:6980",
+             "name": "Everyone / SMILE – Beggary / No Figures for Goa"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "Opening the Nasha Mukt Bharat Abhiyaan Dashboard",
+         "id": "357:14",
+         "children": [
+          {
+           "name": "Desktop",
+           "id": "357:15",
+           "frames": [
+            {
+             "id": "365:20827",
+             "name": "Everyone / Nasha Mukt Bharat Abhiyaan / All India"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "Opening the DAPSC Dashboard (e-Utthaan)",
+         "id": "357:17",
+         "children": [
+          {
+           "name": "Desktop",
+           "id": "357:18",
+           "frames": [
+            {
+             "id": "365:21228",
+             "name": "Everyone / DAPSC / All India"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "Opening the SHRESHTA Dashboard (e-Anudaan)",
+         "id": "357:20",
+         "children": [
+          {
+           "name": "Desktop",
+           "id": "357:21",
+           "frames": [
+            {
+             "id": "365:21629",
+             "name": "Everyone / SHRESHTA / All India"
+            },
+            {
+             "id": "396:7429",
+             "name": "Everyone / SHRESHTA / Live Figures Not Yet Available"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "Opening the Senior Citizens Welfare Dashboard",
+         "id": "357:23",
+         "children": [
+          {
+           "name": "Desktop",
+           "id": "357:24",
+           "frames": [
+            {
+             "id": "365:22030",
+             "name": "Everyone / Senior Citizens Welfare / All Components"
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "Officers — Signed In",
+       "id": "355:24",
+       "children": [
+        {
+         "name": "Signing In as an Officer",
+         "id": "357:26",
+         "children": [
+          {
+           "name": "Desktop",
+           "id": "357:27",
+           "frames": [
+            {
+             "id": "365:22431",
+             "name": "Officer / Officer Login"
+            },
+            {
+             "id": "396:7868",
+             "name": "Officer / Officer Login / Required Fields Missing"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "Viewing the Dashboard as the Ministry",
+         "id": "357:29",
+         "children": [
+          {
+           "name": "Desktop",
+           "id": "357:30",
+           "frames": [
+            {
+             "id": "365:22832",
+             "name": "Officer / Dashboard Landing / Signed In as Ministry"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "Viewing Senior Citizens Welfare as the Ministry",
+         "id": "357:32",
+         "children": [
+          {
+           "name": "Desktop",
+           "id": "357:33",
+           "frames": [
+            {
+             "id": "365:23233",
+             "name": "Officer / Senior Citizens Welfare / Signed In as Ministry"
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "SHARED PARTS",
+     "id": "355:25",
+     "children": [
+      {
+       "name": "Notes",
+       "id": "402:8341",
+       "frames": [
+        {
+         "id": "397:46505",
+         "name": "Note — Library Parts Used"
+        }
+       ]
+      },
+      {
+       "name": "Shared Sections — Used on Several Screens",
+       "id": "388:44049",
+       "frames": [
+        {
+         "id": "388:44134",
+         "name": "Everyone / Dashboard Landing Section / Scholarships and Fellowship, All India"
+        },
+        {
+         "id": "388:44405",
+         "name": "Everyone / Dashboard Landing Section / Hostels and Top Class Education, All India"
+        },
+        {
+         "id": "388:44723",
+         "name": "Everyone / Dashboard Landing Section / Year by Year Trends, All India"
+        },
+        {
+         "id": "388:45175",
+         "name": "Everyone / Dashboard Landing Section / Year on Year Report, All India"
+        },
+        {
+         "id": "388:45581",
+         "name": "Everyone / Dashboard Landing Section / State/UT-wise Figures, All India"
+        }
+       ]
+      },
+      {
+       "name": "Reference — Captured From the Build",
+       "id": "365:19608",
+       "frames": [
+        {
+         "id": "357:7",
+         "name": "Reference — Everyone / Dashboard Landing / All India"
+        },
+        {
+         "id": "357:10",
+         "name": "Reference — Everyone / Dashboard Landing / Maharashtra Chosen"
+        },
+        {
+         "id": "357:13",
+         "name": "Reference — Everyone / SMILE – Beggary / All India"
+        },
+        {
+         "id": "357:16",
+         "name": "Reference — Everyone / Nasha Mukt Bharat Abhiyaan / All India"
+        },
+        {
+         "id": "357:19",
+         "name": "Reference — Everyone / DAPSC / All India"
+        },
+        {
+         "id": "357:22",
+         "name": "Reference — Everyone / SHRESHTA / All India"
+        },
+        {
+         "id": "357:25",
+         "name": "Reference — Everyone / Senior Citizens Welfare / All Components"
+        },
+        {
+         "id": "357:28",
+         "name": "Reference — Officer / Officer Login"
+        },
+        {
+         "id": "357:31",
+         "name": "Reference — Officer / Dashboard Landing / Signed In as Ministry"
+        },
+        {
+         "id": "357:34",
+         "name": "Reference — Officer / Senior Citizens Welfare / Signed In as Ministry"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

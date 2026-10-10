@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Icon, SectionTitle, buttonClasses } from "@mosje/design-system";
 import { PageLayout } from "@/components/website-next/layout/PageLayout";
 import { RecordTable, type RecordColumn } from "@/components/website-next/ui/RecordTable";
-import { archivedOn, dedupeNotices, displayNoticeTitle, tidyTitle } from "@/components/website-next/ui/records";
+import { dedupeNotices, displayNoticeTitle, tidyTitle } from "@/components/website-next/ui/records";
 import { isArchivedRecord } from "@/lib/website-shared/records";
 import { getContentSyncedDate, getTenders, getVacancies } from "@/lib/website/content";
 import { socialCard } from "@/lib/seo/social";
@@ -11,7 +11,7 @@ import "@/components/website-next/templates/records.css";
 
 const TITLE = "Archives";
 const DESCRIPTION =
-  "Tenders and vacancies move to the Archives twelve months after the date they were published.";
+  "Tenders and vacancies the Department has marked as archived.";
 
 export const metadata: Metadata = {
   title: `${TITLE} | Department of Social Justice & Empowerment`,
@@ -32,7 +32,6 @@ export const metadata: Metadata = {
 const columns: RecordColumn[] = [
   { key: "title", label: "Title", type: "record", sortable: true },
   { key: "published", label: "Published", type: "date", sortable: true },
-  { key: "archived", label: "Archived", type: "date", sortable: true },
   { key: "document", label: "Document", type: "link", hrefKey: "fileUrl" },
 ];
 
@@ -46,7 +45,6 @@ const toRows = (items: FileRow[], base: string, notices = false) =>
       title: notices ? displayNoticeTitle(i.title) : tidyTitle(i.title),
       href: `${base}/${i.slug}`,
       published: i.date,
-      archived: archivedOn(i.date),
       fileUrl: i.fileUrl,
       year: i.date?.slice(0, 4),
     }));
@@ -77,7 +75,7 @@ export default function ArchivesPage() {
               nounSingular="tender"
               paramPrefix="t-"
               layout="stack"
-              emptyMessage="No tender is old enough to be archived."
+              emptyMessage="No tender has been archived."
             />
           </section>
 
@@ -94,7 +92,7 @@ export default function ArchivesPage() {
               nounSingular="vacancy"
               paramPrefix="v-"
               layout="stack"
-              emptyMessage="No vacancy is old enough to be archived."
+              emptyMessage="No vacancy has been archived."
             />
           </section>
 

@@ -540,6 +540,25 @@
     );
   }
 
+  /* ---- sticky: the row follows a long page ---------------------------------
+     Opt-in (`sticky`). It pins under the masthead at `--sa-header-stuck`, which
+     SiteHeader publishes for exactly this, and sits on the page canvas so the
+     content scrolling beneath it does not show through. A row on another ground
+     sets `--ds-tabs-sticky-bg`. `--sa-z-sticky` keeps it over the panel's own
+     raised parts and under the masthead (`--sa-z-modal`) and its menus. */
+  .ds-tabs--sticky {
+    position: sticky;
+    top: var(--sa-header-stuck, 0); /* 0 when no masthead is sticky */
+    z-index: var(--sa-z-sticky);
+    background: var(--ds-tabs-sticky-bg, var(--sa-bg-neutral-subtlest));
+  }
+
+  /* Stuck, the row gets an edge: without one the panel sliding beneath it ran
+     straight into the rule and read as text cut in half. */
+  .ds-tabs--sticky.is-stuck {
+    box-shadow: var(--sa-elevation-card);
+  }
+
   /* ---- the overflow trigger and its menu ------------------------------------
      Rendered only when `overflow` is on and tabs are actually hidden. The bar is
      the positioning context: the trigger must sit OUTSIDE the tablist, both

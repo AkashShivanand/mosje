@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "SEGMENTEDCONTROL HAS A BUTTONS VARIANT. `variant=\"buttons\"` draws the SAMAVESH segmented button — attached buttons, the choice Filled and the rest Outlined — for a switch that changes what one chart shows, where a filled track read as tabs. It keeps the radio-group semantics and keys of the other variants: one tab stop, arrows select. Button's selected styling now also answers to a radio segment's `aria-checked`, so the chosen segment deepens exactly as an `aria-pressed` button does. In Figma: drawn as an arrangement on the Button Group page — Attached, the choice Filled."
+}

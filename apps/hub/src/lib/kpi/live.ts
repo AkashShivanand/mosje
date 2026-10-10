@@ -1,13 +1,13 @@
-import { readPortal, type ModelAnchors } from "./model.ts";
-import type { AreaScope, KpiReading, PortalId, PortalReading } from "./types.ts";
+import { readPortal, scwMirror, SCW_SOURCES, type ModelAnchors } from "./model.ts";
+import type { AreaScope, KpiReading, Labelled, PortalId, PortalReading } from "./types.ts";
 
 /**
  * LIVE FIRST, MODEL SECOND — how a portal's feed and the illustrative model combine,
  * per data mode (`.claude/rules/prototype-data-modes.md`). Pure, so the server sends the
  * raw feed and the browser resolves the mode, as the PM-AJAY dashboards do.
  *
- * Today only NMBA has a feed. A portal with none reads as it always has: the model in the
- * Illustrative and Live + illustrative modes, nothing in Live.
+ * NMBA and Senior Citizens Welfare have feeds. A portal with none reads as it always has: the
+ * model in the Illustrative and Live + illustrative modes, nothing in Live.
  */
 
 /** One area's NMBA figures. `null` = the feed did not answer for that field. */
@@ -27,7 +27,17 @@ export interface NmbaFeed {
   readAt: string;
 }
 
-export type PortalFeed = { portal: "nmba"; feed: NmbaFeed };
+/** Senior Citizens Welfare's three public feeds. `null` = that feed did not answer. */
+export interface ScwFeed {
+  /** IPSrC facilities by type, counted from `facilities_list`. */
+  facilities: Labelled[] | null;
+  pledges: number | null;
+  rvy: { camps: number; beneficiaries: number; devices: number } | null;
+  /** YYYY-MM-DD, the day the feed was read. */
+  readAt: string;
+}
+
+export type PortalFeed = { portal: "nmba"; feed: NmbaFeed } | { portal: "senior-citizens"; feed: ScwFeed };
 
 const NMBA_LIVE_SOURCE = "Nasha Mukt Bharat Abhiyaan portal";
 
@@ -60,8 +70,29 @@ function nmbaLive(feed: NmbaFeed, scope: AreaScope): PortalReading {
   return out;
 }
 
+/**
+ * Senior Citizens Welfare: each feed that answered, live; each that did not, its dated mirror
+ * (`scwMirror`) — live first, snapshot second, never an empty card. All India only.
+ */
+function scwLive(feed: ScwFeed | undefined, scope: AreaScope): PortalReading {
+  if (scope.state) return {};
+  const out: PortalReading = scwMirror();
+  if (!feed) return out;
+  const asOn = feed.readAt.split("-").reverse().join(".");
+  const live = (value: KpiReading["value"], source: string): KpiReading => ({ value, origin: "live", source, asOn });
+  if (feed.facilities) out["senior-citizens.ipsrc.projects"] = live({ kind: "breakdown", chart: "bar", items: feed.facilities }, SCW_SOURCES.portal);
+  if (feed.pledges) out["senior-citizens.pledge.count"] = live({ kind: "figure", value: feed.pledges }, SCW_SOURCES.portal);
+  if (feed.rvy) {
+    out["senior-citizens.rvy.beneficiaries"] = live({ kind: "figure", value: feed.rvy.beneficiaries }, SCW_SOURCES.rvy);
+    out["senior-citizens.rvy.devices"] = live({ kind: "figure", value: feed.rvy.devices }, SCW_SOURCES.rvy);
+    out["senior-citizens.rvy.camps"] = live({ kind: "figure", value: feed.rvy.camps }, SCW_SOURCES.rvy);
+  }
+  return out;
+}
+
 /** The figures a model should be scaled to, so a modelled gap agrees with the live total beside it. */
 function anchorsOf(feed: PortalFeed | null | undefined): ModelAnchors | undefined {
+  if (feed?.portal === "senior-citizens") return feed.feed.rvy ? { rvyDevices: feed.feed.rvy.devices } : undefined;
   if (feed?.portal !== "nmba") return undefined;
   const n = feed.feed.national;
   return { outreach: n.people ?? undefined, women: n.women ?? undefined, youth: n.youth ?? undefined, pledges: n.pledges ?? undefined, mitras: n.mitras ?? undefined };
@@ -76,7 +107,10 @@ export type DataModeName = "live" | "mock" | "hybrid";
  *  - hybrid: the feed where it answers; the model, scaled to the feed's totals, for the rest.
  */
 export function resolveReading(portal: PortalId, scope: AreaScope, mode: DataModeName, feed?: PortalFeed | null): PortalReading {
-  const live = feed?.portal === portal && portal === "nmba" ? nmbaLive(feed.feed, scope) : {};
+  const live =
+    feed?.portal === "nmba" && portal === "nmba" ? nmbaLive(feed.feed, scope)
+    : portal === "senior-citizens" ? scwLive(feed?.portal === "senior-citizens" ? feed.feed : undefined, scope)
+    : {};
   if (mode === "live") return live;
   if (mode === "mock") return readPortal(portal, scope);
   return { ...readPortal(portal, scope, anchorsOf(feed)), ...live };

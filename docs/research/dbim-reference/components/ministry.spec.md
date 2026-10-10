@@ -1,5 +1,10 @@
 # Ministry — About Us, Our Team, Our Division, Our Organisation, Our Scheme Portals, Our Performance, Directory
 
+> **Superseded 9 Oct 2026.** Ministry › Our Division was removed: neither socialjustice.gov.in nor
+> dosje.gov.in has the section. The divisions are Important Links groups (`lib/website-dbim/division-links.ts`,
+> `components/website-dbim/utility/LinkGroup.tsx`); the register pages moved to `/important-links/<register>`,
+> and links this design cannot render open the Department's page on dosje.gov.in instead of being dropped.
+
 Reference stems: `ministry`, `ministry_our_team`, `ministry_our_division`, `ministry_our_organisation`,
 `ministry_our_performance`, `ministry_directory`. Values are computed at 1440 (the reference's
 1280–1536 bucket, so its type is the smaller `--db-fs-*` scale) unless marked. Colours → tokens

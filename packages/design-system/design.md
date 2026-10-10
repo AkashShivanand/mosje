@@ -3300,7 +3300,25 @@ optional `valueFormat` (defaults to `en-IN` grouping).
 container with actions slot + loading/empty states + grid `span`), `DashboardGrid`
 (responsive 12-col grid; full-width on mobile), `KpiRow` (a row of `MetricCard`
 tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
-`SegmentedControl` (filter row + period toggle).
+`SegmentedControl` (filter row + period toggle; `variant="buttons"` is the segmented
+BUTTON — attached, the choice Filled — for a switch that changes what one chart shows).
+
+**Dashboard parts** (Oct 2026, from the website's Beneficiary Dashboard — reach for these
+before composing a dashboard by hand):
+
+| Component | Use it for | Key props |
+|---|---|---|
+| `DashboardCard` | One dashboard summarised on a page that lists several: mark, title, lead figure, facts. The whole card is its link | `title`, `subtitle`, `mark`, `tone`, `figure`, `note`, `href` + `linkLabel` + `linkAs` |
+| `DashboardCardList` | The cards, laid out for the count they hold — no row ever has a hole | `items: { key, id?, content }[]`, `arrangement` (`balanced` / `lead`) |
+| `HeadlineBand` | The figures a dashboard opens with: one large, a few beside it, on the dashboard's colour; a figure may link to the card that explains it | `title` (visually hidden), `lead`, `figures[]`, `tone`, `linkAs` |
+| `DashboardHeader` | The head of one dashboard's page: name, one sentence, the period, the way out | `title`, `subtitle`, `mark`, `summary`, `meta`, `action`, `tone` |
+| `AreaBreakdown` | A programme's figures by State/UT: the map and the same figures ranked, one measure read by both | `measures: { id, name, label, rows }[]`, `onSelectArea`, `valueFormat` |
+| `AreaExplorer` | The map beside a panel: highest and lowest five until a State/UT is picked, then that State | `measureName`, `rows`, `selected`, `onSelect`, `selectedContent`, `selectedActions` |
+| `KpiView` | A KPI drawn by the SHAPE of its reading — ring, bars, line, funnel, map, table — in a `ChartCard` with its source. `isKpiTile` says which readings are tiles for a `KpiRow` instead | `kpi: KpiSpec`, `reading: KpiReading`, `quiet`, `renderOrigin` |
+
+`KpiReading`, `KpiValue`, `KpiUnit` and `ValueOrigin` are exported, with the formatters
+`formatKpi`, `kpiFormatter`, `compactCount`, `shownDate` and `isoDate`, so a register can
+hand its readings straight to `KpiView`. A whole dashboard page is `DashboardScreen` (§8a).
 
 **States**: `CardState` and `CardSkeleton` are what a card shows when it has
 nothing to draw. Pass `ChartCard` a `state` and a `skeleton` rather than reaching
@@ -4154,8 +4172,10 @@ hand costs four extra branches on every page. `SidebarNav` sits at 100% adoption
 **Pick from the data, not from a picture.** One record read-only → `RecordScreen`.
 Editable, over eight fields or a statutory stage → `WizardScreen`. Many records the
 reader acts on → `WorklistScreen`. Many records aggregated into figures →
-`OverviewScreen`. The closed set of eighteen, the full decision table and the eight
-easily-confused pairs are in **`docs/design-system/screen-templates.md`**.
+`OverviewScreen`. Figures about one or many programmes, filtered by area and period, for a
+citizen or an officer → `DashboardScreen` (the nineteenth, Oct 2026). The closed set of
+nineteen, the full decision table and the easily-confused pairs are in
+**`docs/design-system/screen-templates.md`**.
 
 **`PortalPage`** composes `AppShell` and adds the four things the sixteen shells each
 wired differently: `data-portal` for the palette re-bind, the rail's **two** widths
@@ -4204,7 +4224,7 @@ and a figure the register does not publish is left **off** the design rather tha
 measures not ten, one stepper not two, one chooser design not three, and a mobile form for
 every archetype where the handoff draws none (9 of its 9 mobile frames are auth).
 
-**The set is closed at eighteen, and since 2026-09-07 all eighteen have code.** The
+**The set was closed at eighteen, and since 2026-09-07 all eighteen have code; `DashboardScreen` joined it as the nineteenth on 2026-10-09** (`docs/design-system/screen-templates.md` §4.19). The
 fourteen below completed it. Each owns the seven states through `ScreenBody`, takes
 `headingLevel` so it can be embedded, and states every sentence as a prop.
 

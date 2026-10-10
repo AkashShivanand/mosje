@@ -79,6 +79,8 @@ export interface RecordLibraryProps {
   showOrganisation?: boolean;
   /** Show a Category column and its filter — for a page holding several types. */
   showCategory?: boolean;
+  /** The Category column's heading and filter label, e.g. "State". @default "Type" */
+  categoryLabel?: string;
   /**
    * Sentence shown when the DEPARTMENT publishes nothing under this heading —
    * not when the reader's filter excluded everything.
@@ -126,6 +128,7 @@ export function RecordLibrary({
   showPublishWindow = true,
   showOrganisation = true,
   showCategory = false,
+  categoryLabel = "Type",
   emptyMessage,
 }: RecordLibraryProps) {
   const [query, setQuery] = useState("");
@@ -213,7 +216,7 @@ export function RecordLibrary({
     if (showCategory) {
       cols.push({
         key: "category",
-        header: "Type",
+        header: categoryLabel,
         sortable: true,
         sortValue: (r) => r.category ?? "",
         render: (r) => r.category ?? "—",
@@ -308,7 +311,7 @@ export function RecordLibrary({
       },
     });
     return cols;
-  }, [detailBase, organisationColumn, showCategory, yearColumn, windowColumns, anySize, anyDate]);
+  }, [detailBase, organisationColumn, showCategory, categoryLabel, yearColumn, windowColumns, anySize, anyDate]);
 
   return (
     <PageLayout
@@ -350,13 +353,13 @@ export function RecordLibrary({
 
                 {showCategory && categories.length > 1 && (
                   <label className="sa-record-library__filter">
-                    <span className="sa-record-library__filter-label">Type</span>
+                    <span className="sa-record-library__filter-label">{categoryLabel}</span>
                     <Select
                       appearance="filter"
                       value={category}
                       onChange={(e) => setCategory(e.target.value)}
                       options={[
-                        { label: "All types", value: "All" },
+                        { label: `All ${categoryLabel.toLowerCase()}s`, value: "All" },
                         ...categories.map((c) => ({ label: c, value: c })),
                       ]}
                     />

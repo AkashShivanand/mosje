@@ -1,116 +1,61 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
-import { PageLayout } from "@/components/website/layout/PageLayout";
-import { Icon } from "@mosje/design-system";
+import { eventDate } from "@/components/website-next/media/EventCard";
+import { tidyTitle } from "@/components/website-next/media/albums";
+import { organisationName } from "@/components/website-next/media/org-name";
+import { formatDate } from "@/components/website-next/ui/format";
+import { getContentSyncedDate, getEvents, routeSlug } from "@/lib/website/content";
+import { socialCard } from "@/lib/seo/social";
+import { EventsClient, type ClassicEventCard } from "./events-client";
+
+const TITLE = "Events";
+const DESCRIPTION =
+  "Conclaves, conferences, camps and commemorative events organised by the Department of Social Justice & Empowerment and its associated organisations.";
 
 export const metadata: Metadata = {
-  title: "Events — DoSJE",
-  description:
-    "Conclaves, conferences and commemorative events organised by the Department of Social Justice & Empowerment, Government of India.",
+  title: `${TITLE} | Department of Social Justice & Empowerment`,
+  description: DESCRIPTION,
+  ...socialCard({ title: TITLE, description: DESCRIPTION, url: "/website/events" }),
 };
 
-interface EventCard {
-  slug: string;
-  title: string;
-  date: string;
-  excerpt: string;
-  image: string;
-}
+const isPicture = (u: string) => /\.(jpe?g|png|webp|gif|avif)(\?|$)/i.test(u) && !/\/Ashoka\.png$/i.test(u);
 
-const EVENTS: EventCard[] = [
-  {
-    slug: "chintan-shivir-2026",
-    title: "Chintan Shivir 2026 on Social Justice & Empowerment",
-    date: "18–19 May 2026",
-    excerpt: "Centre–State deliberations to strengthen last-mile delivery of social-justice schemes.",
-    image: "/website/images/5-234x300.jpg",
-  },
-  {
-    slug: "national-de-addiction-conclave-2026",
-    title: "National De-Addiction Conclave 2026 under NMBA",
-    date: "26 June 2026",
-    excerpt: "Marking the International Day Against Drug Abuse with the Nasha Mukt Bharat Abhiyaan.",
-    image: "/website/images/4-1-300x133.jpg",
-  },
-  {
-    slug: "ambedkar-jayanti-samaroh-2026",
-    title: "Ambedkar Jayanti Samaroh 2026",
-    date: "14 April 2026",
-    excerpt: "Tributes and the Dr. Ambedkar National Awards at the Dr. Ambedkar National Memorial.",
-    image: "/website/images/3-300x251.jpg",
-  },
-  {
-    slug: "scholarship-outreach-camp-2026",
-    title: "National Scholarship Outreach Camp 2026",
-    date: "08 March 2026",
-    excerpt: "District-level camps assisting SC, OBC and DNT students with scholarship applications.",
-    image: "/website/images/65811748325059-300x291.jpg",
-  },
-  {
-    slug: "smile-skill-mela-2026",
-    title: "SMILE Skilling & Livelihood Mela 2026",
-    date: "21 February 2026",
-    excerpt: "Skill-development and placement drive for beneficiaries under the SMILE scheme.",
-    image: "/website/images/Banner-7.png",
-  },
-  {
-    slug: "constitution-day-observance-2025",
-    title: "Constitution Day Observance 2025",
-    date: "26 November 2025",
-    excerpt: "Reading of the Preamble and exhibitions celebrating the values of the Constitution.",
-    image: "/website/images/Banner-8.png",
-  },
-];
-
+/**
+ * The Department's events register — every record, not a hand-picked six.
+ *
+ * WHAT THIS REPLACED: six events written into this file (a "Chintan Shivir
+ * 2026", a "National De-Addiction Conclave 2026", …) that are not in the
+ * register and were never held as described. The cards are now the register's
+ * own records, newest first.
+ *
+ * The client receives only what a card prints. The full records carry
+ * description HTML, photo sets and contact details; shipping all 635 of those to
+ * the browser to draw a title and a date would be most of the payload for none
+ * of the page.
+ */
 export default function EventsPage() {
+  const cards: ClassicEventCard[] = getEvents()
+    .map((e) => {
+      const when = eventDate(e);
+      const cover = [e.imageUrl, ...(e.photos ?? []).map((p) => p.thumbnailUrl ?? p.url)].find(
+        (u): u is string => Boolean(u && isPicture(u)),
+      );
+      return {
+        slug: routeSlug(e.slug),
+        title: tidyTitle(e.title),
+        sortKey: when ?? "",
+        when: when ? formatDate(when) : undefined,
+        organisation: organisationName(e.organisation),
+        cover,
+      };
+    })
+    .sort((a, b) => b.sortKey.localeCompare(a.sortKey));
+
   return (
-    <PageLayout
-      title="Events"
-      breadcrumb={[{ label: "Events & Gallery" }, { label: "Events" }]}
-      description="Conclaves, conferences and commemorative events organised by the Department of Social Justice & Empowerment."
-    >
-      <section>
-        <div className="sa-container py-10">
-          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {EVENTS.map((event) => (
-              <li
-                key={event.slug}
-                className="group flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white transition-shadow hover:shadow-md"
-              >
-                <div className="relative">
-                  <Image
-                    src={event.image}
-                    alt={event.title}
-                    width={400}
-                    height={240}
-                    className="h-48 w-full object-cover"
-                  />
-                  <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1 text-label-2 text-white">
-                    <Icon name="calendar_month" size={14} aria-hidden="true" />
-                    {event.date}
-                  </span>
-                </div>
-                <div className="flex flex-1 flex-col p-5">
-                  <h2 className="text-title-2 text-primary-dark">
-                    {event.title}
-                  </h2>
-                  <p className="mt-2 flex-1 text-body-2 text-ink-muted">
-                    {event.excerpt}
-                  </p>
-                  <Link
-                    href={`/website/events/${event.slug}`}
-                    className="mt-4 inline-flex items-center gap-1.5 text-label-1 text-saffron hover:underline"
-                  >
-                    Read More
-                    <Icon name="arrow_forward" size={16} className="transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
-                  </Link>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-    </PageLayout>
+    <EventsClient
+      title={TITLE}
+      description={DESCRIPTION}
+      lastUpdated={getContentSyncedDate()}
+      events={cards}
+    />
   );
 }

@@ -84,11 +84,6 @@ function sectionRank(text: string, anchored = false): number {
   return i === -1 ? SENIORITY.length : i;
 }
 
-/** A CMS test entry, not an officer. */
-function isTestRecord(o: OfficialRecord): boolean {
-  return /^test\b/i.test(o.title.trim()) || /\babc$/i.test((o.designation ?? "").trim());
-}
-
 export function OfficialsDirectory({
   title,
   description,
@@ -106,8 +101,8 @@ export function OfficialsDirectory({
    * records carry is not shown here.
    */
   const sectionOf = (o: OfficialRecord) => (o.group?.trim() ? titleCase(o.group.trim()) : UNGROUPED);
-  const rows: DirectoryRow[] = officials
-    .filter((o) => !isTestRecord(o))
+  // CMS test entries are dropped at the source (lib/website/content, `isCmsTestOfficial`).
+  const rows: DirectoryRow[] = [...officials]
     .sort((a, b) => {
       const sa = sectionOf(a);
       const sb = sectionOf(b);

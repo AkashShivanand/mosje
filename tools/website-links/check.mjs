@@ -103,25 +103,6 @@ const jsonSlugs = (...files) => {
   return out;
 };
 
-/**
- * `events/[slug]` keeps its records inline in the page rather than in
- * `content/website`, so its slugs are the keys of that object literal.
- */
-const inlineEventSlugs = () => {
-  // The ARCHIVED classic design keeps its inline records; the redesign reads
-  // events.json. Both are served at /website/events/<slug> (the classic one
-  // through the demo rail), so the route accepts the union.
-  const p = join(APP, "website-classic/events/[slug]/page.tsx");
-  if (!existsSync(p)) fail("events/[slug]/page.tsx missing");
-  const src = readFileSync(p, "utf8");
-  const block = src.match(/const EVENTS[^=]*=\s*\{([\s\S]*?)\n\};/);
-  if (!block) fail("could not find the EVENTS record in events/[slug]/page.tsx");
-  const slugs = new Set();
-  for (const m of block[1].matchAll(/^\s{2}["']?([a-z0-9-]+)["']?\s*:\s*\{/gm)) slugs.add(m[1]);
-  if (slugs.size === 0) fail("parsed the EVENTS record but found no slugs");
-  return slugs;
-};
-
 /** Scheme ids in the Department's scheme master (lib/website-next/schemes.ts). */
 const masterSchemeIds = () => {
   const p = join(APP, "..", "content/website/scheme-master.json");
@@ -160,8 +141,9 @@ const DYNAMIC = [
   {
     prefix: "/website/events/",
     catchAll: false,
-    source: "events.json + the classic EVENTS record",
-    slugs: () => new Set([...jsonSlugs("events.json"), ...inlineEventSlugs()]),
+    // Both designs read the register since Classic's six inline events went (28 Sep 2026).
+    source: "events.json",
+    slugs: () => jsonSlugs("events.json"),
   },
   { prefix: "/website/booking/", catchAll: false, source: "booking.json", slugs: () => jsonSlugs("booking.json") },
   { prefix: "/website/cpio/", catchAll: false, source: "cpio.json", slugs: () => jsonSlugs("cpio.json") },

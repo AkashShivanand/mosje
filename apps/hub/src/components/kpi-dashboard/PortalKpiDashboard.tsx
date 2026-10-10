@@ -8,8 +8,12 @@ import {
   DashboardGrid,
   FilterSelect,
   KpiRow,
+  KpiView,
   SectionTitle,
+  isKpiTile,
+  type KpiViewState,
   type MetricCardProps,
+  type ValueOrigin,
 } from "@mosje/design-system";
 import { OriginChip } from "@/components/website/ProvenanceChip";
 import { cardStateFor, useDataMode } from "@/lib/data-mode/context";
@@ -19,8 +23,10 @@ import { areaOptions, covers } from "@/lib/kpi/model";
 import { resolveReading, type PortalFeed } from "@/lib/kpi/live";
 import { kpisFor, levelsOf, portalById, portalPhrase } from "@/lib/kpi/register";
 import type { AreaScope, KpiDefinition, KpiReading, PortalId } from "@/lib/kpi/types";
-import { KpiChart, isTile, type KpiCardState } from "./KpiCard";
 import "./kpi-dashboard.css";
+
+/** The page's mark for a figure's origin, drawn by `KpiView` beside the title. */
+const renderOrigin = (origin: ValueOrigin) => <OriginChip origin={origin} />;
 
 /**
  * One portal's dashboard — the body shared by the three website designs and the
@@ -111,7 +117,7 @@ export function PortalKpiDashboard({ portalId, audience, ceiling = {}, allowDist
   const showDistrict = allowDistrict && portal.levels.includes("district") && Boolean(area.state) && !ceiling.district;
 
   let index = 0;
-  const cardOf = (): KpiCardState => {
+  const cardOf = (): KpiViewState => {
     const forced = cardStateFor(demo, index++);
     return { ...forced, onRetry: () => demo.setPreview("normal") };
   };
@@ -206,8 +212,8 @@ export function PortalKpiDashboard({ portalId, audience, ceiling = {}, allowDist
     body = KPI_CATEGORIES.map((cat) => {
       const inCat = kpis.filter((k) => k.category === cat.id);
       if (inCat.length === 0) return null;
-      const tiles = inCat.filter((k) => isTile(reading[k.id]!));
-      const charts = inCat.filter((k) => !isTile(reading[k.id]!));
+      const tiles = inCat.filter((k) => isKpiTile(reading[k.id]!));
+      const charts = inCat.filter((k) => !isKpiTile(reading[k.id]!));
       const headingId = `kd-${portalId}-${cat.id}`;
       return (
         <section key={cat.id} className="kd-section" aria-labelledby={headingId}>
@@ -227,7 +233,7 @@ export function PortalKpiDashboard({ portalId, audience, ceiling = {}, allowDist
           {charts.length > 0 && (
             <DashboardGrid>
               {charts.map((k, i, all) => (
-                <KpiChart
+                <KpiView
                   key={k.id}
                   kpi={k}
                   reading={reading[k.id]!}
@@ -236,6 +242,7 @@ export function PortalKpiDashboard({ portalId, audience, ceiling = {}, allowDist
                   headingLevel={sectionLevel === 2 ? 3 : 4}
                   badge={officerOnly(k)}
                   span={closeRows(all.map((c) => c.span ?? 6))[i]}
+                  renderOrigin={renderOrigin}
                 />
               ))}
             </DashboardGrid>

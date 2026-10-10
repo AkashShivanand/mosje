@@ -11,8 +11,9 @@ import "./footer.css";
 
 
 /**
- * The DBIM footer: Useful Links, Subscribe for Updates (the Department's four social
- * accounts), the MyGov and india.gov.in badges, the ownership line and the date the
+ * The DBIM footer: Useful Links, Follow Us (the Department's four social accounts —
+ * headed "Subscribe for Updates" in the reference; renamed on the instruction of
+ * 8 Oct 2026, because the icons follow an account, they subscribe to nothing), the MyGov and india.gov.in badges, the ownership line and the date the
  * content was last updated — the date of the estate's last content ingest.
  *
  * "This Website belong to…" is the reference's sentence, verbatim, including its
@@ -42,7 +43,7 @@ export function DbimFooter() {
 
         <div className="db-footer__aside">
           <div>
-            <h2 className="db-footer__subscribe">Subscribe for Updates</h2>
+            <h2 className="db-footer__subscribe">Follow Us</h2>
             <ul className="db-footer__social">
               {DBIM_BRAND.social.map((s) => (
                 <li key={s.label}>

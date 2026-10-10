@@ -5,26 +5,26 @@ import Link from "next/link";
 import {
   Accordion,
   AccordionItem,
+  AreaExplorer,
   Badge,
   Button,
   Card,
   CardBody,
-  CardFooter,
-  CardHeader,
   CardState,
-  CardSubtitle,
   CardTitle,
   ChartCard,
+  DashboardCard,
+  DashboardCardList,
   DataTable,
   DescriptionList,
   DotPlot,
   FilterSelect,
   FunnelChart,
+  HeadlineBand,
   HeadlineFigure,
   Icon,
   IndiaMap,
   OrgLogo,
-  type CardTone,
   RankedBarList,
   SectionTitle,
   Sparkline,
@@ -42,6 +42,7 @@ import { DepartmentTileContent } from "./Education";
 import { DEPARTMENT_NAME, DEPARTMENT_PAGE } from "./DepartmentStory";
 import {
   COMPONENT_SHORT,
+  HEADLINE_KPI,
   READINESS_LABEL,
   READINESS_TONE,
   SHORT_NAME,
@@ -148,7 +149,7 @@ function Hero(props: PulseProps) {
   const side: { key: string; value: string; label: string; context?: string; origin: string; note?: SourceNote; card?: string }[] = scope.state
     ? [
         { id: "smile-beggary" as const, kpi: "smile-beggary.identified" },
-        { id: "senior-citizens" as const, kpi: "senior-citizens.ipsrc.beneficiaries" },
+        { id: "senior-citizens" as const, kpi: HEADLINE_KPI["senior-citizens"] },
       ].flatMap((x) => {
         const f = has(x.id)?.levels.includes("state") ? figureOf(x.id, x.kpi, readings, kpis(x.id)) : null;
         return f ? [{ key: x.kpi, value: compact(f.value, f.kpi.unit), label: kpiLabel(f.kpi), context: SHORT_NAME[x.id], origin: f.origin, note: noteOf(viewing, readings, x.id, x.kpi, compact(f.value, f.kpi.unit)) }] : [];
@@ -162,118 +163,65 @@ function Hero(props: PulseProps) {
   const rest = promoted ? side.slice(1) : side;
   if (!lead && !promoted) return null;
 
+  const leadFigure = lead
+    ? {
+        value: compact(lead.value, "number"),
+        label: `${kpiLabel(lead.kpi)}${scope.state ? `, ${scope.state}` : ""}`,
+        // What the figure counts, and when (design review, 7 Oct 2026): 34 crore is people
+        // reached by awareness activities, not beneficiaries, and the reader must not have
+        // to guess which.
+        context: `Persons reached by awareness activities under Nasha Mukt Bharat Abhiyaan, since launch${leadAsOn ? `. As on ${shownDate(leadAsOn)}` : ""}`,
+        mark: marked(lead.origin, noteOf(viewing, readings, "nmba", "nmba.outreach", compact(lead.value, "number"))),
+      }
+    : { value: promoted!.value, label: promoted!.label, context: promoted!.context, mark: marked(promoted!.origin, promoted!.note) };
+
   return (
-    <Card tone="primary" accent="fill" className="pd-hero">
-      {/* Named for the outline and for focus after the area changes; the figures speak for themselves on screen. */}
-      <SectionTitle as={sectionLevel} headingId="pd-glance" title={`At a Glance, ${areaName(scope)}`} className="ds-sr-only" />
-      <CardBody className="pd-hero__body">
-        {lead ? (
-          <HeadlineFigure
-            size="xl"
-            tone="inverse"
-            value={compact(lead.value, "number")}
-            label={`${kpiLabel(lead.kpi)}${scope.state ? `, ${scope.state}` : ""}`}
-            // What the figure counts, and when (design review, 7 Oct 2026): 34 crore is people
-            // reached by awareness activities, not beneficiaries, and the reader must not have
-            // to guess which.
-            context={`Persons reached by awareness activities under Nasha Mukt Bharat Abhiyaan, since launch${leadAsOn ? `. As on ${shownDate(leadAsOn)}` : ""}`}
-            mark={marked(lead.origin, noteOf(viewing, readings, "nmba", "nmba.outreach", compact(lead.value, "number")))}
-          />
-        ) : promoted ? (
-          <HeadlineFigure size="xl" tone="inverse" value={promoted.value} label={promoted.label} context={promoted.context} mark={marked(promoted.origin, promoted.note)} />
-        ) : null}
-        {rest.length > 0 ? (
-          <ul className={rest.length === 1 ? "pd-hero__side pd-hero__side--one" : "pd-hero__side"} aria-label="Other figures">
-            {rest.map((s) => (
-              <li key={s.key}>
-                {/* A figure that leads a card below is a link to it: the hero is the summary,
-                    the card the detail, so the figure appearing twice has a job (instruction,
-                    6 Oct 2026: the three figures stay, the live cards stay intact). */}
-                {"card" in s && s.card ? (
-                  <Link className="pd-hero__jump" href={`${props.hrefTo({ programme: DEPARTMENT_PAGE })}#pd-card-${s.card}`}>
-                    <HeadlineFigure
-                      size="md"
-                      tone="inverse"
-                      value={s.value}
-                      label={s.label}
-                      // No arrow after the card's name: beside a figure, a down arrow reads as a
-                      // fall (design review, 7 Oct 2026). The link's underline on hover and focus
-                      // is the cue.
-                      context={s.context}
-                    />
-                  </Link>
-                ) : (
-                  <HeadlineFigure size="md" tone="inverse" value={s.value} label={s.label} context={s.context} mark={marked(s.origin, s.note)} />
-                )}
-              </li>
-            ))}
-          </ul>
-        ) : null}
-      </CardBody>
-    </Card>
+    <HeadlineBand
+      // Named for the outline and for focus after the area changes; the figures speak for themselves on screen.
+      title={`At a Glance, ${areaName(scope)}`}
+      headingLevel={sectionLevel}
+      headingId="pd-glance"
+      lead={leadFigure}
+      linkAs={Link}
+      figures={rest.map((s) => ({
+        key: s.key,
+        value: s.value,
+        label: s.label,
+        context: s.context,
+        mark: marked(s.origin, s.note),
+        // A figure that leads a card below is a link to it: the hero is the summary, the card
+        // the detail, so the figure appearing twice has a job (instruction, 6 Oct 2026). No
+        // arrow after the card's name: beside a figure, a down arrow reads as a fall.
+        href: "card" in s && s.card ? `${props.hrefTo({ programme: DEPARTMENT_PAGE })}#pd-card-${s.card}` : undefined,
+      }))}
+    />
   );
 }
 
 /* ══ 2 · The programmes ═════════════════════════════════════════════════════ */
 
 /**
- * One dashboard's card on the landing page. A PORTAL'S CARD IS TITLED BY THE PORTAL'S NAME
- * (instruction, 6–7 Oct 2026) — e-Utthaan, e-Anudaan — with its mark, and the scheme it
- * reports under it; the Department's card by the Department's name.
+ * One portal's card on the landing page (`DashboardCard`). A PORTAL'S CARD IS TITLED BY THE
+ * PORTAL'S NAME (instruction, 6–7 Oct 2026) — e-Utthaan, e-Anudaan — with its mark, and the
+ * scheme it reports under it; the Department's card by the Department's name.
  */
-function DashboardTile({ id, tone, mark, title, subtitle, href, label, children, figure, note }: {
-  id: string;
-  tone: CardTone;
-  mark?: React.ReactNode;
-  title: string;
-  subtitle: string;
-  href: string;
-  /** Names the link for a screen reader: each card's visible link says "View Dashboard". */
-  label: string;
-  children?: React.ReactNode;
-  figure?: React.ReactNode;
-  note?: string;
-}) {
-  return (
-    <Card tone={tone} accent="edge" className={`pd-tile pd-tile--${id}`}>
-      <CardHeader>
-        {/* The name sits beside the mark, so the mark takes no accessible name of its own. */}
-        {mark}
-        <div className="pd-tile__titles">
-          <CardTitle size="sm">{title}</CardTitle>
-          <CardSubtitle>{subtitle}</CardSubtitle>
-        </div>
-      </CardHeader>
-      <CardBody className="pd-tile__body">
-        {note ? <p className="pd-note">{note}</p> : null}
-        {figure}
-        {children}
-      </CardBody>
-      <CardFooter>
-        <Button appearance="text" size="sm" href={href} linkAs={Link} aria-label={label} iconRight={<Icon name="arrow_forward" size={16} />}>
-          <span className="pd-tile__cta">View Dashboard</span>
-        </Button>
-      </CardFooter>
-    </Card>
-  );
-}
-
 function Tile({ p, children, figure, hrefTo, note }: { p: PortalDashboard; children?: React.ReactNode; figure?: React.ReactNode; hrefTo: PulseProps["hrefTo"]; note?: string }) {
   return (
-    <DashboardTile
-      id={p.id}
+    <DashboardCard
+      className={`pd-tile pd-tile--${p.id}`}
       tone={PROGRAMME_TONE[p.id]}
       // The portal's own mark, or none: a generic icon in its place stood for nothing (instruction, 7 Oct 2026).
       mark={hasMark(p) ? <OrgLogo path={p.logoPath} size="md" /> : undefined}
       title={p.portal}
       subtitle={p.subtitle ?? p.name}
       href={hrefTo({ programme: p.id })}
-      label={`View the ${p.portal} Dashboard`}
+      linkAs={Link}
+      linkLabel={`View the ${p.portal} Dashboard`}
       figure={figure}
       note={note}
     >
       {children}
-    </DashboardTile>
+    </DashboardCard>
   );
 }
 
@@ -292,19 +240,20 @@ function Programmes(props: PulseProps) {
    */
   const dept = DepartmentTileContent({ audiences: props.audiences, wide: true });
   const deptCard = dept ? (
-    <DashboardTile
-      id="department"
+    <DashboardCard
+      className="pd-tile pd-tile--department"
       tone="primary"
       mark={<OrgLogo path={null} size="md" name="" />}
       title={DEPARTMENT_NAME}
       subtitle="Beneficiary Dashboard"
       href={hrefTo({ programme: DEPARTMENT_PAGE })}
-      label="View the Department's Beneficiary Dashboard"
+      linkAs={Link}
+      linkLabel="View the Department's Beneficiary Dashboard"
       note={scope.state ? NATIONAL_ONLY : undefined}
       figure={dept.figure}
     >
       {dept.body}
-    </DashboardTile>
+    </DashboardCard>
   ) : null;
 
   const tiles: React.ReactNode[] = [];
@@ -578,13 +527,14 @@ function Programmes(props: PulseProps) {
    * SENIOR CITIZENS WELFARE: ITS PUBLIC KPIs FOR A CITIZEN, ITS BUDGET FOR AN OFFICER. The
    * sheet marks every Budget Estimate, Budget Expenditure and Financial Progress row Official
    * (Post-Login), so the readings gate (`readAll`) removes them from a citizen's page and
-   * `fundsRows` is empty there. The tile leads with IP-SrC's beneficiaries and lists four of the
-   * Pre-Login KPIs, one per component, each labelled by `kpiLabel`.
+   * `fundsRows` is empty there. The tile leads with RVY's beneficiaries and lists the SCW1 tab's
+   * other read figures (9 Oct 2026) — devices, camps, projects and pledges — each labelled by
+   * `kpiLabel`. SAGE and MoUs, which no feed carries, stay on the programme's own page.
    */
   const scw = shows(props.audiences, PROGRAMME_AUDIENCE["senior-citizens"]) ? get("senior-citizens") : undefined;
   if (scw) {
-    const lead = fig("senior-citizens", "senior-citizens.ipsrc.beneficiaries");
-    const facts = ["senior-citizens.rvy.devices", "senior-citizens.pm-special.caregivers", "senior-citizens.elderline.calls", "senior-citizens.sage.startups"].flatMap((id) => {
+    const lead = fig("senior-citizens", HEADLINE_KPI["senior-citizens"]);
+    const facts = ["senior-citizens.rvy.devices", "senior-citizens.rvy.camps", "senior-citizens.ipsrc.projects", "senior-citizens.pledge.count"].flatMap((id) => {
       const f = fig("senior-citizens", id);
       return f ? [{ term: kpiLabel(f.kpi), value: compact(f.value, f.kpi.unit) }] : [];
     });
@@ -604,7 +554,7 @@ function Programmes(props: PulseProps) {
               value={compact(lead.value, lead.kpi.unit)}
               label={lead.kpi.name}
               context={lead.kpi.component}
-              mark={marked(lead.origin, noteOf(viewing, readings, "senior-citizens", "senior-citizens.ipsrc.beneficiaries", compact(lead.value, lead.kpi.unit)))}
+              mark={marked(lead.origin, noteOf(viewing, readings, "senior-citizens", HEADLINE_KPI["senior-citizens"], compact(lead.value, lead.kpi.unit)))}
             />
           ) : undefined
         }
@@ -625,7 +575,7 @@ function Programmes(props: PulseProps) {
    * A PROGRAMME WITH NOTHING TO SHOW IS NOT DRAWN. In Live mode four of the five have no
    * feed yet, and an outlined tile holding only "Explore DAPSC" told the reader nothing
    * but that something was missing (feedback, 6 Oct 2026). The grid is laid out for the
-   * number of tiles that remain (`pd-bento--n<count>`), so it closes up with no gap.
+   * number of tiles that remain (`DashboardCardList`), so it closes up with no gap.
    */
   if (tiles.length === 0 && !deptCard) return null;
   return (
@@ -635,13 +585,7 @@ function Programmes(props: PulseProps) {
         {deptCard ? <div className="pd-lead">{deptCard}</div> : null}
         {/* NMBA, the one tile with a map, and SMILE share the first row; the rest share the
             next, so no map is squeezed into a third of the page (design audit, 6 Oct 2026). */}
-        {tiles.length ? (
-          <ul className={`pd-bento pd-bento--n${Math.min(tiles.length, 5)} pd-bento--portals`}>
-            {tiles.map((t, i) => (
-              <li key={i}>{t}</li>
-            ))}
-          </ul>
-        ) : null}
+        <DashboardCardList arrangement="lead" items={tiles.map((t, i) => ({ key: i, content: t }))} />
       </div>
     </section>
   );
@@ -673,9 +617,6 @@ function Where({ viewing, national, scope, go, sectionLevel, audiences }: PulseP
   const reading = national[metric.programme]?.[metric.id];
   const data = areaRows(reading);
   const fmt = (v: number) => compact(v, metric.unit);
-  const tileFmt = (v: number) => compact(v, metric.unit);
-  const ranked = [...data].sort((a, b) => b.value - a.value);
-  const rank = picked ? ranked.findIndex((r) => r.state === picked) + 1 : 0;
   const title = metric.label;
 
   // The chosen State/UT across programmes, from the national readings' state rows.
@@ -701,64 +642,31 @@ function Where({ viewing, national, scope, go, sectionLevel, audiences }: PulseP
           <FigureSource note={noteOf(viewing, national, metric.programme, metric.id, undefined, undefined, `${metric.label}, by State/UT`)} />
         </span>
       </SectionTitle>
-      <div className="pd-where">
-        <Card variant="outlined" className="pd-where__map">
-          <CardBody>
-            <IndiaMap title={title} data={data} valueFormat={fmt} legendFormat={tileFmt} scale="quantile" selected={picked} onSelect={setPicked} tableView="sr-only" />
-          </CardBody>
-        </Card>
-        <Card variant="outlined" className="pd-where__panel">
-          {picked ? (
-            <>
-              <CardHeader>
-                <div>
-                  <CardTitle size="sm">{picked}</CardTitle>
-                  {rank > 0 ? <CardSubtitle>{`${rank} of ${ranked.length} · ${title}`}</CardSubtitle> : null}
-                </div>
-              </CardHeader>
-              <CardBody>
-                {stateFacts.length ? (
-                  <DescriptionList size="figure" columns={1} divided items={stateFacts} />
-                ) : (
-                  <p className="pd-note">Figures for {picked} are not yet published on this dashboard.</p>
-                )}
-              </CardBody>
-              <CardFooter>
-                {scope.state === picked ? (
-                  <Button appearance="outlined" size="sm" onClick={() => go({ state: null })}>
-                    View All-India Figures
-                  </Button>
-                ) : (
-                  <Button appearance="filled" size="sm" onClick={() => go({ state: picked })}>
-                    View Figures for {picked}
-                  </Button>
-                )}
-              </CardFooter>
-            </>
+      <AreaExplorer
+        measureName={title}
+        rows={data.map((r) => ({ area: r.state, value: r.value }))}
+        valueFormat={fmt}
+        selected={picked}
+        onSelect={setPicked}
+        selectedContent={
+          stateFacts.length ? (
+            <DescriptionList size="figure" columns={1} divided items={stateFacts} />
           ) : (
-            <>
-              <CardHeader>
-                <div>
-                  <CardTitle>Highest and Lowest</CardTitle>
-                  <CardSubtitle>{title}</CardSubtitle>
-                </div>
-              </CardHeader>
-              {/* As drawn in Figma (Option B, "Highest and Lowest"): two labelled groups of
-                  Ranked Bar Rows, every bar against the highest State/UT. */}
-              <CardBody className="pd-extremes">
-                <div className="pd-extremes__group">
-                  <h4 className="pd-extremes__label">Highest Five</h4>
-                  <RankedBarList title={`${title}, highest five`} items={ranked.slice(0, 5).map((r) => ({ label: r.state, value: r.value }))} max={ranked[0]?.value} valueFormat={fmt} showRank size="md" sort="none" />
-                </div>
-                <div className="pd-extremes__group">
-                  <h4 className="pd-extremes__label">Lowest Five</h4>
-                  <RankedBarList title={`${title}, lowest five`} items={ranked.slice(-5).map((r, i) => ({ label: r.state, value: r.value, detail: `${ranked.length - 4 + i} of ${ranked.length}` }))} max={ranked[0]?.value} valueFormat={fmt} showRank={false} showBar={false} size="md" sort="none" />
-                </div>
-              </CardBody>
-            </>
-          )}
-        </Card>
-      </div>
+            <p className="pd-note">Figures for {picked} are not yet published on this dashboard.</p>
+          )
+        }
+        selectedActions={
+          scope.state === picked ? (
+            <Button appearance="outlined" size="sm" onClick={() => go({ state: null })}>
+              View All-India Figures
+            </Button>
+          ) : (
+            <Button appearance="filled" size="sm" onClick={() => go({ state: picked })}>
+              View Figures for {picked}
+            </Button>
+          )
+        }
+      />
     </section>
   );
 }

@@ -3,7 +3,8 @@
  * Ministry/Department-specific important data"; issue BRD-24).
  *
  * WHERE THEY GO, decided 28 Sep 2026: in the posts row — two CCPS central posts,
- * then the infographic — and for now on the DBIM design only
+ * then the infographic, which opens the Beneficiary Dashboard — and for now on the DBIM
+ * design only
  * (components/website-dbim/home/Campaigns.tsx). Any other design that takes
  * them takes them in the same row.
  *
@@ -45,46 +46,49 @@ export function infographicText(info: Infographic): string {
 
 export const INFOGRAPHICS: Infographic[] = [
   {
-    id: "setu-scholarships",
-    title: "Scholarships and Fellowships",
-    subtitle:
-      "SETU – Scholarship for Educational Transformation & Upliftment, 2014–15 to 2025–26",
-    src: "/website/images/infographics/setu-scholarships.png",
+    id: "beneficiary-dashboard",
+    title: "Beneficiary Dashboard",
+    subtitle: "At a Glance, All India — Department of Social Justice and Empowerment, as on 05.10.2026",
+    src: "/website/images/infographics/beneficiary-dashboard.png",
     width: 2160,
     height: 2160,
-    // Read 28 Sep 2026. Three totals are sums of the dashboard's own parts for
-    // the same period: 4,896 + 46,676; 2,163 + 12,118; 117 + 810.
+    // Redrawn 8 Oct 2026 after the proposed Beneficiary Dashboard, from the Department's
+    // own figures only (lib/website-shared/dashboard.ts, origin "received") — nothing
+    // illustrative, nothing live. The SETU picture it replaces carried the same source.
+    // Computed from that source, same period: ₹67,977 Cr is the nine FUND_SHARE slices;
+    // 74.23 = 26.70 + 47.53 and 56.47 = 25.21 + 31.26 lakh (2025-26, provisional); each
+    // share is its slice ÷ 67,977; 45,228 and 37,937 are the students placed by year.
     source: {
       label: "Beneficiary Dashboard",
       href: "https://www.dosje.gov.in/dashboard/",
     },
     figures: [
       {
-        scheme: "Scholarships for SC Students",
-        audience: "Pre-Matric and Post-Matric",
-        values: ["9 Crore student beneficiaries", "₹51,572 Crore"],
+        scheme: "Total spend across 9 schemes",
+        audience: "scholarships, fellowships and hostels, 2014–15 to 2025–26",
+        values: ["₹67,977 Crore"],
+      },
+      { scheme: "Scholarships for SC Students", values: ["9 Crore students beneficiary"] },
+      { scheme: "PM-YASASVI Scholarships", values: ["11 Crore students beneficiary"] },
+      { scheme: "SHREYAS National Fellowship", values: ["14,757 scholars funded"] },
+      {
+        scheme: "Beneficiary students",
+        audience: "2025–26, provisional",
+        values: ["SC 74.23 lakh", "OBC, EBC and DNT 56.47 lakh"],
       },
       {
-        scheme: "PM-YASASVI Scholarships",
-        audience: "OBC, EBC and DNT students",
-        values: ["11 Crore student beneficiaries", "₹14,281 Crore"],
+        scheme: "Share of fund release",
+        values: ["Post-Matric SC 68.7%", "Post-Matric OBC 17.8%", "Pre-Matric SC 7.2%", "other 6 schemes 6.3%"],
       },
-      {
-        scheme: "SHREYAS National Fellowship for OBCs",
-        values: ["14,757 scholars funded", "₹640 Crore released"],
-      },
-      {
-        scheme: "Hostels for OBC Boys and Girls",
-        values: ["28,865 seats sanctioned", "₹347 Crore disbursed"],
-      },
+      { scheme: "Hostels for OBC Boys and Girls", values: ["28,865 seats sanctioned"] },
       {
         scheme: "Top Class Education for OBC, EBC and DNT",
-        values: ["45,228 schools", "37,937 colleges", "₹927 Crore released"],
+        values: ["45,228 students in schools", "37,937 students in colleges"],
       },
       {
-        scheme: "Interest Subsidy for Overseas Studies",
+        scheme: "Interest Subsidy on Educational Loans for Overseas Studies",
         audience: "OBC and EBC students",
-        values: ["29,015 beneficiaries", "₹210 Crore disbursed"],
+        values: ["29,015 beneficiaries"],
       },
     ],
   },

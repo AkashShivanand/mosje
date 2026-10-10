@@ -14,7 +14,7 @@ import "server-only";
  * docs/research/dbim-reference/components/home-mid.spec.md.
  */
 import {
-  OFFERING_TENDERS, OFFERING_VACANCIES, offeringSchemesInOrder,
+  OFFERING_TENDERS, OFFERING_VACANCIES, keyOfferingSchemes,
 } from "@/lib/website-shared/offerings";
 import { RECENT_DOCUMENTS } from "@/lib/website-shared/documents";
 import { localiseDocumentUrl } from "@/lib/website/sample-documents";
@@ -43,15 +43,15 @@ export interface DbimHomeLink {
  * entries in each category"; the reference build showed four schemes it chose itself
  * and the four newest register rows.
  *
- * Schemes: the live section's schemes in the order it first names them (the live site
- * dates none, so its order stands for "most recent"). A scheme the master holds opens
- * its DBIM page; one it does not opens the scheme list; a document opens the document.
+ * Schemes: the live Key Offerings tab's five, in its order (`keyOfferingSchemes`). A
+ * scheme the master holds opens its DBIM page; one it does not opens the scheme list; a
+ * document opens the document.
  * Vacancies and tenders: the live section's own, each opening its page here.
  */
 export const KEY_OFFERING_ROWS = 5;
 
 export function dbimKeySchemes(): DbimHomeLink[] {
-  return offeringSchemesInOrder()
+  return keyOfferingSchemes()
     .slice(0, KEY_OFFERING_ROWS)
     .map((s) => ({
       key: s.slug ?? s.file ?? s.title,
@@ -84,14 +84,18 @@ export function dbimKeyTenders(): DbimHomeLink[] {
 /* ── What's New ────────────────────────────────────────────────────────── */
 
 /**
- * The four newest items of the estate's What's New feed — four, because that is what
- * the reference's 301px panel holds at 1440 (measured: four items of one- and two-line
- * titles take 238 of its 269px; a fifth would not fit). Dates are on the What's New page
- * (`whatsNew()`: updates, circulars, notices, results and announcements of the last
- * twelve months). Each item opens where `whatsNewTarget` sends it — the same target the
- * Announcements bar and the What's New page give it.
+ * The six newest items of the estate's What's New feed. The reference's panel held four
+ * (301px at 1440; the live site still shows four); six on the instruction of 8 Oct 2026,
+ * so the four senior-citizen and yoga items added that week do not push the Lok Adalat
+ * material and the NAPDDR call off the home page. The panel and the Key Offerings box
+ * share the band's height, and the offering rows spread to fill it (home-mid.css), so
+ * both View More buttons stay on one line. Dates are on the What's New page. Each item
+ * opens where `whatsNewTarget` sends it — the same target the Announcements bar and the
+ * What's New page give it.
  */
-export function dbimHomeNews(limit = 4): DbimHomeLink[] {
+export const HOME_NEWS_COUNT = 6;
+
+export function dbimHomeNews(limit = HOME_NEWS_COUNT): DbimHomeLink[] {
   return whatsNew()
     .flatMap((n): DbimHomeLink[] => {
       const t = whatsNewTarget(n);

@@ -278,3 +278,89 @@ shares are illustrative.
 **Two roles.** The sheet's KPI Type has Pre-Login and Post-Login only, so the dashboard has
 Public and Officer only; an officer's scope (portals, State, District) is the account's. The
 six demo accounts and their User IDs are in `apps/hub/src/lib/kpi/access.ts`.
+
+## 14. Senior Citizens Welfare: the SCW1 tab and its APIs (9 Oct 2026)
+
+**What the sheet gained.** The tracker (now titled `SAMAVESH_KPI_Data_Collection_Tracker`,
+modified 9 Oct 2026 04:02) carries a new **SCW1** tab: NeGD's list of seven Public (Pre-login)
+Senior Citizens KPIs, each with the API that supplies it. The SCW tab is unchanged. The KPI
+Status tab now records SCW's Post Login Data as "No". It also gained a **SMILE (TG)** tab (one
+row, its KPI Name copied from e-Utthaan's "Total DAPSC allocation (B.E. and R.E.)") and an empty
+**NAMASTE** proforma. Neither is built.
+
+**What each API returned, 9 Oct 2026.**
+
+| SCW1 | KPI | API | Answer |
+|---|---|---|---|
+| 1 | Number of Projects Assisted under IPSrC | `seniorcitizen-api-user…/v1/user/facilities_list` | **Open, 200.** 808 rows, all active: 764 Senior Citizens Homes, 17 Mobile Medicare Units, 13 Continuous Care Homes, 11 RRTC, 3 Physiotherapy Clinics; 28 States/UTs, 433 districts; 173 rows with no coordinates |
+| 2–4 | RVY beneficiaries, devices, camps | `adip.depwd.gov.in/auth/api/sje/rvysummary` (`x-api-key`) | **403 from this network** with the key supplied, and with a wrong key; 401 without one. The Department's team supplied the response: `{ camp: 3290, nob: 1032667, noa: 5528017 }` |
+| 5 | Start-ups Supported under SAGE | — | Not available |
+| 6 | Number of Strategic MoUs Signed | — | Not available |
+| 7 | Pledge Count | `seniorcitizen-api-user…/v1/user/pledges/dashboard-count` | **Open, 200.** `totalCount` 90,40,477 |
+
+The SCW tab's own `/api/app/*` and admin endpoints still answer 401 to a public request.
+
+**What changed (instruction, 9 Oct 2026: SCW1 replaces the public list; projects count every
+row).**
+- A citizen sees SCW1's seven KPIs, under SCW1's names. IPSrC beneficiaries, RVY Generic Items,
+  geriatric caregivers and Elderline calls are not on SCW1 and are officer KPIs; "Number of
+  Activities (Walk-in Mode and Camp Mode)" is replaced by "Total No. of Camps Conducted under
+  RVY", as the API carries no walk-in figure. Pledge Count is new (29 KPIs in all).
+- Projects, RVY and pledges are read, never modelled: live from `feeds/scw.ts` where the API
+  answers, otherwise the 9 Oct 2026 mirror (`feeds/scw-snapshot.ts`), in every data mode. RVY
+  needs `RVY_API_KEY` on the server; until it answers, RVY is the mirror.
+- Projects is 808 — every row, Regional Resource and Training Centres included — drawn with its
+  split by type. SCW1's definition names four types and not RRTCs (797 without them); the owner
+  confirmed on 9 Oct 2026 that RRTCs count as projects assisted, so 808 stands.
+- The tile leads with RVY's 10.33 lakh beneficiaries; devices, camps, projects and pledges
+  beside it. SAGE and MoUs are on the programme page only, illustrative.
+- **No Financial Year filter for Senior Citizens Welfare.** Its public figures are running
+  totals with no year (RVY since the scheme began), so an earlier year could only be invented.
+  The period line reads "Cumulative to date". This reverses part of the 8 Oct 2026 decision.
+- IPSrC is spelt as SCW1 and the portal spell it (was IP-SrC, from the SCW tab).
+
+**Points for the Division.**
+- **RVY key.** It is refused (403) from outside, and a wrong key gets the same answer, so either
+  the key or an IP allow-list is the cause. The key as supplied has nine characters in its first
+  group, where a UUID has eight — worth checking for a typing slip. Confirm whether the API
+  serves calls from the hosting provider's addresses.
+- **RVY figures are cumulative** (8.53 lakh beneficiaries to 2025-26 per AIR, 21 Sep 2026; the
+  API reads 10.33 lakh). Confirm the period the API counts.
+- **SAGE.** SCW1 has no API for Start-ups Supported; the SCW tab named an admin endpoint. Which
+  application status counts as "supported" is still open.
+
+## 15. The dashboard's parts join the design system (9 Oct 2026)
+
+**Instruction, 9 Oct 2026:** what was built for this dashboard goes into the design system, as
+components or a template, so it can be reused wherever it applies. Code first, then Figma (owner's
+choice); both are done.
+
+| Was (local to this dashboard) | Now (`@mosje/design-system`) |
+|---|---|
+| `DashboardTile`, Education's `Tile`, the `pd-bento` grid | `DashboardCard`, `DashboardCardList` |
+| The At a Glance hero | `HeadlineBand` |
+| `StoryHeader` | `DashboardHeader` |
+| `StateBreakdown`; the landing page's map and Highest / Lowest panel | `AreaBreakdown`; `AreaExplorer` |
+| `SegmentedButtons` (ButtonGroup + `aria-pressed`) | `SegmentedControl variant="buttons"` — a radio group: one tab stop, arrows select |
+| `KpiCard.tsx`'s `KpiChart`, `isTile`; the reading types and formatters | `KpiView`, `isKpiTile`; `KpiReading` and the rest, re-exported by `lib/kpi/types.ts` and `format.ts` |
+| `ProposedDashboard`'s area bar, back link and focus move | `DashboardScreen`, the nineteenth screen template |
+
+**Nothing on screen changed.** Twenty views (landing, Department, five programmes, the sign-in
+view, the DBIM and Classic designs; 1440 and 390 wide) were captured before and after and
+compared pixel by pixel. Twelve are identical; in the other eight the only differences are NMBA's
+live figures, which moved between the two captures (41.22 → 41.23 lakh pledges). Behaviour was
+checked in a browser: the segmented switch takes arrow keys, a click anywhere on a card opens its
+dashboard, focus lands on the new view's heading, the map pick fills the panel.
+
+**Figma (9 Oct 2026).** A new **Dashboard** page in the SAMAVESH library, after Map of India, holds
+seven masters — Headline Figure (Size × Tone), Dashboard Card (Tone × Link), Headline Band (Figures),
+Dashboard Header (Tone), Area Breakdown (Measures), Area Explorer (State) and KPI View (Kind × 8, each a
+Chart Card with its chart swapped) — composed from ten library parts, one documentation frame in the
+house style (six counted stats, five sections, an arrangements section with eight drawn arrangements
+and six code-only) and a component record. DashboardScreen is a wireframe card and a full-size
+desktop-and-phone frame on Screen Templates; the segmented button is an arrangement on Button Group.
+The Index carries a Dashboard card (live-instance preview) and reads 99 pages · 222 components.
+Every master has a Code Connect template and a fixture. Open, on the component record: the
+Description List has no figure size; the Icon set has no named glyphs (Open Portal draws the default
+arrow); KPI View's table is the library's example table; the library must be **published** from Figma
+for consumer files to see the masters.

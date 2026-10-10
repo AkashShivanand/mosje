@@ -180,6 +180,7 @@ const NAV: NavItem[] = [
       { label: "Suo Moto Disclosure", href: "/website/suo-moto-disclosure" },
       { label: "MOU", href: "/website/mou" },
       { label: "Advices", href: "/website/advices" },
+      { label: "Central List of OBCs", href: "/website/central-list-of-obcs" },
       { label: "Miscellaneous", href: "/website/miscellaneous" },
     ],
   },

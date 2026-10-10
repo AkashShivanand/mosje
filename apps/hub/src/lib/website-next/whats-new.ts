@@ -12,11 +12,14 @@ export const newestFirst = <T extends { date?: string }>(rows: T[]) => [...rows]
  * What's New, as the live home page lists it (lib/website-shared/whats-new.ts): the same
  * items, in the same order, under the same labels and dates, in every design. Each item
  * is keyed by the register it lives in (`d-` document, `u-` update, `s-` scheme, `v-`
- * vacancy) and points at that record's page in the estate.
+ * vacancy) and points at that record's page in the estate; an item the live list carries
+ * as a link (`x-`) points where the live site points it.
  */
 export function whatsNew(): NewsItem[] {
   return WHATS_NEW.map((e): NewsItem => {
     const base = { kind: e.label, title: tidyTitle(e.title), date: e.date };
+    // A live item that is a link, not a record: it opens where the live site sends it.
+    if (e.href) return { ...base, key: `x-${e.slug}`, href: e.href };
     switch (e.source) {
       case "documents": {
         const d = getDocument(e.slug);

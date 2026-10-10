@@ -1,6 +1,7 @@
 /**
- * The DBIM design's Ministry pages: About Us, Our Team, Our Division, Our
- * Organisation, Our Scheme Portals and Our Performance.
+ * The DBIM design's Ministry pages: About Us, Our Team, Our Organisation, Our
+ * Scheme Portals and Our Performance — and the divisions' links, which Important
+ * Links groups.
  *
  * Every word here is the Department's, read from the estate's own modules; this
  * file only arranges it into the DBIM reference build's page shapes
@@ -12,7 +13,7 @@
  */
 import { WEBSITE_PORTAL_DASHBOARDS } from "@/lib/website-shared/dashboard";
 import { PORTAL_DASHBOARD_CRUMBS } from "@/lib/website-shared/dashboard-links";
-import { DIVISIONS, ORGANISATIONS, ORGANISATION_CATEGORY_LABELS, getDepartmentSecretary, type Organisation, type OrganisationCategory } from "@/data/website";
+import { ORGANISATIONS, ORGANISATION_CATEGORY_LABELS, getDepartmentSecretary, type Organisation, type OrganisationCategory } from "@/data/website";
 import { getOrganisationDetail } from "@/content/website/organisation-details";
 import { schemePortals } from "@/lib/website-shared/organisations";
 import { getDocument, getOfficialsByOrganisation, getOrganisation } from "@/lib/website/content";
@@ -20,7 +21,6 @@ import { localiseDocumentUrl } from "@/lib/website/sample-documents";
 import { phoneGroups } from "@/components/website-next/templates/people-format";
 import { cleanHtml, firstSentence, kindOf, stripTags } from "@/components/website-next/templates/organisation-content";
 import { DBIM_SOCIAL_AUDIT } from "./assets";
-import { DBIM_REGISTERS, registerPath } from "./division-registers";
 
 /* ── About Us ──────────────────────────────────────────────────────────────── */
 
@@ -313,30 +313,6 @@ export function teamOffices(
   }));
 }
 
-/* ── Our Division ──────────────────────────────────────────────────────────── */
-
-/**
- * The Department's own opening line on a division, where it publishes one — the first
- * sentence of the division's page on dosje.gov.in, word for word (checked against the live
- * pages on 29 Sep 2026: `about-the-division`, `…-welfare-of-the-other-backward-classes`,
- * `…-social-defence`, `…-statistics-division`, `official-language-background`).
- * Social Defence's page opens with a lead and a four-item list; the list is joined into the
- * line with commas. A division the Department describes nowhere gets no description — the
- * Plan Division's page carries only a list of activities, so its card has none.
- */
-const DIVISION_SUMMARY: Record<string, string> = {
-  "scheduled-caste-welfare":
-    "The Scheduled Castes Development (SCD) Bureau aims to promote the welfare of Scheduled Castes through their educational, economic and social empowerment.",
-  "welfare-of-other-backward-classes":
-    "Under the Backward Classes Bureau, the Ministry is mandated to look after the welfare of Backward Classes, by implementing the schemes for Backward Classes.",
-  "social-defence":
-    "The Social Defence Division of the Department mainly caters to the requirements of: Senior Citizens, Victims of alcoholism and substance abuse, Transgender Persons, Beggars / Destitute.",
-  "statistics-division":
-    "Statistics Division of the Department of Social Justice & Empowerment is primarily responsible for sponsoring evaluation/research studies on schemes of its target groups namely Scheduled Castes, Other Backward Classes (OBCs), Senior Citizens and Victims of Substance Abuse.",
-  "official-language":
-    "Hindi unit is responsible for implementation of Official Language policy and the progressive use of Official Language Hindi in the Department of Social Justice and Empowerment and the Offices under its control.",
-};
-
 export interface DbimCardItem {
   slug: string;
   title: string;
@@ -348,93 +324,6 @@ export interface DbimCardItem {
   category?: string;
   /** The body's own mark, drawn beside its name (MeitY's organisation card). */
   logo?: string;
-}
-
-export function divisionCards(): DbimCardItem[] {
-  return DIVISIONS.map((d) => ({
-    slug: d.id,
-    title: d.name,
-    description: DIVISION_SUMMARY[d.id],
-    href: `/ministry/our-division/${d.id}`,
-  }));
-}
-
-/**
- * WHERE A DIVISION'S RELATED LINK GOES IN THE DBIM DESIGN. `DIVISIONS[].links` point at
- * pages of the 2026 design, which this design does not have; a DBIM page never links to
- * a page that does not exist in it. Each internal link is mapped here, in this order of
- * preference: an existing DBIM page carrying the same content; a DBIM register page
- * rendering the same data (`./division-registers.ts`); otherwise dropped, with the
- * reason. External links pass through untouched. A link missing from this map is
- * dropped too, so a link added to the shared data later cannot 404 here — add its row.
- * The table, with the reasoning: docs/research/dbim-reference/components/link-map.spec.md.
- */
-type LinkTarget = { path: string } | { dropped: string };
-
-const ON_THIS_PAGE = "the reader is on this division's page";
-const TEXT_ONLY =
-  "its content exists only as text typed into the 2026 design's page file, not as data a DBIM page can read, and no DBIM page carries it";
-
-export const DBIM_DIVISION_LINK_MAP: Record<string, LinkTarget> = {
-  // Scheduled Caste Welfare
-  "/website/about-the-division": { dropped: ON_THIS_PAGE },
-  "/website/policies-acts-rules-circular": { path: "/documents/publications/acts-rules" },
-  // Welfare of the Other Backward Classes
-  "/website/about-the-division-welfare-of-the-other-backward-classes": { dropped: ON_THIS_PAGE },
-  "/website/policies-acts-rules-codes-circular": { path: "/documents/publications/acts-rules" },
-  "/website/welfare-of-the-other-backward-classes": { dropped: TEXT_ONLY },
-  // Grants-in-Aid to NGOs
-  "/website/prioritization-guidelines-for-funding-projects-by-voluntary-organisations": { dropped: TEXT_ONLY },
-  "/website/procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations": { dropped: TEXT_ONLY },
-  "/website/inspection-and-monitoring-procedure": { dropped: TEXT_ONLY },
-  "/website/penalties-in-case-of-misutilisation-of-grants": { dropped: TEXT_ONLY },
-  "/website/cessation-of-voluntary-organisation-activities": { dropped: TEXT_ONLY },
-  "/website/guidelines-for-assisting-ngos-voluntary-organisations": { dropped: TEXT_ONLY },
-  "/website/grants-in-aid-to-ngos-faqs": { dropped: TEXT_ONLY },
-  // Budget and Account — the accounts office's contacts are in the Department's directory (PR.CCA).
-  "/website/contact-person": { path: "/ministry/directory" },
-  // Social Defence
-  "/website/about-the-division-social-defence": { dropped: ON_THIS_PAGE },
-  "/website/drug-division": { dropped: TEXT_ONLY },
-  "/website/organisation-under-division-social-division": { path: "/ministry/our-organisation/national-institute-of-social-defence" },
-  "/website/policies-acts-rules-codes-circular-social-defence": { path: "/documents/publications/acts-rules" },
-  "/website/social-defence-faqs": { dropped: TEXT_ONLY },
-  // Statistics Division
-  "/website/about-the-division-statistics-division": { dropped: ON_THIS_PAGE },
-  "/website/list-of-research-evaluation-studies": { dropped: TEXT_ONLY },
-  // Official Language
-  "/website/official-language-background": { dropped: TEXT_ONLY },
-  "/website/official-language-act": { dropped: TEXT_ONLY },
-  "/website/activities-of-the-ministry-official-language": { dropped: TEXT_ONLY },
-  // Parliamentary Matters
-  "/website/assurances": { dropped: TEXT_ONLY },
-  // Plan Division
-  "/website/about-the-division-2": { dropped: ON_THIS_PAGE },
-  // The registers the estate holds as data: a DBIM page each.
-  ...Object.fromEntries(DBIM_REGISTERS.map((r) => [r.from, { path: registerPath(r) }])),
-};
-
-export interface DbimDivisionLink {
-  label: string;
-  /** A DBIM path (resolve with `dbimHref`) or an absolute URL. */
-  href: string;
-  external: boolean;
-}
-
-function divisionLink(l: { label: string; href: string }): DbimDivisionLink[] {
-  if (/^https?:/.test(l.href)) return [{ label: l.label, href: l.href, external: true }];
-  const t = DBIM_DIVISION_LINK_MAP[l.href];
-  return t && "path" in t ? [{ label: l.label, href: t.path, external: false }] : [];
-}
-
-export function divisionDetail(slug: string) {
-  const d = DIVISIONS.find((x) => x.id === slug);
-  if (!d) return undefined;
-  return {
-    title: d.name,
-    summary: DIVISION_SUMMARY[d.id],
-    links: d.links.flatMap(divisionLink),
-  };
 }
 
 /* ── Our Organisation and Our Scheme Portals ──────────────────────────────── */

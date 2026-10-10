@@ -135,6 +135,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "bar_chart"
   },
   {
+    "title": "Area Breakdown — Design System",
+    "section": "Auth & Dashboard",
+    "href": "/design-system/components/dashboard/area-breakdown",
+    "keywords": "area breakdown — design system auth & dashboard one measure, read by both the map is a control the explorer&rsquo;s panel belongs to the page area explorer props areameasure example not yet verified id name label rows Persons Engaged in Begging Identified Persons Rehabilitated tokens wcag accessibility",
+    "description": "The figures of one programme, State/UT by State/UT: the map of India and the same figures ranked beside it. With Area Explorer, the map beside a panel for the State/UT the reader picks.",
+    "type": "component",
+    "iconName": "lock"
+  },
+  {
     "title": "Area Chart — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/area-chart",
@@ -589,6 +598,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "bar_chart"
   },
   {
+    "title": "Dashboard Card — Design System",
+    "section": "Auth & Dashboard",
+    "href": "/design-system/components/dashboard/dashboard-card",
+    "keywords": "dashboard card — design system auth & dashboard the whole card is the link laid out by how many there are one figure leads dashboard card list props dashboardcardlistitem example not yet measured key id content tokens wcag accessibility",
+    "description": "One dashboard summarised on a page that lists several: its mark, its name, one lead figure, a few facts and a link to the dashboard. With Dashboard Card List, which lays the cards out by how many there are.",
+    "type": "component",
+    "iconName": "lock"
+  },
+  {
     "title": "Dashboard Grid — Design System",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/dashboard/dashboard-grid",
@@ -596,6 +614,24 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "The 12-column grid a portal dashboard is laid out on. Children declare their own width with a span prop; every child is full width below 768px.",
     "type": "component",
     "iconName": "lock"
+  },
+  {
+    "title": "Dashboard Header — Design System",
+    "section": "Auth & Dashboard",
+    "href": "/design-system/components/dashboard/dashboard-header",
+    "keywords": "dashboard header — design system auth & dashboard nothing the page says again below the organisation&rsquo;s own mark, or none example not yet measured  tokens wcag accessibility",
+    "description": "The head of a dashboard page: whose dashboard it is, one sentence on what the scheme does, the period the figures describe, and the one way out — in the colour of the dashboard.",
+    "type": "component",
+    "iconName": "lock"
+  },
+  {
+    "title": "Dashboard Screen — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/dashboard-screen",
+    "keywords": "dashboard screen — design system getting started the order is the reader&rsquo;s say what an area choice changed a new view moves focus; a filter does not the seven states are the template&rsquo;s example the heading that takes focus  tokens wcag accessibility",
+    "description": "Figures about one programme or several, filtered by area and period: the way back, the area bar with its filters, one sentence where an area choice changes only part of the page, then the view.",
+    "type": "component",
+    "iconName": "widgets"
   },
   {
     "title": "Data Table — Design System",
@@ -1051,6 +1087,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "view_quilt"
   },
   {
+    "title": "Headline Band — Design System",
+    "section": "Auth & Dashboard",
+    "href": "/design-system/components/dashboard/headline-band",
+    "keywords": "headline band — design system auth & dashboard the band is the summary, the card the detail named in the outline, not on screen headlinebandfigure example not yet measured key value label context mark href tokens wcag accessibility",
+    "description": "The figures a dashboard opens with: one drawn large and a few beside it, on the colour of the dashboard, named in the page outline by a visually hidden heading.",
+    "type": "component",
+    "iconName": "lock"
+  },
+  {
     "title": "Headline Figure — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/headline-figure",
@@ -1194,6 +1239,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "href": "/design-system/components/dashboard/kpi-row",
     "keywords": "kpi row — design system auth & dashboard composition example  tokens wcag accessibility",
     "description": "A responsive row of MetricCard tiles carrying the headline figures at the top of a dashboard — funds released, beneficiaries, applications pending.",
+    "type": "component",
+    "iconName": "lock"
+  },
+  {
+    "title": "KPI View — Design System",
+    "section": "Auth & Dashboard",
+    "href": "/design-system/components/dashboard/kpi-view",
+    "keywords": "kpi view — design system auth & dashboard drawn by the shape of the reading two chromes: the public&rsquo;s and the analyst&rsquo;s provenance on every card kpispec kpireading formatters example inherited, not claimed here id name unit definition span totalled value origin source asOn tokens wcag accessibility",
+    "description": "One KPI, drawn by the shape of its reading: a breakdown as a ring or ranked bars, a series as a line or bars, stages as a funnel, a State/UT reading as a map beside its ranked list, a table as a table — each in a Chart Card carrying its source.",
     "type": "component",
     "iconName": "lock"
   },

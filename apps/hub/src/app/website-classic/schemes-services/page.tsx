@@ -32,7 +32,8 @@ export const metadata: Metadata = {
 };
 
 export default function SchemesPage() {
-  const rawSchemes = getSchemes();
+  // Live lists only the schemes it tags Active; the six it tags Archived are not current.
+  const rawSchemes = getSchemes().filter((s) => s.status !== "Archived");
 
   const schemes: SchemeItem[] = rawSchemes.map((s) => {
     // Extract first paragraph for description snippet

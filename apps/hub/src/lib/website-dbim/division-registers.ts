@@ -1,13 +1,14 @@
 /**
- * The Department's division registers, as DBIM pages under their division:
- * `/ministry/our-division/<division>/<register>`.
+ * The Department's division registers, as DBIM pages under Important Links, where the
+ * divisions' links are grouped: `/important-links/<register>`. (Under Ministry › Our
+ * Division until that section was removed, 9 Oct 2026; the old addresses redirect.)
  *
  * A division's Related Links (`DIVISIONS[].links`) point at pages of the 2026 design.
  * Where such a page is a register the estate holds as DATA — a file list or the NGO
  * enforcement table in `@/data/website` — the DBIM design renders the same data here,
  * in its own document list. Nothing is transcribed: every row is read from the module
  * the 2026 page reads, and the page title is the division's own link label. The full
- * old-href → new-destination table is `DBIM_DIVISION_LINK_MAP` in `./ministry.ts` and
+ * old-href → new-destination table is `DBIM_DIVISION_LINK_MAP` in `./division-links.ts` and
  * docs/research/dbim-reference/components/link-map.spec.md.
  *
  * SOURCE: `@/data/website/scheduled-castes.ts` (registers transcribed from dosje.gov.in
@@ -151,13 +152,13 @@ export const DBIM_REGISTERS: DbimRegister[] = [
   },
 ];
 
-/** The DBIM path of a register page. */
-export const registerPath = (r: Pick<DbimRegister, "division" | "slug">) => `/ministry/our-division/${r.division}/${r.slug}`;
+/** The DBIM path of a register page. Register slugs are unique across divisions. */
+export const registerPath = (r: Pick<DbimRegister, "slug">) => `/important-links/${r.slug}`;
 
 /** A register page: the register, its title (the division's own link label) and its division's name. */
-export function divisionRegister(division: string, slug: string) {
-  const r = DBIM_REGISTERS.find((x) => x.division === division && x.slug === slug);
-  const d = DIVISIONS.find((x) => x.id === division);
+export function divisionRegister(slug: string) {
+  const r = DBIM_REGISTERS.find((x) => x.slug === slug);
+  const d = DIVISIONS.find((x) => x.id === r?.division);
   const title = d?.links.find((l) => l.href === r?.from)?.label;
   return r && d && title ? { ...r, title, divisionName: d.name } : undefined;
 }

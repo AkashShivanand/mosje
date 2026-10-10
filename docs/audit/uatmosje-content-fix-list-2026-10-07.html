@@ -1,0 +1,356 @@
+<title>UAT Content Fix List</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a work order. One reading column; each task is a ruled block with a reference, the pages, the action and the test for done. */
+:root {
+  --paper: #ffffff;
+  --panel: #f3f6fa;
+  --ink: #14202e;
+  --muted: #536173;
+  --rule: #d9e0e8;
+  --brand: #0373df;
+  --brand-ink: #0a4f99;
+  --wait: #8a5a00; --wait-bg: #fbf0d9;
+  --quick: #1a7a46; --quick-bg: #e3f3ea;
+  --font: "Noto Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "Noto Sans Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #0f1620; --panel: #172230; --ink: #e6ecf3; --muted: #9aa8b8; --rule: #2a3747;
+  --brand: #5aa8f5; --brand-ink: #8cc3fa; --wait: #f0c060; --wait-bg: #3a2c0c; --quick: #6fd29b; --quick-bg: #143323; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #0f1620; --panel: #172230; --ink: #e6ecf3; --muted: #9aa8b8; --rule: #2a3747;
+  --brand: #5aa8f5; --brand-ink: #8cc3fa; --wait: #f0c060; --wait-bg: #3a2c0c; --quick: #6fd29b; --quick-bg: #143323; color-scheme: dark }
+
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 15px/1.6 var(--font); padding: 0 16px; }
+.wrap { max-width: 860px; margin: 0 auto; padding-block: 40px 72px; display: grid; gap: 44px; }
+h1, h2, h3 { text-wrap: balance; line-height: 1.25; margin: 0; }
+h1 { font-size: 30px; font-weight: 700; }
+h2 { font-size: 21px; font-weight: 600; padding-bottom: 8px; border-bottom: 2px solid var(--ink); }
+h3 { font-size: 16px; font-weight: 600; }
+p { margin: 0; }
+.stack { display: grid; gap: 14px; }
+.eyebrow { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--brand-ink); font-weight: 600; }
+.meta { color: var(--muted); font-size: 14px; }
+a { color: var(--brand-ink); overflow-wrap: anywhere; }
+a:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 2px; }
+code { font-family: var(--mono); font-size: 13px; overflow-wrap: anywhere; }
+
+.tally { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+.tally div { border: 1px solid var(--rule); padding: 12px 14px; display: grid; gap: 2px; }
+.tally b { font-size: 26px; font-variant-numeric: tabular-nums; }
+.tally span { font-size: 13px; color: var(--muted); }
+
+.note { background: var(--panel); padding: 16px 18px; display: grid; gap: 8px; }
+ul, ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+
+.task { display: grid; grid-template-columns: 56px 1fr; gap: 4px 16px; padding-block: 18px; border-bottom: 1px solid var(--rule); }
+.task:last-child { border-bottom: 0; }
+.ref { font-family: var(--mono); font-size: 14px; font-weight: 500; color: var(--brand-ink); padding-top: 1px; }
+.body { display: grid; gap: 10px; min-width: 0; }
+.head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; }
+.tag { font-size: 12px; font-weight: 600; padding: 1px 8px; border-radius: 999px; white-space: nowrap; }
+.tag.quick { color: var(--quick); background: var(--quick-bg); }
+.tag.wait { color: var(--wait); background: var(--wait-bg); }
+.tag.new { color: var(--brand-ink); background: var(--panel); border: 1px solid var(--rule); }
+.std { font-size: 12px; color: var(--muted); }
+dl { margin: 0; display: grid; grid-template-columns: 92px 1fr; gap: 6px 12px; }
+dt { font-size: 12px; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding-top: 2px; }
+dd { margin: 0; min-width: 0; }
+
+.tbl { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; min-width: 520px; }
+th { text-align: center; font-size: 12px; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 6px 8px; border-bottom: 1px solid var(--rule); }
+td { padding: 7px 8px; border-bottom: 1px solid var(--rule); vertical-align: top; text-align: left; }
+td.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+@media (max-width: 520px) {
+  .task { grid-template-columns: 1fr; }
+  dl { grid-template-columns: 1fr; gap: 2px; }
+  dd { margin-bottom: 8px; }
+}
+</style>
+
+<div class="wrap">
+
+<header class="stack">
+  <span class="eyebrow">For the website content team · uatmosje.negd.in</span>
+  <h1>UAT Content Fix List</h1>
+  <p class="meta">From the UAT re-audit of 7 Oct 2026 against the Levithan DBIM and GIGW Level-1 reports (1 Oct 2026)</p>
+  <p>These are the open items from both parts of the re-audit that are fixed by editing pages, files and images in the CMS: the agency's findings (Part 1) and the new issues found on UAT (Part 2). Tasks that answer a new issue carry a <span class="tag new">Part 2</span> tag. None of them needs a developer. Each task names the UAT pages, what to do, and how to check it is done. Work on UAT first; the agency re-tests the build that goes live.</p>
+</header>
+
+<section class="tally" aria-label="Summary">
+  <div><b>19</b><span>tasks for the content team</span></div>
+  <div><b>6</b><span>quick fixes, under 15 minutes each</span></div>
+  <div><b>6</b><span>answer a Part 2 new issue</span></div>
+  <div><b>5</b><span>waiting on the Department or Dev first</span></div>
+</section>
+
+<section class="note">
+  <h3>Limits to Work To</h3>
+  <ul>
+    <li><b>Images:</b> logos and thumbnails 100 KB or less; banners, header and background images 500 KB or less; nothing over 5 MB. Save as WEBP, JPEG or PNG at the size the page shows it (DBIM 6.1.1).</li>
+    <li><b>Documents:</b> PDF only, with real selectable text (not a scan), tagged for accessibility. No Word, Excel or PowerPoint files (DBIM A.5.6).</li>
+    <li><b>Download links:</b> every link to a file says its format and size, for example "Annual Report 2025-26 (PDF, 6.6 MB)" (GIGW).</li>
+    <li><b>Text:</b> paste as plain text so the site's Noto Sans font is kept (DBIM 4.1).</li>
+  </ul>
+</section>
+
+<section class="stack">
+  <h2>1. Wrong or Unfinished Text</h2>
+
+  <div class="task"><span class="ref">C1</span><div class="body">
+    <div class="head"><h3>Remove the template placeholder on SCW About Us</h3><span class="tag quick">Quick</span><span class="std">DBIM 8.17</span></div>
+    <dl>
+      <dt>Page</dt><dd><a href="https://uatmosje.negd.in/organisation/scw-about-us/">/organisation/scw-about-us/</a></dd>
+      <dt>Now</dt><dd>The page shows "Add Your Heading Text Here" and a "Lorem ipsum dolor sit amet…" paragraph.</dd>
+      <dt>Do</dt><dd>Replace both with the approved Senior Citizens Welfare text, or delete the empty blocks if there is none yet.</dd>
+      <dt>Done when</dt><dd>Searching the page for "Lorem" and "Add Your Heading" finds nothing.</dd>
+    </dl>
+  </div></div>
+
+  <div class="task"><span class="ref">C2</span><div class="body">
+    <div class="head"><h3>Correct "Misutilization of Grands"</h3><span class="tag quick">Quick</span><span class="std">DBIM 8.16</span></div>
+    <dl>
+      <dt>Pages</dt><dd><a href="https://uatmosje.negd.in/penalties-in-case-of-misutilization-of-grands/">/penalties-in-case-of-misutilization-of-grands/</a>, plus the Grants-in-Aid to NGOs page and the Sitemap, which list it</dd>
+      <dt>Do</dt><dd>Change "Grands" to "Grants" in the page title, its heading and every menu or link label. Changing the title changes the page address, so ask Dev to redirect the old address to the new one before you publish.</dd>
+      <dt>Done when</dt><dd>"Grands" appears nowhere on the site, and the old address opens the corrected page.</dd>
+    </dl>
+  </div></div>
+
+  <div class="task"><span class="ref">C3</span><div class="body">
+    <div class="head"><h3>Correct "lnviting Expression of lnterest … undor the scheme"</h3><span class="tag quick">Quick</span><span class="std">DBIM 8.16</span></div>
+    <dl>
+      <dt>Where</dt><dd>One document record, shown on <a href="https://uatmosje.negd.in/">Home</a> (What's New), <a href="https://uatmosje.negd.in/updates/">Updates</a>, <a href="https://uatmosje.negd.in/miscellaneous/">Miscellaneous</a> and <a href="https://uatmosje.negd.in/organisation/nasha-mukt-bharat-abhiyaan/">NMBA</a></dd>
+      <dt>Now</dt><dd>The title was typed with a lower-case "l" in place of capital "I" twice, and "under" is spelt "undor".</dd>
+      <dt>Do</dt><dd>Retitle it "Inviting Expression of Interest-cum-proposal from the eligible organizations for setting up of District De-addiction Centres under the scheme of National Action Plan for Drug Demand Reduction (NAPDDR)". Ask Dev for a redirect, as in C2.</dd>
+      <dt>Done when</dt><dd>All four pages show the corrected title.</dd>
+    </dl>
+  </div></div>
+
+  <div class="task"><span class="ref">C4</span><div class="body">
+    <div class="head"><h3>Correct "E- Procuremnet" on Tenders</h3><span class="tag quick">Quick</span><span class="std">DBIM 8.16</span></div>
+    <dl>
+      <dt>Page</dt><dd><a href="https://uatmosje.negd.in/tenders/">/tenders/</a></dd>
+      <dt>Do</dt><dd>Change it to "E-Procurement". While in the CMS, search all content for "guidlines", which the agency also reported.</dd>
+      <dt>Done when</dt><dd>Neither misspelling appears on the site.</dd>
+    </dl>
+  </div></div>
+
+  <div class="task"><span class="ref">C5</span><div class="body">
+    <div class="head"><h3>Move closed 2025 tenders out of the active list</h3><span class="std">DBIM 8.17</span></div>
+    <dl>
+      <dt>Page</dt><dd><a href="https://uatmosje.negd.in/tenders/">/tenders/</a></dd>
+      <dt>Now</dt><dd>Tenders from 2025 (DANM canteen RFP, 1 Dec 2025; the NSFDC website tender and its corrigendum and notices, 19 Nov 2025) are listed as current.</dd>
+      <dt>Do</dt><dd>Check each tender's closing date with the issuing office. Move every closed tender to the archive, keeping its date.</dd>
+      <dt>Done when</dt><dd>The active list holds only tenders still open for bids.</dd>
+    </dl>
+  </div></div>
+
+  <div class="task"><span class="ref">C6</span><div class="body">
+    <div class="head"><h3>Add English versions of the Hindi news items on NCSK</h3><span class="std">GIGW 8.9</span></div>
+    <dl>
+      <dt>Page</dt><dd><a href="https://uatmosje.negd.in/organisation/national-commission-for-safai-karamcharis/">/organisation/national-commission-for-safai-karamcharis/</a></dd>
+      <dt>Now</dt><dd>Three Hindi-only news items (29 and 30 July 2026) sit on the English page. They are correctly marked as Hindi, so nothing needs changing in the markup.</dd>
+      <dt>Do</dt><dd>Add an English version of each item to the English page and keep the Hindi originals on the Hindi page.</dd>
+      <dt>Done when</dt><dd>The English page carries the news in English.</dd>
+    </dl>
+  </div></div>
+</section>
+
+<section class="stack">
+  <h2>2. Documents</h2>
+
+  <div class="task"><span class="ref">C7</span><div class="body">
+    <div class="head"><h3>Replace the nine editable files with PDFs</h3><span class="std">DBIM 8.24</span></div>
+    <dl>
+      <dt>Do</dt><dd>Convert each file to a tagged PDF, upload it, update the link and its label, then delete the original from the media library.</dd>
+      <dt>Done when</dt><dd>No <code>.pptx</code>, <code>.xlsx</code> or <code>.docx</code> link remains on these pages.</dd>
+    </dl>
+    <div class="tbl"><table>
+      <thead><tr><th>Page</th><th>Files</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://uatmosje.negd.in/organisation/national-helpline-against-atrocities/iec-and-training-material/">NHAA IEC and Training Material</a></td><td>Rights-of-Victims.pptx · Functions-and-Responsibilities-of-Authorities.pptx · The-Protection-of-Civil-Rights-Act-_-Slides.pptx · General-Intro.pptx · Filing-of-Complaints.pptx · Steps-to-Follow-in-Atrocity-Cases.pptx · Institutions-under-POA-Act.pptx</td></tr>
+        <tr><td><a href="https://uatmosje.negd.in/organisation/national-safai-karamcharis-finance-development-corporation/csr/">NSKFDC CSR</a></td><td>NSKFDC_CSRProjects.xlsx</td></tr>
+        <tr><td><a href="https://uatmosje.negd.in/organisation/pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/">PM-AJAY</a></td><td>PMAJAY-FINAL-PPT.pptx</td></tr>
+      </tbody>
+    </table></div>
+  </div></div>
+
+  <div class="task"><span class="ref">C8</span><div class="body">
+    <div class="head"><h3>Add format and size to 166 download links</h3><span class="std">GIGW 8.1</span></div>
+    <dl>
+      <dt>Now</dt><dd>Most listings already say "(PDF, 2.1 MB)". On these 23 pages, 166 links do not show both: some lists give the size in a column but never say PDF (Research and Evaluation Studies, Suo-Moto Disclosure); links typed into page text give neither.</dd>
+      <dt>Do</dt><dd>Make every link say both, for example "(PDF, 729 KB)": add it after links typed into text, or re-attach the file through the document field, which adds it automatically. Where a list has a Size column, ask Dev to add the format beside it.</dd>
+      <dt>Done when</dt><dd>Every file link on these pages states its format and size.</dd>
+    </dl>
+    <div class="tbl"><table>
+      <thead><tr><th>Page</th><th>Links</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://uatmosje.negd.in/list-of-research-evaluation-studies/">List of Research and Evaluation Studies</a></td><td class="n">40</td></tr>
+        <tr><td><a href="https://uatmosje.negd.in/detailed-demand-for-grant/">Detailed Demand for Grant</a></td><td class="n">24</td></tr>
+        <tr><td><a href="https://uatmosje.negd.in/suo-moto-disclosure/">Suo-Moto Disclosure</a> and four of its sub-pages</td><td class="n">24</td></tr>
+        <tr><td><a href="https://uatmosje.negd.in/organisation/national-helpline-against-atrocities/iec-and-training-material/">NHAA IEC and Training Material</a></td><td class="n">18</td></tr>
+        <tr><td><a href="https://uatmosje.negd.in/policies-acts-rules-codes-circular-social-defence/">Policies, Acts, Rules, Codes, Circular (Social Defence)</a></td><td class="n">14</td></tr>
+        <tr><td><a href="https://uatmosje.negd.in/about-the-division-social-defence/">About the Division: Social Defence</a></td><td class="n">6</td></tr>
+        <tr><td><a href="https://uatmosje.negd.in/list-of-de-blacklisted-ngos/">List of De-blacklisted NGOs</a></td><td class="n">5</td></tr>
+        <tr><td>Guidelines for Assisting NGOs · Handbook on Social Welfare Statistics · both Minutes of Screening Committees pages · Policies, Acts, Rules, Codes, Circular</td><td class="n">4 each</td></tr>
+        <tr><td>Statistics Division · Special Mention Matters under 377 · Policies, Acts, Rules, Circular</td><td class="n">3 each</td></tr>
+        <tr><td>NSKFDC CSR · Drug Division</td><td class="n">2 each</td></tr>
+        <tr><td>Supreme Court Judgement · About the Division</td><td class="n">1 each</td></tr>
+      </tbody>
+    </table></div>
+  </div></div>
+
+  <div class="task"><span class="ref">C9</span><div class="body">
+    <div class="head"><h3>Replace scanned PDFs with text PDFs</h3><span class="tag wait">Needs originals</span><span class="tag new">Part 2 · New 2</span><span class="std">GIGW 8.13 · DBIM A.5.6</span></div>
+    <dl>
+      <dt>Now</dt><dd>Three of four PDFs sampled are photographs of paper with no text a screen reader can read: the Financial Adviser vacancy circular (31 Jul 2026, on <a href="https://uatmosje.negd.in/vacancies/">Vacancies</a>), the DAIC Notice Inviting Expression of Interest (24 Jul 2026, on <a href="https://uatmosje.negd.in/tenders/">Tenders</a>) and the DANM canteen date extension (29 Dec 2025).</dd>
+      <dt>Do</dt><dd>Ask the issuing office for the Word or PDF original, export a tagged PDF and replace the file. Open each new PDF and check you can select its text. Check other recent uploads the same way.</dd>
+      <dt>Done when</dt><dd>Text can be selected and copied out of every new upload.</dd>
+    </dl>
+  </div></div>
+</section>
+
+<section class="stack">
+  <h2>3. Images and Alt Text</h2>
+
+  <div class="task"><span class="ref">C10</span><div class="body">
+    <div class="head"><h3>Re-export the oversized images</h3><span class="tag new">Part 2 · New 1</span><span class="std">DBIM 8.13 · 8.14 · 8.15</span></div>
+    <dl>
+      <dt>Do</dt><dd>Export each at the size the page draws it, as WEBP, under its limit, and replace it in the media library.</dd>
+      <dt>Done when</dt><dd>Each file is at or below the limit in the table.</dd>
+    </dl>
+    <div class="tbl"><table>
+      <thead><tr><th>Image</th><th>Where</th><th>Now</th><th>Limit</th></tr></thead>
+      <tbody>
+        <tr><td>Five persona pictures: <code>scheduled-castes.svg</code>, <code>safai-karamcharis-5.svg</code>, <code>persons-engaged-in-begging-9.svg</code>, <code>victims-atrocities-10.svg</code>, <code>persons-substance-use-8.svg</code></td><td>Home, Explore User Personas (shown 130 px)</td><td class="n">1.5–1.9 MB each</td><td class="n">100 KB</td></tr>
+        <tr><td>NHAA 14566 helpline logo (<code>51631768814486-300x93.jpg</code>)</td><td>Home, partner logos</td><td class="n">564 KB</td><td class="n">100 KB</td></tr>
+        <tr><td><code>Schemes-Services.png</code></td><td>Scheme pages, e.g. <a href="https://uatmosje.negd.in/schemes-and-services/cm-housing-rent-scheme/">CM Housing Rent Scheme</a></td><td class="n">578 KB</td><td class="n">100 KB</td></tr>
+        <tr><td><code>p1.jpg</code>: replace it by retyping the table, not by re-exporting (task C18)</td><td><a href="https://uatmosje.negd.in/organisation/babu-jagjivan-ram-national-foundation-bjrnf/literature/">BJRNF Literature</a></td><td class="n">775 KB</td><td class="n">500 KB</td></tr>
+        <tr><td><code>first_floor_foyer_3.jpg</code></td><td><a href="https://uatmosje.negd.in/booking/first-floor-foyer-area/">Venue Booking, First Floor Foyer</a></td><td class="n">521 KB</td><td class="n">500 KB</td></tr>
+        <tr><td>Event photos</td><td><a href="https://uatmosje.negd.in/events/ek-ped-maa-ke-naam-7/">Ek Ped Maa Ke Naam</a>; event photos are being uploaded at full size, so check all events</td><td class="n">132–168 KB</td><td class="n">100 KB</td></tr>
+      </tbody>
+    </table></div>
+  </div></div>
+
+  <div class="task"><span class="ref">C11</span><div class="body">
+    <div class="head"><h3>Write alt text for the four home page banners</h3><span class="tag quick">Quick</span><span class="tag new">Part 2 · New 8</span><span class="std">GIGW 8.15</span></div>
+    <dl>
+      <dt>Page</dt><dd><a href="https://uatmosje.negd.in/">Home</a>, the Highlights carousel</dd>
+      <dt>Now</dt><dd>The four banner photographs have empty alt text and no caption, so a screen reader announces nothing.</dd>
+      <dt>Do</dt><dd>In the media library, give each banner a sentence saying what and who it shows, for example "The Hon'ble Prime Minister with officials at the launch of …". Keep it under 150 characters.</dd>
+      <dt>Done when</dt><dd>Each banner has its own alt text.</dd>
+    </dl>
+  </div></div>
+
+  <div class="task"><span class="ref">C12</span><div class="body">
+    <div class="head"><h3>Fill in alt text for gallery and event images</h3><span class="std">DBIM 8.20 · GIGW 8.15 · 8.26</span></div>
+    <dl>
+      <dt>Pages</dt><dd>The gallery strip on <a href="https://uatmosje.negd.in/organisation/dr-ambedkar-foundation/">DAF</a>, <a href="https://uatmosje.negd.in/organisation/dr-ambedkar-international-centre/">DAIC</a>, <a href="https://uatmosje.negd.in/organisation/national-commission-for-scheduled-castes/">NCSC</a>, <a href="https://uatmosje.negd.in/organisation/national-commission-for-safai-karamcharis/">NCSK</a>, <a href="https://uatmosje.negd.in/organisation/nasha-mukt-bharat-abhiyaan/">NMBA</a> and <a href="https://uatmosje.negd.in/organisation/national-safai-karamcharis-finance-development-corporation/">NSKFDC</a> (three images each), and one image on <a href="https://uatmosje.negd.in/events/international-yoga-day/">International Yoga Day</a></dd>
+      <dt>Now</dt><dd>Each image is a link with no alt text, so a screen reader announces a link with no name.</dd>
+      <dt>Do</dt><dd>Add alt text in the media library naming the event, for example "Shramdaan activity organised by Dr. Ambedkar Foundation". Do this for every new gallery upload from now on.</dd>
+      <dt>Done when</dt><dd>Every gallery image on these pages has alt text.</dd>
+    </dl>
+  </div></div>
+</section>
+
+<section class="stack">
+  <h2>4. Pasted Formatting and Headings</h2>
+
+  <div class="task"><span class="ref">C13</span><div class="body">
+    <div class="head"><h3>Strip fonts pasted in from Word</h3><span class="tag quick">Quick</span><span class="tag new">Part 2 · New 9</span><span class="std">DBIM 8.5</span></div>
+    <dl>
+      <dt>Pages</dt><dd><a href="https://uatmosje.negd.in/organisation/babu-jagjivan-ram-national-foundation-bjrnf/literature/">BJRNF Literature</a> (Mangal, Times New Roman) · <a href="https://uatmosje.negd.in/events/senior-citizen-mental-health-and-property-protection-2/">Senior Citizen Mental Health and Property Protection</a> (Calibri, the whole article)</dd>
+      <dt>Do</dt><dd>Select the text and use the editor's Clear Formatting, or paste it again as plain text. Re-apply bold and lists with the editor's own buttons.</dd>
+      <dt>Done when</dt><dd>The text matches the rest of the site's font.</dd>
+    </dl>
+  </div></div>
+
+  <div class="task"><span class="ref">C14</span><div class="body">
+    <div class="head"><h3>Fix the heading levels inside page text</h3><span class="std">DBIM 8.19 · GIGW 8.17</span></div>
+    <dl>
+      <dt>Pages</dt><dd><a href="https://uatmosje.negd.in/drug-division/">Drug Division</a> · <a href="https://uatmosje.negd.in/detailed-demand-for-grant/">Detailed Demand for Grant</a> · <a href="https://uatmosje.negd.in/guidelines-for-assisting-ngos-voluntary-organisations/">Guidelines for Assisting NGOs</a> · <a href="https://uatmosje.negd.in/contact-us-2/">Contact Us 2</a></dd>
+      <dt>Now</dt><dd>Headings were picked for their look and skip levels, for example "Drug Prevention – I Section" set as Heading 5 under a Heading 2, and the year links on Detailed Demand for Grant set as Heading 5.</dd>
+      <dt>Do</dt><dd>Use Heading 2 for main sections and Heading 3 for sections inside them. Plain links and bold labels should be normal text, not headings.</dd>
+      <dt>Done when</dt><dd>Headings step down one level at a time: 2, then 3, then 4.</dd>
+    </dl>
+  </div></div>
+</section>
+
+<section class="stack">
+  <h2>5. Waiting on the Department</h2>
+  <p class="meta">The content team publishes these, but only the Department can supply the material. Send the requests now so the material arrives before the retest.</p>
+
+  <div class="task"><span class="ref">C15</span><div class="body">
+    <div class="head"><h3>Correct five office addresses on Contact Us</h3><span class="tag wait">Needs addresses</span><span class="std">DBIM 8.17 · 8.22</span></div>
+    <dl>
+      <dt>Page</dt><dd><a href="https://uatmosje.negd.in/contact-us/">/contact-us/</a>, using the "Switch organisation" list</dd>
+      <dt>Now</dt><dd><b>DWBDNC</b> searches the map for "Office Address Office Address Google Map 2nd Floor, Wing 2, West Block-8…". <b>NBCFDC, NCSC, NISD and NOS</b> all point at "Dr. Ambedkar Foundation".</dd>
+      <dt>Do</dt><dd>Get each office's postal address from the organisation. Put only the address in the address field: no labels, no "Google Map". The map follows the field.</dd>
+      <dt>Done when</dt><dd>"Open in Google Maps" for each of the five lands on that organisation's own building.</dd>
+    </dl>
+  </div></div>
+
+  <div class="task"><span class="ref">C16</span><div class="body">
+    <div class="head"><h3>Publish the Web Information Manager and the six website policies</h3><span class="tag wait">Needs approval</span><span class="std">GIGW 8.2 · 8.3 · 8.12 · 8.14 · DBIM 8.22</span></div>
+    <dl>
+      <dt>Do</dt><dd>Once the Department names its Web Information Manager and CIO, add their name, designation, phone and email to the "Website and Information Officers" block on Contact Us. Once it approves the policies, publish each on Website Policies: Content Contribution, Moderation and Approval; Content Archival; Content Review; Contingency Management; Security; Website Monitoring.</dd>
+      <dt>Done when</dt><dd>Contact Us names the WIM and CIO, and Website Policies lists ten policies, up from four.</dd>
+    </dl>
+  </div></div>
+
+  <div class="task"><span class="ref">C17</span><div class="body">
+    <div class="head"><h3>Fill in Tender IDs and portal links</h3><span class="tag wait">Needs Dev first</span><span class="std">DBIM 8.23</span></div>
+    <dl>
+      <dt>Do</dt><dd>When Dev adds the two fields, enter for each tender its Tender ID as published on CPPP or GeM (up to 50 characters) and a link to that tender on the portal. The tender list holds about 310 records; start with the active ones.</dd>
+      <dt>Done when</dt><dd>Every active tender shows a Tender ID and a working portal link.</dd>
+    </dl>
+  </div></div>
+
+  <div class="note">
+    <h3>Also to Ask the Department For</h3>
+    <ul>
+      <li>The website address on its letterhead, so issued documents carry it (GIGW 8.13).</li>
+      <li>Confirmation that its YouTube videos have captions (GIGW 8.16).</li>
+      <li>The source of the PM photograph on the home page, and approval of the Help page text (DBIM 8.21, GIGW 8.5).</li>
+    </ul>
+  </div>
+</section>
+
+<section class="stack">
+  <h2>6. New Issues From Part 2</h2>
+  <p class="meta">Neither agency report raised these, but the next audit is likely to. New 1, 2, 8 and 9 are already covered above by C10, C9, C11 and C13.</p>
+
+  <div class="task"><span class="ref">C18</span><div class="body">
+    <div class="head"><h3>Retype the BJRNF literature table as text</h3><span class="tag new">Part 2 · New 7</span><span class="std">WCAG 1.4.5 · 1.1.1 · DBIM 8.14</span></div>
+    <dl>
+      <dt>Page</dt><dd><a href="https://uatmosje.negd.in/organisation/babu-jagjivan-ram-national-foundation-bjrnf/literature/">/organisation/babu-jagjivan-ram-national-foundation-bjrnf/literature/</a></dd>
+      <dt>Now</dt><dd>The whole literature list is one picture, <code>p1.jpg</code> (954×1900, 775 KB), with empty alt text. A screen reader reads nothing, site search cannot find the titles, and the text blurs when enlarged.</dd>
+      <dt>Do</dt><dd>Rebuild it as a table in the editor, with the same columns, typed in Hindi, and mark the table as Hindi. Ask BJRNF for the source list if that is easier than retyping from the image. Then remove <code>p1.jpg</code> from the page and the media library.</dd>
+      <dt>Done when</dt><dd>You can select and copy a book title on the page, and the image is gone.</dd>
+    </dl>
+  </div></div>
+
+  <div class="task"><span class="ref">C19</span><div class="body">
+    <div class="head"><h3>Publish an Accessibility Statement</h3><span class="tag wait">Needs approval</span><span class="tag new">Part 2 · New 3</span><span class="std">GIGW 3.0 mandatory page</span></div>
+    <dl>
+      <dt>Now</dt><dd>The site has no Accessibility Statement. <a href="https://uatmosje.negd.in/accessibility-statement/">/accessibility-statement/</a> shows Page Not Found, and neither the footer nor Website Policies links to one.</dd>
+      <dt>Do</dt><dd>Once the Department approves the text, publish it as a page at <code>/accessibility-statement/</code> and ask Dev to link it from the footer. It should state the standard the site follows (WCAG 2.1 AA and GIGW 3.0), the accessibility features (text size, contrast, screen-reader support), known limits such as scanned documents, and who to contact about a barrier.</dd>
+      <dt>Done when</dt><dd>The address opens the statement and the footer links to it.</dd>
+    </dl>
+  </div></div>
+</section>
+
+<section class="stack">
+  <h2>Passed to Dev, Not Content</h2>
+  <p class="meta">Listed so the content team does not spend time on them: the chat button covering text, table alignment, the external-website notice, the Tender ID and portal fields (needed before C17), headings on CPIO and Official profile pages, the SCW Scope page error (Part 2 · New 4), the footer link to the Accessibility Statement, redirects for C2 and C3, letting the audit agency past the firewall (New 5), and removing a staff member’s name from the home page metadata (New 6).</p>
+</section>
+
+<footer class="meta">Full findings and evidence: the UAT re-audit of 7 Oct 2026, filed beside this list in <code>docs/audit/</code>. Source reports: Levithan Technologies DBIM and GIGW Level-1, 1 Oct 2026.</footer>
+
+</div>
