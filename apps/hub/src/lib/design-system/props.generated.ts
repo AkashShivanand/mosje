@@ -16636,6 +16636,13 @@ export const GENERATED_PROPS = {
         "description": "Tab height and type scale."
       },
       {
+        "name": "sticky",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Pin the row under the masthead while the page scrolls past its panels. For a LONG page whose tabs are its quick navigation — a review file, a record with sections. A reader forty answers down should not have to scroll back up to reach the next section. Horizontal only, and OFF by default: a tab row inside a card or a short page has nothing to follow. The row pins at `--sa-header-stuck`, the offset `SiteHeader` publishes, on the page canvas (`--ds-tabs-sticky-bg`; override it where the row sits on another ground). Changing tab while pinned brings the new panel's top into view under the row, so the reader never lands halfway down a panel they have not read."
+      },
+      {
         "name": "track",
         "type": "TabTrack = \"none\" | \"enclosed\"",
         "required": false,
