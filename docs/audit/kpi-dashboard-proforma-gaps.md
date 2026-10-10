@@ -310,7 +310,8 @@ row).**
   answers, otherwise the 9 Oct 2026 mirror (`feeds/scw-snapshot.ts`), in every data mode. RVY
   needs `RVY_API_KEY` on the server; until it answers, RVY is the mirror.
 - Projects is 808 — every row, Regional Resource and Training Centres included — drawn with its
-  split by type. SCW1's definition names four types and not RRTCs (797 without them).
+  split by type. SCW1's definition names four types and not RRTCs (797 without them); the owner
+  confirmed on 9 Oct 2026 that RRTCs count as projects assisted, so 808 stands.
 - The tile leads with RVY's 10.33 lakh beneficiaries; devices, camps, projects and pledges
   beside it. SAGE and MoUs are on the programme page only, illustrative.
 - **No Financial Year filter for Senior Citizens Welfare.** Its public figures are running
@@ -325,6 +326,41 @@ row).**
   serves calls from the hosting provider's addresses.
 - **RVY figures are cumulative** (8.53 lakh beneficiaries to 2025-26 per AIR, 21 Sep 2026; the
   API reads 10.33 lakh). Confirm the period the API counts.
-- **Projects definition.** Confirm RRTCs count as projects assisted under IPSrC.
 - **SAGE.** SCW1 has no API for Start-ups Supported; the SCW tab named an admin endpoint. Which
   application status counts as "supported" is still open.
+
+## 15. The dashboard's parts join the design system (9 Oct 2026)
+
+**Instruction, 9 Oct 2026:** what was built for this dashboard goes into the design system, as
+components or a template, so it can be reused wherever it applies. Code first, then Figma (owner's
+choice); both are done.
+
+| Was (local to this dashboard) | Now (`@mosje/design-system`) |
+|---|---|
+| `DashboardTile`, Education's `Tile`, the `pd-bento` grid | `DashboardCard`, `DashboardCardList` |
+| The At a Glance hero | `HeadlineBand` |
+| `StoryHeader` | `DashboardHeader` |
+| `StateBreakdown`; the landing page's map and Highest / Lowest panel | `AreaBreakdown`; `AreaExplorer` |
+| `SegmentedButtons` (ButtonGroup + `aria-pressed`) | `SegmentedControl variant="buttons"` — a radio group: one tab stop, arrows select |
+| `KpiCard.tsx`'s `KpiChart`, `isTile`; the reading types and formatters | `KpiView`, `isKpiTile`; `KpiReading` and the rest, re-exported by `lib/kpi/types.ts` and `format.ts` |
+| `ProposedDashboard`'s area bar, back link and focus move | `DashboardScreen`, the nineteenth screen template |
+
+**Nothing on screen changed.** Twenty views (landing, Department, five programmes, the sign-in
+view, the DBIM and Classic designs; 1440 and 390 wide) were captured before and after and
+compared pixel by pixel. Twelve are identical; in the other eight the only differences are NMBA's
+live figures, which moved between the two captures (41.22 → 41.23 lakh pledges). Behaviour was
+checked in a browser: the segmented switch takes arrow keys, a click anywhere on a card opens its
+dashboard, focus lands on the new view's heading, the map pick fills the panel.
+
+**Figma (9 Oct 2026).** A new **Dashboard** page in the SAMAVESH library, after Map of India, holds
+seven masters — Headline Figure (Size × Tone), Dashboard Card (Tone × Link), Headline Band (Figures),
+Dashboard Header (Tone), Area Breakdown (Measures), Area Explorer (State) and KPI View (Kind × 8, each a
+Chart Card with its chart swapped) — composed from ten library parts, one documentation frame in the
+house style (six counted stats, five sections, an arrangements section with eight drawn arrangements
+and six code-only) and a component record. DashboardScreen is a wireframe card and a full-size
+desktop-and-phone frame on Screen Templates; the segmented button is an arrangement on Button Group.
+The Index carries a Dashboard card (live-instance preview) and reads 99 pages · 222 components.
+Every master has a Code Connect template and a fixture. Open, on the component record: the
+Description List has no figure size; the Icon set has no named glyphs (Open Portal draws the default
+arrow); KPI View's table is the library's example table; the library must be **published** from Figma
+for consumer files to see the masters.

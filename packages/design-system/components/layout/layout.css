@@ -174,8 +174,13 @@
     .sa-app-shell__body--with-sidebar {
       grid-template-columns: var(--sa-layout-sidebar-width) minmax(0, 1fr);
     }
+    /* FLEX, not block: `SidebarNav`'s column stretches with `align-self`, which a block
+       parent ignores. As a block the column hugged the rail, the sticky rail had no room
+       to travel inside it, and the whole menu scrolled off with the page (E-Anudaan ASO
+       review, 9 Oct 2026). As a flex row the column takes the full height of the body
+       row, and the rail pins under the masthead at `--sa-header-stuck`. */
     .sa-app-shell__sidebar {
-      display: block;
+      display: flex;
       border-right: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
       background: var(--sa-bg-neutral-base);
     }

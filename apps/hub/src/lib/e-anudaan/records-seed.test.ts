@@ -14,7 +14,7 @@ import { applicationRefOf, claimIdFor, instalmentPlan, upcomingInstalments } fro
 import { buildReturnRows } from "./roster.ts";
 import { demoVerdictFor } from "./doc-verification.ts";
 import { schemeName } from "./glossary.ts";
-import { automaticCheckOf, awaitingVerdict, bulkVerifiable, isFlagged } from "./review-readiness.ts";
+import { automaticCheckOf, awaitingVerdict, bulkVerifiable, isFlagged, overruledWithoutReason } from "./review-readiness.ts";
 import { buildSeed, cctvActivationCode, SEED_NOW, SEED_SCHEMES } from "./store/seed.ts";
 import type { EAnudaanState } from "./types.ts";
 
@@ -432,7 +432,10 @@ test("the file the Programme Division's ASO opens leaves at least one document f
   }
   // The one stamped verdict is the portal's reading, not the Ministry's: the officer's own verdict
   // is still to come, the document is required, it has a file, and no deficiency touches it.
-  const stamped = seed.applications.flatMap((a) => a.documents.filter((d) => d.aiVerdict).map((d) => ({ a, d })));
+  // (Set aside: the one document the officer verified against a "Not valid" check, seeded so the
+  // reason it then owes can be shown — `overruledWithoutReason`.)
+  const overrule = (d: (typeof seed.applications)[number]["documents"][number]) => d.reviewStatus === "Verified" && d.aiVerdict?.state === "invalid";
+  const stamped = seed.applications.flatMap((a) => a.documents.filter((d) => d.aiVerdict && !overrule(d)).map((d) => ({ a, d })));
   assert.equal(stamped.length, 1, `${stamped.length} documents carry a stamped automatic check`);
   const { a, d } = stamped[0]!;
   assert.equal(d.reviewStatus, "Pending", `${a.id} slot ${d.slot}`);
@@ -467,4 +470,12 @@ test("an organisation's registration names the Act it is registered under, with 
     const answered = a.formValues?.fld_statute_act;
     if (answered !== undefined) assert.equal(answered, ngo.registeredUnder, a.id);
   }
+});
+
+test("a document verified against a \"Not valid\" check holds the forward until the officer says why", () => {
+  const held = seed.applications.filter((a) => overruledWithoutReason(a).length > 0);
+  assert.equal(held.length, 1, "one seeded file shows the overrule");
+  const [app] = held;
+  const [doc] = overruledWithoutReason(app!);
+  assert.equal(overruledWithoutReason({ ...app!, documents: app!.documents.map((d) => (d.id === doc!.id ? { ...d, officerRemarks: "The original was seen at the inspection." } : d)) }).length, 0, "a reason clears it");
 });

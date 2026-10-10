@@ -723,9 +723,48 @@ Renamed: "Raise a Deficiency (Dialog)" → "Forward with a Document Marked Needs
 prototype has no Raise a Deficiency dialog. Page 3 re-laid in reading order (versions by division and grade; rows by
 tab, then state).
 
+## 5n. Page 3 by division, and the Assistant Section Officer's missing states — 8 Oct 2026
+
+Why: the dev portal was read as the Programme Division ASO on 8 Oct (anonymised record in
+`docs/audit/e-anudaan-aso-dev-capture-2026-10-08/capture.json`). It showed states the page did not draw, and a reader
+could not follow the ASO from My Queue to a file without the guide: the two were tens of thousands of px apart in one
+column that held both divisions. Pictures: `before-after-figma-officers-by-division-2026-10-08.html`.
+
+**Re-organised (no screen deleted, node ids kept):**
+
+| Before | After |
+|---|---|
+| One column, `Programme and Finance Officers — Reviewing Applications` | Three: `Programme Division Officers — Reviewing Applications` (`3:22527`), `Integrated Finance Division Officers — Checking the Money` (`489:46534`), `All Officers — Shared Screens` (`489:46535`) |
+| Journeys `My Queue`, `Queries`, `Sanctioned, Returned, Rejected and Forwarded Lists`, each split inside by division | One journey per division, the division in its name (`My Queue — Programme Division` `3:34613`, `— Integrated Finance Division` `3:32936`, and so on); the three emptied journeys removed |
+| `Reviewing an Application — Needs Discussion` held every grade of both divisions | Programme Division grades only (`3:24986`); finance grades in `Checking the Money — Integrated Finance Division — Needs Discussion` (`489:46536`), with its own copy of the note |
+| Versions `Programme Division — Assistant Section Officer` etc., no scheme | `Assistant Section Officer, SHRESHTA File`, `…, NAPDDR File`, `Section Officer, SHRESHTA File` … — every grade's drawn file is SHRESHTA Mode 2, so the name says so |
+| 50 screens named `… — Assistant Section Officer (Mid-Review) — Documents Tab` | `… — Assistant Section Officer — SHRESHTA, Documents Tab (Mid-Review)` — one pattern everywhere: `<Division> — <Grade> — <Scheme>, <Tab> (<State>)` |
+| Ten pop-ups in `Used at Every Grade` | Four moved to the grade that uses them (needs-correction forward → ASO; sending the deficiency → SO; forwarding to finance → PD JS; financial concurrence → IFD JS); the rest stay in `Screens and Pop-ups Used at Every Grade` |
+| States after History in a row | Each state right after the tab it varies |
+| Note said "JS-PD" | Plain words; two open points added (below) |
+
+Start Here: the Portal Map shows the three officer boxes with their journeys linked; Needs Discussion lists both review
+journeys; the Change Log has the entry. Page 3's Find a Screen list is rebuilt division → journey → grade, every part
+linked.
+
+**Drawn for the ASO's NAPDDR file (desktop; phone to follow):** Documents Tab (Mid-Review) `491:46576`, (Document Needs
+Correction) `491:47371`; Application Tab (Ongoing Project, 2nd Instalment) `491:48173`; Grant Tab (Ongoing Project, 2nd
+Instalment) `491:48497` — recurring heads only, Statement of Account with the utilisation-certificate settlement; History
+Tab (File Moved from the Old Portal) `491:49542`; Application Tab (Returned to You from the Previous Level) `491:49853`,
+(Decision Not Saved) `491:50179`, (Forwarded, Read-Only) `491:50646`, (With the NGO for Correction) `491:51161`; Forward to
+the Section Officer (Dialog) `496:50638`. Shared: Application Not Found `491:51679`. My Queue, Programme Division ASO:
+Filtered `496:51449`, Filtered to Nothing `496:52018`, Empty `496:52574`, Loading `496:53321`, Error `496:54089`. All
+figures are invented and agree with each other (₹73,49,000 proposed = the DDAC norm less one doctor post).
+
+**New open points (on the red note):** what an officer does with a file already decided in the old portal; whether an
+ongoing project's cost sheet includes the one-time items. **Not drawn:** a file the NGO corrected coming back to the ASO
+(the prototype routes it to the Section Officer); the Programme Director returning a file (not seen on the dev portal).
+
+`check:figma-handoff --fresh --strict`: 14 of 14 E-Anudaan pages conformant; manifest re-captured.
+
 ## 6. Adding to the page
 
-- **A screen:** into the right row of its flow; name `Role / Screen / State`; phone version ends ` · Mobile`.
+- **A screen:** into the right row of its flow; name `Role / Screen / State`; phone version ends ` — Mobile`.
 - **A flow:** a free number in its role (`NGO 145`), then run the layout from `layout-engine.js`
   and regenerate the Portal Map and Status.
 - **A role:** a new column in B, in lifecycle order; flows numbered from 10 with a new role code.

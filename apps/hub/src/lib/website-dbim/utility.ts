@@ -10,6 +10,7 @@
  */
 import { DIVISIONS, ORGANISATIONS } from "@/data/website";
 import { DBIM_PERSONA_ICONS, DBIM_SOCIAL_AUDIT } from "./assets";
+import { dbimDivisionLinks } from "./division-links";
 import { DBIM_POLICY_TABS, type DbimLink } from "./nav";
 
 /* ── Rich text ──────────────────────────────────────────────────────────── */
@@ -239,6 +240,8 @@ export interface DbimLinkRow {
   path?: string;
   /** …or the address of another website. */
   href?: string;
+  /** …or neither: a group (a division) that opens to show its own links. */
+  links?: DbimLinkRow[];
 }
 
 /**
@@ -255,12 +258,13 @@ export const DBIM_RELATED_LINKS: DbimLinkRow[] = [
 ];
 
 /**
- * The Department's Important Links: one row per Division, as the classic design's
- * Important Links rail groups them (components/website/ImportantLinks.tsx, reading
- * `DIVISIONS` from data/website/divisions.ts). A division opens its DBIM page under
- * Ministry → Our Division; a division whose only destination is another website opens
- * that website. The three the DBIM reference leads with — Scheduled Caste Welfare,
- * Social Defence, Grants-in-Aid to NGOs — come first, the rest in `DIVISIONS` order.
+ * The Department's divisions, each a group that opens to show its own links — the way
+ * socialjustice.gov.in and dosje.gov.in arrange their Important Links (read 9 Oct
+ * 2026): the division's name, and under it the division's pages, not a page of its own.
+ * Where each link goes in this design is `./division-links.ts`. The three the DBIM
+ * reference leads with — Scheduled Caste Welfare, Social Defence, Grants-in-Aid to
+ * NGOs — come first, the rest in `DIVISIONS` order. A division left with no link this
+ * design can open is not drawn, as an empty group would be a dead end.
  */
 const LEAD_DIVISIONS = ["scheduled-caste-welfare", "social-defence", "grants-in-aid-to-ngos"];
 const leadRank = (id: string) => {
@@ -268,13 +272,10 @@ const leadRank = (id: string) => {
   return i < 0 ? LEAD_DIVISIONS.length : i;
 };
 
-const DIVISION_LINKS: DbimLinkRow[] = [...DIVISIONS].sort((a, b) => leadRank(a.id) - leadRank(b.id)).map((d) => {
-  const internal = d.links.some((l) => !l.href.startsWith("http"));
-  const external = d.links.find((l) => l.href.startsWith("http"));
-  return internal || !external
-    ? { label: d.name, path: `/ministry/our-division/${d.id}` }
-    : { label: d.name, href: external.href };
-});
+const DIVISION_GROUPS: DbimLinkRow[] = [...DIVISIONS]
+  .sort((a, b) => leadRank(a.id) - leadRank(b.id))
+  .map((d) => ({ label: d.name, links: dbimDivisionLinks(d.id) }))
+  .filter((g) => g.links.length > 0);
 
 /*
  * THE DEPARTMENT'S PRIORITY DESTINATIONS (instruction, 1 Oct 2026, following the one of
@@ -288,8 +289,8 @@ const DIVISION_LINKS: DbimLinkRow[] = [...DIVISIONS].sort((a, b) => leadRank(a.i
  *
  * The Social Audit MIS Portal is one of them. It came onto this list on 28 Sep 2026 from
  * the home page's posts row, whose third slot became the Infographics (DBIM 3.0 §7.3
- * xiii), and it sits here rather than among the divisions because it is a portal, not a
- * division.
+ * xiii), and it sits here rather than in a division's group because it is a portal,
+ * not a division's page.
  *
  * TO BE CONFIRMED BY THE DEPARTMENT: which destinations are in fact its most accessed.
  * No usage figures were available, so the choice follows the benchmark's categories.
@@ -327,13 +328,13 @@ const HOME_SECTION_LINKS: DbimLinkRow[] = [
  * The home section is a window on this list, not a list of its own — one record, so the
  * two cannot disagree — and it keeps its "View more", which opens this page in full.
  * That is why the order is the order: the four actions a citizen may have come for, then
- * the Department's priority destinations, then its divisions, which are the deepest and
- * also live a click away under Ministry › Our Division.
+ * the Department's priority destinations, then its divisions, each opening to its own
+ * links. The divisions have no other home in this design.
  */
 export const DBIM_IMPORTANT_LINKS: DbimLinkRow[] = [
   ...HOME_SECTION_LINKS,
   ...PRIORITY_LINKS,
-  ...DIVISION_LINKS,
+  ...DIVISION_GROUPS,
 ];
 
 /* ── Help ───────────────────────────────────────────────────────────────── */
@@ -524,7 +525,7 @@ export function dbimSearchTarget(href: string): { path: string } | { href: strin
     return { path: `/ministry/${scheme ? "our-scheme-portals" : "our-organisation"}/${sub}` };
   }
   if (head === "official" && sub) return { path: "/ministry/our-team" };
-  if (head.startsWith("about-the-division")) return { path: "/ministry/our-division" };
+  if (head.startsWith("about-the-division")) return { path: "/important-links" };
   if (head.endsWith("-directory")) return { path: "/connect/directory" };
   if (!sub && head in STATIC_MAP) return { path: STATIC_MAP[head] as string };
   return null;

@@ -119,6 +119,16 @@ export function matchesReviewFilter(
 }
 
 /**
+ * Documents the officer marked Verified although the automatic check found them not valid, with no
+ * word on why. The dev portal let an ASO do this silently (read of 8 Oct 2026: a Memorandum of
+ * Association the check read as an audit report went up the chain "Verified"); the next officer
+ * deserves the reason.
+ */
+export function overruledWithoutReason(app: ReviewApp, checkOf: (d: MockDoc) => DocVerdict | undefined = (x) => automaticCheckOf(app, x)): MockDoc[] {
+  return app.documents.filter((d) => d.reviewStatus === "Verified" && checkOf(d)?.state === "invalid" && !d.officerRemarks?.trim());
+}
+
+/**
  * Why the Assistant Section Officer's forward is not available yet, in the order they are done —
  * or an empty list when it is. The workflow requires the certification; the screen also holds the
  * forward while a required document has no verdict, which happens when a corrected file arrives

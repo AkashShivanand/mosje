@@ -3,33 +3,33 @@
 import * as React from "react";
 import Link from "next/link";
 import {
+  AreaBreakdown,
   Button,
   Card,
   CardBody,
   CardState,
   Chip,
+  DashboardHeader,
   DotPlot,
   Icon,
   OrgLogo,
   SectionTitle,
+  isKpiTile,
 } from "@mosje/design-system";
 import { useDataMode } from "@/lib/data-mode/context";
 import { KPI_CATEGORIES } from "@/lib/kpi/categories";
 import { covers } from "@/lib/kpi/model";
 import type { AreaScope, PortalDashboard } from "@/lib/kpi/types";
-import { isTile } from "../KpiCard";
 import { KpiBlocks } from "./KpiBlocks";
 import { COMPONENT_SHORT, fundsRows, shownKpis, type Readings, type StateMeasure, type Viewing } from "./model";
-import { StateBreakdown } from "./StateBreakdown";
-import { StoryHeader } from "./StoryHeader";
 import { PROGRAMME_TONE, compact, hasMark } from "./story";
 
 /**
- * One portal's dashboard, told on its own: its head in the programme's colour (`StoryHeader`),
+ * One portal's dashboard, told on its own: its head in the programme's colour (`DashboardHeader`),
  * then its indicators by theme (or by component, for Senior Citizens), each with
  * its source and calculation while the demo rail shows them. Reached from the programme's tile; `?programme=` holds it.
  *
- * DS Audit: StoryHeader (Card `accent="fill"`) ✅ · OrgLogo ✅ · SectionTitle ✅ ·
+ * DS Audit: DashboardHeader ✅ · OrgLogo ✅ · SectionTitle ✅ ·
  * Chip ✅ · DotPlot ✅ · Button ✅ · CardState ✅ · KpiBlocks (app) ✅.
  */
 
@@ -129,7 +129,7 @@ export function ProgrammeStory({ programme: p, viewing, readings, scope, section
         const these = inView.filter((k) => k.component === c);
         return {
           key: c,
-          single: these.length === 1 ? (isTile(reading[these[0]!.id]!) ? "figure" : "chart") : null,
+          single: these.length === 1 ? (isKpiTile(reading[these[0]!.id]!) ? "figure" : "chart") : null,
           node: (
             <section key={c} className="pd-section" aria-labelledby={`pd-c${i}`}>
               <SectionTitle as={sub} headingId={`pd-c${i}`} title={c} />
@@ -148,14 +148,21 @@ export function ProgrammeStory({ programme: p, viewing, readings, scope, section
           const map = c.id === "geography" && states.length > 0 && !scope.state;
           return {
             key: c.id,
-            single: these.length === 1 && !map ? (isTile(reading[these[0]!.id]!) ? "figure" : "chart") : null,
+            single: these.length === 1 && !map ? (isKpiTile(reading[these[0]!.id]!) ? "figure" : "chart") : null,
             node: (
               <section key={c.id} className="pd-section" aria-labelledby={`pd-${c.id}`}>
                 <SectionTitle as={sub} headingId={`pd-${c.id}`} title={c.title} />
                 <KpiBlocks kpis={these} reading={reading} areasAreStates={!scope.state} headingLevel={4} />
                 {/* Where the scheme works, State/UT by State/UT: All India only — a State/UT's page
                     is already that State's figures. */}
-                {map ? <StateBreakdown measures={states} headingLevel={4} onSelectState={(state) => go({ state })} /> : null}
+                {map ? (
+                  <AreaBreakdown
+                    measures={states.map((m) => ({ id: m.kpi.id, name: m.kpi.name, label: m.label, rows: m.rows.map((r) => ({ area: r.state, value: r.value })) }))}
+                    headingLevel={4}
+                    valueFormat={(v) => compact(v, "number")}
+                    onSelectArea={(state) => go({ state })}
+                  />
+                ) : null}
               </section>
             ),
           };
@@ -165,7 +172,7 @@ export function ProgrammeStory({ programme: p, viewing, readings, scope, section
 
   return (
     <div className="pd-story">
-      <StoryHeader
+      <DashboardHeader
         tone={PROGRAMME_TONE[p.id]}
         // The portal's own mark, or none — never the State Emblem standing in for it.
         mark={hasMark(p) ? <OrgLogo path={p.logoPath} size="md" name="" /> : undefined}
@@ -182,7 +189,8 @@ export function ProgrammeStory({ programme: p, viewing, readings, scope, section
             Open Portal
           </Button>
         }
-        sectionLevel={sectionLevel}
+        headingLevel={sectionLevel}
+        headingId="pd-programme"
       />
 
       {pace.length ? (

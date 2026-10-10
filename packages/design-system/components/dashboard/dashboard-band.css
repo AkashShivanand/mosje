@@ -1,0 +1,134 @@
+/*
+ * HeadlineBand and DashboardHeader — the two coloured bands a dashboard page opens with.
+ * Moved from the website dashboard's own stylesheet (`proposed.css`, Oct 2026) when they
+ * joined the design system; the rules are those that shipped there, renamed.
+ */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ── HeadlineBand ─────────────────────────────────────────────────────────── */
+  .ds-headline-band,
+  .ds-dashboard-header { container-type: inline-size; }
+
+  .ds-headline-band__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: var(--sa-stack-40);
+    align-items: center;
+    padding: var(--sa-padding-40);
+  }
+
+  .ds-headline-band__side {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sa-stack-24) var(--sa-stack-32);
+    margin: 0;
+    padding: 0 0 0 var(--sa-padding-32);
+    border-inline-start: var(--sa-stroke-1) solid color-mix(in srgb, var(--sa-text-neutral-inverse) 35%, transparent);
+    list-style: none;
+  }
+
+  /* One figure beside the lead takes the column, not half of it. */
+  .ds-headline-band__side--one { grid-template-columns: minmax(0, 1fr); }
+
+  /* A figure that leads a card below is a link to it. */
+  .ds-headline-band__jump {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    border-radius: var(--sa-shape-8);
+  }
+
+  .ds-headline-band__jump:hover {
+    text-decoration: underline;
+  }
+
+  /* The press answers as the inverse Link's does: the ink takes the inverse action colour, so a
+     tap on a touch screen, which has no hover, is still acknowledged. */
+  .ds-headline-band__jump:active {
+    text-decoration: underline;
+    color: var(--sa-cmp-action-brand-secondary-inverse-hover-text);
+  }
+
+  .ds-headline-band__jump:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  /* ── DashboardHeader ──────────────────────────────────────────────────────── */
+  .ds-dashboard-header__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--sa-stack-16) var(--sa-stack-32);
+    align-items: start;
+    padding: var(--sa-padding-32);
+  }
+
+  .ds-dashboard-header__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-16);
+    min-width: 0;
+  }
+
+  .ds-dashboard-header__mark {
+    display: inline-flex;
+    padding: var(--sa-padding-8);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-base);
+  }
+
+  .ds-dashboard-header__action {
+    align-self: center;
+  }
+
+  .ds-dashboard-header__text {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: var(--sa-stack-8);
+  }
+
+  .ds-dashboard-header__summary,
+  .ds-dashboard-header__meta {
+    margin: 0;
+    color: var(--sa-text-neutral-inverse);
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    font-weight: var(--sa-font-weight-regular);
+  }
+
+  .ds-dashboard-header__summary {
+    max-width: 60ch; /* layout geometry: the prose measure */
+  }
+
+  /* The period and the body that runs the portal: one line where the row allows. */
+  .ds-dashboard-header__meta {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+
+  @media (max-width: 1023px) {
+    .ds-headline-band__body { grid-template-columns: minmax(0, 1fr); padding: var(--sa-padding-24); }
+    .ds-headline-band__side { padding: var(--sa-padding-24) 0 0; border-inline-start: 0; border-block-start: var(--sa-stroke-1) solid color-mix(in srgb, var(--sa-text-neutral-inverse) 35%, transparent); }
+    .ds-dashboard-header__body { grid-template-columns: minmax(0, 1fr); padding: var(--sa-padding-24); }
+  }
+
+  @media (max-width: 767px) {
+    .ds-headline-band__side { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  /* PLACED NARROWER THAN THE PAGE. The viewport rules above are the dashboard's own, measured
+     at full page width; these answer to the component's OWN width, so it lays out the same in
+     a docs specimen, a side column or a modal. Thresholds sit below every width the component
+     takes on the dashboard at the matching viewport (measured 9 Oct 2026), so they never fire
+     there. */
+  @container (max-width: 899px) {
+    .ds-headline-band__body { grid-template-columns: minmax(0, 1fr); padding: var(--sa-padding-24); }
+    .ds-headline-band__side { padding: var(--sa-padding-24) 0 0; border-inline-start: 0; border-block-start: var(--sa-stroke-1) solid color-mix(in srgb, var(--sa-text-neutral-inverse) 35%, transparent); }
+    .ds-dashboard-header__body { grid-template-columns: minmax(0, 1fr); padding: var(--sa-padding-24); }
+  }
+
+  @container (max-width: 559px) {
+    .ds-headline-band__side { grid-template-columns: minmax(0, 1fr); }
+  }
+}

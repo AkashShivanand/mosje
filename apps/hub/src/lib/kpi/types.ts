@@ -16,6 +16,15 @@
  * as a column the proforma should gain.
  */
 
+/*
+ * THE SHAPE OF A READING IS THE DESIGN SYSTEM'S (Oct 2026). `KpiValue`, `KpiReading`, the unit
+ * and the origin moved to `@mosje/design-system` with `KpiView`, which draws them, so any
+ * dashboard on the estate shares them. Re-exported here so the register reads as it did; what
+ * is about the Department's own KPIs — audience, category, API coverage — stays here.
+ */
+import type { KpiReading, KpiUnit } from "@mosje/design-system";
+export type { AreaRow, KpiReading, KpiUnit, KpiValue, Labelled, ValueOrigin } from "@mosje/design-system";
+
 /** The proforma's "KPI Type", normalised. "Both" in the proforma means public. */
 export type KpiAudience = "public" | "officer";
 
@@ -49,9 +58,6 @@ export interface AreaScope {
 }
 
 export type KpiFrequency = "Real-time" | "Daily" | "Weekly" | "Monthly" | "Quarterly" | "Bi-annual" | "Annual";
-
-/** The unit a number is read in. The proforma's "Unit of Measurement" is free text; these are its values. */
-export type KpiUnit = "number" | "crore" | "percent" | "days";
 
 export interface KpiDefinition {
   /** Stable id, `<portal>.<slug>`. The key an API reading will be mapped onto. */
@@ -142,69 +148,6 @@ export interface PortalDashboard {
 }
 
 /* ── Readings ─────────────────────────────────────────────────────────────── */
-
-/**
- * Where ONE value came from.
- *
- * `live` is the portal's own feed, read on the day shown (NMBA, since 5 Oct 2026).
- * `received` is a figure the Department supplied by hand — a report, a spreadsheet, a
- * PDF or a letter — entered exactly as received, with who sent it and the date it was
- * received. Departmental, but not a feed: it changes only when a new document arrives.
- * `snapshot` is a figure a Department system has published, mirrored on a stated date.
- * `modelled` is illustrative: derived by a stated rule, consistent with every other
- * figure on the dashboard, and never a departmental figure.
- */
-export type ValueOrigin = "live" | "received" | "snapshot" | "modelled";
-
-export interface Labelled {
-  label: string;
-  value: number;
-}
-
-export interface AreaRow {
-  /** State or district name, matching `IndiaMap`'s spelling for states. */
-  area: string;
-  value: number;
-}
-
-export type KpiValue =
-  | { kind: "figure"; value: number }
-  /** Two figures read together, e.g. shelters and their bed capacity. */
-  | { kind: "pair"; items: [Labelled & { unit: KpiUnit }, Labelled & { unit: KpiUnit }] }
-  /** `unit` overrides the KPI's where the parts are counted differently, e.g. a share drawn from counts. */
-  | { kind: "breakdown"; items: Labelled[]; chart: "donut" | "bar"; unit?: KpiUnit }
-  | {
-      kind: "series";
-      labels: string[];
-      /** `pending` lists label indices a series has no figure for yet — drawn as "not reported", never as 0. */
-      series: { name: string; data: number[]; pending?: number[] }[];
-      chart: "line" | "bar";
-      /** One line under the chart, for what a label cannot say ("2026-27: spent to 30 Sep"). */
-      note?: string;
-    }
-  | { kind: "stages"; stages: Labelled[] }
-  /** One figure for the scope, and the same figure for each area inside it. */
-  | { kind: "areas"; total: number; rows: AreaRow[] }
-  | {
-      kind: "table";
-      columns: string[];
-      rows: (string | number)[][];
-      /**
-       * A column holding a signed difference against a MINIMUM (DAPSC's mandated share): drawn
-       * as "Meets, +0.8 pp" or "Short by 0.7 pp", in words with an icon, so the colour follows
-       * compliance and not the sign alone (design review, 7 Oct 2026).
-       */
-      againstMinimum?: { column: number; header: string; unit: string };
-    };
-
-export interface KpiReading {
-  value: KpiValue;
-  origin: ValueOrigin;
-  /** For `snapshot`: who published it. */
-  source?: string;
-  /** For `snapshot`: DD.MM.YYYY. */
-  asOn?: string;
-}
 
 /** Everything one portal publishes for one area. A KPI absent here is not published for that area. */
 export type PortalReading = Partial<Record<string, KpiReading>>;

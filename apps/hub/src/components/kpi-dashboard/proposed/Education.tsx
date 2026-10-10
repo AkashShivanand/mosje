@@ -3,13 +3,10 @@
 import * as React from "react";
 import {
   Badge,
-  Card,
-  CardBody,
-  CardHeader,
   CardIcon,
-  CardSubtitle,
-  CardTitle,
   ChartCard,
+  DashboardCard,
+  DashboardCardList,
   DataTable,
   DescriptionList,
   HeadlineFigure,
@@ -17,6 +14,7 @@ import {
   Progress,
   RankedBarList,
   SectionTitle,
+  SegmentedControl,
   Sparkline,
   type CardTone,
 } from "@mosje/design-system";
@@ -36,7 +34,6 @@ import {
 } from "@/lib/website-shared/dashboard";
 import { FitChart } from "../DepartmentOverview";
 import { HostelCard, deptAmount } from "../DepartmentCards";
-import { SegmentedButtons } from "./SegmentedButtons";
 import { CARD_AUDIENCE, FUND_SLICE_AUDIENCE, TREND_AUDIENCE, YOY_AUDIENCE, shows, type Audience } from "./audience";
 
 /**
@@ -75,7 +72,7 @@ import { CARD_AUDIENCE, FUND_SLICE_AUDIENCE, TREND_AUDIENCE, YOY_AUDIENCE, shows
  *
  * DS Audit: Card / CardHeader / CardIcon / CardBody ✅ · HeadlineFigure ✅ · DescriptionList ✅ ·
  * Badge ✅ · Sparkline (`startLabel`/`endLabel`/`markLast` ➕ ADDED) ✅ · ChartCard (`variant` ➕ ADDED) ✅ ·
- * LineChart ✅ · DataTable ✅ · Progress ✅ · RankedBarList ✅ · ButtonGroup (SegmentedButtons) ✅ ·
+ * LineChart ✅ · DataTable ✅ · Progress ✅ · RankedBarList ✅ · SegmentedControl (`buttons`) ✅ · DashboardCard / DashboardCardList ✅ ·
  * SectionTitle ✅ · OriginChip / FigureSource (app) ✅.
  */
 
@@ -115,16 +112,9 @@ function nth<T>(list: readonly T[] | undefined, i: number): T {
 
 function Tile({ tone, icon, title, subtitle, children }: { tone: CardTone; icon: string; title: string; subtitle?: string; children: React.ReactNode }) {
   return (
-    <Card tone={tone} accent="edge" className="pd-tile">
-      <CardHeader>
-        <CardIcon name={icon} />
-        <div className="pd-tile__titles">
-          <CardTitle size="sm">{title}</CardTitle>
-          {subtitle ? <CardSubtitle>{subtitle}</CardSubtitle> : null}
-        </div>
-      </CardHeader>
-      <CardBody className="pd-tile__body">{children}</CardBody>
-    </Card>
+    <DashboardCard tone={tone} mark={<CardIcon name={icon} />} title={title} subtitle={subtitle} className="pd-tile">
+      {children}
+    </DashboardCard>
   );
 }
 
@@ -215,7 +205,7 @@ function BeneficiaryStudents({ headingLevel, audiences }: { headingLevel: 3 | 4;
       subtitle={views.length === 1 ? view.label : undefined}
       actions={
         views.length > 1 ? (
-          <SegmentedButtons label="Students shown" value={id} onChange={setId} options={views.map((v) => ({ value: v.id, label: v.label }))} />
+          <SegmentedControl variant="buttons" ariaLabel="Students shown" value={id} onChange={setId} options={views.map((v) => ({ value: v.id, label: v.label }))} />
         ) : undefined
       }
       footer={view.provisional ? BENEFICIARY_TRENDS.footnote : undefined}
@@ -353,7 +343,7 @@ function YearOnYearReport({ cards, headingLevel }: { cards: (typeof YEAR_ON_YEAR
       subtitle={takeaway}
       actions={
         cards.length > 1 ? (
-          <SegmentedButtons label="Scheme" value={c.id} onChange={setId} options={cards.map((x) => ({ value: x.id, label: YOY_SEGMENT[x.id] ?? x.title }))} />
+          <SegmentedControl variant="buttons" ariaLabel="Scheme" value={c.id} onChange={setId} options={cards.map((x) => ({ value: x.id, label: YOY_SEGMENT[x.id] ?? x.title }))} />
         ) : undefined
       }
     >
@@ -475,7 +465,7 @@ export function EducationResults({ sectionLevel, state, audiences }: MovementPro
   };
 
   // Which cards the Type of Applicant filter leaves; a section with none left is not drawn, and
-  // the grid is laid out for the cards that remain (`pd-bento--n<count>`).
+  // the grid is laid out for the cards that remain (`DashboardCardList`).
   const scholarshipCards = [sc, obc, shreyas].filter((c) => show(c.id));
   const placeCards = [hostels, topClass, ambedkar].filter((c) => show(c.id));
 
@@ -490,26 +480,35 @@ export function EducationResults({ sectionLevel, state, audiences }: MovementPro
             {sectionMarks(SCHOLARSHIPS.title)}
           </span>
         </SectionTitle>
-        <ul className={`pd-bento pd-bento--n${scholarshipCards.length}`} aria-label={SCHOLARSHIPS.title}>
-          {[sc, obc].filter((x) => show(x.id)).map((x) => (
-            <li key={x.id} id={`pd-card-${x.id}`}>
-              <Tile tone={x.tone} icon={x.icon} title={x.title} subtitle={x.subtitle}>
-                <Lead m={nth(x.metrics, 2)} />
-                <Rest ms={[nth(x.metrics, 0), nth(x.metrics, 1)]} />
-                {studentsLine(x.id === "sc" ? scTrend : obcTrend, x.title)}
-              </Tile>
-            </li>
-          ))}
-          {show("shreyas") ? (
-          <li id="pd-card-shreyas">
-            <Tile tone={shreyas.tone} icon={shreyas.icon} title={shreyas.title} subtitle={shreyas.subtitle}>
-              <Lead m={nth(shreyas.metrics, 1)} />
-              <Rest ms={[nth(shreyas.metrics, 0), nth(shreyas.metrics, 2)]} />
-              {/* No line: its years are Year by Year Trends' SHREYAS view, just below. */}
-            </Tile>
-          </li>
-          ) : null}
-        </ul>
+        <DashboardCardList
+          aria-label={SCHOLARSHIPS.title}
+          items={[
+            ...[sc, obc].filter((x) => show(x.id)).map((x) => ({
+              key: x.id,
+              id: `pd-card-${x.id}`,
+              content: (
+                <Tile tone={x.tone} icon={x.icon} title={x.title} subtitle={x.subtitle}>
+                  <Lead m={nth(x.metrics, 2)} />
+                  <Rest ms={[nth(x.metrics, 0), nth(x.metrics, 1)]} />
+                  {studentsLine(x.id === "sc" ? scTrend : obcTrend, x.title)}
+                </Tile>
+              ),
+            })),
+            ...(show("shreyas")
+              ? [{
+                  key: "shreyas",
+                  id: "pd-card-shreyas",
+                  content: (
+                    <Tile tone={shreyas.tone} icon={shreyas.icon} title={shreyas.title} subtitle={shreyas.subtitle}>
+                      <Lead m={nth(shreyas.metrics, 1)} />
+                      <Rest ms={[nth(shreyas.metrics, 0), nth(shreyas.metrics, 2)]} />
+                      {/* No line: its years are Year by Year Trends' SHREYAS view, just below. */}
+                    </Tile>
+                  ),
+                }]
+              : []),
+          ]}
+        />
       </section>
       ) : null}
 
@@ -521,14 +520,15 @@ export function EducationResults({ sectionLevel, state, audiences }: MovementPro
               {sectionMarks(HOSTELS.title)}
             </span>
           </SectionTitle>
-          <ul className={`pd-bento pd-bento--n${placeCards.length}`} aria-label={HOSTELS.title}>
-            {placeCards.map((c) => (
-              <li key={c.id} id={`pd-card-${c.id}`}>
-                {/* `info`, not the live page's red, for the overseas loan card: on this estate red means a rejected application. */}
-                <HostelCard c={c} tone={c.id === "ambedkar" ? "info" : undefined} {...hostelTrends[c.id]} />
-              </li>
-            ))}
-          </ul>
+          <DashboardCardList
+            aria-label={HOSTELS.title}
+            items={placeCards.map((c) => ({
+              key: c.id,
+              id: `pd-card-${c.id}`,
+              // `info`, not the live page's red, for the overseas loan card: on this estate red means a rejected application.
+              content: <HostelCard c={c} tone={c.id === "ambedkar" ? "info" : undefined} {...hostelTrends[c.id]} />,
+            }))}
+          />
         </section>
       ) : null}
     </>

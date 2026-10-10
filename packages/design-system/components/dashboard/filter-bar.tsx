@@ -2,6 +2,8 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { buttonClasses } from "../actions/button";
+import "../actions/button-group.css";
 import "./dashboard.css";
 
 export interface FilterBarProps {
@@ -41,10 +43,13 @@ export interface SegmentedControlProps<T extends string> {
    * `"default"` is the filled track a reader uses to change what a view SHOWS — a period, a
    * series. `"quiet"` is text only, for a switch that is a way out rather than a choice the
    * page is built around: a chart's Chart / Table view, there for the reader who wants the
-   * raw figures and kept out of everyone else's way. Same radio-group semantics and keys.
+   * raw figures and kept out of everyone else's way. `"buttons"` is SAMAVESH's segmented
+   * BUTTON — attached buttons, the chosen one Filled and the rest Outlined — for a switch that
+   * changes what one chart shows (Students: SC / OBC / SHREYAS), where a filled track read as
+   * tabs (instruction, 7 Oct 2026). Same radio-group semantics and keys in all three.
    * @default "default"
    */
-  variant?: "default" | "quiet";
+  variant?: "default" | "quiet" | "buttons";
   className?: string;
 }
 
@@ -82,7 +87,7 @@ export function SegmentedControl<T extends string>({
     const opt = options[next];
     if (!opt) return;
     onChange(opt.value);
-    const buttons = group.current?.querySelectorAll<HTMLButtonElement>(".ds-segmented__option");
+    const buttons = group.current?.querySelectorAll<HTMLButtonElement>('[role="radio"]');
     buttons?.[next]?.focus();
   };
 
@@ -118,7 +123,16 @@ export function SegmentedControl<T extends string>({
   const tabIndexOf = (index: number) => (index === (selectedIndex === -1 ? 0 : selectedIndex) ? 0 : -1);
 
   return (
-    <div ref={group} className={cn("ds-segmented", variant === "quiet" && "ds-segmented--quiet", className)} role="radiogroup" aria-label={ariaLabel}>
+    <div
+      ref={group}
+      className={cn(
+        variant === "buttons" ? "ds-btn-group ds-btn-group--attached" : "ds-segmented",
+        variant === "quiet" && "ds-segmented--quiet",
+        className,
+      )}
+      role="radiogroup"
+      aria-label={ariaLabel}
+    >
       {options.map((opt, index) => {
         const selected = opt.value === value;
         return (
@@ -129,7 +143,11 @@ export function SegmentedControl<T extends string>({
             role="radio"
             aria-checked={selected}
             tabIndex={tabIndexOf(index)}
-            className={cn("ds-segmented__option", selected && "ds-segmented__option--active")}
+            className={
+              variant === "buttons"
+                ? buttonClasses("primary", selected ? "filled" : "outlined", "sm")
+                : cn("ds-segmented__option", selected && "ds-segmented__option--active")
+            }
             onClick={() => onChange(opt.value)}
             onKeyDown={(e) => onKeyDown(e, index)}
           >

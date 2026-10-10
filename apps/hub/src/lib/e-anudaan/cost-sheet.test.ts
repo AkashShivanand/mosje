@@ -13,13 +13,15 @@ import {
   normLines,
   schedulesFor,
   seedSheet,
+  netPayable,
+  settlementProblems,
   sheetProblems,
   sheetTotals,
   statementProblems,
   type CostScheduleId,
 } from "./cost-sheet.ts";
 import { buildSeed } from "./store/seed.ts";
-import type { GrantApplication } from "./types.ts";
+import { holderIsRole, type GrantApplication } from "./types.ts";
 
 const money = (n: number) => `₹${n}`;
 const sum = (xs: readonly { norm: number }[]) => xs.reduce((s, l) => s + l.norm, 0);
@@ -100,7 +102,10 @@ test("schedules: a DDAC has one, a general IRCA three by bed size, other project
   assert.deepEqual(schedulesFor(ircaApp), ["IRCA-15", "IRCA-30", "IRCA-50"]);
   assert.equal(defaultSchedule(ircaApp), "IRCA-30");
   assert.deepEqual(schedulesFor(app({ formValues: { fld_project_type: "IRCA — Female" } })), []);
-  assert.deepEqual(schedulesFor(app({ caseType: "Ongoing" })), []);
+  // An ongoing project is costed too, on its recurring heads only (dev portal read, 8 Oct 2026).
+  assert.deepEqual(schedulesFor(app({ caseType: "Ongoing" })), ["DDAC"]);
+  assert.ok(seedSheet("DDAC", { recurringOnly: true }).lines.every((l) => l.head === "recurring"));
+  assert.ok(seedSheet("DDAC").lines.some((l) => l.head === "nonRecurring"));
   assert.deepEqual(schedulesFor(app({ schemeCode: "AVYAY" })), []);
 });
 
@@ -110,20 +115,29 @@ test("the pipeline: proposed is current until the ASO saves; later stages follow
   assert.equal(amountPipeline(app({ schemeCode: "SHRESHTA_M2" })), null);
 });
 
+test("an ongoing instalment is settled against its utilisation certificate", () => {
+  assert.equal(netPayable({ payable: 2537600, unspentUc: 62400 }), 2475200);
+  assert.deepEqual(settlementProblems({ payable: "2537600", unspentUc: "0" }), {});
+  assert.ok(settlementProblems({ payable: "", unspentUc: "0" }).payable);
+  assert.ok(settlementProblems({ payable: "100", unspentUc: "200" }).unspentUc, "unspent above payable");
+});
+
 /* ── The seed ─────────────────────────────────────────────────────────────── */
 
 const seed = buildSeed();
 const atAso = seed.applications.filter((a) => a.schemeCode === "NAPDDR" && a.holder.kind === "chain" && a.holder.division === "pd" && a.holder.grade === "aso");
 
-test("the ASO's NAPDDR files are a DDAC and a 30-bed IRCA, each with NAPDDR's own documents", () => {
-  const types = atAso.map((a) => a.formValues?.fld_project_type).sort();
-  assert.deepEqual(types, ["DDAC — District De-Addiction Centre", "IRCA — Integrated Rehabilitation Centre"]);
+test("the ASO's NAPDDR files are DDACs and IRCAs, each with NAPDDR's own documents", () => {
+  const types = new Set(atAso.map((a) => a.formValues?.fld_project_type));
+  assert.deepEqual([...types].sort(), ["DDAC — District De-Addiction Centre", "IRCA — Integrated Rehabilitation Centre"]);
   for (const a of atAso) {
     assert.equal(a.documents.length, 12, a.id);
     assert.ok(!a.documents.some((d) => /School/.test(d.title)), `${a.id} carries a school's document`);
     assert.equal(a.formValues?.fld_total_beneficiaries, String(a.totalBeneficiaries), a.id);
     assert.equal(a.formValues?.fld_grant_total, String(a.total), a.id);
-    assert.ok(!a.costSheet && !a.budgetStatement, "the ASO has not costed it yet");
+    // Uncosted, except a file returned to the ASO after it was costed and forwarded.
+    // Uncosted, except a file returned after it was costed, or one carrying the old portal's sheet.
+    if (a.status !== "QueryRaised" && !a.costSheet?.historical) assert.ok(!a.costSheet && !a.budgetStatement, `${a.id}: the ASO has not costed it yet`);
   }
 });
 
@@ -134,4 +148,24 @@ test("the costed file further up shows its pipeline done to the Joint Secretary"
   assert.deepEqual(stages.map((s) => s.state), ["done", "done", "current", "upcoming"]);
   assert.equal(stages[0]!.amount, 3510000 + 245000);
   assert.equal(costed.budgetStatement!.release, stages[0]!.amount);
+});
+
+test("each pipeline stage states its own figure where it recorded one", () => {
+  const recommended = seed.applications.find((a) => a.costSheet && a.audit.some((e) => e.byRole === "pd-js" && e.action === "forward" && e.amount != null));
+  assert.ok(recommended, "the seed carries a recommendation that differs from the proposal");
+  const p = amountPipeline(recommended!)!;
+  assert.notEqual(p[0]!.amount, p[1]!.amount);
+  assert.equal(p[1]!.amount, recommended!.audit.find((e) => e.byRole === "pd-js" && e.action === "forward")!.amount);
+});
+
+test("the ASO's review is seeded in every state the dev portal showed", () => {
+  const napddr = seed.applications.filter((a) => a.schemeCode === "NAPDDR");
+  const atAsoNow = napddr.filter((a) => holderIsRole(a.holder, "pd-aso"));
+  assert.ok(atAsoNow.some((a) => a.documents.some((d) => d.reviewStatus === "Verified") && a.documents.some((d) => d.reviewStatus === "Pending")), "part-way through the documents");
+  assert.ok(atAsoNow.some((a) => a.documents.some((d) => d.reviewStatus === "Deficient")), "a document marked for correction");
+  assert.ok(atAsoNow.some((a) => a.caseType === "Ongoing" && a.instalment), "an ongoing instalment");
+  assert.ok(atAsoNow.some((a) => a.legacy?.notings.length), "a file from the old portal");
+  assert.ok(atAsoNow.some((a) => a.status === "QueryRaised"), "returned to the ASO");
+  assert.ok(napddr.some((a) => holderIsRole(a.holder, "pd-so") && a.costSheet && a.budgetStatement), "forwarded, costed, with the SO");
+  assert.ok(napddr.some((a) => a.status === "DeficiencyRaised"), "with the NGO for correction");
 });

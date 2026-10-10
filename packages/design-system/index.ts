@@ -562,6 +562,22 @@ export { KpiRow } from "./components/dashboard/kpi-row";
 export type { KpiRowProps } from "./components/dashboard/kpi-row";
 export { FilterBar, SegmentedControl } from "./components/dashboard/filter-bar";
 export type { FilterBarProps, SegmentedControlProps, SegmentedOption } from "./components/dashboard/filter-bar";
+// The website Beneficiary Dashboard's parts, joined Oct 2026 so every dashboard is drawn the
+// same way: the card a "choose a dashboard" page is made of and the list that lays them out,
+// the band a page opens with, a dashboard page's head, the State/UT panels, and the renderer
+// that draws a KPI reading by its shape.
+export { DashboardCard, DashboardCardList } from "./components/dashboard/dashboard-card";
+export type { DashboardCardProps, DashboardCardListProps, DashboardCardListItem } from "./components/dashboard/dashboard-card";
+export { HeadlineBand } from "./components/dashboard/headline-band";
+export type { HeadlineBandProps, HeadlineBandFigure } from "./components/dashboard/headline-band";
+export { DashboardHeader } from "./components/dashboard/dashboard-header";
+export type { DashboardHeaderProps } from "./components/dashboard/dashboard-header";
+export { AreaBreakdown, AreaExplorer } from "./components/dashboard/area-breakdown";
+export type { AreaBreakdownProps, AreaExplorerProps, AreaMeasure } from "./components/dashboard/area-breakdown";
+export { KpiView, isKpiTile } from "./components/dashboard/kpi-view";
+export type { KpiViewProps, KpiViewState } from "./components/dashboard/kpi-view";
+export type { KpiUnit, KpiValue, KpiReading, KpiSpec, ValueOrigin, Labelled, AreaRow } from "./components/dashboard/kpi-types";
+export { formatKpi, kpiFormatter, compactCount, shownDate, isoDate } from "./components/dashboard/kpi-format";
 
 // ---- Components: Navigation --------------------------------------------------
 // AccessibilityBar — the government top utility bar (UX4G / GIGW).
@@ -999,6 +1015,8 @@ export type {
 } from "./components/templates/screen-state";
 export { WorklistScreen } from "./components/templates/worklist-screen";
 export type { WorklistScreenProps, WorklistColumn } from "./components/templates/worklist-screen";
+export { DashboardScreen } from "./components/templates/dashboard-screen";
+export type { DashboardScreenProps } from "./components/templates/dashboard-screen";
 export { RecordScreen } from "./components/templates/record-screen";
 export type { RecordScreenProps, RecordTab, RecordFact } from "./components/templates/record-screen";
 export { WizardScreen } from "./components/templates/wizard-screen";

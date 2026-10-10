@@ -290,6 +290,34 @@ export const Segments: Story = {
   },
 };
 
+/**
+ * `variant="buttons"` — SAMAVESH's segmented button: attached buttons, the chosen one Filled
+ * and the rest Outlined. For a switch that changes what **one chart** shows (Students:
+ * SC / OBC / SHREYAS), where the default filled track read as tabs. `"quiet"` is the text-only
+ * switch for a chart's Chart / Table view. Same radio-group semantics and arrow keys in all three.
+ */
+export const Buttons: Story = {
+  render: function Render() {
+    const [group, setGroup] = React.useState<"sc" | "obc" | "shreyas">("sc");
+    return (
+      <div style={{ display: "grid", gap: 16, justifyItems: "start" }}>
+        <SegmentedControl
+          variant="buttons"
+          ariaLabel="Students supported"
+          value={group}
+          onChange={setGroup}
+          options={[
+            { label: "SC", value: "sc" },
+            { label: "OBC", value: "obc" },
+            { label: "SHREYAS", value: "shreyas" },
+          ]}
+        />
+        <p style={{ margin: 0, color: "var(--sa-color-text-muted)" }}>Showing students supported under {group.toUpperCase()}.</p>
+      </div>
+    );
+  },
+};
+
 /** All five together — what a portal dashboard actually looks like. */
 export const AWholeDashboard: Story = {
   render: function Render() {

@@ -1,0 +1,4 @@
+{
+  "kind": "Added",
+  "text": "HEADLINEBAND — THE FIGURES A DASHBOARD OPENS WITH. One `HeadlineFigure` drawn large and up to a few beside it, on the dashboard's colour, named in the outline by a visually hidden heading (`title`). A figure that leads a card further down can link to it (`href`, `linkAs`). One column below 1024px. Extracted unchanged from the Beneficiary Dashboard's At a Glance band. In Figma: the Dashboard page — Figures None | One | Four, Code Connect."
+}

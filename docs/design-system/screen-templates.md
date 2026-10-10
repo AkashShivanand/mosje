@@ -43,7 +43,7 @@ gate and sits at zero. Templates ship with a gate for that reason.
   Tier A   PortalPage          chrome: masthead · sidebar · content column · footer
              │                 resolved from the portal registry + the viewer's role
              ▼
-  Tier B   <Something>Screen   one of eighteen. Owns the seven states.
+  Tier B   <Something>Screen   one of nineteen. Owns the seven states.
              │                 Takes a descriptor, renders the screen.
              ▼
   Tier C   the descriptor      a typed object. THIS is what you write.
@@ -72,6 +72,7 @@ Answer one question: **what have you got?**
 | Many records, homogeneous, the reader acts on them | `WorklistScreen` | Filters, table, bulk actions, pagination |
 | Many records, homogeneous, the reader browses them | `CatalogueScreen` | Filter chips, cards or file rows, pagination |
 | Many records, aggregated into figures | `OverviewScreen` | KPI row, charts, context panels, recent list |
+| Figures about one or many programmes, filtered by area and period | `DashboardScreen` | Area bar and filters, headline band, dashboard cards, per-programme views |
 | Many records, ranked by a query the reader typed | `SearchScreen` | Query field, facets, result rows |
 | Many records, each a dated attributed event | `InboxScreen` | Grouped event list, read/unread, filters |
 | A finite set of mutually exclusive options | `ChooserScreen` | Radio cards, one continue |
@@ -84,9 +85,12 @@ Answer one question: **what have you got?**
 | A tabular statement meant to be printed or exported | `ReportScreen` | Print-first table, export actions |
 | No record, because something failed | `StatusScreen` | 404 / 403 / 500 / maintenance / offline |
 
-**Eighteen. The set is closed.** A screen that appears to need a nineteenth is almost
+**Nineteen. The set is closed.** A screen that appears to need a twentieth is almost
 always one of these with a different descriptor — check that first, and if it truly is
 new, it is added here by a change to this document, not invented in a portal folder.
+`DashboardScreen` was the nineteenth (9 Oct 2026): the website's Beneficiary Dashboard is
+a public page about many programmes with an area filter and views that open from one
+another, which `OverviewScreen` — one signed-in reader's records — does not describe (§4.19).
 
 ### 2a. When two look plausible
 
@@ -100,6 +104,7 @@ new, it is added here by a change to this document, not invented in a portal fol
 | `RecordScreen` vs `DecisionScreen` | Does this reader **change the record's state**? Yes ⇒ decision. |
 | `InboxScreen` vs `WorklistScreen` | Is the unit an **event** (dated, attributed) or an **object**? |
 | `OverviewScreen` vs `ReportScreen` | Is it read **on screen** or **printed and filed**? |
+| `OverviewScreen` vs `DashboardScreen` | Is it **one reader's own records** after sign-in, or **a programme's figures** anyone may filter by area? |
 
 ### 2b. Composition, not a nineteenth template
 
@@ -278,6 +283,33 @@ banned; that published a `138%` once; a KPI with no figure at all (the row holds
 shape — `KpiRow`'s `loading` is a **count**, not a boolean, for exactly this reason); a
 chart with one series; a chart with more categories than the palette distinguishes
 (`CHART_CATEGORICAL_SAFE_CAP`); "Recent" when there is no recent.
+
+---
+
+### 4.19 `DashboardScreen` — figures about programmes, by area
+
+Built 9 October 2026 from the website's Beneficiary Dashboard
+(`apps/hub/src/components/kpi-dashboard/proposed/`), which it now renders, pixel for pixel:
+
+```
+Button (text)     "All Dashboards"                   — `back`, on a programme's own view
+Area bar          "Figures for" All India  ·  State / UT · District · Financial Year
+Note              what an area choice changed, where most of the page is All-India only
+ScreenBody        the view — composed from:
+  HeadlineBand        one large figure, a few beside it, a figure linking to its card
+  DashboardCardList   DashboardCards, laid out for the count they hold
+  DashboardHeader     a programme's head: name, one sentence, period, Open Portal
+  KpiView · KpiRow    each KPI drawn by the shape of its reading
+  AreaBreakdown · AreaExplorer   the State/UT map with its ranked list or panel
+```
+
+Edge cases: **a State/UT chosen where most sections publish All-India only** — the
+template's `areaNote` says so once, beside the picker, rather than under every section;
+**focus after a view change** — it moves to the new view's first heading, except when the
+change came from a filter, which keeps the reader on the filter (`shouldMoveFocus`); **a
+programme with nothing to show** — it is not drawn, and the card list closes up for the
+count that remains; **an area with no figures** — `count` 0 resolves to `empty`, and a
+filter that empties the view to `filtered`.
 
 ---
 
