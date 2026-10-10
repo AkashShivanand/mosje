@@ -1,0 +1,238 @@
+{
+  "source": "https://eanudaan-admin-dev.mosje.in — signed in as Dealing Assistant, Programme Division (ASO-PD), read 08 Oct 2026, 15:50–16:20 IST",
+  "method": "Browsing only: page text and screenshots of each screen. Nothing was saved, forwarded or returned on the dev portal. Screenshots are in raw/ (git-ignored: they carry phone numbers, e-mail addresses and account numbers).",
+  "anonymised": "Individuals' names, phone numbers, e-mail addresses and bank account numbers are replaced. Organisation names are kept. Officer names are replaced by their desk.",
+
+  "queue": {
+    "route": "/dashboard/pd/aso",
+    "title": "My Action Queue",
+    "standfirst": "Every application awaiting your action — across all your schemes and both workflows",
+    "kpis": { "awaitingMyAction": 13038, "grantValueSoughtCr": 5641.07, "schemes": 5, "ngos": 4547, "states": 36, "pendingOver7Days": 13029 },
+    "byScheme": { "AVYAY": 6083, "NAPDDR": 5749, "SMILE": 1196, "SHRESHTA_M2": 9, "SHRESHTA_M1": 1 },
+    "byFinancialYear": { "2027-28": 1, "2026-27": 380, "2025-26": 3698, "2024-25": 2235, "2023-24": 1389, "2022-23": 3633 },
+    "byCase": { "New": 10024, "Existing (Recurring Grant)": 1, "Ongoing · 1st": 2326, "Ongoing · 2nd": 70, "Ongoing · 3rd": 579, "Not stated": 38 },
+    "ageing": { "0-3 days": 8, "4-7 days": 1, "over 7 days": 13029 },
+    "columns": ["S.No.", "GIA ID", "NGO", "State", "Scheme", "Type", "FY", "Submitted On", "Installment", "Requested", "Status", "Action"],
+    "filters": ["Type chips: All · New · Ongoing · 1st · 2nd · 3rd Installment · Not stated", "Sort: Default · Newest · Oldest", "State", "District (after state)", "Status bucket", "Year"],
+    "statusBuckets": {
+      "Needs my action": ["STATE_RECOMMENDED", "SM2_SUBMITTED", "AVY_SUBMITTED", "AVY_RETURNED_ASOPD", "SMILE_SUBMITTED"],
+      "Returned / Queried (351)": ["AVY_DEFICIENCY_RAISED", "FINANCE_ASO_RETURNED_TO_JS_PD", "PD_JS_RETURNED_TO_DS", "PD_SO_RETURNED_TO_NGO", "PD_US_RETURNED_TO_SO", "SM2_DEFICIENCY_RAISED", "SM2_RETURNED_SOPD", "SM2_REWORK_US", "SMILE_DEFICIENCY_RAISED"],
+      "In progress (8,962)": ["AVY_DS_REVIEW", "AVY_IFD_ASO_REVIEW", "AVY_IFD_US_REVIEW", "AVY_JSPD_REVIEW", "AVY_SO_REVIEW", "AVY_US_REVIEW", "AVY_WITH_USPD", "DWO_VERIFIED", "MIGRATED_IN_REVIEW", "PD_ASO_REVIEW", "PD_DS_REVIEW", "PD_JS_REVIEW", "PD_SO_REVIEW", "PD_US_REVIEW", "SM2_DS_REVIEW", "SM2_IFD_ASO_REVIEW", "SM2_IFD_DS_REVIEW", "SM2_IFD_JS_REVIEW", "SM2_IFD_SO_REVIEW", "SM2_IFD_US_REVIEW", "SM2_JSPD_CONCUR", "SM2_JSPD_REVIEW", "SM2_SO_REVIEW", "SM2_US_REVIEW", "SMILE_ADMIN_APPROVAL", "SMILE_IFD_ASO_REVIEW", "SMILE_IFD_SO_REVIEW", "SMILE_PD_SO_REVIEW", "STATE_DEFERRED"],
+      "Sanctioned (11,348)": ["AVY_SELECTION_ORDER_ISSUED", "FINANCE_JS_APPROVED", "MIGRATED_SANCTIONED", "NAPDDR_SANCTIONED", "RELEASED", "SM2_RELEASED", "SM2_SANCTIONED", "SMILE_1ST_INSTALLMENT", "SMILE_2ND_INSTALLMENT", "SMILE_SANCTIONED"]
+    },
+    "rowTags": ["RESUBMITTED", "SCN"],
+    "firstPageDefaultOrder": [
+      { "gia": "GIA/2026-27/NAPDDR/CHENNAI_TAMIL_NADU/84406", "ngo": "Demo NGO (Anudaan)", "state": "Tamil Nadu", "type": "Ongoing · 1st", "fy": "2026-27", "submitted": "2026-10-08", "requested": 1700000, "status": "With ASO" },
+      { "gia": "GIA/2026-27/NAPDDR/WEST_DELHI_DELHI/84402", "ngo": "Demo NGO (Anudaan)", "state": "Delhi", "type": "Ongoing · 1st", "fy": "2026-27", "submitted": "2026-10-08", "requested": 2750000, "status": "With ASO" },
+      { "gia": "GIA/2026-27/NAPDDR/BIJNOR_UTTAR_PRADESH/84362", "ngo": "Demo NGO (Anudaan)", "state": "Uttar Pradesh", "type": "New", "fy": "2026-27", "submitted": "2026-10-07", "requested": 1247823, "status": "With ASO" },
+      { "gia": "GIA/2026-27/NAPDDR/SOUTH_DELHI_DELHI/84230", "ngo": "Demo NGO (Anudaan)", "state": "Delhi", "type": "New", "fy": "2026-27", "submitted": "2026-10-06", "requested": 500000, "status": "With ASO" },
+      { "gia": "GIA/2026-27/NAPDDR/NEW_DELHI_DELHI/84065", "ngo": "Demo NGO (Anudaan)", "state": "Delhi", "type": "New", "fy": "2026-27", "submitted": "2026-09-28", "requested": 1500000, "status": "With ASO" },
+      { "gia": "GIA/2026-27/NAPDDR/KHORDHA_ODISHA/83965", "ngo": "Demo NGO (Anudaan)", "state": "Odisha", "type": "New", "fy": "2026-27", "submitted": "2026-09-24", "requested": 434000, "status": "With ASO" },
+      { "gia": "GIA/2026-27/NAPDDR/DR_B_R_AMBEDKAR_KONASEEMA_ANDH/83933", "ngo": "CAD MS TRUST", "state": "Andhra Pradesh", "type": "New", "fy": "2026-27", "submitted": "2026-09-24", "requested": 34646, "status": "With ASO" },
+      { "gia": "LGCY/91048", "ngo": "SOCIETY FOR ECONOMICAL DEVELOPMENT JESUS MINISTRY", "state": "Madhya Pradesh", "type": "New", "fy": "2026-27", "submitted": "2026-06-13", "requested": 7045000, "status": "With ASO" }
+    ],
+    "firstPageOldestFirst": [
+      { "gia": "LGCY/22", "ngo": "TTRANGANATHAN CLINICAL RESEARCH FOUNDATION", "state": "Tamil Nadu", "type": "Ongoing · 1st", "fy": "2014-15", "submitted": "2014-06-13", "requested": 579000 },
+      { "gia": "LGCY/1067", "ngo": "SOCIETY FOR ALL AROUND HUMAN DEVELOPMENT", "state": "Haryana", "type": "Ongoing · 1st", "fy": "2014-15", "submitted": "2014-06-16", "requested": 1213000 },
+      { "gia": "LGCY/88", "ngo": "GUNJAN", "state": "Himachal Pradesh", "type": "Ongoing · 1st", "fy": "2014-15", "submitted": "2014-07-08", "requested": 776000 },
+      { "gia": "LGCY/6088", "ngo": "Sri Shakthi Association", "state": "Karnataka", "type": "Ongoing · 1st", "fy": "2014-15", "submitted": "2014-10-27", "requested": 92465 }
+    ]
+  },
+
+  "reviewRoute": "/dashboard/pd/aso/review/{applicationId}",
+  "reviewSectionsInOrder": [
+    "Header: 'ASO-PD Review — {GIA}', desk chip, case chip, status chip (only when not at the ASO), scheme · NGO · district, state",
+    "Application Details (NGO, DARPAN ID, Registration No., Scheme · FY, Project ID, Sanctioned Strength, Amount Requested, NGO Grade)",
+    "Application — As Filled by the NGO (10–12 groups, raw field keys as labels; state and district shown as numeric ids)",
+    "Amount Pipeline (Proposed ASO → Recommended JS-PD → Concurred JS-IFD → Final Approved JS-PD)",
+    "Previous Sanctions — this NGO",
+    "Cost Sheet — {project type} (not shown for legacy RRTC/SLCA files)",
+    "Statement of Account (Budget Statement; + Settlement/UC reconciliation for Ongoing) (not shown for legacy files)",
+    "Officer Supporting Documents",
+    "Show Cause Notices",
+    "Sanction & Disbursement — this Project",
+    "Audit Trail — File Movement (collapsed)",
+    "File Noting — old portal (legacy files only)",
+    "Documents Review (permanent / application groups; AI verdict; Pending · Verified · Query; PD remarks)",
+    "Officer Decision (Forward to SO-PD only; remarks mandatory, 200 words)"
+  ],
+
+  "files": [
+    {
+      "id": 84406, "gia": "GIA/2026-27/NAPDDR/CHENNAI_TAMIL_NADU/84406", "state": "ACTIONABLE — ongoing, 1st instalment",
+      "apiStatus": "STATE_RECOMMENDED", "case": "Ongoing — 1st Installment", "projectType": "IRCA (cost sheet IRCA_15)", "ngo": "Demo NGO (Anudaan)",
+      "district": "Chennai, Tamil Nadu", "projectId": "DR/TN/CHE/40579", "sanctionedStrength": 25, "requested": 1700000,
+      "grant": { "total": 1700000, "recurring": 1700000, "nonRecurring": null }, "ongoingSourceApplication": 84395,
+      "previousSanctions": [
+        { "fy": "2026-27", "instalment": null, "no": "NAPDDR/SANC/2026-27/084395", "date": "2026-10-08", "type": "IRCA_15", "case": "New", "sanctioned": 1700000, "disbursed": 0, "sameProject": true },
+        { "fy": "2026-27", "instalment": null, "no": "NAPDDR/SANC/2026-27/084296", "date": "2026-10-07", "type": "DDAC", "case": "New", "sanctioned": 107500, "disbursed": 0 },
+        { "fy": "2026-27", "instalment": null, "no": "NAPDDR/SANC/2026-27/084164", "date": "2026-10-01", "type": "IRCA_15", "case": "New", "sanctioned": 1700000, "disbursed": 0 },
+        { "fy": "2026-27", "instalment": null, "no": "NAPDDR/SANC/2026-27/084066", "date": "2026-09-28", "type": "IRCA_MALE_CHILDREN", "case": "New", "sanctioned": 750000, "disbursed": 0 },
+        { "fy": "2026-27", "instalment": null, "no": "NAPDDR/SANC/2026-27/083907", "date": "2026-09-24", "type": "IRCA_15", "case": "New", "sanctioned": 2100000, "disbursed": 0 },
+        { "fy": "2026-27", "instalment": "1st", "no": "NAPDDR/SANC/2026-27/083904", "date": "2026-09-19", "type": "DDAC", "case": "Ongoing", "sanctioned": 630000, "disbursed": 630000 },
+        { "fy": "2026-27", "instalment": null, "no": "NAPDDR/SANC/2026-27/083866", "date": "2026-09-18", "type": "DDAC", "case": "New", "sanctioned": 1575000, "disbursed": 0 }
+      ],
+      "sanctionAndDisbursementThisProject": "No sanctioned grants on record for this NGO.  (contradicts the same-project row above)",
+      "costSheet": {
+        "state": "Seeded from the cost norms — not saved yet", "bedSelector": ["15 beds", "30 beds", "50 beds"], "selected": "15 beds",
+        "nonRecurring": [ { "item": "Non recurring", "norm": 245000 }, { "item": "CCTV NON-RCURRING", "norm": 25000 } ],
+        "nonRecurringTotals": { "norm": 270000, "ngoClaimed": null, "admissible": 270000 },
+        "recurring": [
+          { "item": "Project Coordinator cum-Vocational Counsellor (@ Rs.25000 per month)", "norm": 300000 },
+          { "item": "Accountant cum Clerk (@ Rs. 12,000 per month)", "norm": 144000 },
+          { "item": "Cook (@ Rs. 10,000 per month)", "norm": 120000 },
+          { "item": "Chowkidar (2 Post) (@ Rs. 9,000 per month)", "norm": 216000 },
+          { "item": "House Keeping Staff (Full Time) (@ Rs. 9,000 per month)", "norm": 108000 },
+          { "item": "Doctor (Part time) Urban (@ Rs. 20,000 per month)", "norm": 240000, "eitherOr": "doctor" },
+          { "item": "Doctor (Part time) Rural (@ Rs. 24,000 per month)", "norm": 288000, "eitherOr": "doctor" },
+          { "item": "Doctor (Full time) with Out patient facilities (@ Rs. 60,000 per month)", "norm": 720000, "eitherOr": "doctor" },
+          { "item": "Counsellor/Social Worker/Psychologist (2 Posts) (@ Rs. 17,500 per month)", "norm": 420000 },
+          { "item": "Counsellor/Social Worker/Psychologist with Out patient facilities (3 Posts) (@ Rs. 17,500 per month)", "norm": 630000, "eitherOr": "counsellor" },
+          { "item": "Yoga therapist/ Dance Teacher/Music Teacher/ Art Teacher (Part Time) (@ Rs. 5,000 per month)", "norm": 60000 },
+          { "item": "Nurse (2 Posts) (@ Rs. 15,000 per month)", "norm": 360000 },
+          { "item": "Nurse (with OPF) (3 Posts) (@ Rs. 15,000 per month)", "norm": 540000, "eitherOr": "nurse" },
+          { "item": "Ward Boys (2 Posts) (@ Rs. 13,000 per month)", "norm": 312000 },
+          { "item": "Peer Educator (@ Rs. 10,000 per month)", "norm": 120000 },
+          { "item": "Rent (@ Rs. 18,000 per month)", "norm": 216000 },
+          { "item": "Medicines (@ Rs. 14,000 per month)", "norm": 168000 },
+          { "item": "Medicines with Outpatient facility (@ Rs. 17,500 per month)", "norm": 210000 },
+          { "item": "Contingencies (Stationery, water, electricity, postage, telephone, maintenance and replacement of bed, linen etc.) (@ Rs. 6,000 per month)", "norm": 96000 },
+          { "item": "Transport/Petrol and Maintenance of Vehicle (@ Rs. 3,600 per month)", "norm": 72000 },
+          { "item": "In house Kitchen expenditure @ Rs. 110 per day for 3 meals per day to 15 inmates (@ Rs. 33,750 per month)", "norm": 594000 },
+          { "item": "CCTV RECURRING", "norm": 5000 }
+        ],
+        "recurringTotals": { "norm": 5939000, "ngoClaimed": 1700000, "admissible": 1700000, "exceedsBy": 4239000 },
+        "totalAdmissible": 1970000, "totalRecommendedShown": 1970000, "sumOfProposedLines": 6209000,
+        "warning": "The recommended grant exceeds the admissible ceiling — reduce before saving."
+      },
+      "statementOfAccount": { "sections": ["Budget Statement", "Settlement — UC Reconciliation"], "amountPayablePrefill": 6209000, "netPayableShown": 6209000 },
+      "auditTrail": [ { "desk": "NGO", "at": "2026-10-08T15:49", "action": "Submitted by NGO" } ],
+      "documents": {
+        "count": 10, "permanentVerified": 7,
+        "application": [
+          { "name": "List of Staff / Employees", "mandatory": true, "ai": "Not valid", "aiTitle": "Academic lecture notes on Computer Organization & Architecture", "pd": "Pending" },
+          { "name": "Budget Estimate", "mandatory": true, "ai": "Not valid", "aiTitle": "Grievance Acknowledgement Receipt", "pd": "Pending" },
+          { "name": "List of Beneficiaries — Previous Year — 2nd instalment", "mandatory": false, "ai": "Not valid", "aiTitle": "Grievance Acknowledgement Receipt (AI asks for a Statement of Expenditure)", "pd": "Pending" }
+        ]
+      },
+      "decision": { "only": "Forward to SO-PD", "blocker": "3 document(s) still show a Pending PD status." }
+    },
+    {
+      "id": 84402, "gia": "GIA/2026-27/NAPDDR/WEST_DELHI_DELHI/84402", "state": "ACTIONABLE — ongoing, cost sheet SAVED",
+      "case": "Ongoing — 1st Installment", "projectType": "DDAC", "sanctionedStrength": 40, "requested": 2750000,
+      "grant": { "total": 2750000, "recurring": 2750000, "nonRecurring": null }, "ongoingSourceApplication": 84296,
+      "pipeline": { "proposedAso": 3094983, "proposedAt": null },
+      "costSheet": {
+        "state": "Showing the saved cost sheet", "nonRecurringTotals": { "norm": 345000, "ngoClaimed": null, "admissible": 345000 },
+        "recurringTotal": 2749983, "recurringTotals": { "norm": 7724000, "ngoClaimed": 2750000, "admissible": 2750000 },
+        "bothDoctorPostsKept": [ { "item": "(a)Doctor (Full time) post 1 Rs. 60,000 (Rural)", "norm": 720000 }, { "item": "(a)Doctor (Full time) post 1 Rs. 55,000 (Urban)", "norm": 660000 } ],
+        "eitherOrMarkersAfterSave": false,
+        "totalAdmissible": 3095000, "totalRecommended": 3094983
+      },
+      "statementOfAccount": { "netPayableShown": 680000, "otherFields": "empty" },
+      "sanctionAndDisbursementThisProject": "No sanctioned grants on record for this NGO.  (Previous Sanctions shows the same-project DDAC sanction 084296)",
+      "documents": { "count": 10, "permanentVerified": 7, "aiNotValid": 3, "blocker": "2 document(s) still show a Pending PD status." }
+    },
+    {
+      "id": 84362, "gia": "GIA/2026-27/NAPDDR/BIJNOR_UTTAR_PRADESH/84362", "state": "ACTIONABLE — new project, nothing reviewed",
+      "case": "New Project", "projectType": "DDAC", "sanctionedStrength": 1, "requested": 1247823,
+      "grant": { "total": 1247823, "recurring": 1235478, "nonRecurring": 12345 },
+      "costSheet": {
+        "state": "Seeded from the cost norms — not saved yet", "bedSelector": null,
+        "nonRecurring": [ { "item": "15 beds, tables, 3 sets of linen, blankets, office furniture, almirah, equipments, computers, refrigerator etc.", "norm": 325000 }, { "item": "Adhaar based Biometric Attendance System", "norm": 20000 } ],
+        "nonRecurringTotals": { "norm": 345000, "ngoClaimed": 12345, "admissible": 12345, "exceedsBy": 332655 },
+        "recurringTotals": { "norm": 7724000, "ngoClaimed": 1235478, "admissible": 1235478, "exceedsBy": 6488522 },
+        "totalAdmissible": 1247823, "totalRecommendedShown": 1247823,
+        "warning": "The recommended grant exceeds the admissible ceiling — reduce before saving.  (shown although the displayed total equals the ceiling)"
+      },
+      "statementOfAccount": { "sections": ["Budget Statement"], "note": "No UC reconciliation for a new project" },
+      "documents": {
+        "count": 12, "permanentVerified": 0, "pending": 12,
+        "aiFlags": [ { "name": "Memorandum of Association", "ai": "Not valid", "aiTitle": "E-Anudaan portal dashboard screenshot" }, { "name": "Audit Report — last two financial years", "ai": "Not valid", "aiTitle": "e-Anudaan dashboard screenshot" } ]
+      },
+      "decision": { "only": "Forward to SO-PD", "blocker": "12 document(s) still show a Pending PD status." }
+    },
+    {
+      "id": 6376, "gia": "LGCY/22", "state": "MIGRATED — already decided in the old portal, back in the queue",
+      "case": "Ongoing (1st Installment in queue)", "projectType": "RRTC (SLCA from 2020-21)", "fy": "2014-15",
+      "ngo": "TTRANGANATHAN CLINICAL RESEARCH FOUNDATION", "district": "Chennai, Tamil Nadu", "projectId": "DR/TN/CHE/00285",
+      "sanctionedStrength": null, "sanctionedStrengthShown": "null beneficiaries", "requested": 578600, "source": "legacy_migration",
+      "previousSanctions": [
+        { "fy": "2024-25", "no": "S202526046310", "date": "2025-04-24", "type": "SLCA", "sanctioned": 1030592, "disbursed": 1030592 },
+        { "fy": "2023-24", "no": "S202425035779", "date": "2025-03-09", "type": "SLCA", "sanctioned": 1176911, "disbursed": 1176911 },
+        { "fy": "2022-23", "no": "S202324093979", "date": "2023-09-14", "type": "SLCA", "sanctioned": 1138511, "disbursed": 1138511 },
+        { "fy": "2021-22", "no": "S202122033067", "date": "2022-03-21", "type": "SLCA", "sanctioned": 427950, "disbursed": 855900 },
+        { "fy": "2020-21", "no": "S202122012920", "date": "2022-01-31", "type": "SLCA", "sanctioned": 860400, "disbursed": 860400 },
+        { "fy": "2018-19", "no": "S201920031286", "date": "2020-03-27", "type": "RRTC", "sanctioned": 643285, "disbursed": 643285 },
+        { "fy": "2017-18", "no": "S20181905588", "date": "2018-05-09", "type": "RRTC", "sanctioned": 918340, "disbursed": 918340 },
+        { "fy": "2016-17", "no": "S20171803523", "date": "2018-03-12", "type": "RRTC", "sanctioned": 788613, "disbursed": 788613 },
+        { "fy": "2015-16", "no": "S20161705352", "date": "2016-05-20", "type": "RRTC", "sanctioned": 751606, "disbursed": 751606 }
+      ],
+      "oldPortalNoting": {
+        "entries": 13, "last": "2014-12-04",
+        "outcome": "Approved by the Joint Secretary, 04 Dec 2014, subject to IFD's conditions — ₹5,72,560 full and final GIA for 2014-15, concurred by IFD on 27 Nov and 03 Dec 2014.",
+        "chain": ["Dealing Assistant", "Section Officer", "Under Secretary", "Deputy Secretary/Director", "Joint Secretary", "Deputy Secretary – Director IFD", "Section Officer IFD", "Additional Secretary & FA", "Joint Secretary IFD", "Joint Secretary"]
+      },
+      "costSheet": null, "statementOfAccount": null, "documents": { "count": 0, "shown": "Verify each of the 0 documents submitted with this application." },
+      "auditTrail": [],
+      "decision": { "only": "Forward to SO-PD", "blocker": null, "note": "Forward is possible with remarks alone — nothing to review" }
+    },
+    {
+      "id": 84198, "gia": "GIA/2026-27/NAPDDR/MADURAI_TAMIL_NADU/84198", "state": "READ-ONLY — forwarded by the ASO, now with SO-PD",
+      "statusChip": "SO Review", "case": "New Project", "projectType": "DDAC", "sanctionedStrength": 500, "requested": 67000000,
+      "pipeline": { "proposedAso": 8069000, "proposedAt": "2026-10-06T11:25" },
+      "costSheet": { "state": "Showing the saved cost sheet (read-only)", "nonRecurringNgoClaimed": 7000000, "totalRecommended": 8069000 },
+      "statementOfAccount": { "budgetaryAllocation": 67000000, "upToDateExpenditure": 0, "balanceAfterThisRelease": 67000000, "note": "balance does not subtract this release" },
+      "officerDocuments": [ { "title": "justification for continuation of ongoing projects.pdf", "by": "ASO-PD", "on": "2026-10-06" } ],
+      "auditTrail": [
+        { "desk": "NGO", "at": "2026-10-05T19:59", "action": "Submitted by NGO" },
+        { "desk": "Dealing Assistant - Program Division", "at": "2026-10-06T11:25", "action": "Supporting document added" },
+        { "desk": "Dealing Assistant - Program Division", "at": "2026-10-06T11:32", "action": "Forwarded", "remarks": "All good" }
+      ],
+      "documents": { "count": 12, "allVerifiedByAso": true, "selectsDisabled": true, "aiDisagreed": ["Memorandum of Association: AI 'Not valid' (an audit report was uploaded) — ASO marked Verified", "PAN Card Copy: AI 'Needs review'"] },
+      "decision": { "shown": "Forward to SO-PD panel, empty remarks, button disabled — no 'forwarded on … with remarks …' read-out" }
+    },
+    {
+      "id": 84097, "gia": "GIA/2026-27/NAPDDR/NEW_DELHI_DELHI/84097", "state": "READ-ONLY — returned to the NGO by SO-PD",
+      "statusChip": "Returned NGO", "case": "New Project", "projectType": "IRCA_30", "ngo": "SOCIETY FOR THE PROMOTION OF YOUTH AND MASSES (SPYM)", "requested": 2500000,
+      "pipeline": { "proposedAso": 2180400, "proposedAt": "2026-09-30T08:27" },
+      "auditTrail": [
+        { "desk": "NGO", "at": "2026-09-30T08:26", "action": "Submitted by NGO" },
+        { "desk": "Dealing Assistant - Program Division", "at": "2026-09-30T08:27", "action": "Forwarded", "remarks": "Documents verified. Forwarding to SO-PD." },
+        { "desk": "SO - Program Division", "at": "2026-09-30T08:28", "action": "Deficiency to NGO", "remarks": "Budget Estimate document is deficient — upload a corrected, itemised Budget Estimate. (NGO query #388)" }
+      ],
+      "documents": { "count": 12, "verified": 11, "pending": ["Budget Estimate"], "selectsDisabled": true },
+      "decision": { "shown": "Forward to SO-PD panel, empty — the query is only visible inside the collapsed Audit Trail" }
+    },
+    {
+      "id": 84395, "gia": "GIA/2026-27/NAPDDR/CHENNAI_TAMIL_NADU/84395", "state": "READ-ONLY — sanctioned",
+      "statusChip": "Napddr Sanctioned", "case": "New Project", "projectType": "IRCA_15", "requested": 2000000,
+      "pipeline": [
+        { "stage": "Proposed (ASO)", "amount": 1770000, "at": "2026-10-08T15:18" },
+        { "stage": "Recommended (JS-PD)", "amount": 1700000, "at": "2026-10-08T15:25" },
+        { "stage": "Concurred (JS-IFD)", "amount": 1700000, "at": "2026-10-08T15:35" },
+        { "stage": "Final Approved (JS-PD)", "amount": 1700000, "at": "2026-10-08T15:37" }
+      ],
+      "costSheet": { "totalAdmissible": 1770000, "pdRecommended": 1770000, "totalRecommended": 1700000 },
+      "auditTrailEntries": 14,
+      "chain": ["NGO", "Dealing Assistant – PD (supporting document, forward)", "SO – PD", "US – PD", "DS/Dir – PD", "JS/AS – PD (recommended, amount locked)", "DA – IFD", "SO – IFD", "US – IFD", "…", "JS – IFD (concurred)", "JS – PD (final approval)"]
+    },
+    {
+      "id": 84398, "gia": "GIA/2027-28/AVYAY/PLOT_42_SECTOR_7_DWARKA_NEW_DE/84398", "state": "ACTIONABLE — AVYAY, separate screen /dashboard/avyay/aso/review/{id}",
+      "case": "Ongoing — 1st Installment", "projectType": "SRCH_25 · City Z · 90% central share", "requested": 813656.16,
+      "summary": { "currentStatus": "With ASO-PD", "atThisDeskSince": "2026-10-08 (0 days)", "actionRequired": "Fill the Component-wise Cost Sheet and record it as final before forwarding this file." },
+      "applicationData": { "answered": "53 of 53", "groups": ["Application Type 4/4", "Organisation Details 13/13", "Project Details 4/4", "Project Location & Infrastructure 17/17", "Beneficiaries 2/2", "Bank Account Details 5/5", "Verification & Authorised Person 6/6", "Other Recorded Details 2/2"], "collapsedByDefault": true, "expandAll": true },
+      "grantPanel": { "recurringNorm": 2438356, "lessRent": 178200, "admissibleRecurring": 2260156, "centralShare90": 2034140, "nonRecurringNorm": 309105, "nonRecurringAdmissible": 278195, "appliedRecurring": 813656.16 },
+      "costSheet": { "heads": 17, "recommendedTotal": 2034142, "netPayable": 813656.8, "instalment": "1st · 40% of the year", "columns": ["Norm", "Expenditure proposed", "Calculated", "Recommended by PD", "Concurred by IFD", "Remarks by PD"], "save": ["Save as draft", "Save as final"] },
+      "documents": { "uploaded": 9, "onChecklist": 9, "summary": "9 mandatory documents still to review before this file can be forwarded", "aiNotValid": 3, "aiNeedsReview": 4 },
+      "decision": { "forwardTo": ["SO — next in the chain", "US", "DS/Director", "JS-PD"], "attachment": "PDF/JPG/PNG ≤ 5 MB", "secondaryAction": "Raise deficiency for the SO (with documents to seek from the NGO)", "blocker": "The cost sheet is required before this file can move on." },
+      "fileNoting": "Append-only ledger, latest first"
+    }
+  ],
+
+  "otherScreens": {
+    "pdQueries": { "route": "/dashboard/pd/aso/queries", "standfirst": "Applications returned by upstream PD officers (SO/US/DS/JS-PD) — open each, rework it, and forward it back up the chain.", "filter": ["All", "Open (Awaiting Response)", "Responded"], "empty": "No PD queries with status \"OPEN\"." },
+    "returned": { "route": "/dashboard/pd/aso/rejected", "title": "Returned Applications", "standfirst": "Applications you have sent back — to the State GIA, to the NGO, to the previous level, or for rework.", "rows": [ { "gia": "GIA/2026-27/NAPDDR/KA/00112", "ngo": "Health for All NGO", "district": "Karnataka · Kalaburagi", "submitted": "2026-05-01", "returned": "2026-05-11", "reason": "Document is pending from your side", "query": "Responded" } ] },
+    "avyayQueue": { "route": "/dashboard/avyay/aso", "kpis2026_27": { "total": 719, "inReview": 23, "sanctioned": 17, "returned": 2 } }
+  }
+}
