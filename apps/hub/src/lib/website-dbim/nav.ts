@@ -39,7 +39,8 @@ export const DBIM_MENU: DbimMenu[] = [
     children: [
       { label: "About Us", path: "/ministry" },
       { label: "Our Team", path: "/ministry/our-team" },
-      { label: "Our Division", path: "/ministry/our-division" },
+      // No "Our Division" (removed 9 Oct 2026): neither live site has the section; the
+      // divisions are Important Links groups, as on socialjustice.gov.in and dosje.gov.in.
       { label: "Our Organisation", path: "/ministry/our-organisation" },
       // The Department's addition to DBIM's second level (28 Sep 2026): the scheme
       // portals, out of Our Organisation as every other design has them.

@@ -1,5 +1,10 @@
 # Utility pages — spec
 
+> **Superseded 9 Oct 2026.** Ministry › Our Division was removed: neither socialjustice.gov.in nor
+> dosje.gov.in has the section. The divisions are Important Links groups (`lib/website-dbim/division-links.ts`,
+> `components/website-dbim/utility/LinkGroup.tsx`); the register pages moved to `/important-links/<register>`,
+> and links this design cannot render open the Department's page on dosje.gov.in instead of being dropped.
+
 Owner: the utility-pages builder. Routes under `apps/hub/src/app/website-dbim/`:
 `policies`, `policies/[policy]`, `related-links`, `important-links`, `sitemap`, `help`,
 `cookies`, `feedback`, `search`, `persona/[slug]`. Components in

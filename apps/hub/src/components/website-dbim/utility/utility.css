@@ -127,6 +127,51 @@
     }
   }
 
+  /* A group (a division in Important Links): the row is the disclosure's summary, and
+     its links sit under it, inset, in the same row style. */
+  [data-design="dbim"] .db-u-group__summary {
+    cursor: pointer;
+    list-style: none;
+  }
+
+  [data-design="dbim"] .db-u-group__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  [data-design="dbim"] .db-u-group__summary:hover .db-u-pill {
+    background: var(--sa-color-primaryScale-200);
+  }
+
+  [data-design="dbim"] .db-u-group__summary:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  [data-design="dbim"] .db-u-group__chev {
+    transition: transform var(--sa-motion-expand-duration);
+  }
+
+  [data-design="dbim"] .db-u-group > details[open] .db-u-group__chev {
+    transform: rotate(180deg);
+  }
+
+  [data-design="dbim"] .db-u-group__links {
+    margin-bottom: var(--sa-stack-12);
+    padding-inline-start: var(--sa-padding-32);
+  }
+
+  @media (max-width: 767.5px) {
+    [data-design="dbim"] .db-u-group__links {
+      padding-inline-start: var(--sa-padding-16);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-design="dbim"] .db-u-group__chev {
+      transition: none;
+    }
+  }
+
   /* The pill — the reference's .download-btn */
   [data-design="dbim"] .db-u-pill {
     display: inline-flex;
