@@ -127,3 +127,9 @@ docs/qc/portals/*/package-lock.json
 # CLAUDE.md at the repo root.
 apps/hub/AGENTS.md
 apps/hub/CLAUDE.md
+
+# Presentation decks built by hand for a specific date — binaries (tens of MB)
+# with no script that regenerates them, and this repository is public. The
+# before-and-after evidence beside them IS committed, as the handoff convention
+# asks; the .pptx files themselves stay on disk only.
+docs/design-handoffs/samavesh-keynote/
