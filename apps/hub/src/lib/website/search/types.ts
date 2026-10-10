@@ -44,6 +44,12 @@ export interface WebsiteSearchEntry {
    * schemes above old-site scheme listings at the same match strength.
    */
   boost?: number;
+  /**
+   * Which register a `document` entry came from. All three are type "document" for
+   * the New design's facets; the DBIM design lists tenders and vacancies as
+   * categories of their own, as the Department's own site does.
+   */
+  source?: "documents" | "tenders" | "vacancies";
 }
 
 /** The facets offered on the results page, in the order they are shown. */

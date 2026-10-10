@@ -244,13 +244,13 @@ function buildIndex(): WebsiteSearchEntry[] {
      for a phrase that appears only inside a PDF will not find it. Their href is
      the document itself on dosje.gov.in, which is where the file lives; the
      results page marks those as leaving the site. */
-  const files: [ReturnType<typeof getDocuments>, string, string][] = [
-    [getDocuments(), "Documents", "description"],
-    [getTenders(), "Tenders", "receipt_long"],
-    [getVacancies(), "Vacancies", "work"],
+  const files: [ReturnType<typeof getDocuments>, string, string, NonNullable<WebsiteSearchEntry["source"]>][] = [
+    [getDocuments(), "Documents", "description", "documents"],
+    [getTenders(), "Tenders", "receipt_long", "tenders"],
+    [getVacancies(), "Vacancies", "work", "vacancies"],
   ];
 
-  for (const [records, section, iconName] of files) {
+  for (const [records, section, iconName, source] of files) {
     for (const record of records) {
       entries.push({
         title: record.title,
@@ -266,6 +266,7 @@ function buildIndex(): WebsiteSearchEntry[] {
         section: record.category ?? section,
         updated: record.date,
         iconName,
+        source,
       });
     }
   }
