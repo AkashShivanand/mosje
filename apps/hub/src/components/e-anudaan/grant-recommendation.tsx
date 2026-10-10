@@ -58,6 +58,8 @@ import {
   sheetProblems,
   sheetTotals,
   statementProblems,
+  netPayable,
+  settlementProblems,
   type CostHead,
   type CostScheduleId,
   type SheetProblem,
@@ -103,15 +105,31 @@ export function AmountPipeline({ app }: { app: GrantApplication }) {
 
 type Draft = Omit<CostSheet, "savedAt" | "savedBy">;
 
+/** An ongoing project is costed on its recurring heads only; its one-time set-up came with its first sanction. */
+const seedOpts = (app: GrantApplication) => ({ recurringOnly: app.caseType === "Ongoing" });
+
+/**
+ * A shape, never rendered: the draft of a file with no norms to cost against. The card mounts on
+ * every file whose review shows a Grant tab — AVYAY's too — and returns nothing for these, but its
+ * state is set up first, and seeding a sheet from no schedule threw and took the page down
+ * (every AVYAY review, 7–9 Oct 2026).
+ */
+const NO_SHEET: Draft = { schedule: "DDAC", lines: [], choices: {} };
+
 /** The sheet as the file holds it, or a fresh one at the norm. */
 function draftOf(app: GrantApplication): Draft {
-  if (!app.costSheet) return seedSheet(defaultSchedule(app)!);
+  const schedule = defaultSchedule(app);
+  if (!schedule) return NO_SHEET;
+  if (!app.costSheet) return seedSheet(schedule, seedOpts(app));
   return structuredClone({ schedule: app.costSheet.schedule, lines: app.costSheet.lines, choices: app.costSheet.choices });
 }
 
 const HEAD_LABEL: Record<CostHead, string> = { nonRecurring: "Non-Recurring (One-Time)", recurring: "Recurring (Annual)" };
 
-export function CostSheetCard({ app, editable }: { app: GrantApplication; editable: boolean }) {
+export function CostSheetCard({ app, editable: mayEdit }: { app: GrantApplication; editable: boolean }) {
+  // A sheet carried across from the old portal is the record of what was sanctioned there.
+  const historical = !!app.costSheet?.historical;
+  const editable = mayEdit && !historical;
   const { saveCostSheet } = useEAnudaan();
   const { toast } = useToast();
   const schedules = schedulesFor(app);
@@ -150,7 +168,9 @@ export function CostSheetCard({ app, editable }: { app: GrantApplication; editab
     }
   };
 
-  const state = !app.costSheet ? (
+  const state = historical ? (
+    <Badge status="neutral" size="sm">Old Portal</Badge>
+  ) : !app.costSheet ? (
     <Badge status="warning" size="sm">Not Saved</Badge>
   ) : changed && editable ? (
     <Badge status="warning" size="sm">Unsaved Changes</Badge>
@@ -164,7 +184,9 @@ export function CostSheetCard({ app, editable }: { app: GrantApplication; editab
         <SectionTitle
           title="Cost Sheet"
           description={
-            app.costSheet && !changed
+            historical
+              ? `${SCHEDULE_LABEL[draft.schedule]} · As sanctioned in the old e-Anudaan portal, shown read-only.`
+              : app.costSheet && !changed
               ? `${SCHEDULE_LABEL[draft.schedule]} · ${savedLine(app.costSheet.savedAt, app.costSheet.savedBy)}.`
               : `${SCHEDULE_LABEL[draft.schedule]} · Opens at the scheme's cost norm. Each head may be recommended up to the lower of its norm and the NGO's claim.`
           }
@@ -181,7 +203,7 @@ export function CostSheetCard({ app, editable }: { app: GrantApplication; editab
                 options={schedules.map((s) => ({ value: s, label: SCHEDULE_LABEL[s] }))}
                 value={draft.schedule}
                 onChange={(e) => {
-                  setDraft(seedSheet(e.target.value as CostScheduleId));
+                  setDraft(seedSheet(e.target.value as CostScheduleId, seedOpts(app)));
                   setTried(false);
                 }}
               />
@@ -189,7 +211,8 @@ export function CostSheetCard({ app, editable }: { app: GrantApplication; editab
           </FormField>
         )}
 
-        {(["nonRecurring", "recurring"] as const).map((head) => (
+        {/* An ongoing project's sheet has no one-time head to show (seedOpts). */}
+        {(app.caseType === "Ongoing" ? (["recurring"] as const) : (["nonRecurring", "recurring"] as const)).map((head) => (
           <HeadTable
             key={head}
             head={head}
@@ -234,7 +257,7 @@ export function CostSheetCard({ app, editable }: { app: GrantApplication; editab
             <Button
               appearance="outlined"
               onClick={() => {
-                setDraft(seedSheet(draft.schedule));
+                setDraft(seedSheet(draft.schedule, seedOpts(app)));
                 setTried(false);
               }}
             >
@@ -479,6 +502,13 @@ function ItemCell({
       ) : (
         l.remark && <span className="block text-body-3 text-ink">Remark: {l.remark}</span>
       )}
+      {/* The finance division's figure, read-only, where it recorded one (dev portal, 8 Oct 2026). */}
+      {l.ifdProposed != null && (
+        <span className={`block text-body-3 ${l.ifdProposed !== l.proposed ? "text-[var(--sa-text-status-warning-bolder)]" : "text-ink-muted"}`}>
+          Integrated Finance Division: <span className="tabular-nums">{rupees(l.ifdProposed)}</span>
+          {l.ifdRemark ? ` — ${l.ifdRemark}` : l.ifdProposed === l.proposed ? " — as proposed" : ""}
+        </span>
+      )}
     </div>
   );
 }
@@ -491,23 +521,38 @@ export function StatementOfAccountCard({ app, editable }: { app: GrantApplicatio
   const saved = app.budgetStatement;
   const [allocation, setAllocation] = React.useState(saved ? String(saved.allocation) : "");
   const [expenditure, setExpenditure] = React.useState(saved ? String(saved.expenditure) : "");
+  // An ongoing project's instalment is settled against the utilisation certificate for the last one.
+  const ongoing = app.caseType === "Ongoing";
+  const [payable, setPayable] = React.useState(saved?.settlement ? String(saved.settlement.payable) : "");
+  const [unspentUc, setUnspentUc] = React.useState(saved?.settlement ? String(saved.settlement.unspentUc) : "");
   const [tried, setTried] = React.useState(false);
 
   if (!hasGrantTab(app)) return null;
   if (!editable && !saved) return null;
 
   const release = releaseOf(app);
-  const problems = statementProblems({ allocation, expenditure }, release, rupees);
+  const problems = { ...statementProblems({ allocation, expenditure }, release, rupees), ...(ongoing ? settlementProblems({ payable, unspentUc }) : {}) };
   const ready = !problems.allocation && !problems.expenditure;
   const balance = ready ? balanceAfter({ allocation: Number(allocation), expenditure: Number(expenditure) }, release) : null;
   // The release moved after the statement was saved — the cost sheet was saved again since.
   const stale = !!saved && saved.release !== release;
-  const changed = !saved || stale || String(saved.allocation) !== allocation || String(saved.expenditure) !== expenditure;
+  const settlementReady = ongoing && !problems.payable && !problems.unspentUc;
+  const changed =
+    !saved ||
+    stale ||
+    String(saved.allocation) !== allocation ||
+    String(saved.expenditure) !== expenditure ||
+    (ongoing && (String(saved.settlement?.payable ?? "") !== payable || String(saved.settlement?.unspentUc ?? "") !== unspentUc));
 
   const save = () => {
     setTried(true);
     if (Object.keys(problems).length) return;
-    const res = saveBudgetStatement(app.id, { allocation: Number(allocation), expenditure: Number(expenditure), release });
+    const res = saveBudgetStatement(app.id, {
+      allocation: Number(allocation),
+      expenditure: Number(expenditure),
+      release,
+      ...(ongoing ? { settlement: { payable: Number(payable), unspentUc: Number(unspentUc) } } : {}),
+    });
     if (res.ok) {
       setTried(false);
       toast("Statement of Account saved.", "success");
@@ -549,7 +594,9 @@ export function StatementOfAccountCard({ app, editable }: { app: GrantApplicatio
           description={
             saved && !changed
               ? `The scheme's budget position for this release · ${savedLine(saved.savedAt, saved.savedBy)}.`
-              : "The scheme's budget position for this release. Saved separately from the cost sheet."
+              : ongoing
+                ? "The scheme's budget position for this release, and the utilisation of the last instalment. Saved separately from the cost sheet."
+                : "The scheme's budget position for this release. Saved separately from the cost sheet."
           }
         >
           {state}
@@ -584,6 +631,28 @@ export function StatementOfAccountCard({ app, editable }: { app: GrantApplicatio
             },
           ]}
         />
+        {ongoing && (
+          <div className="space-y-4">
+            <h3 className="text-body-2 font-semibold text-ink">Settlement — Utilisation Certificate Check</h3>
+            <div className="grid gap-4 md:grid-cols-2">
+              {money(payable, setPayable, "soa-payable", "Amount Payable This Instalment", problems.payable, "After deducting the project's own share.")}
+              {money(unspentUc, setUnspentUc, "soa-unspent", "Less: Unspent as per Utilisation Certificate", problems.unspentUc)}
+            </div>
+            <DescriptionList
+              size="sm"
+              items={[
+                {
+                  term: "Net Amount Payable",
+                  value: settlementReady ? (
+                    <span className="tabular-nums">{rupees(netPayable({ payable: Number(payable), unspentUc: Number(unspentUc) }))}</span>
+                  ) : (
+                    <span className="text-ink-muted">Enter both figures</span>
+                  ),
+                },
+              ]}
+            />
+          </div>
+        )}
         {problems.balance && (
           <p className="text-body-3 text-[var(--sa-text-status-error-bolder)]" role="alert">
             {problems.balance}
@@ -606,7 +675,8 @@ export function grantBlockers(app: GrantApplication): ("costSheet" | "statement"
   if (!hasGrantTab(app)) return [];
   const out: ("costSheet" | "statement")[] = [];
   if (!app.costSheet) out.push("costSheet");
-  if (!app.budgetStatement || app.budgetStatement.release !== releaseOf(app)) out.push("statement");
+  const stmt = app.budgetStatement;
+  if (!stmt || stmt.release !== releaseOf(app) || (app.caseType === "Ongoing" && !stmt.settlement)) out.push("statement");
   return out;
 }
 

@@ -134,9 +134,14 @@ export function normLines(schedule: CostScheduleId): readonly NormLine[] {
  * Which schedules a file can be costed against. A DDAC has one; a general IRCA has three, because
  * the reviewing officer sets its bed capacity (the NAPDDR form tells the NGO so). Empty for every
  * file this module holds no norms for — the cost sheet is then not drawn.
+ *
+ * An ongoing project is costed too: the dev portal costs every NAPDDR instalment (read of 8 Oct
+ * 2026), on its recurring heads only — `seedSheet` leaves the one-time items off.
  */
 export function schedulesFor(app: GrantApplication): CostScheduleId[] {
-  if (app.schemeCode !== "NAPDDR" || app.caseType !== "New") return [];
+  if (app.schemeCode !== "NAPDDR") return [];
+  // Decided in the old portal: its grant was settled there, and there is nothing to cost again.
+  if (app.legacy?.decision) return [];
   const type = app.formValues?.fld_project_type ?? "";
   if (type.startsWith("DDAC")) return ["DDAC"];
   if (type === "IRCA — Integrated Rehabilitation Centre") return ["IRCA-15", "IRCA-30", "IRCA-50"];
@@ -151,18 +156,27 @@ export function defaultSchedule(app: GrantApplication): CostScheduleId | null {
   return options.find((s) => Number(s.split("-")[1]) >= people) ?? options[options.length - 1]!;
 }
 
-/** A fresh sheet at the norm. Not saved: `savedAt` stays empty until the officer saves it. */
-export function seedSheet(schedule: CostScheduleId): Omit<CostSheet, "savedAt" | "savedBy"> {
+/**
+ * A fresh sheet at the norm. Not saved: `savedAt` stays empty until the officer saves it.
+ * `recurringOnly` for an ongoing project, whose one-time set-up was granted with its first sanction.
+ */
+export function seedSheet(schedule: CostScheduleId, opts: { recurringOnly?: boolean } = {}): Omit<CostSheet, "savedAt" | "savedBy"> {
   return {
     schedule,
-    lines: SCHEDULES[schedule].map((l, i) => ({
-      id: `${schedule}-${i + 1}`,
-      head: l.head,
-      label: l.label,
-      norm: l.norm,
-      proposed: l.norm,
-      ...(l.choice ? { choice: l.choice } : {}),
-    })),
+    lines: SCHEDULES[schedule].flatMap((l, i) =>
+      opts.recurringOnly && l.head === "nonRecurring"
+        ? []
+        : [
+            {
+              id: `${schedule}-${i + 1}`,
+              head: l.head,
+              label: l.label,
+              norm: l.norm,
+              proposed: l.norm,
+              ...(l.choice ? { choice: l.choice } : {}),
+            },
+          ],
+    ),
     choices: {},
   };
 }
@@ -288,6 +302,22 @@ export function statementProblems(
   return out;
 }
 
+/** An ongoing instalment's net payable: payable this instalment, less what the utilisation certificate shows unspent. */
+export function netPayable(s: { payable: number; unspentUc: number }): number {
+  return s.payable - s.unspentUc;
+}
+
+/** What is wrong with a settlement as typed, by field. Empty when it can be saved. */
+export function settlementProblems(s: { payable: string; unspentUc: string }): { payable?: string; unspentUc?: string } {
+  const p = s.payable === "" ? NaN : Number(s.payable);
+  const u = s.unspentUc === "" ? NaN : Number(s.unspentUc);
+  const out: { payable?: string; unspentUc?: string } = {};
+  if (!Number.isFinite(p) || p <= 0) out.payable = "Enter the amount payable as this instalment.";
+  if (!Number.isFinite(u) || u < 0) out.unspentUc = "Enter the unspent amount on the utilisation certificate. Enter 0 if none.";
+  else if (Number.isFinite(p) && u > p) out.unspentUc = "The unspent amount cannot be more than the amount payable.";
+  return out;
+}
+
 /* ── Amount pipeline ─────────────────────────────────────────────────────── */
 
 export type PipelineState = "done" | "current" | "upcoming";
@@ -316,10 +346,12 @@ export function amountPipeline(app: GrantApplication): PipelineStage[] | null {
   const proposed = app.costSheet ? sheetTotals(app.costSheet, app).proposed : undefined;
   const recommended = lastBy(app, "pd-js", "forward");
   const concurred = lastBy(app, "finance-js", "concur");
+  // Each stage states its own figure where it recorded one; otherwise it carried the last one on.
+  const recommendedAmount = recommended ? (recommended.amount ?? proposed) : undefined;
   const steps: Omit<PipelineStage, "state">[] = [
     { id: "proposed", label: "Proposed", by: "Assistant Section Officer, Programme Division", amount: proposed, at: app.costSheet?.savedAt },
-    { id: "recommended", label: "Recommended", by: "Joint Secretary, Programme Division", amount: recommended ? proposed : undefined, at: recommended?.at },
-    { id: "concurred", label: "Concurred", by: "Joint Secretary, Integrated Finance Division", amount: concurred ? proposed : undefined, at: concurred?.at },
+    { id: "recommended", label: "Recommended", by: "Joint Secretary, Programme Division", amount: recommendedAmount, at: recommended?.at },
+    { id: "concurred", label: "Concurred", by: "Joint Secretary, Integrated Finance Division", amount: concurred ? (concurred.amount ?? recommendedAmount) : undefined, at: concurred?.at },
     { id: "sanctioned", label: "Sanctioned", by: "Programme Director", amount: app.sanction?.total, at: app.sanction?.sanctionedAt },
   ];
   const doneUpTo = steps.reduce((n, s, i) => (s.amount != null ? i : n), -1);

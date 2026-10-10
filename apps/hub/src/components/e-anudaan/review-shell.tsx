@@ -43,6 +43,7 @@ import {
   docReviewerLine,
   permittedActions,
   proposedDeficiency,
+  seatName,
   statusLabel,
   verdictAttribution,
   type ActionPayload,
@@ -61,6 +62,7 @@ import {
   awaitingVerdict,
   bulkVerifiable,
   correctedDocIds,
+  overruledWithoutReason,
   isFlagged,
   matchesReviewFilter,
   verdictProgress,
@@ -86,6 +88,7 @@ import {
 } from "./review-panels";
 import { ReviewReport } from "./review-report";
 import { AmountPipeline, CostSheetCard, StatementOfAccountCard, grantBlockers, hasGrantTab } from "./grant-recommendation";
+import { amountPipeline } from "@/lib/e-anudaan/cost-sheet";
 import { ProjectRecordsSummary } from "./project-records";
 import { Findings, rowStateOf } from "./document-centre-parts";
 import {
@@ -309,7 +312,10 @@ export function ReviewShell({ appId }: { appId: string }) {
   // on the certification, and the panel says which BEFORE the button is pressed (audit R-01).
   const certifyingSeat = holdsFile && role.caps.includes("certify");
   // The NAPDDR file's cost sheet and Statement of Account are the ASO's to save before forwarding.
-  const blockers: ForwardBlocker[] = certifyingSeat ? [...asoForwardBlockers(app), ...(docsEditable ? grantBlockers(app) : [])] : [];
+  const overruled = overruledWithoutReason(app, checkOf);
+  const blockers: ForwardBlocker[] = certifyingSeat
+    ? [...asoForwardBlockers(app), ...(overruled.length ? (["overruled"] as const) : []), ...(docsEditable ? grantBlockers(app) : [])]
+    : [];
   const forwardBlocked = certifyingSeat && blockers.length > 0;
   const bulk = docsEditable ? bulkVerifiable(app, checkOf) : [];
   const norms = schemeNorms(app);
@@ -430,7 +436,17 @@ export function ReviewShell({ appId }: { appId: string }) {
   const grantOwed = blockers.filter((b) => b === "costSheet" || b === "statement").length;
   const tabs = [
     { id: "application", label: "Application" },
-    { id: "documents", label: docsEditable && awaiting.length > 0 ? `Documents (${awaiting.length} to Verify)` : "Documents", badge: docsEditable && awaiting.length > 0 },
+    {
+      id: "documents",
+      // What the tab still owes: verdicts first; once every verdict is given, a document marked for correction.
+      label:
+        docsEditable && awaiting.length > 0
+          ? `Documents (${awaiting.length} to Verify)`
+          : docsEditable && markedDocs > 0
+            ? `Documents (${markedDocs} for Correction)`
+            : "Documents",
+      badge: docsEditable && (awaiting.length > 0 || markedDocs > 0),
+    },
     ...(grantTab ? [{ id: "grant", label: grantOwed > 0 ? `Grant (${grantOwed} to Save)` : "Grant", badge: grantOwed > 0 }] : []),
     { id: "history", label: "History" },
   ];
@@ -451,8 +467,7 @@ export function ReviewShell({ appId }: { appId: string }) {
   return (
     <div className="space-y-5">
       {/* ── Header: who and what, not the reference in 40px ─────────────────────── */}
-      <header className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
-        <div className="min-w-0 basis-full space-y-1 md:basis-auto md:flex-1">
+      <header className="space-y-2">
           {/* The dev portal's ← (walkthrough of 07 Oct 2026), named for where it goes. */}
           <Link href={role.home} className={buttonClasses("primary", "text", "sm", "!px-0")}>
             <Icon name="arrow_back" size={16} aria-hidden /> My Queue
@@ -462,26 +477,29 @@ export function ReviewShell({ appId }: { appId: string }) {
             Review · {gradeTitle}
             {role.division ? `, ${role.division === "finance" ? "Integrated Finance Division" : "Programme Division"}` : ""}
           </p>
-          <h1 className="text-headline-3 text-ink">{ngo?.name ?? app.ngoId}</h1>
-          <p className="text-body-2 text-ink">
-            {project} · {schemeLabel(app.schemeCode)} · FY {app.financialYear}
-          </p>
-          <p className="text-body-3 text-ink-muted">
-            Application No. <RefText value={app.id} breakAtEverySlash className="text-ink" /> · Project ID {app.institutionId}
-          </p>
-        </div>
-        <div className="flex min-w-0 max-w-full flex-wrap items-center gap-3">
-          {/* Wraps on a phone: "Under Examination · With the Under Secretary, Integrated Finance" ran 45px off a 375px screen. */}
-          <Badge status={statusTone(app.status)} className="h-auto max-w-full whitespace-normal">
-            {statusLabel(app)}
-          </Badge>
-        </div>
+          {/* The status reads with the name it belongs to; at the far right of the page it was the
+              last thing found (polish pass, 9 Oct 2026). */}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+            <h1 className="text-headline-3 text-ink">{ngo?.name ?? app.ngoId}</h1>
+            {/* Wraps on a phone: "Under Examination · With the Under Secretary, Integrated Finance" ran 45px off a 375px screen. */}
+            <Badge status={statusTone(app.status)} className="h-auto max-w-full whitespace-normal">
+              {statusLabel(app)}
+            </Badge>
+          </div>
+          <div className="space-y-1">
+            <p className="text-body-2 text-ink">
+              {project} · {schemeLabel(app.schemeCode)} · FY {app.financialYear}
+            </p>
+            <p className="text-body-3 text-ink-muted">
+              Application No. <RefText value={app.id} breakAtEverySlash className="text-ink" /> · Project ID {app.institutionId}
+            </p>
+          </div>
       </header>
 
-      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_24rem] xl:items-start">
-        <div className="min-w-0 space-y-5">
+      <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_24rem] xl:items-start xl:gap-8">
+        <div className="min-w-0 space-y-6">
           {/* What is open on the file stays above the tabs: it is why the file is here. */}
-          <OpenItem app={app} onShowDocument={(docId) => showDocuments("changed", docId)} />
+          <OpenItem app={app} viewer={role.id} holdsFile={holdsFile} onShowDocument={(docId) => showDocuments("changed", docId)} />
 
           <Tabs
             idBase={tabsId}
@@ -545,6 +563,7 @@ export function ReviewShell({ appId }: { appId: string }) {
 
           <TabPanel idBase={tabsId} tabId="history" hidden={tab !== "history"}>
             <div className="space-y-5">
+              <OldPortalNoting app={app} />
               <FundingHistory app={app} />
               <InstalmentsPanel app={app} />
               <ProjectRecordsSummary app={app} />
@@ -659,7 +678,7 @@ export function ReviewShell({ appId }: { appId: string }) {
           )}
 
           <Panel
-            title="Your Decision"
+            title={holdsFile ? "Your Decision" : "File Status"}
             actions={
               <Menu items={moreActions} onSelect={onMoreAction} label="More actions on this file">
                 <Button appearance="outlined" size="sm" nowrap>
@@ -670,16 +689,16 @@ export function ReviewShell({ appId }: { appId: string }) {
           >
             <span id="officer-decision" tabIndex={-1} className="sr-only">Your decision</span>
             {!holdsFile ? (
-              <p className="text-body-2 text-ink-muted">
-                This application is not with you. Its status is <strong className="text-ink">{statusLabel(app)}</strong>, and you are viewing it read-only.
-              </p>
+              <FileStatus app={app} viewer={role.id} />
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {/* What the file still needs, BEFORE the button is pressed (audit R-01). */}
                 {certifyingSeat && (
                   <BeforeForwarding
                     progress={progress}
                     awaiting={awaiting.length}
+                    overruled={overruled.length}
+                    onShowOverruled={() => showDocuments("flagged")}
                     certifiedAt={app.certifiedAt}
                     onShowAwaiting={() => showDocuments("awaiting")}
                     grant={
@@ -725,13 +744,6 @@ export function ReviewShell({ appId }: { appId: string }) {
                     <Button appearance="text" size="sm" onClick={() => showDocuments("changed")}>
                       Review the Changed Documents
                     </Button>
-                  </p>
-                )}
-                {decisions.some((d) => d.action === "raiseDeficiency") && (
-                  <p className="text-body-3 text-ink-muted">
-                    {markedDocs > 0
-                      ? `${markedDocs} document${markedDocs === 1 ? "" : "s"} marked for correction. Raising a deficiency sends ${markedDocs === 1 ? "it" : "them"}, with your reasons, to the Section Officer.`
-                      : "No document is marked for correction. Raising a deficiency sends your remarks to the Section Officer as a clarification request."}
                   </p>
                 )}
                 <FormField
@@ -781,7 +793,10 @@ export function ReviewShell({ appId }: { appId: string }) {
                       disabled style it explains — it was #8f949d on white, 3.04:1 (audit R-01). */}
                   {forwardBlocked && (
                     <p id="forward-blocked" className="text-body-3 text-ink-muted">
-                      {forwardBlockedReason(blockers, awaiting.length)}
+                      {/* The checklist above already names each step; the full sentence said it all again. */}
+                      {certifyingSeat
+                        ? "Available once every step under Before You Forward is done."
+                        : forwardBlockedReason(blockers, awaiting.length)}
                     </p>
                   )}
                   {secondary
@@ -808,6 +823,14 @@ export function ReviewShell({ appId }: { appId: string }) {
                     </Button>
                   ))}
                 </div>
+                {/* What Raise Deficiency does, under the button it explains rather than above the remarks. */}
+                {decisions.some((d) => d.action === "raiseDeficiency") && (
+                  <p className="-mt-3 text-body-3 text-ink-muted">
+                    {markedDocs > 0
+                      ? `Raise Deficiency sends the ${markedDocs} document${markedDocs === 1 ? "" : "s"} marked for correction, with your reasons, to the Section Officer.`
+                      : "Raise Deficiency sends your remarks to the Section Officer as a clarification request."}
+                  </p>
+                )}
                 {problems.deficiency && (
                   <p className="text-body-3 text-[var(--sa-text-status-error-bolder)]" role="alert">
                     {problems.deficiency}
@@ -948,7 +971,17 @@ export function ReviewShell({ appId }: { appId: string }) {
  * "Resolve Query and Send Back" with the query's text shown nowhere, and an ASO saw "Returned
  * for Rework · By the Programme Director" without the Director's reason (screen audit, 14 Sep).
  */
-function OpenItem({ app, onShowDocument }: { app: GrantApplication; onShowDocument: (docId: string) => void }) {
+function OpenItem({
+  app,
+  viewer,
+  holdsFile,
+  onShowDocument,
+}: {
+  app: GrantApplication;
+  viewer: RoleId;
+  holdsFile: boolean;
+  onShowDocument: (docId: string) => void;
+}) {
   const proposed = proposedDeficiency(app);
   if (proposed) {
     return (
@@ -1014,7 +1047,111 @@ function OpenItem({ app, onShowDocument }: { app: GrantApplication; onShowDocume
     }
   }
 
+  // The officer's own forward, read back while the file is with someone else (dev portal read,
+  // 8 Oct 2026: the forwarded file showed an empty "record your remarks and forward" panel).
+  const sent = !holdsFile && app.holder.kind === "chain" ? lastForwardBy(app, viewer) : undefined;
+  if (sent) {
+    return (
+      <Alert status="info" title={`Forwarded to ${seatName(app.holder)}`}>
+        <p className="text-body-2">
+          You forwarded this file on {formatDate(sent.at)} at {formatTime(sent.at)}. It is read-only while it is with {seatName(app.holder)}.
+        </p>
+        {sent.remarks && <p className="mt-2 text-body-2">Your remarks: {sent.remarks}</p>}
+      </Alert>
+    );
+  }
+
+  // An ongoing instalment carries over the permanent documents verified on an earlier one.
+  const carried = holdsFile && app.caseType === "Ongoing" && app.instalment && app.submittedAt
+    ? app.documents.filter((d) => d.group === "permanent" && d.reviewStatus === "Verified" && d.reviewedAt && d.reviewedAt < app.submittedAt!)
+    : [];
+  if (carried.length) {
+    const since = carried.map((d) => d.reviewedAt!).sort()[0]!;
+    return (
+      <Alert status="info" title={`${ordinal(app.instalment!)} Instalment of an Ongoing Project`}>
+        <p className="text-body-2">
+          The permanent documents were verified on {formatDate(since)}, for an earlier instalment, and are carried over. This instalment needs the documents filed with it and the utilisation of the last instalment.
+        </p>
+      </Alert>
+    );
+  }
+
+  if (app.legacy?.decision) {
+    const l = app.legacy;
+    return (
+      <Alert status="info" title="Decided in the Old Portal">
+        <p className="text-body-2">
+          {l.decision}
+          {l.decidedAt ? <> on {formatDate(l.decidedAt)}</> : null}
+          {l.amount != null ? <> for {rupees(l.amount)}</> : null}. Its notings are on the History tab, read-only.
+        </p>
+      </Alert>
+    );
+  }
+
+  if (app.legacy) {
+    return (
+      <Alert status="info" title="Moved from the Old Portal">
+        <p className="text-body-2">
+          This file was in progress in the old e-Anudaan portal. What was done there — its notings, the deficiencies it sent and the cost sheet as it stood — is on the History and Grant tabs, read-only.
+        </p>
+      </Alert>
+    );
+  }
+
   return null;
+}
+
+const capitalise = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+
+/** The officer's last forward of this file, if the file has moved on since. */
+function lastForwardBy(app: GrantApplication, viewer: RoleId) {
+  const last = [...app.audit].reverse().find((e) => e.action === "forward" || e.action === "raiseDeficiency" || e.action === "communicateDeficiency");
+  return last && last.byRole === viewer && last.action === "forward" ? last : undefined;
+}
+
+/**
+ * The decision panel of a file that is not with this officer: where it is, since when, and the
+ * amount it carries. It replaced one sentence naming a status code.
+ */
+function FileStatus({ app, viewer }: { app: GrantApplication; viewer: RoleId }) {
+  const moved = [...app.audit].reverse().find((e) => e.to || e.action === "forward" || e.action === "sanction");
+  const proposed = amountPipeline(app)?.find((s) => s.id === "proposed");
+  const where =
+    app.holder.kind === "done" ? statusLabel(app) : app.holder.kind === "ngo" ? "The NGO, for correction" : capitalise(seatName(app.holder).replace(/^the /, ""));
+  const items: { term: string; value: string }[] = [{ term: app.holder.kind === "done" ? "Status" : "With", value: where }];
+  if (moved) items.push({ term: "Since", value: `${formatDate(moved.at)}, ${formatTime(moved.at)}` });
+  if (proposed?.amount != null) {
+    const mine = app.costSheet?.savedBy === viewer;
+    items.push({ term: "Proposed Amount", value: `${rupees(proposed.amount)}${proposed.at ? ` — saved by ${mine ? "you" : "the Assistant Section Officer"}, ${formatDate(proposed.at)}` : ""}` });
+  }
+  return (
+    <div className="space-y-3">
+      <p className="text-body-2 text-ink-muted">This file is not with you. You can read it, but not change it.</p>
+      <DescriptionList size="sm" items={items} />
+    </div>
+  );
+}
+
+/** The old portal's noting on a migrated file, oldest last — read-only, as the old portal kept it. */
+function OldPortalNoting({ app }: { app: GrantApplication }) {
+  if (!app.legacy?.notings.length) return null;
+  return (
+    <Panel title="File Noting — Old Portal">
+      <EventList
+        linkAs={Link}
+        label="File noting in the old portal"
+        events={[...app.legacy.notings].reverse().map((n, i) => ({
+          id: `legacy-${i}`,
+          at: n.at,
+          actor: n.fromDesk,
+          action: n.deficiency ? "Deficiency to the NGO" : n.markedTo ? `Marked to ${n.markedTo}` : "Noting",
+          note: [n.noting, n.recommendedAmount != null ? `Recommended amount: ${rupees(n.recommendedAmount)}` : ""].filter(Boolean).join(" "),
+          tone: n.deficiency ? "warning" : "neutral",
+        }))}
+      />
+    </Panel>
+  );
 }
 
 /**
@@ -1196,12 +1333,13 @@ const grouped = (v: string) => (v === "" ? "" : Number(v).toLocaleString("en-IN"
 
 type ReviewTab = "application" | "documents" | "grant" | "history";
 /** What stops the ASO's forward: the verdicts and certification, and on a NAPDDR file the costing. */
-type ForwardBlocker = "verdicts" | "certification" | "costSheet" | "statement";
+type ForwardBlocker = "verdicts" | "overruled" | "certification" | "costSheet" | "statement";
 
 /** Why the forward is not available, in one sentence, at reading contrast (audit R-01). */
 function forwardBlockedReason(blockers: readonly ForwardBlocker[], awaiting: number): string {
   const parts: string[] = [];
   if (blockers.includes("verdicts")) parts.push(`${awaiting} document${awaiting === 1 ? "" : "s"} still need${awaiting === 1 ? "s" : ""} your verdict`);
+  if (blockers.includes("overruled")) parts.push("a document verified against the automatic check has no reason given");
   if (blockers.includes("certification")) parts.push("the certification is not yet recorded");
   if (blockers.includes("costSheet")) parts.push("the cost sheet is not saved");
   if (blockers.includes("statement")) parts.push("the Statement of Account is not saved");
@@ -1225,6 +1363,7 @@ function decisionStandFirst({
   app: GrantApplication;
 }): string {
   if (blockers.includes("verdicts")) return `${awaiting} document${awaiting === 1 ? "" : "s"} need${awaiting === 1 ? "s" : ""} your verdict.`;
+  if (blockers.includes("overruled")) return "Say why a document is verified against the automatic check.";
   if (blockers.includes("certification")) return "The certification is not yet recorded.";
   if (blockers.includes("costSheet")) return "The cost sheet is not saved.";
   if (blockers.includes("statement")) return "The Statement of Account is not saved.";
@@ -1243,12 +1382,17 @@ function decisionStandFirst({
 function BeforeForwarding({
   progress,
   awaiting,
+  overruled = 0,
+  onShowOverruled,
   certifiedAt,
   onShowAwaiting,
   grant,
 }: {
   progress: { reviewed: number; required: number };
   awaiting: number;
+  /** Documents verified against a "Not valid" check with no reason given yet. */
+  overruled?: number;
+  onShowOverruled?: () => void;
   certifiedAt?: string;
   onShowAwaiting: () => void;
   /** A NAPDDR file's costing: present only where the Grant tab carries a cost sheet. */
@@ -1277,6 +1421,17 @@ function BeforeForwarding({
             )
           }
         />
+        {overruled > 0 && (
+          <ListRow
+            leading={<StepMark done={false} />}
+            title="Say Why a Document Is Verified Against the Check"
+            description={
+              <Button appearance="text" size="sm" className="!justify-start !px-0" onClick={onShowOverruled}>
+                {overruled} Document{overruled === 1 ? "" : "s"} Need{overruled === 1 ? "s" : ""} a Reason
+              </Button>
+            }
+          />
+        )}
         <ListRow
           leading={<StepMark done={!!certifiedAt} />}
           title="Record the Certification"
@@ -1382,22 +1537,37 @@ function VerdictControl({
 /** The remark that follows a verdict, under the row it belongs to. */
 function VerdictRemark({
   doc: d,
+  overrules = false,
   onReview,
 }: {
   doc: MockDoc;
+  /** Verified although the automatic check found it not valid. */
+  overrules?: boolean;
   onReview: (doc: MockDoc, status: DocReviewStatus, remark: string) => void;
 }) {
   const [remark, setRemark] = React.useState(d.officerRemarks ?? "");
   const [touched, setTouched] = React.useState(false);
-  const needsRemark = d.reviewStatus === "Deficient";
+  const needsRemark = d.reviewStatus === "Deficient" || overrules;
   return (
     <div className="max-w-xl">
       <FormField
         id={`remark-${d.id}`}
-        label={needsRemark ? "What must the NGO correct?" : "Your remark on this document"}
+        label={
+          overrules
+            ? "Why is it verified, when the automatic check found it not valid?"
+            : needsRemark
+              ? "What must the NGO correct?"
+              : "Your remark on this document"
+        }
         required={needsRemark}
         optional={!needsRemark}
-        error={needsRemark && touched && !remark.trim() ? "Give the reason, so the NGO knows what to correct." : undefined}
+        error={
+          needsRemark && touched && !remark.trim()
+            ? overrules
+              ? "Give the reason, so the next officer knows why the check was set aside."
+              : "Give the reason, so the NGO knows what to correct."
+            : undefined
+        }
       >
         {(c) => (
           <Input
@@ -1531,8 +1701,10 @@ function DocumentsPanel({
                 const settled =
                   (d.reviewStatus === "Verified" || d.reviewStatus === "Not applicable") &&
                   (!editable || (!!d.reviewedBy && d.reviewedBy !== viewer));
+                // Verified against a "Not valid" check: the reason is asked for, not optional.
+                const overrules = d.reviewStatus === "Verified" && verdict?.state === "invalid";
                 const remarkVisible =
-                  editable && d.reviewStatus !== "Pending" && (d.reviewStatus === "Deficient" || !!d.officerRemarks || !!remarkOpen[d.id]);
+                  editable && d.reviewStatus !== "Pending" && (d.reviewStatus === "Deficient" || overrules || !!d.officerRemarks || !!remarkOpen[d.id]);
                 const showReport = !!reportOpen[d.id] && hasReport;
                 const previous = d.versions?.[d.versions.length - 1];
                 return (
@@ -1574,7 +1746,7 @@ function DocumentsPanel({
                     findings={
                       remarkVisible || showReport ? (
                         <div className="space-y-3">
-                          {remarkVisible && <VerdictRemark key={`${d.id}-${d.reviewStatus}`} doc={d} onReview={review} />}
+                          {remarkVisible && <VerdictRemark key={`${d.id}-${d.reviewStatus}`} doc={d} overrules={overrules} onReview={review} />}
                           {showReport && <Findings verdict={verdict!} title={d.title} facts={facts} applicationFy={app.financialYear} officer />}
                         </div>
                       ) : undefined

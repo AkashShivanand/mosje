@@ -144,6 +144,12 @@ export interface AuditEntry {
   from?: Holder;
   to?: Holder;
   remarks?: string;
+  /**
+   * The amount this step recorded, where the step records one — the Joint Secretary's
+   * recommendation, the Integrated Finance Division's concurrence. Unset where the step carried
+   * the amount forward unchanged (cost-sheet.ts `amountPipeline`).
+   */
+  amount?: number;
 }
 
 /**
@@ -445,6 +451,34 @@ export interface GrantApplication {
   costSheet?: CostSheet;
   /** The Programme Division ASO's Statement of Account for this release, once saved. */
   budgetStatement?: BudgetStatement;
+  /**
+   * A file that came across from the old e-Anudaan portal, with what was decided there. The dev
+   * portal read of 8 Oct 2026 found 13,029 such files in the ASO's queue, many already approved.
+   */
+  legacy?: LegacyRecord;
+}
+
+/** What the old portal recorded on a migrated file. Read-only here. */
+export interface LegacyRecord {
+  /** The old portal's outcome, in its words — e.g. "Approved by the Joint Secretary". Unset if it was never decided. */
+  decision?: string;
+  decidedAt?: string;
+  /** The amount the old portal approved. */
+  amount?: number;
+  /** The old portal's noting, oldest first. */
+  notings: LegacyNoting[];
+}
+
+/** One noting in the old portal's file, as it recorded it. */
+export interface LegacyNoting {
+  at: string;
+  /** The desk, in the old portal's words: "Dealing Assistant", "Section Officer IFD" … */
+  fromDesk: string;
+  markedTo?: string;
+  recommendedAmount?: number;
+  noting?: string;
+  /** A deficiency the old portal sent to the NGO, rather than a noting. */
+  deficiency?: boolean;
 }
 
 /** One item of expense on a cost sheet: the norm, and what the reviewing officer proposes. */
@@ -462,6 +496,9 @@ export interface CostSheetLine {
   removed?: boolean;
   /** An item the officer added; it has no norm. */
   added?: boolean;
+  /** The Integrated Finance Division's figure for the item, where it recorded one, and why it differs. */
+  ifdProposed?: number;
+  ifdRemark?: string;
 }
 
 export interface CostSheet {
@@ -472,6 +509,8 @@ export interface CostSheet {
   choices: Record<string, string>;
   savedAt: string;
   savedBy: RoleId;
+  /** Carried across from the old portal as it was sanctioned there — read, never edited, here. */
+  historical?: boolean;
 }
 
 /** The scheme's budget position for this release, as the ASO records it before forwarding. */
@@ -480,6 +519,11 @@ export interface BudgetStatement {
   expenditure: number;
   /** The release the balance was computed against when it was saved. */
   release: number;
+  /**
+   * An ongoing project's instalment, settled against the utilisation certificate for the last
+   * one: what is payable this instalment, less what the certificate shows unspent.
+   */
+  settlement?: { payable: number; unspentUc: number };
   savedAt: string;
   savedBy: RoleId;
 }
@@ -506,6 +550,11 @@ export interface Inspection {
   submittedAt?: string;
   findings?: string;
   recommendation?: "Satisfactory" | "Needs improvement" | "Unsatisfactory";
+  /** What a PMU field visit recorded on the spot (dev portal read, 8 Oct 2026). */
+  located?: boolean;
+  functional?: boolean;
+  geoTag?: { lat: number; lng: number };
+  team?: string;
   /** An online (BharatVC) inspection an officer scheduled from the review screen. */
   title?: string;
   description?: string;

@@ -1,0 +1,4 @@
+{
+  "kind": "Fixed",
+  "text": "`DocumentRow` compact titles wrap to two lines before they are cut, instead of one. Beside a review's decision panel the verdict control left the title a third of the row, and \"List of Managing Committee Members\" read \"List of Managing Committe…\"."
+}

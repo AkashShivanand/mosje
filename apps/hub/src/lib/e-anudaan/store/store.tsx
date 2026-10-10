@@ -91,7 +91,12 @@ import {
  * 15 — every sanction is dated within its own financial year, the year its order is numbered in. An
  * older copy is reseeded: it holds 29 orders such as SAN/2024-25/01245 dated 10 Mar 2026.
  */
-const SCHEMA_VERSION = 15;
+/*
+ * 16 — the ASO's NAPDDR review in every state the dev portal showed (seed block 15): part-way and
+ * marked documents, a 2nd instalment, a file from the old portal, forwarded, returned, and with the
+ * NGO. An older copy is reseeded: it has none of them.
+ */
+const SCHEMA_VERSION = 16;
 
 function seedState(): EAnudaanState {
   const seed = buildSeed();

@@ -12,6 +12,7 @@ import assert from "node:assert/strict";
 
 import { ACTION_LABEL, STATUS_LABEL, auditActionLabel, docReviewerLine, holderLabel, statusLabel } from "./workflow.ts";
 import { divisionOfRole, queriesFor, rejectedFor, rejectionOf, schemeLabel } from "./selectors.ts";
+import { holderIsRole } from "./types.ts";
 import { inspectionActionFor, officerDashboard, recordInspection, scheduleInspection } from "./officer.ts";
 import { OFFICER_ROLES, ROLES } from "./roles.ts";
 import { buildSeed } from "./store/seed.ts";
@@ -84,7 +85,8 @@ test("the dashboard's Returned for Rework figure is the Queries list's length, f
   assert.ok(queriesFor(state, "pd-us").length > 0, "PD:US raised open queries");
   assert.deepEqual(
     queriesFor(state, "pd-us").map((a) => a.id).sort(),
-    queriesFor(state, "pd-so").filter((a) => a.status === "QueryRaised").map((a) => a.id).sort(),
+    // Only those sent to the SO: a query the SO itself raised sits with the ASO, on the SO's list as its own.
+    queriesFor(state, "pd-so").filter((a) => a.status === "QueryRaised" && holderIsRole(a.holder, "pd-so")).map((a) => a.id).sort(),
   );
 });
 
