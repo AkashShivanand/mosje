@@ -41,12 +41,20 @@ export function DbimHeader() {
               <Link href={dbimHref("/")} className="db-logo">
                 <DbimEmblem className="db-logo__emblem" />
                 <span className="db-logo__text">
+                  {/* BETA: the website is in beta (review of 8 Oct 2026), drawn as the DBIM DS
+                      `Beta Badge` (Figma xdv8nEd7PhnRhahASd9UPY, node 922:1434). The badge is
+                      hidden from the tree and the link's name says it once, at the end, so a
+                      screen reader hears the Department first and not the letters B-E-T-A. */}
+                  <span className="db-logo__beta" aria-hidden="true">
+                    Beta
+                  </span>
                   <span className="db-logo__gov">
                     Government of India
                     <br />
                     Ministry of Social Justice and Empowerment
                   </span>
                   <span className="db-logo__dept">Department of Social Justice and Empowerment</span>
+                  <span className="sr-only">, beta website</span>
                 </span>
               </Link>
             </div>
