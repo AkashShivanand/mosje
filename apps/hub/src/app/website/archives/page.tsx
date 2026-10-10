@@ -22,12 +22,20 @@ export const metadata: Metadata = {
 /*
  * GIGW 3.0 / DBIM 3.0 §5.6 archive (issue MAN-06).
  *
- * THE RULE: an item leaves its live page and appears here twelve months after
- * its publish date. The register publishes no closing date for tenders or
- * vacancies, so the publish date is the only date the rule can read; the
- * "Archived" column is that date plus twelve months, derived, not recorded.
- * The same rule (`isArchivedRecord`) removes the item from /tenders and /vacancies,
- * so an item is on exactly one of the two pages.
+ * THE RULE: the Department's own tag decides. Live tags each tender and vacancy
+ * Active or Archived by hand (`component_status`), and that tag wins wherever a
+ * record carries one — a 2022 tender can still be open and a month-old one can
+ * already be closed, so a date cannot be trusted to say which. The twelve-month
+ * rule from the publish date remains ONLY as the fallback for a record ingested
+ * before the tag was kept.
+ *
+ * There is therefore no "Archived" column: when a tag decides, no archive DATE
+ * exists to show. The page carried one until 8 Oct 2026, computed as publish
+ * date plus twelve months, which was a derived number presented as a record.
+ *
+ * The same rule (`isArchivedRecord`, lib/website-shared/records.ts — one source
+ * for all three designs) removes the item from /tenders and /vacancies, so an
+ * item is on exactly one of the two pages.
  */
 const columns: RecordColumn[] = [
   { key: "title", label: "Title", type: "record", sortable: true },
