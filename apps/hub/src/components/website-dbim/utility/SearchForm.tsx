@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Icon, Input, Select } from "@mosje/design-system";
+import { Button, Icon, Input, Select } from "@mosje/design-system";
 import { dbimHref } from "@/lib/website-dbim/nav";
 import { DBIM_SEARCH_SORTS, searchHref, type DbimSearchCategory, type DbimSearchSort } from "@/lib/website-dbim/search-params";
 import "@/components/website-dbim/ui/ui.css";
@@ -44,9 +44,13 @@ export function DbimSearchForm({
             autoComplete="off"
           />
         </label>
-        <button type="submit" className="sr-only">
+        {/* The form submits on Enter; this is the explicit control that makes that
+            possible and discoverable to assistive technology. It is never seen, so it
+            carries `sr-only` — but it is still the design system's Button, not a
+            hand-rolled one (design-system-architecture.md §2c). */}
+        <Button type="submit" className="sr-only">
           Search
-        </button>
+        </Button>
       </form>
       {showSort && (
         <div className="db-filter__rest db-search__sort">
